@@ -195,6 +195,14 @@ public class CompoundComparator<T> implements Comparator<T>, Serializable {
 	}
 
 	/**
+	 * Convenience method to construct a {@link CompoundComparator} 
+	 * @return a new {@link CompoundComparator}
+	 */
+	public static <T> CompoundComparator<T> get() {
+		return new CompoundComparator<T>();
+	}
+
+	/**
 	 * Convenience method to construct a {@link CompoundComparator} from
 	 * existing {@link Comparator}s.
 	 * @param comparators the comparators to build into a compound comparator

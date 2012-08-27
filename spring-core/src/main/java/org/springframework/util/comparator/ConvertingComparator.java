@@ -16,6 +16,7 @@
 
 package org.springframework.util.comparator;
 
+import java.lang.reflect.Method;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -53,12 +54,19 @@ public class ConvertingComparator<S, T> implements Comparator<S> {
 		this.converter = converter;
 	}
 
+	/**
+	 * Create a new {@link ComparableComparator} instance.
+	 * 
+	 * @param comparator the underlying comparator
+	 * @param conversionService the conversion service
+	 * @param targetType the target type
+	 */
 	public ConvertingComparator(Comparator<T> comparator,
 		ConversionService conversionService, Class<? extends T> targetType) {
 		this(comparator, new ConversionServiceConverter<S, T>(conversionService,
 			targetType));
 	}
-
+	
 	public int compare(S o1, S o2) {
 		T c1 = this.converter.convert(o1);
 		T c2 = this.converter.convert(o2);
@@ -75,6 +83,21 @@ public class ConvertingComparator<S, T> implements Comparator<S> {
 	 */
 	public static <S, T> ConvertingComparator<S, T> get(Comparator<T> comparator,
 		Converter<S, T> converter) {
+		return new ConvertingComparator<S, T>(comparator, converter);
+	}
+	
+	/**
+	 * Convenience method that can be used to get a {@link ConvertingComparator} for the
+	 * given <tt>converter</tt>.  This method will use a {@link ConvertingComparator} as
+	 * the underlying comparator.
+	 * 
+	 * @param comparator the underlying comparator used to compare the converted values
+	 * @param converter the converter
+	 * @return a new {@link ConvertingComparator} instance
+	 */
+	public static <S, T extends Comparable<T>> ConvertingComparator<S, T> get(
+		Converter<S, T> converter) {
+		Comparator<T> comparator = ComparableComparator.get();
 		return new ConvertingComparator<S, T>(comparator, converter);
 	}
 

@@ -57,9 +57,11 @@ public class InstanceComparator<T> implements Comparator<T> {
 	}
 
 	private int getOrder(T object) {
-		for (int i = 0; i < instanceOrder.length; i++) {
-			if (instanceOrder[i].isInstance(object)) {
-				return i;
+		if(object != null) {
+			for (int i = 0; i < instanceOrder.length; i++) {
+				if (instanceOrder[i].isInstance(object)) {
+					return i;
+				}
 			}
 		}
 		return instanceOrder.length;

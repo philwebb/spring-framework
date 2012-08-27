@@ -65,6 +65,8 @@ public class InstanceComparatorTests {
 		Comparator<Object> comparator = new InstanceComparator<Object>(I1.class, C3.class);
 		assertThat(comparator.compare(c1, c1), is(0));
 		assertThat(comparator.compare(c3, c4), is(-1));
+		assertThat(comparator.compare(c3, null), is(-1));
+		assertThat(comparator.compare(c4, null), is(0));
 	}
 
 	private static interface I1 {
