@@ -27,7 +27,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import org.springframework.core.MethodParameter;
 
@@ -40,9 +42,13 @@ import static org.junit.Assert.assertNull;
 /**
  * @author Keith Donald
  * @author Andy Clement
+ * @author Phillip Webb
  */
 @SuppressWarnings("rawtypes")
 public class TypeDescriptorTests {
+
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
 
 	public List<String> listOfString;
 
@@ -801,4 +807,20 @@ public class TypeDescriptorTests {
 
 	public Map<CharSequence, Number> isAssignableMapKeyValueTypes;
 
+	@Test
+	public void testUpCast() throws Exception {
+		Property property = new Property(getClass(), getClass().getMethod("getProperty"), getClass().getMethod("setProperty", Map.class));
+		TypeDescriptor typeDescriptor = new TypeDescriptor(property);
+		TypeDescriptor upCast = typeDescriptor.upCast(Object.class);
+		assertTrue(upCast.getAnnotation(MethodAnnotation1.class) != null);
+	}
+
+	@Test
+	public void testUpCastNotSuper() throws Exception {
+		Property property = new Property(getClass(), getClass().getMethod("getProperty"), getClass().getMethod("setProperty", Map.class));
+		TypeDescriptor typeDescriptor = new TypeDescriptor(property);
+		this.thrown.expect(IllegalArgumentException.class);
+		this.thrown.expectMessage("java.util.Map is not assignable to interface java.util.Collection");
+		typeDescriptor.upCast(Collection.class);
+	}
 }

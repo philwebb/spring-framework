@@ -31,6 +31,7 @@ import org.springframework.core.convert.converter.ConditionalGenericConverter;
  *
  * @author Keith Donald
  * @author Juergen Hoeller
+ * @author Phillip Webb
  * @since 3.0
  */
 final class FallbackObjectToStringConverter implements ConditionalGenericConverter {
@@ -41,6 +42,9 @@ final class FallbackObjectToStringConverter implements ConditionalGenericConvert
 
 	public boolean matches(TypeDescriptor sourceType, TypeDescriptor targetType) {
 		Class<?> sourceClass = sourceType.getObjectType();
+		if(String.class.equals(sourceClass)) {
+			return false;
+		}
 		return CharSequence.class.isAssignableFrom(sourceClass) || StringWriter.class.isAssignableFrom(sourceClass) ||
 			ObjectToObjectConverter.hasValueOfMethodOrConstructor(sourceClass, String.class);
 	}

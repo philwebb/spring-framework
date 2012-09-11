@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.core.MethodParameter;
+import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 
@@ -32,9 +33,10 @@ import org.springframework.util.ObjectUtils;
  * @author Keith Donald
  * @author Andy Clement
  * @author Juergen Hoeller
+ * @author Phillip Webb
  * @since 3.0
  */
-public class TypeDescriptor {
+public final class TypeDescriptor {
 
 	static final Annotation[] EMPTY_ANNOTATION_ARRAY = new Annotation[0];
 
@@ -58,6 +60,7 @@ public class TypeDescriptor {
 		typeDescriptorCache.put(double.class, new TypeDescriptor(double.class));
 		typeDescriptorCache.put(Double.class, new TypeDescriptor(Double.class));
 		typeDescriptorCache.put(String.class, new TypeDescriptor(String.class));
+		typeDescriptorCache.put(Object.class, new TypeDescriptor(Object.class));
 	}
 
 
@@ -246,6 +249,22 @@ public class TypeDescriptor {
 			return this;
 		}
 		return new TypeDescriptor(value.getClass(), this.elementTypeDescriptor,
+				this.mapKeyTypeDescriptor, this.mapValueTypeDescriptor, this.annotations);
+	}
+
+	/**
+	 * Cast this {@link TypeDescriptor} to a superclass or implemented interface
+	 * preserving annotations and nested type context.
+	 * @param superType the super type to cast to (can be {@code null}
+	 * @return a new TypeDescriptor for the up-cast type
+	 * @throws IllegalArgumentException if this type is not assignable to the super-type
+	 */
+	public TypeDescriptor upCast(Class<?> superType) {
+		if (superType == null) {
+			return null;
+		}
+		Assert.isAssignable(superType, getType());
+		return new TypeDescriptor(superType, this.elementTypeDescriptor,
 				this.mapKeyTypeDescriptor, this.mapValueTypeDescriptor, this.annotations);
 	}
 
