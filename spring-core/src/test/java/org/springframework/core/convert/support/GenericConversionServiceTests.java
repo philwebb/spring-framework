@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2011 the original author or authors.
+ * Copyright 2002-2012 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,6 @@
 
 package org.springframework.core.convert.support;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.fail;
-
 import java.awt.Color;
 import java.awt.SystemColor;
 import java.util.ArrayList;
@@ -39,6 +31,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.junit.Test;
+
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.convert.ConverterNotFoundException;
 import org.springframework.core.convert.TypeDescriptor;
@@ -48,6 +41,8 @@ import org.springframework.core.io.DescriptiveResource;
 import org.springframework.core.io.Resource;
 import org.springframework.util.StopWatch;
 import org.springframework.util.StringUtils;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Keith Donald
@@ -433,8 +428,6 @@ public class GenericConversionServiceTests {
 		System.out.println(watch.prettyPrint());
 	}
 
-	public static List<Integer> list;
-
 	@Test
 	public void testPerformance3() throws Exception {
 		GenericConversionService conversionService = new DefaultConversionService();
@@ -518,9 +511,7 @@ public class GenericConversionServiceTests {
 		}
 	}
 
-
 	private static class MyStringArrayToIntegerArrayConverter implements Converter<String[], Integer[]>	{
-
 		public Integer[] convert(String[] source) {
 			Integer[] result = new Integer[source.length];
 			for (int i = 0; i < source.length; i++) {
@@ -530,9 +521,7 @@ public class GenericConversionServiceTests {
 		}
 	}
 
-
 	private static class MyStringToIntegerArrayConverter implements Converter<String, Integer[]>	{
-
 		public Integer[] convert(String source) {
 			String[] srcArray = StringUtils.commaDelimitedListToStringArray(source);
 			Integer[] result = new Integer[srcArray.length];
