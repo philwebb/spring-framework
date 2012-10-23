@@ -30,7 +30,7 @@ class ClassDescriptor extends AbstractDescriptor {
 
 	@Override
 	public Annotation[] getAnnotations() {
-		return TypeDescriptor.EMPTY_ANNOTATION_ARRAY;
+		return EMPTY_ANNOTATION_ARRAY;
 	}
 
 	@Override
@@ -52,5 +52,5 @@ class ClassDescriptor extends AbstractDescriptor {
 	protected AbstractDescriptor nested(Class<?> type, int typeIndex) {
 		return new ClassDescriptor(type);
 	}
-	
+
 }

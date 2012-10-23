@@ -28,6 +28,10 @@ import org.springframework.util.Assert;
  */
 abstract class AbstractDescriptor {
 
+
+	static final Annotation[] EMPTY_ANNOTATION_ARRAY = new Annotation[0];
+
+
 	private final Class<?> type;
 
 
@@ -35,40 +39,40 @@ abstract class AbstractDescriptor {
 		Assert.notNull(type, "Type must not be null");
 		this.type = type;
 	}
-	
+
 
 	public Class<?> getType() {
 		return this.type;
 	}
 
-	public TypeDescriptor getElementTypeDescriptor() {
+	public AbstractDescriptor getElementDescriptor() {
 		if (isCollection()) {
 			Class<?> elementType = resolveCollectionElementType();
-			return (elementType != null ? new TypeDescriptor(nested(elementType, 0)) : null);
+			return (elementType != null ? nested(elementType, 0) : null);
 		}
 		else if (isArray()) {
 			Class<?> elementType = getType().getComponentType();
-			return new TypeDescriptor(nested(elementType, 0));				
+			return nested(elementType, 0);
 		}
 		else {
 			return null;
 		}
 	}
-	
-	public TypeDescriptor getMapKeyTypeDescriptor() {
+
+	public AbstractDescriptor getMapKeyDescriptor() {
 		if (isMap()) {
 			Class<?> keyType = resolveMapKeyType();
-			return keyType != null ? new TypeDescriptor(nested(keyType, 0)) : null;
+			return (keyType != null ? nested(keyType, 0) : null);
 		}
 		else {
 			return null;
 		}
 	}
-	
-	public TypeDescriptor getMapValueTypeDescriptor() {
+
+	public AbstractDescriptor getMapValueDescriptor() {
 		if (isMap()) {
 			Class<?> valueType = resolveMapValueType();
-			return valueType != null ? new TypeDescriptor(nested(valueType, 1)) : null;
+			return (valueType != null ? nested(valueType, 1) : null);
 		}
 		else {
 			return null;
@@ -96,33 +100,37 @@ abstract class AbstractDescriptor {
 			throw new IllegalStateException("Not a collection, array, or map: cannot resolve nested value types");
 		}
 	}
-	
+
 
 	// subclassing hooks
-	
+
 	public abstract Annotation[] getAnnotations();
 
 	protected abstract Class<?> resolveCollectionElementType();
-	
+
 	protected abstract Class<?> resolveMapKeyType();
-	
+
 	protected abstract Class<?> resolveMapValueType();
-	
+
 	protected abstract AbstractDescriptor nested(Class<?> type, int typeIndex);
-	
+
 
 	// internal helpers
-	
+
 	private boolean isCollection() {
 		return Collection.class.isAssignableFrom(getType());
 	}
-	
+
 	private boolean isArray() {
 		return getType().isArray();
 	}
-	
+
 	private boolean isMap() {
 		return Map.class.isAssignableFrom(getType());
 	}
-	
+
+	static Annotation[] nullSafeAnnotations(Annotation[] annotations) {
+		return annotations != null ? annotations : EMPTY_ANNOTATION_ARRAY;
+	}
+
 }

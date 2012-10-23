@@ -16,6 +16,14 @@
 
 package org.springframework.core.convert.support;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -25,12 +33,11 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.convert.ConverterNotFoundException;
 import org.springframework.core.convert.TypeDescriptor;
-
-import static org.junit.Assert.*;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 public class MapToMapConverterTests {
 
@@ -215,6 +222,38 @@ public class MapToMapConverterTests {
 		Map<String, Integer> result = (Map<String, Integer>) conversionService.convert(map, sourceType, targetType);
 		assertEquals(map, result);
 		assertEquals(NoDefaultConstructorMap.class, result.getClass());
+	}
+
+	public MultiValueMap<String, String> multiValueMapTarget;
+
+	@Test
+	@SuppressWarnings("unchecked")
+	public void multiValueMapToMultiValueMap() throws Exception {
+		DefaultConversionService.addDefaultConverters(conversionService);
+		MultiValueMap<String, Integer> source = new LinkedMultiValueMap<String, Integer>();
+		source.put("a", Arrays.asList(1, 2, 3));
+		source.put("b", Arrays.asList(4, 5, 6));
+		TypeDescriptor targetType = new TypeDescriptor(getClass().getField("multiValueMapTarget"));
+		MultiValueMap<String, String> converted = (MultiValueMap<String, String>)
+				conversionService.convert(source, targetType);
+		assertThat(converted.size(), is(2));
+		assertThat(converted.get("a"), is(Arrays.asList("1","2","3")));
+		assertThat(converted.get("b"), is(Arrays.asList("3","4","5")));
+	}
+
+	@Test
+	@SuppressWarnings("unchecked")
+	public void mapToMultiValueMap() throws Exception {
+		DefaultConversionService.addDefaultConverters(conversionService);
+		Map<String, Integer> source = new HashMap<String, Integer>();
+		source.put("a", 1);
+		source.put("b", 2);
+		TypeDescriptor targetType = new TypeDescriptor(getClass().getField("multiValueMapTarget"));
+		MultiValueMap<String, String> converted = (MultiValueMap<String, String>)
+				conversionService.convert(source, targetType);
+		assertThat(converted.size(), is(2));
+		assertThat(converted.get("a"), is(Arrays.asList("1")));
+		assertThat(converted.get("b"), is(Arrays.asList("2")));
 	}
 
 	public static class NoDefaultConstructorMap<K, V> extends HashMap<K, V> {

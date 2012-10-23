@@ -16,6 +16,15 @@
 
 package org.springframework.core.convert;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -26,18 +35,16 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.Test;
-
 import org.springframework.core.MethodParameter;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 /**
+ * Tests for {@link TypeDescriptor}.
+ *
  * @author Keith Donald
  * @author Andy Clement
  */
@@ -800,5 +807,30 @@ public class TypeDescriptorTests {
 	public Map notGenericMap;
 
 	public Map<CharSequence, Number> isAssignableMapKeyValueTypes;
+
+	@Test
+	public void multiValueMap() throws Exception {
+		TypeDescriptor td = new TypeDescriptor(getClass().getField("multiValueMap"));
+		assertTrue(td.isMap());
+		assertEquals(String.class, td.getMapKeyTypeDescriptor().getType());
+		assertEquals(List.class, td.getMapValueTypeDescriptor().getType());
+		assertEquals(Integer.class, td.getMapValueTypeDescriptor().getElementTypeDescriptor().getType());
+	}
+
+	public MultiValueMap<String, Integer> multiValueMap = new LinkedMultiValueMap<String, Integer>();
+
+
+	@Test
+	public void passDownGeneric() throws Exception {
+		TypeDescriptor td = new TypeDescriptor(getClass().getField("passDownGeneric"));
+		assertEquals(List.class, td.getElementTypeDescriptor().getType());
+		assertEquals(Set.class, td.getElementTypeDescriptor().getElementTypeDescriptor().getType());
+		assertEquals(Integer.class, td.getElementTypeDescriptor().getElementTypeDescriptor().getElementTypeDescriptor().getType());
+	}
+
+	public PassDownGeneric<Integer> passDownGeneric = new PassDownGeneric<Integer>();
+
+	public static class PassDownGeneric<T> extends ArrayList<List<Set<T>>> {
+	}
 
 }

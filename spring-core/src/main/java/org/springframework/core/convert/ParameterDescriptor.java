@@ -34,7 +34,7 @@ class ParameterDescriptor extends AbstractDescriptor {
 		super(methodParameter.getParameterType());
 		if (methodParameter.getNestingLevel() != 1) {
 			throw new IllegalArgumentException("MethodParameter argument must have its nestingLevel set to 1");
-		}			
+		}
 		this.methodParameter = methodParameter;
 	}
 
@@ -47,13 +47,13 @@ class ParameterDescriptor extends AbstractDescriptor {
 	@Override
 	public Annotation[] getAnnotations() {
 		if (this.methodParameter.getParameterIndex() == -1) {
-			return TypeDescriptor.nullSafeAnnotations(this.methodParameter.getMethodAnnotations());
+			return nullSafeAnnotations(this.methodParameter.getMethodAnnotations());
 		}
 		else {
-			return TypeDescriptor.nullSafeAnnotations(this.methodParameter.getParameterAnnotations());
+			return nullSafeAnnotations(this.methodParameter.getParameterAnnotations());
 		}
 	}
-	
+
 	@Override
 	protected Class<?> resolveCollectionElementType() {
 		return GenericCollectionTypeResolver.getCollectionParameterType(this.methodParameter);

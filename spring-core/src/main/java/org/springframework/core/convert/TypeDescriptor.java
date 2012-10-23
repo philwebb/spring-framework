@@ -36,7 +36,8 @@ import org.springframework.util.ObjectUtils;
  */
 public class TypeDescriptor {
 
-	static final Annotation[] EMPTY_ANNOTATION_ARRAY = new Annotation[0];
+	private static final Annotation[] EMPTY_ANNOTATION_ARRAY = AbstractDescriptor.EMPTY_ANNOTATION_ARRAY;
+
 
 	private static final Map<Class<?>, TypeDescriptor> typeDescriptorCache = new HashMap<Class<?>, TypeDescriptor>();
 
@@ -125,7 +126,7 @@ public class TypeDescriptor {
 		if (!Collection.class.isAssignableFrom(collectionType)) {
 			throw new IllegalArgumentException("collectionType must be a java.util.Collection");
 		}
-		return new TypeDescriptor(collectionType, elementTypeDescriptor);
+		return new TypeDescriptor(collectionType, elementTypeDescriptor, null, null, EMPTY_ANNOTATION_ARRAY);
 	}
 
 	/**
@@ -142,17 +143,17 @@ public class TypeDescriptor {
 		if (!Map.class.isAssignableFrom(mapType)) {
 			throw new IllegalArgumentException("mapType must be a java.util.Map");
 		}
-		return new TypeDescriptor(mapType, keyTypeDescriptor, valueTypeDescriptor);
+		return new TypeDescriptor(mapType, null, keyTypeDescriptor, valueTypeDescriptor, EMPTY_ANNOTATION_ARRAY);
 	}
 
 	/**
 	 * Creates a type descriptor for a nested type declared within the method parameter.
-	 * For example, if the methodParameter is a List&lt;String&gt; and the nestingLevel is 1, the nested type descriptor will be String.class.
-	 * If the methodParameter is a List<List<String>> and the nestingLevel is 2, the nested type descriptor will also be a String.class.
-	 * If the methodParameter is a Map<Integer, String> and the nesting level is 1, the nested type descriptor will be String, derived from the map value.
-	 * If the methodParameter is a List<Map<Integer, String>> and the nesting level is 2, the nested type descriptor will be String, derived from the map value.
-	 * Returns null if a nested type cannot be obtained because it was not declared.
-	 * For example, if the method parameter is a List&lt;?&gt;, the nested type descriptor returned will be <tt>null</tt>.
+	 * <p>For example, if the methodParameter is a <code>List&lt;String&gt;</code> and the nestingLevel is 1, the nested type descriptor will be <code>String.class</code>.
+	 * If the methodParameter is a <code>List&lt;List&lt;String&gt;&gt;</code> and the nestingLevel is 2, the nested type descriptor will also be a <code>String.class</code>.
+	 * If the methodParameter is a <code>Map&lt;Integer, String&gt;</code> and the nesting level is 1, the nested type descriptor will be String, derived from the map value.
+	 * If the methodParameter is a <code>List&lt;Map&lt;Integer, String&gt;&gt;</code> and the nesting level is 2, the nested type descriptor will be String, derived from the map value.
+	 * Returns <code>null</code> if a nested type cannot be obtained because it was not declared.
+	 * For example, if the method parameter is a <code>List&lt;?&gt;</code>, the nested type descriptor returned will be <code>null</code>.
 	 * @param methodParameter the method parameter with a nestingLevel of 1
 	 * @param nestingLevel the nesting level of the collection/array element or map key/value declaration within the method parameter
 	 * @return the nested type descriptor at the specified nesting level, or null if it could not be obtained
@@ -225,9 +226,11 @@ public class TypeDescriptor {
 	/**
 	 * Variation of {@link #getType()} that accounts for a primitive type by returning its object wrapper type.
 	 * This is useful for conversion service implementations that wish to normalize to object-based types and not work with primitive types directly.
+	 * @return the type, or <code>null</code> if this is {@link TypeDescriptor#NULL}
+	 * @see #getType()
 	 */
 	public Class<?> getObjectType() {
-		return ClassUtils.resolvePrimitiveIfNecessary(getType());
+		return (this.type == null ? null : ClassUtils.resolvePrimitiveIfNecessary(getType()));
 	}
 
 	/**
@@ -251,6 +254,7 @@ public class TypeDescriptor {
 
 	/**
 	 * Returns the name of this type: the fully qualified class name.
+	 * @return the qualified class na,e
 	 */
 	public String getName() {
 		return ClassUtils.getQualifiedName(getType());
@@ -258,6 +262,7 @@ public class TypeDescriptor {
 
 	/**
 	 * Is this type a primitive type?
+	 * @return {@code true} if this is a primitive type
 	 */
 	public boolean isPrimitive() {
 		return getType().isPrimitive();
@@ -302,6 +307,7 @@ public class TypeDescriptor {
 	 * <p>
 	 * For arrays, collections, and maps, element and key/value types are checked if declared.
 	 * For example, a List&lt;String&gt; field value is assignable to a Collection&lt;CharSequence&gt; field, but List&lt;Number&gt; is not assignable to List&lt;Integer&gt;.
+	 * @param typeDescriptor the type descriptor to test
 	 * @return true if this type is assignable to the type represented by the provided type descriptor
 	 * @see #getObjectType()
 	 */
@@ -329,6 +335,7 @@ public class TypeDescriptor {
 
 	/**
 	 * Is this type a {@link Collection} type?
+	 * @return {@code true} if this is a collection
 	 */
 	public boolean isCollection() {
 		return Collection.class.isAssignableFrom(getType());
@@ -336,6 +343,7 @@ public class TypeDescriptor {
 
 	/**
 	 * Is this type an array type?
+	 * @return {@code true} if this is an array
 	 */
 	public boolean isArray() {
 		return getType().isArray();
@@ -372,6 +380,7 @@ public class TypeDescriptor {
 
 	/**
 	 * Is this type a {@link Map} type?
+	 * @return {@code true} if this is a map
 	 */
 	public boolean isMap() {
 		return Map.class.isAssignableFrom(getType());
@@ -433,48 +442,36 @@ public class TypeDescriptor {
 
 	/**
 	 * Returns the value of {@link TypeDescriptor#getType() getType()} for the {@link #getElementTypeDescriptor() elementTypeDescriptor}.
+	 * @return the element type
 	 * @deprecated in Spring 3.1 in favor of {@link #getElementTypeDescriptor()}
 	 * @throws IllegalStateException if this type is not a java.util.Collection or Array type
 	 */
 	@Deprecated
 	public Class<?> getElementType() {
-		return getElementTypeDescriptor().getType();
+		return (getElementTypeDescriptor() == null ? null : getElementTypeDescriptor().getType());
 	}
 
 	/**
 	 * Returns the value of {@link TypeDescriptor#getType() getType()} for the {@link #getMapKeyTypeDescriptor() getMapKeyTypeDescriptor}.
+	 * @return the map key type
 	 * @deprecated in Spring 3.1 in favor of {@link #getMapKeyTypeDescriptor()}
 	 * @throws IllegalStateException if this type is not a java.util.Map
 	 */
 	@Deprecated
 	public Class<?> getMapKeyType() {
-		return getMapKeyTypeDescriptor().getType();
+		return (getMapKeyTypeDescriptor() == null ? null : getMapKeyTypeDescriptor().getType());
 	}
 
 	/**
 	 * Returns the value of {@link TypeDescriptor#getType() getType()} for the {@link #getMapValueTypeDescriptor() getMapValueTypeDescriptor}.
+	 * @return the map value type
 	 * @deprecated in Spring 3.1 in favor of {@link #getMapValueTypeDescriptor()}
 	 * @throws IllegalStateException if this type is not a java.util.Map
 	 */
 	@Deprecated
 	public Class<?> getMapValueType() {
-		return getMapValueTypeDescriptor().getType();
+		return (getMapValueTypeDescriptor() == null ? null : getMapValueTypeDescriptor().getType());
 	}
-
-	// package private helpers
-
-	TypeDescriptor(AbstractDescriptor descriptor) {
-		this.type = descriptor.getType();
-		this.elementTypeDescriptor = descriptor.getElementTypeDescriptor();
-		this.mapKeyTypeDescriptor = descriptor.getMapKeyTypeDescriptor();
-		this.mapValueTypeDescriptor = descriptor.getMapValueTypeDescriptor();
-		this.annotations = descriptor.getAnnotations();
-	}
-
-	static Annotation[] nullSafeAnnotations(Annotation[] annotations) {
-		return annotations != null ? annotations : EMPTY_ANNOTATION_ARRAY;
-	}
-
 
 	// internal constructors
 
@@ -482,22 +479,25 @@ public class TypeDescriptor {
 		this(new ClassDescriptor(type));
 	}
 
-	private TypeDescriptor(Class<?> collectionType, TypeDescriptor elementTypeDescriptor) {
-		this(collectionType, elementTypeDescriptor, null, null, EMPTY_ANNOTATION_ARRAY);
-	}
-
-	private TypeDescriptor(Class<?> mapType, TypeDescriptor keyTypeDescriptor, TypeDescriptor valueTypeDescriptor) {
-		this(mapType, null, keyTypeDescriptor, valueTypeDescriptor, EMPTY_ANNOTATION_ARRAY);
+	private TypeDescriptor(AbstractDescriptor descriptor) {
+		this.type = descriptor.getType();
+		this.elementTypeDescriptor = createTypeDescriptor(descriptor.getElementDescriptor());
+		this.mapKeyTypeDescriptor = createTypeDescriptor(descriptor.getMapKeyDescriptor());
+		this.mapValueTypeDescriptor = createTypeDescriptor(descriptor.getMapValueDescriptor());
+		this.annotations = descriptor.getAnnotations();
 	}
 
 	private TypeDescriptor(Class<?> type, TypeDescriptor elementTypeDescriptor, TypeDescriptor mapKeyTypeDescriptor,
 			TypeDescriptor mapValueTypeDescriptor, Annotation[] annotations) {
-
 		this.type = type;
 		this.elementTypeDescriptor = elementTypeDescriptor;
 		this.mapKeyTypeDescriptor = mapKeyTypeDescriptor;
 		this.mapValueTypeDescriptor = mapValueTypeDescriptor;
 		this.annotations = annotations;
+	}
+
+	private static TypeDescriptor createTypeDescriptor(AbstractDescriptor descriptor) {
+		return descriptor == null ? null : new TypeDescriptor(descriptor);
 	}
 
 	private static TypeDescriptor nested(AbstractDescriptor descriptor, int nestingLevel) {
@@ -590,10 +590,12 @@ public class TypeDescriptor {
 		}
 		builder.append(ClassUtils.getQualifiedName(getType()));
 		if (isMap()) {
+			//FIXME just because we implement a map does not mean can render like this (eg multimap)
 			builder.append("<").append(wildcard(getMapKeyTypeDescriptor()));
 			builder.append(", ").append(wildcard(getMapValueTypeDescriptor())).append(">");
 		}
 		else if (isCollection()) {
+			//FIXME as above
 			builder.append("<").append(wildcard(getElementTypeDescriptor())).append(">");
 		}
 		return builder.toString();
