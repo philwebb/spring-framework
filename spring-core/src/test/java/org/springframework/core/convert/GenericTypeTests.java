@@ -2,8 +2,8 @@
 package org.springframework.core.convert;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
 import java.util.HashMap;
@@ -13,7 +13,13 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.util.MultiValueMap;
 
+/**
+ * Tests for {@link GenericType}.
+ *
+ * @author Phillip Webb
+ */
 public class GenericTypeTests {
 
 	private GenericType mixedUpMapType;
@@ -94,11 +100,23 @@ public class GenericTypeTests {
 		assertThat(type.getSuperclass().getGenerics()[1].toString(), is("java.util.List<java.util.Set<java.lang.Integer>>"));
 	}
 
+	@Test
+	public void shouldFindSuperType() throws Exception {
+		GenericType type = GenericType.get(getClass().getField("multiValueMap")).find(Map.class);
+		assertThat(type.toString(), is("java.util.Map<java.lang.Integer, java.util.List<java.lang.String>>"));
+	}
+
 	public MixedupMap<String, Integer> mixedUpMap;
 
 	public MixedupMap<String, ?> wildcard;
 
 	public MixedupMap<List<Set<Integer>>, List<Set<String>>> nested;
+
+	public MultiValueMap<Integer, String> multiValueMap;
+
+	//FIXME generic array List<String>[]
+
+	//FIXME generic with array List<List<String>[]>
 
 	public static class MixedupMap<V, K> extends HashMap<K, V> implements KeyAccess<K> {
 	}

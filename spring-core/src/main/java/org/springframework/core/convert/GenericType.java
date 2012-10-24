@@ -2,9 +2,11 @@
 package org.springframework.core.convert;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
+import java.lang.reflect.WildcardType;
 
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.MethodParameter;
@@ -15,75 +17,188 @@ import org.springframework.util.ObjectUtils;
  *
  * @author Phillip Webb
  */
-public abstract class GenericType {
+public final class GenericType {
 
 	private static final GenericType[] EMPTY_GENERIC_TYPES = {};
 
-	private Type type;
+	private static final GenericType NONE = new GenericType(null, null);
 
+	/**
+	 * The owner that create this type (if any).
+	 */
+	private final GenericType owner;
+
+	/**
+	 * The underlying java type.
+	 */
+	private final Type type;
+
+	/**
+	 * Holds a reference to a nested resolved type (if any). Used when a type is
+	 * recursively resolved.
+	 */
+	private GenericType resolvedType;
+
+	/**
+	 * The ultimate type class represented by this type (if any).
+	 */
 	private Class<?> typeClass;
 
-	private TypeVariable<?>[] typeParameters;
+	/**
+	 * The superclass of this type or {@link #NONE} if there is no superclass. A
+	 * {@code null} value indicates that the superclass has not yet been deduced.
+	 */
+	private GenericType superclass;
 
-	private Type[] actualTypeArguments;
+	/**
+	 * The interfaces implemented by this type or {@link #EMPTY_GENERIC_TYPES} if there
+	 * are no interfaces. A {@code null} value indicates that the interfaces have not yet
+	 * been deduced.
+	 */
+	private GenericType[] interfaces;
 
+	/**
+	 * The generics on this type or {@link #EMPTY_GENERIC_TYPES} if there are no generics.
+	 * A {@code null} value indicates that the generics have not yet been deduced.
+	 */
+	private GenericType[] generics;
+
+	/**
+	 * Create a new {@link GenericType} instance from the specified {@link Type}.
+	 *
+	 * @param type the underlying type
+	 */
 	public GenericType(Type type) {
-		initialize(type);
+		this(null, type);
+		Assert.notNull(type, "Type must not be null");
 	}
 
-	protected void initialize(Type type) {
-		Assert.notNull(type);
+	/**
+	 * Internal private constructor used to create new {@link GenericType} instances.
+	 *
+	 * @param owner the owner (if any)
+	 * @param type the underlying type
+	 */
+	private GenericType(GenericType owner, Type type) {
+		this.owner = owner;
 		this.type = type;
 		if (type instanceof Class) {
 			this.typeClass = (Class<?>) type;
-		}
-		if (type instanceof ParameterizedType) {
+		} else if (type instanceof ParameterizedType) {
 			ParameterizedType parameterizedType = (ParameterizedType) type;
-			if (parameterizedType.getRawType() instanceof Class) {
-				typeClass = (Class<?>) parameterizedType.getRawType();
-				this.typeParameters = typeClass.getTypeParameters();
-				this.actualTypeArguments = parameterizedType.getActualTypeArguments();
-			}
+			this.resolvedType = new GenericType(owner, parameterizedType.getRawType());
+			this.typeClass = this.resolvedType.getTypeClass();
+		} else if (type instanceof TypeVariable) {
+			this.resolvedType = resolveVariable(owner, (TypeVariable<?>) type);
+			this.typeClass = this.resolvedType == null ? null
+					: this.resolvedType.getTypeClass();
+		}
+		if (type instanceof GenericArrayType) {
+			// FIXME
+		}
+		if (type instanceof WildcardType) {
+			// FIXME
 		}
 	}
 
-	public GenericType getSuperclass() {
-		if (getTypeClass() == null || getTypeClass().getGenericSuperclass() == null) {
+	private GenericType resolveVariable(GenericType owner, TypeVariable<?> variable) {
+		if (owner == null || owner.getTypeClass() == null
+				|| !(owner.getType() instanceof ParameterizedType)) {
 			return null;
 		}
-		return new RelatedGenericType(this, getTypeClass().getGenericSuperclass());
+		TypeVariable<?>[] typeParameters = owner.getTypeClass().getTypeParameters();
+		Type[] actualTypeArguments = ((ParameterizedType) owner.getType()).getActualTypeArguments();
+		for (int i = 0; i < typeParameters.length; i++) {
+			if (ObjectUtils.nullSafeEquals(getVariableName(typeParameters[i]),
+					getVariableName(variable))) {
+				return new GenericType(owner.owner, actualTypeArguments[i]);
+			}
+		}
+		return null;
 	}
 
-	public GenericType[] getInterfaces() {
-		if (getTypeClass() == null) {
-			return EMPTY_GENERIC_TYPES;
-		}
-		return asRelatedGenericTypes(getTypeClass().getGenericInterfaces());
-	}
-
-	public GenericType[] getGenerics() {
-		if (getTypeClass() == null || (!(getType() instanceof ParameterizedType))) {
-			return EMPTY_GENERIC_TYPES;
-		}
-		return asRelatedGenericTypes(((ParameterizedType) getType()).getActualTypeArguments());
+	private String getVariableName(TypeVariable<?> variable) {
+		return variable == null ? null : variable.getName();
 	}
 
 	public Type getType() {
-		return type;
+		return this.type;
 	}
 
 	public Class<?> getTypeClass() {
-		return typeClass;
+		return this.typeClass;
+	}
+
+	public GenericType getSuperclass() {
+		if (this.superclass == null) {
+			if (getTypeClass() == null || getTypeClass().getGenericSuperclass() == null) {
+				this.superclass = NONE;
+			} else {
+				this.superclass = new GenericType(this,
+						getTypeClass().getGenericSuperclass());
+			}
+		}
+		return (this.superclass == NONE ? null : this.superclass);
+	}
+
+	public GenericType[] getInterfaces() {
+		if (this.interfaces == null) {
+			if (getTypeClass() == null) {
+				this.interfaces = EMPTY_GENERIC_TYPES;
+			} else {
+				this.interfaces = asRelatedGenericTypes(getTypeClass().getGenericInterfaces());
+			}
+		}
+		return this.interfaces;
+	}
+
+	public GenericType[] getGenerics() {
+		if (this.generics == null) {
+			if (getTypeClass() == null || (!(getType() instanceof ParameterizedType))) {
+				this.generics = EMPTY_GENERIC_TYPES;
+			} else {
+				this.generics = asRelatedGenericTypes(((ParameterizedType) getType()).getActualTypeArguments());
+			}
+		}
+		return this.generics;
+	}
+
+	private GenericType[] asRelatedGenericTypes(Type[] types) {
+		GenericType[] genericTypes = new GenericType[types.length];
+		for (int i = 0; i < types.length; i++) {
+			genericTypes[i] = new GenericType(this, types[i]);
+		}
+		return genericTypes;
+	}
+
+	public GenericType find(Class<?> typeClass) {
+		GenericType type = null;
+		if (ObjectUtils.nullSafeEquals(getTypeClass(), typeClass)) {
+			return this;
+		}
+		if (getSuperclass() != null) {
+			type = getSuperclass().find(typeClass);
+		}
+		if (type == null) {
+			for (GenericType interfaceType : getInterfaces()) {
+				type = interfaceType.find(typeClass);
+				if (type != null) {
+					break;
+				}
+			}
+		}
+		return type;
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder name = new StringBuilder();
-		name.append(getTypeClass() == null ? "?" : getTypeClass().getName());
+		name.append(this.resolvedType != null ? this.resolvedType
+				: (getTypeClass() != null ? getTypeClass().getName() : "?"));
 		GenericType[] generics = getGenerics();
-		if(generics.length > 0) {
+		if (generics.length > 0) {
 			name.append("<");
-			for(int i=0;i<generics.length;i++) {
+			for (int i = 0; i < generics.length; i++) {
 				name.append(i > 0 ? ", " : "");
 				name.append(generics[i]);
 			}
@@ -92,86 +207,37 @@ public abstract class GenericType {
 		return name.toString();
 	}
 
-	protected GenericType getOwner() {
-		return null;
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (obj == null || obj.getClass() != GenericType.class) {
+			return false;
+		}
+		GenericType other = (GenericType) obj;
+		return ObjectUtils.nullSafeEquals(this.type, other.type)
+				&& ObjectUtils.nullSafeEquals(this.owner, other.owner);
 	}
 
-	protected Class<?> resolve(TypeVariable<?> variable) {
-		GenericType owner = getOwner();
-		if(typeParameters != null) {
-			for(int i=0; i<typeParameters.length; i++) {
-				if(ObjectUtils.nullSafeEquals(variable.getName(), typeParameters[i].getName())) {
-					Type type = actualTypeArguments[i];
-					if(type instanceof TypeVariable && owner != null) {
-						return owner.resolve((TypeVariable<?>) type);
-					}
-					if(type instanceof Class) {
-						return (Class<?>) type;
-					}
-					//FIXME could be Param Type or class
-				}
-			}
-		}
-		return null;
-	}
-
-	private GenericType[] asRelatedGenericTypes(Type[] types) {
-		GenericType[] genericTypes = new GenericType[types.length];
-		for (int i = 0; i < types.length; i++) {
-			genericTypes[i] = new RelatedGenericType(this, types[i]);
-		}
-		return genericTypes;
-
-	}
-
-	private static class RootGenericType extends GenericType {
-
-		public RootGenericType(Type type) {
-			super(type);
-		}
-
-		@Override
-		protected void initialize(Type type) {
-			super.initialize(type);
-			if (getTypeClass() == null) {
-				throw new IllegalArgumentException("Unsupported type " + type);
-			}
-		}
-	}
-
-	private static class RelatedGenericType extends GenericType {
-
-		private GenericType owner;
-
-		public RelatedGenericType(GenericType owner, Type type) {
-			super(type);
-			this.owner = owner;
-		}
-
-		@Override
-		public Class<?> getTypeClass() {
-			Type type = getType();
-			Class<?> typeClass = super.getTypeClass();
-			if(typeClass == null && owner != null && type instanceof TypeVariable) {
-				typeClass = owner.resolve((TypeVariable<?>)type);
-			}
-			return typeClass;
-		}
-
-		public GenericType getOwner() {
-			return owner;
-		}
+	@Override
+	public int hashCode() {
+		return ObjectUtils.nullSafeHashCode(this.type) * 31
+				+ ObjectUtils.nullSafeHashCode(this.owner);
 	}
 
 	public static GenericType get(Class<?> typeClass) {
-		return new RootGenericType(typeClass);
+		return new GenericType(typeClass);
 	}
 
 	public static GenericType get(MethodParameter methodParameter) {
-		return new RootGenericType(GenericTypeResolver.getTargetType(methodParameter));
+		return new GenericType(GenericTypeResolver.getTargetType(methodParameter));
 	}
 
 	public static GenericType get(Field field) {
-		return new RootGenericType(field.getGenericType());
+		return new GenericType(field.getGenericType());
 	}
 }
