@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2002-2012 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,11 @@
 
 package org.springframework.jmx.export.annotation;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 
 import org.junit.Test;
+
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -34,6 +31,8 @@ import org.springframework.jmx.export.TestDynamicMBean;
 import org.springframework.jmx.support.MBeanServerFactoryBean;
 import org.springframework.jmx.support.ObjectNameManager;
 import org.springframework.jmx.support.RegistrationPolicy;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests for {@link EnableMBeanExport} and {@link MBeanExportConfiguration}.
@@ -170,7 +169,7 @@ public class EnableMBeanExportConfigurationTests {
 	}
 
 	@Configuration
-	@ComponentScan(excludeFilters={@ComponentScan.Filter(value=Configuration.class)})
+	@ComponentScan(excludeFilters = @ComponentScan.Filter(value=Configuration.class))
 	@EnableMBeanExport(server = "server")
 	static class ComponentScanConfiguration {
 

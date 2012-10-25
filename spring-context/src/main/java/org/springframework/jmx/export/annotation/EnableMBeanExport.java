@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2002-2012 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,9 +29,9 @@ import org.springframework.jmx.support.RegistrationPolicy;
  * Enables default exporting of all standard {@code MBean}s from the Spring context, as
  * well as well all {@code @ManagedResource} annotated beans.
  *
- * <p>The resulting MBeanExporter bean is defined under the name "mbeanExporter".
- * Alternatively, consider defining a custom {@link AnnotationMBeanExporter} bean
- * explicitly.
+ * <p>The resulting {@link org.springframework.jmx.export.MBeanExporter MBeanExporter}
+ * bean is defined under the name "mbeanExporter". Alternatively, consider defining a
+ * custom {@link AnnotationMBeanExporter} bean explicitly.
  *
  * <p>This annotation is modeled after and functionally equivalent to Spring XML's
  * {@code <context:mbean-export/>} element.

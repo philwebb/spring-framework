@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2002-2012 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,11 +41,11 @@ import org.springframework.util.StringUtils;
 /**
  * {@code @Configuration} class that registers a {@link AnnotationMBeanExporter} bean.
  *
- * <p>This configuration class is automatically imported when using the
- * {@link EnableMBeanExport} annotation. See {@code @EnableMBeanExport} Javadoc for
- * complete usage details.
+ * <p>This configuration class is automatically imported when using the @{@link
+ * EnableMBeanExport} annotation. See its Javadoc for complete usage details.
  *
  * @author Phillip Webb
+ * @author Chris Beams
  * @since 3.2
  * @see EnableMBeanExport
  */
@@ -62,8 +62,8 @@ public class MBeanExportConfiguration implements ImportAware, BeanFactoryAware {
 	public void setImportMetadata(AnnotationMetadata importMetadata) {
 		Map<String, Object> map = importMetadata.getAnnotationAttributes(EnableMBeanExport.class.getName());
 		this.attributes = AnnotationAttributes.fromMap(map);
-		Assert.notNull(this.attributes, "@EnableMBeanExport is not present on "
-				+ "importing class " + importMetadata.getClassName());
+		Assert.notNull(this.attributes, "@EnableMBeanExport is not present on " +
+				"importing class " + importMetadata.getClassName());
 	}
 
 	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
@@ -91,10 +91,11 @@ public class MBeanExportConfiguration implements ImportAware, BeanFactoryAware {
 		String server = this.attributes.getString("server");
 		if (StringUtils.hasText(server)) {
 			exporter.setServer(this.beanFactory.getBean(server, MBeanServer.class));
-		} else {
-			SpecialEnvironment specialEnvironment = SpecialEnvironment.get();
-			if(specialEnvironment != null) {
-				exporter.setServer(specialEnvironment.getServer());
+		}
+		else {
+			SpecificPlatform specificPlatform = SpecificPlatform.get();
+			if(specificPlatform != null) {
+				exporter.setServer(specificPlatform.getMBeanServer());
 			}
 		}
 	}
@@ -105,11 +106,11 @@ public class MBeanExportConfiguration implements ImportAware, BeanFactoryAware {
 	}
 
 
-	private static enum SpecialEnvironment {
+	private static enum SpecificPlatform {
 
 		WEBLOGIC("weblogic.management.Helper") {
 			@Override
-			public FactoryBean<?> getServerFactory() {
+			public FactoryBean<?> getMBeanServerFactory() {
 				JndiObjectFactoryBean factory = new JndiObjectFactoryBean();
 				factory.setJndiName("java:comp/env/jmx/runtime");
 				return factory;
@@ -118,33 +119,33 @@ public class MBeanExportConfiguration implements ImportAware, BeanFactoryAware {
 
 		WEBSPHERE("com.ibm.websphere.management.AdminServiceFactory") {
 			@Override
-			public FactoryBean<?> getServerFactory() {
+			public FactoryBean<MBeanServer> getMBeanServerFactory() {
 				return new WebSphereMBeanServerFactoryBean();
 			}
 		};
 
 		private final String identifyingClass;
 
-		private SpecialEnvironment(String identifyingClass) {
+		private SpecificPlatform(String identifyingClass) {
 			this.identifyingClass = identifyingClass;
 		}
 
-		public MBeanServer getServer() {
+		public MBeanServer getMBeanServer() {
 			Object server;
 			try {
-				server = getServerFactory().getObject();
+				server = getMBeanServerFactory().getObject();
 				Assert.isInstanceOf(MBeanServer.class, server);
 				return (MBeanServer) server;
-			} catch (Exception e) {
-				throw new IllegalStateException(e);
+			} catch (Exception ex) {
+				throw new IllegalStateException(ex);
 			}
 		}
 
-		protected abstract FactoryBean<?> getServerFactory();
+		protected abstract FactoryBean<?> getMBeanServerFactory();
 
-		public static SpecialEnvironment get() {
+		public static SpecificPlatform get() {
 			ClassLoader classLoader = MBeanExportConfiguration.class.getClassLoader();
-			for (SpecialEnvironment environment : values()) {
+			for (SpecificPlatform environment : values()) {
 				if(ClassUtils.isPresent(environment.identifyingClass, classLoader)) {
 					return environment;
 				}

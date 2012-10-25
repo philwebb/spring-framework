@@ -163,23 +163,14 @@ public class MBeanRegistrationSupport {
 	 */
 	@Deprecated
 	public void setRegistrationBehavior(int registrationBehavior) {
-		setRegistrationPolicy(convertRegistrationBehaviorToPolicy(registrationBehavior));
-	}
-
-	private RegistrationPolicy convertRegistrationBehaviorToPolicy(int registrationBehavior) {
-		switch (registrationBehavior) {
-			case REGISTRATION_IGNORE_EXISTING:
-				return RegistrationPolicy.IGNORE_EXISTING;
-			case REGISTRATION_REPLACE_EXISTING:
-				return RegistrationPolicy.REPLACE_EXISTING;
-		}
-		return RegistrationPolicy.FAIL_ON_EXISTING;
+		setRegistrationPolicy(RegistrationPolicy.valueOf(registrationBehavior));
 	}
 
 	/**
 	 * The policy to use when attempting to register an MBean
 	 * under an {@link javax.management.ObjectName} that already exists.
 	 * @param registrationPolicy the policy to use
+	 * @since 3.2
 	 */
 	public void setRegistrationPolicy(RegistrationPolicy registrationPolicy) {
 		Assert.notNull(registrationPolicy, "RegistrationPolicy must not be null");
