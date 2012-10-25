@@ -3,6 +3,7 @@ package org.springframework.core.convert;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
@@ -105,10 +106,22 @@ public final class GenericType {
 			// FIXME
 		}
 		if (type instanceof WildcardType) {
-			// FIXME
+			WildcardType wildcardType = (WildcardType) type;
+			this.resolvedType = resolveBounds(wildcardType.getUpperBounds());
+			if(this.resolvedType == null) {
+				this.resolvedType = resolveBounds(wildcardType.getLowerBounds());
+			}
+			this.typeClass = this.resolvedType == null ? null
+					: this.resolvedType.getTypeClass();
 		}
 	}
 
+	private GenericType resolveBounds(Type[] bounds) {
+		if (bounds != null && bounds.length > 0 && !Object.class.equals(bounds[0])) {
+			return new GenericType(this, bounds[0]);
+		}
+		return null;
+	}
 
 	private GenericType resolveVariable(GenericType owner, TypeVariable<?> variable) {
 		while(owner != null) {
@@ -182,16 +195,40 @@ public final class GenericType {
 		return this.interfaces;
 	}
 
+	//FIXME DOC
+	public Class<?> getGenericTypeClass() {
+		return getGenericTypeClass(0);
+	}
+
 	/**
-	 * Return the generic type at the specified index.  For example if the underlying
-	 * type is {@code Map<K, V>} calling {@code getGeneric(1)} will return {@code V}.
+	 * Return the generic type class at the specified index. For example if the underlying
+	 * type is {@code Map<Integer, String>} calling {@code getGeneric(1)} will return
+	 * {@code String}.
 	 * @param index the index of the generic
-	 * @return the generic type
+	 * @return the generic type or {@code null} if there is no generic at the specified
+	 *         index
+	 * @see #getGeneric(int)
 	 * @see #getGenerics()
-	 * @throws ArrayIndexOutOfBoundsException
+	 */
+	public Class<?> getGenericTypeClass(int index) {
+		GenericType generic = getGeneric(index);
+		return (generic != null ? generic.getTypeClass() : null);
+	}
+
+	/**
+	 * Return the generic type at the specified index. For example if the underlying type
+	 * is {@code Map<K, V>} calling {@code getGeneric(1)} will return {@code V}.
+	 * @param index the index of the generic
+	 * @return the generic type or {@code null} if there is no generic at the specified
+	 *         index
+	 * @see #getGenerics()
 	 */
 	public GenericType getGeneric(int index) {
-		return getGenerics()[index];
+		GenericType[] generics = getGenerics();
+		if(index >= 0 && index < generics.length) {
+			return generics[index];
+		}
+		return null;
 	}
 
 	/**
@@ -285,14 +322,22 @@ public final class GenericType {
 	}
 
 	public static GenericType get(Class<?> typeClass) {
+		Assert.notNull(typeClass, "TypeClass must not be null");
 		return new GenericType(typeClass);
 	}
 
 	public static GenericType get(MethodParameter methodParameter) {
+		Assert.notNull(methodParameter, "methodParameter must not be null");
 		return new GenericType(GenericTypeResolver.getTargetType(methodParameter));
 	}
 
 	public static GenericType get(Field field) {
+		Assert.notNull(field, "Field must not be null");
 		return new GenericType(field.getGenericType());
+	}
+
+	public static GenericType getForMethodReturnType(Method method) {
+		Assert.notNull(method, "Method must not be null");
+		return new GenericType(method.getGenericReturnType());
 	}
 }
