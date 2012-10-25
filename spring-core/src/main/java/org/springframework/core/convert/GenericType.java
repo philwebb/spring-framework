@@ -14,14 +14,21 @@ import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
 /**
+ * Wrapper for {@link java.lang.reflect.Type}s that allows generic information to be
+ * easily obtained.
  *
  * @author Phillip Webb
+ * @since 3.2
+ * @see #getGenerics()
+ * @see #getSuperclass()
+ * @see #getInterfaces()
  */
 public final class GenericType {
 
 	private static final GenericType[] EMPTY_GENERIC_TYPES = {};
 
-	private static final GenericType NONE = new GenericType(null, null);
+	private static final GenericType NONE = new GenericType(Void.class);
+
 
 	/**
 	 * The owner that create this type (if any).
@@ -63,6 +70,7 @@ public final class GenericType {
 	 */
 	private GenericType[] generics;
 
+
 	/**
 	 * Create a new {@link GenericType} instance from the specified {@link Type}.
 	 *
@@ -70,7 +78,6 @@ public final class GenericType {
 	 */
 	public GenericType(Type type) {
 		this(null, type);
-		Assert.notNull(type, "Type must not be null");
 	}
 
 	/**
@@ -80,6 +87,7 @@ public final class GenericType {
 	 * @param type the underlying type
 	 */
 	private GenericType(GenericType owner, Type type) {
+		Assert.notNull(type, "Type must not be null");
 		this.owner = owner;
 		this.type = type;
 		if (type instanceof Class) {
@@ -101,18 +109,21 @@ public final class GenericType {
 		}
 	}
 
+
 	private GenericType resolveVariable(GenericType owner, TypeVariable<?> variable) {
-		if (owner == null || owner.getTypeClass() == null
-				|| !(owner.getType() instanceof ParameterizedType)) {
-			return null;
-		}
-		TypeVariable<?>[] typeParameters = owner.getTypeClass().getTypeParameters();
-		Type[] actualTypeArguments = ((ParameterizedType) owner.getType()).getActualTypeArguments();
-		for (int i = 0; i < typeParameters.length; i++) {
-			if (ObjectUtils.nullSafeEquals(getVariableName(typeParameters[i]),
-					getVariableName(variable))) {
-				return new GenericType(owner.owner, actualTypeArguments[i]);
+		while(owner != null) {
+			if(owner.getType() instanceof ParameterizedType && ObjectUtils.nullSafeEquals(owner.getTypeClass(), variable.getGenericDeclaration())) {
+				TypeVariable<?>[] typeParameters = owner.getTypeClass().getTypeParameters();
+				Type[] actualTypeArguments = ((ParameterizedType) owner.getType()).getActualTypeArguments();
+				for (int i = 0; i < typeParameters.length; i++) {
+					if (ObjectUtils.nullSafeEquals(getVariableName(typeParameters[i]),
+							getVariableName(variable))) {
+						return new GenericType(owner.owner, actualTypeArguments[i]);
+					}
+				}
+
 			}
+			owner = owner.owner;
 		}
 		return null;
 	}
@@ -121,14 +132,28 @@ public final class GenericType {
 		return variable == null ? null : variable.getName();
 	}
 
+	/**
+	 * Returns the underlying {@link Type} being managed.
+	 * @return the underlying type (never {@code null}.
+	 */
 	public Type getType() {
 		return this.type;
 	}
 
+	/**
+	 * Returns the type {@link Class} or {@code null} if this type cannot be resolved to a
+	 * class.
+	 * @return the resolved type class or {@code null}
+	 */
 	public Class<?> getTypeClass() {
 		return this.typeClass;
 	}
 
+	/**
+	 * Returns a {@link GenericType} for the superclass of this item or {@code null} if
+	 * there is no supertype.
+	 * @return the supertype or {@code null}
+	 */
 	public GenericType getSuperclass() {
 		if (this.superclass == null) {
 			if (getTypeClass() == null || getTypeClass().getGenericSuperclass() == null) {
@@ -141,36 +166,58 @@ public final class GenericType {
 		return (this.superclass == NONE ? null : this.superclass);
 	}
 
+	/**
+	 * Returns an array {@link GenericType}s for each interface implemented.  If no interfaces
+	 * are implemented an empty array is returned.
+	 * @return the interfaces or an empty array
+	 */
 	public GenericType[] getInterfaces() {
 		if (this.interfaces == null) {
 			if (getTypeClass() == null) {
 				this.interfaces = EMPTY_GENERIC_TYPES;
 			} else {
-				this.interfaces = asRelatedGenericTypes(getTypeClass().getGenericInterfaces());
+				this.interfaces = asOwnedGenericTypes(getTypeClass().getGenericInterfaces());
 			}
 		}
 		return this.interfaces;
 	}
 
+	/**
+	 * Return the generic type at the specified index.  For example if the underlying
+	 * type is {@code Map<K, V>} calling {@code getGeneric(1)} will return {@code V}.
+	 * @param index the index of the generic
+	 * @return the generic type
+	 * @see #getGenerics()
+	 * @throws ArrayIndexOutOfBoundsException
+	 */
+	public GenericType getGeneric(int index) {
+		return getGenerics()[index];
+	}
+
+	/**
+	 * Return all generics defined on this type.  For example if the underlying
+	 * type is {@code Map<Integer,List<String>>} this method will return the array
+	 * containing the two types {@code Integer, List<String>}.  If no generics are
+	 * defined an empty array is returned.
+	 * @return the generics or an empty array
+	 */
 	public GenericType[] getGenerics() {
 		if (this.generics == null) {
 			if (getTypeClass() == null || (!(getType() instanceof ParameterizedType))) {
 				this.generics = EMPTY_GENERIC_TYPES;
 			} else {
-				this.generics = asRelatedGenericTypes(((ParameterizedType) getType()).getActualTypeArguments());
+				this.generics = asOwnedGenericTypes(((ParameterizedType) getType()).getActualTypeArguments());
 			}
 		}
 		return this.generics;
 	}
 
-	private GenericType[] asRelatedGenericTypes(Type[] types) {
-		GenericType[] genericTypes = new GenericType[types.length];
-		for (int i = 0; i < types.length; i++) {
-			genericTypes[i] = new GenericType(this, types[i]);
-		}
-		return genericTypes;
-	}
-
+	/**
+	 * Search the entire inheritance hierarchy (both superclass and implemented
+	 * interfaces) to find the specified class.
+	 * @param typeClass the type of class to find.
+	 * @return a {@link GenericType} for the found class or {@code null}.
+	 */
 	public GenericType find(Class<?> typeClass) {
 		GenericType type = null;
 		if (ObjectUtils.nullSafeEquals(getTypeClass(), typeClass)) {
@@ -227,6 +274,14 @@ public final class GenericType {
 	public int hashCode() {
 		return ObjectUtils.nullSafeHashCode(this.type) * 31
 				+ ObjectUtils.nullSafeHashCode(this.owner);
+	}
+
+	private GenericType[] asOwnedGenericTypes(Type[] types) {
+		GenericType[] genericTypes = new GenericType[types.length];
+		for (int i = 0; i < types.length; i++) {
+			genericTypes[i] = new GenericType(this, types[i]);
+		}
+		return genericTypes;
 	}
 
 	public static GenericType get(Class<?> typeClass) {

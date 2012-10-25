@@ -94,16 +94,18 @@ public class GenericTypeTests {
 	@Test
 	public void shouldKeepNestedGenerics() throws Exception {
 		GenericType type = GenericType.get(getClass().getField("nested"));
-		assertThat(type.getGenerics()[0].toString(), is("java.util.List<java.util.Set<java.lang.Integer>>"));
-		assertThat(type.getGenerics()[1].toString(), is("java.util.List<java.util.Set<java.lang.String>>"));
-		assertThat(type.getSuperclass().getGenerics()[0].toString(), is("java.util.List<java.util.Set<java.lang.String>>"));
-		assertThat(type.getSuperclass().getGenerics()[1].toString(), is("java.util.List<java.util.Set<java.lang.Integer>>"));
+		assertThat(type.getGeneric(0).toString(), is("java.util.List<java.util.Set<java.lang.Integer>>"));
+		assertThat(type.getGeneric(1).toString(), is("java.util.List<java.util.Set<java.lang.String>>"));
+		assertThat(type.getSuperclass().getGeneric(0).toString(), is("java.util.List<java.util.Set<java.lang.String>>"));
+		assertThat(type.getSuperclass().getGeneric(1).toString(), is("java.util.List<java.util.Set<java.lang.Integer>>"));
 	}
 
 	@Test
 	public void shouldFindSuperType() throws Exception {
 		GenericType type = GenericType.get(getClass().getField("multiValueMap")).find(Map.class);
 		assertThat(type.toString(), is("java.util.Map<java.lang.Integer, java.util.List<java.lang.String>>"));
+		assertThat(type.getGeneric(1).toString(), is("java.util.List<java.lang.String>"));
+		assertThat(type.getGeneric(1).getGeneric(0).toString(), is("java.lang.String"));
 	}
 
 	public MixedupMap<String, Integer> mixedUpMap;
