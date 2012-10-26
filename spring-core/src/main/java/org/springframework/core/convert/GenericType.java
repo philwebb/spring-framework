@@ -359,6 +359,7 @@ public final class GenericType {
 	private GenericType[] asOwnedGenericTypes(GenericType owner, Type[] types, boolean array) {
 		GenericType[] genericTypes = new GenericType[types.length];
 		for (int i = 0; i < types.length; i++) {
+			//FIXME use factory method with agressive caching
 			genericTypes[i] = new GenericType(owner, types[i], array);
 		}
 		return genericTypes;
@@ -384,6 +385,7 @@ public final class GenericType {
 		return new GenericType(method.getGenericReturnType());
 	}
 
+	//FIXME change to get(Class<?> owner, Method methd);
 	public static GenericType getForMethodReturnType(Method method,
 			GenericType owner) {
 		Assert.notNull(method, "Method must not be null");
