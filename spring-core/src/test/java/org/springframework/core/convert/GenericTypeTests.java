@@ -209,6 +209,13 @@ public class GenericTypeTests {
 		assertThat(GenericType.get(Object.class).getGenerics().length, is(0));
 	}
 
+	@Test
+	public void shouldResolveVariableFromSpecificOwner() throws Exception {
+		Method method = ReflectionUtils.findMethod(BoundedType.class, "getNumber");
+		assertEquals(Number.class, GenericType.getForMethodReturnType(method).getTypeClass());
+		assertEquals(Integer.class, GenericType.getForMethodReturnType(method, GenericType.get(DeclaredBoundedType.class)).getTypeClass());
+	}
+
 	// Can we replicate GenericTypeResolverTests
 
 	@Test
@@ -368,22 +375,11 @@ public class GenericTypeTests {
 	public static interface KeyAccess<K> {
 	}
 
-	@Test
-	public void dunno() throws Exception {
-		Method method = ReflectionUtils.findMethod(Dunno.class, "getNumber");
-		System.out.println(GenericTypeResolver.resolveReturnType(method, Dunno.class));
-		System.out.println(GenericTypeResolver.resolveReturnType(method, Dunno2.class));
-
-		GenericType type = GenericType.getForMethodReturnType(method);
-		System.out.println(type.getGeneric(0));
-
-	}
-
-	public static interface Dunno<V extends Number> {
+	public static interface BoundedType<V extends Number> {
 		public V getNumber();
 	}
 
-	public static interface Dunno2 extends Dunno<Integer> {
+	public static interface DeclaredBoundedType extends BoundedType<Integer> {
 	}
 
 	// From GenericTypeResolverTests

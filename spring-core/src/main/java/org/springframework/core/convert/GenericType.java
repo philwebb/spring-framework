@@ -126,15 +126,27 @@ public final class GenericType {
 						if (ObjectUtils.nullSafeEquals(
 								getVariableName(typeParameters[i]),
 								getVariableName(variable))) {
-							return new GenericType(candidateTarget.owner,
-									actualTypeArguments[i], false);
+							return new GenericType(candidateTarget, actualTypeArguments[i], false);
 						}
 					}
-
 				}
 				candidateTarget = candidateTarget.target;
 			}
 			candidate = candidate.owner;
+		}
+		if(owner != null) {
+			if(owner.getSuperType() != null) {
+				GenericType resolved = resolveVariable(owner.getSuperType(), variable);
+				if(resolved != null) {
+					return resolved;
+				}
+			}
+			for (GenericType interfaceType: owner.getInterfaces()) {
+				GenericType resolved = resolveVariable(interfaceType, variable);
+				if(resolved != null) {
+					return resolved;
+				}
+			}
 		}
 		return resolveBounds(variable.getBounds());
 	}
@@ -215,7 +227,7 @@ public final class GenericType {
 			if (typeClass == null) {
 				this.interfaces = EMPTY_GENERIC_TYPES;
 			} else {
-				this.interfaces = asOwnedGenericTypes(typeClass.getGenericInterfaces(), isArray());
+				this.interfaces = asOwnedGenericTypes(this, typeClass.getGenericInterfaces(), isArray());
 			}
 		}
 		return this.interfaces;
@@ -271,7 +283,7 @@ public final class GenericType {
 			while(candidate != null) {
 				Type candidateType = candidate.getType();
 				if(candidateType instanceof ParameterizedType && candidate.getTargetClass() != null) {
-					this.generics = asOwnedGenericTypes(((ParameterizedType) candidateType).getActualTypeArguments(), false);
+					this.generics = asOwnedGenericTypes(this, ((ParameterizedType) candidateType).getActualTypeArguments(), false);
 					break;
 				}
 				candidate = candidate.target;
@@ -344,10 +356,10 @@ public final class GenericType {
 				+ ObjectUtils.nullSafeHashCode(this.owner);
 	}
 
-	private GenericType[] asOwnedGenericTypes(Type[] types, boolean array) {
+	private GenericType[] asOwnedGenericTypes(GenericType owner, Type[] types, boolean array) {
 		GenericType[] genericTypes = new GenericType[types.length];
 		for (int i = 0; i < types.length; i++) {
-			genericTypes[i] = new GenericType(this, types[i], array);
+			genericTypes[i] = new GenericType(owner, types[i], array);
 		}
 		return genericTypes;
 	}
@@ -370,5 +382,11 @@ public final class GenericType {
 	public static GenericType getForMethodReturnType(Method method) {
 		Assert.notNull(method, "Method must not be null");
 		return new GenericType(method.getGenericReturnType());
+	}
+
+	public static GenericType getForMethodReturnType(Method method,
+			GenericType owner) {
+		Assert.notNull(method, "Method must not be null");
+		return new GenericType(owner, method.getGenericReturnType(), false);
 	}
 }
