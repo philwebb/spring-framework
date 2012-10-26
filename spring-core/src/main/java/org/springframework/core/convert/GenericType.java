@@ -1,6 +1,7 @@
 
 package org.springframework.core.convert;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Method;
@@ -37,14 +38,13 @@ public final class GenericType {
 	private final GenericType owner;
 
 	/**
-	 * The underlying java type.
+	 * The underlying java type (never null).
 	 */
 	private final Type type;
 
 	/**
-	 * The actual target used for operations or {@code null} if this object is the target.
-	 * This provides a way to reference resolved variable, array elements or wildcard
-	 * bounds.
+	 * The target or {@code null} if this object is the target. This provides a way to
+	 * reference raw types, resolved variable, array elements or wildcard bounds.
 	 */
 	private GenericType target;
 
@@ -67,6 +67,9 @@ public final class GenericType {
 	 */
 	private GenericType[] generics;
 
+	/**
+	 * If this type represents an array.
+	 */
 	private boolean array;
 
 
@@ -104,20 +107,27 @@ public final class GenericType {
 				this.target = resolveBounds(wildcardType.getLowerBounds());
 			}
 		}
+		if(target != null && target.isArray()) {
+			this.array = true;
+		}
 	}
 
 	private GenericType resolveVariable(GenericType owner, TypeVariable<?> variable) {
 		GenericType candidate = owner;
-		while(candidate != null) {
+		while (candidate != null) {
 			GenericType candidateTarget = candidate;
-			while(candidateTarget != null) {
-				if(candidateTarget.getType() instanceof ParameterizedType && ObjectUtils.nullSafeEquals(candidateTarget.getTypeClass(), variable.getGenericDeclaration())) {
-					TypeVariable<?>[] typeParameters = candidateTarget.getTypeClass().getTypeParameters();
+			while (candidateTarget != null) {
+				if (candidateTarget.getType() instanceof ParameterizedType
+						&& ObjectUtils.nullSafeEquals(candidateTarget.getTargetClass(),
+								variable.getGenericDeclaration())) {
+					TypeVariable<?>[] typeParameters = candidateTarget.getTargetClass().getTypeParameters();
 					Type[] actualTypeArguments = ((ParameterizedType) candidateTarget.getType()).getActualTypeArguments();
 					for (int i = 0; i < typeParameters.length; i++) {
-						if (ObjectUtils.nullSafeEquals(getVariableName(typeParameters[i]),
+						if (ObjectUtils.nullSafeEquals(
+								getVariableName(typeParameters[i]),
 								getVariableName(variable))) {
-							return new GenericType(candidateTarget.owner, actualTypeArguments[i], false);
+							return new GenericType(candidateTarget.owner,
+									actualTypeArguments[i], false);
 						}
 					}
 
@@ -126,7 +136,7 @@ public final class GenericType {
 			}
 			candidate = candidate.owner;
 		}
-		return null;
+		return resolveBounds(variable.getBounds());
 	}
 
 	private String getVariableName(TypeVariable<?> variable) {
@@ -155,16 +165,21 @@ public final class GenericType {
 	 * @return the resolved type class or {@code null}
 	 */
 	public Class<?> getTypeClass() {
+		Class<?> typeClass = getTargetClass();
+		if(typeClass != null && isArray()) {
+			return Array.newInstance(typeClass, 0).getClass();
+		}
+		return typeClass;
+	}
+
+	private Class<?> getTargetClass() {
 		if(target != null) {
-			return target.getTypeClass();
+			return target.getTargetClass();
 		}
 		if(type instanceof Class) {
 			return (Class<?>)type;
 		}
-
-		//FIXME convert to array
-
-		return null; //FIXME
+		return null;
 	}
 
 	// FIXME DC
@@ -179,7 +194,7 @@ public final class GenericType {
 	 */
 	public GenericType getSuperType() {
 		if (this.superType == null) {
-			Class<?> typeClass = getTypeClass();
+			Class<?> typeClass = getTargetClass();
 			if (typeClass == null || typeClass.getGenericSuperclass() == null) {
 				this.superType = NONE;
 			} else {
@@ -190,13 +205,13 @@ public final class GenericType {
 	}
 
 	/**
-	 * Returns an array {@link GenericType}s for each interface implemented.  If no interfaces
-	 * are implemented an empty array is returned.
+	 * Returns an array {@link GenericType}s for each interface implemented. If no
+	 * interfaces are implemented an empty array is returned.
 	 * @return the interfaces or an empty array
 	 */
 	public GenericType[] getInterfaces() {
 		if (this.interfaces == null) {
-			Class<?> typeClass = getTypeClass();
+			Class<?> typeClass = getTargetClass();
 			if (typeClass == null) {
 				this.interfaces = EMPTY_GENERIC_TYPES;
 			} else {
@@ -223,7 +238,7 @@ public final class GenericType {
 	 */
 	public Class<?> getGenericTypeClass(int index) {
 		GenericType generic = getGeneric(index);
-		return (generic != null ? generic.getTypeClass() : null);
+		return (generic != null ? generic.getTargetClass() : null);
 	}
 
 	/**
@@ -255,7 +270,7 @@ public final class GenericType {
 			GenericType candidate = this;
 			while(candidate != null) {
 				Type candidateType = candidate.getType();
-				if(candidateType instanceof ParameterizedType && candidate.getTypeClass() != null) {
+				if(candidateType instanceof ParameterizedType && candidate.getTargetClass() != null) {
 					this.generics = asOwnedGenericTypes(((ParameterizedType) candidateType).getActualTypeArguments(), false);
 					break;
 				}
@@ -273,7 +288,7 @@ public final class GenericType {
 	 */
 	public GenericType find(Class<?> typeClass) {
 		GenericType type = null;
-		if (ObjectUtils.nullSafeEquals(getTypeClass(), typeClass)) {
+		if (ObjectUtils.nullSafeEquals(getTargetClass(), typeClass)) {
 			return this;
 		}
 		if (getSuperType() != null) {
@@ -293,7 +308,7 @@ public final class GenericType {
 	@Override
 	public String toString() {
 		StringBuilder name = new StringBuilder();
-		name.append(getTypeClass() != null ? getTypeClass().getName() : "?");
+		name.append(getTargetClass() != null ? getTargetClass().getName() : "?");
 		GenericType[] generics = getGenerics();
 		if (generics.length > 0) {
 			name.append("<");

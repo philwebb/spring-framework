@@ -2,6 +2,8 @@
 package org.springframework.core.convert;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
@@ -23,10 +25,13 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.GenericBean;
+import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.io.Resource;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.ReflectionUtils;
+
+import sun.text.normalizer.UCharacter.NumericType;
 
 /**
  * Tests for {@link GenericType}.
@@ -107,6 +112,19 @@ public class GenericTypeTests {
 	}
 
 	@Test
+	public void shouldSupportBoundedWildcards() throws Exception {
+		GenericType type = GenericType.get(getClass().getField("boundedWildcard"));
+		assertThat(type.find(Map.class).getGeneric(1).toString(), is("java.lang.Number"));
+	}
+
+	@Test
+	public void shouldSupportBoundedVariable() throws Exception {
+		Method method = ReflectionUtils.findMethod(getClass(), "boundedVariable");
+		GenericType type = GenericType.getForMethodReturnType(method);
+		assertEquals(Number.class, type.getTypeClass());
+	}
+
+	@Test
 	public void shouldKeepNestedGenerics() throws Exception {
 		GenericType type = GenericType.get(getClass().getField("nested"));
 		assertThat(type.getGeneric(0).toString(), is("java.util.List<java.util.Set<java.lang.Integer>>"));
@@ -128,8 +146,7 @@ public class GenericTypeTests {
 		GenericType type = GenericType.get(getClass().getField("genericArray"));
 		assertThat(type.toString(), is("java.util.ArrayList<java.util.Set<java.lang.Integer>>[]"));
 		assertThat(type.isArray(), is(true));
-		//FIXME consider if getTypeClass should return an array type
-		assertEquals(ArrayList.class,type.getTypeClass());
+		assertEquals(ArrayList[].class,type.getTypeClass());
 		assertThat(type.getGeneric(0).toString(), is("java.util.Set<java.lang.Integer>"));
 	}
 
@@ -138,20 +155,58 @@ public class GenericTypeTests {
 		GenericType type = GenericType.get(getClass().getField("genericArray")).getSuperType();
 		assertThat(type.toString(), is("java.util.AbstractList<java.util.Set<java.lang.Integer>>[]"));
 		assertThat(type.isArray(), is(true));
-		assertEquals(AbstractList.class,type.getTypeClass());
+		assertEquals(AbstractList[].class,type.getTypeClass());
 		assertThat(type.getGeneric(0).toString(), is("java.util.Set<java.lang.Integer>"));
 	}
 
 	@Test
-	public void testName() throws Exception {
-		Class<?> c = ArrayList[].class;
-		while(c!= null) {
-			System.out.println(c);
-			c.getComponentType();
-			System.out.println(c.getName());
-			System.out.println(c.isArray());
-			c = c.getSuperclass();
-		}
+	public void shouldFindGenericOnArray() throws Exception {
+		GenericType type = GenericType.get(getClass().getField("genericArray")).find(List.class);
+		assertThat(type.toString(), is("java.util.List<java.util.Set<java.lang.Integer>>[]"));
+		assertThat(type.isArray(), is(true));
+		assertEquals(List[].class,type.getTypeClass());
+		assertThat(type.getGeneric(0).toString(), is("java.util.Set<java.lang.Integer>"));
+	}
+
+	@Test
+	public void shouldSupportVariablesOnArray() throws Exception {
+		GenericType type = GenericType.get(getClass().getField("mixedUpMapArray"));
+		assertThat(type.toString(), is("org.springframework.core.convert.GenericTypeTests$MixedupMap<java.lang.String, java.lang.Integer>[]"));
+		assertThat(type.getSuperType().toString(), is("java.util.HashMap<java.lang.Integer, java.lang.String>[]"));
+		assertThat(type.getInterfaces()[0].toString(), is("org.springframework.core.convert.GenericTypeTests$KeyAccess<java.lang.Integer>[]"));
+	}
+
+	@Test
+	public void shouldSupportArrayInGeneric() throws Exception {
+		GenericType type = GenericType.get(getClass().getField("arrayInGeneric"));
+		assertThat(type.toString(), is("java.util.List<java.util.Set<java.lang.Integer>[]>"));
+		assertThat(type.getGeneric(0).toString(), is("java.util.Set<java.lang.Integer>[]"));;
+		assertThat(type.getGeneric(0).isArray(), is(true));;
+	}
+
+	@Test
+	public void shouldSupportComplexNestedArrays() throws Exception {
+		GenericType type = GenericType.get(getClass().getField("complex"));
+		assertThat(type.toString(), is("org.springframework.core.convert.GenericTypeTests$MixedupMap<org.springframework.core.convert.GenericTypeTests$MixedupMap<java.lang.String[], java.lang.Integer>, java.lang.Integer>[]"));
+		GenericType nestedInnerGeneric = type.find(Map.class).getGeneric(1).find(Map.class).getGeneric(1);
+		assertThat(nestedInnerGeneric.toString(), is("java.lang.String[]"));
+		assertThat(nestedInnerGeneric.isArray(), is(true));
+		assertEquals(String[].class, nestedInnerGeneric.getTypeClass());
+	}
+
+	@Test
+	public void shouldSupportNoSuperclass() throws Exception {
+		assertThat(GenericType.get(Object.class).getSuperType(), is(nullValue()));
+	}
+
+	@Test
+	public void shouldSupportNoInterfaces() throws Exception {
+		assertThat(GenericType.get(Object.class).getInterfaces().length, is(0));
+	}
+
+	@Test
+	public void shouldSupportNoGenerics() throws Exception {
+		assertThat(GenericType.get(Object.class).getGenerics().length, is(0));
 	}
 
 	// Can we replicate GenericTypeResolverTests
@@ -283,7 +338,11 @@ public class GenericTypeTests {
 
 	public MixedupMap<String, Integer> mixedUpMap;
 
+	public MixedupMap<String, Integer>[] mixedUpMapArray;
+
 	public MixedupMap<String, ?> wildcard;
+
+	public MixedupMap<? extends Number, Integer> boundedWildcard;
 
 	public MixedupMap<List<Set<Integer>>, List<Set<String>>> nested;
 
@@ -291,10 +350,15 @@ public class GenericTypeTests {
 
 	public ArrayList<Set<Integer>>[] genericArray;
 
-	//FIXME generic array List<String>[]
+	public List<Set<Integer>[]> arrayInGeneric;
 
-	//FIXME generic with array List<List<String>[]>
+	public MixedupMap<MixedupMap<String[], Integer>, Integer>[] complex;
 
+	// Public methods used for testing
+
+	public <V extends Number> V boundedVariable() {
+		return null;
+	}
 
 	// Test classes
 
@@ -302,6 +366,24 @@ public class GenericTypeTests {
 	}
 
 	public static interface KeyAccess<K> {
+	}
+
+	@Test
+	public void dunno() throws Exception {
+		Method method = ReflectionUtils.findMethod(Dunno.class, "getNumber");
+		System.out.println(GenericTypeResolver.resolveReturnType(method, Dunno.class));
+		System.out.println(GenericTypeResolver.resolveReturnType(method, Dunno2.class));
+
+		GenericType type = GenericType.getForMethodReturnType(method);
+		System.out.println(type.getGeneric(0));
+
+	}
+
+	public static interface Dunno<V extends Number> {
+		public V getNumber();
+	}
+
+	public static interface Dunno2 extends Dunno<Integer> {
 	}
 
 	// From GenericTypeResolverTests
@@ -394,8 +476,6 @@ public class GenericTypeTests {
 	}
 
 	// From GenericCollectionTypeResolverTests
-
-
 
 	private abstract class CustomSet<T> extends AbstractSet<String> {
 	}
