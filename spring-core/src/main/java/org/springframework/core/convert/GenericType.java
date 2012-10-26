@@ -1,7 +1,6 @@
 
 package org.springframework.core.convert;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Method;
@@ -22,7 +21,7 @@ import org.springframework.util.ObjectUtils;
  * @author Phillip Webb
  * @since 3.2
  * @see #getGenerics()
- * @see #getSuperclass()
+ * @see #getSuperType()
  * @see #getInterfaces()
  */
 public final class GenericType {
@@ -33,7 +32,7 @@ public final class GenericType {
 
 
 	/**
-	 * The owner that create this type (if any).
+	 * The owner that created this type (if any).
 	 */
 	private final GenericType owner;
 
@@ -50,15 +49,10 @@ public final class GenericType {
 	private GenericType target;
 
 	/**
-	 * The ultimate type class represented by this type (if any).
+	 * The super type of this type or {@link #NONE} if there is no super type. A
+	 * {@code null} value indicates that the super type has not yet been deduced.
 	 */
-	private Class<?> typeClass;
-
-	/**
-	 * The superclass of this type or {@link #NONE} if there is no superclass. A
-	 * {@code null} value indicates that the superclass has not yet been deduced.
-	 */
-	private GenericType superclass;
+	private GenericType superType;
 
 	/**
 	 * The interfaces implemented by this type or {@link #EMPTY_GENERIC_TYPES} if there
@@ -96,32 +90,47 @@ public final class GenericType {
 		this.owner = owner;
 		this.type = type;
 		this.array = array;
-		if (type instanceof Class) {
-			this.typeClass = (Class<?>) type;
-		} else if (type instanceof ParameterizedType) {
-			ParameterizedType parameterizedType = (ParameterizedType) type;
-			this.typeClass = new GenericType(owner, parameterizedType.getRawType(), false).getTypeClass();
+		if (type instanceof ParameterizedType) {
+			this.target = new GenericType(owner, ((ParameterizedType) type).getRawType(), false);
 		} else if (type instanceof TypeVariable) {
 			this.target = resolveVariable(owner, (TypeVariable<?>) type);
-			this.typeClass = this.target == null ? null : this.target.getTypeClass();
 		} else if (type instanceof GenericArrayType) {
 			this.array = true;
-			this.target = new GenericType(owner,
-					((GenericArrayType) type).getGenericComponentType(), false);
+			this.target = new GenericType(owner, ((GenericArrayType) type).getGenericComponentType(), false);
 		} else if (type instanceof WildcardType) {
 			WildcardType wildcardType = (WildcardType) type;
-			// FIXME do we want to get the target
 			this.target = resolveBounds(wildcardType.getUpperBounds());
 			if (this.target == null) {
 				this.target = resolveBounds(wildcardType.getLowerBounds());
 			}
-			this.typeClass = this.target == null ? null : this.target.getTypeClass();
 		}
+	}
 
-		if(this.array && this.getTarget().getTypeClass() != null) {
-			this.typeClass = Array.newInstance(getTarget().getTypeClass(), 0).getClass();
+	private GenericType resolveVariable(GenericType owner, TypeVariable<?> variable) {
+		GenericType candidate = owner;
+		while(candidate != null) {
+			GenericType candidateTarget = candidate;
+			while(candidateTarget != null) {
+				if(candidateTarget.getType() instanceof ParameterizedType && ObjectUtils.nullSafeEquals(candidateTarget.getTypeClass(), variable.getGenericDeclaration())) {
+					TypeVariable<?>[] typeParameters = candidateTarget.getTypeClass().getTypeParameters();
+					Type[] actualTypeArguments = ((ParameterizedType) candidateTarget.getType()).getActualTypeArguments();
+					for (int i = 0; i < typeParameters.length; i++) {
+						if (ObjectUtils.nullSafeEquals(getVariableName(typeParameters[i]),
+								getVariableName(variable))) {
+							return new GenericType(candidateTarget.owner, actualTypeArguments[i], false);
+						}
+					}
+
+				}
+				candidateTarget = candidateTarget.target;
+			}
+			candidate = candidate.owner;
 		}
+		return null;
+	}
 
+	private String getVariableName(TypeVariable<?> variable) {
+		return variable == null ? null : variable.getName();
 	}
 
 	private GenericType resolveBounds(Type[] bounds) {
@@ -131,27 +140,6 @@ public final class GenericType {
 		return null;
 	}
 
-	private GenericType resolveVariable(GenericType owner, TypeVariable<?> variable) {
-		while(owner != null) {
-			if(owner.getTargetType() instanceof ParameterizedType && ObjectUtils.nullSafeEquals(owner.getTarget().getTypeClass(), variable.getGenericDeclaration())) {
-				TypeVariable<?>[] typeParameters = owner.getTarget().getTypeClass().getTypeParameters();
-				Type[] actualTypeArguments = ((ParameterizedType) owner.getTarget().getType()).getActualTypeArguments();
-				for (int i = 0; i < typeParameters.length; i++) {
-					if (ObjectUtils.nullSafeEquals(getVariableName(typeParameters[i]),
-							getVariableName(variable))) {
-						return new GenericType(owner.owner, actualTypeArguments[i], false);
-					}
-				}
-
-			}
-			owner = owner.owner;
-		}
-		return null;
-	}
-
-	private String getVariableName(TypeVariable<?> variable) {
-		return variable == null ? null : variable.getName();
-	}
 
 	/**
 	 * Returns the underlying {@link Type} being managed.
@@ -161,21 +149,22 @@ public final class GenericType {
 		return this.type;
 	}
 
-	private GenericType getTarget() {
-		return target == null ? this : target.getTarget();
-	}
-
-	private Type getTargetType() {
-		return getTarget().getType();
-	}
-
 	/**
 	 * Returns the type {@link Class} or {@code null} if this type cannot be resolved to a
 	 * class.
 	 * @return the resolved type class or {@code null}
 	 */
 	public Class<?> getTypeClass() {
-		return this.typeClass;
+		if(target != null) {
+			return target.getTypeClass();
+		}
+		if(type instanceof Class) {
+			return (Class<?>)type;
+		}
+
+		//FIXME convert to array
+
+		return null; //FIXME
 	}
 
 	// FIXME DC
@@ -188,16 +177,16 @@ public final class GenericType {
 	 * there is no supertype.
 	 * @return the supertype or {@code null}
 	 */
-	public GenericType getSuperclass() {
-		if (this.superclass == null) {
-			Class<?> targetTypeClass = getTarget().getTypeClass();
-			if (targetTypeClass == null || targetTypeClass.getGenericSuperclass() == null) {
-				this.superclass = NONE;
+	public GenericType getSuperType() {
+		if (this.superType == null) {
+			Class<?> typeClass = getTypeClass();
+			if (typeClass == null || typeClass.getGenericSuperclass() == null) {
+				this.superType = NONE;
 			} else {
-				this.superclass = new GenericType(this, targetTypeClass.getGenericSuperclass(), isArray());
+				this.superType = new GenericType(this, typeClass.getGenericSuperclass(), isArray());
 			}
 		}
-		return (this.superclass == NONE ? null : this.superclass);
+		return (this.superType == NONE ? null : this.superType);
 	}
 
 	/**
@@ -207,10 +196,11 @@ public final class GenericType {
 	 */
 	public GenericType[] getInterfaces() {
 		if (this.interfaces == null) {
-			if (getTypeClass() == null) {
+			Class<?> typeClass = getTypeClass();
+			if (typeClass == null) {
 				this.interfaces = EMPTY_GENERIC_TYPES;
 			} else {
-				this.interfaces = asOwnedGenericTypes(getTypeClass().getGenericInterfaces());
+				this.interfaces = asOwnedGenericTypes(typeClass.getGenericInterfaces(), isArray());
 			}
 		}
 		return this.interfaces;
@@ -261,10 +251,15 @@ public final class GenericType {
 	 */
 	public GenericType[] getGenerics() {
 		if (this.generics == null) {
-			if (getTypeClass() == null || (!(getTargetType() instanceof ParameterizedType))) {
-				this.generics = EMPTY_GENERIC_TYPES;
-			} else {
-				this.generics = asOwnedGenericTypes(((ParameterizedType) getTargetType()).getActualTypeArguments());
+			this.generics = EMPTY_GENERIC_TYPES;
+			GenericType candidate = this;
+			while(candidate != null) {
+				Type candidateType = candidate.getType();
+				if(candidateType instanceof ParameterizedType && candidate.getTypeClass() != null) {
+					this.generics = asOwnedGenericTypes(((ParameterizedType) candidateType).getActualTypeArguments(), false);
+					break;
+				}
+				candidate = candidate.target;
 			}
 		}
 		return this.generics;
@@ -281,8 +276,8 @@ public final class GenericType {
 		if (ObjectUtils.nullSafeEquals(getTypeClass(), typeClass)) {
 			return this;
 		}
-		if (getSuperclass() != null) {
-			type = getSuperclass().find(typeClass);
+		if (getSuperType() != null) {
+			type = getSuperType().find(typeClass);
 		}
 		if (type == null) {
 			for (GenericType interfaceType : getInterfaces()) {
@@ -297,9 +292,6 @@ public final class GenericType {
 
 	@Override
 	public String toString() {
-		if(target != null) {
-			return target.toString() + (isArray() ? "[]" : "");
-		}
 		StringBuilder name = new StringBuilder();
 		name.append(getTypeClass() != null ? getTypeClass().getName() : "?");
 		GenericType[] generics = getGenerics();
@@ -311,7 +303,7 @@ public final class GenericType {
 			}
 			name.append(">");
 		}
-		name.append((isArray() ? "[]" : ""));
+		name.append(isArray() ? "[]" : "");
 		return name.toString();
 	}
 
@@ -337,10 +329,10 @@ public final class GenericType {
 				+ ObjectUtils.nullSafeHashCode(this.owner);
 	}
 
-	private GenericType[] asOwnedGenericTypes(Type[] types) {
+	private GenericType[] asOwnedGenericTypes(Type[] types, boolean array) {
 		GenericType[] genericTypes = new GenericType[types.length];
 		for (int i = 0; i < types.length; i++) {
-			genericTypes[i] = new GenericType(this, types[i], false);
+			genericTypes[i] = new GenericType(this, types[i], array);
 		}
 		return genericTypes;
 	}

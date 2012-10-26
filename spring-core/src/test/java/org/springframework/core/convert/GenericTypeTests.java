@@ -2,14 +2,12 @@
 package org.springframework.core.convert;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+import java.util.AbstractList;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.ArrayList;
@@ -53,7 +51,7 @@ public class GenericTypeTests {
 
 	@Test
 	public void shouldGetSuperType() throws Exception {
-		assertEquals(HashMap.class, mixedUpMapType.getSuperclass().getTypeClass());
+		assertEquals(HashMap.class, mixedUpMapType.getSuperType().getTypeClass());
 	}
 
 	@Test
@@ -71,7 +69,7 @@ public class GenericTypeTests {
 
 	@Test
 	public void shouldGetGenericsOnSuperclass() throws Exception {
-		GenericType[] generics = mixedUpMapType.getSuperclass().getGenerics();
+		GenericType[] generics = mixedUpMapType.getSuperType().getGenerics();
 		assertThat(generics.length, is(2));
 		assertThat(generics[0].getType().toString(), is("K"));
 		assertThat(generics[1].getType().toString(), is("V"));
@@ -94,7 +92,7 @@ public class GenericTypeTests {
 
 	@Test
 	public void shouldSupportVariablesForToString() throws Exception {
-		assertThat(mixedUpMapType.getSuperclass().toString(), is("java.util.HashMap<java.lang.Integer, java.lang.String>"));
+		assertThat(mixedUpMapType.getSuperType().toString(), is("java.util.HashMap<java.lang.Integer, java.lang.String>"));
 		assertThat(mixedUpMapType.getInterfaces()[0].toString(), is("org.springframework.core.convert.GenericTypeTests$KeyAccess<java.lang.Integer>"));
 	}
 
@@ -102,9 +100,9 @@ public class GenericTypeTests {
 	public void shouldSupportWildcards() throws Exception {
 		GenericType type = GenericType.get(getClass().getField("wildcard"));
 		assertNull(type.getGenericTypeClass(1));
-		assertNull(type.getSuperclass().getGenericTypeClass(0));
+		assertNull(type.getSuperType().getGenericTypeClass(0));
 		assertThat(type.toString(), is("org.springframework.core.convert.GenericTypeTests$MixedupMap<java.lang.String, ?>"));
-		assertThat(type.getSuperclass().toString(), is("java.util.HashMap<?, java.lang.String>"));
+		assertThat(type.getSuperType().toString(), is("java.util.HashMap<?, java.lang.String>"));
 		assertThat(type.getInterfaces()[0].toString(), is("org.springframework.core.convert.GenericTypeTests$KeyAccess<?>"));
 	}
 
@@ -113,8 +111,8 @@ public class GenericTypeTests {
 		GenericType type = GenericType.get(getClass().getField("nested"));
 		assertThat(type.getGeneric(0).toString(), is("java.util.List<java.util.Set<java.lang.Integer>>"));
 		assertThat(type.getGeneric(1).toString(), is("java.util.List<java.util.Set<java.lang.String>>"));
-		assertThat(type.getSuperclass().getGeneric(0).toString(), is("java.util.List<java.util.Set<java.lang.String>>"));
-		assertThat(type.getSuperclass().getGeneric(1).toString(), is("java.util.List<java.util.Set<java.lang.Integer>>"));
+		assertThat(type.getSuperType().getGeneric(0).toString(), is("java.util.List<java.util.Set<java.lang.String>>"));
+		assertThat(type.getSuperType().getGeneric(1).toString(), is("java.util.List<java.util.Set<java.lang.Integer>>"));
 	}
 
 	@Test
@@ -130,16 +128,17 @@ public class GenericTypeTests {
 		GenericType type = GenericType.get(getClass().getField("genericArray"));
 		assertThat(type.toString(), is("java.util.ArrayList<java.util.Set<java.lang.Integer>>[]"));
 		assertThat(type.isArray(), is(true));
-		assertEquals(ArrayList[].class,type.getTypeClass());
+		//FIXME consider if getTypeClass should return an array type
+		assertEquals(ArrayList.class,type.getTypeClass());
 		assertThat(type.getGeneric(0).toString(), is("java.util.Set<java.lang.Integer>"));
 	}
 
 	@Test
-	public void shouldSuppoerArraySuperClass() throws Exception {
-		GenericType type = GenericType.get(getClass().getField("genericArray")).getSuperclass();
+	public void shouldSupportArraySuperClass() throws Exception {
+		GenericType type = GenericType.get(getClass().getField("genericArray")).getSuperType();
 		assertThat(type.toString(), is("java.util.AbstractList<java.util.Set<java.lang.Integer>>[]"));
 		assertThat(type.isArray(), is(true));
-		assertEquals(ArrayList[].class,type.getTypeClass());
+		assertEquals(AbstractList.class,type.getTypeClass());
 		assertThat(type.getGeneric(0).toString(), is("java.util.Set<java.lang.Integer>"));
 	}
 
