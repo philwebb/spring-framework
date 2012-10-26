@@ -2,13 +2,17 @@
 package org.springframework.core.convert;
 
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -97,8 +101,8 @@ public class GenericTypeTests {
 	@Test
 	public void shouldSupportWildcards() throws Exception {
 		GenericType type = GenericType.get(getClass().getField("wildcard"));
-		assertNull(type.getGenerics()[1].getTypeClass());
-		assertNull(type.getSuperclass().getGenerics()[0].getTypeClass());
+		assertNull(type.getGenericTypeClass(1));
+		assertNull(type.getSuperclass().getGenericTypeClass(0));
 		assertThat(type.toString(), is("org.springframework.core.convert.GenericTypeTests$MixedupMap<java.lang.String, ?>"));
 		assertThat(type.getSuperclass().toString(), is("java.util.HashMap<?, java.lang.String>"));
 		assertThat(type.getInterfaces()[0].toString(), is("org.springframework.core.convert.GenericTypeTests$KeyAccess<?>"));
@@ -121,7 +125,37 @@ public class GenericTypeTests {
 		assertThat(type.getGeneric(1).getGeneric(0).toString(), is("java.lang.String"));
 	}
 
-	// From GenericTypeResolverTests
+	@Test
+	public void shouldSupportGenericArrays() throws Exception {
+		GenericType type = GenericType.get(getClass().getField("genericArray"));
+		assertThat(type.toString(), is("java.util.ArrayList<java.util.Set<java.lang.Integer>>[]"));
+		assertThat(type.isArray(), is(true));
+		assertEquals(ArrayList[].class,type.getTypeClass());
+		assertThat(type.getGeneric(0).toString(), is("java.util.Set<java.lang.Integer>"));
+	}
+
+	@Test
+	public void shouldSuppoerArraySuperClass() throws Exception {
+		GenericType type = GenericType.get(getClass().getField("genericArray")).getSuperclass();
+		assertThat(type.toString(), is("java.util.AbstractList<java.util.Set<java.lang.Integer>>[]"));
+		assertThat(type.isArray(), is(true));
+		assertEquals(ArrayList[].class,type.getTypeClass());
+		assertThat(type.getGeneric(0).toString(), is("java.util.Set<java.lang.Integer>"));
+	}
+
+	@Test
+	public void testName() throws Exception {
+		Class<?> c = ArrayList[].class;
+		while(c!= null) {
+			System.out.println(c);
+			c.getComponentType();
+			System.out.println(c.getName());
+			System.out.println(c.isArray());
+			c = c.getSuperclass();
+		}
+	}
+
+	// Can we replicate GenericTypeResolverTests
 
 	@Test
 	public void shouldResolveSimpleInterface() throws Exception {
@@ -213,7 +247,7 @@ public class GenericTypeTests {
 //		assertEquals(Object.class, resolveReturnTypeForGenericMethod(extractMagicValue, new Object[] { map }));
 	}
 
-	// From GenericCollectionTypeResolverTests
+	// Can we replicate GenericCollectionTypeResolverTests
 
 	@Test
 	public void shouldGetMapValueGenerics() throws Exception {
@@ -255,6 +289,8 @@ public class GenericTypeTests {
 	public MixedupMap<List<Set<Integer>>, List<Set<String>>> nested;
 
 	public MultiValueMap<Integer, String> multiValueMap;
+
+	public ArrayList<Set<Integer>>[] genericArray;
 
 	//FIXME generic array List<String>[]
 
