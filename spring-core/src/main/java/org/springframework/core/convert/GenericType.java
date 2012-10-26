@@ -1,3 +1,18 @@
+/*
+ * Copyright 2012 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package org.springframework.core.convert;
 
@@ -15,8 +30,37 @@ import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
 /**
- * Wrapper for {@link java.lang.reflect.Type}s that allows generic information to be
- * easily obtained.
+ * Allows generics declared on {@link #fromField(Field) fields},
+ * {@link #fromMethodParameter(MethodParameter) method parameters},
+ * {@link #fromMethodReturn(Method) method return types} or {@link #fromClass(Class)
+ * classes} to be obtained easily.
+ *
+ * <p>
+ * Most methods on this class will themselves return a {@code GenericType}. Use
+ * {@link #getTypeClass()} or {@link #getType()} if you need to convert back to a standard
+ * Java types.
+ *
+ * <p>
+ * Generics declared on the type can be obtained using the {@link #getGenerics()} method.
+ * There are also a number of convenience methods ({@link #getGeneric()},
+ * {@link #getGeneric(int)}, {@link #getGenericTypeClass()} &amp;
+ * {@link #getGenericTypeClass(int)}) that can be used when working with generics.
+ *
+ * <p>
+ * Generic information is tracked when navigating type hierarchies. For example, given a
+ * {@code MultiValueMap} field declaration "
+ * {@code org.springframework.util.MultiValueMap<Integer, String> multiValueMap}" when
+ * obtaining the super type using "{@code GenericType.fromField(multiValueMap).getSuper()}"
+ * the resulting generics are resolved using the original owning field to
+ * "{@code java.util.Map<Integer, java.util.List<String>>}". If you need to navigate to a
+ * specific superclass or interface use the {@link #get(Class)} method. For example to
+ * return a {@code Map} value type
+ * {@code genericType.get(Map.class).getGenericTypeClass(1)}.
+ * <p>
+ * When working with array types both {@link #getSuper()} and {@link #getInterfaces()}
+ * will infer array results. For example: {@code ArrayList<String>[]} will return
+ * interfaces {@code List<String>[]} and {@code Collection<String>[]}. The
+ * {@link #isArray()} method can be used to determine if type is an array.
  *
  * @author Phillip Webb
  * @since 3.2
@@ -111,7 +155,7 @@ public final class GenericType {
 		if(type == null) {
 			return null;
 		}
-		GenericType resolved = resolveVariableAgainstParameters(variable, type);
+		GenericType resolved = resolveVariableAgainstParameterizedType(variable, type);
 		resolved = (resolved != null ? resolved : resolveVariable(variable, type.target));
 		resolved = (resolved != null ? resolved : resolveVariable(variable, type.owner));
 		resolved = (resolved != null ? resolved : resolveVariable(variable, type.getSuper()));
@@ -121,7 +165,7 @@ public final class GenericType {
 		return resolved;
 	}
 
-	private GenericType resolveVariableAgainstParameters(TypeVariable<?> variable, GenericType type) {
+	private GenericType resolveVariableAgainstParameterizedType(TypeVariable<?> variable, GenericType type) {
 		if (type.getType() instanceof ParameterizedType
 				&& ObjectUtils.nullSafeEquals(type.getTargetClass(), variable.getGenericDeclaration())) {
 			TypeVariable<?>[] typeParameters = type.getTargetClass().getTypeParameters();
@@ -153,7 +197,7 @@ public final class GenericType {
 
 	/**
 	 * Returns the underlying {@link Type} being managed.
-	 * @return the underlying type (never {@code null}.
+	 * @return the underlying type (never {@code null}).
 	 */
 	public Type getType() {
 		return this.type;
@@ -182,13 +226,18 @@ public final class GenericType {
 		return null;
 	}
 
-	// FIXME DC
+	/**
+	 * Return {@code true} if this type represents an array.
+	 * @return {@code true} if this is an array type
+	 */
 	public boolean isArray() {
 		return array;
 	}
 
-
-	//FIXME DOC
+	/**
+	 * Returns the first generic type or {@code null} if the generic cannot be obtained.
+	 * @return the generic type class or {@code null}
+	 */
 	public Class<?> getGenericTypeClass() {
 		return getGenericTypeClass(0);
 	}
@@ -198,14 +247,22 @@ public final class GenericType {
 	 * type is {@code Map<Integer, String>} calling {@code getGeneric(1)} will return
 	 * {@code String}.
 	 * @param index the index of the generic
-	 * @return the generic type or {@code null} if there is no generic at the specified
-	 *         index
+	 * @return the generic type class or {@code null} if there is no generic at the
+	 *         specified index
 	 * @see #getGeneric(int)
 	 * @see #getGenerics()
 	 */
 	public Class<?> getGenericTypeClass(int index) {
 		GenericType generic = getGeneric(index);
 		return (generic != null ? generic.getTargetClass() : null);
+	}
+
+	/**
+	 * Returns the first generic or {@code null} if the generic cannot be obtained.
+	 * @return the generic type or {@code null}
+	 */
+	public GenericType getGeneric() {
+		return getGeneric(0);
 	}
 
 	/**
@@ -289,7 +346,6 @@ public final class GenericType {
 		return genericTypes;
 	}
 
-
 	/**
 	 * Search the entire inheritance hierarchy (both superclass and implemented
 	 * interfaces) to get the specified class.
@@ -355,44 +411,82 @@ public final class GenericType {
 	}
 
 
+	/**
+	 * Get a {@link GenericType} for the specified {@link MethodParameter}.
+	 * @param methodParameter the method parameter
+	 * @return a generic type
+	 */
 	public static GenericType fromMethodParameter(MethodParameter methodParameter) {
 		return fromMethodParameter(methodParameter, null);
 	}
 
+	/**
+	 * Get a {@link GenericType} for the specified {@link MethodParameter}.
+	 * @param methodParameter the method parameter
+	 * @param clazz The actual class used to resolve method parameter variables or {@code null}
+	 * @return a generic type
+	 */
 	public static GenericType fromMethodParameter(MethodParameter methodParameter, Class<?> clazz) {
 		Assert.notNull(methodParameter, "MethodParameter must not be null");
 		return get(null, methodParameter.getGenericParameterType(), false);
 	}
 
+	/**
+	 * Get a {@link GenericType} for the specified {@link Field}.
+	 * @param field the field
+	 * @return a generic type
+	 */
 	public static GenericType fromField(Field field) {
 		return fromField(field, null);
 	}
 
+	/**
+	 * Get a {@link GenericType} for the specified {@link Field}.
+	 * @param field the method parameter
+	 * @param clazz The actual class used to resolve field variables or {@code null}
+	 * @return a generic type
+	 */
 	public static GenericType fromField(Field field, Class<?> clazz) {
 		Assert.notNull(field, "Field must not be null");
 		return get(null, field.getGenericType(), false);
 	}
 
+	/**
+	 * Get a {@link GenericType} for the specified {@link Method} return.
+	 * @param method the method
+	 * @return a generic type
+	 */
 	public static GenericType fromMethodReturn(Method method) {
 		return fromMethodReturn(method, null);
 	}
 
+	/**
+	 * Get a {@link GenericType} for the specified {@link Method} return.
+	 * @param method the method
+	 * @param clazz The actual class used to resolve method return variables or {@code null}
+	 * @return a generic type
+	 */
 	public static GenericType fromMethodReturn(Method method, Class<?> clazz) {
 		Assert.notNull(method, "Method must not be null");
 		GenericType owner = (clazz == null ? null : fromClass(clazz));
 		return get(owner, method.getGenericReturnType(), false);
 	}
 
-	public static GenericType fromClass(Class<?> classType) {
-		Assert.notNull(classType, "ClassType must not be null");
-		return get(null, classType, false);
+	/**
+	 * Get a {@link GenericType} for the specified {@link Class}.
+	 * @param clazz the class
+	 * @return a generic type
+	 */
+	public static GenericType fromClass(Class<?> clazz) {
+		Assert.notNull(clazz, "ClassType must not be null");
+		return get(null, clazz, false);
 	}
 
 	private static GenericType get(GenericType owner, Type type, boolean array) {
 		if(type == null) {
 			return null;
 		}
-		//FIXME we can cache here based on owner, type & array
+		//FIXME we should probably cache here based on owner, type & array
 		return new GenericType(owner, type, array);
 	}
 }
