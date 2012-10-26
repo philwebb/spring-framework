@@ -26,6 +26,7 @@ import org.springframework.util.ObjectUtils;
  */
 public final class GenericType {
 
+
 	private static final GenericType[] EMPTY_GENERIC_TYPES = {};
 
 	private static final GenericType NONE = new GenericType(null, Void.class, false);
