@@ -87,11 +87,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or <code>null</code> if none
 	 */
 	public static Class<?> getCollectionFieldType(Field collectionField, int nestingLevel) {
-		GenericType generic = GenericType.fromField(collectionField).getGeneric(0);
-		for(int i=2; i<=nestingLevel; i++) {
-			generic = generic == null ? null : generic.getGeneric(0);
-		}
-		return generic == null ? null : generic.getTypeClass();
+		return getNested(GenericType.fromField(collectionField).get(Collection.class), 0, nestingLevel).getTypeClass();
 	}
 
 	/**
@@ -225,7 +221,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or <code>null</code> if none
 	 */
 	public static Class<?> getCollectionReturnType(Method method, int nestingLevel) {
-		return getGenericReturnType(method, Collection.class, 0, nestingLevel);
+		return getNested(GenericType.fromMethodReturn(method).get(Collection.class), 0, nestingLevel).getTypeClass();
 	}
 
 	/**
@@ -478,4 +474,11 @@ public abstract class GenericCollectionTypeResolver {
 		return (Collection.class.isAssignableFrom(clazz) || Map.class.isAssignableFrom(clazz));
 	}
 
+	private static GenericType getNested(GenericType type, int index, int nestingLevel) {
+		do {
+			type = type.getGeneric(index);
+			nestingLevel--;
+		} while(nestingLevel > 0);
+		return type;
+	}
 }

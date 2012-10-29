@@ -16,11 +16,14 @@
 
 package org.springframework.core;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -29,6 +32,7 @@ import junit.framework.Assert;
 
 import org.springframework.beans.GenericBean;
 import org.springframework.core.io.Resource;
+import org.springframework.util.ReflectionUtils;
 
 /**
  * @author Serge Bogatyrjov
@@ -109,6 +113,23 @@ public class GenericCollectionTypeResolverTests extends AbstractGenericsTests {
 	}
 
 
+	public void testNested() throws Exception {
+		Method method = ReflectionUtils.findMethod(Foo.class, "nested");
+		assertEquals(Set.class, GenericCollectionTypeResolver.getCollectionReturnType(method, 1));
+		assertEquals(Collection.class, GenericCollectionTypeResolver.getCollectionReturnType(method, 2));
+		assertEquals(String.class, GenericCollectionTypeResolver.getCollectionReturnType(method, 3));
+	}
+
+	public Map<Long, Map<Integer, String>> nestedPerLevel;
+
+	public void testNestedPerLevel() throws Exception {
+		Field field = getClass().getField("nestedPerLevel");
+		Map<Integer, Integer> typeIndexesPerLevel = new HashMap<Integer, Integer>();
+		typeIndexesPerLevel.put(1, 1);
+		typeIndexesPerLevel.put(2, 0);
+		assertEquals(Integer.class, GenericCollectionTypeResolver.getMapValueFieldType(field, 2, typeIndexesPerLevel));
+	}
+
 	private abstract class CustomSet<T> extends AbstractSet<String> {
 	}
 
@@ -144,6 +165,8 @@ public class GenericCollectionTypeResolverTests extends AbstractGenericsTests {
 		OtherCustomMap<?> e2();
 
 		OtherCustomMap e3();
+
+		List<Set<Collection<String>>> nested();
 	}
 
 }
