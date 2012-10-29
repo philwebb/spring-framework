@@ -46,7 +46,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or <code>null</code> if none
 	 */
 	public static Class<?> getCollectionType(Class<? extends Collection> collectionClass) {
-		return GenericType.fromClass(collectionClass).get(Collection.class).getGenericTypeClass();
+		return GenericType.fromClass(collectionClass).getGeneric(Collection.class, 0).getTypeClass();
 	}
 
 	/**
@@ -56,7 +56,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or <code>null</code> if none
 	 */
 	public static Class<?> getMapKeyType(Class<? extends Map> mapClass) {
-		return GenericType.fromClass(mapClass).get(Map.class).getGenericTypeClass(0);
+		return GenericType.fromClass(mapClass).getGeneric(Map.class,0).getTypeClass();
 	}
 
 	/**
@@ -66,7 +66,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or <code>null</code> if none
 	 */
 	public static Class<?> getMapValueType(Class<? extends Map> mapClass) {
-		return GenericType.fromClass(mapClass).getGenericTypeClass(Map.class, 1);
+		return GenericType.fromClass(mapClass).getGeneric(Map.class, 1).getTypeClass();
 	}
 
 	/**
@@ -75,7 +75,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or <code>null</code> if none
 	 */
 	public static Class<?> getCollectionFieldType(Field collectionField) {
-		return GenericType.fromField(collectionField).getGenericTypeClass(Collection.class, 0);
+		return GenericType.fromField(collectionField).getGeneric(Collection.class, 0).getTypeClass();
 	}
 
 	/**
@@ -87,7 +87,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or <code>null</code> if none
 	 */
 	public static Class<?> getCollectionFieldType(Field collectionField, int nestingLevel) {
-		GenericType generic = GenericType.fromField(collectionField).getGeneric();
+		GenericType generic = GenericType.fromField(collectionField).getGeneric(0);
 		for(int i=2; i<=nestingLevel; i++) {
 			generic = generic == null ? null : generic.getGeneric(0);
 		}

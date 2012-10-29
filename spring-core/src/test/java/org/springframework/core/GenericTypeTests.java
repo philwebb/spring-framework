@@ -116,8 +116,8 @@ public class GenericTypeTests {
 	@Test
 	public void shouldSupportWildcards() throws Exception {
 		GenericType type = GenericType.fromField(getClass().getField("wildcard"));
-		assertNull(type.getGenericTypeClass(1));
-		assertNull(type.getSuper().getGenericTypeClass(0));
+		assertNull(type.getGeneric(1).getTypeClass());
+		assertNull(type.getSuper().getGeneric(0).getTypeClass());
 		assertThat(type.toString(), is("org.springframework.core.GenericTypeTests$MixedupMap<java.lang.String, ?>"));
 		assertThat(type.getSuper().toString(), is("java.util.HashMap<?, java.lang.String>"));
 		assertThat(type.getInterfaces()[0].toString(), is("org.springframework.core.GenericTypeTests$KeyAccess<?>"));
@@ -208,7 +208,7 @@ public class GenericTypeTests {
 
 	@Test
 	public void shouldSupportNoSuperclass() throws Exception {
-		assertThat(GenericType.fromClass(Object.class).getSuper(), is(nullValue()));
+		assertThat(GenericType.fromClass(Object.class).getSuper(), is(GenericType.NONE));
 	}
 
 	@Test
@@ -232,69 +232,69 @@ public class GenericTypeTests {
 
 	@Test
 	public void shouldResolveSimpleInterface() throws Exception {
-		assertEquals(String.class, GenericType.fromClass(MySimpleInterfaceType.class).get(MyInterfaceType.class).getGenericTypeClass());
+		assertEquals(String.class, GenericType.fromClass(MySimpleInterfaceType.class).get(MyInterfaceType.class).getGeneric(0).getTypeClass());
 	}
 
 	@Test
 	public void shouldResolveCollectionInterface() throws Exception {
-		assertEquals(Collection.class, GenericType.fromClass(MyCollectionInterfaceType.class).get(MyInterfaceType.class).getGenericTypeClass());
+		assertEquals(Collection.class, GenericType.fromClass(MyCollectionInterfaceType.class).get(MyInterfaceType.class).getGeneric(0).getTypeClass());
 	}
 
 	@Test
 	public void shouldResolveSimpleSuperclass() throws Exception {
-		assertEquals(String.class, GenericType.fromClass(MySimpleSuperclassType.class).get(MySuperclassType.class).getGenericTypeClass());
+		assertEquals(String.class, GenericType.fromClass(MySimpleSuperclassType.class).get(MySuperclassType.class).getGeneric(0).getTypeClass());
 	}
 
 	@Test
 	public void shouldResolveSimpleCollectionSuperclass() throws Exception {
-		assertEquals(Collection.class, GenericType.fromClass(MyCollectionSuperclassType.class).get(MySuperclassType.class).getGenericTypeClass());
+		assertEquals(Collection.class, GenericType.fromClass(MyCollectionSuperclassType.class).get(MySuperclassType.class).getGeneric(0).getTypeClass());
 	}
 
 	@Test
 	public void shouldReturnNullIfNotResolvable() throws Exception {
 		GenericClass<String> obj = new GenericClass<String>();
-		assertNull(GenericType.fromClass(obj.getClass()).get(GenericClass.class).getGenericTypeClass());
+		assertNull(GenericType.fromClass(obj.getClass()).get(GenericClass.class).getGeneric(0).getTypeClass());
 	}
 
 	@Test
 	public void shouldResolveReturnTypes() throws Exception {
-		assertEquals(Integer.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(MyTypeWithMethods.class, "integer")).get(MyInterfaceType.class).getGenericTypeClass());
-		assertEquals(String.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(MyTypeWithMethods.class, "string")).get(MyInterfaceType.class).getGenericTypeClass());
-		assertNull(GenericType.fromMethodReturn(ReflectionUtils.findMethod(MyTypeWithMethods.class, "raw")).get(MyInterfaceType.class).getGenericTypeClass());
-		assertNull(GenericType.fromMethodReturn(ReflectionUtils.findMethod(MyTypeWithMethods.class, "object")).get(MyInterfaceType.class));
+		assertEquals(Integer.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(MyTypeWithMethods.class, "integer")).get(MyInterfaceType.class).getGeneric(0).getTypeClass());
+		assertEquals(String.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(MyTypeWithMethods.class, "string")).get(MyInterfaceType.class).getGeneric(0).getTypeClass());
+		assertNull(GenericType.fromMethodReturn(ReflectionUtils.findMethod(MyTypeWithMethods.class, "raw")).get(MyInterfaceType.class).getGeneric(0).getTypeClass());
+		assertEquals(GenericType.NONE, GenericType.fromMethodReturn(ReflectionUtils.findMethod(MyTypeWithMethods.class, "object")).get(MyInterfaceType.class));
 	}
 
 	// Can we replicate GenericCollectionTypeResolverTests
 
 	@Test
 	public void shouldGetMapValueGenerics() throws Exception {
-		assertEquals(Integer.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "a")).get(Map.class).getGenericTypeClass(1));
-		assertNull(GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "b")).get(Map.class).getGenericTypeClass(1));
-		assertEquals(Set.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "b2")).get(Map.class).getGenericTypeClass(1));
-		assertEquals(Set.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "b3")).get(Map.class).getGenericTypeClass(1));
-		assertNull(GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "c")).get(Map.class).getGenericTypeClass(1));
-		assertEquals(Integer.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "d")).get(Map.class).getGenericTypeClass(1));
-		assertEquals(Integer.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "d2")).get(Map.class).getGenericTypeClass(1));
-		assertEquals(Integer.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "d3")).get(Map.class).getGenericTypeClass(1));
-		assertEquals(Integer.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "e")).get(Map.class).getGenericTypeClass(1));
-		assertEquals(Integer.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "e2")).get(Map.class).getGenericTypeClass(1));
-		assertEquals(Integer.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "e3")).get(Map.class).getGenericTypeClass(1));
+		assertEquals(Integer.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "a")).get(Map.class).getGeneric(1).getTypeClass());
+		assertNull(GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "b")).get(Map.class).getGeneric(1).getTypeClass());
+		assertEquals(Set.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "b2")).get(Map.class).getGeneric(1).getTypeClass());
+		assertEquals(Set.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "b3")).get(Map.class).getGeneric(1).getTypeClass());
+		assertNull(GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "c")).get(Map.class).getGeneric(1).getTypeClass());
+		assertEquals(Integer.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "d")).get(Map.class).getGeneric(1).getTypeClass());
+		assertEquals(Integer.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "d2")).get(Map.class).getGeneric(1).getTypeClass());
+		assertEquals(Integer.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "d3")).get(Map.class).getGeneric(1).getTypeClass());
+		assertEquals(Integer.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "e")).get(Map.class).getGeneric(1).getTypeClass());
+		assertEquals(Integer.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "e2")).get(Map.class).getGeneric(1).getTypeClass());
+		assertEquals(Integer.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "e3")).get(Map.class).getGeneric(1).getTypeClass());
 	}
 
 
 	@Test
 	public void testProgrammaticListIntrospection() throws Exception {
 		Method setter = GenericBean.class.getMethod("setResourceList", List.class);
-		Assert.assertEquals(Resource.class, GenericType.fromMethodParameter(new MethodParameter(setter, 0)).get(Collection.class).getGenericTypeClass());
+		Assert.assertEquals(Resource.class, GenericType.fromMethodParameter(new MethodParameter(setter, 0)).get(Collection.class).getGeneric(0).getTypeClass());
 		Method getter = GenericBean.class.getMethod("getResourceList");
-		Assert.assertEquals(Resource.class, GenericType.fromMethodReturn(getter).get(Collection.class).getGenericTypeClass());
+		Assert.assertEquals(Resource.class, GenericType.fromMethodReturn(getter).get(Collection.class).getGeneric(0).getTypeClass());
 	}
 
 	@Test
 	public void testClassResolution() {
-		assertEquals(String.class, GenericType.fromClass(CustomSet.class).get(Collection.class).getGenericTypeClass());
-		assertEquals(String.class, GenericType.fromClass(CustomMap.class).get(Map.class).getGenericTypeClass(0));
-		assertEquals(Integer.class, GenericType.fromClass(CustomMap.class).get(Map.class).getGenericTypeClass(1));
+		assertEquals(String.class, GenericType.fromClass(CustomSet.class).get(Collection.class).getGeneric(0).getTypeClass());
+		assertEquals(String.class, GenericType.fromClass(CustomMap.class).get(Map.class).getGeneric(0).getTypeClass());
+		assertEquals(Integer.class, GenericType.fromClass(CustomMap.class).get(Map.class).getGeneric(1).getTypeClass());
 	}
 
 	// Public fields used for testing

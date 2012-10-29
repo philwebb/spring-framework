@@ -70,9 +70,10 @@ import org.springframework.util.ObjectUtils;
 public final class GenericType {
 
 
-	private static final GenericType[] EMPTY_GENERIC_TYPES = {};
+	public static final GenericType NONE = new GenericType(null, null, false);
 
-	private static final GenericType NONE = new GenericType(null, Void.class, false);
+
+	private static final GenericType[] EMPTY_GENERIC_TYPES = {};
 
 
 	/**
@@ -81,7 +82,7 @@ public final class GenericType {
 	private final GenericType owner;
 
 	/**
-	 * The underlying java type (never null).
+	 * The underlying java type or {@code null}.
 	 */
 	private final Type type;
 
@@ -123,7 +124,6 @@ public final class GenericType {
 	 * @param type the underlying type
 	 */
 	private GenericType(GenericType owner, Type type, boolean array) {
-		Assert.notNull(type, "Type must not be null");
 		this.owner = owner;
 		this.type = type;
 		this.array = array;
@@ -132,7 +132,7 @@ public final class GenericType {
 		} else if (type instanceof TypeVariable) {
 			TypeVariable<?> variable = (TypeVariable<?>) type;
 			this.target = resolveVariable(variable, owner);
-			if(this.target == null) {
+			if(this.target == NONE) {
 				this.target = resolveBounds(variable.getBounds());
 			}
 		} else if (type instanceof GenericArrayType) {
@@ -141,25 +141,26 @@ public final class GenericType {
 		} else if (type instanceof WildcardType) {
 			WildcardType wildcardType = (WildcardType) type;
 			this.target = resolveBounds(wildcardType.getUpperBounds());
-			if (this.target == null) {
+			if (this.target == NONE) {
 				this.target = resolveBounds(wildcardType.getLowerBounds());
 			}
 		}
+		this.target = (target == NONE ? null : target);
 		if(target != null && target.isArray()) {
 			this.array = true;
 		}
 	}
 
 	private GenericType resolveVariable(TypeVariable<?> variable, GenericType type) {
-		if(type == null) {
-			return null;
+		if(type == NONE || type == null) {
+			return NONE;
 		}
 		GenericType resolved = resolveVariableAgainstParameterizedType(variable, type);
-		resolved = (resolved != null ? resolved : resolveVariable(variable, type.target));
-		resolved = (resolved != null ? resolved : resolveVariable(variable, type.owner));
-		resolved = (resolved != null ? resolved : resolveVariable(variable, type.getSuper()));
+		resolved = (resolved != NONE ? resolved : resolveVariable(variable, type.target));
+		resolved = (resolved != NONE ? resolved : resolveVariable(variable, type.owner));
+		resolved = (resolved != NONE ? resolved : resolveVariable(variable, type.getSuper()));
 		for (GenericType interfaceType : owner.getInterfaces()) {
-			resolved = (resolved != null ? resolved : resolveVariable(variable, interfaceType));
+			resolved = (resolved != NONE ? resolved : resolveVariable(variable, interfaceType));
 		}
 		return resolved;
 	}
@@ -175,7 +176,7 @@ public final class GenericType {
 				}
 			}
 		}
-		return null;
+		return NONE;
 	}
 
 	private boolean isSameVariableName(TypeVariable<?> variable, TypeVariable<?> typeParameters) {
@@ -190,13 +191,13 @@ public final class GenericType {
 		if (bounds != null && bounds.length > 0 && !Object.class.equals(bounds[0])) {
 			return get(this, bounds[0], false);
 		}
-		return null;
+		return NONE;
 	}
 
 
 	/**
-	 * Returns the underlying {@link Type} being managed.
-	 * @return the underlying type (never {@code null}).
+	 * Returns the underlying {@link Type} being managed or {@code null}.
+	 * @return the underlying type or {@code null}.
 	 */
 	public Type getType() {
 		return this.type;
@@ -233,51 +234,15 @@ public final class GenericType {
 		return array;
 	}
 
-	/**
-	 * Returns the first generic type or {@code null} if the generic cannot be obtained.
-	 * @return the generic type class or {@code null}
-	 */
-	public Class<?> getGenericTypeClass() {
-		return getGenericTypeClass(0);
-	}
-
-	/**
-	 * Return the generic type class at the specified index. For example if the underlying
-	 * type is {@code Map<Integer, String>} calling {@code getGeneric(1)} will return
-	 * {@code String}.
-	 * @param index the index of the generic
-	 * @return the generic type class or {@code null} if there is no generic at the
-	 *         specified index
-	 * @see #getGeneric(int)
-	 * @see #getGenerics()
-	 */
-	public Class<?> getGenericTypeClass(int index) {
-		GenericType generic = getGeneric(index);
-		return (generic != null ? generic.getTargetClass() : null);
-	}
-
-	public Class<?> getGenericTypeClass(Class<?> typeClass) {
-		return getGenericTypeClass(typeClass, 0);
-	}
-
-	public Class<?> getGenericTypeClass(Class<?> typeClass, int index) {
-		GenericType generic = get(typeClass);
-		return generic == null ? null : generic.getGenericTypeClass(index);
-	}
-
-	/**
-	 * Returns the first generic or {@code null} if the generic cannot be obtained.
-	 * @return the generic type or {@code null}
-	 */
-	public GenericType getGeneric() {
-		return getGeneric(0);
+	public GenericType getGeneric(Class<?> typeClass, int index) {
+		return get(typeClass).getGeneric(index);
 	}
 
 	/**
 	 * Return the generic type at the specified index. For example if the underlying type
 	 * is {@code Map<K, V>} calling {@code getGeneric(1)} will return {@code V}.
 	 * @param index the index of the generic
-	 * @return the generic type or {@code null} if there is no generic at the specified
+	 * @return the generic type or {@link #NONE} if there is no generic at the specified
 	 *         index
 	 * @see #getGenerics()
 	 */
@@ -286,7 +251,7 @@ public final class GenericType {
 		if(index >= 0 && index < generics.length) {
 			return generics[index];
 		}
-		return null;
+		return NONE;
 	}
 
 	/**
@@ -313,9 +278,9 @@ public final class GenericType {
 	}
 
 	/**
-	 * Returns a {@link GenericType} for the superclass of this item or {@code null} if
+	 * Returns a {@link GenericType} for the superclass of this item or {@link #NONE} if
 	 * there is no supertype.
-	 * @return the supertype or {@code null}
+	 * @return the supertype or {@link #NONE}
 	 */
 	public GenericType getSuper() {
 		if (this.superType == null) {
@@ -326,7 +291,7 @@ public final class GenericType {
 				this.superType = get(this, typeClass.getGenericSuperclass(), isArray());
 			}
 		}
-		return (this.superType == NONE ? null : this.superType);
+		return this.superType;
 	}
 
 	/**
@@ -358,20 +323,17 @@ public final class GenericType {
 	 * Search the entire inheritance hierarchy (both superclass and implemented
 	 * interfaces) to get the specified class.
 	 * @param typeClass the type of class to get.
-	 * @return a {@link GenericType} for the found class or {@code null}.
+	 * @return a {@link GenericType} for the found class or {@link #NONE}.
 	 */
 	public GenericType get(Class<?> typeClass) {
-		GenericType type = null;
 		if (ObjectUtils.nullSafeEquals(getTargetClass(), typeClass)) {
 			return this;
 		}
-		if (getSuper() != null) {
-			type = getSuper().get(typeClass);
-		}
-		if (type == null) {
+		GenericType type = getSuper() == NONE ? NONE : getSuper().get(typeClass);
+		if (type == NONE) {
 			for (GenericType interfaceType : getInterfaces()) {
 				type = interfaceType.get(typeClass);
-				if (type != null) {
+				if (type != NONE) {
 					break;
 				}
 			}
@@ -492,7 +454,7 @@ public final class GenericType {
 
 	private static GenericType get(GenericType owner, Type type, boolean array) {
 		if(type == null) {
-			return null;
+			return NONE;
 		}
 		//FIXME we should probably cache here based on owner, type & array
 		return new GenericType(owner, type, array);
