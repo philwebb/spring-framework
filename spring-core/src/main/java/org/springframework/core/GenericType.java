@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.core.convert;
+package org.springframework.core;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -25,7 +25,6 @@ import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 
-import org.springframework.core.MethodParameter;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
@@ -60,7 +59,7 @@ import org.springframework.util.ObjectUtils;
  * When working with array types both {@link #getSuper()} and {@link #getInterfaces()}
  * will infer array results. For example: {@code ArrayList<String>[]} will return
  * interfaces {@code List<String>[]} and {@code Collection<String>[]}. The
- * {@link #isArray()} method can be used to determine if type is an array.
+ * {@link #isArray()} method can be used to determine if a type is an array.
  *
  * @author Phillip Webb
  * @since 3.2
@@ -255,6 +254,15 @@ public final class GenericType {
 	public Class<?> getGenericTypeClass(int index) {
 		GenericType generic = getGeneric(index);
 		return (generic != null ? generic.getTargetClass() : null);
+	}
+
+	public Class<?> getGenericTypeClass(Class<?> typeClass) {
+		return getGenericTypeClass(typeClass, 0);
+	}
+
+	public Class<?> getGenericTypeClass(Class<?> typeClass, int index) {
+		GenericType generic = get(typeClass);
+		return generic == null ? null : generic.getGenericTypeClass(index);
 	}
 
 	/**

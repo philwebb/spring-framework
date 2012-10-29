@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.core.convert;
+package org.springframework.core;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
@@ -39,6 +39,7 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.GenericBean;
+import org.springframework.core.GenericType;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.io.Resource;
 import org.springframework.util.MultiValueMap;
@@ -103,13 +104,13 @@ public class GenericTypeTests {
 
 	@Test
 	public void shouldSupportToString() throws Exception {
-		assertThat(mixedUpMapType.toString(), is("org.springframework.core.convert.GenericTypeTests$MixedupMap<java.lang.String, java.lang.Integer>"));
+		assertThat(mixedUpMapType.toString(), is("org.springframework.core.GenericTypeTests$MixedupMap<java.lang.String, java.lang.Integer>"));
 	}
 
 	@Test
 	public void shouldSupportVariablesForToString() throws Exception {
 		assertThat(mixedUpMapType.getSuper().toString(), is("java.util.HashMap<java.lang.Integer, java.lang.String>"));
-		assertThat(mixedUpMapType.getInterfaces()[0].toString(), is("org.springframework.core.convert.GenericTypeTests$KeyAccess<java.lang.Integer>"));
+		assertThat(mixedUpMapType.getInterfaces()[0].toString(), is("org.springframework.core.GenericTypeTests$KeyAccess<java.lang.Integer>"));
 	}
 
 	@Test
@@ -117,9 +118,9 @@ public class GenericTypeTests {
 		GenericType type = GenericType.fromField(getClass().getField("wildcard"));
 		assertNull(type.getGenericTypeClass(1));
 		assertNull(type.getSuper().getGenericTypeClass(0));
-		assertThat(type.toString(), is("org.springframework.core.convert.GenericTypeTests$MixedupMap<java.lang.String, ?>"));
+		assertThat(type.toString(), is("org.springframework.core.GenericTypeTests$MixedupMap<java.lang.String, ?>"));
 		assertThat(type.getSuper().toString(), is("java.util.HashMap<?, java.lang.String>"));
-		assertThat(type.getInterfaces()[0].toString(), is("org.springframework.core.convert.GenericTypeTests$KeyAccess<?>"));
+		assertThat(type.getInterfaces()[0].toString(), is("org.springframework.core.GenericTypeTests$KeyAccess<?>"));
 	}
 
 	@Test
@@ -182,9 +183,9 @@ public class GenericTypeTests {
 	@Test
 	public void shouldSupportVariablesOnArray() throws Exception {
 		GenericType type = GenericType.fromField(getClass().getField("mixedUpMapArray"));
-		assertThat(type.toString(), is("org.springframework.core.convert.GenericTypeTests$MixedupMap<java.lang.String, java.lang.Integer>[]"));
+		assertThat(type.toString(), is("org.springframework.core.GenericTypeTests$MixedupMap<java.lang.String, java.lang.Integer>[]"));
 		assertThat(type.getSuper().toString(), is("java.util.HashMap<java.lang.Integer, java.lang.String>[]"));
-		assertThat(type.getInterfaces()[0].toString(), is("org.springframework.core.convert.GenericTypeTests$KeyAccess<java.lang.Integer>[]"));
+		assertThat(type.getInterfaces()[0].toString(), is("org.springframework.core.GenericTypeTests$KeyAccess<java.lang.Integer>[]"));
 	}
 
 	@Test
@@ -198,7 +199,7 @@ public class GenericTypeTests {
 	@Test
 	public void shouldSupportComplexNestedArrays() throws Exception {
 		GenericType type = GenericType.fromField(getClass().getField("complex"));
-		assertThat(type.toString(), is("org.springframework.core.convert.GenericTypeTests$MixedupMap<org.springframework.core.convert.GenericTypeTests$MixedupMap<java.lang.String[], java.lang.Integer>, java.lang.Integer>[]"));
+		assertThat(type.toString(), is("org.springframework.core.GenericTypeTests$MixedupMap<org.springframework.core.GenericTypeTests$MixedupMap<java.lang.String[], java.lang.Integer>, java.lang.Integer>[]"));
 		GenericType nestedInnerGeneric = type.get(Map.class).getGeneric(1).get(Map.class).getGeneric(1);
 		assertThat(nestedInnerGeneric.toString(), is("java.lang.String[]"));
 		assertThat(nestedInnerGeneric.isArray(), is(true));

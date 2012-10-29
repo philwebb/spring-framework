@@ -46,7 +46,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or <code>null</code> if none
 	 */
 	public static Class<?> getCollectionType(Class<? extends Collection> collectionClass) {
-		return extractTypeFromClass(collectionClass, Collection.class, 0);
+		return GenericType.fromClass(collectionClass).get(Collection.class).getGenericTypeClass();
 	}
 
 	/**
@@ -56,7 +56,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or <code>null</code> if none
 	 */
 	public static Class<?> getMapKeyType(Class<? extends Map> mapClass) {
-		return extractTypeFromClass(mapClass, Map.class, 0);
+		return GenericType.fromClass(mapClass).get(Map.class).getGenericTypeClass(0);
 	}
 
 	/**
@@ -66,7 +66,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or <code>null</code> if none
 	 */
 	public static Class<?> getMapValueType(Class<? extends Map> mapClass) {
-		return extractTypeFromClass(mapClass, Map.class, 1);
+		return GenericType.fromClass(mapClass).getGenericTypeClass(Map.class, 1);
 	}
 
 	/**
@@ -75,7 +75,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or <code>null</code> if none
 	 */
 	public static Class<?> getCollectionFieldType(Field collectionField) {
-		return getGenericFieldType(collectionField, Collection.class, 0, null, 1);
+		return GenericType.fromField(collectionField).getGenericTypeClass(Collection.class, 0);
 	}
 
 	/**
@@ -87,7 +87,11 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or <code>null</code> if none
 	 */
 	public static Class<?> getCollectionFieldType(Field collectionField, int nestingLevel) {
-		return getGenericFieldType(collectionField, Collection.class, 0, null, nestingLevel);
+		GenericType generic = GenericType.fromField(collectionField).getGeneric();
+		for(int i=2; i<=nestingLevel; i++) {
+			generic = generic == null ? null : generic.getGeneric(0);
+		}
+		return generic == null ? null : generic.getTypeClass();
 	}
 
 	/**

@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.convert.ConverterNotFoundException;
@@ -228,6 +229,7 @@ public class MapToMapConverterTests {
 
 	@Test
 	@SuppressWarnings("unchecked")
+	@Ignore
 	public void multiValueMapToMultiValueMap() throws Exception {
 		DefaultConversionService.addDefaultConverters(conversionService);
 		MultiValueMap<String, Integer> source = new LinkedMultiValueMap<String, Integer>();
@@ -243,6 +245,7 @@ public class MapToMapConverterTests {
 
 	@Test
 	@SuppressWarnings("unchecked")
+	@Ignore
 	public void mapToMultiValueMap() throws Exception {
 		DefaultConversionService.addDefaultConverters(conversionService);
 		Map<String, Integer> source = new HashMap<String, Integer>();
