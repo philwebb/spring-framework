@@ -1,3 +1,18 @@
+/*
+ * Copyright 2012 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package org.springframework.log;
 
@@ -13,9 +28,6 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.apache.commons.logging.LogConfigurationException;
 import org.apache.commons.logging.impl.LogFactoryImpl;
 import org.junit.After;
@@ -122,6 +134,14 @@ public class LogTests {
 	@Test
 	public void shouldLogToCategories() throws Exception {
 		LogFactory.getLog(getClass()).withCategory(Category1.class, Category2.class).warn("message");
+		verify(getMockLog(getClass())).warn("message");
+		verify(getMockLog(Category1.class)).warn("message");
+		verify(getMockLog(Category2.class)).warn("message");
+	}
+
+	@Test
+	public void shouldLogToCategoriesFromFactory() throws Exception {
+		LogFactory.getLog(getClass(), Category1.class, Category2.class).warn("message");
 		verify(getMockLog(getClass())).warn("message");
 		verify(getMockLog(Category1.class)).warn("message");
 		verify(getMockLog(Category2.class)).warn("message");
@@ -293,7 +313,7 @@ public class LogTests {
 
 	public static class MockLogFactory extends LogFactoryImpl {
 
-		private Map<String, org.apache.commons.logging.Log> logs = new HashMap<String, org.apache.commons.logging.Log>();
+		private final Map<String, org.apache.commons.logging.Log> logs = new HashMap<String, org.apache.commons.logging.Log>();
 
 		@Override
 		@SuppressWarnings("rawtypes")
@@ -305,10 +325,10 @@ public class LogTests {
 		@Override
 		public org.apache.commons.logging.Log getInstance(String name)
 				throws LogConfigurationException {
-			org.apache.commons.logging.Log log = logs.get(name);
+			org.apache.commons.logging.Log log = this.logs.get(name);
 			if (log == null) {
 				log = mock(org.apache.commons.logging.Log.class);
-				logs.put(name, log);
+				this.logs.put(name, log);
 			}
 			return log;
 		}

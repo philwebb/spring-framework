@@ -1,8 +1,24 @@
+/*
+ * Copyright 2012 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package org.springframework.log;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,6 +27,13 @@ import org.springframework.core.style.ToStringCreator;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+/**
+ * {@link Log} implementation that wraps java-commons-logging
+ * {@link org.apache.commons.logging.Log logs}.
+ *
+ * @author Phillip Webb
+ * @since 3.2
+ */
 class LogWrapper implements Log {
 
 
@@ -20,6 +43,7 @@ class LogWrapper implements Log {
 
 	private static final Throwable NO_THROWABLE = new Throwable();
 
+
 	private final String name;
 
 	private final org.apache.commons.logging.Log log;
@@ -28,7 +52,14 @@ class LogWrapper implements Log {
 
 	private final LogWrapper root;
 
-	public LogWrapper(String name, org.apache.commons.logging.Log log, LogWrapper parent) {
+
+	/**
+	 * Internal constructor.
+	 * @param name the name of the logger
+	 * @param log the underlying {@link org.apache.commons.logging.Log}
+	 * @param parent a parent log or {@code null}
+	 */
+	private LogWrapper(String name, org.apache.commons.logging.Log log, LogWrapper parent) {
 		this.name = name;
 		this.log = log;
 		this.parent = parent;
@@ -39,10 +70,6 @@ class LogWrapper implements Log {
 		this.root = root;
 	}
 
-
-	public String getName() {
-		return name;
-	}
 
 	public boolean isTraceEnabled() {
 		return isEnabled(Level.TRACE);
@@ -188,6 +215,14 @@ class LogWrapper implements Log {
 		log(Level.FATAL, format, arg1, arg2, arguments);
 	}
 
+	public Log withCategory(Class<?> categoryClass, Class<?>... categoryClasses) {
+		LogWrapper log = get(categoryClass, this);
+		for (Class<?> additionalCategoryClass : (categoryClasses != null ? categoryClasses : NO_CLASSES)) {
+			log = get(additionalCategoryClass, log);
+		}
+		return log;
+	}
+
 	private void log(Level level, String format, Object arg1, Object arg2,
 			Object... arguments) {
 		if (isEnabled(level)) {
@@ -197,7 +232,7 @@ class LogWrapper implements Log {
 	}
 
 	private void log(final Level level, Object message, Throwable t) {
-		Level translatedLevel = (root == null ? level : LevelTranslator.get(name).translate(root.name, level));
+		Level translatedLevel = (this.root == null ? level : LevelTranslator.get(this.name).translate(this.root.name, level));
 		translatedLevel.log(this.log, message, t);
 		if(this.parent != null) {
 			this.parent.log(level, message, t);
@@ -208,52 +243,156 @@ class LogWrapper implements Log {
 		return level.isEnabled(this.log) || (this.parent != null && this.parent.isEnabled(level));
 	}
 
-	public Log withCategory(Class<?> categoryClass) {
-		return withCategory(categoryClass, NO_CLASSES);
-	}
-
-	public Log withCategory(Class<?> categoryClass, Class<?>... categoryClasses) {
-		LogWrapper log = get(categoryClass, this);
-		for (Class<?> additionalraClass : categoryClasses) {
-			log = get(additionalraClass, log);
-		}
-		return log;
-	}
-
 	@Override
 	public String toString() {
 		return new ToStringCreator(this).append("name", this.name).append("log", this.log).toString();
 	}
 
 
-	static LogWrapper get(Class<?> clazz) {
-		return get(clazz, null);
+	public static LogWrapper get(Class<?> clazz) {
+		if(clazz == null) {
+			throw new IllegalArgumentException("Class must not be null");
+		}
+		return get(clazz.getName(), null);
 	}
 
-	static LogWrapper get(Class<?> clazz, LogWrapper parent) {
+	private static LogWrapper get(Class<?> clazz, LogWrapper parent) {
 		if(clazz == null) {
 			throw new IllegalArgumentException("Class must not be null");
 		}
 		return get(clazz.getName(), parent);
 	}
 
-	static LogWrapper get(String name) {
+	public static LogWrapper get(String name) {
 		return get(name, null);
 	}
 
-	static LogWrapper get(String name, LogWrapper parent) {
+	/**
+	 * Factory method used to create a new {@link LogWrapper} instance.
+	 * @param name the name of the logger
+	 * @param parent the parent or {@code null}
+	 * @return a {@link LogWrapper} instance
+	 */
+	private static LogWrapper get(String name, LogWrapper parent) {
 		// FIXME We should cache here based on the name and the parent
 		if(name == null) {
-			throw new IllegalArgumentException("Class must not be null");
+			throw new IllegalArgumentException("Name must not be null");
 		}
 		return new LogWrapper(name, LogFactory.getLog(name), parent);
 	}
 
+
+	/**
+	 * Logging levels and mappings back to underling
+	 * {@link org.apache.commons.logging.Log} methods.
+	 */
+	private enum Level {
+
+		TRACE {
+			@Override
+			public boolean isEnabled(org.apache.commons.logging.Log log) {
+				return log.isTraceEnabled();
+			}
+			@Override
+			public void log(org.apache.commons.logging.Log log, Object message, Throwable t) {
+				if(t == NO_THROWABLE) {
+					log.trace(message);
+				} else {
+					log.trace(message, t);
+				}
+			};
+		},
+
+		DEBUG {
+			@Override
+			public boolean isEnabled(org.apache.commons.logging.Log log) {
+				return log.isDebugEnabled();
+			}
+			@Override
+			public void log(org.apache.commons.logging.Log log, Object message, Throwable t) {
+				if(t == NO_THROWABLE) {
+					log.debug(message);
+				} else {
+					log.debug(message, t);
+				}
+			};
+		},
+
+		INFO {
+			@Override
+			public boolean isEnabled(org.apache.commons.logging.Log log) {
+				return log.isInfoEnabled();
+			}
+			@Override
+			public void log(org.apache.commons.logging.Log log, Object message, Throwable t) {
+				if(t == NO_THROWABLE) {
+					log.info(message);
+				} else {
+					log.info(message, t);
+				}
+			};
+		},
+
+		WARN {
+			@Override
+			public boolean isEnabled(org.apache.commons.logging.Log log) {
+				return log.isWarnEnabled();
+			}
+			@Override
+			public void log(org.apache.commons.logging.Log log, Object message, Throwable t) {
+				if(t == NO_THROWABLE) {
+					log.warn(message);
+				} else {
+					log.warn(message, t);
+				}
+			};
+		},
+
+		ERROR {
+			@Override
+			public boolean isEnabled(org.apache.commons.logging.Log log) {
+				return log.isErrorEnabled();
+			}
+			@Override
+			public void log(org.apache.commons.logging.Log log, Object message, Throwable t) {
+				if(t == NO_THROWABLE) {
+					log.error(message);
+				} else {
+					log.error(message, t);
+				}
+			};
+		},
+
+		FATAL {
+			@Override
+			public boolean isEnabled(org.apache.commons.logging.Log log) {
+				return log.isFatalEnabled();
+			}
+			@Override
+			public void log(org.apache.commons.logging.Log log, Object message, Throwable t) {
+				if(t == NO_THROWABLE) {
+					log.fatal(message);
+				} else {
+					log.fatal(message, t);
+				}
+			};
+		};
+
+		public abstract boolean isEnabled(org.apache.commons.logging.Log log);
+
+		public abstract void log(org.apache.commons.logging.Log log, Object message, Throwable t);
+	}
+
+
+	/**
+	 * Internal class used to construct formatted messages.
+	 */
 	private static class FormattedMessage {
 
 		private final String string;
 
 		private final Throwable throwable;
+
 
 		public FormattedMessage(String format, Object arg1, Object arg2,
 				Object... arguments) {
@@ -261,6 +400,7 @@ class LogWrapper implements Log {
 			this.string = String.format(format, allArguments);
 			this.throwable = findThrowable(allArguments);
 		}
+
 
 		private Object[] concat(Object arg1, Object arg2, Object... arguments) {
 			Object[] concat = new Object[arguments.length+2];
@@ -291,123 +431,23 @@ class LogWrapper implements Log {
 		}
 	}
 
-	private enum Level {
 
-		TRACE {
-
-			@Override
-			public boolean isEnabled(org.apache.commons.logging.Log log) {
-				return log.isTraceEnabled();
-			}
-
-			@Override
-			public void log(org.apache.commons.logging.Log log, Object message, Throwable t) {
-				if(t == NO_THROWABLE) {
-					log.trace(message);
-				} else {
-					log.trace(message, t);
-				}
-			};
-		},
-
-		DEBUG {
-
-			@Override
-			public boolean isEnabled(org.apache.commons.logging.Log log) {
-				return log.isDebugEnabled();
-			}
-
-			@Override
-			public void log(org.apache.commons.logging.Log log, Object message, Throwable t) {
-				if(t == NO_THROWABLE) {
-					log.debug(message);
-				} else {
-					log.debug(message, t);
-				}
-			};
-
-		},
-		INFO {
-
-			@Override
-			public boolean isEnabled(org.apache.commons.logging.Log log) {
-				return log.isInfoEnabled();
-			}
-
-			@Override
-			public void log(org.apache.commons.logging.Log log, Object message, Throwable t) {
-				if(t == NO_THROWABLE) {
-					log.info(message);
-				} else {
-					log.info(message, t);
-				}
-			};
-
-		},
-		WARN {
-
-			@Override
-			public boolean isEnabled(org.apache.commons.logging.Log log) {
-				return log.isWarnEnabled();
-			}
-
-			@Override
-			public void log(org.apache.commons.logging.Log log, Object message, Throwable t) {
-				if(t == NO_THROWABLE) {
-					log.warn(message);
-				} else {
-					log.warn(message, t);
-				}
-			};
-
-		},
-		ERROR {
-
-			@Override
-			public boolean isEnabled(org.apache.commons.logging.Log log) {
-				return log.isErrorEnabled();
-			}
-
-			@Override
-			public void log(org.apache.commons.logging.Log log, Object message, Throwable t) {
-				if(t == NO_THROWABLE) {
-					log.error(message);
-				} else {
-					log.error(message, t);
-				}
-			};
-
-		},
-		FATAL {
-
-			@Override
-			public boolean isEnabled(org.apache.commons.logging.Log log) {
-				return log.isFatalEnabled();
-			}
-
-			@Override
-			public void log(org.apache.commons.logging.Log log, Object message, Throwable t) {
-				if(t == NO_THROWABLE) {
-					log.fatal(message);
-				} else {
-					log.fatal(message, t);
-				}
-			};
-		};
-
-		public abstract boolean isEnabled(org.apache.commons.logging.Log log);
-
-		public abstract void log(org.apache.commons.logging.Log log, Object message, Throwable t);
-	}
-
-
+	/**
+	 * Internal class used to translate {@link Level}s based on configuration.
+	 */
 	private static class LevelTranslator {
+
 
 		private static final LevelTranslator NONE = new LevelTranslator(null, null);
 
 		private static final Pattern PATTERN = Pattern.compile("^([\\w\\.]+)\\.([A-Z]+)->([A-Z]+)$");
 
-		private Map<NameAndLevel, Level> mappings = new HashMap<NameAndLevel, Level>();
+
+		private static Map<String, LevelTranslator> cache = new ConcurrentHashMap<String, LevelTranslator>();
+
+
+		private final Map<NameAndLevel, Level> mappings = new HashMap<NameAndLevel, Level>();
+
 
 		public LevelTranslator(String name, String attribute) {
 			if(attribute != null) {
@@ -417,7 +457,7 @@ class LogWrapper implements Log {
 						Assert.state(matcher.matches(), "Unrecognized pattern");
 						NameAndLevel nameAndLevel = new NameAndLevel(
 								matcher.group(1), Level.valueOf(matcher.group(2)));
-						mappings.put(nameAndLevel, Level.valueOf(matcher.group(3)));
+						this.mappings.put(nameAndLevel, Level.valueOf(matcher.group(3)));
 					} catch (Exception e) {
 						throw new IllegalStateException("Unable to parse '" + mapping
 								+ "' for log config '" + name + "'", e);
@@ -426,28 +466,40 @@ class LogWrapper implements Log {
 			}
 		}
 
+
 		public Level translate(String name, Level level) {
-			Level translatedLevel = mappings.get(new NameAndLevel(name, level));
+			Level translatedLevel = this.mappings.get(new NameAndLevel(name, level));
 			return (translatedLevel != null ? translatedLevel : level);
 		}
 
+
 		public static LevelTranslator get(String name) {
-			Object attribute = LogFactory.getFactory().getAttribute(name);
-			//FIXME cache this
-			return attribute == null ? NONE : new LevelTranslator(name, attribute.toString());
+			LevelTranslator translator = cache.get(name);
+			if(translator == null) {
+				Object attribute = LogFactory.getFactory().getAttribute(name);
+				translator = (attribute == null ? NONE : new LevelTranslator(name, attribute.toString()));
+				cache.put(name, translator);
+			}
+			return translator;
 		}
 	}
 
+
+	/**
+	 * Allows a log name and {@link Level} to be used as a mapping key.
+	 */
 	private static final class NameAndLevel {
 
-		private String name;
+		private final String name;
 
-		private Level level;
+		private final Level level;
+
 
 		public NameAndLevel(String name, Level level) {
 			this.name = name;
 			this.level = level;
 		}
+
 
 		@Override
 		public boolean equals(Object obj) {
