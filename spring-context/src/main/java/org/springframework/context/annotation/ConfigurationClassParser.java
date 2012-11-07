@@ -19,13 +19,12 @@ package org.springframework.context.annotation;
 import static org.springframework.context.annotation.MetadataUtils.attributesFor;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
@@ -50,6 +49,7 @@ import org.springframework.core.type.StandardAnnotationMetadata;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.core.type.filter.AssignableTypeFilter;
+import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 
 /**
@@ -67,6 +67,7 @@ import org.springframework.util.StringUtils;
  *
  * @author Chris Beams
  * @author Juergen Hoeller
+ * @author Phillip Webb
  * @since 3.0
  * @see ConfigurationClassBeanDefinitionReader
  */
@@ -135,13 +136,6 @@ class ConfigurationClassParser {
 
 	protected void processConfigurationClass(ConfigurationClass configClass) throws IOException {
 		AnnotationMetadata metadata = configClass.getMetadata();
-		if (this.environment != null && metadata.isAnnotated(Profile.class.getName())) {
-			AnnotationAttributes profile = MetadataUtils.attributesFor(metadata, Profile.class);
-			if (!this.environment.acceptsProfiles(profile.getStringArray("value"))) {
-				return;
-			}
-		}
-
 		// recursively process the configuration class and its superclass hierarchy
 		do {
 			metadata = doProcessConfigurationClass(configClass, metadata);
@@ -168,7 +162,7 @@ class ConfigurationClassParser {
 			MetadataReader reader = this.metadataReaderFactory.getMetadataReader(memberClassName);
 			AnnotationMetadata memberClassMetadata = reader.getAnnotationMetadata();
 			if (ConfigurationClassUtils.isConfigurationCandidate(memberClassMetadata)) {
-				processConfigurationClass(new ConfigurationClass(reader, true));
+				processConfigurationClass(new ConfigurationClass(reader, configClass));
 			}
 		}
 
@@ -221,9 +215,11 @@ class ConfigurationClassParser {
 		}
 
 		// process any @Import annotations
-		Set<String> imports = getImports(metadata.getClassName(), null, new HashSet<String>());
-		if (imports != null && !imports.isEmpty()) {
-			processImport(configClass, imports.toArray(new String[imports.size()]), true);
+		List<String[]> importValues = getImportValues(metadataReaderFactory.getMetadataReader(metadata.getClassName()).getAnnotationMetadata());
+		if (importValues != null) {
+			for (String[] importValue : importValues) {
+				processImport(configClass, importValue, true);
+			}
 		}
 
 		// process any @ImportResource annotations
@@ -262,37 +258,11 @@ class ConfigurationClassParser {
 		return null;
 	}
 
-	/**
-	 * Recursively collect all declared {@code @Import} values. Unlike most
-	 * meta-annotations it is valid to have several {@code @Import}s declared with
-	 * different values, the usual process or returning values from the first
-	 * meta-annotation on a class is not sufficient.
-	 * <p>For example, it is common for a {@code @Configuration} class to declare direct
-	 * {@code @Import}s in addition to meta-imports originating from an {@code @Enable}
-	 * annotation.
-	 * @param className the class name to search
-	 * @param imports the imports collected so far or {@code null}
-	 * @param visited used to track visited classes to prevent infinite recursion (must not be null)
-	 * @return a set of all {@link Import#value() import values} or {@code null}
-	 * @throws IOException if there is any problem reading metadata from the named class
-	 */
-	private Set<String> getImports(String className, Set<String> imports,
-			Set<String> visited) throws IOException {
-		if (visited.add(className)) {
-			AnnotationMetadata metadata = metadataReaderFactory.getMetadataReader(className).getAnnotationMetadata();
-			for (String annotationType : metadata.getAnnotationTypes()) {
-				imports = getImports(annotationType, imports, visited);
-			}
-			Map<String, Object> attributes = metadata.getAnnotationAttributes(Import.class.getName(), true);
-			if (attributes != null) {
-				String[] value = (String[]) attributes.get("value");
-				if (value != null && value.length > 0) {
-					imports = (imports == null ? new LinkedHashSet<String>() : imports);
-					imports.addAll(Arrays.asList(value));
-				}
-			}
-		}
-		return imports;
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private List<String[]> getImportValues(AnnotationMetadata metadata) {
+		MultiValueMap<String, Object> importAnnotations = metadata.getAllAnnotationAttributes(Import.class.getName(), true);
+		List<Object> importValues = importAnnotations == null ? null : importAnnotations.get("value");
+		return (List) importValues;
 	}
 
 	private void processImport(ConfigurationClass configClass, String[] classesToImport, boolean checkForCircularImports) throws IOException {
@@ -327,7 +297,7 @@ class ConfigurationClassParser {
 				else {
 					// the candidate class not an ImportSelector or ImportBeanDefinitionRegistrar -> process it as a @Configuration class
 					this.importStack.registerImport(importingClassMetadata.getClassName(), candidate);
-					processConfigurationClass(new ConfigurationClass(reader, true));
+					processConfigurationClass(new ConfigurationClass(reader, configClass));
 				}
 			}
 			this.importStack.pop();

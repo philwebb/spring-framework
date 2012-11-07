@@ -23,6 +23,7 @@ import java.util.Map;
 
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.Assert;
+import org.springframework.util.MultiValueMap;
 
 /**
  * {@link MethodMetadata} implementation that uses standard reflection
@@ -67,11 +68,11 @@ public class StandardMethodMetadata implements MethodMetadata {
 		return this.introspectedMethod;
 	}
 
-	
+
 	public String getMethodName() {
 		return this.introspectedMethod.getName();
 	}
-	
+
 	public String getDeclaringClassName() {
 		return this.introspectedMethod.getDeclaringClass().getName();
 	}
@@ -110,6 +111,8 @@ public class StandardMethodMetadata implements MethodMetadata {
 				return AnnotationUtils.getAnnotationAttributes(
 						ann, true, nestedAnnotationsAsMap);
 			}
+		}
+		for (Annotation ann : anns) {
 			for (Annotation metaAnn : ann.annotationType().getAnnotations()) {
 				if (metaAnn.annotationType().getName().equals(annotationType)) {
 					return AnnotationUtils.getAnnotationAttributes(
@@ -118,6 +121,11 @@ public class StandardMethodMetadata implements MethodMetadata {
 			}
 		}
 		return null;
+	}
+
+	public MultiValueMap<String, Object> getAllAnnotationAttributes(String annotationType) {
+		return new AnnotationAttributeCollector(annotationType, false,
+				this.nestedAnnotationsAsMap).collect(this.introspectedMethod);
 	}
 
 }

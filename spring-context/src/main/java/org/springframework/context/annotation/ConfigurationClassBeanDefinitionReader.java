@@ -63,6 +63,7 @@ import static org.springframework.context.annotation.MetadataUtils.*;
  *
  * @author Chris Beams
  * @author Juergen Hoeller
+ * @author Phillip Webb
  * @since 3.0
  * @see ConfigurationClassParser
  */
@@ -119,6 +120,9 @@ class ConfigurationClassBeanDefinitionReader {
 	 * class itself, all its {@link Bean} methods
 	 */
 	private void loadBeanDefinitionsForConfigurationClass(ConfigurationClass configClass) {
+		if (ConditionalAnnotationHelper.shouldSkip(this.registry, this.resourceLoader, configClass)) {
+			return;
+		}
 		if (configClass.isImported()) {
 			registerBeanDefinitionForImportedConfigurationClass(configClass);
 		}
@@ -155,6 +159,9 @@ class ConfigurationClassBeanDefinitionReader {
 	 * with the BeanDefinitionRegistry based on its contents.
 	 */
 	private void loadBeanDefinitionsForBeanMethod(BeanMethod beanMethod) {
+		if (ConditionalAnnotationHelper.shouldSkip(this.registry, this.resourceLoader, beanMethod)) {
+			return;
+		}
 		ConfigurationClass configClass = beanMethod.getConfigurationClass();
 		MethodMetadata metadata = beanMethod.getMetadata();
 
@@ -333,7 +340,7 @@ class ConfigurationClassBeanDefinitionReader {
 		}
 	}
 
-	
+
 	/**
 	 * Configuration classes must be annotated with {@link Configuration @Configuration} or
 	 * declare at least one {@link Bean @Bean} method.

@@ -51,7 +51,7 @@ final class AnnotationMetadataReadingVisitor extends ClassMetadataReadingVisitor
 
 	private final Map<String, Set<String>> metaAnnotationMap = new LinkedHashMap<String, Set<String>>(4);
 
-	private final Map<String, AnnotationAttributes> attributeMap = new LinkedHashMap<String, AnnotationAttributes>(4);
+	private final MultiValueMap<String, AnnotationAttributes> attributeMap = new LinkedMultiValueMap<String, AnnotationAttributes>(4);
 
 	private final MultiValueMap<String, MethodMetadata> methodMetadataMap = new LinkedMultiValueMap<String, MethodMetadata>();
 
@@ -108,10 +108,30 @@ final class AnnotationMetadataReadingVisitor extends ClassMetadataReadingVisitor
 		return getAnnotationAttributes(annotationType, classValuesAsString, false);
 	}
 
+	public MultiValueMap<String, Object> getAllAnnotationAttributes(String annotationType) {
+		return getAllAnnotationAttributes(annotationType, false);
+	}
+
+	public MultiValueMap<String, Object> getAllAnnotationAttributes(
+			String annotationType, boolean classValuesAsString) {
+		MultiValueMap<String, Object> allAttributes = new LinkedMultiValueMap<String, Object>();
+		List<AnnotationAttributes> attributes = this.attributeMap.get(annotationType);
+		if (attributes == null) {
+			return null;
+		}
+		for (AnnotationAttributes raw : attributes) {
+			for (Map.Entry<String, Object> entry : convertClassValues(raw,
+					classValuesAsString, false).entrySet()) {
+				allAttributes.add(entry.getKey(), entry.getValue());
+			}
+		}
+		return allAttributes;
+	}
+
 	public AnnotationAttributes getAnnotationAttributes(
 			String annotationType, boolean classValuesAsString, boolean nestedAttributesAsMap) {
-
-		AnnotationAttributes raw = this.attributeMap.get(annotationType);
+		List<AnnotationAttributes> attributes = this.attributeMap.get(annotationType);
+		AnnotationAttributes raw = attributes == null ? null : attributes.get(0);
 		return convertClassValues(raw, classValuesAsString, nestedAttributesAsMap);
 	}
 

@@ -41,6 +41,7 @@ import org.springframework.util.ClassUtils;
  *
  * @author Chris Beams
  * @author Juergen Hoeller
+ * @author Phillip Webb
  * @since 3.0
  * @see BeanMethod
  * @see ConfigurationClassParser
@@ -58,7 +59,7 @@ final class ConfigurationClass {
 
 	private String beanName;
 
-	private final boolean imported;
+	private final ConfigurationClass importedBy;
 
 
 	/**
@@ -73,7 +74,7 @@ final class ConfigurationClass {
 		this.metadata = metadataReader.getAnnotationMetadata();
 		this.resource = metadataReader.getResource();
 		this.beanName = beanName;
-		this.imported = false;
+		this.importedBy = null;
 	}
 
 	/**
@@ -84,10 +85,10 @@ final class ConfigurationClass {
 	 * @param beanName name of the {@code @Configuration} class bean
 	 * @since 3.1.1
 	 */
-	public ConfigurationClass(MetadataReader metadataReader, boolean imported) {
+	public ConfigurationClass(MetadataReader metadataReader, ConfigurationClass importedBy) {
 		this.metadata = metadataReader.getAnnotationMetadata();
 		this.resource = metadataReader.getResource();
-		this.imported = imported;
+		this.importedBy = importedBy;
 	}
 
 	/**
@@ -102,7 +103,7 @@ final class ConfigurationClass {
 		this.metadata = new StandardAnnotationMetadata(clazz, true);
 		this.resource = new DescriptiveResource(clazz.toString());
 		this.beanName = beanName;
-		this.imported = false;
+		this.importedBy = null;
 	}
 
 	/**
@@ -113,10 +114,10 @@ final class ConfigurationClass {
 	 * @param beanName name of the {@code @Configuration} class bean
 	 * @since 3.1.1
 	 */
-	public ConfigurationClass(Class<?> clazz, boolean imported) {
+	public ConfigurationClass(Class<?> clazz, ConfigurationClass importedBy) {
 		this.metadata = new StandardAnnotationMetadata(clazz, true);
 		this.resource = new DescriptiveResource(clazz.toString());
-		this.imported = imported;
+		this.importedBy = importedBy;
 	}
 
 	public AnnotationMetadata getMetadata() {
@@ -135,9 +136,20 @@ final class ConfigurationClass {
 	 * Return whether this configuration class was registered via @{@link Import} or
 	 * automatically registered due to being nested within another configuration class.
 	 * @since 3.1.1
+	 * @see #getImportedBy()
 	 */
 	public boolean isImported() {
-		return this.imported;
+		return this.importedBy != null;
+	}
+
+	/**
+	 * Returns the configuration class that imported this class or {@code null} if
+	 * this configuration was not imported.
+	 * @since 3.2
+	 * @see #isImported()
+	 */
+	public ConfigurationClass getImportedBy() {
+		return importedBy;
 	}
 
 	public void setBeanName(String beanName) {
@@ -178,7 +190,7 @@ final class ConfigurationClass {
 			int newCount = currentCount != null ? currentCount + 1 : 1;
 			methodNameCounts.put(fqMethodName, newCount);
 		}
-		
+
 		for (String methodName : methodNameCounts.keySet()) {
 			int count = methodNameCounts.get(methodName);
 			if (count > 1) {
@@ -186,7 +198,7 @@ final class ConfigurationClass {
 				problemReporter.error(new BeanMethodOverloadingProblem(shortMethodName, count));
 			}
 		}
-		
+
 		// A configuration class may not be final (CGLIB limitation)
 		if (getMetadata().isAnnotated(Configuration.class.getName())) {
 			if (getMetadata().isFinal()) {

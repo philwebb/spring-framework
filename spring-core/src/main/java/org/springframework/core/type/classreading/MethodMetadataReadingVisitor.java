@@ -16,7 +16,7 @@
 
 package org.springframework.core.type.classreading;
 
-import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.asm.AnnotationVisitor;
@@ -26,6 +26,7 @@ import org.springframework.asm.SpringAsmInfo;
 import org.springframework.asm.Type;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.MethodMetadata;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 /**
@@ -51,7 +52,7 @@ final class MethodMetadataReadingVisitor extends MethodVisitor implements Method
 
 	private final MultiValueMap<String, MethodMetadata> methodMetadataMap;
 
-	private final Map<String, AnnotationAttributes> attributeMap = new LinkedHashMap<String, AnnotationAttributes>(2);
+	private final MultiValueMap<String, AnnotationAttributes> attributeMap = new LinkedMultiValueMap<String, AnnotationAttributes>(2);
 
 	public MethodMetadataReadingVisitor(String name, int access, String declaringClassName, ClassLoader classLoader,
 			MultiValueMap<String, MethodMetadata> methodMetadataMap) {
@@ -91,7 +92,18 @@ final class MethodMetadataReadingVisitor extends MethodVisitor implements Method
 	}
 
 	public AnnotationAttributes getAnnotationAttributes(String annotationType) {
-		return this.attributeMap.get(annotationType);
+		List<AnnotationAttributes> attributes = this.attributeMap.get(annotationType);
+		return (attributes == null ? null : attributes.get(0));
+	}
+
+	public MultiValueMap<String, Object> getAllAnnotationAttributes(String annotationType) {
+		MultiValueMap<String, Object> allAttributes = new LinkedMultiValueMap<String, Object>();
+		for (AnnotationAttributes annotationAttributes : this.attributeMap.get(annotationType)) {
+			for (Map.Entry<String, Object> entry : annotationAttributes.entrySet()) {
+				allAttributes.add(entry.getKey(), entry.getValue());
+			}
+		}
+		return allAttributes;
 	}
 
 	public String getDeclaringClassName() {

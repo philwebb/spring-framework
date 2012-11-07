@@ -134,12 +134,8 @@ public class AnnotatedBeanDefinitionReader {
 
 	public void registerBean(Class<?> annotatedClass, String name, Class<? extends Annotation>... qualifiers) {
 		AnnotatedGenericBeanDefinition abd = new AnnotatedGenericBeanDefinition(annotatedClass);
-		AnnotationMetadata metadata = abd.getMetadata();
-		if (metadata.isAnnotated(Profile.class.getName())) {
-			AnnotationAttributes profile = MetadataUtils.attributesFor(metadata, Profile.class);
-			if (!this.environment.acceptsProfiles(profile.getStringArray("value"))) {
-				return;
-			}
+		if(ConditionalAnnotationHelper.shouldSkip(this.registry, null, abd)) {
+			return;
 		}
 		ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(abd);
 		abd.setScope(scopeMetadata.getScopeName());

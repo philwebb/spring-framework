@@ -18,7 +18,9 @@ package org.springframework.core.type;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -29,10 +31,12 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
-
 import org.springframework.beans.factory.annotation.TestAutowired;
 import org.springframework.beans.factory.annotation.TestQualifier;
 import org.springframework.core.annotation.AnnotationAttributes;
@@ -47,6 +51,7 @@ import org.springframework.stereotype.Component;
  *
  * @author Juergen Hoeller
  * @author Chris Beams
+ * @author Phillip Webb
  */
 public class AnnotationMetadataTests {
 
@@ -95,7 +100,7 @@ public class AnnotationMetadataTests {
 		assertThat(metadata.hasAnnotation(Component.class.getName()), is(true));
 		assertThat(metadata.hasAnnotation(Scope.class.getName()), is(true));
 		assertThat(metadata.hasAnnotation(SpecialAttr.class.getName()), is(true));
-		assertThat(metadata.getAnnotationTypes().size(), is(3));
+		assertThat(metadata.getAnnotationTypes().size(), is(5));
 		assertThat(metadata.getAnnotationTypes().contains(Component.class.getName()), is(true));
 		assertThat(metadata.getAnnotationTypes().contains(Scope.class.getName()), is(true));
 		assertThat(metadata.getAnnotationTypes().contains(SpecialAttr.class.getName()), is(true));
@@ -106,6 +111,13 @@ public class AnnotationMetadataTests {
 		AnnotationAttributes scopeAttrs = (AnnotationAttributes) metadata.getAnnotationAttributes(Scope.class.getName());
 		assertThat(scopeAttrs.size(), is(1));
 		assertThat(scopeAttrs.getString("value"), is("myScope"));
+
+		Set<MethodMetadata> methods = metadata.getAnnotatedMethods(DirectAnnotation.class.getName());
+		MethodMetadata method = methods.iterator().next();
+		assertEquals("direct", method.getAnnotationAttributes(DirectAnnotation.class.getName()).get("value"));
+		List<Object> allMeta = method.getAllAnnotationAttributes(DirectAnnotation.class.getName()).get("value");
+		assertThat(new HashSet<Object>(allMeta), is(equalTo(new HashSet<Object>(Arrays.asList("direct", "meta")))));
+
 		{ // perform tests with classValuesAsString = false (the default)
 			AnnotationAttributes specialAttrs = (AnnotationAttributes) metadata.getAnnotationAttributes(SpecialAttr.class.getName());
 			assertThat(specialAttrs.size(), is(6));
@@ -139,6 +151,10 @@ public class AnnotationMetadataTests {
 			assertTrue(optionalArray[0].getEnum("anEnum").equals(SomeEnum.DEFAULT));
 			assertArrayEquals(new Class[]{Void.class}, (Class[])optionalArray[0].get("classArray"));
 			assertArrayEquals(new Class[]{Void.class}, optionalArray[0].getClassArray("classArray"));
+
+			assertEquals("direct", metadata.getAnnotationAttributes(DirectAnnotation.class.getName()).get("value"));
+			allMeta = metadata.getAllAnnotationAttributes(DirectAnnotation.class.getName()).get("value");
+			assertThat(new HashSet<Object>(allMeta), is(equalTo(new HashSet<Object>(Arrays.asList("direct", "meta")))));
 		}
 		{ // perform tests with classValuesAsString = true
 			AnnotationAttributes specialAttrs = (AnnotationAttributes) metadata.getAnnotationAttributes(SpecialAttr.class.getName(), true);
@@ -147,7 +163,7 @@ public class AnnotationMetadataTests {
 			assertThat(specialAttrs.getString("clazz"), is(String.class.getName()));
 
 			AnnotationAttributes nestedAnno = specialAttrs.getAnnotation("nestedAnno");
-			assertArrayEquals(new String[]{String.class.getName()}, (String[])nestedAnno.getStringArray("classArray"));
+			assertArrayEquals(new String[]{String.class.getName()}, (String[])nestedAnno.get("classArray"));
 			assertArrayEquals(new String[]{String.class.getName()}, nestedAnno.getStringArray("classArray"));
 
 			AnnotationAttributes[] nestedAnnoArray = specialAttrs.getAnnotationArray("nestedAnnoArray");
@@ -163,6 +179,10 @@ public class AnnotationMetadataTests {
 			AnnotationAttributes[] optionalArray = specialAttrs.getAnnotationArray("optionalArray");
 			assertArrayEquals(new String[]{Void.class.getName()}, (String[])optionalArray[0].get("classArray"));
 			assertArrayEquals(new String[]{Void.class.getName()}, optionalArray[0].getStringArray("classArray"));
+
+			assertEquals(metadata.getAnnotationAttributes(DirectAnnotation.class.getName()).get("value"), "direct");
+			allMeta = metadata.getAllAnnotationAttributes(DirectAnnotation.class.getName()).get("value");
+			assertThat(new HashSet<Object>(allMeta), is(equalTo(new HashSet<Object>(Arrays.asList("direct", "meta")))));
 		}
 	}
 
@@ -203,6 +223,23 @@ public class AnnotationMetadataTests {
 		NestedAnno[] optionalArray() default {@NestedAnno(value="optional", anEnum=SomeEnum.DEFAULT, classArray=Void.class)};
 	}
 
+	@Target({ ElementType.TYPE, ElementType.METHOD })
+	@Retention(RetentionPolicy.RUNTIME)
+	public @interface DirectAnnotation {
+		String value();
+	}
+
+	@Target(ElementType.TYPE)
+	@Retention(RetentionPolicy.RUNTIME)
+	@DirectAnnotation("meta")
+	public @interface MetaAnnotation {
+	}
+
+	@Target({ ElementType.TYPE, ElementType.METHOD })
+	@Retention(RetentionPolicy.RUNTIME)
+	@MetaAnnotation
+	public @interface MetaMetaAnnotation {
+	}
 
 	@Component("myName")
 	@Scope("myScope")
@@ -213,13 +250,20 @@ public class AnnotationMetadataTests {
 				@NestedAnno(value = "na1", anEnum = SomeEnum.LABEL2, classArray = {Number.class})
 			})
 	@SuppressWarnings({"serial", "unused"})
+	@DirectAnnotation("direct")
+	@MetaMetaAnnotation
 	private static class AnnotatedComponent implements Serializable {
-		
+
 		@TestAutowired
 		public void doWork(@TestQualifier("myColor") java.awt.Color color) {
 		}
 
 		public void doSleep()  {
+		}
+
+		@DirectAnnotation("direct")
+		@MetaMetaAnnotation
+		public void meta() {
 		}
 	}
 
