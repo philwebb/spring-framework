@@ -16,17 +16,17 @@
 
 package org.springframework.context.annotation;
 
+import static org.springframework.context.annotation.MetadataUtils.attributesFor;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.annotation.AnnotatedGenericBeanDefinition;
 import org.springframework.beans.factory.annotation.Autowire;
@@ -50,8 +50,6 @@ import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.MethodMetadata;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.util.StringUtils;
-
-import static org.springframework.context.annotation.MetadataUtils.*;
 
 /**
  * Reads a given fully-populated set of ConfigurationClass instances, registering bean
@@ -106,20 +104,10 @@ class ConfigurationClassBeanDefinitionReader {
 
 
 	/**
-	 * Read {@code configurationModel}, registering bean definitions with {@link #registry}
-	 * based on its contents.
-	 */
-	public void loadBeanDefinitions(Set<ConfigurationClass> configurationModel) {
-		for (ConfigurationClass configClass : configurationModel) {
-			loadBeanDefinitionsForConfigurationClass(configClass);
-		}
-	}
-
-	/**
 	 * Read a particular {@link ConfigurationClass}, registering bean definitions for the
 	 * class itself, all its {@link Bean} methods
 	 */
-	private void loadBeanDefinitionsForConfigurationClass(ConfigurationClass configClass) {
+	public void loadBeanDefinitionsForConfigurationClass(ConfigurationClass configClass) {
 		if (ConditionalAnnotationHelper.shouldSkip(this.registry, this.resourceLoader, configClass)) {
 			return;
 		}

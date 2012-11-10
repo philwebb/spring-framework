@@ -298,6 +298,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	 * bean definition has been found for the specified name
 	 */
 	protected boolean checkCandidate(String beanName, BeanDefinition beanDefinition) throws IllegalStateException {
+		//FIXME This is probably too early to perform condition checks, move back to a context
 		if (ConditionalAnnotationHelper.shouldSkip(getRegistry(), getResourceLoader(), beanDefinition)) {
 			return false;
 		}

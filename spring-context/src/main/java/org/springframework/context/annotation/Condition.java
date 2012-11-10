@@ -28,7 +28,7 @@ import org.springframework.core.type.AnnotatedTypeMetadata;
  * registered and are free to veto registration based on any criteria that can be
  * determined at that point.
  *
- * <p>Conditions are always create via {@link AutowireCapableBeanFactory#createBean(Class)}
+ * <p>Conditions are create via {@link AutowireCapableBeanFactory#createBean(Class)}
  * and as such will receive all standard bean initialization callbacks. Conditions must
  * follow the same restrictions as {@link BeanFactoryPostProcessor} and take care to never
  * interact with bean instances.
@@ -46,5 +46,9 @@ public interface Condition {
 	 *         or {@code false} to veto registration.
 	 */
 	boolean matches(AnnotatedTypeMetadata metadata);
+
+	//FIXME should we consider a ConditionContext that can grow over time?
+	//FIXME matches should perhaps be rename to shouldSkip or could return
+	//      and enum to make it cleared when the bean is loaded
 
 }

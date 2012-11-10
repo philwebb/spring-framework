@@ -120,8 +120,8 @@ final class AnnotationMetadataReadingVisitor extends ClassMetadataReadingVisitor
 			return null;
 		}
 		for (AnnotationAttributes raw : attributes) {
-			for (Map.Entry<String, Object> entry : convertClassValues(raw,
-					classValuesAsString, false).entrySet()) {
+			for (Map.Entry<String, Object> entry : AnnotationMetadataUtils.convertClassValues(
+					this.classLoader, raw, classValuesAsString, false).entrySet()) {
 				allAttributes.add(entry.getKey(), entry.getValue());
 			}
 		}
@@ -132,62 +132,11 @@ final class AnnotationMetadataReadingVisitor extends ClassMetadataReadingVisitor
 			String annotationType, boolean classValuesAsString, boolean nestedAttributesAsMap) {
 		List<AnnotationAttributes> attributes = this.attributeMap.get(annotationType);
 		AnnotationAttributes raw = attributes == null ? null : attributes.get(0);
-		return convertClassValues(raw, classValuesAsString, nestedAttributesAsMap);
+		return AnnotationMetadataUtils.convertClassValues(this.classLoader, raw,
+				classValuesAsString, nestedAttributesAsMap);
 	}
 
-	private AnnotationAttributes convertClassValues(
-			AnnotationAttributes original, boolean classValuesAsString, boolean nestedAttributesAsMap) {
 
-		if (original == null) {
-			return null;
-		}
-		AnnotationAttributes result = new AnnotationAttributes(original.size());
-		for (Map.Entry<String, Object> entry : original.entrySet()) {
-			try {
-				Object value = entry.getValue();
-				if (value instanceof AnnotationAttributes) {
-					value = convertClassValues((AnnotationAttributes)value, classValuesAsString, nestedAttributesAsMap);
-				}
-				else if (value instanceof AnnotationAttributes[]) {
-					AnnotationAttributes[] values = (AnnotationAttributes[])value;
-					for (int i = 0; i < values.length; i++) {
-						values[i] = convertClassValues(values[i], classValuesAsString, nestedAttributesAsMap);
-					}
-				}
-				else if (value instanceof Type) {
-					value = (classValuesAsString ? ((Type) value).getClassName() :
-							this.classLoader.loadClass(((Type) value).getClassName()));
-				}
-				else if (value instanceof Type[]) {
-					Type[] array = (Type[]) value;
-					Object[] convArray = (classValuesAsString ? new String[array.length] : new Class[array.length]);
-					for (int i = 0; i < array.length; i++) {
-						convArray[i] = (classValuesAsString ? array[i].getClassName() :
-								this.classLoader.loadClass(array[i].getClassName()));
-					}
-					value = convArray;
-				}
-				else if (classValuesAsString) {
-					if (value instanceof Class) {
-						value = ((Class<?>) value).getName();
-					}
-					else if (value instanceof Class[]) {
-						Class<?>[] clazzArray = (Class[]) value;
-						String[] newValue = new String[clazzArray.length];
-						for (int i = 0; i < clazzArray.length; i++) {
-							newValue[i] = clazzArray[i].getName();
-						}
-						value = newValue;
-					}
-				}
-				result.put(entry.getKey(), value);
-			}
-			catch (Exception ex) {
-				// Class not found - can't resolve class reference in annotation attribute.
-			}
-		}
-		return result;
-	}
 
 	public boolean hasAnnotatedMethods(String annotationType) {
 		return this.methodMetadataMap.containsKey(annotationType);

@@ -105,18 +105,23 @@ public class StandardMethodMetadata implements MethodMetadata {
 	}
 
 	public Map<String, Object> getAnnotationAttributes(String annotationType) {
+		return getAnnotationAttributes(annotationType, false); //FIXME old value was true? discuss
+	}
+
+	public Map<String, Object> getAnnotationAttributes(String annotationType,
+		boolean classValuesAsString) {
 		Annotation[] anns = this.introspectedMethod.getAnnotations();
 		for (Annotation ann : anns) {
 			if (ann.annotationType().getName().equals(annotationType)) {
 				return AnnotationUtils.getAnnotationAttributes(
-						ann, true, nestedAnnotationsAsMap);
+						ann, classValuesAsString, nestedAnnotationsAsMap);
 			}
 		}
 		for (Annotation ann : anns) {
 			for (Annotation metaAnn : ann.annotationType().getAnnotations()) {
 				if (metaAnn.annotationType().getName().equals(annotationType)) {
 					return AnnotationUtils.getAnnotationAttributes(
-							metaAnn, true, this.nestedAnnotationsAsMap);
+							metaAnn, classValuesAsString, this.nestedAnnotationsAsMap);
 				}
 			}
 		}
@@ -124,7 +129,12 @@ public class StandardMethodMetadata implements MethodMetadata {
 	}
 
 	public MultiValueMap<String, Object> getAllAnnotationAttributes(String annotationType) {
-		return new AnnotationAttributeCollector(annotationType, false,
+		return getAllAnnotationAttributes(annotationType, false);
+	}
+
+	public MultiValueMap<String, Object> getAllAnnotationAttributes(
+			String annotationType, boolean classValuesAsString) {
+		return new AnnotationAttributeCollector(annotationType, classValuesAsString,
 				this.nestedAnnotationsAsMap).collect(this.introspectedMethod);
 	}
 

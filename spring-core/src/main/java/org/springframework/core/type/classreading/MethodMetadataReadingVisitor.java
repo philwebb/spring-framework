@@ -91,15 +91,30 @@ final class MethodMetadataReadingVisitor extends MethodVisitor implements Method
 		return this.attributeMap.containsKey(annotationType);
 	}
 
-	public AnnotationAttributes getAnnotationAttributes(String annotationType) {
+	public Map<String, Object> getAnnotationAttributes(String annotationType) {
+		return getAnnotationAttributes(annotationType, false);
+	}
+
+	public Map<String, Object> getAnnotationAttributes(String annotationType,
+			boolean classValuesAsString) {
 		List<AnnotationAttributes> attributes = this.attributeMap.get(annotationType);
-		return (attributes == null ? null : attributes.get(0));
+		return (attributes == null ? null : AnnotationMetadataUtils.convertClassValues(
+				this.classLoader, attributes.get(0), classValuesAsString, false));
 	}
 
 	public MultiValueMap<String, Object> getAllAnnotationAttributes(String annotationType) {
+		return getAllAnnotationAttributes(annotationType, false);
+	}
+
+	public MultiValueMap<String, Object> getAllAnnotationAttributes(
+			String annotationType, boolean classValuesAsString) {
+		if(!this.attributeMap.containsKey(annotationType)) {
+			return null;
+		}
 		MultiValueMap<String, Object> allAttributes = new LinkedMultiValueMap<String, Object>();
 		for (AnnotationAttributes annotationAttributes : this.attributeMap.get(annotationType)) {
-			for (Map.Entry<String, Object> entry : annotationAttributes.entrySet()) {
+			for (Map.Entry<String, Object> entry : AnnotationMetadataUtils.convertClassValues(
+					this.classLoader, annotationAttributes, classValuesAsString, false).entrySet()) {
 				allAttributes.add(entry.getKey(), entry.getValue());
 			}
 		}

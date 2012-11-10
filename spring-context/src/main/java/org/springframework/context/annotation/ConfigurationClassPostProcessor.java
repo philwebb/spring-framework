@@ -79,7 +79,7 @@ import static org.springframework.context.annotation.AnnotationConfigUtils.*;
  * that any {@link Bean} methods declared in Configuration classes have their
  * respective bean definitions registered before any other BeanFactoryPostProcessor
  * executes.
- * 
+ *
  * @author Chris Beams
  * @author Juergen Hoeller
  * @since 3.0
@@ -312,7 +312,10 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 					registry, this.sourceExtractor, this.problemReporter, this.metadataReaderFactory,
 					this.resourceLoader, this.environment, this.importBeanNameGenerator);
 		}
-		this.reader.loadBeanDefinitions(parser.getConfigurationClasses());
+		for (ConfigurationClass configurationClass : parser.getConfigurationClasses()) {
+			reader.loadBeanDefinitionsForConfigurationClass(configurationClass);
+			afterLoadConfigurationClass(registry, configurationClass.getBeanName(), configurationClass.getMetadata());
+		}
 
 		// Register the ImportRegistry as a bean in order to support ImportAware @Configuration classes
 		if (singletonRegistry != null) {
@@ -320,6 +323,17 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 				singletonRegistry.registerSingleton(IMPORT_REGISTRY_BEAN_NAME, parser.getImportRegistry());
 			}
 		}
+	}
+
+	/**
+	 * Hook method called immediately after a {@code @Configuration} bean has been
+	 * loaded.
+	 * @param registry the registry
+	 * @param beanName the name of the configration bean
+	 * @param metadata the configuration meta-data.
+	 */
+	protected void afterLoadConfigurationClass(BeanDefinitionRegistry registry,
+			String beanName, AnnotationMetadata metadata) {
 	}
 
 	/**
@@ -362,6 +376,11 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 				throw new IllegalStateException("Cannot load configuration class: " + beanDef.getBeanClassName(), ex);
 			}
 		}
+	}
+
+
+	protected final MetadataReaderFactory getMetadataReaderFactory() {
+		return metadataReaderFactory;
 	}
 
 

@@ -82,7 +82,7 @@ public abstract class SpringFactoriesLoader {
 		return result;
 	}
 
-	private static List<String> loadFactoryNames(Class<?> factoryClass, ClassLoader classLoader) {
+	public static List<String> loadFactoryNames(Class<?> factoryClass, ClassLoader classLoader) {
 		String factoryClassName = factoryClass.getName();
 		try {
 			List<String> result = new ArrayList<String>();
