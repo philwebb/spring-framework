@@ -41,7 +41,7 @@ import test.mixin.Lockable;
 /**
  * Tests for auto proxy creation by advisor recognition.
  *
- * @see org.springframework.aop.framework.autoproxy.AdvisorAutoProxyCreatorIntegrationTests;
+ * @see org.springframework.aop.framework.autoproxy.AdvisorAutoProxyCreatorIntegrationTests
  *
  * @author Rod Johnson
  * @author Dave Syer
@@ -57,9 +57,6 @@ public final class AdvisorAutoProxyCreatorTests {
 	private static final String CUSTOM_TARGETSOURCE_CONTEXT = CLASSNAME + "-custom-targetsource.xml";
 	private static final String QUICK_TARGETSOURCE_CONTEXT = CLASSNAME + "-quick-targetsource.xml";
 	private static final String OPTIMIZED_CONTEXT = CLASSNAME + "-optimized.xml";
-
-	private static final String ADVISOR_APC_BEAN_NAME = "aapc";
-	private static final String TXMANAGER_BEAN_NAME = "txManager";
 
 	/**
 	 * Return a bean factory with attributes and EnterpriseServices configured.

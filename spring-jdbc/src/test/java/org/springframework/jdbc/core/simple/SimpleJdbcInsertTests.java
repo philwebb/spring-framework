@@ -105,7 +105,7 @@ public class SimpleJdbcInsertTests extends TestCase {
 
 		SimpleJdbcInsert insert = new SimpleJdbcInsert(mockDataSource).withTableName(NO_SUCH_TABLE);
 		try {
-			insert.execute(new HashMap());
+			insert.execute(new HashMap<String, Object>());
 			fail("Shouldn't succeed in inserting into table which doesn't exist");
 		} catch (InvalidDataAccessApiUsageException ex) {
 			// OK

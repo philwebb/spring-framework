@@ -43,6 +43,7 @@ import org.springframework.util.ClassUtils;
  * @deprecated as of Spring 3.0, in favor of Java 5 enums.
  */
 @Deprecated
+@SuppressWarnings("rawtypes")
 public abstract class AbstractCachingLabeledEnumResolver implements LabeledEnumResolver {
 
 	protected transient final Log logger = LogFactory.getLog(getClass());

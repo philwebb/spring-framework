@@ -47,7 +47,7 @@ import org.testng.annotations.Test;
  * classes with TestNG-based tests.
  *
  * <p>Configuration will be loaded from
- * {@link AnnotationConfigTransactionalTestNGSpringContextTests.ContextConfiguration}.
+ * {@link AnnotationConfigTransactionalTestNGSpringContextTestsConfig}.
  *
  * @author Sam Brannen
  * @since 3.1

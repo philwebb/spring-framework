@@ -17,13 +17,12 @@
 package org.springframework.aop.framework;
 
 import static org.junit.Assert.assertEquals;
-import static test.util.TestResourceUtils.qualifiedResource;
+import static test.util.TestResourceUtils.beanFactoryFromQualifiedResource;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.junit.Test;
-import org.springframework.beans.factory.xml.XmlBeanFactory;
-import org.springframework.core.io.Resource;
+import org.springframework.beans.factory.BeanFactory;
 
 /**
  * @author Juergen Hoeller
@@ -32,34 +31,28 @@ import org.springframework.core.io.Resource;
  */
 public final class PrototypeTargetTests {
 
-	private static final Resource CONTEXT = qualifiedResource(PrototypeTargetTests.class, "context.xml");
-
 	@Test
 	public void testPrototypeProxyWithPrototypeTarget() {
-		TestBeanImpl.constructionCount = 0;
-		XmlBeanFactory xbf = new XmlBeanFactory(CONTEXT);
-		for (int i = 0; i < 10; i++) {
-			TestBean tb = (TestBean) xbf.getBean("testBeanPrototype");
-			tb.doSomething();
-		}
-		TestInterceptor interceptor = (TestInterceptor) xbf.getBean("testInterceptor");
-		assertEquals(10, TestBeanImpl.constructionCount);
-		assertEquals(10, interceptor.invocationCount);
+		assertConstructionAndInvocationCounts("testBeanPrototype", 10, 10);
 	}
 
 	@Test
 	public void testSingletonProxyWithPrototypeTarget() {
-		TestBeanImpl.constructionCount = 0;
-		XmlBeanFactory xbf = new XmlBeanFactory(CONTEXT);
-		for (int i = 0; i < 10; i++) {
-			TestBean tb = (TestBean) xbf.getBean("testBeanSingleton");
-			tb.doSomething();
-		}
-		TestInterceptor interceptor = (TestInterceptor) xbf.getBean("testInterceptor");
-		assertEquals(1, TestBeanImpl.constructionCount);
-		assertEquals(10, interceptor.invocationCount);
+		assertConstructionAndInvocationCounts("testBeanSingleton", 1, 10);
 	}
 
+	private void assertConstructionAndInvocationCounts(String beanName,
+		int constructionCount, int invocationCount) {
+		TestBeanImpl.constructionCount = 0;
+		BeanFactory bf = beanFactoryFromQualifiedResource(getClass(), "context.xml");
+		for (int i = 0; i < 10; i++) {
+			TestBean tb = (TestBean) bf.getBean(beanName);
+			tb.doSomething();
+		}
+		TestInterceptor interceptor = (TestInterceptor) bf.getBean("testInterceptor");
+		assertEquals(constructionCount, TestBeanImpl.constructionCount);
+		assertEquals(invocationCount, interceptor.invocationCount);
+	}
 
 	public static interface TestBean {
 		public void doSomething();

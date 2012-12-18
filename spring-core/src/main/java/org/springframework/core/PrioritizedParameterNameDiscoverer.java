@@ -18,7 +18,6 @@ package org.springframework.core;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -59,7 +58,7 @@ public class PrioritizedParameterNameDiscoverer implements ParameterNameDiscover
 		return null;
 	}
 
-	public String[] getParameterNames(Constructor ctor) {
+	public String[] getParameterNames(Constructor<?> ctor) {
 		for (ParameterNameDiscoverer pnd : this.parameterNameDiscoverers) {
 			String[] result = pnd.getParameterNames(ctor);
 			if (result != null) {

@@ -16,7 +16,6 @@
 
 package org.springframework.beans.factory;
 
-import org.springframework.beans.factory.InitializingBean;
 
 /**
  * Simple test of BeanFactory initialization

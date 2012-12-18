@@ -17,16 +17,8 @@
 package org.springframework.beans.support;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import junit.framework.TestCase;
-
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
 
 import test.beans.TestBean;
 
@@ -47,12 +39,12 @@ public class PagedListHolderTests extends TestCase {
 		TestBean tb3 = new TestBean();
 		tb3.setName("Rod");
 		tb3.setAge(32);
-		List tbs = new ArrayList();
+		List<Object> tbs = new ArrayList<Object>();
 		tbs.add(tb1);
 		tbs.add(tb2);
 		tbs.add(tb3);
 
-		PagedListHolder holder = new PagedListHolder(tbs);
+		PagedListHolder<Object> holder = new PagedListHolder<Object>(tbs);
 		assertTrue("Correct source", holder.getSource() == tbs);
 		assertTrue("Correct number of elements", holder.getNrOfElements() == 3);
 		assertTrue("Correct number of pages", holder.getPageCount() == 1);

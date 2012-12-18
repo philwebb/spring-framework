@@ -150,7 +150,7 @@ public final class ThrowsAdviceInterceptorTests {
 	}
 
 	@SuppressWarnings("serial")
-	private static class MyThrowsHandler extends MethodCounter implements ThrowsAdvice {
+	public static class MyThrowsHandler extends MethodCounter implements ThrowsAdvice {
 		// Full method signature
 		public void afterThrowing(Method m, Object[] args, Object target, IOException ex) {
 			count("ioException");

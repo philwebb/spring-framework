@@ -34,8 +34,8 @@ public class GroovyClassLoadingTests extends TestCase {
 		StaticApplicationContext context = new StaticApplicationContext();
 
 		GroovyClassLoader gcl = new GroovyClassLoader();
-		Class class1 = gcl.parseClass("class TestBean { def myMethod() { \"foo\" } }");
-		Class class2 = gcl.parseClass("class TestBean { def myMethod() { \"bar\" } }");
+		Class<?> class1 = gcl.parseClass("class TestBean { def myMethod() { \"foo\" } }");
+		Class<?> class2 = gcl.parseClass("class TestBean { def myMethod() { \"bar\" } }");
 
 		context.registerBeanDefinition("testBean", new RootBeanDefinition(class1));
 		Object testBean1 = context.getBean("testBean");

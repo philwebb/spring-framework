@@ -53,7 +53,6 @@ final class StringToCollectionConverter implements ConditionalGenericConverter {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public Object convert(Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
 		if (source == null) {
 			return null;

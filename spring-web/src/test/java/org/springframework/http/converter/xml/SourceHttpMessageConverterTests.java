@@ -39,7 +39,6 @@ import org.springframework.util.FileCopyUtils;
 import static org.custommonkey.xmlunit.XMLAssert.*;
 
 /** @author Arjen Poutsma */
-@SuppressWarnings("unchecked")
 public class SourceHttpMessageConverterTests {
 
 	private SourceHttpMessageConverter<Source> converter;

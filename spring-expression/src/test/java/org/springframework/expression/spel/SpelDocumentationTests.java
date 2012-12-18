@@ -16,6 +16,9 @@
 
 package org.springframework.expression.spel;
 
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -62,6 +65,8 @@ public class SpelDocumentationTests extends ExpressionTestCase {
 		pupin.setPlaceOfBirth(new PlaceOfBirth("Idvor"));
 
 	}
+
+	@SuppressWarnings("rawtypes")
 	static class IEEE {
 		private String name;
 
@@ -210,9 +215,11 @@ public class SpelDocumentationTests extends ExpressionTestCase {
 		societyContext.setRootObject(new IEEE());
 		// Officer's Dictionary
 		Inventor pupin = parser.parseExpression("officers['president']").getValue(societyContext, Inventor.class);
+		assertThat(pupin.getName(), is("Pupin"));
 
 		// evaluates to "Idvor"
 		String city = parser.parseExpression("officers['president'].PlaceOfBirth.city").getValue(societyContext, String.class);
+		assertThat(city, is("Idvor"));
 
 		// setting values
 		Inventor i = parser.parseExpression("officers['advisors'][0]").getValue(societyContext,Inventor.class);
@@ -377,7 +384,7 @@ public class SpelDocumentationTests extends ExpressionTestCase {
 
 	@Test
 	public void testTypes() throws Exception {
-		Class dateClass = parser.parseExpression("T(java.util.Date)").getValue(Class.class);
+		Class<?> dateClass = parser.parseExpression("T(java.util.Date)").getValue(Class.class);
 		Assert.assertEquals(Date.class,dateClass);
 		boolean trueValue = parser.parseExpression("T(java.math.RoundingMode).CEILING < T(java.math.RoundingMode).FLOOR").getValue(Boolean.class);
 		Assert.assertTrue(trueValue);

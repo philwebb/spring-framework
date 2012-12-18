@@ -35,7 +35,7 @@ import org.springframework.util.StringUtils;
 
 /**
  * Integration tests for {@link PropertyResourceConfigurer} implementations requiring
- * interaction with an {@link ApplicationContext}.  For example, a {@link PropertyPlaceholderConfigurer}
+ * interaction with an {@link ApplicationContext}. For example, a {@link PropertyPlaceholderConfigurer}
  * that contains ${..} tokens in its 'location' property requires being tested through an ApplicationContext
  * as opposed to using only a BeanFactory during testing.
  *

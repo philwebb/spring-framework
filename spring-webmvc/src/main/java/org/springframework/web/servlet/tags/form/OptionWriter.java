@@ -20,18 +20,12 @@ import java.beans.PropertyEditor;
 import java.util.Collection;
 import java.util.Map;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
-
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.servlet.support.BindStatus;
-import org.springframework.web.servlet.support.RequestDataValueProcessor;
-import org.springframework.web.servlet.support.RequestContext;
 
 /**
  * Provides supporting functionality to render a list of '<code>option</code>'
@@ -141,7 +135,7 @@ class OptionWriter {
 		else if (this.optionSource instanceof Map) {
 			renderFromMap(tagWriter);
 		}
-		else if (this.optionSource instanceof Class && ((Class) this.optionSource).isEnum()) {
+		else if (this.optionSource instanceof Class && ((Class<?>) this.optionSource).isEnum()) {
 			renderFromEnum(tagWriter);
 		}
 		else {
@@ -164,8 +158,8 @@ class OptionWriter {
 	 * @see #renderOption(TagWriter, Object, Object, Object)
 	 */
 	private void renderFromMap(TagWriter tagWriter) throws JspException {
-		Map<?, ?> optionMap = (Map) this.optionSource;
-		for (Map.Entry entry : optionMap.entrySet()) {
+		Map<?, ?> optionMap = (Map<?, ?>) this.optionSource;
+		for (Map.Entry<?, ?> entry : optionMap.entrySet()) {
 			Object mapKey = entry.getKey();
 			Object mapValue = entry.getValue();
 			Object renderValue = (this.valueProperty != null ?
@@ -183,7 +177,7 @@ class OptionWriter {
 	 * @see #doRenderFromCollection(java.util.Collection, TagWriter)
 	 */
 	private void renderFromCollection(TagWriter tagWriter) throws JspException {
-		doRenderFromCollection((Collection) this.optionSource, tagWriter);
+		doRenderFromCollection((Collection<?>) this.optionSource, tagWriter);
 	}
 
 	/**
@@ -191,7 +185,7 @@ class OptionWriter {
 	 * @see #doRenderFromCollection(java.util.Collection, TagWriter)
 	 */
 	private void renderFromEnum(TagWriter tagWriter) throws JspException {
-		doRenderFromCollection(CollectionUtils.arrayToList(((Class) this.optionSource).getEnumConstants()), tagWriter);
+		doRenderFromCollection(CollectionUtils.arrayToList(((Class<?>) this.optionSource).getEnumConstants()), tagWriter);
 	}
 
 	/**
@@ -200,7 +194,7 @@ class OptionWriter {
 	 * when rendering the '<code>value</code>' of the '<code>option</code>' and the value of the
 	 * {@link #labelProperty} property is used when rendering the label.
 	 */
-	private void doRenderFromCollection(Collection optionCollection, TagWriter tagWriter) throws JspException {
+	private void doRenderFromCollection(Collection<?> optionCollection, TagWriter tagWriter) throws JspException {
 		for (Object item : optionCollection) {
 			BeanWrapper wrapper = PropertyAccessorFactory.forBeanPropertyAccess(item);
 			Object value;

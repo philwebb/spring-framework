@@ -48,7 +48,7 @@ import org.springframework.util.Assert;
  * @author Juergen Hoeller
  * @since 2.0
  */
-class AspectJPrecedenceComparator implements Comparator {
+class AspectJPrecedenceComparator implements Comparator<Object> {
 
 	private static final int HIGHER_PRECEDENCE = -1;
 	private static final int SAME_PRECEDENCE = 0;

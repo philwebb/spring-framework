@@ -45,7 +45,7 @@ import org.springframework.util.ClassUtils;
  */
 public class AspectJAwareAdvisorAutoProxyCreator extends AbstractAdvisorAutoProxyCreator {
 
-	private static final Comparator DEFAULT_PRECEDENCE_COMPARATOR = new AspectJPrecedenceComparator();
+	private static final Comparator<Object> DEFAULT_PRECEDENCE_COMPARATOR = new AspectJPrecedenceComparator();
 
 
 	/**
@@ -75,8 +75,7 @@ public class AspectJAwareAdvisorAutoProxyCreator extends AbstractAdvisorAutoProx
 		}
 
 		// sort it
-		List<PartiallyComparableAdvisorHolder> sorted =
-				(List<PartiallyComparableAdvisorHolder>) PartialOrder.sort(partiallyComparableAdvisors);
+		List<PartiallyComparableAdvisorHolder> sorted = PartialOrder.sort(partiallyComparableAdvisors);
 		if (sorted == null) {
 			// TODO: work harder to give a better error message here.
 			throw new IllegalArgumentException("Advice precedence circularity error");
@@ -102,7 +101,7 @@ public class AspectJAwareAdvisorAutoProxyCreator extends AbstractAdvisorAutoProx
 	}
 
 	@Override
-	protected boolean shouldSkip(Class beanClass, String beanName) {
+	protected boolean shouldSkip(Class<?> beanClass, String beanName) {
 		// TODO: Consider optimization by caching the list of the aspect names
 		List<Advisor> candidateAdvisors = findCandidateAdvisors();
 		for (Advisor advisor : candidateAdvisors) {
@@ -123,9 +122,9 @@ public class AspectJAwareAdvisorAutoProxyCreator extends AbstractAdvisorAutoProx
 
 		private final Advisor advisor;
 
-		private final Comparator<Advisor> comparator;
+		private final Comparator<Object> comparator;
 
-		public PartiallyComparableAdvisorHolder(Advisor advisor, Comparator<Advisor> comparator) {
+		public PartiallyComparableAdvisorHolder(Advisor advisor, Comparator<Object> comparator) {
 			this.advisor = advisor;
 			this.comparator = comparator;
 		}

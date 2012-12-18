@@ -106,11 +106,11 @@ public class SimpleRemoteSlsbInvokerInterceptor extends AbstractRemoteSlsbInvoke
 			if (targetEx instanceof RemoteException) {
 				RemoteException rex = (RemoteException) targetEx;
 				throw RmiClientInterceptorUtils.convertRmiAccessException(
-				    invocation.getMethod(), rex, isConnectFailure(rex), getJndiName());
+					invocation.getMethod(), rex, isConnectFailure(rex), getJndiName());
 			}
 			else if (targetEx instanceof CreateException) {
 				throw RmiClientInterceptorUtils.convertRmiAccessException(
-				    invocation.getMethod(), targetEx, "Could not create remote EJB [" + getJndiName() + "]");
+					invocation.getMethod(), targetEx, "Could not create remote EJB [" + getJndiName() + "]");
 			}
 			throw targetEx;
 		}

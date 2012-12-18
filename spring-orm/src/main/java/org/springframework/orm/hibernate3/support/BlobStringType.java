@@ -70,7 +70,7 @@ public class BlobStringType extends AbstractLobType {
 		return new int[] {Types.BLOB};
 	}
 
-	public Class returnedClass() {
+	public Class<?> returnedClass() {
 		return String.class;
 	}
 

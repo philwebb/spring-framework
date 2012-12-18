@@ -34,6 +34,7 @@ import org.springframework.util.Assert;
  * @deprecated as of Spring 3.0, in favor of Java 5 enums.
  */
 @Deprecated
+@SuppressWarnings({"rawtypes","unchecked"})
 public class StaticLabeledEnumResolver extends AbstractCachingLabeledEnumResolver {
 
 	/**

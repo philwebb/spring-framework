@@ -23,7 +23,7 @@ import test.beans.TestBean;
 /**
  * @author Juergen Hoeller
  */
-public class CountingFactory implements FactoryBean {
+public class CountingFactory implements FactoryBean<String> {
 
 	private static int factoryBeanInstanceCount = 0;
 
@@ -51,11 +51,11 @@ public class CountingFactory implements FactoryBean {
 	}
 
 
-	public Object getObject() {
+	public String getObject() {
 		return "myString";
 	}
 
-	public Class getObjectType() {
+	public Class<?> getObjectType() {
 		return String.class;
 	}
 

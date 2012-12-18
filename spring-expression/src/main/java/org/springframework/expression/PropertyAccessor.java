@@ -36,7 +36,7 @@ public interface PropertyAccessor {
 	 * resolver that can be called in an attempt to resolve a property on any type.
 	 * @return an array of classes that this resolver is suitable for (or null if a general resolver)
 	 */
-	Class[] getSpecificTargetClasses();
+	Class<?>[] getSpecificTargetClasses();
 
 	/**
 	 * Called to determine if a resolver instance is able to access a specified property on a specified target object.

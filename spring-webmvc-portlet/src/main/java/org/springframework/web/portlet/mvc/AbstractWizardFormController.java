@@ -271,7 +271,7 @@ public abstract class AbstractWizardFormController extends AbstractFormControlle
 	 * Calls page-specific referenceData method.
 	 */
 	@Override
-	protected final Map referenceData(PortletRequest request, Object command, Errors errors)
+	protected final Map<String, ?> referenceData(PortletRequest request, Object command, Errors errors)
 			throws Exception {
 
 		return referenceData(request, command, errors, getCurrentPage(request));
@@ -291,7 +291,7 @@ public abstract class AbstractWizardFormController extends AbstractFormControlle
 	 * @see #referenceData(PortletRequest, int)
 	 * @see org.springframework.web.portlet.ModelAndView
 	 */
-	protected Map referenceData(PortletRequest request, Object command, Errors errors, int page)
+	protected Map<String, ?> referenceData(PortletRequest request, Object command, Errors errors, int page)
 			throws Exception {
 
 		return referenceData(request, page);
@@ -308,7 +308,7 @@ public abstract class AbstractWizardFormController extends AbstractFormControlle
 	 * @throws Exception in case of invalid state or arguments
 	 * @see org.springframework.web.portlet.ModelAndView
 	 */
-	protected Map referenceData(PortletRequest request, int page) throws Exception {
+	protected Map<String, ?> referenceData(PortletRequest request, int page) throws Exception {
 		return null;
 	}
 
@@ -355,7 +355,7 @@ public abstract class AbstractWizardFormController extends AbstractFormControlle
 			request.setAttribute(pageAttrName, pageInteger);
 
 			// Set page request attribute for evaluation by views.
-			Map controlModel = new HashMap();
+			Map<String, Integer> controlModel = new HashMap<String, Integer>();
 			if (this.pageAttribute != null) {
 				controlModel.put(this.pageAttribute, new Integer(page));
 			}

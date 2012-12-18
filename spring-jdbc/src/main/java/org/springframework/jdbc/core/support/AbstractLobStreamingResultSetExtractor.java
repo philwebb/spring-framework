@@ -53,7 +53,7 @@ import org.springframework.jdbc.core.ResultSetExtractor;
  * @see org.springframework.jdbc.support.lob.LobHandler
  * @see org.springframework.jdbc.LobRetrievalFailureException
  */
-public abstract class AbstractLobStreamingResultSetExtractor implements ResultSetExtractor {
+public abstract class AbstractLobStreamingResultSetExtractor implements ResultSetExtractor<Object> {
 
 	/**
 	 * Delegates to handleNoRowFound, handleMultipleRowsFound and streamData,

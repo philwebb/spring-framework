@@ -25,8 +25,9 @@ import test.beans.TestBean;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.RootBeanDefinition;
-import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -41,12 +42,14 @@ import org.springframework.core.io.ClassPathResource;
  * @author Chris Beams
  * @author Juergen Hoeller
  */
+@SuppressWarnings("deprecation")
 public class AutowiredConfigurationTests {
 
 	@Test
 	public void testAutowiredConfigurationDependencies() {
 		ClassPathXmlApplicationContext factory = new ClassPathXmlApplicationContext(
-		        AutowiredConfigurationTests.class.getSimpleName() + ".xml", AutowiredConfigurationTests.class);
+			AutowiredConfigurationTests.class.getSimpleName() + ".xml",
+			AutowiredConfigurationTests.class);
 
 		assertThat(factory.getBean("colour", Colour.class), equalTo(Colour.RED));
 		assertThat(factory.getBean("testBean", TestBean.class).getName(), equalTo(Colour.RED.toString()));
@@ -79,7 +82,8 @@ public class AutowiredConfigurationTests {
 	 */
 	@Test(expected=BeanCreationException.class)
 	public void testAutowiredConfigurationConstructorsAreNotSupported() {
-		XmlBeanFactory factory = new XmlBeanFactory(new ClassPathResource("annotation-config.xml", AutowiredConstructorConfig.class));
+		DefaultListableBeanFactory factory = new DefaultListableBeanFactory();
+		new XmlBeanDefinitionReader(factory).loadBeanDefinitions(new ClassPathResource("annotation-config.xml", AutowiredConstructorConfig.class));
 		GenericApplicationContext ctx = new GenericApplicationContext(factory);
 		ctx.registerBeanDefinition("config1", new RootBeanDefinition(AutowiredConstructorConfig.class));
 		ctx.registerBeanDefinition("config2", new RootBeanDefinition(ColorConfig.class));
@@ -100,7 +104,7 @@ public class AutowiredConfigurationTests {
 	@Test
 	public void testValueInjection() {
 		ClassPathXmlApplicationContext factory = new ClassPathXmlApplicationContext(
-		        "ValueInjectionTests.xml", AutowiredConfigurationTests.class);
+			"ValueInjectionTests.xml", AutowiredConfigurationTests.class);
 
 		System.clearProperty("myProp");
 
@@ -155,7 +159,7 @@ public class AutowiredConfigurationTests {
 	@Test
 	public void testCustomProperties() {
 		ClassPathXmlApplicationContext factory = new ClassPathXmlApplicationContext(
-		        "AutowiredConfigurationTests-custom.xml", AutowiredConfigurationTests.class);
+			"AutowiredConfigurationTests-custom.xml", AutowiredConfigurationTests.class);
 
 		TestBean testBean = factory.getBean("testBean", TestBean.class);
 		assertThat(testBean.getName(), equalTo("localhost"));

@@ -76,7 +76,7 @@ public class HttpMessageConverterExtractor<T> implements ResponseExtractor<T> {
 		this.logger = logger;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public T extractData(ClientHttpResponse response) throws IOException {
 		if (!hasMessageBody(response)) {
 			return null;

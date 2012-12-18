@@ -17,12 +17,11 @@
 package org.springframework.aop.interceptor;
 
 import static org.junit.Assert.*;
-import static test.util.TestResourceUtils.qualifiedResource;
+import static test.util.TestResourceUtils.beanFactoryFromQualifiedResource;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.junit.Test;
-import org.springframework.beans.factory.xml.XmlBeanFactory;
-import org.springframework.core.io.Resource;
+import org.springframework.beans.factory.BeanFactory;
 
 import test.beans.ITestBean;
 import test.beans.TestBean;
@@ -35,21 +34,17 @@ import test.beans.TestBean;
  */
 public final class ExposeInvocationInterceptorTests {
 
-	private static final Resource CONTEXT =
-		qualifiedResource(ExposeInvocationInterceptorTests.class, "context.xml");
-
 	@Test
 	public void testXmlConfig() {
-		XmlBeanFactory bf = new XmlBeanFactory(CONTEXT);
+		BeanFactory bf = beanFactoryFromQualifiedResource(getClass(), "context.xml");
 		ITestBean tb = (ITestBean) bf.getBean("proxy");
-		String name= "tony";
+		String name = "tony";
 		tb.setName(name);
 		// Fires context checks
 		assertEquals(name, tb.getName());
 	}
 
 }
-
 
 abstract class ExposedInvocationTestBean extends TestBean {
 
@@ -68,11 +63,11 @@ abstract class ExposedInvocationTestBean extends TestBean {
 	protected abstract void assertions(MethodInvocation invocation);
 }
 
-
 class InvocationCheckExposedInvocationTestBean extends ExposedInvocationTestBean {
+
 	protected void assertions(MethodInvocation invocation) {
 		assertTrue(invocation.getThis() == this);
 		assertTrue("Invocation should be on ITestBean: " + invocation.getMethod(),
-				ITestBean.class.isAssignableFrom(invocation.getMethod().getDeclaringClass()));
+			ITestBean.class.isAssignableFrom(invocation.getMethod().getDeclaringClass()));
 	}
 }

@@ -17,13 +17,11 @@
 package org.springframework.aop.target;
 
 import static org.junit.Assert.assertEquals;
-import static test.util.TestResourceUtils.qualifiedResource;
+import static test.util.TestResourceUtils.beanFactoryFromQualifiedResource;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.xml.XmlBeanFactory;
-import org.springframework.core.io.Resource;
 
 import test.beans.SideEffectBean;
 
@@ -34,8 +32,6 @@ import test.beans.SideEffectBean;
  */
 public final class PrototypeTargetSourceTests {
 
-	private static final Resource CONTEXT = qualifiedResource(PrototypeTargetSourceTests.class, "context.xml");
-
 	/** Initial count value set in bean factory XML */
 	private static final int INITIAL_COUNT = 10;
 
@@ -43,7 +39,7 @@ public final class PrototypeTargetSourceTests {
 
 	@Before
 	public void setUp() throws Exception {
-		this.beanFactory = new XmlBeanFactory(CONTEXT);
+		this.beanFactory = beanFactoryFromQualifiedResource(getClass(), "context.xml");
 	}
 
 	/**

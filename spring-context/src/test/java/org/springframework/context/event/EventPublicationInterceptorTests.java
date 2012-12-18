@@ -92,7 +92,7 @@ public class EventPublicationInterceptorTests {
 
 		class TestContext extends StaticApplicationContext {
 			protected void onRefresh() throws BeansException {
-				addListener(listener);
+				addApplicationListener(listener);
 			}
 		}
 
@@ -137,13 +137,13 @@ public class EventPublicationInterceptorTests {
 	}
 
 
-	public static class FactoryBeanTestListener extends TestListener implements FactoryBean {
+	public static class FactoryBeanTestListener extends TestListener implements FactoryBean<String> {
 
-		public Object getObject() throws Exception {
+		public String getObject() throws Exception {
 			return "test";
 		}
 
-		public Class getObjectType() {
+		public Class<?> getObjectType() {
 			return String.class;
 		}
 

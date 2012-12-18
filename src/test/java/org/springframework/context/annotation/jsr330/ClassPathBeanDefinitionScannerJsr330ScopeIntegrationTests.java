@@ -86,6 +86,7 @@ public class ClassPathBeanDefinitionScannerJsr330ScopeIntegrationTests {
 	public void testPrototype() {
 		ApplicationContext context = createContext(ScopedProxyMode.NO);
 		ScopedTestBean bean = (ScopedTestBean) context.getBean("prototype");
+		assertNotNull(bean);
 		assertTrue(context.isPrototype("prototype"));
 		assertFalse(context.isSingleton("prototype"));
 	}

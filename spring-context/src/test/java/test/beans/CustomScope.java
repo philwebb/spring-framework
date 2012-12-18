@@ -24,8 +24,8 @@ import org.springframework.beans.factory.config.Scope;
 /**
  * Simple scope implementation which creates object based on a flag.
  *
- * @author  Costin Leau
- * @author  Chris Beams
+ * @author Costin Leau
+ * @author Chris Beams
  */
 public class CustomScope implements Scope {
 

@@ -34,7 +34,7 @@ public final class MapDataSourceLookupTests {
 	private static final String DATA_SOURCE_NAME = "dataSource";
 
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test(expected=UnsupportedOperationException.class)
 	public void testGetDataSourcesReturnsUnmodifiableMap() throws Exception {
 		MapDataSourceLookup lookup = new MapDataSourceLookup(new HashMap());
@@ -81,7 +81,7 @@ public final class MapDataSourceLookupTests {
 		assertSame(expectedDataSource, dataSource);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test(expected=ClassCastException.class)
 	public void testGetDataSourceWhereSuppliedMapHasNonDataSourceTypeUnderSpecifiedKey() throws Exception {
 		Map dataSources = new HashMap();

@@ -27,7 +27,7 @@ public class TestBean {
 
 	private String name;
 
-	private List list;
+	private List<Object> list;
 
 	private Object objRef;
 
@@ -48,14 +48,14 @@ public class TestBean {
 	/**
 	 * @return Returns the list.
 	 */
-	public List getList() {
+	public List<Object> getList() {
 		return list;
 	}
 
 	/**
 	 * @param list The list to set.
 	 */
-	public void setList(List list) {
+	public void setList(List<Object> list) {
 		this.list = list;
 	}
 

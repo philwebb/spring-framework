@@ -29,7 +29,7 @@ public abstract class GlobalAdvisorAdapterRegistry {
 	/**
 	 * Keep track of a single instance so we can return it to classes that request it.
 	 */
-	private static AdvisorAdapterRegistry instance = new DefaultAdvisorAdapterRegistry();
+	private static final AdvisorAdapterRegistry instance = new DefaultAdvisorAdapterRegistry();
 
 	/**
 	 * Return the singleton {@link DefaultAdvisorAdapterRegistry} instance.

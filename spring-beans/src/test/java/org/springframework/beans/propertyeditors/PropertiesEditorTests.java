@@ -140,7 +140,7 @@ public class PropertiesEditorTests extends TestCase {
 	}
 
 	public void testUsingMapAsValueSource() throws Exception {
-		Map map = new HashMap();
+		Map<String, String> map = new HashMap<String, String>();
 		map.put("one", "1");
 		map.put("two", "2");
 		map.put("three", "3");

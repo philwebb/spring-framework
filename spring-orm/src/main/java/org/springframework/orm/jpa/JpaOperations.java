@@ -55,7 +55,7 @@ public interface JpaOperations {
 
 	<T> T execute(JpaCallback<T> action) throws DataAccessException;
 
-	List executeFind(JpaCallback<?> action) throws DataAccessException;
+	List<Object> executeFind(JpaCallback<?> action) throws DataAccessException;
 
 	<T> T find(Class<T> entityClass, Object id) throws DataAccessException;
 
@@ -73,16 +73,16 @@ public interface JpaOperations {
 
 	void flush() throws DataAccessException;
 
-	List find(String queryString) throws DataAccessException;
+	List<Object> find(String queryString) throws DataAccessException;
 
-	List find(String queryString, Object... values) throws DataAccessException;
+	List<Object> find(String queryString, Object... values) throws DataAccessException;
 
-	List findByNamedParams(String queryString, Map<String, ?> params) throws DataAccessException;
+	List<Object> findByNamedParams(String queryString, Map<String, ?> params) throws DataAccessException;
 
-	List findByNamedQuery(String queryName) throws DataAccessException;
+	List<Object> findByNamedQuery(String queryName) throws DataAccessException;
 
-	List findByNamedQuery(String queryName, Object... values) throws DataAccessException;
+	List<Object> findByNamedQuery(String queryName, Object... values) throws DataAccessException;
 
-	List findByNamedQueryAndNamedParams(String queryName, Map<String, ?> params) throws DataAccessException;
+	List<Object> findByNamedQueryAndNamedParams(String queryName, Map<String, ?> params) throws DataAccessException;
 
 }

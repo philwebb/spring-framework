@@ -71,8 +71,8 @@ public class CollectionToCollectionConverterTests {
 		@SuppressWarnings("unchecked")
 		List<String> result = (List<String>) conversionService.convert(list, sourceType, targetType);
 		assertFalse(list.equals(result));
-		assertEquals((Integer) 9, result.get(0));
-		assertEquals((Integer) 37, result.get(1));
+		assertEquals(9, result.get(0));
+		assertEquals(37, result.get(1));
 	}
 
 	public ArrayList<Integer> scalarListTarget;
@@ -297,7 +297,7 @@ public class CollectionToCollectionConverterTests {
 		converter.convert(list, type, TypeDescriptor.valueOf(Class.forName("java.util.Collections$EmptyList")));
 	}
 
-	public List list = Collections.emptyList();
+	public List<?> list = Collections.emptyList();
 
 	@SuppressWarnings("rawtypes")
 	private void testCollectionConversionToArrayList(Collection<String> aSource) {

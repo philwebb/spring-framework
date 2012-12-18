@@ -22,9 +22,9 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
-import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.ClassPathResource;
 
 /**
@@ -33,12 +33,15 @@ import org.springframework.core.io.ClassPathResource;
  * @author Chris Beams
  */
 public class FactoryBeanLookupTests {
-	private BeanFactory beanFactory;
+	
+	private DefaultListableBeanFactory beanFactory;
 
 	@Before
 	public void setUp() {
-		beanFactory = new XmlBeanFactory(
-				new ClassPathResource("FactoryBeanLookupTests-context.xml", this.getClass()));
+		beanFactory = new DefaultListableBeanFactory();
+		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
+		reader.loadBeanDefinitions(new ClassPathResource(
+			"FactoryBeanLookupTests-context.xml", this.getClass()));
 	}
 
 	@Test

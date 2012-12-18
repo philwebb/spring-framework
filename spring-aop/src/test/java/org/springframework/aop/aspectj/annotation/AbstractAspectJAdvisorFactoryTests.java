@@ -385,13 +385,11 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 						CannotBeUnlocked.class
 				),
 				CannotBeUnlocked.class);
-		assertTrue(proxy instanceof Lockable);
-		Lockable lockable = (Lockable) proxy;
-		assertTrue("Already locked", lockable.locked());
-		lockable.lock();
-		assertTrue("Real target ignores locking", lockable.locked());
+		assertTrue("Already locked", proxy.locked());
+		proxy.lock();
+		assertTrue("Real target ignores locking", proxy.locked());
 		try {
-			lockable.unlock();
+			proxy.unlock();
 			fail();
 		}
 		catch (UnsupportedOperationException ex) {
@@ -402,8 +400,8 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testIntroductionOnTargetExcludedByTypePattern() {
-		LinkedList target = new LinkedList();
-		List proxy = (List) createProxy(target,
+		LinkedList<Object> target = new LinkedList<Object>();
+		List<Object> proxy = (List<Object>) createProxy(target,
 				AopUtils.findAdvisorsThatCanApply(
 						getFixture().getAdvisors(new SingletonMetadataAwareAspectInstanceFactory(new MakeLockable(), "someBean")),
 						List.class
@@ -426,7 +424,7 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 		Lockable lockable = (Lockable)proxy;
 		lockable.locked();
 	}
-    */
+	*/
 	// TODO: Why does this test fail? It hasn't been run before, so it maybe never actually passed...
 	public void XtestIntroductionWithArgumentBinding() {
 		TestBean target = new TestBean();
@@ -439,7 +437,6 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 		Modifiable modifiable = (Modifiable) createProxy(target,
 				advisors,
 				ITestBean.class);
-		assertTrue(modifiable instanceof Modifiable);
 		Lockable lockable = (Lockable) modifiable;
 		assertFalse(lockable.locked());
 
@@ -574,20 +571,31 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 	@Test
 	public void testFailureWithoutExplicitDeclarePrecedence() {
 		TestBean target = new TestBean();
-		MetadataAwareAspectInstanceFactory aspectInstanceFactory = new SingletonMetadataAwareAspectInstanceFactory(
-			new NoDeclarePrecedenceShouldFail(), "someBean");
 		ITestBean itb = (ITestBean) createProxy(target,
-			getFixture().getAdvisors(aspectInstanceFactory), ITestBean.class);
-		itb.getAge();
+				getFixture().getAdvisors(new SingletonMetadataAwareAspectInstanceFactory(new NoDeclarePrecedenceShouldFail(), "someBean")),
+				ITestBean.class);
+		try {
+			itb.getAge();
+			fail();
+		}
+		catch (IllegalStateException ex) {
+			// expected
+		}
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testDeclarePrecedenceNotSupported() {
 		TestBean target = new TestBean();
-		MetadataAwareAspectInstanceFactory aspectInstanceFactory = new SingletonMetadataAwareAspectInstanceFactory(
-			new DeclarePrecedenceShouldSucceed(), "someBean");
-		createProxy(target, getFixture().getAdvisors(aspectInstanceFactory),
-			ITestBean.class);
+		try {
+			createProxy(target,
+				getFixture().getAdvisors(new SingletonMetadataAwareAspectInstanceFactory(
+						new DeclarePrecedenceShouldSucceed(),"someBean")),
+				ITestBean.class);
+			fail();
+		}
+		catch (IllegalArgumentException ex) {
+			// Not supported in 2.0
+		}
 	}
 
 	/** Not supported in 2.0!
@@ -694,6 +702,7 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 	@Aspect
 	public static class NamedPointcutAspectWithFQN {
 
+		@SuppressWarnings("unused")
 		private ITestBean fieldThatShouldBeIgnoredBySpringAtAspectJProcessing = new TestBean();
 
 		@Pointcut("execution(* getAge())")
@@ -926,7 +935,7 @@ abstract class AbstractMakeModifiable {
 		}
 
 		// Find the current raw value, by invoking the corresponding setter
-		Method correspondingGetter =  getGetterFromSetter(((MethodSignature) jp.getSignature()).getMethod());
+		Method correspondingGetter = getGetterFromSetter(((MethodSignature) jp.getSignature()).getMethod());
 		boolean modified = true;
 		if (correspondingGetter != null) {
 			try {
@@ -1086,6 +1095,7 @@ class PerThisAspect {
 	/**
 	 * Just to check that this doesn't cause problems with introduction processing
 	 */
+	@SuppressWarnings("unused")
 	private ITestBean fieldThatShouldBeIgnoredBySpringAtAspectJProcessing = new TestBean();
 
 	@Around("execution(int *.getAge())")

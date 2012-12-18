@@ -67,7 +67,6 @@ public class SQLStateExceptionTranslatorTests extends TestCase {
 	 * Bug 729170
 	 */
 	public void testMalformedSqlStateCodes() {
-		String sql = "SELECT FOO FROM BAR";
 		SQLException sex = new SQLException("Message", null, 1);
 		testMalformedSqlStateCode(sex);
 

@@ -59,7 +59,7 @@ import org.springframework.util.Assert;
  */
 public class RowMapperResultSetExtractor<T> implements ResultSetExtractor<List<T>> {
 
-	private final RowMapper<T> rowMapper;
+	private final RowMapper<? extends T> rowMapper;
 
 	private final int rowsExpected;
 
@@ -68,7 +68,7 @@ public class RowMapperResultSetExtractor<T> implements ResultSetExtractor<List<T
 	 * Create a new RowMapperResultSetExtractor.
 	 * @param rowMapper the RowMapper which creates an object for each row
 	 */
-	public RowMapperResultSetExtractor(RowMapper<T> rowMapper) {
+	public RowMapperResultSetExtractor(RowMapper<? extends T> rowMapper) {
 		this(rowMapper, 0);
 	}
 
@@ -78,7 +78,7 @@ public class RowMapperResultSetExtractor<T> implements ResultSetExtractor<List<T
 	 * @param rowsExpected the number of expected rows
 	 * (just used for optimized collection handling)
 	 */
-	public RowMapperResultSetExtractor(RowMapper<T> rowMapper, int rowsExpected) {
+	public RowMapperResultSetExtractor(RowMapper<? extends T> rowMapper, int rowsExpected) {
 		Assert.notNull(rowMapper, "RowMapper is required");
 		this.rowMapper = rowMapper;
 		this.rowsExpected = rowsExpected;

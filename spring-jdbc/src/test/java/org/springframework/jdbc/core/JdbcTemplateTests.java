@@ -26,7 +26,6 @@ import java.sql.SQLWarning;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -221,12 +220,12 @@ public class JdbcTemplateTests extends AbstractJdbcTests {
 		String[] results = { "rod", "gary", " portia" };
 
 		class StringHandler implements RowCallbackHandler {
-			private List list = new LinkedList();
+			private List<String> list = new LinkedList<String>();
 			public void processRow(ResultSet rs) throws SQLException {
 				list.add(rs.getString(1));
 			}
 			public String[] getStrings() {
-				return (String[]) list.toArray(new String[list.size()]);
+				return list.toArray(new String[list.size()]);
 			}
 		}
 
@@ -365,7 +364,7 @@ public class JdbcTemplateTests extends AbstractJdbcTests {
 
 		JdbcTemplate template = new JdbcTemplate(mockDataSource);
 		template.setNativeJdbcExtractor(new PlainNativeJdbcExtractor());
-		Object result = template.execute(new ConnectionCallback() {
+		Object result = template.execute(new ConnectionCallback<Object>() {
 			public Object doInConnection(Connection con) {
 				assertSame(mockConnection, con);
 				return "test";
@@ -389,7 +388,7 @@ public class JdbcTemplateTests extends AbstractJdbcTests {
 		replay();
 
 		JdbcTemplate template = new JdbcTemplate(mockDataSource);
-		Object result = template.execute(new ConnectionCallback() {
+		Object result = template.execute(new ConnectionCallback<Object>() {
 			public Object doInConnection(Connection con) throws SQLException {
 				PreparedStatement ps = con.prepareStatement("some SQL");
 				ps.close();

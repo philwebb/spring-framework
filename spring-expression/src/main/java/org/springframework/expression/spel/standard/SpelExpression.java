@@ -30,10 +30,9 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.util.Assert;
 
 /**
- * A {@code SpelExpression} represents a parsed (valid) expression that is ready
- * to be evaluated in a specified context. An expression can be evaluated
- * standalone or in a specified context. During expression evaluation the context
- * may be asked to resolve references to types, beans, properties, and methods.
+ * A SpelExpressions represents a parsed (valid) expression that is ready to be evaluated in a specified context. An
+ * expression can be evaluated standalone or in a specified context. During expression evaluation the context may be
+ * asked to resolve references to types, beans, properties, methods.
  *
  * @author Andy Clement
  * @since 3.0

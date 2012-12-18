@@ -148,7 +148,7 @@ public class TomcatInstrumentableClassLoader extends WebappClassLoader {
 		if (dest == null) {
 			throw new IllegalArgumentException("Destination for field copy cannot be null");
 		}
-		Class targetClass = findCommonAncestor(src.getClass(), dest.getClass());
+		Class<?> targetClass = findCommonAncestor(src.getClass(), dest.getClass());
 
 		// Keep backing up the inheritance hierarchy.
 		do {
@@ -178,8 +178,8 @@ public class TomcatInstrumentableClassLoader extends WebappClassLoader {
 		while (targetClass != null && targetClass != Object.class);
 	}
 
-	private static Class findCommonAncestor(Class one, Class two) throws IllegalArgumentException {
-		Class ancestor = one;
+	private static Class<?> findCommonAncestor(Class<?> one, Class<?> two) throws IllegalArgumentException {
+		Class<?> ancestor = one;
 		while (ancestor != Object.class || ancestor != null) {
 			if (ancestor.isAssignableFrom(two)) {
 				return ancestor;

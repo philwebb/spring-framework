@@ -74,6 +74,9 @@ public class ScheduledTasksBeanDefinitionParser extends AbstractSingleBeanDefini
 				continue;
 			}
 
+			RuntimeBeanReference runnableBeanRef = new RuntimeBeanReference(
+					createRunnableBean(ref, method, taskElement, parserContext));
+
 			String cronAttribute = taskElement.getAttribute("cron");
 			String fixedDelayAttribute = taskElement.getAttribute("fixed-delay");
 			String fixedRateAttribute = taskElement.getAttribute("fixed-rate");

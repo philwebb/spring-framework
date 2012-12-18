@@ -32,6 +32,7 @@ import java.util.Map;
  * @deprecated as of Spring 3.0, since standard {@link java.util.concurrent.ConcurrentMap}
  * is available on Java 5+ anyway
  */
+@SuppressWarnings("rawtypes")
 @Deprecated
 public interface ConcurrentMap extends Map {
 

@@ -242,6 +242,7 @@ public class SqlMapClientTemplate extends JdbcAccessor implements SqlMapClientOp
 	 * {@link #execute} method
 	 */
 	@Deprecated
+	@SuppressWarnings("rawtypes")
 	public List executeWithListResult(SqlMapClientCallback<List> action) throws DataAccessException {
 		return execute(action);
 	}
@@ -256,6 +257,7 @@ public class SqlMapClientTemplate extends JdbcAccessor implements SqlMapClientOp
 	 * {@link #execute} method
 	 */
 	@Deprecated
+	@SuppressWarnings("rawtypes")
 	public Map executeWithMapResult(SqlMapClientCallback<Map> action) throws DataAccessException {
 		return execute(action);
 	}
@@ -286,32 +288,34 @@ public class SqlMapClientTemplate extends JdbcAccessor implements SqlMapClientOp
 		});
 	}
 
-	public List queryForList(String statementName) throws DataAccessException {
+	public List<Object> queryForList(String statementName) throws DataAccessException {
 		return queryForList(statementName, null);
 	}
 
-	public List queryForList(final String statementName, final Object parameterObject)
+	public List<Object> queryForList(final String statementName, final Object parameterObject)
 			throws DataAccessException {
 
-		return execute(new SqlMapClientCallback<List>() {
-			public List doInSqlMapClient(SqlMapExecutor executor) throws SQLException {
+		return execute(new SqlMapClientCallback<List<Object>>() {
+			@SuppressWarnings("unchecked")
+			public List<Object> doInSqlMapClient(SqlMapExecutor executor) throws SQLException {
 				return executor.queryForList(statementName, parameterObject);
 			}
 		});
 	}
 
-	public List queryForList(String statementName, int skipResults, int maxResults)
+	public List<Object> queryForList(String statementName, int skipResults, int maxResults)
 			throws DataAccessException {
 
 		return queryForList(statementName, null, skipResults, maxResults);
 	}
 
-	public List queryForList(
+	public List<Object> queryForList(
 			final String statementName, final Object parameterObject, final int skipResults, final int maxResults)
 			throws DataAccessException {
 
-		return execute(new SqlMapClientCallback<List>() {
-			public List doInSqlMapClient(SqlMapExecutor executor) throws SQLException {
+		return execute(new SqlMapClientCallback<List<Object>>() {
+			@SuppressWarnings("unchecked")
+			public List<Object> doInSqlMapClient(SqlMapExecutor executor) throws SQLException {
 				return executor.queryForList(statementName, parameterObject, skipResults, maxResults);
 			}
 		});

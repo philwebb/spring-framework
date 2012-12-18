@@ -17,12 +17,11 @@
 package org.springframework.aop.target;
 
 import static org.junit.Assert.*;
-import static test.util.TestResourceUtils.qualifiedResource;
+import static test.util.TestResourceUtils.beanFactoryFromQualifiedResource;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.xml.XmlBeanFactory;
-import org.springframework.core.io.Resource;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 
 import test.beans.ITestBean;
 import test.beans.SideEffectBean;
@@ -34,16 +33,14 @@ import test.beans.SideEffectBean;
  */
 public class ThreadLocalTargetSourceTests {
 
-	private static final Resource CONTEXT = qualifiedResource(ThreadLocalTargetSourceTests.class, "context.xml");
-
 	/** Initial count value set in bean factory XML */
 	private static final int INITIAL_COUNT = 10;
 
-	private XmlBeanFactory beanFactory;
+	private DefaultListableBeanFactory beanFactory;
 
 	@Before
 	public void setUp() throws Exception {
-		this.beanFactory = new XmlBeanFactory(CONTEXT);
+		this.beanFactory = beanFactoryFromQualifiedResource(getClass(), "context.xml");
 	}
 
 	/**

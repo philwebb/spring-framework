@@ -58,7 +58,7 @@ class RmiInvocationWrapper implements RmiInvocationHandler {
 	 * @see RmiBasedExporter#getServiceInterface()
 	 */
 	public String getTargetInterfaceName() {
-		Class ifc = this.rmiExporter.getServiceInterface();
+		Class<?> ifc = this.rmiExporter.getServiceInterface();
 		return (ifc != null ? ifc.getName() : null);
 	}
 
@@ -67,7 +67,7 @@ class RmiInvocationWrapper implements RmiInvocationHandler {
 	 * @see RmiBasedExporter#invoke(org.springframework.remoting.support.RemoteInvocation, Object)
 	 */
 	public Object invoke(RemoteInvocation invocation)
-	    throws RemoteException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+		throws RemoteException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 
 		return this.rmiExporter.invoke(invocation, this.wrappedObject);
 	}

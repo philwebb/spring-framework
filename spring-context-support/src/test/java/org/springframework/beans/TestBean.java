@@ -40,7 +40,7 @@ import org.springframework.util.ObjectUtils;
  * @author Juergen Hoeller
  * @since 15 April 2001
  */
-public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOther, Comparable {
+public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOther, Comparable<Object> {
 
 	private String beanName;
 

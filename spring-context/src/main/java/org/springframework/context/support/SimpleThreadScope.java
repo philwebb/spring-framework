@@ -55,7 +55,7 @@ public class SimpleThreadScope implements Scope {
 				}
 			};
 
-	public Object get(String name, ObjectFactory objectFactory) {
+	public Object get(String name, ObjectFactory<?> objectFactory) {
 		Map<String, Object> scope = threadScope.get();
 		Object object = scope.get(name);
 		if (object == null) {

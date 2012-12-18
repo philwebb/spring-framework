@@ -69,7 +69,7 @@ public class WebSphereDataSourceAdapter extends IsolationLevelDataSourceAdapter 
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	private Class wsDataSourceClass;
+	private Class<?> wsDataSourceClass;
 
 	private Method newJdbcConnSpecMethod;
 
@@ -91,8 +91,8 @@ public class WebSphereDataSourceAdapter extends IsolationLevelDataSourceAdapter 
 	public WebSphereDataSourceAdapter() {
 		try {
 			this.wsDataSourceClass = getClass().getClassLoader().loadClass("com.ibm.websphere.rsadapter.WSDataSource");
-			Class jdbcConnSpecClass = getClass().getClassLoader().loadClass("com.ibm.websphere.rsadapter.JDBCConnectionSpec");
-			Class wsrraFactoryClass = getClass().getClassLoader().loadClass("com.ibm.websphere.rsadapter.WSRRAFactory");
+			Class<?> jdbcConnSpecClass = getClass().getClassLoader().loadClass("com.ibm.websphere.rsadapter.JDBCConnectionSpec");
+			Class<?> wsrraFactoryClass = getClass().getClassLoader().loadClass("com.ibm.websphere.rsadapter.WSRRAFactory");
 			this.newJdbcConnSpecMethod = wsrraFactoryClass.getMethod("createJDBCConnectionSpec", (Class[]) null);
 			this.wsDataSourceGetConnectionMethod =
 					this.wsDataSourceClass.getMethod("getConnection", new Class[] {jdbcConnSpecClass});

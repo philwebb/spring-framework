@@ -85,7 +85,7 @@ import org.springframework.web.util.NestedServletException;
  */
 public class VelocityView extends AbstractTemplateView {
 
-	private Map<String, Class> toolAttributes;
+	private Map<String, Class<?>> toolAttributes;
 
 	private String dateToolAttribute;
 
@@ -127,7 +127,7 @@ public class VelocityView extends AbstractTemplateView {
 	 * @see #setDateToolAttribute
 	 * @see #setNumberToolAttribute
 	 */
-	public void setToolAttributes(Map<String, Class> toolAttributes) {
+	public void setToolAttributes(Map<String, Class<?>> toolAttributes) {
 		this.toolAttributes = toolAttributes;
 	}
 
@@ -392,9 +392,9 @@ public class VelocityView extends AbstractTemplateView {
 	protected void exposeToolAttributes(Context velocityContext, HttpServletRequest request) throws Exception {
 		// Expose generic attributes.
 		if (this.toolAttributes != null) {
-			for (Map.Entry<String, Class> entry : this.toolAttributes.entrySet()) {
+			for (Map.Entry<String, Class<?>> entry : this.toolAttributes.entrySet()) {
 				String attributeName = entry.getKey();
-				Class toolClass = entry.getValue();
+				Class<?> toolClass = entry.getValue();
 				try {
 					Object tool = toolClass.newInstance();
 					initTool(tool, velocityContext);

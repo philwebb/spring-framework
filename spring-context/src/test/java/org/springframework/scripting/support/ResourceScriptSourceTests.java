@@ -17,7 +17,6 @@
 package org.springframework.scripting.support;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import junit.framework.TestCase;

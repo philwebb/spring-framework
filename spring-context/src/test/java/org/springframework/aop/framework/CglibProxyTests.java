@@ -55,7 +55,7 @@ import test.mixin.LockMixinAdvisor;
 @SuppressWarnings("serial")
 public final class CglibProxyTests extends AbstractAopProxyTests implements Serializable {
 
-	private static final String DEPENDENCY_CHECK_CONTEXT =  CglibProxyTests.class.getSimpleName() + "-with-dependency-checking.xml";
+	private static final String DEPENDENCY_CHECK_CONTEXT = CglibProxyTests.class.getSimpleName() + "-with-dependency-checking.xml";
 
 
 	protected Object createProxy(ProxyCreatorSupport as) {
@@ -134,6 +134,7 @@ public final class CglibProxyTests extends AbstractAopProxyTests implements Seri
 	@Test
 	public void testCglibProxyingGivesMeaningfulExceptionIfAskedToProxyNonvisibleClass() {
 		class YouCantSeeThis {
+			@SuppressWarnings("unused")
 			void hidden() {
 			}
 		}

@@ -90,9 +90,10 @@ public final class TigerAspectJExpressionPointcutTests {
 	@Test
 	public void testMatchVarargs() throws SecurityException, NoSuchMethodException {
 		class MyTemplate {
-		    public int queryForInt(String sql, Object... params) {
-		        return 0;
-		    }
+			@SuppressWarnings("unused")
+			public int queryForInt(String sql, Object... params) {
+				return 0;
+			}
 		}
 
 		String expression = "execution(int *.*(String, Object...))";
@@ -269,6 +270,7 @@ public final class TigerAspectJExpressionPointcutTests {
 
 
 	static class BeanA {
+		@SuppressWarnings("unused")
 		private String name;
 
 		private int age;
@@ -286,6 +288,7 @@ public final class TigerAspectJExpressionPointcutTests {
 
 	@Tx
 	static class BeanB {
+		@SuppressWarnings("unused")
 		private String name;
 
 		public void setName(String name) {

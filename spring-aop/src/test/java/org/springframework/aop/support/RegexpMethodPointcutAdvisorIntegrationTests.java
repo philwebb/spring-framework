@@ -17,13 +17,11 @@
 package org.springframework.aop.support;
 
 import static org.junit.Assert.assertEquals;
-import static test.util.TestResourceUtils.qualifiedResource;
+import static test.util.TestResourceUtils.beanFactoryFromQualifiedResource;
 
 import org.junit.Test;
 import org.springframework.aop.framework.Advised;
 import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.xml.XmlBeanFactory;
-import org.springframework.core.io.Resource;
 
 import test.aop.NopInterceptor;
 import test.aop.SerializableNopInterceptor;
@@ -38,12 +36,9 @@ import test.util.SerializationTestUtils;
  */
 public final class RegexpMethodPointcutAdvisorIntegrationTests {
 
-	private static final Resource CONTEXT =
-		qualifiedResource(RegexpMethodPointcutAdvisorIntegrationTests.class, "context.xml");
-
 	@Test
 	public void testSinglePattern() throws Throwable {
-		BeanFactory bf = new XmlBeanFactory(CONTEXT);
+		BeanFactory bf = beanFactoryFromQualifiedResource(getClass(), "context.xml");
 		ITestBean advised = (ITestBean) bf.getBean("settersAdvised");
 		// Interceptor behind regexp advisor
 		NopInterceptor nop = (NopInterceptor) bf.getBean("nopInterceptor");
@@ -61,7 +56,7 @@ public final class RegexpMethodPointcutAdvisorIntegrationTests {
 
 	@Test
 	public void testMultiplePatterns() throws Throwable {
-		BeanFactory bf = new XmlBeanFactory(CONTEXT);
+		BeanFactory bf = beanFactoryFromQualifiedResource(getClass(), "context.xml");
 		// This is a CGLIB proxy, so we can proxy it to the target class
 		TestBean advised = (TestBean) bf.getBean("settersAndAbsquatulateAdvised");
 		// Interceptor behind regexp advisor
@@ -84,7 +79,7 @@ public final class RegexpMethodPointcutAdvisorIntegrationTests {
 
 	@Test
 	public void testSerialization() throws Throwable {
-		BeanFactory bf = new XmlBeanFactory(CONTEXT);
+		BeanFactory bf = beanFactoryFromQualifiedResource(getClass(), "context.xml");
 		// This is a CGLIB proxy, so we can proxy it to the target class
 		Person p = (Person) bf.getBean("serializableSettersAdvised");
 		// Interceptor behind regexp advisor

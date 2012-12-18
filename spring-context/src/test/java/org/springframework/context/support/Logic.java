@@ -23,8 +23,12 @@ import org.springframework.beans.factory.BeanNameAware;
 
 public class Logic implements BeanNameAware {
 
+	@SuppressWarnings("unused")
 	private Log log = LogFactory.getLog(Logic.class);
+
 	private String name;
+
+	@SuppressWarnings("unused")
 	private Assembler a;
 
 	public void setAssembler(Assembler a) {

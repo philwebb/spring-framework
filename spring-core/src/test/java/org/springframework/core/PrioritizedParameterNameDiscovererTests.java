@@ -34,7 +34,7 @@ public class PrioritizedParameterNameDiscovererTests extends TestCase {
 		public String[] getParameterNames(Method m) {
 			return FOO_BAR;
 		}
-		public String[] getParameterNames(Constructor ctor) {
+		public String[] getParameterNames(Constructor<?> ctor) {
 			return FOO_BAR;
 		}
 	};
@@ -43,13 +43,15 @@ public class PrioritizedParameterNameDiscovererTests extends TestCase {
 		public String[] getParameterNames(Method m) {
 			return SOMETHING_ELSE;
 		}
-		public String[] getParameterNames(Constructor ctor) {
+		public String[] getParameterNames(Constructor<?> ctor) {
 			return SOMETHING_ELSE;
 		}
 	};
 
 	private final Method anyMethod;
-	private final Class anyClass = Object.class;
+
+	@SuppressWarnings("unused")
+	private final Class<?> anyClass = Object.class;
 
 	public PrioritizedParameterNameDiscovererTests() throws SecurityException, NoSuchMethodException {
 		anyMethod = TestBean.class.getMethod("getAge", (Class[]) null);
@@ -58,27 +60,27 @@ public class PrioritizedParameterNameDiscovererTests extends TestCase {
 	public void testNoParametersDiscoverers() {
 		ParameterNameDiscoverer pnd = new PrioritizedParameterNameDiscoverer();
 		assertNull(pnd.getParameterNames(anyMethod));
-		assertNull(pnd.getParameterNames((Constructor) null));
+		assertNull(pnd.getParameterNames((Constructor<?>) null));
 	}
 
 	public void testOrderedParameterDiscoverers1() {
 		PrioritizedParameterNameDiscoverer pnd = new PrioritizedParameterNameDiscoverer();
 		pnd.addDiscoverer(returnsFooBar);
 		assertTrue(Arrays.equals(FOO_BAR, pnd.getParameterNames(anyMethod)));
-		assertTrue(Arrays.equals(FOO_BAR, pnd.getParameterNames((Constructor) null)));
+		assertTrue(Arrays.equals(FOO_BAR, pnd.getParameterNames((Constructor<?>) null)));
 		pnd.addDiscoverer(returnsSomethingElse);
 		assertTrue(Arrays.equals(FOO_BAR, pnd.getParameterNames(anyMethod)));
-		assertTrue(Arrays.equals(FOO_BAR, pnd.getParameterNames((Constructor) null)));
+		assertTrue(Arrays.equals(FOO_BAR, pnd.getParameterNames((Constructor<?>) null)));
 	}
 
 	public void testOrderedParameterDiscoverers2() {
 		PrioritizedParameterNameDiscoverer pnd = new PrioritizedParameterNameDiscoverer();
 		pnd.addDiscoverer(returnsSomethingElse);
 		assertTrue(Arrays.equals(SOMETHING_ELSE, pnd.getParameterNames(anyMethod)));
-		assertTrue(Arrays.equals(SOMETHING_ELSE, pnd.getParameterNames((Constructor) null)));
+		assertTrue(Arrays.equals(SOMETHING_ELSE, pnd.getParameterNames((Constructor<?>) null)));
 		pnd.addDiscoverer(returnsFooBar);
 		assertTrue(Arrays.equals(SOMETHING_ELSE, pnd.getParameterNames(anyMethod)));
-		assertTrue(Arrays.equals(SOMETHING_ELSE, pnd.getParameterNames((Constructor) null)));
+		assertTrue(Arrays.equals(SOMETHING_ELSE, pnd.getParameterNames((Constructor<?>) null)));
 	}
 
 }

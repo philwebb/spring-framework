@@ -53,15 +53,12 @@ public final class AspectJExpressionPointcutTests {
 
 	private Method setSomeNumber;
 
-	private Method isPostProcessed;
-
-
 	@Before
 	public void setUp() throws NoSuchMethodException {
 		getAge = TestBean.class.getMethod("getAge", (Class<?>[])null);
 		setAge = TestBean.class.getMethod("setAge", new Class[]{int.class});
 		setSomeNumber = TestBean.class.getMethod("setSomeNumber", new Class[]{Number.class});
-		isPostProcessed = TestBean.class.getMethod("isPostProcessed", (Class[]) null);
+		TestBean.class.getMethod("isPostProcessed", (Class[]) null);
 	}
 
 	@Test
@@ -121,8 +118,8 @@ public final class AspectJExpressionPointcutTests {
 
 	/**
 	 * This and target are equivalent. Really instanceof pointcuts.
-	 * @throws Exception
 	 * @param which this or target
+	 * @throws Exception
 	 * @throws NoSuchMethodException
 	 * @throws SecurityException
 	 */
@@ -306,10 +303,6 @@ public final class AspectJExpressionPointcutTests {
 
 	private void assertMatchesTestBeanClass(ClassFilter classFilter) {
 		assertTrue("Expression should match TestBean class", classFilter.matches(TestBean.class));
-	}
-
-	private void assertDoesNotMatchStringClass(ClassFilter classFilter) {
-		assertFalse("Expression should not match String class", classFilter.matches(String.class));
 	}
 
 	@Test

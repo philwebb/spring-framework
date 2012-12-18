@@ -144,7 +144,7 @@ public @interface ContextConfiguration {
 	/**
 	 * The application context <em>initializer classes</em> to use for initializing
 	 * a {@link ConfigurableApplicationContext}.
-	 *
+	 * 
 	 * <p>The concrete {@code ConfigurableApplicationContext} type supported by each
 	 * declared initializer must be compatible with the type of {@code ApplicationContext}
 	 * created by the {@link SmartContextLoader} in use.
@@ -249,7 +249,7 @@ public @interface ContextConfiguration {
 	 * public class BaseTest {
 	 *     // ...
 	 * }
-	 *
+	 * 
 	 * &#064;ContextConfiguration(initializers = ExtendedInitializer.class)
 	 * public class ExtendedTest extends BaseTest {
 	 *     // ...

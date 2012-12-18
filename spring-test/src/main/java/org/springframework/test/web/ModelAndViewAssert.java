@@ -192,9 +192,35 @@ public abstract class ModelAndViewAssert {
 	 * @param expectedName the name of the model value
 	 */
 	public static void assertViewName(ModelAndView mav, String expectedName) {
-		assertTrue("ModelAndView is null", mav != null);
-		assertTrue("View name is not equal to '" + expectedName + "' but was '" + mav.getViewName() + "'",
-			ObjectUtils.nullSafeEquals(expectedName, mav.getViewName()));
+		assertCondition(mav != null, "ModelAndView is null");
+		assertCondition(ObjectUtils.nullSafeEquals(expectedName, mav.getViewName()), "View name is not equal to '"
+				+ expectedName + "' but was '" + mav.getViewName() + "'");
+	}
+
+	/**
+	 * Fails by throwing an <code>AssertionError</code> with the supplied
+	 * <code>message</code>.
+	 *
+	 * @param message the exception message to use
+	 * @see #assertCondition(boolean,String)
+	 */
+	private static void fail(String message) {
+		throw new AssertionError(message);
+	}
+
+	/**
+	 * Assert the provided boolean <code>condition</code>, throwing
+	 * <code>AssertionError</code> with the supplied <code>message</code> if the
+	 * test result is <code>false</code>.
+	 *
+	 * @param condition a boolean expression
+	 * @param message the exception message to use if the assertion fails
+	 * @see #fail(String)
+	 */
+	private static void assertCondition(boolean condition, String message) {
+		if (!condition) {
+			fail(message);
+		}
 	}
 
 	private static void appendNonMatchingSetsErrorMessage(Set<String> assertionSet, Set<String> incorrectSet,

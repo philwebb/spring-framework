@@ -116,11 +116,11 @@ public class CustomEditorConfigurer implements BeanFactoryPostProcessor, BeanCla
 
 
 	public void setOrder(int order) {
-	  this.order = order;
+		this.order = order;
 	}
 
 	public int getOrder() {
-	  return this.order;
+		return this.order;
 	}
 
 	/**
@@ -178,7 +178,7 @@ public class CustomEditorConfigurer implements BeanFactoryPostProcessor, BeanCla
 			for (Map.Entry<String, ?> entry : this.customEditors.entrySet()) {
 				String key = entry.getKey();
 				Object value = entry.getValue();
-				Class requiredType = null;
+				Class<?> requiredType = null;
 
 				try {
 					requiredType = ClassUtils.forName(key, this.beanClassLoader);
@@ -192,10 +192,10 @@ public class CustomEditorConfigurer implements BeanFactoryPostProcessor, BeanCla
 								new SharedPropertyEditorRegistrar(requiredType, (PropertyEditor) value));
 					}
 					else if (value instanceof Class) {
-						beanFactory.registerCustomEditor(requiredType, (Class) value);
+						beanFactory.registerCustomEditor(requiredType, (Class<? extends PropertyEditor>) value);
 					}
 					else if (value instanceof String) {
-						Class editorClass = ClassUtils.forName((String) value, this.beanClassLoader);
+						Class<?> editorClass = ClassUtils.forName((String) value, this.beanClassLoader);
 						Assert.isAssignable(PropertyEditor.class, editorClass);
 						beanFactory.registerCustomEditor(requiredType, (Class<? extends PropertyEditor>) editorClass);
 					}
@@ -225,16 +225,17 @@ public class CustomEditorConfigurer implements BeanFactoryPostProcessor, BeanCla
 	 */
 	private static class SharedPropertyEditorRegistrar implements PropertyEditorRegistrar {
 
-		private final Class requiredType;
+		private final Class<?> requiredType;
 
 		private final PropertyEditor sharedEditor;
 
-		public SharedPropertyEditorRegistrar(Class requiredType, PropertyEditor sharedEditor) {
+		public SharedPropertyEditorRegistrar(Class<?> requiredType, PropertyEditor sharedEditor) {
 			this.requiredType = requiredType;
 			this.sharedEditor = sharedEditor;
 		}
 
-		public void registerCustomEditors(PropertyEditorRegistry registry) {
+		@SuppressWarnings("deprecation")
+        public void registerCustomEditors(PropertyEditorRegistry registry) {
 			if (!(registry instanceof PropertyEditorRegistrySupport)) {
 				throw new IllegalArgumentException("Cannot registered shared editor " +
 						"on non-PropertyEditorRegistrySupport registry: " + registry);

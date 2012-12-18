@@ -236,7 +236,7 @@ public class SqlMapClientFactoryBean implements FactoryBean<SqlMapClient>, Initi
 	 * @see com.ibatis.sqlmap.engine.transaction.jta.JtaTransactionConfig
 	 * @see com.ibatis.sqlmap.client.SqlMapTransactionManager
 	 	 */
-	public void setTransactionConfigClass(Class transactionConfigClass) {
+	public void setTransactionConfigClass(Class<?> transactionConfigClass) {
 		if (transactionConfigClass == null || !TransactionConfig.class.isAssignableFrom(transactionConfigClass)) {
 			throw new IllegalArgumentException("Invalid transactionConfigClass: does not implement " +
 					"com.ibatis.sqlmap.engine.transaction.TransactionConfig");

@@ -45,7 +45,7 @@ public class StaticApplicationContextMulticasterTests extends AbstractApplicatio
 	/** Run for each test */
 	protected ConfigurableApplicationContext createContext() throws Exception {
 		StaticApplicationContext parent = new StaticApplicationContext();
-		Map m = new HashMap();
+		Map<String, String> m = new HashMap<String, String>();
 		m.put("name", "Roderick");
 		parent.registerPrototype("rod", TestBean.class, new MutablePropertyValues(m));
 		m.put("name", "Albert");
@@ -53,7 +53,7 @@ public class StaticApplicationContextMulticasterTests extends AbstractApplicatio
 		parent.registerSingleton(StaticApplicationContext.APPLICATION_EVENT_MULTICASTER_BEAN_NAME,
 				TestApplicationEventMulticaster.class, null);
 		parent.refresh();
-		parent.addListener(parentListener) ;
+		parent.addApplicationListener(parentListener) ;
 
 		parent.getStaticMessageSource().addMessage("code1", Locale.getDefault(), "message1");
 
@@ -65,7 +65,7 @@ public class StaticApplicationContextMulticasterTests extends AbstractApplicatio
 		Resource resource = new ClassPathResource("testBeans.properties", getClass());
 		reader.loadBeanDefinitions(new EncodedResource(resource, "ISO-8859-1"));
 		sac.refresh();
-		sac.addListener(listener);
+		sac.addApplicationListener(listener);
 
 		sac.getStaticMessageSource().addMessage("code2", Locale.getDefault(), "message2");
 

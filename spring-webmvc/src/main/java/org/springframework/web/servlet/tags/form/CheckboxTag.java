@@ -69,7 +69,7 @@ public class CheckboxTag extends AbstractSingleCheckedElementTag {
 		tagWriter.writeAttribute("type", getInputType());
 
 		Object boundValue = getBoundValue();
-		Class valueType = getBindStatus().getValueType();
+		Class<?> valueType = getBindStatus().getValueType();
 
 		if (Boolean.class.equals(valueType) || boolean.class.equals(valueType)) {
 			// the concrete type may not be a Boolean - can be String
@@ -85,7 +85,7 @@ public class CheckboxTag extends AbstractSingleCheckedElementTag {
 			if (value == null) {
 				throw new IllegalArgumentException("Attribute 'value' is required when binding to non-boolean values");
 			}
-			Object resolvedValue = (value instanceof String ? evaluate("value", (String) value) : value);
+			Object resolvedValue = (value instanceof String ? evaluate("value", value) : value);
 			renderFromValue(resolvedValue, tagWriter);
 		}
 	}

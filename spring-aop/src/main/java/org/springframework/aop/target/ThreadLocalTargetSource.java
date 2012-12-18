@@ -61,7 +61,7 @@ public class ThreadLocalTargetSource extends AbstractPrototypeBasedTargetSource
 	/**
 	 * Set of managed targets, enabling us to keep track of the targets we've created.
 	 */
-	private final Set<Object> targetSet = new HashSet<Object>();
+	private final Set<Object> targetSet = Collections.synchronizedSet(new HashSet<Object>());
 
 	private int invocationCount;
 
@@ -79,7 +79,7 @@ public class ThreadLocalTargetSource extends AbstractPrototypeBasedTargetSource
 		if (target == null) {
 			if (logger.isDebugEnabled()) {
 				logger.debug("No target for prototype '" + getTargetBeanName() + "' bound to thread: " +
-				    "creating one and binding it to thread '" + Thread.currentThread().getName() + "'");
+					"creating one and binding it to thread '" + Thread.currentThread().getName() + "'");
 			}
 			// Associate target with ThreadLocal.
 			target = newPrototypeInstance();

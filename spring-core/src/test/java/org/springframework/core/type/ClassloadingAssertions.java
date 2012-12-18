@@ -32,7 +32,7 @@ public class ClassloadingAssertions {
 		ClassLoader cl = ClassUtils.getDefaultClassLoader();
 		Method findLoadeClassMethod = ReflectionUtils.findMethod(cl.getClass(), "findLoadedClass", new Class[]{String.class});
 		findLoadeClassMethod.setAccessible(true);
-		Class loadedClass = (Class)ReflectionUtils.invokeMethod(findLoadeClassMethod, cl, new Object[]{className});
+		Class<?> loadedClass = (Class<?>)ReflectionUtils.invokeMethod(findLoadeClassMethod, cl, new Object[]{className});
 		return loadedClass != null;
 	}
 

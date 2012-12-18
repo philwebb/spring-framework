@@ -129,7 +129,7 @@ public class PropertyBatchUpdateException extends BeansException {
 	}
 
 	@Override
-	public boolean contains(Class exType) {
+	public boolean contains(Class<?> exType) {
 		if (exType == null) {
 			return false;
 		}

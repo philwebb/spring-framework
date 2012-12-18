@@ -78,6 +78,7 @@ public class SerializationTestUtils extends TestCase {
 		}
 	}
 
+	@SuppressWarnings("cast")
 	public void testWithSerializableObject() throws Exception {
 		int x = 5;
 		int y = 10;

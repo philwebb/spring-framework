@@ -96,7 +96,7 @@ public class RdbmsOperationTests extends TestCase {
 		operation.setSql("select * from mytable");
 		operation.setTypes(new int[] { Types.INTEGER });
 		try {
-			operation.validateNamedParameters((Map) null);
+			operation.validateNamedParameters((Map<String, ?>) null);
 			fail("Shouldn't validate without enough parameters");
 		}
 		catch (InvalidDataAccessApiUsageException idaauex) {
@@ -134,7 +134,7 @@ public class RdbmsOperationTests extends TestCase {
 		TestRdbmsOperation operation = new TestRdbmsOperation();
 		operation.setSql("select * from mytable");
 		try {
-			Map params = new HashMap();
+			Map<String, String> params = new HashMap<String, String>();
 			params.put("col1", "value");
 			operation.validateNamedParameters(params);
 			fail("Shouldn't validate with unspecified parameters");
@@ -193,7 +193,7 @@ public class RdbmsOperationTests extends TestCase {
 		DataSource ds = new DriverManagerDataSource();
 		operation.setDataSource(ds);
 		operation.setSql("select * from mytable where one = ? and two = ?");
-		List l = new ArrayList();
+		List<SqlParameter> l = new ArrayList<SqlParameter>();
 		l.add(new SqlParameter("one", Types.NUMERIC));
 		l.add(new SqlParameter("two", Types.VARCHAR));
 		operation.setParameters(new SqlParameter[] {

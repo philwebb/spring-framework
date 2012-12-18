@@ -23,7 +23,6 @@ import org.junit.Test;
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.ITestBean;
-import org.springframework.beans.TestBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -37,8 +36,6 @@ public final class DeclareParentsTests {
 
 	private ITestBean testBeanProxy;
 
-	private TestBean testBeanTarget;
-
 	private ApplicationContext ctx;
 
 	@Before
@@ -49,7 +46,7 @@ public final class DeclareParentsTests {
 		assertTrue(AopUtils.isAopProxy(testBeanProxy));
 
 		// we need the real target too, not just the proxy...
-		testBeanTarget = (TestBean) ((Advised) testBeanProxy).getTargetSource().getTarget();
+		((Advised) testBeanProxy).getTargetSource().getTarget();
 	}
 
 	@Test

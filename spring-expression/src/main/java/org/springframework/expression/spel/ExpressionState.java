@@ -141,10 +141,6 @@ public class ExpressionState {
 		return this.relatedContext.getTypeConverter().convertValue(value, TypeDescriptor.forObject(value), targetTypeDescriptor);
 	}
 
-	public TypeConverter getTypeConverter() {
-		return this.relatedContext.getTypeConverter();
-	}
-
 	public Object convertValue(TypedValue value, TypeDescriptor targetTypeDescriptor) throws EvaluationException {
 		Object val = value.getValue();
 		return this.relatedContext.getTypeConverter().convertValue(val, TypeDescriptor.forObject(val), targetTypeDescriptor);

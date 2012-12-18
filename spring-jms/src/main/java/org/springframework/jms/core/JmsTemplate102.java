@@ -150,7 +150,7 @@ public class JmsTemplate102 extends JmsTemplate {
 	 * a QueueConnection or a TopicConnection, depending on the domain.
 	 */
 	protected Connection getConnection(JmsResourceHolder holder) {
-		return holder.getConnection(isPubSubDomain() ? (Class) TopicConnection.class : QueueConnection.class);
+		return holder.getConnection(isPubSubDomain() ? (Class<? extends Connection>) TopicConnection.class : QueueConnection.class);
 	}
 
 	/**
@@ -158,7 +158,7 @@ public class JmsTemplate102 extends JmsTemplate {
 	 * a QueueSession or a TopicSession, depending on the domain.
 	 */
 	protected Session getSession(JmsResourceHolder holder) {
-		return holder.getSession(isPubSubDomain() ? (Class) TopicSession.class : QueueSession.class);
+		return holder.getSession(isPubSubDomain() ? (Class<? extends Session>) TopicSession.class : QueueSession.class);
 	}
 
 	/**

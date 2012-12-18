@@ -91,13 +91,13 @@ public class PathMatchingResourcePatternResolverTests {
 		Resource[] resources = resolver.getResources("classpath*:org/springframework/core/io/sup*/*.class");
 		// Have to exclude Clover-generated class files here,
 		// as we might be running as part of a Clover test run.
-		List noCloverResources = new ArrayList();
+		List<Resource> noCloverResources = new ArrayList<Resource>();
 		for (int i = 0; i < resources.length; i++) {
 			if (resources[i].getFilename().indexOf("$__CLOVER_") == -1) {
 				noCloverResources.add(resources[i]);
 			}
 		}
-		resources = (Resource[]) noCloverResources.toArray(new Resource[noCloverResources.size()]);
+		resources = noCloverResources.toArray(new Resource[noCloverResources.size()]);
 		assertProtocolAndFilenames(resources, "file", CLASSES_IN_CORE_IO_SUPPORT, TEST_CLASSES_IN_CORE_IO_SUPPORT);
 	}
 
@@ -119,9 +119,9 @@ public class PathMatchingResourcePatternResolverTests {
 
 	private void assertProtocolAndFilenames(
 			Resource[] resources, String urlProtocol, String[] fileNames1, String[] fileNames2) throws IOException {
-		List fileNames = new ArrayList(Arrays.asList(fileNames1));
+		List<String> fileNames = new ArrayList<String>(Arrays.asList(fileNames1));
 		fileNames.addAll(Arrays.asList(fileNames2));
-		assertProtocolAndFilenames(resources, urlProtocol, (String[]) fileNames.toArray(new String[fileNames.size()]));
+		assertProtocolAndFilenames(resources, urlProtocol, fileNames.toArray(new String[fileNames.size()]));
 	}
 
 	private void assertProtocolAndFilenames(Resource[] resources, String urlProtocol, String[] fileNames)

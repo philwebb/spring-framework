@@ -145,7 +145,7 @@ class Tokenizer {
 					if (isTwoCharToken(TokenKind.SYMBOLIC_OR)) {
 						pushPairToken(TokenKind.SYMBOLIC_OR);
 					}
-					break;
+					break;					
 				case '?':
 					if (isTwoCharToken(TokenKind.SELECT)) {
 						pushPairToken(TokenKind.SELECT);
@@ -220,6 +220,7 @@ class Tokenizer {
 		return tokens;
 	}
 
+
 	// STRING_LITERAL: '\''! (APOS|~'\'')* '\''!;
 	private void lexQuotedStringLiteral() {
 		int start = pos;
@@ -251,12 +252,7 @@ class Tokenizer {
 			pos++;
 			char ch = toProcess[pos];
 			if (ch=='"') {
-				// may not be the end if the char after is also a "
-				if (toProcess[pos+1]=='"') {
-					pos++; // skip over that too, and continue
-				} else {
-					terminated = true;
-				}
+				terminated = true;
 			}
 			if (ch==0) {
 				throw new InternalParseException(new SpelParseException(expressionString,start,SpelMessage.NON_TERMINATING_DOUBLE_QUOTED_STRING));
@@ -265,6 +261,7 @@ class Tokenizer {
 		pos++;
 		tokens.add(new Token(TokenKind.LITERAL_STRING, subarray(start,pos), start, pos));
 	}
+
 
 //	REAL_LITERAL :
 //	  ('.' (DECIMAL_DIGIT)+ (EXPONENT_PART)? (REAL_TYPE_SUFFIX)?) |
@@ -312,7 +309,6 @@ class Tokenizer {
 		ch = toProcess[pos];
 		if (ch=='.') {
 			isReal = true;
-			int dotpos = pos;
 			// carry on consuming digits
 			do {
 				pos++;
@@ -534,5 +530,6 @@ class Tokenizer {
 			flags[ch]|= IS_ALPHA;
 		}
 	}
+
 
 }

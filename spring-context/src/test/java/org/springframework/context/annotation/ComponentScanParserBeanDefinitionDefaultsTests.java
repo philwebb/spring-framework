@@ -214,7 +214,7 @@ public class ComponentScanParserBeanDefinitionDefaultsTests {
 	}
 
 
-	private static class DefaultsTestBean {
+	public static class DefaultsTestBean {
 
 		static int INIT_COUNT;
 
@@ -276,7 +276,7 @@ public class ComponentScanParserBeanDefinitionDefaultsTests {
 	}
 
 
-	private static class PropertyDependencyTestBean {
+	public static class PropertyDependencyTestBean {
 
 		private String name;
 
@@ -290,7 +290,7 @@ public class ComponentScanParserBeanDefinitionDefaultsTests {
 	}
 
 
-	private static class ConstructorDependencyTestBean {
+	public static class ConstructorDependencyTestBean {
 
 		private String name;
 

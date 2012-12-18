@@ -28,7 +28,8 @@ import static test.util.TestResourceUtils.*;
 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.Resource;
 import org.springframework.util.SerializationTestUtils;
 
@@ -43,11 +44,13 @@ public class ObjectFactoryCreatingFactoryBeanTests {
 	private static final Resource CONTEXT =
 		qualifiedResource(ObjectFactoryCreatingFactoryBeanTests.class, "context.xml");
 
-	private XmlBeanFactory beanFactory;
+	private DefaultListableBeanFactory beanFactory;
 
 	@Before
 	public void setUp() {
-		this.beanFactory = new XmlBeanFactory(CONTEXT);
+		this.beanFactory = new DefaultListableBeanFactory();
+		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
+		reader.loadBeanDefinitions(CONTEXT);
 		this.beanFactory.setSerializationId("test");
 	}
 
@@ -66,6 +69,7 @@ public class ObjectFactoryCreatingFactoryBeanTests {
 		assertTrue(date1 != date2);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Test
 	public void testFactorySerialization() throws Exception {
 		FactoryTestBean testBean = beanFactory.getBean("factoryTestBean", FactoryTestBean.class);
@@ -88,6 +92,7 @@ public class ObjectFactoryCreatingFactoryBeanTests {
 		assertTrue(date1 != date2);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Test
 	public void testProviderSerialization() throws Exception {
 		ProviderTestBean testBean = beanFactory.getBean("providerTestBean", ProviderTestBean.class);
@@ -113,7 +118,7 @@ public class ObjectFactoryCreatingFactoryBeanTests {
 		factory.setTargetBeanName(targetBeanName);
 		factory.setBeanFactory(beanFactory);
 		factory.afterPropertiesSet();
-		ObjectFactory<?> objectFactory = (ObjectFactory<?>) factory.getObject();
+		ObjectFactory<?> objectFactory = factory.getObject();
 		Object actualSingleton = objectFactory.getObject();
 		assertSame(expectedSingleton, actualSingleton);
 

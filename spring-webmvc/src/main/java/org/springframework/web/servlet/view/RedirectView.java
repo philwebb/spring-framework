@@ -373,12 +373,12 @@ public class RedirectView extends AbstractUrlBasedView implements SmartView {
 		boolean first = (targetUrl.toString().indexOf('?') < 0);
 		for (Map.Entry<String, Object> entry : queryProperties(model).entrySet()) {
 			Object rawValue = entry.getValue();
-			Iterator<Object> valueIter;
+			Iterator<?> valueIter;
 			if (rawValue != null && rawValue.getClass().isArray()) {
 				valueIter = Arrays.asList(ObjectUtils.toObjectArray(rawValue)).iterator();
 			}
 			else if (rawValue instanceof Collection) {
-				valueIter = ((Collection) rawValue).iterator();
+				valueIter = ((Collection<?>) rawValue).iterator();
 			}
 			else {
 				valueIter = Collections.singleton(rawValue).iterator();
@@ -457,7 +457,7 @@ public class RedirectView extends AbstractUrlBasedView implements SmartView {
 		}
 
 		if (value instanceof Collection) {
-			Collection coll = (Collection) value;
+			Collection<?> coll = (Collection<?>) value;
 			if (coll.isEmpty()) {
 				return false;
 			}

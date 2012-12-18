@@ -84,7 +84,7 @@ public final class SerializationTestUtils {
 	public void testWithSerializableObject() throws Exception {
 		int x = 5;
 		int y = 10;
-		Point p = new Point(x, y);
+		Object p = new Point(x, y);
 		assertTrue(p instanceof Serializable);
 
 		testSerialization(p);

@@ -131,13 +131,15 @@ public class JmxTestBean implements IJmxTestBean {
 	protected void someProtectedMethod() {
 	}
 
-	private void somePrivateMethod() {
+	@SuppressWarnings("unused")
+    private void somePrivateMethod() {
 	}
 
 	protected void getSomething() {
 	}
 
-	private void getSomethingElse() {
+	@SuppressWarnings("unused")
+    private void getSomethingElse() {
 	}
 
 }

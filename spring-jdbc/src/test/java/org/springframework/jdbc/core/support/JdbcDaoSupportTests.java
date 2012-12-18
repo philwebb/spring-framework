@@ -35,7 +35,7 @@ public class JdbcDaoSupportTests extends TestCase {
 	public void testJdbcDaoSupportWithDataSource() throws Exception {
 		MockControl dsControl = MockControl.createControl(DataSource.class);
 		DataSource ds = (DataSource) dsControl.getMock();
-		final List test = new ArrayList();
+		final List<Object> test = new ArrayList<Object>();
 		JdbcDaoSupport dao = new JdbcDaoSupport() {
 			protected void initDao() {
 				test.add("test");
@@ -50,7 +50,7 @@ public class JdbcDaoSupportTests extends TestCase {
 
 	public void testJdbcDaoSupportWithJdbcTemplate() throws Exception {
 		JdbcTemplate template = new JdbcTemplate();
-		final List test = new ArrayList();
+		final List<Object> test = new ArrayList<Object>();
 		JdbcDaoSupport dao = new JdbcDaoSupport() {
 			protected void initDao() {
 				test.add("test");

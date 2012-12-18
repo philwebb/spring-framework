@@ -40,7 +40,8 @@ import org.springframework.context.support.GenericApplicationContext;
  */
 public class SpringAtInjectTck {
 
-	public static Test suite() {
+	@SuppressWarnings("unchecked")
+    public static Test suite() {
 		GenericApplicationContext ac = new GenericApplicationContext();
 		AnnotatedBeanDefinitionReader bdr = new AnnotatedBeanDefinitionReader(ac);
 		bdr.setScopeMetadataResolver(new Jsr330ScopeMetadataResolver());

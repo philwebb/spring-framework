@@ -25,7 +25,7 @@ import org.junit.rules.ExpectedException;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.ClassPathResource;
@@ -123,7 +123,8 @@ public class JdbcNamespaceIntegrationTests {
 
 	@Test
 	public void testMultipleDataSourcesHaveDifferentDatabaseNames() throws Exception {
-		DefaultListableBeanFactory factory = new XmlBeanFactory(new ClassPathResource(
+		DefaultListableBeanFactory factory = new DefaultListableBeanFactory();
+		new XmlBeanDefinitionReader(factory).loadBeanDefinitions(new ClassPathResource(
 				"org/springframework/jdbc/config/jdbc-config-multiple-datasources.xml"));
 		assertBeanPropertyValueOf("databaseName", "firstDataSource", factory);
 		assertBeanPropertyValueOf("databaseName", "secondDataSource", factory);

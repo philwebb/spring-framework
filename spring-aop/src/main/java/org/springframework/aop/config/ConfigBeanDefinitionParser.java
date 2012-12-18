@@ -404,7 +404,7 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 	/**
 	 * Gets the advice implementation class corresponding to the supplied {@link Element}.
 	 */
-	private Class getAdviceClass(Element adviceElement, ParserContext parserContext) {
+	private Class<?> getAdviceClass(Element adviceElement, ParserContext parserContext) {
 		String elementName = parserContext.getDelegate().getLocalName(adviceElement);
 		if (BEFORE.equals(elementName)) {
 			return AspectJMethodBeforeAdvice.class;
@@ -462,7 +462,7 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 	/**
 	 * Parses the <code>pointcut</code> or <code>pointcut-ref</code> attributes of the supplied
 	 * {@link Element} and add a <code>pointcut</code> property as appropriate. Generates a
-	 * {@link org.springframework.beans.factory.config.BeanDefinition} for the pointcut if  necessary
+	 * {@link org.springframework.beans.factory.config.BeanDefinition} for the pointcut if necessary
 	 * and returns its bean name, otherwise returns the bean name of the referred pointcut.
 	 */
 	private Object parsePointcutProperty(Element element, ParserContext parserContext) {

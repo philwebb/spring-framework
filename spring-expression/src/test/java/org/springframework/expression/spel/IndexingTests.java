@@ -63,11 +63,11 @@ public class IndexingTests {
 	public static class MapAccessor implements PropertyAccessor {
 
 		public boolean canRead(EvaluationContext context, Object target, String name) throws AccessException {
-			return (((Map) target).containsKey(name));
+			return (((Map<?, ?>) target).containsKey(name));
 		}
 
 		public TypedValue read(EvaluationContext context, Object target, String name) throws AccessException {
-			return new TypedValue(((Map) target).get(name));
+			return new TypedValue(((Map<?, ?>) target).get(name));
 		}
 
 		public boolean canWrite(EvaluationContext context, Object target, String name) throws AccessException {
@@ -77,7 +77,7 @@ public class IndexingTests {
 		@SuppressWarnings("unchecked")
 		public void write(EvaluationContext context, Object target, String name, Object newValue)
 				throws AccessException {
-			((Map) target).put(name, newValue);
+			((Map<String, Object>) target).put(name, newValue);
 		}
 
 		public Class<?>[] getSpecificTargetClasses() {
@@ -268,6 +268,7 @@ public class IndexingTests {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	public List property2;
 
 	@Test
@@ -282,6 +283,7 @@ public class IndexingTests {
 		assertEquals("bar", expression.getValue(this));
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Test
 	public void emptyList() {
 		listOfScalarNotGeneric = new ArrayList();
@@ -291,6 +293,7 @@ public class IndexingTests {
 		assertEquals("", expression.getValue(this, String.class));
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Test
 	public void resolveCollectionElementType() {
 		listNotGeneric = new ArrayList();
@@ -309,6 +312,7 @@ public class IndexingTests {
 		assertEquals("@org.springframework.expression.spel.IndexingTests$FieldAnnotation java.util.List<?>", expression.getValueTypeDescriptor(this).toString());
 	}
 
+	@SuppressWarnings("rawtypes")
 	@FieldAnnotation
 	public List listNotGeneric;
 
@@ -318,6 +322,7 @@ public class IndexingTests {
 
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Test
 	public void resolveMapKeyValueTypes() {
 		mapNotGeneric = new HashMap();
@@ -328,9 +333,11 @@ public class IndexingTests {
 		assertEquals("@org.springframework.expression.spel.IndexingTests$FieldAnnotation java.util.HashMap<?, ?>", expression.getValueTypeDescriptor(this).toString());
 	}
 
+	@SuppressWarnings("rawtypes")
 	@FieldAnnotation
 	public Map mapNotGeneric;
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void testListOfScalar() {
 		listOfScalarNotGeneric = new ArrayList();
@@ -340,9 +347,11 @@ public class IndexingTests {
 		assertEquals(new Integer(5), expression.getValue(this, Integer.class));
 	}
 
+	@SuppressWarnings("rawtypes")
 	public List listOfScalarNotGeneric;
 
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Test
 	public void testListsOfMap() {
 		listOfMapsNotGeneric = new ArrayList();
@@ -354,6 +363,7 @@ public class IndexingTests {
 		assertEquals("apple", expression.getValue(this, String.class));
 	}
 
+	@SuppressWarnings("rawtypes")
 	public List listOfMapsNotGeneric;
 
 }

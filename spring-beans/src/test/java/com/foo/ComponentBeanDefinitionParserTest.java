@@ -20,7 +20,8 @@ import java.util.List;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.ClassPathResource;
 
 import static org.junit.Assert.*;
@@ -31,12 +32,13 @@ import static org.hamcrest.CoreMatchers.*;
  */
 public class ComponentBeanDefinitionParserTest {
 
-	private static XmlBeanFactory bf;
+	private static DefaultListableBeanFactory bf;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		bf = new XmlBeanFactory(new ClassPathResource(
-				"com/foo/component-config.xml"));
+		bf = new DefaultListableBeanFactory();
+		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(bf);
+		reader.loadBeanDefinitions(new ClassPathResource("com/foo/component-config.xml"));
 	}
 
 	@AfterClass

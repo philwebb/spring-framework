@@ -88,9 +88,6 @@ class ResourcesBeanDefinitionParser implements BeanDefinitionParser {
 	        return null;
 		}
 
-		ManagedList<String> locations = new ManagedList<String>();
-		locations.addAll(StringUtils.commaDelimitedListToSet(locationAttr));
-
 		RootBeanDefinition resourceHandlerDef = new RootBeanDefinition(ResourceHttpRequestHandler.class);
 		resourceHandlerDef.setSource(source);
 		resourceHandlerDef.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);

@@ -97,6 +97,8 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
 	private static final String CHARSET_PREFIX = "charset=";
 
+	private static final String CHARSET_PREFIX = "charset=";
+
 	private boolean active = true;
 
 	// ---------------------------------------------------------------------
@@ -747,7 +749,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 			return -1;
 		}
 	}
-
+	
 	public void setMethod(String method) {
 		this.method = method;
 	}

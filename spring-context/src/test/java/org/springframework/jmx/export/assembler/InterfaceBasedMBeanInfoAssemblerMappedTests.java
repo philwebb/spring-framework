@@ -22,8 +22,6 @@ import javax.management.MBeanAttributeInfo;
 import javax.management.modelmbean.ModelMBeanAttributeInfo;
 import javax.management.modelmbean.ModelMBeanInfo;
 
-import org.junit.Ignore;
-
 /**
  * @author Rob Harrop
  */
@@ -41,7 +39,7 @@ public class InterfaceBasedMBeanInfoAssemblerMappedTests extends AbstractJmxAsse
 
 	public void testWithUnknownClass() throws Exception {
 		try {
-			InterfaceBasedMBeanInfoAssembler assembler = getWithMapping("com.foo.bar.Unknown");
+			getWithMapping("com.foo.bar.Unknown");
 			fail("Should have thrown IllegalArgumentException");
 		}
 		catch (IllegalArgumentException ex) {
@@ -51,7 +49,7 @@ public class InterfaceBasedMBeanInfoAssemblerMappedTests extends AbstractJmxAsse
 
 	public void testWithNonInterface() throws Exception {
 		try {
-			InterfaceBasedMBeanInfoAssembler assembler = getWithMapping("JmxTestBean");
+			getWithMapping("JmxTestBean");
 			fail("Should have thrown IllegalArgumentException");
 		}
 		catch (IllegalArgumentException ex) {

@@ -134,7 +134,7 @@ public final class ConcurrentBeanWrapperTests {
 	}
 
 
-	private static class TestBean {
+	public static class TestBean {
 
 		private Properties properties;
 

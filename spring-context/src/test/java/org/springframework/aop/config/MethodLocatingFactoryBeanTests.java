@@ -105,9 +105,10 @@ public final class MethodLocatingFactoryBeanTests {
 		factory.setBeanFactory(beanFactory);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testSunnyDayPath() throws Exception {
-		expect((Class) beanFactory.getType(BEAN_NAME)).andReturn(String.class);
+		expect((Class<String>) beanFactory.getType(BEAN_NAME)).andReturn(String.class);
 		replay(beanFactory);
 
 		factory.setTargetBeanName(BEAN_NAME);
@@ -120,9 +121,10 @@ public final class MethodLocatingFactoryBeanTests {
 		assertEquals("Bingo", method.invoke("Bingo"));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test(expected=IllegalArgumentException.class)
 	public void testWhereMethodCannotBeResolved() {
-		expect((Class) beanFactory.getType(BEAN_NAME)).andReturn(String.class);
+		expect((Class<String>) beanFactory.getType(BEAN_NAME)).andReturn(String.class);
 		replay(beanFactory);
 
 		factory.setTargetBeanName(BEAN_NAME);

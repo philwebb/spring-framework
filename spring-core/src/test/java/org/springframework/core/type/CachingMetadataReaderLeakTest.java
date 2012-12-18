@@ -27,10 +27,9 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
-import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
 
 /**
- * Unit test checking the behaviour of {@link CachingMetadataReaderFactory under load.
+ * Unit test checking the behaviour of {@link CachingMetadataReaderFactory} under load.
  * If the cache is not controller, this test should fail with an out of memory exception around entry
  * 5k.
  *
@@ -55,7 +54,6 @@ public class CachingMetadataReaderLeakTest {
 		// look at a LOT of items
 		for (int i = 0; i < ITEMS_LOAD; i++) {
 			Resource resource = new UrlResource(url) {
-				private int counter = 0;
 
 				@Override
 				public boolean equals(Object obj) {

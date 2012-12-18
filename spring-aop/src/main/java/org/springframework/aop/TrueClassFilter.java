@@ -33,7 +33,7 @@ class TrueClassFilter implements ClassFilter, Serializable {
 	private TrueClassFilter() {
 	}
 
-	public boolean matches(Class clazz) {
+	public boolean matches(Class<?> clazz) {
 		return true;
 	}
 

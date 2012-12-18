@@ -104,15 +104,10 @@ public class PropertyOrFieldReference extends SpelNodeImpl {
 
 	@Override
 	public TypedValue getValueInternal(ExpressionState state) throws EvaluationException {
-		return getValueInternal(state.getActiveContextObject(), state.getEvaluationContext(), state.getConfiguration().isAutoGrowNullReferences());
-	}
+		TypedValue result = readProperty(state, this.name);
 
-	private TypedValue getValueInternal(TypedValue contextObject, EvaluationContext eContext, boolean isAutoGrowNullReferences) throws EvaluationException {
-
-		TypedValue result = readProperty(contextObject, eContext, this.name);
-
-		// Dynamically create the objects if the user has requested that optional behavior
-		if (result.getValue() == null && isAutoGrowNullReferences &&
+		// Dynamically create the objects if the user has requested that optional behaviour
+		if (result.getValue() == null && state.getConfiguration().isAutoGrowNullReferences() &&
 				nextChildIs(Indexer.class, PropertyOrFieldReference.class)) {
 			TypeDescriptor resultDescriptor = result.getTypeDescriptor();
 			// Creating lists and maps
@@ -120,10 +115,11 @@ public class PropertyOrFieldReference extends SpelNodeImpl {
 				// Create a new collection or map ready for the indexer
 				if (resultDescriptor.getType().equals(List.class)) {
 					try {
-						if (isWritableProperty(this.name,contextObject,eContext)) {
-							List<?> newList = ArrayList.class.newInstance();
-							writeProperty(contextObject, eContext, this.name, newList);
-							result = readProperty(contextObject, eContext, this.name);
+						if (isWritable(state)) {
+							@SuppressWarnings("rawtypes")
+							List newList = ArrayList.class.newInstance();
+							writeProperty(state, this.name, newList);
+							result = readProperty(state, this.name);
 						}
 					}
 					catch (InstantiationException ex) {
@@ -137,10 +133,11 @@ public class PropertyOrFieldReference extends SpelNodeImpl {
 				}
 				else {
 					try {
-						if (isWritableProperty(this.name,contextObject,eContext)) {
-							Map<?,?> newMap = HashMap.class.newInstance();
-							writeProperty(contextObject, eContext, name, newMap);
-							result = readProperty(contextObject, eContext, this.name);
+						if (isWritable(state)) {
+							@SuppressWarnings("rawtypes")
+							Map newMap = HashMap.class.newInstance();
+							writeProperty(state, name, newMap);
+							result = readProperty(state, this.name);
 						}
 					}
 					catch (InstantiationException ex) {
@@ -156,7 +153,7 @@ public class PropertyOrFieldReference extends SpelNodeImpl {
 			else {
 				// 'simple' object
 				try {
-					if (isWritableProperty(this.name,contextObject,eContext)) {
+					if (isWritable(state)) {
 						Object newObject  = result.getTypeDescriptor().getType().newInstance();
 						writeProperty(contextObject, eContext, name, newObject);
 						result = readProperty(contextObject, eContext, this.name);
@@ -248,7 +245,9 @@ public class PropertyOrFieldReference extends SpelNodeImpl {
 		}
 	}
 
-	private void writeProperty(TypedValue contextObject, EvaluationContext eContext, String name, Object newValue) throws SpelEvaluationException {
+	private void writeProperty(ExpressionState state, String name, Object newValue) throws SpelEvaluationException {
+		TypedValue contextObject = state.getActiveContextObject();
+		EvaluationContext eContext = state.getEvaluationContext();
 
 		if (contextObject.getValue() == null && nullSafe) {
 			return;
@@ -257,7 +256,7 @@ public class PropertyOrFieldReference extends SpelNodeImpl {
 		PropertyAccessor accessorToUse = this.cachedWriteAccessor;
 		if (accessorToUse != null) {
 			try {
-				accessorToUse.write(eContext, contextObject.getValue(), name, newValue);
+				accessorToUse.write(state.getEvaluationContext(), contextObject.getValue(), name, newValue);
 				return;
 			}
 			catch (AccessException ae) {

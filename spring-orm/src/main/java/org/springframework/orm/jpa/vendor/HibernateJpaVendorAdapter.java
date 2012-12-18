@@ -76,7 +76,7 @@ public class HibernateJpaVendorAdapter extends AbstractJpaVendorAdapter {
 			jpaProperties.put(Environment.DIALECT, getDatabasePlatform());
 		}
 		else if (getDatabase() != null) {
-			Class databaseDialectClass = determineDatabaseDialectClass(getDatabase());
+			Class<?> databaseDialectClass = determineDatabaseDialectClass(getDatabase());
 			if (databaseDialectClass != null) {
 				jpaProperties.put(Environment.DIALECT, databaseDialectClass.getName());
 			}
@@ -97,7 +97,7 @@ public class HibernateJpaVendorAdapter extends AbstractJpaVendorAdapter {
 	 * @param database the target database
 	 * @return the Hibernate database dialect class, or <code>null<code> if none found
 	 */
-	protected Class determineDatabaseDialectClass(Database database) {
+	protected Class<?> determineDatabaseDialectClass(Database database) {
 		switch (database) {
 			case DB2: return DB2Dialect.class;
 			case DERBY: return DerbyDialect.class;

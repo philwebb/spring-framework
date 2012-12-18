@@ -79,7 +79,7 @@ public class TilesConfigurer extends WebApplicationObjectSupport implements Init
 	private boolean validateDefinitions = true;
 
 	/** Factory class for Tiles */
-	private Class factoryClass = I18nFactorySet.class;
+	private Class<?> factoryClass = I18nFactorySet.class;
 
 
 	/**
@@ -100,7 +100,7 @@ public class TilesConfigurer extends WebApplicationObjectSupport implements Init
 	 * Set the factory class for Tiles. Default is I18nFactorySet.
 	 * @see org.apache.struts.tiles.xmlDefinition.I18nFactorySet
 	 */
-	public void setFactoryClass(Class factoryClass) {
+	public void setFactoryClass(Class<?> factoryClass) {
 		this.factoryClass = factoryClass;
 	}
 

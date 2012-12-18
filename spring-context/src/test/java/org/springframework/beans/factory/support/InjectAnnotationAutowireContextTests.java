@@ -541,7 +541,7 @@ public class InjectAnnotationAutowireContextTests {
 	}
 
 
-	private static class QualifiedFieldTestBean {
+	public static class QualifiedFieldTestBean {
 
 		@Inject
 		@TestQualifier
@@ -553,7 +553,7 @@ public class InjectAnnotationAutowireContextTests {
 	}
 
 
-	private static class QualifiedMethodParameterTestBean {
+	public static class QualifiedMethodParameterTestBean {
 
 		private Person person;
 
@@ -568,7 +568,7 @@ public class InjectAnnotationAutowireContextTests {
 	}
 
 
-	private static class QualifiedConstructorArgumentTestBean {
+	public static class QualifiedConstructorArgumentTestBean {
 
 		private Person person;
 
@@ -608,7 +608,7 @@ public class InjectAnnotationAutowireContextTests {
 	}
 
 
-	private static class QualifiedFieldWithBaseQualifierDefaultValueTestBean {
+	public static class QualifiedFieldWithBaseQualifierDefaultValueTestBean {
 
 		@Inject
 		private Person person;
@@ -635,7 +635,7 @@ public class InjectAnnotationAutowireContextTests {
 	}
 
 
-	private static class Person {
+	public static class Person {
 
 		private String name;
 
@@ -650,7 +650,7 @@ public class InjectAnnotationAutowireContextTests {
 
 
 	@TestQualifier
-	private static class QualifiedPerson extends Person {
+	public static class QualifiedPerson extends Person {
 
 		public QualifiedPerson() {
 			super(null);

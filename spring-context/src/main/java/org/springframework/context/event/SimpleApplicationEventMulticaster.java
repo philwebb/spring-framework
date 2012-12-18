@@ -81,13 +81,12 @@ public class SimpleApplicationEventMulticaster extends AbstractApplicationEventM
 	}
 
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void multicastEvent(final ApplicationEvent event) {
 		for (final ApplicationListener listener : getApplicationListeners(event)) {
 			Executor executor = getTaskExecutor();
 			if (executor != null) {
 				executor.execute(new Runnable() {
-					@SuppressWarnings("unchecked")
 					public void run() {
 						listener.onApplicationEvent(event);
 					}

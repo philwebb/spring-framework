@@ -83,6 +83,7 @@ public final class DeclarationOrderIndependenceTests {
 	/** public visibility is required */
 	public static class BeanNameAwareMixin implements BeanNameAware {
 
+		@SuppressWarnings("unused")
 		private String beanName;
 
 		/* (non-Javadoc)

@@ -120,7 +120,7 @@ public class GenericCollectionTypeResolverTests extends AbstractGenericsTests {
 	private abstract class OtherCustomMap<T> implements Map<String, Integer> {
 	}
 
-
+	@SuppressWarnings("rawtypes")
 	private interface Foo {
 
 		Map<String, Integer> a();

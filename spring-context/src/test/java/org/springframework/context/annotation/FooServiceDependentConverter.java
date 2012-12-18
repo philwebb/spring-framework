@@ -31,6 +31,10 @@ public class FooServiceDependentConverter implements Converter<String, org.sprin
 		this.fooService = fooService;
 	}
 
+	public FooService getFooService() {
+		return fooService;
+	}
+
 	public org.springframework.beans.TestBean convert(String source) {
 		return new org.springframework.beans.TestBean(source);
 	}

@@ -51,6 +51,7 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
  * {@link SpringJUnit4ClassRunner}, {@link ContextConfiguration
  * &#064;ContextConfiguration}, {@link TestExecutionListeners
  * &#064;TestExecutionListeners}, etc.
+ * </p>
  *
  * @author Sam Brannen
  * @since 2.5

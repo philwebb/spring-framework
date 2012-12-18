@@ -42,6 +42,7 @@ import org.springframework.util.comparator.NullSafeComparator;
  * @deprecated as of Spring 3.0, in favor of Java 5 enums.
  */
 @Deprecated
+@SuppressWarnings({"rawtypes","unchecked"})
 public interface LabeledEnum extends Comparable, Serializable {
 
 	/**

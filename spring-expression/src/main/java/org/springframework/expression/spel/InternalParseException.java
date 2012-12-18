@@ -16,7 +16,6 @@
 
 package org.springframework.expression.spel;
 
-import org.springframework.expression.spel.SpelParseException;
 
 /**
  * Wraps a real parse exception. This exception flows to the top parse method and then

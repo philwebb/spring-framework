@@ -203,7 +203,7 @@ public abstract class PortletUtils {
 	 * @return the value of the session attribute, newly created if not found
 	 * @throws IllegalArgumentException if the session attribute could not be instantiated
 	 */
-	public static Object getOrCreateSessionAttribute(PortletSession session, String name, Class clazz)
+	public static Object getOrCreateSessionAttribute(PortletSession session, String name, Class<?> clazz)
 			throws IllegalArgumentException {
 
 		return getOrCreateSessionAttribute(session, name, clazz, PortletSession.PORTLET_SCOPE);
@@ -221,7 +221,7 @@ public abstract class PortletUtils {
 	 * @return the value of the session attribute, newly created if not found
 	 * @throws IllegalArgumentException if the session attribute could not be instantiated
 	 */
-	public static Object getOrCreateSessionAttribute(PortletSession session, String name, Class clazz, int scope)
+	public static Object getOrCreateSessionAttribute(PortletSession session, String name, Class<?> clazz, int scope)
 			throws IllegalArgumentException {
 
 		Assert.notNull(session, "Session must not be null");

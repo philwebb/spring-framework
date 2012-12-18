@@ -331,7 +331,7 @@ public abstract class AbstractEntityManagerFactoryBean implements
 	 * @return proxy entity manager
 	 */
 	protected EntityManagerFactory createEntityManagerFactoryProxy(EntityManagerFactory emf) {
-		Set<Class> ifcs = new LinkedHashSet<Class>();
+		Set<Class<?>> ifcs = new LinkedHashSet<Class<?>>();
 		if (this.entityManagerFactoryInterface != null) {
 			ifcs.add(this.entityManagerFactoryInterface);
 		}
@@ -509,7 +509,7 @@ public abstract class AbstractEntityManagerFactoryBean implements
 				}
 				else if (method.getName().equals("unwrap")) {
 					// Handle JPA 2.1 unwrap method - could be a proxy match.
-					Class targetClass = (Class) args[0];
+					Class<?> targetClass = (Class<?>) args[0];
 					if (targetClass == null || targetClass.isInstance(proxy)) {
 						return proxy;
 					}

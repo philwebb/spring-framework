@@ -94,10 +94,10 @@ abstract class SelectedValueComparator {
 			selected = collectionCompare(CollectionUtils.arrayToList(boundValue), candidateValue, bindStatus);
 		}
 		else if (boundValue instanceof Collection) {
-			selected = collectionCompare((Collection) boundValue, candidateValue, bindStatus);
+			selected = collectionCompare((Collection<?>) boundValue, candidateValue, bindStatus);
 		}
 		else if (boundValue instanceof Map) {
-			selected = mapCompare((Map) boundValue, candidateValue, bindStatus);
+			selected = mapCompare((Map<?, ?>) boundValue, candidateValue, bindStatus);
 		}
 		if (!selected) {
 			selected = exhaustiveCompare(boundValue, candidateValue, bindStatus.getEditor(), null);
@@ -105,7 +105,7 @@ abstract class SelectedValueComparator {
 		return selected;
 	}
 
-	private static boolean collectionCompare(Collection boundCollection, Object candidateValue, BindStatus bindStatus) {
+	private static boolean collectionCompare(Collection<?> boundCollection, Object candidateValue, BindStatus bindStatus) {
 		try {
 			if (boundCollection.contains(candidateValue)) {
 				return true;
@@ -117,7 +117,7 @@ abstract class SelectedValueComparator {
 		return exhaustiveCollectionCompare(boundCollection, candidateValue, bindStatus);
 	}
 
-	private static boolean mapCompare(Map boundMap, Object candidateValue, BindStatus bindStatus) {
+	private static boolean mapCompare(Map<?, ?> boundMap, Object candidateValue, BindStatus bindStatus) {
 		try {
 			if (boundMap.containsKey(candidateValue)) {
 				return true;
@@ -130,7 +130,7 @@ abstract class SelectedValueComparator {
 	}
 
 	private static boolean exhaustiveCollectionCompare(
-			Collection collection, Object candidateValue, BindStatus bindStatus) {
+			Collection<?> collection, Object candidateValue, BindStatus bindStatus) {
 
 		Map<PropertyEditor, Object> convertedValueCache = new HashMap<PropertyEditor, Object>(1);
 		PropertyEditor editor = null;
@@ -165,7 +165,7 @@ abstract class SelectedValueComparator {
 			}
 		}
 		else if (boundValue.getClass().isEnum()) {
-			Enum boundEnum = (Enum) boundValue;
+			Enum<?> boundEnum = (Enum<?>) boundValue;
 			String enumCodeAsString = ObjectUtils.getDisplayString(boundEnum.name());
 			if (enumCodeAsString.equals(candidateDisplayString)) {
 				return true;

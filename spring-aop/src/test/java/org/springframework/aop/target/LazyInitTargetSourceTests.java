@@ -17,13 +17,12 @@
 package org.springframework.aop.target;
 
 import static org.junit.Assert.*;
-import static test.util.TestResourceUtils.qualifiedResource;
+import static test.util.TestResourceUtils.beanFactoryFromQualifiedResource;
 
 import java.util.Set;
 
 import org.junit.Test;
-import org.springframework.beans.factory.xml.XmlBeanFactory;
-import org.springframework.core.io.Resource;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 
 import test.beans.ITestBean;
 
@@ -35,15 +34,9 @@ import test.beans.ITestBean;
  */
 public final class LazyInitTargetSourceTests {
 
-	private static final Class<?> CLASS = LazyInitTargetSourceTests.class;
-
-	private static final Resource SINGLETON_CONTEXT = qualifiedResource(CLASS, "singleton.xml");
-	private static final Resource CUSTOM_TARGET_CONTEXT = qualifiedResource(CLASS, "customTarget.xml");
-	private static final Resource FACTORY_BEAN_CONTEXT = qualifiedResource(CLASS, "factoryBean.xml");
-
 	@Test
 	public void testLazyInitSingletonTargetSource() {
-		XmlBeanFactory bf = new XmlBeanFactory(SINGLETON_CONTEXT);
+		DefaultListableBeanFactory bf = beanFactoryFromQualifiedResource(getClass(), "singleton.xml");
 		bf.preInstantiateSingletons();
 
 		ITestBean tb = (ITestBean) bf.getBean("proxy");
@@ -54,7 +47,8 @@ public final class LazyInitTargetSourceTests {
 
 	@Test
 	public void testCustomLazyInitSingletonTargetSource() {
-		XmlBeanFactory bf = new XmlBeanFactory(CUSTOM_TARGET_CONTEXT);
+		DefaultListableBeanFactory bf = beanFactoryFromQualifiedResource(getClass(),
+			"customTarget.xml");
 		bf.preInstantiateSingletons();
 
 		ITestBean tb = (ITestBean) bf.getBean("proxy");
@@ -65,7 +59,8 @@ public final class LazyInitTargetSourceTests {
 
 	@Test
 	public void testLazyInitFactoryBeanTargetSource() {
-		XmlBeanFactory bf = new XmlBeanFactory(FACTORY_BEAN_CONTEXT);
+		DefaultListableBeanFactory bf = beanFactoryFromQualifiedResource(getClass(),
+			"factoryBean.xml");
 		bf.preInstantiateSingletons();
 
 		Set<?> set1 = (Set<?>) bf.getBean("proxy1");

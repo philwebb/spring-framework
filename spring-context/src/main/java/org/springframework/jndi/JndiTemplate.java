@@ -127,10 +127,10 @@ public class JndiTemplate {
 	 * @throws NamingException in case of initialization errors
 	 */
 	protected Context createInitialContext() throws NamingException {
-		Hashtable icEnv = null;
+		Hashtable<String, Object> icEnv = null;
 		Properties env = getEnvironment();
 		if (env != null) {
-			icEnv = new Hashtable(env.size());
+			icEnv = new Hashtable<String, Object>(env.size());
 			CollectionUtils.mergePropertiesIntoMap(env, icEnv);
 		}
 		return new InitialContext(icEnv);

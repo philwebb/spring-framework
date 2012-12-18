@@ -48,7 +48,7 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.RootBeanDefinition;
-import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.TestListener;
 import org.springframework.core.io.ClassPathResource;
@@ -93,7 +93,7 @@ public final class ProxyFactoryBeanTests {
 	public void setUp() throws Exception {
 		DefaultListableBeanFactory parent = new DefaultListableBeanFactory();
 		parent.registerBeanDefinition("target2", new RootBeanDefinition(TestListener.class));
-		this.factory = new XmlBeanFactory(new ClassPathResource(CONTEXT, getClass()), parent);
+		this.factory = createBeanFactory(CONTEXT, parent);
 	}
 
 	@Test
@@ -133,7 +133,7 @@ public final class ProxyFactoryBeanTests {
 
 	private void testDoubleTargetSourceIsRejected(String name) {
 		try {
-			BeanFactory bf = new XmlBeanFactory(new ClassPathResource(DBL_TARGETSOURCE_CONTEXT, CLASS));
+			BeanFactory bf = createBeanFactory(DBL_TARGETSOURCE_CONTEXT);
 			bf.getBean(name);
 			fail("Should not allow TargetSource to be specified in interceptorNames as well as targetSource property");
 		}
@@ -147,7 +147,7 @@ public final class ProxyFactoryBeanTests {
 	@Test
 	public void testTargetSourceNotAtEndOfInterceptorNamesIsRejected() {
 		try {
-			BeanFactory bf = new XmlBeanFactory(new ClassPathResource(NOTLAST_TARGETSOURCE_CONTEXT, CLASS));
+			BeanFactory bf = createBeanFactory(NOTLAST_TARGETSOURCE_CONTEXT);
 			bf.getBean("targetSourceNotLast");
 			fail("TargetSource or non-advised object must be last in interceptorNames");
 		}
@@ -160,7 +160,7 @@ public final class ProxyFactoryBeanTests {
 
 	@Test
 	public void testGetObjectTypeWithDirectTarget() {
-		BeanFactory bf = new XmlBeanFactory(new ClassPathResource(TARGETSOURCE_CONTEXT, CLASS));
+		BeanFactory bf = createBeanFactory(TARGETSOURCE_CONTEXT);
 
 		// We have a counting before advice here
 		CountingBeforeAdvice cba = (CountingBeforeAdvice) bf.getBean("countingBeforeAdvice");
@@ -176,7 +176,7 @@ public final class ProxyFactoryBeanTests {
 
 	@Test
 	public void testGetObjectTypeWithTargetViaTargetSource() {
-		BeanFactory bf = new XmlBeanFactory(new ClassPathResource(TARGETSOURCE_CONTEXT, CLASS));
+		BeanFactory bf = createBeanFactory(TARGETSOURCE_CONTEXT);
 		ITestBean tb = (ITestBean) bf.getBean("viaTargetSource");
 		assertTrue(tb.getName().equals("Adam"));
 		ProxyFactoryBean pfb = (ProxyFactoryBean) bf.getBean("&viaTargetSource");
@@ -185,7 +185,7 @@ public final class ProxyFactoryBeanTests {
 
 	@Test
 	public void testGetObjectTypeWithNoTargetOrTargetSource() {
-		BeanFactory bf = new XmlBeanFactory(new ClassPathResource(TARGETSOURCE_CONTEXT, CLASS));
+		BeanFactory bf = createBeanFactory(TARGETSOURCE_CONTEXT);
 
 		ITestBean tb = (ITestBean) bf.getBean("noTarget");
 		try {
@@ -246,7 +246,7 @@ public final class ProxyFactoryBeanTests {
 		// Initial count value set in bean factory XML
 		int INITIAL_COUNT = 10;
 
-		BeanFactory bf = new XmlBeanFactory(new ClassPathResource(PROTOTYPE_CONTEXT, CLASS));
+		BeanFactory bf = createBeanFactory(PROTOTYPE_CONTEXT);
 
 		// Check it works without AOP
 		SideEffectBean raw = (SideEffectBean) bf.getBean("prototypeTarget");
@@ -337,7 +337,7 @@ public final class ProxyFactoryBeanTests {
 	 */
 	@Test
 	public void testTargetAsInnerBean() {
-		ListableBeanFactory bf = new XmlBeanFactory(new ClassPathResource(INNER_BEAN_TARGET_CONTEXT, CLASS));
+		ListableBeanFactory bf = createBeanFactory(INNER_BEAN_TARGET_CONTEXT);
 		ITestBean itb = (ITestBean) bf.getBean("testBean");
 		assertEquals("innerBeanTarget", itb.getName());
 		assertEquals("Only have proxy and interceptor: no target", 3, bf.getBeanDefinitionCount());
@@ -440,7 +440,7 @@ public final class ProxyFactoryBeanTests {
 
 	@Test
 	public void testCanAddThrowsAdviceWithoutAdvisor() throws Throwable {
-		BeanFactory f = new XmlBeanFactory(new ClassPathResource(THROWS_ADVICE_CONTEXT, CLASS));
+		BeanFactory f = createBeanFactory(THROWS_ADVICE_CONTEXT);
 		MyThrowsHandler th = (MyThrowsHandler) f.getBean("throwsAdvice");
 		CountingBeforeAdvice cba = (CountingBeforeAdvice) f.getBean("countingBeforeAdvice");
 		assertEquals(0, cba.getCalls());
@@ -497,7 +497,7 @@ public final class ProxyFactoryBeanTests {
 
 	@Test
 	public void testEmptyInterceptorNames() {
-		XmlBeanFactory factory = new XmlBeanFactory(new ClassPathResource(INVALID_CONTEXT, CLASS));
+		DefaultListableBeanFactory factory = createBeanFactory(INVALID_CONTEXT);
 		try {
 			factory.getBean("emptyInterceptorNames");
 			fail("Interceptor names cannot be empty");
@@ -512,7 +512,7 @@ public final class ProxyFactoryBeanTests {
 	 */
 	@Test
 	public void testGlobalsWithoutTarget() {
-		XmlBeanFactory factory = new XmlBeanFactory(new ClassPathResource(INVALID_CONTEXT, CLASS));
+		DefaultListableBeanFactory factory = createBeanFactory(INVALID_CONTEXT);
 		try {
 			factory.getBean("globalsWithoutTarget");
 			fail("Should require target name");
@@ -539,7 +539,7 @@ public final class ProxyFactoryBeanTests {
 		// 2 globals + 2 explicit
 		assertEquals("Have 2 globals and 2 explicit advisors", 3, pfb.getAdvisors().length);
 
-		ApplicationListener l = (ApplicationListener) factory.getBean("validGlobals");
+		ApplicationListener<?> l = (ApplicationListener<?>) factory.getBean("validGlobals");
 		agi = (AddedGlobalInterface) l;
 		assertTrue(agi.globalsAdded() == -1);
 
@@ -553,7 +553,7 @@ public final class ProxyFactoryBeanTests {
 
 	@Test
 	public void testSerializableSingletonProxy() throws Exception {
-		BeanFactory bf = new XmlBeanFactory(new ClassPathResource(SERIALIZATION_CONTEXT, CLASS));
+		BeanFactory bf = createBeanFactory(SERIALIZATION_CONTEXT);
 		Person p = (Person) bf.getBean("serializableSingleton");
 		assertSame("Should be a Singleton", p, bf.getBean("serializableSingleton"));
 		Person p2 = (Person) SerializationTestUtils.serializeAndDeserialize(p);
@@ -575,7 +575,7 @@ public final class ProxyFactoryBeanTests {
 
 	@Test
 	public void testSerializablePrototypeProxy() throws Exception {
-		BeanFactory bf = new XmlBeanFactory(new ClassPathResource(SERIALIZATION_CONTEXT, CLASS));
+		BeanFactory bf = createBeanFactory(SERIALIZATION_CONTEXT);
 		Person p = (Person) bf.getBean("serializablePrototype");
 		assertNotSame("Should not be a Singleton", p, bf.getBean("serializablePrototype"));
 		Person p2 = (Person) SerializationTestUtils.serializeAndDeserialize(p);
@@ -586,7 +586,7 @@ public final class ProxyFactoryBeanTests {
 
 	@Test
 	public void testSerializableSingletonProxyFactoryBean() throws Exception {
-		BeanFactory bf = new XmlBeanFactory(new ClassPathResource(SERIALIZATION_CONTEXT, CLASS));
+		BeanFactory bf = createBeanFactory(SERIALIZATION_CONTEXT);
 		Person p = (Person) bf.getBean("serializableSingleton");
 		ProxyFactoryBean pfb = (ProxyFactoryBean) bf.getBean("&serializableSingleton");
 		ProxyFactoryBean pfb2 = (ProxyFactoryBean) SerializationTestUtils.serializeAndDeserialize(pfb);
@@ -598,14 +598,14 @@ public final class ProxyFactoryBeanTests {
 
 	@Test
 	public void testProxyNotSerializableBecauseOfAdvice() throws Exception {
-		BeanFactory bf = new XmlBeanFactory(new ClassPathResource(SERIALIZATION_CONTEXT, CLASS));
+		BeanFactory bf = createBeanFactory(SERIALIZATION_CONTEXT);
 		Person p = (Person) bf.getBean("interceptorNotSerializableSingleton");
 		assertFalse("Not serializable because an interceptor isn't serializable", SerializationTestUtils.isSerializable(p));
 	}
 
 	@Test
 	public void testPrototypeAdvisor() {
-		BeanFactory bf = new XmlBeanFactory(new ClassPathResource(CONTEXT, CLASS));
+		BeanFactory bf = createBeanFactory(CONTEXT);
 
 		ITestBean bean1 = (ITestBean) bf.getBean("prototypeTestBeanProxy");
 		ITestBean bean2 = (ITestBean) bf.getBean("prototypeTestBeanProxy");
@@ -636,7 +636,7 @@ public final class ProxyFactoryBeanTests {
 
 	@Test
 	public void testPrototypeInterceptorSingletonTarget() {
-		BeanFactory bf = new XmlBeanFactory(new ClassPathResource(CONTEXT, CLASS));
+		BeanFactory bf = createBeanFactory(CONTEXT);
 
 		ITestBean bean1 = (ITestBean) bf.getBean("prototypeTestBeanProxySingletonTarget");
 		ITestBean bean2 = (ITestBean) bf.getBean("prototypeTestBeanProxySingletonTarget");
@@ -670,16 +670,16 @@ public final class ProxyFactoryBeanTests {
 	 */
 	@Test
 	public void testInnerBeanTargetUsingAutowiring() {
-		BeanFactory bf = new XmlBeanFactory(new ClassPathResource(AUTOWIRING_CONTEXT, CLASS));
+		BeanFactory bf = createBeanFactory(AUTOWIRING_CONTEXT);
 		bf.getBean("testBean");
 	}
 
 	@Test
 	public void testFrozenFactoryBean() {
-		BeanFactory bf = new XmlBeanFactory(new ClassPathResource(FROZEN_CONTEXT, CLASS));
+		BeanFactory bf = createBeanFactory(FROZEN_CONTEXT);
 
-	    Advised advised = (Advised)bf.getBean("frozen");
-	    assertTrue("The proxy should be frozen", advised.isFrozen());
+		Advised advised = (Advised) bf.getBean("frozen");
+		assertTrue("The proxy should be frozen", advised.isFrozen());
 	}
 
 	@Test
@@ -691,6 +691,19 @@ public final class ProxyFactoryBeanTests {
 		ITestBean proxy = (ITestBean) fb.getObject();
 		assertTrue(AopUtils.isJdkDynamicProxy(proxy));
 	}
+
+	private DefaultListableBeanFactory createBeanFactory(String resource) {
+		return createBeanFactory(resource, null);
+	}
+
+	private DefaultListableBeanFactory createBeanFactory(String resource,
+		DefaultListableBeanFactory parent) {
+		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory(parent);
+		new XmlBeanDefinitionReader(beanFactory).loadBeanDefinitions(new ClassPathResource(
+			resource, getClass()));
+		return beanFactory;
+	}
+
 	/**
 	 * Fires only on void methods. Saves list of methods intercepted.
 	 */

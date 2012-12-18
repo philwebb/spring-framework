@@ -24,6 +24,7 @@ import org.springframework.test.jpa.AbstractJpaTests;
  *
  * @author Ramnivas Laddad
  */
+@SuppressWarnings("deprecation")
 public class ComponentScanningWithLTWTests extends AbstractJpaTests {
 
 	public ComponentScanningWithLTWTests() {

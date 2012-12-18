@@ -65,7 +65,7 @@ public class MockHttpServletResponse implements HttpServletResponse {
 	private boolean writerAccessAllowed = true;
 
 	private String characterEncoding = WebUtils.DEFAULT_CHARACTER_ENCODING;
-
+	
 	private boolean charset = false;
 
 	private final ByteArrayOutputStream content = new ByteArrayOutputStream();
@@ -151,7 +151,7 @@ public class MockHttpServletResponse implements HttpServletResponse {
 			doAddHeaderValue(CONTENT_TYPE_HEADER, sb.toString(), true);
 		}
 	}
-
+	
 	public String getCharacterEncoding() {
 		return this.characterEncoding;
 	}

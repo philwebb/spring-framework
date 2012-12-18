@@ -219,11 +219,9 @@ public class StandardEvaluationContext implements EvaluationContext {
 	}
 
 	/**
-	 * Register a {@code MethodFilter} which will be called during method resolution
-	 * for the specified type.
-	 *
-	 * <p>The {@code MethodFilter} may remove methods and/or sort the methods which
-	 * will then be used by SpEL as the candidates to look through for a match.
+	 * Register a MethodFilter which will be called during method resolution for the
+	 * specified type.  The MethodFilter may remove methods and/or sort the methods
+	 * which will then be used by SpEL as the candidates to look through for a match.
 	 *
 	 * @param type the type for which the filter should be called
 	 * @param filter a {@code MethodFilter}, or {@code null} to unregister a filter for the type

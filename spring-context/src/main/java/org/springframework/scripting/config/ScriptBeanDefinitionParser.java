@@ -98,7 +98,8 @@ class ScriptBeanDefinitionParser extends AbstractBeanDefinitionParser {
 	 * Parses the dynamic object element and returns the resulting bean definition.
 	 * Registers a {@link ScriptFactoryPostProcessor} if needed.
 	 */
-	@Override
+	@SuppressWarnings("deprecation")
+    @Override
 	protected AbstractBeanDefinition parseInternal(Element element, ParserContext parserContext) {
 		// Resolve the script source.
 		String value = resolveScriptSource(element, parserContext.getReaderContext());
@@ -202,7 +203,7 @@ class ScriptBeanDefinitionParser extends AbstractBeanDefinitionParser {
 	 */
 	private String resolveScriptSource(Element element, XmlReaderContext readerContext) {
 		boolean hasScriptSource = element.hasAttribute(SCRIPT_SOURCE_ATTRIBUTE);
-		List elements = DomUtils.getChildElementsByTagName(element, INLINE_SCRIPT_ELEMENT);
+		List<Element> elements = DomUtils.getChildElementsByTagName(element, INLINE_SCRIPT_ELEMENT);
 		if (hasScriptSource && !elements.isEmpty()) {
 			readerContext.error("Only one of 'script-source' and 'inline-script' should be specified.", element);
 			return null;
@@ -211,7 +212,7 @@ class ScriptBeanDefinitionParser extends AbstractBeanDefinitionParser {
 			return element.getAttribute(SCRIPT_SOURCE_ATTRIBUTE);
 		}
 		else if (!elements.isEmpty()) {
-			Element inlineElement = (Element) elements.get(0);
+			Element inlineElement = elements.get(0);
 			return "inline:" + DomUtils.getTextValue(inlineElement);
 		}
 		else {

@@ -22,6 +22,7 @@ package org.springframework.core.enums;
  * @author Sam Brannen
  * @since 2.5
  */
+@SuppressWarnings("deprecation")
 public class StandAloneStaticLabeledEnum extends StaticLabeledEnum {
 
 	private static final long serialVersionUID = 1L;

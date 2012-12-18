@@ -91,7 +91,7 @@ public class PropertyPathFactoryBean implements FactoryBean<Object>, BeanNameAwa
 
 	private String propertyPath;
 
-	private Class resultType;
+	private Class<?> resultType;
 
 	private String beanName;
 
@@ -137,7 +137,7 @@ public class PropertyPathFactoryBean implements FactoryBean<Object>, BeanNameAwa
 	 * provided that you need matching by type (for example, for autowiring).
 	 * @param resultType the result type, for example "java.lang.Integer"
 	 */
-	public void setResultType(Class resultType) {
+	public void setResultType(Class<?> resultType) {
 		this.resultType = resultType;
 	}
 
@@ -162,15 +162,15 @@ public class PropertyPathFactoryBean implements FactoryBean<Object>, BeanNameAwa
 		if (this.targetBeanWrapper == null && this.targetBeanName == null) {
 			if (this.propertyPath != null) {
 				throw new IllegalArgumentException(
-				    "Specify 'targetObject' or 'targetBeanName' in combination with 'propertyPath'");
+					"Specify 'targetObject' or 'targetBeanName' in combination with 'propertyPath'");
 			}
 
 			// No other properties specified: check bean name.
 			int dotIndex = this.beanName.indexOf('.');
 			if (dotIndex == -1) {
 				throw new IllegalArgumentException(
-				    "Neither 'targetObject' nor 'targetBeanName' specified, and PropertyPathFactoryBean " +
-				    "bean name '" + this.beanName + "' does not follow 'beanName.property' syntax");
+					"Neither 'targetObject' nor 'targetBeanName' specified, and PropertyPathFactoryBean " +
+						"bean name '" + this.beanName + "' does not follow 'beanName.property' syntax");
 			}
 			this.targetBeanName = this.beanName.substring(0, dotIndex);
 			this.propertyPath = this.beanName.substring(dotIndex + 1);

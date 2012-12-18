@@ -1460,7 +1460,7 @@ public class CustomEditorTests {
 	}
 
 
-	private static class PrimitiveArrayBean {
+	public static class PrimitiveArrayBean {
 
 		private byte[] byteArray;
 
@@ -1484,7 +1484,7 @@ public class CustomEditorTests {
 	}
 
 
-	private static class CharBean {
+	public static class CharBean {
 
 		private char myChar;
 
@@ -1508,7 +1508,7 @@ public class CustomEditorTests {
 	}
 
 
-	private static class OldCollectionsBean {
+	public static class OldCollectionsBean {
 
 		private Vector<?> vector;
 

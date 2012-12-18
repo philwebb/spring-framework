@@ -146,7 +146,7 @@ public class PreparedStatementCreatorFactory {
 	 * Return a new PreparedStatementSetter for the given parameters.
 	 * @param params list of parameters (may be <code>null</code>)
 	 */
-	public PreparedStatementSetter newPreparedStatementSetter(List params) {
+	public PreparedStatementSetter newPreparedStatementSetter(List<?> params) {
 		return new PreparedStatementCreatorImpl(params != null ? params : Collections.emptyList());
 	}
 
@@ -194,13 +194,13 @@ public class PreparedStatementCreatorFactory {
 
 		private final String actualSql;
 
-		private final List parameters;
+		private final List<?> parameters;
 
 		public PreparedStatementCreatorImpl(List<?> parameters) {
 			this(sql, parameters);
 		}
 
-		public PreparedStatementCreatorImpl(String actualSql, List parameters) {
+		public PreparedStatementCreatorImpl(String actualSql, List<?> parameters) {
 			this.actualSql = actualSql;
 			Assert.notNull(parameters, "Parameters List must not be null");
 			this.parameters = parameters;
@@ -281,7 +281,7 @@ public class PreparedStatementCreatorFactory {
 					declaredParameter = declaredParameters.get(i);
 				}
 				if (in instanceof Collection && declaredParameter.getSqlType() != Types.ARRAY) {
-					Collection entries = (Collection) in;
+					Collection<?> entries = (Collection<?>) in;
 					for (Object entry : entries) {
 						if (entry instanceof Object[]) {
 							Object[] valueArray = ((Object[])entry);

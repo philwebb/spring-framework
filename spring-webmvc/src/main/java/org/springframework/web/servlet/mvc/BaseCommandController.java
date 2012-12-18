@@ -142,7 +142,7 @@ public abstract class BaseCommandController extends AbstractController {
 
 	private String commandName = DEFAULT_COMMAND_NAME;
 
-	private Class commandClass;
+	private Class<?> commandClass;
 
 	private Validator[] validators;
 
@@ -176,14 +176,14 @@ public abstract class BaseCommandController extends AbstractController {
 	 * Set the command class for this controller.
 	 * An instance of this class gets populated and validated on each request.
 	 */
-	public final void setCommandClass(Class commandClass) {
+	public final void setCommandClass(Class<?> commandClass) {
 		this.commandClass = commandClass;
 	}
 
 	/**
 	 * Return the command class for this controller.
 	 */
-	public final Class getCommandClass() {
+	public final Class<?> getCommandClass() {
 		return this.commandClass;
 	}
 

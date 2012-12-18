@@ -411,7 +411,7 @@ public abstract class AbstractReflectiveMBeanInfoAssembler extends AbstractMBean
 	 * @see #getClassToExpose(Class)
 	 * @see org.springframework.aop.framework.AopProxyUtils#proxiedUserInterfaces(Object)
 	 */
-	protected Class getClassForDescriptor(Object managedBean) {
+	protected Class<?> getClassForDescriptor(Object managedBean) {
 		if (AopUtils.isJdkDynamicProxy(managedBean)) {
 			return AopProxyUtils.proxiedUserInterfaces(managedBean)[0];
 		}

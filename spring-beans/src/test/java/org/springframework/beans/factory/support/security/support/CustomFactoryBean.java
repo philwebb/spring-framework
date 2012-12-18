@@ -28,7 +28,7 @@ public class CustomFactoryBean implements FactoryBean<Object> {
 		return System.getProperties();
 	}
 
-	public Class getObjectType() {
+	public Class<?> getObjectType() {
 		System.setProperty("factory.object.type", "true");
 		return Properties.class;
 	}

@@ -37,7 +37,8 @@ public class AutowiredQualifierFooService implements FooService {
 
 	private boolean initCalled = false;
 
-	@PostConstruct
+	@SuppressWarnings("unused")
+    @PostConstruct
 	private void init() {
 		if (this.initCalled) {
 			throw new IllegalStateException("Init already called");

@@ -112,15 +112,15 @@ abstract class ContextLoaderUtils {
 	/**
 	 * Resolve the {@link ContextLoader} {@linkplain Class class} to use for the
 	 * supplied list of {@link ContextConfigurationAttributes}.
-	 *
+	 * 
 	 * <p>Beginning with the first level in the context configuration attributes
-	 * hierarchy:
+	 * hierarchy: 
 	 *
 	 * <ol>
 	 * <li>If the {@link ContextConfigurationAttributes#getContextLoaderClass()
 	 * contextLoaderClass} property of {@link ContextConfigurationAttributes} is
 	 * configured with an explicit class, that class will be returned.</li>
-	 * <li>If an explicit {@code ContextLoader} class is not specified at the
+	 * <li>If an explicit {@code ContextLoader} class is not specified at the 
 	 * current level in the hierarchy, traverse to the next level in the hierarchy
 	 * and return to step #1.</li>
 	 * <li>If no explicit {@code ContextLoader} class is found after traversing
@@ -407,7 +407,7 @@ abstract class ContextLoaderUtils {
 	/**
 	 * Load the {@link org.springframework.test.context.web.WebAppConfiguration @WebAppConfiguration}
 	 * class, using reflection in order to avoid package cycles.
-	 *
+	 * 
 	 * @return the {@code @WebAppConfiguration} class or <code>null</code> if it
 	 * cannot be loaded
 	 * @since 3.2

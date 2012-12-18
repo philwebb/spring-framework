@@ -250,14 +250,14 @@ public class JRubyScriptFactoryTests extends TestCase {
 		assertEquals("2", lol[1][0]);
 		assertEquals("3", lol[2][0]);
 
-		Map singleValueMap = adder.toMap("key", "value");
+		Map<String, Object> singleValueMap = adder.toMap("key", "value");
 		assertNotNull(singleValueMap);
 		assertEquals(1, singleValueMap.size());
 		assertEquals("key", singleValueMap.keySet().iterator().next());
 		assertEquals("value", singleValueMap.values().iterator().next());
 
 		String[] expectedStrings = new String[]{"1", "2", "3"};
-		Map map = adder.toMap("key", expectedStrings);
+		Map<String, Object> map = adder.toMap("key", expectedStrings);
 		assertNotNull(map);
 		assertEquals(1, map.size());
 		assertEquals("key", map.keySet().iterator().next());

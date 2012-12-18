@@ -402,7 +402,7 @@ public class GroovyScriptFactoryTests {
 	@Test
 	public void testAnonymousScriptDetected() throws Exception {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("groovy-with-xsd.xml", getClass());
-		Map beans = ctx.getBeansOfType(Messenger.class);
+		Map<String, Messenger> beans = ctx.getBeansOfType(Messenger.class);
 		assertEquals(4, beans.size());
 	}
 

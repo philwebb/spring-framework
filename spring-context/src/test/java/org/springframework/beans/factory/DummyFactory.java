@@ -31,8 +31,7 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
  * @author Rod Johnson
  * @since 10.03.2003
  */
-public class DummyFactory
-		implements FactoryBean, BeanNameAware, BeanFactoryAware, InitializingBean, DisposableBean {
+public class DummyFactory implements FactoryBean<TestBean>, BeanNameAware, BeanFactoryAware, InitializingBean, DisposableBean {
 
 	public static final String SINGLETON_NAME = "Factory singleton";
 
@@ -144,7 +143,7 @@ public class DummyFactory
 	 * and prototype mode.
 	 * @see org.springframework.beans.factory.FactoryBean#getObject()
 	 */
-	public Object getObject() throws BeansException {
+	public TestBean getObject() throws BeansException {
 		if (isSingleton()) {
 			return this.testBean;
 		}
@@ -158,7 +157,7 @@ public class DummyFactory
 		}
 	}
 
-	public Class getObjectType() {
+	public Class<?> getObjectType() {
 		return TestBean.class;
 	}
 

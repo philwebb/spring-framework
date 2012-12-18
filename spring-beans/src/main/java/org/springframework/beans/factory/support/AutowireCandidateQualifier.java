@@ -41,7 +41,7 @@ public class AutowireCandidateQualifier extends BeanMetadataAttributeAccessor {
 	 * given type.
 	 * @param type the annotation type
 	 */
-	public AutowireCandidateQualifier(Class type) {
+	public AutowireCandidateQualifier(Class<?> type) {
 		this(type.getName());
 	}
 
@@ -64,7 +64,7 @@ public class AutowireCandidateQualifier extends BeanMetadataAttributeAccessor {
 	 * @param type the annotation type
 	 * @param value the annotation value to match
 	 */
-	public AutowireCandidateQualifier(Class type, Object value) {
+	public AutowireCandidateQualifier(Class<?> type, Object value) {
 		this(type.getName(), value);
 	}
 

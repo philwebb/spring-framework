@@ -10,7 +10,7 @@
  * <p>In this model, the EJB is a facade, with as many POJO helpers
  * behind the BeanFactory as required.</p>
  *
- * <p>Note that the default behavior is to look for an EJB environment variable
+ * <p>Note that the default behavior is to look for an EJB enviroment variable
  * with name <code>ejb/BeanFactoryPath</code> that specifies the
  * location <i>on the classpath</i> of an XML bean factory definition
  * file (such as <code>/com/mycom/mypackage/mybeans.xml</code>).

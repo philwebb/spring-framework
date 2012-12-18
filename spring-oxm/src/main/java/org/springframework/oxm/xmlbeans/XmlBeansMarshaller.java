@@ -21,7 +21,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
-import java.io.FilterInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.ref.WeakReference;
@@ -38,8 +37,6 @@ import org.apache.xmlbeans.XmlObject;
 import org.apache.xmlbeans.XmlOptions;
 import org.apache.xmlbeans.XmlSaxHandler;
 import org.apache.xmlbeans.XmlValidationError;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -270,7 +267,7 @@ public class XmlBeansMarshaller extends AbstractMarshaller {
 		if (isValidating() && object != null) {
 			// create a temporary xmlOptions just for validation
 			XmlOptions validateOptions = getXmlOptions() != null ? getXmlOptions() : new XmlOptions();
-			List errorsList = new ArrayList();
+			List<Object> errorsList = new ArrayList<Object>();
 			validateOptions.setErrorListener(errorsList);
 			if (!object.validate(validateOptions)) {
 				StringBuilder builder = new StringBuilder("Could not validate XmlObject :");

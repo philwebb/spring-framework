@@ -88,6 +88,8 @@ class ConfigurationClassBeanDefinitionReader {
 	/**
 	 * Create a new {@link ConfigurationClassBeanDefinitionReader} instance that will be used
 	 * to populate the given {@link BeanDefinitionRegistry}.
+	 * @param problemReporter
+	 * @param metadataReaderFactory
 	 */
 	public ConfigurationClassBeanDefinitionReader(
 			BeanDefinitionRegistry registry, SourceExtractor sourceExtractor,

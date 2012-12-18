@@ -169,7 +169,7 @@ public class MethodInvocationProceedingJoinPoint implements ProceedingJoinPoint,
 			return methodInvocation.getMethod().getModifiers();
 		}
 
-		public Class getDeclaringType() {
+		public Class<?> getDeclaringType() {
 			return methodInvocation.getMethod().getDeclaringClass();
 		}
 
@@ -177,7 +177,7 @@ public class MethodInvocationProceedingJoinPoint implements ProceedingJoinPoint,
 			return methodInvocation.getMethod().getDeclaringClass().getName();
 		}
 
-		public Class getReturnType() {
+		public Class<?> getReturnType() {
 			return methodInvocation.getMethod().getReturnType();
 		}
 
@@ -185,7 +185,7 @@ public class MethodInvocationProceedingJoinPoint implements ProceedingJoinPoint,
 			return methodInvocation.getMethod();
 		}
 
-		public Class[] getParameterTypes() {
+		public Class<?>[] getParameterTypes() {
 			return methodInvocation.getMethod().getParameterTypes();
 		}
 
@@ -196,7 +196,7 @@ public class MethodInvocationProceedingJoinPoint implements ProceedingJoinPoint,
 			return this.parameterNames;
 		}
 
-		public Class[] getExceptionTypes() {
+		public Class<?>[] getExceptionTypes() {
 			return methodInvocation.getMethod().getExceptionTypes();
 		}
 
@@ -227,7 +227,7 @@ public class MethodInvocationProceedingJoinPoint implements ProceedingJoinPoint,
 			sb.append(".");
 			sb.append(getMethod().getName());
 			sb.append("(");
-			Class[] parametersTypes = getParameterTypes();
+			Class<?>[] parametersTypes = getParameterTypes();
 			appendTypes(sb, parametersTypes, includeReturnTypeAndArgs, useLongReturnAndArgumentTypeName);
 			sb.append(")");
 			return sb.toString();
@@ -267,7 +267,7 @@ public class MethodInvocationProceedingJoinPoint implements ProceedingJoinPoint,
 	 */
 	private class SourceLocationImpl implements SourceLocation {
 
-		public Class getWithinType() {
+		public Class<?> getWithinType() {
 			if (methodInvocation.getThis() == null) {
 				throw new UnsupportedOperationException("No source location joinpoint available: target is null");
 			}
