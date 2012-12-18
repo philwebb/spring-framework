@@ -32,7 +32,7 @@ import test.advice.CountingBeforeAdvice;
 
 /**
  * Unit tests for aop namespace.
- * 
+ *
  * @author Rob Harrop
  * @author Chris Beams
  */
@@ -40,7 +40,7 @@ public class AopNamespaceHandlerTests {
 
 	private ApplicationContext context;
 
-	
+
 	@Before
 	public void setUp() {
 		this.context =
@@ -128,7 +128,7 @@ class CountingAspectJAdvice {
 		this.aroundCount++;
 		pjp.proceed();
 	}
-	
+
 	public void myAfterReturningAdvice(int age) {
 		this.afterCount++;
 	}
@@ -136,11 +136,11 @@ class CountingAspectJAdvice {
 	public void myAfterThrowingAdvice(RuntimeException ex) {
 		this.afterCount++;
 	}
-	
+
 	public void mySetAgeAdvice(int newAge, ITestBean bean) {
 		// no-op
 	}
-	
+
 	public int getBeforeCount() {
 		return this.beforeCount;
 	}
