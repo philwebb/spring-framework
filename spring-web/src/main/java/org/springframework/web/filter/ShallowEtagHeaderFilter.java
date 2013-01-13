@@ -36,14 +36,21 @@ import org.springframework.web.util.WebUtils;
 
 /**
  * {@link javax.servlet.Filter} that generates an {@code ETag} value based on the content on the response.
- * This ETag is compared to the {@code If-None-Match} header of the request. If these headers are equal,
- * the response content is not sent, but rather a {@code 304 "Not Modified"} status instead.
+ *
+ * <p>If the request contains an {@code If-None-Match} header, the ETag is compared to the {@code If-None-Match}
+ * header of the request. If these headers are equal, the response content is not sent, but rather a
+ * {@code 304 "Not Modified"} status instead.
+ *
+ * <p>If the request contains an {@code If-Match} header, the ETag is compared to the {@code If-Match} header
+ * of the request. If these headers not are equal, the response content is not sent, but rather a
+ * {@code 412 "Precondition Failed"} status instead.
  *
  * <p>Since the ETag is based on the response content, the response (or {@link org.springframework.web.servlet.View})
  * is still rendered. As such, this filter only saves bandwidth, not server performance.
  *
  * @author Arjen Poutsma
  * @author Rossen Stoyanchev
+ * @author Eugen Paraschiv
  * @since 3.0
  */
 public class ShallowEtagHeaderFilter extends OncePerRequestFilter {
@@ -51,6 +58,8 @@ public class ShallowEtagHeaderFilter extends OncePerRequestFilter {
 	private static String HEADER_ETAG = "ETag";
 
 	private static String HEADER_IF_NONE_MATCH = "If-None-Match";
+
+	private static String HEADER_IF_MATCH = "If-Match";
 
 
 	/**
@@ -91,17 +100,17 @@ public class ShallowEtagHeaderFilter extends OncePerRequestFilter {
 			String responseETag = generateETagHeaderValue(body);
 			response.setHeader(HEADER_ETAG, responseETag);
 
-			String requestETag = request.getHeader(HEADER_IF_NONE_MATCH);
-			if (responseETag.equals(requestETag)) {
-				if (logger.isTraceEnabled()) {
-					logger.trace("ETag [" + responseETag + "] equal to If-None-Match, sending 304");
-				}
-				response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+			String requestIfNoneMatchETag = request.getHeader(HEADER_IF_NONE_MATCH);
+			String requestIfMatchETag = request.getHeader(HEADER_IF_MATCH);
+			if (requestIfNoneMatchETag != null) {
+				updateResponseForIfNoneMatchETag(body, response, requestIfNoneMatchETag, responseETag);
+			}
+			else if (requestIfMatchETag != null) {
+				updateResponseForIfMatchETag(body, response, requestIfMatchETag, responseETag);
 			}
 			else {
 				if (logger.isTraceEnabled()) {
-					logger.trace("ETag [" + responseETag + "] not equal to If-None-Match [" + requestETag +
-							"], sending normal response");
+					logger.trace("No If-Match or If-None-Match headers on the Request, sending normal response");
 				}
 				copyBodyToResponse(body, response);
 			}
@@ -111,6 +120,40 @@ public class ShallowEtagHeaderFilter extends OncePerRequestFilter {
 				logger.trace("Response with status code [" + statusCode + "] not eligible for ETag");
 			}
 			copyBodyToResponse(body, response);
+		}
+	}
+
+	private void updateResponseForIfNoneMatchETag(byte[] body, HttpServletResponse response, String requestETag,
+			String responseETag) throws IOException {
+		if (responseETag.equals(requestETag)) {
+			if (logger.isTraceEnabled()) {
+				logger.trace("ETag [" + responseETag + "] equal to If-None-Match, sending 304");
+			}
+			response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+		}
+		else {
+			if (logger.isTraceEnabled()) {
+				logger.trace("ETag [" + responseETag + "] not equal to If-None-Match [" + requestETag +
+						"], sending normal response");
+			}
+			copyBodyToResponse(body, response);
+		}
+	}
+
+	private void updateResponseForIfMatchETag(byte[] body, HttpServletResponse response, String requestETag,
+			String responseETag) throws IOException {
+		if (responseETag.equals(requestETag)) {
+			if (logger.isTraceEnabled()) {
+				logger.trace("ETag [" + responseETag + "] equal to If-Match, sending normal response");
+			}
+			copyBodyToResponse(body, response);
+		}
+		else {
+			if (logger.isTraceEnabled()) {
+				logger.trace("ETag [" + responseETag + "] not equal to If-Match [" + requestETag +
+						"], sending 412");
+			}
+			response.setStatus(HttpServletResponse.SC_PRECONDITION_FAILED);
 		}
 	}
 
