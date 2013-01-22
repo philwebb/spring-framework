@@ -109,6 +109,8 @@ public abstract class PlaceholderConfigurerSupport extends PropertyResourceConfi
 
 	protected boolean ignoreUnresolvablePlaceholders = false;
 
+	protected boolean useDefaultValues = true;
+
 	protected String nullValue;
 
 	private BeanFactory beanFactory;

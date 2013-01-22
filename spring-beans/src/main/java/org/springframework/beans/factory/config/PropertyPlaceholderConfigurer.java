@@ -233,7 +233,8 @@ public class PropertyPlaceholderConfigurer extends PlaceholderConfigurerSupport 
 	@Deprecated
 	protected String parseStringValue(String strVal, Properties props, Set<?> visitedPlaceholders) {
 		PropertyPlaceholderHelper helper = new PropertyPlaceholderHelper(
-				placeholderPrefix, placeholderSuffix, valueSeparator, ignoreUnresolvablePlaceholders);
+				placeholderPrefix, placeholderSuffix, valueSeparator,
+				ignoreUnresolvablePlaceholders, useDefaultValues);
 		PlaceholderResolver resolver = new PropertyPlaceholderConfigurerResolver(props);
 		return helper.replacePlaceholders(strVal, resolver);
 	}
@@ -247,7 +248,8 @@ public class PropertyPlaceholderConfigurer extends PlaceholderConfigurerSupport 
 
 		public PlaceholderResolvingStringValueResolver(Properties props) {
 			this.helper = new PropertyPlaceholderHelper(
-					placeholderPrefix, placeholderSuffix, valueSeparator, ignoreUnresolvablePlaceholders);
+					placeholderPrefix, placeholderSuffix, valueSeparator,
+					ignoreUnresolvablePlaceholders, useDefaultValues);
 			this.resolver = new PropertyPlaceholderConfigurerResolver(props);
 		}
 

@@ -161,6 +161,7 @@ public class PropertySourcesPlaceholderConfigurer extends PlaceholderConfigurerS
 		propertyResolver.setPlaceholderPrefix(this.placeholderPrefix);
 		propertyResolver.setPlaceholderSuffix(this.placeholderSuffix);
 		propertyResolver.setValueSeparator(this.valueSeparator);
+		// FIXME how to set useDefaultValues without extending ConfigurablePropertyResolver
 
 		StringValueResolver valueResolver = new StringValueResolver() {
 			public String resolveStringValue(String strVal) {

@@ -58,6 +58,8 @@ public class PropertyPlaceholderHelper {
 
 	private final boolean ignoreUnresolvablePlaceholders;
 
+	private final boolean useDefaultValues;
+
 
 	/**
 	 * Creates a new {@code PropertyPlaceholderHelper} that uses the supplied prefix and suffix.
@@ -80,6 +82,24 @@ public class PropertyPlaceholderHelper {
 	 */
 	public PropertyPlaceholderHelper(String placeholderPrefix, String placeholderSuffix,
 			String valueSeparator, boolean ignoreUnresolvablePlaceholders) {
+		this(placeholderPrefix, placeholderSuffix, valueSeparator,
+				ignoreUnresolvablePlaceholders, true);
+	}
+
+	/**
+	 * Creates a new {@code PropertyPlaceholderHelper} that uses the supplied prefix and suffix.
+	 * @param placeholderPrefix the prefix that denotes the start of a placeholder
+	 * @param placeholderSuffix the suffix that denotes the end of a placeholder
+	 * @param valueSeparator the separating character between the placeholder variable
+	 * and the associated default value, if any
+	 * @param ignoreUnresolvablePlaceholders indicates whether unresolvable placeholders should be ignored
+	 * ({@code true}) or cause an exception ({@code false}).
+	 * @param useDefaultValues indicates whether default values should be used. Can be useful when only
+	 * multiple {@code BeanFactoryPostProcessor}s are resolving placeholders and only the last
+	 * should handle default values.
+	 */
+	public PropertyPlaceholderHelper(String placeholderPrefix, String placeholderSuffix,
+			String valueSeparator, boolean ignoreUnresolvablePlaceholders, boolean useDefaultValues) {
 
 		Assert.notNull(placeholderPrefix, "placeholderPrefix must not be null");
 		Assert.notNull(placeholderSuffix, "placeholderSuffix must not be null");
@@ -94,6 +114,7 @@ public class PropertyPlaceholderHelper {
 		}
 		this.valueSeparator = valueSeparator;
 		this.ignoreUnresolvablePlaceholders = ignoreUnresolvablePlaceholders;
+		this.useDefaultValues = useDefaultValues;
 	}
 
 
@@ -150,7 +171,7 @@ public class PropertyPlaceholderHelper {
 						String actualPlaceholder = placeholder.substring(0, separatorIndex);
 						String defaultValue = placeholder.substring(separatorIndex + this.valueSeparator.length());
 						propVal = placeholderResolver.resolvePlaceholder(actualPlaceholder);
-						if (propVal == null) {
+						if (propVal == null && this.useDefaultValues) {
 							propVal = defaultValue;
 						}
 					}
