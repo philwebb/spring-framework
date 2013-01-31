@@ -98,11 +98,11 @@ public class AspectJExpressionPointcut extends AbstractExpressionPointcut
 
 	private static final Log logger = LogFactory.getLog(AspectJExpressionPointcut.class);
 
-	private Class pointcutDeclarationScope;
+	private Class<?> pointcutDeclarationScope;
 
 	private String[] pointcutParameterNames = new String[0];
 
-	private Class[] pointcutParameterTypes = new Class[0];
+	private Class<?>[] pointcutParameterTypes = new Class[0];
 
 	private BeanFactory beanFactory;
 
@@ -123,7 +123,7 @@ public class AspectJExpressionPointcut extends AbstractExpressionPointcut
 	 * @param paramNames the parameter names for the pointcut
 	 * @param paramTypes the parameter types for the pointcut
 	 */
-	public AspectJExpressionPointcut(Class declarationScope, String[] paramNames, Class[] paramTypes) {
+	public AspectJExpressionPointcut(Class<?> declarationScope, String[] paramNames, Class<?>[] paramTypes) {
 		this.pointcutDeclarationScope = declarationScope;
 		if (paramNames.length != paramTypes.length) {
 			throw new IllegalStateException(
@@ -137,7 +137,7 @@ public class AspectJExpressionPointcut extends AbstractExpressionPointcut
 	/**
 	 * Set the declaration scope for the pointcut.
 	 */
-	public void setPointcutDeclarationScope(Class pointcutDeclarationScope) {
+	public void setPointcutDeclarationScope(Class<?> pointcutDeclarationScope) {
 		this.pointcutDeclarationScope = pointcutDeclarationScope;
 	}
 
@@ -151,7 +151,7 @@ public class AspectJExpressionPointcut extends AbstractExpressionPointcut
 	/**
 	 * Set the parameter types for the pointcut.
 	 */
-	public void setParameterTypes(Class[] types) {
+	public void setParameterTypes(Class<?>[] types) {
 		this.pointcutParameterTypes = types;
 	}
 
@@ -244,7 +244,7 @@ public class AspectJExpressionPointcut extends AbstractExpressionPointcut
 		return this.pointcutExpression;
 	}
 
-	public boolean matches(Class targetClass) {
+	public boolean matches(Class<?> targetClass) {
 		checkReadyToMatch();
 		try {
 			return this.pointcutExpression.couldMatchJoinPointsInType(targetClass);
@@ -267,7 +267,7 @@ public class AspectJExpressionPointcut extends AbstractExpressionPointcut
 		}
 	}
 
-	public boolean matches(Method method, Class targetClass, boolean beanHasIntroductions) {
+	public boolean matches(Method method, Class<?> targetClass, boolean beanHasIntroductions) {
 		checkReadyToMatch();
 		Method targetMethod = AopUtils.getMostSpecificMethod(method, targetClass);
 		ShadowMatch shadowMatch = getShadowMatch(targetMethod, method);
@@ -287,7 +287,7 @@ public class AspectJExpressionPointcut extends AbstractExpressionPointcut
 		}
 	}
 
-	public boolean matches(Method method, Class targetClass) {
+	public boolean matches(Method method, Class<?> targetClass) {
 		return matches(method, targetClass, false);
 	}
 
@@ -296,7 +296,7 @@ public class AspectJExpressionPointcut extends AbstractExpressionPointcut
 		return this.pointcutExpression.mayNeedDynamicTest();
 	}
 
-	public boolean matches(Method method, Class targetClass, Object[] args) {
+	public boolean matches(Method method, Class<?> targetClass, Object[] args) {
 		checkReadyToMatch();
 		ShadowMatch shadowMatch = getShadowMatch(AopUtils.getMostSpecificMethod(method, targetClass), method);
 		ShadowMatch originalShadowMatch = getShadowMatch(method, method);
@@ -369,7 +369,7 @@ public class AspectJExpressionPointcut extends AbstractExpressionPointcut
 		return !(getRuntimeTestWalker(shadowMatch).testsSubtypeSensitiveVars());
 	}
 
-	private boolean matchesTarget(ShadowMatch shadowMatch, Class targetClass) {
+	private boolean matchesTarget(ShadowMatch shadowMatch, Class<?> targetClass) {
 		return getRuntimeTestWalker(shadowMatch).testTargetInstanceOfResidue(targetClass);
 	}
 
@@ -551,7 +551,7 @@ public class AspectJExpressionPointcut extends AbstractExpressionPointcut
 			return false;
 		}
 
-		private FuzzyBoolean contextMatch(Class targetType) {
+		private FuzzyBoolean contextMatch(Class<?> targetType) {
 			String advisedBeanName = getCurrentProxiedBeanName();
 			if (advisedBeanName == null) {  // no proxy creation in progress
 				// abstain; can't return YES, since that will make pointcut with negation fail

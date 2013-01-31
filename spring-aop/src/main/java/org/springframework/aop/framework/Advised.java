@@ -52,13 +52,13 @@ public interface Advised extends TargetClassAware {
 	 * Return the interfaces proxied by the AOP proxy. Will not
 	 * include the target class, which may also be proxied.
 	 */
-	Class[] getProxiedInterfaces();
+	Class<?>[] getProxiedInterfaces();
 
 	/**
 	 * Determine whether the given interface is proxied.
 	 * @param intf the interface to check
 	 */
-	boolean isInterfaceProxied(Class intf);
+	boolean isInterfaceProxied(Class<?> intf);
 
 
 	/**

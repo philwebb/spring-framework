@@ -406,8 +406,8 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 
 	@Test
 	public void testIntroductionOnTargetExcludedByTypePattern() {
-		LinkedList target = new LinkedList();
-		List proxy = (List) createProxy(target,
+		LinkedList<Object> target = new LinkedList<Object>();
+		List<Object> proxy = (List<Object>) createProxy(target,
 				AopUtils.findAdvisorsThatCanApply(
 						getFixture().getAdvisors(new SingletonMetadataAwareAspectInstanceFactory(new MakeLockable(), "someBean")),
 						List.class

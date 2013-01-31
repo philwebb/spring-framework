@@ -96,7 +96,7 @@ public abstract class ClassFilters {
 			this.filters = filters;
 		}
 
-		public boolean matches(Class clazz) {
+		public boolean matches(Class<?> clazz) {
 			for (int i = 0; i < this.filters.length; i++) {
 				if (this.filters[i].matches(clazz)) {
 					return true;
@@ -130,7 +130,7 @@ public abstract class ClassFilters {
 			this.filters = filters;
 		}
 
-		public boolean matches(Class clazz) {
+		public boolean matches(Class<?> clazz) {
 			for (int i = 0; i < this.filters.length; i++) {
 				if (!this.filters[i].matches(clazz)) {
 					return false;
