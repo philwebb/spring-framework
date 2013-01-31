@@ -59,7 +59,7 @@ public class AnnotationClassFilter implements ClassFilter {
 	}
 
 
-	public boolean matches(Class clazz) {
+	public boolean matches(Class<?> clazz) {
 		return (this.checkInherited ?
 				(AnnotationUtils.findAnnotation(clazz, this.annotationType) != null) :
 				clazz.isAnnotationPresent(this.annotationType));

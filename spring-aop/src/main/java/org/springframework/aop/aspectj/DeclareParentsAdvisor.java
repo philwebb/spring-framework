@@ -34,7 +34,7 @@ import org.springframework.aop.support.DelegatingIntroductionInterceptor;
  */
 public class DeclareParentsAdvisor implements IntroductionAdvisor {
 
-	private final Class introducedInterface;
+	private final Class<?> introducedInterface;
 
 	private final ClassFilter typePatternClassFilter;
 
@@ -71,13 +71,13 @@ public class DeclareParentsAdvisor implements IntroductionAdvisor {
 	 * @param implementationClass implementation class
 	 * @param advice delegation advice
 	 */
-	private DeclareParentsAdvisor(Class interfaceType, String typePattern, Class implementationClass, Advice advice) {
+	private DeclareParentsAdvisor(Class<?> interfaceType, String typePattern, Class<?> implementationClass, Advice advice) {
 		this.introducedInterface = interfaceType;
 		ClassFilter typePatternFilter = new TypePatternClassFilter(typePattern);
 
 		// Excludes methods implemented.
 		ClassFilter exclusion = new ClassFilter() {
-			public boolean matches(Class clazz) {
+			public boolean matches(Class<?> clazz) {
 				return !(introducedInterface.isAssignableFrom(clazz));
 			}
 		};
@@ -103,7 +103,7 @@ public class DeclareParentsAdvisor implements IntroductionAdvisor {
 		return this.advice;
 	}
 
-	public Class[] getInterfaces() {
+	public Class<?>[] getInterfaces() {
 		return new Class[] {this.introducedInterface};
 	}
 
