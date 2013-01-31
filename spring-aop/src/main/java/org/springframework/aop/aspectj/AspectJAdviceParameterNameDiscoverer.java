@@ -21,7 +21,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -142,11 +141,10 @@ public class AspectJAdviceParameterNameDiscoverer implements ParameterNameDiscov
 		singleValuedAnnotationPcds.add("@withincode");
 		singleValuedAnnotationPcds.add("@annotation");
 
-		Set pointcutPrimitives = PointcutParser.getAllSupportedPointcutPrimitives();
-		for (Iterator iterator = pointcutPrimitives.iterator(); iterator.hasNext();) {
-			PointcutPrimitive primitive = (PointcutPrimitive) iterator.next();
+		for (PointcutPrimitive primitive : PointcutParser.getAllSupportedPointcutPrimitives()) {
 			nonReferencePointcutTokens.add(primitive.getName());
 		}
+
 		nonReferencePointcutTokens.add("&&");
 		nonReferencePointcutTokens.add("!");
 		nonReferencePointcutTokens.add("||");
