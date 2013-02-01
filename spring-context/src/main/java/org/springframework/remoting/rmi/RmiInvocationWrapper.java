@@ -58,7 +58,7 @@ class RmiInvocationWrapper implements RmiInvocationHandler {
 	 * @see RmiBasedExporter#getServiceInterface()
 	 */
 	public String getTargetInterfaceName() {
-		Class ifc = this.rmiExporter.getServiceInterface();
+		Class<?> ifc = this.rmiExporter.getServiceInterface();
 		return (ifc != null ? ifc.getName() : null);
 	}
 

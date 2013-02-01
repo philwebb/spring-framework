@@ -58,7 +58,7 @@ public abstract class AbstractApplicationEventMulticaster implements Application
 	private BeanFactory beanFactory;
 
 
-	public void addApplicationListener(ApplicationListener listener) {
+	public void addApplicationListener(ApplicationListener<?> listener) {
 		synchronized (this.defaultRetriever) {
 			this.defaultRetriever.applicationListeners.add(listener);
 			this.retrieverCache.clear();
@@ -72,7 +72,7 @@ public abstract class AbstractApplicationEventMulticaster implements Application
 		}
 	}
 
-	public void removeApplicationListener(ApplicationListener listener) {
+	public void removeApplicationListener(ApplicationListener<?> listener) {
 		synchronized (this.defaultRetriever) {
 			this.defaultRetriever.applicationListeners.remove(listener);
 			this.retrieverCache.clear();
@@ -112,10 +112,8 @@ public abstract class AbstractApplicationEventMulticaster implements Application
 	 * @return a Collection of ApplicationListeners
 	 * @see org.springframework.context.ApplicationListener
 	 */
-	protected Collection<ApplicationListener> getApplicationListeners() {
-		synchronized (this.defaultRetriever) {
-			return this.defaultRetriever.getApplicationListeners();
-		}
+	protected Collection<ApplicationListener<?>> getApplicationListeners() {
+		return this.defaultRetriever.getApplicationListeners();
 	}
 
 	/**
@@ -178,7 +176,7 @@ public abstract class AbstractApplicationEventMulticaster implements Application
 	 * candidates for the given event type
 	 */
 	protected boolean supportsEvent(
-			ApplicationListener listener, Class<? extends ApplicationEvent> eventType, Class sourceType) {
+			ApplicationListener<?> listener, Class<? extends ApplicationEvent> eventType, Class<?> sourceType) {
 
 		SmartApplicationListener smartListener = (listener instanceof SmartApplicationListener ?
 				(SmartApplicationListener) listener : new GenericApplicationListenerAdapter(listener));
@@ -191,11 +189,11 @@ public abstract class AbstractApplicationEventMulticaster implements Application
 	 */
 	private static class ListenerCacheKey {
 
-		private final Class eventType;
+		private final Class<?> eventType;
 
-		private final Class sourceType;
+		private final Class<?> sourceType;
 
-		public ListenerCacheKey(Class eventType, Class sourceType) {
+		public ListenerCacheKey(Class<?> eventType, Class<?> sourceType) {
 			this.eventType = eventType;
 			this.sourceType = sourceType;
 		}
@@ -223,27 +221,27 @@ public abstract class AbstractApplicationEventMulticaster implements Application
 	 */
 	private class ListenerRetriever {
 
-		public final Set<ApplicationListener> applicationListeners;
+		public final Set<ApplicationListener<?>> applicationListeners;
 
 		public final Set<String> applicationListenerBeans;
 
 		private final boolean preFiltered;
 
 		public ListenerRetriever(boolean preFiltered) {
-			this.applicationListeners = new LinkedHashSet<ApplicationListener>();
+			this.applicationListeners = new LinkedHashSet<ApplicationListener<?>>();
 			this.applicationListenerBeans = new LinkedHashSet<String>();
 			this.preFiltered = preFiltered;
 		}
 
-		public Collection<ApplicationListener> getApplicationListeners() {
-			LinkedList<ApplicationListener> allListeners = new LinkedList<ApplicationListener>();
-			for (ApplicationListener listener : this.applicationListeners) {
+		public Collection<ApplicationListener<?>> getApplicationListeners() {
+			LinkedList<ApplicationListener<?>> allListeners = new LinkedList<ApplicationListener<?>>();
+			for (ApplicationListener<?> listener : this.applicationListeners) {
 				allListeners.add(listener);
 			}
 			if (!this.applicationListenerBeans.isEmpty()) {
 				BeanFactory beanFactory = getBeanFactory();
 				for (String listenerBeanName : this.applicationListenerBeans) {
-					ApplicationListener listener = beanFactory.getBean(listenerBeanName, ApplicationListener.class);
+					ApplicationListener<?> listener = beanFactory.getBean(listenerBeanName, ApplicationListener.class);
 					if (this.preFiltered || !allListeners.contains(listener)) {
 						allListeners.add(listener);
 					}

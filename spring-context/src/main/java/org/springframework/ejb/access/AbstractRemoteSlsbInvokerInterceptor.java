@@ -60,7 +60,7 @@ public abstract class AbstractRemoteSlsbInvokerInterceptor extends AbstractSlsbI
 	 * sufficient to make a WebSphere 5.0 Remote SLSB work. On other servers,
 	 * the specific home interface for the target SLSB might be necessary.
 	 */
-	public void setHomeInterface(Class homeInterface) {
+	public void setHomeInterface(Class<?> homeInterface) {
 		if (homeInterface != null && !homeInterface.isInterface()) {
 			throw new IllegalArgumentException(
 					"Home interface class [" + homeInterface.getClass() + "] is not an interface");

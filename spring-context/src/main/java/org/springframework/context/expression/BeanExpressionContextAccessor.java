@@ -48,7 +48,7 @@ public class BeanExpressionContextAccessor implements PropertyAccessor {
 		throw new AccessException("Beans in a BeanFactory are read-only");
 	}
 
-	public Class[] getSpecificTargetClasses() {
+	public Class<?>[] getSpecificTargetClasses() {
 		return new Class[] {BeanExpressionContext.class};
 	}
 

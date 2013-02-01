@@ -49,7 +49,7 @@ public interface ScriptFactory {
 	 * its Java interfaces (such as in the case of Groovy).
 	 * @return the interfaces for the script
 	 */
-	Class[] getScriptInterfaces();
+	Class<?>[] getScriptInterfaces();
 
 	/**
 	 * Return whether the script requires a config interface to be
@@ -75,7 +75,7 @@ public interface ScriptFactory {
 	 * @throws IOException if script retrieval failed
 	 * @throws ScriptCompilationException if script compilation failed
 	 */
-	Object getScriptedObject(ScriptSource scriptSource, Class[] actualInterfaces)
+	Object getScriptedObject(ScriptSource scriptSource, Class<?>[] actualInterfaces)
 			throws IOException, ScriptCompilationException;
 
 	/**
@@ -91,7 +91,7 @@ public interface ScriptFactory {
 	 * @throws ScriptCompilationException if script compilation failed
 	 * @since 2.0.3
 	 */
-	Class getScriptedObjectType(ScriptSource scriptSource)
+	Class<?> getScriptedObjectType(ScriptSource scriptSource)
 			throws IOException, ScriptCompilationException;
 
 	/**
