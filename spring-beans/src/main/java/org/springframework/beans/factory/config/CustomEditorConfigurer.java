@@ -178,7 +178,7 @@ public class CustomEditorConfigurer implements BeanFactoryPostProcessor, BeanCla
 			for (Map.Entry<String, ?> entry : this.customEditors.entrySet()) {
 				String key = entry.getKey();
 				Object value = entry.getValue();
-				Class requiredType = null;
+				Class<?> requiredType = null;
 
 				try {
 					requiredType = ClassUtils.forName(key, this.beanClassLoader);
@@ -195,7 +195,7 @@ public class CustomEditorConfigurer implements BeanFactoryPostProcessor, BeanCla
 						beanFactory.registerCustomEditor(requiredType, (Class) value);
 					}
 					else if (value instanceof String) {
-						Class editorClass = ClassUtils.forName((String) value, this.beanClassLoader);
+						Class<?> editorClass = ClassUtils.forName((String) value, this.beanClassLoader);
 						Assert.isAssignable(PropertyEditor.class, editorClass);
 						beanFactory.registerCustomEditor(requiredType, editorClass);
 					}
@@ -225,11 +225,11 @@ public class CustomEditorConfigurer implements BeanFactoryPostProcessor, BeanCla
 	 */
 	private static class SharedPropertyEditorRegistrar implements PropertyEditorRegistrar {
 
-		private final Class requiredType;
+		private final Class<?> requiredType;
 
 		private final PropertyEditor sharedEditor;
 
-		public SharedPropertyEditorRegistrar(Class requiredType, PropertyEditor sharedEditor) {
+		public SharedPropertyEditorRegistrar(Class<?> requiredType, PropertyEditor sharedEditor) {
 			this.requiredType = requiredType;
 			this.sharedEditor = sharedEditor;
 		}

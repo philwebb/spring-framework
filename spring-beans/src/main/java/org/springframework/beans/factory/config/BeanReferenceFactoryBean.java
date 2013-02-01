@@ -83,7 +83,7 @@ public class BeanReferenceFactoryBean implements SmartFactoryBean, BeanFactoryAw
 		return this.beanFactory.getBean(this.targetBeanName);
 	}
 
-	public Class getObjectType() {
+	public Class<?> getObjectType() {
 		if (this.beanFactory == null) {
 			return null;
 		}
