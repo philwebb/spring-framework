@@ -63,7 +63,7 @@ public abstract class JRubyScriptUtils {
 	 * @throws JumpException in case of JRuby parsing failure
 	 * @see ClassUtils#getDefaultClassLoader()
 	 */
-	public static Object createJRubyObject(String scriptSource, Class[] interfaces) throws JumpException {
+	public static Object createJRubyObject(String scriptSource, Class<?>[] interfaces) throws JumpException {
 		return createJRubyObject(scriptSource, interfaces, ClassUtils.getDefaultClassLoader());
 	}
 
@@ -207,7 +207,7 @@ public abstract class JRubyScriptUtils {
 			return rubyArgs;
 		}
 
-		private Object convertFromRuby(IRubyObject rubyResult, Class returnType) {
+		private Object convertFromRuby(IRubyObject rubyResult, Class<?> returnType) {
 			Object result = JavaEmbedUtils.rubyToJava(this.ruby, rubyResult, returnType);
 			if (result instanceof RubyArray && returnType.isArray()) {
 				result = convertFromRubyArray(((RubyArray) result).toJavaArray(), returnType);
@@ -215,8 +215,8 @@ public abstract class JRubyScriptUtils {
 			return result;
 		}
 
-		private Object convertFromRubyArray(IRubyObject[] rubyArray, Class returnType) {
-			Class targetType = returnType.getComponentType();
+		private Object convertFromRubyArray(IRubyObject[] rubyArray, Class<?> returnType) {
+			Class<?> targetType = returnType.getComponentType();
 			Object javaArray = Array.newInstance(targetType, rubyArray.length);
 			for (int i = 0; i < rubyArray.length; i++) {
 				IRubyObject rubyObject = rubyArray[i];
