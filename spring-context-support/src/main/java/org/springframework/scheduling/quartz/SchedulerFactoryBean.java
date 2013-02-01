@@ -208,7 +208,7 @@ public class SchedulerFactoryBean extends SchedulerAccessor implements FactoryBe
 	 * @see #setConfigLocation
 	 * @see #setQuartzProperties
 	 */
-	public void setSchedulerFactoryClass(Class schedulerFactoryClass) {
+	public void setSchedulerFactoryClass(Class<?> schedulerFactoryClass) {
 		if (schedulerFactoryClass == null || !SchedulerFactory.class.isAssignableFrom(schedulerFactoryClass)) {
 			throw new IllegalArgumentException("schedulerFactoryClass must implement [org.quartz.SchedulerFactory]");
 		}
