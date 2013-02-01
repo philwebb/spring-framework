@@ -199,7 +199,7 @@ class XMLEventStreamWriter implements XMLStreamWriter {
 	private void writeNamespace(Namespace namespace) throws XMLStreamException {
 		int last = endElements.size() - 1;
 		EndElement oldEndElement = endElements.get(last);
-		Iterator oldNamespaces = oldEndElement.getNamespaces();
+		Iterator<?> oldNamespaces = oldEndElement.getNamespaces();
 		List<Namespace> newNamespaces = new ArrayList<Namespace>();
 		while (oldNamespaces.hasNext()) {
 			Namespace oldNamespace = (Namespace) oldNamespaces.next();

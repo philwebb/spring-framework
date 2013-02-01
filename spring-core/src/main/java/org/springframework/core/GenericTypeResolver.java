@@ -44,8 +44,8 @@ import org.springframework.util.ConcurrentReferenceHashMap;
 public abstract class GenericTypeResolver {
 
 	/** Cache from Class to TypeVariable Map */
-	private static final Map<Class, Map<TypeVariable, Type>> typeVariableCache =
-			new ConcurrentReferenceHashMap<Class, Map<TypeVariable,Type>>();
+	private static final Map<Class, Map<TypeVariable<?>, Type>> typeVariableCache =
+			new ConcurrentReferenceHashMap<Class, Map<TypeVariable<?>,Type>>();
 
 
 	/**
@@ -77,7 +77,7 @@ public abstract class GenericTypeResolver {
 	public static Class<?> resolveParameterType(MethodParameter methodParam, Class clazz) {
 		Type genericType = getTargetType(methodParam);
 		Assert.notNull(clazz, "Class must not be null");
-		Map<TypeVariable, Type> typeVariableMap = getTypeVariableMap(clazz);
+		Map<TypeVariable<?>, Type> typeVariableMap = getTypeVariableMap(clazz);
 		Type rawType = getRawType(genericType, typeVariableMap);
 		Class result = (rawType instanceof Class ? (Class) rawType : methodParam.getParameterType());
 		methodParam.setParameterType(result);
@@ -97,7 +97,7 @@ public abstract class GenericTypeResolver {
 		Assert.notNull(method, "Method must not be null");
 		Type genericType = method.getGenericReturnType();
 		Assert.notNull(clazz, "Class must not be null");
-		Map<TypeVariable, Type> typeVariableMap = getTypeVariableMap(clazz);
+		Map<TypeVariable<?>, Type> typeVariableMap = getTypeVariableMap(clazz);
 		Type rawType = getRawType(genericType, typeVariableMap);
 		return (rawType instanceof Class ? (Class<?>) rawType : method.getReturnType());
 	}
@@ -330,7 +330,7 @@ public abstract class GenericTypeResolver {
 	 * @param typeVariableMap the TypeVariable Map to resolved against
 	 * @return the type if it resolves to a Class, or {@code Object.class} otherwise
 	 */
-	public static Class<?> resolveType(Type genericType, Map<TypeVariable, Type> typeVariableMap) {
+	public static Class<?> resolveType(Type genericType, Map<TypeVariable<?>, Type> typeVariableMap) {
 		Type resolvedType = getRawType(genericType, typeVariableMap);
 		if (resolvedType instanceof GenericArrayType) {
 			Type componentType = ((GenericArrayType) resolvedType).getGenericComponentType();
@@ -346,7 +346,7 @@ public abstract class GenericTypeResolver {
 	 * @param typeVariableMap the TypeVariable Map to resolved against
 	 * @return the resolved raw type
 	 */
-	static Type getRawType(Type genericType, Map<TypeVariable, Type> typeVariableMap) {
+	static Type getRawType(Type genericType, Map<TypeVariable<?>, Type> typeVariableMap) {
 		Type resolvedType = genericType;
 		if (genericType instanceof TypeVariable) {
 			TypeVariable tv = (TypeVariable) genericType;
@@ -368,12 +368,12 @@ public abstract class GenericTypeResolver {
 	 * {@link Class concrete classes} for the specified {@link Class}. Searches
 	 * all super types, enclosing types and interfaces.
 	 */
-	public static Map<TypeVariable, Type> getTypeVariableMap(Class clazz) {
-		Map<TypeVariable, Type> ref = typeVariableCache.get(clazz);
-		Map<TypeVariable, Type> typeVariableMap = (ref != null ? ref : null);
+	public static Map<TypeVariable<?>, Type> getTypeVariableMap(Class clazz) {
+		Map<TypeVariable<?>, Type> ref = typeVariableCache.get(clazz);
+		Map<TypeVariable<?>, Type> typeVariableMap = (ref != null ? ref : null);
 
 		if (typeVariableMap == null) {
-			typeVariableMap = new HashMap<TypeVariable, Type>();
+			typeVariableMap = new HashMap<TypeVariable<?>, Type>();
 
 			// interfaces
 			extractTypeVariablesFromGenericInterfaces(clazz.getGenericInterfaces(), typeVariableMap);
@@ -423,7 +423,7 @@ public abstract class GenericTypeResolver {
 		return bound;
 	}
 
-	private static void extractTypeVariablesFromGenericInterfaces(Type[] genericInterfaces, Map<TypeVariable, Type> typeVariableMap) {
+	private static void extractTypeVariablesFromGenericInterfaces(Type[] genericInterfaces, Map<TypeVariable<?>, Type> typeVariableMap) {
 		for (Type genericInterface : genericInterfaces) {
 			if (genericInterface instanceof ParameterizedType) {
 				ParameterizedType pt = (ParameterizedType) genericInterface;
@@ -456,7 +456,7 @@ public abstract class GenericTypeResolver {
 	 * For '{@code FooImpl}' the following mappings would be added to the {@link Map}:
 	 * {S=java.lang.String, T=java.lang.Integer}.
 	 */
-	private static void populateTypeMapFromParameterizedType(ParameterizedType type, Map<TypeVariable, Type> typeVariableMap) {
+	private static void populateTypeMapFromParameterizedType(ParameterizedType type, Map<TypeVariable<?>, Type> typeVariableMap) {
 		if (type.getRawType() instanceof Class) {
 			Type[] actualTypeArguments = type.getActualTypeArguments();
 			TypeVariable[] typeVariables = ((Class) type.getRawType()).getTypeParameters();

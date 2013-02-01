@@ -116,7 +116,7 @@ public class AutoPopulatingList<E> implements List<E>, Serializable {
 		return this.backingList.contains(o);
 	}
 
-	public boolean containsAll(Collection c) {
+	public boolean containsAll(Collection<?> c) {
 		return this.backingList.containsAll(c);
 	}
 
