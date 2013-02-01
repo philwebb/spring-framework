@@ -52,7 +52,7 @@ import org.springframework.context.ApplicationContextAware;
 public class JobDetailBean extends JobDetail
 		implements BeanNameAware, ApplicationContextAware, InitializingBean {
 
-	private Class actualJobClass;
+	private Class<?> actualJobClass;
 
 	private String beanName;
 
@@ -82,7 +82,7 @@ public class JobDetailBean extends JobDetail
 	 * to adapt the given job class to the Quartz Job interface.
 	 */
 	@Override
-	public Class getJobClass() {
+	public Class<?> getJobClass() {
 		return (this.actualJobClass != null ? this.actualJobClass : super.getJobClass());
 	}
 

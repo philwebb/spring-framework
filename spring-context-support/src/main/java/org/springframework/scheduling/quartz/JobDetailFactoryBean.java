@@ -56,7 +56,7 @@ public class JobDetailFactoryBean
 
 	private String group;
 
-	private Class jobClass;
+	private Class<?> jobClass;
 
 	private JobDataMap jobDataMap = new JobDataMap();
 
