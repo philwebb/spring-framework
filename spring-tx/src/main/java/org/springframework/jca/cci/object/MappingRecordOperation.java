@@ -139,7 +139,7 @@ public abstract class MappingRecordOperation extends EisOperation {
 	 * Implementation of RecordExtractor that calls the enclosing
 	 * class's {@code extractOutputData} method.
 	 */
-	protected class RecordExtractorImpl implements RecordExtractor {
+	protected class RecordExtractorImpl implements RecordExtractor<Object> {
 
 		public Object extractData(Record record) throws ResourceException, SQLException, DataAccessException {
 			return extractOutputData(record);
