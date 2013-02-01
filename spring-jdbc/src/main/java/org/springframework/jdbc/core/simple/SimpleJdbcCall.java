@@ -120,7 +120,7 @@ public class SimpleJdbcCall extends AbstractJdbcCall implements SimpleJdbcCallOp
 		return this;
 	}
 
-	public SimpleJdbcCall returningResultSet(String parameterName, RowMapper rowMapper) {
+	public SimpleJdbcCall returningResultSet(String parameterName, RowMapper<?> rowMapper) {
 		addDeclaredRowMapper(parameterName, rowMapper);
 		return this;
 	}
@@ -129,7 +129,7 @@ public class SimpleJdbcCall extends AbstractJdbcCall implements SimpleJdbcCallOp
 	 * @deprecated in favor of {@link #returningResultSet(String, org.springframework.jdbc.core.RowMapper)}
 	 */
    @Deprecated
-	public SimpleJdbcCall returningResultSet(String parameterName, ParameterizedRowMapper rowMapper) {
+	public SimpleJdbcCall returningResultSet(String parameterName, ParameterizedRowMapper<?> rowMapper) {
 		addDeclaredRowMapper(parameterName, rowMapper);
 		return this;
 	}
