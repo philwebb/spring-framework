@@ -57,7 +57,7 @@ public class LiteralExpression implements Expression {
 		return this.literalValue;
 	}
 
-	public Class getValueType(EvaluationContext context) {
+	public Class<?> getValueType(EvaluationContext context) {
 		return String.class;
 	}
 
@@ -87,7 +87,7 @@ public class LiteralExpression implements Expression {
 		return false;
 	}
 
-	public Class getValueType() {
+	public Class<?> getValueType() {
 		return String.class;
 	}
 
@@ -105,11 +105,11 @@ public class LiteralExpression implements Expression {
 		return ExpressionUtils.convert(null, value, desiredResultType);
 	}
 
-	public Class getValueType(Object rootObject) throws EvaluationException {
+	public Class<?> getValueType(Object rootObject) throws EvaluationException {
 		return String.class;
 	}
 
-	public Class getValueType(EvaluationContext context, Object rootObject) throws EvaluationException {
+	public Class<?> getValueType(EvaluationContext context, Object rootObject) throws EvaluationException {
 		return String.class;
 	}
 
