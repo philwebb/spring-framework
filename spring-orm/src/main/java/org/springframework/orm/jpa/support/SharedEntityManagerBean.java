@@ -78,7 +78,7 @@ public class SharedEntityManagerBean extends EntityManagerFactoryAccessor
 		if (emf == null) {
 			throw new IllegalArgumentException("'entityManagerFactory' or 'persistenceUnitName' is required");
 		}
-		Class[] ifcs = null;
+		Class<?>[] ifcs = null;
 		if (emf instanceof EntityManagerFactoryInfo) {
 			EntityManagerFactoryInfo emfInfo = (EntityManagerFactoryInfo) emf;
 			if (this.entityManagerInterface == null) {

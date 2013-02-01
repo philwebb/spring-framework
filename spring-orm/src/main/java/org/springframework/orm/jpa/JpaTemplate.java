@@ -150,13 +150,13 @@ public class JpaTemplate extends JpaAccessor implements JpaOperations {
 		return execute(action, isExposeNativeEntityManager());
 	}
 
-	public List executeFind(JpaCallback<?> action) throws DataAccessException {
+	public List<Object> executeFind(JpaCallback<?> action) throws DataAccessException {
 		Object result = execute(action, isExposeNativeEntityManager());
 		if (!(result instanceof List)) {
 			throw new InvalidDataAccessApiUsageException(
 					"Result object returned from JpaCallback isn't a List: [" + result + "]");
 		}
-		return (List) result;
+		return (List<Object>) result;
 	}
 
 	/**
@@ -209,10 +209,10 @@ public class JpaTemplate extends JpaAccessor implements JpaOperations {
 	 * @see javax.persistence.EntityManager#close
 	 */
 	protected EntityManager createEntityManagerProxy(EntityManager em) {
-		Class[] ifcs = null;
+		Class<?>[] ifcs = null;
 		EntityManagerFactory emf = getEntityManagerFactory();
 		if (emf instanceof EntityManagerFactoryInfo) {
-			Class entityManagerInterface = ((EntityManagerFactoryInfo) emf).getEntityManagerInterface();
+			Class<?> entityManagerInterface = ((EntityManagerFactoryInfo) emf).getEntityManagerInterface();
 			if (entityManagerInterface != null) {
 				ifcs = new Class[] {entityManagerInterface};
 			}
@@ -302,13 +302,13 @@ public class JpaTemplate extends JpaAccessor implements JpaOperations {
 	// Convenience finder methods
 	//-------------------------------------------------------------------------
 
-	public List find(String queryString) throws DataAccessException {
+	public List<Object> find(String queryString) throws DataAccessException {
 		return find(queryString, (Object[]) null);
 	}
 
-	public List find(final String queryString, final Object... values) throws DataAccessException {
-		return execute(new JpaCallback<List>() {
-			public List doInJpa(EntityManager em) throws PersistenceException {
+	public List<Object> find(final String queryString, final Object... values) throws DataAccessException {
+		return execute(new JpaCallback<List<Object>>() {
+			public List<Object> doInJpa(EntityManager em) throws PersistenceException {
 				Query queryObject = em.createQuery(queryString);
 				prepareQuery(queryObject);
 				if (values != null) {
@@ -321,9 +321,9 @@ public class JpaTemplate extends JpaAccessor implements JpaOperations {
 		});
 	}
 
-	public List findByNamedParams(final String queryString, final Map<String, ?> params) throws DataAccessException {
-		return execute(new JpaCallback<List>() {
-			public List doInJpa(EntityManager em) throws PersistenceException {
+	public List<Object> findByNamedParams(final String queryString, final Map<String, ?> params) throws DataAccessException {
+		return execute(new JpaCallback<List<Object>>() {
+			public List<Object> doInJpa(EntityManager em) throws PersistenceException {
 				Query queryObject = em.createQuery(queryString);
 				prepareQuery(queryObject);
 				if (params != null) {
@@ -336,13 +336,13 @@ public class JpaTemplate extends JpaAccessor implements JpaOperations {
 		});
 	}
 
-	public List findByNamedQuery(String queryName) throws DataAccessException {
+	public List<Object> findByNamedQuery(String queryName) throws DataAccessException {
 		return findByNamedQuery(queryName, (Object[]) null);
 	}
 
-	public List findByNamedQuery(final String queryName, final Object... values) throws DataAccessException {
-		return execute(new JpaCallback<List>() {
-			public List doInJpa(EntityManager em) throws PersistenceException {
+	public List<Object> findByNamedQuery(final String queryName, final Object... values) throws DataAccessException {
+		return execute(new JpaCallback<List<Object>>() {
+			public List<Object> doInJpa(EntityManager em) throws PersistenceException {
 				Query queryObject = em.createNamedQuery(queryName);
 				prepareQuery(queryObject);
 				if (values != null) {
@@ -355,11 +355,11 @@ public class JpaTemplate extends JpaAccessor implements JpaOperations {
 		});
 	}
 
-	public List findByNamedQueryAndNamedParams(final String queryName, final Map<String, ?> params)
+	public List<Object> findByNamedQueryAndNamedParams(final String queryName, final Map<String, ?> params)
 			throws DataAccessException {
 
-		return execute(new JpaCallback<List>() {
-			public List doInJpa(EntityManager em) throws PersistenceException {
+		return execute(new JpaCallback<List<Object>>() {
+			public List<Object> doInJpa(EntityManager em) throws PersistenceException {
 				Query queryObject = em.createNamedQuery(queryName);
 				prepareQuery(queryObject);
 				if (params != null) {
