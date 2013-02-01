@@ -113,7 +113,7 @@ public interface Expression {
 	 * @return the most general type of value that can be set on this context
 	 * @throws EvaluationException if there is a problem determining the type
 	 */
-	Class getValueType() throws EvaluationException;
+	Class<?> getValueType() throws EvaluationException;
 
 	/**
 	 * Returns the most general type that can be passed to the {@link #setValue(EvaluationContext, Object)}
@@ -122,7 +122,7 @@ public interface Expression {
 	 * @return the most general type of value that can be set on this context
 	 * @throws EvaluationException if there is a problem determining the type
 	 */
-	Class getValueType(Object rootObject) throws EvaluationException;
+	Class<?> getValueType(Object rootObject) throws EvaluationException;
 
 	/**
 	 * Returns the most general type that can be passed to the {@link #setValue(EvaluationContext, Object)}
@@ -141,7 +141,7 @@ public interface Expression {
 	 * @return the most general type of value that can be set on this context
 	 * @throws EvaluationException if there is a problem determining the type
 	 */
-	Class getValueType(EvaluationContext context, Object rootObject) throws EvaluationException;
+	Class<?> getValueType(EvaluationContext context, Object rootObject) throws EvaluationException;
 
 	/**
 	 * Returns the most general type that can be passed to the {@link #setValue(EvaluationContext, Object)}
