@@ -171,7 +171,7 @@ public class DefaultPropertiesPersister implements PropertiesPersister {
 		}
 		out.write("#" + new Date());
 		out.newLine();
-		for (Enumeration keys = props.keys(); keys.hasMoreElements();) {
+		for (Enumeration<?> keys = props.keys(); keys.hasMoreElements();) {
 			String key = (String) keys.nextElement();
 			String val = props.getProperty(key);
 			out.write(escape(key, true) + "=" + escape(val, false));

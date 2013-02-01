@@ -146,7 +146,7 @@ public abstract class CachingMapDecorator<K, V> implements Map<K, V>, Serializab
 			return true;
 		}
 		for (Object mapVal : this.targetMap.values()) {
-			if (mapVal instanceof Reference && value.equals(((Reference) mapVal).get())) {
+			if (mapVal instanceof Reference && value.equals(((Reference<?>) mapVal).get())) {
 				return true;
 			}
 		}
@@ -161,7 +161,7 @@ public abstract class CachingMapDecorator<K, V> implements Map<K, V>, Serializab
 	private V unwrapReturnValue(Object value) {
 		Object returnValue = value;
 		if (returnValue instanceof Reference) {
-			returnValue = ((Reference) returnValue).get();
+			returnValue = ((Reference<?>) returnValue).get();
 		}
 		return (returnValue == NULL_VALUE ? null : (V) returnValue);
 	}
@@ -202,7 +202,7 @@ public abstract class CachingMapDecorator<K, V> implements Map<K, V>, Serializab
 		for (Iterator<Object> it = this.targetMap.values().iterator(); it.hasNext();) {
 			Object value = it.next();
 			if (value instanceof Reference) {
-				value = ((Reference) value).get();
+				value = ((Reference<?>) value).get();
 				if (value == null) {
 					it.remove();
 					continue;
@@ -231,7 +231,7 @@ public abstract class CachingMapDecorator<K, V> implements Map<K, V>, Serializab
 			Entry<K, Object> entry = it.next();
 			Object value = entry.getValue();
 			if (value instanceof Reference) {
-				value = ((Reference) value).get();
+				value = ((Reference<?>) value).get();
 				if (value == null) {
 					it.remove();
 					continue;
@@ -284,7 +284,7 @@ public abstract class CachingMapDecorator<K, V> implements Map<K, V>, Serializab
 	public V get(Object key) {
 		Object value = this.targetMap.get(key);
 		if (value instanceof Reference) {
-			value = ((Reference) value).get();
+			value = ((Reference<?>) value).get();
 		}
 		if (value == null) {
 			V newValue = create((K) key);

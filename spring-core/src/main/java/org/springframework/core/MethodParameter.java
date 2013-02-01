@@ -44,7 +44,7 @@ public class MethodParameter {
 
 	private final Method method;
 
-	private final Constructor constructor;
+	private final Constructor<?> constructor;
 
 	private final int parameterIndex;
 
@@ -63,7 +63,7 @@ public class MethodParameter {
 	/** Map from Integer level to Integer type index */
 	Map<Integer, Integer> typeIndexesPerLevel;
 
-	Map<TypeVariable, Type> typeVariableMap;
+	Map<TypeVariable<?>, Type> typeVariableMap;
 
 	private int hash = 0;
 
@@ -100,7 +100,7 @@ public class MethodParameter {
 	 * @param constructor the Constructor to specify a parameter for
 	 * @param parameterIndex the index of the parameter
 	 */
-	public MethodParameter(Constructor constructor, int parameterIndex) {
+	public MethodParameter(Constructor<?> constructor, int parameterIndex) {
 		this(constructor, parameterIndex, 1);
 	}
 
@@ -112,7 +112,7 @@ public class MethodParameter {
 	 * (typically 1; e.g. in case of a List of Lists, 1 would indicate the
 	 * nested List, whereas 2 would indicate the element of the nested List)
 	 */
-	public MethodParameter(Constructor constructor, int parameterIndex, int nestingLevel) {
+	public MethodParameter(Constructor<?> constructor, int parameterIndex, int nestingLevel) {
 		Assert.notNull(constructor, "Constructor must not be null");
 		this.constructor = constructor;
 		this.parameterIndex = parameterIndex;
@@ -156,7 +156,7 @@ public class MethodParameter {
 	 * <p>Note: Either Method or Constructor is available.
 	 * @return the Constructor, or {@code null} if none
 	 */
-	public Constructor getConstructor() {
+	public Constructor<?> getConstructor() {
 		return this.constructor;
 	}
 
@@ -179,7 +179,7 @@ public class MethodParameter {
 	/**
 	 * Return the class that declares the underlying Method or Constructor.
 	 */
-	public Class getDeclaringClass() {
+	public Class<?> getDeclaringClass() {
 		return getMember().getDeclaringClass();
 	}
 
@@ -241,12 +241,12 @@ public class MethodParameter {
 				Integer index = getTypeIndexForCurrentLevel();
 				Type arg = ((ParameterizedType) type).getActualTypeArguments()[index != null ? index : 0];
 				if (arg instanceof Class) {
-					return (Class) arg;
+					return (Class<?>) arg;
 				}
 				else if (arg instanceof ParameterizedType) {
 					arg = ((ParameterizedType) arg).getRawType();
 					if (arg instanceof Class) {
-						return (Class) arg;
+						return (Class<?>) arg;
 					}
 				}
 			}
