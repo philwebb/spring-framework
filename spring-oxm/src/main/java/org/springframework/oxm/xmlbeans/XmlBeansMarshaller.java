@@ -267,7 +267,7 @@ public class XmlBeansMarshaller extends AbstractMarshaller {
 		if (isValidating() && object != null) {
 			// create a temporary xmlOptions just for validation
 			XmlOptions validateOptions = getXmlOptions() != null ? getXmlOptions() : new XmlOptions();
-			List errorsList = new ArrayList();
+			List<Object> errorsList = new ArrayList<Object>();
 			validateOptions.setErrorListener(errorsList);
 			if (!object.validate(validateOptions)) {
 				StringBuilder builder = new StringBuilder("Could not validate XmlObject :");
