@@ -55,7 +55,7 @@ public final class ParseState {
 	 * of that of the passed in {@code ParseState}.
 	 */
 	@SuppressWarnings("unchecked")
-	private ParseState(ParseState other) {
+    private ParseState(ParseState other) {
 		this.state = (Stack<Entry>) other.state.clone();
 	}
 
