@@ -17,7 +17,6 @@
 package org.springframework.web.struts;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Iterator;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -163,9 +162,7 @@ public class SpringBindingActionForm extends ActionForm {
 	 */
 	private ActionMessages getActionMessages() {
 		ActionMessages actionMessages = new ActionMessages();
-		Iterator it = this.errors.getAllErrors().iterator();
-		while (it.hasNext()) {
-			ObjectError objectError = (ObjectError) it.next();
+		for (ObjectError objectError : this.errors.getAllErrors()) {
 			String effectiveMessageKey = findEffectiveMessageKey(objectError);
 			if (effectiveMessageKey == null && !defaultActionMessageAvailable) {
 				// Need to specify default code despite it not being resolvable:
