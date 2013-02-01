@@ -477,12 +477,12 @@ public abstract class AbstractJdbcInsert {
 				Long key = jdbcTemplate.queryForLong(
 						getInsertString() + " " + keyQuery,
 						values.toArray(new Object[values.size()]));
-				HashMap keys = new HashMap(1);
+				HashMap<String, Object> keys = new HashMap<String, Object>(1);
 				keys.put(getGeneratedKeyNames()[0], key);
 				keyHolder.getKeyList().add(keys);
 			}
 			else {
-				jdbcTemplate.execute(new ConnectionCallback() {
+				jdbcTemplate.execute(new ConnectionCallback<Object>() {
 					public Object doInConnection(Connection con) throws SQLException, DataAccessException {
 						// Do the insert
 						PreparedStatement ps = null;
@@ -496,7 +496,7 @@ public abstract class AbstractJdbcInsert {
 						//Get the key
 						Statement keyStmt = null;
 						ResultSet rs = null;
-						HashMap keys = new HashMap(1);
+						HashMap<String, Object> keys = new HashMap<String, Object>(1);
 						try {
 							keyStmt = con.createStatement();
 							rs = keyStmt.executeQuery(keyQuery);
@@ -554,7 +554,7 @@ public abstract class AbstractJdbcInsert {
 	 */
 	protected int[] doExecuteBatch(Map<String, Object>[] batch) {
 		checkCompiled();
-		List[] batchValues = new ArrayList[batch.length];
+		List<Object>[] batchValues = createBatchValuesArray(batch.length);
 		int i = 0;
 		for (Map<String, Object> args : batch) {
 			List<Object> values = matchInParameterValuesWithInsertColumns(args);
@@ -571,7 +571,7 @@ public abstract class AbstractJdbcInsert {
 	 */
 	protected int[] doExecuteBatch(SqlParameterSource[] batch) {
 		checkCompiled();
-		List[] batchValues = new ArrayList[batch.length];
+		List<Object>[] batchValues = createBatchValuesArray(batch.length);
 		int i = 0;
 		for (SqlParameterSource parameterSource : batch) {
 			List<Object> values = matchInParameterValuesWithInsertColumns(parameterSource);

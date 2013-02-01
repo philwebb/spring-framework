@@ -58,8 +58,8 @@ class ArgTypePreparedStatementSetter implements PreparedStatementSetter, Paramet
 			for (int i = 0; i < this.args.length; i++) {
 				Object arg = this.args[i];
 				if (arg instanceof Collection && this.argTypes[i] != Types.ARRAY) {
-					Collection entries = (Collection) arg;
-					for (Iterator it = entries.iterator(); it.hasNext();) {
+					Collection<?> entries = (Collection<?>) arg;
+					for (Iterator<?> it = entries.iterator(); it.hasNext();) {
 						Object entry = it.next();
 						if (entry instanceof Object[]) {
 							Object[] valueArray = ((Object[])entry);

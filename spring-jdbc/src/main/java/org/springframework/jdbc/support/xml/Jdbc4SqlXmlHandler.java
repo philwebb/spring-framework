@@ -75,13 +75,13 @@ public class Jdbc4SqlXmlHandler implements SqlXmlHandler {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Source getXmlAsSource(ResultSet rs, String columnName, Class sourceClass) throws SQLException {
-		return rs.getSQLXML(columnName).getSource(sourceClass != null ? sourceClass : DOMSource.class);
+	public Source getXmlAsSource(ResultSet rs, String columnName, Class<?> sourceClass) throws SQLException {
+		return rs.getSQLXML(columnName).getSource((Class<Source>) (sourceClass != null ? sourceClass : DOMSource.class));
 	}
 
 	@SuppressWarnings("unchecked")
-	public Source getXmlAsSource(ResultSet rs, int columnIndex, Class sourceClass) throws SQLException {
-		return rs.getSQLXML(columnIndex).getSource(sourceClass != null ? sourceClass : DOMSource.class);
+	public Source getXmlAsSource(ResultSet rs, int columnIndex, Class<?> sourceClass) throws SQLException {
+		return rs.getSQLXML(columnIndex).getSource((Class<Source>) (sourceClass != null ? sourceClass : DOMSource.class));
 	}
 
 
@@ -116,12 +116,12 @@ public class Jdbc4SqlXmlHandler implements SqlXmlHandler {
 		};
 	}
 
-	public SqlXmlValue newSqlXmlValue(final Class resultClass, final XmlResultProvider provider) {
+	public SqlXmlValue newSqlXmlValue(final Class<?> resultClass, final XmlResultProvider provider) {
 		return new AbstractJdbc4SqlXmlValue() {
 			@Override
 			@SuppressWarnings("unchecked")
 			protected void provideXml(SQLXML xmlObject) throws SQLException, IOException {
-				provider.provideXml(xmlObject.setResult(resultClass));
+				provider.provideXml(xmlObject.setResult((Class<Result>)resultClass));
 			}
 		};
 	}
