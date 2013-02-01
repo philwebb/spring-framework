@@ -114,7 +114,7 @@ public class ContextLoaderPlugIn implements PlugIn {
 	 * Default context class for ContextLoaderPlugIn.
 	 * @see org.springframework.web.context.support.XmlWebApplicationContext
 	 */
-	public static final Class DEFAULT_CONTEXT_CLASS = XmlWebApplicationContext.class;
+	public static final Class<?> DEFAULT_CONTEXT_CLASS = XmlWebApplicationContext.class;
 
 	/**
 	 * Prefix for the ServletContext attribute for the WebApplicationContext.
@@ -126,7 +126,7 @@ public class ContextLoaderPlugIn implements PlugIn {
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	/** Custom WebApplicationContext class */
-	private Class contextClass = DEFAULT_CONTEXT_CLASS;
+	private Class<?> contextClass = DEFAULT_CONTEXT_CLASS;
 
 	/** Namespace for this servlet */
 	private String namespace;
@@ -160,14 +160,14 @@ public class ContextLoaderPlugIn implements PlugIn {
 	 * must also implement ConfigurableWebApplicationContext.
 	 * @see #createWebApplicationContext
 	 */
-	public void setContextClass(Class contextClass) {
+	public void setContextClass(Class<?> contextClass) {
 		this.contextClass = contextClass;
 	}
 
 	/**
 	 * Return the custom context class.
 	 */
-	public Class getContextClass() {
+	public Class<?> getContextClass() {
 		return this.contextClass;
 	}
 
