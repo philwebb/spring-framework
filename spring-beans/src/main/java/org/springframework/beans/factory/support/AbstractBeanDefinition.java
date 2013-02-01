@@ -383,7 +383,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 			throw new IllegalStateException(
 					"Bean class name [" + beanClassObject + "] has not been resolved into an actual Class");
 		}
-		return (Class) beanClassObject;
+		return (Class<?>) beanClassObject;
 	}
 
 	public void setBeanClassName(String beanClassName) {
@@ -393,7 +393,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	public String getBeanClassName() {
 		Object beanClassObject = this.beanClass;
 		if (beanClassObject instanceof Class) {
-			return ((Class) beanClassObject).getName();
+			return ((Class<?>) beanClassObject).getName();
 		}
 		else {
 			return (String) beanClassObject;
@@ -408,12 +408,12 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	 * @return the resolved bean class
 	 * @throws ClassNotFoundException if the class name could be resolved
 	 */
-	public Class resolveBeanClass(ClassLoader classLoader) throws ClassNotFoundException {
+	public Class<?> resolveBeanClass(ClassLoader classLoader) throws ClassNotFoundException {
 		String className = getBeanClassName();
 		if (className == null) {
 			return null;
 		}
-		Class resolvedClass = ClassUtils.forName(className, classLoader);
+		Class<?> resolvedClass = ClassUtils.forName(className, classLoader);
 		this.beanClass = resolvedClass;
 		return resolvedClass;
 	}
@@ -551,8 +551,8 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 			// Work out whether to apply setter autowiring or constructor autowiring.
 			// If it has a no-arg constructor it's deemed to be setter autowiring,
 			// otherwise we'll try constructor autowiring.
-			Constructor[] constructors = getBeanClass().getConstructors();
-			for (Constructor constructor : constructors) {
+			Constructor<?>[] constructors = getBeanClass().getConstructors();
+			for (Constructor<?> constructor : constructors) {
 				if (constructor.getParameterTypes().length == 0) {
 					return AUTOWIRE_BY_TYPE;
 				}

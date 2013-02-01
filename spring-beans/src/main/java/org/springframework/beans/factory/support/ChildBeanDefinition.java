@@ -98,7 +98,7 @@ public class ChildBeanDefinition extends AbstractBeanDefinition {
 	 * @param pvs the property values to apply
 	 */
 	public ChildBeanDefinition(
-			String parentName, Class beanClass, ConstructorArgumentValues cargs, MutablePropertyValues pvs) {
+			String parentName, Class<?> beanClass, ConstructorArgumentValues cargs, MutablePropertyValues pvs) {
 
 		super(cargs, pvs);
 		this.parentName = parentName;

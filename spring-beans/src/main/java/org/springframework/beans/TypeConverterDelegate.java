@@ -671,7 +671,7 @@ class TypeConverterDelegate {
 				null);
 	}
 
-	private boolean canCreateCopy(Class requiredType) {
+	private boolean canCreateCopy(Class<?> requiredType) {
 		return (!requiredType.isInterface() && !Modifier.isAbstract(requiredType.getModifiers()) &&
 				Modifier.isPublic(requiredType.getModifiers()) && ClassUtils.hasConstructor(requiredType));
 	}

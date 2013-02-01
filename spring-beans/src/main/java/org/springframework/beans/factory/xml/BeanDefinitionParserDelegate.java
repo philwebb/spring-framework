@@ -1195,7 +1195,7 @@ public class BeanDefinitionParserDelegate {
 	/**
 	 * Parse a list element.
 	 */
-	public List parseListElement(Element collectionEle, BeanDefinition bd) {
+	public List<Object> parseListElement(Element collectionEle, BeanDefinition bd) {
 		String defaultElementType = collectionEle.getAttribute(VALUE_TYPE_ATTRIBUTE);
 		NodeList nl = collectionEle.getChildNodes();
 		ManagedList<Object> target = new ManagedList<Object>(nl.getLength());
@@ -1209,7 +1209,7 @@ public class BeanDefinitionParserDelegate {
 	/**
 	 * Parse a set element.
 	 */
-	public Set parseSetElement(Element collectionEle, BeanDefinition bd) {
+	public Set<Object> parseSetElement(Element collectionEle, BeanDefinition bd) {
 		String defaultElementType = collectionEle.getAttribute(VALUE_TYPE_ATTRIBUTE);
 		NodeList nl = collectionEle.getChildNodes();
 		ManagedSet<Object> target = new ManagedSet<Object>(nl.getLength());
@@ -1234,7 +1234,7 @@ public class BeanDefinitionParserDelegate {
 	/**
 	 * Parse a map element.
 	 */
-	public Map parseMapElement(Element mapEle, BeanDefinition bd) {
+	public Map<Object, Object> parseMapElement(Element mapEle, BeanDefinition bd) {
 		String defaultKeyType = mapEle.getAttribute(KEY_TYPE_ATTRIBUTE);
 		String defaultValueType = mapEle.getAttribute(VALUE_TYPE_ATTRIBUTE);
 

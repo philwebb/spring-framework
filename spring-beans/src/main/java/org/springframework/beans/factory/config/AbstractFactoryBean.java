@@ -153,7 +153,7 @@ public abstract class AbstractFactoryBean<T>
 	 */
 	@SuppressWarnings("unchecked")
 	private T getEarlySingletonInstance() throws Exception {
-		Class[] ifcs = getEarlySingletonInterfaces();
+		Class<?>[] ifcs = getEarlySingletonInterfaces();
 		if (ifcs == null) {
 			throw new FactoryBeanNotInitializedException(
 					getClass().getName() + " does not support circular references");
@@ -218,8 +218,8 @@ public abstract class AbstractFactoryBean<T>
 	 * or {@code null} to indicate a FactoryBeanNotInitializedException
 	 * @see org.springframework.beans.factory.FactoryBeanNotInitializedException
 	 */
-	protected Class[] getEarlySingletonInterfaces() {
-		Class type = getObjectType();
+	protected Class<?>[] getEarlySingletonInterfaces() {
+		Class<?> type = getObjectType();
 		return (type != null && type.isInterface() ? new Class[] {type} : null);
 	}
 

@@ -115,7 +115,7 @@ public class BeanFactoryGenericsTests {
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
 		RootBeanDefinition rbd = new RootBeanDefinition(GenericIntegerBean.class);
 
-		List input = new ArrayList();
+		List<Integer> input = new ArrayList<Integer>();
 		input.add(1);
 		rbd.getPropertyValues().add("testBeanList", input);
 

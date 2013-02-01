@@ -27,24 +27,25 @@ import junit.framework.TestCase;
 public class ManagedMapTests extends TestCase {
 
 	public void testMergeSunnyDay() {
-		ManagedMap parent = new ManagedMap();
+		ManagedMap<String, String> parent = new ManagedMap<String, String>();
 		parent.put("one", "one");
 		parent.put("two", "two");
-		ManagedMap child = new ManagedMap();
+		ManagedMap<String, String> child = new ManagedMap<String, String>();
 		child.put("three", "three");
 		child.setMergeEnabled(true);
-		Map mergedMap = (Map) child.merge(parent);
+		@SuppressWarnings("unchecked")
+		Map<String, String> mergedMap = (Map<String, String>) child.merge(parent);
 		assertEquals("merge() obviously did not work.", 3, mergedMap.size());
 	}
 
 	public void testMergeWithNullParent() {
-		ManagedMap child = new ManagedMap();
+		ManagedMap<String, String> child = new ManagedMap<String, String>();
 		child.setMergeEnabled(true);
 		assertSame(child, child.merge(null));
 	}
 
 	public void testMergeWithNonCompatibleParentType() {
-		ManagedMap map = new ManagedMap();
+		ManagedMap<String, String> map = new ManagedMap<String, String>();
 		map.setMergeEnabled(true);
 		try {
 			map.merge("hello");

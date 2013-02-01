@@ -364,7 +364,7 @@ public final class PropertyResourceConfigurerTests {
 	}
 
 	private void doTestPropertyPlaceholderConfigurer(boolean parentChildSeparation) {
-		Map singletonMap = Collections.singletonMap("myKey", "myValue");
+		Map<String,String> singletonMap = Collections.singletonMap("myKey", "myValue");
 		if (parentChildSeparation) {
 			MutablePropertyValues pvs1 = new MutablePropertyValues();
 			pvs1.add("age", "${age}");

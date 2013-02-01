@@ -27,10 +27,10 @@ import junit.framework.TestCase;
 public class ManagedListTests extends TestCase {
 
 	public void testMergeSunnyDay() {
-		ManagedList parent = new ManagedList();
+		ManagedList<String> parent = new ManagedList<String>();
 		parent.add("one");
 		parent.add("two");
-		ManagedList child = new ManagedList();
+		ManagedList<String> child = new ManagedList<String>();
 		child.add("three");
 		child.setMergeEnabled(true);
 		List mergedList = child.merge(parent);
@@ -38,14 +38,14 @@ public class ManagedListTests extends TestCase {
 	}
 
 	public void testMergeWithNullParent() {
-		ManagedList child = new ManagedList();
+		ManagedList<String> child = new ManagedList<String>();
 		child.add("one");
 		child.setMergeEnabled(true);
 		assertSame(child, child.merge(null));
 	}
 
 	public void testMergeNotAllowedWhenMergeNotEnabled() {
-		ManagedList child = new ManagedList();
+		ManagedList<String> child = new ManagedList<String>();
 		try {
 			child.merge(null);
 			fail("Must have failed by this point (cannot merge() when the mergeEnabled property is false.");
@@ -55,7 +55,7 @@ public class ManagedListTests extends TestCase {
 	}
 
 	public void testMergeWithNonCompatibleParentType() {
-		ManagedList child = new ManagedList();
+		ManagedList<String> child = new ManagedList<String>();
 		child.add("one");
 		child.setMergeEnabled(true);
 		try {
@@ -67,10 +67,10 @@ public class ManagedListTests extends TestCase {
 	}
 
 	public void testMergeEmptyChild() {
-		ManagedList parent = new ManagedList();
+		ManagedList<String> parent = new ManagedList<String>();
 		parent.add("one");
 		parent.add("two");
-		ManagedList child = new ManagedList();
+		ManagedList<String> child = new ManagedList<String>();
 		child.setMergeEnabled(true);
 		List mergedList = child.merge(parent);
 		assertEquals("merge() obviously did not work.", 2, mergedList.size());
@@ -78,10 +78,10 @@ public class ManagedListTests extends TestCase {
 
 	public void testMergeChildValuesOverrideTheParents() {
 		// doesn't make a whole lotta sense in the context of a list...
-		ManagedList parent = new ManagedList();
+		ManagedList<String> parent = new ManagedList<String>();
 		parent.add("one");
 		parent.add("two");
-		ManagedList child = new ManagedList();
+		ManagedList<String> child = new ManagedList<String>();
 		child.add("one");
 		child.setMergeEnabled(true);
 		List mergedList = child.merge(parent);

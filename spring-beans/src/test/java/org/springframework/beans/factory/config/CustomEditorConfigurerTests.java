@@ -128,7 +128,7 @@ public final class CustomEditorConfigurerTests {
 	public void testCustomEditorConfigurerWithEditorAsClass() throws ParseException {
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
 		CustomEditorConfigurer cec = new CustomEditorConfigurer();
-		Map<String, Class> editors = new HashMap<String, Class>();
+		Map<String, Class<?>> editors = new HashMap<String, Class<?>>();
 		editors.put(Date.class.getName(), MyDateEditor.class);
 		cec.setCustomEditors(editors);
 		cec.postProcessBeanFactory(bf);
