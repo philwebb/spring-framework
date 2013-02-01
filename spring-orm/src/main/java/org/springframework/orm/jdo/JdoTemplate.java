@@ -179,13 +179,13 @@ public class JdoTemplate extends JdoAccessor implements JdoOperations {
 		return execute(action, isExposeNativePersistenceManager());
 	}
 
-	public Collection executeFind(JdoCallback<?> action) throws DataAccessException {
+	public Collection<Object> executeFind(JdoCallback<?> action) throws DataAccessException {
 		Object result = execute(action, isExposeNativePersistenceManager());
 		if (result != null && !(result instanceof Collection)) {
 			throw new InvalidDataAccessApiUsageException(
 					"Result object returned from JdoCallback isn't a Collection: [" + result + "]");
 		}
-		return (Collection) result;
+		return (Collection<Object>) result;
 	}
 
 	/**
@@ -235,7 +235,7 @@ public class JdoTemplate extends JdoAccessor implements JdoOperations {
 	 * @see #prepareQuery
 	 */
 	protected PersistenceManager createPersistenceManagerProxy(PersistenceManager pm) {
-		Class[] ifcs = ClassUtils.getAllInterfacesForClass(pm.getClass(), getClass().getClassLoader());
+		Class<?>[] ifcs = ClassUtils.getAllInterfacesForClass(pm.getClass(), getClass().getClassLoader());
 		return (PersistenceManager) Proxy.newProxyInstance(
 				pm.getClass().getClassLoader(), ifcs, new CloseSuppressingInvocationHandler(pm));
 	}
@@ -287,7 +287,7 @@ public class JdoTemplate extends JdoAccessor implements JdoOperations {
 		}, true);
 	}
 
-	public void evictAll(final Collection entities) throws DataAccessException {
+	public void evictAll(final Collection<?> entities) throws DataAccessException {
 		execute(new JdoCallback<Object>() {
 			public Object doInJdo(PersistenceManager pm) throws JDOException {
 				pm.evictAll(entities);
@@ -314,7 +314,7 @@ public class JdoTemplate extends JdoAccessor implements JdoOperations {
 		}, true);
 	}
 
-	public void refreshAll(final Collection entities) throws DataAccessException {
+	public void refreshAll(final Collection<?> entities) throws DataAccessException {
 		execute(new JdoCallback<Object>() {
 			public Object doInJdo(PersistenceManager pm) throws JDOException {
 				pm.refreshAll(entities);
@@ -357,7 +357,7 @@ public class JdoTemplate extends JdoAccessor implements JdoOperations {
 		}, true);
 	}
 
-	public void deletePersistentAll(final Collection entities) throws DataAccessException {
+	public void deletePersistentAll(final Collection<?> entities) throws DataAccessException {
 		execute(new JdoCallback<Object>() {
 			public Object doInJdo(PersistenceManager pm) throws JDOException {
 				pm.deletePersistentAll(entities);
@@ -469,12 +469,12 @@ public class JdoTemplate extends JdoAccessor implements JdoOperations {
 		}, true);
 	}
 
-	public Collection find(final String language, final Object queryObject) throws DataAccessException {
-		return execute(new JdoCallback<Collection>() {
-			public Collection doInJdo(PersistenceManager pm) throws JDOException {
+	public Collection<Object> find(final String language, final Object queryObject) throws DataAccessException {
+		return execute(new JdoCallback<Collection<Object>>() {
+			public Collection<Object> doInJdo(PersistenceManager pm) throws JDOException {
 				Query query = pm.newQuery(language, queryObject);
 				prepareQuery(query);
-				return (Collection) query.execute();
+				return (Collection<Object>) query.execute();
 			}
 		}, true);
 	}
@@ -484,27 +484,27 @@ public class JdoTemplate extends JdoAccessor implements JdoOperations {
 			public Collection doInJdo(PersistenceManager pm) throws JDOException {
 				Query query = pm.newQuery(queryString);
 				prepareQuery(query);
-				return (Collection) query.execute();
+				return (Collection<Object>) query.execute();
 			}
 		}, true);
 	}
 
-	public Collection find(final String queryString, final Object... values) throws DataAccessException {
-		return execute(new JdoCallback<Collection>() {
-			public Collection doInJdo(PersistenceManager pm) throws JDOException {
+	public Collection<Object> find(final String queryString, final Object... values) throws DataAccessException {
+		return execute(new JdoCallback<Collection<Object>>() {
+			public Collection<Object> doInJdo(PersistenceManager pm) throws JDOException {
 				Query query = pm.newQuery(queryString);
 				prepareQuery(query);
-				return (Collection) query.executeWithArray(values);
+				return (Collection<Object>) query.executeWithArray(values);
 			}
 		}, true);
 	}
 
-	public Collection find(final String queryString, final Map<String, ?> values) throws DataAccessException {
-		return execute(new JdoCallback<Collection>() {
-			public Collection doInJdo(PersistenceManager pm) throws JDOException {
+	public Collection<Object> find(final String queryString, final Map<String, ?> values) throws DataAccessException {
+		return execute(new JdoCallback<Collection<Object>>() {
+			public Collection<Object> doInJdo(PersistenceManager pm) throws JDOException {
 				Query query = pm.newQuery(queryString);
 				prepareQuery(query);
-				return (Collection) query.executeWithMap(values);
+				return (Collection<Object>) query.executeWithMap(values);
 			}
 		}, true);
 	}

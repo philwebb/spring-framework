@@ -68,27 +68,27 @@ public interface SqlMapClientOperations {
 	 * @see com.ibatis.sqlmap.client.SqlMapExecutor#queryForList(String)
 	 * @throws org.springframework.dao.DataAccessException in case of errors
 	 */
-	List queryForList(String statementName) throws DataAccessException;
+	List<Object> queryForList(String statementName) throws DataAccessException;
 
 	/**
 	 * @see com.ibatis.sqlmap.client.SqlMapExecutor#queryForList(String, Object)
 	 * @throws org.springframework.dao.DataAccessException in case of errors
 	 */
-	List queryForList(String statementName, Object parameterObject)
+	List<Object> queryForList(String statementName, Object parameterObject)
 			throws DataAccessException;
 
 	/**
 	 * @see com.ibatis.sqlmap.client.SqlMapExecutor#queryForList(String, int, int)
 	 * @throws org.springframework.dao.DataAccessException in case of errors
 	 */
-	List queryForList(String statementName, int skipResults, int maxResults)
+	List<Object> queryForList(String statementName, int skipResults, int maxResults)
 			throws DataAccessException;
 
 	/**
 	 * @see com.ibatis.sqlmap.client.SqlMapExecutor#queryForList(String, Object, int, int)
 	 * @throws org.springframework.dao.DataAccessException in case of errors
 	 */
-	List queryForList(String statementName, Object parameterObject, int skipResults, int maxResults)
+	List<Object> queryForList(String statementName, Object parameterObject, int skipResults, int maxResults)
 			throws DataAccessException;
 
 	/**

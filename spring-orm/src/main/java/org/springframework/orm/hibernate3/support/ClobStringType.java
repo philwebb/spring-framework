@@ -66,7 +66,7 @@ public class ClobStringType extends AbstractLobType {
 		return new int[] {Types.CLOB};
 	}
 
-	public Class returnedClass() {
+	public Class<?> returnedClass() {
 		return String.class;
 	}
 

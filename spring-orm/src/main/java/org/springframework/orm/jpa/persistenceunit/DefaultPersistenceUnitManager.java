@@ -592,9 +592,9 @@ public class DefaultPersistenceUnitManager
 		public Jpa2PersistenceUnitInfoDecorator(SpringPersistenceUnitInfo target) {
 			this.target = target;
 			try {
-				this.sharedCacheModeEnum = (Class<? extends Enum>)
+				this.sharedCacheModeEnum = (Class<? extends Enum<?>>)
 						ClassUtils.forName("javax.persistence.SharedCacheMode", PersistenceUnitInfo.class.getClassLoader());
-				this.validationModeEnum = (Class<? extends Enum>)
+				this.validationModeEnum = (Class<? extends Enum<?>>)
 						ClassUtils.forName("javax.persistence.ValidationMode", PersistenceUnitInfo.class.getClassLoader());
 			}
 			catch (Exception ex) {
