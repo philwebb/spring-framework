@@ -53,7 +53,7 @@ public class LocalJaxRpcServiceFactory {
 
 	private ServiceFactory serviceFactory;
 
-	private Class serviceFactoryClass;
+	private Class<?> serviceFactoryClass;
 
 	private URL wsdlDocumentUrl;
 
@@ -61,7 +61,7 @@ public class LocalJaxRpcServiceFactory {
 
 	private String serviceName;
 
-	private Class jaxRpcServiceInterface;
+	private Class<?> jaxRpcServiceInterface;
 
 	private Properties jaxRpcServiceProperties;
 
@@ -92,7 +92,7 @@ public class LocalJaxRpcServiceFactory {
 	 * itself with the JAX-RPC system property "SERVICEFACTORY_PROPERTY".
 	 * @see javax.xml.rpc.ServiceFactory
 	 */
-	public void setServiceFactoryClass(Class serviceFactoryClass) {
+	public void setServiceFactoryClass(Class<?> serviceFactoryClass) {
 		if (serviceFactoryClass != null && !ServiceFactory.class.isAssignableFrom(serviceFactoryClass)) {
 			throw new IllegalArgumentException("'serviceFactoryClass' must implement [javax.xml.rpc.ServiceFactory]");
 		}
@@ -102,7 +102,7 @@ public class LocalJaxRpcServiceFactory {
 	/**
 	 * Return the ServiceFactory class to use, or {@code null} if default.
 	 */
-	public Class getServiceFactoryClass() {
+	public Class<?> getServiceFactoryClass() {
 		return this.serviceFactoryClass;
 	}
 
@@ -165,14 +165,14 @@ public class LocalJaxRpcServiceFactory {
 	 * @see javax.xml.rpc.ServiceFactory#loadService(Class)
 	 * @see javax.xml.rpc.ServiceFactory#loadService(java.net.URL, Class, java.util.Properties)
 	 */
-	public void setJaxRpcServiceInterface(Class jaxRpcServiceInterface) {
+	public void setJaxRpcServiceInterface(Class<?> jaxRpcServiceInterface) {
 		this.jaxRpcServiceInterface = jaxRpcServiceInterface;
 	}
 
 	/**
 	 * Return the JAX-RPC service interface to use for looking up the service.
 	 */
-	public Class getJaxRpcServiceInterface() {
+	public Class<?> getJaxRpcServiceInterface() {
 		return this.jaxRpcServiceInterface;
 	}
 
