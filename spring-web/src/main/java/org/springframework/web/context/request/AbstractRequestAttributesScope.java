@@ -36,7 +36,7 @@ import org.springframework.beans.factory.config.Scope;
  */
 public abstract class AbstractRequestAttributesScope implements Scope {
 
-	public Object get(String name, ObjectFactory objectFactory) {
+	public Object get(String name, ObjectFactory<?> objectFactory) {
 		RequestAttributes attributes = RequestContextHolder.currentRequestAttributes();
 		Object scopedObject = attributes.getAttribute(name, getScope());
 		if (scopedObject == null) {

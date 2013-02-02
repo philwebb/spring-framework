@@ -109,7 +109,7 @@ public class ServletContextResourcePatternResolver extends PathMatchingResourceP
 			ServletContext servletContext, String fullPattern, String dir, Set<Resource> result)
 			throws IOException {
 
-		Set candidates = servletContext.getResourcePaths(dir);
+		Set<String> candidates = servletContext.getResourcePaths(dir);
 		if (candidates != null) {
 			boolean dirDepthNotFixed = fullPattern.contains("**");
 			int jarFileSep = fullPattern.indexOf(ResourceUtils.JAR_URL_SEPARATOR);
