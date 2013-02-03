@@ -38,6 +38,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.transform.Source;
 
 import org.springframework.core.ExceptionDepthComparator;
 import org.springframework.core.GenericTypeResolver;
@@ -97,7 +98,7 @@ public class AnnotationMethodHandlerExceptionResolver extends AbstractHandlerExc
 
 	private HttpMessageConverter<?>[] messageConverters =
 			new HttpMessageConverter[] {new ByteArrayHttpMessageConverter(), new StringHttpMessageConverter(),
-					new SourceHttpMessageConverter(), new XmlAwareFormHttpMessageConverter()};
+					new SourceHttpMessageConverter<Source>(), new XmlAwareFormHttpMessageConverter()};
 
 
 	/**
@@ -428,7 +429,7 @@ public class AnnotationMethodHandlerExceptionResolver extends AbstractHandlerExc
 		Class<?> returnValueType = returnValue.getClass();
 		if (this.messageConverters != null) {
 			for (MediaType acceptedMediaType : acceptedMediaTypes) {
-				for (HttpMessageConverter messageConverter : this.messageConverters) {
+				for (HttpMessageConverter<?> messageConverter : this.messageConverters) {
 					if (messageConverter.canWrite(returnValueType, acceptedMediaType)) {
 						messageConverter.write(returnValue, acceptedMediaType, outputMessage);
 						return new ModelAndView();

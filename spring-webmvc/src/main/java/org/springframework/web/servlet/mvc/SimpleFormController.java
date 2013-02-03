@@ -195,7 +195,7 @@ public class SimpleFormController extends AbstractFormController {
 	 * @see #setFormView
 	 */
 	protected ModelAndView showForm(
-			HttpServletRequest request, HttpServletResponse response, BindException errors, Map controlModel)
+			HttpServletRequest request, HttpServletResponse response, BindException errors, Map<String, ?> controlModel)
 			throws Exception {
 
 		return showForm(request, errors, getFormView(), controlModel);
@@ -214,7 +214,7 @@ public class SimpleFormController extends AbstractFormController {
 	 * @see ModelAndView
 	 */
 	@Override
-	protected Map referenceData(HttpServletRequest request, Object command, Errors errors) throws Exception {
+	protected Map<String, ?> referenceData(HttpServletRequest request, Object command, Errors errors) throws Exception {
 		return referenceData(request);
 	}
 
@@ -230,7 +230,7 @@ public class SimpleFormController extends AbstractFormController {
 	 * @see #referenceData(HttpServletRequest, Object, Errors)
 	 * @see ModelAndView
 	 */
-	protected Map referenceData(HttpServletRequest request) throws Exception {
+	protected Map<String, ?> referenceData(HttpServletRequest request) throws Exception {
 		return null;
 	}
 
