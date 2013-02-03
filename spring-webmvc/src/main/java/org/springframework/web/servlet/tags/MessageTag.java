@@ -267,7 +267,7 @@ public class MessageTag extends HtmlEscapingAwareTag {
 			return (Object[]) arguments;
 		}
 		else if (arguments instanceof Collection) {
-			return ((Collection) arguments).toArray();
+			return ((Collection<?>) arguments).toArray();
 		}
 		else if (arguments != null) {
 			// Assume a single argument object.

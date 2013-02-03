@@ -556,7 +556,7 @@ public abstract class AbstractFormController extends BaseCommandController {
 	 * @throws Exception in case of invalid state or arguments
 	 */
 	protected final ModelAndView showForm(
-			HttpServletRequest request, BindException errors, String viewName, Map controlModel)
+			HttpServletRequest request, BindException errors, String viewName, Map<String, ?> controlModel)
 			throws Exception {
 
 		// In session form mode, re-expose form object as HTTP session attribute.
@@ -572,10 +572,10 @@ public abstract class AbstractFormController extends BaseCommandController {
 
 		// Fetch errors model as starting point, containing form object under
 		// "commandName", and corresponding Errors instance under internal key.
-		Map model = errors.getModel();
+		Map<String, Object> model = errors.getModel();
 
 		// Merge reference data into model, if any.
-		Map referenceData = referenceData(request, errors.getTarget(), errors);
+		Map<String, ?> referenceData = referenceData(request, errors.getTarget(), errors);
 		if (referenceData != null) {
 			model.putAll(referenceData);
 		}
@@ -601,7 +601,7 @@ public abstract class AbstractFormController extends BaseCommandController {
 	 * @throws Exception in case of invalid state or arguments
 	 * @see ModelAndView
 	 */
-	protected Map referenceData(HttpServletRequest request, Object command, Errors errors) throws Exception {
+	protected Map<String, ?> referenceData(HttpServletRequest request, Object command, Errors errors) throws Exception {
 		return null;
 	}
 

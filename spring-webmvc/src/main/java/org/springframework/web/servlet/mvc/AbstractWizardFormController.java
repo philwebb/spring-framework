@@ -302,7 +302,7 @@ public abstract class AbstractWizardFormController extends AbstractFormControlle
 	 * @throws Exception in case of invalid state or arguments
 	 * @see ModelAndView
 	 */
-	protected Map referenceData(HttpServletRequest request, int page) throws Exception {
+	protected Map<String, ?> referenceData(HttpServletRequest request, int page) throws Exception {
 		return null;
 	}
 
@@ -350,7 +350,7 @@ public abstract class AbstractWizardFormController extends AbstractFormControlle
 			request.setAttribute(pageAttrName, pageInteger);
 
 			// Set page request attribute for evaluation by views.
-			Map controlModel = new HashMap();
+			Map<String, Integer> controlModel = new HashMap<String, Integer>();
 			if (this.pageAttribute != null) {
 				controlModel.put(this.pageAttribute, new Integer(page));
 			}

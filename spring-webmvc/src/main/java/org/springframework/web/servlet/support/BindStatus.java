@@ -214,7 +214,7 @@ public class BindStatus {
 	 * '{@code getValue().getClass()}' since '{@code getValue()}' may
 	 * return '{@code null}'.
 	 */
-	public Class getValueType() {
+	public Class<?> getValueType() {
 		return this.valueType;
 	}
 
@@ -318,7 +318,7 @@ public class BindStatus {
 	 * @param valueClass the value class that an editor is needed for
 	 * @return the associated PropertyEditor, or {@code null} if none
 	 */
-	public PropertyEditor findEditor(Class valueClass) {
+	public PropertyEditor findEditor(Class<?> valueClass) {
 		return (this.bindingResult != null ? this.bindingResult.findEditor(this.expression, valueClass) : null);
 	}
 
