@@ -73,7 +73,7 @@ public abstract class AbstractCommandController extends BaseCommandController {
 	 * Create a new AbstractCommandController.
 	 * @param commandClass class of the command bean
 	 */
-	public AbstractCommandController(Class commandClass) {
+	public AbstractCommandController(Class<?> commandClass) {
 		setCommandClass(commandClass);
 	}
 
@@ -82,7 +82,7 @@ public abstract class AbstractCommandController extends BaseCommandController {
 	 * @param commandClass class of the command bean
 	 * @param commandName name of the command bean
 	 */
-	public AbstractCommandController(Class commandClass, String commandName) {
+	public AbstractCommandController(Class<?> commandClass, String commandName) {
 		setCommandClass(commandClass);
 		setCommandName(commandName);
 	}
