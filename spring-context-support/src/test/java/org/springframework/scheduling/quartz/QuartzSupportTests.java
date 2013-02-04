@@ -96,7 +96,7 @@ public class QuartzSupportTests {
 		JobDetailBean jobDetail0 = new JobDetailBean();
 		jobDetail0.setJobClass(Job.class);
 		jobDetail0.setBeanName("myJob0");
-		Map jobData = new HashMap();
+		Map<String, TestBean> jobData = new HashMap<String, TestBean>();
 		jobData.put("testBean", tb);
 		jobDetail0.setJobDataAsMap(jobData);
 		jobDetail0.afterPropertiesSet();
@@ -143,7 +143,7 @@ public class QuartzSupportTests {
 			}
 		};
 		schedulerFactoryBean.setJobFactory(null);
-		Map schedulerContext = new HashMap();
+		Map<String, TestBean> schedulerContext = new HashMap<String, TestBean>();
 		schedulerContext.put("otherTestBean", tb);
 		schedulerFactoryBean.setSchedulerContextAsMap(schedulerContext);
 		if (explicitJobDetail) {
@@ -183,7 +183,7 @@ public class QuartzSupportTests {
 		JobDetailBean jobDetail0 = new JobDetailBean();
 		jobDetail0.setJobClass(Job.class);
 		jobDetail0.setBeanName("myJob0");
-		Map jobData = new HashMap();
+		Map<String, TestBean> jobData = new HashMap<String, TestBean>();
 		jobData.put("testBean", tb);
 		jobDetail0.setJobDataAsMap(jobData);
 		jobDetail0.afterPropertiesSet();
@@ -223,7 +223,7 @@ public class QuartzSupportTests {
 			}
 		};
 		schedulerFactoryBean.setJobFactory(null);
-		Map schedulerContext = new HashMap();
+		Map<String, TestBean> schedulerContext = new HashMap<String, TestBean>();
 		schedulerContext.put("otherTestBean", tb);
 		schedulerFactoryBean.setSchedulerContextAsMap(schedulerContext);
 		schedulerFactoryBean.setTriggers(new Trigger[] {trigger0, trigger1});
@@ -267,7 +267,7 @@ public class QuartzSupportTests {
 		JobDetailBean jobDetail0 = new JobDetailBean();
 		jobDetail0.setJobClass(Job.class);
 		jobDetail0.setBeanName("myJob0");
-		Map jobData = new HashMap();
+		Map<String, TestBean> jobData = new HashMap<String, TestBean>();
 		jobData.put("testBean", tb);
 		jobDetail0.setJobDataAsMap(jobData);
 		jobDetail0.afterPropertiesSet();
@@ -312,7 +312,7 @@ public class QuartzSupportTests {
 			}
 		};
 		schedulerFactoryBean.setJobFactory(null);
-		Map schedulerContext = new HashMap();
+		HashMap<String, TestBean> schedulerContext = new HashMap<String, TestBean>();
 		schedulerContext.put("otherTestBean", tb);
 		schedulerFactoryBean.setSchedulerContextAsMap(schedulerContext);
 		schedulerFactoryBean.setTriggers(new Trigger[] {trigger0, trigger1});

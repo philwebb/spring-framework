@@ -211,7 +211,7 @@ public final class QualifierAnnotationTests {
 	}
 
 
-	private static class QualifiedByValueTestBean {
+	public static class QualifiedByValueTestBean {
 
 		@Autowired @Qualifier("larry")
 		private Person larry;
@@ -222,7 +222,7 @@ public final class QualifierAnnotationTests {
 	}
 
 
-	private static class QualifiedByBeanNameTestBean {
+	public static class QualifiedByBeanNameTestBean {
 
 		@Autowired @Qualifier("larryBean")
 		private Person larry;
@@ -236,7 +236,7 @@ public final class QualifierAnnotationTests {
 	}
 
 
-	private static class QualifiedByFieldNameTestBean {
+	public static class QualifiedByFieldNameTestBean {
 
 		@Autowired
 		private Person larryBean;
@@ -247,7 +247,7 @@ public final class QualifierAnnotationTests {
 	}
 
 
-	private static class QualifiedByParameterNameTestBean {
+	public static class QualifiedByParameterNameTestBean {
 
 		private Person larryBean;
 
@@ -262,7 +262,7 @@ public final class QualifierAnnotationTests {
 	}
 
 
-	private static class QualifiedByAliasTestBean {
+	public static class QualifiedByAliasTestBean {
 
 		@Autowired @Qualifier("stooge")
 		private Person stooge;
@@ -273,7 +273,7 @@ public final class QualifierAnnotationTests {
 	}
 
 
-	private static class QualifiedByAnnotationTestBean {
+	public static class QualifiedByAnnotationTestBean {
 
 		@Autowired @Qualifier("special")
 		private Person larry;
@@ -284,7 +284,7 @@ public final class QualifierAnnotationTests {
 	}
 
 
-	private static class QualifiedByCustomValueTestBean {
+	public static class QualifiedByCustomValueTestBean {
 
 		@Autowired @SimpleValueQualifier("curly")
 		private Person curly;
@@ -295,7 +295,7 @@ public final class QualifierAnnotationTests {
 	}
 
 
-	private static class QualifiedByAnnotationValueTestBean {
+	public static class QualifiedByAnnotationValueTestBean {
 
 		@Autowired @SimpleValueQualifier("special")
 		private Person larry;
@@ -342,7 +342,7 @@ public final class QualifierAnnotationTests {
 
 	@Qualifier("special")
 	@SimpleValueQualifier("special")
-	private static class SpecialPerson extends Person {
+	public static class SpecialPerson extends Person {
 	}
 
 

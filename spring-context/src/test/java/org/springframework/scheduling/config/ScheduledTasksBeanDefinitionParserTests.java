@@ -102,7 +102,8 @@ public class ScheduledTasksBeanDefinitionParserTests {
 		List<CronTask> tasks = (List<CronTask>) new DirectFieldAccessor(
 				this.registrar).getPropertyValue("cronTasks");
 		assertEquals(1, tasks.size());
-		assertEquals("*/4 * 9-17 * * MON-FRI", tasks.get(0).getExpression());
+		String expression = tasks.values().iterator().next();
+		assertEquals("*/4 * 9-17 * * MON-FRI", expression);
 	}
 
 	@Test
@@ -110,7 +111,8 @@ public class ScheduledTasksBeanDefinitionParserTests {
 		List<TriggerTask> tasks = (List<TriggerTask>) new DirectFieldAccessor(
 				this.registrar).getPropertyValue("triggerTasks");
 		assertEquals(1, tasks.size());
-		assertThat(tasks.get(0).getTrigger(), instanceOf(TestTrigger.class));
+		Trigger trigger = tasks.values().iterator().next();
+		assertEquals(TestTrigger.class, trigger.getClass());
 	}
 
 

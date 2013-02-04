@@ -24,7 +24,6 @@ import javax.portlet.PortletException;
 import javax.portlet.PortletMode;
 import javax.portlet.PortletSecurityException;
 import javax.portlet.PortletSession;
-
 import junit.framework.TestCase;
 
 import org.springframework.tests.sample.beans.TestBean;

@@ -41,6 +41,7 @@ public class StopWatchTests extends TestCase {
 		sw.stop();
 
 		// TODO are timings off in JUnit? Why do these assertions sometimes fail
+		// long fudgeFactor = 5L;
 		// under both Ant and Eclipse?
 
 		//long fudgeFactor = 5L;
@@ -79,6 +80,7 @@ public class StopWatchTests extends TestCase {
 		sw.stop();
 
 		// TODO are timings off in JUnit? Why do these assertions sometimes fail
+		//long fudgeFactor = 5L;
 		// under both Ant and Eclipse?
 
 		//long fudgeFactor = 5L;

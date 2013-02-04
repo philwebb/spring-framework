@@ -27,7 +27,7 @@ import java.util.Comparator;
  */
 public final class OrderComparatorTests extends TestCase {
 
-	private Comparator comparator;
+	private Comparator<Object> comparator;
 
 
 	@Override

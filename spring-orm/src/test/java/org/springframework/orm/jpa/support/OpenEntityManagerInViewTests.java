@@ -64,6 +64,8 @@ import org.springframework.web.context.support.StaticWebApplicationContext;
  */
 public class OpenEntityManagerInViewTests {
 
+	private MockControl factoryControl, managerControl;
+
 	private EntityManager manager;
 
 	private EntityManagerFactory factory;

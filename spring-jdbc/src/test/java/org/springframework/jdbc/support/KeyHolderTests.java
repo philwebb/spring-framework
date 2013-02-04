@@ -29,7 +29,7 @@ import junit.framework.TestCase;
  * Tests for the KeyHolder and GeneratedKeyHolder
  * and it appears that JdbcUtils doesn't work exactly as documented.
  *
- * @author trisberg
+ * @author Thomas Risberg
  * @since Jul 18, 2004
  */
 public class KeyHolderTests extends TestCase {
@@ -41,8 +41,8 @@ public class KeyHolderTests extends TestCase {
 	}
 
 	public void testSingleKey(){
-		LinkedList l = new LinkedList();
-		HashMap m = new HashMap(1);
+		LinkedList<Map<String, Object>> l = new LinkedList<Map<String, Object>>();
+		HashMap<String, Object> m = new HashMap<String, Object>(1);
 		m.put("key", new Integer(1));
 		l.add(m);
 		kh.getKeyList().addAll(l);
@@ -50,8 +50,8 @@ public class KeyHolderTests extends TestCase {
 	}
 
 	public void testSingleKeyNonNumeric(){
-		LinkedList l = new LinkedList();
-		HashMap m = new HashMap(1);
+		LinkedList<Map<String, Object>> l = new LinkedList<Map<String, Object>>();
+		HashMap<String, Object> m = new HashMap<String, Object>(1);
 		m.put("key", "1");
 		l.add(m);
 		kh.getKeyList().addAll(l);
@@ -64,8 +64,8 @@ public class KeyHolderTests extends TestCase {
 	}
 
 	public void testNoKeyReturnedInMap(){
-		LinkedList l = new LinkedList();
-		HashMap m = new HashMap();
+		LinkedList<Map<String, Object>> l = new LinkedList<Map<String, Object>>();
+		HashMap<String, Object> m = new HashMap<String, Object>(1);
 		l.add(m);
 		kh.getKeyList().addAll(l);
 		try {
@@ -77,13 +77,13 @@ public class KeyHolderTests extends TestCase {
 	}
 
 	public void testMultipleKeys(){
-		LinkedList l = new LinkedList();
-		HashMap m = new HashMap(1);
+		LinkedList<Map<String, Object>> l = new LinkedList<Map<String, Object>>();
+		HashMap<String, Object> m = new HashMap<String, Object>(1);
 		m.put("key", new Integer(1));
 		m.put("seq", new Integer(2));
 		l.add(m);
 		kh.getKeyList().addAll(l);
-		Map keyMap = kh.getKeys();
+		Map<String, Object> keyMap = kh.getKeys();
 		assertEquals("two keys should be in the map", 2, keyMap.size());
 		try {
 			kh.getKey();
@@ -94,8 +94,8 @@ public class KeyHolderTests extends TestCase {
 	}
 
 	public void testMultipleKeyRows(){
-		LinkedList l = new LinkedList();
-		HashMap m = new HashMap(1);
+		LinkedList<Map<String, Object>> l = new LinkedList<Map<String, Object>>();
+		HashMap<String, Object> m = new HashMap<String, Object>(1);
 		m.put("key", new Integer(1));
 		m.put("seq", new Integer(2));
 		l.add(m);

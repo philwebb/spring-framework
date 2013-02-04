@@ -42,6 +42,7 @@ import org.springframework.core.io.ClassPathResource;
  * @author Chris Beams
  * @author Juergen Hoeller
  */
+@SuppressWarnings("deprecation")
 public class AutowiredConfigurationTests {
 
 	@Test

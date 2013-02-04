@@ -210,6 +210,7 @@ public class MethodInvokerTests extends TestCase {
 		}
 
 		// should handle Regular (exact) and VIP (closest match)
+		@SuppressWarnings("unused")
 		private String greet(Regular regular) {
 			return "regular: " + regular.getGreeting();
 		}

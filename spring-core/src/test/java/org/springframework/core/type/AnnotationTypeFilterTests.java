@@ -108,17 +108,17 @@ public class AnnotationTypeFilterTests {
 	// and interfering with ClassloadingAssertions.assertClassNotLoaded()
 
 	@Inherited
-	private static @interface InheritedAnnotation {
+	public static @interface InheritedAnnotation {
 	}
 
 
 	@InheritedAnnotation
-	private static class SomeComponent {
+	public static class SomeComponent {
 	}
 
 
 	@InheritedAnnotation
-	private static interface SomeComponentInterface {
+	public static interface SomeComponentInterface {
 	}
 
 
@@ -132,12 +132,12 @@ public class AnnotationTypeFilterTests {
 	}
 
 
-	private static @interface NonInheritedAnnotation {
+	public static @interface NonInheritedAnnotation {
 	}
 
 
 	@NonInheritedAnnotation
-	private static class SomeClassMarkedWithNonInheritedAnnotation {
+	public static class SomeClassMarkedWithNonInheritedAnnotation {
 	}
 
 

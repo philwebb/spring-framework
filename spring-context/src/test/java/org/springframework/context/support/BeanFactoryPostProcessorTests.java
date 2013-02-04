@@ -32,7 +32,7 @@ import org.springframework.context.support.StaticApplicationContext;
 
 /**
  * Tests the interaction between {@link ApplicationContext} implementations and
- * any registered {@link BeanFactoryPostProcessor} implementations.  Specifically
+ * any registered {@link BeanFactoryPostProcessor} implementations. Specifically
  * {@link StaticApplicationContext} is used for the tests, but what's represented
  * here is any {@link AbstractApplicationContext} implementation.
  *

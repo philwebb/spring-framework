@@ -191,5 +191,4 @@ public class ScheduledAndTransactionalAnnotationIntegrationTests {
 			return this.count.get();
 		}
 	}
-
 }

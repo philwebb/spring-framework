@@ -47,7 +47,7 @@ public class XmlListableBeanFactoryTests extends AbstractListableBeanFactoryTest
 	@Override
 	protected void setUp() {
 		parent = new DefaultListableBeanFactory();
-		Map m = new HashMap();
+		Map<Object, Object> m = new HashMap<Object, Object>();
 		m.put("name", "Albert");
 		RootBeanDefinition bd1 = new RootBeanDefinition(TestBean.class);
 		bd1.setPropertyValues(new MutablePropertyValues(m));
@@ -115,7 +115,7 @@ public class XmlListableBeanFactoryTests extends AbstractListableBeanFactoryTest
 	 * Test that properties with name as well as id creating an alias up front.
 	 */
 	public void testAutoAliasing() throws Exception {
-		List beanNames = Arrays.asList(getListableBeanFactory().getBeanDefinitionNames());
+		List<String> beanNames = Arrays.asList(getListableBeanFactory().getBeanDefinitionNames());
 
 		TestBean tb1 = (TestBean) getBeanFactory().getBean("aliased");
 		TestBean alias1 = (TestBean) getBeanFactory().getBean("myalias");

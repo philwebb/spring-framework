@@ -51,7 +51,7 @@ public final class DeclareParentsTests {
 		assertTrue(AopUtils.isAopProxy(testBeanProxy));
 
 		// we need the real target too, not just the proxy...
-		testBeanTarget = (TestBean) ((Advised) testBeanProxy).getTargetSource().getTarget();
+		((Advised) testBeanProxy).getTargetSource().getTarget();
 	}
 
 	@Test

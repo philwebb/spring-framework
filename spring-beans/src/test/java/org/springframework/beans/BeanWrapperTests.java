@@ -96,14 +96,27 @@ public final class BeanWrapperTests {
 		assertEquals(map, foo.list.get(0));
 	}
 
-	@Test
-	public void testNullNestedTypeDescriptorWithNoConversionService() {
-		Foo foo = new Foo();
-		BeanWrapperImpl wrapper = new BeanWrapperImpl(foo);
-		wrapper.setAutoGrowNestedPaths(true);
-		wrapper.setPropertyValue("listOfMaps[0]['luckyNumber']", "9");
-		assertEquals("9", foo.listOfMaps.get(0).get("luckyNumber"));
-	}
+	static class Foo {
+
+		private List<?> list;
+
+		private List<Map<?, ?>> listOfMaps;
+
+		public List<?> getList() {
+			return list;
+		}
+
+		public void setList(List<?> list) {
+			this.list = list;
+		}
+
+		public List<Map<?, ?>> getListOfMaps() {
+			return listOfMaps;
+		}
+
+		public void setListOfMaps(List<Map<?, ?>> listOfMaps) {
+			this.listOfMaps = listOfMaps;
+		}
 
 	@Test
 	public void testNullNestedTypeDescriptorWithBadConversionService() {
@@ -1099,13 +1112,13 @@ public final class BeanWrapperTests {
 		inputMap.put(new Integer(1), "rod");
 		inputMap.put(new Integer(2), "rob");
 		MutablePropertyValues pvs = new MutablePropertyValues();
-		pvs.add("map", new ReadOnlyMap(inputMap));
+		pvs.add("map", new ReadOnlyMap<Object, Object>(inputMap));
 		bw.setPropertyValues(pvs);
 		assertEquals("rod", ((TestBean) bean.getMap().get(new Integer(1))).getName());
 		assertEquals("rob", ((TestBean) bean.getMap().get(new Integer(2))).getName());
 	}
 
-	@SuppressWarnings("unchecked") // must work with raw map in this test
+	@SuppressWarnings({ "unchecked", "rawtypes" }) // must work with raw map in this test
 	@Test
 	public void testRawMapAccessWithNoEditorRegistered() {
 		IndexedTestBean bean = new IndexedTestBean();

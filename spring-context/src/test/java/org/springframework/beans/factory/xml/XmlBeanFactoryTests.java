@@ -83,6 +83,7 @@ import org.xml.sax.InputSource;
  * @author Rick Evans
  * @author Chris Beams
  */
+@SuppressWarnings("deprecation")
 public final class XmlBeanFactoryTests {
 
 	private static final Class<?> CLASS = XmlBeanFactoryTests.class;
@@ -1827,7 +1828,7 @@ public final class XmlBeanFactoryTests {
 			this.tb = tb;
 		}
 
-		public LenientDependencyTestBean(Map[] m) {
+		public LenientDependencyTestBean(Map<Object, Object>[] m) {
 			throw new IllegalStateException("Don't pick this constructor");
 		}
 

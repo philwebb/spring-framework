@@ -1627,7 +1627,7 @@ public class DataBinderTests extends TestCase {
 		assertEquals("firstValue", list.get(0));
 		assertEquals("secondValue", list.get(1));
 		assertEquals(2, list.size());
-	  }
+	}
 
 
 	@SuppressWarnings("unused")
@@ -1680,7 +1680,7 @@ public class DataBinderTests extends TestCase {
 	}
 
 
-	private static class TestBeanValidator implements Validator {
+	public static class TestBeanValidator implements Validator {
 
 		@Override
 		public boolean supports(Class<?> clazz) {
@@ -1709,7 +1709,7 @@ public class DataBinderTests extends TestCase {
 	}
 
 
-	private static class SpouseValidator implements Validator {
+	public static class SpouseValidator implements Validator {
 
 		@Override
 		public boolean supports(Class<?> clazz) {
@@ -1819,7 +1819,7 @@ public class DataBinderTests extends TestCase {
 	}
 
 
-	private static class Form {
+	public static class Form {
 
 		private final Map<String, Object> f;
 

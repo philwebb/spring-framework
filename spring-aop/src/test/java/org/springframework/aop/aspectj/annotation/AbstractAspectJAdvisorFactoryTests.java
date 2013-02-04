@@ -396,7 +396,7 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 		lockable.lock();
 		assertTrue("Real target ignores locking", lockable.locked());
 		try {
-			lockable.unlock();
+			proxy.unlock();
 			fail();
 		}
 		catch (UnsupportedOperationException ex) {
@@ -581,20 +581,31 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 	@Test
 	public void testFailureWithoutExplicitDeclarePrecedence() {
 		TestBean target = new TestBean();
-		MetadataAwareAspectInstanceFactory aspectInstanceFactory = new SingletonMetadataAwareAspectInstanceFactory(
-			new NoDeclarePrecedenceShouldFail(), "someBean");
 		ITestBean itb = (ITestBean) createProxy(target,
-			getFixture().getAdvisors(aspectInstanceFactory), ITestBean.class);
-		itb.getAge();
+				getFixture().getAdvisors(new SingletonMetadataAwareAspectInstanceFactory(new NoDeclarePrecedenceShouldFail(), "someBean")),
+				ITestBean.class);
+		try {
+			itb.getAge();
+			fail();
+		}
+		catch (IllegalStateException ex) {
+			// expected
+		}
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testDeclarePrecedenceNotSupported() {
 		TestBean target = new TestBean();
-		MetadataAwareAspectInstanceFactory aspectInstanceFactory = new SingletonMetadataAwareAspectInstanceFactory(
-			new DeclarePrecedenceShouldSucceed(), "someBean");
-		createProxy(target, getFixture().getAdvisors(aspectInstanceFactory),
-			ITestBean.class);
+		try {
+			createProxy(target,
+				getFixture().getAdvisors(new SingletonMetadataAwareAspectInstanceFactory(
+						new DeclarePrecedenceShouldSucceed(),"someBean")),
+				ITestBean.class);
+			fail();
+		}
+		catch (IllegalArgumentException ex) {
+			// Not supported in 2.0
+		}
 	}
 
 	/** Not supported in 2.0!
@@ -705,6 +716,7 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 	@Aspect
 	public static class NamedPointcutAspectWithFQN {
 
+		@SuppressWarnings("unused")
 		private ITestBean fieldThatShouldBeIgnoredBySpringAtAspectJProcessing = new TestBean();
 
 		@Pointcut("execution(* getAge())")
@@ -1104,6 +1116,7 @@ class PerThisAspect {
 	/**
 	 * Just to check that this doesn't cause problems with introduction processing
 	 */
+	@SuppressWarnings("unused")
 	private ITestBean fieldThatShouldBeIgnoredBySpringAtAspectJProcessing = new TestBean();
 
 	@Around("execution(int *.getAge())")

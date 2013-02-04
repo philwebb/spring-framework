@@ -37,9 +37,9 @@ public final class JndiDataSourceLookupTests {
 		JndiDataSourceLookup lookup = new JndiDataSourceLookup() {
 			@Override
 			@SuppressWarnings("unchecked")
-			protected Object lookup(String jndiName, Class requiredType) {
+			protected <T> T lookup(String jndiName, Class<T> requiredType) {
 				assertEquals(DATA_SOURCE_NAME, jndiName);
-				return expectedDataSource;
+				return (T) expectedDataSource;
 			}
 		};
 		DataSource dataSource = lookup.getDataSource(DATA_SOURCE_NAME);

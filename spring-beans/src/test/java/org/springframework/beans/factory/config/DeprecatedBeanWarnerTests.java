@@ -36,7 +36,7 @@ public class DeprecatedBeanWarnerTests {
 
 	private DeprecatedBeanWarner warner;
 
-
+	@SuppressWarnings("deprecation")
 	@Test
 	@SuppressWarnings("deprecation")
 	public void postProcess() {

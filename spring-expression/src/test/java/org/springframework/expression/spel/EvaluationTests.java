@@ -75,8 +75,8 @@ public class EvaluationTests extends ExpressionTestCase {
 		assertEquals(4, testClass.getFoo().size());
 	}
 
-	@Test(expected = SpelEvaluationException.class)
-	public void testCreateMapsOnAttemptToIndexNull01() throws Exception {
+	@Test
+	public void testCreateMapsOnAttemptToIndexNull01() throws EvaluationException, ParseException {
 		TestClass testClass = new TestClass();
 		StandardEvaluationContext ctx = new StandardEvaluationContext(testClass);
 		ExpressionParser parser = new SpelExpressionParser(new SpelParserConfiguration(true, true));
@@ -84,10 +84,15 @@ public class EvaluationTests extends ExpressionTestCase {
 		o = parser.parseExpression("map['a']").getValue(ctx);
 		assertNull(o);
 		o = parser.parseExpression("map").getValue(ctx);
-		assertNotNull(o);
+		Assert.assertNotNull(o);
 
-		o = parser.parseExpression("map2['a']").getValue(ctx);
-		// map2 should be null, there is no setter
+		try {
+			o = parser.parseExpression("map2['a']").getValue(ctx);
+			// fail!
+			Assert.fail("map2 should be null, there is no setter");
+		} catch (Exception e) {
+			// success!
+		}
 	}
 
 	// wibble2 should be null (cannot be initialized dynamically), there is no setter
@@ -100,14 +105,20 @@ public class EvaluationTests extends ExpressionTestCase {
 		o = parser.parseExpression("wibble.bar").getValue(ctx);
 		assertEquals("hello", o);
 		o = parser.parseExpression("wibble").getValue(ctx);
-		assertNotNull(o);
+		Assert.assertNotNull(o);
 
-		o = parser.parseExpression("wibble2.bar").getValue(ctx);
+		try {
+			o = parser.parseExpression("wibble2.bar").getValue(ctx);
+			// fail!
+			Assert.fail("wibble2 should be null (cannot be initialized dynamically), there is no setter");
+		} catch (Exception e) {
+			// success!
+		}
 	}
-
 
 	@SuppressWarnings("rawtypes")
 	static class TestClass {
+
 		public Foo wibble;
 		private Foo wibble2;
 		public Map map;
@@ -115,7 +126,6 @@ public class EvaluationTests extends ExpressionTestCase {
 		public List<String> list;
 		public List list2;
 		private Map map2;
-		private List<String> foo;
 
 		public Map getMap2() { return this.map2; }
 		public Foo getWibble2() { return this.wibble2; }
@@ -127,7 +137,6 @@ public class EvaluationTests extends ExpressionTestCase {
 		public Foo() {}
 		public String bar = "hello";
 	}
-
 
 	@Test
 	public void testElvis01() {
@@ -237,12 +246,13 @@ public class EvaluationTests extends ExpressionTestCase {
 			new SpelExpressionParser().parseExpression("placeOfBirth.foo.");
 			fail("Should have failed to parse");
 		} catch (ParseException e) {
-			assertTrue(e instanceof SpelParseException);
-			SpelParseException spe = (SpelParseException) e;
-			assertEquals(SpelMessage.OOD, spe.getMessageCode());
-			assertEquals(16, spe.getPosition());
+			Assert.assertTrue(e instanceof SpelParseException);
+			SpelParseException spe = (SpelParseException)e;
+			Assert.assertEquals(SpelMessage.OOD,spe.getMessageCode());
+			Assert.assertEquals(16,spe.getPosition());
 		}
 	}
+
 
 	// nested properties
 	@Test
@@ -295,10 +305,10 @@ public class EvaluationTests extends ExpressionTestCase {
 		String newString = expr.getValue(String.class);
 		assertEquals("wibble", newString);
 		newString = expr.getValue(String.class);
-		assertEquals("wibble", newString);
+		Assert.assertEquals("wibble",newString);
 
 		// not writable
-		assertFalse(expr.isWritable(new StandardEvaluationContext()));
+		Assert.assertFalse(expr.isWritable(new StandardEvaluationContext()));
 
 		// ast
 		assertEquals("new String('wibble')", expr.toStringAST());
@@ -417,6 +427,7 @@ public class EvaluationTests extends ExpressionTestCase {
 		evaluate("'christian'[8]", "n", String.class);
 	}
 
+
 	@Test
 	public void testIndexerError() {
 		evaluateAndCheckError("new org.springframework.expression.spel.testresources.Inventor().inventions[1]",
@@ -492,6 +503,7 @@ public class EvaluationTests extends ExpressionTestCase {
 		evaluateAndAskForReturnType("3*4+5", "17", String.class);
 	}
 
+
 	@Test
 	public void testAdvancedNumerics() throws Exception {
 		int twentyFour = parser.parseExpression("2.0 * 3e0 * 4").getValue(Integer.class);
@@ -530,7 +542,7 @@ public class EvaluationTests extends ExpressionTestCase {
 	@Test
 	public void testResolvingString() throws Exception {
 		Class<?> stringClass = parser.parseExpression("T(String)").getValue(Class.class);
-		assertEquals(String.class, stringClass);
+		Assert.assertEquals(String.class,stringClass);
 	}
 
 	/**
@@ -549,11 +561,11 @@ public class EvaluationTests extends ExpressionTestCase {
 
 		expression = parser.parseExpression("address.street");
 		expression.setValue(context, "123 High St");
-		assertEquals("123 High St", person.getAddress().getStreet());
+		Assert.assertEquals("123 High St",person.getAddress().getStreet());
 
 		expression = parser.parseExpression("address.crossStreets[0]");
 		expression.setValue(context, "Blah");
-		assertEquals("Blah", person.getAddress().getCrossStreets().get(0));
+		Assert.assertEquals("Blah",person.getAddress().getCrossStreets().get(0));
 
 		expression = parser.parseExpression("address.crossStreets[3]");
 		expression.setValue(context, "Wibble");

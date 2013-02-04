@@ -31,6 +31,7 @@ import org.springframework.jdbc.core.test.Person;
 /**
  * @author Thomas Risberg
  */
+@SuppressWarnings("deprecation")
 public class ParameterizedBeanPropertyRowMapperTests extends AbstractRowMapperTests {
 
 	@Rule

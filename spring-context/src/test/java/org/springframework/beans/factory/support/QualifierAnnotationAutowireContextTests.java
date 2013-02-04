@@ -605,7 +605,7 @@ public class QualifierAnnotationAutowireContextTests {
 	}
 
 
-	private static class QualifiedFieldTestBean {
+	public static class QualifiedFieldTestBean {
 
 		@Autowired
 		@TestQualifier
@@ -628,14 +628,7 @@ public class QualifierAnnotationAutowireContextTests {
 	}
 
 
-	@Autowired
-	@TestQualifier
-	@Retention(RetentionPolicy.RUNTIME)
-	public static @interface MyAutowired {
-	}
-
-
-	private static class QualifiedMethodParameterTestBean {
+	public static class QualifiedMethodParameterTestBean {
 
 		private Person person;
 

@@ -78,7 +78,7 @@ public class StaticMessageSourceTests extends AbstractApplicationContextTests {
 	/**
 	 * We really are testing the AbstractMessageSource class here.
 	 * The underlying implementation uses a hashMap to cache messageFormats
-	 * once a message has been asked for.  This test is an attempt to
+	 * once a message has been asked for. This test is an attempt to
 	 * make sure the cache is being used properly.
 	 * @see org.springframework.context.support.AbstractMessageSource for more details.
 	 */
@@ -120,7 +120,7 @@ public class StaticMessageSourceTests extends AbstractApplicationContextTests {
 		/*
 		 Try with Locale.US
 		 Since the msg has a time value in it, we will use String.indexOf(...)
-		 to just look for a substring without the time.  This is because it is
+		 to just look for a substring without the time. This is because it is
 		 possible that by the time we store a time variable in this method
 		 and the time the ResourceBundleMessageSource resolves the msg the
 		 minutes of the time might not be the same.

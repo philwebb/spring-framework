@@ -309,7 +309,7 @@ public class CollectionToCollectionConverterTests {
 		converter.convert(list, type, TypeDescriptor.valueOf(Class.forName("java.util.Collections$EmptyList")));
 	}
 
-	public List list = Collections.emptyList();
+	public List<?> list = Collections.emptyList();
 
 	@SuppressWarnings("rawtypes")
 	private void testCollectionConversionToArrayList(Collection<String> aSource) {

@@ -719,6 +719,19 @@ public final class ProxyFactoryBeanTests {
 		ITestBean proxy = (ITestBean) fb.getObject();
 		assertTrue(AopUtils.isJdkDynamicProxy(proxy));
 	}
+
+	private DefaultListableBeanFactory createBeanFactory(String resource) {
+		return createBeanFactory(resource, null);
+	}
+
+	private DefaultListableBeanFactory createBeanFactory(String resource,
+		DefaultListableBeanFactory parent) {
+		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory(parent);
+		new XmlBeanDefinitionReader(beanFactory).loadBeanDefinitions(new ClassPathResource(
+			resource, getClass()));
+		return beanFactory;
+	}
+
 	/**
 	 * Fires only on void methods. Saves list of methods intercepted.
 	 */

@@ -303,7 +303,6 @@ public final class PortletUtilsTests {
 		PortletUtils.exposeRequestAttributes(new MockPortletRequest(), null);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testExposeRequestAttributesSunnyDay() throws Exception {
 		MockPortletRequest request = new MockPortletRequest();
@@ -315,7 +314,6 @@ public final class PortletUtilsTests {
 		assertEquals("Roy Fokker", request.getAttribute("mentor"));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testExposeRequestAttributesWithEmptyAttributesMapIsAnIdempotentOperation() throws Exception {
 		MockPortletRequest request = new MockPortletRequest();

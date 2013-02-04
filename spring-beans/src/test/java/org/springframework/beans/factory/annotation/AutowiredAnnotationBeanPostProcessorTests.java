@@ -1004,12 +1004,14 @@ public final class AutowiredAnnotationBeanPostProcessorTests {
 			super.setTestBean2(testBean2);
 		}
 
+		@SuppressWarnings("unused")
 		@Autowired
 		private void inject(ITestBean testBean4, T nestedTestBean) {
 			this.testBean4 = testBean4;
 			this.nestedTestBean = nestedTestBean;
 		}
 
+		@SuppressWarnings("unused")
 		@Autowired
 		private void inject(ITestBean testBean4) {
 			this.baseInjected = true;
@@ -1057,6 +1059,7 @@ public final class AutowiredAnnotationBeanPostProcessorTests {
 			this.beanFactory = beanFactory;
 		}
 
+		@SuppressWarnings("unused")
 		@Autowired
 		private void inject(ITestBean testBean4) {
 			this.subInjected = true;
@@ -1084,6 +1087,7 @@ public final class AutowiredAnnotationBeanPostProcessorTests {
 			super.setTestBean2(testBean2);
 		}
 
+		@SuppressWarnings("unused")
 		@Autowired(required = false)
 		private void inject(ITestBean testBean4, NestedTestBean[] nestedTestBeans, IndexedTestBean indexedTestBean) {
 			this.testBean4 = testBean4;
@@ -1131,6 +1135,7 @@ public final class AutowiredAnnotationBeanPostProcessorTests {
 			super.setTestBean2(testBean2);
 		}
 
+		@SuppressWarnings("unused")
 		@Autowired(required = false)
 		private void inject(ITestBean testBean4, List<NestedTestBean> nestedTestBeans, IndexedTestBean indexedTestBean) {
 			this.testBean4 = testBean4;

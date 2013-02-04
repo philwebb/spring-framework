@@ -54,7 +54,7 @@ public class ToStringCreatorTests extends TestCase {
 	}
 
 	public void testDefaultStyleMap() {
-		final Map map = getMap();
+		final Map<String, String> map = getMap();
 		Object stringy = new Object() {
 			public String toString() {
 				return new ToStringCreator(this).append("familyFavoriteSport", map).toString();
@@ -87,7 +87,7 @@ public class ToStringCreatorTests extends TestCase {
 	}
 
 	public void testList() {
-		List list = new ArrayList();
+		List<SomeObject> list = new ArrayList<SomeObject>();
 		list.add(s1);
 		list.add(s2);
 		list.add(s3);

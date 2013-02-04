@@ -92,9 +92,8 @@ public abstract class AbstractJmxAssemblerTests extends AbstractJmxTests {
 
 		for (int x = 0; x < inf.length; x++) {
 			assertNotNull("MBeanOperationInfo should not be null", inf[x]);
-			assertNotNull(
-					"Description for MBeanOperationInfo should not be null",
-					inf[x].getDescription());
+			assertNotNull("Description for MBeanOperationInfo should not be null",
+				inf[x].getDescription());
 		}
 	}
 
@@ -132,13 +131,13 @@ public abstract class AbstractJmxAssemblerTests extends AbstractJmxTests {
 		ModelMBeanAttributeInfo attr = info.getAttribute(NAME_ATTRIBUTE);
 		Descriptor desc = attr.getDescriptor();
 		assertNotNull("getMethod field should not be null",
-				desc.getFieldValue("getMethod"));
+			desc.getFieldValue("getMethod"));
 		assertNotNull("setMethod field should not be null",
-				desc.getFieldValue("setMethod"));
+			desc.getFieldValue("setMethod"));
 		assertEquals("getMethod field has incorrect value", "getName",
-				desc.getFieldValue("getMethod"));
+			desc.getFieldValue("getMethod"));
 		assertEquals("setMethod field has incorrect value", "setName",
-				desc.getFieldValue("setMethod"));
+			desc.getFieldValue("setMethod"));
 	}
 
 	public void testAttributeHasCorrespondingOperations() throws Exception {

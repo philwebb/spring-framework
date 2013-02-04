@@ -329,22 +329,24 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	// Specialized methods for fine-grained control over the bean lifecycle
 	//-------------------------------------------------------------------------
 
-	public Object createBean(Class beanClass, int autowireMode, boolean dependencyCheck) throws BeansException {
+	@SuppressWarnings("unchecked")
+    public <T> T createBean(Class<T> beanClass, int autowireMode, boolean dependencyCheck) throws BeansException {
 		// Use non-singleton bean definition, to avoid registering bean as dependent bean.
 		RootBeanDefinition bd = new RootBeanDefinition(beanClass, autowireMode, dependencyCheck);
 		bd.setScope(BeanDefinition.SCOPE_PROTOTYPE);
-		return createBean(beanClass.getName(), bd, null);
+		return (T) createBean(beanClass.getName(), bd, null);
 	}
 
-	public Object autowire(Class beanClass, int autowireMode, boolean dependencyCheck) throws BeansException {
+	@SuppressWarnings("unchecked")
+    public <T> T autowire(Class<T> beanClass, int autowireMode, boolean dependencyCheck) throws BeansException {
 		// Use non-singleton bean definition, to avoid registering bean as dependent bean.
 		final RootBeanDefinition bd = new RootBeanDefinition(beanClass, autowireMode, dependencyCheck);
 		bd.setScope(BeanDefinition.SCOPE_PROTOTYPE);
 		if (bd.getResolvedAutowireMode() == AUTOWIRE_CONSTRUCTOR) {
-			return autowireConstructor(beanClass.getName(), bd, null, null).getWrappedInstance();
+			return (T) autowireConstructor(beanClass.getName(), bd, null, null).getWrappedInstance();
 		}
 		else {
-			Object bean;
+			T bean;
 			final BeanFactory parent = this;
 
 			if (System.getSecurityManager() != null) {
@@ -356,7 +358,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				}, getAccessControlContext());
 			}
 			else {
-				bean = getInstantiationStrategy().instantiate(bd, null, parent);
+				bean = (T) getInstantiationStrategy().instantiate(bd, null, parent);
 			}
 
 			populateBean(beanClass.getName(), bd, new BeanWrapperImpl(bean));
@@ -490,7 +492,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			instanceWrapper = createBeanInstance(beanName, mbd, args);
 		}
 		final Object bean = (instanceWrapper != null ? instanceWrapper.getWrappedInstance() : null);
-		Class beanType = (instanceWrapper != null ? instanceWrapper.getWrappedClass() : null);
+		Class<?> beanType = (instanceWrapper != null ? instanceWrapper.getWrappedClass() : null);
 
 		// Allow post-processors to modify the merged bean definition.
 		synchronized (mbd.postProcessingLock) {
@@ -509,7 +511,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				logger.debug("Eagerly caching bean '" + beanName +
 						"' to allow for resolving potential circular references");
 			}
-			addSingletonFactory(beanName, new ObjectFactory() {
+			addSingletonFactory(beanName, new ObjectFactory<Object>() {
 				public Object getObject() throws BeansException {
 					return getEarlyBeanReference(beanName, mbd, bean);
 				}
@@ -921,7 +923,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 					"Bean class isn't public, and non-public access not allowed: " + beanClass.getName());
 		}
 
-		if (mbd.getFactoryMethodName() != null)  {
+		if (mbd.getFactoryMethodName() != null) {
 			return instantiateUsingFactoryMethod(beanName, mbd, args);
 		}
 
@@ -949,7 +951,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		Constructor<?>[] ctors = determineConstructorsFromBeanPostProcessors(beanClass, beanName);
 		if (ctors != null ||
 				mbd.getResolvedAutowireMode() == RootBeanDefinition.AUTOWIRE_CONSTRUCTOR ||
-				mbd.hasConstructorArgumentValues() || !ObjectUtils.isEmpty(args))  {
+				mbd.hasConstructorArgumentValues() || !ObjectUtils.isEmpty(args)) {
 			return autowireConstructor(beanName, mbd, ctors, args);
 		}
 
@@ -1583,7 +1585,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		if (logger.isDebugEnabled()) {
-			logger.debug("Invoking init method  '" + initMethodName + "' on bean with name '" + beanName + "'");
+			logger.debug("Invoking init method '" + initMethodName + "' on bean with name '" + beanName + "'");
 		}
 
 		if (System.getSecurityManager() != null) {

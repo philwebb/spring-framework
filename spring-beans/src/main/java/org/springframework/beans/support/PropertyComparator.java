@@ -129,7 +129,7 @@ public class PropertyComparator implements Comparator {
 	 * @param sortDefinition the parameters to sort by
 	 * @throws java.lang.IllegalArgumentException in case of a missing propertyName
 	 */
-	public static void sort(List source, SortDefinition sortDefinition) throws BeansException {
+	public static <T> void sort(List<T> source, SortDefinition sortDefinition) throws BeansException {
 		if (StringUtils.hasText(sortDefinition.getProperty())) {
 			Collections.sort(source, new PropertyComparator(sortDefinition));
 		}
@@ -143,7 +143,7 @@ public class PropertyComparator implements Comparator {
 	 * @param sortDefinition the parameters to sort by
 	 * @throws java.lang.IllegalArgumentException in case of a missing propertyName
 	 */
-	public static void sort(Object[] source, SortDefinition sortDefinition) throws BeansException {
+	public static <T> void sort(T[] source, SortDefinition sortDefinition) throws BeansException {
 		if (StringUtils.hasText(sortDefinition.getProperty())) {
 			Arrays.sort(source, new PropertyComparator(sortDefinition));
 		}

@@ -49,7 +49,7 @@ public class CollectionMergingTests extends TestCase {
 
 	public void testMergeList() throws Exception {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithList");
-		List list = bean.getSomeList();
+		List<Object> list = bean.getSomeList();
 		assertEquals("Incorrect size", 3, list.size());
 		assertEquals(list.get(0), "Rob Harrop");
 		assertEquals(list.get(1), "Rod Johnson");
@@ -58,7 +58,7 @@ public class CollectionMergingTests extends TestCase {
 
 	public void testMergeListWithInnerBeanAsListElement() throws Exception {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithListOfRefs");
-		List list = bean.getSomeList();
+		List<Object> list = bean.getSomeList();
 		assertNotNull(list);
 		assertEquals(3, list.size());
 		assertNotNull(list.get(2));
@@ -67,7 +67,7 @@ public class CollectionMergingTests extends TestCase {
 
 	public void testMergeSet() {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithSet");
-		Set set = bean.getSomeSet();
+		Set<Object> set = bean.getSomeSet();
 		assertEquals("Incorrect size", 2, set.size());
 		assertTrue(set.contains("Rob Harrop"));
 		assertTrue(set.contains("Sally Greenwood"));
@@ -75,10 +75,10 @@ public class CollectionMergingTests extends TestCase {
 
 	public void testMergeSetWithInnerBeanAsSetElement() throws Exception {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithSetOfRefs");
-		Set set = bean.getSomeSet();
+		Set<Object> set = bean.getSomeSet();
 		assertNotNull(set);
 		assertEquals(2, set.size());
-		Iterator it = set.iterator();
+		Iterator<Object> it = set.iterator();
 		it.next();
 		Object o = it.next();
 		assertNotNull(o);
@@ -88,7 +88,7 @@ public class CollectionMergingTests extends TestCase {
 
 	public void testMergeMap() throws Exception {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithMap");
-		Map map = bean.getSomeMap();
+		Map<Object, Object> map = bean.getSomeMap();
 		assertEquals("Incorrect size", 3, map.size());
 		assertEquals(map.get("Rob"), "Sally");
 		assertEquals(map.get("Rod"), "Kerry");
@@ -97,7 +97,7 @@ public class CollectionMergingTests extends TestCase {
 
 	public void testMergeMapWithInnerBeanAsMapEntryValue() throws Exception {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithMapOfRefs");
-		Map map = bean.getSomeMap();
+		Map<Object, Object> map = bean.getSomeMap();
 		assertNotNull(map);
 		assertEquals(2, map.size());
 		assertNotNull(map.get("Rob"));
@@ -117,7 +117,7 @@ public class CollectionMergingTests extends TestCase {
 
 	public void testMergeListInConstructor() throws Exception {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithListInConstructor");
-		List list = bean.getSomeList();
+		List<Object> list = bean.getSomeList();
 		assertEquals("Incorrect size", 3, list.size());
 		assertEquals(list.get(0), "Rob Harrop");
 		assertEquals(list.get(1), "Rod Johnson");
@@ -126,7 +126,7 @@ public class CollectionMergingTests extends TestCase {
 
 	public void testMergeListWithInnerBeanAsListElementInConstructor() throws Exception {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithListOfRefsInConstructor");
-		List list = bean.getSomeList();
+		List<Object> list = bean.getSomeList();
 		assertNotNull(list);
 		assertEquals(3, list.size());
 		assertNotNull(list.get(2));
@@ -135,7 +135,7 @@ public class CollectionMergingTests extends TestCase {
 
 	public void testMergeSetInConstructor() {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithSetInConstructor");
-		Set set = bean.getSomeSet();
+		Set<Object> set = bean.getSomeSet();
 		assertEquals("Incorrect size", 2, set.size());
 		assertTrue(set.contains("Rob Harrop"));
 		assertTrue(set.contains("Sally Greenwood"));
@@ -143,10 +143,10 @@ public class CollectionMergingTests extends TestCase {
 
 	public void testMergeSetWithInnerBeanAsSetElementInConstructor() throws Exception {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithSetOfRefsInConstructor");
-		Set set = bean.getSomeSet();
+		Set<Object> set = bean.getSomeSet();
 		assertNotNull(set);
 		assertEquals(2, set.size());
-		Iterator it = set.iterator();
+		Iterator<Object> it = set.iterator();
 		it.next();
 		Object o = it.next();
 		assertNotNull(o);
@@ -156,7 +156,7 @@ public class CollectionMergingTests extends TestCase {
 
 	public void testMergeMapInConstructor() throws Exception {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithMapInConstructor");
-		Map map = bean.getSomeMap();
+		Map<Object, Object> map = bean.getSomeMap();
 		assertEquals("Incorrect size", 3, map.size());
 		assertEquals(map.get("Rob"), "Sally");
 		assertEquals(map.get("Rod"), "Kerry");
@@ -165,7 +165,7 @@ public class CollectionMergingTests extends TestCase {
 
 	public void testMergeMapWithInnerBeanAsMapEntryValueInConstructor() throws Exception {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithMapOfRefsInConstructor");
-		Map map = bean.getSomeMap();
+		Map<Object, Object> map = bean.getSomeMap();
 		assertNotNull(map);
 		assertEquals(2, map.size());
 		assertNotNull(map.get("Rob"));

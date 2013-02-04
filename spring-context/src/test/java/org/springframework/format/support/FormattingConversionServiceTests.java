@@ -364,13 +364,6 @@ public class FormattingConversionServiceTests {
 		}
 	}
 
-
-	@org.springframework.format.annotation.DateTimeFormat(pattern="${datePattern}")
-	@Retention(RetentionPolicy.RUNTIME)
-	public static @interface MyDatePattern {
-	}
-
-
 	public static class NullReturningFormatter implements Formatter<Integer> {
 
 		@Override

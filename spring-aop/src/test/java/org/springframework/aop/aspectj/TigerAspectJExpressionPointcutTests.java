@@ -271,6 +271,7 @@ public final class TigerAspectJExpressionPointcutTests {
 
 
 	static class BeanA {
+		@SuppressWarnings("unused")
 		private String name;
 
 		private int age;
@@ -288,6 +289,7 @@ public final class TigerAspectJExpressionPointcutTests {
 
 	@Tx
 	static class BeanB {
+		@SuppressWarnings("unused")
 		private String name;
 
 		public void setName(String name) {

@@ -61,6 +61,16 @@ import org.springframework.tests.sample.beans.TestBean;
  */
 public class BeanFactoryGenericsTests {
 
+	private DefaultListableBeanFactory bf;
+
+	@Before
+	public void setup() {
+		this.bf = new DefaultListableBeanFactory();
+		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(bf);
+		reader.loadBeanDefinitions(new ClassPathResource("genericBeanTests.xml",
+			getClass()));
+	}
+
 	@Test
 	public void testGenericSetProperty() {
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();

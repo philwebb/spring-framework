@@ -74,7 +74,7 @@ public class MapAccessTests extends ExpressionTestCase {
 	@Test
 	public void testGetValue(){
 
-		Map props1= new HashMap<String,String>();
+		HashMap<String, String> props1= new HashMap<String, String>();
 		props1.put("key1", "value1");
 		props1.put("key2", "value2");
 		props1.put("key3", "value3");
@@ -89,6 +89,7 @@ public class MapAccessTests extends ExpressionTestCase {
 
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static class TestBean
 	{
 		private String name;
@@ -153,12 +154,12 @@ public class MapAccessTests extends ExpressionTestCase {
 
 		@Override
 		public boolean canRead(EvaluationContext context, Object target, String name) throws AccessException {
-			return (((Map) target).containsKey(name));
+			return (((Map<?, ?>) target).containsKey(name));
 		}
 
 		@Override
 		public TypedValue read(EvaluationContext context, Object target, String name) throws AccessException {
-			return new TypedValue(((Map) target).get(name));
+			return new TypedValue(((Map<?, ?>) target).get(name));
 		}
 
 		@Override
@@ -170,7 +171,7 @@ public class MapAccessTests extends ExpressionTestCase {
 		@SuppressWarnings("unchecked")
 		public void write(EvaluationContext context, Object target, String name, Object newValue)
 				throws AccessException {
-			((Map) target).put(name, newValue);
+			((Map<String, Object>) target).put(name, newValue);
 		}
 
 		@Override
