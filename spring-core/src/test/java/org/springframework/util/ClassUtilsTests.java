@@ -39,6 +39,7 @@ import org.springframework.tests.sample.objects.TestObject;
  * @author Rob Harrop
  * @author Rick Evans
  */
+@SuppressWarnings("deprecation")
 public class ClassUtilsTests extends TestCase {
 
 	private ClassLoader classLoader = getClass().getClassLoader();
@@ -269,13 +270,13 @@ public class ClassUtilsTests extends TestCase {
 	}
 
 	public void testClassNamesToString() {
-		List ifcs = new LinkedList();
+		List<Class<?>> ifcs = new LinkedList<Class<?>>();
 		ifcs.add(Serializable.class);
 		ifcs.add(Runnable.class);
 		assertEquals("[interface java.io.Serializable, interface java.lang.Runnable]", ifcs.toString());
 		assertEquals("[java.io.Serializable, java.lang.Runnable]", ClassUtils.classNamesToString(ifcs));
 
-		List classes = new LinkedList();
+		List<Class<?>> classes = new LinkedList<Class<?>>();
 		classes.add(LinkedList.class);
 		classes.add(Integer.class);
 		assertEquals("[class java.util.LinkedList, class java.lang.Integer]", classes.toString());
@@ -285,7 +286,7 @@ public class ClassUtilsTests extends TestCase {
 		assertEquals("[java.util.List]", ClassUtils.classNamesToString(List.class));
 
 		assertEquals("[]", Collections.EMPTY_LIST.toString());
-		assertEquals("[]", ClassUtils.classNamesToString(Collections.EMPTY_LIST));
+		assertEquals("[]", ClassUtils.classNamesToString(Collections.<Class<?>>emptyList()));
 	}
 
 

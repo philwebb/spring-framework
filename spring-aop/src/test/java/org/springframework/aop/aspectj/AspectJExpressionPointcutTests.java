@@ -61,7 +61,7 @@ public final class AspectJExpressionPointcutTests {
 		getAge = TestBean.class.getMethod("getAge", (Class<?>[])null);
 		setAge = TestBean.class.getMethod("setAge", new Class[]{int.class});
 		setSomeNumber = TestBean.class.getMethod("setSomeNumber", new Class[]{Number.class});
-		isPostProcessed = TestBean.class.getMethod("isPostProcessed", (Class[]) null);
+		TestBean.class.getMethod("isPostProcessed", (Class[]) null);
 	}
 
 	@Test

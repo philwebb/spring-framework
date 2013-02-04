@@ -26,6 +26,7 @@ import org.springframework.beans.factory.config.TypedStringValue;
 import org.springframework.beans.factory.parsing.AliasDefinition;
 import org.springframework.beans.factory.parsing.BeanComponentDefinition;
 import org.springframework.beans.factory.parsing.ComponentDefinition;
+import org.springframework.beans.factory.parsing.DefaultsDefinition;
 import org.springframework.beans.factory.parsing.ImportDefinition;
 import org.springframework.beans.factory.parsing.PassThroughSourceExtractor;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -52,7 +53,7 @@ public class EventPublicationTests extends TestCase {
 	}
 
 	public void testDefaultsEventReceived() throws Exception {
-		List defaultsList = this.eventListener.getDefaults();
+		List<DefaultsDefinition> defaultsList = this.eventListener.getDefaults();
 		assertTrue(!defaultsList.isEmpty());
 		assertTrue(defaultsList.get(0) instanceof DocumentDefaultsDefinition);
 		DocumentDefaultsDefinition defaults = (DocumentDefaultsDefinition) defaultsList.get(0);
@@ -95,20 +96,20 @@ public class EventPublicationTests extends TestCase {
 	}
 
 	public void testAliasEventReceived() throws Exception {
-		List aliases = this.eventListener.getAliases("testBean");
+		List<AliasDefinition> aliases = this.eventListener.getAliases("testBean");
 		assertEquals(2, aliases.size());
-		AliasDefinition aliasDefinition1 = (AliasDefinition) aliases.get(0);
+		AliasDefinition aliasDefinition1 = aliases.get(0);
 		assertEquals("testBeanAlias1", aliasDefinition1.getAlias());
 		assertTrue(aliasDefinition1.getSource() instanceof Element);
-		AliasDefinition aliasDefinition2 = (AliasDefinition) aliases.get(1);
+		AliasDefinition aliasDefinition2 = aliases.get(1);
 		assertEquals("testBeanAlias2", aliasDefinition2.getAlias());
 		assertTrue(aliasDefinition2.getSource() instanceof Element);
 	}
 
 	public void testImportEventReceived() throws Exception {
-		List imports = this.eventListener.getImports();
+		List<ImportDefinition> imports = this.eventListener.getImports();
 		assertEquals(1, imports.size());
-		ImportDefinition importDefinition = (ImportDefinition) imports.get(0);
+		ImportDefinition importDefinition = imports.get(0);
 		assertEquals("beanEventsImported.xml", importDefinition.getImportedResource());
 		assertTrue(importDefinition.getSource() instanceof Element);
 	}

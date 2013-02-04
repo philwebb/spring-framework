@@ -74,12 +74,14 @@ public class GenericSqlQueryTests  {
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void testPlaceHoldersCustomerQuery() throws SQLException {
 		SqlQuery query = (SqlQuery) beanFactory.getBean("queryWithPlaceHolders");
 		doTestCustomerQuery(query, false);
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void testNamedParameterCustomerQuery() throws SQLException {
 		SqlQuery query = (SqlQuery) beanFactory.getBean("queryWithNamedParameters");
 		doTestCustomerQuery(query, true);

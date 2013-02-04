@@ -51,6 +51,11 @@ public final class PrototypeTargetTests {
 
 	@Test
 	public void testSingletonProxyWithPrototypeTarget() {
+		assertConstructionAndInvocationCounts("testBeanSingleton", 1, 10);
+	}
+
+	private void assertConstructionAndInvocationCounts(String beanName,
+		int constructionCount, int invocationCount) {
 		TestBeanImpl.constructionCount = 0;
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(bf).loadBeanDefinitions(CONTEXT);

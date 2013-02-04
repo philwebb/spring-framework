@@ -71,7 +71,7 @@ public class CollectionsWithDefaultTypesTests {
 	}
 
 	private void assertMap(Map<?,?> map) {
-		for (Map.Entry entry : map.entrySet()) {
+		for (Map.Entry<?,?> entry : map.entrySet()) {
 			assertEquals("Key type is incorrect", Integer.class, entry.getKey().getClass());
 			assertEquals("Value type is incorrect", Boolean.class, entry.getValue().getClass());
 		}
@@ -79,10 +79,11 @@ public class CollectionsWithDefaultTypesTests {
 
 	@Test
 	public void testBuildCollectionFromMixtureOfReferencesAndValues() throws Exception {
-		MixedCollectionBean jumble = (MixedCollectionBean) this.beanFactory.getBean("jumble");
+		@SuppressWarnings("unchecked")
+		MixedCollectionBean<Object> jumble = (MixedCollectionBean<Object>) this.beanFactory.getBean("jumble");
 		assertTrue("Expected 3 elements, not " + jumble.getJumble().size(),
 				jumble.getJumble().size() == 3);
-		List l = (List) jumble.getJumble();
+		List<Object> l = (List<Object>) jumble.getJumble();
 		assertTrue(l.get(0).equals("literal"));
 		Integer[] array1 = (Integer[]) l.get(1);
 		assertTrue(array1[0].equals(new Integer(2)));

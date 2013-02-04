@@ -531,10 +531,12 @@ public class AspectJExpressionPointcut extends AbstractExpressionPointcut
 			this.expressionPattern = new NamePattern(expression);
 		}
 
+		@SuppressWarnings("rawtypes")
 		public boolean couldMatchJoinPointsInType(Class someClass) {
 			return (contextMatch(someClass) == FuzzyBoolean.YES);
 		}
 
+		@SuppressWarnings("rawtypes")
 		public boolean couldMatchJoinPointsInType(Class someClass, MatchingContext context) {
 			return (contextMatch(someClass) == FuzzyBoolean.YES);
 		}

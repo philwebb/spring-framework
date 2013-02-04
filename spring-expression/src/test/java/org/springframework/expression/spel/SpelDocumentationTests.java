@@ -66,6 +66,8 @@ public class SpelDocumentationTests extends ExpressionTestCase {
 		pupin.setPlaceOfBirth(new PlaceOfBirth("Idvor"));
 
 	}
+
+	@SuppressWarnings("rawtypes")
 	static class IEEE {
 		private String name;
 

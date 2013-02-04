@@ -35,6 +35,7 @@ import org.springframework.tests.context.TestMethodInvokingTask;
 @Deprecated
 public class TimerSupportTests extends TestCase {
 
+	@SuppressWarnings("cast")
 	public void testTimerFactoryBean() throws Exception {
 		final TestTimerTask timerTask0 = new TestTimerTask();
 

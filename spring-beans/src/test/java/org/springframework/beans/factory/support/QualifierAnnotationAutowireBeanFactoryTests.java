@@ -212,8 +212,10 @@ public class QualifierAnnotationAutowireBeanFactoryTests {
 	private static class QualifiedTestBean {
 
 		@TestQualifier
+		@SuppressWarnings("unused")
 		private Person qualified;
 
+		@SuppressWarnings("unused")
 		private Person nonqualified;
 
 		public QualifiedTestBean(@TestQualifier Person tpb) {

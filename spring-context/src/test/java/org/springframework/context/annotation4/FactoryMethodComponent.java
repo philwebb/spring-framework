@@ -37,7 +37,7 @@ public final class FactoryMethodComponent {
 
 	private int i;
 
-	public static TestBean nullInstance()  {
+	public static TestBean nullInstance() {
 		return null;
 	}
 
@@ -59,6 +59,7 @@ public final class FactoryMethodComponent {
 		return tb;
 	}
 
+	@SuppressWarnings("unused")
 	@Bean @Scope("prototype")
 	private TestBean privateInstance() {
 		return new TestBean("privateInstance", i++);

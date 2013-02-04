@@ -58,7 +58,6 @@ public class CachingMetadataReaderLeakTest {
 		// look at a LOT of items
 		for (int i = 0; i < ITEMS_LOAD; i++) {
 			Resource resource = new UrlResource(url) {
-				private int counter = 0;
 
 				@Override
 				public boolean equals(Object obj) {

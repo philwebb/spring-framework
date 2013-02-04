@@ -62,27 +62,27 @@ public class PrioritizedParameterNameDiscovererTests extends TestCase {
 	public void testNoParametersDiscoverers() {
 		ParameterNameDiscoverer pnd = new PrioritizedParameterNameDiscoverer();
 		assertNull(pnd.getParameterNames(anyMethod));
-		assertNull(pnd.getParameterNames((Constructor) null));
+		assertNull(pnd.getParameterNames((Constructor<?>) null));
 	}
 
 	public void testOrderedParameterDiscoverers1() {
 		PrioritizedParameterNameDiscoverer pnd = new PrioritizedParameterNameDiscoverer();
 		pnd.addDiscoverer(returnsFooBar);
 		assertTrue(Arrays.equals(FOO_BAR, pnd.getParameterNames(anyMethod)));
-		assertTrue(Arrays.equals(FOO_BAR, pnd.getParameterNames((Constructor) null)));
+		assertTrue(Arrays.equals(FOO_BAR, pnd.getParameterNames((Constructor<?>) null)));
 		pnd.addDiscoverer(returnsSomethingElse);
 		assertTrue(Arrays.equals(FOO_BAR, pnd.getParameterNames(anyMethod)));
-		assertTrue(Arrays.equals(FOO_BAR, pnd.getParameterNames((Constructor) null)));
+		assertTrue(Arrays.equals(FOO_BAR, pnd.getParameterNames((Constructor<?>) null)));
 	}
 
 	public void testOrderedParameterDiscoverers2() {
 		PrioritizedParameterNameDiscoverer pnd = new PrioritizedParameterNameDiscoverer();
 		pnd.addDiscoverer(returnsSomethingElse);
 		assertTrue(Arrays.equals(SOMETHING_ELSE, pnd.getParameterNames(anyMethod)));
-		assertTrue(Arrays.equals(SOMETHING_ELSE, pnd.getParameterNames((Constructor) null)));
+		assertTrue(Arrays.equals(SOMETHING_ELSE, pnd.getParameterNames((Constructor<?>) null)));
 		pnd.addDiscoverer(returnsFooBar);
 		assertTrue(Arrays.equals(SOMETHING_ELSE, pnd.getParameterNames(anyMethod)));
-		assertTrue(Arrays.equals(SOMETHING_ELSE, pnd.getParameterNames((Constructor) null)));
+		assertTrue(Arrays.equals(SOMETHING_ELSE, pnd.getParameterNames((Constructor<?>) null)));
 	}
 
 }

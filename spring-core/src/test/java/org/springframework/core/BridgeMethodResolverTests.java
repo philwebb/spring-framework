@@ -99,7 +99,7 @@ public class BridgeMethodResolverTests {
 
 	@Test
 	public void testIsBridgeMethodFor() throws Exception {
-		Map<TypeVariable, Type> typeParameterMap = GenericTypeResolver.getTypeVariableMap(MyBar.class);
+		Map<TypeVariable<?>, Type> typeParameterMap = GenericTypeResolver.getTypeVariableMap(MyBar.class);
 		Method bridged = MyBar.class.getDeclaredMethod("someMethod", String.class, Object.class);
 		Method other = MyBar.class.getDeclaredMethod("someMethod", Integer.class, Object.class);
 		Method bridge = MyBar.class.getDeclaredMethod("someMethod", Object.class, Object.class);
@@ -110,7 +110,7 @@ public class BridgeMethodResolverTests {
 
 	@Test
 	public void testCreateTypeVariableMap() throws Exception {
-		Map<TypeVariable, Type> typeVariableMap = GenericTypeResolver.getTypeVariableMap(MyBar.class);
+		Map<TypeVariable<?>, Type> typeVariableMap = GenericTypeResolver.getTypeVariableMap(MyBar.class);
 		TypeVariable<?> barT = findTypeVariable(InterBar.class, "T");
 		assertEquals(String.class, typeVariableMap.get(barT));
 
@@ -220,7 +220,7 @@ public class BridgeMethodResolverTests {
 		Method otherMethod = MessageBroadcasterImpl.class.getMethod("receive", NewMessageEvent.class);
 		assertFalse(otherMethod.isBridge());
 
-		Map<TypeVariable, Type> typeVariableMap = GenericTypeResolver.getTypeVariableMap(MessageBroadcasterImpl.class);
+		Map<TypeVariable<?>, Type> typeVariableMap = GenericTypeResolver.getTypeVariableMap(MessageBroadcasterImpl.class);
 		assertFalse("Match identified incorrectly", BridgeMethodResolver.isBridgeMethodFor(bridgeMethod, otherMethod, typeVariableMap));
 		assertTrue("Match not found correctly", BridgeMethodResolver.isBridgeMethodFor(bridgeMethod, bridgedMethod, typeVariableMap));
 
@@ -229,7 +229,7 @@ public class BridgeMethodResolverTests {
 
 	@Test
 	public void testSPR2454() throws Exception {
-		Map<TypeVariable, Type> typeVariableMap = GenericTypeResolver.getTypeVariableMap(YourHomer.class);
+		Map<TypeVariable<?>, Type> typeVariableMap = GenericTypeResolver.getTypeVariableMap(YourHomer.class);
 		TypeVariable<?> variable = findTypeVariable(MyHomer.class, "L");
 		assertEquals(AbstractBounded.class, ((ParameterizedType) typeVariableMap.get(variable)).getRawType());
 	}
@@ -545,7 +545,7 @@ public class BridgeMethodResolverTests {
 	}
 
 
-	private static class SerializableBounded<E extends HashMap & Delayed> extends AbstractBounded<E> {
+	private static class SerializableBounded<E extends HashMap<?, ?> & Delayed> extends AbstractBounded<E> {
 
 		@Override
 		public boolean boundedOperation(E myE) {
@@ -574,7 +574,7 @@ public class BridgeMethodResolverTests {
 	}
 
 
-	private static class StringList implements List<String> {
+	public static class StringList implements List<String> {
 
 		@Override
 		public int size() {
@@ -768,6 +768,7 @@ public class BridgeMethodResolverTests {
 	}
 
 
+	@SuppressWarnings({ "rawtypes", "unused", "unchecked" })
 	public abstract class GenericEventBroadcasterImpl<T extends Event> extends GenericBroadcasterImpl
 					implements EventBroadcaster {
 
@@ -838,6 +839,7 @@ public class BridgeMethodResolverTests {
 	public class MessageBroadcasterImpl extends GenericEventBroadcasterImpl<MessageEvent>
 					implements MessageBroadcaster {
 
+		@SuppressWarnings("unchecked")
 		public MessageBroadcasterImpl() {
 			super(NewMessageEvent.class);
 		}

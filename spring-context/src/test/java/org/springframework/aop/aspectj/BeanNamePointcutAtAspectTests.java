@@ -38,6 +38,7 @@ public final class BeanNamePointcutAtAspectTests {
 
 	private ITestBean testBean1;
 
+	@SuppressWarnings("unused")
 	private ITestBean testBean2;
 
 	private ITestBean testBean3;

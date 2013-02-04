@@ -57,6 +57,7 @@ public class BeanWrapperAutoGrowingTests {
 	}
 
 	@Test
+	@SuppressWarnings("cast")
 	public void getPropertyValueAutoGrowArray() {
 		assertNotNull(wrapper.getPropertyValue("array[0]"));
 		assertEquals(1, bean.getArray().length);
@@ -70,6 +71,7 @@ public class BeanWrapperAutoGrowingTests {
 	}
 
 	@Test
+	@SuppressWarnings("cast")
 	public void getPropertyValueAutoGrowArrayBySeveralElements() {
 		assertNotNull(wrapper.getPropertyValue("array[4]"));
 		assertEquals(5, bean.getArray().length);
@@ -85,6 +87,7 @@ public class BeanWrapperAutoGrowingTests {
 	}
 
 	@Test
+	@SuppressWarnings("cast")
 	public void getPropertyValueAutoGrowMultiDimensionalArray() {
 		assertNotNull(wrapper.getPropertyValue("multiArray[0][0]"));
 		assertEquals(1, bean.getMultiArray()[0].length);
@@ -92,6 +95,7 @@ public class BeanWrapperAutoGrowingTests {
 	}
 
 	@Test
+	@SuppressWarnings("cast")
 	public void getPropertyValueAutoGrowList() {
 		assertNotNull(wrapper.getPropertyValue("list[0]"));
 		assertEquals(1, bean.getList().size());
@@ -105,6 +109,7 @@ public class BeanWrapperAutoGrowingTests {
 	}
 
 	@Test
+	@SuppressWarnings("cast")
 	public void getPropertyValueAutoGrowListBySeveralElements() {
 		assertNotNull(wrapper.getPropertyValue("list[4]"));
 		assertEquals(5, bean.getList().size());
@@ -133,6 +138,7 @@ public class BeanWrapperAutoGrowingTests {
 	}
 
 	@Test
+	@SuppressWarnings("cast")
 	public void getPropertyValueAutoGrowMultiDimensionalList() {
 		assertNotNull(wrapper.getPropertyValue("multiList[0][0]"));
 		assertEquals(1, bean.getMultiList().get(0).size());
@@ -145,12 +151,14 @@ public class BeanWrapperAutoGrowingTests {
 	}
 
 	@Test
+	@SuppressWarnings("cast")
 	public void setPropertyValueAutoGrowMap() {
 		wrapper.setPropertyValue("map[A]", new Bean());
 		assertThat(bean.getMap().get("A"), instanceOf(Bean.class));
 	}
 
 	@Test
+	@SuppressWarnings("cast")
 	public void setNestedPropertyValueAutoGrowMap() {
 		wrapper.setPropertyValue("map[A].nested", new Bean());
 		assertThat(bean.getMap().get("A").getNested(), instanceOf(Bean.class));
@@ -173,6 +181,7 @@ public class BeanWrapperAutoGrowingTests {
 
 		private List<List<Bean>> multiList;
 
+		@SuppressWarnings("rawtypes")
 		private List listNotParameterized;
 
 		private Map<String, Bean> map;
@@ -233,10 +242,12 @@ public class BeanWrapperAutoGrowingTests {
 			this.nestedNoConstructor = nestedNoConstructor;
 		}
 
+		@SuppressWarnings("rawtypes")
 		public List getListNotParameterized() {
 			return listNotParameterized;
 		}
 
+		@SuppressWarnings("rawtypes")
 		public void setListNotParameterized(List listNotParameterized) {
 			this.listNotParameterized = listNotParameterized;
 		}

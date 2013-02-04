@@ -66,17 +66,17 @@ public class XmlBeanCollectionTests {
 	@Test
 	public void testCollectionFactoryDefaults() throws Exception {
 		ListFactoryBean listFactory = new ListFactoryBean();
-		listFactory.setSourceList(new LinkedList());
+		listFactory.setSourceList(new LinkedList<Object>());
 		listFactory.afterPropertiesSet();
 		assertTrue(listFactory.getObject() instanceof ArrayList);
 
 		SetFactoryBean setFactory = new SetFactoryBean();
-		setFactory.setSourceSet(new TreeSet());
+		setFactory.setSourceSet(new TreeSet<Object>());
 		setFactory.afterPropertiesSet();
 		assertTrue(setFactory.getObject() instanceof LinkedHashSet);
 
 		MapFactoryBean mapFactory = new MapFactoryBean();
-		mapFactory.setSourceMap(new TreeMap());
+		mapFactory.setSourceMap(new TreeMap<Object, Object>());
 		mapFactory.afterPropertiesSet();
 		assertTrue(mapFactory.getObject() instanceof LinkedHashMap);
 	}
@@ -157,12 +157,13 @@ public class XmlBeanCollectionTests {
 		assertTrue(loner.getFriends().contains(dave));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testBuildCollectionFromMixtureOfReferencesAndValues() throws Exception {
-		MixedCollectionBean jumble = (MixedCollectionBean) this.beanFactory.getBean("jumble");
+		MixedCollectionBean<Object> jumble = (MixedCollectionBean<Object>) this.beanFactory.getBean("jumble");
 		assertTrue("Expected 5 elements, not " + jumble.getJumble().size(),
 				jumble.getJumble().size() == 5);
-		List l = (List) jumble.getJumble();
+		List<Object> l = (List<Object>) jumble.getJumble();
 		assertTrue(l.get(0).equals(this.beanFactory.getBean("david")));
 		assertTrue(l.get(1).equals("literal"));
 		assertTrue(l.get(2).equals(this.beanFactory.getBean("jenny")));
@@ -229,6 +230,7 @@ public class XmlBeanCollectionTests {
 		assertTrue("Not same instance", hasMap2.getMap().get("jenny") != hasMap.getMap().get("jenny"));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testMapWithLiteralsReferencesAndList() throws Exception {
 		HasMap hasMap = (HasMap) this.beanFactory.getBean("mixedMapWithList");
@@ -238,14 +240,14 @@ public class XmlBeanCollectionTests {
 		assertTrue(hasMap.getMap().get("jenny").equals(jenny));
 
 		// Check list
-		List l = (List) hasMap.getMap().get("list");
+		List<Object> l = (List<Object>) hasMap.getMap().get("list");
 		assertNotNull(l);
 		assertTrue(l.size() == 4);
 		assertTrue(l.get(0).equals("zero"));
 		assertTrue(l.get(3) == null);
 
 		// Check nested map in list
-		Map m = (Map) l.get(1);
+		Map<Object, Object> m = (Map<Object, Object>) l.get(1);
 		assertNotNull(m);
 		assertTrue(m.size() == 2);
 		assertTrue(m.get("fo").equals("bar"));
@@ -253,14 +255,14 @@ public class XmlBeanCollectionTests {
 				m.get("jen").equals(jenny));
 
 		// Check nested list in list
-		l = (List) l.get(2);
+		l = (List<Object>) l.get(2);
 		assertNotNull(l);
 		assertTrue(l.size() == 2);
 		assertTrue(l.get(0).equals(jenny));
 		assertTrue(l.get(1).equals("ba"));
 
 		// Check nested map
-		m = (Map) hasMap.getMap().get("map");
+		m = (Map<Object, Object>) hasMap.getMap().get("map");
 		assertNotNull(m);
 		assertTrue(m.size() == 2);
 		assertTrue(m.get("foo").equals("bar"));
@@ -282,7 +284,7 @@ public class XmlBeanCollectionTests {
 		TestBean jenny = (TestBean) this.beanFactory.getBean("jenny");
 		assertTrue(hasMap.getSet().contains(jenny));
 		assertTrue(hasMap.getSet().contains(null));
-		Iterator it = hasMap.getSet().iterator();
+		Iterator<Object> it = hasMap.getSet().iterator();
 		assertEquals("bar", it.next());
 		assertEquals(jenny, it.next());
 		assertEquals(null, it.next());
@@ -302,7 +304,7 @@ public class XmlBeanCollectionTests {
 	public void testPopulatedIdentityMap() throws Exception {
 		HasMap hasMap = (HasMap) this.beanFactory.getBean("identityMap");
 		assertTrue(hasMap.getIdentityMap().size() == 2);
-		HashSet set = new HashSet(hasMap.getIdentityMap().keySet());
+		HashSet<Object> set = new HashSet<Object>(hasMap.getIdentityMap().keySet());
 		assertTrue(set.contains("foo"));
 		assertTrue(set.contains("jenny"));
 	}
@@ -360,74 +362,82 @@ public class XmlBeanCollectionTests {
 		assertEquals("TWO", hasMap2.getProps().getProperty("2"));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testListFactory() throws Exception {
-		List list = (List) this.beanFactory.getBean("listFactory");
+		List<Object> list = (List<Object>) this.beanFactory.getBean("listFactory");
 		assertTrue(list instanceof LinkedList);
 		assertTrue(list.size() == 2);
 		assertEquals("bar", list.get(0));
 		assertEquals("jenny", list.get(1));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testPrototypeListFactory() throws Exception {
-		List list = (List) this.beanFactory.getBean("pListFactory");
+		List<Object> list = (List<Object>) this.beanFactory.getBean("pListFactory");
 		assertTrue(list instanceof LinkedList);
 		assertTrue(list.size() == 2);
 		assertEquals("bar", list.get(0));
 		assertEquals("jenny", list.get(1));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testSetFactory() throws Exception {
-		Set set = (Set) this.beanFactory.getBean("setFactory");
+		Set<Object> set = (Set<Object>) this.beanFactory.getBean("setFactory");
 		assertTrue(set instanceof TreeSet);
 		assertTrue(set.size() == 2);
 		assertTrue(set.contains("bar"));
 		assertTrue(set.contains("jenny"));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testPrototypeSetFactory() throws Exception {
-		Set set = (Set) this.beanFactory.getBean("pSetFactory");
+		Set<Object> set = (Set<Object>) this.beanFactory.getBean("pSetFactory");
 		assertTrue(set instanceof TreeSet);
 		assertTrue(set.size() == 2);
 		assertTrue(set.contains("bar"));
 		assertTrue(set.contains("jenny"));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testMapFactory() throws Exception {
-		Map map = (Map) this.beanFactory.getBean("mapFactory");
+		Map<Object, Object> map = (Map<Object, Object>) this.beanFactory.getBean("mapFactory");
 		assertTrue(map instanceof TreeMap);
 		assertTrue(map.size() == 2);
 		assertEquals("bar", map.get("foo"));
 		assertEquals("jenny", map.get("jen"));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testPrototypeMapFactory() throws Exception {
-		Map map = (Map) this.beanFactory.getBean("pMapFactory");
+		Map<Object, Object> map = (Map<Object, Object>) this.beanFactory.getBean("pMapFactory");
 		assertTrue(map instanceof TreeMap);
 		assertTrue(map.size() == 2);
 		assertEquals("bar", map.get("foo"));
 		assertEquals("jenny", map.get("jen"));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testChoiceBetweenSetAndMap() {
 		MapAndSet sam = (MapAndSet) this.beanFactory.getBean("setAndMap");
 		assertTrue("Didn't choose constructor with Map argument", sam.getObject() instanceof Map);
-		Map map = (Map) sam.getObject();
+		Map<Object, Object> map = (Map<Object, Object>) sam.getObject();
 		assertEquals(3, map.size());
 		assertEquals("val1", map.get("key1"));
 		assertEquals("val2", map.get("key2"));
 		assertEquals("val3", map.get("key3"));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testEnumSetFactory() throws Exception {
-		Set set = (Set) this.beanFactory.getBean("enumSetFactory");
+		Set<Object> set = (Set<Object>) this.beanFactory.getBean("enumSetFactory");
 		assertTrue(set.size() == 2);
 		assertTrue(set.contains("ONE"));
 		assertTrue(set.contains("TWO"));
@@ -438,11 +448,11 @@ public class XmlBeanCollectionTests {
 
 		private Object obj;
 
-		public MapAndSet(Map map) {
+		public MapAndSet(Map<Object,Object> map) {
 			this.obj = map;
 		}
 
-		public MapAndSet(Set set) {
+		public MapAndSet(Set<Object> set) {
 			this.obj = set;
 		}
 

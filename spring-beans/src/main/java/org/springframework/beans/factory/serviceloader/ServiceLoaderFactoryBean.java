@@ -28,15 +28,15 @@ import org.springframework.beans.factory.BeanClassLoaderAware;
  * @since 2.5
  * @see java.util.ServiceLoader
  */
-public class ServiceLoaderFactoryBean extends AbstractServiceLoaderBasedFactoryBean implements BeanClassLoaderAware {
+public class ServiceLoaderFactoryBean<S> extends AbstractServiceLoaderBasedFactoryBean<ServiceLoader<S>, S> implements BeanClassLoaderAware {
 
 	@Override
-	protected Object getObjectToExpose(ServiceLoader serviceLoader) {
+	protected ServiceLoader<S> getObjectToExpose(ServiceLoader<S> serviceLoader) {
 		return serviceLoader;
 	}
 
 	@Override
-	public Class getObjectType() {
+	public Class<?> getObjectType() {
 		return ServiceLoader.class;
 	}
 

@@ -233,12 +233,12 @@ public final class ServiceLocatorFactoryBeanTests {
 
 	@Test(expected=IllegalArgumentException.class)
 	public void testNoServiceLocatorInterfaceSupplied() throws Exception {
-		new ServiceLocatorFactoryBean().afterPropertiesSet();
+		new ServiceLocatorFactoryBean<Object>().afterPropertiesSet();
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	public void testWhenServiceLocatorInterfaceIsNotAnInterfaceType() throws Exception {
-		ServiceLocatorFactoryBean factory = new ServiceLocatorFactoryBean();
+		ServiceLocatorFactoryBean<Object> factory = new ServiceLocatorFactoryBean<Object>();
 		factory.setServiceLocatorInterface(getClass());
 		factory.afterPropertiesSet();
 		// should throw, bad (non-interface-type) serviceLocator interface supplied
@@ -246,21 +246,22 @@ public final class ServiceLocatorFactoryBeanTests {
 
 	@Test(expected=IllegalArgumentException.class)
 	public void testWhenServiceLocatorExceptionClassToExceptionTypeWithOnlyNoArgCtor() throws Exception {
-		ServiceLocatorFactoryBean factory = new ServiceLocatorFactoryBean();
+		ServiceLocatorFactoryBean<Object> factory = new ServiceLocatorFactoryBean<Object>();
 		factory.setServiceLocatorExceptionClass(ExceptionClassWithOnlyZeroArgCtor.class);
 		// should throw, bad (invalid-Exception-type) serviceLocatorException class supplied
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Test(expected = IllegalArgumentException.class)
 	public void testWhenServiceLocatorExceptionClassIsNotAnExceptionSubclass() throws Exception {
-		ServiceLocatorFactoryBean factory = new ServiceLocatorFactoryBean();
-		factory.setServiceLocatorExceptionClass(getClass());
+		ServiceLocatorFactoryBean<Object> factory = new ServiceLocatorFactoryBean<Object>();
+		factory.setServiceLocatorExceptionClass((Class)getClass());
 		// should throw, bad (non-Exception-type) serviceLocatorException class supplied
 	}
 
 	@Test(expected=UnsupportedOperationException.class)
 	public void testWhenServiceLocatorMethodCalledWithTooManyParameters() throws Exception {
-		ServiceLocatorFactoryBean factory = new ServiceLocatorFactoryBean();
+		ServiceLocatorFactoryBean<Object> factory = new ServiceLocatorFactoryBean<Object>();
 		factory.setServiceLocatorInterface(ServiceLocatorInterfaceWithExtraNonCompliantMethod.class);
 		factory.afterPropertiesSet();
 		ServiceLocatorInterfaceWithExtraNonCompliantMethod locator = (ServiceLocatorInterfaceWithExtraNonCompliantMethod) factory.getObject();
@@ -271,7 +272,7 @@ public final class ServiceLocatorFactoryBeanTests {
 	public void testRequiresListableBeanFactoryAndChokesOnAnythingElse() throws Exception {
 		BeanFactory beanFactory = mock(BeanFactory.class);
 		try {
-			ServiceLocatorFactoryBean factory = new ServiceLocatorFactoryBean();
+			ServiceLocatorFactoryBean<Object> factory = new ServiceLocatorFactoryBean<Object>();
 			factory.setBeanFactory(beanFactory);
 		} catch (FatalBeanException ex) {
 			// expected

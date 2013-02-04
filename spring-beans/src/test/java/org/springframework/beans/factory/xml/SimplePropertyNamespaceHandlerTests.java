@@ -73,4 +73,10 @@ public class SimplePropertyNamespaceHandlerTests {
 		assertEquals("r", sally.getSpouse().getName());
 	}
 
+	private DefaultListableBeanFactory createFactory(String resourceName) {
+		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+		new XmlBeanDefinitionReader(beanFactory).loadBeanDefinitions(new ClassPathResource(
+			resourceName, getClass()));
+		return beanFactory;
+	}
 }

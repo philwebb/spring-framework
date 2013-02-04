@@ -484,7 +484,7 @@ public class StoredProcedureTests {
 		}
 	}
 
-	private static class AddInvoiceUsingObjectArray extends StoredProcedure {
+	public static class AddInvoiceUsingObjectArray extends StoredProcedure {
 
 		public static final String SQL = "add_invoice";
 
@@ -671,7 +671,7 @@ public class StoredProcedureTests {
 		}
 	}
 
-	private static class NumericWithScaleStoredProcedure extends StoredProcedure {
+	public static class NumericWithScaleStoredProcedure extends StoredProcedure {
 
 		public static final String SQL = "numeric_with_scale_sp";
 

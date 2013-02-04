@@ -52,7 +52,6 @@ public final class ExposeInvocationInterceptorTests {
 
 }
 
-
 abstract class ExposedInvocationTestBean extends TestBean {
 
 	@Override
@@ -71,7 +70,6 @@ abstract class ExposedInvocationTestBean extends TestBean {
 
 	protected abstract void assertions(MethodInvocation invocation);
 }
-
 
 class InvocationCheckExposedInvocationTestBean extends ExposedInvocationTestBean {
 	@Override

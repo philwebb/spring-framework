@@ -66,6 +66,7 @@ public class ResourceArrayPropertyEditorTests {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@Test(expected=IllegalArgumentException.class)
 	public void testStrictSystemPropertyReplacement() {
 		PropertyEditor editor = new ResourceArrayPropertyEditor(

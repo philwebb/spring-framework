@@ -124,9 +124,9 @@ public class AspectJAwareAdvisorAutoProxyCreator extends AbstractAdvisorAutoProx
 
 		private final Advisor advisor;
 
-		private final Comparator<Advisor> comparator;
+		private final Comparator<Object> comparator;
 
-		public PartiallyComparableAdvisorHolder(Advisor advisor, Comparator<Advisor> comparator) {
+		public PartiallyComparableAdvisorHolder(Advisor advisor, Comparator<Object> comparator) {
 			this.advisor = advisor;
 			this.comparator = comparator;
 		}

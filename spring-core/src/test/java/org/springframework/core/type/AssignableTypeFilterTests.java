@@ -73,11 +73,11 @@ public class AssignableTypeFilterTests extends TestCase {
 
 	// We must use a standalone set of types to ensure that no one else is loading them
 	// and interfere with ClassloadingAssertions.assertClassNotLoaded()
-	private static class TestNonInheritingClass {
+	public static class TestNonInheritingClass {
 	}
 
 
-	private static interface TestInterface {
+	public static interface TestInterface {
 	}
 
 
@@ -86,7 +86,7 @@ public class AssignableTypeFilterTests extends TestCase {
 	}
 
 
-	private static interface SomeDaoLikeInterface {
+	public static interface SomeDaoLikeInterface {
 	}
 
 
@@ -94,11 +94,11 @@ public class AssignableTypeFilterTests extends TestCase {
 	private static class SomeDaoLikeImpl extends SimpleJdbcDaoSupport implements SomeDaoLikeInterface {
 	}
 
-	private static interface JdbcDaoSupport {
+	public static interface JdbcDaoSupport {
 
 	}
 
-	private static class SimpleJdbcDaoSupport implements JdbcDaoSupport {
+	public static class SimpleJdbcDaoSupport implements JdbcDaoSupport {
 
 	}
 

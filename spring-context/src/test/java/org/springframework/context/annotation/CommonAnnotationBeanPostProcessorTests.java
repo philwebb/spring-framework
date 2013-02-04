@@ -444,6 +444,7 @@ public class CommonAnnotationBeanPostProcessorTests {
 
 		public boolean destroyCalled = false;
 
+		@SuppressWarnings("unused")
 		@PostConstruct
 		private void init() {
 			if (this.initCalled) {
@@ -452,6 +453,7 @@ public class CommonAnnotationBeanPostProcessorTests {
 			this.initCalled = true;
 		}
 
+		@SuppressWarnings("unused")
 		@PreDestroy
 		private void destroy() {
 			if (this.destroyCalled) {
@@ -518,6 +520,7 @@ public class CommonAnnotationBeanPostProcessorTests {
 			this.init2Called = true;
 		}
 
+		@SuppressWarnings("unused")
 		@PostConstruct
 		private void init() {
 			if (this.init3Called) {
@@ -537,6 +540,7 @@ public class CommonAnnotationBeanPostProcessorTests {
 			this.destroy2Called = true;
 		}
 
+		@SuppressWarnings("unused")
 		@PreDestroy
 		private void destroy() {
 			if (this.destroyCalled) {
@@ -587,7 +591,8 @@ public class CommonAnnotationBeanPostProcessorTests {
 			super.setTestBean2(testBean2);
 		}
 
-		@Resource(name="${tb}", type=ITestBean.class)
+		@SuppressWarnings("unused")
+		@Resource(name = "${tb}", type = ITestBean.class)
 		private void setTestBean4(ITestBean testBean4) {
 			this.testBean4 = testBean4;
 		}
@@ -651,7 +656,8 @@ public class CommonAnnotationBeanPostProcessorTests {
 			super.setTestBean2(testBean2);
 		}
 
-		@EJB(beanName="testBean3", beanInterface=ITestBean.class)
+		@SuppressWarnings("unused")
+		@EJB(beanName = "testBean3", beanInterface = ITestBean.class)
 		private void setTestBean4(ITestBean testBean4) {
 			this.testBean4 = testBean4;
 		}
@@ -686,14 +692,14 @@ public class CommonAnnotationBeanPostProcessorTests {
 	}
 
 
-	private static class NamedResourceInjectionBean {
+	public static class NamedResourceInjectionBean {
 
 		@Resource(name="testBean9")
 		private INestedTestBean testBean;
 	}
 
 
-	private static class ConvertedResourceInjectionBean {
+	public static class ConvertedResourceInjectionBean {
 
 		@Resource(name="value")
 		private int value;

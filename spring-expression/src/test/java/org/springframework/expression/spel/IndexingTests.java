@@ -64,12 +64,12 @@ public class IndexingTests {
 
 		@Override
 		public boolean canRead(EvaluationContext context, Object target, String name) throws AccessException {
-			return (((Map) target).containsKey(name));
+			return (((Map<?, ?>) target).containsKey(name));
 		}
 
 		@Override
 		public TypedValue read(EvaluationContext context, Object target, String name) throws AccessException {
-			return new TypedValue(((Map) target).get(name));
+			return new TypedValue(((Map<?, ?>) target).get(name));
 		}
 
 		@Override
@@ -81,7 +81,7 @@ public class IndexingTests {
 		@SuppressWarnings("unchecked")
 		public void write(EvaluationContext context, Object target, String name, Object newValue)
 				throws AccessException {
-			((Map) target).put(name, newValue);
+			((Map<String, Object>) target).put(name, newValue);
 		}
 
 		@Override
@@ -296,6 +296,7 @@ public class IndexingTests {
 		assertEquals("", expression.getValue(this, String.class));
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Test
 	public void resolveCollectionElementType() {
 		listNotGeneric = new ArrayList();
@@ -314,6 +315,7 @@ public class IndexingTests {
 		assertEquals("@org.springframework.expression.spel.IndexingTests$FieldAnnotation java.util.List<?>", expression.getValueTypeDescriptor(this).toString());
 	}
 
+	@SuppressWarnings("rawtypes")
 	@FieldAnnotation
 	public List listNotGeneric;
 
@@ -323,6 +325,7 @@ public class IndexingTests {
 
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Test
 	public void resolveMapKeyValueTypes() {
 		mapNotGeneric = new HashMap();
@@ -336,6 +339,7 @@ public class IndexingTests {
 	@FieldAnnotation
 	public Map mapNotGeneric;
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void testListOfScalar() {
 		listOfScalarNotGeneric = new ArrayList();

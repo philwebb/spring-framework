@@ -192,7 +192,7 @@ public class CustomEditorConfigurer implements BeanFactoryPostProcessor, BeanCla
 								new SharedPropertyEditorRegistrar(requiredType, (PropertyEditor) value));
 					}
 					else if (value instanceof Class) {
-						beanFactory.registerCustomEditor(requiredType, (Class) value);
+						beanFactory.registerCustomEditor(requiredType, (Class<? extends PropertyEditor>) value);
 					}
 					else if (value instanceof String) {
 						Class<?> editorClass = ClassUtils.forName((String) value, this.beanClassLoader);

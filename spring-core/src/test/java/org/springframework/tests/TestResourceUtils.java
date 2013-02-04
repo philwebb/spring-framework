@@ -18,12 +18,16 @@ package org.springframework.tests;
 
 import static java.lang.String.format;
 
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.ClassPathResource;
 
 /**
  * Convenience utilities for common operations with test resources.
  *
  * @author Chris Beams
+ * @author Phillip Webb
  */
 public class TestResourceUtils {
 
@@ -43,4 +47,33 @@ public class TestResourceUtils {
 			return new ClassPathResource(format("%s-%s", clazz.getSimpleName(), resourceSuffix), clazz);
 	}
 
+	/**
+	 * Creates a {@link DefaultListableBeanFactory} using a {@link #qualifiedResource(Class, String) qualified XML
+	 * resource}.
+	 *
+	 * @param clazz
+	 * @param resourceSuffix
+	 */
+	public static DefaultListableBeanFactory beanFactoryFromQualifiedResource(
+		Class<?> clazz, String resourceSuffix) {
+		return beanFactoryFromQualifiedResource(clazz, resourceSuffix, null);
+	}
+
+	/**
+	 * Creates a {@link DefaultListableBeanFactory} using a {@link #qualifiedResource(Class, String) qualified XML
+	 * resource}.
+	 *
+	 * @param clazz
+	 * @param resourceSuffix
+	 * @param parentBeanFactory
+	 */
+	public static DefaultListableBeanFactory beanFactoryFromQualifiedResource(
+		Class<?> clazz, String resourceSuffix, BeanFactory parentBeanFactory) {
+		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory(
+			parentBeanFactory);
+		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
+		ClassPathResource resource = qualifiedResource(clazz, resourceSuffix);
+		reader.loadBeanDefinitions(resource);
+		return beanFactory;
+	}
 }

@@ -74,6 +74,7 @@ public class ApplicationContextEventTests {
 		smc.multicastEvent(new MyOtherEvent(this));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	@SuppressWarnings("unchecked")
 	public void proxiedListeners() {

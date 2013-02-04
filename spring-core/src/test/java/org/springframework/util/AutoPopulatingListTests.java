@@ -82,7 +82,7 @@ public class AutoPopulatingListTests extends TestCase {
 	}
 
 
-	private static class MockElementFactory implements AutoPopulatingList.ElementFactory {
+	private static class MockElementFactory implements AutoPopulatingList.ElementFactory<Object> {
 
 		@Override
 		public Object createElement(int index) {

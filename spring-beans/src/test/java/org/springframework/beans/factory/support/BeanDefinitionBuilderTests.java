@@ -18,6 +18,8 @@ package org.springframework.beans.factory.support;
 
 import java.util.Arrays;
 
+import org.springframework.beans.factory.config.BeanDefinition;
+
 import junit.framework.TestCase;
 
 import org.springframework.beans.factory.config.BeanDefinition;

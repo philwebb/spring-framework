@@ -73,6 +73,7 @@ public class ObjectFactoryCreatingFactoryBeanTests {
 		assertTrue(date1 != date2);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Test
 	public void testFactorySerialization() throws Exception {
 		FactoryTestBean testBean = beanFactory.getBean("factoryTestBean", FactoryTestBean.class);
@@ -95,6 +96,7 @@ public class ObjectFactoryCreatingFactoryBeanTests {
 		assertTrue(date1 != date2);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Test
 	public void testProviderSerialization() throws Exception {
 		ProviderTestBean testBean = beanFactory.getBean("providerTestBean", ProviderTestBean.class);

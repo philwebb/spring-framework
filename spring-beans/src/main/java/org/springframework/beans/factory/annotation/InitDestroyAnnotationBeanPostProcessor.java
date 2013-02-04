@@ -116,7 +116,6 @@ public class InitDestroyAnnotationBeanPostProcessor
 		return this.order;
 	}
 
-
 	public void postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, Class<?> beanType, String beanName) {
 		if (beanType != null) {
 			LifecycleMetadata metadata = findLifecycleMetadata(beanType);

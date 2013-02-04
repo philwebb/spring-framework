@@ -422,7 +422,7 @@ public final class PropertyResourceConfigurerTests {
 		someMap.put("${key4}", new BeanDefinitionHolder(new ChildBeanDefinition("tb1", innerPvs2), "child"));
 		pvs.add("someMap", someMap);
 
-		RootBeanDefinition bd = new RootBeanDefinition(TestBean.class, cas, pvs);
+		bd = new RootBeanDefinition(TestBean.class, cas, pvs);
 		factory.registerBeanDefinition("tb2", bd);
 
 		PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();

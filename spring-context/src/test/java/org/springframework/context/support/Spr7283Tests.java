@@ -36,6 +36,10 @@ public class Spr7283Tests {
 		assertTrue(list.get(1) instanceof B);
 	}
 
+	public static class A {
+		public A() {
+		}
+	}
 
 	public static class A {
 		public A() {}

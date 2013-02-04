@@ -1007,7 +1007,7 @@ public class DefaultListableBeanFactoryTests {
 		assertEquals(singletonObject, lbf.getBean("singletonObject"));
 		assertEquals(singletonObject, test.getSpouse());
 
-		Map<?, ?>  beansOfType = lbf.getBeansOfType(TestBean.class, false, true);
+		Map<?, ?> beansOfType = lbf.getBeansOfType(TestBean.class, false, true);
 		assertEquals(2, beansOfType.size());
 		assertTrue(beansOfType.containsValue(test));
 		assertTrue(beansOfType.containsValue(singletonObject));
@@ -1155,6 +1155,7 @@ public class DefaultListableBeanFactoryTests {
 	}
 
 	@Test
+	@SuppressWarnings("deprecation")
 	public void testAutowireWithNoDependencies() {
 		DefaultListableBeanFactory lbf = new DefaultListableBeanFactory();
 		RootBeanDefinition bd = new RootBeanDefinition(TestBean.class);
@@ -1166,6 +1167,7 @@ public class DefaultListableBeanFactoryTests {
 	}
 
 	@Test
+	@SuppressWarnings("deprecation")
 	public void testAutowireWithSatisfiedJavaBeanDependency() {
 		DefaultListableBeanFactory lbf = new DefaultListableBeanFactory();
 		MutablePropertyValues pvs = new MutablePropertyValues();
@@ -1183,6 +1185,7 @@ public class DefaultListableBeanFactoryTests {
 	}
 
 	@Test
+	@SuppressWarnings("deprecation")
 	public void testAutowireWithSatisfiedConstructorDependency() {
 		DefaultListableBeanFactory lbf = new DefaultListableBeanFactory();
 		MutablePropertyValues pvs = new MutablePropertyValues();
@@ -1199,6 +1202,7 @@ public class DefaultListableBeanFactoryTests {
 	}
 
 	@Test
+	@SuppressWarnings("deprecation")
 	public void testAutowireWithTwoMatchesForConstructorDependency() {
 		DefaultListableBeanFactory lbf = new DefaultListableBeanFactory();
 		RootBeanDefinition bd = new RootBeanDefinition(TestBean.class);
@@ -1217,6 +1221,7 @@ public class DefaultListableBeanFactoryTests {
 	}
 
 	@Test
+	@SuppressWarnings("deprecation")
 	public void testAutowireWithUnsatisfiedConstructorDependency() {
 		DefaultListableBeanFactory lbf = new DefaultListableBeanFactory();
 		MutablePropertyValues pvs = new MutablePropertyValues();
@@ -1239,8 +1244,7 @@ public class DefaultListableBeanFactoryTests {
 		DefaultListableBeanFactory lbf = new DefaultListableBeanFactory();
 		RootBeanDefinition bd = new RootBeanDefinition(TestBean.class);
 		lbf.registerBeanDefinition("spouse", bd);
-		ConstructorDependenciesBean bean = (ConstructorDependenciesBean)
-				lbf.autowire(ConstructorDependenciesBean.class, AutowireCapableBeanFactory.AUTOWIRE_CONSTRUCTOR, true);
+		ConstructorDependenciesBean bean = lbf.autowire(ConstructorDependenciesBean.class, AutowireCapableBeanFactory.AUTOWIRE_CONSTRUCTOR, true);
 		Object spouse = lbf.getBean("spouse");
 		assertTrue(bean.getSpouse1() == spouse);
 		assertTrue(BeanFactoryUtils.beanOfType(lbf, TestBean.class) == spouse);
@@ -1251,8 +1255,7 @@ public class DefaultListableBeanFactoryTests {
 		DefaultListableBeanFactory lbf = new DefaultListableBeanFactory();
 		RootBeanDefinition bd = new RootBeanDefinition(TestBean.class);
 		lbf.registerBeanDefinition("spouse", bd);
-		DependenciesBean bean = (DependenciesBean)
-				lbf.autowire(DependenciesBean.class, AutowireCapableBeanFactory.AUTOWIRE_BY_NAME, true);
+		DependenciesBean bean = lbf.autowire(DependenciesBean.class, AutowireCapableBeanFactory.AUTOWIRE_BY_NAME, true);
 		TestBean spouse = (TestBean) lbf.getBean("spouse");
 		assertEquals(spouse, bean.getSpouse());
 		assertTrue(BeanFactoryUtils.beanOfType(lbf, TestBean.class) == spouse);
@@ -1277,8 +1280,7 @@ public class DefaultListableBeanFactoryTests {
 		DefaultListableBeanFactory lbf = new DefaultListableBeanFactory();
 		RootBeanDefinition bd = new RootBeanDefinition(TestBean.class);
 		lbf.registerBeanDefinition("spous", bd);
-		DependenciesBean bean = (DependenciesBean)
-				lbf.autowire(DependenciesBean.class, AutowireCapableBeanFactory.AUTOWIRE_BY_NAME, false);
+		DependenciesBean bean = lbf.autowire(DependenciesBean.class, AutowireCapableBeanFactory.AUTOWIRE_BY_NAME, false);
 		assertNull(bean.getSpouse());
 	}
 
@@ -1352,8 +1354,7 @@ public class DefaultListableBeanFactoryTests {
 		DefaultListableBeanFactory lbf = new DefaultListableBeanFactory();
 		RootBeanDefinition bd = new RootBeanDefinition(TestBean.class);
 		lbf.registerBeanDefinition("test", bd);
-		DependenciesBean bean = (DependenciesBean)
-				lbf.autowire(DependenciesBean.class, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, true);
+		DependenciesBean bean = lbf.autowire(DependenciesBean.class, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, true);
 		TestBean test = (TestBean) lbf.getBean("test");
 		assertEquals(test, bean.getSpouse());
 	}
@@ -1371,7 +1372,7 @@ public class DefaultListableBeanFactoryTests {
 		lbf.registerBeanDefinition("factoryBean", bd);
 		LazyInitFactory factoryBean = (LazyInitFactory) lbf.getBean("&factoryBean");
 		assertNotNull("The FactoryBean should have been registered.", factoryBean);
-		FactoryBeanDependentBean bean = (FactoryBeanDependentBean) lbf.autowire(FactoryBeanDependentBean.class,
+		FactoryBeanDependentBean bean = lbf.autowire(FactoryBeanDependentBean.class,
 				AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, true);
 		assertEquals("The FactoryBeanDependentBean should have been autowired 'by type' with the LazyInitFactory.",
 				factoryBean, bean.getFactoryBean());
@@ -1453,8 +1454,7 @@ public class DefaultListableBeanFactoryTests {
 	@Test
 	public void testAutowireBeanByTypeWithNoDependencyCheck() {
 		DefaultListableBeanFactory lbf = new DefaultListableBeanFactory();
-		DependenciesBean bean = (DependenciesBean)
-				lbf.autowire(DependenciesBean.class, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false);
+		DependenciesBean bean = lbf.autowire(DependenciesBean.class, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false);
 		assertNull(bean.getSpouse());
 	}
 
@@ -1848,7 +1848,7 @@ public class DefaultListableBeanFactoryTests {
 	 */
 
 	@Test
-	@Ignore  // TODO re-enable when ConstructorResolver TODO sorted out
+	@Ignore // TODO re-enable when ConstructorResolver TODO sorted out
 	public void testPrototypeCreationWithConstructorArgumentsIsFastEnough() {
 		Assume.group(TestGroup.PERFORMANCE);
 		Assume.notLogging(factoryLog);
@@ -2235,7 +2235,6 @@ public class DefaultListableBeanFactoryTests {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testInitSecurityAwarePrototypeBean() {
 		final DefaultListableBeanFactory lbf = new DefaultListableBeanFactory();
@@ -2586,20 +2585,20 @@ public class DefaultListableBeanFactoryTests {
 
 		@Override
 		@SuppressWarnings("unchecked")
-		public Object convertIfNecessary(Object value, Class requiredType) {
+		public <T> T convertIfNecessary(Object value, Class<T> requiredType, MethodParameter methodParam) {
 			if (value instanceof String && Float.class.isAssignableFrom(requiredType)) {
 				try {
-					return new Float(this.numberFormat.parse((String) value).floatValue());
+					return (T) new Float(this.numberFormat.parse((String) value).floatValue());
 				}
 				catch (ParseException ex) {
 					throw new TypeMismatchException(value, requiredType, ex);
 				}
 			}
 			else if (value instanceof String && int.class.isAssignableFrom(requiredType)) {
-				return new Integer(5);
+				return (T) new Integer(5);
 			}
 			else {
-				return value;
+				return (T) value;
 			}
 		}
 

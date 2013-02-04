@@ -167,13 +167,13 @@ public class SetValueTests extends ExpressionTestCase {
 		e.setValue(eContext, "true");
 
 		// All keys should be strings
-		Set ks = parse("mapOfStringToBoolean.keySet()").getValue(eContext,Set.class);
+		Set<?> ks = parse("mapOfStringToBoolean.keySet()").getValue(eContext,Set.class);
 		for (Object o: ks) {
 			assertEquals(String.class,o.getClass());
 		}
 
 		// All values should be booleans
-		Collection vs = parse("mapOfStringToBoolean.values()").getValue(eContext,Collection.class);
+		Collection<?> vs = parse("mapOfStringToBoolean.values()").getValue(eContext,Collection.class);
 		for (Object o: vs) {
 			assertEquals(Boolean.class,o.getClass());
 		}

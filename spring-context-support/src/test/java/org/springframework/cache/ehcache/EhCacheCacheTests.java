@@ -31,6 +31,8 @@ import org.springframework.tests.TestGroup;
 import static org.junit.Assert.*;
 
 /**
+ * Test for native cache implementations.
+ *
  * @author Costin Leau
  */
 public class EhCacheCacheTests {

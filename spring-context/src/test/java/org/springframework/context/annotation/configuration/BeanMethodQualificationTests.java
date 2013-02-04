@@ -60,7 +60,6 @@ public class BeanMethodQualificationTests {
 		assertThat(pojo.testBean.getName(), equalTo("interesting"));
 	}
 
-
 	@Configuration
 	static class StandardConfig {
 		@Bean @Lazy @Qualifier("interesting")
@@ -74,8 +73,8 @@ public class BeanMethodQualificationTests {
 		}
 	}
 
-	@Component @Lazy
-	static class StandardPojo {
+	@Component
+	static class Pojo {
 		@Autowired @Qualifier("interesting") TestBean testBean;
 	}
 

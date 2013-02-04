@@ -60,7 +60,7 @@ public final class ContextJndiBeanFactoryLocatorTests extends TestCase {
 		}
 	}
 
-	public void testBeanFactoryPathFromJndiEnvironmentNotFound() throws Exception  {
+	public void testBeanFactoryPathFromJndiEnvironmentNotFound() throws Exception {
 		SimpleNamingContextBuilder sncb = SimpleNamingContextBuilder.emptyActivatedContextBuilder();
 
 		String bogusPath = "RUBBISH/com/xxxx/framework/server/test1.xml";

@@ -34,7 +34,8 @@ import org.springframework.core.io.ClassPathResource;
  * @author Chris Beams
  */
 public class FactoryBeanLookupTests {
-	private BeanFactory beanFactory;
+	
+	private DefaultListableBeanFactory beanFactory;
 
 	@Before
 	public void setUp() {

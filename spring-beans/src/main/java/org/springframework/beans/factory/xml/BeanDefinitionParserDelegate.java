@@ -113,6 +113,11 @@ public class BeanDefinitionParserDelegate {
 
 	public static final String AUTOWIRE_CONSTRUCTOR_VALUE = "constructor";
 
+	/**
+	 * @deprecated as of Spring 3.0: If you are using mixed autowiring strategies, use annotation-based autowiring for
+	 *             clearer demarcation of autowiring needs.
+	 */
+	@Deprecated
 	public static final String AUTOWIRE_AUTODETECT_VALUE = "autodetect";
 
 	public static final String DEPENDENCY_CHECK_ALL_ATTRIBUTE_VALUE = "all";

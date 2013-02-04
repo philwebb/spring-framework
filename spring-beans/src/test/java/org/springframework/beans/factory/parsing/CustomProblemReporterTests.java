@@ -64,7 +64,7 @@ public final class CustomProblemReporterTests {
 	}
 
 
-	private static class CollatingProblemReporter implements ProblemReporter {
+	public static class CollatingProblemReporter implements ProblemReporter {
 
 		private List<Problem> errors = new ArrayList<Problem>();
 

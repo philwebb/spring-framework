@@ -295,6 +295,7 @@ public class DefaultConversionTests {
 	public List<Integer> genericList = new ArrayList<Integer>();
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void convertArrayToCollectionGenericTypeConversion() throws Exception {
 		List<Integer> result = (List<Integer>) conversionService.convert(new String[] { "1", "2", "3" }, TypeDescriptor
 				.valueOf(String[].class), new TypeDescriptor(getClass().getDeclaredField("genericList")));
@@ -304,6 +305,7 @@ public class DefaultConversionTests {
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void testSpr7766() throws Exception {
 		ConverterRegistry registry = (conversionService);
 		registry.addConverter(new ColorConverter());
@@ -466,7 +468,7 @@ public class DefaultConversionTests {
 
 	@Test
 	public void convertStringToCollection() {
-		List result = conversionService.convert("1,2,3", List.class);
+		List<?> result = conversionService.convert("1,2,3", List.class);
 		assertEquals(3, result.size());
 		assertEquals("1", result.get(0));
 		assertEquals("2", result.get(1));
@@ -475,7 +477,7 @@ public class DefaultConversionTests {
 
 	@Test
 	public void convertStringToCollectionWithElementConversion() throws Exception {
-		List result = (List) conversionService.convert("1,2,3", TypeDescriptor.valueOf(String.class),
+		List<?> result = (List<?>) conversionService.convert("1,2,3", TypeDescriptor.valueOf(String.class),
 				new TypeDescriptor(getClass().getField("genericList")));
 		assertEquals(3, result.size());
 		assertEquals(new Integer(1), result.get(0));
@@ -485,7 +487,7 @@ public class DefaultConversionTests {
 
 	@Test
 	public void convertEmptyStringToCollection() {
-		Collection result = conversionService.convert("", Collection.class);
+		Collection<?> result = conversionService.convert("", Collection.class);
 		assertEquals(0, result.size());
 	}
 
@@ -528,12 +530,13 @@ public class DefaultConversionTests {
 
 	@Test
 	public void convertObjectToCollection() {
-		List<String> result = (List<String>) conversionService.convert(3L, List.class);
+		List<String> result = conversionService.convert(3L, List.class);
 		assertEquals(1, result.size());
 		assertEquals(3L, result.get(0));
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void convertObjectToCollectionWithElementConversion() throws Exception {
 		List<Integer> result = (List<Integer>) conversionService.convert(3L, TypeDescriptor.valueOf(Long.class),
 				new TypeDescriptor(getClass().getField("genericList")));
@@ -566,6 +569,7 @@ public class DefaultConversionTests {
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void convertCollectionToCollection() throws Exception {
 		Set<String> foo = new LinkedHashSet<String>();
 		foo.add("1");
@@ -579,6 +583,7 @@ public class DefaultConversionTests {
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void convertCollectionToCollectionNull() throws Exception {
 		List<Integer> bar = (List<Integer>) conversionService.convert(null,
 				TypeDescriptor.valueOf(LinkedHashSet.class), new TypeDescriptor(getClass().getField("genericList")));
@@ -591,7 +596,7 @@ public class DefaultConversionTests {
 		foo.add("1");
 		foo.add("2");
 		foo.add("3");
-		List bar = (List) conversionService.convert(foo, TypeDescriptor.valueOf(LinkedHashSet.class), TypeDescriptor
+		List<?> bar = (List<?>) conversionService.convert(foo, TypeDescriptor.valueOf(LinkedHashSet.class), TypeDescriptor
 				.valueOf(List.class));
 		assertEquals("1", bar.get(0));
 		assertEquals("2", bar.get(1));
@@ -599,12 +604,13 @@ public class DefaultConversionTests {
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void convertCollectionToCollectionSpecialCaseSourceImpl() throws Exception {
-		Map map = new LinkedHashMap();
+		Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 		map.put("1", "1");
 		map.put("2", "2");
 		map.put("3", "3");
-		Collection values = map.values();
+		Collection<Object> values = map.values();
 		List<Integer> bar = (List<Integer>) conversionService.convert(values,
 				TypeDescriptor.forObject(values), new TypeDescriptor(getClass().getField("genericList")));
 		assertEquals(3, bar.size());
@@ -614,6 +620,7 @@ public class DefaultConversionTests {
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void collection() {
 		List<String> strings = new ArrayList<String>();
 		strings.add("3");
@@ -626,6 +633,7 @@ public class DefaultConversionTests {
 	public Map<Integer, FooEnum> genericMap = new HashMap<Integer, FooEnum>();
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void convertMapToMap() throws Exception {
 		Map<String, String> foo = new HashMap<String, String>();
 		foo.put("1", "BAR");
@@ -637,6 +645,7 @@ public class DefaultConversionTests {
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void map() {
 		Map<String, String> strings = new HashMap<String, String>();
 		strings.put("3", "9");

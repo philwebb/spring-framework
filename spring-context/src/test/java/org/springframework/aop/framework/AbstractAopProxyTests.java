@@ -176,7 +176,7 @@ public abstract class AbstractAopProxyTests {
 		testManyProxies(howMany);
 		sw.stop();
 		System.out.println(sw.getTotalTimeMillis());
-		assertTrue("Proxy creation was too slow",  sw.getTotalTimeMillis() < 5000);
+		assertTrue("Proxy creation was too slow", sw.getTotalTimeMillis() < 5000);
 	}
 
 	private void testManyProxies(int howMany) {
@@ -522,6 +522,9 @@ public abstract class AbstractAopProxyTests {
 		catch (UndeclaredThrowableException thrown) {
 			assertEquals("exception matches", unexpectedException, thrown.getUndeclaredThrowable());
 		}
+		//catch (net.sf.cglib.proxy.UndeclaredThrowableException thrown) {
+		//	assertEquals("exception matches", unexpectedException, thrown.getUndeclaredThrowable());
+		//}
 		catch (Exception ex) {
 			ex.printStackTrace();
 			fail("Didn't expect exception: " + ex);
@@ -555,6 +558,9 @@ public abstract class AbstractAopProxyTests {
 		catch (RuntimeException thrown) {
 			assertEquals("exception matches", unexpectedException, thrown);
 		}
+		//catch (net.sf.cglib.proxy.UndeclaredThrowableException thrown) {
+		//	assertEquals("exception matches", unexpectedException, thrown.getUndeclaredThrowable());
+		//}
 	}
 
 	/**
@@ -603,7 +609,7 @@ public abstract class AbstractAopProxyTests {
 		//assertTrue(target.invocation.getProxy() == tb);
 
 	//	((IOther) tb).absquatulate();
-		//MethodInvocation minv =  tii.invocation;
+		//MethodInvocation minv = tii.invocation;
 		//assertTrue("invoked on iother, not " + minv.getMethod().getDeclaringClass(), minv.getMethod().getDeclaringClass() == IOther.class);
 		//assertTrue(target.invocation == tii.invocation);
 	}
@@ -1773,6 +1779,8 @@ public abstract class AbstractAopProxyTests {
 	protected static class TestStaticPointcutAdvice extends StaticMethodMatcherPointcutAdvisor {
 
 		private String pattern;
+
+		@SuppressWarnings("unused")
 		private int count;
 
 		public TestStaticPointcutAdvice(MethodInterceptor mi, String pattern) {

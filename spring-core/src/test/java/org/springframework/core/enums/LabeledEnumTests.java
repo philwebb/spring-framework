@@ -126,7 +126,6 @@ public class LabeledEnumTests extends TestCase {
 
 		public static final Other THING2 = new Other(2, "Thing2");
 
-
 		private Other(int code, String name) {
 			super(code, name);
 		}

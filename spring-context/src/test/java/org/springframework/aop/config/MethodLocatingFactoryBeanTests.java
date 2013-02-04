@@ -89,6 +89,7 @@ public final class MethodLocatingFactoryBeanTests {
 		verify(beanFactory).getType(BEAN_NAME);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testSunnyDayPath() throws Exception {
@@ -103,6 +104,7 @@ public final class MethodLocatingFactoryBeanTests {
 		assertEquals("Bingo", method.invoke("Bingo"));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test(expected=IllegalArgumentException.class)
 	@SuppressWarnings("unchecked")
 	public void testWhereMethodCannotBeResolved() {

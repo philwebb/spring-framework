@@ -347,7 +347,7 @@ public final class BeanUtilsTests {
 		}
 	}
 
-	private interface MapEntry<K, V> {
+	public interface MapEntry<K, V> {
 
 		K getKey();
 
@@ -358,7 +358,7 @@ public final class BeanUtilsTests {
 		void setValue(V value);
 	}
 
-	private static class Bean implements MapEntry<String, String> {
+	public static class Bean implements MapEntry<String, String> {
 
 		private String key;
 
