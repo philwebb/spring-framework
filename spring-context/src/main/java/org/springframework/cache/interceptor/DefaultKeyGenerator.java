@@ -18,8 +18,6 @@ package org.springframework.cache.interceptor;
 
 import java.lang.reflect.Method;
 
-import org.springframework.cache.interceptor.KeyGenerator;
-
 /**
  * Default key generator. Returns {@value #NO_PARAM_KEY} if no
  * parameters are provided, the parameter itself if only one is given or
@@ -30,7 +28,10 @@ import org.springframework.cache.interceptor.KeyGenerator;
  * @author Costin Leau
  * @author Chris Beams
  * @since 3.1
+ * @deprecated as of Spring 3.2 in favor of {@link SimpleKeyGenerator} which is less
+ * likely to encounter collisions
  */
+@Deprecated
 public class DefaultKeyGenerator implements KeyGenerator {
 
 	public static final int NO_PARAM_KEY = 0;

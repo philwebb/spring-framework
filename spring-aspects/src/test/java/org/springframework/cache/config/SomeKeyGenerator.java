@@ -16,8 +16,8 @@
 
 package org.springframework.cache.config;
 
-import org.springframework.cache.interceptor.DefaultKeyGenerator;
+import org.springframework.cache.interceptor.SimpleKeyGenerator;
 
-public class SomeKeyGenerator extends DefaultKeyGenerator {
+public class SomeKeyGenerator extends SimpleKeyGenerator {
 
 }
