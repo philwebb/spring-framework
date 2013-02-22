@@ -101,6 +101,17 @@ public class ConfigurationClassPostProcessorTests {
 		}
 	}
 
+	@Test
+	public void testInheritedConfiguration() throws Exception {
+		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+		beanFactory.registerBeanDefinition("config", new RootBeanDefinition(InheritedSingletonBeanConfig.class));
+		ConfigurationClassPostProcessor pp = new ConfigurationClassPostProcessor();
+		pp.postProcessBeanFactory(beanFactory);
+		Foo foo = beanFactory.getBean("foo", Foo.class);
+		Bar bar = beanFactory.getBean("bar", Bar.class);
+		assertSame(foo, bar.foo);
+	}
+
 
 	@Configuration
 	static class SingletonBeanConfig {
@@ -114,6 +125,8 @@ public class ConfigurationClassPostProcessorTests {
 		}
 	}
 
+	static class InheritedSingletonBeanConfig extends SingletonBeanConfig {
+	}
 
 	static class Foo {
 	}

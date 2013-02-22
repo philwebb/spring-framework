@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2012 the original author or authors.
+ * Copyright 2002-2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,15 +33,12 @@ import org.springframework.stereotype.Component;
  * Utilities for processing @{@link Configuration} classes.
  *
  * @author Chris Beams
+ * @author Phillip Webb
  * @since 3.1
  */
 abstract class ConfigurationClassUtils {
 
 	private static final Log logger = LogFactory.getLog(ConfigurationClassUtils.class);
-
-	private static final String CONFIGURATION_CLASS_FULL = "full";
-
-	private static final String CONFIGURATION_CLASS_LITE = "lite";
 
 	private static final String CONFIGURATION_CLASS_ATTRIBUTE =
 		Conventions.getQualifiedAttributeName(ConfigurationClassPostProcessor.class, "configurationClass");
@@ -54,64 +51,94 @@ abstract class ConfigurationClassUtils {
 	 * @param metadataReaderFactory the current factory in use by the caller
 	 * @return whether the candidate qualifies as (any kind of) configuration class
 	 */
-	public static boolean checkConfigurationClassCandidate(BeanDefinition beanDef, MetadataReaderFactory metadataReaderFactory) {
-		AnnotationMetadata metadata = null;
-
-		// Check already loaded Class if present...
-		// since we possibly can't even load the class file for this Class.
-		if (beanDef instanceof AbstractBeanDefinition && ((AbstractBeanDefinition) beanDef).hasBeanClass()) {
-			Class<?> beanClass = ((AbstractBeanDefinition) beanDef).getBeanClass();
-			metadata = new StandardAnnotationMetadata(beanClass, true);
-		}
-		else {
-			String className = beanDef.getBeanClassName();
-			if (className != null) {
-				try {
-					MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(className);
-					metadata = metadataReader.getAnnotationMetadata();
-				}
-				catch (IOException ex) {
-					if (logger.isDebugEnabled()) {
-						logger.debug("Could not find class file for introspecting factory methods: " + className, ex);
-					}
-					return false;
-				}
-			}
-		}
-
-		if (metadata != null) {
-			if (isFullConfigurationCandidate(metadata)) {
-				beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_FULL);
-				return true;
-			}
-			else if (isLiteConfigurationCandidate(metadata)) {
-				beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_LITE);
-				return true;
-			}
+	public static boolean checkConfigurationClassCandidate(BeanDefinition beanDef,
+			MetadataReaderFactory metadataReaderFactory) {
+		Type type = getType(beanDef, metadataReaderFactory);
+		if(type != null) {
+			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, type);
+			return true;
 		}
 		return false;
 	}
 
-	public static boolean isConfigurationCandidate(AnnotationMetadata metadata) {
-		return isFullConfigurationCandidate(metadata) || isLiteConfigurationCandidate(metadata);
+	private static Type getType(BeanDefinition beanDef,
+			MetadataReaderFactory metadataReaderFactory) {
+		if (beanDef instanceof AbstractBeanDefinition && ((AbstractBeanDefinition) beanDef).hasBeanClass()) {
+			return getType(((AbstractBeanDefinition) beanDef).getBeanClass(), metadataReaderFactory);
+		}
+		return getType(beanDef.getBeanClassName(), metadataReaderFactory);
 	}
 
-	public static boolean isFullConfigurationCandidate(AnnotationMetadata metadata) {
-		return metadata.isAnnotated(Configuration.class.getName());
+	private static Type getType(Object beanClass, MetadataReaderFactory metadataReaderFactory) {
+		if(beanClass != null) {
+			AnnotationMetadata metadata = getMetadata(metadataReaderFactory, beanClass);
+			if (metadata != null) {
+				Type type = Type.get(metadata);
+				if (type == null) {
+					type = getType(
+							beanClass instanceof Class ? ((Class<?>) beanClass).getSuperclass()
+									: metadata.getSuperClassName(), metadataReaderFactory);
+				}
+				return type;
+			}
+		}
+		return null;
 	}
 
-	public static boolean isLiteConfigurationCandidate(AnnotationMetadata metadata) {
-		return !metadata.isInterface() && // not an interface or an annotation
-				(metadata.isAnnotated(Component.class.getName()) ||
-				metadata.hasAnnotatedMethods(Bean.class.getName()));
+	private static AnnotationMetadata getMetadata(
+			MetadataReaderFactory metadataReaderFactory, Object beanClass) {
+		if (beanClass instanceof Class) {
+			return new StandardAnnotationMetadata((Class<?>) beanClass, true);
+		}
+		try {
+			MetadataReader metadataReader = metadataReaderFactory.getMetadataReader((String) beanClass);
+			return metadataReader.getAnnotationMetadata();
+		}
+		catch (IOException ex) {
+			if (logger.isDebugEnabled()) {
+				logger.debug("Could not find class file for introspecting factory methods: " + beanClass, ex);
+			}
+		}
+		return null;
 	}
 
+	public static boolean isConfigurationCandidate(AnnotationMetadata metadata,
+			MetadataReaderFactory metadataReaderFactory) {
+		return getType(metadata.getClassName(), metadataReaderFactory) != null;
+	}
 
 	/**
 	 * Determine whether the given bean definition indicates a full @Configuration class.
 	 */
 	public static boolean isFullConfigurationClass(BeanDefinition beanDef) {
-		return CONFIGURATION_CLASS_FULL.equals(beanDef.getAttribute(CONFIGURATION_CLASS_ATTRIBUTE));
+		return Type.FULL.equals(beanDef.getAttribute(CONFIGURATION_CLASS_ATTRIBUTE));
+	}
+
+	private enum Type {
+		FULL {
+			@Override
+			public boolean matches(AnnotationMetadata metadata) {
+				return metadata.isAnnotated(Configuration.class.getName());
+			}
+		},
+		LITE {
+			@Override
+			public boolean matches(AnnotationMetadata metadata) {
+				return !metadata.isInterface() && // not an interface or an annotation
+						(metadata.isAnnotated(Component.class.getName()) || metadata.hasAnnotatedMethods(Bean.class.getName()));
+			}
+		};
+
+		public abstract boolean matches(AnnotationMetadata metadata);
+
+		public static Type get(AnnotationMetadata metadata) {
+			for (Type type : values()) {
+				if (type.matches(metadata)) {
+					return type;
+				}
+			}
+			return null;
+		}
 	}
 
 }
