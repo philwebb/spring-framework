@@ -16,9 +16,6 @@
 
 package org.springframework.scripting.support;
 
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
@@ -26,6 +23,8 @@ import junit.framework.TestCase;
 
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+
+import static org.mockito.BDDMockito.*;
 
 /**
  * @author Rick Evans

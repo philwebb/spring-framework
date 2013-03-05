@@ -16,12 +16,6 @@
 
 package org.springframework.ejb.access;
 
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-
 import java.lang.reflect.Proxy;
 
 import javax.ejb.CreateException;
@@ -31,6 +25,9 @@ import javax.naming.NamingException;
 
 import org.junit.Test;
 import org.springframework.jndi.JndiTemplate;
+
+import static org.junit.Assert.*;
+import static org.mockito.BDDMockito.*;
 
 /**
  * @author Rod Johnson

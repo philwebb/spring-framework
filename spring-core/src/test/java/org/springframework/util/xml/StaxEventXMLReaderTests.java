@@ -16,11 +16,9 @@
 
 package org.springframework.util.xml;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-
 import java.io.InputStream;
 import java.io.StringReader;
+
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -28,6 +26,8 @@ import javax.xml.stream.XMLStreamException;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.helpers.AttributesImpl;
+
+import static org.mockito.BDDMockito.*;
 
 public class StaxEventXMLReaderTests extends AbstractStaxXMLReaderTestCase {
 

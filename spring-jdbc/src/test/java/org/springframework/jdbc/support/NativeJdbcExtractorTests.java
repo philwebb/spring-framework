@@ -16,10 +16,6 @@
 
 package org.springframework.jdbc.support;
 
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -31,6 +27,9 @@ import java.sql.Statement;
 import org.junit.Test;
 import org.springframework.jdbc.support.nativejdbc.CommonsDbcpNativeJdbcExtractor;
 import org.springframework.jdbc.support.nativejdbc.SimpleNativeJdbcExtractor;
+
+import static org.junit.Assert.*;
+import static org.mockito.BDDMockito.*;
 
 /**
  * @author Andre Biryukov

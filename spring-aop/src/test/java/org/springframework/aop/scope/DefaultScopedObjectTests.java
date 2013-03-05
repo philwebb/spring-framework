@@ -16,10 +16,10 @@
 
 package org.springframework.aop.scope;
 
-import static org.mockito.Mockito.mock;
-
 import org.junit.Test;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+
+import static org.mockito.BDDMockito.*;
 
 /**
  * Unit tests for the {@link DefaultScopedObject} class.

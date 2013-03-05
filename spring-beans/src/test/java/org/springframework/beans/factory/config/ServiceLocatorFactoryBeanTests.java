@@ -16,10 +16,6 @@
 
 package org.springframework.beans.factory.config;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.springframework.beans.factory.support.BeanDefinitionBuilder.genericBeanDefinition;
-
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -29,6 +25,10 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.core.NestedCheckedException;
 import org.springframework.core.NestedRuntimeException;
+
+import static org.junit.Assert.*;
+import static org.mockito.BDDMockito.*;
+import static org.springframework.beans.factory.support.BeanDefinitionBuilder.*;
 
 /**
  * Unit tests for {@link ServiceLocatorFactoryBean}.

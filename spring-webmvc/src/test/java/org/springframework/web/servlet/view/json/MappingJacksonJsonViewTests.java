@@ -16,13 +16,6 @@
 
 package org.springframework.web.servlet.view.json;
 
-import static org.easymock.EasyMock.createMock;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
@@ -47,6 +40,9 @@ import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.mock.web.test.MockHttpServletResponse;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+
+import static org.junit.Assert.*;
+import static org.mockito.BDDMockito.*;
 
 /**
  * @author Jeremy Grelle
@@ -84,7 +80,7 @@ public class MappingJacksonJsonViewTests {
 	public void renderSimpleMap() throws Exception {
 
 		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("bindingResult", createMock("binding_result", BindingResult.class));
+		model.put("bindingResult", mock(BindingResult.class, "binding_result"));
 		model.put("foo", "bar");
 
 		view.setUpdateContentLength(true);
@@ -108,7 +104,7 @@ public class MappingJacksonJsonViewTests {
 		view.setDisableCaching(false);
 
 		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("bindingResult", createMock("binding_result", BindingResult.class));
+		model.put("bindingResult", mock(BindingResult.class, "binding_result"));
 		model.put("foo", "bar");
 
 		view.render(model, request, response);
@@ -129,7 +125,7 @@ public class MappingJacksonJsonViewTests {
 
 		Object bean = new TestBeanSimple();
 		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("bindingResult", createMock("binding_result", BindingResult.class));
+		model.put("bindingResult", mock(BindingResult.class, "binding_result"));
 		model.put("foo", bean);
 
 		view.setUpdateContentLength(true);

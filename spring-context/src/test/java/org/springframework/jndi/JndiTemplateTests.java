@@ -16,15 +16,13 @@
 
 package org.springframework.jndi;
 
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-
 import javax.naming.Context;
 import javax.naming.NameNotFoundException;
 
 import org.junit.Test;
+
+import static org.junit.Assert.*;
+import static org.mockito.BDDMockito.*;
 
 /**
  * @author Rod Johnson

@@ -16,12 +16,6 @@
 
 package org.springframework.util.xml;
 
-import static org.mockito.BDDMockito.willAnswer;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-
 import java.io.InputStream;
 
 import javax.xml.stream.XMLInputFactory;
@@ -43,6 +37,8 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.helpers.AttributesImpl;
 import org.xml.sax.helpers.XMLReaderFactory;
+
+import static org.mockito.BDDMockito.*;
 
 public abstract class AbstractStaxXMLReaderTestCase {
 

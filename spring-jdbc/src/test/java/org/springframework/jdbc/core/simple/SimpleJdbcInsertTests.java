@@ -16,10 +16,6 @@
 
 package org.springframework.jdbc.core.simple;
 
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -33,6 +29,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
+
+import static org.mockito.BDDMockito.*;
 
 /**
  * Mock object based tests for SimpleJdbcInsert.

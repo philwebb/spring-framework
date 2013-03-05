@@ -16,10 +16,6 @@
 
 package org.springframework.jdbc.core;
 
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
@@ -29,6 +25,8 @@ import java.util.GregorianCalendar;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.mockito.BDDMockito.*;
 
 /**
  * @author Juergen Hoeller

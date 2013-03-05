@@ -16,12 +16,11 @@
 
 package org.springframework.context.access;
 
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-
 import org.junit.Test;
 import org.springframework.context.ConfigurableApplicationContext;
+
+import static org.junit.Assert.*;
+import static org.mockito.BDDMockito.*;
 
 /**
  * Unit test for {@link ContextBeanFactoryReference}

@@ -12,10 +12,6 @@
  */
 package org.springframework.mock.web;
 
-import static org.easymock.EasyMock.*;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
-
 import java.io.IOException;
 
 import javax.servlet.Filter;
@@ -28,6 +24,10 @@ import javax.servlet.ServletResponse;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
+import static org.mockito.BDDMockito.*;
 
 /**
  * Test fixture for {@link MockFilterChain}.
@@ -53,7 +53,7 @@ public class MockFilterChainTests {
 
 	@Test(expected=IllegalArgumentException.class)
 	public void constructorNullFilter() {
-		new MockFilterChain(createMock(Servlet.class), (Filter) null);
+		new MockFilterChain(mock(Servlet.class), (Filter) null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -87,16 +87,10 @@ public class MockFilterChainTests {
 
 	@Test
 	public void doFilterWithServlet() throws Exception {
-		Servlet servlet = createMock(Servlet.class);
-
+		Servlet servlet = mock(Servlet.class);
 		MockFilterChain chain = new MockFilterChain(servlet);
-		servlet.service(this.request, this.response);
-		replay(servlet);
-
 		chain.doFilter(this.request, this.response);
-
-		verify(servlet);
-
+		verify(servlet).service(this.request, this.response);
 		try {
 			chain.doFilter(this.request, this.response);
 			fail("Expected Exception");
@@ -108,9 +102,7 @@ public class MockFilterChainTests {
 
 	@Test
 	public void doFilterWithServletAndFilters() throws Exception {
-		Servlet servlet = createMock(Servlet.class);
-		servlet.service(this.request, this.response);
-		replay(servlet);
+		Servlet servlet = mock(Servlet.class);
 
 		MockFilter filter2 = new MockFilter(servlet);
 		MockFilter filter1 = new MockFilter(null);
@@ -121,7 +113,7 @@ public class MockFilterChainTests {
 		assertTrue(filter1.invoked);
 		assertTrue(filter2.invoked);
 
-		verify(servlet);
+		verify(servlet).service(this.request, this.response);
 
 		try {
 			chain.doFilter(this.request, this.response);

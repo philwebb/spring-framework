@@ -16,14 +16,12 @@
 
 package org.springframework.beans.factory.parsing;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.isA;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-
 import org.apache.commons.logging.Log;
 import org.junit.Test;
 import org.springframework.core.io.DescriptiveResource;
+
+import static org.mockito.Matchers.*;
+import static org.mockito.BDDMockito.*;
 
 /**
  * @author Rick Evans

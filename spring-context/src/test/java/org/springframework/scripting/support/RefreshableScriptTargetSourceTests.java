@@ -16,10 +16,11 @@
 
 package org.springframework.scripting.support;
 
-import static org.mockito.Mockito.mock;
 import junit.framework.TestCase;
 
 import org.springframework.beans.factory.BeanFactory;
+
+import static org.mockito.BDDMockito.*;
 
 /**
  * @author Rick Evans

@@ -16,13 +16,13 @@
 
 package org.springframework.jdbc.datasource;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-
 import java.sql.Connection;
 import java.util.Properties;
 
 import org.junit.Test;
+
+import static org.junit.Assert.*;
+import static org.mockito.BDDMockito.*;
 
 /**
  * @author Rod Johnson

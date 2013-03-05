@@ -32,14 +32,15 @@ import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRAbstractBeanDataSourceProvider;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import org.easymock.MockControl;
-import org.junit.Ignore;
 
+import org.junit.Ignore;
 import org.springframework.context.ApplicationContextException;
 import org.springframework.mock.web.test.MockServletContext;
 import org.springframework.ui.jasperreports.PersonBean;
 import org.springframework.web.context.support.StaticWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
+
+import static org.mockito.BDDMockito.*;
 
 /**
  * @author Rob Harrop
@@ -372,11 +373,8 @@ public abstract class AbstractJasperReportsViewTests extends AbstractJasperRepor
 	}
 
 	private DataSource getMockJdbcDataSource() throws SQLException {
-		MockControl ctl = MockControl.createControl(DataSource.class);
-		DataSource ds = (DataSource) ctl.getMock();
-		ds.getConnection();
-		ctl.setThrowable(new SQLException());
-		ctl.replay();
+		DataSource ds = mock(DataSource.class);
+		given(ds.getConnection()).willThrow(new SQLException());
 		return ds;
 	}
 
