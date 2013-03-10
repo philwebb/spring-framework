@@ -21,6 +21,7 @@ import java.util.Arrays;
 import junit.framework.TestCase;
 import org.xml.sax.InputSource;
 
+import org.junit.Test;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -29,6 +30,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.tests.sample.beans.TestBean;
+
+import static org.junit.Assert.*;
 
 
 /**
@@ -154,4 +157,12 @@ public class XmlBeanDefinitionReaderTests extends TestCase {
 		assertNotNull(bean);
 	}
 
+	// SPR-10315
+	public void testOddLengthDoubleByteChars() throws Exception {
+		DefaultListableBeanFactory factory = new DefaultListableBeanFactory();;
+		Resource resource = new ClassPathResource("oddLengthDoubleByteChars.xml", getClass());
+		new XmlBeanDefinitionReader(factory).loadBeanDefinitions(resource);
+		TestBean bean = (TestBean) factory.getBean("testBean");
+		assertNotNull(bean);
+	}
 }
