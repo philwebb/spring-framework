@@ -1,29 +1,30 @@
-# Spring 4 Sneak Peek : Embedded Servlet Containers
+# Spring Framework 4 Sneak Peek: Embedded Servlet Containers
 
-Embedded servlet containers provide an easy way to develop standalone web applications that can 'just run'. Jetty was probably the first server to offerer embedded support, but these days most servlet containers (including Tomcat) and even many full Java EE application servers can be used in embedded way. Spring has always strived to be the framework that you can use anywhere, and whilst it certainly possible to use an embedded Servlet container with Spring 3, version 4 will make it significantly easier.
+Embedded servlet containers provide an easy way to develop standalone web applications that can 'just run'. Jetty was probably the first server to offerer embedded support, but these days most servlet containers (including Tomcat) and even many full Java EE application servers can be used in an embedded way. Spring has always strived to be the framework that you can use anywhere, and whilst it is certainly possible to use an embedded Servlet container with 3.x, the [forthcoming Spring Framework 4.0](TODO) will make it significantly easier.
 
 
 ## Background
 
-Before discussing embedded servlet containers it is worth a refresher on how classic deployments currently work. Usually here, your Spring application is packaged as a `WAR` file before being deployed to a server. Lets assume that you have a container that supports Servlet 3.0 style registration, you might have an initializer that looks like this:
+Before discussing embedded servlet containers it is worth a refresher on how classic deployments currently work. Usually here, your Spring application is packaged as a `WAR` file before being deployed to a server. Lets assume that you have a container that supports [Servlet 3.0 style registration](TODO), you might have a Spring [web app initializer](TODO) that looks like this:
 
-```java
-public class MyWebAppInitializer implements WebApplicationInitializer {
-    public void onStartup(ServletContext servletContext) throws ServletException {
-        AnnotationConfigWebApplicationContext context = 
-        		new AnnotationConfigWebApplicationContext(MyConfiguration.class);
+    public class MyWebAppInitializer implements WebApplicationInitializer {
+
+      @Override
+      public void onStartup(ServletContext servletContext) throws ServletException {
+        AnnotationConfigWebApplicationContext context =
+            new AnnotationConfigWebApplicationContext(MyConfiguration.class);
         ServletRegistration.Dynamic registration = servletContext.addServlet(
-        		"dispatcher", new DispatcherServlet(context));
+          "dispatcher", new DispatcherServlet(context));
         registration.setLoadOnStartup(1);
         registration.addMapping("/");
-    }
-}
+      }
 
-@EnableWebMvc
-@Import(MyController.class)
-public MyConfiguration {
-}
-```
+    }
+
+    @EnableWebMvc
+    @Import(MyController.class)
+    public MyConfiguration {
+    }
 
 __NOTE:__ `AbstractDispatcherServletInitializer` is usually a better choice for this type of initialization.
 
@@ -44,53 +45,51 @@ The application will remain running until the `DispatcherServlet` is stopped. Th
 
 To get the most from using an embedded servlet container we really want to flip the classic deployment model on its head. We want the Spring context to be created and refreshed first so that it can contain and manage all aspects of the application. The Spring context itself will contain everything needed to configure and start the embedded servlet container.
 
-The new `EmbeddedWebApplicationContext` is a special type of `WebApplicationContext` supports these ideas. Lets take a look at an example:
+The new `EmbeddedWebApplicationContext` is a special type of `WebApplicationContext` that supports these ideas. Lets take a look at an example:
 
-```java
-public class MySpringApplication {
-	
-	public static void main(String... args) {
-		AnnotationConfigEmbeddedWebApplicationContext context =
-				new AnnotationConfigEmbeddedWebApplicationContext();
-		context.register(MyConfig.class);
-		context.refresh();
+    public class MySpringApplication {
 
-		// The XmlEmbeddedWebApplicationContext is also available 
-		// if you prefer XML configuration
-	}
+      public static void main(String... args) {
+        AnnotationConfigEmbeddedWebApplicationContext context =
+            new AnnotationConfigEmbeddedWebApplicationContext();
+        context.register(MyConfig.class);
+        context.refresh();
 
-}
+        // The XmlEmbeddedWebApplicationContext is also available
+        // if you prefer XML configuration
+      }
 
-@Configuration
-@EnableWebMvc
-@Import(MyController.class)
-public class MyConfiguration {
-	
-	@Bean
-	public EmbeddedServletContainerFactory servletContainerFactory() {
-		return new TomcatEmbeddedServletContainerFactory();
-	}
+    }
 
-	@Bean
-	public DispatcherServlet dispatcher() {
-		return new DispatcherServlet();
-	}
-}
-```
+    @Configuration
+    @EnableWebMvc
+    @Import(MyController.class)
+    public class MyConfiguration {
+
+      @Bean
+      public EmbeddedServletContainerFactory servletContainerFactory() {
+        return new TomcatEmbeddedServletContainerFactory();
+      }
+
+      @Bean
+      public DispatcherServlet dispatcher() {
+        return new DispatcherServlet();
+      }
+
+    }
 
 Running `MySpringApplication.main()` will start the server and listen for requests on port 8080. We are free to use the usual Spring MVC semantics to handle requests, for example requests to `http://localhost:8080/hello` would respond "Hello World!" with the following `@Controller`:
 
-```java
-@Controller
-public class MyController {
-	
-	@RequestMapping("/hello")
-	@ResponseBody
-	public String sayHello() {
-		return "Hello World!"
-	}
-}
-```
+    @Controller
+    public class MyController {
+
+      @RequestMapping("/hello")
+      @ResponseBody
+      public String sayHello() {
+        return "Hello World!"
+      }
+
+    }
 
 The main difference between our new application and the earlier example is that we no longer have a `WebApplicationInitializer`. Instead the `DispatcherServlet` is now defined in the same way as any other Spring bean. We also must define a single `EmbeddedServletContainerFactory` bean that will be used to create and start the embedded servlet container. In this example I have used Tomcat but you could easily switch to `JettyEmbeddedServletContainerFactory` if you prefer.
 
@@ -106,45 +105,44 @@ Here are the steps that now happen when the application runs:
 
 The `TomcatEmbeddedServletContainerFactory` and `JettyEmbeddedServletContainerFactory` can be configured in the same way as any other Spring bean. For example, you can use the `setPort` property if you don't like the default choice of 8080. One nice advantage of of this approach is that you can easily mix-in other Spring concepts when configuring your embedded container. For example, we can support a command line `--port` option with just a few more lines of code:
 
-```java
-public class MySpringApplication {
-	
-	public static void main(String... args) {
-		AnnotationConfigEmbeddedWebApplicationContext context = 
-				new AnnotationConfigEmbeddedWebApplicationContext();
+    public class MySpringApplication {
 
-		// Add support for command line property sources
-		context.getEnvironment().getPropertySources().addFirst(
-				new SimpleCommandLinePropertySource(args));
+      public static void main(String... args) {
+        AnnotationConfigEmbeddedWebApplicationContext context =
+          new AnnotationConfigEmbeddedWebApplicationContext();
 
-		// Register PropertySourcesPlaceholderConfigurer to support
-		// ${variable} expansion
-		context.register(MyConfig.class, PropertySourcesPlaceholderConfigurer.class);
+        // Add support for command line property sources
+        context.getEnvironment().getPropertySources().addFirst(
+            new SimpleCommandLinePropertySource(args));
 
-		context.refresh();
-	}
+        // Register PropertySourcesPlaceholderConfigurer to support
+        // ${variable} expansion
+        context.register(MyConfig.class, PropertySourcesPlaceholderConfigurer.class);
 
-}
+        context.refresh();
+      }
 
-@Configuration
-@EnableWebMvc
-@Import(MyController.class)
-public class MyConfiguration {
-	
-	@Value("${port:8080}")
-	private int port;
+    }
 
-	@Bean
-	public EmbeddedServletContainerFactory servletContainerFactory() {
-		return new TomcatEmbeddedServletContainerFactory(this.port);
-	}
+    @Configuration
+    @EnableWebMvc
+    @Import(MyController.class)
+    public class MyConfiguration {
 
-	@Bean
-	public DispatcherServlet dispatcher() {
-		return new DispatcherServlet();
-	}
-}
-```
+      @Value("${port:8080}")
+      private int port;
+
+      @Bean
+      public EmbeddedServletContainerFactory servletContainerFactory() {
+        return new TomcatEmbeddedServletContainerFactory(this.port);
+      }
+
+      @Bean
+      public DispatcherServlet dispatcher() {
+        return new DispatcherServlet();
+      }
+
+    }
 
 
 ## Advanced ServletContext Initialization
@@ -157,27 +155,26 @@ For convenience a couple of ServletContextInitializer implementations are provid
 
 For example:
 
-```java
-@Configuration
-public class MyConfiguration {
+    @Configuration
+    public class MyConfiguration {
 
-	@Bean
-	public ServletRegistrationBean customServlet() {
-		ServletRegistrationBean registration = new ServletRegistrationBean();
-		registration.setServlet(dispatcher());
-		registration.addUrlMappings("/spring/*", "*.spring")
-	}
+      @Bean
+      public ServletRegistrationBean customServlet() {
+        ServletRegistrationBean registration = new ServletRegistrationBean();
+        registration.setServlet(dispatcher());
+        registration.addUrlMappings("/spring/*", "*.spring")
+      }
 
-	@Bean
-	public DispatcherServlet dispatcher() {
-		return new DispatcherServlet();
-	}
-}
-```
+      @Bean
+      public DispatcherServlet dispatcher() {
+        return new DispatcherServlet();
+      }
+
+    }
 
 ## Summary
 
-It should be very easy to use an embedding Tomcat or Jetty server with Spring 4, opening up all sorts of interesting new ways to run and deploy your applications. Using an embedded servlet container allows you to take precise control of how your application runs and really reduces the burden for people wanting to try your application.
+It should be very easy to use an embedding Tomcat or Jetty server with Spring Framework 4, opening up all sorts of interesting new ways to run and deploy your applications. Using an embedded servlet container allows you to take precise control of how your application runs and really reduces the burden for people wanting to try your application.
 
-Please do try the Spring 4 milestone releases and provide feedback!
+Please do try the Spring Framework 4 milestone releases and provide feedback!
 
