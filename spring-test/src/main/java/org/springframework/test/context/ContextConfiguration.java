@@ -58,7 +58,7 @@ import org.springframework.context.ConfigurableApplicationContext;
  * {@link org.springframework.context.annotation.Bean @Bean}-methods</li>
  * </ul>
  *
- * Consult the Javadoc for
+ * <p>Consult the Javadoc for
  * {@link org.springframework.context.annotation.Configuration @Configuration} and
  * {@link org.springframework.context.annotation.Bean @Bean}
  * for further information regarding the configuration and semantics of
@@ -270,16 +270,25 @@ public @interface ContextConfiguration {
 	 * explicit loader. If no class in the hierarchy specifies an explicit
 	 * loader, a default loader will be used instead.
 	 *
-	 * <p>The default concrete implementation chosen at runtime will be
+	 * <p>The default concrete implementation chosen at runtime will be either
 	 * {@link org.springframework.test.context.support.DelegatingSmartContextLoader
-	 * DelegatingSmartContextLoader}. For further details on the default behavior
-	 * of various concrete {@code ContextLoaders}, check out the Javadoc for
+	 * DelegatingSmartContextLoader} or
+	 * {@link org.springframework.test.context.web.WebDelegatingSmartContextLoader
+	 * WebDelegatingSmartContextLoader} depending on the absence or presence of
+	 * {@link org.springframework.test.context.web.WebAppConfiguration
+	 * &#064;WebAppConfiguration}. For further details on the default behavior
+	 * of various concrete {@code SmartContextLoaders}, check out the Javadoc for
 	 * {@link org.springframework.test.context.support.AbstractContextLoader
 	 * AbstractContextLoader},
 	 * {@link org.springframework.test.context.support.GenericXmlContextLoader
-	 * GenericXmlContextLoader}, and
+	 * GenericXmlContextLoader},
 	 * {@link org.springframework.test.context.support.AnnotationConfigContextLoader
-	 * AnnotationConfigContextLoader}.
+	 * AnnotationConfigContextLoader},
+	 * {@link org.springframework.test.context.web.GenericXmlWebContextLoader
+	 * GenericXmlWebContextLoader}, and
+	 * {@link org.springframework.test.context.web.AnnotationConfigWebContextLoader
+	 * AnnotationConfigWebContextLoader}.
+	 *
 	 * @since 2.5
 	 */
 	Class<? extends ContextLoader> loader() default ContextLoader.class;
@@ -287,13 +296,14 @@ public @interface ContextConfiguration {
 	/**
 	 * The name of the context hierarchy level represented by this configuration.
 	 *
-	 * <p>If not specified the name will be inferred based on the numerical level within all
-	 * declared contexts within the hierarchy.
+	 * <p>If not specified the name will be inferred based on the numerical level
+	 * within all declared contexts within the hierarchy.
 	 *
-	 * <p>This attribute is only applicable when used within a test class hierarchy that is
-	 * configured using {@link ContextHierarchy @ContextHierarchy}, in which case the name
-	 * can be used for merging or overriding this configuration with configuration of the
-	 * same name in hierarchy levels defined in superclasses.
+	 * <p>This attribute is only applicable when used within a test class hierarchy
+	 * that is configured using {@code @ContextHierarchy}, in which case the name
+	 * can be used for <em>merging</em> or <em>overriding</em> this configuration
+	 * with configuration of the same name in hierarchy levels defined in superclasses.
+	 * See the Javadoc for {@link ContextHierarchy @ContextHierarchy} for details.
 	 *
 	 * @since 3.2.2
 	 */
