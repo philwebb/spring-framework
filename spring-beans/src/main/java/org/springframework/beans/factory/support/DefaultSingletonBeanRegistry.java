@@ -16,18 +16,22 @@
 
 package org.springframework.beans.factory.support;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.BeanCreationNotAllowedException;
 import org.springframework.beans.factory.BeanCurrentlyInCreationException;
@@ -81,17 +85,14 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	/** Logger available to subclasses */
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	/** Cache of singleton objects: bean name --> bean instance */
-	private final Map<String, Object> singletonObjects = new ConcurrentHashMap<String, Object>(64);
+	/** Counter used to record the order that singletons are added */
+	private final AtomicLong singletonCounter = new AtomicLong();
 
-	/** Cache of singleton factories: bean name --> ObjectFactory */
-	private final Map<String, ObjectFactory> singletonFactories = new HashMap<String, ObjectFactory>(16);
+	/** Map of {@link Singleton}s (can hold singletonObjects, factories or earlySingletonObjects) **/
+	private final ConcurrentMap<String, Singleton> singletons = new ConcurrentHashMap<String, Singleton>();
 
-	/** Cache of early singleton objects: bean name --> bean instance */
-	private final Map<String, Object> earlySingletonObjects = new HashMap<String, Object>(16);
-
-	/** Set of registered singletons, containing the bean names in registration order */
-	private final Set<String> registeredSingletons = new LinkedHashSet<String>(64);
+	/** List of suppressed Exceptions, available for associating related causes */
+	private ThreadLocal<Set<Exception>> suppressedExceptions = new ThreadLocal<Set<Exception>>();
 
 	/** Names of beans that are currently in creation */
 	private final Set<String> singletonsCurrentlyInCreation =
@@ -101,11 +102,8 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	private final Set<String> inCreationCheckExclusions =
 			Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>(16));
 
-	/** List of suppressed Exceptions, available for associating related causes */
-	private Set<Exception> suppressedExceptions;
-
 	/** Flag that indicates whether we're currently within destroySingletons */
-	private boolean singletonsCurrentlyInDestruction = false;
+	private volatile boolean singletonsCurrentlyInDestruction = false;
 
 	/** Disposable bean instances: bean name --> disposable instance */
 	private final Map<String, Object> disposableBeans = new LinkedHashMap<String, Object>();
@@ -119,16 +117,19 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	/** Map between depending bean names: bean name --> Set of bean names for the bean's dependencies */
 	private final Map<String, Set<String>> dependenciesForBeanMap = new ConcurrentHashMap<String, Set<String>>(64);
 
+	/** Cache of current singleton names, blown away when singletons change */
+	private volatile String[] registeredSingletonNames;
+
 
 	public void registerSingleton(String beanName, Object singletonObject) throws IllegalStateException {
-		Assert.notNull(beanName, "'beanName' must not be null");
-		synchronized (this.singletonObjects) {
-			Object oldObject = this.singletonObjects.get(beanName);
-			if (oldObject != null) {
+		Singleton singleton = getOrCreateSingleton(beanName);
+		synchronized (singleton) {
+			if (singleton.getObject() != null) {
 				throw new IllegalStateException("Could not register object [" + singletonObject +
-						"] under bean name '" + beanName + "': there is already object [" + oldObject + "] bound");
+						"] under bean name '" + beanName + "': there is already object [" + singleton.getObject() + "] bound");
 			}
-			addSingleton(beanName, singletonObject);
+			singleton.setObject((singletonObject != null ? singletonObject : NULL_OBJECT));
+			singletonsChanged();
 		}
 	}
 
@@ -139,11 +140,10 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 * @param singletonObject the singleton object
 	 */
 	protected void addSingleton(String beanName, Object singletonObject) {
-		synchronized (this.singletonObjects) {
-			this.singletonObjects.put(beanName, (singletonObject != null ? singletonObject : NULL_OBJECT));
-			this.singletonFactories.remove(beanName);
-			this.earlySingletonObjects.remove(beanName);
-			this.registeredSingletons.add(beanName);
+		Singleton singleton = getOrCreateSingleton(beanName);
+		synchronized (singleton) {
+			singleton.setObject((singletonObject != null ? singletonObject : NULL_OBJECT));
+			singletonsChanged();
 		}
 	}
 
@@ -157,12 +157,9 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 */
 	protected void addSingletonFactory(String beanName, ObjectFactory singletonFactory) {
 		Assert.notNull(singletonFactory, "Singleton factory must not be null");
-		synchronized (this.singletonObjects) {
-			if (!this.singletonObjects.containsKey(beanName)) {
-				this.singletonFactories.put(beanName, singletonFactory);
-				this.earlySingletonObjects.remove(beanName);
-				this.registeredSingletons.add(beanName);
-			}
+		Singleton singleton = getOrCreateSingleton(beanName);
+		synchronized (singleton) {
+			singleton.setFactory(singletonFactory);
 		}
 	}
 
@@ -179,16 +176,14 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 * @return the registered singleton object, or {@code null} if none found
 	 */
 	protected Object getSingleton(String beanName, boolean allowEarlyReference) {
-		Object singletonObject = this.singletonObjects.get(beanName);
-		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
-			synchronized (this.singletonObjects) {
-				singletonObject = this.earlySingletonObjects.get(beanName);
-				if (singletonObject == null && allowEarlyReference) {
-					ObjectFactory singletonFactory = this.singletonFactories.get(beanName);
-					if (singletonFactory != null) {
-						singletonObject = singletonFactory.getObject();
-						this.earlySingletonObjects.put(beanName, singletonObject);
-						this.singletonFactories.remove(beanName);
+		Singleton singleton = getOrCreateSingleton(beanName);
+		Object singletonObject = singleton.getObject();
+		if(singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
+			singletonObject = (singletonObject != null ? singletonObject : singleton.getEarlyObject());
+			if(singletonObject == null && allowEarlyReference) {
+				synchronized (singleton) {
+					if(singleton.hasObjectFactory()) {
+						singletonObject = singleton.createEarlyObjectFromFactory();
 					}
 				}
 			}
@@ -205,44 +200,48 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 * @return the registered singleton object
 	 */
 	public Object getSingleton(String beanName, ObjectFactory singletonFactory) {
-		Assert.notNull(beanName, "'beanName' must not be null");
-		synchronized (this.singletonObjects) {
-			Object singletonObject = this.singletonObjects.get(beanName);
-			if (singletonObject == null) {
-				if (this.singletonsCurrentlyInDestruction) {
-					throw new BeanCreationNotAllowedException(beanName,
-							"Singleton bean creation not allowed while the singletons of this factory are in destruction " +
-							"(Do not request a bean from a BeanFactory in a destroy method implementation!)");
-				}
-				if (logger.isDebugEnabled()) {
-					logger.debug("Creating shared instance of singleton bean '" + beanName + "'");
-				}
-				beforeSingletonCreation(beanName);
-				boolean recordSuppressedExceptions = (this.suppressedExceptions == null);
-				if (recordSuppressedExceptions) {
-					this.suppressedExceptions = new LinkedHashSet<Exception>();
-				}
-				try {
-					singletonObject = singletonFactory.getObject();
-				}
-				catch (BeanCreationException ex) {
+		Singleton singleton = getOrCreateSingleton(beanName);
+		Object singletonObject = singleton.getObject();
+		if(singletonObject == null) {
+			synchronized (singleton) {
+				singletonObject = singleton.getObject();
+				if (singletonObject == null) {
+					if (this.singletonsCurrentlyInDestruction) {
+						throw new BeanCreationNotAllowedException(beanName,
+								"Singleton bean creation not allowed while the singletons of this factory are in destruction " +
+								"(Do not request a bean from a BeanFactory in a destroy method implementation!)");
+					}
+					if (logger.isDebugEnabled()) {
+						logger.debug("Creating shared instance of singleton bean '" + beanName + "'");
+					}
+					beforeSingletonCreation(beanName);
+					boolean recordSuppressedExceptions = (this.suppressedExceptions.get() == null);
 					if (recordSuppressedExceptions) {
-						for (Exception suppressedException : this.suppressedExceptions) {
-							ex.addRelatedCause(suppressedException);
+						this.suppressedExceptions.set(new LinkedHashSet<Exception>());
+					}
+					try {
+						singletonObject = singletonFactory.getObject();
+					}
+					catch (BeanCreationException ex) {
+						if (recordSuppressedExceptions) {
+							for (Exception suppressedException : this.suppressedExceptions.get()) {
+								ex.addRelatedCause(suppressedException);
+							}
 						}
+						throw ex;
 					}
-					throw ex;
-				}
-				finally {
-					if (recordSuppressedExceptions) {
-						this.suppressedExceptions = null;
+					finally {
+						if (recordSuppressedExceptions) {
+							this.suppressedExceptions.remove();
+						}
+						afterSingletonCreation(beanName);
 					}
-					afterSingletonCreation(beanName);
+					singleton.setObject((singletonObject != null ? singletonObject : NULL_OBJECT));
+					singletonsChanged();
 				}
-				addSingleton(beanName, singletonObject);
 			}
-			return (singletonObject != NULL_OBJECT ? singletonObject : null);
 		}
+		return (singletonObject != NULL_OBJECT ? singletonObject : null);
 	}
 
 	/**
@@ -251,10 +250,9 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 * @param ex the Exception to register
 	 */
 	protected void onSuppressedException(Exception ex) {
-		synchronized (this.singletonObjects) {
-			if (this.suppressedExceptions != null) {
-				this.suppressedExceptions.add(ex);
-			}
+		Set<Exception> suppressedExceptions = this.suppressedExceptions.get();
+		if(suppressedExceptions != null) {
+			suppressedExceptions.add(ex);
 		}
 	}
 
@@ -262,33 +260,57 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 * Remove the bean with the given name from the singleton cache of this factory,
 	 * to be able to clean up eager registration of a singleton if creation failed.
 	 * @param beanName the name of the bean
-	 * @see #getSingletonMutex()
+	 * @see #getSingletonMutex(String)
 	 */
 	protected void removeSingleton(String beanName) {
-		synchronized (this.singletonObjects) {
-			this.singletonObjects.remove(beanName);
-			this.singletonFactories.remove(beanName);
-			this.earlySingletonObjects.remove(beanName);
-			this.registeredSingletons.remove(beanName);
-		}
+		this.singletons.remove(beanName);
+		singletonsChanged();
 	}
 
 	public boolean containsSingleton(String beanName) {
-		return (this.singletonObjects.containsKey(beanName));
+		Singleton singleton = this.singletons.get(beanName);
+		return (singleton != null && singleton.getObject() != null);
 	}
 
 	public String[] getSingletonNames() {
-		synchronized (this.singletonObjects) {
-			return StringUtils.toStringArray(this.registeredSingletons);
+		// Use a local copy in case another thread changes
+		String[] registeredSingletonNames = this.registeredSingletonNames;
+		if (registeredSingletonNames == null) {
+			List<Map.Entry<String, Singleton>> entries = getOrderedSingletonEntries();
+			registeredSingletonNames = getRegisteredSingletonNames(entries);
+			this.registeredSingletonNames = registeredSingletonNames;
 		}
+		return registeredSingletonNames;
+	}
+
+	private List<Map.Entry<String, Singleton>> getOrderedSingletonEntries() {
+		List<Map.Entry<String, Singleton>> entries =
+				new ArrayList<Map.Entry<String, Singleton>>(singletons.entrySet());
+
+		Collections.sort(entries, new Comparator<Map.Entry<String, Singleton>>() {
+			public int compare(Entry<String, Singleton> o1,
+					Entry<String, Singleton> o2) {
+				long p1 = o1.getValue().getPosition();
+				long p2 = o2.getValue().getPosition();
+				return (p1 < p2) ? -1 : ((p1 == p2) ? 0 : 1);
+			}
+		});
+		return entries;
+	}
+
+	private String[] getRegisteredSingletonNames(List<Map.Entry<String, Singleton>> entries) {
+		List<String> names = new ArrayList<String>(entries.size());
+		for (Map.Entry<String, Singleton> entry : entries) {
+			if(entry.getValue().isRegistered()) {
+				names.add(entry.getKey());
+			}
+		}
+		return names.toArray(new String[names.size()]);
 	}
 
 	public int getSingletonCount() {
-		synchronized (this.singletonObjects) {
-			return this.registeredSingletons.size();
-		}
+		return getSingletonNames().length;
 	}
-
 
 	public void setCurrentlyInCreation(String beanName, boolean inCreation) {
 		Assert.notNull(beanName, "Bean name must not be null");
@@ -446,27 +468,23 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 		if (logger.isInfoEnabled()) {
 			logger.info("Destroying singletons in " + this);
 		}
-		synchronized (this.singletonObjects) {
-			this.singletonsCurrentlyInDestruction = true;
-		}
+		this.singletonsCurrentlyInDestruction = true;
+		try {
+			String[] disposableBeanNames;
+			synchronized (this.disposableBeans) {
+				disposableBeanNames = StringUtils.toStringArray(this.disposableBeans.keySet());
+			}
+			for (int i = disposableBeanNames.length - 1; i >= 0; i--) {
+				destroySingleton(disposableBeanNames[i]);
+			}
 
-		String[] disposableBeanNames;
-		synchronized (this.disposableBeans) {
-			disposableBeanNames = StringUtils.toStringArray(this.disposableBeans.keySet());
+			this.containedBeanMap.clear();
+			this.dependentBeanMap.clear();
+			this.dependenciesForBeanMap.clear();
+			this.singletons.clear();
+			singletonsChanged();
 		}
-		for (int i = disposableBeanNames.length - 1; i >= 0; i--) {
-			destroySingleton(disposableBeanNames[i]);
-		}
-
-		this.containedBeanMap.clear();
-		this.dependentBeanMap.clear();
-		this.dependenciesForBeanMap.clear();
-
-		synchronized (this.singletonObjects) {
-			this.singletonObjects.clear();
-			this.singletonFactories.clear();
-			this.earlySingletonObjects.clear();
-			this.registeredSingletons.clear();
+		finally {
 			this.singletonsCurrentlyInDestruction = false;
 		}
 	}
@@ -547,9 +565,99 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 * any sort of extended singleton creation phase. In particular, subclasses
 	 * should <i>not</i> have their own mutexes involved in singleton creation,
 	 * to avoid the potential for deadlocks in lazy-init situations.
+	 * @deprecated use getSingletonMutex(beanName), remains only for binary compatibility
 	 */
 	protected final Object getSingletonMutex() {
-		return this.singletonObjects;
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * Expose the singleton mutex to subclasses.
+	 * <p>Subclasses should synchronize on the given Object if they perform
+	 * any sort of extended singleton creation phase. In particular, subclasses
+	 * should <i>not</i> have their own mutexes involved in singleton creation,
+	 * to avoid the potential for deadlocks in lazy-init situations.
+	 */
+	protected final Object getSingletonMutex(String beanName) {
+		return getOrCreateSingleton(beanName);
+	}
+
+	private Singleton getOrCreateSingleton(String beanName) {
+		Assert.notNull(beanName, "'beanName' must not be null");
+		// Quick check to save creating throw away singleton
+		Singleton singleton = this.singletons.get(beanName);
+		if(singleton != null) {
+			return singleton;
+		}
+
+		singleton = new Singleton(this.singletonCounter.getAndIncrement());
+		Singleton existing = this.singletons.putIfAbsent(beanName, singleton);
+		if(existing == null) { // We added a new singeton
+			return singleton;
+		}
+		return existing;
+	}
+
+	protected void singletonsChanged() {
+		this.registeredSingletonNames = null;
+	}
+
+
+	private static class Singleton {
+
+
+		private long position;
+
+		private Object object;
+
+		private ObjectFactory factory;
+
+		private Object earlyObject;
+
+
+		public Singleton(long position) {
+			this.position = position;
+		}
+
+		public long getPosition() {
+			return this.position;
+		}
+
+		public Object getObject() {
+			return this.object;
+		}
+
+		public void setObject(Object object) {
+			this.object = object;
+			this.factory = null;
+			this.earlyObject = null;
+		}
+
+		public void setFactory(ObjectFactory factory) {
+			this.factory = factory;
+			this.object = null;
+			this.earlyObject = null;
+		}
+
+		public Object createEarlyObjectFromFactory() {
+			Assert.state(this.factory != null, "Missing ObjectFactory");
+			this.earlyObject = this.factory.getObject();
+			this.object = null;
+			this.factory = null;
+			return earlyObject;
+		}
+
+		public boolean hasObjectFactory() {
+			return this.factory != null;
+		}
+
+		public Object getEarlyObject() {
+			return this.earlyObject;
+		}
+
+		public boolean isRegistered() {
+			return this.object != null || this.earlyObject != null || this.factory != null;
+		}
 	}
 
 }

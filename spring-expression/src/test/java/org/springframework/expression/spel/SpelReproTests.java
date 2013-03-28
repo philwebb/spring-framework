@@ -16,18 +16,11 @@
 
 package org.springframework.expression.spel;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -57,6 +50,9 @@ import org.springframework.expression.spel.support.ReflectivePropertyAccessor;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.expression.spel.support.StandardTypeLocator;
 import org.springframework.expression.spel.testresources.le.div.mod.reserved.Reserver;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
 /**
  * Reproduction tests cornering various SpEL JIRA issues.
@@ -1751,6 +1747,28 @@ public class SpelReproTests extends ExpressionTestCase {
 		thrown.expectMessage("EL1071E:(pos 2): A required selection expression has not been specified");
 		Expression exp = parser.parseExpression("$[]");
 		exp.getValue(Arrays.asList("foo", "bar", "baz"));
+	}
+
+	@Test
+	public void SPR_10417() throws Exception {
+		StandardEvaluationContext context = new StandardEvaluationContext();
+		context.registerFunction(
+				"intersect",
+				getClass().getDeclaredMethod("intersect", Collection.class, Collection.class));
+
+		Expression exp = parser.parseExpression("#intersect(#list1, #list2)");
+		List<String> list1 = new ArrayList<String>(Arrays.asList("a", "b", "c"));
+		List<String> list2 = new ArrayList<String>(Arrays.asList("c", "x"));
+		context.setVariable("list1", list1);
+		context.setVariable("list2", list2);
+		Object value = exp.getValue(context);
+		System.out.println(value);
+	}
+
+	public static List intersect(Collection a, Collection b) {
+		List list = new ArrayList(a);
+		list.retainAll(b);
+		return list;
 	}
 
 	public static class BooleanHolder {

@@ -769,7 +769,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 * that we couldn't obtain a shortcut FactoryBean instance
 	 */
 	private FactoryBean getSingletonFactoryBeanForTypeCheck(String beanName, RootBeanDefinition mbd) {
-		synchronized (getSingletonMutex()) {
+		synchronized (getSingletonMutex(beanName)) {
 			BeanWrapper bw = this.factoryBeanInstanceCache.get(beanName);
 			if (bw != null) {
 				return (FactoryBean) bw.getWrappedInstance();
