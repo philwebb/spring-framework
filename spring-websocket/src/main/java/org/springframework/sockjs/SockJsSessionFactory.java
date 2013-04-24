@@ -29,6 +29,6 @@ import org.springframework.websocket.WebSocketSession;
  */
 public interface SockJsSessionFactory<S extends WebSocketSession>{
 
-	S createSession(String sessionId, HandlerProvider<WebSocketHandler> handler);
+	S createSession(String sessionId, HandlerProvider<WebSocketHandler<?>> handler);
 
 }

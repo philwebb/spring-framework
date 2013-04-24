@@ -56,7 +56,7 @@ public abstract class AbstractHttpSendingTransportHandler
 
 	@Override
 	public final void handleRequest(ServerHttpRequest request, ServerHttpResponse response,
-			HandlerProvider<WebSocketHandler> webSocketHandler, AbstractSockJsSession session) throws Exception {
+			HandlerProvider<WebSocketHandler<?>> webSocketHandler, AbstractSockJsSession session) throws Exception {
 
 		// Set content type before writing
 		response.getHeaders().setContentType(getContentType());

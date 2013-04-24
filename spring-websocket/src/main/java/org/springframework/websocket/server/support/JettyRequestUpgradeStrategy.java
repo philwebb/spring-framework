@@ -39,13 +39,12 @@ import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.websocket.BinaryMessage;
-import org.springframework.websocket.BinaryMessageHandler;
 import org.springframework.websocket.CloseStatus;
 import org.springframework.websocket.HandlerProvider;
 import org.springframework.websocket.TextMessage;
-import org.springframework.websocket.TextMessageHandler;
 import org.springframework.websocket.WebSocketHandler;
 import org.springframework.websocket.WebSocketMessage;
+import org.springframework.websocket.WebSocketMessages;
 import org.springframework.websocket.WebSocketSession;
 import org.springframework.websocket.server.RequestUpgradeStrategy;
 
@@ -80,8 +79,8 @@ public class JettyRequestUpgradeStrategy implements RequestUpgradeStrategy {
 			public Object createWebSocket(UpgradeRequest req, UpgradeResponse resp) {
 				Assert.isInstanceOf(ServletWebSocketRequest.class, req);
 				ServletWebSocketRequest servletRequest = (ServletWebSocketRequest) req;
-				HandlerProvider<WebSocketHandler> handlerProvider = (HandlerProvider<WebSocketHandler>) servletRequest.getServletAttributes().get(
-						HANDLER_PROVIDER);
+				HandlerProvider<WebSocketHandler<?>> handlerProvider =
+						(HandlerProvider<WebSocketHandler<?>>) servletRequest.getServletAttributes().get(HANDLER_PROVIDER);
 				return new WebSocketHandlerAdapter(handlerProvider);
 			}
 		});
@@ -100,7 +99,7 @@ public class JettyRequestUpgradeStrategy implements RequestUpgradeStrategy {
 
 	@Override
 	public void upgrade(ServerHttpRequest request, ServerHttpResponse response,
-			String selectedProtocol, HandlerProvider<WebSocketHandler> handlerProvider)
+			String selectedProtocol, HandlerProvider<WebSocketHandler<?>> handlerProvider)
 			throws Exception {
 		Assert.isInstanceOf(ServletServerHttpRequest.class, request);
 		Assert.isInstanceOf(ServletServerHttpResponse.class, response);
@@ -110,7 +109,7 @@ public class JettyRequestUpgradeStrategy implements RequestUpgradeStrategy {
 	}
 
 	private void upgrade(HttpServletRequest request, HttpServletResponse response,
-			String selectedProtocol, final HandlerProvider<WebSocketHandler> handlerProvider)
+			String selectedProtocol, final HandlerProvider<WebSocketHandler<?>> handlerProvider)
 			throws Exception {
 		request.setAttribute(HANDLER_PROVIDER, handlerProvider);
 		Assert.state(factory.isUpgradeRequest(request, response), "Not a suitable WebSocket upgrade request");
@@ -123,14 +122,14 @@ public class JettyRequestUpgradeStrategy implements RequestUpgradeStrategy {
 	 */
 	private static class WebSocketHandlerAdapter implements WebSocketListener {
 
-		private final HandlerProvider<WebSocketHandler> provider;
+		private final HandlerProvider<WebSocketHandler<?>> provider;
 
-		private WebSocketHandler handler;
+		private WebSocketHandler<?> handler;
 
 		private WebSocketSession session;
 
 
-		public WebSocketHandlerAdapter(HandlerProvider<WebSocketHandler> provider) {
+		public WebSocketHandlerAdapter(HandlerProvider<WebSocketHandler<?>> provider) {
 			Assert.notNull(provider, "Provider must not be null");
 			Assert.isAssignable(WebSocketHandler.class, provider.getHandlerType());
 			this.provider = provider;
@@ -170,7 +169,7 @@ public class JettyRequestUpgradeStrategy implements RequestUpgradeStrategy {
 					logger.debug("Client disconnected, WebSocket session id="
 							+ this.session.getId() + ", " + closeStatus);
 				}
-				this.handler.afterConnectionClosed(closeStatus, this.session);
+				this.handler.afterConnectionClosed(this.session, closeStatus);
 			}
 			catch (Exception ex) {
 				onWebSocketError(ex);
@@ -190,33 +189,21 @@ public class JettyRequestUpgradeStrategy implements RequestUpgradeStrategy {
 
 		@Override
 		public void onWebSocketText(String payload) {
-			try {
-				TextMessage message = new TextMessage(payload);
-				if (logger.isTraceEnabled()) {
-					logger.trace("Received message for WebSocket session id="
-							+ this.session.getId() + ": " + message);
-				}
-				if (this.handler instanceof TextMessageHandler) {
-					((TextMessageHandler) this.handler).handleTextMessage(message, this.session);
-				}
-			}
-			catch(Exception ex) {
-				ex.printStackTrace(); //FIXME
-			}
+			onMessage(new TextMessage(payload));
 		}
 
 		@Override
 		public void onWebSocketBinary(byte[] payload, int offset, int len) {
+			onMessage(new BinaryMessage(payload, offset, len));
+		}
+
+		private void onMessage(WebSocketMessage<?> message) {
 			try {
-				BinaryMessage message = new BinaryMessage(payload, offset, len);
 				if (logger.isTraceEnabled()) {
 					logger.trace("Received binary data for WebSocket session id="
 							+ this.session.getId() + ": " + message);
 				}
-				if (this.handler instanceof BinaryMessageHandler) {
-					((BinaryMessageHandler) this.handler).handleBinaryMessage(message,
-							this.session);
-				}
+				WebSocketMessages.deliver(this.handler, this.session, message);
 			}
 			catch(Exception ex) {
 				ex.printStackTrace(); //FIXME
@@ -226,7 +213,7 @@ public class JettyRequestUpgradeStrategy implements RequestUpgradeStrategy {
 		@Override
 		public void onWebSocketError(Throwable cause) {
 			try {
-				this.handler.handleError(cause, this.session);
+				this.handler.handleError(this.session, cause);
 			}
 			catch (Throwable ex) {
 				// FIXME exceptions

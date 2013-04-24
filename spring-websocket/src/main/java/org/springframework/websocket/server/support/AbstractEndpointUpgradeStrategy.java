@@ -42,12 +42,12 @@ public abstract class AbstractEndpointUpgradeStrategy implements RequestUpgradeS
 
 	@Override
 	public void upgrade(ServerHttpRequest request, ServerHttpResponse response,
-			String protocol, HandlerProvider<WebSocketHandler> handler) throws Exception {
+			String protocol, HandlerProvider<WebSocketHandler<?>> handler) throws Exception {
 
 		upgradeInternal(request, response, protocol, adaptWebSocketHandler(handler));
 	}
 
-	protected Endpoint adaptWebSocketHandler(HandlerProvider<WebSocketHandler> handler) {
+	protected Endpoint adaptWebSocketHandler(HandlerProvider<WebSocketHandler<?>> handler) {
 		return new WebSocketHandlerEndpoint(handler);
 	}
 

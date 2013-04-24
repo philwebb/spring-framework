@@ -219,7 +219,7 @@ public abstract class AbstractSockJsService
 	 * @throws Exception
 	 */
 	public final void handleRequest(ServerHttpRequest request, ServerHttpResponse response,
-			String sockJsPath, HandlerProvider<WebSocketHandler> handler) throws Exception {
+			String sockJsPath, HandlerProvider<WebSocketHandler<?>> handler) throws Exception {
 
 		logger.debug(request.getMethod() + " [" + sockJsPath + "]");
 
@@ -273,10 +273,10 @@ public abstract class AbstractSockJsService
 	}
 
 	protected abstract void handleRawWebSocketRequest(ServerHttpRequest request, ServerHttpResponse response,
-			HandlerProvider<WebSocketHandler> handler) throws Exception;
+			HandlerProvider<WebSocketHandler<?>> handler) throws Exception;
 
 	protected abstract void handleTransportRequest(ServerHttpRequest request, ServerHttpResponse response,
-			String sessionId, TransportType transportType, HandlerProvider<WebSocketHandler> handler) throws Exception;
+			String sessionId, TransportType transportType, HandlerProvider<WebSocketHandler<?>> handler) throws Exception;
 
 
 	protected boolean validateRequest(String serverId, String sessionId, String transport) {

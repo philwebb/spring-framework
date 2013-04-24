@@ -28,7 +28,7 @@ import org.springframework.websocket.HandlerProvider;
 
 
 /**
- * A {@link HandlerProvider} that uses {@link AutowireCapableBeanFactory#createBean(Class)
+ * A {@link HandlerProvider} that uses {@link AutowireCapableBeanFactory#createBean(Class)}
  * creating a fresh instance every time #getHandler() is called.
  *
  * @author Rossen Stoyanchev

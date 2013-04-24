@@ -30,7 +30,7 @@ public class StreamingServerSockJsSession extends AbstractHttpServerSockJsSessio
 
 
 	public StreamingServerSockJsSession(String sessionId, SockJsConfiguration sockJsConfig,
-			HandlerProvider<WebSocketHandler> handler) {
+			HandlerProvider<WebSocketHandler<?>> handler) {
 
 		super(sessionId, sockJsConfig, handler);
 	}

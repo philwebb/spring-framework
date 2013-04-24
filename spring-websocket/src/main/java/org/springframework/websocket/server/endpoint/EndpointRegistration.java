@@ -29,8 +29,6 @@ import javax.websocket.HandshakeResponse;
 import javax.websocket.server.HandshakeRequest;
 import javax.websocket.server.ServerEndpointConfig;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -39,7 +37,6 @@ import org.springframework.websocket.HandlerProvider;
 import org.springframework.websocket.endpoint.WebSocketHandlerEndpoint;
 import org.springframework.websocket.support.BeanCreatingHandlerProvider;
 import org.springframework.websocket.support.SimpleHandlerProvider;
-
 
 /**
  * An implementation of {@link javax.websocket.server.ServerEndpointConfig} that also

@@ -20,14 +20,14 @@ import java.net.URI;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.core.GenericTypeResolver;
 import org.springframework.util.Assert;
+import org.springframework.websocket.BinaryMessage;
 import org.springframework.websocket.CloseStatus;
 import org.springframework.websocket.HandlerProvider;
-import org.springframework.websocket.TextMessage;
-import org.springframework.websocket.TextMessageHandler;
 import org.springframework.websocket.WebSocketHandler;
+import org.springframework.websocket.WebSocketMessages;
 import org.springframework.websocket.WebSocketSession;
-
 
 /**
  * TODO
@@ -41,9 +41,9 @@ public abstract class AbstractSockJsSession implements WebSocketSession {
 
 	private final String sessionId;
 
-	private final HandlerProvider<WebSocketHandler> handlerProvider;
+	private final HandlerProvider<WebSocketHandler<?>> handlerProvider;
 
-	private final TextMessageHandler handler;
+	private final WebSocketHandler<?> handler;
 
 	private State state = State.NEW;
 
@@ -57,15 +57,16 @@ public abstract class AbstractSockJsSession implements WebSocketSession {
 	 * @param sessionId
 	 * @param handlerProvider the recipient of SockJS messages
 	 */
-	public AbstractSockJsSession(String sessionId, HandlerProvider<WebSocketHandler> handlerProvider) {
+	public AbstractSockJsSession(String sessionId, HandlerProvider<WebSocketHandler<?>> handlerProvider) {
 		Assert.notNull(sessionId, "sessionId is required");
 		Assert.notNull(handlerProvider, "handlerProvider is required");
 		this.sessionId = sessionId;
-
-		WebSocketHandler webSocketHandler = handlerProvider.getHandler();
-		Assert.isInstanceOf(TextMessageHandler.class, webSocketHandler, "Expected a TextMessageHandler");
-		this.handler = (TextMessageHandler) webSocketHandler;
 		this.handlerProvider = handlerProvider;
+		this.handler = handlerProvider.getHandler();
+		Class<?> messageType = GenericTypeResolver.resolveTypeArgument(handler.getClass(), WebSocketHandler.class);
+		if(BinaryMessage.class.isAssignableFrom(messageType)) {
+			throw new IllegalArgumentException("SockJS cannot handle binary messages");
+		}
 	}
 
 	public String getId() {
@@ -131,13 +132,11 @@ public abstract class AbstractSockJsSession implements WebSocketSession {
 	}
 
 	public void delegateMessages(String[] messages) throws Exception {
-		for (String message : messages) {
-			this.handler.handleTextMessage(new TextMessage(message), this);
-		}
+		WebSocketMessages.deliver(this.handler, this, messages);
 	}
 
 	public void delegateError(Throwable ex) {
-		this.handler.handleError(ex, this);
+		this.handler.handleError(this, ex);
 	}
 
 	/**
@@ -156,7 +155,7 @@ public abstract class AbstractSockJsSession implements WebSocketSession {
 			}
 			finally {
 				this.state = State.CLOSED;
-				this.handler.afterConnectionClosed(status, this);
+				this.handler.afterConnectionClosed(this, status);
 			}
 		}
 	}
@@ -187,7 +186,7 @@ public abstract class AbstractSockJsSession implements WebSocketSession {
 			finally {
 				this.state = State.CLOSED;
 				try {
-					this.handler.afterConnectionClosed(status, this);
+					this.handler.afterConnectionClosed(this, status);
 				}
 				finally {
 					this.handlerProvider.destroy(this.handler);

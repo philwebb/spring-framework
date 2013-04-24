@@ -21,10 +21,12 @@ package org.springframework.websocket;
 /**
  * A handler for WebSocket sessions.
  *
+ * @param <T> The type of message being handled {@link TextMessage}, {@link BinaryMessage}
+ *        (or {@link WebSocketMessage} for both).
  * @author Rossen Stoyanchev
  * @since 4.0
  */
-public interface WebSocketHandler {
+public interface WebSocketHandler<T extends WebSocketMessage<?>> {
 
 	/**
 	 * A new WebSocket connection has been opened and is ready to be used.
@@ -34,11 +36,13 @@ public interface WebSocketHandler {
 	/**
 	 * A WebSocket connection has been closed.
 	 */
-	void afterConnectionClosed(CloseStatus closeStatus, WebSocketSession session) throws Exception;
+	void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception;
 
 	/**
 	 * TODO
 	 */
-	void handleError(Throwable exception, WebSocketSession session);
+	void handleError(WebSocketSession session, Throwable exception);
+
+	void handleMessage(WebSocketSession session, T message) throws Exception;
 
 }

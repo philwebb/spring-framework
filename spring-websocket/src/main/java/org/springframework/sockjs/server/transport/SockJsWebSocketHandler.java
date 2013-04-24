@@ -29,12 +29,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.websocket.CloseStatus;
 import org.springframework.websocket.HandlerProvider;
 import org.springframework.websocket.TextMessage;
-import org.springframework.websocket.TextMessageHandler;
 import org.springframework.websocket.WebSocketHandler;
 import org.springframework.websocket.WebSocketSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 
 /**
  * A wrapper around a {@link WebSocketHandler} instance that parses and adds SockJS
@@ -43,13 +41,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @author Rossen Stoyanchev
  * @since 4.0
  */
-public class SockJsWebSocketHandler implements TextMessageHandler {
+public class SockJsWebSocketHandler implements WebSocketHandler<TextMessage> {
 
 	private static final Log logger = LogFactory.getLog(SockJsWebSocketHandler.class);
 
 	private final SockJsConfiguration sockJsConfig;
 
-	private final HandlerProvider<WebSocketHandler> handlerProvider;
+	private final HandlerProvider<WebSocketHandler<?>> handlerProvider;
 
 	private AbstractSockJsSession session;
 
@@ -57,7 +55,7 @@ public class SockJsWebSocketHandler implements TextMessageHandler {
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
 
-	public SockJsWebSocketHandler(SockJsConfiguration config, HandlerProvider<WebSocketHandler> handlerProvider) {
+	public SockJsWebSocketHandler(SockJsConfiguration config, HandlerProvider<WebSocketHandler<?>> handlerProvider) {
 		Assert.notNull(config, "sockJsConfig is required");
 		Assert.notNull(handlerProvider, "handlerProvider is required");
 		this.sockJsConfig = config;
@@ -69,12 +67,12 @@ public class SockJsWebSocketHandler implements TextMessageHandler {
 	}
 
 	@Override
-	public void afterConnectionEstablished(WebSocketSession wsSession) throws Exception {
-		this.session = new WebSocketServerSockJsSession(wsSession, getSockJsConfig());
+	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+		this.session = new WebSocketServerSockJsSession(session, getSockJsConfig());
 	}
 
 	@Override
-	public void handleTextMessage(TextMessage message, WebSocketSession wsSession) throws Exception {
+	public void handleMessage(WebSocketSession session, TextMessage message) throws Exception {
 		String payload = message.getPayload();
 		if (StringUtils.isEmpty(payload)) {
 			logger.trace("Ignoring empty message");
@@ -86,17 +84,18 @@ public class SockJsWebSocketHandler implements TextMessageHandler {
 		}
 		catch (IOException e) {
 			logger.error("Broken data received. Terminating WebSocket connection abruptly", e);
-			wsSession.close();
+			session.close();
 		}
 	}
 
 	@Override
-	public void afterConnectionClosed(CloseStatus status, WebSocketSession wsSession) throws Exception {
-		this.session.delegateConnectionClosed(status);
+	public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus)
+			throws Exception {
+		this.session.delegateConnectionClosed(closeStatus);
 	}
 
 	@Override
-	public void handleError(Throwable exception, WebSocketSession webSocketSession) {
+	public void handleError(WebSocketSession session, Throwable exception) {
 		this.session.delegateError(exception);
 	}
 

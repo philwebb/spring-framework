@@ -23,17 +23,17 @@ import javax.websocket.MessageHandler;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.core.GenericTypeResolver;
 import org.springframework.util.Assert;
 import org.springframework.websocket.BinaryMessage;
-import org.springframework.websocket.BinaryMessageHandler;
 import org.springframework.websocket.CloseStatus;
 import org.springframework.websocket.HandlerProvider;
 import org.springframework.websocket.PartialMessageHandler;
 import org.springframework.websocket.TextMessage;
-import org.springframework.websocket.TextMessageHandler;
 import org.springframework.websocket.WebSocketHandler;
+import org.springframework.websocket.WebSocketMessage;
+import org.springframework.websocket.WebSocketMessages;
 import org.springframework.websocket.WebSocketSession;
-
 
 /**
  * An {@link Endpoint} that delegates to a {@link WebSocketHandler}.
@@ -45,14 +45,14 @@ public class WebSocketHandlerEndpoint extends Endpoint {
 
 	private static Log logger = LogFactory.getLog(WebSocketHandlerEndpoint.class);
 
-	private final HandlerProvider<WebSocketHandler> handlerProvider;
+	private final HandlerProvider<WebSocketHandler<?>> handlerProvider;
 
-	private WebSocketHandler handler;
+	private WebSocketHandler<?> handler;
 
 	private WebSocketSession webSocketSession;
 
 
-	public WebSocketHandlerEndpoint(HandlerProvider<WebSocketHandler> handlerProvider) {
+	public WebSocketHandlerEndpoint(HandlerProvider<WebSocketHandler<?>> handlerProvider) {
 		Assert.notNull(handlerProvider, "handlerProvider is required");
 		this.handlerProvider = handlerProvider;
 	}
@@ -65,21 +65,23 @@ public class WebSocketHandlerEndpoint extends Endpoint {
 		try {
 			this.handler = handlerProvider.getHandler();
 			this.webSocketSession = new StandardWebSocketSession(session);
+			Class<?> messageType = GenericTypeResolver.resolveTypeArgument(this.handler.getClass(), WebSocketHandler.class);
 
-			if (this.handler instanceof TextMessageHandler) {
+			if (TextMessage.class.isAssignableFrom(messageType)) {
+				// FIXME Partial String support?
 				session.addMessageHandler(new MessageHandler.Whole<String>() {
 					@Override
 					public void onMessage(String message) {
-						handleTextMessage(session, message);
+						handleMessage(session, new TextMessage(message));
 					}
 				});
 			}
-			else if (this.handler instanceof BinaryMessageHandler) {
+			else if (BinaryMessage.class.isAssignableFrom(messageType)) {
 				if (this.handler instanceof PartialMessageHandler) {
 					session.addMessageHandler(new MessageHandler.Partial<byte[]>() {
 						@Override
 						public void onMessage(byte[] messagePart, boolean isLast) {
-							handleBinaryMessage(session, messagePart, isLast);
+							handleMessage(session, new BinaryMessage(messagePart, isLast));
 						}
 					});
 				}
@@ -87,7 +89,7 @@ public class WebSocketHandlerEndpoint extends Endpoint {
 					session.addMessageHandler(new MessageHandler.Whole<byte[]>() {
 						@Override
 						public void onMessage(byte[] message) {
-							handleBinaryMessage(session, message, true);
+							handleMessage(session, new BinaryMessage(message));
 						}
 					});
 				}
@@ -104,27 +106,12 @@ public class WebSocketHandlerEndpoint extends Endpoint {
 		}
 	}
 
-	private void handleTextMessage(javax.websocket.Session session, String message) {
+	private void handleMessage(javax.websocket.Session session, WebSocketMessage<?> message) {
 		if (logger.isTraceEnabled()) {
 			logger.trace("Received message for WebSocket session id=" + session.getId() + ": " + message);
 		}
 		try {
-			TextMessage textMessage = new TextMessage(message);
-			((TextMessageHandler) handler).handleTextMessage(textMessage, this.webSocketSession);
-		}
-		catch (Throwable ex) {
-			// TODO
-			logger.error("Error while processing message", ex);
-		}
-	}
-
-	private void handleBinaryMessage(javax.websocket.Session session, byte[] message, boolean isLast) {
-		if (logger.isTraceEnabled()) {
-			logger.trace("Received binary data for WebSocket session id=" + session.getId());
-		}
-		try {
-			BinaryMessage binaryMessage = new BinaryMessage(message, isLast);
-			((BinaryMessageHandler) handler).handleBinaryMessage(binaryMessage, this.webSocketSession);
+			WebSocketMessages.deliver(handler, webSocketSession, message);
 		}
 		catch (Throwable ex) {
 			// TODO
@@ -139,7 +126,7 @@ public class WebSocketHandlerEndpoint extends Endpoint {
 		}
 		try {
 			CloseStatus closeStatus = new CloseStatus(reason.getCloseCode().getCode(), reason.getReasonPhrase());
-			this.handler.afterConnectionClosed(closeStatus, this.webSocketSession);
+			this.handler.afterConnectionClosed(this.webSocketSession, closeStatus);
 		}
 		catch (Throwable ex) {
 			// TODO
@@ -154,7 +141,7 @@ public class WebSocketHandlerEndpoint extends Endpoint {
 	public void onError(javax.websocket.Session session, Throwable exception) {
 		logger.error("Error for WebSocket session id=" + session.getId(), exception);
 		try {
-			this.handler.handleError(exception, this.webSocketSession);
+			this.handler.handleError(this.webSocketSession, exception);
 		}
 		catch (Throwable ex) {
 			// TODO

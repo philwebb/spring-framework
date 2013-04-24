@@ -23,31 +23,24 @@ package org.springframework.websocket;
  * @author Rossen Stoyanchev
  * @since 4.0
  */
-public class WebSocketHandlerAdapter implements WebSocketHandler {
+public abstract class WebSocketHandlerAdapter<T extends WebSocketMessage<?>> implements
+		WebSocketHandler<T> {
 
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 	}
 
 	@Override
-	public void afterConnectionClosed(CloseStatus status, WebSocketSession session) throws Exception {
+	public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus)
+			throws Exception {
 	}
 
 	@Override
-	public void handleError(Throwable exception, WebSocketSession session) {
+	public void handleError(WebSocketSession session, Throwable exception) {
 	}
 
-
-	public static abstract class TextMessageHandlerAdapter
-			extends WebSocketHandlerAdapter implements TextMessageHandler {
-	}
-
-	public static abstract class BinaryMessageHandlerAdapter
-		extends WebSocketHandlerAdapter implements BinaryMessageHandler {
-	}
-
-	public static abstract class TextAndBinaryMessageHandlerAdapter extends WebSocketHandlerAdapter
-			implements TextMessageHandler, BinaryMessageHandler {
+	@Override
+	public void handleMessage(WebSocketSession session, T message) throws Exception {
 	}
 
 }

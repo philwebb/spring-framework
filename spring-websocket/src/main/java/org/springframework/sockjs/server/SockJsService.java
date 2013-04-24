@@ -31,6 +31,6 @@ public interface SockJsService {
 
 
 	void handleRequest(ServerHttpRequest request, ServerHttpResponse response, String sockJsPath,
-			HandlerProvider<WebSocketHandler> handler) throws Exception;
+			HandlerProvider<WebSocketHandler<?>> handler) throws Exception;
 
 }

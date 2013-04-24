@@ -30,8 +30,7 @@ import org.springframework.websocket.WebSocketHandler;
  */
 public interface HandshakeHandler {
 
-
 	boolean doHandshake(ServerHttpRequest request, ServerHttpResponse response,
-			HandlerProvider<WebSocketHandler> handler) throws Exception;
+			HandlerProvider<WebSocketHandler<?>> handler) throws Exception;
 
 }
