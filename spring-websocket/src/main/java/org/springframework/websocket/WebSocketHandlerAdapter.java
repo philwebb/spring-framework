@@ -16,7 +16,6 @@
 
 package org.springframework.websocket;
 
-
 /**
  * A {@link WebSocketHandler} with empty methods.
  *
@@ -42,6 +41,50 @@ public abstract class WebSocketHandlerAdapter<T extends WebSocketMessage<?>> imp
 
 	@Override
 	public void handleMessage(WebSocketSession session, T message) throws Exception {
+	}
+
+
+	/**
+	 * A {@link WebSocketHandlerAdapter} that handles {@link TextMessage}s.
+	 */
+	public static class Text extends WebSocketHandlerAdapter<TextMessage> {
+	}
+
+
+	/**
+	 * A {@link WebSocketHandlerAdapter} that handles {@link BinaryMessage}s.
+	 */
+	public static class Binary extends WebSocketHandlerAdapter<BinaryMessage> {
+	}
+
+
+	/**
+	 * A {@link WebSocketHandlerAdapter} that handles {@link TextMessage}s or
+	 * {@link BinaryMessage}s.
+	 * @see #handleTextMessage
+	 * @see #handlBinaryeMessage
+	 */
+	public static class TextAndBinary extends WebSocketHandlerAdapter<WebSocketMessage<?>> {
+
+		@Override
+		public void handleMessage(WebSocketSession session, WebSocketMessage<?> message)
+				throws Exception {
+			if (message instanceof TextMessage) {
+				handleTextMessage(session, message);
+			}
+			else if (message instanceof BinaryMessage) {
+				handlBinaryeMessage(session, message);
+			}
+		}
+
+		public void handleTextMessage(WebSocketSession session, WebSocketMessage<?> message)
+				throws Exception {
+		}
+
+		public void handlBinaryeMessage(WebSocketSession session, WebSocketMessage<?> message)
+				throws Exception {
+		}
+
 	}
 
 }
