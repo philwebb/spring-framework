@@ -57,6 +57,7 @@ public class WebSocketHandlerEndpoint extends Endpoint {
 		this.handlerProvider = handlerProvider;
 	}
 
+
 	@Override
 	public void onOpen(final javax.websocket.Session session, EndpointConfig config) {
 		if (logger.isDebugEnabled()) {

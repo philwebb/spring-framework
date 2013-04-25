@@ -16,8 +16,6 @@
 
 package org.springframework.websocket;
 
-
-
 /**
  * A handler for WebSocket sessions.
  *
@@ -43,6 +41,9 @@ public interface WebSocketHandler<T extends WebSocketMessage<?>> {
 	 */
 	void handleError(WebSocketSession session, Throwable exception);
 
+	/**
+	 * TODO
+	 */
 	void handleMessage(WebSocketSession session, T message) throws Exception;
 
 }

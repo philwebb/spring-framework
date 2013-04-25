@@ -19,11 +19,21 @@ package org.springframework.websocket;
 import org.springframework.core.GenericTypeResolver;
 
 /**
+ * Utility methods for use when dealing with {@link WebSocketMessage}s.
+ *
  * @author Phillip Webb
  * @since 4.0
  */
 public abstract class WebSocketMessages {
 
+	/**
+	 * Deliver messages to the specified handler, taking into account they type
+	 * of message that the handler supports.
+	 * @param handler the handler to receive messages
+	 * @param session the WebSocketSession
+	 * @param binaryPayloads the message payloads
+	 * @throws Exception Any error thrown from {@link WebSocketHandler#handleMessage}
+	 */
 	public static void deliver(WebSocketHandler<?> handler, WebSocketSession session,
 			byte[]... binaryPayloads) throws Exception {
 		WebSocketMessage<?>[] messages = new WebSocketMessage<?>[binaryPayloads.length];
@@ -33,6 +43,14 @@ public abstract class WebSocketMessages {
 		deliver(handler, session, messages);
 	}
 
+	/**
+	 * Deliver messages to the specified handler, taking into account they type
+	 * of message that the handler supports.
+	 * @param handler the handler to receive messages
+	 * @param session the WebSocketSession
+	 * @param textPayloads the message payloads
+	 * @throws Exception Any error thrown from {@link WebSocketHandler#handleMessage}
+	 */
 	public static void deliver(WebSocketHandler<?> handler, WebSocketSession session,
 			String... textPayloads) throws Exception {
 		WebSocketMessage<?>[] messages = new WebSocketMessage<?>[textPayloads.length];
@@ -42,6 +60,14 @@ public abstract class WebSocketMessages {
 		deliver(handler, session, messages);
 	}
 
+	/**
+	 * Deliver messages to the specified handler, taking into account they type
+	 * of message that the handler supports.
+	 * @param handler the handler to receive messages
+	 * @param session the WebSocketSession
+	 * @param messages the messages
+	 * @throws Exception Any error thrown from {@link WebSocketHandler#handleMessage}
+	 */
 	@SuppressWarnings("unchecked")
 	public static void deliver(WebSocketHandler<?> handler, WebSocketSession session,
 			WebSocketMessage<?>... messages) throws Exception {

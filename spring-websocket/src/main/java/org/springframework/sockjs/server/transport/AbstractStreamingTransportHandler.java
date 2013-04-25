@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.springframework.sockjs.server.transport;
 
 import java.io.IOException;
@@ -23,7 +24,6 @@ import org.springframework.util.Assert;
 import org.springframework.websocket.HandlerProvider;
 import org.springframework.websocket.WebSocketHandler;
 
-
 /**
  * TODO
  *
@@ -31,7 +31,6 @@ import org.springframework.websocket.WebSocketHandler;
  * @since 4.0
  */
 public abstract class AbstractStreamingTransportHandler extends AbstractHttpSendingTransportHandler {
-
 
 	@Override
 	public StreamingServerSockJsSession createSession(String sessionId, HandlerProvider<WebSocketHandler<?>> handler) {

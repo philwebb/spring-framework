@@ -17,7 +17,10 @@ package org.springframework.sockjs.server.transport;
 
 import java.io.IOException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.sockjs.AbstractSockJsSession;
 import org.springframework.sockjs.server.SockJsConfiguration;
 import org.springframework.sockjs.server.SockJsFrame;
 import org.springframework.websocket.HandlerProvider;
@@ -31,9 +34,9 @@ public class StreamingServerSockJsSession extends AbstractHttpServerSockJsSessio
 
 	public StreamingServerSockJsSession(String sessionId, SockJsConfiguration sockJsConfig,
 			HandlerProvider<WebSocketHandler<?>> handler) {
-
 		super(sessionId, sockJsConfig, handler);
 	}
+
 
 	protected void flushCache() throws Exception {
 

@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.springframework.websocket.client;
 
 import java.net.URI;
@@ -24,13 +25,15 @@ import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.web.util.UriComponentsBuilder;
 
-
 /**
+ * Abstract base class for WebSocketConnection managers.
  *
  * @author Rossen Stoyanchev
  * @since 4.0
  */
 public abstract class AbstractWebSocketConnectionManager implements SmartLifecycle {
+
+	// FIXME DC
 
 	protected final Log logger = LogFactory.getLog(getClass());
 

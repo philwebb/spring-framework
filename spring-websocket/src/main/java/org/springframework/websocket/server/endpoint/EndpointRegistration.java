@@ -91,6 +91,7 @@ public class EndpointRegistration implements ServerEndpointConfig, BeanFactoryAw
 		this.handlerProvider = new SimpleHandlerProvider<Endpoint>(endpointBean);
 	}
 
+
 	@Override
 	public String getPath() {
 		return this.path;

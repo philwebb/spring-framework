@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.springframework.sockjs.server.support;
 
 import java.util.Arrays;
@@ -72,6 +73,7 @@ public class DefaultSockJsService extends AbstractSockJsService {
 		Assert.notNull(sessionTimeoutScheduler, "sessionTimeoutScheduler is required");
 		this.sessionTimeoutSchedulerHolder = new TaskSchedulerHolder(sessionTimeoutScheduler);
 	}
+
 
 	public void setTransportHandlers(TransportHandler... handlers) {
 		this.transportHandlers.clear();
