@@ -16,16 +16,24 @@
 
 package org.springframework.context.annotation;
 
-import example.scannable.DefaultNamedComponent;
-import org.junit.Test;
+import java.io.IOException;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.annotation.AnnotatedGenericBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.SimpleBeanDefinitionRegistry;
+import org.springframework.core.type.classreading.MetadataReader;
+import org.springframework.core.type.classreading.MetadataReaderFactory;
+import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import example.scannable.DefaultNamedComponent;
 import static org.junit.Assert.*;
 
 /**
@@ -81,6 +89,23 @@ public class AnnotationBeanNameGeneratorTests {
 		assertEquals(expectedGeneratedBeanName, beanName);
 	}
 
+	@Test
+	public void testGenerateBeanNameFromMetaComponentWithValue() {
+		BeanDefinitionRegistry registry = new SimpleBeanDefinitionRegistry();
+		AnnotatedBeanDefinition bd = new AnnotatedGenericBeanDefinition(ComponentFromMeta.class);
+		String beanName = this.beanNameGenerator.generateBeanName(bd, registry);
+		assertEquals("walden", beanName);
+	}
+
+	@Test
+	public void testGenerateBeanNameFromMetaComponentWithValueAsm() throws Exception {
+		BeanDefinitionRegistry registry = new SimpleBeanDefinitionRegistry();
+		MetadataReader metadataReader = new SimpleMetadataReaderFactory().getMetadataReader(ComponentFromMeta.class.getName());
+		AnnotatedBeanDefinition bd = new AnnotatedGenericBeanDefinition(metadataReader.getAnnotationMetadata());
+		String beanName = this.beanNameGenerator.generateBeanName(bd, registry);
+		assertEquals("walden", beanName);
+	}
+
 
 	@Component("walden")
 	private static class ComponentWithName {
@@ -94,6 +119,17 @@ public class AnnotationBeanNameGeneratorTests {
 
 	@Component
 	private static class AnonymousComponent {
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.TYPE)
+	@Component
+	public @interface MetaComponent {
+		long value();
+	}
+
+	@MetaComponent(123)
+	private static class ComponentFromMeta {
 	}
 
 }
