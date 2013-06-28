@@ -1,0 +1,200 @@
+/*
+ * Copyright 2002-2013 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.springframework.web.socket.adapter;
+
+import java.nio.ByteBuffer;
+
+import javax.websocket.DecodeException;
+import javax.websocket.EncodeException;
+import javax.websocket.EndpointConfig;
+
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.GenericTypeResolver;
+import org.springframework.core.convert.ConversionException;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.core.convert.TypeDescriptor;
+import org.springframework.util.Assert;
+import org.springframework.web.context.ContextLoader;
+
+/**
+ * Base class that can be used to implement a standard {@link javax.websocket.Encoder}
+ * and/or {@link javax.websocket.Decoder} by delegating to a Spring
+ * {@link ConversionService}.
+ *
+ * <p>Subclasses should extend this class and additionally implements one or
+ * both of the appropriate {@link javax.websocket.Encoder}/{@link javax.websocket.Decoder}
+ * interfaces. For convenience {@link AbstractConvertingTextEncoder},
+ * {@link AbstractConvertingBinaryEncoder}, {@link AbstractConvertingTextDecoder} and
+ * {@link AbstractConvertingBinaryDecoder} subclasses are provided.
+ *
+ * <p>By default, this class requires that a {@link ConversionService} bean has been
+ * registered in the {@link #getApplicationContext() active ApplicationContext} under
+ * the name {@code 'webSocketConversionService'}. Subclasses can override the
+ * {@link #getConversionService()} method to provide an alternative lookup strategy.
+ *
+ * <p>Converters to convert between the {@link #getType() type} and {@code String} or
+ * {@code ByteBuffer} should be registered.
+ *
+ * <p>This class assumes that it is running a Servlet environment and the the
+ * {@link ApplicationContext} can be obtained via .
+ * {@link ContextLoader#getCurrentWebApplicationContext()}. If this is not the
+ * case then the {@link #getApplicationContext()} method should be overwritten.
+ *
+ * <p>Instances of this class are intended to managed entirely by the websocket runtime,
+ * they should not be registered as Spring Beans. They can, however, make use of
+ * {@link Autowired @Autowire} annotations when running against a
+ * {@link ConfigurableApplicationContext}.
+ *
+ * @author Phillip Webb
+ * @param <T> The type being converted
+ * @param <M> The websocket message type ({@link String} or {@link ByteBuffer})
+ * @see AbstractConvertingTextEncoder
+ * @see AbstractConvertingBinaryEncoder
+ * @see AbstractConvertingTextDecoder
+ * @see AbstractConvertingBinaryDecoder
+ */
+public abstract class ConvertingEncoderDecoderSupport<T, M> {
+
+	private static final String CONVERSION_SERVICE_BEAN_NAME = "webSocketConversionService";
+
+
+	/**
+	 * @see javax.websocket.Encoder#init(EndpointConfig)
+	 * @see javax.websocket.Decoder#init(EndpointConfig)
+	 */
+	public void init(EndpointConfig config) {
+		ApplicationContext applicationContext = getApplicationContext();
+		if (applicationContext != null &&
+				applicationContext instanceof ConfigurableApplicationContext) {
+			ConfigurableListableBeanFactory beanFactory =
+					((ConfigurableApplicationContext) applicationContext).getBeanFactory();
+			beanFactory.autowireBean(this);
+		}
+	}
+
+	/**
+	 * @see javax.websocket.Encoder#destroy()
+	 * @see javax.websocket.Decoder#destroy()
+	 */
+	public void destroy() {
+	}
+
+	/**
+	 * Strategy method used to obtain the {@link ConversionService}. By default this
+	 * method expects a bean named {@code 'webSocketConversionService'} in the
+	 * {@link #getApplicationContext() active ApplicationContext}.
+	 * @return the {@link ConversionService} (never null)
+	 */
+	protected ConversionService getConversionService() {
+		ApplicationContext applicationContext = getApplicationContext();
+		Assert.state(applicationContext != null,
+				"Unable to locate the Spring ApplicationContext");
+		try {
+			return applicationContext.getBean(CONVERSION_SERVICE_BEAN_NAME,
+					ConversionService.class);
+		}
+		catch (BeansException ex) {
+			throw new IllegalStateException(
+					"Unable to find ConversionService, please configure a '"
+							+ CONVERSION_SERVICE_BEAN_NAME + "' or override "
+									+ "getConversionService()", ex);
+		}
+	}
+
+	/**
+	 * Returns the active {@link ApplicationContext}. Be default this method obtains
+	 * the context via {@link ContextLoader#getCurrentWebApplicationContext()}. When
+	 * not using the {@link ContextLoader} this method should be overridden.
+	 * @return the {@link ApplicationContext} or {@code null}
+	 */
+	protected ApplicationContext getApplicationContext() {
+		return ContextLoader.getCurrentWebApplicationContext();
+	}
+
+	/**
+	 * Returns the type being converted. By default the type is resolved using
+	 * the generic arguments of the class.
+	 */
+	protected TypeDescriptor getType() {
+		return TypeDescriptor.valueOf(resolveTypeArguments()[0]);
+	}
+
+	/**
+	 * Returns the websocket message type. By default the type is resolved using
+	 * the generic arguments of the class.
+	 */
+	protected TypeDescriptor getMessageType() {
+		return TypeDescriptor.valueOf(resolveTypeArguments()[1]);
+	}
+
+	private Class<?>[] resolveTypeArguments() {
+		return GenericTypeResolver.resolveTypeArguments(getClass(),
+				ConvertingEncoderDecoderSupport.class);
+	}
+
+	/**
+	 * @see javax.websocket.Encoder.Text#encode(Object)
+	 * @see javax.websocket.Encoder.Binary#encode(Object)
+	 */
+	@SuppressWarnings("unchecked")
+	public M encode(T object) throws EncodeException {
+		try {
+			return (M) getConversionService().convert(object, getType(),
+					getMessageType());
+		}
+		catch (ConversionException ex) {
+			throw new EncodeException(object, "Unable to encode websocket message " +
+					"using ConversionService", ex);
+		}
+	}
+
+	/**
+	 * @see javax.websocket.Decoder.Text#willDecode(String)
+	 * @see javax.websocket.Decoder.Binary#willDecode(ByteBuffer)
+	 */
+	public boolean willDecode(M bytes) {
+		return getConversionService().canConvert(getType(), getMessageType());
+	}
+
+	/**
+	 * @see javax.websocket.Decoder.Text#decode(String)
+	 * @see javax.websocket.Decoder.Binary#decode(ByteBuffer)
+	 */
+	@SuppressWarnings("unchecked")
+	public T decode(M message) throws DecodeException {
+		try {
+			return (T) getConversionService().convert(message, getMessageType(),
+					getType());
+		}
+		catch (ConversionException ex) {
+			if (message instanceof String) {
+				throw new DecodeException((String) message, "Unable to decode " +
+						"websocket message using ConversionService", ex);
+			}
+			if (message instanceof ByteBuffer) {
+				throw new DecodeException((ByteBuffer) message, "Unable to decode " +
+						"websocket message using ConversionService", ex);
+			}
+			throw ex;
+		}
+	}
+
+}
