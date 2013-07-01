@@ -36,36 +36,36 @@ import org.springframework.web.context.ContextLoader;
 
 /**
  * Base class that can be used to implement a standard {@link javax.websocket.Encoder}
- * and/or {@link javax.websocket.Decoder} by delegating to a Spring
- * {@link ConversionService}.
+ * and/or {@link javax.websocket.Decoder}. It provides encode and decode method
+ * implementations that delegate to a Spring {@link ConversionService}.
  *
- * <p>Subclasses should extend this class and additionally implements one or
- * both of the appropriate {@link javax.websocket.Encoder}/{@link javax.websocket.Decoder}
- * interfaces. For convenience {@link AbstractConvertingTextEncoder},
+ * <p>By default, this class looks up a {@link ConversionService} registered in the
+ * {@link #getApplicationContext() active ApplicationContext} under
+ * the name {@code 'webSocketConversionService'}. This works fine for both client
+ * and server endpoints, in a Servlet container environment. If not running in a
+ * Servlet container, subclasses will need to override the
+ * {@link #getConversionService()} method to provide an alternative lookup strategy.
+ *
+ * <p>Subclasses can extend this class and should also implement one or
+ * both of {@link javax.websocket.Encoder} and {@link javax.websocket.Decoder}.
+ * For convenience {@link AbstractConvertingTextEncoder},
  * {@link AbstractConvertingBinaryEncoder}, {@link AbstractConvertingTextDecoder} and
  * {@link AbstractConvertingBinaryDecoder} subclasses are provided.
  *
- * <p>By default, this class requires that a {@link ConversionService} bean has been
- * registered in the {@link #getApplicationContext() active ApplicationContext} under
- * the name {@code 'webSocketConversionService'}. Subclasses can override the
- * {@link #getConversionService()} method to provide an alternative lookup strategy.
+ * <p>Since JSR-356 only allows Encoder/Decoder to be registered by type, instances
+ * of this class are therefore managed by the WebSocket runtime, and do not need to
+ * be registered as Spring Beans. They can, however, by injected with Spring-managed
+ * dependencies via {@link Autowired @Autowire}.
  *
  * <p>Converters to convert between the {@link #getType() type} and {@code String} or
  * {@code ByteBuffer} should be registered.
  *
- * <p>This class assumes that it is running a Servlet environment and the the
- * {@link ApplicationContext} can be obtained via .
- * {@link ContextLoader#getCurrentWebApplicationContext()}. If this is not the
- * case then the {@link #getApplicationContext()} method should be overwritten.
- *
- * <p>Instances of this class are intended to managed entirely by the websocket runtime,
- * they should not be registered as Spring Beans. They can, however, make use of
- * {@link Autowired @Autowire} annotations when running against a
- * {@link ConfigurableApplicationContext}.
- *
  * @author Phillip Webb
- * @param <T> The type being converted
- * @param <M> The websocket message type ({@link String} or {@link ByteBuffer})
+ * @since 4.0
+ *
+ * @param <T> The type being converted to (for Encoder) or from (for Decoder)
+ * @param <M> The WebSocket message type ({@link String} or {@link ByteBuffer})
+ *
  * @see AbstractConvertingTextEncoder
  * @see AbstractConvertingBinaryEncoder
  * @see AbstractConvertingTextDecoder
@@ -82,8 +82,7 @@ public abstract class ConvertingEncoderDecoderSupport<T, M> {
 	 */
 	public void init(EndpointConfig config) {
 		ApplicationContext applicationContext = getApplicationContext();
-		if (applicationContext != null &&
-				applicationContext instanceof ConfigurableApplicationContext) {
+		if (applicationContext != null && applicationContext instanceof ConfigurableApplicationContext) {
 			ConfigurableListableBeanFactory beanFactory =
 					((ConfigurableApplicationContext) applicationContext).getBeanFactory();
 			beanFactory.autowireBean(this);
@@ -108,21 +107,21 @@ public abstract class ConvertingEncoderDecoderSupport<T, M> {
 		Assert.state(applicationContext != null,
 				"Unable to locate the Spring ApplicationContext");
 		try {
-			return applicationContext.getBean(CONVERSION_SERVICE_BEAN_NAME,
-					ConversionService.class);
+			return applicationContext.getBean(CONVERSION_SERVICE_BEAN_NAME, ConversionService.class);
 		}
 		catch (BeansException ex) {
 			throw new IllegalStateException(
 					"Unable to find ConversionService, please configure a '"
-							+ CONVERSION_SERVICE_BEAN_NAME + "' or override "
-									+ "getConversionService()", ex);
+							+ CONVERSION_SERVICE_BEAN_NAME + "' or override getConversionService()", ex);
 		}
 	}
 
 	/**
 	 * Returns the active {@link ApplicationContext}. Be default this method obtains
-	 * the context via {@link ContextLoader#getCurrentWebApplicationContext()}. When
-	 * not using the {@link ContextLoader} this method should be overridden.
+	 * the context via {@link ContextLoader#getCurrentWebApplicationContext()}, which
+	 * finds the ApplicationContext loaded via {@link ContextLoader} typically in a
+	 * Servlet container environment. When not running in a Servlet container and
+	 * not using {@link ContextLoader}, this method should be overridden.
 	 * @return the {@link ApplicationContext} or {@code null}
 	 */
 	protected ApplicationContext getApplicationContext() {
@@ -157,12 +156,10 @@ public abstract class ConvertingEncoderDecoderSupport<T, M> {
 	@SuppressWarnings("unchecked")
 	public M encode(T object) throws EncodeException {
 		try {
-			return (M) getConversionService().convert(object, getType(),
-					getMessageType());
+			return (M) getConversionService().convert(object, getType(), getMessageType());
 		}
 		catch (ConversionException ex) {
-			throw new EncodeException(object, "Unable to encode websocket message " +
-					"using ConversionService", ex);
+			throw new EncodeException(object, "Unable to encode websocket message using ConversionService", ex);
 		}
 	}
 
@@ -181,8 +178,7 @@ public abstract class ConvertingEncoderDecoderSupport<T, M> {
 	@SuppressWarnings("unchecked")
 	public T decode(M message) throws DecodeException {
 		try {
-			return (T) getConversionService().convert(message, getMessageType(),
-					getType());
+			return (T) getConversionService().convert(message, getMessageType(), getType());
 		}
 		catch (ConversionException ex) {
 			if (message instanceof String) {
