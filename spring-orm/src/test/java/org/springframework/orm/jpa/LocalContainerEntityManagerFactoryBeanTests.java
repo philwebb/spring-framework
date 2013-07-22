@@ -51,6 +51,9 @@ import static org.mockito.BDDMockito.*;
  */
 public class LocalContainerEntityManagerFactoryBeanTests extends AbstractEntityManagerFactoryBeanTests {
 
+	private static final String SCHEMA_GENERATION_ACTION_PROPERTY =
+			"javax.persistence.schema-generation.database.action";
+
 	// Static fields set by inner class DummyPersistenceProvider
 
 	private static Map actualProps;
@@ -272,6 +275,7 @@ public class LocalContainerEntityManagerFactoryBeanTests extends AbstractEntityM
 		containerEmfb.setTransactionType(PersistenceUnitTransactionType.JTA);
 		containerEmfb.setSharedCacheMode(SharedCacheMode.ENABLE_SELECTIVE);
 		containerEmfb.setValidationMode(ValidationMode.CALLBACK);
+		containerEmfb.setSchemaGenerationAction("fooBar");
 		containerEmfb.afterPropertiesSet();
 
 		assertEquals("default", actualPui.getPersistenceUnitName());
@@ -279,6 +283,8 @@ public class LocalContainerEntityManagerFactoryBeanTests extends AbstractEntityM
 				actualPui.getTransactionType());
 		assertSame("The cache mode is not correct.", SharedCacheMode.ENABLE_SELECTIVE, actualPui.getSharedCacheMode());
 		assertSame("The validation mode is not correct.", ValidationMode.CALLBACK, actualPui.getValidationMode());
+		assertEquals("The generation mode is not correct.", "fooBar",
+				actualProps.get(SCHEMA_GENERATION_ACTION_PROPERTY));
 	}
 
 	public LocalContainerEntityManagerFactoryBean parseValidPersistenceUnit() throws Exception {
