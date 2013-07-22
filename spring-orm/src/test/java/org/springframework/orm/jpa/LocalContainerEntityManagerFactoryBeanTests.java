@@ -23,6 +23,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceException;
+import javax.persistence.SharedCacheMode;
+import javax.persistence.ValidationMode;
 import javax.persistence.spi.PersistenceProvider;
 import javax.persistence.spi.PersistenceUnitInfo;
 import javax.persistence.spi.PersistenceUnitTransactionType;
@@ -237,6 +239,46 @@ public class LocalContainerEntityManagerFactoryBeanTests extends AbstractEntityM
 		verify(mockEm).joinTransaction();
 		verify(mockEm).contains(testEntity);
 		verify(mockEmf).close();
+	}
+
+	@Test
+	public void testTransactionTypeCacheModeValidationModeAndGenerationModeDefaults() {
+		actualPui = null;
+		actualProps = null;
+
+		LocalContainerEntityManagerFactoryBean containerEmfb = new LocalContainerEntityManagerFactoryBean();
+		containerEmfb.setPackagesToScan("org.example.foo.bar");
+		containerEmfb.setPersistenceProviderClass(DummyContainerPersistenceProvider.class);
+		containerEmfb.setLoadTimeWeaver(new InstrumentationLoadTimeWeaver());
+		containerEmfb.afterPropertiesSet();
+
+		assertEquals("default", actualPui.getPersistenceUnitName());
+		assertSame("The transaction type is not correct.", PersistenceUnitTransactionType.RESOURCE_LOCAL,
+				actualPui.getTransactionType());
+		assertSame("The cache mode is not correct.", SharedCacheMode.UNSPECIFIED, actualPui.getSharedCacheMode());
+		assertSame("The validation mode is not correct.", ValidationMode.AUTO, actualPui.getValidationMode());
+		assertNull("The generation mode is not correct.", actualProps.get(SCHEMA_GENERATION_ACTION_PROPERTY));
+	}
+
+	@Test
+	public void testTransactionTypeCacheModeValidationModeAndGenerationModeCustom() {
+		actualPui = null;
+		actualProps = null;
+
+		LocalContainerEntityManagerFactoryBean containerEmfb = new LocalContainerEntityManagerFactoryBean();
+		containerEmfb.setPackagesToScan("org.example.foo.bar");
+		containerEmfb.setPersistenceProviderClass(DummyContainerPersistenceProvider.class);
+		containerEmfb.setLoadTimeWeaver(new InstrumentationLoadTimeWeaver());
+		containerEmfb.setTransactionType(PersistenceUnitTransactionType.JTA);
+		containerEmfb.setSharedCacheMode(SharedCacheMode.ENABLE_SELECTIVE);
+		containerEmfb.setValidationMode(ValidationMode.CALLBACK);
+		containerEmfb.afterPropertiesSet();
+
+		assertEquals("default", actualPui.getPersistenceUnitName());
+		assertSame("The transaction type is not correct.", PersistenceUnitTransactionType.JTA,
+				actualPui.getTransactionType());
+		assertSame("The cache mode is not correct.", SharedCacheMode.ENABLE_SELECTIVE, actualPui.getSharedCacheMode());
+		assertSame("The validation mode is not correct.", ValidationMode.CALLBACK, actualPui.getValidationMode());
 	}
 
 	public LocalContainerEntityManagerFactoryBean parseValidPersistenceUnit() throws Exception {

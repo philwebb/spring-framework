@@ -18,8 +18,11 @@ package org.springframework.orm.jpa;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceException;
+import javax.persistence.SharedCacheMode;
+import javax.persistence.ValidationMode;
 import javax.persistence.spi.PersistenceProvider;
 import javax.persistence.spi.PersistenceUnitInfo;
+import javax.persistence.spi.PersistenceUnitTransactionType;
 import javax.sql.DataSource;
 
 import org.springframework.beans.BeanUtils;
@@ -204,6 +207,33 @@ public class LocalContainerEntityManagerFactoryBean extends AbstractEntityManage
 	public void setJtaDataSource(DataSource jtaDataSource) {
 		this.internalPersistenceUnitManager.setDataSourceLookup(new SingleDataSourceLookup(jtaDataSource));
 		this.internalPersistenceUnitManager.setDefaultJtaDataSource(jtaDataSource);
+	}
+
+	/**
+	 * Specifies the transaction type that the JPA persistence provider is supposed
+	 * to use for accessing the database. Replaces the {@code transaction-type}
+	 * attribute in {@code <persistence-unit>} element from {@code persistence.xml}.
+	 */
+	public void setTransactionType(PersistenceUnitTransactionType transactionType) {
+		this.internalPersistenceUnitManager.setDefaultTransactionType(transactionType);
+	}
+
+	/**
+	 * Specifies the shared cache mode that the JPA persistence provider is supposed
+	 * to activate for this persistence unit. Replaces the
+	 * {@code <shared-cache-mode>} element from {@code persistence.xml}.
+	 */
+	public void setSharedCacheMode(SharedCacheMode sharedCacheMode) {
+		this.internalPersistenceUnitManager.setDefaultSharedCacheMode(sharedCacheMode);
+	}
+
+	/**
+	 * Specifies the validation mode that the JPA persistence provider is supposed
+	 * to use when persisting entities. Replaces the {@code <validation-mode>}
+	 * element from {@code persistence.xml}.
+	 */
+	public void setValidationMode(ValidationMode validationMode) {
+		this.internalPersistenceUnitManager.setDefaultValidationMode(validationMode);
 	}
 
 	/**

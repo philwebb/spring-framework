@@ -24,11 +24,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PersistenceException;
+import javax.persistence.SharedCacheMode;
+import javax.persistence.ValidationMode;
 import javax.persistence.spi.PersistenceUnitInfo;
+import javax.persistence.spi.PersistenceUnitTransactionType;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.InitializingBean;
@@ -113,6 +117,12 @@ public class DefaultPersistenceUnitManager
 	private DataSource defaultDataSource;
 
 	private DataSource defaultJtaDataSource;
+
+	private PersistenceUnitTransactionType defaultTransactionType;
+
+	private SharedCacheMode defaultSharedCacheMode;
+
+	private ValidationMode defaultValidationMode;
 
 	private PersistenceUnitPostProcessor[] persistenceUnitPostProcessors;
 
@@ -280,6 +290,33 @@ public class DefaultPersistenceUnitManager
 	}
 
 	/**
+	 * Specifies the transaction type that the JPA persistence provider is supposed
+	 * to use for accessing the database. Replaces the {@code transaction-type}
+	 * attribute in {@code <persistence-unit>} element from {@code persistence.xml}.
+	 */
+	public void setDefaultTransactionType(PersistenceUnitTransactionType transactionType) {
+		this.defaultTransactionType = transactionType;
+	}
+
+	/**
+	 * Specifies the shared cache mode that the JPA persistence provider is supposed
+	 * to activate for this persistence unit. Replaces the
+	 * {@code <shared-cache-mode>} element from {@code persistence.xml}.
+	 */
+	public void setDefaultSharedCacheMode(SharedCacheMode sharedCacheMode) {
+		this.defaultSharedCacheMode = sharedCacheMode;
+	}
+
+	/**
+	 * Specifies the validation mode that the JPA persistence provider is supposed
+	 * to use when persisting entities. Replaces the {@code <validation-mode>}
+	 * element from {@code persistence.xml}.
+	 */
+	public void setDefaultValidationMode(ValidationMode validationMode) {
+		this.defaultValidationMode = validationMode;
+	}
+
+	/**
 	 * Set the PersistenceUnitPostProcessors to be applied to each
 	 * PersistenceUnitInfo that has been parsed by this manager.
 	 * <p>Such post-processors can, for example, register further entity classes and
@@ -366,6 +403,15 @@ public class DefaultPersistenceUnitManager
 			}
 			if (pui.getNonJtaDataSource() == null) {
 				pui.setNonJtaDataSource(this.defaultDataSource);
+			}
+			if (pui.getTransactionType() == null) {
+				pui.setTransactionType(this.defaultTransactionType);
+			}
+			if (pui.getSharedCacheMode() == null) {
+				pui.setSharedCacheMode(this.defaultSharedCacheMode);
+			}
+			if (pui.getValidationMode() == null) {
+				pui.setValidationMode(this.defaultValidationMode);
 			}
 			if (this.loadTimeWeaver != null) {
 				pui.init(this.loadTimeWeaver);
