@@ -24,10 +24,18 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 
+import static org.hamcrest.Matchers.*;
+
+import static org.junit.Assert.*;
+
 /**
  * @author Phillip Webb
  */
 public class Spr10744Tests {
+
+	private static int createCount = 0;
+
+	private static int scopeCount = 0;
 
 	@Test
 	public void testSpr10744() throws Exception {
@@ -36,7 +44,21 @@ public class Spr10744Tests {
 		context.getBeanFactory().registerScope("myTestScope", scope);
 		context.register(MyTestConfiguration.class);
 		context.refresh();
-		context.getBean(Foo.class);
+		Foo bean1 = context.getBean("foo", Foo.class);
+		Foo bean2 = context.getBean("foo", Foo.class);
+		assertThat(bean1, sameInstance(bean2));
+		// Should have created a single instance for the proxy
+		assertThat(createCount, equalTo(1));
+		assertThat(scopeCount, equalTo(0));
+
+		// Proxy mode should create new scoped object on each method call
+		bean1.getMessage();
+		assertThat(createCount, equalTo(2));
+		assertThat(scopeCount, equalTo(1));
+		bean1.getMessage();
+		assertThat(createCount, equalTo(3));
+		assertThat(scopeCount, equalTo(2));
+
 		context.close();
 	}
 
@@ -44,7 +66,7 @@ public class Spr10744Tests {
 
 		@Override
 		public Object get(String name, ObjectFactory<?> objectFactory) {
-			System.out.println(name);
+			scopeCount++;
 			return objectFactory.getObject();
 		}
 
@@ -70,6 +92,15 @@ public class Spr10744Tests {
 	}
 
 	static class Foo {
+
+		public Foo() {
+			createCount++;
+		}
+
+		public String getMessage() {
+			return "Hello";
+		}
+
 	}
 
 	@Configuration
@@ -87,12 +118,8 @@ public class Spr10744Tests {
 
 		@Override
 		@Scope(value = "myTestScope",  proxyMode = ScopedProxyMode.TARGET_CLASS)
-		public Foo foo() {
-			return new Foo();
-		}
-
 		@Bean
-		public Foo foo2() {
+		public Foo foo() {
 			return new Foo();
 		}
 

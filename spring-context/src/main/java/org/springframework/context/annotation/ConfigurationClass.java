@@ -16,10 +16,13 @@
 
 package org.springframework.context.annotation;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -57,7 +60,7 @@ final class ConfigurationClass {
 
 	private final ConfigurationClass importedBy;
 
-	private final Set<BeanMethod> beanMethods = new LinkedHashSet<BeanMethod>();
+	private final List<BeanMethod> beanMethods = new LinkedList<BeanMethod>();
 
 	private final Map<String, Class<? extends BeanDefinitionReader>> importedResources =
 			new LinkedHashMap<String, Class<? extends BeanDefinitionReader>>();
@@ -166,10 +169,10 @@ final class ConfigurationClass {
 	}
 
 	public void addBeanMethod(BeanMethod method) {
-		this.beanMethods.add(method);
+		this.beanMethods.add(0, method);
 	}
 
-	public Set<BeanMethod> getBeanMethods() {
+	public Collection<BeanMethod> getBeanMethods() {
 		return this.beanMethods;
 	}
 
