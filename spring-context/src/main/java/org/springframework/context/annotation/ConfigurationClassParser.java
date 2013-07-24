@@ -149,12 +149,12 @@ class ConfigurationClassParser {
 		for (BeanDefinitionHolder holder : configCandidates) {
 			BeanDefinition bd = holder.getBeanDefinition();
 			try {
-				if (bd instanceof AbstractBeanDefinition && ((AbstractBeanDefinition) bd).hasBeanClass()) {
-					parse(((AbstractBeanDefinition) bd).getBeanClass(), holder.getBeanName());
-				}
-				else {
+//				if (bd instanceof AbstractBeanDefinition && ((AbstractBeanDefinition) bd).hasBeanClass()) {
+//					parse(((AbstractBeanDefinition) bd).getBeanClass(), holder.getBeanName());
+//				}
+//				else {
 					parse(bd.getBeanClassName(), holder.getBeanName());
-				}
+//				}
 			}
 			catch (IOException ex) {
 				throw new BeanDefinitionStoreException("Failed to load bean class: " + bd.getBeanClassName(), ex);

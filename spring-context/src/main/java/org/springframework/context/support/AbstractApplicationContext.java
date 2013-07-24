@@ -582,13 +582,6 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		beanFactory.registerResolvableDependency(ApplicationEventPublisher.class, this);
 		beanFactory.registerResolvableDependency(ApplicationContext.class, this);
 
-		// Detect a LoadTimeWeaver and prepare for weaving, if found.
-		if (beanFactory.containsBean(LOAD_TIME_WEAVER_BEAN_NAME)) {
-			beanFactory.addBeanPostProcessor(new LoadTimeWeaverAwareProcessor(beanFactory));
-			// Set a temporary ClassLoader for type matching.
-			beanFactory.setTempClassLoader(new ContextTypeMatchClassLoader(beanFactory.getBeanClassLoader()));
-		}
-
 		// Register default environment beans.
 		if (!beanFactory.containsLocalBean(ENVIRONMENT_BEAN_NAME)) {
 			beanFactory.registerSingleton(ENVIRONMENT_BEAN_NAME, getEnvironment());
@@ -598,6 +591,15 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		}
 		if (!beanFactory.containsLocalBean(SYSTEM_ENVIRONMENT_BEAN_NAME)) {
 			beanFactory.registerSingleton(SYSTEM_ENVIRONMENT_BEAN_NAME, getEnvironment().getSystemEnvironment());
+		}
+	}
+
+	private void configureLoadTimeWeaving(ConfigurableListableBeanFactory beanFactory) {
+		// Detect a LoadTimeWeaver and prepare for weaving, if found.
+		if (beanFactory.containsBean(LOAD_TIME_WEAVER_BEAN_NAME)) {
+			beanFactory.addBeanPostProcessor(new LoadTimeWeaverAwareProcessor(beanFactory));
+			// Set a temporary ClassLoader for type matching.
+			beanFactory.setTempClassLoader(new ContextTypeMatchClassLoader(beanFactory.getBeanClassLoader()));
 		}
 	}
 
@@ -643,6 +645,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			for (BeanDefinitionRegistryPostProcessor postProcessor : registryPostProcessorBeans) {
 				postProcessor.postProcessBeanDefinitionRegistry(registry);
 			}
+			configureLoadTimeWeaving(beanFactory);
 			invokeBeanFactoryPostProcessors(registryPostProcessors, beanFactory);
 			invokeBeanFactoryPostProcessors(registryPostProcessorBeans, beanFactory);
 			invokeBeanFactoryPostProcessors(regularPostProcessors, beanFactory);
@@ -650,6 +653,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		}
 		else {
 			// Invoke factory processors registered with the context instance.
+			configureLoadTimeWeaving(beanFactory);
 			invokeBeanFactoryPostProcessors(getBeanFactoryPostProcessors(), beanFactory);
 		}
 
