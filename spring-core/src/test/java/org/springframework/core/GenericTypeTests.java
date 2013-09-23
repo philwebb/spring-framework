@@ -16,408 +16,284 @@
 
 package org.springframework.core;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-
+import java.io.Serializable;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Method;
-import java.util.AbstractList;
-import java.util.AbstractMap;
-import java.util.AbstractSet;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import junit.framework.Assert;
-
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.springframework.beans.GenericBean;
-import org.springframework.core.GenericType;
-import org.springframework.core.MethodParameter;
-import org.springframework.core.io.Resource;
+import org.junit.rules.ExpectedException;
 import org.springframework.util.MultiValueMap;
-import org.springframework.util.ReflectionUtils;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
 /**
  * Tests for {@link GenericType}.
- *
- * @author Phillip Webb
- * @author Juergen Hoeller
- * @author Sam Brannen
  */
 public class GenericTypeTests {
 
-	private GenericType mixedUpMapType;
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
 
-	@Before
-	public void setup() throws Exception {
-		this.mixedUpMapType = GenericType.fromField(getClass().getField("mixedUpMap"));
+	@Test
+	public void forClass() throws Exception {
+		GenericType type = GenericType.forClass(MyList.class);
+		assertThat(type.getType(), equalTo((Type) MyList.class));
 	}
 
 	@Test
-	public void shouldGetType() throws Exception {
-		assertEquals(MixedupMap.class, mixedUpMapType.getTypeClass());
+	public void forClassMustNotBeNull() throws Exception {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("Class must not be null");
+		GenericType.forClass(null);
 	}
 
 	@Test
-	public void shouldGetSuperType() throws Exception {
-		assertEquals(HashMap.class, mixedUpMapType.getSuper().getTypeClass());
+	public void forField() throws Exception {
+		Field field = Fields.class.getField("charSequenceList");
+		GenericType type = GenericType.forField(field);
+		assertThat(type.getType(), equalTo(field.getGenericType()));
 	}
 
 	@Test
-	public void shouldGetInterfaces() throws Exception {
-		assertEquals(KeyAccess.class, mixedUpMapType.getInterfaces()[0].getTypeClass());
+	public void forFieldMustNotBeNull() throws Exception {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("Field must not be null");
+		GenericType.forField(null);
 	}
 
 	@Test
-	public void shouldGetGenerics() throws Exception {
-		GenericType[] generics = mixedUpMapType.getGenerics();
-		assertThat(generics.length, is(2));
-		assertEquals(String.class, generics[0].getType());
-		assertEquals(Integer.class, generics[1].getType());
+	public void forConstructorParameter() throws Exception {
+		Constructor<Constructors> constructor = Constructors.class.getConstructor(List.class);
+		GenericType type = GenericType.forConstructorParameter(constructor, 0);
+		assertThat(type.getType(), equalTo(constructor.getGenericParameterTypes()[0]));
 	}
 
 	@Test
-	public void shouldGetGenericsOnSuperclass() throws Exception {
-		GenericType[] generics = mixedUpMapType.getSuper().getGenerics();
-		assertThat(generics.length, is(2));
-		assertThat(generics[0].getType().toString(), is("K"));
-		assertThat(generics[1].getType().toString(), is("V"));
-		assertEquals(Integer.class, generics[0].getTypeClass());
-		assertEquals(String.class, generics[1].getTypeClass());
+	public void forConstructorParameterMustNotBeNull() throws Exception {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("Constructor must not be null");
+		GenericType.forConstructorParameter(null, 0);
 	}
 
 	@Test
-	public void shouldGetGenericsOnInterface() throws Exception {
-		GenericType[] generics = mixedUpMapType.getInterfaces()[0].getGenerics();
-		assertThat(generics.length, is(1));
-		assertThat(generics[0].getType().toString(), is("K"));
-		assertEquals(Integer.class, generics[0].getTypeClass());
+	public void forMethodParameterByIndex() throws Exception {
+		Method method = Methods.class.getMethod("charSequenceParameter", List.class);
+		GenericType type = GenericType.forMethodParameter(method, 0);
+		assertThat(type.getType(), equalTo(method.getGenericParameterTypes()[0]));
 	}
 
 	@Test
-	public void shouldSupportToString() throws Exception {
-		assertThat(mixedUpMapType.toString(), is("org.springframework.core.GenericTypeTests$MixedupMap<java.lang.String, java.lang.Integer>"));
+	public void forMethodParameterByIndexMustNotBeNull() throws Exception {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("Method must not be null");
+		GenericType.forMethodParameter(null, 0);
 	}
 
 	@Test
-	public void shouldSupportVariablesForToString() throws Exception {
-		assertThat(mixedUpMapType.getSuper().toString(), is("java.util.HashMap<java.lang.Integer, java.lang.String>"));
-		assertThat(mixedUpMapType.getInterfaces()[0].toString(), is("org.springframework.core.GenericTypeTests$KeyAccess<java.lang.Integer>"));
+	public void forMethodParameter() throws Exception {
+		Method method = Methods.class.getMethod("charSequenceParameter", List.class);
+		MethodParameter methodParameter = MethodParameter.forMethodOrConstructor(method,
+				0);
+		GenericType type = GenericType.forMethodParameter(methodParameter);
+		assertThat(type.getType(), equalTo(method.getGenericParameterTypes()[0]));
 	}
 
 	@Test
-	public void shouldSupportWildcards() throws Exception {
-		GenericType type = GenericType.fromField(getClass().getField("wildcard"));
-		assertNull(type.getGeneric(1).getTypeClass());
-		assertNull(type.getSuper().getGeneric(0).getTypeClass());
-		assertThat(type.toString(), is("org.springframework.core.GenericTypeTests$MixedupMap<java.lang.String, ?>"));
-		assertThat(type.getSuper().toString(), is("java.util.HashMap<?, java.lang.String>"));
-		assertThat(type.getInterfaces()[0].toString(), is("org.springframework.core.GenericTypeTests$KeyAccess<?>"));
+	public void forMethodParameterMustNotBeNull() throws Exception {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("MethodParameter must not be null");
+		GenericType.forMethodParameter(null);
 	}
 
 	@Test
-	public void shouldSupportBoundedWildcards() throws Exception {
-		GenericType type = GenericType.fromField(getClass().getField("boundedWildcard"));
-		assertThat(type.get(Map.class).getGeneric(1).toString(), is("java.lang.Number"));
+	public void forMethodReturn() throws Exception {
+		Method method = Methods.class.getMethod("charSequenceReturn");
+		GenericType type = GenericType.forMethodReturn(method);
+		assertThat(type.getType(), equalTo(method.getGenericReturnType()));
 	}
 
 	@Test
-	public void shouldSupportBoundedVariable() throws Exception {
-		Method method = ReflectionUtils.findMethod(getClass(), "boundedVariable");
-		GenericType type = GenericType.fromMethodReturn(method);
-		assertEquals(Number.class, type.getTypeClass());
+	public void forMethodReturnMustNotBeNull() throws Exception {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("Method must not be null");
+		GenericType.forMethodReturn(null);
 	}
 
 	@Test
-	public void shouldKeepNestedGenerics() throws Exception {
-		GenericType type = GenericType.fromField(getClass().getField("nested"));
-		assertThat(type.getGeneric(0).toString(), is("java.util.List<java.util.Set<java.lang.Integer>>"));
-		assertThat(type.getGeneric(1).toString(), is("java.util.List<java.util.Set<java.lang.String>>"));
-		assertThat(type.getSuper().getGeneric(0).toString(), is("java.util.List<java.util.Set<java.lang.String>>"));
-		assertThat(type.getSuper().getGeneric(1).toString(), is("java.util.List<java.util.Set<java.lang.Integer>>"));
+	public void classType() throws Exception {
+		GenericType type = GenericType.forField(Fields.class.getField("classType"));
+		assertThat(type.getType().getClass(), equalTo((Class) Class.class));
 	}
 
 	@Test
-	public void shouldFindSuperType() throws Exception {
-		GenericType type = GenericType.fromField(getClass().getField("multiValueMap")).get(Map.class);
-		assertThat(type.toString(), is("java.util.Map<java.lang.Integer, java.util.List<java.lang.String>>"));
-		assertThat(type.getGeneric(1).toString(), is("java.util.List<java.lang.String>"));
-		assertThat(type.getGeneric(1).getGeneric(0).toString(), is("java.lang.String"));
+	public void arrayClassType() throws Exception {
+		GenericType type = GenericType.forField(Fields.class.getField("arrayClassType"));
+		assertThat(type.getType(), instanceOf(Class.class));
+		assertThat(((Class)type.getType()).isArray(), equalTo(true));
+	}
+	@Test
+	public void genericArrayType() throws Exception {
+		GenericType type = GenericType.forField(Fields.class.getField("genericArrayType"));
+		assertThat(type.getType(), instanceOf(GenericArrayType.class));
 	}
 
 	@Test
-	public void shouldSupportGenericArrays() throws Exception {
-		GenericType type = GenericType.fromField(getClass().getField("genericArray"));
-		assertThat(type.toString(), is("java.util.ArrayList<java.util.Set<java.lang.Integer>>[]"));
-		assertThat(type.isArray(), is(true));
-		assertEquals(ArrayList[].class,type.getTypeClass());
-		assertThat(type.getGeneric(0).toString(), is("java.util.Set<java.lang.Integer>"));
+	public void wildcardType() throws Exception {
+		GenericType type = GenericType.forField(Fields.class.getField("wildcardType"));
+		assertThat(type.getType(), instanceOf(ParameterizedType.class));
+		assertThat(type.getGeneric().getType(), instanceOf(WildcardType.class));
 	}
 
 	@Test
-	public void shouldSupportArraySuperClass() throws Exception {
-		GenericType type = GenericType.fromField(getClass().getField("genericArray")).getSuper();
-		assertThat(type.toString(), is("java.util.AbstractList<java.util.Set<java.lang.Integer>>[]"));
-		assertThat(type.isArray(), is(true));
-		assertEquals(AbstractList[].class,type.getTypeClass());
-		assertThat(type.getGeneric(0).toString(), is("java.util.Set<java.lang.Integer>"));
+	public void typeVariableType() throws Exception {
+		GenericType type = GenericType.forField(Fields.class.getField("typeVariableType"));
+		assertThat(type.getType(), instanceOf(ParameterizedType.class));
+		assertThat(type.getGeneric().getType(), instanceOf(TypeVariable.class));
 	}
 
 	@Test
-	public void shouldFindGenericOnArray() throws Exception {
-		GenericType type = GenericType.fromField(getClass().getField("genericArray")).get(List.class);
-		assertThat(type.toString(), is("java.util.List<java.util.Set<java.lang.Integer>>[]"));
-		assertThat(type.isArray(), is(true));
-		assertEquals(List[].class,type.getTypeClass());
-		assertThat(type.getGeneric(0).toString(), is("java.util.Set<java.lang.Integer>"));
+	public void getGeneric() throws Exception {
+		GenericType type = GenericType.forField(Fields.class.getField("stringList"));
+		assertThat(type.getGeneric().getType(), equalTo((Type) String.class));
 	}
 
 	@Test
-	public void shouldSupportVariablesOnArray() throws Exception {
-		GenericType type = GenericType.fromField(getClass().getField("mixedUpMapArray"));
-		assertThat(type.toString(), is("org.springframework.core.GenericTypeTests$MixedupMap<java.lang.String, java.lang.Integer>[]"));
-		assertThat(type.getSuper().toString(), is("java.util.HashMap<java.lang.Integer, java.lang.String>[]"));
-		assertThat(type.getInterfaces()[0].toString(), is("org.springframework.core.GenericTypeTests$KeyAccess<java.lang.Integer>[]"));
+	public void getGenericByIndex() throws Exception {
+		GenericType type = GenericType.forField(Fields.class.getField("stringIntegerMultiValueMap"));
+		assertThat(type.getGeneric(0).getType(), equalTo((Type) String.class));
+		assertThat(type.getGeneric(1).getType(), equalTo((Type) Integer.class));
 	}
 
 	@Test
-	public void shouldSupportArrayInGeneric() throws Exception {
-		GenericType type = GenericType.fromField(getClass().getField("arrayInGeneric"));
-		assertThat(type.toString(), is("java.util.List<java.util.Set<java.lang.Integer>[]>"));
-		assertThat(type.getGeneric(0).toString(), is("java.util.Set<java.lang.Integer>[]"));;
-		assertThat(type.getGeneric(0).isArray(), is(true));;
+	public void getNestedGeneric() throws Exception {
+		GenericType type = GenericType.forField(Fields.class.getField("stringListList"));
+		assertThat(type.getGeneric().getType().toString(),
+				equalTo("java.util.List<java.lang.String>"));
+		assertThat(type.getGeneric().getGeneric().getType(), equalTo((Type) String.class));
 	}
 
 	@Test
-	public void shouldSupportComplexNestedArrays() throws Exception {
-		GenericType type = GenericType.fromField(getClass().getField("complex"));
-		assertThat(type.toString(), is("org.springframework.core.GenericTypeTests$MixedupMap<org.springframework.core.GenericTypeTests$MixedupMap<java.lang.String[], java.lang.Integer>, java.lang.Integer>[]"));
-		GenericType nestedInnerGeneric = type.get(Map.class).getGeneric(1).get(Map.class).getGeneric(1);
-		assertThat(nestedInnerGeneric.toString(), is("java.lang.String[]"));
-		assertThat(nestedInnerGeneric.isArray(), is(true));
-		assertEquals(String[].class, nestedInnerGeneric.getTypeClass());
+	public void getNestedGenericByIndexes() throws Exception {
+		GenericType type = GenericType.forField(Fields.class.getField("stringListList"));
+		assertThat(type.getGeneric(0, 0).getType(), equalTo((Type) String.class));
 	}
 
 	@Test
-	public void shouldSupportNoSuperclass() throws Exception {
-		assertThat(GenericType.fromClass(Object.class).getSuper(), is(GenericType.NONE));
+	public void getExtendsGeneric() throws Exception {
+		GenericType type = GenericType.forField(Fields.class.getField("extendsCharSequenceList"));
+		assertThat(type.getGeneric().getType().toString(),
+				equalTo("? extends java.lang.CharSequence"));
 	}
 
 	@Test
-	public void shouldSupportNoInterfaces() throws Exception {
-		assertThat(GenericType.fromClass(Object.class).getInterfaces().length, is(0));
-	}
+	public void dunno() throws Exception {
+		Field field = Fields.class.getField("stringIntegerMultiValueMap");
+		GenericType type = GenericType.forField(field);
+		ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
+		Type x = ((Class) parameterizedType.getRawType()).getGenericInterfaces()[0];
+		System.out.println(x);
+		System.out.println(((ParameterizedType)x).getActualTypeArguments()[0]);
+		System.out.println(Arrays.asList(List.class.getTypeParameters()));
+		System.out.println(ArrayList.class.getGenericSuperclass().toString());
+		System.out.println(ArrayList.class.getGenericSuperclass().getClass());
 
-	@Test
-	public void shouldSupportNoGenerics() throws Exception {
-		assertThat(GenericType.fromClass(Object.class).getGenerics().length, is(0));
-	}
+		TypeVariable<Class<Wibble>>[] typeParameters = Wibble.class.getTypeParameters();
+		for (TypeVariable<Class<Wibble>> typeVariable : typeParameters) {
+			System.out.println(typeVariable);
+			System.out.println(Arrays.asList(typeVariable.getBounds()));
+		}
 
-	@Test
-	public void shouldResolveVariableFromSpecificOwner() throws Exception {
-		Method method = ReflectionUtils.findMethod(BoundedType.class, "getNumber");
-		assertEquals(Number.class, GenericType.fromMethodReturn(method).getTypeClass());
-		assertEquals(Integer.class, GenericType.fromMethodReturn(method, DeclaredBoundedType.class).getTypeClass());
-	}
+		System.out.println(GenericTypeResolver.resolveTypeArgument(MyWibble.class, Wibble.class));
+		System.out.println(MyWibble.class.getGenericSuperclass());
+		System.out.println(GenericTypeResolver.resolveTypeArgument(ArrayList.class, Map.class));
+		//GenericType.forClass(Wibble.class).withGenerics(String.class);
+		// GenericArrayType
+		// ParameterizedType
+		// TypeVariable
+		// WildcardType
 
-	// Can we replicate GenericTypeResolverTests
+		// Class<?>
 
-	@Test
-	public void shouldResolveSimpleInterface() throws Exception {
-		assertEquals(String.class, GenericType.fromClass(MySimpleInterfaceType.class).get(MyInterfaceType.class).getGeneric(0).getTypeClass());
-	}
+		// GenericType.forClass(List.class).getGeneric().resolve();
+		// GenericType.forClass(stringList).getGeneric().resolve();
+		// GenericType.forClass(stringList).resolveGenerics();
 
-	@Test
-	public void shouldResolveCollectionInterface() throws Exception {
-		assertEquals(Collection.class, GenericType.fromClass(MyCollectionInterfaceType.class).get(MyInterfaceType.class).getGeneric(0).getTypeClass());
-	}
 
-	@Test
-	public void shouldResolveSimpleSuperclass() throws Exception {
-		assertEquals(String.class, GenericType.fromClass(MySimpleSuperclassType.class).get(MySuperclassType.class).getGeneric(0).getTypeClass());
-	}
-
-	@Test
-	public void shouldResolveSimpleCollectionSuperclass() throws Exception {
-		assertEquals(Collection.class, GenericType.fromClass(MyCollectionSuperclassType.class).get(MySuperclassType.class).getGeneric(0).getTypeClass());
-	}
-
-	@Test
-	public void shouldReturnNullIfNotResolvable() throws Exception {
-		GenericClass<String> obj = new GenericClass<String>();
-		assertNull(GenericType.fromClass(obj.getClass()).get(GenericClass.class).getGeneric(0).getTypeClass());
-	}
-
-	@Test
-	public void shouldResolveReturnTypes() throws Exception {
-		assertEquals(Integer.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(MyTypeWithMethods.class, "integer")).get(MyInterfaceType.class).getGeneric(0).getTypeClass());
-		assertEquals(String.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(MyTypeWithMethods.class, "string")).get(MyInterfaceType.class).getGeneric(0).getTypeClass());
-		assertNull(GenericType.fromMethodReturn(ReflectionUtils.findMethod(MyTypeWithMethods.class, "raw")).get(MyInterfaceType.class).getGeneric(0).getTypeClass());
-		assertEquals(GenericType.NONE, GenericType.fromMethodReturn(ReflectionUtils.findMethod(MyTypeWithMethods.class, "object")).get(MyInterfaceType.class));
-	}
-
-	// Can we replicate GenericCollectionTypeResolverTests
-
-	@Test
-	public void shouldGetMapValueGenerics() throws Exception {
-		assertEquals(Integer.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "a")).get(Map.class).getGeneric(1).getTypeClass());
-		assertNull(GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "b")).get(Map.class).getGeneric(1).getTypeClass());
-		assertEquals(Set.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "b2")).get(Map.class).getGeneric(1).getTypeClass());
-		assertEquals(Set.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "b3")).get(Map.class).getGeneric(1).getTypeClass());
-		assertNull(GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "c")).get(Map.class).getGeneric(1).getTypeClass());
-		assertEquals(Integer.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "d")).get(Map.class).getGeneric(1).getTypeClass());
-		assertEquals(Integer.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "d2")).get(Map.class).getGeneric(1).getTypeClass());
-		assertEquals(Integer.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "d3")).get(Map.class).getGeneric(1).getTypeClass());
-		assertEquals(Integer.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "e")).get(Map.class).getGeneric(1).getTypeClass());
-		assertEquals(Integer.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "e2")).get(Map.class).getGeneric(1).getTypeClass());
-		assertEquals(Integer.class, GenericType.fromMethodReturn(ReflectionUtils.findMethod(Foo.class, "e3")).get(Map.class).getGeneric(1).getTypeClass());
+		// GenericType.forMethodReturn(Wibble::get, ConcreteWibble.class);
+		// GenericType.forMethodReturn(Wibble::get(M), ConcreteWibble.class);
 	}
 
 
-	@Test
-	public void testProgrammaticListIntrospection() throws Exception {
-		Method setter = GenericBean.class.getMethod("setResourceList", List.class);
-		Assert.assertEquals(Resource.class, GenericType.fromMethodParameter(new MethodParameter(setter, 0)).get(Collection.class).getGeneric(0).getTypeClass());
-		Method getter = GenericBean.class.getMethod("getResourceList");
-		Assert.assertEquals(Resource.class, GenericType.fromMethodReturn(getter).get(Collection.class).getGeneric(0).getTypeClass());
-	}
-
-	@Test
-	public void testClassResolution() {
-		assertEquals(String.class, GenericType.fromClass(CustomSet.class).get(Collection.class).getGeneric(0).getTypeClass());
-		assertEquals(String.class, GenericType.fromClass(CustomMap.class).get(Map.class).getGeneric(0).getTypeClass());
-		assertEquals(Integer.class, GenericType.fromClass(CustomMap.class).get(Map.class).getGeneric(1).getTypeClass());
-	}
-
-	// Public fields used for testing
-
-	public MixedupMap<String, Integer> mixedUpMap;
-
-	public MixedupMap<String, Integer>[] mixedUpMapArray;
-
-	public MixedupMap<String, ?> wildcard;
-
-	public MixedupMap<? extends Number, Integer> boundedWildcard;
-
-	public MixedupMap<List<Set<Integer>>, List<Set<String>>> nested;
-
-	public MultiValueMap<Integer, String> multiValueMap;
-
-	public ArrayList<Set<Integer>>[] genericArray;
-
-	public List<Set<Integer>[]> arrayInGeneric;
-
-	public MixedupMap<MixedupMap<String[], Integer>, Integer>[] complex;
-
-	// Public methods used for testing
-
-	public <V extends Number> V boundedVariable() {
-		return null;
-	}
-
-	// Test classes
-
-	public static class MixedupMap<V, K> extends HashMap<K, V> implements KeyAccess<K> {
-	}
-
-	public static interface KeyAccess<K> {
-	}
-
-	public static interface BoundedType<V extends Number> {
-		public V getNumber();
-	}
-
-	public static interface DeclaredBoundedType extends BoundedType<Integer> {
-	}
-
-	// From GenericTypeResolverTests
-
-	public interface MyInterfaceType<T> {
-	}
-
-	public class MySimpleInterfaceType implements MyInterfaceType<String> {
-	}
-
-	public class MyCollectionInterfaceType implements MyInterfaceType<Collection<String>> {
-	}
-
-	public abstract class MySuperclassType<T> {
-	}
-
-	public class MySimpleSuperclassType extends MySuperclassType<String> {
-	}
-
-	public class MyCollectionSuperclassType extends MySuperclassType<Collection<String>> {
-	}
-
-	public static class MyTypeWithMethods {
-
-		public MyInterfaceType<Integer> integer() {
+	private static class Wibble<T extends CharSequence & Serializable> {
+		public T get() {
 			return null;
 		}
 
-		public MySimpleInterfaceType string() {
-			return null;
-		}
-
-		public Object object() {
-			return null;
-		}
-
-		@SuppressWarnings("rawtypes")
-		public MyInterfaceType raw() {
+		public <M> M get(Class<M> x) {
 			return null;
 		}
 	}
 
-	static class GenericClass<T> {
+	private static class MyWibble<T extends CharSequence & Serializable> extends Wibble<T> {
 	}
 
-	// From GenericCollectionTypeResolverTests
-
-	private abstract class CustomSet<T> extends AbstractSet<String> {
+	private static class ConcreteWibble extends Wibble<String> {
 	}
 
-
-	private abstract class CustomMap<T> extends AbstractMap<String, Integer> {
+	static class MyList extends ArrayList<CharSequence> {
 	}
 
+	static class Fields<T> {
 
-	private abstract class OtherCustomMap<T> implements Map<String, Integer> {
+		public List classType;
+
+		public List[] arrayClassType;
+
+		public List<String>[] genericArrayType;
+
+		public List<? extends Number> wildcardType;
+
+		public List<T> typeVariableType;
+
+		public List<CharSequence> charSequenceList;
+
+		public List<String> stringList;
+
+		public List<List<String>> stringListList;
+
+		public List<? extends CharSequence> extendsCharSequenceList;
+
+		public MultiValueMap<String, Integer> stringIntegerMultiValueMap;
+
+
 	}
 
+	static interface Methods {
 
-	@SuppressWarnings("rawtypes")
-	private interface Foo {
+		List<CharSequence> charSequenceReturn();
 
-		Map<String, Integer> a();
+		void charSequenceParameter(List<CharSequence> cs);
 
-		Map<?, ?> b();
+		<T extends CharSequence & Serializable> T doIt();
 
-		Map<?, ? extends Set> b2();
-
-		Map<?, ? super Set> b3();
-
-		Map c();
-
-		CustomMap<Date> d();
-
-		CustomMap<?> d2();
-
-		CustomMap d3();
-
-		OtherCustomMap<Date> e();
-
-		OtherCustomMap<?> e2();
-
-		OtherCustomMap e3();
 	}
+
+	static class Constructors {
+
+		public Constructors(List<CharSequence> cs) {
+		}
+	}
+
 }
