@@ -26,7 +26,7 @@ import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -39,30 +39,30 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 /**
- * Tests for {@link GenericType}.
+ * Tests for {@link ResolvableType}.
  */
-public class GenericTypeTests {
+public class ResolvableTypeTests {
 
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
 
 	@Test
 	public void forClass() throws Exception {
-		GenericType type = GenericType.forClass(MyList.class);
-		assertThat(type.getType(), equalTo((Type) MyList.class));
+		ResolvableType type = ResolvableType.forClass(ExtendsList.class);
+		assertThat(type.getType(), equalTo((Type) ExtendsList.class));
 	}
 
 	@Test
 	public void forClassMustNotBeNull() throws Exception {
 		thrown.expect(IllegalArgumentException.class);
 		thrown.expectMessage("Class must not be null");
-		GenericType.forClass(null);
+		ResolvableType.forClass(null);
 	}
 
 	@Test
 	public void forField() throws Exception {
 		Field field = Fields.class.getField("charSequenceList");
-		GenericType type = GenericType.forField(field);
+		ResolvableType type = ResolvableType.forField(field);
 		assertThat(type.getType(), equalTo(field.getGenericType()));
 	}
 
@@ -70,13 +70,13 @@ public class GenericTypeTests {
 	public void forFieldMustNotBeNull() throws Exception {
 		thrown.expect(IllegalArgumentException.class);
 		thrown.expectMessage("Field must not be null");
-		GenericType.forField(null);
+		ResolvableType.forField(null);
 	}
 
 	@Test
 	public void forConstructorParameter() throws Exception {
 		Constructor<Constructors> constructor = Constructors.class.getConstructor(List.class);
-		GenericType type = GenericType.forConstructorParameter(constructor, 0);
+		ResolvableType type = ResolvableType.forConstructorParameter(constructor, 0);
 		assertThat(type.getType(), equalTo(constructor.getGenericParameterTypes()[0]));
 	}
 
@@ -84,13 +84,13 @@ public class GenericTypeTests {
 	public void forConstructorParameterMustNotBeNull() throws Exception {
 		thrown.expect(IllegalArgumentException.class);
 		thrown.expectMessage("Constructor must not be null");
-		GenericType.forConstructorParameter(null, 0);
+		ResolvableType.forConstructorParameter(null, 0);
 	}
 
 	@Test
 	public void forMethodParameterByIndex() throws Exception {
 		Method method = Methods.class.getMethod("charSequenceParameter", List.class);
-		GenericType type = GenericType.forMethodParameter(method, 0);
+		ResolvableType type = ResolvableType.forMethodParameter(method, 0);
 		assertThat(type.getType(), equalTo(method.getGenericParameterTypes()[0]));
 	}
 
@@ -98,7 +98,7 @@ public class GenericTypeTests {
 	public void forMethodParameterByIndexMustNotBeNull() throws Exception {
 		thrown.expect(IllegalArgumentException.class);
 		thrown.expectMessage("Method must not be null");
-		GenericType.forMethodParameter(null, 0);
+		ResolvableType.forMethodParameter(null, 0);
 	}
 
 	@Test
@@ -106,7 +106,7 @@ public class GenericTypeTests {
 		Method method = Methods.class.getMethod("charSequenceParameter", List.class);
 		MethodParameter methodParameter = MethodParameter.forMethodOrConstructor(method,
 				0);
-		GenericType type = GenericType.forMethodParameter(methodParameter);
+		ResolvableType type = ResolvableType.forMethodParameter(methodParameter);
 		assertThat(type.getType(), equalTo(method.getGenericParameterTypes()[0]));
 	}
 
@@ -114,13 +114,13 @@ public class GenericTypeTests {
 	public void forMethodParameterMustNotBeNull() throws Exception {
 		thrown.expect(IllegalArgumentException.class);
 		thrown.expectMessage("MethodParameter must not be null");
-		GenericType.forMethodParameter(null);
+		ResolvableType.forMethodParameter(null);
 	}
 
 	@Test
 	public void forMethodReturn() throws Exception {
 		Method method = Methods.class.getMethod("charSequenceReturn");
-		GenericType type = GenericType.forMethodReturn(method);
+		ResolvableType type = ResolvableType.forMethodReturn(method);
 		assertThat(type.getType(), equalTo(method.getGenericReturnType()));
 	}
 
@@ -128,57 +128,58 @@ public class GenericTypeTests {
 	public void forMethodReturnMustNotBeNull() throws Exception {
 		thrown.expect(IllegalArgumentException.class);
 		thrown.expectMessage("Method must not be null");
-		GenericType.forMethodReturn(null);
+		ResolvableType.forMethodReturn(null);
 	}
 
 	@Test
 	public void classType() throws Exception {
-		GenericType type = GenericType.forField(Fields.class.getField("classType"));
+		ResolvableType type = ResolvableType.forField(Fields.class.getField("classType"));
 		assertThat(type.getType().getClass(), equalTo((Class) Class.class));
 	}
 
 	@Test
 	public void arrayClassType() throws Exception {
-		GenericType type = GenericType.forField(Fields.class.getField("arrayClassType"));
+		ResolvableType type = ResolvableType.forField(Fields.class.getField("arrayClassType"));
 		assertThat(type.getType(), instanceOf(Class.class));
-		assertThat(((Class)type.getType()).isArray(), equalTo(true));
+		assertThat(((Class) type.getType()).isArray(), equalTo(true));
 	}
+
 	@Test
 	public void genericArrayType() throws Exception {
-		GenericType type = GenericType.forField(Fields.class.getField("genericArrayType"));
+		ResolvableType type = ResolvableType.forField(Fields.class.getField("genericArrayType"));
 		assertThat(type.getType(), instanceOf(GenericArrayType.class));
 	}
 
 	@Test
 	public void wildcardType() throws Exception {
-		GenericType type = GenericType.forField(Fields.class.getField("wildcardType"));
+		ResolvableType type = ResolvableType.forField(Fields.class.getField("wildcardType"));
 		assertThat(type.getType(), instanceOf(ParameterizedType.class));
 		assertThat(type.getGeneric().getType(), instanceOf(WildcardType.class));
 	}
 
 	@Test
 	public void typeVariableType() throws Exception {
-		GenericType type = GenericType.forField(Fields.class.getField("typeVariableType"));
+		ResolvableType type = ResolvableType.forField(Fields.class.getField("typeVariableType"));
 		assertThat(type.getType(), instanceOf(ParameterizedType.class));
 		assertThat(type.getGeneric().getType(), instanceOf(TypeVariable.class));
 	}
 
 	@Test
 	public void getGeneric() throws Exception {
-		GenericType type = GenericType.forField(Fields.class.getField("stringList"));
+		ResolvableType type = ResolvableType.forField(Fields.class.getField("stringList"));
 		assertThat(type.getGeneric().getType(), equalTo((Type) String.class));
 	}
 
 	@Test
 	public void getGenericByIndex() throws Exception {
-		GenericType type = GenericType.forField(Fields.class.getField("stringIntegerMultiValueMap"));
+		ResolvableType type = ResolvableType.forField(Fields.class.getField("stringIntegerMultiValueMap"));
 		assertThat(type.getGeneric(0).getType(), equalTo((Type) String.class));
 		assertThat(type.getGeneric(1).getType(), equalTo((Type) Integer.class));
 	}
 
 	@Test
 	public void getNestedGeneric() throws Exception {
-		GenericType type = GenericType.forField(Fields.class.getField("stringListList"));
+		ResolvableType type = ResolvableType.forField(Fields.class.getField("stringListList"));
 		assertThat(type.getGeneric().getType().toString(),
 				equalTo("java.util.List<java.lang.String>"));
 		assertThat(type.getGeneric().getGeneric().getType(), equalTo((Type) String.class));
@@ -186,73 +187,114 @@ public class GenericTypeTests {
 
 	@Test
 	public void getNestedGenericByIndexes() throws Exception {
-		GenericType type = GenericType.forField(Fields.class.getField("stringListList"));
+		ResolvableType type = ResolvableType.forField(Fields.class.getField("stringListList"));
 		assertThat(type.getGeneric(0, 0).getType(), equalTo((Type) String.class));
 	}
 
 	@Test
 	public void getExtendsGeneric() throws Exception {
-		GenericType type = GenericType.forField(Fields.class.getField("extendsCharSequenceList"));
+		ResolvableType type = ResolvableType.forField(Fields.class.getField("extendsCharSequenceList"));
 		assertThat(type.getGeneric().getType().toString(),
 				equalTo("? extends java.lang.CharSequence"));
 	}
 
 	@Test
-	public void dunno() throws Exception {
-		Field field = Fields.class.getField("stringIntegerMultiValueMap");
-		GenericType type = GenericType.forField(field);
-		ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
-		Type x = ((Class) parameterizedType.getRawType()).getGenericInterfaces()[0];
-		System.out.println(x);
-		System.out.println(((ParameterizedType)x).getActualTypeArguments()[0]);
-		System.out.println(Arrays.asList(List.class.getTypeParameters()));
-		System.out.println(ArrayList.class.getGenericSuperclass().toString());
-		System.out.println(ArrayList.class.getGenericSuperclass().getClass());
+	public void asFromInterface() throws Exception {
+		ResolvableType type = ResolvableType.forClass(ExtendsList.class).as(List.class);
+		assertThat(type.getType().toString(), equalTo("java.util.List<E>"));
+	}
 
-		TypeVariable<Class<Wibble>>[] typeParameters = Wibble.class.getTypeParameters();
-		for (TypeVariable<Class<Wibble>> typeVariable : typeParameters) {
-			System.out.println(typeVariable);
-			System.out.println(Arrays.asList(typeVariable.getBounds()));
-		}
+	@Test
+	public void asFromInheritedInterface() throws Exception {
+		ResolvableType type = ResolvableType.forClass(ExtendsList.class).as(Collection.class);
+		assertThat(type.getType().toString(), equalTo("java.util.Collection<E>"));
+	}
 
-		System.out.println(GenericTypeResolver.resolveTypeArgument(MyWibble.class, Wibble.class));
-		System.out.println(MyWibble.class.getGenericSuperclass());
-		System.out.println(GenericTypeResolver.resolveTypeArgument(ArrayList.class, Map.class));
-		//GenericType.forClass(Wibble.class).withGenerics(String.class);
-		// GenericArrayType
-		// ParameterizedType
-		// TypeVariable
-		// WildcardType
+	@Test
+	public void asNotFound() throws Exception {
+		ResolvableType type = ResolvableType.forClass(ExtendsList.class).as(Map.class);
+		assertThat(type, sameInstance(ResolvableType.NONE));
+	}
 
-		// Class<?>
+	@Test
+	public void asFromSuperType() throws Exception {
+		ResolvableType type = ResolvableType.forClass(ExtendsList.class).as(ArrayList.class);
+		assertThat(type.getType().toString(), equalTo("java.util.ArrayList<java.lang.CharSequence>"));
+	}
 
-		// GenericType.forClass(List.class).getGeneric().resolve();
-		// GenericType.forClass(stringList).getGeneric().resolve();
-		// GenericType.forClass(stringList).resolveGenerics();
+	@Test
+	public void resolveGenericClassType() throws Exception {
+		ResolvableType type = ResolvableType.forField(Fields.class.getField("stringList"));
+		assertThat(type.resolveClass(), equalTo((Class) List.class));
+		assertThat(type.getGeneric().resolveClass(), equalTo((Class) String.class));
+	}
 
+	@Test
+	public void resolveRawClassType() throws Exception {
+		ResolvableType type = ResolvableType.forField(Fields.class.getField("classType"));
+		assertThat(type.resolveClass(), equalTo((Class) List.class));
+	}
 
-		// GenericType.forMethodReturn(Wibble::get, ConcreteWibble.class);
-		// GenericType.forMethodReturn(Wibble::get(M), ConcreteWibble.class);
+	@Test
+	public void resolveGenericInClass() throws Exception {
+		ResolvableType type = ResolvableType.forClass(ExtendsList.class);
+		assertThat(type.resolveClass(), equalTo((Class) ExtendsList.class));
+		assertThat(type.getSuperType().resolveClass(), equalTo((Class) ArrayList.class));
+		assertThat(type.getSuperType().getGeneric().resolveClass(),
+				equalTo((Class) CharSequence.class));
+	}
+
+	@Test
+	public void resolveBoundedTypeVariableResult() throws Exception {
+		ResolvableType type = ResolvableType.forMethodReturn(Methods.class.getMethod("boundedTypeVaraibleResult"));
+		assertThat(type.resolveClass(), equalTo((Class) CharSequence.class));
+	}
+
+	@Test
+	public void resolveArrayClassType() throws Exception {
+		// FIXME
+	}
+
+	@Test
+	public void resolveGenericArrayType() throws Exception {
+		// FIXME
+	}
+
+	@Test
+	public void resolveWildcardType() throws Exception {
+		ResolvableType type = ResolvableType.forField(Fields.class.getField("wildcardType"));
+		assertThat(type.getGeneric().resolveClass(), equalTo((Class) Number.class));
+	}
+
+	@Test
+	public void resolveWildcardSuperType() throws Exception {
+		ResolvableType type = ResolvableType.forField(Fields.class.getField("wildcardSuperType"));
+		assertThat(type.getGeneric().resolveClass(), equalTo((Class) Number.class));
+	}
+
+	@Test
+	public void resolveTypeVariableType() throws Exception {
+		// FIXME
+	}
+
+	@Test
+	public void resolveInherited() throws Exception {
+		ResolvableType type = ResolvableType.forField(Fields.class.getField("stringIntegerMultiValueMap")).as(Map.class);
+		assertThat(type.getGeneric(0).resolveClass(), equalTo((Class) String.class));
+		assertThat(type.getGeneric(1).resolveClass(), equalTo((Class) List.class));
+		assertThat(type.getGeneric(1, 0).resolveClass(), equalTo((Class) Integer.class));
+	}
+
+	@Test
+	public void resolveInheritedSwitched() throws Exception {
+		ResolvableType type = ResolvableType.forField(Fields.class.getField("stringIntegerMultiValueMapSwitched")).as(Map.class);
+		assertThat(type.getGeneric(0).resolveClass(), equalTo((Class) String.class));
+		assertThat(type.getGeneric(1).resolveClass(), equalTo((Class) List.class));
+		assertThat(type.getGeneric(1, 0).resolveClass(), equalTo((Class) Integer.class));
 	}
 
 
-	private static class Wibble<T extends CharSequence & Serializable> {
-		public T get() {
-			return null;
-		}
-
-		public <M> M get(Class<M> x) {
-			return null;
-		}
-	}
-
-	private static class MyWibble<T extends CharSequence & Serializable> extends Wibble<T> {
-	}
-
-	private static class ConcreteWibble extends Wibble<String> {
-	}
-
-	static class MyList extends ArrayList<CharSequence> {
+	static class ExtendsList extends ArrayList<CharSequence> {
 	}
 
 	static class Fields<T> {
@@ -264,6 +306,8 @@ public class GenericTypeTests {
 		public List<String>[] genericArrayType;
 
 		public List<? extends Number> wildcardType;
+
+		public List<? super Number> wildcardSuperType;
 
 		public List<T> typeVariableType;
 
@@ -277,6 +321,7 @@ public class GenericTypeTests {
 
 		public MultiValueMap<String, Integer> stringIntegerMultiValueMap;
 
+		public VariableNameSwitch<Integer, String> stringIntegerMultiValueMapSwitched;
 
 	}
 
@@ -286,7 +331,7 @@ public class GenericTypeTests {
 
 		void charSequenceParameter(List<CharSequence> cs);
 
-		<T extends CharSequence & Serializable> T doIt();
+		<T extends CharSequence & Serializable> T boundedTypeVaraibleResult();
 
 	}
 
@@ -294,6 +339,17 @@ public class GenericTypeTests {
 
 		public Constructors(List<CharSequence> cs) {
 		}
+	}
+
+	static interface Wildcard<T extends Number> extends List<T> {
+
+	}
+
+	static interface RawExtendsWildcard extends Wildcard {
+
+	}
+
+	static interface VariableNameSwitch<V, K> extends MultiValueMap<K, V> {
 	}
 
 }
