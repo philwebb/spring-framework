@@ -23,9 +23,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.util.Assert;
@@ -104,9 +102,14 @@ public final class ResolvableType {
 			typeIndexesPerLevel = Collections.emptyMap();
 		}
 		ResolvableType type = this;
+		// FIXME hack to deal with BWGT.testComplexDerivedIndexedMapEntry
+		while(type.getGenerics().length == 0 && type != NONE) {
+			type = type.getSuperType();
+		}
 		for (int levelIndex = 2; levelIndex <= nestingLevel; levelIndex++) {
+			ResolvableType[] generics = type.getGenerics();
 			Integer genericIndex = typeIndexesPerLevel.get(levelIndex);
-			type = type.getGeneric(genericIndex == null ? 0 : genericIndex);
+			type = type.getGeneric(genericIndex == null ? generics.length - 1 : genericIndex);
 		}
 		return type;
 	}
