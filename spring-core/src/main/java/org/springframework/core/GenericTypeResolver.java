@@ -83,6 +83,7 @@ public abstract class GenericTypeResolver {
 		Class<?> result = (rawType instanceof Class ? (Class) rawType : methodParam.getParameterType());
 		methodParam.setParameterType(result);
 		methodParam.typeVariableMap = typeVariableMap;
+		methodParam.resolveClass = clazz;
 		return result;
 	}
 

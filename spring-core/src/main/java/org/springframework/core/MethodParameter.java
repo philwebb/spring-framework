@@ -65,6 +65,8 @@ public class MethodParameter {
 
 	Map<TypeVariable, Type> typeVariableMap;
 
+	Class<?> resolveClass;
+
 	private int hash = 0;
 
 
