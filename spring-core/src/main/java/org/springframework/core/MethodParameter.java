@@ -30,9 +30,9 @@ import java.util.Map;
 import org.springframework.util.Assert;
 
 /**
- * Helper class that encapsulates the specification of a method parameter, i.e.
- * a Method or Constructor plus a parameter index and a nested type index for
- * a declared generic type. Useful as a specification object to pass along.
+ * Helper class that encapsulates the specification of a method parameter, i.e. a Method
+ * or Constructor plus a parameter index and a nested type index for a declared generic
+ * type. Useful as a specification object to pass along.
  *
  * @author Juergen Hoeller
  * @author Rob Harrop
@@ -69,9 +69,9 @@ public class MethodParameter {
 
 	private int hash = 0;
 
-
 	/**
 	 * Create a new MethodParameter for the given method, with nesting level 1.
+	 *
 	 * @param method the Method to specify a parameter for
 	 * @param parameterIndex the index of the parameter
 	 */
@@ -81,13 +81,13 @@ public class MethodParameter {
 
 	/**
 	 * Create a new MethodParameter for the given method.
+	 *
 	 * @param method the Method to specify a parameter for
-	 * @param parameterIndex the index of the parameter
-	 * (-1 for the method return type; 0 for the first method parameter,
-	 * 1 for the second method parameter, etc)
-	 * @param nestingLevel the nesting level of the target type
-	 * (typically 1; e.g. in case of a List of Lists, 1 would indicate the
-	 * nested List, whereas 2 would indicate the element of the nested List)
+	 * @param parameterIndex the index of the parameter (-1 for the method return type; 0
+	 *        for the first method parameter, 1 for the second method parameter, etc)
+	 * @param nestingLevel the nesting level of the target type (typically 1; e.g. in case
+	 *        of a List of Lists, 1 would indicate the nested List, whereas 2 would
+	 *        indicate the element of the nested List)
 	 */
 	public MethodParameter(Method method, int parameterIndex, int nestingLevel) {
 		Assert.notNull(method, "Method must not be null");
@@ -99,6 +99,7 @@ public class MethodParameter {
 
 	/**
 	 * Create a new MethodParameter for the given constructor, with nesting level 1.
+	 *
 	 * @param constructor the Constructor to specify a parameter for
 	 * @param parameterIndex the index of the parameter
 	 */
@@ -108,11 +109,12 @@ public class MethodParameter {
 
 	/**
 	 * Create a new MethodParameter for the given constructor.
+	 *
 	 * @param constructor the Constructor to specify a parameter for
 	 * @param parameterIndex the index of the parameter
-	 * @param nestingLevel the nesting level of the target type
-	 * (typically 1; e.g. in case of a List of Lists, 1 would indicate the
-	 * nested List, whereas 2 would indicate the element of the nested List)
+	 * @param nestingLevel the nesting level of the target type (typically 1; e.g. in case
+	 *        of a List of Lists, 1 would indicate the nested List, whereas 2 would
+	 *        indicate the element of the nested List)
 	 */
 	public MethodParameter(Constructor constructor, int parameterIndex, int nestingLevel) {
 		Assert.notNull(constructor, "Constructor must not be null");
@@ -123,8 +125,9 @@ public class MethodParameter {
 	}
 
 	/**
-	 * Copy constructor, resulting in an independent MethodParameter object
-	 * based on the same metadata and cache state that the original object was in.
+	 * Copy constructor, resulting in an independent MethodParameter object based on the
+	 * same metadata and cache state that the original object was in.
+	 *
 	 * @param original the original MethodParameter object to copy from
 	 */
 	public MethodParameter(MethodParameter original) {
@@ -140,13 +143,15 @@ public class MethodParameter {
 		this.nestingLevel = original.nestingLevel;
 		this.typeIndexesPerLevel = original.typeIndexesPerLevel;
 		this.typeVariableMap = original.typeVariableMap;
+		this.resolveClass = original.resolveClass;
 		this.hash = original.hash;
 	}
 
-
 	/**
 	 * Return the wrapped Method, if any.
-	 * <p>Note: Either Method or Constructor is available.
+	 * <p>
+	 * Note: Either Method or Constructor is available.
+	 *
 	 * @return the Method, or {@code null} if none
 	 */
 	public Method getMethod() {
@@ -155,7 +160,9 @@ public class MethodParameter {
 
 	/**
 	 * Return the wrapped Constructor, if any.
-	 * <p>Note: Either Method or Constructor is available.
+	 * <p>
+	 * Note: Either Method or Constructor is available.
+	 *
 	 * @return the Constructor, or {@code null} if none
 	 */
 	public Constructor getConstructor() {
@@ -164,6 +171,7 @@ public class MethodParameter {
 
 	/**
 	 * Returns the wrapped member.
+	 *
 	 * @return the Method or Constructor as Member
 	 */
 	public Member getMember() {
@@ -180,6 +188,7 @@ public class MethodParameter {
 
 	/**
 	 * Returns the wrapped annotated element.
+	 *
 	 * @return the Method or Constructor as AnnotatedElement
 	 */
 	public AnnotatedElement getAnnotatedElement() {
@@ -203,6 +212,7 @@ public class MethodParameter {
 
 	/**
 	 * Return the index of the method/constructor parameter.
+	 *
 	 * @return the parameter index (never negative)
 	 */
 	public int getParameterIndex() {
@@ -218,17 +228,18 @@ public class MethodParameter {
 
 	/**
 	 * Return the type of the method/constructor parameter.
+	 *
 	 * @return the parameter type (never {@code null})
 	 */
 	public Class<?> getParameterType() {
 		if (this.parameterType == null) {
 			if (this.parameterIndex < 0) {
-				this.parameterType = (this.method != null ? this.method.getReturnType() : null);
+				this.parameterType = (this.method != null ? this.method.getReturnType()
+						: null);
 			}
 			else {
-				this.parameterType = (this.method != null ?
-					this.method.getParameterTypes()[this.parameterIndex] :
-					this.constructor.getParameterTypes()[this.parameterIndex]);
+				this.parameterType = (this.method != null ? this.method.getParameterTypes()[this.parameterIndex]
+						: this.constructor.getParameterTypes()[this.parameterIndex]);
 			}
 		}
 		return this.parameterType;
@@ -236,17 +247,18 @@ public class MethodParameter {
 
 	/**
 	 * Return the generic type of the method/constructor parameter.
+	 *
 	 * @return the parameter type (never {@code null})
 	 */
 	public Type getGenericParameterType() {
 		if (this.genericParameterType == null) {
 			if (this.parameterIndex < 0) {
-				this.genericParameterType = (this.method != null ? this.method.getGenericReturnType() : null);
+				this.genericParameterType = (this.method != null ? this.method.getGenericReturnType()
+						: null);
 			}
 			else {
-				this.genericParameterType = (this.method != null ?
-					this.method.getGenericParameterTypes()[this.parameterIndex] :
-					this.constructor.getGenericParameterTypes()[this.parameterIndex]);
+				this.genericParameterType = (this.method != null ? this.method.getGenericParameterTypes()[this.parameterIndex]
+						: this.constructor.getGenericParameterTypes()[this.parameterIndex]);
 			}
 		}
 		return this.genericParameterType;
@@ -257,7 +269,8 @@ public class MethodParameter {
 			Type type = getGenericParameterType();
 			if (type instanceof ParameterizedType) {
 				Integer index = getTypeIndexForCurrentLevel();
-				Type arg = ((ParameterizedType) type).getActualTypeArguments()[index != null ? index : 0];
+				Type arg = ((ParameterizedType) type).getActualTypeArguments()[index != null ? index
+						: 0];
 				if (arg instanceof Class) {
 					return (Class) arg;
 				}
@@ -284,6 +297,7 @@ public class MethodParameter {
 
 	/**
 	 * Return the method/constructor annotation of the given type, if available.
+	 *
 	 * @param annotationType the annotation type to look for
 	 * @return the annotation object, or {@code null} if not found
 	 */
@@ -296,8 +310,8 @@ public class MethodParameter {
 	 */
 	public Annotation[] getParameterAnnotations() {
 		if (this.parameterAnnotations == null) {
-			Annotation[][] annotationArray = (this.method != null ?
-					this.method.getParameterAnnotations() : this.constructor.getParameterAnnotations());
+			Annotation[][] annotationArray = (this.method != null ? this.method.getParameterAnnotations()
+					: this.constructor.getParameterAnnotations());
 			if (this.parameterIndex >= 0 && this.parameterIndex < annotationArray.length) {
 				this.parameterAnnotations = annotationArray[this.parameterIndex];
 			}
@@ -310,6 +324,7 @@ public class MethodParameter {
 
 	/**
 	 * Return the parameter annotation of the given type, if available.
+	 *
 	 * @param annotationType the annotation type to look for
 	 * @return the annotation object, or {@code null} if not found
 	 */
@@ -332,7 +347,8 @@ public class MethodParameter {
 	}
 
 	/**
-	 * Return true if the parameter has the given annotation type, and false if it doesn't.
+	 * Return true if the parameter has the given annotation type, and false if it
+	 * doesn't.
 	 */
 	public <T extends Annotation> boolean hasParameterAnnotation(Class<T> annotationType) {
 		return (getParameterAnnotation(annotationType) != null);
@@ -340,8 +356,9 @@ public class MethodParameter {
 
 	/**
 	 * Initialize parameter name discovery for this method parameter.
-	 * <p>This method does not actually try to retrieve the parameter name at
-	 * this point; it just allows discovery to happen when the application calls
+	 * <p>
+	 * This method does not actually try to retrieve the parameter name at this point; it
+	 * just allows discovery to happen when the application calls
 	 * {@link #getParameterName()} (if ever).
 	 */
 	public void initParameterNameDiscovery(ParameterNameDiscoverer parameterNameDiscoverer) {
@@ -350,16 +367,15 @@ public class MethodParameter {
 
 	/**
 	 * Return the name of the method/constructor parameter.
-	 * @return the parameter name (may be {@code null} if no
-	 * parameter name metadata is contained in the class file or no
-	 * {@link #initParameterNameDiscovery ParameterNameDiscoverer}
-	 * has been set to begin with)
+	 *
+	 * @return the parameter name (may be {@code null} if no parameter name metadata is
+	 *         contained in the class file or no {@link #initParameterNameDiscovery
+	 *         ParameterNameDiscoverer} has been set to begin with)
 	 */
 	public String getParameterName() {
 		if (this.parameterNameDiscoverer != null) {
-			String[] parameterNames = (this.method != null ?
-					this.parameterNameDiscoverer.getParameterNames(this.method) :
-					this.parameterNameDiscoverer.getParameterNames(this.constructor));
+			String[] parameterNames = (this.method != null ? this.parameterNameDiscoverer.getParameterNames(this.method)
+					: this.parameterNameDiscoverer.getParameterNames(this.constructor));
 			if (parameterNames != null) {
 				this.parameterName = parameterNames[this.parameterIndex];
 			}
@@ -370,6 +386,7 @@ public class MethodParameter {
 
 	/**
 	 * Increase this parameter's nesting level.
+	 *
 	 * @see #getNestingLevel()
 	 */
 	public void increaseNestingLevel() {
@@ -378,6 +395,7 @@ public class MethodParameter {
 
 	/**
 	 * Decrease this parameter's nesting level.
+	 *
 	 * @see #getNestingLevel()
 	 */
 	public void decreaseNestingLevel() {
@@ -386,9 +404,9 @@ public class MethodParameter {
 	}
 
 	/**
-	 * Return the nesting level of the target type
-	 * (typically 1; e.g. in case of a List of Lists, 1 would indicate the
-	 * nested List, whereas 2 would indicate the element of the nested List).
+	 * Return the nesting level of the target type (typically 1; e.g. in case of a List of
+	 * Lists, 1 would indicate the nested List, whereas 2 would indicate the element of
+	 * the nested List).
 	 */
 	public int getNestingLevel() {
 		return this.nestingLevel;
@@ -396,8 +414,9 @@ public class MethodParameter {
 
 	/**
 	 * Set the type index for the current nesting level.
-	 * @param typeIndex the corresponding type index
-	 * (or {@code null} for the default type index)
+	 *
+	 * @param typeIndex the corresponding type index (or {@code null} for the default type
+	 *        index)
 	 * @see #getNestingLevel()
 	 */
 	public void setTypeIndexForCurrentLevel(int typeIndex) {
@@ -406,8 +425,9 @@ public class MethodParameter {
 
 	/**
 	 * Return the type index for the current nesting level.
-	 * @return the corresponding type index, or {@code null}
-	 * if none specified (indicating the default type index)
+	 *
+	 * @return the corresponding type index, or {@code null} if none specified (indicating
+	 *         the default type index)
 	 * @see #getNestingLevel()
 	 */
 	public Integer getTypeIndexForCurrentLevel() {
@@ -416,9 +436,10 @@ public class MethodParameter {
 
 	/**
 	 * Return the type index for the specified nesting level.
+	 *
 	 * @param nestingLevel the nesting level to check
-	 * @return the corresponding type index, or {@code null}
-	 * if none specified (indicating the default type index)
+	 * @return the corresponding type index, or {@code null} if none specified (indicating
+	 *         the default type index)
 	 */
 	public Integer getTypeIndexForLevel(int nestingLevel) {
 		return getTypeIndexesPerLevel().get(nestingLevel);
@@ -466,16 +487,18 @@ public class MethodParameter {
 		return result;
 	}
 
-
 	/**
 	 * Create a new MethodParameter for the given method or constructor.
-	 * <p>This is a convenience constructor for scenarios where a
-	 * Method or Constructor reference is treated in a generic fashion.
+	 * <p>
+	 * This is a convenience constructor for scenarios where a Method or Constructor
+	 * reference is treated in a generic fashion.
+	 *
 	 * @param methodOrConstructor the Method or Constructor to specify a parameter for
 	 * @param parameterIndex the index of the parameter
 	 * @return the corresponding MethodParameter instance
 	 */
-	public static MethodParameter forMethodOrConstructor(Object methodOrConstructor, int parameterIndex) {
+	public static MethodParameter forMethodOrConstructor(Object methodOrConstructor,
+			int parameterIndex) {
 		if (methodOrConstructor instanceof Method) {
 			return new MethodParameter((Method) methodOrConstructor, parameterIndex);
 		}
@@ -483,8 +506,8 @@ public class MethodParameter {
 			return new MethodParameter((Constructor) methodOrConstructor, parameterIndex);
 		}
 		else {
-			throw new IllegalArgumentException(
-					"Given object [" + methodOrConstructor + "] is neither a Method nor a Constructor");
+			throw new IllegalArgumentException("Given object [" + methodOrConstructor
+					+ "] is neither a Method nor a Constructor");
 		}
 	}
 

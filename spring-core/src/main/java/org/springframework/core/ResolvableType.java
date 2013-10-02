@@ -40,7 +40,7 @@ public final class ResolvableType {
 	// FIXME toString()
 	// FIXME test getNestedGeneric
 
-	public static final ResolvableType NONE = new ResolvableType(null, null, null);
+	public static final ResolvableType NONE = new ResolvableType(null, null);
 
 	private static final ResolvableType[] EMPTY_TYPES_ARRAY = new ResolvableType[0];
 
@@ -48,13 +48,9 @@ public final class ResolvableType {
 
 	private final ResolvableType owner;
 
-	private Map<TypeVariable<?>, Type> typeVariableMap;
-
-	private ResolvableType(Type type, ResolvableType owner,
-			Map<TypeVariable<?>, Type> typeVariableMap) {
+	private ResolvableType(Type type, ResolvableType owner) {
 		this.type = type;
 		this.owner = owner;
-		this.typeVariableMap = typeVariableMap;
 	}
 
 	public Type getType() {
@@ -66,7 +62,7 @@ public final class ResolvableType {
 		if (resolved == null || resolved.getGenericSuperclass() == null) {
 			return NONE;
 		}
-		return new ResolvableType(resolved.getGenericSuperclass(), this, null);
+		return new ResolvableType(resolved.getGenericSuperclass(), this);
 	}
 
 	public ResolvableType[] getInterfaces() {
@@ -77,7 +73,7 @@ public final class ResolvableType {
 		Type[] interfaceTypes = resolved.getGenericInterfaces();
 		ResolvableType[] interfaces = new ResolvableType[interfaceTypes.length];
 		for (int i = 0; i < interfaceTypes.length; i++) {
-			interfaces[i] = new ResolvableType(interfaceTypes[i], this, null);
+			interfaces[i] = new ResolvableType(interfaceTypes[i], this);
 		}
 		return interfaces;
 	}
@@ -108,7 +104,7 @@ public final class ResolvableType {
 			typeIndexesPerLevel = Collections.emptyMap();
 		}
 		ResolvableType type = this;
-		for (int levelIndex = 1; levelIndex < nestingLevel; levelIndex++) {
+		for (int levelIndex = 2; levelIndex <= nestingLevel; levelIndex++) {
 			Integer genericIndex = typeIndexesPerLevel.get(levelIndex);
 			type = type.getGeneric(genericIndex == null ? 0 : genericIndex);
 		}
@@ -143,7 +139,7 @@ public final class ResolvableType {
 			Type[] genericTypes = ((ParameterizedType) getType()).getActualTypeArguments();
 			ResolvableType[] generics = new ResolvableType[genericTypes.length];
 			for (int i = 0; i < genericTypes.length; i++) {
-				generics[i] = new ResolvableType(genericTypes[i], this, null);
+				generics[i] = new ResolvableType(genericTypes[i], this);
 			}
 			return generics;
 		}
@@ -174,8 +170,7 @@ public final class ResolvableType {
 			resolved = resolved != null ? resolved
 					: resolveBounds(((TypeVariable<?>) this.type).getBounds());
 		}
-		return (resolved == null ? NONE : new ResolvableType(resolved, this.owner,
-				this.typeVariableMap));
+		return (resolved == null ? NONE : new ResolvableType(resolved, this.owner));
 	}
 
 	private Type resolveBounds(Type[] bounds) {
@@ -199,7 +194,6 @@ public final class ResolvableType {
 			}
 		}
 		if (this.type instanceof TypeVariable<?>) {
-			System.out.println(this.type + " " + variable);
 			return resolveType().resolveVariable(variable);
 		}
 		return this.owner == null ? null : owner.resolveVariable(variable);
@@ -243,7 +237,7 @@ public final class ResolvableType {
 			ownerType = forClass(resolveClass).as(methodParameter.getDeclaringClass());
 		}
 		Type parameterType = methodParameter.getGenericParameterType();
-		return new ResolvableType(parameterType, ownerType, null).getNestedGeneric(
+		return new ResolvableType(parameterType, ownerType).getNestedGeneric(
 				methodParameter.getNestingLevel(), methodParameter.typeIndexesPerLevel);
 	}
 
@@ -253,7 +247,7 @@ public final class ResolvableType {
 	}
 
 	public static ResolvableType forType(Type type) {
-		return new ResolvableType(type, null, null);
+		return new ResolvableType(type, null);
 	}
 
 }

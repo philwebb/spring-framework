@@ -315,6 +315,11 @@ public class ResolvableTypeTests {
 		assertThat(genericAsCollection.resolveGeneric(), equalTo((Class) Integer.class));
 	}
 
+	@Test
+	public void testGTR() throws Exception {
+		
+	}
+	
 
 	static class ExtendsList extends ArrayList<CharSequence> {
 	}
