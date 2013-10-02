@@ -23,6 +23,8 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.util.Assert;
@@ -199,12 +201,6 @@ public final class ResolvableType {
 				}
 			}
 		}
-		if(this.type instanceof TypeVariable<?> && this.variableResolver != null) {
-			Type resolved = this.variableResolver.resolve((TypeVariable<?>) this.type);
-			if(resolved != null) {
-				return getResolvableType(resolved, owner, ownerType).resolveType();
-			}
-		}
 		return this.owner == null ? null : owner.resolveVariable(variable);
 	}
 
@@ -233,23 +229,33 @@ public final class ResolvableType {
 				parameterIndex));
 	}
 
-	public static ResolvableType forMethodParameter(final MethodParameter methodParameter) {
+	public static ResolvableType forMethodParameter(MethodParameter methodParameter) {
 		Assert.notNull(methodParameter, "MethodParameter must not be null");
-		ResolvableType type = forType(methodParameter.getGenericParameterType());
-		type.variableResolver = new TypeVariableResolver() {
+		final Map<TypeVariable, Type> variables = methodParameter.typeVariableMap == null ?
+				Collections.<TypeVariable, Type> emptyMap() :
+				new HashMap<TypeVariable, Type>(methodParameter.typeVariableMap);
+		Type type = methodParameter.getGenericParameterType();
+//		while (variables.containsKey(type)) {
+//			type = variables.remove(type);
+//		}
+		ResolvableType resolvableType = forType(type);
+		resolvableType.variableResolver = new TypeVariableResolver() {
 			@Override
 			public Type resolve(TypeVariable<?> variable) {
-				if(methodParameter.typeVariableMap == null) {
-					return null;
-				}
-				return methodParameter.typeVariableMap.get(variable);
+				return variables.get(variable);
 			}
 		};
-		type = type.getNestedGeneric(methodParameter.getNestingLevel(),
+		return resolvableType.getNestedGeneric(methodParameter.getNestingLevel(),
 				methodParameter.typeIndexesPerLevel);
-		// FIXME methodParameter.typeVariableMap;
-		return type;
 	}
+
+	public static ResolvableType forMethodParameter(MethodParameter methodParameter, Class<?> owner) {
+		Assert.notNull(methodParameter, "MethodParameter must not be null");
+		ResolvableType ownerType = forClass(owner);
+		Type parameterType = methodParameter.getGenericParameterType();
+		return getResolvableType(parameterType, ownerType, OwnerType.SUBTYPE);
+	}
+
 
 	public static ResolvableType forMethodReturn(Method method) {
 		Assert.notNull(method, "Method must not be null");
