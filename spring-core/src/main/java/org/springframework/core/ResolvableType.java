@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2002-2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,22 @@
 
 package org.springframework.core;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 /**
  * @author Phillip Webb
@@ -36,7 +40,7 @@ import org.springframework.util.ObjectUtils;
 public final class ResolvableType {
 
 	// FIXME toString()
-	// FIXME test getNestedGeneric
+	// FIXME equals hc
 
 	public static final ResolvableType NONE = new ResolvableType(null, null);
 
@@ -55,25 +59,36 @@ public final class ResolvableType {
 		return this.type;
 	}
 
-	public ResolvableType getSuperType() {
-		Class<?> resolved = resolve();
-		if (resolved == null || resolved.getGenericSuperclass() == null) {
-			return NONE;
+	public boolean isArray() {
+		if (this == NONE) {
+			return false;
 		}
-		return new ResolvableType(resolved.getGenericSuperclass(), this);
+		return (((this.type instanceof Class) && ((Class) this.type).isArray())
+				|| this.type instanceof GenericArrayType || this.resolveType().isArray());
 	}
 
-	public ResolvableType[] getInterfaces() {
-		Class<?> resolved = resolve();
-		if (resolved == null || ObjectUtils.isEmpty(resolved.getGenericInterfaces())) {
-			return EMPTY_TYPES_ARRAY;
+	public ResolvableType getComponentType() {
+		if (this == NONE) {
+			return NONE;
 		}
-		Type[] interfaceTypes = resolved.getGenericInterfaces();
-		ResolvableType[] interfaces = new ResolvableType[interfaceTypes.length];
-		for (int i = 0; i < interfaceTypes.length; i++) {
-			interfaces[i] = new ResolvableType(interfaceTypes[i], this);
+		if (this.type instanceof Class) {
+			Class componentType = ((Class) this.type).getComponentType();
+			return componentType == null ? NONE : get(componentType,
+					this.owner);
 		}
-		return interfaces;
+		if (this.type instanceof GenericArrayType) {
+			return get(
+					((GenericArrayType) this.type).getGenericComponentType(), this.owner);
+		}
+		return resolveType().getComponentType();
+	}
+
+	public ResolvableType asCollection() {
+		return as(Collection.class);
+	}
+
+	public ResolvableType asMap() {
+		return as(Map.class);
 	}
 
 	public ResolvableType as(Class<?> type) {
@@ -92,6 +107,31 @@ public final class ResolvableType {
 		return getSuperType().as(type);
 	}
 
+	public ResolvableType getSuperType() {
+		Class<?> resolved = resolve();
+		if (resolved == null || resolved.getGenericSuperclass() == null) {
+			return NONE;
+		}
+		return get(resolved.getGenericSuperclass(), this);
+	}
+
+	public ResolvableType[] getInterfaces() {
+		Class<?> resolved = resolve();
+		if (resolved == null || ObjectUtils.isEmpty(resolved.getGenericInterfaces())) {
+			return EMPTY_TYPES_ARRAY;
+		}
+		Type[] interfaceTypes = resolved.getGenericInterfaces();
+		ResolvableType[] interfaces = new ResolvableType[interfaceTypes.length];
+		for (int i = 0; i < interfaceTypes.length; i++) {
+			interfaces[i] = get(interfaceTypes[i], this);
+		}
+		return interfaces;
+	}
+
+	public boolean hasGenerics() {
+		return getGenerics().length > 0;
+	}
+
 	public ResolvableType getNestedGeneric(int nestingLevel) {
 		return getNestedGeneric(nestingLevel, null);
 	}
@@ -103,19 +143,16 @@ public final class ResolvableType {
 		}
 		ResolvableType type = this;
 		// FIXME hack to deal with BWGT.testComplexDerivedIndexedMapEntry
-		while(type.getGenerics().length == 0 && type != NONE) {
+		while (type.getGenerics().length == 0 && type != NONE && nestingLevel > 1) {
 			type = type.getSuperType();
 		}
 		for (int levelIndex = 2; levelIndex <= nestingLevel; levelIndex++) {
 			ResolvableType[] generics = type.getGenerics();
 			Integer genericIndex = typeIndexesPerLevel.get(levelIndex);
-			type = type.getGeneric(genericIndex == null ? generics.length - 1 : genericIndex);
+			type = type.getGeneric(genericIndex == null ? generics.length - 1
+					: genericIndex);
 		}
 		return type;
-	}
-
-	public Class<?> resolveGeneric(int... indexes) {
-		return getGeneric(indexes).resolve();
 	}
 
 	public ResolvableType getGeneric(int... indexes) {
@@ -142,16 +179,23 @@ public final class ResolvableType {
 			Type[] genericTypes = ((ParameterizedType) getType()).getActualTypeArguments();
 			ResolvableType[] generics = new ResolvableType[genericTypes.length];
 			for (int i = 0; i < genericTypes.length; i++) {
-				generics[i] = new ResolvableType(genericTypes[i], this);
+				generics[i] = get(genericTypes[i], this);
 			}
 			return generics;
 		}
 		return resolveType().getGenerics();
 	}
 
+	public Class<?> resolveGeneric(int... indexes) {
+		return getGeneric(indexes).resolve();
+	}
+
 	public Class<?> resolve() {
 		if (this.type instanceof Class<?> || this.type == null) {
-			return (Class<?>) type;
+			return (Class<?>) this.type;
+		}
+		if (this.type instanceof GenericArrayType) {
+			return Array.newInstance(getComponentType().resolve(), 0).getClass();
 		}
 		return resolveType().resolve();
 	}
@@ -159,7 +203,7 @@ public final class ResolvableType {
 	private ResolvableType resolveType() {
 		Type resolved = null;
 		if (this.type instanceof ParameterizedType) {
-			resolved = ((ParameterizedType) type).getRawType();
+			resolved = ((ParameterizedType) this.type).getRawType();
 		}
 		else if (this.type instanceof WildcardType) {
 			resolved = resolveBounds(((WildcardType) this.type).getUpperBounds());
@@ -173,7 +217,7 @@ public final class ResolvableType {
 			resolved = resolved != null ? resolved
 					: resolveBounds(((TypeVariable<?>) this.type).getBounds());
 		}
-		return (resolved == null ? NONE : new ResolvableType(resolved, this.owner));
+		return (resolved == null ? NONE : get(resolved, this.owner));
 	}
 
 	private Type resolveBounds(Type[] bounds) {
@@ -195,23 +239,51 @@ public final class ResolvableType {
 					}
 				}
 			}
+			return this.owner == null ? null : this.owner.resolveVariable(variable);
 		}
 		if (this.type instanceof TypeVariable<?>) {
 			return resolveType().resolveVariable(variable);
 		}
-		return this.owner == null ? null : owner.resolveVariable(variable);
+		return null;
+	}
+
+	@Override
+	public String toString() {
+		if (isArray()) {
+			return getComponentType() + "[]";
+		}
+		StringBuilder result = new StringBuilder();
+		result.append(resolve() == null ? "?" : resolve().getName());
+		if (hasGenerics()) {
+			result.append("<" + StringUtils.arrayToDelimitedString(getGenerics(), ", ")
+					+ ">");
+		}
+		return result.toString();
 	}
 
 	//
 
 	public static ResolvableType forClass(Class<?> type) {
-		Assert.notNull(type, "Class must not be null");
-		return forType(type);
+		Assert.notNull(type, "Type class must not be null");
+		return get(type);
+	}
+
+	public static ResolvableType forClass(Class<?> type, Class<?> implementationClass) {
+		Assert.notNull(type, "Type class must not be null");
+		Assert.notNull(implementationClass, "ImplementationClass must not be null");
+		return get(implementationClass).as(type);
 	}
 
 	public static ResolvableType forField(Field field) {
 		Assert.notNull(field, "Field must not be null");
-		return forType(field.getGenericType());
+		return get(field.getGenericType());
+	}
+
+	public static ResolvableType forField(Field field, Class<?> implementationClass) {
+		Assert.notNull(field, "Field must not be null");
+		Assert.notNull(implementationClass, "ImplementationClass must not be null");
+		ResolvableType owner = get(implementationClass).as(field.getDeclaringClass());
+		return get(field.getGenericType(), owner);
 	}
 
 	public static ResolvableType forConstructorParameter(Constructor<?> constructor,
@@ -229,28 +301,40 @@ public final class ResolvableType {
 
 	public static ResolvableType forMethodParameter(MethodParameter methodParameter) {
 		Assert.notNull(methodParameter, "MethodParameter must not be null");
-		return forMethodParameter(methodParameter, methodParameter.resolveClass);
+		if (methodParameter.resolveClass != null) {
+			return forMethodParameter(methodParameter, methodParameter.resolveClass);
+		}
+		return get(methodParameter.getGenericParameterType()).getNestedGeneric(
+				methodParameter.getNestingLevel(), methodParameter.typeIndexesPerLevel);
 	}
 
 	public static ResolvableType forMethodParameter(MethodParameter methodParameter,
-			Class<?> resolveClass) {
+			Class<?> implementationClass) {
 		Assert.notNull(methodParameter, "MethodParameter must not be null");
-		ResolvableType ownerType = null;
-		if (resolveClass != null) {
-			ownerType = forClass(resolveClass).as(methodParameter.getDeclaringClass());
-		}
-		Type parameterType = methodParameter.getGenericParameterType();
-		return new ResolvableType(parameterType, ownerType).getNestedGeneric(
+		Assert.notNull(implementationClass, "ImplementationClass must not be null");
+		ResolvableType owner = get(implementationClass).as(methodParameter.getDeclaringClass());
+		return get(methodParameter.getGenericParameterType(), owner).getNestedGeneric(
 				methodParameter.getNestingLevel(), methodParameter.typeIndexesPerLevel);
 	}
 
 	public static ResolvableType forMethodReturn(Method method) {
 		Assert.notNull(method, "Method must not be null");
-		return forType(method.getGenericReturnType());
+		return get(method.getGenericReturnType());
 	}
 
-	public static ResolvableType forType(Type type) {
-		return new ResolvableType(type, null);
+	public static ResolvableType forMethodReturn(Method method, Class<?> implementationClass) {
+		Assert.notNull(method, "Method must not be null");
+		Assert.notNull(implementationClass, "ImplementationClass must not be null");
+		ResolvableType owner = get(implementationClass).as(method.getReturnType());
+		return get(method.getGenericReturnType(), owner);
+	}
+
+	private static ResolvableType get(Type type) {
+		return get(type, null);
+	}
+
+	private static ResolvableType get(Type type, ResolvableType owner) {
+		return new ResolvableType(type, owner); // FIXME cache
 	}
 
 }

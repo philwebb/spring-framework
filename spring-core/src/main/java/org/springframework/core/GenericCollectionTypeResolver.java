@@ -41,7 +41,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or {@code null} if none
 	 */
 	public static Class<?> getCollectionType(Class<? extends Collection> collectionClass) {
-		return ResolvableType.forClass(collectionClass).as(Collection.class).resolveGeneric();
+		return ResolvableType.forClass(collectionClass).asCollection().resolveGeneric();
 	}
 
 	/**
@@ -51,7 +51,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or {@code null} if none
 	 */
 	public static Class<?> getMapKeyType(Class<? extends Map> mapClass) {
-		return ResolvableType.forClass(mapClass).as(Map.class).resolveGeneric(0);
+		return ResolvableType.forClass(mapClass).asMap().resolveGeneric(0);
 	}
 
 	/**
@@ -61,7 +61,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or {@code null} if none
 	 */
 	public static Class<?> getMapValueType(Class<? extends Map> mapClass) {
-		return ResolvableType.forClass(mapClass).as(Map.class).resolveGeneric(1);
+		return ResolvableType.forClass(mapClass).asMap().resolveGeneric(1);
 	}
 
 	/**
@@ -70,7 +70,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or {@code null} if none
 	 */
 	public static Class<?> getCollectionFieldType(Field collectionField) {
-		return ResolvableType.forField(collectionField).as(Collection.class).resolveGeneric();
+		return ResolvableType.forField(collectionField).asCollection().resolveGeneric();
 	}
 
 	/**
@@ -82,7 +82,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or {@code null} if none
 	 */
 	public static Class<?> getCollectionFieldType(Field collectionField, int nestingLevel) {
-		return ResolvableType.forField(collectionField).getNestedGeneric(nestingLevel).as(Collection.class).resolveGeneric();
+		return ResolvableType.forField(collectionField).getNestedGeneric(nestingLevel).asCollection().resolveGeneric();
 	}
 
 	/**
@@ -96,7 +96,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or {@code null} if none
 	 */
 	public static Class<?> getCollectionFieldType(Field collectionField, int nestingLevel, Map<Integer, Integer> typeIndexesPerLevel) {
-		return ResolvableType.forField(collectionField).getNestedGeneric(nestingLevel, typeIndexesPerLevel).as(Collection.class).resolveGeneric();
+		return ResolvableType.forField(collectionField).getNestedGeneric(nestingLevel, typeIndexesPerLevel).asCollection().resolveGeneric();
 	}
 
 	/**
@@ -105,7 +105,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or {@code null} if none
 	 */
 	public static Class<?> getMapKeyFieldType(Field mapField) {
-		return ResolvableType.forField(mapField).as(Map.class).resolveGeneric(0);
+		return ResolvableType.forField(mapField).asMap().resolveGeneric(0);
 	}
 
 	/**
@@ -117,7 +117,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or {@code null} if none
 	 */
 	public static Class<?> getMapKeyFieldType(Field mapField, int nestingLevel) {
-		return ResolvableType.forField(mapField).getNestedGeneric(nestingLevel).as(Map.class).resolveGeneric(0);
+		return ResolvableType.forField(mapField).getNestedGeneric(nestingLevel).asMap().resolveGeneric(0);
 	}
 
 	/**
@@ -131,7 +131,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or {@code null} if none
 	 */
 	public static Class<?> getMapKeyFieldType(Field mapField, int nestingLevel, Map<Integer, Integer> typeIndexesPerLevel) {
-		return ResolvableType.forField(mapField).getNestedGeneric(nestingLevel, typeIndexesPerLevel).as(Map.class).resolveGeneric(0);
+		return ResolvableType.forField(mapField).getNestedGeneric(nestingLevel, typeIndexesPerLevel).asMap().resolveGeneric(0);
 	}
 
 	/**
@@ -140,7 +140,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or {@code null} if none
 	 */
 	public static Class<?> getMapValueFieldType(Field mapField) {
-		return ResolvableType.forField(mapField).as(Map.class).resolveGeneric(1);
+		return ResolvableType.forField(mapField).asMap().resolveGeneric(1);
 	}
 
 	/**
@@ -152,7 +152,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or {@code null} if none
 	 */
 	public static Class<?> getMapValueFieldType(Field mapField, int nestingLevel) {
-		return ResolvableType.forField(mapField).getNestedGeneric(nestingLevel).as(Map.class).resolveGeneric(1);
+		return ResolvableType.forField(mapField).getNestedGeneric(nestingLevel).asMap().resolveGeneric(1);
 	}
 
 	/**
@@ -166,7 +166,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or {@code null} if none
 	 */
 	public static Class<?> getMapValueFieldType(Field mapField, int nestingLevel, Map<Integer, Integer> typeIndexesPerLevel) {
-		return ResolvableType.forField(mapField).getNestedGeneric(nestingLevel, typeIndexesPerLevel).as(Map.class).resolveGeneric(1);
+		return ResolvableType.forField(mapField).getNestedGeneric(nestingLevel, typeIndexesPerLevel).asMap().resolveGeneric(1);
 	}
 
 	/**
@@ -175,7 +175,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or {@code null} if none
 	 */
 	public static Class<?> getCollectionParameterType(MethodParameter methodParam) {
-		return ResolvableType.forMethodParameter(methodParam).as(Collection.class).resolveGeneric();
+		return ResolvableType.forMethodParameter(methodParam).asCollection().resolveGeneric();
 	}
 
 	/**
@@ -184,7 +184,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or {@code null} if none
 	 */
 	public static Class<?> getMapKeyParameterType(MethodParameter methodParam) {
-		return ResolvableType.forMethodParameter(methodParam).as(Map.class).resolveGeneric(0);
+		return ResolvableType.forMethodParameter(methodParam).asMap().resolveGeneric(0);
 	}
 
 	/**
@@ -193,7 +193,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or {@code null} if none
 	 */
 	public static Class<?> getMapValueParameterType(MethodParameter methodParam) {
-		return ResolvableType.forMethodParameter(methodParam).as(Map.class).resolveGeneric(1);
+		return ResolvableType.forMethodParameter(methodParam).asMap().resolveGeneric(1);
 	}
 
 	/**
@@ -202,7 +202,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or {@code null} if none
 	 */
 	public static Class<?> getCollectionReturnType(Method method) {
-		return ResolvableType.forMethodReturn(method).as(Collection.class).resolveGeneric();
+		return ResolvableType.forMethodReturn(method).asCollection().resolveGeneric();
 	}
 
 	/**
@@ -216,7 +216,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or {@code null} if none
 	 */
 	public static Class<?> getCollectionReturnType(Method method, int nestingLevel) {
-		return ResolvableType.forMethodReturn(method).getNestedGeneric(nestingLevel).as(Collection.class).resolveGeneric();
+		return ResolvableType.forMethodReturn(method).getNestedGeneric(nestingLevel).asCollection().resolveGeneric();
 	}
 
 	/**
@@ -225,7 +225,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or {@code null} if none
 	 */
 	public static Class<?> getMapKeyReturnType(Method method) {
-		return ResolvableType.forMethodReturn(method).as(Map.class).resolveGeneric(0);
+		return ResolvableType.forMethodReturn(method).asMap().resolveGeneric(0);
 	}
 
 	/**
@@ -237,7 +237,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or {@code null} if none
 	 */
 	public static Class<?> getMapKeyReturnType(Method method, int nestingLevel) {
-		return ResolvableType.forMethodReturn(method).getNestedGeneric(nestingLevel).as(Map.class).resolveGeneric(0);
+		return ResolvableType.forMethodReturn(method).getNestedGeneric(nestingLevel).asMap().resolveGeneric(0);
 	}
 
 	/**
@@ -246,7 +246,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or {@code null} if none
 	 */
 	public static Class<?> getMapValueReturnType(Method method) {
-		return ResolvableType.forMethodReturn(method).as(Map.class).resolveGeneric(1);
+		return ResolvableType.forMethodReturn(method).asMap().resolveGeneric(1);
 	}
 
 	/**
@@ -258,7 +258,7 @@ public abstract class GenericCollectionTypeResolver {
 	 * @return the generic type, or {@code null} if none
 	 */
 	public static Class<?> getMapValueReturnType(Method method, int nestingLevel) {
-		return ResolvableType.forMethodReturn(method).getNestedGeneric(nestingLevel).as(Map.class).resolveGeneric(1);
+		return ResolvableType.forMethodReturn(method).getNestedGeneric(nestingLevel).asMap().resolveGeneric(1);
 	}
 
 }
