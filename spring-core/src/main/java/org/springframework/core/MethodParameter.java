@@ -264,6 +264,10 @@ public class MethodParameter {
 		return this.genericParameterType;
 	}
 
+	/**
+	 * @deprecated as of 4.0 in favor of using {@link ResolvableType} for accessing nested parameters
+	 */
+	@Deprecated
 	public Class<?> getNestedParameterType() {
 		if (this.nestingLevel > 1) {
 			Type type = getGenericParameterType();
@@ -389,6 +393,7 @@ public class MethodParameter {
 	 *
 	 * @see #getNestingLevel()
 	 */
+	@Deprecated
 	public void increaseNestingLevel() {
 		this.nestingLevel++;
 	}
@@ -397,7 +402,9 @@ public class MethodParameter {
 	 * Decrease this parameter's nesting level.
 	 *
 	 * @see #getNestingLevel()
+ 	 * @deprecated as of 4.0 in favor of using {@link ResolvableType} for arbitrary nesting levels
 	 */
+	@Deprecated
 	public void decreaseNestingLevel() {
 		getTypeIndexesPerLevel().remove(this.nestingLevel);
 		this.nestingLevel--;
@@ -407,7 +414,9 @@ public class MethodParameter {
 	 * Return the nesting level of the target type (typically 1; e.g. in case of a List of
 	 * Lists, 1 would indicate the nested List, whereas 2 would indicate the element of
 	 * the nested List).
+ 	 * @deprecated as of 4.0 in favor of using {@link ResolvableType} for arbitrary nesting levels
 	 */
+	@Deprecated
 	public int getNestingLevel() {
 		return this.nestingLevel;
 	}
@@ -418,7 +427,9 @@ public class MethodParameter {
 	 * @param typeIndex the corresponding type index (or {@code null} for the default type
 	 *        index)
 	 * @see #getNestingLevel()
+ 	 * @deprecated as of 4.0 in favor of using {@link ResolvableType} for arbitrary nesting levels
 	 */
+	@Deprecated
 	public void setTypeIndexForCurrentLevel(int typeIndex) {
 		getTypeIndexesPerLevel().put(this.nestingLevel, typeIndex);
 	}
@@ -429,7 +440,9 @@ public class MethodParameter {
 	 * @return the corresponding type index, or {@code null} if none specified (indicating
 	 *         the default type index)
 	 * @see #getNestingLevel()
+	 * @deprecated as of 4.0 in favor of using {@link ResolvableType} for arbitrary nesting levels
 	 */
+	@Deprecated
 	public Integer getTypeIndexForCurrentLevel() {
 		return getTypeIndexForLevel(this.nestingLevel);
 	}

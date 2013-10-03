@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2002-2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -280,26 +280,6 @@ public class ResolvableTypeTests {
 	}
 
 	@Test
-	public void getNestedGeneric() throws Exception {
-		// FIXME pick last convention
-	}
-
-	@Test
-	public void getNestedGenericWithTypeIndexesPerLevel() throws Exception {
-		// FIXME
-	}
-
-	@Test
-	public void getNestedGenericWithNullTypeIndexesPerLevel() throws Exception {
-		// FIXME
-	}
-
-	@Test
-	public void testNestedGenericWithDerrivedType() throws Exception {
-		// FIXME test the hack
-	}
-
-	@Test
 	public void getGeneric() throws Exception {
 		ResolvableType type = ResolvableType.forField(Fields.class.getField("stringList"));
 		assertThat(type.getGeneric().getType(), equalTo((Type) String.class));
@@ -439,7 +419,6 @@ public class ResolvableTypeTests {
 				Fields.class.getField("listOfListOfUnknown")).as(Collection.class);
 		assertThat(type.getGeneric(0).resolve(), equalTo((Class) List.class));
 		assertThat(type.getGeneric(0).as(Collection.class).getGeneric(0).as(Collection.class).resolve(), nullValue());
-		assertThat(type.getNestedGeneric(2).as(Collection.class).resolveGeneric(), nullValue());
 	}
 
 	@Test

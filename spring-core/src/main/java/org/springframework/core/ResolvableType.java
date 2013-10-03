@@ -26,7 +26,6 @@ import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 
 import org.springframework.util.Assert;
@@ -39,7 +38,6 @@ import org.springframework.util.StringUtils;
  */
 public final class ResolvableType {
 
-	// FIXME toString()
 	// FIXME equals hc
 
 	public static final ResolvableType NONE = new ResolvableType(null, null);
@@ -130,29 +128,6 @@ public final class ResolvableType {
 
 	public boolean hasGenerics() {
 		return getGenerics().length > 0;
-	}
-
-	public ResolvableType getNestedGeneric(int nestingLevel) {
-		return getNestedGeneric(nestingLevel, null);
-	}
-
-	public ResolvableType getNestedGeneric(int nestingLevel,
-			Map<Integer, Integer> typeIndexesPerLevel) {
-		if (typeIndexesPerLevel == null) {
-			typeIndexesPerLevel = Collections.emptyMap();
-		}
-		ResolvableType type = this;
-		// FIXME hack to deal with BWGT.testComplexDerivedIndexedMapEntry
-		while (type.getGenerics().length == 0 && type != NONE && nestingLevel > 1) {
-			type = type.getSuperType();
-		}
-		for (int levelIndex = 2; levelIndex <= nestingLevel; levelIndex++) {
-			ResolvableType[] generics = type.getGenerics();
-			Integer genericIndex = typeIndexesPerLevel.get(levelIndex);
-			type = type.getGeneric(genericIndex == null ? generics.length - 1
-					: genericIndex);
-		}
-		return type;
 	}
 
 	public ResolvableType getGeneric(int... indexes) {
@@ -301,11 +276,11 @@ public final class ResolvableType {
 
 	public static ResolvableType forMethodParameter(MethodParameter methodParameter) {
 		Assert.notNull(methodParameter, "MethodParameter must not be null");
+		//FIXME not here?
 		if (methodParameter.resolveClass != null) {
 			return forMethodParameter(methodParameter, methodParameter.resolveClass);
 		}
-		return get(methodParameter.getGenericParameterType()).getNestedGeneric(
-				methodParameter.getNestingLevel(), methodParameter.typeIndexesPerLevel);
+		return get(methodParameter.getGenericParameterType());
 	}
 
 	public static ResolvableType forMethodParameter(MethodParameter methodParameter,
@@ -313,8 +288,7 @@ public final class ResolvableType {
 		Assert.notNull(methodParameter, "MethodParameter must not be null");
 		Assert.notNull(implementationClass, "ImplementationClass must not be null");
 		ResolvableType owner = get(implementationClass).as(methodParameter.getDeclaringClass());
-		return get(methodParameter.getGenericParameterType(), owner).getNestedGeneric(
-				methodParameter.getNestingLevel(), methodParameter.typeIndexesPerLevel);
+		return get(methodParameter.getGenericParameterType(), owner);
 	}
 
 	public static ResolvableType forMethodReturn(Method method) {
