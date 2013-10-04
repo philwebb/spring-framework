@@ -41,6 +41,7 @@ import org.springframework.util.ReflectionUtils;
  *
  * @author Rob Harrop
  * @author Juergen Hoeller
+ * @author Phillip Webb
  * @since 2.0
  */
 public abstract class BridgeMethodResolver {

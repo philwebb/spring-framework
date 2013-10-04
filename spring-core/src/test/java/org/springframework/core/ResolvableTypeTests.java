@@ -25,22 +25,29 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
+import java.util.AbstractCollection;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.springframework.core.BridgeMethodResolverTests.YourHomer;
 import org.springframework.util.MultiValueMap;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link ResolvableType}.
+ *
+ * @author Phillip Webb
  */
 public class ResolvableTypeTests {
 
@@ -49,7 +56,24 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void noneReturnValues() throws Exception {
-		// FIXME
+		ResolvableType none = ResolvableType.NONE;
+		assertThat(none.as(Object.class), equalTo(ResolvableType.NONE));
+		assertThat(none.asCollection(), equalTo(ResolvableType.NONE));
+		assertThat(none.asMap(), equalTo(ResolvableType.NONE));
+		assertThat(none.getComponentType(), equalTo(ResolvableType.NONE));
+		assertThat(none.getGeneric(0), equalTo(ResolvableType.NONE));
+		assertThat(none.getGenerics().length, equalTo(0));
+		assertThat(none.getInterfaces().length, equalTo(0));
+		assertThat(none.getSuperType(), equalTo(ResolvableType.NONE));
+		assertThat(none.getType(), nullValue());
+		assertThat(none.hasGenerics(), equalTo(false));
+		assertThat(none.isArray(), equalTo(false));
+		assertThat(none.resolve(), nullValue());
+		assertThat(none.resolve(String.class), equalTo((Class) String.class));
+		assertThat(none.resolveGeneric(0), nullValue());
+		assertThat(none.resolveGenerics().length, equalTo(0));
+		assertThat(none.resolveVariable(mock(TypeVariable.class)), nullValue());
+		assertThat(none.toString(), equalTo("?"));
 	}
 
 	@Test
@@ -110,20 +134,33 @@ public class ResolvableTypeTests {
 	@Test
 	public void forMethodParameter() throws Exception {
 		Method method = Methods.class.getMethod("charSequenceParameter", List.class);
-		MethodParameter methodParameter = MethodParameter.forMethodOrConstructor(method,
-				0);
+		MethodParameter methodParameter = MethodParameter.forMethodOrConstructor(method, 0);
 		ResolvableType type = ResolvableType.forMethodParameter(methodParameter);
 		assertThat(type.getType(), equalTo(method.getGenericParameterTypes()[0]));
 	}
 
 	@Test
-	public void forMethodParameterWithNesting() throws Exception {
-		// FIXME
+	@SuppressWarnings("deprecation")
+	public void forMethodParameterIgnoresNesting() throws Exception {
+		Method method = Methods.class.getMethod("nested", Map.class);
+		MethodParameter methodParameter = MethodParameter.forMethodOrConstructor(method, 0);
+		methodParameter.setTypeIndexForCurrentLevel(1);
+		methodParameter.increaseNestingLevel();
+		ResolvableType type = ResolvableType.forMethodParameter(methodParameter);
+		assertThat(type.resolve(), equalTo((Class) Map.class));
+		assertThat(type.getGeneric(0).resolve(), equalTo((Class) Map.class));
+		assertThat(type.getGeneric(1).resolve(), equalTo((Class) Map.class));
 	}
 
 	@Test
 	public void forResolvedMethodParameter() throws Exception {
-		// FIXME
+		Method method = Methods.class.getMethod("typedParameter", Object.class);
+		MethodParameter methodParameter = MethodParameter.forMethodOrConstructor(method, 0);
+
+		assertThat(ResolvableType.forMethodParameter(methodParameter).resolve(), nullValue());
+
+		methodParameter.resolveClass = TypedMethods.class;
+		assertThat(ResolvableType.forMethodParameter(methodParameter).resolve(), equalTo((Class) String.class));
 	}
 
 	@Test
@@ -219,12 +256,17 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void asCollection() throws Exception {
-		// FIXME
+		ResolvableType type = ResolvableType.forClass(ExtendsList.class).asCollection();
+		assertThat(type.resolve(), equalTo((Class) Collection.class));
+		assertThat(type.resolveGeneric(), equalTo((Class) CharSequence.class));
 	}
 
 	@Test
 	public void asMap() throws Exception {
-		// FIXME
+		ResolvableType type = ResolvableType.forClass(ExtendsMap.class).asMap();
+		assertThat(type.resolve(), equalTo((Class) Map.class));
+		assertThat(type.resolveGeneric(0), equalTo((Class) String.class));
+		assertThat(type.resolveGeneric(1), equalTo((Class) Integer.class));
 	}
 
 	@Test
@@ -262,22 +304,40 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void getSuperType() throws Exception {
-		// FIXME
+		ResolvableType type = ResolvableType.forClass(ExtendsList.class).getSuperType();
+		assertThat(type.resolve(), equalTo((Class) ArrayList.class));
+		type = type.getSuperType();
+		assertThat(type.resolve(), equalTo((Class) AbstractList.class));
+		type = type.getSuperType();
+		assertThat(type.resolve(), equalTo((Class) AbstractCollection.class));
+		type = type.getSuperType();
+		assertThat(type.resolve(), equalTo((Class) Object.class));
 	}
 
 	@Test
 	public void getInterfaces() throws Exception {
-		// FIXME
+		ResolvableType type = ResolvableType.forClass(ExtendsList.class);
+		assertThat(type.getInterfaces().length, equalTo(0));
+		SortedSet<String> interfaces = new TreeSet<String>();
+		for (ResolvableType interfaceType : type.getSuperType().getInterfaces()) {
+			interfaces.add(interfaceType.toString());
+		}
+		assertThat(interfaces.toString(), equalTo("["
+				+ "java.io.Serializable, "
+				+ "java.lang.Cloneable, "
+				+ "java.util.List<java.lang.CharSequence>, "
+				+ "java.util.RandomAccess"
+				+ "]"));
 	}
 
 	@Test
 	public void noSuperType() throws Exception {
-		// FIXME
+		assertThat(ResolvableType.forClass(Object.class).getSuperType(), equalTo(ResolvableType.NONE));
 	}
 
 	@Test
 	public void noInterfaces() throws Exception {
-		// FIXME
+		assertThat(ResolvableType.forClass(Object.class).getInterfaces().length, equalTo(0));
 	}
 
 	@Test
@@ -309,22 +369,40 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void getGenericOutOfBounds() throws Exception {
-		// FIXME
+		ResolvableType type = ResolvableType.forClass(List.class, ExtendsList.class);
+		assertThat(type.getGeneric(0), not(equalTo(ResolvableType.NONE)));
+		assertThat(type.getGeneric(1), equalTo(ResolvableType.NONE));
+		assertThat(type.getGeneric(0, 1), equalTo(ResolvableType.NONE));
+	}
+
+	@Test
+	public void hasGenerics() throws Exception {
+		ResolvableType type = ResolvableType.forClass(ExtendsList.class);
+		assertThat(type.hasGenerics(), equalTo(false));
+		assertThat(type.asCollection().hasGenerics(), equalTo(true));
 	}
 
 	@Test
 	public void getGenerics() throws Exception {
-		// FIXME
+		ResolvableType type = ResolvableType.forClass(List.class, ExtendsList.class);
+		ResolvableType[] generics = type.getGenerics();
+		assertThat(generics.length, equalTo(1));
+		assertThat(generics[0].resolve(), equalTo((Class) CharSequence.class));
 	}
 
 	@Test
 	public void noGetGenerics() throws Exception {
-		// FIXME
+		ResolvableType type = ResolvableType.forClass(ExtendsList.class);
+		ResolvableType[] generics = type.getGenerics();
+		assertThat(generics.length, equalTo(0));
 	}
 
 	@Test
 	public void getResolvedGenerics() throws Exception {
-		// FIXME
+		ResolvableType type = ResolvableType.forClass(List.class, ExtendsList.class);
+		Class<?>[] generics = type.resolveGenerics();
+		assertThat(generics.length, equalTo(1));
+		assertThat(generics[0], equalTo((Class) CharSequence.class));
 	}
 
 	@Test
@@ -479,7 +557,7 @@ public class ResolvableTypeTests {
 		assertFieldToStringValue("arrayClassType", "java.util.List[]");
 		assertFieldToStringValue("genericArrayType", "java.util.List<java.lang.String>[]");
 		assertFieldToStringValue("genericMultiArrayType", "java.util.List<java.lang.String>[][][]");
-		assertFieldToStringValue("wildcardType", "java.util.List<java.lang.Number>"); // FIXME do we want to show wildcards?
+		assertFieldToStringValue("wildcardType", "java.util.List<java.lang.Number>");
 		assertFieldToStringValue("wildcardSuperType", "java.util.List<java.lang.Number>");
 		assertFieldToStringValue("charSequenceList", "java.util.List<java.lang.CharSequence>");
 		assertFieldToStringValue("stringList", "java.util.List<java.lang.String>");
@@ -522,16 +600,17 @@ public class ResolvableTypeTests {
 
 	// FIXME Array getSuperType and Array getInterfaces ?
 
-	// FIXME hasGenerics
-
 	// FIXME asSelf
 
-	// FIXME woth ownerTypes
+	// FIXME with ownerTypes
 
 	// FIXME hc equals
 
 	// FIXME resolveGenerics
 
+	// FIXME consider supertype/interface of arrays
+
+	// FIXME with custom variable resolver
 
 	@Test
 	public void getExtendsGeneric() throws Exception {
@@ -540,13 +619,10 @@ public class ResolvableTypeTests {
 				equalTo("? extends java.lang.CharSequence"));
 	}
 
-	@Test
-	public void dunno() throws Exception {
-		ResolvableType type = ResolvableType.forClass(YourHomer.class);
-		System.out.println(type);
+	static class ExtendsList extends ArrayList<CharSequence> {
 	}
 
-	static class ExtendsList extends ArrayList<CharSequence> {
+	static class ExtendsMap extends HashMap<String, Integer> {
 	}
 
 	static class Fields<T> {
@@ -588,14 +664,21 @@ public class ResolvableTypeTests {
 	static class TypeFields extends Fields<String> {
 	}
 
-	static interface Methods {
+	static interface Methods<T> {
 
 		List<CharSequence> charSequenceReturn();
 
 		void charSequenceParameter(List<CharSequence> cs);
 
-		<T extends CharSequence & Serializable> T boundedTypeVaraibleResult();
+		<R extends CharSequence & Serializable> R boundedTypeVaraibleResult();
 
+		void nested(Map<Map<String, Integer>, Map<Byte, Long>> p);
+
+		void typedParameter(T p);
+
+	}
+
+	static interface TypedMethods extends Methods<String> {
 	}
 
 	static class Constructors {
@@ -651,8 +734,4 @@ public class ResolvableTypeTests {
 		}
 	}
 
-	// FIXME consider supertype of arrays
-	// FIXME consider enclosed type
-	// FIXME getEnclosingClass
-	// FIXME
 }

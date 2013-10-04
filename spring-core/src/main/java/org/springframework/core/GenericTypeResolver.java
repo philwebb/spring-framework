@@ -334,14 +334,19 @@ public abstract class GenericTypeResolver {
 	}
 
 
+	/**
+	 * Adapts a {@code typeVariableMap} to a {@link TypeVariableResolver}.
+	 */
 	private static class TypeVariableMapResolver implements TypeVariableResolver {
 
 		private Map<TypeVariable, Type> typeVariableMap;
+
 
 		public TypeVariableMapResolver(Map<TypeVariable, Type> typeVariableMap) {
 			Assert.notNull("TypeVariableMap must not be null");
 			this.typeVariableMap = typeVariableMap;
 		}
+
 
 		@Override
 		public Type resolveVariable(TypeVariable typeVariable) {

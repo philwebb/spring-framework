@@ -228,6 +228,7 @@ public final class ResolvableType implements TypeVariableResolver {
 	}
 
 	public Type resolveVariable(TypeVariable variable) {
+		Assert.notNull("Variable must not be null");
 		if (this.type instanceof ParameterizedType) {
 			ParameterizedType parameterizedType = (ParameterizedType) this.type;
 			if (parameterizedType.getRawType().equals(variable.getGenericDeclaration())) {
@@ -332,7 +333,6 @@ public final class ResolvableType implements TypeVariableResolver {
 
 	public static ResolvableType forMethodParameter(MethodParameter methodParameter) {
 		Assert.notNull(methodParameter, "MethodParameter must not be null");
-		//FIXME not here?
 		if (methodParameter.resolveClass != null) {
 			return forMethodParameter(methodParameter, methodParameter.resolveClass);
 		}
