@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.springframework.util.Assert;
+import org.springframework.util.ConcurrentReferenceHashMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
@@ -38,7 +39,8 @@ import org.springframework.util.StringUtils;
  */
 public final class ResolvableType {
 
-	// FIXME equals hc
+	private static ConcurrentReferenceHashMap<ResolvableType, ResolvableType> cache =
+			new ConcurrentReferenceHashMap<ResolvableType, ResolvableType>();
 
 	public static final ResolvableType NONE = new ResolvableType(null, null);
 
@@ -47,6 +49,8 @@ public final class ResolvableType {
 	private final Type type;
 
 	private final ResolvableType owner;
+
+	private Class<?> resolved;
 
 	private ResolvableType(Type type, ResolvableType owner) {
 		this.type = type;
@@ -98,7 +102,7 @@ public final class ResolvableType {
 		}
 		for (ResolvableType interfaceType : getInterfaces()) {
 			ResolvableType interfaceAsType = interfaceType.as(type);
-			if (interfaceAsType != null) {
+			if (interfaceAsType != NONE) {
 				return interfaceAsType;
 			}
 		}
@@ -161,11 +165,34 @@ public final class ResolvableType {
 		return resolveType().getGenerics();
 	}
 
+	public Class<?>[] resolveGenerics() {
+		ResolvableType[] generics = getGenerics();
+		Class<?>[] resolvedGenerics = new Class<?>[generics.length];
+		for (int i = 0; i < generics.length; i++) {
+			resolvedGenerics[i] = generics[i].resolve();
+		}
+		return resolvedGenerics;
+	}
+
 	public Class<?> resolveGeneric(int... indexes) {
 		return getGeneric(indexes).resolve();
 	}
 
 	public Class<?> resolve() {
+		return resolve(null);
+	}
+
+	public Class<?> resolve(Class<?> fallback) {
+		if (this.resolved == null) {
+			synchronized (this) {
+				this.resolved = resolveClass();
+				this.resolved = (this.resolved == null ? void.class : this.resolved);
+			}
+		}
+		return (this.resolved == void.class ? fallback : this.resolved);
+	}
+
+	private Class<?> resolveClass() {
 		if (this.type instanceof Class<?> || this.type == null) {
 			return (Class<?>) this.type;
 		}
@@ -236,7 +263,27 @@ public final class ResolvableType {
 		return result.toString();
 	}
 
+
 	//
+
+	@Override
+	public int hashCode() {
+		return ObjectUtils.nullSafeHashCode(this.type) * 31
+				+ ObjectUtils.nullSafeHashCode(this.owner);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this ) {
+			return true;
+		}
+		if (obj instanceof ResolvableType) {
+			ResolvableType other = (ResolvableType) obj;
+			return ObjectUtils.nullSafeEquals(this.type, other.type)
+					&& ObjectUtils.nullSafeEquals(this.owner, other.owner);
+		}
+		return false;
+	}
 
 	public static ResolvableType forClass(Class<?> type) {
 		Assert.notNull(type, "Type class must not be null");
@@ -287,7 +334,8 @@ public final class ResolvableType {
 			Class<?> implementationClass) {
 		Assert.notNull(methodParameter, "MethodParameter must not be null");
 		Assert.notNull(implementationClass, "ImplementationClass must not be null");
-		ResolvableType owner = get(implementationClass).as(methodParameter.getDeclaringClass());
+		ResolvableType owner = get(implementationClass).as(
+				methodParameter.getMember().getDeclaringClass());
 		return get(methodParameter.getGenericParameterType(), owner);
 	}
 
@@ -299,16 +347,22 @@ public final class ResolvableType {
 	public static ResolvableType forMethodReturn(Method method, Class<?> implementationClass) {
 		Assert.notNull(method, "Method must not be null");
 		Assert.notNull(implementationClass, "ImplementationClass must not be null");
-		ResolvableType owner = get(implementationClass).as(method.getReturnType());
+		ResolvableType owner = get(implementationClass).as(method.getDeclaringClass());
 		return get(method.getGenericReturnType(), owner);
 	}
 
-	private static ResolvableType get(Type type) {
+	public static ResolvableType get(Type type) {
 		return get(type, null);
 	}
 
-	private static ResolvableType get(Type type, ResolvableType owner) {
-		return new ResolvableType(type, owner); // FIXME cache
+	public static ResolvableType get(Type type, ResolvableType owner) {
+		ResolvableType key = new ResolvableType(type, owner);
+		ResolvableType resolvableType = cache.get(key);
+		if(resolvableType == null) {
+			resolvableType = key;
+			cache.put(key, resolvableType);
+		}
+		return resolvableType;
 	}
 
 }

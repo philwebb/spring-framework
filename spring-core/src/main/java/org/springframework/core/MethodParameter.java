@@ -63,6 +63,7 @@ public class MethodParameter {
 	/** Map from Integer level to Integer type index */
 	Map<Integer, Integer> typeIndexesPerLevel;
 
+	@Deprecated
 	Map<TypeVariable, Type> typeVariableMap;
 
 	Class<?> resolveClass;

@@ -518,6 +518,10 @@ public class ResolvableTypeTests {
 
 	// FIXME woth ownerTypes
 
+	// FIXME hc equals
+
+	// FIXME resolveGenerics
+
 
 	@Test
 	public void getExtendsGeneric() throws Exception {
