@@ -37,7 +37,7 @@ import org.springframework.util.StringUtils;
  * @author Phillip Webb
  * @since 4.0
  */
-public final class ResolvableType {
+public final class ResolvableType implements TypeVariableResolver {
 
 	private static ConcurrentReferenceHashMap<ResolvableType, ResolvableType> cache =
 			new ConcurrentReferenceHashMap<ResolvableType, ResolvableType>();
@@ -48,13 +48,13 @@ public final class ResolvableType {
 
 	private final Type type;
 
-	private final ResolvableType owner;
+	private final TypeVariableResolver variableResolver;
 
 	private Class<?> resolved;
 
-	private ResolvableType(Type type, ResolvableType owner) {
+	private ResolvableType(Type type, TypeVariableResolver variableResolver) {
 		this.type = type;
-		this.owner = owner;
+		this.variableResolver = variableResolver;
 	}
 
 	public Type getType() {
@@ -75,12 +75,10 @@ public final class ResolvableType {
 		}
 		if (this.type instanceof Class) {
 			Class componentType = ((Class) this.type).getComponentType();
-			return componentType == null ? NONE : get(componentType,
-					this.owner);
+			return componentType == null ? NONE : forType(componentType, this.variableResolver);
 		}
 		if (this.type instanceof GenericArrayType) {
-			return get(
-					((GenericArrayType) this.type).getGenericComponentType(), this.owner);
+			return forType(((GenericArrayType) this.type).getGenericComponentType(), this.variableResolver);
 		}
 		return resolveType().getComponentType();
 	}
@@ -114,7 +112,7 @@ public final class ResolvableType {
 		if (resolved == null || resolved.getGenericSuperclass() == null) {
 			return NONE;
 		}
-		return get(resolved.getGenericSuperclass(), this);
+		return forType(resolved.getGenericSuperclass(), this);
 	}
 
 	public ResolvableType[] getInterfaces() {
@@ -125,7 +123,7 @@ public final class ResolvableType {
 		Type[] interfaceTypes = resolved.getGenericInterfaces();
 		ResolvableType[] interfaces = new ResolvableType[interfaceTypes.length];
 		for (int i = 0; i < interfaceTypes.length; i++) {
-			interfaces[i] = get(interfaceTypes[i], this);
+			interfaces[i] = forType(interfaceTypes[i], this);
 		}
 		return interfaces;
 	}
@@ -158,7 +156,7 @@ public final class ResolvableType {
 			Type[] genericTypes = ((ParameterizedType) getType()).getActualTypeArguments();
 			ResolvableType[] generics = new ResolvableType[genericTypes.length];
 			for (int i = 0; i < genericTypes.length; i++) {
-				generics[i] = get(genericTypes[i], this);
+				generics[i] = forType(genericTypes[i], this);
 			}
 			return generics;
 		}
@@ -213,13 +211,13 @@ public final class ResolvableType {
 					: resolveBounds(((WildcardType) this.type).getLowerBounds());
 		}
 		else if (this.type instanceof TypeVariable) {
-			if (this.owner != null) {
-				resolved = this.owner.resolveVariable((TypeVariable) this.type);
+			if (this.variableResolver != null) {
+				resolved = this.variableResolver.resolveVariable((TypeVariable) this.type);
 			}
 			resolved = resolved != null ? resolved
 					: resolveBounds(((TypeVariable<?>) this.type).getBounds());
 		}
-		return (resolved == null ? NONE : get(resolved, this.owner));
+		return (resolved == null ? NONE : forType(resolved, this.variableResolver));
 	}
 
 	private Type resolveBounds(Type[] bounds) {
@@ -229,7 +227,7 @@ public final class ResolvableType {
 		return bounds[0];
 	}
 
-	private Type resolveVariable(TypeVariable variable) {
+	public Type resolveVariable(TypeVariable variable) {
 		if (this.type instanceof ParameterizedType) {
 			ParameterizedType parameterizedType = (ParameterizedType) this.type;
 			if (parameterizedType.getRawType().equals(variable.getGenericDeclaration())) {
@@ -241,7 +239,7 @@ public final class ResolvableType {
 					}
 				}
 			}
-			return this.owner == null ? null : this.owner.resolveVariable(variable);
+			return (this.variableResolver == null ? null : this.variableResolver.resolveVariable(variable));
 		}
 		if (this.type instanceof TypeVariable<?>) {
 			return resolveType().resolveVariable(variable);
@@ -269,7 +267,7 @@ public final class ResolvableType {
 	@Override
 	public int hashCode() {
 		return ObjectUtils.nullSafeHashCode(this.type) * 31
-				+ ObjectUtils.nullSafeHashCode(this.owner);
+				+ ObjectUtils.nullSafeHashCode(this.variableResolver);
 	}
 
 	@Override
@@ -280,32 +278,32 @@ public final class ResolvableType {
 		if (obj instanceof ResolvableType) {
 			ResolvableType other = (ResolvableType) obj;
 			return ObjectUtils.nullSafeEquals(this.type, other.type)
-					&& ObjectUtils.nullSafeEquals(this.owner, other.owner);
+					&& ObjectUtils.nullSafeEquals(this.variableResolver, other.variableResolver);
 		}
 		return false;
 	}
 
 	public static ResolvableType forClass(Class<?> type) {
 		Assert.notNull(type, "Type class must not be null");
-		return get(type);
+		return forType(type);
 	}
 
 	public static ResolvableType forClass(Class<?> type, Class<?> implementationClass) {
 		Assert.notNull(type, "Type class must not be null");
 		Assert.notNull(implementationClass, "ImplementationClass must not be null");
-		return get(implementationClass).as(type);
+		return forType(implementationClass).as(type);
 	}
 
 	public static ResolvableType forField(Field field) {
 		Assert.notNull(field, "Field must not be null");
-		return get(field.getGenericType());
+		return forType(field.getGenericType());
 	}
 
 	public static ResolvableType forField(Field field, Class<?> implementationClass) {
 		Assert.notNull(field, "Field must not be null");
 		Assert.notNull(implementationClass, "ImplementationClass must not be null");
-		ResolvableType owner = get(implementationClass).as(field.getDeclaringClass());
-		return get(field.getGenericType(), owner);
+		TypeVariableResolver variableResolver = forType(implementationClass).as(field.getDeclaringClass());
+		return forType(field.getGenericType(), variableResolver);
 	}
 
 	public static ResolvableType forConstructorParameter(Constructor<?> constructor,
@@ -327,36 +325,36 @@ public final class ResolvableType {
 		if (methodParameter.resolveClass != null) {
 			return forMethodParameter(methodParameter, methodParameter.resolveClass);
 		}
-		return get(methodParameter.getGenericParameterType());
+		return forType(methodParameter.getGenericParameterType());
 	}
 
 	public static ResolvableType forMethodParameter(MethodParameter methodParameter,
 			Class<?> implementationClass) {
 		Assert.notNull(methodParameter, "MethodParameter must not be null");
 		Assert.notNull(implementationClass, "ImplementationClass must not be null");
-		ResolvableType owner = get(implementationClass).as(
+		TypeVariableResolver variableResolver = forType(implementationClass).as(
 				methodParameter.getMember().getDeclaringClass());
-		return get(methodParameter.getGenericParameterType(), owner);
+		return forType(methodParameter.getGenericParameterType(), variableResolver);
 	}
 
 	public static ResolvableType forMethodReturn(Method method) {
 		Assert.notNull(method, "Method must not be null");
-		return get(method.getGenericReturnType());
+		return forType(method.getGenericReturnType());
 	}
 
 	public static ResolvableType forMethodReturn(Method method, Class<?> implementationClass) {
 		Assert.notNull(method, "Method must not be null");
 		Assert.notNull(implementationClass, "ImplementationClass must not be null");
-		ResolvableType owner = get(implementationClass).as(method.getDeclaringClass());
-		return get(method.getGenericReturnType(), owner);
+		TypeVariableResolver variableResolver = forType(implementationClass).as(method.getDeclaringClass());
+		return forType(method.getGenericReturnType(), variableResolver);
 	}
 
-	public static ResolvableType get(Type type) {
-		return get(type, null);
+	public static ResolvableType forType(Type type) {
+		return forType(type, null);
 	}
 
-	public static ResolvableType get(Type type, ResolvableType owner) {
-		ResolvableType key = new ResolvableType(type, owner);
+	public static ResolvableType forType(Type type, TypeVariableResolver variableResolver) {
+		ResolvableType key = new ResolvableType(type, variableResolver);
 		ResolvableType resolvableType = cache.get(key);
 		if(resolvableType == null) {
 			resolvableType = key;

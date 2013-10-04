@@ -248,13 +248,17 @@ public abstract class GenericTypeResolver {
 	 */
 	@Deprecated
 	public static Class<?> resolveType(Type genericType, Map<TypeVariable, Type> typeVariableMap) {
-		Type resolvedType = getRawType(genericType, typeVariableMap);
-		if (resolvedType instanceof GenericArrayType) {
-			Type componentType = ((GenericArrayType) resolvedType).getGenericComponentType();
-			Class<?> componentClass = resolveType(componentType, typeVariableMap);
-			resolvedType = Array.newInstance(componentClass, 0).getClass();
-		}
-		return (resolvedType instanceof Class ? (Class) resolvedType : Object.class);
+		TypeVariableResolver variableResolver = new TypeVariableMapResolver(typeVariableMap);
+		Class<?> resolved = ResolvableType.forType(genericType, variableResolver).resolve();
+		return (resolved == null ? Object.class : resolved);
+
+//		Type resolvedType = getRawType(genericType, typeVariableMap);
+//		if (resolvedType instanceof GenericArrayType) {
+//			Type componentType = ((GenericArrayType) resolvedType).getGenericComponentType();
+//			Class<?> componentClass = resolveType(componentType, typeVariableMap);
+//			resolvedType = Array.newInstance(componentClass, 0).getClass();
+//		}
+//		return (resolvedType instanceof Class ? (Class) resolvedType : Object.class);
 	}
 
 	/**
@@ -411,6 +415,39 @@ public abstract class GenericTypeResolver {
 				}
 			}
 		}
+	}
+
+	private static class TypeVariableMapResolver implements TypeVariableResolver {
+
+		private Map<TypeVariable, Type> typeVariableMap;
+
+		public TypeVariableMapResolver(Map<TypeVariable, Type> typeVariableMap) {
+			Assert.notNull("TypeVariableMap must not be null");
+			this.typeVariableMap = typeVariableMap;
+		}
+
+		@Override
+		public Type resolveVariable(TypeVariable typeVariable) {
+			return typeVariableMap.get(typeVariable);
+		}
+
+		@Override
+		public int hashCode() {
+			return typeVariableMap.hashCode();
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if(obj == this) {
+				return true;
+			}
+			if(obj instanceof TypeVariableMapResolver) {
+				TypeVariableMapResolver other = (TypeVariableMapResolver) obj;
+				return this.typeVariableMap.equals(other.typeVariableMap);
+			}
+			return false;
+		}
+
 	}
 
 }

@@ -22,9 +22,18 @@ import java.lang.reflect.TypeVariable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.junit.Test;
+import org.springframework.core.BridgeMethodResolverTests.Enclosing;
+import org.springframework.core.BridgeMethodResolverTests.ExtendsEnclosing;
+import org.springframework.core.BridgeMethodResolverTests.Foo;
+import org.springframework.core.BridgeMethodResolverTests.InterBar;
+import org.springframework.core.BridgeMethodResolverTests.MyBar;
+import org.springframework.core.BridgeMethodResolverTests.MyFoo;
 
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 import static org.junit.Assert.*;
 import static org.springframework.core.GenericTypeResolver.*;
 import static org.springframework.util.ReflectionUtils.*;
@@ -158,6 +167,35 @@ public class GenericTypeResolverTests {
 		assertEquals(B.class, resolveTypeArgument(TestImpl.class, ITest.class));
 	}
 
+	@Test
+	public void testGetTypeVariableMap() throws Exception {
+		Map<TypeVariable, Type> map;
+		Entry<TypeVariable, Type> entry;
+
+		map = GenericTypeResolver.getTypeVariableMap(MySimpleInterfaceType.class);
+		entry = map.entrySet().iterator().next();
+		assertThat(map.size(), equalTo(1));
+		assertThat(entry.getKey().toString(), equalTo("T"));
+		assertThat(entry.getValue(), equalTo((Type) String.class));
+
+		map = GenericTypeResolver.getTypeVariableMap(MyCollectionInterfaceType.class);
+		entry = map.entrySet().iterator().next();
+		assertThat(map.size(), equalTo(1));
+		assertThat(entry.getKey().toString(), equalTo("T"));
+		assertThat(entry.getValue().toString(), equalTo("java.util.Collection<java.lang.String>"));
+
+		map = GenericTypeResolver.getTypeVariableMap(MyCollectionSuperclassType.class);
+		entry = map.entrySet().iterator().next();
+		assertThat(map.size(), equalTo(1));
+		assertThat(entry.getKey().toString(), equalTo("T"));
+		assertThat(entry.getValue().toString(), equalTo("java.util.Collection<java.lang.String>"));
+
+		map = GenericTypeResolver.getTypeVariableMap(MySimpleTypeWithMethods.class);
+		entry = map.entrySet().iterator().next();
+		assertThat(map.size(), equalTo(1));
+		assertThat(entry.getKey().toString(), equalTo("T"));
+		assertThat(entry.getValue(), equalTo((Type) Integer.class));
+	}
 
 	public interface MyInterfaceType<T> {
 	}

@@ -620,4 +620,6 @@ public class ResolvableTypeTests {
 
 	static interface ListOfGenericArray extends List<List<String>[]> {
 	}
+
+	// FIXME consider supertype of arrays
 }

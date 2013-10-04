@@ -119,7 +119,7 @@ public abstract class AbstractMessageConverterMethodArgumentResolver implements 
 				}
 
 				Class<?> contextClass = methodParam.getDeclaringClass();
-				Class<T> targetClass = (Class<T>) ResolvableType.get(targetType,
+				Class<T> targetClass = (Class<T>) ResolvableType.forType(targetType,
 						ResolvableType.forMethodParameter(methodParam)).resolve();
 
 				for (HttpMessageConverter<?> converter : this.messageConverters) {
