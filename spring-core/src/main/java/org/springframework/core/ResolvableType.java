@@ -200,7 +200,7 @@ public final class ResolvableType implements TypeVariableResolver {
 		return resolveType().resolve();
 	}
 
-	private ResolvableType resolveType() {
+	ResolvableType resolveType() {
 		Type resolved = null;
 		if (this.type instanceof ParameterizedType) {
 			resolved = ((ParameterizedType) this.type).getRawType();
@@ -239,7 +239,11 @@ public final class ResolvableType implements TypeVariableResolver {
 					}
 				}
 			}
-			return (this.variableResolver == null ? null : this.variableResolver.resolveVariable(variable));
+			Type resolved = (this.variableResolver == null ? null : this.variableResolver.resolveVariable(variable));
+			if(resolved == null && parameterizedType.getOwnerType() != null) {
+				resolved = forType(parameterizedType.getOwnerType(), this.variableResolver).resolveVariable(variable);
+			}
+			return resolved;
 		}
 		if (this.type instanceof TypeVariable<?>) {
 			return resolveType().resolveVariable(variable);

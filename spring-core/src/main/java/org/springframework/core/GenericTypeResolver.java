@@ -16,14 +16,12 @@
 
 package org.springframework.core;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.GenericArrayType;
-import java.lang.reflect.MalformedParameterizedTypeException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -236,7 +234,6 @@ public abstract class GenericTypeResolver {
 			return null;
 		}
 		return type.resolveGenerics();
-		// return doResolveTypeArguments(clazz, clazz, genericIfc);
 	}
 
 	/**
@@ -251,14 +248,49 @@ public abstract class GenericTypeResolver {
 		TypeVariableResolver variableResolver = new TypeVariableMapResolver(typeVariableMap);
 		Class<?> resolved = ResolvableType.forType(genericType, variableResolver).resolve();
 		return (resolved == null ? Object.class : resolved);
+	}
 
-//		Type resolvedType = getRawType(genericType, typeVariableMap);
-//		if (resolvedType instanceof GenericArrayType) {
-//			Type componentType = ((GenericArrayType) resolvedType).getGenericComponentType();
-//			Class<?> componentClass = resolveType(componentType, typeVariableMap);
-//			resolvedType = Array.newInstance(componentClass, 0).getClass();
-//		}
-//		return (resolvedType instanceof Class ? (Class) resolvedType : Object.class);
+	/**
+	 * Build a mapping of {@link TypeVariable#getName TypeVariable names} to
+	 * {@link Class concrete classes} for the specified {@link Class}. Searches
+	 * all super types, enclosing types and interfaces.
+	 * @deprecated as of Spring 4.0 in favor of {@link ResolvableType}
+	 */
+	@Deprecated
+	public static Map<TypeVariable, Type> getTypeVariableMap(Class<?> clazz) {
+		Map<TypeVariable, Type> typeVariableMap = typeVariableCache.get(clazz);
+		if (typeVariableMap == null) {
+			typeVariableMap = new HashMap<TypeVariable, Type>();
+			buildTypeVaraibleMap(ResolvableType.forClass(clazz), typeVariableMap);
+			typeVariableCache.put(clazz, Collections.unmodifiableMap(typeVariableMap));
+		}
+		return typeVariableMap;
+	}
+
+	private static void buildTypeVaraibleMap(ResolvableType type,
+			Map<TypeVariable, Type> typeVariableMap) {
+		if(type != ResolvableType.NONE) {
+			if(type.getType() instanceof ParameterizedType) {
+				TypeVariable<?>[] variables = type.resolve().getTypeParameters();
+				for (int i = 0; i < variables.length; i++) {
+					ResolvableType generic = type.getGeneric(i);
+					while (generic.getType() instanceof TypeVariable<?>) {
+						generic = generic.resolveType();
+					}
+					if (generic != ResolvableType.NONE) {
+						typeVariableMap.put(variables[i], generic.getType());
+					}
+				}
+			}
+			buildTypeVaraibleMap(type.getSuperType(), typeVariableMap);
+			for (ResolvableType interfaceType : type.getInterfaces()) {
+				buildTypeVaraibleMap(interfaceType, typeVariableMap);
+			}
+			if (type.resolve().isMemberClass()) {
+				buildTypeVaraibleMap(ResolvableType.forClass(type.resolve().getEnclosingClass()),
+						typeVariableMap);
+			}
+		}
 	}
 
 	/**
@@ -267,6 +299,7 @@ public abstract class GenericTypeResolver {
 	 * @param typeVariableMap the TypeVariable Map to resolved against
 	 * @return the resolved raw type
 	 */
+	@Deprecated
 	static Type getRawType(Type genericType, Map<TypeVariable, Type> typeVariableMap) {
 		Type resolvedType = genericType;
 		if (genericType instanceof TypeVariable) {
@@ -285,63 +318,9 @@ public abstract class GenericTypeResolver {
 	}
 
 	/**
-	 * Build a mapping of {@link TypeVariable#getName TypeVariable names} to
-	 * {@link Class concrete classes} for the specified {@link Class}. Searches
-	 * all super types, enclosing types and interfaces.
-	 * @deprecated as of Spring 4.0 in favor of {@link ResolvableType}
-	 */
-	@Deprecated
-	public static Map<TypeVariable, Type> getTypeVariableMap(Class<?> clazz) {
-		Map<TypeVariable, Type> typeVariableMap = typeVariableCache.get(clazz);
-
-		if (typeVariableMap == null) {
-			typeVariableMap = new HashMap<TypeVariable, Type>();
-
-			// interfaces
-			extractTypeVariablesFromGenericInterfaces(clazz.getGenericInterfaces(), typeVariableMap);
-
-			try {
-				// super class
-				Class<?> type = clazz;
-				while (type.getSuperclass() != null && !Object.class.equals(type.getSuperclass())) {
-					Type genericType = type.getGenericSuperclass();
-					if (genericType instanceof ParameterizedType) {
-						ParameterizedType pt = (ParameterizedType) genericType;
-						populateTypeMapFromParameterizedType(pt, typeVariableMap);
-					}
-					extractTypeVariablesFromGenericInterfaces(type.getSuperclass().getGenericInterfaces(), typeVariableMap);
-					type = type.getSuperclass();
-				}
-			}
-			catch (MalformedParameterizedTypeException ex) {
-				// from getGenericSuperclass() - ignore and continue with member class check
-			}
-
-			try {
-				// enclosing class
-				Class<?> type = clazz;
-				while (type.isMemberClass()) {
-					Type genericType = type.getGenericSuperclass();
-					if (genericType instanceof ParameterizedType) {
-						ParameterizedType pt = (ParameterizedType) genericType;
-						populateTypeMapFromParameterizedType(pt, typeVariableMap);
-					}
-					type = type.getEnclosingClass();
-				}
-			}
-			catch (MalformedParameterizedTypeException ex) {
-				// from getGenericSuperclass() - ignore and preserve previously accumulated type variables
-			}
-
-			typeVariableCache.put(clazz, typeVariableMap);
-		}
-
-		return typeVariableMap;
-	}
-
-	/**
 	 * Extracts the bound {@code Type} for a given {@link TypeVariable}.
 	 */
+	@Deprecated
 	static Type extractBoundForTypeVariable(TypeVariable typeVariable) {
 		Type[] bounds = typeVariable.getBounds();
 		if (bounds.length == 0) {
@@ -354,68 +333,6 @@ public abstract class GenericTypeResolver {
 		return bound;
 	}
 
-	private static void extractTypeVariablesFromGenericInterfaces(Type[] genericInterfaces, Map<TypeVariable, Type> typeVariableMap) {
-		for (Type genericInterface : genericInterfaces) {
-			if (genericInterface instanceof ParameterizedType) {
-				ParameterizedType pt = (ParameterizedType) genericInterface;
-				populateTypeMapFromParameterizedType(pt, typeVariableMap);
-				if (pt.getRawType() instanceof Class) {
-					extractTypeVariablesFromGenericInterfaces(
-							((Class) pt.getRawType()).getGenericInterfaces(), typeVariableMap);
-				}
-			}
-			else if (genericInterface instanceof Class) {
-				extractTypeVariablesFromGenericInterfaces(
-						((Class) genericInterface).getGenericInterfaces(), typeVariableMap);
-			}
-		}
-	}
-
-	/**
-	 * Read the {@link TypeVariable TypeVariables} from the supplied {@link ParameterizedType}
-	 * and add mappings corresponding to the {@link TypeVariable#getName TypeVariable name} ->
-	 * concrete type to the supplied {@link Map}.
-	 * <p>Consider this case:
-	 * <pre class="code>
-	 * public interface Foo<S, T> {
-	 *  ..
-	 * }
-	 *
-	 * public class FooImpl implements Foo<String, Integer> {
-	 *  ..
-	 * }</pre>
-	 * For '{@code FooImpl}' the following mappings would be added to the {@link Map}:
-	 * {S=java.lang.String, T=java.lang.Integer}.
-	 */
-	private static void populateTypeMapFromParameterizedType(ParameterizedType type, Map<TypeVariable, Type> typeVariableMap) {
-		if (type.getRawType() instanceof Class) {
-			Type[] actualTypeArguments = type.getActualTypeArguments();
-			TypeVariable[] typeVariables = ((Class) type.getRawType()).getTypeParameters();
-			for (int i = 0; i < actualTypeArguments.length; i++) {
-				Type actualTypeArgument = actualTypeArguments[i];
-				TypeVariable variable = typeVariables[i];
-				if (actualTypeArgument instanceof Class) {
-					typeVariableMap.put(variable, actualTypeArgument);
-				}
-				else if (actualTypeArgument instanceof GenericArrayType) {
-					typeVariableMap.put(variable, actualTypeArgument);
-				}
-				else if (actualTypeArgument instanceof ParameterizedType) {
-					typeVariableMap.put(variable, actualTypeArgument);
-				}
-				else if (actualTypeArgument instanceof TypeVariable) {
-					// We have a type that is parameterized at instantiation time
-					// the nearest match on the bridge method will be the bounded type.
-					TypeVariable typeVariableArgument = (TypeVariable) actualTypeArgument;
-					Type resolvedType = typeVariableMap.get(typeVariableArgument);
-					if (resolvedType == null) {
-						resolvedType = extractBoundForTypeVariable(typeVariableArgument);
-					}
-					typeVariableMap.put(variable, resolvedType);
-				}
-			}
-		}
-	}
 
 	private static class TypeVariableMapResolver implements TypeVariableResolver {
 

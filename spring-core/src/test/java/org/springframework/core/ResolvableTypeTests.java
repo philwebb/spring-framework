@@ -33,6 +33,7 @@ import java.util.Map;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.springframework.core.BridgeMethodResolverTests.YourHomer;
 import org.springframework.util.MultiValueMap;
 
 import static org.hamcrest.Matchers.*;
@@ -506,6 +507,15 @@ public class ResolvableTypeTests {
 		assertThat("field " + field + " toString", type.toString(), equalTo(expected));
 	}
 
+	@Test
+	public void resolveFromOuterClass() throws Exception {
+		Field field = EnclosedInParameterizedType.InnerTyped.class.getField("field");
+		ResolvableType type = ResolvableType.forField(field, TypedEnclosedInParameterizedType.TypedInnerTyped.class);
+		assertThat(type.resolve(), equalTo((Type) Integer.class));
+
+		// MalformedParameterizedTypeException
+	}
+
 	// FIXME would be nice to support resolveReturnTypeForGenericMethod style
 
 	// FIXME sort here down
@@ -528,6 +538,12 @@ public class ResolvableTypeTests {
 		ResolvableType type = ResolvableType.forField(Fields.class.getField("extendsCharSequenceList"));
 		assertThat(type.getGeneric().getType().toString(),
 				equalTo("? extends java.lang.CharSequence"));
+	}
+
+	@Test
+	public void dunno() throws Exception {
+		ResolvableType type = ResolvableType.forClass(YourHomer.class);
+		System.out.println(type);
 	}
 
 	static class ExtendsList extends ArrayList<CharSequence> {
@@ -621,5 +637,22 @@ public class ResolvableTypeTests {
 	static interface ListOfGenericArray extends List<List<String>[]> {
 	}
 
+	static class EnclosedInParameterizedType<T> {
+		static class InnerRaw {
+		}
+
+		class InnerTyped<Y> {
+			public T field;
+		}
+	}
+
+	static class TypedEnclosedInParameterizedType extends EnclosedInParameterizedType<Integer> {
+		class TypedInnerTyped extends InnerTyped<Long> {
+		}
+	}
+
+
 	// FIXME consider supertype of arrays
+	// FIXME consider enclosed type
+	// FIXME getEnclosingClass
 }

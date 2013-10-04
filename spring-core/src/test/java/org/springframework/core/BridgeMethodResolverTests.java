@@ -231,6 +231,7 @@ public class BridgeMethodResolverTests {
 	public void testSPR2454() throws Exception {
 		Map<TypeVariable, Type> typeVariableMap = GenericTypeResolver.getTypeVariableMap(YourHomer.class);
 		TypeVariable<?> variable = findTypeVariable(MyHomer.class, "L");
+		System.out.println(typeVariableMap.get(variable));
 		assertEquals(AbstractBounded.class, ((ParameterizedType) typeVariableMap.get(variable)).getRawType());
 	}
 

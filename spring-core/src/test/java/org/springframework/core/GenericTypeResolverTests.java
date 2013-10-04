@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.hamcrest.Matcher;
 import org.junit.Test;
 import org.springframework.core.BridgeMethodResolverTests.Enclosing;
 import org.springframework.core.BridgeMethodResolverTests.ExtendsEnclosing;
@@ -31,6 +32,8 @@ import org.springframework.core.BridgeMethodResolverTests.Foo;
 import org.springframework.core.BridgeMethodResolverTests.InterBar;
 import org.springframework.core.BridgeMethodResolverTests.MyBar;
 import org.springframework.core.BridgeMethodResolverTests.MyFoo;
+
+import static org.mockito.Mockito.*;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -170,31 +173,39 @@ public class GenericTypeResolverTests {
 	@Test
 	public void testGetTypeVariableMap() throws Exception {
 		Map<TypeVariable, Type> map;
-		Entry<TypeVariable, Type> entry;
 
 		map = GenericTypeResolver.getTypeVariableMap(MySimpleInterfaceType.class);
-		entry = map.entrySet().iterator().next();
-		assertThat(map.size(), equalTo(1));
-		assertThat(entry.getKey().toString(), equalTo("T"));
-		assertThat(entry.getValue(), equalTo((Type) String.class));
+		assertThat(map.toString(), equalTo("{T=class java.lang.String}"));
 
 		map = GenericTypeResolver.getTypeVariableMap(MyCollectionInterfaceType.class);
-		entry = map.entrySet().iterator().next();
-		assertThat(map.size(), equalTo(1));
-		assertThat(entry.getKey().toString(), equalTo("T"));
-		assertThat(entry.getValue().toString(), equalTo("java.util.Collection<java.lang.String>"));
+		assertThat(map.toString(), equalTo("{T=java.util.Collection<java.lang.String>}"));
 
 		map = GenericTypeResolver.getTypeVariableMap(MyCollectionSuperclassType.class);
-		entry = map.entrySet().iterator().next();
-		assertThat(map.size(), equalTo(1));
-		assertThat(entry.getKey().toString(), equalTo("T"));
-		assertThat(entry.getValue().toString(), equalTo("java.util.Collection<java.lang.String>"));
+		assertThat(map.toString(), equalTo("{T=java.util.Collection<java.lang.String>}"));
 
 		map = GenericTypeResolver.getTypeVariableMap(MySimpleTypeWithMethods.class);
-		entry = map.entrySet().iterator().next();
-		assertThat(map.size(), equalTo(1));
-		assertThat(entry.getKey().toString(), equalTo("T"));
-		assertThat(entry.getValue(), equalTo((Type) Integer.class));
+		assertThat(map.toString(), equalTo("{T=class java.lang.Integer}"));
+
+		map = GenericTypeResolver.getTypeVariableMap(TopLevelClass.class);
+		assertThat(map.toString(), equalTo("{}"));
+
+		map = GenericTypeResolver.getTypeVariableMap(TypedTopLevelClass.class);
+		assertThat(map.toString(), equalTo("{T=class java.lang.Integer}"));
+
+		map = GenericTypeResolver.getTypeVariableMap(TypedTopLevelClass.TypedNested.class);
+		assertThat(map.size(), equalTo(2));
+		Type t = null;
+		Type x = null;
+		for (Map.Entry<TypeVariable, Type> entry : map.entrySet()) {
+			if(entry.getKey().toString().equals("T")) {
+				t = entry.getValue();
+			}
+			else {
+				x = entry.getValue();
+			}
+		}
+		assertThat(t, equalTo((Type) Integer.class));
+		assertThat(x, equalTo((Type) Long.class));
 	}
 
 	public interface MyInterfaceType<T> {
@@ -320,6 +331,16 @@ public class GenericTypeResolverTests {
 	class ITest<T>{}
 
 	class TestImpl<I extends A, T extends B<I>> extends ITest<T>{
+	}
+
+	static class TopLevelClass<T> {
+		class Nested<X> {
+		}
+	}
+
+	static class TypedTopLevelClass extends TopLevelClass<Integer> {
+		class TypedNested extends Nested<Long> {
+		}
 	}
 
 }
