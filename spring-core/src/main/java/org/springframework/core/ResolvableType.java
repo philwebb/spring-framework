@@ -323,6 +323,13 @@ public final class ResolvableType implements TypeVariableResolver {
 				parameterIndex));
 	}
 
+	public static ResolvableType forMethodParameter(Method method, int parameterIndex,
+			Class<?> implementationClass) {
+		Assert.notNull(method, "Method must not be null");
+		return forMethodParameter(MethodParameter.forMethodOrConstructor(method,
+				parameterIndex), implementationClass);
+	}
+
 	public static ResolvableType forMethodParameter(MethodParameter methodParameter) {
 		Assert.notNull(methodParameter, "MethodParameter must not be null");
 		//FIXME not here?

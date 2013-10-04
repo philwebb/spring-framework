@@ -512,9 +512,9 @@ public class ResolvableTypeTests {
 		Field field = EnclosedInParameterizedType.InnerTyped.class.getField("field");
 		ResolvableType type = ResolvableType.forField(field, TypedEnclosedInParameterizedType.TypedInnerTyped.class);
 		assertThat(type.resolve(), equalTo((Type) Integer.class));
-
-		// MalformedParameterizedTypeException
 	}
+
+	// FIXME MalformedParameterizedTypeException
 
 	// FIXME would be nice to support resolveReturnTypeForGenericMethod style
 
@@ -651,8 +651,8 @@ public class ResolvableTypeTests {
 		}
 	}
 
-
 	// FIXME consider supertype of arrays
 	// FIXME consider enclosed type
 	// FIXME getEnclosingClass
+	// FIXME
 }
