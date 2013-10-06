@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.hamcrest.Matchers;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -84,8 +85,8 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void forClassMustNotBeNull() throws Exception {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("Type class must not be null");
+		this.thrown.expect(IllegalArgumentException.class);
+		this.thrown.expectMessage("Type class must not be null");
 		ResolvableType.forClass(null);
 	}
 
@@ -98,8 +99,8 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void forFieldMustNotBeNull() throws Exception {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("Field must not be null");
+		this.thrown.expect(IllegalArgumentException.class);
+		this.thrown.expectMessage("Field must not be null");
 		ResolvableType.forField(null);
 	}
 
@@ -112,8 +113,8 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void forConstructorParameterMustNotBeNull() throws Exception {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("Constructor must not be null");
+		this.thrown.expect(IllegalArgumentException.class);
+		this.thrown.expectMessage("Constructor must not be null");
 		ResolvableType.forConstructorParameter(null, 0);
 	}
 
@@ -126,8 +127,8 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void forMethodParameterByIndexMustNotBeNull() throws Exception {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("Method must not be null");
+		this.thrown.expect(IllegalArgumentException.class);
+		this.thrown.expectMessage("Method must not be null");
 		ResolvableType.forMethodParameter(null, 0);
 	}
 
@@ -165,8 +166,8 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void forMethodParameterMustNotBeNull() throws Exception {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("MethodParameter must not be null");
+		this.thrown.expect(IllegalArgumentException.class);
+		this.thrown.expectMessage("MethodParameter must not be null");
 		ResolvableType.forMethodParameter(null);
 	}
 
@@ -179,8 +180,8 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void forMethodReturnMustNotBeNull() throws Exception {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("Method must not be null");
+		this.thrown.expect(IllegalArgumentException.class);
+		this.thrown.expectMessage("Method must not be null");
 		ResolvableType.forMethodReturn(null);
 	}
 
@@ -300,6 +301,12 @@ public class ResolvableTypeTests {
 	public void asNotFound() throws Exception {
 		ResolvableType type = ResolvableType.forClass(ExtendsList.class).as(Map.class);
 		assertThat(type, sameInstance(ResolvableType.NONE));
+	}
+
+	@Test
+	public void asSelf() throws Exception {
+		ResolvableType type = ResolvableType.forClass(ExtendsList.class);
+		assertThat(type.as(ExtendsList.class), equalTo(type));
 	}
 
 	@Test
@@ -467,11 +474,10 @@ public class ResolvableTypeTests {
 	}
 
 	@Test
-	public void resolveVariableFromSuperType() throws Exception {
-		ResolvableType type = ResolvableType.forClass(ExtendsList.class);
-		assertThat(type.resolve(), equalTo((Class) ExtendsList.class));
-		assertThat(type.asCollection().resolveGeneric(),
-				equalTo((Class) CharSequence.class));
+	public void resolveVariableFromFieldTypeUnknown() throws Exception {
+		ResolvableType type = ResolvableType.forField(Fields.class.getField("parameterizedType"));
+		assertThat(type.resolve(), equalTo((Class) List.class));
+		assertThat(type.getGeneric().resolve(), nullValue());
 	}
 
 	@Test
@@ -501,24 +507,27 @@ public class ResolvableTypeTests {
 	}
 
 	@Test
-	public void resolveVariableNotFound() throws Exception {
-		// FIXME
-	}
-
-	@Test
 	public void resolveBoundedTypeVariableResult() throws Exception {
 		ResolvableType type = ResolvableType.forMethodReturn(Methods.class.getMethod("boundedTypeVaraibleResult"));
 		assertThat(type.resolve(), equalTo((Class) CharSequence.class));
 	}
 
 	@Test
-	public void resolveTypeVaraibleFromMethod() throws Exception {
-		//FIXME
+	public void resolveVariableNotFound() throws Exception {
+		ResolvableType type = ResolvableType.forMethodReturn(Methods.class.getMethod("typedReturn"));
+		assertThat(type.resolve(), nullValue());
 	}
 
 	@Test
-	public void resolveTypeVaraibleFromMethodAndOwner() throws Exception {
-		//FIXME
+	public void resolveTypeVaraibleFromMethodReturn() throws Exception {
+		ResolvableType type = ResolvableType.forMethodReturn(Methods.class.getMethod("typedReturn"));
+		assertThat(type.resolve(), nullValue());
+	}
+
+	@Test
+	public void resolveTypeVaraibleFromMethodReturnWithInstanceClass() throws Exception {
+		ResolvableType type = ResolvableType.forMethodReturn(Methods.class.getMethod("typedReturn"), TypedMethods.class);
+		assertThat(type.resolve(), equalTo((Class) String.class));
 	}
 
 	@Test
@@ -548,6 +557,123 @@ public class ResolvableTypeTests {
 	}
 
 	@Test
+	public void resolveTypeVariableFromFieldTypeWithImplementsClass() throws Exception {
+		ResolvableType type = ResolvableType.forField(Fields.class.getField("parameterizedType"), TypedFields.class);
+		assertThat(type.resolve(), equalTo((Class) List.class));
+		assertThat(type.getGeneric().resolve(), equalTo((Class) String.class));
+	}
+
+	@Test
+	public void resolveTypeVariableFromSuperType() throws Exception {
+		ResolvableType type = ResolvableType.forClass(ExtendsList.class);
+		assertThat(type.resolve(), equalTo((Class) ExtendsList.class));
+		assertThat(type.asCollection().resolveGeneric(),
+				equalTo((Class) CharSequence.class));
+	}
+
+	@Test
+	public void resolveTypeVariableFromClassWithImplementsClass() throws Exception {
+		ResolvableType type = ResolvableType.forClass(MySuperclassType.class, MyCollectionSuperclassType.class);
+		assertThat(type.resolveGeneric(), equalTo((Class) Collection.class));
+		assertThat(type.resolveGeneric(0, 0), equalTo((Class) String.class));
+	}
+
+	@Test
+	public void resolveTypeVariableFromConstructorParameter() throws Exception {
+		Constructor<?> constructor = Constructors.class.getConstructor(List.class);
+		ResolvableType type = ResolvableType.forConstructorParameter(constructor, 0);
+		assertThat(type.resolve(), equalTo((Class) List.class));
+		assertThat(type.resolveGeneric(0), equalTo((Class) CharSequence.class));
+	}
+
+	@Test
+	public void resolveUnknownTypeVariableFromConstructorParameter() throws Exception {
+		Constructor<?> constructor = Constructors.class.getConstructor(Map.class);
+		ResolvableType type = ResolvableType.forConstructorParameter(constructor, 0);
+		assertThat(type.resolve(), equalTo((Class) Map.class));
+		assertThat(type.resolveGeneric(0), nullValue());
+	}
+
+	@Test
+	public void resolveTypeVariableFromConstructorParameterWithImplementsClass() throws Exception {
+		Constructor<?> constructor = Constructors.class.getConstructor(Map.class);
+		ResolvableType type = ResolvableType.forConstructorParameter(constructor, 0, TypedConstructors.class);
+		assertThat(type.resolve(), equalTo((Class) Map.class));
+		assertThat(type.resolveGeneric(0), equalTo((Class) String.class));
+	}
+
+	@Test
+	public void resolveTypeVariableFromMethodParameter() throws Exception {
+		Method method = Methods.class.getMethod("typedParameter", Object.class);
+		ResolvableType type = ResolvableType.forMethodParameter(method, 0);
+		assertThat(type.resolve(), nullValue());
+		assertThat(type.getType().toString(), equalTo("T"));
+	}
+
+	@Test
+	public void resolveTypeVariableFromMethodParameterWithImplementsClass() throws Exception {
+		Method method = Methods.class.getMethod("typedParameter", Object.class);
+		ResolvableType type = ResolvableType.forMethodParameter(method, 0, TypedMethods.class);
+		assertThat(type.resolve(), equalTo((Class) String.class));
+		assertThat(type.getType().toString(), equalTo("T"));
+	}
+
+	@Test
+	public void resolveTypeVariableFromMethodParameterType() throws Exception {
+		Method method = Methods.class.getMethod("typedParameter", Object.class);
+		MethodParameter methodParameter = MethodParameter.forMethodOrConstructor(method, 0);
+		ResolvableType type = ResolvableType.forMethodParameter(methodParameter);
+		assertThat(type.resolve(), nullValue());
+		assertThat(type.getType().toString(), equalTo("T"));
+	}
+
+	@Test
+	public void resolveTypeVariableFromMethodParameterTypeWithImplementsClass() throws Exception {
+		Method method = Methods.class.getMethod("typedParameter", Object.class);
+		MethodParameter methodParameter = MethodParameter.forMethodOrConstructor(method, 0);
+		ResolvableType type = ResolvableType.forMethodParameter(methodParameter, TypedMethods.class);
+		assertThat(type.resolve(), equalTo((Class) String.class));
+		assertThat(type.getType().toString(), equalTo("T"));
+	}
+
+	@Test
+	public void resolveTypeVariableFromMethodReturn() throws Exception {
+		Method method = Methods.class.getMethod("typedReturn");
+		ResolvableType type = ResolvableType.forMethodReturn(method);
+		assertThat(type.resolve(), nullValue());
+		assertThat(type.getType().toString(), equalTo("T"));
+	}
+
+	@Test
+	public void resolveTypeVariableFromMethodReturnWithImplementsClass() throws Exception {
+		Method method = Methods.class.getMethod("typedReturn");
+		ResolvableType type = ResolvableType.forMethodReturn(method, TypedMethods.class);
+		assertThat(type.resolve(), equalTo((Class) String.class));
+		assertThat(type.getType().toString(), equalTo("T"));
+	}
+
+	@Test
+	public void resolveTypeVariableFromType() throws Exception {
+		Type sourceType = Methods.class.getMethod("typedReturn").getGenericReturnType();
+		ResolvableType type = ResolvableType.forType(sourceType);
+		assertThat(type.resolve(), nullValue());
+		assertThat(type.getType().toString(), equalTo("T"));
+	}
+
+	@Test
+	public void resolveTypeVariableFromTypeWithVariableResolver() throws Exception {
+		Type sourceType = Methods.class.getMethod("typedReturn").getGenericReturnType();
+		ResolvableType type = ResolvableType.forType(sourceType, ResolvableType.forClass(TypedMethods.class).as(Methods.class));
+		assertThat(type.resolve(), equalTo((Class) String.class));
+		assertThat(type.getType().toString(), equalTo("T"));
+	}
+
+	@Test
+	public void resolveTypeWithCustomVariableResolver() throws Exception {
+		//FIXME
+	}
+
+	@Test
 	public void toStrings() throws Exception {
 		assertThat(ResolvableType.NONE.toString(), equalTo("?"));
 
@@ -563,7 +689,6 @@ public class ResolvableTypeTests {
 		assertFieldToStringValue("stringList", "java.util.List<java.lang.String>");
 		assertFieldToStringValue("stringListList", "java.util.List<java.util.List<java.lang.String>>");
 		assertFieldToStringValue("stringArrayList", "java.util.List<java.lang.String[]>");
-		assertFieldToStringValue("extendsCharSequenceList", "java.util.List<java.lang.CharSequence>");
 		assertFieldToStringValue("stringIntegerMultiValueMap", "org.springframework.util.MultiValueMap<java.lang.String, java.lang.Integer>");
 		assertFieldToStringValue("stringIntegerMultiValueMapSwitched", VariableNameSwitch.class.getName() + "<java.lang.Integer, java.lang.String>");
 		assertFieldToStringValue("listOfListOfUnknown", "java.util.List<java.util.List>");
@@ -581,7 +706,7 @@ public class ResolvableTypeTests {
 	}
 
 	private void assertTypedFieldToStringValue(String field, String expected) throws Exception {
-		ResolvableType type = ResolvableType.forField(Fields.class.getField(field), TypeFields.class);
+		ResolvableType type = ResolvableType.forField(Fields.class.getField(field), TypedFields.class);
 		assertThat("field " + field + " toString", type.toString(), equalTo(expected));
 	}
 
@@ -592,32 +717,175 @@ public class ResolvableTypeTests {
 		assertThat(type.resolve(), equalTo((Type) Integer.class));
 	}
 
-	// FIXME MalformedParameterizedTypeException
+	@Test
+	public void isAssignableFromMustNotBeNull() throws Exception {
+		this.thrown.expect(IllegalArgumentException.class);
+		this.thrown.expectMessage("Type must not be null");
+		ResolvableType.forClass(Object.class).isAssignableFrom(null);
+	}
+
+	@Test
+	public void isAssignableFromForNone() throws Exception {
+		ResolvableType objectType = ResolvableType.forClass(Object.class);
+		assertThat(objectType.isAssignableFrom(ResolvableType.NONE), equalTo(false));
+		assertThat(ResolvableType.NONE.isAssignableFrom(objectType), equalTo(false));
+	}
+
+	@Test
+	public void isAssignableFromForClassAndClass() throws Exception {
+		ResolvableType objectType = ResolvableType.forClass(Object.class);
+		ResolvableType charSequenceType = ResolvableType.forClass(CharSequence.class);
+		ResolvableType stringType = ResolvableType.forClass(String.class);
+
+		assertAssignable(objectType, objectType, charSequenceType, stringType).equalTo(true, true, true);
+		assertAssignable(charSequenceType, objectType, charSequenceType, stringType).equalTo(false, true, true);
+		assertAssignable(stringType, objectType, charSequenceType, stringType).equalTo(false, false, true);
+	}
+
+	@Test
+	public void isAssignableFromCannotBeResolved() throws Exception {
+		ResolvableType objectType = ResolvableType.forClass(Object.class);
+		ResolvableType unresolvableVariable = ResolvableType.forField(AssignmentBase.class.getField("o"));
+		assertThat(unresolvableVariable.resolve(), nullValue());
+		assertAssignable(objectType, unresolvableVariable).equalTo(false);
+		assertAssignable(unresolvableVariable, objectType).equalTo(false);
+	}
+
+	@Test
+	public void isAssignableFromForClassAndSimpleVariable() throws Exception {
+		ResolvableType objectType = ResolvableType.forClass(Object.class);
+		ResolvableType charSequenceType = ResolvableType.forClass(CharSequence.class);
+		ResolvableType stringType = ResolvableType.forClass(String.class);
+
+		ResolvableType objectVariable = ResolvableType.forField(AssignmentBase.class.getField("o"), Assignment.class);
+		ResolvableType charSequenceVariable = ResolvableType.forField(AssignmentBase.class.getField("c"), Assignment.class);
+		ResolvableType stringVariable = ResolvableType.forField(AssignmentBase.class.getField("s"), Assignment.class);
+
+		assertAssignable(objectType, objectVariable, charSequenceVariable, stringVariable).equalTo(true, true, true);
+		assertAssignable(charSequenceType, objectVariable, charSequenceVariable, stringVariable).equalTo(false, true, true);
+		assertAssignable(stringType, objectVariable, charSequenceVariable, stringVariable).equalTo(false, false, true);
+
+		assertAssignable(objectVariable, objectType, charSequenceType, stringType).equalTo(true, true, true);
+		assertAssignable(charSequenceVariable, objectType, charSequenceType, stringType).equalTo(false, true, true);
+		assertAssignable(stringVariable, objectType, charSequenceType, stringType).equalTo(false, false, true);
+
+		assertAssignable(objectVariable, objectVariable, charSequenceVariable, stringVariable).equalTo(true, true, true);
+		assertAssignable(charSequenceVariable, objectVariable, charSequenceVariable, stringVariable).equalTo(false, true, true);
+		assertAssignable(stringVariable, objectVariable, charSequenceVariable, stringVariable).equalTo(false, false, true);
+	}
+
+	@Test
+	public void isAssignableFromForSameClassNonExtendsGenerics() throws Exception {
+		ResolvableType objectList = ResolvableType.forField(AssignmentBase.class.getField("listo"), Assignment.class);
+		ResolvableType stringList = ResolvableType.forField(AssignmentBase.class.getField("lists"), Assignment.class);
+
+		assertAssignable(stringList, objectList).equalTo(false);
+		assertAssignable(objectList, stringList).equalTo(false);
+		assertAssignable(stringList, stringList).equalTo(true);
+	}
+
+	@Test
+	public void isAssignableFromForSameClassExtendsGenerics() throws Exception {
+
+		// Generic assignment can be a little confusing, given:
+		//
+		// List<CharSequence> c1, List<? extends CharSequence> c2, List<String> s;
+		//
+		// c2 = s; is allowed and is often used for argument input, for example
+		// see List.addAll(). You can get items from c2 but you cannot add items without
+		// getting a generic type 'is not applicable for the arguments' error. This makes
+		// sense since if you added a StringBuffer to c2 it would break the rules on s.
+		//
+		// c1 = s; not allowed. Since there is no '? extends' to cause the generic
+		// 'is not applicable for the arguments' error when adding (which would pollute s).
+
+		List<CharSequence> c1 = null;
+		c1.add(new StringBuffer("X"));
+
+		ResolvableType objectList = ResolvableType.forField(AssignmentBase.class.getField("listo"), Assignment.class);
+		ResolvableType charSequenceList = ResolvableType.forField(AssignmentBase.class.getField("listc"), Assignment.class);
+		ResolvableType stringList = ResolvableType.forField(AssignmentBase.class.getField("lists"), Assignment.class);
+		ResolvableType extendsObjectList = ResolvableType.forField(AssignmentBase.class.getField("listxo"), Assignment.class);
+		ResolvableType extendsCharSequenceList = ResolvableType.forField(AssignmentBase.class.getField("listxc"), Assignment.class);
+		ResolvableType extendsStringList = ResolvableType.forField(AssignmentBase.class.getField("listxs"), Assignment.class);
+
+		assertAssignable(objectList, extendsObjectList, extendsCharSequenceList, extendsStringList).equalTo(false, false, false);
+		assertAssignable(charSequenceList, extendsObjectList, extendsCharSequenceList, extendsStringList).equalTo(false, false, false);
+		assertAssignable(stringList, extendsObjectList, extendsCharSequenceList, extendsStringList).equalTo(false, false, false);
+		assertAssignable(extendsObjectList, objectList, charSequenceList, stringList).equalTo(true, true, true);
+		assertAssignable(extendsObjectList, extendsObjectList, extendsCharSequenceList, extendsStringList).equalTo(true, true, true);
+		assertAssignable(extendsCharSequenceList, extendsObjectList, extendsCharSequenceList, extendsStringList).equalTo(false, true, true);
+		assertAssignable(extendsCharSequenceList, objectList, charSequenceList, stringList).equalTo(false, true, true);
+		assertAssignable(extendsStringList, extendsObjectList, extendsCharSequenceList, extendsStringList).equalTo(false, false, true);
+		assertAssignable(extendsStringList, objectList, charSequenceList, stringList).equalTo(false, false, true);
+	}
+
+	@Test
+	public void isAssignableFromForDifferentClassesWithGenerics() throws Exception {
+		ResolvableType extendsCharSequenceCollection = ResolvableType.forField(AssignmentBase.class.getField("collectionxc"), Assignment.class);
+		ResolvableType charSequenceCollection = ResolvableType.forField(AssignmentBase.class.getField("collectionc"), Assignment.class);
+		ResolvableType charSequenceList = ResolvableType.forField(AssignmentBase.class.getField("listc"), Assignment.class);
+		ResolvableType extendsCharSequenceList = ResolvableType.forField(AssignmentBase.class.getField("listxc"), Assignment.class);
+		ResolvableType extendsStringList = ResolvableType.forField(AssignmentBase.class.getField("listxs"), Assignment.class);
+
+		assertAssignable(extendsCharSequenceCollection, charSequenceCollection, charSequenceList, extendsCharSequenceList, extendsStringList).equalTo(true, true, true, true);
+		assertAssignable(charSequenceCollection, charSequenceList, extendsCharSequenceList, extendsStringList).equalTo(true, false, false);
+		assertAssignable(charSequenceList, extendsCharSequenceCollection, charSequenceCollection).equalTo(false, false);
+		assertAssignable(extendsCharSequenceList, extendsCharSequenceCollection, charSequenceCollection).equalTo(false, false);
+		assertAssignable(extendsStringList, charSequenceCollection, charSequenceList, extendsCharSequenceList).equalTo(false, false, false);
+	}
+
+	@Test
+	public void isAssignableFromForArrays() throws Exception {
+		ResolvableType object = ResolvableType.forField(AssignmentBase.class.getField("o"), Assignment.class);
+		ResolvableType objectArray = ResolvableType.forField(AssignmentBase.class.getField("oarray"), Assignment.class);
+		ResolvableType charSequenceArray = ResolvableType.forField(AssignmentBase.class.getField("carray"), Assignment.class);
+		ResolvableType stringArray = ResolvableType.forField(AssignmentBase.class.getField("sarray"), Assignment.class);
+
+		assertAssignable(object, objectArray, charSequenceArray, stringArray).equalTo(true, true, true);
+		assertAssignable(objectArray, object, objectArray, charSequenceArray, stringArray).equalTo(false, true, true, true);
+		assertAssignable(charSequenceArray, object, objectArray, charSequenceArray, stringArray).equalTo(false, false, true, true);
+		assertAssignable(stringArray, object, objectArray, charSequenceArray, stringArray).equalTo(false, false, false, true);
+	}
+
+
+	// FIXME bounded variable and bounded types
+
+	private static AssertAssignbleMatcher assertAssignable(final ResolvableType type, final ResolvableType... fromTypes) {
+		return new AssertAssignbleMatcher() {
+			@Override
+			public void equalTo(boolean... values) {
+				for (int i = 0; i < fromTypes.length; i++) {
+					assertThat(stringDesc(type) + " isAssignableFrom " + stringDesc(fromTypes[i]),
+							type.isAssignableFrom(fromTypes[i]), Matchers.equalTo(values[i]));
+				}
+			}
+
+		};
+	}
+
+	private static interface AssertAssignbleMatcher {
+		void equalTo(boolean... values);
+	}
+
+	private static String stringDesc(ResolvableType type) {
+		if(type == ResolvableType.NONE) {
+			return "NONE";
+		}
+		if(type.getType().getClass().equals(Class.class)) {
+			return type.toString();
+		}
+		return type.getType() + ":" + type;
+	}
+
+	// FIXME worry about MalformedParameterizedTypeException ?
 
 	// FIXME would be nice to support resolveReturnTypeForGenericMethod style
 
-	// FIXME sort here down
-
 	// FIXME Array getSuperType and Array getInterfaces ?
-
-	// FIXME asSelf
-
-	// FIXME with ownerTypes
 
 	// FIXME hc equals
 
-	// FIXME resolveGenerics
-
-	// FIXME consider supertype/interface of arrays
-
-	// FIXME with custom variable resolver
-
-	@Test
-	public void getExtendsGeneric() throws Exception {
-		ResolvableType type = ResolvableType.forField(Fields.class.getField("extendsCharSequenceList"));
-		assertThat(type.getGeneric().getType().toString(),
-				equalTo("? extends java.lang.CharSequence"));
-	}
 
 	static class ExtendsList extends ArrayList<CharSequence> {
 	}
@@ -651,8 +919,6 @@ public class ResolvableTypeTests {
 
 		public List<String[]> stringArrayList;
 
-		public List<? extends CharSequence> extendsCharSequenceList;
-
 		public MultiValueMap<String, Integer> stringIntegerMultiValueMap;
 
 		public VariableNameSwitch<Integer, String> stringIntegerMultiValueMapSwitched;
@@ -661,7 +927,7 @@ public class ResolvableTypeTests {
 
 	}
 
-	static class TypeFields extends Fields<String> {
+	static class TypedFields extends Fields<String> {
 	}
 
 	static interface Methods<T> {
@@ -676,14 +942,73 @@ public class ResolvableTypeTests {
 
 		void typedParameter(T p);
 
+		T typedReturn();
+
+	}
+
+	static class AssignmentBase<O, C, S> {
+
+		public O o;
+
+		public C c;
+
+		public S s;
+
+		public List<O> listo;
+
+		public List<C> listc;
+
+		public List<S> lists;
+
+		public List<? extends O> listxo;
+
+		public List<? extends C> listxc;
+
+		public List<? extends S> listxs;
+
+		public O[] oarray;
+
+		public C[] carray;
+
+		public C[] sarray;
+
+		public Collection<C> collectionc;
+
+		public Collection<? extends C> collectionxc;
+	}
+
+	static class Assignment extends AssignmentBase<Object, CharSequence, String> {
+	}
+
+	static abstract class BoundedAssignment<C extends CharSequence> {
+		// FIXME
+
+		public C c;
+
+
 	}
 
 	static interface TypedMethods extends Methods<String> {
 	}
 
-	static class Constructors {
+	static class Constructors<T> {
 
-		public Constructors(List<CharSequence> cs) {
+		public Constructors(List<CharSequence> p) {
+		}
+
+		public Constructors(Map<T, Long> p) {
+		}
+
+	}
+
+	static class TypedConstructors extends Constructors<String> {
+
+		public TypedConstructors(List<CharSequence> p) {
+			super(p);
+		}
+
+		public TypedConstructors(Map<String, Long> p) {
+			super(p);
 		}
 
 	}

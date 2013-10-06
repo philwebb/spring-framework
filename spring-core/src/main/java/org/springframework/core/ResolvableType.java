@@ -61,6 +61,14 @@ public final class ResolvableType implements TypeVariableResolver {
 		return this.type;
 	}
 
+	public boolean isAssignableFrom(ResolvableType type) {
+		Assert.notNull(type, "Type must not be null");
+		if(resolve() == null || type.resolve() == null) {
+			return false;
+		}
+		return resolve().isAssignableFrom(type.resolve());
+	}
+
 	public boolean isArray() {
 		if (this == NONE) {
 			return false;
@@ -318,6 +326,14 @@ public final class ResolvableType implements TypeVariableResolver {
 				parameterIndex));
 	}
 
+	public static ResolvableType forConstructorParameter(Constructor<?> constructor,
+			int parameterIndex, Class<?> implementationClass) {
+		Assert.notNull(constructor, "Constructor must not be null");
+		Assert.notNull(implementationClass, "ImplementationClass must not be null");
+		return forMethodParameter(MethodParameter.forMethodOrConstructor(constructor,
+				parameterIndex), implementationClass);
+	}
+
 	public static ResolvableType forMethodParameter(Method method, int parameterIndex) {
 		Assert.notNull(method, "Method must not be null");
 		return forMethodParameter(MethodParameter.forMethodOrConstructor(method,
@@ -333,6 +349,7 @@ public final class ResolvableType implements TypeVariableResolver {
 
 	public static ResolvableType forMethodParameter(MethodParameter methodParameter) {
 		Assert.notNull(methodParameter, "MethodParameter must not be null");
+		//FIXME not here?
 		if (methodParameter.resolveClass != null) {
 			return forMethodParameter(methodParameter, methodParameter.resolveClass);
 		}
