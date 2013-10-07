@@ -25,6 +25,6 @@ import java.lang.reflect.TypeVariable;
  */
 public interface TypeVariableResolver {
 
-	Type resolveVariable(TypeVariable typeVariable);
+	Type resolveVariable(TypeVariable<?> typeVariable);
 
 }

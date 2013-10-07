@@ -39,8 +39,7 @@ import org.springframework.util.StringUtils;
  */
 public final class ResolvableType implements TypeVariableResolver {
 
-	private static ConcurrentReferenceHashMap<ResolvableType, ResolvableType> cache =
-			new ConcurrentReferenceHashMap<ResolvableType, ResolvableType>();
+	private static ConcurrentReferenceHashMap<ResolvableType, ResolvableType> cache = new ConcurrentReferenceHashMap<ResolvableType, ResolvableType>();
 
 	public static final ResolvableType NONE = new ResolvableType(null, null);
 
@@ -63,17 +62,94 @@ public final class ResolvableType implements TypeVariableResolver {
 
 	public boolean isAssignableFrom(ResolvableType type) {
 		Assert.notNull(type, "Type must not be null");
-		if(resolve() == null || type.resolve() == null) {
+		if (resolve() == null || type.resolve() == null) {
 			return false;
 		}
-		return resolve().isAssignableFrom(type.resolve());
+
+		if (isArray()) {
+			return (type.isArray() && getComponentType().isAssignableFrom(
+					type.getComponentType()));
+		}
+
+		return isTypeAssignableFrom(type)
+				&& isGenericallyAssignableFrom(type.as(resolve()));
+	}
+
+	private boolean isTypeAssignableFrom(ResolvableType type) {
+		ResolvableType asWildcard = type.resolveType(WildcardType.class);
+		ResolvableType typeAsWildcard = type.resolveType(WildcardType.class);
+		if (asWildcard != null) {
+			return (typeAsWildcard != null ? asWildcard.isWildcardAssignableFromWildcard(typeAsWildcard)
+					: asWildcard.isWildcardAssignableFromNonWildcard(type));
+		}
+		return (typeAsWildcard != null ? isNonWildcardAssignableFromWildcard(typeAsWildcard)
+				: resolve().isAssignableFrom(type.resolve()));
+	}
+
+	private boolean isWildcardAssignableFromWildcard(ResolvableType type) {
+		if (getWildcardBounds(WildcardBounds.LOWER).length > 0
+				&& type.getWildcardBounds(WildcardBounds.LOWER).length == 0) {
+			return false;
+		}
+		return dunno(this, type.getWildcardBounds(WildcardBounds.LOWER),
+				type.getWildcardBounds(WildcardBounds.UPPER));
+	}
+
+	private boolean isWildcardAssignableFromNonWildcard(ResolvableType type) {
+		return dunno(this, new ResolvableType[] { type }, new ResolvableType[] { type });
+	}
+
+	private boolean isNonWildcardAssignableFromWildcard(ResolvableType type) {
+		return dunno(type, new ResolvableType[] { type }, new ResolvableType[] { type });
+	}
+
+	private static boolean dunno(ResolvableType wildcard, ResolvableType[] lowerBounds,
+			ResolvableType[] upperBounds) {
+		for (ResolvableType lowerBound : wildcard.getWildcardBounds(WildcardBounds.LOWER)) {
+			for (int i = 0; i < lowerBounds.length; i++) {
+				if(!lowerBound.isAssignableFrom(lowerBounds[i])) {
+					return false;
+				}
+			}
+		}
+		for (ResolvableType upperBound : wildcard.getWildcardBounds(WildcardBounds.UPPER)) {
+			for (int i = 0; i < upperBounds.length; i++) {
+				if(!upperBound.isAssignableFrom(upperBounds[i])) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	private ResolvableType[] getWildcardBounds(WildcardBounds bounds) {
+		if(!(this.type instanceof WildcardType)) {
+			return EMPTY_TYPES_ARRAY;
+		}
+		WildcardType wildcardType = (WildcardType) this.type;
+		Type[] types = (bounds == WildcardBounds.LOWER ? wildcardType.getLowerBounds() : wildcardType.getUpperBounds());
+		ResolvableType[] resolvableTypes = new ResolvableType[types.length];
+		for (int i = 0; i < types.length; i++) {
+			resolvableTypes[i] = forType(types[i], this.variableResolver);
+		}
+		return resolvableTypes;
+	}
+
+	private boolean isGenericallyAssignableFrom(ResolvableType type) {
+		for (int i = 0; i < getGenerics().length; i++) {
+			ResolvableType generic = getGeneric(i);
+			if (!generic.isAssignableFrom(type.getGeneric(i))) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public boolean isArray() {
 		if (this == NONE) {
 			return false;
 		}
-		return (((this.type instanceof Class) && ((Class) this.type).isArray())
+		return (((this.type instanceof Class) && ((Class<?>) this.type).isArray())
 				|| this.type instanceof GenericArrayType || this.resolveType().isArray());
 	}
 
@@ -82,11 +158,13 @@ public final class ResolvableType implements TypeVariableResolver {
 			return NONE;
 		}
 		if (this.type instanceof Class) {
-			Class componentType = ((Class) this.type).getComponentType();
-			return componentType == null ? NONE : forType(componentType, this.variableResolver);
+			Class<?> componentType = ((Class<?>) this.type).getComponentType();
+			return componentType == null ? NONE : forType(componentType,
+					this.variableResolver);
 		}
 		if (this.type instanceof GenericArrayType) {
-			return forType(((GenericArrayType) this.type).getGenericComponentType(), this.variableResolver);
+			return forType(((GenericArrayType) this.type).getGenericComponentType(),
+					this.variableResolver);
 		}
 		return resolveType().getComponentType();
 	}
@@ -208,6 +286,13 @@ public final class ResolvableType implements TypeVariableResolver {
 		return resolveType().resolve();
 	}
 
+	private ResolvableType resolveType(Class<? extends Type> targetType) {
+		if (this.type == targetType || this == NONE) {
+			return this;
+		}
+		return resolveType().resolveType(targetType);
+	}
+
 	ResolvableType resolveType() {
 		Type resolved = null;
 		if (this.type instanceof ParameterizedType) {
@@ -220,7 +305,7 @@ public final class ResolvableType implements TypeVariableResolver {
 		}
 		else if (this.type instanceof TypeVariable) {
 			if (this.variableResolver != null) {
-				resolved = this.variableResolver.resolveVariable((TypeVariable) this.type);
+				resolved = this.variableResolver.resolveVariable((TypeVariable<?>) this.type);
 			}
 			resolved = resolved != null ? resolved
 					: resolveBounds(((TypeVariable<?>) this.type).getBounds());
@@ -235,7 +320,7 @@ public final class ResolvableType implements TypeVariableResolver {
 		return bounds[0];
 	}
 
-	public Type resolveVariable(TypeVariable variable) {
+	public Type resolveVariable(TypeVariable<?> variable) {
 		Assert.notNull("Variable must not be null");
 		if (this.type instanceof ParameterizedType) {
 			ParameterizedType parameterizedType = (ParameterizedType) this.type;
@@ -248,9 +333,11 @@ public final class ResolvableType implements TypeVariableResolver {
 					}
 				}
 			}
-			Type resolved = (this.variableResolver == null ? null : this.variableResolver.resolveVariable(variable));
-			if(resolved == null && parameterizedType.getOwnerType() != null) {
-				resolved = forType(parameterizedType.getOwnerType(), this.variableResolver).resolveVariable(variable);
+			Type resolved = (this.variableResolver == null ? null
+					: this.variableResolver.resolveVariable(variable));
+			if (resolved == null && parameterizedType.getOwnerType() != null) {
+				resolved = forType(parameterizedType.getOwnerType(),
+						this.variableResolver).resolveVariable(variable);
 			}
 			return resolved;
 		}
@@ -274,7 +361,6 @@ public final class ResolvableType implements TypeVariableResolver {
 		return result.toString();
 	}
 
-
 	//
 
 	@Override
@@ -285,13 +371,14 @@ public final class ResolvableType implements TypeVariableResolver {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == this ) {
+		if (obj == this) {
 			return true;
 		}
 		if (obj instanceof ResolvableType) {
 			ResolvableType other = (ResolvableType) obj;
 			return ObjectUtils.nullSafeEquals(this.type, other.type)
-					&& ObjectUtils.nullSafeEquals(this.variableResolver, other.variableResolver);
+					&& ObjectUtils.nullSafeEquals(this.variableResolver,
+							other.variableResolver);
 		}
 		return false;
 	}
@@ -315,7 +402,8 @@ public final class ResolvableType implements TypeVariableResolver {
 	public static ResolvableType forField(Field field, Class<?> implementationClass) {
 		Assert.notNull(field, "Field must not be null");
 		Assert.notNull(implementationClass, "ImplementationClass must not be null");
-		TypeVariableResolver variableResolver = forType(implementationClass).as(field.getDeclaringClass());
+		TypeVariableResolver variableResolver = forType(implementationClass).as(
+				field.getDeclaringClass());
 		return forType(field.getGenericType(), variableResolver);
 	}
 
@@ -330,8 +418,9 @@ public final class ResolvableType implements TypeVariableResolver {
 			int parameterIndex, Class<?> implementationClass) {
 		Assert.notNull(constructor, "Constructor must not be null");
 		Assert.notNull(implementationClass, "ImplementationClass must not be null");
-		return forMethodParameter(MethodParameter.forMethodOrConstructor(constructor,
-				parameterIndex), implementationClass);
+		return forMethodParameter(
+				MethodParameter.forMethodOrConstructor(constructor, parameterIndex),
+				implementationClass);
 	}
 
 	public static ResolvableType forMethodParameter(Method method, int parameterIndex) {
@@ -343,13 +432,14 @@ public final class ResolvableType implements TypeVariableResolver {
 	public static ResolvableType forMethodParameter(Method method, int parameterIndex,
 			Class<?> implementationClass) {
 		Assert.notNull(method, "Method must not be null");
-		return forMethodParameter(MethodParameter.forMethodOrConstructor(method,
-				parameterIndex), implementationClass);
+		return forMethodParameter(
+				MethodParameter.forMethodOrConstructor(method, parameterIndex),
+				implementationClass);
 	}
 
 	public static ResolvableType forMethodParameter(MethodParameter methodParameter) {
 		Assert.notNull(methodParameter, "MethodParameter must not be null");
-		//FIXME not here?
+		// FIXME not here?
 		if (methodParameter.resolveClass != null) {
 			return forMethodParameter(methodParameter, methodParameter.resolveClass);
 		}
@@ -370,10 +460,12 @@ public final class ResolvableType implements TypeVariableResolver {
 		return forType(method.getGenericReturnType());
 	}
 
-	public static ResolvableType forMethodReturn(Method method, Class<?> implementationClass) {
+	public static ResolvableType forMethodReturn(Method method,
+			Class<?> implementationClass) {
 		Assert.notNull(method, "Method must not be null");
 		Assert.notNull(implementationClass, "ImplementationClass must not be null");
-		TypeVariableResolver variableResolver = forType(implementationClass).as(method.getDeclaringClass());
+		TypeVariableResolver variableResolver = forType(implementationClass).as(
+				method.getDeclaringClass());
 		return forType(method.getGenericReturnType(), variableResolver);
 	}
 
@@ -384,11 +476,12 @@ public final class ResolvableType implements TypeVariableResolver {
 	public static ResolvableType forType(Type type, TypeVariableResolver variableResolver) {
 		ResolvableType key = new ResolvableType(type, variableResolver);
 		ResolvableType resolvableType = cache.get(key);
-		if(resolvableType == null) {
+		if (resolvableType == null) {
 			resolvableType = key;
 			cache.put(key, resolvableType);
 		}
 		return resolvableType;
 	}
 
+	private static enum WildcardBounds {UPPER, LOWER}
 }

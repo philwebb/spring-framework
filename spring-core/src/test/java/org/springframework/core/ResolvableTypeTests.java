@@ -50,6 +50,7 @@ import static org.mockito.Mockito.*;
  *
  * @author Phillip Webb
  */
+@SuppressWarnings("rawtypes")
 public class ResolvableTypeTests {
 
 	@Rule
@@ -75,6 +76,7 @@ public class ResolvableTypeTests {
 		assertThat(none.resolveGenerics().length, equalTo(0));
 		assertThat(none.resolveVariable(mock(TypeVariable.class)), nullValue());
 		assertThat(none.toString(), equalTo("?"));
+		assertThat(none.isAssignableFrom(ResolvableType.forClass(Object.class)), equalTo(false));
 	}
 
 	@Test
@@ -799,9 +801,6 @@ public class ResolvableTypeTests {
 		// c1 = s; not allowed. Since there is no '? extends' to cause the generic
 		// 'is not applicable for the arguments' error when adding (which would pollute s).
 
-		List<CharSequence> c1 = null;
-		c1.add(new StringBuffer("X"));
-
 		ResolvableType objectList = ResolvableType.forField(AssignmentBase.class.getField("listo"), Assignment.class);
 		ResolvableType charSequenceList = ResolvableType.forField(AssignmentBase.class.getField("listc"), Assignment.class);
 		ResolvableType stringList = ResolvableType.forField(AssignmentBase.class.getField("lists"), Assignment.class);
@@ -847,7 +846,6 @@ public class ResolvableTypeTests {
 		assertAssignable(charSequenceArray, object, objectArray, charSequenceArray, stringArray).equalTo(false, false, true, true);
 		assertAssignable(stringArray, object, objectArray, charSequenceArray, stringArray).equalTo(false, false, false, true);
 	}
-
 
 	// FIXME bounded variable and bounded types
 
@@ -909,7 +907,7 @@ public class ResolvableTypeTests {
 
 		public List<? extends Number> wildcardType;
 
-		public List<? super Number> wildcardSuperType;
+		public List<? super Number> wildcardSuperType = new ArrayList<Object>();
 
 		public List<CharSequence> charSequenceList;
 
@@ -966,11 +964,17 @@ public class ResolvableTypeTests {
 
 		public List<? extends S> listxs;
 
+		public List<? super O> listso;
+
+		public List<? super C> listsc;
+
+		public List<? super S> listss;
+
 		public O[] oarray;
 
 		public C[] carray;
 
-		public C[] sarray;
+		public S[] sarray;
 
 		public Collection<C> collectionc;
 
@@ -1059,4 +1063,5 @@ public class ResolvableTypeTests {
 		}
 	}
 
+	// FIXME getUpperBounds/getLowerBounds
 }
