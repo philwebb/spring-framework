@@ -78,18 +78,17 @@ public final class ResolvableType implements TypeVariableResolver {
 		WildcardBounds ourBounds = WildcardBounds.get(this);
 		WildcardBounds typeBounds = WildcardBounds.get(type);
 
-		if (ourBounds != null && typeBounds != null) {
-			return ourBounds.isSameType(typeBounds)
-					&& ourBounds.isAssignableFrom(checkingGeneric, typeBounds.getBounds());
+		if (typeBounds != null) {
+			return ourBounds != null && ourBounds.isSameType(typeBounds)
+					&& ourBounds.isAssignableFrom(typeBounds.getBounds());
 		}
 
-		if (ourBounds == null && typeBounds != null) {
-			return false;
+		if (ourBounds != null) {
+			return ourBounds.isAssignableFrom(type);
 		}
 
 		boolean rtn = true;
-		rtn &= (typeBounds == null || typeBounds.isAssignableTo(checkingGeneric, this));
-		//rtn &= (!checkingGeneric || resolve().equals(type.resolve()));
+		rtn &= (!checkingGeneric || resolve().equals(type.resolve()));
 		rtn &= resolve().isAssignableFrom(type.resolve());
 		for (int i = 0; i < getGenerics().length; i++) {
 			rtn &= getGeneric(i).isAssignableFrom(true, type.as(resolve()).getGeneric(i));
@@ -450,21 +449,12 @@ public final class ResolvableType implements TypeVariableResolver {
 			return this.type == bounds.type;
 		}
 
-		public boolean isAssignableFrom(boolean checkingGeneric, ResolvableType... types) {
+		public boolean isAssignableFrom(ResolvableType... types) {
 			for (ResolvableType bound : this.bounds) {
 				for (ResolvableType type : types) {
-					if (!this.type.isAssignable(checkingGeneric, bound, type)) {
+					if (!this.type.isAssignable( bound, type)) {
 						return false;
 					}
-				}
-			}
-			return true;
-		}
-
-		public boolean isAssignableTo(boolean checkingGeneric, ResolvableType type) {
-			for (ResolvableType bound : this.bounds) {
-				if (!this.type.isAssignable(checkingGeneric, type, bound)) {
-					return false;
 				}
 			}
 			return true;
@@ -496,19 +486,19 @@ public final class ResolvableType implements TypeVariableResolver {
 			UPPER {
 
 				@Override
-				public boolean isAssignable(boolean checkingGeneric, ResolvableType type, ResolvableType from) {
-					return type.isAssignableFrom(checkingGeneric, from);
+				public boolean isAssignable(ResolvableType type, ResolvableType from) {
+					return type.isAssignableFrom(from);
 				}
 			},
 			LOWER {
 
 				@Override
-				public boolean isAssignable(boolean checkingGeneric, ResolvableType type, ResolvableType from) {
-					return from.isAssignableFrom(checkingGeneric, type);
+				public boolean isAssignable(ResolvableType type, ResolvableType from) {
+					return from.isAssignableFrom(type);
 				}
 			};
 
-			public abstract boolean isAssignable(boolean checkingGeneric, ResolvableType type, ResolvableType from);
+			public abstract boolean isAssignable(ResolvableType type, ResolvableType from);
 		}
 	}
 

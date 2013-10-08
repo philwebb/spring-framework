@@ -36,7 +36,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.hamcrest.Matchers;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -849,7 +848,6 @@ public class ResolvableTypeTests {
 	}
 
 	@Test
-	@Ignore
 	public void isAssignableFromForWildcards() throws Exception {
 
 		ResolvableType object = ResolvableType.forClass(Object.class);
@@ -880,10 +878,12 @@ public class ResolvableTypeTests {
 		assertAssignable(charSequence, object, charSequence, string).equalTo(false, true, true);
 
 		// T <= ? extends T
-		assertAssignable(charSequence, extendsObject, extendsCharSequence, extendsString).equalTo(false, true, true);
+		assertAssignable(extendsCharSequence, object, charSequence, string).equalTo(false, true, true);
+		assertAssignable(charSequence, extendsObject, extendsCharSequence, extendsString).equalTo(false, false, false);
 
 		// T <= ? super T
-		assertAssignable(extendsCharSequence, superObject, superCharSequence, superString).equalTo(false, false, false);
+		assertAssignable(superCharSequence, object, charSequence, string).equalTo(true, true, false);
+		assertAssignable(charSequence, superObject, superCharSequence, superString).equalTo(false, false, false);
 
 	}
 
