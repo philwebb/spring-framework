@@ -36,6 +36,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.hamcrest.Matchers;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -847,6 +848,45 @@ public class ResolvableTypeTests {
 		assertAssignable(stringArray, object, objectArray, charSequenceArray, stringArray).equalTo(false, false, false, true);
 	}
 
+	@Test
+	@Ignore
+	public void isAssignableFromForWildcards() throws Exception {
+
+		ResolvableType object = ResolvableType.forClass(Object.class);
+		ResolvableType charSequence = ResolvableType.forClass(CharSequence.class);
+		ResolvableType string = ResolvableType.forClass(String.class);
+		ResolvableType extendsObject = ResolvableType.forField(AssignmentBase.class.getField("listxo"), Assignment.class).getGeneric();
+		ResolvableType extendsCharSequence = ResolvableType.forField(AssignmentBase.class.getField("listxc"), Assignment.class).getGeneric();
+		ResolvableType extendsString = ResolvableType.forField(AssignmentBase.class.getField("listxs"), Assignment.class).getGeneric();
+		ResolvableType superObject = ResolvableType.forField(AssignmentBase.class.getField("listso"), Assignment.class).getGeneric();
+		ResolvableType superCharSequence = ResolvableType.forField(AssignmentBase.class.getField("listsc"), Assignment.class).getGeneric();
+		ResolvableType superString = ResolvableType.forField(AssignmentBase.class.getField("listss"), Assignment.class).getGeneric();
+
+		// Language Spec 4.5.1. Type Arguments and Wildcards
+
+		// ? extends T <= ? extends S if T <: S
+		assertAssignable(extendsCharSequence, extendsObject, extendsCharSequence, extendsString).equalTo(false, true, true);
+		assertAssignable(extendsCharSequence, object, charSequence, string).equalTo(false, true, true);
+
+		// ? super T <= ? super S if S <: T
+		assertAssignable(superCharSequence, superObject, superCharSequence, superString).equalTo(true, true, false);
+		assertAssignable(superCharSequence, object, charSequence, string).equalTo(true, true, false);
+
+		// [Implied] super / extends cannot be mixed
+		assertAssignable(superCharSequence, extendsObject, extendsCharSequence, extendsString).equalTo(false, false, false);
+		assertAssignable(extendsCharSequence, superObject, superCharSequence, superString).equalTo(false, false, false);
+
+		// T <= T
+		assertAssignable(charSequence, object, charSequence, string).equalTo(false, true, true);
+
+		// T <= ? extends T
+		assertAssignable(charSequence, extendsObject, extendsCharSequence, extendsString).equalTo(false, true, true);
+
+		// T <= ? super T
+		assertAssignable(extendsCharSequence, superObject, superCharSequence, superString).equalTo(false, false, false);
+
+	}
+
 	// FIXME bounded variable and bounded types
 
 	private static AssertAssignbleMatcher assertAssignable(final ResolvableType type, final ResolvableType... fromTypes) {
@@ -979,6 +1019,7 @@ public class ResolvableTypeTests {
 		public Collection<C> collectionc;
 
 		public Collection<? extends C> collectionxc;
+
 	}
 
 	static class Assignment extends AssignmentBase<Object, CharSequence, String> {

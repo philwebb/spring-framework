@@ -61,6 +61,10 @@ public final class ResolvableType implements TypeVariableResolver {
 	}
 
 	public boolean isAssignableFrom(ResolvableType type) {
+		return isAssignableFrom(false, type);
+	}
+
+	private boolean isAssignableFrom(boolean checkingGeneric, ResolvableType type) {
 		Assert.notNull(type, "Type must not be null");
 		if (resolve() == null || type.resolve() == null) {
 			return false;
@@ -71,78 +75,26 @@ public final class ResolvableType implements TypeVariableResolver {
 					type.getComponentType()));
 		}
 
-		return isTypeAssignableFrom(type)
-				&& isGenericallyAssignableFrom(type.as(resolve()));
-	}
+		WildcardBounds ourBounds = WildcardBounds.get(this);
+		WildcardBounds typeBounds = WildcardBounds.get(type);
 
-	private boolean isTypeAssignableFrom(ResolvableType type) {
-		ResolvableType asWildcard = type.resolveType(WildcardType.class);
-		ResolvableType typeAsWildcard = type.resolveType(WildcardType.class);
-		if (asWildcard != null) {
-			return (typeAsWildcard != null ? asWildcard.isWildcardAssignableFromWildcard(typeAsWildcard)
-					: asWildcard.isWildcardAssignableFromNonWildcard(type));
+		if (ourBounds != null && typeBounds != null) {
+			return ourBounds.isSameType(typeBounds)
+					&& ourBounds.isAssignableFrom(checkingGeneric, typeBounds.getBounds());
 		}
-		return (typeAsWildcard != null ? isNonWildcardAssignableFromWildcard(typeAsWildcard)
-				: resolve().isAssignableFrom(type.resolve()));
-	}
 
-	private boolean isWildcardAssignableFromWildcard(ResolvableType type) {
-		if (getWildcardBounds(WildcardBounds.LOWER).length > 0
-				&& type.getWildcardBounds(WildcardBounds.LOWER).length == 0) {
+		if (ourBounds == null && typeBounds != null) {
 			return false;
 		}
-		return dunno(this, type.getWildcardBounds(WildcardBounds.LOWER),
-				type.getWildcardBounds(WildcardBounds.UPPER));
-	}
 
-	private boolean isWildcardAssignableFromNonWildcard(ResolvableType type) {
-		return dunno(this, new ResolvableType[] { type }, new ResolvableType[] { type });
-	}
-
-	private boolean isNonWildcardAssignableFromWildcard(ResolvableType type) {
-		return dunno(type, new ResolvableType[] { type }, new ResolvableType[] { type });
-	}
-
-	private static boolean dunno(ResolvableType wildcard, ResolvableType[] lowerBounds,
-			ResolvableType[] upperBounds) {
-		for (ResolvableType lowerBound : wildcard.getWildcardBounds(WildcardBounds.LOWER)) {
-			for (int i = 0; i < lowerBounds.length; i++) {
-				if(!lowerBound.isAssignableFrom(lowerBounds[i])) {
-					return false;
-				}
-			}
-		}
-		for (ResolvableType upperBound : wildcard.getWildcardBounds(WildcardBounds.UPPER)) {
-			for (int i = 0; i < upperBounds.length; i++) {
-				if(!upperBound.isAssignableFrom(upperBounds[i])) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-
-	private ResolvableType[] getWildcardBounds(WildcardBounds bounds) {
-		if(!(this.type instanceof WildcardType)) {
-			return EMPTY_TYPES_ARRAY;
-		}
-		WildcardType wildcardType = (WildcardType) this.type;
-		Type[] types = (bounds == WildcardBounds.LOWER ? wildcardType.getLowerBounds() : wildcardType.getUpperBounds());
-		ResolvableType[] resolvableTypes = new ResolvableType[types.length];
-		for (int i = 0; i < types.length; i++) {
-			resolvableTypes[i] = forType(types[i], this.variableResolver);
-		}
-		return resolvableTypes;
-	}
-
-	private boolean isGenericallyAssignableFrom(ResolvableType type) {
+		boolean rtn = true;
+		rtn &= (typeBounds == null || typeBounds.isAssignableTo(checkingGeneric, this));
+		//rtn &= (!checkingGeneric || resolve().equals(type.resolve()));
+		rtn &= resolve().isAssignableFrom(type.resolve());
 		for (int i = 0; i < getGenerics().length; i++) {
-			ResolvableType generic = getGeneric(i);
-			if (!generic.isAssignableFrom(type.getGeneric(i))) {
-				return false;
-			}
+			rtn &= getGeneric(i).isAssignableFrom(true, type.as(resolve()).getGeneric(i));
 		}
-		return true;
+		return rtn;
 	}
 
 	public boolean isArray() {
@@ -287,7 +239,7 @@ public final class ResolvableType implements TypeVariableResolver {
 	}
 
 	private ResolvableType resolveType(Class<? extends Type> targetType) {
-		if (this.type == targetType || this == NONE) {
+		if (targetType.isInstance(this.type) || this == NONE) {
 			return this;
 		}
 		return resolveType().resolveType(targetType);
@@ -483,5 +435,81 @@ public final class ResolvableType implements TypeVariableResolver {
 		return resolvableType;
 	}
 
-	private static enum WildcardBounds {UPPER, LOWER}
+	private static class WildcardBounds {
+
+		private final BoundsType type;
+
+		private final ResolvableType[] bounds;
+
+		private WildcardBounds(BoundsType type, ResolvableType[] bounds) {
+			this.type = type;
+			this.bounds = bounds;
+		}
+
+		public boolean isSameType(WildcardBounds bounds) {
+			return this.type == bounds.type;
+		}
+
+		public boolean isAssignableFrom(boolean checkingGeneric, ResolvableType... types) {
+			for (ResolvableType bound : this.bounds) {
+				for (ResolvableType type : types) {
+					if (!this.type.isAssignable(checkingGeneric, bound, type)) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+
+		public boolean isAssignableTo(boolean checkingGeneric, ResolvableType type) {
+			for (ResolvableType bound : this.bounds) {
+				if (!this.type.isAssignable(checkingGeneric, type, bound)) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		public ResolvableType[] getBounds() {
+			return bounds;
+		}
+
+		public static WildcardBounds get(ResolvableType type) {
+			ResolvableType resolveToWildcard = type.resolveType(WildcardType.class);
+			if (resolveToWildcard == NONE) {
+				return null;
+			}
+			WildcardType wildcardType = (WildcardType) resolveToWildcard.type;
+			BoundsType boundsType = (wildcardType.getLowerBounds().length > 0 ? BoundsType.LOWER
+					: BoundsType.UPPER);
+			Type[] bounds = boundsType == BoundsType.UPPER ? wildcardType.getUpperBounds()
+					: wildcardType.getLowerBounds();
+			ResolvableType[] resolvableBounds = new ResolvableType[bounds.length];
+			for (int i = 0; i < bounds.length; i++) {
+				resolvableBounds[i] = forType(bounds[i], type.variableResolver);
+			}
+			return new WildcardBounds(boundsType, resolvableBounds);
+		}
+
+		static enum BoundsType {
+
+			UPPER {
+
+				@Override
+				public boolean isAssignable(boolean checkingGeneric, ResolvableType type, ResolvableType from) {
+					return type.isAssignableFrom(checkingGeneric, from);
+				}
+			},
+			LOWER {
+
+				@Override
+				public boolean isAssignable(boolean checkingGeneric, ResolvableType type, ResolvableType from) {
+					return from.isAssignableFrom(checkingGeneric, type);
+				}
+			};
+
+			public abstract boolean isAssignable(boolean checkingGeneric, ResolvableType type, ResolvableType from);
+		}
+	}
+
 }
