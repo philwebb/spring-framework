@@ -49,9 +49,11 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 
 // FIXME original GenericTypeResolver caught MalformedParameterizedTypeException, should we ?
 // FIXME would be nice to support resolveReturnTypeForGenericMethod style
+// FIXME for MethodParam with overridden declare
 
 /**
  * Tests for {@link ResolvableType}.
@@ -111,6 +113,14 @@ public class ResolvableTypeTests {
 		Field field = Fields.class.getField("charSequenceList");
 		ResolvableType type = ResolvableType.forField(field);
 		assertThat(type.getType(), equalTo(field.getGenericType()));
+	}
+
+	@Test
+	public void forPrivateField() throws Exception {
+		Field field = Fields.class.getDeclaredField("privateField");
+		ResolvableType type = ResolvableType.forField(field);
+		assertThat(type.getType(), equalTo(field.getGenericType()));
+		assertThat(type.resolve(), equalTo((Class) List.class));
 	}
 
 	@Test
@@ -977,6 +987,20 @@ public class ResolvableTypeTests {
 		assertThat(forFieldDirect, not(equalTo(forFieldWithImplementation)));
 	}
 
+	@SuppressWarnings("unused")
+	private HashMap<Integer, List<String>> myMap;
+
+	@Test
+	public void javaDocSample() throws Exception {
+		ResolvableType t = ResolvableType.forField(getClass().getDeclaredField("myMap"));
+		assertThat(t.getSuperType().toString(), equalTo("java.util.AbstractMap<java.lang.Integer, java.util.List<java.lang.String>>"));
+		assertThat(t.asMap().toString(), equalTo("java.util.Map<java.lang.Integer, java.util.List<java.lang.String>>"));
+		assertThat(t.getGeneric(0).resolve(), equalTo((Class)Integer.class));
+		assertThat(t.getGeneric(1).resolve(), equalTo((Class)List.class));
+		assertThat(t.getGeneric(1).toString(), equalTo("java.util.List<java.lang.String>"));
+		assertThat(t.resolveGeneric(1, 0), equalTo((Class) String.class));
+	}
+
 
 	private static AssertAssignbleMatcher assertAssignable(final ResolvableType type,
 			final ResolvableType... fromTypes) {
@@ -1052,6 +1076,8 @@ public class ResolvableTypeTests {
 		public VariableNameSwitch<Integer, String> stringIntegerMultiValueMapSwitched;
 
 		public List<List> listOfListOfUnknown;
+
+		private List<String> privateField;
 
 	}
 
