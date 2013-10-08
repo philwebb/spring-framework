@@ -312,8 +312,6 @@ public final class ResolvableType implements TypeVariableResolver {
 		return result.toString();
 	}
 
-	//
-
 	@Override
 	public int hashCode() {
 		return ObjectUtils.nullSafeHashCode(this.type) * 31
@@ -390,7 +388,6 @@ public final class ResolvableType implements TypeVariableResolver {
 
 	public static ResolvableType forMethodParameter(MethodParameter methodParameter) {
 		Assert.notNull(methodParameter, "MethodParameter must not be null");
-		// FIXME not here?
 		if (methodParameter.resolveClass != null) {
 			return forMethodParameter(methodParameter, methodParameter.resolveClass);
 		}
