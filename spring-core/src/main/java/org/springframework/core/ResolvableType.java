@@ -449,12 +449,17 @@ public final class ResolvableType implements TypeVariableResolver {
 		public boolean isAssignableFrom(ResolvableType... types) {
 			for (ResolvableType bound : this.bounds) {
 				for (ResolvableType type : types) {
-					if (!this.type.isAssignable( bound, type)) {
+					if (!isAssignable(bound, type)) {
 						return false;
 					}
 				}
 			}
 			return true;
+		}
+
+		private boolean isAssignable(ResolvableType source, ResolvableType from) {
+			return (this.type == BoundsType.UPPER ? source.isAssignableFrom(from)
+					: from.isAssignableFrom(source));
 		}
 
 		public ResolvableType[] getBounds() {
@@ -478,25 +483,7 @@ public final class ResolvableType implements TypeVariableResolver {
 			return new WildcardBounds(boundsType, resolvableBounds);
 		}
 
-		static enum BoundsType {
-
-			UPPER {
-
-				@Override
-				public boolean isAssignable(ResolvableType type, ResolvableType from) {
-					return type.isAssignableFrom(from);
-				}
-			},
-			LOWER {
-
-				@Override
-				public boolean isAssignable(ResolvableType type, ResolvableType from) {
-					return from.isAssignableFrom(type);
-				}
-			};
-
-			public abstract boolean isAssignable(ResolvableType type, ResolvableType from);
-		}
+		static enum BoundsType { UPPER, LOWER }
 	}
 
 }
