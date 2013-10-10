@@ -21,12 +21,10 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 
-import org.springframework.core.GenericCollectionTypeResolver;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ParameterNameDiscoverer;
+import org.springframework.core.ResolvableType;
 import org.springframework.util.Assert;
 
 /**
@@ -61,6 +59,8 @@ public class DependencyDescriptor implements Serializable {
 	private int nestingLevel = 1;
 
 	private transient Annotation[] fieldAnnotations;
+
+	private transient ResolvableType type;
 
 
 	/**
@@ -138,6 +138,7 @@ public class DependencyDescriptor implements Serializable {
 		this.eager = original.eager;
 		this.nestingLevel = original.nestingLevel;
 		this.fieldAnnotations = original.fieldAnnotations;
+		this.type = original.type;
 	}
 
 
@@ -184,6 +185,7 @@ public class DependencyDescriptor implements Serializable {
 		if (this.methodParameter != null) {
 			this.methodParameter.increaseNestingLevel();
 		}
+		this.type = null;
 	}
 
 	/**
@@ -211,30 +213,7 @@ public class DependencyDescriptor implements Serializable {
 	 * @return the declared type (never {@code null})
 	 */
 	public Class<?> getDependencyType() {
-		if (this.field != null) {
-			if (this.nestingLevel > 1) {
-				Type type = this.field.getGenericType();
-				if (type instanceof ParameterizedType) {
-					Type arg = ((ParameterizedType) type).getActualTypeArguments()[0];
-					if (arg instanceof Class) {
-						return (Class) arg;
-					}
-					else if (arg instanceof ParameterizedType) {
-						arg = ((ParameterizedType) arg).getRawType();
-						if (arg instanceof Class) {
-							return (Class) arg;
-						}
-					}
-				}
-				return Object.class;
-			}
-			else {
-				return this.field.getType();
-			}
-		}
-		else {
-			return this.methodParameter.getNestedParameterType();
-		}
+		return getType().resolve(Object.class);
 	}
 
 	/**
@@ -242,9 +221,7 @@ public class DependencyDescriptor implements Serializable {
 	 * @return the generic type, or {@code null} if none
 	 */
 	public Class<?> getCollectionType() {
-		return (this.field != null ?
-				GenericCollectionTypeResolver.getCollectionFieldType(this.field, this.nestingLevel) :
-				GenericCollectionTypeResolver.getCollectionParameterType(this.methodParameter));
+		return getType().asCollection().resolveGeneric();
 	}
 
 	/**
@@ -252,9 +229,7 @@ public class DependencyDescriptor implements Serializable {
 	 * @return the generic type, or {@code null} if none
 	 */
 	public Class<?> getMapKeyType() {
-		return (this.field != null ?
-				GenericCollectionTypeResolver.getMapKeyFieldType(this.field, this.nestingLevel) :
-				GenericCollectionTypeResolver.getMapKeyParameterType(this.methodParameter));
+		return getType().asMap().resolveGeneric(0);
 	}
 
 	/**
@@ -262,9 +237,7 @@ public class DependencyDescriptor implements Serializable {
 	 * @return the generic type, or {@code null} if none
 	 */
 	public Class<?> getMapValueType() {
-		return (this.field != null ?
-				GenericCollectionTypeResolver.getMapValueFieldType(this.field, this.nestingLevel) :
-				GenericCollectionTypeResolver.getMapValueParameterType(this.methodParameter));
+		return getType().asMap().resolveGeneric(1);
 	}
 
 	/**
@@ -280,6 +253,20 @@ public class DependencyDescriptor implements Serializable {
 		else {
 			return this.methodParameter.getParameterAnnotations();
 		}
+	}
+
+	private ResolvableType getType() {
+		if (this.type == null) {
+			if (this.field != null) {
+				this.type = ResolvableType.forField(this.field,
+						this.declaringClass).getNested(this.nestingLevel);
+			}
+			else {
+				this.type = ResolvableType.forMethodParameter(
+						this.methodParameter, this.declaringClass);
+			}
+		}
+		return this.type;
 	}
 
 
