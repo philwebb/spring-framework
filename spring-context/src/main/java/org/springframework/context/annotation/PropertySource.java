@@ -18,6 +18,7 @@ package org.springframework.context.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -141,6 +142,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
+@Repeatable(PropertySources.class)
 public @interface PropertySource {
 
 	/**
@@ -165,5 +167,8 @@ public @interface PropertySource {
 	 * property source, and in the order declared.
 	 */
 	String[] value();
+
+	// FIXME DC
+	boolean ignoreResourceNotFound() default false;
 
 }
