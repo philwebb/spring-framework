@@ -86,6 +86,11 @@ abstract class SerializableTypeWrapper {
 			public Type getType() {
 				return type.getGenericSuperclass();
 			}
+
+			@Override
+			public Object getSource() {
+				return null;
+			}
 		});
 	}
 
@@ -104,6 +109,11 @@ abstract class SerializableTypeWrapper {
 				@Override
 				public Type getType() {
 					return type.getGenericInterfaces()[index];
+				}
+
+				@Override
+				public Object getSource() {
+					return null;
 				}
 			});
 		}
@@ -126,6 +136,11 @@ abstract class SerializableTypeWrapper {
 				public Type getType() {
 					return type.getTypeParameters()[index];
 				}
+
+				@Override
+				public Object getSource() {
+					return null;
+				}
 			});
 		}
 		return result;
@@ -135,7 +150,7 @@ abstract class SerializableTypeWrapper {
 	/**
 	 * Return a {@link Serializable} {@link Type} backed by a {@link TypeProvider} .
 	 */
-	private static Type forTypeProvider(final TypeProvider provider) {
+	static Type forTypeProvider(final TypeProvider provider) {
 		Assert.notNull(provider, "Provider must not be null");
 		if (provider.getType() instanceof Serializable || provider.getType() == null) {
 			return provider.getType();
@@ -156,12 +171,17 @@ abstract class SerializableTypeWrapper {
 	/**
 	 * A {@link Serializable} interface providing access to a {@link Type}.
 	 */
-	private static interface TypeProvider extends Serializable {
+	static interface TypeProvider extends Serializable {
 
 		/**
 		 * Return the (possibly non {@link Serializable}) {@link Type}.
 		 */
 		Type getType();
+
+		/**
+		 * Return the source of the type or {@code null}.
+		 */
+		Object getSource();
 
 	}
 
@@ -207,7 +227,7 @@ abstract class SerializableTypeWrapper {
 	/**
 	 * {@link TypeProvider} for {@link Type}s obtained from a {@link Field}.
 	 */
-	private static class FieldTypeProvider implements TypeProvider {
+	static class FieldTypeProvider implements TypeProvider {
 
 		private static final long serialVersionUID = 1L;
 
@@ -231,6 +251,11 @@ abstract class SerializableTypeWrapper {
 			return this.field.getGenericType();
 		}
 
+		@Override
+		public Object getSource() {
+			return this.field;
+		}
+
 		private void readObject(ObjectInputStream inputStream) throws IOException,
 				ClassNotFoundException {
 			inputStream.defaultReadObject();
@@ -249,7 +274,7 @@ abstract class SerializableTypeWrapper {
 	/**
 	 * {@link TypeProvider} for {@link Type}s obtained from a {@link MethodParameter}.
 	 */
-	private static class MethodParameterTypeProvider implements TypeProvider {
+	static class MethodParameterTypeProvider implements TypeProvider {
 
 		private static final long serialVersionUID = 1L;
 
@@ -285,6 +310,11 @@ abstract class SerializableTypeWrapper {
 			return this.methodParameter.getGenericParameterType();
 		}
 
+		@Override
+		public Object getSource() {
+			return this.methodParameter;
+		}
+
 		private void readObject(ObjectInputStream inputStream) throws IOException,
 				ClassNotFoundException {
 			inputStream.defaultReadObject();
@@ -312,7 +342,7 @@ abstract class SerializableTypeWrapper {
 	/**
 	 * {@link TypeProvider} for {@link Type}s obtained by invoking a no-arg method.
 	 */
-	private static class MethodInvokeTypeProvider implements TypeProvider {
+	static class MethodInvokeTypeProvider implements TypeProvider {
 
 		private static final long serialVersionUID = 1L;
 
@@ -340,6 +370,11 @@ abstract class SerializableTypeWrapper {
 				return (Type) this.result;
 			}
 			return ((Type[])this.result)[this.index];
+		}
+
+		@Override
+		public Object getSource() {
+			return null;
 		}
 
 		private void readObject(ObjectInputStream inputStream) throws IOException,
