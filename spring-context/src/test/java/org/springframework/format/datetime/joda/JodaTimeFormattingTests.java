@@ -21,6 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -34,6 +35,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 import org.joda.time.MutableDateTime;
+import org.joda.time.format.DateTimeFormatter;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -235,6 +237,15 @@ public class JodaTimeFormattingTests {
 
 	@Test
 	public void testBindLocalDateTimeAnnotated() {
+		DateTimeFormatterFactory factory = new DateTimeFormatterFactory();
+		factory.setStyle("FF");
+//		factory.setIso(ISO.NONE);
+//		factory.setPattern("");
+		DateTimeFormatter f = factory.createDateTimeFormatter();
+		f = JodaTimeContextHolder.getJodaTimeContext().getFormatter(f);
+		System.out.println(f.print(0));
+		f.parseLocalDateTime("Wednesday, December 31, 1969 7:00:00 PM PST");
+
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("localDateTimeAnnotated", "Saturday, October 31, 2009 12:00:00 PM ");
 		binder.bind(propertyValues);
