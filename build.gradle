@@ -26,27 +26,6 @@ configure(allprojects) { project ->
 	apply plugin: "test-source-set-dependencies"
 	apply from: "${gradleScriptDir}/ide.gradle"
 
-	[compileJava, compileTestJava]*.options*.compilerArgs = [
-		"-Xlint:serial",
-		"-Xlint:varargs",
-		"-Xlint:cast",
-		"-Xlint:classfile",
-		"-Xlint:dep-ann",
-		"-Xlint:divzero",
-		"-Xlint:empty",
-		"-Xlint:finally",
-		"-Xlint:overrides",
-		"-Xlint:path",
-		"-Xlint:processing",
-		"-Xlint:static",
-		"-Xlint:try",
-		"-Xlint:-options",     // intentionally disabled
-		"-Xlint:-fallthrough", // intentionally disabled
-		"-Xlint:-rawtypes",    // TODO enable and fix warnings
-		"-Xlint:-deprecation", // TODO enable and fix warnings
-		"-Xlint:-unchecked"    // TODO enable and fix warnings
-	]
-
 	compileJava {
 		sourceCompatibility=1.6
 		targetCompatibility=1.6
@@ -102,6 +81,58 @@ configure(allprojects) { project ->
 		"http://jackson.codehaus.org/1.9.12/javadoc/",
 		"http://fasterxml.github.com/jackson-core/javadoc/2.2.2/",
 	] as String[]
+
+	def defaultCompilerArgs = [
+		"-Xlint:serial",
+		"-Xlint:varargs",
+		"-Xlint:cast",
+		"-Xlint:classfile",
+		"-Xlint:dep-ann",
+		"-Xlint:divzero",
+		"-Xlint:empty",
+		"-Xlint:finally",
+		"-Xlint:overrides",
+		"-Xlint:path",
+		"-Xlint:processing",
+		"-Xlint:static",
+		"-Xlint:try",
+		"-Xlint:-options",     // intentionally disabled
+		"-Xlint:-fallthrough"  // intentionally disabled
+	]
+
+	if(project.name in ["spring-core", "spring-beans", "spring-context"]) {
+		compileJava.options.each {
+			it.compilerArgs = defaultCompilerArgs + [
+				"-Xlint:rawtypes",
+				"-Xlint:deprecation",
+				"-Xlint:unchecked",
+				"-Werror"
+			]
+		}
+		compileTestJava.options.each {
+			it.compilerArgs = defaultCompilerArgs + [
+				"-Xlint:-rawtypes",
+				"-Xlint:-deprecation",
+				"-Xlint:-unchecked"
+			]
+		}
+	} else {
+		compileJava.options.each {
+			it.compilerArgs = defaultCompilerArgs + [
+				"-Xlint:-rawtypes",
+				"-Xlint:-deprecation",
+				"-Xlint:-unchecked",
+				"-Werror"
+			]
+		}
+		compileTestJava.options.each {
+			it.compilerArgs = defaultCompilerArgs + [
+				"-Xlint:-rawtypes",
+				"-Xlint:-deprecation",
+				"-Xlint:-unchecked"
+			]
+		}
+	}
 }
 
 configure(subprojects - project(":spring-build-src")) { subproject ->

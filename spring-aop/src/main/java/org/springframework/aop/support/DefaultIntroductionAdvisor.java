@@ -43,7 +43,7 @@ public class DefaultIntroductionAdvisor implements IntroductionAdvisor, ClassFil
 
 	private final Advice advice;
 
-	private final Set<Class> interfaces = new HashSet<Class>();
+	private final Set<Class<?>> interfaces = new HashSet<Class<?>>();
 
 	private int order = Integer.MAX_VALUE;
 

@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectStreamException;
+import java.io.Serializable;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
@@ -44,6 +45,9 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
  * @see CommonsPoolTargetSource
  */
 public abstract class AbstractPrototypeBasedTargetSource extends AbstractBeanFactoryBasedTargetSource {
+
+	private static final long serialVersionUID = 1L;
+
 
 	@Override
 	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {

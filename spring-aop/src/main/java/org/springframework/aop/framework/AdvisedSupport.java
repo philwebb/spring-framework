@@ -88,7 +88,7 @@ public class AdvisedSupport extends ProxyConfig implements Advised {
 	 * Interfaces to be implemented by the proxy. Held in List to keep the order
 	 * of registration, to create JDK proxy with specified order of interfaces.
 	 */
-	private List<Class> interfaces = new ArrayList<Class>();
+	private List<Class<?>> interfaces = new ArrayList<Class<?>>();
 
 	/**
 	 * List of Advisors. If an Advice is added, it will be wrapped
@@ -521,7 +521,7 @@ public class AdvisedSupport extends ProxyConfig implements Advised {
 		copyFrom(other);
 		this.targetSource = targetSource;
 		this.advisorChainFactory = other.advisorChainFactory;
-		this.interfaces = new ArrayList<Class>(other.interfaces);
+		this.interfaces = new ArrayList<Class<?>>(other.interfaces);
 		for (Advisor advisor : advisors) {
 			if (advisor instanceof IntroductionAdvisor) {
 				validateIntroductionAdvisor((IntroductionAdvisor) advisor);
