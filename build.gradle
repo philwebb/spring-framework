@@ -100,7 +100,7 @@ configure(allprojects) { project ->
 		"-Xlint:-fallthrough"  // intentionally disabled
 	]
 
-	if(project.name in ["spring-core", "spring-beans", "spring-context", "spring-aop"]) {
+	if(project.name in [ "spring-aop", "spring-aspects", "spring-beans", "spring-beans-groovy", "spring-context", "spring-context-support", "spring-core"]) {
 		compileJava.options.each {
 			it.compilerArgs = defaultCompilerArgs + [
 				"-Xlint:rawtypes",
