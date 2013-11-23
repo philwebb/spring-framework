@@ -101,7 +101,8 @@ configure(allprojects) { project ->
 	]
 
 	if(project.name in [ "spring-aop", "spring-aspects", "spring-beans", "spring-beans-groovy",
-		"spring-context", "spring-context-support", "spring-core", "spring-expression"]) {
+		"spring-context", "spring-context-support", "spring-core", "spring-expression",
+		"spring-instrument", "spring-instrument-tomcat", "spring-jdbc"]) {
 		compileJava.options.each {
 			it.compilerArgs = defaultCompilerArgs + [
 				"-Xlint:rawtypes",
