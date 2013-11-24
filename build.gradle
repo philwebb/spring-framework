@@ -104,7 +104,7 @@ configure(allprojects) { project ->
 		"spring-context", "spring-context-support", "spring-core", "spring-expression",
 		"spring-instrument", "spring-instrument-tomcat", "spring-jdbc", "spring-jms",
 		"spring-messaging", "spring-orm", "spring-orm-hibernate", "spring-oxm",
-		"spring-test"]) {
+		"spring-test", "spring-tx"]) {
 		compileJava.options.each {
 			it.compilerArgs = defaultCompilerArgs + [
 				"-Xlint:rawtypes",
