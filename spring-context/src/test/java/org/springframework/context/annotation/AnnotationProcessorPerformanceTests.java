@@ -16,12 +16,13 @@
 
 package org.springframework.context.annotation;
 
+import java.io.IOException;
+
 import javax.annotation.Resource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
@@ -70,8 +71,8 @@ public class AnnotationProcessorPerformanceTests {
 	}
 
 	@Test
-	public void testPrototypeCreationWithOverriddenResourcePropertiesIsFastEnough() {
-		Assume.group(TestGroup.PERFORMANCE);
+	public void testPrototypeCreationWithOverriddenResourcePropertiesIsFastEnough() throws Exception {
+		//System.in.read();
 		Assume.notLogging(factoryLog);
 		GenericApplicationContext ctx = new GenericApplicationContext();
 		AnnotationConfigUtils.registerAnnotationConfigProcessors(ctx);
@@ -90,7 +91,7 @@ public class AnnotationProcessorPerformanceTests {
 			assertSame(spouse, tb.getSpouse());
 		}
 		sw.stop();
-		//System.out.println(sw.getTotalTimeMillis());
+		System.out.println(sw.getTotalTimeMillis());
 		assertTrue("Prototype creation took too long: " + sw.getTotalTimeMillis(), sw.getTotalTimeMillis() < 4000);
 	}
 
