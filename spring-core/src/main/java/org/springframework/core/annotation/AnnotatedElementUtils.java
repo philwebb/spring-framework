@@ -26,8 +26,6 @@ import java.util.Set;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import static org.springframework.core.annotation.AnnotationUtils.*;
-
 /**
  * Utility class used to collect all annotation values including those declared on
  * meta-annotations.
@@ -72,7 +70,7 @@ public class AnnotatedElementUtils {
 	}
 
 	public static boolean isAnnotated(AnnotatedElement element, String annotationType) {
-		return Boolean.TRUE.equals(process(element, annotationType, true, new Processor<Boolean>() {
+		return Boolean.TRUE.equals(process(element, annotationType, false, new Processor<Boolean>() {
 			@Override
 			public Boolean process(Annotation annotation, int metaDepth) {
 				return Boolean.TRUE;
@@ -90,7 +88,7 @@ public class AnnotatedElementUtils {
 	public static AnnotationAttributes getAnnotationAttributes(AnnotatedElement element, String annotationType,
 			final boolean classValuesAsString, final boolean nestedAnnotationsAsMap) {
 
-		return process(element, annotationType, true, new Processor<AnnotationAttributes>() {
+		return process(element, annotationType, false, new Processor<AnnotationAttributes>() {
 			@Override
 			public AnnotationAttributes process(Annotation annotation, int metaDepth) {
 				return AnnotationUtils.getAnnotationAttributes(annotation, classValuesAsString, nestedAnnotationsAsMap);
@@ -98,8 +96,8 @@ public class AnnotatedElementUtils {
 			@Override
 			public void postProcess(Annotation annotation, AnnotationAttributes result) {
 				for (String key : result.keySet()) {
-					if (!VALUE.equals(key)) {
-						Object value = getValue(annotation, key);
+					if (!AnnotationUtils.VALUE.equals(key)) {
+						Object value = AnnotationUtils.getValue(annotation, key);
 						if (value != null) {
 							result.put(key, value);
 						}
@@ -131,8 +129,8 @@ public class AnnotatedElementUtils {
 			@Override
 			public void postProcess(Annotation annotation, Void result) {
 				for (String key : attributes.keySet()) {
-					if (!VALUE.equals(key)) {
-						Object value = getValue(annotation, key);
+					if (!AnnotationUtils.VALUE.equals(key)) {
+						Object value = AnnotationUtils.getValue(annotation, key);
 						if (value != null) {
 							attributes.add(key, value);
 						}
@@ -206,7 +204,7 @@ public class AnnotatedElementUtils {
 				}
 			}
 			for (Annotation annotation : annotations) {
-				if (!isInJavaLangAnnotationPackage(annotation)) {
+				if (!AnnotationUtils.isInJavaLangAnnotationPackage(annotation)) {
 					T result = doProcess(annotation.annotationType(), annotationType, traverseClassHierarchy,
 						processor, visited, metaDepth);
 					if (result != null) {
