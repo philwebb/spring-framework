@@ -16,6 +16,7 @@
 
 package org.springframework.beans.factory.support;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -92,6 +93,9 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 
 	/** Set of registered singletons, containing the bean names in registration order */
 	private final Set<String> registeredSingletons = new LinkedHashSet<String>(64);
+
+	/** Unmodifiable view of registeredSingletons */
+	private final Set<String> unmodifiableRegisteredSingletons = Collections.unmodifiableSet(this.registeredSingletons);
 
 	/** Names of beans that are currently in creation */
 	private final Set<String> singletonsCurrentlyInCreation =
@@ -297,6 +301,14 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 		synchronized (this.singletonObjects) {
 			return StringUtils.toStringArray(this.registeredSingletons);
 		}
+	}
+
+	/**
+	 * Return an unmodifiable {@link Collections} containing the singleton names.
+	 * @since 4.1.2
+	 */
+	public Collection<String> getSingletonNamesCollection() {
+		return this.unmodifiableRegisteredSingletons;
 	}
 
 	@Override

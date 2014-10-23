@@ -165,6 +165,9 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	/** List of bean definition names, in registration order */
 	private final List<String> beanDefinitionNames = new ArrayList<String>();
 
+	/** Unmodifiable view of beanDefinitionNames */
+	private final List<String> unmodifiableBeanDefinitionNames = Collections.unmodifiableList(this.beanDefinitionNames);
+
 	/** Whether bean definition metadata may be cached for all beans */
 	private boolean configurationFrozen = false;
 
@@ -228,6 +231,15 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	}
 
 	/**
+	 * Return if the factory is allowed to eagerly load bean classes.
+	 * @see #setAllowEagerClassLoading(boolean)
+	 * @since 4.1.2
+	 */
+	public boolean isAllowEagerClassLoading() {
+		return this.allowEagerClassLoading;
+	}
+
+	/**
 	 * Set a {@link java.util.Comparator} for dependency Lists and arrays.
 	 * @see org.springframework.core.OrderComparator
 	 * @see org.springframework.core.annotation.AnnotationAwareOrderComparator
@@ -288,6 +300,10 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		}
 	}
 
+	@Override
+	public Class<?> predictBeanType(String beanName, RootBeanDefinition mbd, Class<?>... typesToMatch) {
+		return super.predictBeanType(beanName, mbd, typesToMatch);
+	}
 
 	//---------------------------------------------------------------------
 	// Implementation of ListableBeanFactory interface
@@ -362,6 +378,14 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		}
 	}
 
+	/**
+	 * Return an unmodifiable collection containing the bean definition names.
+	 * @since 4.1.2
+	 */
+	public Collection<String> getBeanDefinitionNamesCollection() {
+		return this.unmodifiableBeanDefinitionNames;
+	}
+
 	@Override
 	public String[] getBeanNamesForType(Class<?> type) {
 		return getBeanNamesForType(type, true, true);
@@ -389,8 +413,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		List<String> result = new ArrayList<String>();
 
 		// Check all bean definitions.
-		String[] beanDefinitionNames = getBeanDefinitionNames();
-		for (String beanName : beanDefinitionNames) {
+		for (String beanName : getBeanDefinitionNamesCollection()) {
 			// Only consider bean as eligible if the bean name
 			// is not defined as alias for some other bean.
 			if (!isAlias(beanName)) {
@@ -438,8 +461,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		}
 
 		// Check singletons too, to catch manually registered singletons.
-		String[] singletonNames = getSingletonNames();
-		for (String beanName : singletonNames) {
+		for (String beanName : getSingletonNamesCollection()) {
 			// Only check if manually registered.
 			if (!containsBeanDefinition(beanName)) {
 				// In case of FactoryBean, match object created by FactoryBean.
@@ -512,13 +534,13 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	@Override
 	public String[] getBeanNamesForAnnotation(Class<? extends Annotation> annotationType) {
 		List<String> results = new ArrayList<String>();
-		for (String beanName : getBeanDefinitionNames()) {
+		for (String beanName : getBeanDefinitionNamesCollection()) {
 			BeanDefinition beanDefinition = getBeanDefinition(beanName);
 			if (!beanDefinition.isAbstract() && findAnnotationOnBean(beanName, annotationType) != null) {
 				results.add(beanName);
 			}
 		}
-		for (String beanName : getSingletonNames()) {
+		for (String beanName : getSingletonNamesCollection()) {
 			if (!results.contains(beanName) && findAnnotationOnBean(beanName, annotationType) != null) {
 				results.add(beanName);
 			}
@@ -529,13 +551,13 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	@Override
 	public Map<String, Object> getBeansWithAnnotation(Class<? extends Annotation> annotationType) {
 		Map<String, Object> results = new LinkedHashMap<String, Object>();
-		for (String beanName : getBeanDefinitionNames()) {
+		for (String beanName : getBeanDefinitionNamesCollection()) {
 			BeanDefinition beanDefinition = getBeanDefinition(beanName);
 			if (!beanDefinition.isAbstract() && findAnnotationOnBean(beanName, annotationType) != null) {
 				results.put(beanName, getBean(beanName));
 			}
 		}
-		for (String beanName : getSingletonNames()) {
+		for (String beanName : getSingletonNamesCollection()) {
 			if (!results.containsKey(beanName) && findAnnotationOnBean(beanName, annotationType) != null) {
 				results.put(beanName, getBean(beanName));
 			}
@@ -1266,7 +1288,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	public String toString() {
 		StringBuilder sb = new StringBuilder(ObjectUtils.identityToString(this));
 		sb.append(": defining beans [");
-		sb.append(StringUtils.arrayToCommaDelimitedString(getBeanDefinitionNames()));
+		sb.append(StringUtils.collectionToCommaDelimitedString(getBeanDefinitionNamesCollection()));
 		sb.append("]; ");
 		BeanFactory parent = getParentBeanFactory();
 		if (parent == null) {
