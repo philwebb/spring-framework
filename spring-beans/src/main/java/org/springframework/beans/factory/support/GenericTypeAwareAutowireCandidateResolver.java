@@ -128,24 +128,22 @@ public class GenericTypeAwareAutowireCandidateResolver implements AutowireCandid
 	}
 
 	protected ResolvableType getReturnTypeForFactoryMethod(RootBeanDefinition rbd, DependencyDescriptor descriptor) {
+		Method resolvedFactoryMethod = rbd.getResolvedFactoryMethod();
+		if (resolvedFactoryMethod != null) {
+			if (descriptor.getDependencyType().isAssignableFrom(resolvedFactoryMethod.getReturnType())) {
+				// Only use factory method metadata if the return type is actually expressive enough
+				// for our dependency. Otherwise, the returned instance type may have matched instead
+				// in case of a singleton instance having been registered with the container already.
+				return ResolvableType.forMethodReturnType(resolvedFactoryMethod);
+			}
+		}
 		// Should typically be set for any kind of factory method, since the BeanFactory
 		// pre-resolves them before reaching out to the AutowireCandidateResolver...
 		Class<?> preResolved = rbd.resolvedFactoryMethodReturnType;
 		if (preResolved != null) {
 			return ResolvableType.forClass(preResolved);
 		}
-		else {
-			Method resolvedFactoryMethod = rbd.getResolvedFactoryMethod();
-			if (resolvedFactoryMethod != null) {
-				if (descriptor.getDependencyType().isAssignableFrom(resolvedFactoryMethod.getReturnType())) {
-					// Only use factory method metadata if the return type is actually expressive enough
-					// for our dependency. Otherwise, the returned instance type may have matched instead
-					// in case of a singleton instance having been registered with the container already.
-					return ResolvableType.forMethodReturnType(resolvedFactoryMethod);
-				}
-			}
-			return null;
-		}
+		return null;
 	}
 
 

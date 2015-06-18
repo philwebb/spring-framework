@@ -970,7 +970,11 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			return ((ConfigurableBeanFactory) getParentBeanFactory()).isFactoryBean(name);
 		}
 
-		return isFactoryBean(beanName, getMergedLocalBeanDefinition(beanName));
+		BeanDefinition bd = getBeanDefinition(beanName);
+		if (bd.getParentName() == null && bd instanceof RootBeanDefinition) {
+			return isFactoryBean(beanName, (RootBeanDefinition) bd);
+		}
+		return isFactoryBean(beanName, getMergedBeanDefinition(beanName, bd));
 	}
 
 	@Override

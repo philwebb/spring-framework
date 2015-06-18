@@ -60,6 +60,7 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.UnsatisfiedDependencyException;
+import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -74,6 +75,7 @@ import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.core.PriorityOrdered;
+import org.springframework.core.type.MethodMetadata;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.ReflectionUtils;
@@ -661,6 +663,18 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			if (factoryBeanName.equals(beanName)) {
 				throw new BeanDefinitionStoreException(mbd.getResourceDescription(), beanName,
 						"factory-bean reference points back to the same bean definition");
+			}
+			// Try to use the meta-data to short circuit discovery algorithms
+			if (mbd instanceof AnnotatedBeanDefinition) {
+				MethodMetadata metadata = ((AnnotatedBeanDefinition) mbd).getFactoryMethodMetadata();
+				if (metadata != null) {
+					try {
+						mbd.resolvedFactoryMethodReturnType = ClassUtils.forName(metadata.getReturnTypeName(), getBeanClassLoader());
+						return mbd.resolvedFactoryMethodReturnType;
+					}
+					catch (Exception ex) {
+					}
+				}
 			}
 			// Check declared factory method return type on factory class.
 			factoryClass = getType(factoryBeanName);
