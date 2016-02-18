@@ -128,9 +128,12 @@ public class AntPathMatcherTests {
 
 		assertFalse(pathMatcher.match("/x/x/**/bla", "/x/x/x/"));
 
+		assertTrue(pathMatcher.match("/foo/bar/**", "/foo/bar")) ;
+
 		assertTrue(pathMatcher.match("", ""));
 
 		assertTrue(pathMatcher.match("/{bla}.*", "/testing.html"));
+
 	}
 
 	@Test
