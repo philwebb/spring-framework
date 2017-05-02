@@ -1360,6 +1360,7 @@ public class ResolvableType implements Serializable {
 	 * @since 4.2
 	 */
 	public static void clearCache() {
+		SerializableTypeWrapper.clearCache();
 		cache.clear();
 	}
 

@@ -142,6 +142,10 @@ abstract class SerializableTypeWrapper {
 		return (T) unwrapped;
 	}
 
+	static void clearCache() {
+		cache.clear();
+	}
+
 	/**
 	 * Return a {@link Serializable} {@link Type} backed by a {@link TypeProvider} .
 	 */
