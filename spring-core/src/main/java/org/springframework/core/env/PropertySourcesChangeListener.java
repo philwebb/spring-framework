@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2011 the original author or authors.
+ * Copyright 2002-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,25 +16,23 @@
 
 package org.springframework.core.env;
 
+import java.util.EventListener;
+
 /**
- * Holder containing one or more {@link PropertySource} objects.
+ * {@link EventListener} that can be used to monitor changes to
+ * {@link MutablePropertySources}.
  *
- * @author Chris Beams
- * @since 3.1
+ * @author Phillip Webb
+ * @since 5.0
  * @see MutablePropertySources
  */
-public interface PropertySources extends Iterable<PropertySource<?>> {
+@FunctionalInterface
+public interface PropertySourcesChangeListener extends EventListener {
 
 	/**
-	 * Return whether a property source with the given name is contained.
-	 * @param name the {@linkplain PropertySource#getName() name of the property source} to find
+	 * Handle a property sources change event
+	 * @param event the event to respond to
 	 */
-	boolean contains(String name);
-
-	/**
-	 * Return the property source with the given name, {@code null} if not found.
-	 * @param name the {@linkplain PropertySource#getName() name of the property source} to find
-	 */
-	PropertySource<?> get(String name);
+	void onChange(PropertySourcesChangedEvent event);
 
 }
