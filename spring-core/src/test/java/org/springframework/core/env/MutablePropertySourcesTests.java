@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2014 the original author or authors.
+ * Copyright 2002-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,13 @@
 
 package org.springframework.core.env;
 
-import org.junit.Test;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.springframework.mock.env.MockPropertySource;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -28,6 +33,12 @@ import static org.junit.Assert.*;
  * @author Juergen Hoeller
  */
 public class MutablePropertySourcesTests {
+
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
+
+	private MutablePropertySources sources = new MutablePropertySources();
+
 
 	@Test
 	public void test() {
@@ -153,4 +164,91 @@ public class MutablePropertySourcesTests {
 		assertThat(sources.get("bogus"), nullValue());
 	}
 
+	@Test
+	public void addChangeListenerWhenListenerIsNullShouldThrowException()
+			throws Exception {
+		this.thrown.expect(IllegalArgumentException.class);
+		this.thrown.expectMessage("Listener must not be null");
+		this.sources.addChangeListener(null);
+	}
+
+	@Test
+	public void removeChangeListenerWhenListenerIsNullShouldThrowException()
+			throws Exception {
+		this.thrown.expect(IllegalArgumentException.class);
+		this.thrown.expectMessage("Listener must not be null");
+		this.sources.removeChangeListener(null);
+	}
+
+	@Test
+	public void addFirstShouldPublishChangeEvent() throws Exception {
+		MockPropertySourcesChangeListener listener = new MockPropertySourcesChangeListener();
+		this.sources.addChangeListener(listener);
+		this.sources.addFirst(new MapPropertySource("foo", new HashMap<>()));
+		assertThat(listener.getSources().size(), is(1));
+	}
+
+	@Test
+	public void addLastShouldPublishChangeEvent() throws Exception {
+		MockPropertySourcesChangeListener listener = new MockPropertySourcesChangeListener();
+		this.sources.addChangeListener(listener);
+		this.sources.addLast(new MapPropertySource("foo", new HashMap<>()));
+		assertThat(listener.getSources().size(), is(1));
+	}
+
+	@Test
+	public void addBeforeShouldPublishChangeEvent() throws Exception {
+		MockPropertySourcesChangeListener listener = new MockPropertySourcesChangeListener();
+		this.sources.addLast(new MapPropertySource("bar", new HashMap<>()));
+		this.sources.addChangeListener(listener);
+		this.sources.addBefore("bar", new MapPropertySource("foo", new HashMap<>()));
+		assertThat(listener.getSources().size(), is(2));
+	}
+
+	@Test
+	public void addAfterShouldPublishChangeEvent() throws Exception {
+		MockPropertySourcesChangeListener listener = new MockPropertySourcesChangeListener();
+		this.sources.addLast(new MapPropertySource("bar", new HashMap<>()));
+		this.sources.addChangeListener(listener);
+		this.sources.addAfter("bar", new MapPropertySource("foo", new HashMap<>()));
+		assertThat(listener.getSources().size(), is(2));
+	}
+
+	@Test
+	public void removeShouldPublishChangeEvent() throws Exception {
+		MockPropertySourcesChangeListener listener = new MockPropertySourcesChangeListener();
+		this.sources.addLast(new MapPropertySource("foo", new HashMap<>()));
+		this.sources.addChangeListener(listener);
+		this.sources.remove("foo");
+		assertThat(listener.getSources().size(), is(0));
+	}
+
+	@Test
+	public void replaceShouldPublishChangeEvent() throws Exception {
+		MockPropertySourcesChangeListener listener = new MockPropertySourcesChangeListener();
+		this.sources.addLast(new MapPropertySource("bar", new HashMap<>()));
+		this.sources.addChangeListener(listener);
+		this.sources.replace("bar", new MapPropertySource("foo", new HashMap<>()));
+		assertThat(listener.getSources().size(), is(1));
+		assertThat(listener.getSources().get(0).getName(), is("foo"));
+	}
+
+
+	private static class MockPropertySourcesChangeListener implements PropertySourcesChangeListener {
+
+
+		private List<PropertySource<?>> sources;
+
+
+		@Override
+		public void onChange(PropertySourcesChangeEvent event) {
+			this.sources = new ArrayList<>();
+			event.getSource().forEach(sources::add);
+		}
+
+
+		public List<PropertySource<?>> getSources() {
+			return sources;
+		}
+	}
 }

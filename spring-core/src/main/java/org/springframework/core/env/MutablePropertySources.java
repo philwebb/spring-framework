@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,15 @@
 
 package org.springframework.core.env;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 /**
@@ -45,6 +47,10 @@ public class MutablePropertySources implements PropertySources {
 
 	private final List<PropertySource<?>> propertySourceList = new CopyOnWriteArrayList<>();
 
+	private final List<PropertySource<?>> unmodifiablePropertySourceList =
+			Collections.unmodifiableList(this.propertySourceList);
+
+	private final List<PropertySourcesChangeListener> changeListeners = new ArrayList<>();
 
 	/**
 	 * Create a new {@link MutablePropertySources} object.
@@ -86,7 +92,7 @@ public class MutablePropertySources implements PropertySources {
 
 	@Override
 	public Iterator<PropertySource<?>> iterator() {
-		return this.propertySourceList.iterator();
+		return this.unmodifiablePropertySourceList.iterator();
 	}
 
 	/**
@@ -99,6 +105,7 @@ public class MutablePropertySources implements PropertySources {
 		}
 		removeIfPresent(propertySource);
 		this.propertySourceList.add(0, propertySource);
+		publishChangeEvent();
 	}
 
 	/**
@@ -111,6 +118,7 @@ public class MutablePropertySources implements PropertySources {
 		}
 		removeIfPresent(propertySource);
 		this.propertySourceList.add(propertySource);
+		publishChangeEvent();
 	}
 
 	/**
@@ -126,6 +134,7 @@ public class MutablePropertySources implements PropertySources {
 		removeIfPresent(propertySource);
 		int index = assertPresentAndGetIndex(relativePropertySourceName);
 		addAtIndex(index, propertySource);
+		publishChangeEvent();
 	}
 
 	/**
@@ -141,6 +150,7 @@ public class MutablePropertySources implements PropertySources {
 		removeIfPresent(propertySource);
 		int index = assertPresentAndGetIndex(relativePropertySourceName);
 		addAtIndex(index + 1, propertySource);
+		publishChangeEvent();
 	}
 
 	/**
@@ -159,7 +169,9 @@ public class MutablePropertySources implements PropertySources {
 			logger.debug(String.format("Removing [%s] PropertySource", name));
 		}
 		int index = this.propertySourceList.indexOf(PropertySource.named(name));
-		return (index != -1 ? this.propertySourceList.remove(index) : null);
+		PropertySource<?> removed = (index != -1 ? this.propertySourceList.remove(index) : null);
+		publishChangeEvent();
+		return removed;
 	}
 
 	/**
@@ -176,6 +188,29 @@ public class MutablePropertySources implements PropertySources {
 		}
 		int index = assertPresentAndGetIndex(name);
 		this.propertySourceList.set(index, propertySource);
+		publishChangeEvent();
+	}
+
+	/**
+	 * Add a new change listener that will be called whenever the property source list changes.
+	 * @param listener the listener to add
+	 * @see #removeChangeListener(PropertySourcesChangeListener)
+	 * @since 5.0
+	 */
+	public void addChangeListener(PropertySourcesChangeListener listener) {
+		Assert.notNull(listener, "Listener must not be null");
+		this.changeListeners.add(listener);
+	}
+
+	/**
+	 * Remove a previously added change listener.
+	 * @param listener the listener to add
+	 * @see #addChangeListener(PropertySourcesChangeListener)
+	 * @since 5.0
+	 */
+	public void removeChangeListener(PropertySourcesChangeListener listener) {
+		Assert.notNull(listener, "Listener must not be null");
+		this.changeListeners.remove(listener);
 	}
 
 	/**
@@ -234,4 +269,8 @@ public class MutablePropertySources implements PropertySources {
 		return index;
 	}
 
+	private void publishChangeEvent() {
+		PropertySourcesChangeEvent event = new PropertySourcesChangeEvent(this);
+		this.changeListeners.forEach((listener) -> listener.onChange(event));
+	}
 }

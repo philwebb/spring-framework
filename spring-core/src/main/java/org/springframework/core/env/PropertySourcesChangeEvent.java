@@ -16,25 +16,31 @@
 
 package org.springframework.core.env;
 
+import java.util.EventObject;
+
 /**
- * Holder containing one or more {@link PropertySource} objects.
+ * Event published by {@link MutablePropertySources} whenever the underlying sources are
+ * changed.
  *
- * @author Chris Beams
- * @since 3.1
+ * @author Phillip Webb
+ * @since 5.0
  * @see MutablePropertySources
  */
-public interface PropertySources extends Iterable<PropertySource<?>> {
+@SuppressWarnings("serial")
+public class PropertySourcesChangeEvent extends EventObject {
+
 
 	/**
-	 * Return whether a property source with the given name is contained.
-	 * @param name the {@linkplain PropertySource#getName() name of the property source} to find
+	 * Create a new {@link PropertySourcesChangeEvent} instance.
+	 * @param source the source {@link PropertySources}
 	 */
-	boolean contains(String name);
+	public PropertySourcesChangeEvent(PropertySources source) {
+		super(source);
+	}
 
-	/**
-	 * Return the property source with the given name, {@code null} if not found.
-	 * @param name the {@linkplain PropertySource#getName() name of the property source} to find
-	 */
-	PropertySource<?> get(String name);
 
+	@Override
+	public PropertySources getSource() {
+		return (PropertySources) super.getSource();
+	}
 }
