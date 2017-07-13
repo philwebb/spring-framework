@@ -19,6 +19,7 @@ package org.springframework.beans.factory.support;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.UndeclaredThrowableException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.security.PrivilegedExceptionAction;
@@ -179,7 +180,11 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 				msg = "Circular reference involving containing bean '" + bd.getFactoryBeanName() + "' - consider " +
 						"declaring the factory method as static for independence from its containing instance. " + msg;
 			}
-			throw new BeanInstantiationException(factoryMethod, msg, ex.getTargetException());
+			Throwable cause = ex.getTargetException();
+			if (cause instanceof UndeclaredThrowableException) {
+				cause = ((UndeclaredThrowableException) cause).getUndeclaredThrowable();
+			}
+			throw new BeanInstantiationException(factoryMethod, msg, cause);
 		}
 	}
 
