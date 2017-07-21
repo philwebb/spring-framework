@@ -31,11 +31,14 @@ import org.springframework.core.Conventions;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.StandardAnnotationMetadata;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
+import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ClassUtils;
 
 /**
  * Utilities for processing @{@link Configuration} classes.
@@ -46,12 +49,11 @@ import org.springframework.stereotype.Component;
  */
 abstract class ConfigurationClassUtils {
 
-	private static final String CONFIGURATION_CLASS_FULL = "full";
-
-	private static final String CONFIGURATION_CLASS_LITE = "lite";
-
 	private static final String CONFIGURATION_CLASS_ATTRIBUTE =
 			Conventions.getQualifiedAttributeName(ConfigurationClassPostProcessor.class, "configurationClass");
+
+	private static final String PRE_PROCESSED_CONFIGURATION_ATTRIBUTE =
+			Conventions.getQualifiedAttributeName(ConfigurationClassPostProcessor.class, "preProcessedConfiguration");
 
 	private static final String ORDER_ATTRIBUTE =
 			Conventions.getQualifiedAttributeName(ConfigurationClassPostProcessor.class, "order");
@@ -108,11 +110,16 @@ abstract class ConfigurationClassUtils {
 			}
 		}
 
-		if (isFullConfigurationCandidate(metadata)) {
-			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_FULL);
+		String preProcessed = findPreProcessedConfiguration(metadataReaderFactory, className);
+		if (preProcessed != null) {
+			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, ConfigurationClassType.PRE_PROCESSED);
+			beanDef.setAttribute(PRE_PROCESSED_CONFIGURATION_ATTRIBUTE, preProcessed);
+		}
+		else if (isFullConfigurationCandidate(metadata)) {
+			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, ConfigurationClassType.FULL);
 		}
 		else if (isLiteConfigurationCandidate(metadata)) {
-			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_LITE);
+			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, ConfigurationClassType.LITE);
 		}
 		else {
 			return false;
@@ -138,6 +145,51 @@ abstract class ConfigurationClassUtils {
 		return (isFullConfigurationCandidate(metadata) || isLiteConfigurationCandidate(metadata));
 	}
 
+
+	/**
+	 * Check if the given class name as a pre-processed variant available. Deals with
+	 * simple top level classes as well as nested inner classes.
+	 * @param metadataReaderFactory the metadata reader factory
+	 * @param className the configuration class name
+	 * @return {@code true} if a pre-processed class is available.
+	 */
+	private static String findPreProcessedConfiguration(
+			MetadataReaderFactory metadataReaderFactory, String className) {
+		String prefix = className;
+		String suffix = "";
+		while (true) {
+			String candidate = prefix + PreProcessedConfiguration.CLASS_SUFFIX + suffix;
+			if (canReadClassName(metadataReaderFactory, candidate)) {
+				return candidate;
+			}
+			int split = prefix.lastIndexOf('$');
+			if (split == -1) {
+				return null;
+			}
+			suffix = prefix.substring(split) + PreProcessedConfiguration.CLASS_SUFFIX + suffix;
+			prefix = prefix.substring(0, split);
+		}
+	}
+
+	private static boolean canReadClassName(MetadataReaderFactory metadataReaderFactory,
+			String className) {
+		ResourceLoader loader = (metadataReaderFactory instanceof SimpleMetadataReaderFactory
+				? ((SimpleMetadataReaderFactory) metadataReaderFactory).getResourceLoader()
+				: null);
+		if (loader != null) {
+			// Use the resource loader if possible to save throwing exceptions
+			String resourcePath = ResourceLoader.CLASSPATH_URL_PREFIX +
+					ClassUtils.convertClassNameToResourcePath(className) + ClassUtils.CLASS_FILE_SUFFIX;
+			return loader.getResource(resourcePath).exists();
+		}
+		try {
+			MetadataReader reader = metadataReaderFactory.getMetadataReader(className);
+			return (reader != null);
+		} catch (Exception ex) {
+			return false;
+		}
+	}
+
 	/**
 	 * Check the given metadata for a full configuration class candidate
 	 * (i.e. a class annotated with {@code @Configuration}).
@@ -145,7 +197,7 @@ abstract class ConfigurationClassUtils {
 	 * @return {@code true} if the given class is to be processed as a full
 	 * configuration class, including cross-method call interception
 	 */
-	public static boolean isFullConfigurationCandidate(AnnotationMetadata metadata) {
+	private static boolean isFullConfigurationCandidate(AnnotationMetadata metadata) {
 		return metadata.isAnnotated(Configuration.class.getName());
 	}
 
@@ -157,7 +209,7 @@ abstract class ConfigurationClassUtils {
 	 * @return {@code true} if the given class is to be processed as a lite
 	 * configuration class, just registering it and scanning it for {@code @Bean} methods
 	 */
-	public static boolean isLiteConfigurationCandidate(AnnotationMetadata metadata) {
+	private static boolean isLiteConfigurationCandidate(AnnotationMetadata metadata) {
 		// Do not consider an interface or an annotation...
 		if (metadata.isInterface()) {
 			return false;
@@ -182,20 +234,8 @@ abstract class ConfigurationClassUtils {
 		}
 	}
 
-	/**
-	 * Determine whether the given bean definition indicates a full {@code @Configuration}
-	 * class, through checking {@link #checkConfigurationClassCandidate}'s metadata marker.
-	 */
-	public static boolean isFullConfigurationClass(BeanDefinition beanDef) {
-		return CONFIGURATION_CLASS_FULL.equals(beanDef.getAttribute(CONFIGURATION_CLASS_ATTRIBUTE));
-	}
-
-	/**
-	 * Determine whether the given bean definition indicates a lite {@code @Configuration}
-	 * class, through checking {@link #checkConfigurationClassCandidate}'s metadata marker.
-	 */
-	public static boolean isLiteConfigurationClass(BeanDefinition beanDef) {
-		return CONFIGURATION_CLASS_LITE.equals(beanDef.getAttribute(CONFIGURATION_CLASS_ATTRIBUTE));
+	public static ConfigurationClassType getConfigurationType(BeanDefinition beanDefinition) {
+		return (ConfigurationClassType) beanDefinition.getAttribute(CONFIGURATION_CLASS_ATTRIBUTE);
 	}
 
 	/**
@@ -223,4 +263,32 @@ abstract class ConfigurationClassUtils {
 		return (order != null ? order : Ordered.LOWEST_PRECEDENCE);
 	}
 
+	public static Class<?> getPreProcessedClass(BeanDefinition beanDefinition,
+			ClassLoader classLoader) {
+		String className = (String) beanDefinition.getAttribute(
+				PRE_PROCESSED_CONFIGURATION_ATTRIBUTE);
+		return ClassUtils.resolveClassName(className, classLoader);
+	}
+
+
+	/**
+	 * Configuration class types.
+	 */
+	public static enum ConfigurationClassType {
+
+		/**
+		 * A pre-processed {@code @Configuration} class using {@link ConfigurationProxy}.
+		 */
+		PRE_PROCESSED,
+
+		/**
+		 * A full {@code @Configuration} class using {@link ConfigurationClassEnhancer}.
+		 */
+		FULL,
+
+		/**
+		 * A lite {@code @Configuration} class that doesn't use a proxy.
+		 */
+		LITE;
+	}
 }

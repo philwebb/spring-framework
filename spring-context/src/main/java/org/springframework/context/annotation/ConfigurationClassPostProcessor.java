@@ -51,6 +51,7 @@ import org.springframework.beans.factory.support.BeanNameGenerator;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.annotation.ConfigurationClassEnhancer.EnhancedConfiguration;
+import org.springframework.context.annotation.ConfigurationClassUtils.ConfigurationClassType;
 import org.springframework.core.Ordered;
 import org.springframework.core.PriorityOrdered;
 import org.springframework.core.env.Environment;
@@ -235,7 +236,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 
 	/**
 	 * Prepare the Configuration classes for servicing bean requests at runtime
-	 * by replacing them with CGLIB-enhanced subclasses.
+	 * by replacing them with CGLIB-enhanced or annotation processed subclasses.
 	 */
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
@@ -251,7 +252,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			processConfigBeanDefinitions((BeanDefinitionRegistry) beanFactory);
 		}
 
-		enhanceConfigurationClasses(beanFactory);
+		updateConfigurationClasses(beanFactory);
 		beanFactory.addBeanPostProcessor(new ImportAwareBeanPostProcessor(beanFactory));
 	}
 
@@ -264,15 +265,14 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		String[] candidateNames = registry.getBeanDefinitionNames();
 
 		for (String beanName : candidateNames) {
-			BeanDefinition beanDef = registry.getBeanDefinition(beanName);
-			if (ConfigurationClassUtils.isFullConfigurationClass(beanDef) ||
-					ConfigurationClassUtils.isLiteConfigurationClass(beanDef)) {
+			BeanDefinition beanDefinition = registry.getBeanDefinition(beanName);
+			if (ConfigurationClassUtils.getConfigurationType(beanDefinition) != null) {
 				if (logger.isDebugEnabled()) {
-					logger.debug("Bean definition has already been processed as a configuration class: " + beanDef);
+					logger.debug("Bean definition has already been processed as a configuration class: " + beanDefinition);
 				}
 			}
-			else if (ConfigurationClassUtils.checkConfigurationClassCandidate(beanDef, this.metadataReaderFactory)) {
-				configCandidates.add(new BeanDefinitionHolder(beanDef, beanName));
+			else if (ConfigurationClassUtils.checkConfigurationClassCandidate(beanDefinition, this.metadataReaderFactory)) {
+				configCandidates.add(new BeanDefinitionHolder(beanDefinition, beanName));
 			}
 		}
 
@@ -365,59 +365,81 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	}
 
 	/**
-	 * Post-processes a BeanFactory in search of Configuration class BeanDefinitions;
-	 * any candidates are then enhanced by a {@link ConfigurationClassEnhancer}.
-	 * Candidate status is determined by BeanDefinition attribute metadata.
-	 * @see ConfigurationClassEnhancer
+	 * Post-processes a BeanFactory in search of Configuration class BeanDefinitions and
+	 * update the actual bean class used. Candidate status is determined by BeanDefinition
+	 * attribute metadata.
 	 */
-	public void enhanceConfigurationClasses(ConfigurableListableBeanFactory beanFactory) {
-		Map<String, AbstractBeanDefinition> configBeanDefs = new LinkedHashMap<>();
+	private void updateConfigurationClasses(ConfigurableListableBeanFactory beanFactory) {
+		Map<String, AbstractBeanDefinition> definitionsToUpdate = new LinkedHashMap<>();
 		for (String beanName : beanFactory.getBeanDefinitionNames()) {
-			BeanDefinition beanDef = beanFactory.getBeanDefinition(beanName);
-			if (ConfigurationClassUtils.isFullConfigurationClass(beanDef)) {
-				if (!(beanDef instanceof AbstractBeanDefinition)) {
+			BeanDefinition beanDefinition = beanFactory.getBeanDefinition(beanName);
+			ConfigurationClassType candidate = ConfigurationClassUtils.getConfigurationType(beanDefinition);
+			if(candidate != null && candidate != ConfigurationClassType.LITE) {
+				if (!(beanDefinition instanceof AbstractBeanDefinition)) {
 					throw new BeanDefinitionStoreException("Cannot enhance @Configuration bean definition '" +
 							beanName + "' since it is not stored in an AbstractBeanDefinition subclass");
 				}
-				else if (logger.isWarnEnabled() && beanFactory.containsSingleton(beanName)) {
+				if (logger.isWarnEnabled() && beanFactory.containsSingleton(beanName)) {
 					logger.warn("Cannot enhance @Configuration bean definition '" + beanName +
 							"' since its singleton instance has been created too early. The typical cause " +
 							"is a non-static @Bean method with a BeanDefinitionRegistryPostProcessor " +
 							"return type: Consider declaring such methods as 'static'.");
 				}
-				configBeanDefs.put(beanName, (AbstractBeanDefinition) beanDef);
+				definitionsToUpdate.put(beanName, (AbstractBeanDefinition) beanDefinition);
 			}
 		}
-		if (configBeanDefs.isEmpty()) {
-			// nothing to enhance -> return immediately
-			return;
-		}
+		updateConfigurationClasses(definitionsToUpdate);
+	}
 
+	private void updateConfigurationClasses(
+			Map<String, AbstractBeanDefinition> beanDefinitions) {
 		ConfigurationClassEnhancer enhancer = new ConfigurationClassEnhancer();
-		for (Map.Entry<String, AbstractBeanDefinition> entry : configBeanDefs.entrySet()) {
-			AbstractBeanDefinition beanDef = entry.getValue();
-			// If a @Configuration class gets proxied, always proxy the target class
-			beanDef.setAttribute(AutoProxyUtils.PRESERVE_TARGET_CLASS_ATTRIBUTE, Boolean.TRUE);
-			try {
-				// Set enhanced subclass of the user-specified bean class
-				Class<?> configClass = beanDef.resolveBeanClass(this.beanClassLoader);
-				if (configClass != null) {
-					Class<?> enhancedClass = enhancer.enhance(configClass, this.beanClassLoader);
-					if (configClass != enhancedClass) {
-						if (logger.isDebugEnabled()) {
-							logger.debug(String.format("Replacing bean definition '%s' existing class '%s' with " +
-									"enhanced class '%s'", entry.getKey(), configClass.getName(), enhancedClass.getName()));
-						}
-						beanDef.setBeanClass(enhancedClass);
-					}
+		beanDefinitions.forEach((beanName, beanDefinition) -> updateConfigurationClass(
+				beanName, beanDefinition, enhancer));
+	}
+
+	private void updateConfigurationClass(String beanName,
+			AbstractBeanDefinition beanDefinition, ConfigurationClassEnhancer enhancer) {
+		try {
+			Class<?> configClass = beanDefinition.resolveBeanClass(this.beanClassLoader);
+			if (configClass == null) {
+				return;
+			}
+			if (ConfigurationClassUtils.getConfigurationType(
+					beanDefinition) == ConfigurationClassType.PRE_PROCESSED) {
+				try {
+					Class<?> preProcessedClass = ConfigurationClassUtils.getPreProcessedClass(
+							beanDefinition, this.beanClassLoader);
+					replaceConfigClass(beanName, beanDefinition, configClass,
+							preProcessedClass);
+					return;
+				}
+				catch (Throwable ex) {
+					// Ignore and try to use enhancer
 				}
 			}
-			catch (Throwable ex) {
-				throw new IllegalStateException("Cannot load configuration class: " + beanDef.getBeanClassName(), ex);
-			}
+			Class<?> enhancedClass = enhancer.enhance(configClass, this.beanClassLoader);
+			replaceConfigClass(beanName, beanDefinition, configClass, enhancedClass);
+		}
+		catch (Throwable ex) {
+			throw new IllegalStateException("Cannot load configuration class: "
+					+ beanDefinition.getBeanClassName(), ex);
 		}
 	}
 
+	private void replaceConfigClass(String beanName,
+			AbstractBeanDefinition beanDefinition, Class<?> configClass,
+			Class<?> replacement) {
+		if (configClass != replacement) {
+			if (logger.isDebugEnabled()) {
+				logger.debug(String.format(
+						"Replacing bean definition '%s' existing class '%s' with configuration class '%s'",
+						beanName, configClass.getName(), replacement.getName()));
+			}
+			beanDefinition.setBeanClass(replacement);
+			beanDefinition.setAttribute(AutoProxyUtils.PRESERVE_TARGET_CLASS_ATTRIBUTE, Boolean.TRUE);
+		}
+	}
 
 	private static class ImportAwareBeanPostProcessor extends InstantiationAwareBeanPostProcessorAdapter {
 
