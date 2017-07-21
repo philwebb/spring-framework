@@ -1157,6 +1157,15 @@ project("spring-aspects") {
 	}
 }
 
+project("spring-configuration-processor") {
+	description = "Spring Configuration Processor"
+
+	dependencies {
+		compile("com.squareup:javapoet:1.9.0")
+		testCompile(project(":spring-context"))
+	}
+}
+
 project("spring-framework-bom") {
 	description = "Spring Framework (Bill of Materials)"
 
