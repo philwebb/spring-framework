@@ -1264,17 +1264,6 @@ public class AnnotatedElementUtils {
 		return null;
 	}
 
-	private static Method findEquivalentMethod(Class<?> clazz, Method method) {
-		Method[] candidates = clazz.getDeclaredMethods();
-		for (Method candidate : candidates) {
-			if (candidate.getName().equals(method.getName()) && Arrays.equals(
-					candidate.getParameterTypes(), method.getParameterTypes())) {
-				return candidate;
-			}
-		}
-		return null;
-	}
-
 	private static <T> T doSearchWithFindSemanticsOnClass(		Class<?> clazz,
 			@Nullable Class<? extends Annotation> annotationType, @Nullable String annotationName,
 			@Nullable Class<? extends Annotation> containerType, Processor<T> processor,
@@ -1308,22 +1297,31 @@ public class AnnotatedElementUtils {
 
 		for (Class<?> iface : ifcs) {
 			if (AnnotationUtils.isInterfaceWithAnnotatedMethods(iface)) {
-				try {
-					Method equivalentMethod = iface.getMethod(method.getName(), method.getParameterTypes());
+				Method equivalentMethod = findEquivalentMethod(iface, method);
+				if (equivalentMethod != null) {
 					T result = searchWithFindSemantics(equivalentMethod, annotationType, annotationName, containerType,
 							processor, visited, metaDepth);
 					if (result != null) {
 						return result;
 					}
 				}
-				catch (NoSuchMethodException ex) {
-					// Skip this interface - it doesn't have the method...
-				}
 			}
 		}
 
 		return null;
 	}
+
+	private static Method findEquivalentMethod(Class<?> clazz, Method method) {
+		Method[] candidates = clazz.getDeclaredMethods();
+		for (Method candidate : candidates) {
+			if (candidate.getName().equals(method.getName()) && Arrays.equals(
+					candidate.getParameterTypes(), method.getParameterTypes())) {
+				return candidate;
+			}
+		}
+		return null;
+	}
+
 
 	/**
 	 * Get the array of raw (unsynthesized) annotations from the {@code value}
