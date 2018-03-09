@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -36,7 +37,6 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
@@ -49,7 +49,9 @@ import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionReader;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanNameGenerator;
+import org.springframework.context.annotation.ConfigurationClassParser.DeferredImportSelectorGrouping;
 import org.springframework.context.annotation.ConfigurationCondition.ConfigurationPhase;
+import org.springframework.context.annotation.DeferredImportSelector.Group;
 import org.springframework.core.NestedIOException;
 import org.springframework.core.OrderComparator;
 import org.springframework.core.Ordered;
@@ -539,22 +541,30 @@ class ConfigurationClassParser {
 		if (deferredImports == null) {
 			return;
 		}
-
 		deferredImports.sort(DEFERRED_IMPORT_COMPARATOR);
+		Map<Object, DeferredImportSelectorGrouping> groupings = new LinkedHashMap<>();
 		for (DeferredImportSelectorHolder deferredImport : deferredImports) {
-			ConfigurationClass configClass = deferredImport.getConfigurationClass();
-			try {
-				String[] imports = deferredImport.getImportSelector().selectImports(configClass.getMetadata());
-				processImports(configClass, asSourceClass(configClass), asSourceClasses(imports), false);
-			}
-			catch (BeanDefinitionStoreException ex) {
-				throw ex;
-			}
-			catch (Throwable ex) {
-				throw new BeanDefinitionStoreException(
-						"Failed to process import candidates for configuration class [" +
-						configClass.getMetadata().getClassName() + "]", ex);
-			}
+			Class<? extends Group> group = deferredImport.getImportSelector().getImportGroup();
+			DeferredImportSelectorGrouping grouping = groupings.computeIfAbsent(
+					(group == null ? deferredImport : group),
+					(key) -> new DeferredImportSelectorGrouping(group));
+			grouping.add(deferredImport);
+		}
+		for (DeferredImportSelectorGrouping grouping : groupings.values()) {
+			grouping.getImports().forEach((configClass, importClassName) -> {
+				try {
+					processImports(configClass, asSourceClass(configClass),
+							asSourceClasses(importClassName), false);
+				}
+				catch (BeanDefinitionStoreException ex) {
+					throw ex;
+				}
+				catch (Throwable ex) {
+					throw new BeanDefinitionStoreException(
+							"Failed to process import candidates for configuration class [" +
+									configClass.getMetadata().getClassName() + "]", ex);
+				}
+			});
 		}
 	}
 
@@ -672,7 +682,7 @@ class ConfigurationClassParser {
 	/**
 	 * Factory method to obtain {@link SourceClass}s from class names.
 	 */
-	private Collection<SourceClass> asSourceClasses(String[] classNames) throws IOException {
+	private Collection<SourceClass> asSourceClasses(String... classNames) throws IOException {
 		List<SourceClass> annotatedClasses = new ArrayList<>(classNames.length);
 		for (String className : classNames) {
 			annotatedClasses.add(asSourceClass(className));
@@ -768,6 +778,41 @@ class ConfigurationClassParser {
 
 		public DeferredImportSelector getImportSelector() {
 			return this.importSelector;
+		}
+	}
+
+
+	private class DeferredImportSelectorGrouping {
+
+		private final DeferredImportSelector.Group group;
+
+		private final List<DeferredImportSelectorHolder> deferredImports = new ArrayList<>();
+
+		DeferredImportSelectorGrouping(Class<? extends Group> type) {
+			this.group = BeanUtils.instantiateClass(type);
+			ParserStrategyUtils.invokeAwareMethods(this.group,
+					ConfigurationClassParser.this.environment,
+					ConfigurationClassParser.this.resourceLoader,
+					ConfigurationClassParser.this.registry);
+		}
+
+		public void add(DeferredImportSelectorHolder deferredImport) {
+			this.deferredImports.add(deferredImport);
+		}
+
+		public Map<ConfigurationClass, String> getImports() {
+			Map<String, ConfigurationClass> configurationClasses = new HashMap<>();
+			this.deferredImports.forEach((deferredImport) -> {
+				ConfigurationClass configurationClass = deferredImport.getConfigurationClass();
+				String[] imports = deferredImport.getImportSelector().selectImports(configurationClass.getMetadata());
+				this.group.add(configurationClass.getMetadata(), imports);
+				Arrays.stream(imports).forEach((i)->configurationClasses.putIfAbsent(i, configurationClass));
+			});
+			String[] groupImports = this.group.selectImports();
+			Map<ConfigurationClass, String> result = new LinkedHashMap<>();
+			Arrays.stream(groupImports).forEach(
+					(i) -> result.put(configurationClasses.get(i), i));
+			return result;
 		}
 	}
 

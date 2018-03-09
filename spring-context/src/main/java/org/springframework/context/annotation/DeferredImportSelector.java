@@ -16,6 +16,8 @@
 
 package org.springframework.context.annotation;
 
+import org.springframework.core.type.AnnotationMetadata;
+
 /**
  * A variation of {@link ImportSelector} that runs after all {@code @Configuration} beans
  * have been processed. This type of selector can be particularly useful when the selected
@@ -25,9 +27,32 @@ package org.springframework.context.annotation;
  * interface or use the {@link org.springframework.core.annotation.Order} annotation to
  * indicate a precedence against other {@link DeferredImportSelector}s.
  *
+ * <p>Implementations may also provide an {@link #getImportGroup() import group} which
+ * can provide additional sorting and filtering logic across different selectors.
+ *
  * @author Phillip Webb
  * @since 4.0
  */
 public interface DeferredImportSelector extends ImportSelector {
+
+	/**
+	 * Return a specific import group or {@code null} if no grouping is required.
+	 * @return the import group class or {@code null}
+	 */
+	default Class<? extends Group> getImportGroup() {
+		return null;
+	}
+
+
+	/**
+	 * Interface used to group results from different import selectors.
+	 */
+	interface Group {
+
+		void add(AnnotationMetadata metadata, String[] imports);
+
+		String[] selectImports();
+
+	}
 
 }
