@@ -16,6 +16,7 @@
 
 package org.springframework.core.type.classreading;
 
+import java.util.EnumSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -47,18 +48,10 @@ class ClassMetadataReadingVisitor extends ClassVisitor implements ClassMetadata 
 
 	private String className = "";
 
-	private boolean isInterface;
-
-	private boolean isAnnotation;
-
-	private boolean isAbstract;
-
-	private boolean isFinal;
+	private EnumSet<Flag> flags = EnumSet.noneOf(Flag.class);
 
 	@Nullable
 	private String enclosingClassName;
-
-	private boolean independentInnerClass;
 
 	@Nullable
 	private String superClassName;
@@ -78,11 +71,11 @@ class ClassMetadataReadingVisitor extends ClassVisitor implements ClassMetadata 
 			int version, int access, String name, String signature, @Nullable String supername, String[] interfaces) {
 
 		this.className = ClassUtils.convertResourcePathToClassName(name);
-		this.isInterface = ((access & Opcodes.ACC_INTERFACE) != 0);
-		this.isAnnotation = ((access & Opcodes.ACC_ANNOTATION) != 0);
-		this.isAbstract = ((access & Opcodes.ACC_ABSTRACT) != 0);
-		this.isFinal = ((access & Opcodes.ACC_FINAL) != 0);
-		if (supername != null && !this.isInterface) {
+		toggle(Flag.INTERFACE, ((access & Opcodes.ACC_INTERFACE) != 0));
+		toggle(Flag.ANNOTATION, ((access & Opcodes.ACC_ANNOTATION) != 0));
+		toggle(Flag.ABSTRACT, ((access & Opcodes.ACC_ABSTRACT) != 0));
+		toggle(Flag.FINAL, ((access & Opcodes.ACC_FINAL) != 0));
+		if (supername != null && !flags.contains(Flag.INTERFACE)) {
 			this.superClassName = ClassUtils.convertResourcePathToClassName(supername);
 		}
 		this.interfaces = new String[interfaces.length];
@@ -103,7 +96,7 @@ class ClassMetadataReadingVisitor extends ClassVisitor implements ClassMetadata 
 			String fqOuterName = ClassUtils.convertResourcePathToClassName(outerName);
 			if (this.className.equals(fqName)) {
 				this.enclosingClassName = fqOuterName;
-				this.independentInnerClass = ((access & Opcodes.ACC_STATIC) != 0);
+				toggle(Flag.INDEPENDENT_INNER_CLASS, ((access & Opcodes.ACC_STATIC) != 0));
 			}
 			else if (this.className.equals(fqOuterName)) {
 				this.memberClassNames.add(fqName);
@@ -144,6 +137,15 @@ class ClassMetadataReadingVisitor extends ClassVisitor implements ClassMetadata 
 		// no-op
 	}
 
+	private void toggle(Flag flag, boolean add) {
+		if (add) {
+			this.flags.add(flag);
+		}
+		else {
+			this.flags.remove(flag);
+		}
+	}
+
 
 	@Override
 	public String getClassName() {
@@ -152,27 +154,28 @@ class ClassMetadataReadingVisitor extends ClassVisitor implements ClassMetadata 
 
 	@Override
 	public boolean isInterface() {
-		return this.isInterface;
+		return this.flags.contains(Flag.INTERFACE);
 	}
 
 	@Override
 	public boolean isAnnotation() {
-		return this.isAnnotation;
+		return this.flags.contains(Flag.ANNOTATION);
 	}
 
 	@Override
 	public boolean isAbstract() {
-		return this.isAbstract;
+		return this.flags.contains(Flag.ABSTRACT);
+
 	}
 
 	@Override
 	public boolean isFinal() {
-		return this.isFinal;
+		return this.flags.contains(Flag.FINAL);
 	}
 
 	@Override
 	public boolean isIndependent() {
-		return (this.enclosingClassName == null || this.independentInnerClass);
+		return (getEnclosingClassName() == null || this.flags.contains(Flag.INDEPENDENT_INNER_CLASS));
 	}
 
 	@Override
@@ -229,6 +232,12 @@ class ClassMetadataReadingVisitor extends ClassVisitor implements ClassMetadata 
 		public EmptyFieldVisitor() {
 			super(SpringAsmInfo.ASM_VERSION);
 		}
+	}
+
+	private static enum Flag {
+
+		INTERFACE, ANNOTATION, ABSTRACT, FINAL, INDEPENDENT_INNER_CLASS
+
 	}
 
 }
