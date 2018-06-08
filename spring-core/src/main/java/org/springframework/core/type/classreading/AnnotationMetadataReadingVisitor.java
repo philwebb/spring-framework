@@ -47,6 +47,7 @@ import org.springframework.util.MultiValueMap;
  * @author Sam Brannen
  * @since 2.5
  */
+@Deprecated
 public class AnnotationMetadataReadingVisitor extends ClassMetadataReadingVisitor implements AnnotationMetadata {
 
 	@Nullable
@@ -70,6 +71,14 @@ public class AnnotationMetadataReadingVisitor extends ClassMetadataReadingVisito
 		this.classLoader = classLoader;
 	}
 
+
+
+	/**
+	 * @return the metaAnnotationMap
+	 */
+	public Map<String, Set<String>> getMetaAnnotationMap() {
+		return metaAnnotationMap;
+	}
 
 	@Override
 	public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
