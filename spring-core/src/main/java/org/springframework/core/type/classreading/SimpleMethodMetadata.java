@@ -53,6 +53,10 @@ public class SimpleMethodMetadata extends SimpleAnnotatedTypeMetadata
 	}
 
 
+	Set<Flag> getFlags() {
+		return flags;
+	}
+
 	@Override
 	public String getMethodName() {
 		return this.methodName;

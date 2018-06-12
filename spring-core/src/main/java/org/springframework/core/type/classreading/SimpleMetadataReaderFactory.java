@@ -34,6 +34,8 @@ import org.springframework.util.ClassUtils;
  */
 public class SimpleMetadataReaderFactory implements MetadataReaderFactory {
 
+	public static long time = 0;
+
 	private final ResourceLoader resourceLoader;
 
 

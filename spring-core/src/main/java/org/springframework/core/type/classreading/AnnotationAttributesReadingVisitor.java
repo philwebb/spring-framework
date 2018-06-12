@@ -63,7 +63,6 @@ final class AnnotationAttributesReadingVisitor extends RecursiveAnnotationAttrib
 	@Override
 	public void visitEnd() {
 		super.visitEnd();
-
 		Class<?> annotationClass = this.attributes.annotationType();
 		if (annotationClass != null) {
 			List<AnnotationAttributes> attributeList = this.annotationAttributes.get(this.annotationType);

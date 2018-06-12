@@ -1698,6 +1698,7 @@ public abstract class AnnotationUtils {
 	 */
 	@SuppressWarnings("unchecked")
 	private static boolean isSynthesizable(Class<? extends Annotation> annotationType) {
+		return false;
 		Boolean synthesizable = synthesizableCache.get(annotationType);
 		if (synthesizable != null) {
 			return synthesizable;

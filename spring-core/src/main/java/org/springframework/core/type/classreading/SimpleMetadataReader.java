@@ -21,11 +21,14 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.springframework.asm.ClassReader;
+import org.springframework.asm.ClassVisitor;
 import org.springframework.core.NestedIOException;
 import org.springframework.core.io.Resource;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.ClassMetadata;
 import org.springframework.lang.Nullable;
+
+import aj.org.objectweb.asm.Opcodes;
 
 /**
  * {@link MetadataReader} implementation based on an ASM
@@ -46,12 +49,14 @@ final class SimpleMetadataReader implements MetadataReader {
 
 
 	SimpleMetadataReader(Resource resource, @Nullable ClassLoader classLoader) throws IOException {
+		long t= System.nanoTime();
 		SimpleAnnotationMetadataReadingVistor visitor = new SimpleAnnotationMetadataReadingVistor(classLoader);
 		getClassReader(resource).accept(visitor, ClassReader.SKIP_DEBUG);
 		this.annotationMetadata = visitor.getMetadata();
 		this.resource = resource;
+		long total = System.nanoTime() - t;
+		SimpleMetadataReaderFactory.time += total;
 	}
-
 
 	private ClassReader getClassReader(Resource resource)
 			throws IOException, NestedIOException {

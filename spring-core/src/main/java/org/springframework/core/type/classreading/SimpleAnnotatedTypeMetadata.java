@@ -79,6 +79,13 @@ abstract class SimpleAnnotatedTypeMetadata implements AnnotatedTypeMetadata {
 				: null);
 	}
 
+	protected final LinkedMultiValueMap<String, AnnotationAttributes> getDirectAnnotationAttributes() {
+		return this.annotationAttributes;
+	}
+
+	protected final Map<String, Set<String>> getMetaAnnotations() {
+		return this.metaAnnotations;
+	}
 
 	protected Set<String> getMetaAnnotationTypes(String annotationName) {
 		return this.metaAnnotations.get(annotationName);
