@@ -72,8 +72,9 @@ public class LocaleResolverTests {
 		// set new locale
 		try {
 			localeResolver.setLocale(request, response, Locale.GERMANY);
-			if (!shouldSet)
+			if (!shouldSet) {
 				fail("should not be able to set Locale");
+			}
 			// check new locale
 			locale = localeResolver.resolveLocale(request);
 			assertEquals(Locale.GERMANY, locale);

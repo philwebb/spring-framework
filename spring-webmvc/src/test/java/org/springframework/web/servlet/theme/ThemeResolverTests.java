@@ -46,8 +46,9 @@ public class ThemeResolverTests {
 		// set new theme name
 		try {
 			themeResolver.setThemeName(request, response, TEST_THEME_NAME);
-			if (!shouldSet)
+			if (!shouldSet) {
 				fail("should not be able to set Theme name");
+			}
 			// check new theme namelocale
 			themeName = themeResolver.resolveThemeName(request);
 			assertEquals(TEST_THEME_NAME, themeName);
@@ -56,8 +57,9 @@ public class ThemeResolverTests {
 			assertEquals(themeName, defaultName);
 		}
 		catch (UnsupportedOperationException ex) {
-			if (shouldSet)
+			if (shouldSet) {
 				fail("should be able to set Theme name");
+			}
 		}
 	}
 

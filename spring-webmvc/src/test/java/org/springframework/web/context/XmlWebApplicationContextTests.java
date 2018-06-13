@@ -177,22 +177,25 @@ public class XmlWebApplicationContextTests extends AbstractApplicationContextTes
 
 		@Override
 		public void afterPropertiesSet() {
-			if (this.initMethodInvoked)
+			if (this.initMethodInvoked) {
 				fail();
+			}
 			this.afterPropertiesSetInvoked = true;
 		}
 
 		/** Init method */
 		public void customInit() throws ServletException {
-			if (!this.afterPropertiesSetInvoked)
+			if (!this.afterPropertiesSetInvoked) {
 				fail();
+			}
 			this.initMethodInvoked = true;
 		}
 
 		@Override
 		public void destroy() {
-			if (this.customDestroyed)
+			if (this.customDestroyed) {
 				fail();
+			}
 			if (this.destroyed) {
 				throw new IllegalStateException("Already destroyed");
 			}
@@ -200,8 +203,9 @@ public class XmlWebApplicationContextTests extends AbstractApplicationContextTes
 		}
 
 		public void customDestroy() {
-			if (!this.destroyed)
+			if (!this.destroyed) {
 				fail();
+			}
 			if (this.customDestroyed) {
 				throw new IllegalStateException("Already customDestroyed");
 			}

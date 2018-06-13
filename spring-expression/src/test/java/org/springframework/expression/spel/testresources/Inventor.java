@@ -191,14 +191,16 @@ public class Inventor {
 	}
 
 	public int aVarargsMethod(String... strings) {
-		if (strings == null)
+		if (strings == null) {
 			return 0;
+		}
 		return strings.length;
 	}
 
 	public int aVarargsMethod2(int i, String... strings) {
-		if (strings == null)
+		if (strings == null) {
 			return i;
+		}
 		return strings.length + i;
 	}
 
