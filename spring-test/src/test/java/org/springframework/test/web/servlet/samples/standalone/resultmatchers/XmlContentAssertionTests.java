@@ -85,7 +85,7 @@ public class XmlContentAssertionTests {
 	@Controller
 	private static class MusicController {
 
-		@RequestMapping(value="/music/people")
+		@RequestMapping("/music/people")
 		public @ResponseBody PeopleWrapper getPeople() {
 
 			List<Person> composers = Arrays.asList(

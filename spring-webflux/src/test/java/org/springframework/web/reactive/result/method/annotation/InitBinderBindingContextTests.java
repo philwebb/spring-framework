@@ -144,7 +144,7 @@ public class InitBinderBindingContextTests {
 			dataBinder.setDisallowedFields("id");
 		}
 
-		@InitBinder(value="foo")
+		@InitBinder("foo")
 		public void initBinderWithAttributeName(WebDataBinder dataBinder) {
 			dataBinder.setDisallowedFields("id");
 		}

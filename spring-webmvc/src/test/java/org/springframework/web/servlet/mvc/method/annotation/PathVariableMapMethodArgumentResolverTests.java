@@ -98,7 +98,7 @@ public class PathVariableMapMethodArgumentResolverTests {
 
 	public void handle(
 			@PathVariable Map<String, String> map,
-			@PathVariable(value = "name") Map<String, String> namedMap,
+			@PathVariable("name") Map<String, String> namedMap,
 			Map<String, String> mapWithoutAnnotat) {
 	}
 

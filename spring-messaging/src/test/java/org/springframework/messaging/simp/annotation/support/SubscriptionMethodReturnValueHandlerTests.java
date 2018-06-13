@@ -65,9 +65,11 @@ public class SubscriptionMethodReturnValueHandlerTests {
 
 	private SubscriptionMethodReturnValueHandler jsonHandler;
 
-	@Mock private MessageChannel messageChannel;
+	@Mock
+	private MessageChannel messageChannel;
 
-	@Captor private ArgumentCaptor<Message<?>> messageCaptor;
+	@Captor
+	private ArgumentCaptor<Message<?>> messageCaptor;
 
 	private MethodParameter subscribeEventReturnType;
 

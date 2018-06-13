@@ -128,7 +128,7 @@ public class StandaloneMockMvcBuilderTests {
 	@Controller
 	private static class PlaceholderController {
 
-		@RequestMapping(value = "${sys.login.ajax}")
+		@RequestMapping("${sys.login.ajax}")
 		private void handleWithPlaceholders() { }
 	}
 
@@ -152,12 +152,12 @@ public class StandaloneMockMvcBuilderTests {
 	@Controller
 	private static class PersonController {
 
-		@RequestMapping(value="/persons")
+		@RequestMapping("/persons")
 		public String persons() {
 			return null;
 		}
 
-		@RequestMapping(value="/forward")
+		@RequestMapping("/forward")
 		public String forward() {
 			return "forward:/persons";
 		}

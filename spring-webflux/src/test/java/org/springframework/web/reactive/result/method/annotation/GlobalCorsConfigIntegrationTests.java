@@ -186,7 +186,8 @@ public class GlobalCorsConfigIntegrationTests extends AbstractRequestMappingInte
 		}
 	}
 
-	@RestController @SuppressWarnings("unused")
+	@RestController
+	@SuppressWarnings("unused")
 	static class TestController {
 
 		@GetMapping("/welcome")

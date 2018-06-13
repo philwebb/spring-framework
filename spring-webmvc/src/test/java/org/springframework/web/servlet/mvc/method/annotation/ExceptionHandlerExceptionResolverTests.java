@@ -392,7 +392,7 @@ public class ExceptionHandlerExceptionResolverTests {
 
 		public void handle() {}
 
-		@ExceptionHandler(value = IOException.class)
+		@ExceptionHandler(IOException.class)
 		public void handleException() {
 		}
 	}

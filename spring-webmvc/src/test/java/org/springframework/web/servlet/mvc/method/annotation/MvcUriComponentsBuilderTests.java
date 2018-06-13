@@ -499,13 +499,13 @@ public class MvcUriComponentsBuilderTests {
 			return null;
 		}
 
-		@RequestMapping(value = "/{id}/foo")
+		@RequestMapping("/{id}/foo")
 		HttpEntity<Void> methodForNextPage(@PathVariable String id,
 				@RequestParam Integer offset, @RequestParam Integer limit) {
 			return null;
 		}
 
-		@RequestMapping(value = "/{id}/foo")
+		@RequestMapping("/{id}/foo")
 		HttpEntity<Void> methodWithMultiValueRequestParams(@PathVariable String id,
 				@RequestParam List<Integer> items, @RequestParam Integer limit) {
 			return null;

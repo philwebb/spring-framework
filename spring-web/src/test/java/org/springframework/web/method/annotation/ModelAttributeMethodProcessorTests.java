@@ -325,7 +325,8 @@ public class ModelAttributeMethodProcessorTests {
 	}
 
 
-	@ModelAttribute("modelAttrName") @SuppressWarnings("unused")
+	@ModelAttribute("modelAttrName")
+	@SuppressWarnings("unused")
 	private String annotatedReturnValue() {
 		return null;
 	}
