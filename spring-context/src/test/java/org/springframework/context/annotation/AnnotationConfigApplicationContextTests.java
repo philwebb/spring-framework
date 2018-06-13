@@ -377,7 +377,9 @@ public class AnnotationConfigApplicationContextTests {
 	static class NameConfig {
 
 		@Bean
-		String name() { return "foo"; }
+		String name() {
+			return "foo";
+		}
 	}
 
 	@Configuration

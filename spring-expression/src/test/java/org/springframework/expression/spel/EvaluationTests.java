@@ -1436,10 +1436,21 @@ public class EvaluationTests extends AbstractExpressionTests {
 		private Map map2;
 		private List<String> foo;
 
-		public Map getMap2() { return this.map2; }
-		public Foo getWibble2() { return this.wibble2; }
-		public List<String> getFoo() { return this.foo; }
-		public void setFoo(List<String> newfoo) { this.foo = newfoo; }
+		public Map getMap2() {
+			return this.map2;
+		}
+
+		public Foo getWibble2() {
+			return this.wibble2;
+		}
+
+		public List<String> getFoo() {
+			return this.foo;
+		}
+
+		public void setFoo(List<String> newfoo) {
+			this.foo = newfoo;
+		}
 	}
 
 

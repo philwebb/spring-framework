@@ -620,6 +620,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 
 	private void waitTillDone(ListenableFuture<?> future) {
 		while (!future.isDone()) {
+			// wait
 		}
 	}
 

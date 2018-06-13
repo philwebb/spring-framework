@@ -475,8 +475,9 @@ public class ApplicationContextEventTests extends AbstractApplicationEventListen
 	@Test
 	public void lambdaAsListenerWithJava8StyleClassCastMessage() {
 		StaticApplicationContext context = new StaticApplicationContext();
-		ApplicationListener<ApplicationEvent> listener =
-				event -> { throw new ClassCastException(event.getClass().getName()); };
+		ApplicationListener<ApplicationEvent> listener = event -> {
+			throw new ClassCastException(event.getClass().getName());
+		};
 		context.addApplicationListener(listener);
 		context.refresh();
 
@@ -487,8 +488,9 @@ public class ApplicationContextEventTests extends AbstractApplicationEventListen
 	@Test
 	public void lambdaAsListenerWithJava9StyleClassCastMessage() {
 		StaticApplicationContext context = new StaticApplicationContext();
-		ApplicationListener<ApplicationEvent> listener =
-				event -> { throw new ClassCastException("spring.context/" + event.getClass().getName()); };
+		ApplicationListener<ApplicationEvent> listener = event -> {
+			throw new ClassCastException("spring.context/" + event.getClass().getName());
+		};
 		context.addApplicationListener(listener);
 		context.refresh();
 

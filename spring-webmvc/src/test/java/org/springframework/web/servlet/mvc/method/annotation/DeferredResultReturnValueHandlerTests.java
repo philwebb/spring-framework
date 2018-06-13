@@ -141,13 +141,21 @@ public class DeferredResultReturnValueHandlerTests {
 	@SuppressWarnings("unused")
 	static class TestController {
 
-		String handleString() { return null; }
+		String handleString() {
+			return null;
+		}
 
-		DeferredResult<String> handleDeferredResult() { return null; }
+		DeferredResult<String> handleDeferredResult() {
+			return null;
+		}
 
-		ListenableFuture<String> handleListenableFuture() { return null; }
+		ListenableFuture<String> handleListenableFuture() {
+			return null;
+		}
 
-		CompletableFuture<String> handleCompletableFuture() { return null; }
+		CompletableFuture<String> handleCompletableFuture() {
+			return null;
+		}
 	}
 
 }

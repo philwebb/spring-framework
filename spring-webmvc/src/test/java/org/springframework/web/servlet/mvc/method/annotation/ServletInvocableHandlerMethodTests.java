@@ -386,13 +386,17 @@ public class ServletInvocableHandlerMethodTests {
 	private static class MethodLevelResponseBodyHandler {
 
 		@ResponseBody
-		public DeferredResult<String> handle() { return null; }
+		public DeferredResult<String> handle() {
+			return null;
+		}
 
 		// Unusual but legal return type
 		// Properly test generic type handling of Flux values collected to a List
 
 		@ResponseBody
-		public Flux<List<String>> handleFluxOfLists() { return null; }
+		public Flux<List<String>> handleFluxOfLists() {
+			return null;
+		}
 	}
 
 
@@ -400,14 +404,18 @@ public class ServletInvocableHandlerMethodTests {
 	@ResponseBody
 	private static class TypeLevelResponseBodyHandler {
 
-		public DeferredResult<String> handle() { return null; }
+		public DeferredResult<String> handle() {
+			return null;
+		}
 	}
 
 
 	private static class DeferredResultSubclassHandler {
 
 		@ResponseBody
-		public CustomDeferredResult handle() { return null; }
+		public CustomDeferredResult handle() {
+			return null;
+		}
 	}
 
 
@@ -418,11 +426,17 @@ public class ServletInvocableHandlerMethodTests {
 	@SuppressWarnings("unused")
 	private static class ResponseEntityHandler {
 
-		public DeferredResult<ResponseEntity<String>> handleDeferred() { return null; }
+		public DeferredResult<ResponseEntity<String>> handleDeferred() {
+			return null;
+		}
 
-		public ResponseEntity<Void> handleRawType() { return null; }
+		public ResponseEntity<Void> handleRawType() {
+			return null;
+		}
 
-		public ResponseEntity<Flux<Bar>> handleFlux() { return null; }
+		public ResponseEntity<Flux<Bar>> handleFlux() {
+			return null;
+		}
 	}
 
 
@@ -444,10 +458,13 @@ public class ServletInvocableHandlerMethodTests {
 	@SuppressWarnings("unused")
 	private static class StreamingHandler {
 
-		public ResponseBodyEmitter handleEmitter() { return null; }
+		public ResponseBodyEmitter handleEmitter() {
+			return null;
+		}
 
-		public StreamingResponseBody handleStreamBody() { return null; }
-
+		public StreamingResponseBody handleStreamBody() {
+			return null;
+		}
 	}
 
 	private static class Bar {

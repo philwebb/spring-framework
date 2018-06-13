@@ -122,8 +122,14 @@ public class ExpressionLanguageScenarioTests extends AbstractExpressionTests {
 	static class TestClass {
 		public String str;
 		private int property;
-		public int getProperty() { return property; }
-		public void setProperty(int i) { property = i; }
+
+		public int getProperty() {
+			return property;
+		}
+
+		public void setProperty(int i) {
+			property = i;
+		}
 	}
 
 	/**
@@ -170,7 +176,9 @@ public class ExpressionLanguageScenarioTests extends AbstractExpressionTests {
 		assertEquals(4,value);
 	}
 
-	public static String repeat(String s) { return s+s; }
+	public static String repeat(String s) {
+		return s + s;
+	}
 
 	/**
 	 * Scenario: using your own java methods and calling them from the expression

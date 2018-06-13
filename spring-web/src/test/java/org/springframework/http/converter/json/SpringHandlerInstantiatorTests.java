@@ -247,7 +247,9 @@ public class SpringHandlerInstantiatorTests {
 			this.username = username;
 		}
 
-		public String getUsername() { return this.username; }
+		public String getUsername() {
+			return this.username;
+		}
 	}
 
 
