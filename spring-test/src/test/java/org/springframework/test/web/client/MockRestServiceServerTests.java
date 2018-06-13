@@ -116,8 +116,9 @@ public class MockRestServiceServerTests {
 	public void followUpRequestAfterFailure() {
 		MockRestServiceServer server = MockRestServiceServer.bindTo(this.restTemplate).build();
 
-		server.expect(requestTo("/some-service/some-endpoint"))
-				.andRespond(request -> { throw new SocketException("pseudo network error"); });
+		server.expect(requestTo("/some-service/some-endpoint")).andRespond(request -> {
+			throw new SocketException("pseudo network error");
+		});
 
 		server.expect(requestTo("/reporting-service/report-error"))
 				.andExpect(method(POST)).andRespond(withSuccess());

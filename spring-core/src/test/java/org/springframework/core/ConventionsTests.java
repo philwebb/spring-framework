@@ -157,19 +157,33 @@ public class ConventionsTests {
 				Mono<TestObject> toMono, Flux<TestObject> toFlux,
 				Single<TestObject> toSingle, Observable<TestObject> toObservable) { }
 
-		public TestObject handleTo() { return null; }
+		public TestObject handleTo() {
+			return null;
+		}
 
-		public List<TestObject> handleToList() { return null; }
+		public List<TestObject> handleToList() {
+			return null;
+		}
 
-		public Set<TestObject> handleToSet() { return null; }
+		public Set<TestObject> handleToSet() {
+			return null;
+		}
 
-		public Mono<TestObject> handleToMono() { return null; }
+		public Mono<TestObject> handleToMono() {
+			return null;
+		}
 
-		public Flux<TestObject> handleToFlux() { return null; }
+		public Flux<TestObject> handleToFlux() {
+			return null;
+		}
 
-		public Single<TestObject> handleToSingle() { return null; }
+		public Single<TestObject> handleToSingle() {
+			return null;
+		}
 
-		public Observable<TestObject> handleToObservable() { return null; }
+		public Observable<TestObject> handleToObservable() {
+			return null;
+		}
 
 	}
 

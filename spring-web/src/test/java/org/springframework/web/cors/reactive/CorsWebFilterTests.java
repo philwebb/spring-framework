@@ -70,7 +70,8 @@ public class CorsWebFilterTests {
 				HttpHeaders headers = filterExchange.getResponse().getHeaders();
 				assertEquals("http://domain2.com", headers.getFirst(ACCESS_CONTROL_ALLOW_ORIGIN));
 				assertEquals("header3, header4", headers.getFirst(ACCESS_CONTROL_EXPOSE_HEADERS));
-			} catch (AssertionError ex) {
+			}
+			catch (AssertionError ex) {
 				return Mono.error(ex);
 			}
 			return Mono.empty();

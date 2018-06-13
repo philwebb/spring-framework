@@ -338,19 +338,33 @@ public class ReactiveTypeHandlerTests {
 	@SuppressWarnings("unused")
 	static class TestController {
 
-		String handleString() { return null; }
+		String handleString() {
+			return null;
+		}
 
-		Mono<String> handleMono() { return null; }
+		Mono<String> handleMono() {
+			return null;
+		}
 
-		Single<String> handleSingle() { return null; }
+		Single<String> handleSingle() {
+			return null;
+		}
 
-		io.reactivex.Single<String> handleSingleRxJava2() { return null; }
+		io.reactivex.Single<String> handleSingleRxJava2() {
+			return null;
+		}
 
-		Flux<Bar> handleFlux() { return null; }
+		Flux<Bar> handleFlux() {
+			return null;
+		}
 
-		Flux<String> handleFluxString() { return null; }
+		Flux<String> handleFluxString() {
+			return null;
+		}
 
-		Flux<ServerSentEvent<String>> handleFluxSseEventBuilder() { return null; }
+		Flux<ServerSentEvent<String>> handleFluxSseEventBuilder() {
+			return null;
+		}
 	}
 
 

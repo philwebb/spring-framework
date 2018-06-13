@@ -100,8 +100,12 @@ public enum Propagation {
 	private final int value;
 
 
-	Propagation(int value) { this.value = value; }
+	Propagation(int value) {
+		this.value = value;
+	}
 
-	public int value() { return this.value; }
+	public int value() {
+		return this.value;
+	}
 
 }

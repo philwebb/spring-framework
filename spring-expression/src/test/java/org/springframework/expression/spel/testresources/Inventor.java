@@ -216,10 +216,19 @@ public class Inventor {
 		this.accessedThroughGetSet = b;
 	}
 
-	public Date getBirthdate() { return birthdate;}
+	public Date getBirthdate() {
+		return birthdate;
+	}
 
-	public String getFoo() { return foo; }
-	public void setFoo(String s) { foo = s; }
+	public String getFoo() {
+		return foo;
+	}
 
-	public String getNationality() { return nationality; }
+	public void setFoo(String s) {
+		foo = s;
+	}
+
+	public String getNationality() {
+		return nationality;
+	}
 }

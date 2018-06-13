@@ -81,8 +81,12 @@ public enum Isolation {
 	private final int value;
 
 
-	Isolation(int value) { this.value = value; }
+	Isolation(int value) {
+		this.value = value;
+	}
 
-	public int value() { return this.value; }
+	public int value() {
+		return this.value;
+	}
 
 }
