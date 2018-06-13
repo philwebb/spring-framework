@@ -222,7 +222,8 @@ public class AnnotationAsyncExecutionAspectTests {
 
 		int counter;
 
-		@Async public void incrementAsync() {
+		@Async
+		public void incrementAsync() {
 			counter++;
 		}
 
@@ -230,7 +231,8 @@ public class AnnotationAsyncExecutionAspectTests {
 			counter++;
 		}
 
-		@Async public Future<Integer> incrementReturningAFuture() {
+		@Async
+		public Future<Integer> incrementReturningAFuture() {
 			counter++;
 			return new AsyncResult<Integer>(5);
 		}

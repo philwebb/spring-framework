@@ -564,7 +564,8 @@ public class AnnotationDrivenEventListenerTests {
 		assertThat(listener.order, contains("first", "second", "third"));
 	}
 
-	@Test @Ignore  // SPR-15122
+	@Test
+	@Ignore  // SPR-15122
 	public void listenersReceiveEarlyEvents() {
 		load(EventOnPostConstruct.class, OrderedTestListener.class);
 		OrderedTestListener listener = this.context.getBean(OrderedTestListener.class);

@@ -350,10 +350,12 @@ public class ApplicationContextExpressionTests {
 	@SuppressWarnings("serial")
 	public static class ValueTestBean implements Serializable {
 
-		@Autowired @Value("XXX#{tb0.name}YYY#{mySpecialAttr}ZZZ")
+		@Autowired
+		@Value("XXX#{tb0.name}YYY#{mySpecialAttr}ZZZ")
 		public String name;
 
-		@Autowired @Value("#{mySpecialAttr}")
+		@Autowired
+		@Value("#{mySpecialAttr}")
 		public int age;
 
 		@Value("#{mySpecialAttr}")
@@ -365,7 +367,8 @@ public class ApplicationContextExpressionTests {
 		@Value("${code} #{systemProperties.country}")
 		public ObjectFactory<String> countryFactory;
 
-		@Autowired @Qualifier("original")
+		@Autowired
+		@Qualifier("original")
 		public transient TestBean tb;
 	}
 
@@ -443,7 +446,8 @@ public class ApplicationContextExpressionTests {
 			this.country = country;
 		}
 
-		@Autowired @Qualifier("original")
+		@Autowired
+		@Qualifier("original")
 		public void setTb(TestBean tb) {
 			this.tb = tb;
 		}

@@ -104,7 +104,7 @@ public class ArgumentBindingTests {
 @Aspect
 class PointcutWithAnnotationArgument {
 
-	@Around(value = "execution(* org.springframework..*.*(..)) && @annotation(transaction)")
+	@Around("execution(* org.springframework..*.*(..)) && @annotation(transaction)")
 	public Object around(ProceedingJoinPoint pjp, Transactional transaction) throws Throwable {
 		System.out.println("Invoked with transaction " + transaction);
 		throw new IllegalStateException();

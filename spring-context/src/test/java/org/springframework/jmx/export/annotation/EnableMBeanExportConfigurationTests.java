@@ -265,7 +265,7 @@ public class EnableMBeanExportConfigurationTests {
 
 
 	@Configuration
-	@ComponentScan(excludeFilters = @ComponentScan.Filter(value=Configuration.class))
+	@ComponentScan(excludeFilters = @ComponentScan.Filter(Configuration.class))
 	@EnableMBeanExport(server = "server")
 	static class ComponentScanConfiguration {
 

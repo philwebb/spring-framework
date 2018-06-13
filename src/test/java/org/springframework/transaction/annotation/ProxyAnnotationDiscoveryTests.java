@@ -113,7 +113,8 @@ interface NonAnnotatedService {
 }
 
 interface AnnotatedService {
-	@Transactional void m();
+	@Transactional
+	void m();
 }
 
 class NonAnnotatedServiceImpl implements AnnotatedService {
@@ -123,9 +124,11 @@ class NonAnnotatedServiceImpl implements AnnotatedService {
 
 class AnnotatedServiceImpl implements NonAnnotatedService {
 	@Override
-	@Transactional public void m() { }
+	@Transactional
+	public void m() { }
 }
 
 class AnnotatedServiceWithoutInterface {
-	@Transactional public void m() { }
+	@Transactional
+	public void m() { }
 }
