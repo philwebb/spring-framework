@@ -376,7 +376,7 @@ public class ComposedRepeatableAnnotationsTests {
 	}
 
 	@ComposedNoninherited(name = "C")
-	@Noninheriteds({ @Noninherited(value = "A"), @Noninherited(name = "B") })
+	@Noninheriteds({ @Noninherited("A"), @Noninherited(name = "B") })
 	static class NoninheritedRepeatableClass {
 	}
 

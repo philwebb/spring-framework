@@ -109,12 +109,14 @@ public class WebHttpHandlerBuilderTests {
 
 		private static final String ATTRIBUTE = "attr";
 
-		@Bean @Order(2)
+		@Bean
+		@Order(2)
 		public WebFilter filterA() {
 			return createFilter("FilterA");
 		}
 
-		@Bean @Order(1)
+		@Bean
+		@Order(1)
 		public WebFilter filterB() {
 			return createFilter("FilterB");
 		}

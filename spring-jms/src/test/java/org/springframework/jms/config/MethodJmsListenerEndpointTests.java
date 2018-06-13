@@ -519,7 +519,8 @@ public class MethodJmsListenerEndpointTests {
 	}
 
 
-	@SendTo("defaultReply") @SuppressWarnings("unused")
+	@SendTo("defaultReply")
+	@SuppressWarnings("unused")
 	static class JmsEndpointSampleBean {
 
 		private final Map<String, Boolean> invocations = new HashMap<>();

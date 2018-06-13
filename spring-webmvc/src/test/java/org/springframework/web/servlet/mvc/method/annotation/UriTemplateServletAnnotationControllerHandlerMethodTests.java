@@ -571,25 +571,25 @@ public class UriTemplateServletAnnotationControllerHandlerMethodTests extends Ab
 	@RequestMapping("/category")
 	public static class MultiPathController {
 
-		@RequestMapping(value = {"/{category}/page/{page}", "/*/{category}/page/{page}"})
+		@RequestMapping({"/{category}/page/{page}", "/*/{category}/page/{page}"})
 		public void category(@PathVariable String category, @PathVariable int page, Writer writer) throws IOException {
 			writer.write("handle1-");
 			writer.write("category-" + category);
 			writer.write("page-" + page);
 		}
 
-		@RequestMapping(value = {"/{category}", "/*/{category}"})
+		@RequestMapping({"/{category}", "/*/{category}"})
 		public void category(@PathVariable String category, Writer writer) throws IOException {
 			writer.write("handle2-");
 			writer.write("category-" + category);
 		}
 
-		@RequestMapping(value = {""})
+		@RequestMapping({""})
 		public void category(Writer writer) throws IOException {
 			writer.write("handle3");
 		}
 
-		@RequestMapping(value = {"/page/{page}"})
+		@RequestMapping({"/page/{page}"})
 		public void category(@PathVariable int page, Writer writer) throws IOException {
 			writer.write("handle4-");
 			writer.write("page-" + page);

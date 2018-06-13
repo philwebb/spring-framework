@@ -167,7 +167,7 @@ public class PathVariableMethodArgumentResolverTests {
 
 	@SuppressWarnings({"unused", "OptionalUsedAsFieldOrParameterType"})
 	public void handle(
-			@PathVariable(value = "name") String param1,
+			@PathVariable("name") String param1,
 			String param2,
 			@PathVariable(name = "name", required = false) String param3,
 			@PathVariable("name") Optional<String> param4,

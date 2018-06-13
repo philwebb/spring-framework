@@ -3,9 +3,11 @@
     "-//Puppy Crawl//DTD Suppressions 1.1//EN"
     "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
 <suppressions>
-	<suppress files="[\\/]src[\\/]main[\\/]java[\\/]org[\\/]springframework[\\/]asm[\\/]" checks="Header" />
+	<suppress files="[\\/]src[\\/]main[\\/]java[\\/]org[\\/]springframework[\\/]asm[\\/]" checks=".*" />
 	<suppress files="[\\/]src[\\/]main[\\/]java[\\/]org[\\/]springframework[\\/]cglib[\\/]" checks="Header" />
 	<suppress files="[\\/]src[\\/]main[\\/]java[\\/]org[\\/]apache[\\/]commons[\\/]logging[\\/]" checks="Header" />
 	<suppress files="[\\/]src[\\/]main[\\/]java[\\/]org[\\/]springframework[\\/]protobuf[\\/]" checks="Header" />
 	<suppress files="[\\/]src[\\/]test[\\/]java[\\/]org[\\/]springframework[\\/]protobuf[\\/]" checks="Header" />
+	<suppress files="AnnotationUtilsTests" checks="AnnotationUseStyle" />
+	<suppress files="[\\/]src[\\/]test[\\/]java[\\/]org[\\/]springframework[\\/]test[\\/]context[\\/]hierarchies[\\/]" checks="AnnotationUseStyle" />
 </suppressions>

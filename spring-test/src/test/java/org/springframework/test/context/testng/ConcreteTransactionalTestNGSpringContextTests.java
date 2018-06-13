@@ -73,7 +73,7 @@ public class ConcreteTransactionalTestNGSpringContextTests extends AbstractTrans
 	@Autowired(required = false)
 	protected Long nonrequiredLong;
 
-	@Resource()
+	@Resource
 	protected String foo;
 
 	protected String bar;

@@ -449,7 +449,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		public void bar() {
 		}
 
-		@RequestMapping(value = "")
+		@RequestMapping("")
 		public void empty() {
 		}
 

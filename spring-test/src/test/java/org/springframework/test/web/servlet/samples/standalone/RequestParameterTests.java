@@ -49,7 +49,7 @@ public class RequestParameterTests {
 	@Controller
 	private class PersonController {
 
-		@RequestMapping(value="/search")
+		@RequestMapping("/search")
 		@ResponseBody
 		public Person get(@RequestParam String name) {
 			Person person = new Person(name);

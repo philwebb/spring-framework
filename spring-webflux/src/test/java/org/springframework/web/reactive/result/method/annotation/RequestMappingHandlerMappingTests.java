@@ -164,7 +164,8 @@ public class RequestMappingHandlerMappingTests {
 	}
 
 
-	@Controller @SuppressWarnings("unused")
+	@Controller
+	@SuppressWarnings("unused")
 	@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	static class ComposedAnnotationController {
 
