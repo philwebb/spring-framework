@@ -93,13 +93,17 @@ public class PrimitiveBeanLookupAndAutowiringTests {
 
 
 	static class AutowiredComponent {
-		@Autowired boolean b;
-		@Autowired int i;
+		@Autowired
+		boolean b;
+		@Autowired
+		int i;
 	}
 
 
 	static class ResourceComponent {
-		@Resource boolean b;
-		@Autowired int i;
+		@Resource
+		boolean b;
+		@Autowired
+		int i;
 	}
 }

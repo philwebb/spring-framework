@@ -984,7 +984,9 @@ public class ConfigurationClassPostProcessorTests {
 	@Configuration
 	public static class ScopedProxyConfigurationClass {
 
-		@Bean @Lazy @Scope(proxyMode = ScopedProxyMode.INTERFACES)
+		@Bean
+		@Lazy
+		@Scope(proxyMode = ScopedProxyMode.INTERFACES)
 		public ITestBean scopedClass() {
 			return new TestBean();
 		}
@@ -1478,7 +1480,8 @@ public class ConfigurationClassPostProcessorTests {
 	@Configuration
 	static class BeanArgumentConfigWithSingleton {
 
-		@Bean @Lazy
+		@Bean
+		@Lazy
 		public DependingFoo foo(BarArgument bar) {
 			return new DependingFoo(bar);
 		}
@@ -1502,7 +1505,8 @@ public class ConfigurationClassPostProcessorTests {
 			return foo(null);
 		}
 
-		@Bean @Lazy
+		@Bean
+		@Lazy
 		public DependingFoo foo(BarArgument bar) {
 			return new DependingFoo(bar);
 		}

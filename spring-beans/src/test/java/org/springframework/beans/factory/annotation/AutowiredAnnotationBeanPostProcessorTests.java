@@ -2570,7 +2570,8 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 		}
 
 		@Override
-		@Autowired @Required
+		@Autowired
+		@Required
 		public void setTestBean2(TestBean testBean2) {
 			super.setTestBean2(testBean2);
 		}
@@ -3408,28 +3409,36 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 
 	public static class RepositoryFieldInjectionBeanWithQualifiers {
 
-		@Autowired @Qualifier("stringRepo")
+		@Autowired
+		@Qualifier("stringRepo")
 		public Repository<?> stringRepository;
 
-		@Autowired @Qualifier("integerRepo")
+		@Autowired
+		@Qualifier("integerRepo")
 		public Repository<?> integerRepository;
 
-		@Autowired @Qualifier("stringRepo")
+		@Autowired
+		@Qualifier("stringRepo")
 		public Repository<?>[] stringRepositoryArray;
 
-		@Autowired @Qualifier("integerRepo")
+		@Autowired
+		@Qualifier("integerRepo")
 		public Repository<?>[] integerRepositoryArray;
 
-		@Autowired @Qualifier("stringRepo")
+		@Autowired
+		@Qualifier("stringRepo")
 		public List<Repository<?>> stringRepositoryList;
 
-		@Autowired @Qualifier("integerRepo")
+		@Autowired
+		@Qualifier("integerRepo")
 		public List<Repository<?>> integerRepositoryList;
 
-		@Autowired @Qualifier("stringRepo")
+		@Autowired
+		@Qualifier("stringRepo")
 		public Map<String, Repository<?>> stringRepositoryMap;
 
-		@Autowired @Qualifier("integerRepo")
+		@Autowired
+		@Qualifier("integerRepo")
 		public Map<String, Repository<?>> integerRepositoryMap;
 	}
 

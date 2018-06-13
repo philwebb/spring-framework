@@ -249,7 +249,8 @@ public class ScopingTests {
 	@Configuration
 	public static class InvalidProxyOnPredefinedScopesConfiguration {
 
-		@Bean @Scope(proxyMode=ScopedProxyMode.INTERFACES)
+		@Bean
+		@Scope(proxyMode=ScopedProxyMode.INTERFACES)
 		public Object invalidProxyOnPredefinedScopes() {
 			return new Object();
 		}

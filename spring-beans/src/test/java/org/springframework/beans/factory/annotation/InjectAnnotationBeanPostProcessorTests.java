@@ -848,7 +848,8 @@ public class InjectAnnotationBeanPostProcessorTests {
 		}
 
 		@Override
-		@Inject @Required
+		@Inject
+		@Required
 		public void setTestBean2(TestBean testBean2) {
 			super.setTestBean2(testBean2);
 		}
@@ -1337,7 +1338,8 @@ public class InjectAnnotationBeanPostProcessorTests {
 
 	public static class NullableFieldInjectionBean {
 
-		@Inject @Nullable
+		@Inject
+		@Nullable
 		private TestBean testBean;
 
 		public TestBean getTestBean() {
