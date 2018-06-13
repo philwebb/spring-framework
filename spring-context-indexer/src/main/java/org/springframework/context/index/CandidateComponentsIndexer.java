@@ -137,8 +137,9 @@ public class CandidateComponentsIndexer implements Processor {
 		List<TypeElement> list = new ArrayList<>();
 		for (Element e : elements) {
 			if (TYPE_KINDS.contains(e.getKind())
-					&& e.getModifiers().contains(Modifier.STATIC))
+					&& e.getModifiers().contains(Modifier.STATIC)) {
 				list.add(TypeElement.class.cast(e));
+			}
 		}
 		return list;
 	}

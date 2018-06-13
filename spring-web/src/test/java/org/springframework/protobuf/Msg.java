@@ -201,7 +201,9 @@ public  final class Msg extends
   private byte memoizedIsInitialized = -1;
   public final boolean isInitialized() {
     byte isInitialized = memoizedIsInitialized;
-    if (isInitialized != -1) return isInitialized == 1;
+    if (isInitialized != -1) {
+		return isInitialized == 1;
+	}
 
     memoizedIsInitialized = 1;
     return true;
@@ -222,7 +224,9 @@ public  final class Msg extends
   private int memoizedSerializedSize = -1;
   public int getSerializedSize() {
     int size = memoizedSerializedSize;
-    if (size != -1) return size;
+    if (size != -1) {
+		return size;
+	}
 
     size = 0;
     if (((bitField0_ & 0x00000001) == 0x00000001)) {
@@ -413,7 +417,9 @@ public  final class Msg extends
     }
 
     public Builder mergeFrom(org.springframework.protobuf.Msg other) {
-      if (other == org.springframework.protobuf.Msg.getDefaultInstance()) return this;
+      if (other == org.springframework.protobuf.Msg.getDefaultInstance()) {
+		return this;
+	}
       if (other.hasFoo()) {
         bitField0_ |= 0x00000001;
         foo_ = other.foo_;

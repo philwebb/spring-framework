@@ -1436,8 +1436,9 @@ public abstract class AbstractAopProxyTests {
 			@Override
 			public void before(Method m, Object[] args, Object target) throws Throwable {
 				super.before(m, args, target);
-				if (m.getName().startsWith("set"))
+				if (m.getName().startsWith("set")) {
 					throw rex;
+				}
 			}
 		};
 
@@ -1714,7 +1715,9 @@ public abstract class AbstractAopProxyTests {
 				@Override
 				public boolean matches(Method m, @Nullable Class<?> targetClass, Object... args) {
 					boolean run = m.getName().contains(pattern);
-					if (run) ++count;
+					if (run) {
+						++count;
+					}
 					return run;
 				}
 			});
@@ -1733,7 +1736,9 @@ public abstract class AbstractAopProxyTests {
 				@Override
 				public boolean matches(Method m, @Nullable Class<?> targetClass, Object... args) {
 					boolean run = m.getName().contains(pattern);
-					if (run) ++count;
+					if (run) {
+						++count;
+					}
 					return run;
 				}
 				@Override
@@ -2037,8 +2042,9 @@ public abstract class AbstractAopProxyTests {
 		 */
 		@Override
 		public void releaseTarget(Object pTarget) throws Exception {
-			if (pTarget != this.target)
+			if (pTarget != this.target) {
 				throw new RuntimeException("Released wrong target");
+			}
 			++releases;
 		}
 
@@ -2047,8 +2053,9 @@ public abstract class AbstractAopProxyTests {
 		 *
 		 */
 		public void verify() {
-			if (gets != releases)
+			if (gets != releases) {
 				throw new RuntimeException("Expectation failed: " + gets + " gets and " + releases + " releases");
+			}
 		}
 
 		/**

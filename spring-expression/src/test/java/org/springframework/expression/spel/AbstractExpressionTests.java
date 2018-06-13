@@ -147,10 +147,12 @@ public abstract class AbstractExpressionTests {
 
 		boolean isWritable = expr.isWritable(context);
 		if (isWritable != shouldBeWritable) {
-			if (shouldBeWritable)
+			if (shouldBeWritable) {
 				fail("Expected the expression to be writable but it is not");
-			else
+			}
+			else {
 				fail("Expected the expression to be readonly but it is not");
+			}
 		}
 	}
 
