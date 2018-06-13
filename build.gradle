@@ -78,7 +78,7 @@ configure(allprojects) { project ->
 
 	checkstyle {
 		toolVersion = "8.9"
-		configFile = rootProject.file("src/checkstyle/checkstyle.xml")
+		configDir = rootProject.file("src/checkstyle")
 	}
 
 	apply plugin: "kotlin"
