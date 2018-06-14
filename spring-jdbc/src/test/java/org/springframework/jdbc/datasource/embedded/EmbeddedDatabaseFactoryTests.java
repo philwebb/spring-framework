@@ -21,7 +21,7 @@ import java.sql.Connection;
 import org.junit.Test;
 import org.springframework.jdbc.datasource.init.DatabasePopulator;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Keith Donald

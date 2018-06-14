@@ -28,8 +28,8 @@ import org.springframework.core.annotation.AnnotationUtilsTests.Location3Implici
 import org.springframework.core.annotation.AnnotationUtilsTests.ValueImplicitAliasesContextConfigClass;
 import org.springframework.core.annotation.AnnotationUtilsTests.XmlImplicitAliasesContextConfigClass;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * Abstract base class for tests involving concrete implementations of

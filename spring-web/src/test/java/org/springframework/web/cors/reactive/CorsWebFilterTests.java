@@ -30,6 +30,8 @@ import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.server.WebFilterChain;
 
+import reactor.core.publisher.Mono;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS;
@@ -40,8 +42,6 @@ import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_REQUEST_HEADER
 import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD;
 import static org.springframework.http.HttpHeaders.HOST;
 import static org.springframework.http.HttpHeaders.ORIGIN;
-
-import reactor.core.publisher.Mono;
 
 /**
  * Unit tests for {@link CorsWebFilter}.

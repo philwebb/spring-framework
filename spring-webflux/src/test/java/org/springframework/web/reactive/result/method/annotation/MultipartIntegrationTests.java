@@ -49,11 +49,11 @@ import org.springframework.web.server.adapter.WebHttpHandlerBuilder;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import static org.junit.Assert.*;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+
+import static org.junit.Assert.assertEquals;
 
 public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTests {
 

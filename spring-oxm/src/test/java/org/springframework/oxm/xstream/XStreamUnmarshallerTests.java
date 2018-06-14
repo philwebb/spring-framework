@@ -35,7 +35,9 @@ import org.springframework.util.xml.StaxUtils;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Arjen Poutsma

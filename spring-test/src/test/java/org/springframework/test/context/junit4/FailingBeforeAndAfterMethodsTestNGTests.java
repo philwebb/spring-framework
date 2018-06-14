@@ -34,7 +34,7 @@ import org.springframework.util.ClassUtils;
 import org.testng.ITestNGListener;
 import org.testng.TestNG;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Integration tests which verify that '<i>before</i>' and '<i>after</i>'

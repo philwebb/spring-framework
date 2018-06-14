@@ -40,9 +40,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.config.EnableWebFlux;
 
-import static org.junit.Assert.*;
-
 import reactor.core.publisher.Mono;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Data binding and type conversion related integration tests for

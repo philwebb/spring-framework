@@ -20,7 +20,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.testng.annotations.Test;
 
-import static org.testng.AssertJUnit.*;
+import static org.testng.AssertJUnit.assertEquals;
 
 /**
  * Extension of {@link CommitForRequiredEjbTxDaoTestNGTests} which sets the default

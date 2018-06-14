@@ -52,7 +52,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.socket.WebSocketExtension;
 import org.springframework.web.socket.server.HandshakeFailureException;
 
-import static org.glassfish.tyrus.spi.WebSocketEngine.UpgradeStatus.*;
+import static org.glassfish.tyrus.spi.WebSocketEngine.UpgradeStatus.SUCCESS;
 
 /**
  * A base class for {@code RequestUpgradeStrategy} implementations on top of

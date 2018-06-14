@@ -22,7 +22,10 @@ import java.util.Properties;
 import org.junit.Test;
 import org.springframework.transaction.TransactionDefinition;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for the various {@link TransactionAttributeSource} implementations.

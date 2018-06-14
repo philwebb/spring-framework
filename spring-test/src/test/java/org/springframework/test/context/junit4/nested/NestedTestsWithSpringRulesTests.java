@@ -26,9 +26,10 @@ import org.springframework.test.context.junit4.nested.NestedTestsWithSpringRules
 import org.springframework.test.context.junit4.rules.SpringClassRule;
 import org.springframework.test.context.junit4.rules.SpringMethodRule;
 
-import static org.junit.Assert.*;
-
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * JUnit 4 based integration tests for <em>nested</em> test classes that are

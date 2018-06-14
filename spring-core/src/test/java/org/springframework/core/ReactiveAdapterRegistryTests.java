@@ -24,8 +24,6 @@ import java.util.concurrent.CompletableFuture;
 import org.junit.Test;
 import org.reactivestreams.Publisher;
 
-import static org.junit.Assert.*;
-
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import reactor.core.publisher.Flux;
@@ -34,6 +32,13 @@ import reactor.core.publisher.Mono;
 import rx.Completable;
 import rx.Observable;
 import rx.Single;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for {@link ReactiveAdapterRegistry}.

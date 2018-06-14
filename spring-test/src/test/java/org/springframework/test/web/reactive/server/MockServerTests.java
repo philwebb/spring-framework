@@ -25,10 +25,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 
-import static java.nio.charset.StandardCharsets.*;
-import static org.junit.Assert.*;
-
 import reactor.core.publisher.Mono;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test scenarios involving a mock server.

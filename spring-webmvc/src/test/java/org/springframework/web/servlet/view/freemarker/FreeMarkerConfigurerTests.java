@@ -32,11 +32,13 @@ import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.ui.freemarker.SpringTemplateLoader;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+
+import static org.hamcrest.Matchers.instanceOf;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Juergen Hoeller

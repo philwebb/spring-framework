@@ -25,12 +25,12 @@ import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.web.filter.reactive.ForwardedHeaderFilter;
 
+import reactor.core.publisher.Mono;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.get;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.options;
-
-import reactor.core.publisher.Mono;
 
 /**
  * Test case for reactive {@link CorsUtils}.

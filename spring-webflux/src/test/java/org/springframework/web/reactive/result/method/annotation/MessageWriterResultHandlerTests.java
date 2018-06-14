@@ -46,18 +46,20 @@ import org.springframework.web.reactive.accept.RequestedContentTypeResolverBuild
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-import static org.junit.Assert.*;
-import static org.springframework.core.io.buffer.support.DataBufferTestUtils.*;
-import static org.springframework.http.MediaType.*;
-import static org.springframework.web.method.ResolvableMethod.*;
-import static org.springframework.web.reactive.HandlerMapping.*;
-
 import io.reactivex.Flowable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import rx.Completable;
 import rx.Observable;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.springframework.core.io.buffer.support.DataBufferTestUtils.dumpString;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
+import static org.springframework.web.method.ResolvableMethod.on;
+import static org.springframework.web.reactive.HandlerMapping.PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE;
 
 /**
  * Unit tests for {@link AbstractMessageWriterResultHandler}.

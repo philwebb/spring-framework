@@ -25,7 +25,9 @@ import org.junit.rules.ExpectedException;
 import org.junit.runners.model.Statement;
 import org.mockito.stubbing.Answer;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
 
 /**
  * Unit tests for {@link SpringFailOnTimeout}.

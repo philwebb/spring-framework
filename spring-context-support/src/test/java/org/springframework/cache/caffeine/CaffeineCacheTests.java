@@ -23,7 +23,9 @@ import org.springframework.cache.Cache;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 /**
  * @author Ben Manes

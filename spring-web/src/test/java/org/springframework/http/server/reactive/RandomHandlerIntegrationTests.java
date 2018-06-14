@@ -28,12 +28,12 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 public class RandomHandlerIntegrationTests extends AbstractHttpHandlerIntegrationTests {
 

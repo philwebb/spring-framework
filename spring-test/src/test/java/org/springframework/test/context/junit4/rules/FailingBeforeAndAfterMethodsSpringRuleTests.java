@@ -31,7 +31,7 @@ import org.springframework.test.context.transaction.AfterTransaction;
 import org.springframework.test.context.transaction.BeforeTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 /**
  * This class is an extension of {@link FailingBeforeAndAfterMethodsSpringRunnerTests}

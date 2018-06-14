@@ -29,12 +29,12 @@ import org.junit.rules.ExpectedException;
 import org.springframework.tests.sample.objects.TestObject;
 import org.springframework.util.ClassUtils;
 
-import static org.junit.Assert.*;
-
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Unit tests for {@link Conventions}.

@@ -30,8 +30,6 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.xnio.OptionMap;
 import org.xnio.Xnio;
 
-import static io.undertow.servlet.Servlets.*;
-
 import io.undertow.Undertow;
 import io.undertow.server.HttpHandler;
 import io.undertow.servlet.api.DeploymentInfo;
@@ -41,6 +39,10 @@ import io.undertow.servlet.api.InstanceFactory;
 import io.undertow.servlet.api.InstanceHandle;
 import io.undertow.servlet.api.ServletInfo;
 import io.undertow.websockets.jsr.WebSocketDeploymentInfo;
+
+import static io.undertow.servlet.Servlets.defaultContainer;
+import static io.undertow.servlet.Servlets.deployment;
+import static io.undertow.servlet.Servlets.servlet;
 
 /**
  * Undertow-based {@link WebSocketTestServer}.

@@ -22,7 +22,8 @@ import java.util.Map;
 import org.junit.Test;
 import org.springframework.web.cors.CorsConfiguration;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test fixture with a {@link CorsRegistry}.

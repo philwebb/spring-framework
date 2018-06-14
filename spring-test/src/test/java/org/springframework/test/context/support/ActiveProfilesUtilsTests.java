@@ -30,8 +30,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ActiveProfilesResolver;
 import org.springframework.util.StringUtils;
 
-import static org.junit.Assert.*;
-import static org.springframework.test.context.support.ActiveProfilesUtils.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.springframework.test.context.support.ActiveProfilesUtils.resolveActiveProfiles;
 
 /**
  * Unit tests for {@link ActiveProfilesUtils} involving resolution of active bean

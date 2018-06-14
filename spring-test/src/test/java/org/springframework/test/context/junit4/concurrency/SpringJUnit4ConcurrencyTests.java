@@ -43,8 +43,8 @@ import org.springframework.tests.Assume;
 import org.springframework.tests.TestGroup;
 import org.springframework.util.ReflectionUtils;
 
-import static org.springframework.core.annotation.AnnotatedElementUtils.*;
-import static org.springframework.test.context.junit4.JUnitTestingUtils.*;
+import static org.springframework.core.annotation.AnnotatedElementUtils.hasAnnotation;
+import static org.springframework.test.context.junit4.JUnitTestingUtils.runTestsAndAssertCounters;
 
 /**
  * Concurrency tests for the {@link SpringRunner}, {@link SpringClassRule}, and
