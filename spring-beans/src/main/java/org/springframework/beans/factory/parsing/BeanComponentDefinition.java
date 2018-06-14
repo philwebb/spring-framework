@@ -25,6 +25,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.config.BeanReference;
 import org.springframework.lang.Nullable;
+import org.springframework.util.ObjectUtils;
 
 /**
  * ComponentDefinition based on a standard BeanDefinition, exposing the given bean
@@ -121,6 +122,11 @@ public class BeanComponentDefinition extends BeanDefinitionHolder implements Com
 	@Override
 	public String toString() {
 		return getDescription();
+	}
+
+	@Override
+	public int hashCode() {
+		return super.hashCode();
 	}
 
 	/**

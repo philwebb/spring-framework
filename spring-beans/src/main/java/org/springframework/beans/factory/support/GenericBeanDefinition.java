@@ -83,6 +83,11 @@ public class GenericBeanDefinition extends AbstractBeanDefinition {
 	}
 
 	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+
+	@Override
 	public boolean equals(Object other) {
 		return (this == other || (other instanceof GenericBeanDefinition && super.equals(other)));
 	}

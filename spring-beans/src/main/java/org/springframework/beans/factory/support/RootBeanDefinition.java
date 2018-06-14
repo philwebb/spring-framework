@@ -405,6 +405,11 @@ public class RootBeanDefinition extends AbstractBeanDefinition {
 	}
 
 	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+
+	@Override
 	public boolean equals(Object other) {
 		return (this == other || (other instanceof RootBeanDefinition && super.equals(other)));
 	}
