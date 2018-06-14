@@ -89,7 +89,7 @@ public class PropertiesBeanDefinitionReader extends AbstractBeanDefinitionReader
 	public static final String SEPARATOR = ".";
 
 	/**
-	 * Special key to distinguish {@code owner.(class)=com.myapp.MyClass}-
+	 * Special key to distinguish {@code owner.(class)=com.myapp.MyClass}.
 	 */
 	public static final String CLASS_KEY = "(class)";
 
@@ -392,7 +392,7 @@ public class PropertiesBeanDefinitionReader extends AbstractBeanDefinitionReader
 
 	/**
 	 * Get all property values, given a prefix (which will be stripped)
-	 * and add the bean they define to the factory with the given name
+	 * and add the bean they define to the factory with the given name.
 	 * @param beanName name of the bean to define
 	 * @param map Map containing string pairs
 	 * @param prefix prefix of each entry, which will be stripped

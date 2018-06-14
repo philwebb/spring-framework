@@ -50,7 +50,7 @@ public abstract class RemoteInvocationSerializingExporter extends RemoteInvocati
 		implements InitializingBean {
 
 	/**
-	 * Default content type: "application/x-java-serialized-object"
+	 * Default content type: "application/x-java-serialized-object".
 	 */
 	public static final String CONTENT_TYPE_SERIALIZED_OBJECT = "application/x-java-serialized-object";
 

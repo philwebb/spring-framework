@@ -53,8 +53,14 @@ import org.springframework.util.StringUtils;
  */
 public class LiveBeansView implements LiveBeansViewMBean, ApplicationContextAware {
 
+	/**
+	 * The "MBean Domain" property name.
+	 */
 	public static final String MBEAN_DOMAIN_PROPERTY_NAME = "spring.liveBeansView.mbeanDomain";
 
+	/**
+	 * The MBean application key.
+	 */
 	public static final String MBEAN_APPLICATION_KEY = "application";
 
 	private static final Set<ConfigurableApplicationContext> applicationContexts = new LinkedHashSet<>();

@@ -37,7 +37,7 @@ public class NoOpCache implements Cache {
 
 
 	/**
-	 * Create a {@link NoOpCache} instance with the specified name
+	 * Create a {@link NoOpCache} instance with the specified name.
 	 * @param name the name of the cache
 	 */
 	public NoOpCache(String name) {

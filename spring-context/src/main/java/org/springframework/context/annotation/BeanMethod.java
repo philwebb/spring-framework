@@ -21,8 +21,8 @@ import org.springframework.beans.factory.parsing.ProblemReporter;
 import org.springframework.core.type.MethodMetadata;
 
 /**
- * Represents a {@link Configuration} class method marked with the
- * {@link Bean} annotation.
+ * Represents a {@link Configuration @Configuration} class method marked with the
+ * {@link Bean @Bean} annotation.
  *
  * @author Chris Beams
  * @author Juergen Hoeller

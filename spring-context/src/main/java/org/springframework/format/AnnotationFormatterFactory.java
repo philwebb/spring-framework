@@ -26,9 +26,9 @@ import java.util.Set;
  * <p>For example, a {@code DateTimeFormatAnnotationFormatterFactory} might create a formatter
  * that formats {@code Date} values set on fields annotated with {@code @DateTimeFormat}.
  *
+ * @param <A> the annotation type that should trigger formatting
  * @author Keith Donald
  * @since 3.0
- * @param <A> the annotation type that should trigger formatting
  */
 public interface AnnotationFormatterFactory<A extends Annotation> {
 
