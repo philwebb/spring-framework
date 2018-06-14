@@ -205,10 +205,10 @@ public class OpPlus extends Operator {
 			mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
 		}
 	}
-	
+
 	@Override
 	public void generateCode(MethodVisitor mv, CodeFlow cf) {
-		if (this.exitTypeDescriptor == "Ljava/lang/String") {
+		if ("Ljava/lang/String".equals(this.exitTypeDescriptor)) {
 			mv.visitTypeInsn(NEW, "java/lang/StringBuilder");
 			mv.visitInsn(DUP);
 			mv.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "()V", false);
@@ -236,12 +236,12 @@ public class OpPlus extends Operator {
 					case 'J':
 						mv.visitInsn(LADD);
 						break;
-					case 'F': 
+					case 'F':
 						mv.visitInsn(FADD);
 						break;
 					case 'D':
 						mv.visitInsn(DADD);
-						break;				
+						break;
 					default:
 						throw new IllegalStateException(
 								"Unrecognized exit type descriptor: '" + this.exitTypeDescriptor + "'");
