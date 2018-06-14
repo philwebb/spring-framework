@@ -54,7 +54,8 @@ public class ConcurrentBeanFactoryTests {
 	private static final Resource CONTEXT = qualifiedResource(ConcurrentBeanFactoryTests.class, "context.xml");
 
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy/MM/dd");
-	private static final Date DATE_1, DATE_2;
+	private static final Date DATE_1;
+	private static final Date DATE_2;
 
 	static {
 		try {
