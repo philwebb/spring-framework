@@ -43,7 +43,7 @@ import org.springframework.util.ConcurrentReferenceHashMap;
  */
 public abstract class GenericTypeResolver {
 
-	/** Cache from Class to TypeVariable Map */
+	/** Cache from Class to TypeVariable Map. */
 	@SuppressWarnings("rawtypes")
 	private static final Map<Class<?>, Map<TypeVariable, Type>> typeVariableCache = new ConcurrentReferenceHashMap<>();
 

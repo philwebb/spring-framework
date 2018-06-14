@@ -43,11 +43,11 @@ public abstract class SqlOperation extends RdbmsOperation {
 	@Nullable
 	private PreparedStatementCreatorFactory preparedStatementFactory;
 
-	/** Parsed representation of the SQL statement */
+	/** Parsed representation of the SQL statement. */
 	@Nullable
 	private ParsedSql cachedSql;
 
-	/** Monitor for locking the cached representation of the parsed SQL statement */
+	/** Monitor for locking the cached representation of the parsed SQL statement. */
 	private final Object parsedSqlMonitor = new Object();
 
 

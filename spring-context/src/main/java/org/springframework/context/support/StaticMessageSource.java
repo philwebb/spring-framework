@@ -36,7 +36,7 @@ import org.springframework.util.Assert;
  */
 public class StaticMessageSource extends AbstractMessageSource {
 
-	/** Map from 'code + locale' keys to message Strings */
+	/** Map from 'code + locale' keys to message Strings. */
 	private final Map<String, String> messages = new HashMap<>();
 
 	private final Map<String, MessageFormat> cachedMessageFormats = new HashMap<>();

@@ -243,13 +243,13 @@ import org.springframework.web.util.UriUtils;
 @SuppressWarnings("serial")
 public class FormTag extends AbstractHtmlElementTag {
 
-	/** The default HTTP method using which form values are sent to the server: "post" */
+	/** The default HTTP method using which form values are sent to the server: "post". */
 	private static final String DEFAULT_METHOD = "post";
 
-	/** The default attribute name: &quot;command&quot; */
+	/** The default attribute name: &quot;command&quot;. */
 	public static final String DEFAULT_COMMAND_NAME = "command";
 
-	/** The name of the '{@code modelAttribute}' setting */
+	/** The name of the '{@code modelAttribute}' setting. */
 	private static final String MODEL_ATTRIBUTE = "modelAttribute";
 
 	/**
@@ -315,7 +315,7 @@ public class FormTag extends AbstractHtmlElementTag {
 
 	private String methodParam = DEFAULT_METHOD_PARAM;
 
-	/** Caching a previous nested path, so that it may be reset */
+	/** Caching a previous nested path, so that it may be reset. */
 	private String previousNestedPath;
 
 

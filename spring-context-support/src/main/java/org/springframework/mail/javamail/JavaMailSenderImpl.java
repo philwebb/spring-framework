@@ -69,10 +69,10 @@ import org.springframework.util.Assert;
  */
 public class JavaMailSenderImpl implements JavaMailSender {
 
-	/** The default protocol: 'smtp' */
+	/** The default protocol: 'smtp'. */
 	public static final String DEFAULT_PROTOCOL = "smtp";
 
-	/** The default port: -1 */
+	/** The default port: -1. */
 	public static final int DEFAULT_PORT = -1;
 
 	private static final String HEADER_MESSAGE_ID = "Message-ID";

@@ -48,7 +48,7 @@ public class NameMatchTransactionAttributeSource implements TransactionAttribute
 	 */
 	protected static final Log logger = LogFactory.getLog(NameMatchTransactionAttributeSource.class);
 
-	/** Keys are method names; values are TransactionAttributes */
+	/** Keys are method names; values are TransactionAttributes. */
 	private Map<String, TransactionAttribute> nameMap = new HashMap<>();
 
 

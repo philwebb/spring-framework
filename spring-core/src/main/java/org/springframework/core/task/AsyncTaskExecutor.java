@@ -41,10 +41,10 @@ import java.util.concurrent.Future;
  */
 public interface AsyncTaskExecutor extends TaskExecutor {
 
-	/** Constant that indicates immediate execution */
+	/** Constant that indicates immediate execution. */
 	long TIMEOUT_IMMEDIATE = 0;
 
-	/** Constant that indicates no time limit */
+	/** Constant that indicates no time limit. */
 	long TIMEOUT_INDEFINITE = Long.MAX_VALUE;
 
 

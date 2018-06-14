@@ -643,7 +643,7 @@ public class MvcNamespaceTests {
 		assertEquals(404, response.getStatus());
 	}
 
-	/** WebSphere gives trailing servlet path slashes by default!! */
+	/** WebSphere gives trailing servlet path slashes by default!!. */
 	@Test
 	public void testViewControllersOnWebSphere() throws Exception {
 		loadBeanDefinitions("mvc-config-view-controllers.xml");

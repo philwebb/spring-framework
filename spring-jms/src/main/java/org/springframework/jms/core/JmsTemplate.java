@@ -88,7 +88,7 @@ import org.springframework.util.Assert;
  */
 public class JmsTemplate extends JmsDestinationAccessor implements JmsOperations {
 
-	/** Internal ResourceFactory adapter for interacting with ConnectionFactoryUtils */
+	/** Internal ResourceFactory adapter for interacting with ConnectionFactoryUtils. */
 	private final JmsTemplateResourceFactory transactionalResourceFactory = new JmsTemplateResourceFactory();
 
 

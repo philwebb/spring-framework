@@ -206,10 +206,10 @@ import org.springframework.util.StringUtils;
  */
 public abstract class CommandLinePropertySource<T> extends EnumerablePropertySource<T> {
 
-	/** The default name given to {@link CommandLinePropertySource} instances: {@value} */
+	/** The default name given to {@link CommandLinePropertySource} instances: {@value}. */
 	public static final String COMMAND_LINE_PROPERTY_SOURCE_NAME = "commandLineArgs";
 
-	/** The default name of the property representing non-option arguments: {@value} */
+	/** The default name of the property representing non-option arguments: {@value}. */
 	public static final String DEFAULT_NON_OPTION_ARGS_PROPERTY_NAME = "nonOptionArgs";
 
 

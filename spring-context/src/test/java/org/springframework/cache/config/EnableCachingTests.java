@@ -49,7 +49,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class EnableCachingTests extends AbstractCacheAnnotationTests {
 
-	/** hook into superclass suite of tests */
+	/** hook into superclass suite of tests. */
 	@Override
 	protected ConfigurableApplicationContext getApplicationContext() {
 		return new AnnotationConfigApplicationContext(EnableCachingConfig.class);

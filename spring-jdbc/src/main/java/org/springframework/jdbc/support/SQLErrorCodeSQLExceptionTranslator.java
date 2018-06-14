@@ -74,7 +74,7 @@ public class SQLErrorCodeSQLExceptionTranslator extends AbstractFallbackSQLExcep
 	private static final int MESSAGE_SQL_SQLEX_CONSTRUCTOR = 5;
 
 
-	/** Error codes used by this translator */
+	/** Error codes used by this translator. */
 	@Nullable
 	private SQLErrorCodes sqlErrorCodes;
 

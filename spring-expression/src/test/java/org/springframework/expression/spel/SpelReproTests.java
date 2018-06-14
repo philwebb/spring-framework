@@ -299,7 +299,7 @@ public class SpelReproTests extends AbstractExpressionTests {
 		assertEquals("hello", name);
 	}
 
-	/** $ related identifiers */
+	/** $ related identifiers. */
 	@Test
 	public void dollarPrefixedIdentifier_SPR7100() {
 		Holder h = new Holder();

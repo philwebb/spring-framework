@@ -70,7 +70,7 @@ public class PluggableSchemaResolver implements EntityResolver {
 
 	private final String schemaMappingsLocation;
 
-	/** Stores the mapping of schema URL -> local schema path */
+	/** Stores the mapping of schema URL -> local schema path. */
 	@Nullable
 	private volatile Map<String, String> schemaMappings;
 

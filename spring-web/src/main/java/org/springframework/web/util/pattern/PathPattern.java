@@ -93,26 +93,26 @@ public class PathPattern implements Comparable<PathPattern> {
 			);
 
 
-	/** The text of the parsed pattern */
+	/** The text of the parsed pattern. */
 	private final String patternString;
 
-	/** The parser used to construct this pattern */
+	/** The parser used to construct this pattern. */
 	private final PathPatternParser parser;
 
-	/** The separator used when parsing the pattern */
+	/** The separator used when parsing the pattern. */
 	private final char separator;
 
-	/** If this pattern has no trailing slash, allow candidates to include one and still match successfully */
+	/** If this pattern has no trailing slash, allow candidates to include one and still match successfully. */
 	private final boolean matchOptionalTrailingSeparator;
 
-	/** Will this match candidates in a case sensitive way? (case sensitivity  at parse time) */
+	/** Will this match candidates in a case sensitive way? (case sensitivity  at parse time). */
 	private final boolean caseSensitive;
 
-	/** First path element in the parsed chain of path elements for this pattern */
+	/** First path element in the parsed chain of path elements for this pattern. */
 	@Nullable
 	private final PathElement head;
 
-	/** How many variables are captured in this pattern */
+	/** How many variables are captured in this pattern. */
 	private int capturedVariableCount;
 
 	/**

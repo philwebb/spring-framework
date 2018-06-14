@@ -55,7 +55,7 @@ import org.springframework.util.Assert;
  */
 public class SimpleTriggerFactoryBean implements FactoryBean<SimpleTrigger>, BeanNameAware, InitializingBean {
 
-	/** Constants for the SimpleTrigger class */
+	/** Constants for the SimpleTrigger class. */
 	private static final Constants constants = new Constants(SimpleTrigger.class);
 
 

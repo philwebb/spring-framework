@@ -33,7 +33,7 @@ import org.springframework.beans.factory.InitializingBean;
  */
 public abstract class DaoSupport implements InitializingBean {
 
-	/** Logger available to subclasses */
+	/** Logger available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 
 

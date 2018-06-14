@@ -31,7 +31,7 @@ import org.springframework.lang.Nullable;
 @SuppressWarnings("serial")
 public class UncategorizedSQLException extends UncategorizedDataAccessException {
 
-	/** SQL that led to the problem */
+	/** SQL that led to the problem. */
 	@Nullable
 	private final String sql;
 

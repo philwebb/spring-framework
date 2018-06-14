@@ -57,7 +57,7 @@ import org.springframework.util.Assert;
  */
 public class CronTriggerFactoryBean implements FactoryBean<CronTrigger>, BeanNameAware, InitializingBean {
 
-	/** Constants for the CronTrigger class */
+	/** Constants for the CronTrigger class. */
 	private static final Constants constants = new Constants(CronTrigger.class);
 
 

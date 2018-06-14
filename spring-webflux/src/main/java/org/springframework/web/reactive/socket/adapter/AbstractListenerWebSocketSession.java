@@ -162,12 +162,12 @@ public abstract class AbstractListenerWebSocketSession<T> extends AbstractWebSoc
 
 	// WebSocketHandler adapter delegate methods
 
-	/** Handle a message callback from the WebSocketHandler adapter */
+	/** Handle a message callback from the WebSocketHandler adapter. */
 	void handleMessage(Type type, WebSocketMessage message) {
 		this.receivePublisher.handleMessage(message);
 	}
 
-	/** Handle an error callback from the WebSocketHandler adapter */
+	/** Handle an error callback from the WebSocketHandler adapter. */
 	void handleError(Throwable ex) {
 		this.receivePublisher.onError(ex);
 		WebSocketSendProcessor sendProcessor = this.sendProcessor;
@@ -177,7 +177,7 @@ public abstract class AbstractListenerWebSocketSession<T> extends AbstractWebSoc
 		}
 	}
 
-	/** Handle a close callback from the WebSocketHandler adapter */
+	/** Handle a close callback from the WebSocketHandler adapter. */
 	void handleClose(CloseStatus reason) {
 		this.receivePublisher.onAllDataRead();
 		WebSocketSendProcessor sendProcessor = this.sendProcessor;

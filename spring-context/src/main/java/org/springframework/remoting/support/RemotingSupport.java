@@ -31,7 +31,7 @@ import org.springframework.util.ClassUtils;
  */
 public abstract class RemotingSupport implements BeanClassLoaderAware {
 
-	/** Logger available to subclasses */
+	/** Logger available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	private ClassLoader beanClassLoader = ClassUtils.getDefaultClassLoader();

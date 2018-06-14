@@ -30,7 +30,7 @@ import static org.junit.Assert.assertTrue;
  */
 public abstract class AbstractListableBeanFactoryTests extends AbstractBeanFactoryTests {
 
-	/** Subclasses must initialize this */
+	/** Subclasses must initialize this. */
 	protected ListableBeanFactory getListableBeanFactory() {
 		BeanFactory bf = getBeanFactory();
 		if (!(bf instanceof ListableBeanFactory)) {

@@ -35,7 +35,7 @@ import org.springframework.lang.Nullable;
  */
 public class LiteralExpression implements Expression {
 
-	/** Fixed literal value of this expression */
+	/** Fixed literal value of this expression. */
 	private final String literalValue;
 
 

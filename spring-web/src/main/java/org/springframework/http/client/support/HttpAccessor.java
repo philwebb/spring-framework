@@ -43,7 +43,7 @@ import org.springframework.util.Assert;
  */
 public abstract class HttpAccessor {
 
-	/** Logger available to subclasses */
+	/** Logger available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	private ClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();

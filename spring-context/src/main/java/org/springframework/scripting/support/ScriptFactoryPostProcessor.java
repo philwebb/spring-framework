@@ -160,7 +160,7 @@ public class ScriptFactoryPostProcessor extends InstantiationAwareBeanPostProces
 	private static final String SCRIPTED_OBJECT_NAME_PREFIX = "scriptedObject.";
 
 
-	/** Logger available to subclasses */
+	/** Logger available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	private long defaultRefreshCheckDelay = -1;
@@ -177,7 +177,7 @@ public class ScriptFactoryPostProcessor extends InstantiationAwareBeanPostProces
 
 	final DefaultListableBeanFactory scriptBeanFactory = new DefaultListableBeanFactory();
 
-	/** Map from bean name String to ScriptSource object */
+	/** Map from bean name String to ScriptSource object. */
 	private final Map<String, ScriptSource> scriptSourceCache = new HashMap<>();
 
 

@@ -46,11 +46,11 @@ import reactor.core.publisher.Mono;
  */
 public abstract class AbstractView implements View, ApplicationContextAware {
 
-	/** Well-known name for the RequestDataValueProcessor in the bean factory */
+	/** Well-known name for the RequestDataValueProcessor in the bean factory. */
 	public static final String REQUEST_DATA_VALUE_PROCESSOR_BEAN_NAME = "requestDataValueProcessor";
 
 
-	/** Logger that is available to subclasses */
+	/** Logger that is available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	private static final Object NO_VALUE = new Object();

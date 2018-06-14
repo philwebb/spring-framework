@@ -71,7 +71,7 @@ public class NestedPathTag extends TagSupport implements TryCatchFinally {
 	@Nullable
 	private String path;
 
-	/** Caching a previous nested path, so that it may be reset */
+	/** Caching a previous nested path, so that it may be reset. */
 	@Nullable
 	private String previousNestedPath;
 

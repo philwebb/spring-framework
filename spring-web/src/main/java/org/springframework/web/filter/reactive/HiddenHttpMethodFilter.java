@@ -52,7 +52,7 @@ public class HiddenHttpMethodFilter implements WebFilter {
 			Collections.unmodifiableList(Arrays.asList(HttpMethod.PUT,
 					HttpMethod.DELETE, HttpMethod.PATCH));
 
-	/** Default name of the form parameter with the HTTP method to use */
+	/** Default name of the form parameter with the HTTP method to use. */
 	public static final String DEFAULT_METHOD_PARAMETER_NAME = "_method";
 
 

@@ -43,7 +43,7 @@ import org.springframework.util.CollectionUtils;
  */
 public abstract class EntityManagerFactoryAccessor implements BeanFactoryAware {
 
-	/** Logger available to subclasses */
+	/** Logger available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	@Nullable

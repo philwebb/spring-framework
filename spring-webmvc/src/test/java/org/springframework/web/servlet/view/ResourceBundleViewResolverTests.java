@@ -47,7 +47,7 @@ import static org.junit.Assume.assumeTrue;
  */
 public class ResourceBundleViewResolverTests {
 
-	/** Comes from this package */
+	/** Comes from this package. */
 	private static String PROPS_FILE = "org.springframework.web.servlet.view.testviews";
 
 	private final ResourceBundleViewResolver rb = new ResourceBundleViewResolver();
