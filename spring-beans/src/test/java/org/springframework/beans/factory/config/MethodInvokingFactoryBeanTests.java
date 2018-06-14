@@ -351,7 +351,7 @@ public class MethodInvokingFactoryBeanTests {
 		public int _field1 = 0;
 
 		public int method1() {
-			return ++_field1;
+			return ++this._field1;
 		}
 
 		public static int staticMethod1() {

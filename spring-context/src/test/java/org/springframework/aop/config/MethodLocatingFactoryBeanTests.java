@@ -38,62 +38,62 @@ public class MethodLocatingFactoryBeanTests {
 
 	@Before
 	public void setUp() {
-		factory = new MethodLocatingFactoryBean();
-		beanFactory = mock(BeanFactory.class);
+		this.factory = new MethodLocatingFactoryBean();
+		this.beanFactory = mock(BeanFactory.class);
 	}
 
 	@Test
 	public void testIsSingleton() {
-		assertTrue(factory.isSingleton());
+		assertTrue(this.factory.isSingleton());
 	}
 
 	@Test
 	public void testGetObjectType() {
-		assertEquals(Method.class, factory.getObjectType());
+		assertEquals(Method.class, this.factory.getObjectType());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testWithNullTargetBeanName() {
-		factory.setMethodName("toString()");
-		factory.setBeanFactory(beanFactory);
+		this.factory.setMethodName("toString()");
+		this.factory.setBeanFactory(this.beanFactory);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testWithEmptyTargetBeanName() {
-		factory.setTargetBeanName("");
-		factory.setMethodName("toString()");
-		factory.setBeanFactory(beanFactory);
+		this.factory.setTargetBeanName("");
+		this.factory.setMethodName("toString()");
+		this.factory.setBeanFactory(this.beanFactory);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testWithNullTargetMethodName() {
-		factory.setTargetBeanName(BEAN_NAME);
-		factory.setBeanFactory(beanFactory);
+		this.factory.setTargetBeanName(BEAN_NAME);
+		this.factory.setBeanFactory(this.beanFactory);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testWithEmptyTargetMethodName() {
-		factory.setTargetBeanName(BEAN_NAME);
-		factory.setMethodName("");
-		factory.setBeanFactory(beanFactory);
+		this.factory.setTargetBeanName(BEAN_NAME);
+		this.factory.setMethodName("");
+		this.factory.setBeanFactory(this.beanFactory);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testWhenTargetBeanClassCannotBeResolved() {
-		factory.setTargetBeanName(BEAN_NAME);
-		factory.setMethodName("toString()");
-		factory.setBeanFactory(beanFactory);
-		verify(beanFactory).getType(BEAN_NAME);
+		this.factory.setTargetBeanName(BEAN_NAME);
+		this.factory.setMethodName("toString()");
+		this.factory.setBeanFactory(this.beanFactory);
+		verify(this.beanFactory).getType(BEAN_NAME);
 	}
 
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testSunnyDayPath() throws Exception {
-		given(beanFactory.getType(BEAN_NAME)).willReturn((Class)String.class);
-		factory.setTargetBeanName(BEAN_NAME);
-		factory.setMethodName("toString()");
-		factory.setBeanFactory(beanFactory);
-		Object result = factory.getObject();
+		given(this.beanFactory.getType(BEAN_NAME)).willReturn((Class)String.class);
+		this.factory.setTargetBeanName(BEAN_NAME);
+		this.factory.setMethodName("toString()");
+		this.factory.setBeanFactory(this.beanFactory);
+		Object result = this.factory.getObject();
 		assertNotNull(result);
 		assertTrue(result instanceof Method);
 		Method method = (Method) result;
@@ -103,10 +103,10 @@ public class MethodLocatingFactoryBeanTests {
 	@Test(expected = IllegalArgumentException.class)
 	@SuppressWarnings("unchecked")
 	public void testWhereMethodCannotBeResolved() {
-		given(beanFactory.getType(BEAN_NAME)).willReturn((Class)String.class);
-		factory.setTargetBeanName(BEAN_NAME);
-		factory.setMethodName("loadOfOld()");
-		factory.setBeanFactory(beanFactory);
+		given(this.beanFactory.getType(BEAN_NAME)).willReturn((Class)String.class);
+		this.factory.setTargetBeanName(BEAN_NAME);
+		this.factory.setMethodName("loadOfOld()");
+		this.factory.setBeanFactory(this.beanFactory);
 	}
 
 }

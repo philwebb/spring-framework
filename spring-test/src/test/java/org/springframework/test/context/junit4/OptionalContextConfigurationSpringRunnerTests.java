@@ -42,7 +42,7 @@ public class OptionalContextConfigurationSpringRunnerTests {
 
 	@Test
 	public void contextConfigurationAnnotationIsOptional() {
-		assertEquals("foo", foo);
+		assertEquals("foo", this.foo);
 	}
 
 

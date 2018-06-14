@@ -34,24 +34,24 @@ public class ByteArrayPropertyEditorTests {
 	@Test
 	public void sunnyDaySetAsText() throws Exception {
 		final String text = "Hideous towns make me throw... up";
-		byteEditor.setAsText(text);
+		this.byteEditor.setAsText(text);
 
-		Object value = byteEditor.getValue();
+		Object value = this.byteEditor.getValue();
 		assertNotNull(value);
 		assertTrue(value instanceof byte[]);
 		byte[] bytes = (byte[]) value;
 		for (int i = 0; i < text.length(); ++i) {
 			assertEquals("cyte[] differs at index '" + i + "'", text.charAt(i), bytes[i]);
 		}
-		assertEquals(text, byteEditor.getAsText());
+		assertEquals(text, this.byteEditor.getAsText());
 	}
 
 	@Test
 	public void getAsTextReturnsEmptyStringIfValueIsNull() throws Exception {
-		assertEquals("", byteEditor.getAsText());
+		assertEquals("", this.byteEditor.getAsText());
 
-		byteEditor.setAsText(null);
-		assertEquals("", byteEditor.getAsText());
+		this.byteEditor.setAsText(null);
+		assertEquals("", this.byteEditor.getAsText());
 	}
 
 }

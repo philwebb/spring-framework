@@ -36,15 +36,15 @@ public class ByteArrayMultipartFileEditorTests {
 	@Test
 	public void setValueAsByteArray() throws Exception {
 		String expectedValue = "Shumwere, shumhow, a shuck ish washing you. - Drunken Far Side";
-		editor.setValue(expectedValue.getBytes());
-		assertEquals(expectedValue, editor.getAsText());
+		this.editor.setValue(expectedValue.getBytes());
+		assertEquals(expectedValue, this.editor.getAsText());
 	}
 
 	@Test
 	public void setValueAsString() throws Exception {
 		String expectedValue = "'Green Wing' - classic British comedy";
-		editor.setValue(expectedValue);
-		assertEquals(expectedValue, editor.getAsText());
+		this.editor.setValue(expectedValue);
+		assertEquals(expectedValue, this.editor.getAsText());
 	}
 
 	@Test
@@ -57,14 +57,14 @@ public class ByteArrayMultipartFileEditorTests {
 			}
 		};
 
-		editor.setValue(object);
-		assertEquals(expectedValue, editor.getAsText());
+		this.editor.setValue(object);
+		assertEquals(expectedValue, this.editor.getAsText());
 	}
 
 	@Test
 	public void setValueAsNullGetsBackEmptyString() throws Exception {
-		editor.setValue(null);
-		assertEquals("", editor.getAsText());
+		this.editor.setValue(null);
+		assertEquals("", this.editor.getAsText());
 	}
 
 	@Test
@@ -72,15 +72,15 @@ public class ByteArrayMultipartFileEditorTests {
 		String expectedValue = "That is comforting to know";
 		MultipartFile file = mock(MultipartFile.class);
 		given(file.getBytes()).willReturn(expectedValue.getBytes());
-		editor.setValue(file);
-		assertEquals(expectedValue, editor.getAsText());
+		this.editor.setValue(file);
+		assertEquals(expectedValue, this.editor.getAsText());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void setValueAsMultipartFileWithBadBytes() throws Exception {
 		MultipartFile file = mock(MultipartFile.class);
 		given(file.getBytes()).willThrow(new IOException());
-		editor.setValue(file);
+		this.editor.setValue(file);
 	}
 
 }

@@ -69,14 +69,14 @@ public class DateTimeFormattingTests {
 	}
 
 	private void setup(DateTimeFormatterRegistrar registrar) {
-		conversionService = new FormattingConversionService();
-		DefaultConversionService.addDefaultConverters(conversionService);
-		registrar.registerFormatters(conversionService);
+		this.conversionService = new FormattingConversionService();
+		DefaultConversionService.addDefaultConverters(this.conversionService);
+		registrar.registerFormatters(this.conversionService);
 
 		DateTimeBean bean = new DateTimeBean();
 		bean.getChildren().add(new DateTimeBean());
-		binder = new DataBinder(bean);
-		binder.setConversionService(conversionService);
+		this.binder = new DataBinder(bean);
+		this.binder.setConversionService(this.conversionService);
 
 		LocaleContextHolder.setLocale(Locale.US);
 		DateTimeContext context = new DateTimeContext();
@@ -95,9 +95,9 @@ public class DateTimeFormattingTests {
 	public void testBindLocalDate() {
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("localDate", "10/31/09");
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertEquals("10/31/09", binder.getBindingResult().getFieldValue("localDate"));
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		assertEquals("10/31/09", this.binder.getBindingResult().getFieldValue("localDate"));
 	}
 
 	@Test
@@ -107,9 +107,9 @@ public class DateTimeFormattingTests {
 		setup(registrar);
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("localDate", "October 31, 2009");
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertEquals("October 31, 2009", binder.getBindingResult().getFieldValue("localDate"));
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		assertEquals("October 31, 2009", this.binder.getBindingResult().getFieldValue("localDate"));
 	}
 
 	@Test
@@ -119,82 +119,82 @@ public class DateTimeFormattingTests {
 		setup(registrar);
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("localDate", "20091031");
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertEquals("20091031", binder.getBindingResult().getFieldValue("localDate"));
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		assertEquals("20091031", this.binder.getBindingResult().getFieldValue("localDate"));
 	}
 
 	@Test
 	public void testBindLocalDateArray() {
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("localDate", new String[] {"10/31/09"});
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
 	}
 
 	@Test
 	public void testBindLocalDateAnnotated() {
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("localDateAnnotated", "Oct 31, 2009");
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertEquals("Oct 31, 2009", binder.getBindingResult().getFieldValue("localDateAnnotated"));
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		assertEquals("Oct 31, 2009", this.binder.getBindingResult().getFieldValue("localDateAnnotated"));
 	}
 
 	@Test
 	public void testBindLocalDateAnnotatedWithError() {
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("localDateAnnotated", "Oct -31, 2009");
-		binder.bind(propertyValues);
-		assertEquals(1, binder.getBindingResult().getFieldErrorCount("localDateAnnotated"));
-		assertEquals("Oct -31, 2009", binder.getBindingResult().getFieldValue("localDateAnnotated"));
+		this.binder.bind(propertyValues);
+		assertEquals(1, this.binder.getBindingResult().getFieldErrorCount("localDateAnnotated"));
+		assertEquals("Oct -31, 2009", this.binder.getBindingResult().getFieldValue("localDateAnnotated"));
 	}
 
 	@Test
 	public void testBindNestedLocalDateAnnotated() {
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("children[0].localDateAnnotated", "Oct 31, 2009");
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertEquals("Oct 31, 2009", binder.getBindingResult().getFieldValue("children[0].localDateAnnotated"));
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		assertEquals("Oct 31, 2009", this.binder.getBindingResult().getFieldValue("children[0].localDateAnnotated"));
 	}
 
 	@Test
 	public void testBindLocalDateAnnotatedWithDirectFieldAccess() {
-		binder.initDirectFieldAccess();
+		this.binder.initDirectFieldAccess();
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("localDateAnnotated", "Oct 31, 2009");
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertEquals("Oct 31, 2009", binder.getBindingResult().getFieldValue("localDateAnnotated"));
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		assertEquals("Oct 31, 2009", this.binder.getBindingResult().getFieldValue("localDateAnnotated"));
 	}
 
 	@Test
 	public void testBindLocalDateAnnotatedWithDirectFieldAccessAndError() {
-		binder.initDirectFieldAccess();
+		this.binder.initDirectFieldAccess();
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("localDateAnnotated", "Oct -31, 2009");
-		binder.bind(propertyValues);
-		assertEquals(1, binder.getBindingResult().getFieldErrorCount("localDateAnnotated"));
-		assertEquals("Oct -31, 2009", binder.getBindingResult().getFieldValue("localDateAnnotated"));
+		this.binder.bind(propertyValues);
+		assertEquals(1, this.binder.getBindingResult().getFieldErrorCount("localDateAnnotated"));
+		assertEquals("Oct -31, 2009", this.binder.getBindingResult().getFieldValue("localDateAnnotated"));
 	}
 
 	@Test
 	public void testBindLocalDateFromJavaUtilCalendar() {
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("localDate", new GregorianCalendar(2009, 9, 31, 0, 0));
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertEquals("10/31/09", binder.getBindingResult().getFieldValue("localDate"));
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		assertEquals("10/31/09", this.binder.getBindingResult().getFieldValue("localDate"));
 	}
 
 	@Test
 	public void testBindLocalTime() {
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("localTime", "12:00 PM");
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertEquals("12:00 PM", binder.getBindingResult().getFieldValue("localTime"));
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		assertEquals("12:00 PM", this.binder.getBindingResult().getFieldValue("localTime"));
 	}
 
 	@Test
@@ -204,9 +204,9 @@ public class DateTimeFormattingTests {
 		setup(registrar);
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("localTime", "12:00:00 PM");
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertEquals("12:00:00 PM", binder.getBindingResult().getFieldValue("localTime"));
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		assertEquals("12:00:00 PM", this.binder.getBindingResult().getFieldValue("localTime"));
 	}
 
 	@Test
@@ -216,36 +216,36 @@ public class DateTimeFormattingTests {
 		setup(registrar);
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("localTime", "130000");
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertEquals("130000", binder.getBindingResult().getFieldValue("localTime"));
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		assertEquals("130000", this.binder.getBindingResult().getFieldValue("localTime"));
 	}
 
 	@Test
 	public void testBindLocalTimeAnnotated() {
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("localTimeAnnotated", "12:00:00 PM");
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertEquals("12:00:00 PM", binder.getBindingResult().getFieldValue("localTimeAnnotated"));
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		assertEquals("12:00:00 PM", this.binder.getBindingResult().getFieldValue("localTimeAnnotated"));
 	}
 
 	@Test
 	public void testBindLocalTimeFromJavaUtilCalendar() {
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("localTime", new GregorianCalendar(1970, 0, 0, 12, 0));
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertEquals("12:00 PM", binder.getBindingResult().getFieldValue("localTime"));
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		assertEquals("12:00 PM", this.binder.getBindingResult().getFieldValue("localTime"));
 	}
 
 	@Test
 	public void testBindLocalDateTime() {
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("localDateTime", LocalDateTime.of(2009, 10, 31, 12, 0));
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		String value = binder.getBindingResult().getFieldValue("localDateTime").toString();
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		String value = this.binder.getBindingResult().getFieldValue("localDateTime").toString();
 		assertTrue(value.startsWith("10/31/09"));
 		assertTrue(value.endsWith("12:00 PM"));
 	}
@@ -254,9 +254,9 @@ public class DateTimeFormattingTests {
 	public void testBindLocalDateTimeAnnotated() {
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("localDateTimeAnnotated", LocalDateTime.of(2009, 10, 31, 12, 0));
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		String value = binder.getBindingResult().getFieldValue("localDateTimeAnnotated").toString();
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		String value = this.binder.getBindingResult().getFieldValue("localDateTimeAnnotated").toString();
 		assertTrue(value.startsWith("Oct 31, 2009"));
 		assertTrue(value.endsWith("12:00:00 PM"));
 	}
@@ -265,9 +265,9 @@ public class DateTimeFormattingTests {
 	public void testBindLocalDateTimeFromJavaUtilCalendar() {
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("localDateTime", new GregorianCalendar(2009, 9, 31, 12, 0));
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		String value = binder.getBindingResult().getFieldValue("localDateTime").toString();
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		String value = this.binder.getBindingResult().getFieldValue("localDateTime").toString();
 		assertTrue(value.startsWith("10/31/09"));
 		assertTrue(value.endsWith("12:00 PM"));
 	}
@@ -279,9 +279,9 @@ public class DateTimeFormattingTests {
 		setup(registrar);
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("localDateTime", LocalDateTime.of(2009, 10, 31, 12, 0));
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		String value = binder.getBindingResult().getFieldValue("localDateTime").toString();
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		String value = this.binder.getBindingResult().getFieldValue("localDateTime").toString();
 		assertTrue(value.startsWith("Oct 31, 2009"));
 		assertTrue(value.endsWith("12:00:00 PM"));
 	}
@@ -290,71 +290,71 @@ public class DateTimeFormattingTests {
 	public void testBindDateTimeAnnotatedPattern() {
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("dateTimeAnnotatedPattern", "10/31/09 12:00 PM");
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertEquals("10/31/09 12:00 PM", binder.getBindingResult().getFieldValue("dateTimeAnnotatedPattern"));
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		assertEquals("10/31/09 12:00 PM", this.binder.getBindingResult().getFieldValue("dateTimeAnnotatedPattern"));
 	}
 
 	@Test
 	public void testBindDateTimeOverflow() {
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("dateTimeAnnotatedPattern", "02/29/09 12:00 PM");
-		binder.bind(propertyValues);
-		assertEquals(1, binder.getBindingResult().getErrorCount());
+		this.binder.bind(propertyValues);
+		assertEquals(1, this.binder.getBindingResult().getErrorCount());
 	}
 
 	@Test
 	public void testBindISODate() {
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("isoDate", "2009-10-31");
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertEquals("2009-10-31", binder.getBindingResult().getFieldValue("isoDate"));
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		assertEquals("2009-10-31", this.binder.getBindingResult().getFieldValue("isoDate"));
 	}
 
 	@Test
 	public void testBindISOTime() {
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("isoTime", "12:00:00");
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertEquals("12:00:00", binder.getBindingResult().getFieldValue("isoTime"));
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		assertEquals("12:00:00", this.binder.getBindingResult().getFieldValue("isoTime"));
 	}
 
 	@Test
 	public void testBindISOTimeWithZone() {
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("isoTime", "12:00:00.000-05:00");
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertEquals("12:00:00", binder.getBindingResult().getFieldValue("isoTime"));
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		assertEquals("12:00:00", this.binder.getBindingResult().getFieldValue("isoTime"));
 	}
 
 	@Test
 	public void testBindISODateTime() {
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("isoDateTime", "2009-10-31T12:00:00");
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertEquals("2009-10-31T12:00:00", binder.getBindingResult().getFieldValue("isoDateTime"));
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		assertEquals("2009-10-31T12:00:00", this.binder.getBindingResult().getFieldValue("isoDateTime"));
 	}
 
 	@Test
 	public void testBindISODateTimeWithZone() {
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("isoDateTime", "2009-10-31T12:00:00.000Z");
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertEquals("2009-10-31T12:00:00", binder.getBindingResult().getFieldValue("isoDateTime"));
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		assertEquals("2009-10-31T12:00:00", this.binder.getBindingResult().getFieldValue("isoDateTime"));
 	}
 
 	@Test
 	public void testBindInstant() {
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("instant", "2009-10-31T12:00:00.000Z");
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertTrue(binder.getBindingResult().getFieldValue("instant").toString().startsWith("2009-10-31T12:00"));
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		assertTrue(this.binder.getBindingResult().getFieldValue("instant").toString().startsWith("2009-10-31T12:00"));
 	}
 
 	@Test
@@ -365,9 +365,9 @@ public class DateTimeFormattingTests {
 		try {
 			MutablePropertyValues propertyValues = new MutablePropertyValues();
 			propertyValues.add("instant", new Date(109, 9, 31, 12, 0));
-			binder.bind(propertyValues);
-			assertEquals(0, binder.getBindingResult().getErrorCount());
-			assertTrue(binder.getBindingResult().getFieldValue("instant").toString().startsWith("2009-10-31"));
+			this.binder.bind(propertyValues);
+			assertEquals(0, this.binder.getBindingResult().getErrorCount());
+			assertTrue(this.binder.getBindingResult().getFieldValue("instant").toString().startsWith("2009-10-31"));
 		}
 		finally {
 			TimeZone.setDefault(defaultZone);
@@ -378,63 +378,63 @@ public class DateTimeFormattingTests {
 	public void testBindPeriod() {
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("period", "P6Y3M1D");
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertTrue(binder.getBindingResult().getFieldValue("period").toString().equals("P6Y3M1D"));
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		assertTrue(this.binder.getBindingResult().getFieldValue("period").toString().equals("P6Y3M1D"));
 	}
 
 	@Test
 	public void testBindDuration() {
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("duration", "PT8H6M12.345S");
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertTrue(binder.getBindingResult().getFieldValue("duration").toString().equals("PT8H6M12.345S"));
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		assertTrue(this.binder.getBindingResult().getFieldValue("duration").toString().equals("PT8H6M12.345S"));
 	}
 
 	@Test
 	public void testBindYear() {
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("year", "2007");
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertTrue(binder.getBindingResult().getFieldValue("year").toString().equals("2007"));
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		assertTrue(this.binder.getBindingResult().getFieldValue("year").toString().equals("2007"));
 	}
 
 	@Test
 	public void testBindMonth() {
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("month", "JULY");
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertTrue(binder.getBindingResult().getFieldValue("month").toString().equals("JULY"));
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		assertTrue(this.binder.getBindingResult().getFieldValue("month").toString().equals("JULY"));
 	}
 
 	@Test
 	public void testBindMonthInAnyCase() {
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("month", "July");
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertTrue(binder.getBindingResult().getFieldValue("month").toString().equals("JULY"));
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		assertTrue(this.binder.getBindingResult().getFieldValue("month").toString().equals("JULY"));
 	}
 
 	@Test
 	public void testBindYearMonth() {
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("yearMonth", "2007-12");
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertTrue(binder.getBindingResult().getFieldValue("yearMonth").toString().equals("2007-12"));
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		assertTrue(this.binder.getBindingResult().getFieldValue("yearMonth").toString().equals("2007-12"));
 	}
 
 	@Test
 	public void testBindMonthDay() {
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("monthDay", "--12-03");
-		binder.bind(propertyValues);
-		assertEquals(0, binder.getBindingResult().getErrorCount());
-		assertTrue(binder.getBindingResult().getFieldValue("monthDay").toString().equals("--12-03"));
+		this.binder.bind(propertyValues);
+		assertEquals(0, this.binder.getBindingResult().getErrorCount());
+		assertTrue(this.binder.getBindingResult().getFieldValue("monthDay").toString().equals("--12-03"));
 	}
 
 
@@ -484,7 +484,7 @@ public class DateTimeFormattingTests {
 		private final List<DateTimeBean> children = new ArrayList<>();
 
 		public LocalDate getLocalDate() {
-			return localDate;
+			return this.localDate;
 		}
 
 		public void setLocalDate(LocalDate localDate) {
@@ -492,7 +492,7 @@ public class DateTimeFormattingTests {
 		}
 
 		public LocalDate getLocalDateAnnotated() {
-			return localDateAnnotated;
+			return this.localDateAnnotated;
 		}
 
 		public void setLocalDateAnnotated(LocalDate localDateAnnotated) {
@@ -500,7 +500,7 @@ public class DateTimeFormattingTests {
 		}
 
 		public LocalTime getLocalTime() {
-			return localTime;
+			return this.localTime;
 		}
 
 		public void setLocalTime(LocalTime localTime) {
@@ -508,7 +508,7 @@ public class DateTimeFormattingTests {
 		}
 
 		public LocalTime getLocalTimeAnnotated() {
-			return localTimeAnnotated;
+			return this.localTimeAnnotated;
 		}
 
 		public void setLocalTimeAnnotated(LocalTime localTimeAnnotated) {
@@ -516,7 +516,7 @@ public class DateTimeFormattingTests {
 		}
 
 		public LocalDateTime getLocalDateTime() {
-			return localDateTime;
+			return this.localDateTime;
 		}
 
 		public void setLocalDateTime(LocalDateTime localDateTime) {
@@ -524,7 +524,7 @@ public class DateTimeFormattingTests {
 		}
 
 		public LocalDateTime getLocalDateTimeAnnotated() {
-			return localDateTimeAnnotated;
+			return this.localDateTimeAnnotated;
 		}
 
 		public void setLocalDateTimeAnnotated(LocalDateTime localDateTimeAnnotated) {
@@ -532,7 +532,7 @@ public class DateTimeFormattingTests {
 		}
 
 		public LocalDateTime getDateTimeAnnotatedPattern() {
-			return dateTimeAnnotatedPattern;
+			return this.dateTimeAnnotatedPattern;
 		}
 
 		public void setDateTimeAnnotatedPattern(LocalDateTime dateTimeAnnotatedPattern) {
@@ -540,7 +540,7 @@ public class DateTimeFormattingTests {
 		}
 
 		public LocalDate getIsoDate() {
-			return isoDate;
+			return this.isoDate;
 		}
 
 		public void setIsoDate(LocalDate isoDate) {
@@ -548,7 +548,7 @@ public class DateTimeFormattingTests {
 		}
 
 		public LocalTime getIsoTime() {
-			return isoTime;
+			return this.isoTime;
 		}
 
 		public void setIsoTime(LocalTime isoTime) {
@@ -556,7 +556,7 @@ public class DateTimeFormattingTests {
 		}
 
 		public LocalDateTime getIsoDateTime() {
-			return isoDateTime;
+			return this.isoDateTime;
 		}
 
 		public void setIsoDateTime(LocalDateTime isoDateTime) {
@@ -564,7 +564,7 @@ public class DateTimeFormattingTests {
 		}
 
 		public Instant getInstant() {
-			return instant;
+			return this.instant;
 		}
 
 		public void setInstant(Instant instant) {
@@ -572,7 +572,7 @@ public class DateTimeFormattingTests {
 		}
 
 		public Period getPeriod() {
-			return period;
+			return this.period;
 		}
 
 		public void setPeriod(Period period) {
@@ -580,7 +580,7 @@ public class DateTimeFormattingTests {
 		}
 
 		public Duration getDuration() {
-			return duration;
+			return this.duration;
 		}
 
 		public void setDuration(Duration duration) {
@@ -588,7 +588,7 @@ public class DateTimeFormattingTests {
 		}
 
 		public Year getYear() {
-			return year;
+			return this.year;
 		}
 
 		public void setYear(Year year) {
@@ -596,7 +596,7 @@ public class DateTimeFormattingTests {
 		}
 
 		public Month getMonth() {
-			return month;
+			return this.month;
 		}
 
 		public void setMonth(Month month) {
@@ -604,7 +604,7 @@ public class DateTimeFormattingTests {
 		}
 
 		public YearMonth getYearMonth() {
-			return yearMonth;
+			return this.yearMonth;
 		}
 
 		public void setYearMonth(YearMonth yearMonth) {
@@ -612,7 +612,7 @@ public class DateTimeFormattingTests {
 		}
 
 		public MonthDay getMonthDay() {
-			return monthDay;
+			return this.monthDay;
 		}
 
 		public void setMonthDay(MonthDay monthDay) {
@@ -620,7 +620,7 @@ public class DateTimeFormattingTests {
 		}
 
 		public List<DateTimeBean> getChildren() {
-			return children;
+			return this.children;
 		}
 	}
 

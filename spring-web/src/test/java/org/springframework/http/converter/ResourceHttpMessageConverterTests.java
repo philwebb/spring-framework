@@ -56,13 +56,13 @@ public class ResourceHttpMessageConverterTests {
 
 	@Test
 	public void canReadResource() {
-		assertTrue(converter.canRead(Resource.class, new MediaType("application", "octet-stream")));
+		assertTrue(this.converter.canRead(Resource.class, new MediaType("application", "octet-stream")));
 	}
 
 	@Test
 	public void canWriteResource() {
-		assertTrue(converter.canWrite(Resource.class, new MediaType("application", "octet-stream")));
-		assertTrue(converter.canWrite(Resource.class, MediaType.ALL));
+		assertTrue(this.converter.canWrite(Resource.class, new MediaType("application", "octet-stream")));
+		assertTrue(this.converter.canWrite(Resource.class, MediaType.ALL));
 	}
 
 	@Test
@@ -72,7 +72,7 @@ public class ResourceHttpMessageConverterTests {
 		inputMessage.getHeaders().setContentType(MediaType.IMAGE_JPEG);
 		inputMessage.getHeaders().setContentDisposition(
 				ContentDisposition.builder("attachment").filename("yourlogo.jpg").build());
-		Resource actualResource = converter.read(Resource.class, inputMessage);
+		Resource actualResource = this.converter.read(Resource.class, inputMessage);
 		assertThat(FileCopyUtils.copyToByteArray(actualResource.getInputStream()), is(body));
 		assertEquals("yourlogo.jpg", actualResource.getFilename());
 	}
@@ -84,7 +84,7 @@ public class ResourceHttpMessageConverterTests {
 			inputMessage.getHeaders().setContentType(MediaType.IMAGE_JPEG);
 			inputMessage.getHeaders().setContentDisposition(
 					ContentDisposition.builder("attachment").filename("yourlogo.jpg").build());
-			Resource actualResource = converter.read(InputStreamResource.class, inputMessage);
+			Resource actualResource = this.converter.read(InputStreamResource.class, inputMessage);
 			assertThat(actualResource, instanceOf(InputStreamResource.class));
 			assertThat(actualResource.getInputStream(), is(body));
 			assertEquals("yourlogo.jpg", actualResource.getFilename());
@@ -106,7 +106,7 @@ public class ResourceHttpMessageConverterTests {
 	public void shouldWriteImageResource() throws IOException {
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		Resource body = new ClassPathResource("logo.jpg", getClass());
-		converter.write(body, null, outputMessage);
+		this.converter.write(body, null, outputMessage);
 
 		assertEquals("Invalid content-type", MediaType.IMAGE_JPEG,
 				outputMessage.getHeaders().getContentType());
@@ -118,7 +118,7 @@ public class ResourceHttpMessageConverterTests {
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		byte[] byteArray = {1, 2, 3};
 		Resource body = new ByteArrayResource(byteArray);
-		converter.write(body, null, outputMessage);
+		this.converter.write(body, null, outputMessage);
 
 		assertTrue(Arrays.equals(byteArray, outputMessage.getBodyAsBytes()));
 	}
@@ -129,7 +129,7 @@ public class ResourceHttpMessageConverterTests {
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		Resource resource = mock(Resource.class);
 		given(resource.getInputStream()).willThrow(FileNotFoundException.class);
-		converter.write(resource, MediaType.APPLICATION_OCTET_STREAM, outputMessage);
+		this.converter.write(resource, MediaType.APPLICATION_OCTET_STREAM, outputMessage);
 
 		assertEquals(0, outputMessage.getHeaders().getContentLength());
 	}
@@ -142,7 +142,7 @@ public class ResourceHttpMessageConverterTests {
 		given(resource.getInputStream()).willReturn(inputStream);
 		given(inputStream.read(any())).willReturn(-1);
 		doThrow(new NullPointerException()).when(inputStream).close();
-		converter.write(resource, MediaType.APPLICATION_OCTET_STREAM, outputMessage);
+		this.converter.write(resource, MediaType.APPLICATION_OCTET_STREAM, outputMessage);
 
 		assertEquals(0, outputMessage.getHeaders().getContentLength());
 	}
@@ -155,7 +155,7 @@ public class ResourceHttpMessageConverterTests {
 		InputStream in = mock(InputStream.class);
 		given(resource.getInputStream()).willReturn(in);
 		given(in.read(any())).willThrow(NullPointerException.class);
-		converter.write(resource, MediaType.APPLICATION_OCTET_STREAM, outputMessage);
+		this.converter.write(resource, MediaType.APPLICATION_OCTET_STREAM, outputMessage);
 
 		assertEquals(0, outputMessage.getHeaders().getContentLength());
 	}

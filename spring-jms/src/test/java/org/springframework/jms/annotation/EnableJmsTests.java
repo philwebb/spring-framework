@@ -140,8 +140,8 @@ public class EnableJmsTests extends AbstractJmsAnnotationDrivenTests {
 		ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(
 				EnableJmsHandlerMethodFactoryConfig.class, ValidationBean.class);
 
-		thrown.expect(ListenerExecutionFailedException.class);
-		thrown.expectCause(Is.<MethodArgumentNotValidException>isA(MethodArgumentNotValidException.class));
+		this.thrown.expect(ListenerExecutionFailedException.class);
+		this.thrown.expectCause(Is.<MethodArgumentNotValidException>isA(MethodArgumentNotValidException.class));
 		testJmsHandlerMethodFactoryConfiguration(context);
 	}
 
@@ -186,8 +186,8 @@ public class EnableJmsTests extends AbstractJmsAnnotationDrivenTests {
 	@Test
 	@SuppressWarnings("resource")
 	public void unknownFactory() {
-		thrown.expect(BeanCreationException.class);
-		thrown.expectMessage("customFactory");  // not found
+		this.thrown.expect(BeanCreationException.class);
+		this.thrown.expectMessage("customFactory");  // not found
 		new AnnotationConfigApplicationContext(EnableJmsSampleConfig.class, CustomBean.class);
 	}
 

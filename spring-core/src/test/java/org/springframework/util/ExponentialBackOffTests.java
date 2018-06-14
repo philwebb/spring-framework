@@ -110,7 +110,7 @@ public class ExponentialBackOffTests {
 	public void invalidInterval() {
 		ExponentialBackOff backOff = new ExponentialBackOff();
 
-		thrown.expect(IllegalArgumentException.class);
+		this.thrown.expect(IllegalArgumentException.class);
 		backOff.setMultiplier(0.9);
 	}
 

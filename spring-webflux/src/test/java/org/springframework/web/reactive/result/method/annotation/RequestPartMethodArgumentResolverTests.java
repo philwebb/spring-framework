@@ -292,7 +292,7 @@ public class RequestPartMethodArgumentResolverTests {
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 	}
 

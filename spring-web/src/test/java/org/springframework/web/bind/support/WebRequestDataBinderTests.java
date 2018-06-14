@@ -359,7 +359,7 @@ public class WebRequestDataBinderTests {
 		private MyEnum myEnum;
 
 		public MyEnum getMyEnum() {
-			return myEnum;
+			return this.myEnum;
 		}
 
 		public void setMyEnum(MyEnum myEnum) {

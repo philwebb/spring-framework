@@ -83,7 +83,7 @@ class TestTransport implements Transport {
 
 	@Override
 	public String toString() {
-		return "TestTransport[" + name + "]";
+		return "TestTransport[" + this.name + "]";
 	}
 
 

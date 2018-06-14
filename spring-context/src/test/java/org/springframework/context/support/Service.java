@@ -54,7 +54,7 @@ public class Service implements ApplicationContextAware, MessageSourceAware, Dis
 	}
 
 	public MessageSource getMessageSource() {
-		return messageSource;
+		return this.messageSource;
 	}
 
 	public void setResources(Resource[] resources) {
@@ -62,7 +62,7 @@ public class Service implements ApplicationContextAware, MessageSourceAware, Dis
 	}
 
 	public Resource[] getResources() {
-		return resources;
+		return this.resources;
 	}
 
 
@@ -72,12 +72,12 @@ public class Service implements ApplicationContextAware, MessageSourceAware, Dis
 		Thread thread = new Thread() {
 			@Override
 			public void run() {
-				Assert.state(applicationContext.getBean("messageSource") instanceof StaticMessageSource,
+				Assert.state(Service.this.applicationContext.getBean("messageSource") instanceof StaticMessageSource,
 						"Invalid MessageSource bean");
 				try {
-					applicationContext.getBean("service2");
+					Service.this.applicationContext.getBean("service2");
 					// Should have thrown BeanCreationNotAllowedException
-					properlyDestroyed = false;
+					Service.this.properlyDestroyed = false;
 				}
 				catch (BeanCreationNotAllowedException ex) {
 					// expected
@@ -94,7 +94,7 @@ public class Service implements ApplicationContextAware, MessageSourceAware, Dis
 	}
 
 	public boolean isProperlyDestroyed() {
-		return properlyDestroyed;
+		return this.properlyDestroyed;
 	}
 
 }

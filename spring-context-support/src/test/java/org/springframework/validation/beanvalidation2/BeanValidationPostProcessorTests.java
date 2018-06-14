@@ -118,7 +118,7 @@ public class BeanValidationPostProcessorTests {
 		private String stringValue;
 
 		public TestBean getTestBean() {
-			return testBean;
+			return this.testBean;
 		}
 
 		public void setTestBean(TestBean testBean) {
@@ -126,7 +126,7 @@ public class BeanValidationPostProcessorTests {
 		}
 
 		public String getStringValue() {
-			return stringValue;
+			return this.stringValue;
 		}
 
 		public void setStringValue(String stringValue) {
@@ -146,7 +146,7 @@ public class BeanValidationPostProcessorTests {
 		private TestBean testBean;
 
 		public TestBean getTestBean() {
-			return testBean;
+			return this.testBean;
 		}
 
 		public void setTestBean(TestBean testBean) {

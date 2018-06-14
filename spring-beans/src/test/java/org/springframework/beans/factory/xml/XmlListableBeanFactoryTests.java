@@ -51,19 +51,19 @@ public class XmlListableBeanFactoryTests extends AbstractListableBeanFactoryTest
 
 	@Before
 	public void setUp() {
-		parent = new DefaultListableBeanFactory();
+		this.parent = new DefaultListableBeanFactory();
 		Map m = new HashMap();
 		m.put("name", "Albert");
 		RootBeanDefinition bd1 = new RootBeanDefinition(TestBean.class);
 		bd1.setPropertyValues(new MutablePropertyValues(m));
-		parent.registerBeanDefinition("father", bd1);
+		this.parent.registerBeanDefinition("father", bd1);
 		m = new HashMap();
 		m.put("name", "Roderick");
 		RootBeanDefinition bd2 = new RootBeanDefinition(TestBean.class);
 		bd2.setPropertyValues(new MutablePropertyValues(m));
-		parent.registerBeanDefinition("rod", bd2);
+		this.parent.registerBeanDefinition("rod", bd2);
 
-		this.factory = new DefaultListableBeanFactory(parent);
+		this.factory = new DefaultListableBeanFactory(this.parent);
 		new XmlBeanDefinitionReader(this.factory).loadBeanDefinitions(
 				new ClassPathResource("test.xml", getClass()));
 		this.factory.addBeanPostProcessor(new BeanPostProcessor() {
@@ -89,7 +89,7 @@ public class XmlListableBeanFactoryTests extends AbstractListableBeanFactoryTest
 
 	@Override
 	protected BeanFactory getBeanFactory() {
-		return factory;
+		return this.factory;
 	}
 
 	@Test
@@ -193,7 +193,7 @@ public class XmlListableBeanFactoryTests extends AbstractListableBeanFactoryTest
 		assertTrue("Bean from child context", "Rod".equals(rod.getName()));
 		assertTrue("Bean has external reference", rod.getSpouse() == father);
 
-		rod = (TestBean) parent.getBean("rod");
+		rod = (TestBean) this.parent.getBean("rod");
 		assertTrue("Bean from root context", "Roderick".equals(rod.getName()));
 	}
 

@@ -46,63 +46,63 @@ public class ServletServerHttpRequestTests {
 
 	@Before
 	public void create() {
-		mockRequest = new MockHttpServletRequest();
-		request = new ServletServerHttpRequest(mockRequest);
+		this.mockRequest = new MockHttpServletRequest();
+		this.request = new ServletServerHttpRequest(this.mockRequest);
 	}
 
 
 	@Test
 	public void getMethod() {
-		mockRequest.setMethod("POST");
-		assertEquals("Invalid method", HttpMethod.POST, request.getMethod());
+		this.mockRequest.setMethod("POST");
+		assertEquals("Invalid method", HttpMethod.POST, this.request.getMethod());
 	}
 
 	@Test
 	public void getUriForSimplePath() throws URISyntaxException {
 		URI uri = new URI("http://example.com/path");
-		mockRequest.setServerName(uri.getHost());
-		mockRequest.setServerPort(uri.getPort());
-		mockRequest.setRequestURI(uri.getPath());
-		mockRequest.setQueryString(uri.getQuery());
-		assertEquals(uri, request.getURI());
+		this.mockRequest.setServerName(uri.getHost());
+		this.mockRequest.setServerPort(uri.getPort());
+		this.mockRequest.setRequestURI(uri.getPath());
+		this.mockRequest.setQueryString(uri.getQuery());
+		assertEquals(uri, this.request.getURI());
 	}
 
 	@Test
 	public void getUriWithQueryString() throws URISyntaxException {
 		URI uri = new URI("http://example.com/path?query");
-		mockRequest.setServerName(uri.getHost());
-		mockRequest.setServerPort(uri.getPort());
-		mockRequest.setRequestURI(uri.getPath());
-		mockRequest.setQueryString(uri.getQuery());
-		assertEquals(uri, request.getURI());
+		this.mockRequest.setServerName(uri.getHost());
+		this.mockRequest.setServerPort(uri.getPort());
+		this.mockRequest.setRequestURI(uri.getPath());
+		this.mockRequest.setQueryString(uri.getQuery());
+		assertEquals(uri, this.request.getURI());
 	}
 
 	@Test  // SPR-16414
 	public void getUriWithQueryParam() throws URISyntaxException {
-		mockRequest.setServerName("example.com");
-		mockRequest.setRequestURI("/path");
-		mockRequest.setQueryString("query=foo");
-		assertEquals(new URI("http://example.com/path?query=foo"), request.getURI());
+		this.mockRequest.setServerName("example.com");
+		this.mockRequest.setRequestURI("/path");
+		this.mockRequest.setQueryString("query=foo");
+		assertEquals(new URI("http://example.com/path?query=foo"), this.request.getURI());
 	}
 
 	@Test  // SPR-16414
 	public void getUriWithMalformedQueryParam() throws URISyntaxException {
-		mockRequest.setServerName("example.com");
-		mockRequest.setRequestURI("/path");
-		mockRequest.setQueryString("query=foo%%x");
-		assertEquals(new URI("http://example.com/path"), request.getURI());
+		this.mockRequest.setServerName("example.com");
+		this.mockRequest.setRequestURI("/path");
+		this.mockRequest.setQueryString("query=foo%%x");
+		assertEquals(new URI("http://example.com/path"), this.request.getURI());
 	}
 
 	@Test  // SPR-13876
 	public void getUriWithEncoding() throws URISyntaxException {
         URI uri = new URI("https://example.com/%E4%B8%AD%E6%96%87" +
 				"?redirect=https%3A%2F%2Fgithub.com%2Fspring-projects%2Fspring-framework");
-        mockRequest.setScheme(uri.getScheme());
-        mockRequest.setServerName(uri.getHost());
-        mockRequest.setServerPort(uri.getPort());
-        mockRequest.setRequestURI(uri.getRawPath());
-        mockRequest.setQueryString(uri.getRawQuery());
-        assertEquals(uri, request.getURI());
+        this.mockRequest.setScheme(uri.getScheme());
+        this.mockRequest.setServerName(uri.getHost());
+        this.mockRequest.setServerPort(uri.getPort());
+        this.mockRequest.setRequestURI(uri.getRawPath());
+        this.mockRequest.setQueryString(uri.getRawQuery());
+        assertEquals(uri, this.request.getURI());
     }
 
 	@Test
@@ -110,12 +110,12 @@ public class ServletServerHttpRequestTests {
 		String headerName = "MyHeader";
 		String headerValue1 = "value1";
 		String headerValue2 = "value2";
-		mockRequest.addHeader(headerName, headerValue1);
-		mockRequest.addHeader(headerName, headerValue2);
-		mockRequest.setContentType("text/plain");
-		mockRequest.setCharacterEncoding("UTF-8");
+		this.mockRequest.addHeader(headerName, headerValue1);
+		this.mockRequest.addHeader(headerName, headerValue2);
+		this.mockRequest.setContentType("text/plain");
+		this.mockRequest.setCharacterEncoding("UTF-8");
 
-		HttpHeaders headers = request.getHeaders();
+		HttpHeaders headers = this.request.getHeaders();
 		assertNotNull("No HttpHeaders returned", headers);
 		assertTrue("Invalid headers returned", headers.containsKey(headerName));
 		List<String> headerValues = headers.get(headerName);
@@ -131,12 +131,12 @@ public class ServletServerHttpRequestTests {
 		String headerName = "MyHeader";
 		String headerValue1 = "value1";
 		String headerValue2 = "value2";
-		mockRequest.addHeader(headerName, headerValue1);
-		mockRequest.addHeader(headerName, headerValue2);
-		mockRequest.setContentType("");
-		mockRequest.setCharacterEncoding("");
+		this.mockRequest.addHeader(headerName, headerValue1);
+		this.mockRequest.addHeader(headerName, headerValue2);
+		this.mockRequest.setContentType("");
+		this.mockRequest.setCharacterEncoding("");
 
-		HttpHeaders headers = request.getHeaders();
+		HttpHeaders headers = this.request.getHeaders();
 		assertNotNull("No HttpHeaders returned", headers);
 		assertTrue("Invalid headers returned", headers.containsKey(headerName));
 		List<String> headerValues = headers.get(headerName);
@@ -149,22 +149,22 @@ public class ServletServerHttpRequestTests {
 	@Test
 	public void getBody() throws IOException {
 		byte[] content = "Hello World".getBytes("UTF-8");
-		mockRequest.setContent(content);
+		this.mockRequest.setContent(content);
 
-		byte[] result = FileCopyUtils.copyToByteArray(request.getBody());
+		byte[] result = FileCopyUtils.copyToByteArray(this.request.getBody());
 		assertArrayEquals("Invalid content returned", content, result);
 	}
 
 	@Test
 	public void getFormBody() throws IOException {
 		// Charset (SPR-8676)
-		mockRequest.setContentType("application/x-www-form-urlencoded; charset=UTF-8");
-		mockRequest.setMethod("POST");
-		mockRequest.addParameter("name 1", "value 1");
-		mockRequest.addParameter("name 2", new String[] {"value 2+1", "value 2+2"});
-		mockRequest.addParameter("name 3", (String) null);
+		this.mockRequest.setContentType("application/x-www-form-urlencoded; charset=UTF-8");
+		this.mockRequest.setMethod("POST");
+		this.mockRequest.addParameter("name 1", "value 1");
+		this.mockRequest.addParameter("name 2", new String[] {"value 2+1", "value 2+2"});
+		this.mockRequest.addParameter("name 3", (String) null);
 
-		byte[] result = FileCopyUtils.copyToByteArray(request.getBody());
+		byte[] result = FileCopyUtils.copyToByteArray(this.request.getBody());
 		byte[] content = "name+1=value+1&name+2=value+2%2B1&name+2=value+2%2B2&name+3".getBytes("UTF-8");
 		assertArrayEquals("Invalid content returned", content, result);
 	}

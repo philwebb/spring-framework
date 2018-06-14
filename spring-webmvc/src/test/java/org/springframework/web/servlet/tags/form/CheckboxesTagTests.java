@@ -266,7 +266,7 @@ public class CheckboxesTagTests extends AbstractFormTagTests {
 		m.put(new ItemPet("PET2"), "PET2Label");
 		m.put(new ItemPet("PET3"), "PET3Label");
 		this.tag.setItems(m);
-		tag.setItemValue("name");
+		this.tag.setItemValue("name");
 		int result = this.tag.doStartTag();
 		assertEquals(Tag.SKIP_BODY, result);
 

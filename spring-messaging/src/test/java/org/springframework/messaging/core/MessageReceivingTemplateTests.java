@@ -104,8 +104,8 @@ public class MessageReceivingTemplateTests {
 		this.template.setReceiveMessage(expected);
 		this.template.setMessageConverter(new GenericMessageConverter());
 
-		thrown.expect(MessageConversionException.class);
-		thrown.expectCause(isA(ConversionFailedException.class));
+		this.thrown.expect(MessageConversionException.class);
+		this.thrown.expectCause(isA(ConversionFailedException.class));
 		this.template.receiveAndConvert("somewhere", Integer.class);
 	}
 

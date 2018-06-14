@@ -61,7 +61,7 @@ public class SystemPropertyOverridePropertiesFileTestPropertySourceTests {
 
 	@Test
 	public void verifyPropertiesAreAvailableInEnvironment() {
-		assertEquals("enigma", env.getProperty(KEY));
+		assertEquals("enigma", this.env.getProperty(KEY));
 	}
 
 

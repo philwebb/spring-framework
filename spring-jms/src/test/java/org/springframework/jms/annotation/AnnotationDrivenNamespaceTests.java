@@ -87,8 +87,8 @@ public class AnnotationDrivenNamespaceTests extends AbstractJmsAnnotationDrivenT
 		ApplicationContext context = new ClassPathXmlApplicationContext(
 				"annotation-driven-custom-handler-method-factory.xml", getClass());
 
-		thrown.expect(ListenerExecutionFailedException.class);
-		thrown.expectCause(Is.<MethodArgumentNotValidException>isA(MethodArgumentNotValidException.class));
+		this.thrown.expect(ListenerExecutionFailedException.class);
+		this.thrown.expectCause(Is.<MethodArgumentNotValidException>isA(MethodArgumentNotValidException.class));
 		testJmsHandlerMethodFactoryConfiguration(context);
 	}
 
@@ -118,7 +118,7 @@ public class AnnotationDrivenNamespaceTests extends AbstractJmsAnnotationDrivenT
 			SimpleJmsListenerEndpoint endpoint = new SimpleJmsListenerEndpoint();
 			endpoint.setId("myCustomEndpointId");
 			endpoint.setDestination("myQueue");
-			endpoint.setMessageListener(messageListener);
+			endpoint.setMessageListener(this.messageListener);
 			registrar.registerEndpoint(endpoint);
 		}
 

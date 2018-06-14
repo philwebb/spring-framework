@@ -41,13 +41,13 @@ public class OperatorOverloaderTests extends AbstractExpressionTests {
 		StandardEvaluationContext eContext = TestScenarioCreator.getTestEvaluationContext();
 		eContext.setOperatorOverloader(new StringAndBooleanAddition());
 
-		SpelExpression expr = (SpelExpression)parser.parseExpression("'abc'+true");
+		SpelExpression expr = (SpelExpression)this.parser.parseExpression("'abc'+true");
 		assertEquals("abctrue",expr.getValue(eContext));
 
-		expr = (SpelExpression)parser.parseExpression("'abc'-true");
+		expr = (SpelExpression)this.parser.parseExpression("'abc'-true");
 		assertEquals("abc",expr.getValue(eContext));
 
-		expr = (SpelExpression)parser.parseExpression("'abc'+null");
+		expr = (SpelExpression)this.parser.parseExpression("'abc'+null");
 		assertEquals("abcnull",expr.getValue(eContext));
 	}
 

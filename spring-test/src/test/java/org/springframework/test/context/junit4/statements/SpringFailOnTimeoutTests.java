@@ -46,22 +46,22 @@ public class SpringFailOnTimeoutTests {
 
 	@Test
 	public void nullNextStatement() throws Throwable {
-		exception.expect(IllegalArgumentException.class);
+		this.exception.expect(IllegalArgumentException.class);
 		new SpringFailOnTimeout(null, 1);
 	}
 
 	@Test
 	public void negativeTimeout() throws Throwable {
-		exception.expect(IllegalArgumentException.class);
-		new SpringFailOnTimeout(statement, -1);
+		this.exception.expect(IllegalArgumentException.class);
+		new SpringFailOnTimeout(this.statement, -1);
 	}
 
 	@Test
 	public void userExceptionPropagates() throws Throwable {
-		doThrow(new Boom()).when(statement).evaluate();
+		doThrow(new Boom()).when(this.statement).evaluate();
 
-		exception.expect(Boom.class);
-		new SpringFailOnTimeout(statement, 1).evaluate();
+		this.exception.expect(Boom.class);
+		new SpringFailOnTimeout(this.statement, 1).evaluate();
 	}
 
 	@Test
@@ -69,19 +69,19 @@ public class SpringFailOnTimeoutTests {
 		doAnswer((Answer<Void>) invocation -> {
 			TimeUnit.MILLISECONDS.sleep(50);
 			return null;
-		}).when(statement).evaluate();
+		}).when(this.statement).evaluate();
 
-		exception.expect(TimeoutException.class);
-		new SpringFailOnTimeout(statement, 1).evaluate();
+		this.exception.expect(TimeoutException.class);
+		new SpringFailOnTimeout(this.statement, 1).evaluate();
 	}
 
 	@Test
 	public void noExceptionThrownIfNoUserExceptionAndTimeoutDoesNotOccur() throws Throwable {
 		doAnswer((Answer<Void>) invocation -> {
 			return null;
-		}).when(statement).evaluate();
+		}).when(this.statement).evaluate();
 
-		new SpringFailOnTimeout(statement, 100).evaluate();
+		new SpringFailOnTimeout(this.statement, 100).evaluate();
 	}
 
 	@SuppressWarnings("serial")

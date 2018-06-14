@@ -443,7 +443,7 @@ public class RmiSupportTests {
 
 		@Override
 		protected Remote lookupStub() {
-			counter++;
+			this.counter++;
 			return new RemoteBean();
 		}
 	}

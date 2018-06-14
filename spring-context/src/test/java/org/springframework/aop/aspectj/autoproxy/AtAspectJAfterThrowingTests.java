@@ -66,8 +66,8 @@ class ExceptionHandlingAspect {
 
 	@AfterThrowing(pointcut = "within(org.springframework.tests.sample.beans.ITestBean+)", throwing = "ex")
 	public void handleIOException(IOException ex) {
-		handled++;
-		lastException = ex;
+		this.handled++;
+		this.lastException = ex;
 	}
 
 }

@@ -77,7 +77,7 @@ public class EncodedUriTests {
 	public void test() throws Exception {
 		String id = "a/b";
 		URI url = UriComponentsBuilder.fromUriString("/circuit").pathSegment(id).build().encode().toUri();
-		ResultActions result = mockMvc.perform(get(url));
+		ResultActions result = this.mockMvc.perform(get(url));
 		result.andExpect(status().isOk()).andExpect(model().attribute("receivedId", is(id)));
 	}
 

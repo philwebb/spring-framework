@@ -51,7 +51,7 @@ public class DefaultPropertiesFileDetectionTestPropertySourceTests {
 	}
 
 	protected void assertEnvironmentValue(String key, String expected) {
-		assertEquals("Value of key [" + key + "].", expected, env.getProperty(key));
+		assertEquals("Value of key [" + key + "].", expected, this.env.getProperty(key));
 	}
 
 

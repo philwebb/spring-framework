@@ -65,7 +65,7 @@ public class RequestMappingHandlerMappingTests {
 
 	@Before
 	public void setup() {
-		this.handlerMapping.setApplicationContext(wac);
+		this.handlerMapping.setApplicationContext(this.wac);
 	}
 
 	@Test

@@ -147,7 +147,7 @@ public class UndertowTestServer implements WebSocketTestServer {
 			return new InstanceHandle<Servlet>() {
 				@Override
 				public Servlet getInstance() {
-					return new DispatcherServlet(wac);
+					return new DispatcherServlet(DispatcherServletInstanceFactory.this.wac);
 				}
 				@Override
 				public void release() {
@@ -170,7 +170,7 @@ public class UndertowTestServer implements WebSocketTestServer {
 			return new InstanceHandle<Filter>() {
 				@Override
 				public Filter getInstance() {
-					return filter;
+					return FilterInstanceFactory.this.filter;
 				}
 				@Override
 				public void release() {}

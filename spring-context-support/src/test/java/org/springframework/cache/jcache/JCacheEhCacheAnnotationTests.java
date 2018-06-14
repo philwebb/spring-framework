@@ -54,7 +54,7 @@ public class JCacheEhCacheAnnotationTests extends AbstractCacheAnnotationTests {
 		context.getBeanFactory().registerSingleton("cachingProvider", getCachingProvider());
 		context.register(EnableCachingConfig.class);
 		context.refresh();
-		jCacheManager = context.getBean("jCacheManager", CacheManager.class);
+		this.jCacheManager = context.getBean("jCacheManager", CacheManager.class);
 		return context;
 	}
 
@@ -64,8 +64,8 @@ public class JCacheEhCacheAnnotationTests extends AbstractCacheAnnotationTests {
 
 	@After
 	public void shutdown() {
-		if (jCacheManager != null) {
-			jCacheManager.close();
+		if (this.jCacheManager != null) {
+			this.jCacheManager.close();
 		}
 	}
 

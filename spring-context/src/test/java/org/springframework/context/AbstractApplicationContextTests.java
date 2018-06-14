@@ -55,11 +55,11 @@ public abstract class AbstractApplicationContextTests extends AbstractListableBe
 
 	@Override
 	protected BeanFactory getBeanFactory() {
-		return applicationContext;
+		return this.applicationContext;
 	}
 
 	protected ApplicationContext getApplicationContext() {
-		return applicationContext;
+		return this.applicationContext;
 	}
 
 	/**
@@ -72,72 +72,72 @@ public abstract class AbstractApplicationContextTests extends AbstractListableBe
 
 	@Test
 	public void contextAwareSingletonWasCalledBack() throws Exception {
-		ACATester aca = (ACATester) applicationContext.getBean("aca");
-		assertTrue("has had context set", aca.getApplicationContext() == applicationContext);
-		Object aca2 = applicationContext.getBean("aca");
+		ACATester aca = (ACATester) this.applicationContext.getBean("aca");
+		assertTrue("has had context set", aca.getApplicationContext() == this.applicationContext);
+		Object aca2 = this.applicationContext.getBean("aca");
 		assertTrue("Same instance", aca == aca2);
-		assertTrue("Says is singleton", applicationContext.isSingleton("aca"));
+		assertTrue("Says is singleton", this.applicationContext.isSingleton("aca"));
 	}
 
 	@Test
 	public void contextAwarePrototypeWasCalledBack() throws Exception {
-		ACATester aca = (ACATester) applicationContext.getBean("aca-prototype");
-		assertTrue("has had context set", aca.getApplicationContext() == applicationContext);
-		Object aca2 = applicationContext.getBean("aca-prototype");
+		ACATester aca = (ACATester) this.applicationContext.getBean("aca-prototype");
+		assertTrue("has had context set", aca.getApplicationContext() == this.applicationContext);
+		Object aca2 = this.applicationContext.getBean("aca-prototype");
 		assertTrue("NOT Same instance", aca != aca2);
-		assertTrue("Says is prototype", !applicationContext.isSingleton("aca-prototype"));
+		assertTrue("Says is prototype", !this.applicationContext.isSingleton("aca-prototype"));
 	}
 
 	@Test
 	public void parentNonNull() {
-		assertTrue("parent isn't null", applicationContext.getParent() != null);
+		assertTrue("parent isn't null", this.applicationContext.getParent() != null);
 	}
 
 	@Test
 	public void grandparentNull() {
-		assertTrue("grandparent is null", applicationContext.getParent().getParent() == null);
+		assertTrue("grandparent is null", this.applicationContext.getParent().getParent() == null);
 	}
 
 	@Test
 	public void overrideWorked() throws Exception {
-		TestBean rod = (TestBean) applicationContext.getParent().getBean("rod");
+		TestBean rod = (TestBean) this.applicationContext.getParent().getBean("rod");
 		assertTrue("Parent's name differs", rod.getName().equals("Roderick"));
 	}
 
 	@Test
 	public void grandparentDefinitionFound() throws Exception {
-		TestBean dad = (TestBean) applicationContext.getBean("father");
+		TestBean dad = (TestBean) this.applicationContext.getBean("father");
 		assertTrue("Dad has correct name", dad.getName().equals("Albert"));
 	}
 
 	@Test
 	public void grandparentTypedDefinitionFound() throws Exception {
-		TestBean dad = applicationContext.getBean("father", TestBean.class);
+		TestBean dad = this.applicationContext.getBean("father", TestBean.class);
 		assertTrue("Dad has correct name", dad.getName().equals("Albert"));
 	}
 
 	@Test
 	public void closeTriggersDestroy() {
-		LifecycleBean lb = (LifecycleBean) applicationContext.getBean("lifecycle");
+		LifecycleBean lb = (LifecycleBean) this.applicationContext.getBean("lifecycle");
 		assertTrue("Not destroyed", !lb.isDestroyed());
-		applicationContext.close();
-		if (applicationContext.getParent() != null) {
-			((ConfigurableApplicationContext) applicationContext.getParent()).close();
+		this.applicationContext.close();
+		if (this.applicationContext.getParent() != null) {
+			((ConfigurableApplicationContext) this.applicationContext.getParent()).close();
 		}
 		assertTrue("Destroyed", lb.isDestroyed());
-		applicationContext.close();
-		if (applicationContext.getParent() != null) {
-			((ConfigurableApplicationContext) applicationContext.getParent()).close();
+		this.applicationContext.close();
+		if (this.applicationContext.getParent() != null) {
+			((ConfigurableApplicationContext) this.applicationContext.getParent()).close();
 		}
 		assertTrue("Destroyed", lb.isDestroyed());
 	}
 
 	@Test(expected = NoSuchMessageException.class)
 	public void messageSource() throws NoSuchMessageException {
-		assertEquals("message1", applicationContext.getMessage("code1", null, Locale.getDefault()));
-		assertEquals("message2", applicationContext.getMessage("code2", null, Locale.getDefault()));
+		assertEquals("message1", this.applicationContext.getMessage("code1", null, Locale.getDefault()));
+		assertEquals("message2", this.applicationContext.getMessage("code2", null, Locale.getDefault()));
 
-		applicationContext.getMessage("code0", null, Locale.getDefault());
+		this.applicationContext.getMessage("code0", null, Locale.getDefault());
 	}
 
 	@Test
@@ -173,7 +173,7 @@ public abstract class AbstractApplicationContextTests extends AbstractListableBe
 	public void beanAutomaticallyHearsEvents() throws Exception {
 		//String[] listenerNames = ((ListableBeanFactory) applicationContext).getBeanDefinitionNames(ApplicationListener.class);
 		//assertTrue("listeners include beanThatListens", Arrays.asList(listenerNames).contains("beanThatListens"));
-		BeanThatListens b = (BeanThatListens) applicationContext.getBean("beanThatListens");
+		BeanThatListens b = (BeanThatListens) this.applicationContext.getBean("beanThatListens");
 		b.zero();
 		assertTrue("0 events before publication", b.getEventCount() == 0);
 		this.applicationContext.publishEvent(new MyEvent(this));

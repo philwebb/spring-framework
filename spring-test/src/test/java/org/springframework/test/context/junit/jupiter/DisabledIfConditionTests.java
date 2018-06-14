@@ -57,7 +57,7 @@ class DisabledIfConditionTests {
 
 	@Test
 	void missingDisabledIf() {
-		assertResult(condition.evaluateExecutionCondition(buildExtensionContext("missingDisabledIf")), false,
+		assertResult(this.condition.evaluateExecutionCondition(buildExtensionContext("missingDisabledIf")), false,
 			endsWith("missingDisabledIf() is enabled since @DisabledIf is not present"));
 	}
 
@@ -75,7 +75,7 @@ class DisabledIfConditionTests {
 	void invalidExpressionEvaluationType() {
 		String methodName = "nonBooleanOrStringExpression";
 		IllegalStateException exception = assertThrows(IllegalStateException.class,
-			() -> condition.evaluateExecutionCondition(buildExtensionContext(methodName)));
+			() -> this.condition.evaluateExecutionCondition(buildExtensionContext(methodName)));
 
 		Method method = ReflectionUtils.findMethod(getClass(), methodName);
 
@@ -87,7 +87,7 @@ class DisabledIfConditionTests {
 	void unsupportedStringEvaluationValue() {
 		String methodName = "stringExpressionThatIsNeitherTrueNorFalse";
 		IllegalStateException exception = assertThrows(IllegalStateException.class,
-			() -> condition.evaluateExecutionCondition(buildExtensionContext(methodName)));
+			() -> this.condition.evaluateExecutionCondition(buildExtensionContext(methodName)));
 
 		Method method = ReflectionUtils.findMethod(getClass(), methodName);
 
@@ -97,18 +97,18 @@ class DisabledIfConditionTests {
 
 	@Test
 	void disabledWithCustomReason() {
-		assertResult(condition.evaluateExecutionCondition(buildExtensionContext("customReason")), true, is(equalTo("Because... 42!")));
+		assertResult(this.condition.evaluateExecutionCondition(buildExtensionContext("customReason")), true, is(equalTo("Because... 42!")));
 	}
 
 	@Test
 	void disabledWithDefaultReason() {
-		assertResult(condition.evaluateExecutionCondition(buildExtensionContext("defaultReason")), true,
+		assertResult(this.condition.evaluateExecutionCondition(buildExtensionContext("defaultReason")), true,
 			endsWith("defaultReason() is disabled because @DisabledIf(\"#{1 + 1 eq 2}\") evaluated to true"));
 	}
 
 	@Test
 	void notDisabledWithDefaultReason() {
-		assertResult(condition.evaluateExecutionCondition(buildExtensionContext("neverDisabledWithDefaultReason")), false, endsWith(
+		assertResult(this.condition.evaluateExecutionCondition(buildExtensionContext("neverDisabledWithDefaultReason")), false, endsWith(
 			"neverDisabledWithDefaultReason() is enabled because @DisabledIf(\"false\") did not evaluate to true"));
 	}
 
@@ -129,7 +129,7 @@ class DisabledIfConditionTests {
 
 	private void assertExpressionIsBlank(String methodName) {
 		IllegalStateException exception = assertThrows(IllegalStateException.class,
-			() -> condition.evaluateExecutionCondition(buildExtensionContext(methodName)));
+			() -> this.condition.evaluateExecutionCondition(buildExtensionContext(methodName)));
 
 		assertThat(exception.getMessage(), containsString("must not be blank"));
 	}

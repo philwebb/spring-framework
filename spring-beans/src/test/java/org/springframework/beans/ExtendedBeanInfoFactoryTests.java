@@ -40,7 +40,7 @@ public class ExtendedBeanInfoFactoryTests {
 			public void setFoo(String s) {
 			}
 		}
-		assertThat(factory.getBeanInfo(C.class), nullValue());
+		assertThat(this.factory.getBeanInfo(C.class), nullValue());
 	}
 
 	@Test
@@ -52,7 +52,7 @@ public class ExtendedBeanInfoFactoryTests {
 				return this;
 			}
 		}
-		assertThat(factory.getBeanInfo(C.class), notNullValue());
+		assertThat(this.factory.getBeanInfo(C.class), notNullValue());
 	}
 
 	@Test
@@ -64,7 +64,7 @@ public class ExtendedBeanInfoFactoryTests {
 				return this;
 			}
 		}
-		assertThat(factory.getBeanInfo(C.class), notNullValue());
+		assertThat(this.factory.getBeanInfo(C.class), notNullValue());
 	}
 
 	@Test
@@ -75,7 +75,7 @@ public class ExtendedBeanInfoFactoryTests {
 			void setBar(String s) {
 			}
 		}
-		assertThat(factory.getBeanInfo(C.class), nullValue());
+		assertThat(this.factory.getBeanInfo(C.class), nullValue());
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public class ExtendedBeanInfoFactoryTests {
 				return this;
 			}
 		}
-		assertThat(factory.getBeanInfo(C.class), nullValue());
+		assertThat(this.factory.getBeanInfo(C.class), nullValue());
 	}
 
 	@Test
@@ -99,7 +99,7 @@ public class ExtendedBeanInfoFactoryTests {
 				return this;
 			}
 		}
-		assertThat(factory.getBeanInfo(C.class), nullValue());
+		assertThat(this.factory.getBeanInfo(C.class), nullValue());
 	}
 
 }

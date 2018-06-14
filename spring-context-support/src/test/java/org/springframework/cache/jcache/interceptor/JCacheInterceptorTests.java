@@ -41,14 +41,14 @@ public class JCacheInterceptorTests extends AbstractJCacheTests {
 	@Test
 	public void severalCachesNotSupported() {
 		JCacheInterceptor interceptor = createInterceptor(createOperationSource(
-				cacheManager, new NamedCacheResolver(cacheManager, "default", "simpleCache"),
-				defaultExceptionCacheResolver, defaultKeyGenerator));
+				this.cacheManager, new NamedCacheResolver(this.cacheManager, "default", "simpleCache"),
+				this.defaultExceptionCacheResolver, this.defaultKeyGenerator));
 
-		AnnotatedJCacheableService service = new AnnotatedJCacheableService(cacheManager.getCache("default"));
+		AnnotatedJCacheableService service = new AnnotatedJCacheableService(this.cacheManager.getCache("default"));
 		Method m = ReflectionUtils.findMethod(AnnotatedJCacheableService.class, "cache", String.class);
 
 		try {
-			interceptor.execute(dummyInvoker, service, m, new Object[] {"myId"});
+			interceptor.execute(this.dummyInvoker, service, m, new Object[] {"myId"});
 		}
 		catch (IllegalStateException ex) {
 			assertTrue(ex.getMessage().contains("JSR-107 only supports a single cache"));
@@ -61,14 +61,14 @@ public class JCacheInterceptorTests extends AbstractJCacheTests {
 	@Test
 	public void noCacheCouldBeResolved() {
 		JCacheInterceptor interceptor = createInterceptor(createOperationSource(
-				cacheManager, new NamedCacheResolver(cacheManager), // Returns empty list
-				defaultExceptionCacheResolver, defaultKeyGenerator));
+				this.cacheManager, new NamedCacheResolver(this.cacheManager), // Returns empty list
+				this.defaultExceptionCacheResolver, this.defaultKeyGenerator));
 
-		AnnotatedJCacheableService service = new AnnotatedJCacheableService(cacheManager.getCache("default"));
+		AnnotatedJCacheableService service = new AnnotatedJCacheableService(this.cacheManager.getCache("default"));
 		Method m = ReflectionUtils.findMethod(AnnotatedJCacheableService.class, "cache", String.class);
 
 		try {
-			interceptor.execute(dummyInvoker, service, m, new Object[] {"myId"});
+			interceptor.execute(this.dummyInvoker, service, m, new Object[] {"myId"});
 		}
 		catch (IllegalStateException ex) {
 			assertTrue(ex.getMessage().contains("Cache could not have been resolved for"));
@@ -80,21 +80,21 @@ public class JCacheInterceptorTests extends AbstractJCacheTests {
 
 	@Test
 	public void cacheManagerMandatoryIfCacheResolverNotSet() {
-		thrown.expect(IllegalStateException.class);
-		createOperationSource(null, null, null, defaultKeyGenerator);
+		this.thrown.expect(IllegalStateException.class);
+		createOperationSource(null, null, null, this.defaultKeyGenerator);
 	}
 
 	@Test
 	public void cacheManagerOptionalIfCacheResolversSet() {
-		createOperationSource(null, defaultCacheResolver, defaultExceptionCacheResolver, defaultKeyGenerator);
+		createOperationSource(null, this.defaultCacheResolver, this.defaultExceptionCacheResolver, this.defaultKeyGenerator);
 	}
 
 	@Test
 	public void cacheResultReturnsProperType() throws Throwable {
 		JCacheInterceptor interceptor = createInterceptor(createOperationSource(
-				cacheManager, defaultCacheResolver, defaultExceptionCacheResolver, defaultKeyGenerator));
+				this.cacheManager, this.defaultCacheResolver, this.defaultExceptionCacheResolver, this.defaultKeyGenerator));
 
-		AnnotatedJCacheableService service = new AnnotatedJCacheableService(cacheManager.getCache("default"));
+		AnnotatedJCacheableService service = new AnnotatedJCacheableService(this.cacheManager.getCache("default"));
 		Method method = ReflectionUtils.findMethod(AnnotatedJCacheableService.class, "cache", String.class);
 
 		CacheOperationInvoker invoker = new DummyInvoker(0L);
@@ -137,7 +137,7 @@ public class JCacheInterceptorTests extends AbstractJCacheTests {
 
 		@Override
 		public Object invoke() throws ThrowableWrapper {
-			return result;
+			return this.result;
 		}
 	}
 

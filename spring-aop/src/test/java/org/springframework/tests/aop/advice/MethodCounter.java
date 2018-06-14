@@ -39,19 +39,19 @@ public class MethodCounter implements Serializable {
 	}
 
 	protected void count(String methodName) {
-		Integer i = map.get(methodName);
+		Integer i = this.map.get(methodName);
 		i = (i != null) ? new Integer(i.intValue() + 1) : new Integer(1);
-		map.put(methodName, i);
-		++allCount;
+		this.map.put(methodName, i);
+		++this.allCount;
 	}
 
 	public int getCalls(String methodName) {
-		Integer i = map.get(methodName);
+		Integer i = this.map.get(methodName);
 		return (i != null ? i.intValue() : 0);
 	}
 
 	public int getCalls() {
-		return allCount;
+		return this.allCount;
 	}
 
 	/**

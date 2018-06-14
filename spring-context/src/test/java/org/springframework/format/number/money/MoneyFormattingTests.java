@@ -57,7 +57,7 @@ public class MoneyFormattingTests {
 	public void testAmountAndUnit() {
 		MoneyHolder bean = new MoneyHolder();
 		DataBinder binder = new DataBinder(bean);
-		binder.setConversionService(conversionService);
+		binder.setConversionService(this.conversionService);
 
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("amount", "USD 10.50");
@@ -83,7 +83,7 @@ public class MoneyFormattingTests {
 	public void testAmountWithNumberFormat1() {
 		FormattedMoneyHolder1 bean = new FormattedMoneyHolder1();
 		DataBinder binder = new DataBinder(bean);
-		binder.setConversionService(conversionService);
+		binder.setConversionService(this.conversionService);
 
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("amount", "$10.50");
@@ -106,7 +106,7 @@ public class MoneyFormattingTests {
 	public void testAmountWithNumberFormat2() {
 		FormattedMoneyHolder2 bean = new FormattedMoneyHolder2();
 		DataBinder binder = new DataBinder(bean);
-		binder.setConversionService(conversionService);
+		binder.setConversionService(this.conversionService);
 
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("amount", "10.50");
@@ -121,7 +121,7 @@ public class MoneyFormattingTests {
 	public void testAmountWithNumberFormat3() {
 		FormattedMoneyHolder3 bean = new FormattedMoneyHolder3();
 		DataBinder binder = new DataBinder(bean);
-		binder.setConversionService(conversionService);
+		binder.setConversionService(this.conversionService);
 
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("amount", "10%");
@@ -136,7 +136,7 @@ public class MoneyFormattingTests {
 	public void testAmountWithNumberFormat4() {
 		FormattedMoneyHolder4 bean = new FormattedMoneyHolder4();
 		DataBinder binder = new DataBinder(bean);
-		binder.setConversionService(conversionService);
+		binder.setConversionService(this.conversionService);
 
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("amount", "010.500");
@@ -151,7 +151,7 @@ public class MoneyFormattingTests {
 	public void testAmountWithNumberFormat5() {
 		FormattedMoneyHolder5 bean = new FormattedMoneyHolder5();
 		DataBinder binder = new DataBinder(bean);
-		binder.setConversionService(conversionService);
+		binder.setConversionService(this.conversionService);
 
 		MutablePropertyValues propertyValues = new MutablePropertyValues();
 		propertyValues.add("amount", "USD 10.50");
@@ -178,7 +178,7 @@ public class MoneyFormattingTests {
 		private CurrencyUnit unit;
 
 		public MonetaryAmount getAmount() {
-			return amount;
+			return this.amount;
 		}
 
 		public void setAmount(MonetaryAmount amount) {
@@ -186,7 +186,7 @@ public class MoneyFormattingTests {
 		}
 
 		public CurrencyUnit getUnit() {
-			return unit;
+			return this.unit;
 		}
 
 		public void setUnit(CurrencyUnit unit) {
@@ -201,7 +201,7 @@ public class MoneyFormattingTests {
 		private MonetaryAmount amount;
 
 		public MonetaryAmount getAmount() {
-			return amount;
+			return this.amount;
 		}
 
 		public void setAmount(MonetaryAmount amount) {
@@ -216,7 +216,7 @@ public class MoneyFormattingTests {
 		private MonetaryAmount amount;
 
 		public MonetaryAmount getAmount() {
-			return amount;
+			return this.amount;
 		}
 
 		public void setAmount(MonetaryAmount amount) {
@@ -231,7 +231,7 @@ public class MoneyFormattingTests {
 		private MonetaryAmount amount;
 
 		public MonetaryAmount getAmount() {
-			return amount;
+			return this.amount;
 		}
 
 		public void setAmount(MonetaryAmount amount) {
@@ -246,7 +246,7 @@ public class MoneyFormattingTests {
 		private MonetaryAmount amount;
 
 		public MonetaryAmount getAmount() {
-			return amount;
+			return this.amount;
 		}
 
 		public void setAmount(MonetaryAmount amount) {
@@ -261,7 +261,7 @@ public class MoneyFormattingTests {
 		private MonetaryAmount amount;
 
 		public MonetaryAmount getAmount() {
-			return amount;
+			return this.amount;
 		}
 
 		public void setAmount(MonetaryAmount amount) {

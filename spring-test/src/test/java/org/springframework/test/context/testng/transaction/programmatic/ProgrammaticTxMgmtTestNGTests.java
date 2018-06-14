@@ -71,7 +71,7 @@ public class ProgrammaticTxMgmtTestNGTests extends AbstractTransactionalTestNGSp
 
 	@AfterTransaction
 	public void afterTransaction() {
-		switch (method) {
+		switch (this.method) {
 			case "commitTxAndStartNewTx":
 			case "commitTxButDoNotStartNewTx": {
 				assertUsers("Dogbert");
@@ -88,7 +88,7 @@ public class ProgrammaticTxMgmtTestNGTests extends AbstractTransactionalTestNGSp
 				break;
 			}
 			default: {
-				fail("missing 'after transaction' assertion for test method: " + method);
+				fail("missing 'after transaction' assertion for test method: " + this.method);
 			}
 		}
 	}
@@ -251,7 +251,7 @@ public class ProgrammaticTxMgmtTestNGTests extends AbstractTransactionalTestNGSp
 	private void assertUsers(String... users) {
 		List<String> expected = Arrays.asList(users);
 		Collections.sort(expected);
-		List<String> actual = jdbcTemplate.queryForList("select name from user", String.class);
+		List<String> actual = this.jdbcTemplate.queryForList("select name from user", String.class);
 		Collections.sort(actual);
 		assertEquals("Users in database;", expected, actual);
 	}

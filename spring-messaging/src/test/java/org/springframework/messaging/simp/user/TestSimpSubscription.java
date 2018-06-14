@@ -38,7 +38,7 @@ public class TestSimpSubscription implements SimpSubscription {
 
 	@Override
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class TestSimpSubscription implements SimpSubscription {
 
 	@Override
 	public String getDestination() {
-		return destination;
+		return this.destination;
 	}
 
 

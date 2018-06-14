@@ -56,14 +56,14 @@ public class MetaHierarchyLevelTwoTests extends MetaHierarchyLevelOneTests {
 
 	@Test
 	public void bar() {
-		assertEquals("Prod Bar", bar);
+		assertEquals("Prod Bar", this.bar);
 	}
 
 	@Test
 	public void contextHierarchy() {
-		assertNotNull("child ApplicationContext", context);
-		assertNotNull("parent ApplicationContext", context.getParent());
-		assertNull("grandparent ApplicationContext", context.getParent().getParent());
+		assertNotNull("child ApplicationContext", this.context);
+		assertNotNull("parent ApplicationContext", this.context.getParent());
+		assertNull("grandparent ApplicationContext", this.context.getParent().getParent());
 	}
 
 }

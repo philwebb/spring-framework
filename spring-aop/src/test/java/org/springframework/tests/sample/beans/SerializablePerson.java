@@ -35,7 +35,7 @@ public class SerializablePerson implements Person, Serializable {
 
 	@Override
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class SerializablePerson implements Person, Serializable {
 
 	@Override
 	public int getAge() {
-		return age;
+		return this.age;
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class SerializablePerson implements Person, Serializable {
 			return false;
 		}
 		SerializablePerson p = (SerializablePerson) other;
-		return p.age == age && ObjectUtils.nullSafeEquals(name, p.name);
+		return p.age == this.age && ObjectUtils.nullSafeEquals(this.name, p.name);
 	}
 
 	@Override

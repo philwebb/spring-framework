@@ -39,8 +39,8 @@ public class AnnotationConfigWebContextLoaderTests {
 
 	@Test
 	public void configMustNotContainLocations() throws Exception {
-		expectedException.expect(IllegalStateException.class);
-		expectedException.expectMessage(containsString("does not support resource locations"));
+		this.expectedException.expect(IllegalStateException.class);
+		this.expectedException.expectMessage(containsString("does not support resource locations"));
 
 		AnnotationConfigWebContextLoader loader = new AnnotationConfigWebContextLoader();
 		WebMergedContextConfiguration mergedConfig = new WebMergedContextConfiguration(getClass(),

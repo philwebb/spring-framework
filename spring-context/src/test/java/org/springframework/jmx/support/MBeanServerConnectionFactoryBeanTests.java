@@ -50,7 +50,7 @@ public class MBeanServerConnectionFactoryBeanTests extends AbstractMBeanServerTe
 	}
 
 	private JMXServiceURL getJMXServiceUrl() throws MalformedURLException {
-		return new JMXServiceURL(serviceUrl);
+		return new JMXServiceURL(this.serviceUrl);
 	}
 
 	private JMXConnectorServer getConnectorServer() throws Exception {
@@ -65,7 +65,7 @@ public class MBeanServerConnectionFactoryBeanTests extends AbstractMBeanServerTe
 
 		try {
 			MBeanServerConnectionFactoryBean bean = new MBeanServerConnectionFactoryBean();
-			bean.setServiceUrl(serviceUrl);
+			bean.setServiceUrl(this.serviceUrl);
 			bean.afterPropertiesSet();
 
 			try {
@@ -94,7 +94,7 @@ public class MBeanServerConnectionFactoryBeanTests extends AbstractMBeanServerTe
 	public void testTestWithLazyConnection() throws Exception {
 		Assume.group(TestGroup.JMXMP);
 		MBeanServerConnectionFactoryBean bean = new MBeanServerConnectionFactoryBean();
-		bean.setServiceUrl(serviceUrl);
+		bean.setServiceUrl(this.serviceUrl);
 		bean.setConnectOnStartup(false);
 		bean.afterPropertiesSet();
 
@@ -118,7 +118,7 @@ public class MBeanServerConnectionFactoryBeanTests extends AbstractMBeanServerTe
 	@Test
 	public void testWithLazyConnectionAndNoAccess() throws Exception {
 		MBeanServerConnectionFactoryBean bean = new MBeanServerConnectionFactoryBean();
-		bean.setServiceUrl(serviceUrl);
+		bean.setServiceUrl(this.serviceUrl);
 		bean.setConnectOnStartup(false);
 		bean.afterPropertiesSet();
 

@@ -326,7 +326,7 @@ public class PropertySourcesPlaceholderConfigurerTests {
 	@Test
 	public void getAppliedPropertySourcesTooEarly() throws Exception {
 		PropertySourcesPlaceholderConfigurer ppc = new PropertySourcesPlaceholderConfigurer();
-		thrown.expect(IllegalStateException.class);
+		this.thrown.expect(IllegalStateException.class);
 		ppc.getAppliedPropertySources();
 	}
 
@@ -393,7 +393,7 @@ public class PropertySourcesPlaceholderConfigurerTests {
 		private Optional<String> name;
 
 		public Optional<String> getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(Optional<String> name) {

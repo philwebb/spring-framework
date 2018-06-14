@@ -26,7 +26,7 @@ public class Flights {
 	private List<String> strings = new ArrayList<>();
 
 	public List<Flight> getFlights() {
-		return flights;
+		return this.flights;
 	}
 
 	public void setFlights(List<Flight> flights) {
@@ -34,7 +34,7 @@ public class Flights {
 	}
 
 	public List<String> getStrings() {
-		return strings;
+		return this.strings;
 	}
 
 	public void setStrings(List<String> strings) {

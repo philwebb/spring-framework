@@ -71,8 +71,8 @@ public class FreeMarkerViewTests {
 
 		fv.setUrl("anythingButNull");
 
-		exception.expect(ApplicationContextException.class);
-		exception.expectMessage(containsString("FreeMarkerConfig"));
+		this.exception.expect(ApplicationContextException.class);
+		this.exception.expectMessage(containsString("FreeMarkerConfig"));
 		fv.setApplicationContext(wac);
 	}
 
@@ -80,8 +80,8 @@ public class FreeMarkerViewTests {
 	public void noTemplateName() throws Exception {
 		FreeMarkerView fv = new FreeMarkerView();
 
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage(containsString("url"));
+		this.exception.expect(IllegalArgumentException.class);
+		this.exception.expectMessage(containsString("url"));
 		fv.afterPropertiesSet();
 	}
 

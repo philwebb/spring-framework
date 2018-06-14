@@ -439,7 +439,7 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 		}
 
 		public String getProperty1() {
-			return property1;
+			return this.property1;
 		}
 
 		public void setProperty1(String property1) {
@@ -447,7 +447,7 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 		}
 
 		public String getProperty2() {
-			return property2;
+			return this.property2;
 		}
 
 		public void setProperty2(String property2) {

@@ -35,7 +35,7 @@ public class Logic implements BeanNameAware {
 	}
 
 	public void output() {
-		System.out.println("Bean " + name);
+		System.out.println("Bean " + this.name);
 	}
 
 }

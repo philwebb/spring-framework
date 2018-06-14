@@ -33,11 +33,11 @@ public class ImplementsNoInterfaces {
 	}
 
 	public String getName() {
-		return testBean.getName();
+		return this.testBean.getName();
 	}
 
 	public void setName(String name) {
-		testBean.setName(name);
+		this.testBean.setName(name);
 	}
 
 }

@@ -32,23 +32,23 @@ public class Fruit {
 	}
 
 	public Color getColor() {
-		return color;
+		return this.color;
 	}
 
 	public Fruit(String... strings) {
-		stringscount = strings.length;
+		this.stringscount = strings.length;
 	}
 
 	public Fruit(int i, String... strings) {
-		stringscount = i + strings.length;
+		this.stringscount = i + strings.length;
 	}
 
 	public int stringscount() {
-		return stringscount;
+		return this.stringscount;
 	}
 
 	@Override
 	public String toString() {
-		return "A" + (colorName != null && colorName.startsWith("o") ? "n " : " ") + colorName + " " + name;
+		return "A" + (this.colorName != null && this.colorName.startsWith("o") ? "n " : " ") + this.colorName + " " + this.name;
 	}
 }

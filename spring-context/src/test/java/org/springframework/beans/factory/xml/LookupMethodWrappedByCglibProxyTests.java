@@ -50,7 +50,7 @@ public class LookupMethodWrappedByCglibProxyTests {
 
 	@Test
 	public void testAutoProxiedLookup() {
-		OverloadLookup olup = (OverloadLookup) applicationContext.getBean("autoProxiedOverload");
+		OverloadLookup olup = (OverloadLookup) this.applicationContext.getBean("autoProxiedOverload");
 		ITestBean jenny = olup.newTestBean();
 		assertEquals("Jenny", jenny.getName());
 		assertEquals("foo", olup.testMethod());
@@ -59,7 +59,7 @@ public class LookupMethodWrappedByCglibProxyTests {
 
 	@Test
 	public void testRegularlyProxiedLookup() {
-		OverloadLookup olup = (OverloadLookup) applicationContext.getBean("regularlyProxiedOverload");
+		OverloadLookup olup = (OverloadLookup) this.applicationContext.getBean("regularlyProxiedOverload");
 		ITestBean jenny = olup.newTestBean();
 		assertEquals("Jenny", jenny.getName());
 		assertEquals("foo", olup.testMethod());
@@ -77,7 +77,7 @@ public class LookupMethodWrappedByCglibProxyTests {
 	}
 
 	private DebugInterceptor getInterceptor() {
-		return (DebugInterceptor) applicationContext.getBean("interceptor");
+		return (DebugInterceptor) this.applicationContext.getBean("interceptor");
 	}
 
 }

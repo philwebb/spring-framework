@@ -69,41 +69,41 @@ public class Jaxb2RootElementHttpMessageConverterTests {
 
 	@Before
 	public void setUp() {
-		converter = new Jaxb2RootElementHttpMessageConverter();
-		rootElement = new RootElement();
+		this.converter = new Jaxb2RootElementHttpMessageConverter();
+		this.rootElement = new RootElement();
 		DefaultAopProxyFactory proxyFactory = new DefaultAopProxyFactory();
 		AdvisedSupport advisedSupport = new AdvisedSupport();
-		advisedSupport.setTarget(rootElement);
+		advisedSupport.setTarget(this.rootElement);
 		advisedSupport.setProxyTargetClass(true);
 		AopProxy proxy = proxyFactory.createAopProxy(advisedSupport);
-		rootElementCglib = (RootElement) proxy.getProxy();
+		this.rootElementCglib = (RootElement) proxy.getProxy();
 	}
 
 
 	@Test
 	public void canRead() throws Exception {
 		assertTrue("Converter does not support reading @XmlRootElement",
-				converter.canRead(RootElement.class, null));
+				this.converter.canRead(RootElement.class, null));
 		assertTrue("Converter does not support reading @XmlType",
-				converter.canRead(Type.class, null));
+				this.converter.canRead(Type.class, null));
 	}
 
 	@Test
 	public void canWrite() throws Exception {
 		assertTrue("Converter does not support writing @XmlRootElement",
-				converter.canWrite(RootElement.class, null));
+				this.converter.canWrite(RootElement.class, null));
 		assertTrue("Converter does not support writing @XmlRootElement subclass",
-				converter.canWrite(RootElementSubclass.class, null));
+				this.converter.canWrite(RootElementSubclass.class, null));
 		assertTrue("Converter does not support writing @XmlRootElement subclass",
-				converter.canWrite(rootElementCglib.getClass(), null));
-		assertFalse("Converter supports writing @XmlType", converter.canWrite(Type.class, null));
+				this.converter.canWrite(this.rootElementCglib.getClass(), null));
+		assertFalse("Converter supports writing @XmlType", this.converter.canWrite(Type.class, null));
 	}
 
 	@Test
 	public void readXmlRootElement() throws Exception {
 		byte[] body = "<rootElement><type s=\"Hello World\"/></rootElement>".getBytes("UTF-8");
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(body);
-		RootElement result = (RootElement) converter.read(RootElement.class, inputMessage);
+		RootElement result = (RootElement) this.converter.read(RootElement.class, inputMessage);
 		assertEquals("Invalid result", "Hello World", result.type.s);
 	}
 
@@ -111,7 +111,7 @@ public class Jaxb2RootElementHttpMessageConverterTests {
 	public void readXmlRootElementSubclass() throws Exception {
 		byte[] body = "<rootElement><type s=\"Hello World\"/></rootElement>".getBytes("UTF-8");
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(body);
-		RootElementSubclass result = (RootElementSubclass) converter.read(RootElementSubclass.class, inputMessage);
+		RootElementSubclass result = (RootElementSubclass) this.converter.read(RootElementSubclass.class, inputMessage);
 		assertEquals("Invalid result", "Hello World", result.getType().s);
 	}
 
@@ -119,7 +119,7 @@ public class Jaxb2RootElementHttpMessageConverterTests {
 	public void readXmlType() throws Exception {
 		byte[] body = "<foo s=\"Hello World\"/>".getBytes("UTF-8");
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(body);
-		Type result = (Type) converter.read(Type.class, inputMessage);
+		Type result = (Type) this.converter.read(Type.class, inputMessage);
 		assertEquals("Invalid result", "Hello World", result.s);
 	}
 
@@ -131,8 +131,8 @@ public class Jaxb2RootElementHttpMessageConverterTests {
 				"  <!ENTITY ext SYSTEM \"" + external.getURI() + "\" >]>" +
 				"  <rootElement><external>&ext;</external></rootElement>";
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(content.getBytes("UTF-8"));
-		converter.setSupportDtd(true);
-		RootElement rootElement = (RootElement) converter.read(RootElement.class, inputMessage);
+		this.converter.setSupportDtd(true);
+		RootElement rootElement = (RootElement) this.converter.read(RootElement.class, inputMessage);
 
 		assertEquals("", rootElement.external);
 	}
@@ -146,7 +146,7 @@ public class Jaxb2RootElementHttpMessageConverterTests {
 				"  <rootElement><external>&ext;</external></rootElement>";
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(content.getBytes("UTF-8"));
 		this.converter.setProcessExternalEntities(true);
-		RootElement rootElement = (RootElement) converter.read(RootElement.class, inputMessage);
+		RootElement rootElement = (RootElement) this.converter.read(RootElement.class, inputMessage);
 
 		assertEquals("Foo Bar", rootElement.external);
 	}
@@ -179,7 +179,7 @@ public class Jaxb2RootElementHttpMessageConverterTests {
 	@Test
 	public void writeXmlRootElement() throws Exception {
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
-		converter.write(rootElement, null, outputMessage);
+		this.converter.write(this.rootElement, null, outputMessage);
 		assertEquals("Invalid content-type", new MediaType("application", "xml"),
 				outputMessage.getHeaders().getContentType());
 		DifferenceEvaluator ev = chain(Default, downgradeDifferencesToEqual(XML_STANDALONE));
@@ -190,7 +190,7 @@ public class Jaxb2RootElementHttpMessageConverterTests {
 	@Test
 	public void writeXmlRootElementSubclass() throws Exception {
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
-		converter.write(rootElementCglib, null, outputMessage);
+		this.converter.write(this.rootElementCglib, null, outputMessage);
 		assertEquals("Invalid content-type", new MediaType("application", "xml"),
 				outputMessage.getHeaders().getContentType());
 		DifferenceEvaluator ev = chain(Default, downgradeDifferencesToEqual(XML_STANDALONE));
@@ -282,7 +282,7 @@ public class Jaxb2RootElementHttpMessageConverterTests {
 		}
 
 		public String getField1() {
-			return field1;
+			return this.field1;
 		}
 
 		public void setField1(String field1) {
@@ -290,7 +290,7 @@ public class Jaxb2RootElementHttpMessageConverterTests {
 		}
 
 		public String getField2() {
-			return field2;
+			return this.field2;
 		}
 
 		public void setField2(String field2) {
@@ -314,7 +314,7 @@ public class Jaxb2RootElementHttpMessageConverterTests {
 
 		@XmlJavaTypeAdapter(MyCustomElementAdapter.class)
 		public MyCustomElement getElement() {
-			return element;
+			return this.element;
 		}
 
 		public void setElement(MyCustomElement element) {

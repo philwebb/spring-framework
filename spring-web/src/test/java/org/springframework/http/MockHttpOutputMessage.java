@@ -49,18 +49,18 @@ public class MockHttpOutputMessage implements HttpOutputMessage {
 	 * the underlying headers, e.g. via a previously obtained instance.
 	 */
 	public HttpHeaders getWrittenHeaders() {
-		return writtenHeaders;
+		return this.writtenHeaders;
 	}
 
 	@Override
 	public OutputStream getBody() throws IOException {
 		writeHeaders();
-		return body;
+		return this.body;
 	}
 
 	public byte[] getBodyAsBytes() {
 		writeHeaders();
-		return body.toByteArray();
+		return this.body.toByteArray();
 	}
 
 	public String getBodyAsString(Charset charset) {

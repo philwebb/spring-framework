@@ -488,7 +488,7 @@ public class BridgeMethodResolverTests {
 		// @Transactional(readOnly = true)
 		@Override
 		public S loadFromParent() {
-			return otherObject;
+			return this.otherObject;
 		}
 	}
 
@@ -683,7 +683,7 @@ public class BridgeMethodResolverTests {
 
 		@Override
 		public int getPriority() {
-			return priority;
+			return this.priority;
 		}
 
 		/**

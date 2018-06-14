@@ -87,7 +87,7 @@ public class MessageSendingTemplateTests {
 
 	@Test
 	public void convertAndSend() {
-		this.template.convertAndSend("somewhere", "payload", headers, this.postProcessor);
+		this.template.convertAndSend("somewhere", "payload", this.headers, this.postProcessor);
 
 		assertEquals("somewhere", this.template.destination);
 		assertNotNull(this.template.message);
@@ -121,7 +121,7 @@ public class MessageSendingTemplateTests {
 
 	@Test
 	public void convertAndSendPayloadAndHeadersToDestination() {
-		this.template.convertAndSend("somewhere", "payload", headers);
+		this.template.convertAndSend("somewhere", "payload", this.headers);
 
 		assertEquals("somewhere", this.template.destination);
 		assertNotNull(this.template.message);

@@ -55,7 +55,7 @@ public abstract class AbstractExpressionTests {
 	 * @param expectedResultType the expected class of the evaluation result
 	 */
 	public void evaluate(String expression, Object expectedValue, Class<?> expectedResultType) {
-		Expression expr = parser.parseExpression(expression);
+		Expression expr = this.parser.parseExpression(expression);
 		if (expr == null) {
 			fail("Parser returned null for expression");
 		}
@@ -63,7 +63,7 @@ public abstract class AbstractExpressionTests {
 			SpelUtilities.printAbstractSyntaxTree(System.out, expr);
 		}
 
-		Object value = expr.getValue(context);
+		Object value = expr.getValue(this.context);
 
 		// Check the return value
 		if (value == null) {
@@ -87,7 +87,7 @@ public abstract class AbstractExpressionTests {
 	}
 
 	public void evaluateAndAskForReturnType(String expression, Object expectedValue, Class<?> expectedResultType) {
-		Expression expr = parser.parseExpression(expression);
+		Expression expr = this.parser.parseExpression(expression);
 		if (expr == null) {
 			fail("Parser returned null for expression");
 		}
@@ -95,7 +95,7 @@ public abstract class AbstractExpressionTests {
 			SpelUtilities.printAbstractSyntaxTree(System.out, expr);
 		}
 
-		Object value = expr.getValue(context, expectedResultType);
+		Object value = expr.getValue(this.context, expectedResultType);
 		if (value == null) {
 			if (expectedValue == null) {
 				return;  // no point doing other checks
@@ -120,14 +120,14 @@ public abstract class AbstractExpressionTests {
 	 * @param shouldBeWritable should the parsed expression be writable?
 	 */
 	public void evaluate(String expression, Object expectedValue, Class<?> expectedClassOfResult, boolean shouldBeWritable) {
-		Expression expr = parser.parseExpression(expression);
+		Expression expr = this.parser.parseExpression(expression);
 		if (expr == null) {
 			fail("Parser returned null for expression");
 		}
 		if (DEBUG) {
 			SpelUtilities.printAbstractSyntaxTree(System.out, expr);
 		}
-		Object value = expr.getValue(context);
+		Object value = expr.getValue(this.context);
 		if (value == null) {
 			if (expectedValue == null) {
 				return;  // no point doing other checks
@@ -145,7 +145,7 @@ public abstract class AbstractExpressionTests {
 		assertTrue("Type of the result was not as expected.  Expected '" + expectedClassOfResult +
 				"' but result was of type '" + resultType + "'", expectedClassOfResult.equals(resultType));
 
-		boolean isWritable = expr.isWritable(context);
+		boolean isWritable = expr.isWritable(this.context);
 		if (isWritable != shouldBeWritable) {
 			if (shouldBeWritable) {
 				fail("Expected the expression to be writable but it is not");
@@ -181,15 +181,15 @@ public abstract class AbstractExpressionTests {
 	protected void evaluateAndCheckError(String expression, Class<?> expectedReturnType, SpelMessage expectedMessage,
 			Object... otherProperties) {
 		try {
-			Expression expr = parser.parseExpression(expression);
+			Expression expr = this.parser.parseExpression(expression);
 			if (expr == null) {
 				fail("Parser returned null for expression");
 			}
 			if (expectedReturnType != null) {
-				expr.getValue(context, expectedReturnType);
+				expr.getValue(this.context, expectedReturnType);
 			}
 			else {
-				expr.getValue(context);
+				expr.getValue(this.context);
 			}
 			fail("Should have failed with message " + expectedMessage);
 		}
@@ -245,7 +245,7 @@ public abstract class AbstractExpressionTests {
 	 */
 	protected void parseAndCheckError(String expression, SpelMessage expectedMessage, Object... otherProperties) {
 		try {
-			Expression expr = parser.parseExpression(expression);
+			Expression expr = this.parser.parseExpression(expression);
 			SpelUtilities.printAbstractSyntaxTree(System.out, expr);
 			fail("Parsing should have failed!");
 		}

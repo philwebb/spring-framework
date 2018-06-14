@@ -101,7 +101,7 @@ public class PropertyComparatorTests {
 		private String lastName;
 
 		public String getNickName() {
-			return nickName;
+			return this.nickName;
 		}
 
 		public void setNickName(String nickName) {
@@ -109,7 +109,7 @@ public class PropertyComparatorTests {
 		}
 
 		public String getFirstName() {
-			return firstName;
+			return this.firstName;
 		}
 
 		public void setFirstName(String firstName) {
@@ -117,7 +117,7 @@ public class PropertyComparatorTests {
 		}
 
 		public String getLastName() {
-			return lastName;
+			return this.lastName;
 		}
 
 		public void setLastName(String lastName) {

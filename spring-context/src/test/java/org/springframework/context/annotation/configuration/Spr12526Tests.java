@@ -83,7 +83,7 @@ public class Spr12526Tests {
 		private boolean condition;
 
 		public boolean check() {
-			return condition;
+			return this.condition;
 		}
 
 		public void setCondition(boolean value) {
@@ -105,7 +105,7 @@ public class Spr12526Tests {
 
 		@Override
 		public void doStuff() {
-			if (dependency == null) {
+			if (this.dependency == null) {
 				throw new IllegalStateException("FirstService: dependency is null");
 			}
 		}
@@ -117,7 +117,7 @@ public class Spr12526Tests {
 
 
 		public DependencyOne getDependency() {
-			return dependency;
+			return this.dependency;
 		}
 	}
 
@@ -128,7 +128,7 @@ public class Spr12526Tests {
 
 		@Override
 		public void doStuff() {
-			if (dependency == null) {
+			if (this.dependency == null) {
 				throw new IllegalStateException("SecondService: dependency is null");
 			}
 		}
@@ -140,7 +140,7 @@ public class Spr12526Tests {
 
 
 		public DependencyTwo getDependency() {
-			return dependency;
+			return this.dependency;
 		}
 	}
 

@@ -44,7 +44,7 @@ public class ResizableByteArrayOutputStreamTests {
 	@Test
 	public void resize() throws Exception {
 		assertEquals(INITIAL_CAPACITY, this.baos.capacity());
-		this.baos.write(helloBytes);
+		this.baos.write(this.helloBytes);
 		int size = 64;
 		this.baos.resize(size);
 		assertEquals(size, this.baos.capacity());
@@ -63,7 +63,7 @@ public class ResizableByteArrayOutputStreamTests {
 	@Test
 	public void grow() throws Exception {
 		assertEquals(INITIAL_CAPACITY, this.baos.capacity());
-		this.baos.write(helloBytes);
+		this.baos.write(this.helloBytes);
 		this.baos.grow(1000);
 		assertEquals(this.helloBytes.length + 1000, this.baos.capacity());
 		assertByteArrayEqualsString(this.baos);
@@ -71,19 +71,19 @@ public class ResizableByteArrayOutputStreamTests {
 
 	@Test
 	public void write() throws Exception{
-		this.baos.write(helloBytes);
+		this.baos.write(this.helloBytes);
 		assertByteArrayEqualsString(this.baos);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void failResize() throws Exception{
-		this.baos.write(helloBytes);
+		this.baos.write(this.helloBytes);
 		this.baos.resize(5);
 	}
 
 
 	private void assertByteArrayEqualsString(ResizableByteArrayOutputStream actual) {
-		assertArrayEquals(helloBytes, actual.toByteArray());
+		assertArrayEquals(this.helloBytes, actual.toByteArray());
 	}
 
 }

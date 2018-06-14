@@ -119,11 +119,11 @@ public class JndiDestinationResolverTests {
 
 		@Override
 		protected <T> T lookup(String jndiName, Class<T> requiredType) throws NamingException {
-			if (called) {
+			if (this.called) {
 				fail("Must not be delegating to lookup(..), must be resolving from cache.");
 			}
 			assertEquals(DESTINATION_NAME, jndiName);
-			called = true;
+			this.called = true;
 			return requiredType.cast(DESTINATION);
 		}
 	}

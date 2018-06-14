@@ -38,7 +38,7 @@ public class ErrorHandlerIntegrationTests extends AbstractHttpHandlerIntegration
 
 	@Override
 	protected HttpHandler createHttpHandler() {
-		return handler;
+		return this.handler;
 	}
 
 	@Test
@@ -46,7 +46,7 @@ public class ErrorHandlerIntegrationTests extends AbstractHttpHandlerIntegration
 		RestTemplate restTemplate = new RestTemplate();
 		restTemplate.setErrorHandler(NO_OP_ERROR_HANDLER);
 
-		URI url = new URI("http://localhost:" + port + "/response-body-error");
+		URI url = new URI("http://localhost:" + this.port + "/response-body-error");
 		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
@@ -57,7 +57,7 @@ public class ErrorHandlerIntegrationTests extends AbstractHttpHandlerIntegration
 		RestTemplate restTemplate = new RestTemplate();
 		restTemplate.setErrorHandler(NO_OP_ERROR_HANDLER);
 
-		URI url = new URI("http://localhost:" + port + "/handling-error");
+		URI url = new URI("http://localhost:" + this.port + "/handling-error");
 		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
@@ -69,7 +69,7 @@ public class ErrorHandlerIntegrationTests extends AbstractHttpHandlerIntegration
 		RestTemplate restTemplate = new RestTemplate();
 		restTemplate.setErrorHandler(NO_OP_ERROR_HANDLER);
 
-		URI url = new URI("http://localhost:" + port + "//");
+		URI url = new URI("http://localhost:" + this.port + "//");
 		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
 		assertEquals(HttpStatus.OK, response.getStatusCode());

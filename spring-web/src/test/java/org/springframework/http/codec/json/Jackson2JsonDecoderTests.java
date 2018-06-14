@@ -263,11 +263,11 @@ public class Jackson2JsonDecoderTests extends AbstractDataBufferAllocatingTestCa
 		}
 
 		public String getProperty1() {
-			return property1;
+			return this.property1;
 		}
 
 		public String getProperty2() {
-			return property2;
+			return this.property2;
 		}
 
 	}
@@ -276,7 +276,7 @@ public class Jackson2JsonDecoderTests extends AbstractDataBufferAllocatingTestCa
 	public static class TestObject {
 		private int test;
 		public int getTest() {
-			return test;
+			return this.test;
 		}
 		public void setTest(int test) {
 			this.test = test;

@@ -45,7 +45,7 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 
 	@Test
 	public void testUtilities() throws ParseException {
-		SpelExpression expr = (SpelExpression)parser.parseExpression("3+4+5+6+7-2");
+		SpelExpression expr = (SpelExpression)this.parser.parseExpression("3+4+5+6+7-2");
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		PrintStream ps = new PrintStream(baos);
 		SpelUtilities.printAbstractSyntaxTree(ps, expr);
@@ -506,47 +506,47 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 		String xyZ = "xyZ";
 
 		public String getProperty() {
-			return property;
+			return this.property;
 		}
 
 		public void setProperty(String value) {
-			property = value;
+			this.property = value;
 		}
 
 		public void setProperty2(String value) {
-			property2 = value;
+			this.property2 = value;
 		}
 
 		public String getProperty3() {
-			return property3;
+			return this.property3;
 		}
 
 		public boolean isProperty4() {
-			return property4;
+			return this.property4;
 		}
 
 		public String getiD() {
-			return iD;
+			return this.iD;
 		}
 
 		public String getId() {
-			return id;
+			return this.id;
 		}
 
 		public String getID() {
-			return ID;
+			return this.ID;
 		}
 
 		public String getXY() {
-			return xY;
+			return this.xY;
 		}
 
 		public String getXyZ() {
-			return xyZ;
+			return this.xyZ;
 		}
 
 		public String getpEBS() {
-			return pEBS;
+			return this.pEBS;
 		}
 
 		public void setpEBS(String pEBS) {

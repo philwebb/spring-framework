@@ -246,7 +246,7 @@ public class BeanWrapperTests extends AbstractPropertyAccessorTests {
 			if (this.name == null) {
 				throw new RuntimeException("name property must be set");
 			}
-			return name;
+			return this.name;
 		}
 	}
 

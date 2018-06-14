@@ -86,34 +86,34 @@ public class Jsr250LifecycleTests {
 
 	@PostConstruct
 	public void beforeAllTests() {
-		logger.info("beforeAllTests()");
+		this.logger.info("beforeAllTests()");
 	}
 
 	@PreDestroy
 	public void afterTestSuite() {
-		logger.info("afterTestSuite()");
+		this.logger.info("afterTestSuite()");
 	}
 
 	@Before
 	public void setUp() throws Exception {
-		logger.info("setUp()");
+		this.logger.info("setUp()");
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		logger.info("tearDown()");
+		this.logger.info("tearDown()");
 	}
 
 	@Test
 	public void test1() {
-		logger.info("test1()");
-		assertNotNull(lifecycleBean);
+		this.logger.info("test1()");
+		assertNotNull(this.lifecycleBean);
 	}
 
 	@Test
 	public void test2() {
-		logger.info("test2()");
-		assertNotNull(lifecycleBean);
+		this.logger.info("test2()");
+		assertNotNull(this.lifecycleBean);
 	}
 
 }

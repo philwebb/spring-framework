@@ -295,7 +295,7 @@ class FailingBeforeAndAfterMethodsSpringExtensionTests {
 		@Override
 		public void executionFinished(TestIdentifier testIdentifier, TestExecutionResult testExecutionResult) {
 			super.executionFinished(testIdentifier, testExecutionResult);
-			testExecutionResult.getThrowable().ifPresent(exceptions::add);
+			testExecutionResult.getThrowable().ifPresent(this.exceptions::add);
 		}
 	}
 

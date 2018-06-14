@@ -45,93 +45,93 @@ public class DefaultLobHandlerTests {
 
 	private LobHandler lobHandler = new DefaultLobHandler();
 
-	private LobCreator lobCreator = lobHandler.getLobCreator();
+	private LobCreator lobCreator = this.lobHandler.getLobCreator();
 
 
 	@Test
 	public void testGetBlobAsBytes() throws SQLException {
-		lobHandler.getBlobAsBytes(rs, 1);
-		verify(rs).getBytes(1);
+		this.lobHandler.getBlobAsBytes(this.rs, 1);
+		verify(this.rs).getBytes(1);
 	}
 
 	@Test
 	public void testGetBlobAsBinaryStream() throws SQLException {
-		lobHandler.getBlobAsBinaryStream(rs, 1);
-		verify(rs).getBinaryStream(1);
+		this.lobHandler.getBlobAsBinaryStream(this.rs, 1);
+		verify(this.rs).getBinaryStream(1);
 	}
 
 	@Test
 	public void testGetClobAsString() throws SQLException {
-		lobHandler.getClobAsString(rs, 1);
-		verify(rs).getString(1);
+		this.lobHandler.getClobAsString(this.rs, 1);
+		verify(this.rs).getString(1);
 	}
 
 	@Test
 	public void testGetClobAsAsciiStream() throws SQLException {
-		lobHandler.getClobAsAsciiStream(rs, 1);
-		verify(rs).getAsciiStream(1);
+		this.lobHandler.getClobAsAsciiStream(this.rs, 1);
+		verify(this.rs).getAsciiStream(1);
 	}
 
 	@Test
 	public void testGetClobAsCharacterStream() throws SQLException {
-		lobHandler.getClobAsCharacterStream(rs, 1);
-		verify(rs).getCharacterStream(1);
+		this.lobHandler.getClobAsCharacterStream(this.rs, 1);
+		verify(this.rs).getCharacterStream(1);
 	}
 
 	@Test
 	public void testSetBlobAsBytes() throws SQLException {
 		byte[] content = "testContent".getBytes();
-		lobCreator.setBlobAsBytes(ps, 1, content);
-		verify(ps).setBytes(1, content);
+		this.lobCreator.setBlobAsBytes(this.ps, 1, content);
+		verify(this.ps).setBytes(1, content);
 	}
 
 	@Test
 	public void testSetBlobAsBinaryStream() throws SQLException, IOException {
 		InputStream bis = new ByteArrayInputStream("testContent".getBytes());
-		lobCreator.setBlobAsBinaryStream(ps, 1, bis, 11);
-		verify(ps).setBinaryStream(1, bis, 11);
+		this.lobCreator.setBlobAsBinaryStream(this.ps, 1, bis, 11);
+		verify(this.ps).setBinaryStream(1, bis, 11);
 	}
 
 	@Test
 	public void testSetBlobAsBinaryStreamWithoutLength() throws SQLException, IOException {
 		InputStream bis = new ByteArrayInputStream("testContent".getBytes());
-		lobCreator.setBlobAsBinaryStream(ps, 1, bis, -1);
-		verify(ps).setBinaryStream(1, bis);
+		this.lobCreator.setBlobAsBinaryStream(this.ps, 1, bis, -1);
+		verify(this.ps).setBinaryStream(1, bis);
 	}
 
 	@Test
 	public void testSetClobAsString() throws SQLException, IOException {
 		String content = "testContent";
-		lobCreator.setClobAsString(ps, 1, content);
-		verify(ps).setString(1, content);
+		this.lobCreator.setClobAsString(this.ps, 1, content);
+		verify(this.ps).setString(1, content);
 	}
 
 	@Test
 	public void testSetClobAsAsciiStream() throws SQLException, IOException {
 		InputStream bis = new ByteArrayInputStream("testContent".getBytes());
-		lobCreator.setClobAsAsciiStream(ps, 1, bis, 11);
-		verify(ps).setAsciiStream(1, bis, 11);
+		this.lobCreator.setClobAsAsciiStream(this.ps, 1, bis, 11);
+		verify(this.ps).setAsciiStream(1, bis, 11);
 	}
 
 	@Test
 	public void testSetClobAsAsciiStreamWithoutLength() throws SQLException, IOException {
 		InputStream bis = new ByteArrayInputStream("testContent".getBytes());
-		lobCreator.setClobAsAsciiStream(ps, 1, bis, -1);
-		verify(ps).setAsciiStream(1, bis);
+		this.lobCreator.setClobAsAsciiStream(this.ps, 1, bis, -1);
+		verify(this.ps).setAsciiStream(1, bis);
 	}
 
 	@Test
 	public void testSetClobAsCharacterStream() throws SQLException, IOException {
 		Reader str = new StringReader("testContent");
-		lobCreator.setClobAsCharacterStream(ps, 1, str, 11);
-		verify(ps).setCharacterStream(1, str, 11);
+		this.lobCreator.setClobAsCharacterStream(this.ps, 1, str, 11);
+		verify(this.ps).setCharacterStream(1, str, 11);
 	}
 
 	@Test
 	public void testSetClobAsCharacterStreamWithoutLength() throws SQLException, IOException {
 		Reader str = new StringReader("testContent");
-		lobCreator.setClobAsCharacterStream(ps, 1, str, -1);
-		verify(ps).setCharacterStream(1, str);
+		this.lobCreator.setClobAsCharacterStream(this.ps, 1, str, -1);
+		verify(this.ps).setCharacterStream(1, str);
 	}
 
 }

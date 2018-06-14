@@ -62,7 +62,7 @@ public class TxNamespaceHandlerTests {
 	@Test
 	public void invokeTransactional() {
 		ITestBean testBean = getTestBean();
-		CallCountingTransactionManager ptm = (CallCountingTransactionManager) context.getBean("transactionManager");
+		CallCountingTransactionManager ptm = (CallCountingTransactionManager) this.context.getBean("transactionManager");
 
 		// try with transactional
 		assertEquals("Should not have any started transactions", 0, ptm.begun);
@@ -88,17 +88,17 @@ public class TxNamespaceHandlerTests {
 
 	@Test
 	public void rollbackRules() {
-		TransactionInterceptor txInterceptor = (TransactionInterceptor) context.getBean("txRollbackAdvice");
+		TransactionInterceptor txInterceptor = (TransactionInterceptor) this.context.getBean("txRollbackAdvice");
 		TransactionAttributeSource txAttrSource = txInterceptor.getTransactionAttributeSource();
-		TransactionAttribute txAttr = txAttrSource.getTransactionAttribute(getAgeMethod,ITestBean.class);
+		TransactionAttribute txAttr = txAttrSource.getTransactionAttribute(this.getAgeMethod,ITestBean.class);
 		assertTrue("should be configured to rollback on Exception",txAttr.rollbackOn(new Exception()));
 
-		txAttr = txAttrSource.getTransactionAttribute(setAgeMethod, ITestBean.class);
+		txAttr = txAttrSource.getTransactionAttribute(this.setAgeMethod, ITestBean.class);
 		assertFalse("should not rollback on RuntimeException",txAttr.rollbackOn(new RuntimeException()));
 	}
 
 	private ITestBean getTestBean() {
-		return (ITestBean) context.getBean("testBean");
+		return (ITestBean) this.context.getBean("testBean");
 	}
 
 }

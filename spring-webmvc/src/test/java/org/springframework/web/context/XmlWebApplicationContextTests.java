@@ -50,12 +50,12 @@ public class XmlWebApplicationContextTests extends AbstractApplicationContextTes
 	@Override
 	protected ConfigurableApplicationContext createContext() throws Exception {
 		InitAndIB.constructed = false;
-		root = new XmlWebApplicationContext();
-		root.getEnvironment().addActiveProfile("rootProfile1");
+		this.root = new XmlWebApplicationContext();
+		this.root.getEnvironment().addActiveProfile("rootProfile1");
 		MockServletContext sc = new MockServletContext("");
-		root.setServletContext(sc);
-		root.setConfigLocations(new String[] {"/org/springframework/web/context/WEB-INF/applicationContext.xml"});
-		root.addBeanFactoryPostProcessor(new BeanFactoryPostProcessor() {
+		this.root.setServletContext(sc);
+		this.root.setConfigLocations(new String[] {"/org/springframework/web/context/WEB-INF/applicationContext.xml"});
+		this.root.addBeanFactoryPostProcessor(new BeanFactoryPostProcessor() {
 			@Override
 			public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 				beanFactory.addBeanPostProcessor(new BeanPostProcessor() {
@@ -73,10 +73,10 @@ public class XmlWebApplicationContextTests extends AbstractApplicationContextTes
 				});
 			}
 		});
-		root.refresh();
+		this.root.refresh();
 		XmlWebApplicationContext wac = new XmlWebApplicationContext();
 		wac.getEnvironment().addActiveProfile("wacProfile1");
-		wac.setParent(root);
+		wac.setParent(this.root);
 		wac.setServletContext(sc);
 		wac.setNamespace("test-servlet");
 		wac.setConfigLocations(new String[] {"/org/springframework/web/context/WEB-INF/test-servlet.xml"});
@@ -116,7 +116,7 @@ public class XmlWebApplicationContextTests extends AbstractApplicationContextTes
 	public void withoutMessageSource() throws Exception {
 		MockServletContext sc = new MockServletContext("");
 		XmlWebApplicationContext wac = new XmlWebApplicationContext();
-		wac.setParent(root);
+		wac.setParent(this.root);
 		wac.setServletContext(sc);
 		wac.setNamespace("testNamespace");
 		wac.setConfigLocations(new String[] {"/org/springframework/web/context/WEB-INF/test-servlet.xml"});

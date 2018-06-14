@@ -92,44 +92,44 @@ public abstract class AbstractRowMapperTests {
 
 		@SuppressWarnings("unchecked")
 		public Mock(MockType type) throws Exception {
-			connection = mock(Connection.class);
-			statement = mock(Statement.class);
-			resultSet = mock(ResultSet.class);
-			resultSetMetaData = mock(ResultSetMetaData.class);
+			this.connection = mock(Connection.class);
+			this.statement = mock(Statement.class);
+			this.resultSet = mock(ResultSet.class);
+			this.resultSetMetaData = mock(ResultSetMetaData.class);
 
-			given(connection.createStatement()).willReturn(statement);
-			given(statement.executeQuery(anyString())).willReturn(resultSet);
-			given(resultSet.getMetaData()).willReturn(resultSetMetaData);
+			given(this.connection.createStatement()).willReturn(this.statement);
+			given(this.statement.executeQuery(anyString())).willReturn(this.resultSet);
+			given(this.resultSet.getMetaData()).willReturn(this.resultSetMetaData);
 
-			given(resultSet.next()).willReturn(true, false);
-			given(resultSet.getString(1)).willReturn("Bubba");
-			given(resultSet.getLong(2)).willReturn(22L);
-			given(resultSet.getTimestamp(3)).willReturn(new Timestamp(1221222L));
-			given(resultSet.getObject(anyInt(), any(Class.class))).willThrow(new SQLFeatureNotSupportedException());
-			given(resultSet.getDate(3)).willReturn(new java.sql.Date(1221222L));
-			given(resultSet.getBigDecimal(4)).willReturn(new BigDecimal("1234.56"));
-			given(resultSet.wasNull()).willReturn(type == MockType.TWO);
+			given(this.resultSet.next()).willReturn(true, false);
+			given(this.resultSet.getString(1)).willReturn("Bubba");
+			given(this.resultSet.getLong(2)).willReturn(22L);
+			given(this.resultSet.getTimestamp(3)).willReturn(new Timestamp(1221222L));
+			given(this.resultSet.getObject(anyInt(), any(Class.class))).willThrow(new SQLFeatureNotSupportedException());
+			given(this.resultSet.getDate(3)).willReturn(new java.sql.Date(1221222L));
+			given(this.resultSet.getBigDecimal(4)).willReturn(new BigDecimal("1234.56"));
+			given(this.resultSet.wasNull()).willReturn(type == MockType.TWO);
 
-			given(resultSetMetaData.getColumnCount()).willReturn(4);
-			given(resultSetMetaData.getColumnLabel(1)).willReturn(
+			given(this.resultSetMetaData.getColumnCount()).willReturn(4);
+			given(this.resultSetMetaData.getColumnLabel(1)).willReturn(
 					type == MockType.THREE ? "Last Name" : "name");
-			given(resultSetMetaData.getColumnLabel(2)).willReturn("age");
-			given(resultSetMetaData.getColumnLabel(3)).willReturn("birth_date");
-			given(resultSetMetaData.getColumnLabel(4)).willReturn("balance");
+			given(this.resultSetMetaData.getColumnLabel(2)).willReturn("age");
+			given(this.resultSetMetaData.getColumnLabel(3)).willReturn("birth_date");
+			given(this.resultSetMetaData.getColumnLabel(4)).willReturn("balance");
 
-			jdbcTemplate = new JdbcTemplate();
-			jdbcTemplate.setDataSource(new SingleConnectionDataSource(connection, false));
-			jdbcTemplate.setExceptionTranslator(new SQLStateSQLExceptionTranslator());
-			jdbcTemplate.afterPropertiesSet();
+			this.jdbcTemplate = new JdbcTemplate();
+			this.jdbcTemplate.setDataSource(new SingleConnectionDataSource(this.connection, false));
+			this.jdbcTemplate.setExceptionTranslator(new SQLStateSQLExceptionTranslator());
+			this.jdbcTemplate.afterPropertiesSet();
 		}
 
 		public JdbcTemplate getJdbcTemplate() {
-			return jdbcTemplate;
+			return this.jdbcTemplate;
 		}
 
 		public void verifyClosed() throws Exception {
-			verify(resultSet).close();
-			verify(statement).close();
+			verify(this.resultSet).close();
+			verify(this.statement).close();
 		}
 	}
 

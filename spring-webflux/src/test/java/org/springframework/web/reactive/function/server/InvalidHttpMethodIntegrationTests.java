@@ -42,7 +42,7 @@ public class InvalidHttpMethodIntegrationTests extends AbstractRouterFunctionInt
 
 		Request request = new Request.Builder()
 				.method("BAZ", null)
-				.url("http://localhost:" + port + "/")
+				.url("http://localhost:" + this.port + "/")
 				.build();
 
 		try (Response response = client.newCall(request).execute()) {

@@ -624,33 +624,33 @@ public class RequestMappingMessageConversionIntegrationTests extends AbstractReq
 
 		@PostMapping("/publisher")
 		public Publisher<Void> createWithPublisher(@RequestBody Publisher<Person> publisher) {
-			return Flux.from(publisher).doOnNext(persons::add).then();
+			return Flux.from(publisher).doOnNext(this.persons::add).then();
 		}
 
 		@PostMapping("/mono")
 		public Mono<Void> createWithMono(@RequestBody Mono<Person> mono) {
-			return mono.doOnNext(persons::add).then();
+			return mono.doOnNext(this.persons::add).then();
 		}
 
 		@PostMapping("/single")
 		public Completable createWithSingle(@RequestBody Single<Person> single) {
-			return single.map(persons::add).toCompletable();
+			return single.map(this.persons::add).toCompletable();
 		}
 
 		@PostMapping("/rxjava2-single")
 		@SuppressWarnings("deprecation")
 		public io.reactivex.Completable createWithRxJava2Single(@RequestBody io.reactivex.Single<Person> single) {
-			return single.map(persons::add).toCompletable();
+			return single.map(this.persons::add).toCompletable();
 		}
 
 		@PostMapping("/flux")
 		public Mono<Void> createWithFlux(@RequestBody Flux<Person> flux) {
-			return flux.doOnNext(persons::add).then();
+			return flux.doOnNext(this.persons::add).then();
 		}
 
 		@PostMapping("/observable")
 		public Observable<Void> createWithObservable(@RequestBody Observable<Person> observable) {
-			return observable.toList().doOnNext(persons::addAll).flatMap(document -> Observable.empty());
+			return observable.toList().doOnNext(this.persons::addAll).flatMap(document -> Observable.empty());
 		}
 
 		@PostMapping("/rxjava2-observable")
@@ -658,13 +658,13 @@ public class RequestMappingMessageConversionIntegrationTests extends AbstractReq
 		public io.reactivex.Completable createWithRxJava2Observable(
 				@RequestBody io.reactivex.Observable<Person> observable) {
 
-			return observable.toList().doOnSuccess(persons::addAll).toCompletable();
+			return observable.toList().doOnSuccess(this.persons::addAll).toCompletable();
 		}
 
 		@PostMapping("/flowable")
 		@SuppressWarnings("deprecation")
 		public io.reactivex.Completable createWithFlowable(@RequestBody Flowable<Person> flowable) {
-			return flowable.toList().doOnSuccess(persons::addAll).toCompletable();
+			return flowable.toList().doOnSuccess(this.persons::addAll).toCompletable();
 		}
 	}
 
@@ -683,7 +683,7 @@ public class RequestMappingMessageConversionIntegrationTests extends AbstractReq
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String name) {
@@ -710,7 +710,7 @@ public class RequestMappingMessageConversionIntegrationTests extends AbstractReq
 		@Override
 		public String toString() {
 			return "Person{" +
-					"name='" + name + '\'' +
+					"name='" + this.name + '\'' +
 					'}';
 		}
 	}

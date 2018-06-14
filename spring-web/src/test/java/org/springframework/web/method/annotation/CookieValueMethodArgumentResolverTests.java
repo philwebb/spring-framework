@@ -56,28 +56,28 @@ public class CookieValueMethodArgumentResolverTests {
 
 	@Before
 	public void setUp() throws Exception {
-		resolver = new TestCookieValueMethodArgumentResolver();
+		this.resolver = new TestCookieValueMethodArgumentResolver();
 
 		Method method = getClass().getMethod("params", Cookie.class, String.class, String.class);
-		paramNamedCookie = new SynthesizingMethodParameter(method, 0);
-		paramNamedDefaultValueString = new SynthesizingMethodParameter(method, 1);
-		paramString = new SynthesizingMethodParameter(method, 2);
+		this.paramNamedCookie = new SynthesizingMethodParameter(method, 0);
+		this.paramNamedDefaultValueString = new SynthesizingMethodParameter(method, 1);
+		this.paramString = new SynthesizingMethodParameter(method, 2);
 
-		request = new MockHttpServletRequest();
-		webRequest = new ServletWebRequest(request, new MockHttpServletResponse());
+		this.request = new MockHttpServletRequest();
+		this.webRequest = new ServletWebRequest(this.request, new MockHttpServletResponse());
 	}
 
 
 	@Test
 	public void supportsParameter() {
-		assertTrue("Cookie parameter not supported", resolver.supportsParameter(paramNamedCookie));
-		assertTrue("Cookie string parameter not supported", resolver.supportsParameter(paramNamedDefaultValueString));
-		assertFalse("non-@CookieValue parameter supported", resolver.supportsParameter(paramString));
+		assertTrue("Cookie parameter not supported", this.resolver.supportsParameter(this.paramNamedCookie));
+		assertTrue("Cookie string parameter not supported", this.resolver.supportsParameter(this.paramNamedDefaultValueString));
+		assertFalse("non-@CookieValue parameter supported", this.resolver.supportsParameter(this.paramString));
 	}
 
 	@Test
 	public void resolveCookieDefaultValue() throws Exception {
-		Object result = resolver.resolveArgument(paramNamedDefaultValueString, null, webRequest, null);
+		Object result = this.resolver.resolveArgument(this.paramNamedDefaultValueString, null, this.webRequest, null);
 
 		assertTrue(result instanceof String);
 		assertEquals("Invalid result", "bar", result);
@@ -85,7 +85,7 @@ public class CookieValueMethodArgumentResolverTests {
 
 	@Test(expected = ServletRequestBindingException.class)
 	public void notFound() throws Exception {
-		resolver.resolveArgument(paramNamedCookie, null, webRequest, null);
+		this.resolver.resolveArgument(this.paramNamedCookie, null, this.webRequest, null);
 		fail("Expected exception");
 	}
 

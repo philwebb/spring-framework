@@ -41,7 +41,7 @@ public class LifecycleBean {
 
 	@PostConstruct
 	public void init() {
-		initialized = true;
+		this.initialized = true;
 	}
 
 	public boolean isInitialized() {

@@ -25,7 +25,7 @@ public class ExtendedPerson extends ConcretePerson {
 
 
 	public Object getSomeField() {
-		return someField;
+		return this.someField;
 	}
 
 	public void setSomeField(Object someField) {

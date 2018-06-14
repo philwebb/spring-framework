@@ -59,17 +59,17 @@ public class WriteOnlyHandlerIntegrationTests extends AbstractHttpHandlerIntegra
 
 		this.body = randomBytes();
 		RequestEntity<byte[]> request = RequestEntity.post(
-				new URI("http://localhost:" + port)).body(
+				new URI("http://localhost:" + this.port)).body(
 						"".getBytes(StandardCharsets.UTF_8));
 		ResponseEntity<byte[]> response = restTemplate.exchange(request, byte[].class);
 
-		assertArrayEquals(body, response.getBody());
+		assertArrayEquals(this.body, response.getBody());
 	}
 
 
 	private byte[] randomBytes() {
 		byte[] buffer = new byte[REQUEST_SIZE];
-		rnd.nextBytes(buffer);
+		this.rnd.nextBytes(buffer);
 		return buffer;
 	}
 
@@ -78,8 +78,8 @@ public class WriteOnlyHandlerIntegrationTests extends AbstractHttpHandlerIntegra
 
 		@Override
 		public Mono<Void> handle(ServerHttpRequest request, ServerHttpResponse response) {
-			DataBuffer buffer = response.bufferFactory().allocateBuffer(body.length);
-			buffer.write(body);
+			DataBuffer buffer = response.bufferFactory().allocateBuffer(WriteOnlyHandlerIntegrationTests.this.body.length);
+			buffer.write(WriteOnlyHandlerIntegrationTests.this.body);
 			return response.writeAndFlushWith(Flux.just(Flux.just(buffer)));
 		}
 	}

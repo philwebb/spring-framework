@@ -48,7 +48,7 @@ public class RedirectAttributesModelMapTests {
 	public void setup() {
 		this.conversionService = new DefaultFormattingConversionService();
 		DataBinder dataBinder = new DataBinder(null);
-		dataBinder.setConversionService(conversionService);
+		dataBinder.setConversionService(this.conversionService);
 
 		this.redirectAttributes = new RedirectAttributesModelMap(dataBinder);
 	}

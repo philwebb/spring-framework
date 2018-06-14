@@ -30,9 +30,9 @@ public class AroundAdviceCircularTests extends AroundAdviceBindingTests {
 
 	@Test
 	public void testBothBeansAreProxies() {
-		Object tb = ctx.getBean("testBean");
+		Object tb = this.ctx.getBean("testBean");
 		assertTrue(AopUtils.isAopProxy(tb));
-		Object tb2 = ctx.getBean("testBean2");
+		Object tb2 = this.ctx.getBean("testBean2");
 		assertTrue(AopUtils.isAopProxy(tb2));
 	}
 

@@ -279,7 +279,7 @@ public class DelegatingIntroductionInterceptorTests {
 
 		@Override
 		public long getTimeStamp() {
-			return ts;
+			return this.ts;
 		}
 	}
 
@@ -294,7 +294,7 @@ public class DelegatingIntroductionInterceptorTests {
 
 		@Override
 		public long getTimeStamp() {
-			return t;
+			return this.t;
 		}
 	}
 

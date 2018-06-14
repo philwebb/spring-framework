@@ -48,7 +48,7 @@ public class PersistenceExceptionTranslationAdvisorTests {
 
 	protected RepositoryInterface createProxy(RepositoryInterfaceImpl target) {
 		MapPersistenceExceptionTranslator mpet = new MapPersistenceExceptionTranslator();
-		mpet.addTranslation(persistenceException1, new InvalidDataAccessApiUsageException("", persistenceException1));
+		mpet.addTranslation(this.persistenceException1, new InvalidDataAccessApiUsageException("", this.persistenceException1));
 		ProxyFactory pf = new ProxyFactory(target);
 		pf.addInterface(RepositoryInterface.class);
 		addPersistenceExceptionTranslation(pf, mpet);
@@ -67,20 +67,20 @@ public class PersistenceExceptionTranslationAdvisorTests {
 		ri.noThrowsClause();
 		ri.throwsPersistenceException();
 
-		target.setBehavior(persistenceException1);
+		target.setBehavior(this.persistenceException1);
 		try {
 			ri.noThrowsClause();
 			fail();
 		}
 		catch (RuntimeException ex) {
-			assertSame(persistenceException1, ex);
+			assertSame(this.persistenceException1, ex);
 		}
 		try {
 			ri.throwsPersistenceException();
 			fail();
 		}
 		catch (RuntimeException ex) {
-			assertSame(persistenceException1, ex);
+			assertSame(this.persistenceException1, ex);
 		}
 	}
 
@@ -92,20 +92,20 @@ public class PersistenceExceptionTranslationAdvisorTests {
 		ri.noThrowsClause();
 		ri.throwsPersistenceException();
 
-		target.setBehavior(doNotTranslate);
+		target.setBehavior(this.doNotTranslate);
 		try {
 			ri.noThrowsClause();
 			fail();
 		}
 		catch (RuntimeException ex) {
-			assertSame(doNotTranslate, ex);
+			assertSame(this.doNotTranslate, ex);
 		}
 		try {
 			ri.throwsPersistenceException();
 			fail();
 		}
 		catch (RuntimeException ex) {
-			assertSame(doNotTranslate, ex);
+			assertSame(this.doNotTranslate, ex);
 		}
 	}
 
@@ -137,14 +137,14 @@ public class PersistenceExceptionTranslationAdvisorTests {
 	private void doTestTranslationNeededForTheseExceptions(RepositoryInterfaceImpl target) {
 		RepositoryInterface ri = createProxy(target);
 
-		target.setBehavior(persistenceException1);
+		target.setBehavior(this.persistenceException1);
 		try {
 			ri.noThrowsClause();
 			fail();
 		}
 		catch (DataAccessException ex) {
 			// Expected
-			assertSame(persistenceException1, ex.getCause());
+			assertSame(this.persistenceException1, ex.getCause());
 		}
 		catch (PersistenceException ex) {
 			fail("Should have been translated");
@@ -155,7 +155,7 @@ public class PersistenceExceptionTranslationAdvisorTests {
 			fail();
 		}
 		catch (PersistenceException ex) {
-			assertSame(persistenceException1, ex);
+			assertSame(this.persistenceException1, ex);
 		}
 	}
 
@@ -177,15 +177,15 @@ public class PersistenceExceptionTranslationAdvisorTests {
 
 		@Override
 		public void noThrowsClause() {
-			if (runtimeException != null) {
-				throw runtimeException;
+			if (this.runtimeException != null) {
+				throw this.runtimeException;
 			}
 		}
 
 		@Override
 		public void throwsPersistenceException() throws PersistenceException {
-			if (runtimeException != null) {
-				throw runtimeException;
+			if (this.runtimeException != null) {
+				throw this.runtimeException;
 			}
 		}
 	}

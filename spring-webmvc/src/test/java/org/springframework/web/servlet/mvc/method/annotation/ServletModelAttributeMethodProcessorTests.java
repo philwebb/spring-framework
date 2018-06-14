@@ -63,21 +63,21 @@ public class ServletModelAttributeMethodProcessorTests {
 
 	@Before
 	public void setup() throws Exception {
-		processor = new ServletModelAttributeMethodProcessor(false);
+		this.processor = new ServletModelAttributeMethodProcessor(false);
 
 		ConfigurableWebBindingInitializer initializer = new ConfigurableWebBindingInitializer();
 		initializer.setConversionService(new DefaultConversionService());
-		binderFactory = new ServletRequestDataBinderFactory(null, initializer);
+		this.binderFactory = new ServletRequestDataBinderFactory(null, initializer);
 
-		mavContainer = new ModelAndViewContainer();
-		request = new MockHttpServletRequest();
-		webRequest = new ServletWebRequest(request);
+		this.mavContainer = new ModelAndViewContainer();
+		this.request = new MockHttpServletRequest();
+		this.webRequest = new ServletWebRequest(this.request);
 
 		Method method = getClass().getDeclaredMethod("modelAttribute",
 				TestBean.class, TestBeanWithoutStringConstructor.class, Optional.class);
-		testBeanModelAttr = new MethodParameter(method, 0);
-		testBeanWithoutStringConstructorModelAttr = new MethodParameter(method, 1);
-		testBeanWithOptionalModelAttr = new MethodParameter(method, 2);
+		this.testBeanModelAttr = new MethodParameter(method, 0);
+		this.testBeanWithoutStringConstructorModelAttr = new MethodParameter(method, 1);
+		this.testBeanWithOptionalModelAttr = new MethodParameter(method, 2);
 	}
 
 
@@ -85,11 +85,11 @@ public class ServletModelAttributeMethodProcessorTests {
 	public void createAttributeUriTemplateVar() throws Exception {
 		Map<String, String> uriTemplateVars = new HashMap<>();
 		uriTemplateVars.put("testBean1", "Patty");
-		request.setAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, uriTemplateVars);
+		this.request.setAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, uriTemplateVars);
 
 		// Type conversion from "Patty" to TestBean via TestBean(String) constructor
-		TestBean testBean = (TestBean) processor.resolveArgument(
-				testBeanModelAttr, mavContainer, webRequest, binderFactory);
+		TestBean testBean = (TestBean) this.processor.resolveArgument(
+				this.testBeanModelAttr, this.mavContainer, this.webRequest, this.binderFactory);
 
 		assertEquals("Patty", testBean.getName());
 	}
@@ -98,10 +98,10 @@ public class ServletModelAttributeMethodProcessorTests {
 	public void createAttributeUriTemplateVarCannotConvert() throws Exception {
 		Map<String, String> uriTemplateVars = new HashMap<>();
 		uriTemplateVars.put("testBean2", "Patty");
-		request.setAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, uriTemplateVars);
+		this.request.setAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, uriTemplateVars);
 
-		TestBeanWithoutStringConstructor testBean = (TestBeanWithoutStringConstructor) processor.resolveArgument(
-				testBeanWithoutStringConstructorModelAttr, mavContainer, webRequest, binderFactory);
+		TestBeanWithoutStringConstructor testBean = (TestBeanWithoutStringConstructor) this.processor.resolveArgument(
+				this.testBeanWithoutStringConstructorModelAttr, this.mavContainer, this.webRequest, this.binderFactory);
 
 		assertNotNull(testBean);
 	}
@@ -111,32 +111,32 @@ public class ServletModelAttributeMethodProcessorTests {
 	public void createAttributeUriTemplateVarWithOptional() throws Exception {
 		Map<String, String> uriTemplateVars = new HashMap<>();
 		uriTemplateVars.put("testBean3", "Patty");
-		request.setAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, uriTemplateVars);
+		this.request.setAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, uriTemplateVars);
 
 		// Type conversion from "Patty" to TestBean via TestBean(String) constructor
-		Optional<TestBean> testBean = (Optional<TestBean>) processor.resolveArgument(
-				testBeanWithOptionalModelAttr, mavContainer, webRequest, binderFactory);
+		Optional<TestBean> testBean = (Optional<TestBean>) this.processor.resolveArgument(
+				this.testBeanWithOptionalModelAttr, this.mavContainer, this.webRequest, this.binderFactory);
 
 		assertEquals("Patty", testBean.get().getName());
 	}
 
 	@Test
 	public void createAttributeRequestParameter() throws Exception {
-		request.addParameter("testBean1", "Patty");
+		this.request.addParameter("testBean1", "Patty");
 
 		// Type conversion from "Patty" to TestBean via TestBean(String) constructor
-		TestBean testBean = (TestBean) processor.resolveArgument(
-				testBeanModelAttr, mavContainer, webRequest, binderFactory);
+		TestBean testBean = (TestBean) this.processor.resolveArgument(
+				this.testBeanModelAttr, this.mavContainer, this.webRequest, this.binderFactory);
 
 		assertEquals("Patty", testBean.getName());
 	}
 
 	@Test
 	public void createAttributeRequestParameterCannotConvert() throws Exception {
-		request.addParameter("testBean2", "Patty");
+		this.request.addParameter("testBean2", "Patty");
 
-		TestBeanWithoutStringConstructor testBean = (TestBeanWithoutStringConstructor) processor.resolveArgument(
-				testBeanWithoutStringConstructorModelAttr, mavContainer, webRequest, binderFactory);
+		TestBeanWithoutStringConstructor testBean = (TestBeanWithoutStringConstructor) this.processor.resolveArgument(
+				this.testBeanWithoutStringConstructorModelAttr, this.mavContainer, this.webRequest, this.binderFactory);
 
 		assertNotNull(testBean);
 	}
@@ -144,10 +144,10 @@ public class ServletModelAttributeMethodProcessorTests {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void createAttributeRequestParameterWithOptional() throws Exception {
-		request.addParameter("testBean3", "Patty");
+		this.request.addParameter("testBean3", "Patty");
 
-		Optional<TestBean> testBean = (Optional<TestBean>) processor.resolveArgument(
-				testBeanWithOptionalModelAttr, mavContainer, webRequest, binderFactory);
+		Optional<TestBean> testBean = (Optional<TestBean>) this.processor.resolveArgument(
+				this.testBeanWithOptionalModelAttr, this.mavContainer, this.webRequest, this.binderFactory);
 
 		assertEquals("Patty", testBean.get().getName());
 	}
@@ -155,40 +155,40 @@ public class ServletModelAttributeMethodProcessorTests {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void attributesAsNullValues() throws Exception {
-		request.addParameter("name", "Patty");
+		this.request.addParameter("name", "Patty");
 
-		mavContainer.getModel().put("testBean1", null);
-		mavContainer.getModel().put("testBean2", null);
-		mavContainer.getModel().put("testBean3", null);
+		this.mavContainer.getModel().put("testBean1", null);
+		this.mavContainer.getModel().put("testBean2", null);
+		this.mavContainer.getModel().put("testBean3", null);
 
-		assertNull(processor.resolveArgument(
-				testBeanModelAttr, mavContainer, webRequest, binderFactory));
+		assertNull(this.processor.resolveArgument(
+				this.testBeanModelAttr, this.mavContainer, this.webRequest, this.binderFactory));
 
-		assertNull(processor.resolveArgument(
-				testBeanWithoutStringConstructorModelAttr, mavContainer, webRequest, binderFactory));
+		assertNull(this.processor.resolveArgument(
+				this.testBeanWithoutStringConstructorModelAttr, this.mavContainer, this.webRequest, this.binderFactory));
 
-		Optional<TestBean> testBean = (Optional<TestBean>) processor.resolveArgument(
-				testBeanWithOptionalModelAttr, mavContainer, webRequest, binderFactory);
+		Optional<TestBean> testBean = (Optional<TestBean>) this.processor.resolveArgument(
+				this.testBeanWithOptionalModelAttr, this.mavContainer, this.webRequest, this.binderFactory);
 		assertFalse(testBean.isPresent());
 	}
 
 	@Test
 	@SuppressWarnings("unchecked")
 	public void attributesAsOptionalEmpty() throws Exception {
-		request.addParameter("name", "Patty");
+		this.request.addParameter("name", "Patty");
 
-		mavContainer.getModel().put("testBean1", Optional.empty());
-		mavContainer.getModel().put("testBean2", Optional.empty());
-		mavContainer.getModel().put("testBean3", Optional.empty());
+		this.mavContainer.getModel().put("testBean1", Optional.empty());
+		this.mavContainer.getModel().put("testBean2", Optional.empty());
+		this.mavContainer.getModel().put("testBean3", Optional.empty());
 
-		assertNull(processor.resolveArgument(
-				testBeanModelAttr, mavContainer, webRequest, binderFactory));
+		assertNull(this.processor.resolveArgument(
+				this.testBeanModelAttr, this.mavContainer, this.webRequest, this.binderFactory));
 
-		assertNull(processor.resolveArgument(
-				testBeanWithoutStringConstructorModelAttr, mavContainer, webRequest, binderFactory));
+		assertNull(this.processor.resolveArgument(
+				this.testBeanWithoutStringConstructorModelAttr, this.mavContainer, this.webRequest, this.binderFactory));
 
-		Optional<TestBean> testBean =(Optional<TestBean>) processor.resolveArgument(
-				testBeanWithOptionalModelAttr, mavContainer, webRequest, binderFactory);
+		Optional<TestBean> testBean =(Optional<TestBean>) this.processor.resolveArgument(
+				this.testBeanWithOptionalModelAttr, this.mavContainer, this.webRequest, this.binderFactory);
 		assertFalse(testBean.isPresent());
 	}
 

@@ -42,8 +42,8 @@ public class Assembler implements TestIF {
 	}
 
 	public void output() {
-		System.out.println("Bean " + name);
-		l.output();
+		System.out.println("Bean " + this.name);
+		this.l.output();
 	}
 
 }

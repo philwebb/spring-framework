@@ -55,17 +55,17 @@ public class ExpressionValueMethodArgumentResolverTests {
 	public void setUp() throws Exception {
 		GenericWebApplicationContext context = new GenericWebApplicationContext();
 		context.refresh();
-		resolver = new ExpressionValueMethodArgumentResolver(context.getBeanFactory());
+		this.resolver = new ExpressionValueMethodArgumentResolver(context.getBeanFactory());
 
 		Method method = getClass().getMethod("params", int.class, String.class, String.class);
-		paramSystemProperty = new MethodParameter(method, 0);
-		paramContextPath = new MethodParameter(method, 1);
-		paramNotSupported = new MethodParameter(method, 2);
+		this.paramSystemProperty = new MethodParameter(method, 0);
+		this.paramContextPath = new MethodParameter(method, 1);
+		this.paramNotSupported = new MethodParameter(method, 2);
 
-		webRequest = new ServletWebRequest(new MockHttpServletRequest(), new MockHttpServletResponse());
+		this.webRequest = new ServletWebRequest(new MockHttpServletRequest(), new MockHttpServletResponse());
 
 		// Expose request to the current thread (for SpEL expressions)
-		RequestContextHolder.setRequestAttributes(webRequest);
+		RequestContextHolder.setRequestAttributes(this.webRequest);
 	}
 
 	@After
@@ -75,15 +75,15 @@ public class ExpressionValueMethodArgumentResolverTests {
 
 	@Test
 	public void supportsParameter() throws Exception {
-		assertTrue(resolver.supportsParameter(paramSystemProperty));
-		assertTrue(resolver.supportsParameter(paramContextPath));
-		assertFalse(resolver.supportsParameter(paramNotSupported));
+		assertTrue(this.resolver.supportsParameter(this.paramSystemProperty));
+		assertTrue(this.resolver.supportsParameter(this.paramContextPath));
+		assertFalse(this.resolver.supportsParameter(this.paramNotSupported));
 	}
 
 	@Test
 	public void resolveSystemProperty() throws Exception {
 		System.setProperty("systemProperty", "22");
-		Object value = resolver.resolveArgument(paramSystemProperty, null, webRequest, null);
+		Object value = this.resolver.resolveArgument(this.paramSystemProperty, null, this.webRequest, null);
 		System.clearProperty("systemProperty");
 
 		assertEquals("22", value);
@@ -91,8 +91,8 @@ public class ExpressionValueMethodArgumentResolverTests {
 
 	@Test
 	public void resolveContextPath() throws Exception {
-		webRequest.getNativeRequest(MockHttpServletRequest.class).setContextPath("/contextPath");
-		Object value = resolver.resolveArgument(paramContextPath, null, webRequest, null);
+		this.webRequest.getNativeRequest(MockHttpServletRequest.class).setContextPath("/contextPath");
+		Object value = this.resolver.resolveArgument(this.paramContextPath, null, this.webRequest, null);
 
 		assertEquals("/contextPath", value);
 	}

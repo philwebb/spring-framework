@@ -52,12 +52,12 @@ public class ContextCacheTests {
 
 	@Before
 	public void initialCacheState() {
-		assertContextCacheStatistics(contextCache, "initial state", 0, 0, 0);
+		assertContextCacheStatistics(this.contextCache, "initial state", 0, 0, 0);
 		assertParentContextCount(0);
 	}
 
 	private void assertParentContextCount(int expected) {
-		assertEquals("parent context count", expected, contextCache.getParentContextCount());
+		assertEquals("parent context count", expected, this.contextCache.getParentContextCount());
 	}
 
 	private MergedContextConfiguration getMergedContextConfiguration(TestContext testContext) {
@@ -65,13 +65,13 @@ public class ContextCacheTests {
 	}
 
 	private ApplicationContext loadContext(Class<?> testClass) {
-		TestContext testContext = TestContextTestUtils.buildTestContext(testClass, contextCache);
+		TestContext testContext = TestContextTestUtils.buildTestContext(testClass, this.contextCache);
 		return testContext.getApplicationContext();
 	}
 
 	private void loadCtxAndAssertStats(Class<?> testClass, int expectedSize, int expectedHitCount, int expectedMissCount) {
 		assertNotNull(loadContext(testClass));
-		assertContextCacheStatistics(contextCache, testClass.getName(), expectedSize, expectedHitCount,
+		assertContextCacheStatistics(this.contextCache, testClass.getName(), expectedSize, expectedHitCount,
 			expectedMissCount);
 	}
 
@@ -130,23 +130,23 @@ public class ContextCacheTests {
 
 		// Load Level 3-A
 		TestContext testContext3a = TestContextTestUtils.buildTestContext(
-			ClassHierarchyContextHierarchyLevel3aTestCase.class, contextCache);
+			ClassHierarchyContextHierarchyLevel3aTestCase.class, this.contextCache);
 		testContext3a.getApplicationContext();
-		assertContextCacheStatistics(contextCache, "level 3, A", 3, 0, 3);
+		assertContextCacheStatistics(this.contextCache, "level 3, A", 3, 0, 3);
 		assertParentContextCount(2);
 
 		// Load Level 3-B
 		TestContext testContext3b = TestContextTestUtils.buildTestContext(
-			ClassHierarchyContextHierarchyLevel3bTestCase.class, contextCache);
+			ClassHierarchyContextHierarchyLevel3bTestCase.class, this.contextCache);
 		testContext3b.getApplicationContext();
-		assertContextCacheStatistics(contextCache, "level 3, A and B", 4, 1, 4);
+		assertContextCacheStatistics(this.contextCache, "level 3, A and B", 4, 1, 4);
 		assertParentContextCount(2);
 
 		// Remove Level 1
 		// Should also remove Levels 2, 3-A, and 3-B, leaving nothing.
-		contextCache.remove(getMergedContextConfiguration(testContext3a).getParent().getParent(),
+		this.contextCache.remove(getMergedContextConfiguration(testContext3a).getParent().getParent(),
 			HierarchyMode.CURRENT_LEVEL);
-		assertContextCacheStatistics(contextCache, "removed level 1", 0, 1, 4);
+		assertContextCacheStatistics(this.contextCache, "removed level 1", 0, 1, 4);
 		assertParentContextCount(0);
 	}
 
@@ -155,23 +155,23 @@ public class ContextCacheTests {
 
 		// Load Level 3-A
 		TestContext testContext3a = TestContextTestUtils.buildTestContext(
-			ClassHierarchyContextHierarchyLevel3aTestCase.class, contextCache);
+			ClassHierarchyContextHierarchyLevel3aTestCase.class, this.contextCache);
 		testContext3a.getApplicationContext();
-		assertContextCacheStatistics(contextCache, "level 3, A", 3, 0, 3);
+		assertContextCacheStatistics(this.contextCache, "level 3, A", 3, 0, 3);
 		assertParentContextCount(2);
 
 		// Load Level 3-B
 		TestContext testContext3b = TestContextTestUtils.buildTestContext(
-			ClassHierarchyContextHierarchyLevel3bTestCase.class, contextCache);
+			ClassHierarchyContextHierarchyLevel3bTestCase.class, this.contextCache);
 		testContext3b.getApplicationContext();
-		assertContextCacheStatistics(contextCache, "level 3, A and B", 4, 1, 4);
+		assertContextCacheStatistics(this.contextCache, "level 3, A and B", 4, 1, 4);
 		assertParentContextCount(2);
 
 		// Remove Level 1
 		// Should also remove Levels 2, 3-A, and 3-B, leaving nothing.
-		contextCache.remove(getMergedContextConfiguration(testContext3a).getParent().getParent(),
+		this.contextCache.remove(getMergedContextConfiguration(testContext3a).getParent().getParent(),
 			HierarchyMode.EXHAUSTIVE);
-		assertContextCacheStatistics(contextCache, "removed level 1", 0, 1, 4);
+		assertContextCacheStatistics(this.contextCache, "removed level 1", 0, 1, 4);
 		assertParentContextCount(0);
 	}
 
@@ -180,24 +180,24 @@ public class ContextCacheTests {
 
 		// Load Level 3-A
 		TestContext testContext3a = TestContextTestUtils.buildTestContext(
-			ClassHierarchyContextHierarchyLevel3aTestCase.class, contextCache);
+			ClassHierarchyContextHierarchyLevel3aTestCase.class, this.contextCache);
 		testContext3a.getApplicationContext();
-		assertContextCacheStatistics(contextCache, "level 3, A", 3, 0, 3);
+		assertContextCacheStatistics(this.contextCache, "level 3, A", 3, 0, 3);
 		assertParentContextCount(2);
 
 		// Load Level 3-B
 		TestContext testContext3b = TestContextTestUtils.buildTestContext(
-			ClassHierarchyContextHierarchyLevel3bTestCase.class, contextCache);
+			ClassHierarchyContextHierarchyLevel3bTestCase.class, this.contextCache);
 		testContext3b.getApplicationContext();
-		assertContextCacheStatistics(contextCache, "level 3, A and B", 4, 1, 4);
+		assertContextCacheStatistics(this.contextCache, "level 3, A and B", 4, 1, 4);
 		assertParentContextCount(2);
 
 		// Remove Level 2
 		// Should also remove Levels 3-A and 3-B, leaving only Level 1 as a context in the
 		// cache but also removing the Level 1 hierarchy since all children have been
 		// removed.
-		contextCache.remove(getMergedContextConfiguration(testContext3a).getParent(), HierarchyMode.CURRENT_LEVEL);
-		assertContextCacheStatistics(contextCache, "removed level 2", 1, 1, 4);
+		this.contextCache.remove(getMergedContextConfiguration(testContext3a).getParent(), HierarchyMode.CURRENT_LEVEL);
+		assertContextCacheStatistics(this.contextCache, "removed level 2", 1, 1, 4);
 		assertParentContextCount(0);
 	}
 
@@ -206,22 +206,22 @@ public class ContextCacheTests {
 
 		// Load Level 3-A
 		TestContext testContext3a = TestContextTestUtils.buildTestContext(
-			ClassHierarchyContextHierarchyLevel3aTestCase.class, contextCache);
+			ClassHierarchyContextHierarchyLevel3aTestCase.class, this.contextCache);
 		testContext3a.getApplicationContext();
-		assertContextCacheStatistics(contextCache, "level 3, A", 3, 0, 3);
+		assertContextCacheStatistics(this.contextCache, "level 3, A", 3, 0, 3);
 		assertParentContextCount(2);
 
 		// Load Level 3-B
 		TestContext testContext3b = TestContextTestUtils.buildTestContext(
-			ClassHierarchyContextHierarchyLevel3bTestCase.class, contextCache);
+			ClassHierarchyContextHierarchyLevel3bTestCase.class, this.contextCache);
 		testContext3b.getApplicationContext();
-		assertContextCacheStatistics(contextCache, "level 3, A and B", 4, 1, 4);
+		assertContextCacheStatistics(this.contextCache, "level 3, A and B", 4, 1, 4);
 		assertParentContextCount(2);
 
 		// Remove Level 2
 		// Should wipe the cache
-		contextCache.remove(getMergedContextConfiguration(testContext3a).getParent(), HierarchyMode.EXHAUSTIVE);
-		assertContextCacheStatistics(contextCache, "removed level 2", 0, 1, 4);
+		this.contextCache.remove(getMergedContextConfiguration(testContext3a).getParent(), HierarchyMode.EXHAUSTIVE);
+		assertContextCacheStatistics(this.contextCache, "removed level 2", 0, 1, 4);
 		assertParentContextCount(0);
 	}
 
@@ -230,27 +230,27 @@ public class ContextCacheTests {
 
 		// Load Level 3-A
 		TestContext testContext3a = TestContextTestUtils.buildTestContext(
-			ClassHierarchyContextHierarchyLevel3aTestCase.class, contextCache);
+			ClassHierarchyContextHierarchyLevel3aTestCase.class, this.contextCache);
 		testContext3a.getApplicationContext();
-		assertContextCacheStatistics(contextCache, "level 3, A", 3, 0, 3);
+		assertContextCacheStatistics(this.contextCache, "level 3, A", 3, 0, 3);
 		assertParentContextCount(2);
 
 		// Load Level 3-B
 		TestContext testContext3b = TestContextTestUtils.buildTestContext(
-			ClassHierarchyContextHierarchyLevel3bTestCase.class, contextCache);
+			ClassHierarchyContextHierarchyLevel3bTestCase.class, this.contextCache);
 		testContext3b.getApplicationContext();
-		assertContextCacheStatistics(contextCache, "level 3, A and B", 4, 1, 4);
+		assertContextCacheStatistics(this.contextCache, "level 3, A and B", 4, 1, 4);
 		assertParentContextCount(2);
 
 		// Remove Level 3-A
-		contextCache.remove(getMergedContextConfiguration(testContext3a), HierarchyMode.CURRENT_LEVEL);
-		assertContextCacheStatistics(contextCache, "removed level 3-A", 3, 1, 4);
+		this.contextCache.remove(getMergedContextConfiguration(testContext3a), HierarchyMode.CURRENT_LEVEL);
+		assertContextCacheStatistics(this.contextCache, "removed level 3-A", 3, 1, 4);
 		assertParentContextCount(2);
 
 		// Remove Level 2
 		// Should also remove Level 3-B, leaving only Level 1.
-		contextCache.remove(getMergedContextConfiguration(testContext3b).getParent(), HierarchyMode.CURRENT_LEVEL);
-		assertContextCacheStatistics(contextCache, "removed level 2", 1, 1, 4);
+		this.contextCache.remove(getMergedContextConfiguration(testContext3b).getParent(), HierarchyMode.CURRENT_LEVEL);
+		assertContextCacheStatistics(this.contextCache, "removed level 2", 1, 1, 4);
 		assertParentContextCount(0);
 	}
 
@@ -259,29 +259,29 @@ public class ContextCacheTests {
 
 		// Load Level 3-A
 		TestContext testContext3a = TestContextTestUtils.buildTestContext(
-			ClassHierarchyContextHierarchyLevel3aTestCase.class, contextCache);
+			ClassHierarchyContextHierarchyLevel3aTestCase.class, this.contextCache);
 		testContext3a.getApplicationContext();
-		assertContextCacheStatistics(contextCache, "level 3, A", 3, 0, 3);
+		assertContextCacheStatistics(this.contextCache, "level 3, A", 3, 0, 3);
 		assertParentContextCount(2);
 
 		// Load Level 3-B
 		TestContext testContext3b = TestContextTestUtils.buildTestContext(
-			ClassHierarchyContextHierarchyLevel3bTestCase.class, contextCache);
+			ClassHierarchyContextHierarchyLevel3bTestCase.class, this.contextCache);
 		testContext3b.getApplicationContext();
-		assertContextCacheStatistics(contextCache, "level 3, A and B", 4, 1, 4);
+		assertContextCacheStatistics(this.contextCache, "level 3, A and B", 4, 1, 4);
 		assertParentContextCount(2);
 
 		// Remove Level 3-A
 		// Should wipe the cache.
-		contextCache.remove(getMergedContextConfiguration(testContext3a), HierarchyMode.EXHAUSTIVE);
-		assertContextCacheStatistics(contextCache, "removed level 3-A", 0, 1, 4);
+		this.contextCache.remove(getMergedContextConfiguration(testContext3a), HierarchyMode.EXHAUSTIVE);
+		assertContextCacheStatistics(this.contextCache, "removed level 3-A", 0, 1, 4);
 		assertParentContextCount(0);
 
 		// Remove Level 2
 		// Should not actually do anything since the cache was cleared in the
 		// previous step. So the stats should remain the same.
-		contextCache.remove(getMergedContextConfiguration(testContext3b).getParent(), HierarchyMode.EXHAUSTIVE);
-		assertContextCacheStatistics(contextCache, "removed level 2", 0, 1, 4);
+		this.contextCache.remove(getMergedContextConfiguration(testContext3b).getParent(), HierarchyMode.EXHAUSTIVE);
+		assertContextCacheStatistics(this.contextCache, "removed level 2", 0, 1, 4);
 		assertParentContextCount(0);
 	}
 

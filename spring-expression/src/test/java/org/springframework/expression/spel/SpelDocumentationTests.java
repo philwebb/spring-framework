@@ -76,14 +76,14 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 
 		@SuppressWarnings("unchecked")
 		IEEE() {
-			officers.put("president",pupin);
+			this.officers.put("president",pupin);
 			List linv = new ArrayList();
 			linv.add(tesla);
-			officers.put("advisors",linv);
-			Members2.add(tesla);
-			Members2.add(pupin);
+			this.officers.put("advisors",linv);
+			this.Members2.add(tesla);
+			this.Members2.add(pupin);
 
-			reverse.add(officers);
+			this.reverse.add(this.officers);
 		}
 
 		public boolean isMember(String name) {
@@ -91,7 +91,7 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String n) {
@@ -175,10 +175,10 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 	@Test
 	public void testPropertyAccess() throws Exception {
 		EvaluationContext context = TestScenarioCreator.getTestEvaluationContext();
-		int year = (Integer) parser.parseExpression("Birthdate.Year + 1900").getValue(context); // 1856
+		int year = (Integer) this.parser.parseExpression("Birthdate.Year + 1900").getValue(context); // 1856
 		assertEquals(1856,year);
 
-		String city = (String) parser.parseExpression("placeOfBirth.City").getValue(context);
+		String city = (String) this.parser.parseExpression("placeOfBirth.City").getValue(context);
 		assertEquals("SmilJan",city);
 	}
 
@@ -216,20 +216,20 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 		StandardEvaluationContext societyContext = new StandardEvaluationContext();
 		societyContext.setRootObject(new IEEE());
 		// Officer's Dictionary
-		Inventor pupin = parser.parseExpression("officers['president']").getValue(societyContext, Inventor.class);
+		Inventor pupin = this.parser.parseExpression("officers['president']").getValue(societyContext, Inventor.class);
 		assertNotNull(pupin);
 
 		// evaluates to "Idvor"
-		String city = parser.parseExpression("officers['president'].PlaceOfBirth.city").getValue(societyContext, String.class);
+		String city = this.parser.parseExpression("officers['president'].PlaceOfBirth.city").getValue(societyContext, String.class);
 		assertNotNull(city);
 
 		// setting values
-		Inventor i = parser.parseExpression("officers['advisors'][0]").getValue(societyContext,Inventor.class);
+		Inventor i = this.parser.parseExpression("officers['advisors'][0]").getValue(societyContext,Inventor.class);
 		assertEquals("Nikola Tesla",i.getName());
 
-		parser.parseExpression("officers['advisors'][0].PlaceOfBirth.Country").setValue(societyContext, "Croatia");
+		this.parser.parseExpression("officers['advisors'][0].PlaceOfBirth.Country").setValue(societyContext, "Croatia");
 
-		Inventor i2 = parser.parseExpression("reverse[0]['advisors'][0]").getValue(societyContext,Inventor.class);
+		Inventor i2 = this.parser.parseExpression("reverse[0]['advisors'][0]").getValue(societyContext,Inventor.class);
 		assertEquals("Nikola Tesla",i2.getName());
 
 	}
@@ -239,13 +239,13 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 	@Test
 	public void testMethodInvocation2() throws Exception {
 		// string literal, evaluates to "bc"
-		String c = parser.parseExpression("'abc'.substring(1, 3)").getValue(String.class);
+		String c = this.parser.parseExpression("'abc'.substring(1, 3)").getValue(String.class);
 		assertEquals("bc",c);
 
 		StandardEvaluationContext societyContext = new StandardEvaluationContext();
 		societyContext.setRootObject(new IEEE());
 		// evaluates to true
-		boolean isMember = parser.parseExpression("isMember('Mihajlo Pupin')").getValue(societyContext, Boolean.class);
+		boolean isMember = this.parser.parseExpression("isMember('Mihajlo Pupin')").getValue(societyContext, Boolean.class);
 		assertTrue(isMember);
 	}
 
@@ -253,29 +253,29 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 
 	@Test
 	public void testRelationalOperators() throws Exception {
-		boolean result = parser.parseExpression("2 == 2").getValue(Boolean.class);
+		boolean result = this.parser.parseExpression("2 == 2").getValue(Boolean.class);
 		assertTrue(result);
 		// evaluates to false
-		result = parser.parseExpression("2 < -5.0").getValue(Boolean.class);
+		result = this.parser.parseExpression("2 < -5.0").getValue(Boolean.class);
 		assertFalse(result);
 
 		// evaluates to true
-		result = parser.parseExpression("'black' < 'block'").getValue(Boolean.class);
+		result = this.parser.parseExpression("'black' < 'block'").getValue(Boolean.class);
 		assertTrue(result);
 	}
 
 	@Test
 	public void testOtherOperators() throws Exception {
 		// evaluates to false
-		boolean falseValue = parser.parseExpression("'xyz' instanceof T(int)").getValue(Boolean.class);
+		boolean falseValue = this.parser.parseExpression("'xyz' instanceof T(int)").getValue(Boolean.class);
 		assertFalse(falseValue);
 
 		// evaluates to true
-		boolean trueValue = parser.parseExpression("'5.00' matches '^-?\\d+(\\.\\d{2})?$'").getValue(Boolean.class);
+		boolean trueValue = this.parser.parseExpression("'5.00' matches '^-?\\d+(\\.\\d{2})?$'").getValue(Boolean.class);
 		assertTrue(trueValue);
 
 		//evaluates to false
-		falseValue = parser.parseExpression("'5.0067' matches '^-?\\d+(\\.\\d{2})?$'").getValue(Boolean.class);
+		falseValue = this.parser.parseExpression("'5.0067' matches '^-?\\d+(\\.\\d{2})?$'").getValue(Boolean.class);
 		assertFalse(falseValue);
 	}
 
@@ -290,33 +290,33 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 		// -- AND --
 
 		// evaluates to false
-		boolean falseValue = parser.parseExpression("true and false").getValue(Boolean.class);
+		boolean falseValue = this.parser.parseExpression("true and false").getValue(Boolean.class);
 		assertFalse(falseValue);
 		// evaluates to true
 		String expression =  "isMember('Nikola Tesla') and isMember('Mihajlo Pupin')";
-		boolean trueValue = parser.parseExpression(expression).getValue(societyContext, Boolean.class);
+		boolean trueValue = this.parser.parseExpression(expression).getValue(societyContext, Boolean.class);
 
 		// -- OR --
 
 		// evaluates to true
-		trueValue = parser.parseExpression("true or false").getValue(Boolean.class);
+		trueValue = this.parser.parseExpression("true or false").getValue(Boolean.class);
 		assertTrue(trueValue);
 
 		// evaluates to true
 		expression =  "isMember('Nikola Tesla') or isMember('Albert Einstien')";
-		trueValue = parser.parseExpression(expression).getValue(societyContext, Boolean.class);
+		trueValue = this.parser.parseExpression(expression).getValue(societyContext, Boolean.class);
 		assertTrue(trueValue);
 
 		// -- NOT --
 
 		// evaluates to false
-		falseValue = parser.parseExpression("!true").getValue(Boolean.class);
+		falseValue = this.parser.parseExpression("!true").getValue(Boolean.class);
 		assertFalse(falseValue);
 
 
 		// -- AND and NOT --
 		expression =  "isMember('Nikola Tesla') and !isMember('Mihajlo Pupin')";
-		falseValue = parser.parseExpression(expression).getValue(societyContext, Boolean.class);
+		falseValue = this.parser.parseExpression(expression).getValue(societyContext, Boolean.class);
 		assertFalse(falseValue);
 	}
 
@@ -325,42 +325,42 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 	@Test
 	public void testNumericalOperators() throws Exception {
 		// Addition
-		int two = parser.parseExpression("1 + 1").getValue(Integer.class); // 2
+		int two = this.parser.parseExpression("1 + 1").getValue(Integer.class); // 2
 		assertEquals(2,two);
 
-		String testString = parser.parseExpression("'test' + ' ' + 'string'").getValue(String.class); // 'test string'
+		String testString = this.parser.parseExpression("'test' + ' ' + 'string'").getValue(String.class); // 'test string'
 		assertEquals("test string",testString);
 
 		// Subtraction
-		int four =  parser.parseExpression("1 - -3").getValue(Integer.class); // 4
+		int four =  this.parser.parseExpression("1 - -3").getValue(Integer.class); // 4
 		assertEquals(4,four);
 
-		double d = parser.parseExpression("1000.00 - 1e4").getValue(Double.class); // -9000
+		double d = this.parser.parseExpression("1000.00 - 1e4").getValue(Double.class); // -9000
 		assertEquals(-9000.0d, d, 0);
 
 		// Multiplication
-		int six =  parser.parseExpression("-2 * -3").getValue(Integer.class); // 6
+		int six =  this.parser.parseExpression("-2 * -3").getValue(Integer.class); // 6
 		assertEquals(6,six);
 
-		double twentyFour = parser.parseExpression("2.0 * 3e0 * 4").getValue(Double.class); // 24.0
+		double twentyFour = this.parser.parseExpression("2.0 * 3e0 * 4").getValue(Double.class); // 24.0
 		assertEquals(24.0d, twentyFour, 0);
 
 		// Division
-		int minusTwo =  parser.parseExpression("6 / -3").getValue(Integer.class); // -2
+		int minusTwo =  this.parser.parseExpression("6 / -3").getValue(Integer.class); // -2
 		assertEquals(-2,minusTwo);
 
-		double one = parser.parseExpression("8.0 / 4e0 / 2").getValue(Double.class); // 1.0
+		double one = this.parser.parseExpression("8.0 / 4e0 / 2").getValue(Double.class); // 1.0
 		assertEquals(1.0d, one, 0);
 
 		// Modulus
-		int three =  parser.parseExpression("7 % 4").getValue(Integer.class); // 3
+		int three =  this.parser.parseExpression("7 % 4").getValue(Integer.class); // 3
 		assertEquals(3,three);
 
-		int oneInt = parser.parseExpression("8 / 5 % 2").getValue(Integer.class); // 1
+		int oneInt = this.parser.parseExpression("8 / 5 % 2").getValue(Integer.class); // 1
 		assertEquals(1,oneInt);
 
 		// Operator precedence
-		int minusTwentyOne = parser.parseExpression("1+2-3*8").getValue(Integer.class); // -21
+		int minusTwentyOne = this.parser.parseExpression("1+2-3*8").getValue(Integer.class); // -21
 		assertEquals(-21,minusTwentyOne);
 	}
 
@@ -372,13 +372,13 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 		StandardEvaluationContext inventorContext = new StandardEvaluationContext();
 		inventorContext.setRootObject(inventor);
 
-		parser.parseExpression("foo").setValue(inventorContext, "Alexander Seovic2");
+		this.parser.parseExpression("foo").setValue(inventorContext, "Alexander Seovic2");
 
-		assertEquals("Alexander Seovic2",parser.parseExpression("foo").getValue(inventorContext,String.class));
+		assertEquals("Alexander Seovic2",this.parser.parseExpression("foo").getValue(inventorContext,String.class));
 		// alternatively
 
-		String aleks = parser.parseExpression("foo = 'Alexandar Seovic'").getValue(inventorContext, String.class);
-		assertEquals("Alexandar Seovic",parser.parseExpression("foo").getValue(inventorContext,String.class));
+		String aleks = this.parser.parseExpression("foo = 'Alexandar Seovic'").getValue(inventorContext, String.class);
+		assertEquals("Alexandar Seovic",this.parser.parseExpression("foo").getValue(inventorContext,String.class));
 		assertEquals("Alexandar Seovic",aleks);
 	}
 
@@ -386,9 +386,9 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 
 	@Test
 	public void testTypes() throws Exception {
-		Class<?> dateClass = parser.parseExpression("T(java.util.Date)").getValue(Class.class);
+		Class<?> dateClass = this.parser.parseExpression("T(java.util.Date)").getValue(Class.class);
 		assertEquals(Date.class, dateClass);
-		boolean trueValue = parser.parseExpression("T(java.math.RoundingMode).CEILING < T(java.math.RoundingMode).FLOOR").getValue(Boolean.class);
+		boolean trueValue = this.parser.parseExpression("T(java.math.RoundingMode).CEILING < T(java.math.RoundingMode).FLOOR").getValue(Boolean.class);
 		assertTrue(trueValue);
 	}
 
@@ -399,10 +399,10 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 		StandardEvaluationContext societyContext = new StandardEvaluationContext();
 		societyContext.setRootObject(new IEEE());
 		Inventor einstein =
-			   parser.parseExpression("new org.springframework.expression.spel.testresources.Inventor('Albert Einstein',new java.util.Date(), 'German')").getValue(Inventor.class);
+			   this.parser.parseExpression("new org.springframework.expression.spel.testresources.Inventor('Albert Einstein',new java.util.Date(), 'German')").getValue(Inventor.class);
 		assertEquals("Albert Einstein", einstein.getName());
 		//create new inventor instance within add method of List
-		parser.parseExpression("Members2.add(new org.springframework.expression.spel.testresources.Inventor('Albert Einstein', 'German'))").getValue(societyContext);
+		this.parser.parseExpression("Members2.add(new org.springframework.expression.spel.testresources.Inventor('Albert Einstein', 'German'))").getValue(societyContext);
 	}
 
 	// 7.5.8
@@ -415,7 +415,7 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 
 		context.setRootObject(tesla);
 
-		parser.parseExpression("foo = #newName").getValue(context);
+		this.parser.parseExpression("foo = #newName").getValue(context);
 
 		assertEquals("Mike Tesla",tesla.getFoo());
 	}
@@ -453,20 +453,20 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 
 	@Test
 	public void testTernary() throws Exception {
-		String falseString = parser.parseExpression("false ? 'trueExp' : 'falseExp'").getValue(String.class);
+		String falseString = this.parser.parseExpression("false ? 'trueExp' : 'falseExp'").getValue(String.class);
 		assertEquals("falseExp",falseString);
 
 		StandardEvaluationContext societyContext = new StandardEvaluationContext();
 		societyContext.setRootObject(new IEEE());
 
 
-		parser.parseExpression("Name").setValue(societyContext, "IEEE");
+		this.parser.parseExpression("Name").setValue(societyContext, "IEEE");
 		societyContext.setVariable("queryName", "Nikola Tesla");
 
 		String expression = "isMember(#queryName)? #queryName + ' is a member of the ' "
 				+ "+ Name + ' Society' : #queryName + ' is not a member of the ' + Name + ' Society'";
 
-		String queryResultString = parser.parseExpression(expression).getValue(societyContext, String.class);
+		String queryResultString = this.parser.parseExpression(expression).getValue(societyContext, String.class);
 		assertEquals("Nikola Tesla is a member of the IEEE Society",queryResultString);
 		// queryResultString = "Nikola Tesla is a member of the IEEE Society"
 	}
@@ -478,7 +478,7 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 	public void testSelection() throws Exception {
 		StandardEvaluationContext societyContext = new StandardEvaluationContext();
 		societyContext.setRootObject(new IEEE());
-		List<Inventor> list = (List<Inventor>) parser.parseExpression("Members2.?[nationality == 'Serbian']").getValue(societyContext);
+		List<Inventor> list = (List<Inventor>) this.parser.parseExpression("Members2.?[nationality == 'Serbian']").getValue(societyContext);
 		assertEquals(1,list.size());
 		assertEquals("Nikola Tesla",list.get(0).getName());
 	}
@@ -488,7 +488,7 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 	@Test
 	public void testTemplating() throws Exception {
 		String randomPhrase =
-			   parser.parseExpression("random number is ${T(java.lang.Math).random()}", new TemplatedParserContext()).getValue(String.class);
+			   this.parser.parseExpression("random number is ${T(java.lang.Math).random()}", new TemplatedParserContext()).getValue(String.class);
 		assertTrue(randomPhrase.startsWith("random number"));
 	}
 

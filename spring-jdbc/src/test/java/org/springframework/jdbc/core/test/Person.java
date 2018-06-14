@@ -33,7 +33,7 @@ public class Person {
 
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -41,7 +41,7 @@ public class Person {
 	}
 
 	public long getAge() {
-		return age;
+		return this.age;
 	}
 
 	public void setAge(long age) {
@@ -49,7 +49,7 @@ public class Person {
 	}
 
 	public java.util.Date getBirth_date() {
-		return birth_date;
+		return this.birth_date;
 	}
 
 	public void setBirth_date(java.util.Date birth_date) {
@@ -57,7 +57,7 @@ public class Person {
 	}
 
 	public BigDecimal getBalance() {
-		return balance;
+		return this.balance;
 	}
 
 	public void setBalance(BigDecimal balanace) {

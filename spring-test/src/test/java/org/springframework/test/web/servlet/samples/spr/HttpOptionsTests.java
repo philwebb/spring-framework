@@ -92,7 +92,7 @@ public class HttpOptionsTests {
 		@RequestMapping(value = "/myUrl", method = RequestMethod.OPTIONS)
 		@ResponseBody
 		public void handle() {
-			counter.incrementAndGet();
+			this.counter.incrementAndGet();
 		}
 	}
 

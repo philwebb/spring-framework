@@ -89,10 +89,10 @@ public class RepeatedSpringRunnerTests {
 	public void assertRepetitions() throws Exception {
 		invocationCount.set(0);
 
-		runTestsAndAssertCounters(getRunnerClass(), this.testClass, expectedStartedCount, expectedFailureCount,
-			expectedFinishedCount, 0, 0);
+		runTestsAndAssertCounters(getRunnerClass(), this.testClass, this.expectedStartedCount, this.expectedFailureCount,
+			this.expectedFinishedCount, 0, 0);
 
-		assertEquals("invocations for [" + testClass + "]:", expectedInvocationCount, invocationCount.get());
+		assertEquals("invocations for [" + this.testClass + "]:", this.expectedInvocationCount, invocationCount.get());
 	}
 
 

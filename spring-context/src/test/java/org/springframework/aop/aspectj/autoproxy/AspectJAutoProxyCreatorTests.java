@@ -405,12 +405,12 @@ class PerTargetAspect implements Ordered {
 
 	@Around("execution(int *.getAge())")
 	public int returnCountAsAge() {
-		return count++;
+		return this.count++;
 	}
 
 	@Before("execution(void *.set*(int))")
 	public void countSetter() {
-		++count;
+		++this.count;
 	}
 
 	@Override
@@ -645,7 +645,7 @@ class TestBeanAdvisor extends StaticMethodMatcherPointcutAdvisor {
 		setAdvice(new MethodBeforeAdvice() {
 			@Override
 			public void before(Method method, Object[] args, @Nullable Object target) throws Throwable {
-				++count;
+				++TestBeanAdvisor.this.count;
 			}
 		});
 	}

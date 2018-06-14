@@ -39,7 +39,7 @@ public class MockJtaTransaction implements javax.transaction.Transaction {
 	}
 
 	public Synchronization getSynchronization() {
-		return synchronization;
+		return this.synchronization;
 	}
 
 	@Override

@@ -90,7 +90,7 @@ public class ServerHttpsRequestIntegrationTests {
 
 	@Test
 	public void checkUri() throws Exception {
-		URI url = new URI("https://localhost:" + port + "/foo?param=bar");
+		URI url = new URI("https://localhost:" + this.port + "/foo?param=bar");
 		RequestEntity<Void> request = RequestEntity.post(url).build();
 		ResponseEntity<Void> response = this.restTemplate.exchange(request, Void.class);
 		assertEquals(HttpStatus.OK, response.getStatusCode());

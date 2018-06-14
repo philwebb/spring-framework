@@ -234,7 +234,7 @@ public class QualifierAnnotationTests {
 		private Person anonymous;
 
 		public Person getAnonymous() {
-			return anonymous;
+			return this.anonymous;
 		}
 	}
 
@@ -246,7 +246,7 @@ public class QualifierAnnotationTests {
 		private Person larry;
 
 		public Person getLarry() {
-			return larry;
+			return this.larry;
 		}
 	}
 
@@ -258,7 +258,7 @@ public class QualifierAnnotationTests {
 		private Person larry;
 
 		public Person getLarry() {
-			return larry;
+			return this.larry;
 		}
 	}
 
@@ -274,7 +274,7 @@ public class QualifierAnnotationTests {
 		public Properties myProps;
 
 		public Person getLarry() {
-			return larry;
+			return this.larry;
 		}
 	}
 
@@ -285,7 +285,7 @@ public class QualifierAnnotationTests {
 		private Person larryBean;
 
 		public Person getLarry() {
-			return larryBean;
+			return this.larryBean;
 		}
 	}
 
@@ -300,7 +300,7 @@ public class QualifierAnnotationTests {
 		}
 
 		public Person getLarry() {
-			return larryBean;
+			return this.larryBean;
 		}
 	}
 
@@ -312,7 +312,7 @@ public class QualifierAnnotationTests {
 		private Person stooge;
 
 		public Person getStooge() {
-			return stooge;
+			return this.stooge;
 		}
 	}
 
@@ -324,7 +324,7 @@ public class QualifierAnnotationTests {
 		private Person larry;
 
 		public Person getLarry() {
-			return larry;
+			return this.larry;
 		}
 	}
 
@@ -336,7 +336,7 @@ public class QualifierAnnotationTests {
 		private Person curly;
 
 		public Person getCurly() {
-			return curly;
+			return this.curly;
 		}
 	}
 
@@ -348,7 +348,7 @@ public class QualifierAnnotationTests {
 		private Person larry;
 
 		public Person getLarry() {
-			return larry;
+			return this.larry;
 		}
 	}
 
@@ -365,11 +365,11 @@ public class QualifierAnnotationTests {
 		private Person moeJunior;
 
 		public Person getMoeSenior() {
-			return moeSenior;
+			return this.moeSenior;
 		}
 
 		public Person getMoeJunior() {
-			return moeJunior;
+			return this.moeJunior;
 		}
 	}
 
@@ -380,7 +380,7 @@ public class QualifierAnnotationTests {
 		private String name;
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String name) {

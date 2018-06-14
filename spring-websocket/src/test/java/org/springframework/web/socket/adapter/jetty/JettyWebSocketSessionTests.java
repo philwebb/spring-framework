@@ -46,7 +46,7 @@ public class JettyWebSocketSessionTests {
 	@SuppressWarnings("resource")
 	public void getPrincipalWithConstructorArg() {
 		TestPrincipal user = new TestPrincipal("joe");
-		JettyWebSocketSession session = new JettyWebSocketSession(attributes, user);
+		JettyWebSocketSession session = new JettyWebSocketSession(this.attributes, user);
 
 		assertSame(user, session.getPrincipal());
 	}
@@ -66,7 +66,7 @@ public class JettyWebSocketSessionTests {
 		given(nativeSession.getUpgradeRequest()).willReturn(request);
 		given(nativeSession.getUpgradeResponse()).willReturn(response);
 
-		JettyWebSocketSession session = new JettyWebSocketSession(attributes);
+		JettyWebSocketSession session = new JettyWebSocketSession(this.attributes);
 		session.initializeNativeSession(nativeSession);
 
 		reset(nativeSession);
@@ -88,7 +88,7 @@ public class JettyWebSocketSessionTests {
 		given(nativeSession.getUpgradeRequest()).willReturn(request);
 		given(nativeSession.getUpgradeResponse()).willReturn(response);
 
-		JettyWebSocketSession session = new JettyWebSocketSession(attributes);
+		JettyWebSocketSession session = new JettyWebSocketSession(this.attributes);
 		session.initializeNativeSession(nativeSession);
 
 		reset(nativeSession);
@@ -112,7 +112,7 @@ public class JettyWebSocketSessionTests {
 		given(nativeSession.getUpgradeRequest()).willReturn(request);
 		given(nativeSession.getUpgradeResponse()).willReturn(response);
 
-		JettyWebSocketSession session = new JettyWebSocketSession(attributes);
+		JettyWebSocketSession session = new JettyWebSocketSession(this.attributes);
 		session.initializeNativeSession(nativeSession);
 
 		reset(nativeSession);

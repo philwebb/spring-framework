@@ -54,29 +54,29 @@ public class ResourceRegionHttpMessageConverterTests {
 
 	@Test
 	public void canReadResource() {
-		assertFalse(converter.canRead(Resource.class, MediaType.APPLICATION_OCTET_STREAM));
-		assertFalse(converter.canRead(Resource.class, MediaType.ALL));
-		assertFalse(converter.canRead(List.class, MediaType.APPLICATION_OCTET_STREAM));
-		assertFalse(converter.canRead(List.class, MediaType.ALL));
+		assertFalse(this.converter.canRead(Resource.class, MediaType.APPLICATION_OCTET_STREAM));
+		assertFalse(this.converter.canRead(Resource.class, MediaType.ALL));
+		assertFalse(this.converter.canRead(List.class, MediaType.APPLICATION_OCTET_STREAM));
+		assertFalse(this.converter.canRead(List.class, MediaType.ALL));
 	}
 
 	@Test
 	public void canWriteResource() {
-		assertTrue(converter.canWrite(ResourceRegion.class, null, MediaType.APPLICATION_OCTET_STREAM));
-		assertTrue(converter.canWrite(ResourceRegion.class, null, MediaType.ALL));
-		assertFalse(converter.canWrite(Object.class, null, MediaType.ALL));
+		assertTrue(this.converter.canWrite(ResourceRegion.class, null, MediaType.APPLICATION_OCTET_STREAM));
+		assertTrue(this.converter.canWrite(ResourceRegion.class, null, MediaType.ALL));
+		assertFalse(this.converter.canWrite(Object.class, null, MediaType.ALL));
 	}
 
 	@Test
 	public void canWriteResourceCollection() {
 		Type resourceRegionList = new ParameterizedTypeReference<List<ResourceRegion>>() {}.getType();
-		assertTrue(converter.canWrite(resourceRegionList, null, MediaType.APPLICATION_OCTET_STREAM));
-		assertTrue(converter.canWrite(resourceRegionList, null, MediaType.ALL));
+		assertTrue(this.converter.canWrite(resourceRegionList, null, MediaType.APPLICATION_OCTET_STREAM));
+		assertTrue(this.converter.canWrite(resourceRegionList, null, MediaType.ALL));
 
-		assertFalse(converter.canWrite(List.class, MediaType.APPLICATION_OCTET_STREAM));
-		assertFalse(converter.canWrite(List.class, MediaType.ALL));
+		assertFalse(this.converter.canWrite(List.class, MediaType.APPLICATION_OCTET_STREAM));
+		assertFalse(this.converter.canWrite(List.class, MediaType.ALL));
 		Type resourceObjectList = new ParameterizedTypeReference<List<Object>>() {}.getType();
-		assertFalse(converter.canWrite(resourceObjectList, null, MediaType.ALL));
+		assertFalse(this.converter.canWrite(resourceObjectList, null, MediaType.ALL));
 	}
 
 	@Test
@@ -84,7 +84,7 @@ public class ResourceRegionHttpMessageConverterTests {
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		Resource body = new ClassPathResource("byterangeresource.txt", getClass());
 		ResourceRegion region = HttpRange.createByteRange(0, 5).toResourceRegion(body);
-		converter.write(region, MediaType.TEXT_PLAIN, outputMessage);
+		this.converter.write(region, MediaType.TEXT_PLAIN, outputMessage);
 
 		HttpHeaders headers = outputMessage.getHeaders();
 		assertThat(headers.getContentType(), is(MediaType.TEXT_PLAIN));
@@ -99,7 +99,7 @@ public class ResourceRegionHttpMessageConverterTests {
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		Resource body = new ClassPathResource("byterangeresource.txt", getClass());
 		ResourceRegion region = HttpRange.createByteRange(7).toResourceRegion(body);
-		converter.write(region, MediaType.TEXT_PLAIN, outputMessage);
+		this.converter.write(region, MediaType.TEXT_PLAIN, outputMessage);
 
 		HttpHeaders headers = outputMessage.getHeaders();
 		assertThat(headers.getContentType(), is(MediaType.TEXT_PLAIN));
@@ -119,7 +119,7 @@ public class ResourceRegionHttpMessageConverterTests {
 			regions.add(range.toResourceRegion(body));
 		}
 
-		converter.write(regions, MediaType.TEXT_PLAIN, outputMessage);
+		this.converter.write(regions, MediaType.TEXT_PLAIN, outputMessage);
 
 		HttpHeaders headers = outputMessage.getHeaders();
 		assertThat(headers.getContentType().toString(), Matchers.startsWith("multipart/byteranges;boundary="));
@@ -158,7 +158,7 @@ public class ResourceRegionHttpMessageConverterTests {
 		HttpRange range = HttpRange.createByteRange(0, 5);
 		ResourceRegion resourceRegion = range.toResourceRegion(body);
 
-		converter.write(Collections.singletonList(resourceRegion), null, outputMessage);
+		this.converter.write(Collections.singletonList(resourceRegion), null, outputMessage);
 
 		assertThat(outputMessage.getHeaders().getContentType(), is(MediaType.APPLICATION_OCTET_STREAM));
 		assertThat(outputMessage.getHeaders().getFirst(HttpHeaders.CONTENT_RANGE), is("bytes 0-5/12"));

@@ -26,7 +26,7 @@ public class ExceptionOnInitBean {
 	private String name;
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -38,7 +38,7 @@ public class ExceptionOnInitBean {
 	}
 
 	public ExceptionOnInitBean() {
-		if (exceptOnInit) {
+		if (this.exceptOnInit) {
 			throw new RuntimeException("I am being init'd!");
 		}
 	}

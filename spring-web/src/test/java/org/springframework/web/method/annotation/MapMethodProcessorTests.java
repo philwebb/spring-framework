@@ -50,40 +50,40 @@ public class MapMethodProcessorTests {
 
 	@Before
 	public void setUp() throws Exception {
-		processor = new MapMethodProcessor();
-		mavContainer = new ModelAndViewContainer();
+		this.processor = new MapMethodProcessor();
+		this.mavContainer = new ModelAndViewContainer();
 
 		Method method = getClass().getDeclaredMethod("map", Map.class);
-		paramMap = new MethodParameter(method, 0);
-		returnParamMap = new MethodParameter(method, 0);
+		this.paramMap = new MethodParameter(method, 0);
+		this.returnParamMap = new MethodParameter(method, 0);
 
-		webRequest = new ServletWebRequest(new MockHttpServletRequest());
+		this.webRequest = new ServletWebRequest(new MockHttpServletRequest());
 	}
 
 	@Test
 	public void supportsParameter() {
-		assertTrue(processor.supportsParameter(paramMap));
+		assertTrue(this.processor.supportsParameter(this.paramMap));
 	}
 
 	@Test
 	public void supportsReturnType() {
-		assertTrue(processor.supportsReturnType(returnParamMap));
+		assertTrue(this.processor.supportsReturnType(this.returnParamMap));
 	}
 
 	@Test
 	public void resolveArgumentValue() throws Exception {
-		assertSame(mavContainer.getModel(), processor.resolveArgument(paramMap, mavContainer, webRequest, null));
+		assertSame(this.mavContainer.getModel(), this.processor.resolveArgument(this.paramMap, this.mavContainer, this.webRequest, null));
 	}
 
 	@Test
 	public void handleMapReturnValue() throws Exception {
-		mavContainer.addAttribute("attr1", "value1");
+		this.mavContainer.addAttribute("attr1", "value1");
 		Map<String, Object> returnValue = new ModelMap("attr2", "value2");
 
-		processor.handleReturnValue(returnValue , returnParamMap, mavContainer, webRequest);
+		this.processor.handleReturnValue(returnValue , this.returnParamMap, this.mavContainer, this.webRequest);
 
-		assertEquals("value1", mavContainer.getModel().get("attr1"));
-		assertEquals("value2", mavContainer.getModel().get("attr2"));
+		assertEquals("value1", this.mavContainer.getModel().get("attr1"));
+		assertEquals("value2", this.mavContainer.getModel().get("attr2"));
 	}
 
 	@SuppressWarnings("unused")

@@ -545,7 +545,7 @@ public class BeanWrapperGenericsTests {
 
 		@Override
 		public Map<String, Integer> getMapOfInteger() {
-			return mapOfInteger;
+			return this.mapOfInteger;
 		}
 
 		public void setMapOfInteger(Map<String, Integer> mapOfInteger) {
@@ -554,7 +554,7 @@ public class BeanWrapperGenericsTests {
 
 		@Override
 		public Map<String, List<Integer>> getMapOfListOfInteger() {
-			return mapOfListOfInteger;
+			return this.mapOfListOfInteger;
 		}
 
 		@Override
@@ -563,7 +563,7 @@ public class BeanWrapperGenericsTests {
 		}
 
 		public List<Map<String, Integer>> getListOfMapOfInteger() {
-			return listOfMapOfInteger;
+			return this.listOfMapOfInteger;
 		}
 
 		public void setListOfMapOfInteger(List<Map<String, Integer>> listOfMapOfInteger) {
@@ -571,7 +571,7 @@ public class BeanWrapperGenericsTests {
 		}
 
 		public Map<String, List<List<Integer>>> getMapOfListOfListOfInteger() {
-			return mapOfListOfListOfInteger;
+			return this.mapOfListOfListOfInteger;
 		}
 
 		public void setMapOfListOfListOfInteger(Map<String, List<List<Integer>>> mapOfListOfListOfInteger) {
@@ -594,7 +594,7 @@ public class BeanWrapperGenericsTests {
 		}
 
 		public Map<List<Integer>, List<Long>> getGenericMap() {
-			return genericMap;
+			return this.genericMap;
 		}
 
 		public void setGenericIndexedMap(Map<Integer, List<Long>> genericIndexedMap) {
@@ -602,7 +602,7 @@ public class BeanWrapperGenericsTests {
 		}
 
 		public Map<Integer, List<Long>> getGenericIndexedMap() {
-			return genericIndexedMap;
+			return this.genericIndexedMap;
 		}
 
 		public void setDerivedIndexedMap(DerivedMap derivedIndexedMap) {
@@ -610,7 +610,7 @@ public class BeanWrapperGenericsTests {
 		}
 
 		public DerivedMap getDerivedIndexedMap() {
-			return derivedIndexedMap;
+			return this.derivedIndexedMap;
 		}
 	}
 
@@ -656,7 +656,7 @@ public class BeanWrapperGenericsTests {
 
 	  @Override
 	  public Long getId() {
-		  return id;
+		  return this.id;
 	  }
 
 	  @Override

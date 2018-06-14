@@ -46,9 +46,9 @@ public class ProceedTests {
 	public void setUp() {
 		ClassPathXmlApplicationContext ctx =
 			new ClassPathXmlApplicationContext(getClass().getSimpleName() + ".xml", getClass());
-		testBean = (SimpleBean) ctx.getBean("testBean");
-		firstTestAspect = (ProceedTestingAspect) ctx.getBean("firstTestAspect");
-		secondTestAspect = (ProceedTestingAspect) ctx.getBean("secondTestAspect");
+		this.testBean = (SimpleBean) ctx.getBean("testBean");
+		this.firstTestAspect = (ProceedTestingAspect) ctx.getBean("firstTestAspect");
+		this.secondTestAspect = (ProceedTestingAspect) ctx.getBean("secondTestAspect");
 	}
 
 	@Test
@@ -104,22 +104,22 @@ class SimpleBeanImpl implements SimpleBean {
 
 	@Override
 	public int getAge() {
-		return age;
+		return this.age;
 	}
 
 	@Override
 	public float getMyFloat() {
-		return aFloat;
+		return this.aFloat;
 	}
 
 	@Override
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	@Override
 	public String getSex() {
-		return sex;
+		return this.sex;
 	}
 
 	@Override

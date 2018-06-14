@@ -66,6 +66,6 @@ public class ConfigClassesAndProfilesMetaConfigTests {
 
 	@Test
 	public void foo() {
-		assertEquals("Local Dev Foo", foo);
+		assertEquals("Local Dev Foo", this.foo);
 	}
 }

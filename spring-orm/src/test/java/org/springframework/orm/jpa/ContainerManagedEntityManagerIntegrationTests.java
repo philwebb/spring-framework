@@ -47,13 +47,13 @@ public class ContainerManagedEntityManagerIntegrationTests extends AbstractEntit
 
 	@Test
 	public void testExceptionTranslationWithDialectFoundOnIntroducedEntityManagerInfo() throws Exception {
-		doTestExceptionTranslationWithDialectFound(((EntityManagerFactoryInfo) entityManagerFactory).getJpaDialect());
+		doTestExceptionTranslationWithDialectFound(((EntityManagerFactoryInfo) this.entityManagerFactory).getJpaDialect());
 	}
 
 	@Test
 	public void testExceptionTranslationWithDialectFoundOnEntityManagerFactoryBean() throws Exception {
-		assertNotNull("Dialect must have been set", entityManagerFactoryBean.getJpaDialect());
-		doTestExceptionTranslationWithDialectFound(entityManagerFactoryBean);
+		assertNotNull("Dialect must have been set", this.entityManagerFactoryBean.getJpaDialect());
+		doTestExceptionTranslationWithDialectFound(this.entityManagerFactoryBean);
 	}
 
 	protected void doTestExceptionTranslationWithDialectFound(PersistenceExceptionTranslator pet) throws Exception {

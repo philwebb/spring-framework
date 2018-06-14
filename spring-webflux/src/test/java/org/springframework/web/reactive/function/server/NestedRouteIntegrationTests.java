@@ -54,7 +54,7 @@ public class NestedRouteIntegrationTests extends AbstractRouterFunctionIntegrati
 	@Test
 	public void bar() throws Exception {
 		ResponseEntity<String> result =
-				restTemplate.getForEntity("http://localhost:" + port + "/foo/bar", String.class);
+				this.restTemplate.getForEntity("http://localhost:" + this.port + "/foo/bar", String.class);
 
 		assertEquals(HttpStatus.OK, result.getStatusCode());
 		assertEquals("bar", result.getBody());
@@ -63,7 +63,7 @@ public class NestedRouteIntegrationTests extends AbstractRouterFunctionIntegrati
 	@Test
 	public void baz() throws Exception {
 		ResponseEntity<String> result =
-				restTemplate.getForEntity("http://localhost:" + port + "/foo/baz", String.class);
+				this.restTemplate.getForEntity("http://localhost:" + this.port + "/foo/baz", String.class);
 
 		assertEquals(HttpStatus.OK, result.getStatusCode());
 		assertEquals("baz", result.getBody());
@@ -72,7 +72,7 @@ public class NestedRouteIntegrationTests extends AbstractRouterFunctionIntegrati
 	@Test
 	public void variables() throws Exception {
 		ResponseEntity<String> result =
-				restTemplate.getForEntity("http://localhost:" + port + "/1/2/3", String.class);
+				this.restTemplate.getForEntity("http://localhost:" + this.port + "/1/2/3", String.class);
 
 		assertEquals(HttpStatus.OK, result.getStatusCode());
 		assertEquals("{foo=1, bar=2, baz=3}", result.getBody());
@@ -82,7 +82,7 @@ public class NestedRouteIntegrationTests extends AbstractRouterFunctionIntegrati
 	@Test
 	public void parentVariables() throws Exception {
 		ResponseEntity<String> result =
-				restTemplate.getForEntity("http://localhost:" + port + "/1/bar", String.class);
+				this.restTemplate.getForEntity("http://localhost:" + this.port + "/1/bar", String.class);
 
 		assertEquals(HttpStatus.OK, result.getStatusCode());
 		assertEquals("{foo=1}", result.getBody());
@@ -93,7 +93,7 @@ public class NestedRouteIntegrationTests extends AbstractRouterFunctionIntegrati
 	@Test
 	public void removeFailedPathVariables() throws Exception {
 		ResponseEntity<String> result =
-				restTemplate.getForEntity("http://localhost:" + port + "/qux/quux", String.class);
+				this.restTemplate.getForEntity("http://localhost:" + this.port + "/qux/quux", String.class);
 
 		assertEquals(HttpStatus.OK, result.getStatusCode());
 		assertEquals("{qux=qux}", result.getBody());

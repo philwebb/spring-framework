@@ -140,7 +140,7 @@ public class ScriptTemplateViewTests {
 		ExecutorService executor = Executors.newFixedThreadPool(4);
 		List<Future<Boolean>> results = new ArrayList<>();
 		for (int i = 0; i < iterations; i++) {
-			results.add(executor.submit(() -> view.getEngine() != null));
+			results.add(executor.submit(() -> this.view.getEngine() != null));
 		}
 		assertEquals(iterations, results.size());
 		for (int i = 0; i < iterations; i++) {

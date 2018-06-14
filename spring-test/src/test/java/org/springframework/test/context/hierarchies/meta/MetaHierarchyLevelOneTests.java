@@ -38,7 +38,7 @@ public class MetaHierarchyLevelOneTests {
 
 	@Test
 	public void foo() {
-		assertEquals("Dev Foo", foo);
+		assertEquals("Dev Foo", this.foo);
 	}
 
 }

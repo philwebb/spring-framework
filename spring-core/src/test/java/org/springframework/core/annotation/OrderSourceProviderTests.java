@@ -43,7 +43,7 @@ public class OrderSourceProviderTests {
 		C c2 = new C(-5);
 		items.add(c);
 		items.add(c2);
-		Collections.sort(items, comparator);
+		Collections.sort(items, this.comparator);
 		assertOrder(items, c2, c);
 	}
 
@@ -54,7 +54,7 @@ public class OrderSourceProviderTests {
 		B b = new B();
 
 		List<?> items = Arrays.asList(a, c, b);
-		Collections.sort(items, comparator.withSourceProvider(obj -> null));
+		Collections.sort(items, this.comparator.withSourceProvider(obj -> null));
 		assertOrder(items, c, a, b);
 	}
 
@@ -65,7 +65,7 @@ public class OrderSourceProviderTests {
 		B b = new B();
 
 		List<?> items = Arrays.asList(a, c, b);
-		Collections.sort(items, comparator.withSourceProvider(obj -> {
+		Collections.sort(items, this.comparator.withSourceProvider(obj -> {
 			if (obj == a) {
 				return new C(4);
 			}
@@ -84,7 +84,7 @@ public class OrderSourceProviderTests {
 		C c2 = new C(-5);
 
 		List<?> items = Arrays.asList(a, c, c2);
-		Collections.sort(items, comparator.withSourceProvider(obj -> {
+		Collections.sort(items, this.comparator.withSourceProvider(obj -> {
 			if (obj == a) {
 				return 4;
 			}
@@ -103,7 +103,7 @@ public class OrderSourceProviderTests {
 		B b = new B();
 
 		Object[] items = new Object[] {a, c, b};
-		Arrays.sort(items, comparator.withSourceProvider(obj -> null));
+		Arrays.sort(items, this.comparator.withSourceProvider(obj -> null));
 		assertOrder(items, c, a, b);
 	}
 
@@ -114,7 +114,7 @@ public class OrderSourceProviderTests {
 		B b = new B();
 
 		Object[] items = new Object[] {a, c, b};
-		Arrays.sort(items, comparator.withSourceProvider(obj -> {
+		Arrays.sort(items, this.comparator.withSourceProvider(obj -> {
 			if (obj == a) {
 				return new C(4);
 			}
@@ -133,7 +133,7 @@ public class OrderSourceProviderTests {
 		C c2 = new C(-5);
 
 		Object[] items = new Object[] {a, c, c2};
-		Arrays.sort(items, comparator.withSourceProvider(obj -> {
+		Arrays.sort(items, this.comparator.withSourceProvider(obj -> {
 			if (obj == a) {
 				return 4;
 			}
@@ -181,7 +181,7 @@ public class OrderSourceProviderTests {
 
 		@Override
 		public int getOrder() {
-			return order;
+			return this.order;
 		}
 	}
 

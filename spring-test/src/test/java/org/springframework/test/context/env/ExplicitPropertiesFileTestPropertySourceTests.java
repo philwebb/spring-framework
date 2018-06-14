@@ -47,8 +47,8 @@ public class ExplicitPropertiesFileTestPropertySourceTests {
 	@Test
 	public void verifyPropertiesAreAvailableInEnvironment() {
 		String userHomeKey = "user.home";
-		assertEquals(System.getProperty(userHomeKey), env.getProperty(userHomeKey));
-		assertEquals("enigma", env.getProperty("explicit"));
+		assertEquals(System.getProperty(userHomeKey), this.env.getProperty(userHomeKey));
+		assertEquals("enigma", this.env.getProperty("explicit"));
 	}
 
 

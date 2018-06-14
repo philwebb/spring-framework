@@ -35,7 +35,7 @@ public class MixedCollectionBean {
 	}
 
 	public Collection getJumble() {
-		return jumble;
+		return this.jumble;
 	}
 
 }

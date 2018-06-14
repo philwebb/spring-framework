@@ -47,7 +47,7 @@ public class EchoHandlerIntegrationTests extends AbstractHttpHandlerIntegrationT
 		RestTemplate restTemplate = new RestTemplate();
 
 		byte[] body = randomBytes();
-		RequestEntity<byte[]> request = RequestEntity.post(new URI("http://localhost:" + port)).body(body);
+		RequestEntity<byte[]> request = RequestEntity.post(new URI("http://localhost:" + this.port)).body(body);
 		ResponseEntity<byte[]> response = restTemplate.exchange(request, byte[].class);
 
 		assertArrayEquals(body, response.getBody());
@@ -56,7 +56,7 @@ public class EchoHandlerIntegrationTests extends AbstractHttpHandlerIntegrationT
 
 	private byte[] randomBytes() {
 		byte[] buffer = new byte[REQUEST_SIZE];
-		rnd.nextBytes(buffer);
+		this.rnd.nextBytes(buffer);
 		return buffer;
 	}
 

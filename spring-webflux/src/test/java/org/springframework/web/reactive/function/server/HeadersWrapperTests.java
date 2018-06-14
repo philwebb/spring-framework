@@ -47,74 +47,74 @@ public class HeadersWrapperTests {
 
 	@Before
 	public void createWrapper() {
-		mockHeaders = mock(ServerRequest.Headers.class);
-		wrapper = new ServerRequestWrapper.HeadersWrapper(mockHeaders);
+		this.mockHeaders = mock(ServerRequest.Headers.class);
+		this.wrapper = new ServerRequestWrapper.HeadersWrapper(this.mockHeaders);
 	}
 
 
 	@Test
 	public void accept() throws Exception {
 		List<MediaType> accept = Collections.singletonList(MediaType.APPLICATION_JSON);
-		when(mockHeaders.accept()).thenReturn(accept);
+		when(this.mockHeaders.accept()).thenReturn(accept);
 
-		assertSame(accept, wrapper.accept());
+		assertSame(accept, this.wrapper.accept());
 	}
 
 	@Test
 	public void acceptCharset() throws Exception {
 		List<Charset> acceptCharset = Collections.singletonList(StandardCharsets.UTF_8);
-		when(mockHeaders.acceptCharset()).thenReturn(acceptCharset);
+		when(this.mockHeaders.acceptCharset()).thenReturn(acceptCharset);
 
-		assertSame(acceptCharset, wrapper.acceptCharset());
+		assertSame(acceptCharset, this.wrapper.acceptCharset());
 	}
 
 	@Test
 	public void contentLength() throws Exception {
 		OptionalLong contentLength = OptionalLong.of(42L);
-		when(mockHeaders.contentLength()).thenReturn(contentLength);
+		when(this.mockHeaders.contentLength()).thenReturn(contentLength);
 
-		assertSame(contentLength, wrapper.contentLength());
+		assertSame(contentLength, this.wrapper.contentLength());
 	}
 
 	@Test
 	public void contentType() throws Exception {
 		Optional<MediaType> contentType = Optional.of(MediaType.APPLICATION_JSON);
-		when(mockHeaders.contentType()).thenReturn(contentType);
+		when(this.mockHeaders.contentType()).thenReturn(contentType);
 
-		assertSame(contentType, wrapper.contentType());
+		assertSame(contentType, this.wrapper.contentType());
 	}
 
 	@Test
 	public void host() throws Exception {
 		InetSocketAddress host = InetSocketAddress.createUnresolved("example.com", 42);
-		when(mockHeaders.host()).thenReturn(host);
+		when(this.mockHeaders.host()).thenReturn(host);
 
-		assertSame(host, wrapper.host());
+		assertSame(host, this.wrapper.host());
 	}
 
 	@Test
 	public void range() throws Exception {
 		List<HttpRange> range = Collections.singletonList(HttpRange.createByteRange(42));
-		when(mockHeaders.range()).thenReturn(range);
+		when(this.mockHeaders.range()).thenReturn(range);
 
-		assertSame(range, wrapper.range());
+		assertSame(range, this.wrapper.range());
 	}
 
 	@Test
 	public void header() throws Exception {
 		String name = "foo";
 		List<String> value = Collections.singletonList("bar");
-		when(mockHeaders.header(name)).thenReturn(value);
+		when(this.mockHeaders.header(name)).thenReturn(value);
 
-		assertSame(value, wrapper.header(name));
+		assertSame(value, this.wrapper.header(name));
 	}
 
 	@Test
 	public void asHttpHeaders() throws Exception {
 		HttpHeaders httpHeaders = new HttpHeaders();
-		when(mockHeaders.asHttpHeaders()).thenReturn(httpHeaders);
+		when(this.mockHeaders.asHttpHeaders()).thenReturn(httpHeaders);
 
-		assertSame(httpHeaders, wrapper.asHttpHeaders());
+		assertSame(httpHeaders, this.wrapper.asHttpHeaders());
 	}
 
 }

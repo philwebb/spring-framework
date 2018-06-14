@@ -116,7 +116,7 @@ public class HtmlCharacterEntityReferencesTests {
 				if (inputStream == null) {
 					throw new IOException("Cannot find definition resource [" + DTD_FILE + "]");
 				}
-				tokenizer = new StreamTokenizer(new BufferedReader(new InputStreamReader(inputStream, "UTF-8")));
+				this.tokenizer = new StreamTokenizer(new BufferedReader(new InputStreamReader(inputStream, "UTF-8")));
 			}
 			catch (IOException ex) {
 				throw new IllegalStateException("Failed to open definition resource [" + DTD_FILE + "]");
@@ -124,20 +124,20 @@ public class HtmlCharacterEntityReferencesTests {
 		}
 
 		public boolean hasNext() {
-			return (currentEntityName != null || readNextEntity());
+			return (this.currentEntityName != null || readNextEntity());
 		}
 
 		public String nextEntry() {
 			if (hasNext()) {
-				String entityName = currentEntityName;
-				currentEntityName = null;
+				String entityName = this.currentEntityName;
+				this.currentEntityName = null;
 				return entityName;
 			}
 			return null;
 		}
 
 		public int getReferredCharacter() {
-			return referredCharacter;
+			return this.referredCharacter;
 		}
 
 		private boolean readNextEntity() {
@@ -161,8 +161,8 @@ public class HtmlCharacterEntityReferencesTests {
 		}
 
 		private boolean navigateToNextEntity() throws IOException {
-			while (tokenizer.nextToken() != StreamTokenizer.TT_WORD || !"ENTITY".equals(tokenizer.sval)) {
-				if (tokenizer.ttype == StreamTokenizer.TT_EOF) {
+			while (this.tokenizer.nextToken() != StreamTokenizer.TT_WORD || !"ENTITY".equals(this.tokenizer.sval)) {
+				if (this.tokenizer.ttype == StreamTokenizer.TT_EOF) {
 					return false;
 				}
 			}
@@ -178,8 +178,8 @@ public class HtmlCharacterEntityReferencesTests {
 		}
 
 		private String nextWordToken() throws IOException {
-			tokenizer.nextToken();
-			return tokenizer.sval;
+			this.tokenizer.nextToken();
+			return this.tokenizer.sval;
 		}
 	}
 

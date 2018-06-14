@@ -49,13 +49,13 @@ public class SimpleThreadScopeTests {
 		Thread thread1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				beans[0] = applicationContext.getBean("threadScopedObject", TestBean.class);
+				beans[0] = SimpleThreadScopeTests.this.applicationContext.getBean("threadScopedObject", TestBean.class);
 			}
 		});
 		Thread thread2 = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				beans[1] = applicationContext.getBean("threadScopedObject", TestBean.class);
+				beans[1] = SimpleThreadScopeTests.this.applicationContext.getBean("threadScopedObject", TestBean.class);
 			}
 		});
 		thread1.start();

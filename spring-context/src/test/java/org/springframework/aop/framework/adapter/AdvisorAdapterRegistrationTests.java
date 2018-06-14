@@ -117,11 +117,11 @@ class SimpleBeforeAdviceImpl implements SimpleBeforeAdvice {
 
 	@Override
 	public void before() throws Throwable {
-		++invocationCounter;
+		++this.invocationCounter;
 	}
 
 	public int getInvocationCounter() {
-		return invocationCounter;
+		return this.invocationCounter;
 	}
 
 }
@@ -137,7 +137,7 @@ final class SimpleBeforeAdviceInterceptor implements MethodInterceptor {
 
 	@Override
 	public Object invoke(MethodInvocation mi) throws Throwable {
-		advice.before();
+		this.advice.before();
 		return mi.proceed();
 	}
 }

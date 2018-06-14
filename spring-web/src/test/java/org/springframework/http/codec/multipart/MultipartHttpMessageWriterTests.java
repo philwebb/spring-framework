@@ -265,7 +265,7 @@ public class MultipartHttpMessageWriterTests {
 		}
 
 		public String getBar() {
-			return bar;
+			return this.bar;
 		}
 
 		public void setBar(String bar) {

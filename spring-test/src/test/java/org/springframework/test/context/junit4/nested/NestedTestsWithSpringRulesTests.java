@@ -51,7 +51,7 @@ public class NestedTestsWithSpringRulesTests extends SpringRuleConfigurer {
 
 	@Test
 	public void topLevelTest() {
-		assertEquals("foo", foo);
+		assertEquals("foo", this.foo);
 	}
 
 
@@ -70,8 +70,8 @@ public class NestedTestsWithSpringRulesTests extends SpringRuleConfigurer {
 			//
 			// assertEquals("foo", foo);
 
-			assertNull("@Autowired field in enclosing instance should be null.", foo);
-			assertEquals("bar", bar);
+			assertNull("@Autowired field in enclosing instance should be null.", NestedTestsWithSpringRulesTests.this.foo);
+			assertEquals("bar", this.bar);
 		}
 	}
 

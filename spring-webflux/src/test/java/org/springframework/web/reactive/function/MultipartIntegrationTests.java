@@ -47,7 +47,7 @@ public class MultipartIntegrationTests extends AbstractRouterFunctionIntegration
 
 	@Test
 	public void multipartData() {
-		Mono<ClientResponse> result = webClient
+		Mono<ClientResponse> result = this.webClient
 				.post()
 				.uri("http://localhost:" + this.port + "/multipartData")
 				.syncBody(generateBody())
@@ -61,7 +61,7 @@ public class MultipartIntegrationTests extends AbstractRouterFunctionIntegration
 
 	@Test
 	public void parts() {
-		Mono<ClientResponse> result = webClient
+		Mono<ClientResponse> result = this.webClient
 				.post()
 				.uri("http://localhost:" + this.port + "/parts")
 				.syncBody(generateBody())

@@ -33,7 +33,7 @@ public class GeneratedNameBean implements BeanNameAware {
 	}
 
 	public String getBeanName() {
-		return beanName;
+		return this.beanName;
 	}
 
 	public void setChild(GeneratedNameBean child) {
@@ -41,7 +41,7 @@ public class GeneratedNameBean implements BeanNameAware {
 	}
 
 	public GeneratedNameBean getChild() {
-		return child;
+		return this.child;
 	}
 
 }

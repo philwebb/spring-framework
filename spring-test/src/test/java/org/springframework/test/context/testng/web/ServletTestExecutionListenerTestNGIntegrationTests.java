@@ -72,7 +72,7 @@ public class ServletTestExecutionListenerTestNGIntegrationTests extends Abstract
 	}
 
 	private void assertInjectedServletRequestEqualsRequestInRequestContextHolder() {
-		assertEquals("Injected ServletRequest must be stored in the RequestContextHolder", servletRequest,
+		assertEquals("Injected ServletRequest must be stored in the RequestContextHolder", this.servletRequest,
 			((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
 	}
 

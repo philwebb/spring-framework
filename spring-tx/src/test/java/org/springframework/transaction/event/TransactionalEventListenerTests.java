@@ -308,11 +308,11 @@ public class TransactionalEventListenerTests {
 
 
 	protected EventCollector getEventCollector() {
-		return eventCollector;
+		return this.eventCollector;
 	}
 
 	protected ConfigurableApplicationContext getContext() {
-		return context;
+		return this.context;
 	}
 
 	private void load(Class<?>... classes) {
@@ -542,7 +542,7 @@ public class TransactionalEventListenerTests {
 
 		@Override
 		public int getOrder() {
-			return order;
+			return this.order;
 		}
 	}
 

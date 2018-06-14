@@ -58,24 +58,24 @@ public class RequestHeaderMapMethodArgumentResolverTests {
 
 	@Before
 	public void setup() throws Exception {
-		resolver = new RequestHeaderMapMethodArgumentResolver(ReactiveAdapterRegistry.getSharedInstance());
+		this.resolver = new RequestHeaderMapMethodArgumentResolver(ReactiveAdapterRegistry.getSharedInstance());
 
 		Method method = ReflectionUtils.findMethod(getClass(), "params", (Class<?>[]) null);
-		paramMap = new SynthesizingMethodParameter(method, 0);
-		paramMultiValueMap = new SynthesizingMethodParameter(method, 1);
-		paramHttpHeaders = new SynthesizingMethodParameter(method, 2);
-		paramUnsupported = new SynthesizingMethodParameter(method, 3);
-		paramUnsupported = new SynthesizingMethodParameter(method, 3);
-		paramAlsoUnsupported = new SynthesizingMethodParameter(method, 4);
+		this.paramMap = new SynthesizingMethodParameter(method, 0);
+		this.paramMultiValueMap = new SynthesizingMethodParameter(method, 1);
+		this.paramHttpHeaders = new SynthesizingMethodParameter(method, 2);
+		this.paramUnsupported = new SynthesizingMethodParameter(method, 3);
+		this.paramUnsupported = new SynthesizingMethodParameter(method, 3);
+		this.paramAlsoUnsupported = new SynthesizingMethodParameter(method, 4);
 	}
 
 
 	@Test
 	public void supportsParameter() {
-		assertTrue("Map parameter not supported", resolver.supportsParameter(paramMap));
-		assertTrue("MultiValueMap parameter not supported", resolver.supportsParameter(paramMultiValueMap));
-		assertTrue("HttpHeaders parameter not supported", resolver.supportsParameter(paramHttpHeaders));
-		assertFalse("non-@RequestParam map supported", resolver.supportsParameter(paramUnsupported));
+		assertTrue("Map parameter not supported", this.resolver.supportsParameter(this.paramMap));
+		assertTrue("MultiValueMap parameter not supported", this.resolver.supportsParameter(this.paramMultiValueMap));
+		assertTrue("HttpHeaders parameter not supported", this.resolver.supportsParameter(this.paramHttpHeaders));
+		assertFalse("non-@RequestParam map supported", this.resolver.supportsParameter(this.paramUnsupported));
 		try {
 			this.resolver.supportsParameter(this.paramAlsoUnsupported);
 			fail();
@@ -95,7 +95,7 @@ public class RequestHeaderMapMethodArgumentResolverTests {
 		MockServerHttpRequest request = MockServerHttpRequest.get("/").header(name, value).build();
 		MockServerWebExchange exchange = MockServerWebExchange.from(request);
 
-		Mono<Object> mono = resolver.resolveArgument(paramMap, null, exchange);
+		Mono<Object> mono = this.resolver.resolveArgument(this.paramMap, null, exchange);
 		Object result = mono.block();
 
 		assertTrue(result instanceof Map);
@@ -114,7 +114,7 @@ public class RequestHeaderMapMethodArgumentResolverTests {
 		expected.add(name, value1);
 		expected.add(name, value2);
 
-		Mono<Object> mono = resolver.resolveArgument(paramMultiValueMap, null, exchange);
+		Mono<Object> mono = this.resolver.resolveArgument(this.paramMultiValueMap, null, exchange);
 		Object result = mono.block();
 
 		assertTrue(result instanceof MultiValueMap);
@@ -133,7 +133,7 @@ public class RequestHeaderMapMethodArgumentResolverTests {
 		expected.add(name, value1);
 		expected.add(name, value2);
 
-		Mono<Object> mono = resolver.resolveArgument(paramHttpHeaders, null, exchange);
+		Mono<Object> mono = this.resolver.resolveArgument(this.paramHttpHeaders, null, exchange);
 		Object result = mono.block();
 
 		assertTrue(result instanceof HttpHeaders);

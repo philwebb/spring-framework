@@ -155,7 +155,7 @@ public class FormattingConversionServiceFactoryBeanTests {
 		private int specialInt;
 
 		public int getSpecialInt() {
-			return specialInt;
+			return this.specialInt;
 		}
 
 		public void setSpecialInt(int field) {
@@ -185,12 +185,12 @@ public class FormattingConversionServiceFactoryBeanTests {
 		private final Set<Class<?>> fieldTypes = new HashSet<>(1);
 
 		public SpecialIntAnnotationFormatterFactory() {
-			fieldTypes.add(Integer.class);
+			this.fieldTypes.add(Integer.class);
 		}
 
 		@Override
 		public Set<Class<?>> getFieldTypes() {
-			return fieldTypes;
+			return this.fieldTypes;
 		}
 
 		@Override

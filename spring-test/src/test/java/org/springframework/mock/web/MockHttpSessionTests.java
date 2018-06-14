@@ -33,15 +33,15 @@ public class MockHttpSessionTests {
 
 	@Test
 	public void invalidateOnce() {
-		assertFalse(session.isInvalid());
-		session.invalidate();
-		assertTrue(session.isInvalid());
+		assertFalse(this.session.isInvalid());
+		this.session.invalidate();
+		assertTrue(this.session.isInvalid());
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void invalidateTwice() {
-		session.invalidate();
-		session.invalidate();
+		this.session.invalidate();
+		this.session.invalidate();
 	}
 
 	/**
@@ -49,8 +49,8 @@ public class MockHttpSessionTests {
 	 */
 	@Test(expected = IllegalStateException.class)
 	public void getCreationTimeOnInvalidatedSession() {
-		session.invalidate();
-		session.getCreationTime();
+		this.session.invalidate();
+		this.session.getCreationTime();
 	}
 
 	/**
@@ -58,8 +58,8 @@ public class MockHttpSessionTests {
 	 */
 	@Test(expected = IllegalStateException.class)
 	public void getLastAccessedTimeOnInvalidatedSession() {
-		session.invalidate();
-		session.getLastAccessedTime();
+		this.session.invalidate();
+		this.session.getLastAccessedTime();
 	}
 
 	/**
@@ -67,8 +67,8 @@ public class MockHttpSessionTests {
 	 */
 	@Test(expected = IllegalStateException.class)
 	public void getAttributeOnInvalidatedSession() {
-		session.invalidate();
-		session.getAttribute("foo");
+		this.session.invalidate();
+		this.session.getAttribute("foo");
 	}
 
 	/**
@@ -76,8 +76,8 @@ public class MockHttpSessionTests {
 	 */
 	@Test(expected = IllegalStateException.class)
 	public void getAttributeNamesOnInvalidatedSession() {
-		session.invalidate();
-		session.getAttributeNames();
+		this.session.invalidate();
+		this.session.getAttributeNames();
 	}
 
 	/**
@@ -85,8 +85,8 @@ public class MockHttpSessionTests {
 	 */
 	@Test(expected = IllegalStateException.class)
 	public void getValueOnInvalidatedSession() {
-		session.invalidate();
-		session.getValue("foo");
+		this.session.invalidate();
+		this.session.getValue("foo");
 	}
 
 	/**
@@ -94,8 +94,8 @@ public class MockHttpSessionTests {
 	 */
 	@Test(expected = IllegalStateException.class)
 	public void getValueNamesOnInvalidatedSession() {
-		session.invalidate();
-		session.getValueNames();
+		this.session.invalidate();
+		this.session.getValueNames();
 	}
 
 	/**
@@ -103,8 +103,8 @@ public class MockHttpSessionTests {
 	 */
 	@Test(expected = IllegalStateException.class)
 	public void setAttributeOnInvalidatedSession() {
-		session.invalidate();
-		session.setAttribute("name", "value");
+		this.session.invalidate();
+		this.session.setAttribute("name", "value");
 	}
 
 	/**
@@ -112,8 +112,8 @@ public class MockHttpSessionTests {
 	 */
 	@Test(expected = IllegalStateException.class)
 	public void putValueOnInvalidatedSession() {
-		session.invalidate();
-		session.putValue("name", "value");
+		this.session.invalidate();
+		this.session.putValue("name", "value");
 	}
 
 	/**
@@ -121,8 +121,8 @@ public class MockHttpSessionTests {
 	 */
 	@Test(expected = IllegalStateException.class)
 	public void removeAttributeOnInvalidatedSession() {
-		session.invalidate();
-		session.removeAttribute("name");
+		this.session.invalidate();
+		this.session.removeAttribute("name");
 	}
 
 	/**
@@ -130,8 +130,8 @@ public class MockHttpSessionTests {
 	 */
 	@Test(expected = IllegalStateException.class)
 	public void removeValueOnInvalidatedSession() {
-		session.invalidate();
-		session.removeValue("name");
+		this.session.invalidate();
+		this.session.removeValue("name");
 	}
 
 	/**
@@ -139,8 +139,8 @@ public class MockHttpSessionTests {
 	 */
 	@Test(expected = IllegalStateException.class)
 	public void isNewOnInvalidatedSession() {
-		session.invalidate();
-		session.isNew();
+		this.session.invalidate();
+		this.session.isNew();
 	}
 
 }

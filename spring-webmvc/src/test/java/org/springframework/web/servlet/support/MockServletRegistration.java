@@ -36,7 +36,7 @@ class MockServletRegistration implements ServletRegistration.Dynamic {
 	private boolean asyncSupported = false;
 
 	public int getLoadOnStartup() {
-		return loadOnStartup;
+		return this.loadOnStartup;
 	}
 
 	@Override
@@ -51,18 +51,18 @@ class MockServletRegistration implements ServletRegistration.Dynamic {
 
 	@Override
 	public Set<String> addMapping(String... urlPatterns) {
-		mappings.addAll(Arrays.asList(urlPatterns));
-		return mappings;
+		this.mappings.addAll(Arrays.asList(urlPatterns));
+		return this.mappings;
 	}
 
 	@Override
 	public Collection<String> getMappings() {
-		return mappings;
+		return this.mappings;
 	}
 
 	@Override
 	public String getRunAsRole() {
-		return roleName;
+		return this.roleName;
 	}
 
 	@Override

@@ -60,67 +60,67 @@ public class ClassUtilsTests {
 
 	@Test
 	public void testIsPresent() {
-		assertTrue(ClassUtils.isPresent("java.lang.String", classLoader));
-		assertFalse(ClassUtils.isPresent("java.lang.MySpecialString", classLoader));
+		assertTrue(ClassUtils.isPresent("java.lang.String", this.classLoader));
+		assertFalse(ClassUtils.isPresent("java.lang.MySpecialString", this.classLoader));
 	}
 
 	@Test
 	public void testForName() throws ClassNotFoundException {
-		assertEquals(String.class, ClassUtils.forName("java.lang.String", classLoader));
-		assertEquals(String[].class, ClassUtils.forName("java.lang.String[]", classLoader));
-		assertEquals(String[].class, ClassUtils.forName(String[].class.getName(), classLoader));
-		assertEquals(String[][].class, ClassUtils.forName(String[][].class.getName(), classLoader));
-		assertEquals(String[][][].class, ClassUtils.forName(String[][][].class.getName(), classLoader));
-		assertEquals(TestObject.class, ClassUtils.forName("org.springframework.tests.sample.objects.TestObject", classLoader));
-		assertEquals(TestObject[].class, ClassUtils.forName("org.springframework.tests.sample.objects.TestObject[]", classLoader));
-		assertEquals(TestObject[].class, ClassUtils.forName(TestObject[].class.getName(), classLoader));
-		assertEquals(TestObject[][].class, ClassUtils.forName("org.springframework.tests.sample.objects.TestObject[][]", classLoader));
-		assertEquals(TestObject[][].class, ClassUtils.forName(TestObject[][].class.getName(), classLoader));
-		assertEquals(short[][][].class, ClassUtils.forName("[[[S", classLoader));
+		assertEquals(String.class, ClassUtils.forName("java.lang.String", this.classLoader));
+		assertEquals(String[].class, ClassUtils.forName("java.lang.String[]", this.classLoader));
+		assertEquals(String[].class, ClassUtils.forName(String[].class.getName(), this.classLoader));
+		assertEquals(String[][].class, ClassUtils.forName(String[][].class.getName(), this.classLoader));
+		assertEquals(String[][][].class, ClassUtils.forName(String[][][].class.getName(), this.classLoader));
+		assertEquals(TestObject.class, ClassUtils.forName("org.springframework.tests.sample.objects.TestObject", this.classLoader));
+		assertEquals(TestObject[].class, ClassUtils.forName("org.springframework.tests.sample.objects.TestObject[]", this.classLoader));
+		assertEquals(TestObject[].class, ClassUtils.forName(TestObject[].class.getName(), this.classLoader));
+		assertEquals(TestObject[][].class, ClassUtils.forName("org.springframework.tests.sample.objects.TestObject[][]", this.classLoader));
+		assertEquals(TestObject[][].class, ClassUtils.forName(TestObject[][].class.getName(), this.classLoader));
+		assertEquals(short[][][].class, ClassUtils.forName("[[[S", this.classLoader));
 	}
 
 	@Test
 	public void testForNameWithPrimitiveClasses() throws ClassNotFoundException {
-		assertEquals(boolean.class, ClassUtils.forName("boolean", classLoader));
-		assertEquals(byte.class, ClassUtils.forName("byte", classLoader));
-		assertEquals(char.class, ClassUtils.forName("char", classLoader));
-		assertEquals(short.class, ClassUtils.forName("short", classLoader));
-		assertEquals(int.class, ClassUtils.forName("int", classLoader));
-		assertEquals(long.class, ClassUtils.forName("long", classLoader));
-		assertEquals(float.class, ClassUtils.forName("float", classLoader));
-		assertEquals(double.class, ClassUtils.forName("double", classLoader));
-		assertEquals(void.class, ClassUtils.forName("void", classLoader));
+		assertEquals(boolean.class, ClassUtils.forName("boolean", this.classLoader));
+		assertEquals(byte.class, ClassUtils.forName("byte", this.classLoader));
+		assertEquals(char.class, ClassUtils.forName("char", this.classLoader));
+		assertEquals(short.class, ClassUtils.forName("short", this.classLoader));
+		assertEquals(int.class, ClassUtils.forName("int", this.classLoader));
+		assertEquals(long.class, ClassUtils.forName("long", this.classLoader));
+		assertEquals(float.class, ClassUtils.forName("float", this.classLoader));
+		assertEquals(double.class, ClassUtils.forName("double", this.classLoader));
+		assertEquals(void.class, ClassUtils.forName("void", this.classLoader));
 	}
 
 	@Test
 	public void testForNameWithPrimitiveArrays() throws ClassNotFoundException {
-		assertEquals(boolean[].class, ClassUtils.forName("boolean[]", classLoader));
-		assertEquals(byte[].class, ClassUtils.forName("byte[]", classLoader));
-		assertEquals(char[].class, ClassUtils.forName("char[]", classLoader));
-		assertEquals(short[].class, ClassUtils.forName("short[]", classLoader));
-		assertEquals(int[].class, ClassUtils.forName("int[]", classLoader));
-		assertEquals(long[].class, ClassUtils.forName("long[]", classLoader));
-		assertEquals(float[].class, ClassUtils.forName("float[]", classLoader));
-		assertEquals(double[].class, ClassUtils.forName("double[]", classLoader));
+		assertEquals(boolean[].class, ClassUtils.forName("boolean[]", this.classLoader));
+		assertEquals(byte[].class, ClassUtils.forName("byte[]", this.classLoader));
+		assertEquals(char[].class, ClassUtils.forName("char[]", this.classLoader));
+		assertEquals(short[].class, ClassUtils.forName("short[]", this.classLoader));
+		assertEquals(int[].class, ClassUtils.forName("int[]", this.classLoader));
+		assertEquals(long[].class, ClassUtils.forName("long[]", this.classLoader));
+		assertEquals(float[].class, ClassUtils.forName("float[]", this.classLoader));
+		assertEquals(double[].class, ClassUtils.forName("double[]", this.classLoader));
 	}
 
 	@Test
 	public void testForNameWithPrimitiveArraysInternalName() throws ClassNotFoundException {
-		assertEquals(boolean[].class, ClassUtils.forName(boolean[].class.getName(), classLoader));
-		assertEquals(byte[].class, ClassUtils.forName(byte[].class.getName(), classLoader));
-		assertEquals(char[].class, ClassUtils.forName(char[].class.getName(), classLoader));
-		assertEquals(short[].class, ClassUtils.forName(short[].class.getName(), classLoader));
-		assertEquals(int[].class, ClassUtils.forName(int[].class.getName(), classLoader));
-		assertEquals(long[].class, ClassUtils.forName(long[].class.getName(), classLoader));
-		assertEquals(float[].class, ClassUtils.forName(float[].class.getName(), classLoader));
-		assertEquals(double[].class, ClassUtils.forName(double[].class.getName(), classLoader));
+		assertEquals(boolean[].class, ClassUtils.forName(boolean[].class.getName(), this.classLoader));
+		assertEquals(byte[].class, ClassUtils.forName(byte[].class.getName(), this.classLoader));
+		assertEquals(char[].class, ClassUtils.forName(char[].class.getName(), this.classLoader));
+		assertEquals(short[].class, ClassUtils.forName(short[].class.getName(), this.classLoader));
+		assertEquals(int[].class, ClassUtils.forName(int[].class.getName(), this.classLoader));
+		assertEquals(long[].class, ClassUtils.forName(long[].class.getName(), this.classLoader));
+		assertEquals(float[].class, ClassUtils.forName(float[].class.getName(), this.classLoader));
+		assertEquals(double[].class, ClassUtils.forName(double[].class.getName(), this.classLoader));
 	}
 
 	@Test
 	public void testIsCacheSafe() {
-		ClassLoader childLoader1 = new ClassLoader(classLoader) {};
-		ClassLoader childLoader2 = new ClassLoader(classLoader) {};
-		ClassLoader childLoader3 = new ClassLoader(classLoader) {
+		ClassLoader childLoader1 = new ClassLoader(this.classLoader) {};
+		ClassLoader childLoader2 = new ClassLoader(this.classLoader) {};
+		ClassLoader childLoader3 = new ClassLoader(this.classLoader) {
 			@Override
 			public Class<?> loadClass(String name) throws ClassNotFoundException {
 				return childLoader1.loadClass(name);
@@ -130,17 +130,17 @@ public class ClassUtilsTests {
 				new Class<?>[] {Serializable.class, Externalizable.class}, childLoader1);
 
 		assertTrue(ClassUtils.isCacheSafe(String.class, null));
-		assertTrue(ClassUtils.isCacheSafe(String.class, classLoader));
+		assertTrue(ClassUtils.isCacheSafe(String.class, this.classLoader));
 		assertTrue(ClassUtils.isCacheSafe(String.class, childLoader1));
 		assertTrue(ClassUtils.isCacheSafe(String.class, childLoader2));
 		assertTrue(ClassUtils.isCacheSafe(String.class, childLoader3));
 		assertFalse(ClassUtils.isCacheSafe(InnerClass.class, null));
-		assertTrue(ClassUtils.isCacheSafe(InnerClass.class, classLoader));
+		assertTrue(ClassUtils.isCacheSafe(InnerClass.class, this.classLoader));
 		assertTrue(ClassUtils.isCacheSafe(InnerClass.class, childLoader1));
 		assertTrue(ClassUtils.isCacheSafe(InnerClass.class, childLoader2));
 		assertTrue(ClassUtils.isCacheSafe(InnerClass.class, childLoader3));
 		assertFalse(ClassUtils.isCacheSafe(composite, null));
-		assertFalse(ClassUtils.isCacheSafe(composite, classLoader));
+		assertFalse(ClassUtils.isCacheSafe(composite, this.classLoader));
 		assertTrue(ClassUtils.isCacheSafe(composite, childLoader1));
 		assertFalse(ClassUtils.isCacheSafe(composite, childLoader2));
 		assertTrue(ClassUtils.isCacheSafe(composite, childLoader3));

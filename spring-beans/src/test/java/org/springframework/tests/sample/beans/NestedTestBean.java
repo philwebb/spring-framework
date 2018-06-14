@@ -39,7 +39,7 @@ public class NestedTestBean implements INestedTestBean {
 
 	@Override
 	public String getCompany() {
-		return company;
+		return this.company;
 	}
 
 	@Override

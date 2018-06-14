@@ -55,25 +55,25 @@ public class ConcurrentBeanWrapperTests {
 	public void testConcurrent() {
 		for (int i = 0; i < 10; i++) {
 			TestRun run = new TestRun(this);
-			set.add(run);
+			this.set.add(run);
 			Thread t = new Thread(run);
 			t.setDaemon(true);
 			t.start();
 		}
-		logger.info("Thread creation over, " + set.size() + " still active.");
+		this.logger.info("Thread creation over, " + this.set.size() + " still active.");
 		synchronized (this) {
-			while (!set.isEmpty() && ex == null) {
+			while (!this.set.isEmpty() && this.ex == null) {
 				try {
 					wait();
 				}
 				catch (InterruptedException e) {
-					logger.info(e.toString());
+					this.logger.info(e.toString());
 				}
-				logger.info(set.size() + " threads still active.");
+				this.logger.info(this.set.size() + " threads still active.");
 			}
 		}
-		if (ex != null) {
-			fail(ex.getMessage());
+		if (this.ex != null) {
+			fail(this.ex.getMessage());
 		}
 	}
 
@@ -123,12 +123,12 @@ public class ConcurrentBeanWrapperTests {
 				}
 			}
 			catch (Throwable e) {
-				test.ex = e;
+				this.test.ex = e;
 			}
 			finally {
-				synchronized (test) {
-					test.set.remove(this);
-					test.notifyAll();
+				synchronized (this.test) {
+					this.test.set.remove(this);
+					this.test.notifyAll();
 				}
 			}
 		}
@@ -141,7 +141,7 @@ public class ConcurrentBeanWrapperTests {
 		private Properties properties;
 
 		public Properties getProperties() {
-			return properties;
+			return this.properties;
 		}
 
 		public void setProperties(Properties properties) {

@@ -62,7 +62,7 @@ public class XsltViewTests {
 	@Test(expected = IllegalArgumentException.class)
 	public void withNoSource() throws Exception {
 		final XsltView view = getXsltView(HTML_OUTPUT);
-		view.render(emptyMap(), request, response);
+		view.render(emptyMap(), this.request, this.response);
 	}
 
 	@Test(expected = IllegalArgumentException.class)

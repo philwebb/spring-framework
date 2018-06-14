@@ -58,9 +58,9 @@ public class EarTests {
 
 	@Test
 	public void verifyEarConfig() {
-		assertFalse(context instanceof WebApplicationContext);
-		assertNull(context.getParent());
-		assertEquals("ear", ear);
+		assertFalse(this.context instanceof WebApplicationContext);
+		assertNull(this.context.getParent());
+		assertEquals("ear", this.ear);
 	}
 
 }

@@ -140,9 +140,9 @@ public class DefaultMessageListenerContainerTests {
 				int currentAttempts = 0;
 				@Override
 				public Object answer(InvocationOnMock invocation) throws Throwable {
-					currentAttempts++;
-					if (currentAttempts <= failingAttempts) {
-						throw new JMSException("Test exception (attempt " + currentAttempts + ")");
+					this.currentAttempts++;
+					if (this.currentAttempts <= failingAttempts) {
+						throw new JMSException("Test exception (attempt " + this.currentAttempts + ")");
 					}
 					else {
 						return mock(Connection.class);

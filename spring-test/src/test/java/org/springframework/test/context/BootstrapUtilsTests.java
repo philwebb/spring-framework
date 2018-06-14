@@ -59,10 +59,10 @@ public class BootstrapUtilsTests {
 
 	@Test
 	public void resolveTestContextBootstrapperWithEmptyBootstrapWithAnnotation() {
-		BootstrapContext bootstrapContext = BootstrapTestUtils.buildBootstrapContext(EmptyBootstrapWithAnnotationClass.class, delegate);
+		BootstrapContext bootstrapContext = BootstrapTestUtils.buildBootstrapContext(EmptyBootstrapWithAnnotationClass.class, this.delegate);
 
-		exception.expect(IllegalStateException.class);
-		exception.expectMessage(containsString("Specify @BootstrapWith's 'value' attribute"));
+		this.exception.expect(IllegalStateException.class);
+		this.exception.expectMessage(containsString("Specify @BootstrapWith's 'value' attribute"));
 
 		resolveTestContextBootstrapper(bootstrapContext);
 	}
@@ -85,18 +85,18 @@ public class BootstrapUtilsTests {
 	@Test
 	public void resolveTestContextBootstrapperWithDoubleMetaBootstrapWithAnnotation() {
 		BootstrapContext bootstrapContext = BootstrapTestUtils.buildBootstrapContext(
-			DoubleMetaAnnotatedBootstrapWithAnnotationClass.class, delegate);
+			DoubleMetaAnnotatedBootstrapWithAnnotationClass.class, this.delegate);
 
-		exception.expect(IllegalStateException.class);
-		exception.expectMessage(containsString("found multiple declarations of @BootstrapWith"));
-		exception.expectMessage(containsString(FooBootstrapper.class.getName()));
-		exception.expectMessage(containsString(BarBootstrapper.class.getName()));
+		this.exception.expect(IllegalStateException.class);
+		this.exception.expectMessage(containsString("found multiple declarations of @BootstrapWith"));
+		this.exception.expectMessage(containsString(FooBootstrapper.class.getName()));
+		this.exception.expectMessage(containsString(BarBootstrapper.class.getName()));
 
 		resolveTestContextBootstrapper(bootstrapContext);
 	}
 
 	private void assertBootstrapper(Class<?> testClass, Class<?> expectedBootstrapper) {
-		BootstrapContext bootstrapContext = BootstrapTestUtils.buildBootstrapContext(testClass, delegate);
+		BootstrapContext bootstrapContext = BootstrapTestUtils.buildBootstrapContext(testClass, this.delegate);
 		TestContextBootstrapper bootstrapper = resolveTestContextBootstrapper(bootstrapContext);
 		assertNotNull(bootstrapper);
 		assertEquals(expectedBootstrapper, bootstrapper.getClass());

@@ -65,7 +65,7 @@ public abstract class AbstractAsyncHttpRequestFactoryTestCase extends AbstractMo
 
 	@Test
 	public void status() throws Exception {
-		URI uri = new URI(baseUrl + "/status/notfound");
+		URI uri = new URI(this.baseUrl + "/status/notfound");
 		AsyncClientHttpRequest request = this.factory.createAsyncRequest(uri, HttpMethod.GET);
 		assertEquals("Invalid HTTP method", HttpMethod.GET, request.getMethod());
 		assertEquals("Invalid HTTP URI", uri, request.getURI());
@@ -81,7 +81,7 @@ public abstract class AbstractAsyncHttpRequestFactoryTestCase extends AbstractMo
 
 	@Test
 	public void statusCallback() throws Exception {
-		URI uri = new URI(baseUrl + "/status/notfound");
+		URI uri = new URI(this.baseUrl + "/status/notfound");
 		AsyncClientHttpRequest request = this.factory.createAsyncRequest(uri, HttpMethod.GET);
 		assertEquals("Invalid HTTP method", HttpMethod.GET, request.getMethod());
 		assertEquals("Invalid HTTP URI", uri, request.getURI());
@@ -112,7 +112,7 @@ public abstract class AbstractAsyncHttpRequestFactoryTestCase extends AbstractMo
 
 	@Test
 	public void echo() throws Exception {
-		AsyncClientHttpRequest request = this.factory.createAsyncRequest(new URI(baseUrl + "/echo"), HttpMethod.PUT);
+		AsyncClientHttpRequest request = this.factory.createAsyncRequest(new URI(this.baseUrl + "/echo"), HttpMethod.PUT);
 		assertEquals("Invalid HTTP method", HttpMethod.PUT, request.getMethod());
 		String headerName = "MyHeader";
 		String headerValue1 = "value1";
@@ -147,7 +147,7 @@ public abstract class AbstractAsyncHttpRequestFactoryTestCase extends AbstractMo
 
 	@Test
 	public void multipleWrites() throws Exception {
-		AsyncClientHttpRequest request = this.factory.createAsyncRequest(new URI(baseUrl + "/echo"), HttpMethod.POST);
+		AsyncClientHttpRequest request = this.factory.createAsyncRequest(new URI(this.baseUrl + "/echo"), HttpMethod.POST);
 		final byte[] body = "Hello World".getBytes("UTF-8");
 
 		if (request instanceof StreamingHttpOutputMessage) {
@@ -174,7 +174,7 @@ public abstract class AbstractAsyncHttpRequestFactoryTestCase extends AbstractMo
 
 	@Test
 	public void headersAfterExecute() throws Exception {
-		AsyncClientHttpRequest request = this.factory.createAsyncRequest(new URI(baseUrl + "/echo"), HttpMethod.POST);
+		AsyncClientHttpRequest request = this.factory.createAsyncRequest(new URI(this.baseUrl + "/echo"), HttpMethod.POST);
 		request.getHeaders().add("MyHeader", "value");
 		byte[] body = "Hello World".getBytes("UTF-8");
 		FileCopyUtils.copy(body, request.getBody());
@@ -206,7 +206,7 @@ public abstract class AbstractAsyncHttpRequestFactoryTestCase extends AbstractMo
 	protected void assertHttpMethod(String path, HttpMethod method) throws Exception {
 		ClientHttpResponse response = null;
 		try {
-			AsyncClientHttpRequest request = this.factory.createAsyncRequest(new URI(baseUrl + "/methods/" + path), method);
+			AsyncClientHttpRequest request = this.factory.createAsyncRequest(new URI(this.baseUrl + "/methods/" + path), method);
 			if (method == HttpMethod.POST || method == HttpMethod.PUT || method == HttpMethod.PATCH) {
 				// requires a body
 				request.getBody().write(32);
@@ -225,7 +225,7 @@ public abstract class AbstractAsyncHttpRequestFactoryTestCase extends AbstractMo
 
 	@Test
 	public void cancel() throws Exception {
-		URI uri = new URI(baseUrl + "/status/notfound");
+		URI uri = new URI(this.baseUrl + "/status/notfound");
 		AsyncClientHttpRequest request = this.factory.createAsyncRequest(uri, HttpMethod.GET);
 		Future<ClientHttpResponse> futureResponse = request.executeAsync();
 		futureResponse.cancel(true);

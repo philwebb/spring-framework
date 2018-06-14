@@ -39,7 +39,7 @@ public class Person {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public Person setName(String name) {
@@ -48,7 +48,7 @@ public class Person {
 	}
 
 	public double getSomeDouble() {
-		return someDouble;
+		return this.someDouble;
 	}
 
 	public Person setSomeDouble(double someDouble) {
@@ -57,7 +57,7 @@ public class Person {
 	}
 
 	public boolean isSomeBoolean() {
-		return someBoolean;
+		return this.someBoolean;
 	}
 
 	public Person setSomeBoolean(boolean someBoolean) {

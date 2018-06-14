@@ -46,34 +46,34 @@ public class StreamUtilsTests {
 
 	@Before
 	public void setup() {
-		new Random().nextBytes(bytes);
-		while (string.length() < StreamUtils.BUFFER_SIZE + 10) {
-			string += UUID.randomUUID().toString();
+		new Random().nextBytes(this.bytes);
+		while (this.string.length() < StreamUtils.BUFFER_SIZE + 10) {
+			this.string += UUID.randomUUID().toString();
 		}
 	}
 
 	@Test
 	public void copyToByteArray() throws Exception {
-		InputStream inputStream = spy(new ByteArrayInputStream(bytes));
+		InputStream inputStream = spy(new ByteArrayInputStream(this.bytes));
 		byte[] actual = StreamUtils.copyToByteArray(inputStream);
-		assertThat(actual, equalTo(bytes));
+		assertThat(actual, equalTo(this.bytes));
 		verify(inputStream, never()).close();
 	}
 
 	@Test
 	public void copyToString() throws Exception {
 		Charset charset = Charset.defaultCharset();
-		InputStream inputStream = spy(new ByteArrayInputStream(string.getBytes(charset)));
+		InputStream inputStream = spy(new ByteArrayInputStream(this.string.getBytes(charset)));
 		String actual = StreamUtils.copyToString(inputStream, charset);
-		assertThat(actual, equalTo(string));
+		assertThat(actual, equalTo(this.string));
 		verify(inputStream, never()).close();
 	}
 
 	@Test
 	public void copyBytes() throws Exception {
 		ByteArrayOutputStream out = spy(new ByteArrayOutputStream());
-		StreamUtils.copy(bytes, out);
-		assertThat(out.toByteArray(), equalTo(bytes));
+		StreamUtils.copy(this.bytes, out);
+		assertThat(out.toByteArray(), equalTo(this.bytes));
 		verify(out, never()).close();
 	}
 
@@ -81,24 +81,24 @@ public class StreamUtilsTests {
 	public void copyString() throws Exception {
 		Charset charset = Charset.defaultCharset();
 		ByteArrayOutputStream out = spy(new ByteArrayOutputStream());
-		StreamUtils.copy(string, charset, out);
-		assertThat(out.toByteArray(), equalTo(string.getBytes(charset)));
+		StreamUtils.copy(this.string, charset, out);
+		assertThat(out.toByteArray(), equalTo(this.string.getBytes(charset)));
 		verify(out, never()).close();
 	}
 
 	@Test
 	public void copyStream() throws Exception {
 		ByteArrayOutputStream out = spy(new ByteArrayOutputStream());
-		StreamUtils.copy(new ByteArrayInputStream(bytes), out);
-		assertThat(out.toByteArray(), equalTo(bytes));
+		StreamUtils.copy(new ByteArrayInputStream(this.bytes), out);
+		assertThat(out.toByteArray(), equalTo(this.bytes));
 		verify(out, never()).close();
 	}
 
 	@Test
 	public void copyRange() throws Exception {
 		ByteArrayOutputStream out = spy(new ByteArrayOutputStream());
-		StreamUtils.copyRange(new ByteArrayInputStream(bytes), out, 0, 100);
-		byte[] range = Arrays.copyOfRange(bytes, 0, 101);
+		StreamUtils.copyRange(new ByteArrayInputStream(this.bytes), out, 0, 100);
+		byte[] range = Arrays.copyOfRange(this.bytes, 0, 101);
 		assertThat(out.toByteArray(), equalTo(range));
 		verify(out, never()).close();
 	}
@@ -108,13 +108,13 @@ public class StreamUtilsTests {
 		InputStream source = mock(InputStream.class);
 		InputStream nonClosing = StreamUtils.nonClosing(source);
 		nonClosing.read();
-		nonClosing.read(bytes);
-		nonClosing.read(bytes, 1, 2);
+		nonClosing.read(this.bytes);
+		nonClosing.read(this.bytes, 1, 2);
 		nonClosing.close();
 		InOrder ordered = inOrder(source);
 		ordered.verify(source).read();
-		ordered.verify(source).read(bytes, 0, bytes.length);
-		ordered.verify(source).read(bytes, 1, 2);
+		ordered.verify(source).read(this.bytes, 0, this.bytes.length);
+		ordered.verify(source).read(this.bytes, 1, 2);
 		ordered.verify(source, never()).close();
 	}
 
@@ -123,13 +123,13 @@ public class StreamUtilsTests {
 		OutputStream source = mock(OutputStream.class);
 		OutputStream nonClosing = StreamUtils.nonClosing(source);
 		nonClosing.write(1);
-		nonClosing.write(bytes);
-		nonClosing.write(bytes, 1, 2);
+		nonClosing.write(this.bytes);
+		nonClosing.write(this.bytes, 1, 2);
 		nonClosing.close();
 		InOrder ordered = inOrder(source);
 		ordered.verify(source).write(1);
-		ordered.verify(source).write(bytes, 0, bytes.length);
-		ordered.verify(source).write(bytes, 1, 2);
+		ordered.verify(source).write(this.bytes, 0, this.bytes.length);
+		ordered.verify(source).write(this.bytes, 1, 2);
 		ordered.verify(source, never()).close();
 	}
 }

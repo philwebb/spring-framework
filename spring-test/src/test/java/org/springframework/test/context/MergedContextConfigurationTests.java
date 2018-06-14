@@ -60,24 +60,24 @@ public class MergedContextConfigurationTests {
 
 	@Test
 	public void hashCodeWithNullArrays() {
-		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(), null, null, null, loader);
-		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(), null, null, null, loader);
+		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(), null, null, null, this.loader);
+		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(), null, null, null, this.loader);
 		assertEquals(mergedConfig1.hashCode(), mergedConfig2.hashCode());
 	}
 
 	@Test
 	public void hashCodeWithEmptyArrays() {
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, this.loader);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, this.loader);
 		assertEquals(mergedConfig1.hashCode(), mergedConfig2.hashCode());
 	}
 
 	@Test
 	public void hashCodeWithEmptyArraysAndDifferentLoaders() {
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, this.loader);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(),
 				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, new AnnotationConfigContextLoader());
 		assertNotEquals(mergedConfig1.hashCode(), mergedConfig2.hashCode());
@@ -87,9 +87,9 @@ public class MergedContextConfigurationTests {
 	public void hashCodeWithSameLocations() {
 		String[] locations = new String[] { "foo", "bar}" };
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(), locations,
-				EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, loader);
+				EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, this.loader);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(), locations,
-				EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, loader);
+				EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, this.loader);
 		assertEquals(mergedConfig1.hashCode(), mergedConfig2.hashCode());
 	}
 
@@ -98,9 +98,9 @@ public class MergedContextConfigurationTests {
 		String[] locations1 = new String[] { "foo", "bar}" };
 		String[] locations2 = new String[] { "baz", "quux}" };
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(), locations1,
-				EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, loader);
+				EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, this.loader);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(), locations2,
-				EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, loader);
+				EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, this.loader);
 		assertNotEquals(mergedConfig1.hashCode(), mergedConfig2.hashCode());
 	}
 
@@ -108,9 +108,9 @@ public class MergedContextConfigurationTests {
 	public void hashCodeWithSameConfigClasses() {
 		Class<?>[] classes = new Class<?>[] { String.class, Integer.class };
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, classes, EMPTY_STRING_ARRAY, loader);
+				EMPTY_STRING_ARRAY, classes, EMPTY_STRING_ARRAY, this.loader);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, classes, EMPTY_STRING_ARRAY, loader);
+				EMPTY_STRING_ARRAY, classes, EMPTY_STRING_ARRAY, this.loader);
 		assertEquals(mergedConfig1.hashCode(), mergedConfig2.hashCode());
 	}
 
@@ -119,9 +119,9 @@ public class MergedContextConfigurationTests {
 		Class<?>[] classes1 = new Class<?>[] { String.class, Integer.class };
 		Class<?>[] classes2 = new Class<?>[] { Boolean.class, Number.class };
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, classes1, EMPTY_STRING_ARRAY, loader);
+				EMPTY_STRING_ARRAY, classes1, EMPTY_STRING_ARRAY, this.loader);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, classes2, EMPTY_STRING_ARRAY, loader);
+				EMPTY_STRING_ARRAY, classes2, EMPTY_STRING_ARRAY, this.loader);
 		assertNotEquals(mergedConfig1.hashCode(), mergedConfig2.hashCode());
 	}
 
@@ -129,9 +129,9 @@ public class MergedContextConfigurationTests {
 	public void hashCodeWithSameProfiles() {
 		String[] activeProfiles = new String[] { "catbert", "dogbert" };
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles, this.loader);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles, this.loader);
 		assertEquals(mergedConfig1.hashCode(), mergedConfig2.hashCode());
 	}
 
@@ -140,9 +140,9 @@ public class MergedContextConfigurationTests {
 		String[] activeProfiles1 = new String[] { "catbert", "dogbert" };
 		String[] activeProfiles2 = new String[] { "dogbert", "catbert" };
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles1, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles1, this.loader);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles2, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles2, this.loader);
 		assertNotEquals(mergedConfig1.hashCode(), mergedConfig2.hashCode());
 	}
 
@@ -151,9 +151,9 @@ public class MergedContextConfigurationTests {
 		String[] activeProfiles1 = new String[] { "catbert", "dogbert" };
 		String[] activeProfiles2 = new String[] { "catbert", "dogbert", "catbert", "dogbert", "catbert" };
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles1, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles1, this.loader);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles2, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles2, this.loader);
 		assertEquals(mergedConfig1.hashCode(), mergedConfig2.hashCode());
 	}
 
@@ -162,9 +162,9 @@ public class MergedContextConfigurationTests {
 		String[] activeProfiles1 = new String[] { "catbert", "dogbert" };
 		String[] activeProfiles2 = new String[] { "X", "Y" };
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles1, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles1, this.loader);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles2, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles2, this.loader);
 		assertNotEquals(mergedConfig1.hashCode(), mergedConfig2.hashCode());
 	}
 
@@ -181,9 +181,9 @@ public class MergedContextConfigurationTests {
 		initializerClasses2.add(FooInitializer.class);
 
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, initializerClasses1, EMPTY_STRING_ARRAY, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, initializerClasses1, EMPTY_STRING_ARRAY, this.loader);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, initializerClasses2, EMPTY_STRING_ARRAY, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, initializerClasses2, EMPTY_STRING_ARRAY, this.loader);
 		assertEquals(mergedConfig1.hashCode(), mergedConfig2.hashCode());
 	}
 
@@ -198,9 +198,9 @@ public class MergedContextConfigurationTests {
 		initializerClasses2.add(BarInitializer.class);
 
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, initializerClasses1, EMPTY_STRING_ARRAY, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, initializerClasses1, EMPTY_STRING_ARRAY, this.loader);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, initializerClasses2, EMPTY_STRING_ARRAY, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, initializerClasses2, EMPTY_STRING_ARRAY, this.loader);
 		assertNotEquals(mergedConfig1.hashCode(), mergedConfig2.hashCode());
 	}
 
@@ -210,12 +210,12 @@ public class MergedContextConfigurationTests {
 	@Test
 	public void hashCodeWithSameParent() {
 		MergedContextConfiguration parent = new MergedContextConfiguration(getClass(), new String[] { "foo", "bar}" },
-				EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, loader);
+				EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, this.loader);
 
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, null, EMPTY_STRING_ARRAY, loader, null, parent);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, null, EMPTY_STRING_ARRAY, this.loader, null, parent);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(), EMPTY_STRING_ARRAY,
-				EMPTY_CLASS_ARRAY, null, EMPTY_STRING_ARRAY, loader, null, parent);
+				EMPTY_CLASS_ARRAY, null, EMPTY_STRING_ARRAY, this.loader, null, parent);
 		assertEquals(mergedConfig1.hashCode(), mergedConfig2.hashCode());
 	}
 
@@ -225,14 +225,14 @@ public class MergedContextConfigurationTests {
 	@Test
 	public void hashCodeWithDifferentParents() {
 		MergedContextConfiguration parent1 = new MergedContextConfiguration(getClass(), new String[] { "foo", "bar}" },
-				EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, loader);
+				EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, this.loader);
 		MergedContextConfiguration parent2 = new MergedContextConfiguration(getClass(), new String[] { "baz", "quux" },
-				EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, loader);
+				EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, this.loader);
 
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(), EMPTY_STRING_ARRAY,
-				EMPTY_CLASS_ARRAY, null, EMPTY_STRING_ARRAY, loader, null, parent1);
+				EMPTY_CLASS_ARRAY, null, EMPTY_STRING_ARRAY, this.loader, null, parent1);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(), EMPTY_STRING_ARRAY,
-				EMPTY_CLASS_ARRAY, null, EMPTY_STRING_ARRAY, loader, null, parent2);
+				EMPTY_CLASS_ARRAY, null, EMPTY_STRING_ARRAY, this.loader, null, parent2);
 		assertNotEquals(mergedConfig1.hashCode(), mergedConfig2.hashCode());
 	}
 
@@ -253,24 +253,24 @@ public class MergedContextConfigurationTests {
 
 	@Test
 	public void equalsWithNullArrays() {
-		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(), null, null, null, loader);
-		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(), null, null, null, loader);
+		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(), null, null, null, this.loader);
+		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(), null, null, null, this.loader);
 		assertEquals(mergedConfig1, mergedConfig2);
 	}
 
 	@Test
 	public void equalsWithEmptyArrays() {
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, this.loader);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, this.loader);
 		assertEquals(mergedConfig1, mergedConfig2);
 	}
 
 	@Test
 	public void equalsWithEmptyArraysAndDifferentLoaders() {
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, this.loader);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(),
 				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, new AnnotationConfigContextLoader());
 		assertNotEquals(mergedConfig1, mergedConfig2);
@@ -281,9 +281,9 @@ public class MergedContextConfigurationTests {
 	public void equalsWithSameLocations() {
 		String[] locations = new String[] { "foo", "bar}" };
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(),
-				locations, EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, loader);
+				locations, EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, this.loader);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(),
-				locations, EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, loader);
+				locations, EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, this.loader);
 		assertEquals(mergedConfig1, mergedConfig2);
 	}
 
@@ -292,9 +292,9 @@ public class MergedContextConfigurationTests {
 		String[] locations1 = new String[] { "foo", "bar}" };
 		String[] locations2 = new String[] { "baz", "quux}" };
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(),
-				locations1, EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, loader);
+				locations1, EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, this.loader);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(),
-				locations2, EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, loader);
+				locations2, EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, this.loader);
 		assertNotEquals(mergedConfig1, mergedConfig2);
 		assertNotEquals(mergedConfig2, mergedConfig1);
 	}
@@ -303,9 +303,9 @@ public class MergedContextConfigurationTests {
 	public void equalsWithSameConfigClasses() {
 		Class<?>[] classes = new Class<?>[] { String.class, Integer.class };
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, classes, EMPTY_STRING_ARRAY, loader);
+				EMPTY_STRING_ARRAY, classes, EMPTY_STRING_ARRAY, this.loader);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, classes, EMPTY_STRING_ARRAY, loader);
+				EMPTY_STRING_ARRAY, classes, EMPTY_STRING_ARRAY, this.loader);
 		assertEquals(mergedConfig1, mergedConfig2);
 	}
 
@@ -314,9 +314,9 @@ public class MergedContextConfigurationTests {
 		Class<?>[] classes1 = new Class<?>[] { String.class, Integer.class };
 		Class<?>[] classes2 = new Class<?>[] { Boolean.class, Number.class };
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, classes1, EMPTY_STRING_ARRAY, loader);
+				EMPTY_STRING_ARRAY, classes1, EMPTY_STRING_ARRAY, this.loader);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, classes2, EMPTY_STRING_ARRAY, loader);
+				EMPTY_STRING_ARRAY, classes2, EMPTY_STRING_ARRAY, this.loader);
 		assertNotEquals(mergedConfig1, mergedConfig2);
 		assertNotEquals(mergedConfig2, mergedConfig1);
 	}
@@ -325,9 +325,9 @@ public class MergedContextConfigurationTests {
 	public void equalsWithSameProfiles() {
 		String[] activeProfiles = new String[] { "catbert", "dogbert" };
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles, this.loader);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles, this.loader);
 		assertEquals(mergedConfig1, mergedConfig2);
 	}
 
@@ -336,9 +336,9 @@ public class MergedContextConfigurationTests {
 		String[] activeProfiles1 = new String[] { "catbert", "dogbert" };
 		String[] activeProfiles2 = new String[] { "dogbert", "catbert" };
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles1, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles1, this.loader);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles2, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles2, this.loader);
 		assertNotEquals(mergedConfig1, mergedConfig2);
 	}
 
@@ -347,9 +347,9 @@ public class MergedContextConfigurationTests {
 		String[] activeProfiles1 = new String[] { "catbert", "dogbert" };
 		String[] activeProfiles2 = new String[] { "catbert", "dogbert", "catbert", "dogbert", "catbert" };
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles1, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles1, this.loader);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles2, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles2, this.loader);
 		assertEquals(mergedConfig1, mergedConfig2);
 	}
 
@@ -358,9 +358,9 @@ public class MergedContextConfigurationTests {
 		String[] activeProfiles1 = new String[] { "catbert", "dogbert" };
 		String[] activeProfiles2 = new String[] { "X", "Y" };
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles1, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles1, this.loader);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles2, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, activeProfiles2, this.loader);
 		assertNotEquals(mergedConfig1, mergedConfig2);
 		assertNotEquals(mergedConfig2, mergedConfig1);
 	}
@@ -378,9 +378,9 @@ public class MergedContextConfigurationTests {
 		initializerClasses2.add(FooInitializer.class);
 
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, initializerClasses1, EMPTY_STRING_ARRAY, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, initializerClasses1, EMPTY_STRING_ARRAY, this.loader);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, initializerClasses2, EMPTY_STRING_ARRAY, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, initializerClasses2, EMPTY_STRING_ARRAY, this.loader);
 		assertEquals(mergedConfig1, mergedConfig2);
 	}
 
@@ -395,9 +395,9 @@ public class MergedContextConfigurationTests {
 		initializerClasses2.add(BarInitializer.class);
 
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, initializerClasses1, EMPTY_STRING_ARRAY, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, initializerClasses1, EMPTY_STRING_ARRAY, this.loader);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(),
-				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, initializerClasses2, EMPTY_STRING_ARRAY, loader);
+				EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, initializerClasses2, EMPTY_STRING_ARRAY, this.loader);
 		assertNotEquals(mergedConfig1, mergedConfig2);
 		assertNotEquals(mergedConfig2, mergedConfig1);
 	}
@@ -409,9 +409,9 @@ public class MergedContextConfigurationTests {
 	public void equalsWithSameContextCustomizers() {
 		Set<ContextCustomizer> customizers = Collections.singleton(mock(ContextCustomizer.class));
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(), EMPTY_STRING_ARRAY,
-			EMPTY_CLASS_ARRAY, null, EMPTY_STRING_ARRAY, null, null, customizers, loader, null, null);
+			EMPTY_CLASS_ARRAY, null, EMPTY_STRING_ARRAY, null, null, customizers, this.loader, null, null);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(), EMPTY_STRING_ARRAY,
-			EMPTY_CLASS_ARRAY, null, EMPTY_STRING_ARRAY, null, null, customizers, loader, null, null);
+			EMPTY_CLASS_ARRAY, null, EMPTY_STRING_ARRAY, null, null, customizers, this.loader, null, null);
 		assertEquals(mergedConfig1, mergedConfig2);
 	}
 
@@ -424,9 +424,9 @@ public class MergedContextConfigurationTests {
 		Set<ContextCustomizer> customizers2 = Collections.singleton(mock(ContextCustomizer.class));
 
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(), EMPTY_STRING_ARRAY,
-			EMPTY_CLASS_ARRAY, null, EMPTY_STRING_ARRAY, null, null, customizers1, loader, null, null);
+			EMPTY_CLASS_ARRAY, null, EMPTY_STRING_ARRAY, null, null, customizers1, this.loader, null, null);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(), EMPTY_STRING_ARRAY,
-			EMPTY_CLASS_ARRAY, null, EMPTY_STRING_ARRAY, null, null, customizers2, loader, null, null);
+			EMPTY_CLASS_ARRAY, null, EMPTY_STRING_ARRAY, null, null, customizers2, this.loader, null, null);
 		assertNotEquals(mergedConfig1, mergedConfig2);
 		assertNotEquals(mergedConfig2, mergedConfig1);
 	}
@@ -437,12 +437,12 @@ public class MergedContextConfigurationTests {
 	@Test
 	public void equalsWithSameParent() {
 		MergedContextConfiguration parent = new MergedContextConfiguration(getClass(), new String[] { "foo", "bar}" },
-			EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, loader);
+			EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, this.loader);
 
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(), EMPTY_STRING_ARRAY,
-			EMPTY_CLASS_ARRAY, null, EMPTY_STRING_ARRAY, loader, null, parent);
+			EMPTY_CLASS_ARRAY, null, EMPTY_STRING_ARRAY, this.loader, null, parent);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(), EMPTY_STRING_ARRAY,
-			EMPTY_CLASS_ARRAY, null, EMPTY_STRING_ARRAY, loader, null, parent);
+			EMPTY_CLASS_ARRAY, null, EMPTY_STRING_ARRAY, this.loader, null, parent);
 		assertEquals(mergedConfig1, mergedConfig2);
 		assertEquals(mergedConfig2, mergedConfig1);
 	}
@@ -453,14 +453,14 @@ public class MergedContextConfigurationTests {
 	@Test
 	public void equalsWithDifferentParents() {
 		MergedContextConfiguration parent1 = new MergedContextConfiguration(getClass(), new String[] { "foo", "bar}" },
-			EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, loader);
+			EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, this.loader);
 		MergedContextConfiguration parent2 = new MergedContextConfiguration(getClass(), new String[] { "baz", "quux" },
-			EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, loader);
+			EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, this.loader);
 
 		MergedContextConfiguration mergedConfig1 = new MergedContextConfiguration(getClass(), EMPTY_STRING_ARRAY,
-			EMPTY_CLASS_ARRAY, null, EMPTY_STRING_ARRAY, loader, null, parent1);
+			EMPTY_CLASS_ARRAY, null, EMPTY_STRING_ARRAY, this.loader, null, parent1);
 		MergedContextConfiguration mergedConfig2 = new MergedContextConfiguration(getClass(), EMPTY_STRING_ARRAY,
-			EMPTY_CLASS_ARRAY, null, EMPTY_STRING_ARRAY, loader, null, parent2);
+			EMPTY_CLASS_ARRAY, null, EMPTY_STRING_ARRAY, this.loader, null, parent2);
 		assertNotEquals(mergedConfig1, mergedConfig2);
 		assertNotEquals(mergedConfig2, mergedConfig1);
 	}

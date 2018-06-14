@@ -41,15 +41,15 @@ public class DeclareParentsTests {
 
 	@Before
 	public void setUp() throws Exception {
-		ctx = new ClassPathXmlApplicationContext(getClass().getSimpleName() + ".xml", getClass());
+		this.ctx = new ClassPathXmlApplicationContext(getClass().getSimpleName() + ".xml", getClass());
 
-		testBeanProxy = (ITestBean) ctx.getBean("testBean");
-		assertTrue(AopUtils.isAopProxy(testBeanProxy));
+		this.testBeanProxy = (ITestBean) this.ctx.getBean("testBean");
+		assertTrue(AopUtils.isAopProxy(this.testBeanProxy));
 	}
 
 	@Test
 	public void testIntroductionWasMade() {
-		assertTrue("Introduction must have been made", testBeanProxy instanceof Lockable);
+		assertTrue("Introduction must have been made", this.testBeanProxy instanceof Lockable);
 	}
 
 	// TODO if you change type pattern from org.springframework.beans..*
@@ -60,19 +60,19 @@ public class DeclareParentsTests {
 	public void testLockingWorks() {
 		Assume.group(TestGroup.LONG_RUNNING);
 
-		Object introductionObject = ctx.getBean("introduction");
+		Object introductionObject = this.ctx.getBean("introduction");
 		assertFalse("Introduction should not be proxied", AopUtils.isAopProxy(introductionObject));
 
-		Lockable lockable = (Lockable) testBeanProxy;
+		Lockable lockable = (Lockable) this.testBeanProxy;
 		assertFalse(lockable.locked());
 
 		// Invoke a non-advised method
-		testBeanProxy.getAge();
+		this.testBeanProxy.getAge();
 
-		testBeanProxy.setName("");
+		this.testBeanProxy.setName("");
 		lockable.lock();
 		try {
-			testBeanProxy.setName(" ");
+			this.testBeanProxy.setName(" ");
 			fail("Should be locked");
 		}
 		catch (IllegalStateException ex) {

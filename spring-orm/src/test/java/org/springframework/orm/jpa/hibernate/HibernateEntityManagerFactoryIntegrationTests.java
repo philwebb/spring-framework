@@ -47,20 +47,20 @@ public class HibernateEntityManagerFactoryIntegrationTests extends AbstractConta
 
 	@Test
 	public void testCanCastNativeEntityManagerFactoryToHibernateEntityManagerFactoryImpl() {
-		EntityManagerFactoryInfo emfi = (EntityManagerFactoryInfo) entityManagerFactory;
+		EntityManagerFactoryInfo emfi = (EntityManagerFactoryInfo) this.entityManagerFactory;
 		assertTrue(emfi.getNativeEntityManagerFactory() instanceof org.hibernate.jpa.HibernateEntityManagerFactory);
 		assertTrue(emfi.getNativeEntityManagerFactory() instanceof SessionFactory);  // as of Hibernate 5.2
 	}
 
 	@Test
 	public void testCanCastSharedEntityManagerProxyToHibernateEntityManager() {
-		assertTrue(sharedEntityManager instanceof org.hibernate.jpa.HibernateEntityManager);
-		assertTrue(((EntityManagerProxy) sharedEntityManager).getTargetEntityManager() instanceof Session);  // as of Hibernate 5.2
+		assertTrue(this.sharedEntityManager instanceof org.hibernate.jpa.HibernateEntityManager);
+		assertTrue(((EntityManagerProxy) this.sharedEntityManager).getTargetEntityManager() instanceof Session);  // as of Hibernate 5.2
 	}
 
 	@Test
 	public void testCanUnwrapAopProxy() {
-		EntityManager em = entityManagerFactory.createEntityManager();
+		EntityManager em = this.entityManagerFactory.createEntityManager();
 		EntityManager proxy = ProxyFactory.getProxy(EntityManager.class, new SingletonTargetSource(em));
 		assertTrue(em instanceof org.hibernate.jpa.HibernateEntityManager);
 		assertFalse(proxy instanceof org.hibernate.jpa.HibernateEntityManager);

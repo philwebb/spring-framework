@@ -57,7 +57,7 @@ public class HttpComponentsClientHttpRequestFactoryTests extends AbstractHttpReq
 		hrf.setConnectionRequestTimeout(4321);
 		hrf.setReadTimeout(4567);
 
-		URI uri = new URI(baseUrl + "/status/ok");
+		URI uri = new URI(this.baseUrl + "/status/ok");
 		HttpComponentsClientHttpRequest request = (HttpComponentsClientHttpRequest)
 				hrf.createRequest(uri, HttpMethod.GET);
 
@@ -142,7 +142,7 @@ public class HttpComponentsClientHttpRequestFactoryTests extends AbstractHttpReq
 	}
 
 	private RequestConfig retrieveRequestConfig(HttpComponentsClientHttpRequestFactory factory) throws Exception {
-		URI uri = new URI(baseUrl + "/status/ok");
+		URI uri = new URI(this.baseUrl + "/status/ok");
 		HttpComponentsClientHttpRequest request = (HttpComponentsClientHttpRequest)
 				factory.createRequest(uri, HttpMethod.GET);
 		return (RequestConfig) request.getHttpContext().getAttribute(HttpClientContext.REQUEST_CONFIG);

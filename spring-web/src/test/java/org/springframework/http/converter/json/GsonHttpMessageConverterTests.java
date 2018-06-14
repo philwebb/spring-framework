@@ -183,7 +183,7 @@ public class GsonHttpMessageConverterTests {
 		inputMessage.getHeaders().setContentType(new MediaType("application", "json"));
 
 		Type genericType = beansList.getGenericType();
-		List<MyBean> results = (List<MyBean>) converter.read(genericType, MyBeanListHolder.class, inputMessage);
+		List<MyBean> results = (List<MyBean>) this.converter.read(genericType, MyBeanListHolder.class, inputMessage);
 		assertEquals(1, results.size());
 		MyBean result = results.get(0);
 		assertEquals("Foo", result.getString());
@@ -194,7 +194,7 @@ public class GsonHttpMessageConverterTests {
 		assertArrayEquals(new byte[] {0x1, 0x2}, result.getBytes());
 
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
-		converter.write(results, genericType, new MediaType("application", "json"), outputMessage);
+		this.converter.write(results, genericType, new MediaType("application", "json"), outputMessage);
 		JSONAssert.assertEquals(body, outputMessage.getBodyAsString(StandardCharsets.UTF_8), true);
 	}
 
@@ -209,7 +209,7 @@ public class GsonHttpMessageConverterTests {
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(body.getBytes(StandardCharsets.UTF_8));
 		inputMessage.getHeaders().setContentType(new MediaType("application", "json"));
 
-		List<MyBean> results = (List<MyBean>) converter.read(beansList.getType(), null, inputMessage);
+		List<MyBean> results = (List<MyBean>) this.converter.read(beansList.getType(), null, inputMessage);
 		assertEquals(1, results.size());
 		MyBean result = results.get(0);
 		assertEquals("Foo", result.getString());
@@ -220,7 +220,7 @@ public class GsonHttpMessageConverterTests {
 		assertArrayEquals(new byte[] {0x1, 0x2}, result.getBytes());
 
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
-		converter.write(results, beansList.getType(), new MediaType("application", "json"), outputMessage);
+		this.converter.write(results, beansList.getType(), new MediaType("application", "json"), outputMessage);
 		JSONAssert.assertEquals(body, outputMessage.getBodyAsString(StandardCharsets.UTF_8), true);
 	}
 
@@ -235,7 +235,7 @@ public class GsonHttpMessageConverterTests {
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(body.getBytes(StandardCharsets.UTF_8));
 		inputMessage.getHeaders().setContentType(new MediaType("application", "json"));
 
-		List<MyBean> results = (List<MyBean>) converter.read(beansList.getType(), null, inputMessage);
+		List<MyBean> results = (List<MyBean>) this.converter.read(beansList.getType(), null, inputMessage);
 		assertEquals(1, results.size());
 		MyBean result = results.get(0);
 		assertEquals("Foo", result.getString());
@@ -246,7 +246,7 @@ public class GsonHttpMessageConverterTests {
 		assertArrayEquals(new byte[] {0x1, 0x2}, result.getBytes());
 
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
-		converter.write(results, baseList.getType(), new MediaType("application", "json"), outputMessage);
+		this.converter.write(results, baseList.getType(), new MediaType("application", "json"), outputMessage);
 		JSONAssert.assertEquals(body, outputMessage.getBodyAsString(StandardCharsets.UTF_8), true);
 	}
 
@@ -272,7 +272,7 @@ public class GsonHttpMessageConverterTests {
 		private String string;
 
 		public String getString() {
-			return string;
+			return this.string;
 		}
 
 		public void setString(String string) {
@@ -294,7 +294,7 @@ public class GsonHttpMessageConverterTests {
 		private byte[] bytes;
 
 		public int getNumber() {
-			return number;
+			return this.number;
 		}
 
 		public void setNumber(int number) {
@@ -302,7 +302,7 @@ public class GsonHttpMessageConverterTests {
 		}
 
 		public float getFraction() {
-			return fraction;
+			return this.fraction;
 		}
 
 		public void setFraction(float fraction) {
@@ -310,7 +310,7 @@ public class GsonHttpMessageConverterTests {
 		}
 
 		public String[] getArray() {
-			return array;
+			return this.array;
 		}
 
 		public void setArray(String[] array) {
@@ -318,7 +318,7 @@ public class GsonHttpMessageConverterTests {
 		}
 
 		public boolean isBool() {
-			return bool;
+			return this.bool;
 		}
 
 		public void setBool(boolean bool) {
@@ -326,7 +326,7 @@ public class GsonHttpMessageConverterTests {
 		}
 
 		public byte[] getBytes() {
-			return bytes;
+			return this.bytes;
 		}
 
 		public void setBytes(byte[] bytes) {

@@ -33,7 +33,7 @@ public class DatePerson {
 	private BigDecimal balance;
 
 	public String getLastName() {
-		return lastName;
+		return this.lastName;
 	}
 
 	public void setLastName(String lastName) {
@@ -41,7 +41,7 @@ public class DatePerson {
 	}
 
 	public long getAge() {
-		return age;
+		return this.age;
 	}
 
 	public void setAge(long age) {
@@ -49,7 +49,7 @@ public class DatePerson {
 	}
 
 	public LocalDate getBirthDate() {
-		return birthDate;
+		return this.birthDate;
 	}
 
 	public void setBirthDate(LocalDate birthDate) {
@@ -57,7 +57,7 @@ public class DatePerson {
 	}
 
 	public BigDecimal getBalance() {
-		return balance;
+		return this.balance;
 	}
 
 	public void setBalance(BigDecimal balanace) {

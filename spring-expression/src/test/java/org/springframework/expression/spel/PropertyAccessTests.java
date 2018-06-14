@@ -76,7 +76,7 @@ public class PropertyAccessTests extends AbstractExpressionTests {
 	 */
 	@Test
 	public void testAccessingOnNullObject() {
-		SpelExpression expr = (SpelExpression)parser.parseExpression("madeup");
+		SpelExpression expr = (SpelExpression)this.parser.parseExpression("madeup");
 		EvaluationContext context = new StandardEvaluationContext(null);
 		try {
 			expr.getValue(context);
@@ -165,7 +165,7 @@ public class PropertyAccessTests extends AbstractExpressionTests {
 
 	@Test
 	public void testAccessingPropertyOfClass() {
-		Expression expression = parser.parseExpression("name");
+		Expression expression = this.parser.parseExpression("name");
 		Object value = expression.getValue(new StandardEvaluationContext(String.class));
 		assertEquals("java.lang.String", value);
 	}
@@ -186,28 +186,28 @@ public class PropertyAccessTests extends AbstractExpressionTests {
 
 	@Test
 	public void standardGetClassAccess() {
-		assertEquals(String.class.getName(), parser.parseExpression("'a'.class.name").getValue());
+		assertEquals(String.class.getName(), this.parser.parseExpression("'a'.class.name").getValue());
 	}
 
 	@Test(expected = SpelEvaluationException.class)
 	public void noGetClassAccess() {
 		EvaluationContext context = SimpleEvaluationContext.forReadOnlyDataBinding().build();
 
-		parser.parseExpression("'a'.class.name").getValue(context);
+		this.parser.parseExpression("'a'.class.name").getValue(context);
 	}
 
 	@Test
 	public void propertyReadOnly() {
 		EvaluationContext context = SimpleEvaluationContext.forReadOnlyDataBinding().build();
 
-		Expression expr = parser.parseExpression("name");
+		Expression expr = this.parser.parseExpression("name");
 		Person target = new Person("p1");
 		assertEquals("p1", expr.getValue(context, target));
 		target.setName("p2");
 		assertEquals("p2", expr.getValue(context, target));
 
 		try {
-			parser.parseExpression("name='p3'").getValue(context, target);
+			this.parser.parseExpression("name='p3'").getValue(context, target);
 			fail("Should have thrown SpelEvaluationException");
 		}
 		catch (SpelEvaluationException ex) {
@@ -219,13 +219,13 @@ public class PropertyAccessTests extends AbstractExpressionTests {
 	public void propertyReadWrite() {
 		EvaluationContext context = SimpleEvaluationContext.forReadWriteDataBinding().build();
 
-		Expression expr = parser.parseExpression("name");
+		Expression expr = this.parser.parseExpression("name");
 		Person target = new Person("p1");
 		assertEquals("p1", expr.getValue(context, target));
 		target.setName("p2");
 		assertEquals("p2", expr.getValue(context, target));
 
-		parser.parseExpression("name='p3'").getValue(context, target);
+		this.parser.parseExpression("name='p3'").getValue(context, target);
 		assertEquals("p3", target.getName());
 		assertEquals("p3", expr.getValue(context, target));
 
@@ -240,12 +240,12 @@ public class PropertyAccessTests extends AbstractExpressionTests {
 		EvaluationContext context = SimpleEvaluationContext.forReadWriteDataBinding().withRootObject(target).build();
 		assertSame(target, context.getRootObject().getValue());
 
-		Expression expr = parser.parseExpression("name");
+		Expression expr = this.parser.parseExpression("name");
 		assertEquals("p1", expr.getValue(context, target));
 		target.setName("p2");
 		assertEquals("p2", expr.getValue(context, target));
 
-		parser.parseExpression("name='p3'").getValue(context, target);
+		this.parser.parseExpression("name='p3'").getValue(context, target);
 		assertEquals("p3", target.getName());
 		assertEquals("p3", expr.getValue(context, target));
 
@@ -259,7 +259,7 @@ public class PropertyAccessTests extends AbstractExpressionTests {
 		EvaluationContext context = SimpleEvaluationContext.forReadOnlyDataBinding().build();
 		Person target = new Person("p1");
 		try {
-			parser.parseExpression("name.substring(1)").getValue(context, target);
+			this.parser.parseExpression("name.substring(1)").getValue(context, target);
 			fail("Should have thrown SpelEvaluationException");
 		}
 		catch (SpelEvaluationException ex) {
@@ -271,7 +271,7 @@ public class PropertyAccessTests extends AbstractExpressionTests {
 	public void propertyAccessWithInstanceMethodResolver() {
 		EvaluationContext context = SimpleEvaluationContext.forReadOnlyDataBinding().withInstanceMethods().build();
 		Person target = new Person("p1");
-		assertEquals("1", parser.parseExpression("name.substring(1)").getValue(context, target));
+		assertEquals("1", this.parser.parseExpression("name.substring(1)").getValue(context, target));
 	}
 
 	@Test
@@ -280,7 +280,7 @@ public class PropertyAccessTests extends AbstractExpressionTests {
 		EvaluationContext context = SimpleEvaluationContext.forReadOnlyDataBinding().
 				withInstanceMethods().withTypedRootObject(target, TypeDescriptor.valueOf(Object.class)).build();
 
-		assertEquals("1", parser.parseExpression("name.substring(1)").getValue(context, target));
+		assertEquals("1", this.parser.parseExpression("name.substring(1)").getValue(context, target));
 		assertSame(target, context.getRootObject().getValue());
 		assertSame(Object.class, context.getRootObject().getTypeDescriptor().getType());
 	}
@@ -317,7 +317,7 @@ public class PropertyAccessTests extends AbstractExpressionTests {
 			if (!name.equals("flibbles")) {
 				throw new RuntimeException("Assertion Failed! name should be flibbles");
 			}
-			return new TypedValue(flibbles);
+			return new TypedValue(this.flibbles);
 		}
 
 		@Override
@@ -326,7 +326,7 @@ public class PropertyAccessTests extends AbstractExpressionTests {
 				throw new RuntimeException("Assertion Failed! name should be flibbles");
 			}
 			try {
-				flibbles = (Integer) context.getTypeConverter().convertValue(newValue,
+				this.flibbles = (Integer) context.getTypeConverter().convertValue(newValue,
 						TypeDescriptor.forObject(newValue), TypeDescriptor.valueOf(Integer.class));
 			}
 			catch (EvaluationException ex) {

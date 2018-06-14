@@ -602,12 +602,12 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 
 		@Around("execution(int *.getAge())")
 		public int returnCountAsAge() {
-			return count++;
+			return this.count++;
 		}
 
 		@Before("execution(void *.set*(int))")
 		public void countSetter() {
-			++count;
+			++this.count;
 		}
 	}
 
@@ -620,12 +620,12 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 
 		@Around("execution(int *.getAge())")
 		public int returnCountAsAge() {
-			return count++;
+			return this.count++;
 		}
 
 		@Before("execution(void *.set*(int))")
 		public void countSetter() {
-			++count;
+			++this.count;
 		}
 	}
 
@@ -637,12 +637,12 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 
 		@Around("execution(int *.getAge())")
 		public int returnCountAsAge() {
-			return count++;
+			return this.count++;
 		}
 
 		@Before("execution(void *.*(..))")
 		public void countAnythingVoid() {
-			++count;
+			++this.count;
 		}
 	}
 
@@ -791,7 +791,7 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 
 		@Before("execution(* getAge())")
 		public void throwException() throws Exception {
-			throw ex;
+			throw this.ex;
 		}
 	}
 
@@ -818,17 +818,17 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 
 		@AfterReturning("execution(* echo(*))")
 		public void succeeded() {
-			++successCount;
+			++this.successCount;
 		}
 
 		@AfterThrowing("execution(* echo(*))")
 		public void failed() {
-			++failureCount;
+			++this.failureCount;
 		}
 
 		@After("execution(* echo(*))")
 		public void invoked() {
-			++afterCount;
+			++this.afterCount;
 		}
 	}
 
@@ -895,12 +895,12 @@ abstract class AbstractMakeModifiable {
 
 		@Override
 		public void acceptChanges() {
-			modified = false;
+			this.modified = false;
 		}
 
 		@Override
 		public boolean isModified() {
-			return modified;
+			return this.modified;
 		}
 
 		@Override
@@ -1072,7 +1072,7 @@ class NotLockable {
 	private int intValue;
 
 	public int getIntValue() {
-		return intValue;
+		return this.intValue;
 	}
 
 	public void setIntValue(int intValue) {
@@ -1092,12 +1092,12 @@ class PerThisAspect {
 
 	@Around("execution(int *.getAge())")
 	public int returnCountAsAge() {
-		return count++;
+		return this.count++;
 	}
 
 	@Before("execution(void *.set*(int))")
 	public void countSetter() {
-		++count;
+		++this.count;
 	}
 
 }

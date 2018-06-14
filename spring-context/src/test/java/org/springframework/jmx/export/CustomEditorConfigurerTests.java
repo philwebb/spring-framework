@@ -60,12 +60,12 @@ public class CustomEditorConfigurerTests extends AbstractJmxTests {
 	}
 
 	private Date getStartDate() throws ParseException {
-		Date start = df.parse("2004/10/12");
+		Date start = this.df.parse("2004/10/12");
 		return start;
 	}
 
 	private Date getEndDate() throws ParseException {
-		Date end = df.parse("2004/11/13");
+		Date end = this.df.parse("2004/11/13");
 		return end;
 	}
 

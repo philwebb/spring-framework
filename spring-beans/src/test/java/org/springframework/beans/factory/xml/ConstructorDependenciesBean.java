@@ -70,23 +70,23 @@ public class ConstructorDependenciesBean implements Serializable {
 	}
 
 	public int getAge() {
-		return age;
+		return this.age;
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public TestBean getSpouse1() {
-		return spouse1;
+		return this.spouse1;
 	}
 
 	public TestBean getSpouse2() {
-		return spouse2;
+		return this.spouse2;
 	}
 
 	public IndexedTestBean getOther() {
-		return other;
+		return this.other;
 	}
 
 	public void setAge(int age) {

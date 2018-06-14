@@ -53,12 +53,12 @@ public class Jackson2SmileDecoderTests extends AbstractDataBufferAllocatingTestC
 
 	@Test
 	public void canDecode() {
-		assertTrue(decoder.canDecode(forClass(Pojo.class), SMILE_MIME_TYPE));
-		assertTrue(decoder.canDecode(forClass(Pojo.class), STREAM_SMILE_MIME_TYPE));
-		assertTrue(decoder.canDecode(forClass(Pojo.class), null));
+		assertTrue(this.decoder.canDecode(forClass(Pojo.class), SMILE_MIME_TYPE));
+		assertTrue(this.decoder.canDecode(forClass(Pojo.class), STREAM_SMILE_MIME_TYPE));
+		assertTrue(this.decoder.canDecode(forClass(Pojo.class), null));
 
-		assertFalse(decoder.canDecode(forClass(String.class), null));
-		assertFalse(decoder.canDecode(forClass(Pojo.class), APPLICATION_JSON));
+		assertFalse(this.decoder.canDecode(forClass(String.class), null));
+		assertFalse(this.decoder.canDecode(forClass(Pojo.class), APPLICATION_JSON));
 	}
 
 	@Test
@@ -69,7 +69,7 @@ public class Jackson2SmileDecoderTests extends AbstractDataBufferAllocatingTestC
 		
 		Flux<DataBuffer> source = Flux.just(this.bufferFactory.wrap(serializedPojo));
 		ResolvableType elementType = forClass(Pojo.class);
-		Flux<Object> flux = decoder.decode(source, elementType, null, emptyMap());
+		Flux<Object> flux = this.decoder.decode(source, elementType, null, emptyMap());
 
 		StepVerifier.create(flux)
 				.expectNext(pojo)
@@ -80,7 +80,7 @@ public class Jackson2SmileDecoderTests extends AbstractDataBufferAllocatingTestC
 	public void decodePojoWithError() throws Exception {
 		Flux<DataBuffer> source = Flux.just(stringBuffer("123"));
 		ResolvableType elementType = forClass(Pojo.class);
-		Flux<Object> flux = decoder.decode(source, elementType, null, emptyMap());
+		Flux<Object> flux = this.decoder.decode(source, elementType, null, emptyMap());
 
 		StepVerifier.create(flux).verifyError(CodecException.class);
 	}
@@ -93,7 +93,7 @@ public class Jackson2SmileDecoderTests extends AbstractDataBufferAllocatingTestC
 		Flux<DataBuffer> source = Flux.just(this.bufferFactory.wrap(serializedList));
 
 		ResolvableType elementType = ResolvableType.forClassWithGenerics(List.class, Pojo.class);
-		Mono<Object> mono = decoder.decodeToMono(source, elementType, null, emptyMap());
+		Mono<Object> mono = this.decoder.decodeToMono(source, elementType, null, emptyMap());
 
 		StepVerifier.create(mono)
 				.expectNext(list)
@@ -109,7 +109,7 @@ public class Jackson2SmileDecoderTests extends AbstractDataBufferAllocatingTestC
 		Flux<DataBuffer> source = Flux.just(this.bufferFactory.wrap(serializedList));
 
 		ResolvableType elementType = forClass(Pojo.class);
-		Flux<Object> flux = decoder.decode(source, elementType, null, emptyMap());
+		Flux<Object> flux = this.decoder.decode(source, elementType, null, emptyMap());
 
 		StepVerifier.create(flux)
 				.expectNext(new Pojo("f1", "b1"))
@@ -125,7 +125,7 @@ public class Jackson2SmileDecoderTests extends AbstractDataBufferAllocatingTestC
 		Flux<DataBuffer> source = Flux.just(this.bufferFactory.wrap(serializedList));
 
 		ResolvableType elementType = forClass(Pojo.class);
-		Flux<Object> flux = decoder.decode(source, elementType, STREAM_SMILE_MIME_TYPE, emptyMap());
+		Flux<Object> flux = this.decoder.decode(source, elementType, STREAM_SMILE_MIME_TYPE, emptyMap());
 
 		StepVerifier.create(flux)
 				.expectNext(new Pojo("f1", "b1"))

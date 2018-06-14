@@ -136,8 +136,8 @@ public class RequestPartIntegrationTests {
 		AllEncompassingFormHttpMessageConverter converter = new AllEncompassingFormHttpMessageConverter();
 		converter.setPartConverters(converters);
 
-		restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
-		restTemplate.setMessageConverters(Collections.singletonList(converter));
+		this.restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
+		this.restTemplate.setMessageConverters(Collections.singletonList(converter));
 	}
 
 
@@ -177,7 +177,7 @@ public class RequestPartIntegrationTests {
 		converter.setSupportedMediaTypes(Collections.singletonList(MediaType.MULTIPART_FORM_DATA));
 		this.restTemplate.setMessageConverters(Collections.singletonList(converter));
 
-		ResponseEntity<Void> responseEntity = restTemplate.exchange(requestEntity, Void.class);
+		ResponseEntity<Void> responseEntity = this.restTemplate.exchange(requestEntity, Void.class);
 		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
 	}
 
@@ -191,7 +191,7 @@ public class RequestPartIntegrationTests {
 		headers.setContentType(new MediaType("application", "octet-stream", StandardCharsets.ISO_8859_1));
 		parts.add("iso-8859-1-data", new HttpEntity<>(new byte[] {(byte) 0xC4}, headers)); // SPR-13096
 
-		URI location = restTemplate.postForLocation(url, parts);
+		URI location = this.restTemplate.postForLocation(url, parts);
 		assertEquals("http://localhost:8080/test/" + basename + "/logo.jpg", location.toString());
 	}
 
@@ -269,7 +269,7 @@ public class RequestPartIntegrationTests {
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String name) {

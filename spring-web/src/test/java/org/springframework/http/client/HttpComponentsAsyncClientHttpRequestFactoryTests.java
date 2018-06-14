@@ -53,7 +53,7 @@ public class HttpComponentsAsyncClientHttpRequestFactoryTests extends AbstractAs
 		HttpComponentsAsyncClientHttpRequestFactory factory =
 				new HttpComponentsAsyncClientHttpRequestFactory();
 
-		URI uri = new URI(baseUrl + "/status/ok");
+		URI uri = new URI(this.baseUrl + "/status/ok");
 		HttpComponentsAsyncClientHttpRequest request = (HttpComponentsAsyncClientHttpRequest)
 				factory.createAsyncRequest(uri, HttpMethod.GET);
 
@@ -68,7 +68,7 @@ public class HttpComponentsAsyncClientHttpRequestFactoryTests extends AbstractAs
 				.build();
 		HttpComponentsAsyncClientHttpRequestFactory factory = new HttpComponentsAsyncClientHttpRequestFactory(client);
 
-		URI uri = new URI(baseUrl + "/status/ok");
+		URI uri = new URI(this.baseUrl + "/status/ok");
 		HttpComponentsAsyncClientHttpRequest request = (HttpComponentsAsyncClientHttpRequest)
 				factory.createAsyncRequest(uri, HttpMethod.GET);
 

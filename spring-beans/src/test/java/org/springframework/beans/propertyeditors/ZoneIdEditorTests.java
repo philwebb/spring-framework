@@ -31,35 +31,35 @@ public class ZoneIdEditorTests {
 
 	@Test
 	public void americaChicago() {
-		editor.setAsText("America/Chicago");
+		this.editor.setAsText("America/Chicago");
 
-		ZoneId zoneId = (ZoneId) editor.getValue();
+		ZoneId zoneId = (ZoneId) this.editor.getValue();
 		assertNotNull("The zone ID should not be null.", zoneId);
 		assertEquals("The zone ID is not correct.", ZoneId.of("America/Chicago"), zoneId);
 
-		assertEquals("The text version is not correct.", "America/Chicago", editor.getAsText());
+		assertEquals("The text version is not correct.", "America/Chicago", this.editor.getAsText());
 	}
 
 	@Test
 	public void americaLosAngeles() {
-		editor.setAsText("America/Los_Angeles");
+		this.editor.setAsText("America/Los_Angeles");
 
-		ZoneId zoneId = (ZoneId) editor.getValue();
+		ZoneId zoneId = (ZoneId) this.editor.getValue();
 		assertNotNull("The zone ID should not be null.", zoneId);
 		assertEquals("The zone ID is not correct.", ZoneId.of("America/Los_Angeles"), zoneId);
 
-		assertEquals("The text version is not correct.", "America/Los_Angeles", editor.getAsText());
+		assertEquals("The text version is not correct.", "America/Los_Angeles", this.editor.getAsText());
 	}
 
 	@Test
 	public void getNullAsText() {
-		assertEquals("The returned value is not correct.", "", editor.getAsText());
+		assertEquals("The returned value is not correct.", "", this.editor.getAsText());
 	}
 
 	@Test
 	public void getValueAsText() {
-		editor.setValue(ZoneId.of("America/New_York"));
-		assertEquals("The text version is not correct.", "America/New_York", editor.getAsText());
+		this.editor.setValue(ZoneId.of("America/New_York"));
+		assertEquals("The text version is not correct.", "America/New_York", this.editor.getAsText());
 	}
 
 }

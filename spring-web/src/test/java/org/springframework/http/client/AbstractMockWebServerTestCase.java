@@ -65,7 +65,7 @@ public class AbstractMockWebServerTestCase {
 			try {
 				if (request.getPath().equals("/echo")) {
 					assertThat(request.getHeader("Host"),
-							Matchers.containsString("localhost:" + port));
+							Matchers.containsString("localhost:" + AbstractMockWebServerTestCase.this.port));
 					MockResponse response = new MockResponse()
 							.setHeaders(request.getHeaders())
 							.setHeader("Content-Length", request.getBody().size())

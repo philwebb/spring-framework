@@ -85,10 +85,10 @@ public class SetValueTests extends AbstractExpressionTests {
 
 		// PROPERTYORFIELDREFERENCE
 		// Non existent field (or property):
-		e = parser.parseExpression("arrayContainer.wibble");
+		e = this.parser.parseExpression("arrayContainer.wibble");
 		assertFalse("Should not be writable!",e.isWritable(lContext));
 
-		e = parser.parseExpression("arrayContainer.wibble.foo");
+		e = this.parser.parseExpression("arrayContainer.wibble.foo");
 		try {
 			assertFalse("Should not be writable!",e.isWritable(lContext));
 			fail("Should have had an error because wibble does not really exist");
@@ -101,15 +101,15 @@ public class SetValueTests extends AbstractExpressionTests {
 
 		// VARIABLE
 		// the variable does not exist (but that is OK, we should be writable)
-		e = parser.parseExpression("#madeup1");
+		e = this.parser.parseExpression("#madeup1");
 		assertTrue("Should be writable!",e.isWritable(lContext));
 
-		e = parser.parseExpression("#madeup2.bar"); // compound expression
+		e = this.parser.parseExpression("#madeup2.bar"); // compound expression
 		assertFalse("Should not be writable!",e.isWritable(lContext));
 
 		// INDEXER
 		// non existent indexer (wibble made up)
-		e = parser.parseExpression("arrayContainer.wibble[99]");
+		e = this.parser.parseExpression("arrayContainer.wibble[99]");
 		try {
 			assertFalse("Should not be writable!",e.isWritable(lContext));
 			fail("Should have had an error because wibble does not really exist");
@@ -119,7 +119,7 @@ public class SetValueTests extends AbstractExpressionTests {
 		}
 
 		// non existent indexer (index via a string)
-		e = parser.parseExpression("arrayContainer.ints['abc']");
+		e = this.parser.parseExpression("arrayContainer.ints['abc']");
 		try {
 			assertFalse("Should not be writable!",e.isWritable(lContext));
 			fail("Should have had an error because wibble does not really exist");
@@ -234,7 +234,7 @@ public class SetValueTests extends AbstractExpressionTests {
 
 
 	private Expression parse(String expressionString) throws Exception {
-		return parser.parseExpression(expressionString);
+		return this.parser.parseExpression(expressionString);
 	}
 
 	/**
@@ -242,7 +242,7 @@ public class SetValueTests extends AbstractExpressionTests {
 	 */
 	protected void setValueExpectError(String expression, Object value) {
 		try {
-			Expression e = parser.parseExpression(expression);
+			Expression e = this.parser.parseExpression(expression);
 			if (e == null) {
 				fail("Parser returned null for expression");
 			}
@@ -264,7 +264,7 @@ public class SetValueTests extends AbstractExpressionTests {
 
 	protected void setValue(String expression, Object value) {
 		try {
-			Expression e = parser.parseExpression(expression);
+			Expression e = this.parser.parseExpression(expression);
 			if (e == null) {
 				fail("Parser returned null for expression");
 			}
@@ -292,7 +292,7 @@ public class SetValueTests extends AbstractExpressionTests {
 	 */
 	protected void setValue(String expression, Object value, Object expectedValue) {
 		try {
-			Expression e = parser.parseExpression(expression);
+			Expression e = this.parser.parseExpression(expression);
 			if (e == null) {
 				fail("Parser returned null for expression");
 			}

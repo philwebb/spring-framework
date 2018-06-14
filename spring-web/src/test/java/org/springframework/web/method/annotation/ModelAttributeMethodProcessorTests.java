@@ -106,7 +106,7 @@ public class ModelAttributeMethodProcessorTests {
 
 	@Test
 	public void supportedParametersInDefaultResolutionMode() throws Exception {
-		processor = new ModelAttributeMethodProcessor(true);
+		this.processor = new ModelAttributeMethodProcessor(true);
 
 		// Only non-simple types, even if not annotated
 		assertTrue(this.processor.supportsParameter(this.paramNamedValidModelAttr));
@@ -119,16 +119,16 @@ public class ModelAttributeMethodProcessorTests {
 
 	@Test
 	public void supportedReturnTypes() throws Exception {
-		processor = new ModelAttributeMethodProcessor(false);
-		assertTrue(this.processor.supportsReturnType(returnParamNamedModelAttr));
-		assertFalse(this.processor.supportsReturnType(returnParamNonSimpleType));
+		this.processor = new ModelAttributeMethodProcessor(false);
+		assertTrue(this.processor.supportsReturnType(this.returnParamNamedModelAttr));
+		assertFalse(this.processor.supportsReturnType(this.returnParamNonSimpleType));
 	}
 
 	@Test
 	public void supportedReturnTypesInDefaultResolutionMode() throws Exception {
-		processor = new ModelAttributeMethodProcessor(true);
-		assertTrue(this.processor.supportsReturnType(returnParamNamedModelAttr));
-		assertTrue(this.processor.supportsReturnType(returnParamNonSimpleType));
+		this.processor = new ModelAttributeMethodProcessor(true);
+		assertTrue(this.processor.supportsReturnType(this.returnParamNamedModelAttr));
+		assertTrue(this.processor.supportsReturnType(this.returnParamNonSimpleType));
 	}
 
 	@Test
@@ -280,26 +280,26 @@ public class ModelAttributeMethodProcessorTests {
 		}
 
 		public boolean isBindInvoked() {
-			return bindInvoked;
+			return this.bindInvoked;
 		}
 
 		public boolean isValidateInvoked() {
-			return validateInvoked;
+			return this.validateInvoked;
 		}
 
 		@Override
 		public void bind(WebRequest request) {
-			bindInvoked = true;
+			this.bindInvoked = true;
 		}
 
 		@Override
 		public void validate() {
-			validateInvoked = true;
+			this.validateInvoked = true;
 		}
 
 		@Override
 		public void validate(Object... validationHints) {
-			validateInvoked = true;
+			this.validateInvoked = true;
 		}
 	}
 

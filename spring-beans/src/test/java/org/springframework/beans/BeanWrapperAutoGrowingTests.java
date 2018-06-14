@@ -33,99 +33,99 @@ public class BeanWrapperAutoGrowingTests {
 
 	private final Bean bean = new Bean();
 
-	private final BeanWrapperImpl wrapper = new BeanWrapperImpl(bean);
+	private final BeanWrapperImpl wrapper = new BeanWrapperImpl(this.bean);
 
 
 	@Before
 	public void setUp() {
-		wrapper.setAutoGrowNestedPaths(true);
+		this.wrapper.setAutoGrowNestedPaths(true);
 	}
 
 
 	@Test
 	public void getPropertyValueNullValueInNestedPath() {
-		assertNull(wrapper.getPropertyValue("nested.prop"));
+		assertNull(this.wrapper.getPropertyValue("nested.prop"));
 	}
 
 	@Test
 	public void setPropertyValueNullValueInNestedPath() {
-		wrapper.setPropertyValue("nested.prop", "test");
-		assertEquals("test", bean.getNested().getProp());
+		this.wrapper.setPropertyValue("nested.prop", "test");
+		assertEquals("test", this.bean.getNested().getProp());
 	}
 
 	@Test(expected = NullValueInNestedPathException.class)
 	public void getPropertyValueNullValueInNestedPathNoDefaultConstructor() {
-		wrapper.getPropertyValue("nestedNoConstructor.prop");
+		this.wrapper.getPropertyValue("nestedNoConstructor.prop");
 	}
 
 	@Test
 	public void getPropertyValueAutoGrowArray() {
-		assertNotNull(wrapper.getPropertyValue("array[0]"));
-		assertEquals(1, bean.getArray().length);
-		assertThat(bean.getArray()[0], instanceOf(Bean.class));
+		assertNotNull(this.wrapper.getPropertyValue("array[0]"));
+		assertEquals(1, this.bean.getArray().length);
+		assertThat(this.bean.getArray()[0], instanceOf(Bean.class));
 	}
 
 	@Test
 	public void setPropertyValueAutoGrowArray() {
-		wrapper.setPropertyValue("array[0].prop", "test");
-		assertEquals("test", bean.getArray()[0].getProp());
+		this.wrapper.setPropertyValue("array[0].prop", "test");
+		assertEquals("test", this.bean.getArray()[0].getProp());
 	}
 
 	@Test
 	public void getPropertyValueAutoGrowArrayBySeveralElements() {
-		assertNotNull(wrapper.getPropertyValue("array[4]"));
-		assertEquals(5, bean.getArray().length);
-		assertThat(bean.getArray()[0], instanceOf(Bean.class));
-		assertThat(bean.getArray()[1], instanceOf(Bean.class));
-		assertThat(bean.getArray()[2], instanceOf(Bean.class));
-		assertThat(bean.getArray()[3], instanceOf(Bean.class));
-		assertThat(bean.getArray()[4], instanceOf(Bean.class));
-		assertNotNull(wrapper.getPropertyValue("array[0]"));
-		assertNotNull(wrapper.getPropertyValue("array[1]"));
-		assertNotNull(wrapper.getPropertyValue("array[2]"));
-		assertNotNull(wrapper.getPropertyValue("array[3]"));
+		assertNotNull(this.wrapper.getPropertyValue("array[4]"));
+		assertEquals(5, this.bean.getArray().length);
+		assertThat(this.bean.getArray()[0], instanceOf(Bean.class));
+		assertThat(this.bean.getArray()[1], instanceOf(Bean.class));
+		assertThat(this.bean.getArray()[2], instanceOf(Bean.class));
+		assertThat(this.bean.getArray()[3], instanceOf(Bean.class));
+		assertThat(this.bean.getArray()[4], instanceOf(Bean.class));
+		assertNotNull(this.wrapper.getPropertyValue("array[0]"));
+		assertNotNull(this.wrapper.getPropertyValue("array[1]"));
+		assertNotNull(this.wrapper.getPropertyValue("array[2]"));
+		assertNotNull(this.wrapper.getPropertyValue("array[3]"));
 	}
 
 	@Test
 	public void getPropertyValueAutoGrowMultiDimensionalArray() {
-		assertNotNull(wrapper.getPropertyValue("multiArray[0][0]"));
-		assertEquals(1, bean.getMultiArray()[0].length);
-		assertThat(bean.getMultiArray()[0][0], instanceOf(Bean.class));
+		assertNotNull(this.wrapper.getPropertyValue("multiArray[0][0]"));
+		assertEquals(1, this.bean.getMultiArray()[0].length);
+		assertThat(this.bean.getMultiArray()[0][0], instanceOf(Bean.class));
 	}
 
 	@Test
 	public void getPropertyValueAutoGrowList() {
-		assertNotNull(wrapper.getPropertyValue("list[0]"));
-		assertEquals(1, bean.getList().size());
-		assertThat(bean.getList().get(0), instanceOf(Bean.class));
+		assertNotNull(this.wrapper.getPropertyValue("list[0]"));
+		assertEquals(1, this.bean.getList().size());
+		assertThat(this.bean.getList().get(0), instanceOf(Bean.class));
 	}
 
 	@Test
 	public void setPropertyValueAutoGrowList() {
-		wrapper.setPropertyValue("list[0].prop", "test");
-		assertEquals("test", bean.getList().get(0).getProp());
+		this.wrapper.setPropertyValue("list[0].prop", "test");
+		assertEquals("test", this.bean.getList().get(0).getProp());
 	}
 
 	@Test
 	public void getPropertyValueAutoGrowListBySeveralElements() {
-		assertNotNull(wrapper.getPropertyValue("list[4]"));
-		assertEquals(5, bean.getList().size());
-		assertThat(bean.getList().get(0), instanceOf(Bean.class));
-		assertThat(bean.getList().get(1), instanceOf(Bean.class));
-		assertThat(bean.getList().get(2), instanceOf(Bean.class));
-		assertThat(bean.getList().get(3), instanceOf(Bean.class));
-		assertThat(bean.getList().get(4), instanceOf(Bean.class));
-		assertNotNull(wrapper.getPropertyValue("list[0]"));
-		assertNotNull(wrapper.getPropertyValue("list[1]"));
-		assertNotNull(wrapper.getPropertyValue("list[2]"));
-		assertNotNull(wrapper.getPropertyValue("list[3]"));
+		assertNotNull(this.wrapper.getPropertyValue("list[4]"));
+		assertEquals(5, this.bean.getList().size());
+		assertThat(this.bean.getList().get(0), instanceOf(Bean.class));
+		assertThat(this.bean.getList().get(1), instanceOf(Bean.class));
+		assertThat(this.bean.getList().get(2), instanceOf(Bean.class));
+		assertThat(this.bean.getList().get(3), instanceOf(Bean.class));
+		assertThat(this.bean.getList().get(4), instanceOf(Bean.class));
+		assertNotNull(this.wrapper.getPropertyValue("list[0]"));
+		assertNotNull(this.wrapper.getPropertyValue("list[1]"));
+		assertNotNull(this.wrapper.getPropertyValue("list[2]"));
+		assertNotNull(this.wrapper.getPropertyValue("list[3]"));
 	}
 
 	@Test
 	public void getPropertyValueAutoGrowListFailsAgainstLimit() {
-		wrapper.setAutoGrowCollectionLimit(2);
+		this.wrapper.setAutoGrowCollectionLimit(2);
 		try {
-			assertNotNull(wrapper.getPropertyValue("list[4]"));
+			assertNotNull(this.wrapper.getPropertyValue("list[4]"));
 			fail("Should have thrown InvalidPropertyException");
 		}
 		catch (InvalidPropertyException ex) {
@@ -136,26 +136,26 @@ public class BeanWrapperAutoGrowingTests {
 
 	@Test
 	public void getPropertyValueAutoGrowMultiDimensionalList() {
-		assertNotNull(wrapper.getPropertyValue("multiList[0][0]"));
-		assertEquals(1, bean.getMultiList().get(0).size());
-		assertThat(bean.getMultiList().get(0).get(0), instanceOf(Bean.class));
+		assertNotNull(this.wrapper.getPropertyValue("multiList[0][0]"));
+		assertEquals(1, this.bean.getMultiList().get(0).size());
+		assertThat(this.bean.getMultiList().get(0).get(0), instanceOf(Bean.class));
 	}
 
 	@Test(expected = InvalidPropertyException.class)
 	public void getPropertyValueAutoGrowListNotParameterized() {
-		wrapper.getPropertyValue("listNotParameterized[0]");
+		this.wrapper.getPropertyValue("listNotParameterized[0]");
 	}
 
 	@Test
 	public void setPropertyValueAutoGrowMap() {
-		wrapper.setPropertyValue("map[A]", new Bean());
-		assertThat(bean.getMap().get("A"), instanceOf(Bean.class));
+		this.wrapper.setPropertyValue("map[A]", new Bean());
+		assertThat(this.bean.getMap().get("A"), instanceOf(Bean.class));
 	}
 
 	@Test
 	public void setNestedPropertyValueAutoGrowMap() {
-		wrapper.setPropertyValue("map[A].nested", new Bean());
-		assertThat(bean.getMap().get("A").getNested(), instanceOf(Bean.class));
+		this.wrapper.setPropertyValue("map[A].nested", new Bean());
+		assertThat(this.bean.getMap().get("A").getNested(), instanceOf(Bean.class));
 	}
 
 
@@ -180,7 +180,7 @@ public class BeanWrapperAutoGrowingTests {
 		private Map<String, Bean> map;
 
 		public String getProp() {
-			return prop;
+			return this.prop;
 		}
 
 		public void setProp(String prop) {
@@ -188,7 +188,7 @@ public class BeanWrapperAutoGrowingTests {
 		}
 
 		public Bean getNested() {
-			return nested;
+			return this.nested;
 		}
 
 		public void setNested(Bean nested) {
@@ -196,7 +196,7 @@ public class BeanWrapperAutoGrowingTests {
 		}
 
 		public Bean[] getArray() {
-			return array;
+			return this.array;
 		}
 
 		public void setArray(Bean[] array) {
@@ -204,7 +204,7 @@ public class BeanWrapperAutoGrowingTests {
 		}
 
 		public Bean[][] getMultiArray() {
-			return multiArray;
+			return this.multiArray;
 		}
 
 		public void setMultiArray(Bean[][] multiArray) {
@@ -212,7 +212,7 @@ public class BeanWrapperAutoGrowingTests {
 		}
 
 		public List<Bean> getList() {
-			return list;
+			return this.list;
 		}
 
 		public void setList(List<Bean> list) {
@@ -220,7 +220,7 @@ public class BeanWrapperAutoGrowingTests {
 		}
 
 		public List<List<Bean>> getMultiList() {
-			return multiList;
+			return this.multiList;
 		}
 
 		public void setMultiList(List<List<Bean>> multiList) {
@@ -228,7 +228,7 @@ public class BeanWrapperAutoGrowingTests {
 		}
 
 		public NestedNoDefaultConstructor getNestedNoConstructor() {
-			return nestedNoConstructor;
+			return this.nestedNoConstructor;
 		}
 
 		public void setNestedNoConstructor(NestedNoDefaultConstructor nestedNoConstructor) {
@@ -236,7 +236,7 @@ public class BeanWrapperAutoGrowingTests {
 		}
 
 		public List getListNotParameterized() {
-			return listNotParameterized;
+			return this.listNotParameterized;
 		}
 
 		public void setListNotParameterized(List listNotParameterized) {
@@ -244,7 +244,7 @@ public class BeanWrapperAutoGrowingTests {
 		}
 
 		public Map<String, Bean> getMap() {
-			return map;
+			return this.map;
 		}
 
 		public void setMap(Map<String, Bean> map) {

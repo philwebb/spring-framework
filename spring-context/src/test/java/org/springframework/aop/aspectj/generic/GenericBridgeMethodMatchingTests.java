@@ -52,23 +52,23 @@ public class GenericBridgeMethodMatchingTests {
 		ClassPathXmlApplicationContext ctx =
 			new ClassPathXmlApplicationContext(getClass().getSimpleName() + "-context.xml", getClass());
 
-		counterAspect = (GenericCounterAspect) ctx.getBean("counterAspect");
-		counterAspect.count = 0;
+		this.counterAspect = (GenericCounterAspect) ctx.getBean("counterAspect");
+		this.counterAspect.count = 0;
 
-		testBean = (DerivedInterface<String>) ctx.getBean("testBean");
+		this.testBean = (DerivedInterface<String>) ctx.getBean("testBean");
 	}
 
 
 	@Test
 	public void testGenericDerivedInterfaceMethodThroughInterface() {
-		testBean.genericDerivedInterfaceMethod("");
-		assertEquals(1, counterAspect.count);
+		this.testBean.genericDerivedInterfaceMethod("");
+		assertEquals(1, this.counterAspect.count);
 	}
 
 	@Test
 	public void testGenericBaseInterfaceMethodThroughInterface() {
-		testBean.genericBaseInterfaceMethod("");
-		assertEquals(1, counterAspect.count);
+		this.testBean.genericBaseInterfaceMethod("");
+		assertEquals(1, this.counterAspect.count);
 	}
 
 }
@@ -104,7 +104,7 @@ class GenericCounterAspect {
 
 	@Before("execution(* *..BaseInterface+.*(..))")
 	public void increment() {
-		count++;
+		this.count++;
 	}
 
 }

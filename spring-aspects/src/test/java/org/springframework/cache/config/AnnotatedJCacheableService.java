@@ -55,7 +55,7 @@ public class AnnotatedJCacheableService implements JCacheableService<Long> {
 	@Override
 	@CacheResult
 	public Long cache(String id) {
-		return counter.getAndIncrement();
+		return this.counter.getAndIncrement();
 	}
 
 	@Override
@@ -81,25 +81,25 @@ public class AnnotatedJCacheableService implements JCacheableService<Long> {
 	@Override
 	@CacheResult(skipGet = true)
 	public Long cacheAlwaysInvoke(String id) {
-		return counter.getAndIncrement();
+		return this.counter.getAndIncrement();
 	}
 
 	@Override
 	@CacheResult
 	public Long cacheWithPartialKey(@CacheKey String id, boolean notUsed) {
-		return counter.getAndIncrement();
+		return this.counter.getAndIncrement();
 	}
 
 	@Override
 	@CacheResult(cacheResolverFactory = TestableCacheResolverFactory.class)
 	public Long cacheWithCustomCacheResolver(String id) {
-		return counter.getAndIncrement();
+		return this.counter.getAndIncrement();
 	}
 
 	@Override
 	@CacheResult(cacheKeyGenerator = TestableCacheKeyGenerator.class)
 	public Long cacheWithCustomKeyGenerator(String id, String anotherId) {
-		return counter.getAndIncrement();
+		return this.counter.getAndIncrement();
 	}
 
 	@Override
@@ -117,7 +117,7 @@ public class AnnotatedJCacheableService implements JCacheableService<Long> {
 	@CachePut(afterInvocation = false)
 	public void earlyPut(String id, @CacheValue Object value) {
 		Object key = SimpleKeyGenerator.generateKey(id);
-		Cache.ValueWrapper valueWrapper = defaultCache.get(key);
+		Cache.ValueWrapper valueWrapper = this.defaultCache.get(key);
 		if (valueWrapper == null) {
 			throw new AssertionError("Excepted value to be put in cache with key " + key);
 		}
@@ -149,7 +149,7 @@ public class AnnotatedJCacheableService implements JCacheableService<Long> {
 	@CacheRemove(afterInvocation = false)
 	public void earlyRemove(String id) {
 		Object key = SimpleKeyGenerator.generateKey(id);
-		Cache.ValueWrapper valueWrapper = defaultCache.get(key);
+		Cache.ValueWrapper valueWrapper = this.defaultCache.get(key);
 		if (valueWrapper != null) {
 			throw new AssertionError("Value with key " + key + " expected to be already remove from cache");
 		}
@@ -175,7 +175,7 @@ public class AnnotatedJCacheableService implements JCacheableService<Long> {
 	@Override
 	@CacheRemoveAll(afterInvocation = false)
 	public void earlyRemoveAll() {
-		ConcurrentHashMap<?, ?> nativeCache = (ConcurrentHashMap<?, ?>) defaultCache.getNativeCache();
+		ConcurrentHashMap<?, ?> nativeCache = (ConcurrentHashMap<?, ?>) this.defaultCache.getNativeCache();
 		if (!nativeCache.isEmpty()) {
 			throw new AssertionError("Cache was expected to be empty");
 		}
@@ -193,11 +193,11 @@ public class AnnotatedJCacheableService implements JCacheableService<Long> {
 
 	@Override
 	public long exceptionInvocations() {
-		return exceptionCounter.get();
+		return this.exceptionCounter.get();
 	}
 
 	private void throwException(boolean matchFilter) {
-		long count = exceptionCounter.getAndIncrement();
+		long count = this.exceptionCounter.getAndIncrement();
 		if (matchFilter) {
 			throw new UnsupportedOperationException("Expected exception (" + count + ")");
 		}
@@ -207,7 +207,7 @@ public class AnnotatedJCacheableService implements JCacheableService<Long> {
 	}
 
 	private void throwCheckedException(boolean matchFilter) throws IOException {
-		long count = exceptionCounter.getAndIncrement();
+		long count = this.exceptionCounter.getAndIncrement();
 		if (matchFilter) {
 			throw new IOException("Expected exception (" + count + ")");
 		}

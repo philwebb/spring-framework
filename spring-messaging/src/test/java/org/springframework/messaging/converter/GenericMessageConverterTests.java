@@ -41,25 +41,25 @@ public class GenericMessageConverterTests {
 	public final ExpectedException thrown = ExpectedException.none();
 
 	private final ConversionService conversionService = new DefaultConversionService();
-	private final GenericMessageConverter converter = new GenericMessageConverter(conversionService);
+	private final GenericMessageConverter converter = new GenericMessageConverter(this.conversionService);
 
 	@Test
 	public void fromMessageWithConversion() {
 		Message<String> content = MessageBuilder.withPayload("33").build();
-		assertEquals(33, converter.fromMessage(content, Integer.class));
+		assertEquals(33, this.converter.fromMessage(content, Integer.class));
 	}
 
 	@Test
 	public void fromMessageNoConverter() {
 		Message<Integer> content = MessageBuilder.withPayload(1234).build();
-		assertNull("No converter from integer to locale", converter.fromMessage(content, Locale.class));
+		assertNull("No converter from integer to locale", this.converter.fromMessage(content, Locale.class));
 	}
 
 	@Test
 	public void fromMessageWithFailedConversion() {
 		Message<String> content = MessageBuilder.withPayload("test not a number").build();
-		thrown.expect(MessageConversionException.class);
-		thrown.expectCause(isA(ConversionException.class));
-		converter.fromMessage(content, Integer.class);
+		this.thrown.expect(MessageConversionException.class);
+		this.thrown.expectCause(isA(ConversionException.class));
+		this.converter.fromMessage(content, Integer.class);
 	}
 }

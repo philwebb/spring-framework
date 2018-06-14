@@ -73,7 +73,7 @@ public class CacheErrorHandlerTests {
 		willThrow(exception).given(this.cache).get(0L);
 
 		Object result = this.simpleService.get(0L);
-		verify(this.errorHandler).handleCacheGetError(exception, cache, 0L);
+		verify(this.errorHandler).handleCacheGetError(exception, this.cache, 0L);
 		verify(this.cache).get(0L);
 		verify(this.cache).put(0L, result); // result of the invocation
 	}
@@ -110,7 +110,7 @@ public class CacheErrorHandlerTests {
 		willThrow(exception).given(this.cache).put(0L, 0L);
 
 		this.simpleService.put(0L);
-		verify(this.errorHandler).handleCachePutError(exception, cache, 0L, 0L);
+		verify(this.errorHandler).handleCachePutError(exception, this.cache, 0L, 0L);
 	}
 
 	@Test
@@ -130,7 +130,7 @@ public class CacheErrorHandlerTests {
 		willThrow(exception).given(this.cache).evict(0L);
 
 		this.simpleService.evict(0L);
-		verify(this.errorHandler).handleCacheEvictError(exception, cache, 0L);
+		verify(this.errorHandler).handleCacheEvictError(exception, this.cache, 0L);
 	}
 
 	@Test
@@ -150,7 +150,7 @@ public class CacheErrorHandlerTests {
 		willThrow(exception).given(this.cache).clear();
 
 		this.simpleService.clear();
-		verify(this.errorHandler).handleCacheClearError(exception, cache);
+		verify(this.errorHandler).handleCacheClearError(exception, this.cache);
 	}
 
 	@Test

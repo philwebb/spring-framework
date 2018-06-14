@@ -48,14 +48,14 @@ public class InvertibleComparatorTests {
 
 	@Test
 	public void shouldDefaultToAscending() throws Exception {
-		InvertibleComparator<Integer> invertibleComparator = new InvertibleComparator<>(comparator);
+		InvertibleComparator<Integer> invertibleComparator = new InvertibleComparator<>(this.comparator);
 		assertThat(invertibleComparator.isAscending(), is(true));
 		assertThat(invertibleComparator.compare(1, 2), is(-1));
 	}
 
 	@Test
 	public void shouldInvert() throws Exception {
-		InvertibleComparator<Integer> invertibleComparator = new InvertibleComparator<>(comparator);
+		InvertibleComparator<Integer> invertibleComparator = new InvertibleComparator<>(this.comparator);
 		assertThat(invertibleComparator.isAscending(), is(true));
 		assertThat(invertibleComparator.compare(1, 2), is(-1));
 		invertibleComparator.invertOrder();
@@ -65,13 +65,13 @@ public class InvertibleComparatorTests {
 
 	@Test
 	public void shouldCompareAscending() throws Exception {
-		InvertibleComparator<Integer> invertibleComparator = new InvertibleComparator<>(comparator, true);
+		InvertibleComparator<Integer> invertibleComparator = new InvertibleComparator<>(this.comparator, true);
 		assertThat(invertibleComparator.compare(1, 2), is(-1));
 	}
 
 	@Test
 	public void shouldCompareDescending() throws Exception {
-		InvertibleComparator<Integer> invertibleComparator = new InvertibleComparator<>(comparator, false);
+		InvertibleComparator<Integer> invertibleComparator = new InvertibleComparator<>(this.comparator, false);
 		assertThat(invertibleComparator.compare(1, 2), is(1));
 	}
 

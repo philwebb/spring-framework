@@ -39,7 +39,7 @@ public class WebSocketHttpHeadersTests {
 
 	@Before
 	public void setUp() {
-		headers = new WebSocketHttpHeaders();
+		this.headers = new WebSocketHttpHeaders();
 	}
 
 	@Test

@@ -27,19 +27,19 @@ public class QuartzTestBean {
 
 
 	public void doImport() {
-		++importCount;
+		++this.importCount;
 	}
 
 	public void doExport() {
-		++exportCount;
+		++this.exportCount;
 	}
 
 	public int getImportCount() {
-		return importCount;
+		return this.importCount;
 	}
 
 	public int getExportCount() {
-		return exportCount;
+		return this.exportCount;
 	}
 
 }

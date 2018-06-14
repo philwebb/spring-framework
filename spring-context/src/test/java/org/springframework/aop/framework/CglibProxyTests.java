@@ -91,10 +91,10 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 	public void testProtectedMethodInvocation() {
 		ProtectedMethodTestBean bean = new ProtectedMethodTestBean();
 		bean.value = "foo";
-		mockTargetSource.setTarget(bean);
+		this.mockTargetSource.setTarget(bean);
 
 		AdvisedSupport as = new AdvisedSupport();
-		as.setTargetSource(mockTargetSource);
+		as.setTargetSource(this.mockTargetSource);
 		as.addAdvice(new NopInterceptor());
 		AopProxy aop = new CglibAopProxy(as);
 
@@ -108,10 +108,10 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 	public void testPackageMethodInvocation() {
 		PackageMethodTestBean bean = new PackageMethodTestBean();
 		bean.value = "foo";
-		mockTargetSource.setTarget(bean);
+		this.mockTargetSource.setTarget(bean);
 
 		AdvisedSupport as = new AdvisedSupport();
-		as.setTargetSource(mockTargetSource);
+		as.setTargetSource(this.mockTargetSource);
 		as.addAdvice(new NopInterceptor());
 		AopProxy aop = new CglibAopProxy(as);
 
@@ -125,9 +125,9 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 	public void testProxyCanBeClassNotInterface() {
 		TestBean raw = new TestBean();
 		raw.setAge(32);
-		mockTargetSource.setTarget(raw);
+		this.mockTargetSource.setTarget(raw);
 		AdvisedSupport pc = new AdvisedSupport();
-		pc.setTargetSource(mockTargetSource);
+		pc.setTargetSource(this.mockTargetSource);
 		AopProxy aop = new CglibAopProxy(pc);
 
 		Object proxy = aop.getProxy();
@@ -243,9 +243,9 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 		NoArgCtorTestBean target = new NoArgCtorTestBean("b", 1);
 		target.reset();
 
-		mockTargetSource.setTarget(target);
+		this.mockTargetSource.setTarget(target);
 		AdvisedSupport pc = new AdvisedSupport();
-		pc.setTargetSource(mockTargetSource);
+		pc.setTargetSource(this.mockTargetSource);
 		CglibAopProxy aop = new CglibAopProxy(pc);
 		aop.setConstructorArguments(new Object[] {"Rob Harrop", 22}, new Class<?>[] {String.class, int.class});
 
@@ -257,17 +257,17 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 	public void testProxyAProxy() {
 		ITestBean target = new TestBean();
 
-		mockTargetSource.setTarget(target);
+		this.mockTargetSource.setTarget(target);
 		AdvisedSupport as = new AdvisedSupport();
-		as.setTargetSource(mockTargetSource);
+		as.setTargetSource(this.mockTargetSource);
 		as.addAdvice(new NopInterceptor());
 		CglibAopProxy cglib = new CglibAopProxy(as);
 
 		ITestBean proxy1 = (ITestBean) cglib.getProxy();
 
-		mockTargetSource.setTarget(proxy1);
+		this.mockTargetSource.setTarget(proxy1);
 		as = new AdvisedSupport(new Class<?>[]{});
-		as.setTargetSource(mockTargetSource);
+		as.setTargetSource(this.mockTargetSource);
 		as.addAdvice(new NopInterceptor());
 		cglib = new CglibAopProxy(as);
 
@@ -277,19 +277,19 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 	@Test
 	public void testProxyAProxyWithAdditionalInterface() {
 		ITestBean target = new TestBean();
-		mockTargetSource.setTarget(target);
+		this.mockTargetSource.setTarget(target);
 
 		AdvisedSupport as = new AdvisedSupport();
-		as.setTargetSource(mockTargetSource);
+		as.setTargetSource(this.mockTargetSource);
 		as.addAdvice(new NopInterceptor());
 		as.addInterface(Serializable.class);
 		CglibAopProxy cglib = new CglibAopProxy(as);
 
 		ITestBean proxy1 = (ITestBean) cglib.getProxy();
 
-		mockTargetSource.setTarget(proxy1);
+		this.mockTargetSource.setTarget(proxy1);
 		as = new AdvisedSupport(new Class<?>[]{});
-		as.setTargetSource(mockTargetSource);
+		as.setTargetSource(this.mockTargetSource);
 		as.addAdvice(new NopInterceptor());
 		cglib = new CglibAopProxy(as);
 
@@ -300,10 +300,10 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 	@Test
 	public void testExceptionHandling() {
 		ExceptionThrower bean = new ExceptionThrower();
-		mockTargetSource.setTarget(bean);
+		this.mockTargetSource.setTarget(bean);
 
 		AdvisedSupport as = new AdvisedSupport();
-		as.setTargetSource(mockTargetSource);
+		as.setTargetSource(this.mockTargetSource);
 		as.addAdvice(new NopInterceptor());
 		AopProxy aop = new CglibAopProxy(as);
 
@@ -381,7 +381,7 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 		private String name;
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String name) {
@@ -422,11 +422,11 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 		private boolean finallyInvoked;
 
 		public boolean isCatchInvoked() {
-			return catchInvoked;
+			return this.catchInvoked;
 		}
 
 		public boolean isFinallyInvoked() {
-			return finallyInvoked;
+			return this.finallyInvoked;
 		}
 
 		public void doTest() throws Exception {
@@ -434,11 +434,11 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 				throw new ApplicationContextException("foo");
 			}
 			catch (Exception ex) {
-				catchInvoked = true;
+				this.catchInvoked = true;
 				throw ex;
 			}
 			finally {
-				finallyInvoked = true;
+				this.finallyInvoked = true;
 			}
 		}
 	}
@@ -449,15 +449,15 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 		private boolean called = false;
 
 		public NoArgCtorTestBean(String x, int y) {
-			called = true;
+			this.called = true;
 		}
 
 		public boolean wasCalled() {
-			return called;
+			return this.called;
 		}
 
 		public void reset() {
-			called = false;
+			this.called = false;
 		}
 	}
 

@@ -36,13 +36,13 @@ public class DelegatingDataSourceTests {
 
 	private final DataSource delegate = mock(DataSource.class);
 
-	private DelegatingDataSource dataSource = new DelegatingDataSource(delegate);
+	private DelegatingDataSource dataSource = new DelegatingDataSource(this.delegate);
 
 	@Test
 	public void shouldDelegateGetConnection() throws Exception {
 		Connection connection = mock(Connection.class);
-		given(delegate.getConnection()).willReturn(connection);
-		assertThat(dataSource.getConnection(), is(connection));
+		given(this.delegate.getConnection()).willReturn(connection);
+		assertThat(this.dataSource.getConnection(), is(connection));
 	}
 
 	@Test
@@ -50,62 +50,62 @@ public class DelegatingDataSourceTests {
 		Connection connection = mock(Connection.class);
 		String username = "username";
 		String password = "password";
-		given(delegate.getConnection(username, password)).willReturn(connection);
-		assertThat(dataSource.getConnection(username, password), is(connection));
+		given(this.delegate.getConnection(username, password)).willReturn(connection);
+		assertThat(this.dataSource.getConnection(username, password), is(connection));
 	}
 
 	@Test
 	public void shouldDelegateGetLogWriter() throws Exception {
 		PrintWriter writer = new PrintWriter(new ByteArrayOutputStream());
-		given(delegate.getLogWriter()).willReturn(writer);
-		assertThat(dataSource.getLogWriter(), is(writer));
+		given(this.delegate.getLogWriter()).willReturn(writer);
+		assertThat(this.dataSource.getLogWriter(), is(writer));
 	}
 
 	@Test
 	public void shouldDelegateSetLogWriter() throws Exception {
 		PrintWriter writer = new PrintWriter(new ByteArrayOutputStream());
-		dataSource.setLogWriter(writer);
-		verify(delegate).setLogWriter(writer);
+		this.dataSource.setLogWriter(writer);
+		verify(this.delegate).setLogWriter(writer);
 	}
 
 	@Test
 	public void shouldDelegateGetLoginTimeout() throws Exception {
 		int timeout = 123;
-		given(delegate.getLoginTimeout()).willReturn(timeout);
-		assertThat(dataSource.getLoginTimeout(), is(timeout));
+		given(this.delegate.getLoginTimeout()).willReturn(timeout);
+		assertThat(this.dataSource.getLoginTimeout(), is(timeout));
 	}
 
 	@Test
 	public void shouldDelegateSetLoginTimeoutWithSeconds() throws Exception {
 		int timeout = 123;
-		dataSource.setLoginTimeout(timeout);
-		verify(delegate).setLoginTimeout(timeout);
+		this.dataSource.setLoginTimeout(timeout);
+		verify(this.delegate).setLoginTimeout(timeout);
 	}
 
 	@Test
 	public void shouldDelegateUnwrapWithoutImplementing() throws Exception {
 		ExampleWrapper wrapper = mock(ExampleWrapper.class);
-		given(delegate.unwrap(ExampleWrapper.class)).willReturn(wrapper);
-		assertThat(dataSource.unwrap(ExampleWrapper.class), is(wrapper));
+		given(this.delegate.unwrap(ExampleWrapper.class)).willReturn(wrapper);
+		assertThat(this.dataSource.unwrap(ExampleWrapper.class), is(wrapper));
 	}
 
 	@Test
 	public void shouldDelegateUnwrapImplementing() throws Exception {
-		dataSource = new DelegatingDataSourceWithWrapper();
-		assertThat(dataSource.unwrap(ExampleWrapper.class),
-				is((ExampleWrapper) dataSource));
+		this.dataSource = new DelegatingDataSourceWithWrapper();
+		assertThat(this.dataSource.unwrap(ExampleWrapper.class),
+				is((ExampleWrapper) this.dataSource));
 	}
 
 	@Test
 	public void shouldDelegateIsWrapperForWithoutImplementing() throws Exception {
-		given(delegate.isWrapperFor(ExampleWrapper.class)).willReturn(true);
-		assertThat(dataSource.isWrapperFor(ExampleWrapper.class), is(true));
+		given(this.delegate.isWrapperFor(ExampleWrapper.class)).willReturn(true);
+		assertThat(this.dataSource.isWrapperFor(ExampleWrapper.class), is(true));
 	}
 
 	@Test
 	public void shouldDelegateIsWrapperForImplementing() throws Exception {
-		dataSource = new DelegatingDataSourceWithWrapper();
-		assertThat(dataSource.isWrapperFor(ExampleWrapper.class), is(true));
+		this.dataSource = new DelegatingDataSourceWithWrapper();
+		assertThat(this.dataSource.isWrapperFor(ExampleWrapper.class), is(true));
 	}
 
 	public static interface ExampleWrapper {

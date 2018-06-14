@@ -121,7 +121,7 @@ public class AnnotationScopeMetadataResolverTests {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void setScopeAnnotationTypeWithNullType() {
-		scopeMetadataResolver.setScopeAnnotationType(null);
+		this.scopeMetadataResolver.setScopeAnnotationType(null);
 	}
 
 

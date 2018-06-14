@@ -77,7 +77,7 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 
 	@Test
 	public void requestPart() {
-		Mono<ClientResponse> result = webClient
+		Mono<ClientResponse> result = this.webClient
 				.post()
 				.uri("/requestPart")
 				.syncBody(generateBody())
@@ -91,7 +91,7 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 
 	@Test
 	public void requestBodyMap() {
-		Mono<String> result = webClient
+		Mono<String> result = this.webClient
 				.post()
 				.uri("/requestBodyMap")
 				.syncBody(generateBody())
@@ -106,7 +106,7 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 
 	@Test
 	public void requestBodyFlux() {
-		Mono<String> result = webClient
+		Mono<String> result = this.webClient
 				.post()
 				.uri("/requestBodyFlux")
 				.syncBody(generateBody())
@@ -121,7 +121,7 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 
 	@Test
 	public void modelAttribute() {
-		Mono<String> result = webClient
+		Mono<String> result = this.webClient
 				.post()
 				.uri("/modelAttribute")
 				.syncBody(generateBody())
@@ -259,7 +259,7 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 	}
 

@@ -42,16 +42,16 @@ public class ServerSentEventHttpMessageReaderTests extends AbstractDataBufferAll
 
 	@Test
 	public void cantRead() {
-		assertFalse(messageReader.canRead(ResolvableType.forClass(Object.class),
+		assertFalse(this.messageReader.canRead(ResolvableType.forClass(Object.class),
 				new MediaType("foo", "bar")));
-		assertFalse(messageReader.canRead(ResolvableType.forClass(Object.class), null));
+		assertFalse(this.messageReader.canRead(ResolvableType.forClass(Object.class), null));
 	}
 
 	@Test
 	public void canRead() {
-		assertTrue(messageReader.canRead(ResolvableType.forClass(Object.class),
+		assertTrue(this.messageReader.canRead(ResolvableType.forClass(Object.class),
 				new MediaType("text", "event-stream")));
-		assertTrue(messageReader.canRead(ResolvableType.forClass(ServerSentEvent.class),
+		assertTrue(this.messageReader.canRead(ResolvableType.forClass(ServerSentEvent.class),
 				new MediaType("foo", "bar")));
 	}
 
@@ -92,7 +92,7 @@ public class ServerSentEventHttpMessageReaderTests extends AbstractDataBufferAll
 						stringBuffer("ent:foo\nretry:123\n:bla\n:bla bla\n:bla bla bla\ndata:"),
 						stringBuffer("bar\n\nid:c43\nevent:bar\nretry:456\ndata:baz\n\n")));
 
-		Flux<ServerSentEvent> events = messageReader
+		Flux<ServerSentEvent> events = this.messageReader
 				.read(ResolvableType.forClassWithGenerics(ServerSentEvent.class, String.class),
 						request, Collections.emptyMap()).cast(ServerSentEvent.class);
 
@@ -120,7 +120,7 @@ public class ServerSentEventHttpMessageReaderTests extends AbstractDataBufferAll
 		String body = "data:foo\ndata:bar\n\ndata:baz\n\n";
 		MockServerHttpRequest request = MockServerHttpRequest.post("/").body(body);
 
-		Flux<String> data = messageReader.read(ResolvableType.forClass(String.class),
+		Flux<String> data = this.messageReader.read(ResolvableType.forClass(String.class),
 				request, Collections.emptyMap()).cast(String.class);
 
 		StepVerifier.create(data)
@@ -136,7 +136,7 @@ public class ServerSentEventHttpMessageReaderTests extends AbstractDataBufferAll
 				"data:{\"foo\": \"foofoo\", \"bar\": \"barbar\"}\n\n" +
 				"data:{\"foo\": \"foofoofoo\", \"bar\": \"barbarbar\"}\n\n");
 
-		Flux<Pojo> data = messageReader.read(ResolvableType.forClass(Pojo.class), request,
+		Flux<Pojo> data = this.messageReader.read(ResolvableType.forClass(Pojo.class), request,
 				Collections.emptyMap()).cast(Pojo.class);
 
 		StepVerifier.create(data)
@@ -157,7 +157,7 @@ public class ServerSentEventHttpMessageReaderTests extends AbstractDataBufferAll
 		String body = "data:foo\ndata:bar\n\ndata:baz\n\n";
 		MockServerHttpRequest request = MockServerHttpRequest.post("/").body(body);
 
-		String actual = messageReader
+		String actual = this.messageReader
 				.readMono(ResolvableType.forClass(String.class), request, Collections.emptyMap())
 				.cast(String.class)
 				.block(Duration.ZERO);

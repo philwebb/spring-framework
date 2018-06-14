@@ -45,20 +45,20 @@ public class ServletServerHttpResponseTests {
 
 	@Before
 	public void create() throws Exception {
-		mockResponse = new MockHttpServletResponse();
-		response = new ServletServerHttpResponse(mockResponse);
+		this.mockResponse = new MockHttpServletResponse();
+		this.response = new ServletServerHttpResponse(this.mockResponse);
 	}
 
 
 	@Test
 	public void setStatusCode() throws Exception {
-		response.setStatusCode(HttpStatus.NOT_FOUND);
-		assertEquals("Invalid status code", 404, mockResponse.getStatus());
+		this.response.setStatusCode(HttpStatus.NOT_FOUND);
+		assertEquals("Invalid status code", 404, this.mockResponse.getStatus());
 	}
 
 	@Test
 	public void getHeaders() throws Exception {
-		HttpHeaders headers = response.getHeaders();
+		HttpHeaders headers = this.response.getHeaders();
 		String headerName = "MyHeader";
 		String headerValue1 = "value1";
 		headers.add(headerName, headerValue1);
@@ -66,14 +66,14 @@ public class ServletServerHttpResponseTests {
 		headers.add(headerName, headerValue2);
 		headers.setContentType(new MediaType("text", "plain", StandardCharsets.UTF_8));
 
-		response.close();
-		assertTrue("Header not set", mockResponse.getHeaderNames().contains(headerName));
-		List<String> headerValues = mockResponse.getHeaders(headerName);
+		this.response.close();
+		assertTrue("Header not set", this.mockResponse.getHeaderNames().contains(headerName));
+		List<String> headerValues = this.mockResponse.getHeaders(headerName);
 		assertTrue("Header not set", headerValues.contains(headerValue1));
 		assertTrue("Header not set", headerValues.contains(headerValue2));
-		assertEquals("Invalid Content-Type", "text/plain;charset=UTF-8", mockResponse.getHeader("Content-Type"));
-		assertEquals("Invalid Content-Type", "text/plain;charset=UTF-8", mockResponse.getContentType());
-		assertEquals("Invalid Content-Type", "UTF-8", mockResponse.getCharacterEncoding());
+		assertEquals("Invalid Content-Type", "text/plain;charset=UTF-8", this.mockResponse.getHeader("Content-Type"));
+		assertEquals("Invalid Content-Type", "text/plain;charset=UTF-8", this.mockResponse.getContentType());
+		assertEquals("Invalid Content-Type", "UTF-8", this.mockResponse.getCharacterEncoding());
 	}
 
 	@Test
@@ -94,9 +94,9 @@ public class ServletServerHttpResponseTests {
 	@Test
 	public void getBody() throws Exception {
 		byte[] content = "Hello World".getBytes("UTF-8");
-		FileCopyUtils.copy(content, response.getBody());
+		FileCopyUtils.copy(content, this.response.getBody());
 
-		assertArrayEquals("Invalid content written", content, mockResponse.getContentAsByteArray());
+		assertArrayEquals("Invalid content written", content, this.mockResponse.getContentAsByteArray());
 	}
 
 }

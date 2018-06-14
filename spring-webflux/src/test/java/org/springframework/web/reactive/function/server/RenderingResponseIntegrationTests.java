@@ -75,7 +75,7 @@ public class RenderingResponseIntegrationTests extends AbstractRouterFunctionInt
 	@Test
 	public void normal() throws Exception {
 		ResponseEntity<String> result =
-				restTemplate.getForEntity("http://localhost:" + port + "/normal", String.class);
+				this.restTemplate.getForEntity("http://localhost:" + this.port + "/normal", String.class);
 
 		assertEquals(HttpStatus.OK, result.getStatusCode());
 		Map<String, String> body = parseBody(result.getBody());
@@ -87,7 +87,7 @@ public class RenderingResponseIntegrationTests extends AbstractRouterFunctionInt
 	@Test
 	public void filter() throws Exception {
 		ResponseEntity<String> result =
-				restTemplate.getForEntity("http://localhost:" + port + "/filter", String.class);
+				this.restTemplate.getForEntity("http://localhost:" + this.port + "/filter", String.class);
 
 		assertEquals(HttpStatus.OK, result.getStatusCode());
 		Map<String, String> body = parseBody(result.getBody());

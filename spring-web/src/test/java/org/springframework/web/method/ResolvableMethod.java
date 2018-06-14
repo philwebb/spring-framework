@@ -582,8 +582,8 @@ public class ResolvableMethod {
 
 		private List<MethodParameter> applyFilters() {
 			List<MethodParameter> matches = new ArrayList<>();
-			for (int i = 0; i < method.getParameterCount(); i++) {
-				MethodParameter param = new SynthesizingMethodParameter(method, i);
+			for (int i = 0; i < ResolvableMethod.this.method.getParameterCount(); i++) {
+				MethodParameter param = new SynthesizingMethodParameter(ResolvableMethod.this.method, i);
 				param.initParameterNameDiscovery(nameDiscoverer);
 				if (this.filters.stream().allMatch(p -> p.test(param))) {
 					matches.add(param);

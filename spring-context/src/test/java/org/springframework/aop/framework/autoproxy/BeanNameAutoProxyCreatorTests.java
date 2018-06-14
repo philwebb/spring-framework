@@ -48,35 +48,35 @@ public class BeanNameAutoProxyCreatorTests {
 	public void setup() {
 		// Note that we need an ApplicationContext, not just a BeanFactory,
 		// for post-processing and hence auto-proxying to work.
-		beanFactory = new ClassPathXmlApplicationContext(getClass().getSimpleName() + "-context.xml", getClass());
+		this.beanFactory = new ClassPathXmlApplicationContext(getClass().getSimpleName() + "-context.xml", getClass());
 	}
 
 
 	@Test
 	public void testNoProxy() {
-		TestBean tb = (TestBean) beanFactory.getBean("noproxy");
+		TestBean tb = (TestBean) this.beanFactory.getBean("noproxy");
 		assertFalse(AopUtils.isAopProxy(tb));
 		assertEquals("noproxy", tb.getName());
 	}
 
 	@Test
 	public void testJdkProxyWithExactNameMatch() {
-		ITestBean tb = (ITestBean) beanFactory.getBean("onlyJdk");
+		ITestBean tb = (ITestBean) this.beanFactory.getBean("onlyJdk");
 		jdkAssertions(tb, 1);
 		assertEquals("onlyJdk", tb.getName());
 	}
 
 	@Test
 	public void testJdkProxyWithDoubleProxying() {
-		ITestBean tb = (ITestBean) beanFactory.getBean("doubleJdk");
+		ITestBean tb = (ITestBean) this.beanFactory.getBean("doubleJdk");
 		jdkAssertions(tb, 2);
 		assertEquals("doubleJdk", tb.getName());
 	}
 
 	@Test
 	public void testJdkIntroduction() {
-		ITestBean tb = (ITestBean) beanFactory.getBean("introductionUsingJdk");
-		NopInterceptor nop = (NopInterceptor) beanFactory.getBean("introductionNopInterceptor");
+		ITestBean tb = (ITestBean) this.beanFactory.getBean("introductionUsingJdk");
+		NopInterceptor nop = (NopInterceptor) this.beanFactory.getBean("introductionNopInterceptor");
 		assertEquals(0, nop.getCount());
 		assertTrue(AopUtils.isJdkDynamicProxy(tb));
 		int age = 5;
@@ -87,7 +87,7 @@ public class BeanNameAutoProxyCreatorTests {
 		assertEquals(3, nop.getCount());
 		assertEquals("introductionUsingJdk", tb.getName());
 
-		ITestBean tb2 = (ITestBean) beanFactory.getBean("second-introductionUsingJdk");
+		ITestBean tb2 = (ITestBean) this.beanFactory.getBean("second-introductionUsingJdk");
 
 		// Check two per-instance mixins were distinct
 		Lockable lockable1 = (Lockable) tb;
@@ -114,8 +114,8 @@ public class BeanNameAutoProxyCreatorTests {
 
 	@Test
 	public void testJdkIntroductionAppliesToCreatedObjectsNotFactoryBean() {
-		ITestBean tb = (ITestBean) beanFactory.getBean("factory-introductionUsingJdk");
-		NopInterceptor nop = (NopInterceptor) beanFactory.getBean("introductionNopInterceptor");
+		ITestBean tb = (ITestBean) this.beanFactory.getBean("factory-introductionUsingJdk");
+		NopInterceptor nop = (NopInterceptor) this.beanFactory.getBean("introductionNopInterceptor");
 		assertEquals("NOP should not have done any work yet", 0, nop.getCount());
 		assertTrue(AopUtils.isJdkDynamicProxy(tb));
 		int age = 5;
@@ -125,7 +125,7 @@ public class BeanNameAutoProxyCreatorTests {
 		assertEquals(0, ((TimeStamped) tb).getTimeStamp());
 		assertEquals(3, nop.getCount());
 
-		ITestBean tb2 = (ITestBean) beanFactory.getBean("second-introductionUsingJdk");
+		ITestBean tb2 = (ITestBean) this.beanFactory.getBean("second-introductionUsingJdk");
 
 		// Check two per-instance mixins were distinct
 		Lockable lockable1 = (Lockable) tb;
@@ -152,27 +152,27 @@ public class BeanNameAutoProxyCreatorTests {
 
 	@Test
 	public void testJdkProxyWithWildcardMatch() {
-		ITestBean tb = (ITestBean) beanFactory.getBean("jdk1");
+		ITestBean tb = (ITestBean) this.beanFactory.getBean("jdk1");
 		jdkAssertions(tb, 1);
 		assertEquals("jdk1", tb.getName());
 	}
 
 	@Test
 	public void testCglibProxyWithWildcardMatch() {
-		TestBean tb = (TestBean) beanFactory.getBean("cglib1");
+		TestBean tb = (TestBean) this.beanFactory.getBean("cglib1");
 		cglibAssertions(tb);
 		assertEquals("cglib1", tb.getName());
 	}
 
 	@Test
 	public void testWithFrozenProxy() {
-		ITestBean testBean = (ITestBean) beanFactory.getBean("frozenBean");
+		ITestBean testBean = (ITestBean) this.beanFactory.getBean("frozenBean");
 		assertTrue(((Advised)testBean).isFrozen());
 	}
 
 
 	private void jdkAssertions(ITestBean tb, int nopInterceptorCount)  {
-		NopInterceptor nop = (NopInterceptor) beanFactory.getBean("nopInterceptor");
+		NopInterceptor nop = (NopInterceptor) this.beanFactory.getBean("nopInterceptor");
 		assertEquals(0, nop.getCount());
 		assertTrue(AopUtils.isJdkDynamicProxy(tb));
 		int age = 5;
@@ -185,8 +185,8 @@ public class BeanNameAutoProxyCreatorTests {
 	 * Also has counting before advice.
 	 */
 	private void cglibAssertions(TestBean tb) {
-		CountingBeforeAdvice cba = (CountingBeforeAdvice) beanFactory.getBean("countingBeforeAdvice");
-		NopInterceptor nop = (NopInterceptor) beanFactory.getBean("nopInterceptor");
+		CountingBeforeAdvice cba = (CountingBeforeAdvice) this.beanFactory.getBean("countingBeforeAdvice");
+		NopInterceptor nop = (NopInterceptor) this.beanFactory.getBean("nopInterceptor");
 		assertEquals(0, cba.getCalls());
 		assertEquals(0, nop.getCount());
 		assertTrue(AopUtils.isCglibProxy(tb));

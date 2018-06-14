@@ -124,7 +124,7 @@ public class InterceptorRegistryTests {
 	@Test
 	public void addInterceptorsWithCustomPathMatcher() {
 		PathMatcher pathMatcher = Mockito.mock(PathMatcher.class);
-		this.registry.addInterceptor(interceptor1).addPathPatterns("/path1/**").pathMatcher(pathMatcher);
+		this.registry.addInterceptor(this.interceptor1).addPathPatterns("/path1/**").pathMatcher(pathMatcher);
 
 		MappedInterceptor mappedInterceptor = (MappedInterceptor) this.registry.getInterceptors().get(0);
 		assertSame(pathMatcher, mappedInterceptor.getPathMatcher());
@@ -189,7 +189,7 @@ public class InterceptorRegistryTests {
 
 		@Override
 		public void preHandle(WebRequest request) throws Exception {
-			preHandleInvoked = true;
+			this.preHandleInvoked = true;
 		}
 
 		@Override

@@ -51,11 +51,11 @@ public class Spr7816Tests {
 		}
 
 		public String getExtensionPrefix() {
-			return extensionPrefix;
+			return this.extensionPrefix;
 		}
 
 		public Map<String, Class<? extends DomainEntity>> getSupportedTypes() {
-			return supportedTypes;
+			return this.supportedTypes;
 		}
 
 	}

@@ -58,7 +58,7 @@ public class CacheResolverAdapterTests extends AbstractJCacheTests {
 		DefaultCacheInvocationContext<?> dummyContext = createDummyContext();
 		CacheResolverAdapter adapter = new CacheResolverAdapter(getCacheResolver(dummyContext, null));
 
-		thrown.expect(IllegalStateException.class);
+		this.thrown.expect(IllegalStateException.class);
 		adapter.resolveCaches(dummyContext);
 	}
 
@@ -82,7 +82,7 @@ public class CacheResolverAdapterTests extends AbstractJCacheTests {
 		CacheMethodDetails<CacheResult> methodDetails =
 				new DefaultCacheMethodDetails<>(method, cacheAnnotation, "test");
 		CacheResultOperation operation = new CacheResultOperation(methodDetails,
-				defaultCacheResolver, defaultKeyGenerator, defaultExceptionCacheResolver);
+				this.defaultCacheResolver, this.defaultKeyGenerator, this.defaultExceptionCacheResolver);
 		return new DefaultCacheInvocationContext<>(operation, new Sample(), new Object[] {"id"});
 	}
 

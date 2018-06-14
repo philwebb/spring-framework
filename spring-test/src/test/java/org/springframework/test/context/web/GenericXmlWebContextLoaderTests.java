@@ -38,8 +38,8 @@ public class GenericXmlWebContextLoaderTests {
 
 	@Test
 	public void configMustNotContainAnnotatedClasses() throws Exception {
-		expectedException.expect(IllegalStateException.class);
-		expectedException.expectMessage(containsString("does not support annotated classes"));
+		this.expectedException.expect(IllegalStateException.class);
+		this.expectedException.expectMessage(containsString("does not support annotated classes"));
 
 		GenericXmlWebContextLoader loader = new GenericXmlWebContextLoader();
 		WebMergedContextConfiguration mergedConfig = new WebMergedContextConfiguration(getClass(), EMPTY_STRING_ARRAY,
