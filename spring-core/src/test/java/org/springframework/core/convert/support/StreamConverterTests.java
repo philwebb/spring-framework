@@ -63,7 +63,7 @@ public class StreamConverterTests {
 	public void convertFromStreamToList() throws NoSuchFieldException {
 		this.conversionService.addConverter(Number.class, String.class, new ObjectToStringConverter());
 		Stream<Integer> stream = Arrays.asList(1, 2, 3).stream();
-		TypeDescriptor listOfStrings = new TypeDescriptor(Types.class.getField("listOfStrings")); ;
+		TypeDescriptor listOfStrings = new TypeDescriptor(Types.class.getField("listOfStrings"));
 		Object result = this.conversionService.convert(stream, listOfStrings);
 
 		assertNotNull("Converted object must not be null", result);
@@ -80,7 +80,7 @@ public class StreamConverterTests {
 	public void convertFromStreamToArray() throws NoSuchFieldException {
 		this.conversionService.addConverterFactory(new NumberToNumberConverterFactory());
 		Stream<Integer> stream = Arrays.asList(1, 2, 3).stream();
-		TypeDescriptor arrayOfLongs = new TypeDescriptor(Types.class.getField("arrayOfLongs")); ;
+		TypeDescriptor arrayOfLongs = new TypeDescriptor(Types.class.getField("arrayOfLongs"));
 		Object result = this.conversionService.convert(stream, arrayOfLongs);
 
 		assertNotNull("Converted object must not be null", result);
@@ -95,7 +95,7 @@ public class StreamConverterTests {
 	@Test
 	public void convertFromStreamToRawList() throws NoSuchFieldException {
 		Stream<Integer> stream = Arrays.asList(1, 2, 3).stream();
-		TypeDescriptor listOfStrings = new TypeDescriptor(Types.class.getField("rawList")); ;
+		TypeDescriptor listOfStrings = new TypeDescriptor(Types.class.getField("rawList"));
 		Object result = this.conversionService.convert(stream, listOfStrings);
 
 		assertNotNull("Converted object must not be null", result);
@@ -111,7 +111,7 @@ public class StreamConverterTests {
 	@Test
 	public void convertFromStreamToArrayNoConverter() throws NoSuchFieldException {
 		Stream<Integer> stream = Arrays.asList(1, 2, 3).stream();
-		TypeDescriptor arrayOfLongs = new TypeDescriptor(Types.class.getField("arrayOfLongs")); ;
+		TypeDescriptor arrayOfLongs = new TypeDescriptor(Types.class.getField("arrayOfLongs"));
 
 		this.thrown.expect(ConversionFailedException.class);
 		this.thrown.expectCause(is(instanceOf(ConverterNotFoundException.class)));
@@ -123,7 +123,7 @@ public class StreamConverterTests {
 	public void convertFromListToStream() throws NoSuchFieldException {
 		this.conversionService.addConverterFactory(new StringToNumberConverterFactory());
 		List<String> stream = Arrays.asList("1", "2", "3");
-		TypeDescriptor streamOfInteger = new TypeDescriptor(Types.class.getField("streamOfIntegers")); ;
+		TypeDescriptor streamOfInteger = new TypeDescriptor(Types.class.getField("streamOfIntegers"));
 		Object result = this.conversionService.convert(stream, streamOfInteger);
 
 		assertNotNull("Converted object must not be null", result);
@@ -143,7 +143,7 @@ public class StreamConverterTests {
 				return source == 1;
 			}
 		});
-		TypeDescriptor streamOfBoolean = new TypeDescriptor(Types.class.getField("streamOfBooleans")); ;
+		TypeDescriptor streamOfBoolean = new TypeDescriptor(Types.class.getField("streamOfBooleans"));
 		Object result = this.conversionService.convert(stream, streamOfBoolean);
 
 		assertNotNull("Converted object must not be null", result);
@@ -157,7 +157,7 @@ public class StreamConverterTests {
 	@SuppressWarnings("resource")
 	public void convertFromListToRawStream() throws NoSuchFieldException {
 		List<String> stream = Arrays.asList("1", "2", "3");
-		TypeDescriptor streamOfInteger = new TypeDescriptor(Types.class.getField("rawStream")); ;
+		TypeDescriptor streamOfInteger = new TypeDescriptor(Types.class.getField("rawStream"));
 		Object result = this.conversionService.convert(stream, streamOfInteger);
 
 		assertNotNull("Converted object must not be null", result);
