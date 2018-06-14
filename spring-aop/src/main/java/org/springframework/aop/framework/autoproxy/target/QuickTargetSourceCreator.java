@@ -37,8 +37,19 @@ import org.springframework.lang.Nullable;
  */
 public class QuickTargetSourceCreator extends AbstractBeanFactoryBasedTargetSourceCreator {
 
+	/**
+	 * The CommonsPool2TargetSource prefix.
+	 */
 	public static final String PREFIX_COMMONS_POOL = ":";
+
+	/**
+	 * The ThreadLocalTargetSource prefix.
+	 */
 	public static final String PREFIX_THREAD_LOCAL = "%";
+
+	/**
+	 * The PrototypeTargetSource prefix.
+	 */
 	public static final String PREFIX_PROTOTYPE = "!";
 
 	@Override

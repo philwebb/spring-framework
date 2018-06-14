@@ -41,10 +41,10 @@ import org.springframework.lang.Nullable;
  */
 public abstract class AbstractLazyCreationTargetSource implements TargetSource {
 
-	/** Logger available to subclasses */
+	/** Logger available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	/** The lazily initialized target object */
+	/** The lazily initialized target object. */
 	private Object lazyTarget;
 
 

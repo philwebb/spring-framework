@@ -39,6 +39,11 @@ public interface PropertyAccessor {
 	 * Follows normal Java conventions: getFoo().getBar() would be "foo.bar".
 	 */
 	String NESTED_PROPERTY_SEPARATOR = ".";
+
+	/**
+	 * Path separator for nested properties.
+	 * Follows normal Java conventions: getFoo().getBar() would be "foo.bar".
+	 */
 	char NESTED_PROPERTY_SEPARATOR_CHAR = '.';
 
 	/**
@@ -46,6 +51,11 @@ public interface PropertyAccessor {
 	 * indexed or mapped property like "person.addresses[0]".
 	 */
 	String PROPERTY_KEY_PREFIX = "[";
+
+	/**
+	 * Marker that indicates the start of a property key for an
+	 * indexed or mapped property like "person.addresses[0]".
+	 */
 	char PROPERTY_KEY_PREFIX_CHAR = '[';
 
 	/**
@@ -53,6 +63,11 @@ public interface PropertyAccessor {
 	 * indexed or mapped property like "person.addresses[0]".
 	 */
 	String PROPERTY_KEY_SUFFIX = "]";
+
+	/**
+	 * Marker that indicates the end of a property key for an
+	 * indexed or mapped property like "person.addresses[0]".
+	 */
 	char PROPERTY_KEY_SUFFIX_CHAR = ']';
 
 

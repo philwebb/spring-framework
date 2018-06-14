@@ -87,7 +87,7 @@ public class MethodInvokingFactoryBean extends MethodInvokingBean implements Fac
 
 	private boolean initialized = false;
 
-	/** Method call result in the singleton case */
+	/** Method call result in the singleton case. */
 	@Nullable
 	private Object singletonObject;
 

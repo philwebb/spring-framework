@@ -26,6 +26,7 @@ import org.springframework.lang.Nullable;
  * A variant of {@link ObjectFactory} designed specifically for injection points,
  * allowing for programmatic optionality and lenient not-unique handling.
  *
+ * @param <T> the object type
  * @author Juergen Hoeller
  * @since 4.3
  */

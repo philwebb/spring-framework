@@ -34,6 +34,7 @@ import org.springframework.beans.BeansException;
  * @author Colin Sampaleanu
  * @since 1.0.2
  * @see FactoryBean
+ * @param <T> the object type
  */
 @FunctionalInterface
 public interface ObjectFactory<T> {

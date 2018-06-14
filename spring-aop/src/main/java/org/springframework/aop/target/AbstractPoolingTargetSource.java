@@ -55,7 +55,7 @@ import org.springframework.lang.Nullable;
 public abstract class AbstractPoolingTargetSource extends AbstractPrototypeBasedTargetSource
 		implements PoolingConfig, DisposableBean {
 
-	/** The maximum size of the pool */
+	/** The maximum size of the pool. */
 	private int maxSize = -1;
 
 

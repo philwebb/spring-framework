@@ -29,7 +29,7 @@ import java.util.HashMap;
 @SuppressWarnings("serial")
 public class MethodCounter implements Serializable {
 
-	/** Method name --> count, does not understand overloading */
+	/** Method name to count, does not understand overloading */
 	private HashMap<String, Integer> map = new HashMap<>();
 
 	private int allCount;

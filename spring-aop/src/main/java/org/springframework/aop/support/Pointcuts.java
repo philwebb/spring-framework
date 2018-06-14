@@ -35,10 +35,10 @@ import org.springframework.util.Assert;
  */
 public abstract class Pointcuts {
 
-	/** Pointcut matching all bean property setters, in any class */
+	/** Pointcut matching all bean property setters, in any class. */
 	public static final Pointcut SETTERS = SetterPointcut.INSTANCE;
 
-	/** Pointcut matching all bean property getters, in any class */
+	/** Pointcut matching all bean property getters, in any class. */
 	public static final Pointcut GETTERS = GetterPointcut.INSTANCE;
 
 
