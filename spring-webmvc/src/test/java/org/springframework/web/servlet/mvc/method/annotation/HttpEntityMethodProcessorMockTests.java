@@ -531,7 +531,7 @@ public class HttpEntityMethodProcessorMockTests {
 
 		then(this.resourceRegionMessageConverter).should(times(1)).write(
 				anyCollection(), eq(APPLICATION_OCTET_STREAM),
-				argThat(outputMessage -> outputMessage.getHeaders().getFirst(HttpHeaders.ACCEPT_RANGES) == "bytes"));
+				argThat(outputMessage -> "bytes".equals(outputMessage.getHeaders().getFirst(HttpHeaders.ACCEPT_RANGES))));
 		assertEquals(206, this.servletResponse.getStatus());
 	}
 
