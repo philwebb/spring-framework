@@ -37,9 +37,14 @@ import java.util.TimeZone;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
-import static java.time.format.DateTimeFormatter.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static java.time.format.DateTimeFormatter.RFC_1123_DATE_TIME;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for {@link org.springframework.http.HttpHeaders}.

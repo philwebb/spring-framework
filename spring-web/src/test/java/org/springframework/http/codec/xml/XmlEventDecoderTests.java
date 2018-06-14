@@ -23,7 +23,8 @@ import javax.xml.stream.events.XMLEvent;
 import org.junit.Test;
 import org.springframework.core.io.buffer.AbstractDataBufferAllocatingTestCase;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;

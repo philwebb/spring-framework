@@ -29,11 +29,12 @@ import org.springframework.util.MimeType;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static java.util.Arrays.*;
-import static java.util.Collections.*;
-import static org.junit.Assert.*;
-import static org.springframework.core.ResolvableType.*;
-import static org.springframework.http.MediaType.*;
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyMap;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.springframework.core.ResolvableType.forClass;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

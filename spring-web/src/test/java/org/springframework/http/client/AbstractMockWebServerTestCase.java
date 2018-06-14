@@ -24,7 +24,7 @@ import org.junit.Before;
 import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 
-import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockResponse;
