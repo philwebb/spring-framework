@@ -24,7 +24,6 @@ import java.util.concurrent.Executor;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.junit.Test;
-
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -49,7 +48,9 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.ReflectionUtils;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Unit and integration tests for the ApplicationContext event support.

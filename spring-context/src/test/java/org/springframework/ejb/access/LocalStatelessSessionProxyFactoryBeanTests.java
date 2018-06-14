@@ -17,17 +17,18 @@
 package org.springframework.ejb.access;
 
 import java.lang.reflect.Proxy;
+
 import javax.ejb.CreateException;
 import javax.ejb.EJBLocalHome;
 import javax.ejb.EJBLocalObject;
 import javax.naming.NamingException;
 
 import org.junit.Test;
-
 import org.springframework.jndi.JndiTemplate;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Rod Johnson

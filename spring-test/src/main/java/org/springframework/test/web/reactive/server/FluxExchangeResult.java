@@ -19,10 +19,10 @@ package org.springframework.test.web.reactive.server;
 import java.time.Duration;
 import java.util.function.Consumer;
 
+import org.springframework.lang.Nullable;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import org.springframework.lang.Nullable;
 
 /**
  * {@code ExchangeResult} variant with the response body decoded as

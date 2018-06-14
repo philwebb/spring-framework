@@ -20,9 +20,9 @@ import java.nio.ByteBuffer;
 import java.util.Collection;
 import java.util.List;
 
-import io.netty.buffer.ByteBuf;
-
 import org.springframework.messaging.Message;
+
+import io.netty.buffer.ByteBuf;
 
 /**
  * Convenient base class for {@link ReactorNettyCodec} implementations that need

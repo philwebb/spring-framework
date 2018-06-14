@@ -19,6 +19,7 @@ package org.springframework.jms.core;
 import javax.jms.Session;
 
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Juergen Hoeller

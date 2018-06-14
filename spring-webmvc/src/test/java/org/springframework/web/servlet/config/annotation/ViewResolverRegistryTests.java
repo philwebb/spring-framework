@@ -20,7 +20,6 @@ import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.beans.DirectFieldAccessor;
 import org.springframework.core.Ordered;
 import org.springframework.web.accept.ContentNegotiationManager;

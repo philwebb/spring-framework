@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.junit.Test;
-
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.core.io.Resource;

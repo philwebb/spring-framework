@@ -23,7 +23,6 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.mock.web.test.MockBodyContent;
 import org.springframework.mock.web.test.MockHttpServletResponse;
 

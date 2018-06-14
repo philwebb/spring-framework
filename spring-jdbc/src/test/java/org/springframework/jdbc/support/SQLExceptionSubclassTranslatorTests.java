@@ -19,7 +19,6 @@ package org.springframework.jdbc.support;
 import java.sql.SQLException;
 
 import org.junit.Test;
-
 import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.dao.DataIntegrityViolationException;

@@ -18,7 +18,6 @@ package org.springframework.jdbc.datasource.init;
 
 import org.junit.Test;
 import org.mockito.Mockito;
-
 import org.springframework.core.io.Resource;
 
 import static org.junit.Assert.*;

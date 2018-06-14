@@ -20,7 +20,6 @@ import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamSource;
 
 import org.junit.Test;
-
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.MediaType;
 import org.springframework.http.MockHttpInputMessage;
@@ -33,7 +32,9 @@ import org.springframework.oxm.Unmarshaller;
 import org.springframework.oxm.UnmarshallingFailureException;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link MarshallingHttpMessageConverter}.

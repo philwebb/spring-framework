@@ -18,8 +18,6 @@ package org.springframework.web.servlet.config;
 
 import java.util.Map;
 
-import org.w3c.dom.Element;
-
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.parsing.BeanComponentDefinition;
 import org.springframework.beans.factory.support.ManagedMap;
@@ -31,6 +29,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 import org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter;
 import org.springframework.web.servlet.resource.DefaultServletHttpRequestHandler;
+import org.w3c.dom.Element;
 
 /**
  * {@link BeanDefinitionParser} that parses a {@code default-servlet-handler} element to

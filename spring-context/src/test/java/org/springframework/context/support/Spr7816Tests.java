@@ -19,7 +19,6 @@ package org.springframework.context.support;
 import java.util.Map;
 
 import org.junit.Test;
-
 import org.springframework.context.ApplicationContext;
 
 import static org.junit.Assert.*;

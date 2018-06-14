@@ -21,7 +21,6 @@ import java.util.Locale;
 import javax.servlet.ServletException;
 
 import org.junit.Test;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;

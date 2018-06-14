@@ -17,10 +17,10 @@ package org.springframework.web.reactive.socket.client;
 
 import java.net.URI;
 
-import reactor.core.publisher.Mono;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.reactive.socket.WebSocketHandler;
+
+import reactor.core.publisher.Mono;
 
 /**
  * Contract for reactive-style handling of a WebSocket session.

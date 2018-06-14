@@ -29,7 +29,6 @@ import java.util.concurrent.DelayQueue;
 import java.util.concurrent.Delayed;
 
 import org.junit.Test;
-
 import org.springframework.util.ReflectionUtils;
 
 import static org.junit.Assert.*;

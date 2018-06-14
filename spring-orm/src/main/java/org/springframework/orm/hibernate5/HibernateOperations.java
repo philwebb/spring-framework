@@ -25,7 +25,6 @@ import org.hibernate.Filter;
 import org.hibernate.LockMode;
 import org.hibernate.ReplicationMode;
 import org.hibernate.criterion.DetachedCriteria;
-
 import org.springframework.dao.DataAccessException;
 import org.springframework.lang.Nullable;
 

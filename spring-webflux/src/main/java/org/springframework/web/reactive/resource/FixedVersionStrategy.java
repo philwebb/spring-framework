@@ -16,9 +16,9 @@
 
 package org.springframework.web.reactive.resource;
 
-import reactor.core.publisher.Mono;
-
 import org.springframework.core.io.Resource;
+
+import reactor.core.publisher.Mono;
 
 /**
  * A {@code VersionStrategy} that relies on a fixed version applied as a request

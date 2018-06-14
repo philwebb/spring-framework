@@ -18,6 +18,7 @@ package org.springframework.orm.jpa;
 
 import java.util.Map;
 import java.util.Properties;
+
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.spi.PersistenceProvider;
 import javax.persistence.spi.PersistenceUnitInfo;
@@ -27,7 +28,7 @@ import org.junit.After;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Rod Johnson

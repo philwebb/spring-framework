@@ -21,7 +21,6 @@ import javax.resource.spi.ResourceAdapter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.BeanWrapper;
 
 /**

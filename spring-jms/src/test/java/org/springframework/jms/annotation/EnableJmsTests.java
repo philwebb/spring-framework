@@ -23,11 +23,9 @@ import javax.jms.JMSException;
 import javax.jms.MessageListener;
 
 import org.hamcrest.core.Is;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;

@@ -17,9 +17,8 @@
 package org.springframework.test.context.testng.web;
 
 import java.io.File;
-import javax.servlet.ServletContext;
 
-import org.testng.annotations.Test;
+import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -34,6 +33,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.ServletWebRequest;
+import org.testng.annotations.Test;
 
 import static org.junit.Assert.*;
 

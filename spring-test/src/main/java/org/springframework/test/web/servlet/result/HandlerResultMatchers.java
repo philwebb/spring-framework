@@ -19,7 +19,6 @@ package org.springframework.test.web.servlet.result;
 import java.lang.reflect.Method;
 
 import org.hamcrest.Matcher;
-
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.util.ClassUtils;

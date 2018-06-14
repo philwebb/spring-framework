@@ -20,6 +20,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.util.SortedSet;
+
 import javax.net.ServerSocketFactory;
 
 import org.junit.Rule;
@@ -28,8 +29,7 @@ import org.junit.rules.ExpectedException;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
-import static org.springframework.util.SocketUtils.PORT_RANGE_MIN;
-import static org.springframework.util.SocketUtils.PORT_RANGE_MAX;
+import static org.springframework.util.SocketUtils.*;
 
 /**
  * Unit tests for {@link SocketUtils}.

@@ -22,11 +22,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.junit.Test;
-import org.yaml.snakeyaml.constructor.DuplicateKeyException;
-
 import org.springframework.core.io.AbstractResource;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
+import org.yaml.snakeyaml.constructor.DuplicateKeyException;
 
 import static org.junit.Assert.*;
 

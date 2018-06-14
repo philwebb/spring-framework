@@ -18,9 +18,6 @@ package org.springframework.aop.framework.autoproxy;
 
 import org.junit.Before;
 import org.junit.Test;
-import test.mixin.Lockable;
-import test.mixin.LockedException;
-
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.BeanFactory;
@@ -33,6 +30,9 @@ import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.junit.Assert.*;
+
+import test.mixin.Lockable;
+import test.mixin.LockedException;
 
 /**
  * @author Rod Johnson

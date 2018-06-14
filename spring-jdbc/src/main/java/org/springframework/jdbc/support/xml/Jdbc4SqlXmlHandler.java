@@ -23,15 +23,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLXML;
+
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 
-import org.w3c.dom.Document;
-
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.lang.Nullable;
+import org.w3c.dom.Document;
 
 /**
  * Default implementation of the {@link SqlXmlHandler} interface.

@@ -17,7 +17,6 @@
 package org.springframework.aop.target;
 
 import org.junit.Test;
-
 import org.springframework.aop.TargetSource;
 import org.springframework.aop.framework.ProxyFactory;
 

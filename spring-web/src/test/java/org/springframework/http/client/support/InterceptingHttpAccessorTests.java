@@ -21,7 +21,6 @@ import java.util.List;
 
 import org.hamcrest.Matchers;
 import org.junit.Test;
-
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpRequest;

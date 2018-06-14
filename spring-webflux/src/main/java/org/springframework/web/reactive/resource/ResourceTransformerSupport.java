@@ -18,12 +18,12 @@ package org.springframework.web.reactive.resource;
 
 import java.util.Collections;
 
-import reactor.core.publisher.Mono;
-
 import org.springframework.core.io.Resource;
 import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
+
+import reactor.core.publisher.Mono;
 
 /**
  * A base class for a {@code ResourceTransformer} with an optional helper method

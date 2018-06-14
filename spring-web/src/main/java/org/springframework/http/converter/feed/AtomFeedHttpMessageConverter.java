@@ -16,9 +16,9 @@
 
 package org.springframework.http.converter.feed;
 
-import com.rometools.rome.feed.atom.Feed;
-
 import org.springframework.http.MediaType;
+
+import com.rometools.rome.feed.atom.Feed;
 
 /**
  * Implementation of {@link org.springframework.http.converter.HttpMessageConverter}

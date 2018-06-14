@@ -22,7 +22,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
-
 import org.springframework.core.Ordered;
 
 import static org.junit.Assert.*;

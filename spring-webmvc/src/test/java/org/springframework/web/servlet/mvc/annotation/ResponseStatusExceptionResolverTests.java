@@ -22,7 +22,6 @@ import java.util.Locale;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.StaticMessageSource;

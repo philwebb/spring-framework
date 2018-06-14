@@ -22,7 +22,6 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 
 import org.junit.Test;
-
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.support.StaticListableBeanFactory;
 

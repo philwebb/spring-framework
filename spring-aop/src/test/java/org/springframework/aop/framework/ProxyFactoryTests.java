@@ -18,6 +18,7 @@ package org.springframework.aop.framework;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.accessibility.Accessible;
 import javax.swing.JFrame;
 import javax.swing.RootPaneContainer;
@@ -26,7 +27,6 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.junit.Ignore;
 import org.junit.Test;
-
 import org.springframework.aop.Advisor;
 import org.springframework.aop.interceptor.DebugInterceptor;
 import org.springframework.aop.support.AopUtils;

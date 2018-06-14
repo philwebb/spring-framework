@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import org.junit.Test;
-
 import org.springframework.expression.spel.ast.InlineList;
 import org.springframework.expression.spel.standard.SpelExpression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;

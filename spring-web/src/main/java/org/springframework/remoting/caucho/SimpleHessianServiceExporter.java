@@ -19,11 +19,11 @@ package org.springframework.remoting.caucho;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
-
 import org.springframework.lang.UsesSunHttpServer;
 import org.springframework.util.FileCopyUtils;
+
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
 
 /**
  * HTTP request handler that exports the specified service bean as

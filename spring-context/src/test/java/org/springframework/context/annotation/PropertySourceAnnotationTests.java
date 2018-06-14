@@ -23,12 +23,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Properties;
+
 import javax.inject.Inject;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
 import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.core.annotation.AliasFor;

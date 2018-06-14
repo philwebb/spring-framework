@@ -20,10 +20,7 @@ import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.Map;
 
-import groovy.lang.DelegatingMetaClass;
-import groovy.lang.GroovyObject;
 import org.junit.Test;
-
 import org.springframework.aop.support.AopUtils;
 import org.springframework.aop.target.dynamic.Refreshable;
 import org.springframework.beans.factory.BeanCreationException;
@@ -47,6 +44,10 @@ import org.springframework.util.ObjectUtils;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
+
+import groovy.lang.DelegatingMetaClass;
+import groovy.lang.GroovyObject;
 
 /**
  * @author Rob Harrop

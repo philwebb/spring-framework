@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import org.junit.Test;
-
 import org.springframework.http.MockHttpOutputMessage;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.mock.web.test.MockHttpServletRequest;

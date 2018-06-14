@@ -21,7 +21,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.junit.Test;
-
 import org.springframework.http.HttpHeaders;
 
 import static org.junit.Assert.*;

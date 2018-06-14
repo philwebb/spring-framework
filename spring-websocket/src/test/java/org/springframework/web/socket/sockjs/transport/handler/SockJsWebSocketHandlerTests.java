@@ -19,7 +19,6 @@ package org.springframework.web.socket.sockjs.transport.handler;
 import java.util.Collections;
 
 import org.junit.Test;
-
 import org.springframework.messaging.SubscribableChannel;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.web.socket.WebSocketHandler;

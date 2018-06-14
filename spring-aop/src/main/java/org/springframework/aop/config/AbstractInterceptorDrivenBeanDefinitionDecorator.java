@@ -18,8 +18,6 @@ package org.springframework.aop.config;
 
 import java.util.List;
 
-import org.w3c.dom.Node;
-
 import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
@@ -33,6 +31,7 @@ import org.springframework.beans.factory.xml.ParserContext;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+import org.w3c.dom.Node;
 
 /**
  * Base implementation for

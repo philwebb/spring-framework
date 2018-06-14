@@ -21,7 +21,6 @@ import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
 
 import org.junit.Test;
-
 import org.springframework.core.OverridingClassLoader;
 import org.springframework.tests.sample.beans.TestBean;
 

@@ -19,12 +19,12 @@ package org.springframework.transaction.annotation;
 import java.lang.management.ManagementFactory;
 import java.util.Collection;
 import java.util.Map;
+
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.aop.support.AopUtils;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

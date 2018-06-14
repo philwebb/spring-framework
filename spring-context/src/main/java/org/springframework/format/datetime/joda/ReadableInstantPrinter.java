@@ -20,7 +20,6 @@ import java.util.Locale;
 
 import org.joda.time.ReadableInstant;
 import org.joda.time.format.DateTimeFormatter;
-
 import org.springframework.format.Printer;
 
 /**

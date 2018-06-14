@@ -19,7 +19,6 @@ package org.springframework.test.context.junit4.statements;
 import java.lang.reflect.Method;
 
 import org.junit.runners.model.Statement;
-
 import org.springframework.test.context.TestContextManager;
 
 /**

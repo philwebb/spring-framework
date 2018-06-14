@@ -24,8 +24,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.junit.Test;
-import reactor.core.publisher.Mono;
-
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -38,9 +36,11 @@ import org.springframework.web.reactive.result.view.ViewResolver;
 import org.springframework.web.server.ServerWebExchange;
 
 import static org.junit.Assert.*;
-import static org.springframework.web.reactive.function.server.HandlerFilterFunction.ofResponseProcessor;
-import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
-import static org.springframework.web.reactive.function.server.RouterFunctions.route;
+import static org.springframework.web.reactive.function.server.HandlerFilterFunction.*;
+import static org.springframework.web.reactive.function.server.RequestPredicates.*;
+import static org.springframework.web.reactive.function.server.RouterFunctions.*;
+
+import reactor.core.publisher.Mono;
 
 /**
  * @author Arjen Poutsma

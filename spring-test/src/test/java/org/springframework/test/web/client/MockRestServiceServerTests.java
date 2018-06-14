@@ -19,7 +19,6 @@ package org.springframework.test.web.client;
 import java.net.SocketException;
 
 import org.junit.Test;
-
 import org.springframework.test.web.client.MockRestServiceServer.MockRestServiceServerBuilder;
 import org.springframework.web.client.RestTemplate;
 

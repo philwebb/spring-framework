@@ -18,6 +18,7 @@ package org.springframework.web.socket;
 
 import java.io.File;
 import java.io.IOException;
+
 import javax.servlet.Filter;
 import javax.servlet.ServletContext;
 
@@ -30,7 +31,6 @@ import org.apache.coyote.http11.Http11NioProtocol;
 import org.apache.tomcat.util.descriptor.web.FilterDef;
 import org.apache.tomcat.util.descriptor.web.FilterMap;
 import org.apache.tomcat.websocket.server.WsContextListener;
-
 import org.springframework.util.Assert;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;

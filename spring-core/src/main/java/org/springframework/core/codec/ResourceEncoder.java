@@ -18,8 +18,6 @@ package org.springframework.core.codec;
 
 import java.util.Map;
 
-import reactor.core.publisher.Flux;
-
 import org.springframework.core.ResolvableType;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.buffer.DataBuffer;
@@ -30,6 +28,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.MimeType;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.util.StreamUtils;
+
+import reactor.core.publisher.Flux;
 
 /**
  * Encoder for {@link Resource}s.

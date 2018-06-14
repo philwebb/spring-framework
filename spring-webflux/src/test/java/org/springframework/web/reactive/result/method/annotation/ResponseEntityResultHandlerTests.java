@@ -30,12 +30,6 @@ import java.util.concurrent.CompletableFuture;
 
 import org.junit.Before;
 import org.junit.Test;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
-import rx.Completable;
-import rx.Single;
-
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.codec.ByteBufferEncoder;
@@ -63,6 +57,12 @@ import static org.springframework.http.ResponseEntity.*;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.*;
 import static org.springframework.web.method.ResolvableMethod.*;
 import static org.springframework.web.reactive.HandlerMapping.*;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
+import rx.Completable;
+import rx.Single;
 
 /**
  * Unit tests for {@link ResponseEntityResultHandler}. When adding a test also

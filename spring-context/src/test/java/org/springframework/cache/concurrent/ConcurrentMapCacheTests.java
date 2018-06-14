@@ -24,7 +24,6 @@ import java.util.concurrent.ConcurrentMap;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.cache.AbstractValueAdaptingCacheTests;
 import org.springframework.core.serializer.support.SerializationDelegate;
 

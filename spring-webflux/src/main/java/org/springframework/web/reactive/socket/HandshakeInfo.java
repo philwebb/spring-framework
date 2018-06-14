@@ -21,11 +21,11 @@ import java.security.Principal;
 import java.util.Collections;
 import java.util.Map;
 
-import reactor.core.publisher.Mono;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+
+import reactor.core.publisher.Mono;
 
 /**
  * Simple container of information related to the handshake request that started

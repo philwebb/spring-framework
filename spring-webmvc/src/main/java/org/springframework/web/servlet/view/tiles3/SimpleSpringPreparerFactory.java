@@ -23,7 +23,6 @@ import org.apache.tiles.TilesException;
 import org.apache.tiles.preparer.PreparerException;
 import org.apache.tiles.preparer.ViewPreparer;
 import org.apache.tiles.preparer.factory.NoSuchPreparerException;
-
 import org.springframework.util.ClassUtils;
 import org.springframework.web.context.WebApplicationContext;
 

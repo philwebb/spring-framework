@@ -17,16 +17,16 @@
 package org.springframework.http.codec.xml;
 
 import java.util.Collections;
+
 import javax.xml.stream.events.XMLEvent;
 
 import org.junit.Test;
-import reactor.core.publisher.Flux;
-import reactor.test.StepVerifier;
-
 import org.springframework.core.io.buffer.AbstractDataBufferAllocatingTestCase;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+
+import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
 
 /**
  * @author Arjen Poutsma

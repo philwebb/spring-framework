@@ -44,8 +44,6 @@ import java.util.TimeZone;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-import org.xml.sax.InputSource;
-
 import org.springframework.beans.propertyeditors.ByteArrayPropertyEditor;
 import org.springframework.beans.propertyeditors.CharArrayPropertyEditor;
 import org.springframework.beans.propertyeditors.CharacterEditor;
@@ -76,6 +74,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourceArrayPropertyEditor;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
+import org.xml.sax.InputSource;
 
 /**
  * Base implementation of the {@link PropertyEditorRegistry} interface.

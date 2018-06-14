@@ -17,7 +17,6 @@
 package org.springframework.test.context.junit4.profile.xml;
 
 import org.junit.Test;
-
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.Assert.*;

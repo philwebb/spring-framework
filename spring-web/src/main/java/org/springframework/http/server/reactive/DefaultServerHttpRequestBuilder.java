@@ -22,8 +22,6 @@ import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.function.Consumer;
 
-import reactor.core.publisher.Flux;
-
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpHeaders;
@@ -33,6 +31,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
+
+import reactor.core.publisher.Flux;
 
 /**
  * Package-private default implementation of {@link ServerHttpRequest.Builder}.

@@ -19,7 +19,6 @@ package org.springframework.test.web.servlet;
 import java.util.concurrent.CountDownLatch;
 
 import org.junit.Test;
-
 import org.springframework.mock.web.MockHttpServletRequest;
 
 /**

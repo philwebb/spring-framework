@@ -16,9 +16,9 @@
 
 package org.springframework.messaging.tcp.reactor;
 
-import reactor.core.publisher.Mono;
-
 import org.springframework.lang.Nullable;
+
+import reactor.core.publisher.Mono;
 
 /**
  * A Mono-to-ListenableFuture adapter where the source and the target from

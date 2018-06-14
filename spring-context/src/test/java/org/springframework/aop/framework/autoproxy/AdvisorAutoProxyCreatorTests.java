@@ -19,8 +19,6 @@ package org.springframework.aop.framework.autoproxy;
 import java.io.IOException;
 
 import org.junit.Test;
-import test.mixin.Lockable;
-
 import org.springframework.aop.Advisor;
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.framework.autoproxy.target.AbstractBeanFactoryBasedTargetSourceCreator;
@@ -38,6 +36,8 @@ import org.springframework.tests.sample.beans.CountingTestBean;
 import org.springframework.tests.sample.beans.ITestBean;
 
 import static org.junit.Assert.*;
+
+import test.mixin.Lockable;
 
 /**
  * Tests for auto proxy creation by advisor recognition.

@@ -24,7 +24,6 @@ import org.junit.Test;
 import org.junit.rules.Timeout;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-
 import org.springframework.test.annotation.Repeat;
 import org.springframework.test.context.junit4.TimedTransactionalSpringRunnerTests;
 

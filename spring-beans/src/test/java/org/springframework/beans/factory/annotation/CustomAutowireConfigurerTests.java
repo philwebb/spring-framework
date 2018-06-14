@@ -17,7 +17,6 @@
 package org.springframework.beans.factory.annotation;
 
 import org.junit.Test;
-
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.config.DependencyDescriptor;
 import org.springframework.beans.factory.support.AutowireCandidateResolver;

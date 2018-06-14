@@ -17,8 +17,6 @@
 package org.springframework.web.socket.sockjs.transport.handler;
 
 import org.junit.Test;
-
-import org.springframework.http.MediaType;
 import org.springframework.web.socket.AbstractHttpRequestTests;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketHandler;
@@ -29,6 +27,7 @@ import org.springframework.web.socket.sockjs.transport.session.TestHttpSockJsSes
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Test fixture for {@link AbstractHttpReceivingTransportHandler} and sub-classes

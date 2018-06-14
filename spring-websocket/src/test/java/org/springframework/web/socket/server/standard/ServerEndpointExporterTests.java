@@ -25,7 +25,6 @@ import javax.websocket.server.ServerEndpoint;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mock.web.test.MockServletContext;

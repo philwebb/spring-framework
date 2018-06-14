@@ -19,17 +19,17 @@ package org.springframework.remoting.caucho;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-import com.caucho.hessian.client.HessianProxyFactory;
-import com.sun.net.httpserver.HttpServer;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.remoting.RemoteAccessException;
 import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.SocketUtils;
+
+import com.caucho.hessian.client.HessianProxyFactory;
+import com.sun.net.httpserver.HttpServer;
 
 import static org.junit.Assert.*;
 

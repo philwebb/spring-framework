@@ -18,8 +18,6 @@ package org.springframework.test.web.servlet.samples.standalone;
 import java.time.Duration;
 
 import org.junit.Test;
-import reactor.core.publisher.Flux;
-
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -30,6 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
+
+import reactor.core.publisher.Flux;
 
 /**
  * Tests with reactive return value types.

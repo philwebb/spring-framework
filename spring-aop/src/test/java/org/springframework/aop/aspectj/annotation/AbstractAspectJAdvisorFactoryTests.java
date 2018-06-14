@@ -40,11 +40,6 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.junit.Ignore;
 import org.junit.Test;
-import test.aop.DefaultLockable;
-import test.aop.Lockable;
-import test.aop.PerTargetAspect;
-import test.aop.TwoAdviceAspect;
-
 import org.springframework.aop.Advisor;
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.framework.AopConfigException;
@@ -60,6 +55,11 @@ import org.springframework.util.ObjectUtils;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
+
+import test.aop.DefaultLockable;
+import test.aop.Lockable;
+import test.aop.PerTargetAspect;
+import test.aop.TwoAdviceAspect;
 
 /**
  * Abstract tests for AspectJAdvisorFactory.

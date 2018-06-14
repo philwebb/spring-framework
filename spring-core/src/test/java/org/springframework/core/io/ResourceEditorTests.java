@@ -19,7 +19,6 @@ package org.springframework.core.io;
 import java.beans.PropertyEditor;
 
 import org.junit.Test;
-
 import org.springframework.core.env.StandardEnvironment;
 
 import static org.junit.Assert.*;

@@ -26,7 +26,6 @@ import javax.persistence.SynchronizationType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.lang.Nullable;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -35,6 +34,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Juergen Hoeller

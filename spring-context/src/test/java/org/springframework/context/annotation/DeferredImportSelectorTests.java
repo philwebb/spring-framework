@@ -17,7 +17,6 @@
 package org.springframework.context.annotation;
 
 import org.junit.Test;
-
 import org.springframework.context.annotation.DeferredImportSelector.Group;
 import org.springframework.core.type.AnnotationMetadata;
 

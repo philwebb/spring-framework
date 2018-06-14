@@ -19,7 +19,6 @@ package org.springframework.context.annotation;
 import java.lang.reflect.Method;
 
 import org.junit.Test;
-
 import org.springframework.util.ReflectionUtils;
 
 import static org.hamcrest.CoreMatchers.*;

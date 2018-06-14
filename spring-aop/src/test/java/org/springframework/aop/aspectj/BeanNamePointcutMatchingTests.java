@@ -17,7 +17,6 @@
 package org.springframework.aop.aspectj;
 
 import org.junit.Test;
-
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.junit.Assert.*;

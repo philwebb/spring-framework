@@ -23,19 +23,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.HashSet;
 
-import example.scannable.CustomComponent;
-import example.scannable.CustomStereotype;
-import example.scannable.DefaultNamedComponent;
-import example.scannable.FooService;
-import example.scannable.MessageBean;
-import example.scannable.ScopedProxyTestBean;
-import example.scannable_implicitbasepackage.ComponentScanAnnotatedConfigWithImplicitBasePackage;
-import example.scannable_implicitbasepackage.ConfigurableComponent;
-import example.scannable_scoped.CustomScopeAnnotationBean;
-import example.scannable_scoped.MyScope;
-
 import org.junit.Test;
-
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanClassLoaderAware;
@@ -65,6 +53,17 @@ import org.springframework.util.SerializationTestUtils;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.springframework.beans.factory.support.BeanDefinitionBuilder.*;
+
+import example.scannable.CustomComponent;
+import example.scannable.CustomStereotype;
+import example.scannable.DefaultNamedComponent;
+import example.scannable.FooService;
+import example.scannable.MessageBean;
+import example.scannable.ScopedProxyTestBean;
+import example.scannable_implicitbasepackage.ComponentScanAnnotatedConfigWithImplicitBasePackage;
+import example.scannable_implicitbasepackage.ConfigurableComponent;
+import example.scannable_scoped.CustomScopeAnnotationBean;
+import example.scannable_scoped.MyScope;
 
 /**
  * Integration tests for processing ComponentScan-annotated Configuration classes.

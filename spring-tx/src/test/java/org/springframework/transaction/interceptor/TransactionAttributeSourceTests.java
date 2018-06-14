@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.junit.Test;
-
 import org.springframework.transaction.TransactionDefinition;
 
 import static org.junit.Assert.*;

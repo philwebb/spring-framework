@@ -19,6 +19,7 @@ package org.springframework.web.reactive.socket.server.upgrade;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.function.Supplier;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,8 +27,6 @@ import javax.websocket.Endpoint;
 import javax.websocket.server.ServerContainer;
 
 import org.apache.tomcat.websocket.server.WsServerContainer;
-import reactor.core.publisher.Mono;
-
 import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.http.server.reactive.AbstractServerHttpRequest;
 import org.springframework.http.server.reactive.AbstractServerHttpResponse;
@@ -41,6 +40,8 @@ import org.springframework.web.reactive.socket.adapter.StandardWebSocketHandlerA
 import org.springframework.web.reactive.socket.adapter.TomcatWebSocketSession;
 import org.springframework.web.reactive.socket.server.RequestUpgradeStrategy;
 import org.springframework.web.server.ServerWebExchange;
+
+import reactor.core.publisher.Mono;
 
 /**
  * A {@link RequestUpgradeStrategy} for use with Tomcat.

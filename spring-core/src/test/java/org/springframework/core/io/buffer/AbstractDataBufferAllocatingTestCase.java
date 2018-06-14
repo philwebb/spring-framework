@@ -21,19 +21,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.junit.Rule;
+import org.junit.rules.Verifier;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.springframework.core.io.buffer.support.DataBufferTestUtils;
+
+import static org.junit.Assert.*;
+
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.PoolArenaMetric;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.buffer.PooledByteBufAllocatorMetric;
 import io.netty.buffer.UnpooledByteBufAllocator;
-import org.junit.Rule;
-import org.junit.rules.Verifier;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-
-import org.springframework.core.io.buffer.support.DataBufferTestUtils;
-
-import static org.junit.Assert.*;
 
 /**
  * @author Arjen Poutsma

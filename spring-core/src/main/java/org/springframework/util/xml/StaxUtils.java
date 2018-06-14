@@ -17,6 +17,7 @@
 package org.springframework.util.xml;
 
 import java.util.List;
+
 import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLEventWriter;
@@ -31,11 +32,10 @@ import javax.xml.transform.Source;
 import javax.xml.transform.stax.StAXResult;
 import javax.xml.transform.stax.StAXSource;
 
-import org.xml.sax.ContentHandler;
-import org.xml.sax.XMLReader;
-
 import org.springframework.lang.Nullable;
 import org.springframework.util.StreamUtils;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.XMLReader;
 
 /**
  * Convenience methods for working with the StAX API. Partly historic due to JAXP 1.3

@@ -19,7 +19,6 @@ package org.springframework.web.context.request;
 import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Test;
-
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.mock.web.test.MockHttpServletRequest;

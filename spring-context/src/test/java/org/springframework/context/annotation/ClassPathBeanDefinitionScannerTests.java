@@ -16,14 +16,8 @@
 
 package org.springframework.context.annotation;
 
-import example.scannable.CustomComponent;
-import example.scannable.FooService;
-import example.scannable.FooServiceImpl;
-import example.scannable.NamedStubDao;
-import example.scannable.StubFooDao;
 import org.aspectj.lang.annotation.Aspect;
 import org.junit.Test;
-
 import org.springframework.beans.BeanInstantiationException;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -40,6 +34,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.junit.Assert.*;
+
+import example.scannable.CustomComponent;
+import example.scannable.FooService;
+import example.scannable.FooServiceImpl;
+import example.scannable.NamedStubDao;
+import example.scannable.StubFooDao;
 
 /**
  * @author Mark Fisher

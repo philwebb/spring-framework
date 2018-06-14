@@ -18,12 +18,12 @@ package org.springframework.jms.support;
 
 import java.util.Date;
 import java.util.Map;
+
 import javax.jms.DeliveryMode;
 import javax.jms.Destination;
 import javax.jms.JMSException;
 
 import org.junit.Test;
-
 import org.springframework.jms.StubTextMessage;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;

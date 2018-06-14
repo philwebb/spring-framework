@@ -27,7 +27,6 @@ import javax.persistence.PersistenceException;
 import javax.persistence.TransactionRequiredException;
 
 import org.junit.Test;
-
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -37,6 +36,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Costin Leau

@@ -24,8 +24,6 @@ import java.net.URI;
 import java.net.URL;
 import java.nio.file.Path;
 
-import org.xml.sax.InputSource;
-
 import org.springframework.beans.PropertyEditorRegistrar;
 import org.springframework.beans.PropertyEditorRegistry;
 import org.springframework.beans.PropertyEditorRegistrySupport;
@@ -45,6 +43,7 @@ import org.springframework.core.io.ResourceEditor;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourceArrayPropertyEditor;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import org.xml.sax.InputSource;
 
 /**
  * PropertyEditorRegistrar implementation that populates a given

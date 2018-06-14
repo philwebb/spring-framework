@@ -24,7 +24,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.BDDMockito;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.test.annotation.Commit;
@@ -38,6 +37,7 @@ import org.springframework.transaction.support.SimpleTransactionStatus;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 import static org.springframework.transaction.annotation.Propagation.*;
 
 /**

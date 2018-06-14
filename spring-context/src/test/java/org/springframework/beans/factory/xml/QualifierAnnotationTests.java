@@ -23,7 +23,6 @@ import java.lang.annotation.Target;
 import java.util.Properties;
 
 import org.junit.Test;
-
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;

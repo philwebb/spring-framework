@@ -22,7 +22,6 @@ import java.util.Properties;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.core.convert.ConverterNotFoundException;
 import org.springframework.mock.env.MockPropertySource;
 

@@ -18,17 +18,17 @@ package org.springframework.web.socket.adapter.standard;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.websocket.Session;
 
 import org.junit.Test;
-
 import org.mockito.Mockito;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.socket.handler.TestPrincipal;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Unit tests for {@link org.springframework.web.socket.adapter.standard.StandardWebSocketSession}.

@@ -19,7 +19,6 @@ package org.springframework.beans.factory.config;
 import java.util.Properties;
 
 import org.junit.Test;
-
 import org.springframework.core.io.Resource;
 
 import static org.junit.Assert.*;

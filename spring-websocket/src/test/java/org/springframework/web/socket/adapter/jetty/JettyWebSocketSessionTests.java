@@ -22,15 +22,13 @@ import java.util.Map;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.UpgradeRequest;
 import org.eclipse.jetty.websocket.api.UpgradeResponse;
-
 import org.junit.Test;
-
 import org.mockito.Mockito;
-
 import org.springframework.web.socket.handler.TestPrincipal;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Unit tests for {@link org.springframework.web.socket.adapter.jetty.JettyWebSocketSession}.

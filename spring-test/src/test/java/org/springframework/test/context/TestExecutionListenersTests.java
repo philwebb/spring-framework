@@ -21,7 +21,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 import org.junit.Test;
-
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.AnnotationConfigurationException;
 import org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener;

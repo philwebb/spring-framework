@@ -18,7 +18,6 @@ package org.springframework.jdbc.datasource.init;
 
 import org.junit.After;
 import org.junit.Before;
-
 import org.springframework.core.io.ClassRelativeResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.core.JdbcTemplate;

@@ -19,16 +19,15 @@ package org.springframework.http.client.reactive;
 import java.net.URI;
 import java.util.function.Function;
 
+import org.springframework.http.HttpMethod;
+
+import io.netty.buffer.ByteBufAllocator;
 import reactor.core.publisher.Mono;
 import reactor.netty.NettyInbound;
 import reactor.netty.NettyOutbound;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
-
-import org.springframework.http.HttpMethod;
-
-import io.netty.buffer.ByteBufAllocator;
 
 /**
  * Reactor-Netty implementation of {@link ClientHttpConnector}.

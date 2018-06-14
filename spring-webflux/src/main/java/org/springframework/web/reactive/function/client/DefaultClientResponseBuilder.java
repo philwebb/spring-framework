@@ -19,8 +19,6 @@ package org.springframework.web.reactive.function.client;
 import java.nio.charset.StandardCharsets;
 import java.util.function.Consumer;
 
-import reactor.core.publisher.Flux;
-
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.core.io.buffer.DataBufferUtils;
@@ -33,6 +31,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+
+import reactor.core.publisher.Flux;
 
 /**
  * Default implementation of {@link ClientResponse.Builder}.

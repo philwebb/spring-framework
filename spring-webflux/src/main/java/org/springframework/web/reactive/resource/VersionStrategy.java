@@ -16,10 +16,10 @@
 
 package org.springframework.web.reactive.resource;
 
-import reactor.core.publisher.Mono;
-
 import org.springframework.core.io.Resource;
 import org.springframework.lang.Nullable;
+
+import reactor.core.publisher.Mono;
 
 /**
  * A strategy to determine the version of a static resource and to apply and/or

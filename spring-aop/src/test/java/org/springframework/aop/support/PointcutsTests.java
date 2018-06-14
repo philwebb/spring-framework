@@ -19,7 +19,6 @@ package org.springframework.aop.support;
 import java.lang.reflect.Method;
 
 import org.junit.Test;
-
 import org.springframework.aop.ClassFilter;
 import org.springframework.aop.Pointcut;
 import org.springframework.lang.Nullable;

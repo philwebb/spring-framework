@@ -18,14 +18,14 @@ package org.springframework.jdbc.core.support;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.sql.DataSource;
 
 import org.junit.Test;
-
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Juergen Hoeller

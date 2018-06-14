@@ -17,7 +17,6 @@
 package org.springframework.oxm.config;
 
 import org.junit.Test;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;

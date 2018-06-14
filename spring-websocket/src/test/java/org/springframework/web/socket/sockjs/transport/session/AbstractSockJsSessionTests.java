@@ -17,7 +17,6 @@
 package org.springframework.web.socket.sockjs.transport.session;
 
 import org.junit.Before;
-
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.web.socket.WebSocketHandler;
 

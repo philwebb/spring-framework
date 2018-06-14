@@ -25,12 +25,12 @@ import javax.jms.Topic;
 import javax.jms.TopicSession;
 
 import org.junit.Test;
-
 import org.springframework.jms.StubQueue;
 import org.springframework.jms.StubTopic;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Rick Evans

@@ -18,10 +18,9 @@ package org.springframework.oxm.support;
 
 import java.io.IOException;
 
-import org.xml.sax.InputSource;
-
 import org.springframework.core.io.Resource;
 import org.springframework.lang.Nullable;
+import org.xml.sax.InputSource;
 
 /**
  * Convenient utility methods for dealing with SAX.

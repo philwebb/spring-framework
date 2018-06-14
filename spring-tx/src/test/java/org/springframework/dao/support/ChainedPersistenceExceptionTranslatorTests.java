@@ -17,7 +17,6 @@
 package org.springframework.dao.support;
 
 import org.junit.Test;
-
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.dao.support.DataAccessUtilsTests.MapPersistenceExceptionTranslator;

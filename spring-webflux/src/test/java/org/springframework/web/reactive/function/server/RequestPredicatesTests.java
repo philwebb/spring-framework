@@ -21,7 +21,6 @@ import java.util.Collections;
 import java.util.function.Function;
 
 import org.junit.Test;
-
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.web.util.pattern.PathPatternParser;

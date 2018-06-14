@@ -21,7 +21,6 @@ import java.io.IOException;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.mock.http.client.MockClientHttpRequest;
 
 /**

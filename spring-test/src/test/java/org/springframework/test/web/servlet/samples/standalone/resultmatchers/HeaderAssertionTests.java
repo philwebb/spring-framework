@@ -23,7 +23,6 @@ import java.util.TimeZone;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.test.web.Person;

@@ -18,6 +18,7 @@ package org.springframework.jmx.export;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.management.Attribute;
 import javax.management.AttributeChangeNotification;
 import javax.management.MalformedObjectNameException;
@@ -27,7 +28,6 @@ import javax.management.NotificationListener;
 import javax.management.ObjectName;
 
 import org.junit.Test;
-
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.jmx.AbstractMBeanServerTests;
 import org.springframework.jmx.JmxTestBean;

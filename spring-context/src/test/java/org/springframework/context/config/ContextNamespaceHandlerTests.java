@@ -22,7 +22,6 @@ import java.util.Date;
 
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.beans.FatalBeanException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

@@ -22,7 +22,6 @@ import java.util.concurrent.FutureTask;
 
 import org.quartz.SchedulerConfigException;
 import org.quartz.simpl.SimpleThreadPool;
-
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.task.AsyncListenableTaskExecutor;

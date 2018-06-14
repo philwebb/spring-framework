@@ -20,7 +20,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import org.junit.Test;
-
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 

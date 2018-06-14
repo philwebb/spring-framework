@@ -28,12 +28,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-import com.fasterxml.jackson.dataformat.smile.SmileFactory;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-
 import org.junit.Test;
-
 import org.springframework.beans.FatalBeanException;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
@@ -64,6 +61,7 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.fasterxml.jackson.databind.ser.std.ClassSerializer;
 import com.fasterxml.jackson.databind.ser.std.NumberSerializer;
 import com.fasterxml.jackson.databind.type.SimpleType;
+import com.fasterxml.jackson.dataformat.smile.SmileFactory;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import static org.hamcrest.Matchers.*;

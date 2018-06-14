@@ -22,7 +22,6 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import org.junit.Test;
-
 import org.springframework.messaging.simp.SimpMessageType;
 
 import static org.junit.Assert.*;

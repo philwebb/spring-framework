@@ -16,10 +16,10 @@
 
 package org.springframework.http.codec.json;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.util.MimeType;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Decode a byte stream into JSON and convert to Object's with Jackson 2.9,

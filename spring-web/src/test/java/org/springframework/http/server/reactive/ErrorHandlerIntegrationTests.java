@@ -19,8 +19,6 @@ package org.springframework.http.server.reactive;
 import java.net.URI;
 
 import org.junit.Test;
-import reactor.core.publisher.Mono;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpResponse;
@@ -28,6 +26,8 @@ import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
 import static org.junit.Assert.*;
+
+import reactor.core.publisher.Mono;
 
 /**
  * @author Arjen Poutsma

@@ -19,7 +19,6 @@ package org.springframework.util;
 import java.util.LinkedList;
 
 import org.junit.Test;
-
 import org.springframework.tests.sample.objects.TestObject;
 
 import static org.junit.Assert.*;

@@ -20,10 +20,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Properties;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
 import org.junit.Test;
-
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.core.io.ByteArrayResource;
@@ -37,6 +34,9 @@ import org.springframework.ui.freemarker.SpringTemplateLoader;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
+
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 
 /**
  * @author Juergen Hoeller

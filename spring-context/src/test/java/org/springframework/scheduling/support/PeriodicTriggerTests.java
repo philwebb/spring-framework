@@ -20,7 +20,6 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
-
 import org.springframework.scheduling.TriggerContext;
 import org.springframework.util.NumberUtils;
 

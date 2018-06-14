@@ -17,7 +17,6 @@
 package org.springframework.web.socket.handler;
 
 import org.junit.Test;
-
 import org.springframework.beans.BeanInstantiationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;

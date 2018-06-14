@@ -19,7 +19,6 @@ package org.springframework.core.io.support;
 import java.io.IOException;
 
 import org.junit.Test;
-
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;

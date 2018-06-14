@@ -22,7 +22,6 @@ import javax.management.ObjectName;
 
 import org.junit.After;
 import org.junit.Before;
-
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;

@@ -24,7 +24,6 @@ import javax.transaction.TransactionManager;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
 import org.springframework.beans.DirectFieldAccessor;
 import org.springframework.jms.StubConnectionFactory;
 import org.springframework.jms.listener.AbstractMessageListenerContainer;

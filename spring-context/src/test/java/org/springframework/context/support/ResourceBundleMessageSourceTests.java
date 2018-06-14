@@ -23,7 +23,6 @@ import java.util.ResourceBundle;
 
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.context.NoSuchMessageException;

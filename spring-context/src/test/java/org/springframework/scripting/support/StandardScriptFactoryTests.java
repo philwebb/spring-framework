@@ -19,7 +19,6 @@ package org.springframework.scripting.support;
 import java.util.Arrays;
 
 import org.junit.Test;
-
 import org.springframework.aop.support.AopUtils;
 import org.springframework.aop.target.dynamic.Refreshable;
 import org.springframework.context.ApplicationContext;

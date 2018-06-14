@@ -17,7 +17,6 @@
 package org.springframework.test.util;
 
 import org.junit.Test;
-
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.aop.support.AopUtils;
 

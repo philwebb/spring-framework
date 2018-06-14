@@ -18,7 +18,6 @@ package org.springframework.aop.aspectj.autoproxy;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import static org.junit.Assert.*;

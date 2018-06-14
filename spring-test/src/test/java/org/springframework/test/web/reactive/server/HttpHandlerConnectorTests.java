@@ -23,8 +23,6 @@ import java.util.Collections;
 import java.util.function.Function;
 
 import org.junit.Test;
-import reactor.core.publisher.Mono;
-
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DefaultDataBufferFactory;
 import org.springframework.core.io.buffer.support.DataBufferTestUtils;
@@ -40,8 +38,10 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.mock.http.server.reactive.MockServerHttpRequest;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.junit.Assert.assertEquals;
+import static java.nio.charset.StandardCharsets.*;
+import static org.junit.Assert.*;
+
+import reactor.core.publisher.Mono;
 
 /**
  * Unit tests for {@link HttpHandlerConnector}.

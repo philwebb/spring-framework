@@ -17,7 +17,6 @@
 package org.springframework.web.socket;
 
 import org.junit.Before;
-
 import org.springframework.http.server.ServerHttpAsyncRequestControl;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;

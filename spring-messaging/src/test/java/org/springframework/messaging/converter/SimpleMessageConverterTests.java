@@ -19,7 +19,6 @@ package org.springframework.messaging.converter;
 import java.util.Collections;
 
 import org.junit.Test;
-
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageHeaderAccessor;

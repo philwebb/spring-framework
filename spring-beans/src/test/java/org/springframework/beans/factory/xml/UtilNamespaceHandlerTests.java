@@ -26,7 +26,6 @@ import java.util.TreeMap;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.beans.factory.config.FieldRetrievingFactoryBean;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.beans.factory.parsing.ComponentDefinition;

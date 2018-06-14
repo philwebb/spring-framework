@@ -22,19 +22,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import io.reactivex.Flowable;
-import io.reactivex.Maybe;
 import org.junit.Test;
 import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import rx.Completable;
-import rx.Observable;
-import rx.Single;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
@@ -62,6 +55,14 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 import static java.util.Arrays.*;
 import static org.junit.Assert.*;
 import static org.springframework.http.MediaType.*;
+
+import io.reactivex.Flowable;
+import io.reactivex.Maybe;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import rx.Completable;
+import rx.Observable;
+import rx.Single;
 
 /**
  * {@code @RequestMapping} integration tests focusing on serialization and

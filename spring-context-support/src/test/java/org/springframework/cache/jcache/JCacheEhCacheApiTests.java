@@ -24,7 +24,6 @@ import javax.cache.spi.CachingProvider;
 
 import org.junit.After;
 import org.junit.Before;
-
 import org.springframework.cache.AbstractValueAdaptingCacheTests;
 
 /**

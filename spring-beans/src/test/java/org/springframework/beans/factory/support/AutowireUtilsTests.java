@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
-
 import org.springframework.util.ReflectionUtils;
 
 import static org.junit.Assert.*;

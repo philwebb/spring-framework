@@ -19,7 +19,6 @@ package org.springframework.core.type;
 import java.lang.annotation.Inherited;
 
 import org.junit.Test;
-
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;

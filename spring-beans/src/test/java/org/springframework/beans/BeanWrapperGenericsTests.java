@@ -30,7 +30,6 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.junit.Test;
-
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.core.io.UrlResource;

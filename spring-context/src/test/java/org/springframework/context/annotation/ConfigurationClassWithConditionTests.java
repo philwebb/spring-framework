@@ -23,7 +23,6 @@ import java.lang.annotation.Target;
 import java.util.Map;
 
 import org.junit.Test;
-
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.core.annotation.AnnotationAttributes;
