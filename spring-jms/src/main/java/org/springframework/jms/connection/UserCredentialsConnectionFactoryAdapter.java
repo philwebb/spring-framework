@@ -320,16 +320,18 @@ public class UserCredentialsConnectionFactoryAdapter
 	/**
 	 * Inner class used as ThreadLocal value.
 	 */
-	private static class JmsUserCredentials {
+	private static final class JmsUserCredentials {
 
 		public final String username;
 
 		public final String password;
 
+
 		private JmsUserCredentials(String username, String password) {
 			this.username = username;
 			this.password = password;
 		}
+
 
 		@Override
 		public String toString() {

@@ -37,7 +37,7 @@ import org.springframework.lang.Nullable;
 public class InvalidResultSetAccessException extends InvalidDataAccessResourceUsageException {
 
 	@Nullable
-	private String sql;
+	private final String sql;
 
 
 	/**
@@ -57,6 +57,7 @@ public class InvalidResultSetAccessException extends InvalidDataAccessResourceUs
 	 */
 	public InvalidResultSetAccessException(SQLException ex) {
 		super(ex.getMessage(), ex);
+		this.sql = null;
 	}
 
 

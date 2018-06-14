@@ -27,7 +27,7 @@ import org.springframework.lang.Nullable;
  * @author Rod Johnson
  */
 @SuppressWarnings("serial")
-class TrueMethodMatcher implements MethodMatcher, Serializable {
+final class TrueMethodMatcher implements MethodMatcher, Serializable {
 
 	public static final TrueMethodMatcher INSTANCE = new TrueMethodMatcher();
 

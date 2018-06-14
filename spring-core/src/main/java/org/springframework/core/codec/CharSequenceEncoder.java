@@ -41,7 +41,7 @@ import org.springframework.util.MimeTypeUtils;
  * @since 5.0
  * @see StringDecoder
  */
-public class CharSequenceEncoder extends AbstractEncoder<CharSequence> {
+public final class CharSequenceEncoder extends AbstractEncoder<CharSequence> {
 
 	public static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 

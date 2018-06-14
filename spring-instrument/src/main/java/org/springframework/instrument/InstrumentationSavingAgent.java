@@ -27,9 +27,13 @@ import java.lang.instrument.Instrumentation;
  * @since 2.0
  * @see org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver
  */
-public class InstrumentationSavingAgent {
+public final class InstrumentationSavingAgent {
 
 	private static volatile Instrumentation instrumentation;
+
+
+	private InstrumentationSavingAgent() {
+	}
 
 
 	/**

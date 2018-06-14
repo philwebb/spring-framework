@@ -28,7 +28,12 @@ import javax.management.ObjectName;
  * @since 1.2
  * @see javax.management.ObjectName#getInstance(String)
  */
-public class ObjectNameManager {
+public final class ObjectNameManager {
+
+
+	private ObjectNameManager() {
+	}
+
 
 	/**
 	 * Retrieve the {@code ObjectName} instance corresponding to the supplied name.

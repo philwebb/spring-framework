@@ -30,10 +30,10 @@ import org.springframework.lang.Nullable;
 public class ObjectRetrievalFailureException extends DataRetrievalFailureException {
 
 	@Nullable
-	private Object persistentClass;
+	private final Object persistentClass;
 
 	@Nullable
-	private Object identifier;
+	private final Object identifier;
 
 
 	/**
@@ -44,6 +44,8 @@ public class ObjectRetrievalFailureException extends DataRetrievalFailureExcepti
 	 */
 	public ObjectRetrievalFailureException(String msg, Throwable cause) {
 		super(msg, cause);
+		this.persistentClass = null;
+		this.identifier = null;
 	}
 
 	/**

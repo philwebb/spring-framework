@@ -28,9 +28,9 @@ package org.springframework.dao;
 @SuppressWarnings("serial")
 public class IncorrectResultSizeDataAccessException extends DataRetrievalFailureException {
 
-	private int expectedSize;
+	private final int expectedSize;
 
-	private int actualSize;
+	private final int actualSize;
 
 
 	/**

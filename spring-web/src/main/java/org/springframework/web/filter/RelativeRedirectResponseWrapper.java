@@ -30,7 +30,7 @@ import org.springframework.web.util.WebUtils;
  * @author Rossen Stoyanchev
  * @since 4.3.10
  */
-class RelativeRedirectResponseWrapper extends HttpServletResponseWrapper {
+final class RelativeRedirectResponseWrapper extends HttpServletResponseWrapper {
 
 	private final HttpStatus redirectStatus;
 

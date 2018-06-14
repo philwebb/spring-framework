@@ -170,7 +170,7 @@ public class UriTemplate implements Serializable {
 	/**
 	 * Helper to extract variable names and regex for matching to actual URLs.
 	 */
-	private static class TemplateInfo {
+	private static final class TemplateInfo {
 
 		private final List<String> variableNames;
 

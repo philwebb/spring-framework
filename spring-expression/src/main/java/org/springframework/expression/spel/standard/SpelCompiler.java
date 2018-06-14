@@ -64,7 +64,7 @@ import org.springframework.util.ReflectionUtils;
  * @author Andy Clement
  * @since 4.1
  */
-public class SpelCompiler implements Opcodes {
+public final class SpelCompiler implements Opcodes {
 
 	private static final Log logger = LogFactory.getLog(SpelCompiler.class);
 

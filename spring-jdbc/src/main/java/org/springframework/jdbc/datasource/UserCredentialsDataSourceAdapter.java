@@ -202,7 +202,7 @@ public class UserCredentialsDataSourceAdapter extends DelegatingDataSource {
 	/**
 	 * Inner class used as ThreadLocal value.
 	 */
-	private static class JdbcUserCredentials {
+	private static final class JdbcUserCredentials {
 
 		public final String username;
 

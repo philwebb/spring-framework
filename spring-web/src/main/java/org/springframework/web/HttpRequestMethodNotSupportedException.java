@@ -37,10 +37,10 @@ import org.springframework.util.StringUtils;
 @SuppressWarnings("serial")
 public class HttpRequestMethodNotSupportedException extends ServletException {
 
-	private String method;
+	private final String method;
 
 	@Nullable
-	private String[] supportedMethods;
+	private final String[] supportedMethods;
 
 
 	/**

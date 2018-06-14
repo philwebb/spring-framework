@@ -30,13 +30,13 @@ import org.springframework.lang.Nullable;
 public class CannotLoadBeanClassException extends FatalBeanException {
 
 	@Nullable
-	private String resourceDescription;
+	private final String resourceDescription;
 
 	@Nullable
-	private String beanName;
+	private final String beanName;
 
 	@Nullable
-	private String beanClassName;
+	private final String beanClassName;
 
 
 	/**

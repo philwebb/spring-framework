@@ -29,7 +29,7 @@ import org.springframework.aop.framework.AopConfigException;
 @SuppressWarnings("serial")
 public class NotAnAtAspectException extends AopConfigException {
 
-	private Class<?> nonAspectClass;
+	private final Class<?> nonAspectClass;
 
 
 	/**

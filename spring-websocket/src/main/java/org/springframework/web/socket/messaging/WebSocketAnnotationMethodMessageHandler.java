@@ -86,7 +86,7 @@ public class WebSocketAnnotationMethodMessageHandler extends SimpAnnotationMetho
 	/**
 	 * Adapt ControllerAdviceBean to MessagingAdviceBean.
 	 */
-	private static class MessagingControllerAdviceBean implements MessagingAdviceBean {
+	private static final class MessagingControllerAdviceBean implements MessagingAdviceBean {
 
 		private final ControllerAdviceBean adviceBean;
 
