@@ -93,9 +93,9 @@ public class EnvironmentSystemIntegrationTests {
 
 	@Before
 	public void setUp() {
-		prodEnv.setActiveProfiles(PROD_ENV_NAME);
-		devEnv.setActiveProfiles(DEV_ENV_NAME);
-		prodWebEnv.setActiveProfiles(PROD_ENV_NAME);
+		this.prodEnv.setActiveProfiles(PROD_ENV_NAME);
+		this.devEnv.setActiveProfiles(DEV_ENV_NAME);
+		this.prodWebEnv.setActiveProfiles(PROD_ENV_NAME);
 	}
 
 	@Test
@@ -111,18 +111,18 @@ public class EnvironmentSystemIntegrationTests {
 	@Test
 	public void genericApplicationContext_customEnv() {
 		GenericApplicationContext ctx = new GenericApplicationContext(newBeanFactoryWithEnvironmentAwareBean());
-		ctx.setEnvironment(prodEnv);
+		ctx.setEnvironment(this.prodEnv);
 		ctx.refresh();
 
-		assertHasEnvironment(ctx, prodEnv);
+		assertHasEnvironment(ctx, this.prodEnv);
 		assertEnvironmentBeanRegistered(ctx);
-		assertEnvironmentAwareInvoked(ctx, prodEnv);
+		assertEnvironmentAwareInvoked(ctx, this.prodEnv);
 	}
 
 	@Test
 	public void xmlBeanDefinitionReader_inheritsEnvironmentFromEnvironmentCapableBDR() {
 		GenericApplicationContext ctx = new GenericApplicationContext();
-		ctx.setEnvironment(prodEnv);
+		ctx.setEnvironment(this.prodEnv);
 		new XmlBeanDefinitionReader(ctx).loadBeanDefinitions(XML_PATH);
 		ctx.refresh();
 		assertThat(ctx.containsBean(DEV_BEAN_NAME), is(false));
@@ -132,7 +132,7 @@ public class EnvironmentSystemIntegrationTests {
 	@Test
 	public void annotatedBeanDefinitionReader_inheritsEnvironmentFromEnvironmentCapableBDR() {
 		GenericApplicationContext ctx = new GenericApplicationContext();
-		ctx.setEnvironment(prodEnv);
+		ctx.setEnvironment(this.prodEnv);
 		new AnnotatedBeanDefinitionReader(ctx).register(Config.class);
 		ctx.refresh();
 		assertThat(ctx.containsBean(DEV_BEAN_NAME), is(false));
@@ -143,7 +143,7 @@ public class EnvironmentSystemIntegrationTests {
 	public void classPathBeanDefinitionScanner_inheritsEnvironmentFromEnvironmentCapableBDR_scanProfileAnnotatedConfigClasses() {
 		// it's actually ConfigurationClassPostProcessor's Environment that gets the job done here.
 		GenericApplicationContext ctx = new GenericApplicationContext();
-		ctx.setEnvironment(prodEnv);
+		ctx.setEnvironment(this.prodEnv);
 		ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(ctx);
 		scanner.scan("org.springframework.core.env.scan1");
 		ctx.refresh();
@@ -154,7 +154,7 @@ public class EnvironmentSystemIntegrationTests {
 	@Test
 	public void classPathBeanDefinitionScanner_inheritsEnvironmentFromEnvironmentCapableBDR_scanProfileAnnotatedComponents() {
 		GenericApplicationContext ctx = new GenericApplicationContext();
-		ctx.setEnvironment(prodEnv);
+		ctx.setEnvironment(this.prodEnv);
 		ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(ctx);
 		scanner.scan("org.springframework.core.env.scan2");
 		ctx.refresh();
@@ -167,13 +167,13 @@ public class EnvironmentSystemIntegrationTests {
 	public void genericXmlApplicationContext() {
 		GenericXmlApplicationContext ctx = new GenericXmlApplicationContext();
 		assertHasStandardEnvironment(ctx);
-		ctx.setEnvironment(prodEnv);
+		ctx.setEnvironment(this.prodEnv);
 		ctx.load(XML_PATH);
 		ctx.refresh();
 
-		assertHasEnvironment(ctx, prodEnv);
+		assertHasEnvironment(ctx, this.prodEnv);
 		assertEnvironmentBeanRegistered(ctx);
-		assertEnvironmentAwareInvoked(ctx, prodEnv);
+		assertEnvironmentAwareInvoked(ctx, this.prodEnv);
 		assertThat(ctx.containsBean(DEV_BEAN_NAME), is(false));
 		assertThat(ctx.containsBean(PROD_BEAN_NAME), is(true));
 	}
@@ -181,11 +181,11 @@ public class EnvironmentSystemIntegrationTests {
 	@Test
 	public void classPathXmlApplicationContext() {
 		ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext(XML_PATH);
-		ctx.setEnvironment(prodEnv);
+		ctx.setEnvironment(this.prodEnv);
 		ctx.refresh();
 
 		assertEnvironmentBeanRegistered(ctx);
-		assertHasEnvironment(ctx, prodEnv);
+		assertHasEnvironment(ctx, this.prodEnv);
 		assertEnvironmentAwareInvoked(ctx, ctx.getEnvironment());
 		assertThat(ctx.containsBean(DEV_BEAN_NAME), is(false));
 		assertThat(ctx.containsBean(PROD_BEAN_NAME), is(true));
@@ -200,10 +200,10 @@ public class EnvironmentSystemIntegrationTests {
 		// strange - FSXAC strips leading '/' unless prefixed with 'file:'
 		ConfigurableApplicationContext ctx =
 				new FileSystemXmlApplicationContext(new String[] {"file:" + tmpFile.getPath()}, false);
-		ctx.setEnvironment(prodEnv);
+		ctx.setEnvironment(this.prodEnv);
 		ctx.refresh();
 		assertEnvironmentBeanRegistered(ctx);
-		assertHasEnvironment(ctx, prodEnv);
+		assertHasEnvironment(ctx, this.prodEnv);
 		assertEnvironmentAwareInvoked(ctx, ctx.getEnvironment());
 		assertThat(ctx.containsBean(DEV_BEAN_NAME), is(false));
 		assertThat(ctx.containsBean(PROD_BEAN_NAME), is(true));
@@ -214,12 +214,12 @@ public class EnvironmentSystemIntegrationTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 
 		assertHasStandardEnvironment(ctx);
-		ctx.setEnvironment(prodEnv);
+		ctx.setEnvironment(this.prodEnv);
 
 		ctx.register(EnvironmentAwareBean.class);
 		ctx.refresh();
 
-		assertEnvironmentAwareInvoked(ctx, prodEnv);
+		assertEnvironmentAwareInvoked(ctx, this.prodEnv);
 	}
 
 	@Test
@@ -227,7 +227,7 @@ public class EnvironmentSystemIntegrationTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 
 		assertHasStandardEnvironment(ctx);
-		ctx.setEnvironment(prodEnv);
+		ctx.setEnvironment(this.prodEnv);
 
 		ctx.register(ProdConfig.class);
 		ctx.refresh();
@@ -240,7 +240,7 @@ public class EnvironmentSystemIntegrationTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 
 		assertHasStandardEnvironment(ctx);
-		ctx.setEnvironment(prodEnv);
+		ctx.setEnvironment(this.prodEnv);
 
 		ctx.register(DevConfig.class);
 		ctx.refresh();
@@ -254,7 +254,7 @@ public class EnvironmentSystemIntegrationTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 
 		assertHasStandardEnvironment(ctx);
-		ctx.setEnvironment(devEnv);
+		ctx.setEnvironment(this.devEnv);
 
 		ctx.register(DevConfig.class);
 		ctx.refresh();
@@ -268,12 +268,12 @@ public class EnvironmentSystemIntegrationTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 
 		assertHasStandardEnvironment(ctx);
-		ctx.setEnvironment(prodEnv);
+		ctx.setEnvironment(this.prodEnv);
 
 		ctx.register(Config.class);
 		ctx.refresh();
 
-		assertEnvironmentAwareInvoked(ctx, prodEnv);
+		assertEnvironmentAwareInvoked(ctx, this.prodEnv);
 		assertThat("should have prod bean", ctx.containsBean(PROD_BEAN_NAME), is(true));
 		assertThat("should not have dev bean", ctx.containsBean(DEV_BEAN_NAME), is(false));
 		assertThat("should not have transitive bean", ctx.containsBean(TRANSITIVE_BEAN_NAME), is(false));
@@ -296,7 +296,7 @@ public class EnvironmentSystemIntegrationTests {
 	@Test
 	public void mostSpecificDerivedClassDrivesEnvironment_withDevEnvAndDerivedDevConfigClass() {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
-		ctx.setEnvironment(devEnv);
+		ctx.setEnvironment(this.devEnv);
 		ctx.register(DerivedDevConfig.class);
 		ctx.refresh();
 
@@ -309,24 +309,24 @@ public class EnvironmentSystemIntegrationTests {
 	public void webApplicationContext() {
 		GenericWebApplicationContext ctx = new GenericWebApplicationContext(newBeanFactoryWithEnvironmentAwareBean());
 		assertHasStandardServletEnvironment(ctx);
-		ctx.setEnvironment(prodWebEnv);
+		ctx.setEnvironment(this.prodWebEnv);
 		ctx.refresh();
 
-		assertHasEnvironment(ctx, prodWebEnv);
+		assertHasEnvironment(ctx, this.prodWebEnv);
 		assertEnvironmentBeanRegistered(ctx);
-		assertEnvironmentAwareInvoked(ctx, prodWebEnv);
+		assertEnvironmentAwareInvoked(ctx, this.prodWebEnv);
 	}
 
 	@Test
 	public void xmlWebApplicationContext() {
 		AbstractRefreshableWebApplicationContext ctx = new XmlWebApplicationContext();
 		ctx.setConfigLocation("classpath:" + XML_PATH);
-		ctx.setEnvironment(prodWebEnv);
+		ctx.setEnvironment(this.prodWebEnv);
 		ctx.refresh();
 
-		assertHasEnvironment(ctx, prodWebEnv);
+		assertHasEnvironment(ctx, this.prodWebEnv);
 		assertEnvironmentBeanRegistered(ctx);
-		assertEnvironmentAwareInvoked(ctx, prodWebEnv);
+		assertEnvironmentAwareInvoked(ctx, this.prodWebEnv);
 		assertThat(ctx.containsBean(DEV_BEAN_NAME), is(false));
 		assertThat(ctx.containsBean(PROD_BEAN_NAME), is(true));
 	}
@@ -339,12 +339,12 @@ public class EnvironmentSystemIntegrationTests {
 
 		registerEnvironmentBeanDefinition(ctx);
 
-		ctx.setEnvironment(prodEnv);
+		ctx.setEnvironment(this.prodEnv);
 		ctx.refresh();
 
-		assertHasEnvironment(ctx, prodEnv);
+		assertHasEnvironment(ctx, this.prodEnv);
 		assertEnvironmentBeanRegistered(ctx);
-		assertEnvironmentAwareInvoked(ctx, prodEnv);
+		assertEnvironmentAwareInvoked(ctx, this.prodEnv);
 	}
 
 	@Test
@@ -355,24 +355,24 @@ public class EnvironmentSystemIntegrationTests {
 
 		registerEnvironmentBeanDefinition(ctx);
 
-		ctx.setEnvironment(prodWebEnv);
+		ctx.setEnvironment(this.prodWebEnv);
 		ctx.refresh();
 
-		assertHasEnvironment(ctx, prodWebEnv);
+		assertHasEnvironment(ctx, this.prodWebEnv);
 		assertEnvironmentBeanRegistered(ctx);
-		assertEnvironmentAwareInvoked(ctx, prodWebEnv);
+		assertEnvironmentAwareInvoked(ctx, this.prodWebEnv);
 	}
 
 	@Test
 	public void annotationConfigWebApplicationContext() {
 		AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
-		ctx.setEnvironment(prodWebEnv);
+		ctx.setEnvironment(this.prodWebEnv);
 		ctx.setConfigLocation(EnvironmentAwareBean.class.getName());
 		ctx.refresh();
 
-		assertHasEnvironment(ctx, prodWebEnv);
+		assertHasEnvironment(ctx, this.prodWebEnv);
 		assertEnvironmentBeanRegistered(ctx);
-		assertEnvironmentAwareInvoked(ctx, prodWebEnv);
+		assertEnvironmentAwareInvoked(ctx, this.prodWebEnv);
 	}
 
 	@Test
@@ -505,12 +505,12 @@ public class EnvironmentSystemIntegrationTests {
 
 		registerEnvironmentBeanDefinition(ctx);
 
-		ctx.setEnvironment(prodEnv);
+		ctx.setEnvironment(this.prodEnv);
 		ctx.refresh();
 
-		assertHasEnvironment(ctx, prodEnv);
+		assertHasEnvironment(ctx, this.prodEnv);
 		assertEnvironmentBeanRegistered(ctx);
-		assertEnvironmentAwareInvoked(ctx, prodEnv);
+		assertEnvironmentAwareInvoked(ctx, this.prodEnv);
 	}
 
 	@Test
