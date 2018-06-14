@@ -233,7 +233,7 @@ public abstract class AbstractAdaptableMessageListener
 	 * @see #onMessage(javax.jms.Message)
 	 */
 	protected void handleListenerException(Throwable ex) {
-		logger.error("Listener execution failed", ex);
+		this.logger.error("Listener execution failed", ex);
 	}
 
 
@@ -271,8 +271,8 @@ public abstract class AbstractAdaptableMessageListener
 	 */
 	protected void handleResult(Object result, Message request, @Nullable Session session) {
 		if (session != null) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("Listener method returned result [" + result +
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Listener method returned result [" + result +
 						"] - generating response message for it");
 			}
 			try {
@@ -288,8 +288,8 @@ public abstract class AbstractAdaptableMessageListener
 
 		else {
 			// No JMS Session available
-			if (logger.isWarnEnabled()) {
-				logger.warn("Listener method returned result [" + result +
+			if (this.logger.isWarnEnabled()) {
+				this.logger.warn("Listener method returned result [" + result +
 						"]: not generating response message for it because of no JMS Session given");
 			}
 		}
@@ -482,7 +482,7 @@ public abstract class AbstractAdaptableMessageListener
 				}
 				catch (JMSException ex) {
 					// Continue since the BytesMessage typically won't be used any further.
-					logger.debug("Failed to reset BytesMessage after payload extraction", ex);
+					AbstractAdaptableMessageListener.this.logger.debug("Failed to reset BytesMessage after payload extraction", ex);
 				}
 			}
 			return payload;

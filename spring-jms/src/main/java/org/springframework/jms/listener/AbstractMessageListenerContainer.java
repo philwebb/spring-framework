@@ -486,7 +486,7 @@ public abstract class AbstractMessageListenerContainer extends AbstractJmsListen
 	@Override
 	public boolean isReplyPubSubDomain() {
 		if (this.replyPubSubDomain != null) {
-			return replyPubSubDomain;
+			return this.replyPubSubDomain;
 		}
 		else {
 			return isPubSubDomain();
@@ -662,8 +662,8 @@ public abstract class AbstractMessageListenerContainer extends AbstractJmsListen
 	 */
 	protected void doExecuteListener(Session session, Message message) throws JMSException {
 		if (!isAcceptMessagesWhileStopping() && !isRunning()) {
-			if (logger.isWarnEnabled()) {
-				logger.warn("Rejecting received message because of the listener container " +
+			if (this.logger.isWarnEnabled()) {
+				this.logger.warn("Rejecting received message because of the listener container " +
 						"having been stopped in the meantime: " + message);
 			}
 			rollbackIfNecessary(session);
@@ -809,8 +809,8 @@ public abstract class AbstractMessageListenerContainer extends AbstractJmsListen
 			if (session.getTransacted()) {
 				if (isSessionLocallyTransacted(session)) {
 					// Transacted session created by this container -> rollback.
-					if (logger.isDebugEnabled()) {
-						logger.debug("Initiating transaction rollback on application exception", ex);
+					if (this.logger.isDebugEnabled()) {
+						this.logger.debug("Initiating transaction rollback on application exception", ex);
 					}
 					JmsUtils.rollbackIfNecessary(session);
 				}
@@ -820,10 +820,10 @@ public abstract class AbstractMessageListenerContainer extends AbstractJmsListen
 			}
 		}
 		catch (IllegalStateException ex2) {
-			logger.debug("Could not roll back because Session already closed", ex2);
+			this.logger.debug("Could not roll back because Session already closed", ex2);
 		}
 		catch (JMSException | RuntimeException | Error ex2) {
-			logger.error("Application exception overridden by rollback error", ex);
+			this.logger.error("Application exception overridden by rollback error", ex);
 			throw ex2;
 		}
 	}
@@ -899,7 +899,7 @@ public abstract class AbstractMessageListenerContainer extends AbstractJmsListen
 		else {
 			// Rare case: listener thread failed after container shutdown.
 			// Log at debug level, to avoid spamming the shutdown log.
-			logger.debug("Listener exception after container shutdown", ex);
+			this.logger.debug("Listener exception after container shutdown", ex);
 		}
 	}
 
@@ -926,7 +926,7 @@ public abstract class AbstractMessageListenerContainer extends AbstractJmsListen
 			errorHandler.handleError(ex);
 		}
 		else {
-			logger.warn("Execution of JMS message listener failed, and no ErrorHandler has been set.", ex);
+			this.logger.warn("Execution of JMS message listener failed, and no ErrorHandler has been set.", ex);
 		}
 	}
 

@@ -111,8 +111,8 @@ public class RestTemplateXhrTransport extends AbstractXhrTransport {
 					break;
 				}
 				try {
-					if (logger.isTraceEnabled()) {
-						logger.trace("Starting XHR receive request, url=" + receiveUrl);
+					if (this.logger.isTraceEnabled()) {
+						this.logger.trace("Starting XHR receive request, url=" + receiveUrl);
 					}
 					getRestTemplate().execute(receiveUrl, HttpMethod.POST, requestCallback, responseExtractor);
 					requestCallback = requestCallbackAfterHandshake;
@@ -211,16 +211,16 @@ public class RestTemplateXhrTransport extends AbstractXhrTransport {
 						httpStatus, response.getStatusText(), response.getHeaders(), null, null);
 			}
 
-			if (logger.isTraceEnabled()) {
-				logger.trace("XHR receive headers: " + response.getHeaders());
+			if (RestTemplateXhrTransport.this.logger.isTraceEnabled()) {
+				RestTemplateXhrTransport.this.logger.trace("XHR receive headers: " + response.getHeaders());
 			}
 			InputStream is = response.getBody();
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
 
 			while (true) {
 				if (this.sockJsSession.isDisconnected()) {
-					if (logger.isDebugEnabled()) {
-						logger.debug("SockJS sockJsSession closed, closing response.");
+					if (RestTemplateXhrTransport.this.logger.isDebugEnabled()) {
+						RestTemplateXhrTransport.this.logger.debug("SockJS sockJsSession closed, closing response.");
 					}
 					response.close();
 					break;
@@ -230,8 +230,8 @@ public class RestTemplateXhrTransport extends AbstractXhrTransport {
 					if (os.size() > 0) {
 						handleFrame(os);
 					}
-					if (logger.isTraceEnabled()) {
-						logger.trace("XHR receive completed");
+					if (RestTemplateXhrTransport.this.logger.isTraceEnabled()) {
+						RestTemplateXhrTransport.this.logger.trace("XHR receive completed");
 					}
 					break;
 				}
@@ -249,8 +249,8 @@ public class RestTemplateXhrTransport extends AbstractXhrTransport {
 			byte[] bytes = os.toByteArray();
 			os.reset();
 			String content = new String(bytes, SockJsFrame.CHARSET);
-			if (logger.isTraceEnabled()) {
-				logger.trace("XHR receive content: " + content);
+			if (RestTemplateXhrTransport.this.logger.isTraceEnabled()) {
+				RestTemplateXhrTransport.this.logger.trace("XHR receive content: " + content);
 			}
 			if (!PRELUDE.equals(content)) {
 				this.sockJsSession.handleFrame(new String(bytes, SockJsFrame.CHARSET));

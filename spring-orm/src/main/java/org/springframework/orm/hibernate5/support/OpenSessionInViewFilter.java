@@ -137,7 +137,7 @@ public class OpenSessionInViewFilter extends OncePerRequestFilter {
 		else {
 			boolean isFirstRequest = !isAsyncDispatch(request);
 			if (isFirstRequest || !applySessionBindingInterceptor(asyncManager, key)) {
-				logger.debug("Opening Hibernate Session in OpenSessionInViewFilter");
+				this.logger.debug("Opening Hibernate Session in OpenSessionInViewFilter");
 				Session session = openSession(sessionFactory);
 				SessionHolder sessionHolder = new SessionHolder(session);
 				TransactionSynchronizationManager.bindResource(sessionFactory, sessionHolder);
@@ -157,7 +157,7 @@ public class OpenSessionInViewFilter extends OncePerRequestFilter {
 				SessionHolder sessionHolder =
 						(SessionHolder) TransactionSynchronizationManager.unbindResource(sessionFactory);
 				if (!isAsyncStarted(request)) {
-					logger.debug("Closing Hibernate Session in OpenSessionInViewFilter");
+					this.logger.debug("Closing Hibernate Session in OpenSessionInViewFilter");
 					SessionFactoryUtils.closeSession(sessionHolder.getSession());
 				}
 			}
@@ -184,8 +184,8 @@ public class OpenSessionInViewFilter extends OncePerRequestFilter {
 	 * @see #getSessionFactoryBeanName
 	 */
 	protected SessionFactory lookupSessionFactory() {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Using SessionFactory '" + getSessionFactoryBeanName() + "' for OpenSessionInViewFilter");
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Using SessionFactory '" + getSessionFactoryBeanName() + "' for OpenSessionInViewFilter");
 		}
 		WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
 		return wac.getBean(getSessionFactoryBeanName(), SessionFactory.class);

@@ -263,7 +263,7 @@ public class ScriptTemplateView extends AbstractUrlBasedView {
 					new EngineKey(this.engineName, this.scripts) : this.engineName);
 			ScriptEngine engine = engines.get(engineKey);
 			if (engine == null) {
-				engine = createEngineFromName(engineName);
+				engine = createEngineFromName(this.engineName);
 				engines.put(engineKey, engine);
 			}
 			return engine;

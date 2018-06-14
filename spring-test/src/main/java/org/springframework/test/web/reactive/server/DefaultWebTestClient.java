@@ -153,7 +153,7 @@ class DefaultWebTestClient implements WebTestClient {
 
 		DefaultRequestBodyUriSpec(WebClient.RequestBodyUriSpec spec) {
 			this.bodySpec = spec;
-			this.requestId = String.valueOf(requestIndex.incrementAndGet());
+			this.requestId = String.valueOf(DefaultWebTestClient.this.requestIndex.incrementAndGet());
 			this.bodySpec.header(WebTestClient.WEBTESTCLIENT_REQUEST_ID, this.requestId);
 		}
 
@@ -281,7 +281,7 @@ class DefaultWebTestClient implements WebTestClient {
 		public ResponseSpec exchange() {
 			ClientResponse clientResponse = this.bodySpec.exchange().block(getTimeout());
 			Assert.state(clientResponse != null, "No ClientResponse");
-			WiretapConnector.Info info = wiretapConnector.claimRequest(this.requestId);
+			WiretapConnector.Info info = DefaultWebTestClient.this.wiretapConnector.claimRequest(this.requestId);
 			return new DefaultResponseSpec(info, clientResponse, this.uriTemplate, getTimeout());
 		}
 	}

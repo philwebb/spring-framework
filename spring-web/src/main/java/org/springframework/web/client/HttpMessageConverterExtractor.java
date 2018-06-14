@@ -93,8 +93,8 @@ public class HttpMessageConverterExtractor<T> implements ResponseExtractor<T> {
 					GenericHttpMessageConverter<?> genericMessageConverter =
 							(GenericHttpMessageConverter<?>) messageConverter;
 					if (genericMessageConverter.canRead(this.responseType, null, contentType)) {
-						if (logger.isDebugEnabled()) {
-							logger.debug("Reading [" + this.responseType + "] as \"" +
+						if (this.logger.isDebugEnabled()) {
+							this.logger.debug("Reading [" + this.responseType + "] as \"" +
 									contentType + "\" using [" + messageConverter + "]");
 						}
 						return (T) genericMessageConverter.read(this.responseType, null, responseWrapper);
@@ -102,8 +102,8 @@ public class HttpMessageConverterExtractor<T> implements ResponseExtractor<T> {
 				}
 				if (this.responseClass != null) {
 					if (messageConverter.canRead(this.responseClass, contentType)) {
-						if (logger.isDebugEnabled()) {
-							logger.debug("Reading [" + this.responseClass.getName() + "] as \"" +
+						if (this.logger.isDebugEnabled()) {
+							this.logger.debug("Reading [" + this.responseClass.getName() + "] as \"" +
 									contentType + "\" using [" + messageConverter + "]");
 						}
 						return (T) messageConverter.read((Class) this.responseClass, responseWrapper);
@@ -130,8 +130,8 @@ public class HttpMessageConverterExtractor<T> implements ResponseExtractor<T> {
 	protected MediaType getContentType(ClientHttpResponse response) {
 		MediaType contentType = response.getHeaders().getContentType();
 		if (contentType == null) {
-			if (logger.isTraceEnabled()) {
-				logger.trace("No Content-Type header found, defaulting to application/octet-stream");
+			if (this.logger.isTraceEnabled()) {
+				this.logger.trace("No Content-Type header found, defaulting to application/octet-stream");
 			}
 			contentType = MediaType.APPLICATION_OCTET_STREAM;
 		}

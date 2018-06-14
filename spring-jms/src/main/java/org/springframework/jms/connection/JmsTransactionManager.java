@@ -202,8 +202,8 @@ public class JmsTransactionManager extends AbstractPlatformTransactionManager
 		try {
 			con = createConnection();
 			session = createSession(con);
-			if (logger.isDebugEnabled()) {
-				logger.debug("Created JMS transaction on Session [" + session + "] from Connection [" + con + "]");
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Created JMS transaction on Session [" + session + "] from Connection [" + con + "]");
 			}
 			JmsResourceHolder resourceHolder = new JmsResourceHolder(connectionFactory, con, session);
 			resourceHolder.setSynchronizedWithTransaction(true);
@@ -254,7 +254,7 @@ public class JmsTransactionManager extends AbstractPlatformTransactionManager
 		if (session != null) {
 			try {
 				if (status.isDebug()) {
-					logger.debug("Committing JMS transaction on Session [" + session + "]");
+					this.logger.debug("Committing JMS transaction on Session [" + session + "]");
 				}
 				session.commit();
 			}
@@ -274,7 +274,7 @@ public class JmsTransactionManager extends AbstractPlatformTransactionManager
 		if (session != null) {
 			try {
 				if (status.isDebug()) {
-					logger.debug("Rolling back JMS transaction on Session [" + session + "]");
+					this.logger.debug("Rolling back JMS transaction on Session [" + session + "]");
 				}
 				session.rollback();
 			}

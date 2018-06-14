@@ -87,7 +87,7 @@ class DefaultClientResponse implements ClientResponse {
 		return extractor.extract(this.response, new BodyExtractor.Context() {
 			@Override
 			public List<HttpMessageReader<?>> messageReaders() {
-				return strategies.messageReaders();
+				return DefaultClientResponse.this.strategies.messageReaders();
 			}
 			@Override
 			public Optional<ServerHttpResponse> serverResponse() {
@@ -202,7 +202,7 @@ class DefaultClientResponse implements ClientResponse {
 	private class DefaultHeaders implements Headers {
 
 		private HttpHeaders delegate() {
-			return response.getHeaders();
+			return DefaultClientResponse.this.response.getHeaders();
 		}
 
 		@Override

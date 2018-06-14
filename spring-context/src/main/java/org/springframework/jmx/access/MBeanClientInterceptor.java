@@ -386,11 +386,11 @@ public class MBeanClientInterceptor
 	protected Object handleConnectFailure(MethodInvocation invocation, Exception ex) throws Throwable {
 		if (this.refreshOnConnectFailure) {
 			String msg = "Could not connect to JMX server - retrying";
-			if (logger.isDebugEnabled()) {
-				logger.warn(msg, ex);
+			if (this.logger.isDebugEnabled()) {
+				this.logger.warn(msg, ex);
 			}
-			else if (logger.isWarnEnabled()) {
-				logger.warn(msg);
+			else if (this.logger.isWarnEnabled()) {
+				this.logger.warn(msg);
 			}
 			prepare();
 			return doInvoke(invocation);

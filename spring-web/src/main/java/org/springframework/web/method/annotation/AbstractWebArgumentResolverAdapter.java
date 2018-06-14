@@ -81,7 +81,7 @@ public abstract class AbstractWebArgumentResolverAdapter implements HandlerMetho
 		}
 		catch (Exception ex) {
 			// ignore (see class-level doc)
-			logger.debug("Error in checking support for parameter [" + parameter + "], message: " + ex.getMessage());
+			this.logger.debug("Error in checking support for parameter [" + parameter + "], message: " + ex.getMessage());
 			return false;
 		}
 	}

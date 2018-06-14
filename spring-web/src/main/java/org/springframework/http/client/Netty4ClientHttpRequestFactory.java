@@ -205,13 +205,13 @@ public class Netty4ClientHttpRequestFactory implements ClientHttpRequestFactory,
 						configureChannel(channel.config());
 						ChannelPipeline pipeline = channel.pipeline();
 						if (isSecure) {
-							Assert.notNull(sslContext, "sslContext should not be null");
-							pipeline.addLast(sslContext.newHandler(channel.alloc(), uri.getHost(), uri.getPort()));
+							Assert.notNull(Netty4ClientHttpRequestFactory.this.sslContext, "sslContext should not be null");
+							pipeline.addLast(Netty4ClientHttpRequestFactory.this.sslContext.newHandler(channel.alloc(), uri.getHost(), uri.getPort()));
 						}
 						pipeline.addLast(new HttpClientCodec());
-						pipeline.addLast(new HttpObjectAggregator(maxResponseSize));
-						if (readTimeout > 0) {
-							pipeline.addLast(new ReadTimeoutHandler(readTimeout,
+						pipeline.addLast(new HttpObjectAggregator(Netty4ClientHttpRequestFactory.this.maxResponseSize));
+						if (Netty4ClientHttpRequestFactory.this.readTimeout > 0) {
+							pipeline.addLast(new ReadTimeoutHandler(Netty4ClientHttpRequestFactory.this.readTimeout,
 									TimeUnit.MILLISECONDS));
 						}
 					}

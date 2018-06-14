@@ -42,15 +42,15 @@ public class WebSocketClientSupport {
 
 
 	protected List<String> beforeHandshake(URI url, HttpHeaders requestHeaders, WebSocketHandler handler) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Executing handshake to " + url);
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Executing handshake to " + url);
 		}
 		return handler.getSubProtocols();
 	}
 
 	protected HandshakeInfo afterHandshake(URI url, HttpHeaders responseHeaders) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Handshake response: " + url + ", " + responseHeaders);
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Handshake response: " + url + ", " + responseHeaders);
 		}
 		String protocol = responseHeaders.getFirst(SEC_WEBSOCKET_PROTOCOL);
 		return new HandshakeInfo(url, responseHeaders, Mono.empty(), protocol);

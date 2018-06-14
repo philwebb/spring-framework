@@ -125,7 +125,7 @@ public class OpenSessionInViewInterceptor implements AsyncWebRequestInterceptor 
 			request.setAttribute(getParticipateAttributeName(), newCount, WebRequest.SCOPE_REQUEST);
 		}
 		else {
-			logger.debug("Opening Hibernate Session in OpenSessionInViewInterceptor");
+			this.logger.debug("Opening Hibernate Session in OpenSessionInViewInterceptor");
 			Session session = openSession();
 			SessionHolder sessionHolder = new SessionHolder(session);
 			TransactionSynchronizationManager.bindResource(obtainSessionFactory(), sessionHolder);
@@ -150,7 +150,7 @@ public class OpenSessionInViewInterceptor implements AsyncWebRequestInterceptor 
 		if (!decrementParticipateCount(request)) {
 			SessionHolder sessionHolder =
 					(SessionHolder) TransactionSynchronizationManager.unbindResource(obtainSessionFactory());
-			logger.debug("Closing Hibernate Session in OpenSessionInViewInterceptor");
+			this.logger.debug("Closing Hibernate Session in OpenSessionInViewInterceptor");
 			SessionFactoryUtils.closeSession(sessionHolder.getSession());
 		}
 	}

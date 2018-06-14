@@ -98,8 +98,8 @@ public abstract class JndiLocatorSupport extends JndiAccessor {
 		catch (NamingException ex) {
 			if (!convertedName.equals(jndiName)) {
 				// Try fallback to originally specified name...
-				if (logger.isDebugEnabled()) {
-					logger.debug("Converted JNDI name [" + convertedName +
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Converted JNDI name [" + convertedName +
 							"] not found - trying original name [" + jndiName + "]. " + ex);
 				}
 				jndiObject = getJndiTemplate().lookup(jndiName, requiredType);
@@ -108,8 +108,8 @@ public abstract class JndiLocatorSupport extends JndiAccessor {
 				throw ex;
 			}
 		}
-		if (logger.isDebugEnabled()) {
-			logger.debug("Located object with JNDI name [" + convertedName + "]");
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Located object with JNDI name [" + convertedName + "]");
 		}
 		return jndiObject;
 	}

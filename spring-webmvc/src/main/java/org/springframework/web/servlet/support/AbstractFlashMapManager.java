@@ -148,8 +148,8 @@ public abstract class AbstractFlashMapManager implements FlashMapManager {
 		}
 		if (!result.isEmpty()) {
 			Collections.sort(result);
-			if (logger.isTraceEnabled()) {
-				logger.trace("Found " + result.get(0));
+			if (this.logger.isTraceEnabled()) {
+				this.logger.trace("Found " + result.get(0));
 			}
 			return result.get(0);
 		}

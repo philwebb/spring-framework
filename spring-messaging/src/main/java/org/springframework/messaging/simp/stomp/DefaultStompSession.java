@@ -680,7 +680,7 @@ public class DefaultStompSession implements ConnectionHandlingStompSession {
 
 		@Override
 		public void run() {
-			TcpConnection<byte[]> conn = connection;
+			TcpConnection<byte[]> conn = DefaultStompSession.this.connection;
 			if (conn != null) {
 				conn.send(HEARTBEAT).addCallback(
 						new ListenableFutureCallback<Void>() {
@@ -699,8 +699,8 @@ public class DefaultStompSession implements ConnectionHandlingStompSession {
 
 		@Override
 		public void run() {
-			closing = true;
-			String error = "Server has gone quiet. Closing connection in session id=" + sessionId + ".";
+			DefaultStompSession.this.closing = true;
+			String error = "Server has gone quiet. Closing connection in session id=" + DefaultStompSession.this.sessionId + ".";
 			if (logger.isDebugEnabled()) {
 				logger.debug(error);
 			}

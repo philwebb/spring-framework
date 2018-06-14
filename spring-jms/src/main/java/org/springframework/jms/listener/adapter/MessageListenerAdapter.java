@@ -224,7 +224,7 @@ public class MessageListenerAdapter extends AbstractAdaptableMessageListener imp
 			handleResult(result, message, session);
 		}
 		else {
-			logger.trace("No result object given - no result to handle");
+			this.logger.trace("No result object given - no result to handle");
 		}
 	}
 

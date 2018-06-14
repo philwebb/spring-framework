@@ -57,7 +57,7 @@ public class JmsListenerEndpointRegistrar implements BeanFactoryAware, Initializ
 
 	private boolean startImmediately;
 
-	private Object mutex = endpointDescriptors;
+	private Object mutex = this.endpointDescriptors;
 
 
 	/**

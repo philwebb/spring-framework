@@ -275,7 +275,7 @@ public class SimpleAsyncTaskExecutor extends CustomizableThreadCreator
 				this.target.run();
 			}
 			finally {
-				concurrencyThrottle.afterAccess();
+				SimpleAsyncTaskExecutor.this.concurrencyThrottle.afterAccess();
 			}
 		}
 	}

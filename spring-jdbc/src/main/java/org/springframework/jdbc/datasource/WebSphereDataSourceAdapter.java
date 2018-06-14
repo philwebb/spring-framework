@@ -136,8 +136,8 @@ public class WebSphereDataSourceAdapter extends IsolationLevelDataSourceAdapter 
 		// Create JDBCConnectionSpec using current isolation level value and read-only flag.
 		Object connSpec = createConnectionSpec(
 				getCurrentIsolationLevel(), getCurrentReadOnlyFlag(), username, password);
-		if (logger.isDebugEnabled()) {
-			logger.debug("Obtaining JDBC Connection from WebSphere DataSource [" +
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Obtaining JDBC Connection from WebSphere DataSource [" +
 					getTargetDataSource() + "], using ConnectionSpec [" + connSpec + "]");
 		}
 		// Create Connection through invoking WSDataSource.getConnection(JDBCConnectionSpec)

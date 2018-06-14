@@ -349,10 +349,10 @@ public class SimpleBrokerMessageHandler extends AbstractBrokerMessageHandler {
 	}
 
 	private void logMessage(Message<?> message) {
-		if (logger.isDebugEnabled()) {
+		if (this.logger.isDebugEnabled()) {
 			SimpMessageHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, SimpMessageHeaderAccessor.class);
 			accessor = (accessor != null ? accessor : SimpMessageHeaderAccessor.wrap(message));
-			logger.debug("Processing " + accessor.getShortLogMessage(message.getPayload()));
+			this.logger.debug("Processing " + accessor.getShortLogMessage(message.getPayload()));
 		}
 	}
 
@@ -380,8 +380,8 @@ public class SimpleBrokerMessageHandler extends AbstractBrokerMessageHandler {
 
 	protected void sendMessageToSubscribers(@Nullable String destination, Message<?> message) {
 		MultiValueMap<String,String> subscriptions = this.subscriptionRegistry.findSubscriptions(message);
-		if (!subscriptions.isEmpty() && logger.isDebugEnabled()) {
-			logger.debug("Broadcasting to " + subscriptions.size() + " sessions.");
+		if (!subscriptions.isEmpty() && this.logger.isDebugEnabled()) {
+			this.logger.debug("Broadcasting to " + subscriptions.size() + " sessions.");
 		}
 		long now = System.currentTimeMillis();
 		subscriptions.forEach((sessionId, subscriptionIds) -> {
@@ -397,8 +397,8 @@ public class SimpleBrokerMessageHandler extends AbstractBrokerMessageHandler {
 					getClientOutboundChannel().send(reply);
 				}
 				catch (Throwable ex) {
-					if (logger.isErrorEnabled()) {
-						logger.error("Failed to send " + message, ex);
+					if (this.logger.isErrorEnabled()) {
+						this.logger.error("Failed to send " + message, ex);
 					}
 				}
 				finally {
@@ -493,7 +493,7 @@ public class SimpleBrokerMessageHandler extends AbstractBrokerMessageHandler {
 		@Override
 		public void run() {
 			long now = System.currentTimeMillis();
-			for (SessionInfo info : sessions.values()) {
+			for (SessionInfo info : SimpleBrokerMessageHandler.this.sessions.values()) {
 				if (info.getReadInterval() > 0 && (now - info.getLastReadTime()) > info.getReadInterval()) {
 					handleDisconnect(info.getSessionId(), info.getUser(), null);
 				}

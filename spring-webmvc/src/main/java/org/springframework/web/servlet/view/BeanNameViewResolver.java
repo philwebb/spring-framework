@@ -81,8 +81,8 @@ public class BeanNameViewResolver extends WebApplicationObjectSupport implements
 			return null;
 		}
 		if (!context.isTypeMatch(viewName, View.class)) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("Found bean named '" + viewName + "' but it does not implement View");
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Found bean named '" + viewName + "' but it does not implement View");
 			}
 			// Since we're looking into the general ApplicationContext here,
 			// let's accept this as a non-match and allow for chaining as well...

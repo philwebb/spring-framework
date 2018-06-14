@@ -156,7 +156,7 @@ public abstract class PropertySource<T> {
 	 */
 	@Override
 	public String toString() {
-		if (logger.isDebugEnabled()) {
+		if (this.logger.isDebugEnabled()) {
 			return getClass().getSimpleName() + "@" + System.identityHashCode(this) +
 					" {name='" + this.name + "', properties=" + this.source + "}";
 		}

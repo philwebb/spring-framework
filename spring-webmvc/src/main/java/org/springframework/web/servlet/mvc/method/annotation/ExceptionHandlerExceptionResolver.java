@@ -287,14 +287,14 @@ public class ExceptionHandlerExceptionResolver extends AbstractHandlerMethodExce
 			}
 		}
 
-		if (logger.isDebugEnabled()) {
+		if (this.logger.isDebugEnabled()) {
 			int handlerSize = this.exceptionHandlerAdviceCache.size();
 			int adviceSize = this.responseBodyAdvice.size();
 			if (handlerSize == 0 && adviceSize == 0) {
-				logger.debug("ControllerAdvice beans: none");
+				this.logger.debug("ControllerAdvice beans: none");
 			}
 			else {
-				logger.debug("ControllerAdvice beans: " +
+				this.logger.debug("ControllerAdvice beans: " +
 						handlerSize + " @ExceptionHandler, " + adviceSize + " ResponseBodyAdvice");
 			}
 		}
@@ -394,8 +394,8 @@ public class ExceptionHandlerExceptionResolver extends AbstractHandlerMethodExce
 		ModelAndViewContainer mavContainer = new ModelAndViewContainer();
 
 		try {
-			if (logger.isDebugEnabled()) {
-				logger.debug("Using @ExceptionHandler " + exceptionHandlerMethod);
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Using @ExceptionHandler " + exceptionHandlerMethod);
 			}
 			Throwable cause = exception.getCause();
 			if (cause != null) {
@@ -410,8 +410,8 @@ public class ExceptionHandlerExceptionResolver extends AbstractHandlerMethodExce
 		catch (Throwable invocationEx) {
 			// Any other than the original exception is unintended here,
 			// probably an accident (e.g. failed assertion or the like).
-			if (invocationEx != exception && logger.isWarnEnabled()) {
-				logger.warn("Failure in @ExceptionHandler " + exceptionHandlerMethod, invocationEx);
+			if (invocationEx != exception && this.logger.isWarnEnabled()) {
+				this.logger.warn("Failure in @ExceptionHandler " + exceptionHandlerMethod, invocationEx);
 			}
 			// Continue with default processing of the original exception...
 			return null;

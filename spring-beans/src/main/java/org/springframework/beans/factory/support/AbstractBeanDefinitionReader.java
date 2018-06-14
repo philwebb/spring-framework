@@ -226,8 +226,8 @@ public abstract class AbstractBeanDefinitionReader implements EnvironmentCapable
 						actualResources.add(resource);
 					}
 				}
-				if (logger.isDebugEnabled()) {
-					logger.debug("Loaded " + loadCount + " bean definitions from location pattern [" + location + "]");
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Loaded " + loadCount + " bean definitions from location pattern [" + location + "]");
 				}
 				return loadCount;
 			}
@@ -243,8 +243,8 @@ public abstract class AbstractBeanDefinitionReader implements EnvironmentCapable
 			if (actualResources != null) {
 				actualResources.add(resource);
 			}
-			if (logger.isDebugEnabled()) {
-				logger.debug("Loaded " + loadCount + " bean definitions from location [" + location + "]");
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Loaded " + loadCount + " bean definitions from location [" + location + "]");
 			}
 			return loadCount;
 		}

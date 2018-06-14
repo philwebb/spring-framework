@@ -79,8 +79,8 @@ public abstract class ModuleVisitor {
      * @param mainClass the main class of the current module.
      */
     public void visitMainClass(String mainClass) {
-        if (mv != null) {
-            mv.visitMainClass(mainClass);
+        if (this.mv != null) {
+            this.mv.visitMainClass(mainClass);
         }
     }
     
@@ -90,8 +90,8 @@ public abstract class ModuleVisitor {
      * @param packaze name of a concealed package
      */
     public void visitPackage(String packaze) {
-        if (mv != null) {
-            mv.visitPackage(packaze);
+        if (this.mv != null) {
+            this.mv.visitPackage(packaze);
         }
     }
     
@@ -105,8 +105,8 @@ public abstract class ModuleVisitor {
      * @param version the module version at compile time or null.
      */
     public void visitRequire(String module, int access, String version) {
-        if (mv != null) {
-            mv.visitRequire(module, access, version);
+        if (this.mv != null) {
+            this.mv.visitRequire(module, access, version);
         }
     }
     
@@ -122,8 +122,8 @@ public abstract class ModuleVisitor {
      *        <tt>null</tt>.
      */
     public void visitExport(String packaze, int access, String... modules) {
-        if (mv != null) {
-            mv.visitExport(packaze, access, modules);
+        if (this.mv != null) {
+            this.mv.visitExport(packaze, access, modules);
         }
     }
     
@@ -139,8 +139,8 @@ public abstract class ModuleVisitor {
      *        <tt>null</tt>.
      */
     public void visitOpen(String packaze, int access, String... modules) {
-        if (mv != null) {
-            mv.visitOpen(packaze, access, modules);
+        if (this.mv != null) {
+            this.mv.visitOpen(packaze, access, modules);
         }
     }
     
@@ -152,8 +152,8 @@ public abstract class ModuleVisitor {
      * @param service the internal name of the service.
      */
     public void visitUse(String service) {
-        if (mv != null) {
-            mv.visitUse(service);
+        if (this.mv != null) {
+            this.mv.visitUse(service);
         }
     }
     
@@ -165,14 +165,14 @@ public abstract class ModuleVisitor {
      *        of the service (there is at least one provider).
      */
     public void visitProvide(String service, String... providers) {
-        if (mv != null) {
-            mv.visitProvide(service, providers);
+        if (this.mv != null) {
+            this.mv.visitProvide(service, providers);
         }
     }
     
     public void visitEnd() {
-        if (mv != null) {
-            mv.visitEnd();
+        if (this.mv != null) {
+            this.mv.visitEnd();
         }
     }
 }

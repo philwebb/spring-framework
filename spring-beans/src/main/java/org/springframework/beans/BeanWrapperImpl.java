@@ -283,7 +283,7 @@ public class BeanWrapperImpl extends AbstractNestablePropertyAccessor implements
 		@Override
 		@Nullable
 		public TypeDescriptor nested(int level) {
-			return TypeDescriptor.nested(property(pd), level);
+			return TypeDescriptor.nested(property(this.pd), level);
 		}
 
 		@Override
@@ -297,7 +297,7 @@ public class BeanWrapperImpl extends AbstractNestablePropertyAccessor implements
 				});
 				try {
 					return AccessController.doPrivileged((PrivilegedExceptionAction<Object>) () ->
-							readMethod.invoke(getWrappedInstance(), (Object[]) null), acc);
+							readMethod.invoke(getWrappedInstance(), (Object[]) null), BeanWrapperImpl.this.acc);
 				}
 				catch (PrivilegedActionException pae) {
 					throw pae.getException();
@@ -321,7 +321,7 @@ public class BeanWrapperImpl extends AbstractNestablePropertyAccessor implements
 				});
 				try {
 					AccessController.doPrivileged((PrivilegedExceptionAction<Object>) () ->
-							writeMethod.invoke(getWrappedInstance(), value), acc);
+							writeMethod.invoke(getWrappedInstance(), value), BeanWrapperImpl.this.acc);
 				}
 				catch (PrivilegedActionException ex) {
 					throw ex.getException();

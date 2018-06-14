@@ -133,13 +133,13 @@ final class Item {
      */
     Item(final int index, final Item i) {
         this.index = index;
-        type = i.type;
-        intVal = i.intVal;
-        longVal = i.longVal;
-        strVal1 = i.strVal1;
-        strVal2 = i.strVal2;
-        strVal3 = i.strVal3;
-        hashCode = i.hashCode;
+        this.type = i.type;
+        this.intVal = i.intVal;
+        this.longVal = i.longVal;
+        this.strVal1 = i.strVal1;
+        this.strVal2 = i.strVal2;
+        this.strVal3 = i.strVal3;
+        this.hashCode = i.hashCode;
     }
 
     /**
@@ -151,7 +151,7 @@ final class Item {
     void set(final int intVal) {
         this.type = ClassWriter.INT;
         this.intVal = intVal;
-        this.hashCode = 0x7FFFFFFF & (type + intVal);
+        this.hashCode = 0x7FFFFFFF & (this.type + intVal);
     }
 
     /**
@@ -163,7 +163,7 @@ final class Item {
     void set(final long longVal) {
         this.type = ClassWriter.LONG;
         this.longVal = longVal;
-        this.hashCode = 0x7FFFFFFF & (type + (int) longVal);
+        this.hashCode = 0x7FFFFFFF & (this.type + (int) longVal);
     }
 
     /**
@@ -175,7 +175,7 @@ final class Item {
     void set(final float floatVal) {
         this.type = ClassWriter.FLOAT;
         this.intVal = Float.floatToRawIntBits(floatVal);
-        this.hashCode = 0x7FFFFFFF & (type + (int) floatVal);
+        this.hashCode = 0x7FFFFFFF & (this.type + (int) floatVal);
     }
 
     /**
@@ -187,7 +187,7 @@ final class Item {
     void set(final double doubleVal) {
         this.type = ClassWriter.DOUBLE;
         this.longVal = Double.doubleToRawLongBits(doubleVal);
-        this.hashCode = 0x7FFFFFFF & (type + (int) doubleVal);
+        this.hashCode = 0x7FFFFFFF & (this.type + (int) doubleVal);
     }
 
     /**
@@ -218,10 +218,10 @@ final class Item {
         case ClassWriter.MODULE:
         case ClassWriter.PACKAGE:
         case ClassWriter.TYPE_NORMAL:
-            hashCode = 0x7FFFFFFF & (type + strVal1.hashCode());
+            this.hashCode = 0x7FFFFFFF & (type + strVal1.hashCode());
             return;
         case ClassWriter.NAME_TYPE: {
-            hashCode = 0x7FFFFFFF & (type + strVal1.hashCode()
+            this.hashCode = 0x7FFFFFFF & (type + strVal1.hashCode()
                     * strVal2.hashCode());
             return;
         }
@@ -230,7 +230,7 @@ final class Item {
         // ClassWriter.IMETH:
         // ClassWriter.HANDLE_BASE + 1..9
         default:
-            hashCode = 0x7FFFFFFF & (type + strVal1.hashCode()
+            this.hashCode = 0x7FFFFFFF & (type + strVal1.hashCode()
                     * strVal2.hashCode() * strVal3.hashCode());
         }
     }
@@ -251,7 +251,7 @@ final class Item {
         this.strVal1 = name;
         this.strVal2 = desc;
         this.hashCode = 0x7FFFFFFF & (ClassWriter.INDY + bsmIndex
-                * strVal1.hashCode() * strVal2.hashCode());
+                * this.strVal1.hashCode() * this.strVal2.hashCode());
     }
 
     /**
@@ -281,7 +281,7 @@ final class Item {
      *         <tt>false</tt> otherwise.
      */
     boolean isEqualTo(final Item i) {
-        switch (type) {
+        switch (this.type) {
         case ClassWriter.UTF8:
         case ClassWriter.STR:
         case ClassWriter.CLASS:
@@ -289,29 +289,29 @@ final class Item {
         case ClassWriter.PACKAGE:
         case ClassWriter.MTYPE:
         case ClassWriter.TYPE_NORMAL:
-            return i.strVal1.equals(strVal1);
+            return i.strVal1.equals(this.strVal1);
         case ClassWriter.TYPE_MERGED:
         case ClassWriter.LONG:
         case ClassWriter.DOUBLE:
-            return i.longVal == longVal;
+            return i.longVal == this.longVal;
         case ClassWriter.INT:
         case ClassWriter.FLOAT:
-            return i.intVal == intVal;
+            return i.intVal == this.intVal;
         case ClassWriter.TYPE_UNINIT:
-            return i.intVal == intVal && i.strVal1.equals(strVal1);
+            return i.intVal == this.intVal && i.strVal1.equals(this.strVal1);
         case ClassWriter.NAME_TYPE:
-            return i.strVal1.equals(strVal1) && i.strVal2.equals(strVal2);
+            return i.strVal1.equals(this.strVal1) && i.strVal2.equals(this.strVal2);
         case ClassWriter.INDY: {
-            return i.longVal == longVal && i.strVal1.equals(strVal1)
-                    && i.strVal2.equals(strVal2);
+            return i.longVal == this.longVal && i.strVal1.equals(this.strVal1)
+                    && i.strVal2.equals(this.strVal2);
         }
         // case ClassWriter.FIELD:
         // case ClassWriter.METH:
         // case ClassWriter.IMETH:
         // case ClassWriter.HANDLE_BASE + 1..9
         default:
-            return i.strVal1.equals(strVal1) && i.strVal2.equals(strVal2)
-                    && i.strVal3.equals(strVal3);
+            return i.strVal1.equals(this.strVal1) && i.strVal2.equals(this.strVal2)
+                    && i.strVal3.equals(this.strVal3);
         }
     }
 

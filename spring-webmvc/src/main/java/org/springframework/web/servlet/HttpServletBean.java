@@ -146,8 +146,8 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 	 */
 	@Override
 	public final void init() throws ServletException {
-		if (logger.isTraceEnabled()) {
-			logger.trace("Initializing servlet '" + getServletName() + "'");
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Initializing servlet '" + getServletName() + "'");
 		}
 
 		// Set bean properties from init parameters.
@@ -161,8 +161,8 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 				bw.setPropertyValues(pvs, true);
 			}
 			catch (BeansException ex) {
-				if (logger.isErrorEnabled()) {
-					logger.error("Failed to set bean properties on servlet '" + getServletName() + "'", ex);
+				if (this.logger.isErrorEnabled()) {
+					this.logger.error("Failed to set bean properties on servlet '" + getServletName() + "'", ex);
 				}
 				throw ex;
 			}
@@ -171,8 +171,8 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 		// Let subclasses do whatever initialization they like.
 		initServletBean();
 
-		if (logger.isTraceEnabled()) {
-			logger.trace("Servlet '" + getServletName() + "' configured successfully");
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Servlet '" + getServletName() + "' configured successfully");
 		}
 	}
 

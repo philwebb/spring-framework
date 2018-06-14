@@ -157,7 +157,7 @@ public class PathResourceResolver extends AbstractResourceResolver {
 				}
 			}
 			catch (IOException ex) {
-				logger.trace("Failed to get resource, skipping location: " + location, ex);
+				this.logger.trace("Failed to get resource, skipping location: " + location, ex);
 			}
 		}
 		return null;
@@ -178,9 +178,9 @@ public class PathResourceResolver extends AbstractResourceResolver {
 			if (checkResource(resource, location)) {
 				return resource;
 			}
-			else if (logger.isWarnEnabled()) {
+			else if (this.logger.isWarnEnabled()) {
 				Resource[] allowedLocations = getAllowedLocations();
-				logger.warn("Resource path \"" + resourcePath + "\" was successfully resolved " +
+				this.logger.warn("Resource path \"" + resourcePath + "\" was successfully resolved " +
 						"but resource \"" +	resource.getURL() + "\" is neither under the " +
 						"current location \"" + location.getURL() + "\" nor under any of the " +
 						"allowed locations " + (allowedLocations != null ? Arrays.asList(allowedLocations) : "[]"));
@@ -276,8 +276,8 @@ public class PathResourceResolver extends AbstractResourceResolver {
 			try {
 				String decodedPath = URLDecoder.decode(resourcePath, "UTF-8");
 				if (decodedPath.contains("../") || decodedPath.contains("..\\")) {
-					if (logger.isTraceEnabled()) {
-						logger.trace("Resolved resource path contains encoded \"../\" or \"..\\\": " + resourcePath);
+					if (this.logger.isTraceEnabled()) {
+						this.logger.trace("Resolved resource path contains encoded \"../\" or \"..\\\": " + resourcePath);
 					}
 					return true;
 				}

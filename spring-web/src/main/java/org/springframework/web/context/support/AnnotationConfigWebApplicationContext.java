@@ -209,16 +209,16 @@ public class AnnotationConfigWebApplicationContext extends AbstractRefreshableWe
 		}
 
 		if (!this.annotatedClasses.isEmpty()) {
-			if (logger.isInfoEnabled()) {
-				logger.info("Registering annotated classes: [" +
+			if (this.logger.isInfoEnabled()) {
+				this.logger.info("Registering annotated classes: [" +
 						StringUtils.collectionToCommaDelimitedString(this.annotatedClasses) + "]");
 			}
 			reader.register(ClassUtils.toClassArray(this.annotatedClasses));
 		}
 
 		if (!this.basePackages.isEmpty()) {
-			if (logger.isInfoEnabled()) {
-				logger.info("Scanning base packages: [" +
+			if (this.logger.isInfoEnabled()) {
+				this.logger.info("Scanning base packages: [" +
 						StringUtils.collectionToCommaDelimitedString(this.basePackages) + "]");
 			}
 			scanner.scan(StringUtils.toStringArray(this.basePackages));
@@ -229,23 +229,23 @@ public class AnnotationConfigWebApplicationContext extends AbstractRefreshableWe
 			for (String configLocation : configLocations) {
 				try {
 					Class<?> clazz = ClassUtils.forName(configLocation, getClassLoader());
-					if (logger.isInfoEnabled()) {
-						logger.info("Successfully resolved class for [" + configLocation + "]");
+					if (this.logger.isInfoEnabled()) {
+						this.logger.info("Successfully resolved class for [" + configLocation + "]");
 					}
 					reader.register(clazz);
 				}
 				catch (ClassNotFoundException ex) {
-					if (logger.isDebugEnabled()) {
-						logger.debug("Could not load class for config location [" + configLocation +
+					if (this.logger.isDebugEnabled()) {
+						this.logger.debug("Could not load class for config location [" + configLocation +
 								"] - trying package scan. " + ex);
 					}
 					int count = scanner.scan(configLocation);
-					if (logger.isInfoEnabled()) {
+					if (this.logger.isInfoEnabled()) {
 						if (count == 0) {
-							logger.info("No annotated classes found for specified class/package [" + configLocation + "]");
+							this.logger.info("No annotated classes found for specified class/package [" + configLocation + "]");
 						}
 						else {
-							logger.info("Found " + count + " annotated classes in package [" + configLocation + "]");
+							this.logger.info("Found " + count + " annotated classes in package [" + configLocation + "]");
 						}
 					}
 				}

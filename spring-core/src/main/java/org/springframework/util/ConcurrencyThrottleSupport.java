@@ -108,7 +108,7 @@ public abstract class ConcurrencyThrottleSupport implements Serializable {
 					"Currently no invocations allowed - concurrency limit set to NO_CONCURRENCY");
 		}
 		if (this.concurrencyLimit > 0) {
-			boolean debug = logger.isDebugEnabled();
+			boolean debug = this.logger.isDebugEnabled();
 			synchronized (this.monitor) {
 				boolean interrupted = false;
 				while (this.concurrencyCount >= this.concurrencyLimit) {
@@ -117,7 +117,7 @@ public abstract class ConcurrencyThrottleSupport implements Serializable {
 								"but concurrency limit still does not allow for entering");
 					}
 					if (debug) {
-						logger.debug("Concurrency count " + this.concurrencyCount +
+						this.logger.debug("Concurrency count " + this.concurrencyCount +
 								" has reached limit " + this.concurrencyLimit + " - blocking");
 					}
 					try {
@@ -130,7 +130,7 @@ public abstract class ConcurrencyThrottleSupport implements Serializable {
 					}
 				}
 				if (debug) {
-					logger.debug("Entering throttle at concurrency count " + this.concurrencyCount);
+					this.logger.debug("Entering throttle at concurrency count " + this.concurrencyCount);
 				}
 				this.concurrencyCount++;
 			}
@@ -145,8 +145,8 @@ public abstract class ConcurrencyThrottleSupport implements Serializable {
 		if (this.concurrencyLimit >= 0) {
 			synchronized (this.monitor) {
 				this.concurrencyCount--;
-				if (logger.isDebugEnabled()) {
-					logger.debug("Returning from throttle at concurrency count " + this.concurrencyCount);
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Returning from throttle at concurrency count " + this.concurrencyCount);
 				}
 				this.monitor.notify();
 			}

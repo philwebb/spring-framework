@@ -205,11 +205,11 @@ abstract public class KeyFactory {
 		}
 
 		protected ClassLoader getDefaultClassLoader() {
-			return keyInterface.getClassLoader();
+			return this.keyInterface.getClassLoader();
 		}
 
 		protected ProtectionDomain getProtectionDomain() {
-			return ReflectUtils.getProtectionDomain(keyInterface);
+			return ReflectUtils.getProtectionDomain(this.keyInterface);
 		}
 
 		/**
@@ -217,15 +217,15 @@ abstract public class KeyFactory {
 		 */
 		@Deprecated
 		public void setCustomizer(Customizer customizer) {
-			customizers = CustomizerRegistry.singleton(customizer);
+			this.customizers = CustomizerRegistry.singleton(customizer);
 		}
 
 		public void addCustomizer(KeyFactoryCustomizer customizer) {
-			customizers.add(customizer);
+			this.customizers.add(customizer);
 		}
 
 		public <T> List<T> getCustomizers(Class<T> klass) {
-			return customizers.get(klass);
+			return this.customizers.get(klass);
 		}
 
 		public void setInterface(Class keyInterface) {
@@ -233,8 +233,8 @@ abstract public class KeyFactory {
 		}
 
 		public KeyFactory create() {
-			setNamePrefix(keyInterface.getName());
-			return (KeyFactory) super.create(keyInterface.getName());
+			setNamePrefix(this.keyInterface.getName());
+			return (KeyFactory) super.create(this.keyInterface.getName());
 		}
 
 		public void setHashConstant(int constant) {
@@ -256,7 +256,7 @@ abstract public class KeyFactory {
 		public void generateClass(ClassVisitor v) {
 			ClassEmitter ce = new ClassEmitter(v);
 
-			Method newInstance = ReflectUtils.findNewInstance(keyInterface);
+			Method newInstance = ReflectUtils.findNewInstance(this.keyInterface);
 			if (!newInstance.getReturnType().equals(Object.class)) {
 				throw new IllegalArgumentException("newInstance method must return Object");
 			}
@@ -266,7 +266,7 @@ abstract public class KeyFactory {
 					Constants.ACC_PUBLIC,
 					getClassName(),
 					KEY_FACTORY,
-					new Type[]{Type.getType(keyInterface)},
+					new Type[]{Type.getType(this.keyInterface)},
 					Constants.SOURCE_FILE);
 			EmitUtils.null_constructor(ce);
 			EmitUtils.factory_method(ce, ReflectUtils.getSignature(newInstance));
@@ -302,13 +302,13 @@ abstract public class KeyFactory {
 
 			// hash code
 			e = ce.begin_method(Constants.ACC_PUBLIC, HASH_CODE, null);
-			int hc = (constant != 0) ? constant : PRIMES[(Math.abs(seed) % PRIMES.length)];
-			int hm = (multiplier != 0) ? multiplier : PRIMES[(Math.abs(seed * 13) % PRIMES.length)];
+			int hc = (this.constant != 0) ? this.constant : PRIMES[(Math.abs(seed) % PRIMES.length)];
+			int hm = (this.multiplier != 0) ? this.multiplier : PRIMES[(Math.abs(seed * 13) % PRIMES.length)];
 			e.push(hc);
 			for (int i = 0; i < parameterTypes.length; i++) {
 				e.load_this();
 				e.getfield(getFieldName(i));
-				EmitUtils.hash_code(e, parameterTypes[i], hm, customizers);
+				EmitUtils.hash_code(e, parameterTypes[i], hm, this.customizers);
 			}
 			e.return_value();
 			e.end_method();
@@ -325,7 +325,7 @@ abstract public class KeyFactory {
 				e.load_arg(0);
 				e.checkcast_this();
 				e.getfield(getFieldName(i));
-				EmitUtils.not_equals(e, parameterTypes[i], fail, customizers);
+				EmitUtils.not_equals(e, parameterTypes[i], fail, this.customizers);
 			}
 			e.push(1);
 			e.return_value();
@@ -346,7 +346,7 @@ abstract public class KeyFactory {
 				}
 				e.load_this();
 				e.getfield(getFieldName(i));
-				EmitUtils.append_string(e, parameterTypes[i], EmitUtils.DEFAULT_DELIMITERS, customizers);
+				EmitUtils.append_string(e, parameterTypes[i], EmitUtils.DEFAULT_DELIMITERS, this.customizers);
 			}
 			e.invoke_virtual(Constants.TYPE_STRING_BUFFER, TO_STRING);
 			e.return_value();

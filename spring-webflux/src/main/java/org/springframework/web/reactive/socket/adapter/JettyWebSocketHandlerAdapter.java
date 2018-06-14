@@ -73,7 +73,7 @@ public class JettyWebSocketHandlerAdapter {
 
 	@OnWebSocketConnect
 	public void onWebSocketConnect(Session session) {
-		this.delegateSession = sessionFactory.apply(session);
+		this.delegateSession = this.sessionFactory.apply(session);
 		this.delegateHandler.handle(this.delegateSession).subscribe(this.delegateSession);
 	}
 
@@ -90,7 +90,7 @@ public class JettyWebSocketHandlerAdapter {
 		if (this.delegateSession != null) {
 			ByteBuffer buffer = ByteBuffer.wrap(message, offset, length);
 			WebSocketMessage webSocketMessage = toMessage(Type.BINARY, buffer);
-			delegateSession.handleMessage(webSocketMessage.getType(), webSocketMessage);
+			this.delegateSession.handleMessage(webSocketMessage.getType(), webSocketMessage);
 		}
 	}
 
@@ -100,7 +100,7 @@ public class JettyWebSocketHandlerAdapter {
 			if (OpCode.PONG == frame.getOpCode()) {
 				ByteBuffer buffer = (frame.getPayload() != null ? frame.getPayload() : EMPTY_PAYLOAD);
 				WebSocketMessage webSocketMessage = toMessage(Type.PONG, buffer);
-				delegateSession.handleMessage(webSocketMessage.getType(), webSocketMessage);
+				this.delegateSession.handleMessage(webSocketMessage.getType(), webSocketMessage);
 			}
 		}
 	}

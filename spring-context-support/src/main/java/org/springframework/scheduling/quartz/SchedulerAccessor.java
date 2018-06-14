@@ -253,7 +253,7 @@ public abstract class SchedulerAccessor implements ResourceLoaderAware {
 					this.transactionManager.rollback(transactionStatus);
 				}
 				catch (TransactionException tex) {
-					logger.error("Job registration exception overridden by rollback exception", ex);
+					this.logger.error("Job registration exception overridden by rollback exception", ex);
 					throw tex;
 				}
 			}
@@ -324,8 +324,8 @@ public abstract class SchedulerAccessor implements ResourceLoaderAware {
 				}
 			}
 			catch (ObjectAlreadyExistsException ex) {
-				if (logger.isDebugEnabled()) {
-					logger.debug("Unexpectedly found existing trigger, assumably due to cluster race condition: " +
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Unexpectedly found existing trigger, assumably due to cluster race condition: " +
 							ex.getMessage() + " - can safely be ignored");
 				}
 				if (this.overwriteExistingJobs) {

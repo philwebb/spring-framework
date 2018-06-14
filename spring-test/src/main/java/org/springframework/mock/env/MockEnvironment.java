@@ -37,14 +37,14 @@ public class MockEnvironment extends AbstractEnvironment {
 	 * Create a new {@code MockEnvironment} with a single {@link MockPropertySource}.
 	 */
 	public MockEnvironment() {
-		getPropertySources().addLast(propertySource);
+		getPropertySources().addLast(this.propertySource);
 	}
 
 	/**
 	 * Set a property on the underlying {@link MockPropertySource} for this environment.
 	 */
 	public void setProperty(String key, String value) {
-		propertySource.setProperty(key, value);
+		this.propertySource.setProperty(key, value);
 	}
 
 	/**

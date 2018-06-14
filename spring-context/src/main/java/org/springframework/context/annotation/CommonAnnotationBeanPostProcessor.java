@@ -369,7 +369,7 @@ public class CommonAnnotationBeanPostProcessor extends InitDestroyAnnotationBean
 					if (Modifier.isStatic(field.getModifiers())) {
 						throw new IllegalStateException("@Resource annotation is not supported on static fields");
 					}
-					if (!ignoredResourceTypes.contains(field.getType().getName())) {
+					if (!this.ignoredResourceTypes.contains(field.getType().getName())) {
 						currElements.add(new ResourceElement(field, field, null));
 					}
 				}
@@ -409,7 +409,7 @@ public class CommonAnnotationBeanPostProcessor extends InitDestroyAnnotationBean
 						if (paramTypes.length != 1) {
 							throw new IllegalStateException("@Resource annotation requires a single-arg method: " + method);
 						}
-						if (!ignoredResourceTypes.contains(paramTypes[0].getName())) {
+						if (!this.ignoredResourceTypes.contains(paramTypes[0].getName())) {
 							PropertyDescriptor pd = BeanUtils.findPropertyForMethod(bridgedMethod, clazz);
 							currElements.add(new ResourceElement(method, bridgedMethod, pd));
 						}
@@ -594,8 +594,8 @@ public class CommonAnnotationBeanPostProcessor extends InitDestroyAnnotationBean
 					resourceName = Introspector.decapitalize(resourceName.substring(3));
 				}
 			}
-			else if (embeddedValueResolver != null) {
-				resourceName = embeddedValueResolver.resolveStringValue(resourceName);
+			else if (CommonAnnotationBeanPostProcessor.this.embeddedValueResolver != null) {
+				resourceName = CommonAnnotationBeanPostProcessor.this.embeddedValueResolver.resolveStringValue(resourceName);
 			}
 			if (Object.class != resourceType) {
 				checkResourceType(resourceType);
@@ -742,11 +742,11 @@ public class CommonAnnotationBeanPostProcessor extends InitDestroyAnnotationBean
 		@Override
 		protected Object getResourceToInject(Object target, @Nullable String requestingBeanName) {
 			if (StringUtils.hasLength(this.beanName)) {
-				if (beanFactory != null && beanFactory.containsBean(this.beanName)) {
+				if (CommonAnnotationBeanPostProcessor.this.beanFactory != null && CommonAnnotationBeanPostProcessor.this.beanFactory.containsBean(this.beanName)) {
 					// Local match found for explicitly specified local bean name.
-					Object bean = beanFactory.getBean(this.beanName, this.lookupType);
-					if (requestingBeanName != null && beanFactory instanceof ConfigurableBeanFactory) {
-						((ConfigurableBeanFactory) beanFactory).registerDependentBean(this.beanName, requestingBeanName);
+					Object bean = CommonAnnotationBeanPostProcessor.this.beanFactory.getBean(this.beanName, this.lookupType);
+					if (requestingBeanName != null && CommonAnnotationBeanPostProcessor.this.beanFactory instanceof ConfigurableBeanFactory) {
+						((ConfigurableBeanFactory) CommonAnnotationBeanPostProcessor.this.beanFactory).registerDependentBean(this.beanName, requestingBeanName);
 					}
 					return bean;
 				}

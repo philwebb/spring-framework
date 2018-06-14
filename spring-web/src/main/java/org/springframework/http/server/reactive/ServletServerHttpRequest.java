@@ -203,8 +203,8 @@ class ServletServerHttpRequest extends AbstractServerHttpRequest {
 	@Nullable
 	DataBuffer readFromInputStream() throws IOException {
 		int read = this.request.getInputStream().read(this.buffer);
-		if (logger.isTraceEnabled()) {
-			logger.trace("InputStream read returned " + read + (read != -1 ? " bytes" : ""));
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("InputStream read returned " + read + (read != -1 ? " bytes" : ""));
 		}
 
 		if (read > 0) {
@@ -236,17 +236,17 @@ class ServletServerHttpRequest extends AbstractServerHttpRequest {
 		public void onTimeout(AsyncEvent event) {
 			Throwable ex = event.getThrowable();
 			ex = ex != null ? ex : new IllegalStateException("Async operation timeout.");
-			bodyPublisher.onError(ex);
+			ServletServerHttpRequest.this.bodyPublisher.onError(ex);
 		}
 
 		@Override
 		public void onError(AsyncEvent event) {
-			bodyPublisher.onError(event.getThrowable());
+			ServletServerHttpRequest.this.bodyPublisher.onError(event.getThrowable());
 		}
 
 		@Override
 		public void onComplete(AsyncEvent event) {
-			bodyPublisher.onAllDataRead();
+			ServletServerHttpRequest.this.bodyPublisher.onAllDataRead();
 		}
 	}
 

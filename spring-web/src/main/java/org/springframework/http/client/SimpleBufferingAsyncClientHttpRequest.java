@@ -79,23 +79,23 @@ final class SimpleBufferingAsyncClientHttpRequest extends AbstractBufferingAsync
 		return this.taskExecutor.submitListenable(new Callable<ClientHttpResponse>() {
 			@Override
 			public ClientHttpResponse call() throws Exception {
-				SimpleBufferingClientHttpRequest.addHeaders(connection, headers);
+				SimpleBufferingClientHttpRequest.addHeaders(SimpleBufferingAsyncClientHttpRequest.this.connection, headers);
 				// JDK <1.8 doesn't support getOutputStream with HTTP DELETE
 				if (getMethod() == HttpMethod.DELETE && bufferedOutput.length == 0) {
-					connection.setDoOutput(false);
+					SimpleBufferingAsyncClientHttpRequest.this.connection.setDoOutput(false);
 				}
-				if (connection.getDoOutput() && outputStreaming) {
-					connection.setFixedLengthStreamingMode(bufferedOutput.length);
+				if (SimpleBufferingAsyncClientHttpRequest.this.connection.getDoOutput() && SimpleBufferingAsyncClientHttpRequest.this.outputStreaming) {
+					SimpleBufferingAsyncClientHttpRequest.this.connection.setFixedLengthStreamingMode(bufferedOutput.length);
 				}
-				connection.connect();
-				if (connection.getDoOutput()) {
-					FileCopyUtils.copy(bufferedOutput, connection.getOutputStream());
+				SimpleBufferingAsyncClientHttpRequest.this.connection.connect();
+				if (SimpleBufferingAsyncClientHttpRequest.this.connection.getDoOutput()) {
+					FileCopyUtils.copy(bufferedOutput, SimpleBufferingAsyncClientHttpRequest.this.connection.getOutputStream());
 				}
 				else {
 					// Immediately trigger the request in a no-output scenario as well
-					connection.getResponseCode();
+					SimpleBufferingAsyncClientHttpRequest.this.connection.getResponseCode();
 				}
-				return new SimpleClientHttpResponse(connection);
+				return new SimpleClientHttpResponse(SimpleBufferingAsyncClientHttpRequest.this.connection);
 			}
 		});
 	}

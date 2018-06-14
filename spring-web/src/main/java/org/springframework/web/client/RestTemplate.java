@@ -330,7 +330,7 @@ public class RestTemplate extends InterceptingHttpAccessor implements RestOperat
 	public <T> T getForObject(String url, Class<T> responseType, Object... uriVariables) throws RestClientException {
 		RequestCallback requestCallback = acceptHeaderRequestCallback(responseType);
 		HttpMessageConverterExtractor<T> responseExtractor =
-				new HttpMessageConverterExtractor<>(responseType, getMessageConverters(), logger);
+				new HttpMessageConverterExtractor<>(responseType, getMessageConverters(), this.logger);
 		return execute(url, HttpMethod.GET, requestCallback, responseExtractor, uriVariables);
 	}
 
@@ -339,7 +339,7 @@ public class RestTemplate extends InterceptingHttpAccessor implements RestOperat
 	public <T> T getForObject(String url, Class<T> responseType, Map<String, ?> uriVariables) throws RestClientException {
 		RequestCallback requestCallback = acceptHeaderRequestCallback(responseType);
 		HttpMessageConverterExtractor<T> responseExtractor =
-				new HttpMessageConverterExtractor<>(responseType, getMessageConverters(), logger);
+				new HttpMessageConverterExtractor<>(responseType, getMessageConverters(), this.logger);
 		return execute(url, HttpMethod.GET, requestCallback, responseExtractor, uriVariables);
 	}
 
@@ -348,7 +348,7 @@ public class RestTemplate extends InterceptingHttpAccessor implements RestOperat
 	public <T> T getForObject(URI url, Class<T> responseType) throws RestClientException {
 		RequestCallback requestCallback = acceptHeaderRequestCallback(responseType);
 		HttpMessageConverterExtractor<T> responseExtractor =
-				new HttpMessageConverterExtractor<>(responseType, getMessageConverters(), logger);
+				new HttpMessageConverterExtractor<>(responseType, getMessageConverters(), this.logger);
 		return execute(url, HttpMethod.GET, requestCallback, responseExtractor);
 	}
 
@@ -433,7 +433,7 @@ public class RestTemplate extends InterceptingHttpAccessor implements RestOperat
 
 		RequestCallback requestCallback = httpEntityCallback(request, responseType);
 		HttpMessageConverterExtractor<T> responseExtractor =
-				new HttpMessageConverterExtractor<>(responseType, getMessageConverters(), logger);
+				new HttpMessageConverterExtractor<>(responseType, getMessageConverters(), this.logger);
 		return execute(url, HttpMethod.POST, requestCallback, responseExtractor, uriVariables);
 	}
 
@@ -444,7 +444,7 @@ public class RestTemplate extends InterceptingHttpAccessor implements RestOperat
 
 		RequestCallback requestCallback = httpEntityCallback(request, responseType);
 		HttpMessageConverterExtractor<T> responseExtractor =
-				new HttpMessageConverterExtractor<>(responseType, getMessageConverters(), logger);
+				new HttpMessageConverterExtractor<>(responseType, getMessageConverters(), this.logger);
 		return execute(url, HttpMethod.POST, requestCallback, responseExtractor, uriVariables);
 	}
 
@@ -521,7 +521,7 @@ public class RestTemplate extends InterceptingHttpAccessor implements RestOperat
 
 		RequestCallback requestCallback = httpEntityCallback(request, responseType);
 		HttpMessageConverterExtractor<T> responseExtractor =
-				new HttpMessageConverterExtractor<>(responseType, getMessageConverters(), logger);
+				new HttpMessageConverterExtractor<>(responseType, getMessageConverters(), this.logger);
 		return execute(url, HttpMethod.PATCH, requestCallback, responseExtractor, uriVariables);
 	}
 
@@ -532,7 +532,7 @@ public class RestTemplate extends InterceptingHttpAccessor implements RestOperat
 
 		RequestCallback requestCallback = httpEntityCallback(request, responseType);
 		HttpMessageConverterExtractor<T> responseExtractor =
-				new HttpMessageConverterExtractor<>(responseType, getMessageConverters(), logger);
+				new HttpMessageConverterExtractor<>(responseType, getMessageConverters(), this.logger);
 		return execute(url, HttpMethod.PATCH, requestCallback, responseExtractor, uriVariables);
 	}
 
@@ -787,9 +787,9 @@ public class RestTemplate extends InterceptingHttpAccessor implements RestOperat
 	protected void handleResponse(URI url, HttpMethod method, ClientHttpResponse response) throws IOException {
 		ResponseErrorHandler errorHandler = getErrorHandler();
 		boolean hasError = errorHandler.hasError(response);
-		if (logger.isDebugEnabled()) {
+		if (this.logger.isDebugEnabled()) {
 			try {
-				logger.debug(method.name() + " request for \"" + url + "\" resulted in " +
+				this.logger.debug(method.name() + " request for \"" + url + "\" resulted in " +
 						response.getRawStatusCode() + " (" + response.getStatusText() + ")" +
 						(hasError ? "; invoking error handler" : ""));
 			}
@@ -872,8 +872,8 @@ public class RestTemplate extends InterceptingHttpAccessor implements RestOperat
 						.distinct()
 						.sorted(MediaType.SPECIFICITY_COMPARATOR)
 						.collect(Collectors.toList());
-				if (logger.isDebugEnabled()) {
-					logger.debug("Setting request Accept header to " + allSupportedMediaTypes);
+				if (RestTemplate.this.logger.isDebugEnabled()) {
+					RestTemplate.this.logger.debug("Setting request Accept header to " + allSupportedMediaTypes);
 				}
 				request.getHeaders().setAccept(allSupportedMediaTypes);
 			}
@@ -958,13 +958,13 @@ public class RestTemplate extends InterceptingHttpAccessor implements RestOperat
 							if (!requestHeaders.isEmpty()) {
 								requestHeaders.forEach((key, values) -> httpHeaders.put(key, new LinkedList<>(values)));
 							}
-							if (logger.isDebugEnabled()) {
+							if (RestTemplate.this.logger.isDebugEnabled()) {
 								if (requestContentType != null) {
-									logger.debug("Writing [" + requestBody + "] as \"" + requestContentType +
+									RestTemplate.this.logger.debug("Writing [" + requestBody + "] as \"" + requestContentType +
 											"\" using [" + messageConverter + "]");
 								}
 								else {
-									logger.debug("Writing [" + requestBody + "] using [" + messageConverter + "]");
+									RestTemplate.this.logger.debug("Writing [" + requestBody + "] using [" + messageConverter + "]");
 								}
 
 							}
@@ -976,13 +976,13 @@ public class RestTemplate extends InterceptingHttpAccessor implements RestOperat
 						if (!requestHeaders.isEmpty()) {
 							requestHeaders.forEach((key, values) -> httpHeaders.put(key, new LinkedList<>(values)));
 						}
-						if (logger.isDebugEnabled()) {
+						if (RestTemplate.this.logger.isDebugEnabled()) {
 							if (requestContentType != null) {
-								logger.debug("Writing [" + requestBody + "] as \"" + requestContentType +
+								RestTemplate.this.logger.debug("Writing [" + requestBody + "] as \"" + requestContentType +
 										"\" using [" + messageConverter + "]");
 							}
 							else {
-								logger.debug("Writing [" + requestBody + "] using [" + messageConverter + "]");
+								RestTemplate.this.logger.debug("Writing [" + requestBody + "] using [" + messageConverter + "]");
 							}
 
 						}
@@ -1012,7 +1012,7 @@ public class RestTemplate extends InterceptingHttpAccessor implements RestOperat
 
 		public ResponseEntityResponseExtractor(@Nullable Type responseType) {
 			if (responseType != null && Void.class != responseType) {
-				this.delegate = new HttpMessageConverterExtractor<>(responseType, getMessageConverters(), logger);
+				this.delegate = new HttpMessageConverterExtractor<>(responseType, getMessageConverters(), RestTemplate.this.logger);
 			}
 			else {
 				this.delegate = null;

@@ -218,7 +218,7 @@ public class DefaultUriBuilderFactory implements UriBuilderFactory {
 			UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(uriTemplate);
 			UriComponents uriComponents = uriComponentsBuilder.build();
 			UriComponentsBuilder result = (uriComponents.getHost() == null ?
-					baseUri.cloneBuilder().uriComponents(uriComponents) : uriComponentsBuilder);
+					DefaultUriBuilderFactory.this.baseUri.cloneBuilder().uriComponents(uriComponents) : uriComponentsBuilder);
 
 			if (shouldParsePath()) {
 				UriComponents uric = result.build();
@@ -326,17 +326,17 @@ public class DefaultUriBuilderFactory implements UriBuilderFactory {
 
 		@Override
 		public URI build(Map<String, ?> uriVars) {
-			if (!defaultUriVariables.isEmpty()) {
+			if (!DefaultUriBuilderFactory.this.defaultUriVariables.isEmpty()) {
 				Map<String, Object> map = new HashMap<>();
-				map.putAll(defaultUriVariables);
+				map.putAll(DefaultUriBuilderFactory.this.defaultUriVariables);
 				map.putAll(uriVars);
 				uriVars = map;
 			}
-			if (encodingMode.equals(EncodingMode.VALUES_ONLY)) {
+			if (DefaultUriBuilderFactory.this.encodingMode.equals(EncodingMode.VALUES_ONLY)) {
 				uriVars = UriUtils.encodeUriVariables(uriVars);
 			}
 			UriComponents uriComponents = this.uriComponentsBuilder.build().expand(uriVars);
-			if (encodingMode.equals(EncodingMode.URI_COMPONENT)) {
+			if (DefaultUriBuilderFactory.this.encodingMode.equals(EncodingMode.URI_COMPONENT)) {
 				uriComponents = uriComponents.encode();
 			}
 			return URI.create(uriComponents.toString());
@@ -344,14 +344,14 @@ public class DefaultUriBuilderFactory implements UriBuilderFactory {
 
 		@Override
 		public URI build(Object... uriVars) {
-			if (ObjectUtils.isEmpty(uriVars) && !defaultUriVariables.isEmpty()) {
+			if (ObjectUtils.isEmpty(uriVars) && !DefaultUriBuilderFactory.this.defaultUriVariables.isEmpty()) {
 				return build(Collections.emptyMap());
 			}
-			if (encodingMode.equals(EncodingMode.VALUES_ONLY)) {
+			if (DefaultUriBuilderFactory.this.encodingMode.equals(EncodingMode.VALUES_ONLY)) {
 				uriVars = UriUtils.encodeUriVariables(uriVars);
 			}
 			UriComponents uriComponents = this.uriComponentsBuilder.build().expand(uriVars);
-			if (encodingMode.equals(EncodingMode.URI_COMPONENT)) {
+			if (DefaultUriBuilderFactory.this.encodingMode.equals(EncodingMode.URI_COMPONENT)) {
 				uriComponents = uriComponents.encode();
 			}
 			return URI.create(uriComponents.toString());

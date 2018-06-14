@@ -110,8 +110,8 @@ public class PropertyOverrideConfigurer extends PropertyResourceConfigurer {
 				if (!this.ignoreInvalidKeys) {
 					throw new BeanInitializationException(msg, ex);
 				}
-				if (logger.isDebugEnabled()) {
-					logger.debug(msg, ex);
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug(msg, ex);
 				}
 			}
 		}
@@ -132,8 +132,8 @@ public class PropertyOverrideConfigurer extends PropertyResourceConfigurer {
 		String beanProperty = key.substring(separatorIndex+1);
 		this.beanNames.add(beanName);
 		applyPropertyValue(factory, beanName, beanProperty, value);
-		if (logger.isDebugEnabled()) {
-			logger.debug("Property '" + key + "' set to value [" + value + "]");
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Property '" + key + "' set to value [" + value + "]");
 		}
 	}
 

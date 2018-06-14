@@ -97,7 +97,7 @@ public class LinkedCaseInsensitiveMap<V> implements Map<String, V>, Serializable
 			protected boolean removeEldestEntry(Map.Entry<String, V> eldest) {
 				boolean doRemove = LinkedCaseInsensitiveMap.this.removeEldestEntry(eldest);
 				if (doRemove) {
-					caseInsensitiveKeys.remove(convertKey(eldest.getKey()));
+					LinkedCaseInsensitiveMap.this.caseInsensitiveKeys.remove(convertKey(eldest.getKey()));
 				}
 				return doRemove;
 			}

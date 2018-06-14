@@ -63,8 +63,8 @@ public abstract class AbstractPrototypeBasedTargetSource extends AbstractBeanFac
 	 * @throws BeansException if bean creation failed
 	 */
 	protected Object newPrototypeInstance() throws BeansException {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Creating new instance of bean '" + getTargetBeanName() + "'");
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Creating new instance of bean '" + getTargetBeanName() + "'");
 		}
 		return getBeanFactory().getBean(getTargetBeanName());
 	}
@@ -85,7 +85,7 @@ public abstract class AbstractPrototypeBasedTargetSource extends AbstractBeanFac
 				((DisposableBean) target).destroy();
 			}
 			catch (Throwable ex) {
-				logger.error("Couldn't invoke destroy method of bean with name '" + getTargetBeanName() + "'", ex);
+				this.logger.error("Couldn't invoke destroy method of bean with name '" + getTargetBeanName() + "'", ex);
 			}
 		}
 	}
@@ -109,8 +109,8 @@ public abstract class AbstractPrototypeBasedTargetSource extends AbstractBeanFac
 	 * non-serializable fields in this class or subclasses as transient.
 	 */
 	protected Object writeReplace() throws ObjectStreamException {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Disconnecting TargetSource [" + this + "]");
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Disconnecting TargetSource [" + this + "]");
 		}
 		try {
 			// Create disconnected SingletonTargetSource/EmptyTargetSource.
@@ -120,7 +120,7 @@ public abstract class AbstractPrototypeBasedTargetSource extends AbstractBeanFac
 		}
 		catch (Exception ex) {
 			String msg = "Cannot get target for disconnecting TargetSource [" + this + "]";
-			logger.error(msg, ex);
+			this.logger.error(msg, ex);
 			throw new NotSerializableException(msg + ": " + ex);
 		}
 	}

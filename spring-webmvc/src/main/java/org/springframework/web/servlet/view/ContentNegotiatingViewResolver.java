@@ -212,7 +212,7 @@ public class ContentNegotiatingViewResolver extends WebApplicationObjectSupport
 			this.contentNegotiationManager = this.cnmFactoryBean.build();
 		}
 		if (this.viewResolvers == null || this.viewResolvers.isEmpty()) {
-			logger.warn("No ViewResolvers configured");
+			this.logger.warn("No ViewResolvers configured");
 		}
 	}
 
@@ -231,17 +231,17 @@ public class ContentNegotiatingViewResolver extends WebApplicationObjectSupport
 			}
 		}
 
-		String mediaTypeInfo = logger.isDebugEnabled() && requestedMediaTypes != null ?
+		String mediaTypeInfo = this.logger.isDebugEnabled() && requestedMediaTypes != null ?
 				" given " + requestedMediaTypes.toString() : "";
 
 		if (this.useNotAcceptableStatusCode) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("Using 406 NOT_ACCEPTABLE" + mediaTypeInfo);
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Using 406 NOT_ACCEPTABLE" + mediaTypeInfo);
 			}
 			return NOT_ACCEPTABLE_VIEW;
 		}
 		else {
-			logger.debug("View remains unresolved" + mediaTypeInfo);
+			this.logger.debug("View remains unresolved" + mediaTypeInfo);
 			return null;
 		}
 	}
@@ -271,8 +271,8 @@ public class ContentNegotiatingViewResolver extends WebApplicationObjectSupport
 			return selectedMediaTypes;
 		}
 		catch (HttpMediaTypeNotAcceptableException ex) {
-			if (logger.isDebugEnabled()) {
-				logger.debug(ex.getMessage());
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug(ex.getMessage());
 			}
 			return null;
 		}
@@ -343,8 +343,8 @@ public class ContentNegotiatingViewResolver extends WebApplicationObjectSupport
 				if (StringUtils.hasText(candidateView.getContentType())) {
 					MediaType candidateContentType = MediaType.parseMediaType(candidateView.getContentType());
 					if (mediaType.isCompatibleWith(candidateContentType)) {
-						if (logger.isDebugEnabled()) {
-							logger.debug("Selected '" + mediaType + "' given " + requestedMediaTypes);
+						if (this.logger.isDebugEnabled()) {
+							this.logger.debug("Selected '" + mediaType + "' given " + requestedMediaTypes);
 						}
 						attrs.setAttribute(View.SELECTED_CONTENT_TYPE, mediaType, RequestAttributes.SCOPE_REQUEST);
 						return candidateView;

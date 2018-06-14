@@ -149,8 +149,8 @@ public class ServerEndpointExporter extends WebApplicationObjectSupport
 						"org.springframework.web.context.ContextLoaderListener, " +
 						"i.e. after the ServletContext has been fully initialized?");
 		try {
-			if (logger.isInfoEnabled()) {
-				logger.info("Registering @ServerEndpoint class: " + endpointClass);
+			if (this.logger.isInfoEnabled()) {
+				this.logger.info("Registering @ServerEndpoint class: " + endpointClass);
 			}
 			serverContainer.addEndpoint(endpointClass);
 		}
@@ -163,8 +163,8 @@ public class ServerEndpointExporter extends WebApplicationObjectSupport
 		ServerContainer serverContainer = getServerContainer();
 		Assert.state(serverContainer != null, "No ServerContainer set");
 		try {
-			if (logger.isInfoEnabled()) {
-				logger.info("Registering ServerEndpointConfig: " + endpointConfig);
+			if (this.logger.isInfoEnabled()) {
+				this.logger.info("Registering ServerEndpointConfig: " + endpointConfig);
 			}
 			serverContainer.addEndpoint(endpointConfig);
 		}

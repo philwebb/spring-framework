@@ -121,7 +121,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	@Nullable
 	private EntityResolver entityResolver;
 
-	private ErrorHandler errorHandler = new SimpleSaxErrorHandler(logger);
+	private ErrorHandler errorHandler = new SimpleSaxErrorHandler(this.logger);
 
 	private final XmlValidationModeDetector validationModeDetector = new XmlValidationModeDetector();
 
@@ -312,8 +312,8 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	 */
 	public int loadBeanDefinitions(EncodedResource encodedResource) throws BeanDefinitionStoreException {
 		Assert.notNull(encodedResource, "EncodedResource must not be null");
-		if (logger.isInfoEnabled()) {
-			logger.info("Loading XML bean definitions from " + encodedResource.getResource());
+		if (this.logger.isInfoEnabled()) {
+			this.logger.info("Loading XML bean definitions from " + encodedResource.getResource());
 		}
 
 		Set<EncodedResource> currentResources = this.resourcesCurrentlyBeingLoaded.get();

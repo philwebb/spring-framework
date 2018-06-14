@@ -188,14 +188,14 @@ public class PreparedStatementCreatorFactory {
 		private final List<?> parameters;
 
 		public PreparedStatementCreatorImpl(List<?> parameters) {
-			this(sql, parameters);
+			this(PreparedStatementCreatorFactory.this.sql, parameters);
 		}
 
 		public PreparedStatementCreatorImpl(String actualSql, List<?> parameters) {
 			this.actualSql = actualSql;
 			Assert.notNull(parameters, "Parameters List must not be null");
 			this.parameters = parameters;
-			if (this.parameters.size() != declaredParameters.size()) {
+			if (this.parameters.size() != PreparedStatementCreatorFactory.this.declaredParameters.size()) {
 				// account for named parameters being used multiple times
 				Set<String> names = new HashSet<>();
 				for (int i = 0; i < parameters.size(); i++) {
@@ -207,10 +207,10 @@ public class PreparedStatementCreatorFactory {
 						names.add("Parameter #" + i);
 					}
 				}
-				if (names.size() != declaredParameters.size()) {
+				if (names.size() != PreparedStatementCreatorFactory.this.declaredParameters.size()) {
 					throw new InvalidDataAccessApiUsageException(
-							"SQL [" + sql + "]: given " + names.size() +
-							" parameters but expected " + declaredParameters.size());
+							"SQL [" + PreparedStatementCreatorFactory.this.sql + "]: given " + names.size() +
+							" parameters but expected " + PreparedStatementCreatorFactory.this.declaredParameters.size());
 				}
 			}
 		}
@@ -218,20 +218,20 @@ public class PreparedStatementCreatorFactory {
 		@Override
 		public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
 			PreparedStatement ps;
-			if (generatedKeysColumnNames != null || returnGeneratedKeys) {
-				if (generatedKeysColumnNames != null) {
-					ps = con.prepareStatement(this.actualSql, generatedKeysColumnNames);
+			if (PreparedStatementCreatorFactory.this.generatedKeysColumnNames != null || PreparedStatementCreatorFactory.this.returnGeneratedKeys) {
+				if (PreparedStatementCreatorFactory.this.generatedKeysColumnNames != null) {
+					ps = con.prepareStatement(this.actualSql, PreparedStatementCreatorFactory.this.generatedKeysColumnNames);
 				}
 				else {
 					ps = con.prepareStatement(this.actualSql, PreparedStatement.RETURN_GENERATED_KEYS);
 				}
 			}
-			else if (resultSetType == ResultSet.TYPE_FORWARD_ONLY && !updatableResults) {
+			else if (PreparedStatementCreatorFactory.this.resultSetType == ResultSet.TYPE_FORWARD_ONLY && !PreparedStatementCreatorFactory.this.updatableResults) {
 				ps = con.prepareStatement(this.actualSql);
 			}
 			else {
-				ps = con.prepareStatement(this.actualSql, resultSetType,
-					updatableResults ? ResultSet.CONCUR_UPDATABLE : ResultSet.CONCUR_READ_ONLY);
+				ps = con.prepareStatement(this.actualSql, PreparedStatementCreatorFactory.this.resultSetType,
+					PreparedStatementCreatorFactory.this.updatableResults ? ResultSet.CONCUR_UPDATABLE : ResultSet.CONCUR_READ_ONLY);
 			}
 			setValues(ps);
 			return ps;
@@ -252,13 +252,13 @@ public class PreparedStatementCreatorFactory {
 					declaredParameter = paramValue;
 				}
 				else {
-					if (declaredParameters.size() <= i) {
+					if (PreparedStatementCreatorFactory.this.declaredParameters.size() <= i) {
 						throw new InvalidDataAccessApiUsageException(
-								"SQL [" + sql + "]: unable to access parameter number " + (i + 1) +
-								" given only " + declaredParameters.size() + " parameters");
+								"SQL [" + PreparedStatementCreatorFactory.this.sql + "]: unable to access parameter number " + (i + 1) +
+								" given only " + PreparedStatementCreatorFactory.this.declaredParameters.size() + " parameters");
 
 					}
-					declaredParameter = declaredParameters.get(i);
+					declaredParameter = PreparedStatementCreatorFactory.this.declaredParameters.get(i);
 				}
 				if (in instanceof Collection && declaredParameter.getSqlType() != Types.ARRAY) {
 					Collection<?> entries = (Collection<?>) in;
@@ -282,7 +282,7 @@ public class PreparedStatementCreatorFactory {
 
 		@Override
 		public String getSql() {
-			return sql;
+			return PreparedStatementCreatorFactory.this.sql;
 		}
 
 		@Override
@@ -292,7 +292,7 @@ public class PreparedStatementCreatorFactory {
 
 		@Override
 		public String toString() {
-			return "PreparedStatementCreator: sql=[" + sql + "]; parameters=" + this.parameters;
+			return "PreparedStatementCreator: sql=[" + PreparedStatementCreatorFactory.this.sql + "]; parameters=" + this.parameters;
 		}
 	}
 

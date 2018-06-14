@@ -174,7 +174,7 @@ public class ConnectorServerFactoryBean extends MBeanRegistrationSupport
 					@Override
 					public void run() {
 						try {
-							connectorServer.start();
+							ConnectorServerFactoryBean.this.connectorServer.start();
 						}
 						catch (IOException ex) {
 							throw new JmxException("Could not start JMX connector server after delay", ex);
@@ -191,8 +191,8 @@ public class ConnectorServerFactoryBean extends MBeanRegistrationSupport
 				this.connectorServer.start();
 			}
 
-			if (logger.isInfoEnabled()) {
-				logger.info("JMX connector server started: " + this.connectorServer);
+			if (this.logger.isInfoEnabled()) {
+				this.logger.info("JMX connector server started: " + this.connectorServer);
 			}
 		}
 
@@ -230,8 +230,8 @@ public class ConnectorServerFactoryBean extends MBeanRegistrationSupport
 	public void destroy() throws IOException {
 		try {
 			if (this.connectorServer != null) {
-				if (logger.isInfoEnabled()) {
-					logger.info("Stopping JMX connector server: " + this.connectorServer);
+				if (this.logger.isInfoEnabled()) {
+					this.logger.info("Stopping JMX connector server: " + this.connectorServer);
 				}
 				this.connectorServer.stop();
 			}

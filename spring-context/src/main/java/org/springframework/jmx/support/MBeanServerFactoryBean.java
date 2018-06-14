@@ -135,7 +135,7 @@ public class MBeanServerFactoryBean implements FactoryBean<MBeanServer>, Initial
 				if (this.agentId != null) {
 					throw ex;
 				}
-				logger.info("No existing MBeanServer found - creating new one");
+				this.logger.info("No existing MBeanServer found - creating new one");
 			}
 		}
 

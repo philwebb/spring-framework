@@ -90,8 +90,8 @@ public class EventListenerMethodProcessor implements SmartInitializingSingleton,
 				}
 				catch (Throwable ex) {
 					// An unresolvable bean type, probably from a lazy bean - let's ignore it.
-					if (logger.isDebugEnabled()) {
-						logger.debug("Could not resolve target class for bean with name '" + beanName + "'", ex);
+					if (this.logger.isDebugEnabled()) {
+						this.logger.debug("Could not resolve target class for bean with name '" + beanName + "'", ex);
 					}
 				}
 				if (type != null) {
@@ -105,8 +105,8 @@ public class EventListenerMethodProcessor implements SmartInitializingSingleton,
 						}
 						catch (Throwable ex) {
 							// An invalid scoped proxy arrangement - let's ignore it.
-							if (logger.isDebugEnabled()) {
-								logger.debug("Could not resolve target bean for scoped proxy '" + beanName + "'", ex);
+							if (this.logger.isDebugEnabled()) {
+								this.logger.debug("Could not resolve target bean for scoped proxy '" + beanName + "'", ex);
 							}
 						}
 					}
@@ -146,14 +146,14 @@ public class EventListenerMethodProcessor implements SmartInitializingSingleton,
 			}
 			catch (Throwable ex) {
 				// An unresolvable type in a method signature, probably from a lazy bean - let's ignore it.
-				if (logger.isDebugEnabled()) {
-					logger.debug("Could not resolve methods for bean with name '" + beanName + "'", ex);
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Could not resolve methods for bean with name '" + beanName + "'", ex);
 				}
 			}
 			if (CollectionUtils.isEmpty(annotatedMethods)) {
 				this.nonAnnotatedClasses.add(targetType);
-				if (logger.isTraceEnabled()) {
-					logger.trace("No @EventListener annotations found on bean class: " + targetType.getName());
+				if (this.logger.isTraceEnabled()) {
+					this.logger.trace("No @EventListener annotations found on bean class: " + targetType.getName());
 				}
 			}
 			else {
@@ -173,8 +173,8 @@ public class EventListenerMethodProcessor implements SmartInitializingSingleton,
 						}
 					}
 				}
-				if (logger.isDebugEnabled()) {
-					logger.debug(annotatedMethods.size() + " @EventListener methods processed on bean '" +
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug(annotatedMethods.size() + " @EventListener methods processed on bean '" +
 							beanName + "': " + annotatedMethods);
 				}
 			}

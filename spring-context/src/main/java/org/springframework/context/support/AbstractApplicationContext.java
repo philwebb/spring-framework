@@ -376,8 +376,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 */
 	protected void publishEvent(Object event, @Nullable ResolvableType eventType) {
 		Assert.notNull(event, "Event must not be null");
-		if (logger.isTraceEnabled()) {
-			logger.trace("Publishing event in " + getDisplayName() + ": " + event);
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Publishing event in " + getDisplayName() + ": " + event);
 		}
 
 		// Decorate event as an ApplicationEvent if necessary
@@ -554,8 +554,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			}
 
 			catch (BeansException ex) {
-				if (logger.isWarnEnabled()) {
-					logger.warn("Exception encountered during context initialization - " +
+				if (this.logger.isWarnEnabled()) {
+					this.logger.warn("Exception encountered during context initialization - " +
 							"cancelling refresh attempt: " + ex);
 				}
 
@@ -586,8 +586,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		this.closed.set(false);
 		this.active.set(true);
 
-		if (logger.isInfoEnabled()) {
-			logger.info("Refreshing " + this);
+		if (this.logger.isInfoEnabled()) {
+			this.logger.info("Refreshing " + this);
 		}
 
 		// Initialize any placeholder property sources in the context environment
@@ -620,8 +620,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {
 		refreshBeanFactory();
 		ConfigurableListableBeanFactory beanFactory = getBeanFactory();
-		if (logger.isDebugEnabled()) {
-			logger.debug("Bean factory for " + getDisplayName() + ": " + beanFactory);
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Bean factory for " + getDisplayName() + ": " + beanFactory);
 		}
 		return beanFactory;
 	}
@@ -727,8 +727,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 					hms.setParentMessageSource(getInternalParentMessageSource());
 				}
 			}
-			if (logger.isDebugEnabled()) {
-				logger.debug("Using MessageSource [" + this.messageSource + "]");
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Using MessageSource [" + this.messageSource + "]");
 			}
 		}
 		else {
@@ -737,8 +737,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			dms.setParentMessageSource(getInternalParentMessageSource());
 			this.messageSource = dms;
 			beanFactory.registerSingleton(MESSAGE_SOURCE_BEAN_NAME, this.messageSource);
-			if (logger.isDebugEnabled()) {
-				logger.debug("Unable to locate MessageSource with name '" + MESSAGE_SOURCE_BEAN_NAME +
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Unable to locate MessageSource with name '" + MESSAGE_SOURCE_BEAN_NAME +
 						"': using default [" + this.messageSource + "]");
 			}
 		}
@@ -754,15 +754,15 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		if (beanFactory.containsLocalBean(APPLICATION_EVENT_MULTICASTER_BEAN_NAME)) {
 			this.applicationEventMulticaster =
 					beanFactory.getBean(APPLICATION_EVENT_MULTICASTER_BEAN_NAME, ApplicationEventMulticaster.class);
-			if (logger.isDebugEnabled()) {
-				logger.debug("Using ApplicationEventMulticaster [" + this.applicationEventMulticaster + "]");
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Using ApplicationEventMulticaster [" + this.applicationEventMulticaster + "]");
 			}
 		}
 		else {
 			this.applicationEventMulticaster = new SimpleApplicationEventMulticaster(beanFactory);
 			beanFactory.registerSingleton(APPLICATION_EVENT_MULTICASTER_BEAN_NAME, this.applicationEventMulticaster);
-			if (logger.isDebugEnabled()) {
-				logger.debug("Unable to locate ApplicationEventMulticaster with name '" +
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Unable to locate ApplicationEventMulticaster with name '" +
 						APPLICATION_EVENT_MULTICASTER_BEAN_NAME +
 						"': using default [" + this.applicationEventMulticaster + "]");
 			}
@@ -779,8 +779,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		if (beanFactory.containsLocalBean(LIFECYCLE_PROCESSOR_BEAN_NAME)) {
 			this.lifecycleProcessor =
 					beanFactory.getBean(LIFECYCLE_PROCESSOR_BEAN_NAME, LifecycleProcessor.class);
-			if (logger.isDebugEnabled()) {
-				logger.debug("Using LifecycleProcessor [" + this.lifecycleProcessor + "]");
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Using LifecycleProcessor [" + this.lifecycleProcessor + "]");
 			}
 		}
 		else {
@@ -788,8 +788,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			defaultProcessor.setBeanFactory(beanFactory);
 			this.lifecycleProcessor = defaultProcessor;
 			beanFactory.registerSingleton(LIFECYCLE_PROCESSOR_BEAN_NAME, this.lifecycleProcessor);
-			if (logger.isDebugEnabled()) {
-				logger.debug("Unable to locate LifecycleProcessor with name '" +
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Unable to locate LifecycleProcessor with name '" +
 						LIFECYCLE_PROCESSOR_BEAN_NAME +
 						"': using default [" + this.lifecycleProcessor + "]");
 			}
@@ -933,7 +933,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			this.shutdownHook = new Thread() {
 				@Override
 				public void run() {
-					synchronized (startupShutdownMonitor) {
+					synchronized (AbstractApplicationContext.this.startupShutdownMonitor) {
 						doClose();
 					}
 				}
@@ -989,8 +989,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 */
 	protected void doClose() {
 		if (this.active.get() && this.closed.compareAndSet(false, true)) {
-			if (logger.isInfoEnabled()) {
-				logger.info("Closing " + this);
+			if (this.logger.isInfoEnabled()) {
+				this.logger.info("Closing " + this);
 			}
 
 			LiveBeansView.unregisterApplicationContext(this);
@@ -1000,7 +1000,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				publishEvent(new ContextClosedEvent(this));
 			}
 			catch (Throwable ex) {
-				logger.warn("Exception thrown from ApplicationListener handling ContextClosedEvent", ex);
+				this.logger.warn("Exception thrown from ApplicationListener handling ContextClosedEvent", ex);
 			}
 
 			// Stop all Lifecycle beans, to avoid delays during individual destruction.
@@ -1009,7 +1009,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 					this.lifecycleProcessor.onClose();
 				}
 				catch (Throwable ex) {
-					logger.warn("Exception thrown from LifecycleProcessor on context close", ex);
+					this.logger.warn("Exception thrown from LifecycleProcessor on context close", ex);
 				}
 			}
 

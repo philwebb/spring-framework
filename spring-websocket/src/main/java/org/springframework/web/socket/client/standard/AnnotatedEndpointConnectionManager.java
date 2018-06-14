@@ -105,19 +105,19 @@ public class AnnotatedEndpointConnectionManager extends ConnectionManagerSupport
 	protected void openConnection() {
 		this.taskExecutor.execute(() -> {
 			try {
-				if (logger.isInfoEnabled()) {
-					logger.info("Connecting to WebSocket at " + getUri());
+				if (this.logger.isInfoEnabled()) {
+					this.logger.info("Connecting to WebSocket at " + getUri());
 				}
-				Object endpointToUse = endpoint;
+				Object endpointToUse = this.endpoint;
 				if (endpointToUse == null) {
-					Assert.state(endpointProvider != null, "No endpoint set");
-					endpointToUse = endpointProvider.getHandler();
+					Assert.state(this.endpointProvider != null, "No endpoint set");
+					endpointToUse = this.endpointProvider.getHandler();
 				}
-				session = webSocketContainer.connectToServer(endpointToUse, getUri());
-				logger.info("Successfully connected to WebSocket");
+				this.session = this.webSocketContainer.connectToServer(endpointToUse, getUri());
+				this.logger.info("Successfully connected to WebSocket");
 			}
 			catch (Throwable ex) {
-				logger.error("Failed to connect to WebSocket", ex);
+				this.logger.error("Failed to connect to WebSocket", ex);
 			}
 		});
 	}

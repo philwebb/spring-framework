@@ -350,8 +350,8 @@ public class JpaTransactionManager extends AbstractPlatformTransactionManager
 		EntityManagerHolder emHolder = (EntityManagerHolder)
 				TransactionSynchronizationManager.getResource(obtainEntityManagerFactory());
 		if (emHolder != null) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("Found thread-bound EntityManager [" + emHolder.getEntityManager() +
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Found thread-bound EntityManager [" + emHolder.getEntityManager() +
 						"] for JPA transaction");
 			}
 			txObject.setEntityManagerHolder(emHolder, false);
@@ -387,8 +387,8 @@ public class JpaTransactionManager extends AbstractPlatformTransactionManager
 			if (!txObject.hasEntityManagerHolder() ||
 					txObject.getEntityManagerHolder().isSynchronizedWithTransaction()) {
 				EntityManager newEm = createEntityManagerForTransaction();
-				if (logger.isDebugEnabled()) {
-					logger.debug("Opened new EntityManager [" + newEm + "] for JPA transaction");
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Opened new EntityManager [" + newEm + "] for JPA transaction");
 				}
 				txObject.setEntityManagerHolder(new EntityManagerHolder(newEm), true);
 			}
@@ -419,15 +419,15 @@ public class JpaTransactionManager extends AbstractPlatformTransactionManager
 					if (timeoutToUse != TransactionDefinition.TIMEOUT_DEFAULT) {
 						conHolder.setTimeoutInSeconds(timeoutToUse);
 					}
-					if (logger.isDebugEnabled()) {
-						logger.debug("Exposing JPA transaction as JDBC transaction [" + conHandle + "]");
+					if (this.logger.isDebugEnabled()) {
+						this.logger.debug("Exposing JPA transaction as JDBC transaction [" + conHandle + "]");
 					}
 					TransactionSynchronizationManager.bindResource(getDataSource(), conHolder);
 					txObject.setConnectionHolder(conHolder);
 				}
 				else {
-					if (logger.isDebugEnabled()) {
-						logger.debug("Not exposing JPA transaction [" + em + "] as JDBC transaction because " +
+					if (this.logger.isDebugEnabled()) {
+						this.logger.debug("Not exposing JPA transaction [" + em + "] as JDBC transaction because " +
 								"JpaDialect [" + getJpaDialect() + "] does not support JDBC Connection retrieval");
 					}
 				}
@@ -482,7 +482,7 @@ public class JpaTransactionManager extends AbstractPlatformTransactionManager
 				}
 			}
 			catch (Throwable ex) {
-				logger.debug("Could not rollback EntityManager after failed transaction begin", ex);
+				this.logger.debug("Could not rollback EntityManager after failed transaction begin", ex);
 			}
 			finally {
 				EntityManagerFactoryUtils.closeEntityManager(em);
@@ -528,7 +528,7 @@ public class JpaTransactionManager extends AbstractPlatformTransactionManager
 	protected void doCommit(DefaultTransactionStatus status) {
 		JpaTransactionObject txObject = (JpaTransactionObject) status.getTransaction();
 		if (status.isDebug()) {
-			logger.debug("Committing JPA transaction on EntityManager [" +
+			this.logger.debug("Committing JPA transaction on EntityManager [" +
 					txObject.getEntityManagerHolder().getEntityManager() + "]");
 		}
 		try {
@@ -554,7 +554,7 @@ public class JpaTransactionManager extends AbstractPlatformTransactionManager
 	protected void doRollback(DefaultTransactionStatus status) {
 		JpaTransactionObject txObject = (JpaTransactionObject) status.getTransaction();
 		if (status.isDebug()) {
-			logger.debug("Rolling back JPA transaction on EntityManager [" +
+			this.logger.debug("Rolling back JPA transaction on EntityManager [" +
 					txObject.getEntityManagerHolder().getEntityManager() + "]");
 		}
 		try {
@@ -579,7 +579,7 @@ public class JpaTransactionManager extends AbstractPlatformTransactionManager
 	protected void doSetRollbackOnly(DefaultTransactionStatus status) {
 		JpaTransactionObject txObject = (JpaTransactionObject) status.getTransaction();
 		if (status.isDebug()) {
-			logger.debug("Setting JPA transaction on EntityManager [" +
+			this.logger.debug("Setting JPA transaction on EntityManager [" +
 					txObject.getEntityManagerHolder().getEntityManager() + "] rollback-only");
 		}
 		txObject.setRollbackOnly();
@@ -608,7 +608,7 @@ public class JpaTransactionManager extends AbstractPlatformTransactionManager
 				}
 				catch (Exception ex) {
 					// Just log it, to keep a transaction-related exception.
-					logger.error("Could not close JDBC connection after transaction", ex);
+					this.logger.error("Could not close JDBC connection after transaction", ex);
 				}
 			}
 		}
@@ -618,13 +618,13 @@ public class JpaTransactionManager extends AbstractPlatformTransactionManager
 		// Remove the entity manager holder from the thread.
 		if (txObject.isNewEntityManagerHolder()) {
 			EntityManager em = txObject.getEntityManagerHolder().getEntityManager();
-			if (logger.isDebugEnabled()) {
-				logger.debug("Closing JPA EntityManager [" + em + "] after transaction");
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Closing JPA EntityManager [" + em + "] after transaction");
 			}
 			EntityManagerFactoryUtils.closeEntityManager(em);
 		}
 		else {
-			logger.debug("Not closing pre-bound JPA EntityManager after transaction");
+			this.logger.debug("Not closing pre-bound JPA EntityManager after transaction");
 		}
 	}
 

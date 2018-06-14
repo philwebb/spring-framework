@@ -91,14 +91,14 @@ public class JndiPropertySource extends PropertySource<JndiLocatorDelegate> {
 
 		try {
 			Object value = this.source.lookup(name);
-			if (logger.isDebugEnabled()) {
-				logger.debug("JNDI lookup for name [" + name + "] returned: [" + value + "]");
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("JNDI lookup for name [" + name + "] returned: [" + value + "]");
 			}
 			return value;
 		}
 		catch (NamingException ex) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("JNDI lookup for name [" + name + "] threw NamingException " +
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("JNDI lookup for name [" + name + "] threw NamingException " +
 						"with message: " + ex.getMessage() + ". Returning null.");
 			}
 			return null;

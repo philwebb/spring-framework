@@ -403,7 +403,7 @@ public abstract class AbstractHtmlElementTag extends AbstractDataBoundFormElemen
 			throw new IllegalArgumentException(
 					"Attribute " + localName + "=\"" + value + "\" is not allowed");
 		}
-		dynamicAttributes.put(localName, value);
+		this.dynamicAttributes.put(localName, value);
 	}
 
 	/**

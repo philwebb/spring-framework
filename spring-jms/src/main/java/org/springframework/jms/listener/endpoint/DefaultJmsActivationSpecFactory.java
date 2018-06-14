@@ -85,7 +85,7 @@ public class DefaultJmsActivationSpecFactory extends StandardJmsActivationSpecFa
 				return adapter.getClass().getClassLoader().loadClass(specClassName);
 			}
 			catch (ClassNotFoundException ex) {
-				logger.debug("No default <Provider>ActivationSpec class found: " + specClassName);
+				this.logger.debug("No default <Provider>ActivationSpec class found: " + specClassName);
 			}
 		}
 
@@ -98,7 +98,7 @@ public class DefaultJmsActivationSpecFactory extends StandardJmsActivationSpecFa
 				return adapter.getClass().getClassLoader().loadClass(specClassName);
 			}
 			catch (ClassNotFoundException ex) {
-				logger.debug("No default <Provider>ActivationSpecImpl class found: " + specClassName);
+				this.logger.debug("No default <Provider>ActivationSpecImpl class found: " + specClassName);
 			}
 		}
 
@@ -109,7 +109,7 @@ public class DefaultJmsActivationSpecFactory extends StandardJmsActivationSpecFa
 			return adapter.getClass().getClassLoader().loadClass(specClassName);
 		}
 		catch (ClassNotFoundException ex) {
-			logger.debug("No default ActivationSpecImpl class found in provider package: " + specClassName);
+			this.logger.debug("No default ActivationSpecImpl class found in provider package: " + specClassName);
 		}
 
 		// ActivationSpecImpl class in "inbound" subpackage (WebSphere MQ 6.0.2.1)
@@ -118,7 +118,7 @@ public class DefaultJmsActivationSpecFactory extends StandardJmsActivationSpecFa
 			return adapter.getClass().getClassLoader().loadClass(specClassName);
 		}
 		catch (ClassNotFoundException ex) {
-			logger.debug("No default ActivationSpecImpl class found in inbound subpackage: " + specClassName);
+			this.logger.debug("No default ActivationSpecImpl class found in inbound subpackage: " + specClassName);
 		}
 
 		throw new IllegalStateException("No ActivationSpec class defined - " +

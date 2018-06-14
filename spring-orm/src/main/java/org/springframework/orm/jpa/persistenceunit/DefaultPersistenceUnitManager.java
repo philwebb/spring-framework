@@ -510,8 +510,8 @@ public class DefaultPersistenceUnitManager
 
 		if (buildDefaultUnit) {
 			if (foundDefaultUnit) {
-				if (logger.isInfoEnabled()) {
-					logger.info("Found explicit default unit with name '" + defaultName + "' in persistence.xml - " +
+				if (this.logger.isInfoEnabled()) {
+					this.logger.info("Found explicit default unit with name '" + defaultName + "' in persistence.xml - " +
 							"overriding local default unit settings ('packagesToScan'/'mappingResources')");
 				}
 			}
@@ -554,7 +554,7 @@ public class DefaultPersistenceUnitManager
 								PersistenceUnitReader.determinePersistenceUnitRootUrl(ormXml));
 					}
 					catch (IOException ex) {
-						logger.debug("Failed to determine persistence unit root URL from orm.xml location", ex);
+						this.logger.debug("Failed to determine persistence unit root URL from orm.xml location", ex);
 					}
 				}
 			}

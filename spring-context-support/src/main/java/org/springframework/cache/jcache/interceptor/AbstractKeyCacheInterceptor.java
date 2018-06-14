@@ -45,8 +45,8 @@ abstract class AbstractKeyCacheInterceptor<O extends AbstractJCacheKeyOperation<
 	protected Object generateKey(CacheOperationInvocationContext<O> context) {
 		KeyGenerator keyGenerator = context.getOperation().getKeyGenerator();
 		Object key = keyGenerator.generate(context.getTarget(), context.getMethod(), context.getArgs());
-		if (logger.isTraceEnabled()) {
-			logger.trace("Computed cache key " + key + " for operation " + context.getOperation());
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Computed cache key " + key + " for operation " + context.getOperation());
 		}
 		return key;
 	}

@@ -174,7 +174,7 @@ public class SQLErrorCodeSQLExceptionTranslator extends AbstractFallbackSQLExcep
 		if (sqlEx instanceof BatchUpdateException && sqlEx.getNextException() != null) {
 			SQLException nestedSqlEx = sqlEx.getNextException();
 			if (nestedSqlEx.getErrorCode() > 0 || nestedSqlEx.getSQLState() != null) {
-				logger.debug("Using nested SQLException from the BatchUpdateException");
+				this.logger.debug("Using nested SQLException from the BatchUpdateException");
 				sqlEx = nestedSqlEx;
 			}
 		}
@@ -273,7 +273,7 @@ public class SQLErrorCodeSQLExceptionTranslator extends AbstractFallbackSQLExcep
 		}
 
 		// We couldn't identify it more precisely - let's hand it over to the SQLState fallback translator.
-		if (logger.isDebugEnabled()) {
+		if (this.logger.isDebugEnabled()) {
 			String codes;
 			if (this.sqlErrorCodes != null && this.sqlErrorCodes.isUseSqlStateForTranslation()) {
 				codes = "SQL state '" + sqlEx.getSQLState() + "', error code '" + sqlEx.getErrorCode();
@@ -281,7 +281,7 @@ public class SQLErrorCodeSQLExceptionTranslator extends AbstractFallbackSQLExcep
 			else {
 				codes = "Error code '" + sqlEx.getErrorCode() + "'";
 			}
-			logger.debug("Unable to translate SQLException with " + codes + ", will now try the fallback translator");
+			this.logger.debug("Unable to translate SQLException with " + codes + ", will now try the fallback translator");
 		}
 
 		return null;
@@ -381,25 +381,25 @@ public class SQLErrorCodeSQLExceptionTranslator extends AbstractFallbackSQLExcep
 					exceptionConstructor = exceptionClass.getConstructor(messageOnlyArgsClass);
 					return (DataAccessException) exceptionConstructor.newInstance(messageOnlyArgs);
 				default:
-					if (logger.isWarnEnabled()) {
-						logger.warn("Unable to find appropriate constructor of custom exception class [" +
+					if (this.logger.isWarnEnabled()) {
+						this.logger.warn("Unable to find appropriate constructor of custom exception class [" +
 								exceptionClass.getName() + "]");
 					}
 					return null;
 				}
 		}
 		catch (Throwable ex) {
-			if (logger.isWarnEnabled()) {
-				logger.warn("Unable to instantiate custom exception class [" + exceptionClass.getName() + "]", ex);
+			if (this.logger.isWarnEnabled()) {
+				this.logger.warn("Unable to instantiate custom exception class [" + exceptionClass.getName() + "]", ex);
 			}
 			return null;
 		}
 	}
 
 	private void logTranslation(String task, @Nullable String sql, SQLException sqlEx, boolean custom) {
-		if (logger.isDebugEnabled()) {
+		if (this.logger.isDebugEnabled()) {
 			String intro = custom ? "Custom translation of" : "Translating";
-			logger.debug(intro + " SQLException with SQL state '" + sqlEx.getSQLState() +
+			this.logger.debug(intro + " SQLException with SQL state '" + sqlEx.getSQLState() +
 					"', error code '" + sqlEx.getErrorCode() + "', message [" + sqlEx.getMessage() + "]" +
 					(sql != null ? "; SQL was [" + sql + "]": "") + " for task [" + task + "]");
 		}

@@ -84,7 +84,7 @@ public class XsltView extends AbstractUrlBasedView {
 	@Nullable
 	private URIResolver uriResolver;
 
-	private ErrorListener errorListener = new SimpleTransformErrorListener(logger);
+	private ErrorListener errorListener = new SimpleTransformErrorListener(this.logger);
 
 	private boolean indent = true;
 
@@ -140,7 +140,7 @@ public class XsltView extends AbstractUrlBasedView {
 	 * @see org.springframework.util.xml.SimpleTransformErrorListener
 	 */
 	public void setErrorListener(@Nullable ErrorListener errorListener) {
-		this.errorListener = (errorListener != null ? errorListener : new SimpleTransformErrorListener(logger));
+		this.errorListener = (errorListener != null ? errorListener : new SimpleTransformErrorListener(this.logger));
 	}
 
 	/**
@@ -462,8 +462,8 @@ public class XsltView extends AbstractUrlBasedView {
 		String url = getUrl();
 		Assert.state(url != null, "'url' not set");
 
-		if (logger.isDebugEnabled()) {
-			logger.debug("Applying stylesheet [" + url + "]");
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Applying stylesheet [" + url + "]");
 		}
 		try {
 			Resource resource = obtainApplicationContext().getResource(url);

@@ -161,13 +161,13 @@ public class DefaultSubscriptionRegistry extends AbstractSubscriptionRegistry {
 				try {
 					expression = this.expressionParser.parseExpression(selector);
 					this.selectorHeaderInUse = true;
-					if (logger.isTraceEnabled()) {
-						logger.trace("Subscription selector: [" + selector + "]");
+					if (this.logger.isTraceEnabled()) {
+						this.logger.trace("Subscription selector: [" + selector + "]");
 					}
 				}
 				catch (Throwable ex) {
-					if (logger.isDebugEnabled()) {
-						logger.debug("Failed to parse selector: " + selector, ex);
+					if (this.logger.isDebugEnabled()) {
+						this.logger.debug("Failed to parse selector: " + selector, ex);
 					}
 				}
 			}
@@ -228,12 +228,12 @@ public class DefaultSubscriptionRegistry extends AbstractSubscriptionRegistry {
 					}
 				}
 				catch (SpelEvaluationException ex) {
-					if (logger.isDebugEnabled()) {
-						logger.debug("Failed to evaluate selector: " + ex.getMessage());
+					if (this.logger.isDebugEnabled()) {
+						this.logger.debug("Failed to evaluate selector: " + ex.getMessage());
 					}
 				}
 				catch (Throwable ex) {
-					logger.debug("Failed to evaluate selector", ex);
+					this.logger.debug("Failed to evaluate selector", ex);
 				}
 			}
 		});
@@ -263,7 +263,7 @@ public class DefaultSubscriptionRegistry extends AbstractSubscriptionRegistry {
 					@Override
 					protected boolean removeEldestEntry(Map.Entry<String, LinkedMultiValueMap<String, String>> eldest) {
 						if (size() > getCacheLimit()) {
-							accessCache.remove(eldest.getKey());
+							DestinationCache.this.accessCache.remove(eldest.getKey());
 							return true;
 						}
 						else {
@@ -278,7 +278,7 @@ public class DefaultSubscriptionRegistry extends AbstractSubscriptionRegistry {
 			if (result == null) {
 				synchronized (this.updateCache) {
 					result = new LinkedMultiValueMap<>();
-					for (SessionSubscriptionInfo info : subscriptionRegistry.getAllSubscriptions()) {
+					for (SessionSubscriptionInfo info : DefaultSubscriptionRegistry.this.subscriptionRegistry.getAllSubscriptions()) {
 						for (String destinationPattern : info.getDestinations()) {
 							if (getPathMatcher().match(destinationPattern, destination)) {
 								for (Subscription sub : info.getSubscriptions(destinationPattern)) {

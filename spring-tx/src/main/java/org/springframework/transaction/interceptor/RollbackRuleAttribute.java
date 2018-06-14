@@ -96,7 +96,7 @@ public class RollbackRuleAttribute implements Serializable{
 	 * Return the pattern for the exception name.
 	 */
 	public String getExceptionName() {
-		return exceptionName;
+		return this.exceptionName;
 	}
 
 	/**

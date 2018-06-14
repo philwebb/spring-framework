@@ -230,7 +230,7 @@ public class SimpleTaskWorkManager implements WorkManager {
 		@Override
 		public void run() {
 			if (this.acceptOnExecution) {
-				this.workListener.workAccepted(new WorkEvent(this, WorkEvent.WORK_ACCEPTED, work, null));
+				this.workListener.workAccepted(new WorkEvent(this, WorkEvent.WORK_ACCEPTED, this.work, null));
 			}
 			synchronized (this.monitor) {
 				this.started = true;

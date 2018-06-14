@@ -599,16 +599,16 @@ public class PersistenceAnnotationBeanPostProcessor
 
 		public <T> T lookup(String jndiName, Class<T> requiredType) throws Exception {
 			JndiLocatorDelegate locator = new JndiLocatorDelegate();
-			if (jndiEnvironment instanceof JndiTemplate) {
-				locator.setJndiTemplate((JndiTemplate) jndiEnvironment);
+			if (PersistenceAnnotationBeanPostProcessor.this.jndiEnvironment instanceof JndiTemplate) {
+				locator.setJndiTemplate((JndiTemplate) PersistenceAnnotationBeanPostProcessor.this.jndiEnvironment);
 			}
-			else if (jndiEnvironment instanceof Properties) {
-				locator.setJndiEnvironment((Properties) jndiEnvironment);
+			else if (PersistenceAnnotationBeanPostProcessor.this.jndiEnvironment instanceof Properties) {
+				locator.setJndiEnvironment((Properties) PersistenceAnnotationBeanPostProcessor.this.jndiEnvironment);
 			}
-			else if (jndiEnvironment != null) {
-				throw new IllegalStateException("Illegal 'jndiEnvironment' type: " + jndiEnvironment.getClass());
+			else if (PersistenceAnnotationBeanPostProcessor.this.jndiEnvironment != null) {
+				throw new IllegalStateException("Illegal 'jndiEnvironment' type: " + PersistenceAnnotationBeanPostProcessor.this.jndiEnvironment.getClass());
 			}
-			locator.setResourceRef(resourceRef);
+			locator.setResourceRef(PersistenceAnnotationBeanPostProcessor.this.resourceRef);
 			return locator.lookup(jndiName, requiredType);
 		}
 	}
@@ -730,9 +730,9 @@ public class PersistenceAnnotationBeanPostProcessor
 				em = ExtendedEntityManagerCreator.createContainerManagedEntityManager(
 						emf, this.properties, this.synchronizedWithTransaction);
 			}
-			if (em instanceof EntityManagerProxy && beanFactory != null && requestingBeanName != null &&
-					beanFactory.containsBean(requestingBeanName) && !beanFactory.isPrototype(requestingBeanName)) {
-				extendedEntityManagersToClose.put(target, ((EntityManagerProxy) em).getTargetEntityManager());
+			if (em instanceof EntityManagerProxy && PersistenceAnnotationBeanPostProcessor.this.beanFactory != null && requestingBeanName != null &&
+					PersistenceAnnotationBeanPostProcessor.this.beanFactory.containsBean(requestingBeanName) && !PersistenceAnnotationBeanPostProcessor.this.beanFactory.isPrototype(requestingBeanName)) {
+				PersistenceAnnotationBeanPostProcessor.this.extendedEntityManagersToClose.put(target, ((EntityManagerProxy) em).getTargetEntityManager());
 			}
 			return em;
 		}

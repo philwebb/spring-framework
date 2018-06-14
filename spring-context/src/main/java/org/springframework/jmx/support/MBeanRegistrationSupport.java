@@ -138,20 +138,20 @@ public class MBeanRegistrationSupport {
 			}
 			catch (InstanceAlreadyExistsException ex) {
 				if (this.registrationPolicy == RegistrationPolicy.IGNORE_EXISTING) {
-					if (logger.isDebugEnabled()) {
-						logger.debug("Ignoring existing MBean at [" + objectName + "]");
+					if (this.logger.isDebugEnabled()) {
+						this.logger.debug("Ignoring existing MBean at [" + objectName + "]");
 					}
 				}
 				else if (this.registrationPolicy == RegistrationPolicy.REPLACE_EXISTING) {
 					try {
-						if (logger.isDebugEnabled()) {
-							logger.debug("Replacing existing MBean at [" + objectName + "]");
+						if (this.logger.isDebugEnabled()) {
+							this.logger.debug("Replacing existing MBean at [" + objectName + "]");
 						}
 						this.server.unregisterMBean(objectName);
 						registeredBean = this.server.registerMBean(mbean, objectName);
 					}
 					catch (InstanceNotFoundException ex2) {
-						logger.error("Unable to replace existing MBean at [" + objectName + "]", ex2);
+						this.logger.error("Unable to replace existing MBean at [" + objectName + "]", ex2);
 						throw ex;
 					}
 				}
@@ -180,7 +180,7 @@ public class MBeanRegistrationSupport {
 			snapshot = new LinkedHashSet<>(this.registeredBeans);
 		}
 		if (!snapshot.isEmpty()) {
-			logger.info("Unregistering JMX-exposed beans");
+			this.logger.info("Unregistering JMX-exposed beans");
 		}
 		for (ObjectName objectName : snapshot) {
 			doUnregister(objectName);
@@ -204,15 +204,15 @@ public class MBeanRegistrationSupport {
 						actuallyUnregistered = true;
 					}
 					else {
-						if (logger.isWarnEnabled()) {
-							logger.warn("Could not unregister MBean [" + objectName + "] as said MBean " +
+						if (this.logger.isWarnEnabled()) {
+							this.logger.warn("Could not unregister MBean [" + objectName + "] as said MBean " +
 									"is not registered (perhaps already unregistered by an external process)");
 						}
 					}
 				}
 				catch (JMException ex) {
-					if (logger.isErrorEnabled()) {
-						logger.error("Could not unregister MBean [" + objectName + "]", ex);
+					if (this.logger.isErrorEnabled()) {
+						this.logger.error("Could not unregister MBean [" + objectName + "]", ex);
 					}
 				}
 			}

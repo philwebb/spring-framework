@@ -109,8 +109,8 @@ public class CachingResourceResolver extends AbstractResourceResolver {
 		Resource resource = this.cache.get(key, Resource.class);
 
 		if (resource != null) {
-			if (logger.isTraceEnabled()) {
-				logger.trace("Resource resolved from cache");
+			if (this.logger.isTraceEnabled()) {
+				this.logger.trace("Resource resolved from cache");
 			}
 			return resource;
 		}
@@ -159,8 +159,8 @@ public class CachingResourceResolver extends AbstractResourceResolver {
 		String resolvedUrlPath = this.cache.get(key, String.class);
 
 		if (resolvedUrlPath != null) {
-			if (logger.isTraceEnabled()) {
-				logger.trace("Path resolved from cache");
+			if (this.logger.isTraceEnabled()) {
+				this.logger.trace("Path resolved from cache");
 			}
 			return resolvedUrlPath;
 		}

@@ -133,7 +133,7 @@ public class SimpleMappingExceptionResolver extends AbstractHandlerExceptionReso
 	 * Keys are view names; values are status codes.
 	 */
 	public Map<String, Integer> getStatusCodesAsMap() {
-		return Collections.unmodifiableMap(statusCodes);
+		return Collections.unmodifiableMap(this.statusCodes);
 	}
 
 	/**
@@ -225,8 +225,8 @@ public class SimpleMappingExceptionResolver extends AbstractHandlerExceptionReso
 		}
 		// Return default error view else, if defined.
 		if (viewName == null && this.defaultErrorView != null) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("Resolving to default view '" + this.defaultErrorView + "'");
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Resolving to default view '" + this.defaultErrorView + "'");
 			}
 			viewName = this.defaultErrorView;
 		}
@@ -255,8 +255,8 @@ public class SimpleMappingExceptionResolver extends AbstractHandlerExceptionReso
 				viewName = exceptionMappings.getProperty(exceptionMapping);
 			}
 		}
-		if (viewName != null && logger.isDebugEnabled()) {
-			logger.debug("Resolving to view '" + viewName + "' based on mapping [" + dominantMapping + "]");
+		if (viewName != null && this.logger.isDebugEnabled()) {
+			this.logger.debug("Resolving to view '" + viewName + "' based on mapping [" + dominantMapping + "]");
 		}
 		return viewName;
 	}
@@ -315,8 +315,8 @@ public class SimpleMappingExceptionResolver extends AbstractHandlerExceptionReso
 	 */
 	protected void applyStatusCodeIfPossible(HttpServletRequest request, HttpServletResponse response, int statusCode) {
 		if (!WebUtils.isIncludeRequest(request)) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("Applying HTTP status " + statusCode);
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Applying HTTP status " + statusCode);
 			}
 			response.setStatus(statusCode);
 			request.setAttribute(WebUtils.ERROR_STATUS_CODE_ATTRIBUTE, statusCode);

@@ -209,16 +209,16 @@ public class CookieLocaleResolver extends CookieGenerator implements LocaleConte
 								cookieName + ":" + value + "' due to: " + ex.getMessage();
 						if (request.getAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE) != null) {
 							// Error dispatch: ignore locale/timezone parse exceptions
-							if (logger.isDebugEnabled()) {
-								logger.debug(reason);
+							if (this.logger.isDebugEnabled()) {
+								this.logger.debug(reason);
 							}
 						}
 						else {
 							throw new IllegalStateException(reason);
 						}
 					}
-					if (logger.isTraceEnabled()) {
-						logger.trace("Parsed cookie value [" + cookie.getValue() + "] into locale '" + locale +
+					if (this.logger.isTraceEnabled()) {
+						this.logger.trace("Parsed cookie value [" + cookie.getValue() + "] into locale '" + locale +
 								"'" + (timeZone != null ? " and time zone '" + timeZone.getID() + "'" : ""));
 					}
 				}

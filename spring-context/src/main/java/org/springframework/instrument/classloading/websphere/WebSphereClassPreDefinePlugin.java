@@ -83,7 +83,7 @@ class WebSphereClassPreDefinePlugin implements InvocationHandler {
 			throws Exception {
 
 		// NB: WebSphere passes className as "." without class while the transformer expects a VM "/" format
-		byte[] result = transformer.transform(classLoader, className.replace('.', '/'), null, null, classfileBuffer);
+		byte[] result = this.transformer.transform(classLoader, className.replace('.', '/'), null, null, classfileBuffer);
 		return (result != null ? result : classfileBuffer);
 	}
 

@@ -189,7 +189,7 @@ public class ServletWrappingController extends AbstractController
 		@Override
 		@Nullable
 		public String getServletName() {
-			return servletName;
+			return ServletWrappingController.this.servletName;
 		}
 
 		@Override
@@ -200,13 +200,13 @@ public class ServletWrappingController extends AbstractController
 
 		@Override
 		public String getInitParameter(String paramName) {
-			return initParameters.getProperty(paramName);
+			return ServletWrappingController.this.initParameters.getProperty(paramName);
 		}
 
 		@Override
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Enumeration<String> getInitParameterNames() {
-			return (Enumeration) initParameters.keys();
+			return (Enumeration) ServletWrappingController.this.initParameters.keys();
 		}
 	}
 

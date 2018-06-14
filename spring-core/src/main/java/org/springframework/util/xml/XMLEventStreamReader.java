@@ -95,7 +95,7 @@ class XMLEventStreamReader extends AbstractXMLStreamReader {
 	@Override
 	public boolean isStandalone() {
 		if (this.event.isStartDocument()) {
-			return ((StartDocument) event).isStandalone();
+			return ((StartDocument) this.event).isStandalone();
 		}
 		else {
 			throw new IllegalStateException();
@@ -152,7 +152,7 @@ class XMLEventStreamReader extends AbstractXMLStreamReader {
 	@Override
 	public String getText() {
 		if (this.event.isCharacters()) {
-			return event.asCharacters().getData();
+			return this.event.asCharacters().getData();
 		}
 		else if (this.event.getEventType() == XMLEvent.COMMENT) {
 			return ((Comment) this.event).getText();

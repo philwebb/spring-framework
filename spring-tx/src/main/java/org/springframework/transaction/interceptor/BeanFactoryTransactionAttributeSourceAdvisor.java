@@ -41,7 +41,7 @@ public class BeanFactoryTransactionAttributeSourceAdvisor extends AbstractBeanFa
 		@Override
 		@Nullable
 		protected TransactionAttributeSource getTransactionAttributeSource() {
-			return transactionAttributeSource;
+			return BeanFactoryTransactionAttributeSourceAdvisor.this.transactionAttributeSource;
 		}
 	};
 

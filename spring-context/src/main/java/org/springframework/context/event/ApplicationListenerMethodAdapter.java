@@ -182,7 +182,7 @@ public class ApplicationListenerMethodAdapter implements GenericApplicationListe
 				handleResult(result);
 			}
 			else {
-				logger.trace("No result object given - no result to handle");
+				this.logger.trace("No result object given - no result to handle");
 			}
 		}
 	}

@@ -146,7 +146,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 				ReactiveAdapter adapter = this.reactiveAdapterRegistry.getAdapter(returnType.getParameterType());
 				boolean asyncVoid = isAsyncVoidReturnType(returnType, adapter);
 				if ((value == null || asyncVoid) && isResponseHandled(args, exchange)) {
-					logger.debug("Response fully handled in controller method");
+					this.logger.debug("Response fully handled in controller method");
 					return asyncVoid ? Mono.from(adapter.toPublisher(value)) : Mono.empty();
 				}
 
@@ -214,8 +214,8 @@ public class InvocableHandlerMethod extends HandlerMethod {
 			return resolver.resolveArgument(parameter, bindingContext, exchange)
 					.defaultIfEmpty(NO_ARG_VALUE)
 					.doOnError(cause -> {
-						if (logger.isDebugEnabled()) {
-							logger.debug(getDetailedErrorMessage("Failed to resolve", parameter), cause);
+						if (this.logger.isDebugEnabled()) {
+							this.logger.debug(getDetailedErrorMessage("Failed to resolve", parameter), cause);
 						}
 					});
 		}
@@ -235,14 +235,14 @@ public class InvocableHandlerMethod extends HandlerMethod {
 
 	@Nullable
 	private Object doInvoke(Object[] args) throws Exception {
-		if (logger.isTraceEnabled()) {
-			logger.trace("Invoking '" + ClassUtils.getQualifiedMethodName(getMethod(), getBeanType()) +
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Invoking '" + ClassUtils.getQualifiedMethodName(getMethod(), getBeanType()) +
 					"' with arguments " + Arrays.toString(args));
 		}
 		ReflectionUtils.makeAccessible(getBridgedMethod());
 		Object returnValue = getBridgedMethod().invoke(getBean(), args);
-		if (logger.isTraceEnabled()) {
-			logger.trace("Method [" + ClassUtils.getQualifiedMethodName(getMethod(), getBeanType()) +
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Method [" + ClassUtils.getQualifiedMethodName(getMethod(), getBeanType()) +
 					"] returned [" + returnValue + "]");
 		}
 		return returnValue;

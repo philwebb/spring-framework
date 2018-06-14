@@ -73,11 +73,11 @@ public class StandardBeanExpressionResolver implements BeanExpressionResolver {
 		}
 		@Override
 		public String getExpressionPrefix() {
-			return expressionPrefix;
+			return StandardBeanExpressionResolver.this.expressionPrefix;
 		}
 		@Override
 		public String getExpressionSuffix() {
-			return expressionSuffix;
+			return StandardBeanExpressionResolver.this.expressionSuffix;
 		}
 	};
 

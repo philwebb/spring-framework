@@ -174,8 +174,8 @@ public class DefaultLifecycleProcessor implements LifecycleProcessor, BeanFactor
 			}
 			if (!bean.isRunning() &&
 					(!autoStartupOnly || !(bean instanceof SmartLifecycle) || ((SmartLifecycle) bean).isAutoStartup())) {
-				if (logger.isDebugEnabled()) {
-					logger.debug("Starting bean '" + beanName + "' of type [" + bean.getClass() + "]");
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Starting bean '" + beanName + "' of type [" + bean.getClass() + "]");
 				}
 				try {
 					bean.start();
@@ -183,8 +183,8 @@ public class DefaultLifecycleProcessor implements LifecycleProcessor, BeanFactor
 				catch (Throwable ex) {
 					throw new ApplicationContextException("Failed to start bean '" + beanName + "'", ex);
 				}
-				if (logger.isDebugEnabled()) {
-					logger.debug("Successfully started bean '" + beanName + "'");
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Successfully started bean '" + beanName + "'");
 				}
 			}
 		}
@@ -229,25 +229,25 @@ public class DefaultLifecycleProcessor implements LifecycleProcessor, BeanFactor
 			try {
 				if (bean.isRunning()) {
 					if (bean instanceof SmartLifecycle) {
-						if (logger.isDebugEnabled()) {
-							logger.debug("Asking bean '" + beanName + "' of type [" + bean.getClass() + "] to stop");
+						if (this.logger.isDebugEnabled()) {
+							this.logger.debug("Asking bean '" + beanName + "' of type [" + bean.getClass() + "] to stop");
 						}
 						countDownBeanNames.add(beanName);
 						((SmartLifecycle) bean).stop(() -> {
 							latch.countDown();
 							countDownBeanNames.remove(beanName);
-							if (logger.isDebugEnabled()) {
-								logger.debug("Bean '" + beanName + "' completed its stop procedure");
+							if (this.logger.isDebugEnabled()) {
+								this.logger.debug("Bean '" + beanName + "' completed its stop procedure");
 							}
 						});
 					}
 					else {
-						if (logger.isDebugEnabled()) {
-							logger.debug("Stopping bean '" + beanName + "' of type [" + bean.getClass() + "]");
+						if (this.logger.isDebugEnabled()) {
+							this.logger.debug("Stopping bean '" + beanName + "' of type [" + bean.getClass() + "]");
 						}
 						bean.stop();
-						if (logger.isDebugEnabled()) {
-							logger.debug("Successfully stopped bean '" + beanName + "'");
+						if (this.logger.isDebugEnabled()) {
+							this.logger.debug("Successfully stopped bean '" + beanName + "'");
 						}
 					}
 				}
@@ -257,8 +257,8 @@ public class DefaultLifecycleProcessor implements LifecycleProcessor, BeanFactor
 				}
 			}
 			catch (Throwable ex) {
-				if (logger.isWarnEnabled()) {
-					logger.warn("Failed to stop bean '" + beanName + "'", ex);
+				if (this.logger.isWarnEnabled()) {
+					this.logger.warn("Failed to stop bean '" + beanName + "'", ex);
 				}
 			}
 		}
@@ -349,8 +349,8 @@ public class DefaultLifecycleProcessor implements LifecycleProcessor, BeanFactor
 			if (this.members.isEmpty()) {
 				return;
 			}
-			if (logger.isInfoEnabled()) {
-				logger.info("Starting beans in phase " + this.phase);
+			if (DefaultLifecycleProcessor.this.logger.isInfoEnabled()) {
+				DefaultLifecycleProcessor.this.logger.info("Starting beans in phase " + this.phase);
 			}
 			Collections.sort(this.members);
 			for (LifecycleGroupMember member : this.members) {
@@ -364,8 +364,8 @@ public class DefaultLifecycleProcessor implements LifecycleProcessor, BeanFactor
 			if (this.members.isEmpty()) {
 				return;
 			}
-			if (logger.isInfoEnabled()) {
-				logger.info("Stopping beans in phase " + this.phase);
+			if (DefaultLifecycleProcessor.this.logger.isInfoEnabled()) {
+				DefaultLifecycleProcessor.this.logger.info("Stopping beans in phase " + this.phase);
 			}
 			this.members.sort(Collections.reverseOrder());
 			CountDownLatch latch = new CountDownLatch(this.smartMemberCount);
@@ -381,8 +381,8 @@ public class DefaultLifecycleProcessor implements LifecycleProcessor, BeanFactor
 			}
 			try {
 				latch.await(this.timeout, TimeUnit.MILLISECONDS);
-				if (latch.getCount() > 0 && !countDownBeanNames.isEmpty() && logger.isWarnEnabled()) {
-					logger.warn("Failed to shut down " + countDownBeanNames.size() + " bean" +
+				if (latch.getCount() > 0 && !countDownBeanNames.isEmpty() && DefaultLifecycleProcessor.this.logger.isWarnEnabled()) {
+					DefaultLifecycleProcessor.this.logger.warn("Failed to shut down " + countDownBeanNames.size() + " bean" +
 							(countDownBeanNames.size() > 1 ? "s" : "") + " with phase value " +
 							this.phase + " within timeout of " + this.timeout + ": " + countDownBeanNames);
 				}

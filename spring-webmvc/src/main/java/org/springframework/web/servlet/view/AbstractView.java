@@ -83,7 +83,7 @@ public abstract class AbstractView extends WebApplicationObjectSupport implement
 
 	@Nullable
 	private Set<String> exposedContextBeanNames;
-	
+
 	@Nullable
 	private String beanName;
 
@@ -305,8 +305,8 @@ public abstract class AbstractView extends WebApplicationObjectSupport implement
 	public void render(@Nullable Map<String, ?> model, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
-		if (logger.isDebugEnabled()) {
-			logger.debug("View " + formatViewName() +
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("View " + formatViewName() +
 					", model " + (model != null ? model : Collections.emptyMap()) +
 					(this.staticAttributes.isEmpty() ? "" : ", static attributes " + this.staticAttributes));
 		}

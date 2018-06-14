@@ -98,8 +98,8 @@ public abstract class AbstractXhrTransport implements XhrTransport {
 		request.addTimeoutTask(session.getTimeoutTask());
 
 		URI receiveUrl = request.getTransportUrl();
-		if (logger.isDebugEnabled()) {
-			logger.debug("Starting XHR " +
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Starting XHR " +
 					(isXhrStreamingDisabled() ? "Polling" : "Streaming") + "session url=" + receiveUrl);
 		}
 
@@ -119,8 +119,8 @@ public abstract class AbstractXhrTransport implements XhrTransport {
 
 	@Override
 	public String executeInfoRequest(URI infoUrl, @Nullable HttpHeaders headers) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Executing SockJS Info request, url=" + infoUrl);
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Executing SockJS Info request, url=" + infoUrl);
 		}
 		HttpHeaders infoRequestHeaders = new HttpHeaders();
 		if (headers != null) {
@@ -128,13 +128,13 @@ public abstract class AbstractXhrTransport implements XhrTransport {
 		}
 		ResponseEntity<String> response = executeInfoRequestInternal(infoUrl, infoRequestHeaders);
 		if (response.getStatusCode() != HttpStatus.OK) {
-			if (logger.isErrorEnabled()) {
-				logger.error("SockJS Info request (url=" + infoUrl + ") failed: " + response);
+			if (this.logger.isErrorEnabled()) {
+				this.logger.error("SockJS Info request (url=" + infoUrl + ") failed: " + response);
 			}
 			throw new HttpServerErrorException(response.getStatusCode());
 		}
-		if (logger.isTraceEnabled()) {
-			logger.trace("SockJS Info request (url=" + infoUrl + ") response: " + response);
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("SockJS Info request (url=" + infoUrl + ") response: " + response);
 		}
 		String result = response.getBody();
 		return (result != null ? result : "");
@@ -147,18 +147,18 @@ public abstract class AbstractXhrTransport implements XhrTransport {
 
 	@Override
 	public void executeSendRequest(URI url, HttpHeaders headers, TextMessage message) {
-		if (logger.isTraceEnabled()) {
-			logger.trace("Starting XHR send, url=" + url);
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Starting XHR send, url=" + url);
 		}
 		ResponseEntity<String> response = executeSendRequestInternal(url, headers, message);
 		if (response.getStatusCode() != HttpStatus.NO_CONTENT) {
-			if (logger.isErrorEnabled()) {
-				logger.error("XHR send request (url=" + url + ") failed: " + response);
+			if (this.logger.isErrorEnabled()) {
+				this.logger.error("XHR send request (url=" + url + ") failed: " + response);
 			}
 			throw new HttpServerErrorException(response.getStatusCode());
 		}
-		if (logger.isTraceEnabled()) {
-			logger.trace("XHR send request (url=" + url + ") response: " + response);
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("XHR send request (url=" + url + ") response: " + response);
 		}
 	}
 

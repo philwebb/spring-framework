@@ -101,8 +101,8 @@ public abstract class AbstractUrlViewController extends AbstractController {
 	@Override
 	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) {
 		String viewName = getViewNameForRequest(request);
-		if (logger.isTraceEnabled()) {
-			logger.trace("Returning view name '" + viewName + "'");
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Returning view name '" + viewName + "'");
 		}
 		return new ModelAndView(viewName, RequestContextUtils.getInputFlashMap(request));
 	}

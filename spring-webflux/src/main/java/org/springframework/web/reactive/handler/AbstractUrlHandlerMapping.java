@@ -91,11 +91,11 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping {
 			return Mono.error(ex);
 		}
 
-		if (handler != null && logger.isDebugEnabled()) {
-			logger.debug("Mapping [" + lookupPath + "] to " + handler);
+		if (handler != null && this.logger.isDebugEnabled()) {
+			this.logger.debug("Mapping [" + lookupPath + "] to " + handler);
 		}
-		else if (handler == null && logger.isTraceEnabled()) {
-			logger.trace("No handler mapping found for [" + lookupPath + "]");
+		else if (handler == null && this.logger.isTraceEnabled()) {
+			this.logger.trace("No handler mapping found for [" + lookupPath + "]");
 		}
 
 		return Mono.justOrEmpty(handler);
@@ -120,8 +120,8 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping {
 				.findFirst()
 				.map(entry -> {
 					PathPattern pattern = entry.getKey();
-					if (logger.isDebugEnabled()) {
-						logger.debug("Matching pattern for request [" + lookupPath + "] is " + pattern);
+					if (this.logger.isDebugEnabled()) {
+						this.logger.debug("Matching pattern for request [" + lookupPath + "] is " + pattern);
 					}
 					PathContainer pathWithinMapping = pattern.extractPathWithinPattern(lookupPath);
 					return handleMatch(entry.getValue(), pattern, pathWithinMapping, exchange);
@@ -207,8 +207,8 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping {
 
 		// Register resolved handler
 		this.handlerMap.put(pattern, resolvedHandler);
-		if (logger.isInfoEnabled()) {
-			logger.info("Mapped URL path [" + urlPath + "] onto " + getHandlerDescription(handler));
+		if (this.logger.isInfoEnabled()) {
+			this.logger.info("Mapped URL path [" + urlPath + "] onto " + getHandlerDescription(handler));
 		}
 	}
 

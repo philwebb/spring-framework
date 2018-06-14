@@ -95,11 +95,11 @@ public class ServerResponseResultHandler implements HandlerResultHandler, Initia
 		return response.writeTo(exchange, new ServerResponse.Context() {
 			@Override
 			public List<HttpMessageWriter<?>> messageWriters() {
-				return messageWriters;
+				return ServerResponseResultHandler.this.messageWriters;
 			}
 			@Override
 			public List<ViewResolver> viewResolvers() {
-				return viewResolvers;
+				return ServerResponseResultHandler.this.viewResolvers;
 			}
 		});
 	}
