@@ -15,6 +15,7 @@
 	<suppress files="BeanCreationException" checks="MutableException"/>
 	<suppress files="ExpressionException" checks="MutableException" />
 	<suppress files="TransactionSystemException" checks="MutableException" />
+	<suppress files="ExtractingResponseErrorHandlerTests" checks="MutableException" />
 	<suppress files="SocketUtils" checks="HideUtilityClassConstructor" />
 	<suppress files="ResolvableType" checks="FinalClass" />
 	<suppress files="JmsHeaderMapper" checks="InterfaceIsType" />
