@@ -22,4 +22,5 @@
 	<suppress files="JmsHeaders" checks="InterfaceIsType" />
 	<suppress files="ValueConstants" checks="InterfaceIsType" />
 	<suppress files="SpelReproTests" checks="InterfaceIsType" />
+	<suppress files="ServletAnnotationControllerHandlerMethodTests" checks="InterfaceIsType" />
 </suppressions>
