@@ -39,6 +39,7 @@ import org.springframework.core.MethodParameter;
 import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.core.ResolvableType;
 import org.springframework.lang.Nullable;
+import org.springframework.util.ObjectUtils;
 
 /**
  * Descriptor for a specific dependency that is about to be injected.
@@ -374,6 +375,16 @@ public class DependencyDescriptor extends InjectionPoint implements Serializable
 		}
 	}
 
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = ObjectUtils.nullSafeHashCode(this.containingClass);
+		result = prime * result + Boolean.hashCode(this.eager);
+		result = prime * result + this.nestingLevel;
+		result = prime * result + Boolean.hashCode(this.required);
+		return result;
+	}
 
 	@Override
 	public boolean equals(Object other) {
