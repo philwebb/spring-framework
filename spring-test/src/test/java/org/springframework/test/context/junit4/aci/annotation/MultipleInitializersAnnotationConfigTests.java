@@ -42,7 +42,13 @@ import static org.junit.Assert.*;
 public class MultipleInitializersAnnotationConfigTests {
 
 	@Autowired
-	private String foo, bar, baz;
+	private String foo;
+
+	@Autowired
+	private String bar;
+
+	@Autowired
+	private String baz;
 
 
 	@Test
