@@ -23,7 +23,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.AbstractContainerEntityManagerFactoryIntegrationTests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 /**
  * Hibernate-specific JPA tests with multiple EntityManagerFactory instances.

@@ -31,8 +31,8 @@ import org.springframework.test.context.transaction.BeforeTransaction;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ClassUtils;
 
-import static org.junit.Assert.*;
-import static org.springframework.test.context.junit4.JUnitTestingUtils.*;
+import static org.junit.Assert.fail;
+import static org.springframework.test.context.junit4.JUnitTestingUtils.runTestsAndAssertCounters;
 
 /**
  * Integration tests which verify that '<i>before</i>' and '<i>after</i>'

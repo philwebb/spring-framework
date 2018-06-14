@@ -35,10 +35,10 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
-import static org.junit.Assert.*;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Sebastien Deleuze

@@ -19,7 +19,8 @@ package org.springframework.test.context.junit4.profile.importresource;
 import org.junit.Test;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Juergen Hoeller

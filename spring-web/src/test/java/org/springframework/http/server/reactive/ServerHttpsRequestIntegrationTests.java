@@ -37,11 +37,11 @@ import org.springframework.http.server.reactive.bootstrap.HttpServer;
 import org.springframework.http.server.reactive.bootstrap.ReactorHttpsServer;
 import org.springframework.web.client.RestTemplate;
 
+import reactor.core.publisher.Mono;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
-
-import reactor.core.publisher.Mono;
 
 /**
  * HTTPS-specific integration test for {@link ServerHttpRequest}.

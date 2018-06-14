@@ -40,10 +40,10 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.i18n.FixedLocaleContextResolver;
 import org.springframework.web.server.i18n.LocaleContextResolver;
 
-import static org.junit.Assert.*;
-
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Sebastien Deleuze

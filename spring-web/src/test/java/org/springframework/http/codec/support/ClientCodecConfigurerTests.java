@@ -55,13 +55,13 @@ import org.springframework.http.codec.xml.Jaxb2XmlDecoder;
 import org.springframework.http.codec.xml.Jaxb2XmlEncoder;
 import org.springframework.util.MimeTypeUtils;
 
+import reactor.core.publisher.Flux;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.core.ResolvableType.forClass;
-
-import reactor.core.publisher.Flux;
 
 /**
  * Unit tests for {@link ClientCodecConfigurer}.

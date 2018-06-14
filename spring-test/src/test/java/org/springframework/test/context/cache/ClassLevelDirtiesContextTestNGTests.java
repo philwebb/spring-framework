@@ -37,8 +37,9 @@ import org.springframework.test.context.testng.TrackingTestNGTestListener;
 import org.testng.ITestNGListener;
 import org.testng.TestNG;
 
-import static org.junit.Assert.*;
-import static org.springframework.test.context.cache.ContextCacheTestUtils.*;
+import static org.junit.Assert.assertEquals;
+import static org.springframework.test.context.cache.ContextCacheTestUtils.assertContextCacheStatistics;
+import static org.springframework.test.context.cache.ContextCacheTestUtils.resetContextCache;
 
 /**
  * JUnit 4 based integration test which verifies correct {@linkplain ContextCache

@@ -34,11 +34,11 @@ import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.util.TokenBuffer;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
-
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
+
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 
 /**
  * @author Arjen Poutsma

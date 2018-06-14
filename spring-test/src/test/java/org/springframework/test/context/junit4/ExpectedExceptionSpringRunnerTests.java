@@ -24,7 +24,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.springframework.test.context.TestExecutionListeners;
 
-import static org.springframework.test.context.junit4.JUnitTestingUtils.*;
+import static org.springframework.test.context.junit4.JUnitTestingUtils.runTestsAndAssertCounters;
 
 /**
  * Verifies proper handling of JUnit's {@link Test#expected() &#064;Test(expected = ...)}

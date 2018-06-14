@@ -31,7 +31,9 @@ import org.springframework.http.server.reactive.HttpHandler;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.adapter.WebHttpHandlerBuilder;
 
-import static org.springframework.http.RequestEntity.*;
+import static org.springframework.http.RequestEntity.get;
+import static org.springframework.http.RequestEntity.options;
+import static org.springframework.http.RequestEntity.post;
 
 /**
  * Base class for integration tests with {@code @RequestMapping methods}.

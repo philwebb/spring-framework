@@ -27,7 +27,7 @@ import org.junit.runners.JUnit4;
 import org.springframework.test.annotation.Repeat;
 import org.springframework.test.context.junit4.TimedTransactionalSpringRunnerTests;
 
-import static org.springframework.test.transaction.TransactionTestUtils.*;
+import static org.springframework.test.transaction.TransactionTestUtils.assertInTransaction;
 
 /**
  * This class is an extension of {@link TimedTransactionalSpringRunnerTests}

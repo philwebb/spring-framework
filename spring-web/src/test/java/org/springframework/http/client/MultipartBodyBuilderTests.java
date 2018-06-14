@@ -28,10 +28,10 @@ import org.springframework.http.client.MultipartBodyBuilder.PublisherEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import reactor.core.publisher.Flux;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
-import reactor.core.publisher.Flux;
 
 /**
  * @author Arjen Poutsma

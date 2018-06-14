@@ -27,9 +27,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
-import static org.springframework.util.SocketUtils.*;
+import static org.hamcrest.CoreMatchers.endsWith;
+import static org.hamcrest.CoreMatchers.startsWith;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.springframework.util.SocketUtils.PORT_RANGE_MAX;
+import static org.springframework.util.SocketUtils.PORT_RANGE_MIN;
 
 /**
  * Unit tests for {@link SocketUtils}.

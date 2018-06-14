@@ -32,6 +32,9 @@ import org.springframework.mock.http.server.reactive.test.MockServerHttpResponse
 import org.springframework.util.MimeType;
 import org.springframework.util.MimeTypeUtils;
 
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.Assert.assertEquals;
@@ -43,9 +46,6 @@ import static org.springframework.core.ResolvableType.forClass;
 import static org.springframework.http.MediaType.TEXT_HTML;
 import static org.springframework.http.MediaType.TEXT_PLAIN;
 import static org.springframework.http.MediaType.TEXT_XML;
-
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /**
  * Unit tests for {@link EncoderHttpMessageWriter}.

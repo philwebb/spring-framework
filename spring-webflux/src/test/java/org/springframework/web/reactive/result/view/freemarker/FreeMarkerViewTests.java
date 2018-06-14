@@ -33,10 +33,11 @@ import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.ModelMap;
 
-import static org.junit.Assert.*;
-
 import freemarker.template.Configuration;
 import reactor.test.StepVerifier;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Rossen Stoyanchev

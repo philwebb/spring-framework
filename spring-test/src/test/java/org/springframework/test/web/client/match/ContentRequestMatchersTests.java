@@ -25,7 +25,7 @@ import org.springframework.mock.http.client.MockClientHttpRequest;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasXPath;
 
 /**
  * Unit tests for {@link ContentRequestMatchers}.

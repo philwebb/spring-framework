@@ -45,10 +45,10 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.lang.Nullable;
 import org.springframework.util.MimeTypeUtils;
 
-import static java.util.Collections.emptyMap;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import static java.util.Collections.emptyMap;
 
 /**
  * {@code HttpMessageWriter} that can write a {@link Resource}.

@@ -26,9 +26,11 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.web.socket.handler.TestPrincipal;
 
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 /**
  * Unit tests for {@link org.springframework.web.socket.adapter.jetty.JettyWebSocketSession}.

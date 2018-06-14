@@ -24,7 +24,7 @@ import org.springframework.test.context.ContextCustomizerFactory;
 import org.springframework.test.context.configuration.interfaces.BootstrapWithTestInterface.CustomTestContextBootstrapper;
 import org.springframework.test.context.support.DefaultTestContextBootstrapper;
 
-import static java.util.Collections.*;
+import static java.util.Collections.singletonList;
 
 /**
  * @author Sam Brannen

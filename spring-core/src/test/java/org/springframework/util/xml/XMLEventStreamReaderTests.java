@@ -31,8 +31,8 @@ import org.junit.Test;
 import org.w3c.dom.Node;
 import org.xmlunit.util.Predicate;
 
-import static org.junit.Assert.*;
-import static org.xmlunit.matchers.CompareMatcher.*;
+import static org.junit.Assert.assertThat;
+import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;
 
 public class XMLEventStreamReaderTests {
 

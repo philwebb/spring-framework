@@ -21,8 +21,10 @@ import java.io.IOException;
 import org.junit.Test;
 import org.springframework.beans.FatalBeanException;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for the {@link RollbackRuleAttribute} class.

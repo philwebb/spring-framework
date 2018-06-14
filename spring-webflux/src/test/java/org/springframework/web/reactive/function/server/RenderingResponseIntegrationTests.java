@@ -35,12 +35,12 @@ import org.springframework.web.reactive.result.view.View;
 import org.springframework.web.reactive.result.view.ViewResolver;
 import org.springframework.web.server.ServerWebExchange;
 
-import static org.junit.Assert.*;
-import static org.springframework.web.reactive.function.server.HandlerFilterFunction.*;
-import static org.springframework.web.reactive.function.server.RequestPredicates.*;
-import static org.springframework.web.reactive.function.server.RouterFunctions.*;
-
 import reactor.core.publisher.Mono;
+
+import static org.junit.Assert.assertEquals;
+import static org.springframework.web.reactive.function.server.HandlerFilterFunction.ofResponseProcessor;
+import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
+import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 /**
  * @author Arjen Poutsma

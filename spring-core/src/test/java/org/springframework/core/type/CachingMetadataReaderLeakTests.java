@@ -27,8 +27,8 @@ import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.tests.Assume;
 import org.springframework.tests.TestGroup;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
 /**
  * Unit tests for checking the behaviour of {@link CachingMetadataReaderFactory} under

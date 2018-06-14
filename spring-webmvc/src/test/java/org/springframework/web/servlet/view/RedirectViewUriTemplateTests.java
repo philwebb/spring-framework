@@ -29,7 +29,7 @@ import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.support.SessionFlashMapManager;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class RedirectViewUriTemplateTests {
 

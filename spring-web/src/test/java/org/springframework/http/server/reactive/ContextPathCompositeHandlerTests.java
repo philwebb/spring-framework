@@ -26,12 +26,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 import org.springframework.mock.http.server.reactive.test.MockServerHttpResponse;
 
+import reactor.core.publisher.Mono;
+
 import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
-import reactor.core.publisher.Mono;
 
 /**
  * Unit tests for {@link ContextPathCompositeHandler}.

@@ -38,7 +38,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 import org.xmlunit.matchers.CompareMatcher;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Arjen Poutsma

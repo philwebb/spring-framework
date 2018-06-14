@@ -18,11 +18,11 @@ package org.springframework.web.reactive.function.server;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-import static org.springframework.web.reactive.function.BodyInserters.*;
-
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+
+import static org.junit.Assert.assertNotNull;
+import static org.springframework.web.reactive.function.BodyInserters.fromObject;
 
 /**
  * @author Arjen Poutsma

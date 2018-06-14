@@ -36,11 +36,11 @@ import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.ModelMap;
 
+import reactor.test.StepVerifier;
+
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-
-import reactor.test.StepVerifier;
 
 
 /**

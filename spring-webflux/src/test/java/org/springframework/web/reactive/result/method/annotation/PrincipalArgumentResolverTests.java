@@ -26,10 +26,11 @@ import org.springframework.web.method.ResolvableMethod;
 import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.server.ServerWebExchange;
 
-import static org.junit.Assert.*;
-
 import io.reactivex.Single;
 import reactor.core.publisher.Mono;
+
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for {@link PrincipalArgumentResolver}.

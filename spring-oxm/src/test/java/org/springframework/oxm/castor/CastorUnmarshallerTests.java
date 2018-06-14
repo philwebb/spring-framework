@@ -32,8 +32,12 @@ import org.springframework.oxm.MarshallingException;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThat;
 
 /**
  * @author Arjen Poutsma

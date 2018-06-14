@@ -46,10 +46,11 @@ import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriBuilder;
 
-import static java.nio.charset.StandardCharsets.*;
-import static org.springframework.test.util.AssertionErrors.*;
-
 import reactor.core.publisher.Flux;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.springframework.test.util.AssertionErrors.assertEquals;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 /**
  * Default implementation of {@link WebTestClient}.

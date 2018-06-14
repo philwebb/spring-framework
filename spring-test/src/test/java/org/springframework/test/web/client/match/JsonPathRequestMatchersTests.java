@@ -21,7 +21,7 @@ import java.io.IOException;
 import org.junit.Test;
 import org.springframework.mock.http.client.MockClientHttpRequest;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.equalTo;
 
 /**
  * Unit tests for {@link JsonPathRequestMatchers}.

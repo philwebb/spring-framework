@@ -22,7 +22,11 @@ import java.io.IOException;
 import org.junit.Test;
 import org.springframework.transaction.TransactionDefinition;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests to check conversion from String to TransactionAttribute.
