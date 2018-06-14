@@ -33,8 +33,8 @@ public class SimpleAsyncUncaughtExceptionHandler implements AsyncUncaughtExcepti
 
 	@Override
 	public void handleUncaughtException(Throwable ex, Method method, Object... params) {
-		if (logger.isErrorEnabled()) {
-			logger.error(String.format("Unexpected error occurred invoking async " +
+		if (this.logger.isErrorEnabled()) {
+			this.logger.error(String.format("Unexpected error occurred invoking async " +
 					"method '%s'.", method), ex);
 		}
 	}

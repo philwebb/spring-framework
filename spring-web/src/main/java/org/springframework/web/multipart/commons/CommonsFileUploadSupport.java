@@ -259,8 +259,8 @@ public abstract class CommonsFileUploadSupport {
 					value = fileItem.getString(partEncoding);
 				}
 				catch (UnsupportedEncodingException ex) {
-					if (logger.isWarnEnabled()) {
-						logger.warn("Could not decode multipart item '" + fileItem.getFieldName() +
+					if (this.logger.isWarnEnabled()) {
+						this.logger.warn("Could not decode multipart item '" + fileItem.getFieldName() +
 								"' with encoding '" + partEncoding + "': using platform default");
 					}
 					value = fileItem.getString();
@@ -281,8 +281,8 @@ public abstract class CommonsFileUploadSupport {
 				// multipart file field
 				CommonsMultipartFile file = createMultipartFile(fileItem);
 				multipartFiles.add(file.getName(), file);
-				if (logger.isDebugEnabled()) {
-					logger.debug("Found multipart file [" + file.getName() + "] of size " + file.getSize() +
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Found multipart file [" + file.getName() + "] of size " + file.getSize() +
 							" bytes with original filename [" + file.getOriginalFilename() + "], stored " +
 							file.getStorageDescription());
 				}
@@ -318,8 +318,8 @@ public abstract class CommonsFileUploadSupport {
 				if (file instanceof CommonsMultipartFile) {
 					CommonsMultipartFile cmf = (CommonsMultipartFile) file;
 					cmf.getFileItem().delete();
-					if (logger.isDebugEnabled()) {
-						logger.debug("Cleaning up multipart file [" + cmf.getName() + "] with original filename [" +
+					if (this.logger.isDebugEnabled()) {
+						this.logger.debug("Cleaning up multipart file [" + cmf.getName() + "] with original filename [" +
 								cmf.getOriginalFilename() + "], stored " + cmf.getStorageDescription());
 					}
 				}

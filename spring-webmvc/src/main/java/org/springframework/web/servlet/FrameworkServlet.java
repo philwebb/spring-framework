@@ -988,13 +988,13 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 				requestAttributes.requestCompleted();
 			}
 
-			if (logger.isDebugEnabled()) {
+			if (this.logger.isDebugEnabled()) {
 				if (failureCause != null) {
 					this.logger.debug("Could not complete request", failureCause);
 				}
 				else {
 					if (asyncManager.isConcurrentHandlingStarted()) {
-						logger.debug("Leaving response open for concurrent processing");
+						this.logger.debug("Leaving response open for concurrent processing");
 					}
 					else {
 						this.logger.debug("Successfully completed request");
@@ -1050,8 +1050,8 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		if (requestAttributes != null) {
 			RequestContextHolder.setRequestAttributes(requestAttributes, this.threadContextInheritable);
 		}
-		if (logger.isTraceEnabled()) {
-			logger.trace("Bound request context to thread: " + request);
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Bound request context to thread: " + request);
 		}
 	}
 
@@ -1060,8 +1060,8 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 
 		LocaleContextHolder.setLocaleContext(prevLocaleContext, this.threadContextInheritable);
 		RequestContextHolder.setRequestAttributes(previousAttributes, this.threadContextInheritable);
-		if (logger.isTraceEnabled()) {
-			logger.trace("Cleared thread-bound request context: " + request);
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Cleared thread-bound request context: " + request);
 		}
 	}
 

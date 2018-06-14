@@ -75,12 +75,12 @@ public abstract class StreamingSockJsSession extends AbstractHttpSockJsSession {
 			writeFrame(frame);
 
 			this.byteCount += (frame.getContentBytes().length + 1);
-			if (logger.isTraceEnabled()) {
-				logger.trace(this.byteCount + " bytes written so far, " +
+			if (this.logger.isTraceEnabled()) {
+				this.logger.trace(this.byteCount + " bytes written so far, " +
 						getMessageCache().size() + " more messages not flushed");
 			}
 			if (this.byteCount >= getSockJsServiceConfig().getStreamBytesLimit()) {
-				logger.trace("Streamed bytes limit reached, recycling current request");
+				this.logger.trace("Streamed bytes limit reached, recycling current request");
 				resetRequest();
 				this.byteCount = 0;
 				break;

@@ -231,16 +231,16 @@ public class ScheduledAnnotationBeanPostProcessor
 			Assert.state(this.beanFactory != null, "BeanFactory must be set to find scheduler by type");
 			try {
 				// Search for TaskScheduler bean...
-				this.registrar.setTaskScheduler(resolveSchedulerBean(beanFactory, TaskScheduler.class, false));
+				this.registrar.setTaskScheduler(resolveSchedulerBean(this.beanFactory, TaskScheduler.class, false));
 			}
 			catch (NoUniqueBeanDefinitionException ex) {
-				logger.debug("Could not find unique TaskScheduler bean", ex);
+				this.logger.debug("Could not find unique TaskScheduler bean", ex);
 				try {
-					this.registrar.setTaskScheduler(resolveSchedulerBean(beanFactory, TaskScheduler.class, true));
+					this.registrar.setTaskScheduler(resolveSchedulerBean(this.beanFactory, TaskScheduler.class, true));
 				}
 				catch (NoSuchBeanDefinitionException ex2) {
-					if (logger.isInfoEnabled()) {
-						logger.info("More than one TaskScheduler bean exists within the context, and " +
+					if (this.logger.isInfoEnabled()) {
+						this.logger.info("More than one TaskScheduler bean exists within the context, and " +
 								"none is named 'taskScheduler'. Mark one of them as primary or name it 'taskScheduler' " +
 								"(possibly as an alias); or implement the SchedulingConfigurer interface and call " +
 								"ScheduledTaskRegistrar#setScheduler explicitly within the configureTasks() callback: " +
@@ -249,19 +249,19 @@ public class ScheduledAnnotationBeanPostProcessor
 				}
 			}
 			catch (NoSuchBeanDefinitionException ex) {
-				logger.debug("Could not find default TaskScheduler bean", ex);
+				this.logger.debug("Could not find default TaskScheduler bean", ex);
 				// Search for ScheduledExecutorService bean next...
 				try {
-					this.registrar.setScheduler(resolveSchedulerBean(beanFactory, ScheduledExecutorService.class, false));
+					this.registrar.setScheduler(resolveSchedulerBean(this.beanFactory, ScheduledExecutorService.class, false));
 				}
 				catch (NoUniqueBeanDefinitionException ex2) {
-					logger.debug("Could not find unique ScheduledExecutorService bean", ex2);
+					this.logger.debug("Could not find unique ScheduledExecutorService bean", ex2);
 					try {
-						this.registrar.setScheduler(resolveSchedulerBean(beanFactory, ScheduledExecutorService.class, true));
+						this.registrar.setScheduler(resolveSchedulerBean(this.beanFactory, ScheduledExecutorService.class, true));
 					}
 					catch (NoSuchBeanDefinitionException ex3) {
-						if (logger.isInfoEnabled()) {
-							logger.info("More than one ScheduledExecutorService bean exists within the context, and " +
+						if (this.logger.isInfoEnabled()) {
+							this.logger.info("More than one ScheduledExecutorService bean exists within the context, and " +
 									"none is named 'taskScheduler'. Mark one of them as primary or name it 'taskScheduler' " +
 									"(possibly as an alias); or implement the SchedulingConfigurer interface and call " +
 									"ScheduledTaskRegistrar#setScheduler explicitly within the configureTasks() callback: " +
@@ -270,9 +270,9 @@ public class ScheduledAnnotationBeanPostProcessor
 					}
 				}
 				catch (NoSuchBeanDefinitionException ex2) {
-					logger.debug("Could not find default ScheduledExecutorService bean", ex2);
+					this.logger.debug("Could not find default ScheduledExecutorService bean", ex2);
 					// Giving up -> falling back to default scheduler within the registrar...
-					logger.info("No TaskScheduler/ScheduledExecutorService bean found for scheduled processing");
+					this.logger.info("No TaskScheduler/ScheduledExecutorService bean found for scheduled processing");
 				}
 			}
 		}
@@ -323,16 +323,16 @@ public class ScheduledAnnotationBeanPostProcessor
 					});
 			if (annotatedMethods.isEmpty()) {
 				this.nonAnnotatedClasses.add(targetClass);
-				if (logger.isTraceEnabled()) {
-					logger.trace("No @Scheduled annotations found on bean class: " + bean.getClass());
+				if (this.logger.isTraceEnabled()) {
+					this.logger.trace("No @Scheduled annotations found on bean class: " + bean.getClass());
 				}
 			}
 			else {
 				// Non-empty set of methods
 				annotatedMethods.forEach((method, scheduledMethods) ->
 						scheduledMethods.forEach(scheduled -> processScheduled(scheduled, method, bean)));
-				if (logger.isDebugEnabled()) {
-					logger.debug(annotatedMethods.size() + " @Scheduled methods processed on bean '" + beanName +
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug(annotatedMethods.size() + " @Scheduled methods processed on bean '" + beanName +
 							"': " + annotatedMethods);
 				}
 			}

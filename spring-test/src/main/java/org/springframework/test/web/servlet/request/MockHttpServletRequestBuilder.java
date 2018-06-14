@@ -712,7 +712,7 @@ public class MockHttpServletRequestBuilder
 		HttpInputMessage message = new HttpInputMessage() {
 			@Override
 			public InputStream getBody() {
-				return (content != null ? new ByteArrayInputStream(content) : StreamUtils.emptyInput());
+				return (MockHttpServletRequestBuilder.this.content != null ? new ByteArrayInputStream(MockHttpServletRequestBuilder.this.content) : StreamUtils.emptyInput());
 			}
 			@Override
 			public HttpHeaders getHeaders() {

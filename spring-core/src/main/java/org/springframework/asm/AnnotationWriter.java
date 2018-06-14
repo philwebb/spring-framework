@@ -118,116 +118,116 @@ final class AnnotationWriter extends AnnotationVisitor {
 
     @Override
     public void visit(final String name, final Object value) {
-        ++size;
-        if (named) {
-            bv.putShort(cw.newUTF8(name));
+        ++this.size;
+        if (this.named) {
+            this.bv.putShort(this.cw.newUTF8(name));
         }
         if (value instanceof String) {
-            bv.put12('s', cw.newUTF8((String) value));
+            this.bv.put12('s', this.cw.newUTF8((String) value));
         } else if (value instanceof Byte) {
-            bv.put12('B', cw.newInteger(((Byte) value).byteValue()).index);
+            this.bv.put12('B', this.cw.newInteger(((Byte) value).byteValue()).index);
         } else if (value instanceof Boolean) {
             int v = ((Boolean) value).booleanValue() ? 1 : 0;
-            bv.put12('Z', cw.newInteger(v).index);
+            this.bv.put12('Z', this.cw.newInteger(v).index);
         } else if (value instanceof Character) {
-            bv.put12('C', cw.newInteger(((Character) value).charValue()).index);
+            this.bv.put12('C', this.cw.newInteger(((Character) value).charValue()).index);
         } else if (value instanceof Short) {
-            bv.put12('S', cw.newInteger(((Short) value).shortValue()).index);
+            this.bv.put12('S', this.cw.newInteger(((Short) value).shortValue()).index);
         } else if (value instanceof Type) {
-            bv.put12('c', cw.newUTF8(((Type) value).getDescriptor()));
+            this.bv.put12('c', this.cw.newUTF8(((Type) value).getDescriptor()));
         } else if (value instanceof byte[]) {
             byte[] v = (byte[]) value;
-            bv.put12('[', v.length);
+            this.bv.put12('[', v.length);
             for (int i = 0; i < v.length; i++) {
-                bv.put12('B', cw.newInteger(v[i]).index);
+                this.bv.put12('B', this.cw.newInteger(v[i]).index);
             }
         } else if (value instanceof boolean[]) {
             boolean[] v = (boolean[]) value;
-            bv.put12('[', v.length);
+            this.bv.put12('[', v.length);
             for (int i = 0; i < v.length; i++) {
-                bv.put12('Z', cw.newInteger(v[i] ? 1 : 0).index);
+                this.bv.put12('Z', this.cw.newInteger(v[i] ? 1 : 0).index);
             }
         } else if (value instanceof short[]) {
             short[] v = (short[]) value;
-            bv.put12('[', v.length);
+            this.bv.put12('[', v.length);
             for (int i = 0; i < v.length; i++) {
-                bv.put12('S', cw.newInteger(v[i]).index);
+                this.bv.put12('S', this.cw.newInteger(v[i]).index);
             }
         } else if (value instanceof char[]) {
             char[] v = (char[]) value;
-            bv.put12('[', v.length);
+            this.bv.put12('[', v.length);
             for (int i = 0; i < v.length; i++) {
-                bv.put12('C', cw.newInteger(v[i]).index);
+                this.bv.put12('C', this.cw.newInteger(v[i]).index);
             }
         } else if (value instanceof int[]) {
             int[] v = (int[]) value;
-            bv.put12('[', v.length);
+            this.bv.put12('[', v.length);
             for (int i = 0; i < v.length; i++) {
-                bv.put12('I', cw.newInteger(v[i]).index);
+                this.bv.put12('I', this.cw.newInteger(v[i]).index);
             }
         } else if (value instanceof long[]) {
             long[] v = (long[]) value;
-            bv.put12('[', v.length);
+            this.bv.put12('[', v.length);
             for (int i = 0; i < v.length; i++) {
-                bv.put12('J', cw.newLong(v[i]).index);
+                this.bv.put12('J', this.cw.newLong(v[i]).index);
             }
         } else if (value instanceof float[]) {
             float[] v = (float[]) value;
-            bv.put12('[', v.length);
+            this.bv.put12('[', v.length);
             for (int i = 0; i < v.length; i++) {
-                bv.put12('F', cw.newFloat(v[i]).index);
+                this.bv.put12('F', this.cw.newFloat(v[i]).index);
             }
         } else if (value instanceof double[]) {
             double[] v = (double[]) value;
-            bv.put12('[', v.length);
+            this.bv.put12('[', v.length);
             for (int i = 0; i < v.length; i++) {
-                bv.put12('D', cw.newDouble(v[i]).index);
+                this.bv.put12('D', this.cw.newDouble(v[i]).index);
             }
         } else {
-            Item i = cw.newConstItem(value);
-            bv.put12(".s.IFJDCS".charAt(i.type), i.index);
+            Item i = this.cw.newConstItem(value);
+            this.bv.put12(".s.IFJDCS".charAt(i.type), i.index);
         }
     }
 
     @Override
     public void visitEnum(final String name, final String desc,
             final String value) {
-        ++size;
-        if (named) {
-            bv.putShort(cw.newUTF8(name));
+        ++this.size;
+        if (this.named) {
+            this.bv.putShort(this.cw.newUTF8(name));
         }
-        bv.put12('e', cw.newUTF8(desc)).putShort(cw.newUTF8(value));
+        this.bv.put12('e', this.cw.newUTF8(desc)).putShort(this.cw.newUTF8(value));
     }
 
     @Override
     public AnnotationVisitor visitAnnotation(final String name,
             final String desc) {
-        ++size;
-        if (named) {
-            bv.putShort(cw.newUTF8(name));
+        ++this.size;
+        if (this.named) {
+            this.bv.putShort(this.cw.newUTF8(name));
         }
         // write tag and type, and reserve space for values count
-        bv.put12('@', cw.newUTF8(desc)).putShort(0);
-        return new AnnotationWriter(cw, true, bv, bv, bv.length - 2);
+        this.bv.put12('@', this.cw.newUTF8(desc)).putShort(0);
+        return new AnnotationWriter(this.cw, true, this.bv, this.bv, this.bv.length - 2);
     }
 
     @Override
     public AnnotationVisitor visitArray(final String name) {
-        ++size;
-        if (named) {
-            bv.putShort(cw.newUTF8(name));
+        ++this.size;
+        if (this.named) {
+            this.bv.putShort(this.cw.newUTF8(name));
         }
         // write tag, and reserve space for array size
-        bv.put12('[', 0);
-        return new AnnotationWriter(cw, false, bv, bv, bv.length - 2);
+        this.bv.put12('[', 0);
+        return new AnnotationWriter(this.cw, false, this.bv, this.bv, this.bv.length - 2);
     }
 
     @Override
     public void visitEnd() {
-        if (parent != null) {
-            byte[] data = parent.data;
-            data[offset] = (byte) (size >>> 8);
-            data[offset + 1] = (byte) size;
+        if (this.parent != null) {
+            byte[] data = this.parent.data;
+            data[this.offset] = (byte) (this.size >>> 8);
+            data[this.offset + 1] = (byte) this.size;
         }
     }
 

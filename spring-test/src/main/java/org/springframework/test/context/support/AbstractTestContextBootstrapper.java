@@ -121,8 +121,8 @@ public abstract class AbstractTestContextBootstrapper implements TestContextBoot
 
 		// Use defaults?
 		if (descriptor == null) {
-			if (logger.isDebugEnabled()) {
-				logger.debug(String.format("@TestExecutionListeners is not present for class [%s]: using defaults.",
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug(String.format("@TestExecutionListeners is not present for class [%s]: using defaults.",
 						clazz.getName()));
 			}
 			usingDefaults = true;
@@ -133,8 +133,8 @@ public abstract class AbstractTestContextBootstrapper implements TestContextBoot
 			while (descriptor != null) {
 				Class<?> declaringClass = descriptor.getDeclaringClass();
 				TestExecutionListeners testExecutionListeners = descriptor.synthesizeAnnotation();
-				if (logger.isTraceEnabled()) {
-					logger.trace(String.format("Retrieved @TestExecutionListeners [%s] for declaring class [%s].",
+				if (this.logger.isTraceEnabled()) {
+					this.logger.trace(String.format("Retrieved @TestExecutionListeners [%s] for declaring class [%s].",
 							testExecutionListeners, declaringClass.getName()));
 				}
 
@@ -147,8 +147,8 @@ public abstract class AbstractTestContextBootstrapper implements TestContextBoot
 				// locally declared listeners with the defaults.
 				if ((!inheritListeners || superDescriptor == null) &&
 						testExecutionListeners.mergeMode() == MergeMode.MERGE_WITH_DEFAULTS) {
-					if (logger.isDebugEnabled()) {
-						logger.debug(String.format("Merging default listeners with listeners configured via " +
+					if (this.logger.isDebugEnabled()) {
+						this.logger.debug(String.format("Merging default listeners with listeners configured via " +
 								"@TestExecutionListeners for class [%s].", descriptor.getRootDeclaringClass().getName()));
 					}
 					usingDefaults = true;
@@ -173,8 +173,8 @@ public abstract class AbstractTestContextBootstrapper implements TestContextBoot
 			AnnotationAwareOrderComparator.sort(listeners);
 		}
 
-		if (logger.isInfoEnabled()) {
-			logger.info("Using TestExecutionListeners: " + listeners);
+		if (this.logger.isInfoEnabled()) {
+			this.logger.info("Using TestExecutionListeners: " + listeners);
 		}
 		return listeners;
 	}
@@ -188,8 +188,8 @@ public abstract class AbstractTestContextBootstrapper implements TestContextBoot
 			catch (BeanInstantiationException ex) {
 				if (ex.getCause() instanceof NoClassDefFoundError) {
 					// TestExecutionListener not applicable due to a missing dependency
-					if (logger.isDebugEnabled()) {
-						logger.debug(String.format(
+					if (this.logger.isDebugEnabled()) {
+						this.logger.debug(String.format(
 								"Skipping candidate TestExecutionListener [%s] due to a missing dependency. " +
 								"Specify custom listener classes or make the default listener classes " +
 								"and their required dependencies available. Offending class: [%s]",
@@ -221,8 +221,8 @@ public abstract class AbstractTestContextBootstrapper implements TestContextBoot
 				defaultListenerClasses.add((Class<? extends TestExecutionListener>) ClassUtils.forName(className, cl));
 			}
 			catch (Throwable ex) {
-				if (logger.isDebugEnabled()) {
-					logger.debug("Could not load default TestExecutionListener class [" + className +
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Could not load default TestExecutionListener class [" + className +
 							"]. Specify custom listener classes or make the default listener classes available.", ex);
 				}
 			}
@@ -244,8 +244,8 @@ public abstract class AbstractTestContextBootstrapper implements TestContextBoot
 	protected List<String> getDefaultTestExecutionListenerClassNames() {
 		List<String> classNames =
 				SpringFactoriesLoader.loadFactoryNames(TestExecutionListener.class, getClass().getClassLoader());
-		if (logger.isInfoEnabled()) {
-			logger.info(String.format("Loaded default TestExecutionListener class names from location [%s]: %s",
+		if (this.logger.isInfoEnabled()) {
+			this.logger.info(String.format("Loaded default TestExecutionListener class names from location [%s]: %s",
 					SpringFactoriesLoader.FACTORIES_RESOURCE_LOCATION, classNames));
 		}
 		return Collections.unmodifiableList(classNames);
@@ -304,8 +304,8 @@ public abstract class AbstractTestContextBootstrapper implements TestContextBoot
 				Collections.singletonList(new ContextConfigurationAttributes(testClass));
 
 		ContextLoader contextLoader = resolveContextLoader(testClass, defaultConfigAttributesList);
-		if (logger.isInfoEnabled()) {
-			logger.info(String.format(
+		if (this.logger.isInfoEnabled()) {
+			this.logger.info(String.format(
 					"Neither @ContextConfiguration nor @ContextHierarchy found for test class [%s], using %s",
 					testClass.getName(), contextLoader.getClass().getSimpleName()));
 		}
@@ -351,8 +351,8 @@ public abstract class AbstractTestContextBootstrapper implements TestContextBoot
 		List<Class<?>> initializers = new ArrayList<>();
 
 		for (ContextConfigurationAttributes configAttributes : configAttributesList) {
-			if (logger.isTraceEnabled()) {
-				logger.trace(String.format("Processing locations and classes for context configuration attributes %s",
+			if (this.logger.isTraceEnabled()) {
+				this.logger.trace(String.format("Processing locations and classes for context configuration attributes %s",
 						configAttributes));
 			}
 			if (contextLoader instanceof SmartContextLoader) {
@@ -450,8 +450,8 @@ public abstract class AbstractTestContextBootstrapper implements TestContextBoot
 		if (contextLoaderClass == null) {
 			contextLoaderClass = getDefaultContextLoaderClass(testClass);
 		}
-		if (logger.isTraceEnabled()) {
-			logger.trace(String.format("Using ContextLoader class [%s] for test class [%s]",
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace(String.format("Using ContextLoader class [%s] for test class [%s]",
 					contextLoaderClass.getName(), testClass.getName()));
 		}
 		return BeanUtils.instantiateClass(contextLoaderClass, ContextLoader.class);
@@ -484,14 +484,14 @@ public abstract class AbstractTestContextBootstrapper implements TestContextBoot
 		Assert.notNull(configAttributesList, "ContextConfigurationAttributes list must not be null");
 
 		for (ContextConfigurationAttributes configAttributes : configAttributesList) {
-			if (logger.isTraceEnabled()) {
-				logger.trace(String.format("Resolving ContextLoader for context configuration attributes %s",
+			if (this.logger.isTraceEnabled()) {
+				this.logger.trace(String.format("Resolving ContextLoader for context configuration attributes %s",
 						configAttributes));
 			}
 			Class<? extends ContextLoader> contextLoaderClass = configAttributes.getContextLoaderClass();
 			if (ContextLoader.class != contextLoaderClass) {
-				if (logger.isDebugEnabled()) {
-					logger.debug(String.format(
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug(String.format(
 							"Found explicit ContextLoader class [%s] for context configuration attributes %s",
 							contextLoaderClass.getName(), configAttributes));
 				}

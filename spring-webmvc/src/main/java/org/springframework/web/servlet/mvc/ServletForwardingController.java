@@ -132,15 +132,15 @@ public class ServletForwardingController extends AbstractController implements B
 		// If already included, include again, else forward.
 		if (useInclude(request, response)) {
 			rd.include(request, response);
-			if (logger.isDebugEnabled()) {
-				logger.debug("Included servlet [" + this.servletName +
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Included servlet [" + this.servletName +
 						"] in ServletForwardingController '" + this.beanName + "'");
 			}
 		}
 		else {
 			rd.forward(request, response);
-			if (logger.isDebugEnabled()) {
-				logger.debug("Forwarded to servlet [" + this.servletName +
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Forwarded to servlet [" + this.servletName +
 						"] in ServletForwardingController '" + this.beanName + "'");
 			}
 		}

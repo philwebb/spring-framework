@@ -142,8 +142,8 @@ public class SubProtocolWebSocketHandler
 	public void addProtocolHandler(SubProtocolHandler handler) {
 		List<String> protocols = handler.getSupportedProtocols();
 		if (CollectionUtils.isEmpty(protocols)) {
-			if (logger.isErrorEnabled()) {
-				logger.error("No sub-protocols for " + handler);
+			if (this.logger.isErrorEnabled()) {
+				this.logger.error("No sub-protocols for " + handler);
 			}
 			return;
 		}
@@ -291,8 +291,8 @@ public class SubProtocolWebSocketHandler
 				holder.getSession().close(CloseStatus.GOING_AWAY);
 			}
 			catch (Throwable ex) {
-				if (logger.isWarnEnabled()) {
-					logger.warn("Failed to close '" + holder.getSession() + "': " + ex);
+				if (this.logger.isWarnEnabled()) {
+					this.logger.warn("Failed to close '" + holder.getSession() + "': " + ex);
 				}
 			}
 		}
@@ -349,17 +349,17 @@ public class SubProtocolWebSocketHandler
 	public void handleMessage(Message<?> message) throws MessagingException {
 		String sessionId = resolveSessionId(message);
 		if (sessionId == null) {
-			if (logger.isErrorEnabled()) {
-				logger.error("Could not find session id in " + message);
+			if (this.logger.isErrorEnabled()) {
+				this.logger.error("Could not find session id in " + message);
 			}
 			return;
 		}
 
 		WebSocketSessionHolder holder = this.sessions.get(sessionId);
 		if (holder == null) {
-			if (logger.isDebugEnabled()) {
+			if (this.logger.isDebugEnabled()) {
 				// The broker may not have removed the session yet
-				logger.debug("No session for " + message);
+				this.logger.debug("No session for " + message);
 			}
 			return;
 		}
@@ -370,21 +370,21 @@ public class SubProtocolWebSocketHandler
 		}
 		catch (SessionLimitExceededException ex) {
 			try {
-				if (logger.isDebugEnabled()) {
-					logger.debug("Terminating '" + session + "'", ex);
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Terminating '" + session + "'", ex);
 				}
 				this.stats.incrementLimitExceededCount();
 				clearSession(session, ex.getStatus()); // clear first, session may be unresponsive
 				session.close(ex.getStatus());
 			}
 			catch (Exception secondException) {
-				logger.debug("Failure while closing session " + sessionId + ".", secondException);
+				this.logger.debug("Failure while closing session " + sessionId + ".", secondException);
 			}
 		}
 		catch (Exception ex) {
 			// Could be part of normal workflow (e.g. browser tab closed)
-			if (logger.isDebugEnabled()) {
-				logger.debug("Failed to send message to client in " + session + ": " + message, ex);
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Failed to send message to client in " + session + ": " + message, ex);
 			}
 		}
 	}
@@ -429,7 +429,7 @@ public class SubProtocolWebSocketHandler
 		}
 		catch (Exception ex) {
 			// Shouldn't happen
-			logger.error("Failed to obtain session.getAcceptedProtocol(): " +
+			this.logger.error("Failed to obtain session.getAcceptedProtocol(): " +
 					"will use the default protocol handler (if configured).", ex);
 		}
 
@@ -498,8 +498,8 @@ public class SubProtocolWebSocketHandler
 						continue;
 					}
 					WebSocketSession session = holder.getSession();
-					if (logger.isInfoEnabled()) {
-						logger.info("No messages received after " + timeSinceCreated + " ms. " +
+					if (this.logger.isInfoEnabled()) {
+						this.logger.info("No messages received after " + timeSinceCreated + " ms. " +
 								"Closing " + holder.getSession() + ".");
 					}
 					try {
@@ -507,8 +507,8 @@ public class SubProtocolWebSocketHandler
 						session.close(CloseStatus.SESSION_NOT_RELIABLE);
 					}
 					catch (Throwable ex) {
-						if (logger.isWarnEnabled()) {
-							logger.warn("Failed to close unreliable " + session, ex);
+						if (this.logger.isWarnEnabled()) {
+							this.logger.warn("Failed to close unreliable " + session, ex);
 						}
 					}
 				}
@@ -521,8 +521,8 @@ public class SubProtocolWebSocketHandler
 	}
 
 	private void clearSession(WebSocketSession session, CloseStatus closeStatus) throws Exception {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Clearing session " + session.getId());
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Clearing session " + session.getId());
 		}
 		if (this.sessions.remove(session.getId()) != null) {
 			this.stats.decrementSessionCount(session);

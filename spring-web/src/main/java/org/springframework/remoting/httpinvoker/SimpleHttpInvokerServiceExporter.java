@@ -77,7 +77,7 @@ public class SimpleHttpInvokerServiceExporter extends RemoteInvocationSerializin
 		}
 		catch (ClassNotFoundException ex) {
 			exchange.sendResponseHeaders(500, -1);
-			logger.error("Class not found during deserialization", ex);
+			this.logger.error("Class not found during deserialization", ex);
 		}
 	}
 

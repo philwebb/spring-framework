@@ -302,8 +302,8 @@ public abstract class AbstractPollingMessageListenerContainer extends AbstractMe
 			}
 			Message message = receiveMessage(consumerToUse);
 			if (message != null) {
-				if (logger.isDebugEnabled()) {
-					logger.debug("Received message of type [" + message.getClass() + "] from consumer [" +
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Received message of type [" + message.getClass() + "] from consumer [" +
 							consumerToUse + "] of " + (transactional ? "transactional " : "") + "session [" +
 							sessionToUse + "]");
 				}
@@ -319,8 +319,8 @@ public abstract class AbstractPollingMessageListenerContainer extends AbstractMe
 				}
 				catch (Throwable ex) {
 					if (status != null) {
-						if (logger.isDebugEnabled()) {
-							logger.debug("Rolling back transaction because of listener exception thrown: " + ex);
+						if (this.logger.isDebugEnabled()) {
+							this.logger.debug("Rolling back transaction because of listener exception thrown: " + ex);
 						}
 						status.setRollbackOnly();
 					}
@@ -340,8 +340,8 @@ public abstract class AbstractPollingMessageListenerContainer extends AbstractMe
 				return true;
 			}
 			else {
-				if (logger.isTraceEnabled()) {
-					logger.trace("Consumer [" + consumerToUse + "] of " + (transactional ? "transactional " : "") +
+				if (this.logger.isTraceEnabled()) {
+					this.logger.trace("Consumer [" + consumerToUse + "] of " + (transactional ? "transactional " : "") +
 							"session [" + sessionToUse + "] did not receive a message");
 				}
 				noMessageReceived(invoker, sessionToUse);
@@ -393,16 +393,16 @@ public abstract class AbstractPollingMessageListenerContainer extends AbstractMe
 	 * @param ex the thrown listener exception or error
 	 */
 	private void rollbackOnException(PlatformTransactionManager manager, TransactionStatus status, Throwable ex) {
-		logger.debug("Initiating transaction rollback on listener exception", ex);
+		this.logger.debug("Initiating transaction rollback on listener exception", ex);
 		try {
 			manager.rollback(status);
 		}
 		catch (RuntimeException ex2) {
-			logger.error("Listener exception overridden by rollback exception", ex);
+			this.logger.error("Listener exception overridden by rollback exception", ex);
 			throw ex2;
 		}
 		catch (Error err) {
-			logger.error("Listener exception overridden by rollback error", ex);
+			this.logger.error("Listener exception overridden by rollback error", ex);
 			throw err;
 		}
 	}

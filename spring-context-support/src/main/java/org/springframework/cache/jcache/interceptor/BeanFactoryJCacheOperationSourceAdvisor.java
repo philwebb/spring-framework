@@ -35,7 +35,7 @@ public class BeanFactoryJCacheOperationSourceAdvisor extends AbstractBeanFactory
 	private final JCacheOperationSourcePointcut pointcut = new JCacheOperationSourcePointcut() {
 		@Override
 		protected JCacheOperationSource getCacheOperationSource() {
-			return cacheOperationSource;
+			return BeanFactoryJCacheOperationSourceAdvisor.this.cacheOperationSource;
 		}
 	};
 

@@ -229,8 +229,8 @@ public class DefaultHandlerExceptionResolver extends AbstractHandlerExceptionRes
 			}
 		}
 		catch (Exception handlerException) {
-			if (logger.isWarnEnabled()) {
-				logger.warn("Handling of [" + ex.getClass().getName() + "] resulted in exception", handlerException);
+			if (this.logger.isWarnEnabled()) {
+				this.logger.warn("Handling of [" + ex.getClass().getName() + "] resulted in exception", handlerException);
 			}
 		}
 		return null;
@@ -376,8 +376,8 @@ public class DefaultHandlerExceptionResolver extends AbstractHandlerExceptionRes
 	protected ModelAndView handleConversionNotSupported(ConversionNotSupportedException ex,
 			HttpServletRequest request, HttpServletResponse response, @Nullable Object handler) throws IOException {
 
-		if (logger.isWarnEnabled()) {
-			logger.warn("Failed to convert request element: " + ex);
+		if (this.logger.isWarnEnabled()) {
+			this.logger.warn("Failed to convert request element: " + ex);
 		}
 		sendServerError(ex, request, response);
 		return new ModelAndView();
@@ -397,8 +397,8 @@ public class DefaultHandlerExceptionResolver extends AbstractHandlerExceptionRes
 	protected ModelAndView handleTypeMismatch(TypeMismatchException ex,
 			HttpServletRequest request, HttpServletResponse response, @Nullable Object handler) throws IOException {
 
-		if (logger.isWarnEnabled()) {
-			logger.warn("Failed to bind request element: " + ex);
+		if (this.logger.isWarnEnabled()) {
+			this.logger.warn("Failed to bind request element: " + ex);
 		}
 		response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 		return new ModelAndView();
@@ -420,8 +420,8 @@ public class DefaultHandlerExceptionResolver extends AbstractHandlerExceptionRes
 	protected ModelAndView handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
 			HttpServletRequest request, HttpServletResponse response, @Nullable Object handler) throws IOException {
 
-		if (logger.isWarnEnabled()) {
-			logger.warn("Failed to read HTTP message: " + ex);
+		if (this.logger.isWarnEnabled()) {
+			this.logger.warn("Failed to read HTTP message: " + ex);
 		}
 		response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 		return new ModelAndView();
@@ -443,8 +443,8 @@ public class DefaultHandlerExceptionResolver extends AbstractHandlerExceptionRes
 	protected ModelAndView handleHttpMessageNotWritable(HttpMessageNotWritableException ex,
 			HttpServletRequest request, HttpServletResponse response, @Nullable Object handler) throws IOException {
 
-		if (logger.isWarnEnabled()) {
-			logger.warn("Failed to write HTTP message: " + ex);
+		if (this.logger.isWarnEnabled()) {
+			this.logger.warn("Failed to write HTTP message: " + ex);
 		}
 		sendServerError(ex, request, response);
 		return new ModelAndView();
@@ -541,8 +541,8 @@ public class DefaultHandlerExceptionResolver extends AbstractHandlerExceptionRes
 		if (!response.isCommitted()) {
 			response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
 		}
-		else if (logger.isDebugEnabled()) {
-			logger.debug("Async timeout for " + request.getMethod() + " [" + request.getRequestURI() + "]");
+		else if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Async timeout for " + request.getMethod() + " [" + request.getRequestURI() + "]");
 		}
 		return new ModelAndView();
 	}

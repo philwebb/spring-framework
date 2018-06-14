@@ -143,8 +143,8 @@ public class UndertowXhrTransport extends AbstractXhrTransport {
 			final URI url, final HttpHeaders headers, final XhrClientSockJsSession session,
 			final SettableListenableFuture<WebSocketSession> connectFuture) {
 
-		if (logger.isTraceEnabled()) {
-			logger.trace("Starting XHR receive request for " + url);
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Starting XHR receive request for " + url);
 		}
 
 		ClientCallback<ClientConnection> clientCallback = new ClientCallback<ClientConnection>() {
@@ -199,8 +199,8 @@ public class UndertowXhrTransport extends AbstractXhrTransport {
 									sockJsSession, connectFuture);
 							listener.setup(result.getResponseChannel());
 						}
-						if (logger.isTraceEnabled()) {
-							logger.trace("XHR receive headers: " + toHttpHeaders(response.getResponseHeaders()));
+						if (UndertowXhrTransport.this.logger.isTraceEnabled()) {
+							UndertowXhrTransport.this.logger.trace("XHR receive headers: " + toHttpHeaders(response.getResponseHeaders()));
 						}
 						try {
 							StreamSinkChannel channel = result.getRequestChannel();
@@ -398,14 +398,14 @@ public class UndertowXhrTransport extends AbstractXhrTransport {
 		@Override
 		public void handleEvent(StreamSourceChannel channel) {
 			if (this.session.isDisconnected()) {
-				if (logger.isDebugEnabled()) {
-					logger.debug("SockJS sockJsSession closed, closing response.");
+				if (UndertowXhrTransport.this.logger.isDebugEnabled()) {
+					UndertowXhrTransport.this.logger.debug("SockJS sockJsSession closed, closing response.");
 				}
 				IoUtils.safeClose(this.connection);
 				throw new SockJsException("Session closed.", this.session.getId(), null);
 			}
 
-			PooledByteBuffer pooled = bufferPool.allocate();
+			PooledByteBuffer pooled = UndertowXhrTransport.this.bufferPool.allocate();
 			try {
 				int r;
 				do {
@@ -445,8 +445,8 @@ public class UndertowXhrTransport extends AbstractXhrTransport {
 			byte[] bytes = this.outputStream.toByteArray();
 			this.outputStream.reset();
 			String content = new String(bytes, SockJsFrame.CHARSET);
-			if (logger.isTraceEnabled()) {
-				logger.trace("XHR content received: " + content);
+			if (UndertowXhrTransport.this.logger.isTraceEnabled()) {
+				UndertowXhrTransport.this.logger.trace("XHR content received: " + content);
 			}
 			if (!PRELUDE.equals(content)) {
 				this.session.handleFrame(new String(bytes, SockJsFrame.CHARSET));
@@ -457,8 +457,8 @@ public class UndertowXhrTransport extends AbstractXhrTransport {
 			if (this.outputStream.size() > 0) {
 				handleFrame();
 			}
-			if (logger.isTraceEnabled()) {
-				logger.trace("XHR receive request completed.");
+			if (UndertowXhrTransport.this.logger.isTraceEnabled()) {
+				UndertowXhrTransport.this.logger.trace("XHR receive request completed.");
 			}
 			IoUtils.safeClose(this.connection);
 			executeReceiveRequest(this.request, this.url, this.headers, this.session, this.connectFuture);

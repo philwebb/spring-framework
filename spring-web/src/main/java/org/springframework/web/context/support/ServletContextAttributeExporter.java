@@ -70,14 +70,14 @@ public class ServletContextAttributeExporter implements ServletContextAware {
 		if (this.attributes != null) {
 			for (Map.Entry<String, Object> entry : this.attributes.entrySet()) {
 				String attributeName = entry.getKey();
-				if (logger.isWarnEnabled()) {
+				if (this.logger.isWarnEnabled()) {
 					if (servletContext.getAttribute(attributeName) != null) {
-						logger.warn("Replacing existing ServletContext attribute with name '" + attributeName + "'");
+						this.logger.warn("Replacing existing ServletContext attribute with name '" + attributeName + "'");
 					}
 				}
 				servletContext.setAttribute(attributeName, entry.getValue());
-				if (logger.isInfoEnabled()) {
-					logger.info("Exported ServletContext attribute with name '" + attributeName + "'");
+				if (this.logger.isInfoEnabled()) {
+					this.logger.info("Exported ServletContext attribute with name '" + attributeName + "'");
 				}
 			}
 		}

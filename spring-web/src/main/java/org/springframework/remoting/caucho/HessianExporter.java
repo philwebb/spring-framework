@@ -112,7 +112,7 @@ public class HessianExporter extends RemoteExporter implements InitializingBean 
 	 * @see com.caucho.hessian.client.HessianProxyFactory#setDebug
 	 */
 	public void setDebug(boolean debug) {
-		this.debugLogger = (debug ? logger : null);
+		this.debugLogger = (debug ? this.logger : null);
 	}
 
 

@@ -83,11 +83,11 @@ public abstract class RequestContextAwareTag extends TagSupport implements TryCa
 			return doStartTagInternal();
 		}
 		catch (JspException | RuntimeException ex) {
-			logger.error(ex.getMessage(), ex);
+			this.logger.error(ex.getMessage(), ex);
 			throw ex;
 		}
 		catch (Exception ex) {
-			logger.error(ex.getMessage(), ex);
+			this.logger.error(ex.getMessage(), ex);
 			throw new JspTagException(ex.getMessage());
 		}
 	}

@@ -209,8 +209,8 @@ public abstract class GenericFilterBean implements Filter, BeanNameAware, Enviro
 	@Override
 	public final void init(FilterConfig filterConfig) throws ServletException {
 		Assert.notNull(filterConfig, "FilterConfig must not be null");
-		if (logger.isDebugEnabled()) {
-			logger.debug("Initializing filter '" + filterConfig.getFilterName() + "'");
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Initializing filter '" + filterConfig.getFilterName() + "'");
 		}
 
 		this.filterConfig = filterConfig;
@@ -232,7 +232,7 @@ public abstract class GenericFilterBean implements Filter, BeanNameAware, Enviro
 			catch (BeansException ex) {
 				String msg = "Failed to set bean properties on filter '" +
 					filterConfig.getFilterName() + "': " + ex.getMessage();
-				logger.error(msg, ex);
+				this.logger.error(msg, ex);
 				throw new NestedServletException(msg, ex);
 			}
 		}
@@ -240,8 +240,8 @@ public abstract class GenericFilterBean implements Filter, BeanNameAware, Enviro
 		// Let subclasses do whatever initialization they like.
 		initFilterBean();
 
-		if (logger.isDebugEnabled()) {
-			logger.debug("Filter '" + filterConfig.getFilterName() + "' configured successfully");
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Filter '" + filterConfig.getFilterName() + "' configured successfully");
 		}
 	}
 

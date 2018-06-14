@@ -223,8 +223,8 @@ public class SingleConnectionDataSource extends DriverManagerDataSource implemen
 			closeConnection();
 			this.target = getConnectionFromDriver(getUsername(), getPassword());
 			prepareConnection(this.target);
-			if (logger.isInfoEnabled()) {
-				logger.info("Established shared JDBC Connection: " + this.target);
+			if (this.logger.isInfoEnabled()) {
+				this.logger.info("Established shared JDBC Connection: " + this.target);
 			}
 			this.connection = (isSuppressClose() ? getCloseSuppressingConnectionProxy(this.target) : this.target);
 		}
@@ -264,7 +264,7 @@ public class SingleConnectionDataSource extends DriverManagerDataSource implemen
 				this.target.close();
 			}
 			catch (Throwable ex) {
-				logger.warn("Could not close shared JDBC Connection", ex);
+				this.logger.warn("Could not close shared JDBC Connection", ex);
 			}
 		}
 	}

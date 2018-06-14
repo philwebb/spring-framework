@@ -111,7 +111,7 @@ public class SimpleUrlHandlerMapping extends AbstractUrlHandlerMapping {
 	 */
 	protected void registerHandlers(Map<String, Object> urlMap) throws BeansException {
 		if (urlMap.isEmpty()) {
-			logger.warn("Neither 'urlMap' nor 'mappings' set on SimpleUrlHandlerMapping");
+			this.logger.warn("Neither 'urlMap' nor 'mappings' set on SimpleUrlHandlerMapping");
 		}
 		else {
 			urlMap.forEach((url, handler) -> {

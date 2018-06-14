@@ -253,7 +253,7 @@ public class SendToMethodReturnValueHandler implements HandlerMethodReturnValueH
 
 	@Override
 	public String toString() {
-		return "SendToMethodReturnValueHandler [annotationRequired=" + annotationRequired + "]";
+		return "SendToMethodReturnValueHandler [annotationRequired=" + this.annotationRequired + "]";
 	}
 
 
@@ -293,7 +293,7 @@ public class SendToMethodReturnValueHandler implements HandlerMethodReturnValueH
 
 
 		public String expandTemplateVars(String destination) {
-			return placeholderHelper.replacePlaceholders(destination, this.placeholderResolver);
+			return SendToMethodReturnValueHandler.this.placeholderHelper.replacePlaceholders(destination, this.placeholderResolver);
 		}
 	}
 }

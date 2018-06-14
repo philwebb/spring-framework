@@ -125,7 +125,7 @@ public class Attribute {
     protected Attribute read(final ClassReader cr, final int off,
             final int len, final char[] buf, final int codeOff,
             final Label[] labels) {
-        Attribute attr = new Attribute(type);
+        Attribute attr = new Attribute(this.type);
         attr.value = new byte[len];
         System.arraycopy(cr.b, off, attr.value, 0, len);
         return attr;
@@ -159,8 +159,8 @@ public class Attribute {
     protected ByteVector write(final ClassWriter cw, final byte[] code,
             final int len, final int maxStack, final int maxLocals) {
         ByteVector v = new ByteVector();
-        v.data = value;
-        v.length = value.length;
+        v.data = this.value;
+        v.length = this.value.length;
         return v;
     }
 

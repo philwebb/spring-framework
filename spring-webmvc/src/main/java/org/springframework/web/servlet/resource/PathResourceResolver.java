@@ -150,23 +150,23 @@ public class PathResourceResolver extends AbstractResourceResolver {
 
 		for (Resource location : locations) {
 			try {
-				if (logger.isTraceEnabled()) {
-					logger.trace("Checking location: " + location);
+				if (this.logger.isTraceEnabled()) {
+					this.logger.trace("Checking location: " + location);
 				}
 				String pathToUse = encodeIfNecessary(resourcePath, request, location);
 				Resource resource = getResource(pathToUse, location);
 				if (resource != null) {
-					if (logger.isTraceEnabled()) {
-						logger.trace("Found match: " + resource);
+					if (this.logger.isTraceEnabled()) {
+						this.logger.trace("Found match: " + resource);
 					}
 					return resource;
 				}
-				else if (logger.isTraceEnabled()) {
-					logger.trace("No match for location: " + location);
+				else if (this.logger.isTraceEnabled()) {
+					this.logger.trace("No match for location: " + location);
 				}
 			}
 			catch (IOException ex) {
-				logger.trace("Failure checking for relative resource - trying next location", ex);
+				this.logger.trace("Failure checking for relative resource - trying next location", ex);
 			}
 		}
 		return null;
@@ -187,9 +187,9 @@ public class PathResourceResolver extends AbstractResourceResolver {
 			if (checkResource(resource, location)) {
 				return resource;
 			}
-			else if (logger.isTraceEnabled()) {
+			else if (this.logger.isTraceEnabled()) {
 				Resource[] allowedLocations = getAllowedLocations();
-				logger.trace("Resource path \"" + resourcePath + "\" was successfully resolved " +
+				this.logger.trace("Resource path \"" + resourcePath + "\" was successfully resolved " +
 						"but resource \"" +	resource.getURL() + "\" is neither under the " +
 						"current location \"" + location.getURL() + "\" nor under any of the " +
 						"allowed locations " + (allowedLocations != null ? Arrays.asList(allowedLocations) : "[]"));
@@ -285,8 +285,8 @@ public class PathResourceResolver extends AbstractResourceResolver {
 			try {
 				String decodedPath = URLDecoder.decode(resourcePath, "UTF-8");
 				if (decodedPath.contains("../") || decodedPath.contains("..\\")) {
-					if (logger.isTraceEnabled()) {
-						logger.trace("Resolved resource path contains encoded \"../\" or \"..\\\": " + resourcePath);
+					if (this.logger.isTraceEnabled()) {
+						this.logger.trace("Resolved resource path contains encoded \"../\" or \"..\\\": " + resourcePath);
 					}
 					return true;
 				}

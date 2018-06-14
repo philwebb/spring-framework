@@ -50,7 +50,7 @@ class SingleCharWildcardedPathElement extends PathElement {
 		}
 		else {
 			this.text = new char[literalText.length];
-			for (int i = 0; i < len; i++) {
+			for (int i = 0; i < this.len; i++) {
 				this.text[i] = Character.toLowerCase(literalText[i]);
 			}
 		}
@@ -69,14 +69,14 @@ class SingleCharWildcardedPathElement extends PathElement {
 			return false;
 		}
 		String value = ((PathSegment)element).valueToMatch();
-		if (value.length() != len) {
+		if (value.length() != this.len) {
 			// Not enough data to match this path element
 			return false;
 		}
 		
 		char[] data = ((PathSegment)element).valueToMatchAsChars();
 		if (this.caseSensitive) {
-			for (int i = 0; i < len; i++) {
+			for (int i = 0; i < this.len; i++) {
 				char ch = this.text[i];
 				if ((ch != '?') && (ch != data[i])) {
 					return false;
@@ -84,7 +84,7 @@ class SingleCharWildcardedPathElement extends PathElement {
 			}
 		}
 		else {
-			for (int i = 0; i < len; i++) {
+			for (int i = 0; i < this.len; i++) {
 				char ch = this.text[i];
 				// TODO revisit performance if doing a lot of case insensitive matching
 				if ((ch != '?') && (ch != Character.toLowerCase(data[i]))) {
@@ -122,7 +122,7 @@ class SingleCharWildcardedPathElement extends PathElement {
 
 	@Override
 	public int getNormalizedLength() {
-		return len;
+		return this.len;
 	}
 
 

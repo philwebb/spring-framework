@@ -347,7 +347,7 @@ public class TypeReference {
      *         METHOD_REFERENCE_TYPE_ARGUMENT}.
      */
     public int getSort() {
-        return value >>> 24;
+        return this.value >>> 24;
     }
 
     /**
@@ -361,7 +361,7 @@ public class TypeReference {
      * @return a type parameter index.
      */
     public int getTypeParameterIndex() {
-        return (value & 0x00FF0000) >> 16;
+        return (this.value & 0x00FF0000) >> 16;
     }
 
     /**
@@ -374,7 +374,7 @@ public class TypeReference {
      * @return a type parameter bound index.
      */
     public int getTypeParameterBoundIndex() {
-        return (value & 0x0000FF00) >> 8;
+        return (this.value & 0x0000FF00) >> 8;
     }
 
     /**
@@ -387,7 +387,7 @@ public class TypeReference {
      *         class.
      */
     public int getSuperTypeIndex() {
-        return (short) ((value & 0x00FFFF00) >> 8);
+        return (short) ((this.value & 0x00FFFF00) >> 8);
     }
 
     /**
@@ -398,7 +398,7 @@ public class TypeReference {
      * @return a formal parameter index.
      */
     public int getFormalParameterIndex() {
-        return (value & 0x00FF0000) >> 16;
+        return (this.value & 0x00FF0000) >> 16;
     }
 
     /**
@@ -409,7 +409,7 @@ public class TypeReference {
      * @return the index of an exception in the 'throws' clause of a method.
      */
     public int getExceptionIndex() {
-        return (value & 0x00FFFF00) >> 8;
+        return (this.value & 0x00FFFF00) >> 8;
     }
 
     /**
@@ -421,7 +421,7 @@ public class TypeReference {
      * @return the index of an exception in the 'throws' clause of a method.
      */
     public int getTryCatchBlockIndex() {
-        return (value & 0x00FFFF00) >> 8;
+        return (this.value & 0x00FFFF00) >> 8;
     }
 
     /**
@@ -437,7 +437,7 @@ public class TypeReference {
      * @return a type parameter index.
      */
     public int getTypeArgumentIndex() {
-        return value & 0xFF;
+        return this.value & 0xFF;
     }
 
     /**
@@ -447,6 +447,6 @@ public class TypeReference {
      * @return the int encoded value of this type reference.
      */
     public int getValue() {
-        return value;
+        return this.value;
     }
 }

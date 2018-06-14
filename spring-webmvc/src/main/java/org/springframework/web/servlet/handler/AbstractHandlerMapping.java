@@ -146,7 +146,7 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 	 * Return the UrlPathHelper implementation to use for resolution of lookup paths.
 	 */
 	public UrlPathHelper getUrlPathHelper() {
-		return urlPathHelper;
+		return this.urlPathHelper;
 	}
 
 	/**
@@ -484,7 +484,7 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 
 		@Override
 		public void handleRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
-			corsProcessor.processRequest(this.config, request, response);
+			AbstractHandlerMapping.this.corsProcessor.processRequest(this.config, request, response);
 		}
 
 		@Override
@@ -508,7 +508,7 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 		public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 				throws Exception {
 
-			return corsProcessor.processRequest(this.config, request, response);
+			return AbstractHandlerMapping.this.corsProcessor.processRequest(this.config, request, response);
 		}
 
 		@Override

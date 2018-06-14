@@ -133,8 +133,8 @@ public abstract class AbstractHttpInvokerRequestExecutor implements HttpInvokerR
 			HttpInvokerClientConfiguration config, RemoteInvocation invocation) throws Exception {
 
 		ByteArrayOutputStream baos = getByteArrayOutputStream(invocation);
-		if (logger.isDebugEnabled()) {
-			logger.debug("Sending HTTP invoker request for service at [" + config.getServiceUrl() +
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Sending HTTP invoker request for service at [" + config.getServiceUrl() +
 					"], with size " + baos.size());
 		}
 		return doExecuteRequest(config, baos);

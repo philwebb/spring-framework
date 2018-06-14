@@ -163,8 +163,8 @@ public class BatchSqlUpdate extends SqlUpdate {
 		this.parameterQueue.add(params.clone());
 
 		if (this.parameterQueue.size() == this.batchSize) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("Triggering auto-flush because queue reached batch size of " + this.batchSize);
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Triggering auto-flush because queue reached batch size of " + this.batchSize);
 			}
 			flush();
 		}
@@ -186,11 +186,11 @@ public class BatchSqlUpdate extends SqlUpdate {
 				new BatchPreparedStatementSetter() {
 					@Override
 					public int getBatchSize() {
-						return parameterQueue.size();
+						return BatchSqlUpdate.this.parameterQueue.size();
 					}
 					@Override
 					public void setValues(PreparedStatement ps, int index) throws SQLException {
-						Object[] params = parameterQueue.removeFirst();
+						Object[] params = BatchSqlUpdate.this.parameterQueue.removeFirst();
 						newPreparedStatementSetter(params).setValues(ps);
 					}
 				});

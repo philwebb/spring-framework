@@ -272,7 +272,7 @@ public abstract class AbstractMessageEndpointFactory implements MessageEndpointF
 		protected void onEndpointException(Throwable ex) {
 			Assert.state(this.transactionDelegate != null, "Not initialized");
 			this.transactionDelegate.setRollbackOnly();
-			logger.debug("Transaction marked as rollback-only after endpoint exception", ex);
+			AbstractMessageEndpointFactory.this.logger.debug("Transaction marked as rollback-only after endpoint exception", ex);
 		}
 
 		/**
@@ -292,7 +292,7 @@ public abstract class AbstractMessageEndpointFactory implements MessageEndpointF
 				this.transactionDelegate.endTransaction();
 			}
 			catch (Throwable ex) {
-				logger.warn("Failed to complete transaction after endpoint delivery", ex);
+				AbstractMessageEndpointFactory.this.logger.warn("Failed to complete transaction after endpoint delivery", ex);
 				throw new ApplicationServerInternalException("Failed to complete transaction", ex);
 			}
 		}
@@ -305,7 +305,7 @@ public abstract class AbstractMessageEndpointFactory implements MessageEndpointF
 					this.transactionDelegate.endTransaction();
 				}
 				catch (Throwable ex) {
-					logger.warn("Could not complete unfinished transaction on endpoint release", ex);
+					AbstractMessageEndpointFactory.this.logger.warn("Could not complete unfinished transaction on endpoint release", ex);
 				}
 			}
 		}
@@ -327,8 +327,8 @@ public abstract class AbstractMessageEndpointFactory implements MessageEndpointF
 		private boolean rollbackOnly;
 
 		public TransactionDelegate(@Nullable XAResource xaResource) {
-			if (xaResource == null && transactionFactory != null &&
-					!transactionFactory.supportsResourceAdapterManagedTransactions()) {
+			if (xaResource == null && AbstractMessageEndpointFactory.this.transactionFactory != null &&
+					!AbstractMessageEndpointFactory.this.transactionFactory.supportsResourceAdapterManagedTransactions()) {
 				throw new IllegalStateException("ResourceAdapter-provided XAResource is required for " +
 						"transaction management. Check your ResourceAdapter's configuration.");
 			}
@@ -336,8 +336,8 @@ public abstract class AbstractMessageEndpointFactory implements MessageEndpointF
 		}
 
 		public void beginTransaction() throws Exception {
-			if (transactionFactory != null && this.xaResource != null) {
-				this.transaction = transactionFactory.createTransaction(transactionName, transactionTimeout);
+			if (AbstractMessageEndpointFactory.this.transactionFactory != null && this.xaResource != null) {
+				this.transaction = AbstractMessageEndpointFactory.this.transactionFactory.createTransaction(AbstractMessageEndpointFactory.this.transactionName, AbstractMessageEndpointFactory.this.transactionTimeout);
 				this.transaction.enlistResource(this.xaResource);
 			}
 		}

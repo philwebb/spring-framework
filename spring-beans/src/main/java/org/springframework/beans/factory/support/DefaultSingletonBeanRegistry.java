@@ -209,8 +209,8 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 							"Singleton bean creation not allowed while singletons of this factory are in destruction " +
 							"(Do not request a bean from a BeanFactory in a destroy method implementation!)");
 				}
-				if (logger.isDebugEnabled()) {
-					logger.debug("Creating shared instance of singleton bean '" + beanName + "'");
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Creating shared instance of singleton bean '" + beanName + "'");
 				}
 				beforeSingletonCreation(beanName);
 				boolean newSingleton = false;
@@ -489,8 +489,8 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	}
 
 	public void destroySingletons() {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Destroying singletons in " + this);
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Destroying singletons in " + this);
 		}
 		synchronized (this.singletonObjects) {
 			this.singletonsCurrentlyInDestruction = true;
@@ -557,8 +557,8 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 			dependencies = this.dependentBeanMap.remove(beanName);
 		}
 		if (dependencies != null) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("Retrieved dependent beans for bean '" + beanName + "': " + dependencies);
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Retrieved dependent beans for bean '" + beanName + "': " + dependencies);
 			}
 			for (String dependentBeanName : dependencies) {
 				destroySingleton(dependentBeanName);
@@ -571,7 +571,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 				bean.destroy();
 			}
 			catch (Throwable ex) {
-				logger.error("Destroy method on bean with name '" + beanName + "' threw an exception", ex);
+				this.logger.error("Destroy method on bean with name '" + beanName + "' threw an exception", ex);
 			}
 		}
 

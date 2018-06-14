@@ -117,7 +117,7 @@ public class ExponentialBackOff implements BackOff {
 	 * Return the initial interval in milliseconds.
 	 */
 	public long getInitialInterval() {
-		return initialInterval;
+		return this.initialInterval;
 	}
 
 	/**
@@ -132,7 +132,7 @@ public class ExponentialBackOff implements BackOff {
 	 * Return the value to multiply the current interval by for each retry attempt.
 	 */
 	public double getMultiplier() {
-		return multiplier;
+		return this.multiplier;
 	}
 
 	/**
@@ -146,7 +146,7 @@ public class ExponentialBackOff implements BackOff {
 	 * Return the maximum back off time.
 	 */
 	public long getMaxInterval() {
-		return maxInterval;
+		return this.maxInterval;
 	}
 
 	/**
@@ -162,7 +162,7 @@ public class ExponentialBackOff implements BackOff {
 	 * {@link BackOffExecution#nextBackOff()} returns {@link BackOffExecution#STOP}.
 	 */
 	public long getMaxElapsedTime() {
-		return maxElapsedTime;
+		return this.maxElapsedTime;
 	}
 
 	@Override
@@ -184,7 +184,7 @@ public class ExponentialBackOff implements BackOff {
 
 		@Override
 		public long nextBackOff() {
-			if (this.currentElapsedTime >= maxElapsedTime) {
+			if (this.currentElapsedTime >= ExponentialBackOff.this.maxElapsedTime) {
 				return STOP;
 			}
 

@@ -93,7 +93,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 	@Override
 	public void registerBeanDefinitions(Document doc, XmlReaderContext readerContext) {
 		this.readerContext = readerContext;
-		logger.debug("Loading bean definitions");
+		this.logger.debug("Loading bean definitions");
 		Element root = doc.getDocumentElement();
 		doRegisterBeanDefinitions(root);
 	}
@@ -135,8 +135,8 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 				String[] specifiedProfiles = StringUtils.tokenizeToStringArray(
 						profileSpec, BeanDefinitionParserDelegate.MULTI_VALUE_ATTRIBUTE_DELIMITERS);
 				if (!getReaderContext().getEnvironment().acceptsProfiles(specifiedProfiles)) {
-					if (logger.isInfoEnabled()) {
-						logger.info("Skipped XML bean definition file due to specified profiles [" + profileSpec +
+					if (this.logger.isInfoEnabled()) {
+						this.logger.info("Skipped XML bean definition file due to specified profiles [" + profileSpec +
 								"] not matching: " + getReaderContext().getResource());
 					}
 					return;
@@ -231,8 +231,8 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 		if (absoluteLocation) {
 			try {
 				int importCount = getReaderContext().getReader().loadBeanDefinitions(location, actualResources);
-				if (logger.isDebugEnabled()) {
-					logger.debug("Imported " + importCount + " bean definitions from URL location [" + location + "]");
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Imported " + importCount + " bean definitions from URL location [" + location + "]");
 				}
 			}
 			catch (BeanDefinitionStoreException ex) {
@@ -254,8 +254,8 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 					importCount = getReaderContext().getReader().loadBeanDefinitions(
 							StringUtils.applyRelativePath(baseLocation, location), actualResources);
 				}
-				if (logger.isDebugEnabled()) {
-					logger.debug("Imported " + importCount + " bean definitions from relative location [" + location + "]");
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Imported " + importCount + " bean definitions from relative location [" + location + "]");
 				}
 			}
 			catch (IOException ex) {

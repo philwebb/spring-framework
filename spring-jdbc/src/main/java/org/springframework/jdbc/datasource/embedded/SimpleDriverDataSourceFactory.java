@@ -37,22 +37,22 @@ final class SimpleDriverDataSourceFactory implements DataSourceFactory {
 		return new ConnectionProperties() {
 			@Override
 			public void setDriverClass(Class<? extends Driver> driverClass) {
-				dataSource.setDriverClass(driverClass);
+				SimpleDriverDataSourceFactory.this.dataSource.setDriverClass(driverClass);
 			}
 
 			@Override
 			public void setUrl(String url) {
-				dataSource.setUrl(url);
+				SimpleDriverDataSourceFactory.this.dataSource.setUrl(url);
 			}
 
 			@Override
 			public void setUsername(String username) {
-				dataSource.setUsername(username);
+				SimpleDriverDataSourceFactory.this.dataSource.setUsername(username);
 			}
 
 			@Override
 			public void setPassword(String password) {
-				dataSource.setPassword(password);
+				SimpleDriverDataSourceFactory.this.dataSource.setPassword(password);
 			}
 		};
 	}

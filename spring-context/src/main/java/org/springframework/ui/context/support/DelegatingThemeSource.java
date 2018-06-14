@@ -46,7 +46,7 @@ public class DelegatingThemeSource implements HierarchicalThemeSource {
 	@Override
 	@Nullable
 	public ThemeSource getParentThemeSource() {
-		return parentThemeSource;
+		return this.parentThemeSource;
 	}
 
 

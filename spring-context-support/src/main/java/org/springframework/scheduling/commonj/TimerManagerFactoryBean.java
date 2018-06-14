@@ -145,7 +145,7 @@ public class TimerManagerFactoryBean extends TimerManagerAccessor
 				timer.cancel();
 			}
 			catch (Throwable ex) {
-				logger.warn("Could not cancel CommonJ Timer", ex);
+				this.logger.warn("Could not cancel CommonJ Timer", ex);
 			}
 		}
 		this.timers.clear();

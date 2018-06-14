@@ -107,8 +107,8 @@ final class AnnotationAttributesReadingVisitor extends RecursiveAnnotationAttrib
 				}
 			}
 			catch (Throwable ex) {
-				if (logger.isDebugEnabled()) {
-					logger.debug("Failed to introspect meta-annotations on [" + annotation + "]: " + ex);
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Failed to introspect meta-annotations on [" + annotation + "]: " + ex);
 				}
 			}
 		}

@@ -146,13 +146,13 @@ public class RmiClientInterceptor extends RemoteInvocationBasedAccessor
 		// Cache RMI stub on initialization?
 		if (this.lookupStubOnStartup) {
 			Remote remoteObj = lookupStub();
-			if (logger.isDebugEnabled()) {
+			if (this.logger.isDebugEnabled()) {
 				if (remoteObj instanceof RmiInvocationHandler) {
-					logger.debug("RMI stub [" + getServiceUrl() + "] is an RMI invoker");
+					this.logger.debug("RMI stub [" + getServiceUrl() + "] is an RMI invoker");
 				}
 				else if (getServiceInterface() != null) {
 					boolean isImpl = getServiceInterface().isInstance(remoteObj);
-					logger.debug("Using service interface [" + getServiceInterface().getName() +
+					this.logger.debug("Using service interface [" + getServiceInterface().getName() +
 						"] for RMI stub [" + getServiceUrl() + "] - " +
 						(!isImpl ? "not " : "") + "directly implemented");
 				}
@@ -200,8 +200,8 @@ public class RmiClientInterceptor extends RemoteInvocationBasedAccessor
 				// Can proceed with standard RMI lookup API...
 				stub = Naming.lookup(getServiceUrl());
 			}
-			if (logger.isDebugEnabled()) {
-				logger.debug("Located RMI stub with URL [" + getServiceUrl() + "]");
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Located RMI stub with URL [" + getServiceUrl() + "]");
 			}
 			return stub;
 		}
@@ -300,11 +300,11 @@ public class RmiClientInterceptor extends RemoteInvocationBasedAccessor
 	private Object handleRemoteConnectFailure(MethodInvocation invocation, Exception ex) throws Throwable {
 		if (this.refreshStubOnConnectFailure) {
 			String msg = "Could not connect to RMI service [" + getServiceUrl() + "] - retrying";
-			if (logger.isDebugEnabled()) {
-				logger.warn(msg, ex);
+			if (this.logger.isDebugEnabled()) {
+				this.logger.warn(msg, ex);
 			}
-			else if (logger.isWarnEnabled()) {
-				logger.warn(msg);
+			else if (this.logger.isWarnEnabled()) {
+				this.logger.warn(msg);
 			}
 			return refreshAndRetry(invocation);
 		}

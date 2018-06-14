@@ -102,8 +102,8 @@ public abstract class AbstractUrlViewController extends AbstractController {
 	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) {
 		String lookupPath = getUrlPathHelper().getLookupPathForRequest(request);
 		String viewName = getViewNameForRequest(request);
-		if (logger.isDebugEnabled()) {
-			logger.debug("Returning view name '" + viewName + "' for lookup path [" + lookupPath + "]");
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Returning view name '" + viewName + "' for lookup path [" + lookupPath + "]");
 		}
 		return new ModelAndView(viewName, RequestContextUtils.getInputFlashMap(request));
 	}

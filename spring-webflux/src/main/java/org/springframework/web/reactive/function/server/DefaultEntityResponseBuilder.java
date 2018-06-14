@@ -235,7 +235,7 @@ class DefaultEntityResponseBuilder<T> implements EntityResponse.Builder<T> {
 				}
 				@Override
 				public Map<String, Object> hints() {
-					return hints;
+					return DefaultEntityResponse.this.hints;
 				}
 			});
 		}

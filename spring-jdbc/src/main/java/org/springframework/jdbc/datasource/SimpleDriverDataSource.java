@@ -137,8 +137,8 @@ public class SimpleDriverDataSource extends AbstractDriverBasedDataSource {
 		Driver driver = getDriver();
 		String url = getUrl();
 		Assert.notNull(driver, "Driver must not be null");
-		if (logger.isDebugEnabled()) {
-			logger.debug("Creating new JDBC Driver Connection to [" + url + "]");
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Creating new JDBC Driver Connection to [" + url + "]");
 		}
 		return driver.connect(url, props);
 	}

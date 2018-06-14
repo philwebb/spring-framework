@@ -275,11 +275,11 @@ public class Label {
      *             if this label is not resolved yet.
      */
     public int getOffset() {
-        if ((status & RESOLVED) == 0) {
+        if ((this.status & RESOLVED) == 0) {
             throw new IllegalStateException(
                     "Label offset position has not been resolved yet");
         }
-        return position;
+        return this.position;
     }
 
     /**
@@ -303,7 +303,7 @@ public class Label {
      */
     void put(final MethodWriter owner, final ByteVector out, final int source,
             final boolean wideOffset) {
-        if ((status & RESOLVED) == 0) {
+        if ((this.status & RESOLVED) == 0) {
             if (wideOffset) {
                 addReference(-1 - source, out.length);
                 out.putInt(-1);
@@ -313,9 +313,9 @@ public class Label {
             }
         } else {
             if (wideOffset) {
-                out.putInt(position - source);
+                out.putInt(this.position - source);
             } else {
-                out.putShort(position - source);
+                out.putShort(this.position - source);
             }
         }
     }
@@ -335,17 +335,17 @@ public class Label {
      */
     private void addReference(final int sourcePosition,
             final int referencePosition) {
-        if (srcAndRefPositions == null) {
-            srcAndRefPositions = new int[6];
+        if (this.srcAndRefPositions == null) {
+            this.srcAndRefPositions = new int[6];
         }
-        if (referenceCount >= srcAndRefPositions.length) {
-            int[] a = new int[srcAndRefPositions.length + 6];
-            System.arraycopy(srcAndRefPositions, 0, a, 0,
-                    srcAndRefPositions.length);
-            srcAndRefPositions = a;
+        if (this.referenceCount >= this.srcAndRefPositions.length) {
+            int[] a = new int[this.srcAndRefPositions.length + 6];
+            System.arraycopy(this.srcAndRefPositions, 0, a, 0,
+                    this.srcAndRefPositions.length);
+            this.srcAndRefPositions = a;
         }
-        srcAndRefPositions[referenceCount++] = sourcePosition;
-        srcAndRefPositions[referenceCount++] = referencePosition;
+        this.srcAndRefPositions[this.referenceCount++] = sourcePosition;
+        this.srcAndRefPositions[this.referenceCount++] = referencePosition;
     }
 
     /**
@@ -376,9 +376,9 @@ public class Label {
         this.status |= RESOLVED;
         this.position = position;
         int i = 0;
-        while (i < referenceCount) {
-            int source = srcAndRefPositions[i++];
-            int reference = srcAndRefPositions[i++];
+        while (i < this.referenceCount) {
+            int source = this.srcAndRefPositions[i++];
+            int reference = this.srcAndRefPositions[i++];
             int offset;
             if (source >= 0) {
                 offset = position - source;
@@ -424,7 +424,7 @@ public class Label {
      * @return the first label of the series to which this label belongs.
      */
     Label getFirst() {
-        return !ClassReader.FRAMES || frame == null ? this : frame.owner;
+        return !ClassReader.FRAMES || this.frame == null ? this : this.frame.owner;
     }
 
     // ------------------------------------------------------------------------
@@ -439,8 +439,8 @@ public class Label {
      * @return true is this basic block belongs to the given subroutine.
      */
     boolean inSubroutine(final long id) {
-        if ((status & Label.VISITED) != 0) {
-            return (srcAndRefPositions[(int) (id >>> 32)] & (int) id) != 0;
+        if ((this.status & Label.VISITED) != 0) {
+            return (this.srcAndRefPositions[(int) (id >>> 32)] & (int) id) != 0;
         }
         return false;
     }
@@ -455,11 +455,11 @@ public class Label {
      *         subroutine.
      */
     boolean inSameSubroutine(final Label block) {
-        if ((status & VISITED) == 0 || (block.status & VISITED) == 0) {
+        if ((this.status & VISITED) == 0 || (block.status & VISITED) == 0) {
             return false;
         }
-        for (int i = 0; i < srcAndRefPositions.length; ++i) {
-            if ((srcAndRefPositions[i] & block.srcAndRefPositions[i]) != 0) {
+        for (int i = 0; i < this.srcAndRefPositions.length; ++i) {
+            if ((this.srcAndRefPositions[i] & block.srcAndRefPositions[i]) != 0) {
                 return true;
             }
         }
@@ -475,11 +475,11 @@ public class Label {
      *            the total number of subroutines in the method.
      */
     void addToSubroutine(final long id, final int nbSubroutines) {
-        if ((status & VISITED) == 0) {
-            status |= VISITED;
-            srcAndRefPositions = new int[nbSubroutines / 32 + 1];
+        if ((this.status & VISITED) == 0) {
+            this.status |= VISITED;
+            this.srcAndRefPositions = new int[nbSubroutines / 32 + 1];
         }
-        srcAndRefPositions[(int) (id >>> 32)] |= (int) id;
+        this.srcAndRefPositions[(int) (id >>> 32)] |= (int) id;
     }
 
     /**

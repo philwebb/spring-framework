@@ -156,15 +156,15 @@ public class InitDestroyAnnotationBeanPostProcessor
 		}
 		catch (InvocationTargetException ex) {
 			String msg = "Invocation of destroy method failed on bean with name '" + beanName + "'";
-			if (logger.isDebugEnabled()) {
-				logger.warn(msg, ex.getTargetException());
+			if (this.logger.isDebugEnabled()) {
+				this.logger.warn(msg, ex.getTargetException());
 			}
 			else {
-				logger.warn(msg + ": " + ex.getTargetException());
+				this.logger.warn(msg + ": " + ex.getTargetException());
 			}
 		}
 		catch (Throwable ex) {
-			logger.error("Failed to invoke destroy method on bean with name '" + beanName + "'", ex);
+			this.logger.error("Failed to invoke destroy method on bean with name '" + beanName + "'", ex);
 		}
 	}
 
@@ -195,7 +195,7 @@ public class InitDestroyAnnotationBeanPostProcessor
 	}
 
 	private LifecycleMetadata buildLifecycleMetadata(final Class<?> clazz) {
-		final boolean debug = logger.isDebugEnabled();
+		final boolean debug = this.logger.isDebugEnabled();
 		LinkedList<LifecycleElement> initMethods = new LinkedList<>();
 		LinkedList<LifecycleElement> destroyMethods = new LinkedList<>();
 		Class<?> targetClass = clazz;
@@ -205,17 +205,17 @@ public class InitDestroyAnnotationBeanPostProcessor
 			final LinkedList<LifecycleElement> currDestroyMethods = new LinkedList<>();
 
 			ReflectionUtils.doWithLocalMethods(targetClass, method -> {
-				if (initAnnotationType != null && method.isAnnotationPresent(initAnnotationType)) {
+				if (this.initAnnotationType != null && method.isAnnotationPresent(this.initAnnotationType)) {
 					LifecycleElement element = new LifecycleElement(method);
 					currInitMethods.add(element);
 					if (debug) {
-						logger.debug("Found init method on class [" + clazz.getName() + "]: " + method);
+						this.logger.debug("Found init method on class [" + clazz.getName() + "]: " + method);
 					}
 				}
-				if (destroyAnnotationType != null && method.isAnnotationPresent(destroyAnnotationType)) {
+				if (this.destroyAnnotationType != null && method.isAnnotationPresent(this.destroyAnnotationType)) {
 					currDestroyMethods.add(new LifecycleElement(method));
 					if (debug) {
-						logger.debug("Found destroy method on class [" + clazz.getName() + "]: " + method);
+						this.logger.debug("Found destroy method on class [" + clazz.getName() + "]: " + method);
 					}
 				}
 			});
@@ -275,8 +275,8 @@ public class InitDestroyAnnotationBeanPostProcessor
 				if (!beanDefinition.isExternallyManagedInitMethod(methodIdentifier)) {
 					beanDefinition.registerExternallyManagedInitMethod(methodIdentifier);
 					checkedInitMethods.add(element);
-					if (logger.isDebugEnabled()) {
-						logger.debug("Registered init method on class [" + this.targetClass.getName() + "]: " + element);
+					if (InitDestroyAnnotationBeanPostProcessor.this.logger.isDebugEnabled()) {
+						InitDestroyAnnotationBeanPostProcessor.this.logger.debug("Registered init method on class [" + this.targetClass.getName() + "]: " + element);
 					}
 				}
 			}
@@ -286,8 +286,8 @@ public class InitDestroyAnnotationBeanPostProcessor
 				if (!beanDefinition.isExternallyManagedDestroyMethod(methodIdentifier)) {
 					beanDefinition.registerExternallyManagedDestroyMethod(methodIdentifier);
 					checkedDestroyMethods.add(element);
-					if (logger.isDebugEnabled()) {
-						logger.debug("Registered destroy method on class [" + this.targetClass.getName() + "]: " + element);
+					if (InitDestroyAnnotationBeanPostProcessor.this.logger.isDebugEnabled()) {
+						InitDestroyAnnotationBeanPostProcessor.this.logger.debug("Registered destroy method on class [" + this.targetClass.getName() + "]: " + element);
 					}
 				}
 			}
@@ -300,10 +300,10 @@ public class InitDestroyAnnotationBeanPostProcessor
 			Collection<LifecycleElement> initMethodsToIterate =
 					(checkedInitMethods != null ? checkedInitMethods : this.initMethods);
 			if (!initMethodsToIterate.isEmpty()) {
-				boolean debug = logger.isDebugEnabled();
+				boolean debug = InitDestroyAnnotationBeanPostProcessor.this.logger.isDebugEnabled();
 				for (LifecycleElement element : initMethodsToIterate) {
 					if (debug) {
-						logger.debug("Invoking init method on bean '" + beanName + "': " + element.getMethod());
+						InitDestroyAnnotationBeanPostProcessor.this.logger.debug("Invoking init method on bean '" + beanName + "': " + element.getMethod());
 					}
 					element.invoke(target);
 				}
@@ -315,10 +315,10 @@ public class InitDestroyAnnotationBeanPostProcessor
 			Collection<LifecycleElement> destroyMethodsToUse =
 					(checkedDestroyMethods != null ? checkedDestroyMethods : this.destroyMethods);
 			if (!destroyMethodsToUse.isEmpty()) {
-				boolean debug = logger.isDebugEnabled();
+				boolean debug = InitDestroyAnnotationBeanPostProcessor.this.logger.isDebugEnabled();
 				for (LifecycleElement element : destroyMethodsToUse) {
 					if (debug) {
-						logger.debug("Invoking destroy method on bean '" + beanName + "': " + element.getMethod());
+						InitDestroyAnnotationBeanPostProcessor.this.logger.debug("Invoking destroy method on bean '" + beanName + "': " + element.getMethod());
 					}
 					element.invoke(target);
 				}

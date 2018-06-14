@@ -76,12 +76,12 @@ public class FixedLocaleContextResolver implements LocaleContextResolver {
 		return new TimeZoneAwareLocaleContext() {
 			@Override
 			public Locale getLocale() {
-				return locale;
+				return FixedLocaleContextResolver.this.locale;
 			}
 			@Override
 			@Nullable
 			public TimeZone getTimeZone() {
-				return timeZone;
+				return FixedLocaleContextResolver.this.timeZone;
 			}
 		};
 	}

@@ -129,13 +129,13 @@ public class InvocableHandlerMethod extends HandlerMethod {
 			Object... providedArgs) throws Exception {
 
 		Object[] args = getMethodArgumentValues(request, mavContainer, providedArgs);
-		if (logger.isTraceEnabled()) {
-			logger.trace("Invoking '" + ClassUtils.getQualifiedMethodName(getMethod(), getBeanType()) +
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Invoking '" + ClassUtils.getQualifiedMethodName(getMethod(), getBeanType()) +
 					"' with arguments " + Arrays.toString(args));
 		}
 		Object returnValue = doInvoke(args);
-		if (logger.isTraceEnabled()) {
-			logger.trace("Method [" + ClassUtils.getQualifiedMethodName(getMethod(), getBeanType()) +
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Method [" + ClassUtils.getQualifiedMethodName(getMethod(), getBeanType()) +
 					"] returned [" + returnValue + "]");
 		}
 		return returnValue;
@@ -163,8 +163,8 @@ public class InvocableHandlerMethod extends HandlerMethod {
 					continue;
 				}
 				catch (Exception ex) {
-					if (logger.isDebugEnabled()) {
-						logger.debug(getArgumentResolutionErrorMessage("Failed to resolve", i), ex);
+					if (this.logger.isDebugEnabled()) {
+						this.logger.debug(getArgumentResolutionErrorMessage("Failed to resolve", i), ex);
 					}
 					throw ex;
 				}

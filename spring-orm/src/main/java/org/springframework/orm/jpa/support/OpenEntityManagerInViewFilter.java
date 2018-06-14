@@ -165,7 +165,7 @@ public class OpenEntityManagerInViewFilter extends OncePerRequestFilter {
 		else {
 			boolean isFirstRequest = !isAsyncDispatch(request);
 			if (isFirstRequest || !applyEntityManagerBindingInterceptor(asyncManager, key)) {
-				logger.debug("Opening JPA EntityManager in OpenEntityManagerInViewFilter");
+				this.logger.debug("Opening JPA EntityManager in OpenEntityManagerInViewFilter");
 				try {
 					EntityManager em = createEntityManager(emf);
 					EntityManagerHolder emHolder = new EntityManagerHolder(em);
@@ -190,7 +190,7 @@ public class OpenEntityManagerInViewFilter extends OncePerRequestFilter {
 				EntityManagerHolder emHolder = (EntityManagerHolder)
 						TransactionSynchronizationManager.unbindResource(emf);
 				if (!isAsyncStarted(request)) {
-					logger.debug("Closing JPA EntityManager in OpenEntityManagerInViewFilter");
+					this.logger.debug("Closing JPA EntityManager in OpenEntityManagerInViewFilter");
 					EntityManagerFactoryUtils.closeEntityManager(emHolder.getEntityManager());
 				}
 			}

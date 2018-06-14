@@ -497,7 +497,7 @@ public class SchedulerFactoryBean extends SchedulerAccessor implements FactoryBe
 				this.scheduler.shutdown(true);
 			}
 			catch (Exception ex2) {
-				logger.debug("Scheduler shutdown exception after registration failure", ex2);
+				this.logger.debug("Scheduler shutdown exception after registration failure", ex2);
 			}
 			throw ex;
 		}
@@ -550,8 +550,8 @@ public class SchedulerFactoryBean extends SchedulerAccessor implements FactoryBe
 		}
 
 		if (this.configLocation != null) {
-			if (logger.isInfoEnabled()) {
-				logger.info("Loading Quartz config from [" + this.configLocation + "]");
+			if (this.logger.isInfoEnabled()) {
+				this.logger.info("Loading Quartz config from [" + this.configLocation + "]");
 			}
 			PropertiesLoaderUtils.fillProperties(mergedProps, this.configLocation);
 		}
@@ -697,12 +697,12 @@ public class SchedulerFactoryBean extends SchedulerAccessor implements FactoryBe
 	 */
 	protected void startScheduler(final Scheduler scheduler, final int startupDelay) throws SchedulerException {
 		if (startupDelay <= 0) {
-			logger.info("Starting Quartz Scheduler now");
+			this.logger.info("Starting Quartz Scheduler now");
 			scheduler.start();
 		}
 		else {
-			if (logger.isInfoEnabled()) {
-				logger.info("Will start Quartz Scheduler [" + scheduler.getSchedulerName() +
+			if (this.logger.isInfoEnabled()) {
+				this.logger.info("Will start Quartz Scheduler [" + scheduler.getSchedulerName() +
 						"] in " + startupDelay + " seconds");
 			}
 			// Not using the Quartz startDelayed method since we explicitly want a daemon
@@ -717,8 +717,8 @@ public class SchedulerFactoryBean extends SchedulerAccessor implements FactoryBe
 						Thread.currentThread().interrupt();
 						// simply proceed
 					}
-					if (logger.isInfoEnabled()) {
-						logger.info("Starting Quartz Scheduler now, after delay of " + startupDelay + " seconds");
+					if (SchedulerFactoryBean.this.logger.isInfoEnabled()) {
+						SchedulerFactoryBean.this.logger.info("Starting Quartz Scheduler now, after delay of " + startupDelay + " seconds");
 					}
 					try {
 						scheduler.start();
@@ -821,7 +821,7 @@ public class SchedulerFactoryBean extends SchedulerAccessor implements FactoryBe
 	@Override
 	public void destroy() throws SchedulerException {
 		if (this.scheduler != null) {
-			logger.info("Shutting down Quartz Scheduler");
+			this.logger.info("Shutting down Quartz Scheduler");
 			this.scheduler.shutdown(this.waitForJobsToCompleteOnShutdown);
 		}
 	}

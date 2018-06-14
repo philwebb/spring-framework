@@ -229,8 +229,8 @@ public class JmsListenerAnnotationBeanPostProcessor
 					});
 			if (annotatedMethods.isEmpty()) {
 				this.nonAnnotatedClasses.add(bean.getClass());
-				if (logger.isTraceEnabled()) {
-					logger.trace("No @JmsListener annotations found on bean type: " + bean.getClass());
+				if (this.logger.isTraceEnabled()) {
+					this.logger.trace("No @JmsListener annotations found on bean type: " + bean.getClass());
 				}
 			}
 			else {
@@ -238,8 +238,8 @@ public class JmsListenerAnnotationBeanPostProcessor
 				annotatedMethods.forEach((method, listeners) ->
 						listeners.forEach(listener ->
 								processJmsListener(listener, method, bean)));
-				if (logger.isDebugEnabled()) {
-					logger.debug(annotatedMethods.size() + " @JmsListener methods processed on bean '" + beanName +
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug(annotatedMethods.size() + " @JmsListener methods processed on bean '" + beanName +
 							"': " + annotatedMethods);
 				}
 			}
@@ -351,8 +351,8 @@ public class JmsListenerAnnotationBeanPostProcessor
 
 		private MessageHandlerMethodFactory createDefaultJmsHandlerMethodFactory() {
 			DefaultMessageHandlerMethodFactory defaultFactory = new DefaultMessageHandlerMethodFactory();
-			if (beanFactory != null) {
-				defaultFactory.setBeanFactory(beanFactory);
+			if (JmsListenerAnnotationBeanPostProcessor.this.beanFactory != null) {
+				defaultFactory.setBeanFactory(JmsListenerAnnotationBeanPostProcessor.this.beanFactory);
 			}
 			defaultFactory.afterPropertiesSet();
 			return defaultFactory;

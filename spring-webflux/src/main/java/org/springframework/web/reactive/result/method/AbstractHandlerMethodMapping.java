@@ -152,8 +152,8 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	 * @see #handlerMethodsInitialized(Map)
 	 */
 	protected void initHandlerMethods() {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Looking for request mappings in application context: " + getApplicationContext());
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Looking for request mappings in application context: " + getApplicationContext());
 		}
 		String[] beanNames = obtainApplicationContext().getBeanNamesForType(Object.class);
 
@@ -165,8 +165,8 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 				}
 				catch (Throwable ex) {
 					// An unresolvable bean type, probably from a lazy bean - let's ignore it.
-					if (logger.isDebugEnabled()) {
-						logger.debug("Could not resolve target class for bean with name '" + beanName + "'", ex);
+					if (this.logger.isDebugEnabled()) {
+						this.logger.debug("Could not resolve target class for bean with name '" + beanName + "'", ex);
 					}
 				}
 				if (beanType != null && isHandler(beanType)) {
@@ -189,8 +189,8 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 			final Class<?> userType = ClassUtils.getUserClass(handlerType);
 			Map<Method, T> methods = MethodIntrospector.selectMethods(userType,
 					(MethodIntrospector.MetadataLookup<T>) method -> getMappingForMethod(method, userType));
-			if (logger.isDebugEnabled()) {
-				logger.debug(methods.size() + " request handler methods found on " + userType + ": " + methods);
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug(methods.size() + " request handler methods found on " + userType + ": " + methods);
 			}
 			methods.forEach((key, mapping) -> {
 				Method invocableMethod = AopUtils.selectInvocableMethod(key, userType);
@@ -255,8 +255,8 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	 */
 	@Override
 	public Mono<HandlerMethod> getHandlerInternal(ServerWebExchange exchange) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Looking up handler method for path " +
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Looking up handler method for path " +
 					exchange.getRequest().getPath().value());
 		}
 		this.mappingRegistry.acquireReadLock();
@@ -268,12 +268,12 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 			catch (Exception ex) {
 				return Mono.error(ex);
 			}
-			if (logger.isDebugEnabled()) {
+			if (this.logger.isDebugEnabled()) {
 				if (handlerMethod != null) {
-					logger.debug("Returning handler method [" + handlerMethod + "]");
+					this.logger.debug("Returning handler method [" + handlerMethod + "]");
 				}
 				else {
-					logger.debug("Did not find handler method for " +
+					this.logger.debug("Did not find handler method for " +
 							"[" + exchange.getRequest().getPath().value() + "]");
 				}
 			}
@@ -303,8 +303,8 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 		if (!matches.isEmpty()) {
 			Comparator<Match> comparator = new MatchComparator(getMappingComparator(exchange));
 			matches.sort(comparator);
-			if (logger.isTraceEnabled()) {
-				logger.trace("Found " + matches.size() + " matching mapping(s) for [" +
+			if (this.logger.isTraceEnabled()) {
+				this.logger.trace("Found " + matches.size() + " matching mapping(s) for [" +
 						exchange.getRequest().getPath() + "] : " + matches);
 			}
 			Match bestMatch = matches.get(0);
@@ -464,8 +464,8 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 				HandlerMethod handlerMethod = createHandlerMethod(handler, method);
 				assertUniqueMethodMapping(handlerMethod, mapping);
 
-				if (logger.isInfoEnabled()) {
-					logger.info("Mapped \"" + mapping + "\" onto " + handlerMethod);
+				if (AbstractHandlerMethodMapping.this.logger.isInfoEnabled()) {
+					AbstractHandlerMethodMapping.this.logger.info("Mapped \"" + mapping + "\" onto " + handlerMethod);
 				}
 				this.mappingLookup.put(mapping, handlerMethod);
 

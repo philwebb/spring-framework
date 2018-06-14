@@ -62,7 +62,7 @@ public abstract class AbstractListenerWriteFlushProcessor<T> implements Processo
 
 	@Override
 	public final void onNext(Publisher<? extends T> publisher) {
-		logger.trace("Received onNext publisher");
+		this.logger.trace("Received onNext publisher");
 		this.state.get().onNext(this, publisher);
 	}
 
@@ -72,8 +72,8 @@ public abstract class AbstractListenerWriteFlushProcessor<T> implements Processo
 	 */
 	@Override
 	public final void onError(Throwable ex) {
-		if (logger.isTraceEnabled()) {
-			logger.trace("Received onError: " + ex);
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Received onError: " + ex);
 		}
 		this.state.get().onError(this, ex);
 	}
@@ -84,7 +84,7 @@ public abstract class AbstractListenerWriteFlushProcessor<T> implements Processo
 	 */
 	@Override
 	public final void onComplete() {
-		logger.trace("Received onComplete");
+		this.logger.trace("Received onComplete");
 		this.state.get().onComplete(this);
 	}
 
@@ -158,16 +158,16 @@ public abstract class AbstractListenerWriteFlushProcessor<T> implements Processo
 
 	private boolean changeState(State oldState, State newState) {
 		boolean result = this.state.compareAndSet(oldState, newState);
-		if (result && logger.isTraceEnabled()) {
-			logger.trace(oldState + " -> " + newState);
+		if (result && this.logger.isTraceEnabled()) {
+			this.logger.trace(oldState + " -> " + newState);
 		}
 		return result;
 	}
 
 	private void flushIfPossible() {
 		boolean result = isWritePossible();
-		if (logger.isTraceEnabled()) {
-			logger.trace("isWritePossible[" + result + "]");
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("isWritePossible[" + result + "]");
 		}
 		if (result) {
 			onFlushPossible();

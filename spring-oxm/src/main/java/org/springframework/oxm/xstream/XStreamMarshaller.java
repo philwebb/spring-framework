@@ -431,8 +431,8 @@ public class XStreamMarshaller extends AbstractMarshaller implements BeanClassLo
 			@Override
 			protected MapperWrapper wrapMapper(MapperWrapper next) {
 				MapperWrapper mapperToWrap = next;
-				if (mapperWrappers != null) {
-					for (Class<? extends MapperWrapper> mapperWrapper : mapperWrappers) {
+				if (XStreamMarshaller.this.mapperWrappers != null) {
+					for (Class<? extends MapperWrapper> mapperWrapper : XStreamMarshaller.this.mapperWrappers) {
 						Constructor<? extends MapperWrapper> ctor;
 						try {
 							ctor = mapperWrapper.getConstructor(Mapper.class);
@@ -734,7 +734,7 @@ public class XStreamMarshaller extends AbstractMarshaller implements BeanClassLo
 				streamWriter.flush();
 			}
 			catch (Exception ex) {
-				logger.debug("Could not flush HierarchicalStreamWriter", ex);
+				this.logger.debug("Could not flush HierarchicalStreamWriter", ex);
 			}
 		}
 	}

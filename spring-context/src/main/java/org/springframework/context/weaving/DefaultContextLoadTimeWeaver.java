@@ -75,21 +75,21 @@ public class DefaultContextLoadTimeWeaver implements LoadTimeWeaver, BeanClassLo
 	public void setBeanClassLoader(ClassLoader classLoader) {
 		LoadTimeWeaver serverSpecificLoadTimeWeaver = createServerSpecificLoadTimeWeaver(classLoader);
 		if (serverSpecificLoadTimeWeaver != null) {
-			if (logger.isInfoEnabled()) {
-				logger.info("Determined server-specific load-time weaver: " +
+			if (this.logger.isInfoEnabled()) {
+				this.logger.info("Determined server-specific load-time weaver: " +
 						serverSpecificLoadTimeWeaver.getClass().getName());
 			}
 			this.loadTimeWeaver = serverSpecificLoadTimeWeaver;
 		}
 		else if (InstrumentationLoadTimeWeaver.isInstrumentationAvailable()) {
-			logger.info("Found Spring's JVM agent for instrumentation");
+			this.logger.info("Found Spring's JVM agent for instrumentation");
 			this.loadTimeWeaver = new InstrumentationLoadTimeWeaver(classLoader);
 		}
 		else {
 			try {
 				this.loadTimeWeaver = new ReflectiveLoadTimeWeaver(classLoader);
-				if (logger.isInfoEnabled()) {
-					logger.info("Using a reflective load-time weaver for class loader: " +
+				if (this.logger.isInfoEnabled()) {
+					this.logger.info("Using a reflective load-time weaver for class loader: " +
 							this.loadTimeWeaver.getInstrumentableClassLoader().getClass().getName());
 				}
 			}
@@ -127,8 +127,8 @@ public class DefaultContextLoadTimeWeaver implements LoadTimeWeaver, BeanClassLo
 			}
 		}
 		catch (Exception ex) {
-			if (logger.isInfoEnabled()) {
-				logger.info("Could not obtain server-specific LoadTimeWeaver: " + ex.getMessage());
+			if (this.logger.isInfoEnabled()) {
+				this.logger.info("Could not obtain server-specific LoadTimeWeaver: " + ex.getMessage());
 			}
 		}
 		return null;
@@ -137,8 +137,8 @@ public class DefaultContextLoadTimeWeaver implements LoadTimeWeaver, BeanClassLo
 	@Override
 	public void destroy() {
 		if (this.loadTimeWeaver instanceof InstrumentationLoadTimeWeaver) {
-			if (logger.isInfoEnabled()) {
-				logger.info("Removing all registered transformers for class loader: " +
+			if (this.logger.isInfoEnabled()) {
+				this.logger.info("Removing all registered transformers for class loader: " +
 						this.loadTimeWeaver.getInstrumentableClassLoader().getClass().getName());
 			}
 			((InstrumentationLoadTimeWeaver) this.loadTimeWeaver).removeTransformers();

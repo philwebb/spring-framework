@@ -54,24 +54,24 @@ public abstract class AbstractSubscriptionRegistry implements SubscriptionRegist
 
 		String sessionId = SimpMessageHeaderAccessor.getSessionId(headers);
 		if (sessionId == null) {
-			if (logger.isErrorEnabled()) {
-				logger.error("No sessionId in  " + message);
+			if (this.logger.isErrorEnabled()) {
+				this.logger.error("No sessionId in  " + message);
 			}
 			return;
 		}
 
 		String subscriptionId = SimpMessageHeaderAccessor.getSubscriptionId(headers);
 		if (subscriptionId == null) {
-			if (logger.isErrorEnabled()) {
-				logger.error("No subscriptionId in " + message);
+			if (this.logger.isErrorEnabled()) {
+				this.logger.error("No subscriptionId in " + message);
 			}
 			return;
 		}
 
 		String destination = SimpMessageHeaderAccessor.getDestination(headers);
 		if (destination == null) {
-			if (logger.isErrorEnabled()) {
-				logger.error("No destination in " + message);
+			if (this.logger.isErrorEnabled()) {
+				this.logger.error("No destination in " + message);
 			}
 			return;
 		}
@@ -90,16 +90,16 @@ public abstract class AbstractSubscriptionRegistry implements SubscriptionRegist
 
 		String sessionId = SimpMessageHeaderAccessor.getSessionId(headers);
 		if (sessionId == null) {
-			if (logger.isErrorEnabled()) {
-				logger.error("No sessionId in " + message);
+			if (this.logger.isErrorEnabled()) {
+				this.logger.error("No sessionId in " + message);
 			}
 			return;
 		}
 
 		String subscriptionId = SimpMessageHeaderAccessor.getSubscriptionId(headers);
 		if (subscriptionId == null) {
-			if (logger.isErrorEnabled()) {
-				logger.error("No subscriptionId " + message);
+			if (this.logger.isErrorEnabled()) {
+				this.logger.error("No subscriptionId " + message);
 			}
 			return;
 		}
@@ -118,8 +118,8 @@ public abstract class AbstractSubscriptionRegistry implements SubscriptionRegist
 
 		String destination = SimpMessageHeaderAccessor.getDestination(headers);
 		if (destination == null) {
-			if (logger.isErrorEnabled()) {
-				logger.error("No destination in " + message);
+			if (this.logger.isErrorEnabled()) {
+				this.logger.error("No destination in " + message);
 			}
 			return EMPTY_MAP;
 		}

@@ -153,8 +153,8 @@ public class DefaultJCacheOperationSource extends AnnotationJCacheOperationSourc
 					"mark one as primary, or declare a more specific implementation type for your cache", ex);
 		}
 		catch (NoSuchBeanDefinitionException ex) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("No bean of type [" + type.getName() + "] found in application context", ex);
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("No bean of type [" + type.getName() + "] found in application context", ex);
 			}
 			return BeanUtils.instantiateClass(type);
 		}

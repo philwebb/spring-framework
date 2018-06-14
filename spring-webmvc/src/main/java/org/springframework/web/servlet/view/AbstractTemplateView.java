@@ -122,8 +122,8 @@ public abstract class AbstractTemplateView extends AbstractUrlBasedView {
 						"' because of an existing model object of the same name");
 				}
 				Object attributeValue = request.getAttribute(attribute);
-				if (logger.isDebugEnabled()) {
-					logger.debug("Exposing request attribute '" + attribute +
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Exposing request attribute '" + attribute +
 							"' with value [" + attributeValue + "] to model");
 				}
 				model.put(attribute, attributeValue);
@@ -140,8 +140,8 @@ public abstract class AbstractTemplateView extends AbstractUrlBasedView {
 							"' because of an existing model object of the same name");
 					}
 					Object attributeValue = session.getAttribute(attribute);
-					if (logger.isDebugEnabled()) {
-						logger.debug("Exposing session attribute '" + attribute +
+					if (this.logger.isDebugEnabled()) {
+						this.logger.debug("Exposing session attribute '" + attribute +
 								"' with value [" + attributeValue + "] to model");
 					}
 					model.put(attribute, attributeValue);

@@ -129,8 +129,8 @@ public class DriverManagerDataSource extends AbstractDriverBasedDataSource {
 		catch (ClassNotFoundException ex) {
 			throw new IllegalStateException("Could not load JDBC driver class [" + driverClassNameToUse + "]", ex);
 		}
-		if (logger.isInfoEnabled()) {
-			logger.info("Loaded JDBC driver: " + driverClassNameToUse);
+		if (this.logger.isInfoEnabled()) {
+			this.logger.info("Loaded JDBC driver: " + driverClassNameToUse);
 		}
 	}
 
@@ -139,8 +139,8 @@ public class DriverManagerDataSource extends AbstractDriverBasedDataSource {
 	protected Connection getConnectionFromDriver(Properties props) throws SQLException {
 		String url = getUrl();
 		Assert.state(url != null, "'url' not set");
-		if (logger.isDebugEnabled()) {
-			logger.debug("Creating new JDBC DriverManager Connection to [" + url + "]");
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Creating new JDBC DriverManager Connection to [" + url + "]");
 		}
 		return getConnectionFromDriverManager(url, props);
 	}

@@ -157,12 +157,12 @@ public class ExecutorSubscribableChannel extends AbstractSubscribableChannel {
 		@Nullable
 		private Message<?> applyBeforeHandle(Message<?> message) {
 			Message<?> messageToUse = message;
-			for (ExecutorChannelInterceptor interceptor : executorInterceptors) {
+			for (ExecutorChannelInterceptor interceptor : ExecutorSubscribableChannel.this.executorInterceptors) {
 				messageToUse = interceptor.beforeHandle(messageToUse, ExecutorSubscribableChannel.this, this.messageHandler);
 				if (messageToUse == null) {
 					String name = interceptor.getClass().getSimpleName();
-					if (logger.isDebugEnabled()) {
-						logger.debug(name + " returned null from beforeHandle, i.e. precluding the send.");
+					if (ExecutorSubscribableChannel.this.logger.isDebugEnabled()) {
+						ExecutorSubscribableChannel.this.logger.debug(name + " returned null from beforeHandle, i.e. precluding the send.");
 					}
 					triggerAfterMessageHandled(message, null);
 					return null;
@@ -174,12 +174,12 @@ public class ExecutorSubscribableChannel extends AbstractSubscribableChannel {
 
 		private void triggerAfterMessageHandled(Message<?> message, @Nullable Exception ex) {
 			for (int i = this.interceptorIndex; i >= 0; i--) {
-				ExecutorChannelInterceptor interceptor = executorInterceptors.get(i);
+				ExecutorChannelInterceptor interceptor = ExecutorSubscribableChannel.this.executorInterceptors.get(i);
 				try {
 					interceptor.afterMessageHandled(message, ExecutorSubscribableChannel.this, this.messageHandler, ex);
 				}
 				catch (Throwable ex2) {
-					logger.error("Exception from afterMessageHandled in " + interceptor, ex2);
+					ExecutorSubscribableChannel.this.logger.error("Exception from afterMessageHandled in " + interceptor, ex2);
 				}
 			}
 		}

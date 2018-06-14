@@ -187,7 +187,7 @@ public class WebSocketServerSockJsSession extends AbstractSockJsSession implemen
 			messages = getSockJsServiceConfig().getMessageCodec().decode(payload);
 		}
 		catch (Throwable ex) {
-			logger.error("Broken data received. Terminating WebSocket connection abruptly", ex);
+			this.logger.error("Broken data received. Terminating WebSocket connection abruptly", ex);
 			tryCloseWithSockJsTransportError(ex, CloseStatus.BAD_DATA);
 			return;
 		}
@@ -217,8 +217,8 @@ public class WebSocketServerSockJsSession extends AbstractSockJsSession implemen
 	@Override
 	protected void writeFrameInternal(SockJsFrame frame) throws IOException {
 		Assert.state(this.webSocketSession != null, "WebSocketSession not yet initialized");
-		if (logger.isTraceEnabled()) {
-			logger.trace("Writing " + frame);
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Writing " + frame);
 		}
 		TextMessage message = new TextMessage(frame.getContent());
 		this.webSocketSession.sendMessage(message);

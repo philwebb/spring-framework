@@ -42,8 +42,8 @@ public abstract class AbstractResourceResolver implements ResourceResolver {
 	public Resource resolveResource(@Nullable HttpServletRequest request, String requestPath,
 			List<? extends Resource> locations, ResourceResolverChain chain) {
 
-		if (logger.isTraceEnabled()) {
-			logger.trace("Resolving resource for request path \"" + requestPath + "\"");
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Resolving resource for request path \"" + requestPath + "\"");
 		}
 		return resolveResourceInternal(request, requestPath, locations, chain);
 	}
@@ -53,8 +53,8 @@ public abstract class AbstractResourceResolver implements ResourceResolver {
 	public String resolveUrlPath(String resourceUrlPath, List<? extends Resource> locations,
 			ResourceResolverChain chain) {
 
-		if (logger.isTraceEnabled()) {
-			logger.trace("Resolving public URL for resource path \"" + resourceUrlPath + "\"");
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Resolving public URL for resource path \"" + resourceUrlPath + "\"");
 		}
 
 		return resolveUrlPathInternal(resourceUrlPath, locations, chain);

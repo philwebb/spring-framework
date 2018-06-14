@@ -142,7 +142,7 @@ public final class PatternsRequestCondition extends AbstractRequestCondition<Pat
 	 */
 	private SortedSet<PathPattern> getMatchingPatterns(ServerWebExchange exchange) {
 		PathContainer lookupPath = exchange.getRequest().getPath().pathWithinApplication();
-		return patterns.stream()
+		return this.patterns.stream()
 				.filter(pattern -> pattern.matches(lookupPath))
 				.collect(Collectors.toCollection(TreeSet::new));
 	}

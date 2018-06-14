@@ -130,8 +130,8 @@ public class EhCacheManagerFactoryBean implements FactoryBean<CacheManager>, Ini
 
 	@Override
 	public void afterPropertiesSet() throws CacheException {
-		if (logger.isInfoEnabled()) {
-			logger.info("Initializing EhCache CacheManager" +
+		if (this.logger.isInfoEnabled()) {
+			this.logger.info("Initializing EhCache CacheManager" +
 					(this.cacheManagerName != null ? " '" + this.cacheManagerName + "'" : ""));
 		}
 
@@ -188,8 +188,8 @@ public class EhCacheManagerFactoryBean implements FactoryBean<CacheManager>, Ini
 	@Override
 	public void destroy() {
 		if (this.cacheManager != null && this.locallyManaged) {
-			if (logger.isInfoEnabled()) {
-				logger.info("Shutting down EhCache CacheManager" +
+			if (this.logger.isInfoEnabled()) {
+				this.logger.info("Shutting down EhCache CacheManager" +
 						(this.cacheManagerName != null ? " '" + this.cacheManagerName + "'" : ""));
 			}
 			this.cacheManager.shutdown();

@@ -103,10 +103,10 @@ public class DefaultManagedAwareThreadFactory extends CustomizableThreadFactory 
 				this.threadFactory = this.jndiLocator.lookup(this.jndiName, ThreadFactory.class);
 			}
 			catch (NamingException ex) {
-				if (logger.isDebugEnabled()) {
-					logger.debug("Failed to retrieve [" + this.jndiName + "] from JNDI", ex);
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Failed to retrieve [" + this.jndiName + "] from JNDI", ex);
 				}
-				logger.info("Could not find default managed thread factory in JNDI - " +
+				this.logger.info("Could not find default managed thread factory in JNDI - " +
 						"proceeding with default local thread factory");
 			}
 		}

@@ -209,7 +209,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 		try {
 			this.includeFilters.add(new AnnotationTypeFilter(
 					((Class<? extends Annotation>) ClassUtils.forName("javax.annotation.ManagedBean", cl)), false));
-			logger.debug("JSR-250 'javax.annotation.ManagedBean' found and supported for component scanning");
+			this.logger.debug("JSR-250 'javax.annotation.ManagedBean' found and supported for component scanning");
 		}
 		catch (ClassNotFoundException ex) {
 			// JSR-250 1.1 API (as included in Java EE 6) not available - simply skip.
@@ -217,7 +217,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 		try {
 			this.includeFilters.add(new AnnotationTypeFilter(
 					((Class<? extends Annotation>) ClassUtils.forName("javax.inject.Named", cl)), false));
-			logger.debug("JSR-330 'javax.inject.Named' annotation found and supported for component scanning");
+			this.logger.debug("JSR-330 'javax.inject.Named' annotation found and supported for component scanning");
 		}
 		catch (ClassNotFoundException ex) {
 			// JSR-330 API not available - simply skip.
@@ -381,8 +381,8 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 				}
 				types.addAll(index.getCandidateTypes(basePackage, stereotype));
 			}
-			boolean traceEnabled = logger.isTraceEnabled();
-			boolean debugEnabled = logger.isDebugEnabled();
+			boolean traceEnabled = this.logger.isTraceEnabled();
+			boolean debugEnabled = this.logger.isDebugEnabled();
 			for (String type : types) {
 				MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(type);
 				if (isCandidateComponent(metadataReader)) {
@@ -390,19 +390,19 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 							metadataReader.getAnnotationMetadata());
 					if (isCandidateComponent(sbd)) {
 						if (debugEnabled) {
-							logger.debug("Using candidate component class from index: " + type);
+							this.logger.debug("Using candidate component class from index: " + type);
 						}
 						candidates.add(sbd);
 					}
 					else {
 						if (debugEnabled) {
-							logger.debug("Ignored because not a concrete top-level class: " + type);
+							this.logger.debug("Ignored because not a concrete top-level class: " + type);
 						}
 					}
 				}
 				else {
 					if (traceEnabled) {
-						logger.trace("Ignored because matching an exclude filter: " + type);
+						this.logger.trace("Ignored because matching an exclude filter: " + type);
 					}
 				}
 			}
@@ -419,11 +419,11 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 			String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
 					resolveBasePackage(basePackage) + '/' + this.resourcePattern;
 			Resource[] resources = getResourcePatternResolver().getResources(packageSearchPath);
-			boolean traceEnabled = logger.isTraceEnabled();
-			boolean debugEnabled = logger.isDebugEnabled();
+			boolean traceEnabled = this.logger.isTraceEnabled();
+			boolean debugEnabled = this.logger.isDebugEnabled();
 			for (Resource resource : resources) {
 				if (traceEnabled) {
-					logger.trace("Scanning " + resource);
+					this.logger.trace("Scanning " + resource);
 				}
 				if (resource.isReadable()) {
 					try {
@@ -434,19 +434,19 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 							sbd.setSource(resource);
 							if (isCandidateComponent(sbd)) {
 								if (debugEnabled) {
-									logger.debug("Identified candidate component class: " + resource);
+									this.logger.debug("Identified candidate component class: " + resource);
 								}
 								candidates.add(sbd);
 							}
 							else {
 								if (debugEnabled) {
-									logger.debug("Ignored because not a concrete top-level class: " + resource);
+									this.logger.debug("Ignored because not a concrete top-level class: " + resource);
 								}
 							}
 						}
 						else {
 							if (traceEnabled) {
-								logger.trace("Ignored because not matching any filter: " + resource);
+								this.logger.trace("Ignored because not matching any filter: " + resource);
 							}
 						}
 					}
@@ -457,7 +457,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 				}
 				else {
 					if (traceEnabled) {
-						logger.trace("Ignored because not readable: " + resource);
+						this.logger.trace("Ignored because not readable: " + resource);
 					}
 				}
 			}

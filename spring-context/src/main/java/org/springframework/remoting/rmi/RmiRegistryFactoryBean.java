@@ -183,8 +183,8 @@ public class RmiRegistryFactoryBean implements FactoryBean<Registry>, Initializi
 
 		if (registryHost != null) {
 			// Host explicitly specified: only lookup possible.
-			if (logger.isInfoEnabled()) {
-				logger.info("Looking for RMI registry at port '" + registryPort + "' of host [" + registryHost + "]");
+			if (this.logger.isInfoEnabled()) {
+				this.logger.info("Looking for RMI registry at port '" + registryPort + "' of host [" + registryHost + "]");
 			}
 			Registry reg = LocateRegistry.getRegistry(registryHost, registryPort, clientSocketFactory);
 			testRegistry(reg);
@@ -210,12 +210,12 @@ public class RmiRegistryFactoryBean implements FactoryBean<Registry>, Initializi
 
 		if (clientSocketFactory != null) {
 			if (this.alwaysCreate) {
-				logger.info("Creating new RMI registry");
+				this.logger.info("Creating new RMI registry");
 				this.created = true;
 				return LocateRegistry.createRegistry(registryPort, clientSocketFactory, serverSocketFactory);
 			}
-			if (logger.isInfoEnabled()) {
-				logger.info("Looking for RMI registry at port '" + registryPort + "', using custom socket factory");
+			if (this.logger.isInfoEnabled()) {
+				this.logger.info("Looking for RMI registry at port '" + registryPort + "', using custom socket factory");
 			}
 			synchronized (LocateRegistry.class) {
 				try {
@@ -225,8 +225,8 @@ public class RmiRegistryFactoryBean implements FactoryBean<Registry>, Initializi
 					return reg;
 				}
 				catch (RemoteException ex) {
-					logger.debug("RMI registry access threw exception", ex);
-					logger.info("Could not detect RMI registry - creating new one");
+					this.logger.debug("RMI registry access threw exception", ex);
+					this.logger.info("Could not detect RMI registry - creating new one");
 					// Assume no registry found -> create new one.
 					this.created = true;
 					return LocateRegistry.createRegistry(registryPort, clientSocketFactory, serverSocketFactory);
@@ -247,12 +247,12 @@ public class RmiRegistryFactoryBean implements FactoryBean<Registry>, Initializi
 	 */
 	protected Registry getRegistry(int registryPort) throws RemoteException {
 		if (this.alwaysCreate) {
-			logger.info("Creating new RMI registry");
+			this.logger.info("Creating new RMI registry");
 			this.created = true;
 			return LocateRegistry.createRegistry(registryPort);
 		}
-		if (logger.isInfoEnabled()) {
-			logger.info("Looking for RMI registry at port '" + registryPort + "'");
+		if (this.logger.isInfoEnabled()) {
+			this.logger.info("Looking for RMI registry at port '" + registryPort + "'");
 		}
 		synchronized (LocateRegistry.class) {
 			try {
@@ -262,8 +262,8 @@ public class RmiRegistryFactoryBean implements FactoryBean<Registry>, Initializi
 				return reg;
 			}
 			catch (RemoteException ex) {
-				logger.debug("RMI registry access threw exception", ex);
-				logger.info("Could not detect RMI registry - creating new one");
+				this.logger.debug("RMI registry access threw exception", ex);
+				this.logger.info("Could not detect RMI registry - creating new one");
 				// Assume no registry found -> create new one.
 				this.created = true;
 				return LocateRegistry.createRegistry(registryPort);
@@ -307,7 +307,7 @@ public class RmiRegistryFactoryBean implements FactoryBean<Registry>, Initializi
 	@Override
 	public void destroy() throws RemoteException {
 		if (this.created) {
-			logger.info("Unexporting RMI registry");
+			this.logger.info("Unexporting RMI registry");
 			UnicastRemoteObject.unexportObject(this.registry, true);
 		}
 	}

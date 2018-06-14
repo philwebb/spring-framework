@@ -68,7 +68,7 @@ public class XpathRequestMatchers {
 		return new AbstractXpathRequestMatcher() {
 			@Override
 			protected void matchInternal(MockClientHttpRequest request) throws Exception {
-				xpathHelper.assertNode(request.getBodyAsBytes(), DEFAULT_ENCODING, matcher);
+				XpathRequestMatchers.this.xpathHelper.assertNode(request.getBodyAsBytes(), DEFAULT_ENCODING, matcher);
 			}
 		};
 	}
@@ -80,7 +80,7 @@ public class XpathRequestMatchers {
 		return new AbstractXpathRequestMatcher() {
 			@Override
 			protected void matchInternal(MockClientHttpRequest request) throws Exception {
-				xpathHelper.exists(request.getBodyAsBytes(), DEFAULT_ENCODING);
+				XpathRequestMatchers.this.xpathHelper.exists(request.getBodyAsBytes(), DEFAULT_ENCODING);
 			}
 		};
 	}
@@ -92,7 +92,7 @@ public class XpathRequestMatchers {
 		return new AbstractXpathRequestMatcher() {
 			@Override
 			protected void matchInternal(MockClientHttpRequest request) throws Exception {
-				xpathHelper.doesNotExist(request.getBodyAsBytes(), DEFAULT_ENCODING);
+				XpathRequestMatchers.this.xpathHelper.doesNotExist(request.getBodyAsBytes(), DEFAULT_ENCODING);
 			}
 		};
 	}
@@ -105,7 +105,7 @@ public class XpathRequestMatchers {
 		return new AbstractXpathRequestMatcher() {
 			@Override
 			protected void matchInternal(MockClientHttpRequest request) throws Exception {
-				xpathHelper.assertNodeCount(request.getBodyAsBytes(), DEFAULT_ENCODING, matcher);
+				XpathRequestMatchers.this.xpathHelper.assertNodeCount(request.getBodyAsBytes(), DEFAULT_ENCODING, matcher);
 			}
 		};
 	}
@@ -117,7 +117,7 @@ public class XpathRequestMatchers {
 		return new AbstractXpathRequestMatcher() {
 			@Override
 			protected void matchInternal(MockClientHttpRequest request) throws Exception {
-				xpathHelper.assertNodeCount(request.getBodyAsBytes(), DEFAULT_ENCODING, expectedCount);
+				XpathRequestMatchers.this.xpathHelper.assertNodeCount(request.getBodyAsBytes(), DEFAULT_ENCODING, expectedCount);
 			}
 		};
 	}
@@ -129,7 +129,7 @@ public class XpathRequestMatchers {
 		return new AbstractXpathRequestMatcher() {
 			@Override
 			protected void matchInternal(MockClientHttpRequest request) throws Exception {
-				xpathHelper.assertString(request.getBodyAsBytes(), DEFAULT_ENCODING, matcher);
+				XpathRequestMatchers.this.xpathHelper.assertString(request.getBodyAsBytes(), DEFAULT_ENCODING, matcher);
 			}
 		};
 	}
@@ -141,7 +141,7 @@ public class XpathRequestMatchers {
 		return new AbstractXpathRequestMatcher() {
 			@Override
 			protected void matchInternal(MockClientHttpRequest request) throws Exception {
-				xpathHelper.assertString(request.getBodyAsBytes(), DEFAULT_ENCODING, value);
+				XpathRequestMatchers.this.xpathHelper.assertString(request.getBodyAsBytes(), DEFAULT_ENCODING, value);
 			}
 		};
 	}
@@ -153,7 +153,7 @@ public class XpathRequestMatchers {
 		return new AbstractXpathRequestMatcher() {
 			@Override
 			protected void matchInternal(MockClientHttpRequest request) throws Exception {
-				xpathHelper.assertNumber(request.getBodyAsBytes(), DEFAULT_ENCODING, matcher);
+				XpathRequestMatchers.this.xpathHelper.assertNumber(request.getBodyAsBytes(), DEFAULT_ENCODING, matcher);
 			}
 		};
 	}
@@ -165,7 +165,7 @@ public class XpathRequestMatchers {
 		return new AbstractXpathRequestMatcher() {
 			@Override
 			protected void matchInternal(MockClientHttpRequest request) throws Exception {
-				xpathHelper.assertNumber(request.getBodyAsBytes(), DEFAULT_ENCODING, value);
+				XpathRequestMatchers.this.xpathHelper.assertNumber(request.getBodyAsBytes(), DEFAULT_ENCODING, value);
 			}
 		};
 	}
@@ -177,7 +177,7 @@ public class XpathRequestMatchers {
 		return new AbstractXpathRequestMatcher() {
 			@Override
 			protected void matchInternal(MockClientHttpRequest request) throws Exception {
-				xpathHelper.assertBoolean(request.getBodyAsBytes(), DEFAULT_ENCODING, value);
+				XpathRequestMatchers.this.xpathHelper.assertBoolean(request.getBodyAsBytes(), DEFAULT_ENCODING, value);
 			}
 		};
 	}

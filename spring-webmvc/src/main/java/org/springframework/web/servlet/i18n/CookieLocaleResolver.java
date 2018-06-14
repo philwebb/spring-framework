@@ -207,8 +207,8 @@ public class CookieLocaleResolver extends CookieGenerator implements LocaleConte
 					catch (IllegalArgumentException ex) {
 						if (request.getAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE) != null) {
 							// Error dispatch: ignore locale/timezone parse exceptions
-							if (logger.isDebugEnabled()) {
-								logger.debug("Ignoring invalid locale cookie '" + cookieName +
+							if (this.logger.isDebugEnabled()) {
+								this.logger.debug("Ignoring invalid locale cookie '" + cookieName +
 										"' with value [" + value + "] due to error dispatch: " + ex.getMessage());
 							}
 						}
@@ -217,8 +217,8 @@ public class CookieLocaleResolver extends CookieGenerator implements LocaleConte
 									"' with value [" + value + "]: " + ex.getMessage());
 						}
 					}
-					if (logger.isDebugEnabled()) {
-						logger.debug("Parsed cookie value [" + cookie.getValue() + "] into locale '" + locale +
+					if (this.logger.isDebugEnabled()) {
+						this.logger.debug("Parsed cookie value [" + cookie.getValue() + "] into locale '" + locale +
 								"'" + (timeZone != null ? " and time zone '" + timeZone.getID() + "'" : ""));
 					}
 				}

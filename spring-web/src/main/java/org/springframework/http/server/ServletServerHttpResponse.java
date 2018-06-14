@@ -139,7 +139,7 @@ public class ServletServerHttpResponse implements ServerHttpResponse {
 		@Override
 		@Nullable
 		public String getFirst(String headerName) {
-			String value = servletResponse.getHeader(headerName);
+			String value = ServletServerHttpResponse.this.servletResponse.getHeader(headerName);
 			if (value != null) {
 				return value;
 			}
@@ -152,7 +152,7 @@ public class ServletServerHttpResponse implements ServerHttpResponse {
 		public List<String> get(Object key) {
 			Assert.isInstanceOf(String.class, key, "Key must be a String-based header name");
 
-			Collection<String> values1 = servletResponse.getHeaders((String) key);
+			Collection<String> values1 = ServletServerHttpResponse.this.servletResponse.getHeaders((String) key);
 			boolean isEmpty1 = CollectionUtils.isEmpty(values1);
 
 			List<String> values2 = super.get(key);

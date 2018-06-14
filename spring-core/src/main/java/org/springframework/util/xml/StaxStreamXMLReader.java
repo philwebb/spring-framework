@@ -164,12 +164,12 @@ class StaxStreamXMLReader extends AbstractStaxXMLReader {
 				}
 				@Override
 				public String getXMLVersion() {
-					return xmlVersion;
+					return StaxStreamXMLReader.this.xmlVersion;
 				}
 				@Override
 				@Nullable
 				public String getEncoding() {
-					return encoding;
+					return StaxStreamXMLReader.this.encoding;
 				}
 			});
 			getContentHandler().startDocument();

@@ -260,8 +260,8 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 			if (!txObject.hasConnectionHolder() ||
 					txObject.getConnectionHolder().isSynchronizedWithTransaction()) {
 				Connection newCon = obtainDataSource().getConnection();
-				if (logger.isDebugEnabled()) {
-					logger.debug("Acquired Connection [" + newCon + "] for JDBC transaction");
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Acquired Connection [" + newCon + "] for JDBC transaction");
 				}
 				txObject.setConnectionHolder(new ConnectionHolder(newCon), true);
 			}
@@ -277,8 +277,8 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 			// configured the connection pool to set it already).
 			if (con.getAutoCommit()) {
 				txObject.setMustRestoreAutoCommit(true);
-				if (logger.isDebugEnabled()) {
-					logger.debug("Switching JDBC Connection [" + con + "] to manual commit");
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Switching JDBC Connection [" + con + "] to manual commit");
 				}
 				con.setAutoCommit(false);
 			}
@@ -323,7 +323,7 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 		DataSourceTransactionObject txObject = (DataSourceTransactionObject) status.getTransaction();
 		Connection con = txObject.getConnectionHolder().getConnection();
 		if (status.isDebug()) {
-			logger.debug("Committing JDBC transaction on Connection [" + con + "]");
+			this.logger.debug("Committing JDBC transaction on Connection [" + con + "]");
 		}
 		try {
 			con.commit();
@@ -338,7 +338,7 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 		DataSourceTransactionObject txObject = (DataSourceTransactionObject) status.getTransaction();
 		Connection con = txObject.getConnectionHolder().getConnection();
 		if (status.isDebug()) {
-			logger.debug("Rolling back JDBC transaction on Connection [" + con + "]");
+			this.logger.debug("Rolling back JDBC transaction on Connection [" + con + "]");
 		}
 		try {
 			con.rollback();
@@ -352,7 +352,7 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 	protected void doSetRollbackOnly(DefaultTransactionStatus status) {
 		DataSourceTransactionObject txObject = (DataSourceTransactionObject) status.getTransaction();
 		if (status.isDebug()) {
-			logger.debug("Setting JDBC transaction [" + txObject.getConnectionHolder().getConnection() +
+			this.logger.debug("Setting JDBC transaction [" + txObject.getConnectionHolder().getConnection() +
 					"] rollback-only");
 		}
 		txObject.setRollbackOnly();
@@ -376,12 +376,12 @@ public class DataSourceTransactionManager extends AbstractPlatformTransactionMan
 			DataSourceUtils.resetConnectionAfterTransaction(con, txObject.getPreviousIsolationLevel());
 		}
 		catch (Throwable ex) {
-			logger.debug("Could not reset JDBC Connection after transaction", ex);
+			this.logger.debug("Could not reset JDBC Connection after transaction", ex);
 		}
 
 		if (txObject.isNewConnectionHolder()) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("Releasing JDBC Connection [" + con + "] after transaction");
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Releasing JDBC Connection [" + con + "] after transaction");
 			}
 			DataSourceUtils.releaseConnection(con, this.dataSource);
 		}

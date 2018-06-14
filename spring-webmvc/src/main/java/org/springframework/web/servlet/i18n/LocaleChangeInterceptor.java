@@ -149,7 +149,7 @@ public class LocaleChangeInterceptor extends HandlerInterceptorAdapter {
 				}
 				catch (IllegalArgumentException ex) {
 					if (isIgnoreInvalidLocale()) {
-						logger.debug("Ignoring invalid locale value [" + newLocale + "]: " + ex.getMessage());
+						this.logger.debug("Ignoring invalid locale value [" + newLocale + "]: " + ex.getMessage());
 					}
 					else {
 						throw ex;

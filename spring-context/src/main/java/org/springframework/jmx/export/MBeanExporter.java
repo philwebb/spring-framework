@@ -405,7 +405,7 @@ public class MBeanExporter extends MBeanRegistrationSupport implements MBeanExpo
 			this.beanFactory = (ListableBeanFactory) beanFactory;
 		}
 		else {
-			logger.info("MBeanExporter not running in a ListableBeanFactory: autodetection of MBeans not available.");
+			this.logger.info("MBeanExporter not running in a ListableBeanFactory: autodetection of MBeans not available.");
 		}
 	}
 
@@ -430,7 +430,7 @@ public class MBeanExporter extends MBeanRegistrationSupport implements MBeanExpo
 	@Override
 	public void afterSingletonsInstantiated() {
 		try {
-			logger.info("Registering beans for JMX exposure on startup");
+			this.logger.info("Registering beans for JMX exposure on startup");
 			registerBeans();
 			registerNotificationListeners();
 		}
@@ -448,7 +448,7 @@ public class MBeanExporter extends MBeanRegistrationSupport implements MBeanExpo
 	 */
 	@Override
 	public void destroy() {
-		logger.info("Unregistering JMX-exposed beans on shutdown");
+		this.logger.info("Unregistering JMX-exposed beans on shutdown");
 		unregisterNotificationListeners();
 		unregisterBeans();
 	}
@@ -537,7 +537,7 @@ public class MBeanExporter extends MBeanRegistrationSupport implements MBeanExpo
 			}
 			if (mode == AUTODETECT_MBEAN || mode == AUTODETECT_ALL) {
 				// Autodetect any beans that are already MBeans.
-				logger.debug("Autodetecting user-defined JMX MBeans");
+				this.logger.debug("Autodetecting user-defined JMX MBeans");
 				autodetect(this.beans, (beanClass, beanName) -> isMBean(beanClass));
 			}
 			// Allow the assembler a chance to vote for bean inclusion.
@@ -664,15 +664,15 @@ public class MBeanExporter extends MBeanRegistrationSupport implements MBeanExpo
 		}
 
 		if (mbeanToExpose != null) {
-			if (logger.isInfoEnabled()) {
-				logger.info("Located MBean '" + beanKey + "': registering with JMX server as MBean [" +
+			if (this.logger.isInfoEnabled()) {
+				this.logger.info("Located MBean '" + beanKey + "': registering with JMX server as MBean [" +
 						objectName + "]");
 			}
 			doRegister(mbeanToExpose, objectName);
 		}
 		else {
-			if (logger.isInfoEnabled()) {
-				logger.info("Located managed bean '" + beanKey + "': registering with JMX server as MBean [" +
+			if (this.logger.isInfoEnabled()) {
+				this.logger.info("Located managed bean '" + beanKey + "': registering with JMX server as MBean [" +
 						objectName + "]");
 			}
 			ModelMBean mbean = createAndConfigureMBean(bean, beanKey);
@@ -707,8 +707,8 @@ public class MBeanExporter extends MBeanRegistrationSupport implements MBeanExpo
 
 			Object proxy = proxyFactory.getProxy(this.beanClassLoader);
 			ObjectName objectName = getObjectName(proxy, beanKey);
-			if (logger.isDebugEnabled()) {
-				logger.debug("Located MBean '" + beanKey + "': registering with JMX server as lazy-init MBean [" +
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Located MBean '" + beanKey + "': registering with JMX server as lazy-init MBean [" +
 						objectName + "]");
 			}
 			doRegister(proxy, objectName);
@@ -724,8 +724,8 @@ public class MBeanExporter extends MBeanRegistrationSupport implements MBeanExpo
 
 			Object proxy = proxyFactory.getProxy(this.beanClassLoader);
 			ObjectName objectName = getObjectName(proxy, beanKey);
-			if (logger.isDebugEnabled()) {
-				logger.debug("Located simple bean '" + beanKey + "': registering with JMX server as lazy-init MBean [" +
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Located simple bean '" + beanKey + "': registering with JMX server as lazy-init MBean [" +
 						objectName + "]");
 			}
 			ModelMBean mbean = createAndConfigureMBean(proxy, beanKey);
@@ -845,9 +845,9 @@ public class MBeanExporter extends MBeanRegistrationSupport implements MBeanExpo
 	 */
 	private ModelMBeanInfo getMBeanInfo(Object managedBean, String beanKey) throws JMException {
 		ModelMBeanInfo info = this.assembler.getMBeanInfo(managedBean, beanKey);
-		if (logger.isWarnEnabled() && ObjectUtils.isEmpty(info.getAttributes()) &&
+		if (this.logger.isWarnEnabled() && ObjectUtils.isEmpty(info.getAttributes()) &&
 				ObjectUtils.isEmpty(info.getOperations())) {
-			logger.warn("Bean with key '" + beanKey +
+			this.logger.warn("Bean with key '" + beanKey +
 					"' has been registered as an MBean but has no exposed attributes or operations");
 		}
 		return info;
@@ -891,13 +891,13 @@ public class MBeanExporter extends MBeanRegistrationSupport implements MBeanExpo
 										!CollectionUtils.containsInstance(beans.values(), beanInstance))) {
 							// Not already registered for JMX exposure.
 							beans.put(beanName, (beanInstance != null ? beanInstance : beanName));
-							if (logger.isInfoEnabled()) {
-								logger.info("Bean with name '" + beanName + "' has been autodetected for JMX exposure");
+							if (this.logger.isInfoEnabled()) {
+								this.logger.info("Bean with name '" + beanName + "' has been autodetected for JMX exposure");
 							}
 						}
 						else {
-							if (logger.isDebugEnabled()) {
-								logger.debug("Bean with name '" + beanName + "' is already registered for JMX exposure");
+							if (this.logger.isDebugEnabled()) {
+								this.logger.debug("Bean with name '" + beanName + "' is already registered for JMX exposure");
 							}
 						}
 					}
@@ -988,8 +988,8 @@ public class MBeanExporter extends MBeanRegistrationSupport implements MBeanExpo
 								bean.getNotificationFilter(), bean.getHandback());
 					}
 					catch (Throwable ex) {
-						if (logger.isDebugEnabled()) {
-							logger.debug("Unable to unregister NotificationListener", ex);
+						if (this.logger.isDebugEnabled()) {
+							this.logger.debug("Unable to unregister NotificationListener", ex);
 						}
 					}
 				}
@@ -1103,8 +1103,8 @@ public class MBeanExporter extends MBeanRegistrationSupport implements MBeanExpo
 				return super.getTarget();
 			}
 			catch (RuntimeException ex) {
-				if (logger.isWarnEnabled()) {
-					logger.warn("Failed to retrieve target for JMX-exposed bean [" + this.objectName + "]: " + ex);
+				if (this.logger.isWarnEnabled()) {
+					this.logger.warn("Failed to retrieve target for JMX-exposed bean [" + this.objectName + "]: " + ex);
 				}
 				throw ex;
 			}

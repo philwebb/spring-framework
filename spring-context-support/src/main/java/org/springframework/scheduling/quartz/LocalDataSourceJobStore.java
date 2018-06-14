@@ -103,7 +103,7 @@ public class LocalDataSourceJobStore extends JobStoreCMT {
 					@Override
 					public Connection getConnection() throws SQLException {
 						// Return a transactional Connection, if any.
-						return DataSourceUtils.doGetConnection(dataSource);
+						return DataSourceUtils.doGetConnection(LocalDataSourceJobStore.this.dataSource);
 					}
 					@Override
 					public void shutdown() {

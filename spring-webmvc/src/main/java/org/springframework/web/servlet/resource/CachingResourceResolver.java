@@ -109,16 +109,16 @@ public class CachingResourceResolver extends AbstractResourceResolver {
 		Resource resource = this.cache.get(key, Resource.class);
 
 		if (resource != null) {
-			if (logger.isTraceEnabled()) {
-				logger.trace("Found match: " + resource);
+			if (this.logger.isTraceEnabled()) {
+				this.logger.trace("Found match: " + resource);
 			}
 			return resource;
 		}
 
 		resource = chain.resolveResource(request, requestPath, locations);
 		if (resource != null) {
-			if (logger.isTraceEnabled()) {
-				logger.trace("Putting resolved resource in cache: " + resource);
+			if (this.logger.isTraceEnabled()) {
+				this.logger.trace("Putting resolved resource in cache: " + resource);
 			}
 			this.cache.put(key, resource);
 		}
@@ -162,16 +162,16 @@ public class CachingResourceResolver extends AbstractResourceResolver {
 		String resolvedUrlPath = this.cache.get(key, String.class);
 
 		if (resolvedUrlPath != null) {
-			if (logger.isTraceEnabled()) {
-				logger.trace("Found match: \"" + resolvedUrlPath + "\"");
+			if (this.logger.isTraceEnabled()) {
+				this.logger.trace("Found match: \"" + resolvedUrlPath + "\"");
 			}
 			return resolvedUrlPath;
 		}
 
 		resolvedUrlPath = chain.resolveUrlPath(resourceUrlPath, locations);
 		if (resolvedUrlPath != null) {
-			if (logger.isTraceEnabled()) {
-				logger.trace("Putting resolved resource URL path in cache: \"" + resolvedUrlPath + "\"");
+			if (this.logger.isTraceEnabled()) {
+				this.logger.trace("Putting resolved resource URL path in cache: \"" + resolvedUrlPath + "\"");
 			}
 			this.cache.put(key, resolvedUrlPath);
 		}

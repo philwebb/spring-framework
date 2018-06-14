@@ -132,7 +132,7 @@ class DefaultServerRequest implements ServerRequest {
 				new BodyExtractor.Context() {
 					@Override
 					public List<HttpMessageReader<?>> messageReaders() {
-						return messageReaders;
+						return DefaultServerRequest.this.messageReaders;
 					}
 					@Override
 					public Optional<ServerHttpResponse> serverResponse() {

@@ -118,7 +118,7 @@ public class JndiTemplate {
 				ctx.close();
 			}
 			catch (NamingException ex) {
-				logger.debug("Could not close JNDI InitialContext", ex);
+				this.logger.debug("Could not close JNDI InitialContext", ex);
 			}
 		}
 	}
@@ -150,8 +150,8 @@ public class JndiTemplate {
 	 * name bound to JNDI
 	 */
 	public Object lookup(final String name) throws NamingException {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Looking up JNDI object with name [" + name + "]");
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Looking up JNDI object with name [" + name + "]");
 		}
 		Object result = execute(ctx -> ctx.lookup(name));
 		if (result == null) {
@@ -189,8 +189,8 @@ public class JndiTemplate {
 	 * @throws NamingException thrown by JNDI, mostly name already bound
 	 */
 	public void bind(final String name, final Object object) throws NamingException {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Binding JNDI object with name [" + name + "]");
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Binding JNDI object with name [" + name + "]");
 		}
 		execute(ctx -> {
 			ctx.bind(name, object);
@@ -206,8 +206,8 @@ public class JndiTemplate {
 	 * @throws NamingException thrown by JNDI
 	 */
 	public void rebind(final String name, final Object object) throws NamingException {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Rebinding JNDI object with name [" + name + "]");
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Rebinding JNDI object with name [" + name + "]");
 		}
 		execute(ctx -> {
 			ctx.rebind(name, object);
@@ -221,8 +221,8 @@ public class JndiTemplate {
 	 * @throws NamingException thrown by JNDI, mostly name not found
 	 */
 	public void unbind(final String name) throws NamingException {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Unbinding JNDI object with name [" + name + "]");
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Unbinding JNDI object with name [" + name + "]");
 		}
 		execute(ctx -> {
 			ctx.unbind(name);

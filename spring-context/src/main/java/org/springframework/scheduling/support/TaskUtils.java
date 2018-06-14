@@ -92,8 +92,8 @@ public abstract class TaskUtils {
 
 		@Override
 		public void handleError(Throwable t) {
-			if (logger.isErrorEnabled()) {
-				logger.error("Unexpected error occurred in scheduled task.", t);
+			if (this.logger.isErrorEnabled()) {
+				this.logger.error("Unexpected error occurred in scheduled task.", t);
 			}
 		}
 	}

@@ -219,8 +219,8 @@ public class ResourceBundleMessageSource extends AbstractResourceBasedMessageSou
 				return bundle;
 			}
 			catch (MissingResourceException ex) {
-				if (logger.isWarnEnabled()) {
-					logger.warn("ResourceBundle [" + basename + "] not found for MessageSource: " + ex.getMessage());
+				if (this.logger.isWarnEnabled()) {
+					this.logger.warn("ResourceBundle [" + basename + "] not found for MessageSource: " + ex.getMessage());
 				}
 				// Assume bundle not found
 				// -> do NOT throw the exception to allow for checking parent message source.
@@ -251,8 +251,8 @@ public class ResourceBundleMessageSource extends AbstractResourceBasedMessageSou
 				// Probably in a Jigsaw environment on JDK 9+
 				this.control = null;
 				String encoding = getDefaultEncoding();
-				if (encoding != null && logger.isInfoEnabled()) {
-					logger.info("ResourceBundleMessageSource is configured to read resources with encoding '" +
+				if (encoding != null && this.logger.isInfoEnabled()) {
+					this.logger.info("ResourceBundleMessageSource is configured to read resources with encoding '" +
 							encoding + "' but ResourceBundle.Control not supported in current system environment: " +
 							ex.getMessage() + " - falling back to plain ResourceBundle.getBundle retrieval with the " +
 							"platform default encoding. Consider setting the 'defaultEncoding' property to 'null' " +
@@ -475,7 +475,7 @@ public class ResourceBundleMessageSource extends AbstractResourceBasedMessageSou
 				String baseName, Locale locale, String format, ClassLoader loader, ResourceBundle bundle, long loadTime) {
 
 			if (super.needsReload(baseName, locale, format, loader, bundle, loadTime)) {
-				cachedBundleMessageFormats.remove(bundle);
+				ResourceBundleMessageSource.this.cachedBundleMessageFormats.remove(bundle);
 				return true;
 			}
 			else {

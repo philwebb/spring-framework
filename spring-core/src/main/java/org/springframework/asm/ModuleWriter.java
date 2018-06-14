@@ -154,99 +154,99 @@ final class ModuleWriter extends ModuleVisitor {
     @Override
     public void visitMainClass(String mainClass) {
         if (this.mainClass == 0) { // protect against several calls to visitMainClass
-            cw.newUTF8("ModuleMainClass");
-            attributeCount++;
-            attributesSize += 8;
+            this.cw.newUTF8("ModuleMainClass");
+            this.attributeCount++;
+            this.attributesSize += 8;
         }
-        this.mainClass = cw.newClass(mainClass);
+        this.mainClass = this.cw.newClass(mainClass);
     }
     
     @Override
     public void visitPackage(String packaze) {
-        if (packages == null) { 
+        if (this.packages == null) { 
             // protect against several calls to visitPackage
-            cw.newUTF8("ModulePackages");
-            packages = new ByteVector();
-            attributeCount++;
-            attributesSize += 8;
+            this.cw.newUTF8("ModulePackages");
+            this.packages = new ByteVector();
+            this.attributeCount++;
+            this.attributesSize += 8;
         }
-        packages.putShort(cw.newPackage(packaze));
-        packageCount++;
-        attributesSize += 2;
+        this.packages.putShort(this.cw.newPackage(packaze));
+        this.packageCount++;
+        this.attributesSize += 2;
     }
     
     @Override
     public void visitRequire(String module, int access, String version) {
-        if (requires == null) {
-            requires = new ByteVector();
+        if (this.requires == null) {
+            this.requires = new ByteVector();
         }
-        requires.putShort(cw.newModule(module))
+        this.requires.putShort(this.cw.newModule(module))
                 .putShort(access)
-                .putShort(version == null? 0: cw.newUTF8(version));
-        requireCount++;
-        size += 6;
+                .putShort(version == null? 0: this.cw.newUTF8(version));
+        this.requireCount++;
+        this.size += 6;
     }
     
     @Override
     public void visitExport(String packaze, int access, String... modules) {
-        if (exports == null) {
-            exports = new ByteVector();
+        if (this.exports == null) {
+            this.exports = new ByteVector();
         }
-        exports.putShort(cw.newPackage(packaze)).putShort(access);
+        this.exports.putShort(this.cw.newPackage(packaze)).putShort(access);
         if (modules == null) {
-            exports.putShort(0);
-            size += 6;
+            this.exports.putShort(0);
+            this.size += 6;
         } else {
-            exports.putShort(modules.length);
+            this.exports.putShort(modules.length);
             for(String module: modules) {
-                exports.putShort(cw.newModule(module));
+                this.exports.putShort(this.cw.newModule(module));
             }    
-            size += 6 + 2 * modules.length; 
+            this.size += 6 + 2 * modules.length; 
         }
-        exportCount++;
+        this.exportCount++;
     }
     
     @Override
     public void visitOpen(String packaze, int access, String... modules) {
-        if (opens == null) {
-            opens = new ByteVector();
+        if (this.opens == null) {
+            this.opens = new ByteVector();
         }
-        opens.putShort(cw.newPackage(packaze)).putShort(access);
+        this.opens.putShort(this.cw.newPackage(packaze)).putShort(access);
         if (modules == null) {
-            opens.putShort(0);
-            size += 6;
+            this.opens.putShort(0);
+            this.size += 6;
         } else {
-            opens.putShort(modules.length);
+            this.opens.putShort(modules.length);
             for(String module: modules) {
-                opens.putShort(cw.newModule(module));
+                this.opens.putShort(this.cw.newModule(module));
             }    
-            size += 6 + 2 * modules.length; 
+            this.size += 6 + 2 * modules.length; 
         }
-        openCount++;
+        this.openCount++;
     }
     
     @Override
     public void visitUse(String service) {
-        if (uses == null) {
-            uses = new ByteVector();
+        if (this.uses == null) {
+            this.uses = new ByteVector();
         }
-        uses.putShort(cw.newClass(service));
-        useCount++;
-        size += 2;
+        this.uses.putShort(this.cw.newClass(service));
+        this.useCount++;
+        this.size += 2;
     }
     
     @Override
     public void visitProvide(String service, String... providers) {
-        if (provides == null) {
-            provides = new ByteVector();
+        if (this.provides == null) {
+            this.provides = new ByteVector();
         }
-        provides.putShort(cw.newClass(service));
-        provides.putShort(providers.length);
+        this.provides.putShort(this.cw.newClass(service));
+        this.provides.putShort(providers.length);
         for(String provider: providers) {
-            provides.putShort(cw.newClass(provider));
+            this.provides.putShort(this.cw.newClass(provider));
         }
-        provideCount++;
-        size += 4 + 2 * providers.length; 
+        this.provideCount++;
+        this.size += 4 + 2 * providers.length; 
     }
     
     @Override
@@ -255,39 +255,39 @@ final class ModuleWriter extends ModuleVisitor {
     }
 
     void putAttributes(ByteVector out) {
-        if (mainClass != 0) {
-            out.putShort(cw.newUTF8("ModuleMainClass")).putInt(2).putShort(mainClass);
+        if (this.mainClass != 0) {
+            out.putShort(this.cw.newUTF8("ModuleMainClass")).putInt(2).putShort(this.mainClass);
         }
-        if (packages != null) {
-            out.putShort(cw.newUTF8("ModulePackages"))
-               .putInt(2 + 2 * packageCount)
-               .putShort(packageCount)
-               .putByteArray(packages.data, 0, packages.length);
+        if (this.packages != null) {
+            out.putShort(this.cw.newUTF8("ModulePackages"))
+               .putInt(2 + 2 * this.packageCount)
+               .putShort(this.packageCount)
+               .putByteArray(this.packages.data, 0, this.packages.length);
         }
     }
 
     void put(ByteVector out) {
-        out.putInt(size);
-        out.putShort(name).putShort(access).putShort(version);
-        out.putShort(requireCount);
-        if (requires != null) {
-            out.putByteArray(requires.data, 0, requires.length);
+        out.putInt(this.size);
+        out.putShort(this.name).putShort(this.access).putShort(this.version);
+        out.putShort(this.requireCount);
+        if (this.requires != null) {
+            out.putByteArray(this.requires.data, 0, this.requires.length);
         }
-        out.putShort(exportCount);
-        if (exports != null) {
-            out.putByteArray(exports.data, 0, exports.length);
+        out.putShort(this.exportCount);
+        if (this.exports != null) {
+            out.putByteArray(this.exports.data, 0, this.exports.length);
         }
-        out.putShort(openCount);
-        if (opens != null) {
-            out.putByteArray(opens.data, 0, opens.length);
+        out.putShort(this.openCount);
+        if (this.opens != null) {
+            out.putByteArray(this.opens.data, 0, this.opens.length);
         }
-        out.putShort(useCount);
-        if (uses != null) {
-            out.putByteArray(uses.data, 0, uses.length);
+        out.putShort(this.useCount);
+        if (this.uses != null) {
+            out.putByteArray(this.uses.data, 0, this.uses.length);
         }
-        out.putShort(provideCount);
-        if (provides != null) {
-            out.putByteArray(provides.data, 0, provides.length);
+        out.putShort(this.provideCount);
+        if (this.provides != null) {
+            out.putByteArray(this.provides.data, 0, this.provides.length);
         }
     }    
 }

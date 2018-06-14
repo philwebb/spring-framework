@@ -86,7 +86,7 @@ public class ResponseStatusExceptionResolver extends AbstractHandlerExceptionRes
 			}
 		}
 		catch (Exception resolveEx) {
-			logger.warn("ResponseStatus handling resulted in exception", resolveEx);
+			this.logger.warn("ResponseStatus handling resulted in exception", resolveEx);
 		}
 		return null;
 	}

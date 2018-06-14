@@ -162,7 +162,7 @@ public class DefaultJmsListenerContainerFactory
 		if (this.backOff != null) {
 			container.setBackOff(this.backOff);
 			if (this.recoveryInterval != null) {
-				logger.warn("Ignoring recovery interval in DefaultJmsListenerContainerFactory in favor of BackOff");
+				this.logger.warn("Ignoring recovery interval in DefaultJmsListenerContainerFactory in favor of BackOff");
 			}
 		}
 		else if (this.recoveryInterval != null) {

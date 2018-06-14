@@ -69,8 +69,8 @@ public abstract class AbstractDetectingUrlHandlerMapping extends AbstractUrlHand
 	 */
 	protected void detectHandlers() throws BeansException {
 		ApplicationContext applicationContext = obtainApplicationContext();
-		if (logger.isDebugEnabled()) {
-			logger.debug("Looking for URL mappings in application context: " + applicationContext);
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Looking for URL mappings in application context: " + applicationContext);
 		}
 		String[] beanNames = (this.detectHandlersInAncestorContexts ?
 				BeanFactoryUtils.beanNamesForTypeIncludingAncestors(applicationContext, Object.class) :
@@ -84,8 +84,8 @@ public abstract class AbstractDetectingUrlHandlerMapping extends AbstractUrlHand
 				registerHandler(urls, beanName);
 			}
 			else {
-				if (logger.isDebugEnabled()) {
-					logger.debug("Rejected bean name '" + beanName + "': no URL paths identified");
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Rejected bean name '" + beanName + "': no URL paths identified");
 				}
 			}
 		}

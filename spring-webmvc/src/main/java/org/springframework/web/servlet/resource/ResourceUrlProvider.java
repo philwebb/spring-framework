@@ -129,8 +129,8 @@ public class ResourceUrlProvider implements ApplicationListener<ContextRefreshed
 		if (isAutodetect()) {
 			this.handlerMap.clear();
 			detectResourceHandlers(event.getApplicationContext());
-			if (this.handlerMap.isEmpty() && logger.isDebugEnabled()) {
-				logger.debug("No resource handling mappings found");
+			if (this.handlerMap.isEmpty() && this.logger.isDebugEnabled()) {
+				this.logger.debug("No resource handling mappings found");
 			}
 			if (!this.handlerMap.isEmpty()) {
 				this.autodetect = false;
@@ -140,7 +140,7 @@ public class ResourceUrlProvider implements ApplicationListener<ContextRefreshed
 
 
 	protected void detectResourceHandlers(ApplicationContext appContext) {
-		logger.debug("Looking for resource handler mappings");
+		this.logger.debug("Looking for resource handler mappings");
 
 		Map<String, SimpleUrlHandlerMapping> beans = appContext.getBeansOfType(SimpleUrlHandlerMapping.class);
 		List<SimpleUrlHandlerMapping> mappings = new ArrayList<>(beans.values());
@@ -151,8 +151,8 @@ public class ResourceUrlProvider implements ApplicationListener<ContextRefreshed
 				Object handler = mapping.getHandlerMap().get(pattern);
 				if (handler instanceof ResourceHttpRequestHandler) {
 					ResourceHttpRequestHandler resourceHandler = (ResourceHttpRequestHandler) handler;
-					if (logger.isDebugEnabled()) {
-						logger.debug("Found resource handler mapping: URL pattern=\"" + pattern + "\", " +
+					if (this.logger.isDebugEnabled()) {
+						this.logger.debug("Found resource handler mapping: URL pattern=\"" + pattern + "\", " +
 								"locations=" + resourceHandler.getLocations() + ", " +
 								"resolvers=" + resourceHandler.getResourceResolvers());
 					}
@@ -172,8 +172,8 @@ public class ResourceUrlProvider implements ApplicationListener<ContextRefreshed
 	 */
 	@Nullable
 	public final String getForRequestUrl(HttpServletRequest request, String requestUrl) {
-		if (logger.isTraceEnabled()) {
-			logger.trace("Getting resource URL for request URL \"" + requestUrl + "\"");
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Getting resource URL for request URL \"" + requestUrl + "\"");
 		}
 		int prefixIndex = getLookupPathIndex(request);
 		int suffixIndex = getEndPathIndex(requestUrl);
@@ -229,8 +229,8 @@ public class ResourceUrlProvider implements ApplicationListener<ContextRefreshed
 			lookupPath = StringUtils.replace(lookupPath, "//", "/");
 		} while (!lookupPath.equals(previous));
 
-		if (logger.isTraceEnabled()) {
-			logger.trace("Getting resource URL for lookup path \"" + lookupPath + "\"");
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Getting resource URL for lookup path \"" + lookupPath + "\"");
 		}
 
 		List<String> matchingPatterns = new ArrayList<>();
@@ -246,8 +246,8 @@ public class ResourceUrlProvider implements ApplicationListener<ContextRefreshed
 			for (String pattern : matchingPatterns) {
 				String pathWithinMapping = getPathMatcher().extractPathWithinPattern(pattern, lookupPath);
 				String pathMapping = lookupPath.substring(0, lookupPath.indexOf(pathWithinMapping));
-				if (logger.isTraceEnabled()) {
-					logger.trace("Invoking ResourceResolverChain for URL pattern \"" + pattern + "\"");
+				if (this.logger.isTraceEnabled()) {
+					this.logger.trace("Invoking ResourceResolverChain for URL pattern \"" + pattern + "\"");
 				}
 				ResourceHttpRequestHandler handler = this.handlerMap.get(pattern);
 				ResourceResolverChain chain = new DefaultResourceResolverChain(handler.getResourceResolvers());
@@ -255,15 +255,15 @@ public class ResourceUrlProvider implements ApplicationListener<ContextRefreshed
 				if (resolved == null) {
 					continue;
 				}
-				if (logger.isTraceEnabled()) {
-					logger.trace("Resolved public resource URL path \"" + resolved + "\"");
+				if (this.logger.isTraceEnabled()) {
+					this.logger.trace("Resolved public resource URL path \"" + resolved + "\"");
 				}
 				return pathMapping + resolved;
 			}
 		}
 
-		if (logger.isDebugEnabled()) {
-			logger.debug("No matching resource mapping for lookup path \"" + lookupPath + "\"");
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("No matching resource mapping for lookup path \"" + lookupPath + "\"");
 		}
 		return null;
 	}

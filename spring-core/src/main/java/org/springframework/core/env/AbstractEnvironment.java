@@ -121,8 +121,8 @@ public abstract class AbstractEnvironment implements ConfigurableEnvironment {
 	 */
 	public AbstractEnvironment() {
 		customizePropertySources(this.propertySources);
-		if (logger.isDebugEnabled()) {
-			logger.debug("Initialized " + getClass().getSimpleName() + " with PropertySources " + this.propertySources);
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Initialized " + getClass().getSimpleName() + " with PropertySources " + this.propertySources);
 		}
 	}
 
@@ -261,8 +261,8 @@ public abstract class AbstractEnvironment implements ConfigurableEnvironment {
 
 	@Override
 	public void addActiveProfile(String profile) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Activating profile '" + profile + "'");
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Activating profile '" + profile + "'");
 		}
 		validateProfile(profile);
 		doGetActiveProfiles();
@@ -392,8 +392,8 @@ public abstract class AbstractEnvironment implements ConfigurableEnvironment {
 						return System.getenv(attributeName);
 					}
 					catch (AccessControlException ex) {
-						if (logger.isInfoEnabled()) {
-							logger.info("Caught AccessControlException when accessing system environment variable '" +
+						if (AbstractEnvironment.this.logger.isInfoEnabled()) {
+							AbstractEnvironment.this.logger.info("Caught AccessControlException when accessing system environment variable '" +
 									attributeName + "'; its value will be returned [null]. Reason: " + ex.getMessage());
 						}
 						return null;
@@ -433,8 +433,8 @@ public abstract class AbstractEnvironment implements ConfigurableEnvironment {
 						return System.getProperty(attributeName);
 					}
 					catch (AccessControlException ex) {
-						if (logger.isInfoEnabled()) {
-							logger.info("Caught AccessControlException when accessing system property '" +
+						if (AbstractEnvironment.this.logger.isInfoEnabled()) {
+							AbstractEnvironment.this.logger.info("Caught AccessControlException when accessing system property '" +
 									attributeName + "'; its value will be returned [null]. Reason: " + ex.getMessage());
 						}
 						return null;

@@ -195,8 +195,8 @@ public class MBeanServerConnectionFactoryBean
 
 		@Override
 		protected Object createObject() throws Exception {
-			Assert.state(serviceUrl != null, "No JMXServiceURL set");
-			return JMXConnectorFactory.connect(serviceUrl, environment);
+			Assert.state(MBeanServerConnectionFactoryBean.this.serviceUrl != null, "No JMXServiceURL set");
+			return JMXConnectorFactory.connect(MBeanServerConnectionFactoryBean.this.serviceUrl, MBeanServerConnectionFactoryBean.this.environment);
 		}
 
 		@Override
@@ -213,8 +213,8 @@ public class MBeanServerConnectionFactoryBean
 
 		@Override
 		protected Object createObject() throws Exception {
-			Assert.state(connector != null, "JMXConnector not initialized");
-			return connector.getMBeanServerConnection();
+			Assert.state(MBeanServerConnectionFactoryBean.this.connector != null, "JMXConnector not initialized");
+			return MBeanServerConnectionFactoryBean.this.connector.getMBeanServerConnection();
 		}
 
 		@Override

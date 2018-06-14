@@ -120,7 +120,7 @@ public class SessionLocaleResolver extends AbstractLocaleContextResolver {
 		return new TimeZoneAwareLocaleContext() {
 			@Override
 			public Locale getLocale() {
-				Locale locale = (Locale) WebUtils.getSessionAttribute(request, localeAttributeName);
+				Locale locale = (Locale) WebUtils.getSessionAttribute(request, SessionLocaleResolver.this.localeAttributeName);
 				if (locale == null) {
 					locale = determineDefaultLocale(request);
 				}
@@ -129,7 +129,7 @@ public class SessionLocaleResolver extends AbstractLocaleContextResolver {
 			@Override
 			@Nullable
 			public TimeZone getTimeZone() {
-				TimeZone timeZone = (TimeZone) WebUtils.getSessionAttribute(request, timeZoneAttributeName);
+				TimeZone timeZone = (TimeZone) WebUtils.getSessionAttribute(request, SessionLocaleResolver.this.timeZoneAttributeName);
 				if (timeZone == null) {
 					timeZone = determineDefaultTimeZone(request);
 				}

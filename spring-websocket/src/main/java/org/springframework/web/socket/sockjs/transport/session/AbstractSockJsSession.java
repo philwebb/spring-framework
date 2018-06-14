@@ -200,8 +200,8 @@ public abstract class AbstractSockJsSession implements SockJsSession {
 	@Override
 	public final void close(CloseStatus status) throws IOException {
 		if (isOpen()) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("Closing SockJS session " + getId() + " with " + status);
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Closing SockJS session " + getId() + " with " + status);
 			}
 			this.state = State.CLOSED;
 			try {
@@ -210,7 +210,7 @@ public abstract class AbstractSockJsSession implements SockJsSession {
 						writeFrameInternal(SockJsFrame.closeFrame(status.getCode(), status.getReason()));
 					}
 					catch (Throwable ex) {
-						logger.debug("Failure while sending SockJS close frame", ex);
+						this.logger.debug("Failure while sending SockJS close frame", ex);
 					}
 				}
 				updateLastActiveTime();
@@ -222,7 +222,7 @@ public abstract class AbstractSockJsSession implements SockJsSession {
 					this.handler.afterConnectionClosed(this, status);
 				}
 				catch (Throwable ex) {
-					logger.debug("Error from WebSocketHandler.afterConnectionClosed in " + this, ex);
+					this.logger.debug("Error from WebSocketHandler.afterConnectionClosed in " + this, ex);
 				}
 			}
 		}
@@ -272,8 +272,8 @@ public abstract class AbstractSockJsSession implements SockJsSession {
 			Date time = new Date(System.currentTimeMillis() + this.config.getHeartbeatTime());
 			this.heartbeatTask = new HeartbeatTask();
 			this.heartbeatFuture = this.config.getTaskScheduler().schedule(this.heartbeatTask, time);
-			if (logger.isTraceEnabled()) {
-				logger.trace("Scheduled heartbeat in session " + getId());
+			if (this.logger.isTraceEnabled()) {
+				this.logger.trace("Scheduled heartbeat in session " + getId());
 			}
 		}
 	}
@@ -281,8 +281,8 @@ public abstract class AbstractSockJsSession implements SockJsSession {
 	protected void cancelHeartbeat() {
 		synchronized (this.responseLock) {
 			if (this.heartbeatFuture != null) {
-				if (logger.isTraceEnabled()) {
-					logger.trace("Cancelling heartbeat in session " + getId());
+				if (this.logger.isTraceEnabled()) {
+					this.logger.trace("Cancelling heartbeat in session " + getId());
 				}
 				this.heartbeatFuture.cancel(false);
 				this.heartbeatFuture = null;
@@ -317,8 +317,8 @@ public abstract class AbstractSockJsSession implements SockJsSession {
 	 * session class.
 	 */
 	protected void writeFrame(SockJsFrame frame) throws SockJsTransportFailureException {
-		if (logger.isTraceEnabled()) {
-			logger.trace("Preparing to write " + frame);
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Preparing to write " + frame);
 		}
 		try {
 			writeFrameInternal(frame);
@@ -356,7 +356,7 @@ public abstract class AbstractSockJsSession implements SockJsSession {
 			}
 		}
 		else {
-			logger.debug("Terminating connection after failure to send message to client", ex);
+			this.logger.debug("Terminating connection after failure to send message to client", ex);
 		}
 	}
 
@@ -418,21 +418,21 @@ public abstract class AbstractSockJsSession implements SockJsSession {
 	 * Close due to error arising from SockJS transport handling.
 	 */
 	public void tryCloseWithSockJsTransportError(Throwable error, CloseStatus closeStatus) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Closing due to transport error for " + this);
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Closing due to transport error for " + this);
 		}
 		try {
 			delegateError(error);
 		}
 		catch (Throwable delegateException) {
 			// Ignore
-			logger.debug("Exception from error handling delegate", delegateException);
+			this.logger.debug("Exception from error handling delegate", delegateException);
 		}
 		try {
 			close(closeStatus);
 		}
 		catch (Throwable closeException) {
-			logger.debug("Failure while closing " + this, closeException);
+			this.logger.debug("Failure while closing " + this, closeException);
 		}
 	}
 
@@ -455,7 +455,7 @@ public abstract class AbstractSockJsSession implements SockJsSession {
 
 		@Override
 		public void run() {
-			synchronized (responseLock) {
+			synchronized (AbstractSockJsSession.this.responseLock) {
 				if (!this.expired && !isClosed()) {
 					try {
 						sendHeartbeat();

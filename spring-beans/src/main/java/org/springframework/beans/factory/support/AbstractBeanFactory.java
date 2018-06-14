@@ -245,13 +245,13 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		// Eagerly check singleton cache for manually registered singletons.
 		Object sharedInstance = getSingleton(beanName);
 		if (sharedInstance != null && args == null) {
-			if (logger.isDebugEnabled()) {
+			if (this.logger.isDebugEnabled()) {
 				if (isSingletonCurrentlyInCreation(beanName)) {
-					logger.debug("Returning eagerly cached instance of singleton bean '" + beanName +
+					this.logger.debug("Returning eagerly cached instance of singleton bean '" + beanName +
 							"' that is not fully initialized yet - a consequence of a circular reference");
 				}
 				else {
-					logger.debug("Returning cached instance of singleton bean '" + beanName + "'");
+					this.logger.debug("Returning cached instance of singleton bean '" + beanName + "'");
 				}
 			}
 			bean = getObjectForBeanInstance(sharedInstance, name, beanName, null);
@@ -382,8 +382,8 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				return convertedBean;
 			}
 			catch (TypeMismatchException ex) {
-				if (logger.isDebugEnabled()) {
-					logger.debug("Failed to convert bean '" + name + "' to required type '" +
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Failed to convert bean '" + name + "' to required type '" +
 							ClassUtils.getQualifiedName(requiredType) + "'", ex);
 				}
 				throw new BeanNotOfRequiredTypeException(name, requiredType, bean.getClass());
@@ -899,13 +899,13 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		}
 		Scope previous = this.scopes.put(scopeName, scope);
 		if (previous != null && previous != scope) {
-			if (logger.isInfoEnabled()) {
-				logger.info("Replacing scope '" + scopeName + "' from [" + previous + "] to [" + scope + "]");
+			if (this.logger.isInfoEnabled()) {
+				this.logger.info("Replacing scope '" + scopeName + "' from [" + previous + "] to [" + scope + "]");
 			}
 		}
 		else {
-			if (logger.isDebugEnabled()) {
-				logger.debug("Registering scope '" + scopeName + "' with implementation [" + scope + "]");
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Registering scope '" + scopeName + "' with implementation [" + scope + "]");
 			}
 		}
 	}
@@ -1173,8 +1173,8 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 						BeanCreationException bce = (BeanCreationException) rootCause;
 						String bceBeanName = bce.getBeanName();
 						if (bceBeanName != null && isCurrentlyInCreation(bceBeanName)) {
-							if (logger.isDebugEnabled()) {
-								logger.debug("PropertyEditorRegistrar [" + registrar.getClass().getName() +
+							if (this.logger.isDebugEnabled()) {
+								this.logger.debug("PropertyEditorRegistrar [" + registrar.getClass().getName() +
 										"] failed because it tried to obtain currently created bean '" +
 										ex.getBeanName() + "': " + ex.getMessage());
 							}
@@ -1516,18 +1516,18 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		}
 		catch (BeanCreationException ex) {
 			if (ex.contains(BeanCurrentlyInCreationException.class)) {
-				if (logger.isDebugEnabled()) {
-					logger.debug("Bean currently in creation on FactoryBean type check: " + ex);
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Bean currently in creation on FactoryBean type check: " + ex);
 				}
 			}
 			else if (mbd.isLazyInit()) {
-				if (logger.isDebugEnabled()) {
-					logger.debug("Bean creation exception on lazy FactoryBean type check: " + ex);
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Bean creation exception on lazy FactoryBean type check: " + ex);
 				}
 			}
 			else {
-				if (logger.isWarnEnabled()) {
-					logger.warn("Bean creation exception on non-lazy FactoryBean type check: " + ex);
+				if (this.logger.isWarnEnabled()) {
+					this.logger.warn("Bean creation exception on non-lazy FactoryBean type check: " + ex);
 				}
 			}
 			onSuppressedException(ex);

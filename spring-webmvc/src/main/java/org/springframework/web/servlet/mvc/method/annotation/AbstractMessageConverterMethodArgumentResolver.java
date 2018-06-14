@@ -197,8 +197,8 @@ public abstract class AbstractMessageConverterMethodArgumentResolver implements 
 						(converter instanceof GenericHttpMessageConverter ? (GenericHttpMessageConverter<?>) converter : null);
 				if (genericConverter != null ? genericConverter.canRead(targetType, contextClass, contentType) :
 						(targetClass != null && converter.canRead(targetClass, contentType))) {
-					if (logger.isDebugEnabled()) {
-						logger.debug("Read [" + targetType + "] as \"" + contentType + "\" with [" + converter + "]");
+					if (this.logger.isDebugEnabled()) {
+						this.logger.debug("Read [" + targetType + "] as \"" + contentType + "\" with [" + converter + "]");
 					}
 					if (message.hasBody()) {
 						HttpInputMessage msgToUse =

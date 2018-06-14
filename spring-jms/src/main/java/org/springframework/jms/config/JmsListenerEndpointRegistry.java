@@ -255,7 +255,7 @@ public class JmsListenerEndpointRegistry implements DisposableBean, SmartLifecyc
 					((DisposableBean) listenerContainer).destroy();
 				}
 				catch (Throwable ex) {
-					logger.warn("Failed to destroy message listener container", ex);
+					this.logger.warn("Failed to destroy message listener container", ex);
 				}
 			}
 		}

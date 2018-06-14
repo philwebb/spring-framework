@@ -69,7 +69,7 @@ public class FixedBackOff implements BackOff {
 	 * Return the interval between two attempts in milliseconds.
 	 */
 	public long getInterval() {
-		return interval;
+		return this.interval;
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class FixedBackOff implements BackOff {
 	 * Return the maximum number of attempts in milliseconds.
 	 */
 	public long getMaxAttempts() {
-		return maxAttempts;
+		return this.maxAttempts;
 	}
 
 	@Override

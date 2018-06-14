@@ -85,7 +85,7 @@ public class MockMvcClientHttpRequestFactory
 			HttpMethod httpMethod, URI uri, HttpHeaders requestHeaders, byte[] requestBody) {
 
 		try {
-			MockHttpServletResponse servletResponse = mockMvc
+			MockHttpServletResponse servletResponse = this.mockMvc
 					.perform(request(httpMethod, uri).content(requestBody).headers(requestHeaders))
 					.andReturn()
 					.getResponse();

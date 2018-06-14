@@ -38,7 +38,7 @@ public class BeanFactoryCacheOperationSourceAdvisor extends AbstractBeanFactoryP
 		@Override
 		@Nullable
 		protected CacheOperationSource getCacheOperationSource() {
-			return cacheOperationSource;
+			return BeanFactoryCacheOperationSourceAdvisor.this.cacheOperationSource;
 		}
 	};
 

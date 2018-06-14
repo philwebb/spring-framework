@@ -254,8 +254,8 @@ public abstract class AbstractJdbcCall {
 					"You must specify a parameter name when declaring parameters for \"" + getProcedureName() + "\"");
 		}
 		this.declaredParameters.add(parameter);
-		if (logger.isDebugEnabled()) {
-			logger.debug("Added declared parameter for [" + getProcedureName() + "]: " + parameter.getName());
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Added declared parameter for [" + getProcedureName() + "]: " + parameter.getName());
 		}
 	}
 
@@ -266,8 +266,8 @@ public abstract class AbstractJdbcCall {
 	 */
 	public void addDeclaredRowMapper(String parameterName, RowMapper<?> rowMapper) {
 		this.declaredRowMappers.put(parameterName, rowMapper);
-		if (logger.isDebugEnabled()) {
-			logger.debug("Added row mapper for [" + getProcedureName() + "]: " + parameterName);
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Added row mapper for [" + getProcedureName() + "]: " + parameterName);
 		}
 	}
 
@@ -296,8 +296,8 @@ public abstract class AbstractJdbcCall {
 			}
 			compileInternal();
 			this.compiled = true;
-			if (logger.isDebugEnabled()) {
-				logger.debug("SqlCall for " + (isFunction() ? "function" : "procedure") +
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("SqlCall for " + (isFunction() ? "function" : "procedure") +
 						" [" + getProcedureName() + "] compiled");
 			}
 		}
@@ -320,8 +320,8 @@ public abstract class AbstractJdbcCall {
 		this.callMetaDataContext.processParameters(this.declaredParameters);
 
 		this.callString = this.callMetaDataContext.createCallString();
-		if (logger.isDebugEnabled()) {
-			logger.debug("Compiled stored procedure. Call string is [" + this.callString + "]");
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Compiled stored procedure. Call string is [" + this.callString + "]");
 		}
 
 		this.callableStatementFactory = new CallableStatementCreatorFactory(
@@ -352,7 +352,7 @@ public abstract class AbstractJdbcCall {
 	 */
 	protected void checkCompiled() {
 		if (!isCompiled()) {
-			logger.debug("JdbcCall call not compiled before execution - invoking compile");
+			this.logger.debug("JdbcCall call not compiled before execution - invoking compile");
 			compile();
 		}
 	}
@@ -401,11 +401,11 @@ public abstract class AbstractJdbcCall {
 	 */
 	private Map<String, Object> executeCallInternal(Map<String, ?> args) {
 		CallableStatementCreator csc = getCallableStatementFactory().newCallableStatementCreator(args);
-		if (logger.isDebugEnabled()) {
-			logger.debug("The following parameters are used for call " + getCallString() + " with " + args);
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("The following parameters are used for call " + getCallString() + " with " + args);
 			int i = 1;
 			for (SqlParameter param : getCallParameters()) {
-				logger.debug(i + ": " +  param.getName() + ", SQL type "+ param.getSqlType() + ", type name " +
+				this.logger.debug(i + ": " +  param.getName() + ", SQL type "+ param.getSqlType() + ", type name " +
 						param.getTypeName() + ", parameter class [" + param.getClass().getName() + "]");
 				i++;
 			}

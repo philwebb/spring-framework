@@ -156,16 +156,16 @@ public class InternalResourceView extends AbstractUrlBasedView {
 		// If already included or response already committed, perform include, else forward.
 		if (useInclude(request, response)) {
 			response.setContentType(getContentType());
-			if (logger.isDebugEnabled()) {
-				logger.debug("Including resource [" + getUrl() + "] in InternalResourceView '" + getBeanName() + "'");
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Including resource [" + getUrl() + "] in InternalResourceView '" + getBeanName() + "'");
 			}
 			rd.include(request, response);
 		}
 
 		else {
 			// Note: The forwarded resource is supposed to determine the content type itself.
-			if (logger.isDebugEnabled()) {
-				logger.debug("Forwarding to resource [" + getUrl() + "] in InternalResourceView '" + getBeanName() + "'");
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Forwarding to resource [" + getUrl() + "] in InternalResourceView '" + getBeanName() + "'");
 			}
 			rd.forward(request, response);
 		}

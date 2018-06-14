@@ -99,7 +99,7 @@ public class DeprecatedBeanWarner implements BeanFactoryPostProcessor {
 	 * @param message the message to write
 	 */
 	protected void writeToLog(String message) {
-		logger.warn(message);
+		this.logger.warn(message);
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class DeprecatedBeanWarner implements BeanFactoryPostProcessor {
 	 * Subclasses can override this to change the level under which logging occurs.
 	 */
 	protected boolean isLogEnabled() {
-		return logger.isWarnEnabled();
+		return this.logger.isWarnEnabled();
 	}
 
 }

@@ -514,15 +514,15 @@ public class DispatcherServlet extends FrameworkServlet {
 	private void initMultipartResolver(ApplicationContext context) {
 		try {
 			this.multipartResolver = context.getBean(MULTIPART_RESOLVER_BEAN_NAME, MultipartResolver.class);
-			if (logger.isDebugEnabled()) {
-				logger.debug("Using MultipartResolver [" + this.multipartResolver + "]");
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Using MultipartResolver [" + this.multipartResolver + "]");
 			}
 		}
 		catch (NoSuchBeanDefinitionException ex) {
 			// Default is no multipart resolver.
 			this.multipartResolver = null;
-			if (logger.isDebugEnabled()) {
-				logger.debug("Unable to locate MultipartResolver with name '" + MULTIPART_RESOLVER_BEAN_NAME +
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Unable to locate MultipartResolver with name '" + MULTIPART_RESOLVER_BEAN_NAME +
 						"': no multipart request handling provided");
 			}
 		}
@@ -536,15 +536,15 @@ public class DispatcherServlet extends FrameworkServlet {
 	private void initLocaleResolver(ApplicationContext context) {
 		try {
 			this.localeResolver = context.getBean(LOCALE_RESOLVER_BEAN_NAME, LocaleResolver.class);
-			if (logger.isDebugEnabled()) {
-				logger.debug("Using LocaleResolver [" + this.localeResolver + "]");
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Using LocaleResolver [" + this.localeResolver + "]");
 			}
 		}
 		catch (NoSuchBeanDefinitionException ex) {
 			// We need to use the default.
 			this.localeResolver = getDefaultStrategy(context, LocaleResolver.class);
-			if (logger.isDebugEnabled()) {
-				logger.debug("Unable to locate LocaleResolver with name '" + LOCALE_RESOLVER_BEAN_NAME +
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Unable to locate LocaleResolver with name '" + LOCALE_RESOLVER_BEAN_NAME +
 						"': using default [" + this.localeResolver + "]");
 			}
 		}
@@ -558,15 +558,15 @@ public class DispatcherServlet extends FrameworkServlet {
 	private void initThemeResolver(ApplicationContext context) {
 		try {
 			this.themeResolver = context.getBean(THEME_RESOLVER_BEAN_NAME, ThemeResolver.class);
-			if (logger.isDebugEnabled()) {
-				logger.debug("Using ThemeResolver [" + this.themeResolver + "]");
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Using ThemeResolver [" + this.themeResolver + "]");
 			}
 		}
 		catch (NoSuchBeanDefinitionException ex) {
 			// We need to use the default.
 			this.themeResolver = getDefaultStrategy(context, ThemeResolver.class);
-			if (logger.isDebugEnabled()) {
-				logger.debug("Unable to locate ThemeResolver with name '" + THEME_RESOLVER_BEAN_NAME +
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Unable to locate ThemeResolver with name '" + THEME_RESOLVER_BEAN_NAME +
 						"': using default [" + this.themeResolver + "]");
 			}
 		}
@@ -604,8 +604,8 @@ public class DispatcherServlet extends FrameworkServlet {
 		// a default HandlerMapping if no other mappings are found.
 		if (this.handlerMappings == null) {
 			this.handlerMappings = getDefaultStrategies(context, HandlerMapping.class);
-			if (logger.isDebugEnabled()) {
-				logger.debug("No HandlerMappings found in servlet '" + getServletName() + "': using default");
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("No HandlerMappings found in servlet '" + getServletName() + "': using default");
 			}
 		}
 	}
@@ -642,8 +642,8 @@ public class DispatcherServlet extends FrameworkServlet {
 		// default HandlerAdapters if no other adapters are found.
 		if (this.handlerAdapters == null) {
 			this.handlerAdapters = getDefaultStrategies(context, HandlerAdapter.class);
-			if (logger.isDebugEnabled()) {
-				logger.debug("No HandlerAdapters found in servlet '" + getServletName() + "': using default");
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("No HandlerAdapters found in servlet '" + getServletName() + "': using default");
 			}
 		}
 	}
@@ -681,8 +681,8 @@ public class DispatcherServlet extends FrameworkServlet {
 		// default HandlerExceptionResolvers if no other resolvers are found.
 		if (this.handlerExceptionResolvers == null) {
 			this.handlerExceptionResolvers = getDefaultStrategies(context, HandlerExceptionResolver.class);
-			if (logger.isDebugEnabled()) {
-				logger.debug("No HandlerExceptionResolvers found in servlet '" + getServletName() + "': using default");
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("No HandlerExceptionResolvers found in servlet '" + getServletName() + "': using default");
 			}
 		}
 	}
@@ -695,15 +695,15 @@ public class DispatcherServlet extends FrameworkServlet {
 		try {
 			this.viewNameTranslator =
 					context.getBean(REQUEST_TO_VIEW_NAME_TRANSLATOR_BEAN_NAME, RequestToViewNameTranslator.class);
-			if (logger.isDebugEnabled()) {
-				logger.debug("Using RequestToViewNameTranslator [" + this.viewNameTranslator + "]");
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Using RequestToViewNameTranslator [" + this.viewNameTranslator + "]");
 			}
 		}
 		catch (NoSuchBeanDefinitionException ex) {
 			// We need to use the default.
 			this.viewNameTranslator = getDefaultStrategy(context, RequestToViewNameTranslator.class);
-			if (logger.isDebugEnabled()) {
-				logger.debug("Unable to locate RequestToViewNameTranslator with name '" +
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Unable to locate RequestToViewNameTranslator with name '" +
 						REQUEST_TO_VIEW_NAME_TRANSLATOR_BEAN_NAME + "': using default [" + this.viewNameTranslator +
 						"]");
 			}
@@ -742,8 +742,8 @@ public class DispatcherServlet extends FrameworkServlet {
 		// a default ViewResolver if no other resolvers are found.
 		if (this.viewResolvers == null) {
 			this.viewResolvers = getDefaultStrategies(context, ViewResolver.class);
-			if (logger.isDebugEnabled()) {
-				logger.debug("No ViewResolvers found in servlet '" + getServletName() + "': using default");
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("No ViewResolvers found in servlet '" + getServletName() + "': using default");
 			}
 		}
 	}
@@ -756,15 +756,15 @@ public class DispatcherServlet extends FrameworkServlet {
 	private void initFlashMapManager(ApplicationContext context) {
 		try {
 			this.flashMapManager = context.getBean(FLASH_MAP_MANAGER_BEAN_NAME, FlashMapManager.class);
-			if (logger.isDebugEnabled()) {
-				logger.debug("Using FlashMapManager [" + this.flashMapManager + "]");
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Using FlashMapManager [" + this.flashMapManager + "]");
 			}
 		}
 		catch (NoSuchBeanDefinitionException ex) {
 			// We need to use the default.
 			this.flashMapManager = getDefaultStrategy(context, FlashMapManager.class);
-			if (logger.isDebugEnabled()) {
-				logger.debug("Unable to locate FlashMapManager with name '" +
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Unable to locate FlashMapManager with name '" +
 						FLASH_MAP_MANAGER_BEAN_NAME + "': using default [" + this.flashMapManager + "]");
 			}
 		}
@@ -886,9 +886,9 @@ public class DispatcherServlet extends FrameworkServlet {
 	 */
 	@Override
 	protected void doService(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		if (logger.isDebugEnabled()) {
+		if (this.logger.isDebugEnabled()) {
 			String resumed = WebAsyncUtils.getAsyncManager(request).hasConcurrentResult() ? " resumed" : "";
-			logger.debug("DispatcherServlet with name '" + getServletName() + "'" + resumed +
+			this.logger.debug("DispatcherServlet with name '" + getServletName() + "'" + resumed +
 					" processing " + request.getMethod() + " request for [" + getRequestUri(request) + "]");
 		}
 
@@ -975,8 +975,8 @@ public class DispatcherServlet extends FrameworkServlet {
 				boolean isGet = "GET".equals(method);
 				if (isGet || "HEAD".equals(method)) {
 					long lastModified = ha.getLastModified(request, mappedHandler.getHandler());
-					if (logger.isDebugEnabled()) {
-						logger.debug("Last-Modified value for [" + getRequestUri(request) + "] is: " + lastModified);
+					if (this.logger.isDebugEnabled()) {
+						this.logger.debug("Last-Modified value for [" + getRequestUri(request) + "] is: " + lastModified);
 					}
 					if (new ServletWebRequest(request, response).checkNotModified(lastModified) && isGet) {
 						return;
@@ -1054,7 +1054,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 		if (exception != null) {
 			if (exception instanceof ModelAndViewDefiningException) {
-				logger.debug("ModelAndViewDefiningException encountered", exception);
+				this.logger.debug("ModelAndViewDefiningException encountered", exception);
 				mv = ((ModelAndViewDefiningException) exception).getModelAndView();
 			}
 			else {
@@ -1072,8 +1072,8 @@ public class DispatcherServlet extends FrameworkServlet {
 			}
 		}
 		else {
-			if (logger.isDebugEnabled()) {
-				logger.debug("Null ModelAndView returned to DispatcherServlet with name '" + getServletName() +
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Null ModelAndView returned to DispatcherServlet with name '" + getServletName() +
 						"': assuming HandlerAdapter completed request handling");
 			}
 		}
@@ -1116,11 +1116,11 @@ public class DispatcherServlet extends FrameworkServlet {
 	protected HttpServletRequest checkMultipart(HttpServletRequest request) throws MultipartException {
 		if (this.multipartResolver != null && this.multipartResolver.isMultipart(request)) {
 			if (WebUtils.getNativeRequest(request, MultipartHttpServletRequest.class) != null) {
-				logger.debug("Request is already a MultipartHttpServletRequest - if not in a forward, " +
+				this.logger.debug("Request is already a MultipartHttpServletRequest - if not in a forward, " +
 						"this typically results from an additional MultipartFilter in web.xml");
 			}
 			else if (hasMultipartException(request) ) {
-				logger.debug("Multipart resolution failed for current request before - " +
+				this.logger.debug("Multipart resolution failed for current request before - " +
 						"skipping re-resolution for undisturbed error rendering");
 			}
 			else {
@@ -1129,7 +1129,7 @@ public class DispatcherServlet extends FrameworkServlet {
 				}
 				catch (MultipartException ex) {
 					if (request.getAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE) != null) {
-						logger.debug("Multipart resolution failed for error dispatch", ex);
+						this.logger.debug("Multipart resolution failed for error dispatch", ex);
 						// Keep processing error dispatch with regular request handle below
 					}
 					else {
@@ -1181,8 +1181,8 @@ public class DispatcherServlet extends FrameworkServlet {
 	protected HandlerExecutionChain getHandler(HttpServletRequest request) throws Exception {
 		if (this.handlerMappings != null) {
 			for (HandlerMapping hm : this.handlerMappings) {
-				if (logger.isTraceEnabled()) {
-					logger.trace(
+				if (this.logger.isTraceEnabled()) {
+					this.logger.trace(
 							"Testing handler map [" + hm + "] in DispatcherServlet with name '" + getServletName() + "'");
 				}
 				HandlerExecutionChain handler = hm.getHandler(request);
@@ -1222,8 +1222,8 @@ public class DispatcherServlet extends FrameworkServlet {
 	protected HandlerAdapter getHandlerAdapter(Object handler) throws ServletException {
 		if (this.handlerAdapters != null) {
 			for (HandlerAdapter ha : this.handlerAdapters) {
-				if (logger.isTraceEnabled()) {
-					logger.trace("Testing handler adapter [" + ha + "]");
+				if (this.logger.isTraceEnabled()) {
+					this.logger.trace("Testing handler adapter [" + ha + "]");
 				}
 				if (ha.supports(handler)) {
 					return ha;
@@ -1273,8 +1273,8 @@ public class DispatcherServlet extends FrameworkServlet {
 					exMv.setViewName(defaultViewName);
 				}
 			}
-			if (logger.isDebugEnabled()) {
-				logger.debug("Handler execution resulted in exception - forwarding to resolved error view: " + exMv, ex);
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Handler execution resulted in exception - forwarding to resolved error view: " + exMv, ex);
 			}
 			WebUtils.exposeErrorRequestAttributes(request, ex, getServletName());
 			return exMv;
@@ -1318,8 +1318,8 @@ public class DispatcherServlet extends FrameworkServlet {
 		}
 
 		// Delegate to the View object for rendering.
-		if (logger.isDebugEnabled()) {
-			logger.debug("Rendering view [" + view + "] in DispatcherServlet with name '" + getServletName() + "'");
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Rendering view [" + view + "] in DispatcherServlet with name '" + getServletName() + "'");
 		}
 		try {
 			if (mv.getStatus() != null) {
@@ -1328,8 +1328,8 @@ public class DispatcherServlet extends FrameworkServlet {
 			view.render(mv.getModelInternal(), request, response);
 		}
 		catch (Exception ex) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("Error rendering view [" + view + "] in DispatcherServlet with name '" +
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Error rendering view [" + view + "] in DispatcherServlet with name '" +
 						getServletName() + "'", ex);
 			}
 			throw ex;

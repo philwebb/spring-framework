@@ -262,7 +262,7 @@ public class AppCacheManifestTransformer extends ResourceTransformerSupport {
 			String hash = DigestUtils.md5DigestAsHex(this.baos.toByteArray());
 			this.writer.write("\n" + "# Hash: " + hash);
 			if (logger.isTraceEnabled()) {
-				logger.trace("AppCache file: [" + resource.getFilename()+ "] hash: [" + hash + "]");
+				logger.trace("AppCache file: [" + this.resource.getFilename()+ "] hash: [" + hash + "]");
 			}
 			byte[] bytes = this.writer.toString().getBytes(DEFAULT_CHARSET);
 			return new TransformedResource(this.resource, bytes);

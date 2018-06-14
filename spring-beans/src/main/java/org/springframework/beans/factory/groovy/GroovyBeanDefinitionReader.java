@@ -246,7 +246,7 @@ public class GroovyBeanDefinitionReader extends AbstractBeanDefinitionReader imp
 		Binding binding = new Binding() {
 			@Override
 			public void setVariable(String name, Object value) {
-				if (currentBeanDefinition != null) {
+				if (GroovyBeanDefinitionReader.this.currentBeanDefinition != null) {
 					applyPropertyToBeanDefinition(name, value);
 				}
 				else {
@@ -512,7 +512,7 @@ public class GroovyBeanDefinitionReader extends AbstractBeanDefinitionReader imp
 		}
 		else {
 			List constructorArgs = resolveConstructorArguments(args, 0, hasClosureArgument ? args.length - 1 : args.length);
-			currentBeanDefinition = new GroovyBeanDefinitionWrapper(beanName, null, constructorArgs);
+			this.currentBeanDefinition = new GroovyBeanDefinitionWrapper(beanName, null, constructorArgs);
 		}
 
 		if (hasClosureArgument) {
@@ -693,7 +693,7 @@ public class GroovyBeanDefinitionReader extends AbstractBeanDefinitionReader imp
 			@Override
 			protected void afterInvocation() {
 				if (!this.decorating) {
-					currentBeanDefinition = null;
+					GroovyBeanDefinitionReader.this.currentBeanDefinition = null;
 				}
 			}
 		};
@@ -827,8 +827,8 @@ public class GroovyBeanDefinitionReader extends AbstractBeanDefinitionReader imp
 
 			private void updateDeferredProperties(Object value) {
 				if (value instanceof RuntimeBeanReference) {
-					deferredProperties.put(beanDefinition.getBeanName(),
-							new DeferredProperty(beanDefinition, this.propertyName, this.propertyValue));
+					GroovyBeanDefinitionReader.this.deferredProperties.put(GroovyRuntimeBeanReference.this.beanDefinition.getBeanName(),
+							new DeferredProperty(GroovyRuntimeBeanReference.this.beanDefinition, this.propertyName, this.propertyValue));
 				}
 			}
 		}

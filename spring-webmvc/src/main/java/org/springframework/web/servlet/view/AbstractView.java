@@ -304,8 +304,8 @@ public abstract class AbstractView extends WebApplicationObjectSupport implement
 	public void render(@Nullable Map<String, ?> model, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
-		if (logger.isTraceEnabled()) {
-			logger.trace("Rendering view with name '" + this.beanName + "' with model " + model +
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Rendering view with name '" + this.beanName + "' with model " + model +
 				" and static attributes " + this.staticAttributes);
 		}
 
@@ -440,15 +440,15 @@ public abstract class AbstractView extends WebApplicationObjectSupport implement
 		model.forEach((modelName, modelValue) -> {
 			if (modelValue != null) {
 				request.setAttribute(modelName, modelValue);
-				if (logger.isDebugEnabled()) {
-					logger.debug("Added model object '" + modelName + "' of type [" + modelValue.getClass().getName() +
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Added model object '" + modelName + "' of type [" + modelValue.getClass().getName() +
 							"] to request in view with name '" + getBeanName() + "'");
 				}
 			}
 			else {
 				request.removeAttribute(modelName);
-				if (logger.isDebugEnabled()) {
-					logger.debug("Removed model object '" + modelName +
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Removed model object '" + modelName +
 							"' from request in view with name '" + getBeanName() + "'");
 				}
 			}

@@ -269,8 +269,8 @@ public class ExceptionHandlerExceptionResolver extends AbstractHandlerMethodExce
 		if (getApplicationContext() == null) {
 			return;
 		}
-		if (logger.isDebugEnabled()) {
-			logger.debug("Looking for exception mappings: " + getApplicationContext());
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Looking for exception mappings: " + getApplicationContext());
 		}
 
 		List<ControllerAdviceBean> adviceBeans = ControllerAdviceBean.findAnnotatedBeans(getApplicationContext());
@@ -284,14 +284,14 @@ public class ExceptionHandlerExceptionResolver extends AbstractHandlerMethodExce
 			ExceptionHandlerMethodResolver resolver = new ExceptionHandlerMethodResolver(beanType);
 			if (resolver.hasExceptionMappings()) {
 				this.exceptionHandlerAdviceCache.put(adviceBean, resolver);
-				if (logger.isInfoEnabled()) {
-					logger.info("Detected @ExceptionHandler methods in " + adviceBean);
+				if (this.logger.isInfoEnabled()) {
+					this.logger.info("Detected @ExceptionHandler methods in " + adviceBean);
 				}
 			}
 			if (ResponseBodyAdvice.class.isAssignableFrom(beanType)) {
 				this.responseBodyAdvice.add(adviceBean);
-				if (logger.isInfoEnabled()) {
-					logger.info("Detected ResponseBodyAdvice implementation in " + adviceBean);
+				if (this.logger.isInfoEnabled()) {
+					this.logger.info("Detected ResponseBodyAdvice implementation in " + adviceBean);
 				}
 			}
 		}
@@ -391,8 +391,8 @@ public class ExceptionHandlerExceptionResolver extends AbstractHandlerMethodExce
 		ModelAndViewContainer mavContainer = new ModelAndViewContainer();
 
 		try {
-			if (logger.isDebugEnabled()) {
-				logger.debug("Invoking @ExceptionHandler method: " + exceptionHandlerMethod);
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Invoking @ExceptionHandler method: " + exceptionHandlerMethod);
 			}
 			Throwable cause = exception.getCause();
 			if (cause != null) {
@@ -407,8 +407,8 @@ public class ExceptionHandlerExceptionResolver extends AbstractHandlerMethodExce
 		catch (Throwable invocationEx) {
 			// Any other than the original exception is unintended here,
 			// probably an accident (e.g. failed assertion or the like).
-			if (invocationEx != exception && logger.isWarnEnabled()) {
-				logger.warn("Failed to invoke @ExceptionHandler method: " + exceptionHandlerMethod, invocationEx);
+			if (invocationEx != exception && this.logger.isWarnEnabled()) {
+				this.logger.warn("Failed to invoke @ExceptionHandler method: " + exceptionHandlerMethod, invocationEx);
 			}
 			// Continue with default processing of the original exception...
 			return null;

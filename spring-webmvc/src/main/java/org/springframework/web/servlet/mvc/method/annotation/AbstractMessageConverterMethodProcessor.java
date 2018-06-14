@@ -274,8 +274,8 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 						else {
 							((HttpMessageConverter) converter).write(outputValue, selectedMediaType, outputMessage);
 						}
-						if (logger.isDebugEnabled()) {
-							logger.debug("Written [" + outputValue + "] as \"" + selectedMediaType +
+						if (this.logger.isDebugEnabled()) {
+							this.logger.debug("Written [" + outputValue + "] as \"" + selectedMediaType +
 									"\" using [" + converter + "]");
 						}
 					}

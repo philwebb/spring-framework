@@ -437,8 +437,8 @@ public abstract class ResponseEntityExceptionHandler {
 			HttpServletRequest request = servletWebRequest.getRequest();
 			HttpServletResponse response = servletWebRequest.getResponse();
 			if (response != null && response.isCommitted()) {
-				if (logger.isDebugEnabled()) {
-					logger.debug("Async timeout for " + request.getMethod() + " [" + request.getRequestURI() + "]");
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Async timeout for " + request.getMethod() + " [" + request.getRequestURI() + "]");
 				}
 				return null;
 			}

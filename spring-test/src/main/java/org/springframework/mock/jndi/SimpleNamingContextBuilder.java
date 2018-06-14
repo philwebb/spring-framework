@@ -141,7 +141,7 @@ public class SimpleNamingContextBuilder implements InitialContextFactoryBuilder 
 	 * registered with the JNDI NamingManager
 	 */
 	public void activate() throws IllegalStateException, NamingException {
-		logger.info("Activating simple JNDI environment");
+		this.logger.info("Activating simple JNDI environment");
 		synchronized (initializationLock) {
 			if (!initialized) {
 				Assert.state(!NamingManager.hasInitialContextFactoryBuilder(),
@@ -165,7 +165,7 @@ public class SimpleNamingContextBuilder implements InitialContextFactoryBuilder 
 	 * @see #activate()
 	 */
 	public void deactivate() {
-		logger.info("Deactivating simple JNDI environment");
+		this.logger.info("Deactivating simple JNDI environment");
 		activated = null;
 	}
 
@@ -183,8 +183,8 @@ public class SimpleNamingContextBuilder implements InitialContextFactoryBuilder 
 	 * @param obj the object to bind (e.g. a DataSource implementation)
 	 */
 	public void bind(String name, Object obj) {
-		if (logger.isInfoEnabled()) {
-			logger.info("Static JNDI binding: [" + name + "] = [" + obj + "]");
+		if (this.logger.isInfoEnabled()) {
+			this.logger.info("Static JNDI binding: [" + name + "] = [" + obj + "]");
 		}
 		this.boundObjects.put(name, obj);
 	}
@@ -226,7 +226,7 @@ public class SimpleNamingContextBuilder implements InitialContextFactoryBuilder 
 		}
 
 		// Default case...
-		return environment1 -> new SimpleNamingContext("", boundObjects, (Hashtable<String, Object>) environment1);
+		return environment1 -> new SimpleNamingContext("", this.boundObjects, (Hashtable<String, Object>) environment1);
 	}
 
 }

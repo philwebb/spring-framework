@@ -82,7 +82,7 @@ class InterceptingClientHttpRequest extends AbstractBufferingClientHttpRequest {
 		private final Iterator<ClientHttpRequestInterceptor> iterator;
 
 		public InterceptingRequestExecution() {
-			this.iterator = interceptors.iterator();
+			this.iterator = InterceptingClientHttpRequest.this.interceptors.iterator();
 		}
 
 		@Override
@@ -94,7 +94,7 @@ class InterceptingClientHttpRequest extends AbstractBufferingClientHttpRequest {
 			else {
 				HttpMethod method = request.getMethod();
 				Assert.state(method != null, "No standard HTTP method");
-				ClientHttpRequest delegate = requestFactory.createRequest(request.getURI(), method);
+				ClientHttpRequest delegate = InterceptingClientHttpRequest.this.requestFactory.createRequest(request.getURI(), method);
 				request.getHeaders().forEach((key, value) -> delegate.getHeaders().addAll(key, value));
 				if (body.length > 0) {
 					if (delegate instanceof StreamingHttpOutputMessage) {

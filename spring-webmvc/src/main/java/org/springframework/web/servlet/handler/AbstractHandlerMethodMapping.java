@@ -195,8 +195,8 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	 * @see #handlerMethodsInitialized(Map)
 	 */
 	protected void initHandlerMethods() {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Looking for request mappings in application context: " + getApplicationContext());
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Looking for request mappings in application context: " + getApplicationContext());
 		}
 		String[] beanNames = (this.detectHandlerMethodsInAncestorContexts ?
 				BeanFactoryUtils.beanNamesForTypeIncludingAncestors(obtainApplicationContext(), Object.class) :
@@ -210,8 +210,8 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 				}
 				catch (Throwable ex) {
 					// An unresolvable bean type, probably from a lazy bean - let's ignore it.
-					if (logger.isDebugEnabled()) {
-						logger.debug("Could not resolve target class for bean with name '" + beanName + "'", ex);
+					if (this.logger.isDebugEnabled()) {
+						this.logger.debug("Could not resolve target class for bean with name '" + beanName + "'", ex);
 					}
 				}
 				if (beanType != null && isHandler(beanType)) {
@@ -242,8 +242,8 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 									userType.getName() + "]: " + method, ex);
 						}
 					});
-			if (logger.isDebugEnabled()) {
-				logger.debug(methods.size() + " request handler methods found on " + userType + ": " + methods);
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug(methods.size() + " request handler methods found on " + userType + ": " + methods);
 			}
 			methods.forEach((method, mapping) -> {
 				Method invocableMethod = AopUtils.selectInvocableMethod(method, userType);
@@ -308,18 +308,18 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	@Override
 	protected HandlerMethod getHandlerInternal(HttpServletRequest request) throws Exception {
 		String lookupPath = getUrlPathHelper().getLookupPathForRequest(request);
-		if (logger.isDebugEnabled()) {
-			logger.debug("Looking up handler method for path " + lookupPath);
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Looking up handler method for path " + lookupPath);
 		}
 		this.mappingRegistry.acquireReadLock();
 		try {
 			HandlerMethod handlerMethod = lookupHandlerMethod(lookupPath, request);
-			if (logger.isDebugEnabled()) {
+			if (this.logger.isDebugEnabled()) {
 				if (handlerMethod != null) {
-					logger.debug("Returning handler method [" + handlerMethod + "]");
+					this.logger.debug("Returning handler method [" + handlerMethod + "]");
 				}
 				else {
-					logger.debug("Did not find handler method for [" + lookupPath + "]");
+					this.logger.debug("Did not find handler method for [" + lookupPath + "]");
 				}
 			}
 			return (handlerMethod != null ? handlerMethod.createWithResolvedBean() : null);
@@ -353,8 +353,8 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 		if (!matches.isEmpty()) {
 			Comparator<Match> comparator = new MatchComparator(getMappingComparator(request));
 			matches.sort(comparator);
-			if (logger.isTraceEnabled()) {
-				logger.trace("Found " + matches.size() + " matching mapping(s) for [" + lookupPath + "] : " + matches);
+			if (this.logger.isTraceEnabled()) {
+				this.logger.trace("Found " + matches.size() + " matching mapping(s) for [" + lookupPath + "] : " + matches);
 			}
 			Match bestMatch = matches.get(0);
 			if (matches.size() > 1) {
@@ -543,8 +543,8 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 				HandlerMethod handlerMethod = createHandlerMethod(handler, method);
 				assertUniqueMethodMapping(handlerMethod, mapping);
 
-				if (logger.isInfoEnabled()) {
-					logger.info("Mapped \"" + mapping + "\" onto " + handlerMethod);
+				if (AbstractHandlerMethodMapping.this.logger.isInfoEnabled()) {
+					AbstractHandlerMethodMapping.this.logger.info("Mapped \"" + mapping + "\" onto " + handlerMethod);
 				}
 				this.mappingLookup.put(mapping, handlerMethod);
 
@@ -603,8 +603,8 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 				}
 			}
 
-			if (logger.isTraceEnabled()) {
-				logger.trace("Mapping name '" + name + "'");
+			if (AbstractHandlerMethodMapping.this.logger.isTraceEnabled()) {
+				AbstractHandlerMethodMapping.this.logger.trace("Mapping name '" + name + "'");
 			}
 
 			List<HandlerMethod> newList = new ArrayList<>(oldList.size() + 1);
@@ -613,8 +613,8 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 			this.nameLookup.put(name, newList);
 
 			if (newList.size() > 1) {
-				if (logger.isTraceEnabled()) {
-					logger.trace("Mapping name clash for handlerMethods " + newList +
+				if (AbstractHandlerMethodMapping.this.logger.isTraceEnabled()) {
+					AbstractHandlerMethodMapping.this.logger.trace("Mapping name clash for handlerMethods " + newList +
 							". Consider assigning explicit names.");
 				}
 			}

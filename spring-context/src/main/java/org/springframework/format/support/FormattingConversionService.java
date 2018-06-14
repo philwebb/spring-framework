@@ -256,12 +256,12 @@ public class FormattingConversionService extends GenericConversionService
 						"Expected [" + this.annotationType.getName() + "] to be present on " + sourceType);
 			}
 			AnnotationConverterKey converterKey = new AnnotationConverterKey(ann, sourceType.getObjectType());
-			GenericConverter converter = cachedPrinters.get(converterKey);
+			GenericConverter converter = FormattingConversionService.this.cachedPrinters.get(converterKey);
 			if (converter == null) {
 				Printer<?> printer = this.annotationFormatterFactory.getPrinter(
 						converterKey.getAnnotation(), converterKey.getFieldType());
 				converter = new PrinterConverter(this.fieldType, printer, FormattingConversionService.this);
-				cachedPrinters.put(converterKey, converter);
+				FormattingConversionService.this.cachedPrinters.put(converterKey, converter);
 			}
 			return converter.convert(source, sourceType, targetType);
 		}
@@ -293,7 +293,7 @@ public class FormattingConversionService extends GenericConversionService
 
 		@Override
 		public Set<ConvertiblePair> getConvertibleTypes() {
-			return Collections.singleton(new ConvertiblePair(String.class, fieldType));
+			return Collections.singleton(new ConvertiblePair(String.class, this.fieldType));
 		}
 
 		@Override
@@ -311,12 +311,12 @@ public class FormattingConversionService extends GenericConversionService
 						"Expected [" + this.annotationType.getName() + "] to be present on " + targetType);
 			}
 			AnnotationConverterKey converterKey = new AnnotationConverterKey(ann, targetType.getObjectType());
-			GenericConverter converter = cachedParsers.get(converterKey);
+			GenericConverter converter = FormattingConversionService.this.cachedParsers.get(converterKey);
 			if (converter == null) {
 				Parser<?> parser = this.annotationFormatterFactory.getParser(
 						converterKey.getAnnotation(), converterKey.getFieldType());
 				converter = new ParserConverter(this.fieldType, parser, FormattingConversionService.this);
-				cachedParsers.put(converterKey, converter);
+				FormattingConversionService.this.cachedParsers.put(converterKey, converter);
 			}
 			return converter.convert(source, sourceType, targetType);
 		}

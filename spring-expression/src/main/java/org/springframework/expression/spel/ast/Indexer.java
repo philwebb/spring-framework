@@ -520,7 +520,7 @@ public class Indexer extends SpelNodeImpl {
 		@Override
 		public TypedValue getValue() {
 			Object value = this.map.get(this.key);
-			exitTypeDescriptor = CodeFlow.toDescriptor(Object.class);
+			Indexer.this.exitTypeDescriptor = CodeFlow.toDescriptor(Object.class);
 			return new TypedValue(value, this.mapEntryDescriptor.getMapValueTypeDescriptor(value));
 		}
 
@@ -670,7 +670,7 @@ public class Indexer extends SpelNodeImpl {
 			growCollectionIfNecessary();
 			if (this.collection instanceof List) {
 				Object o = ((List) this.collection).get(this.index);
-				exitTypeDescriptor = CodeFlow.toDescriptor(Object.class);
+				Indexer.this.exitTypeDescriptor = CodeFlow.toDescriptor(Object.class);
 				return new TypedValue(o, this.collectionEntryDescriptor.elementTypeDescriptor(o));
 			}
 			int pos = 0;

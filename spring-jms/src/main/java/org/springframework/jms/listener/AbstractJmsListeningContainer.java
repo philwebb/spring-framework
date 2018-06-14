@@ -218,7 +218,7 @@ public abstract class AbstractJmsListeningContainer extends JmsDestinationAccess
 	 * @throws JmsException if shutdown failed
 	 */
 	public void shutdown() throws JmsException {
-		logger.debug("Shutting down JMS listener container");
+		this.logger.debug("Shutting down JMS listener container");
 		boolean wasRunning;
 		synchronized (this.lifecycleMonitor) {
 			wasRunning = this.running;
@@ -234,7 +234,7 @@ public abstract class AbstractJmsListeningContainer extends JmsDestinationAccess
 				stopSharedConnection();
 			}
 			catch (Throwable ex) {
-				logger.debug("Could not stop JMS Connection on shutdown", ex);
+				this.logger.debug("Could not stop JMS Connection on shutdown", ex);
 			}
 		}
 
@@ -383,7 +383,7 @@ public abstract class AbstractJmsListeningContainer extends JmsDestinationAccess
 		synchronized (this.sharedConnectionMonitor) {
 			if (this.sharedConnection == null) {
 				this.sharedConnection = createSharedConnection();
-				logger.debug("Established shared JMS Connection");
+				this.logger.debug("Established shared JMS Connection");
 			}
 		}
 	}
@@ -454,7 +454,7 @@ public abstract class AbstractJmsListeningContainer extends JmsDestinationAccess
 					this.sharedConnection.start();
 				}
 				catch (javax.jms.IllegalStateException ex) {
-					logger.debug("Ignoring Connection start exception - assuming already started: " + ex);
+					this.logger.debug("Ignoring Connection start exception - assuming already started: " + ex);
 				}
 			}
 		}
@@ -473,7 +473,7 @@ public abstract class AbstractJmsListeningContainer extends JmsDestinationAccess
 					this.sharedConnection.stop();
 				}
 				catch (javax.jms.IllegalStateException ex) {
-					logger.debug("Ignoring Connection stop exception - assuming already stopped: " + ex);
+					this.logger.debug("Ignoring Connection stop exception - assuming already stopped: " + ex);
 				}
 			}
 		}
@@ -549,8 +549,8 @@ public abstract class AbstractJmsListeningContainer extends JmsDestinationAccess
 					try {
 						doRescheduleTask(task);
 						it.remove();
-						if (logger.isDebugEnabled()) {
-							logger.debug("Resumed paused task: " + task);
+						if (this.logger.isDebugEnabled()) {
+							this.logger.debug("Resumed paused task: " + task);
 						}
 					}
 					catch (RuntimeException ex) {
@@ -592,8 +592,8 @@ public abstract class AbstractJmsListeningContainer extends JmsDestinationAccess
 	 * @param ex the exception thrown from {@link #doRescheduleTask}
 	 */
 	protected void logRejectedTask(Object task, RuntimeException ex) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Listener container task [" + task + "] has been rejected and paused: " + ex);
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Listener container task [" + task + "] has been rejected and paused: " + ex);
 		}
 	}
 

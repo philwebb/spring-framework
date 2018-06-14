@@ -203,7 +203,7 @@ public class ContentNegotiatingViewResolver extends WebApplicationObjectSupport
 
 		}
 		if (this.viewResolvers.isEmpty()) {
-			logger.warn("Did not find any ViewResolvers to delegate to; please configure them using the " +
+			this.logger.warn("Did not find any ViewResolvers to delegate to; please configure them using the " +
 					"'viewResolvers' property on the ContentNegotiatingViewResolver");
 		}
 		AnnotationAwareOrderComparator.sort(this.viewResolvers);
@@ -232,13 +232,13 @@ public class ContentNegotiatingViewResolver extends WebApplicationObjectSupport
 			}
 		}
 		if (this.useNotAcceptableStatusCode) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("No acceptable view found; returning 406 (Not Acceptable) status code");
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("No acceptable view found; returning 406 (Not Acceptable) status code");
 			}
 			return NOT_ACCEPTABLE_VIEW;
 		}
 		else {
-			logger.debug("No acceptable view found; returning null");
+			this.logger.debug("No acceptable view found; returning null");
 			return null;
 		}
 	}
@@ -265,8 +265,8 @@ public class ContentNegotiatingViewResolver extends WebApplicationObjectSupport
 			}
 			List<MediaType> selectedMediaTypes = new ArrayList<>(compatibleMediaTypes);
 			MediaType.sortBySpecificityAndQuality(selectedMediaTypes);
-			if (logger.isDebugEnabled()) {
-				logger.debug("Requested media types are " + selectedMediaTypes + " based on Accept header types " +
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Requested media types are " + selectedMediaTypes + " based on Accept header types " +
 						"and producible media types " + producibleMediaTypes + ")");
 			}
 			return selectedMediaTypes;
@@ -332,8 +332,8 @@ public class ContentNegotiatingViewResolver extends WebApplicationObjectSupport
 			if (candidateView instanceof SmartView) {
 				SmartView smartView = (SmartView) candidateView;
 				if (smartView.isRedirectView()) {
-					if (logger.isDebugEnabled()) {
-						logger.debug("Returning redirect view [" + candidateView + "]");
+					if (this.logger.isDebugEnabled()) {
+						this.logger.debug("Returning redirect view [" + candidateView + "]");
 					}
 					return candidateView;
 				}
@@ -344,8 +344,8 @@ public class ContentNegotiatingViewResolver extends WebApplicationObjectSupport
 				if (StringUtils.hasText(candidateView.getContentType())) {
 					MediaType candidateContentType = MediaType.parseMediaType(candidateView.getContentType());
 					if (mediaType.isCompatibleWith(candidateContentType)) {
-						if (logger.isDebugEnabled()) {
-							logger.debug("Returning [" + candidateView + "] based on requested media type '" +
+						if (this.logger.isDebugEnabled()) {
+							this.logger.debug("Returning [" + candidateView + "] based on requested media type '" +
 									mediaType + "'");
 						}
 						attrs.setAttribute(View.SELECTED_CONTENT_TYPE, mediaType, RequestAttributes.SCOPE_REQUEST);
