@@ -22,7 +22,8 @@ import java.util.Map;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test fixture for {@link MappingMediaTypeFileExtensionResolver}.

@@ -27,8 +27,10 @@ import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.web.server.ServerWebExchange;
 
-import static java.util.Locale.*;
-import static org.junit.Assert.*;
+import static java.util.Locale.CANADA;
+import static java.util.Locale.FRANCE;
+import static java.util.Locale.US;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Unit tests for {@link FixedLocaleContextResolver}.

@@ -22,8 +22,8 @@ import java.util.Map;
 import org.junit.Test;
 import org.springframework.web.util.DefaultUriBuilderFactory.EncodingMode;
 
-import static java.util.Collections.*;
-import static junit.framework.TestCase.*;
+import static java.util.Collections.singletonMap;
+import static junit.framework.TestCase.assertEquals;
 
 /**
  * Unit tests for {@link DefaultUriBuilderFactory}.

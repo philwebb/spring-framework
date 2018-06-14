@@ -31,7 +31,8 @@ import org.springframework.util.SocketUtils;
 import com.caucho.hessian.client.HessianProxyFactory;
 import com.sun.net.httpserver.HttpServer;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Juergen Hoeller

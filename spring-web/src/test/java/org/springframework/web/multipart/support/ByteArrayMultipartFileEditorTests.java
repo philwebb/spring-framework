@@ -21,9 +21,9 @@ import java.io.IOException;
 import org.junit.Test;
 import org.springframework.web.multipart.MultipartFile;
 
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 /**
  * @author Rick Evans

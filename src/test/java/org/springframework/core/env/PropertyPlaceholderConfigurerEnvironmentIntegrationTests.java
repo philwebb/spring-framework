@@ -20,7 +20,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.support.GenericApplicationContext;
 
-import static org.springframework.beans.factory.support.BeanDefinitionBuilder.*;
+import static org.springframework.beans.factory.support.BeanDefinitionBuilder.rootBeanDefinition;
 
 @SuppressWarnings("resource")
 public class PropertyPlaceholderConfigurerEnvironmentIntegrationTests {
