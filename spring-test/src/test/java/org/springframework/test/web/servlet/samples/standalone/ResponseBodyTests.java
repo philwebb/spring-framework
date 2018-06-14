@@ -17,7 +17,6 @@
 package org.springframework.test.web.servlet.samples.standalone;
 
 import org.junit.Test;
-
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.test.web.Person;

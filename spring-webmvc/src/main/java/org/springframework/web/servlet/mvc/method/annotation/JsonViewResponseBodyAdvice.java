@@ -16,8 +16,6 @@
 
 package org.springframework.web.servlet.mvc.method.annotation;
 
-import com.fasterxml.jackson.annotation.JsonView;
-
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -25,6 +23,8 @@ import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.util.Assert;
+
+import com.fasterxml.jackson.annotation.JsonView;
 
 /**
  * A {@link ResponseBodyAdvice} implementation that adds support for Jackson's

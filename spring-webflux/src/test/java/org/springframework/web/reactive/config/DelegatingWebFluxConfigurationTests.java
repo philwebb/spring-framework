@@ -25,7 +25,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.codec.HttpMessageWriter;
@@ -35,7 +34,9 @@ import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
 import org.springframework.web.reactive.accept.RequestedContentTypeResolverBuilder;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Test fixture for {@link DelegatingWebFluxConfiguration} tests.

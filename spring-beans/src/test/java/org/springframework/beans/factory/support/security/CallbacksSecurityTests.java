@@ -28,12 +28,12 @@ import java.security.PrivilegedExceptionAction;
 import java.security.ProtectionDomain;
 import java.util.PropertyPermission;
 import java.util.Set;
+
 import javax.security.auth.AuthPermission;
 import javax.security.auth.Subject;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.BeanCreationException;

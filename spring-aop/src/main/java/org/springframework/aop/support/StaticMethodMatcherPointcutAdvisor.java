@@ -19,7 +19,6 @@ package org.springframework.aop.support;
 import java.io.Serializable;
 
 import org.aopalliance.aop.Advice;
-
 import org.springframework.aop.Pointcut;
 import org.springframework.aop.PointcutAdvisor;
 import org.springframework.core.Ordered;

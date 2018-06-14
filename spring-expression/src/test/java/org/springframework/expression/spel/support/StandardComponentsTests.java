@@ -19,7 +19,6 @@ package org.springframework.expression.spel.support;
 import java.util.List;
 
 import org.junit.Test;
-
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.expression.EvaluationException;
 import org.springframework.expression.Operation;

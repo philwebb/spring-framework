@@ -17,7 +17,6 @@
 package org.springframework.web.bind;
 
 import org.junit.Test;
-
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;

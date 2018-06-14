@@ -18,18 +18,19 @@ package org.springframework.ejb.access;
 
 import java.lang.reflect.Proxy;
 import java.rmi.RemoteException;
+
 import javax.ejb.CreateException;
 import javax.ejb.EJBHome;
 import javax.ejb.EJBObject;
 import javax.naming.NamingException;
 
 import org.junit.Test;
-
 import org.springframework.jndi.JndiTemplate;
 import org.springframework.remoting.RemoteAccessException;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Rod Johnson

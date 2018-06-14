@@ -20,7 +20,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import org.junit.Test;
-
 import org.springframework.context.i18n.LocaleContext;
 import org.springframework.context.i18n.SimpleLocaleContext;
 import org.springframework.context.i18n.SimpleTimeZoneAwareLocaleContext;

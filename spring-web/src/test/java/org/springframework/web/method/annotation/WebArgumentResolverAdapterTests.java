@@ -19,7 +19,6 @@ package org.springframework.web.method.annotation;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.core.MethodParameter;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.web.bind.support.WebArgumentResolver;
@@ -29,6 +28,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Test fixture with {@link WebArgumentResolverAdapterTests}.

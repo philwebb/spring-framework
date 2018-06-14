@@ -17,7 +17,6 @@
 package org.springframework.aop.aspectj;
 
 import org.junit.Test;
-
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

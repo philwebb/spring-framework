@@ -18,9 +18,9 @@ package org.springframework.http.server.reactive.bootstrap;
 
 import java.net.InetSocketAddress;
 
-import io.undertow.Undertow;
-
 import org.springframework.http.server.reactive.UndertowHttpHandlerAdapter;
+
+import io.undertow.Undertow;
 
 /**
  * @author Marek Hawrylczak

@@ -16,9 +16,9 @@
 
 package org.springframework.context.annotation;
 
-import example.scannable.FooService;
-
 import org.springframework.core.convert.converter.Converter;
+
+import example.scannable.FooService;
 
 /**
  * @author Juergen Hoeller

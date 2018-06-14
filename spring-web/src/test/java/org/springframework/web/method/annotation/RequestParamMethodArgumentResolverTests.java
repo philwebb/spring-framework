@@ -20,11 +20,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
 import javax.servlet.http.Part;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.convert.support.DefaultConversionService;
@@ -50,6 +50,7 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 import static org.springframework.web.method.MvcAnnotationPredicates.*;
 
 /**

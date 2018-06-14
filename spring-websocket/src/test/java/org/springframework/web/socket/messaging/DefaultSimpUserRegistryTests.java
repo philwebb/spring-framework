@@ -23,7 +23,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.junit.Test;
-
 import org.springframework.messaging.Message;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageType;

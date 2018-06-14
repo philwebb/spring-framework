@@ -19,16 +19,16 @@ package org.springframework.http.server.reactive;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import io.undertow.server.HttpServerExchange;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
-
 import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.core.io.buffer.DefaultDataBufferFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.util.Assert;
+
+import io.undertow.server.HttpServerExchange;
 
 /**
  * Adapt {@link HttpHandler} to the Undertow {@link io.undertow.server.HttpHandler}.

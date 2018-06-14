@@ -22,9 +22,6 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import commonj.timers.Timer;
-import commonj.timers.TimerListener;
-
 import org.springframework.lang.Nullable;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.Trigger;
@@ -32,6 +29,9 @@ import org.springframework.scheduling.support.SimpleTriggerContext;
 import org.springframework.scheduling.support.TaskUtils;
 import org.springframework.util.Assert;
 import org.springframework.util.ErrorHandler;
+
+import commonj.timers.Timer;
+import commonj.timers.TimerListener;
 
 /**
  * Implementation of Spring's {@link TaskScheduler} interface, wrapping

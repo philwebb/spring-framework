@@ -20,13 +20,12 @@ import javax.ejb.EJB;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.Test;
-
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
 import org.springframework.test.context.transaction.ejb.dao.TestEntityDao;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.Test;
 
 import static org.testng.AssertJUnit.*;
 

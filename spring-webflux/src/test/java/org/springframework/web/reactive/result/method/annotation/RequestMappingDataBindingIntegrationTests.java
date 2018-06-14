@@ -21,8 +21,6 @@ import java.util.Date;
 import java.util.Optional;
 
 import org.junit.Test;
-import reactor.core.publisher.Mono;
-
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -43,6 +41,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.config.EnableWebFlux;
 
 import static org.junit.Assert.*;
+
+import reactor.core.publisher.Mono;
 
 /**
  * Data binding and type conversion related integration tests for

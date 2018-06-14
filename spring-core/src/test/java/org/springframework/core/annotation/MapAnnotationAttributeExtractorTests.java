@@ -25,7 +25,9 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-
+import org.springframework.core.annotation.AnnotationUtilsTests.ImplicitAliasesContextConfig;
+import org.springframework.core.annotation.AnnotationUtilsTests.RequestMethod;
+import org.springframework.core.annotation.AnnotationUtilsTests.WebMapping;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 

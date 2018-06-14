@@ -24,7 +24,6 @@ import java.beans.PropertyDescriptor;
 import java.math.BigDecimal;
 
 import org.junit.Test;
-
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.hamcrest.CoreMatchers.equalTo;

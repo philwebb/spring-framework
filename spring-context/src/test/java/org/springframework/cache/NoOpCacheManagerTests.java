@@ -19,7 +19,6 @@ package org.springframework.cache;
 import java.util.UUID;
 
 import org.junit.Test;
-
 import org.springframework.cache.support.NoOpCacheManager;
 
 import static org.junit.Assert.*;

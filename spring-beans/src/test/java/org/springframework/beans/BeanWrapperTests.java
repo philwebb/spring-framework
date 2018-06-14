@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.junit.Test;
-
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.junit.Assert.*;

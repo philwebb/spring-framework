@@ -16,12 +16,12 @@
 
 package org.springframework.cache.caffeine;
 
-import com.github.benmanes.caffeine.cache.Caffeine;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.cache.AbstractValueAdaptingCacheTests;
 import org.springframework.cache.Cache;
+
+import com.github.benmanes.caffeine.cache.Caffeine;
 
 import static org.junit.Assert.*;
 

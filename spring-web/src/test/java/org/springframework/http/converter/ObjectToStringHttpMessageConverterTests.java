@@ -24,7 +24,6 @@ import java.util.Locale;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.core.io.Resource;

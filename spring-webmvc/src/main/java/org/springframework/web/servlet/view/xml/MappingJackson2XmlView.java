@@ -18,15 +18,15 @@ package org.springframework.web.servlet.view.xml;
 
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.json.AbstractJackson2View;
+
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 /**
  * Spring MVC {@link View} that renders XML content by serializing the model for the current request

@@ -21,7 +21,6 @@ import java.util.concurrent.ThreadFactory;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
 import org.springframework.util.ConcurrencyThrottleSupport;
 
 import static org.hamcrest.CoreMatchers.*;

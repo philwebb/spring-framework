@@ -23,6 +23,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Unit tests for the {@link LocalConnectionFactoryBean} class.

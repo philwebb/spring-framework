@@ -18,12 +18,13 @@ package org.springframework.core.env;
 
 import java.util.Arrays;
 
-import joptsimple.OptionParser;
-import joptsimple.OptionSet;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
+
+import joptsimple.OptionParser;
+import joptsimple.OptionSet;
 
 /**
  * Unit tests for {@link JOptCommandLinePropertySource}.

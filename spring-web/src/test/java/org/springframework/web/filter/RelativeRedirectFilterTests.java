@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletResponseWrapper;
 import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.test.MockFilterChain;

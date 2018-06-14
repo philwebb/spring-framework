@@ -21,7 +21,6 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import org.junit.Test;
-
 import org.springframework.http.HttpMethod;
 
 import static org.junit.Assert.*;

@@ -19,7 +19,6 @@ package org.springframework.http.client;
 import java.net.HttpURLConnection;
 
 import org.junit.Test;
-
 import org.springframework.http.HttpHeaders;
 
 import static org.mockito.Mockito.*;

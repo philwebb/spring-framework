@@ -16,10 +16,10 @@
 
 package org.springframework.scheduling.commonj;
 
+import org.springframework.util.Assert;
+
 import commonj.timers.Timer;
 import commonj.timers.TimerListener;
-
-import org.springframework.util.Assert;
 
 /**
  * Simple TimerListener adapter that delegates to a given Runnable.

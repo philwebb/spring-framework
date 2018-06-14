@@ -18,13 +18,8 @@ package org.springframework.web.servlet.view.freemarker;
 
 import java.io.IOException;
 import java.util.List;
-import javax.servlet.ServletContext;
 
-import freemarker.cache.ClassTemplateLoader;
-import freemarker.cache.TemplateLoader;
-import freemarker.ext.jsp.TaglibFactory;
-import freemarker.template.Configuration;
-import freemarker.template.TemplateException;
+import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ResourceLoaderAware;
@@ -32,6 +27,12 @@ import org.springframework.lang.Nullable;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactory;
 import org.springframework.util.Assert;
 import org.springframework.web.context.ServletContextAware;
+
+import freemarker.cache.ClassTemplateLoader;
+import freemarker.cache.TemplateLoader;
+import freemarker.ext.jsp.TaglibFactory;
+import freemarker.template.Configuration;
+import freemarker.template.TemplateException;
 
 /**
  * JavaBean to configure FreeMarker for web usage, via the "configLocation"

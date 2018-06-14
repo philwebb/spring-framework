@@ -17,6 +17,7 @@
 package org.springframework.jmx.support;
 
 import java.beans.PropertyDescriptor;
+
 import javax.management.DynamicMBean;
 import javax.management.MBeanServer;
 import javax.management.MBeanServerFactory;
@@ -26,7 +27,6 @@ import javax.management.ObjectName;
 import javax.management.StandardMBean;
 
 import org.junit.Test;
-
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.jmx.IJmxTestBean;
 import org.springframework.jmx.JmxTestBean;

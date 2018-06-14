@@ -20,7 +20,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
-
 import org.springframework.test.context.TestExecutionListeners;
 
 import static org.junit.Assert.*;

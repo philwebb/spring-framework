@@ -20,13 +20,13 @@ import java.net.URI;
 import java.util.Random;
 
 import org.junit.Test;
-import reactor.core.publisher.Mono;
-
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.*;
+
+import reactor.core.publisher.Mono;
 
 
 public class EchoHandlerIntegrationTests extends AbstractHttpHandlerIntegrationTests {

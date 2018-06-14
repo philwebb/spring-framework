@@ -21,7 +21,9 @@ import org.apache.commons.logging.Log;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Unit tests for the {@link DebugInterceptor} class.

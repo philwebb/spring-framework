@@ -17,7 +17,6 @@
 package org.springframework.test.context.groovy;
 
 import org.junit.Test;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericGroovyApplicationContext;
 import org.springframework.tests.sample.beans.Employee;

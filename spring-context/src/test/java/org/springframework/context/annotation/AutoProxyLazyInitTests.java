@@ -19,7 +19,6 @@ package org.springframework.context.annotation;
 import javax.annotation.PreDestroy;
 
 import org.junit.Test;
-
 import org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator;
 import org.springframework.aop.framework.autoproxy.target.LazyInitTargetSourceCreator;
 import org.springframework.aop.target.AbstractBeanFactoryBasedTargetSource;

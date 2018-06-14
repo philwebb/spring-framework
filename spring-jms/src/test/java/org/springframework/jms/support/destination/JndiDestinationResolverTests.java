@@ -21,11 +21,11 @@ import javax.jms.Session;
 import javax.naming.NamingException;
 
 import org.junit.Test;
-
 import org.springframework.jms.StubTopic;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Rick Evans

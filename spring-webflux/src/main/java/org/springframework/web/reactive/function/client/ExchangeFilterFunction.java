@@ -18,9 +18,9 @@ package org.springframework.web.reactive.function.client;
 
 import java.util.function.Function;
 
-import reactor.core.publisher.Mono;
-
 import org.springframework.util.Assert;
+
+import reactor.core.publisher.Mono;
 
 /**
  * Represents a function that filters an {@linkplain ExchangeFunction exchange function}.

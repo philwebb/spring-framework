@@ -35,7 +35,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.ArgumentCaptor;
-
 import org.springframework.core.MethodParameter;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
@@ -61,7 +60,9 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import static java.time.Instant.*;
 import static java.time.format.DateTimeFormatter.*;
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.web.servlet.HandlerMapping.*;
 

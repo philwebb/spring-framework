@@ -16,6 +16,11 @@
 
 package org.springframework.cache.ehcache;
 
+import org.junit.Test;
+import org.springframework.core.io.ClassPathResource;
+
+import static org.junit.Assert.*;
+
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheException;
 import net.sf.ehcache.CacheManager;
@@ -25,11 +30,6 @@ import net.sf.ehcache.constructs.blocking.BlockingCache;
 import net.sf.ehcache.constructs.blocking.SelfPopulatingCache;
 import net.sf.ehcache.constructs.blocking.UpdatingCacheEntryFactory;
 import net.sf.ehcache.constructs.blocking.UpdatingSelfPopulatingCache;
-import org.junit.Test;
-
-import org.springframework.core.io.ClassPathResource;
-
-import static org.junit.Assert.*;
 
 /**
  * @author Juergen Hoeller

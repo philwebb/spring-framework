@@ -23,7 +23,6 @@ import java.util.Map;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
-
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;

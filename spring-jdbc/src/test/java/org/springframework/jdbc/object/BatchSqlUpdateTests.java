@@ -20,14 +20,15 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.Types;
+
 import javax.sql.DataSource;
 
 import org.junit.Test;
-
 import org.springframework.jdbc.core.SqlParameter;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Juergen Hoeller

@@ -17,7 +17,6 @@
 package org.springframework.web.socket.handler;
 
 import org.junit.Test;
-
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.web.socket.CloseStatus;

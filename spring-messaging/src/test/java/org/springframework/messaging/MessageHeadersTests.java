@@ -24,7 +24,6 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.junit.Test;
-
 import org.springframework.util.SerializationTestUtils;
 
 import static org.junit.Assert.*;

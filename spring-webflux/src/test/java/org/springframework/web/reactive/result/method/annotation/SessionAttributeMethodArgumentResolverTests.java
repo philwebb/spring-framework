@@ -21,9 +21,6 @@ import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
-import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
-
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.GenericTypeResolver;
@@ -43,6 +40,9 @@ import org.springframework.web.server.WebSession;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 /**
  * Unit tests for {@link SessionAttributeMethodArgumentResolver}.

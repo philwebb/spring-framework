@@ -20,7 +20,6 @@ import java.io.NotSerializableException;
 import java.io.Serializable;
 
 import org.junit.Test;
-
 import org.springframework.core.serializer.support.DeserializingConverter;
 import org.springframework.core.serializer.support.SerializationFailedException;
 import org.springframework.core.serializer.support.SerializingConverter;

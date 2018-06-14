@@ -37,7 +37,6 @@ import java.util.Vector;
 import java.util.regex.Pattern;
 
 import org.junit.Test;
-
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;

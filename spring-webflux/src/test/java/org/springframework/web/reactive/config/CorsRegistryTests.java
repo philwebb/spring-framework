@@ -20,7 +20,6 @@ import java.util.Arrays;
 import java.util.Map;
 
 import org.junit.Test;
-
 import org.springframework.web.cors.CorsConfiguration;
 
 import static org.junit.Assert.*;

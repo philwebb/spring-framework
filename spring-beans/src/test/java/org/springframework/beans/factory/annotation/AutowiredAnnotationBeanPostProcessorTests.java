@@ -39,7 +39,6 @@ import java.util.concurrent.Callable;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
-
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanNameAware;

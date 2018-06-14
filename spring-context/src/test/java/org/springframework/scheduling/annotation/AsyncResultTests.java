@@ -22,7 +22,6 @@ import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import org.junit.Test;
-
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 

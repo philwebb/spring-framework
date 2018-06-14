@@ -20,8 +20,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.http.converter.json.MappingJacksonValue;
+import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
+import org.springframework.web.servlet.view.AbstractView;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonEncoding;
@@ -29,11 +35,6 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
-
-import org.springframework.http.converter.json.MappingJacksonValue;
-import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
-import org.springframework.web.servlet.view.AbstractView;
 
 /**
  * Abstract base class for Jackson based and content type independent

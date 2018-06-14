@@ -19,14 +19,14 @@ package org.springframework.web.socket.sockjs.frame;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
+
 import com.fasterxml.jackson.core.io.JsonStringEncoder;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
 
 /**
  * A Jackson 2.6+ codec for encoding and decoding SockJS messages.

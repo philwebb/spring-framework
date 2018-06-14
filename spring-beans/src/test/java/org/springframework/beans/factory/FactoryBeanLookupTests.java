@@ -18,7 +18,6 @@ package org.springframework.beans.factory;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;

@@ -16,9 +16,8 @@
 
 package org.springframework.test.context.testng;
 
-import org.testng.annotations.Test;
-
 import org.springframework.test.context.ContextConfiguration;
+import org.testng.annotations.Test;
 
 import static org.springframework.test.transaction.TransactionTestUtils.*;
 

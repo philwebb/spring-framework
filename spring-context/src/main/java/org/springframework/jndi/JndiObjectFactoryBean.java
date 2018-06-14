@@ -18,12 +18,12 @@ package org.springframework.jndi;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+
 import javax.naming.Context;
 import javax.naming.NamingException;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.beans.SimpleTypeConverter;
 import org.springframework.beans.TypeConverter;

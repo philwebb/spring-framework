@@ -25,8 +25,6 @@ import java.util.Map;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
-import reactor.core.publisher.Mono;
-
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
@@ -36,6 +34,9 @@ import org.springframework.web.server.ServerWebExchange;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
+
+import reactor.core.publisher.Mono;
 
 /**
  * Unit tests for {@link VersionResourceResolver}.

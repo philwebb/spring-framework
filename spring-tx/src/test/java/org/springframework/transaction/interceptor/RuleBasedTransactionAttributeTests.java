@@ -23,7 +23,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Test;
-
 import org.springframework.transaction.TransactionDefinition;
 
 import static org.junit.Assert.*;

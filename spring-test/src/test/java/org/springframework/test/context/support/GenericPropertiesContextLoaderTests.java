@@ -19,7 +19,6 @@ package org.springframework.test.context.support;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
 import org.springframework.test.context.MergedContextConfiguration;
 
 import static org.hamcrest.CoreMatchers.*;

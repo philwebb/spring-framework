@@ -20,7 +20,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import org.junit.Test;
-
 import org.springframework.core.annotation.AnnotationUtilsTests.GroovyImplicitAliasesContextConfigClass;
 import org.springframework.core.annotation.AnnotationUtilsTests.ImplicitAliasesContextConfig;
 import org.springframework.core.annotation.AnnotationUtilsTests.Location1ImplicitAliasesContextConfigClass;

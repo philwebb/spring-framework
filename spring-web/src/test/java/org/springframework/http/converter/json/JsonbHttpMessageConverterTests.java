@@ -28,7 +28,6 @@ import java.util.Map;
 
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
-
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.http.MockHttpInputMessage;

@@ -24,7 +24,6 @@ import java.io.ObjectOutputStream;
 import java.nio.charset.StandardCharsets;
 
 import org.junit.Test;
-
 import org.springframework.http.HttpStatus;
 
 import static org.hamcrest.CoreMatchers.*;

@@ -17,10 +17,10 @@
 package org.springframework.cache;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.UUID;
 
 import org.junit.Rule;
 import org.junit.Test;

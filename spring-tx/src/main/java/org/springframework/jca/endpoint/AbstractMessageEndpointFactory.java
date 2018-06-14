@@ -17,6 +17,7 @@
 package org.springframework.jca.endpoint;
 
 import java.lang.reflect.Method;
+
 import javax.resource.ResourceException;
 import javax.resource.spi.ApplicationServerInternalException;
 import javax.resource.spi.UnavailableException;
@@ -28,7 +29,6 @@ import javax.transaction.xa.XAResource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.lang.Nullable;
 import org.springframework.transaction.jta.SimpleTransactionFactory;

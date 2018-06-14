@@ -20,7 +20,6 @@ import javax.validation.Valid;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.test.web.Person;
 import org.springframework.test.web.servlet.MockMvc;

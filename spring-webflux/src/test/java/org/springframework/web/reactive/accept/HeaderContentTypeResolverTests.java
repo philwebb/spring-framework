@@ -19,13 +19,12 @@ package org.springframework.web.reactive.accept;
 import java.util.List;
 
 import org.junit.Test;
-
 import org.springframework.http.MediaType;
 import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.web.server.NotAcceptableStatusException;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * Unit tests for {@link HeaderContentTypeResolver}.

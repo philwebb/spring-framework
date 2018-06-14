@@ -18,6 +18,7 @@ package org.springframework.jms.listener.adapter;
 
 import java.io.ByteArrayInputStream;
 import java.io.Serializable;
+
 import javax.jms.BytesMessage;
 import javax.jms.InvalidDestinationException;
 import javax.jms.JMSException;
@@ -33,12 +34,13 @@ import javax.jms.TextMessage;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-
 import org.springframework.jms.support.converter.MessageConversionException;
 import org.springframework.jms.support.converter.SimpleMessageConverter;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Rick Evans

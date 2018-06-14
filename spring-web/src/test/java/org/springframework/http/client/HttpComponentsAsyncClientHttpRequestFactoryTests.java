@@ -23,7 +23,6 @@ import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.junit.Test;
-
 import org.springframework.http.HttpMethod;
 
 import static org.junit.Assert.*;

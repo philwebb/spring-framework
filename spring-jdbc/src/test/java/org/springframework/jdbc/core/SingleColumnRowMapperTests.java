@@ -24,12 +24,12 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import org.junit.Test;
-
 import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.dao.TypeMismatchDataAccessException;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link SingleColumnRowMapper}.

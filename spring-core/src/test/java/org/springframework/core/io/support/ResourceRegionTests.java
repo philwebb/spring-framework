@@ -17,7 +17,6 @@
 package org.springframework.core.io.support;
 
 import org.junit.Test;
-
 import org.springframework.core.io.Resource;
 
 import static org.mockito.Mockito.*;

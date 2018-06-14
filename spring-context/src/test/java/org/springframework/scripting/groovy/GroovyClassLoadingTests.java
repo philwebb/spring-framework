@@ -16,8 +16,6 @@
 
 package org.springframework.scripting.groovy;
 
-import groovy.lang.GroovyClassLoader;
-
 import java.lang.reflect.Method;
 
 import org.junit.Test;
@@ -26,6 +24,8 @@ import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.util.ReflectionUtils;
 
 import static org.junit.Assert.*;
+
+import groovy.lang.GroovyClassLoader;
 
 /**
  * @author Mark Fisher

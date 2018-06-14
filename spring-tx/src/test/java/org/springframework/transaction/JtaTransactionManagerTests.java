@@ -28,7 +28,6 @@ import javax.transaction.UserTransaction;
 
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.tests.transaction.MockJtaTransaction;
 import org.springframework.transaction.jta.JtaTransactionManager;
@@ -41,6 +40,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Juergen Hoeller

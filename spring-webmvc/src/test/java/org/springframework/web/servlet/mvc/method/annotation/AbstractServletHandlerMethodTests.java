@@ -19,7 +19,6 @@ package org.springframework.web.servlet.mvc.method.annotation;
 import javax.servlet.ServletException;
 
 import org.junit.After;
-
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.lang.Nullable;

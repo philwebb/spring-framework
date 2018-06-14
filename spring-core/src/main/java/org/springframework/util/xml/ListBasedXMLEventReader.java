@@ -19,6 +19,7 @@ package org.springframework.util.xml;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+
 import javax.xml.stream.events.XMLEvent;
 
 import org.springframework.lang.Nullable;

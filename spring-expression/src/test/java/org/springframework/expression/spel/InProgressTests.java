@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.junit.Test;
-
 import org.springframework.expression.spel.standard.SpelExpression;
 
 import static org.junit.Assert.*;

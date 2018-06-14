@@ -19,9 +19,10 @@ package org.springframework.context.annotation;
 import java.util.Map;
 
 import org.junit.Test;
-
 import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessorAdapter;
+import org.springframework.beans.factory.support.AbstractBeanFactory;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 
 import static org.hamcrest.CoreMatchers.*;

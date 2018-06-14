@@ -33,7 +33,6 @@ import java.util.Set;
 
 import org.junit.Test;
 import org.mockito.Mockito;
-
 import org.springframework.beans.PropertyEditorRegistrar;
 import org.springframework.beans.PropertyEditorRegistry;
 import org.springframework.beans.factory.BeanCreationException;

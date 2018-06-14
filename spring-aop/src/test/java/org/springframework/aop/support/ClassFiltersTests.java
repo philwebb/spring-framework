@@ -17,7 +17,6 @@
 package org.springframework.aop.support;
 
 import org.junit.Test;
-
 import org.springframework.aop.ClassFilter;
 import org.springframework.core.NestedRuntimeException;
 import org.springframework.tests.sample.beans.ITestBean;

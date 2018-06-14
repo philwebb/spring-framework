@@ -21,7 +21,6 @@ import javax.transaction.Status;
 import javax.transaction.UserTransaction;
 
 import org.junit.Test;
-
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.tests.mock.jndi.ExpectedLookupTemplate;
 import org.springframework.transaction.IllegalTransactionStateException;
@@ -39,6 +38,7 @@ import com.ibm.wsspi.uow.UOWManager;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Juergen Hoeller

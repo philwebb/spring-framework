@@ -17,7 +17,6 @@
 package org.springframework.context.annotation;
 
 import org.junit.Test;
-
 import org.springframework.stereotype.Component;
 import org.springframework.tests.sample.beans.TestBean;
 

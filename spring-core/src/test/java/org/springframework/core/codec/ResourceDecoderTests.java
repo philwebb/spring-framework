@@ -20,9 +20,6 @@ import java.io.IOException;
 import java.util.Collections;
 
 import org.junit.Test;
-import reactor.core.publisher.Flux;
-import reactor.test.StepVerifier;
-
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -33,6 +30,9 @@ import org.springframework.util.StreamUtils;
 
 import static org.junit.Assert.*;
 import static org.springframework.core.ResolvableType.*;
+
+import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
 
 /**
  * @author Arjen Poutsma

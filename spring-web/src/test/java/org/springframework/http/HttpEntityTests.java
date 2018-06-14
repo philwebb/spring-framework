@@ -19,7 +19,6 @@ package org.springframework.http;
 import java.net.URI;
 
 import org.junit.Test;
-
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 

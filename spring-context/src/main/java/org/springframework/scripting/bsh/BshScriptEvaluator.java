@@ -20,14 +20,14 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.Map;
 
-import bsh.EvalError;
-import bsh.Interpreter;
-
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.lang.Nullable;
 import org.springframework.scripting.ScriptCompilationException;
 import org.springframework.scripting.ScriptEvaluator;
 import org.springframework.scripting.ScriptSource;
+
+import bsh.EvalError;
+import bsh.Interpreter;
 
 /**
  * BeanShell-based implementation of Spring's {@link ScriptEvaluator} strategy interface.

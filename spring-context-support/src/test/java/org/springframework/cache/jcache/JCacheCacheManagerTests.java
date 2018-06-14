@@ -18,14 +18,15 @@ package org.springframework.cache.jcache;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.cache.Cache;
 import javax.cache.CacheManager;
 
 import org.junit.Before;
-
 import org.springframework.cache.transaction.AbstractTransactionSupportingCacheManagerTests;
 
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Stephane Nicoll

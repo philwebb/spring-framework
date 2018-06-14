@@ -19,7 +19,6 @@ package org.springframework.context.annotation;
 import java.io.Closeable;
 
 import org.junit.Test;
-
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;

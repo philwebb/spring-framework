@@ -19,12 +19,11 @@ package org.springframework.test.context.cache;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.core.SpringProperties;
 
 import static org.junit.Assert.*;
-import static org.springframework.test.context.cache.ContextCacheUtils.*;
 import static org.springframework.test.context.cache.ContextCache.*;
+import static org.springframework.test.context.cache.ContextCacheUtils.*;
 
 /**
  * Unit tests for {@link ContextCacheUtils}.

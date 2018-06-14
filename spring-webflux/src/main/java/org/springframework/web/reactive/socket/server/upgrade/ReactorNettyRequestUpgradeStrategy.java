@@ -18,9 +18,6 @@ package org.springframework.web.reactive.socket.server.upgrade;
 
 import java.util.function.Supplier;
 
-import reactor.core.publisher.Mono;
-import reactor.netty.http.server.HttpServerResponse;
-
 import org.springframework.core.io.buffer.NettyDataBufferFactory;
 import org.springframework.http.server.reactive.AbstractServerHttpResponse;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -30,6 +27,9 @@ import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.adapter.ReactorNettyWebSocketSession;
 import org.springframework.web.reactive.socket.server.RequestUpgradeStrategy;
 import org.springframework.web.server.ServerWebExchange;
+
+import reactor.core.publisher.Mono;
+import reactor.netty.http.server.HttpServerResponse;
 
 /**
  * A {@link RequestUpgradeStrategy} for use with Reactor Netty.

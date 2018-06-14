@@ -22,7 +22,6 @@ import javax.transaction.UserTransaction;
 
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.tests.mock.jndi.ExpectedLookupTemplate;
 import org.springframework.transaction.jta.JtaTransactionManager;
 import org.springframework.transaction.jta.UserTransactionAdapter;
@@ -32,6 +31,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Juergen Hoeller

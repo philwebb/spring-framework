@@ -24,8 +24,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import reactor.test.StepVerifier;
-
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.mock.web.test.server.MockServerWebExchange;
@@ -34,6 +32,8 @@ import org.springframework.web.reactive.resource.EncodedResourceResolver.Encoded
 
 import static org.junit.Assert.*;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.*;
+
+import reactor.test.StepVerifier;
 
 /**
  * Unit tests for {@link CssLinkResourceTransformer}.

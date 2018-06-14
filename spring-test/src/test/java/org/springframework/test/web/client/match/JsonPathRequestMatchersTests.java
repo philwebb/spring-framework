@@ -19,7 +19,6 @@ package org.springframework.test.web.client.match;
 import java.io.IOException;
 
 import org.junit.Test;
-
 import org.springframework.mock.http.client.MockClientHttpRequest;
 
 import static org.hamcrest.CoreMatchers.*;

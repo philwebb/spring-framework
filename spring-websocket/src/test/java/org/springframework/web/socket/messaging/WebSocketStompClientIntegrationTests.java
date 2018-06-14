@@ -15,9 +15,6 @@
  */
 package org.springframework.web.socket.messaging;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +26,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
-
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.Nullable;
 import org.springframework.messaging.converter.StringMessageConverter;
@@ -49,6 +45,9 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 import org.springframework.web.socket.server.RequestUpgradeStrategy;
 import org.springframework.web.socket.server.standard.TomcatRequestUpgradeStrategy;
 import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
 
 /**

@@ -18,7 +18,6 @@ package org.springframework.transaction;
 
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.DefaultTransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;

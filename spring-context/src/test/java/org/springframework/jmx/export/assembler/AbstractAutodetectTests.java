@@ -17,7 +17,6 @@
 package org.springframework.jmx.export.assembler;
 
 import org.junit.Test;
-
 import org.springframework.jmx.JmxTestBean;
 
 import static org.junit.Assert.*;

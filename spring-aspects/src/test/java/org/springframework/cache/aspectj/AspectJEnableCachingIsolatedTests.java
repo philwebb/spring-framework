@@ -19,7 +19,6 @@ package org.springframework.cache.aspectj;
 import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
-
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.CacheTestUtils;

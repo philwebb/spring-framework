@@ -24,11 +24,11 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.junit.Test;
-import test.aop.PerThisAspect;
-
 import org.springframework.util.SerializationTestUtils;
 
 import static org.junit.Assert.*;
+
+import test.aop.PerThisAspect;
 
 /**
  * @author Rob Harrop

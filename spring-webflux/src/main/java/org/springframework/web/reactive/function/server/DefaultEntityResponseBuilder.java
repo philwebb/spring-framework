@@ -29,8 +29,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import reactor.core.publisher.Mono;
-
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -45,6 +43,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserter;
 import org.springframework.web.server.ServerWebExchange;
+
+import reactor.core.publisher.Mono;
 
 /**
  * Default {@link EntityResponse.Builder} implementation.

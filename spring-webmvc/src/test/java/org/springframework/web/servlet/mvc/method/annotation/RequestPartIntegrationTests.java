@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
 import javax.servlet.MultipartConfigElement;
 
 import org.eclipse.jetty.server.Connector;
@@ -35,7 +36,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -67,8 +67,8 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import static org.junit.Assert.assertEquals;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.junit.Assert.*;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 /**
  * Test access to parts of a multipart request with {@link RequestPart}.

@@ -19,7 +19,6 @@ package org.springframework.test.context.web;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.BDDMockito;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -32,6 +31,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.context.web.ServletTestExecutionListener.*;
 
 /**

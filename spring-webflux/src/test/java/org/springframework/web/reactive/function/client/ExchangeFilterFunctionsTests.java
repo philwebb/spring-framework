@@ -19,16 +19,16 @@ package org.springframework.web.reactive.function.client;
 import java.net.URI;
 
 import org.junit.Test;
-import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.web.reactive.function.client.ExchangeFilterFunctions.Credentials.basicAuthenticationCredentials;
+import static org.springframework.http.HttpMethod.*;
+import static org.springframework.web.reactive.function.client.ExchangeFilterFunctions.Credentials.*;
+
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 /**
  * @author Arjen Poutsma

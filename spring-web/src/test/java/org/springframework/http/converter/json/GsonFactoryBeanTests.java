@@ -19,9 +19,9 @@ package org.springframework.http.converter.json;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.google.gson.Gson;
-
 import org.junit.Test;
+
+import com.google.gson.Gson;
 
 import static org.junit.Assert.*;
 

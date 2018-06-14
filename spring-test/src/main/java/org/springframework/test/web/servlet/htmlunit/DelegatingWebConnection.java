@@ -20,11 +20,11 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.util.Assert;
+
 import com.gargoylesoftware.htmlunit.WebConnection;
 import com.gargoylesoftware.htmlunit.WebRequest;
 import com.gargoylesoftware.htmlunit.WebResponse;
-
-import org.springframework.util.Assert;
 
 /**
  * Implementation of {@link WebConnection} that allows delegating to various

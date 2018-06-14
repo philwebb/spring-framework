@@ -17,14 +17,8 @@
 package org.springframework.transaction.jta;
 
 import java.util.List;
-import javax.naming.NamingException;
 
-import com.ibm.websphere.uow.UOWSynchronizationRegistry;
-import com.ibm.wsspi.uow.UOWAction;
-import com.ibm.wsspi.uow.UOWActionException;
-import com.ibm.wsspi.uow.UOWException;
-import com.ibm.wsspi.uow.UOWManager;
-import com.ibm.wsspi.uow.UOWManagerFactory;
+import javax.naming.NamingException;
 
 import org.springframework.lang.Nullable;
 import org.springframework.transaction.IllegalTransactionStateException;
@@ -43,6 +37,13 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 import org.springframework.transaction.support.TransactionSynchronizationUtils;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
+
+import com.ibm.websphere.uow.UOWSynchronizationRegistry;
+import com.ibm.wsspi.uow.UOWAction;
+import com.ibm.wsspi.uow.UOWActionException;
+import com.ibm.wsspi.uow.UOWException;
+import com.ibm.wsspi.uow.UOWManager;
+import com.ibm.wsspi.uow.UOWManagerFactory;
 
 /**
  * WebSphere-specific PlatformTransactionManager implementation that delegates

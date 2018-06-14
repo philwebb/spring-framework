@@ -22,7 +22,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
-
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;

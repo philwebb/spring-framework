@@ -23,14 +23,14 @@ import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 
 import org.junit.Test;
-
 import org.springframework.util.StreamUtils;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Brian Clozel

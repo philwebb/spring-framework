@@ -17,9 +17,7 @@
 package org.springframework.context.support;
 
 import org.junit.Test;
-
 import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 
 import static org.junit.Assert.*;

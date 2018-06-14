@@ -20,7 +20,6 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.junit.Test;
-
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;

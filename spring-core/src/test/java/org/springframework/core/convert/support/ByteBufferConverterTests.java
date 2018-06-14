@@ -20,7 +20,6 @@ import java.nio.ByteBuffer;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.core.convert.converter.Converter;
 
 import static org.hamcrest.Matchers.*;

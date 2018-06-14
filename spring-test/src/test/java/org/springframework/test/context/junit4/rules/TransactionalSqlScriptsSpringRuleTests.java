@@ -26,7 +26,6 @@ import org.junit.rules.Timeout;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.junit.runners.MethodSorters;
-
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.TransactionalSqlScriptsTests;
 

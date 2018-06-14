@@ -20,7 +20,6 @@ import javax.naming.Context;
 import javax.naming.NamingException;
 
 import org.junit.Test;
-
 import org.springframework.tests.mock.jndi.SimpleNamingContext;
 
 import static org.hamcrest.CoreMatchers.*;

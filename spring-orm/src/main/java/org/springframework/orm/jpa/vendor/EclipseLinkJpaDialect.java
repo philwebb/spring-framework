@@ -18,11 +18,11 @@ package org.springframework.orm.jpa.vendor;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 
 import org.eclipse.persistence.sessions.UnitOfWork;
-
 import org.springframework.jdbc.datasource.ConnectionHandle;
 import org.springframework.lang.Nullable;
 import org.springframework.orm.jpa.DefaultJpaDialect;

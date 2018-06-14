@@ -17,7 +17,6 @@
 package org.springframework.util;
 
 import org.junit.Test;
-
 import org.springframework.util.backoff.BackOffExecution;
 import org.springframework.util.backoff.FixedBackOff;
 

@@ -17,7 +17,6 @@
 package org.springframework.web.context.support;
 
 import org.junit.Test;
-
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySource;

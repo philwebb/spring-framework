@@ -16,13 +16,13 @@
 
 package org.springframework.cache.ehcache;
 
+import org.junit.After;
+import org.junit.Before;
+import org.springframework.cache.transaction.AbstractTransactionSupportingCacheManagerTests;
+
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.config.CacheConfiguration;
 import net.sf.ehcache.config.Configuration;
-import org.junit.After;
-import org.junit.Before;
-
-import org.springframework.cache.transaction.AbstractTransactionSupportingCacheManagerTests;
 
 /**
  * @author Stephane Nicoll

@@ -24,7 +24,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runner.Runner;
 import org.junit.runners.JUnit4;
-
 import org.springframework.test.annotation.Timed;
 import org.springframework.test.context.TestExecutionListeners;
 

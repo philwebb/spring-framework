@@ -21,7 +21,6 @@ import java.lang.reflect.Method;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
-
 import org.springframework.util.ReflectionUtils;
 
 import static org.junit.Assert.*;

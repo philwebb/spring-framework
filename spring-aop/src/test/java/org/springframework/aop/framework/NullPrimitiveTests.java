@@ -21,7 +21,6 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
 import org.springframework.aop.AopInvocationException;
 
 import static org.junit.Assert.*;

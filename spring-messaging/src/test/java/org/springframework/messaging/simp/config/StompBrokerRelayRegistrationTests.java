@@ -17,7 +17,6 @@
 package org.springframework.messaging.simp.config;
 
 import org.junit.Test;
-
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.StubMessageChannel;
 import org.springframework.messaging.SubscribableChannel;

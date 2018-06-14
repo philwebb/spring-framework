@@ -36,7 +36,6 @@ import org.quartz.Trigger;
 import org.quartz.TriggerListener;
 import org.quartz.spi.ClassLoadHelper;
 import org.quartz.xml.XMLSchedulingDataProcessor;
-
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.lang.Nullable;

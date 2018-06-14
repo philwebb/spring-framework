@@ -21,9 +21,6 @@ import java.util.Random;
 
 import org.junit.Test;
 import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.core.io.buffer.DefaultDataBufferFactory;
@@ -32,6 +29,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import static org.junit.Assert.*;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public class RandomHandlerIntegrationTests extends AbstractHttpHandlerIntegrationTests {
 

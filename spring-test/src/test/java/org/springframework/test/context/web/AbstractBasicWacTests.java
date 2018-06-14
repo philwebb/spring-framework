@@ -17,11 +17,11 @@
 package org.springframework.test.context.web;
 
 import java.io.File;
+
 import javax.servlet.ServletContext;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;

@@ -20,7 +20,6 @@ import java.beans.PropertyEditor;
 import java.io.File;
 
 import org.junit.Test;
-
 import org.springframework.util.ClassUtils;
 
 import static org.junit.Assert.*;

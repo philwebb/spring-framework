@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Ignore;
 import org.junit.Test;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.test.web.servlet.result.PrintingResultHandler;
 import org.springframework.web.bind.annotation.RequestMapping;

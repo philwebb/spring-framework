@@ -19,14 +19,9 @@ package org.springframework.context.annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import example.scannable.FooDao;
-import example.scannable.FooService;
-import example.scannable.FooServiceImpl;
-import example.scannable.ServiceInvocationCounter;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.junit.Test;
-
 import org.springframework.aop.framework.AopContext;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.context.ApplicationContext;
@@ -34,6 +29,11 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
+
+import example.scannable.FooDao;
+import example.scannable.FooService;
+import example.scannable.FooServiceImpl;
+import example.scannable.ServiceInvocationCounter;
 
 /**
  * @author Juergen Hoeller

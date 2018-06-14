@@ -21,7 +21,6 @@ import java.io.File;
 import java.nio.file.Path;
 
 import org.junit.Test;
-
 import org.springframework.util.ClassUtils;
 
 import static org.junit.Assert.*;

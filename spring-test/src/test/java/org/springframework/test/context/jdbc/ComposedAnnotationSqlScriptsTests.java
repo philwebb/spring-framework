@@ -19,7 +19,6 @@ package org.springframework.test.context.jdbc;
 import java.lang.annotation.Retention;
 
 import org.junit.Test;
-
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;

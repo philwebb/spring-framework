@@ -20,7 +20,6 @@ import java.net.URI;
 
 import org.junit.Assert;
 import org.junit.Test;
-
 import org.springframework.web.socket.sockjs.transport.TransportType;
 
 import static org.hamcrest.CoreMatchers.*;

@@ -27,7 +27,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -57,8 +56,8 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import org.springframework.web.socket.server.HandshakeHandler;
 
-import static org.junit.Assert.assertTrue;
-import static org.springframework.web.socket.messaging.StompTextMessageBuilder.create;
+import static org.junit.Assert.*;
+import static org.springframework.web.socket.messaging.StompTextMessageBuilder.*;
 
 /**
  * Integration tests with annotated message-handling methods.

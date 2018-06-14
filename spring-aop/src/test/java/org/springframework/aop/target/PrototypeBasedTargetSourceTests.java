@@ -17,7 +17,6 @@
 package org.springframework.aop.target;
 
 import org.junit.Test;
-
 import org.springframework.aop.TargetSource;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;

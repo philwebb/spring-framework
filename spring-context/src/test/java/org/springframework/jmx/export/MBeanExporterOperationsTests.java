@@ -24,7 +24,6 @@ import javax.management.modelmbean.ModelMBeanInfoSupport;
 import javax.management.modelmbean.RequiredModelMBean;
 
 import org.junit.Test;
-
 import org.springframework.jmx.AbstractMBeanServerTests;
 import org.springframework.jmx.JmxTestBean;
 import org.springframework.jmx.export.naming.ObjectNamingStrategy;

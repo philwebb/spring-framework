@@ -19,7 +19,6 @@ package org.springframework.web.context.request;
 import javax.servlet.ServletRequestEvent;
 
 import org.junit.Test;
-
 import org.springframework.core.task.MockRunnable;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.mock.web.test.MockServletContext;

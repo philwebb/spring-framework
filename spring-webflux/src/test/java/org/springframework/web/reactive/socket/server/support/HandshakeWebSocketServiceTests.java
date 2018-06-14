@@ -21,8 +21,6 @@ import java.util.function.Supplier;
 
 import org.hamcrest.Matchers;
 import org.junit.Test;
-import reactor.core.publisher.Mono;
-
 import org.springframework.lang.Nullable;
 import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 import org.springframework.mock.web.test.server.MockServerWebExchange;
@@ -34,6 +32,8 @@ import org.springframework.web.server.ServerWebExchange;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+
+import reactor.core.publisher.Mono;
 
 /**
  * Unit tests for {@link HandshakeWebSocketService}.

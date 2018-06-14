@@ -20,7 +20,6 @@ import java.time.Duration;
 
 import org.junit.Test;
 import org.reactivestreams.Publisher;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;

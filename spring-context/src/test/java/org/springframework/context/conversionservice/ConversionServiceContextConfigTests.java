@@ -17,7 +17,6 @@
 package org.springframework.context.conversionservice;
 
 import org.junit.Test;
-
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import static org.junit.Assert.*;

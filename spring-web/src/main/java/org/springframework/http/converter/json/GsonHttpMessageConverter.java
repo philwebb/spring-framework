@@ -21,10 +21,10 @@ import java.io.Writer;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-import com.google.gson.Gson;
-
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+
+import com.google.gson.Gson;
 
 /**
  * Implementation of {@link org.springframework.http.converter.HttpMessageConverter}

@@ -21,7 +21,6 @@ import java.lang.reflect.Method;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.runners.model.Statement;
-
 import org.springframework.test.annotation.TestAnnotationUtils;
 
 /**

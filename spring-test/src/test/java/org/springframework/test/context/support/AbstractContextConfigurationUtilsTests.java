@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.Set;
 
 import org.mockito.Mockito;
-
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ActiveProfiles;

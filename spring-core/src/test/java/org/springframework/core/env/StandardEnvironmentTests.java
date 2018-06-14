@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.Map;
 
 import org.junit.Test;
-
 import org.springframework.core.SpringProperties;
 import org.springframework.mock.env.MockPropertySource;
 

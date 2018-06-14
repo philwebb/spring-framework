@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
-
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.classreading.MetadataReader;

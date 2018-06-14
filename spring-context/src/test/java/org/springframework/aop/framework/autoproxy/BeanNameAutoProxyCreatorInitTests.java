@@ -19,7 +19,6 @@ package org.springframework.aop.framework.autoproxy;
 import java.lang.reflect.Method;
 
 import org.junit.Test;
-
 import org.springframework.aop.MethodBeforeAdvice;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.lang.Nullable;

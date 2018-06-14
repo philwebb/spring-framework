@@ -25,10 +25,10 @@ import org.apache.commons.logging.LogFactory;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
-import reactor.core.publisher.Operators;
-
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+
+import reactor.core.publisher.Operators;
 
 /**
  * Abstract base class for {@code Publisher} implementations that bridge between

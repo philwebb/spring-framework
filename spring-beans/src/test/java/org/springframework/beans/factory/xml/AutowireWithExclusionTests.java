@@ -17,7 +17,6 @@
 package org.springframework.beans.factory.xml;
 
 import org.junit.Test;
-
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;

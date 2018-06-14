@@ -18,7 +18,6 @@ package org.springframework.beans.factory.xml;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.aop.interceptor.DebugInterceptor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

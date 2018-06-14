@@ -24,7 +24,6 @@ import java.util.HashSet;
 import java.util.Map;
 
 import org.junit.Test;
-
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;

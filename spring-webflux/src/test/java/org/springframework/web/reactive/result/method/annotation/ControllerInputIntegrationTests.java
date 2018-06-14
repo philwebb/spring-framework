@@ -17,8 +17,6 @@ package org.springframework.web.reactive.result.method.annotation;
 
 import org.junit.Test;
 import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +27,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.config.EnableWebFlux;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+
+import reactor.core.publisher.Flux;
 
 /**
  * {@code @RequestMapping} integration focusing on controller method parameters.
