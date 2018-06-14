@@ -9,7 +9,8 @@
 	<suppress files="[\\/]src[\\/]main[\\/]java[\\/]org[\\/]springframework[\\/]protobuf[\\/]" checks="Header" />
 	<suppress files="[\\/]src[\\/]test[\\/]java[\\/]org[\\/]springframework[\\/]protobuf[\\/]" checks=".*" />
 	<suppress files="[\\/]src[\\/]test[\\/]java[\\/]org[\\/]springframework[\\/]test[\\/]context[\\/]hierarchies[\\/]" checks="AnnotationUseStyle" />
-	<suppress files="[\\/]src[\\/]test[\\/]java[\\/]org[\\/]springframework[\\/]" checks="[AvoidNestedBlocks|OneTopLevelClass]" />
+	<suppress files="[\\/]src[\\/]test[\\/]java[\\/]org[\\/]springframework[\\/]" checks="AvoidNestedBlocks" />
+	<suppress files="[\\/]src[\\/]test[\\/]java[\\/]org[\\/]springframework[\\/]" checks="OneTopLevelClass" />
 	<suppress files="AnnotationUtilsTests" checks="AnnotationUseStyle" />
 	<suppress files="TypeMismatchException" checks="MutableException"/>
 	<suppress files="BeanCreationException" checks="MutableException"/>
