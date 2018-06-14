@@ -22,8 +22,8 @@ import org.springframework.context.annotation.componentscan.level1.Level1Config;
 import org.springframework.context.annotation.componentscan.level2.Level2Config;
 import org.springframework.context.annotation.componentscan.level3.Level3Component;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.sameInstance;
+import static org.junit.Assert.assertThat;
 
 /**
  * Tests ensuring that configuration classes marked with @ComponentScan

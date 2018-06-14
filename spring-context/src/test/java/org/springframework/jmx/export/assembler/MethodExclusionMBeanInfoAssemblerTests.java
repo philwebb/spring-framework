@@ -25,7 +25,8 @@ import javax.management.modelmbean.ModelMBeanInfo;
 import org.junit.Test;
 import org.springframework.jmx.JmxTestBean;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Rob Harrop

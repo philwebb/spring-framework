@@ -19,7 +19,7 @@ package org.springframework.instrument.classloading;
 import org.junit.Test;
 import org.springframework.util.ClassUtils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertSame;
 
 /**
  * @author Costin Leau

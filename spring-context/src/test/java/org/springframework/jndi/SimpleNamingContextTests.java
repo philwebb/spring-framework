@@ -38,7 +38,9 @@ import org.junit.Test;
 import org.springframework.tests.mock.jndi.SimpleNamingContext;
 import org.springframework.tests.mock.jndi.SimpleNamingContextBuilder;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author Juergen Hoeller

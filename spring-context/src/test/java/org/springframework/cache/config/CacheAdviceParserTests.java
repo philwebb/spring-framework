@@ -20,7 +20,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 /**
  * AOP advice specific parsing tests.

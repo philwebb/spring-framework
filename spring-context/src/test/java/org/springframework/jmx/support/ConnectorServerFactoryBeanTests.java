@@ -34,7 +34,9 @@ import org.springframework.jmx.AbstractMBeanServerTests;
 import org.springframework.tests.Assume;
 import org.springframework.tests.TestGroup;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 /**
  * To run the tests in the class, set the following Java system property:

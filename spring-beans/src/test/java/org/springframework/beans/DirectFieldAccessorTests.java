@@ -19,7 +19,7 @@ package org.springframework.beans;
 import org.junit.Test;
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Specific {@link DirectFieldAccessor} tests.

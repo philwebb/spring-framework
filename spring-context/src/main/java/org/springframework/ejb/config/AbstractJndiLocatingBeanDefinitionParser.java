@@ -23,7 +23,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.util.xml.DomUtils;
 import org.w3c.dom.Element;
 
-import static org.springframework.beans.factory.xml.BeanDefinitionParserDelegate.*;
+import static org.springframework.beans.factory.xml.BeanDefinitionParserDelegate.DEFAULT_VALUE;
+import static org.springframework.beans.factory.xml.BeanDefinitionParserDelegate.LAZY_INIT_ATTRIBUTE;
+import static org.springframework.beans.factory.xml.BeanDefinitionParserDelegate.TRUE_VALUE;
 
 /**
  * Abstract base class for BeanDefinitionParsers which build

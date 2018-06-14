@@ -19,7 +19,7 @@ package org.springframework.jmx.export.assembler;
 import org.junit.Test;
 import org.springframework.jmx.JmxTestBean;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Rob Harrop

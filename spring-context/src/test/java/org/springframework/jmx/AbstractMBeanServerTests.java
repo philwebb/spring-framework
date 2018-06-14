@@ -29,7 +29,8 @@ import org.springframework.jmx.export.MBeanExporter;
 import org.springframework.tests.TestGroup;
 import org.springframework.util.MBeanTestUtils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * <strong>Note:</strong> certain tests throughout this hierarchy require the presence of
