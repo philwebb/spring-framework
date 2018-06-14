@@ -34,7 +34,7 @@ import org.springframework.aop.aspectj.AspectJPointcutAdvisor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.lang.Nullable;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Adrian Colyer

@@ -26,9 +26,10 @@ import org.aspectj.lang.annotation.Aspect;
 import org.junit.Test;
 import org.springframework.util.SerializationTestUtils;
 
-import static org.junit.Assert.*;
-
 import test.aop.PerThisAspect;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Rob Harrop

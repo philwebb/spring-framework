@@ -26,7 +26,9 @@ import org.springframework.core.NestedRuntimeException;
 import org.springframework.lang.Nullable;
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Rod Johnson
