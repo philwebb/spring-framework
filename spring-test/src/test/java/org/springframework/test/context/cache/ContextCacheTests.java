@@ -87,7 +87,9 @@ public class ContextCacheTests {
 
 	@Test
 	public void verifyCacheKeyIsBasedOnActiveProfiles() {
-		int size = 0, hit = 0, miss = 0;
+		int size = 0;
+		int hit = 0;
+		int miss = 0;
 		loadCtxAndAssertStats(FooBarProfilesTestCase.class, ++size, hit, ++miss);
 		loadCtxAndAssertStats(FooBarProfilesTestCase.class, size, ++hit, miss);
 		// Profiles {foo, bar} should not hash to the same as {bar,foo}
