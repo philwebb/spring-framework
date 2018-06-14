@@ -34,8 +34,11 @@ import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.support.StaticApplicationContext;
 
 import static java.lang.String.format;
-import static org.junit.Assert.*;
-import static org.springframework.util.ClassUtils.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.springframework.util.ClassUtils.convertClassNameToResourcePath;
 
 /**
  * @author Mark Fisher

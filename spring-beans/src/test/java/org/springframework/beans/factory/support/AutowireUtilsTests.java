@@ -23,7 +23,7 @@ import java.util.Map;
 import org.junit.Test;
 import org.springframework.util.ReflectionUtils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Juergen Hoeller

@@ -30,7 +30,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.StringUtils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Integration tests for {@link PropertyResourceConfigurer} implementations requiring

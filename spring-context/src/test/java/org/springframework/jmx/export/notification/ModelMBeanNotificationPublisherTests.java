@@ -26,7 +26,9 @@ import javax.management.RuntimeOperationsException;
 import org.junit.Test;
 import org.springframework.jmx.export.SpringModelMBean;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Rick Evans

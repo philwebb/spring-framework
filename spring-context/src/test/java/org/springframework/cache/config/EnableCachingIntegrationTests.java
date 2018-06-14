@@ -33,7 +33,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import static org.springframework.cache.CacheTestUtils.*;
+import static org.springframework.cache.CacheTestUtils.assertCacheHit;
+import static org.springframework.cache.CacheTestUtils.assertCacheMiss;
 
 /**
  * Tests that represent real use cases with advanced configuration.

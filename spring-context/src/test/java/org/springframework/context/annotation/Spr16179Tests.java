@@ -19,7 +19,7 @@ package org.springframework.context.annotation;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertSame;
 
 /**
  * @author Juergen Hoeller
