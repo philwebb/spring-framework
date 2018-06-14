@@ -433,10 +433,10 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 	 */
 	public enum ReferenceType {
 
-		/** Use {@link SoftReference}s */
+		/** Use {@link SoftReference}s. */
 		SOFT,
 
-		/** Use {@link WeakReference}s */
+		/** Use {@link WeakReference}s. */
 		WEAK
 	}
 

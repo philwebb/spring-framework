@@ -30,7 +30,7 @@ import org.springframework.aop.support.DelegatingIntroductionInterceptor;
 @SuppressWarnings("serial")
 public class LockMixin extends DelegatingIntroductionInterceptor implements Lockable {
 
-	/** This field demonstrates additional state in the mixin */
+	/** This field demonstrates additional state in the mixin. */
 	private boolean locked;
 
 	@Override

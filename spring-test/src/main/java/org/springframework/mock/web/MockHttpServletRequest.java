@@ -199,7 +199,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
 	private String remoteHost = DEFAULT_REMOTE_HOST;
 
-	/** List of locales in descending order */
+	/** List of locales in descending order. */
 	private final List<Locale> locales = new LinkedList<>();
 
 	private boolean secure = false;

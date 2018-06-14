@@ -1637,7 +1637,7 @@ public class XmlBeanFactoryTests {
 
 	public static class BadInitializer {
 
-		/** Init method */
+		/** Init method. */
 		public void init2() throws IOException {
 			throw new IOException();
 		}
@@ -1656,7 +1656,7 @@ public class XmlBeanFactoryTests {
 			this.num = i;
 		}
 
-		/** Init method */
+		/** Init method. */
 		public void init() {
 			this.num *= 2;
 		}
@@ -1687,7 +1687,7 @@ public class XmlBeanFactoryTests {
 			this.afterPropertiesSetInvoked = true;
 		}
 
-		/** Init method */
+		/** Init method. */
 		public void customInit() throws IOException {
 			if (!this.afterPropertiesSetInvoked) {
 				fail();

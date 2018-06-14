@@ -50,7 +50,7 @@ public abstract class JmsAccessor implements InitializingBean {
 	private static final Constants sessionConstants = new Constants(Session.class);
 
 
-	/** Logger available to subclasses */
+	/** Logger available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	@Nullable

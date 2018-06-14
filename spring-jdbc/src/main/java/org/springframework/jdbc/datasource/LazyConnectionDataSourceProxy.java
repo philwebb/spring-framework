@@ -78,7 +78,7 @@ import org.springframework.lang.Nullable;
  */
 public class LazyConnectionDataSourceProxy extends DelegatingDataSource {
 
-	/** Constants instance for TransactionDefinition */
+	/** Constants instance for TransactionDefinition. */
 	private static final Constants constants = new Constants(Connection.class);
 
 	private static final Log logger = LogFactory.getLog(LazyConnectionDataSourceProxy.class);

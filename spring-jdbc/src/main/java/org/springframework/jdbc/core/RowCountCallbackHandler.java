@@ -45,10 +45,10 @@ import org.springframework.lang.Nullable;
  */
 public class RowCountCallbackHandler implements RowCallbackHandler {
 
-	/** Rows we've seen so far */
+	/** Rows we've seen so far. */
 	private int rowCount;
 
-	/** Columns we've seen so far */
+	/** Columns we've seen so far. */
 	private int columnCount;
 
 	/**

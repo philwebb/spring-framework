@@ -36,10 +36,10 @@ public abstract class AbstractDataFieldMaxValueIncrementer implements DataFieldM
 
 	private DataSource dataSource;
 
-	/** The name of the sequence/table containing the sequence */
+	/** The name of the sequence/table containing the sequence. */
 	private String incrementerName;
 
-	/** The length to which a string result should be pre-pended with zeroes */
+	/** The length to which a string result should be pre-pended with zeroes. */
 	protected int paddingLength = 0;
 
 

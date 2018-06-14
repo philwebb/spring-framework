@@ -46,7 +46,7 @@ import org.springframework.util.StringUtils;
  */
 public class ResourceScriptSource implements ScriptSource {
 
-	/** Logger available to subclasses */
+	/** Logger available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	private EncodedResource resource;

@@ -60,7 +60,7 @@ public class ResourceBundleThemeSource implements HierarchicalThemeSource, BeanC
 	@Nullable
 	private ClassLoader beanClassLoader;
 
-	/** Map from theme name to Theme instance */
+	/** Map from theme name to Theme instance. */
 	private final Map<String, Theme> themeCache = new ConcurrentHashMap<>();
 
 

@@ -55,25 +55,25 @@ import org.springframework.lang.Nullable;
  */
 public abstract class ClassUtils {
 
-	/** Suffix for array class names: "[]" */
+	/** Suffix for array class names: "[]". */
 	public static final String ARRAY_SUFFIX = "[]";
 
-	/** Prefix for internal array class names: "[" */
+	/** Prefix for internal array class names: "[". */
 	private static final String INTERNAL_ARRAY_PREFIX = "[";
 
-	/** Prefix for internal non-primitive array class names: "[L" */
+	/** Prefix for internal non-primitive array class names: "[L". */
 	private static final String NON_PRIMITIVE_ARRAY_PREFIX = "[L";
 
 	/** The package separator character: '.' */
 	private static final char PACKAGE_SEPARATOR = '.';
 
-	/** The path separator character: '/' */
+	/** The path separator character: '/'. */
 	private static final char PATH_SEPARATOR = '/';
 
-	/** The inner class separator character: '$' */
+	/** The inner class separator character: '$'. */
 	private static final char INNER_CLASS_SEPARATOR = '$';
 
-	/** The CGLIB class separator: "$$" */
+	/** The CGLIB class separator: "$$". */
 	public static final String CGLIB_CLASS_SEPARATOR = "$$";
 
 	/** The ".class" file suffix */

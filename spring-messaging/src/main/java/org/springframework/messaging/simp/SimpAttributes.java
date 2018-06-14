@@ -35,10 +35,10 @@ import org.springframework.util.StringUtils;
  */
 public class SimpAttributes {
 
-	/** Key for the mutex session attribute */
+	/** Key for the mutex session attribute. */
 	public static final String SESSION_MUTEX_NAME = SimpAttributes.class.getName() + ".MUTEX";
 
-	/** Key set after the session is completed */
+	/** Key set after the session is completed. */
 	public static final String SESSION_COMPLETED_NAME = SimpAttributes.class.getName() + ".COMPLETED";
 
 	/** Prefix for the name of session attributes used to store destruction callbacks. */

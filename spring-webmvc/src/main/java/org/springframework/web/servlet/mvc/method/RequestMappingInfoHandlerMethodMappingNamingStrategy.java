@@ -35,7 +35,7 @@ import org.springframework.web.servlet.handler.HandlerMethodMappingNamingStrateg
 public class RequestMappingInfoHandlerMethodMappingNamingStrategy
 		implements HandlerMethodMappingNamingStrategy<RequestMappingInfo> {
 
-	/** Separator between the type and method-level parts of a HandlerMethod mapping name */
+	/** Separator between the type and method-level parts of a HandlerMethod mapping name. */
 	public static final String SEPARATOR = "#";
 
 

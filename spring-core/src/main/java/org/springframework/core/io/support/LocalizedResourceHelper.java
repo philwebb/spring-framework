@@ -33,7 +33,7 @@ import org.springframework.util.Assert;
  */
 public class LocalizedResourceHelper {
 
-	/** The default separator to use inbetween file name parts: an underscore */
+	/** The default separator to use inbetween file name parts: an underscore. */
 	public static final String DEFAULT_SEPARATOR = "_";
 
 

@@ -66,7 +66,7 @@ public abstract class AbstractView extends WebApplicationObjectSupport implement
 	/** Default content type. Overridable as bean property. */
 	public static final String DEFAULT_CONTENT_TYPE = "text/html;charset=ISO-8859-1";
 
-	/** Initial size for the temporary output byte array (if any) */
+	/** Initial size for the temporary output byte array (if any). */
 	private static final int OUTPUT_BYTE_ARRAY_INITIAL_SIZE = 4096;
 
 

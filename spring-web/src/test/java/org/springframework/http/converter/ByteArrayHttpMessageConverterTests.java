@@ -28,7 +28,7 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-/** @author Arjen Poutsma */
+/** @author Arjen Poutsma. */
 public class ByteArrayHttpMessageConverterTests {
 
 	private ByteArrayHttpMessageConverter converter;

@@ -87,15 +87,15 @@ import org.springframework.web.util.TagUtils;
 @SuppressWarnings("serial")
 public class TransformTag extends HtmlEscapingAwareTag {
 
-	/** the value to transform using the appropriate property editor */
+	/** the value to transform using the appropriate property editor. */
 	@Nullable
 	private Object value;
 
-	/** the variable to put the result in */
+	/** the variable to put the result in. */
 	@Nullable
 	private String var;
 
-	/** the scope of the variable the result will be put in */
+	/** the scope of the variable the result will be put in. */
 	private String scope = TagUtils.SCOPE_PAGE;
 
 

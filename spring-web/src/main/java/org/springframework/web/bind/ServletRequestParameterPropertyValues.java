@@ -40,7 +40,7 @@ import org.springframework.web.util.WebUtils;
 @SuppressWarnings("serial")
 public class ServletRequestParameterPropertyValues extends MutablePropertyValues {
 
-	/** Default prefix separator */
+	/** Default prefix separator. */
 	public static final String DEFAULT_PREFIX_SEPARATOR = "_";
 
 

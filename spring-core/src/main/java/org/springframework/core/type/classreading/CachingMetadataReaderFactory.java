@@ -37,10 +37,10 @@ import org.springframework.lang.Nullable;
  */
 public class CachingMetadataReaderFactory extends SimpleMetadataReaderFactory {
 
-	/** Default maximum number of entries for a local MetadataReader cache: 256 */
+	/** Default maximum number of entries for a local MetadataReader cache: 256. */
 	public static final int DEFAULT_CACHE_LIMIT = 256;
 
-	/** MetadataReader cache: either local or shared at the ResourceLoader level */
+	/** MetadataReader cache: either local or shared at the ResourceLoader level. */
 	@Nullable
 	private Map<Resource, MetadataReader> metadataReaderCache;
 

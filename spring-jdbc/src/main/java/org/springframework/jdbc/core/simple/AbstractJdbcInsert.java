@@ -60,19 +60,19 @@ import org.springframework.util.Assert;
  */
 public abstract class AbstractJdbcInsert {
 
-	/** Logger available to subclasses */
+	/** Logger available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	/** Lower-level class used to execute SQL */
+	/** Lower-level class used to execute SQL. */
 	private final JdbcTemplate jdbcTemplate;
 
-	/** Context used to retrieve and manage database meta-data */
+	/** Context used to retrieve and manage database meta-data. */
 	private final TableMetaDataContext tableMetaDataContext = new TableMetaDataContext();
 
-	/** List of columns objects to be used in insert statement */
+	/** List of columns objects to be used in insert statement. */
 	private final List<String> declaredColumns = new ArrayList<>();
 
-	/** The names of the columns holding the generated key */
+	/** The names of the columns holding the generated key. */
 	private String[] generatedKeyNames = new String[0];
 
 	/**
@@ -81,10 +81,10 @@ public abstract class AbstractJdbcInsert {
 	 */
 	private volatile boolean compiled = false;
 
-	/** The generated string used for insert statement */
+	/** The generated string used for insert statement. */
 	private String insertString = "";
 
-	/** The SQL type information for the insert columns */
+	/** The SQL type information for the insert columns. */
 	private int[] insertTypes = new int[0];
 
 

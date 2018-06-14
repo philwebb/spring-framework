@@ -168,7 +168,7 @@ public class ContextLoader {
 	@Nullable
 	private WebApplicationContext context;
 
-	/** Actual ApplicationContextInitializer instances to apply to the context */
+	/** Actual ApplicationContextInitializer instances to apply to the context. */
 	private final List<ApplicationContextInitializer<ConfigurableApplicationContext>> contextInitializers =
 			new ArrayList<>();
 

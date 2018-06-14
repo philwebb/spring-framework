@@ -81,7 +81,7 @@ public interface SimpleJdbcCallOperations {
 	 */
 	SimpleJdbcCallOperations declareParameters(SqlParameter... sqlParameters);
 
-	/** Not used yet */
+	/** Not used yet. */
 	SimpleJdbcCallOperations useInParameterNames(String... inParameterNames);
 
 	/**

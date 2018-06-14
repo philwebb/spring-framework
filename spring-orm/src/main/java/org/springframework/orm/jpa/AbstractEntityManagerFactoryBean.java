@@ -91,7 +91,7 @@ public abstract class AbstractEntityManagerFactoryBean implements
 		FactoryBean<EntityManagerFactory>, BeanClassLoaderAware, BeanFactoryAware, BeanNameAware,
 		InitializingBean, DisposableBean, EntityManagerFactoryInfo, PersistenceExceptionTranslator, Serializable {
 
-	/** Logger available to subclasses */
+	/** Logger available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	@Nullable
@@ -125,15 +125,15 @@ public abstract class AbstractEntityManagerFactoryBean implements
 	@Nullable
 	private String beanName;
 
-	/** Raw EntityManagerFactory as returned by the PersistenceProvider */
+	/** Raw EntityManagerFactory as returned by the PersistenceProvider. */
 	@Nullable
 	private EntityManagerFactory nativeEntityManagerFactory;
 
-	/** Future for lazily initializing raw target EntityManagerFactory */
+	/** Future for lazily initializing raw target EntityManagerFactory. */
 	@Nullable
 	private Future<EntityManagerFactory> nativeEntityManagerFactoryFuture;
 
-	/** Exposed client-level EntityManagerFactory proxy */
+	/** Exposed client-level EntityManagerFactory proxy. */
 	@Nullable
 	private EntityManagerFactory entityManagerFactory;
 

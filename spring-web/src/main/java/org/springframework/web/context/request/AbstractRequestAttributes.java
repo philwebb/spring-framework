@@ -32,7 +32,7 @@ import org.springframework.util.Assert;
  */
 public abstract class AbstractRequestAttributes implements RequestAttributes {
 
-	/** Map from attribute name String to destruction callback Runnable */
+	/** Map from attribute name String to destruction callback Runnable. */
 	protected final Map<String, Runnable> requestDestructionCallbacks = new LinkedHashMap<>(8);
 
 	private volatile boolean requestActive = true;

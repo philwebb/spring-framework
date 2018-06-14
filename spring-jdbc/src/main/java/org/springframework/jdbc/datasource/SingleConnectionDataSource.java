@@ -54,22 +54,22 @@ import org.springframework.util.ObjectUtils;
  */
 public class SingleConnectionDataSource extends DriverManagerDataSource implements SmartDataSource, DisposableBean {
 
-	/** Create a close-suppressing proxy? */
+	/** Create a close-suppressing proxy?. */
 	private boolean suppressClose;
 
-	/** Override auto-commit state? */
+	/** Override auto-commit state?. */
 	@Nullable
 	private Boolean autoCommit;
 
-	/** Wrapped Connection */
+	/** Wrapped Connection. */
 	@Nullable
 	private Connection target;
 
-	/** Proxy Connection */
+	/** Proxy Connection. */
 	@Nullable
 	private Connection connection;
 
-	/** Synchronization monitor for the shared Connection */
+	/** Synchronization monitor for the shared Connection. */
 	private final Object connectionMonitor = new Object();
 
 

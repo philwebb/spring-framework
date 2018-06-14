@@ -40,7 +40,7 @@ import org.springframework.util.Assert;
  */
 public abstract class JndiLocatorSupport extends JndiAccessor {
 
-	/** JNDI prefix used in a Java EE container */
+	/** JNDI prefix used in a Java EE container. */
 	public static final String CONTAINER_PREFIX = "java:comp/env/";
 
 

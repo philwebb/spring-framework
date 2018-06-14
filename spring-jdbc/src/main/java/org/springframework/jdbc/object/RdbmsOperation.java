@@ -60,10 +60,10 @@ import org.springframework.util.Assert;
  */
 public abstract class RdbmsOperation implements InitializingBean {
 
-	/** Logger available to subclasses */
+	/** Logger available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	/** Lower-level class used to execute SQL */
+	/** Lower-level class used to execute SQL. */
 	private JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
 	private int resultSetType = ResultSet.TYPE_FORWARD_ONLY;

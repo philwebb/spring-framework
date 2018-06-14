@@ -36,7 +36,7 @@ import org.springframework.util.FileCopyUtils;
  */
 public class OverridingClassLoader extends DecoratingClassLoader {
 
-	/** Packages that are excluded by default */
+	/** Packages that are excluded by default. */
 	public static final String[] DEFAULT_EXCLUDED_PACKAGES = new String[]
 			{"java.", "javax.", "sun.", "oracle.", "javassist.", "org.aspectj.", "net.sf.cglib."};
 

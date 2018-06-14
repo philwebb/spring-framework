@@ -55,7 +55,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  */
 public class IsolationLevelDataSourceAdapter extends UserCredentialsDataSourceAdapter {
 
-	/** Constants instance for TransactionDefinition */
+	/** Constants instance for TransactionDefinition. */
 	private static final Constants constants = new Constants(TransactionDefinition.class);
 
 	@Nullable

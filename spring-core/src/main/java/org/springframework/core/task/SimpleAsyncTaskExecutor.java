@@ -64,7 +64,7 @@ public class SimpleAsyncTaskExecutor extends CustomizableThreadCreator
 	public static final int NO_CONCURRENCY = ConcurrencyThrottleSupport.NO_CONCURRENCY;
 
 
-	/** Internal concurrency throttle used by this executor */
+	/** Internal concurrency throttle used by this executor. */
 	private final ConcurrencyThrottleAdapter concurrencyThrottle = new ConcurrencyThrottleAdapter();
 
 	@Nullable

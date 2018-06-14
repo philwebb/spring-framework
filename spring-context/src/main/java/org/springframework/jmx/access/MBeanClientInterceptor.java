@@ -92,7 +92,7 @@ import org.springframework.util.StringUtils;
 public class MBeanClientInterceptor
 		implements MethodInterceptor, BeanClassLoaderAware, InitializingBean, DisposableBean {
 
-	/** Logger available to subclasses */
+	/** Logger available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	@Nullable

@@ -35,13 +35,13 @@ import org.springframework.lang.Nullable;
  */
 public abstract class SystemPropertyUtils {
 
-	/** Prefix for system property placeholders: "${" */
+	/** Prefix for system property placeholders: "${". */
 	public static final String PLACEHOLDER_PREFIX = "${";
 
-	/** Suffix for system property placeholders: "}" */
+	/** Suffix for system property placeholders: "}". */
 	public static final String PLACEHOLDER_SUFFIX = "}";
 
-	/** Value separator for system property placeholders: ":" */
+	/** Value separator for system property placeholders: ":". */
 	public static final String VALUE_SEPARATOR = ":";
 
 

@@ -25,7 +25,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-/** @author Arjen Poutsma */
+/** @author Arjen Poutsma. */
 public class HttpStatusTests {
 
 	private Map<Integer, String> statusCodes = new LinkedHashMap<>();

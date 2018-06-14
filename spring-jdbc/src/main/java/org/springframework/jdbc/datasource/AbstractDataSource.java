@@ -39,7 +39,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public abstract class AbstractDataSource implements DataSource {
 
-	/** Logger available to subclasses */
+	/** Logger available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 
 

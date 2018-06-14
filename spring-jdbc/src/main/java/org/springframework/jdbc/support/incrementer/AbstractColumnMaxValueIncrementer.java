@@ -30,10 +30,10 @@ import org.springframework.util.Assert;
  */
 public abstract class AbstractColumnMaxValueIncrementer extends AbstractDataFieldMaxValueIncrementer {
 
-	/** The name of the column for this sequence */
+	/** The name of the column for this sequence. */
 	private String columnName;
 
-	/** The number of keys buffered in a cache */
+	/** The number of keys buffered in a cache. */
 	private int cacheSize = 1;
 
 

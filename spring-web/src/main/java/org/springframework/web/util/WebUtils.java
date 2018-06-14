@@ -132,10 +132,10 @@ public abstract class WebUtils {
 	/** Default web app root key: "webapp.root" */
 	public static final String DEFAULT_WEB_APP_ROOT_KEY = "webapp.root";
 
-	/** Name suffixes in case of image buttons */
+	/** Name suffixes in case of image buttons. */
 	public static final String[] SUBMIT_IMAGE_SUFFIXES = {".x", ".y"};
 
-	/** Key for the mutex session attribute */
+	/** Key for the mutex session attribute. */
 	public static final String SESSION_MUTEX_ATTRIBUTE = WebUtils.class.getName() + ".MUTEX";
 
 
