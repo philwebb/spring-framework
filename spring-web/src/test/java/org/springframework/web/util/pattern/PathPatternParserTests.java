@@ -186,7 +186,7 @@ public class PathPatternParserTests {
 		checkStructure("/{f}/");
 		checkStructure("/{foo}/{bar}/{wibble}");
 	}
-	
+
 	@Test
 	public void noEncoding() {
 		// Check no encoding of expressions or constraints
@@ -195,7 +195,7 @@ public class PathPatternParserTests {
 
 		pp = parse("/{var:f o}_");
 		assertEquals("Separator(/) Regex({var:f o}_)",pp.toChainString());
-		
+
 		pp = parse("{foo:f o}_ _{bar:b\\|o}");
 		assertEquals("Regex({foo:f o}_ _{bar:b\\|o})",pp.toChainString());
 	}
@@ -354,7 +354,9 @@ public class PathPatternParserTests {
 
 	@Test
 	public void compareTests() {
-		PathPattern p1, p2, p3;
+		PathPattern p1;
+		PathPattern p2;
+		PathPattern p3;
 
 		// Based purely on number of captures
 		p1 = parse("{a}");
@@ -473,7 +475,7 @@ public class PathPatternParserTests {
 	private void assertNoMatch(PathPattern pp, String path) {
 		assertFalse(pp.matches(PathPatternTests.toPathContainer(path)));
 	}
-	
+
 	private PathPattern.PathMatchInfo matchAndExtract(PathPattern pp, String path) {
 		 return pp.matchAndExtract(PathPatternTests.toPathContainer(path));
 	}
