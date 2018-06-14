@@ -1356,7 +1356,7 @@ public abstract class AbstractAopProxyTests {
 				rmi.getUserAttributes().putAll(this.valuesToAdd);
 				return invocation.proceed();
 			}
-		};
+		}
 		AdvisedSupport pc = new AdvisedSupport(ITestBean.class);
 		MapAwareMethodInterceptor mami1 = new MapAwareMethodInterceptor(new HashMap<>(), new HashMap<String, String>());
 		Map<String, String> firstValuesToAdd = new HashMap<>();

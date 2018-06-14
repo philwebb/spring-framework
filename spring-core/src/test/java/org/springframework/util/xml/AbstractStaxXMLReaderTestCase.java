@@ -227,7 +227,7 @@ public abstract class AbstractStaxXMLReaderTestCase {
 				if (arguments[i] instanceof Attributes) {
 					arguments[i] = new PartialAttributes((Attributes) arguments[i]);
 				}
-			};
+			}
 			return arguments;
 		}
 	}
