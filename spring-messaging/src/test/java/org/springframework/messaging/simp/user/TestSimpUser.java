@@ -38,7 +38,7 @@ public class TestSimpUser implements SimpUser {
 
 	@Override
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	@Override

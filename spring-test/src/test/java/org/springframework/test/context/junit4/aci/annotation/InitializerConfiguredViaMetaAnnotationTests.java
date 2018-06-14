@@ -66,9 +66,9 @@ public class InitializerConfiguredViaMetaAnnotationTests {
 
 	@Test
 	public void beansFromInitializerAndComposedAnnotation() {
-		assertEquals(2, strings.size());
-		assertEquals("foo", foo);
-		assertEquals("bar", bar);
+		assertEquals(2, this.strings.size());
+		assertEquals("foo", this.foo);
+		assertEquals("bar", this.bar);
 	}
 
 

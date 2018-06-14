@@ -185,35 +185,35 @@ public class ComposedRepeatableAnnotationsTests {
 	}
 
 	private void expectNonRepeatableAnnotation() {
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage(startsWith("Annotation type must be a repeatable annotation"));
-		exception.expectMessage(containsString("failed to resolve container type for"));
-		exception.expectMessage(containsString(NonRepeatable.class.getName()));
+		this.exception.expect(IllegalArgumentException.class);
+		this.exception.expectMessage(startsWith("Annotation type must be a repeatable annotation"));
+		this.exception.expectMessage(containsString("failed to resolve container type for"));
+		this.exception.expectMessage(containsString(NonRepeatable.class.getName()));
 	}
 
 	private void expectContainerMissingValueAttribute() {
-		exception.expect(AnnotationConfigurationException.class);
-		exception.expectMessage(startsWith("Invalid declaration of container type"));
-		exception.expectMessage(containsString(ContainerMissingValueAttribute.class.getName()));
-		exception.expectMessage(containsString("for repeatable annotation"));
-		exception.expectMessage(containsString(InvalidRepeatable.class.getName()));
-		exception.expectCause(isA(NoSuchMethodException.class));
+		this.exception.expect(AnnotationConfigurationException.class);
+		this.exception.expectMessage(startsWith("Invalid declaration of container type"));
+		this.exception.expectMessage(containsString(ContainerMissingValueAttribute.class.getName()));
+		this.exception.expectMessage(containsString("for repeatable annotation"));
+		this.exception.expectMessage(containsString(InvalidRepeatable.class.getName()));
+		this.exception.expectCause(isA(NoSuchMethodException.class));
 	}
 
 	private void expectContainerWithNonArrayValueAttribute() {
-		exception.expect(AnnotationConfigurationException.class);
-		exception.expectMessage(startsWith("Container type"));
-		exception.expectMessage(containsString(ContainerWithNonArrayValueAttribute.class.getName()));
-		exception.expectMessage(containsString("must declare a 'value' attribute for an array of type"));
-		exception.expectMessage(containsString(InvalidRepeatable.class.getName()));
+		this.exception.expect(AnnotationConfigurationException.class);
+		this.exception.expectMessage(startsWith("Container type"));
+		this.exception.expectMessage(containsString(ContainerWithNonArrayValueAttribute.class.getName()));
+		this.exception.expectMessage(containsString("must declare a 'value' attribute for an array of type"));
+		this.exception.expectMessage(containsString(InvalidRepeatable.class.getName()));
 	}
 
 	private void expectContainerWithArrayValueAttributeButWrongComponentType() {
-		exception.expect(AnnotationConfigurationException.class);
-		exception.expectMessage(startsWith("Container type"));
-		exception.expectMessage(containsString(ContainerWithArrayValueAttributeButWrongComponentType.class.getName()));
-		exception.expectMessage(containsString("must declare a 'value' attribute for an array of type"));
-		exception.expectMessage(containsString(InvalidRepeatable.class.getName()));
+		this.exception.expect(AnnotationConfigurationException.class);
+		this.exception.expectMessage(startsWith("Container type"));
+		this.exception.expectMessage(containsString(ContainerWithArrayValueAttributeButWrongComponentType.class.getName()));
+		this.exception.expectMessage(containsString("must declare a 'value' attribute for an array of type"));
+		this.exception.expectMessage(containsString(InvalidRepeatable.class.getName()));
 	}
 
 	private void assertGetRepeatableAnnotations(AnnotatedElement element) {

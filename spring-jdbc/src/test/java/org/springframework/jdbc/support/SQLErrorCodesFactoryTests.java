@@ -143,14 +143,14 @@ public class SQLErrorCodesFactoryTests {
 			private int lookups = 0;
 			@Override
 			protected Resource loadResource(String path) {
-				++lookups;
-				if (lookups == 1) {
+				++this.lookups;
+				if (this.lookups == 1) {
 					assertEquals(SQLErrorCodesFactory.SQL_ERROR_CODE_DEFAULT_PATH, path);
 					return null;
 				}
 				else {
 					// Should have only one more lookup
-					assertEquals(2, lookups);
+					assertEquals(2, this.lookups);
 					assertEquals(SQLErrorCodesFactory.SQL_ERROR_CODE_OVERRIDE_PATH, path);
 					return null;
 				}

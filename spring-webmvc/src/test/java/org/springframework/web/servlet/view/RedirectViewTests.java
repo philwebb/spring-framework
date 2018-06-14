@@ -90,9 +90,9 @@ public class RedirectViewTests {
 		RedirectView rv = new RedirectView();
 		rv.setUrl("http://url.somewhere.com");
 		rv.setHttp10Compatible(false);
-		rv.render(new HashMap<>(), request, response);
-		assertEquals(303, response.getStatus());
-		assertEquals("http://url.somewhere.com", response.getHeader("Location"));
+		rv.render(new HashMap<>(), this.request, this.response);
+		assertEquals(303, this.response.getStatus());
+		assertEquals("http://url.somewhere.com", this.response.getHeader("Location"));
 	}
 
 	@Test
@@ -101,9 +101,9 @@ public class RedirectViewTests {
 		rv.setUrl("http://url.somewhere.com");
 		rv.setHttp10Compatible(false);
 		rv.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
-		rv.render(new HashMap<>(), request, response);
-		assertEquals(301, response.getStatus());
-		assertEquals("http://url.somewhere.com", response.getHeader("Location"));
+		rv.render(new HashMap<>(), this.request, this.response);
+		assertEquals(301, this.response.getStatus());
+		assertEquals("http://url.somewhere.com", this.response.getHeader("Location"));
 	}
 
 	@Test
@@ -111,19 +111,19 @@ public class RedirectViewTests {
 		RedirectView rv = new RedirectView();
 		rv.setUrl("http://url.somewhere.com");
 		rv.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
-		rv.render(new HashMap<>(), request, response);
-		assertEquals(301, response.getStatus());
-		assertEquals("http://url.somewhere.com", response.getHeader("Location"));
+		rv.render(new HashMap<>(), this.request, this.response);
+		assertEquals(301, this.response.getStatus());
+		assertEquals("http://url.somewhere.com", this.response.getHeader("Location"));
 	}
 
 	@Test
 	public void attributeStatusCodeHttp10() throws Exception {
 		RedirectView rv = new RedirectView();
 		rv.setUrl("http://url.somewhere.com");
-		request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.CREATED);
-		rv.render(new HashMap<>(), request, response);
-		assertEquals(201, response.getStatus());
-		assertEquals("http://url.somewhere.com", response.getHeader("Location"));
+		this.request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.CREATED);
+		rv.render(new HashMap<>(), this.request, this.response);
+		assertEquals(201, this.response.getStatus());
+		assertEquals("http://url.somewhere.com", this.response.getHeader("Location"));
 	}
 
 	@Test
@@ -131,10 +131,10 @@ public class RedirectViewTests {
 		RedirectView rv = new RedirectView();
 		rv.setUrl("http://url.somewhere.com");
 		rv.setHttp10Compatible(false);
-		request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.CREATED);
-		rv.render(new HashMap<>(), request, response);
-		assertEquals(201, response.getStatus());
-		assertEquals("http://url.somewhere.com", response.getHeader("Location"));
+		this.request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.CREATED);
+		rv.render(new HashMap<>(), this.request, this.response);
+		assertEquals(201, this.response.getStatus());
+		assertEquals("http://url.somewhere.com", this.response.getHeader("Location"));
 	}
 
 	@Test
@@ -145,11 +145,11 @@ public class RedirectViewTests {
 		rv.setHttp10Compatible(false);
 		FlashMap flashMap = new FlashMap();
 		flashMap.put("successMessage", "yay!");
-		request.setAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE, flashMap);
+		this.request.setAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE, flashMap);
 		ModelMap model = new ModelMap("id", "1");
-		rv.render(model, request, response);
-		assertEquals(303, response.getStatus());
-		assertEquals("http://url.somewhere.com/path?id=1", response.getHeader("Location"));
+		rv.render(model, this.request, this.response);
+		assertEquals(303, this.response.getStatus());
+		assertEquals("http://url.somewhere.com/path?id=1", this.response.getHeader("Location"));
 
 		assertEquals("/path", flashMap.getTargetRequestPath());
 		assertEquals(model, flashMap.getTargetRequestParams().toSingleValueMap());
@@ -169,11 +169,11 @@ public class RedirectViewTests {
 		rv.setApplicationContext(wac);	// Init RedirectView with WebAppCxt
 		rv.setUrl("/path");
 
-		request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, wac);
+		this.request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, wac);
 
-		given(mockProcessor.processUrl(request, "/path")).willReturn("/path?key=123");
-		rv.render(new ModelMap(), request, response);
-		verify(mockProcessor).processUrl(request, "/path");
+		given(mockProcessor.processUrl(this.request, "/path")).willReturn("/path?key=123");
+		rv.render(new ModelMap(), this.request, this.response);
+		verify(mockProcessor).processUrl(this.request, "/path");
 	}
 
 
@@ -193,9 +193,9 @@ public class RedirectViewTests {
 			RedirectView rv = new RedirectView();
 			rv.setUrl("/path");
 
-			given(mockProcessor.processUrl(request, "/path")).willReturn("/path?key=123");
-			rv.render(new ModelMap(), request, response);
-			verify(mockProcessor).processUrl(request, "/path");
+			given(mockProcessor.processUrl(this.request, "/path")).willReturn("/path?key=123");
+			rv.render(new ModelMap(), this.request, this.response);
+			verify(mockProcessor).processUrl(this.request, "/path");
 		}
 		finally {
 			contextLoader.closeWebApplicationContext(servletContext);
@@ -261,7 +261,7 @@ public class RedirectViewTests {
 
 		TestRedirectView rv = new TestRedirectView(url, false, model);
 		rv.setExposeModelAttributes(false);
-		rv.render(model, request, response);
+		rv.render(model, this.request, this.response);
 
 		assertEquals(url, this.response.getRedirectedUrl());
 	}
@@ -364,17 +364,17 @@ public class RedirectViewTests {
 		RedirectView rv = new RedirectView();
 		rv.setPropagateQueryParams(true);
 		rv.setUrl("http://url.somewhere.com?foo=bar#bazz");
-		request.setQueryString("a=b&c=d");
-		rv.render(new HashMap<>(), request, response);
-		assertEquals(302, response.getStatus());
-		assertEquals("http://url.somewhere.com?foo=bar&a=b&c=d#bazz", response.getHeader("Location"));
+		this.request.setQueryString("a=b&c=d");
+		rv.render(new HashMap<>(), this.request, this.response);
+		assertEquals(302, this.response.getStatus());
+		assertEquals("http://url.somewhere.com?foo=bar&a=b&c=d#bazz", this.response.getHeader("Location"));
 	}
 
 	private void doTest(Map<String, ?> map, String url, boolean contextRelative, String expectedUrl)
 			throws Exception {
 
 		TestRedirectView rv = new TestRedirectView(url, contextRelative, map);
-		rv.render(map, request, response);
+		rv.render(map, this.request, this.response);
 
 		assertTrue("queryProperties() should have been called.", rv.queryPropertiesCalled);
 		assertEquals(expectedUrl, this.response.getRedirectedUrl());

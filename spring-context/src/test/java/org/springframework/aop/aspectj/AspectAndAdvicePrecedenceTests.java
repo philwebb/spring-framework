@@ -52,11 +52,11 @@ public class AspectAndAdvicePrecedenceTests {
 	public void setUp() {
 		ClassPathXmlApplicationContext ctx =
 			new ClassPathXmlApplicationContext(getClass().getSimpleName() + ".xml", getClass());
-		highPrecedenceAspect = (PrecedenceTestAspect) ctx.getBean("highPrecedenceAspect");
-		lowPrecedenceAspect = (PrecedenceTestAspect) ctx.getBean("lowPrecedenceAspect");
-		highPrecedenceSpringAdvice = (SimpleSpringBeforeAdvice) ctx.getBean("highPrecedenceSpringAdvice");
-		lowPrecedenceSpringAdvice = (SimpleSpringBeforeAdvice) ctx.getBean("lowPrecedenceSpringAdvice");
-		testBean = (ITestBean) ctx.getBean("testBean");
+		this.highPrecedenceAspect = (PrecedenceTestAspect) ctx.getBean("highPrecedenceAspect");
+		this.lowPrecedenceAspect = (PrecedenceTestAspect) ctx.getBean("lowPrecedenceAspect");
+		this.highPrecedenceSpringAdvice = (SimpleSpringBeforeAdvice) ctx.getBean("highPrecedenceSpringAdvice");
+		this.lowPrecedenceSpringAdvice = (SimpleSpringBeforeAdvice) ctx.getBean("lowPrecedenceSpringAdvice");
+		this.testBean = (ITestBean) ctx.getBean("testBean");
 	}
 
 	// ========== end of test case set up, start of tests proper ===================
@@ -101,13 +101,13 @@ public class AspectAndAdvicePrecedenceTests {
 
 		private void checkAdvice(String whatJustHappened) {
 			//System.out.println("[" + adviceInvocationNumber + "] " + whatJustHappened + " ==> " + EXPECTED[adviceInvocationNumber]);
-			if (adviceInvocationNumber > (EXPECTED.length - 1)) {
+			if (this.adviceInvocationNumber > (EXPECTED.length - 1)) {
 				fail("Too many advice invocations, expecting " + EXPECTED.length
-						+ " but had " + adviceInvocationNumber);
+						+ " but had " + this.adviceInvocationNumber);
 			}
-			String expecting = EXPECTED[adviceInvocationNumber++];
+			String expecting = EXPECTED[this.adviceInvocationNumber++];
 			if (!whatJustHappened.equals(expecting)) {
-				fail("Expecting '" + expecting + "' on advice invocation " + adviceInvocationNumber +
+				fail("Expecting '" + expecting + "' on advice invocation " + this.adviceInvocationNumber +
 						" but got '" + whatJustHappened + "'");
 			}
 		}
@@ -166,7 +166,7 @@ class PrecedenceTestAspect implements BeanNameAware, Ordered {
 
 	@Override
 	public int getOrder() {
-		return order;
+		return this.order;
 	}
 
 	public void setCollaborator(Collaborator collaborator) {

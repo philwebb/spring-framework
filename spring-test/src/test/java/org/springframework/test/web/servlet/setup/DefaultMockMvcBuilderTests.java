@@ -51,15 +51,15 @@ public class DefaultMockMvcBuilderTests {
 
 	@Test
 	public void webAppContextSetupWithNullWac() {
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage(equalTo("WebApplicationContext is required"));
+		this.exception.expect(IllegalArgumentException.class);
+		this.exception.expectMessage(equalTo("WebApplicationContext is required"));
 		webAppContextSetup(null);
 	}
 
 	@Test
 	public void webAppContextSetupWithNullServletContext() {
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage(equalTo("WebApplicationContext must have a ServletContext"));
+		this.exception.expect(IllegalArgumentException.class);
+		this.exception.expectMessage(equalTo("WebApplicationContext must have a ServletContext"));
 		webAppContextSetup(new StubWebApplicationContext(null));
 	}
 

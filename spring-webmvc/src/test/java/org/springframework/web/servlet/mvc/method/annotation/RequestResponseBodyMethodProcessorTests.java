@@ -102,20 +102,20 @@ public class RequestResponseBodyMethodProcessorTests {
 
 	@Before
 	public void setup() throws Exception {
-		container = new ModelAndViewContainer();
-		servletRequest = new MockHttpServletRequest();
-		servletRequest.setMethod("POST");
-		servletResponse = new MockHttpServletResponse();
-		request = new ServletWebRequest(servletRequest, servletResponse);
+		this.container = new ModelAndViewContainer();
+		this.servletRequest = new MockHttpServletRequest();
+		this.servletRequest.setMethod("POST");
+		this.servletResponse = new MockHttpServletResponse();
+		this.request = new ServletWebRequest(this.servletRequest, this.servletResponse);
 		this.factory = new ValidatingBinderFactory();
 
 		Method method = getClass().getDeclaredMethod("handle",
 				List.class, SimpleBean.class, MultiValueMap.class, String.class);
-		paramGenericList = new MethodParameter(method, 0);
-		paramSimpleBean = new MethodParameter(method, 1);
-		paramMultiValueMap = new MethodParameter(method, 2);
-		paramString = new MethodParameter(method, 3);
-		returnTypeString = new MethodParameter(method, -1);
+		this.paramGenericList = new MethodParameter(method, 0);
+		this.paramSimpleBean = new MethodParameter(method, 1);
+		this.paramMultiValueMap = new MethodParameter(method, 2);
+		this.paramString = new MethodParameter(method, 3);
+		this.returnTypeString = new MethodParameter(method, -1);
 	}
 
 
@@ -131,7 +131,7 @@ public class RequestResponseBodyMethodProcessorTests {
 
 		@SuppressWarnings("unchecked")
 		List<SimpleBean> result = (List<SimpleBean>) processor.resolveArgument(
-				paramGenericList, container, request, factory);
+				this.paramGenericList, this.container, this.request, this.factory);
 
 		assertNotNull(result);
 		assertEquals("Jad", result.get(0).getName());
@@ -151,7 +151,7 @@ public class RequestResponseBodyMethodProcessorTests {
 
 		@SuppressWarnings("unchecked")
 		MultiValueMap<String, String> result = (MultiValueMap<String, String>) processor.resolveArgument(
-				paramMultiValueMap, container, request, factory);
+				this.paramMultiValueMap, this.container, this.request, this.factory);
 
 		assertNotNull(result);
 		assertEquals("apple", result.getFirst("fruit"));
@@ -169,7 +169,7 @@ public class RequestResponseBodyMethodProcessorTests {
 		RequestResponseBodyMethodProcessor processor = new RequestResponseBodyMethodProcessor(converters);
 
 		SimpleBean result = (SimpleBean) processor.resolveArgument(
-				paramSimpleBean, container, request, factory);
+				this.paramSimpleBean, this.container, this.request, this.factory);
 
 		assertNotNull(result);
 		assertEquals("Jad", result.getName());
@@ -186,7 +186,7 @@ public class RequestResponseBodyMethodProcessorTests {
 		RequestResponseBodyMethodProcessor processor = new RequestResponseBodyMethodProcessor(converters);
 
 		String result = (String) processor.resolveArgument(
-				paramString, container, request, factory);
+				this.paramString, this.container, this.request, this.factory);
 
 		assertNotNull(result);
 		assertEquals("foobarbaz", result);
@@ -199,7 +199,7 @@ public class RequestResponseBodyMethodProcessorTests {
 		List<HttpMessageConverter<?>> converters = new ArrayList<>();
 		converters.add(new StringHttpMessageConverter());
 		RequestResponseBodyMethodProcessor processor = new RequestResponseBodyMethodProcessor(converters);
-		processor.resolveArgument(paramString, container, request, factory);
+		processor.resolveArgument(this.paramString, this.container, this.request, this.factory);
 	}
 
 	@Test  // SPR-12778
@@ -209,7 +209,7 @@ public class RequestResponseBodyMethodProcessorTests {
 		List<HttpMessageConverter<?>> converters = Collections.singletonList(new StringHttpMessageConverter());
 		List<Object> advice = Collections.singletonList(new EmptyRequestBodyAdvice());
 		RequestResponseBodyMethodProcessor processor = new RequestResponseBodyMethodProcessor(converters, advice);
-		String arg = (String) processor.resolveArgument(paramString, container, request, factory);
+		String arg = (String) processor.resolveArgument(this.paramString, this.container, this.request, this.factory);
 		assertNotNull(arg);
 		assertEquals("default value for empty body", arg);
 	}
@@ -228,7 +228,7 @@ public class RequestResponseBodyMethodProcessorTests {
 		converters.add(new MappingJackson2HttpMessageConverter());
 		RequestResponseBodyMethodProcessor processor = new RequestResponseBodyMethodProcessor(converters);
 
-		SimpleBean result = (SimpleBean) processor.resolveArgument(methodParam, container, request, factory);
+		SimpleBean result = (SimpleBean) processor.resolveArgument(methodParam, this.container, this.request, this.factory);
 
 		assertNotNull(result);
 		assertEquals("Jad", result.getName());
@@ -250,7 +250,7 @@ public class RequestResponseBodyMethodProcessorTests {
 
 		@SuppressWarnings("unchecked")
 		List<SimpleBean> result = (List<SimpleBean>) processor.resolveArgument(
-				methodParam, container, request, factory);
+				methodParam, this.container, this.request, this.factory);
 
 		assertNotNull(result);
 		assertEquals("Jad", result.get(0).getName());
@@ -273,7 +273,7 @@ public class RequestResponseBodyMethodProcessorTests {
 		converters.add(proxy);
 		RequestResponseBodyMethodProcessor processor = new RequestResponseBodyMethodProcessor(converters);
 
-		SimpleBean result = (SimpleBean) processor.resolveArgument(methodParam, container, request, factory);
+		SimpleBean result = (SimpleBean) processor.resolveArgument(methodParam, this.container, this.request, this.factory);
 
 		assertNotNull(result);
 		assertEquals("Jad", result.getName());
@@ -288,9 +288,9 @@ public class RequestResponseBodyMethodProcessorTests {
 		converters.add(new StringHttpMessageConverter());
 		RequestResponseBodyMethodProcessor processor = new RequestResponseBodyMethodProcessor(converters);
 
-		processor.writeWithMessageConverters("Foo", returnTypeString, request);
+		processor.writeWithMessageConverters("Foo", this.returnTypeString, this.request);
 
-		assertEquals("application/json;charset=UTF-8", servletResponse.getHeader("Content-Type"));
+		assertEquals("application/json;charset=UTF-8", this.servletResponse.getHeader("Content-Type"));
 	}
 
 	@Test
@@ -300,10 +300,10 @@ public class RequestResponseBodyMethodProcessorTests {
 		converters.add(new StringHttpMessageConverter());
 
 		RequestResponseBodyMethodProcessor processor = new RequestResponseBodyMethodProcessor(converters);
-		processor.handleReturnValue("Foo", returnTypeString, container, request);
+		processor.handleReturnValue("Foo", this.returnTypeString, this.container, this.request);
 
-		assertEquals("text/plain;charset=ISO-8859-1", servletResponse.getHeader("Content-Type"));
-		assertEquals("Foo", servletResponse.getContentAsString());
+		assertEquals("text/plain;charset=ISO-8859-1", this.servletResponse.getHeader("Content-Type"));
+		assertEquals("Foo", this.servletResponse.getContentAsString());
 	}
 
 	@Test  // SPR-13423
@@ -316,10 +316,10 @@ public class RequestResponseBodyMethodProcessorTests {
 		MethodParameter returnType = new MethodParameter(method, -1);
 
 		RequestResponseBodyMethodProcessor processor = new RequestResponseBodyMethodProcessor(converters);
-		processor.handleReturnValue(new StringBuilder("Foo"), returnType, container, request);
+		processor.handleReturnValue(new StringBuilder("Foo"), returnType, this.container, this.request);
 
-		assertEquals("text/plain;charset=ISO-8859-1", servletResponse.getHeader("Content-Type"));
-		assertEquals("Foo", servletResponse.getContentAsString());
+		assertEquals("text/plain;charset=ISO-8859-1", this.servletResponse.getHeader("Content-Type"));
+		assertEquals("Foo", this.servletResponse.getContentAsString());
 	}
 
 	@Test
@@ -331,9 +331,9 @@ public class RequestResponseBodyMethodProcessorTests {
 		converters.add(new StringHttpMessageConverter());
 		RequestResponseBodyMethodProcessor processor = new RequestResponseBodyMethodProcessor(converters);
 
-		processor.writeWithMessageConverters("Foo", returnTypeString, request);
+		processor.writeWithMessageConverters("Foo", this.returnTypeString, this.request);
 
-		assertEquals("text/plain;charset=UTF-8", servletResponse.getHeader("Content-Type"));
+		assertEquals("text/plain;charset=UTF-8", this.servletResponse.getHeader("Content-Type"));
 	}
 
 	// SPR-12894
@@ -714,7 +714,7 @@ public class RequestResponseBodyMethodProcessorTests {
 		this.servletRequest.setRequestURI(requestURI);
 		processor.handleReturnValue("body", this.returnTypeString, this.container, this.request);
 
-		String header = servletResponse.getHeader("Content-Disposition");
+		String header = this.servletResponse.getHeader("Content-Disposition");
 		if (expectContentDisposition) {
 			assertEquals("Expected 'Content-Disposition' header. Use case: '" + comment + "'",
 					"inline;filename=f.txt", header);
@@ -725,7 +725,7 @@ public class RequestResponseBodyMethodProcessorTests {
 
 		this.servletRequest = new MockHttpServletRequest();
 		this.servletResponse = new MockHttpServletResponse();
-		this.request = new ServletWebRequest(servletRequest, servletResponse);
+		this.request = new ServletWebRequest(this.servletRequest, this.servletResponse);
 	}
 
 
@@ -789,7 +789,7 @@ public class RequestResponseBodyMethodProcessorTests {
 
 		@Override
 		public Long getId() {
-			return id;
+			return this.id;
 		}
 
 		@Override
@@ -798,7 +798,7 @@ public class RequestResponseBodyMethodProcessorTests {
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String name) {
@@ -861,7 +861,7 @@ public class RequestResponseBodyMethodProcessorTests {
 		private String withoutView;
 
 		public String getWithView1() {
-			return withView1;
+			return this.withView1;
 		}
 
 		public void setWithView1(String withView1) {
@@ -869,7 +869,7 @@ public class RequestResponseBodyMethodProcessorTests {
 		}
 
 		public String getWithView2() {
-			return withView2;
+			return this.withView2;
 		}
 
 		public void setWithView2(String withView2) {
@@ -877,7 +877,7 @@ public class RequestResponseBodyMethodProcessorTests {
 		}
 
 		public String getWithoutView() {
-			return withoutView;
+			return this.withoutView;
 		}
 
 		public void setWithoutView(String withoutView) {
@@ -899,7 +899,7 @@ public class RequestResponseBodyMethodProcessorTests {
 		}
 
 		public String getParentProperty() {
-			return parentProperty;
+			return this.parentProperty;
 		}
 
 		public void setParentProperty(String parentProperty) {

@@ -66,7 +66,7 @@ public class Pojo {
 
 	@Override
 	public int hashCode() {
-		return 31 * foo.hashCode() + bar.hashCode();
+		return 31 * this.foo.hashCode() + this.bar.hashCode();
 	}
 
 	@Override

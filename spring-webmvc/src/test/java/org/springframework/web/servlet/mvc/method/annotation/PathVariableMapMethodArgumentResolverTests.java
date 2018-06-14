@@ -56,23 +56,23 @@ public class PathVariableMapMethodArgumentResolverTests {
 
 	@Before
 	public void setup() throws Exception {
-		resolver = new PathVariableMapMethodArgumentResolver();
-		mavContainer = new ModelAndViewContainer();
-		request = new MockHttpServletRequest();
-		webRequest = new ServletWebRequest(request, new MockHttpServletResponse());
+		this.resolver = new PathVariableMapMethodArgumentResolver();
+		this.mavContainer = new ModelAndViewContainer();
+		this.request = new MockHttpServletRequest();
+		this.webRequest = new ServletWebRequest(this.request, new MockHttpServletResponse());
 
 		Method method = getClass().getMethod("handle", Map.class, Map.class, Map.class);
-		paramMap = new MethodParameter(method, 0);
-		paramNamedMap = new MethodParameter(method, 1);
-		paramMapNoAnnot = new MethodParameter(method, 2);
+		this.paramMap = new MethodParameter(method, 0);
+		this.paramNamedMap = new MethodParameter(method, 1);
+		this.paramMapNoAnnot = new MethodParameter(method, 2);
 	}
 
 
 	@Test
 	public void supportsParameter() {
-		assertTrue(resolver.supportsParameter(paramMap));
-		assertFalse(resolver.supportsParameter(paramNamedMap));
-		assertFalse(resolver.supportsParameter(paramMapNoAnnot));
+		assertTrue(this.resolver.supportsParameter(this.paramMap));
+		assertFalse(this.resolver.supportsParameter(this.paramNamedMap));
+		assertFalse(this.resolver.supportsParameter(this.paramMapNoAnnot));
 	}
 
 	@Test
@@ -80,9 +80,9 @@ public class PathVariableMapMethodArgumentResolverTests {
 		Map<String, String> uriTemplateVars = new HashMap<>();
 		uriTemplateVars.put("name1", "value1");
 		uriTemplateVars.put("name2", "value2");
-		request.setAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, uriTemplateVars);
+		this.request.setAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, uriTemplateVars);
 
-		Object result = resolver.resolveArgument(paramMap, mavContainer, webRequest, null);
+		Object result = this.resolver.resolveArgument(this.paramMap, this.mavContainer, this.webRequest, null);
 
 		assertEquals(uriTemplateVars, result);
 	}
@@ -90,7 +90,7 @@ public class PathVariableMapMethodArgumentResolverTests {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void resolveArgumentNoUriVars() throws Exception {
-		Map<String, String> map = (Map<String, String>) resolver.resolveArgument(paramMap, mavContainer, webRequest, null);
+		Map<String, String> map = (Map<String, String>) this.resolver.resolveArgument(this.paramMap, this.mavContainer, this.webRequest, null);
 
 		assertEquals(Collections.emptyMap(), map);
 	}

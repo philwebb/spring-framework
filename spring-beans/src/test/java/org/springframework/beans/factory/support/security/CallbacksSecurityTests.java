@@ -109,7 +109,7 @@ public class CallbacksSecurityTests {
 		}
 
 		private void checkCurrentContext() {
-			assertEquals(expectedName, getCurrentSubjectName());
+			assertEquals(this.expectedName, getCurrentSubjectName());
 		}
 	}
 
@@ -154,7 +154,7 @@ public class CallbacksSecurityTests {
 		}
 
 		private void checkCurrentContext() {
-			assertEquals(expectedName, getCurrentSubjectName());
+			assertEquals(this.expectedName, getCurrentSubjectName());
 		}
 	}
 
@@ -198,7 +198,7 @@ public class CallbacksSecurityTests {
 		}
 
 		private void checkCurrentContext() {
-			assertEquals(expectedName, getCurrentSubjectName());
+			assertEquals(this.expectedName, getCurrentSubjectName());
 		}
 	}
 
@@ -209,7 +209,7 @@ public class CallbacksSecurityTests {
 
 		public NonPrivilegedFactory(String expected) {
 			this.expectedName = expected;
-			assertEquals(expectedName, getCurrentSubjectName());
+			assertEquals(this.expectedName, getCurrentSubjectName());
 		}
 
 		public static Object makeStaticInstance(String expectedName) {
@@ -218,7 +218,7 @@ public class CallbacksSecurityTests {
 		}
 
 		public Object makeInstance() {
-			assertEquals(expectedName, getCurrentSubjectName());
+			assertEquals(this.expectedName, getCurrentSubjectName());
 			return new Object();
 		}
 	}
@@ -300,27 +300,27 @@ public class CallbacksSecurityTests {
 		final ProtectionDomain empty = new ProtectionDomain(null,
 				new Permissions());
 
-		provider = new SecurityContextProvider() {
+		this.provider = new SecurityContextProvider() {
 			private final AccessControlContext acc = new AccessControlContext(
 					new ProtectionDomain[] { empty });
 
 			@Override
 			public AccessControlContext getAccessControlContext() {
-				return acc;
+				return this.acc;
 			}
 		};
 
 		DefaultResourceLoader drl = new DefaultResourceLoader();
 		Resource config = drl
 				.getResource("/org/springframework/beans/factory/support/security/callbacks.xml");
-		beanFactory = new DefaultListableBeanFactory();
-		new XmlBeanDefinitionReader(beanFactory).loadBeanDefinitions(config);
-		beanFactory.setSecurityContextProvider(provider);
+		this.beanFactory = new DefaultListableBeanFactory();
+		new XmlBeanDefinitionReader(this.beanFactory).loadBeanDefinitions(config);
+		this.beanFactory.setSecurityContextProvider(this.provider);
 	}
 
 	@Test
 	public void testSecuritySanity() throws Exception {
-		AccessControlContext acc = provider.getAccessControlContext();
+		AccessControlContext acc = this.provider.getAccessControlContext();
 		try {
 			acc.checkPermission(new PropertyPermission("*", "read"));
 			fail("Acc should not have any permissions");
@@ -366,7 +366,7 @@ public class CallbacksSecurityTests {
 	@Test
 	public void testSpringInitBean() throws Exception {
 		try {
-			beanFactory.getBean("spring-init");
+			this.beanFactory.getBean("spring-init");
 			fail("expected security exception");
 		}
 		catch (BeanCreationException ex) {
@@ -377,7 +377,7 @@ public class CallbacksSecurityTests {
 	@Test
 	public void testCustomInitBean() throws Exception {
 		try {
-			beanFactory.getBean("custom-init");
+			this.beanFactory.getBean("custom-init");
 			fail("expected security exception");
 		}
 		catch (BeanCreationException ex) {
@@ -387,22 +387,22 @@ public class CallbacksSecurityTests {
 
 	@Test
 	public void testSpringDestroyBean() throws Exception {
-		beanFactory.getBean("spring-destroy");
-		beanFactory.destroySingletons();
+		this.beanFactory.getBean("spring-destroy");
+		this.beanFactory.destroySingletons();
 		assertNull(System.getProperty("security.destroy"));
 	}
 
 	@Test
 	public void testCustomDestroyBean() throws Exception {
-		beanFactory.getBean("custom-destroy");
-		beanFactory.destroySingletons();
+		this.beanFactory.getBean("custom-destroy");
+		this.beanFactory.destroySingletons();
 		assertNull(System.getProperty("security.destroy"));
 	}
 
 	@Test
 	public void testCustomFactoryObject() throws Exception {
 		try {
-			beanFactory.getBean("spring-factory");
+			this.beanFactory.getBean("spring-factory");
 			fail("expected security exception");
 		}
 		catch (BeanCreationException ex) {
@@ -413,14 +413,14 @@ public class CallbacksSecurityTests {
 
 	@Test
 	public void testCustomFactoryType() throws Exception {
-		assertNull(beanFactory.getType("spring-factory"));
+		assertNull(this.beanFactory.getType("spring-factory"));
 		assertNull(System.getProperty("factory.object.type"));
 	}
 
 	@Test
 	public void testCustomStaticFactoryMethod() throws Exception {
 		try {
-			beanFactory.getBean("custom-static-factory-method");
+			this.beanFactory.getBean("custom-static-factory-method");
 			fail("expected security exception");
 		}
 		catch (BeanCreationException ex) {
@@ -431,7 +431,7 @@ public class CallbacksSecurityTests {
 	@Test
 	public void testCustomInstanceFactoryMethod() throws Exception {
 		try {
-			beanFactory.getBean("custom-factory-method");
+			this.beanFactory.getBean("custom-factory-method");
 			fail("expected security exception");
 		}
 		catch (BeanCreationException ex) {
@@ -442,7 +442,7 @@ public class CallbacksSecurityTests {
 	@Test
 	public void testTrustedFactoryMethod() throws Exception {
 		try {
-			beanFactory.getBean("privileged-static-factory-method");
+			this.beanFactory.getBean("privileged-static-factory-method");
 			fail("expected security exception");
 		}
 		catch (BeanCreationException ex) {
@@ -453,7 +453,7 @@ public class CallbacksSecurityTests {
 	@Test
 	public void testConstructor() throws Exception {
 		try {
-			beanFactory.getBean("constructor");
+			this.beanFactory.getBean("constructor");
 			fail("expected security exception");
 		}
 		catch (BeanCreationException ex) {
@@ -464,14 +464,14 @@ public class CallbacksSecurityTests {
 
 	@Test
 	public void testContainerPrivileges() throws Exception {
-		AccessControlContext acc = provider.getAccessControlContext();
+		AccessControlContext acc = this.provider.getAccessControlContext();
 
 		AccessController.doPrivileged(new PrivilegedExceptionAction<Object>() {
 
 			@Override
 			public Object run() throws Exception {
-				beanFactory.getBean("working-factory-method");
-				beanFactory.getBean("container-execution");
+				CallbacksSecurityTests.this.beanFactory.getBean("working-factory-method");
+				CallbacksSecurityTests.this.beanFactory.getBean("container-execution");
 				return null;
 			}
 		}, acc);
@@ -480,14 +480,14 @@ public class CallbacksSecurityTests {
 	@Test
 	public void testPropertyInjection() throws Exception {
 		try {
-			beanFactory.getBean("property-injection");
+			this.beanFactory.getBean("property-injection");
 			fail("expected security exception");
 		}
 		catch (BeanCreationException ex) {
 			assertTrue(ex.getMessage().contains("security"));
 		}
 
-		beanFactory.getBean("working-property-injection");
+		this.beanFactory.getBean("working-property-injection");
 	}
 
 	@Test
@@ -514,7 +514,7 @@ public class CallbacksSecurityTests {
 
 	@Test
 	public void testTrustedExecution() throws Exception {
-		beanFactory.setSecurityContextProvider(null);
+		this.beanFactory.setSecurityContextProvider(null);
 
 		Permissions perms = new Permissions();
 		perms.add(new AuthPermission("getSubject"));
@@ -534,23 +534,23 @@ public class CallbacksSecurityTests {
 				assertEquals("user1", getCurrentSubjectName());
 				assertEquals(false, NonPrivilegedBean.destroyed);
 
-				beanFactory.getBean("trusted-spring-callbacks");
-				beanFactory.getBean("trusted-custom-init-destroy");
+				CallbacksSecurityTests.this.beanFactory.getBean("trusted-spring-callbacks");
+				CallbacksSecurityTests.this.beanFactory.getBean("trusted-custom-init-destroy");
 				// the factory is a prototype - ask for multiple instances
-				beanFactory.getBean("trusted-spring-factory");
-				beanFactory.getBean("trusted-spring-factory");
-				beanFactory.getBean("trusted-spring-factory");
+				CallbacksSecurityTests.this.beanFactory.getBean("trusted-spring-factory");
+				CallbacksSecurityTests.this.beanFactory.getBean("trusted-spring-factory");
+				CallbacksSecurityTests.this.beanFactory.getBean("trusted-spring-factory");
 
-				beanFactory.getBean("trusted-factory-bean");
-				beanFactory.getBean("trusted-static-factory-method");
-				beanFactory.getBean("trusted-factory-method");
-				beanFactory.getBean("trusted-property-injection");
-				beanFactory.getBean("trusted-working-property-injection");
+				CallbacksSecurityTests.this.beanFactory.getBean("trusted-factory-bean");
+				CallbacksSecurityTests.this.beanFactory.getBean("trusted-static-factory-method");
+				CallbacksSecurityTests.this.beanFactory.getBean("trusted-factory-method");
+				CallbacksSecurityTests.this.beanFactory.getBean("trusted-property-injection");
+				CallbacksSecurityTests.this.beanFactory.getBean("trusted-working-property-injection");
 
-				beanFactory.destroySingletons();
+				CallbacksSecurityTests.this.beanFactory.destroySingletons();
 				assertEquals(true, NonPrivilegedBean.destroyed);
 				return null;
 			}
-		}, provider.getAccessControlContext());
+		}, this.provider.getAccessControlContext());
 	}
 }

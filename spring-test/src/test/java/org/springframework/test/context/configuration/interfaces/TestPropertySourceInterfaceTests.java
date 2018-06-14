@@ -45,7 +45,7 @@ public class TestPropertySourceInterfaceTests implements TestPropertySourceTestI
 	}
 
 	private String property(String key) {
-		return env.getProperty(key);
+		return this.env.getProperty(key);
 	}
 
 

@@ -50,8 +50,8 @@ public class Spr12636Tests {
 		this.context = new AnnotationConfigApplicationContext(
 				UserServiceTwo.class, UserServiceOne.class, UserServiceCollector.class);
 		UserServiceCollector bean = this.context.getBean(UserServiceCollector.class);
-		assertSame(context.getBean("serviceOne", UserService.class), bean.userServices.get(0));
-		assertSame(context.getBean("serviceTwo", UserService.class), bean.userServices.get(1));
+		assertSame(this.context.getBean("serviceOne", UserService.class), bean.userServices.get(0));
+		assertSame(this.context.getBean("serviceTwo", UserService.class), bean.userServices.get(1));
 
 	}
 

@@ -659,7 +659,7 @@ public class WebClientIntegrationTests {
 
 
 		public T getContainerValue() {
-			return containerValue;
+			return this.containerValue;
 		}
 
 		public void setContainerValue(T containerValue) {
@@ -673,7 +673,7 @@ public class WebClientIntegrationTests {
 
 
 		public String getFooValue() {
-			return fooValue;
+			return this.fooValue;
 		}
 
 		public void setFooValue(String fooValue) {

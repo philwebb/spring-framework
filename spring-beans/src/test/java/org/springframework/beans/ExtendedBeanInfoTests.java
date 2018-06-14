@@ -298,7 +298,7 @@ public class ExtendedBeanInfoTests {
 			private String foo;
 
 			public String getFoo() {
-				return foo;
+				return this.foo;
 			}
 
 			public This setFoo(String foo) {
@@ -311,7 +311,7 @@ public class ExtendedBeanInfoTests {
 			private int bar = -1;
 
 			public int getBar() {
-				return bar;
+				return this.bar;
 			}
 
 			public C setBar(int bar) {

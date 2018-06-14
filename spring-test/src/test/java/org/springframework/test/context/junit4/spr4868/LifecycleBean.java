@@ -33,12 +33,12 @@ class LifecycleBean {
 
 	@PostConstruct
 	public void init() {
-		logger.info("initializing");
+		this.logger.info("initializing");
 	}
 
 	@PreDestroy
 	public void destroy() {
-		logger.info("destroying");
+		this.logger.info("destroying");
 	}
 
 }

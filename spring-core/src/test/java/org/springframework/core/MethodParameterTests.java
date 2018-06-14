@@ -47,62 +47,62 @@ public class MethodParameterTests {
 
 	@Before
 	public void setup() throws NoSuchMethodException {
-		method = getClass().getMethod("method", String.class, Long.TYPE);
-		stringParameter = new MethodParameter(method, 0);
-		longParameter = new MethodParameter(method, 1);
-		intReturnType = new MethodParameter(method, -1);
+		this.method = getClass().getMethod("method", String.class, Long.TYPE);
+		this.stringParameter = new MethodParameter(this.method, 0);
+		this.longParameter = new MethodParameter(this.method, 1);
+		this.intReturnType = new MethodParameter(this.method, -1);
 	}
 
 
 	@Test
 	public void testEquals() throws NoSuchMethodException {
-		assertEquals(stringParameter, stringParameter);
-		assertEquals(longParameter, longParameter);
-		assertEquals(intReturnType, intReturnType);
+		assertEquals(this.stringParameter, this.stringParameter);
+		assertEquals(this.longParameter, this.longParameter);
+		assertEquals(this.intReturnType, this.intReturnType);
 
-		assertFalse(stringParameter.equals(longParameter));
-		assertFalse(stringParameter.equals(intReturnType));
-		assertFalse(longParameter.equals(stringParameter));
-		assertFalse(longParameter.equals(intReturnType));
-		assertFalse(intReturnType.equals(stringParameter));
-		assertFalse(intReturnType.equals(longParameter));
+		assertFalse(this.stringParameter.equals(this.longParameter));
+		assertFalse(this.stringParameter.equals(this.intReturnType));
+		assertFalse(this.longParameter.equals(this.stringParameter));
+		assertFalse(this.longParameter.equals(this.intReturnType));
+		assertFalse(this.intReturnType.equals(this.stringParameter));
+		assertFalse(this.intReturnType.equals(this.longParameter));
 
 		Method method = getClass().getMethod("method", String.class, Long.TYPE);
 		MethodParameter methodParameter = new MethodParameter(method, 0);
-		assertEquals(stringParameter, methodParameter);
-		assertEquals(methodParameter, stringParameter);
-		assertNotEquals(longParameter, methodParameter);
-		assertNotEquals(methodParameter, longParameter);
+		assertEquals(this.stringParameter, methodParameter);
+		assertEquals(methodParameter, this.stringParameter);
+		assertNotEquals(this.longParameter, methodParameter);
+		assertNotEquals(methodParameter, this.longParameter);
 	}
 
 	@Test
 	public void testHashCode() throws NoSuchMethodException {
-		assertEquals(stringParameter.hashCode(), stringParameter.hashCode());
-		assertEquals(longParameter.hashCode(), longParameter.hashCode());
-		assertEquals(intReturnType.hashCode(), intReturnType.hashCode());
+		assertEquals(this.stringParameter.hashCode(), this.stringParameter.hashCode());
+		assertEquals(this.longParameter.hashCode(), this.longParameter.hashCode());
+		assertEquals(this.intReturnType.hashCode(), this.intReturnType.hashCode());
 
 		Method method = getClass().getMethod("method", String.class, Long.TYPE);
 		MethodParameter methodParameter = new MethodParameter(method, 0);
-		assertEquals(stringParameter.hashCode(), methodParameter.hashCode());
-		assertNotEquals(longParameter.hashCode(), methodParameter.hashCode());
+		assertEquals(this.stringParameter.hashCode(), methodParameter.hashCode());
+		assertNotEquals(this.longParameter.hashCode(), methodParameter.hashCode());
 	}
 
 	@Test
 	@SuppressWarnings("deprecation")
 	public void testFactoryMethods() {
-		assertEquals(stringParameter, MethodParameter.forMethodOrConstructor(method, 0));
-		assertEquals(longParameter, MethodParameter.forMethodOrConstructor(method, 1));
+		assertEquals(this.stringParameter, MethodParameter.forMethodOrConstructor(this.method, 0));
+		assertEquals(this.longParameter, MethodParameter.forMethodOrConstructor(this.method, 1));
 
-		assertEquals(stringParameter, MethodParameter.forExecutable(method, 0));
-		assertEquals(longParameter, MethodParameter.forExecutable(method, 1));
+		assertEquals(this.stringParameter, MethodParameter.forExecutable(this.method, 0));
+		assertEquals(this.longParameter, MethodParameter.forExecutable(this.method, 1));
 
-		assertEquals(stringParameter, MethodParameter.forParameter(method.getParameters()[0]));
-		assertEquals(longParameter, MethodParameter.forParameter(method.getParameters()[1]));
+		assertEquals(this.stringParameter, MethodParameter.forParameter(this.method.getParameters()[0]));
+		assertEquals(this.longParameter, MethodParameter.forParameter(this.method.getParameters()[1]));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testIndexValidation() {
-		new MethodParameter(method, 2);
+		new MethodParameter(this.method, 2);
 	}
 
 	@Test

@@ -44,7 +44,7 @@ public class ClassHierarchyWithMergedConfigLevelTwoTests extends ClassHierarchyW
 
 		@Bean
 		public String order() {
-			return userConfig.user() + " + order";
+			return this.userConfig.user() + " + order";
 		}
 	}
 
@@ -57,7 +57,7 @@ public class ClassHierarchyWithMergedConfigLevelTwoTests extends ClassHierarchyW
 	@Override
 	public void loadContextHierarchy() {
 		super.loadContextHierarchy();
-		assertEquals("parent + user + order", order);
+		assertEquals("parent + user + order", this.order);
 	}
 
 }

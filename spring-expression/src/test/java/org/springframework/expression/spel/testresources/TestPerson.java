@@ -21,13 +21,13 @@ public class TestPerson {
 		private TestAddress address;
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 		public void setName(String name) {
 			this.name = name;
 		}
 		public TestAddress getAddress() {
-			return address;
+			return this.address;
 		}
 		public void setAddress(TestAddress address) {
 			this.address = address;

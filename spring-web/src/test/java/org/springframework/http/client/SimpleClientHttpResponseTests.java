@@ -117,7 +117,7 @@ public class SimpleClientHttpResponseTests {
 		}
 
 		public boolean isClosed() {
-			return closed;
+			return this.closed;
 		}
 
 		@Override

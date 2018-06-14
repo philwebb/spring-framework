@@ -97,23 +97,23 @@ class ConstructorDependenciesBean implements Serializable {
 	}
 
 	public int getAge() {
-		return age;
+		return this.age;
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public TestBean getSpouse1() {
-		return spouse1;
+		return this.spouse1;
 	}
 
 	public TestBean getSpouse2() {
-		return spouse2;
+		return this.spouse2;
 	}
 
 	public IndexedTestBean getOther() {
-		return other;
+		return this.other;
 	}
 
 	public void setAge(int age) {
@@ -144,11 +144,11 @@ class SimpleConstructorArgBean {
 	}
 
 	public int getAge() {
-		return age;
+		return this.age;
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 }
 
@@ -178,7 +178,7 @@ abstract class ConstructorInjectedOverrides {
 	protected abstract FactoryMethods createFactoryMethods();
 
 	public String getSetterString() {
-		return setterString;
+		return this.setterString;
 	}
 
 	public void setSetterString(String setterString) {
@@ -284,7 +284,7 @@ class DummyReferencer {
 	}
 
 	public DummyFactory getDummyFactory() {
-		return dummyFactory;
+		return this.dummyFactory;
 	}
 
 	public void setTestBean1(TestBean testBean1) {
@@ -292,7 +292,7 @@ class DummyReferencer {
 	}
 
 	public TestBean getTestBean1() {
-		return testBean1;
+		return this.testBean1;
 	}
 
 	public void setTestBean2(TestBean testBean2) {
@@ -300,7 +300,7 @@ class DummyReferencer {
 	}
 
 	public TestBean getTestBean2() {
-		return testBean2;
+		return this.testBean2;
 	}
 }
 
@@ -386,11 +386,11 @@ class FactoryMethods {
 	}
 
 	public int getNum() {
-		return num;
+		return this.num;
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**
@@ -432,7 +432,7 @@ class MapAndSet {
 	}
 
 	public Object getObject() {
-		return obj;
+		return this.obj;
 	}
 }
 
@@ -461,7 +461,7 @@ class MixedCollectionBean {
 	}
 
 	public Collection<?> getJumble() {
-		return jumble;
+		return this.jumble;
 	}
 }
 
@@ -564,7 +564,7 @@ class ProtectedLifecycleBean implements BeanNameAware, BeanFactoryAware, Initial
 	}
 
 	public boolean isInitMethodDeclared() {
-		return initMethodDeclared;
+		return this.initMethodDeclared;
 	}
 
 	@Override
@@ -573,7 +573,7 @@ class ProtectedLifecycleBean implements BeanNameAware, BeanFactoryAware, Initial
 	}
 
 	public String getBeanName() {
-		return beanName;
+		return this.beanName;
 	}
 
 	@Override
@@ -652,7 +652,7 @@ class ProtectedLifecycleBean implements BeanNameAware, BeanFactoryAware, Initial
 	}
 
 	public boolean isDestroyed() {
-		return destroyed;
+		return this.destroyed;
 	}
 
 
@@ -723,14 +723,14 @@ class SingleSimpleTypeConstructorBean {
 	}
 
 	public boolean isSingleBoolean() {
-		return singleBoolean;
+		return this.singleBoolean;
 	}
 
 	public boolean isSecondBoolean() {
-		return secondBoolean;
+		return this.secondBoolean;
 	}
 
 	public String getTestString() {
-		return testString;
+		return this.testString;
 	}
 }

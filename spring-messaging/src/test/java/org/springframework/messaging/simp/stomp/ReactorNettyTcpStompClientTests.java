@@ -180,10 +180,10 @@ public class ReactorNettyTcpStompClientTests {
 					}
 					@Override
 					public void handleFrame(StompHeaders headers, @Nullable Object payload) {
-						received.add((String) payload);
+						ConsumingHandler.this.received.add((String) payload);
 					}
 				});
-				subscription.addReceiptTask(subscriptionLatch::countDown);
+				subscription.addReceiptTask(this.subscriptionLatch::countDown);
 			}
 		}
 

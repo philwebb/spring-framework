@@ -61,7 +61,7 @@ public class ObjectFactoryCreatingFactoryBeanTests {
 
 	@Test
 	public void testFactoryOperation() throws Exception {
-		FactoryTestBean testBean = beanFactory.getBean("factoryTestBean", FactoryTestBean.class);
+		FactoryTestBean testBean = this.beanFactory.getBean("factoryTestBean", FactoryTestBean.class);
 		ObjectFactory<?> objectFactory = testBean.getObjectFactory();
 
 		Date date1 = (Date) objectFactory.getObject();
@@ -71,7 +71,7 @@ public class ObjectFactoryCreatingFactoryBeanTests {
 
 	@Test
 	public void testFactorySerialization() throws Exception {
-		FactoryTestBean testBean = beanFactory.getBean("factoryTestBean", FactoryTestBean.class);
+		FactoryTestBean testBean = this.beanFactory.getBean("factoryTestBean", FactoryTestBean.class);
 		ObjectFactory<?> objectFactory = testBean.getObjectFactory();
 
 		objectFactory = (ObjectFactory) SerializationTestUtils.serializeAndDeserialize(objectFactory);
@@ -83,7 +83,7 @@ public class ObjectFactoryCreatingFactoryBeanTests {
 
 	@Test
 	public void testProviderOperation() throws Exception {
-		ProviderTestBean testBean = beanFactory.getBean("providerTestBean", ProviderTestBean.class);
+		ProviderTestBean testBean = this.beanFactory.getBean("providerTestBean", ProviderTestBean.class);
 		Provider<?> provider = testBean.getProvider();
 
 		Date date1 = (Date) provider.get();
@@ -93,7 +93,7 @@ public class ObjectFactoryCreatingFactoryBeanTests {
 
 	@Test
 	public void testProviderSerialization() throws Exception {
-		ProviderTestBean testBean = beanFactory.getBean("providerTestBean", ProviderTestBean.class);
+		ProviderTestBean testBean = this.beanFactory.getBean("providerTestBean", ProviderTestBean.class);
 		Provider<?> provider = testBean.getProvider();
 
 		provider = (Provider) SerializationTestUtils.serializeAndDeserialize(provider);
@@ -163,7 +163,7 @@ public class ObjectFactoryCreatingFactoryBeanTests {
 		private ObjectFactory<?> objectFactory;
 
 		public ObjectFactory<?> getObjectFactory() {
-			return objectFactory;
+			return this.objectFactory;
 		}
 
 		public void setObjectFactory(ObjectFactory<?> objectFactory) {
@@ -177,7 +177,7 @@ public class ObjectFactoryCreatingFactoryBeanTests {
 		private Provider<?> provider;
 
 		public Provider<?> getProvider() {
-			return provider;
+			return this.provider;
 		}
 
 		public void setProvider(Provider<?> provider) {

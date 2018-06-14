@@ -40,9 +40,9 @@ public class AspectJCacheAnnotationTests extends AbstractCacheAnnotationTests {
 
 	@Test
 	public void testKeyStrategy() throws Exception {
-		AnnotationCacheAspect aspect = ctx.getBean(
+		AnnotationCacheAspect aspect = this.ctx.getBean(
 				"org.springframework.cache.config.internalCacheAspect", AnnotationCacheAspect.class);
-		Assert.assertSame(ctx.getBean("keyGenerator"), aspect.getKeyGenerator());
+		Assert.assertSame(this.ctx.getBean("keyGenerator"), aspect.getKeyGenerator());
 	}
 
 	@Override
@@ -52,8 +52,8 @@ public class AspectJCacheAnnotationTests extends AbstractCacheAnnotationTests {
 		Object r1 = service.multiCache(o1);
 		Object r2 = service.multiCache(o1);
 
-		Cache primary = cm.getCache("primary");
-		Cache secondary = cm.getCache("secondary");
+		Cache primary = this.cm.getCache("primary");
+		Cache secondary = this.cm.getCache("secondary");
 
 		assertSame(r1, r2);
 		assertSame(r1, primary.get(o1).get());

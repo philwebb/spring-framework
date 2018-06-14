@@ -67,8 +67,8 @@ public class ExecutorSubscribableChannelTests {
 
 	@Test
 	public void messageMustNotBeNull() throws Exception {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("Message must not be null");
+		this.thrown.expect(IllegalArgumentException.class);
+		this.thrown.expectMessage("Message must not be null");
 		this.channel.send(null);
 	}
 
@@ -124,7 +124,7 @@ public class ExecutorSubscribableChannelTests {
 		this.channel.subscribe(this.handler);
 		this.channel.subscribe(secondHandler);
 		try {
-			this.channel.send(message);
+			this.channel.send(this.message);
 		}
 		catch (MessageDeliveryException actualException) {
 			assertThat(actualException.getCause(), equalTo(ex));
@@ -134,7 +134,7 @@ public class ExecutorSubscribableChannelTests {
 
 	@Test
 	public void concurrentModification() throws Exception {
-		this.channel.subscribe(message1 -> channel.unsubscribe(handler));
+		this.channel.subscribe(message1 -> this.channel.unsubscribe(this.handler));
 		this.channel.subscribe(this.handler);
 		this.channel.send(this.message);
 		verify(this.handler).handleMessage(this.message);
@@ -203,7 +203,7 @@ public class ExecutorSubscribableChannelTests {
 		@Override
 		public Message<?> beforeHandle(Message<?> message, MessageChannel channel, MessageHandler handler) {
 			assertNotNull(message);
-			counter.incrementAndGet();
+			this.counter.incrementAndGet();
 			return message;
 		}
 

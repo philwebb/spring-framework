@@ -28,7 +28,7 @@ public class ConcreteMessenger implements ConfigurableMessenger {
 
 	@Override
 	public String getMessage() {
-		return message;
+		return this.message;
 	}
 
 	@Override

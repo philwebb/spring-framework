@@ -147,7 +147,7 @@ public class DataBinderFieldAccessTests {
 		MutablePropertyValues pvs = new MutablePropertyValues();
 		pvs.addPropertyValue(new PropertyValue("spouse.name", "Kerry"));
 
-		thrown.expect(NullValueInNestedPathException.class);
+		this.thrown.expect(NullValueInNestedPathException.class);
 		binder.bind(pvs);
 	}
 

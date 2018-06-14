@@ -50,50 +50,50 @@ public class AfterAdviceBindingTests {
 			new ClassPathXmlApplicationContext(getClass().getSimpleName() + ".xml", getClass());
 		AdviceBindingTestAspect afterAdviceAspect = (AdviceBindingTestAspect) ctx.getBean("testAspect");
 
-		testBeanProxy = (ITestBean) ctx.getBean("testBean");
-		assertTrue(AopUtils.isAopProxy(testBeanProxy));
+		this.testBeanProxy = (ITestBean) ctx.getBean("testBean");
+		assertTrue(AopUtils.isAopProxy(this.testBeanProxy));
 
 		// we need the real target too, not just the proxy...
-		testBeanTarget = (TestBean) ((Advised) testBeanProxy).getTargetSource().getTarget();
+		this.testBeanTarget = (TestBean) ((Advised) this.testBeanProxy).getTargetSource().getTarget();
 
-		mockCollaborator = mock(AdviceBindingCollaborator.class);
-		afterAdviceAspect.setCollaborator(mockCollaborator);
+		this.mockCollaborator = mock(AdviceBindingCollaborator.class);
+		afterAdviceAspect.setCollaborator(this.mockCollaborator);
 	}
 
 	@Test
 	public void testOneIntArg() {
-		testBeanProxy.setAge(5);
-		verify(mockCollaborator).oneIntArg(5);
+		this.testBeanProxy.setAge(5);
+		verify(this.mockCollaborator).oneIntArg(5);
 	}
 
 	@Test
 	public void testOneObjectArgBindingProxyWithThis() {
-		testBeanProxy.getAge();
-		verify(mockCollaborator).oneObjectArg(this.testBeanProxy);
+		this.testBeanProxy.getAge();
+		verify(this.mockCollaborator).oneObjectArg(this.testBeanProxy);
 	}
 
 	@Test
 	public void testOneObjectArgBindingTarget() {
-		testBeanProxy.getDoctor();
-		verify(mockCollaborator).oneObjectArg(this.testBeanTarget);
+		this.testBeanProxy.getDoctor();
+		verify(this.mockCollaborator).oneObjectArg(this.testBeanTarget);
 	}
 
 	@Test
 	public void testOneIntAndOneObjectArgs() {
-		testBeanProxy.setAge(5);
-		verify(mockCollaborator).oneIntAndOneObject(5,this.testBeanProxy);
+		this.testBeanProxy.setAge(5);
+		verify(this.mockCollaborator).oneIntAndOneObject(5,this.testBeanProxy);
 	}
 
 	@Test
 	public void testNeedsJoinPoint() {
-		testBeanProxy.getAge();
-		verify(mockCollaborator).needsJoinPoint("getAge");
+		this.testBeanProxy.getAge();
+		verify(this.mockCollaborator).needsJoinPoint("getAge");
 	}
 
 	@Test
 	public void testNeedsJoinPointStaticPart() {
-		testBeanProxy.getAge();
-		verify(mockCollaborator).needsJoinPointStaticPart("getAge");
+		this.testBeanProxy.getAge();
+		verify(this.mockCollaborator).needsJoinPointStaticPart("getAge");
 	}
 
 }

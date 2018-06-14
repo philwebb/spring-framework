@@ -54,7 +54,7 @@ public class AsyncIntegrationTests extends AbstractHttpHandlerIntegrationTests {
 	@Test
 	@Ignore  // TODO: fragile due to socket failures
 	public void basicTest() throws Exception {
-		URI url = new URI("http://localhost:" + port);
+		URI url = new URI("http://localhost:" + this.port);
 		ResponseEntity<String> response = new RestTemplate().exchange(
 				RequestEntity.get(url).build(), String.class);
 
@@ -68,8 +68,8 @@ public class AsyncIntegrationTests extends AbstractHttpHandlerIntegrationTests {
 		public Mono<Void> handle(ServerHttpRequest request, ServerHttpResponse response) {
 			return response.writeWith(Flux.just("h", "e", "l", "l", "o")
 										.delayElements(Duration.ofMillis(100))
-										.publishOn(asyncGroup)
-					.collect(dataBufferFactory::allocateBuffer, (buffer, str) -> buffer.write(str.getBytes())));
+										.publishOn(AsyncIntegrationTests.this.asyncGroup)
+					.collect(AsyncIntegrationTests.this.dataBufferFactory::allocateBuffer, (buffer, str) -> buffer.write(str.getBytes())));
 		}
 	}
 

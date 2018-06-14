@@ -93,16 +93,16 @@ public class SimpleNamingContext implements Context {
 
 	@Override
 	public NamingEnumeration<NameClassPair> list(String root) throws NamingException {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Listing name/class pairs under [" + root + "]");
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Listing name/class pairs under [" + root + "]");
 		}
 		return new NameClassPairEnumeration(this, root);
 	}
 
 	@Override
 	public NamingEnumeration<Binding> listBindings(String root) throws NamingException {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Listing bindings under [" + root + "]");
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Listing bindings under [" + root + "]");
 		}
 		return new BindingEnumeration(this, root);
 	}
@@ -116,8 +116,8 @@ public class SimpleNamingContext implements Context {
 	@Override
 	public Object lookup(String lookupName) throws NameNotFoundException {
 		String name = this.root + lookupName;
-		if (logger.isDebugEnabled()) {
-			logger.debug("Static JNDI lookup: [" + name + "]");
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Static JNDI lookup: [" + name + "]");
 		}
 		if ("".equals(name)) {
 			return new SimpleNamingContext(this.root, this.boundObjects, this.environment);
@@ -153,16 +153,16 @@ public class SimpleNamingContext implements Context {
 	 */
 	@Override
 	public void bind(String name, Object obj) {
-		if (logger.isInfoEnabled()) {
-			logger.info("Static JNDI binding: [" + this.root + name + "] = [" + obj + "]");
+		if (this.logger.isInfoEnabled()) {
+			this.logger.info("Static JNDI binding: [" + this.root + name + "] = [" + obj + "]");
 		}
 		this.boundObjects.put(this.root + name, obj);
 	}
 
 	@Override
 	public void unbind(String name) {
-		if (logger.isInfoEnabled()) {
-			logger.info("Static JNDI remove: [" + this.root + name + "]");
+		if (this.logger.isInfoEnabled()) {
+			this.logger.info("Static JNDI remove: [" + this.root + name + "]");
 		}
 		this.boundObjects.remove(this.root + name);
 	}

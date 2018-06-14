@@ -45,7 +45,7 @@ public class PooledDataBufferTests {
 	}
 
 	private PooledDataBuffer createDataBuffer(int capacity) {
-		return (PooledDataBuffer) dataBufferFactory.allocateBuffer(capacity);
+		return (PooledDataBuffer) this.dataBufferFactory.allocateBuffer(capacity);
 	}
 
 	@Test

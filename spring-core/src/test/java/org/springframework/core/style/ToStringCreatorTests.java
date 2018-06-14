@@ -40,19 +40,19 @@ public class ToStringCreatorTests {
 
 	@Before
 	public void setUp() throws Exception {
-		s1 = new SomeObject() {
+		this.s1 = new SomeObject() {
 			@Override
 			public String toString() {
 				return "A";
 			}
 		};
-		s2 = new SomeObject() {
+		this.s2 = new SomeObject() {
 			@Override
 			public String toString() {
 				return "B";
 			}
 		};
-		s3 = new SomeObject() {
+		this.s3 = new SomeObject() {
 			@Override
 			public String toString() {
 				return "C";
@@ -84,7 +84,7 @@ public class ToStringCreatorTests {
 
 	@Test
 	public void defaultStyleArray() {
-		SomeObject[] array = new SomeObject[] {s1, s2, s3};
+		SomeObject[] array = new SomeObject[] {this.s1, this.s2, this.s3};
 		String str = new ToStringCreator(array).toString();
 		assertEquals("[@" + ObjectUtils.getIdentityHexString(array) +
 				" array<ToStringCreatorTests.SomeObject>[A, B, C]]", str);
@@ -100,9 +100,9 @@ public class ToStringCreatorTests {
 	@Test
 	public void appendList() {
 		List<SomeObject> list = new ArrayList<>();
-		list.add(s1);
-		list.add(s2);
-		list.add(s3);
+		list.add(this.s1);
+		list.add(this.s2);
+		list.add(this.s3);
 		String str = new ToStringCreator(this).append("myLetters", list).toString();
 		assertEquals("[ToStringCreatorTests@" + ObjectUtils.getIdentityHexString(this) + " myLetters = list[A, B, C]]",
 				str);
@@ -111,9 +111,9 @@ public class ToStringCreatorTests {
 	@Test
 	public void appendSet() {
 		Set<SomeObject> set = new LinkedHashSet<>();
-		set.add(s1);
-		set.add(s2);
-		set.add(s3);
+		set.add(this.s1);
+		set.add(this.s2);
+		set.add(this.s3);
 		String str = new ToStringCreator(this).append("myLetters", set).toString();
 		assertEquals("[ToStringCreatorTests@" + ObjectUtils.getIdentityHexString(this) + " myLetters = set[A, B, C]]", str);
 	}

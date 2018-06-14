@@ -56,9 +56,9 @@ public class SingleTestClassWithSingleLevelContextHierarchyTests {
 
 	@Test
 	public void loadContextHierarchy() {
-		assertNotNull("child ApplicationContext", context);
-		assertNull("parent ApplicationContext", context.getParent());
-		assertEquals("foo", foo);
+		assertNotNull("child ApplicationContext", this.context);
+		assertNull("parent ApplicationContext", this.context.getParent());
+		assertEquals("foo", this.foo);
 	}
 
 }

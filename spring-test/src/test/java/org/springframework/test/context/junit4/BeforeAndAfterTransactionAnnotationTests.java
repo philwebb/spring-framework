@@ -107,7 +107,7 @@ public class BeforeAndAfterTransactionAnnotationTests extends AbstractTransactio
 	}
 
 	private void assertShouldBeInTransaction() {
-		boolean shouldBeInTransaction = !testName.getMethodName().equals("nonTransactionalMethod");
+		boolean shouldBeInTransaction = !this.testName.getMethodName().equals("nonTransactionalMethod");
 		assertInTransaction(shouldBeInTransaction);
 	}
 

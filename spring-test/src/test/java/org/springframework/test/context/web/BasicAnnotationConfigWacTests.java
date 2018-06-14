@@ -51,13 +51,13 @@ public class BasicAnnotationConfigWacTests extends AbstractBasicWacTests {
 
 	@Test
 	public void fooEnigmaAutowired() {
-		assertEquals("enigma", foo);
+		assertEquals("enigma", this.foo);
 	}
 
 	@Test
 	public void servletContextAwareBeanProcessed() {
-		assertNotNull(servletContextAwareBean);
-		assertNotNull(servletContextAwareBean.servletContext);
+		assertNotNull(this.servletContextAwareBean);
+		assertNotNull(this.servletContextAwareBean.servletContext);
 	}
 
 }

@@ -41,8 +41,8 @@ public class ActiveProfilesInterfaceTests implements ActiveProfilesTestInterface
 
 	@Test
 	public void profileFromTestInterface() {
-		assertNotNull(employee);
-		assertEquals("dev", employee.getName());
+		assertNotNull(this.employee);
+		assertEquals("dev", this.employee.getName());
 	}
 
 

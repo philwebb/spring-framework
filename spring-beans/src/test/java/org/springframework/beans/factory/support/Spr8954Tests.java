@@ -46,37 +46,37 @@ public class Spr8954Tests {
 
 	@Before
 	public void setUp() {
-		bf = new DefaultListableBeanFactory();
-		bf.registerBeanDefinition("foo", new RootBeanDefinition(FooFactoryBean.class));
-		bf.addBeanPostProcessor(new PredictingBPP());
+		this.bf = new DefaultListableBeanFactory();
+		this.bf.registerBeanDefinition("foo", new RootBeanDefinition(FooFactoryBean.class));
+		this.bf.addBeanPostProcessor(new PredictingBPP());
 	}
 
 	@Test
 	public void repro() {
-		assertThat(bf.getBean("foo"), instanceOf(Foo.class));
-		assertThat(bf.getBean("&foo"), instanceOf(FooFactoryBean.class));
-		assertThat(bf.isTypeMatch("&foo", FactoryBean.class), is(true));
+		assertThat(this.bf.getBean("foo"), instanceOf(Foo.class));
+		assertThat(this.bf.getBean("&foo"), instanceOf(FooFactoryBean.class));
+		assertThat(this.bf.isTypeMatch("&foo", FactoryBean.class), is(true));
 
 		@SuppressWarnings("rawtypes")
-		Map<String, FactoryBean> fbBeans = bf.getBeansOfType(FactoryBean.class);
+		Map<String, FactoryBean> fbBeans = this.bf.getBeansOfType(FactoryBean.class);
 		assertThat(fbBeans.size(), is(1));
 		assertThat(fbBeans.keySet(), hasItem("&foo"));
 
-		Map<String, AnInterface> aiBeans = bf.getBeansOfType(AnInterface.class);
+		Map<String, AnInterface> aiBeans = this.bf.getBeansOfType(AnInterface.class);
 		assertThat(aiBeans.size(), is(1));
 		assertThat(aiBeans.keySet(), hasItem("&foo"));
 	}
 
 	@Test
 	public void findsBeansByTypeIfNotInstantiated() {
-		assertThat(bf.isTypeMatch("&foo", FactoryBean.class), is(true));
+		assertThat(this.bf.isTypeMatch("&foo", FactoryBean.class), is(true));
 
 		@SuppressWarnings("rawtypes")
-		Map<String, FactoryBean> fbBeans = bf.getBeansOfType(FactoryBean.class);
+		Map<String, FactoryBean> fbBeans = this.bf.getBeansOfType(FactoryBean.class);
 		assertThat(1, equalTo(fbBeans.size()));
 		assertThat("&foo", equalTo(fbBeans.keySet().iterator().next()));
 
-		Map<String, AnInterface> aiBeans = bf.getBeansOfType(AnInterface.class);
+		Map<String, AnInterface> aiBeans = this.bf.getBeansOfType(AnInterface.class);
 		assertThat(aiBeans.size(), is(1));
 		assertThat(aiBeans.keySet(), hasItem("&foo"));
 	}
@@ -86,10 +86,10 @@ public class Spr8954Tests {
 	 */
 	@Test
 	public void findsFactoryBeanNameByTypeWithoutInstantiation() {
-		String[] names = bf.getBeanNamesForType(AnInterface.class, false, false);
+		String[] names = this.bf.getBeanNamesForType(AnInterface.class, false, false);
 		assertThat(Arrays.asList(names), hasItem("&foo"));
 
-		Map<String, AnInterface> beans = bf.getBeansOfType(AnInterface.class, false, false);
+		Map<String, AnInterface> beans = this.bf.getBeansOfType(AnInterface.class, false, false);
 		assertThat(beans.size(), is(1));
 		assertThat(beans.keySet(), hasItem("&foo"));
 	}

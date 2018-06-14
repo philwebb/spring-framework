@@ -54,22 +54,22 @@ public class JCacheCustomInterceptorTests {
 
 	@Before
 	public void setup() {
-		ctx = new AnnotationConfigApplicationContext(EnableCachingConfig.class);
-		cs = ctx.getBean("service", JCacheableService.class);
-		exceptionCache = ctx.getBean("exceptionCache", Cache.class);
+		this.ctx = new AnnotationConfigApplicationContext(EnableCachingConfig.class);
+		this.cs = this.ctx.getBean("service", JCacheableService.class);
+		this.exceptionCache = this.ctx.getBean("exceptionCache", Cache.class);
 	}
 
 	@After
 	public void tearDown() {
-		if (ctx != null) {
-			ctx.close();
+		if (this.ctx != null) {
+			this.ctx.close();
 		}
 	}
 
 
 	@Test
 	public void onlyOneInterceptorIsAvailable() {
-		Map<String, JCacheInterceptor> interceptors = ctx.getBeansOfType(JCacheInterceptor.class);
+		Map<String, JCacheInterceptor> interceptors = this.ctx.getBeansOfType(JCacheInterceptor.class);
 		assertEquals("Only one interceptor should be defined", 1, interceptors.size());
 		JCacheInterceptor interceptor = interceptors.values().iterator().next();
 		assertEquals("Custom interceptor not defined", TestCacheInterceptor.class, interceptor.getClass());
@@ -77,14 +77,14 @@ public class JCacheCustomInterceptorTests {
 
 	@Test
 	public void customInterceptorAppliesWithRuntimeException() {
-		Object o = cs.cacheWithException("id", true);
+		Object o = this.cs.cacheWithException("id", true);
 		assertEquals(55L, o); // See TestCacheInterceptor
 	}
 
 	@Test
 	public void customInterceptorAppliesWithCheckedException() {
 		try {
-			cs.cacheWithCheckedException("id", true);
+			this.cs.cacheWithCheckedException("id", true);
 			fail("Should have failed");
 		}
 		catch (RuntimeException e) {

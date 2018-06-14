@@ -92,7 +92,7 @@ public class ConfigurationClassPostConstructAndAutowiringTests {
 
 		@Bean
 		public TestBean beanMethod() {
-			beanMethodCallCount++;
+			this.beanMethodCallCount++;
 			TestBean testBean = new TestBean();
 			testBean.setAge(1);
 			return testBean;

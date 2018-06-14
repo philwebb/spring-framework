@@ -205,7 +205,7 @@ public class MessageWriterResultHandlerTests {
 		}
 
 		public String getParentProperty() {
-			return parentProperty;
+			return this.parentProperty;
 		}
 
 		public void setParentProperty(String parentProperty) {
@@ -253,12 +253,12 @@ public class MessageWriterResultHandlerTests {
 
 		@Override
 		public Long getId() {
-			return id;
+			return this.id;
 		}
 
 		@SuppressWarnings("unused")
 		public String getName() {
-			return name;
+			return this.name;
 		}
 	}
 

@@ -46,7 +46,7 @@ public class LocaleContextResolverIntegrationTests extends AbstractRouterFunctio
 
 	@Test
 	public void fixedLocale() {
-		Mono<ClientResponse> result = webClient
+		Mono<ClientResponse> result = this.webClient
 				.get()
 				.uri("http://localhost:" + this.port + "/")
 				.exchange();
@@ -101,7 +101,7 @@ public class LocaleContextResolverIntegrationTests extends AbstractRouterFunctio
 		@Override
 		public Mono<Void> render(@Nullable Map<String, ?> model, @Nullable MediaType contentType,
 				ServerWebExchange exchange) {
-			exchange.getResponse().getHeaders().setContentLanguage(locale);
+			exchange.getResponse().getHeaders().setContentLanguage(this.locale);
 			return Mono.empty();
 		}
 	}

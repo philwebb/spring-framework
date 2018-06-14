@@ -49,11 +49,11 @@ public class ExtendedServletRequestDataBinderTests {
 		Map<String, String> uriTemplateVars = new HashMap<>();
 		uriTemplateVars.put("name", "nameValue");
 		uriTemplateVars.put("age", "25");
-		request.setAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, uriTemplateVars);
+		this.request.setAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, uriTemplateVars);
 
 		TestBean target = new TestBean();
 		WebDataBinder binder = new ExtendedServletRequestDataBinder(target, "");
-		((ServletRequestDataBinder) binder).bind(request);
+		((ServletRequestDataBinder) binder).bind(this.request);
 
 		assertEquals("nameValue", target.getName());
 		assertEquals(25, target.getAge());
@@ -61,16 +61,16 @@ public class ExtendedServletRequestDataBinderTests {
 
 	@Test
 	public void uriTemplateVarAndRequestParam() throws Exception {
-		request.addParameter("age", "35");
+		this.request.addParameter("age", "35");
 
 		Map<String, String> uriTemplateVars = new HashMap<>();
 		uriTemplateVars.put("name", "nameValue");
 		uriTemplateVars.put("age", "25");
-		request.setAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, uriTemplateVars);
+		this.request.setAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, uriTemplateVars);
 
 		TestBean target = new TestBean();
 		WebDataBinder binder = new ExtendedServletRequestDataBinder(target, "");
-		((ServletRequestDataBinder) binder).bind(request);
+		((ServletRequestDataBinder) binder).bind(this.request);
 
 		assertEquals("nameValue", target.getName());
 		assertEquals(35, target.getAge());
@@ -80,7 +80,7 @@ public class ExtendedServletRequestDataBinderTests {
 	public void noUriTemplateVars() throws Exception {
 		TestBean target = new TestBean();
 		WebDataBinder binder = new ExtendedServletRequestDataBinder(target, "");
-		((ServletRequestDataBinder) binder).bind(request);
+		((ServletRequestDataBinder) binder).bind(this.request);
 
 		assertEquals(null, target.getName());
 		assertEquals(0, target.getAge());

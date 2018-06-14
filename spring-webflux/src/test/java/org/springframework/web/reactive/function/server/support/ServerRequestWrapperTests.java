@@ -50,140 +50,140 @@ public class ServerRequestWrapperTests {
 
 	@Before
 	public void createWrapper() {
-		mockRequest = mock(ServerRequest.class);
-		wrapper = new ServerRequestWrapper(mockRequest);
+		this.mockRequest = mock(ServerRequest.class);
+		this.wrapper = new ServerRequestWrapper(this.mockRequest);
 	}
 
 	@Test
 	public void request() throws Exception {
-		assertSame(mockRequest, wrapper.request());
+		assertSame(this.mockRequest, this.wrapper.request());
 	}
 
 	@Test
 	public void method() throws Exception {
 		HttpMethod method = HttpMethod.POST;
-		when(mockRequest.method()).thenReturn(method);
+		when(this.mockRequest.method()).thenReturn(method);
 
-		assertSame(method, wrapper.method());
+		assertSame(method, this.wrapper.method());
 	}
 
 	@Test
 	public void uri() throws Exception {
 		URI uri = URI.create("https://example.com");
-		when(mockRequest.uri()).thenReturn(uri);
+		when(this.mockRequest.uri()).thenReturn(uri);
 
-		assertSame(uri, wrapper.uri());
+		assertSame(uri, this.wrapper.uri());
 	}
 
 	@Test
 	public void path() throws Exception {
 		String path = "/foo/bar";
-		when(mockRequest.path()).thenReturn(path);
+		when(this.mockRequest.path()).thenReturn(path);
 
-		assertSame(path, wrapper.path());
+		assertSame(path, this.wrapper.path());
 	}
 
 	@Test
 	public void headers() throws Exception {
 		ServerRequest.Headers headers = mock(ServerRequest.Headers.class);
-		when(mockRequest.headers()).thenReturn(headers);
+		when(this.mockRequest.headers()).thenReturn(headers);
 
-		assertSame(headers, wrapper.headers());
+		assertSame(headers, this.wrapper.headers());
 	}
 
 	@Test
 	public void attribute() throws Exception {
 		String name = "foo";
 		String value = "bar";
-		when(mockRequest.attribute(name)).thenReturn(Optional.of(value));
+		when(this.mockRequest.attribute(name)).thenReturn(Optional.of(value));
 
-		assertEquals(Optional.of(value), wrapper.attribute(name));
+		assertEquals(Optional.of(value), this.wrapper.attribute(name));
 	}
 
 	@Test
 	public void queryParam() throws Exception {
 		String name = "foo";
 		String value = "bar";
-		when(mockRequest.queryParam(name)).thenReturn(Optional.of(value));
+		when(this.mockRequest.queryParam(name)).thenReturn(Optional.of(value));
 
-		assertEquals(Optional.of(value), wrapper.queryParam(name));
+		assertEquals(Optional.of(value), this.wrapper.queryParam(name));
 	}
 
 	@Test
 	public void queryParams() throws Exception {
 		MultiValueMap<String, String> value = new LinkedMultiValueMap<>();
 		value.add("foo", "bar");
-		when(mockRequest.queryParams()).thenReturn(value);
+		when(this.mockRequest.queryParams()).thenReturn(value);
 
-		assertSame(value, wrapper.queryParams());
+		assertSame(value, this.wrapper.queryParams());
 	}
 
 	@Test
 	public void pathVariable() throws Exception {
 		String name = "foo";
 		String value = "bar";
-		when(mockRequest.pathVariable(name)).thenReturn(value);
+		when(this.mockRequest.pathVariable(name)).thenReturn(value);
 
-		assertEquals(value, wrapper.pathVariable(name));
+		assertEquals(value, this.wrapper.pathVariable(name));
 	}
 
 	@Test
 	public void pathVariables() throws Exception {
 		Map<String, String> pathVariables = Collections.singletonMap("foo", "bar");
-		when(mockRequest.pathVariables()).thenReturn(pathVariables);
+		when(this.mockRequest.pathVariables()).thenReturn(pathVariables);
 
-		assertSame(pathVariables, wrapper.pathVariables());
+		assertSame(pathVariables, this.wrapper.pathVariables());
 	}
 
 	@Test
 	public void cookies() throws Exception {
 		MultiValueMap<String, HttpCookie> cookies = mock(MultiValueMap.class);
-		when(mockRequest.cookies()).thenReturn(cookies);
+		when(this.mockRequest.cookies()).thenReturn(cookies);
 
-		assertSame(cookies, wrapper.cookies());
+		assertSame(cookies, this.wrapper.cookies());
 	}
 
 	@Test
 	public void bodyExtractor() throws Exception {
 		Mono<String> result = Mono.just("foo");
 		BodyExtractor<Mono<String>, ReactiveHttpInputMessage> extractor = BodyExtractors.toMono(String.class);
-		when(mockRequest.body(extractor)).thenReturn(result);
+		when(this.mockRequest.body(extractor)).thenReturn(result);
 
-		assertSame(result, wrapper.body(extractor));
+		assertSame(result, this.wrapper.body(extractor));
 	}
 
 	@Test
 	public void bodyToMonoClass() throws Exception {
 		Mono<String> result = Mono.just("foo");
-		when(mockRequest.bodyToMono(String.class)).thenReturn(result);
+		when(this.mockRequest.bodyToMono(String.class)).thenReturn(result);
 
-		assertSame(result, wrapper.bodyToMono(String.class));
+		assertSame(result, this.wrapper.bodyToMono(String.class));
 	}
 
 	@Test
 	public void bodyToMonoParameterizedTypeReference() throws Exception {
 		Mono<String> result = Mono.just("foo");
 		ParameterizedTypeReference<String> reference = new ParameterizedTypeReference<String>() {};
-		when(mockRequest.bodyToMono(reference)).thenReturn(result);
+		when(this.mockRequest.bodyToMono(reference)).thenReturn(result);
 
-		assertSame(result, wrapper.bodyToMono(reference));
+		assertSame(result, this.wrapper.bodyToMono(reference));
 	}
 
 	@Test
 	public void bodyToFluxClass() throws Exception {
 		Flux<String> result = Flux.just("foo");
-		when(mockRequest.bodyToFlux(String.class)).thenReturn(result);
+		when(this.mockRequest.bodyToFlux(String.class)).thenReturn(result);
 
-		assertSame(result, wrapper.bodyToFlux(String.class));
+		assertSame(result, this.wrapper.bodyToFlux(String.class));
 	}
 
 	@Test
 	public void bodyToFluxParameterizedTypeReference() throws Exception {
 		Flux<String> result = Flux.just("foo");
 		ParameterizedTypeReference<String> reference = new ParameterizedTypeReference<String>() {};
-		when(mockRequest.bodyToFlux(reference)).thenReturn(result);
+		when(this.mockRequest.bodyToFlux(reference)).thenReturn(result);
 
-		assertSame(result, wrapper.bodyToFlux(reference));
+		assertSame(result, this.wrapper.bodyToFlux(reference));
 	}
 
 }

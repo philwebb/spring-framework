@@ -163,9 +163,9 @@ public class MethodInvocationTests extends AbstractExpressionTests {
 		SpelExpressionParser parser = new SpelExpressionParser();
 		Expression expr = parser.parseExpression("throwException(#bar)");
 
-		context.setVariable("bar", 2);
+		this.context.setVariable("bar", 2);
 		try {
-			expr.getValue(context);
+			expr.getValue(this.context);
 			fail();
 		}
 		catch (Exception ex) {
@@ -187,9 +187,9 @@ public class MethodInvocationTests extends AbstractExpressionTests {
 		SpelExpressionParser parser = new SpelExpressionParser();
 		Expression expr = parser.parseExpression("throwException(#bar)");
 
-		context.setVariable("bar", 4);
+		this.context.setVariable("bar", 4);
 		try {
-			expr.getValue(context);
+			expr.getValue(this.context);
 			fail();
 		}
 		catch (ExpressionInvocationTargetException ex) {
@@ -292,7 +292,7 @@ public class MethodInvocationTests extends AbstractExpressionTests {
 
 	@Test
 	public void testMethodOfClass() throws Exception {
-		Expression expression = parser.parseExpression("getName()");
+		Expression expression = this.parser.parseExpression("getName()");
 		Object value = expression.getValue(new StandardEvaluationContext(String.class));
 		assertEquals("java.lang.String", value);
 	}
@@ -311,7 +311,7 @@ public class MethodInvocationTests extends AbstractExpressionTests {
 				return null;
 			}
 		});
-		Expression expression = parser.parseExpression("@service.handleBytes(#root)");
+		Expression expression = this.parser.parseExpression("@service.handleBytes(#root)");
 		byte[] outBytes = expression.getValue(context, byte[].class);
 		assertSame(bytes, outBytes);
 	}
@@ -340,10 +340,10 @@ public class MethodInvocationTests extends AbstractExpressionTests {
 
 		@Override
 		public List<Method> filter(List<Method> methods) {
-			filterCalled = true;
+			this.filterCalled = true;
 			List<Method> forRemoval = new ArrayList<>();
 			for (Method method: methods) {
-				if (removeIfNotAnnotated && !isAnnotated(method)) {
+				if (this.removeIfNotAnnotated && !isAnnotated(method)) {
 					forRemoval.add(method);
 				}
 			}

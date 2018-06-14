@@ -36,42 +36,42 @@ public class InternetAddressEditorTests {
 
 	@Test
 	public void uninitialized() {
-		assertEquals("Uninitialized editor did not return empty value string", EMPTY, editor.getAsText());
+		assertEquals("Uninitialized editor did not return empty value string", EMPTY, this.editor.getAsText());
 	}
 
 	@Test
 	public void setNull() {
-		editor.setAsText(null);
-		assertEquals("Setting null did not result in empty value string", EMPTY, editor.getAsText());
+		this.editor.setAsText(null);
+		assertEquals("Setting null did not result in empty value string", EMPTY, this.editor.getAsText());
 	}
 
 	@Test
 	public void setEmpty() {
-		editor.setAsText(EMPTY);
-		assertEquals("Setting empty string did not result in empty value string", EMPTY, editor.getAsText());
+		this.editor.setAsText(EMPTY);
+		assertEquals("Setting empty string did not result in empty value string", EMPTY, this.editor.getAsText());
 	}
 
 	@Test
 	public void allWhitespace() {
-		editor.setAsText(" ");
-		assertEquals("All whitespace was not recognized", EMPTY, editor.getAsText());
+		this.editor.setAsText(" ");
+		assertEquals("All whitespace was not recognized", EMPTY, this.editor.getAsText());
 	}
 
 	@Test
 	public void simpleGoodAddess() {
-		editor.setAsText(SIMPLE);
-		assertEquals("Simple email address failed", SIMPLE, editor.getAsText());
+		this.editor.setAsText(SIMPLE);
+		assertEquals("Simple email address failed", SIMPLE, this.editor.getAsText());
 	}
 
 	@Test
 	public void excessWhitespace() {
-		editor.setAsText(" " + SIMPLE + " ");
-		assertEquals("Whitespace was not stripped", SIMPLE, editor.getAsText());
+		this.editor.setAsText(" " + SIMPLE + " ");
+		assertEquals("Whitespace was not stripped", SIMPLE, this.editor.getAsText());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void simpleBadAddress() {
-		editor.setAsText(BAD);
+		this.editor.setAsText(BAD);
 	}
 
 }

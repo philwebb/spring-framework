@@ -111,8 +111,8 @@ public class OrderComparatorTests {
 
 		@Override
 		public Object getOrderSource(Object obj) {
-			if (target.equals(obj)) {
-				return orderSource;
+			if (this.target.equals(obj)) {
+				return this.orderSource;
 			}
 			return null;
 		}

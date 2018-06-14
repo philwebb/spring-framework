@@ -32,9 +32,9 @@ public class GroovyAspectIntegrationTests {
 
 	@Test
 	public void testJavaBean() {
-		context = new GenericXmlApplicationContext(getClass(), getClass().getSimpleName()+"-java-context.xml");
-		TestService bean = context.getBean("javaBean", TestService.class);
-		LogUserAdvice logAdvice = context.getBean(LogUserAdvice.class);
+		this.context = new GenericXmlApplicationContext(getClass(), getClass().getSimpleName()+"-java-context.xml");
+		TestService bean = this.context.getBean("javaBean", TestService.class);
+		LogUserAdvice logAdvice = this.context.getBean(LogUserAdvice.class);
 
 		assertEquals(0, logAdvice.getCountThrows());
 		try {
@@ -50,9 +50,9 @@ public class GroovyAspectIntegrationTests {
 
 	@Test
 	public void testGroovyBeanInterface() {
-		context = new GenericXmlApplicationContext(getClass(), getClass().getSimpleName()+"-groovy-interface-context.xml");
-		TestService bean = context.getBean("groovyBean", TestService.class);
-		LogUserAdvice logAdvice = context.getBean(LogUserAdvice.class);
+		this.context = new GenericXmlApplicationContext(getClass(), getClass().getSimpleName()+"-groovy-interface-context.xml");
+		TestService bean = this.context.getBean("groovyBean", TestService.class);
+		LogUserAdvice logAdvice = this.context.getBean(LogUserAdvice.class);
 
 		assertEquals(0, logAdvice.getCountThrows());
 		try {
@@ -68,9 +68,9 @@ public class GroovyAspectIntegrationTests {
 
 	@Test
 	public void testGroovyBeanDynamic() {
-		context = new GenericXmlApplicationContext(getClass(), getClass().getSimpleName()+"-groovy-dynamic-context.xml");
-		TestService bean = context.getBean("groovyBean", TestService.class);
-		LogUserAdvice logAdvice = context.getBean(LogUserAdvice.class);
+		this.context = new GenericXmlApplicationContext(getClass(), getClass().getSimpleName()+"-groovy-dynamic-context.xml");
+		TestService bean = this.context.getBean("groovyBean", TestService.class);
+		LogUserAdvice logAdvice = this.context.getBean(LogUserAdvice.class);
 
 		assertEquals(0, logAdvice.getCountThrows());
 		try {
@@ -87,9 +87,9 @@ public class GroovyAspectIntegrationTests {
 
 	@Test
 	public void testGroovyBeanProxyTargetClass() {
-		context = new GenericXmlApplicationContext(getClass(), getClass().getSimpleName()+"-groovy-proxy-target-class-context.xml");
-		TestService bean = context.getBean("groovyBean", TestService.class);
-		LogUserAdvice logAdvice = context.getBean(LogUserAdvice.class);
+		this.context = new GenericXmlApplicationContext(getClass(), getClass().getSimpleName()+"-groovy-proxy-target-class-context.xml");
+		TestService bean = this.context.getBean("groovyBean", TestService.class);
+		LogUserAdvice logAdvice = this.context.getBean(LogUserAdvice.class);
 
 		assertEquals(0, logAdvice.getCountThrows());
 		try {
@@ -105,8 +105,8 @@ public class GroovyAspectIntegrationTests {
 
 	@After
 	public void close() {
-		if (context != null) {
-			context.close();
+		if (this.context != null) {
+			this.context.close();
 		}
 	}
 

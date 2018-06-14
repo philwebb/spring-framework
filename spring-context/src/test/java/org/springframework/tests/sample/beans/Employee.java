@@ -28,7 +28,7 @@ public class Employee extends TestBean {
 	}
 
 	public String getCompany() {
-		return co;
+		return this.co;
 	}
 
 	public void setCompany(String co) {

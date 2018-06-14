@@ -28,7 +28,7 @@ public class DateRange {
 	private Date endDate;
 
 	public Date getStartDate() {
-		return startDate;
+		return this.startDate;
 	}
 
 	public void setStartDate(Date startDate) {
@@ -36,7 +36,7 @@ public class DateRange {
 	}
 
 	public Date getEndDate() {
-		return endDate;
+		return this.endDate;
 	}
 
 	public void setEndDate(Date endDate) {

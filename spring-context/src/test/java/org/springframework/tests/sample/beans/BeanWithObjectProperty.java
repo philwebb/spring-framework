@@ -25,7 +25,7 @@ public class BeanWithObjectProperty {
 	private Object object;
 
 	public Object getObject() {
-		return object;
+		return this.object;
 	}
 
 	public void setObject(Object object) {

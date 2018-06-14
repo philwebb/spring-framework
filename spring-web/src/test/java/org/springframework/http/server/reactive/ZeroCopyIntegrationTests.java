@@ -45,16 +45,16 @@ public class ZeroCopyIntegrationTests extends AbstractHttpHandlerIntegrationTest
 
 	@Override
 	protected HttpHandler createHttpHandler() {
-		return handler;
+		return this.handler;
 	}
 
 	@Test
 	public void zeroCopy() throws Exception {
 
 		// Zero-copy only does not support servlet
-		assumeTrue(server instanceof ReactorHttpServer || server instanceof UndertowHttpServer);
+		assumeTrue(this.server instanceof ReactorHttpServer || this.server instanceof UndertowHttpServer);
 
-		URI url = new URI("http://localhost:" + port);
+		URI url = new URI("http://localhost:" + this.port);
 		RequestEntity<?> request = RequestEntity.get(url).build();
 		ResponseEntity<byte[]> response = new RestTemplate().exchange(request, byte[].class);
 

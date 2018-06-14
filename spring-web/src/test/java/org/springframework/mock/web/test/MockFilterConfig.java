@@ -81,12 +81,12 @@ public class MockFilterConfig implements FilterConfig {
 
 	@Override
 	public String getFilterName() {
-		return filterName;
+		return this.filterName;
 	}
 
 	@Override
 	public ServletContext getServletContext() {
-		return servletContext;
+		return this.servletContext;
 	}
 
 	public void addInitParameter(String name, String value) {

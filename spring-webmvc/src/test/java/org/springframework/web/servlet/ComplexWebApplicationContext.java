@@ -217,7 +217,7 @@ public class ComplexWebApplicationContext extends StaticWebApplicationContext {
 
 		@Override
 		public ServletConfig getServletConfig() {
-			return servletConfig;
+			return this.servletConfig;
 		}
 
 		@Override

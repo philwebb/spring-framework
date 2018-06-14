@@ -129,7 +129,7 @@ public class CookieValueMethodArgumentResolverTests {
 	@Test
 	public void notFound() {
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/"));
-		Mono<Object> mono = resolver.resolveArgument(this.cookieParameter, this.bindingContext, exchange);
+		Mono<Object> mono = this.resolver.resolveArgument(this.cookieParameter, this.bindingContext, exchange);
 		StepVerifier.create(mono)
 				.expectNextCount(0)
 				.expectError(ServerWebInputException.class)

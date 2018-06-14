@@ -54,58 +54,58 @@ public class StaxSourceTests {
 	@Before
 	public void setUp() throws Exception {
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
-		transformer = transformerFactory.newTransformer();
-		inputFactory = XMLInputFactory.newInstance();
+		this.transformer = transformerFactory.newTransformer();
+		this.inputFactory = XMLInputFactory.newInstance();
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		documentBuilderFactory.setNamespaceAware(true);
-		documentBuilder = documentBuilderFactory.newDocumentBuilder();
+		this.documentBuilder = documentBuilderFactory.newDocumentBuilder();
 	}
 
 	@Test
 	public void streamReaderSourceToStreamResult() throws Exception {
-		XMLStreamReader streamReader = inputFactory.createXMLStreamReader(new StringReader(XML));
+		XMLStreamReader streamReader = this.inputFactory.createXMLStreamReader(new StringReader(XML));
 		StaxSource source = new StaxSource(streamReader);
 		assertEquals("Invalid streamReader returned", streamReader, source.getXMLStreamReader());
 		assertNull("EventReader returned", source.getXMLEventReader());
 		StringWriter writer = new StringWriter();
-		transformer.transform(source, new StreamResult(writer));
+		this.transformer.transform(source, new StreamResult(writer));
 		assertThat("Invalid result", writer.toString(), isSimilarTo(XML));
 	}
 
 	@Test
 	public void streamReaderSourceToDOMResult() throws Exception {
-		XMLStreamReader streamReader = inputFactory.createXMLStreamReader(new StringReader(XML));
+		XMLStreamReader streamReader = this.inputFactory.createXMLStreamReader(new StringReader(XML));
 		StaxSource source = new StaxSource(streamReader);
 		assertEquals("Invalid streamReader returned", streamReader, source.getXMLStreamReader());
 		assertNull("EventReader returned", source.getXMLEventReader());
 
-		Document expected = documentBuilder.parse(new InputSource(new StringReader(XML)));
-		Document result = documentBuilder.newDocument();
-		transformer.transform(source, new DOMResult(result));
+		Document expected = this.documentBuilder.parse(new InputSource(new StringReader(XML)));
+		Document result = this.documentBuilder.newDocument();
+		this.transformer.transform(source, new DOMResult(result));
 		assertThat("Invalid result", result, isSimilarTo(expected));
 	}
 
 	@Test
 	public void eventReaderSourceToStreamResult() throws Exception {
-		XMLEventReader eventReader = inputFactory.createXMLEventReader(new StringReader(XML));
+		XMLEventReader eventReader = this.inputFactory.createXMLEventReader(new StringReader(XML));
 		StaxSource source = new StaxSource(eventReader);
 		assertEquals("Invalid eventReader returned", eventReader, source.getXMLEventReader());
 		assertNull("StreamReader returned", source.getXMLStreamReader());
 		StringWriter writer = new StringWriter();
-		transformer.transform(source, new StreamResult(writer));
+		this.transformer.transform(source, new StreamResult(writer));
 		assertThat("Invalid result", writer.toString(), isSimilarTo(XML));
 	}
 
 	@Test
 	public void eventReaderSourceToDOMResult() throws Exception {
-		XMLEventReader eventReader = inputFactory.createXMLEventReader(new StringReader(XML));
+		XMLEventReader eventReader = this.inputFactory.createXMLEventReader(new StringReader(XML));
 		StaxSource source = new StaxSource(eventReader);
 		assertEquals("Invalid eventReader returned", eventReader, source.getXMLEventReader());
 		assertNull("StreamReader returned", source.getXMLStreamReader());
 
-		Document expected = documentBuilder.parse(new InputSource(new StringReader(XML)));
-		Document result = documentBuilder.newDocument();
-		transformer.transform(source, new DOMResult(result));
+		Document expected = this.documentBuilder.parse(new InputSource(new StringReader(XML)));
+		Document result = this.documentBuilder.newDocument();
+		this.transformer.transform(source, new DOMResult(result));
 		assertThat("Invalid result", result, isSimilarTo(expected));
 	}
 }

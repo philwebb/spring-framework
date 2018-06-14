@@ -51,7 +51,7 @@ public class ChannelSendOperatorTests {
 	}
 
 	private <T> Mono<Void> sendOperator(Publisher<String> source){
-		return new ChannelSendOperator<>(source, writer::send);
+		return new ChannelSendOperator<>(source, this.writer::send);
 	}
 
 	@Test
@@ -164,19 +164,19 @@ public class ChannelSendOperatorTests {
 
 			@Override
 			public void onNext(String item) {
-				items.add(item);
+				OneByOneAsyncWriter.this.items.add(item);
 				this.subscription.request(1);
 			}
 
 			@Override
 			public void onError(Throwable ex) {
-				error = ex;
+				OneByOneAsyncWriter.this.error = ex;
 				this.subscriber.onError(ex);
 			}
 
 			@Override
 			public void onComplete() {
-				completed = true;
+				OneByOneAsyncWriter.this.completed = true;
 				this.subscriber.onComplete();
 			}
 		}

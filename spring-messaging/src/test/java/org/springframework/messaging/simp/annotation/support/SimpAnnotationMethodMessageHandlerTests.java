@@ -559,8 +559,8 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		@Override
 		public void validate(@Nullable Object target, Errors errors) {
 			String value = (String) target;
-			if (invalidValue.equals(value)) {
-				errors.reject("invalid value '"+invalidValue+"'");
+			if (this.invalidValue.equals(value)) {
+				errors.reject("invalid value '"+this.invalidValue+"'");
 			}
 		}
 	}

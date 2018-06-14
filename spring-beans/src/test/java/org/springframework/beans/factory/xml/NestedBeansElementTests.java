@@ -39,7 +39,7 @@ public class NestedBeansElementTests {
 	@Test
 	public void getBean_withoutActiveProfile() {
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
-		new XmlBeanDefinitionReader(bf).loadBeanDefinitions(XML);
+		new XmlBeanDefinitionReader(bf).loadBeanDefinitions(this.XML);
 
 		Object foo = bf.getBean("foo");
 		assertThat(foo, instanceOf(String.class));
@@ -53,7 +53,7 @@ public class NestedBeansElementTests {
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
 		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(bf);
 		reader.setEnvironment(env);
-		reader.loadBeanDefinitions(XML);
+		reader.loadBeanDefinitions(this.XML);
 
 		bf.getBean("devOnlyBean"); // should not throw NSBDE
 

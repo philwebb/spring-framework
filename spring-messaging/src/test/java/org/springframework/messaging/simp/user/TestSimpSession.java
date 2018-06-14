@@ -38,12 +38,12 @@ public class TestSimpSession implements SimpSession {
 
 	@Override
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	@Override
 	public TestSimpUser getUser() {
-		return user;
+		return this.user;
 	}
 
 	public void setUser(TestSimpUser user) {
@@ -52,7 +52,7 @@ public class TestSimpSession implements SimpSession {
 
 	@Override
 	public Set<SimpSubscription> getSubscriptions() {
-		return subscriptions;
+		return this.subscriptions;
 	}
 
 	public void addSubscriptions(TestSimpSubscription... subscriptions) {

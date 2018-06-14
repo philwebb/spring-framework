@@ -52,27 +52,27 @@ public class ConditionalDelegatingFilterProxyTests {
 
 	@Before
 	public void setup() {
-		request = new MockHttpServletRequest();
-		request.setContextPath("/context");
-		response = new MockHttpServletResponse();
-		filterChain = new MockFilterChain();
-		delegate = new MockFilter();
+		this.request = new MockHttpServletRequest();
+		this.request.setContextPath("/context");
+		this.response = new MockHttpServletResponse();
+		this.filterChain = new MockFilterChain();
+		this.delegate = new MockFilter();
 	}
 
 
 	@Test
 	public void init() throws Exception {
 		FilterConfig config = new MockFilterConfig();
-		filter = new PatternMappingFilterProxy(delegate, "/");
-		filter.init(config);
-		assertThat(delegate.filterConfig, is(config));
+		this.filter = new PatternMappingFilterProxy(this.delegate, "/");
+		this.filter.init(config);
+		assertThat(this.delegate.filterConfig, is(config));
 	}
 
 	@Test
 	public void destroy() throws Exception {
-		filter = new PatternMappingFilterProxy(delegate, "/");
-		filter.destroy();
-		assertThat(delegate.destroy, is(true));
+		this.filter = new PatternMappingFilterProxy(this.delegate, "/");
+		this.filter.destroy();
+		assertThat(this.delegate.destroy, is(true));
 	}
 
 	@Test
@@ -230,28 +230,28 @@ public class ConditionalDelegatingFilterProxyTests {
 	}
 
 	private void assertFilterNotInvoked(String requestUri, String pattern) throws Exception {
-		request.setRequestURI(request.getContextPath() + requestUri);
-		filter = new PatternMappingFilterProxy(delegate, pattern);
-		filter.doFilter(request, response, filterChain);
+		this.request.setRequestURI(this.request.getContextPath() + requestUri);
+		this.filter = new PatternMappingFilterProxy(this.delegate, pattern);
+		this.filter.doFilter(this.request, this.response, this.filterChain);
 
-		assertThat(delegate.request, equalTo((ServletRequest) null));
-		assertThat(delegate.response, equalTo((ServletResponse) null));
-		assertThat(delegate.chain, equalTo((FilterChain) null));
+		assertThat(this.delegate.request, equalTo((ServletRequest) null));
+		assertThat(this.delegate.response, equalTo((ServletResponse) null));
+		assertThat(this.delegate.chain, equalTo((FilterChain) null));
 
-		assertThat(filterChain.getRequest(), equalTo((ServletRequest) request));
-		assertThat(filterChain.getResponse(), equalTo((ServletResponse) response));
-		filterChain = new MockFilterChain();
+		assertThat(this.filterChain.getRequest(), equalTo((ServletRequest) this.request));
+		assertThat(this.filterChain.getResponse(), equalTo((ServletResponse) this.response));
+		this.filterChain = new MockFilterChain();
 	}
 
 	private void assertFilterInvoked(String requestUri, String pattern) throws Exception {
-		request.setRequestURI(request.getContextPath() + requestUri);
-		filter = new PatternMappingFilterProxy(delegate, pattern);
-		filter.doFilter(request, response, filterChain);
+		this.request.setRequestURI(this.request.getContextPath() + requestUri);
+		this.filter = new PatternMappingFilterProxy(this.delegate, pattern);
+		this.filter.doFilter(this.request, this.response, this.filterChain);
 
-		assertThat(delegate.request, equalTo((ServletRequest) request));
-		assertThat(delegate.response, equalTo((ServletResponse) response));
-		assertThat(delegate.chain, equalTo((FilterChain) filterChain));
-		delegate = new MockFilter();
+		assertThat(this.delegate.request, equalTo((ServletRequest) this.request));
+		assertThat(this.delegate.response, equalTo((ServletResponse) this.response));
+		assertThat(this.delegate.chain, equalTo((FilterChain) this.filterChain));
+		this.delegate = new MockFilter();
 	}
 
 

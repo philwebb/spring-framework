@@ -39,14 +39,14 @@ public class EclipseLinkEntityManagerFactoryIntegrationTests extends AbstractCon
 
 	@Test
 	public void testCanCastNativeEntityManagerFactoryToEclipseLinkEntityManagerFactoryImpl() {
-		EntityManagerFactoryInfo emfi = (EntityManagerFactoryInfo) entityManagerFactory;
+		EntityManagerFactoryInfo emfi = (EntityManagerFactoryInfo) this.entityManagerFactory;
 		assertTrue(emfi.getNativeEntityManagerFactory().getClass().getName().endsWith("EntityManagerFactoryImpl"));
 	}
 
 	@Test
 	public void testCanCastSharedEntityManagerProxyToEclipseLinkEntityManager() {
-		assertTrue(sharedEntityManager instanceof JpaEntityManager);
-		JpaEntityManager eclipselinkEntityManager = (JpaEntityManager) sharedEntityManager;
+		assertTrue(this.sharedEntityManager instanceof JpaEntityManager);
+		JpaEntityManager eclipselinkEntityManager = (JpaEntityManager) this.sharedEntityManager;
 		assertNotNull(eclipselinkEntityManager.getActiveSession());
 	}
 

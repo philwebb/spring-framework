@@ -59,31 +59,31 @@ public class RowMapperTests {
 
 	@Before
 	public void setUp() throws SQLException {
-		given(connection.createStatement()).willReturn(statement);
-		given(connection.prepareStatement(anyString())).willReturn(preparedStatement);
-		given(statement.executeQuery(anyString())).willReturn(resultSet);
-		given(preparedStatement.executeQuery()).willReturn(resultSet);
-		given(resultSet.next()).willReturn(true, true, false);
-		given(resultSet.getString(1)).willReturn("tb1", "tb2");
-		given(resultSet.getInt(2)).willReturn(1, 2);
+		given(this.connection.createStatement()).willReturn(this.statement);
+		given(this.connection.prepareStatement(anyString())).willReturn(this.preparedStatement);
+		given(this.statement.executeQuery(anyString())).willReturn(this.resultSet);
+		given(this.preparedStatement.executeQuery()).willReturn(this.resultSet);
+		given(this.resultSet.next()).willReturn(true, true, false);
+		given(this.resultSet.getString(1)).willReturn("tb1", "tb2");
+		given(this.resultSet.getInt(2)).willReturn(1, 2);
 
-		template.setDataSource(new SingleConnectionDataSource(connection, false));
-		template.setExceptionTranslator(new SQLStateSQLExceptionTranslator());
-		template.afterPropertiesSet();
+		this.template.setDataSource(new SingleConnectionDataSource(this.connection, false));
+		this.template.setExceptionTranslator(new SQLStateSQLExceptionTranslator());
+		this.template.afterPropertiesSet();
 	}
 
 	@After
 	public void verifyClosed() throws Exception {
-		verify(resultSet).close();
+		verify(this.resultSet).close();
 		// verify(connection).close();
 	}
 
 	@After
 	public void verifyResults() {
-		assertNotNull(result);
-		assertEquals(2, result.size());
-		TestBean testBean1 = result.get(0);
-		TestBean testBean2 = result.get(1);
+		assertNotNull(this.result);
+		assertEquals(2, this.result.size());
+		TestBean testBean1 = this.result.get(0);
+		TestBean testBean2 = this.result.get(1);
 		assertEquals("tb1", testBean1.getName());
 		assertEquals("tb2", testBean2.getName());
 		assertEquals(1, testBean1.getAge());
@@ -92,40 +92,40 @@ public class RowMapperTests {
 
 	@Test
 	public void staticQueryWithRowMapper() throws SQLException {
-		result = template.query("some SQL", testRowMapper);
-		verify(statement).close();
+		this.result = this.template.query("some SQL", this.testRowMapper);
+		verify(this.statement).close();
 	}
 
 	@Test
 	public void preparedStatementCreatorWithRowMapper() throws SQLException {
-		result = template.query(con -> preparedStatement, testRowMapper);
-		verify(preparedStatement).close();
+		this.result = this.template.query(con -> this.preparedStatement, this.testRowMapper);
+		verify(this.preparedStatement).close();
 	}
 
 	@Test
 	public void preparedStatementSetterWithRowMapper() throws SQLException {
-		result = template.query("some SQL", ps -> ps.setString(1, "test"), testRowMapper);
-		verify(preparedStatement).setString(1, "test");
-		verify(preparedStatement).close();
+		this.result = this.template.query("some SQL", ps -> ps.setString(1, "test"), this.testRowMapper);
+		verify(this.preparedStatement).setString(1, "test");
+		verify(this.preparedStatement).close();
 	}
 
 	@Test
 	public void queryWithArgsAndRowMapper() throws SQLException {
-		result = template.query("some SQL", new Object[] { "test1", "test2" }, testRowMapper);
-		preparedStatement.setString(1, "test1");
-		preparedStatement.setString(2, "test2");
-		preparedStatement.close();
+		this.result = this.template.query("some SQL", new Object[] { "test1", "test2" }, this.testRowMapper);
+		this.preparedStatement.setString(1, "test1");
+		this.preparedStatement.setString(2, "test2");
+		this.preparedStatement.close();
 	}
 
 	@Test
 	public void queryWithArgsAndTypesAndRowMapper() throws SQLException {
-		result = template.query("some SQL",
+		this.result = this.template.query("some SQL",
 				new Object[] { "test1", "test2" },
 				new int[] { Types.VARCHAR, Types.VARCHAR },
-				testRowMapper);
-		verify(preparedStatement).setString(1, "test1");
-		verify(preparedStatement).setString(2, "test2");
-		verify(preparedStatement).close();
+				this.testRowMapper);
+		verify(this.preparedStatement).setString(1, "test1");
+		verify(this.preparedStatement).setString(2, "test2");
+		verify(this.preparedStatement).close();
 	}
 
 }

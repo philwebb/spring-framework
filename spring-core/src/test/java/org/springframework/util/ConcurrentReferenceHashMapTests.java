@@ -509,7 +509,7 @@ public class ConcurrentReferenceHashMapTests {
 	@Test
 	public void shouldSupportNullReference() {
 		// GC could happen during restructure so we must be able to create a reference for a null entry
-		map.createReferenceManager().createReference(null, 1234, null);
+		this.map.createReferenceManager().createReference(null, 1234, null);
 	}
 
 	/**

@@ -52,13 +52,13 @@ public abstract class AbstractEjbTxDaoTestNGTests extends AbstractTransactionalT
 
 	@Test
 	public void test1InitialState() {
-		int count = dao.getCount(TEST_NAME);
+		int count = this.dao.getCount(TEST_NAME);
 		assertEquals("New TestEntity should have count=0.", 0, count);
 	}
 
 	@Test(dependsOnMethods = "test1InitialState")
 	public void test2IncrementCount1() {
-		int count = dao.incrementCount(TEST_NAME);
+		int count = this.dao.incrementCount(TEST_NAME);
 		assertEquals("Expected count=1 after first increment.", 1, count);
 	}
 
@@ -69,16 +69,16 @@ public abstract class AbstractEjbTxDaoTestNGTests extends AbstractTransactionalT
 	 */
 	@Test(dependsOnMethods = "test2IncrementCount1")
 	public void test3IncrementCount2() {
-		int count = dao.getCount(TEST_NAME);
+		int count = this.dao.getCount(TEST_NAME);
 		assertEquals("Expected count=1 after test2IncrementCount1().", 1, count);
 
-		count = dao.incrementCount(TEST_NAME);
+		count = this.dao.incrementCount(TEST_NAME);
 		assertEquals("Expected count=2 now.", 2, count);
 	}
 
 	@AfterMethod(alwaysRun = true)
 	public void synchronizePersistenceContext() {
-		em.flush();
+		this.em.flush();
 	}
 
 }

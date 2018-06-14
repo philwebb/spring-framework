@@ -50,8 +50,8 @@ public class JCacheNamespaceDrivenTests extends AbstractJCacheAnnotationTests {
 
 	@Test
 	public void testCacheErrorHandler() {
-		JCacheInterceptor ci = ctx.getBean(JCacheInterceptor.class);
-		assertSame(ctx.getBean("errorHandler", CacheErrorHandler.class), ci.getErrorHandler());
+		JCacheInterceptor ci = this.ctx.getBean(JCacheInterceptor.class);
+		assertSame(this.ctx.getBean("errorHandler", CacheErrorHandler.class), ci.getErrorHandler());
 	}
 
 }

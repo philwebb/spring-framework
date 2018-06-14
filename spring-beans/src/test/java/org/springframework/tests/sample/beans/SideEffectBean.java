@@ -34,7 +34,7 @@ public class SideEffectBean {
 	}
 
 	public void doWork() {
-		++count;
+		++this.count;
 	}
 
 }

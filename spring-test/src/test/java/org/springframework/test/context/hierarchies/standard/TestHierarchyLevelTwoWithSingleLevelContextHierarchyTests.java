@@ -69,11 +69,11 @@ public class TestHierarchyLevelTwoWithSingleLevelContextHierarchyTests extends
 	@Test
 	@Override
 	public void loadContextHierarchy() {
-		assertNotNull("child ApplicationContext", context);
-		assertNotNull("parent ApplicationContext", context.getParent());
-		assertEquals("foo-level-2", foo);
-		assertEquals("bar", bar);
-		assertEquals("baz", baz);
+		assertNotNull("child ApplicationContext", this.context);
+		assertNotNull("parent ApplicationContext", this.context.getParent());
+		assertEquals("foo-level-2", this.foo);
+		assertEquals("bar", this.bar);
+		assertEquals("baz", this.baz);
 	}
 
 }

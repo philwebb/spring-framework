@@ -77,7 +77,7 @@ public class JettyWebSocketTestServer implements WebSocketTestServer {
 		this.jettyServer.start();
 		this.contextHandler.start();
 
-		Connector[] connectors = jettyServer.getConnectors();
+		Connector[] connectors = this.jettyServer.getConnectors();
 		NetworkConnector connector = (NetworkConnector) connectors[0];
 		this.port = connector.getLocalPort();
 	}

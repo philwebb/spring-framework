@@ -40,8 +40,8 @@ public class GenericPropertiesContextLoaderTests {
 
 	@Test
 	public void configMustNotContainAnnotatedClasses() throws Exception {
-		expectedException.expect(IllegalStateException.class);
-		expectedException.expectMessage(containsString("does not support annotated classes"));
+		this.expectedException.expect(IllegalStateException.class);
+		this.expectedException.expectMessage(containsString("does not support annotated classes"));
 
 		GenericPropertiesContextLoader loader = new GenericPropertiesContextLoader();
 		MergedContextConfiguration mergedConfig = new MergedContextConfiguration(getClass(), EMPTY_STRING_ARRAY,

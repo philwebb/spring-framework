@@ -70,23 +70,23 @@ public class FreeMarkerMacroTests {
 	@Before
 	public void setUp() throws Exception {
 		ServletContext sc = new MockServletContext();
-		wac = new StaticWebApplicationContext();
-		wac.setServletContext(sc);
+		this.wac = new StaticWebApplicationContext();
+		this.wac.setServletContext(sc);
 
 		// final Template expectedTemplate = new Template();
-		fc = new FreeMarkerConfigurer();
-		fc.setTemplateLoaderPaths("classpath:/", "file://" + System.getProperty("java.io.tmpdir"));
-		fc.setServletContext(sc);
-		fc.afterPropertiesSet();
+		this.fc = new FreeMarkerConfigurer();
+		this.fc.setTemplateLoaderPaths("classpath:/", "file://" + System.getProperty("java.io.tmpdir"));
+		this.fc.setServletContext(sc);
+		this.fc.afterPropertiesSet();
 
-		wac.getDefaultListableBeanFactory().registerSingleton("freeMarkerConfigurer", fc);
-		wac.refresh();
+		this.wac.getDefaultListableBeanFactory().registerSingleton("freeMarkerConfigurer", this.fc);
+		this.wac.refresh();
 
-		request = new MockHttpServletRequest();
-		request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, wac);
-		request.setAttribute(DispatcherServlet.LOCALE_RESOLVER_ATTRIBUTE, new AcceptHeaderLocaleResolver());
-		request.setAttribute(DispatcherServlet.THEME_RESOLVER_ATTRIBUTE, new FixedThemeResolver());
-		response = new MockHttpServletResponse();
+		this.request = new MockHttpServletRequest();
+		this.request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, this.wac);
+		this.request.setAttribute(DispatcherServlet.LOCALE_RESOLVER_ATTRIBUTE, new AcceptHeaderLocaleResolver());
+		this.request.setAttribute(DispatcherServlet.THEME_RESOLVER_ATTRIBUTE, new FixedThemeResolver());
+		this.response = new MockHttpServletResponse();
 	}
 
 
@@ -106,12 +106,12 @@ public class FreeMarkerMacroTests {
 			}
 		};
 		fv.setUrl(TEMPLATE_FILE);
-		fv.setApplicationContext(wac);
+		fv.setApplicationContext(this.wac);
 		fv.setExposeSpringMacroHelpers(true);
 
 		Map<String, Object> model = new HashMap<>();
 		model.put("tb", new TestBean("juergen", 99));
-		fv.render(model, request, response);
+		fv.render(model, this.request, this.response);
 	}
 
 	@Test
@@ -125,14 +125,14 @@ public class FreeMarkerMacroTests {
 			}
 		};
 		fv.setUrl(TEMPLATE_FILE);
-		fv.setApplicationContext(wac);
+		fv.setApplicationContext(this.wac);
 		fv.setExposeSpringMacroHelpers(true);
 
 		Map<String, Object> model = new HashMap<>();
 		model.put(FreeMarkerView.SPRING_MACRO_REQUEST_CONTEXT_ATTRIBUTE, helperTool);
 
 		try {
-			fv.render(model, request, response);
+			fv.render(model, this.request, this.response);
 		}
 		catch (Exception ex) {
 			assertTrue(ex instanceof ServletException);
@@ -290,7 +290,7 @@ public class FreeMarkerMacroTests {
 		FileSystemResource resource = new FileSystemResource(System.getProperty("java.io.tmpdir") + "/tmp.ftl");
 		FileCopyUtils.copy("<#import \"spring.ftl\" as spring />\n" + macro, new FileWriter(resource.getPath()));
 
-		DummyMacroRequestContext rc = new DummyMacroRequestContext(request);
+		DummyMacroRequestContext rc = new DummyMacroRequestContext(this.request);
 		Map<String, String> msgMap = new HashMap<>();
 		msgMap.put("hello", "Howdy");
 		msgMap.put("world", "Mundo");
@@ -307,7 +307,7 @@ public class FreeMarkerMacroTests {
 		darren.setSpouse(fred);
 		darren.setJedi(true);
 		darren.setStringArray(new String[] {"John", "Fred"});
-		request.setAttribute("command", darren);
+		this.request.setAttribute("command", darren);
 
 		Map<String, String> names = new HashMap<>();
 		names.put("Darren", "Darren Davison");
@@ -315,7 +315,7 @@ public class FreeMarkerMacroTests {
 		names.put("Fred", "Fred Bloggs");
 		names.put("Rob&Harrop", "Rob Harrop");
 
-		Configuration config = fc.getConfiguration();
+		Configuration config = this.fc.getConfiguration();
 		Map<String, Object> model = new HashMap<>();
 		model.put("command", darren);
 		model.put("springMacroRequestContext", rc);
@@ -330,10 +330,10 @@ public class FreeMarkerMacroTests {
 		view.setConfiguration(config);
 		view.setServletContext(new MockServletContext());
 
-		view.render(model, request, response);
+		view.render(model, this.request, this.response);
 
 		// tokenize output and ignore whitespace
-		String output = response.getContentAsString();
+		String output = this.response.getContentAsString();
 		output = output.replace("\r\n", "\n");
 		return output.trim();
 	}

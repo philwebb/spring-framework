@@ -38,7 +38,7 @@ public class CompoundComparatorTests {
 	@Test
 	public void shouldNeedAtLeastOneComparator() {
 		Comparator<String> c = new CompoundComparator<>();
-		thrown.expect(IllegalStateException.class);
+		this.thrown.expect(IllegalStateException.class);
 		c.compare("foo", "bar");
 	}
 

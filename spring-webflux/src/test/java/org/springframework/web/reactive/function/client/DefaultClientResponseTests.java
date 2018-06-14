@@ -68,18 +68,18 @@ public class DefaultClientResponseTests {
 
 	@Before
 	public void createMocks() {
-		mockResponse = mock(ClientHttpResponse.class);
-		mockExchangeStrategies = mock(ExchangeStrategies.class);
-		defaultClientResponse = new DefaultClientResponse(mockResponse, mockExchangeStrategies);
+		this.mockResponse = mock(ClientHttpResponse.class);
+		this.mockExchangeStrategies = mock(ExchangeStrategies.class);
+		this.defaultClientResponse = new DefaultClientResponse(this.mockResponse, this.mockExchangeStrategies);
 	}
 
 
 	@Test
 	public void statusCode() throws Exception {
 		HttpStatus status = HttpStatus.CONTINUE;
-		when(mockResponse.getStatusCode()).thenReturn(status);
+		when(this.mockResponse.getStatusCode()).thenReturn(status);
 
-		assertEquals(status, defaultClientResponse.statusCode());
+		assertEquals(status, this.defaultClientResponse.statusCode());
 	}
 
 	@Test
@@ -94,9 +94,9 @@ public class DefaultClientResponseTests {
 		List<HttpRange> range = Collections.singletonList(HttpRange.createByteRange(0, 42));
 		httpHeaders.setRange(range);
 
-		when(mockResponse.getHeaders()).thenReturn(httpHeaders);
+		when(this.mockResponse.getHeaders()).thenReturn(httpHeaders);
 
-		ClientResponse.Headers headers = defaultClientResponse.headers();
+		ClientResponse.Headers headers = this.defaultClientResponse.headers();
 		assertEquals(OptionalLong.of(contentLength), headers.contentLength());
 		assertEquals(Optional.of(contentType), headers.contentType());
 		assertEquals(httpHeaders, headers.asHttpHeaders());
@@ -108,9 +108,9 @@ public class DefaultClientResponseTests {
 		MultiValueMap<String, ResponseCookie> cookies = new LinkedMultiValueMap<>();
 		cookies.add("foo", cookie);
 
-		when(mockResponse.getCookies()).thenReturn(cookies);
+		when(this.mockResponse.getCookies()).thenReturn(cookies);
 
-		assertSame(cookies, defaultClientResponse.cookies());
+		assertSame(cookies, this.defaultClientResponse.cookies());
 	}
 
 
@@ -123,14 +123,14 @@ public class DefaultClientResponseTests {
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.TEXT_PLAIN);
-		when(mockResponse.getHeaders()).thenReturn(httpHeaders);
-		when(mockResponse.getBody()).thenReturn(body);
+		when(this.mockResponse.getHeaders()).thenReturn(httpHeaders);
+		when(this.mockResponse.getBody()).thenReturn(body);
 
 		List<HttpMessageReader<?>> messageReaders = Collections
 				.singletonList(new DecoderHttpMessageReader<>(StringDecoder.allMimeTypes()));
-		when(mockExchangeStrategies.messageReaders()).thenReturn(messageReaders);
+		when(this.mockExchangeStrategies.messageReaders()).thenReturn(messageReaders);
 
-		Mono<String> resultMono = defaultClientResponse.body(toMono(String.class));
+		Mono<String> resultMono = this.defaultClientResponse.body(toMono(String.class));
 		assertEquals("foo", resultMono.block());
 	}
 
@@ -143,15 +143,15 @@ public class DefaultClientResponseTests {
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.TEXT_PLAIN);
-		when(mockResponse.getHeaders()).thenReturn(httpHeaders);
-		when(mockResponse.getStatusCode()).thenReturn(HttpStatus.OK);
-		when(mockResponse.getBody()).thenReturn(body);
+		when(this.mockResponse.getHeaders()).thenReturn(httpHeaders);
+		when(this.mockResponse.getStatusCode()).thenReturn(HttpStatus.OK);
+		when(this.mockResponse.getBody()).thenReturn(body);
 
 		List<HttpMessageReader<?>> messageReaders = Collections
 				.singletonList(new DecoderHttpMessageReader<>(StringDecoder.allMimeTypes()));
-		when(mockExchangeStrategies.messageReaders()).thenReturn(messageReaders);
+		when(this.mockExchangeStrategies.messageReaders()).thenReturn(messageReaders);
 
-		Mono<String> resultMono = defaultClientResponse.bodyToMono(String.class);
+		Mono<String> resultMono = this.defaultClientResponse.bodyToMono(String.class);
 		assertEquals("foo", resultMono.block());
 	}
 
@@ -164,16 +164,16 @@ public class DefaultClientResponseTests {
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.TEXT_PLAIN);
-		when(mockResponse.getHeaders()).thenReturn(httpHeaders);
-		when(mockResponse.getStatusCode()).thenReturn(HttpStatus.OK);
-		when(mockResponse.getBody()).thenReturn(body);
+		when(this.mockResponse.getHeaders()).thenReturn(httpHeaders);
+		when(this.mockResponse.getStatusCode()).thenReturn(HttpStatus.OK);
+		when(this.mockResponse.getBody()).thenReturn(body);
 
 		List<HttpMessageReader<?>> messageReaders = Collections
 				.singletonList(new DecoderHttpMessageReader<>(StringDecoder.allMimeTypes()));
-		when(mockExchangeStrategies.messageReaders()).thenReturn(messageReaders);
+		when(this.mockExchangeStrategies.messageReaders()).thenReturn(messageReaders);
 
 		Mono<String> resultMono =
-				defaultClientResponse.bodyToMono(new ParameterizedTypeReference<String>() {
+				this.defaultClientResponse.bodyToMono(new ParameterizedTypeReference<String>() {
 				});
 		assertEquals("foo", resultMono.block());
 	}
@@ -187,15 +187,15 @@ public class DefaultClientResponseTests {
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.TEXT_PLAIN);
-		when(mockResponse.getHeaders()).thenReturn(httpHeaders);
-		when(mockResponse.getStatusCode()).thenReturn(HttpStatus.OK);
-		when(mockResponse.getBody()).thenReturn(body);
+		when(this.mockResponse.getHeaders()).thenReturn(httpHeaders);
+		when(this.mockResponse.getStatusCode()).thenReturn(HttpStatus.OK);
+		when(this.mockResponse.getBody()).thenReturn(body);
 
 		List<HttpMessageReader<?>> messageReaders = Collections
 				.singletonList(new DecoderHttpMessageReader<>(StringDecoder.allMimeTypes()));
-		when(mockExchangeStrategies.messageReaders()).thenReturn(messageReaders);
+		when(this.mockExchangeStrategies.messageReaders()).thenReturn(messageReaders);
 
-		Flux<String> resultFlux = defaultClientResponse.bodyToFlux(String.class);
+		Flux<String> resultFlux = this.defaultClientResponse.bodyToFlux(String.class);
 		Mono<List<String>> result = resultFlux.collectList();
 		assertEquals(Collections.singletonList("foo"), result.block());
 	}
@@ -209,16 +209,16 @@ public class DefaultClientResponseTests {
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.TEXT_PLAIN);
-		when(mockResponse.getHeaders()).thenReturn(httpHeaders);
-		when(mockResponse.getStatusCode()).thenReturn(HttpStatus.OK);
-		when(mockResponse.getBody()).thenReturn(body);
+		when(this.mockResponse.getHeaders()).thenReturn(httpHeaders);
+		when(this.mockResponse.getStatusCode()).thenReturn(HttpStatus.OK);
+		when(this.mockResponse.getBody()).thenReturn(body);
 
 		List<HttpMessageReader<?>> messageReaders = Collections
 				.singletonList(new DecoderHttpMessageReader<>(StringDecoder.allMimeTypes()));
-		when(mockExchangeStrategies.messageReaders()).thenReturn(messageReaders);
+		when(this.mockExchangeStrategies.messageReaders()).thenReturn(messageReaders);
 
 		Flux<String> resultFlux =
-				defaultClientResponse.bodyToFlux(new ParameterizedTypeReference<String>() {
+				this.defaultClientResponse.bodyToFlux(new ParameterizedTypeReference<String>() {
 				});
 		Mono<List<String>> result = resultFlux.collectList();
 		assertEquals(Collections.singletonList("foo"), result.block());
@@ -233,15 +233,15 @@ public class DefaultClientResponseTests {
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.TEXT_PLAIN);
-		when(mockResponse.getHeaders()).thenReturn(httpHeaders);
-		when(mockResponse.getStatusCode()).thenReturn(HttpStatus.OK);
-		when(mockResponse.getBody()).thenReturn(body);
+		when(this.mockResponse.getHeaders()).thenReturn(httpHeaders);
+		when(this.mockResponse.getStatusCode()).thenReturn(HttpStatus.OK);
+		when(this.mockResponse.getBody()).thenReturn(body);
 
 		List<HttpMessageReader<?>> messageReaders = Collections
 				.singletonList(new DecoderHttpMessageReader<>(StringDecoder.allMimeTypes()));
-		when(mockExchangeStrategies.messageReaders()).thenReturn(messageReaders);
+		when(this.mockExchangeStrategies.messageReaders()).thenReturn(messageReaders);
 
-		ResponseEntity<String> result = defaultClientResponse.toEntity(String.class).block();
+		ResponseEntity<String> result = this.defaultClientResponse.toEntity(String.class).block();
 		assertEquals("foo", result.getBody());
 		assertEquals(HttpStatus.OK, result.getStatusCode());
 		assertEquals(MediaType.TEXT_PLAIN, result.getHeaders().getContentType());
@@ -256,15 +256,15 @@ public class DefaultClientResponseTests {
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.TEXT_PLAIN);
-		when(mockResponse.getHeaders()).thenReturn(httpHeaders);
-		when(mockResponse.getStatusCode()).thenReturn(HttpStatus.OK);
-		when(mockResponse.getBody()).thenReturn(body);
+		when(this.mockResponse.getHeaders()).thenReturn(httpHeaders);
+		when(this.mockResponse.getStatusCode()).thenReturn(HttpStatus.OK);
+		when(this.mockResponse.getBody()).thenReturn(body);
 
 		List<HttpMessageReader<?>> messageReaders = Collections
 				.singletonList(new DecoderHttpMessageReader<>(StringDecoder.allMimeTypes()));
-		when(mockExchangeStrategies.messageReaders()).thenReturn(messageReaders);
+		when(this.mockExchangeStrategies.messageReaders()).thenReturn(messageReaders);
 
-		ResponseEntity<String> result = defaultClientResponse.toEntity(
+		ResponseEntity<String> result = this.defaultClientResponse.toEntity(
 				new ParameterizedTypeReference<String>() {
 				}).block();
 		assertEquals("foo", result.getBody());
@@ -281,15 +281,15 @@ public class DefaultClientResponseTests {
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.TEXT_PLAIN);
-		when(mockResponse.getHeaders()).thenReturn(httpHeaders);
-		when(mockResponse.getStatusCode()).thenReturn(HttpStatus.OK);
-		when(mockResponse.getBody()).thenReturn(body);
+		when(this.mockResponse.getHeaders()).thenReturn(httpHeaders);
+		when(this.mockResponse.getStatusCode()).thenReturn(HttpStatus.OK);
+		when(this.mockResponse.getBody()).thenReturn(body);
 
 		List<HttpMessageReader<?>> messageReaders = Collections
 				.singletonList(new DecoderHttpMessageReader<>(StringDecoder.allMimeTypes()));
-		when(mockExchangeStrategies.messageReaders()).thenReturn(messageReaders);
+		when(this.mockExchangeStrategies.messageReaders()).thenReturn(messageReaders);
 
-		ResponseEntity<List<String>> result = defaultClientResponse.toEntityList(String.class).block();
+		ResponseEntity<List<String>> result = this.defaultClientResponse.toEntityList(String.class).block();
 		assertEquals(Collections.singletonList("foo"), result.getBody());
 		assertEquals(HttpStatus.OK, result.getStatusCode());
 		assertEquals(MediaType.TEXT_PLAIN, result.getHeaders().getContentType());
@@ -304,15 +304,15 @@ public class DefaultClientResponseTests {
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.TEXT_PLAIN);
-		when(mockResponse.getHeaders()).thenReturn(httpHeaders);
-		when(mockResponse.getStatusCode()).thenReturn(HttpStatus.OK);
-		when(mockResponse.getBody()).thenReturn(body);
+		when(this.mockResponse.getHeaders()).thenReturn(httpHeaders);
+		when(this.mockResponse.getStatusCode()).thenReturn(HttpStatus.OK);
+		when(this.mockResponse.getBody()).thenReturn(body);
 
 		List<HttpMessageReader<?>> messageReaders = Collections
 				.singletonList(new DecoderHttpMessageReader<>(StringDecoder.allMimeTypes()));
-		when(mockExchangeStrategies.messageReaders()).thenReturn(messageReaders);
+		when(this.mockExchangeStrategies.messageReaders()).thenReturn(messageReaders);
 
-		ResponseEntity<List<String>> result = defaultClientResponse.toEntityList(
+		ResponseEntity<List<String>> result = this.defaultClientResponse.toEntityList(
 				new ParameterizedTypeReference<String>() {
 				}).block();
 		assertEquals(Collections.singletonList("foo"), result.getBody());
@@ -326,15 +326,15 @@ public class DefaultClientResponseTests {
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.TEXT_PLAIN);
-		when(mockResponse.getHeaders()).thenReturn(httpHeaders);
-		when(mockResponse.getStatusCode()).thenReturn(HttpStatus.OK);
-		when(mockResponse.getBody()).thenReturn(body.flux());
+		when(this.mockResponse.getHeaders()).thenReturn(httpHeaders);
+		when(this.mockResponse.getStatusCode()).thenReturn(HttpStatus.OK);
+		when(this.mockResponse.getBody()).thenReturn(body.flux());
 
 		List<HttpMessageReader<?>> messageReaders = Collections
 				.singletonList(new DecoderHttpMessageReader<>(StringDecoder.allMimeTypes()));
-		when(mockExchangeStrategies.messageReaders()).thenReturn(messageReaders);
+		when(this.mockExchangeStrategies.messageReaders()).thenReturn(messageReaders);
 
-		StepVerifier.create(defaultClientResponse.bodyToMono(Void.class))
+		StepVerifier.create(this.defaultClientResponse.bodyToMono(Void.class))
 				.then(() -> {
 					body.assertWasSubscribed();
 					body.complete();
@@ -351,15 +351,15 @@ public class DefaultClientResponseTests {
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.TEXT_PLAIN);
-		when(mockResponse.getHeaders()).thenReturn(httpHeaders);
-		when(mockResponse.getStatusCode()).thenReturn(HttpStatus.OK);
-		when(mockResponse.getBody()).thenReturn(body.flux());
+		when(this.mockResponse.getHeaders()).thenReturn(httpHeaders);
+		when(this.mockResponse.getStatusCode()).thenReturn(HttpStatus.OK);
+		when(this.mockResponse.getBody()).thenReturn(body.flux());
 
 		List<HttpMessageReader<?>> messageReaders = Collections
 				.singletonList(new DecoderHttpMessageReader<>(StringDecoder.allMimeTypes()));
-		when(mockExchangeStrategies.messageReaders()).thenReturn(messageReaders);
+		when(this.mockExchangeStrategies.messageReaders()).thenReturn(messageReaders);
 
-		StepVerifier.create(defaultClientResponse.bodyToMono(Void.class))
+		StepVerifier.create(this.defaultClientResponse.bodyToMono(Void.class))
 				.then(() -> {
 					body.assertWasSubscribed();
 					body.emit(dataBuffer);

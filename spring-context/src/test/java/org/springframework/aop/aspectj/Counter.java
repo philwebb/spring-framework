@@ -30,17 +30,17 @@ final class Counter implements ICounter {
 
 	@Override
 	public void increment() {
-		count++;
+		this.count++;
 	}
 
 	@Override
 	public void decrement() {
-		count--;
+		this.count--;
 	}
 
 	@Override
 	public int getCount() {
-		return count;
+		return this.count;
 	}
 
 	@Override

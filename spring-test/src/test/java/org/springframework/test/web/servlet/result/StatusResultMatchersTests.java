@@ -62,7 +62,7 @@ public class StatusResultMatchersTests {
 		for (HttpStatus status : HttpStatus.values()) {
 			MockHttpServletResponse response = new MockHttpServletResponse();
 			response.setStatus(status.value());
-			MvcResult mvcResult = new StubMvcResult(request, null, null, null, null, null, response);
+			MvcResult mvcResult = new StubMvcResult(this.request, null, null, null, null, null, response);
 			try {
 				Method method = getMethodForHttpStatus(status);
 				ResultMatcher matcher = (ResultMatcher) ReflectionUtils.invokeMethod(method, this.matchers);
@@ -94,7 +94,7 @@ public class StatusResultMatchersTests {
 		for (HttpStatus status : HttpStatus.values()) {
 			MockHttpServletResponse response = new MockHttpServletResponse();
 			response.setStatus(status.value());
-			MvcResult mvcResult = new StubMvcResult(request, null, null, null, null, null, response);
+			MvcResult mvcResult = new StubMvcResult(this.request, null, null, null, null, null, response);
 			switch (status.series().value()) {
 				case 1:
 					this.matchers.is1xxInformational().match(mvcResult);

@@ -53,7 +53,7 @@ public abstract class AbstractHttpServer implements HttpServer {
 	}
 
 	public String getHost() {
-		return host;
+		return this.host;
 	}
 
 	@Override
@@ -116,8 +116,8 @@ public abstract class AbstractHttpServer implements HttpServer {
 		synchronized (this.lifecycleMonitor) {
 			if (!isRunning()) {
 				String serverName = getClass().getSimpleName();
-				if (logger.isDebugEnabled()) {
-					logger.debug("Starting " + serverName + "...");
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Starting " + serverName + "...");
 				}
 				this.running = true;
 				try {
@@ -125,8 +125,8 @@ public abstract class AbstractHttpServer implements HttpServer {
 					stopWatch.start();
 					startInternal();
 					long millis = stopWatch.getTotalTimeMillis();
-					if (logger.isDebugEnabled()) {
-						logger.debug("Server started on port " + getPort() + "(" + millis + " millis).");
+					if (this.logger.isDebugEnabled()) {
+						this.logger.debug("Server started on port " + getPort() + "(" + millis + " millis).");
 					}
 				}
 				catch (Throwable ex) {
@@ -144,13 +144,13 @@ public abstract class AbstractHttpServer implements HttpServer {
 		synchronized (this.lifecycleMonitor) {
 			if (isRunning()) {
 				String serverName = getClass().getSimpleName();
-				logger.debug("Stopping " + serverName + "...");
+				this.logger.debug("Stopping " + serverName + "...");
 				this.running = false;
 				try {
 					StopWatch stopWatch = new StopWatch();
 					stopWatch.start();
 					stopInternal();
-					logger.debug("Server stopped (" + stopWatch.getTotalTimeMillis() + " millis).");
+					this.logger.debug("Server stopped (" + stopWatch.getTotalTimeMillis() + " millis).");
 				}
 				catch (Throwable ex) {
 					throw new IllegalStateException(ex);

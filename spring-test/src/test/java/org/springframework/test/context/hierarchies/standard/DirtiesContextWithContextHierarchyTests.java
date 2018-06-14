@@ -87,8 +87,8 @@ public class DirtiesContextWithContextHierarchyTests {
 	// -------------------------------------------------------------------------
 
 	private void reverseStringBuffers() {
-		foo.reverse();
-		baz.reverse();
+		this.foo.reverse();
+		this.baz.reverse();
 	}
 
 	private void assertOriginalState() {
@@ -97,28 +97,28 @@ public class DirtiesContextWithContextHierarchyTests {
 	}
 
 	private void assertCleanParentContext() {
-		assertEquals("foo", foo.toString());
+		assertEquals("foo", this.foo.toString());
 	}
 
 	private void assertCleanChildContext() {
-		assertEquals("baz-child", baz.toString());
+		assertEquals("baz-child", this.baz.toString());
 	}
 
 	private void assertDirtyParentContext() {
-		assertEquals("oof", foo.toString());
+		assertEquals("oof", this.foo.toString());
 	}
 
 	private void assertDirtyChildContext() {
-		assertEquals("dlihc-zab", baz.toString());
+		assertEquals("dlihc-zab", this.baz.toString());
 	}
 
 	// -------------------------------------------------------------------------
 
 	@Before
 	public void verifyContextHierarchy() {
-		assertNotNull("child ApplicationContext", context);
-		assertNotNull("parent ApplicationContext", context.getParent());
-		assertNull("grandparent ApplicationContext", context.getParent().getParent());
+		assertNotNull("child ApplicationContext", this.context);
+		assertNotNull("parent ApplicationContext", this.context.getParent());
+		assertNull("grandparent ApplicationContext", this.context.getParent().getParent());
 	}
 
 	@Test

@@ -77,7 +77,7 @@ public class WebExchangeDataBinderTests {
 		this.binder.bind(exchange(formData)).block(Duration.ofMillis(5000));
 
 		assertNotNull(this.testBean.getSpouse());
-		assertEquals("test", testBean.getSpouse().getName());
+		assertEquals("test", this.testBean.getSpouse().getName());
 	}
 
 	@Test

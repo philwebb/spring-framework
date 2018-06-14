@@ -300,7 +300,7 @@ public class BeanUtilsTests {
 		}
 
 		public int getSpecialProperty() {
-			return specialProperty;
+			return this.specialProperty;
 		}
 	}
 
@@ -356,7 +356,7 @@ public class BeanUtilsTests {
 		private ContainedBean[] containedBeans;
 
 		public ContainedBean[] getContainedBeans() {
-			return containedBeans;
+			return this.containedBeans;
 		}
 
 		public void setContainedBeans(ContainedBean[] containedBeans) {
@@ -371,7 +371,7 @@ public class BeanUtilsTests {
 		private String name;
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String name) {
@@ -426,22 +426,22 @@ public class BeanUtilsTests {
 
 		@Override
 		public String getKey() {
-			return key;
+			return this.key;
 		}
 
 		@Override
 		public void setKey(String aKey) {
-			key = aKey;
+			this.key = aKey;
 		}
 
 		@Override
 		public String getValue() {
-			return value;
+			return this.value;
 		}
 
 		@Override
 		public void setValue(String aValue) {
-			value = aValue;
+			this.value = aValue;
 		}
 	}
 	
@@ -454,7 +454,7 @@ public class BeanUtilsTests {
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 	}
 

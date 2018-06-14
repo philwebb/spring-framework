@@ -133,7 +133,7 @@ public class EnableAspectJAutoProxyTests {
 				}
 				@Override
 				protected FooDao fooDao() {
-					return context.getBean(FooDao.class);
+					return this.context.getBean(FooDao.class);
 				}
 			};
 		}

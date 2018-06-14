@@ -52,52 +52,52 @@ public class ServletResponseMethodArgumentResolverTests {
 
 	@Before
 	public void setup() throws Exception {
-		resolver = new ServletResponseMethodArgumentResolver();
-		mavContainer = new ModelAndViewContainer();
-		servletResponse = new MockHttpServletResponse();
-		webRequest = new ServletWebRequest(new MockHttpServletRequest(), servletResponse);
+		this.resolver = new ServletResponseMethodArgumentResolver();
+		this.mavContainer = new ModelAndViewContainer();
+		this.servletResponse = new MockHttpServletResponse();
+		this.webRequest = new ServletWebRequest(new MockHttpServletRequest(), this.servletResponse);
 
-		method = getClass().getMethod("supportedParams", ServletResponse.class, OutputStream.class, Writer.class);
+		this.method = getClass().getMethod("supportedParams", ServletResponse.class, OutputStream.class, Writer.class);
 	}
 
 
 	@Test
 	public void servletResponse() throws Exception {
-		MethodParameter servletResponseParameter = new MethodParameter(method, 0);
-		assertTrue("ServletResponse not supported", resolver.supportsParameter(servletResponseParameter));
+		MethodParameter servletResponseParameter = new MethodParameter(this.method, 0);
+		assertTrue("ServletResponse not supported", this.resolver.supportsParameter(servletResponseParameter));
 
-		Object result = resolver.resolveArgument(servletResponseParameter, mavContainer, webRequest, null);
-		assertSame("Invalid result", servletResponse, result);
-		assertTrue(mavContainer.isRequestHandled());
+		Object result = this.resolver.resolveArgument(servletResponseParameter, this.mavContainer, this.webRequest, null);
+		assertSame("Invalid result", this.servletResponse, result);
+		assertTrue(this.mavContainer.isRequestHandled());
 	}
 
 	@Test  // SPR-8983
 	public void servletResponseNoMavContainer() throws Exception {
-		MethodParameter servletResponseParameter = new MethodParameter(method, 0);
-		assertTrue("ServletResponse not supported", resolver.supportsParameter(servletResponseParameter));
+		MethodParameter servletResponseParameter = new MethodParameter(this.method, 0);
+		assertTrue("ServletResponse not supported", this.resolver.supportsParameter(servletResponseParameter));
 
-		Object result = resolver.resolveArgument(servletResponseParameter, null, webRequest, null);
-		assertSame("Invalid result", servletResponse, result);
+		Object result = this.resolver.resolveArgument(servletResponseParameter, null, this.webRequest, null);
+		assertSame("Invalid result", this.servletResponse, result);
 	}
 
 	@Test
 	public void outputStream() throws Exception {
-		MethodParameter outputStreamParameter = new MethodParameter(method, 1);
-		assertTrue("OutputStream not supported", resolver.supportsParameter(outputStreamParameter));
+		MethodParameter outputStreamParameter = new MethodParameter(this.method, 1);
+		assertTrue("OutputStream not supported", this.resolver.supportsParameter(outputStreamParameter));
 
-		Object result = resolver.resolveArgument(outputStreamParameter, mavContainer, webRequest, null);
-		assertSame("Invalid result", servletResponse.getOutputStream(), result);
-		assertTrue(mavContainer.isRequestHandled());
+		Object result = this.resolver.resolveArgument(outputStreamParameter, this.mavContainer, this.webRequest, null);
+		assertSame("Invalid result", this.servletResponse.getOutputStream(), result);
+		assertTrue(this.mavContainer.isRequestHandled());
 	}
 
 	@Test
 	public void writer() throws Exception {
-		MethodParameter writerParameter = new MethodParameter(method, 2);
-		assertTrue("Writer not supported", resolver.supportsParameter(writerParameter));
+		MethodParameter writerParameter = new MethodParameter(this.method, 2);
+		assertTrue("Writer not supported", this.resolver.supportsParameter(writerParameter));
 
-		Object result = resolver.resolveArgument(writerParameter, mavContainer, webRequest, null);
-		assertSame("Invalid result", servletResponse.getWriter(), result);
-		assertTrue(mavContainer.isRequestHandled());
+		Object result = this.resolver.resolveArgument(writerParameter, this.mavContainer, this.webRequest, null);
+		assertSame("Invalid result", this.servletResponse.getWriter(), result);
+		assertTrue(this.mavContainer.isRequestHandled());
 	}
 
 

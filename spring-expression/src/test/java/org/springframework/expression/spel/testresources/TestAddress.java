@@ -23,13 +23,13 @@ public class TestAddress{
 		private List<String> crossStreets;
 
 		public String getStreet() {
-			return street;
+			return this.street;
 		}
 		public void setStreet(String street) {
 			this.street = street;
 		}
 		public List<String> getCrossStreets() {
-			return crossStreets;
+			return this.crossStreets;
 		}
 		public void setCrossStreets(List<String> crossStreets) {
 			this.crossStreets = crossStreets;

@@ -42,7 +42,7 @@ public class TestClient {
 
 
 	public List<Bar> getBars() {
-		return bars;
+		return this.bars;
 	}
 
 	@Autowired
@@ -51,7 +51,7 @@ public class TestClient {
 	}
 
 	public boolean isBool() {
-		return bool;
+		return this.bool;
 	}
 
 	public void setBool(boolean bool) {
@@ -59,7 +59,7 @@ public class TestClient {
 	}
 
 	public List<String> getStringList() {
-		return stringList;
+		return this.stringList;
 	}
 
 	public void setStringList(List<String> stringList) {
@@ -67,7 +67,7 @@ public class TestClient {
 	}
 
 	public Resource[] getResourceArray() {
-		return resourceArray;
+		return this.resourceArray;
 	}
 
 	public void setResourceArray(Resource[] resourceArray) {
@@ -75,7 +75,7 @@ public class TestClient {
 	}
 
 	public List<Resource> getResourceList() {
-		return resourceList;
+		return this.resourceList;
 	}
 
 	public void setResourceList(List<Resource> resourceList) {
@@ -83,7 +83,7 @@ public class TestClient {
 	}
 
 	public Map<String, Resource> getResourceMap() {
-		return resourceMap;
+		return this.resourceMap;
 	}
 
 	public void setResourceMap(Map<String, Resource> resourceMap) {

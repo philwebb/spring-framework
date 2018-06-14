@@ -173,7 +173,7 @@ public class WebSocketStompClientIntegrationTests {
 				}
 				@Override
 				public void handleFrame(StompHeaders headers, @Nullable Object payload) {
-					received.add((String) payload);
+					TestHandler.this.received.add((String) payload);
 				}
 			});
 			try {

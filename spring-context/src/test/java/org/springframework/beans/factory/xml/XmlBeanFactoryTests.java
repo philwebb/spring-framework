@@ -1622,7 +1622,7 @@ public class XmlBeanFactoryTests {
 		public Object reimplement(Object obj, Method method, Object[] args) throws Throwable {
 			assertEquals(1, args.length);
 			assertEquals("doSomething", method.getName());
-			lastArg = args[0];
+			this.lastArg = args[0];
 			return null;
 		}
 	}
@@ -1642,11 +1642,11 @@ public class XmlBeanFactoryTests {
 		private int num;
 
 		public int getNum() {
-			return num;
+			return this.num;
 		}
 
 		public void setNum(int i) {
-			num = i;
+			this.num = i;
 		}
 
 		/** Init method */
@@ -1778,7 +1778,7 @@ public class XmlBeanFactoryTests {
 			if (PreparingBean1.destroyed || PreparingBean2.destroyed) {
 				throw new IllegalStateException("Should not be destroyed after PreparingBeans");
 			}
-			destroyed = true;
+			this.destroyed = true;
 			destroyCount++;
 		}
 	}

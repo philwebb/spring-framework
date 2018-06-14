@@ -47,9 +47,9 @@ public class MultipleInitializersAnnotationConfigTests {
 
 	@Test
 	public void activeBeans() {
-		assertEquals("foo", foo);
-		assertEquals("foo", bar);
-		assertEquals("dev profile config", baz);
+		assertEquals("foo", this.foo);
+		assertEquals("foo", this.bar);
+		assertEquals("dev profile config", this.baz);
 	}
 
 }

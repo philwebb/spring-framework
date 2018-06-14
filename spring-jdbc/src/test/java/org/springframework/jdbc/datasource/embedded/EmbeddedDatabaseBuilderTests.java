@@ -62,7 +62,7 @@ public class EmbeddedDatabaseBuilderTests {
 
 			@Override
 			public void run() {
-				EmbeddedDatabase db = builder//
+				EmbeddedDatabase db = EmbeddedDatabaseBuilderTests.this.builder//
 				.addScript("db-schema.sql")//
 				.addScript("db-test-data.sql")//
 				.build();
@@ -77,7 +77,7 @@ public class EmbeddedDatabaseBuilderTests {
 
 			@Override
 			public void run() {
-				EmbeddedDatabase db = builder//
+				EmbeddedDatabase db = EmbeddedDatabaseBuilderTests.this.builder//
 				.addScripts("db-schema.sql", "db-test-data.sql")//
 				.build();
 				assertDatabaseCreatedAndShutdown(db);
@@ -91,7 +91,7 @@ public class EmbeddedDatabaseBuilderTests {
 
 			@Override
 			public void run() {
-				EmbeddedDatabase db = builder//
+				EmbeddedDatabase db = EmbeddedDatabaseBuilderTests.this.builder//
 				.addScripts("db-schema-comments.sql", "db-test-data.sql")//
 				.build();
 				assertDatabaseCreatedAndShutdown(db);
@@ -105,7 +105,7 @@ public class EmbeddedDatabaseBuilderTests {
 
 			@Override
 			public void run() {
-				EmbeddedDatabase db = builder//
+				EmbeddedDatabase db = EmbeddedDatabaseBuilderTests.this.builder//
 				.addScripts("db-schema-custom-comments.sql", "db-test-data.sql")//
 				.setCommentPrefix("~")//
 				.build();
@@ -120,7 +120,7 @@ public class EmbeddedDatabaseBuilderTests {
 
 			@Override
 			public void run() {
-				EmbeddedDatabase db = builder//
+				EmbeddedDatabase db = EmbeddedDatabaseBuilderTests.this.builder//
 				.addScripts("db-schema-block-comments.sql", "db-test-data.sql")//
 				.setBlockCommentStartDelimiter("{*")//
 				.setBlockCommentEndDelimiter("*}")//
@@ -136,7 +136,7 @@ public class EmbeddedDatabaseBuilderTests {
 
 			@Override
 			public void run() {
-				EmbeddedDatabase db = builder//
+				EmbeddedDatabase db = EmbeddedDatabaseBuilderTests.this.builder//
 				.setType(H2)//
 				.addScripts("db-schema.sql", "db-test-data.sql")//
 				.build();
@@ -151,7 +151,7 @@ public class EmbeddedDatabaseBuilderTests {
 
 			@Override
 			public void run() {
-				EmbeddedDatabase db = builder//
+				EmbeddedDatabase db = EmbeddedDatabaseBuilderTests.this.builder//
 				.setType(DERBY)//
 				.ignoreFailedDrops(true)//
 				.addScripts("db-schema-derby-with-drop.sql", "db-test-data.sql").build();

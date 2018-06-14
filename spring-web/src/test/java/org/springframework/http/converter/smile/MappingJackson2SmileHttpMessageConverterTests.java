@@ -46,16 +46,16 @@ public class MappingJackson2SmileHttpMessageConverterTests {
 
 	@Test
 	public void canRead() {
-		assertTrue(converter.canRead(MyBean.class, new MediaType("application", "x-jackson-smile")));
-		assertFalse(converter.canRead(MyBean.class, new MediaType("application", "json")));
-		assertFalse(converter.canRead(MyBean.class, new MediaType("application", "xml")));
+		assertTrue(this.converter.canRead(MyBean.class, new MediaType("application", "x-jackson-smile")));
+		assertFalse(this.converter.canRead(MyBean.class, new MediaType("application", "json")));
+		assertFalse(this.converter.canRead(MyBean.class, new MediaType("application", "xml")));
 	}
 
 	@Test
 	public void canWrite() {
-		assertTrue(converter.canWrite(MyBean.class, new MediaType("application", "x-jackson-smile")));
-		assertFalse(converter.canWrite(MyBean.class, new MediaType("application", "json")));
-		assertFalse(converter.canWrite(MyBean.class, new MediaType("application", "xml")));
+		assertTrue(this.converter.canWrite(MyBean.class, new MediaType("application", "x-jackson-smile")));
+		assertFalse(this.converter.canWrite(MyBean.class, new MediaType("application", "json")));
+		assertFalse(this.converter.canWrite(MyBean.class, new MediaType("application", "xml")));
 	}
 
 	@Test
@@ -67,9 +67,9 @@ public class MappingJackson2SmileHttpMessageConverterTests {
 		body.setArray(new String[]{"Foo", "Bar"});
 		body.setBool(true);
 		body.setBytes(new byte[]{0x1, 0x2});
-		MockHttpInputMessage inputMessage = new MockHttpInputMessage(mapper.writeValueAsBytes(body));
+		MockHttpInputMessage inputMessage = new MockHttpInputMessage(this.mapper.writeValueAsBytes(body));
 		inputMessage.getHeaders().setContentType(new MediaType("application", "x-jackson-smile"));
-		MyBean result = (MyBean) converter.read(MyBean.class, inputMessage);
+		MyBean result = (MyBean) this.converter.read(MyBean.class, inputMessage);
 		assertEquals("Foo", result.getString());
 		assertEquals(42, result.getNumber());
 		assertEquals(42F, result.getFraction(), 0F);
@@ -88,8 +88,8 @@ public class MappingJackson2SmileHttpMessageConverterTests {
 		body.setArray(new String[]{"Foo", "Bar"});
 		body.setBool(true);
 		body.setBytes(new byte[]{0x1, 0x2});
-		converter.write(body, null, outputMessage);
-		assertArrayEquals(mapper.writeValueAsBytes(body), outputMessage.getBodyAsBytes());
+		this.converter.write(body, null, outputMessage);
+		assertArrayEquals(this.mapper.writeValueAsBytes(body), outputMessage.getBodyAsBytes());
 		assertEquals("Invalid content-type", new MediaType("application", "x-jackson-smile", StandardCharsets.UTF_8),
 				outputMessage.getHeaders().getContentType());
 	}
@@ -110,7 +110,7 @@ public class MappingJackson2SmileHttpMessageConverterTests {
 		private byte[] bytes;
 
 		public byte[] getBytes() {
-			return bytes;
+			return this.bytes;
 		}
 
 		public void setBytes(byte[] bytes) {
@@ -118,7 +118,7 @@ public class MappingJackson2SmileHttpMessageConverterTests {
 		}
 
 		public boolean isBool() {
-			return bool;
+			return this.bool;
 		}
 
 		public void setBool(boolean bool) {
@@ -126,7 +126,7 @@ public class MappingJackson2SmileHttpMessageConverterTests {
 		}
 
 		public String getString() {
-			return string;
+			return this.string;
 		}
 
 		public void setString(String string) {
@@ -134,7 +134,7 @@ public class MappingJackson2SmileHttpMessageConverterTests {
 		}
 
 		public int getNumber() {
-			return number;
+			return this.number;
 		}
 
 		public void setNumber(int number) {
@@ -142,7 +142,7 @@ public class MappingJackson2SmileHttpMessageConverterTests {
 		}
 
 		public float getFraction() {
-			return fraction;
+			return this.fraction;
 		}
 
 		public void setFraction(float fraction) {
@@ -150,7 +150,7 @@ public class MappingJackson2SmileHttpMessageConverterTests {
 		}
 
 		public String[] getArray() {
-			return array;
+			return this.array;
 		}
 
 		public void setArray(String[] array) {

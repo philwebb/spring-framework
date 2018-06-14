@@ -2022,8 +2022,8 @@ public class DataBinderTests {
 
 	@Test  // SPR-14888
 	public void testSetAutoGrowCollectionLimitAfterInitialization() {
-		expectedException.expect(IllegalStateException.class);
-		expectedException.expectMessage("DataBinder is already initialized - call setAutoGrowCollectionLimit before other configuration methods");
+		this.expectedException.expect(IllegalStateException.class);
+		this.expectedException.expectMessage("DataBinder is already initialized - call setAutoGrowCollectionLimit before other configuration methods");
 
 		DataBinder binder = new DataBinder(new BeanWithIntegerList());
 		binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
@@ -2092,8 +2092,8 @@ public class DataBinderTests {
 
 	@Test  // SPR-15009
 	public void testCallSetMessageCodesResolverTwice() {
-		expectedException.expect(IllegalStateException.class);
-		expectedException.expectMessage("DataBinder is already initialized with MessageCodesResolver");
+		this.expectedException.expect(IllegalStateException.class);
+		this.expectedException.expectMessage("DataBinder is already initialized with MessageCodesResolver");
 
 		TestBean testBean = new TestBean();
 		DataBinder binder = new DataBinder(testBean, "testBean");
@@ -2108,7 +2108,7 @@ public class DataBinderTests {
 		private List<Integer> integerList;
 
 		public List<Integer> getIntegerList() {
-			return integerList;
+			return this.integerList;
 		}
 
 		public void setIntegerList(List<Integer> integerList) {
@@ -2126,15 +2126,15 @@ public class DataBinderTests {
 		private int nInStock;
 
 		public String getTitle() {
-			return Title;
+			return this.Title;
 		}
 
 		public void setTitle(String title) {
-			Title = title;
+			this.Title = title;
 		}
 
 		public String getISBN() {
-			return ISBN;
+			return this.ISBN;
 		}
 
 		public void setISBN(String ISBN) {
@@ -2142,7 +2142,7 @@ public class DataBinderTests {
 		}
 
 		public int getNInStock() {
-			return nInStock;
+			return this.nInStock;
 		}
 
 		public void setNInStock(int nInStock) {
@@ -2158,7 +2158,7 @@ public class DataBinderTests {
 		private Optional<String> name;
 
 		public String getId() {
-			return id;
+			return this.id;
 		}
 
 		public void setId(String id) {
@@ -2166,7 +2166,7 @@ public class DataBinderTests {
 		}
 
 		public Optional<String> getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(Optional<String> name) {
@@ -2235,81 +2235,81 @@ public class DataBinderTests {
 		}
 
 		public List<E> getWrappedList() {
-			return list;
+			return this.list;
 		}
 
 		@Override
 		public E get(int index) {
-			if (index >= list.size()) {
-				for (int i = list.size(); i < index; i++) {
-					list.add(null);
+			if (index >= this.list.size()) {
+				for (int i = this.list.size(); i < index; i++) {
+					this.list.add(null);
 				}
-				list.add(null);
+				this.list.add(null);
 				return null;
 			}
 			else {
-				return list.get(index);
+				return this.list.get(index);
 			}
 		}
 
 		@Override
 		public int size() {
-			return list.size();
+			return this.list.size();
 		}
 
 		@Override
 		public boolean add(E o) {
-			return list.add(o);
+			return this.list.add(o);
 		}
 
 		@Override
 		public void add(int index, E element) {
-			list.add(index, element);
+			this.list.add(index, element);
 		}
 
 		@Override
 		public boolean addAll(int index, Collection<? extends E> c) {
-			return list.addAll(index, c);
+			return this.list.addAll(index, c);
 		}
 
 		@Override
 		public void clear() {
-			list.clear();
+			this.list.clear();
 		}
 
 		@Override
 		public int indexOf(Object o) {
-			return list.indexOf(o);
+			return this.list.indexOf(o);
 		}
 
 		@Override
 		public Iterator<E> iterator() {
-			return list.iterator();
+			return this.list.iterator();
 		}
 
 		@Override
 		public int lastIndexOf(Object o) {
-			return list.lastIndexOf(o);
+			return this.list.lastIndexOf(o);
 		}
 
 		@Override
 		public ListIterator<E> listIterator() {
-			return list.listIterator();
+			return this.list.listIterator();
 		}
 
 		@Override
 		public ListIterator<E> listIterator(int index) {
-			return list.listIterator(index);
+			return this.list.listIterator(index);
 		}
 
 		@Override
 		public E remove(int index) {
-			return list.remove(index);
+			return this.list.remove(index);
 		}
 
 		@Override
 		public E set(int index, E element) {
-			return list.set(index, element);
+			return this.list.set(index, element);
 		}
 	}
 
@@ -2319,12 +2319,12 @@ public class DataBinderTests {
 		private final Map<String, Object> f;
 
 		public Form() {
-			f = new HashMap<>();
-			f.put("list", new GrowingList<>());
+			this.f = new HashMap<>();
+			this.f.put("list", new GrowingList<>());
 		}
 
 		public Map<String, Object> getF() {
-			return f;
+			return this.f;
 		}
 	}
 
@@ -2337,11 +2337,11 @@ public class DataBinderTests {
 			this.name = name;
 		}
 		public String getName() {
-			return name;
+			return this.name;
 		}
 		@Override
 		public String toString() {
-			return name;
+			return this.name;
 		}
 	}
 

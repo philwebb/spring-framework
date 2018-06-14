@@ -63,9 +63,9 @@ public class XlsViewTests {
 			}
 		};
 
-		excelView.render(new HashMap<>(), request, response);
+		excelView.render(new HashMap<>(), this.request, this.response);
 
-		Workbook wb = new HSSFWorkbook(new ByteArrayInputStream(response.getContentAsByteArray()));
+		Workbook wb = new HSSFWorkbook(new ByteArrayInputStream(this.response.getContentAsByteArray()));
 		assertEquals("Test Sheet", wb.getSheetName(0));
 		Sheet sheet = wb.getSheet("Test Sheet");
 		Row row = sheet.getRow(0);
@@ -87,9 +87,9 @@ public class XlsViewTests {
 			}
 		};
 
-		excelView.render(new HashMap<>(), request, response);
+		excelView.render(new HashMap<>(), this.request, this.response);
 
-		Workbook wb = new XSSFWorkbook(new ByteArrayInputStream(response.getContentAsByteArray()));
+		Workbook wb = new XSSFWorkbook(new ByteArrayInputStream(this.response.getContentAsByteArray()));
 		assertEquals("Test Sheet", wb.getSheetName(0));
 		Sheet sheet = wb.getSheet("Test Sheet");
 		Row row = sheet.getRow(0);
@@ -111,9 +111,9 @@ public class XlsViewTests {
 			}
 		};
 
-		excelView.render(new HashMap<>(), request, response);
+		excelView.render(new HashMap<>(), this.request, this.response);
 
-		Workbook wb = new XSSFWorkbook(new ByteArrayInputStream(response.getContentAsByteArray()));
+		Workbook wb = new XSSFWorkbook(new ByteArrayInputStream(this.response.getContentAsByteArray()));
 		assertEquals("Test Sheet", wb.getSheetName(0));
 		Sheet sheet = wb.getSheet("Test Sheet");
 		Row row = sheet.getRow(0);

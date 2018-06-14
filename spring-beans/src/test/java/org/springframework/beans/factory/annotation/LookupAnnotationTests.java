@@ -36,61 +36,61 @@ public class LookupAnnotationTests {
 
 	@Before
 	public void setUp() {
-		beanFactory = new DefaultListableBeanFactory();
+		this.beanFactory = new DefaultListableBeanFactory();
 		AutowiredAnnotationBeanPostProcessor aabpp = new AutowiredAnnotationBeanPostProcessor();
-		aabpp.setBeanFactory(beanFactory);
-		beanFactory.addBeanPostProcessor(aabpp);
-		beanFactory.registerBeanDefinition("abstractBean", new RootBeanDefinition(AbstractBean.class));
-		beanFactory.registerBeanDefinition("beanConsumer", new RootBeanDefinition(BeanConsumer.class));
+		aabpp.setBeanFactory(this.beanFactory);
+		this.beanFactory.addBeanPostProcessor(aabpp);
+		this.beanFactory.registerBeanDefinition("abstractBean", new RootBeanDefinition(AbstractBean.class));
+		this.beanFactory.registerBeanDefinition("beanConsumer", new RootBeanDefinition(BeanConsumer.class));
 		RootBeanDefinition tbd = new RootBeanDefinition(TestBean.class);
 		tbd.setScope(RootBeanDefinition.SCOPE_PROTOTYPE);
-		beanFactory.registerBeanDefinition("testBean", tbd);
+		this.beanFactory.registerBeanDefinition("testBean", tbd);
 	}
 
 
 	@Test
 	public void testWithoutConstructorArg() {
-		AbstractBean bean = (AbstractBean) beanFactory.getBean("abstractBean");
+		AbstractBean bean = (AbstractBean) this.beanFactory.getBean("abstractBean");
 		assertNotNull(bean);
 		Object expected = bean.get();
 		assertEquals(TestBean.class, expected.getClass());
-		assertSame(bean, beanFactory.getBean(BeanConsumer.class).abstractBean);
+		assertSame(bean, this.beanFactory.getBean(BeanConsumer.class).abstractBean);
 	}
 
 	@Test
 	public void testWithOverloadedArg() {
-		AbstractBean bean = (AbstractBean) beanFactory.getBean("abstractBean");
+		AbstractBean bean = (AbstractBean) this.beanFactory.getBean("abstractBean");
 		assertNotNull(bean);
 		TestBean expected = bean.get("haha");
 		assertEquals(TestBean.class, expected.getClass());
 		assertEquals("haha", expected.getName());
-		assertSame(bean, beanFactory.getBean(BeanConsumer.class).abstractBean);
+		assertSame(bean, this.beanFactory.getBean(BeanConsumer.class).abstractBean);
 	}
 
 	@Test
 	public void testWithOneConstructorArg() {
-		AbstractBean bean = (AbstractBean) beanFactory.getBean("abstractBean");
+		AbstractBean bean = (AbstractBean) this.beanFactory.getBean("abstractBean");
 		assertNotNull(bean);
 		TestBean expected = bean.getOneArgument("haha");
 		assertEquals(TestBean.class, expected.getClass());
 		assertEquals("haha", expected.getName());
-		assertSame(bean, beanFactory.getBean(BeanConsumer.class).abstractBean);
+		assertSame(bean, this.beanFactory.getBean(BeanConsumer.class).abstractBean);
 	}
 
 	@Test
 	public void testWithTwoConstructorArg() {
-		AbstractBean bean = (AbstractBean) beanFactory.getBean("abstractBean");
+		AbstractBean bean = (AbstractBean) this.beanFactory.getBean("abstractBean");
 		assertNotNull(bean);
 		TestBean expected = bean.getTwoArguments("haha", 72);
 		assertEquals(TestBean.class, expected.getClass());
 		assertEquals("haha", expected.getName());
 		assertEquals(72, expected.getAge());
-		assertSame(bean, beanFactory.getBean(BeanConsumer.class).abstractBean);
+		assertSame(bean, this.beanFactory.getBean(BeanConsumer.class).abstractBean);
 	}
 
 	@Test
 	public void testWithThreeArgsShouldFail() {
-		AbstractBean bean = (AbstractBean) beanFactory.getBean("abstractBean");
+		AbstractBean bean = (AbstractBean) this.beanFactory.getBean("abstractBean");
 		assertNotNull(bean);
 		try {
 			bean.getThreeArguments("name", 1, 2);
@@ -98,16 +98,16 @@ public class LookupAnnotationTests {
 		}
 		catch (AbstractMethodError ex) {
 		}
-		assertSame(bean, beanFactory.getBean(BeanConsumer.class).abstractBean);
+		assertSame(bean, this.beanFactory.getBean(BeanConsumer.class).abstractBean);
 	}
 
 	@Test
 	public void testWithEarlyInjection() {
-		AbstractBean bean = beanFactory.getBean("beanConsumer", BeanConsumer.class).abstractBean;
+		AbstractBean bean = this.beanFactory.getBean("beanConsumer", BeanConsumer.class).abstractBean;
 		assertNotNull(bean);
 		Object expected = bean.get();
 		assertEquals(TestBean.class, expected.getClass());
-		assertSame(bean, beanFactory.getBean(BeanConsumer.class).abstractBean);
+		assertSame(bean, this.beanFactory.getBean(BeanConsumer.class).abstractBean);
 	}
 
 

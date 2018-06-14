@@ -329,11 +329,11 @@ public class BaseViewTests {
 		 */
 		@Override
 		protected void initApplicationContext() throws ApplicationContextException {
-			if (initialized) {
+			if (this.initialized) {
 				throw new RuntimeException("Already initialized");
 			}
 			this.initialized = true;
-			assertTrue(getApplicationContext() == wac);
+			assertTrue(getApplicationContext() == this.wac);
 		}
 	}
 

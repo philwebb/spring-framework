@@ -53,11 +53,11 @@ public class TableMetaDataContextTests  {
 
 	@Before
 	public void setUp() throws Exception {
-		connection = mock(Connection.class);
-		dataSource = mock(DataSource.class);
-		databaseMetaData = mock(DatabaseMetaData.class);
-		given(connection.getMetaData()).willReturn(databaseMetaData);
-		given(dataSource.getConnection()).willReturn(connection);
+		this.connection = mock(Connection.class);
+		this.dataSource = mock(DataSource.class);
+		this.databaseMetaData = mock(DatabaseMetaData.class);
+		given(this.connection.getMetaData()).willReturn(this.databaseMetaData);
+		given(this.dataSource.getConnection()).willReturn(this.connection);
 	}
 
 
@@ -82,12 +82,12 @@ public class TableMetaDataContextTests  {
 		given(columnsResultSet.getBoolean("NULLABLE")).willReturn(
 				false, true, true, false);
 
-		given(databaseMetaData.getDatabaseProductName()).willReturn("MyDB");
-		given(databaseMetaData.getDatabaseProductName()).willReturn("1.0");
-		given(databaseMetaData.getUserName()).willReturn(USER);
-		given(databaseMetaData.storesLowerCaseIdentifiers()).willReturn(true);
-		given(databaseMetaData.getTables(null, null, TABLE, null)).willReturn(metaDataResultSet);
-		given(databaseMetaData.getColumns(null, USER, TABLE, null)).willReturn(columnsResultSet);
+		given(this.databaseMetaData.getDatabaseProductName()).willReturn("MyDB");
+		given(this.databaseMetaData.getDatabaseProductName()).willReturn("1.0");
+		given(this.databaseMetaData.getUserName()).willReturn(USER);
+		given(this.databaseMetaData.storesLowerCaseIdentifiers()).willReturn(true);
+		given(this.databaseMetaData.getTables(null, null, TABLE, null)).willReturn(metaDataResultSet);
+		given(this.databaseMetaData.getColumns(null, USER, TABLE, null)).willReturn(columnsResultSet);
 
 		MapSqlParameterSource map = new MapSqlParameterSource();
 		map.addValue("id", 1);
@@ -97,10 +97,10 @@ public class TableMetaDataContextTests  {
 		map.registerSqlType("customersince", Types.DATE);
 		map.registerSqlType("version", Types.NUMERIC);
 
-		context.setTableName(TABLE);
-		context.processMetaData(dataSource, new ArrayList<>(), new String[] {});
+		this.context.setTableName(TABLE);
+		this.context.processMetaData(this.dataSource, new ArrayList<>(), new String[] {});
 
-		List<Object> values = context.matchInParameterValuesWithInsertColumns(map);
+		List<Object> values = this.context.matchInParameterValuesWithInsertColumns(map);
 
 		assertEquals("wrong number of parameters: ", 4, values.size());
 		assertTrue("id not wrapped with type info", values.get(0) instanceof Number);
@@ -132,19 +132,19 @@ public class TableMetaDataContextTests  {
 		given(columnsResultSet.getInt("DATA_TYPE")).willReturn(Types.INTEGER);
 		given(columnsResultSet.getBoolean("NULLABLE")).willReturn(false);
 
-		given(databaseMetaData.getDatabaseProductName()).willReturn("MyDB");
-		given(databaseMetaData.getDatabaseProductName()).willReturn("1.0");
-		given(databaseMetaData.getUserName()).willReturn(USER);
-		given(databaseMetaData.storesLowerCaseIdentifiers()).willReturn(true);
-		given(databaseMetaData.getTables(null, null, TABLE, null)).willReturn(metaDataResultSet);
-		given(databaseMetaData.getColumns(null, USER, TABLE, null)).willReturn(columnsResultSet);
+		given(this.databaseMetaData.getDatabaseProductName()).willReturn("MyDB");
+		given(this.databaseMetaData.getDatabaseProductName()).willReturn("1.0");
+		given(this.databaseMetaData.getUserName()).willReturn(USER);
+		given(this.databaseMetaData.storesLowerCaseIdentifiers()).willReturn(true);
+		given(this.databaseMetaData.getTables(null, null, TABLE, null)).willReturn(metaDataResultSet);
+		given(this.databaseMetaData.getColumns(null, USER, TABLE, null)).willReturn(columnsResultSet);
 
 		MapSqlParameterSource map = new MapSqlParameterSource();
 		String[] keyCols = new String[] { "id" };
-		context.setTableName(TABLE);
-		context.processMetaData(dataSource, new ArrayList<>(), keyCols);
-		List<Object> values = context.matchInParameterValuesWithInsertColumns(map);
-		String insertString = context.createInsertString(keyCols);
+		this.context.setTableName(TABLE);
+		this.context.processMetaData(this.dataSource, new ArrayList<>(), keyCols);
+		List<Object> values = this.context.matchInParameterValuesWithInsertColumns(map);
+		String insertString = this.context.createInsertString(keyCols);
 
 		assertEquals("wrong number of parameters: ", 0, values.size());
 		assertEquals("empty insert not generated correctly", "INSERT INTO customers () VALUES()", insertString);

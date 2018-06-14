@@ -80,49 +80,49 @@ public class DelegatingWebConnectionTests {
 
 	@Before
 	public void setup() throws Exception {
-		request = new WebRequest(new URL("http://localhost/"));
+		this.request = new WebRequest(new URL("http://localhost/"));
 		WebResponseData data = new WebResponseData("".getBytes("UTF-8"), 200, "", Collections.emptyList());
-		expectedResponse = new WebResponse(data, request, 100L);
-		webConnection = new DelegatingWebConnection(defaultConnection,
-				new DelegateWebConnection(matcher1, connection1), new DelegateWebConnection(matcher2, connection2));
+		this.expectedResponse = new WebResponse(data, this.request, 100L);
+		this.webConnection = new DelegatingWebConnection(this.defaultConnection,
+				new DelegateWebConnection(this.matcher1, this.connection1), new DelegateWebConnection(this.matcher2, this.connection2));
 	}
 
 
 	@Test
 	public void getResponseDefault() throws Exception {
-		when(defaultConnection.getResponse(request)).thenReturn(expectedResponse);
-		WebResponse response = webConnection.getResponse(request);
+		when(this.defaultConnection.getResponse(this.request)).thenReturn(this.expectedResponse);
+		WebResponse response = this.webConnection.getResponse(this.request);
 
-		assertThat(response, sameInstance(expectedResponse));
-		verify(matcher1).matches(request);
-		verify(matcher2).matches(request);
-		verifyNoMoreInteractions(connection1, connection2);
-		verify(defaultConnection).getResponse(request);
+		assertThat(response, sameInstance(this.expectedResponse));
+		verify(this.matcher1).matches(this.request);
+		verify(this.matcher2).matches(this.request);
+		verifyNoMoreInteractions(this.connection1, this.connection2);
+		verify(this.defaultConnection).getResponse(this.request);
 	}
 
 	@Test
 	public void getResponseAllMatches() throws Exception {
-		when(matcher1.matches(request)).thenReturn(true);
-		when(connection1.getResponse(request)).thenReturn(expectedResponse);
-		WebResponse response = webConnection.getResponse(request);
+		when(this.matcher1.matches(this.request)).thenReturn(true);
+		when(this.connection1.getResponse(this.request)).thenReturn(this.expectedResponse);
+		WebResponse response = this.webConnection.getResponse(this.request);
 
-		assertThat(response, sameInstance(expectedResponse));
-		verify(matcher1).matches(request);
-		verifyNoMoreInteractions(matcher2, connection2, defaultConnection);
-		verify(connection1).getResponse(request);
+		assertThat(response, sameInstance(this.expectedResponse));
+		verify(this.matcher1).matches(this.request);
+		verifyNoMoreInteractions(this.matcher2, this.connection2, this.defaultConnection);
+		verify(this.connection1).getResponse(this.request);
 	}
 
 	@Test
 	public void getResponseSecondMatches() throws Exception {
-		when(matcher2.matches(request)).thenReturn(true);
-		when(connection2.getResponse(request)).thenReturn(expectedResponse);
-		WebResponse response = webConnection.getResponse(request);
+		when(this.matcher2.matches(this.request)).thenReturn(true);
+		when(this.connection2.getResponse(this.request)).thenReturn(this.expectedResponse);
+		WebResponse response = this.webConnection.getResponse(this.request);
 
-		assertThat(response, sameInstance(expectedResponse));
-		verify(matcher1).matches(request);
-		verify(matcher2).matches(request);
-		verifyNoMoreInteractions(connection1, defaultConnection);
-		verify(connection2).getResponse(request);
+		assertThat(response, sameInstance(this.expectedResponse));
+		verify(this.matcher1).matches(this.request);
+		verify(this.matcher2).matches(this.request);
+		verifyNoMoreInteractions(this.connection1, this.defaultConnection);
+		verify(this.connection2).getResponse(this.request);
 	}
 
 	@Test

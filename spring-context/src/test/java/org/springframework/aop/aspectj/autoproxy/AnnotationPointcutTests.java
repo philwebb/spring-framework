@@ -39,18 +39,18 @@ public class AnnotationPointcutTests {
 		ClassPathXmlApplicationContext ctx =
 				new ClassPathXmlApplicationContext(getClass().getSimpleName() + "-context.xml", getClass());
 
-		testBean = (AnnotatedTestBean) ctx.getBean("testBean");
+		this.testBean = (AnnotatedTestBean) ctx.getBean("testBean");
 	}
 
 
 	@Test
 	public void testAnnotationBindingInAroundAdvice() {
-		assertEquals("this value", testBean.doThis());
+		assertEquals("this value", this.testBean.doThis());
 	}
 
 	@Test
 	public void testNoMatchingWithoutAnnotationPresent() {
-		assertEquals("doTheOther", testBean.doTheOther());
+		assertEquals("doTheOther", this.testBean.doTheOther());
 	}
 
 }

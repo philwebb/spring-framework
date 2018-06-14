@@ -108,7 +108,7 @@ public abstract class AbstractSockJsIntegrationTests {
 
 	@Before
 	public void setup() throws Exception {
-		logger.debug("Setting up '" + this.testName.getMethodName() + "'");
+		this.logger.debug("Setting up '" + this.testName.getMethodName() + "'");
 		this.testFilter = new TestFilter();
 
 		this.wac = new AnnotationConfigWebApplicationContext();
@@ -131,25 +131,25 @@ public abstract class AbstractSockJsIntegrationTests {
 			this.sockJsClient.stop();
 		}
 		catch (Throwable ex) {
-			logger.error("Failed to stop SockJsClient", ex);
+			this.logger.error("Failed to stop SockJsClient", ex);
 		}
 		try {
 			this.server.undeployConfig();
 		}
 		catch (Throwable t) {
-			logger.error("Failed to undeploy application config", t);
+			this.logger.error("Failed to undeploy application config", t);
 		}
 		try {
 			this.server.stop();
 		}
 		catch (Throwable t) {
-			logger.error("Failed to stop server", t);
+			this.logger.error("Failed to stop server", t);
 		}
 		try {
 			this.wac.close();
 		}
 		catch (Throwable t) {
-			logger.error("Failed to close WebApplicationContext", t);
+			this.logger.error("Failed to close WebApplicationContext", t);
 		}
 	}
 
@@ -258,7 +258,7 @@ public abstract class AbstractSockJsIntegrationTests {
 		this.testFilter.sendErrorMap.put("/xhr_streaming", 503);
 		initSockJsClient(createXhrTransport());
 		this.sockJsClient.setConnectTimeoutScheduler(this.wac.getBean(ThreadPoolTaskScheduler.class));
-		WebSocketSession clientSession = sockJsClient.doHandshake(clientHandler, this.baseUrl + "/echo").get();
+		WebSocketSession clientSession = this.sockJsClient.doHandshake(clientHandler, this.baseUrl + "/echo").get();
 		assertEquals("Fallback didn't occur", XhrClientSockJsSession.class, clientSession.getClass());
 		TextMessage message = new TextMessage("message1");
 		clientSession.sendMessage(message);
@@ -365,7 +365,7 @@ public abstract class AbstractSockJsIntegrationTests {
 		}
 
 		public void awaitMessageCount(final int count, long timeToWait) throws Exception {
-			awaitEvent(() -> receivedMessages.size() >= count, timeToWait,
+			awaitEvent(() -> this.receivedMessages.size() >= count, timeToWait,
 					count + " number of messages. Received so far: " + this.receivedMessages);
 		}
 

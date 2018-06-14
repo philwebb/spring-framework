@@ -33,7 +33,7 @@ public class BasicGroovyWacTests extends AbstractBasicWacTests {
 
 	@Test
 	public void groovyFooAutowired() {
-		assertEquals("Groovy Foo", foo);
+		assertEquals("Groovy Foo", this.foo);
 	}
 
 }

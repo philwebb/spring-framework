@@ -36,15 +36,15 @@ public class LookupMethodTests {
 
 	@Before
 	public void setUp() {
-		beanFactory = new DefaultListableBeanFactory();
-		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
+		this.beanFactory = new DefaultListableBeanFactory();
+		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(this.beanFactory);
 		reader.loadBeanDefinitions(new ClassPathResource("lookupMethodTests.xml", getClass()));
 	}
 
 
 	@Test
 	public void testWithoutConstructorArg() {
-		AbstractBean bean = (AbstractBean) beanFactory.getBean("abstractBean");
+		AbstractBean bean = (AbstractBean) this.beanFactory.getBean("abstractBean");
 		assertNotNull(bean);
 		Object expected = bean.get();
 		assertEquals(TestBean.class, expected.getClass());
@@ -52,7 +52,7 @@ public class LookupMethodTests {
 
 	@Test
 	public void testWithOverloadedArg() {
-		AbstractBean bean = (AbstractBean) beanFactory.getBean("abstractBean");
+		AbstractBean bean = (AbstractBean) this.beanFactory.getBean("abstractBean");
 		assertNotNull(bean);
 		TestBean expected = bean.get("haha");
 		assertEquals(TestBean.class, expected.getClass());
@@ -61,7 +61,7 @@ public class LookupMethodTests {
 
 	@Test
 	public void testWithOneConstructorArg() {
-		AbstractBean bean = (AbstractBean) beanFactory.getBean("abstractBean");
+		AbstractBean bean = (AbstractBean) this.beanFactory.getBean("abstractBean");
 		assertNotNull(bean);
 		TestBean expected = bean.getOneArgument("haha");
 		assertEquals(TestBean.class, expected.getClass());
@@ -70,7 +70,7 @@ public class LookupMethodTests {
 
 	@Test
 	public void testWithTwoConstructorArg() {
-		AbstractBean bean = (AbstractBean) beanFactory.getBean("abstractBean");
+		AbstractBean bean = (AbstractBean) this.beanFactory.getBean("abstractBean");
 		assertNotNull(bean);
 		TestBean expected = bean.getTwoArguments("haha", 72);
 		assertEquals(TestBean.class, expected.getClass());
@@ -80,7 +80,7 @@ public class LookupMethodTests {
 
 	@Test
 	public void testWithThreeArgsShouldFail() {
-		AbstractBean bean = (AbstractBean) beanFactory.getBean("abstractBean");
+		AbstractBean bean = (AbstractBean) this.beanFactory.getBean("abstractBean");
 		assertNotNull(bean);
 		try {
 			bean.getThreeArguments("name", 1, 2);
@@ -92,7 +92,7 @@ public class LookupMethodTests {
 
 	@Test
 	public void testWithOverriddenLookupMethod() {
-		AbstractBean bean = (AbstractBean) beanFactory.getBean("extendedBean");
+		AbstractBean bean = (AbstractBean) this.beanFactory.getBean("extendedBean");
 		assertNotNull(bean);
 		TestBean expected = bean.getOneArgument("haha");
 		assertEquals(TestBean.class, expected.getClass());

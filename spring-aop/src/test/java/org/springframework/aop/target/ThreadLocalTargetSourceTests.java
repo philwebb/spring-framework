@@ -61,24 +61,24 @@ public class ThreadLocalTargetSourceTests {
 	 */
 	@Test
 	public void testUseDifferentManagedInstancesInSameThread() {
-		SideEffectBean apartment = (SideEffectBean) beanFactory.getBean("apartment");
+		SideEffectBean apartment = (SideEffectBean) this.beanFactory.getBean("apartment");
 		assertEquals(INITIAL_COUNT, apartment.getCount());
 		apartment.doWork();
 		assertEquals(INITIAL_COUNT + 1, apartment.getCount());
 
-		ITestBean test = (ITestBean) beanFactory.getBean("threadLocal2");
+		ITestBean test = (ITestBean) this.beanFactory.getBean("threadLocal2");
 		assertEquals("Rod", test.getName());
 		assertEquals("Kerry", test.getSpouse().getName());
 	}
 
 	@Test
 	public void testReuseInSameThread() {
-		SideEffectBean apartment = (SideEffectBean) beanFactory.getBean("apartment");
+		SideEffectBean apartment = (SideEffectBean) this.beanFactory.getBean("apartment");
 		assertEquals(INITIAL_COUNT, apartment.getCount());
 		apartment.doWork();
 		assertEquals(INITIAL_COUNT + 1, apartment.getCount());
 
-		apartment = (SideEffectBean) beanFactory.getBean("apartment");
+		apartment = (SideEffectBean) this.beanFactory.getBean("apartment");
 		assertEquals(INITIAL_COUNT + 1, apartment.getCount());
 	}
 
@@ -87,10 +87,10 @@ public class ThreadLocalTargetSourceTests {
 	 */
 	@Test
 	public void testCanGetStatsViaMixin() {
-		ThreadLocalTargetSourceStats stats = (ThreadLocalTargetSourceStats) beanFactory.getBean("apartment");
+		ThreadLocalTargetSourceStats stats = (ThreadLocalTargetSourceStats) this.beanFactory.getBean("apartment");
 		// +1 because creating target for stats call counts
 		assertEquals(1, stats.getInvocationCount());
-		SideEffectBean apartment = (SideEffectBean) beanFactory.getBean("apartment");
+		SideEffectBean apartment = (SideEffectBean) this.beanFactory.getBean("apartment");
 		apartment.doWork();
 		// +1 again
 		assertEquals(3, stats.getInvocationCount());
@@ -105,7 +105,7 @@ public class ThreadLocalTargetSourceTests {
 
 	@Test
 	public void testNewThreadHasOwnInstance() throws InterruptedException {
-		SideEffectBean apartment = (SideEffectBean) beanFactory.getBean("apartment");
+		SideEffectBean apartment = (SideEffectBean) this.beanFactory.getBean("apartment");
 		assertEquals(INITIAL_COUNT, apartment.getCount());
 		apartment.doWork();
 		apartment.doWork();
@@ -116,10 +116,10 @@ public class ThreadLocalTargetSourceTests {
 			public SideEffectBean mine;
 			@Override
 			public void run() {
-				this.mine = (SideEffectBean) beanFactory.getBean("apartment");
-				assertEquals(INITIAL_COUNT, mine.getCount());
-				mine.doWork();
-				assertEquals(INITIAL_COUNT + 1, mine.getCount());
+				this.mine = (SideEffectBean) ThreadLocalTargetSourceTests.this.beanFactory.getBean("apartment");
+				assertEquals(INITIAL_COUNT, this.mine.getCount());
+				this.mine.doWork();
+				assertEquals(INITIAL_COUNT + 1, this.mine.getCount());
 			}
 		}
 		Runner r = new Runner();

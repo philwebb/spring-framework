@@ -90,9 +90,9 @@ public abstract class AbstractDataBufferAllocatingTestCase {
 
 		@Override
 		protected void verify() throws Throwable {
-			if (bufferFactory instanceof NettyDataBufferFactory) {
+			if (AbstractDataBufferAllocatingTestCase.this.bufferFactory instanceof NettyDataBufferFactory) {
 				ByteBufAllocator byteBufAllocator =
-						((NettyDataBufferFactory) bufferFactory).getByteBufAllocator();
+						((NettyDataBufferFactory) AbstractDataBufferAllocatingTestCase.this.bufferFactory).getByteBufAllocator();
 				if (byteBufAllocator instanceof PooledByteBufAllocator) {
 					PooledByteBufAllocator pooledByteBufAllocator =
 							(PooledByteBufAllocator) byteBufAllocator;

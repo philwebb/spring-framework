@@ -75,7 +75,7 @@ public class DataSourceOnlySqlScriptsTests {
 
 	protected void assertNumUsers(int expected) {
 		assertEquals("Number of rows in the 'user' table.", expected,
-			JdbcTestUtils.countRowsInTable(jdbcTemplate, "user"));
+			JdbcTestUtils.countRowsInTable(this.jdbcTemplate, "user"));
 	}
 
 

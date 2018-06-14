@@ -78,7 +78,7 @@ public class PrimaryTransactionManagerTests {
 		TransactionTestUtils.assertInTransaction(true);
 
 		ClassPathResource resource = new ClassPathResource("/org/springframework/test/context/jdbc/data.sql");
-		new ResourceDatabasePopulator(resource).execute(jdbcTemplate.getDataSource());
+		new ResourceDatabasePopulator(resource).execute(this.jdbcTemplate.getDataSource());
 
 		assertNumUsers(1);
 	}

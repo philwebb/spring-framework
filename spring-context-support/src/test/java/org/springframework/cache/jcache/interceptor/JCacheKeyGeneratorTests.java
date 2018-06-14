@@ -68,7 +68,7 @@ public class JCacheKeyGeneratorTests {
 		assertSame(first, second);
 
 		Object key = new SimpleKey(1L);
-		assertEquals(first, cache.get(key).get());
+		assertEquals(first, this.cache.get(key).get());
 	}
 
 	@Test
@@ -79,7 +79,7 @@ public class JCacheKeyGeneratorTests {
 		assertSame(first, second);
 
 		Object key = new SimpleKey(1L, "foo", "bar");
-		assertEquals(first, cache.get(key).get());
+		assertEquals(first, this.cache.get(key).get());
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class JCacheKeyGeneratorTests {
 		assertSame(first, second);
 
 		Object key = new SimpleKey(1L);
-		assertEquals(first, cache.get(key).get());
+		assertEquals(first, this.cache.get(key).get());
 	}
 
 
@@ -123,17 +123,17 @@ public class JCacheKeyGeneratorTests {
 
 		@CacheResult
 		public Object get(long id) {
-			return counter.getAndIncrement();
+			return this.counter.getAndIncrement();
 		}
 
 		@CacheResult
 		public Object get(long id, String... items) {
-			return counter.getAndIncrement();
+			return this.counter.getAndIncrement();
 		}
 
 		@CacheResult
 		public Object getFiltered(@CacheKey long id, String... items) {
-			return counter.getAndIncrement();
+			return this.counter.getAndIncrement();
 		}
 
 	}
@@ -151,7 +151,7 @@ public class JCacheKeyGeneratorTests {
 		public Object generate(Object target, Method method, Object... params) {
 			assertTrue("Unexpected parameters: expected: "
 							+ Arrays.toString(this.expectedParams) + " but got: " + Arrays.toString(params),
-					Arrays.equals(expectedParams, params));
+					Arrays.equals(this.expectedParams, params));
 			return new SimpleKey(params);
 		}
 	}

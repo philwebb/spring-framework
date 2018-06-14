@@ -49,20 +49,20 @@ public class AtomFeedHttpMessageConverterTests {
 
 	@Before
 	public void setUp() {
-		converter = new AtomFeedHttpMessageConverter();
+		this.converter = new AtomFeedHttpMessageConverter();
 	}
 
 
 	@Test
 	public void canRead() {
-		assertTrue(converter.canRead(Feed.class, new MediaType("application", "atom+xml")));
-		assertTrue(converter.canRead(Feed.class, new MediaType("application", "atom+xml", StandardCharsets.UTF_8)));
+		assertTrue(this.converter.canRead(Feed.class, new MediaType("application", "atom+xml")));
+		assertTrue(this.converter.canRead(Feed.class, new MediaType("application", "atom+xml", StandardCharsets.UTF_8)));
 	}
 
 	@Test
 	public void canWrite() {
-		assertTrue(converter.canWrite(Feed.class, new MediaType("application", "atom+xml")));
-		assertTrue(converter.canWrite(Feed.class, new MediaType("application", "atom+xml", StandardCharsets.UTF_8)));
+		assertTrue(this.converter.canWrite(Feed.class, new MediaType("application", "atom+xml")));
+		assertTrue(this.converter.canWrite(Feed.class, new MediaType("application", "atom+xml", StandardCharsets.UTF_8)));
 	}
 
 	@Test
@@ -70,7 +70,7 @@ public class AtomFeedHttpMessageConverterTests {
 		InputStream is = getClass().getResourceAsStream("atom.xml");
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(is);
 		inputMessage.getHeaders().setContentType(new MediaType("application", "atom+xml", StandardCharsets.UTF_8));
-		Feed result = converter.read(Feed.class, inputMessage);
+		Feed result = this.converter.read(Feed.class, inputMessage);
 		assertEquals("title", result.getTitle());
 		assertEquals("subtitle", result.getSubtitle().getValue());
 		List<?> entries = result.getEntries();
@@ -104,7 +104,7 @@ public class AtomFeedHttpMessageConverterTests {
 		feed.setEntries(entries);
 
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
-		converter.write(feed, null, outputMessage);
+		this.converter.write(feed, null, outputMessage);
 
 		assertEquals("Invalid content-type", new MediaType("application", "atom+xml", StandardCharsets.UTF_8),
 				outputMessage.getHeaders().getContentType());
@@ -124,7 +124,7 @@ public class AtomFeedHttpMessageConverterTests {
 		feed.setEncoding(encoding);
 
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
-		converter.write(feed, null, outputMessage);
+		this.converter.write(feed, null, outputMessage);
 
 		assertEquals("Invalid content-type", new MediaType("application", "atom+xml", Charset.forName(encoding)),
 				outputMessage.getHeaders().getContentType());

@@ -32,7 +32,7 @@ public class TestExceptionListener implements ExceptionListener {
 	}
 
 	public int getCount() {
-		return count;
+		return this.count;
 	}
 
 }

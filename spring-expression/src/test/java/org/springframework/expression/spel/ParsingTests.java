@@ -454,7 +454,7 @@ public class ParsingTests {
 	 */
 	public void parseCheck(String expression, String expectedStringFormOfAST) {
 		try {
-			SpelExpression e = parser.parseRaw(expression);
+			SpelExpression e = this.parser.parseRaw(expression);
 			if (e != null && !e.toStringAST().equals(expectedStringFormOfAST)) {
 				SpelUtilities.printAbstractSyntaxTree(System.err, e);
 			}

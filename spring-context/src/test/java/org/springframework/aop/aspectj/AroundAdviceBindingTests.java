@@ -49,44 +49,44 @@ public class AroundAdviceBindingTests {
 
 	@Before
 	public void onSetUp() throws Exception {
-		ctx = new ClassPathXmlApplicationContext(getClass().getSimpleName() + ".xml", getClass());
+		this.ctx = new ClassPathXmlApplicationContext(getClass().getSimpleName() + ".xml", getClass());
 
-		AroundAdviceBindingTestAspect  aroundAdviceAspect = ((AroundAdviceBindingTestAspect) ctx.getBean("testAspect"));
+		AroundAdviceBindingTestAspect  aroundAdviceAspect = ((AroundAdviceBindingTestAspect) this.ctx.getBean("testAspect"));
 
-		ITestBean injectedTestBean = (ITestBean) ctx.getBean("testBean");
+		ITestBean injectedTestBean = (ITestBean) this.ctx.getBean("testBean");
 		assertTrue(AopUtils.isAopProxy(injectedTestBean));
 
 		this.testBeanProxy = injectedTestBean;
 		// we need the real target too, not just the proxy...
 
-		this.testBeanTarget = (TestBean) ((Advised) testBeanProxy).getTargetSource().getTarget();
+		this.testBeanTarget = (TestBean) ((Advised) this.testBeanProxy).getTargetSource().getTarget();
 
-		mockCollaborator = mock(AroundAdviceBindingCollaborator.class);
-		aroundAdviceAspect.setCollaborator(mockCollaborator);
+		this.mockCollaborator = mock(AroundAdviceBindingCollaborator.class);
+		aroundAdviceAspect.setCollaborator(this.mockCollaborator);
 	}
 
 	@Test
 	public void testOneIntArg() {
-		testBeanProxy.setAge(5);
-		verify(mockCollaborator).oneIntArg(5);
+		this.testBeanProxy.setAge(5);
+		verify(this.mockCollaborator).oneIntArg(5);
 	}
 
 	@Test
 	public void testOneObjectArgBoundToTarget() {
-		testBeanProxy.getAge();
-		verify(mockCollaborator).oneObjectArg(this.testBeanTarget);
+		this.testBeanProxy.getAge();
+		verify(this.mockCollaborator).oneObjectArg(this.testBeanTarget);
 	}
 
 	@Test
 	public void testOneIntAndOneObjectArgs() {
-		testBeanProxy.setAge(5);
-		verify(mockCollaborator).oneIntAndOneObject(5, this.testBeanProxy);
+		this.testBeanProxy.setAge(5);
+		verify(this.mockCollaborator).oneIntAndOneObject(5, this.testBeanProxy);
 	}
 
 	@Test
 	public void testJustJoinPoint() {
-		testBeanProxy.getAge();
-		verify(mockCollaborator).justJoinPoint("getAge");
+		this.testBeanProxy.getAge();
+		verify(this.mockCollaborator).justJoinPoint("getAge");
 	}
 
 }

@@ -283,7 +283,7 @@ public class DataAccessUtilsTests {
 
 		@Override
 		public DataAccessException translateExceptionIfPossible(RuntimeException ex) {
-			return (DataAccessException) translations.get(ex);
+			return (DataAccessException) this.translations.get(ex);
 		}
 	}
 

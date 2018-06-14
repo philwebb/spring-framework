@@ -52,214 +52,214 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 	@Test
 	public void compilingMathematicalExpressionsWithDifferentOperandTypes() throws Exception {
 		NumberHolder nh = new NumberHolder();
-		expression = parser.parseExpression("(T(Integer).valueOf(payload).doubleValue())/18D");
-		Object o = expression.getValue(nh);
+		this.expression = this.parser.parseExpression("(T(Integer).valueOf(payload).doubleValue())/18D");
+		Object o = this.expression.getValue(nh);
 		assertEquals(2d,o);
 		System.out.println("Performance check for SpEL expression: '(T(Integer).valueOf(payload).doubleValue())/18D'");
 		long stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue(nh);
+			o = this.expression.getValue(nh);
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue(nh);
+			o = this.expression.getValue(nh);
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue(nh);
+			o = this.expression.getValue(nh);
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
-		compile(expression);
+		compile(this.expression);
 		System.out.println("Now compiled:");
-		o = expression.getValue(nh);
+		o = this.expression.getValue(nh);
 		assertEquals(2d, o);
 
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue(nh);
+			o = this.expression.getValue(nh);
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue(nh);
+			o = this.expression.getValue(nh);
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue(nh);
+			o = this.expression.getValue(nh);
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
 
-		expression = parser.parseExpression("payload/18D");
-		o = expression.getValue(nh);
+		this.expression = this.parser.parseExpression("payload/18D");
+		o = this.expression.getValue(nh);
 		assertEquals(2d,o);
 		System.out.println("Performance check for SpEL expression: 'payload/18D'");
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue(nh);
+			o = this.expression.getValue(nh);
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue(nh);
+			o = this.expression.getValue(nh);
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue(nh);
+			o = this.expression.getValue(nh);
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
-		compile(expression);
+		compile(this.expression);
 		System.out.println("Now compiled:");
-		o = expression.getValue(nh);
+		o = this.expression.getValue(nh);
 		assertEquals(2d, o);
 
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue(nh);
+			o = this.expression.getValue(nh);
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue(nh);
+			o = this.expression.getValue(nh);
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue(nh);
+			o = this.expression.getValue(nh);
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
 	}
 
 	@Test
 	public void inlineLists() throws Exception {
-		expression = parser.parseExpression("{'abcde','ijklm'}[0].substring({1,3,4}[0],{1,3,4}[1])");
-		Object o = expression.getValue();
+		this.expression = this.parser.parseExpression("{'abcde','ijklm'}[0].substring({1,3,4}[0],{1,3,4}[1])");
+		Object o = this.expression.getValue();
 		assertEquals("bc",o);
 		System.out.println("Performance check for SpEL expression: '{'abcde','ijklm'}[0].substring({1,3,4}[0],{1,3,4}[1])'");
 		long stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue();
+			o = this.expression.getValue();
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue();
+			o = this.expression.getValue();
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue();
+			o = this.expression.getValue();
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
-		compile(expression);
+		compile(this.expression);
 		System.out.println("Now compiled:");
-		o = expression.getValue();
+		o = this.expression.getValue();
 		assertEquals("bc", o);
 
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue();
+			o = this.expression.getValue();
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue();
+			o = this.expression.getValue();
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue();
+			o = this.expression.getValue();
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
 	}
 
 	@Test
 	public void inlineNestedLists() throws Exception {
-		expression = parser.parseExpression("{'abcde',{'ijklm','nopqr'}}[1][0].substring({1,3,4}[0],{1,3,4}[1])");
-		Object o = expression.getValue();
+		this.expression = this.parser.parseExpression("{'abcde',{'ijklm','nopqr'}}[1][0].substring({1,3,4}[0],{1,3,4}[1])");
+		Object o = this.expression.getValue();
 		assertEquals("jk",o);
 		System.out.println("Performance check for SpEL expression: '{'abcde','ijklm'}[0].substring({1,3,4}[0],{1,3,4}[1])'");
 		long stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue();
+			o = this.expression.getValue();
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue();
+			o = this.expression.getValue();
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue();
+			o = this.expression.getValue();
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
-		compile(expression);
+		compile(this.expression);
 		System.out.println("Now compiled:");
-		o = expression.getValue();
+		o = this.expression.getValue();
 		assertEquals("jk", o);
 
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue();
+			o = this.expression.getValue();
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue();
+			o = this.expression.getValue();
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue();
+			o = this.expression.getValue();
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
 	}
 
 	@Test
 	public void stringConcatenation() throws Exception {
-		expression = parser.parseExpression("'hello' + getWorld() + ' spring'");
+		this.expression = this.parser.parseExpression("'hello' + getWorld() + ' spring'");
 		Greeter g = new Greeter();
-		Object o = expression.getValue(g);
+		Object o = this.expression.getValue(g);
 		assertEquals("helloworld spring", o);
 
 		System.out.println("Performance check for SpEL expression: 'hello' + getWorld() + ' spring'");
 		long stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue(g);
+			o = this.expression.getValue(g);
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue(g);
+			o = this.expression.getValue(g);
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue(g);
+			o = this.expression.getValue(g);
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
-		compile(expression);
+		compile(this.expression);
 		System.out.println("Now compiled:");
-		o = expression.getValue(g);
+		o = this.expression.getValue(g);
 		assertEquals("helloworld spring", o);
 
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue(g);
+			o = this.expression.getValue(g);
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue(g);
+			o = this.expression.getValue(g);
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
 		stime = System.currentTimeMillis();
 		for (int i = 0; i < 1000000; i++) {
-			o = expression.getValue(g);
+			o = this.expression.getValue(g);
 		}
 		System.out.println("One million iterations: " + (System.currentTimeMillis()-stime) + "ms");
 	}
@@ -267,19 +267,19 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 	@Test
 	public void complexExpressionPerformance() throws Exception {
 		Payload payload = new Payload();
-		Expression expression = parser.parseExpression("DR[0].DRFixedSection.duration lt 0.1");
+		Expression expression = this.parser.parseExpression("DR[0].DRFixedSection.duration lt 0.1");
 		boolean b = false;
 		long iTotal = 0,cTotal = 0;
 
 		// warmup
-		for (int i = 0; i < count; i++) {
+		for (int i = 0; i < this.count; i++) {
 			b = expression.getValue(payload, Boolean.TYPE);
 		}
 
 		log("timing interpreted: ");
-		for (int i = 0; i < iterations; i++) {
+		for (int i = 0; i < this.iterations; i++) {
 			long stime = System.currentTimeMillis();
-			for (int j = 0; j < count; j++) {
+			for (int j = 0; j < this.count; j++) {
 				b = expression.getValue(payload, Boolean.TYPE);
 			}
 			long etime = System.currentTimeMillis();
@@ -293,9 +293,9 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		boolean bc = false;
 		expression.getValue(payload, Boolean.TYPE);
 		log("timing compiled: ");
-		for (int i = 0; i < iterations; i++) {
+		for (int i = 0; i < this.iterations; i++) {
 			long stime = System.currentTimeMillis();
-			for (int j = 0; j < count; j++) {
+			for (int j = 0; j < this.count; j++) {
 				bc = expression.getValue(payload, Boolean.TYPE);
 			}
 			long etime = System.currentTimeMillis();
@@ -332,17 +332,17 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		String interpretedResult = null,compiledResult = null;
 
 		HW testdata = new HW();
-		Expression expression = parser.parseExpression("hello()");
+		Expression expression = this.parser.parseExpression("hello()");
 
 		// warmup
-		for (int i = 0; i < count; i++) {
+		for (int i = 0; i < this.count; i++) {
 			interpretedResult = expression.getValue(testdata, String.class);
 		}
 
 		log("timing interpreted: ");
-		for (int i = 0; i < iterations; i++) {
+		for (int i = 0; i < this.iterations; i++) {
 			stime = System.currentTimeMillis();
-			for (int j = 0; j < count; j++) {
+			for (int j = 0; j < this.count; j++) {
 				interpretedResult = expression.getValue(testdata, String.class);
 			}
 			etime = System.currentTimeMillis();
@@ -356,9 +356,9 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 
 		log("timing compiled: ");
 		expression.getValue(testdata, String.class);
-		for (int i = 0; i < iterations; i++) {
+		for (int i = 0; i < this.iterations; i++) {
 			stime = System.currentTimeMillis();
-			for (int j = 0; j < count; j++) {
+			for (int j = 0; j < this.count; j++) {
 				compiledResult = expression.getValue(testdata, String.class);
 			}
 			etime = System.currentTimeMillis();
@@ -384,17 +384,17 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		String interpretedResult = null, compiledResult = null;
 
 		TestClass2 testdata = new TestClass2();
-		Expression expression = parser.parseExpression("name");
+		Expression expression = this.parser.parseExpression("name");
 
 		// warmup
-		for (int i = 0; i < count; i++) {
+		for (int i = 0; i < this.count; i++) {
 			expression.getValue(testdata, String.class);
 		}
 
 		log("timing interpreted: ");
-		for (int i = 0; i < iterations; i++) {
+		for (int i = 0; i < this.iterations; i++) {
 			stime = System.currentTimeMillis();
-			for (int j = 0; j < count; j++) {
+			for (int j = 0; j < this.count; j++) {
 				interpretedResult = expression.getValue(testdata, String.class);
 			}
 			etime = System.currentTimeMillis();
@@ -408,9 +408,9 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 
 		log("timing compiled: ");
 		expression.getValue(testdata, String.class);
-		for (int i = 0; i < iterations; i++) {
+		for (int i = 0; i < this.iterations; i++) {
 			stime = System.currentTimeMillis();
-			for (int j = 0; j < count; j++) {
+			for (int j = 0; j < this.count; j++) {
 				compiledResult = expression.getValue(testdata, String.class);
 			}
 			etime = System.currentTimeMillis();
@@ -430,17 +430,17 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		String interpretedResult = null, compiledResult = null;
 
 		TestClass2 testdata = new TestClass2();
-		Expression expression = parser.parseExpression("foo.bar.boo");
+		Expression expression = this.parser.parseExpression("foo.bar.boo");
 
 		// warmup
-		for (int i = 0; i < count; i++) {
+		for (int i = 0; i < this.count; i++) {
 			expression.getValue(testdata, String.class);
 		}
 
 		log("timing interpreted: ");
-		for (int i = 0; i < iterations; i++) {
+		for (int i = 0; i < this.iterations; i++) {
 			stime = System.currentTimeMillis();
-			for (int j = 0; j < count; j++) {
+			for (int j = 0; j < this.count; j++) {
 				interpretedResult = expression.getValue(testdata, String.class);
 			}
 			etime = System.currentTimeMillis();
@@ -454,9 +454,9 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 
 		log("timing compiled: ");
 		expression.getValue(testdata, String.class);
-		for (int i = 0; i < iterations; i++) {
+		for (int i = 0; i < this.iterations; i++) {
 			stime = System.currentTimeMillis();
-			for (int j = 0; j < count; j++) {
+			for (int j = 0; j < this.count; j++) {
 				compiledResult = expression.getValue(testdata, String.class);
 			}
 			etime = System.currentTimeMillis();
@@ -476,16 +476,16 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		String interpretedResult = null, compiledResult = null;
 
 		TestClass2 testdata = new TestClass2();
-		Expression expression = parser.parseExpression("foo.baz.boo");
+		Expression expression = this.parser.parseExpression("foo.baz.boo");
 
 		// warmup
-		for (int i = 0; i < count; i++) {
+		for (int i = 0; i < this.count; i++) {
 			expression.getValue(testdata, String.class);
 		}
 		log("timing interpreted: ");
-		for (int i = 0; i < iterations; i++) {
+		for (int i = 0; i < this.iterations; i++) {
 			stime = System.currentTimeMillis();
-			for (int j = 0; j < count; j++) {
+			for (int j = 0; j < this.count; j++) {
 				interpretedResult = expression.getValue(testdata, String.class);
 			}
 			etime = System.currentTimeMillis();
@@ -499,9 +499,9 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 
 		log("timing compiled: ");
 		expression.getValue(testdata, String.class);
-		for (int i = 0; i < iterations; i++) {
+		for (int i = 0; i < this.iterations; i++) {
 			stime = System.currentTimeMillis();
-			for (int j = 0; j < count; j++) {
+			for (int j = 0; j < this.count; j++) {
 				compiledResult = expression.getValue(testdata, String.class);
 			}
 			etime = System.currentTimeMillis();
@@ -521,17 +521,17 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		String interpretedResult = null, compiledResult = null;
 
 		TestClass2 testdata = new TestClass2();
-		Expression expression = parser.parseExpression("foo.bay().boo");
+		Expression expression = this.parser.parseExpression("foo.bay().boo");
 
 		// warmup
-		for (int i = 0; i < count; i++) {
+		for (int i = 0; i < this.count; i++) {
 			expression.getValue(testdata, String.class);
 		}
 
 		log("timing interpreted: ");
-		for (int i = 0; i < iterations; i++) {
+		for (int i = 0; i < this.iterations; i++) {
 			stime = System.currentTimeMillis();
-			for (int j = 0; j < count; j++) {
+			for (int j = 0; j < this.count; j++) {
 				interpretedResult = expression.getValue(testdata, String.class);
 			}
 			etime = System.currentTimeMillis();
@@ -545,9 +545,9 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 
 		log("timing compiled: ");
 		expression.getValue(testdata, String.class);
-		for (int i = 0; i < iterations; i++) {
+		for (int i = 0; i < this.iterations; i++) {
 			stime = System.currentTimeMillis();
-			for (int j = 0; j < count; j++) {
+			for (int j = 0; j < this.count; j++) {
 				compiledResult = expression.getValue(testdata, String.class);
 			}
 			etime = System.currentTimeMillis();
@@ -568,17 +568,17 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		String interpretedResult = null, compiledResult = null;
 
 		TestClass2 testdata = new TestClass2();
-		Expression expression = parser.parseExpression("name2");
+		Expression expression = this.parser.parseExpression("name2");
 
 		// warmup
-		for (int i = 0;i < count; i++) {
+		for (int i = 0;i < this.count; i++) {
 			expression.getValue(testdata, String.class);
 		}
 
 		log("timing interpreted: ");
-		for (int i = 0; i < iterations; i++) {
+		for (int i = 0; i < this.iterations; i++) {
 			stime = System.currentTimeMillis();
-			for (int j = 0; j < count; j++) {
+			for (int j = 0; j < this.count; j++) {
 				interpretedResult = expression.getValue(testdata, String.class);
 			}
 			etime = System.currentTimeMillis();
@@ -593,9 +593,9 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 
 		log("timing compiled: ");
 		expression.getValue(testdata, String.class);
-		for (int i = 0; i < iterations; i++) {
+		for (int i = 0; i < this.iterations; i++) {
 			stime = System.currentTimeMillis();
-			for (int j = 0; j < count; j++) {
+			for (int j = 0; j < this.count; j++) {
 				compiledResult = expression.getValue(testdata, String.class);
 			}
 			etime = System.currentTimeMillis();
@@ -616,10 +616,10 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 
 
 	private void reportPerformance(String title, long interpretedTotal, long compiledTotal) {
-		double averageInterpreted = interpretedTotal / iterations;
-		double averageCompiled = compiledTotal / iterations;
+		double averageInterpreted = interpretedTotal / this.iterations;
+		double averageCompiled = compiledTotal / this.iterations;
 		double ratio = (averageCompiled / averageInterpreted) * 100.0d;
-		logln(">>" + title + ": average for " + count + ": compiled=" + averageCompiled +
+		logln(">>" + title + ": average for " + this.count + ": compiled=" + averageCompiled +
 				"ms interpreted=" + averageInterpreted + "ms: compiled takes " +
 				((int) ratio) + "% of the interpreted time");
 		if (averageCompiled > averageInterpreted) {
@@ -656,7 +656,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		Two[] DR = new Two[]{new Two()};
 
 		public Two[] getDR() {
-			return DR;
+			return this.DR;
 		}
 	}
 
@@ -666,7 +666,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		Three DRFixedSection = new Three();
 
 		public Three getDRFixedSection() {
-			return DRFixedSection;
+			return this.DRFixedSection;
 		}
 	}
 
@@ -676,7 +676,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		double duration = 0.4d;
 
 		public double getDuration() {
-			return duration;
+			return this.duration;
 		}
 	}
 
@@ -701,7 +701,7 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		private String name2 = "foobar";
 
 		public String getName2() {
-			return name2;
+			return this.name2;
 		}
 
 		public Foo foo = new Foo();
@@ -715,11 +715,11 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		Bar b = new Bar();
 
 		public Bar getBaz() {
-			return b;
+			return this.b;
 		}
 
 		public Bar bay() {
-			return b;
+			return this.b;
 		}
 	}
 

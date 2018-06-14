@@ -59,25 +59,25 @@ public class JmsResponseTests {
 
 	@Test
 	public void createWithNulResponse() {
-		thrown.expect(IllegalArgumentException.class);
+		this.thrown.expect(IllegalArgumentException.class);
 		JmsResponse.forQueue(null, "myQueue");
 	}
 
 	@Test
 	public void createWithNullQueueName() {
-		thrown.expect(IllegalArgumentException.class);
+		this.thrown.expect(IllegalArgumentException.class);
 		JmsResponse.forQueue("foo", null);
 	}
 
 	@Test
 	public void createWithNullTopicName() {
-		thrown.expect(IllegalArgumentException.class);
+		this.thrown.expect(IllegalArgumentException.class);
 		JmsResponse.forTopic("foo", null);
 	}
 
 	@Test
 	public void createWithNulDestination() {
-		thrown.expect(IllegalArgumentException.class);
+		this.thrown.expect(IllegalArgumentException.class);
 		JmsResponse.forDestination("foo", null);
 	}
 

@@ -114,7 +114,7 @@ public class Spr11202Tests {
 
 		@Override
 		public Foo getObject() throws Exception {
-			return foo;
+			return this.foo;
 		}
 
 		@Override
@@ -139,7 +139,7 @@ public class Spr11202Tests {
 		private String name;
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 	}
 

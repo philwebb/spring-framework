@@ -168,7 +168,7 @@ public class ObjectUtilsTests {
 
 	@Test
 	public void toObjectArrayWithNonArrayType() {
-		exception.expect(IllegalArgumentException.class);
+		this.exception.expect(IllegalArgumentException.class);
 		ObjectUtils.toObjectArray("Not an []");
 	}
 
@@ -806,8 +806,8 @@ public class ObjectUtilsTests {
 		assertThat(ObjectUtils.caseInsensitiveValueOf(Tropes.values(), "foo"), is(Tropes.FOO));
 		assertThat(ObjectUtils.caseInsensitiveValueOf(Tropes.values(), "BAR"), is(Tropes.BAR));
 
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage(is("constant [bogus] does not exist in enum type org.springframework.util.ObjectUtilsTests$Tropes"));
+		this.exception.expect(IllegalArgumentException.class);
+		this.exception.expectMessage(is("constant [bogus] does not exist in enum type org.springframework.util.ObjectUtilsTests$Tropes"));
 		ObjectUtils.caseInsensitiveValueOf(Tropes.values(), "bogus");
 	}
 

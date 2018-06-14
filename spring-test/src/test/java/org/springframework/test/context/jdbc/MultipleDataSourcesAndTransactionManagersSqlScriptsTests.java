@@ -62,13 +62,13 @@ public class MultipleDataSourcesAndTransactionManagersSqlScriptsTests {
 	@Test
 	@Sql("data-add-dogbert.sql")
 	public void database1() {
-		assertUsers(new JdbcTemplate(dataSource1), "Dilbert", "Dogbert");
+		assertUsers(new JdbcTemplate(this.dataSource1), "Dilbert", "Dogbert");
 	}
 
 	@Test
 	@Sql(scripts = "data-add-catbert.sql", config = @SqlConfig(dataSource = "dataSource2", transactionManager = "txMgr2"))
 	public void database2() {
-		assertUsers(new JdbcTemplate(dataSource2), "Dilbert", "Catbert");
+		assertUsers(new JdbcTemplate(this.dataSource2), "Dilbert", "Catbert");
 	}
 
 	private void assertUsers(JdbcTemplate jdbcTemplate, String... users) {

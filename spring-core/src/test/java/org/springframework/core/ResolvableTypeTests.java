@@ -1225,8 +1225,8 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void forClassWithMismatchedGenerics() throws Exception {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("Mismatched number of generics specified");
+		this.thrown.expect(IllegalArgumentException.class);
+		this.thrown.expectMessage("Mismatched number of generics specified");
 		ResolvableType.forClassWithGenerics(Map.class, Integer.class);
 	}
 

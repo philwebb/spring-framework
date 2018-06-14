@@ -33,13 +33,13 @@ public abstract class AbstractJmxTests extends AbstractMBeanServerTests {
 
 	@Override
 	protected final void onSetUp() throws Exception {
-		ctx = loadContext(getApplicationContextPath());
+		this.ctx = loadContext(getApplicationContextPath());
 	}
 
 	@Override
 	protected final void onTearDown() throws Exception {
-		if (ctx != null) {
-			ctx.close();
+		if (this.ctx != null) {
+			this.ctx.close();
 		}
 	}
 

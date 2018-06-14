@@ -151,7 +151,7 @@ public class FastByteArrayOutputStreamTests {
 	@Test
 	public void getInputStreamReadBeyondEndOfStream() throws Exception {
 		this.os.write(this.helloBytes);
-		InputStream inputStream = os.getInputStream();
+		InputStream inputStream = this.os.getInputStream();
 		byte[] actual = new byte[inputStream.available() + 1];
 		int bytesRead = inputStream.read(actual);
 		assertEquals(this.helloBytes.length, bytesRead);

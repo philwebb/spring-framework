@@ -42,7 +42,7 @@ public class SPR3064Tests {
 		ClassPathXmlApplicationContext ctx =
 			new ClassPathXmlApplicationContext(getClass().getSimpleName() + ".xml", getClass());
 
-		service = (Service) ctx.getBean("service");
+		this.service = (Service) ctx.getBean("service");
 
 		try {
 			this.service.serveMe();

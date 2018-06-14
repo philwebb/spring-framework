@@ -564,7 +564,7 @@ public class Jackson2ObjectMapperBuilderTests {
 		private String property2;
 
 		public String getProperty1() {
-			return property1;
+			return this.property1;
 		}
 
 		public void setProperty1(String property1) {
@@ -572,7 +572,7 @@ public class Jackson2ObjectMapperBuilderTests {
 		}
 
 		public String getProperty2() {
-			return property2;
+			return this.property2;
 		}
 
 		public void setProperty2(String property2) {
@@ -593,7 +593,7 @@ public class Jackson2ObjectMapperBuilderTests {
 		}
 
 		public List<T> getList() {
-			return list;
+			return this.list;
 		}
 
 		public void setList(List<T> list) {

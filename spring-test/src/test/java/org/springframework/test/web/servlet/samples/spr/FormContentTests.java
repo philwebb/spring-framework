@@ -67,7 +67,7 @@ public class FormContentTests {
 		}
 
 		public String getD1() {
-			return d1;
+			return this.d1;
 		}
 
 		public void setD1(String d1) {
@@ -75,7 +75,7 @@ public class FormContentTests {
 		}
 
 		public String getD2() {
-			return d2;
+			return this.d2;
 		}
 
 		public void setD2(String d2) {

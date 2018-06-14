@@ -124,11 +124,11 @@ public class ExpressionLanguageScenarioTests extends AbstractExpressionTests {
 		private int property;
 
 		public int getProperty() {
-			return property;
+			return this.property;
 		}
 
 		public void setProperty(int i) {
-			property = i;
+			this.property = i;
 		}
 	}
 

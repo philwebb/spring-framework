@@ -40,7 +40,7 @@ public class Subclass2AppCtxRuleTests extends BaseAppCtxRuleTests {
 
 	@Test
 	public void baz() {
-		assertEquals("baz", baz);
+		assertEquals("baz", this.baz);
 	}
 
 

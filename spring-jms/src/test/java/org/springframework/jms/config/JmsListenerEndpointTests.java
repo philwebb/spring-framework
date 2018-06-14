@@ -99,7 +99,7 @@ public class JmsListenerEndpointTests {
 		DefaultMessageListenerContainer container = new DefaultMessageListenerContainer();
 		SimpleJmsListenerEndpoint endpoint = new SimpleJmsListenerEndpoint();
 
-		thrown.expect(IllegalStateException.class);
+		this.thrown.expect(IllegalStateException.class);
 		endpoint.setupListenerContainer(container);
 	}
 
@@ -109,7 +109,7 @@ public class JmsListenerEndpointTests {
 		SimpleJmsListenerEndpoint endpoint = new SimpleJmsListenerEndpoint();
 		endpoint.setMessageListener(new MessageListenerAdapter());
 
-		thrown.expect(IllegalArgumentException.class);
+		this.thrown.expect(IllegalArgumentException.class);
 		endpoint.setupListenerContainer(container);
 	}
 

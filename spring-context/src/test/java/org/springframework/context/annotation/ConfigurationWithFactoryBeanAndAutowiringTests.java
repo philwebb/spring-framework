@@ -136,13 +136,13 @@ public class ConfigurationWithFactoryBeanAndAutowiringTests {
 
 		@Override
 		public T getObject() throws Exception {
-			return obj;
+			return this.obj;
 		}
 
 		@Override
 		@SuppressWarnings("unchecked")
 		public Class<T> getObjectType() {
-			return (Class<T>)obj.getClass();
+			return (Class<T>)this.obj.getClass();
 		}
 
 		@Override
@@ -170,7 +170,7 @@ public class ConfigurationWithFactoryBeanAndAutowiringTests {
 
 		@Bean
 		public MyFactoryBean factoryBean() {
-			Assert.notNull(dummyBean, "DummyBean was not injected.");
+			Assert.notNull(this.dummyBean, "DummyBean was not injected.");
 			return new MyFactoryBean();
 		}
 	}
@@ -184,7 +184,7 @@ public class ConfigurationWithFactoryBeanAndAutowiringTests {
 
 		@Bean
 		public MyParameterizedFactoryBean<String> factoryBean() {
-			Assert.notNull(dummyBean, "DummyBean was not injected.");
+			Assert.notNull(this.dummyBean, "DummyBean was not injected.");
 			return new MyParameterizedFactoryBean<>("whatev");
 		}
 	}
@@ -198,7 +198,7 @@ public class ConfigurationWithFactoryBeanAndAutowiringTests {
 
 		@Bean
 		public FactoryBean<String> factoryBean() {
-			Assert.notNull(dummyBean, "DummyBean was not injected.");
+			Assert.notNull(this.dummyBean, "DummyBean was not injected.");
 			return new MyFactoryBean();
 		}
 	}
@@ -212,7 +212,7 @@ public class ConfigurationWithFactoryBeanAndAutowiringTests {
 
 		@Bean
 		FactoryBean<String> factoryBean() {
-			Assert.notNull(dummyBean, "DummyBean was not injected.");
+			Assert.notNull(this.dummyBean, "DummyBean was not injected.");
 			return new MyFactoryBean();
 		}
 	}
@@ -227,7 +227,7 @@ public class ConfigurationWithFactoryBeanAndAutowiringTests {
 		@Bean
 		@SuppressWarnings("rawtypes")
 		public FactoryBean factoryBean() {
-			Assert.notNull(dummyBean, "DummyBean was not injected.");
+			Assert.notNull(this.dummyBean, "DummyBean was not injected.");
 			return new MyFactoryBean();
 		}
 	}
@@ -241,7 +241,7 @@ public class ConfigurationWithFactoryBeanAndAutowiringTests {
 
 		@Bean
 		public FactoryBean<?> factoryBean() {
-			Assert.notNull(dummyBean, "DummyBean was not injected.");
+			Assert.notNull(this.dummyBean, "DummyBean was not injected.");
 			return new MyFactoryBean();
 		}
 	}
@@ -255,7 +255,7 @@ public class ConfigurationWithFactoryBeanAndAutowiringTests {
 
 		@Bean
 		public MyFactoryBean factoryBean() {
-			Assert.notNull(dummyBean, "DummyBean was not injected.");
+			Assert.notNull(this.dummyBean, "DummyBean was not injected.");
 			return new MyFactoryBean();
 		}
 

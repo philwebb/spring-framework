@@ -76,8 +76,8 @@ public class MockFilterChainTests {
 		MockFilterChain chain = new MockFilterChain();
 		chain.doFilter(this.request, this.response);
 
-		assertThat(chain.getRequest(), is(request));
-		assertThat(chain.getResponse(), is(response));
+		assertThat(chain.getRequest(), is(this.request));
+		assertThat(chain.getResponse(), is(this.response));
 
 		try {
 			chain.doFilter(this.request, this.response);

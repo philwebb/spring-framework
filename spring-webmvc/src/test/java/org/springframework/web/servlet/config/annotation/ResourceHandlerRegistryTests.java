@@ -121,10 +121,10 @@ public class ResourceHandlerRegistryTests {
 
 	@Test
 	public void order() {
-		assertEquals(Integer.MAX_VALUE -1, registry.getHandlerMapping().getOrder());
+		assertEquals(Integer.MAX_VALUE -1, this.registry.getHandlerMapping().getOrder());
 
-		registry.setOrder(0);
-		assertEquals(0, registry.getHandlerMapping().getOrder());
+		this.registry.setOrder(0);
+		assertEquals(0, this.registry.getHandlerMapping().getOrder());
 	}
 
 	@Test

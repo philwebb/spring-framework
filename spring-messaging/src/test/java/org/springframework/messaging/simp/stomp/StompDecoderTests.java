@@ -171,7 +171,7 @@ public class StompDecoderTests {
 		String frame2 = "DISCONNECT\n\n\0";
 		ByteBuffer buffer = ByteBuffer.wrap((frame1 + frame2).getBytes());
 
-		final List<Message<byte[]>> messages = decoder.decode(buffer);
+		final List<Message<byte[]>> messages = this.decoder.decode(buffer);
 
 		assertEquals(2, messages.size());
 		assertEquals(StompCommand.SEND, StompHeaderAccessor.wrap(messages.get(0)).getCommand());
@@ -242,7 +242,7 @@ public class StompDecoderTests {
 
 		ByteBuffer buffer = ByteBuffer.wrap(frame.getBytes());
 
-		final List<Message<byte[]>> messages = decoder.decode(buffer);
+		final List<Message<byte[]>> messages = this.decoder.decode(buffer);
 
 		assertEquals(1, messages.size());
 		assertEquals(SimpMessageType.HEARTBEAT, StompHeaderAccessor.wrap(messages.get(0)).getMessageType());

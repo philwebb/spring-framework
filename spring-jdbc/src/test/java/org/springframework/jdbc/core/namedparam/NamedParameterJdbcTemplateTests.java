@@ -93,132 +93,132 @@ public class NamedParameterJdbcTemplateTests {
 
 	@Before
 	public void setup() throws Exception {
-		connection = mock(Connection.class);
-		dataSource = mock(DataSource.class);
-		preparedStatement =	mock(PreparedStatement.class);
-		resultSet = mock(ResultSet.class);
-		namedParameterTemplate = new NamedParameterJdbcTemplate(dataSource);
-		databaseMetaData = mock(DatabaseMetaData.class);
-		given(dataSource.getConnection()).willReturn(connection);
-		given(connection.prepareStatement(anyString())).willReturn(preparedStatement);
-		given(preparedStatement.getConnection()).willReturn(connection);
-		given(preparedStatement.executeQuery()).willReturn(resultSet);
-		given(databaseMetaData.getDatabaseProductName()).willReturn("MySQL");
-		given(databaseMetaData.supportsBatchUpdates()).willReturn(true);
+		this.connection = mock(Connection.class);
+		this.dataSource = mock(DataSource.class);
+		this.preparedStatement =	mock(PreparedStatement.class);
+		this.resultSet = mock(ResultSet.class);
+		this.namedParameterTemplate = new NamedParameterJdbcTemplate(this.dataSource);
+		this.databaseMetaData = mock(DatabaseMetaData.class);
+		given(this.dataSource.getConnection()).willReturn(this.connection);
+		given(this.connection.prepareStatement(anyString())).willReturn(this.preparedStatement);
+		given(this.preparedStatement.getConnection()).willReturn(this.connection);
+		given(this.preparedStatement.executeQuery()).willReturn(this.resultSet);
+		given(this.databaseMetaData.getDatabaseProductName()).willReturn("MySQL");
+		given(this.databaseMetaData.supportsBatchUpdates()).willReturn(true);
 	}
 
 
 	@Test
 	public void testNullDataSourceProvidedToCtor() {
-		thrown.expect(IllegalArgumentException.class);
+		this.thrown.expect(IllegalArgumentException.class);
 		new NamedParameterJdbcTemplate((DataSource) null);
 	}
 
 	@Test
 	public void testNullJdbcTemplateProvidedToCtor() {
-		thrown.expect(IllegalArgumentException.class);
+		this.thrown.expect(IllegalArgumentException.class);
 		new NamedParameterJdbcTemplate((JdbcOperations) null);
 	}
 
 	@Test
 	public void testTemplateConfiguration() {
-		assertSame(dataSource, namedParameterTemplate.getJdbcTemplate().getDataSource());
+		assertSame(this.dataSource, this.namedParameterTemplate.getJdbcTemplate().getDataSource());
 	}
 
 	@Test
 	public void testExecute() throws SQLException {
-		given(preparedStatement.executeUpdate()).willReturn(1);
+		given(this.preparedStatement.executeUpdate()).willReturn(1);
 
-		params.put("perfId", 1);
-		params.put("priceId", 1);
-		Object result = namedParameterTemplate.execute(UPDATE_NAMED_PARAMETERS, params,
+		this.params.put("perfId", 1);
+		this.params.put("priceId", 1);
+		Object result = this.namedParameterTemplate.execute(UPDATE_NAMED_PARAMETERS, this.params,
 				(PreparedStatementCallback<Object>) ps -> {
-					assertEquals(preparedStatement, ps);
+					assertEquals(this.preparedStatement, ps);
 					ps.executeUpdate();
 					return "result";
 				});
 
 		assertEquals("result", result);
-		verify(connection).prepareStatement(UPDATE_NAMED_PARAMETERS_PARSED);
-		verify(preparedStatement).setObject(1, 1);
-		verify(preparedStatement).setObject(2, 1);
-		verify(preparedStatement).close();
-		verify(connection).close();
+		verify(this.connection).prepareStatement(UPDATE_NAMED_PARAMETERS_PARSED);
+		verify(this.preparedStatement).setObject(1, 1);
+		verify(this.preparedStatement).setObject(2, 1);
+		verify(this.preparedStatement).close();
+		verify(this.connection).close();
 	}
 
 	@Ignore("SPR-16340")
 	@Test
 	public void testExecuteArray() throws SQLException {
-		given(preparedStatement.executeUpdate()).willReturn(1);
+		given(this.preparedStatement.executeUpdate()).willReturn(1);
 
 		List<Integer> typeIds = Arrays.asList(1, 2, 3);
 
-		params.put("typeIds", typeIds);
-		params.put("id", 1);
-		Object result = namedParameterTemplate.execute(UPDATE_ARRAY_PARAMETERS, params,
+		this.params.put("typeIds", typeIds);
+		this.params.put("id", 1);
+		Object result = this.namedParameterTemplate.execute(UPDATE_ARRAY_PARAMETERS, this.params,
 				(PreparedStatementCallback<Object>) ps -> {
-					assertEquals(preparedStatement, ps);
+					assertEquals(this.preparedStatement, ps);
 					ps.executeUpdate();
 					return "result";
 				});
 
 		assertEquals("result", result);
-		verify(connection).prepareStatement(UPDATE_ARRAY_PARAMETERS_PARSED);
-		verify(preparedStatement).setObject(1, 1);
-		verify(preparedStatement).setObject(2, 2);
-		verify(preparedStatement).setObject(3, 3);
-		verify(preparedStatement).setObject(4, 1);
-		verify(preparedStatement).close();
-		verify(connection).close();
+		verify(this.connection).prepareStatement(UPDATE_ARRAY_PARAMETERS_PARSED);
+		verify(this.preparedStatement).setObject(1, 1);
+		verify(this.preparedStatement).setObject(2, 2);
+		verify(this.preparedStatement).setObject(3, 3);
+		verify(this.preparedStatement).setObject(4, 1);
+		verify(this.preparedStatement).close();
+		verify(this.connection).close();
 	}
 
 	@Test
 	public void testExecuteWithTypedParameters() throws SQLException {
-		given(preparedStatement.executeUpdate()).willReturn(1);
+		given(this.preparedStatement.executeUpdate()).willReturn(1);
 
-		params.put("perfId", new SqlParameterValue(Types.DECIMAL, 1));
-		params.put("priceId", new SqlParameterValue(Types.INTEGER, 1));
-		Object result = namedParameterTemplate.execute(UPDATE_NAMED_PARAMETERS, params,
+		this.params.put("perfId", new SqlParameterValue(Types.DECIMAL, 1));
+		this.params.put("priceId", new SqlParameterValue(Types.INTEGER, 1));
+		Object result = this.namedParameterTemplate.execute(UPDATE_NAMED_PARAMETERS, this.params,
 				(PreparedStatementCallback<Object>) ps -> {
-					assertEquals(preparedStatement, ps);
+					assertEquals(this.preparedStatement, ps);
 					ps.executeUpdate();
 					return "result";
 				});
 
 		assertEquals("result", result);
-		verify(connection).prepareStatement(UPDATE_NAMED_PARAMETERS_PARSED);
-		verify(preparedStatement).setObject(1, 1, Types.DECIMAL);
-		verify(preparedStatement).setObject(2, 1, Types.INTEGER);
-		verify(preparedStatement).close();
-		verify(connection).close();
+		verify(this.connection).prepareStatement(UPDATE_NAMED_PARAMETERS_PARSED);
+		verify(this.preparedStatement).setObject(1, 1, Types.DECIMAL);
+		verify(this.preparedStatement).setObject(2, 1, Types.INTEGER);
+		verify(this.preparedStatement).close();
+		verify(this.connection).close();
 	}
 
 	@Test
 	public void testExecuteNoParameters() throws SQLException {
-		given(preparedStatement.executeUpdate()).willReturn(1);
+		given(this.preparedStatement.executeUpdate()).willReturn(1);
 
-		Object result = namedParameterTemplate.execute(SELECT_NO_PARAMETERS,
+		Object result = this.namedParameterTemplate.execute(SELECT_NO_PARAMETERS,
 				(PreparedStatementCallback<Object>) ps -> {
-					assertEquals(preparedStatement, ps);
+					assertEquals(this.preparedStatement, ps);
 					ps.executeQuery();
 					return "result";
 				});
 
 		assertEquals("result", result);
-		verify(connection).prepareStatement(SELECT_NO_PARAMETERS);
-		verify(preparedStatement).close();
-		verify(connection).close();
+		verify(this.connection).prepareStatement(SELECT_NO_PARAMETERS);
+		verify(this.preparedStatement).close();
+		verify(this.connection).close();
 	}
 
 	@Test
 	public void testQueryWithResultSetExtractor() throws SQLException {
-		given(resultSet.next()).willReturn(true);
-		given(resultSet.getInt("id")).willReturn(1);
-		given(resultSet.getString("forename")).willReturn("rod");
+		given(this.resultSet.next()).willReturn(true);
+		given(this.resultSet.getInt("id")).willReturn(1);
+		given(this.resultSet.getString("forename")).willReturn("rod");
 
-		params.put("id", new SqlParameterValue(Types.DECIMAL, 1));
-		params.put("country", "UK");
-		Customer cust = namedParameterTemplate.query(SELECT_NAMED_PARAMETERS, params,
+		this.params.put("id", new SqlParameterValue(Types.DECIMAL, 1));
+		this.params.put("country", "UK");
+		Customer cust = this.namedParameterTemplate.query(SELECT_NAMED_PARAMETERS, this.params,
 				rs -> {
 					rs.next();
 					Customer cust1 = new Customer();
@@ -229,20 +229,20 @@ public class NamedParameterJdbcTemplateTests {
 
 		assertTrue("Customer id was assigned correctly", cust.getId() == 1);
 		assertTrue("Customer forename was assigned correctly", cust.getForename().equals("rod"));
-		verify(connection).prepareStatement(SELECT_NAMED_PARAMETERS_PARSED);
-		verify(preparedStatement).setObject(1, 1, Types.DECIMAL);
-		verify(preparedStatement).setString(2, "UK");
-		verify(preparedStatement).close();
-		verify(connection).close();
+		verify(this.connection).prepareStatement(SELECT_NAMED_PARAMETERS_PARSED);
+		verify(this.preparedStatement).setObject(1, 1, Types.DECIMAL);
+		verify(this.preparedStatement).setString(2, "UK");
+		verify(this.preparedStatement).close();
+		verify(this.connection).close();
 	}
 
 	@Test
 	public void testQueryWithResultSetExtractorNoParameters() throws SQLException {
-		given(resultSet.next()).willReturn(true);
-		given(resultSet.getInt("id")).willReturn(1);
-		given(resultSet.getString("forename")).willReturn("rod");
+		given(this.resultSet.next()).willReturn(true);
+		given(this.resultSet.getInt("id")).willReturn(1);
+		given(this.resultSet.getString("forename")).willReturn("rod");
 
-		Customer cust = namedParameterTemplate.query(SELECT_NO_PARAMETERS,
+		Customer cust = this.namedParameterTemplate.query(SELECT_NO_PARAMETERS,
 				rs -> {
 					rs.next();
 					Customer cust1 = new Customer();
@@ -253,21 +253,21 @@ public class NamedParameterJdbcTemplateTests {
 
 		assertTrue("Customer id was assigned correctly", cust.getId() == 1);
 		assertTrue("Customer forename was assigned correctly", cust.getForename().equals("rod"));
-		verify(connection).prepareStatement(SELECT_NO_PARAMETERS);
-		verify(preparedStatement).close();
-		verify(connection).close();
+		verify(this.connection).prepareStatement(SELECT_NO_PARAMETERS);
+		verify(this.preparedStatement).close();
+		verify(this.connection).close();
 	}
 
 	@Test
 	public void testQueryWithRowCallbackHandler() throws SQLException {
-		given(resultSet.next()).willReturn(true, false);
-		given(resultSet.getInt("id")).willReturn(1);
-		given(resultSet.getString("forename")).willReturn("rod");
+		given(this.resultSet.next()).willReturn(true, false);
+		given(this.resultSet.getInt("id")).willReturn(1);
+		given(this.resultSet.getString("forename")).willReturn("rod");
 
-		params.put("id", new SqlParameterValue(Types.DECIMAL, 1));
-		params.put("country", "UK");
+		this.params.put("id", new SqlParameterValue(Types.DECIMAL, 1));
+		this.params.put("country", "UK");
 		final List<Customer> customers = new LinkedList<>();
-		namedParameterTemplate.query(SELECT_NAMED_PARAMETERS, params, rs -> {
+		this.namedParameterTemplate.query(SELECT_NAMED_PARAMETERS, this.params, rs -> {
 			Customer cust = new Customer();
 			cust.setId(rs.getInt(COLUMN_NAMES[0]));
 			cust.setForename(rs.getString(COLUMN_NAMES[1]));
@@ -277,21 +277,21 @@ public class NamedParameterJdbcTemplateTests {
 		assertEquals(1, customers.size());
 		assertTrue("Customer id was assigned correctly", customers.get(0).getId() == 1);
 		assertTrue("Customer forename was assigned correctly", customers.get(0).getForename().equals("rod"));
-		verify(connection).prepareStatement(SELECT_NAMED_PARAMETERS_PARSED);
-		verify(preparedStatement).setObject(1, 1, Types.DECIMAL);
-		verify(preparedStatement).setString(2, "UK");
-		verify(preparedStatement).close();
-		verify(connection).close();
+		verify(this.connection).prepareStatement(SELECT_NAMED_PARAMETERS_PARSED);
+		verify(this.preparedStatement).setObject(1, 1, Types.DECIMAL);
+		verify(this.preparedStatement).setString(2, "UK");
+		verify(this.preparedStatement).close();
+		verify(this.connection).close();
 	}
 
 	@Test
 	public void testQueryWithRowCallbackHandlerNoParameters() throws SQLException {
-		given(resultSet.next()).willReturn(true, false);
-		given(resultSet.getInt("id")).willReturn(1);
-		given(resultSet.getString("forename")).willReturn("rod");
+		given(this.resultSet.next()).willReturn(true, false);
+		given(this.resultSet.getInt("id")).willReturn(1);
+		given(this.resultSet.getString("forename")).willReturn("rod");
 
 		final List<Customer> customers = new LinkedList<>();
-		namedParameterTemplate.query(SELECT_NO_PARAMETERS, rs -> {
+		this.namedParameterTemplate.query(SELECT_NO_PARAMETERS, rs -> {
 			Customer cust = new Customer();
 			cust.setId(rs.getInt(COLUMN_NAMES[0]));
 			cust.setForename(rs.getString(COLUMN_NAMES[1]));
@@ -301,20 +301,20 @@ public class NamedParameterJdbcTemplateTests {
 		assertEquals(1, customers.size());
 		assertTrue("Customer id was assigned correctly", customers.get(0).getId() == 1);
 		assertTrue("Customer forename was assigned correctly", customers.get(0).getForename().equals("rod"));
-		verify(connection).prepareStatement(SELECT_NO_PARAMETERS);
-		verify(preparedStatement).close();
-		verify(connection).close();
+		verify(this.connection).prepareStatement(SELECT_NO_PARAMETERS);
+		verify(this.preparedStatement).close();
+		verify(this.connection).close();
 	}
 
 	@Test
 	public void testQueryWithRowMapper() throws SQLException {
-		given(resultSet.next()).willReturn(true, false);
-		given(resultSet.getInt("id")).willReturn(1);
-		given(resultSet.getString("forename")).willReturn("rod");
+		given(this.resultSet.next()).willReturn(true, false);
+		given(this.resultSet.getInt("id")).willReturn(1);
+		given(this.resultSet.getString("forename")).willReturn("rod");
 
-		params.put("id", new SqlParameterValue(Types.DECIMAL, 1));
-		params.put("country", "UK");
-		List<Customer> customers = namedParameterTemplate.query(SELECT_NAMED_PARAMETERS, params,
+		this.params.put("id", new SqlParameterValue(Types.DECIMAL, 1));
+		this.params.put("country", "UK");
+		List<Customer> customers = this.namedParameterTemplate.query(SELECT_NAMED_PARAMETERS, this.params,
 				(rs, rownum) -> {
 					Customer cust = new Customer();
 					cust.setId(rs.getInt(COLUMN_NAMES[0]));
@@ -324,20 +324,20 @@ public class NamedParameterJdbcTemplateTests {
 		assertEquals(1, customers.size());
 		assertTrue("Customer id was assigned correctly", customers.get(0).getId() == 1);
 		assertTrue("Customer forename was assigned correctly", customers.get(0).getForename().equals("rod"));
-		verify(connection).prepareStatement(SELECT_NAMED_PARAMETERS_PARSED);
-		verify(preparedStatement).setObject(1, 1, Types.DECIMAL);
-		verify(preparedStatement).setString(2, "UK");
-		verify(preparedStatement).close();
-		verify(connection).close();
+		verify(this.connection).prepareStatement(SELECT_NAMED_PARAMETERS_PARSED);
+		verify(this.preparedStatement).setObject(1, 1, Types.DECIMAL);
+		verify(this.preparedStatement).setString(2, "UK");
+		verify(this.preparedStatement).close();
+		verify(this.connection).close();
 	}
 
 	@Test
 	public void testQueryWithRowMapperNoParameters() throws SQLException {
-		given(resultSet.next()).willReturn(true, false);
-		given(resultSet.getInt("id")).willReturn(1);
-		given(resultSet.getString("forename")).willReturn("rod");
+		given(this.resultSet.next()).willReturn(true, false);
+		given(this.resultSet.getInt("id")).willReturn(1);
+		given(this.resultSet.getString("forename")).willReturn("rod");
 
-		List<Customer> customers = namedParameterTemplate.query(SELECT_NO_PARAMETERS,
+		List<Customer> customers = this.namedParameterTemplate.query(SELECT_NO_PARAMETERS,
 				(rs, rownum) -> {
 					Customer cust = new Customer();
 					cust.setId(rs.getInt(COLUMN_NAMES[0]));
@@ -347,20 +347,20 @@ public class NamedParameterJdbcTemplateTests {
 		assertEquals(1, customers.size());
 		assertTrue("Customer id was assigned correctly", customers.get(0).getId() == 1);
 		assertTrue("Customer forename was assigned correctly", customers.get(0).getForename().equals("rod"));
-		verify(connection).prepareStatement(SELECT_NO_PARAMETERS);
-		verify(preparedStatement).close();
-		verify(connection).close();
+		verify(this.connection).prepareStatement(SELECT_NO_PARAMETERS);
+		verify(this.preparedStatement).close();
+		verify(this.connection).close();
 	}
 
 	@Test
 	public void testQueryForObjectWithRowMapper() throws SQLException {
-		given(resultSet.next()).willReturn(true, false);
-		given(resultSet.getInt("id")).willReturn(1);
-		given(resultSet.getString("forename")).willReturn("rod");
+		given(this.resultSet.next()).willReturn(true, false);
+		given(this.resultSet.getInt("id")).willReturn(1);
+		given(this.resultSet.getString("forename")).willReturn("rod");
 
-		params.put("id", new SqlParameterValue(Types.DECIMAL, 1));
-		params.put("country", "UK");
-		Customer cust = namedParameterTemplate.queryForObject(SELECT_NAMED_PARAMETERS, params,
+		this.params.put("id", new SqlParameterValue(Types.DECIMAL, 1));
+		this.params.put("country", "UK");
+		Customer cust = this.namedParameterTemplate.queryForObject(SELECT_NAMED_PARAMETERS, this.params,
 				(rs, rownum) -> {
 					Customer cust1 = new Customer();
 					cust1.setId(rs.getInt(COLUMN_NAMES[0]));
@@ -369,43 +369,43 @@ public class NamedParameterJdbcTemplateTests {
 				});
 		assertTrue("Customer id was assigned correctly", cust.getId() == 1);
 		assertTrue("Customer forename was assigned correctly", cust.getForename().equals("rod"));
-		verify(connection).prepareStatement(SELECT_NAMED_PARAMETERS_PARSED);
-		verify(preparedStatement).setObject(1, 1, Types.DECIMAL);
-		verify(preparedStatement).setString(2, "UK");
-		verify(preparedStatement).close();
-		verify(connection).close();
+		verify(this.connection).prepareStatement(SELECT_NAMED_PARAMETERS_PARSED);
+		verify(this.preparedStatement).setObject(1, 1, Types.DECIMAL);
+		verify(this.preparedStatement).setString(2, "UK");
+		verify(this.preparedStatement).close();
+		verify(this.connection).close();
 	}
 
 	@Test
 	public void testUpdate() throws SQLException {
-		given(preparedStatement.executeUpdate()).willReturn(1);
+		given(this.preparedStatement.executeUpdate()).willReturn(1);
 
-		params.put("perfId", 1);
-		params.put("priceId", 1);
-		int rowsAffected = namedParameterTemplate.update(UPDATE_NAMED_PARAMETERS, params);
+		this.params.put("perfId", 1);
+		this.params.put("priceId", 1);
+		int rowsAffected = this.namedParameterTemplate.update(UPDATE_NAMED_PARAMETERS, this.params);
 
 		assertEquals(1, rowsAffected);
-		verify(connection).prepareStatement(UPDATE_NAMED_PARAMETERS_PARSED);
-		verify(preparedStatement).setObject(1, 1);
-		verify(preparedStatement).setObject(2, 1);
-		verify(preparedStatement).close();
-		verify(connection).close();
+		verify(this.connection).prepareStatement(UPDATE_NAMED_PARAMETERS_PARSED);
+		verify(this.preparedStatement).setObject(1, 1);
+		verify(this.preparedStatement).setObject(2, 1);
+		verify(this.preparedStatement).close();
+		verify(this.connection).close();
 	}
 
 	@Test
 	public void testUpdateWithTypedParameters() throws SQLException {
-		given(preparedStatement.executeUpdate()).willReturn(1);
+		given(this.preparedStatement.executeUpdate()).willReturn(1);
 
-		params.put("perfId", new SqlParameterValue(Types.DECIMAL, 1));
-		params.put("priceId", new SqlParameterValue(Types.INTEGER, 1));
-		int rowsAffected = namedParameterTemplate.update(UPDATE_NAMED_PARAMETERS, params);
+		this.params.put("perfId", new SqlParameterValue(Types.DECIMAL, 1));
+		this.params.put("priceId", new SqlParameterValue(Types.INTEGER, 1));
+		int rowsAffected = this.namedParameterTemplate.update(UPDATE_NAMED_PARAMETERS, this.params);
 
 		assertEquals(1, rowsAffected);
-		verify(connection).prepareStatement(UPDATE_NAMED_PARAMETERS_PARSED);
-		verify(preparedStatement).setObject(1, 1, Types.DECIMAL);
-		verify(preparedStatement).setObject(2, 1, Types.INTEGER);
-		verify(preparedStatement).close();
-		verify(connection).close();
+		verify(this.connection).prepareStatement(UPDATE_NAMED_PARAMETERS_PARSED);
+		verify(this.preparedStatement).setObject(1, 1, Types.DECIMAL);
+		verify(this.preparedStatement).setObject(2, 1, Types.INTEGER);
+		verify(this.preparedStatement).close();
+		verify(this.connection).close();
 	}
 
 	@Test
@@ -416,23 +416,23 @@ public class NamedParameterJdbcTemplateTests {
 		ids[1] = Collections.singletonMap("id", 200);
 		final int[] rowsAffected = new int[] {1, 2};
 
-		given(preparedStatement.executeBatch()).willReturn(rowsAffected);
-		given(connection.getMetaData()).willReturn(databaseMetaData);
+		given(this.preparedStatement.executeBatch()).willReturn(rowsAffected);
+		given(this.connection.getMetaData()).willReturn(this.databaseMetaData);
 
-		JdbcTemplate template = new JdbcTemplate(dataSource, false);
-		namedParameterTemplate = new NamedParameterJdbcTemplate(template);
-		assertSame(template, namedParameterTemplate.getJdbcTemplate());
+		JdbcTemplate template = new JdbcTemplate(this.dataSource, false);
+		this.namedParameterTemplate = new NamedParameterJdbcTemplate(template);
+		assertSame(template, this.namedParameterTemplate.getJdbcTemplate());
 
-		int[] actualRowsAffected = namedParameterTemplate.batchUpdate("UPDATE NOSUCHTABLE SET DATE_DISPATCHED = SYSDATE WHERE ID = :id", ids);
+		int[] actualRowsAffected = this.namedParameterTemplate.batchUpdate("UPDATE NOSUCHTABLE SET DATE_DISPATCHED = SYSDATE WHERE ID = :id", ids);
 		assertTrue("executed 2 updates", actualRowsAffected.length == 2);
 		assertEquals(rowsAffected[0], actualRowsAffected[0]);
 		assertEquals(rowsAffected[1], actualRowsAffected[1]);
-		verify(connection).prepareStatement("UPDATE NOSUCHTABLE SET DATE_DISPATCHED = SYSDATE WHERE ID = ?");
-		verify(preparedStatement).setObject(1, 100);
-		verify(preparedStatement).setObject(1, 200);
-		verify(preparedStatement, times(2)).addBatch();
-		verify(preparedStatement, atLeastOnce()).close();
-		verify(connection, atLeastOnce()).close();
+		verify(this.connection).prepareStatement("UPDATE NOSUCHTABLE SET DATE_DISPATCHED = SYSDATE WHERE ID = ?");
+		verify(this.preparedStatement).setObject(1, 100);
+		verify(this.preparedStatement).setObject(1, 200);
+		verify(this.preparedStatement, times(2)).addBatch();
+		verify(this.preparedStatement, atLeastOnce()).close();
+		verify(this.connection, atLeastOnce()).close();
 	}
 
 	@Test
@@ -442,23 +442,23 @@ public class NamedParameterJdbcTemplateTests {
 		ids[1] = new MapSqlParameterSource("id", 200);
 		final int[] rowsAffected = new int[] {1, 2};
 
-		given(preparedStatement.executeBatch()).willReturn(rowsAffected);
-		given(connection.getMetaData()).willReturn(databaseMetaData);
+		given(this.preparedStatement.executeBatch()).willReturn(rowsAffected);
+		given(this.connection.getMetaData()).willReturn(this.databaseMetaData);
 
-		JdbcTemplate template = new JdbcTemplate(dataSource, false);
-		namedParameterTemplate = new NamedParameterJdbcTemplate(template);
-		assertSame(template, namedParameterTemplate.getJdbcTemplate());
+		JdbcTemplate template = new JdbcTemplate(this.dataSource, false);
+		this.namedParameterTemplate = new NamedParameterJdbcTemplate(template);
+		assertSame(template, this.namedParameterTemplate.getJdbcTemplate());
 
-		int[] actualRowsAffected = namedParameterTemplate.batchUpdate("UPDATE NOSUCHTABLE SET DATE_DISPATCHED = SYSDATE WHERE ID = :id", ids);
+		int[] actualRowsAffected = this.namedParameterTemplate.batchUpdate("UPDATE NOSUCHTABLE SET DATE_DISPATCHED = SYSDATE WHERE ID = :id", ids);
 		assertTrue("executed 2 updates", actualRowsAffected.length == 2);
 		assertEquals(rowsAffected[0], actualRowsAffected[0]);
 		assertEquals(rowsAffected[1], actualRowsAffected[1]);
-		verify(connection).prepareStatement("UPDATE NOSUCHTABLE SET DATE_DISPATCHED = SYSDATE WHERE ID = ?");
-		verify(preparedStatement).setObject(1, 100);
-		verify(preparedStatement).setObject(1, 200);
-		verify(preparedStatement, times(2)).addBatch();
-		verify(preparedStatement, atLeastOnce()).close();
-		verify(connection, atLeastOnce()).close();
+		verify(this.connection).prepareStatement("UPDATE NOSUCHTABLE SET DATE_DISPATCHED = SYSDATE WHERE ID = ?");
+		verify(this.preparedStatement).setObject(1, 100);
+		verify(this.preparedStatement).setObject(1, 200);
+		verify(this.preparedStatement, times(2)).addBatch();
+		verify(this.preparedStatement, atLeastOnce()).close();
+		verify(this.connection, atLeastOnce()).close();
 	}
 
 	@Test
@@ -468,23 +468,23 @@ public class NamedParameterJdbcTemplateTests {
 		ids[1] = new MapSqlParameterSource().addValue("id", 200, Types.NUMERIC);
 		final int[] rowsAffected = new int[] {1, 2};
 
-		given(preparedStatement.executeBatch()).willReturn(rowsAffected);
-		given(connection.getMetaData()).willReturn(databaseMetaData);
+		given(this.preparedStatement.executeBatch()).willReturn(rowsAffected);
+		given(this.connection.getMetaData()).willReturn(this.databaseMetaData);
 
-		JdbcTemplate template = new JdbcTemplate(dataSource, false);
-		namedParameterTemplate = new NamedParameterJdbcTemplate(template);
-		assertSame(template, namedParameterTemplate.getJdbcTemplate());
+		JdbcTemplate template = new JdbcTemplate(this.dataSource, false);
+		this.namedParameterTemplate = new NamedParameterJdbcTemplate(template);
+		assertSame(template, this.namedParameterTemplate.getJdbcTemplate());
 
-		int[] actualRowsAffected = namedParameterTemplate.batchUpdate("UPDATE NOSUCHTABLE SET DATE_DISPATCHED = SYSDATE WHERE ID = :id", ids);
+		int[] actualRowsAffected = this.namedParameterTemplate.batchUpdate("UPDATE NOSUCHTABLE SET DATE_DISPATCHED = SYSDATE WHERE ID = :id", ids);
 		assertTrue("executed 2 updates", actualRowsAffected.length == 2);
 		assertEquals(rowsAffected[0], actualRowsAffected[0]);
 		assertEquals(rowsAffected[1], actualRowsAffected[1]);
-		verify(connection).prepareStatement("UPDATE NOSUCHTABLE SET DATE_DISPATCHED = SYSDATE WHERE ID = ?");
-		verify(preparedStatement).setObject(1, 100, Types.NUMERIC);
-		verify(preparedStatement).setObject(1, 200, Types.NUMERIC);
-		verify(preparedStatement, times(2)).addBatch();
-		verify(preparedStatement, atLeastOnce()).close();
-		verify(connection, atLeastOnce()).close();
+		verify(this.connection).prepareStatement("UPDATE NOSUCHTABLE SET DATE_DISPATCHED = SYSDATE WHERE ID = ?");
+		verify(this.preparedStatement).setObject(1, 100, Types.NUMERIC);
+		verify(this.preparedStatement).setObject(1, 200, Types.NUMERIC);
+		verify(this.preparedStatement, times(2)).addBatch();
+		verify(this.preparedStatement, atLeastOnce()).close();
+		verify(this.connection, atLeastOnce()).close();
 	}
 
 }

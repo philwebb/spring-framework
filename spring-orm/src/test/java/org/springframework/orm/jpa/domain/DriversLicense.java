@@ -38,7 +38,7 @@ public class DriversLicense {
 	}
 
 	public String getSerialNumber() {
-		return serial_number;
+		return this.serial_number;
 	}
 
 }

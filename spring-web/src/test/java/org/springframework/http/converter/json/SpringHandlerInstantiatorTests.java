@@ -76,8 +76,8 @@ public class SpringHandlerInstantiatorTests {
 		bpp.setBeanFactory(bf);
 		bf.addBeanPostProcessor(bpp);
 		bf.registerBeanDefinition("capitalizer", new RootBeanDefinition(Capitalizer.class));
-		instantiator = new SpringHandlerInstantiator(bf);
-		objectMapper = Jackson2ObjectMapperBuilder.json().handlerInstantiator(instantiator).build();
+		this.instantiator = new SpringHandlerInstantiator(bf);
+		this.objectMapper = Jackson2ObjectMapperBuilder.json().handlerInstantiator(this.instantiator).build();
 	}
 
 
@@ -263,7 +263,7 @@ public class SpringHandlerInstantiatorTests {
 		}
 
 		public Map<String, String> getCredentials() {
-			return credentials;
+			return this.credentials;
 		}
 	}
 

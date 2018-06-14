@@ -305,7 +305,7 @@ public class MockServletContext implements ServletContext {
 			return resourcePaths;
 		}
 		catch (IOException ex) {
-			logger.warn("Couldn't get resource paths for " + resource, ex);
+			this.logger.warn("Couldn't get resource paths for " + resource, ex);
 			return null;
 		}
 	}
@@ -323,7 +323,7 @@ public class MockServletContext implements ServletContext {
 			throw ex;
 		}
 		catch (IOException ex) {
-			logger.warn("Couldn't get URL for " + resource, ex);
+			this.logger.warn("Couldn't get URL for " + resource, ex);
 			return null;
 		}
 	}
@@ -338,7 +338,7 @@ public class MockServletContext implements ServletContext {
 			return resource.getInputStream();
 		}
 		catch (IOException ex) {
-			logger.warn("Couldn't open InputStream for " + resource, ex);
+			this.logger.warn("Couldn't open InputStream for " + resource, ex);
 			return null;
 		}
 	}
@@ -426,18 +426,18 @@ public class MockServletContext implements ServletContext {
 
 	@Override
 	public void log(String message) {
-		logger.info(message);
+		this.logger.info(message);
 	}
 
 	@Override
 	@Deprecated
 	public void log(Exception ex, String message) {
-		logger.info(message, ex);
+		this.logger.info(message, ex);
 	}
 
 	@Override
 	public void log(String message, Throwable ex) {
-		logger.info(message, ex);
+		this.logger.info(message, ex);
 	}
 
 	@Override
@@ -447,7 +447,7 @@ public class MockServletContext implements ServletContext {
 			return resource.getFile().getAbsolutePath();
 		}
 		catch (IOException ex) {
-			logger.warn("Couldn't determine real path of resource " + resource, ex);
+			this.logger.warn("Couldn't determine real path of resource " + resource, ex);
 			return null;
 		}
 	}

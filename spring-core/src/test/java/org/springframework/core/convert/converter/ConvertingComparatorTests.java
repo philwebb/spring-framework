@@ -76,20 +76,20 @@ public class ConvertingComparatorTests {
 	@Test
 	public void shouldUseConversionServiceOnCompare() throws Exception {
 		ConvertingComparator<String, Integer> convertingComparator = new ConvertingComparator<>(
-				comparator, conversionService, Integer.class);
+				this.comparator, this.conversionService, Integer.class);
 		testConversion(convertingComparator);
 	}
 
 	@Test
 	public void shouldGetForConverter() throws Exception {
-		testConversion(new ConvertingComparator<>(comparator, converter));
+		testConversion(new ConvertingComparator<>(this.comparator, this.converter));
 	}
 
 	private void testConversion(ConvertingComparator<String, Integer> convertingComparator) {
 		assertThat(convertingComparator.compare("0", "0"), is(0));
 		assertThat(convertingComparator.compare("0", "1"), is(-1));
 		assertThat(convertingComparator.compare("1", "0"), is(1));
-		comparator.assertCalled();
+		this.comparator.assertCalled();
 	}
 
 	@Test

@@ -53,7 +53,7 @@ public class JdkProxyControllerTests {
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/test");
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		servlet.service(request, response);
+		this.servlet.service(request, response);
 		assertEquals("doIt", response.getContentAsString());
 	}
 
@@ -63,7 +63,7 @@ public class JdkProxyControllerTests {
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/test");
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		servlet.service(request, response);
+		this.servlet.service(request, response);
 		assertEquals("doIt", response.getContentAsString());
 	}
 
@@ -73,14 +73,14 @@ public class JdkProxyControllerTests {
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/hotels/bookings");
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		servlet.service(request, response);
+		this.servlet.service(request, response);
 		assertEquals("doIt", response.getContentAsString());
 	}
 
 
 	@SuppressWarnings("serial")
 	private void initServlet(final Class<?> controllerclass) throws ServletException {
-		servlet = new DispatcherServlet() {
+		this.servlet = new DispatcherServlet() {
 			@Override
 			protected WebApplicationContext createWebApplicationContext(@Nullable WebApplicationContext parent) {
 				GenericWebApplicationContext wac = new GenericWebApplicationContext();
@@ -93,7 +93,7 @@ public class JdkProxyControllerTests {
 				return wac;
 			}
 		};
-		servlet.init(new MockServletConfig());
+		this.servlet.init(new MockServletConfig());
 	}
 
 

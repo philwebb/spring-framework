@@ -62,71 +62,71 @@ public class DelegatingWebFluxConfigurationTests {
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
-		delegatingConfig = new DelegatingWebFluxConfiguration();
-		delegatingConfig.setApplicationContext(new StaticApplicationContext());
-		given(webFluxConfigurer.getValidator()).willReturn(null);
-		given(webFluxConfigurer.getMessageCodesResolver()).willReturn(null);
+		this.delegatingConfig = new DelegatingWebFluxConfiguration();
+		this.delegatingConfig.setApplicationContext(new StaticApplicationContext());
+		given(this.webFluxConfigurer.getValidator()).willReturn(null);
+		given(this.webFluxConfigurer.getMessageCodesResolver()).willReturn(null);
 	}
 
 
 	@Test
 	public void requestMappingHandlerMapping() throws Exception {
-		delegatingConfig.setConfigurers(Collections.singletonList(webFluxConfigurer));
-		delegatingConfig.requestMappingHandlerMapping();
+		this.delegatingConfig.setConfigurers(Collections.singletonList(this.webFluxConfigurer));
+		this.delegatingConfig.requestMappingHandlerMapping();
 
-		verify(webFluxConfigurer).configureContentTypeResolver(any(RequestedContentTypeResolverBuilder.class));
-		verify(webFluxConfigurer).addCorsMappings(any(CorsRegistry.class));
-		verify(webFluxConfigurer).configurePathMatching(any(PathMatchConfigurer.class));
+		verify(this.webFluxConfigurer).configureContentTypeResolver(any(RequestedContentTypeResolverBuilder.class));
+		verify(this.webFluxConfigurer).addCorsMappings(any(CorsRegistry.class));
+		verify(this.webFluxConfigurer).configurePathMatching(any(PathMatchConfigurer.class));
 	}
 
 	@Test
 	public void requestMappingHandlerAdapter() throws Exception {
-		delegatingConfig.setConfigurers(Collections.singletonList(webFluxConfigurer));
+		this.delegatingConfig.setConfigurers(Collections.singletonList(this.webFluxConfigurer));
 
 		ConfigurableWebBindingInitializer initializer = (ConfigurableWebBindingInitializer)
 				this.delegatingConfig.requestMappingHandlerAdapter().getWebBindingInitializer();
 
-		verify(webFluxConfigurer).configureHttpMessageCodecs(codecsConfigurer.capture());
-		verify(webFluxConfigurer).getValidator();
-		verify(webFluxConfigurer).getMessageCodesResolver();
-		verify(webFluxConfigurer).addFormatters(formatterRegistry.capture());
-		verify(webFluxConfigurer).configureArgumentResolvers(any());
+		verify(this.webFluxConfigurer).configureHttpMessageCodecs(this.codecsConfigurer.capture());
+		verify(this.webFluxConfigurer).getValidator();
+		verify(this.webFluxConfigurer).getMessageCodesResolver();
+		verify(this.webFluxConfigurer).addFormatters(this.formatterRegistry.capture());
+		verify(this.webFluxConfigurer).configureArgumentResolvers(any());
 
 		assertNotNull(initializer);
 		assertTrue(initializer.getValidator() instanceof LocalValidatorFactoryBean);
-		assertSame(formatterRegistry.getValue(), initializer.getConversionService());
-		assertEquals(12, codecsConfigurer.getValue().getReaders().size());
+		assertSame(this.formatterRegistry.getValue(), initializer.getConversionService());
+		assertEquals(12, this.codecsConfigurer.getValue().getReaders().size());
 	}
 
 	@Test
 	public void resourceHandlerMapping() throws Exception {
-		delegatingConfig.setConfigurers(Collections.singletonList(webFluxConfigurer));
+		this.delegatingConfig.setConfigurers(Collections.singletonList(this.webFluxConfigurer));
 		doAnswer(invocation -> {
 			ResourceHandlerRegistry registry = invocation.getArgument(0);
 			registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static");
 			return null;
-		}).when(webFluxConfigurer).addResourceHandlers(any(ResourceHandlerRegistry.class));
+		}).when(this.webFluxConfigurer).addResourceHandlers(any(ResourceHandlerRegistry.class));
 
-		delegatingConfig.resourceHandlerMapping();
-		verify(webFluxConfigurer).addResourceHandlers(any(ResourceHandlerRegistry.class));
-		verify(webFluxConfigurer).configurePathMatching(any(PathMatchConfigurer.class));
+		this.delegatingConfig.resourceHandlerMapping();
+		verify(this.webFluxConfigurer).addResourceHandlers(any(ResourceHandlerRegistry.class));
+		verify(this.webFluxConfigurer).configurePathMatching(any(PathMatchConfigurer.class));
 	}
 
 	@Test
 	public void responseBodyResultHandler() throws Exception {
-		delegatingConfig.setConfigurers(Collections.singletonList(webFluxConfigurer));
-		delegatingConfig.responseBodyResultHandler();
+		this.delegatingConfig.setConfigurers(Collections.singletonList(this.webFluxConfigurer));
+		this.delegatingConfig.responseBodyResultHandler();
 
-		verify(webFluxConfigurer).configureHttpMessageCodecs(codecsConfigurer.capture());
-		verify(webFluxConfigurer).configureContentTypeResolver(any(RequestedContentTypeResolverBuilder.class));
+		verify(this.webFluxConfigurer).configureHttpMessageCodecs(this.codecsConfigurer.capture());
+		verify(this.webFluxConfigurer).configureContentTypeResolver(any(RequestedContentTypeResolverBuilder.class));
 	}
 
 	@Test
 	public void viewResolutionResultHandler() throws Exception {
-		delegatingConfig.setConfigurers(Collections.singletonList(webFluxConfigurer));
-		delegatingConfig.viewResolutionResultHandler();
+		this.delegatingConfig.setConfigurers(Collections.singletonList(this.webFluxConfigurer));
+		this.delegatingConfig.viewResolutionResultHandler();
 
-		verify(webFluxConfigurer).configureViewResolvers(any(ViewResolverRegistry.class));
+		verify(this.webFluxConfigurer).configureViewResolvers(any(ViewResolverRegistry.class));
 	}
 
 }

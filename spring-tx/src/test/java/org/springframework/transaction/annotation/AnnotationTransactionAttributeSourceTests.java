@@ -443,7 +443,7 @@ public class AnnotationTransactionAttributeSourceTests {
 
 		@Override
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		@Override
@@ -453,7 +453,7 @@ public class AnnotationTransactionAttributeSourceTests {
 
 		@Override
 		public int getAge() {
-			return age;
+			return this.age;
 		}
 
 		@Override
@@ -480,7 +480,7 @@ public class AnnotationTransactionAttributeSourceTests {
 
 		@Override
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		@Override
@@ -491,7 +491,7 @@ public class AnnotationTransactionAttributeSourceTests {
 		@Override
 		@Transactional(rollbackFor = Exception.class)
 		public int getAge() {
-			return age;
+			return this.age;
 		}
 
 		@Override
@@ -517,7 +517,7 @@ public class AnnotationTransactionAttributeSourceTests {
 
 		@Override
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		@Override
@@ -527,7 +527,7 @@ public class AnnotationTransactionAttributeSourceTests {
 
 		@Override
 		public int getAge() {
-			return age;
+			return this.age;
 		}
 
 		@Override
@@ -553,7 +553,7 @@ public class AnnotationTransactionAttributeSourceTests {
 
 		@Override
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		@Override
@@ -565,7 +565,7 @@ public class AnnotationTransactionAttributeSourceTests {
 		@Transactional(propagation = Propagation.REQUIRES_NEW, isolation=Isolation.REPEATABLE_READ,
 				timeout = 5, readOnly = true, rollbackFor = Exception.class, noRollbackFor = IOException.class)
 		public int getAge() {
-			return age;
+			return this.age;
 		}
 
 		@Override
@@ -592,7 +592,7 @@ public class AnnotationTransactionAttributeSourceTests {
 
 		@Override
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		@Override
@@ -602,7 +602,7 @@ public class AnnotationTransactionAttributeSourceTests {
 
 		@Override
 		public int getAge() {
-			return age;
+			return this.age;
 		}
 
 		@Override
@@ -703,7 +703,7 @@ public class AnnotationTransactionAttributeSourceTests {
 		@Override
 		@javax.ejb.TransactionAttribute(TransactionAttributeType.SUPPORTS)
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		@Override
@@ -714,7 +714,7 @@ public class AnnotationTransactionAttributeSourceTests {
 		@Override
 		@javax.ejb.TransactionAttribute
 		public int getAge() {
-			return age;
+			return this.age;
 		}
 
 		@Override
@@ -733,7 +733,7 @@ public class AnnotationTransactionAttributeSourceTests {
 
 		@Override
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		@Override
@@ -744,7 +744,7 @@ public class AnnotationTransactionAttributeSourceTests {
 		@Override
 		@javax.ejb.TransactionAttribute
 		public int getAge() {
-			return age;
+			return this.age;
 		}
 
 		@Override
@@ -776,7 +776,7 @@ public class AnnotationTransactionAttributeSourceTests {
 
 		@Override
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		@Override
@@ -786,7 +786,7 @@ public class AnnotationTransactionAttributeSourceTests {
 
 		@Override
 		public int getAge() {
-			return age;
+			return this.age;
 		}
 
 		@Override
@@ -805,7 +805,7 @@ public class AnnotationTransactionAttributeSourceTests {
 		@Override
 		@javax.transaction.Transactional(javax.transaction.Transactional.TxType.SUPPORTS)
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		@Override
@@ -816,7 +816,7 @@ public class AnnotationTransactionAttributeSourceTests {
 		@Override
 		@javax.transaction.Transactional
 		public int getAge() {
-			return age;
+			return this.age;
 		}
 
 		@Override
@@ -835,7 +835,7 @@ public class AnnotationTransactionAttributeSourceTests {
 
 		@Override
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		@Override
@@ -846,7 +846,7 @@ public class AnnotationTransactionAttributeSourceTests {
 		@Override
 		@javax.transaction.Transactional
 		public int getAge() {
-			return age;
+			return this.age;
 		}
 
 		@Override
@@ -878,7 +878,7 @@ public class AnnotationTransactionAttributeSourceTests {
 
 		@Override
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		@Override
@@ -888,7 +888,7 @@ public class AnnotationTransactionAttributeSourceTests {
 
 		@Override
 		public int getAge() {
-			return age;
+			return this.age;
 		}
 
 		@Override
@@ -907,7 +907,7 @@ public class AnnotationTransactionAttributeSourceTests {
 
 		@Override
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		@Override
@@ -917,7 +917,7 @@ public class AnnotationTransactionAttributeSourceTests {
 
 		@Override
 		public int getAge() {
-			return age;
+			return this.age;
 		}
 
 		@Override

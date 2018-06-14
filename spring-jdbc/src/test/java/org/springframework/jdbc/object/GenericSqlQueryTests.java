@@ -65,36 +65,36 @@ public class GenericSqlQueryTests {
 		this.connection = mock(Connection.class);
 		this.preparedStatement = mock(PreparedStatement.class);
 		this.resultSet = mock(ResultSet.class);
-		given(dataSource.getConnection()).willReturn(connection);
-		TestDataSourceWrapper testDataSource = (TestDataSourceWrapper) beanFactory.getBean("dataSource");
+		given(dataSource.getConnection()).willReturn(this.connection);
+		TestDataSourceWrapper testDataSource = (TestDataSourceWrapper) this.beanFactory.getBean("dataSource");
 		testDataSource.setTarget(dataSource);
 	}
 
 	@Test
 	public void testCustomerQueryWithPlaceholders() throws SQLException {
-		SqlQuery<?> query = (SqlQuery<?>) beanFactory.getBean("queryWithPlaceholders");
+		SqlQuery<?> query = (SqlQuery<?>) this.beanFactory.getBean("queryWithPlaceholders");
 		doTestCustomerQuery(query, false);
 	}
 
 	@Test
 	public void testCustomerQueryWithNamedParameters() throws SQLException {
-		SqlQuery<?> query = (SqlQuery<?>) beanFactory.getBean("queryWithNamedParameters");
+		SqlQuery<?> query = (SqlQuery<?>) this.beanFactory.getBean("queryWithNamedParameters");
 		doTestCustomerQuery(query, true);
 	}
 
 	@Test
 	public void testCustomerQueryWithRowMapperInstance() throws SQLException {
-		SqlQuery<?> query = (SqlQuery<?>) beanFactory.getBean("queryWithRowMapperBean");
+		SqlQuery<?> query = (SqlQuery<?>) this.beanFactory.getBean("queryWithRowMapperBean");
 		doTestCustomerQuery(query, true);
 	}
 
 	private void doTestCustomerQuery(SqlQuery<?> query, boolean namedParameters) throws SQLException {
-		given(resultSet.next()).willReturn(true);
-		given(resultSet.getInt("id")).willReturn(1);
-		given(resultSet.getString("forename")).willReturn("rod");
-		given(resultSet.next()).willReturn(true, false);
-		given(preparedStatement.executeQuery()).willReturn(resultSet);
-		given(connection.prepareStatement(SELECT_ID_FORENAME_NAMED_PARAMETERS_PARSED)).willReturn(preparedStatement);
+		given(this.resultSet.next()).willReturn(true);
+		given(this.resultSet.getInt("id")).willReturn(1);
+		given(this.resultSet.getString("forename")).willReturn("rod");
+		given(this.resultSet.next()).willReturn(true, false);
+		given(this.preparedStatement.executeQuery()).willReturn(this.resultSet);
+		given(this.connection.prepareStatement(SELECT_ID_FORENAME_NAMED_PARAMETERS_PARSED)).willReturn(this.preparedStatement);
 
 		List<?> queryResults;
 		if (namedParameters) {
@@ -112,10 +112,10 @@ public class GenericSqlQueryTests {
 		assertTrue("Customer id was assigned correctly", cust.getId() == 1);
 		assertTrue("Customer forename was assigned correctly", cust.getForename().equals("rod"));
 
-		verify(resultSet).close();
-		verify(preparedStatement).setObject(1, 1, Types.INTEGER);
-		verify(preparedStatement).setString(2, "UK");
-		verify(preparedStatement).close();
+		verify(this.resultSet).close();
+		verify(this.preparedStatement).setObject(1, 1, Types.INTEGER);
+		verify(this.preparedStatement).setString(2, "UK");
+		verify(this.preparedStatement).close();
 	}
 
 }

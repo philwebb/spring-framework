@@ -54,7 +54,7 @@ public class Person {
 
 
 	public Integer getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setTestBean(TestBean testBean) {
@@ -62,7 +62,7 @@ public class Person {
 	}
 
 	public TestBean getTestBean() {
-		return testBean;
+		return this.testBean;
 	}
 
 	public void setFirstName(String firstName) {
@@ -91,8 +91,8 @@ public class Person {
 
 	@Override
 	public String toString() {
-		return getClass().getName() + ":(" + hashCode() + ") id=" + id + "; firstName=" + first_name + "; lastName="
-				+ last_name + "; testBean=" + testBean;
+		return getClass().getName() + ":(" + hashCode() + ") id=" + this.id + "; firstName=" + this.first_name + "; lastName="
+				+ this.last_name + "; testBean=" + this.testBean;
 	}
 
 }

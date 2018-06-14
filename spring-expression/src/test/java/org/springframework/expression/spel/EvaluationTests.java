@@ -198,7 +198,7 @@ public class EvaluationTests extends AbstractExpressionTests {
 	public void testMatchesWithPatternAccessThreshold() {
 		String pattern = "^(?=[a-z0-9-]{1,47})([a-z0-9]+[-]{0,1}){1,47}[a-z0-9]{1}$";
 		String expression = "'abcde-fghijklmn-o42pasdfasdfasdf.qrstuvwxyz10x.xx.yyy.zasdfasfd' matches \'" + pattern + "\'";
-		Expression expr = parser.parseExpression(expression);
+		Expression expr = this.parser.parseExpression(expression);
 		try {
 			expr.getValue();
 			fail("Should have exceeded threshold");
@@ -291,7 +291,7 @@ public class EvaluationTests extends AbstractExpressionTests {
 	@Test
 	public void testConstructorInvocation06() {
 		// repeated evaluation to drive use of cached executor
-		SpelExpression e = (SpelExpression) parser.parseExpression("new String('wibble')");
+		SpelExpression e = (SpelExpression) this.parser.parseExpression("new String('wibble')");
 		String newString = e.getValue(String.class);
 		assertEquals("wibble", newString);
 		newString = e.getValue(String.class);
@@ -327,27 +327,27 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 	@Test(expected = EvaluationException.class)
 	public void testUnaryNotWithNullValue() {
-		parser.parseExpression("!null").getValue();
+		this.parser.parseExpression("!null").getValue();
 	}
 
 	@Test(expected = EvaluationException.class)
 	public void testAndWithNullValueOnLeft() {
-		parser.parseExpression("null and true").getValue();
+		this.parser.parseExpression("null and true").getValue();
 	}
 
 	@Test(expected = EvaluationException.class)
 	public void testAndWithNullValueOnRight() {
-		parser.parseExpression("true and null").getValue();
+		this.parser.parseExpression("true and null").getValue();
 	}
 
 	@Test(expected = EvaluationException.class)
 	public void testOrWithNullValueOnLeft() {
-		parser.parseExpression("null or false").getValue();
+		this.parser.parseExpression("null or false").getValue();
 	}
 
 	@Test(expected = EvaluationException.class)
 	public void testOrWithNullValueOnRight() {
-		parser.parseExpression("false or null").getValue();
+		this.parser.parseExpression("false or null").getValue();
 	}
 
 	// assignment
@@ -374,8 +374,8 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 	@Test
 	public void testTernaryOperator04() {
-		Expression e = parser.parseExpression("1>2?3:4");
-		assertFalse(e.isWritable(context));
+		Expression e = this.parser.parseExpression("1>2?3:4");
+		assertFalse(e.isWritable(this.context));
 	}
 
 	@Test
@@ -388,7 +388,7 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 	@Test(expected = EvaluationException.class)
 	public void testTernaryOperatorWithNullValue() {
-		parser.parseExpression("null ? 0 : 1").getValue();
+		this.parser.parseExpression("null ? 0 : 1").getValue();
 	}
 
 	@Test
@@ -452,7 +452,7 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 	@Test
 	public void testTypeReferencesAndQualifiedIdentifierCaching() {
-		SpelExpression e = (SpelExpression) parser.parseExpression("T(java.lang.String)");
+		SpelExpression e = (SpelExpression) this.parser.parseExpression("T(java.lang.String)");
 		assertFalse(e.isWritable(new StandardEvaluationContext()));
 		assertEquals("T(java.lang.String)", e.toStringAST());
 		assertEquals(String.class, e.getValue(Class.class));
@@ -463,7 +463,7 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 	@Test
 	public void operatorVariants() {
-		SpelExpression e = (SpelExpression)parser.parseExpression("#a < #b");
+		SpelExpression e = (SpelExpression)this.parser.parseExpression("#a < #b");
 		EvaluationContext ctx = new StandardEvaluationContext();
 		ctx.setVariable("a", (short) 3);
 		ctx.setVariable("b", (short) 6);
@@ -523,22 +523,22 @@ public class EvaluationTests extends AbstractExpressionTests {
 
 	@Test
 	public void testAdvancedNumerics() {
-		int twentyFour = parser.parseExpression("2.0 * 3e0 * 4").getValue(Integer.class);
+		int twentyFour = this.parser.parseExpression("2.0 * 3e0 * 4").getValue(Integer.class);
 		assertEquals(24, twentyFour);
-		double one = parser.parseExpression("8.0 / 5e0 % 2").getValue(Double.class);
+		double one = this.parser.parseExpression("8.0 / 5e0 % 2").getValue(Double.class);
 		assertEquals(1.6d, one, 0d);
-		int o = parser.parseExpression("8.0 / 5e0 % 2").getValue(Integer.class);
+		int o = this.parser.parseExpression("8.0 / 5e0 % 2").getValue(Integer.class);
 		assertEquals(1, o);
-		int sixteen = parser.parseExpression("-2 ^ 4").getValue(Integer.class);
+		int sixteen = this.parser.parseExpression("-2 ^ 4").getValue(Integer.class);
 		assertEquals(16, sixteen);
-		int minusFortyFive = parser.parseExpression("1+2-3*8^2/2/2").getValue(Integer.class);
+		int minusFortyFive = this.parser.parseExpression("1+2-3*8^2/2/2").getValue(Integer.class);
 		assertEquals(-45, minusFortyFive);
 	}
 
 	@Test
 	public void testComparison() {
 		EvaluationContext context = TestScenarioCreator.getTestEvaluationContext();
-		boolean trueValue = parser.parseExpression("T(java.util.Date) == Birthdate.Class").getValue(
+		boolean trueValue = this.parser.parseExpression("T(java.util.Date) == Birthdate.Class").getValue(
 				context, Boolean.class);
 		assertTrue(trueValue);
 	}
@@ -547,19 +547,19 @@ public class EvaluationTests extends AbstractExpressionTests {
 	public void testResolvingList() {
 		StandardEvaluationContext context = TestScenarioCreator.getTestEvaluationContext();
 		try {
-			assertFalse(parser.parseExpression("T(List)!=null").getValue(context, Boolean.class));
+			assertFalse(this.parser.parseExpression("T(List)!=null").getValue(context, Boolean.class));
 			fail("should have failed to find List");
 		}
 		catch (EvaluationException ee) {
 			// success - List not found
 		}
 		((StandardTypeLocator) context.getTypeLocator()).registerImport("java.util");
-		assertTrue(parser.parseExpression("T(List)!=null").getValue(context, Boolean.class));
+		assertTrue(this.parser.parseExpression("T(List)!=null").getValue(context, Boolean.class));
 	}
 
 	@Test
 	public void testResolvingString() {
-		Class<?> stringClass = parser.parseExpression("T(String)").getValue(Class.class);
+		Class<?> stringClass = this.parser.parseExpression("T(String)").getValue(Class.class);
 		assertEquals(String.class, stringClass);
 	}
 
@@ -1484,14 +1484,14 @@ public class EvaluationTests extends AbstractExpressionTests {
 		public int index3 = 0;
 
 		public Spr9751() {
-			integerArray = new Integer[5];
-			integerArray[0] = 1;
-			integerArray[1] = 2;
-			integerArray[2] = 3;
-			integerArray[3] = 4;
-			integerArray[4] = 5;
-			listOfStrings = new ArrayList<>();
-			listOfStrings.add("abc");
+			this.integerArray = new Integer[5];
+			this.integerArray[0] = 1;
+			this.integerArray[1] = 2;
+			this.integerArray[2] = 3;
+			this.integerArray[3] = 4;
+			this.integerArray[4] = 5;
+			this.listOfStrings = new ArrayList<>();
+			this.listOfStrings.add("abc");
 		}
 
 		public void m() {}

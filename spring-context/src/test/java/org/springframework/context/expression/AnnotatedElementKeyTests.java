@@ -36,14 +36,14 @@ public class AnnotatedElementKeyTests {
 
 	@Test
 	public void sameInstanceEquals() {
-		Method m = ReflectionUtils.findMethod(getClass(), name.getMethodName());
+		Method m = ReflectionUtils.findMethod(getClass(), this.name.getMethodName());
 		AnnotatedElementKey instance = new AnnotatedElementKey(m, getClass());
 		assertKeyEquals(instance, instance);
 	}
 
 	@Test
 	public void equals() {
-		Method m = ReflectionUtils.findMethod(getClass(), name.getMethodName());
+		Method m = ReflectionUtils.findMethod(getClass(), this.name.getMethodName());
 		AnnotatedElementKey first = new AnnotatedElementKey(m, getClass());
 		AnnotatedElementKey second = new AnnotatedElementKey(m, getClass());
 
@@ -52,7 +52,7 @@ public class AnnotatedElementKeyTests {
 
 	@Test
 	public void equalsNoTarget() {
-		Method m = ReflectionUtils.findMethod(getClass(), name.getMethodName());
+		Method m = ReflectionUtils.findMethod(getClass(), this.name.getMethodName());
 		AnnotatedElementKey first = new AnnotatedElementKey(m, null);
 		AnnotatedElementKey second = new AnnotatedElementKey(m, null);
 
@@ -61,7 +61,7 @@ public class AnnotatedElementKeyTests {
 
 	@Test
 	public void noTargetClassNotEquals() {
-		Method m = ReflectionUtils.findMethod(getClass(), name.getMethodName());
+		Method m = ReflectionUtils.findMethod(getClass(), this.name.getMethodName());
 		AnnotatedElementKey first = new AnnotatedElementKey(m, getClass());
 		AnnotatedElementKey second = new AnnotatedElementKey(m, null);
 

@@ -88,7 +88,7 @@ public class DebugInterceptorTests {
 
 		@Override
 		protected Log getLoggerForInvocation(MethodInvocation invocation) {
-			return log;
+			return this.log;
 		}
 
 	}

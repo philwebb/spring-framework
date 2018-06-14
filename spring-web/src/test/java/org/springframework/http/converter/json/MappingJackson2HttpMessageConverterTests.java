@@ -61,20 +61,20 @@ public class MappingJackson2HttpMessageConverterTests {
 
 	@Test
 	public void canRead() {
-		assertTrue(converter.canRead(MyBean.class, new MediaType("application", "json")));
-		assertTrue(converter.canRead(Map.class, new MediaType("application", "json")));
+		assertTrue(this.converter.canRead(MyBean.class, new MediaType("application", "json")));
+		assertTrue(this.converter.canRead(Map.class, new MediaType("application", "json")));
 	}
 
 	@Test
 	public void canWrite() {
-		assertTrue(converter.canWrite(MyBean.class, new MediaType("application", "json")));
-		assertTrue(converter.canWrite(Map.class, new MediaType("application", "json")));
+		assertTrue(this.converter.canWrite(MyBean.class, new MediaType("application", "json")));
+		assertTrue(this.converter.canWrite(Map.class, new MediaType("application", "json")));
 	}
 
 	@Test  // SPR-7905
 	public void canReadAndWriteMicroformats() {
-		assertTrue(converter.canRead(MyBean.class, new MediaType("application", "vnd.test-micro-type+json")));
-		assertTrue(converter.canWrite(MyBean.class, new MediaType("application", "vnd.test-micro-type+json")));
+		assertTrue(this.converter.canRead(MyBean.class, new MediaType("application", "vnd.test-micro-type+json")));
+		assertTrue(this.converter.canWrite(MyBean.class, new MediaType("application", "vnd.test-micro-type+json")));
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class MappingJackson2HttpMessageConverterTests {
 				"\"fraction\":42.0}";
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(body.getBytes("UTF-8"));
 		inputMessage.getHeaders().setContentType(new MediaType("application", "json"));
-		MyBean result = (MyBean) converter.read(MyBean.class, inputMessage);
+		MyBean result = (MyBean) this.converter.read(MyBean.class, inputMessage);
 		assertEquals("Foo", result.getString());
 		assertEquals(42, result.getNumber());
 		assertEquals(42F, result.getFraction(), 0F);
@@ -109,7 +109,7 @@ public class MappingJackson2HttpMessageConverterTests {
 				"\"fraction\":42.0}";
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(body.getBytes("UTF-8"));
 		inputMessage.getHeaders().setContentType(new MediaType("application", "json"));
-		HashMap<String, Object> result = (HashMap<String, Object>) converter.read(HashMap.class, inputMessage);
+		HashMap<String, Object> result = (HashMap<String, Object>) this.converter.read(HashMap.class, inputMessage);
 		assertEquals("Foo", result.get("string"));
 		assertEquals(42, result.get("number"));
 		assertEquals(42D, (Double) result.get("fraction"), 0D);
@@ -131,7 +131,7 @@ public class MappingJackson2HttpMessageConverterTests {
 		body.setArray(new String[] {"Foo", "Bar"});
 		body.setBool(true);
 		body.setBytes(new byte[] {0x1, 0x2});
-		converter.write(body, null, outputMessage);
+		this.converter.write(body, null, outputMessage);
 		String result = outputMessage.getBodyAsString(StandardCharsets.UTF_8);
 		assertTrue(result.contains("\"string\":\"Foo\""));
 		assertTrue(result.contains("\"number\":42"));
@@ -153,7 +153,7 @@ public class MappingJackson2HttpMessageConverterTests {
 		body.setArray(new String[] {"Foo", "Bar"});
 		body.setBool(true);
 		body.setBytes(new byte[] {0x1, 0x2});
-		converter.write(body, MyBase.class, null, outputMessage);
+		this.converter.write(body, MyBase.class, null, outputMessage);
 		String result = outputMessage.getBodyAsString(StandardCharsets.UTF_8);
 		assertTrue(result.contains("\"string\":\"Foo\""));
 		assertTrue(result.contains("\"number\":42"));
@@ -170,7 +170,7 @@ public class MappingJackson2HttpMessageConverterTests {
 		MediaType contentType = new MediaType("application", "json", StandardCharsets.UTF_16BE);
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		String body = "H\u00e9llo W\u00f6rld";
-		converter.write(body, contentType, outputMessage);
+		this.converter.write(body, contentType, outputMessage);
 		assertEquals("Invalid result", "\"" + body + "\"", outputMessage.getBodyAsString(StandardCharsets.UTF_16BE));
 		assertEquals("Invalid content-type", contentType, outputMessage.getHeaders().getContentType());
 	}
@@ -180,7 +180,7 @@ public class MappingJackson2HttpMessageConverterTests {
 		String body = "FooBar";
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(body.getBytes("UTF-8"));
 		inputMessage.getHeaders().setContentType(new MediaType("application", "json"));
-		converter.read(MyBean.class, inputMessage);
+		this.converter.read(MyBean.class, inputMessage);
 	}
 
 	@Test
@@ -188,7 +188,7 @@ public class MappingJackson2HttpMessageConverterTests {
 		String body = "{\"string\":\"string\",\"unknownProperty\":\"value\"}";
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(body.getBytes("UTF-8"));
 		inputMessage.getHeaders().setContentType(new MediaType("application", "json"));
-		converter.read(MyBean.class, inputMessage);
+		this.converter.read(MyBean.class, inputMessage);
 		// Assert no HttpMessageNotReadableException is thrown
 	}
 
@@ -438,7 +438,7 @@ public class MappingJackson2HttpMessageConverterTests {
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(body.getBytes("UTF-8"));
 		inputMessage.getHeaders().setContentType(new MediaType("application", "json"));
 		try {
-			converter.read(BeanWithNoDefaultConstructor.class, inputMessage);
+			this.converter.read(BeanWithNoDefaultConstructor.class, inputMessage);
 		}
 		catch (HttpMessageConversionException ex) {
 			assertTrue(ex.getMessage(), ex.getMessage().startsWith("Type definition error:"));
@@ -461,7 +461,7 @@ public class MappingJackson2HttpMessageConverterTests {
 		private String string;
 
 		public String getString() {
-			return string;
+			return this.string;
 		}
 
 		public void setString(String string) {
@@ -483,7 +483,7 @@ public class MappingJackson2HttpMessageConverterTests {
 		private byte[] bytes;
 
 		public int getNumber() {
-			return number;
+			return this.number;
 		}
 
 		public void setNumber(int number) {
@@ -491,7 +491,7 @@ public class MappingJackson2HttpMessageConverterTests {
 		}
 
 		public float getFraction() {
-			return fraction;
+			return this.fraction;
 		}
 
 		public void setFraction(float fraction) {
@@ -499,7 +499,7 @@ public class MappingJackson2HttpMessageConverterTests {
 		}
 
 		public String[] getArray() {
-			return array;
+			return this.array;
 		}
 
 		public void setArray(String[] array) {
@@ -507,7 +507,7 @@ public class MappingJackson2HttpMessageConverterTests {
 		}
 
 		public boolean isBool() {
-			return bool;
+			return this.bool;
 		}
 
 		public void setBool(boolean bool) {
@@ -515,7 +515,7 @@ public class MappingJackson2HttpMessageConverterTests {
 		}
 
 		public byte[] getBytes() {
-			return bytes;
+			return this.bytes;
 		}
 
 		public void setBytes(byte[] bytes) {
@@ -529,7 +529,7 @@ public class MappingJackson2HttpMessageConverterTests {
 		private String name;
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String name) {
@@ -558,7 +558,7 @@ public class MappingJackson2HttpMessageConverterTests {
 		private String withoutView;
 
 		public String getWithView1() {
-			return withView1;
+			return this.withView1;
 		}
 
 		public void setWithView1(String withView1) {
@@ -566,7 +566,7 @@ public class MappingJackson2HttpMessageConverterTests {
 		}
 
 		public String getWithView2() {
-			return withView2;
+			return this.withView2;
 		}
 
 		public void setWithView2(String withView2) {
@@ -574,7 +574,7 @@ public class MappingJackson2HttpMessageConverterTests {
 		}
 
 		public String getWithoutView() {
-			return withoutView;
+			return this.withoutView;
 		}
 
 		public void setWithoutView(String withoutView) {
@@ -592,7 +592,7 @@ public class MappingJackson2HttpMessageConverterTests {
 		private String property2;
 
 		public String getProperty1() {
-			return property1;
+			return this.property1;
 		}
 
 		public void setProperty1(String property1) {
@@ -600,7 +600,7 @@ public class MappingJackson2HttpMessageConverterTests {
 		}
 
 		public String getProperty2() {
-			return property2;
+			return this.property2;
 		}
 
 		public void setProperty2(String property2) {
@@ -621,11 +621,11 @@ public class MappingJackson2HttpMessageConverterTests {
 		}
 
 		public String getProperty1() {
-			return property1;
+			return this.property1;
 		}
 
 		public String getProperty2() {
-			return property2;
+			return this.property2;
 		}
 	}
 

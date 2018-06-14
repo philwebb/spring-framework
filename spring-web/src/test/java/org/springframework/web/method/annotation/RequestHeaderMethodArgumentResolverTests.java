@@ -73,24 +73,24 @@ public class RequestHeaderMethodArgumentResolverTests {
 	public void setUp() throws Exception {
 		GenericWebApplicationContext context = new GenericWebApplicationContext();
 		context.refresh();
-		resolver = new RequestHeaderMethodArgumentResolver(context.getBeanFactory());
+		this.resolver = new RequestHeaderMethodArgumentResolver(context.getBeanFactory());
 
 		Method method = ReflectionUtils.findMethod(getClass(), "params", (Class<?>[]) null);
-		paramNamedDefaultValueStringHeader = new SynthesizingMethodParameter(method, 0);
-		paramNamedValueStringArray = new SynthesizingMethodParameter(method, 1);
-		paramSystemProperty = new SynthesizingMethodParameter(method, 2);
-		paramContextPath = new SynthesizingMethodParameter(method, 3);
-		paramResolvedNameWithExpression = new SynthesizingMethodParameter(method, 4);
-		paramResolvedNameWithPlaceholder = new SynthesizingMethodParameter(method, 5);
-		paramNamedValueMap = new SynthesizingMethodParameter(method, 6);
-		paramDate = new SynthesizingMethodParameter(method, 7);
-		paramInstant = new SynthesizingMethodParameter(method, 8);
+		this.paramNamedDefaultValueStringHeader = new SynthesizingMethodParameter(method, 0);
+		this.paramNamedValueStringArray = new SynthesizingMethodParameter(method, 1);
+		this.paramSystemProperty = new SynthesizingMethodParameter(method, 2);
+		this.paramContextPath = new SynthesizingMethodParameter(method, 3);
+		this.paramResolvedNameWithExpression = new SynthesizingMethodParameter(method, 4);
+		this.paramResolvedNameWithPlaceholder = new SynthesizingMethodParameter(method, 5);
+		this.paramNamedValueMap = new SynthesizingMethodParameter(method, 6);
+		this.paramDate = new SynthesizingMethodParameter(method, 7);
+		this.paramInstant = new SynthesizingMethodParameter(method, 8);
 
-		servletRequest = new MockHttpServletRequest();
-		webRequest = new ServletWebRequest(servletRequest, new MockHttpServletResponse());
+		this.servletRequest = new MockHttpServletRequest();
+		this.webRequest = new ServletWebRequest(this.servletRequest, new MockHttpServletResponse());
 
 		// Expose request to the current thread (for SpEL expressions)
-		RequestContextHolder.setRequestAttributes(webRequest);
+		RequestContextHolder.setRequestAttributes(this.webRequest);
 	}
 
 	@After
@@ -101,17 +101,17 @@ public class RequestHeaderMethodArgumentResolverTests {
 
 	@Test
 	public void supportsParameter() {
-		assertTrue("String parameter not supported", resolver.supportsParameter(paramNamedDefaultValueStringHeader));
-		assertTrue("String array parameter not supported", resolver.supportsParameter(paramNamedValueStringArray));
-		assertFalse("non-@RequestParam parameter supported", resolver.supportsParameter(paramNamedValueMap));
+		assertTrue("String parameter not supported", this.resolver.supportsParameter(this.paramNamedDefaultValueStringHeader));
+		assertTrue("String array parameter not supported", this.resolver.supportsParameter(this.paramNamedValueStringArray));
+		assertFalse("non-@RequestParam parameter supported", this.resolver.supportsParameter(this.paramNamedValueMap));
 	}
 
 	@Test
 	public void resolveStringArgument() throws Exception {
 		String expected = "foo";
-		servletRequest.addHeader("name", expected);
+		this.servletRequest.addHeader("name", expected);
 
-		Object result = resolver.resolveArgument(paramNamedDefaultValueStringHeader, null, webRequest, null);
+		Object result = this.resolver.resolveArgument(this.paramNamedDefaultValueStringHeader, null, this.webRequest, null);
 		assertTrue(result instanceof String);
 		assertEquals(expected, result);
 	}
@@ -119,16 +119,16 @@ public class RequestHeaderMethodArgumentResolverTests {
 	@Test
 	public void resolveStringArrayArgument() throws Exception {
 		String[] expected = new String[] {"foo", "bar"};
-		servletRequest.addHeader("name", expected);
+		this.servletRequest.addHeader("name", expected);
 
-		Object result = resolver.resolveArgument(paramNamedValueStringArray, null, webRequest, null);
+		Object result = this.resolver.resolveArgument(this.paramNamedValueStringArray, null, this.webRequest, null);
 		assertTrue(result instanceof String[]);
 		assertArrayEquals(expected, (String[]) result);
 	}
 
 	@Test
 	public void resolveDefaultValue() throws Exception {
-		Object result = resolver.resolveArgument(paramNamedDefaultValueStringHeader, null, webRequest, null);
+		Object result = this.resolver.resolveArgument(this.paramNamedDefaultValueStringHeader, null, this.webRequest, null);
 		assertTrue(result instanceof String);
 		assertEquals("bar", result);
 	}
@@ -137,7 +137,7 @@ public class RequestHeaderMethodArgumentResolverTests {
 	public void resolveDefaultValueFromSystemProperty() throws Exception {
 		System.setProperty("systemProperty", "bar");
 		try {
-			Object result = resolver.resolveArgument(paramSystemProperty, null, webRequest, null);
+			Object result = this.resolver.resolveArgument(this.paramSystemProperty, null, this.webRequest, null);
 			assertTrue(result instanceof String);
 			assertEquals("bar", result);
 		}
@@ -149,11 +149,11 @@ public class RequestHeaderMethodArgumentResolverTests {
 	@Test
 	public void resolveNameFromSystemPropertyThroughExpression() throws Exception {
 		String expected = "foo";
-		servletRequest.addHeader("bar", expected);
+		this.servletRequest.addHeader("bar", expected);
 
 		System.setProperty("systemProperty", "bar");
 		try {
-			Object result = resolver.resolveArgument(paramResolvedNameWithExpression, null, webRequest, null);
+			Object result = this.resolver.resolveArgument(this.paramResolvedNameWithExpression, null, this.webRequest, null);
 			assertTrue(result instanceof String);
 			assertEquals(expected, result);
 		}
@@ -165,11 +165,11 @@ public class RequestHeaderMethodArgumentResolverTests {
 	@Test
 	public void resolveNameFromSystemPropertyThroughPlaceholder() throws Exception {
 		String expected = "foo";
-		servletRequest.addHeader("bar", expected);
+		this.servletRequest.addHeader("bar", expected);
 
 		System.setProperty("systemProperty", "bar");
 		try {
-			Object result = resolver.resolveArgument(paramResolvedNameWithPlaceholder, null, webRequest, null);
+			Object result = this.resolver.resolveArgument(this.paramResolvedNameWithPlaceholder, null, this.webRequest, null);
 			assertTrue(result instanceof String);
 			assertEquals(expected, result);
 		}
@@ -180,27 +180,27 @@ public class RequestHeaderMethodArgumentResolverTests {
 
 	@Test
 	public void resolveDefaultValueFromRequest() throws Exception {
-		servletRequest.setContextPath("/bar");
+		this.servletRequest.setContextPath("/bar");
 
-		Object result = resolver.resolveArgument(paramContextPath, null, webRequest, null);
+		Object result = this.resolver.resolveArgument(this.paramContextPath, null, this.webRequest, null);
 		assertTrue(result instanceof String);
 		assertEquals("/bar", result);
 	}
 
 	@Test(expected = ServletRequestBindingException.class)
 	public void notFound() throws Exception {
-		resolver.resolveArgument(paramNamedValueStringArray, null, webRequest, null);
+		this.resolver.resolveArgument(this.paramNamedValueStringArray, null, this.webRequest, null);
 	}
 
 	@Test
 	@SuppressWarnings("deprecation")
 	public void dateConversion() throws Exception {
 		String rfc1123val = "Thu, 21 Apr 2016 17:11:08 +0100";
-		servletRequest.addHeader("name", rfc1123val);
+		this.servletRequest.addHeader("name", rfc1123val);
 
 		ConfigurableWebBindingInitializer bindingInitializer = new ConfigurableWebBindingInitializer();
 		bindingInitializer.setConversionService(new DefaultFormattingConversionService());
-		Object result = resolver.resolveArgument(paramDate, null, webRequest,
+		Object result = this.resolver.resolveArgument(this.paramDate, null, this.webRequest,
 				new DefaultDataBinderFactory(bindingInitializer));
 
 		assertTrue(result instanceof Date);
@@ -210,11 +210,11 @@ public class RequestHeaderMethodArgumentResolverTests {
 	@Test
 	public void instantConversion() throws Exception {
 		String rfc1123val = "Thu, 21 Apr 2016 17:11:08 +0100";
-		servletRequest.addHeader("name", rfc1123val);
+		this.servletRequest.addHeader("name", rfc1123val);
 
 		ConfigurableWebBindingInitializer bindingInitializer = new ConfigurableWebBindingInitializer();
 		bindingInitializer.setConversionService(new DefaultFormattingConversionService());
-		Object result = resolver.resolveArgument(paramInstant, null, webRequest,
+		Object result = this.resolver.resolveArgument(this.paramInstant, null, this.webRequest,
 				new DefaultDataBinderFactory(bindingInitializer));
 
 		assertTrue(result instanceof Instant);

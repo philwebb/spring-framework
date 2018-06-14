@@ -87,7 +87,7 @@ public class PrototypeTargetTests {
 
 		@Override
 		public Object invoke(MethodInvocation methodInvocation) throws Throwable {
-			invocationCount++;
+			this.invocationCount++;
 			return methodInvocation.proceed();
 		}
 	}

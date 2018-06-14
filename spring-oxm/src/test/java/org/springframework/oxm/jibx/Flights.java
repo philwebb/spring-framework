@@ -23,14 +23,14 @@ public class Flights {
 	protected ArrayList<FlightType> flightList = new ArrayList<>();
 
 	public void addFlight(FlightType flight) {
-		flightList.add(flight);
+		this.flightList.add(flight);
 	}
 
 	public FlightType getFlight(int index) {
-		return flightList.get(index);
+		return this.flightList.get(index);
 	}
 
 	public int sizeFlightList() {
-		return flightList.size();
+		return this.flightList.size();
 	}
 }

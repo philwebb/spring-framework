@@ -76,10 +76,10 @@ public class PropertyResourceConfigurerTests {
 	@Test
 	public void testPropertyOverrideConfigurer() {
 		BeanDefinition def1 = BeanDefinitionBuilder.genericBeanDefinition(TestBean.class).getBeanDefinition();
-		factory.registerBeanDefinition("tb1", def1);
+		this.factory.registerBeanDefinition("tb1", def1);
 
 		BeanDefinition def2 = BeanDefinitionBuilder.genericBeanDefinition(TestBean.class).getBeanDefinition();
-		factory.registerBeanDefinition("tb2", def2);
+		this.factory.registerBeanDefinition("tb2", def2);
 
 		PropertyOverrideConfigurer poc1;
 		PropertyOverrideConfigurer poc2;
@@ -101,11 +101,11 @@ public class PropertyResourceConfigurerTests {
 		}
 
 		// emulate what happens when BFPPs are added to an application context: It's LIFO-based
-		poc2.postProcessBeanFactory(factory);
-		poc1.postProcessBeanFactory(factory);
+		poc2.postProcessBeanFactory(this.factory);
+		poc1.postProcessBeanFactory(this.factory);
 
-		TestBean tb1 = (TestBean) factory.getBean("tb1");
-		TestBean tb2 = (TestBean) factory.getBean("tb2");
+		TestBean tb1 = (TestBean) this.factory.getBean("tb1");
+		TestBean tb2 = (TestBean) this.factory.getBean("tb2");
 
 		assertEquals(99, tb1.getAge());
 		assertEquals(99, tb2.getAge());
@@ -116,7 +116,7 @@ public class PropertyResourceConfigurerTests {
 	@Test
 	public void testPropertyOverrideConfigurerWithNestedProperty() {
 		BeanDefinition def = BeanDefinitionBuilder.genericBeanDefinition(IndexedTestBean.class).getBeanDefinition();
-		factory.registerBeanDefinition("tb", def);
+		this.factory.registerBeanDefinition("tb", def);
 
 		PropertyOverrideConfigurer poc;
 		poc = new PropertyOverrideConfigurer();
@@ -124,9 +124,9 @@ public class PropertyResourceConfigurerTests {
 		props.setProperty("tb.array[0].age", "99");
 		props.setProperty("tb.list[1].name", "test");
 		poc.setProperties(props);
-		poc.postProcessBeanFactory(factory);
+		poc.postProcessBeanFactory(this.factory);
 
-		IndexedTestBean tb = (IndexedTestBean) factory.getBean("tb");
+		IndexedTestBean tb = (IndexedTestBean) this.factory.getBean("tb");
 		assertEquals(99, tb.getArray()[0].getAge());
 		assertEquals("test", ((TestBean) tb.getList().get(1)).getName());
 	}
@@ -134,7 +134,7 @@ public class PropertyResourceConfigurerTests {
 	@Test
 	public void testPropertyOverrideConfigurerWithNestedPropertyAndDotInBeanName() {
 		BeanDefinition def = BeanDefinitionBuilder.genericBeanDefinition(IndexedTestBean.class).getBeanDefinition();
-		factory.registerBeanDefinition("my.tb", def);
+		this.factory.registerBeanDefinition("my.tb", def);
 
 		PropertyOverrideConfigurer poc;
 		poc = new PropertyOverrideConfigurer();
@@ -143,9 +143,9 @@ public class PropertyResourceConfigurerTests {
 		props.setProperty("my.tb_list[1].name", "test");
 		poc.setProperties(props);
 		poc.setBeanNameSeparator("_");
-		poc.postProcessBeanFactory(factory);
+		poc.postProcessBeanFactory(this.factory);
 
-		IndexedTestBean tb = (IndexedTestBean) factory.getBean("my.tb");
+		IndexedTestBean tb = (IndexedTestBean) this.factory.getBean("my.tb");
 		assertEquals(99, tb.getArray()[0].getAge());
 		assertEquals("test", ((TestBean) tb.getList().get(1)).getName());
 	}
@@ -153,7 +153,7 @@ public class PropertyResourceConfigurerTests {
 	@Test
 	public void testPropertyOverrideConfigurerWithNestedMapPropertyAndDotInMapKey() {
 		BeanDefinition def = BeanDefinitionBuilder.genericBeanDefinition(IndexedTestBean.class).getBeanDefinition();
-		factory.registerBeanDefinition("tb", def);
+		this.factory.registerBeanDefinition("tb", def);
 
 		PropertyOverrideConfigurer poc;
 		poc = new PropertyOverrideConfigurer();
@@ -161,9 +161,9 @@ public class PropertyResourceConfigurerTests {
 		props.setProperty("tb.map[key1]", "99");
 		props.setProperty("tb.map[key2.ext]", "test");
 		poc.setProperties(props);
-		poc.postProcessBeanFactory(factory);
+		poc.postProcessBeanFactory(this.factory);
 
-		IndexedTestBean tb = (IndexedTestBean) factory.getBean("tb");
+		IndexedTestBean tb = (IndexedTestBean) this.factory.getBean("tb");
 		assertEquals("99", tb.getMap().get("key1"));
 		assertEquals("test", tb.getMap().get("key2.ext"));
 	}
@@ -171,29 +171,29 @@ public class PropertyResourceConfigurerTests {
 	@Test
 	public void testPropertyOverrideConfigurerWithHeldProperties() {
 		BeanDefinition def = BeanDefinitionBuilder.genericBeanDefinition(PropertiesHolder.class).getBeanDefinition();
-		factory.registerBeanDefinition("tb", def);
+		this.factory.registerBeanDefinition("tb", def);
 
 		PropertyOverrideConfigurer poc;
 		poc = new PropertyOverrideConfigurer();
 		Properties props = new Properties();
 		props.setProperty("tb.heldProperties[mail.smtp.auth]", "true");
 		poc.setProperties(props);
-		poc.postProcessBeanFactory(factory);
+		poc.postProcessBeanFactory(this.factory);
 
-		PropertiesHolder tb = (PropertiesHolder) factory.getBean("tb");
+		PropertiesHolder tb = (PropertiesHolder) this.factory.getBean("tb");
 		assertEquals("true", tb.getHeldProperties().getProperty("mail.smtp.auth"));
 	}
 
 	@Test
 	public void testPropertyOverrideConfigurerWithPropertiesFile() {
 		BeanDefinition def = BeanDefinitionBuilder.genericBeanDefinition(IndexedTestBean.class).getBeanDefinition();
-		factory.registerBeanDefinition("tb", def);
+		this.factory.registerBeanDefinition("tb", def);
 
 		PropertyOverrideConfigurer poc = new PropertyOverrideConfigurer();
 		poc.setLocation(TEST_PROPS);
-		poc.postProcessBeanFactory(factory);
+		poc.postProcessBeanFactory(this.factory);
 
-		IndexedTestBean tb = (IndexedTestBean) factory.getBean("tb");
+		IndexedTestBean tb = (IndexedTestBean) this.factory.getBean("tb");
 		assertEquals(99, tb.getArray()[0].getAge());
 		assertEquals("test", ((TestBean) tb.getList().get(1)).getName());
 	}
@@ -201,14 +201,14 @@ public class PropertyResourceConfigurerTests {
 	@Test
 	public void testPropertyOverrideConfigurerWithInvalidPropertiesFile() {
 		BeanDefinition def = BeanDefinitionBuilder.genericBeanDefinition(IndexedTestBean.class).getBeanDefinition();
-		factory.registerBeanDefinition("tb", def);
+		this.factory.registerBeanDefinition("tb", def);
 
 		PropertyOverrideConfigurer poc = new PropertyOverrideConfigurer();
 		poc.setLocations(TEST_PROPS, XTEST_PROPS);
 		poc.setIgnoreResourceNotFound(true);
-		poc.postProcessBeanFactory(factory);
+		poc.postProcessBeanFactory(this.factory);
 
-		IndexedTestBean tb = (IndexedTestBean) factory.getBean("tb");
+		IndexedTestBean tb = (IndexedTestBean) this.factory.getBean("tb");
 		assertEquals(99, tb.getArray()[0].getAge());
 		assertEquals("test", ((TestBean) tb.getList().get(1)).getName());
 	}
@@ -216,13 +216,13 @@ public class PropertyResourceConfigurerTests {
 	@Test
 	public void testPropertyOverrideConfigurerWithPropertiesXmlFile() {
 		BeanDefinition def = BeanDefinitionBuilder.genericBeanDefinition(IndexedTestBean.class).getBeanDefinition();
-		factory.registerBeanDefinition("tb", def);
+		this.factory.registerBeanDefinition("tb", def);
 
 		PropertyOverrideConfigurer poc = new PropertyOverrideConfigurer();
 		poc.setLocation(TEST_PROPS_XML);
-		poc.postProcessBeanFactory(factory);
+		poc.postProcessBeanFactory(this.factory);
 
-		IndexedTestBean tb = (IndexedTestBean) factory.getBean("tb");
+		IndexedTestBean tb = (IndexedTestBean) this.factory.getBean("tb");
 		assertEquals(99, tb.getArray()[0].getAge());
 		assertEquals("test", ((TestBean) tb.getList().get(1)).getName());
 	}
@@ -230,24 +230,24 @@ public class PropertyResourceConfigurerTests {
 	@Test
 	public void testPropertyOverrideConfigurerWithConvertProperties() {
 		BeanDefinition def = BeanDefinitionBuilder.genericBeanDefinition(IndexedTestBean.class).getBeanDefinition();
-		factory.registerBeanDefinition("tb", def);
+		this.factory.registerBeanDefinition("tb", def);
 
 		ConvertingOverrideConfigurer bfpp = new ConvertingOverrideConfigurer();
 		Properties props = new Properties();
 		props.setProperty("tb.array[0].name", "99");
 		props.setProperty("tb.list[1].name", "test");
 		bfpp.setProperties(props);
-		bfpp.postProcessBeanFactory(factory);
+		bfpp.postProcessBeanFactory(this.factory);
 
-		IndexedTestBean tb = (IndexedTestBean) factory.getBean("tb");
+		IndexedTestBean tb = (IndexedTestBean) this.factory.getBean("tb");
 		assertEquals("X99", tb.getArray()[0].getName());
 		assertEquals("Xtest", ((TestBean) tb.getList().get(1)).getName());
 	}
 
 	@Test
 	public void testPropertyOverrideConfigurerWithInvalidKey() {
-		factory.registerBeanDefinition("tb1", genericBeanDefinition(TestBean.class).getBeanDefinition());
-		factory.registerBeanDefinition("tb2", genericBeanDefinition(TestBean.class).getBeanDefinition());
+		this.factory.registerBeanDefinition("tb1", genericBeanDefinition(TestBean.class).getBeanDefinition());
+		this.factory.registerBeanDefinition("tb2", genericBeanDefinition(TestBean.class).getBeanDefinition());
 
 		{
 			PropertyOverrideConfigurer poc = new PropertyOverrideConfigurer();
@@ -258,8 +258,8 @@ public class PropertyResourceConfigurerTests {
 			props.setProperty("tb2.nam", "test");
 			props.setProperty("tb3.name", "test");
 			poc.setProperties(props);
-			poc.postProcessBeanFactory(factory);
-			assertEquals("test", factory.getBean("tb2", TestBean.class).getName());
+			poc.postProcessBeanFactory(this.factory);
+			assertEquals("test", this.factory.getBean("tb2", TestBean.class).getName());
 		}
 		{
 			PropertyOverrideConfigurer poc = new PropertyOverrideConfigurer();
@@ -270,7 +270,7 @@ public class PropertyResourceConfigurerTests {
 			poc.setProperties(props);
 			poc.setOrder(0); // won't actually do anything since we're not processing through an app ctx
 			try {
-				poc.postProcessBeanFactory(factory);
+				poc.postProcessBeanFactory(this.factory);
 			}
 			catch (BeanInitializationException ex) {
 				// prove that the processor chokes on the invalid key
@@ -281,8 +281,8 @@ public class PropertyResourceConfigurerTests {
 
 	@Test
 	public void testPropertyOverrideConfigurerWithIgnoreInvalidKeys() {
-		factory.registerBeanDefinition("tb1", genericBeanDefinition(TestBean.class).getBeanDefinition());
-		factory.registerBeanDefinition("tb2", genericBeanDefinition(TestBean.class).getBeanDefinition());
+		this.factory.registerBeanDefinition("tb1", genericBeanDefinition(TestBean.class).getBeanDefinition());
+		this.factory.registerBeanDefinition("tb2", genericBeanDefinition(TestBean.class).getBeanDefinition());
 
 		{
 			PropertyOverrideConfigurer poc = new PropertyOverrideConfigurer();
@@ -291,7 +291,7 @@ public class PropertyResourceConfigurerTests {
 			props.setProperty("tb2.name", "test2");
 			poc.setProperties(props);
 			poc.setOrder(0); // won't actually do anything since we're not processing through an app ctx
-			poc.postProcessBeanFactory(factory);
+			poc.postProcessBeanFactory(this.factory);
 		}
 		{
 			PropertyOverrideConfigurer poc = new PropertyOverrideConfigurer();
@@ -301,11 +301,11 @@ public class PropertyResourceConfigurerTests {
 			props.setProperty("tb1.age", "99");
 			props.setProperty("tb2.name", "test");
 			poc.setProperties(props);
-			poc.postProcessBeanFactory(factory);
+			poc.postProcessBeanFactory(this.factory);
 		}
 
-		TestBean tb1 = (TestBean) factory.getBean("tb1");
-		TestBean tb2 = (TestBean) factory.getBean("tb2");
+		TestBean tb1 = (TestBean) this.factory.getBean("tb1");
+		TestBean tb2 = (TestBean) this.factory.getBean("tb2");
 		assertEquals(99, tb1.getAge());
 		assertEquals(99, tb2.getAge());
 		assertEquals(null, tb1.getName());
@@ -334,8 +334,8 @@ public class PropertyResourceConfigurerTests {
 			RootBeanDefinition parent = new RootBeanDefinition(TestBean.class);
 			parent.setPropertyValues(pvs1);
 			ChildBeanDefinition bd = new ChildBeanDefinition("${parent}", pvs2);
-			factory.registerBeanDefinition("parent1", parent);
-			factory.registerBeanDefinition("tb1", bd);
+			this.factory.registerBeanDefinition("parent1", parent);
+			this.factory.registerBeanDefinition("tb1", bd);
 		}
 		else {
 			MutablePropertyValues pvs = new MutablePropertyValues();
@@ -345,7 +345,7 @@ public class PropertyResourceConfigurerTests {
 			pvs.add("someMap", singletonMap);
 			RootBeanDefinition bd = new RootBeanDefinition(TestBean.class);
 			bd.setPropertyValues(pvs);
-			factory.registerBeanDefinition("tb1", bd);
+			this.factory.registerBeanDefinition("tb1", bd);
 		}
 
 		ConstructorArgumentValues cas = new ConstructorArgumentValues();
@@ -381,7 +381,7 @@ public class PropertyResourceConfigurerTests {
 		pvs.add("someMap", someMap);
 
 		RootBeanDefinition bd = new RootBeanDefinition(TestBean.class, cas, pvs);
-		factory.registerBeanDefinition("tb2", bd);
+		this.factory.registerBeanDefinition("tb2", bd);
 
 		PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
 		Properties props = new Properties();
@@ -392,10 +392,10 @@ public class PropertyResourceConfigurerTests {
 		props.setProperty("key4", "mykey4");
 		props.setProperty("parent", "parent1");
 		ppc.setProperties(props);
-		ppc.postProcessBeanFactory(factory);
+		ppc.postProcessBeanFactory(this.factory);
 
-		TestBean tb1 = (TestBean) factory.getBean("tb1");
-		TestBean tb2 = (TestBean) factory.getBean("tb2");
+		TestBean tb1 = (TestBean) this.factory.getBean("tb1");
+		TestBean tb2 = (TestBean) this.factory.getBean("tb2");
 		assertEquals(98, tb1.getAge());
 		assertEquals(98, tb2.getAge());
 		assertEquals("namemyvarmyvar${", tb1.getName());
@@ -430,34 +430,34 @@ public class PropertyResourceConfigurerTests {
 
 	@Test
 	public void testPropertyPlaceholderConfigurerWithSystemPropertyFallback() {
-		factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
+		this.factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
 				.addPropertyValue("country", "${os.name}").getBeanDefinition());
 
 		PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
-		ppc.postProcessBeanFactory(factory);
+		ppc.postProcessBeanFactory(this.factory);
 
-		TestBean tb = (TestBean) factory.getBean("tb");
+		TestBean tb = (TestBean) this.factory.getBean("tb");
 		assertEquals(System.getProperty("os.name"), tb.getCountry());
 	}
 
 	@Test
 	public void testPropertyPlaceholderConfigurerWithSystemPropertyNotUsed() {
-		factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
+		this.factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
 				.addPropertyValue("country", "${os.name}").getBeanDefinition());
 
 		PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
 		Properties props = new Properties();
 		props.setProperty("os.name", "myos");
 		ppc.setProperties(props);
-		ppc.postProcessBeanFactory(factory);
+		ppc.postProcessBeanFactory(this.factory);
 
-		TestBean tb = (TestBean) factory.getBean("tb");
+		TestBean tb = (TestBean) this.factory.getBean("tb");
 		assertEquals("myos", tb.getCountry());
 	}
 
 	@Test
 	public void testPropertyPlaceholderConfigurerWithOverridingSystemProperty() {
-		factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
+		this.factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
 				.addPropertyValue("country", "${os.name}").getBeanDefinition());
 
 		PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
@@ -465,22 +465,22 @@ public class PropertyResourceConfigurerTests {
 		props.put("os.name", "myos");
 		ppc.setProperties(props);
 		ppc.setSystemPropertiesMode(PropertyPlaceholderConfigurer.SYSTEM_PROPERTIES_MODE_OVERRIDE);
-		ppc.postProcessBeanFactory(factory);
+		ppc.postProcessBeanFactory(this.factory);
 
-		TestBean tb = (TestBean) factory.getBean("tb");
+		TestBean tb = (TestBean) this.factory.getBean("tb");
 		assertEquals(System.getProperty("os.name"), tb.getCountry());
 	}
 
 	@Test
 	public void testPropertyPlaceholderConfigurerWithUnresolvableSystemProperty() {
-		factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
+		this.factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
 				.addPropertyValue("touchy", "${user.dir}").getBeanDefinition());
 
 		PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
 		ppc.setSystemPropertiesMode(PropertyPlaceholderConfigurer.SYSTEM_PROPERTIES_MODE_NEVER);
 
 		try {
-			ppc.postProcessBeanFactory(factory);
+			ppc.postProcessBeanFactory(this.factory);
 			fail("Should have thrown BeanDefinitionStoreException");
 		}
 		catch (BeanDefinitionStoreException ex) {
@@ -491,13 +491,13 @@ public class PropertyResourceConfigurerTests {
 
 	@Test
 	public void testPropertyPlaceholderConfigurerWithUnresolvablePlaceholder() {
-		factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
+		this.factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
 				.addPropertyValue("name", "${ref}").getBeanDefinition());
 
 		PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
 
 		try {
-			ppc.postProcessBeanFactory(factory);
+			ppc.postProcessBeanFactory(this.factory);
 			fail("Should have thrown BeanDefinitionStoreException");
 		}
 		catch (BeanDefinitionStoreException ex) {
@@ -508,33 +508,33 @@ public class PropertyResourceConfigurerTests {
 
 	@Test
 	public void testPropertyPlaceholderConfigurerWithIgnoreUnresolvablePlaceholder() {
-		factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
+		this.factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
 				.addPropertyValue("name", "${ref}").getBeanDefinition());
 
 		PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
 		ppc.setIgnoreUnresolvablePlaceholders(true);
-		ppc.postProcessBeanFactory(factory);
+		ppc.postProcessBeanFactory(this.factory);
 
-		TestBean tb = (TestBean) factory.getBean("tb");
+		TestBean tb = (TestBean) this.factory.getBean("tb");
 		assertEquals("${ref}", tb.getName());
 	}
 
 	@Test
 	public void testPropertyPlaceholderConfigurerWithEmptyStringAsNull() {
-		factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
+		this.factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
 				.addPropertyValue("name", "").getBeanDefinition());
 
 		PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
 		ppc.setNullValue("");
-		ppc.postProcessBeanFactory(factory);
+		ppc.postProcessBeanFactory(this.factory);
 
-		TestBean tb = (TestBean) factory.getBean("tb");
+		TestBean tb = (TestBean) this.factory.getBean("tb");
 		assertNull(tb.getName());
 	}
 
 	@Test
 	public void testPropertyPlaceholderConfigurerWithEmptyStringInPlaceholderAsNull() {
-		factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
+		this.factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
 				.addPropertyValue("name", "${ref}").getBeanDefinition());
 
 		PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
@@ -542,15 +542,15 @@ public class PropertyResourceConfigurerTests {
 		Properties props = new Properties();
 		props.put("ref", "");
 		ppc.setProperties(props);
-		ppc.postProcessBeanFactory(factory);
+		ppc.postProcessBeanFactory(this.factory);
 
-		TestBean tb = (TestBean) factory.getBean("tb");
+		TestBean tb = (TestBean) this.factory.getBean("tb");
 		assertNull(tb.getName());
 	}
 
 	@Test
 	public void testPropertyPlaceholderConfigurerWithNestedPlaceholderInKey() {
-		factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
+		this.factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
 				.addPropertyValue("name", "${my${key}key}").getBeanDefinition());
 
 		PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
@@ -558,47 +558,47 @@ public class PropertyResourceConfigurerTests {
 		props.put("key", "new");
 		props.put("mynewkey", "myname");
 		ppc.setProperties(props);
-		ppc.postProcessBeanFactory(factory);
+		ppc.postProcessBeanFactory(this.factory);
 
-		TestBean tb = (TestBean) factory.getBean("tb");
+		TestBean tb = (TestBean) this.factory.getBean("tb");
 		assertEquals("myname", tb.getName());
 	}
 
 	@Test
 	public void testPropertyPlaceholderConfigurerWithPlaceholderInAlias() {
-		factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class).getBeanDefinition());
-		factory.registerAlias("tb", "${alias}");
+		this.factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class).getBeanDefinition());
+		this.factory.registerAlias("tb", "${alias}");
 
 		PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
 		Properties props = new Properties();
 		props.put("alias", "tb2");
 		ppc.setProperties(props);
-		ppc.postProcessBeanFactory(factory);
+		ppc.postProcessBeanFactory(this.factory);
 
-		TestBean tb = (TestBean) factory.getBean("tb");
-		TestBean tb2 = (TestBean) factory.getBean("tb2");
+		TestBean tb = (TestBean) this.factory.getBean("tb");
+		TestBean tb2 = (TestBean) this.factory.getBean("tb2");
 		assertSame(tb, tb2);
 	}
 
 	@Test
 	public void testPropertyPlaceholderConfigurerWithSelfReferencingPlaceholderInAlias() {
-		factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class).getBeanDefinition());
-		factory.registerAlias("tb", "${alias}");
+		this.factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class).getBeanDefinition());
+		this.factory.registerAlias("tb", "${alias}");
 
 		PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
 		Properties props = new Properties();
 		props.put("alias", "tb");
 		ppc.setProperties(props);
-		ppc.postProcessBeanFactory(factory);
+		ppc.postProcessBeanFactory(this.factory);
 
-		TestBean tb = (TestBean) factory.getBean("tb");
+		TestBean tb = (TestBean) this.factory.getBean("tb");
 		assertNotNull(tb);
-		assertEquals(0, factory.getAliases("tb").length);
+		assertEquals(0, this.factory.getAliases("tb").length);
 	}
 
 	@Test
 	public void testPropertyPlaceholderConfigurerWithCircularReference() {
-		factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
+		this.factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
 				.addPropertyValue("age", "${age}")
 				.addPropertyValue("name", "name${var}")
 				.getBeanDefinition());
@@ -611,7 +611,7 @@ public class PropertyResourceConfigurerTests {
 		ppc.setProperties(props);
 
 		try {
-			ppc.postProcessBeanFactory(factory);
+			ppc.postProcessBeanFactory(this.factory);
 			fail("Should have thrown BeanDefinitionStoreException");
 		}
 		catch (BeanDefinitionStoreException ex) {
@@ -621,38 +621,38 @@ public class PropertyResourceConfigurerTests {
 
 	@Test
 	public void testPropertyPlaceholderConfigurerWithDefaultProperties() {
-		factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
+		this.factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
 				.addPropertyValue("touchy", "${test}").getBeanDefinition());
 
 		PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
 		Properties props = new Properties();
 		props.put("test", "mytest");
 		ppc.setProperties(props);
-		ppc.postProcessBeanFactory(factory);
+		ppc.postProcessBeanFactory(this.factory);
 
-		TestBean tb = (TestBean) factory.getBean("tb");
+		TestBean tb = (TestBean) this.factory.getBean("tb");
 		assertEquals("mytest", tb.getTouchy());
 	}
 
 	@Test
 	public void testPropertyPlaceholderConfigurerWithInlineDefault() {
-		factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
+		this.factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
 				.addPropertyValue("touchy", "${test:mytest}").getBeanDefinition());
 
 		PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
-		ppc.postProcessBeanFactory(factory);
+		ppc.postProcessBeanFactory(this.factory);
 
-		TestBean tb = (TestBean) factory.getBean("tb");
+		TestBean tb = (TestBean) this.factory.getBean("tb");
 		assertEquals("mytest", tb.getTouchy());
 	}
 
 	@Test
 	public void testPropertyPlaceholderConfigurerWithAliases() {
-		factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
+		this.factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
 				.addPropertyValue("touchy", "${test}").getBeanDefinition());
 
-		factory.registerAlias("tb", "${myAlias}");
-		factory.registerAlias("${myTarget}", "alias2");
+		this.factory.registerAlias("tb", "${myAlias}");
+		this.factory.registerAlias("${myTarget}", "alias2");
 
 		PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
 		Properties props = new Properties();
@@ -660,19 +660,19 @@ public class PropertyResourceConfigurerTests {
 		props.put("myAlias", "alias");
 		props.put("myTarget", "tb");
 		ppc.setProperties(props);
-		ppc.postProcessBeanFactory(factory);
+		ppc.postProcessBeanFactory(this.factory);
 
-		TestBean tb = (TestBean) factory.getBean("tb");
+		TestBean tb = (TestBean) this.factory.getBean("tb");
 		assertEquals("mytest", tb.getTouchy());
-		tb = (TestBean) factory.getBean("alias");
+		tb = (TestBean) this.factory.getBean("alias");
 		assertEquals("mytest", tb.getTouchy());
-		tb = (TestBean) factory.getBean("alias2");
+		tb = (TestBean) this.factory.getBean("alias2");
 		assertEquals("mytest", tb.getTouchy());
 	}
 
 	@Test
 	public void testPreferencesPlaceholderConfigurer() {
-		factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
+		this.factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
 				.addPropertyValue("name", "${myName}")
 				.addPropertyValue("age", "${myAge}")
 				.addPropertyValue("touchy", "${myTouchy}")
@@ -686,9 +686,9 @@ public class PropertyResourceConfigurerTests {
 		Preferences.systemRoot().put("myTouchy", "myTouchyValue");
 		Preferences.userRoot().put("myTouchy", "myOtherTouchyValue");
 		ppc.afterPropertiesSet();
-		ppc.postProcessBeanFactory(factory);
+		ppc.postProcessBeanFactory(this.factory);
 
-		TestBean tb = (TestBean) factory.getBean("tb");
+		TestBean tb = (TestBean) this.factory.getBean("tb");
 		assertEquals("myNameValue", tb.getName());
 		assertEquals(99, tb.getAge());
 		assertEquals("myOtherTouchyValue", tb.getTouchy());
@@ -699,7 +699,7 @@ public class PropertyResourceConfigurerTests {
 
 	@Test
 	public void testPreferencesPlaceholderConfigurerWithCustomTreePaths() {
-		factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
+		this.factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
 				.addPropertyValue("name", "${myName}")
 				.addPropertyValue("age", "${myAge}")
 				.addPropertyValue("touchy", "${myTouchy}")
@@ -715,9 +715,9 @@ public class PropertyResourceConfigurerTests {
 		Preferences.systemRoot().node("mySystemPath").put("myTouchy", "myTouchyValue");
 		Preferences.userRoot().node("myUserPath").put("myTouchy", "myOtherTouchyValue");
 		ppc.afterPropertiesSet();
-		ppc.postProcessBeanFactory(factory);
+		ppc.postProcessBeanFactory(this.factory);
 
-		TestBean tb = (TestBean) factory.getBean("tb");
+		TestBean tb = (TestBean) this.factory.getBean("tb");
 		assertEquals("myNameValue", tb.getName());
 		assertEquals(99, tb.getAge());
 		assertEquals("myOtherTouchyValue", tb.getTouchy());
@@ -728,7 +728,7 @@ public class PropertyResourceConfigurerTests {
 
 	@Test
 	public void testPreferencesPlaceholderConfigurerWithPathInPlaceholder() {
-		factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
+		this.factory.registerBeanDefinition("tb", genericBeanDefinition(TestBean.class)
 				.addPropertyValue("name", "${mypath/myName}")
 				.addPropertyValue("age", "${myAge}")
 				.addPropertyValue("touchy", "${myotherpath/myTouchy}")
@@ -744,9 +744,9 @@ public class PropertyResourceConfigurerTests {
 		Preferences.systemRoot().node("mySystemPath/myotherpath").put("myTouchy", "myTouchyValue");
 		Preferences.userRoot().node("myUserPath/myotherpath").put("myTouchy", "myOtherTouchyValue");
 		ppc.afterPropertiesSet();
-		ppc.postProcessBeanFactory(factory);
+		ppc.postProcessBeanFactory(this.factory);
 
-		TestBean tb = (TestBean) factory.getBean("tb");
+		TestBean tb = (TestBean) this.factory.getBean("tb");
 		assertEquals("myNameValue", tb.getName());
 		assertEquals(99, tb.getAge());
 		assertEquals("myOtherTouchyValue", tb.getTouchy());
@@ -761,7 +761,7 @@ public class PropertyResourceConfigurerTests {
 		private Properties props = new Properties();
 
 		public Properties getHeldProperties() {
-			return props;
+			return this.props;
 		}
 
 		public void setHeldProperties(Properties props) {

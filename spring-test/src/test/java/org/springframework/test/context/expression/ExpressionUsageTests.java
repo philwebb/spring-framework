@@ -52,18 +52,18 @@ public class ExpressionUsageTests {
 	@Test
 	public void testSpr5906() throws Exception {
 		// verify the property values have been evaluated as expressions
-		assertEquals("Dave", props.getProperty("user.name"));
-		assertEquals("Andy", props.getProperty("username"));
+		assertEquals("Dave", this.props.getProperty("user.name"));
+		assertEquals("Andy", this.props.getProperty("username"));
 
 		// verify the property keys have been evaluated as expressions
-		assertEquals("exists", props.getProperty("Dave"));
-		assertEquals("exists also", props.getProperty("Andy"));
+		assertEquals("exists", this.props.getProperty("Dave"));
+		assertEquals("exists also", this.props.getProperty("Andy"));
 	}
 
 	@Test
 	public void testSpr5847() throws Exception {
-		assertEquals("Andy", andy2.getName());
-		assertEquals("Andy", andy.getName());
+		assertEquals("Andy", this.andy2.getName());
+		assertEquals("Andy", this.andy.getName());
 	}
 
 
@@ -73,7 +73,7 @@ public class ExpressionUsageTests {
 
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String name) {

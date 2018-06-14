@@ -56,9 +56,9 @@ public class AspectJExpressionPointcutTests {
 
 	@Before
 	public void setUp() throws NoSuchMethodException {
-		getAge = TestBean.class.getMethod("getAge");
-		setAge = TestBean.class.getMethod("setAge", int.class);
-		setSomeNumber = TestBean.class.getMethod("setSomeNumber", Number.class);
+		this.getAge = TestBean.class.getMethod("getAge");
+		this.setAge = TestBean.class.getMethod("setAge", int.class);
+		this.setSomeNumber = TestBean.class.getMethod("setSomeNumber", Number.class);
 	}
 
 
@@ -77,7 +77,7 @@ public class AspectJExpressionPointcutTests {
 
 		assertFalse("Should not be a runtime match", methodMatcher.isRuntime());
 		assertMatchesGetAge(methodMatcher);
-		assertFalse("Expression should match setAge() method", methodMatcher.matches(setAge, TestBean.class));
+		assertFalse("Expression should match setAge() method", methodMatcher.matches(this.setAge, TestBean.class));
 	}
 
 	@Test
@@ -95,7 +95,7 @@ public class AspectJExpressionPointcutTests {
 
 		assertFalse("Should not be a runtime match", methodMatcher.isRuntime());
 		assertMatchesGetAge(methodMatcher);
-		assertTrue("Expression should match setAge(int) method", methodMatcher.matches(setAge, TestBean.class));
+		assertTrue("Expression should match setAge(int) method", methodMatcher.matches(this.setAge, TestBean.class));
 	}
 
 
@@ -123,7 +123,7 @@ public class AspectJExpressionPointcutTests {
 		iOtherPc.setExpression(matchesIOther);
 
 		assertTrue(testBeanPc.matches(TestBean.class));
-		assertTrue(testBeanPc.matches(getAge, TestBean.class));
+		assertTrue(testBeanPc.matches(this.getAge, TestBean.class));
 		assertTrue(iOtherPc.matches(OtherIOther.class.getMethod("absquatulate"), OtherIOther.class));
 		assertFalse(testBeanPc.matches(OtherIOther.class.getMethod("absquatulate"), OtherIOther.class));
 	}
@@ -149,7 +149,7 @@ public class AspectJExpressionPointcutTests {
 		withinBeansPc.setExpression(withinBeansPackage);
 
 		assertTrue(withinBeansPc.matches(TestBean.class));
-		assertTrue(withinBeansPc.matches(getAge, TestBean.class));
+		assertTrue(withinBeansPc.matches(this.getAge, TestBean.class));
 		assertEquals(matchSubpackages, withinBeansPc.matches(DeepBean.class));
 		assertEquals(matchSubpackages, withinBeansPc.matches(
 				DeepBean.class.getMethod("aMethod", String.class), DeepBean.class));
@@ -173,7 +173,7 @@ public class AspectJExpressionPointcutTests {
 	public void testFriendlyErrorOnNoLocation2ArgMatching() {
 		AspectJExpressionPointcut pc = new AspectJExpressionPointcut();
 		try {
-			pc.matches(getAge, ITestBean.class);
+			pc.matches(this.getAge, ITestBean.class);
 			fail();
 		}
 		catch (IllegalStateException ex) {
@@ -185,7 +185,7 @@ public class AspectJExpressionPointcutTests {
 	public void testFriendlyErrorOnNoLocation3ArgMatching() {
 		AspectJExpressionPointcut pc = new AspectJExpressionPointcut();
 		try {
-			pc.matches(getAge, ITestBean.class, (Object[]) null);
+			pc.matches(this.getAge, ITestBean.class, (Object[]) null);
 			fail();
 		}
 		catch (IllegalStateException ex) {
@@ -208,10 +208,10 @@ public class AspectJExpressionPointcutTests {
 		//assertDoesNotMatchStringClass(classFilter);
 
 		assertTrue("Should match with setSomeNumber with Double input",
-				methodMatcher.matches(setSomeNumber, TestBean.class, new Double(12)));
+				methodMatcher.matches(this.setSomeNumber, TestBean.class, new Double(12)));
 		assertFalse("Should not match setSomeNumber with Integer input",
-				methodMatcher.matches(setSomeNumber, TestBean.class, new Integer(11)));
-		assertFalse("Should not match getAge", methodMatcher.matches(getAge, TestBean.class));
+				methodMatcher.matches(this.setSomeNumber, TestBean.class, new Integer(11)));
+		assertFalse("Should not match getAge", methodMatcher.matches(this.getAge, TestBean.class));
 		assertTrue("Should be a runtime match", methodMatcher.isRuntime());
 	}
 
@@ -272,7 +272,7 @@ public class AspectJExpressionPointcutTests {
 	}
 
 	private void assertMatchesGetAge(MethodMatcher methodMatcher) {
-		assertTrue("Expression should match getAge() method", methodMatcher.matches(getAge, TestBean.class));
+		assertTrue("Expression should match getAge() method", methodMatcher.matches(this.getAge, TestBean.class));
 	}
 
 	private void assertMatchesTestBeanClass(ClassFilter classFilter) {
@@ -330,12 +330,12 @@ class CallCountingInterceptor implements MethodInterceptor {
 
 	@Override
 	public Object invoke(MethodInvocation methodInvocation) throws Throwable {
-		count++;
+		this.count++;
 		return methodInvocation.proceed();
 	}
 
 	public int getCount() {
-		return count;
+		return this.count;
 	}
 
 	public void reset() {

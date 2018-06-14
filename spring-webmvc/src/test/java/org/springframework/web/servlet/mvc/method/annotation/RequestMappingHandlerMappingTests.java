@@ -63,7 +63,7 @@ public class RequestMappingHandlerMappingTests {
 
 	private final RequestMappingHandlerMapping handlerMapping = new RequestMappingHandlerMapping();
 	{
-		this.handlerMapping.setApplicationContext(wac);
+		this.handlerMapping.setApplicationContext(this.wac);
 	}
 
 
@@ -101,12 +101,12 @@ public class RequestMappingHandlerMappingTests {
 			}
 		};
 
-		wac.registerSingleton("testController", ComposedAnnotationController.class);
-		wac.refresh();
+		this.wac.registerSingleton("testController", ComposedAnnotationController.class);
+		this.wac.refresh();
 
 		hm.setContentNegotiationManager(manager);
 		hm.setUseRegisteredSuffixPatternMatch(true);
-		hm.setApplicationContext(wac);
+		hm.setApplicationContext(this.wac);
 		hm.afterPropertiesSet();
 
 		assertEquals(Collections.singleton("json"), extensions);

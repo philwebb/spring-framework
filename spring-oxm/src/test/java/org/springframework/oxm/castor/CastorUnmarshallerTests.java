@@ -118,50 +118,50 @@ public class CastorUnmarshallerTests extends AbstractUnmarshallerTests<CastorMar
 
 	@Test
 	public void whitespacePreserveTrue() throws Exception {
-		unmarshaller.setWhitespacePreserve(true);
+		this.unmarshaller.setWhitespacePreserve(true);
 		Object result = unmarshalFlights();
 		testFlights(result);
 	}
 
 	@Test
 	public void whitespacePreserveFalse() throws Exception {
-		unmarshaller.setWhitespacePreserve(false);
+		this.unmarshaller.setWhitespacePreserve(false);
 		Object result = unmarshalFlights();
 		testFlights(result);
 	}
 
 	@Test
 	public void ignoreExtraAttributesTrue() throws Exception {
-		unmarshaller.setIgnoreExtraAttributes(true);
+		this.unmarshaller.setIgnoreExtraAttributes(true);
 		Object result = unmarshal(EXTRA_ATTRIBUTES_STRING);
 		testFlights(result);
 	}
 
 	@Test(expected = MarshallingException.class)
 	public void ignoreExtraAttributesFalse() throws Exception {
-		unmarshaller.setIgnoreExtraAttributes(false);
+		this.unmarshaller.setIgnoreExtraAttributes(false);
 		unmarshal(EXTRA_ATTRIBUTES_STRING);
 	}
 
 	@Test
 	@Ignore("Not working yet")
 	public void ignoreExtraElementsTrue() throws Exception {
-		unmarshaller.setIgnoreExtraElements(true);
-		unmarshaller.setValidating(false);
+		this.unmarshaller.setIgnoreExtraElements(true);
+		this.unmarshaller.setValidating(false);
 		Object result = unmarshal(EXTRA_ELEMENTS_STRING);
 		testFlights(result);
 	}
 
 	@Test(expected = MarshallingException.class)
 	public void ignoreExtraElementsFalse() throws Exception {
-		unmarshaller.setIgnoreExtraElements(false);
+		this.unmarshaller.setIgnoreExtraElements(false);
 		unmarshal(EXTRA_ELEMENTS_STRING);
 	}
 
 	@Test
 	public void rootObject() throws Exception {
 		Flights flights = new Flights();
-		unmarshaller.setRootObject(flights);
+		this.unmarshaller.setRootObject(flights);
 		Object result = unmarshalFlights();
 		testFlights(result);
 		assertSame("Result Flights is different object.", flights, result);
@@ -171,8 +171,8 @@ public class CastorUnmarshallerTests extends AbstractUnmarshallerTests<CastorMar
 	public void clearCollectionsTrue() throws Exception {
 		Flights flights = new Flights();
 		flights.setFlight(new Flight[]{new Flight()});
-		unmarshaller.setRootObject(flights);
-		unmarshaller.setClearCollections(true);
+		this.unmarshaller.setRootObject(flights);
+		this.unmarshaller.setClearCollections(true);
 		Object result = unmarshalFlights();
 
 		assertSame("Result Flights is different object.", flights, result);
@@ -184,8 +184,8 @@ public class CastorUnmarshallerTests extends AbstractUnmarshallerTests<CastorMar
 	public void clearCollectionsFalse() throws Exception {
 		Flights flights = new Flights();
 		flights.setFlight(new Flight[] {new Flight(), null});
-		unmarshaller.setRootObject(flights);
-		unmarshaller.setClearCollections(false);
+		this.unmarshaller.setRootObject(flights);
+		this.unmarshaller.setClearCollections(false);
 		Object result = unmarshalFlights();
 
 		assertSame("Result Flights is different object.", flights, result);
@@ -254,7 +254,7 @@ public class CastorUnmarshallerTests extends AbstractUnmarshallerTests<CastorMar
 
 	private Object unmarshal(String xml) throws Exception {
 		StreamSource source = new StreamSource(new StringReader(xml));
-		return unmarshaller.unmarshal(source);
+		return this.unmarshaller.unmarshal(source);
 	}
 
 }

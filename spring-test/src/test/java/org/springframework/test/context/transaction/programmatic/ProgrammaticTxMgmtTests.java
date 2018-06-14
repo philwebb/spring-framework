@@ -88,7 +88,7 @@ public class ProgrammaticTxMgmtTests {
 
 	@AfterTransaction
 	public void afterTransaction() {
-		String method = testName.getMethodName();
+		String method = this.testName.getMethodName();
 		switch (method) {
 			case "commitTxAndStartNewTx":
 			case "commitTxButDoNotStartNewTx": {
@@ -272,13 +272,13 @@ public class ProgrammaticTxMgmtTests {
 
 	protected void executeSqlScript(String sqlResourcePath, boolean continueOnError) throws DataAccessException {
 		Resource resource = this.applicationContext.getResource(sqlResourcePath);
-		new ResourceDatabasePopulator(continueOnError, false, this.sqlScriptEncoding, resource).execute(jdbcTemplate.getDataSource());
+		new ResourceDatabasePopulator(continueOnError, false, this.sqlScriptEncoding, resource).execute(this.jdbcTemplate.getDataSource());
 	}
 
 	private void assertUsers(String... users) {
 		List<String> expected = Arrays.asList(users);
 		Collections.sort(expected);
-		List<String> actual = jdbcTemplate.queryForList("select name from user", String.class);
+		List<String> actual = this.jdbcTemplate.queryForList("select name from user", String.class);
 		Collections.sort(actual);
 		assertEquals("Users in database;", expected, actual);
 	}

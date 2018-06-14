@@ -102,25 +102,25 @@ public class ProxyFactoryBeanTests {
 
 	@Test
 	public void testIsDynamicProxyWhenInterfaceSpecified() {
-		ITestBean test1 = (ITestBean) factory.getBean("test1");
+		ITestBean test1 = (ITestBean) this.factory.getBean("test1");
 		assertTrue("test1 is a dynamic proxy", Proxy.isProxyClass(test1.getClass()));
 	}
 
 	@Test
 	public void testIsDynamicProxyWhenInterfaceSpecifiedForPrototype() {
-		ITestBean test1 = (ITestBean) factory.getBean("test2");
+		ITestBean test1 = (ITestBean) this.factory.getBean("test2");
 		assertTrue("test2 is a dynamic proxy", Proxy.isProxyClass(test1.getClass()));
 	}
 
 	@Test
 	public void testIsDynamicProxyWhenAutodetectingInterfaces() {
-		ITestBean test1 = (ITestBean) factory.getBean("test3");
+		ITestBean test1 = (ITestBean) this.factory.getBean("test3");
 		assertTrue("test3 is a dynamic proxy", Proxy.isProxyClass(test1.getClass()));
 	}
 
 	@Test
 	public void testIsDynamicProxyWhenAutodetectingInterfacesForPrototype() {
-		ITestBean test1 = (ITestBean) factory.getBean("test4");
+		ITestBean test1 = (ITestBean) this.factory.getBean("test4");
 		assertTrue("test4 is a dynamic proxy", Proxy.isProxyClass(test1.getClass()));
 	}
 
@@ -214,8 +214,8 @@ public class ProxyFactoryBeanTests {
 	 */
 	@Test
 	public void testSingletonInstancesAreEqual() {
-		ITestBean test1 = (ITestBean) factory.getBean("test1");
-		ITestBean test1_1 = (ITestBean) factory.getBean("test1");
+		ITestBean test1 = (ITestBean) this.factory.getBean("test1");
+		ITestBean test1_1 = (ITestBean) this.factory.getBean("test1");
 		//assertTrue("Singleton instances ==", test1 == test1_1);
 		assertEquals("Singleton instances ==", test1, test1_1);
 		test1.setAge(25);
@@ -238,12 +238,12 @@ public class ProxyFactoryBeanTests {
 
 	@Test
 	public void testPrototypeInstancesAreNotEqual() {
-		assertTrue("Has correct object type", ITestBean.class.isAssignableFrom(factory.getType("prototype")));
-		ITestBean test2 = (ITestBean) factory.getBean("prototype");
-		ITestBean test2_1 = (ITestBean) factory.getBean("prototype");
+		assertTrue("Has correct object type", ITestBean.class.isAssignableFrom(this.factory.getType("prototype")));
+		ITestBean test2 = (ITestBean) this.factory.getBean("prototype");
+		ITestBean test2_1 = (ITestBean) this.factory.getBean("prototype");
 		assertTrue("Prototype instances !=", test2 != test2_1);
 		assertTrue("Prototype instances equal", test2.equals(test2_1));
-		assertTrue("Has correct object type", ITestBean.class.isAssignableFrom(factory.getType("prototype")));
+		assertTrue("Has correct object type", ITestBean.class.isAssignableFrom(this.factory.getType("prototype")));
 	}
 
 	/**
@@ -293,24 +293,24 @@ public class ProxyFactoryBeanTests {
 	@Test
 	public void testAutoInvoker() {
 		String name = "Hieronymous";
-		TestBean target = (TestBean) factory.getBean("test");
+		TestBean target = (TestBean) this.factory.getBean("test");
 		target.setName(name);
-		ITestBean autoInvoker = (ITestBean) factory.getBean("autoInvoker");
+		ITestBean autoInvoker = (ITestBean) this.factory.getBean("autoInvoker");
 		assertTrue(autoInvoker.getName().equals(name));
 	}
 
 	@Test
 	public void testCanGetFactoryReferenceAndManipulate() {
-		ProxyFactoryBean config = (ProxyFactoryBean) factory.getBean("&test1");
+		ProxyFactoryBean config = (ProxyFactoryBean) this.factory.getBean("&test1");
 		assertTrue("Has correct object type", ITestBean.class.isAssignableFrom(config.getObjectType()));
-		assertTrue("Has correct object type", ITestBean.class.isAssignableFrom(factory.getType("test1")));
+		assertTrue("Has correct object type", ITestBean.class.isAssignableFrom(this.factory.getType("test1")));
 		// Trigger lazy initialization.
 		config.getObject();
 		assertEquals("Have one advisors", 1, config.getAdvisors().length);
 		assertTrue("Has correct object type", ITestBean.class.isAssignableFrom(config.getObjectType()));
-		assertTrue("Has correct object type", ITestBean.class.isAssignableFrom(factory.getType("test1")));
+		assertTrue("Has correct object type", ITestBean.class.isAssignableFrom(this.factory.getType("test1")));
 
-		ITestBean tb = (ITestBean) factory.getBean("test1");
+		ITestBean tb = (ITestBean) this.factory.getBean("test1");
 		// no exception
 		tb.hashCode();
 
@@ -324,7 +324,7 @@ public class ProxyFactoryBeanTests {
 		});
 		assertEquals("Have correct advisor count", 2, config.getAdvisors().length);
 
-		tb = (ITestBean) factory.getBean("test1");
+		tb = (ITestBean) this.factory.getBean("test1");
 		try {
 			// Will fail now
 			tb.toString();
@@ -358,9 +358,9 @@ public class ProxyFactoryBeanTests {
 	@Test
 	public void testCanAddAndRemoveAspectInterfacesOnPrototype() {
 		assertThat("Shouldn't implement TimeStamped before manipulation",
-				factory.getBean("test2"), not(instanceOf(TimeStamped.class)));
+				this.factory.getBean("test2"), not(instanceOf(TimeStamped.class)));
 
-		ProxyFactoryBean config = (ProxyFactoryBean) factory.getBean("&test2");
+		ProxyFactoryBean config = (ProxyFactoryBean) this.factory.getBean("&test2");
 		long time = 666L;
 		TimestampIntroductionInterceptor ti = new TimestampIntroductionInterceptor();
 		ti.setTime(time);
@@ -369,7 +369,7 @@ public class ProxyFactoryBeanTests {
 		config.addAdvisor(0, new DefaultIntroductionAdvisor(ti, TimeStamped.class));
 		assertTrue(config.getAdvisors().length == oldCount + 1);
 
-		TimeStamped ts = (TimeStamped) factory.getBean("test2");
+		TimeStamped ts = (TimeStamped) this.factory.getBean("test2");
 		assertEquals(time, ts.getTimeStamp());
 
 		// Can remove
@@ -380,7 +380,7 @@ public class ProxyFactoryBeanTests {
 		assertTrue(ts.getTimeStamp() == time);
 
 		assertThat("Should no longer implement TimeStamped",
-				factory.getBean("test2"), not(instanceOf(TimeStamped.class)));
+				this.factory.getBean("test2"), not(instanceOf(TimeStamped.class)));
 
 		// Now check non-effect of removing interceptor that isn't there
 		config.removeAdvice(new DebugInterceptor());
@@ -392,7 +392,7 @@ public class ProxyFactoryBeanTests {
 		it.getSpouse();
 		// Won't affect existing reference
 		assertTrue(debugInterceptor.getCount() == 0);
-		it = (ITestBean) factory.getBean("test2");
+		it = (ITestBean) this.factory.getBean("test2");
 		it.getSpouse();
 		assertEquals(1, debugInterceptor.getCount());
 		config.removeAdvice(debugInterceptor);
@@ -402,7 +402,7 @@ public class ProxyFactoryBeanTests {
 		assertEquals(2, debugInterceptor.getCount());
 
 		// not invoked with new object
-		it = (ITestBean) factory.getBean("test2");
+		it = (ITestBean) this.factory.getBean("test2");
 		it.getSpouse();
 		assertEquals(2, debugInterceptor.getCount());
 
@@ -416,7 +416,7 @@ public class ProxyFactoryBeanTests {
 	 */
 	@Test
 	public void testCanAddAndRemoveAdvicesOnSingleton() {
-		ITestBean it = (ITestBean) factory.getBean("test1");
+		ITestBean it = (ITestBean) this.factory.getBean("test1");
 		Advised pc = (Advised) it;
 		it.getAge();
 		NopInterceptor di = new NopInterceptor();
@@ -429,7 +429,7 @@ public class ProxyFactoryBeanTests {
 
 	@Test
 	public void testMethodPointcuts() {
-		ITestBean tb = (ITestBean) factory.getBean("pointcuts");
+		ITestBean tb = (ITestBean) this.factory.getBean("pointcuts");
 		PointcutForVoid.reset();
 		assertTrue("No methods intercepted", PointcutForVoid.methodNames.isEmpty());
 		tb.getAge();
@@ -538,21 +538,21 @@ public class ProxyFactoryBeanTests {
 	 */
 	@Test
 	public void testGlobalsCanAddAspectInterfaces() {
-		AddedGlobalInterface agi = (AddedGlobalInterface) factory.getBean("autoInvoker");
+		AddedGlobalInterface agi = (AddedGlobalInterface) this.factory.getBean("autoInvoker");
 		assertTrue(agi.globalsAdded() == -1);
 
-		ProxyFactoryBean pfb = (ProxyFactoryBean) factory.getBean("&validGlobals");
+		ProxyFactoryBean pfb = (ProxyFactoryBean) this.factory.getBean("&validGlobals");
 		// Trigger lazy initialization.
 		pfb.getObject();
 		// 2 globals + 2 explicit
 		assertEquals("Have 2 globals and 2 explicit advisors", 3, pfb.getAdvisors().length);
 
-		ApplicationListener<?> l = (ApplicationListener<?>) factory.getBean("validGlobals");
+		ApplicationListener<?> l = (ApplicationListener<?>) this.factory.getBean("validGlobals");
 		agi = (AddedGlobalInterface) l;
 		assertTrue(agi.globalsAdded() == -1);
 
 		try {
-			agi = (AddedGlobalInterface) factory.getBean("test1");
+			agi = (AddedGlobalInterface) this.factory.getBean("test1");
 			fail("Aspect interface should't be implemeneted without globals");
 		}
 		catch (ClassCastException ex) {

@@ -40,28 +40,28 @@ public class XMLEventStreamWriterTests {
 
 	@Before
 	public void createStreamReader() throws Exception {
-		stringWriter = new StringWriter();
+		this.stringWriter = new StringWriter();
 		XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
-		XMLEventWriter eventWriter = outputFactory.createXMLEventWriter(stringWriter);
-		streamWriter = new XMLEventStreamWriter(eventWriter, XMLEventFactory.newInstance());
+		XMLEventWriter eventWriter = outputFactory.createXMLEventWriter(this.stringWriter);
+		this.streamWriter = new XMLEventStreamWriter(eventWriter, XMLEventFactory.newInstance());
 	}
 
 	@Test
 	public void write() throws Exception {
-		streamWriter.writeStartDocument();
-		streamWriter.writeProcessingInstruction("pi", "content");
-		streamWriter.writeStartElement("namespace", "root");
-		streamWriter.writeDefaultNamespace("namespace");
-		streamWriter.writeStartElement("prefix", "child", "namespace2");
-		streamWriter.writeNamespace("prefix", "namespace2");
-		streamWriter.writeComment("comment");
-		streamWriter.writeCharacters("content");
-		streamWriter.writeEndElement();
-		streamWriter.writeEndElement();
-		streamWriter.writeEndDocument();
+		this.streamWriter.writeStartDocument();
+		this.streamWriter.writeProcessingInstruction("pi", "content");
+		this.streamWriter.writeStartElement("namespace", "root");
+		this.streamWriter.writeDefaultNamespace("namespace");
+		this.streamWriter.writeStartElement("prefix", "child", "namespace2");
+		this.streamWriter.writeNamespace("prefix", "namespace2");
+		this.streamWriter.writeComment("comment");
+		this.streamWriter.writeCharacters("content");
+		this.streamWriter.writeEndElement();
+		this.streamWriter.writeEndElement();
+		this.streamWriter.writeEndDocument();
 
 		Predicate<Node> nodeFilter = n -> n.getNodeType() != Node.DOCUMENT_TYPE_NODE && n.getNodeType() != Node.PROCESSING_INSTRUCTION_NODE;
-		assertThat(stringWriter.toString(), isSimilarTo(XML).withNodeFilter(nodeFilter));
+		assertThat(this.stringWriter.toString(), isSimilarTo(XML).withNodeFilter(nodeFilter));
 	}
 
 

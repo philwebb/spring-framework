@@ -33,11 +33,11 @@ public class SimpleRowCountCallbackHandler implements RowCallbackHandler {
 
 	@Override
 	public void processRow(ResultSet rs) throws SQLException {
-		count++;
+		this.count++;
 	}
 
 	public int getCount() {
-		return count;
+		return this.count;
 	}
 
 }

@@ -50,7 +50,7 @@ public class InlinedPropertiesOverridePropertiesFilesTestPropertySourceTests {
 
 	@Test
 	public void inlinedPropertyOverridesValueFromPropertiesFile() {
-		assertEquals("inlined", env.getProperty("explicit"));
+		assertEquals("inlined", this.env.getProperty("explicit"));
 		assertEquals("inlined", this.explicit);
 	}
 

@@ -169,7 +169,7 @@ public class BeanFactoryPostProcessorTests {
 
 		@Override
 		public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
-			wasCalled = true;
+			this.wasCalled = true;
 		}
 	}
 
@@ -270,7 +270,7 @@ public class BeanFactoryPostProcessorTests {
 		}
 
 		public ListeningBean getListeningBean() {
-			return listeningBean;
+			return this.listeningBean;
 		}
 
 		@Override

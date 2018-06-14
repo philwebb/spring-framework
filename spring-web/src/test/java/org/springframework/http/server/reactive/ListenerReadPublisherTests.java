@@ -63,7 +63,7 @@ public class ListenerReadPublisherTests {
 
 		@Override
 		protected DataBuffer read() throws IOException {
-			readCalls++;
+			this.readCalls++;
 			return mock(DataBuffer.class);
 		}
 

@@ -40,7 +40,7 @@ public class StompEncoderTests {
 		StompHeaderAccessor headers = StompHeaderAccessor.create(StompCommand.DISCONNECT);
 		Message<byte[]> frame = MessageBuilder.createMessage(new byte[0], headers.getMessageHeaders());
 
-		assertEquals("DISCONNECT\n\n\0", new String(encoder.encode(frame)));
+		assertEquals("DISCONNECT\n\n\0", new String(this.encoder.encode(frame)));
 	}
 
 	@Test
@@ -49,7 +49,7 @@ public class StompEncoderTests {
 		headers.setAcceptVersion("1.2");
 		headers.setHost("github.org");
 		Message<byte[]> frame = MessageBuilder.createMessage(new byte[0], headers.getMessageHeaders());
-		String frameString = new String(encoder.encode(frame));
+		String frameString = new String(this.encoder.encode(frame));
 
 		assertTrue(
 				"CONNECT\naccept-version:1.2\nhost:github.org\n\n\0".equals(frameString) ||
@@ -63,7 +63,7 @@ public class StompEncoderTests {
 		Message<byte[]> frame = MessageBuilder.createMessage(new byte[0], headers.getMessageHeaders());
 
 		assertEquals("DISCONNECT\na\\c\\r\\n\\\\b:alpha\\cbravo\\r\\n\\\\\n\n\0",
-				new String(encoder.encode(frame)));
+				new String(this.encoder.encode(frame)));
 	}
 
 	@Test
@@ -74,7 +74,7 @@ public class StompEncoderTests {
 				"Message body".getBytes(), headers.getMessageHeaders());
 
 		assertEquals("SEND\na:alpha\ncontent-length:12\n\nMessage body\0",
-				new String(encoder.encode(frame)));
+				new String(this.encoder.encode(frame)));
 	}
 
 	@Test
@@ -85,7 +85,7 @@ public class StompEncoderTests {
 				"Message body".getBytes(), headers.getMessageHeaders());
 
 		assertEquals("SEND\ncontent-length:12\n\nMessage body\0",
-				new String(encoder.encode(frame)));
+				new String(this.encoder.encode(frame)));
 	}
 
 }

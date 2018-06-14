@@ -340,10 +340,10 @@ public class CommonsMultipartResolverTests {
 					FilterChain filterChain) throws ServletException, IOException {
 				super.doFilterInternal(request, response, filterChain);
 				super.doFilterInternal(request, response, filterChain);
-				if (invoked) {
+				if (this.invoked) {
 					throw new ServletException("Should not have been invoked twice");
 				}
-				invoked = true;
+				this.invoked = true;
 			}
 		};
 		filter.init(filterConfig);
@@ -379,13 +379,13 @@ public class CommonsMultipartResolverTests {
 					}
 					List<FileItem> fileItems = new ArrayList<>();
 					MockFileItem fileItem1 = new MockFileItem(
-						"field1", "type1", empty ? "" : "field1.txt", empty ? "" : "text1");
+						"field1", "type1", MockCommonsMultipartResolver.this.empty ? "" : "field1.txt", MockCommonsMultipartResolver.this.empty ? "" : "text1");
 					MockFileItem fileItem1x = new MockFileItem(
-						"field1", "type1", empty ? "" : "field1.txt", empty ? "" : "text1");
+						"field1", "type1", MockCommonsMultipartResolver.this.empty ? "" : "field1.txt", MockCommonsMultipartResolver.this.empty ? "" : "text1");
 					MockFileItem fileItem2 = new MockFileItem(
-						"field2", "type2", empty ? "" : "C:\\mypath/field2.txt", empty ? "" : "text2");
+						"field2", "type2", MockCommonsMultipartResolver.this.empty ? "" : "C:\\mypath/field2.txt", MockCommonsMultipartResolver.this.empty ? "" : "text2");
 					MockFileItem fileItem2x = new MockFileItem(
-						"field2x", "type2", empty ? "" : "C:/mypath\\field2x.txt", empty ? "" : "text2");
+						"field2x", "type2", MockCommonsMultipartResolver.this.empty ? "" : "C:/mypath\\field2x.txt", MockCommonsMultipartResolver.this.empty ? "" : "text2");
 					MockFileItem fileItem3 = new MockFileItem("field3", null, null, "value3");
 					MockFileItem fileItem4 = new MockFileItem("field4", "text/html; charset=iso-8859-1", null, "value4");
 					MockFileItem fileItem5 = new MockFileItem("field4", null, null, "value5");
@@ -423,17 +423,17 @@ public class CommonsMultipartResolverTests {
 
 		@Override
 		public InputStream getInputStream() throws IOException {
-			return new ByteArrayInputStream(value.getBytes());
+			return new ByteArrayInputStream(this.value.getBytes());
 		}
 
 		@Override
 		public String getContentType() {
-			return contentType;
+			return this.contentType;
 		}
 
 		@Override
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		@Override
@@ -443,12 +443,12 @@ public class CommonsMultipartResolverTests {
 
 		@Override
 		public long getSize() {
-			return value.length();
+			return this.value.length();
 		}
 
 		@Override
 		public byte[] get() {
-			return value.getBytes();
+			return this.value.getBytes();
 		}
 
 		@Override
@@ -458,7 +458,7 @@ public class CommonsMultipartResolverTests {
 
 		@Override
 		public String getString() {
-			return value;
+			return this.value;
 		}
 
 		@Override
@@ -473,7 +473,7 @@ public class CommonsMultipartResolverTests {
 
 		@Override
 		public String getFieldName() {
-			return fieldName;
+			return this.fieldName;
 		}
 
 		@Override
@@ -518,7 +518,7 @@ public class CommonsMultipartResolverTests {
 		}
 
 		public MultipartFile[] getField1() {
-			return field1;
+			return this.field1;
 		}
 
 		public void setField2(byte[] field2) {
@@ -526,7 +526,7 @@ public class CommonsMultipartResolverTests {
 		}
 
 		public byte[] getField2() {
-			return field2;
+			return this.field2;
 		}
 	}
 
@@ -541,7 +541,7 @@ public class CommonsMultipartResolverTests {
 		}
 
 		public String[] getField1() {
-			return field1;
+			return this.field1;
 		}
 
 		public void setField2(String field2) {
@@ -549,7 +549,7 @@ public class CommonsMultipartResolverTests {
 		}
 
 		public String getField2() {
-			return field2;
+			return this.field2;
 		}
 	}
 

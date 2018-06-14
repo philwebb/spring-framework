@@ -478,7 +478,7 @@ public class AutoProxyCreatorTests {
 			return (ITestBean) Proxy.newProxyInstance(CustomProxyFactoryBean.class.getClassLoader(), new Class<?>[]{ITestBean.class}, new InvocationHandler() {
 				@Override
 				public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-					return ReflectionUtils.invokeMethod(method, tb, args);
+					return ReflectionUtils.invokeMethod(method, CustomProxyFactoryBean.this.tb, args);
 				}
 			});
 		}
@@ -501,7 +501,7 @@ public class AutoProxyCreatorTests {
 
 		@Override
 		public ITestBean getObject() {
-			return ProxyFactory.getProxy(ITestBean.class, new SingletonTargetSource(tb));
+			return ProxyFactory.getProxy(ITestBean.class, new SingletonTargetSource(this.tb));
 		}
 
 		@Override

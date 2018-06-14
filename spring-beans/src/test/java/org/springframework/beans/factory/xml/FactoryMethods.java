@@ -105,11 +105,11 @@ public class FactoryMethods {
 	}
 
 	public int getNum() {
-		return num;
+		return this.num;
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**

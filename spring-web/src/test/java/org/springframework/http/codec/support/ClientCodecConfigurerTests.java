@@ -96,7 +96,7 @@ public class ClientCodecConfigurerTests {
 		assertEquals(ByteArrayEncoder.class, getNextEncoder(writers).getClass());
 		assertEquals(ByteBufferEncoder.class, getNextEncoder(writers).getClass());
 		assertEquals(DataBufferEncoder.class, getNextEncoder(writers).getClass());
-		assertEquals(ResourceHttpMessageWriter.class, writers.get(index.getAndIncrement()).getClass());
+		assertEquals(ResourceHttpMessageWriter.class, writers.get(this.index.getAndIncrement()).getClass());
 		assertStringEncoder(getNextEncoder(writers), true);
 		assertEquals(MultipartHttpMessageWriter.class, writers.get(this.index.getAndIncrement()).getClass());
 		assertEquals(Jackson2JsonEncoder.class, getNextEncoder(writers).getClass());

@@ -69,7 +69,7 @@ public class TestConnection implements Connection {
 
 	@Override
 	public ExceptionListener getExceptionListener() throws JMSException {
-		return exceptionListener;
+		return this.exceptionListener;
 	}
 
 	@Override
@@ -113,11 +113,11 @@ public class TestConnection implements Connection {
 
 
 	public int getStartCount() {
-		return startCount;
+		return this.startCount;
 	}
 
 	public int getCloseCount() {
-		return closeCount;
+		return this.closeCount;
 	}
 
 }

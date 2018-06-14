@@ -127,7 +127,7 @@ public class ResourceRegionEncoderTests extends AbstractDataBufferAllocatingTest
 		);
 
 		Mono<DataBuffer> reduced = result
-				.reduce(bufferFactory.allocateBuffer(), (previous, current) -> {
+				.reduce(this.bufferFactory.allocateBuffer(), (previous, current) -> {
 					previous.write(current);
 					DataBufferUtils.release(current);
 					return previous;

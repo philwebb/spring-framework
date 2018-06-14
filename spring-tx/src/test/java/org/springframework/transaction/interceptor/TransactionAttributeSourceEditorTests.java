@@ -40,8 +40,8 @@ public class TransactionAttributeSourceEditorTests {
 
 	@Test
 	public void nullValue() throws Exception {
-		editor.setAsText(null);
-		TransactionAttributeSource tas = (TransactionAttributeSource) editor.getValue();
+		this.editor.setAsText(null);
+		TransactionAttributeSource tas = (TransactionAttributeSource) this.editor.getValue();
 
 		Method m = Object.class.getMethod("hashCode");
 		assertNull(tas.getTransactionAttribute(m, null));
@@ -49,18 +49,18 @@ public class TransactionAttributeSourceEditorTests {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void invalidFormat() throws Exception {
-		editor.setAsText("foo=bar");
+		this.editor.setAsText("foo=bar");
 	}
 
 	@Test
 	public void matchesSpecific() throws Exception {
-		editor.setAsText(
+		this.editor.setAsText(
 			"java.lang.Object.hashCode=PROPAGATION_REQUIRED\n" +
 			"java.lang.Object.equals=PROPAGATION_MANDATORY\n" +
 			"java.lang.Object.*it=PROPAGATION_SUPPORTS\n" +
 			"java.lang.Object.notify=PROPAGATION_SUPPORTS\n" +
 			"java.lang.Object.not*=PROPAGATION_REQUIRED");
-		TransactionAttributeSource tas = (TransactionAttributeSource) editor.getValue();
+		TransactionAttributeSource tas = (TransactionAttributeSource) this.editor.getValue();
 
 		checkTransactionProperties(tas, Object.class.getMethod("hashCode"),
 				TransactionDefinition.PROPAGATION_REQUIRED);
@@ -81,8 +81,8 @@ public class TransactionAttributeSourceEditorTests {
 
 	@Test
 	public void matchesAll() throws Exception {
-		editor.setAsText("java.lang.Object.*=PROPAGATION_REQUIRED");
-		TransactionAttributeSource tas = (TransactionAttributeSource) editor.getValue();
+		this.editor.setAsText("java.lang.Object.*=PROPAGATION_REQUIRED");
+		TransactionAttributeSource tas = (TransactionAttributeSource) this.editor.getValue();
 
 		checkTransactionProperties(tas, Object.class.getMethod("hashCode"),
 				TransactionDefinition.PROPAGATION_REQUIRED);

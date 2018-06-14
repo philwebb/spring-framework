@@ -39,10 +39,10 @@ public class DelegatingNavigationHandlerTests {
 
 	private final TestNavigationHandler origNavHandler = new TestNavigationHandler();
 
-	private final DelegatingNavigationHandlerProxy delNavHandler = new DelegatingNavigationHandlerProxy(origNavHandler) {
+	private final DelegatingNavigationHandlerProxy delNavHandler = new DelegatingNavigationHandlerProxy(this.origNavHandler) {
 		@Override
 		protected BeanFactory getBeanFactory(FacesContext facesContext) {
-			return beanFactory;
+			return DelegatingNavigationHandlerTests.this.beanFactory;
 		}
 	};
 
@@ -50,9 +50,9 @@ public class DelegatingNavigationHandlerTests {
 	@Test
 	public void handleNavigationWithoutDecoration() {
 		TestNavigationHandler targetHandler = new TestNavigationHandler();
-		beanFactory.addBean("jsfNavigationHandler", targetHandler);
+		this.beanFactory.addBean("jsfNavigationHandler", targetHandler);
 
-		delNavHandler.handleNavigation(facesContext, "fromAction", "myViewId");
+		this.delNavHandler.handleNavigation(this.facesContext, "fromAction", "myViewId");
 		assertEquals("fromAction", targetHandler.lastFromAction);
 		assertEquals("myViewId", targetHandler.lastOutcome);
 	}
@@ -60,15 +60,15 @@ public class DelegatingNavigationHandlerTests {
 	@Test
 	public void handleNavigationWithDecoration() {
 		TestDecoratingNavigationHandler targetHandler = new TestDecoratingNavigationHandler();
-		beanFactory.addBean("jsfNavigationHandler", targetHandler);
+		this.beanFactory.addBean("jsfNavigationHandler", targetHandler);
 
-		delNavHandler.handleNavigation(facesContext, "fromAction", "myViewId");
+		this.delNavHandler.handleNavigation(this.facesContext, "fromAction", "myViewId");
 		assertEquals("fromAction", targetHandler.lastFromAction);
 		assertEquals("myViewId", targetHandler.lastOutcome);
 
 		// Original handler must have been invoked as well...
-		assertEquals("fromAction", origNavHandler.lastFromAction);
-		assertEquals("myViewId", origNavHandler.lastOutcome);
+		assertEquals("fromAction", this.origNavHandler.lastFromAction);
+		assertEquals("myViewId", this.origNavHandler.lastOutcome);
 	}
 
 
@@ -79,8 +79,8 @@ public class DelegatingNavigationHandlerTests {
 
 		@Override
 		public void handleNavigation(FacesContext facesContext, String fromAction, String outcome) {
-			lastFromAction = fromAction;
-			lastOutcome = outcome;
+			this.lastFromAction = fromAction;
+			this.lastOutcome = outcome;
 		}
 	}
 
@@ -94,8 +94,8 @@ public class DelegatingNavigationHandlerTests {
 		public void handleNavigation(FacesContext facesContext, @Nullable String fromAction,
 				@Nullable String outcome, @Nullable NavigationHandler originalNavigationHandler) {
 
-			lastFromAction = fromAction;
-			lastOutcome = outcome;
+			this.lastFromAction = fromAction;
+			this.lastOutcome = outcome;
 			if (originalNavigationHandler != null) {
 				originalNavigationHandler.handleNavigation(facesContext, fromAction, outcome);
 			}

@@ -61,8 +61,8 @@ class SpringJUnitJupiterAutowiredConstructorInjectionTests {
 
 	@Test
 	void applicationContextInjected() {
-		assertNotNull(applicationContext, "ApplicationContext should have been injected by Spring");
-		assertEquals(this.dilbert, applicationContext.getBean("dilbert", Person.class));
+		assertNotNull(this.applicationContext, "ApplicationContext should have been injected by Spring");
+		assertEquals(this.dilbert, this.applicationContext.getBean("dilbert", Person.class));
 	}
 
 	@Test

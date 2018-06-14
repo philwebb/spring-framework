@@ -39,15 +39,15 @@ public class H2DatabasePopulatorTests extends AbstractDatabasePopulatorTests {
 	 */
 	@Test
 	public void scriptWithH2Alias() throws Exception {
-		databasePopulator.addScript(usersSchema());
-		databasePopulator.addScript(resource("db-test-data-h2-alias.sql"));
+		this.databasePopulator.addScript(usersSchema());
+		this.databasePopulator.addScript(resource("db-test-data-h2-alias.sql"));
 		// Set statement separator to double newline so that ";" is not
 		// considered a statement separator within the source code of the
 		// aliased function 'REVERSE'.
-		databasePopulator.setSeparator("\n\n");
-		DatabasePopulatorUtils.execute(databasePopulator, db);
+		this.databasePopulator.setSeparator("\n\n");
+		DatabasePopulatorUtils.execute(this.databasePopulator, this.db);
 		String sql = "select REVERSE(first_name) from users where last_name='Brannen'";
-		assertThat(jdbcTemplate.queryForObject(sql, String.class), equalTo("maS"));
+		assertThat(this.jdbcTemplate.queryForObject(sql, String.class), equalTo("maS"));
 	}
 
 }
