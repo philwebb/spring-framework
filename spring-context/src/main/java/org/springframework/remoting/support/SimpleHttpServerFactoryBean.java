@@ -186,7 +186,7 @@ public class SimpleHttpServerFactoryBean implements FactoryBean<HttpServer>, Ini
 
 	@Override
 	public void destroy() {
-		logger.info("Stopping HttpServer");
+		this.logger.info("Stopping HttpServer");
 		this.server.stop(this.shutdownDelay);
 	}
 

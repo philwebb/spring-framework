@@ -177,7 +177,7 @@ public class ResourceUrlProviderTests {
 		@Override
 		public boolean matches(Object item) {
 			if (item != null && item instanceof PathPattern) {
-				return ((PathPattern) item).getPatternString().equals(pattern);
+				return ((PathPattern) item).getPatternString().equals(this.pattern);
 			}
 			return false;
 		}

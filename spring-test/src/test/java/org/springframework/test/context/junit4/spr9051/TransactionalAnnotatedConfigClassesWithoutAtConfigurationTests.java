@@ -106,7 +106,7 @@ public class TransactionalAnnotatedConfigClassesWithoutAtConfigurationTests exte
 	@Before
 	public void compareDataSources() throws Exception {
 		// NOTE: the two DataSource instances are NOT the same!
-		assertNotSame(dataSourceFromTxManager, dataSourceViaInjection);
+		assertNotSame(this.dataSourceFromTxManager, this.dataSourceViaInjection);
 	}
 
 	/**

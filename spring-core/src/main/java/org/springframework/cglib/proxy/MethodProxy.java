@@ -67,18 +67,18 @@ public class MethodProxy {
 		 * code could allow fastClassInfo to be instantiated more than once, which
 		 * appears to be benign.
 		 */
-		if (fastClassInfo == null) {
-			synchronized (initLock) {
-				if (fastClassInfo == null) {
-					CreateInfo ci = createInfo;
+		if (this.fastClassInfo == null) {
+			synchronized (this.initLock) {
+				if (this.fastClassInfo == null) {
+					CreateInfo ci = this.createInfo;
 
 					FastClassInfo fci = new FastClassInfo();
 					fci.f1 = helper(ci, ci.c1);
 					fci.f2 = helper(ci, ci.c2);
-					fci.i1 = fci.f1.getIndex(sig1);
-					fci.i2 = fci.f2.getIndex(sig2);
-					fastClassInfo = fci;
-					createInfo = null;
+					fci.i1 = fci.f1.getIndex(this.sig1);
+					fci.i2 = fci.f2.getIndex(this.sig2);
+					this.fastClassInfo = fci;
+					this.createInfo = null;
 				}
 			}
 		}
@@ -114,9 +114,9 @@ public class MethodProxy {
 			this.c2 = c2;
 			AbstractClassGenerator fromEnhancer = AbstractClassGenerator.getCurrent();
 			if (fromEnhancer != null) {
-				namingPolicy = fromEnhancer.getNamingPolicy();
-				strategy = fromEnhancer.getStrategy();
-				attemptLoad = fromEnhancer.getAttemptLoad();
+				this.namingPolicy = fromEnhancer.getNamingPolicy();
+				this.strategy = fromEnhancer.getStrategy();
+				this.attemptLoad = fromEnhancer.getAttemptLoad();
 			}
 		}
 	}
@@ -142,7 +142,7 @@ public class MethodProxy {
 	 * Return the signature of the proxied method.
 	 */
 	public Signature getSignature() {
-		return sig1;
+		return this.sig1;
 	}
 
 	/**
@@ -152,7 +152,7 @@ public class MethodProxy {
 	 * the same as the proxied method.
 	 */
 	public String getSuperName() {
-		return sig2.getName();
+		return this.sig2.getName();
 	}
 
 	/**
@@ -164,19 +164,19 @@ public class MethodProxy {
 	 */
 	public int getSuperIndex() {
 		init();
-		return fastClassInfo.i2;
+		return this.fastClassInfo.i2;
 	}
 
 	// For testing
 	FastClass getFastClass() {
 		init();
-		return fastClassInfo.f1;
+		return this.fastClassInfo.f1;
 	}
 
 	// For testing
 	FastClass getSuperFastClass() {
 		init();
-		return fastClassInfo.f2;
+		return this.fastClassInfo.f2;
 	}
 
 	/**
@@ -214,15 +214,15 @@ public class MethodProxy {
 	public Object invoke(Object obj, Object[] args) throws Throwable {
 		try {
 			init();
-			FastClassInfo fci = fastClassInfo;
+			FastClassInfo fci = this.fastClassInfo;
 			return fci.f1.invoke(fci.i1, obj, args);
 		}
 		catch (InvocationTargetException ex) {
 			throw ex.getTargetException();
 		}
 		catch (IllegalArgumentException ex) {
-			if (fastClassInfo.i1 < 0) {
-				throw new IllegalArgumentException("Protected method: " + sig1);
+			if (this.fastClassInfo.i1 < 0) {
+				throw new IllegalArgumentException("Protected method: " + this.sig1);
 			}
 			throw ex;
 		}
@@ -241,7 +241,7 @@ public class MethodProxy {
 	public Object invokeSuper(Object obj, Object[] args) throws Throwable {
 		try {
 			init();
-			FastClassInfo fci = fastClassInfo;
+			FastClassInfo fci = this.fastClassInfo;
 			return fci.f2.invoke(fci.i2, obj, args);
 		}
 		catch (InvocationTargetException e) {

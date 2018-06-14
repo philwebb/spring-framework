@@ -166,8 +166,8 @@ public abstract class AbstractView implements View, ApplicationContextAware {
 	public Mono<Void> render(@Nullable Map<String, ?> model, @Nullable MediaType contentType,
 			ServerWebExchange exchange) {
 
-		if (logger.isTraceEnabled()) {
-			logger.trace("Rendering view with model " + model);
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Rendering view with model " + model);
 		}
 
 		if (contentType != null) {

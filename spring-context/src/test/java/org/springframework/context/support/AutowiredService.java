@@ -33,7 +33,7 @@ public class AutowiredService {
 	}
 
 	public MessageSource getMessageSource() {
-		return messageSource;
+		return this.messageSource;
 	}
 
 }

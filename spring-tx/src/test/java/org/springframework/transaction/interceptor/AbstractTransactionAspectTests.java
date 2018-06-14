@@ -60,9 +60,9 @@ public abstract class AbstractTransactionAspectTests {
 
 	@Before
 	public void setup() throws Exception {
-		exceptionalMethod = ITestBean.class.getMethod("exceptional", Throwable.class);
-		getNameMethod = ITestBean.class.getMethod("getName");
-		setNameMethod = ITestBean.class.getMethod("setName", String.class);
+		this.exceptionalMethod = ITestBean.class.getMethod("exceptional", Throwable.class);
+		this.getNameMethod = ITestBean.class.getMethod("getName");
+		this.setNameMethod = ITestBean.class.getMethod("setName", String.class);
 	}
 
 
@@ -94,7 +94,7 @@ public abstract class AbstractTransactionAspectTests {
 		TransactionAttribute txatt = new DefaultTransactionAttribute();
 
 		MapTransactionAttributeSource tas = new MapTransactionAttributeSource();
-		tas.register(getNameMethod, txatt);
+		tas.register(this.getNameMethod, txatt);
 
 		TransactionStatus status = mock(TransactionStatus.class);
 		PlatformTransactionManager ptm = mock(PlatformTransactionManager.class);
@@ -120,7 +120,7 @@ public abstract class AbstractTransactionAspectTests {
 		TransactionAttribute txatt = new DefaultTransactionAttribute();
 
 		MapTransactionAttributeSource tas = new MapTransactionAttributeSource();
-		tas.register(getNameMethod, txatt);
+		tas.register(this.getNameMethod, txatt);
 
 		MockCallbackPreferringTransactionManager ptm = new MockCallbackPreferringTransactionManager();
 
@@ -140,7 +140,7 @@ public abstract class AbstractTransactionAspectTests {
 		TransactionAttribute txatt = new DefaultTransactionAttribute();
 
 		MapTransactionAttributeSource tas = new MapTransactionAttributeSource();
-		tas.register(exceptionalMethod, txatt);
+		tas.register(this.exceptionalMethod, txatt);
 
 		MockCallbackPreferringTransactionManager ptm = new MockCallbackPreferringTransactionManager();
 
@@ -169,9 +169,9 @@ public abstract class AbstractTransactionAspectTests {
 		TransactionAttribute txatt = new DefaultTransactionAttribute();
 
 		MapTransactionAttributeSource tas1 = new MapTransactionAttributeSource();
-		tas1.register(getNameMethod, txatt);
+		tas1.register(this.getNameMethod, txatt);
 		MapTransactionAttributeSource tas2 = new MapTransactionAttributeSource();
-		tas2.register(setNameMethod, txatt);
+		tas2.register(this.setNameMethod, txatt);
 
 		TransactionStatus status = mock(TransactionStatus.class);
 		PlatformTransactionManager ptm = mock(PlatformTransactionManager.class);
@@ -198,7 +198,7 @@ public abstract class AbstractTransactionAspectTests {
 		TransactionAttribute txatt = new DefaultTransactionAttribute();
 
 		MapTransactionAttributeSource tas = new MapTransactionAttributeSource();
-		tas.register(getNameMethod, txatt);
+		tas.register(this.getNameMethod, txatt);
 
 		TransactionStatus status = mock(TransactionStatus.class);
 		PlatformTransactionManager ptm = mock(PlatformTransactionManager.class);
@@ -221,7 +221,7 @@ public abstract class AbstractTransactionAspectTests {
 		TransactionAttribute txatt = new DefaultTransactionAttribute();
 
 		MapTransactionAttributeSource tas = new MapTransactionAttributeSource();
-		tas.register(exceptionalMethod, txatt);
+		tas.register(this.exceptionalMethod, txatt);
 
 		TransactionStatus status = mock(TransactionStatus.class);
 		PlatformTransactionManager ptm = mock(PlatformTransactionManager.class);
@@ -267,8 +267,8 @@ public abstract class AbstractTransactionAspectTests {
 		final TransactionAttribute outerTxatt = new DefaultTransactionAttribute();
 		final TransactionAttribute innerTxatt = new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_NESTED);
 
-		Method outerMethod = exceptionalMethod;
-		Method innerMethod = getNameMethod;
+		Method outerMethod = this.exceptionalMethod;
+		Method innerMethod = this.getNameMethod;
 		MapTransactionAttributeSource tas = new MapTransactionAttributeSource();
 		tas.register(outerMethod, outerTxatt);
 		tas.register(innerMethod, innerTxatt);
@@ -377,7 +377,7 @@ public abstract class AbstractTransactionAspectTests {
 			}
 		};
 
-		Method m = exceptionalMethod;
+		Method m = this.exceptionalMethod;
 		MapTransactionAttributeSource tas = new MapTransactionAttributeSource();
 		tas.register(m, txatt);
 
@@ -430,7 +430,7 @@ public abstract class AbstractTransactionAspectTests {
 	public void programmaticRollback() throws Exception {
 		TransactionAttribute txatt = new DefaultTransactionAttribute();
 
-		Method m = getNameMethod;
+		Method m = this.getNameMethod;
 		MapTransactionAttributeSource tas = new MapTransactionAttributeSource();
 		tas.register(m, txatt);
 
@@ -465,7 +465,7 @@ public abstract class AbstractTransactionAspectTests {
 	public void cannotCreateTransaction() throws Exception {
 		TransactionAttribute txatt = new DefaultTransactionAttribute();
 
-		Method m = getNameMethod;
+		Method m = this.getNameMethod;
 		MapTransactionAttributeSource tas = new MapTransactionAttributeSource();
 		tas.register(m, txatt);
 
@@ -501,7 +501,7 @@ public abstract class AbstractTransactionAspectTests {
 	public void cannotCommitTransaction() throws Exception {
 		TransactionAttribute txatt = new DefaultTransactionAttribute();
 
-		Method m = setNameMethod;
+		Method m = this.setNameMethod;
 		MapTransactionAttributeSource tas = new MapTransactionAttributeSource();
 		tas.register(m, txatt);
 		// Method m2 = getNameMethod;

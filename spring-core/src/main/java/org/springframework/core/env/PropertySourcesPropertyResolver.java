@@ -78,8 +78,8 @@ public class PropertySourcesPropertyResolver extends AbstractPropertyResolver {
 	protected <T> T getProperty(String key, Class<T> targetValueType, boolean resolveNestedPlaceholders) {
 		if (this.propertySources != null) {
 			for (PropertySource<?> propertySource : this.propertySources) {
-				if (logger.isTraceEnabled()) {
-					logger.trace("Searching for key '" + key + "' in PropertySource '" +
+				if (this.logger.isTraceEnabled()) {
+					this.logger.trace("Searching for key '" + key + "' in PropertySource '" +
 							propertySource.getName() + "'");
 				}
 				Object value = propertySource.getProperty(key);
@@ -92,8 +92,8 @@ public class PropertySourcesPropertyResolver extends AbstractPropertyResolver {
 				}
 			}
 		}
-		if (logger.isDebugEnabled()) {
-			logger.debug("Could not find key '" + key + "' in any property source");
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Could not find key '" + key + "' in any property source");
 		}
 		return null;
 	}
@@ -111,8 +111,8 @@ public class PropertySourcesPropertyResolver extends AbstractPropertyResolver {
 	 * @since 4.3.1
 	 */
 	protected void logKeyFound(String key, PropertySource<?> propertySource, Object value) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Found key '" + key + "' in PropertySource '" + propertySource.getName() +
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Found key '" + key + "' in PropertySource '" + propertySource.getName() +
 					"' with value of type " + value.getClass().getSimpleName());
 		}
 	}

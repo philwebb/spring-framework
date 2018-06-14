@@ -149,14 +149,14 @@ final class FieldWriter extends FieldVisitor {
         }
         ByteVector bv = new ByteVector();
         // write type, and reserve space for values count
-        bv.putShort(cw.newUTF8(desc)).putShort(0);
-        AnnotationWriter aw = new AnnotationWriter(cw, true, bv, bv, 2);
+        bv.putShort(this.cw.newUTF8(desc)).putShort(0);
+        AnnotationWriter aw = new AnnotationWriter(this.cw, true, bv, bv, 2);
         if (visible) {
-            aw.next = anns;
-            anns = aw;
+            aw.next = this.anns;
+            this.anns = aw;
         } else {
-            aw.next = ianns;
-            ianns = aw;
+            aw.next = this.ianns;
+            this.ianns = aw;
         }
         return aw;
     }
@@ -171,23 +171,23 @@ final class FieldWriter extends FieldVisitor {
         // write target_type and target_info
         AnnotationWriter.putTarget(typeRef, typePath, bv);
         // write type, and reserve space for values count
-        bv.putShort(cw.newUTF8(desc)).putShort(0);
-        AnnotationWriter aw = new AnnotationWriter(cw, true, bv, bv,
+        bv.putShort(this.cw.newUTF8(desc)).putShort(0);
+        AnnotationWriter aw = new AnnotationWriter(this.cw, true, bv, bv,
                 bv.length - 2);
         if (visible) {
-            aw.next = tanns;
-            tanns = aw;
+            aw.next = this.tanns;
+            this.tanns = aw;
         } else {
-            aw.next = itanns;
-            itanns = aw;
+            aw.next = this.itanns;
+            this.itanns = aw;
         }
         return aw;
     }
 
     @Override
     public void visitAttribute(final Attribute attr) {
-        attr.next = attrs;
-        attrs = attr;
+        attr.next = this.attrs;
+        this.attrs = attr;
     }
 
     @Override
@@ -205,43 +205,43 @@ final class FieldWriter extends FieldVisitor {
      */
     int getSize() {
         int size = 8;
-        if (value != 0) {
-            cw.newUTF8("ConstantValue");
+        if (this.value != 0) {
+            this.cw.newUTF8("ConstantValue");
             size += 8;
         }
-        if ((access & Opcodes.ACC_SYNTHETIC) != 0) {
-            if ((cw.version & 0xFFFF) < Opcodes.V1_5
-                    || (access & ClassWriter.ACC_SYNTHETIC_ATTRIBUTE) != 0) {
-                cw.newUTF8("Synthetic");
+        if ((this.access & Opcodes.ACC_SYNTHETIC) != 0) {
+            if ((this.cw.version & 0xFFFF) < Opcodes.V1_5
+                    || (this.access & ClassWriter.ACC_SYNTHETIC_ATTRIBUTE) != 0) {
+                this.cw.newUTF8("Synthetic");
                 size += 6;
             }
         }
-        if ((access & Opcodes.ACC_DEPRECATED) != 0) {
-            cw.newUTF8("Deprecated");
+        if ((this.access & Opcodes.ACC_DEPRECATED) != 0) {
+            this.cw.newUTF8("Deprecated");
             size += 6;
         }
-        if (ClassReader.SIGNATURES && signature != 0) {
-            cw.newUTF8("Signature");
+        if (ClassReader.SIGNATURES && this.signature != 0) {
+            this.cw.newUTF8("Signature");
             size += 8;
         }
-        if (ClassReader.ANNOTATIONS && anns != null) {
-            cw.newUTF8("RuntimeVisibleAnnotations");
-            size += 8 + anns.getSize();
+        if (ClassReader.ANNOTATIONS && this.anns != null) {
+            this.cw.newUTF8("RuntimeVisibleAnnotations");
+            size += 8 + this.anns.getSize();
         }
-        if (ClassReader.ANNOTATIONS && ianns != null) {
-            cw.newUTF8("RuntimeInvisibleAnnotations");
-            size += 8 + ianns.getSize();
+        if (ClassReader.ANNOTATIONS && this.ianns != null) {
+            this.cw.newUTF8("RuntimeInvisibleAnnotations");
+            size += 8 + this.ianns.getSize();
         }
-        if (ClassReader.ANNOTATIONS && tanns != null) {
-            cw.newUTF8("RuntimeVisibleTypeAnnotations");
-            size += 8 + tanns.getSize();
+        if (ClassReader.ANNOTATIONS && this.tanns != null) {
+            this.cw.newUTF8("RuntimeVisibleTypeAnnotations");
+            size += 8 + this.tanns.getSize();
         }
-        if (ClassReader.ANNOTATIONS && itanns != null) {
-            cw.newUTF8("RuntimeInvisibleTypeAnnotations");
-            size += 8 + itanns.getSize();
+        if (ClassReader.ANNOTATIONS && this.itanns != null) {
+            this.cw.newUTF8("RuntimeInvisibleTypeAnnotations");
+            size += 8 + this.itanns.getSize();
         }
-        if (attrs != null) {
-            size += attrs.getSize(cw, null, 0, -1, -1);
+        if (this.attrs != null) {
+            size += this.attrs.getSize(this.cw, null, 0, -1, -1);
         }
         return size;
     }
@@ -255,75 +255,75 @@ final class FieldWriter extends FieldVisitor {
     void put(final ByteVector out) {
         final int FACTOR = ClassWriter.TO_ACC_SYNTHETIC;
         int mask = Opcodes.ACC_DEPRECATED | ClassWriter.ACC_SYNTHETIC_ATTRIBUTE
-                | ((access & ClassWriter.ACC_SYNTHETIC_ATTRIBUTE) / FACTOR);
-        out.putShort(access & ~mask).putShort(name).putShort(desc);
+                | ((this.access & ClassWriter.ACC_SYNTHETIC_ATTRIBUTE) / FACTOR);
+        out.putShort(this.access & ~mask).putShort(this.name).putShort(this.desc);
         int attributeCount = 0;
-        if (value != 0) {
+        if (this.value != 0) {
             ++attributeCount;
         }
-        if ((access & Opcodes.ACC_SYNTHETIC) != 0) {
-            if ((cw.version & 0xFFFF) < Opcodes.V1_5
-                    || (access & ClassWriter.ACC_SYNTHETIC_ATTRIBUTE) != 0) {
+        if ((this.access & Opcodes.ACC_SYNTHETIC) != 0) {
+            if ((this.cw.version & 0xFFFF) < Opcodes.V1_5
+                    || (this.access & ClassWriter.ACC_SYNTHETIC_ATTRIBUTE) != 0) {
                 ++attributeCount;
             }
         }
-        if ((access & Opcodes.ACC_DEPRECATED) != 0) {
+        if ((this.access & Opcodes.ACC_DEPRECATED) != 0) {
             ++attributeCount;
         }
-        if (ClassReader.SIGNATURES && signature != 0) {
+        if (ClassReader.SIGNATURES && this.signature != 0) {
             ++attributeCount;
         }
-        if (ClassReader.ANNOTATIONS && anns != null) {
+        if (ClassReader.ANNOTATIONS && this.anns != null) {
             ++attributeCount;
         }
-        if (ClassReader.ANNOTATIONS && ianns != null) {
+        if (ClassReader.ANNOTATIONS && this.ianns != null) {
             ++attributeCount;
         }
-        if (ClassReader.ANNOTATIONS && tanns != null) {
+        if (ClassReader.ANNOTATIONS && this.tanns != null) {
             ++attributeCount;
         }
-        if (ClassReader.ANNOTATIONS && itanns != null) {
+        if (ClassReader.ANNOTATIONS && this.itanns != null) {
             ++attributeCount;
         }
-        if (attrs != null) {
-            attributeCount += attrs.getCount();
+        if (this.attrs != null) {
+            attributeCount += this.attrs.getCount();
         }
         out.putShort(attributeCount);
-        if (value != 0) {
-            out.putShort(cw.newUTF8("ConstantValue"));
-            out.putInt(2).putShort(value);
+        if (this.value != 0) {
+            out.putShort(this.cw.newUTF8("ConstantValue"));
+            out.putInt(2).putShort(this.value);
         }
-        if ((access & Opcodes.ACC_SYNTHETIC) != 0) {
-            if ((cw.version & 0xFFFF) < Opcodes.V1_5
-                    || (access & ClassWriter.ACC_SYNTHETIC_ATTRIBUTE) != 0) {
-                out.putShort(cw.newUTF8("Synthetic")).putInt(0);
+        if ((this.access & Opcodes.ACC_SYNTHETIC) != 0) {
+            if ((this.cw.version & 0xFFFF) < Opcodes.V1_5
+                    || (this.access & ClassWriter.ACC_SYNTHETIC_ATTRIBUTE) != 0) {
+                out.putShort(this.cw.newUTF8("Synthetic")).putInt(0);
             }
         }
-        if ((access & Opcodes.ACC_DEPRECATED) != 0) {
-            out.putShort(cw.newUTF8("Deprecated")).putInt(0);
+        if ((this.access & Opcodes.ACC_DEPRECATED) != 0) {
+            out.putShort(this.cw.newUTF8("Deprecated")).putInt(0);
         }
-        if (ClassReader.SIGNATURES && signature != 0) {
-            out.putShort(cw.newUTF8("Signature"));
-            out.putInt(2).putShort(signature);
+        if (ClassReader.SIGNATURES && this.signature != 0) {
+            out.putShort(this.cw.newUTF8("Signature"));
+            out.putInt(2).putShort(this.signature);
         }
-        if (ClassReader.ANNOTATIONS && anns != null) {
-            out.putShort(cw.newUTF8("RuntimeVisibleAnnotations"));
-            anns.put(out);
+        if (ClassReader.ANNOTATIONS && this.anns != null) {
+            out.putShort(this.cw.newUTF8("RuntimeVisibleAnnotations"));
+            this.anns.put(out);
         }
-        if (ClassReader.ANNOTATIONS && ianns != null) {
-            out.putShort(cw.newUTF8("RuntimeInvisibleAnnotations"));
-            ianns.put(out);
+        if (ClassReader.ANNOTATIONS && this.ianns != null) {
+            out.putShort(this.cw.newUTF8("RuntimeInvisibleAnnotations"));
+            this.ianns.put(out);
         }
-        if (ClassReader.ANNOTATIONS && tanns != null) {
-            out.putShort(cw.newUTF8("RuntimeVisibleTypeAnnotations"));
-            tanns.put(out);
+        if (ClassReader.ANNOTATIONS && this.tanns != null) {
+            out.putShort(this.cw.newUTF8("RuntimeVisibleTypeAnnotations"));
+            this.tanns.put(out);
         }
-        if (ClassReader.ANNOTATIONS && itanns != null) {
-            out.putShort(cw.newUTF8("RuntimeInvisibleTypeAnnotations"));
-            itanns.put(out);
+        if (ClassReader.ANNOTATIONS && this.itanns != null) {
+            out.putShort(this.cw.newUTF8("RuntimeInvisibleTypeAnnotations"));
+            this.itanns.put(out);
         }
-        if (attrs != null) {
-            attrs.put(cw, null, 0, -1, -1, out);
+        if (this.attrs != null) {
+            this.attrs.put(this.cw, null, 0, -1, -1, out);
         }
     }
 }

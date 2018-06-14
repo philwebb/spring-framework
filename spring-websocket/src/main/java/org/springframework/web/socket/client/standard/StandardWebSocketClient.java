@@ -147,7 +147,7 @@ public class StandardWebSocketClient extends AbstractWebSocketClient {
 		final Endpoint endpoint = new StandardWebSocketHandlerAdapter(webSocketHandler, session);
 
 		Callable<WebSocketSession> connectTask = () -> {
-			webSocketContainer.connectToServer(endpoint, endpointConfig, uri);
+			this.webSocketContainer.connectToServer(endpoint, endpointConfig, uri);
 			return session;
 		};
 
@@ -198,14 +198,14 @@ public class StandardWebSocketClient extends AbstractWebSocketClient {
 		@Override
 		public void beforeRequest(Map<String, List<String>> requestHeaders) {
 			requestHeaders.putAll(this.headers);
-			if (logger.isTraceEnabled()) {
-				logger.trace("Handshake request headers: " + requestHeaders);
+			if (StandardWebSocketClient.this.logger.isTraceEnabled()) {
+				StandardWebSocketClient.this.logger.trace("Handshake request headers: " + requestHeaders);
 			}
 		}
 		@Override
 		public void afterResponse(HandshakeResponse response) {
-			if (logger.isTraceEnabled()) {
-				logger.trace("Handshake response headers: " + response.getHeaders());
+			if (StandardWebSocketClient.this.logger.isTraceEnabled()) {
+				StandardWebSocketClient.this.logger.trace("Handshake response headers: " + response.getHeaders());
 			}
 		}
 	}

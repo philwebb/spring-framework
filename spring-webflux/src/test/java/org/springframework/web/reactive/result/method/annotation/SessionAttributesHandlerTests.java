@@ -58,14 +58,14 @@ public class SessionAttributesHandlerTests {
 
 		assertEquals("Named attributes (attr1, attr2) should be 'known' right away",
 				new HashSet<>(asList("attr1", "attr2")),
-				sessionAttributesHandler.retrieveAttributes(session).keySet());
+				this.sessionAttributesHandler.retrieveAttributes(session).keySet());
 
 		// Resolve 'attr3' by type
-		sessionAttributesHandler.isHandlerSessionAttribute("attr3", TestBean.class);
+		this.sessionAttributesHandler.isHandlerSessionAttribute("attr3", TestBean.class);
 
 		assertEquals("Named attributes (attr1, attr2) and resolved attribute (att3) should be 'known'",
 				new HashSet<>(asList("attr1", "attr2", "attr3")),
-				sessionAttributesHandler.retrieveAttributes(session).keySet());
+				this.sessionAttributesHandler.retrieveAttributes(session).keySet());
 	}
 
 	@Test
@@ -97,7 +97,7 @@ public class SessionAttributesHandlerTests {
 		model.put("attr3", new TestBean());
 
 		WebSession session = new MockWebSession();
-		sessionAttributesHandler.storeAttributes(session, model);
+		this.sessionAttributesHandler.storeAttributes(session, model);
 
 		assertEquals("value1", session.getAttributes().get("attr1"));
 		assertEquals("value2", session.getAttributes().get("attr2"));

@@ -299,9 +299,9 @@ public class ResolvableMethod {
 		@SafeVarargs
 		public final Builder<T> annotPresent(Class<? extends Annotation>... annotationTypes) {
 			String message = "annotationPresent=" + Arrays.toString(annotationTypes);
-			addFilter(message, method ->
+			addFilter(message, candidateMethod ->
 					Arrays.stream(annotationTypes).allMatch(annotType ->
-							AnnotatedElementUtils.findMergedAnnotation(method, annotType) != null));
+							AnnotatedElementUtils.findMergedAnnotation(candidateMethod, annotType) != null));
 			return this;
 		}
 
@@ -311,13 +311,13 @@ public class ResolvableMethod {
 		@SafeVarargs
 		public final Builder<T> annotNotPresent(Class<? extends Annotation>... annotationTypes) {
 			String message = "annotationNotPresent=" + Arrays.toString(annotationTypes);
-			addFilter(message, method -> {
+			addFilter(message, candidateMethod -> {
 				if (annotationTypes.length != 0) {
 					return Arrays.stream(annotationTypes).noneMatch(annotType ->
-							AnnotatedElementUtils.findMergedAnnotation(method, annotType) != null);
+							AnnotatedElementUtils.findMergedAnnotation(candidateMethod, annotType) != null);
 				}
 				else {
-					return method.getAnnotations().length == 0;
+					return candidateMethod.getAnnotations().length == 0;
 				}
 			});
 			return this;
@@ -582,8 +582,8 @@ public class ResolvableMethod {
 
 		private List<MethodParameter> applyFilters() {
 			List<MethodParameter> matches = new ArrayList<>();
-			for (int i = 0; i < method.getParameterCount(); i++) {
-				MethodParameter param = new SynthesizingMethodParameter(method, i);
+			for (int i = 0; i < ResolvableMethod.this.method.getParameterCount(); i++) {
+				MethodParameter param = new SynthesizingMethodParameter(ResolvableMethod.this.method, i);
 				param.initParameterNameDiscovery(nameDiscoverer);
 				if (this.filters.stream().allMatch(p -> p.test(param))) {
 					matches.add(param);

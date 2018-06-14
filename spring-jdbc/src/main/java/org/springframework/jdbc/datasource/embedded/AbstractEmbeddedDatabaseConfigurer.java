@@ -46,7 +46,7 @@ abstract class AbstractEmbeddedDatabaseConfigurer implements EmbeddedDatabaseCon
 			}
 		}
 		catch (SQLException ex) {
-			logger.warn("Could not shut down embedded database", ex);
+			this.logger.warn("Could not shut down embedded database", ex);
 		}
 		finally {
 			if (con != null) {
@@ -54,7 +54,7 @@ abstract class AbstractEmbeddedDatabaseConfigurer implements EmbeddedDatabaseCon
 					con.close();
 				}
 				catch (Throwable ex) {
-					logger.debug("Could not close JDBC Connection on shutdown", ex);
+					this.logger.debug("Could not close JDBC Connection on shutdown", ex);
 				}
 			}
 		}

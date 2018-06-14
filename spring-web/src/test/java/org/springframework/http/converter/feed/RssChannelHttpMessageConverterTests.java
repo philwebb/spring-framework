@@ -46,20 +46,20 @@ public class RssChannelHttpMessageConverterTests {
 
 	@Before
 	public void setUp() {
-		converter = new RssChannelHttpMessageConverter();
+		this.converter = new RssChannelHttpMessageConverter();
 	}
 
 
 	@Test
 	public void canRead() {
-		assertTrue(converter.canRead(Channel.class, new MediaType("application", "rss+xml")));
-		assertTrue(converter.canRead(Channel.class, new MediaType("application", "rss+xml", StandardCharsets.UTF_8)));
+		assertTrue(this.converter.canRead(Channel.class, new MediaType("application", "rss+xml")));
+		assertTrue(this.converter.canRead(Channel.class, new MediaType("application", "rss+xml", StandardCharsets.UTF_8)));
 	}
 
 	@Test
 	public void canWrite() {
-		assertTrue(converter.canWrite(Channel.class, new MediaType("application", "rss+xml")));
-		assertTrue(converter.canWrite(Channel.class, new MediaType("application", "rss+xml", StandardCharsets.UTF_8)));
+		assertTrue(this.converter.canWrite(Channel.class, new MediaType("application", "rss+xml")));
+		assertTrue(this.converter.canWrite(Channel.class, new MediaType("application", "rss+xml", StandardCharsets.UTF_8)));
 	}
 
 	@Test
@@ -67,7 +67,7 @@ public class RssChannelHttpMessageConverterTests {
 		InputStream is = getClass().getResourceAsStream("rss.xml");
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(is);
 		inputMessage.getHeaders().setContentType(new MediaType("application", "rss+xml", StandardCharsets.UTF_8));
-		Channel result = converter.read(Channel.class, inputMessage);
+		Channel result = this.converter.read(Channel.class, inputMessage);
 		assertEquals("title", result.getTitle());
 		assertEquals("http://example.com", result.getLink());
 		assertEquals("description", result.getDescription());
@@ -101,7 +101,7 @@ public class RssChannelHttpMessageConverterTests {
 		channel.setItems(items);
 
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
-		converter.write(channel, null, outputMessage);
+		this.converter.write(channel, null, outputMessage);
 
 		assertEquals("Invalid content-type", new MediaType("application", "rss+xml", StandardCharsets.UTF_8),
 				outputMessage.getHeaders().getContentType());
@@ -127,7 +127,7 @@ public class RssChannelHttpMessageConverterTests {
 		item1.setTitle("title1");
 
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
-		converter.write(channel, null, outputMessage);
+		this.converter.write(channel, null, outputMessage);
 
 		assertEquals("Invalid content-type", new MediaType("application", "rss+xml", Charset.forName(encoding)),
 				outputMessage.getHeaders().getContentType());

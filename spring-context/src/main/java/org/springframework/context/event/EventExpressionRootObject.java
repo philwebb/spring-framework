@@ -36,11 +36,11 @@ class EventExpressionRootObject {
 	}
 
 	public ApplicationEvent getEvent() {
-		return event;
+		return this.event;
 	}
 
 	public Object[] getArgs() {
-		return args;
+		return this.args;
 	}
 
 }

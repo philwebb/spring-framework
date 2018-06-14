@@ -36,7 +36,7 @@ public class CommonsRequestLoggingFilter extends AbstractRequestLoggingFilter {
 
 	@Override
 	protected boolean shouldLog(HttpServletRequest request) {
-		return logger.isDebugEnabled();
+		return this.logger.isDebugEnabled();
 	}
 
 	/**
@@ -44,7 +44,7 @@ public class CommonsRequestLoggingFilter extends AbstractRequestLoggingFilter {
 	 */
 	@Override
 	protected void beforeRequest(HttpServletRequest request, String message) {
-		logger.debug(message);
+		this.logger.debug(message);
 	}
 
 	/**
@@ -52,7 +52,7 @@ public class CommonsRequestLoggingFilter extends AbstractRequestLoggingFilter {
 	 */
 	@Override
 	protected void afterRequest(HttpServletRequest request, String message) {
-		logger.debug(message);
+		this.logger.debug(message);
 	}
 
 }

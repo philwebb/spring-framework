@@ -134,7 +134,7 @@ public class PropertyMatchesTests {
 		private int counter3;
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String name) {
@@ -142,7 +142,7 @@ public class PropertyMatchesTests {
 		}
 
 		public String getDescription() {
-			return description;
+			return this.description;
 		}
 
 		public void setDescription(String description) {
@@ -150,7 +150,7 @@ public class PropertyMatchesTests {
 		}
 
 		public int getCounter1() {
-			return counter1;
+			return this.counter1;
 		}
 
 		public void setCounter1(int counter1) {
@@ -158,7 +158,7 @@ public class PropertyMatchesTests {
 		}
 
 		public int getCounter2() {
-			return counter2;
+			return this.counter2;
 		}
 
 		public void setCounter2(int counter2) {
@@ -166,7 +166,7 @@ public class PropertyMatchesTests {
 		}
 
 		public int getCounter3() {
-			return counter3;
+			return this.counter3;
 		}
 
 		public void setCounter3(int counter3) {

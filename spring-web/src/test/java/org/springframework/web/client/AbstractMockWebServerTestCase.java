@@ -99,7 +99,7 @@ public class AbstractMockWebServerTestCase {
 		Buffer buf = new Buffer();
 		buf.write(responseBody);
 		return new MockResponse()
-				.setHeader("Location", baseUrl + location)
+				.setHeader("Location", this.baseUrl + location)
 				.setHeader("Content-Type", contentType)
 				.setHeader("Content-Length", responseBody.length)
 				.setBody(buf)
@@ -113,7 +113,7 @@ public class AbstractMockWebServerTestCase {
 			assertNotNull("No content-type", request.getHeader("Content-Type"));
 		}
 		return new MockResponse()
-				.setHeader("Location", baseUrl + location)
+				.setHeader("Location", this.baseUrl + location)
 				.setHeader("Content-Type", contentType)
 				.setHeader("Content-Length", request.getBody().size())
 				.setBody(request.getBody())

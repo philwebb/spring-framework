@@ -99,16 +99,16 @@ class JoinPointMonitorAspect {
 	int aroundExecutions;
 
 	public void before() {
-		beforeExecutions++;
+		this.beforeExecutions++;
 	}
 
 	public Object around(ProceedingJoinPoint pjp) throws Throwable {
-		aroundExecutions++;
+		this.aroundExecutions++;
 		return pjp.proceed();
 	}
 
 	public ICounter getCounter() {
-		return counter;
+		return this.counter;
 	}
 
 	public void setCounter(ICounter counter) {
@@ -131,17 +131,17 @@ class JoinPointMonitorAtAspectJAspect {
 
 	@Before("execution(* increment*())")
 	public void before() {
-		beforeExecutions++;
+		this.beforeExecutions++;
 	}
 
 	@Around("execution(* increment*())")
 	public Object around(ProceedingJoinPoint pjp) throws Throwable {
-		aroundExecutions++;
+		this.aroundExecutions++;
 		return pjp.proceed();
 	}
 
 	public ICounter getCounter() {
-		return counter;
+		return this.counter;
 	}
 
 	public void setCounter(ICounter counter) {

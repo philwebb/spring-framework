@@ -195,7 +195,7 @@ public class CommonsMultipartResolver extends CommonsFileUploadSupport
 				cleanupFileItems(request.getMultiFileMap());
 			}
 			catch (Throwable ex) {
-				logger.warn("Failed to perform multipart cleanup for servlet request", ex);
+				this.logger.warn("Failed to perform multipart cleanup for servlet request", ex);
 			}
 		}
 	}

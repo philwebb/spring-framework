@@ -50,7 +50,7 @@ public class ApplicationPropertyOverridePropertiesFileTestPropertySourceTests {
 
 	@Test
 	public void verifyPropertiesAreAvailableInEnvironment() {
-		assertEquals("test override", env.getProperty("explicit"));
+		assertEquals("test override", this.env.getProperty("explicit"));
 	}
 
 

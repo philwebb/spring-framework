@@ -116,24 +116,24 @@ public class WebSocketConnectionManager extends ConnectionManagerSupport {
 
 	@Override
 	public void startInternal() {
-		if (this.client instanceof Lifecycle && !((Lifecycle) client).isRunning()) {
-			((Lifecycle) client).start();
+		if (this.client instanceof Lifecycle && !((Lifecycle) this.client).isRunning()) {
+			((Lifecycle) this.client).start();
 		}
 		super.startInternal();
 	}
 
 	@Override
 	public void stopInternal() throws Exception {
-		if (this.client instanceof Lifecycle && ((Lifecycle) client).isRunning()) {
-			((Lifecycle) client).stop();
+		if (this.client instanceof Lifecycle && ((Lifecycle) this.client).isRunning()) {
+			((Lifecycle) this.client).stop();
 		}
 		super.stopInternal();
 	}
 
 	@Override
 	protected void openConnection() {
-		if (logger.isInfoEnabled()) {
-			logger.info("Connecting to WebSocket at " + getUri());
+		if (this.logger.isInfoEnabled()) {
+			this.logger.info("Connecting to WebSocket at " + getUri());
 		}
 
 		ListenableFuture<WebSocketSession> future =
@@ -142,12 +142,12 @@ public class WebSocketConnectionManager extends ConnectionManagerSupport {
 		future.addCallback(new ListenableFutureCallback<WebSocketSession>() {
 			@Override
 			public void onSuccess(@Nullable WebSocketSession result) {
-				webSocketSession = result;
-				logger.info("Successfully connected");
+				WebSocketConnectionManager.this.webSocketSession = result;
+				WebSocketConnectionManager.this.logger.info("Successfully connected");
 			}
 			@Override
 			public void onFailure(Throwable ex) {
-				logger.error("Failed to connect", ex);
+				WebSocketConnectionManager.this.logger.error("Failed to connect", ex);
 			}
 		});
 	}

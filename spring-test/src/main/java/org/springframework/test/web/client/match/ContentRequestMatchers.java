@@ -168,7 +168,7 @@ public class ContentRequestMatchers {
 		return new AbstractXmlRequestMatcher() {
 			@Override
 			protected void matchInternal(MockClientHttpRequest request) throws Exception {
-				xmlHelper.assertXmlEqual(expectedXmlContent, request.getBodyAsString());
+				ContentRequestMatchers.this.xmlHelper.assertXmlEqual(expectedXmlContent, request.getBodyAsString());
 			}
 		};
 	}
@@ -180,7 +180,7 @@ public class ContentRequestMatchers {
 		return new AbstractXmlRequestMatcher() {
 			@Override
 			protected void matchInternal(MockClientHttpRequest request) throws Exception {
-				xmlHelper.assertNode(request.getBodyAsString(), matcher);
+				ContentRequestMatchers.this.xmlHelper.assertNode(request.getBodyAsString(), matcher);
 			}
 		};
 	}
@@ -193,7 +193,7 @@ public class ContentRequestMatchers {
 		return new AbstractXmlRequestMatcher() {
 			@Override
 			protected void matchInternal(MockClientHttpRequest request) throws Exception {
-				xmlHelper.assertSource(request.getBodyAsString(), matcher);
+				ContentRequestMatchers.this.xmlHelper.assertSource(request.getBodyAsString(), matcher);
 			}
 		};
 	}
@@ -231,7 +231,7 @@ public class ContentRequestMatchers {
 		return request -> {
 			try {
 				MockClientHttpRequest mockRequest = (MockClientHttpRequest) request;
-				jsonHelper.assertJsonEqual(expectedJsonContent, mockRequest.getBodyAsString(), strict);
+				this.jsonHelper.assertJsonEqual(expectedJsonContent, mockRequest.getBodyAsString(), strict);
 			}
 			catch (Exception ex) {
 				throw new AssertionError("Failed to parse expected or actual JSON request content", ex);

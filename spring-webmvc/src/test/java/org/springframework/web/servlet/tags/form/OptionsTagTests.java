@@ -69,7 +69,7 @@ public class OptionsTagTests extends AbstractHtmlElementTagTests {
 				return new TagWriter(getWriter());
 			}
 		};
-		selectTag = new SelectTag() {
+		this.selectTag = new SelectTag() {
 			@Override
 			protected TagWriter createTagWriter() {
 				return new TagWriter(getWriter());
@@ -81,8 +81,8 @@ public class OptionsTagTests extends AbstractHtmlElementTagTests {
 				return "testName";
 			}
 		};
-		selectTag.setPageContext(getPageContext());
-		this.tag.setParent(selectTag);
+		this.selectTag.setPageContext(getPageContext());
+		this.tag.setParent(this.selectTag);
 		this.tag.setPageContext(getPageContext());
 	}
 

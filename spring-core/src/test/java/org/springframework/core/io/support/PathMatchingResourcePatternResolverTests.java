@@ -59,20 +59,20 @@ public class PathMatchingResourcePatternResolverTests {
 
 	@Test(expected = FileNotFoundException.class)
 	public void invalidPrefixWithPatternElementInIt() throws IOException {
-		resolver.getResources("xx**:**/*.xy");
+		this.resolver.getResources("xx**:**/*.xy");
 	}
 
 	@Test
 	public void singleResourceOnFileSystem() throws IOException {
 		Resource[] resources =
-				resolver.getResources("org/springframework/core/io/support/PathMatchingResourcePatternResolverTests.class");
+				this.resolver.getResources("org/springframework/core/io/support/PathMatchingResourcePatternResolverTests.class");
 		assertEquals(1, resources.length);
 		assertProtocolAndFilenames(resources, "file", "PathMatchingResourcePatternResolverTests.class");
 	}
 
 	@Test
 	public void singleResourceInJar() throws IOException {
-		Resource[] resources = resolver.getResources("org/reactivestreams/Publisher.class");
+		Resource[] resources = this.resolver.getResources("org/reactivestreams/Publisher.class");
 		assertEquals(1, resources.length);
 		assertProtocolAndFilenames(resources, "jar", "Publisher.class");
 	}
@@ -80,7 +80,7 @@ public class PathMatchingResourcePatternResolverTests {
 	@Ignore  // passes under Eclipse, fails under Ant
 	@Test
 	public void classpathStarWithPatternOnFileSystem() throws IOException {
-		Resource[] resources = resolver.getResources("classpath*:org/springframework/core/io/sup*/*.class");
+		Resource[] resources = this.resolver.getResources("classpath*:org/springframework/core/io/sup*/*.class");
 		// Have to exclude Clover-generated class files here,
 		// as we might be running as part of a Clover test run.
 		List<Resource> noCloverResources = new ArrayList<>();
@@ -96,19 +96,19 @@ public class PathMatchingResourcePatternResolverTests {
 
 	@Test
 	public void classpathWithPatternInJar() throws IOException {
-		Resource[] resources = resolver.getResources("classpath:org/reactivestreams/*.class");
+		Resource[] resources = this.resolver.getResources("classpath:org/reactivestreams/*.class");
 		assertProtocolAndFilenames(resources, "jar", CLASSES_IN_REACTIVESTREAMS);
 	}
 
 	@Test
 	public void classpathStarWithPatternInJar() throws IOException {
-		Resource[] resources = resolver.getResources("classpath*:org/reactivestreams/*.class");
+		Resource[] resources = this.resolver.getResources("classpath*:org/reactivestreams/*.class");
 		assertProtocolAndFilenames(resources, "jar", CLASSES_IN_REACTIVESTREAMS);
 	}
 
 	@Test
 	public void rootPatternRetrievalInJarFiles() throws IOException {
-		Resource[] resources = resolver.getResources("classpath*:*.dtd");
+		Resource[] resources = this.resolver.getResources("classpath*:*.dtd");
 		boolean found = false;
 		for (Resource resource : resources) {
 			if (resource.getFilename().equals("aspectj_1_5_0.dtd")) {

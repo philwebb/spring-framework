@@ -304,14 +304,14 @@ public class TilesConfigurer implements ServletContextAware, InitializingBean, D
 
 		@Override
 		protected TilesContainer createDecoratedContainer(TilesContainer originalContainer, ApplicationContext context) {
-			return (useMutableTilesContainer ? new CachingTilesContainer(originalContainer) : originalContainer);
+			return (TilesConfigurer.this.useMutableTilesContainer ? new CachingTilesContainer(originalContainer) : originalContainer);
 		}
 
 		@Override
 		protected List<ApplicationResource> getSources(ApplicationContext applicationContext) {
-			if (definitions != null) {
+			if (TilesConfigurer.this.definitions != null) {
 				List<ApplicationResource> result = new LinkedList<>();
-				for (String definition : definitions) {
+				for (String definition : TilesConfigurer.this.definitions) {
 					Collection<ApplicationResource> resources = applicationContext.getResources(definition);
 					if (resources != null) {
 						result.addAll(resources);
@@ -328,7 +328,7 @@ public class TilesConfigurer implements ServletContextAware, InitializingBean, D
 		protected BaseLocaleUrlDefinitionDAO instantiateLocaleDefinitionDao(ApplicationContext applicationContext,
 				LocaleResolver resolver) {
 			BaseLocaleUrlDefinitionDAO dao = super.instantiateLocaleDefinitionDao(applicationContext, resolver);
-			if (checkRefresh && dao instanceof CachingLocaleUrlDefinitionDAO) {
+			if (TilesConfigurer.this.checkRefresh && dao instanceof CachingLocaleUrlDefinitionDAO) {
 				((CachingLocaleUrlDefinitionDAO) dao).setCheckRefresh(true);
 			}
 			return dao;
@@ -337,7 +337,7 @@ public class TilesConfigurer implements ServletContextAware, InitializingBean, D
 		@Override
 		protected DefinitionsReader createDefinitionsReader(ApplicationContext context) {
 			DigesterDefinitionsReader reader = (DigesterDefinitionsReader) super.createDefinitionsReader(context);
-			reader.setValidating(validateDefinitions);
+			reader.setValidating(TilesConfigurer.this.validateDefinitions);
 			return reader;
 		}
 
@@ -345,8 +345,8 @@ public class TilesConfigurer implements ServletContextAware, InitializingBean, D
 		protected DefinitionsFactory createDefinitionsFactory(ApplicationContext applicationContext,
 				LocaleResolver resolver) {
 
-			if (definitionsFactoryClass != null) {
-				DefinitionsFactory factory = BeanUtils.instantiateClass(definitionsFactoryClass);
+			if (TilesConfigurer.this.definitionsFactoryClass != null) {
+				DefinitionsFactory factory = BeanUtils.instantiateClass(TilesConfigurer.this.definitionsFactoryClass);
 				if (factory instanceof ApplicationContextAware) {
 					((ApplicationContextAware) factory).setApplicationContext(applicationContext);
 				}
@@ -366,8 +366,8 @@ public class TilesConfigurer implements ServletContextAware, InitializingBean, D
 
 		@Override
 		protected PreparerFactory createPreparerFactory(ApplicationContext context) {
-			if (preparerFactoryClass != null) {
-				return BeanUtils.instantiateClass(preparerFactoryClass);
+			if (TilesConfigurer.this.preparerFactoryClass != null) {
+				return BeanUtils.instantiateClass(TilesConfigurer.this.preparerFactoryClass);
 			}
 			else {
 				return super.createPreparerFactory(context);
@@ -417,7 +417,7 @@ public class TilesConfigurer implements ServletContextAware, InitializingBean, D
 		public AttributeEvaluator createEvaluator() {
 			ELAttributeEvaluator evaluator = new ELAttributeEvaluator();
 			evaluator.setExpressionFactory(
-					JspFactory.getDefaultFactory().getJspApplicationContext(servletContext).getExpressionFactory());
+					JspFactory.getDefaultFactory().getJspApplicationContext(TilesConfigurer.this.servletContext).getExpressionFactory());
 			evaluator.setResolver(new CompositeELResolverImpl());
 			return evaluator;
 		}

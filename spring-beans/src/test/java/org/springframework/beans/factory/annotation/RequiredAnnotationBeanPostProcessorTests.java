@@ -201,7 +201,7 @@ public class RequiredAnnotationBeanPostProcessorTests {
 
 
 		public int getAge() {
-			return age;
+			return this.age;
 		}
 
 		@Required
@@ -210,7 +210,7 @@ public class RequiredAnnotationBeanPostProcessorTests {
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		@MyRequired
@@ -219,7 +219,7 @@ public class RequiredAnnotationBeanPostProcessorTests {
 		}
 
 		public String getFavouriteColour() {
-			return favouriteColour;
+			return this.favouriteColour;
 		}
 
 		@Required
@@ -228,7 +228,7 @@ public class RequiredAnnotationBeanPostProcessorTests {
 		}
 
 		public String getJobTitle() {
-			return jobTitle;
+			return this.jobTitle;
 		}
 
 		@Required

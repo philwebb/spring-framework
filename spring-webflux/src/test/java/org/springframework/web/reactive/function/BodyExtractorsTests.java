@@ -99,7 +99,7 @@ public class BodyExtractorsTests {
 
 			@Override
 			public Map<String, Object> hints() {
-				return hints;
+				return BodyExtractorsTests.this.hints;
 			}
 		};
 		this.hints = new HashMap<String, Object>();
@@ -389,7 +389,7 @@ public class BodyExtractorsTests {
 		}
 
 		public String getUsername() {
-			return username;
+			return this.username;
 		}
 
 		public void setUsername(String username) {
@@ -397,7 +397,7 @@ public class BodyExtractorsTests {
 		}
 
 		public String getPassword() {
-			return password;
+			return this.password;
 		}
 
 		public void setPassword(String password) {

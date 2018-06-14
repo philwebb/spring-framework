@@ -27,7 +27,7 @@ public class Customer {
 
 
 	public int getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(int id) {
@@ -35,7 +35,7 @@ public class Customer {
 	}
 
 	public String getForename() {
-		return forename;
+		return this.forename;
 	}
 
 	public void setForename(String forename) {
@@ -45,7 +45,7 @@ public class Customer {
 
 	@Override
 	public String toString() {
-		return "Customer: id=" + id + "; forename=" + forename;
+		return "Customer: id=" + this.id + "; forename=" + this.forename;
 	}
 
 }

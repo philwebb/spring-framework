@@ -121,7 +121,7 @@ public class RedirectViewTests {
 		Map<String, String> attributes = Collections.singletonMap("foo", "bar");
 		this.exchange.getAttributes().put(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, attributes);
 		RedirectView view = new RedirectView(url);
-		view.render(new HashMap<>(), MediaType.TEXT_HTML, exchange).block();
+		view.render(new HashMap<>(), MediaType.TEXT_HTML, this.exchange).block();
 		assertEquals(URI.create("http://url.somewhere.com?foo=bar"), this.exchange.getResponse().getHeaders().getLocation());
 	}
 

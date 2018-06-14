@@ -96,12 +96,12 @@ public abstract class AbstractAopProxyTests {
 	 */
 	@Before
 	public void setUp() {
-		mockTargetSource.reset();
+		this.mockTargetSource.reset();
 	}
 
 	@After
 	public void tearDown() {
-		mockTargetSource.verify();
+		this.mockTargetSource.verify();
 	}
 
 
@@ -457,8 +457,8 @@ public abstract class AbstractAopProxyTests {
 		pc.addAdvice(mi);
 
 		// We don't care about the object
-		mockTargetSource.setTarget(new TestBean());
-		pc.setTargetSource(mockTargetSource);
+		this.mockTargetSource.setTarget(new TestBean());
+		pc.setTargetSource(this.mockTargetSource);
 		AopProxy aop = createAopProxy(pc);
 
 		try {
@@ -1081,7 +1081,7 @@ public abstract class AbstractAopProxyTests {
 		TestDynamicPointcutForSettersOnly dp = new TestDynamicPointcutForSettersOnly(new NopInterceptor(), "Age");
 		pc.addAdvisor(dp);
 		this.mockTargetSource.setTarget(tb);
-		pc.setTargetSource(mockTargetSource);
+		pc.setTargetSource(this.mockTargetSource);
 		ITestBean it = (ITestBean) createProxy(pc);
 		assertEquals(0, dp.count);
 		it.getAge();
@@ -1183,7 +1183,7 @@ public abstract class AbstractAopProxyTests {
 
 			@Override
 			public Object invoke(MethodInvocation mi) throws Throwable {
-				names.add(mi.getArguments()[0]);
+				this.names.add(mi.getArguments()[0]);
 				return mi.proceed();
 			}
 		}
@@ -1351,9 +1351,9 @@ public abstract class AbstractAopProxyTests {
 				ReflectiveMethodInvocation rmi = (ReflectiveMethodInvocation) invocation;
 				for (Iterator<String> it = rmi.getUserAttributes().keySet().iterator(); it.hasNext(); ){
 					Object key = it.next();
-					assertEquals(expectedValues.get(key), rmi.getUserAttributes().get(key));
+					assertEquals(this.expectedValues.get(key), rmi.getUserAttributes().get(key));
 				}
-				rmi.getUserAttributes().putAll(valuesToAdd);
+				rmi.getUserAttributes().putAll(this.valuesToAdd);
 				return invocation.proceed();
 			}
 		};
@@ -1480,7 +1480,7 @@ public abstract class AbstractAopProxyTests {
 			public int sum;
 			@Override
 			public void afterReturning(@Nullable Object returnValue, Method m, Object[] args, @Nullable Object target) throws Throwable {
-				sum += ((Integer) returnValue).intValue();
+				this.sum += ((Integer) returnValue).intValue();
 			}
 		}
 		SummingAfterAdvice aa = new SummingAfterAdvice();
@@ -1716,7 +1716,7 @@ public abstract class AbstractAopProxyTests {
 				public boolean matches(Method m, @Nullable Class<?> targetClass, Object... args) {
 					boolean run = m.getName().contains(pattern);
 					if (run) {
-						++count;
+						++TestDynamicPointcutAdvice.this.count;
 					}
 					return run;
 				}
@@ -1737,7 +1737,7 @@ public abstract class AbstractAopProxyTests {
 				public boolean matches(Method m, @Nullable Class<?> targetClass, Object... args) {
 					boolean run = m.getName().contains(pattern);
 					if (run) {
-						++count;
+						++TestDynamicPointcutForSettersOnly.this.count;
 					}
 					return run;
 				}
@@ -1761,7 +1761,7 @@ public abstract class AbstractAopProxyTests {
 		}
 		@Override
 		public boolean matches(Method m, @Nullable Class<?> targetClass) {
-			return m.getName().contains(pattern);
+			return m.getName().contains(this.pattern);
 		}
 	}
 
@@ -1838,7 +1838,7 @@ public abstract class AbstractAopProxyTests {
 
 		@Override
 		public int getCount() {
-			return count;
+			return this.count;
 		}
 
 		@Override
@@ -1859,7 +1859,7 @@ public abstract class AbstractAopProxyTests {
 
 		@Override
 		public void increment() {
-			++count;
+			++this.count;
 		}
 	}
 
@@ -1886,14 +1886,14 @@ public abstract class AbstractAopProxyTests {
 
 		@Override
 		public void activated(AdvisedSupport advised) {
-			assertEquals(expectedSource, advised);
-			++activates;
+			assertEquals(this.expectedSource, advised);
+			++this.activates;
 		}
 
 		@Override
 		public void adviceChanged(AdvisedSupport advised) {
-			assertEquals(expectedSource, advised);
-			++adviceChanges;
+			assertEquals(this.expectedSource, advised);
+			++this.adviceChanges;
 		}
 	}
 
@@ -1904,12 +1904,12 @@ public abstract class AbstractAopProxyTests {
 
 		@Override
 		public void activated(AdvisedSupport advised) {
-			++refreshes;
+			++this.refreshes;
 		}
 
 		@Override
 		public void adviceChanged(AdvisedSupport advised) {
-			++refreshes;
+			++this.refreshes;
 		}
 	}
 
@@ -2013,7 +2013,7 @@ public abstract class AbstractAopProxyTests {
 
 		public void reset() {
 			this.target = null;
-			gets = releases = 0;
+			this.gets = this.releases = 0;
 		}
 
 		public void setTarget(Object target) {
@@ -2025,7 +2025,7 @@ public abstract class AbstractAopProxyTests {
 		 */
 		@Override
 		public Class<?> getTargetClass() {
-			return target.getClass();
+			return this.target.getClass();
 		}
 
 		/**
@@ -2033,8 +2033,8 @@ public abstract class AbstractAopProxyTests {
 		 */
 		@Override
 		public Object getTarget() throws Exception {
-			++gets;
-			return target;
+			++this.gets;
+			return this.target;
 		}
 
 		/**
@@ -2045,7 +2045,7 @@ public abstract class AbstractAopProxyTests {
 			if (pTarget != this.target) {
 				throw new RuntimeException("Released wrong target");
 			}
-			++releases;
+			++this.releases;
 		}
 
 		/**
@@ -2053,8 +2053,8 @@ public abstract class AbstractAopProxyTests {
 		 *
 		 */
 		public void verify() {
-			if (gets != releases) {
-				throw new RuntimeException("Expectation failed: " + gets + " gets and " + releases + " releases");
+			if (this.gets != this.releases) {
+				throw new RuntimeException("Expectation failed: " + this.gets + " gets and " + this.releases + " releases");
 			}
 		}
 

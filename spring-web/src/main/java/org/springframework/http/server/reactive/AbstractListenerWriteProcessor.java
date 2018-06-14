@@ -67,7 +67,7 @@ public abstract class AbstractListenerWriteProcessor<T> implements Processor<T, 
 
 	@Override
 	public final void onNext(T data) {
-		logger.trace("Received onNext data item");
+		this.logger.trace("Received onNext data item");
 		this.state.get().onNext(this, data);
 	}
 
@@ -77,8 +77,8 @@ public abstract class AbstractListenerWriteProcessor<T> implements Processor<T, 
 	 */
 	@Override
 	public final void onError(Throwable ex) {
-		if (logger.isTraceEnabled()) {
-			logger.trace("Received onError: " + ex);
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Received onError: " + ex);
 		}
 		this.state.get().onError(this, ex);
 	}
@@ -89,7 +89,7 @@ public abstract class AbstractListenerWriteProcessor<T> implements Processor<T, 
 	 */
 	@Override
 	public final void onComplete() {
-		logger.trace("Received onComplete");
+		this.logger.trace("Received onComplete");
 		this.state.get().onComplete(this);
 	}
 
@@ -191,8 +191,8 @@ public abstract class AbstractListenerWriteProcessor<T> implements Processor<T, 
 
 	private boolean changeState(State oldState, State newState) {
 		boolean result = this.state.compareAndSet(oldState, newState);
-		if (result && logger.isTraceEnabled()) {
-			logger.trace(oldState + " -> " + newState);
+		if (result && this.logger.isTraceEnabled()) {
+			this.logger.trace(oldState + " -> " + newState);
 		}
 		return result;
 	}
@@ -215,8 +215,8 @@ public abstract class AbstractListenerWriteProcessor<T> implements Processor<T, 
 
 	private void writeIfPossible() {
 		boolean result = isWritePossible();
-		if (logger.isTraceEnabled()) {
-			logger.trace("isWritePossible[" + result + "]");
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("isWritePossible[" + result + "]");
 		}
 		if (result) {
 			onWritePossible();

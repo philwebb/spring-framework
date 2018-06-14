@@ -75,15 +75,15 @@ public abstract class AbstractTransactionalAnnotatedConfigClassTests {
 	}
 
 	private int countRowsInTable(String tableName) {
-		return jdbcTemplate.queryForObject("SELECT COUNT(0) FROM " + tableName, Integer.class);
+		return this.jdbcTemplate.queryForObject("SELECT COUNT(0) FROM " + tableName, Integer.class);
 	}
 
 	private int createPerson(String name) {
-		return jdbcTemplate.update("INSERT INTO person VALUES(?)", name);
+		return this.jdbcTemplate.update("INSERT INTO person VALUES(?)", name);
 	}
 
 	protected int deletePerson(String name) {
-		return jdbcTemplate.update("DELETE FROM person WHERE name=?", name);
+		return this.jdbcTemplate.update("DELETE FROM person WHERE name=?", name);
 	}
 
 	protected void assertNumRowsInPersonTable(int expectedNumRows, String testState) {
@@ -97,8 +97,8 @@ public abstract class AbstractTransactionalAnnotatedConfigClassTests {
 
 	@Test
 	public void autowiringFromConfigClass() {
-		assertNotNull("The employee should have been autowired.", employee);
-		assertEquals("John Smith", employee.getName());
+		assertNotNull("The employee should have been autowired.", this.employee);
+		assertEquals("John Smith", this.employee.getName());
 	}
 
 	@BeforeTransaction

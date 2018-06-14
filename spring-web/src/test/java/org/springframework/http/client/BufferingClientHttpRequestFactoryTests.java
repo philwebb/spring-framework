@@ -36,7 +36,7 @@ public class BufferingClientHttpRequestFactoryTests extends AbstractHttpRequestF
 
 	@Test
 	public void repeatableRead() throws Exception {
-		ClientHttpRequest request = factory.createRequest(new URI(baseUrl + "/echo"), HttpMethod.PUT);
+		ClientHttpRequest request = this.factory.createRequest(new URI(this.baseUrl + "/echo"), HttpMethod.PUT);
 		assertEquals("Invalid HTTP method", HttpMethod.PUT, request.getMethod());
 		String headerName = "MyHeader";
 		String headerValue1 = "value1";

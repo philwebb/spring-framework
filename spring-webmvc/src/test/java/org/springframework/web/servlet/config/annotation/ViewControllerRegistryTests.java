@@ -107,7 +107,7 @@ public class ViewControllerRegistryTests {
 		redirectView.render(Collections.emptyMap(), this.request, this.response);
 
 		assertEquals(308, this.response.getStatus());
-		assertEquals("/redirectTo?a=b", response.getRedirectedUrl());
+		assertEquals("/redirectTo?a=b", this.response.getRedirectedUrl());
 		assertNotNull(redirectView.getApplicationContext());
 	}
 

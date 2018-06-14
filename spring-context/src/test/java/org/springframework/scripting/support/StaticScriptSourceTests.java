@@ -50,32 +50,32 @@ public class StaticScriptSourceTests {
 
 	@Test
 	public void isModifiedIsTrueByDefault() throws Exception {
-		assertTrue("Script must be flagged as 'modified' when first created.", source.isModified());
+		assertTrue("Script must be flagged as 'modified' when first created.", this.source.isModified());
 	}
 
 	@Test
 	public void gettingScriptTogglesIsModified() throws Exception {
-		source.getScriptAsString();
-		assertFalse("Script must be flagged as 'not modified' after script is read.", source.isModified());
+		this.source.getScriptAsString();
+		assertFalse("Script must be flagged as 'not modified' after script is read.", this.source.isModified());
 	}
 
 	@Test
 	public void gettingScriptViaToStringDoesNotToggleIsModified() throws Exception {
-		boolean isModifiedState = source.isModified();
-		source.toString();
-		assertEquals("Script's 'modified' flag must not change after script is read via toString().", isModifiedState, source.isModified());
+		boolean isModifiedState = this.source.isModified();
+		this.source.toString();
+		assertEquals("Script's 'modified' flag must not change after script is read via toString().", isModifiedState, this.source.isModified());
 	}
 
 	@Test
 	public void isModifiedToggledWhenDifferentScriptIsSet() throws Exception {
-		source.setScript("use warnings;");
-		assertTrue("Script must be flagged as 'modified' when different script is passed in.", source.isModified());
+		this.source.setScript("use warnings;");
+		assertTrue("Script must be flagged as 'modified' when different script is passed in.", this.source.isModified());
 	}
 
 	@Test
 	public void isModifiedNotToggledWhenSameScriptIsSet() throws Exception {
-		source.setScript(SCRIPT_TEXT);
-		assertFalse("Script must not be flagged as 'modified' when same script is passed in.", source.isModified());
+		this.source.setScript(SCRIPT_TEXT);
+		assertFalse("Script must not be flagged as 'modified' when same script is passed in.", this.source.isModified());
 	}
 
 }

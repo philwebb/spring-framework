@@ -30,11 +30,11 @@ public class PlaceOfBirth {
 	 */
 	@Override
 	public String toString() {
-		return city;
+		return this.city;
 	}
 
 	public String getCity() {
-		return city;
+		return this.city;
 	}
 	public void setCity(String s) {
 		this.city = s;
@@ -54,12 +54,12 @@ public class PlaceOfBirth {
 			return false;
 		}
 		PlaceOfBirth oPOB = (PlaceOfBirth)o;
-		return (city.equals(oPOB.city));
+		return (this.city.equals(oPOB.city));
 	}
 
 	@Override
 	public int hashCode() {
-		return city.hashCode();
+		return this.city.hashCode();
 	}
 
 }

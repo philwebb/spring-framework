@@ -78,8 +78,8 @@ public abstract class AbstractWebSocketClient implements WebSocketClient {
 		Assert.notNull(webSocketHandler, "WebSocketHandler must not be null");
 		assertUri(uri);
 
-		if (logger.isDebugEnabled()) {
-			logger.debug("Connecting to " + uri);
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Connecting to " + uri);
 		}
 
 		HttpHeaders headersToUse = new HttpHeaders();

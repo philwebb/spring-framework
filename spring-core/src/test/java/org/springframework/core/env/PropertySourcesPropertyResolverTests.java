@@ -44,32 +44,32 @@ public class PropertySourcesPropertyResolverTests {
 
 	@Before
 	public void setUp() {
-		propertySources = new MutablePropertySources();
-		propertyResolver = new PropertySourcesPropertyResolver(propertySources);
-		testProperties = new Properties();
-		propertySources.addFirst(new PropertiesPropertySource("testProperties", testProperties));
+		this.propertySources = new MutablePropertySources();
+		this.propertyResolver = new PropertySourcesPropertyResolver(this.propertySources);
+		this.testProperties = new Properties();
+		this.propertySources.addFirst(new PropertiesPropertySource("testProperties", this.testProperties));
 	}
 
 
 	@Test
 	public void containsProperty() {
-		assertThat(propertyResolver.containsProperty("foo"), is(false));
-		testProperties.put("foo", "bar");
-		assertThat(propertyResolver.containsProperty("foo"), is(true));
+		assertThat(this.propertyResolver.containsProperty("foo"), is(false));
+		this.testProperties.put("foo", "bar");
+		assertThat(this.propertyResolver.containsProperty("foo"), is(true));
 	}
 
 	@Test
 	public void getProperty() {
-		assertThat(propertyResolver.getProperty("foo"), nullValue());
-		testProperties.put("foo", "bar");
-		assertThat(propertyResolver.getProperty("foo"), is("bar"));
+		assertThat(this.propertyResolver.getProperty("foo"), nullValue());
+		this.testProperties.put("foo", "bar");
+		assertThat(this.propertyResolver.getProperty("foo"), is("bar"));
 	}
 
 	@Test
 	public void getProperty_withDefaultValue() {
-		assertThat(propertyResolver.getProperty("foo", "myDefault"), is("myDefault"));
-		testProperties.put("foo", "bar");
-		assertThat(propertyResolver.getProperty("foo"), is("bar"));
+		assertThat(this.propertyResolver.getProperty("foo", "myDefault"), is("myDefault"));
+		this.testProperties.put("foo", "bar");
+		assertThat(this.propertyResolver.getProperty("foo"), is("bar"));
 	}
 
 	@Test
@@ -88,32 +88,32 @@ public class PropertySourcesPropertyResolverTests {
 	public void getProperty_withExplicitNullValue() {
 		// java.util.Properties does not allow null values (because Hashtable does not)
 		Map<String, Object> nullableProperties = new HashMap<>();
-		propertySources.addLast(new MapPropertySource("nullableProperties", nullableProperties));
+		this.propertySources.addLast(new MapPropertySource("nullableProperties", nullableProperties));
 		nullableProperties.put("foo", null);
-		assertThat(propertyResolver.getProperty("foo"), nullValue());
+		assertThat(this.propertyResolver.getProperty("foo"), nullValue());
 	}
 
 	@Test
 	public void getProperty_withTargetType_andDefaultValue() {
-		assertThat(propertyResolver.getProperty("foo", Integer.class, 42), equalTo(42));
-		testProperties.put("foo", 13);
-		assertThat(propertyResolver.getProperty("foo", Integer.class, 42), equalTo(13));
+		assertThat(this.propertyResolver.getProperty("foo", Integer.class, 42), equalTo(42));
+		this.testProperties.put("foo", 13);
+		assertThat(this.propertyResolver.getProperty("foo", Integer.class, 42), equalTo(13));
 	}
 
 	@Test
 	public void getProperty_withStringArrayConversion() {
-		testProperties.put("foo", "bar,baz");
-		assertThat(propertyResolver.getProperty("foo", String[].class), equalTo(new String[] { "bar", "baz" }));
+		this.testProperties.put("foo", "bar,baz");
+		assertThat(this.propertyResolver.getProperty("foo", String[].class), equalTo(new String[] { "bar", "baz" }));
 	}
 
 	@Test
 	public void getProperty_withNonConvertibleTargetType() {
-		testProperties.put("foo", "bar");
+		this.testProperties.put("foo", "bar");
 
 		class TestType { }
 
 		try {
-			propertyResolver.getProperty("foo", TestType.class);
+			this.propertyResolver.getProperty("foo", TestType.class);
 			fail("Expected ConverterNotFoundException due to non-convertible types");
 		}
 		catch (ConverterNotFoundException ex) {
@@ -150,30 +150,30 @@ public class PropertySourcesPropertyResolverTests {
 
 	@Test
 	public void getPropertySources_replacePropertySource() {
-		propertySources = new MutablePropertySources();
-		propertyResolver = new PropertySourcesPropertyResolver(propertySources);
-		propertySources.addLast(new MockPropertySource("local").withProperty("foo", "localValue"));
-		propertySources.addLast(new MockPropertySource("system").withProperty("foo", "systemValue"));
+		this.propertySources = new MutablePropertySources();
+		this.propertyResolver = new PropertySourcesPropertyResolver(this.propertySources);
+		this.propertySources.addLast(new MockPropertySource("local").withProperty("foo", "localValue"));
+		this.propertySources.addLast(new MockPropertySource("system").withProperty("foo", "systemValue"));
 
 		// 'local' was added first so has precedence
-		assertThat(propertyResolver.getProperty("foo"), equalTo("localValue"));
+		assertThat(this.propertyResolver.getProperty("foo"), equalTo("localValue"));
 
 		// replace 'local' with new property source
-		propertySources.replace("local", new MockPropertySource("new").withProperty("foo", "newValue"));
+		this.propertySources.replace("local", new MockPropertySource("new").withProperty("foo", "newValue"));
 
 		// 'system' now has precedence
-		assertThat(propertyResolver.getProperty("foo"), equalTo("newValue"));
+		assertThat(this.propertyResolver.getProperty("foo"), equalTo("newValue"));
 
-		assertThat(propertySources.size(), is(2));
+		assertThat(this.propertySources.size(), is(2));
 	}
 
 	@Test
 	public void getRequiredProperty() {
-		testProperties.put("exists", "xyz");
-		assertThat(propertyResolver.getRequiredProperty("exists"), is("xyz"));
+		this.testProperties.put("exists", "xyz");
+		assertThat(this.propertyResolver.getRequiredProperty("exists"), is("xyz"));
 
 		try {
-			propertyResolver.getRequiredProperty("bogus");
+			this.propertyResolver.getRequiredProperty("bogus");
 			fail("expected IllegalStateException");
 		}
 		catch (IllegalStateException ex) {
@@ -183,11 +183,11 @@ public class PropertySourcesPropertyResolverTests {
 
 	@Test
 	public void getRequiredProperty_withStringArrayConversion() {
-		testProperties.put("exists", "abc,123");
-		assertThat(propertyResolver.getRequiredProperty("exists", String[].class), equalTo(new String[] { "abc", "123" }));
+		this.testProperties.put("exists", "abc,123");
+		assertThat(this.propertyResolver.getRequiredProperty("exists", String[].class), equalTo(new String[] { "abc", "123" }));
 
 		try {
-			propertyResolver.getRequiredProperty("bogus", String[].class);
+			this.propertyResolver.getRequiredProperty("bogus", String[].class);
 			fail("expected IllegalStateException");
 		}
 		catch (IllegalStateException ex) {
@@ -259,14 +259,14 @@ public class PropertySourcesPropertyResolverTests {
 	@Test
 	public void setRequiredProperties_andValidateRequiredProperties() {
 		// no properties have been marked as required -> validation should pass
-		propertyResolver.validateRequiredProperties();
+		this.propertyResolver.validateRequiredProperties();
 
 		// mark which properties are required
-		propertyResolver.setRequiredProperties("foo", "bar");
+		this.propertyResolver.setRequiredProperties("foo", "bar");
 
 		// neither foo nor bar properties are present -> validating should throw
 		try {
-			propertyResolver.validateRequiredProperties();
+			this.propertyResolver.validateRequiredProperties();
 			fail("expected validation exception");
 		}
 		catch (MissingRequiredPropertiesException ex) {
@@ -276,9 +276,9 @@ public class PropertySourcesPropertyResolverTests {
 		}
 
 		// add foo property -> validation should fail only on missing 'bar' property
-		testProperties.put("foo", "fooValue");
+		this.testProperties.put("foo", "fooValue");
 		try {
-			propertyResolver.validateRequiredProperties();
+			this.propertyResolver.validateRequiredProperties();
 			fail("expected validation exception");
 		}
 		catch (MissingRequiredPropertiesException ex) {
@@ -288,8 +288,8 @@ public class PropertySourcesPropertyResolverTests {
 		}
 
 		// add bar property -> validation should pass, even with an empty string value
-		testProperties.put("bar", "");
-		propertyResolver.validateRequiredProperties();
+		this.testProperties.put("bar", "");
+		this.propertyResolver.validateRequiredProperties();
 	}
 
 	@Test

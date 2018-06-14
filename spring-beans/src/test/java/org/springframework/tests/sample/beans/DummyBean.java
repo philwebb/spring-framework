@@ -51,18 +51,18 @@ public class DummyBean {
 	}
 
 	public Object getValue() {
-		return value;
+		return this.value;
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public int getAge() {
-		return age;
+		return this.age;
 	}
 
 	public TestBean getSpouse() {
-		return spouse;
+		return this.spouse;
 	}
 }

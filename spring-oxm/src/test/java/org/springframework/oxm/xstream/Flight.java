@@ -25,7 +25,7 @@ public class Flight {
 	private long flightNumber;
 
 	public long getFlightNumber() {
-		return flightNumber;
+		return this.flightNumber;
 	}
 
 	public void setFlightNumber(long number) {

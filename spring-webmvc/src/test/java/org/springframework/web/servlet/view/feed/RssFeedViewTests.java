@@ -53,7 +53,7 @@ public class RssFeedViewTests {
 		model.put("2", "This is entry 2");
 		model.put("1", "This is entry 1");
 
-		view.render(model, request, response);
+		this.view.render(model, request, response);
 		assertEquals("Invalid content-type", "application/rss+xml", response.getContentType());
 		String expected = "<rss version=\"2.0\">" +
 				"<channel><title>Test Feed</title>" +

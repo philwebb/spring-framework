@@ -68,7 +68,7 @@ public class CachingMetadataReaderLeakTests {
 				}
 			};
 
-			MetadataReader reader = mrf.getMetadataReader(resource);
+			MetadataReader reader = this.mrf.getMetadataReader(resource);
 			assertThat(reader, notNullValue());
 		}
 

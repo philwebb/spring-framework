@@ -86,7 +86,7 @@ public class ResponseStatusExceptionResolver extends AbstractHandlerExceptionRes
 			}
 		}
 		catch (Exception resolveEx) {
-			logger.warn("Failure while trying to resolve exception [" + ex.getClass().getName() + "]", resolveEx);
+			this.logger.warn("Failure while trying to resolve exception [" + ex.getClass().getName() + "]", resolveEx);
 		}
 		return null;
 	}

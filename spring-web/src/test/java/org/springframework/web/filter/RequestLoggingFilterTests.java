@@ -53,20 +53,20 @@ public class RequestLoggingFilterTests {
 		request.setQueryString("booking=42");
 
 		FilterChain filterChain = new NoOpFilterChain();
-		filter.doFilter(request, response, filterChain);
+		this.filter.doFilter(request, response, filterChain);
 
-		assertNotNull(filter.beforeRequestMessage);
-		assertTrue(filter.beforeRequestMessage.contains("uri=/hotel"));
-		assertFalse(filter.beforeRequestMessage.contains("booking=42"));
+		assertNotNull(this.filter.beforeRequestMessage);
+		assertTrue(this.filter.beforeRequestMessage.contains("uri=/hotel"));
+		assertFalse(this.filter.beforeRequestMessage.contains("booking=42"));
 
-		assertNotNull(filter.afterRequestMessage);
-		assertTrue(filter.afterRequestMessage.contains("uri=/hotel"));
-		assertFalse(filter.afterRequestMessage.contains("booking=42"));
+		assertNotNull(this.filter.afterRequestMessage);
+		assertTrue(this.filter.afterRequestMessage.contains("uri=/hotel"));
+		assertFalse(this.filter.afterRequestMessage.contains("booking=42"));
 	}
 
 	@Test
 	public void queryStringIncluded() throws Exception {
-		filter.setIncludeQueryString(true);
+		this.filter.setIncludeQueryString(true);
 
 		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/hotels");
 		MockHttpServletResponse response = new MockHttpServletResponse();
@@ -74,35 +74,35 @@ public class RequestLoggingFilterTests {
 		request.setQueryString("booking=42");
 
 		FilterChain filterChain = new NoOpFilterChain();
-		filter.doFilter(request, response, filterChain);
+		this.filter.doFilter(request, response, filterChain);
 
-		assertNotNull(filter.beforeRequestMessage);
-		assertTrue(filter.beforeRequestMessage.contains("[uri=/hotels?booking=42]"));
+		assertNotNull(this.filter.beforeRequestMessage);
+		assertTrue(this.filter.beforeRequestMessage.contains("[uri=/hotels?booking=42]"));
 
-		assertNotNull(filter.afterRequestMessage);
-		assertTrue(filter.afterRequestMessage.contains("[uri=/hotels?booking=42]"));
+		assertNotNull(this.filter.afterRequestMessage);
+		assertTrue(this.filter.afterRequestMessage.contains("[uri=/hotels?booking=42]"));
 	}
 
 	@Test
 	public void noQueryStringAvailable() throws Exception {
-		filter.setIncludeQueryString(true);
+		this.filter.setIncludeQueryString(true);
 
 		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/hotels");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 
 		FilterChain filterChain = new NoOpFilterChain();
-		filter.doFilter(request, response, filterChain);
+		this.filter.doFilter(request, response, filterChain);
 
-		assertNotNull(filter.beforeRequestMessage);
-		assertTrue(filter.beforeRequestMessage.contains("[uri=/hotels]"));
+		assertNotNull(this.filter.beforeRequestMessage);
+		assertTrue(this.filter.beforeRequestMessage.contains("[uri=/hotels]"));
 
-		assertNotNull(filter.afterRequestMessage);
-		assertTrue(filter.afterRequestMessage.contains("[uri=/hotels]"));
+		assertNotNull(this.filter.afterRequestMessage);
+		assertTrue(this.filter.afterRequestMessage.contains("[uri=/hotels]"));
 	}
 
 	@Test
 	public void payloadInputStream() throws Exception {
-		filter.setIncludePayload(true);
+		this.filter.setIncludePayload(true);
 
 		final MockHttpServletRequest request = new MockHttpServletRequest("POST", "/hotels");
 		MockHttpServletResponse response = new MockHttpServletResponse();
@@ -120,15 +120,15 @@ public class RequestLoggingFilterTests {
 			}
 		};
 
-		filter.doFilter(request, response, filterChain);
+		this.filter.doFilter(request, response, filterChain);
 
-		assertNotNull(filter.afterRequestMessage);
-		assertTrue(filter.afterRequestMessage.contains("Hello World"));
+		assertNotNull(this.filter.afterRequestMessage);
+		assertTrue(this.filter.afterRequestMessage.contains("Hello World"));
 	}
 
 	@Test
 	public void payloadReader() throws Exception {
-		filter.setIncludePayload(true);
+		this.filter.setIncludePayload(true);
 
 		final MockHttpServletRequest request = new MockHttpServletRequest("POST", "/hotels");
 		MockHttpServletResponse response = new MockHttpServletResponse();
@@ -146,16 +146,16 @@ public class RequestLoggingFilterTests {
 			}
 		};
 
-		filter.doFilter(request, response, filterChain);
+		this.filter.doFilter(request, response, filterChain);
 
-		assertNotNull(filter.afterRequestMessage);
-		assertTrue(filter.afterRequestMessage.contains(requestBody));
+		assertNotNull(this.filter.afterRequestMessage);
+		assertTrue(this.filter.afterRequestMessage.contains(requestBody));
 	}
 
 	@Test
 	public void payloadMaxLength() throws Exception {
-		filter.setIncludePayload(true);
-		filter.setMaxPayloadLength(3);
+		this.filter.setIncludePayload(true);
+		this.filter.setMaxPayloadLength(3);
 
 		final MockHttpServletRequest request = new MockHttpServletRequest("POST", "/hotels");
 		MockHttpServletResponse response = new MockHttpServletResponse();
@@ -176,11 +176,11 @@ public class RequestLoggingFilterTests {
 			}
 		};
 
-		filter.doFilter(request, response, filterChain);
+		this.filter.doFilter(request, response, filterChain);
 
-		assertNotNull(filter.afterRequestMessage);
-		assertTrue(filter.afterRequestMessage.contains("Hel"));
-		assertFalse(filter.afterRequestMessage.contains("Hello World"));
+		assertNotNull(this.filter.afterRequestMessage);
+		assertTrue(this.filter.afterRequestMessage.contains("Hel"));
+		assertFalse(this.filter.afterRequestMessage.contains("Hello World"));
 	}
 
 

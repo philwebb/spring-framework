@@ -28,7 +28,7 @@ public class ScannedComponent {
 	private State state;
 
 	public String iDoAnything() {
-		return state.anyMethod();
+		return this.state.anyMethod();
 	}
 
 

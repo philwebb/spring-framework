@@ -47,14 +47,14 @@ public class DefaultResponseErrorHandlerTests {
 
 	@Test
 	public void hasErrorTrue() throws Exception {
-		given(response.getRawStatusCode()).willReturn(HttpStatus.NOT_FOUND.value());
-		assertTrue(handler.hasError(response));
+		given(this.response.getRawStatusCode()).willReturn(HttpStatus.NOT_FOUND.value());
+		assertTrue(this.handler.hasError(this.response));
 	}
 
 	@Test
 	public void hasErrorFalse() throws Exception {
-		given(response.getRawStatusCode()).willReturn(HttpStatus.OK.value());
-		assertFalse(handler.hasError(response));
+		given(this.response.getRawStatusCode()).willReturn(HttpStatus.OK.value());
+		assertFalse(this.handler.hasError(this.response));
 	}
 
 	@Test
@@ -62,13 +62,13 @@ public class DefaultResponseErrorHandlerTests {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.TEXT_PLAIN);
 
-		given(response.getRawStatusCode()).willReturn(HttpStatus.NOT_FOUND.value());
-		given(response.getStatusText()).willReturn("Not Found");
-		given(response.getHeaders()).willReturn(headers);
-		given(response.getBody()).willReturn(new ByteArrayInputStream("Hello World".getBytes("UTF-8")));
+		given(this.response.getRawStatusCode()).willReturn(HttpStatus.NOT_FOUND.value());
+		given(this.response.getStatusText()).willReturn("Not Found");
+		given(this.response.getHeaders()).willReturn(headers);
+		given(this.response.getBody()).willReturn(new ByteArrayInputStream("Hello World".getBytes("UTF-8")));
 
 		try {
-			handler.handleError(response);
+			this.handler.handleError(this.response);
 			fail("expected HttpClientErrorException");
 		}
 		catch (HttpClientErrorException ex) {
@@ -81,12 +81,12 @@ public class DefaultResponseErrorHandlerTests {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.TEXT_PLAIN);
 
-		given(response.getRawStatusCode()).willReturn(HttpStatus.NOT_FOUND.value());
-		given(response.getStatusText()).willReturn("Not Found");
-		given(response.getHeaders()).willReturn(headers);
-		given(response.getBody()).willThrow(new IOException());
+		given(this.response.getRawStatusCode()).willReturn(HttpStatus.NOT_FOUND.value());
+		given(this.response.getStatusText()).willReturn("Not Found");
+		given(this.response.getHeaders()).willReturn(headers);
+		given(this.response.getBody()).willThrow(new IOException());
 
-		handler.handleError(response);
+		this.handler.handleError(this.response);
 	}
 
 	@Test(expected = HttpClientErrorException.class)
@@ -94,11 +94,11 @@ public class DefaultResponseErrorHandlerTests {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.TEXT_PLAIN);
 
-		given(response.getRawStatusCode()).willReturn(HttpStatus.NOT_FOUND.value());
-		given(response.getStatusText()).willReturn("Not Found");
-		given(response.getHeaders()).willReturn(headers);
+		given(this.response.getRawStatusCode()).willReturn(HttpStatus.NOT_FOUND.value());
+		given(this.response.getStatusText()).willReturn("Not Found");
+		given(this.response.getHeaders()).willReturn(headers);
 
-		handler.handleError(response);
+		this.handler.handleError(this.response);
 	}
 
 	@Test(expected = UnknownHttpStatusCodeException.class)  // SPR-9406
@@ -106,11 +106,11 @@ public class DefaultResponseErrorHandlerTests {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.TEXT_PLAIN);
 
-		given(response.getRawStatusCode()).willReturn(999);
-		given(response.getStatusText()).willReturn("Custom status code");
-		given(response.getHeaders()).willReturn(headers);
+		given(this.response.getRawStatusCode()).willReturn(999);
+		given(this.response.getStatusText()).willReturn("Custom status code");
+		given(this.response.getHeaders()).willReturn(headers);
 
-		handler.handleError(response);
+		this.handler.handleError(this.response);
 	}
 
 	@Test  // SPR-16108
@@ -118,11 +118,11 @@ public class DefaultResponseErrorHandlerTests {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.TEXT_PLAIN);
 
-		given(response.getRawStatusCode()).willReturn(999);
-		given(response.getStatusText()).willReturn("Custom status code");
-		given(response.getHeaders()).willReturn(headers);
+		given(this.response.getRawStatusCode()).willReturn(999);
+		given(this.response.getStatusText()).willReturn("Custom status code");
+		given(this.response.getHeaders()).willReturn(headers);
 
-		assertFalse(handler.hasError(response));
+		assertFalse(this.handler.hasError(this.response));
 	}
 
 	@Test  // SPR-16604
@@ -131,14 +131,14 @@ public class DefaultResponseErrorHandlerTests {
 		headers.setContentType(MediaType.TEXT_PLAIN);
 		TestByteArrayInputStream body = new TestByteArrayInputStream("Hello World".getBytes(StandardCharsets.UTF_8));
 
-		given(response.getRawStatusCode()).willReturn(999);
-		given(response.getStatusText()).willReturn("Custom status code");
-		given(response.getHeaders()).willReturn(headers);
-		given(response.getBody()).willReturn(body);
+		given(this.response.getRawStatusCode()).willReturn(999);
+		given(this.response.getStatusText()).willReturn("Custom status code");
+		given(this.response.getHeaders()).willReturn(headers);
+		given(this.response.getBody()).willReturn(body);
 
-		assertFalse(handler.hasError(response));
+		assertFalse(this.handler.hasError(this.response));
 		assertFalse(body.isClosed());
-		assertEquals("Hello World", StreamUtils.copyToString(response.getBody(), StandardCharsets.UTF_8));
+		assertEquals("Hello World", StreamUtils.copyToString(this.response.getBody(), StandardCharsets.UTF_8));
 	}
 
 
@@ -152,7 +152,7 @@ public class DefaultResponseErrorHandlerTests {
 		}
 
 		public boolean isClosed() {
-			return closed;
+			return this.closed;
 		}
 
 		@Override

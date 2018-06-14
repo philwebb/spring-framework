@@ -157,12 +157,12 @@ public abstract class AbstractMessageChannel implements MessageChannel, Intercep
 		@Nullable
 		public Message<?> applyPreSend(Message<?> message, MessageChannel channel) {
 			Message<?> messageToUse = message;
-			for (ChannelInterceptor interceptor : interceptors) {
+			for (ChannelInterceptor interceptor : AbstractMessageChannel.this.interceptors) {
 				Message<?> resolvedMessage = interceptor.preSend(messageToUse, channel);
 				if (resolvedMessage == null) {
 					String name = interceptor.getClass().getSimpleName();
-					if (logger.isDebugEnabled()) {
-						logger.debug(name + " returned null from preSend, i.e. precluding the send.");
+					if (AbstractMessageChannel.this.logger.isDebugEnabled()) {
+						AbstractMessageChannel.this.logger.debug(name + " returned null from preSend, i.e. precluding the send.");
 					}
 					triggerAfterSendCompletion(messageToUse, channel, false, null);
 					return null;
@@ -174,7 +174,7 @@ public abstract class AbstractMessageChannel implements MessageChannel, Intercep
 		}
 
 		public void applyPostSend(Message<?> message, MessageChannel channel, boolean sent) {
-			for (ChannelInterceptor interceptor : interceptors) {
+			for (ChannelInterceptor interceptor : AbstractMessageChannel.this.interceptors) {
 				interceptor.postSend(message, channel, sent);
 			}
 		}
@@ -183,18 +183,18 @@ public abstract class AbstractMessageChannel implements MessageChannel, Intercep
 				boolean sent, @Nullable Exception ex) {
 
 			for (int i = this.sendInterceptorIndex; i >= 0; i--) {
-				ChannelInterceptor interceptor = interceptors.get(i);
+				ChannelInterceptor interceptor = AbstractMessageChannel.this.interceptors.get(i);
 				try {
 					interceptor.afterSendCompletion(message, channel, sent, ex);
 				}
 				catch (Throwable ex2) {
-					logger.error("Exception from afterSendCompletion in " + interceptor, ex2);
+					AbstractMessageChannel.this.logger.error("Exception from afterSendCompletion in " + interceptor, ex2);
 				}
 			}
 		}
 
 		public boolean applyPreReceive(MessageChannel channel) {
-			for (ChannelInterceptor interceptor : interceptors) {
+			for (ChannelInterceptor interceptor : AbstractMessageChannel.this.interceptors) {
 				if (!interceptor.preReceive(channel)) {
 					triggerAfterReceiveCompletion(null, channel, null);
 					return false;
@@ -207,7 +207,7 @@ public abstract class AbstractMessageChannel implements MessageChannel, Intercep
 		@Nullable
 		public Message<?> applyPostReceive(Message<?> message, MessageChannel channel) {
 			Message<?> messageToUse = message;
-			for (ChannelInterceptor interceptor : interceptors) {
+			for (ChannelInterceptor interceptor : AbstractMessageChannel.this.interceptors) {
 				messageToUse = interceptor.postReceive(messageToUse, channel);
 				if (messageToUse == null) {
 					return null;
@@ -220,13 +220,13 @@ public abstract class AbstractMessageChannel implements MessageChannel, Intercep
 				@Nullable Message<?> message, MessageChannel channel, @Nullable Exception ex) {
 
 			for (int i = this.receiveInterceptorIndex; i >= 0; i--) {
-				ChannelInterceptor interceptor = interceptors.get(i);
+				ChannelInterceptor interceptor = AbstractMessageChannel.this.interceptors.get(i);
 				try {
 					interceptor.afterReceiveCompletion(message, channel, ex);
 				}
 				catch (Throwable ex2) {
-					if (logger.isErrorEnabled()) {
-						logger.error("Exception from afterReceiveCompletion in " + interceptor, ex2);
+					if (AbstractMessageChannel.this.logger.isErrorEnabled()) {
+						AbstractMessageChannel.this.logger.error("Exception from afterReceiveCompletion in " + interceptor, ex2);
 					}
 				}
 			}

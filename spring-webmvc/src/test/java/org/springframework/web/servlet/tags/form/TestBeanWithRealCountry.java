@@ -31,7 +31,7 @@ public class TestBeanWithRealCountry extends TestBean {
 	}
 
 	public Country getRealCountry() {
-		return realCountry;
+		return this.realCountry;
 	}
 
 }

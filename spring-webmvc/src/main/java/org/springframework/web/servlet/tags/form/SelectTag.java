@@ -489,7 +489,7 @@ public class SelectTag extends AbstractHtmlInputElementTag {
 	public int doEndTag() throws JspException {
 		if (this.tagWriter != null) {
 			this.tagWriter.endTag();
-			writeHiddenTagIfNecessary(tagWriter);
+			writeHiddenTagIfNecessary(this.tagWriter);
 		}
 		return EVAL_PAGE;
 	}

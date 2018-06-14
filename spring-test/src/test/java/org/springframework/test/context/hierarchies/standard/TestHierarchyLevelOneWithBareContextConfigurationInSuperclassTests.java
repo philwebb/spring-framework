@@ -63,10 +63,10 @@ public class TestHierarchyLevelOneWithBareContextConfigurationInSuperclassTests 
 
 	@Test
 	public void loadContextHierarchy() {
-		assertNotNull("child ApplicationContext", context);
-		assertNull("parent ApplicationContext", context.getParent());
-		assertEquals("foo-level-1", foo);
-		assertEquals("bar", bar);
+		assertNotNull("child ApplicationContext", this.context);
+		assertNull("parent ApplicationContext", this.context.getParent());
+		assertEquals("foo-level-1", this.foo);
+		assertEquals("bar", this.bar);
 	}
 
 }

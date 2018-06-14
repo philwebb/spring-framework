@@ -49,7 +49,7 @@ public class InlinedPropertiesTestPropertySourceTests {
 
 
 	private String property(String key) {
-		return env.getProperty(key);
+		return this.env.getProperty(key);
 	}
 
 	@Test
@@ -72,7 +72,7 @@ public class InlinedPropertiesTestPropertySourceTests {
 	public void propertyNameOrderingIsPreservedInEnvironment() {
 		final String[] expectedPropertyNames = new String[] { "foo", "baz", "enigma", "x.y.z", "server.url",
 			"key.value.1", "key.value.2", "key.value.3" };
-		EnumerablePropertySource eps = (EnumerablePropertySource) env.getPropertySources().get(
+		EnumerablePropertySource eps = (EnumerablePropertySource) this.env.getPropertySources().get(
 			INLINED_PROPERTIES_PROPERTY_SOURCE_NAME);
 		assertArrayEquals(expectedPropertyNames, eps.getPropertyNames());
 	}

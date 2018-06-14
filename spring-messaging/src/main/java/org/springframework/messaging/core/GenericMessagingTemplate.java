@@ -347,8 +347,8 @@ public class GenericMessagingTemplate extends AbstractDestinationResolvingMessag
 			}
 
 			if (errorDescription != null) {
-				if (logger.isWarnEnabled()) {
-					logger.warn(errorDescription + ":" + message);
+				if (this.logger.isWarnEnabled()) {
+					this.logger.warn(errorDescription + ":" + message);
 				}
 				if (this.throwExceptionOnLateReply) {
 					throw new MessageDeliveryException(message, errorDescription);

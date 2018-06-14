@@ -65,7 +65,7 @@ public abstract class AbstractStaxHandlerTestCase {
 	@Before
 	@SuppressWarnings("deprecation")  // on JDK 9
 	public void createXMLReader() throws Exception {
-		xmlReader = org.xml.sax.helpers.XMLReaderFactory.createXMLReader();
+		this.xmlReader = org.xml.sax.helpers.XMLReaderFactory.createXMLReader();
 	}
 
 
@@ -75,13 +75,13 @@ public abstract class AbstractStaxHandlerTestCase {
 
 		StringWriter stringWriter = new StringWriter();
 		AbstractStaxHandler handler = createStaxHandler(new StreamResult(stringWriter));
-		xmlReader.setContentHandler(handler);
-		xmlReader.setProperty("http://xml.org/sax/properties/lexical-handler", handler);
+		this.xmlReader.setContentHandler(handler);
+		this.xmlReader.setProperty("http://xml.org/sax/properties/lexical-handler", handler);
 
-		xmlReader.setFeature("http://xml.org/sax/features/namespaces", true);
-		xmlReader.setFeature("http://xml.org/sax/features/namespace-prefixes", false);
+		this.xmlReader.setFeature("http://xml.org/sax/features/namespaces", true);
+		this.xmlReader.setFeature("http://xml.org/sax/features/namespace-prefixes", false);
 
-		xmlReader.parse(new InputSource(new StringReader(COMPLEX_XML)));
+		this.xmlReader.parse(new InputSource(new StringReader(COMPLEX_XML)));
 
 		assertThat(stringWriter.toString(), isSimilarTo(COMPLEX_XML).withNodeFilter(nodeFilter));
 	}
@@ -102,13 +102,13 @@ public abstract class AbstractStaxHandlerTestCase {
 
 		StringWriter stringWriter = new StringWriter();
 		AbstractStaxHandler handler = createStaxHandler(new StreamResult(stringWriter));
-		xmlReader.setContentHandler(handler);
-		xmlReader.setProperty("http://xml.org/sax/properties/lexical-handler", handler);
+		this.xmlReader.setContentHandler(handler);
+		this.xmlReader.setProperty("http://xml.org/sax/properties/lexical-handler", handler);
 
-		xmlReader.setFeature("http://xml.org/sax/features/namespaces", true);
-		xmlReader.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
+		this.xmlReader.setFeature("http://xml.org/sax/features/namespaces", true);
+		this.xmlReader.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
 
-		xmlReader.parse(new InputSource(new StringReader(COMPLEX_XML)));
+		this.xmlReader.parse(new InputSource(new StringReader(COMPLEX_XML)));
 
 		assertThat(stringWriter.toString(), isSimilarTo(COMPLEX_XML).withNodeFilter(nodeFilter));
 	}
@@ -123,13 +123,13 @@ public abstract class AbstractStaxHandlerTestCase {
 
 		Document result = documentBuilder.newDocument();
 		AbstractStaxHandler handler = createStaxHandler(new DOMResult(result));
-		xmlReader.setContentHandler(handler);
-		xmlReader.setProperty("http://xml.org/sax/properties/lexical-handler", handler);
+		this.xmlReader.setContentHandler(handler);
+		this.xmlReader.setProperty("http://xml.org/sax/properties/lexical-handler", handler);
 
-		xmlReader.setFeature("http://xml.org/sax/features/namespaces", true);
-		xmlReader.setFeature("http://xml.org/sax/features/namespace-prefixes", false);
+		this.xmlReader.setFeature("http://xml.org/sax/features/namespaces", true);
+		this.xmlReader.setFeature("http://xml.org/sax/features/namespace-prefixes", false);
 
-		xmlReader.parse(new InputSource(new StringReader(SIMPLE_XML)));
+		this.xmlReader.parse(new InputSource(new StringReader(SIMPLE_XML)));
 
 		assertThat(result, isSimilarTo(expected).withNodeFilter(nodeFilter));
 	}
@@ -144,13 +144,13 @@ public abstract class AbstractStaxHandlerTestCase {
 
 		Document result = documentBuilder.newDocument();
 		AbstractStaxHandler handler = createStaxHandler(new DOMResult(result));
-		xmlReader.setContentHandler(handler);
-		xmlReader.setProperty("http://xml.org/sax/properties/lexical-handler", handler);
+		this.xmlReader.setContentHandler(handler);
+		this.xmlReader.setProperty("http://xml.org/sax/properties/lexical-handler", handler);
 
-		xmlReader.setFeature("http://xml.org/sax/features/namespaces", true);
-		xmlReader.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
+		this.xmlReader.setFeature("http://xml.org/sax/features/namespaces", true);
+		this.xmlReader.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
 
-		xmlReader.parse(new InputSource(new StringReader(SIMPLE_XML)));
+		this.xmlReader.parse(new InputSource(new StringReader(SIMPLE_XML)));
 
 		assertThat(expected, isSimilarTo(result).withNodeFilter(nodeFilter));
 	}

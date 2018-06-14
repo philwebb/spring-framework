@@ -163,7 +163,7 @@ public class DestroyMethodInferenceTests {
 		boolean closed = false;
 
 		public void explicitClose() {
-			closed = true;
+			this.closed = true;
 		}
 	}
 
@@ -173,7 +173,7 @@ public class DestroyMethodInferenceTests {
 		boolean closed = false;
 
 		public void close() {
-			closed = true;
+			this.closed = true;
 		}
 	}
 
@@ -184,7 +184,7 @@ public class DestroyMethodInferenceTests {
 
 		@Override
 		public void close() {
-			closed = true;
+			this.closed = true;
 		}
 	}
 
@@ -195,7 +195,7 @@ public class DestroyMethodInferenceTests {
 
 		@Override
 		public void destroy() {
-			closed = true;
+			this.closed = true;
 		}
 	}
 
@@ -211,7 +211,7 @@ public class DestroyMethodInferenceTests {
 		boolean closed = false;
 
 		public void shutdown() {
-			closed = true;
+			this.closed = true;
 		}
 	}
 

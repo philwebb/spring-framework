@@ -123,7 +123,7 @@ public class SQLErrorCodes {
 	}
 
 	public String[] getDuplicateKeyCodes() {
-		return duplicateKeyCodes;
+		return this.duplicateKeyCodes;
 	}
 
 	public void setDuplicateKeyCodes(String... duplicateKeyCodes) {

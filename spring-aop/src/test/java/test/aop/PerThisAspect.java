@@ -31,7 +31,7 @@ public class PerThisAspect {
 
 	@Around("execution(* getAge())")
 	public int changeAge(ProceedingJoinPoint pjp) throws Throwable {
-		return invocations++;
+		return this.invocations++;
 	}
 
 }

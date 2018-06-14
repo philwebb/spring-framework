@@ -205,8 +205,8 @@ public class PropertyPlaceholderConfigurer extends PlaceholderConfigurerSupport 
 			return value;
 		}
 		catch (Throwable ex) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("Could not access system property '" + key + "': " + ex);
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Could not access system property '" + key + "': " + ex);
 			}
 			return null;
 		}
@@ -234,7 +234,7 @@ public class PropertyPlaceholderConfigurer extends PlaceholderConfigurerSupport 
 
 		public PlaceholderResolvingStringValueResolver(Properties props) {
 			this.helper = new PropertyPlaceholderHelper(
-					placeholderPrefix, placeholderSuffix, valueSeparator, ignoreUnresolvablePlaceholders);
+					PropertyPlaceholderConfigurer.this.placeholderPrefix, PropertyPlaceholderConfigurer.this.placeholderSuffix, PropertyPlaceholderConfigurer.this.valueSeparator, PropertyPlaceholderConfigurer.this.ignoreUnresolvablePlaceholders);
 			this.resolver = new PropertyPlaceholderConfigurerResolver(props);
 		}
 
@@ -242,10 +242,10 @@ public class PropertyPlaceholderConfigurer extends PlaceholderConfigurerSupport 
 		@Nullable
 		public String resolveStringValue(String strVal) throws BeansException {
 			String resolved = this.helper.replacePlaceholders(strVal, this.resolver);
-			if (trimValues) {
+			if (PropertyPlaceholderConfigurer.this.trimValues) {
 				resolved = resolved.trim();
 			}
-			return (resolved.equals(nullValue) ? null : resolved);
+			return (resolved.equals(PropertyPlaceholderConfigurer.this.nullValue) ? null : resolved);
 		}
 	}
 
@@ -261,7 +261,7 @@ public class PropertyPlaceholderConfigurer extends PlaceholderConfigurerSupport 
 		@Override
 		@Nullable
 		public String resolvePlaceholder(String placeholderName) {
-			return PropertyPlaceholderConfigurer.this.resolvePlaceholder(placeholderName, props, systemPropertiesMode);
+			return PropertyPlaceholderConfigurer.this.resolvePlaceholder(placeholderName, this.props, PropertyPlaceholderConfigurer.this.systemPropertiesMode);
 		}
 	}
 

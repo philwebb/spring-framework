@@ -38,8 +38,8 @@ public class ContextConfigurationInterfaceTests implements ContextConfigurationT
 
 	@Test
 	public void profileFromTestInterface() {
-		assertNotNull(employee);
-		assertEquals("Dilbert", employee.getName());
+		assertNotNull(this.employee);
+		assertEquals("Dilbert", this.employee.getName());
 	}
 
 }

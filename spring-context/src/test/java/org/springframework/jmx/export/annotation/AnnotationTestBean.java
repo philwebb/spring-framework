@@ -43,7 +43,7 @@ public class AnnotationTestBean implements IJmxTestBean {
 	@Override
 	@ManagedAttribute(description = "The Age Attribute", currencyTimeLimit = 15)
 	public int getAge() {
-		return age;
+		return this.age;
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class AnnotationTestBean implements IJmxTestBean {
 	@Override
 	@ManagedAttribute(defaultValue = "foo", persistPeriod = 300)
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	@ManagedAttribute(description = "The Nick Name Attribute")
@@ -87,7 +87,7 @@ public class AnnotationTestBean implements IJmxTestBean {
 
 	@ManagedAttribute(description = "The Is Superman Attribute")
 	public boolean isSuperman() {
-		return isSuperman;
+		return this.isSuperman;
 	}
 
 	@Override

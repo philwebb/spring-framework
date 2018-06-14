@@ -98,7 +98,7 @@ public class ConfigurationClassProcessingTests {
 		assertSame(testBeanSupplier.get(), ac.getBean(beanName));
 
 		// method name should not be registered
-		exception.expect(NoSuchBeanDefinitionException.class);
+		this.exception.expect(NoSuchBeanDefinitionException.class);
 		ac.getBean("methodName");
 	}
 
@@ -122,7 +122,7 @@ public class ConfigurationClassProcessingTests {
 		Arrays.stream(factory.getAliases(beanName)).map(factory::getBean).forEach(alias -> assertSame(testBean, alias));
 
 		// method name should not be registered
-		exception.expect(NoSuchBeanDefinitionException.class);
+		this.exception.expect(NoSuchBeanDefinitionException.class);
 		factory.getBean("methodName");
 	}
 
@@ -146,7 +146,7 @@ public class ConfigurationClassProcessingTests {
 
 	@Test
 	public void testFinalBeanMethod() {
-		exception.expect(BeanDefinitionParsingException.class);
+		this.exception.expect(BeanDefinitionParsingException.class);
 		initBeanFactory(ConfigWithFinalBean.class);
 	}
 
@@ -463,7 +463,7 @@ public class ConfigurationClassProcessingTests {
 		public POBPP beanPostProcessor() {
 			return new POBPP() {
 
-				String nameSuffix = "-processed-" + myProp;
+				String nameSuffix = "-processed-" + ConfigWithPostProcessor.this.myProp;
 
 				public void setNameSuffix(String nameSuffix) {
 					this.nameSuffix = nameSuffix;
@@ -472,7 +472,7 @@ public class ConfigurationClassProcessingTests {
 				@Override
 				public Object postProcessBeforeInitialization(Object bean, String beanName) {
 					if (bean instanceof ITestBean) {
-						((ITestBean) bean).setName(((ITestBean) bean).getName() + nameSuffix);
+						((ITestBean) bean).setName(((ITestBean) bean).getName() + this.nameSuffix);
 					}
 					return bean;
 				}
@@ -494,7 +494,7 @@ public class ConfigurationClassProcessingTests {
 				@Override
 				public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 					BeanDefinition bd = beanFactory.getBeanDefinition("beanPostProcessor");
-					bd.getPropertyValues().addPropertyValue("nameSuffix", "-processed-" + myProp);
+					bd.getPropertyValues().addPropertyValue("nameSuffix", "-processed-" + ConfigWithPostProcessor.this.myProp);
 				}
 			};
 		}

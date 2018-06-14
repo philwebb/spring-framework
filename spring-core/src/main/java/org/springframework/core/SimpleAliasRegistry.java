@@ -54,8 +54,8 @@ public class SimpleAliasRegistry implements AliasRegistry {
 		synchronized (this.aliasMap) {
 			if (alias.equals(name)) {
 				this.aliasMap.remove(alias);
-				if (logger.isDebugEnabled()) {
-					logger.debug("Alias definition '" + alias + "' ignored since it points to same name");
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Alias definition '" + alias + "' ignored since it points to same name");
 				}
 			}
 			else {
@@ -70,14 +70,14 @@ public class SimpleAliasRegistry implements AliasRegistry {
 								name + "': It is already registered for name '" + registeredName + "'.");
 					}
 					if (this.logger.isInfoEnabled()) {
-						logger.info("Overriding alias '" + alias + "' definition for registered name '" +
+						this.logger.info("Overriding alias '" + alias + "' definition for registered name '" +
 								registeredName + "' with new target name '" + name + "'");
 					}
 				}
 				checkForAliasCircle(name, alias);
 				this.aliasMap.put(alias, name);
-				if (logger.isDebugEnabled()) {
-					logger.debug("Alias definition '" + alias + "' registered for name '" + name + "'");
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Alias definition '" + alias + "' registered for name '" + name + "'");
 				}
 			}
 		}

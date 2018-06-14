@@ -46,9 +46,9 @@ public abstract class AbstractJCacheTests {
 
 	protected final CacheManager cacheManager = createSimpleCacheManager("default", "simpleCache");
 
-	protected final CacheResolver defaultCacheResolver = new SimpleCacheResolver(cacheManager);
+	protected final CacheResolver defaultCacheResolver = new SimpleCacheResolver(this.cacheManager);
 
-	protected final CacheResolver defaultExceptionCacheResolver = new SimpleExceptionCacheResolver(cacheManager);
+	protected final CacheResolver defaultExceptionCacheResolver = new SimpleExceptionCacheResolver(this.cacheManager);
 
 	protected final KeyGenerator defaultKeyGenerator = new SimpleKeyGenerator();
 

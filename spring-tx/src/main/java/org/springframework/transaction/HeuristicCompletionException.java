@@ -75,7 +75,7 @@ public class HeuristicCompletionException extends TransactionException {
 	 * @see #STATE_MIXED
 	 */
 	public int getOutcomeState() {
-		return outcomeState;
+		return this.outcomeState;
 	}
 
 }

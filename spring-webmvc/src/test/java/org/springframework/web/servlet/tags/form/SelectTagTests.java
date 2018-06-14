@@ -1030,7 +1030,7 @@ public class SelectTagTests extends AbstractFormTagTests {
 		private TestBean bean;
 
 		public TestBean getBean() {
-			return bean;
+			return this.bean;
 		}
 
 		public void setBean(TestBean bean) {

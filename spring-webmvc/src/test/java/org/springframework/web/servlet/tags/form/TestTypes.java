@@ -28,7 +28,7 @@ class BeanWithEnum {
 	private TestEnum testEnum;
 
 	public TestEnum getTestEnum() {
-		return testEnum;
+		return this.testEnum;
 	}
 
 	public void setTestEnum(TestEnum customEnum) {

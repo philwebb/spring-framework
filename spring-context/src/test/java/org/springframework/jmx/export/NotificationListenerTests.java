@@ -59,14 +59,14 @@ public class NotificationListenerTests extends AbstractMBeanServerTests {
 		notificationListeners.put(objectName, listener);
 
 		MBeanExporter exporter = new MBeanExporter();
-		exporter.setServer(server);
+		exporter.setServer(this.server);
 		exporter.setBeans(beans);
 		exporter.setNotificationListenerMappings(notificationListeners);
 		start(exporter);
 
 		// update the attribute
 		String attributeName = "Name";
-		server.setAttribute(objectName, new Attribute(attributeName, "Rob Harrop"));
+		this.server.setAttribute(objectName, new Attribute(attributeName, "Rob Harrop"));
 		assertEquals("Listener not notified", 1, listener.getCount(attributeName));
 	}
 
@@ -85,14 +85,14 @@ public class NotificationListenerTests extends AbstractMBeanServerTests {
 		notificationListeners.put("*", listener);
 
 		MBeanExporter exporter = new MBeanExporter();
-		exporter.setServer(server);
+		exporter.setServer(this.server);
 		exporter.setBeans(beans);
 		exporter.setNotificationListenerMappings(notificationListeners);
 		start(exporter);
 
 		// update the attribute
 		String attributeName = "Name";
-		server.setAttribute(objectName, new Attribute(attributeName, "Rob Harrop"));
+		this.server.setAttribute(objectName, new Attribute(attributeName, "Rob Harrop"));
 		assertEquals("Listener not notified", 1, listener.getCount(attributeName));
 	}
 
@@ -113,14 +113,14 @@ public class NotificationListenerTests extends AbstractMBeanServerTests {
 		listenerBean.setHandback(handback);
 
 		MBeanExporter exporter = new MBeanExporter();
-		exporter.setServer(server);
+		exporter.setServer(this.server);
 		exporter.setBeans(beans);
 		exporter.setNotificationListeners(new NotificationListenerBean[] { listenerBean });
 		start(exporter);
 
 		// update the attribute
 		String attributeName = "Name";
-		server.setAttribute(ObjectNameManager.getInstance("spring:name=Test"), new Attribute(attributeName,
+		this.server.setAttribute(ObjectNameManager.getInstance("spring:name=Test"), new Attribute(attributeName,
 				"Rob Harrop"));
 
 		assertEquals("Listener not notified", 1, listener.getCount(attributeName));
@@ -141,14 +141,14 @@ public class NotificationListenerTests extends AbstractMBeanServerTests {
 		listenerBean.setNotificationListener(listener);
 
 		MBeanExporter exporter = new MBeanExporter();
-		exporter.setServer(server);
+		exporter.setServer(this.server);
 		exporter.setBeans(beans);
 		exporter.setNotificationListeners(new NotificationListenerBean[] { listenerBean });
 		start(exporter);
 
 		// update the attribute
 		String attributeName = "Name";
-		server.setAttribute(objectName, new Attribute(attributeName, "Rob Harrop"));
+		this.server.setAttribute(objectName, new Attribute(attributeName, "Rob Harrop"));
 
 		assertEquals("Listener not notified", 1, listener.getCount(attributeName));
 	}
@@ -180,7 +180,7 @@ public class NotificationListenerTests extends AbstractMBeanServerTests {
 		});
 
 		MBeanExporter exporter = new MBeanExporter();
-		exporter.setServer(server);
+		exporter.setServer(this.server);
 		exporter.setBeans(beans);
 		exporter.setNotificationListeners(new NotificationListenerBean[] { listenerBean });
 		start(exporter);
@@ -189,8 +189,8 @@ public class NotificationListenerTests extends AbstractMBeanServerTests {
 		String nameAttribute = "Name";
 		String ageAttribute = "Age";
 
-		server.setAttribute(objectName, new Attribute(nameAttribute, "Rob Harrop"));
-		server.setAttribute(objectName, new Attribute(ageAttribute, new Integer(90)));
+		this.server.setAttribute(objectName, new Attribute(nameAttribute, "Rob Harrop"));
+		this.server.setAttribute(objectName, new Attribute(ageAttribute, new Integer(90)));
 
 		assertEquals("Listener not notified for Name", 1, listener.getCount(nameAttribute));
 		assertEquals("Listener incorrectly notified for Age", 0, listener.getCount(ageAttribute));
@@ -226,14 +226,14 @@ public class NotificationListenerTests extends AbstractMBeanServerTests {
 		listenerMappings.put(beanName, listener);
 
 		MBeanExporter exporter = new MBeanExporter();
-		exporter.setServer(server);
+		exporter.setServer(this.server);
 		exporter.setBeans(beans);
 		exporter.setNotificationListenerMappings(listenerMappings);
 		exporter.setBeanFactory(factory);
 		start(exporter);
 		assertIsRegistered("Should have registered MBean", objectName);
 
-		server.setAttribute(objectName, new Attribute("Age", new Integer(77)));
+		this.server.setAttribute(objectName, new Attribute("Age", new Integer(77)));
 		assertEquals("Listener not notified", 1, listener.getCount("Age"));
 	}
 
@@ -257,14 +257,14 @@ public class NotificationListenerTests extends AbstractMBeanServerTests {
 		listenerMappings.put(beanName, listener);
 
 		MBeanExporter exporter = new MBeanExporter();
-		exporter.setServer(server);
+		exporter.setServer(this.server);
 		exporter.setBeans(beans);
 		exporter.setNotificationListenerMappings(listenerMappings);
 		exporter.setBeanFactory(factory);
 		start(exporter);
 		assertIsRegistered("Should have registered MBean", objectName);
 
-		server.setAttribute(objectName, new Attribute("Age", new Integer(77)));
+		this.server.setAttribute(objectName, new Attribute("Age", new Integer(77)));
 		assertEquals("Listener not notified", 1, listener.getCount("Age"));
 	}
 
@@ -289,14 +289,14 @@ public class NotificationListenerTests extends AbstractMBeanServerTests {
 		listenerMappings.put(objectName, listener);
 
 		MBeanExporter exporter = new MBeanExporter();
-		exporter.setServer(server);
+		exporter.setServer(this.server);
 		exporter.setBeans(beans);
 		exporter.setNotificationListenerMappings(listenerMappings);
 		exporter.setBeanFactory(factory);
 		start(exporter);
 		assertIsRegistered("Should have registered MBean", objectName);
 
-		server.setAttribute(objectName, new Attribute("Age", new Integer(77)));
+		this.server.setAttribute(objectName, new Attribute("Age", new Integer(77)));
 		assertEquals("Listener should have been notified exactly once", 1, listener.getCount("Age"));
 	}
 
@@ -321,14 +321,14 @@ public class NotificationListenerTests extends AbstractMBeanServerTests {
 		listenerMappings.put(beanName, listener);
 
 		MBeanExporter exporter = new MBeanExporter();
-		exporter.setServer(server);
+		exporter.setServer(this.server);
 		exporter.setBeans(beans);
 		exporter.setNotificationListenerMappings(listenerMappings);
 		exporter.setBeanFactory(factory);
 		start(exporter);
 		assertIsRegistered("Should have registered MBean", objectName);
 
-		server.setAttribute(objectName, new Attribute("Age", new Integer(77)));
+		this.server.setAttribute(objectName, new Attribute("Age", new Integer(77)));
 		assertEquals("Listener should have been notified exactly once", 1, listener.getCount("Age"));
 	}
 
@@ -361,7 +361,7 @@ public class NotificationListenerTests extends AbstractMBeanServerTests {
 		listenerMappings.put(beanName2, listener);
 
 		MBeanExporter exporter = new MBeanExporter();
-		exporter.setServer(server);
+		exporter.setServer(this.server);
 		exporter.setBeans(beans);
 		exporter.setNotificationListenerMappings(listenerMappings);
 		exporter.setBeanFactory(factory);
@@ -369,10 +369,10 @@ public class NotificationListenerTests extends AbstractMBeanServerTests {
 		assertIsRegistered("Should have registered MBean", objectName1);
 		assertIsRegistered("Should have registered MBean", objectName2);
 
-		server.setAttribute(ObjectNameManager.getInstance(objectName1), new Attribute("Age", new Integer(77)));
+		this.server.setAttribute(ObjectNameManager.getInstance(objectName1), new Attribute("Age", new Integer(77)));
 		assertEquals("Listener not notified for testBean1", 1, listener.getCount("Age"));
 
-		server.setAttribute(ObjectNameManager.getInstance(objectName2), new Attribute("Age", new Integer(33)));
+		this.server.setAttribute(ObjectNameManager.getInstance(objectName2), new Attribute("Age", new Integer(33)));
 		assertEquals("Listener not notified for testBean2", 2, listener.getCount("Age"));
 	}
 
@@ -385,27 +385,27 @@ public class NotificationListenerTests extends AbstractMBeanServerTests {
 		beans.put(objectName.getCanonicalName(), bean);
 
 		MBeanExporter exporter = new MBeanExporter();
-		exporter.setServer(server);
+		exporter.setServer(this.server);
 		exporter.setBeans(beans);
 		start(exporter);
 
 		CountingAttributeChangeNotificationListener listener = new CountingAttributeChangeNotificationListener();
 
 		NotificationListenerRegistrar registrar = new NotificationListenerRegistrar();
-		registrar.setServer(server);
+		registrar.setServer(this.server);
 		registrar.setNotificationListener(listener);
 		registrar.setMappedObjectName(objectName);
 		registrar.afterPropertiesSet();
 
 		// update the attribute
 		String attributeName = "Name";
-		server.setAttribute(objectName, new Attribute(attributeName, "Rob Harrop"));
+		this.server.setAttribute(objectName, new Attribute(attributeName, "Rob Harrop"));
 		assertEquals("Listener not notified", 1, listener.getCount(attributeName));
 
 		registrar.destroy();
 
 		// try to update the attribute again
-		server.setAttribute(objectName, new Attribute(attributeName, "Rob Harrop"));
+		this.server.setAttribute(objectName, new Attribute(attributeName, "Rob Harrop"));
 		assertEquals("Listener notified after destruction", 1, listener.getCount(attributeName));
 	}
 
@@ -421,14 +421,14 @@ public class NotificationListenerTests extends AbstractMBeanServerTests {
 		beans.put(objectName2.getCanonicalName(), bean2);
 
 		MBeanExporter exporter = new MBeanExporter();
-		exporter.setServer(server);
+		exporter.setServer(this.server);
 		exporter.setBeans(beans);
 		start(exporter);
 
 		CountingAttributeChangeNotificationListener listener = new CountingAttributeChangeNotificationListener();
 
 		NotificationListenerRegistrar registrar = new NotificationListenerRegistrar();
-		registrar.setServer(server);
+		registrar.setServer(this.server);
 		registrar.setNotificationListener(listener);
 		//registrar.setMappedObjectNames(new Object[] {objectName, objectName2});
 		registrar.setMappedObjectNames("spring:name=Test", "spring:name=Test2");
@@ -436,13 +436,13 @@ public class NotificationListenerTests extends AbstractMBeanServerTests {
 
 		// update the attribute
 		String attributeName = "Name";
-		server.setAttribute(objectName, new Attribute(attributeName, "Rob Harrop"));
+		this.server.setAttribute(objectName, new Attribute(attributeName, "Rob Harrop"));
 		assertEquals("Listener not notified", 1, listener.getCount(attributeName));
 
 		registrar.destroy();
 
 		// try to update the attribute again
-		server.setAttribute(objectName, new Attribute(attributeName, "Rob Harrop"));
+		this.server.setAttribute(objectName, new Attribute(attributeName, "Rob Harrop"));
 		assertEquals("Listener notified after destruction", 1, listener.getCount(attributeName));
 	}
 

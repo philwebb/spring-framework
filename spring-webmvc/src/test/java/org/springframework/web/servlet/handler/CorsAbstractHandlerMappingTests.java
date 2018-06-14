@@ -68,7 +68,7 @@ public class CorsAbstractHandlerMappingTests {
 		this.request.setRequestURI("/foo");
 		this.request.addHeader(HttpHeaders.ORIGIN, "http://domain2.com");
 		this.request.addHeader(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "GET");
-		HandlerExecutionChain chain = handlerMapping.getHandler(this.request);
+		HandlerExecutionChain chain = this.handlerMapping.getHandler(this.request);
 		assertNotNull(chain);
 		assertTrue(chain.getHandler() instanceof SimpleHandler);
 	}
@@ -79,7 +79,7 @@ public class CorsAbstractHandlerMappingTests {
 		this.request.setRequestURI("/foo");
 		this.request.addHeader(HttpHeaders.ORIGIN, "http://domain2.com");
 		this.request.addHeader(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "GET");
-		HandlerExecutionChain chain = handlerMapping.getHandler(this.request);
+		HandlerExecutionChain chain = this.handlerMapping.getHandler(this.request);
 		assertNotNull(chain);
 		assertNotNull(chain.getHandler());
 		assertTrue(chain.getHandler().getClass().getSimpleName().equals("PreFlightHandler"));
@@ -91,7 +91,7 @@ public class CorsAbstractHandlerMappingTests {
 		this.request.setRequestURI("/cors");
 		this.request.addHeader(HttpHeaders.ORIGIN, "http://domain2.com");
 		this.request.addHeader(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "GET");
-		HandlerExecutionChain chain = handlerMapping.getHandler(this.request);
+		HandlerExecutionChain chain = this.handlerMapping.getHandler(this.request);
 		assertNotNull(chain);
 		assertTrue(chain.getHandler() instanceof CorsAwareHandler);
 		CorsConfiguration config = getCorsConfiguration(chain, false);
@@ -105,7 +105,7 @@ public class CorsAbstractHandlerMappingTests {
 		this.request.setRequestURI("/cors");
 		this.request.addHeader(HttpHeaders.ORIGIN, "http://domain2.com");
 		this.request.addHeader(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "GET");
-		HandlerExecutionChain chain = handlerMapping.getHandler(this.request);
+		HandlerExecutionChain chain = this.handlerMapping.getHandler(this.request);
 		assertNotNull(chain);
 		assertNotNull(chain.getHandler());
 		assertTrue(chain.getHandler().getClass().getSimpleName().equals("PreFlightHandler"));
@@ -123,7 +123,7 @@ public class CorsAbstractHandlerMappingTests {
 		this.request.setRequestURI("/foo");
 		this.request.addHeader(HttpHeaders.ORIGIN, "http://domain2.com");
 		this.request.addHeader(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "GET");
-		HandlerExecutionChain chain = handlerMapping.getHandler(this.request);
+		HandlerExecutionChain chain = this.handlerMapping.getHandler(this.request);
 		assertNotNull(chain);
 		assertTrue(chain.getHandler() instanceof SimpleHandler);
 		config = getCorsConfiguration(chain, false);
@@ -140,7 +140,7 @@ public class CorsAbstractHandlerMappingTests {
 		this.request.setRequestURI("/foo");
 		this.request.addHeader(HttpHeaders.ORIGIN, "http://domain2.com");
 		this.request.addHeader(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "GET");
-		HandlerExecutionChain chain = handlerMapping.getHandler(this.request);
+		HandlerExecutionChain chain = this.handlerMapping.getHandler(this.request);
 		assertNotNull(chain);
 		assertNotNull(chain.getHandler());
 		assertTrue(chain.getHandler().getClass().getSimpleName().equals("PreFlightHandler"));

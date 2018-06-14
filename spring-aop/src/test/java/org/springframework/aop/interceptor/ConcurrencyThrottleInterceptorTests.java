@@ -140,7 +140,7 @@ public class ConcurrencyThrottleInterceptorTests {
 					}
 					else {
 						// should never happen
-						ex.printStackTrace();
+						this.ex.printStackTrace();
 					}
 				}
 				catch (Throwable ex) {

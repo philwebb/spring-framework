@@ -141,8 +141,8 @@ public class NotificationListenerRegistrar extends NotificationListenerHolder
 		try {
 			this.actualObjectNames = getResolvedObjectNames();
 			if (this.actualObjectNames != null) {
-				if (logger.isDebugEnabled()) {
-					logger.debug("Registering NotificationListener for MBeans " + Arrays.asList(this.actualObjectNames));
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Registering NotificationListener for MBeans " + Arrays.asList(this.actualObjectNames));
 				}
 				for (ObjectName actualObjectName : this.actualObjectNames) {
 					this.server.addNotificationListener(
@@ -172,8 +172,8 @@ public class NotificationListenerRegistrar extends NotificationListenerHolder
 								actualObjectName, getNotificationListener(), getNotificationFilter(), getHandback());
 					}
 					catch (Exception ex) {
-						if (logger.isDebugEnabled()) {
-							logger.debug("Unable to unregister NotificationListener", ex);
+						if (this.logger.isDebugEnabled()) {
+							this.logger.debug("Unable to unregister NotificationListener", ex);
 						}
 					}
 				}

@@ -56,13 +56,13 @@ public class NotificationPublisherTests extends AbstractMBeanServerTests {
 	public void testSimpleBean() throws Exception {
 		// start the MBeanExporter
 		ConfigurableApplicationContext ctx = loadContext("org/springframework/jmx/export/notificationPublisherTests.xml");
-		this.server.addNotificationListener(ObjectNameManager.getInstance("spring:type=Publisher"), listener, null,
+		this.server.addNotificationListener(ObjectNameManager.getInstance("spring:type=Publisher"), this.listener, null,
 				null);
 
 		MyNotificationPublisher publisher = (MyNotificationPublisher) ctx.getBean("publisher");
 		assertNotNull("NotificationPublisher should not be null", publisher.getNotificationPublisher());
 		publisher.sendNotification();
-		assertEquals("Notification not sent", 1, listener.count);
+		assertEquals("Notification not sent", 1, this.listener.count);
 	}
 
 	@Test
@@ -72,24 +72,24 @@ public class NotificationPublisherTests extends AbstractMBeanServerTests {
 		MBeanExporter exporter = (MBeanExporter) ctx.getBean("exporter");
 		MyNotificationPublisher publisher = new MyNotificationPublisher();
 		exporter.registerManagedResource(publisher, ObjectNameManager.getInstance("spring:type=Publisher2"));
-		this.server.addNotificationListener(ObjectNameManager.getInstance("spring:type=Publisher2"), listener, null,
+		this.server.addNotificationListener(ObjectNameManager.getInstance("spring:type=Publisher2"), this.listener, null,
 				null);
 
 		assertNotNull("NotificationPublisher should not be null", publisher.getNotificationPublisher());
 		publisher.sendNotification();
-		assertEquals("Notification not sent", 1, listener.count);
+		assertEquals("Notification not sent", 1, this.listener.count);
 	}
 
 	@Test
 	public void testMBean() throws Exception {
 		// start the MBeanExporter
 		ConfigurableApplicationContext ctx = loadContext("org/springframework/jmx/export/notificationPublisherTests.xml");
-		this.server.addNotificationListener(ObjectNameManager.getInstance("spring:type=PublisherMBean"), listener,
+		this.server.addNotificationListener(ObjectNameManager.getInstance("spring:type=PublisherMBean"), this.listener,
 				null, null);
 
 		MyNotificationPublisherMBean publisher = (MyNotificationPublisherMBean) ctx.getBean("publisherMBean");
 		publisher.sendNotification();
-		assertEquals("Notification not sent", 1, listener.count);
+		assertEquals("Notification not sent", 1, this.listener.count);
 	}
 
 	/*
@@ -112,14 +112,14 @@ public class NotificationPublisherTests extends AbstractMBeanServerTests {
 		assertFalse("Should not have instantiated the bean yet", ctx.getBeanFactory().containsSingleton("publisher"));
 
 		// need to touch the MBean proxy
-		server.getAttribute(ObjectNameManager.getInstance("spring:type=Publisher"), "Name");
-		this.server.addNotificationListener(ObjectNameManager.getInstance("spring:type=Publisher"), listener, null,
+		this.server.getAttribute(ObjectNameManager.getInstance("spring:type=Publisher"), "Name");
+		this.server.addNotificationListener(ObjectNameManager.getInstance("spring:type=Publisher"), this.listener, null,
 				null);
 
 		MyNotificationPublisher publisher = (MyNotificationPublisher) ctx.getBean("publisher");
 		assertNotNull("NotificationPublisher should not be null", publisher.getNotificationPublisher());
 		publisher.sendNotification();
-		assertEquals("Notification not sent", 1, listener.count);
+		assertEquals("Notification not sent", 1, this.listener.count);
 	}
 
 	private static class CountingNotificationListener implements NotificationListener {
@@ -136,12 +136,12 @@ public class NotificationPublisherTests extends AbstractMBeanServerTests {
 
 		@SuppressWarnings("unused")
 		public int getCount() {
-			return count;
+			return this.count;
 		}
 
 		@SuppressWarnings("unused")
 		public Notification getLastNotification() {
-			return lastNotification;
+			return this.lastNotification;
 		}
 	}
 
@@ -155,7 +155,7 @@ public class NotificationPublisherTests extends AbstractMBeanServerTests {
 		}
 
 		public NotificationPublisher getNotificationPublisher() {
-			return notificationPublisher;
+			return this.notificationPublisher;
 		}
 
 		public void sendNotification() {

@@ -51,6 +51,6 @@ class CurrentFrame extends Frame {
         Frame successor = new Frame();
         merge(cw, successor, 0);
         set(successor);
-        owner.inputStackTop = 0;
+        this.owner.inputStackTop = 0;
     }
 }

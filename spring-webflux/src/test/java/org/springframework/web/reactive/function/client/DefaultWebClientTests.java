@@ -50,7 +50,7 @@ public class DefaultWebClientTests {
 	public void setup() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		this.exchangeFunction = mock(ExchangeFunction.class);
-		when(this.exchangeFunction.exchange(captor.capture())).thenReturn(Mono.empty());
+		when(this.exchangeFunction.exchange(this.captor.capture())).thenReturn(Mono.empty());
 	}
 
 

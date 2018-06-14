@@ -113,8 +113,8 @@ public abstract class ConnectionManagerSupport implements SmartLifecycle {
 
 	protected void startInternal() {
 		synchronized (this.lifecycleMonitor) {
-			if (logger.isInfoEnabled()) {
-				logger.info("Starting " + getClass().getSimpleName());
+			if (this.logger.isInfoEnabled()) {
+				this.logger.info("Starting " + getClass().getSimpleName());
 			}
 			this.running = true;
 			openConnection();
@@ -125,14 +125,14 @@ public abstract class ConnectionManagerSupport implements SmartLifecycle {
 	public final void stop() {
 		synchronized (this.lifecycleMonitor) {
 			if (isRunning()) {
-				if (logger.isInfoEnabled()) {
-					logger.info("Stopping " + getClass().getSimpleName());
+				if (this.logger.isInfoEnabled()) {
+					this.logger.info("Stopping " + getClass().getSimpleName());
 				}
 				try {
 					stopInternal();
 				}
 				catch (Throwable ex) {
-					logger.error("Failed to stop WebSocket connection", ex);
+					this.logger.error("Failed to stop WebSocket connection", ex);
 				}
 				finally {
 					this.running = false;

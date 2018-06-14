@@ -816,7 +816,7 @@ public class SpelReproTests extends AbstractExpressionTests {
 			public Map<String, String> m = new HashMap<>();
 
 			Reserver() {
-				m.put("NE", "xyz");
+				this.m.put("NE", "xyz");
 			}
 		}
 
@@ -1287,18 +1287,18 @@ public class SpelReproTests extends AbstractExpressionTests {
 	}
 
 	private void doTestSpr10146(String expression, String expectedMessage) {
-		thrown.expect(SpelParseException.class);
-		thrown.expectMessage(expectedMessage);
+		this.thrown.expect(SpelParseException.class);
+		this.thrown.expectMessage(expectedMessage);
 		new SpelExpressionParser().parseExpression(expression);
 	}
 
 	@Test
 	public void SPR10125() {
 		StandardEvaluationContext context = new StandardEvaluationContext();
-		String fromInterface = parser.parseExpression("T(" + StaticFinalImpl1.class.getName() + ").VALUE").getValue(
+		String fromInterface = this.parser.parseExpression("T(" + StaticFinalImpl1.class.getName() + ").VALUE").getValue(
 				context, String.class);
 		assertThat(fromInterface, is("interfaceValue"));
-		String fromClass = parser.parseExpression("T(" + StaticFinalImpl2.class.getName() + ").VALUE").getValue(
+		String fromClass = this.parser.parseExpression("T(" + StaticFinalImpl2.class.getName() + ").VALUE").getValue(
 				context, String.class);
 		assertThat(fromClass, is("interfaceValue"));
 	}
@@ -1307,15 +1307,15 @@ public class SpelReproTests extends AbstractExpressionTests {
 	public void SPR10210() {
 		StandardEvaluationContext context = new StandardEvaluationContext();
 		context.setVariable("bridgeExample", new org.springframework.expression.spel.spr10210.D());
-		Expression parseExpression = parser.parseExpression("#bridgeExample.bridgeMethod()");
+		Expression parseExpression = this.parser.parseExpression("#bridgeExample.bridgeMethod()");
 		parseExpression.getValue(context);
 	}
 
 	@Test
 	public void SPR10328() {
-		thrown.expect(SpelParseException.class);
-		thrown.expectMessage("EL1071E: A required selection expression has not been specified");
-		Expression exp = parser.parseExpression("$[]");
+		this.thrown.expect(SpelParseException.class);
+		this.thrown.expectMessage("EL1071E: A required selection expression has not been specified");
+		Expression exp = this.parser.parseExpression("$[]");
 		exp.getValue(Arrays.asList("foo", "bar", "baz"));
 	}
 
@@ -1406,8 +1406,8 @@ public class SpelReproTests extends AbstractExpressionTests {
 		StandardEvaluationContext context = new StandardEvaluationContext();
 		Spr11142 rootObject = new Spr11142();
 		Expression expression = parser.parseExpression("something");
-		thrown.expect(SpelEvaluationException.class);
-		thrown.expectMessage("'something' cannot be found");
+		this.thrown.expect(SpelEvaluationException.class);
+		this.thrown.expectMessage("'something' cannot be found");
 		expression.getValue(context, rootObject);
 	}
 
@@ -1638,12 +1638,12 @@ public class SpelReproTests extends AbstractExpressionTests {
 		context.setVariable("list2", list2);
 
 		// #this should be the element from list1
-		Expression ex = parser.parseExpression("#list1.?[#list2.contains(#this)]");
+		Expression ex = this.parser.parseExpression("#list1.?[#list2.contains(#this)]");
 		Object result = ex.getValue(context);
 		assertEquals("[x]", result.toString());
 
 		// toString() should be called on the element from list1
-		ex = parser.parseExpression("#list1.?[#list2.contains(toString())]");
+		ex = this.parser.parseExpression("#list1.?[#list2.contains(toString())]");
 		result = ex.getValue(context);
 		assertEquals("[x]", result.toString());
 
@@ -1655,11 +1655,11 @@ public class SpelReproTests extends AbstractExpressionTests {
 
 		context = new StandardEvaluationContext();
 		context.setVariable("list3", list3);
-		ex = parser.parseExpression("#list3.?[#this > 2]");
+		ex = this.parser.parseExpression("#list3.?[#this > 2]");
 		result = ex.getValue(context);
 		assertEquals("[3, 4]", result.toString());
 
-		ex = parser.parseExpression("#list3.?[#this >= T(java.lang.Math).abs(T(java.lang.Math).abs(#this))]");
+		ex = this.parser.parseExpression("#list3.?[#this >= T(java.lang.Math).abs(T(java.lang.Math).abs(#this))]");
 		result = ex.getValue(context);
 		assertEquals("[1, 2, 3, 4]", result.toString());
 	}
@@ -1679,11 +1679,11 @@ public class SpelReproTests extends AbstractExpressionTests {
 		context.setVariable("map2", map2);
 
 		// #this should be the element from list1
-		Expression ex = parser.parseExpression("#map1.?[#map2.containsKey(#this.getKey())]");
+		Expression ex = this.parser.parseExpression("#map1.?[#map2.containsKey(#this.getKey())]");
 		Object result = ex.getValue(context);
 		assertEquals("{X=66}", result.toString());
 
-		ex = parser.parseExpression("#map1.?[#map2.containsKey(key)]");
+		ex = this.parser.parseExpression("#map1.?[#map2.containsKey(key)]");
 		result = ex.getValue(context);
 		assertEquals("{X=66}", result.toString());
 	}
@@ -1693,7 +1693,7 @@ public class SpelReproTests extends AbstractExpressionTests {
 		EvaluationContext context = new StandardEvaluationContext();
 		context.setVariable("encoding", "UTF-8");
 
-		Expression ex = parser.parseExpression("T(java.nio.charset.Charset).forName(#encoding)");
+		Expression ex = this.parser.parseExpression("T(java.nio.charset.Charset).forName(#encoding)");
 		Object result = ex.getValue(context);
 		assertEquals(StandardCharsets.UTF_8, result);
 	}
@@ -1703,7 +1703,7 @@ public class SpelReproTests extends AbstractExpressionTests {
 		EvaluationContext context = new StandardEvaluationContext();
 		context.setVariable("str", "a\0b");
 
-		Expression ex = parser.parseExpression("#str?.split('\0')");
+		Expression ex = this.parser.parseExpression("#str?.split('\0')");
 		Object result = ex.getValue(context);
 		assertTrue(ObjectUtils.nullSafeEquals(result, new String[] {"a", "b"}));
 	}
@@ -1770,10 +1770,10 @@ public class SpelReproTests extends AbstractExpressionTests {
 		public Properties foo = new Properties();
 
 		TestProperties() {
-			jdbcProperties.put("username", "Dave");
-			jdbcProperties.put("alias", "Dave2");
-			jdbcProperties.put("foo.bar", "Elephant");
-			foo.put("bar", "alias");
+			this.jdbcProperties.put("username", "Dave");
+			this.jdbcProperties.put("alias", "Dave2");
+			this.jdbcProperties.put("foo.bar", "Elephant");
+			this.foo.put("bar", "alias");
 		}
 	}
 
@@ -1833,9 +1833,9 @@ public class SpelReproTests extends AbstractExpressionTests {
 		public String floo = "bar";
 
 		public XX() {
-			m = new HashMap<>();
-			m.put("$foo", "wibble");
-			m.put("bar", "siddle");
+			this.m = new HashMap<>();
+			this.m.put("$foo", "wibble");
+			this.m.put("bar", "siddle");
 		}
 	}
 
@@ -1879,13 +1879,13 @@ public class SpelReproTests extends AbstractExpressionTests {
 		public Map<String, String> ms;
 
 		C() {
-			ls = new ArrayList<>();
-			ls.add("abc");
-			ls.add("def");
-			as = new String[] { "abc", "def" };
-			ms = new HashMap<>();
-			ms.put("abc", "xyz");
-			ms.put("def", "pqr");
+			this.ls = new ArrayList<>();
+			this.ls.add("abc");
+			this.ls.add("def");
+			this.as = new String[] { "abc", "def" };
+			this.ms = new HashMap<>();
+			this.ms.put("abc", "xyz");
+			this.ms.put("def", "pqr");
 		}
 	}
 
@@ -1895,12 +1895,12 @@ public class SpelReproTests extends AbstractExpressionTests {
 		public String a;
 
 		private D(String s) {
-			a = s;
+			this.a = s;
 		}
 
 		@Override
 		public String toString() {
-			return "D(" + a + ")";
+			return "D(" + this.a + ")";
 		}
 	}
 
@@ -1922,7 +1922,7 @@ public class SpelReproTests extends AbstractExpressionTests {
 		}
 
 		public Resource getResource() {
-			return resource;
+			return this.resource;
 		}
 	}
 
@@ -1946,7 +1946,7 @@ public class SpelReproTests extends AbstractExpressionTests {
 		private String payload;
 
 		public String getPayload() {
-			return payload;
+			return this.payload;
 		}
 
 		public void setPayload(String payload) {
@@ -1970,7 +1970,7 @@ public class SpelReproTests extends AbstractExpressionTests {
 		}
 
 		public void setKey(String s) {
-			value = s;
+			this.value = s;
 		}
 	}
 
@@ -2082,7 +2082,7 @@ public class SpelReproTests extends AbstractExpressionTests {
 		@SuppressWarnings("unchecked")
 		public Map<String, String> getMap(Object target) {
 			try {
-				Field f = target.getClass().getDeclaredField(mapName);
+				Field f = target.getClass().getDeclaredField(this.mapName);
 				return (Map<String, String>) f.get(target);
 			}
 			catch (Exception ex) {
@@ -2128,35 +2128,35 @@ public class SpelReproTests extends AbstractExpressionTests {
 		public Map<String, String> fourthContext = new HashMap<>();
 
 		public ContextObject() {
-			firstContext.put("shouldBeFirst", "first");
-			secondContext.put("shouldBeFirst", "second");
-			thirdContext.put("shouldBeFirst", "third");
-			fourthContext.put("shouldBeFirst", "fourth");
+			this.firstContext.put("shouldBeFirst", "first");
+			this.secondContext.put("shouldBeFirst", "second");
+			this.thirdContext.put("shouldBeFirst", "third");
+			this.fourthContext.put("shouldBeFirst", "fourth");
 
-			secondContext.put("shouldBeSecond", "second");
-			thirdContext.put("shouldBeSecond", "third");
-			fourthContext.put("shouldBeSecond", "fourth");
+			this.secondContext.put("shouldBeSecond", "second");
+			this.thirdContext.put("shouldBeSecond", "third");
+			this.fourthContext.put("shouldBeSecond", "fourth");
 
-			thirdContext.put("shouldBeThird", "third");
-			fourthContext.put("shouldBeThird", "fourth");
+			this.thirdContext.put("shouldBeThird", "third");
+			this.fourthContext.put("shouldBeThird", "fourth");
 
-			fourthContext.put("shouldBeFourth", "fourth");
+			this.fourthContext.put("shouldBeFourth", "fourth");
 		}
 
 		public Map<String, String> getFirstContext() {
-			return firstContext;
+			return this.firstContext;
 		}
 
 		public Map<String, String> getSecondContext() {
-			return secondContext;
+			return this.secondContext;
 		}
 
 		public Map<String, String> getThirdContext() {
-			return thirdContext;
+			return this.thirdContext;
 		}
 
 		public Map<String, String> getFourthContext() {
-			return fourthContext;
+			return this.fourthContext;
 		}
 	}
 
@@ -2170,7 +2170,7 @@ public class SpelReproTests extends AbstractExpressionTests {
 		}
 
 		public double getValue() {
-			return value;
+			return this.value;
 		}
 	}
 
@@ -2184,7 +2184,7 @@ public class SpelReproTests extends AbstractExpressionTests {
 		}
 
 		public List<ListOf> getList() {
-			return list;
+			return this.list;
 		}
 	}
 

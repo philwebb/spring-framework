@@ -163,9 +163,9 @@ public class JmsListenerAnnotationBeanPostProcessorTests {
 	@Test
 	@SuppressWarnings("resource")
 	public void invalidProxy() {
-		thrown.expect(BeanCreationException.class);
-		thrown.expectCause(is(instanceOf(IllegalStateException.class)));
-		thrown.expectMessage("handleIt2");
+		this.thrown.expect(BeanCreationException.class);
+		this.thrown.expectCause(is(instanceOf(IllegalStateException.class)));
+		this.thrown.expectMessage("handleIt2");
 		new AnnotationConfigApplicationContext(Config.class, ProxyConfig.class, InvalidProxyTestBean.class);
 	}
 

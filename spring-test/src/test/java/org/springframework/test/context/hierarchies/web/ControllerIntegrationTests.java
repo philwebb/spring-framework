@@ -81,16 +81,16 @@ public class ControllerIntegrationTests {
 
 	@Test
 	public void verifyRootWacSupport() {
-		assertEquals("foo", foo);
-		assertEquals("bar", bar);
+		assertEquals("foo", this.foo);
+		assertEquals("bar", this.bar);
 
-		ApplicationContext parent = wac.getParent();
+		ApplicationContext parent = this.wac.getParent();
 		assertNotNull(parent);
 		assertTrue(parent instanceof WebApplicationContext);
 		WebApplicationContext root = (WebApplicationContext) parent;
 		assertFalse(root.getBeansOfType(String.class).containsKey("bar"));
 
-		ServletContext childServletContext = wac.getServletContext();
+		ServletContext childServletContext = this.wac.getServletContext();
 		assertNotNull(childServletContext);
 		ServletContext rootServletContext = root.getServletContext();
 		assertNotNull(rootServletContext);

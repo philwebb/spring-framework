@@ -113,7 +113,7 @@ public class FreeMarkerConfigurationFactory {
 	 * @see #setTemplateLoaderPath
 	 */
 	public void setConfigLocation(Resource resource) {
-		configLocation = resource;
+		this.configLocation = resource;
 	}
 
 	/**
@@ -260,8 +260,8 @@ public class FreeMarkerConfigurationFactory {
 
 		// Load config file if specified.
 		if (this.configLocation != null) {
-			if (logger.isInfoEnabled()) {
-				logger.info("Loading FreeMarker configuration from " + this.configLocation);
+			if (this.logger.isInfoEnabled()) {
+				this.logger.info("Loading FreeMarker configuration from " + this.configLocation);
 			}
 			PropertiesLoaderUtils.fillProperties(props, this.configLocation);
 		}
@@ -344,15 +344,15 @@ public class FreeMarkerConfigurationFactory {
 			try {
 				Resource path = getResourceLoader().getResource(templateLoaderPath);
 				File file = path.getFile();  // will fail if not resolvable in the file system
-				if (logger.isDebugEnabled()) {
-					logger.debug(
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug(
 							"Template loader path [" + path + "] resolved to file path [" + file.getAbsolutePath() + "]");
 				}
 				return new FileTemplateLoader(file);
 			}
 			catch (Exception ex) {
-				if (logger.isDebugEnabled()) {
-					logger.debug("Cannot resolve template loader path [" + templateLoaderPath +
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Cannot resolve template loader path [" + templateLoaderPath +
 							"] to [java.io.File]: using SpringTemplateLoader as fallback", ex);
 				}
 				return new SpringTemplateLoader(getResourceLoader(), templateLoaderPath);
@@ -360,7 +360,7 @@ public class FreeMarkerConfigurationFactory {
 		}
 		else {
 			// Always load via SpringTemplateLoader (without hot detection of template changes).
-			logger.debug("File system access not preferred: using SpringTemplateLoader");
+			this.logger.debug("File system access not preferred: using SpringTemplateLoader");
 			return new SpringTemplateLoader(getResourceLoader(), templateLoaderPath);
 		}
 	}
@@ -392,7 +392,7 @@ public class FreeMarkerConfigurationFactory {
 	protected TemplateLoader getAggregateTemplateLoader(List<TemplateLoader> templateLoaders) {
 		switch (templateLoaders.size()) {
 			case 0:
-				logger.info("No FreeMarker TemplateLoaders specified");
+				this.logger.info("No FreeMarker TemplateLoaders specified");
 				return null;
 			case 1:
 				return templateLoaders.get(0);

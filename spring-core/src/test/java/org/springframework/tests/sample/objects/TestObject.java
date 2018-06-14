@@ -34,7 +34,7 @@ public class TestObject implements ITestObject, ITestInterface, Comparable<Objec
 
 	@Override
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	@Override

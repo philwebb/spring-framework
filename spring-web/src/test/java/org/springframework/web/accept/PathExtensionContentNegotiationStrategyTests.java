@@ -47,7 +47,7 @@ public class PathExtensionContentNegotiationStrategyTests {
 	@Before
 	public void setup() {
 		this.servletRequest = new MockHttpServletRequest();
-		this.webRequest = new ServletWebRequest(servletRequest);
+		this.webRequest = new ServletWebRequest(this.servletRequest);
 	}
 
 
@@ -89,11 +89,11 @@ public class PathExtensionContentNegotiationStrategyTests {
 		this.servletRequest.setContextPath("/project-1.0.0.M3");
 		this.servletRequest.setRequestURI("/project-1.0.0.M3/");
 		assertEquals("Context path should be excluded", ContentNegotiationStrategy.MEDIA_TYPE_ALL_LIST,
-				strategy.resolveMediaTypes(webRequest));
+				strategy.resolveMediaTypes(this.webRequest));
 
 		this.servletRequest.setRequestURI("/project-1.0.0.M3");
 		assertEquals("Context path should be excluded", ContentNegotiationStrategy.MEDIA_TYPE_ALL_LIST,
-				strategy.resolveMediaTypes(webRequest));
+				strategy.resolveMediaTypes(this.webRequest));
 	}
 
 	// SPR-9390
@@ -104,7 +104,7 @@ public class PathExtensionContentNegotiationStrategyTests {
 		this.servletRequest.setRequestURI("/quo%20vadis%3f.html");
 
 		PathExtensionContentNegotiationStrategy strategy = new PathExtensionContentNegotiationStrategy();
-		List<MediaType> result = strategy.resolveMediaTypes(webRequest);
+		List<MediaType> result = strategy.resolveMediaTypes(this.webRequest);
 
 		assertEquals("Invalid content type", Collections.singletonList(new MediaType("text", "html")), result);
 	}

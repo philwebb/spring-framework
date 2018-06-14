@@ -76,22 +76,22 @@ public class PathResourceTests {
 
 	@Test
 	public void nullPath() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("Path must not be null");
+		this.thrown.expect(IllegalArgumentException.class);
+		this.thrown.expectMessage("Path must not be null");
 		new PathResource((Path) null);
 	}
 
 	@Test
 	public void nullPathString() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("Path must not be null");
+		this.thrown.expect(IllegalArgumentException.class);
+		this.thrown.expectMessage("Path must not be null");
 		new PathResource((String) null);
 	}
 
 	@Test
 	public void nullUri() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("URI must not be null");
+		this.thrown.expect(IllegalArgumentException.class);
+		this.thrown.expectMessage("URI must not be null");
 		new PathResource((URI) null);
 	}
 
@@ -173,14 +173,14 @@ public class PathResourceTests {
 	@Test
 	public void getInputStreamForDir() throws IOException {
 		PathResource resource = new PathResource(TEST_DIR);
-		thrown.expect(FileNotFoundException.class);
+		this.thrown.expect(FileNotFoundException.class);
 		resource.getInputStream();
 	}
 
 	@Test
 	public void getInputStreamDoesNotExist() throws IOException {
 		PathResource resource = new PathResource(NON_EXISTING_FILE);
-		thrown.expect(FileNotFoundException.class);
+		this.thrown.expect(FileNotFoundException.class);
 		resource.getInputStream();
 	}
 
@@ -209,7 +209,7 @@ public class PathResourceTests {
 		given(path.normalize()).willReturn(path);
 		given(path.toFile()).willThrow(new UnsupportedOperationException());
 		PathResource resource = new PathResource(path);
-		thrown.expect(FileNotFoundException.class);
+		this.thrown.expect(FileNotFoundException.class);
 		resource.getFile();
 	}
 
@@ -273,14 +273,14 @@ public class PathResourceTests {
 
 	@Test
 	public void outputStream() throws IOException {
-		PathResource resource = new PathResource(temporaryFolder.newFile("test").toPath());
+		PathResource resource = new PathResource(this.temporaryFolder.newFile("test").toPath());
 		FileCopyUtils.copy("test".getBytes(StandardCharsets.UTF_8), resource.getOutputStream());
 		assertThat(resource.contentLength(), equalTo(4L));
 	}
 
 	@Test
 	public void doesNotExistOutputStream() throws IOException {
-		File file = temporaryFolder.newFile("test");
+		File file = this.temporaryFolder.newFile("test");
 		file.delete();
 		PathResource resource = new PathResource(file.toPath());
 		FileCopyUtils.copy("test".getBytes(), resource.getOutputStream());
@@ -290,7 +290,7 @@ public class PathResourceTests {
 	@Test
 	public void directoryOutputStream() throws IOException {
 		PathResource resource = new PathResource(TEST_DIR);
-		thrown.expect(FileNotFoundException.class);
+		this.thrown.expect(FileNotFoundException.class);
 		resource.getOutputStream();
 	}
 
@@ -326,13 +326,13 @@ public class PathResourceTests {
 	@Test
 	public void getReadableByteChannelDoesNotExist() throws IOException {
 		PathResource resource = new PathResource(NON_EXISTING_FILE);
-		thrown.expect(FileNotFoundException.class);
+		this.thrown.expect(FileNotFoundException.class);
 		resource.readableChannel();
 	}
 
 	@Test
 	public void getWritableChannel() throws IOException {
-		PathResource resource = new PathResource(temporaryFolder.newFile("test").toPath());
+		PathResource resource = new PathResource(this.temporaryFolder.newFile("test").toPath());
 		ByteBuffer buffer = ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8));
 		WritableByteChannel channel = null;
 		try {

@@ -317,7 +317,7 @@ public final class MockRestServiceServer {
 
 				@Override
 				protected ClientHttpResponse executeInternal() throws IOException {
-					ClientHttpResponse response = expectationManager.validateRequest(this);
+					ClientHttpResponse response = MockRestServiceServer.this.expectationManager.validateRequest(this);
 					setResponse(response);
 					return response;
 				}

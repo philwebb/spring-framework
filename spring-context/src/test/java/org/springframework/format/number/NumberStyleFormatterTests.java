@@ -34,22 +34,22 @@ public class NumberStyleFormatterTests {
 
 	@Test
 	public void formatValue() {
-		assertEquals("23.56", formatter.print(new BigDecimal("23.56"), Locale.US));
+		assertEquals("23.56", this.formatter.print(new BigDecimal("23.56"), Locale.US));
 	}
 
 	@Test
 	public void parseValue() throws ParseException {
-		assertEquals(new BigDecimal("23.56"), formatter.parse("23.56", Locale.US));
+		assertEquals(new BigDecimal("23.56"), this.formatter.parse("23.56", Locale.US));
 	}
 
 	@Test(expected = ParseException.class)
 	public void parseBogusValue() throws ParseException {
-		formatter.parse("bogus", Locale.US);
+		this.formatter.parse("bogus", Locale.US);
 	}
 
 	@Test(expected = ParseException.class)
 	public void parsePercentValueNotLenientFailure() throws ParseException {
-		formatter.parse("23.56bogus", Locale.US);
+		this.formatter.parse("23.56bogus", Locale.US);
 	}
 
 }

@@ -399,7 +399,7 @@ public class ProxyFactoryTests {
 
 		@Override
 		public long getTimeStamp() {
-			return ts;
+			return this.ts;
 		}
 	}
 

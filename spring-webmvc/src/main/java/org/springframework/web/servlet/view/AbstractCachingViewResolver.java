@@ -76,7 +76,7 @@ public abstract class AbstractCachingViewResolver extends WebApplicationObjectSu
 				@Override
 				protected boolean removeEldestEntry(Map.Entry<Object, View> eldest) {
 					if (size() > getCacheLimit()) {
-						viewAccessCache.remove(eldest.getKey());
+						AbstractCachingViewResolver.this.viewAccessCache.remove(eldest.getKey());
 						return true;
 					}
 					else {
@@ -169,8 +169,8 @@ public abstract class AbstractCachingViewResolver extends WebApplicationObjectSu
 				}
 			}
 			else {
-				if (logger.isTraceEnabled()) {
-					logger.trace(formatKey(cacheKey) + "served from cache");
+				if (this.logger.isTraceEnabled()) {
+					this.logger.trace(formatKey(cacheKey) + "served from cache");
 				}
 			}
 			return (view != UNRESOLVED_VIEW ? view : null);
@@ -203,7 +203,7 @@ public abstract class AbstractCachingViewResolver extends WebApplicationObjectSu
 	 */
 	public void removeFromCache(String viewName, Locale locale) {
 		if (!isCache()) {
-			logger.warn("Caching is OFF (removal not necessary)");
+			this.logger.warn("Caching is OFF (removal not necessary)");
 		}
 		else {
 			Object cacheKey = getCacheKey(viewName, locale);
@@ -212,9 +212,9 @@ public abstract class AbstractCachingViewResolver extends WebApplicationObjectSu
 				this.viewAccessCache.remove(cacheKey);
 				cachedView = this.viewCreationCache.remove(cacheKey);
 			}
-			if (logger.isDebugEnabled()) {
+			if (this.logger.isDebugEnabled()) {
 				// Some debug output might be useful...
-				logger.debug(formatKey(cacheKey) +
+				this.logger.debug(formatKey(cacheKey) +
 						(cachedView != null ? "cleared from cache" : "not found in the cache"));
 			}
 		}
@@ -225,7 +225,7 @@ public abstract class AbstractCachingViewResolver extends WebApplicationObjectSu
 	 * Subsequent resolve calls will lead to recreation of demanded view objects.
 	 */
 	public void clearCache() {
-		logger.debug("Clearing all views from the cache");
+		this.logger.debug("Clearing all views from the cache");
 		synchronized (this.viewCreationCache) {
 			this.viewAccessCache.clear();
 			this.viewCreationCache.clear();

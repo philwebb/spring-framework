@@ -115,7 +115,7 @@ public class YamlProcessorTests {
 		this.processor.process((properties, map) -> {
 			assertEquals("bucket", properties.get("bar.spam"));
 			assertEquals(2, properties.size());
-			Map<String, Object> flattenedMap = processor.getFlattenedMap(map);
+			Map<String, Object> flattenedMap = this.processor.getFlattenedMap(map);
 			assertEquals("bucket", flattenedMap.get("bar.spam"));
 			assertEquals(2, flattenedMap.size());
 			assertTrue(flattenedMap instanceof LinkedHashMap);

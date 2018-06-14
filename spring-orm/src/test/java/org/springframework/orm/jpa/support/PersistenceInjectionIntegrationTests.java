@@ -41,12 +41,12 @@ public class PersistenceInjectionIntegrationTests extends AbstractEntityManagerF
 
 	@Test
 	public void testDefaultPersistenceContextSetterInjection() {
-		assertNotNull(defaultSetterInjected.getEntityManager());
+		assertNotNull(this.defaultSetterInjected.getEntityManager());
 	}
 
 	@Test
 	public void testSetterInjectionOfNamedPersistenceContext() {
-		assertNotNull(namedSetterInjected.getEntityManagerFactory());
+		assertNotNull(this.namedSetterInjected.getEntityManagerFactory());
 	}
 
 }

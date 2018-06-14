@@ -62,7 +62,7 @@ public abstract class AbstractHttpReceivingTransportHandler extends AbstractTran
 			messages = readMessages(request);
 		}
 		catch (IOException ex) {
-			logger.error("Failed to read message", ex);
+			this.logger.error("Failed to read message", ex);
 			if (ex.getClass().getName().contains("Mapping")) {
 				// e.g. Jackson's JsonMappingException, indicating an incomplete payload
 				handleReadError(response, "Payload expected.", sockJsSession.getId());
@@ -73,7 +73,7 @@ public abstract class AbstractHttpReceivingTransportHandler extends AbstractTran
 			return;
 		}
 		catch (Throwable ex) {
-			logger.error("Failed to read message", ex);
+			this.logger.error("Failed to read message", ex);
 			handleReadError(response, "Failed to read message(s)", sockJsSession.getId());
 			return;
 		}
@@ -81,8 +81,8 @@ public abstract class AbstractHttpReceivingTransportHandler extends AbstractTran
 			handleReadError(response, "Payload expected.", sockJsSession.getId());
 			return;
 		}
-		if (logger.isTraceEnabled()) {
-			logger.trace("Received message(s): " + Arrays.asList(messages));
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Received message(s): " + Arrays.asList(messages));
 		}
 		response.setStatusCode(getResponseStatus());
 		response.getHeaders().setContentType(new MediaType("text", "plain", StandardCharsets.UTF_8));

@@ -50,41 +50,41 @@ public class ModelMethodProcessorTests {
 
 	@Before
 	public void setUp() throws Exception {
-		processor = new ModelMethodProcessor();
-		mavContainer = new ModelAndViewContainer();
+		this.processor = new ModelMethodProcessor();
+		this.mavContainer = new ModelAndViewContainer();
 
 		Method method = getClass().getDeclaredMethod("model", Model.class);
-		paramModel = new MethodParameter(method, 0);
-		returnParamModel = new MethodParameter(method, -1);
+		this.paramModel = new MethodParameter(method, 0);
+		this.returnParamModel = new MethodParameter(method, -1);
 
-		webRequest = new ServletWebRequest(new MockHttpServletRequest());
+		this.webRequest = new ServletWebRequest(new MockHttpServletRequest());
 	}
 
 	@Test
 	public void supportsParameter() {
-		assertTrue(processor.supportsParameter(paramModel));
+		assertTrue(this.processor.supportsParameter(this.paramModel));
 	}
 
 	@Test
 	public void supportsReturnType() {
-		assertTrue(processor.supportsReturnType(returnParamModel));
+		assertTrue(this.processor.supportsReturnType(this.returnParamModel));
 	}
 
 	@Test
 	public void resolveArgumentValue() throws Exception {
-		assertSame(mavContainer.getModel(), processor.resolveArgument(paramModel, mavContainer, webRequest, null));
+		assertSame(this.mavContainer.getModel(), this.processor.resolveArgument(this.paramModel, this.mavContainer, this.webRequest, null));
 	}
 
 	@Test
 	public void handleModelReturnValue() throws Exception {
-		mavContainer.addAttribute("attr1", "value1");
+		this.mavContainer.addAttribute("attr1", "value1");
 		Model returnValue = new ExtendedModelMap();
 		returnValue.addAttribute("attr2", "value2");
 
-		processor.handleReturnValue(returnValue , returnParamModel, mavContainer, webRequest);
+		this.processor.handleReturnValue(returnValue , this.returnParamModel, this.mavContainer, this.webRequest);
 
-		assertEquals("value1", mavContainer.getModel().get("attr1"));
-		assertEquals("value2", mavContainer.getModel().get("attr2"));
+		assertEquals("value1", this.mavContainer.getModel().get("attr1"));
+		assertEquals("value2", this.mavContainer.getModel().get("attr2"));
 	}
 
 	@SuppressWarnings("unused")

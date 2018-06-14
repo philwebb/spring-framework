@@ -60,7 +60,7 @@ public class DerivedTestBean extends TestBean implements Serializable, BeanNameA
 
 	@Override
 	public String getBeanName() {
-		return beanName;
+		return this.beanName;
 	}
 
 	public void setActualSpouse(TestBean spouse) {
@@ -82,7 +82,7 @@ public class DerivedTestBean extends TestBean implements Serializable, BeanNameA
 	}
 
 	public boolean wasInitialized() {
-		return initialized;
+		return this.initialized;
 	}
 
 
@@ -93,7 +93,7 @@ public class DerivedTestBean extends TestBean implements Serializable, BeanNameA
 
 	@Override
 	public boolean wasDestroyed() {
-		return destroyed;
+		return this.destroyed;
 	}
 
 }

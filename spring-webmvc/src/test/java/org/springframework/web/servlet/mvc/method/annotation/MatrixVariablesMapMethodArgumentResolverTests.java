@@ -63,7 +63,7 @@ public class MatrixVariablesMapMethodArgumentResolverTests {
 		this.resolver = new MatrixVariableMapMethodArgumentResolver();
 		this.mavContainer = new ModelAndViewContainer();
 		this.request = new MockHttpServletRequest();
-		this.webRequest = new ServletWebRequest(request, new MockHttpServletResponse());
+		this.webRequest = new ServletWebRequest(this.request, new MockHttpServletResponse());
 
 		Map<String, MultiValueMap<String, String>> params = new LinkedHashMap<>();
 		this.request.setAttribute(HandlerMapping.MATRIX_VARIABLES_ATTRIBUTE, params);

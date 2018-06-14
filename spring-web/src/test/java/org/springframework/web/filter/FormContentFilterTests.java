@@ -146,7 +146,7 @@ public class FormContentFilterTests {
 		this.filter.doFilter(this.request, this.response, this.filterChain);
 		String[] values = this.filterChain.getRequest().getParameterValues("name");
 
-		assertNotSame("Request not wrapped", this.request, filterChain.getRequest());
+		assertNotSame("Request not wrapped", this.request, this.filterChain.getRequest());
 		assertArrayEquals(new String[] {"value1", "value2", "value3", "value4"}, values);
 	}
 

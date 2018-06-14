@@ -97,9 +97,9 @@ public class Jaxb2MarshallerTests extends AbstractMarshallerTests<Jaxb2Marshalle
 	protected Object createFlights() {
 		FlightType flight = new FlightType();
 		flight.setNumber(42L);
-		flights = new Flights();
-		flights.getFlight().add(flight);
-		return flights;
+		this.flights = new Flights();
+		this.flights.getFlight().add(flight);
+		return this.flights;
 	}
 
 
@@ -107,7 +107,7 @@ public class Jaxb2MarshallerTests extends AbstractMarshallerTests<Jaxb2Marshalle
 	public void marshalSAXResult() throws Exception {
 		ContentHandler contentHandler = mock(ContentHandler.class);
 		SAXResult result = new SAXResult(contentHandler);
-		marshaller.marshal(flights, result);
+		this.marshaller.marshal(this.flights, result);
 		InOrder ordered = inOrder(contentHandler);
 		ordered.verify(contentHandler).setDocumentLocator(isA(Locator.class));
 		ordered.verify(contentHandler).startDocument();
@@ -125,13 +125,13 @@ public class Jaxb2MarshallerTests extends AbstractMarshallerTests<Jaxb2Marshalle
 
 	@Test
 	public void lazyInit() throws Exception {
-		marshaller = new Jaxb2Marshaller();
-		marshaller.setContextPath(CONTEXT_PATH);
-		marshaller.setLazyInit(true);
-		marshaller.afterPropertiesSet();
+		this.marshaller = new Jaxb2Marshaller();
+		this.marshaller.setContextPath(CONTEXT_PATH);
+		this.marshaller.setLazyInit(true);
+		this.marshaller.afterPropertiesSet();
 		StringWriter writer = new StringWriter();
 		StreamResult result = new StreamResult(writer);
-		marshaller.marshal(flights, result);
+		this.marshaller.marshal(this.flights, result);
 		DifferenceEvaluator ev = chain(Default, downgradeDifferencesToEqual(XML_STANDALONE));
 		assertThat("Marshaller writes invalid StreamResult", writer.toString(),
 				isSimilarTo(EXPECTED_STRING).withDifferenceEvaluator(ev));
@@ -177,47 +177,47 @@ public class Jaxb2MarshallerTests extends AbstractMarshallerTests<Jaxb2Marshalle
 
 	@Test
 	public void supportsClassesToBeBound() throws Exception {
-		marshaller = new Jaxb2Marshaller();
-		marshaller.setClassesToBeBound(Flights.class, FlightType.class);
-		marshaller.afterPropertiesSet();
+		this.marshaller = new Jaxb2Marshaller();
+		this.marshaller.setClassesToBeBound(Flights.class, FlightType.class);
+		this.marshaller.afterPropertiesSet();
 		testSupports();
 	}
 
 	@Test
 	public void supportsPackagesToScan() throws Exception {
-		marshaller = new Jaxb2Marshaller();
-		marshaller.setPackagesToScan(CONTEXT_PATH);
-		marshaller.afterPropertiesSet();
+		this.marshaller = new Jaxb2Marshaller();
+		this.marshaller.setPackagesToScan(CONTEXT_PATH);
+		this.marshaller.afterPropertiesSet();
 		testSupports();
 	}
 
 	private void testSupports() throws Exception {
-		assertTrue("Jaxb2Marshaller does not support Flights class", marshaller.supports(Flights.class));
-		assertTrue("Jaxb2Marshaller does not support Flights generic type", marshaller.supports((Type)Flights.class));
+		assertTrue("Jaxb2Marshaller does not support Flights class", this.marshaller.supports(Flights.class));
+		assertTrue("Jaxb2Marshaller does not support Flights generic type", this.marshaller.supports((Type)Flights.class));
 
-		assertFalse("Jaxb2Marshaller supports FlightType class", marshaller.supports(FlightType.class));
-		assertFalse("Jaxb2Marshaller supports FlightType type", marshaller.supports((Type)FlightType.class));
+		assertFalse("Jaxb2Marshaller supports FlightType class", this.marshaller.supports(FlightType.class));
+		assertFalse("Jaxb2Marshaller supports FlightType type", this.marshaller.supports((Type)FlightType.class));
 
 		Method method = ObjectFactory.class.getDeclaredMethod("createFlight", FlightType.class);
 		assertTrue("Jaxb2Marshaller does not support JAXBElement<FlightsType>",
-				marshaller.supports(method.getGenericReturnType()));
+				this.marshaller.supports(method.getGenericReturnType()));
 
-		marshaller.setSupportJaxbElementClass(true);
+		this.marshaller.setSupportJaxbElementClass(true);
 		JAXBElement<FlightType> flightTypeJAXBElement = new JAXBElement<>(new QName("http://springframework.org", "flight"), FlightType.class,
 				new FlightType());
-		assertTrue("Jaxb2Marshaller does not support JAXBElement<FlightsType>", marshaller.supports(flightTypeJAXBElement.getClass()));
+		assertTrue("Jaxb2Marshaller does not support JAXBElement<FlightsType>", this.marshaller.supports(flightTypeJAXBElement.getClass()));
 
-		assertFalse("Jaxb2Marshaller supports class not in context path", marshaller.supports(DummyRootElement.class));
-		assertFalse("Jaxb2Marshaller supports type not in context path", marshaller.supports((Type)DummyRootElement.class));
+		assertFalse("Jaxb2Marshaller supports class not in context path", this.marshaller.supports(DummyRootElement.class));
+		assertFalse("Jaxb2Marshaller supports type not in context path", this.marshaller.supports((Type)DummyRootElement.class));
 		method = getClass().getDeclaredMethod("createDummyRootElement");
 		assertFalse("Jaxb2Marshaller supports JAXBElement not in context path",
-				marshaller.supports(method.getGenericReturnType()));
+				this.marshaller.supports(method.getGenericReturnType()));
 
-		assertFalse("Jaxb2Marshaller supports class not in context path", marshaller.supports(DummyType.class));
-		assertFalse("Jaxb2Marshaller supports type not in context path", marshaller.supports((Type)DummyType.class));
+		assertFalse("Jaxb2Marshaller supports class not in context path", this.marshaller.supports(DummyType.class));
+		assertFalse("Jaxb2Marshaller supports type not in context path", this.marshaller.supports((Type)DummyType.class));
 		method = getClass().getDeclaredMethod("createDummyType");
 		assertFalse("Jaxb2Marshaller supports JAXBElement not in context path",
-				marshaller.supports(method.getGenericReturnType()));
+				this.marshaller.supports(method.getGenericReturnType()));
 
 		testSupportsPrimitives();
 		testSupportsStandardClasses();
@@ -230,11 +230,11 @@ public class Jaxb2MarshallerTests extends AbstractMarshallerTests<Jaxb2Marshalle
 			public void doWith(Method method) throws IllegalArgumentException, IllegalAccessException {
 				Type returnType = method.getGenericReturnType();
 				assertTrue("Jaxb2Marshaller does not support JAXBElement<" + method.getName().substring(9) + ">",
-						marshaller.supports(returnType));
+						Jaxb2MarshallerTests.this.marshaller.supports(returnType));
 				try {
 					// make sure the marshalling does not result in errors
 					Object returnValue = method.invoke(primitives);
-					marshaller.marshal(returnValue, new StreamResult(new ByteArrayOutputStream()));
+					Jaxb2MarshallerTests.this.marshaller.marshal(returnValue, new StreamResult(new ByteArrayOutputStream()));
 				}
 				catch (InvocationTargetException ex) {
 					fail(ex.getMessage());
@@ -255,11 +255,11 @@ public class Jaxb2MarshallerTests extends AbstractMarshallerTests<Jaxb2Marshalle
 			public void doWith(Method method) throws IllegalArgumentException, IllegalAccessException {
 				Type returnType = method.getGenericReturnType();
 				assertTrue("Jaxb2Marshaller does not support JAXBElement<" + method.getName().substring(13) + ">",
-						marshaller.supports(returnType));
+						Jaxb2MarshallerTests.this.marshaller.supports(returnType));
 				try {
 					// make sure the marshalling does not result in errors
 					Object returnValue = method.invoke(standardClasses);
-					marshaller.marshal(returnValue, new StreamResult(new ByteArrayOutputStream()));
+					Jaxb2MarshallerTests.this.marshaller.marshal(returnValue, new StreamResult(new ByteArrayOutputStream()));
 				}
 				catch (InvocationTargetException ex) {
 					fail(ex.getMessage());
@@ -275,23 +275,23 @@ public class Jaxb2MarshallerTests extends AbstractMarshallerTests<Jaxb2Marshalle
 
 	@Test
 	public void supportsXmlRootElement() throws Exception {
-		marshaller = new Jaxb2Marshaller();
-		marshaller.setClassesToBeBound(DummyRootElement.class, DummyType.class);
-		marshaller.afterPropertiesSet();
-		assertTrue("Jaxb2Marshaller does not support XmlRootElement class", marshaller.supports(DummyRootElement.class));
-		assertTrue("Jaxb2Marshaller does not support XmlRootElement generic type", marshaller.supports((Type)DummyRootElement.class));
+		this.marshaller = new Jaxb2Marshaller();
+		this.marshaller.setClassesToBeBound(DummyRootElement.class, DummyType.class);
+		this.marshaller.afterPropertiesSet();
+		assertTrue("Jaxb2Marshaller does not support XmlRootElement class", this.marshaller.supports(DummyRootElement.class));
+		assertTrue("Jaxb2Marshaller does not support XmlRootElement generic type", this.marshaller.supports((Type)DummyRootElement.class));
 
-		assertFalse("Jaxb2Marshaller supports DummyType class", marshaller.supports(DummyType.class));
-		assertFalse("Jaxb2Marshaller supports DummyType type", marshaller.supports((Type)DummyType.class));
+		assertFalse("Jaxb2Marshaller supports DummyType class", this.marshaller.supports(DummyType.class));
+		assertFalse("Jaxb2Marshaller supports DummyType type", this.marshaller.supports((Type)DummyType.class));
 	}
 
 
 	@Test
 	public void marshalAttachments() throws Exception {
-		marshaller = new Jaxb2Marshaller();
-		marshaller.setClassesToBeBound(BinaryObject.class);
-		marshaller.setMtomEnabled(true);
-		marshaller.afterPropertiesSet();
+		this.marshaller = new Jaxb2Marshaller();
+		this.marshaller.setClassesToBeBound(BinaryObject.class);
+		this.marshaller.setMtomEnabled(true);
+		this.marshaller.afterPropertiesSet();
 		MimeContainer mimeContainer = mock(MimeContainer.class);
 
 		Resource logo = new ClassPathResource("spring-ws.png", getClass());
@@ -301,21 +301,21 @@ public class Jaxb2MarshallerTests extends AbstractMarshallerTests<Jaxb2Marshalle
 		byte[] bytes = FileCopyUtils.copyToByteArray(logo.getInputStream());
 		BinaryObject object = new BinaryObject(bytes, dataHandler);
 		StringWriter writer = new StringWriter();
-		marshaller.marshal(object, new StreamResult(writer), mimeContainer);
+		this.marshaller.marshal(object, new StreamResult(writer), mimeContainer);
 		assertTrue("No XML written", writer.toString().length() > 0);
 		verify(mimeContainer, times(3)).addAttachment(isA(String.class), isA(DataHandler.class));
 	}
 
 	@Test  // SPR-10714
 	public void marshalAWrappedObjectHoldingAnXmlElementDeclElement() throws Exception {
-		marshaller = new Jaxb2Marshaller();
-		marshaller.setPackagesToScan("org.springframework.oxm.jaxb");
-		marshaller.afterPropertiesSet();
+		this.marshaller = new Jaxb2Marshaller();
+		this.marshaller.setPackagesToScan("org.springframework.oxm.jaxb");
+		this.marshaller.afterPropertiesSet();
 		Airplane airplane = new Airplane();
 		airplane.setName("test");
 		StringWriter writer = new StringWriter();
 		Result result = new StreamResult(writer);
-		marshaller.marshal(airplane, result);
+		this.marshaller.marshal(airplane, result);
 		DifferenceEvaluator ev = chain(Default, downgradeDifferencesToEqual(XML_STANDALONE));
 		assertThat("Marshalling should use root Element",
 				writer.toString(),

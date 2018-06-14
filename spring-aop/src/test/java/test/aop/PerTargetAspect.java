@@ -31,12 +31,12 @@ public class PerTargetAspect implements Ordered {
 
 	@Around("execution(int *.getAge())")
 	public int returnCountAsAge() {
-		return count++;
+		return this.count++;
 	}
 
 	@Before("execution(void *.set*(int))")
 	public void countSetter() {
-		++count;
+		++this.count;
 	}
 
 	@Override

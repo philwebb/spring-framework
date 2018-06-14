@@ -129,19 +129,19 @@ public class DefaultLifecycleMethodsTests {
 		}
 
 		public boolean isInitCalled() {
-			return initCalled;
+			return this.initCalled;
 		}
 
 		public boolean isDestroyCalled() {
-			return destroyCalled;
+			return this.destroyCalled;
 		}
 
 		public boolean isCustomInitCalled() {
-			return customInitCalled;
+			return this.customInitCalled;
 		}
 
 		public boolean isCustomDestroyCalled() {
-			return customDestroyCalled;
+			return this.customDestroyCalled;
 		}
 	}
 

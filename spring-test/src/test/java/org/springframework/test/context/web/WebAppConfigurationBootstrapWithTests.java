@@ -53,7 +53,7 @@ public class WebAppConfigurationBootstrapWithTests {
 	@Test
 	public void webApplicationContextIsLoaded() {
 		// from: src/test/webapp/resources/Spring.js
-		Resource resource = wac.getResource("/resources/Spring.js");
+		Resource resource = this.wac.getResource("/resources/Spring.js");
 		assertNotNull(resource);
 		assertTrue(resource.exists());
 	}

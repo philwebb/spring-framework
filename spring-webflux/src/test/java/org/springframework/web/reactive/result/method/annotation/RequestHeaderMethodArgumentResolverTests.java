@@ -96,9 +96,9 @@ public class RequestHeaderMethodArgumentResolverTests {
 
 	@Test
 	public void supportsParameter() {
-		assertTrue("String parameter not supported", resolver.supportsParameter(paramNamedDefaultValueStringHeader));
-		assertTrue("String array parameter not supported", resolver.supportsParameter(paramNamedValueStringArray));
-		assertFalse("non-@RequestParam parameter supported", resolver.supportsParameter(paramNamedValueMap));
+		assertTrue("String parameter not supported", this.resolver.supportsParameter(this.paramNamedDefaultValueStringHeader));
+		assertTrue("String array parameter not supported", this.resolver.supportsParameter(this.paramNamedValueStringArray));
+		assertFalse("non-@RequestParam parameter supported", this.resolver.supportsParameter(this.paramNamedValueMap));
 		try {
 			this.resolver.supportsParameter(this.paramMono);
 			fail();
@@ -206,7 +206,7 @@ public class RequestHeaderMethodArgumentResolverTests {
 
 	@Test
 	public void notFound() throws Exception {
-		Mono<Object> mono = resolver.resolveArgument(
+		Mono<Object> mono = this.resolver.resolveArgument(
 				this.paramNamedValueStringArray, this.bindingContext,
 				MockServerWebExchange.from(MockServerHttpRequest.get("/")));
 

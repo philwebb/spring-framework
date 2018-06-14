@@ -39,13 +39,13 @@ public class ConcurrentTaskExecutorTests extends AbstractSchedulingTaskExecutorT
 
 	@Override
 	protected AsyncListenableTaskExecutor buildExecutor() {
-		concurrentExecutor.setThreadFactory(new CustomizableThreadFactory(THREAD_NAME_PREFIX));
-		return new ConcurrentTaskExecutor(concurrentExecutor);
+		this.concurrentExecutor.setThreadFactory(new CustomizableThreadFactory(THREAD_NAME_PREFIX));
+		return new ConcurrentTaskExecutor(this.concurrentExecutor);
 	}
 
 	@Override
 	public void shutdownExecutor() {
-		List<Runnable> remainingTasks = concurrentExecutor.shutdownNow();
+		List<Runnable> remainingTasks = this.concurrentExecutor.shutdownNow();
 		for (Runnable task : remainingTasks) {
 			if (task instanceof RunnableFuture) {
 				((RunnableFuture<?>) task).cancel(true);

@@ -36,11 +36,11 @@ public class LifecycleTestBean implements Lifecycle {
 
 
 	public int getStartOrder() {
-		return startOrder;
+		return this.startOrder;
 	}
 
 	public int getStopOrder() {
-		return stopOrder;
+		return this.stopOrder;
 	}
 
 	@Override

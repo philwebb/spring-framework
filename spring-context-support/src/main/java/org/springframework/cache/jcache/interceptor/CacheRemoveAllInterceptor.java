@@ -67,8 +67,8 @@ class CacheRemoveAllInterceptor
 
 	protected void removeAll(CacheOperationInvocationContext<CacheRemoveAllOperation> context) {
 		Cache cache = resolveCache(context);
-		if (logger.isTraceEnabled()) {
-			logger.trace("Invalidating entire cache '" + cache.getName() + "' for operation "
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Invalidating entire cache '" + cache.getName() + "' for operation "
 					+ context.getOperation());
 		}
 		doClear(cache);

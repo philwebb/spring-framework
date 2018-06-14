@@ -47,67 +47,67 @@ public class NameMatchMethodPointcutTests {
 	@Before
 	public void setUp() {
 		ProxyFactory pf = new ProxyFactory(new SerializablePerson());
-		nop = new SerializableNopInterceptor();
-		pc = new NameMatchMethodPointcut();
-		pf.addAdvisor(new DefaultPointcutAdvisor(pc, nop));
-		proxied = (Person) pf.getProxy();
+		this.nop = new SerializableNopInterceptor();
+		this.pc = new NameMatchMethodPointcut();
+		pf.addAdvisor(new DefaultPointcutAdvisor(this.pc, this.nop));
+		this.proxied = (Person) pf.getProxy();
 	}
 
 	@Test
 	public void testMatchingOnly() {
 		// Can't do exact matching through isMatch
-		assertTrue(pc.isMatch("echo", "ech*"));
-		assertTrue(pc.isMatch("setName", "setN*"));
-		assertTrue(pc.isMatch("setName", "set*"));
-		assertFalse(pc.isMatch("getName", "set*"));
-		assertFalse(pc.isMatch("setName", "set"));
-		assertTrue(pc.isMatch("testing", "*ing"));
+		assertTrue(this.pc.isMatch("echo", "ech*"));
+		assertTrue(this.pc.isMatch("setName", "setN*"));
+		assertTrue(this.pc.isMatch("setName", "set*"));
+		assertFalse(this.pc.isMatch("getName", "set*"));
+		assertFalse(this.pc.isMatch("setName", "set"));
+		assertTrue(this.pc.isMatch("testing", "*ing"));
 	}
 
 	@Test
 	public void testEmpty() throws Throwable {
-		assertEquals(0, nop.getCount());
-		proxied.getName();
-		proxied.setName("");
-		proxied.echo(null);
-		assertEquals(0, nop.getCount());
+		assertEquals(0, this.nop.getCount());
+		this.proxied.getName();
+		this.proxied.setName("");
+		this.proxied.echo(null);
+		assertEquals(0, this.nop.getCount());
 	}
 
 
 	@Test
 	public void testMatchOneMethod() throws Throwable {
-		pc.addMethodName("echo");
-		pc.addMethodName("set*");
-		assertEquals(0, nop.getCount());
-		proxied.getName();
-		proxied.getName();
-		assertEquals(0, nop.getCount());
-		proxied.echo(null);
-		assertEquals(1, nop.getCount());
+		this.pc.addMethodName("echo");
+		this.pc.addMethodName("set*");
+		assertEquals(0, this.nop.getCount());
+		this.proxied.getName();
+		this.proxied.getName();
+		assertEquals(0, this.nop.getCount());
+		this.proxied.echo(null);
+		assertEquals(1, this.nop.getCount());
 
-		proxied.setName("");
-		assertEquals(2, nop.getCount());
-		proxied.setAge(25);
-		assertEquals(25, proxied.getAge());
-		assertEquals(3, nop.getCount());
+		this.proxied.setName("");
+		assertEquals(2, this.nop.getCount());
+		this.proxied.setAge(25);
+		assertEquals(25, this.proxied.getAge());
+		assertEquals(3, this.nop.getCount());
 	}
 
 	@Test
 	public void testSets() throws Throwable {
-		pc.setMappedNames(new String[] { "set*", "echo" });
-		assertEquals(0, nop.getCount());
-		proxied.getName();
-		proxied.setName("");
-		assertEquals(1, nop.getCount());
-		proxied.echo(null);
-		assertEquals(2, nop.getCount());
+		this.pc.setMappedNames(new String[] { "set*", "echo" });
+		assertEquals(0, this.nop.getCount());
+		this.proxied.getName();
+		this.proxied.setName("");
+		assertEquals(1, this.nop.getCount());
+		this.proxied.echo(null);
+		assertEquals(2, this.nop.getCount());
 	}
 
 	@Test
 	public void testSerializable() throws Throwable {
 		testSets();
 		// Count is now 2
-		Person p2 = (Person) SerializationTestUtils.serializeAndDeserialize(proxied);
+		Person p2 = (Person) SerializationTestUtils.serializeAndDeserialize(this.proxied);
 		NopInterceptor nop2 = (NopInterceptor) ((Advised) p2).getAdvisors()[0].getAdvice();
 		p2.getName();
 		assertEquals(2, nop2.getCount());

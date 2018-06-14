@@ -50,7 +50,7 @@ public class ComparableComparatorTests {
 		Comparator c = new ComparableComparator();
 		Object o1 = new Object();
 		Object o2 = new Object();
-		thrown.expect(ClassCastException.class);
+		this.thrown.expect(ClassCastException.class);
 		c.compare(o1, o2);
 	}
 

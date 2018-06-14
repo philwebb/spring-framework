@@ -218,7 +218,7 @@ public class SimpleHttpServerJaxWsServiceExporter extends AbstractJaxWsServiceEx
 	public void destroy() {
 		super.destroy();
 		if (this.server != null && this.localServer) {
-			logger.info("Stopping HttpServer");
+			this.logger.info("Stopping HttpServer");
 			this.server.stop(this.shutdownDelay);
 		}
 	}

@@ -82,8 +82,8 @@ public class HeaderMethodArgumentResolverTests {
 
 	@Test
 	public void supportsParameter() {
-		assertTrue(resolver.supportsParameter(paramNamedDefaultValueStringHeader));
-		assertFalse(resolver.supportsParameter(paramNotAnnotated));
+		assertTrue(this.resolver.supportsParameter(this.paramNamedDefaultValueStringHeader));
+		assertFalse(this.resolver.supportsParameter(this.paramNotAnnotated));
 	}
 
 	@Test
@@ -130,7 +130,7 @@ public class HeaderMethodArgumentResolverTests {
 		System.setProperty("systemProperty", "sysbar");
 		try {
 			Message<byte[]> message = MessageBuilder.withPayload(new byte[0]).build();
-			Object result = resolver.resolveArgument(paramSystemPropertyDefaultValue, message);
+			Object result = this.resolver.resolveArgument(this.paramSystemPropertyDefaultValue, message);
 			assertEquals("sysbar", result);
 		}
 		finally {
@@ -143,7 +143,7 @@ public class HeaderMethodArgumentResolverTests {
 		System.setProperty("systemProperty", "sysbar");
 		try {
 			Message<byte[]> message = MessageBuilder.withPayload(new byte[0]).setHeader("sysbar", "foo").build();
-			Object result = resolver.resolveArgument(paramSystemPropertyName, message);
+			Object result = this.resolver.resolveArgument(this.paramSystemPropertyName, message);
 			assertEquals("foo", result);
 		}
 		finally {
@@ -160,7 +160,7 @@ public class HeaderMethodArgumentResolverTests {
 				new HeaderMethodArgumentResolver(new DefaultConversionService(), cxt.getBeanFactory());
 
 		Message<String> message = MessageBuilder.withPayload("foo").setHeader("foo", "bar").build();
-		Object result = resolver.resolveArgument(paramOptional, message);
+		Object result = resolver.resolveArgument(this.paramOptional, message);
 		assertEquals(Optional.of("bar"), result);
 	}
 
@@ -173,7 +173,7 @@ public class HeaderMethodArgumentResolverTests {
 				new HeaderMethodArgumentResolver(new DefaultConversionService(), cxt.getBeanFactory());
 
 		Message<String> message = MessageBuilder.withPayload("foo").build();
-		Object result = resolver.resolveArgument(paramOptional, message);
+		Object result = resolver.resolveArgument(this.paramOptional, message);
 		assertEquals(Optional.empty(), result);
 	}
 

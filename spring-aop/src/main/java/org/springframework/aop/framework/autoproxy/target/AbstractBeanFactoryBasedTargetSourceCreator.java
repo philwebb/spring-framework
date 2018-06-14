@@ -95,8 +95,8 @@ public abstract class AbstractBeanFactoryBasedTargetSourceCreator
 			return null;
 		}
 
-		if (logger.isDebugEnabled()) {
-			logger.debug("Configuring AbstractBeanFactoryBasedTargetSource: " + targetSource);
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Configuring AbstractBeanFactoryBasedTargetSource: " + targetSource);
 		}
 
 		DefaultListableBeanFactory internalBeanFactory = getInternalBeanFactoryForBean(beanName);

@@ -208,7 +208,7 @@ public class RequestContextHolderTests {
 
 		@RequestMapping("/requestScopedController")
 		public void handle() {
-			assertRequestAttributes(request);
+			assertRequestAttributes(this.request);
 			assertRequestAttributes();
 		}
 	}
@@ -220,7 +220,7 @@ public class RequestContextHolderTests {
 
 
 		void process() {
-			assertRequestAttributes(request);
+			assertRequestAttributes(this.request);
 		}
 	}
 

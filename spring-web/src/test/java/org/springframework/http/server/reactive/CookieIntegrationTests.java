@@ -55,7 +55,7 @@ public class CookieIntegrationTests extends AbstractHttpHandlerIntegrationTests 
 	@SuppressWarnings("unchecked")
 	@Test
 	public void basicTest() throws Exception {
-		URI url = new URI("http://localhost:" + port);
+		URI url = new URI("http://localhost:" + this.port);
 		String header = "SID=31d4d96e407aad42; lang=en-US";
 		ResponseEntity<Void> response = new RestTemplate().exchange(
 				RequestEntity.get(url).header("Cookie", header).build(), Void.class);

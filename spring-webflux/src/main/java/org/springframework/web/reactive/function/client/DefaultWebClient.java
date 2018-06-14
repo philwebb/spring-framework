@@ -171,18 +171,18 @@ class DefaultWebClient implements WebClient {
 		@Override
 		public RequestBodySpec uri(String uriTemplate, Object... uriVariables) {
 			attribute(URI_TEMPLATE_ATTRIBUTE, uriTemplate);
-			return uri(uriBuilderFactory.expand(uriTemplate, uriVariables));
+			return uri(DefaultWebClient.this.uriBuilderFactory.expand(uriTemplate, uriVariables));
 		}
 
 		@Override
 		public RequestBodySpec uri(String uriTemplate, Map<String, ?> uriVariables) {
 			attribute(URI_TEMPLATE_ATTRIBUTE, uriTemplate);
-			return uri(uriBuilderFactory.expand(uriTemplate, uriVariables));
+			return uri(DefaultWebClient.this.uriBuilderFactory.expand(uriTemplate, uriVariables));
 		}
 
 		@Override
 		public RequestBodySpec uri(Function<UriBuilder, URI> uriFunction) {
-			return uri(uriFunction.apply(uriBuilderFactory.builder()));
+			return uri(uriFunction.apply(DefaultWebClient.this.uriBuilderFactory.builder()));
 		}
 
 		@Override
@@ -314,11 +314,11 @@ class DefaultWebClient implements WebClient {
 			ClientRequest request = (this.inserter != null ?
 					initRequestBuilder().body(this.inserter).build() :
 					initRequestBuilder().build());
-			return exchangeFunction.exchange(request).switchIfEmpty(NO_HTTP_CLIENT_RESPONSE_ERROR);
+			return DefaultWebClient.this.exchangeFunction.exchange(request).switchIfEmpty(NO_HTTP_CLIENT_RESPONSE_ERROR);
 		}
 
 		private ClientRequest.Builder initRequestBuilder() {
-			URI uri = this.uri != null ? this.uri : uriBuilderFactory.expand("");
+			URI uri = this.uri != null ? this.uri : DefaultWebClient.this.uriBuilderFactory.expand("");
 			return ClientRequest.create(this.httpMethod, uri)
 					.headers(headers -> headers.addAll(initHeaders()))
 					.cookies(cookies -> cookies.addAll(initCookies()))
@@ -327,15 +327,15 @@ class DefaultWebClient implements WebClient {
 
 		private HttpHeaders initHeaders() {
 			if (CollectionUtils.isEmpty(this.headers)) {
-				return (defaultHeaders != null ? defaultHeaders : new HttpHeaders());
+				return (DefaultWebClient.this.defaultHeaders != null ? DefaultWebClient.this.defaultHeaders : new HttpHeaders());
 			}
-			else if (CollectionUtils.isEmpty(defaultHeaders)) {
+			else if (CollectionUtils.isEmpty(DefaultWebClient.this.defaultHeaders)) {
 				return this.headers;
 			}
 			else {
 				HttpHeaders result = new HttpHeaders();
 				result.putAll(this.headers);
-				defaultHeaders.forEach((name, values) -> {
+				DefaultWebClient.this.defaultHeaders.forEach((name, values) -> {
 					if (!this.headers.containsKey(name)) {
 						values.forEach(value -> result.add(name, value));
 					}
@@ -346,15 +346,15 @@ class DefaultWebClient implements WebClient {
 
 		private MultiValueMap<String, String> initCookies() {
 			if (CollectionUtils.isEmpty(this.cookies)) {
-				return (defaultCookies != null ? defaultCookies : new LinkedMultiValueMap<>(0));
+				return (DefaultWebClient.this.defaultCookies != null ? DefaultWebClient.this.defaultCookies : new LinkedMultiValueMap<>(0));
 			}
-			else if (CollectionUtils.isEmpty(defaultCookies)) {
+			else if (CollectionUtils.isEmpty(DefaultWebClient.this.defaultCookies)) {
 				return this.cookies;
 			}
 			else {
 				MultiValueMap<String, String> result = new LinkedMultiValueMap<>();
 				result.putAll(this.cookies);
-				defaultCookies.forEach(result::putIfAbsent);
+				DefaultWebClient.this.defaultCookies.forEach(result::putIfAbsent);
 				return result;
 			}
 		}

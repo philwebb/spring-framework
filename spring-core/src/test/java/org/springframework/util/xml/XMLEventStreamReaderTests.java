@@ -45,20 +45,20 @@ public class XMLEventStreamReaderTests {
 	public void createStreamReader() throws Exception {
 		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 		XMLEventReader eventReader = inputFactory.createXMLEventReader(new StringReader(XML));
-		streamReader = new XMLEventStreamReader(eventReader);
+		this.streamReader = new XMLEventStreamReader(eventReader);
 	}
 
 	@Test
 	public void readAll() throws Exception {
-		while (streamReader.hasNext()) {
-			streamReader.next();
+		while (this.streamReader.hasNext()) {
+			this.streamReader.next();
 		}
 	}
 
 	@Test
 	public void readCorrect() throws Exception {
 		Transformer transformer = TransformerFactory.newInstance().newTransformer();
-		StAXSource source = new StAXSource(streamReader);
+		StAXSource source = new StAXSource(this.streamReader);
 		StringWriter writer = new StringWriter();
 		transformer.transform(source, new StreamResult(writer));
 		Predicate<Node> nodeFilter = n ->

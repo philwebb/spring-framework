@@ -52,83 +52,83 @@ public class RdbmsOperationTests {
 
 	@Test
 	public void emptySql() {
-		exception.expect(InvalidDataAccessApiUsageException.class);
-		operation.compile();
+		this.exception.expect(InvalidDataAccessApiUsageException.class);
+		this.operation.compile();
 	}
 
 	@Test
 	public void setTypeAfterCompile() {
-		operation.setDataSource(new DriverManagerDataSource());
-		operation.setSql("select * from mytable");
-		operation.compile();
-		exception.expect(InvalidDataAccessApiUsageException.class);
-		operation.setTypes(new int[] { Types.INTEGER });
+		this.operation.setDataSource(new DriverManagerDataSource());
+		this.operation.setSql("select * from mytable");
+		this.operation.compile();
+		this.exception.expect(InvalidDataAccessApiUsageException.class);
+		this.operation.setTypes(new int[] { Types.INTEGER });
 	}
 
 	@Test
 	public void declareParameterAfterCompile() {
-		operation.setDataSource(new DriverManagerDataSource());
-		operation.setSql("select * from mytable");
-		operation.compile();
-		exception.expect(InvalidDataAccessApiUsageException.class);
-		operation.declareParameter(new SqlParameter(Types.INTEGER));
+		this.operation.setDataSource(new DriverManagerDataSource());
+		this.operation.setSql("select * from mytable");
+		this.operation.compile();
+		this.exception.expect(InvalidDataAccessApiUsageException.class);
+		this.operation.declareParameter(new SqlParameter(Types.INTEGER));
 	}
 
 	@Test
 	public void tooFewParameters() {
-		operation.setSql("select * from mytable");
-		operation.setTypes(new int[] { Types.INTEGER });
-		exception.expect(InvalidDataAccessApiUsageException.class);
-		operation.validateParameters((Object[]) null);
+		this.operation.setSql("select * from mytable");
+		this.operation.setTypes(new int[] { Types.INTEGER });
+		this.exception.expect(InvalidDataAccessApiUsageException.class);
+		this.operation.validateParameters((Object[]) null);
 	}
 
 	@Test
 	public void tooFewMapParameters() {
-		operation.setSql("select * from mytable");
-		operation.setTypes(new int[] { Types.INTEGER });
-		exception.expect(InvalidDataAccessApiUsageException.class);
-		operation.validateNamedParameters((Map<String, String>) null);
+		this.operation.setSql("select * from mytable");
+		this.operation.setTypes(new int[] { Types.INTEGER });
+		this.exception.expect(InvalidDataAccessApiUsageException.class);
+		this.operation.validateNamedParameters((Map<String, String>) null);
 	}
 
 	@Test
 	public void operationConfiguredViaJdbcTemplateMustGetDataSource() throws Exception {
-		operation.setSql("foo");
+		this.operation.setSql("foo");
 
-		exception.expect(InvalidDataAccessApiUsageException.class);
-		exception.expectMessage(containsString("ataSource"));
-		operation.compile();
+		this.exception.expect(InvalidDataAccessApiUsageException.class);
+		this.exception.expectMessage(containsString("ataSource"));
+		this.operation.compile();
 	}
 
 	@Test
 	public void tooManyParameters() {
-		operation.setSql("select * from mytable");
-		exception.expect(InvalidDataAccessApiUsageException.class);
-		operation.validateParameters(new Object[] { 1, 2 });
+		this.operation.setSql("select * from mytable");
+		this.exception.expect(InvalidDataAccessApiUsageException.class);
+		this.operation.validateParameters(new Object[] { 1, 2 });
 	}
 
 	@Test
 	public void unspecifiedMapParameters() {
-		operation.setSql("select * from mytable");
+		this.operation.setSql("select * from mytable");
 		Map<String, String> params = new HashMap<>();
 		params.put("col1", "value");
-		exception.expect(InvalidDataAccessApiUsageException.class);
-		operation.validateNamedParameters(params);
+		this.exception.expect(InvalidDataAccessApiUsageException.class);
+		this.operation.validateNamedParameters(params);
 	}
 
 	@Test
 	public void compileTwice() {
-		operation.setDataSource(new DriverManagerDataSource());
-		operation.setSql("select * from mytable");
-		operation.setTypes(null);
-		operation.compile();
-		operation.compile();
+		this.operation.setDataSource(new DriverManagerDataSource());
+		this.operation.setSql("select * from mytable");
+		this.operation.setTypes(null);
+		this.operation.compile();
+		this.operation.compile();
 	}
 
 	@Test
 	public void emptyDataSource() {
 		SqlOperation operation = new SqlOperation() {};
 		operation.setSql("select * from mytable");
-		exception.expect(InvalidDataAccessApiUsageException.class);
+		this.exception.expect(InvalidDataAccessApiUsageException.class);
 		operation.compile();
 	}
 
@@ -147,24 +147,24 @@ public class RdbmsOperationTests {
 
 	@Test
 	public void validateInOutParameter() {
-		operation.setDataSource(new DriverManagerDataSource());
-		operation.setSql("DUMMY_PROC");
-		operation.declareParameter(new SqlOutParameter("DUMMY_OUT_PARAM", Types.VARCHAR));
-		operation.declareParameter(new SqlInOutParameter("DUMMY_IN_OUT_PARAM", Types.VARCHAR));
-		operation.validateParameters(new Object[] {"DUMMY_VALUE1", "DUMMY_VALUE2"});
+		this.operation.setDataSource(new DriverManagerDataSource());
+		this.operation.setSql("DUMMY_PROC");
+		this.operation.declareParameter(new SqlOutParameter("DUMMY_OUT_PARAM", Types.VARCHAR));
+		this.operation.declareParameter(new SqlInOutParameter("DUMMY_IN_OUT_PARAM", Types.VARCHAR));
+		this.operation.validateParameters(new Object[] {"DUMMY_VALUE1", "DUMMY_VALUE2"});
 	}
 
 	@Test
 	public void parametersSetWithList() {
 		DataSource ds = new DriverManagerDataSource();
-		operation.setDataSource(ds);
-		operation.setSql("select * from mytable where one = ? and two = ?");
-		operation.setParameters(new SqlParameter[] {
+		this.operation.setDataSource(ds);
+		this.operation.setSql("select * from mytable where one = ? and two = ?");
+		this.operation.setParameters(new SqlParameter[] {
 				new SqlParameter("one", Types.NUMERIC),
 				new SqlParameter("two", Types.NUMERIC)});
-		operation.afterPropertiesSet();
-		operation.validateParameters(new Object[] { 1, "2" });
-		assertEquals(2, operation.getDeclaredParameters().size());
+		this.operation.afterPropertiesSet();
+		this.operation.validateParameters(new Object[] { 1, "2" });
+		assertEquals(2, this.operation.getDeclaredParameters().size());
 	}
 
 

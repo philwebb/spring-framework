@@ -158,16 +158,16 @@ public class CallableStatementCreatorFactory {
 			}
 
 			CallableStatement cs = null;
-			if (resultSetType == ResultSet.TYPE_FORWARD_ONLY && !updatableResults) {
-				cs = con.prepareCall(callString);
+			if (CallableStatementCreatorFactory.this.resultSetType == ResultSet.TYPE_FORWARD_ONLY && !CallableStatementCreatorFactory.this.updatableResults) {
+				cs = con.prepareCall(CallableStatementCreatorFactory.this.callString);
 			}
 			else {
-				cs = con.prepareCall(callString, resultSetType,
-						updatableResults ? ResultSet.CONCUR_UPDATABLE : ResultSet.CONCUR_READ_ONLY);
+				cs = con.prepareCall(CallableStatementCreatorFactory.this.callString, CallableStatementCreatorFactory.this.resultSetType,
+						CallableStatementCreatorFactory.this.updatableResults ? ResultSet.CONCUR_UPDATABLE : ResultSet.CONCUR_READ_ONLY);
 			}
 
 			int sqlColIndx = 1;
-			for (SqlParameter declaredParam : declaredParameters) {
+			for (SqlParameter declaredParam : CallableStatementCreatorFactory.this.declaredParameters) {
 				if (!declaredParam.isResultsParameter()) {
 					// So, it's a call parameter - part of the call string.
 					// Get the value - it may still be null.
@@ -209,7 +209,7 @@ public class CallableStatementCreatorFactory {
 
 		@Override
 		public String getSql() {
-			return callString;
+			return CallableStatementCreatorFactory.this.callString;
 		}
 
 		@Override
@@ -221,7 +221,7 @@ public class CallableStatementCreatorFactory {
 
 		@Override
 		public String toString() {
-			return "CallableStatementCreator: sql=[" + callString + "]; parameters=" + this.inParameters;
+			return "CallableStatementCreator: sql=[" + CallableStatementCreatorFactory.this.callString + "]; parameters=" + this.inParameters;
 		}
 	}
 

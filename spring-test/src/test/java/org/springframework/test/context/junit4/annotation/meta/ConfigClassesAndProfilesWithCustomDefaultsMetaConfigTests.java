@@ -41,6 +41,6 @@ public class ConfigClassesAndProfilesWithCustomDefaultsMetaConfigTests {
 
 	@Test
 	public void foo() {
-		assertEquals("Dev Foo", foo);
+		assertEquals("Dev Foo", this.foo);
 	}
 }

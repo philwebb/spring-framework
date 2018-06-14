@@ -31,7 +31,7 @@ public class Person {
 	}
 
 	public String getName() {
-		return privateName;
+		return this.privateName;
 	}
 
 	public void setName(String n) {
@@ -39,6 +39,6 @@ public class Person {
 	}
 
 	public Company getCompany() {
-		return company;
+		return this.company;
 	}
 }

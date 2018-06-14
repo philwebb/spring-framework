@@ -259,8 +259,8 @@ public abstract class CommonsFileUploadSupport {
 					value = fileItem.getString(partEncoding);
 				}
 				catch (UnsupportedEncodingException ex) {
-					if (logger.isWarnEnabled()) {
-						logger.warn("Could not decode multipart item '" + fileItem.getFieldName() +
+					if (this.logger.isWarnEnabled()) {
+						this.logger.warn("Could not decode multipart item '" + fileItem.getFieldName() +
 								"' with encoding '" + partEncoding + "': using platform default");
 					}
 					value = fileItem.getString();
@@ -281,14 +281,14 @@ public abstract class CommonsFileUploadSupport {
 				// multipart file field
 				CommonsMultipartFile file = createMultipartFile(fileItem);
 				multipartFiles.add(file.getName(), file);
-				if (logger.isDebugEnabled() || logger.isTraceEnabled()) {
+				if (this.logger.isDebugEnabled() || this.logger.isTraceEnabled()) {
 					String message = "Part '" + file.getName() + "', " +
 							"size " + file.getSize() + " bytes, filename='" + file.getOriginalFilename() + "'";
-					if (logger.isTraceEnabled()) {
-						logger.trace(message + ", storage=" + file.getStorageDescription());
+					if (this.logger.isTraceEnabled()) {
+						this.logger.trace(message + ", storage=" + file.getStorageDescription());
 					}
 					else {
-						logger.debug(message);
+						this.logger.debug(message);
 					}
 				}
 			}
@@ -323,14 +323,14 @@ public abstract class CommonsFileUploadSupport {
 				if (file instanceof CommonsMultipartFile) {
 					CommonsMultipartFile cmf = (CommonsMultipartFile) file;
 					cmf.getFileItem().delete();
-					if (logger.isDebugEnabled() || logger.isTraceEnabled()) {
+					if (this.logger.isDebugEnabled() || this.logger.isTraceEnabled()) {
 						String filename = cmf.getOriginalFilename();
 						String message = "Cleaning up part '" + cmf.getName() + "', filename '" + filename + "'";
-						if (logger.isTraceEnabled()) {
-							logger.trace(message + ", stored " + cmf.getStorageDescription());
+						if (this.logger.isTraceEnabled()) {
+							this.logger.trace(message + ", stored " + cmf.getStorageDescription());
 						}
 						else {
-							logger.debug(message);
+							this.logger.debug(message);
 						}
 					}
 				}

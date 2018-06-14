@@ -489,10 +489,10 @@ public class MockHttpServletRequestBuilderTests {
 						.with(requestAttr(ATTR).value("default"))
 						.with(requestAttr(ATTR).value(EXPECTED));
 
-		builder.merge(defaultBuilder);
+		this.builder.merge(defaultBuilder);
 
-		MockHttpServletRequest request = builder.buildRequest(servletContext);
-		request = builder.postProcessRequest(request);
+		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
+		request = this.builder.postProcessRequest(request);
 
 		assertEquals(EXPECTED, request.getAttribute(ATTR));
 	}
@@ -540,7 +540,7 @@ public class MockHttpServletRequestBuilderTests {
 		}
 
 		public MockHttpServletRequest postProcessRequest(MockHttpServletRequest request) {
-			request.setAttribute(attr, value);
+			request.setAttribute(this.attr, this.value);
 			return request;
 		}
 	}

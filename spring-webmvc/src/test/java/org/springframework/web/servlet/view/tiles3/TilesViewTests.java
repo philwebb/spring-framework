@@ -59,40 +59,40 @@ public class TilesViewTests {
 		wac.setServletContext(servletContext);
 		wac.refresh();
 
-		request = new MockHttpServletRequest();
-		request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, wac);
+		this.request = new MockHttpServletRequest();
+		this.request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, wac);
 
-		response = new MockHttpServletResponse();
+		this.response = new MockHttpServletResponse();
 
-		renderer = mock(Renderer.class);
+		this.renderer = mock(Renderer.class);
 
-		view = new TilesView();
-		view.setServletContext(servletContext);
-		view.setRenderer(renderer);
-		view.setUrl(VIEW_PATH);
-		view.afterPropertiesSet();
+		this.view = new TilesView();
+		this.view.setServletContext(servletContext);
+		this.view.setRenderer(this.renderer);
+		this.view.setUrl(VIEW_PATH);
+		this.view.afterPropertiesSet();
 	}
 
 	@Test
 	public void render() throws Exception {
 		Map<String, Object> model = new HashMap<>();
 		model.put("modelAttribute", "modelValue");
-		view.render(model, request, response);
-		assertEquals("modelValue", request.getAttribute("modelAttribute"));
-		verify(renderer).render(eq(VIEW_PATH), isA(Request.class));
+		this.view.render(model, this.request, this.response);
+		assertEquals("modelValue", this.request.getAttribute("modelAttribute"));
+		verify(this.renderer).render(eq(VIEW_PATH), isA(Request.class));
 	}
 
 	@Test
 	public void alwaysIncludeDefaults() throws Exception {
-		view.render(new HashMap<>(), request, response);
-		assertNull(request.getAttribute(AbstractRequest.FORCE_INCLUDE_ATTRIBUTE_NAME));
+		this.view.render(new HashMap<>(), this.request, this.response);
+		assertNull(this.request.getAttribute(AbstractRequest.FORCE_INCLUDE_ATTRIBUTE_NAME));
 	}
 
 	@Test
 	public void alwaysIncludeEnabled() throws Exception {
-		view.setAlwaysInclude(true);
-		view.render(new HashMap<>(), request, response);
-		assertTrue((Boolean)request.getAttribute(AbstractRequest.FORCE_INCLUDE_ATTRIBUTE_NAME));
+		this.view.setAlwaysInclude(true);
+		this.view.render(new HashMap<>(), this.request, this.response);
+		assertTrue((Boolean)this.request.getAttribute(AbstractRequest.FORCE_INCLUDE_ATTRIBUTE_NAME));
 	}
 
 }

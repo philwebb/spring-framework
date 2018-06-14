@@ -266,7 +266,7 @@ public abstract class AbstractFactoryBean<T>
 				// Use hashCode of reference proxy.
 				return System.identityHashCode(proxy);
 			}
-			else if (!initialized && ReflectionUtils.isToStringMethod(method)) {
+			else if (!AbstractFactoryBean.this.initialized && ReflectionUtils.isToStringMethod(method)) {
 				return "Early singleton proxy for interfaces " +
 						ObjectUtils.nullSafeToString(getEarlySingletonInterfaces());
 			}

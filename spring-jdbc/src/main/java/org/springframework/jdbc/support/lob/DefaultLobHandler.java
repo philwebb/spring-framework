@@ -150,7 +150,7 @@ public class DefaultLobHandler extends AbstractLobHandler {
 	@Override
 	@Nullable
 	public byte[] getBlobAsBytes(ResultSet rs, int columnIndex) throws SQLException {
-		logger.debug("Returning BLOB as bytes");
+		this.logger.debug("Returning BLOB as bytes");
 		if (this.wrapAsLob) {
 			Blob blob = rs.getBlob(columnIndex);
 			return blob.getBytes(1, (int) blob.length());
@@ -163,7 +163,7 @@ public class DefaultLobHandler extends AbstractLobHandler {
 	@Override
 	@Nullable
 	public InputStream getBlobAsBinaryStream(ResultSet rs, int columnIndex) throws SQLException {
-		logger.debug("Returning BLOB as binary stream");
+		this.logger.debug("Returning BLOB as binary stream");
 		if (this.wrapAsLob) {
 			Blob blob = rs.getBlob(columnIndex);
 			return blob.getBinaryStream();
@@ -176,7 +176,7 @@ public class DefaultLobHandler extends AbstractLobHandler {
 	@Override
 	@Nullable
 	public String getClobAsString(ResultSet rs, int columnIndex) throws SQLException {
-		logger.debug("Returning CLOB as string");
+		this.logger.debug("Returning CLOB as string");
 		if (this.wrapAsLob) {
 			Clob clob = rs.getClob(columnIndex);
 			return clob.getSubString(1, (int) clob.length());
@@ -188,7 +188,7 @@ public class DefaultLobHandler extends AbstractLobHandler {
 
 	@Override
 	public InputStream getClobAsAsciiStream(ResultSet rs, int columnIndex) throws SQLException {
-		logger.debug("Returning CLOB as ASCII stream");
+		this.logger.debug("Returning CLOB as ASCII stream");
 		if (this.wrapAsLob) {
 			Clob clob = rs.getClob(columnIndex);
 			return clob.getAsciiStream();
@@ -200,7 +200,7 @@ public class DefaultLobHandler extends AbstractLobHandler {
 
 	@Override
 	public Reader getClobAsCharacterStream(ResultSet rs, int columnIndex) throws SQLException {
-		logger.debug("Returning CLOB as character stream");
+		this.logger.debug("Returning CLOB as character stream");
 		if (this.wrapAsLob) {
 			Clob clob = rs.getClob(columnIndex);
 			return clob.getCharacterStream();
@@ -226,7 +226,7 @@ public class DefaultLobHandler extends AbstractLobHandler {
 		public void setBlobAsBytes(PreparedStatement ps, int paramIndex, @Nullable byte[] content)
 				throws SQLException {
 
-			if (streamAsLob) {
+			if (DefaultLobHandler.this.streamAsLob) {
 				if (content != null) {
 					ps.setBlob(paramIndex, new ByteArrayInputStream(content), content.length);
 				}
@@ -234,7 +234,7 @@ public class DefaultLobHandler extends AbstractLobHandler {
 					ps.setBlob(paramIndex, (Blob) null);
 				}
 			}
-			else if (wrapAsLob) {
+			else if (DefaultLobHandler.this.wrapAsLob) {
 				if (content != null) {
 					ps.setBlob(paramIndex, new PassThroughBlob(content));
 				}
@@ -245,8 +245,8 @@ public class DefaultLobHandler extends AbstractLobHandler {
 			else {
 				ps.setBytes(paramIndex, content);
 			}
-			if (logger.isDebugEnabled()) {
-				logger.debug(content != null ? "Set bytes for BLOB with length " + content.length :
+			if (DefaultLobHandler.this.logger.isDebugEnabled()) {
+				DefaultLobHandler.this.logger.debug(content != null ? "Set bytes for BLOB with length " + content.length :
 						"Set BLOB to null");
 			}
 		}
@@ -256,7 +256,7 @@ public class DefaultLobHandler extends AbstractLobHandler {
 				PreparedStatement ps, int paramIndex, @Nullable InputStream binaryStream, int contentLength)
 				throws SQLException {
 
-			if (streamAsLob) {
+			if (DefaultLobHandler.this.streamAsLob) {
 				if (binaryStream != null) {
 					if (contentLength >= 0) {
 						ps.setBlob(paramIndex, binaryStream, contentLength);
@@ -269,7 +269,7 @@ public class DefaultLobHandler extends AbstractLobHandler {
 					ps.setBlob(paramIndex, (Blob) null);
 				}
 			}
-			else if (wrapAsLob) {
+			else if (DefaultLobHandler.this.wrapAsLob) {
 				if (binaryStream != null) {
 					ps.setBlob(paramIndex, new PassThroughBlob(binaryStream, contentLength));
 				}
@@ -283,8 +283,8 @@ public class DefaultLobHandler extends AbstractLobHandler {
 			else {
 				ps.setBinaryStream(paramIndex, binaryStream);
 			}
-			if (logger.isDebugEnabled()) {
-				logger.debug(binaryStream != null ? "Set binary stream for BLOB with length " + contentLength :
+			if (DefaultLobHandler.this.logger.isDebugEnabled()) {
+				DefaultLobHandler.this.logger.debug(binaryStream != null ? "Set binary stream for BLOB with length " + contentLength :
 						"Set BLOB to null");
 			}
 		}
@@ -293,7 +293,7 @@ public class DefaultLobHandler extends AbstractLobHandler {
 		public void setClobAsString(PreparedStatement ps, int paramIndex, @Nullable String content)
 				throws SQLException {
 
-			if (streamAsLob) {
+			if (DefaultLobHandler.this.streamAsLob) {
 				if (content != null) {
 					ps.setClob(paramIndex, new StringReader(content), content.length());
 				}
@@ -301,7 +301,7 @@ public class DefaultLobHandler extends AbstractLobHandler {
 					ps.setClob(paramIndex, (Clob) null);
 				}
 			}
-			else if (wrapAsLob) {
+			else if (DefaultLobHandler.this.wrapAsLob) {
 				if (content != null) {
 					ps.setClob(paramIndex, new PassThroughClob(content));
 				}
@@ -312,8 +312,8 @@ public class DefaultLobHandler extends AbstractLobHandler {
 			else {
 				ps.setString(paramIndex, content);
 			}
-			if (logger.isDebugEnabled()) {
-				logger.debug(content != null ? "Set string for CLOB with length " + content.length() :
+			if (DefaultLobHandler.this.logger.isDebugEnabled()) {
+				DefaultLobHandler.this.logger.debug(content != null ? "Set string for CLOB with length " + content.length() :
 						"Set CLOB to null");
 			}
 		}
@@ -323,7 +323,7 @@ public class DefaultLobHandler extends AbstractLobHandler {
 				PreparedStatement ps, int paramIndex, @Nullable InputStream asciiStream, int contentLength)
 				throws SQLException {
 
-			if (streamAsLob) {
+			if (DefaultLobHandler.this.streamAsLob) {
 				if (asciiStream != null) {
 					Reader reader = new InputStreamReader(asciiStream, StandardCharsets.US_ASCII);
 					if (contentLength >= 0) {
@@ -337,7 +337,7 @@ public class DefaultLobHandler extends AbstractLobHandler {
 					ps.setClob(paramIndex, (Clob) null);
 				}
 			}
-			else if (wrapAsLob) {
+			else if (DefaultLobHandler.this.wrapAsLob) {
 				if (asciiStream != null) {
 					ps.setClob(paramIndex, new PassThroughClob(asciiStream, contentLength));
 				}
@@ -351,8 +351,8 @@ public class DefaultLobHandler extends AbstractLobHandler {
 			else {
 				ps.setAsciiStream(paramIndex, asciiStream);
 			}
-			if (logger.isDebugEnabled()) {
-				logger.debug(asciiStream != null ? "Set ASCII stream for CLOB with length " + contentLength :
+			if (DefaultLobHandler.this.logger.isDebugEnabled()) {
+				DefaultLobHandler.this.logger.debug(asciiStream != null ? "Set ASCII stream for CLOB with length " + contentLength :
 						"Set CLOB to null");
 			}
 		}
@@ -362,7 +362,7 @@ public class DefaultLobHandler extends AbstractLobHandler {
 				PreparedStatement ps, int paramIndex, @Nullable Reader characterStream, int contentLength)
 				throws SQLException {
 
-			if (streamAsLob) {
+			if (DefaultLobHandler.this.streamAsLob) {
 				if (characterStream != null) {
 					if (contentLength >= 0) {
 						ps.setClob(paramIndex, characterStream, contentLength);
@@ -375,7 +375,7 @@ public class DefaultLobHandler extends AbstractLobHandler {
 					ps.setClob(paramIndex, (Clob) null);
 				}
 			}
-			else if (wrapAsLob) {
+			else if (DefaultLobHandler.this.wrapAsLob) {
 				if (characterStream != null) {
 					ps.setClob(paramIndex, new PassThroughClob(characterStream, contentLength));
 				}
@@ -389,8 +389,8 @@ public class DefaultLobHandler extends AbstractLobHandler {
 			else {
 				ps.setCharacterStream(paramIndex, characterStream);
 			}
-			if (logger.isDebugEnabled()) {
-				logger.debug(characterStream != null ? "Set character stream for CLOB with length " + contentLength :
+			if (DefaultLobHandler.this.logger.isDebugEnabled()) {
+				DefaultLobHandler.this.logger.debug(characterStream != null ? "Set character stream for CLOB with length " + contentLength :
 						"Set CLOB to null");
 			}
 		}

@@ -117,8 +117,8 @@ public class JettyXhrTransport extends AbstractXhrTransport implements Lifecycle
 	}
 
 	private void executeReceiveRequest(URI url, HttpHeaders headers, SockJsResponseListener listener) {
-		if (logger.isTraceEnabled()) {
-			logger.trace("Starting XHR receive request, url=" + url);
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Starting XHR receive request, url=" + url);
 		}
 		Request httpRequest = this.httpClient.newRequest(url).method(HttpMethod.POST);
 		addHttpHeaders(httpRequest, headers);
@@ -217,9 +217,9 @@ public class JettyXhrTransport extends AbstractXhrTransport implements Lifecycle
 
 		@Override
 		public void onHeaders(Response response) {
-			if (logger.isTraceEnabled()) {
+			if (JettyXhrTransport.this.logger.isTraceEnabled()) {
 				// Convert to HttpHeaders to avoid "\n"
-				logger.trace("XHR receive headers: " + toHttpHeaders(response.getHeaders()));
+				JettyXhrTransport.this.logger.trace("XHR receive headers: " + toHttpHeaders(response.getHeaders()));
 			}
 		}
 
@@ -227,8 +227,8 @@ public class JettyXhrTransport extends AbstractXhrTransport implements Lifecycle
 		public void onContent(Response response, ByteBuffer buffer) {
 			while (true) {
 				if (this.sockJsSession.isDisconnected()) {
-					if (logger.isDebugEnabled()) {
-						logger.debug("SockJS sockJsSession closed, closing response.");
+					if (JettyXhrTransport.this.logger.isDebugEnabled()) {
+						JettyXhrTransport.this.logger.debug("SockJS sockJsSession closed, closing response.");
 					}
 					response.abort(new SockJsException("Session closed.", this.sockJsSession.getId(), null));
 					return;
@@ -250,8 +250,8 @@ public class JettyXhrTransport extends AbstractXhrTransport implements Lifecycle
 			byte[] bytes = this.outputStream.toByteArray();
 			this.outputStream.reset();
 			String content = new String(bytes, SockJsFrame.CHARSET);
-			if (logger.isTraceEnabled()) {
-				logger.trace("XHR content received: " + content);
+			if (JettyXhrTransport.this.logger.isTraceEnabled()) {
+				JettyXhrTransport.this.logger.trace("XHR content received: " + content);
 			}
 			if (!PRELUDE.equals(content)) {
 				this.sockJsSession.handleFrame(new String(bytes, SockJsFrame.CHARSET));
@@ -263,15 +263,15 @@ public class JettyXhrTransport extends AbstractXhrTransport implements Lifecycle
 			if (this.outputStream.size() > 0) {
 				handleFrame();
 			}
-			if (logger.isTraceEnabled()) {
-				logger.trace("XHR receive request completed.");
+			if (JettyXhrTransport.this.logger.isTraceEnabled()) {
+				JettyXhrTransport.this.logger.trace("XHR receive request completed.");
 			}
 			executeReceiveRequest(this.transportUrl, this.receiveHeaders, this);
 		}
 
 		@Override
 		public void onFailure(Response response, Throwable failure) {
-			if (connectFuture.setException(failure)) {
+			if (this.connectFuture.setException(failure)) {
 				return;
 			}
 			if (this.sockJsSession.isDisconnected()) {

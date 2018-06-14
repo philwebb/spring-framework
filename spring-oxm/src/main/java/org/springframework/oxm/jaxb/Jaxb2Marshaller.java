@@ -515,8 +515,8 @@ public class Jaxb2Marshaller implements MimeMarshaller, MimeUnmarshaller, Generi
 	}
 
 	private JAXBContext createJaxbContextFromContextPath(String contextPath) throws JAXBException {
-		if (logger.isInfoEnabled()) {
-			logger.info("Creating JAXBContext with context path [" + this.contextPath + "]");
+		if (this.logger.isInfoEnabled()) {
+			this.logger.info("Creating JAXBContext with context path [" + this.contextPath + "]");
 		}
 		if (this.jaxbContextProperties != null) {
 			if (this.beanClassLoader != null) {
@@ -539,8 +539,8 @@ public class Jaxb2Marshaller implements MimeMarshaller, MimeUnmarshaller, Generi
 	}
 
 	private JAXBContext createJaxbContextFromClasses(Class<?>... classesToBeBound) throws JAXBException {
-		if (logger.isInfoEnabled()) {
-			logger.info("Creating JAXBContext with classes to be bound [" +
+		if (this.logger.isInfoEnabled()) {
+			this.logger.info("Creating JAXBContext with classes to be bound [" +
 					StringUtils.arrayToCommaDelimitedString(classesToBeBound) + "]");
 		}
 		if (this.jaxbContextProperties != null) {
@@ -552,14 +552,14 @@ public class Jaxb2Marshaller implements MimeMarshaller, MimeUnmarshaller, Generi
 	}
 
 	private JAXBContext createJaxbContextFromPackages(String... packagesToScan) throws JAXBException {
-		if (logger.isInfoEnabled()) {
-			logger.info("Creating JAXBContext by scanning packages [" +
+		if (this.logger.isInfoEnabled()) {
+			this.logger.info("Creating JAXBContext by scanning packages [" +
 					StringUtils.arrayToCommaDelimitedString(packagesToScan) + "]");
 		}
 		ClassPathJaxb2TypeScanner scanner = new ClassPathJaxb2TypeScanner(this.beanClassLoader, packagesToScan);
 		Class<?>[] jaxb2Classes = scanner.scanPackages();
-		if (logger.isDebugEnabled()) {
-			logger.debug("Found JAXB2 classes: [" + StringUtils.arrayToCommaDelimitedString(jaxb2Classes) + "]");
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Found JAXB2 classes: [" + StringUtils.arrayToCommaDelimitedString(jaxb2Classes) + "]");
 		}
 		this.classesToBeBound = jaxb2Classes;
 		if (this.jaxbContextProperties != null) {
@@ -572,8 +572,8 @@ public class Jaxb2Marshaller implements MimeMarshaller, MimeUnmarshaller, Generi
 
 	@SuppressWarnings("deprecation")  // on JDK 9
 	private Schema loadSchema(Resource[] resources, String schemaLanguage) throws IOException, SAXException {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Setting validation schema to " +
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Setting validation schema to " +
 					StringUtils.arrayToCommaDelimitedString(this.schemaResources));
 		}
 		Assert.notEmpty(resources, "No resources given");
@@ -869,7 +869,7 @@ public class Jaxb2Marshaller implements MimeMarshaller, MimeUnmarshaller, Generi
 			return new SAXSource(xmlReader, inputSource);
 		}
 		catch (SAXException ex) {
-			logger.warn("Processing of external entities could not be disabled", ex);
+			this.logger.warn("Processing of external entities could not be disabled", ex);
 			return source;
 		}
 	}

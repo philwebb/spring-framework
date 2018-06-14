@@ -787,7 +787,7 @@ public class Jackson2ObjectMapperBuilder {
 			catch (ClassNotFoundException ex) {
 				if (!kotlinWarningLogged) {
 					kotlinWarningLogged = true;
-					logger.warn("For Jackson Kotlin classes support please add " +
+					this.logger.warn("For Jackson Kotlin classes support please add " +
 							"\"com.fasterxml.jackson.module:jackson-module-kotlin\" to the classpath");
 				}
 			}

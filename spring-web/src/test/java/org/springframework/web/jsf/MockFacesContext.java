@@ -45,7 +45,7 @@ public class MockFacesContext extends FacesContext {
 
 	@Override
 	public Application getApplication() {
-		return application;
+		return this.application;
 	}
 
 	public void setApplication(Application application) {
@@ -59,7 +59,7 @@ public class MockFacesContext extends FacesContext {
 
 	@Override
 	public ExternalContext getExternalContext() {
-		return externalContext;
+		return this.externalContext;
 	}
 
 	public void setExternalContext(ExternalContext externalContext) {
@@ -116,7 +116,7 @@ public class MockFacesContext extends FacesContext {
 
 	@Override
 	public UIViewRoot getViewRoot() {
-		return viewRoot;
+		return this.viewRoot;
 	}
 
 	@Override

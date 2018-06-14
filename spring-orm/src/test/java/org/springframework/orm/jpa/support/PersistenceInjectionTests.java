@@ -771,7 +771,7 @@ public class PersistenceInjectionTests extends AbstractEntityManagerFactoryBeanT
 		}
 
 		public EntityManager getEntityManager() {
-			return em;
+			return this.em;
 		}
 	}
 
@@ -812,7 +812,7 @@ public class PersistenceInjectionTests extends AbstractEntityManagerFactoryBeanT
 		}
 
 		public EntityManagerFactory getEmf() {
-			return emf;
+			return this.emf;
 		}
 	}
 
@@ -828,7 +828,7 @@ public class PersistenceInjectionTests extends AbstractEntityManagerFactoryBeanT
 		}
 
 		public EntityManagerFactory getEntityManagerFactory() {
-			return emf;
+			return this.emf;
 		}
 	}
 

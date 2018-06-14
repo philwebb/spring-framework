@@ -131,7 +131,7 @@ public class HttpInvokerFactoryBeanIntegrationTests {
 
 		@Bean
 		public HttpInvokerProxyFactoryBean myService() {
-			String name = env.getProperty("testbean.name");
+			String name = this.env.getProperty("testbean.name");
 			HttpInvokerProxyFactoryBean factory = new HttpInvokerProxyFactoryBean();
 			factory.setServiceUrl("/svc/" + name);
 			factory.setServiceInterface(MyService.class);

@@ -149,8 +149,8 @@ public abstract class AbstractTyrusRequestUpgradeStrategy extends AbstractStanda
 			UpgradeInfo upgradeInfo = engine.upgrade(requestContext, upgradeResponse);
 			success = SUCCESS.equals(upgradeInfo.getStatus());
 			if (success) {
-				if (logger.isTraceEnabled()) {
-					logger.trace("Successful request upgrade: " + upgradeResponse.getHeaders());
+				if (this.logger.isTraceEnabled()) {
+					this.logger.trace("Successful request upgrade: " + upgradeResponse.getHeaders());
 				}
 				handleSuccess(servletRequest, servletResponse, upgradeInfo, upgradeResponse);
 			}

@@ -255,7 +255,7 @@ public class ConcurrentTaskScheduler extends ConcurrentTaskExecutor implements T
 	private class EnterpriseConcurrentTriggerScheduler {
 
 		public ScheduledFuture<?> schedule(Runnable task, final Trigger trigger) {
-			ManagedScheduledExecutorService executor = (ManagedScheduledExecutorService) scheduledExecutor;
+			ManagedScheduledExecutorService executor = (ManagedScheduledExecutorService) ConcurrentTaskScheduler.this.scheduledExecutor;
 			return executor.schedule(task, new javax.enterprise.concurrent.Trigger() {
 				@Override
 				@Nullable

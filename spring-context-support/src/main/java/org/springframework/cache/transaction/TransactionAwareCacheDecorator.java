@@ -130,7 +130,7 @@ public class TransactionAwareCacheDecorator implements Cache {
 			TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronizationAdapter() {
 				@Override
 				public void afterCommit() {
-					targetCache.clear();
+					TransactionAwareCacheDecorator.this.targetCache.clear();
 				}
 			});
 		}

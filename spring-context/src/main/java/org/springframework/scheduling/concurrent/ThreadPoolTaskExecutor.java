@@ -223,9 +223,9 @@ public class ThreadPoolTaskExecutor extends ExecutorConfigurationSupport
 					queue, threadFactory, rejectedExecutionHandler) {
 				@Override
 				public void execute(Runnable command) {
-					Runnable decorated = taskDecorator.decorate(command);
+					Runnable decorated = ThreadPoolTaskExecutor.this.taskDecorator.decorate(command);
 					if (decorated != command) {
-						decoratedTaskMap.put(decorated, command);
+						ThreadPoolTaskExecutor.this.decoratedTaskMap.put(decorated, command);
 					}
 					super.execute(decorated);
 				}

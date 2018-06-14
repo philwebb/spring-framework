@@ -43,13 +43,13 @@ public class CorsFilterTests {
 
 	@Before
 	public void setup() throws Exception {
-		config.setAllowedOrigins(Arrays.asList("http://domain1.com", "http://domain2.com"));
-		config.setAllowedMethods(Arrays.asList("GET", "POST"));
-		config.setAllowedHeaders(Arrays.asList("header1", "header2"));
-		config.setExposedHeaders(Arrays.asList("header3", "header4"));
-		config.setMaxAge(123L);
-		config.setAllowCredentials(false);
-		filter = new CorsFilter(r -> config);
+		this.config.setAllowedOrigins(Arrays.asList("http://domain1.com", "http://domain2.com"));
+		this.config.setAllowedMethods(Arrays.asList("GET", "POST"));
+		this.config.setAllowedHeaders(Arrays.asList("header1", "header2"));
+		this.config.setExposedHeaders(Arrays.asList("header3", "header4"));
+		this.config.setMaxAge(123L);
+		this.config.setAllowCredentials(false);
+		this.filter = new CorsFilter(r -> this.config);
 	}
 
 	@Test
@@ -64,7 +64,7 @@ public class CorsFilterTests {
 			assertEquals("http://domain2.com", response.getHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
 			assertEquals("header3, header4", response.getHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS));
 		};
-		filter.doFilter(request, response, filterChain);
+		this.filter.doFilter(request, response, filterChain);
 	}
 
 	@Test
@@ -78,7 +78,7 @@ public class CorsFilterTests {
 		FilterChain filterChain = (filterRequest, filterResponse) -> {
 			fail("Invalid requests must not be forwarded to the filter chain");
 		};
-		filter.doFilter(request, response, filterChain);
+		this.filter.doFilter(request, response, filterChain);
 		assertNull(response.getHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
 	}
 
@@ -93,7 +93,7 @@ public class CorsFilterTests {
 
 		FilterChain filterChain = (filterRequest, filterResponse) ->
 				fail("Preflight requests must not be forwarded to the filter chain");
-		filter.doFilter(request, response, filterChain);
+		this.filter.doFilter(request, response, filterChain);
 
 		assertEquals("http://domain2.com", response.getHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
 		assertEquals("header1, header2", response.getHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS));
@@ -112,7 +112,7 @@ public class CorsFilterTests {
 
 		FilterChain filterChain = (filterRequest, filterResponse) ->
 				fail("Preflight requests must not be forwarded to the filter chain");
-		filter.doFilter(request, response, filterChain);
+		this.filter.doFilter(request, response, filterChain);
 
 		assertNull(response.getHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
 	}

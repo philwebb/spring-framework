@@ -511,7 +511,7 @@ public class Type {
      *         METHOD}.
      */
     public int getSort() {
-        return sort;
+        return this.sort;
     }
 
     /**
@@ -522,7 +522,7 @@ public class Type {
      */
     public int getDimensions() {
         int i = 1;
-        while (buf[off + i] == '[') {
+        while (this.buf[this.off + i] == '[') {
             ++i;
         }
         return i;
@@ -535,7 +535,7 @@ public class Type {
      * @return Returns the type of the elements of this array type.
      */
     public Type getElementType() {
-        return getType(buf, off + getDimensions());
+        return getType(this.buf, this.off + getDimensions());
     }
 
     /**
@@ -545,7 +545,7 @@ public class Type {
      * @return the binary name of the class corresponding to this type.
      */
     public String getClassName() {
-        switch (sort) {
+        switch (this.sort) {
         case VOID:
             return "void";
         case BOOLEAN:
@@ -571,7 +571,7 @@ public class Type {
             }
             return sb.toString();
         case OBJECT:
-            return new String(buf, off, len).replace('/', '.').intern();
+            return new String(this.buf, this.off, this.len).replace('/', '.').intern();
         default:
             return null;
         }
@@ -586,7 +586,7 @@ public class Type {
      * @return the internal name of the class corresponding to this object type.
      */
     public String getInternalName() {
-        return new String(buf, off, len).intern();
+        return new String(this.buf, this.off, this.len).intern();
     }
 
     /**
@@ -673,13 +673,13 @@ public class Type {
         if (this.buf == null) {
             // descriptor is in byte 3 of 'off' for primitive types (buf ==
             // null)
-            buf.append((char) ((off & 0xFF000000) >>> 24));
-        } else if (sort == OBJECT) {
+            buf.append((char) ((this.off & 0xFF000000) >>> 24));
+        } else if (this.sort == OBJECT) {
             buf.append('L');
-            buf.append(this.buf, off, len);
+            buf.append(this.buf, this.off, this.len);
             buf.append(';');
         } else { // sort == ARRAY || sort == METHOD
-            buf.append(this.buf, off, len);
+            buf.append(this.buf, this.off, this.len);
         }
     }
 
@@ -814,7 +814,7 @@ public class Type {
      */
     public int getSize() {
         // the size is in byte 0 of 'off' for primitive types (buf == null)
-        return buf == null ? (off & 0xFF) : 1;
+        return this.buf == null ? (this.off & 0xFF) : 1;
     }
 
     /**
@@ -833,11 +833,11 @@ public class Type {
         if (opcode == Opcodes.IALOAD || opcode == Opcodes.IASTORE) {
             // the offset for IALOAD or IASTORE is in byte 1 of 'off' for
             // primitive types (buf == null)
-            return opcode + (buf == null ? (off & 0xFF00) >> 8 : 4);
+            return opcode + (this.buf == null ? (this.off & 0xFF00) >> 8 : 4);
         } else {
             // the offset for other instructions is in byte 2 of 'off' for
             // primitive types (buf == null)
-            return opcode + (buf == null ? (off & 0xFF0000) >> 16 : 4);
+            return opcode + (this.buf == null ? (this.off & 0xFF0000) >> 16 : 4);
         }
     }
 
@@ -861,15 +861,15 @@ public class Type {
             return false;
         }
         Type t = (Type) o;
-        if (sort != t.sort) {
+        if (this.sort != t.sort) {
             return false;
         }
-        if (sort >= ARRAY) {
-            if (len != t.len) {
+        if (this.sort >= ARRAY) {
+            if (this.len != t.len) {
                 return false;
             }
-            for (int i = off, j = t.off, end = i + len; i < end; i++, j++) {
-                if (buf[i] != t.buf[j]) {
+            for (int i = this.off, j = t.off, end = i + this.len; i < end; i++, j++) {
+                if (this.buf[i] != t.buf[j]) {
                     return false;
                 }
             }
@@ -884,10 +884,10 @@ public class Type {
      */
     @Override
     public int hashCode() {
-        int hc = 13 * sort;
-        if (sort >= ARRAY) {
-            for (int i = off, end = i + len; i < end; i++) {
-                hc = 17 * (hc + buf[i]);
+        int hc = 13 * this.sort;
+        if (this.sort >= ARRAY) {
+            for (int i = this.off, end = i + this.len; i < end; i++) {
+                hc = 17 * (hc + this.buf[i]);
             }
         }
         return hc;

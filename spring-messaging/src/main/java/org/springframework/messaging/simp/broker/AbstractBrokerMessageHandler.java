@@ -155,7 +155,7 @@ public abstract class AbstractBrokerMessageHandler
 	@Override
 	public void start() {
 		synchronized (this.lifecycleMonitor) {
-			logger.info("Starting...");
+			this.logger.info("Starting...");
 			this.clientInboundChannel.subscribe(this);
 			this.brokerChannel.subscribe(this);
 			if (this.clientInboundChannel instanceof InterceptableChannel) {
@@ -163,7 +163,7 @@ public abstract class AbstractBrokerMessageHandler
 			}
 			startInternal();
 			this.running = true;
-			logger.info("Started.");
+			this.logger.info("Started.");
 		}
 	}
 
@@ -173,7 +173,7 @@ public abstract class AbstractBrokerMessageHandler
 	@Override
 	public void stop() {
 		synchronized (this.lifecycleMonitor) {
-			logger.info("Stopping...");
+			this.logger.info("Stopping...");
 			stopInternal();
 			this.clientInboundChannel.unsubscribe(this);
 			this.brokerChannel.unsubscribe(this);
@@ -181,7 +181,7 @@ public abstract class AbstractBrokerMessageHandler
 				((InterceptableChannel) this.clientInboundChannel).removeInterceptor(this.unsentDisconnectInterceptor);
 			}
 			this.running = false;
-			logger.info("Stopped.");
+			this.logger.info("Stopped.");
 		}
 	}
 
@@ -226,8 +226,8 @@ public abstract class AbstractBrokerMessageHandler
 	@Override
 	public void handleMessage(Message<?> message) {
 		if (!this.running) {
-			if (logger.isTraceEnabled()) {
-				logger.trace(this + " not running yet. Ignoring " + message);
+			if (this.logger.isTraceEnabled()) {
+				this.logger.trace(this + " not running yet. Ignoring " + message);
 			}
 			return;
 		}
@@ -252,8 +252,8 @@ public abstract class AbstractBrokerMessageHandler
 	protected void publishBrokerAvailableEvent() {
 		boolean shouldPublish = this.brokerAvailable.compareAndSet(false, true);
 		if (this.eventPublisher != null && shouldPublish) {
-			if (logger.isInfoEnabled()) {
-				logger.info(this.availableEvent);
+			if (this.logger.isInfoEnabled()) {
+				this.logger.info(this.availableEvent);
 			}
 			this.eventPublisher.publishEvent(this.availableEvent);
 		}
@@ -262,8 +262,8 @@ public abstract class AbstractBrokerMessageHandler
 	protected void publishBrokerUnavailableEvent() {
 		boolean shouldPublish = this.brokerAvailable.compareAndSet(true, false);
 		if (this.eventPublisher != null && shouldPublish) {
-			if (logger.isInfoEnabled()) {
-				logger.info(this.notAvailableEvent);
+			if (this.logger.isInfoEnabled()) {
+				this.logger.info(this.notAvailableEvent);
 			}
 			this.eventPublisher.publishEvent(this.notAvailableEvent);
 		}
@@ -282,7 +282,7 @@ public abstract class AbstractBrokerMessageHandler
 			if (!sent) {
 				SimpMessageType messageType = SimpMessageHeaderAccessor.getMessageType(message.getHeaders());
 				if (SimpMessageType.DISCONNECT.equals(messageType)) {
-					logger.debug("Detected unsent DISCONNECT message. Processing anyway.");
+					AbstractBrokerMessageHandler.this.logger.debug("Detected unsent DISCONNECT message. Processing anyway.");
 					handleMessage(message);
 				}
 			}

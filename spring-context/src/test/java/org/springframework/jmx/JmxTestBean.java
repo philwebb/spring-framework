@@ -45,7 +45,7 @@ public class JmxTestBean implements IJmxTestBean {
 	 */
 	@Override
 	public int getAge() {
-		return age;
+		return this.age;
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class JmxTestBean implements IJmxTestBean {
 	 */
 	@Override
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class JmxTestBean implements IJmxTestBean {
 	 *                                                                              Attribute")
 	 */
 	public boolean isSuperman() {
-		return isSuperman;
+		return this.isSuperman;
 	}
 
 	/**

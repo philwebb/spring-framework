@@ -90,8 +90,8 @@ public abstract class FieldVisitor {
      *         this visitor is not interested in visiting this annotation.
      */
     public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
-        if (fv != null) {
-            return fv.visitAnnotation(desc, visible);
+        if (this.fv != null) {
+            return this.fv.visitAnnotation(desc, visible);
         }
         return null;
     }
@@ -121,8 +121,8 @@ public abstract class FieldVisitor {
             throw new RuntimeException();
         }
         */
-        if (fv != null) {
-            return fv.visitTypeAnnotation(typeRef, typePath, desc, visible);
+        if (this.fv != null) {
+            return this.fv.visitTypeAnnotation(typeRef, typePath, desc, visible);
         }
         return null;
     }
@@ -134,8 +134,8 @@ public abstract class FieldVisitor {
      *            an attribute.
      */
     public void visitAttribute(Attribute attr) {
-        if (fv != null) {
-            fv.visitAttribute(attr);
+        if (this.fv != null) {
+            this.fv.visitAttribute(attr);
         }
     }
 
@@ -145,8 +145,8 @@ public abstract class FieldVisitor {
      * attributes of the field have been visited.
      */
     public void visitEnd() {
-        if (fv != null) {
-            fv.visitEnd();
+        if (this.fv != null) {
+            this.fv.visitEnd();
         }
     }
 }

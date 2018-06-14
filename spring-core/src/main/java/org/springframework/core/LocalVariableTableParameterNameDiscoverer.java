@@ -164,7 +164,7 @@ public class LocalVariableTableParameterNameDiscoverer implements ParameterNameD
 		public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
 			// exclude synthetic + bridged && static class initialization
 			if (!isSyntheticOrBridged(access) && !STATIC_CLASS_INIT.equals(name)) {
-				return new LocalVariableTableVisitor(clazz, memberMap, name, desc, isStatic(access));
+				return new LocalVariableTableVisitor(this.clazz, this.memberMap, name, desc, isStatic(access));
 			}
 			return null;
 		}

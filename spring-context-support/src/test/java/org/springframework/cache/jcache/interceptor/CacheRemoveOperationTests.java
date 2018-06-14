@@ -34,7 +34,7 @@ public class CacheRemoveOperationTests extends AbstractCacheOperationTests<Cache
 		CacheMethodDetails<CacheRemove> methodDetails = create(CacheRemove.class,
 				SampleObject.class, "simpleRemove", Long.class);
 
-		return new CacheRemoveOperation(methodDetails, defaultCacheResolver, defaultKeyGenerator);
+		return new CacheRemoveOperation(methodDetails, this.defaultCacheResolver, this.defaultKeyGenerator);
 	}
 
 	@Test

@@ -42,7 +42,7 @@ public class AspectJPointcutAdvisorTests {
 		ajexp.setExpression(AspectJExpressionPointcutTests.MATCH_ALL_METHODS);
 
 		InstantiationModelAwarePointcutAdvisorImpl ajpa = new InstantiationModelAwarePointcutAdvisorImpl(
-				ajexp, TestBean.class.getMethod("getAge"), af,
+				ajexp, TestBean.class.getMethod("getAge"), this.af,
 				new SingletonMetadataAwareAspectInstanceFactory(new AbstractAspectJAdvisorFactoryTests.ExceptionAspect(null), "someBean"),
 				1, "someBean");
 
@@ -56,7 +56,7 @@ public class AspectJPointcutAdvisorTests {
 		ajexp.setExpression(AspectJExpressionPointcutTests.MATCH_ALL_METHODS);
 
 		InstantiationModelAwarePointcutAdvisorImpl ajpa = new InstantiationModelAwarePointcutAdvisorImpl(
-				ajexp, TestBean.class.getMethod("getAge"), af,
+				ajexp, TestBean.class.getMethod("getAge"), this.af,
 				new SingletonMetadataAwareAspectInstanceFactory(new PerTargetAspect(), "someBean"),
 				1, "someBean");
 

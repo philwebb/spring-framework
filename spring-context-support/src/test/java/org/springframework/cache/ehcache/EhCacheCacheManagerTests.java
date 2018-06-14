@@ -38,32 +38,32 @@ public class EhCacheCacheManagerTests extends AbstractTransactionSupportingCache
 
 	@Before
 	public void setup() {
-		nativeCacheManager = new CacheManager(new Configuration().name("EhCacheCacheManagerTests")
+		this.nativeCacheManager = new CacheManager(new Configuration().name("EhCacheCacheManagerTests")
 				.defaultCache(new CacheConfiguration("default", 100)));
 		addNativeCache(CACHE_NAME);
 
-		cacheManager = new EhCacheCacheManager(nativeCacheManager);
-		cacheManager.setTransactionAware(false);
-		cacheManager.afterPropertiesSet();
+		this.cacheManager = new EhCacheCacheManager(this.nativeCacheManager);
+		this.cacheManager.setTransactionAware(false);
+		this.cacheManager.afterPropertiesSet();
 
-		transactionalCacheManager = new EhCacheCacheManager(nativeCacheManager);
-		transactionalCacheManager.setTransactionAware(true);
-		transactionalCacheManager.afterPropertiesSet();
+		this.transactionalCacheManager = new EhCacheCacheManager(this.nativeCacheManager);
+		this.transactionalCacheManager.setTransactionAware(true);
+		this.transactionalCacheManager.afterPropertiesSet();
 	}
 
 	@After
 	public void shutdown() {
-		nativeCacheManager.shutdown();
+		this.nativeCacheManager.shutdown();
 	}
 
 
 	@Override
 	protected EhCacheCacheManager getCacheManager(boolean transactionAware) {
 		if (transactionAware) {
-			return transactionalCacheManager;
+			return this.transactionalCacheManager;
 		}
 		else {
-			return cacheManager;
+			return this.cacheManager;
 		}
 	}
 
@@ -74,12 +74,12 @@ public class EhCacheCacheManagerTests extends AbstractTransactionSupportingCache
 
 	@Override
 	protected void addNativeCache(String cacheName) {
-		nativeCacheManager.addCache(cacheName);
+		this.nativeCacheManager.addCache(cacheName);
 	}
 
 	@Override
 	protected void removeNativeCache(String cacheName) {
-		nativeCacheManager.removeCache(cacheName);
+		this.nativeCacheManager.removeCache(cacheName);
 	}
 
 }

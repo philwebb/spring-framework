@@ -177,7 +177,7 @@ public abstract class AbstractTransactionalJUnit4SpringContextTests extends Abst
 	 * @see JdbcTestUtils#deleteFromTableWhere
 	 */
 	protected int deleteFromTableWhere(String tableName, String whereClause, Object... args) {
-		return JdbcTestUtils.deleteFromTableWhere(jdbcTemplate, tableName, whereClause, args);
+		return JdbcTestUtils.deleteFromTableWhere(this.jdbcTemplate, tableName, whereClause, args);
 	}
 
 	/**

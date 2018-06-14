@@ -64,13 +64,13 @@ public class HibernateSessionFlushingTests extends AbstractTransactionalJUnit4Sp
 	@Before
 	public void setUp() {
 		assertInTransaction(true);
-		assertNotNull("PersonService should have been autowired.", personService);
-		assertNotNull("SessionFactory should have been autowired.", sessionFactory);
+		assertNotNull("PersonService should have been autowired.", this.personService);
+		assertNotNull("SessionFactory should have been autowired.", this.sessionFactory);
 	}
 
 	@Test
 	public void findSam() {
-		Person sam = personService.findByName(SAM);
+		Person sam = this.personService.findByName(SAM);
 		assertNotNull("Should be able to find Sam", sam);
 		DriversLicense driversLicense = sam.getDriversLicense();
 		assertNotNull("Sam's driver's license should not be null", driversLicense);
@@ -82,22 +82,22 @@ public class HibernateSessionFlushingTests extends AbstractTransactionalJUnit4Sp
 		DriversLicense driversLicense = new DriversLicense(2L, 2222L);
 		Person juergen = new Person(JUERGEN, driversLicense);
 		int numRows = countRowsInPersonTable();
-		personService.save(juergen);
+		this.personService.save(juergen);
 		assertPersonCount(numRows + 1);
-		assertNotNull("Should be able to save and retrieve Juergen", personService.findByName(JUERGEN));
+		assertNotNull("Should be able to save and retrieve Juergen", this.personService.findByName(JUERGEN));
 		assertNotNull("Juergen's ID should have been set", juergen.getId());
 	}
 
 	@Test(expected = ConstraintViolationException.class)
 	public void saveJuergenWithNullDriversLicense() {
-		personService.save(new Person(JUERGEN));
+		this.personService.save(new Person(JUERGEN));
 	}
 
 	private void updateSamWithNullDriversLicense() {
-		Person sam = personService.findByName(SAM);
+		Person sam = this.personService.findByName(SAM);
 		assertNotNull("Should be able to find Sam", sam);
 		sam.setDriversLicense(null);
-		personService.save(sam);
+		this.personService.save(sam);
 	}
 
 	@Test
@@ -113,7 +113,7 @@ public class HibernateSessionFlushingTests extends AbstractTransactionalJUnit4Sp
 		updateSamWithNullDriversLicense();
 		// Manual flush is required to avoid false positive in test
 		try {
-			sessionFactory.getCurrentSession().flush();
+			this.sessionFactory.getCurrentSession().flush();
 		}
 		catch (PersistenceException ex) {
 			// Wrapped in Hibernate 5.2, with the constraint violation as cause

@@ -66,7 +66,7 @@ public class AsyncHttpAccessor {
 	 * org.springframework.http.client.ClientHttpRequest HttpRequests}.
 	 */
 	public org.springframework.http.client.AsyncClientHttpRequestFactory getAsyncRequestFactory() {
-		Assert.state(asyncRequestFactory != null, "No AsyncClientHttpRequestFactory set");
+		Assert.state(this.asyncRequestFactory != null, "No AsyncClientHttpRequestFactory set");
 		return this.asyncRequestFactory;
 	}
 
@@ -83,8 +83,8 @@ public class AsyncHttpAccessor {
 
 		org.springframework.http.client.AsyncClientHttpRequest request =
 				getAsyncRequestFactory().createAsyncRequest(url, method);
-		if (logger.isDebugEnabled()) {
-			logger.debug("Created asynchronous " + method.name() + " request for \"" + url + "\"");
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Created asynchronous " + method.name() + " request for \"" + url + "\"");
 		}
 		return request;
 	}

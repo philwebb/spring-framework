@@ -27,16 +27,16 @@ public class TestListener implements ApplicationListener<ApplicationEvent> {
 	private int eventCount;
 
 	public int getEventCount() {
-		return eventCount;
+		return this.eventCount;
 	}
 
 	public void zeroCounter() {
-		eventCount = 0;
+		this.eventCount = 0;
 	}
 
 	@Override
 	public void onApplicationEvent(ApplicationEvent e) {
-		++eventCount;
+		++this.eventCount;
 	}
 
 }

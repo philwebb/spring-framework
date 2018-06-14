@@ -52,7 +52,7 @@ public class LazyScheduledTasksBeanDefinitionParserTests {
 		volatile boolean executed = false;
 
 		public void doWork() {
-			executed = true;
+			this.executed = true;
 		}
 	}
 

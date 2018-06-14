@@ -35,8 +35,8 @@ public class EmbeddedDatabaseFactoryTests {
 	@Test
 	public void testGetDataSource() {
 		StubDatabasePopulator populator = new StubDatabasePopulator();
-		factory.setDatabasePopulator(populator);
-		EmbeddedDatabase db = factory.getDatabase();
+		this.factory.setDatabasePopulator(populator);
+		EmbeddedDatabase db = this.factory.getDatabase();
 		assertTrue(populator.populateCalled);
 		db.shutdown();
 	}

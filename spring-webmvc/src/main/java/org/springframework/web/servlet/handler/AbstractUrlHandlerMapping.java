@@ -188,8 +188,8 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping i
 		Comparator<String> patternComparator = getPathMatcher().getPatternComparator(urlPath);
 		if (!matchingPatterns.isEmpty()) {
 			matchingPatterns.sort(patternComparator);
-			if (logger.isTraceEnabled() && matchingPatterns.size() > 1) {
-				logger.trace("Matching patterns " + matchingPatterns);
+			if (this.logger.isTraceEnabled() && matchingPatterns.size() > 1) {
+				this.logger.trace("Matching patterns " + matchingPatterns);
 			}
 			bestMatch = matchingPatterns.get(0);
 		}
@@ -222,8 +222,8 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping i
 					uriTemplateVariables.putAll(decodedVars);
 				}
 			}
-			if (logger.isTraceEnabled() && uriTemplateVariables.size() > 0) {
-				logger.trace("URI variables " + uriTemplateVariables);
+			if (this.logger.isTraceEnabled() && uriTemplateVariables.size() > 0) {
+				this.logger.trace("URI variables " + uriTemplateVariables);
 			}
 			return buildPathExposingHandler(handler, bestMatch, pathWithinMapping, uriTemplateVariables);
 		}
@@ -349,21 +349,21 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping i
 		}
 		else {
 			if (urlPath.equals("/")) {
-				if (logger.isTraceEnabled()) {
-					logger.trace("Root mapping to " + getHandlerDescription(handler));
+				if (this.logger.isTraceEnabled()) {
+					this.logger.trace("Root mapping to " + getHandlerDescription(handler));
 				}
 				setRootHandler(resolvedHandler);
 			}
 			else if (urlPath.equals("/*")) {
-				if (logger.isTraceEnabled()) {
-					logger.trace("Default mapping to " + getHandlerDescription(handler));
+				if (this.logger.isTraceEnabled()) {
+					this.logger.trace("Default mapping to " + getHandlerDescription(handler));
 				}
 				setDefaultHandler(resolvedHandler);
 			}
 			else {
 				this.handlerMap.put(urlPath, resolvedHandler);
-				if (logger.isTraceEnabled()) {
-					logger.trace("Mapped URL path [" + urlPath + "] onto " + getHandlerDescription(handler));
+				if (this.logger.isTraceEnabled()) {
+					this.logger.trace("Mapped URL path [" + urlPath + "] onto " + getHandlerDescription(handler));
 				}
 			}
 		}

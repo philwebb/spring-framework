@@ -274,14 +274,14 @@ public class ScriptFactoryPostProcessor extends InstantiationAwareBeanPostProces
 		catch (Exception ex) {
 			if (ex instanceof BeanCreationException &&
 					((BeanCreationException) ex).getMostSpecificCause() instanceof BeanCurrentlyInCreationException) {
-				if (logger.isTraceEnabled()) {
-					logger.trace("Could not determine scripted object type for bean '" + beanName + "': "
+				if (this.logger.isTraceEnabled()) {
+					this.logger.trace("Could not determine scripted object type for bean '" + beanName + "': "
 							+ ex.getMessage());
 				}
 			}
 			else {
-				if (logger.isDebugEnabled()) {
-					logger.debug("Could not determine scripted object type for bean '" + beanName + "'", ex);
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Could not determine scripted object type for bean '" + beanName + "'", ex);
 				}
 			}
 		}

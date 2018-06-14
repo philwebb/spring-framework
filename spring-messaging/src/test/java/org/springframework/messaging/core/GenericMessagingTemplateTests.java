@@ -258,7 +258,7 @@ public class GenericMessagingTemplateTests {
 
 		@Override
 		public MessageChannel resolveDestination(String name) throws DestinationResolutionException {
-			return messageChannel;
+			return GenericMessagingTemplateTests.this.messageChannel;
 		}
 	}
 

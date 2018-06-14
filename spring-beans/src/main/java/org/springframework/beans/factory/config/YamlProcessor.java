@@ -153,8 +153,8 @@ public abstract class YamlProcessor {
 	private boolean process(MatchCallback callback, Yaml yaml, Resource resource) {
 		int count = 0;
 		try {
-			if (logger.isDebugEnabled()) {
-				logger.debug("Loading from YAML: " + resource);
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Loading from YAML: " + resource);
 			}
 			Reader reader = new UnicodeReader(resource.getInputStream());
 			try {
@@ -166,8 +166,8 @@ public abstract class YamlProcessor {
 						}
 					}
 				}
-				if (logger.isDebugEnabled()) {
-					logger.debug("Loaded " + count + " document" + (count > 1 ? "s" : "") +
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Loaded " + count + " document" + (count > 1 ? "s" : "") +
 							" from YAML resource: " + resource);
 				}
 			}
@@ -186,8 +186,8 @@ public abstract class YamlProcessor {
 				this.resolutionMethod != ResolutionMethod.OVERRIDE_AND_IGNORE) {
 			throw new IllegalStateException(ex);
 		}
-		if (logger.isWarnEnabled()) {
-			logger.warn("Could not load map from " + resource + ": " + ex.getMessage());
+		if (this.logger.isWarnEnabled()) {
+			this.logger.warn("Could not load map from " + resource + ": " + ex.getMessage());
 		}
 	}
 
@@ -222,8 +222,8 @@ public abstract class YamlProcessor {
 		properties.putAll(getFlattenedMap(map));
 
 		if (this.documentMatchers.isEmpty()) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("Merging document (no matchers set): " + map);
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Merging document (no matchers set): " + map);
 			}
 			callback.process(properties, map);
 			return true;
@@ -234,8 +234,8 @@ public abstract class YamlProcessor {
 			MatchStatus match = matcher.matches(properties);
 			result = MatchStatus.getMostSpecific(match, result);
 			if (match == MatchStatus.FOUND) {
-				if (logger.isDebugEnabled()) {
-					logger.debug("Matched document with document matcher: " + properties);
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Matched document with document matcher: " + properties);
 				}
 				callback.process(properties, map);
 				return true;
@@ -243,15 +243,15 @@ public abstract class YamlProcessor {
 		}
 
 		if (result == MatchStatus.ABSTAIN && this.matchDefault) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("Matched document with default matcher: " + map);
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Matched document with default matcher: " + map);
 			}
 			callback.process(properties, map);
 			return true;
 		}
 
-		if (logger.isDebugEnabled()) {
-			logger.debug("Unmatched document: " + map);
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Unmatched document: " + map);
 		}
 		return false;
 	}

@@ -601,16 +601,16 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 			this.requestResponseBodyAdvice.addAll(0, requestResponseBodyAdviceBeans);
 		}
 
-		if (logger.isDebugEnabled()) {
+		if (this.logger.isDebugEnabled()) {
 			int modelSize = this.modelAttributeAdviceCache.size();
 			int binderSize = this.initBinderAdviceCache.size();
 			int reqCount = getBodyAdviceCount(RequestBodyAdvice.class);
 			int resCount = getBodyAdviceCount(ResponseBodyAdvice.class);
 			if (modelSize == 0 && binderSize == 0 && reqCount == 0 && resCount == 0) {
-				logger.debug("ControllerAdvice beans: none");
+				this.logger.debug("ControllerAdvice beans: none");
 			}
 			else {
-				logger.debug("ControllerAdvice beans: " + modelSize + " @ModelAttribute, " + binderSize +
+				this.logger.debug("ControllerAdvice beans: " + modelSize + " @ModelAttribute, " + binderSize +
 						" @InitBinder, " + reqCount + " RequestBodyAdvice, " + resCount + ", ResponseBodyAdvice");
 			}
 		}
@@ -825,7 +825,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 			synchronized (this.sessionAttributesHandlerCache) {
 				sessionAttrHandler = this.sessionAttributesHandlerCache.get(handlerType);
 				if (sessionAttrHandler == null) {
-					sessionAttrHandler = new SessionAttributesHandler(handlerType, sessionAttributeStore);
+					sessionAttrHandler = new SessionAttributesHandler(handlerType, this.sessionAttributeStore);
 					this.sessionAttributesHandlerCache.put(handlerType, sessionAttrHandler);
 				}
 			}
@@ -876,8 +876,8 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 				Object result = asyncManager.getConcurrentResult();
 				mavContainer = (ModelAndViewContainer) asyncManager.getConcurrentResultContext()[0];
 				asyncManager.clearConcurrentResult();
-				if (logger.isDebugEnabled()) {
-					logger.debug("Resume with async result [" +
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Resume with async result [" +
 							(result instanceof CharSequence ? "\"" + result + "\"" :  result) + "]");
 				}
 				invocableMethod = invocableMethod.wrapConcurrentResult(result);

@@ -32,7 +32,7 @@ public class StubMessenger implements ConfigurableMessenger {
 
 	@Override
 	public String getMessage() {
-		return message;
+		return this.message;
 	}
 
 }

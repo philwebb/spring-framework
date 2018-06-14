@@ -124,14 +124,14 @@ public abstract class AbstractTemplateView extends AbstractUrlBasedView {
 						"' because of an existing model object of the same name");
 				}
 				Object attributeValue = request.getAttribute(attribute);
-				if (logger.isDebugEnabled()) {
+				if (this.logger.isDebugEnabled()) {
 					exposed = exposed != null ? exposed : new LinkedHashMap<>();
 					exposed.put(attribute, attributeValue);
 				}
 				model.put(attribute, attributeValue);
 			}
-			if (logger.isTraceEnabled() && exposed != null) {
-				logger.trace("Exposed request attributes to model: " + exposed);
+			if (this.logger.isTraceEnabled() && exposed != null) {
+				this.logger.trace("Exposed request attributes to model: " + exposed);
 			}
 		}
 
@@ -146,14 +146,14 @@ public abstract class AbstractTemplateView extends AbstractUrlBasedView {
 							"' because of an existing model object of the same name");
 					}
 					Object attributeValue = session.getAttribute(attribute);
-					if (logger.isDebugEnabled()) {
+					if (this.logger.isDebugEnabled()) {
 						exposed = exposed != null ? exposed : new LinkedHashMap<>();
 						exposed.put(attribute, attributeValue);
 					}
 					model.put(attribute, attributeValue);
 				}
-				if (logger.isTraceEnabled() && exposed != null) {
-					logger.trace("Exposed session attributes to model: " + exposed);
+				if (this.logger.isTraceEnabled() && exposed != null) {
+					this.logger.trace("Exposed session attributes to model: " + exposed);
 				}
 			}
 		}
@@ -171,8 +171,8 @@ public abstract class AbstractTemplateView extends AbstractUrlBasedView {
 
 		applyContentType(response);
 
-		if (logger.isDebugEnabled()) {
-			logger.debug("Rendering [" + getUrl() + "]");
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Rendering [" + getUrl() + "]");
 		}
 
 		renderMergedTemplateModel(model, request, response);

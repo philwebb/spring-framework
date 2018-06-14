@@ -217,12 +217,12 @@ public class ContentCachingRequestWrapper extends HttpServletRequestWrapper {
 		public int read() throws IOException {
 			int ch = this.is.read();
 			if (ch != -1 && !this.overflow) {
-				if (contentCacheLimit != null && cachedContent.size() == contentCacheLimit) {
+				if (ContentCachingRequestWrapper.this.contentCacheLimit != null && ContentCachingRequestWrapper.this.cachedContent.size() == ContentCachingRequestWrapper.this.contentCacheLimit) {
 					this.overflow = true;
-					handleContentOverflow(contentCacheLimit);
+					handleContentOverflow(ContentCachingRequestWrapper.this.contentCacheLimit);
 				}
 				else {
-					cachedContent.write(ch);
+					ContentCachingRequestWrapper.this.cachedContent.write(ch);
 				}
 			}
 			return ch;

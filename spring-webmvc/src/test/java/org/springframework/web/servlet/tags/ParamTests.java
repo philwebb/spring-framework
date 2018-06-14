@@ -31,20 +31,20 @@ public class ParamTests {
 
 	@Test
 	public void name() {
-		param.setName("name");
-		assertEquals("name", param.getName());
+		this.param.setName("name");
+		assertEquals("name", this.param.getName());
 	}
 
 	@Test
 	public void value() {
-		param.setValue("value");
-		assertEquals("value", param.getValue());
+		this.param.setValue("value");
+		assertEquals("value", this.param.getValue());
 	}
 
 	@Test
 	public void nullDefaults() {
-		assertNull(param.getName());
-		assertNull(param.getValue());
+		assertNull(this.param.getName());
+		assertNull(this.param.getValue());
 	}
 
 }

@@ -53,7 +53,7 @@ public class TransactionalTestExecutionListenerTests {
 	private final TransactionalTestExecutionListener listener = new TransactionalTestExecutionListener() {
 		@Override
 		protected PlatformTransactionManager getTransactionManager(TestContext testContext, String qualifier) {
-			return tm;
+			return TransactionalTestExecutionListenerTests.this.tm;
 		}
 	};
 
@@ -78,16 +78,16 @@ public class TransactionalTestExecutionListenerTests {
 		};
 
 		Class<? extends Invocable> clazz = TransactionalDeclaredOnClassLocallyTestCase.class;
-		BDDMockito.<Class<?>> given(testContext.getTestClass()).willReturn(clazz);
+		BDDMockito.<Class<?>> given(this.testContext.getTestClass()).willReturn(clazz);
 		Invocable instance = BeanUtils.instantiateClass(clazz);
-		given(testContext.getTestInstance()).willReturn(instance);
-		given(testContext.getTestMethod()).willReturn(clazz.getDeclaredMethod("transactionalTest"));
+		given(this.testContext.getTestInstance()).willReturn(instance);
+		given(this.testContext.getTestMethod()).willReturn(clazz.getDeclaredMethod("transactionalTest"));
 
 		assertFalse("callback should not have been invoked", instance.invoked());
 		TransactionContextHolder.removeCurrentTransactionContext();
 
 		try {
-			listener.beforeTestMethod(testContext);
+			listener.beforeTestMethod(this.testContext);
 			fail("Should have thrown an IllegalStateException");
 		}
 		catch (IllegalStateException ex) {
@@ -221,26 +221,26 @@ public class TransactionalTestExecutionListenerTests {
 	private void assertBeforeTestMethodWithTransactionalTestMethod(Class<? extends Invocable> clazz, boolean invokedInTx)
 			throws Exception {
 
-		BDDMockito.<Class<?>> given(testContext.getTestClass()).willReturn(clazz);
+		BDDMockito.<Class<?>> given(this.testContext.getTestClass()).willReturn(clazz);
 		Invocable instance = BeanUtils.instantiateClass(clazz);
-		given(testContext.getTestInstance()).willReturn(instance);
-		given(testContext.getTestMethod()).willReturn(clazz.getDeclaredMethod("transactionalTest"));
+		given(this.testContext.getTestInstance()).willReturn(instance);
+		given(this.testContext.getTestMethod()).willReturn(clazz.getDeclaredMethod("transactionalTest"));
 
 		assertFalse("callback should not have been invoked", instance.invoked());
 		TransactionContextHolder.removeCurrentTransactionContext();
-		listener.beforeTestMethod(testContext);
+		this.listener.beforeTestMethod(this.testContext);
 		assertEquals(invokedInTx, instance.invoked());
 	}
 
 	private void assertBeforeTestMethodWithNonTransactionalTestMethod(Class<? extends Invocable> clazz) throws Exception {
-		BDDMockito.<Class<?>> given(testContext.getTestClass()).willReturn(clazz);
+		BDDMockito.<Class<?>> given(this.testContext.getTestClass()).willReturn(clazz);
 		Invocable instance = BeanUtils.instantiateClass(clazz);
-		given(testContext.getTestInstance()).willReturn(instance);
-		given(testContext.getTestMethod()).willReturn(clazz.getDeclaredMethod("nonTransactionalTest"));
+		given(this.testContext.getTestInstance()).willReturn(instance);
+		given(this.testContext.getTestMethod()).willReturn(clazz.getDeclaredMethod("nonTransactionalTest"));
 
 		assertFalse("callback should not have been invoked", instance.invoked());
 		TransactionContextHolder.removeCurrentTransactionContext();
-		listener.beforeTestMethod(testContext);
+		this.listener.beforeTestMethod(this.testContext);
 		assertFalse("callback should not have been invoked", instance.invoked());
 	}
 
@@ -250,37 +250,37 @@ public class TransactionalTestExecutionListenerTests {
 	}
 
 	private void assertAfterTestMethodWithTransactionalTestMethod(Class<? extends Invocable> clazz) throws Exception {
-		BDDMockito.<Class<?>> given(testContext.getTestClass()).willReturn(clazz);
+		BDDMockito.<Class<?>> given(this.testContext.getTestClass()).willReturn(clazz);
 		Invocable instance = BeanUtils.instantiateClass(clazz);
-		given(testContext.getTestInstance()).willReturn(instance);
-		given(testContext.getTestMethod()).willReturn(clazz.getDeclaredMethod("transactionalTest"));
-		given(tm.getTransaction(BDDMockito.any(TransactionDefinition.class))).willReturn(new SimpleTransactionStatus());
+		given(this.testContext.getTestInstance()).willReturn(instance);
+		given(this.testContext.getTestMethod()).willReturn(clazz.getDeclaredMethod("transactionalTest"));
+		given(this.tm.getTransaction(BDDMockito.any(TransactionDefinition.class))).willReturn(new SimpleTransactionStatus());
 
 		assertFalse("callback should not have been invoked", instance.invoked());
 		TransactionContextHolder.removeCurrentTransactionContext();
-		listener.beforeTestMethod(testContext);
+		this.listener.beforeTestMethod(this.testContext);
 		assertFalse("callback should not have been invoked", instance.invoked());
-		listener.afterTestMethod(testContext);
+		this.listener.afterTestMethod(this.testContext);
 		assertTrue("callback should have been invoked", instance.invoked());
 	}
 
 	private void assertAfterTestMethodWithNonTransactionalTestMethod(Class<? extends Invocable> clazz) throws Exception {
-		BDDMockito.<Class<?>> given(testContext.getTestClass()).willReturn(clazz);
+		BDDMockito.<Class<?>> given(this.testContext.getTestClass()).willReturn(clazz);
 		Invocable instance = BeanUtils.instantiateClass(clazz);
-		given(testContext.getTestInstance()).willReturn(instance);
-		given(testContext.getTestMethod()).willReturn(clazz.getDeclaredMethod("nonTransactionalTest"));
+		given(this.testContext.getTestInstance()).willReturn(instance);
+		given(this.testContext.getTestMethod()).willReturn(clazz.getDeclaredMethod("nonTransactionalTest"));
 
 		assertFalse("callback should not have been invoked", instance.invoked());
 		TransactionContextHolder.removeCurrentTransactionContext();
-		listener.beforeTestMethod(testContext);
-		listener.afterTestMethod(testContext);
+		this.listener.beforeTestMethod(this.testContext);
+		this.listener.afterTestMethod(this.testContext);
 		assertFalse("callback should not have been invoked", instance.invoked());
 	}
 
 	private void assertIsRollback(Class<?> clazz, boolean rollback) throws Exception {
-		BDDMockito.<Class<?>> given(testContext.getTestClass()).willReturn(clazz);
-		given(testContext.getTestMethod()).willReturn(clazz.getDeclaredMethod("test"));
-		assertEquals(rollback, listener.isRollback(testContext));
+		BDDMockito.<Class<?>> given(this.testContext.getTestClass()).willReturn(clazz);
+		given(this.testContext.getTestMethod()).willReturn(clazz.getDeclaredMethod("test"));
+		assertEquals(rollback, this.listener.isRollback(this.testContext));
 	}
 
 

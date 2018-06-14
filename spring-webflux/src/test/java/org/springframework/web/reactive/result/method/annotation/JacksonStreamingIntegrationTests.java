@@ -131,7 +131,7 @@ public class JacksonStreamingIntegrationTests extends AbstractHttpHandlerIntegra
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String name) {
@@ -158,7 +158,7 @@ public class JacksonStreamingIntegrationTests extends AbstractHttpHandlerIntegra
 		@Override
 		public String toString() {
 			return "Person{" +
-					"name='" + name + '\'' +
+					"name='" + this.name + '\'' +
 					'}';
 		}
 	}

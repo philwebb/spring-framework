@@ -553,10 +553,10 @@ public class ReflectUtils {
 			private ClassInfo ci;
 
 			public ClassInfo getClassInfo() {
-				if (ci == null) {
-					ci = ReflectUtils.getClassInfo(member.getDeclaringClass());
+				if (this.ci == null) {
+					this.ci = ReflectUtils.getClassInfo(member.getDeclaringClass());
 				}
-				return ci;
+				return this.ci;
 			}
 
 			public int getModifiers() {

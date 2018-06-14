@@ -156,8 +156,8 @@ public class CciLocalTransactionManager extends AbstractPlatformTransactionManag
 
 		try {
 			con = connectionFactory.getConnection();
-			if (logger.isDebugEnabled()) {
-				logger.debug("Acquired Connection [" + con + "] for local CCI transaction");
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Acquired Connection [" + con + "] for local CCI transaction");
 			}
 
 			ConnectionHolder connectionHolder = new ConnectionHolder(con);
@@ -209,7 +209,7 @@ public class CciLocalTransactionManager extends AbstractPlatformTransactionManag
 		CciLocalTransactionObject txObject = (CciLocalTransactionObject) status.getTransaction();
 		Connection con = txObject.getConnectionHolder().getConnection();
 		if (status.isDebug()) {
-			logger.debug("Committing CCI local transaction on Connection [" + con + "]");
+			this.logger.debug("Committing CCI local transaction on Connection [" + con + "]");
 		}
 		try {
 			con.getLocalTransaction().commit();
@@ -227,7 +227,7 @@ public class CciLocalTransactionManager extends AbstractPlatformTransactionManag
 		CciLocalTransactionObject txObject = (CciLocalTransactionObject) status.getTransaction();
 		Connection con = txObject.getConnectionHolder().getConnection();
 		if (status.isDebug()) {
-			logger.debug("Rolling back CCI local transaction on Connection [" + con + "]");
+			this.logger.debug("Rolling back CCI local transaction on Connection [" + con + "]");
 		}
 		try {
 			con.getLocalTransaction().rollback();
@@ -244,7 +244,7 @@ public class CciLocalTransactionManager extends AbstractPlatformTransactionManag
 	protected void doSetRollbackOnly(DefaultTransactionStatus status) {
 		CciLocalTransactionObject txObject = (CciLocalTransactionObject) status.getTransaction();
 		if (status.isDebug()) {
-			logger.debug("Setting CCI local transaction [" + txObject.getConnectionHolder().getConnection() +
+			this.logger.debug("Setting CCI local transaction [" + txObject.getConnectionHolder().getConnection() +
 					"] rollback-only");
 		}
 		txObject.getConnectionHolder().setRollbackOnly();
@@ -260,8 +260,8 @@ public class CciLocalTransactionManager extends AbstractPlatformTransactionManag
 		txObject.getConnectionHolder().clear();
 
 		Connection con = txObject.getConnectionHolder().getConnection();
-		if (logger.isDebugEnabled()) {
-			logger.debug("Releasing CCI Connection [" + con + "] after transaction");
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Releasing CCI Connection [" + con + "] after transaction");
 		}
 		ConnectionFactoryUtils.releaseConnection(con, connectionFactory);
 	}

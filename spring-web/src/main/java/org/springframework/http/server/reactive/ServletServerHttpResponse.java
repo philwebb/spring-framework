@@ -199,13 +199,13 @@ class ServletServerHttpResponse extends AbstractListenerServerHttpResponse {
 		}
 
 		void handleError(Throwable ex) {
-			ResponseBodyFlushProcessor flushProcessor = bodyFlushProcessor;
+			ResponseBodyFlushProcessor flushProcessor = ServletServerHttpResponse.this.bodyFlushProcessor;
 			if (flushProcessor != null) {
 				flushProcessor.cancel();
 				flushProcessor.onError(ex);
 			}
 
-			ResponseBodyProcessor processor = bodyProcessor;
+			ResponseBodyProcessor processor = ServletServerHttpResponse.this.bodyProcessor;
 			if (processor != null) {
 				processor.cancel();
 				processor.onError(ex);
@@ -214,13 +214,13 @@ class ServletServerHttpResponse extends AbstractListenerServerHttpResponse {
 
 		@Override
 		public void onComplete(AsyncEvent event) {
-			ResponseBodyFlushProcessor flushProcessor = bodyFlushProcessor;
+			ResponseBodyFlushProcessor flushProcessor = ServletServerHttpResponse.this.bodyFlushProcessor;
 			if (flushProcessor != null) {
 				flushProcessor.cancel();
 				flushProcessor.onComplete();
 			}
 
-			ResponseBodyProcessor processor = bodyProcessor;
+			ResponseBodyProcessor processor = ServletServerHttpResponse.this.bodyProcessor;
 			if (processor != null) {
 				processor.cancel();
 				processor.onComplete();
@@ -233,12 +233,12 @@ class ServletServerHttpResponse extends AbstractListenerServerHttpResponse {
 
 		@Override
 		public void onWritePossible() throws IOException {
-			ResponseBodyProcessor processor = bodyProcessor;
+			ResponseBodyProcessor processor = ServletServerHttpResponse.this.bodyProcessor;
 			if (processor != null) {
 				processor.onWritePossible();
 			}
 			else {
-				ResponseBodyFlushProcessor flushProcessor = bodyFlushProcessor;
+				ResponseBodyFlushProcessor flushProcessor = ServletServerHttpResponse.this.bodyFlushProcessor;
 				if (flushProcessor != null) {
 					flushProcessor.onFlushPossible();
 				}
@@ -247,13 +247,13 @@ class ServletServerHttpResponse extends AbstractListenerServerHttpResponse {
 
 		@Override
 		public void onError(Throwable ex) {
-			ResponseBodyProcessor processor = bodyProcessor;
+			ResponseBodyProcessor processor = ServletServerHttpResponse.this.bodyProcessor;
 			if (processor != null) {
 				processor.cancel();
 				processor.onError(ex);
 			}
 			else {
-				ResponseBodyFlushProcessor flushProcessor = bodyFlushProcessor;
+				ResponseBodyFlushProcessor flushProcessor = ServletServerHttpResponse.this.bodyFlushProcessor;
 				if (flushProcessor != null) {
 					flushProcessor.cancel();
 					flushProcessor.onError(ex);
@@ -268,14 +268,14 @@ class ServletServerHttpResponse extends AbstractListenerServerHttpResponse {
 		@Override
 		protected Processor<? super DataBuffer, Void> createWriteProcessor() {
 			ResponseBodyProcessor processor = new ResponseBodyProcessor();
-			bodyProcessor = processor;
+			ServletServerHttpResponse.this.bodyProcessor = processor;
 			return processor;
 		}
 
 		@Override
 		protected void flush() throws IOException {
-			if (logger.isTraceEnabled()) {
-				logger.trace("flush");
+			if (this.logger.isTraceEnabled()) {
+				this.logger.trace("flush");
 			}
 			ServletServerHttpResponse.this.flush();
 		}
@@ -287,7 +287,7 @@ class ServletServerHttpResponse extends AbstractListenerServerHttpResponse {
 
 		@Override
 		protected boolean isFlushPending() {
-			return flushOnNext;
+			return ServletServerHttpResponse.this.flushOnNext;
 		}
 	}
 
@@ -307,8 +307,8 @@ class ServletServerHttpResponse extends AbstractListenerServerHttpResponse {
 		@Override
 		protected boolean write(DataBuffer dataBuffer) throws IOException {
 			if (ServletServerHttpResponse.this.flushOnNext) {
-				if (logger.isTraceEnabled()) {
-					logger.trace("flush");
+				if (this.logger.isTraceEnabled()) {
+					this.logger.trace("flush");
 				}
 				flush();
 			}
@@ -323,8 +323,8 @@ class ServletServerHttpResponse extends AbstractListenerServerHttpResponse {
 					this.logger.trace("written: " + written + " total: " + remaining);
 				}
 				if (written == remaining) {
-					if (logger.isTraceEnabled()) {
-						logger.trace("releaseData: " + dataBuffer);
+					if (this.logger.isTraceEnabled()) {
+						this.logger.trace("releaseData: " + dataBuffer);
 					}
 					DataBufferUtils.release(dataBuffer);
 					return true;
@@ -335,7 +335,7 @@ class ServletServerHttpResponse extends AbstractListenerServerHttpResponse {
 
 		@Override
 		protected void writingComplete() {
-			bodyProcessor = null;
+			ServletServerHttpResponse.this.bodyProcessor = null;
 		}
 	}
 

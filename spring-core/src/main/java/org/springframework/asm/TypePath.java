@@ -92,7 +92,7 @@ public class TypePath {
      * @return the length of this path.
      */
     public int getLength() {
-        return b[offset];
+        return this.b[this.offset];
     }
 
     /**
@@ -105,7 +105,7 @@ public class TypePath {
      *         {@link #TYPE_ARGUMENT TYPE_ARGUMENT}.
      */
     public int getStep(int index) {
-        return b[offset + 2 * index + 1];
+        return this.b[this.offset + 2 * index + 1];
     }
 
     /**
@@ -119,7 +119,7 @@ public class TypePath {
      *         into.
      */
     public int getStepArgument(int index) {
-        return b[offset + 2 * index + 2];
+        return this.b[this.offset + 2 * index + 2];
     }
 
     /**

@@ -152,7 +152,7 @@ public class ResourceUrlProvider implements ApplicationListener<ContextRefreshed
 		}
 
 		if (this.handlerMap.isEmpty()) {
-			logger.trace("No resource handling mappings found");
+			this.logger.trace("No resource handling mappings found");
 		}
 	}
 
@@ -243,8 +243,8 @@ public class ResourceUrlProvider implements ApplicationListener<ContextRefreshed
 			}
 		}
 
-		if (logger.isTraceEnabled()) {
-			logger.trace("No match for \"" + lookupPath + "\"");
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("No match for \"" + lookupPath + "\"");
 		}
 
 		return null;

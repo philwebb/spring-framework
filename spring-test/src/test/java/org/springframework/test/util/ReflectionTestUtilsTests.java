@@ -61,51 +61,51 @@ public class ReflectionTestUtilsTests {
 
 	@Test
 	public void setFieldWithNullTargetObject() throws Exception {
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage(startsWith("Either targetObject or targetClass"));
+		this.exception.expect(IllegalArgumentException.class);
+		this.exception.expectMessage(startsWith("Either targetObject or targetClass"));
 		setField((Object) null, "id", Long.valueOf(99));
 	}
 
 	@Test
 	public void getFieldWithNullTargetObject() throws Exception {
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage(startsWith("Either targetObject or targetClass"));
+		this.exception.expect(IllegalArgumentException.class);
+		this.exception.expectMessage(startsWith("Either targetObject or targetClass"));
 		getField((Object) null, "id");
 	}
 
 	@Test
 	public void setFieldWithNullTargetClass() throws Exception {
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage(startsWith("Either targetObject or targetClass"));
+		this.exception.expect(IllegalArgumentException.class);
+		this.exception.expectMessage(startsWith("Either targetObject or targetClass"));
 		setField((Class<?>) null, "id", Long.valueOf(99));
 	}
 
 	@Test
 	public void getFieldWithNullTargetClass() throws Exception {
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage(startsWith("Either targetObject or targetClass"));
+		this.exception.expect(IllegalArgumentException.class);
+		this.exception.expectMessage(startsWith("Either targetObject or targetClass"));
 		getField((Class<?>) null, "id");
 	}
 
 	@Test
 	public void setFieldWithNullNameAndNullType() throws Exception {
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage(startsWith("Either name or type"));
-		setField(person, null, Long.valueOf(99), null);
+		this.exception.expect(IllegalArgumentException.class);
+		this.exception.expectMessage(startsWith("Either name or type"));
+		setField(this.person, null, Long.valueOf(99), null);
 	}
 
 	@Test
 	public void setFieldWithBogusName() throws Exception {
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage(startsWith("Could not find field 'bogus'"));
-		setField(person, "bogus", Long.valueOf(99), long.class);
+		this.exception.expect(IllegalArgumentException.class);
+		this.exception.expectMessage(startsWith("Could not find field 'bogus'"));
+		setField(this.person, "bogus", Long.valueOf(99), long.class);
 	}
 
 	@Test
 	public void setFieldWithWrongType() throws Exception {
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage(startsWith("Could not find field"));
-		setField(person, "id", Long.valueOf(99), String.class);
+		this.exception.expect(IllegalArgumentException.class);
+		this.exception.expectMessage(startsWith("Could not find field"));
+		setField(this.person, "id", Long.valueOf(99), String.class);
 	}
 
 	@Test
@@ -172,36 +172,36 @@ public class ReflectionTestUtilsTests {
 	@Test
 	public void setFieldWithNullValuesForNonPrimitives() throws Exception {
 		// Fields must be non-null to start with
-		setField(person, "name", "Tom");
-		setField(person, "eyeColor", "blue", String.class);
-		setField(person, "favoriteNumber", PI, Number.class);
-		assertNotNull(person.getName());
-		assertNotNull(person.getEyeColor());
-		assertNotNull(person.getFavoriteNumber());
+		setField(this.person, "name", "Tom");
+		setField(this.person, "eyeColor", "blue", String.class);
+		setField(this.person, "favoriteNumber", PI, Number.class);
+		assertNotNull(this.person.getName());
+		assertNotNull(this.person.getEyeColor());
+		assertNotNull(this.person.getFavoriteNumber());
 
 		// Set to null
-		setField(person, "name", null, String.class);
-		setField(person, "eyeColor", null, String.class);
-		setField(person, "favoriteNumber", null, Number.class);
+		setField(this.person, "name", null, String.class);
+		setField(this.person, "eyeColor", null, String.class);
+		setField(this.person, "favoriteNumber", null, Number.class);
 
-		assertNull("name (protected field)", person.getName());
-		assertNull("eye color (package private field)", person.getEyeColor());
-		assertNull("'favorite number' (package field)", person.getFavoriteNumber());
+		assertNull("name (protected field)", this.person.getName());
+		assertNull("eye color (package private field)", this.person.getEyeColor());
+		assertNull("'favorite number' (package field)", this.person.getFavoriteNumber());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void setFieldWithNullValueForPrimitiveLong() throws Exception {
-		setField(person, "id", null, long.class);
+		setField(this.person, "id", null, long.class);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void setFieldWithNullValueForPrimitiveInt() throws Exception {
-		setField(person, "age", null, int.class);
+		setField(this.person, "age", null, int.class);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void setFieldWithNullValueForPrimitiveBoolean() throws Exception {
-		setField(person, "likesPets", null, boolean.class);
+		setField(this.person, "likesPets", null, boolean.class);
 	}
 
 	@Test
@@ -247,82 +247,82 @@ public class ReflectionTestUtilsTests {
 
 	@Test
 	public void invokeSetterMethodAndInvokeGetterMethodWithExplicitMethodNames() throws Exception {
-		invokeSetterMethod(person, "setId", Long.valueOf(1), long.class);
-		invokeSetterMethod(person, "setName", "Jerry", String.class);
-		invokeSetterMethod(person, "setAge", Integer.valueOf(33), int.class);
-		invokeSetterMethod(person, "setEyeColor", "green", String.class);
-		invokeSetterMethod(person, "setLikesPets", Boolean.FALSE, boolean.class);
-		invokeSetterMethod(person, "setFavoriteNumber", Integer.valueOf(42), Number.class);
+		invokeSetterMethod(this.person, "setId", Long.valueOf(1), long.class);
+		invokeSetterMethod(this.person, "setName", "Jerry", String.class);
+		invokeSetterMethod(this.person, "setAge", Integer.valueOf(33), int.class);
+		invokeSetterMethod(this.person, "setEyeColor", "green", String.class);
+		invokeSetterMethod(this.person, "setLikesPets", Boolean.FALSE, boolean.class);
+		invokeSetterMethod(this.person, "setFavoriteNumber", Integer.valueOf(42), Number.class);
 
-		assertEquals("ID (protected method in a superclass)", 1, person.getId());
-		assertEquals("name (private method)", "Jerry", person.getName());
-		assertEquals("age (protected method)", 33, person.getAge());
-		assertEquals("eye color (package private method)", "green", person.getEyeColor());
-		assertEquals("'likes pets' flag (protected method for a boolean)", false, person.likesPets());
-		assertEquals("'favorite number' (protected method for a Number)", Integer.valueOf(42), person.getFavoriteNumber());
+		assertEquals("ID (protected method in a superclass)", 1, this.person.getId());
+		assertEquals("name (private method)", "Jerry", this.person.getName());
+		assertEquals("age (protected method)", 33, this.person.getAge());
+		assertEquals("eye color (package private method)", "green", this.person.getEyeColor());
+		assertEquals("'likes pets' flag (protected method for a boolean)", false, this.person.likesPets());
+		assertEquals("'favorite number' (protected method for a Number)", Integer.valueOf(42), this.person.getFavoriteNumber());
 
-		assertEquals(Long.valueOf(1), invokeGetterMethod(person, "getId"));
-		assertEquals("Jerry", invokeGetterMethod(person, "getName"));
-		assertEquals(Integer.valueOf(33), invokeGetterMethod(person, "getAge"));
-		assertEquals("green", invokeGetterMethod(person, "getEyeColor"));
-		assertEquals(Boolean.FALSE, invokeGetterMethod(person, "likesPets"));
-		assertEquals(Integer.valueOf(42), invokeGetterMethod(person, "getFavoriteNumber"));
+		assertEquals(Long.valueOf(1), invokeGetterMethod(this.person, "getId"));
+		assertEquals("Jerry", invokeGetterMethod(this.person, "getName"));
+		assertEquals(Integer.valueOf(33), invokeGetterMethod(this.person, "getAge"));
+		assertEquals("green", invokeGetterMethod(this.person, "getEyeColor"));
+		assertEquals(Boolean.FALSE, invokeGetterMethod(this.person, "likesPets"));
+		assertEquals(Integer.valueOf(42), invokeGetterMethod(this.person, "getFavoriteNumber"));
 	}
 
 	@Test
 	public void invokeSetterMethodAndInvokeGetterMethodWithJavaBeanPropertyNames() throws Exception {
-		invokeSetterMethod(person, "id", Long.valueOf(99), long.class);
-		invokeSetterMethod(person, "name", "Tom");
-		invokeSetterMethod(person, "age", Integer.valueOf(42));
-		invokeSetterMethod(person, "eyeColor", "blue", String.class);
-		invokeSetterMethod(person, "likesPets", Boolean.TRUE);
-		invokeSetterMethod(person, "favoriteNumber", PI, Number.class);
+		invokeSetterMethod(this.person, "id", Long.valueOf(99), long.class);
+		invokeSetterMethod(this.person, "name", "Tom");
+		invokeSetterMethod(this.person, "age", Integer.valueOf(42));
+		invokeSetterMethod(this.person, "eyeColor", "blue", String.class);
+		invokeSetterMethod(this.person, "likesPets", Boolean.TRUE);
+		invokeSetterMethod(this.person, "favoriteNumber", PI, Number.class);
 
-		assertEquals("ID (protected method in a superclass)", 99, person.getId());
-		assertEquals("name (private method)", "Tom", person.getName());
-		assertEquals("age (protected method)", 42, person.getAge());
-		assertEquals("eye color (package private method)", "blue", person.getEyeColor());
-		assertEquals("'likes pets' flag (protected method for a boolean)", true, person.likesPets());
-		assertEquals("'favorite number' (protected method for a Number)", PI, person.getFavoriteNumber());
+		assertEquals("ID (protected method in a superclass)", 99, this.person.getId());
+		assertEquals("name (private method)", "Tom", this.person.getName());
+		assertEquals("age (protected method)", 42, this.person.getAge());
+		assertEquals("eye color (package private method)", "blue", this.person.getEyeColor());
+		assertEquals("'likes pets' flag (protected method for a boolean)", true, this.person.likesPets());
+		assertEquals("'favorite number' (protected method for a Number)", PI, this.person.getFavoriteNumber());
 
-		assertEquals(Long.valueOf(99), invokeGetterMethod(person, "id"));
-		assertEquals("Tom", invokeGetterMethod(person, "name"));
-		assertEquals(Integer.valueOf(42), invokeGetterMethod(person, "age"));
-		assertEquals("blue", invokeGetterMethod(person, "eyeColor"));
-		assertEquals(Boolean.TRUE, invokeGetterMethod(person, "likesPets"));
-		assertEquals(PI, invokeGetterMethod(person, "favoriteNumber"));
+		assertEquals(Long.valueOf(99), invokeGetterMethod(this.person, "id"));
+		assertEquals("Tom", invokeGetterMethod(this.person, "name"));
+		assertEquals(Integer.valueOf(42), invokeGetterMethod(this.person, "age"));
+		assertEquals("blue", invokeGetterMethod(this.person, "eyeColor"));
+		assertEquals(Boolean.TRUE, invokeGetterMethod(this.person, "likesPets"));
+		assertEquals(PI, invokeGetterMethod(this.person, "favoriteNumber"));
 	}
 
 	@Test
 	public void invokeSetterMethodWithNullValuesForNonPrimitives() throws Exception {
-		invokeSetterMethod(person, "name", null, String.class);
-		invokeSetterMethod(person, "eyeColor", null, String.class);
-		invokeSetterMethod(person, "favoriteNumber", null, Number.class);
+		invokeSetterMethod(this.person, "name", null, String.class);
+		invokeSetterMethod(this.person, "eyeColor", null, String.class);
+		invokeSetterMethod(this.person, "favoriteNumber", null, Number.class);
 
-		assertNull("name (private method)", person.getName());
-		assertNull("eye color (package private method)", person.getEyeColor());
-		assertNull("'favorite number' (protected method for a Number)", person.getFavoriteNumber());
+		assertNull("name (private method)", this.person.getName());
+		assertNull("eye color (package private method)", this.person.getEyeColor());
+		assertNull("'favorite number' (protected method for a Number)", this.person.getFavoriteNumber());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void invokeSetterMethodWithNullValueForPrimitiveLong() throws Exception {
-		invokeSetterMethod(person, "id", null, long.class);
+		invokeSetterMethod(this.person, "id", null, long.class);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void invokeSetterMethodWithNullValueForPrimitiveInt() throws Exception {
-		invokeSetterMethod(person, "age", null, int.class);
+		invokeSetterMethod(this.person, "age", null, int.class);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void invokeSetterMethodWithNullValueForPrimitiveBoolean() throws Exception {
-		invokeSetterMethod(person, "likesPets", null, boolean.class);
+		invokeSetterMethod(this.person, "likesPets", null, boolean.class);
 	}
 
 	@Test
 	public void invokeMethodWithAutoboxingAndUnboxing() {
 		// IntelliJ IDEA 11 won't accept int assignment here
-		Integer difference = invokeMethod(component, "subtract", 5, 2);
+		Integer difference = invokeMethod(this.component, "subtract", 5, 2);
 		assertEquals("subtract(5, 2)", 3, difference.intValue());
 	}
 
@@ -330,96 +330,96 @@ public class ReflectionTestUtilsTests {
 	@Ignore("[SPR-8644] findMethod() does not currently support var-args")
 	public void invokeMethodWithPrimitiveVarArgs() {
 		// IntelliJ IDEA 11 won't accept int assignment here
-		Integer sum = invokeMethod(component, "add", 1, 2, 3, 4);
+		Integer sum = invokeMethod(this.component, "add", 1, 2, 3, 4);
 		assertEquals("add(1,2,3,4)", 10, sum.intValue());
 	}
 
 	@Test
 	public void invokeMethodWithPrimitiveVarArgsAsSingleArgument() {
 		// IntelliJ IDEA 11 won't accept int assignment here
-		Integer sum = invokeMethod(component, "add", new int[] { 1, 2, 3, 4 });
+		Integer sum = invokeMethod(this.component, "add", new int[] { 1, 2, 3, 4 });
 		assertEquals("add(1,2,3,4)", 10, sum.intValue());
 	}
 
 	@Test
 	public void invokeMethodSimulatingLifecycleEvents() {
-		assertNull("number", component.getNumber());
-		assertNull("text", component.getText());
+		assertNull("number", this.component.getNumber());
+		assertNull("text", this.component.getText());
 
 		// Simulate autowiring a configuration method
-		invokeMethod(component, "configure", Integer.valueOf(42), "enigma");
-		assertEquals("number should have been configured", Integer.valueOf(42), component.getNumber());
-		assertEquals("text should have been configured", "enigma", component.getText());
+		invokeMethod(this.component, "configure", Integer.valueOf(42), "enigma");
+		assertEquals("number should have been configured", Integer.valueOf(42), this.component.getNumber());
+		assertEquals("text should have been configured", "enigma", this.component.getText());
 
 		// Simulate @PostConstruct life-cycle event
-		invokeMethod(component, "init");
+		invokeMethod(this.component, "init");
 		// assertions in init() should succeed
 
 		// Simulate @PreDestroy life-cycle event
-		invokeMethod(component, "destroy");
-		assertNull("number", component.getNumber());
-		assertNull("text", component.getText());
+		invokeMethod(this.component, "destroy");
+		assertNull("number", this.component.getNumber());
+		assertNull("text", this.component.getText());
 	}
 
 	@Test
 	public void invokeInitMethodBeforeAutowiring() {
-		exception.expect(IllegalStateException.class);
-		exception.expectMessage(equalTo("number must not be null"));
-		invokeMethod(component, "init");
+		this.exception.expect(IllegalStateException.class);
+		this.exception.expectMessage(equalTo("number must not be null"));
+		invokeMethod(this.component, "init");
 	}
 
 	@Test
 	public void invokeMethodWithIncompatibleArgumentTypes() {
-		exception.expect(IllegalStateException.class);
-		exception.expectMessage(startsWith("Method not found"));
-		invokeMethod(component, "subtract", "foo", 2.0);
+		this.exception.expect(IllegalStateException.class);
+		this.exception.expectMessage(startsWith("Method not found"));
+		invokeMethod(this.component, "subtract", "foo", 2.0);
 	}
 
 	@Test
 	public void invokeMethodWithTooFewArguments() {
-		exception.expect(IllegalStateException.class);
-		exception.expectMessage(startsWith("Method not found"));
-		invokeMethod(component, "configure", Integer.valueOf(42));
+		this.exception.expect(IllegalStateException.class);
+		this.exception.expectMessage(startsWith("Method not found"));
+		invokeMethod(this.component, "configure", Integer.valueOf(42));
 	}
 
 	@Test
 	public void invokeMethodWithTooManyArguments() {
-		exception.expect(IllegalStateException.class);
-		exception.expectMessage(startsWith("Method not found"));
-		invokeMethod(component, "configure", Integer.valueOf(42), "enigma", "baz", "quux");
+		this.exception.expect(IllegalStateException.class);
+		this.exception.expectMessage(startsWith("Method not found"));
+		invokeMethod(this.component, "configure", Integer.valueOf(42), "enigma", "baz", "quux");
 	}
 
 	@Test // SPR-14363
 	public void getFieldOnLegacyEntityWithSideEffectsInToString() {
-		Object collaborator = getField(entity, "collaborator");
+		Object collaborator = getField(this.entity, "collaborator");
 		assertNotNull(collaborator);
 	}
 
 	@Test // SPR-9571 and SPR-14363
 	public void setFieldOnLegacyEntityWithSideEffectsInToString() {
 		String testCollaborator = "test collaborator";
-		setField(entity, "collaborator", testCollaborator, Object.class);
-		assertTrue(entity.toString().contains(testCollaborator));
+		setField(this.entity, "collaborator", testCollaborator, Object.class);
+		assertTrue(this.entity.toString().contains(testCollaborator));
 	}
 
 	@Test // SPR-14363
 	public void invokeMethodOnLegacyEntityWithSideEffectsInToString() {
-		invokeMethod(entity, "configure", Integer.valueOf(42), "enigma");
-		assertEquals("number should have been configured", Integer.valueOf(42), entity.getNumber());
-		assertEquals("text should have been configured", "enigma", entity.getText());
+		invokeMethod(this.entity, "configure", Integer.valueOf(42), "enigma");
+		assertEquals("number should have been configured", Integer.valueOf(42), this.entity.getNumber());
+		assertEquals("text should have been configured", "enigma", this.entity.getText());
 	}
 
 	@Test // SPR-14363
 	public void invokeGetterMethodOnLegacyEntityWithSideEffectsInToString() {
-		Object collaborator = invokeGetterMethod(entity, "collaborator");
+		Object collaborator = invokeGetterMethod(this.entity, "collaborator");
 		assertNotNull(collaborator);
 	}
 
 	@Test // SPR-14363
 	public void invokeSetterMethodOnLegacyEntityWithSideEffectsInToString() {
 		String testCollaborator = "test collaborator";
-		invokeSetterMethod(entity, "collaborator", testCollaborator);
-		assertTrue(entity.toString().contains(testCollaborator));
+		invokeSetterMethod(this.entity, "collaborator", testCollaborator);
+		assertTrue(this.entity.toString().contains(testCollaborator));
 	}
 
 }

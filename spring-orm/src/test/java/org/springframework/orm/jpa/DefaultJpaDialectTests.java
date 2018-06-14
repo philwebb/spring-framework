@@ -43,7 +43,7 @@ public class DefaultJpaDialectTests {
 		definition.setIsolationLevel(TransactionDefinition.ISOLATION_REPEATABLE_READ);
 
 		try {
-			dialect.beginTransaction(null, definition);
+			this.dialect.beginTransaction(null, definition);
 			fail("expected exception");
 		}
 		catch (TransactionException ex) {
@@ -59,7 +59,7 @@ public class DefaultJpaDialectTests {
 
 		given(entityManager.getTransaction()).willReturn(entityTx);
 
-		dialect.beginTransaction(entityManager, definition);
+		this.dialect.beginTransaction(entityManager, definition);
 	}
 
 	@Test
@@ -67,6 +67,6 @@ public class DefaultJpaDialectTests {
 		OptimisticLockException ex = new OptimisticLockException();
 		assertEquals(
 				EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(ex).getCause(),
-				dialect.translateExceptionIfPossible(ex).getCause());
+				this.dialect.translateExceptionIfPossible(ex).getCause());
 	}
 }

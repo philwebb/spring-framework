@@ -74,10 +74,10 @@ public class SourceHttpMessageConverterTests {
 
 	@Before
 	public void setUp() throws IOException {
-		converter = new SourceHttpMessageConverter<>();
+		this.converter = new SourceHttpMessageConverter<>();
 		Resource external = new ClassPathResource("external.txt", getClass());
 
-		bodyExternal = "<!DOCTYPE root SYSTEM \"http://192.168.28.42/1.jsp\" [" +
+		this.bodyExternal = "<!DOCTYPE root SYSTEM \"http://192.168.28.42/1.jsp\" [" +
 				"  <!ELEMENT root ANY >\n" +
 				"  <!ENTITY ext SYSTEM \"" + external.getURI() + "\" >]><root>&ext;</root>";
 	}
@@ -85,32 +85,32 @@ public class SourceHttpMessageConverterTests {
 
 	@Test
 	public void canRead() {
-		assertTrue(converter.canRead(Source.class, new MediaType("application", "xml")));
-		assertTrue(converter.canRead(Source.class, new MediaType("application", "soap+xml")));
+		assertTrue(this.converter.canRead(Source.class, new MediaType("application", "xml")));
+		assertTrue(this.converter.canRead(Source.class, new MediaType("application", "soap+xml")));
 	}
 
 	@Test
 	public void canWrite() {
-		assertTrue(converter.canWrite(Source.class, new MediaType("application", "xml")));
-		assertTrue(converter.canWrite(Source.class, new MediaType("application", "soap+xml")));
-		assertTrue(converter.canWrite(Source.class, MediaType.ALL));
+		assertTrue(this.converter.canWrite(Source.class, new MediaType("application", "xml")));
+		assertTrue(this.converter.canWrite(Source.class, new MediaType("application", "soap+xml")));
+		assertTrue(this.converter.canWrite(Source.class, MediaType.ALL));
 	}
 
 	@Test
 	public void readDOMSource() throws Exception {
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(BODY.getBytes("UTF-8"));
 		inputMessage.getHeaders().setContentType(new MediaType("application", "xml"));
-		DOMSource result = (DOMSource) converter.read(DOMSource.class, inputMessage);
+		DOMSource result = (DOMSource) this.converter.read(DOMSource.class, inputMessage);
 		Document document = (Document) result.getNode();
 		assertEquals("Invalid result", "root", document.getDocumentElement().getLocalName());
 	}
 
 	@Test
 	public void readDOMSourceExternal() throws Exception {
-		MockHttpInputMessage inputMessage = new MockHttpInputMessage(bodyExternal.getBytes("UTF-8"));
+		MockHttpInputMessage inputMessage = new MockHttpInputMessage(this.bodyExternal.getBytes("UTF-8"));
 		inputMessage.getHeaders().setContentType(new MediaType("application", "xml"));
-		converter.setSupportDtd(true);
-		DOMSource result = (DOMSource) converter.read(DOMSource.class, inputMessage);
+		this.converter.setSupportDtd(true);
+		DOMSource result = (DOMSource) this.converter.read(DOMSource.class, inputMessage);
 		Document document = (Document) result.getNode();
 		assertEquals("Invalid result", "root", document.getDocumentElement().getLocalName());
 		assertNotEquals("Invalid result", "Foo Bar", document.getDocumentElement().getTextContent());
@@ -147,7 +147,7 @@ public class SourceHttpMessageConverterTests {
 	public void readSAXSource() throws Exception {
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(BODY.getBytes("UTF-8"));
 		inputMessage.getHeaders().setContentType(new MediaType("application", "xml"));
-		SAXSource result = (SAXSource) converter.read(SAXSource.class, inputMessage);
+		SAXSource result = (SAXSource) this.converter.read(SAXSource.class, inputMessage);
 		InputSource inputSource = result.getInputSource();
 		String s = FileCopyUtils.copyToString(new InputStreamReader(inputSource.getByteStream()));
 		assertThat("Invalid result", s, isSimilarTo(BODY));
@@ -155,10 +155,10 @@ public class SourceHttpMessageConverterTests {
 
 	@Test
 	public void readSAXSourceExternal() throws Exception {
-		MockHttpInputMessage inputMessage = new MockHttpInputMessage(bodyExternal.getBytes("UTF-8"));
+		MockHttpInputMessage inputMessage = new MockHttpInputMessage(this.bodyExternal.getBytes("UTF-8"));
 		inputMessage.getHeaders().setContentType(new MediaType("application", "xml"));
-		converter.setSupportDtd(true);
-		SAXSource result = (SAXSource) converter.read(SAXSource.class, inputMessage);
+		this.converter.setSupportDtd(true);
+		SAXSource result = (SAXSource) this.converter.read(SAXSource.class, inputMessage);
 		InputSource inputSource = result.getInputSource();
 		XMLReader reader = result.getXMLReader();
 		reader.setContentHandler(new DefaultHandler() {
@@ -206,7 +206,7 @@ public class SourceHttpMessageConverterTests {
 	public void readStAXSource() throws Exception {
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(BODY.getBytes("UTF-8"));
 		inputMessage.getHeaders().setContentType(new MediaType("application", "xml"));
-		StAXSource result = (StAXSource) converter.read(StAXSource.class, inputMessage);
+		StAXSource result = (StAXSource) this.converter.read(StAXSource.class, inputMessage);
 		XMLStreamReader streamReader = result.getXMLStreamReader();
 		assertTrue(streamReader.hasNext());
 		streamReader.nextTag();
@@ -219,10 +219,10 @@ public class SourceHttpMessageConverterTests {
 
 	@Test
 	public void readStAXSourceExternal() throws Exception {
-		MockHttpInputMessage inputMessage = new MockHttpInputMessage(bodyExternal.getBytes("UTF-8"));
+		MockHttpInputMessage inputMessage = new MockHttpInputMessage(this.bodyExternal.getBytes("UTF-8"));
 		inputMessage.getHeaders().setContentType(new MediaType("application", "xml"));
-		converter.setSupportDtd(true);
-		StAXSource result = (StAXSource) converter.read(StAXSource.class, inputMessage);
+		this.converter.setSupportDtd(true);
+		StAXSource result = (StAXSource) this.converter.read(StAXSource.class, inputMessage);
 		XMLStreamReader streamReader = result.getXMLStreamReader();
 		assertTrue(streamReader.hasNext());
 		streamReader.next();
@@ -276,7 +276,7 @@ public class SourceHttpMessageConverterTests {
 	public void readStreamSource() throws Exception {
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(BODY.getBytes("UTF-8"));
 		inputMessage.getHeaders().setContentType(new MediaType("application", "xml"));
-		StreamSource result = (StreamSource) converter.read(StreamSource.class, inputMessage);
+		StreamSource result = (StreamSource) this.converter.read(StreamSource.class, inputMessage);
 		String s = FileCopyUtils.copyToString(new InputStreamReader(result.getInputStream()));
 		assertThat("Invalid result", s, isSimilarTo(BODY));
 	}
@@ -285,7 +285,7 @@ public class SourceHttpMessageConverterTests {
 	public void readSource() throws Exception {
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(BODY.getBytes("UTF-8"));
 		inputMessage.getHeaders().setContentType(new MediaType("application", "xml"));
-		converter.read(Source.class, inputMessage);
+		this.converter.read(Source.class, inputMessage);
 	}
 
 	@Test
@@ -299,7 +299,7 @@ public class SourceHttpMessageConverterTests {
 		DOMSource domSource = new DOMSource(document);
 
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
-		converter.write(domSource, null, outputMessage);
+		this.converter.write(domSource, null, outputMessage);
 		assertThat("Invalid result", outputMessage.getBodyAsString(StandardCharsets.UTF_8),
 				isSimilarTo("<root>Hello World</root>"));
 		assertEquals("Invalid content-type", new MediaType("application", "xml"),
@@ -314,7 +314,7 @@ public class SourceHttpMessageConverterTests {
 		SAXSource saxSource = new SAXSource(new InputSource(new StringReader(xml)));
 
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
-		converter.write(saxSource, null, outputMessage);
+		this.converter.write(saxSource, null, outputMessage);
 		assertThat("Invalid result", outputMessage.getBodyAsString(StandardCharsets.UTF_8),
 				isSimilarTo("<root>Hello World</root>"));
 		assertEquals("Invalid content-type", new MediaType("application", "xml"),
@@ -327,7 +327,7 @@ public class SourceHttpMessageConverterTests {
 		StreamSource streamSource = new StreamSource(new StringReader(xml));
 
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
-		converter.write(streamSource, null, outputMessage);
+		this.converter.write(streamSource, null, outputMessage);
 		assertThat("Invalid result", outputMessage.getBodyAsString(StandardCharsets.UTF_8),
 				isSimilarTo("<root>Hello World</root>"));
 		assertEquals("Invalid content-type", new MediaType("application", "xml"),

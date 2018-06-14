@@ -198,7 +198,7 @@ public class SimpleMessageListenerContainer extends AbstractMessageListenerConta
 				establishSharedConnection();
 			}
 			catch (JMSException ex) {
-				logger.debug("Could not connect on initialization - registering message consumers lazily", ex);
+				this.logger.debug("Could not connect on initialization - registering message consumers lazily", ex);
 				return;
 			}
 			initializeConsumers();
@@ -236,8 +236,8 @@ public class SimpleMessageListenerContainer extends AbstractMessageListenerConta
 		invokeExceptionListener(ex);
 
 		// Now try to recover the shared Connection and all consumers...
-		if (logger.isInfoEnabled()) {
-			logger.info("Trying to recover from JMS Connection exception: " + ex);
+		if (this.logger.isInfoEnabled()) {
+			this.logger.info("Trying to recover from JMS Connection exception: " + ex);
 		}
 		try {
 			synchronized (this.consumersMonitor) {
@@ -246,11 +246,11 @@ public class SimpleMessageListenerContainer extends AbstractMessageListenerConta
 			}
 			refreshSharedConnection();
 			initializeConsumers();
-			logger.info("Successfully refreshed JMS Connection");
+			this.logger.info("Successfully refreshed JMS Connection");
 		}
 		catch (JMSException recoverEx) {
-			logger.debug("Failed to recover JMS Connection", recoverEx);
-			logger.error("Encountered non-recoverable JMSException", ex);
+			this.logger.debug("Failed to recover JMS Connection", recoverEx);
+			this.logger.error("Encountered non-recoverable JMSException", ex);
 		}
 	}
 
@@ -293,7 +293,7 @@ public class SimpleMessageListenerContainer extends AbstractMessageListenerConta
 		MessageConsumer consumer = createConsumer(session, destination);
 
 		if (this.taskExecutor != null) {
-			consumer.setMessageListener(message -> taskExecutor.execute(() -> processMessage(message, session)));
+			consumer.setMessageListener(message -> this.taskExecutor.execute(() -> processMessage(message, session)));
 		}
 		else {
 			consumer.setMessageListener(message -> processMessage(message, session));
@@ -335,12 +335,12 @@ public class SimpleMessageListenerContainer extends AbstractMessageListenerConta
 	protected void doShutdown() throws JMSException {
 		synchronized (this.consumersMonitor) {
 			if (this.consumers != null) {
-				logger.debug("Closing JMS MessageConsumers");
+				this.logger.debug("Closing JMS MessageConsumers");
 				for (MessageConsumer consumer : this.consumers) {
 					JmsUtils.closeMessageConsumer(consumer);
 				}
 				if (this.sessions != null) {
-					logger.debug("Closing JMS Sessions");
+					this.logger.debug("Closing JMS Sessions");
 					for (Session session : this.sessions) {
 						JmsUtils.closeSession(session);
 					}

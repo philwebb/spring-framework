@@ -111,27 +111,27 @@ public class PathResourceResolver extends AbstractResourceResolver {
 			Resource resource = location.createRelative(resourcePath);
 			if (resource.isReadable()) {
 				if (checkResource(resource, location)) {
-					if (logger.isTraceEnabled()) {
-						logger.trace("Found match: " + resource);
+					if (this.logger.isTraceEnabled()) {
+						this.logger.trace("Found match: " + resource);
 					}
 					return Mono.just(resource);
 				}
-				else if (logger.isTraceEnabled()) {
+				else if (this.logger.isTraceEnabled()) {
 					Resource[] allowedLocations = getAllowedLocations();
-					logger.trace("Resource path \"" + resourcePath + "\" was successfully resolved " +
+					this.logger.trace("Resource path \"" + resourcePath + "\" was successfully resolved " +
 							"but resource \"" + resource.getURL() + "\" is neither under the " +
 							"current location \"" + location.getURL() + "\" nor under any of the " +
 							"allowed locations " + (allowedLocations != null ? Arrays.asList(allowedLocations) : "[]"));
 				}
 			}
-			else if (logger.isTraceEnabled()) {
-				logger.trace("No match for location: " + location);
+			else if (this.logger.isTraceEnabled()) {
+				this.logger.trace("No match for location: " + location);
 			}
 			return Mono.empty();
 		}
 		catch (IOException ex) {
-			if (logger.isTraceEnabled()) {
-				logger.trace("Failure checking for relative resource under location + " + location, ex);
+			if (this.logger.isTraceEnabled()) {
+				this.logger.trace("Failure checking for relative resource under location + " + location, ex);
 			}
 			return Mono.error(ex);
 		}
@@ -194,8 +194,8 @@ public class PathResourceResolver extends AbstractResourceResolver {
 			try {
 				String decodedPath = URLDecoder.decode(resourcePath, "UTF-8");
 				if (decodedPath.contains("../") || decodedPath.contains("..\\")) {
-					if (logger.isTraceEnabled()) {
-						logger.trace("Resolved resource path contains encoded \"../\" or \"..\\\": " + resourcePath);
+					if (this.logger.isTraceEnabled()) {
+						this.logger.trace("Resolved resource path contains encoded \"../\" or \"..\\\": " + resourcePath);
 					}
 					return true;
 				}

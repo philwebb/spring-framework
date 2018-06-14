@@ -66,8 +66,8 @@ class CacheRemoveEntryInterceptor extends AbstractKeyCacheInterceptor<CacheRemov
 	private void removeValue(CacheOperationInvocationContext<CacheRemoveOperation> context) {
 		Object key = generateKey(context);
 		Cache cache = resolveCache(context);
-		if (logger.isTraceEnabled()) {
-			logger.trace("Invalidating key [" + key + "] on cache '" + cache.getName()
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Invalidating key [" + key + "] on cache '" + cache.getName()
 					+ "' for operation " + context.getOperation());
 		}
 		doEvict(cache, key);

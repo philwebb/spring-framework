@@ -43,17 +43,17 @@ public class ListTests extends AbstractExpressionTests {
 
 	@Test
 	public void testInlineListCreation01() {
-		evaluate("{1, 2, 3, 4, 5}", "[1, 2, 3, 4, 5]", unmodifiableClass);
+		evaluate("{1, 2, 3, 4, 5}", "[1, 2, 3, 4, 5]", this.unmodifiableClass);
 	}
 
 	@Test
 	public void testInlineListCreation02() {
-		evaluate("{'abc', 'xyz'}", "[abc, xyz]", unmodifiableClass);
+		evaluate("{'abc', 'xyz'}", "[abc, xyz]", this.unmodifiableClass);
 	}
 
 	@Test
 	public void testInlineListCreation03() {
-		evaluate("{}", "[]", unmodifiableClass);
+		evaluate("{}", "[]", this.unmodifiableClass);
 	}
 
 	@Test
@@ -63,8 +63,8 @@ public class ListTests extends AbstractExpressionTests {
 
 	@Test
 	public void testInlineListAndNesting() {
-		evaluate("{{1,2,3},{4,5,6}}", "[[1, 2, 3], [4, 5, 6]]", unmodifiableClass);
-		evaluate("{{1,'2',3},{4,{'a','b'},5,6}}", "[[1, 2, 3], [4, [a, b], 5, 6]]", unmodifiableClass);
+		evaluate("{{1,2,3},{4,5,6}}", "[[1, 2, 3], [4, 5, 6]]", this.unmodifiableClass);
+		evaluate("{{1,'2',3},{4,{'a','b'},5,6}}", "[[1, 2, 3], [4, [a, b], 5, 6]]", this.unmodifiableClass);
 	}
 
 	@Test
@@ -158,6 +158,6 @@ public class ListTests extends AbstractExpressionTests {
 	@Test(expected = UnsupportedOperationException.class)
 	public void testInlineListWriting() {
 		// list should be unmodifiable
-		evaluate("{1, 2, 3, 4, 5}[0]=6", "[1, 2, 3, 4, 5]", unmodifiableClass);
+		evaluate("{1, 2, 3, 4, 5}[0]=6", "[1, 2, 3, 4, 5]", this.unmodifiableClass);
 	}
 }

@@ -411,8 +411,8 @@ public abstract class AbstractEntityManagerFactoryBean implements
 			jpaVendorAdapter.postProcessEntityManagerFactory(emf);
 		}
 
-		if (logger.isInfoEnabled()) {
-			logger.info("Initialized JPA EntityManagerFactory for persistence unit '" + getPersistenceUnitName() + "'");
+		if (this.logger.isInfoEnabled()) {
+			this.logger.info("Initialized JPA EntityManagerFactory for persistence unit '" + getPersistenceUnitName() + "'");
 		}
 		return emf;
 	}
@@ -593,8 +593,8 @@ public abstract class AbstractEntityManagerFactoryBean implements
 	@Override
 	public void destroy() {
 		if (this.entityManagerFactory != null) {
-			if (logger.isInfoEnabled()) {
-				logger.info("Closing JPA EntityManagerFactory for persistence unit '" + getPersistenceUnitName() + "'");
+			if (this.logger.isInfoEnabled()) {
+				this.logger.info("Closing JPA EntityManagerFactory for persistence unit '" + getPersistenceUnitName() + "'");
 			}
 			this.entityManagerFactory.close();
 		}

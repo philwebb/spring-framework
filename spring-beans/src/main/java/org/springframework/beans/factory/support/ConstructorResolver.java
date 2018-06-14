@@ -198,8 +198,8 @@ class ConstructorResolver {
 								getUserDeclaredConstructor(candidate), autowiring);
 					}
 					catch (UnsatisfiedDependencyException ex) {
-						if (logger.isTraceEnabled()) {
-							logger.trace("Ignoring constructor [" + candidate + "] of bean '" + beanName + "': " + ex);
+						if (this.logger.isTraceEnabled()) {
+							this.logger.trace("Ignoring constructor [" + candidate + "] of bean '" + beanName + "': " + ex);
 						}
 						// Swallow and try next constructor.
 						if (causes == null) {
@@ -261,15 +261,15 @@ class ConstructorResolver {
 		}
 
 		try {
-			final InstantiationStrategy strategy = beanFactory.getInstantiationStrategy();
+			final InstantiationStrategy strategy = this.beanFactory.getInstantiationStrategy();
 			Object beanInstance;
 
 			if (System.getSecurityManager() != null) {
 				final Constructor<?> ctorToUse = constructorToUse;
 				final Object[] argumentsToUse = argsToUse;
 				beanInstance = AccessController.doPrivileged((PrivilegedAction<Object>) () ->
-						strategy.instantiate(mbd, beanName, beanFactory, ctorToUse, argumentsToUse),
-						beanFactory.getAccessControlContext());
+						strategy.instantiate(mbd, beanName, this.beanFactory, ctorToUse, argumentsToUse),
+						this.beanFactory.getAccessControlContext());
 			}
 			else {
 				beanInstance = strategy.instantiate(mbd, beanName, this.beanFactory, constructorToUse, argsToUse);
@@ -475,8 +475,8 @@ class ConstructorResolver {
 									beanName, mbd, resolvedValues, bw, paramTypes, paramNames, candidate, autowiring);
 						}
 						catch (UnsatisfiedDependencyException ex) {
-							if (logger.isTraceEnabled()) {
-								logger.trace("Ignoring factory method [" + candidate + "] of bean '" + beanName + "': " + ex);
+							if (this.logger.isTraceEnabled()) {
+								this.logger.trace("Ignoring factory method [" + candidate + "] of bean '" + beanName + "': " + ex);
 							}
 							// Swallow and try next overloaded factory method.
 							if (causes == null) {
@@ -575,8 +575,8 @@ class ConstructorResolver {
 				final Method factoryMethod = factoryMethodToUse;
 				final Object[] args = argsToUse;
 				beanInstance = AccessController.doPrivileged((PrivilegedAction<Object>) () ->
-						beanFactory.getInstantiationStrategy().instantiate(mbd, beanName, beanFactory, fb, factoryMethod, args),
-						beanFactory.getAccessControlContext());
+						this.beanFactory.getInstantiationStrategy().instantiate(mbd, beanName, this.beanFactory, fb, factoryMethod, args),
+						this.beanFactory.getAccessControlContext());
 			}
 			else {
 				beanInstance = this.beanFactory.getInstantiationStrategy().instantiate(
@@ -736,8 +736,8 @@ class ConstructorResolver {
 
 		for (String autowiredBeanName : autowiredBeanNames) {
 			this.beanFactory.registerDependentBean(autowiredBeanName, beanName);
-			if (logger.isDebugEnabled()) {
-				logger.debug("Autowiring by type from bean name '" + beanName +
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Autowiring by type from bean name '" + beanName +
 						"' via " + (executable instanceof Constructor ? "constructor" : "factory method") +
 						" to bean named '" + autowiredBeanName + "'");
 			}

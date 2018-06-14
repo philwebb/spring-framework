@@ -143,7 +143,7 @@ public class DefaultSockJsServiceTests extends AbstractHttpRequestTests {
 
 		assertEquals(200, this.servletResponse.getStatus());
 		verify(this.xhrHandler).handleRequest(this.request, this.response, this.wsHandler, this.session);
-		verify(taskScheduler).scheduleAtFixedRate(any(Runnable.class), eq(service.getDisconnectDelay()));
+		verify(this.taskScheduler).scheduleAtFixedRate(any(Runnable.class), eq(this.service.getDisconnectDelay()));
 
 		assertEquals("no-store, no-cache, must-revalidate, max-age=0", this.response.getHeaders().getCacheControl());
 		assertNull(this.servletResponse.getHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));

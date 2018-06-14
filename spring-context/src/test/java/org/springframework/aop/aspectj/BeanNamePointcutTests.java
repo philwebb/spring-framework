@@ -56,18 +56,18 @@ public class BeanNamePointcutTests {
 
 	@Before
 	public void setUp() {
-		ctx = new ClassPathXmlApplicationContext(getClass().getSimpleName() + ".xml", getClass());
-		testBean1 = (ITestBean) ctx.getBean("testBean1");
-		testBean2 = (ITestBean) ctx.getBean("testBean2");
-		testBeanContainingNestedBean = (ITestBean) ctx.getBean("testBeanContainingNestedBean");
-		testFactoryBean1 = (Map<?, ?>) ctx.getBean("testFactoryBean1");
-		testFactoryBean2 = (Map<?, ?>) ctx.getBean("testFactoryBean2");
-		counterAspect = (Counter) ctx.getBean("counterAspect");
-		interceptThis = (ITestBean) ctx.getBean("interceptThis");
-		dontInterceptThis = (ITestBean) ctx.getBean("dontInterceptThis");
-		testInterceptor = (TestInterceptor) ctx.getBean("testInterceptor");
+		this.ctx = new ClassPathXmlApplicationContext(getClass().getSimpleName() + ".xml", getClass());
+		this.testBean1 = (ITestBean) this.ctx.getBean("testBean1");
+		this.testBean2 = (ITestBean) this.ctx.getBean("testBean2");
+		this.testBeanContainingNestedBean = (ITestBean) this.ctx.getBean("testBeanContainingNestedBean");
+		this.testFactoryBean1 = (Map<?, ?>) this.ctx.getBean("testFactoryBean1");
+		this.testFactoryBean2 = (Map<?, ?>) this.ctx.getBean("testFactoryBean2");
+		this.counterAspect = (Counter) this.ctx.getBean("counterAspect");
+		this.interceptThis = (ITestBean) this.ctx.getBean("interceptThis");
+		this.dontInterceptThis = (ITestBean) this.ctx.getBean("dontInterceptThis");
+		this.testInterceptor = (TestInterceptor) this.ctx.getBean("testInterceptor");
 
-		counterAspect.reset();
+		this.counterAspect.reset();
 	}
 
 
@@ -100,14 +100,14 @@ public class BeanNamePointcutTests {
 		assertEquals("myValue", this.testFactoryBean1.get("myKey"));
 		assertEquals("myValue", this.testFactoryBean1.get("myKey"));
 		assertEquals("Advice not executed: must have been", 2, this.counterAspect.getCount());
-		FactoryBean<?> fb = (FactoryBean<?>) ctx.getBean("&testFactoryBean1");
+		FactoryBean<?> fb = (FactoryBean<?>) this.ctx.getBean("&testFactoryBean1");
 		assertTrue("FactoryBean itself must *not* be advised", !(fb instanceof Advised));
 	}
 
 	@Test
 	public void testMatchingFactoryBeanItself() {
 		assertTrue("Matching bean must *not* be advised (proxied)", !(this.testFactoryBean2 instanceof Advised));
-		FactoryBean<?> fb = (FactoryBean<?>) ctx.getBean("&testFactoryBean2");
+		FactoryBean<?> fb = (FactoryBean<?>) this.ctx.getBean("&testFactoryBean2");
 		assertTrue("FactoryBean itself must be advised", fb instanceof Advised);
 		assertTrue(Map.class.isAssignableFrom(fb.getObjectType()));
 		assertTrue(Map.class.isAssignableFrom(fb.getObjectType()));
@@ -118,10 +118,10 @@ public class BeanNamePointcutTests {
 	public void testPointcutAdvisorCombination() {
 		assertTrue("Matching bean must be advised (proxied)", this.interceptThis instanceof Advised);
 		assertFalse("Non-matching bean must *not* be advised (proxied)", this.dontInterceptThis instanceof Advised);
-		interceptThis.setAge(20);
-		assertEquals(1, testInterceptor.interceptionCount);
-		dontInterceptThis.setAge(20);
-		assertEquals(1, testInterceptor.interceptionCount);
+		this.interceptThis.setAge(20);
+		assertEquals(1, this.testInterceptor.interceptionCount);
+		this.dontInterceptThis.setAge(20);
+		assertEquals(1, this.testInterceptor.interceptionCount);
 	}
 
 
@@ -131,7 +131,7 @@ public class BeanNamePointcutTests {
 
 		@Override
 		public void before(Method method, Object[] args, @Nullable Object target) throws Throwable {
-			interceptionCount++;
+			this.interceptionCount++;
 		}
 	}
 

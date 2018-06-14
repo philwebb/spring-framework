@@ -50,7 +50,7 @@ class NestedTestsWithSpringAndJUnitJupiterTests {
 
 	@Test
 	void topLevelTest() {
-		assertEquals("foo", foo);
+		assertEquals("foo", this.foo);
 	}
 
 
@@ -67,8 +67,8 @@ class NestedTestsWithSpringAndJUnitJupiterTests {
 			// In contrast to nested test classes running in JUnit 4, the foo
 			// field in the outer instance should have been injected from the
 			// test ApplicationContext for the outer instance.
-			assertEquals("foo", foo);
-			assertEquals("bar", bar);
+			assertEquals("foo", NestedTestsWithSpringAndJUnitJupiterTests.this.foo);
+			assertEquals("bar", this.bar);
 		}
 	}
 

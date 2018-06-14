@@ -52,8 +52,8 @@ public class Component {
 
 	@PostConstruct
 	protected void init() {
-		Assert.state(number != null, "number must not be null");
-		Assert.state(StringUtils.hasText(text), "text must not be empty");
+		Assert.state(this.number != null, "number must not be null");
+		Assert.state(StringUtils.hasText(this.text), "text must not be empty");
 	}
 
 	@PreDestroy

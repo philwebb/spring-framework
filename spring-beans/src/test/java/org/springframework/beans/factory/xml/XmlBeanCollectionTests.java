@@ -455,7 +455,7 @@ public class XmlBeanCollectionTests {
 		}
 
 		public Object getObject() {
-			return obj;
+			return this.obj;
 		}
 	}
 

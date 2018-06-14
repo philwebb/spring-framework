@@ -78,7 +78,7 @@ public class InProgressTests extends AbstractExpressionTests {
 
 	@Test
 	public void testProjection06() throws Exception {
-		SpelExpression expr = (SpelExpression) parser.parseExpression("'abc'.![true]");
+		SpelExpression expr = (SpelExpression) this.parser.parseExpression("'abc'.![true]");
 		assertEquals("'abc'.![true]", expr.toStringAST());
 	}
 
@@ -141,11 +141,11 @@ public class InProgressTests extends AbstractExpressionTests {
 
 	@Test
 	public void testSelectionAST() throws Exception {
-		SpelExpression expr = (SpelExpression) parser.parseExpression("'abc'.^[true]");
+		SpelExpression expr = (SpelExpression) this.parser.parseExpression("'abc'.^[true]");
 		assertEquals("'abc'.^[true]", expr.toStringAST());
-		expr = (SpelExpression) parser.parseExpression("'abc'.?[true]");
+		expr = (SpelExpression) this.parser.parseExpression("'abc'.?[true]");
 		assertEquals("'abc'.?[true]", expr.toStringAST());
-		expr = (SpelExpression) parser.parseExpression("'abc'.$[true]");
+		expr = (SpelExpression) this.parser.parseExpression("'abc'.$[true]");
 		assertEquals("'abc'.$[true]", expr.toStringAST());
 	}
 

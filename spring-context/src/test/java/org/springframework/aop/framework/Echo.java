@@ -35,7 +35,7 @@ public class Echo implements IEcho {
 
 	@Override
 	public int getA() {
-		return a;
+		return this.a;
 	}
 
 }

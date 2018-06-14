@@ -65,7 +65,7 @@ public class DispatcherWacRootWacEarTests extends RootWacEarTests {
 
 	@Test
 	public void verifyDispatcherWacConfig() {
-		ApplicationContext parent = wac.getParent();
+		ApplicationContext parent = this.wac.getParent();
 		assertNotNull(parent);
 		assertTrue(parent instanceof WebApplicationContext);
 
@@ -73,7 +73,7 @@ public class DispatcherWacRootWacEarTests extends RootWacEarTests {
 		assertNotNull(grandParent);
 		assertFalse(grandParent instanceof WebApplicationContext);
 
-		ServletContext dispatcherServletContext = wac.getServletContext();
+		ServletContext dispatcherServletContext = this.wac.getServletContext();
 		assertNotNull(dispatcherServletContext);
 		ServletContext rootServletContext = ((WebApplicationContext) parent).getServletContext();
 		assertNotNull(rootServletContext);
@@ -84,9 +84,9 @@ public class DispatcherWacRootWacEarTests extends RootWacEarTests {
 		assertSame(parent,
 			dispatcherServletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE));
 
-		assertEquals("ear", ear);
-		assertEquals("root", root);
-		assertEquals("dispatcher", dispatcher);
+		assertEquals("ear", this.ear);
+		assertEquals("root", this.root);
+		assertEquals("dispatcher", this.dispatcher);
 	}
 
 }

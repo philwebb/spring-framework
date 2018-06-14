@@ -216,7 +216,7 @@ public class ChannelInterceptorTests {
 		@Override
 		public Message<?> preSend(Message<?> message, MessageChannel channel) {
 			assertNotNull(message);
-			counter.incrementAndGet();
+			this.counter.incrementAndGet();
 			return message;
 		}
 

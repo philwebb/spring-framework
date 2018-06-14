@@ -42,6 +42,6 @@ public class MetaMetaConfigDefaultsTests {
 
 	@Test
 	public void foo() {
-		assertEquals("Production Foo", foo);
+		assertEquals("Production Foo", this.foo);
 	}
 }

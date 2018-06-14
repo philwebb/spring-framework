@@ -53,7 +53,7 @@ class TestTransactionManager extends AbstractPlatformTransactionManager {
 
 	@Override
 	protected boolean isExistingTransaction(Object transaction) {
-		return existingTransaction;
+		return this.existingTransaction;
 	}
 
 	@Override

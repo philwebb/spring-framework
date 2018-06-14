@@ -58,7 +58,7 @@ public class DefaultServerRequestBuilderTests {
 
 		Flux<DataBuffer> body = Flux.just("baz")
 				.map(s -> s.getBytes(StandardCharsets.UTF_8))
-				.map(dataBufferFactory::wrap);
+				.map(this.dataBufferFactory::wrap);
 
 		ServerRequest result = ServerRequest.from(other)
 				.method(HttpMethod.HEAD)

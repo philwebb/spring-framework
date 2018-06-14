@@ -72,7 +72,7 @@ public abstract class AbstractWebSocketIntegrationTests {
 
 	@Before
 	public void setup() throws Exception {
-		logger.debug("Setting up '" + this.testName.getMethodName() + "', client=" +
+		this.logger.debug("Setting up '" + this.testName.getMethodName() + "', client=" +
 				this.webSocketClient.getClass().getSimpleName() + ", server=" +
 				this.server.getClass().getSimpleName());
 
@@ -102,25 +102,25 @@ public abstract class AbstractWebSocketIntegrationTests {
 			}
 		}
 		catch (Throwable t) {
-			logger.error("Failed to stop WebSocket client", t);
+			this.logger.error("Failed to stop WebSocket client", t);
 		}
 		try {
 			this.server.undeployConfig();
 		}
 		catch (Throwable t) {
-			logger.error("Failed to undeploy application config", t);
+			this.logger.error("Failed to undeploy application config", t);
 		}
 		try {
 			this.server.stop();
 		}
 		catch (Throwable t) {
-			logger.error("Failed to stop server", t);
+			this.logger.error("Failed to stop server", t);
 		}
 		try {
 			this.wac.close();
 		}
 		catch (Throwable t) {
-			logger.error("Failed to close WebApplicationContext", t);
+			this.logger.error("Failed to close WebApplicationContext", t);
 		}
 	}
 

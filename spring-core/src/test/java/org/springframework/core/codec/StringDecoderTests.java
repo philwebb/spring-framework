@@ -120,7 +120,7 @@ public class StringDecoderTests extends AbstractDataBufferAllocatingTestCase {
 	@Test
 	public void decodeNewLineIncludeDelimiters() {
 
-		decoder = StringDecoder.allMimeTypes(StringDecoder.DEFAULT_DELIMITERS, false);
+		this.decoder = StringDecoder.allMimeTypes(StringDecoder.DEFAULT_DELIMITERS, false);
 
 		Flux<DataBuffer> source = Flux.just(
 				stringBuffer("\r\nabc\n"),

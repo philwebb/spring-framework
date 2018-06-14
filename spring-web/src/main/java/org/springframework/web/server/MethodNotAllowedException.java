@@ -66,6 +66,6 @@ public class MethodNotAllowedException extends ResponseStatusException {
 	 * Return the list of supported HTTP methods.
 	 */
 	public Set<HttpMethod> getSupportedMethods() {
-		return supportedMethods;
+		return this.supportedMethods;
 	}
 }

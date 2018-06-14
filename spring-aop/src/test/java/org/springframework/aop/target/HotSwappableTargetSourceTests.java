@@ -69,27 +69,27 @@ public class HotSwappableTargetSourceTests {
 	 */
 	@Test
 	public void testBasicFunctionality() {
-		SideEffectBean proxied = (SideEffectBean) beanFactory.getBean("swappable");
+		SideEffectBean proxied = (SideEffectBean) this.beanFactory.getBean("swappable");
 		assertEquals(INITIAL_COUNT, proxied.getCount());
 		proxied.doWork();
 		assertEquals(INITIAL_COUNT + 1, proxied.getCount());
 
-		proxied = (SideEffectBean) beanFactory.getBean("swappable");
+		proxied = (SideEffectBean) this.beanFactory.getBean("swappable");
 		proxied.doWork();
 		assertEquals(INITIAL_COUNT + 2, proxied.getCount());
 	}
 
 	@Test
 	public void testValidSwaps() {
-		SideEffectBean target1 = (SideEffectBean) beanFactory.getBean("target1");
-		SideEffectBean target2 = (SideEffectBean) beanFactory.getBean("target2");
+		SideEffectBean target1 = (SideEffectBean) this.beanFactory.getBean("target1");
+		SideEffectBean target2 = (SideEffectBean) this.beanFactory.getBean("target2");
 
-		SideEffectBean proxied = (SideEffectBean) beanFactory.getBean("swappable");
+		SideEffectBean proxied = (SideEffectBean) this.beanFactory.getBean("swappable");
 		assertEquals(target1.getCount(), proxied.getCount());
 		proxied.doWork();
 		assertEquals(INITIAL_COUNT + 1, proxied.getCount());
 
-		HotSwappableTargetSource swapper = (HotSwappableTargetSource) beanFactory.getBean("swapper");
+		HotSwappableTargetSource swapper = (HotSwappableTargetSource) this.beanFactory.getBean("swapper");
 		Object old = swapper.swap(target2);
 		assertEquals("Correct old target was returned", target1, old);
 
@@ -113,7 +113,7 @@ public class HotSwappableTargetSourceTests {
 	 * @return the message
 	 */
 	private IllegalArgumentException testRejectsSwapToInvalidValue(Object invalid) {
-		HotSwappableTargetSource swapper = (HotSwappableTargetSource) beanFactory.getBean("swapper");
+		HotSwappableTargetSource swapper = (HotSwappableTargetSource) this.beanFactory.getBean("swapper");
 		IllegalArgumentException aopex = null;
 		try {
 			swapper.swap(invalid);

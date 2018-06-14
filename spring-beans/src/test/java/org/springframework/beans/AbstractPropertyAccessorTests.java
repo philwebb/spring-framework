@@ -125,7 +125,7 @@ public abstract class AbstractPropertyAccessorTests {
 	public void isReadablePropertyNull() {
 		AbstractPropertyAccessor accessor = createAccessor(new NoRead());
 
-		thrown.expect(IllegalArgumentException.class);
+		this.thrown.expect(IllegalArgumentException.class);
 		accessor.isReadableProperty(null);
 	}
 
@@ -140,7 +140,7 @@ public abstract class AbstractPropertyAccessorTests {
 	public void isWritablePropertyNull() {
 		AbstractPropertyAccessor accessor = createAccessor(new NoRead());
 
-		thrown.expect(IllegalArgumentException.class);
+		this.thrown.expect(IllegalArgumentException.class);
 		accessor.isWritableProperty(null);
 	}
 
@@ -289,7 +289,7 @@ public abstract class AbstractPropertyAccessorTests {
 		Person target = createPerson("John", "London", "UK");
 		AbstractPropertyAccessor accessor = createAccessor(target);
 
-		thrown.expect(NotReadablePropertyException.class);
+		this.thrown.expect(NotReadablePropertyException.class);
 		accessor.getPropertyValue("address.bar");
 	}
 
@@ -1563,7 +1563,7 @@ public abstract class AbstractPropertyAccessorTests {
 		Person target = createPerson("John", "Paris", "FR");
 		AbstractPropertyAccessor accessor = createAccessor(target);
 
-		thrown.expect(NotWritablePropertyException.class);
+		this.thrown.expect(NotWritablePropertyException.class);
 		accessor.setPropertyValue("address.bar", "value");
 	}
 
@@ -1790,7 +1790,7 @@ public abstract class AbstractPropertyAccessorTests {
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String name) {
@@ -1798,7 +1798,7 @@ public abstract class AbstractPropertyAccessorTests {
 		}
 
 		public Integer getInteger() {
-			return integer;
+			return this.integer;
 		}
 
 		public void setInteger(Integer integer) {
@@ -1820,7 +1820,7 @@ public abstract class AbstractPropertyAccessorTests {
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String name) {
@@ -1828,7 +1828,7 @@ public abstract class AbstractPropertyAccessorTests {
 		}
 
 		public Address getAddress() {
-			return address;
+			return this.address;
 		}
 
 		public void setAddress(Address address) {
@@ -1851,7 +1851,7 @@ public abstract class AbstractPropertyAccessorTests {
 		}
 
 		public String getCity() {
-			return city;
+			return this.city;
 		}
 
 		public void setCity(String city) {
@@ -1859,7 +1859,7 @@ public abstract class AbstractPropertyAccessorTests {
 		}
 
 		public Country getCountry() {
-			return country;
+			return this.country;
 		}
 
 		public void setCountry(Country country) {
@@ -1879,7 +1879,7 @@ public abstract class AbstractPropertyAccessorTests {
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String name) {
@@ -1903,7 +1903,7 @@ public abstract class AbstractPropertyAccessorTests {
 		private List<Map> listOfMaps;
 
 		public List getList() {
-			return list;
+			return this.list;
 		}
 
 		public void setList(List list) {
@@ -1911,7 +1911,7 @@ public abstract class AbstractPropertyAccessorTests {
 		}
 
 		public List<Map> getListOfMaps() {
-			return listOfMaps;
+			return this.listOfMaps;
 		}
 
 		public void setListOfMaps(List<Map> listOfMaps) {
@@ -1930,7 +1930,7 @@ public abstract class AbstractPropertyAccessorTests {
 		}
 
 		public Autowire getAutowire() {
-			return autowire;
+			return this.autowire;
 		}
 	}
 
@@ -1946,7 +1946,7 @@ public abstract class AbstractPropertyAccessorTests {
 		private int[] intArray;
 
 		public void setProperties(Properties p) {
-			properties = p;
+			this.properties = p;
 		}
 
 		public void setName(String name) {
@@ -1968,7 +1968,7 @@ public abstract class AbstractPropertyAccessorTests {
 		private String[] array;
 
 		public String[] getArray() {
-			return array;
+			return this.array;
 		}
 
 		public void setArray(String[] array) {
@@ -1983,7 +1983,7 @@ public abstract class AbstractPropertyAccessorTests {
 		private int[] array;
 
 		public int[] getArray() {
-			return array;
+			return this.array;
 		}
 
 		public void setArray(int[] array) {
@@ -1997,7 +1997,7 @@ public abstract class AbstractPropertyAccessorTests {
 		private String company;
 
 		public String getCompany() {
-			return company;
+			return this.company;
 		}
 
 		public void setCompany(String co) {
@@ -2039,7 +2039,7 @@ public abstract class AbstractPropertyAccessorTests {
 		private Double myDouble;
 
 		public byte getMyPrimitiveByte() {
-			return myPrimitiveByte;
+			return this.myPrimitiveByte;
 		}
 
 		public void setMyPrimitiveByte(byte myPrimitiveByte) {
@@ -2047,7 +2047,7 @@ public abstract class AbstractPropertyAccessorTests {
 		}
 
 		public Byte getMyByte() {
-			return myByte;
+			return this.myByte;
 		}
 
 		public void setMyByte(Byte myByte) {
@@ -2055,7 +2055,7 @@ public abstract class AbstractPropertyAccessorTests {
 		}
 
 		public short getMyPrimitiveShort() {
-			return myPrimitiveShort;
+			return this.myPrimitiveShort;
 		}
 
 		public void setMyPrimitiveShort(short myPrimitiveShort) {
@@ -2063,7 +2063,7 @@ public abstract class AbstractPropertyAccessorTests {
 		}
 
 		public Short getMyShort() {
-			return myShort;
+			return this.myShort;
 		}
 
 		public void setMyShort(Short myShort) {
@@ -2071,7 +2071,7 @@ public abstract class AbstractPropertyAccessorTests {
 		}
 
 		public int getMyPrimitiveInt() {
-			return myPrimitiveInt;
+			return this.myPrimitiveInt;
 		}
 
 		public void setMyPrimitiveInt(int myPrimitiveInt) {
@@ -2079,7 +2079,7 @@ public abstract class AbstractPropertyAccessorTests {
 		}
 
 		public Integer getMyInteger() {
-			return myInteger;
+			return this.myInteger;
 		}
 
 		public void setMyInteger(Integer myInteger) {
@@ -2087,7 +2087,7 @@ public abstract class AbstractPropertyAccessorTests {
 		}
 
 		public long getMyPrimitiveLong() {
-			return myPrimitiveLong;
+			return this.myPrimitiveLong;
 		}
 
 		public void setMyPrimitiveLong(long myPrimitiveLong) {
@@ -2095,7 +2095,7 @@ public abstract class AbstractPropertyAccessorTests {
 		}
 
 		public Long getMyLong() {
-			return myLong;
+			return this.myLong;
 		}
 
 		public void setMyLong(Long myLong) {
@@ -2103,7 +2103,7 @@ public abstract class AbstractPropertyAccessorTests {
 		}
 
 		public float getMyPrimitiveFloat() {
-			return myPrimitiveFloat;
+			return this.myPrimitiveFloat;
 		}
 
 		public void setMyPrimitiveFloat(float myPrimitiveFloat) {
@@ -2111,7 +2111,7 @@ public abstract class AbstractPropertyAccessorTests {
 		}
 
 		public Float getMyFloat() {
-			return myFloat;
+			return this.myFloat;
 		}
 
 		public void setMyFloat(Float myFloat) {
@@ -2119,7 +2119,7 @@ public abstract class AbstractPropertyAccessorTests {
 		}
 
 		public double getMyPrimitiveDouble() {
-			return myPrimitiveDouble;
+			return this.myPrimitiveDouble;
 		}
 
 		public void setMyPrimitiveDouble(double myPrimitiveDouble) {
@@ -2127,7 +2127,7 @@ public abstract class AbstractPropertyAccessorTests {
 		}
 
 		public Double getMyDouble() {
-			return myDouble;
+			return this.myDouble;
 		}
 
 		public void setMyDouble(Double myDouble) {
@@ -2141,7 +2141,7 @@ public abstract class AbstractPropertyAccessorTests {
 		private Enum<TestEnum> enumValue;
 
 		public Enum<TestEnum> getEnumValue() {
-			return enumValue;
+			return this.enumValue;
 		}
 
 		public void setEnumValue(Enum<TestEnum> enumValue) {
@@ -2155,7 +2155,7 @@ public abstract class AbstractPropertyAccessorTests {
 		private Enum<?> enumValue;
 
 		public Enum<?> getEnumValue() {
-			return enumValue;
+			return this.enumValue;
 		}
 
 		public void setEnumValue(Enum<?> enumValue) {
@@ -2179,7 +2179,7 @@ public abstract class AbstractPropertyAccessorTests {
 		}
 
 		public Object getObject() {
-			return object;
+			return this.object;
 		}
 	}
 

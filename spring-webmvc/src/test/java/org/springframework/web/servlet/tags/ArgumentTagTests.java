@@ -43,72 +43,72 @@ public class ArgumentTagTests extends AbstractTagTests {
 	@Before
 	public void setUp() throws Exception {
 		PageContext context = createPageContext();
-		parent = new MockArgumentSupportTag();
-		tag = new ArgumentTag();
-		tag.setPageContext(context);
-		tag.setParent(parent);
+		this.parent = new MockArgumentSupportTag();
+		this.tag = new ArgumentTag();
+		this.tag.setPageContext(context);
+		this.tag.setParent(this.parent);
 	}
 
 	@Test
 	public void argumentWithStringValue() throws JspException {
-		tag.setValue("value1");
+		this.tag.setValue("value1");
 
-		int action = tag.doEndTag();
+		int action = this.tag.doEndTag();
 
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("value1", parent.getArgument());
+		assertEquals("value1", this.parent.getArgument());
 	}
 
 	@Test
 	public void argumentWithImplicitNullValue() throws JspException {
-		int action = tag.doEndTag();
+		int action = this.tag.doEndTag();
 
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertNull(parent.getArgument());
+		assertNull(this.parent.getArgument());
 	}
 
 	@Test
 	public void argumentWithExplicitNullValue() throws JspException {
-		tag.setValue(null);
+		this.tag.setValue(null);
 
-		int action = tag.doEndTag();
+		int action = this.tag.doEndTag();
 
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertNull(parent.getArgument());
+		assertNull(this.parent.getArgument());
 	}
 
 	@Test
 	public void argumentWithBodyValue() throws JspException {
-		tag.setBodyContent(new MockBodyContent("value2",
+		this.tag.setBodyContent(new MockBodyContent("value2",
 				new MockHttpServletResponse()));
 
-		int action = tag.doEndTag();
+		int action = this.tag.doEndTag();
 
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("value2", parent.getArgument());
+		assertEquals("value2", this.parent.getArgument());
 	}
 
 	@Test
 	public void argumentWithValueThenReleaseThenBodyValue() throws JspException {
-		tag.setValue("value3");
+		this.tag.setValue("value3");
 
-		int action = tag.doEndTag();
+		int action = this.tag.doEndTag();
 
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("value3", parent.getArgument());
+		assertEquals("value3", this.parent.getArgument());
 
-		tag.release();
+		this.tag.release();
 
-		parent = new MockArgumentSupportTag();
-		tag.setPageContext(createPageContext());
-		tag.setParent(parent);
-		tag.setBodyContent(new MockBodyContent("value4",
+		this.parent = new MockArgumentSupportTag();
+		this.tag.setPageContext(createPageContext());
+		this.tag.setParent(this.parent);
+		this.tag.setBodyContent(new MockBodyContent("value4",
 				new MockHttpServletResponse()));
 
-		action = tag.doEndTag();
+		action = this.tag.doEndTag();
 
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("value4", parent.getArgument());
+		assertEquals("value4", this.parent.getArgument());
 	}
 
 	@SuppressWarnings("serial")
@@ -122,7 +122,7 @@ public class ArgumentTagTests extends AbstractTagTests {
 		}
 
 		private Object getArgument() {
-			return argument;
+			return this.argument;
 		}
 	}
 

@@ -60,7 +60,7 @@ public class ClassHierarchyWithMergedConfigLevelOneTests {
 
 		@Bean
 		public String user() {
-			return appConfig.parent() + " + user";
+			return this.appConfig.parent() + " + user";
 		}
 
 		@Bean
@@ -86,12 +86,12 @@ public class ClassHierarchyWithMergedConfigLevelOneTests {
 
 	@Test
 	public void loadContextHierarchy() {
-		assertNotNull("child ApplicationContext", context);
-		assertNotNull("parent ApplicationContext", context.getParent());
-		assertNull("grandparent ApplicationContext", context.getParent().getParent());
-		assertEquals("parent", parent);
-		assertEquals("parent + user", user);
-		assertEquals("from UserConfig", beanFromUserConfig);
+		assertNotNull("child ApplicationContext", this.context);
+		assertNotNull("parent ApplicationContext", this.context.getParent());
+		assertNull("grandparent ApplicationContext", this.context.getParent().getParent());
+		assertEquals("parent", this.parent);
+		assertEquals("parent + user", this.user);
+		assertEquals("from UserConfig", this.beanFromUserConfig);
 	}
 
 }

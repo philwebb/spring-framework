@@ -68,8 +68,8 @@ public class DefaultBootstrapContext implements BootstrapContext {
 	@Override
 	public String toString() {
 		return new ToStringCreator(this)//
-		.append("testClass", testClass.getName())//
-		.append("cacheAwareContextLoaderDelegate", cacheAwareContextLoaderDelegate.getClass().getName())//
+		.append("testClass", this.testClass.getName())//
+		.append("cacheAwareContextLoaderDelegate", this.cacheAwareContextLoaderDelegate.getClass().getName())//
 		.toString();
 	}
 

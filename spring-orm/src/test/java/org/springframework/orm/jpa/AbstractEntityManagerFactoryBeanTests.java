@@ -77,7 +77,7 @@ public abstract class AbstractEntityManagerFactoryBeanTests {
 
 		@Override
 		protected EntityManagerFactory createNativeEntityManagerFactory() throws PersistenceException {
-			return emf;
+			return this.emf;
 		}
 
 		@Override

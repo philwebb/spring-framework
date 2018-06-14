@@ -185,7 +185,7 @@ public class SpelExpression implements Expression {
 	public Object getValue(Object rootObject) throws EvaluationException {
 		if (this.compiledAst != null) {
 			try {
-				return this.compiledAst.getValue(rootObject, evaluationContext);
+				return this.compiledAst.getValue(rootObject, this.evaluationContext);
 			}
 			catch (Throwable ex) {
 				// If running in mixed mode, revert to interpreted

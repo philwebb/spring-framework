@@ -85,7 +85,7 @@ public abstract class AbstractTypeHierarchyTraversingFilter implements TypeFilte
 						}
 					}
 					catch (IOException ex) {
-						logger.debug("Could not read super class [" + metadata.getSuperClassName() +
+						this.logger.debug("Could not read super class [" + metadata.getSuperClassName() +
 								"] of type-filtered class [" + metadata.getClassName() + "]");
 					}
  				}
@@ -109,7 +109,7 @@ public abstract class AbstractTypeHierarchyTraversingFilter implements TypeFilte
 						}
 					}
 					catch (IOException ex) {
-						logger.debug("Could not read interface [" + ifc + "] for type-filtered class [" +
+						this.logger.debug("Could not read interface [" + ifc + "] for type-filtered class [" +
 								metadata.getClassName() + "]");
 					}
 				}

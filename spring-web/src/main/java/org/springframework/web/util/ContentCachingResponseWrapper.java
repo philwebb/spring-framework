@@ -244,12 +244,12 @@ public class ContentCachingResponseWrapper extends HttpServletResponseWrapper {
 
 		@Override
 		public void write(int b) throws IOException {
-			content.write(b);
+			ContentCachingResponseWrapper.this.content.write(b);
 		}
 
 		@Override
 		public void write(byte[] b, int off, int len) throws IOException {
-			content.write(b, off, len);
+			ContentCachingResponseWrapper.this.content.write(b, off, len);
 		}
 
 		@Override
@@ -267,7 +267,7 @@ public class ContentCachingResponseWrapper extends HttpServletResponseWrapper {
 	private class ResponsePrintWriter extends PrintWriter {
 
 		public ResponsePrintWriter(String characterEncoding) throws UnsupportedEncodingException {
-			super(new OutputStreamWriter(content, characterEncoding));
+			super(new OutputStreamWriter(ContentCachingResponseWrapper.this.content, characterEncoding));
 		}
 
 		@Override

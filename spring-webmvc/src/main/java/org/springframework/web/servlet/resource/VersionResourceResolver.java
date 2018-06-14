@@ -183,8 +183,8 @@ public class VersionResourceResolver extends AbstractResourceResolver {
 			return new FileNameVersionedResource(baseResource, candidateVersion);
 		}
 		else {
-			if (logger.isTraceEnabled()) {
-				logger.trace("Found resource for \"" + requestPath + "\", but version [" +
+			if (this.logger.isTraceEnabled()) {
+				this.logger.trace("Found resource for \"" + requestPath + "\", but version [" +
 						candidateVersion + "] does not match");
 			}
 			return null;
@@ -300,12 +300,12 @@ public class VersionResourceResolver extends AbstractResourceResolver {
 
 		@Override
 		public String getDescription() {
-			return original.getDescription();
+			return this.original.getDescription();
 		}
 
 		@Override
 		public InputStream getInputStream() throws IOException {
-			return original.getInputStream();
+			return this.original.getInputStream();
 		}
 
 		@Override

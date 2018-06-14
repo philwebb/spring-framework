@@ -642,7 +642,7 @@ public class GenericConversionService implements ConfigurableConversionService {
 
 		private List<String> getConverterStrings() {
 			List<String> converterStrings = new ArrayList<>();
-			for (ConvertersForPair convertersForPair : converters.values()) {
+			for (ConvertersForPair convertersForPair : this.converters.values()) {
 				converterStrings.add(convertersForPair.toString());
 			}
 			Collections.sort(converterStrings);

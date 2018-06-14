@@ -435,8 +435,8 @@ public abstract class ResponseEntityExceptionHandler {
 			ServletWebRequest servletWebRequest = (ServletWebRequest) webRequest;
 			HttpServletResponse response = servletWebRequest.getResponse();
 			if (response != null && response.isCommitted()) {
-				if (logger.isWarnEnabled()) {
-					logger.warn("Async request timed out");
+				if (this.logger.isWarnEnabled()) {
+					this.logger.warn("Async request timed out");
 				}
 				return null;
 			}

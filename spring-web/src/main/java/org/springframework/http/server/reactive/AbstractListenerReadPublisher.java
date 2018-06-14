@@ -149,14 +149,14 @@ public abstract class AbstractListenerReadPublisher<T> implements Publisher<T> {
 				}
 				Subscriber<? super T> subscriber = this.subscriber;
 				Assert.state(subscriber != null, "No subscriber");
-				if (logger.isTraceEnabled()) {
-					logger.trace("Data item read, publishing..");
+				if (this.logger.isTraceEnabled()) {
+					this.logger.trace("Data item read, publishing..");
 				}
 				subscriber.onNext(data);
 			}
 			else {
-				if (logger.isTraceEnabled()) {
-					logger.trace("No more data to read");
+				if (this.logger.isTraceEnabled()) {
+					this.logger.trace("No more data to read");
 				}
 				return true;
 			}
@@ -166,8 +166,8 @@ public abstract class AbstractListenerReadPublisher<T> implements Publisher<T> {
 
 	private boolean changeState(State oldState, State newState) {
 		boolean result = this.state.compareAndSet(oldState, newState);
-		if (result && logger.isTraceEnabled()) {
-			logger.trace(oldState + " -> " + newState);
+		if (result && this.logger.isTraceEnabled()) {
+			this.logger.trace(oldState + " -> " + newState);
 		}
 		return result;
 	}
@@ -196,18 +196,18 @@ public abstract class AbstractListenerReadPublisher<T> implements Publisher<T> {
 
 		@Override
 		public final void request(long n) {
-			if (logger.isTraceEnabled()) {
-				logger.trace("Signal request(" + n + ")");
+			if (AbstractListenerReadPublisher.this.logger.isTraceEnabled()) {
+				AbstractListenerReadPublisher.this.logger.trace("Signal request(" + n + ")");
 			}
-			state.get().request(AbstractListenerReadPublisher.this, n);
+			AbstractListenerReadPublisher.this.state.get().request(AbstractListenerReadPublisher.this, n);
 		}
 
 		@Override
 		public final void cancel() {
-			if (logger.isTraceEnabled()) {
-				logger.trace("Signal cancel()");
+			if (AbstractListenerReadPublisher.this.logger.isTraceEnabled()) {
+				AbstractListenerReadPublisher.this.logger.trace("Signal cancel()");
 			}
-			state.get().cancel(AbstractListenerReadPublisher.this);
+			AbstractListenerReadPublisher.this.state.get().cancel(AbstractListenerReadPublisher.this);
 		}
 	}
 

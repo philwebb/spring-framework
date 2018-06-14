@@ -62,14 +62,14 @@ public class InferredDataSourceSqlScriptsTests {
 	@Sql(scripts = "data-add-dogbert.sql", config = @SqlConfig(transactionManager = "txMgr1"))
 	public void database1() {
 		assertInTransaction(false);
-		assertUsers(new JdbcTemplate(dataSource1), "Dilbert", "Dogbert");
+		assertUsers(new JdbcTemplate(this.dataSource1), "Dilbert", "Dogbert");
 	}
 
 	@Test
 	@Sql(scripts = "data-add-catbert.sql", config = @SqlConfig(transactionManager = "txMgr2"))
 	public void database2() {
 		assertInTransaction(false);
-		assertUsers(new JdbcTemplate(dataSource2), "Dilbert", "Catbert");
+		assertUsers(new JdbcTemplate(this.dataSource2), "Dilbert", "Catbert");
 	}
 
 	private void assertUsers(JdbcTemplate jdbcTemplate, String... users) {

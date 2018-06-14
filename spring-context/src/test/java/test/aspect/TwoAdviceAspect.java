@@ -28,12 +28,12 @@ public class TwoAdviceAspect {
 
 	@Around("execution(* org.springframework.tests.sample.beans.ITestBean.age())")
 	public int returnCallCount(ProceedingJoinPoint pjp) throws Exception {
-		return totalCalls;
+		return this.totalCalls;
 	}
 
 	@Before("execution(* org.springframework.tests.sample.beans.ITestBean.setAge(int)) && args(newAge)")
 	public void countSet(int newAge) throws Exception {
-		++totalCalls;
+		++this.totalCalls;
 	}
 
 }

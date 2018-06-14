@@ -40,25 +40,25 @@ public class HandlerMethodArgumentResolverCompositeTests {
 
 	@Before
 	public void setUp() throws Exception {
-		resolvers = new HandlerMethodArgumentResolverComposite();
+		this.resolvers = new HandlerMethodArgumentResolverComposite();
 
 		Method method = getClass().getDeclaredMethod("handle", Integer.class, String.class);
-		paramInt = new MethodParameter(method, 0);
-		paramStr = new MethodParameter(method, 1);
+		this.paramInt = new MethodParameter(method, 0);
+		this.paramStr = new MethodParameter(method, 1);
 	}
 
 	@Test
 	public void supportsParameter() throws Exception {
 		registerResolver(Integer.class, null);
 
-		assertTrue(this.resolvers.supportsParameter(paramInt));
-		assertFalse(this.resolvers.supportsParameter(paramStr));
+		assertTrue(this.resolvers.supportsParameter(this.paramInt));
+		assertFalse(this.resolvers.supportsParameter(this.paramStr));
 	}
 
 	@Test
 	public void resolveArgument() throws Exception {
 		registerResolver(Integer.class, Integer.valueOf(55));
-		Object resolvedValue = this.resolvers.resolveArgument(paramInt, null, null, null);
+		Object resolvedValue = this.resolvers.resolveArgument(this.paramInt, null, null, null);
 
 		assertEquals(Integer.valueOf(55), resolvedValue);
 	}
@@ -67,14 +67,14 @@ public class HandlerMethodArgumentResolverCompositeTests {
 	public void checkArgumentResolverOrder() throws Exception {
 		registerResolver(Integer.class, Integer.valueOf(1));
 		registerResolver(Integer.class, Integer.valueOf(2));
-		Object resolvedValue = this.resolvers.resolveArgument(paramInt, null, null, null);
+		Object resolvedValue = this.resolvers.resolveArgument(this.paramInt, null, null, null);
 
 		assertEquals("Didn't use the first registered resolver", Integer.valueOf(1), resolvedValue);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void noSuitableArgumentResolver() throws Exception {
-		this.resolvers.resolveArgument(paramStr, null, null, null);
+		this.resolvers.resolveArgument(this.paramStr, null, null, null);
 	}
 
 	protected StubArgumentResolver registerResolver(Class<?> supportedType, Object stubValue) {

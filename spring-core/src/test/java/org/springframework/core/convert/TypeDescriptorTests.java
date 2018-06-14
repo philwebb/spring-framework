@@ -806,7 +806,7 @@ public class TypeDescriptorTests {
 
 	@MethodAnnotation1
 	public Map<List<Integer>, List<Long>> getProperty() {
-		return property;
+		return this.property;
 	}
 
 	@MethodAnnotation2

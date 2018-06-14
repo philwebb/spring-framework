@@ -174,20 +174,20 @@ public class WebContentInterceptor extends WebContentGenerator implements Handle
 		CacheControl cacheControl = lookupCacheControl(lookupPath);
 		Integer cacheSeconds = lookupCacheSeconds(lookupPath);
 		if (cacheControl != null) {
-			if (logger.isTraceEnabled()) {
-				logger.trace("Applying " + cacheControl);
+			if (this.logger.isTraceEnabled()) {
+				this.logger.trace("Applying " + cacheControl);
 			}
 			applyCacheControl(response, cacheControl);
 		}
 		else if (cacheSeconds != null) {
-			if (logger.isTraceEnabled()) {
-				logger.trace("Applying cacheSeconds " + cacheSeconds);
+			if (this.logger.isTraceEnabled()) {
+				this.logger.trace("Applying cacheSeconds " + cacheSeconds);
 			}
 			applyCacheSeconds(response, cacheSeconds);
 		}
 		else {
-			if (logger.isTraceEnabled()) {
-				logger.trace("Applying default cacheSeconds");
+			if (this.logger.isTraceEnabled()) {
+				this.logger.trace("Applying default cacheSeconds");
 			}
 			prepareResponse(response);
 		}

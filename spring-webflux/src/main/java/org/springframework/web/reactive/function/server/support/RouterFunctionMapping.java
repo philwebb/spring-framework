@@ -105,14 +105,14 @@ public class RouterFunctionMapping extends AbstractHandlerMapping implements Ini
 	 * Initialized the router functions by detecting them in the application context.
 	 */
 	protected void initRouterFunctions() {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Looking for router functions in application context: " +
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Looking for router functions in application context: " +
 					getApplicationContext());
 		}
 
 		List<RouterFunction<?>> routerFunctions = routerFunctions();
-		if (!CollectionUtils.isEmpty(routerFunctions) && logger.isInfoEnabled()) {
-			routerFunctions.forEach(routerFunction -> logger.info("Mapped " + routerFunction));
+		if (!CollectionUtils.isEmpty(routerFunctions) && this.logger.isInfoEnabled()) {
+			routerFunctions.forEach(routerFunction -> this.logger.info("Mapped " + routerFunction));
 		}
 		this.routerFunction = routerFunctions.stream()
 				.reduce(RouterFunction::andOther)

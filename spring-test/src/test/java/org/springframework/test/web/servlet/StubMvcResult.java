@@ -61,41 +61,41 @@ public class StubMvcResult implements MvcResult {
 
 	@Override
 	public MockHttpServletRequest getRequest() {
-		return request;
+		return this.request;
 	}
 
 	@Override
 	public Object getHandler() {
-		return handler;
+		return this.handler;
 	}
 
 	@Override
 	public HandlerInterceptor[] getInterceptors() {
-		return interceptors;
+		return this.interceptors;
 	}
 
 	@Override
 	public Exception getResolvedException() {
-		return resolvedException;
+		return this.resolvedException;
 	}
 
 	@Override
 	public ModelAndView getModelAndView() {
-		return mav;
+		return this.mav;
 	}
 
 	@Override
 	public FlashMap getFlashMap() {
-		return flashMap;
+		return this.flashMap;
 	}
 
 	@Override
 	public MockHttpServletResponse getResponse() {
-		return response;
+		return this.response;
 	}
 
 	public ModelAndView getMav() {
-		return mav;
+		return this.mav;
 	}
 
 	public void setMav(ModelAndView mav) {

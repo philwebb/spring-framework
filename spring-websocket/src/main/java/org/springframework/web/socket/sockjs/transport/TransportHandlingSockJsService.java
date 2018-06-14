@@ -106,7 +106,7 @@ public class TransportHandlingSockJsService extends AbstractSockJsService implem
 		super(scheduler);
 
 		if (CollectionUtils.isEmpty(handlers)) {
-			logger.warn("No transport handlers specified for TransportHandlingSockJsService");
+			this.logger.warn("No transport handlers specified for TransportHandlingSockJsService");
 		}
 		else {
 			for (TransportHandler handler : handlers) {
@@ -195,7 +195,7 @@ public class TransportHandlingSockJsService extends AbstractSockJsService implem
 
 		TransportHandler transportHandler = this.handlers.get(TransportType.WEBSOCKET);
 		if (!(transportHandler instanceof HandshakeHandler)) {
-			logger.error("No handler configured for raw WebSocket messages");
+			this.logger.error("No handler configured for raw WebSocket messages");
 			response.setStatusCode(HttpStatus.NOT_FOUND);
 			return;
 		}
@@ -231,8 +231,8 @@ public class TransportHandlingSockJsService extends AbstractSockJsService implem
 
 		TransportType transportType = TransportType.fromValue(transport);
 		if (transportType == null) {
-			if (logger.isWarnEnabled()) {
-				logger.warn("Unknown transport type for " + request.getURI());
+			if (this.logger.isWarnEnabled()) {
+				this.logger.warn("Unknown transport type for " + request.getURI());
 			}
 			response.setStatusCode(HttpStatus.NOT_FOUND);
 			return;
@@ -240,8 +240,8 @@ public class TransportHandlingSockJsService extends AbstractSockJsService implem
 
 		TransportHandler transportHandler = this.handlers.get(transportType);
 		if (transportHandler == null) {
-			if (logger.isWarnEnabled()) {
-				logger.warn("No TransportHandler for " + request.getURI());
+			if (this.logger.isWarnEnabled()) {
+				this.logger.warn("No TransportHandler for " + request.getURI());
 			}
 			response.setStatusCode(HttpStatus.NOT_FOUND);
 			return;
@@ -280,8 +280,8 @@ public class TransportHandlingSockJsService extends AbstractSockJsService implem
 				}
 				else {
 					response.setStatusCode(HttpStatus.NOT_FOUND);
-					if (logger.isDebugEnabled()) {
-						logger.debug("Session not found, sessionId=" + sessionId +
+					if (this.logger.isDebugEnabled()) {
+						this.logger.debug("Session not found, sessionId=" + sessionId +
 								". The session may have been closed " +
 								"(e.g. missed heart-beat) while a message was coming in.");
 					}
@@ -291,12 +291,12 @@ public class TransportHandlingSockJsService extends AbstractSockJsService implem
 			else {
 				Principal principal = session.getPrincipal();
 				if (principal != null && !principal.equals(request.getPrincipal())) {
-					logger.debug("The user for the session does not match the user for the request.");
+					this.logger.debug("The user for the session does not match the user for the request.");
 					response.setStatusCode(HttpStatus.NOT_FOUND);
 					return;
 				}
 				if (!transportHandler.checkSessionType(session)) {
-					logger.debug("Session type does not match the transport type for the request.");
+					this.logger.debug("Session type does not match the transport type for the request.");
 					response.setStatusCode(HttpStatus.NOT_FOUND);
 					return;
 				}
@@ -335,8 +335,8 @@ public class TransportHandlingSockJsService extends AbstractSockJsService implem
 		if (!this.allowedOrigins.contains("*")) {
 			TransportType transportType = TransportType.fromValue(transport);
 			if (transportType == null || !transportType.supportsOrigin()) {
-				if (logger.isWarnEnabled()) {
-					logger.warn("Origin check enabled but transport '" + transport + "' does not support it.");
+				if (this.logger.isWarnEnabled()) {
+					this.logger.warn("Origin check enabled but transport '" + transport + "' does not support it.");
 				}
 				return false;
 			}
@@ -367,21 +367,21 @@ public class TransportHandlingSockJsService extends AbstractSockJsService implem
 			}
 			this.sessionCleanupTask = getTaskScheduler().scheduleAtFixedRate(() -> {
 				List<String> removedIds = new ArrayList<>();
-				for (SockJsSession session : sessions.values()) {
+				for (SockJsSession session : this.sessions.values()) {
 					try {
 						if (session.getTimeSinceLastActive() > getDisconnectDelay()) {
-							sessions.remove(session.getId());
+							this.sessions.remove(session.getId());
 							removedIds.add(session.getId());
 							session.close();
 						}
 					}
 					catch (Throwable ex) {
 						// Could be part of normal workflow (e.g. browser tab closed)
-						logger.debug("Failed to close " + session, ex);
+						this.logger.debug("Failed to close " + session, ex);
 					}
 				}
-				if (logger.isDebugEnabled() && !removedIds.isEmpty()) {
-					logger.debug("Closed " + removedIds.size() + " sessions: " + removedIds);
+				if (this.logger.isDebugEnabled() && !removedIds.isEmpty()) {
+					this.logger.debug("Closed " + removedIds.size() + " sessions: " + removedIds);
 				}
 			}, getDisconnectDelay());
 		}

@@ -96,7 +96,7 @@ public class MockMvcConnectionBuilderSupportTests {
 
 	@Test
 	public void mockMvc() throws Exception {
-		MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+		MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 		WebConnection conn = new MockMvcWebConnectionBuilderSupport(mockMvc) {}.createConnection(this.client);
 
 		assertMockMvcUsed(conn, "http://localhost/");

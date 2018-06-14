@@ -141,7 +141,7 @@ public final class Handle {
      *         {@link Opcodes#H_INVOKEINTERFACE}.
      */
     public int getTag() {
-        return tag;
+        return this.tag;
     }
 
     /**
@@ -152,7 +152,7 @@ public final class Handle {
      *         designated by this handle.
      */
     public String getOwner() {
-        return owner;
+        return this.owner;
     }
 
     /**
@@ -161,7 +161,7 @@ public final class Handle {
      * @return the name of the field or method designated by this handle.
      */
     public String getName() {
-        return name;
+        return this.name;
     }
 
     /**
@@ -170,7 +170,7 @@ public final class Handle {
      * @return the descriptor of the field or method designated by this handle.
      */
     public String getDesc() {
-        return desc;
+        return this.desc;
     }
 
     /**
@@ -181,7 +181,7 @@ public final class Handle {
      *         by this handle is an interface.
      */
     public boolean isInterface() {
-        return itf;
+        return this.itf;
     }
 
     @Override
@@ -193,13 +193,13 @@ public final class Handle {
             return false;
         }
         Handle h = (Handle) obj;
-        return tag == h.tag && itf == h.itf && owner.equals(h.owner)
-                && name.equals(h.name) && desc.equals(h.desc);
+        return this.tag == h.tag && this.itf == h.itf && this.owner.equals(h.owner)
+                && this.name.equals(h.name) && this.desc.equals(h.desc);
     }
 
     @Override
     public int hashCode() {
-        return tag + (itf? 64: 0) + owner.hashCode() * name.hashCode() * desc.hashCode();
+        return this.tag + (this.itf? 64: 0) + this.owner.hashCode() * this.name.hashCode() * this.desc.hashCode();
     }
 
     /**
@@ -217,6 +217,6 @@ public final class Handle {
      */
     @Override
     public String toString() {
-        return owner + '.' + name + desc + " (" + tag + (itf? " itf": "") + ')';
+        return this.owner + '.' + this.name + this.desc + " (" + this.tag + (this.itf? " itf": "") + ')';
     }
 }

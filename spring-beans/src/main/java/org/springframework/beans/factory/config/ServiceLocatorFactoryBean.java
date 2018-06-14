@@ -361,7 +361,7 @@ public class ServiceLocatorFactoryBean implements FactoryBean<Object>, BeanFacto
 				return System.identityHashCode(proxy);
 			}
 			else if (ReflectionUtils.isToStringMethod(method)) {
-				return "Service locator: " + serviceLocatorInterface;
+				return "Service locator: " + ServiceLocatorFactoryBean.this.serviceLocatorInterface;
 			}
 			else {
 				return invokeServiceLocatorMethod(method, args);
@@ -372,19 +372,19 @@ public class ServiceLocatorFactoryBean implements FactoryBean<Object>, BeanFacto
 			Class<?> serviceLocatorMethodReturnType = getServiceLocatorMethodReturnType(method);
 			try {
 				String beanName = tryGetBeanName(args);
-				Assert.state(beanFactory != null, "No BeanFactory available");
+				Assert.state(ServiceLocatorFactoryBean.this.beanFactory != null, "No BeanFactory available");
 				if (StringUtils.hasLength(beanName)) {
 					// Service locator for a specific bean name
-					return beanFactory.getBean(beanName, serviceLocatorMethodReturnType);
+					return ServiceLocatorFactoryBean.this.beanFactory.getBean(beanName, serviceLocatorMethodReturnType);
 				}
 				else {
 					// Service locator for a bean type
-					return beanFactory.getBean(serviceLocatorMethodReturnType);
+					return ServiceLocatorFactoryBean.this.beanFactory.getBean(serviceLocatorMethodReturnType);
 				}
 			}
 			catch (BeansException ex) {
-				if (serviceLocatorExceptionConstructor != null) {
-					throw createServiceLocatorException(serviceLocatorExceptionConstructor, ex);
+				if (ServiceLocatorFactoryBean.this.serviceLocatorExceptionConstructor != null) {
+					throw createServiceLocatorException(ServiceLocatorFactoryBean.this.serviceLocatorExceptionConstructor, ex);
 				}
 				throw ex;
 			}
@@ -399,8 +399,8 @@ public class ServiceLocatorFactoryBean implements FactoryBean<Object>, BeanFacto
 				beanName = args[0].toString();
 			}
 			// Look for explicit serviceId-to-beanName mappings.
-			if (serviceMappings != null) {
-				String mappedName = serviceMappings.getProperty(beanName);
+			if (ServiceLocatorFactoryBean.this.serviceMappings != null) {
+				String mappedName = ServiceLocatorFactoryBean.this.serviceMappings.getProperty(beanName);
 				if (mappedName != null) {
 					beanName = mappedName;
 				}
@@ -409,9 +409,9 @@ public class ServiceLocatorFactoryBean implements FactoryBean<Object>, BeanFacto
 		}
 
 		private Class<?> getServiceLocatorMethodReturnType(Method method) throws NoSuchMethodException {
-			Assert.state(serviceLocatorInterface != null, "No service locator interface specified");
+			Assert.state(ServiceLocatorFactoryBean.this.serviceLocatorInterface != null, "No service locator interface specified");
 			Class<?>[] paramTypes = method.getParameterTypes();
-			Method interfaceMethod = serviceLocatorInterface.getMethod(method.getName(), paramTypes);
+			Method interfaceMethod = ServiceLocatorFactoryBean.this.serviceLocatorInterface.getMethod(method.getName(), paramTypes);
 			Class<?> serviceLocatorReturnType = interfaceMethod.getReturnType();
 
 			// Check whether the method is a valid service locator.

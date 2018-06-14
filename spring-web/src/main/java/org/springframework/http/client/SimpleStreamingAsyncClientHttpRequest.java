@@ -107,20 +107,20 @@ final class SimpleStreamingAsyncClientHttpRequest extends AbstractAsyncClientHtt
 			@Override
 			public ClientHttpResponse call() throws Exception {
 				try {
-					if (body != null) {
-						body.close();
+					if (SimpleStreamingAsyncClientHttpRequest.this.body != null) {
+						SimpleStreamingAsyncClientHttpRequest.this.body.close();
 					}
 					else {
-						SimpleBufferingClientHttpRequest.addHeaders(connection, headers);
-						connection.connect();
+						SimpleBufferingClientHttpRequest.addHeaders(SimpleStreamingAsyncClientHttpRequest.this.connection, headers);
+						SimpleStreamingAsyncClientHttpRequest.this.connection.connect();
 						// Immediately trigger the request in a no-output scenario as well
-						connection.getResponseCode();
+						SimpleStreamingAsyncClientHttpRequest.this.connection.getResponseCode();
 					}
 				}
 				catch (IOException ex) {
 					// ignore
 				}
-				return new SimpleClientHttpResponse(connection);
+				return new SimpleClientHttpResponse(SimpleStreamingAsyncClientHttpRequest.this.connection);
 			}
 		});
 

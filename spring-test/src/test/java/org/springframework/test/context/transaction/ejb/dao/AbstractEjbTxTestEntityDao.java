@@ -40,10 +40,10 @@ public abstract class AbstractEjbTxTestEntityDao implements TestEntityDao {
 
 
 	protected final TestEntity getTestEntity(String name) {
-		TestEntity te = entityManager.find(TestEntity.class, name);
+		TestEntity te = this.entityManager.find(TestEntity.class, name);
 		if (te == null) {
 			te = new TestEntity(name, 0);
-			entityManager.persist(te);
+			this.entityManager.persist(te);
 		}
 		return te;
 	}

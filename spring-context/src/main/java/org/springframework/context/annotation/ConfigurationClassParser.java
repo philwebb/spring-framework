@@ -272,7 +272,7 @@ class ConfigurationClassParser {
 				processPropertySource(propertySource);
 			}
 			else {
-				logger.warn("Ignoring @PropertySource annotation on [" + sourceClass.getMetadata().getClassName() +
+				this.logger.warn("Ignoring @PropertySource annotation on [" + sourceClass.getMetadata().getClassName() +
 						"]. Reason: Environment must implement ConfigurableEnvironment");
 			}
 		}
@@ -416,7 +416,7 @@ class ConfigurationClassParser {
 				}
 			}
 			catch (IOException ex) {
-				logger.debug("Failed to read class file via ASM for determining @Bean method order", ex);
+				this.logger.debug("Failed to read class file via ASM for determining @Bean method order", ex);
 				// No worries, let's continue with the reflection metadata we started with...
 			}
 		}
@@ -455,8 +455,8 @@ class ConfigurationClassParser {
 			catch (IllegalArgumentException | FileNotFoundException | UnknownHostException ex) {
 				// Placeholders not resolvable or resource not found when trying to open it
 				if (ignoreResourceNotFound) {
-					if (logger.isInfoEnabled()) {
-						logger.info("Properties location [" + location + "] not resolvable: " + ex.getMessage());
+					if (this.logger.isInfoEnabled()) {
+						this.logger.info("Properties location [" + location + "] not resolvable: " + ex.getMessage());
 					}
 				}
 				else {
@@ -888,14 +888,14 @@ class ConfigurationClassParser {
 				return (Class<?>) this.source;
 			}
 			String className = ((MetadataReader) this.source).getClassMetadata().getClassName();
-			return ClassUtils.forName(className, resourceLoader.getClassLoader());
+			return ClassUtils.forName(className, ConfigurationClassParser.this.resourceLoader.getClassLoader());
 		}
 
 		public boolean isAssignable(Class<?> clazz) throws IOException {
 			if (this.source instanceof Class) {
 				return clazz.isAssignableFrom((Class<?>) this.source);
 			}
-			return new AssignableTypeFilter(clazz).match((MetadataReader) this.source, metadataReaderFactory);
+			return new AssignableTypeFilter(clazz).match((MetadataReader) this.source, ConfigurationClassParser.this.metadataReaderFactory);
 		}
 
 		public ConfigurationClass asConfigClass(ConfigurationClass importedBy) throws IOException {
@@ -920,7 +920,7 @@ class ConfigurationClassParser {
 				catch (NoClassDefFoundError err) {
 					// getDeclaredClasses() failed because of non-resolvable dependencies
 					// -> fall back to ASM below
-					sourceToProcess = metadataReaderFactory.getMetadataReader(sourceClass.getName());
+					sourceToProcess = ConfigurationClassParser.this.metadataReaderFactory.getMetadataReader(sourceClass.getName());
 				}
 			}
 
@@ -934,8 +934,8 @@ class ConfigurationClassParser {
 				}
 				catch (IOException ex) {
 					// Let's skip it if it's not resolvable - we're just looking for candidates
-					if (logger.isDebugEnabled()) {
-						logger.debug("Failed to resolve member class [" + memberClassName +
+					if (ConfigurationClassParser.this.logger.isDebugEnabled()) {
+						ConfigurationClassParser.this.logger.debug("Failed to resolve member class [" + memberClassName +
 								"] - not considering it as a configuration class candidate");
 					}
 				}
@@ -1004,7 +1004,7 @@ class ConfigurationClassParser {
 					if (className.startsWith("java")) {
 						throw new NestedIOException("Failed to load class [" + className + "]", ex);
 					}
-					return new SourceClass(metadataReaderFactory.getMetadataReader(className));
+					return new SourceClass(ConfigurationClassParser.this.metadataReaderFactory.getMetadataReader(className));
 				}
 			}
 			return asSourceClass(className);

@@ -345,8 +345,8 @@ public class SingleConnectionFactory implements ConnectionFactory, QueueConnecti
 			if (this.startedCount > 0) {
 				this.connection.start();
 			}
-			if (logger.isInfoEnabled()) {
-				logger.info("Established shared JMS Connection: " + this.connection);
+			if (this.logger.isInfoEnabled()) {
+				this.logger.info("Established shared JMS Connection: " + this.connection);
 			}
 		}
 	}
@@ -357,7 +357,7 @@ public class SingleConnectionFactory implements ConnectionFactory, QueueConnecti
 	 */
 	@Override
 	public void onException(JMSException ex) {
-		logger.warn("Encountered a JMSException - resetting the underlying JMS Connection", ex);
+		this.logger.warn("Encountered a JMSException - resetting the underlying JMS Connection", ex);
 		resetConnection();
 	}
 
@@ -482,8 +482,8 @@ public class SingleConnectionFactory implements ConnectionFactory, QueueConnecti
 	 * @param con the Connection to close
 	 */
 	protected void closeConnection(Connection con) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Closing shared JMS Connection: " + con);
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Closing shared JMS Connection: " + con);
 		}
 		try {
 			try {
@@ -496,10 +496,10 @@ public class SingleConnectionFactory implements ConnectionFactory, QueueConnecti
 			}
 		}
 		catch (javax.jms.IllegalStateException ex) {
-			logger.debug("Ignoring Connection state exception - assuming already closed: " + ex);
+			this.logger.debug("Ignoring Connection state exception - assuming already closed: " + ex);
 		}
 		catch (Throwable ex) {
-			logger.debug("Could not close shared JMS Connection", ex);
+			this.logger.debug("Could not close shared JMS Connection", ex);
 		}
 	}
 
@@ -571,15 +571,15 @@ public class SingleConnectionFactory implements ConnectionFactory, QueueConnecti
 			}
 			else if (method.getName().equals("setExceptionListener") && args != null) {
 				// Handle setExceptionListener method: add to the chain.
-				synchronized (connectionMonitor) {
-					if (aggregatedExceptionListener != null) {
+				synchronized (SingleConnectionFactory.this.connectionMonitor) {
+					if (SingleConnectionFactory.this.aggregatedExceptionListener != null) {
 						ExceptionListener listener = (ExceptionListener) args[0];
 						if (listener != this.localExceptionListener) {
 							if (this.localExceptionListener != null) {
-								aggregatedExceptionListener.delegates.remove(this.localExceptionListener);
+								SingleConnectionFactory.this.aggregatedExceptionListener.delegates.remove(this.localExceptionListener);
 							}
 							if (listener != null) {
-								aggregatedExceptionListener.delegates.add(listener);
+								SingleConnectionFactory.this.aggregatedExceptionListener.delegates.add(listener);
 							}
 							this.localExceptionListener = listener;
 						}
@@ -595,7 +595,7 @@ public class SingleConnectionFactory implements ConnectionFactory, QueueConnecti
 				}
 			}
 			else if (method.getName().equals("getExceptionListener")) {
-				synchronized (connectionMonitor) {
+				synchronized (SingleConnectionFactory.this.connectionMonitor) {
 					if (this.localExceptionListener != null) {
 						return this.localExceptionListener;
 					}
@@ -614,10 +614,10 @@ public class SingleConnectionFactory implements ConnectionFactory, QueueConnecti
 			}
 			else if (method.getName().equals("close")) {
 				localStop();
-				synchronized (connectionMonitor) {
+				synchronized (SingleConnectionFactory.this.connectionMonitor) {
 					if (this.localExceptionListener != null) {
-						if (aggregatedExceptionListener != null) {
-							aggregatedExceptionListener.delegates.remove(this.localExceptionListener);
+						if (SingleConnectionFactory.this.aggregatedExceptionListener != null) {
+							SingleConnectionFactory.this.aggregatedExceptionListener.delegates.remove(this.localExceptionListener);
 						}
 						this.localExceptionListener = null;
 					}
@@ -648,7 +648,7 @@ public class SingleConnectionFactory implements ConnectionFactory, QueueConnecti
 							session.close();
 						}
 						catch (Throwable ex) {
-							logger.trace("Failed to close newly obtained JMS Session", ex);
+							SingleConnectionFactory.this.logger.trace("Failed to close newly obtained JMS Session", ex);
 						}
 						throw new javax.jms.IllegalStateException(msg);
 					}
@@ -664,26 +664,26 @@ public class SingleConnectionFactory implements ConnectionFactory, QueueConnecti
 		}
 
 		private void localStart() throws JMSException {
-			synchronized (connectionMonitor) {
+			synchronized (SingleConnectionFactory.this.connectionMonitor) {
 				if (!this.locallyStarted) {
 					this.locallyStarted = true;
-					if (startedCount == 0 && connection != null) {
-						connection.start();
+					if (SingleConnectionFactory.this.startedCount == 0 && SingleConnectionFactory.this.connection != null) {
+						SingleConnectionFactory.this.connection.start();
 					}
-					startedCount++;
+					SingleConnectionFactory.this.startedCount++;
 				}
 			}
 		}
 
 		private void localStop() throws JMSException {
-			synchronized (connectionMonitor) {
+			synchronized (SingleConnectionFactory.this.connectionMonitor) {
 				if (this.locallyStarted) {
 					this.locallyStarted = false;
-					if (startedCount == 1 && connection != null) {
-						connection.stop();
+					if (SingleConnectionFactory.this.startedCount == 1 && SingleConnectionFactory.this.connection != null) {
+						SingleConnectionFactory.this.connection.stop();
 					}
-					if (startedCount > 0) {
-						startedCount--;
+					if (SingleConnectionFactory.this.startedCount > 0) {
+						SingleConnectionFactory.this.startedCount--;
 					}
 				}
 			}
@@ -708,7 +708,7 @@ public class SingleConnectionFactory implements ConnectionFactory, QueueConnecti
 			// Iterate over temporary copy in order to avoid ConcurrentModificationException,
 			// since listener invocations may in turn trigger registration of listeners...
 			Set<ExceptionListener> copy;
-			synchronized (connectionMonitor) {
+			synchronized (SingleConnectionFactory.this.connectionMonitor) {
 				copy = new LinkedHashSet<>(this.delegates);
 			}
 			for (ExceptionListener listener : copy) {

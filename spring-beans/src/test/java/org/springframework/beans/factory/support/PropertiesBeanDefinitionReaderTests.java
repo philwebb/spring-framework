@@ -31,7 +31,7 @@ public class PropertiesBeanDefinitionReaderTests {
 	private final DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 
 	private final PropertiesBeanDefinitionReader reader = new PropertiesBeanDefinitionReader(
-			beanFactory);
+			this.beanFactory);
 
 
 	@Test

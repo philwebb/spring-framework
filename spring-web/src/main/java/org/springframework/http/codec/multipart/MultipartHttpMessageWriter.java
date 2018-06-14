@@ -139,7 +139,7 @@ public class MultipartHttpMessageWriter implements HttpMessageWriter<MultiValueM
 	 * @since 5.0.7
 	 */
 	public List<HttpMessageWriter<?>> getPartWriters() {
-		return Collections.unmodifiableList(partWriters);
+		return Collections.unmodifiableList(this.partWriters);
 	}
 
 	/**
@@ -383,7 +383,7 @@ public class MultipartHttpMessageWriter implements HttpMessageWriter<MultiValueM
 
 		private DataBuffer generateHeaders() {
 			DataBuffer buffer = this.bufferFactory.allocateBuffer();
-			for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
+			for (Map.Entry<String, List<String>> entry : this.headers.entrySet()) {
 				byte[] headerName = entry.getKey().getBytes(this.charset);
 				for (String headerValueString : entry.getValue()) {
 					byte[] headerValue = headerValueString.getBytes(this.charset);

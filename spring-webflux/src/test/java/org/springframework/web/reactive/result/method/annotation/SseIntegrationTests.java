@@ -107,7 +107,7 @@ public class SseIntegrationTests extends AbstractHttpHandlerIntegrationTests {
 	@Test
 	public void sseAsEvent() {
 
-		Assume.assumeTrue(server instanceof JettyHttpServer);
+		Assume.assumeTrue(this.server instanceof JettyHttpServer);
 
 		Flux<ServerSentEvent<Person>> result = this.webClient.get()
 				.uri("/event")
@@ -205,7 +205,7 @@ public class SseIntegrationTests extends AbstractHttpHandlerIntegrationTests {
 		Flux<String> infinite() {
 			return Flux.just(0, 1).map(l -> "foo " + l)
 					.mergeWith(Flux.never())
-					.doOnCancel(() -> cancellation.onComplete());
+					.doOnCancel(() -> this.cancellation.onComplete());
 		}
 	}
 
@@ -235,7 +235,7 @@ public class SseIntegrationTests extends AbstractHttpHandlerIntegrationTests {
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String name) {

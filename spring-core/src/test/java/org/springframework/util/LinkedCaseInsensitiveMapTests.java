@@ -30,98 +30,98 @@ public class LinkedCaseInsensitiveMapTests {
 
 	@Test
 	public void putAndGet() {
-		assertNull(map.put("key", "value1"));
-		assertEquals("value1", map.put("key", "value2"));
-		assertEquals("value2", map.put("key", "value3"));
-		assertEquals(1, map.size());
-		assertEquals("value3", map.get("key"));
-		assertEquals("value3", map.get("KEY"));
-		assertEquals("value3", map.get("Key"));
-		assertTrue(map.containsKey("key"));
-		assertTrue(map.containsKey("KEY"));
-		assertTrue(map.containsKey("Key"));
-		assertTrue(map.keySet().contains("key"));
-		assertTrue(map.keySet().contains("KEY"));
-		assertTrue(map.keySet().contains("Key"));
+		assertNull(this.map.put("key", "value1"));
+		assertEquals("value1", this.map.put("key", "value2"));
+		assertEquals("value2", this.map.put("key", "value3"));
+		assertEquals(1, this.map.size());
+		assertEquals("value3", this.map.get("key"));
+		assertEquals("value3", this.map.get("KEY"));
+		assertEquals("value3", this.map.get("Key"));
+		assertTrue(this.map.containsKey("key"));
+		assertTrue(this.map.containsKey("KEY"));
+		assertTrue(this.map.containsKey("Key"));
+		assertTrue(this.map.keySet().contains("key"));
+		assertTrue(this.map.keySet().contains("KEY"));
+		assertTrue(this.map.keySet().contains("Key"));
 	}
 
 	@Test
 	public void putWithOverlappingKeys() {
-		assertNull(map.put("key", "value1"));
-		assertEquals("value1", map.put("KEY", "value2"));
-		assertEquals("value2", map.put("Key", "value3"));
-		assertEquals(1, map.size());
-		assertEquals("value3", map.get("key"));
-		assertEquals("value3", map.get("KEY"));
-		assertEquals("value3", map.get("Key"));
-		assertTrue(map.containsKey("key"));
-		assertTrue(map.containsKey("KEY"));
-		assertTrue(map.containsKey("Key"));
-		assertTrue(map.keySet().contains("key"));
-		assertTrue(map.keySet().contains("KEY"));
-		assertTrue(map.keySet().contains("Key"));
+		assertNull(this.map.put("key", "value1"));
+		assertEquals("value1", this.map.put("KEY", "value2"));
+		assertEquals("value2", this.map.put("Key", "value3"));
+		assertEquals(1, this.map.size());
+		assertEquals("value3", this.map.get("key"));
+		assertEquals("value3", this.map.get("KEY"));
+		assertEquals("value3", this.map.get("Key"));
+		assertTrue(this.map.containsKey("key"));
+		assertTrue(this.map.containsKey("KEY"));
+		assertTrue(this.map.containsKey("Key"));
+		assertTrue(this.map.keySet().contains("key"));
+		assertTrue(this.map.keySet().contains("KEY"));
+		assertTrue(this.map.keySet().contains("Key"));
 	}
 
 	@Test
 	public void getOrDefault() {
-		assertNull(map.put("key", "value1"));
-		assertEquals("value1", map.put("KEY", "value2"));
-		assertEquals("value2", map.put("Key", "value3"));
-		assertEquals("value3", map.getOrDefault("key", "N"));
-		assertEquals("value3", map.getOrDefault("KEY", "N"));
-		assertEquals("value3", map.getOrDefault("Key", "N"));
-		assertEquals("N", map.getOrDefault("keeeey", "N"));
-		assertEquals("N", map.getOrDefault(new Object(), "N"));
+		assertNull(this.map.put("key", "value1"));
+		assertEquals("value1", this.map.put("KEY", "value2"));
+		assertEquals("value2", this.map.put("Key", "value3"));
+		assertEquals("value3", this.map.getOrDefault("key", "N"));
+		assertEquals("value3", this.map.getOrDefault("KEY", "N"));
+		assertEquals("value3", this.map.getOrDefault("Key", "N"));
+		assertEquals("N", this.map.getOrDefault("keeeey", "N"));
+		assertEquals("N", this.map.getOrDefault(new Object(), "N"));
 	}
 
 	@Test
 	public void getOrDefaultWithNullValue() {
-		assertNull(map.put("key", null));
-		assertNull(map.put("KEY", null));
-		assertNull(map.put("Key", null));
-		assertNull(map.getOrDefault("key", "N"));
-		assertNull(map.getOrDefault("KEY", "N"));
-		assertNull(map.getOrDefault("Key", "N"));
-		assertEquals("N", map.getOrDefault("keeeey", "N"));
-		assertEquals("N", map.getOrDefault(new Object(), "N"));
+		assertNull(this.map.put("key", null));
+		assertNull(this.map.put("KEY", null));
+		assertNull(this.map.put("Key", null));
+		assertNull(this.map.getOrDefault("key", "N"));
+		assertNull(this.map.getOrDefault("KEY", "N"));
+		assertNull(this.map.getOrDefault("Key", "N"));
+		assertEquals("N", this.map.getOrDefault("keeeey", "N"));
+		assertEquals("N", this.map.getOrDefault(new Object(), "N"));
 	}
 
 	@Test
 	public void computeIfAbsentWithExistingValue() {
-		assertNull(map.putIfAbsent("key", "value1"));
-		assertEquals("value1", map.putIfAbsent("KEY", "value2"));
-		assertEquals("value1", map.put("Key", "value3"));
-		assertEquals("value3", map.computeIfAbsent("key", key -> "value1"));
-		assertEquals("value3", map.computeIfAbsent("KEY", key -> "value2"));
-		assertEquals("value3", map.computeIfAbsent("Key", key -> "value3"));
+		assertNull(this.map.putIfAbsent("key", "value1"));
+		assertEquals("value1", this.map.putIfAbsent("KEY", "value2"));
+		assertEquals("value1", this.map.put("Key", "value3"));
+		assertEquals("value3", this.map.computeIfAbsent("key", key -> "value1"));
+		assertEquals("value3", this.map.computeIfAbsent("KEY", key -> "value2"));
+		assertEquals("value3", this.map.computeIfAbsent("Key", key -> "value3"));
 	}
 
 	@Test
 	public void computeIfAbsentWithComputedValue() {
-		assertEquals("value1", map.computeIfAbsent("key", key -> "value1"));
-		assertEquals("value1", map.computeIfAbsent("KEY", key -> "value2"));
-		assertEquals("value1", map.computeIfAbsent("Key", key -> "value3"));
+		assertEquals("value1", this.map.computeIfAbsent("key", key -> "value1"));
+		assertEquals("value1", this.map.computeIfAbsent("KEY", key -> "value2"));
+		assertEquals("value1", this.map.computeIfAbsent("Key", key -> "value3"));
 	}
 
 	@Test
 	public void mapClone() {
-		assertNull(map.put("key", "value1"));
-		LinkedCaseInsensitiveMap<String> copy = map.clone();
+		assertNull(this.map.put("key", "value1"));
+		LinkedCaseInsensitiveMap<String> copy = this.map.clone();
 
-		assertEquals(map.getLocale(), copy.getLocale());
-		assertEquals("value1", map.get("key"));
-		assertEquals("value1", map.get("KEY"));
-		assertEquals("value1", map.get("Key"));
+		assertEquals(this.map.getLocale(), copy.getLocale());
+		assertEquals("value1", this.map.get("key"));
+		assertEquals("value1", this.map.get("KEY"));
+		assertEquals("value1", this.map.get("Key"));
 		assertEquals("value1", copy.get("key"));
 		assertEquals("value1", copy.get("KEY"));
 		assertEquals("value1", copy.get("Key"));
 
 		copy.put("Key", "value2");
-		assertEquals(1, map.size());
+		assertEquals(1, this.map.size());
 		assertEquals(1, copy.size());
-		assertEquals("value1", map.get("key"));
-		assertEquals("value1", map.get("KEY"));
-		assertEquals("value1", map.get("Key"));
+		assertEquals("value1", this.map.get("key"));
+		assertEquals("value1", this.map.get("KEY"));
+		assertEquals("value1", this.map.get("Key"));
 		assertEquals("value2", copy.get("key"));
 		assertEquals("value2", copy.get("KEY"));
 		assertEquals("value2", copy.get("Key"));

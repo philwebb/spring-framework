@@ -82,8 +82,8 @@ public abstract class AbstractDetectingUrlHandlerMapping extends AbstractUrlHand
 			}
 		}
 
-		if ((logger.isDebugEnabled() && !getHandlerMap().isEmpty()) || logger.isTraceEnabled()) {
-			logger.debug("Detected " + getHandlerMap().size() + " mappings in " + formatMappingName());
+		if ((this.logger.isDebugEnabled() && !getHandlerMap().isEmpty()) || this.logger.isTraceEnabled()) {
+			this.logger.debug("Detected " + getHandlerMap().size() + " mappings in " + formatMappingName());
 		}
 	}
 

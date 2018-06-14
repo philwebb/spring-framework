@@ -36,7 +36,7 @@ public class EmbeddedDatabaseFactoryBeanTests {
 
 
 	Resource resource(String path) {
-		return resourceLoader.getResource(path);
+		return this.resourceLoader.getResource(path);
 	}
 
 	@Test

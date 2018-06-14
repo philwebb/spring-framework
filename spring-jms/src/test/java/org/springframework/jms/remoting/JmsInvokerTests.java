@@ -65,13 +65,13 @@ public class JmsInvokerTests {
 
 	@Before
 	public void setUpMocks() throws Exception {
-		mockConnectionFactory = mock(QueueConnectionFactory.class);
-		mockConnection = mock(QueueConnection.class);
-		mockSession = mock(QueueSession.class);
-		mockQueue = mock(Queue.class);
+		this.mockConnectionFactory = mock(QueueConnectionFactory.class);
+		this.mockConnection = mock(QueueConnection.class);
+		this.mockSession = mock(QueueSession.class);
+		this.mockQueue = mock(Queue.class);
 
-		given(mockConnectionFactory.createConnection()).willReturn(mockConnection);
-		given(mockConnection.createSession(false, Session.AUTO_ACKNOWLEDGE)).willReturn(mockSession);
+		given(this.mockConnectionFactory.createConnection()).willReturn(this.mockConnection);
+		given(this.mockConnection.createSession(false, Session.AUTO_ACKNOWLEDGE)).willReturn(this.mockSession);
 	}
 
 
@@ -82,7 +82,7 @@ public class JmsInvokerTests {
 
 	@Test
 	public void testJmsInvokerProxyFactoryBeanAndServiceExporterWithDynamicQueue() throws Throwable {
-		given(mockSession.createQueue("myQueue")).willReturn(mockQueue);
+		given(this.mockSession.createQueue("myQueue")).willReturn(this.mockQueue);
 		doTestJmsInvokerProxyFactoryBeanAndServiceExporter(true);
 	}
 
@@ -101,9 +101,9 @@ public class JmsInvokerTests {
 		pfb.afterPropertiesSet();
 		ITestBean proxy = (ITestBean) pfb.getObject();
 
-		thrown.expect(RemoteTimeoutException.class);
-		thrown.expectMessage("1500 ms");
-		thrown.expectMessage("getAge");
+		this.thrown.expect(RemoteTimeoutException.class);
+		this.thrown.expectMessage("1500 ms");
+		this.thrown.expectMessage("getAge");
 		proxy.getAge();
 	}
 
@@ -286,7 +286,7 @@ public class JmsInvokerTests {
 
 		@Override
 		public Serializable getObject() throws JMSException {
-			return serializable;
+			return this.serializable;
 		}
 
 		@Override
@@ -327,7 +327,7 @@ public class JmsInvokerTests {
 
 		@Override
 		public Destination getJMSReplyTo() throws JMSException {
-			return replyTo;
+			return this.replyTo;
 		}
 
 		@Override

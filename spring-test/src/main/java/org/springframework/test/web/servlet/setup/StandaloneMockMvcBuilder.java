@@ -417,36 +417,36 @@ public class StandaloneMockMvcBuilder extends AbstractMockMvcBuilder<StandaloneM
 	private class StandaloneConfiguration extends WebMvcConfigurationSupport {
 
 		public RequestMappingHandlerMapping getHandlerMapping() {
-			RequestMappingHandlerMapping handlerMapping = handlerMappingFactory.get();
-			handlerMapping.setEmbeddedValueResolver(new StaticStringValueResolver(placeholderValues));
-			handlerMapping.setUseSuffixPatternMatch(useSuffixPatternMatch);
-			handlerMapping.setUseTrailingSlashMatch(useTrailingSlashPatternMatch);
+			RequestMappingHandlerMapping handlerMapping = StandaloneMockMvcBuilder.this.handlerMappingFactory.get();
+			handlerMapping.setEmbeddedValueResolver(new StaticStringValueResolver(StandaloneMockMvcBuilder.this.placeholderValues));
+			handlerMapping.setUseSuffixPatternMatch(StandaloneMockMvcBuilder.this.useSuffixPatternMatch);
+			handlerMapping.setUseTrailingSlashMatch(StandaloneMockMvcBuilder.this.useTrailingSlashPatternMatch);
 			handlerMapping.setOrder(0);
 			handlerMapping.setInterceptors(getInterceptors());
-			if (removeSemicolonContent != null) {
-				handlerMapping.setRemoveSemicolonContent(removeSemicolonContent);
+			if (StandaloneMockMvcBuilder.this.removeSemicolonContent != null) {
+				handlerMapping.setRemoveSemicolonContent(StandaloneMockMvcBuilder.this.removeSemicolonContent);
 			}
 			return handlerMapping;
 		}
 
 		@Override
 		protected void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-			converters.addAll(messageConverters);
+			converters.addAll(StandaloneMockMvcBuilder.this.messageConverters);
 		}
 
 		@Override
 		protected void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-			argumentResolvers.addAll(customArgumentResolvers);
+			argumentResolvers.addAll(StandaloneMockMvcBuilder.this.customArgumentResolvers);
 		}
 
 		@Override
 		protected void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> returnValueHandlers) {
-			returnValueHandlers.addAll(customReturnValueHandlers);
+			returnValueHandlers.addAll(StandaloneMockMvcBuilder.this.customReturnValueHandlers);
 		}
 
 		@Override
 		protected void addInterceptors(InterceptorRegistry registry) {
-			for (MappedInterceptor interceptor : mappedInterceptors) {
+			for (MappedInterceptor interceptor : StandaloneMockMvcBuilder.this.mappedInterceptors) {
 				InterceptorRegistration registration = registry.addInterceptor(interceptor.getInterceptor());
 				if (interceptor.getPathPatterns() != null) {
 					registration.addPathPatterns(interceptor.getPathPatterns());
@@ -456,24 +456,24 @@ public class StandaloneMockMvcBuilder extends AbstractMockMvcBuilder<StandaloneM
 
 		@Override
 		public ContentNegotiationManager mvcContentNegotiationManager() {
-			return (contentNegotiationManager != null) ? contentNegotiationManager : super.mvcContentNegotiationManager();
+			return (StandaloneMockMvcBuilder.this.contentNegotiationManager != null) ? StandaloneMockMvcBuilder.this.contentNegotiationManager : super.mvcContentNegotiationManager();
 		}
 
 		@Override
 		public FormattingConversionService mvcConversionService() {
-			return (conversionService != null ? conversionService : super.mvcConversionService());
+			return (StandaloneMockMvcBuilder.this.conversionService != null ? StandaloneMockMvcBuilder.this.conversionService : super.mvcConversionService());
 		}
 
 		@Override
 		public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
-			if (asyncRequestTimeout != null) {
-				configurer.setDefaultTimeout(asyncRequestTimeout);
+			if (StandaloneMockMvcBuilder.this.asyncRequestTimeout != null) {
+				configurer.setDefaultTimeout(StandaloneMockMvcBuilder.this.asyncRequestTimeout);
 			}
 		}
 
 		@Override
 		public Validator mvcValidator() {
-			Validator mvcValidator = (validator != null) ? validator : super.mvcValidator();
+			Validator mvcValidator = (StandaloneMockMvcBuilder.this.validator != null) ? StandaloneMockMvcBuilder.this.validator : super.mvcValidator();
 			if (mvcValidator instanceof InitializingBean) {
 				try {
 					((InitializingBean) mvcValidator).afterPropertiesSet();
@@ -487,10 +487,10 @@ public class StandaloneMockMvcBuilder extends AbstractMockMvcBuilder<StandaloneM
 
 		@Override
 		protected void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> exceptionResolvers) {
-			if (handlerExceptionResolvers == null) {
+			if (StandaloneMockMvcBuilder.this.handlerExceptionResolvers == null) {
 				return;
 			}
-			for (HandlerExceptionResolver resolver : handlerExceptionResolvers) {
+			for (HandlerExceptionResolver resolver : StandaloneMockMvcBuilder.this.handlerExceptionResolvers) {
 				if (resolver instanceof ApplicationContextAware) {
 					ApplicationContext applicationContext  = getApplicationContext();
 					if (applicationContext != null) {

@@ -80,8 +80,8 @@ public class LocalSlsbInvokerInterceptor extends AbstractSlsbInvokerInterceptor 
 		}
 		catch (InvocationTargetException ex) {
 			Throwable targetEx = ex.getTargetException();
-			if (logger.isDebugEnabled()) {
-				logger.debug("Method of local EJB [" + getJndiName() + "] threw exception", targetEx);
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Method of local EJB [" + getJndiName() + "] threw exception", targetEx);
 			}
 			if (targetEx instanceof CreateException) {
 				throw new EjbAccessException("Could not create local EJB [" + getJndiName() + "]", targetEx);
@@ -149,12 +149,12 @@ public class LocalSlsbInvokerInterceptor extends AbstractSlsbInvokerInterceptor 
 	 * @see #create
 	 */
 	protected Object newSessionBeanInstance() throws NamingException, InvocationTargetException {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Trying to create reference to local EJB");
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Trying to create reference to local EJB");
 		}
 		Object ejbInstance = create();
-		if (logger.isDebugEnabled()) {
-			logger.debug("Obtained reference to local EJB: " + ejbInstance);
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Obtained reference to local EJB: " + ejbInstance);
 		}
 		return ejbInstance;
 	}
@@ -170,7 +170,7 @@ public class LocalSlsbInvokerInterceptor extends AbstractSlsbInvokerInterceptor 
 				ejb.remove();
 			}
 			catch (Throwable ex) {
-				logger.warn("Could not invoke 'remove' on local EJB proxy", ex);
+				this.logger.warn("Could not invoke 'remove' on local EJB proxy", ex);
 			}
 		}
 	}

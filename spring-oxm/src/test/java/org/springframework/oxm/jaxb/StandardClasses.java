@@ -48,7 +48,7 @@ public class StandardClasses {
 	private DatatypeFactory factory;
 
 	public StandardClasses() throws DatatypeConfigurationException {
-		factory = DatatypeFactory.newInstance();
+		this.factory = DatatypeFactory.newInstance();
 	}
 
 	/*
@@ -95,12 +95,12 @@ public class StandardClasses {
 
 	public JAXBElement<XMLGregorianCalendar> standardClassXMLGregorianCalendar() throws DatatypeConfigurationException {
 		XMLGregorianCalendar calendar =
-				factory.newXMLGregorianCalendar((GregorianCalendar) Calendar.getInstance());
+				this.factory.newXMLGregorianCalendar((GregorianCalendar) Calendar.getInstance());
 		return new JAXBElement<>(NAME, XMLGregorianCalendar.class, calendar);
 	}
 
 	public JAXBElement<Duration> standardClassDuration() {
-		Duration duration = factory.newDuration(42000);
+		Duration duration = this.factory.newDuration(42000);
 		return new JAXBElement<>(NAME, Duration.class, duration);
 	}
 

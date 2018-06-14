@@ -117,7 +117,7 @@ public class JettyWebSocketClient extends AbstractWebSocketClient implements Lif
 			this.client.stop();
 		}
 		catch (Exception ex) {
-			logger.error("Failed to stop Jetty WebSocketClient", ex);
+			this.logger.error("Failed to stop Jetty WebSocketClient", ex);
 		}
 	}
 
@@ -154,7 +154,7 @@ public class JettyWebSocketClient extends AbstractWebSocketClient implements Lif
 		final JettyWebSocketHandlerAdapter listener = new JettyWebSocketHandlerAdapter(wsHandler, wsSession);
 
 		Callable<WebSocketSession> connectTask = () -> {
-			Future<Session> future = client.connect(listener, uri, request);
+			Future<Session> future = this.client.connect(listener, uri, request);
 			future.get();
 			return wsSession;
 		};

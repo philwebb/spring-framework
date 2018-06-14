@@ -128,7 +128,7 @@ public class FreeMarkerConfigurer extends FreeMarkerConfigurationFactory
 	@Override
 	protected void postProcessTemplateLoaders(List<TemplateLoader> templateLoaders) {
 		templateLoaders.add(new ClassTemplateLoader(FreeMarkerConfigurer.class, ""));
-		logger.trace("ClassTemplateLoader for Spring FreeMarker macros added");
+		this.logger.trace("ClassTemplateLoader for Spring FreeMarker macros added");
 	}
 
 

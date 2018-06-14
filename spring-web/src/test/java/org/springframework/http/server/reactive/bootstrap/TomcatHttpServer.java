@@ -65,18 +65,18 @@ public class TomcatHttpServer extends AbstractHttpServer {
 	@Override
 	protected void initServer() throws Exception {
 		this.tomcatServer = new Tomcat();
-		this.tomcatServer.setBaseDir(baseDir);
+		this.tomcatServer.setBaseDir(this.baseDir);
 		this.tomcatServer.setHostname(getHost());
 		this.tomcatServer.setPort(getPort());
 
 		ServletHttpHandlerAdapter servlet = initServletAdapter();
 
 		File base = new File(System.getProperty("java.io.tmpdir"));
-		Context rootContext = tomcatServer.addContext(this.contextPath, base.getAbsolutePath());
+		Context rootContext = this.tomcatServer.addContext(this.contextPath, base.getAbsolutePath());
 		Tomcat.addServlet(rootContext, "httpHandlerServlet", servlet).setAsyncSupported(true);
 		rootContext.addServletMappingDecoded(this.servletMapping, "httpHandlerServlet");
-		if (wsListener != null) {
-			rootContext.addApplicationListener(wsListener.getName());
+		if (this.wsListener != null) {
+			rootContext.addApplicationListener(this.wsListener.getName());
 		}
 	}
 

@@ -294,7 +294,7 @@ public class TableMetaDataContext {
 		insertStatement.append(") VALUES(");
 		if (columnCount < 1) {
 			if (this.generatedKeyColumnsUsed) {
-				logger.info("Unable to locate non-key columns for table '" +
+				this.logger.info("Unable to locate non-key columns for table '" +
 						getTableName() + "' so an empty insert statement is generated");
 			}
 			else {

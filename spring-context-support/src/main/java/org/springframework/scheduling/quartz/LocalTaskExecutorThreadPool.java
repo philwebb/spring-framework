@@ -81,7 +81,7 @@ public class LocalTaskExecutorThreadPool implements ThreadPool {
 			return true;
 		}
 		catch (RejectedExecutionException ex) {
-			logger.error("Task has been rejected by TaskExecutor", ex);
+			this.logger.error("Task has been rejected by TaskExecutor", ex);
 			return false;
 		}
 	}

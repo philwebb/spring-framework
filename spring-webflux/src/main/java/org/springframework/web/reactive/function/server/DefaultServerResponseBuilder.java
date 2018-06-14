@@ -396,7 +396,7 @@ class DefaultServerResponseBuilder implements ServerResponse.BodyBuilder {
 				}
 				@Override
 				public Map<String, Object> hints() {
-					return hints;
+					return BodyInserterResponse.this.hints;
 				}
 			});
 		}

@@ -113,76 +113,76 @@ public class StandardEnvironmentTests {
 
 	@Test
 	public void activeProfilesIsEmptyByDefault() {
-		assertThat(environment.getActiveProfiles().length, is(0));
+		assertThat(this.environment.getActiveProfiles().length, is(0));
 	}
 
 	@Test
 	public void defaultProfilesContainsDefaultProfileByDefault() {
-		assertThat(environment.getDefaultProfiles().length, is(1));
-		assertThat(environment.getDefaultProfiles()[0], equalTo("default"));
+		assertThat(this.environment.getDefaultProfiles().length, is(1));
+		assertThat(this.environment.getDefaultProfiles()[0], equalTo("default"));
 	}
 
 	@Test
 	public void setActiveProfiles() {
-		environment.setActiveProfiles("local", "embedded");
-		String[] activeProfiles = environment.getActiveProfiles();
+		this.environment.setActiveProfiles("local", "embedded");
+		String[] activeProfiles = this.environment.getActiveProfiles();
 		assertThat(Arrays.asList(activeProfiles), hasItems("local", "embedded"));
 		assertThat(activeProfiles.length, is(2));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void setActiveProfiles_withNullProfileArray() {
-		environment.setActiveProfiles((String[])null);
+		this.environment.setActiveProfiles((String[])null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void setActiveProfiles_withNullProfile() {
-		environment.setActiveProfiles((String)null);
+		this.environment.setActiveProfiles((String)null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void setActiveProfiles_withEmptyProfile() {
-		environment.setActiveProfiles("");
+		this.environment.setActiveProfiles("");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void setActiveProfiles_withNotOperator() {
-		environment.setActiveProfiles("p1", "!p2");
+		this.environment.setActiveProfiles("p1", "!p2");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void setDefaultProfiles_withNullProfileArray() {
-		environment.setDefaultProfiles((String[])null);
+		this.environment.setDefaultProfiles((String[])null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void setDefaultProfiles_withNullProfile() {
-		environment.setDefaultProfiles((String)null);
+		this.environment.setDefaultProfiles((String)null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void setDefaultProfiles_withEmptyProfile() {
-		environment.setDefaultProfiles("");
+		this.environment.setDefaultProfiles("");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void setDefaultProfiles_withNotOperator() {
-		environment.setDefaultProfiles("d1", "!d2");
+		this.environment.setDefaultProfiles("d1", "!d2");
 	}
 
 	@Test
 	public void addActiveProfile() {
-		assertThat(environment.getActiveProfiles().length, is(0));
-		environment.setActiveProfiles("local", "embedded");
-		assertThat(Arrays.asList(environment.getActiveProfiles()), hasItems("local", "embedded"));
-		assertThat(environment.getActiveProfiles().length, is(2));
-		environment.addActiveProfile("p1");
-		assertThat(Arrays.asList(environment.getActiveProfiles()), hasItems("p1"));
-		assertThat(environment.getActiveProfiles().length, is(3));
-		environment.addActiveProfile("p2");
-		environment.addActiveProfile("p3");
-		assertThat(Arrays.asList(environment.getActiveProfiles()), hasItems("p2", "p3"));
-		assertThat(environment.getActiveProfiles().length, is(5));
+		assertThat(this.environment.getActiveProfiles().length, is(0));
+		this.environment.setActiveProfiles("local", "embedded");
+		assertThat(Arrays.asList(this.environment.getActiveProfiles()), hasItems("local", "embedded"));
+		assertThat(this.environment.getActiveProfiles().length, is(2));
+		this.environment.addActiveProfile("p1");
+		assertThat(Arrays.asList(this.environment.getActiveProfiles()), hasItems("p1"));
+		assertThat(this.environment.getActiveProfiles().length, is(3));
+		this.environment.addActiveProfile("p2");
+		this.environment.addActiveProfile("p3");
+		assertThat(Arrays.asList(this.environment.getActiveProfiles()), hasItems("p2", "p3"));
+		assertThat(this.environment.getActiveProfiles().length, is(5));
 	}
 
 	@Test
@@ -197,11 +197,11 @@ public class StandardEnvironmentTests {
 
 	@Test
 	public void reservedDefaultProfile() {
-		assertThat(environment.getDefaultProfiles(), equalTo(new String[]{RESERVED_DEFAULT_PROFILE_NAME}));
+		assertThat(this.environment.getDefaultProfiles(), equalTo(new String[]{RESERVED_DEFAULT_PROFILE_NAME}));
 		System.setProperty(DEFAULT_PROFILES_PROPERTY_NAME, "d0");
-		assertThat(environment.getDefaultProfiles(), equalTo(new String[]{"d0"}));
-		environment.setDefaultProfiles("d1", "d2");
-		assertThat(environment.getDefaultProfiles(), equalTo(new String[]{"d1","d2"}));
+		assertThat(this.environment.getDefaultProfiles(), equalTo(new String[]{"d0"}));
+		this.environment.setDefaultProfiles("d1", "d2");
+		assertThat(this.environment.getDefaultProfiles(), equalTo(new String[]{"d1","d2"}));
 		System.getProperties().remove(DEFAULT_PROFILES_PROPERTY_NAME);
 	}
 
@@ -209,7 +209,7 @@ public class StandardEnvironmentTests {
 	public void defaultProfileWithCircularPlaceholder() {
 		System.setProperty(DEFAULT_PROFILES_PROPERTY_NAME, "${spring.profiles.default}");
 		try {
-			environment.getDefaultProfiles();
+			this.environment.getDefaultProfiles();
 		}
 		finally {
 			System.getProperties().remove(DEFAULT_PROFILES_PROPERTY_NAME);
@@ -218,121 +218,121 @@ public class StandardEnvironmentTests {
 
 	@Test
 	public void getActiveProfiles_systemPropertiesEmpty() {
-		assertThat(environment.getActiveProfiles().length, is(0));
+		assertThat(this.environment.getActiveProfiles().length, is(0));
 		System.setProperty(ACTIVE_PROFILES_PROPERTY_NAME, "");
-		assertThat(environment.getActiveProfiles().length, is(0));
+		assertThat(this.environment.getActiveProfiles().length, is(0));
 		System.getProperties().remove(ACTIVE_PROFILES_PROPERTY_NAME);
 	}
 
 	@Test
 	public void getActiveProfiles_fromSystemProperties() {
 		System.setProperty(ACTIVE_PROFILES_PROPERTY_NAME, "foo");
-		assertThat(Arrays.asList(environment.getActiveProfiles()), hasItem("foo"));
+		assertThat(Arrays.asList(this.environment.getActiveProfiles()), hasItem("foo"));
 		System.getProperties().remove(ACTIVE_PROFILES_PROPERTY_NAME);
 	}
 
 	@Test
 	public void getActiveProfiles_fromSystemProperties_withMultipleProfiles() {
 		System.setProperty(ACTIVE_PROFILES_PROPERTY_NAME, "foo,bar");
-		assertThat(Arrays.asList(environment.getActiveProfiles()), hasItems("foo", "bar"));
+		assertThat(Arrays.asList(this.environment.getActiveProfiles()), hasItems("foo", "bar"));
 		System.getProperties().remove(ACTIVE_PROFILES_PROPERTY_NAME);
 	}
 
 	@Test
 	public void getActiveProfiles_fromSystemProperties_withMulitpleProfiles_withWhitespace() {
 		System.setProperty(ACTIVE_PROFILES_PROPERTY_NAME, " bar , baz "); // notice whitespace
-		assertThat(Arrays.asList(environment.getActiveProfiles()), hasItems("bar", "baz"));
+		assertThat(Arrays.asList(this.environment.getActiveProfiles()), hasItems("bar", "baz"));
 		System.getProperties().remove(ACTIVE_PROFILES_PROPERTY_NAME);
 	}
 
 	@Test
 	public void getDefaultProfiles() {
-		assertThat(environment.getDefaultProfiles(), equalTo(new String[] {RESERVED_DEFAULT_PROFILE_NAME}));
-		environment.getPropertySources().addFirst(new MockPropertySource().withProperty(DEFAULT_PROFILES_PROPERTY_NAME, "pd1"));
-		assertThat(environment.getDefaultProfiles().length, is(1));
-		assertThat(Arrays.asList(environment.getDefaultProfiles()), hasItem("pd1"));
+		assertThat(this.environment.getDefaultProfiles(), equalTo(new String[] {RESERVED_DEFAULT_PROFILE_NAME}));
+		this.environment.getPropertySources().addFirst(new MockPropertySource().withProperty(DEFAULT_PROFILES_PROPERTY_NAME, "pd1"));
+		assertThat(this.environment.getDefaultProfiles().length, is(1));
+		assertThat(Arrays.asList(this.environment.getDefaultProfiles()), hasItem("pd1"));
 	}
 
 	@Test
 	public void setDefaultProfiles() {
-		environment.setDefaultProfiles();
-		assertThat(environment.getDefaultProfiles().length, is(0));
-		environment.setDefaultProfiles("pd1");
-		assertThat(Arrays.asList(environment.getDefaultProfiles()), hasItem("pd1"));
-		environment.setDefaultProfiles("pd2", "pd3");
-		assertThat(Arrays.asList(environment.getDefaultProfiles()), not(hasItem("pd1")));
-		assertThat(Arrays.asList(environment.getDefaultProfiles()), hasItems("pd2", "pd3"));
+		this.environment.setDefaultProfiles();
+		assertThat(this.environment.getDefaultProfiles().length, is(0));
+		this.environment.setDefaultProfiles("pd1");
+		assertThat(Arrays.asList(this.environment.getDefaultProfiles()), hasItem("pd1"));
+		this.environment.setDefaultProfiles("pd2", "pd3");
+		assertThat(Arrays.asList(this.environment.getDefaultProfiles()), not(hasItem("pd1")));
+		assertThat(Arrays.asList(this.environment.getDefaultProfiles()), hasItems("pd2", "pd3"));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void acceptsProfiles_withEmptyArgumentList() {
-		environment.acceptsProfiles();
+		this.environment.acceptsProfiles();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void acceptsProfiles_withNullArgumentList() {
-		environment.acceptsProfiles((String[])null);
+		this.environment.acceptsProfiles((String[])null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void acceptsProfiles_withNullArgument() {
-		environment.acceptsProfiles((String)null);
+		this.environment.acceptsProfiles((String)null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void acceptsProfiles_withEmptyArgument() {
-		environment.acceptsProfiles("");
+		this.environment.acceptsProfiles("");
 	}
 
 	@Test
 	public void acceptsProfiles_activeProfileSetProgrammatically() {
-		assertThat(environment.acceptsProfiles("p1", "p2"), is(false));
-		environment.setActiveProfiles("p1");
-		assertThat(environment.acceptsProfiles("p1", "p2"), is(true));
-		environment.setActiveProfiles("p2");
-		assertThat(environment.acceptsProfiles("p1", "p2"), is(true));
-		environment.setActiveProfiles("p1", "p2");
-		assertThat(environment.acceptsProfiles("p1", "p2"), is(true));
+		assertThat(this.environment.acceptsProfiles("p1", "p2"), is(false));
+		this.environment.setActiveProfiles("p1");
+		assertThat(this.environment.acceptsProfiles("p1", "p2"), is(true));
+		this.environment.setActiveProfiles("p2");
+		assertThat(this.environment.acceptsProfiles("p1", "p2"), is(true));
+		this.environment.setActiveProfiles("p1", "p2");
+		assertThat(this.environment.acceptsProfiles("p1", "p2"), is(true));
 	}
 
 	@Test
 	public void acceptsProfiles_activeProfileSetViaProperty() {
-		assertThat(environment.acceptsProfiles("p1"), is(false));
-		environment.getPropertySources().addFirst(new MockPropertySource().withProperty(ACTIVE_PROFILES_PROPERTY_NAME, "p1"));
-		assertThat(environment.acceptsProfiles("p1"), is(true));
+		assertThat(this.environment.acceptsProfiles("p1"), is(false));
+		this.environment.getPropertySources().addFirst(new MockPropertySource().withProperty(ACTIVE_PROFILES_PROPERTY_NAME, "p1"));
+		assertThat(this.environment.acceptsProfiles("p1"), is(true));
 	}
 
 	@Test
 	public void acceptsProfiles_defaultProfile() {
-		assertThat(environment.acceptsProfiles("pd"), is(false));
-		environment.setDefaultProfiles("pd");
-		assertThat(environment.acceptsProfiles("pd"), is(true));
-		environment.setActiveProfiles("p1");
-		assertThat(environment.acceptsProfiles("pd"), is(false));
-		assertThat(environment.acceptsProfiles("p1"), is(true));
+		assertThat(this.environment.acceptsProfiles("pd"), is(false));
+		this.environment.setDefaultProfiles("pd");
+		assertThat(this.environment.acceptsProfiles("pd"), is(true));
+		this.environment.setActiveProfiles("p1");
+		assertThat(this.environment.acceptsProfiles("pd"), is(false));
+		assertThat(this.environment.acceptsProfiles("p1"), is(true));
 	}
 
 	@Test
 	public void acceptsProfiles_withNotOperator() {
-		assertThat(environment.acceptsProfiles("p1"), is(false));
-		assertThat(environment.acceptsProfiles("!p1"), is(true));
-		environment.addActiveProfile("p1");
-		assertThat(environment.acceptsProfiles("p1"), is(true));
-		assertThat(environment.acceptsProfiles("!p1"), is(false));
+		assertThat(this.environment.acceptsProfiles("p1"), is(false));
+		assertThat(this.environment.acceptsProfiles("!p1"), is(true));
+		this.environment.addActiveProfile("p1");
+		assertThat(this.environment.acceptsProfiles("p1"), is(true));
+		assertThat(this.environment.acceptsProfiles("!p1"), is(false));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void acceptsProfiles_withInvalidNotOperator() {
-		environment.acceptsProfiles("p1", "!");
+		this.environment.acceptsProfiles("p1", "!");
 	}
 
 	@Test
 	public void acceptsProfiles_withProfileExpression() {
-		assertThat(environment.acceptsProfiles(Profiles.of("p1 & p2")), is(false));
-		environment.addActiveProfile("p1");
-		assertThat(environment.acceptsProfiles(Profiles.of("p1 & p2")), is(false));
-		environment.addActiveProfile("p2");
-		assertThat(environment.acceptsProfiles(Profiles.of("p1 & p2")), is(true));
+		assertThat(this.environment.acceptsProfiles(Profiles.of("p1 & p2")), is(false));
+		this.environment.addActiveProfile("p1");
+		assertThat(this.environment.acceptsProfiles(Profiles.of("p1 & p2")), is(false));
+		this.environment.addActiveProfile("p2");
+		assertThat(this.environment.acceptsProfiles(Profiles.of("p1 & p2")), is(true));
 	}
 
 	@Test
@@ -363,21 +363,21 @@ public class StandardEnvironmentTests {
 	@Test
 	public void suppressGetenvAccessThroughSystemProperty() {
 		System.setProperty("spring.getenv.ignore", "true");
-		assertTrue(environment.getSystemEnvironment().isEmpty());
+		assertTrue(this.environment.getSystemEnvironment().isEmpty());
 		System.clearProperty("spring.getenv.ignore");
 	}
 
 	@Test
 	public void suppressGetenvAccessThroughSpringProperty() {
 		SpringProperties.setProperty("spring.getenv.ignore", "true");
-		assertTrue(environment.getSystemEnvironment().isEmpty());
+		assertTrue(this.environment.getSystemEnvironment().isEmpty());
 		SpringProperties.setProperty("spring.getenv.ignore", null);
 	}
 
 	@Test
 	public void suppressGetenvAccessThroughSpringFlag() {
 		SpringProperties.setFlag("spring.getenv.ignore");
-		assertTrue(environment.getSystemEnvironment().isEmpty());
+		assertTrue(this.environment.getSystemEnvironment().isEmpty());
 		SpringProperties.setProperty("spring.getenv.ignore", null);
 	}
 
@@ -389,7 +389,7 @@ public class StandardEnvironmentTests {
 		System.getProperties().put(NON_STRING_PROPERTY_NAME, STRING_PROPERTY_VALUE);
 
 		{
-			Map<?, ?> systemProperties = environment.getSystemProperties();
+			Map<?, ?> systemProperties = this.environment.getSystemProperties();
 			assertThat(systemProperties, notNullValue());
 			assertSame(systemProperties, System.getProperties());
 			assertThat(systemProperties.get(ALLOWED_PROPERTY_NAME), equalTo((Object)ALLOWED_PROPERTY_VALUE));
@@ -423,7 +423,7 @@ public class StandardEnvironmentTests {
 		System.setSecurityManager(securityManager);
 
 		{
-			Map<?, ?> systemProperties = environment.getSystemProperties();
+			Map<?, ?> systemProperties = this.environment.getSystemProperties();
 			assertThat(systemProperties, notNullValue());
 			assertThat(systemProperties, instanceOf(ReadOnlySystemAttributesMap.class));
 			assertThat((String)systemProperties.get(ALLOWED_PROPERTY_NAME), equalTo(ALLOWED_PROPERTY_VALUE));
@@ -462,7 +462,7 @@ public class StandardEnvironmentTests {
 		getModifiableSystemEnvironment().put(DISALLOWED_PROPERTY_NAME, DISALLOWED_PROPERTY_VALUE);
 
 		{
-			Map<String, Object> systemEnvironment = environment.getSystemEnvironment();
+			Map<String, Object> systemEnvironment = this.environment.getSystemEnvironment();
 			assertThat(systemEnvironment, notNullValue());
 			assertSame(systemEnvironment, System.getenv());
 		}
@@ -485,7 +485,7 @@ public class StandardEnvironmentTests {
 		System.setSecurityManager(securityManager);
 
 		{
-			Map<String, Object> systemEnvironment = environment.getSystemEnvironment();
+			Map<String, Object> systemEnvironment = this.environment.getSystemEnvironment();
 			assertThat(systemEnvironment, notNullValue());
 			assertThat(systemEnvironment, instanceOf(ReadOnlySystemAttributesMap.class));
 			assertThat(systemEnvironment.get(ALLOWED_PROPERTY_NAME), equalTo((Object)ALLOWED_PROPERTY_VALUE));

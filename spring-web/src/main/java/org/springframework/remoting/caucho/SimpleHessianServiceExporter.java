@@ -65,7 +65,7 @@ public class SimpleHessianServiceExporter extends HessianExporter implements Htt
 		}
 		catch (Throwable ex) {
 			exchange.sendResponseHeaders(500, -1);
-			logger.error("Hessian skeleton invocation failed", ex);
+			this.logger.error("Hessian skeleton invocation failed", ex);
 			return;
 		}
 

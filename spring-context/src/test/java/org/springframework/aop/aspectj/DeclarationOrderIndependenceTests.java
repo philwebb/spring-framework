@@ -43,8 +43,8 @@ public class DeclarationOrderIndependenceTests {
 	public void setUp() {
 		ClassPathXmlApplicationContext ctx =
 			new ClassPathXmlApplicationContext(getClass().getSimpleName() + ".xml", getClass());
-		aspect = (TopsyTurvyAspect) ctx.getBean("topsyTurvyAspect");
-		target = (TopsyTurvyTarget) ctx.getBean("topsyTurvyTarget");
+		this.aspect = (TopsyTurvyAspect) ctx.getBean("topsyTurvyAspect");
+		this.target = (TopsyTurvyTarget) ctx.getBean("topsyTurvyTarget");
 	}
 
 	@Test
@@ -153,7 +153,7 @@ class TopsyTurvyTargetImpl implements TopsyTurvyTarget {
 
 	@Override
 	public int getX() {
-		return x;
+		return this.x;
 	}
 
 }

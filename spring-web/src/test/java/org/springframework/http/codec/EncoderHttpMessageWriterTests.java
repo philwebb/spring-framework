@@ -94,7 +94,7 @@ public class EncoderHttpMessageWriterTests {
 		HttpMessageWriter<String> writer = getWriter(MimeTypeUtils.ALL);
 		writer.write(Mono.just("body"), forClass(String.class), TEXT_PLAIN, this.response, NO_HINTS);
 
-		assertEquals(TEXT_PLAIN, response.getHeaders().getContentType());
+		assertEquals(TEXT_PLAIN, this.response.getHeaders().getContentType());
 		assertEquals(TEXT_PLAIN, this.mediaTypeCaptor.getValue());
 	}
 
@@ -122,7 +122,7 @@ public class EncoderHttpMessageWriterTests {
 	@Test
 	public void useDefaultMediaTypeCharset() throws Exception {
 		HttpMessageWriter<String> writer = getWriter(TEXT_PLAIN_UTF_8, TEXT_HTML);
-		writer.write(Mono.just("body"), forClass(String.class), TEXT_HTML, response, NO_HINTS);
+		writer.write(Mono.just("body"), forClass(String.class), TEXT_HTML, this.response, NO_HINTS);
 
 		assertEquals(new MediaType("text", "html", UTF_8), this.response.getHeaders().getContentType());
 		assertEquals(new MediaType("text", "html", UTF_8), this.mediaTypeCaptor.getValue());

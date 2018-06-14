@@ -187,12 +187,12 @@ class StaxEventXMLReader extends AbstractStaxXMLReader {
 				}
 				@Override
 				public String getXMLVersion() {
-					return xmlVersion;
+					return StaxEventXMLReader.this.xmlVersion;
 				}
 				@Override
 				@Nullable
 				public String getEncoding() {
-					return encoding;
+					return StaxEventXMLReader.this.encoding;
 				}
 			});
 			getContentHandler().startDocument();

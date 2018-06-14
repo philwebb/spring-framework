@@ -395,7 +395,7 @@ public class MessageReaderArgumentResolverTests {
 
 		@Override
 		public int hashCode() {
-			return 31 * foo.hashCode() + bar.hashCode();
+			return 31 * this.foo.hashCode() + this.bar.hashCode();
 		}
 
 		@Override
@@ -450,7 +450,7 @@ public class MessageReaderArgumentResolverTests {
 
 		@Override
 		public Long getId() {
-			return id;
+			return this.id;
 		}
 
 		@Override
@@ -459,7 +459,7 @@ public class MessageReaderArgumentResolverTests {
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String name) {

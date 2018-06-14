@@ -87,7 +87,7 @@ public class CodecConfigurerTests {
 		assertEquals(ByteArrayEncoder.class, getNextEncoder(writers).getClass());
 		assertEquals(ByteBufferEncoder.class, getNextEncoder(writers).getClass());
 		assertEquals(DataBufferEncoder.class, getNextEncoder(writers).getClass());
-		assertEquals(ResourceHttpMessageWriter.class, writers.get(index.getAndIncrement()).getClass());
+		assertEquals(ResourceHttpMessageWriter.class, writers.get(this.index.getAndIncrement()).getClass());
 		assertStringEncoder(getNextEncoder(writers), true);
 		assertEquals(Jackson2JsonEncoder.class, getNextEncoder(writers).getClass());
 		assertEquals(Jackson2SmileEncoder.class, getNextEncoder(writers).getClass());
@@ -160,7 +160,7 @@ public class CodecConfigurerTests {
 		assertEquals(ByteArrayEncoder.class, getNextEncoder(writers).getClass());
 		assertEquals(ByteBufferEncoder.class, getNextEncoder(writers).getClass());
 		assertEquals(DataBufferEncoder.class, getNextEncoder(writers).getClass());
-		assertEquals(ResourceHttpMessageWriter.class, writers.get(index.getAndIncrement()).getClass());
+		assertEquals(ResourceHttpMessageWriter.class, writers.get(this.index.getAndIncrement()).getClass());
 		assertEquals(CharSequenceEncoder.class, getNextEncoder(writers).getClass());
 		assertSame(customEncoder1, getNextEncoder(writers));
 		assertSame(customWriter1, writers.get(this.index.getAndIncrement()));

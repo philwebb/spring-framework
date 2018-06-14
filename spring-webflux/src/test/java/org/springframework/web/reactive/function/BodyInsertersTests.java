@@ -107,7 +107,7 @@ public class BodyInsertersTests {
 
 			@Override
 			public Map<String, Object> hints() {
-				return hints;
+				return BodyInsertersTests.this.hints;
 			}
 		};
 		this.hints = new HashMap<>();
@@ -221,7 +221,7 @@ public class BodyInsertersTests {
 
 			@Override
 			public Map<String, Object> hints() {
-				return hints;
+				return BodyInsertersTests.this.hints;
 			}
 		});
 		StepVerifier.create(result).expectComplete().verify();
@@ -393,7 +393,7 @@ public class BodyInsertersTests {
 		}
 
 		public String getUsername() {
-			return username;
+			return this.username;
 		}
 
 		public void setUsername(String username) {
@@ -401,7 +401,7 @@ public class BodyInsertersTests {
 		}
 
 		public String getPassword() {
-			return password;
+			return this.password;
 		}
 
 		public void setPassword(String password) {

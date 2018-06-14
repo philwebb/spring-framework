@@ -154,7 +154,7 @@ public class SseHandlerFunctionIntegrationTests extends AbstractRouterFunctionIn
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String name) {
@@ -180,7 +180,7 @@ public class SseHandlerFunctionIntegrationTests extends AbstractRouterFunctionIn
 
 		@Override
 		public String toString() {
-			return "Person{" + "name='" + name + '\'' + '}';
+			return "Person{" + "name='" + this.name + '\'' + '}';
 		}
 	}
 

@@ -1531,7 +1531,7 @@ public class CustomEditorTests {
 		private char[] charArray;
 
 		public byte[] getByteArray() {
-			return byteArray;
+			return this.byteArray;
 		}
 
 		public void setByteArray(byte[] byteArray) {
@@ -1539,7 +1539,7 @@ public class CustomEditorTests {
 		}
 
 		public char[] getCharArray() {
-			return charArray;
+			return this.charArray;
 		}
 
 		public void setCharArray(char[] charArray) {
@@ -1556,7 +1556,7 @@ public class CustomEditorTests {
 		private Character myCharacter;
 
 		public char getMyChar() {
-			return myChar;
+			return this.myChar;
 		}
 
 		public void setMyChar(char myChar) {
@@ -1564,7 +1564,7 @@ public class CustomEditorTests {
 		}
 
 		public Character getMyCharacter() {
-			return myCharacter;
+			return this.myCharacter;
 		}
 
 		public void setMyCharacter(Character myCharacter) {
@@ -1581,7 +1581,7 @@ public class CustomEditorTests {
 		private Hashtable<?, ?> hashtable;
 
 		public Vector<?> getVector() {
-			return vector;
+			return this.vector;
 		}
 
 		public void setVector(Vector<?> vector) {
@@ -1589,7 +1589,7 @@ public class CustomEditorTests {
 		}
 
 		public Hashtable<?, ?> getHashtable() {
-			return hashtable;
+			return this.hashtable;
 		}
 
 		public void setHashtable(Hashtable<?, ?> hashtable) {

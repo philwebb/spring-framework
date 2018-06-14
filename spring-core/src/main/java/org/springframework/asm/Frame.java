@@ -545,9 +545,9 @@ class Frame {
      */
     final void set(ClassWriter cw, final int nLocal, final Object[] local,
             final int nStack, final Object[] stack) {
-        int i = convert(cw, nLocal, local, inputLocals);
+        int i = convert(cw, nLocal, local, this.inputLocals);
         while (i < local.length) {
-            inputLocals[i++] = TOP;
+            this.inputLocals[i++] = TOP;
         }
         int nStackTop = 0;
         for (int j = 0; j < nStack; ++j) {
@@ -555,10 +555,10 @@ class Frame {
                 ++nStackTop;
             }
         }
-        inputStack = new int[nStack + nStackTop];
-        convert(cw, nStack, stack, inputStack);
-        outputStackTop = 0;
-        initializationCount = 0;
+        this.inputStack = new int[nStack + nStackTop];
+        convert(cw, nStack, stack, this.inputStack);
+        this.outputStackTop = 0;
+        this.initializationCount = 0;
     }
 
     /**
@@ -615,13 +615,13 @@ class Frame {
      *            The new frame value.
      */
     final void set(final Frame f) {
-        inputLocals = f.inputLocals;
-        inputStack = f.inputStack;
-        outputLocals = f.outputLocals;
-        outputStack = f.outputStack;
-        outputStackTop = f.outputStackTop;
-        initializationCount = f.initializationCount;
-        initializations = f.initializations;
+        this.inputLocals = f.inputLocals;
+        this.inputStack = f.inputStack;
+        this.outputLocals = f.outputLocals;
+        this.outputStack = f.outputStack;
+        this.outputStackTop = f.outputStackTop;
+        this.initializationCount = f.initializationCount;
+        this.initializations = f.initializations;
     }
 
     /**
@@ -632,16 +632,16 @@ class Frame {
      * @return the output frame local variable type at the given index.
      */
     private int get(final int local) {
-        if (outputLocals == null || local >= outputLocals.length) {
+        if (this.outputLocals == null || local >= this.outputLocals.length) {
             // this local has never been assigned in this basic block,
             // so it is still equal to its value in the input frame
             return LOCAL | local;
         } else {
-            int type = outputLocals[local];
+            int type = this.outputLocals[local];
             if (type == 0) {
                 // this local has never been assigned in this basic block,
                 // so it is still equal to its value in the input frame
-                type = outputLocals[local] = LOCAL | local;
+                type = this.outputLocals[local] = LOCAL | local;
             }
             return type;
         }
@@ -657,17 +657,17 @@ class Frame {
      */
     private void set(final int local, final int type) {
         // creates and/or resizes the output local variables array if necessary
-        if (outputLocals == null) {
-            outputLocals = new int[10];
+        if (this.outputLocals == null) {
+            this.outputLocals = new int[10];
         }
-        int n = outputLocals.length;
+        int n = this.outputLocals.length;
         if (local >= n) {
             int[] t = new int[Math.max(local + 1, 2 * n)];
-            System.arraycopy(outputLocals, 0, t, 0, n);
-            outputLocals = t;
+            System.arraycopy(this.outputLocals, 0, t, 0, n);
+            this.outputLocals = t;
         }
         // sets the local variable
-        outputLocals[local] = type;
+        this.outputLocals[local] = type;
     }
 
     /**
@@ -678,21 +678,21 @@ class Frame {
      */
     private void push(final int type) {
         // creates and/or resizes the output stack array if necessary
-        if (outputStack == null) {
-            outputStack = new int[10];
+        if (this.outputStack == null) {
+            this.outputStack = new int[10];
         }
-        int n = outputStack.length;
-        if (outputStackTop >= n) {
-            int[] t = new int[Math.max(outputStackTop + 1, 2 * n)];
-            System.arraycopy(outputStack, 0, t, 0, n);
-            outputStack = t;
+        int n = this.outputStack.length;
+        if (this.outputStackTop >= n) {
+            int[] t = new int[Math.max(this.outputStackTop + 1, 2 * n)];
+            System.arraycopy(this.outputStack, 0, t, 0, n);
+            this.outputStack = t;
         }
         // pushes the type on the output stack
-        outputStack[outputStackTop++] = type;
+        this.outputStack[this.outputStackTop++] = type;
         // updates the maximum height reached by the output stack, if needed
-        int top = owner.inputStackTop + outputStackTop;
-        if (top > owner.outputStackMax) {
-            owner.outputStackMax = top;
+        int top = this.owner.inputStackTop + this.outputStackTop;
+        if (top > this.owner.outputStackMax) {
+            this.owner.outputStackMax = top;
         }
     }
 
@@ -796,11 +796,11 @@ class Frame {
      * @return the type that has been popped from the output frame stack.
      */
     private int pop() {
-        if (outputStackTop > 0) {
-            return outputStack[--outputStackTop];
+        if (this.outputStackTop > 0) {
+            return this.outputStack[--this.outputStackTop];
         } else {
             // if the output frame stack is empty, pops from the input stack
-            return STACK | -(--owner.inputStackTop);
+            return STACK | -(--this.owner.inputStackTop);
         }
     }
 
@@ -811,14 +811,14 @@ class Frame {
      *            the number of types that must be popped.
      */
     private void pop(final int elements) {
-        if (outputStackTop >= elements) {
-            outputStackTop -= elements;
+        if (this.outputStackTop >= elements) {
+            this.outputStackTop -= elements;
         } else {
             // if the number of elements to be popped is greater than the number
             // of elements in the output stack, clear it, and pops the remaining
             // elements from the input stack.
-            owner.inputStackTop -= elements - outputStackTop;
-            outputStackTop = 0;
+            this.owner.inputStackTop -= elements - this.outputStackTop;
+            this.outputStackTop = 0;
         }
     }
 
@@ -850,17 +850,17 @@ class Frame {
      */
     private void init(final int var) {
         // creates and/or resizes the initializations array if necessary
-        if (initializations == null) {
-            initializations = new int[2];
+        if (this.initializations == null) {
+            this.initializations = new int[2];
         }
-        int n = initializations.length;
-        if (initializationCount >= n) {
-            int[] t = new int[Math.max(initializationCount + 1, 2 * n)];
-            System.arraycopy(initializations, 0, t, 0, n);
-            initializations = t;
+        int n = this.initializations.length;
+        if (this.initializationCount >= n) {
+            int[] t = new int[Math.max(this.initializationCount + 1, 2 * n)];
+            System.arraycopy(this.initializations, 0, t, 0, n);
+            this.initializations = t;
         }
         // stores the type to be initialized
-        initializations[initializationCount++] = var;
+        this.initializations[this.initializationCount++] = var;
     }
 
     /**
@@ -884,14 +884,14 @@ class Frame {
         } else {
             return t;
         }
-        for (int j = 0; j < initializationCount; ++j) {
-            int u = initializations[j];
+        for (int j = 0; j < this.initializationCount; ++j) {
+            int u = this.initializations[j];
             int dim = u & DIM;
             int kind = u & KIND;
             if (kind == LOCAL) {
-                u = dim + inputLocals[u & VALUE];
+                u = dim + this.inputLocals[u & VALUE];
             } else if (kind == STACK) {
-                u = dim + inputStack[inputStack.length - (u & VALUE)];
+                u = dim + this.inputStack[this.inputStack.length - (u & VALUE)];
             }
             if (t == u) {
                 return s;
@@ -915,25 +915,25 @@ class Frame {
      */
     final void initInputFrame(final ClassWriter cw, final int access,
             final Type[] args, final int maxLocals) {
-        inputLocals = new int[maxLocals];
-        inputStack = new int[0];
+        this.inputLocals = new int[maxLocals];
+        this.inputStack = new int[0];
         int i = 0;
         if ((access & Opcodes.ACC_STATIC) == 0) {
             if ((access & MethodWriter.ACC_CONSTRUCTOR) == 0) {
-                inputLocals[i++] = OBJECT | cw.addType(cw.thisName);
+                this.inputLocals[i++] = OBJECT | cw.addType(cw.thisName);
             } else {
-                inputLocals[i++] = UNINITIALIZED_THIS;
+                this.inputLocals[i++] = UNINITIALIZED_THIS;
             }
         }
         for (int j = 0; j < args.length; ++j) {
             int t = type(cw, args[j].getDescriptor());
-            inputLocals[i++] = t;
+            this.inputLocals[i++] = t;
             if (t == LONG || t == DOUBLE) {
-                inputLocals[i++] = TOP;
+                this.inputLocals[i++] = TOP;
             }
         }
         while (i < maxLocals) {
-            inputLocals[i++] = TOP;
+            this.inputLocals[i++] = TOP;
         }
     }
 
@@ -1391,18 +1391,18 @@ class Frame {
         boolean changed = false;
         int i, s, dim, kind, t;
 
-        int nLocal = inputLocals.length;
-        int nStack = inputStack.length;
+        int nLocal = this.inputLocals.length;
+        int nStack = this.inputStack.length;
         if (frame.inputLocals == null) {
             frame.inputLocals = new int[nLocal];
             changed = true;
         }
 
         for (i = 0; i < nLocal; ++i) {
-            if (outputLocals != null && i < outputLocals.length) {
-                s = outputLocals[i];
+            if (this.outputLocals != null && i < this.outputLocals.length) {
+                s = this.outputLocals[i];
                 if (s == 0) {
-                    t = inputLocals[i];
+                    t = this.inputLocals[i];
                 } else {
                     dim = s & DIM;
                     kind = s & KIND;
@@ -1410,9 +1410,9 @@ class Frame {
                         t = s;
                     } else {
                         if (kind == LOCAL) {
-                            t = dim + inputLocals[s & VALUE];
+                            t = dim + this.inputLocals[s & VALUE];
                         } else {
-                            t = dim + inputStack[nStack - (s & VALUE)];
+                            t = dim + this.inputStack[nStack - (s & VALUE)];
                         }
                         if ((s & TOP_IF_LONG_OR_DOUBLE) != 0
                                 && (t == LONG || t == DOUBLE)) {
@@ -1421,9 +1421,9 @@ class Frame {
                     }
                 }
             } else {
-                t = inputLocals[i];
+                t = this.inputLocals[i];
             }
-            if (initializations != null) {
+            if (this.initializations != null) {
                 t = init(cw, t);
             }
             changed |= merge(cw, t, frame.inputLocals, i);
@@ -1431,7 +1431,7 @@ class Frame {
 
         if (edge > 0) {
             for (i = 0; i < nLocal; ++i) {
-                t = inputLocals[i];
+                t = this.inputLocals[i];
                 changed |= merge(cw, t, frame.inputLocals, i);
             }
             if (frame.inputStack == null) {
@@ -1442,37 +1442,37 @@ class Frame {
             return changed;
         }
 
-        int nInputStack = inputStack.length + owner.inputStackTop;
+        int nInputStack = this.inputStack.length + this.owner.inputStackTop;
         if (frame.inputStack == null) {
-            frame.inputStack = new int[nInputStack + outputStackTop];
+            frame.inputStack = new int[nInputStack + this.outputStackTop];
             changed = true;
         }
 
         for (i = 0; i < nInputStack; ++i) {
-            t = inputStack[i];
-            if (initializations != null) {
+            t = this.inputStack[i];
+            if (this.initializations != null) {
                 t = init(cw, t);
             }
             changed |= merge(cw, t, frame.inputStack, i);
         }
-        for (i = 0; i < outputStackTop; ++i) {
-            s = outputStack[i];
+        for (i = 0; i < this.outputStackTop; ++i) {
+            s = this.outputStack[i];
             dim = s & DIM;
             kind = s & KIND;
             if (kind == BASE) {
                 t = s;
             } else {
                 if (kind == LOCAL) {
-                    t = dim + inputLocals[s & VALUE];
+                    t = dim + this.inputLocals[s & VALUE];
                 } else {
-                    t = dim + inputStack[nStack - (s & VALUE)];
+                    t = dim + this.inputStack[nStack - (s & VALUE)];
                 }
                 if ((s & TOP_IF_LONG_OR_DOUBLE) != 0
                         && (t == LONG || t == DOUBLE)) {
                     t = TOP;
                 }
             }
-            if (initializations != null) {
+            if (this.initializations != null) {
                 t = init(cw, t);
             }
             changed |= merge(cw, t, frame.inputStack, nInputStack + i);

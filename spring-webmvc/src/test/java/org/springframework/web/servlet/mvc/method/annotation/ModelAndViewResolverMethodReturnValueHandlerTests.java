@@ -53,55 +53,55 @@ public class ModelAndViewResolverMethodReturnValueHandlerTests {
 
 	@Before
 	public void setup() {
-		mavResolvers = new ArrayList<>();
-		handler = new ModelAndViewResolverMethodReturnValueHandler(mavResolvers);
-		mavContainer = new ModelAndViewContainer();
-		request = new ServletWebRequest(new MockHttpServletRequest());
+		this.mavResolvers = new ArrayList<>();
+		this.handler = new ModelAndViewResolverMethodReturnValueHandler(this.mavResolvers);
+		this.mavContainer = new ModelAndViewContainer();
+		this.request = new ServletWebRequest(new MockHttpServletRequest());
 	}
 
 
 	@Test
 	public void modelAndViewResolver() throws Exception {
 		MethodParameter returnType = new MethodParameter(getClass().getDeclaredMethod("testBeanReturnValue"), -1);
-		mavResolvers.add(new TestModelAndViewResolver(TestBean.class));
+		this.mavResolvers.add(new TestModelAndViewResolver(TestBean.class));
 		TestBean testBean = new TestBean("name");
 
-		handler.handleReturnValue(testBean, returnType, mavContainer, request);
+		this.handler.handleReturnValue(testBean, returnType, this.mavContainer, this.request);
 
-		assertEquals("viewName", mavContainer.getViewName());
-		assertSame(testBean, mavContainer.getModel().get("modelAttrName"));
-		assertFalse(mavContainer.isRequestHandled());
+		assertEquals("viewName", this.mavContainer.getViewName());
+		assertSame(testBean, this.mavContainer.getModel().get("modelAttrName"));
+		assertFalse(this.mavContainer.isRequestHandled());
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
 	public void modelAndViewResolverUnresolved() throws Exception {
 		MethodParameter returnType = new MethodParameter(getClass().getDeclaredMethod("intReturnValue"), -1);
-		mavResolvers.add(new TestModelAndViewResolver(TestBean.class));
-		handler.handleReturnValue(99, returnType, mavContainer, request);
+		this.mavResolvers.add(new TestModelAndViewResolver(TestBean.class));
+		this.handler.handleReturnValue(99, returnType, this.mavContainer, this.request);
 	}
 
 	@Test
 	public void handleNull() throws Exception {
 		MethodParameter returnType = new MethodParameter(getClass().getDeclaredMethod("testBeanReturnValue"), -1);
-		handler.handleReturnValue(null, returnType, mavContainer, request);
+		this.handler.handleReturnValue(null, returnType, this.mavContainer, this.request);
 
-		assertNull(mavContainer.getView());
-		assertNull(mavContainer.getViewName());
-		assertTrue(mavContainer.getModel().isEmpty());
+		assertNull(this.mavContainer.getView());
+		assertNull(this.mavContainer.getViewName());
+		assertTrue(this.mavContainer.getModel().isEmpty());
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
 	public void handleSimpleType() throws Exception {
 		MethodParameter returnType = new MethodParameter(getClass().getDeclaredMethod("intReturnValue"), -1);
-		handler.handleReturnValue(55, returnType, mavContainer, request);
+		this.handler.handleReturnValue(55, returnType, this.mavContainer, this.request);
 	}
 
 	@Test
 	public void handleNonSimpleType() throws Exception{
 		MethodParameter returnType = new MethodParameter(getClass().getDeclaredMethod("testBeanReturnValue"), -1);
-		handler.handleReturnValue(new TestBean(), returnType, mavContainer, request);
+		this.handler.handleReturnValue(new TestBean(), returnType, this.mavContainer, this.request);
 
-		assertTrue(mavContainer.containsAttribute("testBean"));
+		assertTrue(this.mavContainer.containsAttribute("testBean"));
 	}
 
 
@@ -128,7 +128,7 @@ public class ModelAndViewResolverMethodReturnValueHandlerTests {
 		public ModelAndView resolveModelAndView(Method method, Class<?> handlerType, Object returnValue,
 				ExtendedModelMap model, NativeWebRequest request) {
 
-			if (returnValue != null && returnValue.getClass().equals(returnValueType)) {
+			if (returnValue != null && returnValue.getClass().equals(this.returnValueType)) {
 				return new ModelAndView("viewName", "modelAttrName", returnValue);
 			}
 			else {

@@ -89,13 +89,13 @@ public class ExpressionWithConversionTests extends AbstractExpressionTests {
 	@Test
 	public void testSetParameterizedList() throws Exception {
 		StandardEvaluationContext context = TestScenarioCreator.getTestEvaluationContext();
-		Expression e = parser.parseExpression("listOfInteger.size()");
+		Expression e = this.parser.parseExpression("listOfInteger.size()");
 		assertEquals(0,e.getValue(context,Integer.class).intValue());
 		context.setTypeConverter(new TypeConvertorUsingConversionService());
 		// Assign a List<String> to the List<Integer> field - the component elements should be converted
-		parser.parseExpression("listOfInteger").setValue(context,listOfString);
+		this.parser.parseExpression("listOfInteger").setValue(context,listOfString);
 		assertEquals(3,e.getValue(context,Integer.class).intValue()); // size now 3
-		Class<?> clazz = parser.parseExpression("listOfInteger[1].getClass()").getValue(context, Class.class); // element type correctly Integer
+		Class<?> clazz = this.parser.parseExpression("listOfInteger[1].getClass()").getValue(context, Class.class); // element type correctly Integer
 		assertEquals(Integer.class,clazz);
 	}
 
@@ -127,7 +127,7 @@ public class ExpressionWithConversionTests extends AbstractExpressionTests {
 
 		// OK up to here, so the evaluation should be fine...
 		// ... but this fails
-		int result = (Integer) parser.parseExpression("#target.sum(#root)").getValue(evaluationContext, "1,2,3,4");
+		int result = (Integer) this.parser.parseExpression("#target.sum(#root)").getValue(evaluationContext, "1,2,3,4");
 		assertEquals("Wrong result: " + result, 10, result);
 
 	}
@@ -140,26 +140,26 @@ public class ExpressionWithConversionTests extends AbstractExpressionTests {
 		StandardEvaluationContext context = new StandardEvaluationContext(root);
 
 		// property access
-		Expression expression = parser.parseExpression("foos");
+		Expression expression = this.parser.parseExpression("foos");
 		expression.setValue(context, foos);
 		Foo baz = root.getFoos().iterator().next();
 		assertEquals("baz", baz.value);
 
 		// method call
-		expression = parser.parseExpression("setFoos(#foos)");
+		expression = this.parser.parseExpression("setFoos(#foos)");
 		context.setVariable("foos", foos);
 		expression.getValue(context);
 		baz = root.getFoos().iterator().next();
 		assertEquals("baz", baz.value);
 
 		// method call with result from method call
-		expression = parser.parseExpression("setFoos(getFoosAsStrings())");
+		expression = this.parser.parseExpression("setFoos(getFoosAsStrings())");
 		expression.getValue(context);
 		baz = root.getFoos().iterator().next();
 		assertEquals("baz", baz.value);
 
 		// method call with result from method call
-		expression = parser.parseExpression("setFoos(getFoosAsObjects())");
+		expression = this.parser.parseExpression("setFoos(getFoosAsObjects())");
 		expression.getValue(context);
 		baz = root.getFoos().iterator().next();
 		assertEquals("baz", baz.value);

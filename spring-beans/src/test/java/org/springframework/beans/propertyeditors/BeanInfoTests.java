@@ -61,7 +61,7 @@ public class BeanInfoTests {
 		private Integer value;
 
 		public Integer getValue() {
-			return value;
+			return this.value;
 		}
 
 		public void setValue(Integer value) {

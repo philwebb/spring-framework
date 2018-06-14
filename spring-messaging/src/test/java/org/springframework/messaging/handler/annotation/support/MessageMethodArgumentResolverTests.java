@@ -112,9 +112,9 @@ public class MessageMethodArgumentResolverTests {
 		MethodParameter parameter = new MethodParameter(this.method, 1);
 
 		assertTrue(this.resolver.supportsParameter(parameter));
-		thrown.expect(MessageConversionException.class);
-		thrown.expectMessage(Integer.class.getName());
-		thrown.expectMessage(String.class.getName());
+		this.thrown.expect(MessageConversionException.class);
+		this.thrown.expectMessage(Integer.class.getName());
+		this.thrown.expectMessage(String.class.getName());
 		this.resolver.resolveArgument(parameter, message);
 	}
 
@@ -124,10 +124,10 @@ public class MessageMethodArgumentResolverTests {
 		MethodParameter parameter = new MethodParameter(this.method, 1);
 
 		assertTrue(this.resolver.supportsParameter(parameter));
-		thrown.expect(MessageConversionException.class);
-		thrown.expectMessage("payload is empty");
-		thrown.expectMessage(Integer.class.getName());
-		thrown.expectMessage(String.class.getName());
+		this.thrown.expect(MessageConversionException.class);
+		this.thrown.expectMessage("payload is empty");
+		this.thrown.expectMessage(Integer.class.getName());
+		this.thrown.expectMessage(String.class.getName());
 		this.resolver.resolveArgument(parameter, message);
 	}
 
@@ -146,9 +146,9 @@ public class MessageMethodArgumentResolverTests {
 		MethodParameter parameter = new MethodParameter(this.method, 3);
 
 		assertTrue(this.resolver.supportsParameter(parameter));
-		thrown.expect(MessageConversionException.class);
-		thrown.expectMessage(Number.class.getName());
-		thrown.expectMessage(Locale.class.getName());
+		this.thrown.expect(MessageConversionException.class);
+		this.thrown.expectMessage(Number.class.getName());
+		this.thrown.expectMessage(Locale.class.getName());
 		this.resolver.resolveArgument(parameter, message);
 	}
 
@@ -177,9 +177,9 @@ public class MessageMethodArgumentResolverTests {
 		MethodParameter parameter = new MethodParameter(this.method, 4);
 
 		assertTrue(this.resolver.supportsParameter(parameter));
-		thrown.expect(MethodArgumentTypeMismatchException.class);
-		thrown.expectMessage(ErrorMessage.class.getName());
-		thrown.expectMessage(GenericMessage.class.getName());
+		this.thrown.expect(MethodArgumentTypeMismatchException.class);
+		this.thrown.expectMessage(ErrorMessage.class.getName());
+		this.thrown.expectMessage(GenericMessage.class.getName());
 		assertSame(message, this.resolver.resolveArgument(parameter, message));
 	}
 
@@ -202,9 +202,9 @@ public class MessageMethodArgumentResolverTests {
 		MethodParameter parameter = new MethodParameter(this.method, 1);
 
 		assertTrue(this.resolver.supportsParameter(parameter));
-		thrown.expect(MessageConversionException.class);
-		thrown.expectMessage(Integer.class.getName());
-		thrown.expectMessage(String.class.getName());
+		this.thrown.expect(MessageConversionException.class);
+		this.thrown.expectMessage(Integer.class.getName());
+		this.thrown.expectMessage(String.class.getName());
 		this.resolver.resolveArgument(parameter, message);
 	}
 
@@ -216,10 +216,10 @@ public class MessageMethodArgumentResolverTests {
 		MethodParameter parameter = new MethodParameter(this.method, 1);
 
 		assertTrue(this.resolver.supportsParameter(parameter));
-		thrown.expect(MessageConversionException.class);
-		thrown.expectMessage("payload is empty");
-		thrown.expectMessage(Integer.class.getName());
-		thrown.expectMessage(String.class.getName());
+		this.thrown.expect(MessageConversionException.class);
+		this.thrown.expectMessage("payload is empty");
+		this.thrown.expectMessage(Integer.class.getName());
+		this.thrown.expectMessage(String.class.getName());
 		this.resolver.resolveArgument(parameter, message);
 	}
 
@@ -254,7 +254,7 @@ public class MessageMethodArgumentResolverTests {
 		private String foo;
 
 		public String getFoo() {
-			return foo;
+			return this.foo;
 		}
 
 		public void setFoo(String foo) {

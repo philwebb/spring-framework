@@ -151,7 +151,7 @@ public class MvcUriComponentsBuilderTests {
 
 	@Test
 	public void usesForwardedHostAndPortFromHeader() throws Exception {
-		request.addHeader("X-Forwarded-Host", "foobar:8088");
+		this.request.addHeader("X-Forwarded-Host", "foobar:8088");
 		adaptRequestFromForwardedHeaders();
 		UriComponents uriComponents = fromController(PersonControllerImpl.class).build();
 
@@ -443,7 +443,7 @@ public class MvcUriComponentsBuilderTests {
 		Long id;
 
 		public Long getId() {
-			return id;
+			return this.id;
 		}
 	}
 

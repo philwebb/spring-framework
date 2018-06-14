@@ -56,8 +56,8 @@ public  final class SecondMsg extends
             break;
           }
           case 8: {
-            bitField0_ |= 0x00000001;
-            blah_ = input.readInt32();
+            this.bitField0_ |= 0x00000001;
+            this.blah_ = input.readInt32();
             break;
           }
         }
@@ -107,52 +107,52 @@ public  final class SecondMsg extends
    * <code>optional int32 blah = 1;</code>
    */
   public boolean hasBlah() {
-    return ((bitField0_ & 0x00000001) == 0x00000001);
+    return ((this.bitField0_ & 0x00000001) == 0x00000001);
   }
   /**
    * <code>optional int32 blah = 1;</code>
    */
   public int getBlah() {
-    return blah_;
+    return this.blah_;
   }
 
   private void initFields() {
-    blah_ = 0;
+    this.blah_ = 0;
   }
   private byte memoizedIsInitialized = -1;
   public final boolean isInitialized() {
-    byte isInitialized = memoizedIsInitialized;
+    byte isInitialized = this.memoizedIsInitialized;
     if (isInitialized != -1) {
 		return isInitialized == 1;
 	}
 
-    memoizedIsInitialized = 1;
+    this.memoizedIsInitialized = 1;
     return true;
   }
 
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
     getSerializedSize();
-    if (((bitField0_ & 0x00000001) == 0x00000001)) {
-      output.writeInt32(1, blah_);
+    if (((this.bitField0_ & 0x00000001) == 0x00000001)) {
+      output.writeInt32(1, this.blah_);
     }
     getUnknownFields().writeTo(output);
   }
 
   private int memoizedSerializedSize = -1;
   public int getSerializedSize() {
-    int size = memoizedSerializedSize;
+    int size = this.memoizedSerializedSize;
     if (size != -1) {
 		return size;
 	}
 
     size = 0;
-    if (((bitField0_ & 0x00000001) == 0x00000001)) {
+    if (((this.bitField0_ & 0x00000001) == 0x00000001)) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(1, blah_);
+        .computeInt32Size(1, this.blah_);
     }
     size += getUnknownFields().getSerializedSize();
-    memoizedSerializedSize = size;
+    this.memoizedSerializedSize = size;
     return size;
   }
 
@@ -267,8 +267,8 @@ public  final class SecondMsg extends
 
     public Builder clear() {
       super.clear();
-      blah_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
+      this.blah_ = 0;
+      this.bitField0_ = (this.bitField0_ & ~0x00000001);
       return this;
     }
 
@@ -295,12 +295,12 @@ public  final class SecondMsg extends
 
     public org.springframework.protobuf.SecondMsg buildPartial() {
       org.springframework.protobuf.SecondMsg result = new org.springframework.protobuf.SecondMsg(this);
-      int from_bitField0_ = bitField0_;
+      int from_bitField0_ = this.bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
         to_bitField0_ |= 0x00000001;
       }
-      result.blah_ = blah_;
+      result.blah_ = this.blah_;
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -355,20 +355,20 @@ public  final class SecondMsg extends
      * <code>optional int32 blah = 1;</code>
      */
     public boolean hasBlah() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
+      return ((this.bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
      * <code>optional int32 blah = 1;</code>
      */
     public int getBlah() {
-      return blah_;
+      return this.blah_;
     }
     /**
      * <code>optional int32 blah = 1;</code>
      */
     public Builder setBlah(int value) {
-      bitField0_ |= 0x00000001;
-      blah_ = value;
+      this.bitField0_ |= 0x00000001;
+      this.blah_ = value;
       onChanged();
       return this;
     }
@@ -376,8 +376,8 @@ public  final class SecondMsg extends
      * <code>optional int32 blah = 1;</code>
      */
     public Builder clearBlah() {
-      bitField0_ = (bitField0_ & ~0x00000001);
-      blah_ = 0;
+      this.bitField0_ = (this.bitField0_ & ~0x00000001);
+      this.blah_ = 0;
       onChanged();
       return this;
     }

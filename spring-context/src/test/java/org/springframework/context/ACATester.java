@@ -43,7 +43,7 @@ public class ACATester implements ApplicationContextAware {
 	}
 
 	public ApplicationContext getApplicationContext() {
-		return ac;
+		return this.ac;
 	}
 
 }

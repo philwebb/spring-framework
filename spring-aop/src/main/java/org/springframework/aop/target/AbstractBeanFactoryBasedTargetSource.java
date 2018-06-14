@@ -132,8 +132,8 @@ public abstract class AbstractBeanFactoryBasedTargetSource implements TargetSour
 				// Determine type of the target bean.
 				targetClass = this.beanFactory.getType(this.targetBeanName);
 				if (targetClass == null) {
-					if (logger.isTraceEnabled()) {
-						logger.trace("Getting bean with name '" + this.targetBeanName + "' for type determination");
+					if (this.logger.isTraceEnabled()) {
+						this.logger.trace("Getting bean with name '" + this.targetBeanName + "' for type determination");
 					}
 					Object beanInstance = this.beanFactory.getBean(this.targetBeanName);
 					targetClass = beanInstance.getClass();

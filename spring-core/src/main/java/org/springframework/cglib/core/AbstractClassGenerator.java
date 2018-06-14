@@ -85,7 +85,7 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
 
 		private final Predicate uniqueNamePredicate = new Predicate() {
 			public boolean evaluate(Object name) {
-				return reservedClassNames.contains(name);
+				return ClassLoaderData.this.reservedClassNames.contains(name);
 			}
 		};
 
@@ -107,19 +107,19 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
 							return gen.wrapCachedClass(klass);
 						}
 					};
-			generatedClasses = new LoadingCache<AbstractClassGenerator, Object, Object>(GET_KEY, load);
+			this.generatedClasses = new LoadingCache<AbstractClassGenerator, Object, Object>(GET_KEY, load);
 		}
 
 		public ClassLoader getClassLoader() {
-			return classLoader.get();
+			return this.classLoader.get();
 		}
 
 		public void reserveName(String name) {
-			reservedClassNames.add(name);
+			this.reservedClassNames.add(name);
 		}
 
 		public Predicate getUniqueNamePredicate() {
-			return uniqueNamePredicate;
+			return this.uniqueNamePredicate;
 		}
 
 		public Object get(AbstractClassGenerator gen, boolean useCache) {
@@ -127,7 +127,7 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
 				return gen.generate(ClassLoaderData.this);
 			}
 			else {
-				Object cachedValue = generatedClasses.get(gen);
+				Object cachedValue = this.generatedClasses.get(gen);
 				return gen.unwrapCachedValue(cachedValue);
 			}
 		}
@@ -162,7 +162,7 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
 	}
 
 	final protected String getClassName() {
-		return className;
+		return this.className;
 	}
 
 	private void setClassName(String className) {
@@ -170,7 +170,7 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
 	}
 
 	private String generateClassName(Predicate nameTestPredicate) {
-		return namingPolicy.getClassName(namePrefix, source.name, key, nameTestPredicate);
+		return this.namingPolicy.getClassName(this.namePrefix, this.source.name, this.key, nameTestPredicate);
 	}
 
 	/**
@@ -208,7 +208,7 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
 	 * @see #setNamingPolicy
 	 */
 	public NamingPolicy getNamingPolicy() {
-		return namingPolicy;
+		return this.namingPolicy;
 	}
 
 	/**
@@ -223,7 +223,7 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
 	 * @see #setUseCache
 	 */
 	public boolean getUseCache() {
-		return useCache;
+		return this.useCache;
 	}
 
 	/**
@@ -236,7 +236,7 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
 	}
 
 	public boolean getAttemptLoad() {
-		return attemptLoad;
+		return this.attemptLoad;
 	}
 
 	/**
@@ -254,7 +254,7 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
 	 * @see #setStrategy
 	 */
 	public GeneratorStrategy getStrategy() {
-		return strategy;
+		return this.strategy;
 	}
 
 	/**
@@ -266,7 +266,7 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
 	}
 
 	public ClassLoader getClassLoader() {
-		ClassLoader t = classLoader;
+		ClassLoader t = this.classLoader;
 		if (t == null) {
 			t = getDefaultClassLoader();
 		}
@@ -344,7 +344,7 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
 				data.reserveName(name);
 				this.setClassName(name);
 			}
-			if (attemptLoad) {
+			if (this.attemptLoad) {
 				try {
 					gen = classLoader.loadClass(getClassName());
 					return gen;
@@ -353,12 +353,12 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
 					// ignore
 				}
 			}
-			byte[] b = strategy.generate(this);
+			byte[] b = this.strategy.generate(this);
 			String className = ClassNameReader.getClassName(new ClassReader(b));
 			ProtectionDomain protectionDomain = getProtectionDomain();
 			synchronized (classLoader) { // just in case
 				// SPRING PATCH BEGIN
-				gen = ReflectUtils.defineClass(className, b, classLoader, protectionDomain, contextClass);
+				gen = ReflectUtils.defineClass(className, b, classLoader, protectionDomain, this.contextClass);
 				// SPRING PATCH END
 			}
 			return gen;

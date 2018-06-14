@@ -255,7 +255,7 @@ public class ProxyFactoryBean extends ProxyCreatorSupport
 		}
 		else {
 			if (this.targetName == null) {
-				logger.warn("Using non-singleton proxies with singleton targets is often undesirable. " +
+				this.logger.warn("Using non-singleton proxies with singleton targets is often undesirable. " +
 						"Enable prototype proxies by setting the 'targetName' property.");
 			}
 			return newPrototypeInstance();
@@ -342,8 +342,8 @@ public class ProxyFactoryBean extends ProxyCreatorSupport
 		// an independent instance of the configuration.
 		// In this case, no proxy will have an instance of this object's configuration,
 		// but will have an independent copy.
-		if (logger.isTraceEnabled()) {
-			logger.trace("Creating copy of prototype ProxyFactoryBean config: " + this);
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Creating copy of prototype ProxyFactoryBean config: " + this);
 		}
 
 		ProxyCreatorSupport copy = new ProxyCreatorSupport(getAopProxyFactory());
@@ -359,8 +359,8 @@ public class ProxyFactoryBean extends ProxyCreatorSupport
 		}
 		copy.setFrozen(this.freezeProxy);
 
-		if (logger.isTraceEnabled()) {
-			logger.trace("Using ProxyCreatorSupport copy: " + copy);
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Using ProxyCreatorSupport copy: " + copy);
 		}
 		return getProxy(copy.createAopProxy());
 	}
@@ -391,8 +391,8 @@ public class ProxyFactoryBean extends ProxyCreatorSupport
 				if (!finalName.endsWith(GLOBAL_SUFFIX) && !isNamedBeanAnAdvisorOrAdvice(finalName)) {
 					// The target isn't an interceptor.
 					this.targetName = finalName;
-					if (logger.isDebugEnabled()) {
-						logger.debug("Bean with name '" + finalName + "' concluding interceptor chain " +
+					if (this.logger.isDebugEnabled()) {
+						this.logger.debug("Bean with name '" + finalName + "' concluding interceptor chain " +
 								"is not an advisor class: treating it as a target or TargetSource");
 					}
 					String[] newNames = new String[this.interceptorNames.length - 1];
@@ -417,8 +417,8 @@ public class ProxyFactoryBean extends ProxyCreatorSupport
 			return (Advisor.class.isAssignableFrom(namedBeanClass) || Advice.class.isAssignableFrom(namedBeanClass));
 		}
 		// Treat it as an target bean if we can't tell.
-		if (logger.isDebugEnabled()) {
-			logger.debug("Could not determine type of bean with name '" + beanName +
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Could not determine type of bean with name '" + beanName +
 					"' - assuming it is neither an Advisor nor an Advice");
 		}
 		return false;
@@ -449,8 +449,8 @@ public class ProxyFactoryBean extends ProxyCreatorSupport
 
 			// Materialize interceptor chain from bean names.
 			for (String name : this.interceptorNames) {
-				if (logger.isTraceEnabled()) {
-					logger.trace("Configuring advisor or advice '" + name + "'");
+				if (this.logger.isTraceEnabled()) {
+					this.logger.trace("Configuring advisor or advice '" + name + "'");
 				}
 
 				if (name.endsWith(GLOBAL_SUFFIX)) {
@@ -495,8 +495,8 @@ public class ProxyFactoryBean extends ProxyCreatorSupport
 		for (Advisor advisor : advisors) {
 			if (advisor instanceof PrototypePlaceholderAdvisor) {
 				PrototypePlaceholderAdvisor pa = (PrototypePlaceholderAdvisor) advisor;
-				if (logger.isDebugEnabled()) {
-					logger.debug("Refreshing bean named '" + pa.getBeanName() + "'");
+				if (this.logger.isDebugEnabled()) {
+					this.logger.debug("Refreshing bean named '" + pa.getBeanName() + "'");
 				}
 				// Replace the placeholder with a fresh prototype instance resulting
 				// from a getBean() lookup
@@ -558,8 +558,8 @@ public class ProxyFactoryBean extends ProxyCreatorSupport
 		// We need to convert to an Advisor if necessary so that our source reference
 		// matches what we find from superclass interceptors.
 		Advisor advisor = namedBeanToAdvisor(next);
-		if (logger.isTraceEnabled()) {
-			logger.trace("Adding advisor with name '" + name + "'");
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Adding advisor with name '" + name + "'");
 		}
 		addAdvisor(advisor);
 	}
@@ -572,8 +572,8 @@ public class ProxyFactoryBean extends ProxyCreatorSupport
 	 */
 	private TargetSource freshTargetSource() {
 		if (this.targetName == null) {
-			if (logger.isTraceEnabled()) {
-				logger.trace("Not refreshing target: Bean name not specified in 'interceptorNames'.");
+			if (this.logger.isTraceEnabled()) {
+				this.logger.trace("Not refreshing target: Bean name not specified in 'interceptorNames'.");
 			}
 			return this.targetSource;
 		}
@@ -582,8 +582,8 @@ public class ProxyFactoryBean extends ProxyCreatorSupport
 				throw new IllegalStateException("No BeanFactory available anymore (probably due to serialization) " +
 						"- cannot resolve target with name '" + this.targetName + "'");
 			}
-			if (logger.isDebugEnabled()) {
-				logger.debug("Refreshing target with name '" + this.targetName + "'");
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Refreshing target with name '" + this.targetName + "'");
 			}
 			Object target = this.beanFactory.getBean(this.targetName);
 			return (target instanceof TargetSource ? (TargetSource) target : new SingletonTargetSource(target));
@@ -614,7 +614,7 @@ public class ProxyFactoryBean extends ProxyCreatorSupport
 	protected void adviceChanged() {
 		super.adviceChanged();
 		if (this.singleton) {
-			logger.debug("Advice has changed; recaching singleton instance");
+			this.logger.debug("Advice has changed; recaching singleton instance");
 			synchronized (this) {
 				this.singletonInstance = null;
 			}
@@ -651,7 +651,7 @@ public class ProxyFactoryBean extends ProxyCreatorSupport
 		}
 
 		public String getBeanName() {
-			return beanName;
+			return this.beanName;
 		}
 
 		@Override

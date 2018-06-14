@@ -52,51 +52,51 @@ public class DateTimeFormatterFactoryTests {
 
 	@Test
 	public void createDateTimeFormatter() {
-		assertThat(factory.createDateTimeFormatter().toString(), is(equalTo(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).toString())));
+		assertThat(this.factory.createDateTimeFormatter().toString(), is(equalTo(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).toString())));
 	}
 
 	@Test
 	public void createDateTimeFormatterWithPattern() {
-		factory = new DateTimeFormatterFactory("yyyyMMddHHmmss");
-		DateTimeFormatter formatter = factory.createDateTimeFormatter();
-		assertThat(formatter.format(dateTime), is("20091021121000"));
+		this.factory = new DateTimeFormatterFactory("yyyyMMddHHmmss");
+		DateTimeFormatter formatter = this.factory.createDateTimeFormatter();
+		assertThat(formatter.format(this.dateTime), is("20091021121000"));
 	}
 
 	@Test
 	public void createDateTimeFormatterWithNullFallback() {
-		DateTimeFormatter formatter = factory.createDateTimeFormatter(null);
+		DateTimeFormatter formatter = this.factory.createDateTimeFormatter(null);
 		assertThat(formatter, is(nullValue()));
 	}
 
 	@Test
 	public void createDateTimeFormatterWithFallback() {
 		DateTimeFormatter fallback = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG);
-		DateTimeFormatter formatter = factory.createDateTimeFormatter(fallback);
+		DateTimeFormatter formatter = this.factory.createDateTimeFormatter(fallback);
 		assertThat(formatter, is(sameInstance(fallback)));
 	}
 
 	@Test
 	public void createDateTimeFormatterInOrderOfPropertyPriority() {
-		factory.setStylePattern("SS");
-		String value = applyLocale(factory.createDateTimeFormatter()).format(dateTime);
+		this.factory.setStylePattern("SS");
+		String value = applyLocale(this.factory.createDateTimeFormatter()).format(this.dateTime);
 		assertTrue(value.startsWith("10/21/09"));
 		assertTrue(value.endsWith("12:10 PM"));
 
-		factory.setIso(ISO.DATE);
-		assertThat(applyLocale(factory.createDateTimeFormatter()).format(dateTime), is("2009-10-21"));
+		this.factory.setIso(ISO.DATE);
+		assertThat(applyLocale(this.factory.createDateTimeFormatter()).format(this.dateTime), is("2009-10-21"));
 
-		factory.setPattern("yyyyMMddHHmmss");
-		assertThat(factory.createDateTimeFormatter().format(dateTime), is("20091021121000"));
+		this.factory.setPattern("yyyyMMddHHmmss");
+		assertThat(this.factory.createDateTimeFormatter().format(this.dateTime), is("20091021121000"));
 	}
 
 	@Test
 	public void createDateTimeFormatterWithTimeZone() {
-		factory.setPattern("yyyyMMddHHmmss Z");
-		factory.setTimeZone(TEST_TIMEZONE);
+		this.factory.setPattern("yyyyMMddHHmmss Z");
+		this.factory.setTimeZone(TEST_TIMEZONE);
 		ZoneId dateTimeZone = TEST_TIMEZONE.toZoneId();
 		ZonedDateTime dateTime = ZonedDateTime.of(2009, 10, 21, 12, 10, 00, 00, dateTimeZone);
 		String offset = (TEST_TIMEZONE.equals(NEW_YORK) ? "-0400" : "+0200");
-		assertThat(factory.createDateTimeFormatter().format(dateTime), is("20091021121000 " + offset));
+		assertThat(this.factory.createDateTimeFormatter().format(dateTime), is("20091021121000 " + offset));
 	}
 
 	private DateTimeFormatter applyLocale(DateTimeFormatter dateTimeFormatter) {

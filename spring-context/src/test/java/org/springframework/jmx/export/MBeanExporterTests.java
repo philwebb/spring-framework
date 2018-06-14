@@ -85,7 +85,7 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 		listeners.put("*", null);
 		MBeanExporter exporter = new MBeanExporter();
 
-		thrown.expect(IllegalArgumentException.class);
+		this.thrown.expect(IllegalArgumentException.class);
 		exporter.setNotificationListenerMappings(listeners);
 	}
 
@@ -102,7 +102,7 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 		listeners.put("spring:type=Test", dummyListener);
 		MBeanExporter exporter = new MBeanExporter();
 		exporter.setBeans(getBeanMap());
-		exporter.setServer(server);
+		exporter.setServer(this.server);
 		exporter.setNotificationListenerMappings(listeners);
 		try {
 			start(exporter);
@@ -118,7 +118,7 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 	public void testWithSuppliedMBeanServer() throws Exception {
 		MBeanExporter exporter = new MBeanExporter();
 		exporter.setBeans(getBeanMap());
-		exporter.setServer(server);
+		exporter.setServer(this.server);
 		try {
 			start(exporter);
 			assertIsRegistered("The bean was not registered with the MBeanServer",
@@ -137,13 +137,13 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 		InvokeDetectAssembler asm = new InvokeDetectAssembler();
 
 		MBeanExporter exporter = new MBeanExporter();
-		exporter.setServer(server);
+		exporter.setServer(this.server);
 		exporter.setBeans(map);
 		exporter.setAssembler(asm);
 
 		try {
 			start(exporter);
-			Object name = server.getAttribute(ObjectNameManager.getInstance("spring:name=dynBean"), "Name");
+			Object name = this.server.getAttribute(ObjectNameManager.getInstance("spring:name=dynBean"), "Name");
 			assertEquals("The name attribute is incorrect", "Rob Harrop", name);
 			assertFalse("Assembler should not have been invoked", asm.invoked);
 		}
@@ -179,7 +179,7 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 			ObjectInstance instance = server.getObjectInstance(ObjectNameManager.getInstance("spring:mbean=true"));
 			assertNotNull(instance);
 
-			thrown.expect(InstanceNotFoundException.class);
+			this.thrown.expect(InstanceNotFoundException.class);
 			server.getObjectInstance(ObjectNameManager.getInstance("spring:mbean=false"));
 		}
 		finally {
@@ -227,7 +227,7 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 
 		MBeanExporter exporter = new MBeanExporter();
 		exporter.setBeans(getBeanMap());
-		exporter.setServer(server);
+		exporter.setServer(this.server);
 		exporter.setListeners(listener1, listener2);
 		start(exporter);
 		exporter.destroy();
@@ -253,12 +253,12 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 		beans.put(name, proxy);
 
 		MBeanExporter exporter = new MBeanExporter();
-		exporter.setServer(server);
+		exporter.setServer(this.server);
 		exporter.setBeans(beans);
 		exporter.registerBeans();
 
 		ObjectName oname = ObjectName.getInstance(name);
-		Object nameValue = server.getAttribute(oname, "Name");
+		Object nameValue = this.server.getAttribute(oname, "Name");
 		assertEquals("Rob Harrop", nameValue);
 	}
 
@@ -272,12 +272,12 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 		beans.put("foo", testBean);
 
 		MBeanExporter exporter = new MBeanExporter();
-		exporter.setServer(server);
+		exporter.setServer(this.server);
 		exporter.setBeans(beans);
 
 		start(exporter);
 
-		ObjectInstance instance = server.getObjectInstance(objectName);
+		ObjectInstance instance = this.server.getObjectInstance(objectName);
 		assertNotNull(instance);
 	}
 
@@ -288,7 +288,7 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 		Person preRegistered = new Person();
 		preRegistered.setName("Rob Harrop");
 
-		server.registerMBean(preRegistered, objectName);
+		this.server.registerMBean(preRegistered, objectName);
 
 		Person springRegistered = new Person();
 		springRegistered.setName("Sally Greenwood");
@@ -300,19 +300,19 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 		beans.put(objectName2, springRegistered);
 
 		MBeanExporter exporter = new MBeanExporter();
-		exporter.setServer(server);
+		exporter.setServer(this.server);
 		exporter.setBeans(beans);
 		exporter.setRegistrationPolicy(RegistrationPolicy.IGNORE_EXISTING);
 
 		start(exporter);
 
-		ObjectInstance instance = server.getObjectInstance(objectName);
+		ObjectInstance instance = this.server.getObjectInstance(objectName);
 		assertNotNull(instance);
-		ObjectInstance instance2 = server.getObjectInstance(new ObjectName(objectName2));
+		ObjectInstance instance2 = this.server.getObjectInstance(new ObjectName(objectName2));
 		assertNotNull(instance2);
 
 		// should still be the first bean with name Rob Harrop
-		assertEquals("Rob Harrop", server.getAttribute(objectName, "Name"));
+		assertEquals("Rob Harrop", this.server.getAttribute(objectName, "Name"));
 	}
 
 	@Test
@@ -322,7 +322,7 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 		Person preRegistered = new Person();
 		preRegistered.setName("Rob Harrop");
 
-		server.registerMBean(preRegistered, objectName);
+		this.server.registerMBean(preRegistered, objectName);
 
 		Person springRegistered = new Person();
 		springRegistered.setName("Sally Greenwood");
@@ -331,17 +331,17 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 		beans.put(objectName.toString(), springRegistered);
 
 		MBeanExporter exporter = new MBeanExporter();
-		exporter.setServer(server);
+		exporter.setServer(this.server);
 		exporter.setBeans(beans);
 		exporter.setRegistrationPolicy(RegistrationPolicy.REPLACE_EXISTING);
 
 		start(exporter);
 
-		ObjectInstance instance = server.getObjectInstance(objectName);
+		ObjectInstance instance = this.server.getObjectInstance(objectName);
 		assertNotNull(instance);
 
 		// should still be the new bean with name Sally Greenwood
-		assertEquals("Sally Greenwood", server.getAttribute(objectName, "Name"));
+		assertEquals("Sally Greenwood", this.server.getAttribute(objectName, "Name"));
 	}
 
 	@Test
@@ -364,13 +364,13 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 
 		assertIsRegistered("Bean instance not registered", objectName);
 
-		Object result = server.invoke(objectName, "add", new Object[] {new Integer(2), new Integer(3)}, new String[] {
+		Object result = this.server.invoke(objectName, "add", new Object[] {new Integer(2), new Integer(3)}, new String[] {
 				int.class.getName(), int.class.getName()});
 
 		assertEquals("Incorrect result return from add", result, new Integer(5));
-		assertEquals("Incorrect attribute value", name, server.getAttribute(objectName, "Name"));
+		assertEquals("Incorrect attribute value", name, this.server.getAttribute(objectName, "Name"));
 
-		server.setAttribute(objectName, new Attribute("Name", otherName));
+		this.server.setAttribute(objectName, new Attribute("Name", otherName));
 		assertEquals("Incorrect updated name.", otherName, bean.getName());
 	}
 
@@ -484,35 +484,35 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 	@Test
 	public void testSetAutodetectModeToOutOfRangeNegativeValue() {
 		MBeanExporter exporter = new MBeanExporter();
-		thrown.expect(IllegalArgumentException.class);
+		this.thrown.expect(IllegalArgumentException.class);
 		exporter.setAutodetectMode(-1);
 	}
 
 	@Test
 	public void testSetAutodetectModeToOutOfRangePositiveValue() {
 		MBeanExporter exporter = new MBeanExporter();
-		thrown.expect(IllegalArgumentException.class);
+		this.thrown.expect(IllegalArgumentException.class);
 		exporter.setAutodetectMode(5);
 	}
 
 	@Test
 	public void testSetAutodetectModeNameToAnEmptyString() {
 		MBeanExporter exporter = new MBeanExporter();
-		thrown.expect(IllegalArgumentException.class);
+		this.thrown.expect(IllegalArgumentException.class);
 		exporter.setAutodetectModeName("");
 	}
 
 	@Test
 	public void testSetAutodetectModeNameToAWhitespacedString() {
 		MBeanExporter exporter = new MBeanExporter();
-		thrown.expect(IllegalArgumentException.class);
+		this.thrown.expect(IllegalArgumentException.class);
 		exporter.setAutodetectModeName("  \t");
 	}
 
 	@Test
 	public void testSetAutodetectModeNameToARubbishValue() {
 		MBeanExporter exporter = new MBeanExporter();
-		thrown.expect(IllegalArgumentException.class);
+		this.thrown.expect(IllegalArgumentException.class);
 		exporter.setAutodetectModeName("That Hansel is... *sssooo* hot right now!");
 	}
 
@@ -522,7 +522,7 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 		Map<String, Object> beans = new HashMap<>();
 		beans.put(OBJECT_NAME, "beanName");
 		exporter.setBeans(beans);
-		thrown.expect(MBeanExportException.class);
+		this.thrown.expect(MBeanExportException.class);
 		start(exporter);
 	}
 
@@ -530,7 +530,7 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 	public void testNotRunningInBeanFactoryAndAutodetectionIsOn() throws Exception {
 		MBeanExporter exporter = new MBeanExporter();
 		exporter.setAutodetectMode(MBeanExporter.AUTODETECT_ALL);
-		thrown.expect(MBeanExportException.class);
+		this.thrown.expect(MBeanExportException.class);
 		start(exporter);
 	}
 
@@ -707,7 +707,7 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 
 		@Override
 		public ModelMBeanInfo getMBeanInfo(Object managedResource, String beanKey) throws JMException {
-			invoked = true;
+			this.invoked = true;
 			return null;
 		}
 	}
@@ -721,20 +721,20 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 
 		@Override
 		public void mbeanRegistered(ObjectName objectName) {
-			registered.add(objectName);
+			this.registered.add(objectName);
 		}
 
 		@Override
 		public void mbeanUnregistered(ObjectName objectName) {
-			unregistered.add(objectName);
+			this.unregistered.add(objectName);
 		}
 
 		public List<ObjectName> getRegistered() {
-			return registered;
+			return this.registered;
 		}
 
 		public List<ObjectName> getUnregistered() {
-			return unregistered;
+			return this.unregistered;
 		}
 	}
 
@@ -766,7 +766,7 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 
 		@Override
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String name) {

@@ -560,7 +560,7 @@ public class DefaultMessageListenerContainer extends AbstractPollingMessageListe
 	 */
 	@Override
 	protected void doShutdown() throws JMSException {
-		logger.debug("Waiting for shutdown of message listener invokers");
+		this.logger.debug("Waiting for shutdown of message listener invokers");
 		try {
 			synchronized (this.lifecycleMonitor) {
 				long receiveTimeout = getReceiveTimeout();
@@ -575,8 +575,8 @@ public class DefaultMessageListenerContainer extends AbstractPollingMessageListe
 							scheduledInvoker.interruptIfNecessary();
 						}
 					}
-					if (logger.isDebugEnabled()) {
-						logger.debug("Still waiting for shutdown of " + this.activeInvokerCount +
+					if (this.logger.isDebugEnabled()) {
+						this.logger.debug("Still waiting for shutdown of " + this.activeInvokerCount +
 								" message listener invokers (iteration " + waitCount + ")");
 					}
 					// Wait for AsyncMessageListenerInvokers to deactivate themselves...
@@ -771,8 +771,8 @@ public class DefaultMessageListenerContainer extends AbstractPollingMessageListe
 				if (this.scheduledInvokers.size() < this.maxConcurrentConsumers &&
 						getIdleInvokerCount() < this.idleConsumerLimit) {
 					scheduleNewInvoker();
-					if (logger.isDebugEnabled()) {
-						logger.debug("Raised scheduled invoker count: " + this.scheduledInvokers.size());
+					if (this.logger.isDebugEnabled()) {
+						this.logger.debug("Raised scheduled invoker count: " + this.scheduledInvokers.size());
 					}
 				}
 			}
@@ -821,7 +821,7 @@ public class DefaultMessageListenerContainer extends AbstractPollingMessageListe
 			if (ex instanceof JMSException) {
 				invokeExceptionListener((JMSException) ex);
 			}
-			logger.debug("Could not establish shared JMS Connection - " +
+			this.logger.debug("Could not establish shared JMS Connection - " +
 					"leaving it up to asynchronous invokers to establish a Connection as soon as possible", ex);
 		}
 	}
@@ -837,7 +837,7 @@ public class DefaultMessageListenerContainer extends AbstractPollingMessageListe
 			super.startSharedConnection();
 		}
 		catch (Exception ex) {
-			logger.debug("Connection start failed - relying on listeners to perform recovery", ex);
+			this.logger.debug("Connection start failed - relying on listeners to perform recovery", ex);
 		}
 	}
 
@@ -852,7 +852,7 @@ public class DefaultMessageListenerContainer extends AbstractPollingMessageListe
 			super.stopSharedConnection();
 		}
 		catch (Exception ex) {
-			logger.debug("Connection stop failed - relying on listeners to perform recovery after restart", ex);
+			this.logger.debug("Connection stop failed - relying on listeners to perform recovery after restart", ex);
 		}
 	}
 
@@ -875,24 +875,24 @@ public class DefaultMessageListenerContainer extends AbstractPollingMessageListe
 		}
 		if (ex instanceof SharedConnectionNotInitializedException) {
 			if (!alreadyRecovered) {
-				logger.info("JMS message listener invoker needs to establish shared Connection");
+				this.logger.info("JMS message listener invoker needs to establish shared Connection");
 			}
 		}
 		else {
 			// Recovery during active operation..
 			if (alreadyRecovered) {
-				logger.debug("Setup of JMS message listener invoker failed - already recovered by other invoker", ex);
+				this.logger.debug("Setup of JMS message listener invoker failed - already recovered by other invoker", ex);
 			}
 			else {
 				StringBuilder msg = new StringBuilder();
 				msg.append("Setup of JMS message listener invoker failed for destination '");
 				msg.append(getDestinationDescription()).append("' - trying to recover. Cause: ");
 				msg.append(ex instanceof JMSException ? JmsUtils.buildExceptionMessage((JMSException) ex) : ex.getMessage());
-				if (logger.isDebugEnabled()) {
-					logger.warn(msg, ex);
+				if (this.logger.isDebugEnabled()) {
+					this.logger.warn(msg, ex);
 				}
 				else {
-					logger.warn(msg);
+					this.logger.warn(msg);
 				}
 			}
 		}
@@ -943,7 +943,7 @@ public class DefaultMessageListenerContainer extends AbstractPollingMessageListe
 					Connection con = createConnection();
 					JmsUtils.closeConnection(con);
 				}
-				logger.info("Successfully refreshed JMS Connection");
+				this.logger.info("Successfully refreshed JMS Connection");
 				break;
 			}
 			catch (Exception ex) {
@@ -955,11 +955,11 @@ public class DefaultMessageListenerContainer extends AbstractPollingMessageListe
 				msg.append(getDestinationDescription()).append("' - retrying using ");
 				msg.append(execution).append(". Cause: ");
 				msg.append(ex instanceof JMSException ? JmsUtils.buildExceptionMessage((JMSException) ex) : ex.getMessage());
-				if (logger.isDebugEnabled()) {
-					logger.error(msg, ex);
+				if (this.logger.isDebugEnabled()) {
+					this.logger.error(msg, ex);
 				}
 				else {
-					logger.error(msg);
+					this.logger.error(msg);
 				}
 			}
 			if (!applyBackOffTime(execution)) {
@@ -967,7 +967,7 @@ public class DefaultMessageListenerContainer extends AbstractPollingMessageListe
 				msg.append("Stopping container for destination '")
 						.append(getDestinationDescription())
 						.append("': back-off policy does not allow ").append("for further attempts.");
-				logger.error(msg.toString());
+				this.logger.error(msg.toString());
 				stop();
 			}
 		}
@@ -1066,18 +1066,18 @@ public class DefaultMessageListenerContainer extends AbstractPollingMessageListe
 
 		@Override
 		public void run() {
-			synchronized (lifecycleMonitor) {
-				activeInvokerCount++;
-				lifecycleMonitor.notifyAll();
+			synchronized (DefaultMessageListenerContainer.this.lifecycleMonitor) {
+				DefaultMessageListenerContainer.this.activeInvokerCount++;
+				DefaultMessageListenerContainer.this.lifecycleMonitor.notifyAll();
 			}
 			boolean messageReceived = false;
 			try {
-				if (maxMessagesPerTask < 0) {
+				if (DefaultMessageListenerContainer.this.maxMessagesPerTask < 0) {
 					messageReceived = executeOngoingLoop();
 				}
 				else {
 					int messageCount = 0;
-					while (isRunning() && messageCount < maxMessagesPerTask) {
+					while (isRunning() && messageCount < DefaultMessageListenerContainer.this.maxMessagesPerTask) {
 						messageReceived = (invokeListener() || messageReceived);
 						messageCount++;
 					}
@@ -1092,11 +1092,11 @@ public class DefaultMessageListenerContainer extends AbstractPollingMessageListe
 				}
 				this.lastMessageSucceeded = false;
 				boolean alreadyRecovered = false;
-				synchronized (recoveryMonitor) {
-					if (this.lastRecoveryMarker == currentRecoveryMarker) {
+				synchronized (DefaultMessageListenerContainer.this.recoveryMonitor) {
+					if (this.lastRecoveryMarker == DefaultMessageListenerContainer.this.currentRecoveryMarker) {
 						handleListenerSetupFailure(ex, false);
 						recoverAfterListenerSetupFailure();
-						currentRecoveryMarker = new Object();
+						DefaultMessageListenerContainer.this.currentRecoveryMarker = new Object();
 					}
 					else {
 						alreadyRecovered = true;
@@ -1107,9 +1107,9 @@ public class DefaultMessageListenerContainer extends AbstractPollingMessageListe
 				}
 			}
 			finally {
-				synchronized (lifecycleMonitor) {
+				synchronized (DefaultMessageListenerContainer.this.lifecycleMonitor) {
 					decreaseActiveInvokerCount();
-					lifecycleMonitor.notifyAll();
+					DefaultMessageListenerContainer.this.lifecycleMonitor.notifyAll();
 				}
 				if (!messageReceived) {
 					this.idleTaskExecutionCount++;
@@ -1117,24 +1117,24 @@ public class DefaultMessageListenerContainer extends AbstractPollingMessageListe
 				else {
 					this.idleTaskExecutionCount = 0;
 				}
-				synchronized (lifecycleMonitor) {
+				synchronized (DefaultMessageListenerContainer.this.lifecycleMonitor) {
 					if (!shouldRescheduleInvoker(this.idleTaskExecutionCount) || !rescheduleTaskIfNecessary(this)) {
 						// We're shutting down completely.
-						scheduledInvokers.remove(this);
-						if (logger.isDebugEnabled()) {
-							logger.debug("Lowered scheduled invoker count: " + scheduledInvokers.size());
+						DefaultMessageListenerContainer.this.scheduledInvokers.remove(this);
+						if (DefaultMessageListenerContainer.this.logger.isDebugEnabled()) {
+							DefaultMessageListenerContainer.this.logger.debug("Lowered scheduled invoker count: " + DefaultMessageListenerContainer.this.scheduledInvokers.size());
 						}
-						lifecycleMonitor.notifyAll();
+						DefaultMessageListenerContainer.this.lifecycleMonitor.notifyAll();
 						clearResources();
 					}
 					else if (isRunning()) {
 						int nonPausedConsumers = getScheduledConsumerCount() - getPausedTaskCount();
 						if (nonPausedConsumers < 1) {
-							logger.error("All scheduled consumers have been paused, probably due to tasks having been rejected. " +
+							DefaultMessageListenerContainer.this.logger.error("All scheduled consumers have been paused, probably due to tasks having been rejected. " +
 									"Check your thread pool configuration! Manual recovery necessary through a start() call.");
 						}
 						else if (nonPausedConsumers < getConcurrentConsumers()) {
-							logger.warn("Number of scheduled consumers has dropped below concurrentConsumers limit, probably " +
+							DefaultMessageListenerContainer.this.logger.warn("Number of scheduled consumers has dropped below concurrentConsumers limit, probably " +
 									"due to tasks having been rejected. Check your thread pool configuration! Automatic recovery " +
 									"to be triggered by remaining consumers.");
 						}
@@ -1147,7 +1147,7 @@ public class DefaultMessageListenerContainer extends AbstractPollingMessageListe
 			boolean messageReceived = false;
 			boolean active = true;
 			while (active) {
-				synchronized (lifecycleMonitor) {
+				synchronized (DefaultMessageListenerContainer.this.lifecycleMonitor) {
 					boolean interrupted = false;
 					boolean wasWaiting = false;
 					while ((active = isActive()) && !isRunning()) {
@@ -1160,7 +1160,7 @@ public class DefaultMessageListenerContainer extends AbstractPollingMessageListe
 						}
 						wasWaiting = true;
 						try {
-							lifecycleMonitor.wait();
+							DefaultMessageListenerContainer.this.lifecycleMonitor.wait();
 						}
 						catch (InterruptedException ex) {
 							// Re-interrupt current thread, to allow other threads to react.
@@ -1169,9 +1169,9 @@ public class DefaultMessageListenerContainer extends AbstractPollingMessageListe
 						}
 					}
 					if (wasWaiting) {
-						activeInvokerCount++;
+						DefaultMessageListenerContainer.this.activeInvokerCount++;
 					}
-					if (scheduledInvokers.size() > maxConcurrentConsumers) {
+					if (DefaultMessageListenerContainer.this.scheduledInvokers.size() > DefaultMessageListenerContainer.this.maxConcurrentConsumers) {
 						active = false;
 					}
 				}
@@ -1196,10 +1196,10 @@ public class DefaultMessageListenerContainer extends AbstractPollingMessageListe
 		}
 
 		private void decreaseActiveInvokerCount() {
-			activeInvokerCount--;
-			if (stopCallback != null && activeInvokerCount == 0) {
-				stopCallback.run();
-				stopCallback = null;
+			DefaultMessageListenerContainer.this.activeInvokerCount--;
+			if (DefaultMessageListenerContainer.this.stopCallback != null && DefaultMessageListenerContainer.this.activeInvokerCount == 0) {
+				DefaultMessageListenerContainer.this.stopCallback.run();
+				DefaultMessageListenerContainer.this.stopCallback = null;
 			}
 		}
 
@@ -1214,16 +1214,16 @@ public class DefaultMessageListenerContainer extends AbstractPollingMessageListe
 				}
 				if (this.consumer == null && getCacheLevel() >= CACHE_CONSUMER) {
 					this.consumer = createListenerConsumer(this.session);
-					synchronized (lifecycleMonitor) {
-						registeredWithDestination++;
+					synchronized (DefaultMessageListenerContainer.this.lifecycleMonitor) {
+						DefaultMessageListenerContainer.this.registeredWithDestination++;
 					}
 				}
 			}
 		}
 
 		private void updateRecoveryMarker() {
-			synchronized (recoveryMonitor) {
-				this.lastRecoveryMarker = currentRecoveryMarker;
+			synchronized (DefaultMessageListenerContainer.this.recoveryMonitor) {
+				this.lastRecoveryMarker = DefaultMessageListenerContainer.this.currentRecoveryMarker;
 			}
 		}
 
@@ -1236,7 +1236,7 @@ public class DefaultMessageListenerContainer extends AbstractPollingMessageListe
 
 		private void clearResources() {
 			if (sharedConnectionEnabled()) {
-				synchronized (sharedConnectionMonitor) {
+				synchronized (DefaultMessageListenerContainer.this.sharedConnectionMonitor) {
 					JmsUtils.closeMessageConsumer(this.consumer);
 					JmsUtils.closeSession(this.session);
 				}
@@ -1246,8 +1246,8 @@ public class DefaultMessageListenerContainer extends AbstractPollingMessageListe
 				JmsUtils.closeSession(this.session);
 			}
 			if (this.consumer != null) {
-				synchronized (lifecycleMonitor) {
-					registeredWithDestination--;
+				synchronized (DefaultMessageListenerContainer.this.lifecycleMonitor) {
+					DefaultMessageListenerContainer.this.registeredWithDestination--;
 				}
 			}
 			this.consumer = null;
@@ -1267,7 +1267,7 @@ public class DefaultMessageListenerContainer extends AbstractPollingMessageListe
 
 		@Override
 		public boolean isLongLived() {
-			return (maxMessagesPerTask < 0);
+			return (DefaultMessageListenerContainer.this.maxMessagesPerTask < 0);
 		}
 
 		public void setIdle(boolean idle) {

@@ -47,12 +47,12 @@ public class ContextHierarchyInterfaceTests implements ContextHierarchyTestInter
 
 	@Test
 	public void loadContextHierarchy() {
-		assertNotNull("child ApplicationContext", context);
-		assertNotNull("parent ApplicationContext", context.getParent());
-		assertNull("grandparent ApplicationContext", context.getParent().getParent());
-		assertEquals("foo", foo);
-		assertEquals("bar", bar);
-		assertEquals("baz-child", baz);
+		assertNotNull("child ApplicationContext", this.context);
+		assertNotNull("parent ApplicationContext", this.context.getParent());
+		assertNull("grandparent ApplicationContext", this.context.getParent().getParent());
+		assertEquals("foo", this.foo);
+		assertEquals("bar", this.bar);
+		assertEquals("baz-child", this.baz);
 	}
 
 }

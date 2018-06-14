@@ -168,7 +168,7 @@ public class Jaxb2RootElementHttpMessageConverter extends AbstractJaxb2HttpMessa
 				return new SAXSource(xmlReader, inputSource);
 			}
 			catch (SAXException ex) {
-				logger.warn("Processing of external entities could not be disabled", ex);
+				this.logger.warn("Processing of external entities could not be disabled", ex);
 				return source;
 			}
 		}

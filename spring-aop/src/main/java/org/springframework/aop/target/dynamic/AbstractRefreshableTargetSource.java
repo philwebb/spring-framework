@@ -100,13 +100,13 @@ public abstract class AbstractRefreshableTargetSource implements TargetSource, R
 
 	@Override
 	public final synchronized void refresh() {
-		logger.debug("Attempting to refresh target");
+		this.logger.debug("Attempting to refresh target");
 
 		this.targetObject = freshTarget();
 		this.refreshCount++;
 		this.lastRefreshTime = System.currentTimeMillis();
 
-		logger.debug("Target refreshed successfully");
+		this.logger.debug("Target refreshed successfully");
 	}
 
 	@Override
@@ -130,7 +130,7 @@ public abstract class AbstractRefreshableTargetSource implements TargetSource, R
 		if (this.lastRefreshCheck < 0 || currentTimeMillis - this.lastRefreshCheck > this.refreshCheckDelay) {
 			// Going to perform a refresh check - update the timestamp.
 			this.lastRefreshCheck = currentTimeMillis;
-			logger.debug("Refresh check delay elapsed - checking whether refresh is required");
+			this.logger.debug("Refresh check delay elapsed - checking whether refresh is required");
 			return true;
 		}
 

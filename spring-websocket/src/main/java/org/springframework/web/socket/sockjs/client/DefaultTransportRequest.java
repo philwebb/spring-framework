@@ -221,9 +221,9 @@ class DefaultTransportRequest implements TransportRequest {
 					logger.error(message);
 					ex = new SockJsTransportFailureException(message, getSockJsUrlInfo().getSessionId(), ex);
 				}
-				if (fallbackRequest != null) {
+				if (DefaultTransportRequest.this.fallbackRequest != null) {
 					logger.error(DefaultTransportRequest.this + " failed. Falling back on next transport.", ex);
-					fallbackRequest.connect(this.handler, this.future);
+					DefaultTransportRequest.this.fallbackRequest.connect(this.handler, this.future);
 				}
 				else {
 					logger.error("No more fallback transports after " + DefaultTransportRequest.this, ex);
@@ -233,7 +233,7 @@ class DefaultTransportRequest implements TransportRequest {
 				}
 				if (isTimeoutFailure) {
 					try {
-						for (Runnable runnable : timeoutTasks) {
+						for (Runnable runnable : DefaultTransportRequest.this.timeoutTasks) {
 							runnable.run();
 						}
 					}

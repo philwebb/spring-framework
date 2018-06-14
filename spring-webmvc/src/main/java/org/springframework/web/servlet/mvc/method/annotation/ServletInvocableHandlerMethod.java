@@ -120,8 +120,8 @@ public class ServletInvocableHandlerMethod extends InvocableHandlerMethod {
 					returnValue, getReturnValueType(returnValue), mavContainer, webRequest);
 		}
 		catch (Exception ex) {
-			if (logger.isTraceEnabled()) {
-				logger.trace(formatErrorForReturnValue("Error handling return value", returnValue), ex);
+			if (this.logger.isTraceEnabled()) {
+				this.logger.trace(formatErrorForReturnValue("Error handling return value", returnValue), ex);
 			}
 			throw ex;
 		}

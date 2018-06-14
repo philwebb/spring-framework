@@ -55,7 +55,7 @@ public class PropertySourcesInitializerTests {
 
 		@Bean
 		public String enigma() {
-			return enigma;
+			return this.enigma;
 		}
 
 	}
@@ -67,7 +67,7 @@ public class PropertySourcesInitializerTests {
 
 	@Test
 	public void customPropertySourceConfiguredViaContextInitializer() {
-		assertEquals("foo", enigma);
+		assertEquals("foo", this.enigma);
 	}
 
 

@@ -43,7 +43,7 @@ public class DriverManagerDataSourceTests {
 				assertEquals(jdbcUrl, url);
 				assertEquals(uname, props.getProperty("user"));
 				assertEquals(pwd, props.getProperty("password"));
-				return connection;
+				return DriverManagerDataSourceTests.this.connection;
 			}
 		}
 
@@ -54,7 +54,7 @@ public class DriverManagerDataSourceTests {
 		ds.setPassword(pwd);
 
 		Connection actualCon = ds.getConnection();
-		assertTrue(actualCon == connection);
+		assertTrue(actualCon == this.connection);
 
 		assertTrue(ds.getUrl().equals(jdbcUrl));
 		assertTrue(ds.getPassword().equals(pwd));
@@ -79,7 +79,7 @@ public class DriverManagerDataSourceTests {
 				assertEquals("pwd", props.getProperty("password"));
 				assertEquals("myValue", props.getProperty("myProp"));
 				assertEquals("yourValue", props.getProperty("yourProp"));
-				return connection;
+				return DriverManagerDataSourceTests.this.connection;
 			}
 		}
 
@@ -89,7 +89,7 @@ public class DriverManagerDataSourceTests {
 		ds.setConnectionProperties(connProps);
 
 		Connection actualCon = ds.getConnection();
-		assertTrue(actualCon == connection);
+		assertTrue(actualCon == this.connection);
 
 		assertTrue(ds.getUrl().equals(jdbcUrl));
 	}
@@ -114,7 +114,7 @@ public class DriverManagerDataSourceTests {
 				assertEquals(pwd, props.getProperty("password"));
 				assertEquals("myValue", props.getProperty("myProp"));
 				assertEquals("yourValue", props.getProperty("yourProp"));
-				return connection;
+				return DriverManagerDataSourceTests.this.connection;
 			}
 		}
 
@@ -126,7 +126,7 @@ public class DriverManagerDataSourceTests {
 		ds.setConnectionProperties(connProps);
 
 		Connection actualCon = ds.getConnection();
-		assertTrue(actualCon == connection);
+		assertTrue(actualCon == this.connection);
 
 		assertTrue(ds.getUrl().equals(jdbcUrl));
 		assertTrue(ds.getPassword().equals(pwd));

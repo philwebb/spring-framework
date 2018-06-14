@@ -158,7 +158,7 @@ public class ConfigurationClassAspectIntegrationTests {
 
 		@After("execution(* java.lang.Runnable.*(..))")
 		public void after(JoinPoint joinPoint) {
-			count++;
+			this.count++;
 		}
 	}
 

@@ -37,25 +37,25 @@ public class LinkedMultiValueMapTests {
 
 	@Test
 	public void add() {
-		map.add("key", "value1");
-		map.add("key", "value2");
-		assertEquals(1, map.size());
+		this.map.add("key", "value1");
+		this.map.add("key", "value2");
+		assertEquals(1, this.map.size());
 		List<String> expected = new ArrayList<>(2);
 		expected.add("value1");
 		expected.add("value2");
-		assertEquals(expected, map.get("key"));
+		assertEquals(expected, this.map.get("key"));
 	}
 
 	@Test
 	public void addAll() throws Exception {
-		map.add("key", "value1");
-		map.addAll("key", Arrays.asList("value2", "value3"));
-		assertEquals(1, map.size());
+		this.map.add("key", "value1");
+		this.map.addAll("key", Arrays.asList("value2", "value3"));
+		assertEquals(1, this.map.size());
 		List<String> expected = new ArrayList<>(2);
 		expected.add("value1");
 		expected.add("value2");
 		expected.add("value3");
-		assertEquals(expected, map.get("key"));
+		assertEquals(expected, this.map.get("key"));
 	}
 
 	@Test
@@ -63,31 +63,31 @@ public class LinkedMultiValueMapTests {
 		List<String> values = new ArrayList<>(2);
 		values.add("value1");
 		values.add("value2");
-		map.put("key", values);
-		assertEquals("value1", map.getFirst("key"));
-		assertNull(map.getFirst("other"));
+		this.map.put("key", values);
+		assertEquals("value1", this.map.getFirst("key"));
+		assertNull(this.map.getFirst("other"));
 	}
 
 	@Test
 	public void set() {
-		map.set("key", "value1");
-		map.set("key", "value2");
-		assertEquals(1, map.size());
-		assertEquals(Collections.singletonList("value2"), map.get("key"));
+		this.map.set("key", "value1");
+		this.map.set("key", "value2");
+		assertEquals(1, this.map.size());
+		assertEquals(Collections.singletonList("value2"), this.map.get("key"));
 	}
 
 	@Test
 	public void equals() {
-		map.set("key1", "value1");
-		assertEquals(map, map);
+		this.map.set("key1", "value1");
+		assertEquals(this.map, this.map);
 		MultiValueMap<String, String> o1 = new LinkedMultiValueMap<>();
 		o1.set("key1", "value1");
-		assertEquals(map, o1);
-		assertEquals(o1, map);
+		assertEquals(this.map, o1);
+		assertEquals(o1, this.map);
 		Map<String, List<String>> o2 = new HashMap<>();
 		o2.put("key1", Collections.singletonList("value1"));
-		assertEquals(map, o2);
-		assertEquals(o2, map);
+		assertEquals(this.map, o2);
+		assertEquals(o2, this.map);
 	}
 
 }

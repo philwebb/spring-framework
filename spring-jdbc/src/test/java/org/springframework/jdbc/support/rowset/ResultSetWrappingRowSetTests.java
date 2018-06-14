@@ -45,8 +45,8 @@ public class ResultSetWrappingRowSetTests {
 
 	@Before
 	public void setup() throws Exception {
-		resultSet = mock(ResultSet.class);
-		rowSet = new ResultSetWrappingSqlRowSet(resultSet);
+		this.resultSet = mock(ResultSet.class);
+		this.rowSet = new ResultSetWrappingSqlRowSet(this.resultSet);
 	}
 
 
@@ -206,15 +206,15 @@ public class ResultSetWrappingRowSetTests {
 
 	private void doTest(Method rsetMethod, Method rowsetMethod, Object arg, Object ret) throws Exception {
 		if (arg instanceof String) {
-			given(resultSet.findColumn((String) arg)).willReturn(1);
-			given(rsetMethod.invoke(resultSet, 1)).willReturn(ret).willThrow(new SQLException("test"));
+			given(this.resultSet.findColumn((String) arg)).willReturn(1);
+			given(rsetMethod.invoke(this.resultSet, 1)).willReturn(ret).willThrow(new SQLException("test"));
 		}
 		else {
-			given(rsetMethod.invoke(resultSet, arg)).willReturn(ret).willThrow(new SQLException("test"));
+			given(rsetMethod.invoke(this.resultSet, arg)).willReturn(ret).willThrow(new SQLException("test"));
 		}
-		rowsetMethod.invoke(rowSet, arg);
+		rowsetMethod.invoke(this.rowSet, arg);
 		try {
-			rowsetMethod.invoke(rowSet, arg);
+			rowsetMethod.invoke(this.rowSet, arg);
 			fail("InvalidResultSetAccessException should have been thrown");
 		}
 		catch (InvocationTargetException ex) {

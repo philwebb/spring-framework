@@ -47,28 +47,28 @@ public class EhCacheCacheTests extends AbstractCacheTests<EhCacheCache> {
 
 	@Before
 	public void setup() {
-		cacheManager = new CacheManager(new Configuration().name("EhCacheCacheTests")
+		this.cacheManager = new CacheManager(new Configuration().name("EhCacheCacheTests")
 				.defaultCache(new CacheConfiguration("default", 100)));
-		nativeCache = new net.sf.ehcache.Cache(new CacheConfiguration(CACHE_NAME, 100));
-		cacheManager.addCache(nativeCache);
+		this.nativeCache = new net.sf.ehcache.Cache(new CacheConfiguration(CACHE_NAME, 100));
+		this.cacheManager.addCache(this.nativeCache);
 
-		cache = new EhCacheCache(nativeCache);
+		this.cache = new EhCacheCache(this.nativeCache);
 	}
 
 	@After
 	public void shutdown() {
-		cacheManager.shutdown();
+		this.cacheManager.shutdown();
 	}
 
 
 	@Override
 	protected EhCacheCache getCache() {
-		return cache;
+		return this.cache;
 	}
 
 	@Override
 	protected Ehcache getNativeCache() {
-		return nativeCache;
+		return this.nativeCache;
 	}
 
 
@@ -81,12 +81,12 @@ public class EhCacheCacheTests extends AbstractCacheTests<EhCacheCache> {
 		Element brancusi = new Element(key, value);
 		// ttl = 10s
 		brancusi.setTimeToLive(3);
-		nativeCache.put(brancusi);
+		this.nativeCache.put(brancusi);
 
-		assertEquals(value, cache.get(key).get());
+		assertEquals(value, this.cache.get(key).get());
 		// wait for the entry to expire
 		Thread.sleep(5 * 1000);
-		assertNull(cache.get(key));
+		assertNull(this.cache.get(key));
 	}
 
 }

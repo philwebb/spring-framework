@@ -43,22 +43,22 @@ public class JdbcTestUtilsTests {
 
 	@Test
 	public void deleteWithoutWhereClause() throws Exception {
-		given(jdbcTemplate.update("DELETE FROM person")).willReturn(10);
-		int deleted = JdbcTestUtils.deleteFromTableWhere(jdbcTemplate, "person", null);
+		given(this.jdbcTemplate.update("DELETE FROM person")).willReturn(10);
+		int deleted = JdbcTestUtils.deleteFromTableWhere(this.jdbcTemplate, "person", null);
 		assertThat(deleted, equalTo(10));
 	}
 
 	@Test
 	public void deleteWithWhereClause() throws Exception {
-		given(jdbcTemplate.update("DELETE FROM person WHERE name = 'Bob' and age > 25")).willReturn(10);
-		int deleted = JdbcTestUtils.deleteFromTableWhere(jdbcTemplate, "person", "name = 'Bob' and age > 25");
+		given(this.jdbcTemplate.update("DELETE FROM person WHERE name = 'Bob' and age > 25")).willReturn(10);
+		int deleted = JdbcTestUtils.deleteFromTableWhere(this.jdbcTemplate, "person", "name = 'Bob' and age > 25");
 		assertThat(deleted, equalTo(10));
 	}
 
 	@Test
 	public void deleteWithWhereClauseAndArguments() throws Exception {
-		given(jdbcTemplate.update("DELETE FROM person WHERE name = ? and age > ?", "Bob", 25)).willReturn(10);
-		int deleted = JdbcTestUtils.deleteFromTableWhere(jdbcTemplate, "person", "name = ? and age > ?", "Bob", 25);
+		given(this.jdbcTemplate.update("DELETE FROM person WHERE name = ? and age > ?", "Bob", 25)).willReturn(10);
+		int deleted = JdbcTestUtils.deleteFromTableWhere(this.jdbcTemplate, "person", "name = ? and age > ?", "Bob", 25);
 		assertThat(deleted, equalTo(10));
 	}
 

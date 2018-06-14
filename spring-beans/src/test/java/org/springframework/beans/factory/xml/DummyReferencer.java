@@ -45,7 +45,7 @@ public class DummyReferencer {
 	}
 
 	public DummyFactory getDummyFactory() {
-		return dummyFactory;
+		return this.dummyFactory;
 	}
 
 	public void setTestBean1(TestBean testBean1) {
@@ -53,7 +53,7 @@ public class DummyReferencer {
 	}
 
 	public TestBean getTestBean1() {
-		return testBean1;
+		return this.testBean1;
 	}
 
 	public void setTestBean2(TestBean testBean2) {
@@ -61,7 +61,7 @@ public class DummyReferencer {
 	}
 
 	public TestBean getTestBean2() {
-		return testBean2;
+		return this.testBean2;
 	}
 
 }

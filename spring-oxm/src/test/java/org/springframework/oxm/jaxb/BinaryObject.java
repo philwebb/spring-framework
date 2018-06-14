@@ -40,18 +40,18 @@ public class BinaryObject {
 	public BinaryObject(byte[] bytes, DataHandler dataHandler) {
 		this.bytes = bytes;
 		this.dataHandler = dataHandler;
-		swaDataHandler = dataHandler;
+		this.swaDataHandler = dataHandler;
 	}
 
 	public byte[] getBytes() {
-		return bytes;
+		return this.bytes;
 	}
 
 	public DataHandler getDataHandler() {
-		return dataHandler;
+		return this.dataHandler;
 	}
 
 	public DataHandler getSwaDataHandler() {
-		return swaDataHandler;
+		return this.swaDataHandler;
 	}
 }

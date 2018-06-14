@@ -67,7 +67,7 @@ public class BeanFactoryTransactionTests {
 
 	@Test
 	public void testGetsAreNotTransactionalWithProxyFactory1() {
-		ITestBean testBean = (ITestBean) factory.getBean("proxyFactory1");
+		ITestBean testBean = (ITestBean) this.factory.getBean("proxyFactory1");
 		assertTrue("testBean is a dynamic proxy", Proxy.isProxyClass(testBean.getClass()));
 		assertFalse(testBean instanceof TransactionalProxy);
 		doTestGetsAreNotTransactional(testBean);
@@ -76,7 +76,7 @@ public class BeanFactoryTransactionTests {
 	@Test
 	public void testGetsAreNotTransactionalWithProxyFactory2DynamicProxy() {
 		this.factory.preInstantiateSingletons();
-		ITestBean testBean = (ITestBean) factory.getBean("proxyFactory2DynamicProxy");
+		ITestBean testBean = (ITestBean) this.factory.getBean("proxyFactory2DynamicProxy");
 		assertTrue("testBean is a dynamic proxy", Proxy.isProxyClass(testBean.getClass()));
 		assertTrue(testBean instanceof TransactionalProxy);
 		doTestGetsAreNotTransactional(testBean);
@@ -84,7 +84,7 @@ public class BeanFactoryTransactionTests {
 
 	@Test
 	public void testGetsAreNotTransactionalWithProxyFactory2Cglib() {
-		ITestBean testBean = (ITestBean) factory.getBean("proxyFactory2Cglib");
+		ITestBean testBean = (ITestBean) this.factory.getBean("proxyFactory2Cglib");
 		assertTrue("testBean is CGLIB advised", AopUtils.isCglibProxy(testBean));
 		assertTrue(testBean instanceof TransactionalProxy);
 		doTestGetsAreNotTransactional(testBean);
@@ -92,15 +92,15 @@ public class BeanFactoryTransactionTests {
 
 	@Test
 	public void testProxyFactory2Lazy() {
-		ITestBean testBean = (ITestBean) factory.getBean("proxyFactory2Lazy");
-		assertFalse(factory.containsSingleton("target"));
+		ITestBean testBean = (ITestBean) this.factory.getBean("proxyFactory2Lazy");
+		assertFalse(this.factory.containsSingleton("target"));
 		assertEquals(666, testBean.getAge());
-		assertTrue(factory.containsSingleton("target"));
+		assertTrue(this.factory.containsSingleton("target"));
 	}
 
 	@Test
 	public void testCglibTransactionProxyImplementsNoInterfaces() {
-		ImplementsNoInterfaces ini = (ImplementsNoInterfaces) factory.getBean("cglibNoInterfaces");
+		ImplementsNoInterfaces ini = (ImplementsNoInterfaces) this.factory.getBean("cglibNoInterfaces");
 		assertTrue("testBean is CGLIB advised", AopUtils.isCglibProxy(ini));
 		assertTrue(ini instanceof TransactionalProxy);
 		String newName = "Gordon";
@@ -116,12 +116,12 @@ public class BeanFactoryTransactionTests {
 
 	@Test
 	public void testGetsAreNotTransactionalWithProxyFactory3() {
-		ITestBean testBean = (ITestBean) factory.getBean("proxyFactory3");
+		ITestBean testBean = (ITestBean) this.factory.getBean("proxyFactory3");
 		assertTrue("testBean is a full proxy", testBean instanceof DerivedTestBean);
 		assertTrue(testBean instanceof TransactionalProxy);
-		InvocationCounterPointcut txnCounter = (InvocationCounterPointcut) factory.getBean("txnInvocationCounterPointcut");
-		InvocationCounterInterceptor preCounter = (InvocationCounterInterceptor) factory.getBean("preInvocationCounterInterceptor");
-		InvocationCounterInterceptor postCounter = (InvocationCounterInterceptor) factory.getBean("postInvocationCounterInterceptor");
+		InvocationCounterPointcut txnCounter = (InvocationCounterPointcut) this.factory.getBean("txnInvocationCounterPointcut");
+		InvocationCounterInterceptor preCounter = (InvocationCounterInterceptor) this.factory.getBean("preInvocationCounterInterceptor");
+		InvocationCounterInterceptor postCounter = (InvocationCounterInterceptor) this.factory.getBean("postInvocationCounterInterceptor");
 		txnCounter.counter = 0;
 		preCounter.counter = 0;
 		postCounter.counter = 0;
@@ -148,10 +148,10 @@ public class BeanFactoryTransactionTests {
 			private boolean invoked;
 			@Override
 			public TransactionStatus getTransaction(@Nullable TransactionDefinition def) throws TransactionException {
-				if (invoked) {
+				if (this.invoked) {
 					throw new IllegalStateException("getTransaction should not get invoked more than once");
 				}
-				invoked = true;
+				this.invoked = true;
 				if (!(def.getName().contains(DerivedTestBean.class.getName()) && def.getName().contains("setAge"))) {
 					throw new IllegalStateException(
 							"transaction name should contain class and method name: " + def.getName());
@@ -177,7 +177,7 @@ public class BeanFactoryTransactionTests {
 
 	@Test
 	public void testGetBeansOfTypeWithAbstract() {
-		Map<String, ITestBean> beansOfType = factory.getBeansOfType(ITestBean.class, true, true);
+		Map<String, ITestBean> beansOfType = this.factory.getBeansOfType(ITestBean.class, true, true);
 		assertNotNull(beansOfType);
 	}
 
@@ -206,7 +206,7 @@ public class BeanFactoryTransactionTests {
 		CallCountingTransactionManager txMan = new CallCountingTransactionManager();
 		PlatformTransactionManagerFacade.delegate = txMan;
 
-		TestBean tb = (TestBean) factory.getBean("hotSwapped");
+		TestBean tb = (TestBean) this.factory.getBean("hotSwapped");
 		assertEquals(666, tb.getAge());
 		int newAge = 557;
 		tb.setAge(newAge);
@@ -214,7 +214,7 @@ public class BeanFactoryTransactionTests {
 
 		TestBean target2 = new TestBean();
 		target2.setAge(65);
-		HotSwappableTargetSource ts = (HotSwappableTargetSource) factory.getBean("swapper");
+		HotSwappableTargetSource ts = (HotSwappableTargetSource) this.factory.getBean("swapper");
 		ts.swap(target2);
 		assertEquals(target2.getAge(), tb.getAge());
 		tb.setAge(newAge);
@@ -232,7 +232,7 @@ public class BeanFactoryTransactionTests {
 
 		@Override
 		public boolean matches(Method method, @Nullable Class<?> clazz) {
-			counter++;
+			this.counter++;
 			return true;
 		}
 	}
@@ -244,7 +244,7 @@ public class BeanFactoryTransactionTests {
 
 		@Override
 		public Object invoke(MethodInvocation methodInvocation) throws Throwable {
-			counter++;
+			this.counter++;
 			return methodInvocation.proceed();
 		}
 	}

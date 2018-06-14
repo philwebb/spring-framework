@@ -38,7 +38,7 @@ public class TimestampIntroductionInterceptor extends DelegatingIntroductionInte
 
 	@Override
 	public long getTimeStamp() {
-		return ts;
+		return this.ts;
 	}
 
 }

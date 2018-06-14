@@ -55,7 +55,7 @@ public class BaseAppCtxRuleTests {
 
 	@Test
 	public void foo() {
-		assertEquals("foo", foo);
+		assertEquals("foo", this.foo);
 	}
 
 

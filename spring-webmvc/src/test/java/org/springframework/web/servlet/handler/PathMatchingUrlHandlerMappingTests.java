@@ -44,16 +44,16 @@ public class PathMatchingUrlHandlerMappingTests {
 	@Before
 	public void setUp() throws Exception {
 		MockServletContext sc = new MockServletContext("");
-		wac = new XmlWebApplicationContext();
-		wac.setServletContext(sc);
-		wac.setConfigLocations(new String[] {CONF});
-		wac.refresh();
-		hm = (HandlerMapping) wac.getBean("urlMapping");
+		this.wac = new XmlWebApplicationContext();
+		this.wac.setServletContext(sc);
+		this.wac.setConfigLocations(new String[] {CONF});
+		this.wac.refresh();
+		this.hm = (HandlerMapping) this.wac.getBean("urlMapping");
 	}
 
 	@Test
 	public void requestsWithHandlers() throws Exception {
-		Object bean = wac.getBean("mainController");
+		Object bean = this.wac.getBean("mainController");
 
 		MockHttpServletRequest req = new MockHttpServletRequest("GET", "/welcome.html");
 		HandlerExecutionChain hec = getHandler(req);
@@ -73,8 +73,8 @@ public class PathMatchingUrlHandlerMappingTests {
 		// there a couple of mappings defined with which we can test the
 		// path matching, let's do that...
 
-		Object bean = wac.getBean("mainController");
-		Object defaultBean = wac.getBean("starController");
+		Object bean = this.wac.getBean("mainController");
+		Object defaultBean = this.wac.getBean("starController");
 
 		// testing some normal behavior
 		MockHttpServletRequest req = new MockHttpServletRequest("GET", "/pathmatchingTest.html");
@@ -225,7 +225,7 @@ public class PathMatchingUrlHandlerMappingTests {
 
 	@Test
 	public void defaultMapping() throws Exception {
-		Object bean = wac.getBean("starController");
+		Object bean = this.wac.getBean("starController");
 		MockHttpServletRequest req = new MockHttpServletRequest("GET", "/goggog.html");
 		HandlerExecutionChain hec = getHandler(req);
 		assertTrue("Handler is correct bean", hec != null && hec.getHandler() == bean);
@@ -233,7 +233,7 @@ public class PathMatchingUrlHandlerMappingTests {
 
 	@Test
 	public void mappingExposedInRequest() throws Exception {
-		Object bean = wac.getBean("mainController");
+		Object bean = this.wac.getBean("mainController");
 		MockHttpServletRequest req = new MockHttpServletRequest("GET", "/show.html");
 		HandlerExecutionChain hec = getHandler(req);
 		assertTrue("Handler is correct bean", hec != null && hec.getHandler() == bean);
@@ -242,7 +242,7 @@ public class PathMatchingUrlHandlerMappingTests {
 	}
 
 	private HandlerExecutionChain getHandler(MockHttpServletRequest req) throws Exception {
-		HandlerExecutionChain hec = hm.getHandler(req);
+		HandlerExecutionChain hec = this.hm.getHandler(req);
 		HandlerInterceptor[] interceptors = hec.getInterceptors();
 		if (interceptors != null) {
 			for (HandlerInterceptor interceptor : interceptors) {

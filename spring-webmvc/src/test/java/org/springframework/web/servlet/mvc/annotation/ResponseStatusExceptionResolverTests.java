@@ -55,28 +55,28 @@ public class ResponseStatusExceptionResolverTests {
 
 	@Before
 	public void setup() {
-		exceptionResolver.setWarnLogCategory(exceptionResolver.getClass().getName());
+		this.exceptionResolver.setWarnLogCategory(this.exceptionResolver.getClass().getName());
 	}
 
 
 	@Test
 	public void statusCode() {
 		StatusCodeException ex = new StatusCodeException();
-		ModelAndView mav = exceptionResolver.resolveException(request, response, null, ex);
+		ModelAndView mav = this.exceptionResolver.resolveException(this.request, this.response, null, ex);
 		assertResolved(mav, 400, null);
 	}
 
 	@Test
 	public void statusCodeFromComposedResponseStatus() {
 		StatusCodeFromComposedResponseStatusException ex = new StatusCodeFromComposedResponseStatusException();
-		ModelAndView mav = exceptionResolver.resolveException(request, response, null, ex);
+		ModelAndView mav = this.exceptionResolver.resolveException(this.request, this.response, null, ex);
 		assertResolved(mav, 400, null);
 	}
 
 	@Test
 	public void statusCodeAndReason() {
 		StatusCodeAndReasonException ex = new StatusCodeAndReasonException();
-		ModelAndView mav = exceptionResolver.resolveException(request, response, null, ex);
+		ModelAndView mav = this.exceptionResolver.resolveException(this.request, this.response, null, ex);
 		assertResolved(mav, 410, "You suck!");
 	}
 
@@ -87,11 +87,11 @@ public class ResponseStatusExceptionResolverTests {
 		try {
 			StaticMessageSource messageSource = new StaticMessageSource();
 			messageSource.addMessage("gone.reason", locale, "Gone reason message");
-			exceptionResolver.setMessageSource(messageSource);
+			this.exceptionResolver.setMessageSource(messageSource);
 
 			StatusCodeAndReasonMessageException ex = new StatusCodeAndReasonMessageException();
-			exceptionResolver.resolveException(request, response, null, ex);
-			assertEquals("Invalid status reason", "Gone reason message", response.getErrorMessage());
+			this.exceptionResolver.resolveException(this.request, this.response, null, ex);
+			assertEquals("Invalid status reason", "Gone reason message", this.response.getErrorMessage());
 		}
 		finally {
 			LocaleContextHolder.resetLocaleContext();
@@ -101,8 +101,8 @@ public class ResponseStatusExceptionResolverTests {
 	@Test
 	public void notAnnotated() {
 		Exception ex = new Exception();
-		exceptionResolver.resolveException(request, response, null, ex);
-		ModelAndView mav = exceptionResolver.resolveException(request, response, null, ex);
+		this.exceptionResolver.resolveException(this.request, this.response, null, ex);
+		ModelAndView mav = this.exceptionResolver.resolveException(this.request, this.response, null, ex);
 		assertNull("ModelAndView returned", mav);
 	}
 
@@ -110,30 +110,30 @@ public class ResponseStatusExceptionResolverTests {
 	public void nestedException() throws Exception {
 		Exception cause = new StatusCodeAndReasonMessageException();
 		TypeMismatchException ex = new TypeMismatchException("value", ITestBean.class, cause);
-		ModelAndView mav = exceptionResolver.resolveException(request, response, null, ex);
+		ModelAndView mav = this.exceptionResolver.resolveException(this.request, this.response, null, ex);
 		assertResolved(mav, 410, "gone.reason");
 	}
 
 	@Test
 	public void responseStatusException() throws Exception {
 		ResponseStatusException ex = new ResponseStatusException(HttpStatus.BAD_REQUEST);
-		ModelAndView mav = exceptionResolver.resolveException(request, response, null, ex);
+		ModelAndView mav = this.exceptionResolver.resolveException(this.request, this.response, null, ex);
 		assertResolved(mav, 400, null);
 	}
 
 	@Test  // SPR-15524
 	public void responseStatusExceptionWithReason() throws Exception {
 		ResponseStatusException ex = new ResponseStatusException(HttpStatus.BAD_REQUEST, "The reason");
-		ModelAndView mav = exceptionResolver.resolveException(request, response, null, ex);
+		ModelAndView mav = this.exceptionResolver.resolveException(this.request, this.response, null, ex);
 		assertResolved(mav, 400, "The reason");
 	}
 
 
 	private void assertResolved(ModelAndView mav, int status, String reason) {
 		assertTrue("No Empty ModelAndView returned", mav != null && mav.isEmpty());
-		assertEquals(status, response.getStatus());
-		assertEquals(reason, response.getErrorMessage());
-		assertTrue(response.isCommitted());
+		assertEquals(status, this.response.getStatus());
+		assertEquals(reason, this.response.getErrorMessage());
+		assertTrue(this.response.isCommitted());
 	}
 
 

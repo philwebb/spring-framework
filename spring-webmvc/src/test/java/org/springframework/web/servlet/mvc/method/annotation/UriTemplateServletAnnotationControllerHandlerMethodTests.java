@@ -663,10 +663,10 @@ public class UriTemplateServletAnnotationControllerHandlerMethodTests extends Ab
 				@Override
 				protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request,
 						HttpServletResponse response) throws Exception {
-					for (String key : attrsToValidate.keySet()) {
+					for (String key : ModelValidatingViewResolver.this.attrsToValidate.keySet()) {
 						assertTrue("Model should contain attribute named " + key, model.containsKey(key));
-						assertEquals(attrsToValidate.get(key), model.get(key));
-						validatedAttrCount++;
+						assertEquals(ModelValidatingViewResolver.this.attrsToValidate.get(key), model.get(key));
+						ModelValidatingViewResolver.this.validatedAttrCount++;
 					}
 				}
 			};

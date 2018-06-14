@@ -65,9 +65,9 @@ public class OrderedInitializersAnnotationConfigTests {
 
 	@Test
 	public void activeBeans() {
-		assertEquals(PROFILE_GLOBAL, foo);
-		assertEquals(PROFILE_GLOBAL, bar);
-		assertEquals(PROFILE_TWO, baz);
+		assertEquals(PROFILE_GLOBAL, this.foo);
+		assertEquals(PROFILE_GLOBAL, this.bar);
+		assertEquals(PROFILE_TWO, this.baz);
 	}
 
 

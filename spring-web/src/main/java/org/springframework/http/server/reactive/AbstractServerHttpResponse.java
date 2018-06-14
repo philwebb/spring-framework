@@ -90,8 +90,8 @@ public abstract class AbstractServerHttpResponse implements ServerHttpResponse {
 	@Override
 	public boolean setStatusCode(@Nullable HttpStatus statusCode) {
 		if (this.state.get() == State.COMMITTED) {
-			if (logger.isTraceEnabled()) {
-				logger.trace("HTTP response already committed. " +
+			if (this.logger.isTraceEnabled()) {
+				this.logger.trace("HTTP response already committed. " +
 						"Status not set to " + (statusCode != null ? statusCode.toString() : "null"));
 			}
 			return false;
@@ -203,8 +203,8 @@ public abstract class AbstractServerHttpResponse implements ServerHttpResponse {
 	 */
 	protected Mono<Void> doCommit(@Nullable Supplier<? extends Mono<Void>> writeAction) {
 		if (!this.state.compareAndSet(State.NEW, State.COMMITTING)) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("Skipping doCommit (response already committed).");
+			if (this.logger.isDebugEnabled()) {
+				this.logger.debug("Skipping doCommit (response already committed).");
 			}
 			return Mono.empty();
 		}
