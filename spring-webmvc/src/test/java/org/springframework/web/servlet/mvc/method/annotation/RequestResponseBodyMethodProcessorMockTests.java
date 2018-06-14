@@ -392,7 +392,7 @@ public class RequestResponseBodyMethodProcessorMockTests {
 
 		then(this.resourceRegionMessageConverter).should(times(1)).write(
 				anyCollection(), eq(MediaType.APPLICATION_OCTET_STREAM),
-				argThat(outputMessage -> outputMessage.getHeaders().getFirst(HttpHeaders.ACCEPT_RANGES) == "bytes"));
+				argThat(outputMessage -> "bytes".equals(outputMessage.getHeaders().getFirst(HttpHeaders.ACCEPT_RANGES))));
 		assertEquals(206, this.servletResponse.getStatus());
 	}
 
