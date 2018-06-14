@@ -20,4 +20,5 @@
 	<suppress files="JmsHeaderMapper" checks="InterfaceIsType" />
 	<suppress files="JmsHeaders" checks="InterfaceIsType" />
 	<suppress files="ValueConstants" checks="InterfaceIsType" />
+	<suppress files="SpelReproTests" checks="InterfaceIsType" />
 </suppressions>
