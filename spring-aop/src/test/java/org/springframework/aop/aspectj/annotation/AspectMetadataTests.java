@@ -21,9 +21,13 @@ import org.junit.Test;
 import org.springframework.aop.Pointcut;
 import org.springframework.aop.aspectj.annotation.AbstractAspectJAdvisorFactoryTests.ExceptionAspect;
 
-import static org.junit.Assert.*;
-
 import test.aop.PerTargetAspect;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @since 2.0

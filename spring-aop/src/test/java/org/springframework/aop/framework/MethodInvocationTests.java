@@ -25,7 +25,7 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.junit.Test;
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Rod Johnson
