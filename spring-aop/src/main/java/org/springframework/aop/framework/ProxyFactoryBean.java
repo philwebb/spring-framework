@@ -123,10 +123,10 @@ public class ProxyFactoryBean extends ProxyCreatorSupport
 	@Nullable
 	private transient BeanFactory beanFactory;
 
-	/** Whether the advisor chain has already been initialized */
+	/** Whether the advisor chain has already been initialized. */
 	private boolean advisorChainInitialized = false;
 
-	/** If this is a singleton, the cached singleton proxy instance */
+	/** If this is a singleton, the cached singleton proxy instance. */
 	@Nullable
 	private Object singletonInstance;
 

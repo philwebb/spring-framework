@@ -39,7 +39,7 @@ import org.springframework.util.ObjectUtils;
 @SuppressWarnings("serial")
 public class PropertyBatchUpdateException extends BeansException {
 
-	/** List of PropertyAccessException objects */
+	/** List of PropertyAccessException objects. */
 	private final PropertyAccessException[] propertyAccessExceptions;
 
 

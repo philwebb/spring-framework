@@ -258,6 +258,9 @@ class ExtendedBeanInfo implements BeanInfo {
 	}
 
 
+	/**
+	 * A simple {@link PropertyDescriptor}.
+	 */
 	static class SimplePropertyDescriptor extends PropertyDescriptor {
 
 		@Nullable
@@ -349,6 +352,9 @@ class ExtendedBeanInfo implements BeanInfo {
 	}
 
 
+	/**
+	 * A simple {@link IndexedPropertyDescriptor}.
+	 */
 	static class SimpleIndexedPropertyDescriptor extends IndexedPropertyDescriptor {
 
 		@Nullable

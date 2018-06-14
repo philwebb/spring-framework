@@ -52,6 +52,7 @@ import org.springframework.util.ReflectionUtils;
  * for implementing the abstract {@link #createInstance()} template
  * method to actually create the object(s) to expose.
  *
+ * @param <T> the bean type
  * @author Juergen Hoeller
  * @author Keith Donald
  * @since 1.0.2
@@ -61,7 +62,7 @@ import org.springframework.util.ReflectionUtils;
 public abstract class AbstractFactoryBean<T>
 		implements FactoryBean<T>, BeanClassLoaderAware, BeanFactoryAware, InitializingBean, DisposableBean {
 
-	/** Logger available to subclasses */
+	/** Logger available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	private boolean singleton = true;

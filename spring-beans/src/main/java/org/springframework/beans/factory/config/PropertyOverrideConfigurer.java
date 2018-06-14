@@ -64,6 +64,9 @@ import org.springframework.beans.factory.BeanInitializationException;
  */
 public class PropertyOverrideConfigurer extends PropertyResourceConfigurer {
 
+	/**
+	 * The default bean name separator.
+	 */
 	public static final String DEFAULT_BEAN_NAME_SEPARATOR = ".";
 
 
@@ -72,7 +75,7 @@ public class PropertyOverrideConfigurer extends PropertyResourceConfigurer {
 	private boolean ignoreInvalidKeys = false;
 
 	/**
-	 * Contains names of beans that have overrides
+	 * Contains names of beans that have overrides.
 	 */
 	private final Set<String> beanNames = Collections.newSetFromMap(new ConcurrentHashMap<>(16));
 

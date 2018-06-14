@@ -33,6 +33,7 @@ package org.springframework.beans.factory;
  * the plain {@link FactoryBean} interface. New methods might be added
  * to this extended interface even in point releases.
  *
+ * @param <T> the bean type
  * @author Juergen Hoeller
  * @since 2.0.3
  * @see #isPrototype()

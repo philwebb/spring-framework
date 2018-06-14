@@ -42,7 +42,7 @@ public class AspectJPointcutAdvisor implements PointcutAdvisor, Ordered {
 
 
 	/**
-	 * Create a new AspectJPointcutAdvisor for the given advice
+	 * Create a new AspectJPointcutAdvisor for the given advice.
 	 * @param advice the AbstractAspectJAdvice to wrap
 	 */
 	public AspectJPointcutAdvisor(AbstractAspectJAdvice advice) {

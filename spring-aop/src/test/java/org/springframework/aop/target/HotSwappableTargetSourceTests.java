@@ -107,12 +107,6 @@ public class HotSwappableTargetSourceTests {
 		assertEquals(target1.getCount(), proxied.getCount());
 	}
 
-
-	/**
-	 *
-	 * @param invalid
-	 * @return the message
-	 */
 	private IllegalArgumentException testRejectsSwapToInvalidValue(Object invalid) {
 		HotSwappableTargetSource swapper = (HotSwappableTargetSource) this.beanFactory.getBean("swapper");
 		IllegalArgumentException aopex = null;

@@ -79,7 +79,7 @@ public abstract class ExposeBeanNameAdvisors {
 
 	/**
 	 * Create a new advisor that will expose the given bean name,
-	 * with no introduction
+	 * with no introduction.
 	 * @param beanName bean name to expose
 	 */
 	public static Advisor createAdvisorWithoutIntroduction(String beanName) {

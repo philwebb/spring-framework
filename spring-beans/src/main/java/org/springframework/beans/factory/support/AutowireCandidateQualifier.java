@@ -32,6 +32,9 @@ import org.springframework.util.Assert;
 @SuppressWarnings("serial")
 public class AutowireCandidateQualifier extends BeanMetadataAttributeAccessor {
 
+	/**
+	 * The name of the key used to store the value.
+	 */
 	public static final String VALUE_KEY = "value";
 
 	private final String typeName;
