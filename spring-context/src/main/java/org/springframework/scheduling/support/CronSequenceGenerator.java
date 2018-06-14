@@ -372,7 +372,8 @@ public class CronSequenceGenerator {
 			return result;
 		}
 		if (!field.contains("-")) {
-			result[0] = result[1] = Integer.valueOf(field);
+			result[0] = Integer.valueOf(field);
+			result[1] = result[0];
 		}
 		else {
 			String[] split = StringUtils.delimitedListToStringArray(field, "-");
