@@ -26,7 +26,7 @@ import org.springframework.util.Assert;
  * @author Sam Brannen
  * @since 2.0
  */
-public class SystemProfileValueSource implements ProfileValueSource {
+public final class SystemProfileValueSource implements ProfileValueSource {
 
 	private static final SystemProfileValueSource INSTANCE = new SystemProfileValueSource();
 

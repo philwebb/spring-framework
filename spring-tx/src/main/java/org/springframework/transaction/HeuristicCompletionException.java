@@ -53,7 +53,7 @@ public class HeuristicCompletionException extends TransactionException {
 	/**
 	 * The outcome state of the transaction: have some or all resources been committed?
 	 */
-	private int outcomeState = STATE_UNKNOWN;
+	private final int outcomeState;
 
 
 	/**

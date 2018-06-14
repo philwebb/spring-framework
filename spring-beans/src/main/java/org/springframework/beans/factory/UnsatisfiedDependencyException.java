@@ -33,7 +33,7 @@ import org.springframework.util.StringUtils;
 public class UnsatisfiedDependencyException extends BeanCreationException {
 
 	@Nullable
-	private InjectionPoint injectionPoint;
+	private final InjectionPoint injectionPoint;
 
 
 	/**
@@ -49,6 +49,7 @@ public class UnsatisfiedDependencyException extends BeanCreationException {
 		super(resourceDescription, beanName,
 				"Unsatisfied dependency expressed through bean property '" + propertyName + "'" +
 				(StringUtils.hasLength(msg) ? ": " + msg : ""));
+		this.injectionPoint = null;
 	}
 
 	/**

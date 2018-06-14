@@ -39,5 +39,13 @@
 		</module>
 		<module name="com.puppycrawl.tools.checkstyle.checks.blocks.NeedBracesCheck" />
 		<module name="com.puppycrawl.tools.checkstyle.checks.blocks.AvoidNestedBlocksCheck" />
+
+		<!-- Class Design -->
+		<module name="com.puppycrawl.tools.checkstyle.checks.design.FinalClassCheck" />
+		<module name="com.puppycrawl.tools.checkstyle.checks.design.InterfaceIsTypeCheck" />
+		<module name="com.puppycrawl.tools.checkstyle.checks.design.HideUtilityClassConstructorCheck" />
+		<module name="com.puppycrawl.tools.checkstyle.checks.design.MutableExceptionCheck" />
+		<module name="com.puppycrawl.tools.checkstyle.checks.design.InnerTypeLastCheck" />
+		<module name="com.puppycrawl.tools.checkstyle.checks.design.OneTopLevelClassCheck" />
  	</module>
 </module>

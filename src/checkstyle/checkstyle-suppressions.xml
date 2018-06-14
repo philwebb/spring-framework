@@ -4,11 +4,20 @@
     "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
 <suppressions>
 	<suppress files="[\\/]src[\\/]main[\\/]java[\\/]org[\\/]springframework[\\/]asm[\\/]" checks=".*" />
-	<suppress files="[\\/]src[\\/]main[\\/]java[\\/]org[\\/]springframework[\\/]cglib[\\/]" checks="Header" />
+	<suppress files="[\\/]src[\\/]main[\\/]java[\\/]org[\\/]springframework[\\/]cglib[\\/]" checks=".*" />
 	<suppress files="[\\/]src[\\/]main[\\/]java[\\/]org[\\/]apache[\\/]commons[\\/]logging[\\/]" checks="Header" />
 	<suppress files="[\\/]src[\\/]main[\\/]java[\\/]org[\\/]springframework[\\/]protobuf[\\/]" checks="Header" />
 	<suppress files="[\\/]src[\\/]test[\\/]java[\\/]org[\\/]springframework[\\/]protobuf[\\/]" checks=".*" />
 	<suppress files="AnnotationUtilsTests" checks="AnnotationUseStyle" />
 	<suppress files="[\\/]src[\\/]test[\\/]java[\\/]org[\\/]springframework[\\/]test[\\/]context[\\/]hierarchies[\\/]" checks="AnnotationUseStyle" />
-	<suppress files="[\\/]src[\\/]test[\\/]java[\\/]org[\\/]springframework[\\/]" checks="AvoidNestedBlocks" />
+	<suppress files="[\\/]src[\\/]test[\\/]java[\\/]org[\\/]springframework[\\/]" checks="[AvoidNestedBlocks|OneTopLevelClass]" />
+	<suppress files="TypeMismatchException" checks="MutableException"/>
+	<suppress files="BeanCreationException" checks="MutableException"/>
+	<suppress files="SocketUtils" checks="HideUtilityClassConstructor" />
+	<suppress files="ResolvableType" checks="FinalClass" />
+	<suppress files="ExpressionException" checks="MutableException" />
+	<suppress files="TransactionSystemException" checks="MutableException" />
+	<suppress files="JmsHeaderMapper" checks="InterfaceIsType" />
+	<suppress files="JmsHeaders" checks="InterfaceIsType" />
+	<suppress files="ValueConstants" checks="InterfaceIsType" />
 </suppressions>

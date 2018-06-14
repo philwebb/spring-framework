@@ -27,7 +27,12 @@ import org.springframework.core.annotation.AnnotatedElementUtils;
  * @author Juergen Hoeller
  * @since 3.1
  */
-class BeanAnnotationHelper {
+final class BeanAnnotationHelper {
+
+
+	private BeanAnnotationHelper() {
+	}
+
 
 	public static boolean isBeanAnnotated(Method method) {
 		return AnnotatedElementUtils.hasAnnotation(method, Bean.class);

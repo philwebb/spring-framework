@@ -225,7 +225,7 @@ public abstract class BshScriptUtils {
 	 * Exception to be thrown on script execution failure.
 	 */
 	@SuppressWarnings("serial")
-	public static class BshExecutionException extends NestedRuntimeException {
+	public static final class BshExecutionException extends NestedRuntimeException {
 
 		private BshExecutionException(EvalError ex) {
 			super("BeanShell script execution failed", ex);

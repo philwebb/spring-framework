@@ -38,7 +38,7 @@ import org.springframework.util.Assert;
  * @author Rossen Stoyanchev
  * @since 4.3
  */
-public class ExpectedCount {
+public final class ExpectedCount {
 
 	private final int minCount;
 

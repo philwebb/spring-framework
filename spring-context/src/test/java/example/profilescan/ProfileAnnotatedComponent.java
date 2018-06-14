@@ -27,4 +27,7 @@ public class ProfileAnnotatedComponent {
 
 	public static final String PROFILE_NAME = "test";
 
+	public void example() {
+	}
+
 }

@@ -43,6 +43,11 @@ import org.springframework.format.datetime.DateFormatterRegistrar;
  */
 final class DateTimeConverters {
 
+
+	private DateTimeConverters() {
+	}
+
+
 	/**
 	 * Install the converters into the converter registry.
 	 * @param registry the converter registry

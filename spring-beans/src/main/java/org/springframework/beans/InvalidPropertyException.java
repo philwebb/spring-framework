@@ -28,9 +28,9 @@ import org.springframework.lang.Nullable;
 @SuppressWarnings("serial")
 public class InvalidPropertyException extends FatalBeanException {
 
-	private Class<?> beanClass;
+	private final Class<?> beanClass;
 
-	private String propertyName;
+	private final String propertyName;
 
 
 	/**

@@ -29,9 +29,9 @@ import org.springframework.dao.DataRetrievalFailureException;
 @SuppressWarnings("serial")
 public class IncorrectResultSetColumnCountException extends DataRetrievalFailureException {
 
-	private int expectedCount;
+	private final int expectedCount;
 
-	private int actualCount;
+	private final int actualCount;
 
 
 	/**
