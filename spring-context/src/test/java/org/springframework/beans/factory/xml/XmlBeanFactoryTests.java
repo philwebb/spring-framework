@@ -1660,7 +1660,10 @@ public class XmlBeanFactoryTests {
 
 		public static boolean constructed;
 
-		public boolean afterPropertiesSetInvoked, initMethodInvoked, destroyed, customDestroyed;
+		public boolean afterPropertiesSetInvoked;
+		public boolean initMethodInvoked;
+		public boolean destroyed;
+		public boolean customDestroyed;
 
 		public InitAndIB() {
 			constructed = true;
