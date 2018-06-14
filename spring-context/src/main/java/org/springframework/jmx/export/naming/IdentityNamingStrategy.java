@@ -39,8 +39,14 @@ import org.springframework.util.ObjectUtils;
  */
 public class IdentityNamingStrategy implements ObjectNamingStrategy {
 
+	/**
+	 * The type key.
+	 */
 	public static final String TYPE_KEY = "type";
 
+	/**
+	 * The hash code key.
+	 */
 	public static final String HASH_CODE_KEY = "hashCode";
 
 

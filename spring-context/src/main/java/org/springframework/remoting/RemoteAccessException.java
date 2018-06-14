@@ -48,7 +48,7 @@ import org.springframework.core.NestedRuntimeException;
  */
 public class RemoteAccessException extends NestedRuntimeException {
 
-	/** Use serialVersionUID from Spring 1.2 for interoperability */
+	/** Use serialVersionUID from Spring 1.2 for interoperability. */
 	private static final long serialVersionUID = -4906825139312227864L;
 
 

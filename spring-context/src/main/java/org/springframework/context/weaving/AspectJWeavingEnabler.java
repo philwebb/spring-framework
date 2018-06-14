@@ -43,6 +43,9 @@ import org.springframework.lang.Nullable;
 public class AspectJWeavingEnabler
 		implements BeanFactoryPostProcessor, BeanClassLoaderAware, LoadTimeWeaverAware, Ordered {
 
+	/**
+	 * The {@code aop.xml} resource location.
+	 */
 	public static final String ASPECTJ_AOP_XML_RESOURCE = "META-INF/aop.xml";
 
 

@@ -31,6 +31,7 @@ package org.springframework.context;
  * implemented or if the @{@link org.springframework.core.annotation.Order Order}
  * annotation is present and to sort instances accordingly if so prior to invocation.
  *
+ * @param <C> the application context type
  * @author Chris Beams
  * @since 3.1
  * @see org.springframework.web.context.ContextLoader#customizeContext

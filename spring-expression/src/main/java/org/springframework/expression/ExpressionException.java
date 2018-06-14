@@ -22,7 +22,7 @@ import org.springframework.lang.Nullable;
  * Super class for exceptions that can occur whilst processing expressions.
  *
  * @author Andy Clement
- * @author Phil Webb
+ * @author Phillip Webb
  * @since 3.0
  */
 @SuppressWarnings("serial")

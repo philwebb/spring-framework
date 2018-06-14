@@ -21,6 +21,8 @@ import org.springframework.beans.factory.parsing.ProblemReporter;
 import org.springframework.core.type.MethodMetadata;
 
 /**
+ * Base class for a {@link Configuration @Configuration} class method.
+ *
  * @author Chris Beams
  * @since 3.1
  */

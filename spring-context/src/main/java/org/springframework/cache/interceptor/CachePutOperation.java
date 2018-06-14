@@ -33,6 +33,7 @@ public class CachePutOperation extends CacheOperation {
 
 
 	/**
+	 * Create a new {@link CachePutOperation} instance from the given builder.
 	 * @since 4.3
 	 */
 	public CachePutOperation(CachePutOperation.Builder b) {
@@ -48,6 +49,7 @@ public class CachePutOperation extends CacheOperation {
 
 
 	/**
+	 * A builder that can be used to create a {@link CachePutOperation}.
 	 * @since 4.3
 	 */
 	public static class Builder extends CacheOperation.Builder {

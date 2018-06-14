@@ -27,6 +27,7 @@ import org.springframework.lang.Nullable;
  * Tag collection class used to hold managed Set values, which may
  * include runtime bean references (to be resolved into bean objects).
  *
+ * @param <E> the element type
  * @author Juergen Hoeller
  * @author Rob Harrop
  * @since 21.01.2004

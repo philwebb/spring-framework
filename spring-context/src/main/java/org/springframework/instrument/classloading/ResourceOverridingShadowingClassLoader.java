@@ -49,7 +49,7 @@ public class ResourceOverridingShadowingClassLoader extends ShadowingClassLoader
 
 
 	/**
-	 * Key is asked for value: value is actual value
+	 * Key is asked for value: value is actual value.
 	 */
 	private Map<String, String> overrides = new HashMap<>();
 

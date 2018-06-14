@@ -23,4 +23,6 @@
 	<suppress files="ValueConstants" checks="InterfaceIsType" />
 	<suppress files="SpelReproTests" checks="InterfaceIsType" />
 	<suppress files="ServletAnnotationControllerHandlerMethodTests" checks="InterfaceIsType" />
+	<suppress files="BeanDefinitionParserDelegate" checks="JavadocVariable" />
+	<suppress files="DefaultBeanDefinitionDocumentReader" checks="JavadocVariable" />
 </suppressions>

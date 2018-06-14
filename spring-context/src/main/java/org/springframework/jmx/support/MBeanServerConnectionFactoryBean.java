@@ -144,7 +144,7 @@ public class MBeanServerConnectionFactoryBean
 	}
 
 	/**
-	 * Creates lazy proxies for the {@code JMXConnector} and {@code MBeanServerConnection}
+	 * Creates lazy proxies for the {@code JMXConnector} and {@code MBeanServerConnection}.
 	 */
 	private void createLazyConnection() {
 		this.connectorTargetSource = new JMXConnectorLazyInitTargetSource();

@@ -44,6 +44,7 @@ import org.springframework.util.Assert;
  * the respective JSTL EL expressions, like "myModelAttr.pageSize" and
  * "myModelAttr.sort.ascending".
  *
+ * @param <E> The element type
  * @author Juergen Hoeller
  * @since 19.05.2003
  * @see #getPageList()
@@ -52,8 +53,14 @@ import org.springframework.util.Assert;
 @SuppressWarnings("serial")
 public class PagedListHolder<E> implements Serializable {
 
+	/**
+	 * The default page size.
+	 */
 	public static final int DEFAULT_PAGE_SIZE = 10;
 
+	/**
+	 * The default maximum number of page links.
+	 */
 	public static final int DEFAULT_MAX_LINKED_PAGES = 10;
 
 
