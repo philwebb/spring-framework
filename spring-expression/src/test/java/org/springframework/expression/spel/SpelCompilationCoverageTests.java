@@ -5460,7 +5460,8 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 
 	public static class TestClass4 {
 
-		public boolean a,b;
+		public boolean a;
+		public boolean b;
 
 		public boolean gettrue() {
 			return true;

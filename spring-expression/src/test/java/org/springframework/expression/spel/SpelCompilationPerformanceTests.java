@@ -269,7 +269,8 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 		Payload payload = new Payload();
 		Expression expression = this.parser.parseExpression("DR[0].DRFixedSection.duration lt 0.1");
 		boolean b = false;
-		long iTotal = 0,cTotal = 0;
+		long iTotal = 0;
+		long cTotal = 0;
 
 		// warmup
 		for (int i = 0; i < this.count; i++) {
@@ -327,9 +328,12 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 
 	@Test
 	public void compilingMethodReference() throws Exception {
-		long interpretedTotal = 0, compiledTotal = 0;
-		long stime,etime;
-		String interpretedResult = null,compiledResult = null;
+		long interpretedTotal = 0;
+		long compiledTotal = 0;
+		long stime;
+		long etime;
+		String interpretedResult = null;
+		String compiledResult = null;
 
 		HW testdata = new HW();
 		Expression expression = this.parser.parseExpression("hello()");
@@ -380,8 +384,12 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 
 	@Test
 	public void compilingPropertyReferenceField() throws Exception {
-		long interpretedTotal = 0, compiledTotal = 0, stime, etime;
-		String interpretedResult = null, compiledResult = null;
+		long interpretedTotal = 0;
+		long compiledTotal = 0;
+		long stime;
+		long etime;
+		String interpretedResult = null;
+		String compiledResult = null;
 
 		TestClass2 testdata = new TestClass2();
 		Expression expression = this.parser.parseExpression("name");
@@ -426,8 +434,12 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 
 	@Test
 	public void compilingPropertyReferenceNestedField() throws Exception {
-		long interpretedTotal = 0, compiledTotal = 0, stime, etime;
-		String interpretedResult = null, compiledResult = null;
+		long interpretedTotal = 0;
+		long compiledTotal = 0;
+		long stime;
+		long etime;
+		String interpretedResult = null;
+		String compiledResult = null;
 
 		TestClass2 testdata = new TestClass2();
 		Expression expression = this.parser.parseExpression("foo.bar.boo");
@@ -472,8 +484,12 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 
 	@Test
 	public void compilingPropertyReferenceNestedMixedFieldGetter() throws Exception {
-		long interpretedTotal = 0, compiledTotal = 0, stime, etime;
-		String interpretedResult = null, compiledResult = null;
+		long interpretedTotal = 0;
+		long compiledTotal = 0;
+		long stime;
+		long etime;
+		String interpretedResult = null;
+		String compiledResult = null;
 
 		TestClass2 testdata = new TestClass2();
 		Expression expression = this.parser.parseExpression("foo.baz.boo");
@@ -517,8 +533,12 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 
 	@Test
 	public void compilingNestedMixedFieldPropertyReferenceMethodReference() throws Exception {
-		long interpretedTotal = 0, compiledTotal = 0, stime, etime;
-		String interpretedResult = null, compiledResult = null;
+		long interpretedTotal = 0;
+		long compiledTotal = 0;
+		long stime;
+		long etime;
+		String interpretedResult = null;
+		String compiledResult = null;
 
 		TestClass2 testdata = new TestClass2();
 		Expression expression = this.parser.parseExpression("foo.bay().boo");
@@ -564,8 +584,12 @@ public class SpelCompilationPerformanceTests extends AbstractExpressionTests {
 
 	@Test
 	public void compilingPropertyReferenceGetter() throws Exception {
-		long interpretedTotal = 0, compiledTotal = 0, stime, etime;
-		String interpretedResult = null, compiledResult = null;
+		long interpretedTotal = 0;
+		long compiledTotal = 0;
+		long stime;
+		long etime;
+		String interpretedResult = null;
+		String compiledResult = null;
 
 		TestClass2 testdata = new TestClass2();
 		Expression expression = this.parser.parseExpression("name2");
