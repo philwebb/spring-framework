@@ -156,7 +156,6 @@ public class JndiTemplateTests {
 		jt.rebind(name, o);
 		verify(context).rebind(name, o);
 		verify(context).close();
-;
 	}
 
 	@Test
