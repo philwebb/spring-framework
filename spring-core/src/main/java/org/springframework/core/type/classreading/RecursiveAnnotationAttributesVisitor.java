@@ -16,11 +16,14 @@
 
 package org.springframework.core.type.classreading;
 
+import org.springframework.asm.AnnotationVisitor;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.lang.Nullable;
 
 /**
+ * {@link AnnotationVisitor} to recursively visit annotation attributes.
+ *
  * @author Chris Beams
  * @author Juergen Hoeller
  * @since 3.1.1

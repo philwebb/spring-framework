@@ -542,6 +542,11 @@ public class MimeType implements Comparable<MimeType>, Serializable {
 	}
 
 
+	/**
+	 * Comparator to sort {@link MimeType MimeTypes} in order of specificity.
+	 *
+	 * @param <T> the type of mime types that may be compared by this comparator
+	 */
 	public static class SpecificityComparator<T extends MimeType> implements Comparator<T> {
 
 		@Override

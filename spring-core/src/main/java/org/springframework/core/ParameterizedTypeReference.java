@@ -35,6 +35,7 @@ import org.springframework.util.Assert;
  * instance that carries the captured parameterized type information at runtime.
  * For more information on "super type tokens" see the link to Neal Gafter's blog post.
  *
+ * @param <T> the referenced type
  * @author Arjen Poutsma
  * @author Rossen Stoyanchev
  * @since 3.2

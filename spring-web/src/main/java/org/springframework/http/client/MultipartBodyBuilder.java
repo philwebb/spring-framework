@@ -259,8 +259,8 @@ public final class MultipartBodyBuilder {
 	 * Specialization of {@link HttpEntity} for use with a
 	 * {@link Publisher}-based body, for which we also need to keep track of
 	 * the element type.
-	 * @param <T> The type contained in the publisher
-	 * @param <P> The publisher
+	 * @param <T> the type contained in the publisher
+	 * @param <P> the publisher
 	 */
 	public static final class PublisherEntity<T, P extends Publisher<T>> extends HttpEntity<P> {
 

@@ -29,10 +29,10 @@ import org.springframework.util.Assert;
  * parameterized over T. All methods are delegated to the adaptee, where {@link #get()}
  * and {@link #get(long, TimeUnit)} call {@link #adapt(Object)} on the adaptee's result.
  *
- * @author Arjen Poutsma
- * @since 4.0
  * @param <T> the type of this {@code Future}
  * @param <S> the type of the adaptee's {@code Future}
+ * @author Arjen Poutsma
+ * @since 4.0
  */
 public abstract class FutureAdapter<T, S> implements Future<T> {
 

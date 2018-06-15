@@ -31,6 +31,7 @@ import org.springframework.util.Assert;
  *
  * <p>Inspired by {@code com.google.common.util.concurrent.SettableFuture}.
  *
+ * @param <T> the result type returned by this Future's {@code get} method
  * @author Mattias Severson
  * @author Rossen Stoyanchev
  * @author Juergen Hoeller

@@ -44,7 +44,7 @@ import org.springframework.util.Assert;
  * the respective JSTL EL expressions, like "myModelAttr.pageSize" and
  * "myModelAttr.sort.ascending".
  *
- * @param <E> The element type
+ * @param <E> the element type
  * @author Juergen Hoeller
  * @since 19.05.2003
  * @see #getPageList()

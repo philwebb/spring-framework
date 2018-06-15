@@ -54,7 +54,7 @@ import reactor.core.publisher.Mono;
  * @author Rossen Stoyanchev
  * @author Brian Clozel
  * @since 5.0
- * @param <T> The mapping for a {@link HandlerMethod} containing the conditions
+ * @param <T> the mapping for a {@link HandlerMethod} containing the conditions
  * needed to match the handler method to incoming request.
  */
 public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMapping implements InitializingBean {

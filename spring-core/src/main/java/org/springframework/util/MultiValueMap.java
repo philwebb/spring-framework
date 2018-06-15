@@ -24,6 +24,8 @@ import org.springframework.lang.Nullable;
 /**
  * Extension of the {@code Map} interface that stores multiple values.
  *
+ * @param <K> the key type
+ * @param <V> the value element type
  * @author Arjen Poutsma
  * @since 3.0
  */

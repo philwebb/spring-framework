@@ -26,6 +26,7 @@ import org.springframework.util.Assert;
  * whether comparison results should be treated in forward (standard
  * ascending) order or flipped for reverse (descending) order.
  *
+ * @param <T> the type of objects that may be compared by this comparator
  * @author Keith Donald
  * @author Juergen Hoeller
  * @since 1.2.2

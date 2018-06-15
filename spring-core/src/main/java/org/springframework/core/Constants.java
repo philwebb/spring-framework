@@ -105,9 +105,9 @@ public class Constants {
 	 * Return a constant value cast to a Number.
 	 * @param code the name of the field (never {@code null})
 	 * @return the Number value
-	 * @see #asObject
 	 * @throws ConstantException if the field name wasn't found
 	 * or if the type wasn't compatible with Number
+	 * @see #asObject
 	 */
 	public Number asNumber(String code) throws ConstantException {
 		Object obj = asObject(code);
@@ -122,8 +122,8 @@ public class Constants {
 	 * @param code the name of the field (never {@code null})
 	 * @return the String value
 	 * Works even if it's not a string (invokes {@code toString()}).
-	 * @see #asObject
 	 * @throws ConstantException if the field name wasn't found
+	 * @see #asObject
 	 */
 	public String asString(String code) throws ConstantException {
 		return asObject(code).toString();

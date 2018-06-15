@@ -36,6 +36,7 @@ import org.springframework.lang.Nullable;
  *
  * <p>Does <i>not</i> support {@code null} keys.
  *
+ * @param <V> the value type
  * @author Juergen Hoeller
  * @since 3.0
  */

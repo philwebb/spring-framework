@@ -22,6 +22,7 @@ import org.springframework.util.Assert;
  * {@link InheritableThreadLocal} subclass that exposes a specified name
  * as {@link #toString()} result (allowing for introspection).
  *
+ * @param <T> the value type
  * @author Juergen Hoeller
  * @since 2.5.2
  * @see NamedThreadLocal

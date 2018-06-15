@@ -26,6 +26,7 @@ import java.util.concurrent.Future;
  *
  * <p>Inspired by {@code com.google.common.util.concurrent.ListenableFuture}.
  *
+ * @param <T> the result type returned by this Future's {@code get} method
  * @author Arjen Poutsma
  * @author Sebastien Deleuze
  * @author Juergen Hoeller

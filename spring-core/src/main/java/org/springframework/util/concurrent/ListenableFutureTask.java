@@ -26,6 +26,7 @@ import org.springframework.lang.Nullable;
 /**
  * Extension of {@link FutureTask} that implements {@link ListenableFuture}.
  *
+ * @param <T> the result type returned by this Future's {@code get} method
  * @author Arjen Poutsma
  * @since 4.0
  */

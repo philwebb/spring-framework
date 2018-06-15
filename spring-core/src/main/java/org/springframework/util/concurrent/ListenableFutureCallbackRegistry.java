@@ -28,6 +28,7 @@ import org.springframework.util.Assert;
  *
  * <p>Inspired by {@code com.google.common.util.concurrent.ExecutionList}.
  *
+ * @param <T> the callback result type
  * @author Arjen Poutsma
  * @author Sebastien Deleuze
  * @author Rossen Stoyanchev

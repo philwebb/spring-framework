@@ -31,6 +31,7 @@ import reactor.core.publisher.Flux;
  * Abstract base class for {@link org.springframework.core.codec.Encoder}
  * classes that can only deal with a single value.
  *
+ * @param <T> the element type
  * @author Arjen Poutsma
  * @since 5.0
  */

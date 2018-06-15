@@ -34,8 +34,8 @@ import org.xml.sax.SAXException;
  * SAX {@code ContentHandler} that transforms callback calls to DOM {@code Node}s.
  *
  * @author Arjen Poutsma
- * @see org.w3c.dom.Node
  * @since 3.0
+ * @see org.w3c.dom.Node
  */
 class DomContentHandler implements ContentHandler {
 

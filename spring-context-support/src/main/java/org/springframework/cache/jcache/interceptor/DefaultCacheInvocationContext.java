@@ -31,6 +31,7 @@ import org.springframework.cache.interceptor.CacheOperationInvocationContext;
  * by all interceptors. Also implements {@link CacheInvocationContext} to
  * act as a proper bridge when calling JSR-107 {@link javax.cache.annotation.CacheResolver}
  *
+ * @param <A> the annotation type
  * @author Stephane Nicoll
  * @since 4.1
  */
