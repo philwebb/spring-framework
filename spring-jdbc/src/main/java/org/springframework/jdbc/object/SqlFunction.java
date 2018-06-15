@@ -44,6 +44,7 @@ import org.springframework.lang.Nullable;
  *
  * <p>Like all RdbmsOperation objects, SqlFunction objects are thread-safe.
  *
+ * @param <T> the result type
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @author Jean-Pierre Pawlak

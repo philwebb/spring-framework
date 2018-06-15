@@ -48,6 +48,7 @@ import org.springframework.lang.Nullable;
  * initialization is complete. That is, after they are constructed and configured
  * via their setter methods, they can be used safely from multiple threads.
  *
+ * @param <T> the result type
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @author Thomas Risberg
@@ -362,7 +363,7 @@ public abstract class SqlQuery<T> extends SqlOperation {
 
 	/**
 	 * Subclasses must implement this method to extract an object per row, to be
-	 * returned by the <cod>execute</code> method as an aggregated {@link List}.
+	 * returned by the {@code execute} method as an aggregated {@link List}.
 	 * @param parameters the parameters to the {@code execute()} method,
 	 * in case subclass is interested; may be {@code null} if there
 	 * were no parameters.

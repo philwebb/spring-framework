@@ -33,13 +33,14 @@ import org.springframework.lang.Nullable;
  * <p>Subclasses can be constructed providing SQL, parameter types
  * and a DataSource. SQL will often vary between subclasses.
  *
+ * @param <T> the result type
  * @author Thomas Risberg
  * @see org.springframework.jdbc.object.SqlQuery
  */
 public abstract class UpdatableSqlQuery<T> extends SqlQuery<T> {
 
 	/**
-	 * Constructor to allow use as a JavaBean
+	 * Constructor to allow use as a JavaBean.
 	 */
 	public UpdatableSqlQuery() {
 		setUpdatableResults(true);

@@ -31,6 +31,8 @@ import org.springframework.util.xml.DomUtils;
 import org.w3c.dom.Element;
 
 /**
+ * Internal utility methods used with JDBC configuration.
+ *
  * @author Juergen Hoeller
  * @author Stephane Nicoll
  * @since 3.1

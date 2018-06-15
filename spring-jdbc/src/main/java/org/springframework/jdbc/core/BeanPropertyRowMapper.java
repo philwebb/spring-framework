@@ -69,6 +69,7 @@ import org.springframework.util.StringUtils;
  * <p>Please note that this class is designed to provide convenience rather than high performance.
  * For best performance, consider using a custom {@link RowMapper} implementation.
  *
+ * @param <T> the result type
  * @author Thomas Risberg
  * @author Juergen Hoeller
  * @since 2.5

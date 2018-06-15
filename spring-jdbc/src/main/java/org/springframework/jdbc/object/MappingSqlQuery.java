@@ -33,6 +33,7 @@ import org.springframework.lang.Nullable;
  * context. Most subclasses won't care about parameters. If you don't use
  * contextual information, subclass this instead of MappingSqlQueryWithParameters.
  *
+ * @param <T> the result type
  * @author Rod Johnson
  * @author Thomas Risberg
  * @author Jean-Pierre Pawlak

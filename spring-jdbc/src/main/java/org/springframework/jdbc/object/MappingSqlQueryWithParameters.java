@@ -43,6 +43,7 @@ import org.springframework.lang.Nullable;
  * <p>Subclasses can be constructed providing SQL, parameter types
  * and a DataSource. SQL will often vary between subclasses.
  *
+ * @param <T> the result type
  * @author Rod Johnson
  * @author Thomas Risberg
  * @author Jean-Pierre Pawlak
@@ -52,7 +53,7 @@ import org.springframework.lang.Nullable;
 public abstract class MappingSqlQueryWithParameters<T> extends SqlQuery<T> {
 
 	/**
-	 * Constructor to allow use as a JavaBean
+	 * Constructor to allow use as a JavaBean.
 	 */
 	public MappingSqlQueryWithParameters() {
 	}

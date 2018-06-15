@@ -39,9 +39,9 @@ public interface ParameterMapper {
 	 * if we need to do something RDBMS-specific with a proprietary Connection
 	 * implementation class. This class conceals such proprietary details. However,
 	 * it is best to avoid using such proprietary RDBMS features if possible.
+	 * @return Map of input parameters, keyed by name (never {@code null})
 	 * @throws SQLException if a SQLException is encountered setting
 	 * parameter values (that is, there's no need to catch SQLException)
-	 * @return Map of input parameters, keyed by name (never {@code null})
 	 */
 	Map<String, ?> createMap(Connection con) throws SQLException;
 

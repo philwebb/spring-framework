@@ -373,6 +373,9 @@ public abstract class ReflectionHelper {
 	}
 
 
+	/**
+	 * Arguments match kinds.
+	 */
 	enum ArgumentsMatchKind {
 
 		/** An exact match is where the parameter types exactly match what the method/constructor is expecting. */

@@ -400,6 +400,9 @@ public class JdbcTemplate extends JdbcAccessor implements JdbcOperations {
 			this.logger.debug("Executing SQL statement [" + sql + "]");
 		}
 
+		/**
+		 * Callback to execute the statement.
+		 */
 		class ExecuteStatementCallback implements StatementCallback<Object>, SqlProvider {
 			@Override
 			@Nullable
@@ -425,6 +428,9 @@ public class JdbcTemplate extends JdbcAccessor implements JdbcOperations {
 			this.logger.debug("Executing SQL query [" + sql + "]");
 		}
 
+		/**
+		 * Callback to execute the query.
+		 */
 		class QueryStatementCallback implements StatementCallback<T>, SqlProvider {
 			@Override
 			@Nullable
@@ -497,6 +503,9 @@ public class JdbcTemplate extends JdbcAccessor implements JdbcOperations {
 			this.logger.debug("Executing SQL update [" + sql + "]");
 		}
 
+		/**
+		 * Callback to execute the update statement.
+		 */
 		class UpdateStatementCallback implements StatementCallback<Integer>, SqlProvider {
 			@Override
 			public Integer doInStatement(Statement stmt) throws SQLException {
@@ -522,6 +531,9 @@ public class JdbcTemplate extends JdbcAccessor implements JdbcOperations {
 			this.logger.debug("Executing SQL batch update of " + sql.length + " statements");
 		}
 
+		/**
+		 * Callback to execute the batch update.
+		 */
 		class BatchUpdateStatementCallback implements StatementCallback<int[]>, SqlProvider {
 
 			@Nullable

@@ -25,16 +25,34 @@ package org.springframework.expression;
  */
 public enum Operation {
 
+	/**
+	 * Add operation.
+	 */
 	ADD,
 
+	/**
+	 * Subtract operation.
+	 */
 	SUBTRACT,
 
+	/**
+	 * Divide operation.
+	 */
 	DIVIDE,
 
+	/**
+	 * Multiply operation.
+	 */
 	MULTIPLY,
 
+	/**
+	 * Modulus operation.
+	 */
 	MODULUS,
 
+	/**
+	 * Power operation.
+	 */
 	POWER
 
 }
