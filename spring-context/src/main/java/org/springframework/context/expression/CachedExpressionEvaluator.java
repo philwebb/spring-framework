@@ -96,6 +96,9 @@ public abstract class CachedExpressionEvaluator {
 	}
 
 
+	/**
+	 * An expression key.
+	 */
 	protected static class ExpressionKey implements Comparable<ExpressionKey> {
 
 		private final AnnotatedElementKey element;
