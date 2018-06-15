@@ -122,7 +122,7 @@ public class RowCountCallbackHandler implements RowCallbackHandler {
 	}
 
 	/**
-	 * Return the row count of this ResultSet
+	 * Return the row count of this ResultSet.
 	 * Only valid after processing is complete
 	 * @return the number of rows in this ResultSet
 	 */

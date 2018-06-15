@@ -18,8 +18,11 @@ package org.springframework.expression.spel.ast;
 
 import org.springframework.expression.TypedValue;
 import org.springframework.expression.spel.ExpressionState;
+import org.springframework.expression.spel.SpelNode;
 
 /**
+ * An 'identifier' {@link SpelNode}.
+ *
  * @author Andy Clement
  * @since 3.0
  */

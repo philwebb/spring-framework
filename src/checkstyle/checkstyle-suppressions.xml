@@ -25,4 +25,6 @@
 	<suppress files="ServletAnnotationControllerHandlerMethodTests" checks="InterfaceIsType" />
 	<suppress files="BeanDefinitionParserDelegate" checks="JavadocVariable" />
 	<suppress files="DefaultBeanDefinitionDocumentReader" checks="JavadocVariable" />
+	<suppress files="SpelMessage" checks="JavadocVariable|JavadocStyle" />
+	<suppress files="ResultSetWrappingSqlRowSet" checks="JavadocStyle"/>
 </suppressions>

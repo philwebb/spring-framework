@@ -27,6 +27,7 @@ import org.springframework.util.Assert;
  * A concrete variant of {@link SqlQuery} which can be configured
  * with a {@link RowMapper}.
  *
+ * @param <T> the result type
  * @author Thomas Risberg
  * @author Juergen Hoeller
  * @since 3.0

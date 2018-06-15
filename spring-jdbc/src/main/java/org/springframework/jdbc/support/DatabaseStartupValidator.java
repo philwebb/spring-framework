@@ -42,8 +42,14 @@ import org.springframework.lang.Nullable;
  */
 public class DatabaseStartupValidator implements InitializingBean {
 
+	/**
+	 * The default interval.
+	 */
 	public static final int DEFAULT_INTERVAL = 1;
 
+	/**
+	 * The default timeout.
+	 */
 	public static final int DEFAULT_TIMEOUT = 60;
 
 

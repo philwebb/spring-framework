@@ -31,6 +31,9 @@ import org.springframework.util.ObjectUtils;
  */
 public class TypedValue {
 
+	/**
+	 * {@link TypedValue} for {@code null}.
+	 */
 	public static final TypedValue NULL = new TypedValue(null);
 
 

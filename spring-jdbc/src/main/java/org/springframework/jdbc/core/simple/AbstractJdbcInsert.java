@@ -582,7 +582,7 @@ public abstract class AbstractJdbcInsert {
 	}
 
 	/**
-	 * Internal implementation for setting parameter values
+	 * Internal implementation for setting parameter values.
 	 * @param preparedStatement the PreparedStatement
 	 * @param values the values to be set
 	 */

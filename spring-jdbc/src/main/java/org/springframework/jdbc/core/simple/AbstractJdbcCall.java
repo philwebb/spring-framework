@@ -231,7 +231,7 @@ public abstract class AbstractJdbcCall {
 	}
 
 	/**
-	 * Get the {@link CallableStatementCreatorFactory} being used
+	 * Get the {@link CallableStatementCreatorFactory} being used.
 	 */
 	protected CallableStatementCreatorFactory getCallableStatementFactory() {
 		Assert.state(this.callableStatementFactory != null, "No CallableStatementCreatorFactory available");

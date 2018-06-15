@@ -22,6 +22,8 @@ import org.springframework.expression.OperatorOverloader;
 import org.springframework.lang.Nullable;
 
 /**
+ * Standard implementation of {@link OperatorOverloader}.
+ *
  * @author Juergen Hoeller
  * @since 3.0
  */

@@ -30,6 +30,7 @@ import org.springframework.lang.Nullable;
  *
  * <p>Used internally by JdbcTemplate, but also useful for application code.
  *
+ * @param <T> the result type
  * @author Juergen Hoeller
  * @since 16.03.2004
  * @see JdbcTemplate#execute(StatementCallback)

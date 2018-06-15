@@ -63,7 +63,7 @@ import org.springframework.jdbc.InvalidResultSetAccessException;
  */
 public class ResultSetWrappingSqlRowSet implements SqlRowSet {
 
-	/** use serialVersionUID from Spring 1.2 for interoperability */
+	/** use serialVersionUID from Spring 1.2 for interoperability. */
 	private static final long serialVersionUID = -4688694393146734764L;
 
 

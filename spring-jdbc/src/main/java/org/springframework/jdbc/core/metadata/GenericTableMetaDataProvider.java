@@ -380,7 +380,7 @@ public class GenericTableMetaDataProvider implements TableMetaDataProvider {
 	}
 
 	/**
-	 * Method supporting the meta-data processing for a table's columns
+	 * Method supporting the meta-data processing for a table's columns.
 	 */
 	private void processTableColumns(DatabaseMetaData databaseMetaData, TableMetaData tmd) {
 		ResultSet tableColumns = null;
