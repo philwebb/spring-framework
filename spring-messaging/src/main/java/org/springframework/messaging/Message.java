@@ -19,6 +19,7 @@ package org.springframework.messaging;
 /**
  * A generic message representation with headers and body.
  *
+ * @param <T> the payload type
  * @author Mark Fisher
  * @author Arjen Poutsma
  * @since 4.0

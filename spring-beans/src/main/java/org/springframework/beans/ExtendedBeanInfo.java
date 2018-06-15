@@ -212,9 +212,9 @@ class ExtendedBeanInfo implements BeanInfo {
 
 
 	/**
-	 * Return the set of {@link PropertyDescriptor}s from the wrapped {@link BeanInfo}
-	 * object as well as {@code PropertyDescriptor}s for each non-void returning setter
-	 * method found during construction.
+	 * Return the set of {@link PropertyDescriptor PropertyDescriptors} from the wrapped
+	 * {@link BeanInfo} object as well as {@code PropertyDescriptor}s
+	 * for each non-void returning setter method found during construction.
 	 * @see #ExtendedBeanInfo(BeanInfo)
 	 */
 	@Override

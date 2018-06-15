@@ -88,7 +88,7 @@ public class SimpAttributes {
 	/**
 	 * Remove the attribute of the given name, if it exists.
 	 * <p>Also removes the registered destruction callback for the specified
-	 * attribute, if any. However it <i>does not</i> execute</i> the callback.
+	 * attribute, if any. However it <i>does not</i> execute the callback.
 	 * It is assumed the removed object will continue to be used and destroyed
 	 * independently at the appropriate time.
 	 * @param name the name of the attribute

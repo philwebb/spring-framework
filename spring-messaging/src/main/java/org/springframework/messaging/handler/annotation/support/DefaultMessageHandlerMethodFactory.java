@@ -92,7 +92,7 @@ public class DefaultMessageHandlerMethodFactory
 	}
 
 	/**
-	 * Set the Validator instance used for validating @Payload arguments
+	 * Set the Validator instance used for validating {@code @Payload} arguments.
 	 * @see org.springframework.validation.annotation.Validated
 	 * @see org.springframework.messaging.handler.annotation.support.PayloadArgumentResolver
 	 */

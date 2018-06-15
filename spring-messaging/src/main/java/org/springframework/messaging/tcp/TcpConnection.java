@@ -24,9 +24,9 @@ import org.springframework.util.concurrent.ListenableFuture;
 /**
  * A contract for sending messages and managing a TCP connection.
  *
+ * @param <P> the type of payload for outbound {@link Message Messages}
  * @author Rossen Stoyanchev
  * @since 4.0
- * @param <P> the type of payload for outbound {@link Message}s
  */
 public interface TcpConnection<P> extends Closeable {
 

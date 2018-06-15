@@ -28,6 +28,7 @@ import org.springframework.util.Assert;
  * A builder for creating a {@link GenericMessage}
  * (or {@link ErrorMessage} if the payload is of type {@link Throwable}).
  *
+ * @param <T> the message payload type
  * @author Arjen Poutsma
  * @author Mark Fisher
  * @author Rossen Stoyanchev

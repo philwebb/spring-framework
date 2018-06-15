@@ -24,6 +24,8 @@ import org.springframework.messaging.handler.invocation.HandlerMethodArgumentRes
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 
 /**
+ * {@link HandlerMethodArgumentResolver} to a {@link Principal}.
+ *
  * @author Rossen Stoyanchev
  * @since 4.0
  */

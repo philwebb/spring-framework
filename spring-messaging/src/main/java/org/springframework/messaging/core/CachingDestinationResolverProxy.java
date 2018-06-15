@@ -29,6 +29,7 @@ import org.springframework.util.Assert;
  * if the destination resolving process is expensive (e.g. the destination has to be
  * resolved through an external system) and the resolution results are stable anyway.
  *
+ * @param <D> the destination type
  * @author Agim Emruli
  * @author Juergen Hoeller
  * @since 4.1
