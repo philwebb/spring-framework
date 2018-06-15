@@ -42,7 +42,7 @@ class RmiInvocationWrapper implements RmiInvocationHandler {
 
 
 	/**
-	 * Create a new RmiInvocationWrapper for the given object
+	 * Create a new RmiInvocationWrapper for the given object.
 	 * @param wrappedObject the object to wrap with an RmiInvocationHandler
 	 * @param rmiExporter the RMI exporter to handle the actual invocation
 	 */

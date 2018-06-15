@@ -37,7 +37,7 @@ import org.springframework.lang.Nullable;
  */
 public class RemoteInvocationResult implements Serializable {
 
-	/** Use serialVersionUID from Spring 1.1 for interoperability */
+	/** Use serialVersionUID from Spring 1.1 for interoperability. */
 	private static final long serialVersionUID = 2138555143707773549L;
 
 

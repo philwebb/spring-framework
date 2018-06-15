@@ -22,6 +22,8 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.scripting.support.ScriptFactoryPostProcessor;
 
 /**
+ * Utilities for use with {@link LangNamespaceHandler}.
+ *
  * @author Rob Harrop
  * @author Mark Fisher
  * @since 2.5

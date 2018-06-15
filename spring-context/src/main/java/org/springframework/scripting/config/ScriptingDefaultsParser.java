@@ -24,6 +24,8 @@ import org.springframework.util.StringUtils;
 import org.w3c.dom.Element;
 
 /**
+ * A {@link BeanDefinitionParser} for use when loading scripting XML.
+ *
  * @author Mark Fisher
  * @since 2.5
  */

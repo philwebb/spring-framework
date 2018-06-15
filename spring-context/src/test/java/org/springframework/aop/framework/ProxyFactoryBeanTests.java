@@ -73,10 +73,10 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
- * @since 13.03.2003
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @author Chris Beams
+ * @since 13.03.2003
  */
 public class ProxyFactoryBeanTests {
 
