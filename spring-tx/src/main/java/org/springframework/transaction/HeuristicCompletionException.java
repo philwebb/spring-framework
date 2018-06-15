@@ -28,11 +28,23 @@ package org.springframework.transaction;
 public class HeuristicCompletionException extends TransactionException {
 
 	/**
-	 * Values for the outcome state of a heuristically completed transaction.
+	 * Unknown outcome state.
 	 */
 	public static final int STATE_UNKNOWN = 0;
+
+	/**
+	 * Committed outcome state.
+	 */
 	public static final int STATE_COMMITTED = 1;
+
+	/**
+	 * Rolledback outcome state.
+	 */
 	public static final int STATE_ROLLED_BACK = 2;
+
+	/**
+	 * Mixed outcome state.
+	 */
 	public static final int STATE_MIXED = 3;
 
 
