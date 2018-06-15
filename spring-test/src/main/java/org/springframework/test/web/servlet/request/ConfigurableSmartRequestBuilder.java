@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.SmartRequestBuilder;
  * An extension of {@link org.springframework.test.web.servlet.SmartRequestBuilder
  * SmartRequestBuilder} that can be configured with {@link RequestPostProcessor RequestPostProcessors}.
  *
+ * @param <B> a self reference to the builder type
  * @author Rossen Stoyanchev
  * @since 4.1
  */

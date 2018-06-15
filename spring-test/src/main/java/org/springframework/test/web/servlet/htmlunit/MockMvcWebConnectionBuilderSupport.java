@@ -37,6 +37,7 @@ import com.gargoylesoftware.htmlunit.WebConnection;
  * <p>The default is to use {@link MockMvc} for requests to {@code localhost}
  * and otherwise use a real {@link WebConnection}.
  *
+ * @param <T> a self reference to the builder type
  * @author Rob Winch
  * @author Sam Brannen
  * @since 4.2
@@ -144,10 +145,10 @@ public abstract class MockMvcWebConnectionBuilderSupport<T extends MockMvcWebCon
 	 * {@code WebRequestMatcher} instances matches (never {@code null})
 	 * @return a new {@code WebConnection} that will use a {@code MockMvc}
 	 * instance if one of the specified {@code WebRequestMatcher} matches
+	 * @since 4.3
 	 * @see #alwaysUseMockMvc()
 	 * @see #useMockMvc(WebRequestMatcher...)
 	 * @see #useMockMvcForHosts(String...)
-	 * @since 4.3
 	 */
 	protected final WebConnection createConnection(WebClient webClient) {
 		Assert.notNull(webClient, "WebClient must not be null");

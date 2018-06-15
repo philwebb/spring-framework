@@ -26,6 +26,7 @@ import org.springframework.lang.Nullable;
  * A typical implementation will call {@code Session.load/find/update} to perform
  * some operations on persistent objects.
  *
+ * @param <T> the result type
  * @author Juergen Hoeller
  * @since 4.2
  * @see HibernateTemplate

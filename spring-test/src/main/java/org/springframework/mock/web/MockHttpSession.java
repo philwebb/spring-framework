@@ -48,6 +48,9 @@ import org.springframework.util.StringUtils;
 @SuppressWarnings("deprecation")
 public class MockHttpSession implements HttpSession {
 
+	/**
+	 * The session cookie name.
+	 */
 	public static final String SESSION_COOKIE_NAME = "JSESSION";
 
 

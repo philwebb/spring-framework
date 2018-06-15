@@ -60,6 +60,7 @@ import reactor.netty.tcp.TcpClient;
 /**
  * Reactor Netty based implementation of {@link TcpOperations}.
  *
+ * @param <P> the type of payload for in and outbound messages
  * @author Rossen Stoyanchev
  * @author Stephane Maldini
  * @since 5.0

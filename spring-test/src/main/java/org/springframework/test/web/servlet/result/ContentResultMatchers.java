@@ -149,7 +149,7 @@ public class ContentResultMatchers {
 	 * are "similar" - i.e. they contain the same elements and attributes
 	 * regardless of order.
 	 * <p>Use of this matcher requires the <a
-	 * href="http://xmlunit.sourceforge.net/">XMLUnit<a/> library.
+	 * href="http://xmlunit.sourceforge.net/">XMLUnit</a> library.
 	 * @param xmlContent the expected XML content
 	 * @see MockMvcResultMatchers#xpath(String, Object...)
 	 * @see MockMvcResultMatchers#xpath(String, Map, Object...)
@@ -205,7 +205,7 @@ public class ContentResultMatchers {
 	 * <li>{@code false}: lenient checking. Extensible, and non-strict array ordering.</li>
 	 * </ul>
 	 * <p>Use of this matcher requires the <a
-	 * href="http://jsonassert.skyscreamer.org/">JSONassert<a/> library.
+	 * href="http://jsonassert.skyscreamer.org/">JSONassert</a> library.
 	 * @param jsonContent the expected JSON content
 	 * @param strict enables strict checking
 	 * @since 4.2

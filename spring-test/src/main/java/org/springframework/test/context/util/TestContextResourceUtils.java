@@ -61,6 +61,7 @@ public abstract class TestContextResourceUtils {
 	 * {@link ResourceUtils#CLASSPATH_URL_PREFIX classpath:},
 	 * {@link ResourceUtils#FILE_URL_PREFIX file:}, {@code http:}, etc.) will be
 	 * {@link StringUtils#cleanPath cleaned} but otherwise unmodified.
+	 * </ul>
 	 * @param clazz the class with which the paths are associated
 	 * @param paths the paths to be converted
 	 * @return a new array of converted resource paths

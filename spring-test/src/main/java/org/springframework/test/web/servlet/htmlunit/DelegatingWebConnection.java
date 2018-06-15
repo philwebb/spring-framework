@@ -87,6 +87,9 @@ public final class DelegatingWebConnection implements WebConnection {
 	}
 
 
+	/**
+	 * The delegate web connection.
+	 */
 	public static final class DelegateWebConnection {
 
 		private final WebRequestMatcher matcher;

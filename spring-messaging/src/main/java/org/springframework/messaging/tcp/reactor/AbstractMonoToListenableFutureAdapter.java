@@ -36,10 +36,10 @@ import reactor.core.publisher.MonoProcessor;
  * Adapts {@link Mono} to {@link ListenableFuture} optionally converting the
  * result Object type {@code <S>} to the expected target type {@code <T>}.
  *
- * @author Rossen Stoyanchev
- * @since 5.0
  * @param <S> the type of object expected from the {@link Mono}
  * @param <T> the type of object expected from the {@link ListenableFuture}
+ * @author Rossen Stoyanchev
+ * @since 5.0
  */
 abstract class AbstractMonoToListenableFutureAdapter<S, T> implements ListenableFuture<T> {
 

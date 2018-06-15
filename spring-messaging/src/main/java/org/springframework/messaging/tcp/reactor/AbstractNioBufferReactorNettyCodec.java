@@ -28,6 +28,7 @@ import io.netty.buffer.ByteBuf;
  * Convenient base class for {@link ReactorNettyCodec} implementations that need
  * to work with NIO {@link ByteBuffer ByteBuffers}.
  *
+ * @param <P> the message payload type
  * @author Rossen Stoyanchev
  * @since 5.0
  */

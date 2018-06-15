@@ -32,6 +32,8 @@ import com.gargoylesoftware.htmlunit.WebResponseData;
 import com.gargoylesoftware.htmlunit.util.NameValuePair;
 
 /**
+ * Builder used internally to create {@link WebResponse WebResponses}.
+ *
  * @author Rob Winch
  * @author Sam Brannen
  * @author Rossen Stoyanchev

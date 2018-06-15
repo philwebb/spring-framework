@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Configuration;
 import static org.junit.Assert.assertEquals;
 
 /**
- * JUnit 4 based integration test which verifies that {@link @ContextConfiguration}
+ * JUnit 4 based integration test which verifies that {@code @ContextConfiguration}
  * is optional.
  *
  * @author Phillip Webb
