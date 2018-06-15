@@ -37,6 +37,7 @@ import org.springframework.lang.Nullable;
  * results, but don't need to worry about exception handling. ResourceExceptions
  * will be caught and handled correctly by the CciTemplate class.
  *
+ * @param <T> the result type
  * @author Thierry Templier
  * @author Juergen Hoeller
  * @since 1.2

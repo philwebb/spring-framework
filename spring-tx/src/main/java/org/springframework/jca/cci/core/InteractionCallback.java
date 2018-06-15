@@ -36,6 +36,7 @@ import org.springframework.lang.Nullable;
  * written code, it is strongly recommended to use CciTemplate's more specific
  * {@code execute} variants.
  *
+ * @param <T> the result type
  * @author Thierry Templier
  * @author Juergen Hoeller
  * @since 1.2

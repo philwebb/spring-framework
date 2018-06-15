@@ -42,7 +42,7 @@ public class SimpleTransactionFactory implements TransactionFactory {
 
 
 	/**
-	 * Create a new SimpleTransactionFactory for the given TransactionManager
+	 * Create a new SimpleTransactionFactory for the given TransactionManager.
 	 * @param transactionManager the JTA TransactionManager to wrap
 	 */
 	public SimpleTransactionFactory(TransactionManager transactionManager) {

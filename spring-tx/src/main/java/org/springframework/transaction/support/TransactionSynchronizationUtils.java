@@ -137,9 +137,9 @@ public abstract class TransactionSynchronizationUtils {
 
 	/**
 	 * Trigger {@code afterCompletion} callbacks on all currently registered synchronizations.
-	 * @see TransactionSynchronizationManager#getSynchronizations()
 	 * @param completionStatus the completion status according to the
 	 * constants in the TransactionSynchronization interface
+	 * @see TransactionSynchronizationManager#getSynchronizations()
 	 * @see TransactionSynchronization#afterCompletion(int)
 	 * @see TransactionSynchronization#STATUS_COMMITTED
 	 * @see TransactionSynchronization#STATUS_ROLLED_BACK
