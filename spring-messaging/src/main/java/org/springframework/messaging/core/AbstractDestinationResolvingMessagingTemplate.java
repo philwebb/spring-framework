@@ -24,13 +24,15 @@ import org.springframework.util.Assert;
 
 /**
  * An extension of {@link AbstractMessagingTemplate} that adds operations for sending
- * messages to a resolvable destination name as defined by the following interfaces:
+ * messages to a resolvable destination name. Supports destination resolving as defined by
+ * the following interfaces:
  * <ul>
  * <li>{@link DestinationResolvingMessageSendingOperations}</li>
  * <li>{@link DestinationResolvingMessageReceivingOperations}</li>
  * <li>{@link DestinationResolvingMessageRequestReplyOperations}</li>
  * </ul>
  *
+ * @param <D> the destination type
  * @author Mark Fisher
  * @author Rossen Stoyanchev
  * @since 4.0

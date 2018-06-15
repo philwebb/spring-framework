@@ -20,6 +20,7 @@ package org.springframework.messaging.core;
  * Strategy for resolving a String destination name to an actual destination
  * of type {@code <D>}.
  *
+ * @param <D> the destination type
  * @author Mark Fisher
  * @since 4.0
  */

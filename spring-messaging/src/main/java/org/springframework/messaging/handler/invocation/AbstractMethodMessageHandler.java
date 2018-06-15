@@ -60,10 +60,10 @@ import org.springframework.util.concurrent.ListenableFutureCallback;
  * <p>Also supports discovering and invoking exception handling methods to process
  * exceptions raised during message handling.
  *
+ * @param <T> the type of the Object that contains information mapping a
  * @author Rossen Stoyanchev
  * @author Juergen Hoeller
  * @since 4.0
- * @param <T> the type of the Object that contains information mapping a
  * {@link org.springframework.messaging.handler.HandlerMethod} to incoming messages
  */
 public abstract class AbstractMethodMessageHandler<T>

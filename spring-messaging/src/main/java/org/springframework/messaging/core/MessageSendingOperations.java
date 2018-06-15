@@ -25,10 +25,10 @@ import org.springframework.messaging.MessagingException;
 /**
  * Operations for sending messages to a destination.
  *
+ * @param <D> the destination type
  * @author Mark Fisher
  * @author Rossen Stoyanchev
  * @since 4.0
- * @param <D> the type of destination to send messages to
  */
 public interface MessageSendingOperations<D> {
 

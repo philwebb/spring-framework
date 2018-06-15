@@ -168,7 +168,7 @@ class ConfigurationClassEnhancer {
 
 
 	/**
-	 * A {@link CallbackFilter} that works by interrogating {@link Callback}s in the order
+	 * A {@link CallbackFilter} that works by interrogating {@link Callback Callbacks} in the order
 	 * that they are defined via {@link ConditionalCallback}.
 	 */
 	private static class ConditionalCallbackFilter implements CallbackFilter {

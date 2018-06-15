@@ -25,11 +25,11 @@ import org.springframework.messaging.MessagingException;
 /**
  * Operations for sending messages to and receiving the reply from a destination.
  *
+ * @param <D> the type of destination
  * @author Mark Fisher
  * @author Rossen Stoyanchev
  * @since 4.0
  * @see GenericMessagingTemplate
- * @param <D> the type of destination
  */
 public interface MessageRequestReplyOperations<D> {
 

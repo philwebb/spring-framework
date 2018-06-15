@@ -30,4 +30,9 @@
 	<suppress files="AbstractJmsListenerContainerFactory" checks="JavadocStyle" />
 	<suppress files="DefaultJmsListenerContainerFactory" checks="JavadocStyle" />
 	<suppress files="DefaultJcaListenerContainerFactory" checks="JavadocStyle" />
+	<suppress files="SimpMessageHeaderAccessor" checks="JavadocVariable" />
+	<suppress files="SimpMessageType" checks="JavadocVariable" />
+	<suppress files="StompCommand" checks="JavadocVariable" />
+	<suppress files="StompHeaderAccessor" checks="JavadocVariable" />
+	<suppress files="StompHeaders" checks="JavadocVariable" />
 </suppressions>

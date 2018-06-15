@@ -74,7 +74,7 @@ public class StompEncoder  {
 
 
 	/**
-	 * Encodes the given STOMP {@code message} into a {@code byte[]}
+	 * Encodes the given STOMP {@code message} into a {@code byte[]}.
 	 * @param message the message to encode
 	 * @return the encoded message
 	 */
