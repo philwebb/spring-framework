@@ -46,7 +46,7 @@ import org.springframework.util.Assert;
  */
 public abstract class JmsAccessor implements InitializingBean {
 
-	/** Constants instance for javax.jms.Session */
+	/** Constants instance for {@code javax.jms.Session}. */
 	private static final Constants sessionConstants = new Constants(Session.class);
 
 

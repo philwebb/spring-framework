@@ -368,11 +368,11 @@ public class JmsTemplate extends JmsDestinationAccessor implements JmsOperations
 	/**
 	 * Set the {@link QosSettings} to use when sending a message.
 	 * @param settings the deliveryMode, priority, and timeToLive settings to use
+	 * @since 5.0
 	 * @see #setExplicitQosEnabled(boolean)
 	 * @see #setDeliveryMode(int)
 	 * @see #setPriority(int)
 	 * @see #setTimeToLive(long)
-	 * @since 5.0
 	 */
 	public void setQosSettings(QosSettings settings) {
 		Assert.notNull(settings, "Settings must not be null");
