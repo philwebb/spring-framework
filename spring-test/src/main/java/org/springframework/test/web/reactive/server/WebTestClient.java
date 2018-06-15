@@ -247,6 +247,8 @@ public interface WebTestClient {
 
 	/**
 	 * Base specification for setting up tests without a server.
+	 *
+	 * @param <B> a self reference to the builder type
 	 */
 	interface MockServerSpec<B extends MockServerSpec<B>> {
 
@@ -456,6 +458,8 @@ public interface WebTestClient {
 
 	/**
 	 * Specification for providing the URI of a request.
+	 *
+	 * @param <S> a self reference to the spec type
 	 */
 	interface UriSpec<S extends RequestHeadersSpec<?>> {
 
@@ -492,6 +496,8 @@ public interface WebTestClient {
 
 	/**
 	 * Specification for adding request headers and performing an exchange.
+	 *
+	 * @param <S> a self reference to the spec type
 	 */
 	interface RequestHeadersSpec<S extends RequestHeadersSpec<S>> {
 
@@ -590,6 +596,9 @@ public interface WebTestClient {
 	}
 
 
+	/**
+	 * Specification for providing body of a request.
+	 */
 	interface RequestBodySpec extends RequestHeadersSpec<RequestBodySpec> {
 		/**
 		 * Set the length of the body in bytes, as specified by the
@@ -648,10 +657,17 @@ public interface WebTestClient {
 	}
 
 
+	/**
+	 * Specification for providing request headers and the URI of a request.
+	 *
+	 * @param <S> a self reference to the spec type
+	 */
 	interface RequestHeadersUriSpec<S extends RequestHeadersSpec<S>> extends UriSpec<S>, RequestHeadersSpec<S> {
 	}
 
-
+	/**
+	 * Specification for providing the body and the URI of a request.
+	 */
 	interface RequestBodyUriSpec extends RequestBodySpec, RequestHeadersUriSpec<RequestBodySpec> {
 	}
 
@@ -729,6 +745,9 @@ public interface WebTestClient {
 
 	/**
 	 * Spec for expectations on the response body decoded to a single Object.
+	 *
+	 * @param <S> a self reference to the spec type
+	 * @param <B> the body type
 	 */
 	interface BodySpec<B, S extends BodySpec<B, S>> {
 
@@ -752,6 +771,8 @@ public interface WebTestClient {
 
 	/**
 	 * Spec for expectations on the response body decoded to a List.
+	 *
+	 * @param <E> the body list element type
 	 */
 	interface ListBodySpec<E> extends BodySpec<List<E>, ListBodySpec<E>> {
 
@@ -791,7 +812,7 @@ public interface WebTestClient {
 		 * Parse the expected and actual response content as JSON and perform a
 		 * "lenient" comparison verifying the same attribute-value pairs.
 		 * <p>Use of this option requires the
-		 * <a href="http://jsonassert.skyscreamer.org/">JSONassert<a/> library
+		 * <a href="http://jsonassert.skyscreamer.org/">JSONassert</a> library
 		 * on to be on the classpath.
 		 * @param expectedJson the expected JSON content.
 		 */

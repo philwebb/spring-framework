@@ -35,4 +35,6 @@
 	<suppress files="StompCommand" checks="JavadocVariable" />
 	<suppress files="StompHeaderAccessor" checks="JavadocVariable" />
 	<suppress files="StompHeaders" checks="JavadocVariable" />
+	<suppress files="jpa[\\/]vendor[\\/]Database" checks="JavadocVariable|JavadocStyle"/>
+	<suppress files="test[\\/]context[\\/]jdbc[\\/]MergedSqlConfig" checks="JavadocStyle" />
 </suppressions>

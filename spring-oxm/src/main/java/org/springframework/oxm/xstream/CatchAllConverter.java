@@ -40,7 +40,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
  * unmarshaller.getXStream().registerConverter(new MyDomainClassConverter(), XStream.PRIORITY_VERY_HIGH);
  * unmarshaller.getXStream().registerConverter(new CatchAllConverter(), XStream.PRIORITY_NORMAL);
  * MyDomainClass myObject = unmarshaller.unmarshal(source);
- * </pre
+ * </pre>
  *
  * @author Arjen Poutsma
  * @since 3.2.5

@@ -164,7 +164,7 @@ public class CookieResultMatchers {
 	}
 
 	/**
-	 * Assert a cookie's version with a Hamcrest {@link Matcher}
+	 * Assert a cookie's version with a Hamcrest {@link Matcher}.
 	 */
 	public ResultMatcher version(final String name, final Matcher<? super Integer> matcher) {
 		return result -> {

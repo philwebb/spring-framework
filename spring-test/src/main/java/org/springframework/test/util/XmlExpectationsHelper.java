@@ -73,7 +73,7 @@ public class XmlExpectationsHelper {
 	 * two are "similar" -- i.e. they contain the same elements and attributes
 	 * regardless of order.
 	 * <p>Use of this method assumes the
-	 * <a href="https://github.com/xmlunit/xmlunit">XMLUnit<a/> library is available.
+	 * <a href="https://github.com/xmlunit/xmlunit">XMLUnit</a> library is available.
 	 * @param expected the expected XML content
 	 * @param actual the actual XML content
 	 * @see org.springframework.test.web.servlet.result.MockMvcResultMatchers#xpath(String, Object...)

@@ -77,6 +77,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
  */
 public class OpenSessionInViewFilter extends OncePerRequestFilter {
 
+	/**
+	 * The default bean name used for the session factory.
+	 */
 	public static final String DEFAULT_SESSION_FACTORY_BEAN_NAME = "sessionFactory";
 
 	private String sessionFactoryBeanName = DEFAULT_SESSION_FACTORY_BEAN_NAME;

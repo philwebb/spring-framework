@@ -22,9 +22,9 @@ import org.springframework.lang.Nullable;
  * {@code ExchangeResult} sub-class that exposes the response body fully
  * extracted to a representation of type {@code <T>}.
  *
+ * @param <T> the response body type
  * @author Rossen Stoyanchev
  * @since 5.0
- * @param <T> the response body type
  * @see FluxExchangeResult
  */
 public class EntityExchangeResult<T> extends ExchangeResult {
