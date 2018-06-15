@@ -26,5 +26,8 @@
 	<suppress files="BeanDefinitionParserDelegate" checks="JavadocVariable" />
 	<suppress files="DefaultBeanDefinitionDocumentReader" checks="JavadocVariable" />
 	<suppress files="SpelMessage" checks="JavadocVariable|JavadocStyle" />
-	<suppress files="ResultSetWrappingSqlRowSet" checks="JavadocStyle"/>
+	<suppress files="ResultSetWrappingSqlRowSet" checks="JavadocStyle" />
+	<suppress files="AbstractJmsListenerContainerFactory" checks="JavadocStyle" />
+	<suppress files="DefaultJmsListenerContainerFactory" checks="JavadocStyle" />
+	<suppress files="DefaultJcaListenerContainerFactory" checks="JavadocStyle" />
 </suppressions>

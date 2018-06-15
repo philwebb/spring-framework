@@ -27,6 +27,24 @@ package org.springframework.jms.support.converter;
  */
 public enum MessageType {
 
-	TEXT, BYTES, MAP, OBJECT
+	/**
+	 * A {@link javax.jms.TextMessage}.
+	 */
+	TEXT,
+
+	/**
+	 * A {@link javax.jms.BytesMessage}.
+	 */
+	BYTES,
+
+	/**
+	 * A {@link javax.jms.MapMessage}.
+	 */
+	MAP,
+
+	/**
+	 * A {@link javax.jms.ObjectMessage}.
+	 */
+	OBJECT
 
 }

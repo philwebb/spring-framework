@@ -268,8 +268,8 @@ public class MappingJackson2MessageConverter implements SmartMessageConverter, B
 	 * @return the resulting message
 	 * @throws JMSException if thrown by JMS methods
 	 * @throws IOException in case of I/O errors
-	 * @see Session#createBytesMessage
 	 * @since 4.3
+	 * @see Session#createBytesMessage
 	 */
 	protected TextMessage mapToTextMessage(Object object, Session session, ObjectWriter objectWriter)
 			throws JMSException, IOException {

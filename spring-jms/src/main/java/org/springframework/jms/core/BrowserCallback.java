@@ -29,6 +29,7 @@ import org.springframework.lang.Nullable;
  * {@link BrowserCallback} argument, often implemented as an anonymous
  * inner class or as a lambda expression.
  *
+ * @param <T> the result type
  * @author Juergen Hoeller
  * @since 2.5.1
  * @see JmsTemplate#browse(BrowserCallback)
