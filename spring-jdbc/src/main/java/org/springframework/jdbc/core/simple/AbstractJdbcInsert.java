@@ -548,7 +548,7 @@ public abstract class AbstractJdbcInsert {
 	}
 
 	/**
-	 * Delegate method that executes a batch insert using the passed-in {@link SqlParameterSource}s.
+	 * Delegate method that executes a batch insert using the passed-in {@link SqlParameterSource SqlParameterSources}.
 	 * @param batch array of SqlParameterSource with parameter names and values to be used in insert
 	 * @return array of number of rows affected
 	 */

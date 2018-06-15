@@ -27,7 +27,7 @@ import org.springframework.util.MimeType;
 import org.springframework.util.MimeTypeUtils;
 
 /**
- * Decoder for {@link ByteBuffer}s.
+ * Decoder for {@link ByteBuffer ByteBuffers}.
  *
  * @author Sebastien Deleuze
  * @author Arjen Poutsma

@@ -96,7 +96,7 @@ public interface WebFluxConfigurer {
 	}
 
 	/**
-	 * Add custom {@link Converter}s and {@link Formatter}s for performing type
+	 * Add custom {@link Converter}s and {@link Formatter Converter}s and {@link Formatters} for performing type
 	 * conversion and formatting of annotated controller method arguments.
 	 */
 	default void addFormatters(FormatterRegistry registry) {

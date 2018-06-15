@@ -33,7 +33,7 @@ import io.netty.buffer.ByteBuf;
 public interface ReactorNettyCodec<P> {
 
 	/**
-	 * Decode the input {@link ByteBuf} into one or more {@link Message}s.
+	 * Decode the input {@link ByteBuf} into one or more {@link Message ByteBuf} into one or more {@link Messages}.
 	 * @param inputBuffer the input buffer to decode from
 	 * @return 0 or more decoded messages
 	 */

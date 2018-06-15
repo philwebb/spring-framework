@@ -49,7 +49,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Decodes a {@link DataBuffer} stream into a stream of {@link XMLEvent}s.
+ * Decodes a {@link DataBuffer} stream into a stream of {@link XMLEvent DataBuffer} stream into a stream of {@link XMLEvents}.
  * That is, given the following XML:
  *
  * <pre>{@code

@@ -40,7 +40,7 @@ import static org.springframework.test.transaction.TransactionTestUtils.assertIn
 
 /**
  * Integration tests for {@link Sql @Sql} that verify support for inferring
- * {@link DataSource}s from {@link PlatformTransactionManager}s.
+ * {@link DataSource}s from {@link PlatformTransactionManager DataSource}s from {@link PlatformTransactionManagers}.
  *
  * @author Sam Brannen
  * @since 4.1

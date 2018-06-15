@@ -58,7 +58,7 @@ public class StompDecoder {
 
 	/**
 	 * Configure a {@link MessageHeaderInitializer} to apply to the headers of
-	 * {@link Message}s from decoded STOMP frames.
+	 * {@link Message Messages} from decoded STOMP frames.
 	 */
 	public void setHeaderInitializer(@Nullable MessageHeaderInitializer headerInitializer) {
 		this.headerInitializer = headerInitializer;
@@ -75,7 +75,7 @@ public class StompDecoder {
 
 	/**
 	 * Decodes one or more STOMP frames from the given {@code ByteBuffer} into a
-	 * list of {@link Message}s. If the input buffer contains partial STOMP frame
+	 * list of {@link Message Messages}. If the input buffer contains partial STOMP frame
 	 * content, or additional content with a partial STOMP frame, the buffer is
 	 * reset and {@code null} is returned.
 	 * @param byteBuffer the buffer to decode the STOMP frame from
@@ -88,7 +88,7 @@ public class StompDecoder {
 
 	/**
 	 * Decodes one or more STOMP frames from the given {@code buffer} and returns
-	 * a list of {@link Message}s.
+	 * a list of {@link Message Messages}.
 	 * <p>If the given ByteBuffer contains only partial STOMP frame content and no
 	 * complete STOMP frames, an empty list is returned, and the buffer is reset to
 	 * to where it was.

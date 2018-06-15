@@ -28,7 +28,7 @@ import org.springframework.util.MimeTypeUtils;
 import reactor.core.publisher.Flux;
 
 /**
- * Simple pass-through decoder for {@link DataBuffer}s.
+ * Simple pass-through decoder for {@link DataBuffer DataBuffers}.
  * <p><strong>Note</strong> that the "decoded" buffers returned by instances of this class should
  * be released after usage by calling
  * {@link org.springframework.core.io.buffer.DataBufferUtils#release(DataBuffer)}.

@@ -25,7 +25,7 @@ import org.springframework.lang.Nullable;
 
 /**
  * Wrapper for a {@link AsyncClientHttpRequestFactory} that has support for
- * {@link AsyncClientHttpRequestInterceptor}s.
+ * {@link AsyncClientHttpRequestInterceptor AsyncClientHttpRequestInterceptors}.
  *
  * @author Jakub Narloch
  * @since 4.3

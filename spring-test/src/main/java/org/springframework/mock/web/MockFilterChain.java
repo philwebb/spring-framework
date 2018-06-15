@@ -116,7 +116,7 @@ public class MockFilterChain implements FilterChain {
 	}
 
 	/**
-	 * Invoke registered {@link Filter}s and/or {@link Servlet} also saving the
+	 * Invoke registered {@link Filter Filters} and/or {@link Servlet} also saving the
 	 * request and response.
 	 */
 	@Override

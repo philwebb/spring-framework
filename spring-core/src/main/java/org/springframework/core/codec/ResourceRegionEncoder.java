@@ -40,7 +40,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Encoder for {@link ResourceRegion}s.
+ * Encoder for {@link ResourceRegion ResourceRegions}.
  *
  * @author Brian Clozel
  * @since 5.0

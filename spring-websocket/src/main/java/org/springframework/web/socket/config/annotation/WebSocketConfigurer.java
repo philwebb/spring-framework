@@ -28,7 +28,7 @@ import org.springframework.web.socket.WebSocketHandler;
 public interface WebSocketConfigurer {
 
 	/**
-	 * Register {@link WebSocketHandler}s including SockJS fallback options if desired.
+	 * Register {@link WebSocketHandler WebSocketHandlers} including SockJS fallback options if desired.
 	 */
 	void registerWebSocketHandlers(WebSocketHandlerRegistry registry);
 

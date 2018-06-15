@@ -26,7 +26,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
- * Implementation of {@code XMLEventReader} based on a list of {@link XMLEvent}s.
+ * Implementation of {@code XMLEventReader} based on a list of {@link XMLEvent XMLEvents}.
  *
  * @author Arjen Poutsma
  * @since 5.0

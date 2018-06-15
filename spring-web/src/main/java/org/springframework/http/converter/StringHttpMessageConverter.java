@@ -105,7 +105,7 @@ public class StringHttpMessageConverter extends AbstractHttpMessageConverter<Str
 
 
 	/**
-	 * Return the list of supported {@link Charset}s.
+	 * Return the list of supported {@link Charset Charsets}.
 	 * <p>By default, returns {@link Charset#availableCharsets()}.
 	 * Can be overridden in subclasses.
 	 * @return the list of accepted charsets

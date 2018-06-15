@@ -39,7 +39,7 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * Integration tests for {@link Sql @Sql} that verify support for multiple
- * {@link DataSource}s and {@link PlatformTransactionManager}s.
+ * {@link DataSource}s and {@link PlatformTransactionManager DataSource}s and {@link PlatformTransactionManagers}.
  * <p>Simultaneously tests for method-level overrides via {@code @SqlConfig}.
  *
  * @author Sam Brannen

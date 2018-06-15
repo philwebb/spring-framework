@@ -29,7 +29,7 @@ import org.springframework.util.MimeTypeUtils;
 import reactor.core.publisher.Flux;
 
 /**
- * Simple pass-through encoder for {@link DataBuffer}s.
+ * Simple pass-through encoder for {@link DataBuffer DataBuffers}.
  *
  * @author Arjen Poutsma
  * @since 5.0

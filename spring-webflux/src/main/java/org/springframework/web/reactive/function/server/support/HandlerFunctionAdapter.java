@@ -29,7 +29,7 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 /**
- * {@code HandlerAdapter} implementation that supports {@link HandlerFunction}s.
+ * {@code HandlerAdapter} implementation that supports {@link HandlerFunction HandlerFunctions}.
  *
  * @author Arjen Poutsma
  * @since 5.0

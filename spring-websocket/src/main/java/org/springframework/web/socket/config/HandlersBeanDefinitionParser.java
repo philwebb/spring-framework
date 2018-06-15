@@ -42,7 +42,7 @@ import org.w3c.dom.Element;
  * Parses the configuration for the {@code <websocket:handlers/>} namespace
  * element. Registers a Spring MVC {@code SimpleUrlHandlerMapping} to map HTTP
  * WebSocket handshake (or SockJS) requests to
- * {@link org.springframework.web.socket.WebSocketHandler WebSocketHandler}s.
+ * {@link org.springframework.web.socket.WebSocketHandler WebSocketHandler org.springframework.web.socket.WebSocketHandler WebSocketHandlers}.
  *
  * @author Brian Clozel
  * @author Rossen Stoyanchev

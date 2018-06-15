@@ -437,13 +437,13 @@ public interface ServerResponse {
 	interface Context {
 
 		/**
-		 * Return the {@link HttpMessageWriter}s to be used for response body conversion.
+		 * Return the {@link HttpMessageWriter HttpMessageWriters} to be used for response body conversion.
 		 * @return the list of message writers
 		 */
 		List<HttpMessageWriter<?>> messageWriters();
 
 		/**
-		 * Return the  {@link ViewResolver}s to be used for view name resolution.
+		 * Return the  {@link ViewResolver ViewResolvers} to be used for view name resolution.
 		 * @return the list of view resolvers
 		 */
 		List<ViewResolver> viewResolvers();

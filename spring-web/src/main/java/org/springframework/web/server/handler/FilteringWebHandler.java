@@ -26,7 +26,7 @@ import org.springframework.web.server.WebHandler;
 import reactor.core.publisher.Mono;
 
 /**
- * {@link WebHandler} decorator that invokes a chain of {@link WebFilter}s
+ * {@link WebHandler} decorator that invokes a chain of {@link WebFilter WebHandler} decorator that invokes a chain of {@link WebFilters}
  * before the delegate {@link WebHandler}.
  *
  * @author Rossen Stoyanchev

@@ -46,7 +46,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.SynchronousSink;
 
 /**
- * Utility class for working with {@link DataBuffer}s.
+ * Utility class for working with {@link DataBuffer DataBuffers}.
  *
  * @author Arjen Poutsma
  * @author Brian Clozel

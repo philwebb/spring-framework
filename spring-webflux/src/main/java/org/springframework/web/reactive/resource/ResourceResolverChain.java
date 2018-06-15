@@ -25,7 +25,7 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 /**
- * A contract for invoking a chain of {@link ResourceResolver}s where each resolver
+ * A contract for invoking a chain of {@link ResourceResolver ResourceResolvers} where each resolver
  * is given a reference to the chain allowing it to delegate when necessary.
  *
  * @author Rossen Stoyanchev

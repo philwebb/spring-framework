@@ -51,7 +51,7 @@ import static org.springframework.http.MediaType.TEXT_HTML;
 import static org.springframework.http.MediaType.TEXT_PLAIN;
 
 /**
- * An {@code HttpMessageConverter} that reads and writes {@link com.google.protobuf.Message}s
+ * An {@code HttpMessageConverter} that reads and writes {@link com.google.protobuf.Message com.google.protobuf.Messages}
  * using <a href="https://developers.google.com/protocol-buffers/">Google Protocol Buffers</a>.
  *
  * <p>To generate {@code Message} Java classes, you need to install the {@code protoc} binary.
