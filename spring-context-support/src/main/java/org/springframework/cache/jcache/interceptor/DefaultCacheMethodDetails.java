@@ -29,6 +29,7 @@ import static java.util.Arrays.asList;
 /**
  * The default {@link CacheMethodDetails} implementation.
  *
+ * @param <A> the annotation type
  * @author Stephane Nicoll
  * @since 4.1
  */

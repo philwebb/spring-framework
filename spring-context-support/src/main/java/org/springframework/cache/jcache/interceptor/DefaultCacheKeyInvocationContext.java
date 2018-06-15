@@ -24,6 +24,7 @@ import javax.cache.annotation.CacheKeyInvocationContext;
 /**
  * The default {@link CacheKeyInvocationContext} implementation.
  *
+ * @param <A> the annotation type
  * @author Stephane Nicoll
  * @since 4.1
  */

@@ -1638,6 +1638,9 @@ public class ResolvableType implements Serializable {
 	}
 
 
+	/**
+	 * Internal {@link Type} used to represent an empty value.
+	 */
 	@SuppressWarnings("serial")
 	static class EmptyType implements Type, Serializable {
 

@@ -29,10 +29,10 @@ import org.springframework.util.comparator.Comparators;
  * The specified {@link Converter} will be used to convert each value
  * before it passed to the underlying {@code Comparator}.
  *
- * @author Phillip Webb
- * @since 3.2
  * @param <S> the source type
  * @param <T> the target type
+ * @author Phillip Webb
+ * @since 3.2
  */
 public class ConvertingComparator<S, T> implements Comparator<S> {
 

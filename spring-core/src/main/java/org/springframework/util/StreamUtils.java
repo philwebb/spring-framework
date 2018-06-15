@@ -45,6 +45,9 @@ import org.springframework.lang.Nullable;
  */
 public abstract class StreamUtils {
 
+	/**
+	 * The default buffer size used why copying bytes.
+	 */
 	public static final int BUFFER_SIZE = 4096;
 
 	private static final byte[] EMPTY_CONTENT = new byte[0];

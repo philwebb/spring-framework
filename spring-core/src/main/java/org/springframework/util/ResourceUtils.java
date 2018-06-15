@@ -83,7 +83,7 @@ public abstract class ResourceUtils {
 	/** URL protocol for a general JBoss VFS resource: "vfs". */
 	public static final String URL_PROTOCOL_VFS = "vfs";
 
-	/** File extension for a regular jar file: ".jar" */
+	/** File extension for a regular jar file: ".jar". */
 	public static final String JAR_FILE_EXTENSION = ".jar";
 
 	/** Separator between JAR URL and file path within the JAR: "!/". */

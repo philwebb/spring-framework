@@ -53,11 +53,11 @@ import org.springframework.lang.Nullable;
  * <p>If not explicitly specified, this implementation will use
  * {@linkplain SoftReference soft entry references}.
  *
+ * @param <K> the key type
+ * @param <V> the value type
  * @author Phillip Webb
  * @author Juergen Hoeller
  * @since 3.2
- * @param <K> the key type
- * @param <V> the value type
  */
 public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implements ConcurrentMap<K, V> {
 
@@ -667,6 +667,9 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 	/**
 	 * A reference to an {@link Entry} contained in the map. Implementations are usually
 	 * wrappers around specific Java reference implementations (e.g., {@link SoftReference}).
+	 *
+	 * @param <K> the key type
+	 * @param <V> the value type
 	 */
 	protected interface Reference<K, V> {
 
@@ -697,6 +700,9 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 
 	/**
 	 * A single map entry.
+	 *
+	 * @param <K> the key type
+	 * @param <V> the value type
 	 */
 	protected static final class Entry<K, V> implements Map.Entry<K, V> {
 

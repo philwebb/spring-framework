@@ -90,8 +90,14 @@ import org.springframework.util.CollectionUtils;
 public class SchedulerFactoryBean extends SchedulerAccessor implements FactoryBean<Scheduler>,
 		BeanNameAware, ApplicationContextAware, InitializingBean, DisposableBean, SmartLifecycle {
 
+	/**
+	 * The thread count property.
+	 */
 	public static final String PROP_THREAD_COUNT = "org.quartz.threadPool.threadCount";
 
+	/**
+	 * The default thread count.
+	 */
 	public static final int DEFAULT_THREAD_COUNT = 10;
 
 

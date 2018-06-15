@@ -43,6 +43,9 @@ import reactor.core.publisher.Flux;
  */
 public final class CharSequenceEncoder extends AbstractEncoder<CharSequence> {
 
+	/**
+	 * The default charset used by the encoder.
+	 */
 	public static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
 

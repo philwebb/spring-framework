@@ -31,6 +31,7 @@ import reactor.core.publisher.Mono;
 /**
  * Abstract base class for {@link Decoder} implementations.
  *
+ * @param <T> the element type
  * @author Sebastien Deleuze
  * @author Arjen Poutsma
  * @since 5.0

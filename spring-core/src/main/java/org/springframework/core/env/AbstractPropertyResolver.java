@@ -216,7 +216,7 @@ public abstract class AbstractPropertyResolver implements ConfigurablePropertyRe
 	 * unresolvable placeholders should raise an exception or be ignored.
 	 * <p>Invoked from {@link #getProperty} and its variants, implicitly resolving
 	 * nested placeholders. In contrast, {@link #resolvePlaceholders} and
-	 * {@link #resolveRequiredPlaceholders} do <emphasis>not</emphasis> delegate
+	 * {@link #resolveRequiredPlaceholders} do <i>not</i> delegate
 	 * to this method but rather perform their own handling of unresolvable
 	 * placeholders, as specified by each of those methods.
 	 * @since 3.2

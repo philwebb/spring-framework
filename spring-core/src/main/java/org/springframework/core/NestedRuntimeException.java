@@ -38,7 +38,7 @@ import org.springframework.lang.Nullable;
  */
 public abstract class NestedRuntimeException extends RuntimeException {
 
-	/** Use serialVersionUID from Spring 1.2 for interoperability */
+	/** Use serialVersionUID from Spring 1.2 for interoperability. */
 	private static final long serialVersionUID = 5439915454935047936L;
 
 	static {

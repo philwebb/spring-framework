@@ -31,10 +31,10 @@ import org.springframework.util.Assert;
  * {@code 0}. Consider combining with {@link Comparator#thenComparing(Comparator)}
  * if additional sorting is required.
  *
+ * @param <T> the type of objects that may be compared by this comparator
  * @author Phillip Webb
  * @since 3.2
  * @see Comparator#thenComparing(Comparator)
- * @param <T> the type of objects being compared
  */
 public class InstanceComparator<T> implements Comparator<T> {
 

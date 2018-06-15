@@ -39,6 +39,9 @@ import reactor.core.publisher.Flux;
  */
 public class ResourceEncoder extends AbstractSingleValueEncoder<Resource> {
 
+	/**
+	 * The default buffer size used by the encoder.
+	 */
 	public static final int DEFAULT_BUFFER_SIZE = StreamUtils.BUFFER_SIZE;
 
 	private final int bufferSize;

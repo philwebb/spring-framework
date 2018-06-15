@@ -33,6 +33,8 @@ import org.springframework.lang.Nullable;
  * <p>This Map implementation is generally not thread-safe. It is primarily designed
  * for data structures exposed from request objects, for use in a single thread only.
  *
+ * @param <K> the key type
+ * @param <V> the value element type
  * @author Arjen Poutsma
  * @author Juergen Hoeller
  * @since 3.0
@@ -117,7 +119,7 @@ public class LinkedMultiValueMap<K, V> implements MultiValueMap<K, V>, Serializa
 	public Map<K, V> toSingleValueMap() {
 		LinkedHashMap<K, V> singleValueMap = new LinkedHashMap<>(this.targetMap.size());
 		this.targetMap.forEach((key, value) -> singleValueMap.put(key, value.get(0)));
-		
+
 		return singleValueMap;
 	}
 
