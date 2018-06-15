@@ -82,7 +82,7 @@ public interface WebMvcConfigurer {
 	}
 
 	/**
-	 * Add {@link Converter}s and {@link Formatter}s in addition to the ones
+	 * Add {@link Converter}s and {@link Formatter Converter}s and {@link Formatters} in addition to the ones
 	 * registered by default.
 	 */
 	default void addFormatters(FormatterRegistry registry) {
@@ -158,7 +158,7 @@ public interface WebMvcConfigurer {
 	}
 
 	/**
-	 * Configure the {@link HttpMessageConverter}s to use for reading or writing
+	 * Configure the {@link HttpMessageConverter HttpMessageConverters} to use for reading or writing
 	 * to the body of the request or response. If no converters are added, a
 	 * default list of converters is registered.
 	 * <p><strong>Note</strong> that adding converters to the list, turns off

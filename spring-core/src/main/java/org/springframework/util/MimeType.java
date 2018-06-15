@@ -401,7 +401,7 @@ public class MimeType implements Comparable<MimeType>, Serializable {
 	/**
 	 * Determine if the parameters in this {@code MimeType} and the supplied
 	 * {@code MimeType} are equal, performing case-insensitive comparisons
-	 * for {@link Charset}s.
+	 * for {@link Charset Charsets}.
 	 * @since 4.2
 	 */
 	private boolean parametersAreEqual(MimeType other) {

@@ -38,7 +38,7 @@ import org.springframework.util.ReflectionUtils;
 
 /**
  * Internal utility class that can be used to obtain wrapped {@link Serializable}
- * variants of {@link java.lang.reflect.Type}s.
+ * variants of {@link java.lang.reflect.Type java.lang.reflect.Types}.
  *
  * <p>{@link #forField(Field) Fields} or {@link #forMethodParameter(MethodParameter)
  * MethodParameters} can be used as the root source for a serializable type.

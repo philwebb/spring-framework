@@ -34,7 +34,7 @@ import org.springframework.util.MimeTypeUtils;
 import reactor.core.publisher.Flux;
 
 /**
- * Decoder for {@link Resource}s.
+ * Decoder for {@link Resource Resources}.
  *
  * @author Arjen Poutsma
  * @author Rossen Stoyanchev

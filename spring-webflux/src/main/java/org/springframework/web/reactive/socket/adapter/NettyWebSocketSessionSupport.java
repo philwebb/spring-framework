@@ -34,8 +34,8 @@ import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 
 /**
  * Base class for Netty-based {@link WebSocketSession} adapters that provides
- * convenience methods to convert Netty {@link WebSocketFrame}s to and from
- * {@link WebSocketMessage}s.
+ * convenience methods to convert Netty {@link WebSocketFrame WebSocketFrames} to and from
+ * {@link WebSocketMessage WebSocketMessages}.
  *
  * @author Rossen Stoyanchev
  * @since 5.0

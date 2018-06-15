@@ -70,7 +70,7 @@ import org.springframework.util.ClassUtils;
  * the {@code customEditors} property as {@link PropertyEditor PropertyEditors} are stateful
  * and the instances will then have to be synchronized for every editing
  * attempt. In case you need control over the instantiation process of
- * {@link PropertyEditor}s, use a {@link PropertyEditorRegistrar} to register
+ * {@link PropertyEditor PropertyEditors}, use a {@link PropertyEditorRegistrar} to register
  * them.
  *
  * <p>

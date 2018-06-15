@@ -49,7 +49,7 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * Integration tests with requests mapped via
- * {@link SimpleUrlHandlerMapping} to plain {@link WebHandler}s.
+ * {@link SimpleUrlHandlerMapping} to plain {@link WebHandler SimpleUrlHandlerMapping} to plain {@link WebHandlers}.
  *
  * @author Rossen Stoyanchev
  */

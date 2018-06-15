@@ -32,7 +32,7 @@ import org.springframework.util.StreamUtils;
 import reactor.core.publisher.Flux;
 
 /**
- * Encoder for {@link Resource}s.
+ * Encoder for {@link Resource Resources}.
  *
  * @author Arjen Poutsma
  * @since 5.0

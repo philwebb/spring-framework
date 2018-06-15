@@ -28,7 +28,7 @@ import org.springframework.core.convert.converter.ConditionalGenericConverter;
 import org.springframework.lang.Nullable;
 
 /**
- * Converts a {@link ByteBuffer} directly to and from {@code byte[]}s and indirectly
+ * Converts a {@link ByteBuffer} directly to and from {@code byte[] ByteBuffer} directly to and from {@code byte[]s} and indirectly
  * to any type that the {@link ConversionService} support via {@code byte[]}.
  *
  * @author Phillip Webb

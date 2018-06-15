@@ -30,7 +30,7 @@ import org.springframework.util.MimeTypeUtils;
 import reactor.core.publisher.Flux;
 
 /**
- * Encoder for {@link ByteBuffer}s.
+ * Encoder for {@link ByteBuffer ByteBuffers}.
  *
  * @author Sebastien Deleuze
  * @since 5.0

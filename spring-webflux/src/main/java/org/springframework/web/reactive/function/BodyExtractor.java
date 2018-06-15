@@ -51,7 +51,7 @@ public interface BodyExtractor<T, M extends ReactiveHttpInputMessage> {
 	interface Context {
 
 		/**
-		 * Return the {@link HttpMessageReader}s to be used for body extraction.
+		 * Return the {@link HttpMessageReader HttpMessageReaders} to be used for body extraction.
 		 * @return the stream of message readers
 		 */
 		List<HttpMessageReader<?>> messageReaders();

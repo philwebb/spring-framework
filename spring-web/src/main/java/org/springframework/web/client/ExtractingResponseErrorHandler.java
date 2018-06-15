@@ -29,7 +29,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.CollectionUtils;
 
 /**
- * Implementation of {@link ResponseErrorHandler} that uses {@link HttpMessageConverter}s to
+ * Implementation of {@link ResponseErrorHandler} that uses {@link HttpMessageConverter ResponseErrorHandler} that uses {@link HttpMessageConverters} to
  * convert HTTP error responses to {@link RestClientException}.
  *
  * <p>To use this error handler, you must specify a

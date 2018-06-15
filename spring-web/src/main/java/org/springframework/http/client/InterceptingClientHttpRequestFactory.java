@@ -24,7 +24,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.lang.Nullable;
 
 /**
- * {@link ClientHttpRequestFactory} wrapper with support for {@link ClientHttpRequestInterceptor}s.
+ * {@link ClientHttpRequestFactory} wrapper with support for {@link ClientHttpRequestInterceptor ClientHttpRequestFactory} wrapper with support for {@link ClientHttpRequestInterceptors}.
  *
  * @author Arjen Poutsma
  * @since 3.1

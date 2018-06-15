@@ -21,7 +21,7 @@ import java.util.Map;
 import org.springframework.web.socket.WebSocketHandler;
 
 /**
- * A factory for creating a SockJS session. {@link TransportHandler}s typically also serve
+ * A factory for creating a SockJS session. {@link TransportHandler TransportHandlers} typically also serve
  * as SockJS session factories.
  *
  * @author Rossen Stoyanchev

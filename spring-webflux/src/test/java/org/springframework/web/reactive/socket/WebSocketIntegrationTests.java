@@ -42,7 +42,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 /**
- * Integration tests with server-side {@link WebSocketHandler}s.
+ * Integration tests with server-side {@link WebSocketHandler WebSocketHandlers}.
  * @author Rossen Stoyanchev
  */
 public class WebSocketIntegrationTests extends AbstractWebSocketIntegrationTests {

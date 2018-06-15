@@ -52,7 +52,7 @@ public abstract class AbstractMessageWriterResultHandler extends HandlerResultHa
 
 
 	/**
-	 * Constructor with {@link HttpMessageWriter}s and a
+	 * Constructor with {@link HttpMessageWriter HttpMessageWriters} and a
 	 * {@code RequestedContentTypeResolver}.
 	 * @param messageWriters for serializing Objects to the response body stream
 	 * @param contentTypeResolver for resolving the requested content type

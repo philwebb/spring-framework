@@ -26,7 +26,7 @@ import io.netty.buffer.ByteBuf;
 
 /**
  * Convenient base class for {@link ReactorNettyCodec} implementations that need
- * to work with NIO {@link ByteBuffer}s.
+ * to work with NIO {@link ByteBuffer ByteBuffers}.
  *
  * @author Rossen Stoyanchev
  * @since 5.0

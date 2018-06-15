@@ -53,7 +53,7 @@ public interface BodyInserter<T, M extends ReactiveHttpOutputMessage> {
 	interface Context {
 
 		/**
-		 * Return the {@link HttpMessageWriter}s to be used for response body conversion.
+		 * Return the {@link HttpMessageWriter HttpMessageWriters} to be used for response body conversion.
 		 * @return the stream of message writers
 		 */
 		List<HttpMessageWriter<?>> messageWriters();

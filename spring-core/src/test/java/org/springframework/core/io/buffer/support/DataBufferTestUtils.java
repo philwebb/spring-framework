@@ -22,7 +22,7 @@ import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.util.Assert;
 
 /**
- * Utility class for working with {@link DataBuffer}s in tests.
+ * Utility class for working with {@link DataBuffer DataBuffers} in tests.
  *
  * <p>Note that this class is in the {@code test} tree of the project:
  * the methods contained herein are not suitable for production code bases.
