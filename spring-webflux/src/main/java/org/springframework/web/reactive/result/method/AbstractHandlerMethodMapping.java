@@ -51,11 +51,11 @@ import reactor.core.publisher.Mono;
  * <p>For each registered handler method, a unique mapping is maintained with
  * subclasses defining the details of the mapping type {@code <T>}.
  *
+ * @param <T> the mapping for a {@link HandlerMethod} containing the conditions
+ * needed to match the handler method to incoming request.
  * @author Rossen Stoyanchev
  * @author Brian Clozel
  * @since 5.0
- * @param <T> the mapping for a {@link HandlerMethod} containing the conditions
- * needed to match the handler method to incoming request.
  */
 public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMapping implements InitializingBean {
 

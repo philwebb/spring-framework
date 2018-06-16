@@ -43,4 +43,5 @@
 	<suppress files="org[\\/]springframework[\\/]web[\\/]bind[\\/]annotation[\\/]CrossOrigin" checks="JavadocStyle" />
 	<suppress files="org[\\/]springframework[\\/]web[\\/]bind[\\/]annotation[\\/]RequestMethod" checks="JavadocVariable" />
 	<suppress files="PatternParseException" checks="JavadocVariable"/>
+	<suppress files="web[\\/]reactive[\\/]socket[\\/]CloseStatus" checks="JavadocStyle"/>
 </suppressions>

@@ -37,6 +37,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketFrame;
  * convenience methods to convert Netty {@link WebSocketFrame WebSocketFrames} to and from
  * {@link WebSocketMessage WebSocketMessages}.
  *
+ * @param <T> the native delegate type
  * @author Rossen Stoyanchev
  * @since 5.0
  */
