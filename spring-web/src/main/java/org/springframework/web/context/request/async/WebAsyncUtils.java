@@ -32,6 +32,9 @@ import org.springframework.web.context.request.WebRequest;
  */
 public abstract class WebAsyncUtils {
 
+	/**
+	 * The name attribute containing the {@link WebAsyncManager}.
+	 */
 	public static final String WEB_ASYNC_MANAGER_ATTRIBUTE =
 			WebAsyncManager.class.getName() + ".WEB_ASYNC_MANAGER";
 

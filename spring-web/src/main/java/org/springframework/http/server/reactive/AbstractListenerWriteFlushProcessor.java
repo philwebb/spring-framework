@@ -33,6 +33,7 @@ import org.springframework.util.Assert;
  * a {@code Publisher<Publisher<T>>} with flush boundaries enforces after
  * the completion of each nested Publisher.
  *
+ * @param <T> the type of element signaled to the {@link Subscriber}
  * @author Arjen Poutsma
  * @author Violeta Georgieva
  * @author Rossen Stoyanchev

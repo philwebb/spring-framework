@@ -66,6 +66,9 @@ import org.springframework.web.multipart.MultipartResolver;
  */
 public class MultipartFilter extends OncePerRequestFilter {
 
+	/**
+	 * The default name for the multipart resolver bean.
+	 */
 	public static final String DEFAULT_MULTIPART_RESOLVER_BEAN_NAME = "filterMultipartResolver";
 
 	private final MultipartResolver defaultMultipartResolver = new StandardServletMultipartResolver();

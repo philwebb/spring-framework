@@ -339,8 +339,8 @@ public class Jackson2ObjectMapperBuilder {
 
 	/**
 	 * Configure a custom serializer for the given type.
-	 * @see #serializers(JsonSerializer...)
 	 * @since 4.1.2
+	 * @see #serializers(JsonSerializer...)
 	 */
 	public Jackson2ObjectMapperBuilder serializerByType(Class<?> type, JsonSerializer<?> serializer) {
 		this.serializers.put(type, serializer);

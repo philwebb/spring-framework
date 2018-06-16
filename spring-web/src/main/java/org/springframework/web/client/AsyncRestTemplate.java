@@ -613,7 +613,7 @@ public class AsyncRestTemplate extends org.springframework.http.client.support.I
 
 	/**
 	 * Future returned from
-	 * {@link #doExecute(URI, HttpMethod, AsyncRequestCallback, ResponseExtractor)}
+	 * {@link #doExecute(URI, HttpMethod, AsyncRequestCallback, ResponseExtractor)}.
 	 */
 	private class ResponseExtractorFuture<T> extends ListenableFutureAdapter<T, ClientHttpResponse> {
 

@@ -42,6 +42,7 @@ import org.springframework.web.bind.annotation.CookieValue;
 public abstract class AbstractCookieValueMethodArgumentResolver extends AbstractNamedValueMethodArgumentResolver {
 
 	/**
+	 * Crate a new {@link AbstractCookieValueMethodArgumentResolver} instance.
 	 * @param beanFactory a bean factory to use for resolving  ${...}
 	 * placeholder and #{...} SpEL expressions in default values;
 	 * or {@code null} if default values are not expected to contain expressions

@@ -29,7 +29,7 @@ import org.springframework.lang.Nullable;
 public interface SslInfo {
 
 	/**
-	 * Return the SSL session id, if any
+	 * Return the SSL session id, if any.
 	 */
 	@Nullable
 	String getSessionId();

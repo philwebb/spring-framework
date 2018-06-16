@@ -764,8 +764,8 @@ public class MockHttpServletRequest implements HttpServletRequest {
 	/**
 	 * Set the list of preferred locales, in descending order, effectively replacing
 	 * any existing locales.
-	 * @see #addPreferredLocale
 	 * @since 3.2
+	 * @see #addPreferredLocale
 	 */
 	public void setPreferredLocales(List<Locale> locales) {
 		Assert.notEmpty(locales, "Locale list must not be empty");

@@ -35,6 +35,12 @@
 	<suppress files="StompCommand" checks="JavadocVariable" />
 	<suppress files="StompHeaderAccessor" checks="JavadocVariable" />
 	<suppress files="StompHeaders" checks="JavadocVariable" />
+	<suppress files="SpringHandlerInstantiator" checks="JavadocStyle" />
 	<suppress files="jpa[\\/]vendor[\\/]Database" checks="JavadocVariable|JavadocStyle"/>
 	<suppress files="test[\\/]context[\\/]jdbc[\\/]MergedSqlConfig" checks="JavadocStyle" />
+	<suppress files="org[\\/]springframework[\\/]http[\\/]HttpMethod" checks="JavadocVariable|JavadocStyle" />
+	<suppress files="org[\\/]springframework[\\/]http[\\/]HttpStatus" checks="JavadocVariable|JavadocStyle" />
+	<suppress files="org[\\/]springframework[\\/]web[\\/]bind[\\/]annotation[\\/]CrossOrigin" checks="JavadocStyle" />
+	<suppress files="org[\\/]springframework[\\/]web[\\/]bind[\\/]annotation[\\/]RequestMethod" checks="JavadocVariable" />
+	<suppress files="PatternParseException" checks="JavadocVariable"/>
 </suppressions>

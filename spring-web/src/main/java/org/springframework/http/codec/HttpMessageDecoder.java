@@ -27,6 +27,7 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
  * Extension of {@code Decoder} exposing extra methods relevant in the context
  * of HTTP request or response body decoding.
  *
+ * @param <T> the type of elements in the output stream
  * @author Rossen Stoyanchev
  * @since 5.0
  */

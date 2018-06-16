@@ -47,7 +47,7 @@ import org.springframework.util.ClassUtils;
 public abstract class AbstractHttpInvokerRequestExecutor implements HttpInvokerRequestExecutor, BeanClassLoaderAware {
 
 	/**
-	 * Default content type: "application/x-java-serialized-object"
+	 * Default content type: "application/x-java-serialized-object".
 	 */
 	public static final String CONTENT_TYPE_SERIALIZED_OBJECT = "application/x-java-serialized-object";
 

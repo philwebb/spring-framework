@@ -35,7 +35,6 @@ import reactor.core.publisher.Mono;
  * the encoded stream of bytes to an {@link ReactiveHttpOutputMessage}.
  *
  * @param <T> the type of objects in the input stream
- *
  * @author Rossen Stoyanchev
  * @author Arjen Poutsma
  * @author Sebastien Deleuze

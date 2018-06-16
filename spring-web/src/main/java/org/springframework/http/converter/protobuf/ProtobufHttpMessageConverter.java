@@ -81,12 +81,24 @@ import static org.springframework.http.MediaType.TEXT_PLAIN;
  */
 public class ProtobufHttpMessageConverter extends AbstractHttpMessageConverter<Message> {
 
+	/**
+	 * The default charset used by the converter.
+	 */
 	public static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
+	/**
+	 * The media-type for protobuf {@code application/x-protobuf}.
+	 */
 	public static final MediaType PROTOBUF = new MediaType("application", "x-protobuf", DEFAULT_CHARSET);
 
+	/**
+	 * The HTTP header containing the protobuf schema.
+	 */
 	public static final String X_PROTOBUF_SCHEMA_HEADER = "X-Protobuf-Schema";
 
+	/**
+	 * The HTTP header containing the protobuf message.
+	 */
 	public static final String X_PROTOBUF_MESSAGE_HEADER = "X-Protobuf-Message";
 
 
@@ -246,6 +258,9 @@ public class ProtobufHttpMessageConverter extends AbstractHttpMessageConverter<M
 	}
 
 
+	/**
+	 * Protobuf format support.
+	 */
 	interface ProtobufFormatSupport {
 
 		MediaType[] supportedMediaTypes();
@@ -259,7 +274,10 @@ public class ProtobufHttpMessageConverter extends AbstractHttpMessageConverter<M
 				throws IOException;
 	}
 
-
+	/**
+	 * {@link ProtobufFormatSupport} implementation used when
+	 * {@code com.googlecode.protobuf.format.FormatFactory} is available.
+	 */
 	static class ProtobufJavaFormatSupport implements ProtobufFormatSupport {
 
 		private final ProtobufFormatter jsonFormatter;
@@ -320,6 +338,10 @@ public class ProtobufHttpMessageConverter extends AbstractHttpMessageConverter<M
 	}
 
 
+	/**
+	 * {@link ProtobufFormatSupport} implementation used when
+	 * {@code com.google.protobuf.util.JsonFormat} is available.
+	 */
 	static class ProtobufJavaUtilSupport implements ProtobufFormatSupport {
 
 		private final JsonFormat.Parser parser;

@@ -42,7 +42,7 @@ import org.springframework.util.MultiValueMap;
  * Resource image = new ClassPathResource("image.jpg");
  * builder.part("image", image).header("Baz", "Qux");
  *
- * MultiValueMap<String, HttpEntity<?>> multipartBody = builder.build();
+ * MultiValueMap&lt;String, HttpEntity&lt;?&gt;&gt; multipartBody = builder.build();
  * // use multipartBody with RestTemplate or WebClient
  * </pre>
 

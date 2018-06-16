@@ -80,8 +80,8 @@ public interface WebRequest extends RequestAttributes {
 
 	/**
 	 * Return a Iterator over request parameter names.
-	 * @see javax.servlet.http.HttpServletRequest#getParameterNames()
 	 * @since 3.0
+	 * @see javax.servlet.http.HttpServletRequest#getParameterNames()
 	 */
 	Iterator<String> getParameterNames();
 

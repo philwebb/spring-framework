@@ -31,6 +31,7 @@ import org.springframework.lang.Nullable;
  * Extension of {@code Encoder} exposing extra methods relevant in the context
  * of HTTP request or response body encoding.
  *
+ * @param <T> the type of elements in the input stream
  * @author Rossen Stoyanchev
  * @since 5.0
  */

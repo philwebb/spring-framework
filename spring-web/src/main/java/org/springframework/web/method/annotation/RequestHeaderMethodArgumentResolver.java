@@ -46,6 +46,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 public class RequestHeaderMethodArgumentResolver extends AbstractNamedValueMethodArgumentResolver {
 
 	/**
+	 * Create a new {@link RequestHeaderMethodArgumentResolver} instance.
 	 * @param beanFactory a bean factory to use for resolving  ${...}
 	 * placeholder and #{...} SpEL expressions in default values;
 	 * or {@code null} if default values are not expected to have expressions

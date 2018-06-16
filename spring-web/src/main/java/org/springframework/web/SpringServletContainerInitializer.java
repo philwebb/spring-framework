@@ -59,12 +59,11 @@ import org.springframework.util.ReflectionUtils;
  * {@code web.xml} as follows:
  *
  * <pre class="code">
- * {@code
- * <absolute-ordering>
- *   <name>some_web_fragment</name>
- *   <name>spring_web</name>
- * </absolute-ordering>
- * }</pre>
+ * &lt;absolute-ordering&gt;
+ *   &lt;name>some_web_fragment&lt;/name&gt;
+ *   &lt;name>spring_web&lt;/name&gt;
+ * &lt;/absolute-ordering&gt;
+ * </pre>
  *
  * <h2>Relationship to Spring's {@code WebApplicationInitializer}</h2>
  * Spring's {@code WebApplicationInitializer} SPI consists of just one method:

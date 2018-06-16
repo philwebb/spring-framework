@@ -42,6 +42,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 public class ExpressionValueMethodArgumentResolver extends AbstractNamedValueMethodArgumentResolver {
 
 	/**
+	 * Create a new {@link ExpressionValueMethodArgumentResolver} instance.
 	 * @param beanFactory a bean factory to use for resolving  ${...}
 	 * placeholder and #{...} SpEL expressions in default values;
 	 * or {@code null} if default values are not expected to contain expressions

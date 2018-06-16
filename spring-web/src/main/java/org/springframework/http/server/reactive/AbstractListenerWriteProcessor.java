@@ -35,6 +35,7 @@ import org.springframework.util.Assert;
  * Servlet 3.1 non-blocking I/O and Undertow XNIO as well for writing WebSocket
  * messages through the Java WebSocket API (JSR-356), Jetty, and Undertow.
  *
+ * @param <T> the type of element signaled to the {@link Subscriber}
  * @author Arjen Poutsma
  * @author Violeta Georgieva
  * @author Rossen Stoyanchev

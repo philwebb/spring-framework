@@ -286,7 +286,7 @@ public class UrlPathHelper {
 	}
 
 	/**
-	 * Sanitize the given path with the following rules:
+	 * Sanitize the given path. Uses the following rules:
 	 * <ul>
 	 *     <li>replace all "//" by "/"</li>
 	 * </ul>

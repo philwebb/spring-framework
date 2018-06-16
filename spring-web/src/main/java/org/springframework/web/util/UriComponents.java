@@ -182,7 +182,7 @@ public abstract class UriComponents implements Serializable {
 
 	/**
 	 * Replace all URI template variables with the values from the given {@link
-	 * UriTemplateVariables}
+	 * UriTemplateVariables}.
 	 * @param uriVariables URI template values
 	 * @return the expanded URI components
 	 */
@@ -293,11 +293,14 @@ public abstract class UriComponents implements Serializable {
 
 
 	/**
-	 * Defines the contract for URI Template variables
+	 * Defines the contract for URI Template variables.
 	 * @see HierarchicalUriComponents#expand
 	 */
 	public interface UriTemplateVariables {
 
+		/**
+		 * Indicates a skipped value.
+		 */
 		Object SKIP_VALUE = UriTemplateVariables.class;
 
 		/**
