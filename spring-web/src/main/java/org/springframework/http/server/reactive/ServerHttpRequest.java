@@ -30,7 +30,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.MultiValueMap;
 
 /**
- * Represents a reactive server-side HTTP request
+ * Represents a reactive server-side HTTP request.
  *
  * @author Arjen Poutsma
  * @author Rossen Stoyanchev

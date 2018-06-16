@@ -35,7 +35,6 @@ import reactor.core.publisher.Mono;
  * the stream of bytes to Objects of type {@code <T>}.
  *
  * @param <T> the type of objects in the decoded output stream
- *
  * @author Rossen Stoyanchev
  * @author Arjen Poutsma
  * @author Sebastien Deleuze

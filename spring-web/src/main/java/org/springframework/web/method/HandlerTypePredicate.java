@@ -147,6 +147,9 @@ public final class HandlerTypePredicate implements Predicate<Class<?>> {
 	}
 
 
+	/**
+	 * A {@link HandlerTypePredicate} builder.
+	 */
 	public static class Builder {
 
 		private final Set<String> basePackages = new LinkedHashSet<>();

@@ -98,8 +98,8 @@ public class UnsatisfiedServletRequestParameterException extends ServletRequestB
 
 	/**
 	 * Return all parameter condition groups that have been violated.
-	 * @see org.springframework.web.bind.annotation.RequestMapping#params()
 	 * @since 4.2
+	 * @see org.springframework.web.bind.annotation.RequestMapping#params()
 	 */
 	public final List<String[]> getParamConditionGroups() {
 		return this.paramConditions;

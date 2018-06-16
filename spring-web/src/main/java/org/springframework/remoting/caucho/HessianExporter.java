@@ -57,6 +57,9 @@ import com.caucho.hessian.server.HessianSkeleton;
  */
 public class HessianExporter extends RemoteExporter implements InitializingBean {
 
+	/**
+	 * The content type for hessian ({@code application/x-hessian}).
+	 */
 	public static final String CONTENT_TYPE_HESSIAN = "application/x-hessian";
 
 

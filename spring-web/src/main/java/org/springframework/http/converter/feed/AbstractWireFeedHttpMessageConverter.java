@@ -41,9 +41,10 @@ import com.rometools.rome.io.WireFeedOutput;
  * Abstract base class for Atom and RSS Feed message converters, using the
  * <a href="https://github.com/rometools/rome">ROME tools</a> project.
  *
- * <p>><b>NOTE: As of Spring 4.1, this is based on the {@code com.rometools}
+ * <p><b>NOTE: As of Spring 4.1, this is based on the {@code com.rometools}
  * variant of ROME, version 1.5. Please upgrade your build dependency.</b>
  *
+ * @param <T> the converted object type
  * @author Arjen Poutsma
  * @since 3.0.2
  * @see AtomFeedHttpMessageConverter
@@ -52,6 +53,9 @@ import com.rometools.rome.io.WireFeedOutput;
 public abstract class AbstractWireFeedHttpMessageConverter<T extends WireFeed>
 		extends AbstractHttpMessageConverter<T> {
 
+	/**
+	 * The default charset used by the converter.
+	 */
 	public static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
 

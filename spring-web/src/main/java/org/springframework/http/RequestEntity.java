@@ -57,6 +57,7 @@ import org.springframework.util.ObjectUtils;
  * }
  * </pre>
  *
+ * @param <T> the body type
  * @author Arjen Poutsma
  * @author Sebastien Deleuze
  * @since 4.1

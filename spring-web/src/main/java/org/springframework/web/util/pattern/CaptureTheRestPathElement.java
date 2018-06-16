@@ -37,6 +37,7 @@ class CaptureTheRestPathElement extends PathElement {
 
 
 	/**
+	 * Create a new {@link CaptureTheRestPathElement} instance.
 	 * @param pos position of the path element within the path pattern text
 	 * @param captureDescriptor a character array containing contents like '{' '*' 'a' 'b' '}'
 	 * @param separator the separator used in the path pattern
@@ -80,7 +81,7 @@ class CaptureTheRestPathElement extends PathElement {
 		}
 		return true;
 	}
-	
+
 	private String pathToString(int fromSegment, List<Element> pathElements) {
 		StringBuilder buf = new StringBuilder();
 		for (int i = fromSegment, max = pathElements.size(); i < max; i++) {

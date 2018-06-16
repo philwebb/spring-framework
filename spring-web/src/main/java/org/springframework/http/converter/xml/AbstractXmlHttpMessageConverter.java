@@ -40,6 +40,7 @@ import org.springframework.http.converter.HttpMessageConversionException;
  * application/*-xml}. This can be overridden by setting the {@link #setSupportedMediaTypes(java.util.List)
  * supportedMediaTypes} property.
  *
+ * @param <T> the converted object type
  * @author Arjen Poutsma
  * @since 3.0
  */

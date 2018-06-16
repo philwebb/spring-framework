@@ -52,11 +52,11 @@ import reactor.core.publisher.Mono;
  * Decodes a {@link DataBuffer} stream into a stream of {@link XMLEvent DataBuffer} stream into a stream of {@link XMLEvents}.
  * That is, given the following XML:
  *
- * <pre>{@code
- * <root>
- *     <child>foo</child>
- *     <child>bar</child>
- * </root>}
+ * <pre>
+ * &lt;root>
+ *     &lt;child&gt;foo&lt;/child&gt;
+ *     &lt;child&gt;bar&lt;/child&gt;
+ * &lt;/root&gt;
  * </pre>
  *
  * this method with result in a flux with the following events:

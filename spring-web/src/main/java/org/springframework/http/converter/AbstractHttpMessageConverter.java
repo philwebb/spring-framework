@@ -41,6 +41,7 @@ import org.springframework.util.Assert;
  * {@link #setSupportedMediaTypes(List) supportedMediaTypes} bean property. It also adds
  * support for {@code Content-Type} and {@code Content-Length} when writing to output messages.
  *
+ * @param <T> the converted object type
  * @author Arjen Poutsma
  * @author Juergen Hoeller
  * @author Sebastien Deleuze

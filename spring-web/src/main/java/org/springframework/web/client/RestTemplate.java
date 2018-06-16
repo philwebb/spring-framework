@@ -223,8 +223,8 @@ public class RestTemplate extends InterceptingHttpAccessor implements RestOperat
 
 	/**
 	 * Create a new instance of the {@link RestTemplate} using the given list of
-	 * {@link HttpMessageConverter} to use
-	 * @param messageConverters the list of {@link HttpMessageConverter} to use
+	 * {@link HttpMessageConverter} to use.
+	 * @param messageConverters the list of {@link HttpMessageConverter} to use.
 	 * @since 3.2.7
 	 */
 	public RestTemplate(List<HttpMessageConverter<?>> messageConverters) {

@@ -70,8 +70,7 @@ public class HiddenHttpMethodFilter implements WebFilter {
 
 
 	/**
-	 * Transform an HTTP POST into another method based on {@code methodParamName}
-	 *
+	 * Transform an HTTP POST into another method based on {@code methodParamName}.
 	 * @param exchange the current server exchange
 	 * @param chain provides a way to delegate to the next filter
 	 * @return {@code Mono<Void>} to indicate when request processing is complete
