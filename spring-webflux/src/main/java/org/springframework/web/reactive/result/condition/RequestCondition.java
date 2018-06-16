@@ -29,7 +29,6 @@ import org.springframework.web.server.ServerWebExchange;
  *
  * @param <T> the type of objects that this RequestCondition can be combined
  * with and compared to
- *
  * @author Rossen Stoyanchev
  * @since 5.0
  */

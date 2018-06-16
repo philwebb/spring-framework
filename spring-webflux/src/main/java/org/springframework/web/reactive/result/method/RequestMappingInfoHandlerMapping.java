@@ -303,6 +303,7 @@ public abstract class RequestMappingInfoHandlerMapping extends AbstractHandlerMe
 
 
 			/**
+			 * Create a new {@link PartialMatch} instance.
 			 * @param info RequestMappingInfo that matches the URL path
 			 * @param exchange the current exchange
 			 */

@@ -47,6 +47,7 @@ import reactor.util.concurrent.Queues;
  * <p>Also an implementation of {@code Subscriber&lt;Void&gt;} so it can be used as
  * the completion subscriber for session handling
  *
+ * @param <T> the native delegate type
  * @author Violeta Georgieva
  * @author Rossen Stoyanchev
  * @since 5.0
@@ -259,6 +260,9 @@ public abstract class AbstractListenerWebSocketSession<T> extends AbstractWebSoc
 	}
 
 
+	/**
+	 * Processor to send web socket messages.
+	 */
 	protected final class WebSocketSendProcessor extends AbstractListenerWriteProcessor<WebSocketMessage> {
 
 		private volatile boolean isReady = true;
