@@ -38,7 +38,7 @@ import org.springframework.web.reactive.socket.WebSocketSession;
 /**
  * Spring {@link WebSocketSession} implementation that adapts to a Jetty
  * WebSocket {@link org.eclipse.jetty.websocket.api.Session}.
- * 
+ *
  * @author Violeta Georgieva
  * @author Rossen Stoyanchev
  * @since 5.0

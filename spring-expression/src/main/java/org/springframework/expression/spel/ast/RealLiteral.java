@@ -47,7 +47,7 @@ public class RealLiteral extends Literal {
 	public boolean isCompilable() {
 		return true;
 	}
-	
+
 	@Override
 	public void generateCode(MethodVisitor mv, CodeFlow cf) {
 		mv.visitLdcInsn(this.value.getValue());

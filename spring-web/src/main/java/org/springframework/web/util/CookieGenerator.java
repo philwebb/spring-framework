@@ -58,7 +58,7 @@ public class CookieGenerator {
 
 	private String cookiePath = DEFAULT_COOKIE_PATH;
 
-	@Nullable 
+	@Nullable
 	private Integer cookieMaxAge;
 
 	private boolean cookieSecure = false;

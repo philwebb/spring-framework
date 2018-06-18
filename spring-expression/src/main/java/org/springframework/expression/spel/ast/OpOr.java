@@ -77,7 +77,7 @@ public class OpOr extends Operator {
 				CodeFlow.isBooleanCompatible(left.exitTypeDescriptor) &&
 				CodeFlow.isBooleanCompatible(right.exitTypeDescriptor));
 	}
-	
+
 	@Override
 	public void generateCode(MethodVisitor mv, CodeFlow cf) {
 		// pseudo: if (leftOperandValue) { result=true; } else { result=rightOperandValue; }
@@ -98,5 +98,5 @@ public class OpOr extends Operator {
 		mv.visitLabel(endOfIf);
 		cf.pushDescriptor(this.exitTypeDescriptor);
 	}
-	
+
 }

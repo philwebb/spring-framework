@@ -80,7 +80,7 @@ public final class CharSequenceEncoder extends AbstractEncoder<CharSequence> {
 			charset = mimeType.getCharset();
 		}
 		else {
-			 charset = DEFAULT_CHARSET;
+			charset = DEFAULT_CHARSET;
 		}
 		return charset;
 	}

@@ -159,7 +159,7 @@ public class HttpComponentsAsyncClientHttpRequestFactory extends HttpComponentsC
 	}
 
 	private HttpAsyncClient startAsyncClient() {
-        HttpAsyncClient client = getAsyncClient();
+		HttpAsyncClient client = getAsyncClient();
 		if (client instanceof CloseableHttpAsyncClient) {
 			CloseableHttpAsyncClient closeableAsyncClient = (CloseableHttpAsyncClient) client;
 			if (!closeableAsyncClient.isRunning()) {
@@ -175,10 +175,10 @@ public class HttpComponentsAsyncClientHttpRequestFactory extends HttpComponentsC
 
 		HttpUriRequest httpRequest = createHttpUriRequest(httpMethod, uri);
 		postProcessHttpRequest(httpRequest);
-        HttpContext context = createHttpContext(httpMethod, uri);
-        if (context == null) {
-            context = HttpClientContext.create();
-        }
+		HttpContext context = createHttpContext(httpMethod, uri);
+		if (context == null) {
+			context = HttpClientContext.create();
+		}
 
 		// Request configuration not set in the context
 		if (context.getAttribute(HttpClientContext.REQUEST_CONFIG) == null) {

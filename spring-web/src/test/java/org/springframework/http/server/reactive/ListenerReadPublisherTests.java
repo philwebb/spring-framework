@@ -33,7 +33,7 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for {@link AbstractListenerReadPublisher}
- * 
+ *
  * @author Violeta Georgieva
  * @since 5.0
  */

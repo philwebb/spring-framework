@@ -168,8 +168,8 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 		assertThat("Marshaller writes invalid StreamResult", writer.toString(), isSimilarTo(EXPECTED_STRING));
 	}
 
-    private static CompareMatcher isSimilarTo(final Object content) {
-        return CompareMatcher.isSimilarTo(content)
-                .ignoreWhitespace();
-    }
+	private static CompareMatcher isSimilarTo(final Object content) {
+		return CompareMatcher.isSimilarTo(content)
+				.ignoreWhitespace();
+	}
 }

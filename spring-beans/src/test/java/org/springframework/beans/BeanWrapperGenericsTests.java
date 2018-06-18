@@ -644,25 +644,25 @@ public class BeanWrapperGenericsTests {
 
 	public interface ObjectWithId<T extends Comparable<T>> {
 
-	  T getId();
+		T getId();
 
-	  void setId(T aId);
+		void setId(T aId);
 	}
 
 
 	public class Promotion implements ObjectWithId<Long> {
 
-	  private Long id;
+		private Long id;
 
-	  @Override
-	  public Long getId() {
-		  return this.id;
-	  }
+		@Override
+		public Long getId() {
+			return this.id;
+		}
 
-	  @Override
-	  public void setId(Long aId) {
-		  this.id = aId;
-	  }
+		@Override
+		public void setId(Long aId) {
+			this.id = aId;
+		}
 	}
 
 }

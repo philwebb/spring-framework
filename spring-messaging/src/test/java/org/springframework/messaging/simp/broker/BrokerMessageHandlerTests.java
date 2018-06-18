@@ -146,7 +146,7 @@ public class BrokerMessageHandlerTests {
 
 		@Override
 		public void publishEvent(ApplicationEvent event) {
-			 publishEvent((Object) event);
+			publishEvent((Object) event);
 		}
 
 		@Override

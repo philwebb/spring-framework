@@ -48,7 +48,7 @@ public class WebJarsResourceResolverTests {
 
 	private static final Duration TIMEOUT = Duration.ofSeconds(1);
 
-	
+
 	private List<Resource> locations;
 
 	private WebJarsResourceResolver resolver;

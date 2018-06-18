@@ -269,11 +269,11 @@ public abstract class MockMvcRequestBuilders {
 		mvcResult.getAsyncResult();
 
 		return servletContext -> {
-            MockHttpServletRequest request = mvcResult.getRequest();
-            request.setDispatcherType(DispatcherType.ASYNC);
-            request.setAsyncStarted(false);
-            return request;
-        };
+			MockHttpServletRequest request = mvcResult.getRequest();
+			request.setDispatcherType(DispatcherType.ASYNC);
+			request.setAsyncStarted(false);
+			return request;
+		};
 	}
 
 }
