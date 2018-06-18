@@ -133,7 +133,7 @@ public abstract class DataBufferUtils {
 		Assert.isTrue(bufferSize > 0, "'bufferSize' must be > 0");
 
 		return Flux.using(channelSupplier,
-				channel -> {
+				(channel) -> {
 					ReadableByteChannelGenerator generator =
 							new ReadableByteChannelGenerator(channel, dataBufferFactory,
 									bufferSize);
@@ -223,7 +223,7 @@ public abstract class DataBufferUtils {
 		ByteBuffer byteBuffer = dataBuffer.asByteBuffer(0, bufferSize);
 
 		return Flux.using(channelSupplier,
-				channel -> Flux.create((sink) -> {
+				(channel) -> Flux.create((sink) -> {
 							CompletionHandler<Integer, DataBuffer> completionHandler =
 									new AsynchronousFileChannelReadCompletionHandler(channel,
 											sink, position, dataBufferFactory, bufferSize);

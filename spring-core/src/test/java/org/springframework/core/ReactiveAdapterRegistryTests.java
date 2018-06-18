@@ -86,7 +86,7 @@ public class ReactiveAdapterRegistryTests {
 
 		this.registry.registerReactiveType(
 				ReactiveTypeDescriptor.multiValue(FluxProcessor.class, FluxProcessor::empty),
-				o -> (FluxProcessor<?, ?>) o,
+				(o) -> (FluxProcessor<?, ?>) o,
 				FluxProcessor::from);
 
 		ReactiveAdapter adapter3 = getAdapter(FluxProcessor.class);

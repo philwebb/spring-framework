@@ -233,12 +233,12 @@ public class ReactiveAdapterRegistry {
 			);
 			registry.registerReactiveType(
 					ReactiveTypeDescriptor.singleRequiredValue(rx.Single.class),
-					source -> RxReactiveStreams.toPublisher((rx.Single<?>) source),
+					(source) -> RxReactiveStreams.toPublisher((rx.Single<?>) source),
 					RxReactiveStreams::toSingle
 			);
 			registry.registerReactiveType(
 					ReactiveTypeDescriptor.noValue(rx.Completable.class, rx.Completable::complete),
-					source -> RxReactiveStreams.toPublisher((rx.Completable) source),
+					(source) -> RxReactiveStreams.toPublisher((rx.Completable) source),
 					RxReactiveStreams::toCompletable
 			);
 		}
@@ -250,28 +250,28 @@ public class ReactiveAdapterRegistry {
 		void registerAdapters(ReactiveAdapterRegistry registry) {
 			registry.registerReactiveType(
 					ReactiveTypeDescriptor.multiValue(io.reactivex.Flowable.class, io.reactivex.Flowable::empty),
-					source -> (io.reactivex.Flowable<?>) source,
+					(source) -> (io.reactivex.Flowable<?>) source,
 					Flowable::fromPublisher
 			);
 			registry.registerReactiveType(
 					ReactiveTypeDescriptor.multiValue(io.reactivex.Observable.class, io.reactivex.Observable::empty),
-					source -> ((io.reactivex.Observable<?>) source).toFlowable(BackpressureStrategy.BUFFER),
-					source -> io.reactivex.Flowable.fromPublisher(source).toObservable()
+					(source) -> ((io.reactivex.Observable<?>) source).toFlowable(BackpressureStrategy.BUFFER),
+					(source) -> io.reactivex.Flowable.fromPublisher(source).toObservable()
 			);
 			registry.registerReactiveType(
 					ReactiveTypeDescriptor.singleRequiredValue(io.reactivex.Single.class),
-					source -> ((io.reactivex.Single<?>) source).toFlowable(),
-					source -> io.reactivex.Flowable.fromPublisher(source).toObservable().singleElement().toSingle()
+					(source) -> ((io.reactivex.Single<?>) source).toFlowable(),
+					(source) -> io.reactivex.Flowable.fromPublisher(source).toObservable().singleElement().toSingle()
 			);
 			registry.registerReactiveType(
 					ReactiveTypeDescriptor.singleOptionalValue(io.reactivex.Maybe.class, io.reactivex.Maybe::empty),
-					source -> ((io.reactivex.Maybe<?>) source).toFlowable(),
-					source -> io.reactivex.Flowable.fromPublisher(source).toObservable().singleElement()
+					(source) -> ((io.reactivex.Maybe<?>) source).toFlowable(),
+					(source) -> io.reactivex.Flowable.fromPublisher(source).toObservable().singleElement()
 			);
 			registry.registerReactiveType(
 					ReactiveTypeDescriptor.noValue(io.reactivex.Completable.class, io.reactivex.Completable::complete),
-					source -> ((io.reactivex.Completable) source).toFlowable(),
-					source -> io.reactivex.Flowable.fromPublisher(source).toObservable().ignoreElements()
+					(source) -> ((io.reactivex.Completable) source).toFlowable(),
+					(source) -> io.reactivex.Flowable.fromPublisher(source).toObservable().ignoreElements()
 			);
 		}
 	}
@@ -295,8 +295,8 @@ public class ReactiveAdapterRegistry {
 
 			registry.registerReactiveType(
 					ReactiveTypeDescriptor.multiValue(publisherClass, () -> emptyFlow),
-					source -> (Publisher<?>) ReflectionUtils.invokeMethod(toFluxMethod, null, source),
-					publisher -> ReflectionUtils.invokeMethod(toFlowMethod, null, publisher)
+					(source) -> (Publisher<?>) ReflectionUtils.invokeMethod(toFluxMethod, null, source),
+					(publisher) -> ReflectionUtils.invokeMethod(toFlowMethod, null, publisher)
 			);
 		}
 	}

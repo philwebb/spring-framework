@@ -78,7 +78,7 @@ public abstract class AbstractDataBufferAllocatingTestCase {
 	}
 
 	protected Consumer<DataBuffer> stringConsumer(String expected) {
-		return dataBuffer -> {
+		return (dataBuffer) -> {
 			String value =
 					DataBufferTestUtils.dumpString(dataBuffer, StandardCharsets.UTF_8);
 			DataBufferUtils.release(dataBuffer);

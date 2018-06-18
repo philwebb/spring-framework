@@ -88,7 +88,7 @@ import org.springframework.lang.Nullable;
  */
 public final class SimpleEvaluationContext implements EvaluationContext {
 
-	private static final TypeLocator typeNotFoundTypeLocator = typeName -> {
+	private static final TypeLocator typeNotFoundTypeLocator = (typeName) -> {
 		throw new SpelEvaluationException(SpelMessage.TYPE_NOT_FOUND, typeName);
 	};
 
