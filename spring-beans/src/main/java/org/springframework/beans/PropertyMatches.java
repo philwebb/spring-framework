@@ -237,7 +237,7 @@ public abstract class PropertyMatches {
 
 		private static String[] calculateMatches(final String name, Class<?> clazz, final int maxDistance) {
 			final List<String> candidates = new ArrayList<>();
-			ReflectionUtils.doWithFields(clazz, field -> {
+			ReflectionUtils.doWithFields(clazz, (field) -> {
 				String possibleAlternative = field.getName();
 				if (calculateStringDistance(name, possibleAlternative) <= maxDistance) {
 					candidates.add(possibleAlternative);

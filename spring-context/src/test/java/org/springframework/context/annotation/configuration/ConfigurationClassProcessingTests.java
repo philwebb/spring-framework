@@ -546,7 +546,7 @@ public class ConfigurationClassProcessingTests {
 			Supplier<TestBean> testBeanSupplier = () -> new TestBean(ctx.getBean("spouse", TestBean.class));
 			ctx.registerBean(TestBean.class,
 					testBeanSupplier,
-					bd -> bd.setPrimary(true));
+					(bd) -> bd.setPrimary(true));
 		}
 
 		@Bean

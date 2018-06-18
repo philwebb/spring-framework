@@ -196,19 +196,19 @@ public class ReactiveAdapterRegistry {
 
 			registry.registerReactiveType(
 					ReactiveTypeDescriptor.singleOptionalValue(Mono.class, Mono::empty),
-					source -> (Mono<?>) source,
+					(source) -> (Mono<?>) source,
 					Mono::from
 			);
 
 			registry.registerReactiveType(
 					ReactiveTypeDescriptor.multiValue(Flux.class, Flux::empty),
-					source -> (Flux<?>) source,
+					(source) -> (Flux<?>) source,
 					Flux::from);
 
 			registry.registerReactiveType(
 					ReactiveTypeDescriptor.multiValue(Publisher.class, Flux::empty),
-					source -> (Publisher<?>) source,
-					source -> source);
+					(source) -> (Publisher<?>) source,
+					(source) -> source);
 
 			registry.registerReactiveType(
 					ReactiveTypeDescriptor.singleOptionalValue(CompletableFuture.class, () -> {
@@ -216,8 +216,8 @@ public class ReactiveAdapterRegistry {
 						empty.complete(null);
 						return empty;
 					}),
-					source -> Mono.fromFuture((CompletableFuture<?>) source),
-					source -> Mono.from(source).toFuture()
+					(source) -> Mono.fromFuture((CompletableFuture<?>) source),
+					(source) -> Mono.from(source).toFuture()
 			);
 		}
 	}
@@ -228,7 +228,7 @@ public class ReactiveAdapterRegistry {
 		void registerAdapters(ReactiveAdapterRegistry registry) {
 			registry.registerReactiveType(
 					ReactiveTypeDescriptor.multiValue(rx.Observable.class, rx.Observable::empty),
-					source -> RxReactiveStreams.toPublisher((rx.Observable<?>) source),
+					(source) -> RxReactiveStreams.toPublisher((rx.Observable<?>) source),
 					RxReactiveStreams::toObservable
 			);
 			registry.registerReactiveType(

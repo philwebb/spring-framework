@@ -887,7 +887,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		// Find the given factory method, taking into account that in the case of
 		// @Bean methods, there may be parameters present.
-		ReflectionUtils.doWithMethods(fbClass, method -> {
+		ReflectionUtils.doWithMethods(fbClass, (method) -> {
 			if (method.getName().equals(factoryMethodName) &&
 					FactoryBean.class.isAssignableFrom(method.getReturnType())) {
 				Class<?> currentType = GenericTypeResolver.resolveReturnTypeArgument(method, FactoryBean.class);
