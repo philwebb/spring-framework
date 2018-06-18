@@ -33,7 +33,7 @@ public class FixedVersionStrategyTests {
 
 	private static final String PATH = "js/foo.js";
 
-	
+
 	private FixedVersionStrategy strategy;
 
 

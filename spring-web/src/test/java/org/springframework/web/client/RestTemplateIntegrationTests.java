@@ -92,7 +92,7 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 
 	@Before
 	public void setupClient() {
-		 this.template = new RestTemplate(this.clientHttpRequestFactory);
+		this.template = new RestTemplate(this.clientHttpRequestFactory);
 	}
 
 

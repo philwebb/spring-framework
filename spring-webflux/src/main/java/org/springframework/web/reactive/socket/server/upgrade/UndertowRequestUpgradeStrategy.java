@@ -44,7 +44,7 @@ import reactor.core.publisher.Mono;
 
 /**
 * A {@link RequestUpgradeStrategy} for use with Undertow.
-  * 
+  *
  * @author Violeta Georgieva
  * @author Rossen Stoyanchev
  * @since 5.0

@@ -54,7 +54,7 @@ public class EncodedResourceResolverTests {
 
 	private static final Duration TIMEOUT = Duration.ofSeconds(5);
 
-	
+
 	private ResourceResolverChain resolver;
 
 	private List<Resource> locations;

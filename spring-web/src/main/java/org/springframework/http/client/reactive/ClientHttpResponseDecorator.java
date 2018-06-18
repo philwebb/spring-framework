@@ -33,7 +33,7 @@ import reactor.core.publisher.Flux;
  * @since 5.0
  */
 public class ClientHttpResponseDecorator implements ClientHttpResponse {
-	
+
 	private final ClientHttpResponse delegate;
 
 

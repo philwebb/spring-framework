@@ -65,7 +65,7 @@ class SeparatorPathElement extends PathElement {
 	public String toString() {
 		return "Separator(" + this.separator + ")";
 	}
-	
+
 	public char[] getChars() {
 		return new char[] {this.separator};
 	}
