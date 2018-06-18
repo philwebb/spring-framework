@@ -132,7 +132,7 @@ public interface Log {
      * Logs a message with error log level.
      * @param message log this message
      */
-    void error(Object message);
+	void error(Object message);
 
     /**
      * Logs an error with error log level.
@@ -184,7 +184,7 @@ public interface Log {
      * Logs a message with trace log level.
      * @param message log this message
      */
-    void trace(Object message);
+	void trace(Object message);
 
     /**
      * Logs an error with trace log level.
