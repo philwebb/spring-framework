@@ -470,6 +470,8 @@ public abstract class WebContentGenerator extends WebApplicationObjectSupport {
 
 
 	/**
+	 * Check and prepare the given request and response according to the settings
+	 * of this generator.
 	 * @see #checkRequest(HttpServletRequest)
 	 * @see #prepareResponse(HttpServletResponse)
 	 * @deprecated as of 4.2, since the {@code lastModified} flag is effectively ignored,
@@ -484,6 +486,8 @@ public abstract class WebContentGenerator extends WebApplicationObjectSupport {
 	}
 
 	/**
+	 * Check and prepare the given request and response according to the settings
+	 * of this generator.
 	 * @see #checkRequest(HttpServletRequest)
 	 * @see #applyCacheSeconds(HttpServletResponse, int)
 	 * @deprecated as of 4.2, since the {@code lastModified} flag is effectively ignored,

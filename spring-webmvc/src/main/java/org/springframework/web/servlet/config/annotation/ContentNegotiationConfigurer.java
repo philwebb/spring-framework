@@ -187,6 +187,9 @@ public class ContentNegotiationConfigurer {
 	}
 
 	/**
+	 * When {@link #favorPathExtension} is set, this property determines whether
+	 * to allow use of JAF (Java Activation Framework) to resolve a path
+	 * extension to a specific MediaType.
 	 * @deprecated as of 5.0, in favor of {@link #useRegisteredExtensionsOnly(boolean)}
 	 * which has reverse behavior
 	 */
@@ -254,8 +257,8 @@ public class ContentNegotiationConfigurer {
 	 * Set a custom {@link ContentNegotiationStrategy} to use to determine
 	 * the content type to use when no content type is requested.
 	 * <p>By default this is not set.
-	 * @see #defaultContentType
 	 * @since 4.1.2
+	 * @see #defaultContentType
 	 */
 	public ContentNegotiationConfigurer defaultContentTypeStrategy(ContentNegotiationStrategy defaultStrategy) {
 		this.factory.setDefaultContentTypeStrategy(defaultStrategy);

@@ -603,7 +603,7 @@ public class RedirectView extends AbstractUrlBasedView implements SmartView {
 	}
 
 	/**
-	 * Send a redirect back to the HTTP client
+	 * Send a redirect back to the HTTP client.
 	 * @param request current HTTP request (allows for reacting to request method)
 	 * @param response current HTTP response (for sending response headers)
 	 * @param targetUrl the target URL to redirect to

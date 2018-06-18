@@ -81,6 +81,9 @@ public class GzipResourceResolver extends AbstractResourceResolver {
 	}
 
 
+	/**
+	 * A gzipped {@link HttpResource}.
+	 */
 	static final class GzippedResource extends AbstractResource implements HttpResource {
 
 		private final Resource original;

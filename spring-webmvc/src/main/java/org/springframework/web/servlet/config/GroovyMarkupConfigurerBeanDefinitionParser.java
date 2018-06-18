@@ -22,14 +22,17 @@ import org.springframework.beans.factory.xml.ParserContext;
 import org.w3c.dom.Element;
 
 /**
- * Parse the <mvc:groovy-configurer> MVC namespace element and register a
- * GroovyConfigurer bean
+ * Parse the <code>&lt;mvc:groovy-configurer&gt;</code> MVC namespace element and register a
+ * {@code GroovyConfigurer} bean.
  *
  * @author Sebastien Deleuze
  * @since 4.1
  */
 public class GroovyMarkupConfigurerBeanDefinitionParser extends AbstractSimpleBeanDefinitionParser {
 
+	/**
+	 * The bean name used for the {@code GroovyMarkupConfigurer}.
+	 */
 	public static final String BEAN_NAME = "mvcGroovyMarkupConfigurer";
 
 

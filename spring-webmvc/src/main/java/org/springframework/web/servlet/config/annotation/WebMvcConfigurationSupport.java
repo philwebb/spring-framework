@@ -368,8 +368,8 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 
 	/**
 	 * Override this method to configure path matching options.
-	 * @see PathMatchConfigurer
 	 * @since 4.0.3
+	 * @see PathMatchConfigurer
 	 */
 	protected void configurePathMatch(PathMatchConfigurer configurer) {
 	}

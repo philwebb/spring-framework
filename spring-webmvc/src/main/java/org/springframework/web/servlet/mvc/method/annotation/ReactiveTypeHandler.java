@@ -248,7 +248,7 @@ class ReactiveTypeHandler {
 				schedule();
 			}
 		}
-		
+
 		private void schedule() {
 			try {
 				this.taskExecutor.execute(this);
@@ -263,7 +263,7 @@ class ReactiveTypeHandler {
 				}
 			}
 		}
-		
+
 		@Override
 		public void run() {
 			if (this.done) {
@@ -290,7 +290,7 @@ class ReactiveTypeHandler {
 					return;
 				}
 			}
-			
+
 			if (isTerminated) {
 				this.done = true;
 				Throwable ex = this.error;
@@ -309,7 +309,7 @@ class ReactiveTypeHandler {
 				}
 				return;
 			}
-			
+
 			if (this.executing.decrementAndGet() != 0) {
 				schedule();
 			}
@@ -451,6 +451,9 @@ class ReactiveTypeHandler {
 		}
 	}
 
+	/**
+	 * List of collect values where all elements are a specified type.
+	 */
 	@SuppressWarnings("serial")
 	static class CollectedValuesList extends ArrayList<Object> {
 

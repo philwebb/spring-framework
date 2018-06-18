@@ -301,7 +301,7 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 	}
 
 	/**
-	 * Return whether the returned value or the declared return type extend {@link Resource}
+	 * Return whether the returned value or the declared return type extend {@link Resource}.
 	 */
 	protected boolean isResourceType(@Nullable Object value, MethodParameter returnType) {
 		Class<?> clazz = getReturnValueType(value, returnType);
@@ -322,6 +322,7 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 	}
 
 	/**
+	 * Returns the media types that can be produced.
 	 * @see #getProducibleMediaTypes(HttpServletRequest, Class, Type)
 	 */
 	@SuppressWarnings("unused")
@@ -330,7 +331,7 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 	}
 
 	/**
-	 * Returns the media types that can be produced:
+	 * Returns the media types that can be produced. The resulting media types are:
 	 * <ul>
 	 * <li>The producible media types specified in the request mappings, or
 	 * <li>Media types of configured converters that can write the specific return value, or

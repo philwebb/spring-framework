@@ -39,19 +39,19 @@ import org.springframework.lang.Nullable;
  * <caption>Attribute Summary</caption>
  * <thead>
  * <tr>
- * <th class="colFirst">Attribute</th>
- * <th class="colOne">Required?</th>
- * <th class="colOne">Runtime Expression?</th>
- * <th class="colLast">Description</th>
+ * <th>Attribute</th>
+ * <th>Required?</th>
+ * <th>Runtime Expression?</th>
+ * <th>Description</th>
  * </tr>
  * </thead>
  * <tbody>
- * <tr class="altColor">
- * <td>path</p></td>
- * <td>true</p></td>
- * <td>true</p></td>
+ * <tr>
+ * <td>path</td>
+ * <td>true</td>
+ * <td>true</td>
  * <td>Set the path that this tag should apply. E.g. 'customer' to allow bind
- * paths like 'address.street' rather than 'customer.address.street'.</p></td>
+ * paths like 'address.street' rather than 'customer.address.street'.</td>
  * </tr>
  * </tbody>
  * </table>

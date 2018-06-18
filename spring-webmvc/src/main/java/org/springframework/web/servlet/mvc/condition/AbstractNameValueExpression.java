@@ -25,6 +25,7 @@ import org.springframework.lang.Nullable;
  * {@link org.springframework.web.bind.annotation.RequestMapping#params()} and
  * {@link org.springframework.web.bind.annotation.RequestMapping#headers()}.
  *
+ * @param <T> the value type
  * @author Rossen Stoyanchev
  * @author Arjen Poutsma
  * @since 3.1

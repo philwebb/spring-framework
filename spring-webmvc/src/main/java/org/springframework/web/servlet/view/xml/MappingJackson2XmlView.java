@@ -45,6 +45,9 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
  */
 public class MappingJackson2XmlView extends AbstractJackson2View {
 
+	/**
+	 * The default content type for the view.
+	 */
 	public static final String DEFAULT_CONTENT_TYPE = "application/xml";
 
 

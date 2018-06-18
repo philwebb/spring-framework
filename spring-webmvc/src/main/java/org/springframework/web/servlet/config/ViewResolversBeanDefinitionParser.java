@@ -62,6 +62,9 @@ import org.w3c.dom.Element;
  */
 public class ViewResolversBeanDefinitionParser implements BeanDefinitionParser {
 
+	/**
+	 * The bean name used for the {@code ViewResolverComposite}.
+	 */
 	public static final String VIEW_RESOLVER_BEAN_NAME = "mvcViewResolver";
 
 

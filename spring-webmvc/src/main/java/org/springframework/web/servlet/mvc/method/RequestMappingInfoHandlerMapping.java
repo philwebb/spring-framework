@@ -376,6 +376,7 @@ public abstract class RequestMappingInfoHandlerMapping extends AbstractHandlerMe
 			private final boolean paramsMatch;
 
 			/**
+			 * Create a new {@link PartialMatch} instance.
 			 * @param info RequestMappingInfo that matches the URL path.
 			 * @param request the current request
 			 */

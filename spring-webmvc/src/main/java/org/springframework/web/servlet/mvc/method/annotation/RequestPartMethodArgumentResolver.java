@@ -88,11 +88,13 @@ public class RequestPartMethodArgumentResolver extends AbstractMessageConverterM
 
 
 	/**
-	 * Supports the following:
+	 * Whether the given {@linkplain MethodParameter method parameter} is a multi-part
+	 * supported. Supports the following:
 	 * <ul>
 	 * <li>annotated with {@code @RequestPart}
 	 * <li>of type {@link MultipartFile} unless annotated with {@code @RequestParam}
-	 * <li>of type {@code javax.servlet.http.Part} unless annotated with {@code @RequestParam}
+	 * <li>of type {@code javax.servlet.http.Part} unless annotated with
+	 * {@code @RequestParam}
 	 * </ul>
 	 */
 	@Override

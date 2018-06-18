@@ -28,11 +28,11 @@ import org.springframework.lang.Nullable;
  * to each other via {@link #compareTo(Object, HttpServletRequest)} to determine
  * which is a closer match for a given request.
  *
+ * @param <T> the type of objects that this RequestCondition can be combined
+ * with and compared to
  * @author Rossen Stoyanchev
  * @author Arjen Poutsma
  * @since 3.1
- * @param <T> the type of objects that this RequestCondition can be combined
- * with and compared to
  */
 public interface RequestCondition<T> {
 

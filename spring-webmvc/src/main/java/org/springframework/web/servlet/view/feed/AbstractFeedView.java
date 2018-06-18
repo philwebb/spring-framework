@@ -41,6 +41,7 @@ import com.rometools.rome.io.WireFeedOutput;
  *
  * <p>Thanks to Jettro Coenradie and Sergio Bossa for the original feed view prototype!
  *
+ * @param <T> the {@link WireFeed} type
  * @author Arjen Poutsma
  * @author Juergen Hoeller
  * @since 3.0
