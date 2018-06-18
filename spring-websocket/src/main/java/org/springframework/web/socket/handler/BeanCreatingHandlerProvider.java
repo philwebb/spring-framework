@@ -28,6 +28,7 @@ import org.springframework.util.Assert;
  * an equivalent destroy method. Mainly for internal use to assist with initializing and
  * destroying handlers with per-connection lifecycle.
  *
+ * @param <T> the handler type
  * @author Rossen Stoyanchev
  * @since 4.0
  */

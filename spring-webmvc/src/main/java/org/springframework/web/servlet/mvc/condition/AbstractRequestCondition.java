@@ -25,6 +25,8 @@ import org.springframework.lang.Nullable;
  * A base class for {@link RequestCondition} types providing implementations of
  * {@link #equals(Object)}, {@link #hashCode()}, and {@link #toString()}.
  *
+ * @param <T> the type of objects that this RequestCondition can be combined
+ * with and compared to
  * @author Rossen Stoyanchev
  * @since 3.1
  */

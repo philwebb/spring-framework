@@ -22,6 +22,7 @@ import org.springframework.util.ObjectUtils;
 /**
  * A message that can be handled or sent on a WebSocket connection.
  *
+ * @param <T> the payload type
  * @author Rossen Stoyanchev
  * @since 4.0
  */

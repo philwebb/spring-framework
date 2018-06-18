@@ -42,6 +42,11 @@
 	<suppress files="org[\\/]springframework[\\/]http[\\/]HttpStatus" checks="JavadocVariable|JavadocStyle" />
 	<suppress files="org[\\/]springframework[\\/]web[\\/]bind[\\/]annotation[\\/]CrossOrigin" checks="JavadocStyle" />
 	<suppress files="org[\\/]springframework[\\/]web[\\/]bind[\\/]annotation[\\/]RequestMethod" checks="JavadocVariable" />
-	<suppress files="PatternParseException" checks="JavadocVariable"/>
-	<suppress files="web[\\/]reactive[\\/]socket[\\/]CloseStatus" checks="JavadocStyle"/>
+	<suppress files="PatternParseException" checks="JavadocVariable" />
+	<suppress files="web[\\/]reactive[\\/]socket[\\/]CloseStatus" checks="JavadocStyle" />
+	<suppress files="org[\\/]springframework[\\/]web[\\/]servlet[\\/]tags[\\/]form[\\/].*Tag" checks="JavadocVariable" />
+	<suppress files="web[\\/]socket[\\/]CloseStatus" checks="JavadocStyle" />
+	<suppress files="web[\\/]socket[\\/]WebSocketHttpHeaders" checks="JavadocVariable" />
+	<suppress files="sockjs[\\/]frame[\\/]SockJsFrameType" checks="JavadocVariable" />
+	<suppress files="sockjs[\\/]transport[\\/]TransportType" checks="JavadocVariable" />
 </suppressions>

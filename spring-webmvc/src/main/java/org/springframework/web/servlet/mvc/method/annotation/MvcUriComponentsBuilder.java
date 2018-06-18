@@ -232,7 +232,7 @@ public class MvcUriComponentsBuilder {
 	 * class AddressController {
 	 *
 	 *   &#064;RequestMapping("/{country}")
-	 *   public HttpEntity<Void> getAddressesForCountry(&#064;PathVariable String country) { ... }
+	 *   public HttpEntity&lt;Void&gt; getAddressesForCountry(&#064;PathVariable String country) { ... }
 	 *
 	 *   &#064;RequestMapping(value="/", method=RequestMethod.POST)
 	 *   public void addAddress(Address address) { ... }
@@ -311,7 +311,7 @@ public class MvcUriComponentsBuilder {
 	 * class PersonController {
 	 *
 	 *   &#064;RequestMapping("/{id}")
-	 *   public HttpEntity<Void> getPerson(&#064;PathVariable String id) { ... }
+	 *   public HttpEntity&lt;Void&gt; getPerson(&#064;PathVariable String id) { ... }
 	 *
 	 * }
 	 * </pre>
@@ -711,12 +711,24 @@ public class MvcUriComponentsBuilder {
 	}
 
 
+	/**
+	 * Method invocation information.
+	 */
 	public interface MethodInvocationInfo {
 
+		/**
+		 * Return the controller types.
+		 */
 		Class<?> getControllerType();
 
+		/**
+		 * Return the controller method.
+		 */
 		Method getControllerMethod();
 
+		/**
+		 * Return the argument values.
+		 */
 		Object[] getArgumentValues();
 	}
 
@@ -790,6 +802,9 @@ public class MvcUriComponentsBuilder {
 	}
 
 
+	/**
+	 * Builder class to create URLs for method arguments.
+	 */
 	public static class MethodArgumentBuilder {
 
 		private final Class<?> controllerType;
@@ -801,6 +816,7 @@ public class MvcUriComponentsBuilder {
 		private final UriComponentsBuilder baseUrl;
 
 		/**
+		 * Create a new {@link MethodArgumentBuilder} instance.
 		 * @since 4.2
 		 */
 		public MethodArgumentBuilder(Class<?> controllerType, Method method) {
@@ -808,6 +824,7 @@ public class MvcUriComponentsBuilder {
 		}
 
 		/**
+		 * Create a new {@link MethodArgumentBuilder} instance.
 		 * @since 4.2
 		 */
 		public MethodArgumentBuilder(@Nullable UriComponentsBuilder baseUrl, Class<?> controllerType, Method method) {

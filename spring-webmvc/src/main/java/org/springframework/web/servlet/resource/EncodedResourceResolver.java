@@ -54,6 +54,9 @@ import org.springframework.util.Assert;
  */
 public class EncodedResourceResolver extends AbstractResourceResolver {
 
+	/**
+	 * The default content codings.
+	 */
 	public static final List<String> DEFAULT_CODINGS = Arrays.asList("br", "gzip");
 
 
@@ -105,8 +108,8 @@ public class EncodedResourceResolver extends AbstractResourceResolver {
 	 * <p>By default this is configured with {@literal ["br" -> ".br"]} and
 	 * {@literal ["gzip" -> ".gz"]}.
 	 * @param extensions the extensions to use.
-	 * @see #registerExtension(String, String)
 	 * @since 5.1
+	 * @see #registerExtension(String, String)
 	 */
 	public void setExtensions(Map<String, String> extensions) {
 		extensions.forEach(this::registerExtension);
@@ -183,6 +186,9 @@ public class EncodedResourceResolver extends AbstractResourceResolver {
 	}
 
 
+	/**
+	 * An encoded {@link HttpResource}.
+	 */
 	static final class EncodedResource extends AbstractResource implements HttpResource {
 
 		private final Resource original;

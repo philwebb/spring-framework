@@ -47,6 +47,9 @@ import com.rometools.rome.feed.atom.Feed;
  */
 public abstract class AbstractAtomFeedView extends AbstractFeedView<Feed> {
 
+	/**
+	 * The default feed type used.
+	 */
 	public static final String DEFAULT_FEED_TYPE = "atom_1.0";
 
 	private String feedType = DEFAULT_FEED_TYPE;

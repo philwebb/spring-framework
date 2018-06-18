@@ -33,6 +33,7 @@ import org.springframework.lang.Nullable;
  * or more likely annotated with {@code @ControllerAdvice} in which case they
  * will be auto-detected by both.
  *
+ * @param <T> the body type
  * @author Rossen Stoyanchev
  * @since 4.1
  */

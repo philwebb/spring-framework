@@ -78,6 +78,7 @@ public class OriginHandshakeInterceptor implements HandshakeInterceptor {
 	}
 
 	/**
+	 * Return the allowed {@code Origin} header values.
 	 * @since 4.1.5
 	 * @see #setAllowedOrigins
 	 */

@@ -28,14 +28,17 @@ import org.springframework.util.xml.DomUtils;
 import org.w3c.dom.Element;
 
 /**
- * Parse the <mvc:freemarker-configurer> MVC namespace element and register
- * FreeMarkerConfigurer bean
+ * Parse the <code>&lt;mvc:freemarker-configurer&gt;</code> MVC namespace element and
+ * register {@code FreeMarkerConfigurer} bean.
  *
  * @author Rossen Stoyanchev
  * @since 4.1
  */
 public class FreeMarkerConfigurerBeanDefinitionParser extends AbstractSingleBeanDefinitionParser {
 
+	/**
+	 * The bean name used for the {@code FreeMarkerConfigurer}.
+	 */
 	public static final String BEAN_NAME = "mvcFreeMarkerConfigurer";
 
 

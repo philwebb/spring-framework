@@ -355,7 +355,7 @@ public class UrlBasedViewResolver extends AbstractCachingViewResolver implements
 	 * <li>{@code true} - all Views resolved by this resolver will expose path variables
 	 * <li>{@code false} - no Views resolved by this resolver will expose path variables
 	 * <li>{@code null} - individual Views can decide for themselves (this is used by the default)
-	 * <ul>
+	 * </ul>
 	 * @see AbstractView#setExposePathVariables
 	 */
 	public void setExposePathVariables(@Nullable Boolean exposePathVariables) {
@@ -506,7 +506,7 @@ public class UrlBasedViewResolver extends AbstractCachingViewResolver implements
 
 	/**
 	 * Delegates to {@code buildView} for creating a new instance of the
-	 * specified view class, and applies the following Spring lifecycle methods
+	 * specified view class. Applies the following Spring lifecycle methods
 	 * (as supported by the generic Spring bean factory):
 	 * <ul>
 	 * <li>ApplicationContextAware's {@code setApplicationContext}

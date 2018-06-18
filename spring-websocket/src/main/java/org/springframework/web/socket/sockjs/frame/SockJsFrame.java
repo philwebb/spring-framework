@@ -30,6 +30,9 @@ import org.springframework.util.Assert;
  */
 public class SockJsFrame {
 
+	/**
+	 * The charset used by SockJS.
+	 */
 	public static final Charset CHARSET = StandardCharsets.UTF_8;
 
 	private static final SockJsFrame OPEN_FRAME = new SockJsFrame("o");
