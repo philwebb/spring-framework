@@ -139,7 +139,7 @@ public class NamedParameterJdbcTemplateTests {
 		this.params.put("perfId", 1);
 		this.params.put("priceId", 1);
 		Object result = this.namedParameterTemplate.execute(UPDATE_NAMED_PARAMETERS, this.params,
-				(PreparedStatementCallback<Object>) ps -> {
+				(PreparedStatementCallback<Object>) (ps) -> {
 					assertEquals(this.preparedStatement, ps);
 					ps.executeUpdate();
 					return "result";
@@ -163,7 +163,7 @@ public class NamedParameterJdbcTemplateTests {
 		this.params.put("typeIds", typeIds);
 		this.params.put("id", 1);
 		Object result = this.namedParameterTemplate.execute(UPDATE_ARRAY_PARAMETERS, this.params,
-				(PreparedStatementCallback<Object>) ps -> {
+				(PreparedStatementCallback<Object>) (ps) -> {
 					assertEquals(this.preparedStatement, ps);
 					ps.executeUpdate();
 					return "result";
@@ -186,7 +186,7 @@ public class NamedParameterJdbcTemplateTests {
 		this.params.put("perfId", new SqlParameterValue(Types.DECIMAL, 1));
 		this.params.put("priceId", new SqlParameterValue(Types.INTEGER, 1));
 		Object result = this.namedParameterTemplate.execute(UPDATE_NAMED_PARAMETERS, this.params,
-				(PreparedStatementCallback<Object>) ps -> {
+				(PreparedStatementCallback<Object>) (ps) -> {
 					assertEquals(this.preparedStatement, ps);
 					ps.executeUpdate();
 					return "result";
@@ -205,7 +205,7 @@ public class NamedParameterJdbcTemplateTests {
 		given(this.preparedStatement.executeUpdate()).willReturn(1);
 
 		Object result = this.namedParameterTemplate.execute(SELECT_NO_PARAMETERS,
-				(PreparedStatementCallback<Object>) ps -> {
+				(PreparedStatementCallback<Object>) (ps) -> {
 					assertEquals(this.preparedStatement, ps);
 					ps.executeQuery();
 					return "result";
@@ -226,7 +226,7 @@ public class NamedParameterJdbcTemplateTests {
 		this.params.put("id", new SqlParameterValue(Types.DECIMAL, 1));
 		this.params.put("country", "UK");
 		Customer cust = this.namedParameterTemplate.query(SELECT_NAMED_PARAMETERS, this.params,
-				rs -> {
+				(rs) -> {
 					rs.next();
 					Customer cust1 = new Customer();
 					cust1.setId(rs.getInt(COLUMN_NAMES[0]));
@@ -250,7 +250,7 @@ public class NamedParameterJdbcTemplateTests {
 		given(this.resultSet.getString("forename")).willReturn("rod");
 
 		Customer cust = this.namedParameterTemplate.query(SELECT_NO_PARAMETERS,
-				rs -> {
+				(rs) -> {
 					rs.next();
 					Customer cust1 = new Customer();
 					cust1.setId(rs.getInt(COLUMN_NAMES[0]));
@@ -274,7 +274,7 @@ public class NamedParameterJdbcTemplateTests {
 		this.params.put("id", new SqlParameterValue(Types.DECIMAL, 1));
 		this.params.put("country", "UK");
 		final List<Customer> customers = new LinkedList<>();
-		this.namedParameterTemplate.query(SELECT_NAMED_PARAMETERS, this.params, rs -> {
+		this.namedParameterTemplate.query(SELECT_NAMED_PARAMETERS, this.params, (rs) -> {
 			Customer cust = new Customer();
 			cust.setId(rs.getInt(COLUMN_NAMES[0]));
 			cust.setForename(rs.getString(COLUMN_NAMES[1]));
@@ -298,7 +298,7 @@ public class NamedParameterJdbcTemplateTests {
 		given(this.resultSet.getString("forename")).willReturn("rod");
 
 		final List<Customer> customers = new LinkedList<>();
-		this.namedParameterTemplate.query(SELECT_NO_PARAMETERS, rs -> {
+		this.namedParameterTemplate.query(SELECT_NO_PARAMETERS, (rs) -> {
 			Customer cust = new Customer();
 			cust.setId(rs.getInt(COLUMN_NAMES[0]));
 			cust.setForename(rs.getString(COLUMN_NAMES[1]));

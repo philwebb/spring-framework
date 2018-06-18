@@ -653,12 +653,12 @@ public class JmsTemplate extends JmsDestinationAccessor implements JmsOperations
 
 	@Override
 	public void convertAndSend(Destination destination, final Object message) throws JmsException {
-		send(destination, session -> getRequiredMessageConverter().toMessage(message, session));
+		send(destination, (session) -> getRequiredMessageConverter().toMessage(message, session));
 	}
 
 	@Override
 	public void convertAndSend(String destinationName, final Object message) throws JmsException {
-		send(destinationName, session -> getRequiredMessageConverter().toMessage(message, session));
+		send(destinationName, (session) -> getRequiredMessageConverter().toMessage(message, session));
 	}
 
 	@Override
@@ -677,7 +677,7 @@ public class JmsTemplate extends JmsDestinationAccessor implements JmsOperations
 			Destination destination, final Object message, final MessagePostProcessor postProcessor)
 			throws JmsException {
 
-		send(destination, session -> {
+		send(destination, (session) -> {
 			Message msg = getRequiredMessageConverter().toMessage(message, session);
 			return postProcessor.postProcessMessage(msg);
 		});
@@ -688,7 +688,7 @@ public class JmsTemplate extends JmsDestinationAccessor implements JmsOperations
 			String destinationName, final Object message, final MessagePostProcessor postProcessor)
 		throws JmsException {
 
-		send(destinationName, session -> {
+		send(destinationName, (session) -> {
 			Message msg = getRequiredMessageConverter().toMessage(message, session);
 			return postProcessor.postProcessMessage(msg);
 		});

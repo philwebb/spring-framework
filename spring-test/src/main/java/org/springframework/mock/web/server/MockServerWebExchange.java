@@ -115,7 +115,7 @@ public final class MockServerWebExchange extends DefaultServerWebExchange {
 		 * @see MockWebSession
 		 */
 		public Builder session(WebSession session) {
-			this.sessionManager = exchange -> Mono.just(session);
+			this.sessionManager = (exchange) -> Mono.just(session);
 			return this;
 		}
 

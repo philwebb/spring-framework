@@ -61,7 +61,7 @@ public class RequestResultMatchers {
 	 * perform asynchronous dispatches.
 	 */
 	public ResultMatcher asyncStarted() {
-		return result -> {
+		return (result) -> {
 			HttpServletRequest request = result.getRequest();
 			assertAsyncStarted(request);
 		};
@@ -72,7 +72,7 @@ public class RequestResultMatchers {
 	 * @see #asyncStarted()
 	 */
 	public ResultMatcher asyncNotStarted() {
-		return result -> {
+		return (result) -> {
 			HttpServletRequest request = result.getRequest();
 			assertEquals("Async started", false, request.isAsyncStarted());
 		};
@@ -85,7 +85,7 @@ public class RequestResultMatchers {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> ResultMatcher asyncResult(final Matcher<T> matcher) {
-		return result -> {
+		return (result) -> {
 			HttpServletRequest request = result.getRequest();
 			assertAsyncStarted(request);
 			assertThat("Async result", (T) result.getAsyncResult(), matcher);
@@ -99,7 +99,7 @@ public class RequestResultMatchers {
 	 * {@code Callable} or the exception raised.
 	 */
 	public <T> ResultMatcher asyncResult(final Object expectedResult) {
-		return result -> {
+		return (result) -> {
 			HttpServletRequest request = result.getRequest();
 			assertAsyncStarted(request);
 			assertEquals("Async result", expectedResult, result.getAsyncResult());
@@ -111,7 +111,7 @@ public class RequestResultMatchers {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> ResultMatcher attribute(final String name, final Matcher<T> matcher) {
-		return result -> {
+		return (result) -> {
 			T value = (T) result.getRequest().getAttribute(name);
 			assertThat("Request attribute '" + name + "'", value, matcher);
 		};
@@ -130,7 +130,7 @@ public class RequestResultMatchers {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> ResultMatcher sessionAttribute(final String name, final Matcher<T> matcher) {
-		return result -> {
+		return (result) -> {
 			HttpSession session = result.getRequest().getSession();
 			Assert.state(session != null, "No HttpSession");
 			T value = (T) session.getAttribute(name);
@@ -142,7 +142,7 @@ public class RequestResultMatchers {
 	 * Assert a session attribute value.
 	 */
 	public <T> ResultMatcher sessionAttribute(final String name, final Object value) {
-		return result -> {
+		return (result) -> {
 			HttpSession session = result.getRequest().getSession();
 			Assert.state(session != null, "No HttpSession");
 			assertEquals("Session attribute '" + name + "'", value, session.getAttribute(name));

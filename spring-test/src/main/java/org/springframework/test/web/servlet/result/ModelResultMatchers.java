@@ -54,7 +54,7 @@ public class ModelResultMatchers {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> ResultMatcher attribute(final String name, final Matcher<T> matcher) {
-		return result -> {
+		return (result) -> {
 			ModelAndView mav = getModelAndView(result);
 			assertThat("Model attribute '" + name + "'", (T) mav.getModel().get(name), matcher);
 		};
@@ -64,7 +64,7 @@ public class ModelResultMatchers {
 	 * Assert a model attribute value.
 	 */
 	public ResultMatcher attribute(final String name, final Object value) {
-		return result -> {
+		return (result) -> {
 			ModelAndView mav = getModelAndView(result);
 			assertEquals("Model attribute '" + name + "'", value, mav.getModel().get(name));
 		};
@@ -74,7 +74,7 @@ public class ModelResultMatchers {
 	 * Assert the given model attributes exist.
 	 */
 	public ResultMatcher attributeExists(final String... names) {
-		return result -> {
+		return (result) -> {
 			ModelAndView mav = getModelAndView(result);
 			for (String name : names) {
 				assertTrue("Model attribute '" + name + "' does not exist", mav.getModel().get(name) != null);
@@ -86,7 +86,7 @@ public class ModelResultMatchers {
 	 * Assert the given model attributes do not exist.
 	 */
 	public ResultMatcher attributeDoesNotExist(final String... names) {
-		return result -> {
+		return (result) -> {
 			ModelAndView mav = getModelAndView(result);
 			for (String name : names) {
 				assertTrue("Model attribute '" + name + "' exists", mav.getModel().get(name) == null);
@@ -98,7 +98,7 @@ public class ModelResultMatchers {
 	 * Assert the given model attribute(s) have errors.
 	 */
 	public ResultMatcher attributeErrorCount(final String name, final int expectedCount) {
-		return result -> {
+		return (result) -> {
 			ModelAndView mav = getModelAndView(result);
 			Errors errors = getBindingResult(mav, name);
 			assertEquals("Binding/validation error count for attribute '" + name + "', ",
@@ -190,7 +190,7 @@ public class ModelResultMatchers {
 	 * Assert the total number of errors in the model.
 	 */
 	public <T> ResultMatcher errorCount(final int expectedCount) {
-		return result -> {
+		return (result) -> {
 			int actualCount = getErrorCount(getModelAndView(result).getModelMap());
 			assertEquals("Binding/validation error count", expectedCount, actualCount);
 		};
@@ -200,7 +200,7 @@ public class ModelResultMatchers {
 	 * Assert the model has errors.
 	 */
 	public <T> ResultMatcher hasErrors() {
-		return result -> {
+		return (result) -> {
 			int count = getErrorCount(getModelAndView(result).getModelMap());
 			assertTrue("Expected binding/validation errors", count != 0);
 		};
@@ -210,7 +210,7 @@ public class ModelResultMatchers {
 	 * Assert the model has no errors.
 	 */
 	public <T> ResultMatcher hasNoErrors() {
-		return result -> {
+		return (result) -> {
 			ModelAndView mav = getModelAndView(result);
 			for (Object value : mav.getModel().values()) {
 				if (value instanceof Errors) {
@@ -224,7 +224,7 @@ public class ModelResultMatchers {
 	 * Assert the number of model attributes.
 	 */
 	public <T> ResultMatcher size(final int size) {
-		return result -> {
+		return (result) -> {
 			ModelAndView mav = getModelAndView(result);
 			int actual = 0;
 			for (String key : mav.getModel().keySet()) {

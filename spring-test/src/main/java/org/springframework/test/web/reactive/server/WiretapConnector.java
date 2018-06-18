@@ -70,7 +70,7 @@ class WiretapConnector implements ClientHttpConnector {
 		AtomicReference<WiretapClientHttpRequest> requestRef = new AtomicReference<>();
 
 		return this.delegate
-				.connect(method, uri, request -> {
+				.connect(method, uri, (request) -> {
 					WiretapClientHttpRequest wrapped = new WiretapClientHttpRequest(request);
 					requestRef.set(wrapped);
 					return requestCallback.apply(wrapped);

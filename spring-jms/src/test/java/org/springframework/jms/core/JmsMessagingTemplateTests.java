@@ -656,7 +656,7 @@ public class JmsMessagingTemplateTests {
 	protected TextMessage createTextMessage(MessageCreator creator) throws JMSException {
 		Session mock = mock(Session.class);
 		given(mock.createTextMessage(BDDMockito.any())).willAnswer(
-				(Answer<TextMessage>) invocation ->
+				(Answer<TextMessage>) (invocation) ->
 						new StubTextMessage((String) invocation.getArguments()[0]));
 		javax.jms.Message message = creator.createMessage(mock);
 		verify(mock).createTextMessage(BDDMockito.any());

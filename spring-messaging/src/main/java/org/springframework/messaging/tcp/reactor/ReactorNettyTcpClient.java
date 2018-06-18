@@ -188,7 +188,7 @@ public class ReactorNettyTcpClient<P> implements TcpOperations<P> {
 	}
 
 	private <T> Consumer<T> updateConnectMono(MonoProcessor<Void> connectMono) {
-		return o -> {
+		return (o) -> {
 			if (!connectMono.isTerminated()) {
 				if (o instanceof Throwable) {
 					connectMono.onError((Throwable) o);
@@ -201,7 +201,7 @@ public class ReactorNettyTcpClient<P> implements TcpOperations<P> {
 	}
 
 	private <T> Function<Flux<T>, Publisher<?>> reconnectFunction(ReconnectStrategy reconnectStrategy) {
-		return flux -> flux
+		return (flux) -> flux
 				.scan(1, (count, element) -> count++)
 				.flatMap((attempt) -> Optional.ofNullable(reconnectStrategy.getTimeToNextAttempt(attempt))
 						.map((time) -> Mono.delay(Duration.ofMillis(time), this.scheduler))

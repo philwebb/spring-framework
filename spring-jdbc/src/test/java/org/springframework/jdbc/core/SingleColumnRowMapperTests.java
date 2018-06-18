@@ -65,7 +65,7 @@ public class SingleColumnRowMapperTests {
 
 		DefaultConversionService myConversionService = new DefaultConversionService();
 		myConversionService.addConverter(Timestamp.class, MyLocalDateTime.class,
-				source -> new MyLocalDateTime(source.toLocalDateTime()));
+				(source) -> new MyLocalDateTime(source.toLocalDateTime()));
 		SingleColumnRowMapper<MyLocalDateTime> rowMapper =
 				SingleColumnRowMapper.newInstance(MyLocalDateTime.class, myConversionService);
 
