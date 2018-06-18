@@ -213,7 +213,7 @@ class ResourcesBeanDefinitionParser implements BeanDefinitionParser {
 		else {
 			cacheControl = CacheControl.empty();
 		}
-		
+
 		if ("true".equals(element.getAttribute("must-revalidate"))) {
 			cacheControl = cacheControl.mustRevalidate();
 		}
