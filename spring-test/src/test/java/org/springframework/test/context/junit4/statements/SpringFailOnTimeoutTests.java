@@ -77,9 +77,8 @@ public class SpringFailOnTimeoutTests {
 
 	@Test
 	public void noExceptionThrownIfNoUserExceptionAndTimeoutDoesNotOccur() throws Throwable {
-		doAnswer((Answer<Void>) (invocation) -> {
-			return null;
-		}).when(this.statement).evaluate();
+		doAnswer((Answer<Void>) (invocation) -> null
+				).when(this.statement).evaluate();
 
 		new SpringFailOnTimeout(this.statement, 100).evaluate();
 	}
