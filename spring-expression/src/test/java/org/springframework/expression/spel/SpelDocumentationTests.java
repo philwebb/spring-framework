@@ -491,7 +491,7 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 	@Test
 	public void testTemplating() throws Exception {
 		String randomPhrase =
-			   this.parser.parseExpression("random number is ${T(java.lang.Math).random()}", new TemplatedParserContext()).getValue(String.class);
+				this.parser.parseExpression("random number is ${T(java.lang.Math).random()}", new TemplatedParserContext()).getValue(String.class);
 		assertTrue(randomPhrase.startsWith("random number"));
 	}
 
