@@ -114,5 +114,13 @@
 			<property name="target" value="METHOD_DEF, CTOR_DEF, VARIABLE_DEF"/>
     		<property name="tagOrder" value="@param, @return, @throws, @since, @deprecated, @see"/>
 		</module>
+
+		<!-- Miscellaneous -->
+		<module name="com.puppycrawl.tools.checkstyle.checks.indentation.CommentsIndentationCheck">
+			<property name="tokens" value="BLOCK_COMMENT_BEGIN"/>
+		</module>
+		<module name="com.puppycrawl.tools.checkstyle.checks.UpperEllCheck" />
+		<module name="com.puppycrawl.tools.checkstyle.checks.ArrayTypeStyleCheck" />
+		<module name="com.puppycrawl.tools.checkstyle.checks.OuterTypeFilenameCheck" />
  	</module>
 </module>
