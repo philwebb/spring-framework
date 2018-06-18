@@ -192,7 +192,7 @@ public class NotificationPublisherTests extends AbstractMBeanServerTests {
 		}
 
 		@Override
-		public Object invoke(String actionName, Object params[], String signature[]) throws MBeanException,
+		public Object invoke(String actionName, Object[] params, String[] signature) throws MBeanException,
 				ReflectionException {
 			return null;
 		}
