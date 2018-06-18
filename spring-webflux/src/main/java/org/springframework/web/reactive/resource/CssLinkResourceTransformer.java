@@ -76,7 +76,7 @@ public class CssLinkResourceTransformer extends ResourceTransformerSupport {
 			ResourceTransformerChain transformerChain) {
 
 		return transformerChain.transform(exchange, inputResource)
-				.flatMap(ouptputResource -> {
+				.flatMap((ouptputResource) -> {
 					String filename = ouptputResource.getFilename();
 					if (!"css".equals(StringUtils.getFilenameExtension(filename)) ||
 							inputResource instanceof EncodedResourceResolver.EncodedResource ||
@@ -92,7 +92,7 @@ public class CssLinkResourceTransformer extends ResourceTransformerSupport {
 					Flux<DataBuffer> flux = DataBufferUtils
 							.read(ouptputResource, bufferFactory, StreamUtils.BUFFER_SIZE);
 					return DataBufferUtils.join(flux)
-							.flatMap(dataBuffer -> {
+							.flatMap((dataBuffer) -> {
 								CharBuffer charBuffer = DEFAULT_CHARSET.decode(dataBuffer.asByteBuffer());
 								DataBufferUtils.release(dataBuffer);
 								String cssContent = charBuffer.toString();
@@ -113,7 +113,7 @@ public class CssLinkResourceTransformer extends ResourceTransformerSupport {
 		}
 
 		return Flux.fromIterable(contentChunkInfos)
-				.concatMap(contentChunkInfo -> {
+				.concatMap((contentChunkInfo) -> {
 					String contentChunk = contentChunkInfo.getContent(cssContent);
 					if (contentChunkInfo.isLink() && !hasScheme(contentChunk)) {
 						String link = toAbsolutePath(contentChunk, exchange);
@@ -127,7 +127,7 @@ public class CssLinkResourceTransformer extends ResourceTransformerSupport {
 					writer.write(chunk);
 					return writer;
 				})
-				.map(writer -> {
+				.map((writer) -> {
 					byte[] newContent = writer.toString().getBytes(DEFAULT_CHARSET);
 					return new TransformedResource(resource, newContent);
 				});
@@ -135,7 +135,7 @@ public class CssLinkResourceTransformer extends ResourceTransformerSupport {
 
 	private List<ContentChunkInfo> parseContent(String cssContent) {
 		SortedSet<ContentChunkInfo> links = new TreeSet<>();
-		this.linkParsers.forEach(parser -> parser.parse(cssContent, links));
+		this.linkParsers.forEach((parser) -> parser.parse(cssContent, links));
 		if (links.isEmpty()) {
 			return Collections.emptyList();
 		}

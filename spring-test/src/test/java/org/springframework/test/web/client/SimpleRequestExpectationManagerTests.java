@@ -189,7 +189,7 @@ public class SimpleRequestExpectationManagerTests {
 	@Test  // SPR-16132
 	public void sequentialRequestsWithFirstFailing() throws Exception {
 		this.manager.expectRequest(once(), requestTo("/foo")).andExpect(
-				method(GET)).andRespond(request -> {
+				method(GET)).andRespond((request) -> {
 					throw new SocketException("pseudo network error");
 				});
 		this.manager.expectRequest(once(), requestTo("/handle-error")).

@@ -148,7 +148,7 @@ class UndertowServerHttpResponse extends AbstractListenerServerHttpResponse impl
 		public ResponseBodyProcessor(StreamSinkChannel channel) {
 			Assert.notNull(channel, "StreamSinkChannel must not be null");
 			this.channel = channel;
-			this.channel.getWriteSetter().set(c -> {
+			this.channel.getWriteSetter().set((c) -> {
 				this.writePossible = true;
 				onWritePossible();
 			});

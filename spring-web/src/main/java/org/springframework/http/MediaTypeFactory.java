@@ -113,7 +113,7 @@ public final class MediaTypeFactory {
 	 */
 	public static List<MediaType> getMediaTypes(@Nullable String filename) {
 		return Optional.ofNullable(StringUtils.getFilenameExtension(filename))
-				.map(s -> s.toLowerCase(Locale.ENGLISH))
+				.map((s) -> s.toLowerCase(Locale.ENGLISH))
 				.map(fileExtensionToMediaTypes::get)
 				.orElse(Collections.emptyList());
 	}

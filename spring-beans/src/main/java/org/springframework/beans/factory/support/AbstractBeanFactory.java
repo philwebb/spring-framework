@@ -1343,7 +1343,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	 * @since 4.2
 	 */
 	public void clearMetadataCache() {
-		this.mergedBeanDefinitions.keySet().removeIf(bean -> !isBeanEligibleForMetadataCaching(bean));
+		this.mergedBeanDefinitions.keySet().removeIf((bean) -> !isBeanEligibleForMetadataCaching(bean));
 	}
 
 	/**

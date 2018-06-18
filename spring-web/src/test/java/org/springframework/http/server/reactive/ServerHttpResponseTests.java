@@ -76,7 +76,7 @@ public class ServerHttpResponseTests {
 	public void writeWithError() throws Exception {
 		TestServerHttpResponse response = new TestServerHttpResponse();
 		IllegalStateException error = new IllegalStateException("boo");
-		response.writeWith(Flux.error(error)).onErrorResume(ex -> Mono.empty()).block();
+		response.writeWith(Flux.error(error)).onErrorResume((ex) -> Mono.empty()).block();
 
 		assertFalse(response.statusCodeWritten);
 		assertFalse(response.headersWritten);
@@ -176,7 +176,7 @@ public class ServerHttpResponseTests {
 
 		@Override
 		protected Mono<Void> writeWithInternal(Publisher<? extends DataBuffer> body) {
-			return Flux.from(body).map(b -> {
+			return Flux.from(body).map((b) -> {
 				this.body.add(b);
 				return b;
 			}).then();
@@ -185,8 +185,8 @@ public class ServerHttpResponseTests {
 		@Override
 		protected Mono<Void> writeAndFlushWithInternal(
 				Publisher<? extends Publisher<? extends DataBuffer>> bodyWithFlush) {
-			return Flux.from(bodyWithFlush).flatMap(body ->
-				Flux.from(body).map(b -> {
+			return Flux.from(bodyWithFlush).flatMap((body) ->
+				Flux.from(body).map((b) -> {
 					this.body.add(b);
 					return b;
 				})

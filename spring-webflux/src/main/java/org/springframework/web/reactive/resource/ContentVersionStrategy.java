@@ -47,7 +47,7 @@ public class ContentVersionStrategy extends AbstractFileNameVersionStrategy {
 		Flux<DataBuffer> flux =
 				DataBufferUtils.read(resource, dataBufferFactory, StreamUtils.BUFFER_SIZE);
 		return DataBufferUtils.join(flux)
-				.map(buffer -> {
+				.map((buffer) -> {
 					byte[] result = new byte[buffer.readableByteCount()];
 					buffer.read(result);
 					DataBufferUtils.release(buffer);

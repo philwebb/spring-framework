@@ -134,7 +134,7 @@ public class FormHttpMessageWriter implements HttpMessageWriter<MultiValueMap<St
 		}
 		message.getHeaders().setContentType(mediaType);
 
-		return Mono.from(inputStream).flatMap(form -> {
+		return Mono.from(inputStream).flatMap((form) -> {
 					String value = serializeForm(form, charset);
 					ByteBuffer byteBuffer = charset.encode(value);
 					DataBuffer buffer = message.bufferFactory().wrap(byteBuffer);

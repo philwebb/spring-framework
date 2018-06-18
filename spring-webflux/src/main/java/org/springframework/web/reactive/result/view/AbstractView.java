@@ -174,7 +174,7 @@ public abstract class AbstractView implements View, ApplicationContextAware {
 			exchange.getResponse().getHeaders().setContentType(contentType);
 		}
 
-		return getModelAttributes(model, exchange).flatMap(mergedModel -> {
+		return getModelAttributes(model, exchange).flatMap((mergedModel) -> {
 			// Expose RequestContext?
 			if (this.requestContextAttribute != null) {
 				mergedModel.put(this.requestContextAttribute, createRequestContext(exchange, mergedModel));

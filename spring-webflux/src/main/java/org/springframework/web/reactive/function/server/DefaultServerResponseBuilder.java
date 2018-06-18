@@ -213,7 +213,7 @@ class DefaultServerResponseBuilder implements ServerResponse.BodyBuilder {
 				.headers(this.headers)
 				.status(this.statusCode)
 				.build()
-				.map(entityResponse -> entityResponse);
+				.map((entityResponse) -> entityResponse);
 	}
 
 	@Override
@@ -228,7 +228,7 @@ class DefaultServerResponseBuilder implements ServerResponse.BodyBuilder {
 				.headers(this.headers)
 				.status(this.statusCode)
 				.build()
-				.map(entityResponse -> entityResponse);
+				.map((entityResponse) -> entityResponse);
 	}
 
 	@Override
@@ -242,7 +242,7 @@ class DefaultServerResponseBuilder implements ServerResponse.BodyBuilder {
 				.headers(this.headers)
 				.status(this.statusCode)
 				.build()
-				.map(entityResponse -> entityResponse);
+				.map((entityResponse) -> entityResponse);
 	}
 
 	@Override
@@ -258,7 +258,7 @@ class DefaultServerResponseBuilder implements ServerResponse.BodyBuilder {
 				.status(this.statusCode)
 				.modelAttributes(modelAttributes)
 				.build()
-				.map(renderingResponse -> renderingResponse);
+				.map((renderingResponse) -> renderingResponse);
 	}
 
 	@Override
@@ -268,7 +268,7 @@ class DefaultServerResponseBuilder implements ServerResponse.BodyBuilder {
 				.status(this.statusCode)
 				.modelAttributes(model)
 				.build()
-				.map(renderingResponse -> renderingResponse);
+				.map((renderingResponse) -> renderingResponse);
 	}
 
 
@@ -343,8 +343,8 @@ class DefaultServerResponseBuilder implements ServerResponse.BodyBuilder {
 		private static <K,V> void copy(MultiValueMap<K,V> src, MultiValueMap<K,V> dst) {
 			if (!src.isEmpty()) {
 				src.entrySet().stream()
-						.filter(entry -> !dst.containsKey(entry.getKey()))
-						.forEach(entry -> dst.put(entry.getKey(), entry.getValue()));
+						.filter((entry) -> !dst.containsKey(entry.getKey()))
+						.forEach((entry) -> dst.put(entry.getKey(), entry.getValue()));
 			}
 		}
 	}

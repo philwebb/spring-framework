@@ -307,7 +307,7 @@ public class RequestMappingInfoHandlerMappingTests {
 	@SuppressWarnings("unchecked")
 	private <T> void assertError(Mono<Object> mono, final Class<T> exceptionClass, final Consumer<T> consumer) {
 		StepVerifier.create(mono)
-				.consumeErrorWith(error -> {
+				.consumeErrorWith((error) -> {
 					assertEquals(exceptionClass, error.getClass());
 					consumer.accept((T) error);
 				})

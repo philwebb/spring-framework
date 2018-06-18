@@ -109,7 +109,7 @@ public abstract class AbstractJackson2Decoder extends Jackson2CodecSupport imple
 				getObjectMapper().readerWithView(jsonView).forType(javaType) :
 				getObjectMapper().readerFor(javaType));
 
-		return tokens.map(tokenBuffer -> {
+		return tokens.map((tokenBuffer) -> {
 			try {
 				return reader.readValue(tokenBuffer.asParser(getObjectMapper()));
 			}

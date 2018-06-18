@@ -106,7 +106,7 @@ public class StreamingResponseBodyReturnValueHandlerTests {
 
 		MethodParameter returnType = returnType(TestController.class, "handleResponseEntity");
 		ResponseEntity<StreamingResponseBody> emitter = ResponseEntity.ok().header("foo", "bar")
-				.body(outputStream -> {
+				.body((outputStream) -> {
 					outputStream.write("foo".getBytes(StandardCharsets.UTF_8));
 					latch.countDown();
 				});

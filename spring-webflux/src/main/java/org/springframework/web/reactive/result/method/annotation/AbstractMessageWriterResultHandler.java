@@ -171,8 +171,8 @@ public abstract class AbstractMessageWriterResultHandler extends HandlerResultHa
 
 	private List<MediaType> getMediaTypesFor(ResolvableType elementType) {
 		return getMessageWriters().stream()
-				.filter(converter -> converter.canWrite(elementType, null))
-				.flatMap(converter -> converter.getWritableMediaTypes().stream())
+				.filter((converter) -> converter.canWrite(elementType, null))
+				.flatMap((converter) -> converter.getWritableMediaTypes().stream())
 				.collect(Collectors.toList());
 	}
 

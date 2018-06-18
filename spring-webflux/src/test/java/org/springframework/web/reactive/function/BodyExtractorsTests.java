@@ -164,7 +164,7 @@ public class BodyExtractorsTests {
 		Mono<User> result = extractor.extract(request, this.context);
 
 		StepVerifier.create(result)
-				.consumeNextWith(user -> {
+				.consumeNextWith((user) -> {
 					assertEquals("foo", user.getUsername());
 					assertNull(user.getPassword());
 				})
@@ -218,11 +218,11 @@ public class BodyExtractorsTests {
 		Flux<User> result = extractor.extract(request, this.context);
 
 		StepVerifier.create(result)
-				.consumeNextWith(user -> {
+				.consumeNextWith((user) -> {
 					assertEquals("foo", user.getUsername());
 					assertNull(user.getPassword());
 				})
-				.consumeNextWith(user -> {
+				.consumeNextWith((user) -> {
 					assertEquals("bar", user.getUsername());
 					assertNull(user.getPassword());
 				})
@@ -280,7 +280,7 @@ public class BodyExtractorsTests {
 		Mono<MultiValueMap<String, String>> result = BodyExtractors.toFormData().extract(request, this.context);
 
 		StepVerifier.create(result)
-				.consumeNextWith(form -> {
+				.consumeNextWith((form) -> {
 					assertEquals("Invalid result", 3, form.size());
 					assertEquals("Invalid result", "value 1", form.getFirst("name 1"));
 					List<String> values = form.get("name 2");
@@ -327,20 +327,20 @@ public class BodyExtractorsTests {
 		Flux<Part> result = extractor.extract(request, this.context);
 
 		StepVerifier.create(result)
-				.consumeNextWith(part -> {
+				.consumeNextWith((part) -> {
 					assertEquals("text", part.name());
 					assertTrue(part instanceof FormFieldPart);
 					FormFieldPart formFieldPart = (FormFieldPart) part;
 					assertEquals("text default", formFieldPart.value());
 				})
-				.consumeNextWith(part -> {
+				.consumeNextWith((part) -> {
 					assertEquals("file1", part.name());
 					assertTrue(part instanceof FilePart);
 					FilePart filePart = (FilePart) part;
 					assertEquals("a.txt", filePart.filename());
 					assertEquals(MediaType.TEXT_PLAIN, filePart.headers().getContentType());
 				})
-				.consumeNextWith(part -> {
+				.consumeNextWith((part) -> {
 					assertEquals("file2", part.name());
 					assertTrue(part instanceof FilePart);
 					FilePart filePart = (FilePart) part;

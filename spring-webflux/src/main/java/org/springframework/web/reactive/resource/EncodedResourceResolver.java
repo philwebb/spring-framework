@@ -140,7 +140,7 @@ public class EncodedResourceResolver extends AbstractResourceResolver {
 	protected Mono<Resource> resolveResourceInternal(@Nullable ServerWebExchange exchange,
 			String requestPath, List<? extends Resource> locations, ResourceResolverChain chain) {
 
-		return chain.resolveResource(exchange, requestPath, locations).map(resource -> {
+		return chain.resolveResource(exchange, requestPath, locations).map((resource) -> {
 
 			if (exchange == null) {
 				return resource;

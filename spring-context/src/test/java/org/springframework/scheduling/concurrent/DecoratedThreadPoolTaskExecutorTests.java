@@ -29,7 +29,7 @@ public class DecoratedThreadPoolTaskExecutorTests extends AbstractSchedulingTask
 	@Override
 	protected AsyncListenableTaskExecutor buildExecutor() {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-		executor.setTaskDecorator(runnable ->
+		executor.setTaskDecorator((runnable) ->
 				new DelegatingErrorHandlingRunnable(runnable, TaskUtils.LOG_AND_PROPAGATE_ERROR_HANDLER));
 		executor.setThreadNamePrefix(THREAD_NAME_PREFIX);
 		executor.setMaxPoolSize(1);

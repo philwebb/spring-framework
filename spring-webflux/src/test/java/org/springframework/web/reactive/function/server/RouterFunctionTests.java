@@ -63,7 +63,7 @@ public class RouterFunctionTests {
 		Mono<? extends HandlerFunction<?>> resultHandlerFunction = result.route(request);
 
 		StepVerifier.create(resultHandlerFunction)
-				.expectNextMatches(o -> o.equals(handlerFunction))
+				.expectNextMatches((o) -> o.equals(handlerFunction))
 				.expectComplete()
 				.verify();
 	}
@@ -105,7 +105,7 @@ public class RouterFunctionTests {
 
 		MockServerRequest request = MockServerRequest.builder().build();
 		Mono<EntityResponse<Mono<Integer>>> responseMono =
-				result.route(request).flatMap(hf -> hf.handle(request));
+				result.route(request).flatMap((hf) -> hf.handle(request));
 
 		StepVerifier.create(responseMono)
 				.consumeNextWith(

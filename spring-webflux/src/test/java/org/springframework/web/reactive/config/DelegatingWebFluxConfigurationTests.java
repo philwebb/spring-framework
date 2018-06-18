@@ -106,7 +106,7 @@ public class DelegatingWebFluxConfigurationTests {
 	@Test
 	public void resourceHandlerMapping() throws Exception {
 		this.delegatingConfig.setConfigurers(Collections.singletonList(this.webFluxConfigurer));
-		doAnswer(invocation -> {
+		doAnswer((invocation) -> {
 			ResourceHandlerRegistry registry = invocation.getArgument(0);
 			registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static");
 			return null;

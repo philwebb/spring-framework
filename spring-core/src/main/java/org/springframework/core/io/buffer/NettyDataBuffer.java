@@ -181,7 +181,7 @@ public class NettyDataBuffer implements PooledDataBuffer {
 		if (buffers.length > 0) {
 			if (hasNettyDataBuffers(buffers)) {
 				ByteBuf[] nativeBuffers = Arrays.stream(buffers)
-						.map(b -> ((NettyDataBuffer) b).getNativeBuffer())
+						.map((b) -> ((NettyDataBuffer) b).getNativeBuffer())
 						.toArray(ByteBuf[]::new);
 				write(nativeBuffers);
 			}

@@ -320,9 +320,9 @@ class DefaultWebClient implements WebClient {
 		private ClientRequest.Builder initRequestBuilder() {
 			URI uri = this.uri != null ? this.uri : DefaultWebClient.this.uriBuilderFactory.expand("");
 			return ClientRequest.create(this.httpMethod, uri)
-					.headers(headers -> headers.addAll(initHeaders()))
-					.cookies(cookies -> cookies.addAll(initCookies()))
-					.attributes(attributes -> attributes.putAll(this.attributes));
+					.headers((headers) -> headers.addAll(initHeaders()))
+					.cookies((cookies) -> cookies.addAll(initCookies()))
+					.attributes((attributes) -> attributes.putAll(this.attributes));
 		}
 
 		private HttpHeaders initHeaders() {
@@ -337,7 +337,7 @@ class DefaultWebClient implements WebClient {
 				result.putAll(this.headers);
 				DefaultWebClient.this.defaultHeaders.forEach((name, values) -> {
 					if (!this.headers.containsKey(name)) {
-						values.forEach(value -> result.add(name, value));
+						values.forEach((value) -> result.add(name, value));
 					}
 				});
 				return result;
@@ -435,23 +435,23 @@ class DefaultWebClient implements WebClient {
 				T bodyPublisher, Function<Mono<? extends Throwable>, T> errorFunction) {
 
 			return this.statusHandlers.stream()
-					.filter(statusHandler -> statusHandler.test(response.statusCode()))
+					.filter((statusHandler) -> statusHandler.test(response.statusCode()))
 					.findFirst()
-					.map(statusHandler -> statusHandler.apply(response))
+					.map((statusHandler) -> statusHandler.apply(response))
 					.map(errorFunction::apply)
 					.orElse(bodyPublisher);
 		}
 
 		private static Mono<WebClientResponseException> createResponseException(ClientResponse response) {
 			return DataBufferUtils.join(response.body(BodyExtractors.toDataBuffers()))
-					.map(dataBuffer -> {
+					.map((dataBuffer) -> {
 						byte[] bytes = new byte[dataBuffer.readableByteCount()];
 						dataBuffer.read(bytes);
 						DataBufferUtils.release(dataBuffer);
 						return bytes;
 					})
 					.defaultIfEmpty(new byte[0])
-					.map(bodyBytes -> {
+					.map((bodyBytes) -> {
 						String msg = String.format("ClientResponse has erroneous status code: %d %s", response.statusCode().value(),
 								response.statusCode().getReasonPhrase());
 						Charset charset = response.headers().contentType()

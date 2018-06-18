@@ -86,8 +86,8 @@ public class PathPattern implements Comparable<PathPattern> {
 	public static final Comparator<PathPattern> SPECIFICITY_COMPARATOR =
 			Comparator.nullsLast(
 					Comparator.<PathPattern>
-							comparingInt(p -> p.isCatchAll() ? 1 : 0)
-							.thenComparingInt(p -> p.isCatchAll() ? scoreByNormalizedLength(p) : 0)
+							comparingInt((p) -> p.isCatchAll() ? 1 : 0)
+							.thenComparingInt((p) -> p.isCatchAll() ? scoreByNormalizedLength(p) : 0)
 							.thenComparingInt(PathPattern::getScore)
 							.thenComparingInt(PathPattern::scoreByNormalizedLength)
 			);

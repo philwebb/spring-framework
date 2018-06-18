@@ -123,8 +123,8 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 	public void setPathPrefixes(Map<String, Predicate<Class<?>>> prefixes) {
 		this.pathPrefixes.clear();
 		prefixes.entrySet().stream()
-				.filter(entry -> StringUtils.hasText(entry.getKey()))
-				.forEach(entry -> this.pathPrefixes.put(entry.getKey(), entry.getValue()));
+				.filter((entry) -> StringUtils.hasText(entry.getKey()))
+				.forEach((entry) -> this.pathPrefixes.put(entry.getKey(), entry.getValue()));
 	}
 
 	/**

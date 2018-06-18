@@ -185,7 +185,7 @@ public class Jackson2JsonDecoderTests extends AbstractDataBufferAllocatingTestCa
 				.decode(source, elementType, null, hints).cast(JacksonViewBean.class);
 
 		StepVerifier.create(flux)
-				.consumeNextWith(b -> {
+				.consumeNextWith((b) -> {
 					assertTrue(b.getWithView1().equals("with"));
 					assertNull(b.getWithView2());
 					assertNull(b.getWithoutView());
@@ -203,7 +203,7 @@ public class Jackson2JsonDecoderTests extends AbstractDataBufferAllocatingTestCa
 				.decode(source, elementType, null, hints).cast(JacksonViewBean.class);
 
 		StepVerifier.create(flux)
-				.consumeNextWith(b -> {
+				.consumeNextWith((b) -> {
 					assertNull(b.getWithView1());
 					assertNull(b.getWithView2());
 					assertTrue(b.getWithoutView().equals("without"));
@@ -227,7 +227,7 @@ public class Jackson2JsonDecoderTests extends AbstractDataBufferAllocatingTestCa
 		Flux<DataBuffer> source = Flux.just(stringBuffer( "{\"foofoo\": \"foofoo\", \"barbar\": \"barbar\"}"));
 		ResolvableType elementType = forClass(Pojo.class);
 		Flux<Object> flux = new Jackson2JsonDecoder(new ObjectMapper()).decode(source, elementType, null, emptyMap());
-		StepVerifier.create(flux).verifyErrorMatches(ex -> ex instanceof DecodingException);
+		StepVerifier.create(flux).verifyErrorMatches((ex) -> ex instanceof DecodingException);
 	}
 
 	@Test
@@ -247,7 +247,7 @@ public class Jackson2JsonDecoderTests extends AbstractDataBufferAllocatingTestCa
 				ResolvableType.forClass(TestObject.class), null, null).cast(TestObject.class);
 
 		StepVerifier.create(decoded)
-				.assertNext(v -> assertEquals(1, v.getTest()))
+				.assertNext((v) -> assertEquals(1, v.getTest()))
 				.verifyComplete();
 	}
 

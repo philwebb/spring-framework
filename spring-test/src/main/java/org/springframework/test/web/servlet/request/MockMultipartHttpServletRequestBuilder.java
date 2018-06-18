@@ -120,7 +120,7 @@ public class MockMultipartHttpServletRequestBuilder extends MockHttpServletReque
 			if (parent instanceof MockMultipartHttpServletRequestBuilder) {
 				MockMultipartHttpServletRequestBuilder parentBuilder = (MockMultipartHttpServletRequestBuilder) parent;
 				this.files.addAll(parentBuilder.files);
-				parentBuilder.parts.keySet().stream().forEach(name ->
+				parentBuilder.parts.keySet().stream().forEach((name) ->
 						this.parts.putIfAbsent(name, parentBuilder.parts.get(name)));
 			}
 

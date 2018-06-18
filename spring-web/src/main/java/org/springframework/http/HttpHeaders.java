@@ -452,7 +452,7 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
 		Assert.notNull(languages, "'languages' must not be null");
 		DecimalFormat decimal = new DecimalFormat("0.0", DECIMAL_FORMAT_SYMBOLS);
 		List<String> values = languages.stream()
-				.map(range ->
+				.map((range) ->
 						range.getWeight() == Locale.LanguageRange.MAX_WEIGHT ?
 								range.getRange() :
 								range.getRange() + ";q=" + decimal.format(range.getWeight()))
@@ -480,7 +480,7 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
 	 */
 	public void setAcceptLanguageAsLocales(List<Locale> locales) {
 		setAcceptLanguage(locales.stream()
-				.map(locale -> new Locale.LanguageRange(locale.toLanguageTag()))
+				.map((locale) -> new Locale.LanguageRange(locale.toLanguageTag()))
 				.collect(Collectors.toList()));
 	}
 
@@ -497,8 +497,8 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
 			return Collections.emptyList();
 		}
 		return ranges.stream()
-				.map(range -> Locale.forLanguageTag(range.getRange()))
-				.filter(locale -> StringUtils.hasText(locale.getDisplayName()))
+				.map((range) -> Locale.forLanguageTag(range.getRange()))
+				.filter((locale) -> StringUtils.hasText(locale.getDisplayName()))
 				.collect(Collectors.toList());
 	}
 

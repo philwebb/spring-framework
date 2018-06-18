@@ -60,11 +60,11 @@ class ResourceHandlerFunction implements HandlerFunction<ServerResponse> {
 			switch (method) {
 				case GET:
 					return EntityResponse.fromObject(this.resource).build()
-							.map(response -> response);
+							.map((response) -> response);
 				case HEAD:
 					Resource headResource = new HeadMethodResource(this.resource);
 					return EntityResponse.fromObject(headResource).build()
-							.map(response -> response);
+							.map((response) -> response);
 				case OPTIONS:
 					return ServerResponse.ok()
 							.allow(SUPPORTED_METHODS)

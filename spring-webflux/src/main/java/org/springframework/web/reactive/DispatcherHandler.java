@@ -154,11 +154,11 @@ public class DispatcherHandler implements WebHandler, ApplicationContextAware {
 			return Mono.error(HANDLER_NOT_FOUND_EXCEPTION);
 		}
 		return Flux.fromIterable(this.handlerMappings)
-				.concatMap(mapping -> mapping.getHandler(exchange))
+				.concatMap((mapping) -> mapping.getHandler(exchange))
 				.next()
 				.switchIfEmpty(Mono.error(HANDLER_NOT_FOUND_EXCEPTION))
-				.flatMap(handler -> invokeHandler(exchange, handler))
-				.flatMap(result -> handleResult(exchange, result));
+				.flatMap((handler) -> invokeHandler(exchange, handler))
+				.flatMap((result) -> handleResult(exchange, result));
 	}
 
 	private Mono<HandlerResult> invokeHandler(ServerWebExchange exchange, Object handler) {
@@ -174,7 +174,7 @@ public class DispatcherHandler implements WebHandler, ApplicationContextAware {
 
 	private Mono<Void> handleResult(ServerWebExchange exchange, HandlerResult result) {
 		return getResultHandler(result).handleResult(exchange, result)
-				.onErrorResume(ex -> result.applyExceptionHandler(ex).flatMap(exceptionResult ->
+				.onErrorResume((ex) -> result.applyExceptionHandler(ex).flatMap((exceptionResult) ->
 						getResultHandler(exceptionResult).handleResult(exchange, exceptionResult)));
 	}
 

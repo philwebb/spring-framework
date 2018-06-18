@@ -120,11 +120,11 @@ public class ModelAttributeMethodArgumentResolver extends HandlerMethodArgumentR
 		MonoProcessor<BindingResult> bindingResultMono = MonoProcessor.create();
 		model.put(BindingResult.MODEL_KEY_PREFIX + name, bindingResultMono);
 
-		return valueMono.flatMap(value -> {
+		return valueMono.flatMap((value) -> {
 			WebExchangeDataBinder binder = context.createDataBinder(exchange, value, name);
 			return binder.bind(exchange)
 					.doOnError(bindingResultMono::onError)
-					.doOnSuccess(aVoid -> {
+					.doOnSuccess((aVoid) -> {
 						validateIfApplicable(binder, parameter);
 						BindingResult errors = binder.getBindingResult();
 						model.put(BindingResult.MODEL_KEY_PREFIX + name, errors);
@@ -176,7 +176,7 @@ public class ModelAttributeMethodArgumentResolver extends HandlerMethodArgumentR
 	@Nullable
 	private Object findAndRemoveReactiveAttribute(Model model, String attributeName) {
 		return model.asMap().entrySet().stream()
-				.filter(entry -> {
+				.filter((entry) -> {
 					if (!entry.getKey().startsWith(attributeName)) {
 						return false;
 					}
@@ -188,7 +188,7 @@ public class ModelAttributeMethodArgumentResolver extends HandlerMethodArgumentR
 					return entry.getKey().equals(name);
 				})
 				.findFirst()
-				.map(entry -> {
+				.map((entry) -> {
 					// Remove since we will be re-inserting the resolved attribute value
 					model.asMap().remove(entry.getKey());
 					return entry.getValue();
@@ -226,7 +226,7 @@ public class ModelAttributeMethodArgumentResolver extends HandlerMethodArgumentR
 		}
 
 		// A single data class constructor -> resolve constructor arguments from request parameters.
-		return WebExchangeDataBinder.extractValuesToBind(exchange).map(bindValues -> {
+		return WebExchangeDataBinder.extractValuesToBind(exchange).map((bindValues) -> {
 			ConstructorProperties cp = ctor.getAnnotation(ConstructorProperties.class);
 			String[] paramNames = (cp != null ? cp.value() : parameterNameDiscoverer.getParameterNames(ctor));
 			Assert.state(paramNames != null, () -> "Cannot resolve parameter names for constructor " + ctor);

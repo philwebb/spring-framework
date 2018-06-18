@@ -86,7 +86,7 @@ public class CssLinkResourceTransformerTests {
 
 		StepVerifier.create(this.transformerChain.transform(exchange, css)
 				.cast(TransformedResource.class))
-				.consumeNextWith(transformedResource -> {
+				.consumeNextWith((transformedResource) -> {
 					String result = new String(transformedResource.getByteArray(), StandardCharsets.UTF_8);
 					result = StringUtils.deleteAny(result, "\r");
 					assertEquals(expected, result);
@@ -101,7 +101,7 @@ public class CssLinkResourceTransformerTests {
 		Resource expected = getResource("foo.css");
 
 		StepVerifier.create(this.transformerChain.transform(exchange, expected))
-				.consumeNextWith(resource -> assertSame(expected, resource))
+				.consumeNextWith((resource) -> assertSame(expected, resource))
 				.expectComplete().verify();
 	}
 
@@ -120,7 +120,7 @@ public class CssLinkResourceTransformerTests {
 
 		StepVerifier.create(chain.transform(exchange, resource)
 				.cast(TransformedResource.class))
-				.consumeNextWith(transformedResource -> {
+				.consumeNextWith((transformedResource) -> {
 					String result = new String(transformedResource.getByteArray(), StandardCharsets.UTF_8);
 					result = StringUtils.deleteAny(result, "\r");
 					assertEquals(expected, result);

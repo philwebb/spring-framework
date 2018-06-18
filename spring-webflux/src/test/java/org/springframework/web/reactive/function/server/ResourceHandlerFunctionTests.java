@@ -80,7 +80,7 @@ public class ResourceHandlerFunctionTests {
 
 		Mono<ServerResponse> responseMono = this.handlerFunction.handle(request);
 
-		Mono<Void> result = responseMono.flatMap(response -> {
+		Mono<Void> result = responseMono.flatMap((response) -> {
 					assertEquals(HttpStatus.OK, response.statusCode());
 					assertTrue(response instanceof EntityResponse);
 					@SuppressWarnings("unchecked")
@@ -96,7 +96,7 @@ public class ResourceHandlerFunctionTests {
 		byte[] expectedBytes = Files.readAllBytes(this.resource.getFile().toPath());
 
 		StepVerifier.create(mockResponse.getBody())
-				.consumeNextWith(dataBuffer -> {
+				.consumeNextWith((dataBuffer) -> {
 					byte[] resultBytes = new byte[dataBuffer.readableByteCount()];
 					dataBuffer.read(resultBytes);
 					assertArrayEquals(expectedBytes, resultBytes);
@@ -116,7 +116,7 @@ public class ResourceHandlerFunctionTests {
 
 		Mono<ServerResponse> responseMono = this.handlerFunction.handle(request);
 
-		Mono<Void> result = responseMono.flatMap(response -> {
+		Mono<Void> result = responseMono.flatMap((response) -> {
 			assertEquals(HttpStatus.OK, response.statusCode());
 			assertTrue(response instanceof EntityResponse);
 			@SuppressWarnings("unchecked")
@@ -140,7 +140,7 @@ public class ResourceHandlerFunctionTests {
 		ServerRequest request = new DefaultServerRequest(exchange, HandlerStrategies.withDefaults().messageReaders());
 
 		Mono<ServerResponse> responseMono = this.handlerFunction.handle(request);
-		Mono<Void> result = responseMono.flatMap(response -> {
+		Mono<Void> result = responseMono.flatMap((response) -> {
 			assertEquals(HttpStatus.OK, response.statusCode());
 			assertEquals(EnumSet.of(HttpMethod.GET, HttpMethod.HEAD, HttpMethod.OPTIONS),
 					response.headers().getAllow());

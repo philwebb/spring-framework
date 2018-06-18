@@ -143,7 +143,7 @@ public class SynchronossPartHttpMessageReader implements HttpMessageReader<Part>
 					.usePartBodyStreamStorageFactory(this.streamStorageFactory)
 					.forNIO(listener);
 
-			this.inputMessage.getBody().subscribe(buffer -> {
+			this.inputMessage.getBody().subscribe((buffer) -> {
 				byte[] resultBytes = new byte[buffer.readableByteCount()];
 				buffer.read(resultBytes);
 				try {

@@ -235,7 +235,7 @@ public class JmsListenerAnnotationBeanPostProcessor
 			else {
 				// Non-empty set of methods
 				annotatedMethods.forEach((method, listeners) ->
-						listeners.forEach(listener ->
+						listeners.forEach((listener) ->
 								processJmsListener(listener, method, bean)));
 				if (this.logger.isDebugEnabled()) {
 					this.logger.debug(annotatedMethods.size() + " @JmsListener methods processed on bean '" + beanName +

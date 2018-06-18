@@ -91,7 +91,7 @@ public abstract class Jackson2CodecSupport {
 
 
 	protected boolean supportsMimeType(@Nullable MimeType mimeType) {
-		return (mimeType == null || this.mimeTypes.stream().anyMatch(m -> m.isCompatibleWith(mimeType)));
+		return (mimeType == null || this.mimeTypes.stream().anyMatch((m) -> m.isCompatibleWith(mimeType)));
 	}
 
 	protected JavaType getJavaType(Type type, @Nullable Class<?> contextClass) {

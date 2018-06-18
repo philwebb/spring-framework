@@ -769,7 +769,7 @@ public class MethodParameter {
 					List<KParameter> parameters = function.getParameters();
 					KParameter parameter = parameters
 							.stream()
-							.filter(p -> KParameter.Kind.VALUE.equals(p.getKind()))
+							.filter((p) -> KParameter.Kind.VALUE.equals(p.getKind()))
 							.collect(Collectors.toList())
 							.get(index);
 					return (parameter.getType().isMarkedNullable() || parameter.isOptional());

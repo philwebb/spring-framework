@@ -79,7 +79,7 @@ public class GenericMessagingTemplateTests {
 	public void sendWithTimeout() {
 		SubscribableChannel channel = mock(SubscribableChannel.class);
 		final AtomicReference<Message<?>> sent = new AtomicReference<>();
-		doAnswer(invocation -> {
+		doAnswer((invocation) -> {
 			sent.set(invocation.getArgument(0));
 			return true;
 		}).when(channel).send(any(Message.class), eq(30_000L));
@@ -98,7 +98,7 @@ public class GenericMessagingTemplateTests {
 	public void sendWithTimeoutMutable() {
 		SubscribableChannel channel = mock(SubscribableChannel.class);
 		final AtomicReference<Message<?>> sent = new AtomicReference<>();
-		doAnswer(invocation -> {
+		doAnswer((invocation) -> {
 			sent.set(invocation.getArgument(0));
 			return true;
 		}).when(channel).send(any(Message.class), eq(30_000L));
@@ -139,7 +139,7 @@ public class GenericMessagingTemplateTests {
 
 		SubscribableChannel channel = mock(SubscribableChannel.class);
 		MessageHandler handler = createLateReplier(latch, failure);
-		doAnswer(invocation -> {
+		doAnswer((invocation) -> {
 			this.executor.execute(() -> {
 				handler.handleMessage(invocation.getArgument(0));
 			});
@@ -167,7 +167,7 @@ public class GenericMessagingTemplateTests {
 
 		SubscribableChannel channel = mock(SubscribableChannel.class);
 		MessageHandler handler = createLateReplier(latch, failure);
-		doAnswer(invocation -> {
+		doAnswer((invocation) -> {
 			this.executor.execute(() -> {
 				handler.handleMessage(invocation.getArgument(0));
 			});
@@ -201,7 +201,7 @@ public class GenericMessagingTemplateTests {
 
 		SubscribableChannel channel = mock(SubscribableChannel.class);
 		MessageHandler handler = createLateReplier(latch, failure);
-		doAnswer(invocation -> {
+		doAnswer((invocation) -> {
 			this.executor.execute(() -> {
 				handler.handleMessage(invocation.getArgument(0));
 			});

@@ -172,7 +172,7 @@ public interface WebClient {
 		 * // Result: http://abc.com/v1/accounts/43
 		 *
 		 * Flux&#060;Account&#062; result = client.get()
-		 *         .uri(builder -> builder.path("/accounts").queryParam("q", "12").build())
+		 *         .uri((builder) -> builder.path("/accounts").queryParam("q", "12").build())
 		 *         .retrieve()
 		 *         .bodyToFlux(Account.class);
 		 *
@@ -191,7 +191,7 @@ public interface WebClient {
 		 * <p>Or partially overridden with a {@code UriBuilder}:
 		 * <pre class="code">
 		 * Flux&#060;Account&#062; result = client.get()
-		 *         .uri(builder -> builder.replacePath("/v2/accounts").queryParam("q", "12").build())
+		 *         .uri((builder) -> builder.replacePath("/v2/accounts").queryParam("q", "12").build())
 		 *         .retrieve()
 		 *         .bodyToFlux(Account.class);
 		 *

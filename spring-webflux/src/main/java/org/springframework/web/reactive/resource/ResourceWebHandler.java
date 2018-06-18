@@ -260,7 +260,7 @@ public class ResourceWebHandler implements WebHandler, InitializingBean {
 					logger.trace("No matching resource found - returning 404");
 					return Mono.error(NOT_FOUND_EXCEPTION);
 				}))
-				.flatMap(resource -> {
+				.flatMap((resource) -> {
 					try {
 						if (HttpMethod.OPTIONS.matches(exchange.getRequest().getMethodValue())) {
 							exchange.getResponse().getHeaders().add("Allow", "GET,HEAD,OPTIONS");
@@ -345,7 +345,7 @@ public class ResourceWebHandler implements WebHandler, InitializingBean {
 		Assert.notNull(this.transformerChain, "ResourceTransformerChain not initialized.");
 
 		return this.resolverChain.resolveResource(exchange, path, getLocations())
-				.flatMap(resource -> this.transformerChain.transform(exchange, resource));
+				.flatMap((resource) -> this.transformerChain.transform(exchange, resource));
 	}
 
 	/**

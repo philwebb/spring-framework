@@ -114,7 +114,7 @@ class ReactorClientHttpRequest extends AbstractClientHttpRequest implements Zero
 	@Override
 	protected void applyCookies() {
 		getCookies().values().stream().flatMap(Collection::stream)
-				.map(cookie -> new DefaultCookie(cookie.getName(), cookie.getValue()))
+				.map((cookie) -> new DefaultCookie(cookie.getName(), cookie.getValue()))
 				.forEach(this.request::addCookie);
 	}
 

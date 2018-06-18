@@ -63,7 +63,7 @@ public class ResourceDecoderTests extends AbstractDataBufferAllocatingTestCase {
 				.decode(source, forClass(Resource.class), null, Collections.emptyMap());
 
 		StepVerifier.create(result)
-				.consumeNextWith(resource -> {
+				.consumeNextWith((resource) -> {
 					try {
 						byte[] bytes = StreamUtils.copyToByteArray(resource.getInputStream());
 						assertEquals("foobar", new String(bytes));

@@ -205,9 +205,9 @@ public class MultipartHttpMessageWriterTests {
 
 		MultipartBodyBuilder bodyBuilder = new MultipartBodyBuilder();
 		bodyBuilder.part("resource", logo)
-				.headers(h -> h.setContentDispositionFormData("resource", "spring.jpg"));
+				.headers((h) -> h.setContentDispositionFormData("resource", "spring.jpg"));
 		bodyBuilder.asyncPart("buffers", buffers, DataBuffer.class)
-				.headers(h -> {
+				.headers((h) -> {
 					h.setContentDispositionFormData("buffers", "buffers.jpg");
 					h.setContentType(MediaType.IMAGE_JPEG);
 					h.setContentLength(contentLength);

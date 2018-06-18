@@ -59,7 +59,7 @@ public class HttpEntityArgumentResolver extends AbstractMessageReaderArgumentRes
 
 		Class<?> entityType = parameter.getParameterType();
 		return readBody(parameter.nested(), parameter, false, bindingContext, exchange)
-				.map(body -> createEntity(body, entityType, exchange.getRequest()))
+				.map((body) -> createEntity(body, entityType, exchange.getRequest()))
 				.defaultIfEmpty(createEntity(null, entityType, exchange.getRequest()));
 	}
 

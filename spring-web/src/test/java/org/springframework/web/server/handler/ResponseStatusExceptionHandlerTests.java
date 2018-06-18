@@ -72,7 +72,7 @@ public class ResponseStatusExceptionHandlerTests {
 	public void unresolvedException() {
 		Throwable expected = new IllegalStateException();
 		Mono<Void> mono = this.handler.handle(this.exchange, expected);
-		StepVerifier.create(mono).consumeErrorWith(actual -> assertSame(expected, actual)).verify();
+		StepVerifier.create(mono).consumeErrorWith((actual) -> assertSame(expected, actual)).verify();
 	}
 
 	@Test  // SPR-16231
@@ -81,7 +81,7 @@ public class ResponseStatusExceptionHandlerTests {
 		this.exchange.getResponse().setStatusCode(HttpStatus.CREATED);
 		Mono<Void> mono = this.exchange.getResponse().setComplete()
 				.then(Mono.defer(() -> this.handler.handle(this.exchange, ex)));
-		StepVerifier.create(mono).consumeErrorWith(actual -> assertSame(ex, actual)).verify();
+		StepVerifier.create(mono).consumeErrorWith((actual) -> assertSame(ex, actual)).verify();
 	}
 
 }

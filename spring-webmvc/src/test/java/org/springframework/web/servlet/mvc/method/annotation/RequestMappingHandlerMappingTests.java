@@ -145,7 +145,7 @@ public class RequestMappingHandlerMappingTests {
 
 	@Test
 	public void pathPrefix() throws NoSuchMethodException {
-		this.handlerMapping.setEmbeddedValueResolver(value -> "/${prefix}".equals(value) ? "/api" : value);
+		this.handlerMapping.setEmbeddedValueResolver((value) -> "/${prefix}".equals(value) ? "/api" : value);
 		this.handlerMapping.setPathPrefixes(Collections.singletonMap(
 				"/${prefix}", HandlerTypePredicate.forAnnotation(RestController.class)));
 

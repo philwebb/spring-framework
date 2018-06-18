@@ -153,7 +153,7 @@ public class JndiTemplate {
 		if (this.logger.isDebugEnabled()) {
 			this.logger.debug("Looking up JNDI object with name [" + name + "]");
 		}
-		Object result = execute(ctx -> ctx.lookup(name));
+		Object result = execute((ctx) -> ctx.lookup(name));
 		if (result == null) {
 			throw new NameNotFoundException(
 					"JNDI object with [" + name + "] not found: JNDI implementation returned null");
@@ -192,7 +192,7 @@ public class JndiTemplate {
 		if (this.logger.isDebugEnabled()) {
 			this.logger.debug("Binding JNDI object with name [" + name + "]");
 		}
-		execute(ctx -> {
+		execute((ctx) -> {
 			ctx.bind(name, object);
 			return null;
 		});
@@ -209,7 +209,7 @@ public class JndiTemplate {
 		if (this.logger.isDebugEnabled()) {
 			this.logger.debug("Rebinding JNDI object with name [" + name + "]");
 		}
-		execute(ctx -> {
+		execute((ctx) -> {
 			ctx.rebind(name, object);
 			return null;
 		});
@@ -224,7 +224,7 @@ public class JndiTemplate {
 		if (this.logger.isDebugEnabled()) {
 			this.logger.debug("Unbinding JNDI object with name [" + name + "]");
 		}
-		execute(ctx -> {
+		execute((ctx) -> {
 			ctx.unbind(name);
 			return null;
 		});

@@ -466,7 +466,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 	public <T> T get(final Class<T> entityClass, final Serializable id, @Nullable final LockMode lockMode)
 			throws DataAccessException {
 
-		return executeWithNativeSession(session -> {
+		return executeWithNativeSession((session) -> {
 			if (lockMode != null) {
 				return session.get(entityClass, id, new LockOptions(lockMode));
 			}
@@ -487,7 +487,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 	public Object get(final String entityName, final Serializable id, @Nullable final LockMode lockMode)
 			throws DataAccessException {
 
-		return executeWithNativeSession(session -> {
+		return executeWithNativeSession((session) -> {
 			if (lockMode != null) {
 				return session.get(entityName, id, new LockOptions(lockMode));
 			}
@@ -506,7 +506,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 	public <T> T load(final Class<T> entityClass, final Serializable id, @Nullable final LockMode lockMode)
 			throws DataAccessException {
 
-		return nonNull(executeWithNativeSession(session -> {
+		return nonNull(executeWithNativeSession((session) -> {
 			if (lockMode != null) {
 				return session.load(entityClass, id, new LockOptions(lockMode));
 			}
@@ -525,7 +525,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 	public Object load(final String entityName, final Serializable id, @Nullable final LockMode lockMode)
 			throws DataAccessException {
 
-		return nonNull(executeWithNativeSession(session -> {
+		return nonNull(executeWithNativeSession((session) -> {
 			if (lockMode != null) {
 				return session.load(entityName, id, new LockOptions(lockMode));
 			}
@@ -549,7 +549,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 	@Override
 	@SuppressWarnings({"deprecation"})
 	public void load(final Object entity, final Serializable id) throws DataAccessException {
-		executeWithNativeSession(session -> {
+		executeWithNativeSession((session) -> {
 			session.load(entity, id);
 			return null;
 		});
@@ -562,7 +562,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 
 	@Override
 	public void refresh(final Object entity, @Nullable final LockMode lockMode) throws DataAccessException {
-		executeWithNativeSession(session -> {
+		executeWithNativeSession((session) -> {
 			if (lockMode != null) {
 				session.refresh(entity, new LockOptions(lockMode));
 			}
@@ -575,14 +575,14 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 
 	@Override
 	public boolean contains(final Object entity) throws DataAccessException {
-		Boolean result = executeWithNativeSession(session -> session.contains(entity));
+		Boolean result = executeWithNativeSession((session) -> session.contains(entity));
 		Assert.state(result != null, "No contains result");
 		return result;
 	}
 
 	@Override
 	public void evict(final Object entity) throws DataAccessException {
-		executeWithNativeSession(session -> {
+		executeWithNativeSession((session) -> {
 			session.evict(entity);
 			return null;
 		});
@@ -615,7 +615,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 
 	@Override
 	public void lock(final Object entity, final LockMode lockMode) throws DataAccessException {
-		executeWithNativeSession(session -> {
+		executeWithNativeSession((session) -> {
 			session.buildLockRequest(new LockOptions(lockMode)).lock(entity);
 			return null;
 		});
@@ -625,7 +625,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 	public void lock(final String entityName, final Object entity, final LockMode lockMode)
 			throws DataAccessException {
 
-		executeWithNativeSession(session -> {
+		executeWithNativeSession((session) -> {
 			session.buildLockRequest(new LockOptions(lockMode)).lock(entityName, entity);
 			return null;
 		});
@@ -633,7 +633,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 
 	@Override
 	public Serializable save(final Object entity) throws DataAccessException {
-		return nonNull(executeWithNativeSession(session -> {
+		return nonNull(executeWithNativeSession((session) -> {
 			checkWriteOperationAllowed(session);
 			return session.save(entity);
 		}));
@@ -641,7 +641,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 
 	@Override
 	public Serializable save(final String entityName, final Object entity) throws DataAccessException {
-		return nonNull(executeWithNativeSession(session -> {
+		return nonNull(executeWithNativeSession((session) -> {
 			checkWriteOperationAllowed(session);
 			return session.save(entityName, entity);
 		}));
@@ -654,7 +654,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 
 	@Override
 	public void update(final Object entity, @Nullable final LockMode lockMode) throws DataAccessException {
-		executeWithNativeSession(session -> {
+		executeWithNativeSession((session) -> {
 			checkWriteOperationAllowed(session);
 			session.update(entity);
 			if (lockMode != null) {
@@ -673,7 +673,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 	public void update(final String entityName, final Object entity, @Nullable final LockMode lockMode)
 			throws DataAccessException {
 
-		executeWithNativeSession(session -> {
+		executeWithNativeSession((session) -> {
 			checkWriteOperationAllowed(session);
 			session.update(entityName, entity);
 			if (lockMode != null) {
@@ -685,7 +685,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 
 	@Override
 	public void saveOrUpdate(final Object entity) throws DataAccessException {
-		executeWithNativeSession(session -> {
+		executeWithNativeSession((session) -> {
 			checkWriteOperationAllowed(session);
 			session.saveOrUpdate(entity);
 			return null;
@@ -694,7 +694,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 
 	@Override
 	public void saveOrUpdate(final String entityName, final Object entity) throws DataAccessException {
-		executeWithNativeSession(session -> {
+		executeWithNativeSession((session) -> {
 			checkWriteOperationAllowed(session);
 			session.saveOrUpdate(entityName, entity);
 			return null;
@@ -705,7 +705,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 	public void replicate(final Object entity, final ReplicationMode replicationMode)
 			throws DataAccessException {
 
-		executeWithNativeSession(session -> {
+		executeWithNativeSession((session) -> {
 			checkWriteOperationAllowed(session);
 			session.replicate(entity, replicationMode);
 			return null;
@@ -716,7 +716,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 	public void replicate(final String entityName, final Object entity, final ReplicationMode replicationMode)
 			throws DataAccessException {
 
-		executeWithNativeSession(session -> {
+		executeWithNativeSession((session) -> {
 			checkWriteOperationAllowed(session);
 			session.replicate(entityName, entity, replicationMode);
 			return null;
@@ -725,7 +725,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 
 	@Override
 	public void persist(final Object entity) throws DataAccessException {
-		executeWithNativeSession(session -> {
+		executeWithNativeSession((session) -> {
 			checkWriteOperationAllowed(session);
 			session.persist(entity);
 			return null;
@@ -734,7 +734,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 
 	@Override
 	public void persist(final String entityName, final Object entity) throws DataAccessException {
-		executeWithNativeSession(session -> {
+		executeWithNativeSession((session) -> {
 			checkWriteOperationAllowed(session);
 			session.persist(entityName, entity);
 			return null;
@@ -744,7 +744,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T merge(final T entity) throws DataAccessException {
-		return nonNull(executeWithNativeSession(session -> {
+		return nonNull(executeWithNativeSession((session) -> {
 			checkWriteOperationAllowed(session);
 			return (T) session.merge(entity);
 		}));
@@ -753,7 +753,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T merge(final String entityName, final T entity) throws DataAccessException {
-		return nonNull(executeWithNativeSession(session -> {
+		return nonNull(executeWithNativeSession((session) -> {
 			checkWriteOperationAllowed(session);
 			return (T) session.merge(entityName, entity);
 		}));
@@ -766,7 +766,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 
 	@Override
 	public void delete(final Object entity, @Nullable final LockMode lockMode) throws DataAccessException {
-		executeWithNativeSession(session -> {
+		executeWithNativeSession((session) -> {
 			checkWriteOperationAllowed(session);
 			if (lockMode != null) {
 				session.buildLockRequest(new LockOptions(lockMode)).lock(entity);
@@ -785,7 +785,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 	public void delete(final String entityName, final Object entity, @Nullable final LockMode lockMode)
 			throws DataAccessException {
 
-		executeWithNativeSession(session -> {
+		executeWithNativeSession((session) -> {
 			checkWriteOperationAllowed(session);
 			if (lockMode != null) {
 				session.buildLockRequest(new LockOptions(lockMode)).lock(entityName, entity);
@@ -797,7 +797,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 
 	@Override
 	public void deleteAll(final Collection<?> entities) throws DataAccessException {
-		executeWithNativeSession(session -> {
+		executeWithNativeSession((session) -> {
 			checkWriteOperationAllowed(session);
 			for (Object entity : entities) {
 				session.delete(entity);
@@ -808,7 +808,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 
 	@Override
 	public void flush() throws DataAccessException {
-		executeWithNativeSession(session -> {
+		executeWithNativeSession((session) -> {
 			session.flush();
 			return null;
 		});
@@ -816,7 +816,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 
 	@Override
 	public void clear() throws DataAccessException {
-		executeWithNativeSession(session -> {
+		executeWithNativeSession((session) -> {
 			session.clear();
 			return null;
 		});
@@ -1058,7 +1058,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 	@Override
 	@SuppressWarnings({"rawtypes", "deprecation"})
 	public int bulkUpdate(final String queryString, @Nullable final Object... values) throws DataAccessException {
-		Integer result = executeWithNativeSession(session -> {
+		Integer result = executeWithNativeSession((session) -> {
 			org.hibernate.Query queryObject = queryObject(
 					ReflectionUtils.invokeMethod(createQueryMethod, session, queryString));
 			prepareQuery(queryObject);

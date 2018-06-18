@@ -90,7 +90,7 @@ class FailingBeforeAndAfterMethodsSpringExtensionTests {
 
 	@TestFactory
 	Stream<DynamicTest> generateTests() throws Exception {
-		return testClasses().map(clazz -> dynamicTest(clazz.getSimpleName(), () -> runTestAndAssertCounters(clazz)));
+		return testClasses().map((clazz) -> dynamicTest(clazz.getSimpleName(), () -> runTestAndAssertCounters(clazz)));
 	}
 
 	private void runTestAndAssertCounters(Class<?> testClass) {

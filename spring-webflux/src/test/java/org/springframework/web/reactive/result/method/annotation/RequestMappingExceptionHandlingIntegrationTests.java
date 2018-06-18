@@ -147,7 +147,7 @@ public class RequestMappingExceptionHandlingIntegrationTests extends AbstractReq
 		@GetMapping("/SPR-16051")
 		public Flux<String> errors() {
 			return Flux.range(1, 10000)
-					.map(i -> {
+					.map((i) -> {
 						if (i == 1000) {
 							throw new RuntimeException("Random error");
 						}

@@ -329,7 +329,7 @@ public class ScheduledAnnotationBeanPostProcessor
 			else {
 				// Non-empty set of methods
 				annotatedMethods.forEach((method, scheduledMethods) ->
-						scheduledMethods.forEach(scheduled -> processScheduled(scheduled, method, bean)));
+						scheduledMethods.forEach((scheduled) -> processScheduled(scheduled, method, bean)));
 				if (this.logger.isDebugEnabled()) {
 					this.logger.debug(annotatedMethods.size() + " @Scheduled methods processed on bean '" + beanName +
 							"': " + annotatedMethods);

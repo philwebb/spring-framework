@@ -57,7 +57,7 @@ public abstract class AbstractDataBufferDecoder<T> extends AbstractDecoder<T> {
 	public Flux<T> decode(Publisher<DataBuffer> inputStream, ResolvableType elementType,
 			@Nullable MimeType mimeType, @Nullable Map<String, Object> hints) {
 
-		return Flux.from(inputStream).map(buffer -> decodeDataBuffer(buffer, elementType, mimeType, hints));
+		return Flux.from(inputStream).map((buffer) -> decodeDataBuffer(buffer, elementType, mimeType, hints));
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public abstract class AbstractDataBufferDecoder<T> extends AbstractDecoder<T> {
 			@Nullable MimeType mimeType, @Nullable Map<String, Object> hints) {
 
 		return DataBufferUtils.join(inputStream)
-				.map(buffer -> decodeDataBuffer(buffer, elementType, mimeType, hints));
+				.map((buffer) -> decodeDataBuffer(buffer, elementType, mimeType, hints));
 	}
 
 	/**

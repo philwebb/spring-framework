@@ -57,13 +57,13 @@ public class DefaultServerRequestBuilderTests {
 				ServerRequest.create(exchange, HandlerStrategies.withDefaults().messageReaders());
 
 		Flux<DataBuffer> body = Flux.just("baz")
-				.map(s -> s.getBytes(StandardCharsets.UTF_8))
+				.map((s) -> s.getBytes(StandardCharsets.UTF_8))
 				.map(this.dataBufferFactory::wrap);
 
 		ServerRequest result = ServerRequest.from(other)
 				.method(HttpMethod.HEAD)
-				.headers(httpHeaders -> httpHeaders.set("foo", "baar"))
-				.cookies(cookies -> cookies.set("baz", ResponseCookie.from("baz", "quux").build()))
+				.headers((httpHeaders) -> httpHeaders.set("foo", "baar"))
+				.cookies((cookies) -> cookies.set("baz", ResponseCookie.from("baz", "quux").build()))
 				.body(body)
 				.build();
 

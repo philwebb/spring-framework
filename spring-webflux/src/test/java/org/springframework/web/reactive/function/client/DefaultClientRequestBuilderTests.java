@@ -56,8 +56,8 @@ public class DefaultClientRequestBuilderTests {
 				.header("foo", "bar")
 				.cookie("baz", "qux").build();
 		ClientRequest result = ClientRequest.from(other)
-				.headers(httpHeaders -> httpHeaders.set("foo", "baar"))
-				.cookies(cookies -> cookies.set("baz", "quux"))
+				.headers((httpHeaders) -> httpHeaders.set("foo", "baar"))
+				.cookies((cookies) -> cookies.set("baz", "quux"))
 		.build();
 		assertEquals(new URI("http://example.com"), result.url());
 		assertEquals(GET, result.method());

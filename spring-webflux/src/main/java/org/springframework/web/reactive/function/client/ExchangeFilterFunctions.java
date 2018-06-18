@@ -64,7 +64,7 @@ public abstract class ExchangeFilterFunctions {
 		Assert.notNull(username, "'username' must not be null");
 		Assert.notNull(password, "'password' must not be null");
 		checkIllegalCharacters(username, password);
-		return basicAuthenticationInternal(r -> Optional.of(new Credentials(username, password)));
+		return basicAuthenticationInternal((r) -> Optional.of(new Credentials(username, password)));
 	}
 
 	/**
@@ -80,7 +80,7 @@ public abstract class ExchangeFilterFunctions {
 	 */
 	public static ExchangeFilterFunction basicAuthentication() {
 		return basicAuthenticationInternal(
-				request -> request.attribute(BASIC_AUTHENTICATION_CREDENTIALS_ATTRIBUTE).map(o -> (Credentials)o));
+				request -> request.attribute(BASIC_AUTHENTICATION_CREDENTIALS_ATTRIBUTE).map((o) -> (Credentials)o));
 	}
 
 	private static ExchangeFilterFunction basicAuthenticationInternal(
@@ -90,7 +90,7 @@ public abstract class ExchangeFilterFunctions {
 				clientRequest -> credentialsFunction.apply(clientRequest).map(
 						credentials -> {
 							ClientRequest authorizedRequest = ClientRequest.from(clientRequest)
-									.headers(headers -> headers.set(HttpHeaders.AUTHORIZATION,
+									.headers((headers) -> headers.set(HttpHeaders.AUTHORIZATION,
 											authorization(credentials)))
 									.build();
 							return Mono.just(authorizedRequest);

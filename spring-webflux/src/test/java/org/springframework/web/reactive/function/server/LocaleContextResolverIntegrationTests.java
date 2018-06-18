@@ -53,7 +53,7 @@ public class LocaleContextResolverIntegrationTests extends AbstractRouterFunctio
 
 		StepVerifier
 				.create(result)
-				.consumeNextWith(response -> {
+				.consumeNextWith((response) -> {
 					assertEquals(HttpStatus.OK, response.statusCode());
 					assertEquals(Locale.GERMANY, response.headers().asHttpHeaders().getContentLanguage());
 				})

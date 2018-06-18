@@ -93,7 +93,7 @@ public final class StringDecoder extends AbstractDataBufferDecoder<String> {
 		List<byte[]> delimiterBytes = getDelimiterBytes(mimeType);
 
 		Flux<DataBuffer> inputFlux = Flux.from(inputStream)
-				.flatMap(dataBuffer -> splitOnDelimiter(dataBuffer, delimiterBytes))
+				.flatMap((dataBuffer) -> splitOnDelimiter(dataBuffer, delimiterBytes))
 				.bufferUntil(StringDecoder::isEndFrame)
 				.flatMap(StringDecoder::joinUntilEndFrame);
 		return super.decode(inputFlux, elementType, mimeType, hints);
@@ -102,7 +102,7 @@ public final class StringDecoder extends AbstractDataBufferDecoder<String> {
 	private List<byte[]> getDelimiterBytes(@Nullable MimeType mimeType) {
 		Charset charset = getCharset(mimeType);
 		return this.delimiters.stream()
-				.map(s -> s.getBytes(charset))
+				.map((s) -> s.getBytes(charset))
 				.collect(Collectors.toList());
 	}
 

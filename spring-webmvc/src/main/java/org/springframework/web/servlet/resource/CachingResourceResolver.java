@@ -152,7 +152,7 @@ public class CachingResourceResolver extends AbstractResourceResolver {
 			return null;
 		}
 		return Arrays.stream(StringUtils.tokenizeToStringArray(header, ","))
-				.map(token -> {
+				.map((token) -> {
 					int index = token.indexOf(';');
 					return (index >= 0 ? token.substring(0, index) : token).trim().toLowerCase();
 				})

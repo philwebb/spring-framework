@@ -182,7 +182,7 @@ public class HttpWebHandlerAdapter extends WebHandlerDecorator implements HttpHa
 	public Mono<Void> handle(ServerHttpRequest request, ServerHttpResponse response) {
 		ServerWebExchange exchange = createExchange(request, response);
 		return getDelegate().handle(exchange)
-				.onErrorResume(ex -> handleFailure(request, response, ex))
+				.onErrorResume((ex) -> handleFailure(request, response, ex))
 				.then(Mono.defer(response::setComplete));
 	}
 

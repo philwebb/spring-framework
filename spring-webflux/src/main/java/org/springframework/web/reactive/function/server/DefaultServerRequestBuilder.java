@@ -90,9 +90,9 @@ class DefaultServerRequestBuilder implements ServerRequest.Builder {
 		this.exchange = other.exchange();
 		this.methodName = other.methodName();
 		this.uri = other.uri();
-		headers(headers -> headers.addAll(other.headers().asHttpHeaders()));
-		cookies(cookies -> cookies.addAll(other.cookies()));
-		attributes(attributes -> attributes.putAll(other.attributes()));
+		headers((headers) -> headers.addAll(other.headers().asHttpHeaders()));
+		cookies((cookies) -> cookies.addAll(other.cookies()));
+		attributes((attributes) -> attributes.putAll(other.attributes()));
 	}
 
 
@@ -152,7 +152,7 @@ class DefaultServerRequestBuilder implements ServerRequest.Builder {
 		releaseBody();
 		DataBufferFactory dataBufferFactory = new DefaultDataBufferFactory();
 		this.body = Flux.just(body).
-				map(s -> {
+				map((s) -> {
 					byte[] bytes = body.getBytes(StandardCharsets.UTF_8);
 					return dataBufferFactory.wrap(bytes);
 				});
@@ -317,7 +317,7 @@ class DefaultServerRequestBuilder implements ServerRequest.Builder {
 				MediaType contentType = request.getHeaders().getContentType();
 				if (MediaType.APPLICATION_FORM_URLENCODED.isCompatibleWith(contentType)) {
 					return ((HttpMessageReader<MultiValueMap<String, String>>) readers.stream()
-							.filter(reader -> reader.canRead(FORM_DATA_TYPE, MediaType.APPLICATION_FORM_URLENCODED))
+							.filter((reader) -> reader.canRead(FORM_DATA_TYPE, MediaType.APPLICATION_FORM_URLENCODED))
 							.findFirst()
 							.orElseThrow(() -> new IllegalStateException("No form data HttpMessageReader.")))
 							.readMono(FORM_DATA_TYPE, request, Collections.emptyMap())
@@ -339,7 +339,7 @@ class DefaultServerRequestBuilder implements ServerRequest.Builder {
 				MediaType contentType = request.getHeaders().getContentType();
 				if (MediaType.MULTIPART_FORM_DATA.isCompatibleWith(contentType)) {
 					return ((HttpMessageReader<MultiValueMap<String, Part>>) readers.stream()
-							.filter(reader -> reader.canRead(MULTIPART_DATA_TYPE, MediaType.MULTIPART_FORM_DATA))
+							.filter((reader) -> reader.canRead(MULTIPART_DATA_TYPE, MediaType.MULTIPART_FORM_DATA))
 							.findFirst()
 							.orElseThrow(() -> new IllegalStateException("No multipart HttpMessageReader.")))
 							.readMono(MULTIPART_DATA_TYPE, request, Collections.emptyMap())

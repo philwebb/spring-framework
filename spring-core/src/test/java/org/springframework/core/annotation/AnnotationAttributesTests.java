@@ -171,12 +171,12 @@ public class AnnotationAttributesTests {
 		this.attributes = new AnnotationAttributes(ImplicitAliasesContextConfig.class);
 		this.attributes.put("value", value);
 		AnnotationUtils.postProcessAnnotationAttributes(null, this.attributes, false);
-		aliases.stream().forEach(alias -> assertEquals(value, this.attributes.getString(alias)));
+		aliases.stream().forEach((alias) -> assertEquals(value, this.attributes.getString(alias)));
 
 		this.attributes = new AnnotationAttributes(ImplicitAliasesContextConfig.class);
 		this.attributes.put("location1", value);
 		AnnotationUtils.postProcessAnnotationAttributes(null, this.attributes, false);
-		aliases.stream().forEach(alias -> assertEquals(value, this.attributes.getString(alias)));
+		aliases.stream().forEach((alias) -> assertEquals(value, this.attributes.getString(alias)));
 
 		this.attributes = new AnnotationAttributes(ImplicitAliasesContextConfig.class);
 		this.attributes.put("value", value);
@@ -184,7 +184,7 @@ public class AnnotationAttributesTests {
 		this.attributes.put("xmlFile", value);
 		this.attributes.put("groovyScript", value);
 		AnnotationUtils.postProcessAnnotationAttributes(null, this.attributes, false);
-		aliases.stream().forEach(alias -> assertEquals(value, this.attributes.getString(alias)));
+		aliases.stream().forEach((alias) -> assertEquals(value, this.attributes.getString(alias)));
 	}
 
 	@Test
@@ -195,35 +195,35 @@ public class AnnotationAttributesTests {
 		this.attributes = new AnnotationAttributes(ImplicitAliasesContextConfig.class);
 		this.attributes.put("location1", value);
 		AnnotationUtils.postProcessAnnotationAttributes(null, this.attributes, false);
-		aliases.stream().forEach(alias -> assertArrayEquals(value, this.attributes.getStringArray(alias)));
+		aliases.stream().forEach((alias) -> assertArrayEquals(value, this.attributes.getStringArray(alias)));
 
 		this.attributes = new AnnotationAttributes(ImplicitAliasesContextConfig.class);
 		this.attributes.put("value", value);
 		AnnotationUtils.postProcessAnnotationAttributes(null, this.attributes, false);
-		aliases.stream().forEach(alias -> assertArrayEquals(value, this.attributes.getStringArray(alias)));
+		aliases.stream().forEach((alias) -> assertArrayEquals(value, this.attributes.getStringArray(alias)));
 
 		this.attributes = new AnnotationAttributes(ImplicitAliasesContextConfig.class);
 		this.attributes.put("location1", value);
 		this.attributes.put("value", value);
 		AnnotationUtils.postProcessAnnotationAttributes(null, this.attributes, false);
-		aliases.stream().forEach(alias -> assertArrayEquals(value, this.attributes.getStringArray(alias)));
+		aliases.stream().forEach((alias) -> assertArrayEquals(value, this.attributes.getStringArray(alias)));
 
 		this.attributes = new AnnotationAttributes(ImplicitAliasesContextConfig.class);
 		this.attributes.put("location1", value);
 		AnnotationUtils.registerDefaultValues(this.attributes);
 		AnnotationUtils.postProcessAnnotationAttributes(null, this.attributes, false);
-		aliases.stream().forEach(alias -> assertArrayEquals(value, this.attributes.getStringArray(alias)));
+		aliases.stream().forEach((alias) -> assertArrayEquals(value, this.attributes.getStringArray(alias)));
 
 		this.attributes = new AnnotationAttributes(ImplicitAliasesContextConfig.class);
 		this.attributes.put("value", value);
 		AnnotationUtils.registerDefaultValues(this.attributes);
 		AnnotationUtils.postProcessAnnotationAttributes(null, this.attributes, false);
-		aliases.stream().forEach(alias -> assertArrayEquals(value, this.attributes.getStringArray(alias)));
+		aliases.stream().forEach((alias) -> assertArrayEquals(value, this.attributes.getStringArray(alias)));
 
 		this.attributes = new AnnotationAttributes(ImplicitAliasesContextConfig.class);
 		AnnotationUtils.registerDefaultValues(this.attributes);
 		AnnotationUtils.postProcessAnnotationAttributes(null, this.attributes, false);
-		aliases.stream().forEach(alias -> assertArrayEquals(new String[] {""}, this.attributes.getStringArray(alias)));
+		aliases.stream().forEach((alias) -> assertArrayEquals(new String[] {""}, this.attributes.getStringArray(alias)));
 	}
 
 

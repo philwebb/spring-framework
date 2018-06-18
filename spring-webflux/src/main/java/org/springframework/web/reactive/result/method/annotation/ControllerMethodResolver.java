@@ -121,8 +121,8 @@ class ControllerMethodResolver {
 			ConfigurableApplicationContext context) {
 
 		return initResolvers(customResolvers, reactiveRegistry, context, false, Collections.emptyList()).stream()
-				.filter(resolver -> resolver instanceof SyncHandlerMethodArgumentResolver)
-				.map(resolver -> (SyncHandlerMethodArgumentResolver) resolver)
+				.filter((resolver) -> resolver instanceof SyncHandlerMethodArgumentResolver)
+				.map((resolver) -> (SyncHandlerMethodArgumentResolver) resolver)
 				.collect(Collectors.toList());
 	}
 
@@ -264,13 +264,13 @@ class ControllerMethodResolver {
 		this.initBinderAdviceCache.forEach((adviceBean, methods) -> {
 			if (adviceBean.isApplicableToBeanType(handlerType)) {
 				Object bean = adviceBean.resolveBean();
-				methods.forEach(method -> result.add(getInitBinderMethod(bean, method)));
+				methods.forEach((method) -> result.add(getInitBinderMethod(bean, method)));
 			}
 		});
 
 		this.initBinderMethodCache
 				.computeIfAbsent(handlerType, aClass -> selectMethods(handlerType, BINDER_METHODS))
-				.forEach(method -> {
+				.forEach((method) -> {
 					Object bean = handlerMethod.getBean();
 					result.add(getInitBinderMethod(bean, method));
 				});
@@ -296,13 +296,13 @@ class ControllerMethodResolver {
 		this.modelAttributeAdviceCache.forEach((adviceBean, methods) -> {
 			if (adviceBean.isApplicableToBeanType(handlerType)) {
 				Object bean = adviceBean.resolveBean();
-				methods.forEach(method -> result.add(createAttributeMethod(bean, method)));
+				methods.forEach((method) -> result.add(createAttributeMethod(bean, method)));
 			}
 		});
 
 		this.modelAttributeMethodCache
 				.computeIfAbsent(handlerType, aClass -> selectMethods(handlerType, ATTRIBUTE_METHODS))
-				.forEach(method -> {
+				.forEach((method) -> {
 					Object bean = handlerMethod.getBean();
 					result.add(createAttributeMethod(bean, method));
 				});

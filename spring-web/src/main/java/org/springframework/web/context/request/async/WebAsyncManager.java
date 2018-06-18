@@ -297,7 +297,7 @@ public final class WebAsyncManager {
 			}
 		});
 
-		this.asyncWebRequest.addErrorHandler(ex -> {
+		this.asyncWebRequest.addErrorHandler((ex) -> {
 			logger.debug("Processing error");
 			Object result = interceptorChain.triggerAfterError(this.asyncWebRequest, callable, ex);
 			result = (result != CallableProcessingInterceptor.RESULT_NONE ? result : ex);
@@ -394,7 +394,7 @@ public final class WebAsyncManager {
 			}
 		});
 
-		this.asyncWebRequest.addErrorHandler(ex -> {
+		this.asyncWebRequest.addErrorHandler((ex) -> {
 			try {
 				if (!interceptorChain.triggerAfterError(this.asyncWebRequest, deferredResult, ex)) {
 					return;
@@ -414,7 +414,7 @@ public final class WebAsyncManager {
 
 		try {
 			interceptorChain.applyPreProcess(this.asyncWebRequest, deferredResult);
-			deferredResult.setResultHandler(result -> {
+			deferredResult.setResultHandler((result) -> {
 				result = interceptorChain.applyPostProcess(this.asyncWebRequest, deferredResult, result);
 				setConcurrentResultAndDispatch(result);
 			});

@@ -48,7 +48,7 @@ public class DefaultClientResponseBuilderTests {
 	@Test
 	public void normal() {
 		Flux<DataBuffer> body = Flux.just("baz")
-				.map(s -> s.getBytes(StandardCharsets.UTF_8))
+				.map((s) -> s.getBytes(StandardCharsets.UTF_8))
 				.map(this.dataBufferFactory::wrap);
 
 		ClientResponse response = ClientResponse.create(HttpStatus.BAD_GATEWAY, ExchangeStrategies.withDefaults())
@@ -71,7 +71,7 @@ public class DefaultClientResponseBuilderTests {
 	@Test
 	public void from() throws Exception {
 		Flux<DataBuffer> otherBody = Flux.just("foo", "bar")
-				.map(s -> s.getBytes(StandardCharsets.UTF_8))
+				.map((s) -> s.getBytes(StandardCharsets.UTF_8))
 				.map(this.dataBufferFactory::wrap);
 
 		ClientResponse other = ClientResponse.create(HttpStatus.BAD_REQUEST, ExchangeStrategies.withDefaults())
@@ -81,12 +81,12 @@ public class DefaultClientResponseBuilderTests {
 				.build();
 
 		Flux<DataBuffer> body = Flux.just("baz")
-				.map(s -> s.getBytes(StandardCharsets.UTF_8))
+				.map((s) -> s.getBytes(StandardCharsets.UTF_8))
 				.map(this.dataBufferFactory::wrap);
 
 		ClientResponse result = ClientResponse.from(other)
-				.headers(httpHeaders -> httpHeaders.set("foo", "baar"))
-				.cookies(cookies -> cookies.set("baz", ResponseCookie.from("baz", "quux").build()))
+				.headers((httpHeaders) -> httpHeaders.set("foo", "baar"))
+				.cookies((cookies) -> cookies.set("baz", ResponseCookie.from("baz", "quux").build()))
 				.body(body)
 				.build();
 

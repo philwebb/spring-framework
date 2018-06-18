@@ -343,7 +343,7 @@ public class SimpAnnotationMethodMessageHandlerTests {
 	@Test
 	public void placeholder() throws Exception {
 		Message<?> message = createMessage("/pre/myValue");
-		this.messageHandler.setEmbeddedValueResolver(value -> ("/${myProperty}".equals(value) ? "/myValue" : value));
+		this.messageHandler.setEmbeddedValueResolver((value) -> ("/${myProperty}".equals(value) ? "/myValue" : value));
 		this.messageHandler.registerHandler(this.testController);
 		this.messageHandler.handleMessage(message);
 

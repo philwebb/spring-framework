@@ -82,22 +82,22 @@ public class HttpHandlerConnector implements ClientHttpConnector {
 		MockClientHttpRequest mockClientRequest = new MockClientHttpRequest(httpMethod, uri);
 		MockServerHttpResponse mockServerResponse = new MockServerHttpResponse();
 
-		mockClientRequest.setWriteHandler(requestBody -> {
+		mockClientRequest.setWriteHandler((requestBody) -> {
 			log("Invoking HttpHandler for ", httpMethod, uri);
 			ServerHttpRequest mockServerRequest = adaptRequest(mockClientRequest, requestBody);
 			ServerHttpResponse responseToUse = prepareResponse(mockServerResponse, mockServerRequest);
-			this.handler.handle(mockServerRequest, responseToUse).subscribe(aVoid -> {}, result::onError);
+			this.handler.handle(mockServerRequest, responseToUse).subscribe((aVoid) -> {}, result::onError);
 			return Mono.empty();
 		});
 
-		mockServerResponse.setWriteHandler(responseBody ->
+		mockServerResponse.setWriteHandler((responseBody) ->
 				Mono.fromRunnable(() -> {
 					log("Creating client response for ", httpMethod, uri);
 					result.onNext(adaptResponse(mockServerResponse, responseBody));
 				}));
 
 		log("Writing client request for ", httpMethod, uri);
-		requestCallback.apply(mockClientRequest).subscribe(aVoid -> {}, result::onError);
+		requestCallback.apply(mockClientRequest).subscribe((aVoid) -> {}, result::onError);
 
 		return result;
 	}

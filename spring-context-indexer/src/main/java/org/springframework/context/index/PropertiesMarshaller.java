@@ -34,7 +34,7 @@ abstract class PropertiesMarshaller {
 
 	public static void write(CandidateComponentsMetadata metadata, OutputStream out) throws IOException {
 		Properties props = new Properties();
-		metadata.getItems().forEach(m -> props.put(m.getType(), String.join(",", m.getStereotypes())));
+		metadata.getItems().forEach((m) -> props.put(m.getType(), String.join(",", m.getStereotypes())));
 		props.store(out, "");
 	}
 

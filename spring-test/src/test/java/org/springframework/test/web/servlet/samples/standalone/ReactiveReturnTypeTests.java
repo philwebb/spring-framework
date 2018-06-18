@@ -63,7 +63,7 @@ public class ReactiveReturnTypeTests {
 		@GetMapping(path = "/spr16869", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 		Flux<String> sseFlux() {
 			return Flux.interval(Duration.ofSeconds(1)).take(3)
-					.map(aLong -> String.format("event%d", aLong));
+					.map((aLong) -> String.format("event%d", aLong));
 		}
 	}
 

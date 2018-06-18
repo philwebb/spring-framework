@@ -329,7 +329,7 @@ public class ViewResolutionResultHandlerTests {
 
 	private void assertResponseBody(MockServerWebExchange exchange, String responseBody) {
 		StepVerifier.create(exchange.getResponse().getBody())
-				.consumeNextWith(buf -> assertEquals(responseBody, DataBufferTestUtils.dumpString(buf, UTF_8)))
+				.consumeNextWith((buf) -> assertEquals(responseBody, DataBufferTestUtils.dumpString(buf, UTF_8)))
 				.expectComplete()
 				.verify();
 	}
@@ -342,7 +342,7 @@ public class ViewResolutionResultHandlerTests {
 		private int order = Ordered.LOWEST_PRECEDENCE;
 
 		TestViewResolver(String... viewNames) {
-			Arrays.stream(viewNames).forEach(name -> this.views.put(name, new TestView(name)));
+			Arrays.stream(viewNames).forEach((name) -> this.views.put(name, new TestView(name)));
 		}
 
 		void setOrder(int order) {

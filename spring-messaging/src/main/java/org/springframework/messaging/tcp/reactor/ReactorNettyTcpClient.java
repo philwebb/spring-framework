@@ -113,7 +113,7 @@ public class ReactorNettyTcpClient<P> implements TcpOperations<P> {
 		this.tcpClient = TcpClient.create(this.poolResources)
 				.host(host).port(port)
 				.runOn(this.loopResources, false)
-				.doOnConnected(conn -> this.channelGroup.add(conn.channel()));
+				.doOnConnected((conn) -> this.channelGroup.add(conn.channel()));
 
 		this.codec = codec;
 	}
@@ -203,8 +203,8 @@ public class ReactorNettyTcpClient<P> implements TcpOperations<P> {
 	private <T> Function<Flux<T>, Publisher<?>> reconnectFunction(ReconnectStrategy reconnectStrategy) {
 		return flux -> flux
 				.scan(1, (count, element) -> count++)
-				.flatMap(attempt -> Optional.ofNullable(reconnectStrategy.getTimeToNextAttempt(attempt))
-						.map(time -> Mono.delay(Duration.ofMillis(time), this.scheduler))
+				.flatMap((attempt) -> Optional.ofNullable(reconnectStrategy.getTimeToNextAttempt(attempt))
+						.map((time) -> Mono.delay(Duration.ofMillis(time), this.scheduler))
 						.orElse(Mono.empty()));
 	}
 
@@ -222,12 +222,12 @@ public class ReactorNettyTcpClient<P> implements TcpOperations<P> {
 		if (this.channelGroup != null) {
 			result = FutureMono.from(this.channelGroup.close());
 			if (this.loopResources != null) {
-				result = result.onErrorResume(ex -> Mono.empty()).then(this.loopResources.disposeLater());
+				result = result.onErrorResume((ex) -> Mono.empty()).then(this.loopResources.disposeLater());
 			}
 			if (this.poolResources != null) {
-				result = result.onErrorResume(ex -> Mono.empty()).then(this.poolResources.disposeLater());
+				result = result.onErrorResume((ex) -> Mono.empty()).then(this.poolResources.disposeLater());
 			}
-			result = result.onErrorResume(ex -> Mono.empty()).then(stopScheduler());
+			result = result.onErrorResume((ex) -> Mono.empty()).then(stopScheduler());
 		}
 		else {
 			result = stopScheduler();
@@ -270,7 +270,7 @@ public class ReactorNettyTcpClient<P> implements TcpOperations<P> {
 		@Override
 		@SuppressWarnings("unchecked")
 		public Publisher<Void> apply(NettyInbound inbound, NettyOutbound outbound) {
-			inbound.withConnection(conn -> {
+			inbound.withConnection((conn) -> {
 				if (logger.isDebugEnabled()) {
 					logger.debug("Connected to " + conn.address());
 				}
@@ -279,7 +279,7 @@ public class ReactorNettyTcpClient<P> implements TcpOperations<P> {
 			TcpConnection<P> connection = new ReactorNettyTcpConnection<>(inbound, outbound,  ReactorNettyTcpClient.this.codec, completion);
 			ReactorNettyTcpClient.this.scheduler.schedule(() -> this.connectionHandler.afterConnected(connection));
 
-			inbound.withConnection(conn -> conn.addHandler(new StompMessageDecoder<>(ReactorNettyTcpClient.this.codec)));
+			inbound.withConnection((conn) -> conn.addHandler(new StompMessageDecoder<>(ReactorNettyTcpClient.this.codec)));
 
 			inbound.receiveObject()
 					.cast(Message.class)

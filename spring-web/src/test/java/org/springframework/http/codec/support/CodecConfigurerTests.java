@@ -242,11 +242,11 @@ public class CodecConfigurerTests {
 		this.configurer.defaultCodecs().jackson2JsonDecoder(decoder);
 
 		assertSame(decoder, this.configurer.getReaders().stream()
-				.filter(writer -> writer instanceof DecoderHttpMessageReader)
-				.map(writer -> ((DecoderHttpMessageReader<?>) writer).getDecoder())
-				.filter(e -> Jackson2JsonDecoder.class.equals(e.getClass()))
+				.filter((writer) -> writer instanceof DecoderHttpMessageReader)
+				.map((writer) -> ((DecoderHttpMessageReader<?>) writer).getDecoder())
+				.filter((e) -> Jackson2JsonDecoder.class.equals(e.getClass()))
 				.findFirst()
-				.filter(e -> e == decoder).orElse(null));
+				.filter((e) -> e == decoder).orElse(null));
 	}
 
 	@Test
@@ -255,11 +255,11 @@ public class CodecConfigurerTests {
 		this.configurer.defaultCodecs().jackson2JsonEncoder(encoder);
 
 		assertSame(encoder, this.configurer.getWriters().stream()
-				.filter(writer -> writer instanceof EncoderHttpMessageWriter)
-				.map(writer -> ((EncoderHttpMessageWriter<?>) writer).getEncoder())
-				.filter(e -> Jackson2JsonEncoder.class.equals(e.getClass()))
+				.filter((writer) -> writer instanceof EncoderHttpMessageWriter)
+				.map((writer) -> ((EncoderHttpMessageWriter<?>) writer).getEncoder())
+				.filter((e) -> Jackson2JsonEncoder.class.equals(e.getClass()))
 				.findFirst()
-				.filter(e -> e == encoder).orElse(null));
+				.filter((e) -> e == encoder).orElse(null));
 	}
 
 

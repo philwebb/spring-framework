@@ -423,7 +423,7 @@ public class TransactionalTestExecutionListener extends AbstractTestExecutionLis
 	 */
 	private List<Method> getAnnotatedMethods(Class<?> clazz, Class<? extends Annotation> annotationType) {
 		return Arrays.stream(ReflectionUtils.getUniqueDeclaredMethods(clazz))
-				.filter(method -> AnnotatedElementUtils.hasAnnotation(method, annotationType))
+				.filter((method) -> AnnotatedElementUtils.hasAnnotation(method, annotationType))
 				.collect(Collectors.toList());
 	}
 

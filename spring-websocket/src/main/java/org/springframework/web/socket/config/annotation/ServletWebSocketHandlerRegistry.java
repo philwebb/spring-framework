@@ -109,7 +109,7 @@ public class ServletWebSocketHandlerRegistry implements WebSocketHandlerRegistry
 	 */
 	protected boolean requiresTaskScheduler() {
 		return this.registrations.stream()
-				.anyMatch(r -> r.getSockJsServiceRegistration() != null &&
+				.anyMatch((r) -> r.getSockJsServiceRegistration() != null &&
 						r.getSockJsServiceRegistration().getTaskScheduler() == null);
 	}
 

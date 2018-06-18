@@ -268,7 +268,7 @@ public class ModelAttributeMethodArgumentResolverTests {
 		mono = valueMonoExtractor.apply(mono);
 
 		StepVerifier.create(mono)
-				.consumeErrorWith(ex -> {
+				.consumeErrorWith((ex) -> {
 					assertTrue(ex instanceof WebExchangeBindException);
 					WebExchangeBindException bindException = (WebExchangeBindException) ex;
 					assertEquals(1, bindException.getErrorCount());

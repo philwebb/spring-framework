@@ -372,7 +372,7 @@ public final class MockServerRequest implements ServerRequest {
 
 		@Override
 		public Builder cookie(HttpCookie... cookies) {
-			Arrays.stream(cookies).forEach(cookie -> this.cookies.add(cookie.getName(), cookie));
+			Arrays.stream(cookies).forEach((cookie) -> this.cookies.add(cookie.getName(), cookie));
 			return this;
 		}
 

@@ -239,7 +239,7 @@ public class SpringMethodRule implements MethodRule {
 	private static Optional<Field> findSpringClassRuleField(Class<?> testClass) {
 		return Arrays.stream(testClass.getFields())
 				.filter(ReflectionUtils::isPublicStaticFinal)
-				.filter(field -> SpringClassRule.class.isAssignableFrom(field.getType()))
+				.filter((field) -> SpringClassRule.class.isAssignableFrom(field.getType()))
 				.findFirst();
 	}
 

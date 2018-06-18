@@ -65,13 +65,13 @@ public class ReactorNettyTcpConnection<P> implements TcpConnection<P> {
 	@Override
 	@SuppressWarnings("deprecation")
 	public void onReadInactivity(Runnable runnable, long inactivityDuration) {
-		this.inbound.withConnection(conn -> conn.onReadIdle(inactivityDuration, runnable));
+		this.inbound.withConnection((conn) -> conn.onReadIdle(inactivityDuration, runnable));
 	}
 
 	@Override
 	@SuppressWarnings("deprecation")
 	public void onWriteInactivity(Runnable runnable, long inactivityDuration) {
-		this.inbound.withConnection(conn -> conn.onWriteIdle(inactivityDuration, runnable));
+		this.inbound.withConnection((conn) -> conn.onWriteIdle(inactivityDuration, runnable));
 	}
 
 	@Override

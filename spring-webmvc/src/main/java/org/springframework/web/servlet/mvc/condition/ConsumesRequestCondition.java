@@ -181,7 +181,7 @@ public final class ConsumesRequestCondition extends AbstractRequestCondition<Con
 		}
 
 		Set<ConsumeMediaTypeExpression> result = new LinkedHashSet<>(this.expressions);
-		result.removeIf(expression -> !expression.match(contentType));
+		result.removeIf((expression) -> !expression.match(contentType));
 		return (!result.isEmpty() ? new ConsumesRequestCondition(result) : null);
 	}
 

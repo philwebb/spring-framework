@@ -53,7 +53,7 @@ public abstract class AbstractListenerServerHttpResponse extends AbstractServerH
 
 		if (this.writeCalled.compareAndSet(false, true)) {
 			Processor<? super Publisher<? extends DataBuffer>, Void> processor = createBodyFlushProcessor();
-			return Mono.from(subscriber -> {
+			return Mono.from((subscriber) -> {
 				body.subscribe(processor);
 				processor.subscribe(subscriber);
 			});

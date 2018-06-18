@@ -225,7 +225,7 @@ public class SqlScriptsTestExecutionListener extends AbstractTestExecutionListen
 					TransactionDefinition.PROPAGATION_REQUIRED);
 			TransactionAttribute txAttr = TestContextTransactionUtils.createDelegatingTransactionAttribute(
 					testContext, new DefaultTransactionAttribute(propagation));
-			new TransactionTemplate(txMgr, txAttr).execute(status -> {
+			new TransactionTemplate(txMgr, txAttr).execute((status) -> {
 				populator.execute(finalDataSource);
 				return null;
 			});

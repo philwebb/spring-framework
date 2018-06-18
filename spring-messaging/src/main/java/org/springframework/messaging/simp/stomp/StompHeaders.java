@@ -208,7 +208,7 @@ public class StompHeaders implements MultiValueMap<String, String>, Serializable
 			set(ACCEPT_VERSION, null);
 			return;
 		}
-		Arrays.stream(acceptVersions).forEach(version ->
+		Arrays.stream(acceptVersions).forEach((version) ->
 				Assert.isTrue(version != null && (version.equals("1.1") || version.equals("1.2")),
 						"Invalid version: " + version));
 		set(ACCEPT_VERSION, StringUtils.arrayToCommaDelimitedString(acceptVersions));

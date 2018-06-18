@@ -209,7 +209,7 @@ public abstract class AbstractHttpMessageConverter<T> implements HttpMessageConv
 
 		if (outputMessage instanceof StreamingHttpOutputMessage) {
 			StreamingHttpOutputMessage streamingOutputMessage = (StreamingHttpOutputMessage) outputMessage;
-			streamingOutputMessage.setBody(outputStream -> writeInternal(t, new HttpOutputMessage() {
+			streamingOutputMessage.setBody((outputStream) -> writeInternal(t, new HttpOutputMessage() {
 				@Override
 				public OutputStream getBody() {
 					return outputStream;

@@ -280,10 +280,10 @@ public abstract class BodyInserters {
 
 		MediaType mediaType = outputMessage.getHeaders().getContentType();
 		return context.messageWriters().stream()
-				.filter(messageWriter -> messageWriter.canWrite(bodyType, mediaType))
+				.filter((messageWriter) -> messageWriter.canWrite(bodyType, mediaType))
 				.findFirst()
 				.map(BodyInserters::cast)
-				.map(writer -> write(body, bodyType, mediaType, outputMessage, context, writer))
+				.map((writer) -> write(body, bodyType, mediaType, outputMessage, context, writer))
 				.orElseGet(() -> Mono.error(unsupportedError(bodyType, context, mediaType)));
 	}
 
@@ -291,7 +291,7 @@ public abstract class BodyInserters {
 			BodyInserter.Context context, @Nullable MediaType mediaType) {
 
 		List<MediaType> supportedMediaTypes = context.messageWriters().stream()
-				.flatMap(reader -> reader.getWritableMediaTypes().stream())
+				.flatMap((reader) -> reader.getWritableMediaTypes().stream())
 				.collect(Collectors.toList());
 
 		return new UnsupportedMediaTypeException(mediaType, supportedMediaTypes, bodyType);
@@ -302,7 +302,7 @@ public abstract class BodyInserters {
 			BodyInserter.Context context, HttpMessageWriter<T> writer) {
 
 		return context.serverRequest()
-				.map(request -> {
+				.map((request) -> {
 					ServerHttpResponse response = (ServerHttpResponse) message;
 					return writer.write(input, type, type, mediaType, request, response, context.hints());
 				})
@@ -313,7 +313,7 @@ public abstract class BodyInserters {
 			BodyInserter.Context context, ResolvableType elementType, @Nullable MediaType mediaType) {
 
 		return context.messageWriters().stream()
-				.filter(messageWriter -> messageWriter.canWrite(elementType, mediaType))
+				.filter((messageWriter) -> messageWriter.canWrite(elementType, mediaType))
 				.findFirst()
 				.map(BodyInserters::<T>cast)
 				.orElseThrow(() -> new IllegalStateException(

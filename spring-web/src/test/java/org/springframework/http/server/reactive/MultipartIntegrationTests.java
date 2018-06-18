@@ -90,7 +90,7 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 		private Mono<Void> assertGetFormParts(ServerWebExchange exchange) {
 			return exchange
 					.getMultipartData()
-					.doOnNext(parts -> {
+					.doOnNext((parts) -> {
 						assertEquals(2, parts.size());
 						assertTrue(parts.containsKey("fooPart"));
 						assertFooPart(parts.getFirst("fooPart"));
@@ -106,7 +106,7 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 			assertEquals("foo.txt", ((FilePart) part).filename());
 
 			StepVerifier.create(DataBufferUtils.join(part.content()))
-					.consumeNextWith(buffer -> {
+					.consumeNextWith((buffer) -> {
 						assertEquals(12, buffer.readableByteCount());
 						byte[] byteContent = new byte[12];
 						buffer.read(byteContent);

@@ -58,7 +58,7 @@ public class FlushingIntegrationTests extends AbstractHttpHandlerIntegrationTest
 				.uri("/write-and-flush")
 				.retrieve()
 				.bodyToFlux(String.class)
-				.takeUntil(s -> s.endsWith("data1"))
+				.takeUntil((s) -> s.endsWith("data1"))
 				.reduce((s1, s2) -> s1 + s2);
 
 		StepVerifier.create(result)
@@ -77,7 +77,7 @@ public class FlushingIntegrationTests extends AbstractHttpHandlerIntegrationTest
 
 		try {
 			StepVerifier.create(result)
-					.consumeNextWith(value -> assertTrue(value.length() == 20000 * "0123456789".length()))
+					.consumeNextWith((value) -> assertTrue(value.length() == 20000 * "0123456789".length()))
 					.expectComplete()
 					.verify(Duration.ofSeconds(10L));
 		}
@@ -101,7 +101,7 @@ public class FlushingIntegrationTests extends AbstractHttpHandlerIntegrationTest
 				.next();
 
 		StepVerifier.create(result)
-				.expectNextMatches(s -> s.startsWith("0123456789"))
+				.expectNextMatches((s) -> s.startsWith("0123456789"))
 				.expectComplete()
 				.verify(Duration.ofSeconds(10L));
 	}
@@ -120,7 +120,7 @@ public class FlushingIntegrationTests extends AbstractHttpHandlerIntegrationTest
 			String path = request.getURI().getPath();
 			if (path.endsWith("write-and-flush")) {
 				Flux<Publisher<DataBuffer>> responseBody = interval(Duration.ofMillis(50), 2)
-						.map(l -> toDataBuffer("data" + l + "\n", response.bufferFactory()))
+						.map((l) -> toDataBuffer("data" + l + "\n", response.bufferFactory()))
 						.map(Flux::just);
 				return response.writeAndFlushWith(responseBody.concatWith(Flux.never()));
 			}
@@ -128,14 +128,14 @@ public class FlushingIntegrationTests extends AbstractHttpHandlerIntegrationTest
 				Flux<DataBuffer> responseBody = Flux
 						.just("0123456789")
 						.repeat(20000)
-						.map(value -> toDataBuffer(value + "\n", response.bufferFactory()));
+						.map((value) -> toDataBuffer(value + "\n", response.bufferFactory()));
 				return response.writeWith(responseBody);
 			}
 			else if (path.endsWith("write-and-never-complete")) {
 				Flux<DataBuffer> responseBody = Flux
 						.just("0123456789")
 						.repeat(20000)
-						.map(value -> toDataBuffer(value + "\n", response.bufferFactory()));
+						.map((value) -> toDataBuffer(value + "\n", response.bufferFactory()));
 				return response.writeWith(responseBody.mergeWith(Flux.never()));
 			}
 			return response.writeWith(Flux.empty());

@@ -188,7 +188,7 @@ public abstract class BodyExtractors {
 				.orElse(MediaType.APPLICATION_OCTET_STREAM);
 
 		return context.messageReaders().stream()
-				.filter(reader -> reader.canRead(elementType, contentType))
+				.filter((reader) -> reader.canRead(elementType, contentType))
 				.findFirst()
 				.map(BodyExtractors::<T>cast)
 				.map(readerFunction)
@@ -199,7 +199,7 @@ public abstract class BodyExtractors {
 			ResolvableType elementType, MediaType contentType) {
 
 		List<MediaType> supportedMediaTypes = context.messageReaders().stream()
-				.flatMap(reader -> reader.getReadableMediaTypes().stream())
+				.flatMap((reader) -> reader.getReadableMediaTypes().stream())
 				.collect(Collectors.toList());
 
 		return new UnsupportedMediaTypeException(contentType, supportedMediaTypes, elementType);
@@ -209,7 +209,7 @@ public abstract class BodyExtractors {
 			ResolvableType type, HttpMessageReader<T> reader) {
 
 		return context.serverResponse()
-				.map(response -> reader.readMono(type, type, (ServerHttpRequest) message, response, context.hints()))
+				.map((response) -> reader.readMono(type, type, (ServerHttpRequest) message, response, context.hints()))
 				.orElseGet(() -> reader.readMono(type, message, context.hints()));
 	}
 
@@ -217,7 +217,7 @@ public abstract class BodyExtractors {
 			ResolvableType type, HttpMessageReader<T> reader) {
 
 		return context.serverResponse()
-				.map(response -> reader.read(type, type, (ServerHttpRequest) message, response, context.hints()))
+				.map((response) -> reader.read(type, type, (ServerHttpRequest) message, response, context.hints()))
 				.orElseGet(() -> reader.read(type, message, context.hints()));
 	}
 
@@ -226,7 +226,7 @@ public abstract class BodyExtractors {
 
 		if (inputMessage.getHeaders().getContentType() == null) {
 			// Empty body with no content type is ok
-			return inputMessage.getBody().map(o -> {
+			return inputMessage.getBody().map((o) -> {
 				throw ex;
 			});
 		}
@@ -239,7 +239,7 @@ public abstract class BodyExtractors {
 			ResolvableType elementType, MediaType mediaType, BodyExtractor.Context context) {
 
 		return context.messageReaders().stream()
-				.filter(messageReader -> messageReader.canRead(elementType, mediaType))
+				.filter((messageReader) -> messageReader.canRead(elementType, mediaType))
 				.findFirst()
 				.map(BodyExtractors::<T>cast)
 				.orElseThrow(() -> new IllegalStateException(
