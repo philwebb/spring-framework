@@ -47,14 +47,14 @@ public class FlashAttributeResultMatchers {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> ResultMatcher attribute(final String name, final Matcher<T> matcher) {
-		return result -> assertThat("Flash attribute '" + name + "'", (T) result.getFlashMap().get(name), matcher);
+		return (result) -> assertThat("Flash attribute '" + name + "'", (T) result.getFlashMap().get(name), matcher);
 	}
 
 	/**
 	 * Assert a flash attribute's value.
 	 */
 	public <T> ResultMatcher attribute(final String name, final Object value) {
-		return result -> assertEquals("Flash attribute '" + name + "'", value, result.getFlashMap().get(name));
+		return (result) -> assertEquals("Flash attribute '" + name + "'", value, result.getFlashMap().get(name));
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class FlashAttributeResultMatchers {
 	 * Assert the number of flash attributes.
 	 */
 	public <T> ResultMatcher attributeCount(final int count) {
-		return result -> assertEquals("FlashMap size must be " + count, count, result.getFlashMap().size());
+		return (result) -> assertEquals("FlashMap size must be " + count, count, result.getFlashMap().size());
 	}
 
 }

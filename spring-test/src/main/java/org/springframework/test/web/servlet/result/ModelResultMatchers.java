@@ -110,7 +110,7 @@ public class ModelResultMatchers {
 	 * Assert the given model attribute(s) have errors.
 	 */
 	public ResultMatcher attributeHasErrors(final String... names) {
-		return mvcResult -> {
+		return (mvcResult) -> {
 			ModelAndView mav = getModelAndView(mvcResult);
 			for (String name : names) {
 				BindingResult result = getBindingResult(mav, name);
@@ -123,7 +123,7 @@ public class ModelResultMatchers {
 	 * Assert the given model attribute(s) do not have errors.
 	 */
 	public ResultMatcher attributeHasNoErrors(final String... names) {
-		return mvcResult -> {
+		return (mvcResult) -> {
 			ModelAndView mav = getModelAndView(mvcResult);
 			for (String name : names) {
 				BindingResult result = getBindingResult(mav, name);
@@ -137,7 +137,7 @@ public class ModelResultMatchers {
 	 * Assert the given model attribute field(s) have errors.
 	 */
 	public ResultMatcher attributeHasFieldErrors(final String name, final String... fieldNames) {
-		return mvcResult -> {
+		return (mvcResult) -> {
 			ModelAndView mav = getModelAndView(mvcResult);
 			BindingResult result = getBindingResult(mav, name);
 			assertTrue("No errors for attribute '" + name + "'", result.hasErrors());
@@ -153,7 +153,7 @@ public class ModelResultMatchers {
 	 * @since 4.1
 	 */
 	public ResultMatcher attributeHasFieldErrorCode(final String name, final String fieldName, final String error) {
-		return mvcResult -> {
+		return (mvcResult) -> {
 			ModelAndView mav = getModelAndView(mvcResult);
 			BindingResult result = getBindingResult(mav, name);
 			assertTrue("No errors for attribute '" + name + "'", result.hasErrors());
@@ -173,7 +173,7 @@ public class ModelResultMatchers {
 	public <T> ResultMatcher attributeHasFieldErrorCode(final String name, final String fieldName,
 			final Matcher<? super String> matcher) {
 
-		return mvcResult -> {
+		return (mvcResult) -> {
 			ModelAndView mav = getModelAndView(mvcResult);
 			BindingResult result = getBindingResult(mav, name);
 			assertTrue("No errors for attribute: [" + name + "]", result.hasErrors());

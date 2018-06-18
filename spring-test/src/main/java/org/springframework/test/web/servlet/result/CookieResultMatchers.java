@@ -72,7 +72,7 @@ public class CookieResultMatchers {
 	 * max age is 0 (i.e. expired).
 	 */
 	public ResultMatcher exists(final String name) {
-		return result -> getCookie(result, name);
+		return (result) -> getCookie(result, name);
 	}
 
 	/**

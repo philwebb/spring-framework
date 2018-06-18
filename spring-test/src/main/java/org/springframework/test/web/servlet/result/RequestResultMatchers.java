@@ -121,7 +121,7 @@ public class RequestResultMatchers {
 	 * Assert a request attribute value.
 	 */
 	public <T> ResultMatcher attribute(final String name, final Object expectedValue) {
-		return result ->
+		return (result) ->
 				assertEquals("Request attribute '" + name + "'", expectedValue, result.getRequest().getAttribute(name));
 	}
 

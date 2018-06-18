@@ -45,7 +45,7 @@ public class HttpServerTests {
 	public void setUp() throws Exception {
 
 		HttpHandler httpHandler = RouterFunctions.toHttpHandler(
-				route(GET("/test"), request ->
+				route(GET("/test"), (request) ->
 						ServerResponse.ok().syncBody("It works!")));
 
 		this.server = new ReactorHttpServer();

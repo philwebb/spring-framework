@@ -207,12 +207,12 @@ public class AsyncTests {
 
 		@RequestMapping(params = "streaming")
 		public StreamingResponseBody getStreaming() {
-			return os -> os.write("name=Joe".getBytes(StandardCharsets.UTF_8));
+			return (os) -> os.write("name=Joe".getBytes(StandardCharsets.UTF_8));
 		}
 
 		@RequestMapping(params = "streamingSlow")
 		public StreamingResponseBody getStreamingSlow() {
-			return os -> {
+			return (os) -> {
 				os.write("name=Joe".getBytes());
 				try {
 					Thread.sleep(200);

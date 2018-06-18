@@ -86,7 +86,7 @@ public abstract class MockMvcResultMatchers {
 	 * @param expectedUrl the exact URL expected
 	 */
 	public static ResultMatcher forwardedUrl(String expectedUrl) {
-		return result -> assertEquals("Forwarded URL", expectedUrl, result.getResponse().getForwardedUrl());
+		return (result) -> assertEquals("Forwarded URL", expectedUrl, result.getResponse().getForwardedUrl());
 	}
 
 	/**
@@ -124,7 +124,7 @@ public abstract class MockMvcResultMatchers {
 	 * @param expectedUrl the exact URL expected
 	 */
 	public static ResultMatcher redirectedUrl(String expectedUrl) {
-		return result -> assertEquals("Redirected URL", expectedUrl, result.getResponse().getRedirectedUrl());
+		return (result) -> assertEquals("Redirected URL", expectedUrl, result.getResponse().getRedirectedUrl());
 	}
 
 	/**
