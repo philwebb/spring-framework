@@ -47,7 +47,7 @@ public class AdvisorComponentDefinition extends AbstractComponentDefinition {
 
 
 	public AdvisorComponentDefinition(String advisorBeanName, BeanDefinition advisorDefinition) {
-		 this(advisorBeanName, advisorDefinition, null);
+		this(advisorBeanName, advisorDefinition, null);
 	}
 
 	public AdvisorComponentDefinition(

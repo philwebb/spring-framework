@@ -299,7 +299,7 @@ public class AnnotationAsyncExecutionAspectTests {
 
 		@Async
 		public void failWithVoid() {
-			 throw new UnsupportedOperationException("failWithVoid");
+			throw new UnsupportedOperationException("failWithVoid");
 		}
 	}
 

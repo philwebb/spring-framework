@@ -49,12 +49,12 @@ public class StringLiteral extends Literal {
 	public String toString() {
 		return "'" + getLiteralValue().getValue() + "'";
 	}
-	
+
 	@Override
 	public boolean isCompilable() {
 		return true;
 	}
-	
+
 	@Override
 	public void generateCode(MethodVisitor mv, CodeFlow cf) {
 		mv.visitLdcInsn(this.value.getValue());

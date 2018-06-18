@@ -95,12 +95,12 @@ public class OpLT extends Operator {
 
 		return BooleanTypedValue.forValue(state.getTypeComparator().compare(left, right) < 0);
 	}
-	
+
 	@Override
 	public boolean isCompilable() {
 		return isCompilableOperatorUsingNumerics();
 	}
-	
+
 	@Override
 	public void generateCode(MethodVisitor mv, CodeFlow cf) {
 		generateComparisonCode(mv, cf, IFGE, IF_ICMPGE);

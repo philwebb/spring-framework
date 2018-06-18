@@ -70,7 +70,7 @@ public class InlineMap extends SpelNodeImpl {
 						break;
 					}
 				}
-				else if (!((c%2)==0 && (child instanceof PropertyOrFieldReference))) {					
+				else if (!((c%2)==0 && (child instanceof PropertyOrFieldReference))) {
 					isConstant = false;
 					break;
 				}

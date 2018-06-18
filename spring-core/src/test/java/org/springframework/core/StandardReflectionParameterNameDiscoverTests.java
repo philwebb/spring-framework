@@ -30,21 +30,21 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author Rob Winch
  */
 public class StandardReflectionParameterNameDiscoverTests {
-    private ParameterNameDiscoverer parameterNameDiscoverer;
+	private ParameterNameDiscoverer parameterNameDiscoverer;
 
-    @Before
-    public void setup() {
-        this.parameterNameDiscoverer = new StandardReflectionParameterNameDiscoverer();
-    }
+	@Before
+	public void setup() {
+		this.parameterNameDiscoverer = new StandardReflectionParameterNameDiscoverer();
+	}
 
-    @Test
-    public void getParameterNamesOnInterface() {
-        Method method = ReflectionUtils.findMethod(MessageService.class,"sendMessage", String.class);
-        String[] actualParams = this.parameterNameDiscoverer.getParameterNames(method);
-        assertThat(actualParams, is(new String[]{"message"}));
-    }
+	@Test
+	public void getParameterNamesOnInterface() {
+		Method method = ReflectionUtils.findMethod(MessageService.class,"sendMessage", String.class);
+		String[] actualParams = this.parameterNameDiscoverer.getParameterNames(method);
+		assertThat(actualParams, is(new String[]{"message"}));
+	}
 
-    public interface MessageService {
-        void sendMessage(String message);
-    }
+	public interface MessageService {
+		void sendMessage(String message);
+	}
 }

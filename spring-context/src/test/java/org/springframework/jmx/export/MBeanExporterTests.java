@@ -129,7 +129,7 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 					ObjectNameManager.getInstance(OBJECT_NAME));
 		}
 		finally {
-   			exporter.destroy();
+			exporter.destroy();
 		}
 	}
 
@@ -152,7 +152,7 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 			assertFalse("Assembler should not have been invoked", asm.invoked);
 		}
 		finally {
-   			exporter.destroy();
+			exporter.destroy();
 		}
 	}
 

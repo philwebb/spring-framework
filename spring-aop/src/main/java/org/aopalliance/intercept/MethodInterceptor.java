@@ -41,7 +41,7 @@ package org.aopalliance.intercept;
  */
 @FunctionalInterface
 public interface MethodInterceptor extends Interceptor {
-	
+
 	/**
 	 * Implement this method to perform extra treatments before and
 	 * after the invocation. Polite implementations would certainly
