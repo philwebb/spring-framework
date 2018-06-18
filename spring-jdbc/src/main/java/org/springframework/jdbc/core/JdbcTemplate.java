@@ -934,7 +934,7 @@ public class JdbcTemplate extends JdbcAccessor implements JdbcOperations {
 			this.logger.debug("Executing SQL batch update [" + sql + "]");
 		}
 
-		int[] result = execute(sql, (PreparedStatementCallback<int[]>) ps -> {
+		int[] result = execute(sql, (PreparedStatementCallback<int[]>) (ps) -> {
 			try {
 				int batchSize = pss.getBatchSize();
 				InterruptibleBatchPreparedStatementSetter ipss =
@@ -994,7 +994,7 @@ public class JdbcTemplate extends JdbcAccessor implements JdbcOperations {
 		if (this.logger.isDebugEnabled()) {
 			this.logger.debug("Executing SQL batch update [" + sql + "] with a batch size of " + batchSize);
 		}
-		int[][] result = execute(sql, (PreparedStatementCallback<int[][]>) ps -> {
+		int[][] result = execute(sql, (PreparedStatementCallback<int[][]>) (ps) -> {
 			List<int[]> rowsAffected = new ArrayList<>();
 			try {
 				boolean batchSupported = true;
@@ -1114,7 +1114,7 @@ public class JdbcTemplate extends JdbcAccessor implements JdbcOperations {
 			}
 		}
 
-		Map<String, Object> result = execute(csc, cs -> {
+		Map<String, Object> result = execute(csc, (cs) -> {
 			boolean retVal = cs.execute();
 			int updateCount = cs.getUpdateCount();
 			if (this.logger.isDebugEnabled()) {

@@ -296,7 +296,7 @@ public abstract class AbstractMethodMessageHandler<T>
 		if (handlerType != null) {
 			final Class<?> userType = ClassUtils.getUserClass(handlerType);
 			Map<Method, T> methods = MethodIntrospector.selectMethods(userType,
-					(MethodIntrospector.MetadataLookup<T>) method -> getMappingForMethod(method, userType));
+					(MethodIntrospector.MetadataLookup<T>) (method) -> getMappingForMethod(method, userType));
 			if (this.logger.isDebugEnabled()) {
 				this.logger.debug(methods.size() + " message handler methods found on " + userType + ": " + methods);
 			}

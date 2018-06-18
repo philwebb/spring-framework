@@ -722,8 +722,8 @@ public class StompBrokerRelayMessageHandler extends AbstractBrokerMessageHandler
 				long interval = Math.max(clientSendInterval, serverReceiveInterval);
 				con.onWriteInactivity(() ->
 						con.send(HEARTBEAT_MESSAGE).addCallback(
-								result -> {},
-								ex -> handleTcpConnectionFailure(
+								(result) -> {},
+								(ex) -> handleTcpConnectionFailure(
 										"Failed to forward heartbeat: " + ex.getMessage(), ex)), interval);
 			}
 			if (clientReceiveInterval > 0 && serverSendInterval > 0) {
@@ -923,8 +923,8 @@ public class StompBrokerRelayMessageHandler extends AbstractBrokerMessageHandler
 				if (conn != null) {
 					MessageHeaders headers = accessor.getMessageHeaders();
 					conn.send(MessageBuilder.createMessage(EMPTY_PAYLOAD, headers)).addCallback(
-							result -> {},
-							ex -> {
+							(result) -> {},
+							(ex) -> {
 								String error = "Failed to subscribe in \"system\" session.";
 								handleTcpConnectionFailure(error, ex);
 							});

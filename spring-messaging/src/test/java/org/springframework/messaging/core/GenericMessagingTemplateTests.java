@@ -223,7 +223,7 @@ public class GenericMessagingTemplateTests {
 	}
 
 	private MessageHandler createLateReplier(final CountDownLatch latch, final AtomicReference<Throwable> failure) {
-		MessageHandler handler = message -> {
+		MessageHandler handler = (message) -> {
 			try {
 				Thread.sleep(500);
 				MessageChannel replyChannel = (MessageChannel) message.getHeaders().getReplyChannel();

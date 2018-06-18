@@ -110,7 +110,7 @@ public abstract class MockMvcResultMatchers {
 	 * @see org.springframework.util.AntPathMatcher
 	 */
 	public static ResultMatcher forwardedUrlPattern(String urlPattern) {
-		return result -> {
+		return (result) -> {
 			assertTrue("AntPath pattern", pathMatcher.isPattern(urlPattern));
 			String url = result.getResponse().getForwardedUrl();
 			assertTrue("Forwarded URL does not match the expected URL pattern",
@@ -148,7 +148,7 @@ public abstract class MockMvcResultMatchers {
 	 * @see org.springframework.util.AntPathMatcher
 	 */
 	public static ResultMatcher redirectedUrlPattern(String urlPattern) {
-		return result -> {
+		return (result) -> {
 			assertTrue("No Ant-style path pattern", pathMatcher.isPattern(urlPattern));
 			String url = result.getResponse().getRedirectedUrl();
 			assertTrue("Redirected URL does not match the expected URL pattern",

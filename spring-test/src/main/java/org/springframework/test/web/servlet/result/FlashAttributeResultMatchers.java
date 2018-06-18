@@ -61,7 +61,7 @@ public class FlashAttributeResultMatchers {
 	 * Assert the existence of the given flash attributes.
 	 */
 	public <T> ResultMatcher attributeExists(final String... names) {
-		return result -> {
+		return (result) -> {
 			for (String name : names) {
 				assertTrue("Flash attribute '" + name + "' does not exist", result.getFlashMap().get(name) != null);
 			}

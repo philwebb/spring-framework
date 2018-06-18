@@ -75,7 +75,7 @@ public class ContentRequestMatchers {
 	 * Assert the request content type as a {@link MediaType}.
 	 */
 	public RequestMatcher contentType(final MediaType expectedContentType) {
-		return request -> {
+		return (request) -> {
 			MediaType actualContentType = request.getHeaders().getContentType();
 			assertTrue("Content type not set", actualContentType != null);
 			assertEquals("Content type", expectedContentType, actualContentType);
@@ -95,7 +95,7 @@ public class ContentRequestMatchers {
 	 * content type as defined by {@link MediaType#isCompatibleWith(MediaType)}.
 	 */
 	public RequestMatcher contentTypeCompatibleWith(final MediaType contentType) {
-		return request -> {
+		return (request) -> {
 			MediaType actualContentType = request.getHeaders().getContentType();
 			assertTrue("Content type not set", actualContentType != null);
 			if (actualContentType != null) {
@@ -109,7 +109,7 @@ public class ContentRequestMatchers {
 	 * Get the body of the request as a UTF-8 string and appply the given {@link Matcher}.
 	 */
 	public RequestMatcher string(final Matcher<? super String> matcher) {
-		return request -> {
+		return (request) -> {
 			MockClientHttpRequest mockRequest = (MockClientHttpRequest) request;
 			assertThat("Request content", mockRequest.getBodyAsString(), matcher);
 		};
@@ -119,7 +119,7 @@ public class ContentRequestMatchers {
 	 * Get the body of the request as a UTF-8 string and compare it to the given String.
 	 */
 	public RequestMatcher string(final String expectedContent) {
-		return request -> {
+		return (request) -> {
 			MockClientHttpRequest mockRequest = (MockClientHttpRequest) request;
 			assertEquals("Request content", expectedContent, mockRequest.getBodyAsString());
 		};
@@ -129,7 +129,7 @@ public class ContentRequestMatchers {
 	 * Compare the body of the request to the given byte array.
 	 */
 	public RequestMatcher bytes(final byte[] expectedContent) {
-		return request -> {
+		return (request) -> {
 			MockClientHttpRequest mockRequest = (MockClientHttpRequest) request;
 			assertEquals("Request content", expectedContent, mockRequest.getBodyAsBytes());
 		};
@@ -140,7 +140,7 @@ public class ContentRequestMatchers {
 	 * @since 4.3
 	 */
 	public RequestMatcher formData(final MultiValueMap<String, String> expectedContent) {
-		return request -> {
+		return (request) -> {
 			HttpInputMessage inputMessage = new HttpInputMessage() {
 				@Override
 				public InputStream getBody() throws IOException {
@@ -229,7 +229,7 @@ public class ContentRequestMatchers {
 	 * @since 5.0.5
 	 */
 	public RequestMatcher json(final String expectedJsonContent, final boolean strict) {
-		return request -> {
+		return (request) -> {
 			try {
 				MockClientHttpRequest mockRequest = (MockClientHttpRequest) request;
 				this.jsonHelper.assertJsonEqual(expectedJsonContent, mockRequest.getBodyAsString(), strict);

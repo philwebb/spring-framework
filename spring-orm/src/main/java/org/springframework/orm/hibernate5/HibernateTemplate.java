@@ -538,7 +538,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 	@Override
 	@SuppressWarnings({"unchecked", "deprecation"})
 	public <T> List<T> loadAll(final Class<T> entityClass) throws DataAccessException {
-		return nonNull(executeWithNativeSession((HibernateCallback<List<T>>) session -> {
+		return nonNull(executeWithNativeSession((HibernateCallback<List<T>>) (session) -> {
 			Criteria criteria = session.createCriteria(entityClass);
 			criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 			prepareCriteria(criteria);
@@ -838,7 +838,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 			throws DataAccessException {
 
 		Assert.notNull(criteria, "DetachedCriteria must not be null");
-		return nonNull(executeWithNativeSession((HibernateCallback<List<?>>) session -> {
+		return nonNull(executeWithNativeSession((HibernateCallback<List<?>>) (session) -> {
 			Criteria executableCriteria = criteria.getExecutableCriteria(session);
 			prepareCriteria(executableCriteria);
 			if (firstResult >= 0) {
@@ -873,7 +873,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 			throws DataAccessException {
 
 		Assert.notNull(exampleEntity, "Example entity must not be null");
-		return nonNull(executeWithNativeSession((HibernateCallback<List<T>>) session -> {
+		return nonNull(executeWithNativeSession((HibernateCallback<List<T>>) (session) -> {
 			Criteria executableCriteria = (entityName != null ?
 					session.createCriteria(entityName) : session.createCriteria(exampleEntity.getClass()));
 			executableCriteria.add(Example.create(exampleEntity));
@@ -897,7 +897,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 	@Override
 	@SuppressWarnings({"rawtypes", "unchecked", "deprecation"})
 	public List<?> find(final String queryString, @Nullable final Object... values) throws DataAccessException {
-		return nonNull(executeWithNativeSession((HibernateCallback<List<?>>) session -> {
+		return nonNull(executeWithNativeSession((HibernateCallback<List<?>>) (session) -> {
 			org.hibernate.Query queryObject = queryObject(
 					ReflectionUtils.invokeMethod(createQueryMethod, session, queryString));
 			prepareQuery(queryObject);
@@ -927,7 +927,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 		if (paramNames.length != values.length) {
 			throw new IllegalArgumentException("Length of paramNames array must match length of values array");
 		}
-		return nonNull(executeWithNativeSession((HibernateCallback<List<?>>) session -> {
+		return nonNull(executeWithNativeSession((HibernateCallback<List<?>>) (session) -> {
 			org.hibernate.Query queryObject = queryObject(
 					ReflectionUtils.invokeMethod(createQueryMethod, session, queryString));
 			prepareQuery(queryObject);
@@ -944,7 +944,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 	public List<?> findByValueBean(final String queryString, final Object valueBean)
 			throws DataAccessException {
 
-		return nonNull(executeWithNativeSession((HibernateCallback<List<?>>) session -> {
+		return nonNull(executeWithNativeSession((HibernateCallback<List<?>>) (session) -> {
 			org.hibernate.Query queryObject = queryObject(
 					ReflectionUtils.invokeMethod(createQueryMethod, session, queryString));
 			prepareQuery(queryObject);
@@ -962,7 +962,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 	@Override
 	@SuppressWarnings({"rawtypes", "unchecked", "deprecation"})
 	public List<?> findByNamedQuery(final String queryName, @Nullable final Object... values) throws DataAccessException {
-		return nonNull(executeWithNativeSession((HibernateCallback<List<?>>) session -> {
+		return nonNull(executeWithNativeSession((HibernateCallback<List<?>>) (session) -> {
 			org.hibernate.Query queryObject = queryObject(
 					ReflectionUtils.invokeMethod(getNamedQueryMethod, session, queryName));
 			prepareQuery(queryObject);
@@ -993,7 +993,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 		if (values != null && (paramNames == null || paramNames.length != values.length)) {
 			throw new IllegalArgumentException("Length of paramNames array must match length of values array");
 		}
-		return nonNull(executeWithNativeSession((HibernateCallback<List<?>>) session -> {
+		return nonNull(executeWithNativeSession((HibernateCallback<List<?>>) (session) -> {
 			org.hibernate.Query queryObject = (org.hibernate.Query)
 					nonNull(ReflectionUtils.invokeMethod(getNamedQueryMethod, session, queryName));
 			prepareQuery(queryObject);
@@ -1012,7 +1012,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 	public List<?> findByNamedQueryAndValueBean(final String queryName, final Object valueBean)
 			throws DataAccessException {
 
-		return nonNull(executeWithNativeSession((HibernateCallback<List<?>>) session -> {
+		return nonNull(executeWithNativeSession((HibernateCallback<List<?>>) (session) -> {
 			org.hibernate.Query queryObject = queryObject(
 					ReflectionUtils.invokeMethod(getNamedQueryMethod, session, queryName));
 			prepareQuery(queryObject);
@@ -1030,7 +1030,7 @@ public class HibernateTemplate implements HibernateOperations, InitializingBean 
 	@Override
 	@SuppressWarnings({"rawtypes", "deprecation"})
 	public Iterator<?> iterate(final String queryString, @Nullable final Object... values) throws DataAccessException {
-		return nonNull(executeWithNativeSession((HibernateCallback<Iterator<?>>) session -> {
+		return nonNull(executeWithNativeSession((HibernateCallback<Iterator<?>>) (session) -> {
 			org.hibernate.Query queryObject = queryObject(
 					ReflectionUtils.invokeMethod(createQueryMethod, session, queryString));
 			prepareQuery(queryObject);

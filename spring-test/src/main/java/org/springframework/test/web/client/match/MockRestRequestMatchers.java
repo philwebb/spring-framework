@@ -54,7 +54,7 @@ public abstract class MockRestRequestMatchers {
 	 * Match to any request.
 	 */
 	public static RequestMatcher anything() {
-		return request -> {};
+		return (request) -> {};
 	}
 
 	/**
@@ -64,7 +64,7 @@ public abstract class MockRestRequestMatchers {
 	 */
 	public static RequestMatcher method(final HttpMethod method) {
 		Assert.notNull(method, "'method' must not be null");
-		return request -> assertEquals("Unexpected HttpMethod", method, request.getMethod());
+		return (request) -> assertEquals("Unexpected HttpMethod", method, request.getMethod());
 	}
 
 	/**
@@ -74,7 +74,7 @@ public abstract class MockRestRequestMatchers {
 	 */
 	public static RequestMatcher requestTo(final Matcher<String> matcher) {
 		Assert.notNull(matcher, "'matcher' must not be null");
-		return request -> assertThat("Request URI", request.getURI().toString(), matcher);
+		return (request) -> assertThat("Request URI", request.getURI().toString(), matcher);
 	}
 
 	/**
@@ -84,7 +84,7 @@ public abstract class MockRestRequestMatchers {
 	 */
 	public static RequestMatcher requestTo(final String expectedUri) {
 		Assert.notNull(expectedUri, "'uri' must not be null");
-		return request -> assertEquals("Request URI", expectedUri, request.getURI().toString());
+		return (request) -> assertEquals("Request URI", expectedUri, request.getURI().toString());
 	}
 
 	/**
@@ -108,7 +108,7 @@ public abstract class MockRestRequestMatchers {
 	 */
 	public static RequestMatcher requestTo(final URI uri) {
 		Assert.notNull(uri, "'uri' must not be null");
-		return request -> assertEquals("Unexpected request", uri, request.getURI());
+		return (request) -> assertEquals("Unexpected request", uri, request.getURI());
 	}
 
 	/**
@@ -116,7 +116,7 @@ public abstract class MockRestRequestMatchers {
 	 */
 	@SafeVarargs
 	public static RequestMatcher queryParam(final String name, final Matcher<? super String>... matchers) {
-		return request -> {
+		return (request) -> {
 			MultiValueMap<String, String> params = getQueryParams(request);
 			assertValueCount("query param", name, params, matchers.length);
 			for (int i = 0 ; i < matchers.length; i++) {
@@ -129,7 +129,7 @@ public abstract class MockRestRequestMatchers {
 	 * Assert request query parameter values.
 	 */
 	public static RequestMatcher queryParam(final String name, final String... expectedValues) {
-		return request -> {
+		return (request) -> {
 			MultiValueMap<String, String> params = getQueryParams(request);
 			assertValueCount("query param", name, params, expectedValues.length);
 			for (int i = 0 ; i < expectedValues.length; i++) {
@@ -160,7 +160,7 @@ public abstract class MockRestRequestMatchers {
 	 */
 	@SafeVarargs
 	public static RequestMatcher header(final String name, final Matcher<? super String>... matchers) {
-		return request -> {
+		return (request) -> {
 			assertValueCount("header", name, request.getHeaders(), matchers.length);
 			List<String> headerValues = request.getHeaders().get(name);
 			Assert.state(headerValues != null, "No header values");
@@ -174,7 +174,7 @@ public abstract class MockRestRequestMatchers {
 	 * Assert request header values.
 	 */
 	public static RequestMatcher header(final String name, final String... expectedValues) {
-		return request -> {
+		return (request) -> {
 			assertValueCount("header", name, request.getHeaders(), expectedValues.length);
 			List<String> headerValues = request.getHeaders().get(name);
 			Assert.state(headerValues != null, "No header values");

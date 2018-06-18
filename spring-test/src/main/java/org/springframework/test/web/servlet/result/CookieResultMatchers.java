@@ -51,7 +51,7 @@ public class CookieResultMatchers {
 	 * Assert a cookie value with the given Hamcrest {@link Matcher}.
 	 */
 	public ResultMatcher value(final String name, final Matcher<? super String> matcher) {
-		return result -> {
+		return (result) -> {
 			Cookie cookie = getCookie(result, name);
 			assertThat("Response cookie '" + name + "'", cookie.getValue(), matcher);
 		};
@@ -61,7 +61,7 @@ public class CookieResultMatchers {
 	 * Assert a cookie value.
 	 */
 	public ResultMatcher value(final String name, final String expectedValue) {
-		return result -> {
+		return (result) -> {
 			Cookie cookie = getCookie(result, name);
 			assertEquals("Response cookie", expectedValue, cookie.getValue());
 		};
@@ -80,7 +80,7 @@ public class CookieResultMatchers {
 	 * irrespective of whether max age is 0, i.e. expired.
 	 */
 	public ResultMatcher doesNotExist(final String name) {
-		return result -> {
+		return (result) -> {
 			Cookie cookie = result.getResponse().getCookie(name);
 			assertTrue("Unexpected cookie with name '" + name + "'", cookie == null);
 		};
@@ -90,7 +90,7 @@ public class CookieResultMatchers {
 	 * Assert a cookie's maxAge with a Hamcrest {@link Matcher}.
 	 */
 	public ResultMatcher maxAge(final String name, final Matcher<? super Integer> matcher) {
-		return result -> {
+		return (result) -> {
 			Cookie cookie = getCookie(result, name);
 			assertThat("Response cookie '" + name + "' maxAge", cookie.getMaxAge(), matcher);
 		};
@@ -100,7 +100,7 @@ public class CookieResultMatchers {
 	 * Assert a cookie's maxAge value.
 	 */
 	public ResultMatcher maxAge(final String name, final int maxAge) {
-		return result -> {
+		return (result) -> {
 			Cookie cookie = getCookie(result, name);
 			assertEquals("Response cookie '" + name + "' maxAge", maxAge, cookie.getMaxAge());
 		};
@@ -110,14 +110,14 @@ public class CookieResultMatchers {
 	 * Assert a cookie path with a Hamcrest {@link Matcher}.
 	 */
 	public ResultMatcher path(final String name, final Matcher<? super String> matcher) {
-		return result -> {
+		return (result) -> {
 			Cookie cookie = getCookie(result, name);
 			assertThat("Response cookie '" + name + "' path", cookie.getPath(), matcher);
 		};
 	}
 
 	public ResultMatcher path(final String name, final String path) {
-		return result -> {
+		return (result) -> {
 			Cookie cookie = getCookie(result, name);
 			assertEquals("Response cookie '" + name + "' path", path, cookie.getPath());
 		};
@@ -127,7 +127,7 @@ public class CookieResultMatchers {
 	 * Assert a cookie's domain with a Hamcrest {@link Matcher}.
 	 */
 	public ResultMatcher domain(final String name, final Matcher<? super String> matcher) {
-		return result -> {
+		return (result) -> {
 			Cookie cookie = getCookie(result, name);
 			assertThat("Response cookie '" + name + "' domain", cookie.getDomain(), matcher);
 		};
@@ -137,7 +137,7 @@ public class CookieResultMatchers {
 	 * Assert a cookie's domain value.
 	 */
 	public ResultMatcher domain(final String name, final String domain) {
-		return result -> {
+		return (result) -> {
 			Cookie cookie = getCookie(result, name);
 			assertEquals("Response cookie '" + name + "' domain", domain, cookie.getDomain());
 		};
@@ -147,7 +147,7 @@ public class CookieResultMatchers {
 	 * Assert a cookie's comment with a Hamcrest {@link Matcher}.
 	 */
 	public ResultMatcher comment(final String name, final Matcher<? super String> matcher) {
-		return result -> {
+		return (result) -> {
 			Cookie cookie = getCookie(result, name);
 			assertThat("Response cookie '" + name + "' comment", cookie.getComment(), matcher);
 		};
@@ -157,7 +157,7 @@ public class CookieResultMatchers {
 	 * Assert a cookie's comment value.
 	 */
 	public ResultMatcher comment(final String name, final String comment) {
-		return result -> {
+		return (result) -> {
 			Cookie cookie = getCookie(result, name);
 			assertEquals("Response cookie '" + name + "' comment", comment, cookie.getComment());
 		};
@@ -167,7 +167,7 @@ public class CookieResultMatchers {
 	 * Assert a cookie's version with a Hamcrest {@link Matcher}.
 	 */
 	public ResultMatcher version(final String name, final Matcher<? super Integer> matcher) {
-		return result -> {
+		return (result) -> {
 			Cookie cookie = getCookie(result, name);
 			assertThat("Response cookie '" + name + "' version", cookie.getVersion(), matcher);
 		};
@@ -177,7 +177,7 @@ public class CookieResultMatchers {
 	 * Assert a cookie's version value.
 	 */
 	public ResultMatcher version(final String name, final int version) {
-		return result -> {
+		return (result) -> {
 			Cookie cookie = getCookie(result, name);
 			assertEquals("Response cookie '" + name + "' version", version, cookie.getVersion());
 		};
@@ -187,7 +187,7 @@ public class CookieResultMatchers {
 	 * Assert whether the cookie must be sent over a secure protocol or not.
 	 */
 	public ResultMatcher secure(final String name, final boolean secure) {
-		return result -> {
+		return (result) -> {
 			Cookie cookie = getCookie(result, name);
 			assertEquals("Response cookie '" + name + "' secure", secure, cookie.getSecure());
 		};
@@ -198,7 +198,7 @@ public class CookieResultMatchers {
 	 * @since 4.3.9
 	 */
 	public ResultMatcher httpOnly(final String name, final boolean httpOnly) {
-		return result -> {
+		return (result) -> {
 			Cookie cookie = getCookie(result, name);
 			assertEquals("Response cookie '" + name + "' httpOnly", httpOnly, cookie.isHttpOnly());
 		};

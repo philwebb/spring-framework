@@ -187,7 +187,7 @@ public class NativeMessageHeaderAccessor extends MessageHeaderAccessor {
 			nativeHeaders = new LinkedMultiValueMap<>(4);
 			setHeader(NATIVE_HEADERS, nativeHeaders);
 		}
-		List<String> values = nativeHeaders.computeIfAbsent(name, k -> new LinkedList<>());
+		List<String> values = nativeHeaders.computeIfAbsent(name, (k) -> new LinkedList<>());
 		values.add(value);
 		setModified(true);
 	}

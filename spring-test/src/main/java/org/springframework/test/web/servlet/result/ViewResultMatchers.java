@@ -47,7 +47,7 @@ public class ViewResultMatchers {
 	 * Assert the selected view name with the given Hamcrest {@link Matcher}.
 	 */
 	public ResultMatcher name(final Matcher<? super String> matcher) {
-		return result -> {
+		return (result) -> {
 			ModelAndView mav = result.getModelAndView();
 			if (mav == null) {
 				fail("No ModelAndView found");
@@ -60,7 +60,7 @@ public class ViewResultMatchers {
 	 * Assert the selected view name.
 	 */
 	public ResultMatcher name(final String expectedViewName) {
-		return result -> {
+		return (result) -> {
 			ModelAndView mav = result.getModelAndView();
 			if (mav == null) {
 				fail("No ModelAndView found");
