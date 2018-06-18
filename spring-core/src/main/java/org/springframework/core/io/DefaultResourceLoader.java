@@ -127,7 +127,7 @@ public class DefaultResourceLoader implements ResourceLoader {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> Map<Resource, T> getResourceCache(Class<T> valueType) {
-		return (Map<Resource, T>) this.resourceCaches.computeIfAbsent(valueType, key -> new ConcurrentHashMap<>());
+		return (Map<Resource, T>) this.resourceCaches.computeIfAbsent(valueType, (key) -> new ConcurrentHashMap<>());
 	}
 
 	/**

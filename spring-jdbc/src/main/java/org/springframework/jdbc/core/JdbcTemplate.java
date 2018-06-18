@@ -860,7 +860,7 @@ public class JdbcTemplate extends JdbcAccessor implements JdbcOperations {
 
 		this.logger.debug("Executing prepared SQL update");
 
-		return updateCount(execute(psc, ps -> {
+		return updateCount(execute(psc, (ps) -> {
 			try {
 				if (pss != null) {
 					pss.setValues(ps);
@@ -891,7 +891,7 @@ public class JdbcTemplate extends JdbcAccessor implements JdbcOperations {
 		Assert.notNull(generatedKeyHolder, "KeyHolder must not be null");
 		this.logger.debug("Executing SQL update and returning generated keys");
 
-		return updateCount(execute(psc, ps -> {
+		return updateCount(execute(psc, (ps) -> {
 			int rows = ps.executeUpdate();
 			List<Map<String, Object>> generatedKeys = generatedKeyHolder.getKeyList();
 			generatedKeys.clear();

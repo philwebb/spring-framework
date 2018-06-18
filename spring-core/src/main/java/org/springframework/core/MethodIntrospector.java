@@ -65,7 +65,7 @@ public abstract class MethodIntrospector {
 		for (Class<?> currentHandlerType : handlerTypes) {
 			final Class<?> targetClass = (specificHandlerType != null ? specificHandlerType : currentHandlerType);
 
-			ReflectionUtils.doWithMethods(currentHandlerType, method -> {
+			ReflectionUtils.doWithMethods(currentHandlerType, (method) -> {
 				Method specificMethod = ClassUtils.getMostSpecificMethod(method, targetClass);
 				T result = metadataLookup.inspect(specificMethod);
 				if (result != null) {
@@ -90,7 +90,7 @@ public abstract class MethodIntrospector {
 	 */
 	public static Set<Method> selectMethods(Class<?> targetType, final ReflectionUtils.MethodFilter methodFilter) {
 		return selectMethods(targetType,
-				(MetadataLookup<Boolean>) method -> (methodFilter.matches(method) ? Boolean.TRUE : null)).keySet();
+				(MetadataLookup<Boolean>) (method) -> (methodFilter.matches(method) ? Boolean.TRUE : null)).keySet();
 	}
 
 	/**
