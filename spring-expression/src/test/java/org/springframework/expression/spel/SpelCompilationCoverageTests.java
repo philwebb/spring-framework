@@ -1579,7 +1579,7 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 		assertCanCompile(this.expression);
 		assertTrue((Boolean) this.expression.getValue(f));
 
-		long l = 300l;
+		long l = 300L;
 		this.expression = parse("#root==300l");
 		assertTrue((Boolean) this.expression.getValue(l));
 		assertCanCompile(this.expression);
