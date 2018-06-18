@@ -42,7 +42,7 @@ public class SimpleTriggerContext implements TriggerContext {
 	/**
 	 * Create a SimpleTriggerContext with all time values set to {@code null}.
 	 */
-	 public SimpleTriggerContext() {
+	public SimpleTriggerContext() {
 	}
 
 	/**
