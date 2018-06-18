@@ -109,7 +109,7 @@ public class AnnotationTestBean implements IJmxTestBean {
 	@ManagedMetric(description="The QueueSize metric", currencyTimeLimit = 20, persistPolicy="OnUpdate", persistPeriod=300,
 			category="utilization", metricType = MetricType.COUNTER, displayName="Queue Size", unit="messages")
 	public long getQueueSize() {
-		return 100l;
+		return 100L;
 	}
 
 	@ManagedMetric
