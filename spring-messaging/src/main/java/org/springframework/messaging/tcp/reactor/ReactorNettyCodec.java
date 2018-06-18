@@ -26,7 +26,7 @@ import io.netty.buffer.ByteBuf;
 /**
  * Simple holder for a decoding {@link Function} and an encoding
  * {@link BiConsumer} to use with Reactor Netty.
- * 
+ *
  * @param <P> the message payload type
  * @author Rossen Stoyanchev
  * @since 5.0

@@ -112,7 +112,7 @@ public abstract class HibernateDaoSupport extends DaoSupport {
 	 */
 	@Nullable
 	public final HibernateTemplate getHibernateTemplate() {
-	  return this.hibernateTemplate;
+		return this.hibernateTemplate;
 	}
 
 	@Override

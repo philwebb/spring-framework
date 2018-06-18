@@ -312,12 +312,12 @@ public class PersistenceAnnotationBeanPostProcessor
 	}
 
 	public void setOrder(int order) {
-	  this.order = order;
+		this.order = order;
 	}
 
 	@Override
 	public int getOrder() {
-	  return this.order;
+		return this.order;
 	}
 
 	@Override

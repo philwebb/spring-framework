@@ -449,7 +449,7 @@ public class StatusResultMatchers {
 	 */
 	@Deprecated
 	public ResultMatcher isInsufficientSpaceOnResource() {
-		 return matcher(HttpStatus.INSUFFICIENT_SPACE_ON_RESOURCE);
+		return matcher(HttpStatus.INSUFFICIENT_SPACE_ON_RESOURCE);
 	}
 
 	/**

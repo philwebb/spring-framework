@@ -50,7 +50,7 @@ public class NamedParameterJdbcDaoSupport extends JdbcDaoSupport {
 	 */
 	@Nullable
 	public NamedParameterJdbcTemplate getNamedParameterJdbcTemplate() {
-	  return this.namedParameterJdbcTemplate;
+		return this.namedParameterJdbcTemplate;
 	}
 
 }
