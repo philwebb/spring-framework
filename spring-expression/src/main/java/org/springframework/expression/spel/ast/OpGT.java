@@ -49,7 +49,7 @@ public class OpGT extends Operator {
 
 		this.leftActualDescriptor = CodeFlow.toDescriptorFromObject(left);
 		this.rightActualDescriptor = CodeFlow.toDescriptorFromObject(right);
-		
+
 		if (left instanceof Number && right instanceof Number) {
 			Number leftNumber = (Number) left;
 			Number rightNumber = (Number) right;
@@ -100,7 +100,7 @@ public class OpGT extends Operator {
 	public boolean isCompilable() {
 		return isCompilableOperatorUsingNumerics();
 	}
-	
+
 	@Override
 	public void generateCode(MethodVisitor mv, CodeFlow cf) {
 		generateComparisonCode(mv, cf, IFLE, IF_ICMPLE);

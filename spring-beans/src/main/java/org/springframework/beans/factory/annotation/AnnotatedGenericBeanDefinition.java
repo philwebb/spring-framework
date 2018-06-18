@@ -96,7 +96,7 @@ public class AnnotatedGenericBeanDefinition extends GenericBeanDefinition implem
 
 	@Override
 	public final AnnotationMetadata getMetadata() {
-		 return this.metadata;
+		return this.metadata;
 	}
 
 	@Override

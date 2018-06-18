@@ -87,7 +87,7 @@ public abstract class AbstractTypeHierarchyTraversingFilter implements TypeFilte
 						this.logger.debug("Could not read super class [" + metadata.getSuperClassName() +
 								"] of type-filtered class [" + metadata.getClassName() + "]");
 					}
- 				}
+				}
 			}
 		}
 

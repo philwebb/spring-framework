@@ -48,7 +48,7 @@ public class IntLiteral extends Literal {
 	public boolean isCompilable() {
 		return true;
 	}
-	
+
 	@Override
 	public void generateCode(MethodVisitor mv, CodeFlow cf) {
 		Integer intValue = (Integer) this.value.getValue();

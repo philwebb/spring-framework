@@ -126,13 +126,13 @@ public class OpMultiply extends Operator {
 			return false;
 		}
 		if (this.children.length > 1) {
-			 if (!getRightOperand().isCompilable()) {
-				 return false;
-			 }
+			if (!getRightOperand().isCompilable()) {
+				return false;
+			}
 		}
 		return (this.exitTypeDescriptor != null);
 	}
-	
+
 	@Override
 	public void generateCode(MethodVisitor mv, CodeFlow cf) {
 		getLeftOperand().generateCode(mv, cf);
@@ -154,12 +154,12 @@ public class OpMultiply extends Operator {
 				case 'J':
 					mv.visitInsn(LMUL);
 					break;
-				case 'F': 
+				case 'F':
 					mv.visitInsn(FMUL);
 					break;
 				case 'D':
 					mv.visitInsn(DMUL);
-					break;				
+					break;
 				default:
 					throw new IllegalStateException(
 							"Unrecognized exit type descriptor: '" + this.exitTypeDescriptor + "'");

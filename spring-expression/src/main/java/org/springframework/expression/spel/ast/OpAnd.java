@@ -78,7 +78,7 @@ public class OpAnd extends Operator {
 				CodeFlow.isBooleanCompatible(left.exitTypeDescriptor) &&
 				CodeFlow.isBooleanCompatible(right.exitTypeDescriptor));
 	}
-	
+
 	@Override
 	public void generateCode(MethodVisitor mv, CodeFlow cf) {
 		// Pseudo: if (!leftOperandValue) { result=false; } else { result=rightOperandValue; }
