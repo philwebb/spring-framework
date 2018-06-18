@@ -39,7 +39,7 @@ public class RouterFunctionTests {
 	@Before
 	public void setUp() throws Exception {
 
-		RouterFunction<?> route = route(GET("/test"), request ->
+		RouterFunction<?> route = route(GET("/test"), (request) ->
 				ServerResponse.ok().syncBody("It works!"));
 
 		this.testClient = WebTestClient.bindToRouterFunction(route).build();

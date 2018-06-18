@@ -57,7 +57,7 @@ public class HeaderResultMatchers {
 	 * String {@code Matcher}.
 	 */
 	public ResultMatcher string(final String name, final Matcher<? super String> matcher) {
-		return result -> assertThat("Response header '" + name + "'", result.getResponse().getHeader(name), matcher);
+		return (result) -> assertThat("Response header '" + name + "'", result.getResponse().getHeader(name), matcher);
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class HeaderResultMatchers {
 	 * Assert the primary value of the response header as a String value.
 	 */
 	public ResultMatcher string(final String name, final String value) {
-		return result -> assertEquals("Response header '" + name + "'", value, result.getResponse().getHeader(name));
+		return (result) -> assertEquals("Response header '" + name + "'", value, result.getResponse().getHeader(name));
 	}
 
 	/**
@@ -95,7 +95,7 @@ public class HeaderResultMatchers {
 	 * @since 5.0.3
 	 */
 	public ResultMatcher exists(final String name) {
-		return result -> assertTrue("Response should contain header '" + name + "'",
+		return (result) -> assertTrue("Response should contain header '" + name + "'",
 				result.getResponse().containsHeader(name));
 	}
 
@@ -104,7 +104,7 @@ public class HeaderResultMatchers {
 	 * @since 4.0
 	 */
 	public ResultMatcher doesNotExist(final String name) {
-		return result -> assertTrue("Response should not contain header '" + name + "'",
+		return (result) -> assertTrue("Response should not contain header '" + name + "'",
 				!result.getResponse().containsHeader(name));
 	}
 

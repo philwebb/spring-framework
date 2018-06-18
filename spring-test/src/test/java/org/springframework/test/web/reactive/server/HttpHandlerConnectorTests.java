@@ -61,7 +61,7 @@ public class HttpHandlerConnectorTests {
 		});
 
 		new HttpHandlerConnector(handler).connect(HttpMethod.POST, URI.create("/custom-path"),
-				request -> {
+				(request) -> {
 					request.getHeaders().put("custom-header", Arrays.asList("h0", "h1"));
 					request.getCookies().add("custom-cookie", new HttpCookie("custom-cookie", "c0"));
 					return request.writeWith(Mono.just(toDataBuffer("Custom body")));

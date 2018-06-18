@@ -120,7 +120,7 @@ public class FrameworkExtensionTests {
 		@Override
 		public RequestPostProcessor beforeMockMvcCreated(ConfigurableMockMvcBuilder<?> builder,
 				WebApplicationContext context) {
-			return request -> {
+			return (request) -> {
 				request.setUserPrincipal(mock(Principal.class));
 				return request;
 			};

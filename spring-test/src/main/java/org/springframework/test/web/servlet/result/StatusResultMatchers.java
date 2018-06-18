@@ -51,7 +51,7 @@ public class StatusResultMatchers {
 	 * Use the {@code StatusResultMatchers.isEqualTo} extension in Kotlin.
 	 */
 	public ResultMatcher is(final Matcher<Integer> matcher) {
-		return result -> assertThat("Response status", result.getResponse().getStatus(), matcher);
+		return (result) -> assertThat("Response status", result.getResponse().getStatus(), matcher);
 	}
 
 	/**
@@ -59,14 +59,14 @@ public class StatusResultMatchers {
 	 * Use the {@code StatusResultMatchers.isEqualTo} extension in Kotlin.
 	 */
 	public ResultMatcher is(final int status) {
-		return result -> assertEquals("Response status", status, result.getResponse().getStatus());
+		return (result) -> assertEquals("Response status", status, result.getResponse().getStatus());
 	}
 
 	/**
 	 * Assert the response status code is in the 1xx range.
 	 */
 	public ResultMatcher is1xxInformational() {
-		return result -> assertEquals("Range for response status value " + result.getResponse().getStatus(),
+		return (result) -> assertEquals("Range for response status value " + result.getResponse().getStatus(),
 				HttpStatus.Series.INFORMATIONAL, getHttpStatusSeries(result));
 	}
 
@@ -74,7 +74,7 @@ public class StatusResultMatchers {
 	 * Assert the response status code is in the 2xx range.
 	 */
 	public ResultMatcher is2xxSuccessful() {
-		return result -> assertEquals("Range for response status value " + result.getResponse().getStatus(),
+		return (result) -> assertEquals("Range for response status value " + result.getResponse().getStatus(),
 				HttpStatus.Series.SUCCESSFUL, getHttpStatusSeries(result));
 	}
 
@@ -82,7 +82,7 @@ public class StatusResultMatchers {
 	 * Assert the response status code is in the 3xx range.
 	 */
 	public ResultMatcher is3xxRedirection() {
-		return result -> assertEquals("Range for response status value " + result.getResponse().getStatus(),
+		return (result) -> assertEquals("Range for response status value " + result.getResponse().getStatus(),
 				HttpStatus.Series.REDIRECTION, getHttpStatusSeries(result));
 	}
 
@@ -90,7 +90,7 @@ public class StatusResultMatchers {
 	 * Assert the response status code is in the 4xx range.
 	 */
 	public ResultMatcher is4xxClientError() {
-		return result -> assertEquals("Range for response status value " + result.getResponse().getStatus(),
+		return (result) -> assertEquals("Range for response status value " + result.getResponse().getStatus(),
 				HttpStatus.Series.CLIENT_ERROR, getHttpStatusSeries(result));
 	}
 
@@ -98,7 +98,7 @@ public class StatusResultMatchers {
 	 * Assert the response status code is in the 5xx range.
 	 */
 	public ResultMatcher is5xxServerError() {
-		return result -> assertEquals("Range for response status value " + result.getResponse().getStatus(),
+		return (result) -> assertEquals("Range for response status value " + result.getResponse().getStatus(),
 				HttpStatus.Series.SERVER_ERROR, getHttpStatusSeries(result));
 	}
 
@@ -112,14 +112,14 @@ public class StatusResultMatchers {
 	 * Assert the Servlet response error message with the given Hamcrest {@link Matcher}.
 	 */
 	public ResultMatcher reason(final Matcher<? super String> matcher) {
-		return result -> assertThat("Response status reason", result.getResponse().getErrorMessage(), matcher);
+		return (result) -> assertThat("Response status reason", result.getResponse().getErrorMessage(), matcher);
 	}
 
 	/**
 	 * Assert the Servlet response error message.
 	 */
 	public ResultMatcher reason(final String reason) {
-		return result -> assertEquals("Response status reason", reason, result.getResponse().getErrorMessage());
+		return (result) -> assertEquals("Response status reason", reason, result.getResponse().getErrorMessage());
 	}
 
 	/**
@@ -615,7 +615,7 @@ public class StatusResultMatchers {
 	 * Match the expected response status to that of the HttpServletResponse.
 	 */
 	private ResultMatcher matcher(final HttpStatus status) {
-		return result -> assertEquals("Status", status.value(), result.getResponse().getStatus());
+		return (result) -> assertEquals("Status", status.value(), result.getResponse().getStatus());
 	}
 
 }

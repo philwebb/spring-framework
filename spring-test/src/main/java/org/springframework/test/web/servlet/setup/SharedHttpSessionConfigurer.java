@@ -57,7 +57,7 @@ public class SharedHttpSessionConfigurer implements MockMvcConfigurer {
 	public RequestPostProcessor beforeMockMvcCreated(ConfigurableMockMvcBuilder<?> builder,
 			WebApplicationContext context) {
 
-		return request -> {
+		return (request) -> {
 			if (this.session != null) {
 				request.setSession(this.session);
 			}
