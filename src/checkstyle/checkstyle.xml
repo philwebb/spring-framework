@@ -135,5 +135,8 @@
 			<property name="illegalPattern" value="true" />
 			<property name="message" value="Trailing whitespace" />
 		</module>
+
+		<!-- Spring Conventions -->
+		<module name="io.spring.javaformat.checkstyle.check.LambdaCheck" />
  	</module>
 </module>
