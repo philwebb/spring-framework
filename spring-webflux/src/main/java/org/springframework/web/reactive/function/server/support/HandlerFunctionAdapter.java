@@ -59,6 +59,6 @@ public class HandlerFunctionAdapter implements HandlerAdapter {
 		HandlerFunction<?> handlerFunction = (HandlerFunction<?>) handler;
 		ServerRequest request = exchange.getRequiredAttribute(RouterFunctions.REQUEST_ATTRIBUTE);
 		return handlerFunction.handle(request)
-				.map(response -> new HandlerResult(handlerFunction, response, HANDLER_FUNCTION_RETURN_TYPE));
+				.map((response) -> new HandlerResult(handlerFunction, response, HANDLER_FUNCTION_RETURN_TYPE));
 	}
 }

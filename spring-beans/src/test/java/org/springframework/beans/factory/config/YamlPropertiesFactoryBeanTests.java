@@ -110,7 +110,7 @@ public class YamlPropertiesFactoryBeanTests {
 		YamlPropertiesFactoryBean factory = new YamlPropertiesFactoryBean();
 		factory.setResources(new ByteArrayResource(
 				"foo: bar\nspam: baz\n---\nfoo: bag\nspam: bad".getBytes()));
-		factory.setDocumentMatchers(properties -> ("bag".equals(properties.getProperty("foo")) ?
+		factory.setDocumentMatchers((properties) -> ("bag".equals(properties.getProperty("foo")) ?
 				MatchStatus.FOUND : MatchStatus.NOT_FOUND));
 		Properties properties = factory.getObject();
 		assertThat(properties.getProperty("foo"), equalTo("bag"));
@@ -123,7 +123,7 @@ public class YamlPropertiesFactoryBeanTests {
 		factory.setMatchDefault(true);
 		factory.setResources(new ByteArrayResource(
 				"one: two\n---\nfoo: bar\nspam: baz\n---\nfoo: bag\nspam: bad".getBytes()));
-		factory.setDocumentMatchers(properties -> {
+		factory.setDocumentMatchers((properties) -> {
 			if (!properties.containsKey("foo")) {
 				return MatchStatus.ABSTAIN;
 			}
@@ -164,7 +164,7 @@ public class YamlPropertiesFactoryBeanTests {
 		factory.setMatchDefault(true);
 		factory.setResources(new ByteArrayResource(
 				"one: two\n---\nfoo: bag\nspam: bad\n---\nfoo: bar\nspam: baz".getBytes()));
-		factory.setDocumentMatchers(properties -> {
+		factory.setDocumentMatchers((properties) -> {
 			if (!properties.containsKey("foo")) {
 				return MatchStatus.ABSTAIN;
 			}

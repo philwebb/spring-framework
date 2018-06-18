@@ -69,14 +69,14 @@ public class ServerSentEventHttpMessageReaderTests extends AbstractDataBufferAll
 						request, Collections.emptyMap()).cast(ServerSentEvent.class);
 
 		StepVerifier.create(events)
-				.consumeNextWith(event -> {
+				.consumeNextWith((event) -> {
 					assertEquals("c42", event.id());
 					assertEquals("foo", event.event());
 					assertEquals(Duration.ofMillis(123), event.retry());
 					assertEquals("bla\nbla bla\nbla bla bla", event.comment());
 					assertEquals("bar", event.data());
 				})
-				.consumeNextWith(event -> {
+				.consumeNextWith((event) -> {
 					assertEquals("c43", event.id());
 					assertEquals("bar", event.event());
 					assertEquals(Duration.ofMillis(456), event.retry());
@@ -100,14 +100,14 @@ public class ServerSentEventHttpMessageReaderTests extends AbstractDataBufferAll
 						request, Collections.emptyMap()).cast(ServerSentEvent.class);
 
 		StepVerifier.create(events)
-				.consumeNextWith(event -> {
+				.consumeNextWith((event) -> {
 					assertEquals("c42", event.id());
 					assertEquals("foo", event.event());
 					assertEquals(Duration.ofMillis(123), event.retry());
 					assertEquals("bla\nbla bla\nbla bla bla", event.comment());
 					assertEquals("bar", event.data());
 				})
-				.consumeNextWith(event -> {
+				.consumeNextWith((event) -> {
 					assertEquals("c43", event.id());
 					assertEquals("bar", event.event());
 					assertEquals(Duration.ofMillis(456), event.retry());
@@ -127,8 +127,8 @@ public class ServerSentEventHttpMessageReaderTests extends AbstractDataBufferAll
 				request, Collections.emptyMap()).cast(String.class);
 
 		StepVerifier.create(data)
-				.expectNextMatches(elem -> elem.equals("foo\nbar"))
-				.expectNextMatches(elem -> elem.equals("baz"))
+				.expectNextMatches((elem) -> elem.equals("foo\nbar"))
+				.expectNextMatches((elem) -> elem.equals("baz"))
 				.expectComplete()
 				.verify();
 	}
@@ -143,11 +143,11 @@ public class ServerSentEventHttpMessageReaderTests extends AbstractDataBufferAll
 				Collections.emptyMap()).cast(Pojo.class);
 
 		StepVerifier.create(data)
-				.consumeNextWith(pojo -> {
+				.consumeNextWith((pojo) -> {
 					assertEquals("foofoo", pojo.getFoo());
 					assertEquals("barbar", pojo.getBar());
 				})
-				.consumeNextWith(pojo -> {
+				.consumeNextWith((pojo) -> {
 					assertEquals("foofoofoo", pojo.getFoo());
 					assertEquals("barbarbar", pojo.getBar());
 				})

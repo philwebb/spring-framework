@@ -153,7 +153,7 @@ public abstract class AbstractStaxXMLReaderTestCase {
 		inputFactory.setProperty("javax.xml.stream.isSupportingExternalEntities", Boolean.FALSE);
 
 		LexicalHandler actualLexicalHandler = mockLexicalHandler();
-		willAnswer(invocation -> invocation.getArguments()[0] = "element").
+		willAnswer((invocation) -> invocation.getArguments()[0] = "element").
 				given(actualLexicalHandler).startDTD(anyString(), anyString(), anyString());
 		AbstractStaxXMLReader staxXmlReader = createStaxXmlReader(testLexicalHandlerXml.getInputStream());
 		staxXmlReader.setProperty("http://xml.org/sax/properties/lexical-handler", actualLexicalHandler);

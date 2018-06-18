@@ -122,7 +122,7 @@ public class CachingResourceResolver extends AbstractResourceResolver {
 		}
 
 		return chain.resolveResource(exchange, requestPath, locations)
-				.doOnNext(resource -> {
+				.doOnNext((resource) -> {
 					if (this.logger.isTraceEnabled()) {
 						this.logger.trace("Putting resolved resource in cache: " + resource);
 					}
@@ -149,7 +149,7 @@ public class CachingResourceResolver extends AbstractResourceResolver {
 			return null;
 		}
 		return Arrays.stream(StringUtils.tokenizeToStringArray(header, ","))
-				.map(token -> {
+				.map((token) -> {
 					int index = token.indexOf(';');
 					return (index >= 0 ? token.substring(0, index) : token).trim().toLowerCase();
 				})
@@ -173,7 +173,7 @@ public class CachingResourceResolver extends AbstractResourceResolver {
 		}
 
 		return chain.resolveUrlPath(resourceUrlPath, locations)
-				.doOnNext(resolvedPath -> {
+				.doOnNext((resolvedPath) -> {
 					if (this.logger.isTraceEnabled()) {
 						this.logger.trace("Putting resolved resource URL path in cache: \"" + resolvedPath + "\"");
 					}

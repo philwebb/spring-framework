@@ -307,7 +307,7 @@ public class FormHttpMessageConverter implements HttpMessageConverter<MultiValue
 
 		if (outputMessage instanceof StreamingHttpOutputMessage) {
 			StreamingHttpOutputMessage streamingOutputMessage = (StreamingHttpOutputMessage) outputMessage;
-			streamingOutputMessage.setBody(outputStream -> StreamUtils.copy(bytes, outputStream));
+			streamingOutputMessage.setBody((outputStream) -> StreamUtils.copy(bytes, outputStream));
 		}
 		else {
 			StreamUtils.copy(bytes, outputMessage.getBody());
@@ -364,7 +364,7 @@ public class FormHttpMessageConverter implements HttpMessageConverter<MultiValue
 
 		if (outputMessage instanceof StreamingHttpOutputMessage) {
 			StreamingHttpOutputMessage streamingOutputMessage = (StreamingHttpOutputMessage) outputMessage;
-			streamingOutputMessage.setBody(outputStream -> {
+			streamingOutputMessage.setBody((outputStream) -> {
 				writeParts(outputStream, parts, boundary);
 				writeEnd(outputStream, boundary);
 			});

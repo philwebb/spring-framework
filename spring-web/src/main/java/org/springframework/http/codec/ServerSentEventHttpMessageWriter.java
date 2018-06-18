@@ -114,7 +114,7 @@ public class ServerSentEventHttpMessageWriter implements HttpMessageWriter<Objec
 		ResolvableType valueType = (elementClass != null && ServerSentEvent.class.isAssignableFrom(elementClass) ?
 				elementType.getGeneric() : elementType);
 
-		return Flux.from(input).map(element -> {
+		return Flux.from(input).map((element) -> {
 
 			ServerSentEvent<?> sse = (element instanceof ServerSentEvent ?
 					(ServerSentEvent<?>) element : ServerSentEvent.builder().data(element).build());

@@ -41,16 +41,16 @@ public class MockServerTests {
 	public void mutateDoesNotCreateNewSession() throws Exception {
 
 		WebTestClient client = WebTestClient
-				.bindToWebHandler(exchange -> {
+				.bindToWebHandler((exchange) -> {
 					if (exchange.getRequest().getURI().getPath().equals("/set")) {
 						return exchange.getSession()
-								.doOnNext(session -> session.getAttributes().put("foo", "bar"))
+								.doOnNext((session) -> session.getAttributes().put("foo", "bar"))
 								.then();
 					}
 					else {
 						return exchange.getSession()
-								.map(session -> session.getAttributeOrDefault("foo", "none"))
-								.flatMap(value -> {
+								.map((session) -> session.getAttributeOrDefault("foo", "none"))
+								.flatMap((value) -> {
 									byte[] bytes = value.getBytes(UTF_8);
 									DataBuffer buffer = new DefaultDataBufferFactory().wrap(bytes);
 									return exchange.getResponse().writeWith(Mono.just(buffer));
@@ -77,7 +77,7 @@ public class MockServerTests {
 	public void mutateDoesCopy() throws Exception {
 
 		WebTestClient.Builder builder = WebTestClient
-				.bindToWebHandler(exchange -> exchange.getResponse().setComplete())
+				.bindToWebHandler((exchange) -> exchange.getResponse().setComplete())
 				.configureClient();
 
 		builder.filter((request, next) -> next.exchange(request));
@@ -97,24 +97,24 @@ public class MockServerTests {
 		mutatedBuilder.defaultCookie("baz", "qux");
 		WebTestClient clientFromMutatedBuilder = mutatedBuilder.build();
 
-		client1.mutate().filters(filters -> assertEquals(1, filters.size()));
-		client1.mutate().defaultHeaders(headers -> assertEquals(1, headers.size()));
-		client1.mutate().defaultCookies(cookies -> assertEquals(1, cookies.size()));
+		client1.mutate().filters((filters) -> assertEquals(1, filters.size()));
+		client1.mutate().defaultHeaders((headers) -> assertEquals(1, headers.size()));
+		client1.mutate().defaultCookies((cookies) -> assertEquals(1, cookies.size()));
 
-		client2.mutate().filters(filters -> assertEquals(2, filters.size()));
-		client2.mutate().defaultHeaders(headers -> assertEquals(2, headers.size()));
-		client2.mutate().defaultCookies(cookies -> assertEquals(2, cookies.size()));
+		client2.mutate().filters((filters) -> assertEquals(2, filters.size()));
+		client2.mutate().defaultHeaders((headers) -> assertEquals(2, headers.size()));
+		client2.mutate().defaultCookies((cookies) -> assertEquals(2, cookies.size()));
 
-		clientFromMutatedBuilder.mutate().filters(filters -> assertEquals(2, filters.size()));
-		clientFromMutatedBuilder.mutate().defaultHeaders(headers -> assertEquals(2, headers.size()));
-		clientFromMutatedBuilder.mutate().defaultCookies(cookies -> assertEquals(2, cookies.size()));
+		clientFromMutatedBuilder.mutate().filters((filters) -> assertEquals(2, filters.size()));
+		clientFromMutatedBuilder.mutate().defaultHeaders((headers) -> assertEquals(2, headers.size()));
+		clientFromMutatedBuilder.mutate().defaultCookies((cookies) -> assertEquals(2, cookies.size()));
 	}
 
 	@Test // SPR-16124
 	public void exchangeResultHasCookieHeaders() throws Exception {
 
 		ExchangeResult result = WebTestClient
-				.bindToWebHandler(exchange -> {
+				.bindToWebHandler((exchange) -> {
 					ServerHttpResponse response = exchange.getResponse();
 					if (exchange.getRequest().getURI().getPath().equals("/cookie")) {
 						response.addCookie(ResponseCookie.from("a", "alpha").path("/pathA").build());

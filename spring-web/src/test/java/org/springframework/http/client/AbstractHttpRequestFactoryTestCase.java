@@ -92,7 +92,7 @@ public abstract class AbstractHttpRequestFactoryTestCase extends AbstractMockWeb
 
 		if (request instanceof StreamingHttpOutputMessage) {
 			StreamingHttpOutputMessage streamingRequest = (StreamingHttpOutputMessage) request;
-			streamingRequest.setBody(outputStream -> StreamUtils.copy(body, outputStream));
+			streamingRequest.setBody((outputStream) -> StreamUtils.copy(body, outputStream));
 		}
 		else {
 			StreamUtils.copy(body, request.getBody());
@@ -119,7 +119,7 @@ public abstract class AbstractHttpRequestFactoryTestCase extends AbstractMockWeb
 		final byte[] body = "Hello World".getBytes("UTF-8");
 		if (request instanceof StreamingHttpOutputMessage) {
 			StreamingHttpOutputMessage streamingRequest = (StreamingHttpOutputMessage) request;
-			streamingRequest.setBody(outputStream -> {
+			streamingRequest.setBody((outputStream) -> {
 				StreamUtils.copy(body, outputStream);
 				outputStream.flush();
 				outputStream.close();

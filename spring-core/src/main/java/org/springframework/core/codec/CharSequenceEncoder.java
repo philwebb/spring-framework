@@ -67,7 +67,7 @@ public final class CharSequenceEncoder extends AbstractEncoder<CharSequence> {
 
 		Charset charset = getCharset(mimeType);
 
-		return Flux.from(inputStream).map(charSequence -> {
+		return Flux.from(inputStream).map((charSequence) -> {
 			CharBuffer charBuffer = CharBuffer.wrap(charSequence);
 			ByteBuffer byteBuffer = charset.encode(charBuffer);
 			return bufferFactory.wrap(byteBuffer);

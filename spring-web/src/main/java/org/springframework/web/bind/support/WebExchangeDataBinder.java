@@ -69,7 +69,7 @@ public class WebExchangeDataBinder extends WebDataBinder {
 	 */
 	public Mono<Void> bind(ServerWebExchange exchange) {
 		return getValuesToBind(exchange)
-				.doOnNext(values -> doBind(new MutablePropertyValues(values)))
+				.doOnNext((values) -> doBind(new MutablePropertyValues(values)))
 				.then();
 	}
 
@@ -98,7 +98,7 @@ public class WebExchangeDataBinder extends WebDataBinder {
 		Mono<MultiValueMap<String, Part>> multipartData = exchange.getMultipartData();
 
 		return Mono.zip(Mono.just(queryParams), formData, multipartData)
-				.map(tuple -> {
+				.map((tuple) -> {
 					Map<String, Object> result = new TreeMap<>();
 					tuple.getT1().forEach((key, values) -> addBindValue(result, key, values));
 					tuple.getT2().forEach((key, values) -> addBindValue(result, key, values));
@@ -110,7 +110,7 @@ public class WebExchangeDataBinder extends WebDataBinder {
 	private static void addBindValue(Map<String, Object> params, String key, List<?> values) {
 		if (!CollectionUtils.isEmpty(values)) {
 			values = values.stream()
-					.map(value -> value instanceof FormFieldPart ? ((FormFieldPart) value).value() : value)
+					.map((value) -> value instanceof FormFieldPart ? ((FormFieldPart) value).value() : value)
 					.collect(Collectors.toList());
 			params.put(key, values.size() == 1 ? values.get(0) : values);
 		}

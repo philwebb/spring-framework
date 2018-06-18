@@ -117,7 +117,7 @@ public class DefaultDataBufferFactory implements DataBufferFactory {
 				.sum();
 		DefaultDataBuffer dataBuffer = allocateBuffer(capacity);
 		DataBuffer result = dataBuffers.stream()
-				.map(o -> (DataBuffer) o)
+				.map((o) -> (DataBuffer) o)
 				.reduce(dataBuffer, DataBuffer::write);
 		dataBuffers.forEach(DataBufferUtils::release);
 		return result;

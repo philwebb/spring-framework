@@ -151,11 +151,11 @@ public class ReactiveAdapterRegistry {
 		}
 
 		return this.adapters.stream()
-				.filter(adapter -> adapter.getReactiveType() == clazz)
+				.filter((adapter) -> adapter.getReactiveType() == clazz)
 				.findFirst()
 				.orElseGet(() ->
 						this.adapters.stream()
-								.filter(adapter -> adapter.getReactiveType().isAssignableFrom(clazz))
+								.filter((adapter) -> adapter.getReactiveType().isAssignableFrom(clazz))
 								.findFirst()
 								.orElse(null));
 	}

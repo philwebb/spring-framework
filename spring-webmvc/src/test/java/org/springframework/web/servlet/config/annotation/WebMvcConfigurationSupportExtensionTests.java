@@ -146,7 +146,7 @@ public class WebMvcConfigurationSupportExtensionTests {
 		Map<RequestMappingInfo, HandlerMethod> map = rmHandlerMapping.getHandlerMethods();
 		assertEquals(2, map.size());
 		RequestMappingInfo info = map.entrySet().stream()
-				.filter(entry -> entry.getValue().getBeanType().equals(UserController.class))
+				.filter((entry) -> entry.getValue().getBeanType().equals(UserController.class))
 				.findFirst()
 				.orElseThrow(() -> new AssertionError("UserController bean not found"))
 				.getKey();

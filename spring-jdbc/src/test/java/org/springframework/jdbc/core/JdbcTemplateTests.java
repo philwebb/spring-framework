@@ -1065,7 +1065,7 @@ public class JdbcTemplateTests {
 		}
 
 		try {
-			this.template.query(con -> con.prepareStatement("my query"),
+			this.template.query((con) -> con.prepareStatement("my query"),
 					(ResultSetExtractor<Object>) rs2 -> {
 							throw new InvalidDataAccessApiUsageException("");
 			}		);
@@ -1093,7 +1093,7 @@ public class JdbcTemplateTests {
 
 		this.thrown.expect(InvalidDataAccessApiUsageException.class);
 		try {
-			this.template.call(conn -> conn.prepareCall("my query"), Collections.singletonList(param));
+			this.template.call((conn) -> conn.prepareCall("my query"), Collections.singletonList(param));
 		}
 		finally {
 			verify(this.resultSet).close();

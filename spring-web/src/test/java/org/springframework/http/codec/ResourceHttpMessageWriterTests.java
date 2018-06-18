@@ -104,7 +104,7 @@ public class ResourceHttpMessageWriterTests {
 		assertThat(contentType, startsWith("multipart/byteranges;boundary="));
 
 		StepVerifier.create(this.response.getBodyAsString())
-				.consumeNextWith(content -> {
+				.consumeNextWith((content) -> {
 					String[] actualRanges = StringUtils.tokenizeToStringArray(content, "\r\n", false, true);
 					String[] expected = new String[] {
 							"--" + boundary,

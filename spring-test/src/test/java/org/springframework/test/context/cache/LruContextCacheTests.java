@@ -162,7 +162,7 @@ public class LruContextCacheTests {
 
 		// @formatter:off
 		List<String> actualNames = contextMap.keySet().stream()
-			.map(cfg -> cfg.getClasses()[0])
+			.map((cfg) -> cfg.getClasses()[0])
 			.map(Class::getSimpleName)
 			.collect(toList());
 		// @formatter:on

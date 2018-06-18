@@ -104,7 +104,7 @@ public class AppCacheManifestTransformer extends ResourceTransformerSupport {
 			ResourceTransformerChain chain) {
 
 		return chain.transform(exchange, inputResource)
-				.flatMap(outputResource -> {
+				.flatMap((outputResource) -> {
 					String name = outputResource.getFilename();
 					if (!this.fileExtension.equals(StringUtils.getFilenameExtension(name))) {
 						return Mono.just(outputResource);
@@ -113,7 +113,7 @@ public class AppCacheManifestTransformer extends ResourceTransformerSupport {
 					Flux<DataBuffer> flux = DataBufferUtils
 							.read(outputResource, bufferFactory, StreamUtils.BUFFER_SIZE);
 					return DataBufferUtils.join(flux)
-							.flatMap(dataBuffer -> {
+							.flatMap((dataBuffer) -> {
 								CharBuffer charBuffer = DEFAULT_CHARSET.decode(dataBuffer.asByteBuffer());
 								DataBufferUtils.release(dataBuffer);
 								String content = charBuffer.toString();
@@ -135,12 +135,12 @@ public class AppCacheManifestTransformer extends ResourceTransformerSupport {
 			logger.trace("Transforming resource: " + resource);
 		}
 		return Flux.generate(new LineInfoGenerator(content))
-				.concatMap(info -> processLine(info, exchange, resource, chain))
+				.concatMap((info) -> processLine(info, exchange, resource, chain))
 				.reduce(new ByteArrayOutputStream(), (out, line) -> {
 					writeToByteArrayOutputStream(out, line + "\n");
 					return out;
 				})
-				.map(out -> {
+				.map((out) -> {
 					String hash = DigestUtils.md5DigestAsHex(out.toByteArray());
 					writeToByteArrayOutputStream(out, "\n" + "# Hash: " + hash);
 					if (logger.isTraceEnabled()) {
@@ -169,7 +169,7 @@ public class AppCacheManifestTransformer extends ResourceTransformerSupport {
 
 		String link = toAbsolutePath(info.getLine(), exchange);
 		return resolveUrlPath(link, exchange, resource, chain)
-				.doOnNext(path -> {
+				.doOnNext((path) -> {
 					if (logger.isTraceEnabled()) {
 						logger.trace("Link modified: " + path + " (original: " + info.getLine() + ")");
 					}

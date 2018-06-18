@@ -116,7 +116,7 @@ public abstract class AbstractSchedulingTaskExecutorTests {
 	public void submitListenableRunnable() throws Exception {
 		TestTask task = new TestTask(1);
 		ListenableFuture<?> future = this.executor.submitListenable(task);
-		future.addCallback(result -> this.outcome = result, ex -> this.outcome = ex);
+		future.addCallback((result) -> this.outcome = result, ex -> this.outcome = ex);
 		Thread.sleep(1000);
 		assertTrue(future.isDone());
 		assertNull(this.outcome);
@@ -127,7 +127,7 @@ public abstract class AbstractSchedulingTaskExecutorTests {
 	public void submitFailingListenableRunnable() throws Exception {
 		TestTask task = new TestTask(0);
 		ListenableFuture<?> future = this.executor.submitListenable(task);
-		future.addCallback(result -> this.outcome = result, ex -> this.outcome = ex);
+		future.addCallback((result) -> this.outcome = result, ex -> this.outcome = ex);
 		Thread.sleep(1000);
 		assertTrue(future.isDone());
 		assertSame(RuntimeException.class, this.outcome.getClass());
@@ -175,7 +175,7 @@ public abstract class AbstractSchedulingTaskExecutorTests {
 	public void submitListenableCallable() throws Exception {
 		TestCallable task = new TestCallable(1);
 		ListenableFuture<String> future = this.executor.submitListenable(task);
-		future.addCallback(result -> this.outcome = result, ex -> this.outcome = ex);
+		future.addCallback((result) -> this.outcome = result, ex -> this.outcome = ex);
 		Thread.sleep(100);
 		assertTrue(future.isDone());
 		assertEquals(THREAD_NAME_PREFIX, this.outcome.toString().substring(0, THREAD_NAME_PREFIX.length()));
@@ -185,7 +185,7 @@ public abstract class AbstractSchedulingTaskExecutorTests {
 	public void submitFailingListenableCallable() throws Exception {
 		TestCallable task = new TestCallable(0);
 		ListenableFuture<String> future = this.executor.submitListenable(task);
-		future.addCallback(result -> this.outcome = result, ex -> this.outcome = ex);
+		future.addCallback((result) -> this.outcome = result, ex -> this.outcome = ex);
 		Thread.sleep(100);
 		assertTrue(future.isDone());
 		assertSame(RuntimeException.class, this.outcome.getClass());

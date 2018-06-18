@@ -52,7 +52,7 @@ public class CorsFilterTests {
 		this.config.setExposedHeaders(Arrays.asList("header3", "header4"));
 		this.config.setMaxAge(123L);
 		this.config.setAllowCredentials(false);
-		this.filter = new CorsFilter(r -> this.config);
+		this.filter = new CorsFilter((r) -> this.config);
 	}
 
 	@Test

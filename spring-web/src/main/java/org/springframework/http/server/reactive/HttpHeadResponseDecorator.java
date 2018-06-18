@@ -53,7 +53,7 @@ public class HttpHeadResponseDecorator extends ServerHttpResponseDecorator {
 							DataBufferUtils.release(buffer);
 							return next;
 						})
-						.doOnNext(count -> getHeaders().setContentLength(count))
+						.doOnNext((count) -> getHeaders().setContentLength(count))
 						.then(Mono.empty()));
 	}
 

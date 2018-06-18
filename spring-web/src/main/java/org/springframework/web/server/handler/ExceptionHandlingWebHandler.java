@@ -65,7 +65,7 @@ public class ExceptionHandlingWebHandler extends WebHandlerDecorator {
 		}
 
 		for (WebExceptionHandler handler : this.exceptionHandlers) {
-			completion = completion.onErrorResume(ex -> handler.handle(exchange, ex));
+			completion = completion.onErrorResume((ex) -> handler.handle(exchange, ex));
 		}
 
 		return completion;

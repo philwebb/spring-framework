@@ -50,7 +50,7 @@ public class SharedHttpSessionConfigurer implements MockMvcConfigurer {
 
 	@Override
 	public void afterConfigurerAdded(ConfigurableMockMvcBuilder<?> builder) {
-		builder.alwaysDo(result -> this.session = result.getRequest().getSession(false));
+		builder.alwaysDo((result) -> this.session = result.getRequest().getSession(false));
 	}
 
 	@Override

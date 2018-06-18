@@ -174,7 +174,7 @@ public class MultiServerUserRegistry implements SimpUserRegistry, SmartApplicati
 
 	void purgeExpiredRegistries() {
 		long now = System.currentTimeMillis();
-		this.remoteRegistries.entrySet().removeIf(entry -> entry.getValue().isExpired(now));
+		this.remoteRegistries.entrySet().removeIf((entry) -> entry.getValue().isExpired(now));
 	}
 
 

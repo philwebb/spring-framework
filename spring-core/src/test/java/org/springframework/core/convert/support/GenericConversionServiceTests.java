@@ -514,7 +514,7 @@ public class GenericConversionServiceTests {
 		this.conversionService.addConverter(converter);
 		assertEquals((Integer) 3, this.conversionService.convert(3, Integer.class));
 		assertThat(converter.getSourceTypes().size(), greaterThan(2));
-		assertTrue(converter.getSourceTypes().stream().allMatch(td -> Integer.class.equals(td.getType())));
+		assertTrue(converter.getSourceTypes().stream().allMatch((td) -> Integer.class.equals(td.getType())));
 	}
 
 	@Test
@@ -704,7 +704,7 @@ public class GenericConversionServiceTests {
 
 		@Override
 		public Resource[] convert(String[] source) {
-			return Arrays.stream(source).map(s -> s.substring(1)).map(DescriptiveResource::new).toArray(Resource[]::new);
+			return Arrays.stream(source).map((s) -> s.substring(1)).map(DescriptiveResource::new).toArray(Resource[]::new);
 		}
 	}
 
@@ -713,7 +713,7 @@ public class GenericConversionServiceTests {
 
 		@Override
 		public Integer[] convert(String[] source) {
-			return Arrays.stream(source).map(s -> s.substring(1)).map(Integer::valueOf).toArray(Integer[]::new);
+			return Arrays.stream(source).map((s) -> s.substring(1)).map(Integer::valueOf).toArray(Integer[]::new);
 		}
 	}
 
@@ -723,7 +723,7 @@ public class GenericConversionServiceTests {
 		@Override
 		public Integer[] convert(String source) {
 			String[] srcArray = StringUtils.commaDelimitedListToStringArray(source);
-			return Arrays.stream(srcArray).map(s -> s.substring(1)).map(Integer::valueOf).toArray(Integer[]::new);
+			return Arrays.stream(srcArray).map((s) -> s.substring(1)).map(Integer::valueOf).toArray(Integer[]::new);
 		}
 	}
 

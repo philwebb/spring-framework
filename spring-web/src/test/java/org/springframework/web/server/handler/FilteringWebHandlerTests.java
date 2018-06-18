@@ -164,14 +164,14 @@ public class FilteringWebHandlerTests {
 
 		@Override
 		public Mono<Void> doFilter(ServerWebExchange exchange, WebFilterChain chain) {
-			return doAsyncWork().flatMap(asyncResult -> {
+			return doAsyncWork().flatMap((asyncResult) -> {
 				logger.debug("Async result: " + asyncResult);
 				return chain.filter(exchange);
 			});
 		}
 
 		private Mono<String> doAsyncWork() {
-			return Mono.delay(Duration.ofMillis(100L)).map(l -> "123");
+			return Mono.delay(Duration.ofMillis(100L)).map((l) -> "123");
 		}
 	}
 

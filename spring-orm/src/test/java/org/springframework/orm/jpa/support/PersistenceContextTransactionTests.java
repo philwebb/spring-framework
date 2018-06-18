@@ -96,7 +96,7 @@ public class PersistenceContextTransactionTests {
 	public void testTransactionCommitWithSharedEntityManager() {
 		given(this.manager.getTransaction()).willReturn(this.tx);
 
-		this.tt.execute(status -> {
+		this.tt.execute((status) -> {
 			this.bean.sharedEntityManager.flush();
 			return null;
 		});
@@ -112,7 +112,7 @@ public class PersistenceContextTransactionTests {
 
 		this.tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_SUPPORTS);
 
-		this.tt.execute(status -> {
+		this.tt.execute((status) -> {
 			this.bean.sharedEntityManager.clear();
 			return null;
 		});
@@ -125,7 +125,7 @@ public class PersistenceContextTransactionTests {
 	public void testTransactionCommitWithExtendedEntityManager() {
 		given(this.manager.getTransaction()).willReturn(this.tx);
 
-		this.tt.execute(status -> {
+		this.tt.execute((status) -> {
 			this.bean.extendedEntityManager.flush();
 			return null;
 		});
@@ -141,7 +141,7 @@ public class PersistenceContextTransactionTests {
 
 		this.tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_SUPPORTS);
 
-		this.tt.execute(status -> {
+		this.tt.execute((status) -> {
 			this.bean.extendedEntityManager.flush();
 			return null;
 		});
@@ -153,7 +153,7 @@ public class PersistenceContextTransactionTests {
 	public void testTransactionCommitWithSharedEntityManagerUnsynchronized() {
 		given(this.manager.getTransaction()).willReturn(this.tx);
 
-		this.tt.execute(status -> {
+		this.tt.execute((status) -> {
 			this.bean.sharedEntityManagerUnsynchronized.flush();
 			return null;
 		});
@@ -169,7 +169,7 @@ public class PersistenceContextTransactionTests {
 
 		this.tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_SUPPORTS);
 
-		this.tt.execute(status -> {
+		this.tt.execute((status) -> {
 			this.bean.sharedEntityManagerUnsynchronized.clear();
 			return null;
 		});
@@ -182,7 +182,7 @@ public class PersistenceContextTransactionTests {
 	public void testTransactionCommitWithExtendedEntityManagerUnsynchronized() {
 		given(this.manager.getTransaction()).willReturn(this.tx);
 
-		this.tt.execute(status -> {
+		this.tt.execute((status) -> {
 			this.bean.extendedEntityManagerUnsynchronized.flush();
 			return null;
 		});
@@ -198,7 +198,7 @@ public class PersistenceContextTransactionTests {
 
 		this.tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_SUPPORTS);
 
-		this.tt.execute(status -> {
+		this.tt.execute((status) -> {
 			this.bean.extendedEntityManagerUnsynchronized.flush();
 			return null;
 		});
@@ -210,7 +210,7 @@ public class PersistenceContextTransactionTests {
 	public void testTransactionCommitWithSharedEntityManagerUnsynchronizedJoined() {
 		given(this.manager.getTransaction()).willReturn(this.tx);
 
-		this.tt.execute(status -> {
+		this.tt.execute((status) -> {
 			this.bean.sharedEntityManagerUnsynchronized.joinTransaction();
 			this.bean.sharedEntityManagerUnsynchronized.flush();
 			return null;
@@ -225,7 +225,7 @@ public class PersistenceContextTransactionTests {
 	public void testTransactionCommitWithExtendedEntityManagerUnsynchronizedJoined() {
 		given(this.manager.getTransaction()).willReturn(this.tx);
 
-		this.tt.execute(status -> {
+		this.tt.execute((status) -> {
 			this.bean.extendedEntityManagerUnsynchronized.joinTransaction();
 			this.bean.extendedEntityManagerUnsynchronized.flush();
 			return null;
@@ -242,7 +242,7 @@ public class PersistenceContextTransactionTests {
 
 		this.tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_SUPPORTS);
 
-		this.tt.execute(status -> {
+		this.tt.execute((status) -> {
 			this.bean.extendedEntityManagerUnsynchronized.joinTransaction();
 			this.bean.extendedEntityManagerUnsynchronized.flush();
 			return null;

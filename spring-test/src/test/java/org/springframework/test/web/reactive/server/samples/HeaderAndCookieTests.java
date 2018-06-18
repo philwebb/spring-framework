@@ -55,7 +55,7 @@ public class HeaderAndCookieTests {
 	@Test
 	public void setCookies() {
 		this.client.get().uri("/cookie-echo")
-				.cookies(cookies -> cookies.add("k1", "v1"))
+				.cookies((cookies) -> cookies.add("k1", "v1"))
 				.exchange()
 				.expectHeader().valueMatches("Set-Cookie", "k1=v1");
 	}

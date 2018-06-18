@@ -108,7 +108,7 @@ public class ResourceHttpMessageWriter implements HttpMessageWriter<Resource> {
 	public Mono<Void> write(Publisher<? extends Resource> inputStream, ResolvableType elementType,
 			@Nullable MediaType mediaType, ReactiveHttpOutputMessage message, Map<String, Object> hints) {
 
-		return Mono.from(inputStream).flatMap(resource ->
+		return Mono.from(inputStream).flatMap((resource) ->
 				writeResource(resource, elementType, mediaType, message, hints));
 	}
 
@@ -192,7 +192,7 @@ public class ResourceHttpMessageWriter implements HttpMessageWriter<Resource> {
 			return response.setComplete();
 		}
 
-		return Mono.from(inputStream).flatMap(resource -> {
+		return Mono.from(inputStream).flatMap((resource) -> {
 
 			if (ranges.isEmpty()) {
 				return writeResource(resource, elementType, mediaType, response, hints);

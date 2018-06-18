@@ -142,7 +142,7 @@ public class ConventionsTests {
 
 	private static Method getMethodForReturnType(Class<?> returnType) {
 		return Arrays.stream(TestBean.class.getMethods())
-				.filter(method -> method.getReturnType().equals(returnType))
+				.filter((method) -> method.getReturnType().equals(returnType))
 				.findFirst()
 				.orElseThrow(() ->
 						new IllegalArgumentException("Unique return type not found: " + returnType));

@@ -71,9 +71,9 @@ abstract class AbstractMockServerSpec<B extends WebTestClient.MockServerSpec<B>>
 	@Override
 	public WebTestClient.Builder configureClient() {
 		WebHttpHandlerBuilder builder = initHttpHandlerBuilder();
-		builder.filters(theFilters -> theFilters.addAll(0, this.filters));
+		builder.filters((theFilters) -> theFilters.addAll(0, this.filters));
 		builder.sessionManager(this.sessionManager);
-		this.configurers.forEach(configurer -> configurer.beforeServerCreated(builder));
+		this.configurers.forEach((configurer) -> configurer.beforeServerCreated(builder));
 		return new DefaultWebTestClientBuilder(builder);
 	}
 

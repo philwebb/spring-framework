@@ -99,7 +99,7 @@ class InterceptingClientHttpRequest extends AbstractBufferingClientHttpRequest {
 				if (body.length > 0) {
 					if (delegate instanceof StreamingHttpOutputMessage) {
 						StreamingHttpOutputMessage streamingOutputMessage = (StreamingHttpOutputMessage) delegate;
-						streamingOutputMessage.setBody(outputStream -> StreamUtils.copy(body, outputStream));
+						streamingOutputMessage.setBody((outputStream) -> StreamUtils.copy(body, outputStream));
 					}
 					else {
 						StreamUtils.copy(body, delegate.getBody());

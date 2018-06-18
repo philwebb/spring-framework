@@ -98,7 +98,7 @@ public class RandomHandlerIntegrationTests extends AbstractHttpHandlerIntegratio
 
 		private Publisher<DataBuffer> multipleChunks() {
 			int chunkSize = RESPONSE_SIZE / CHUNKS;
-			return Flux.range(1, CHUNKS).map(integer -> randomBuffer(chunkSize));
+			return Flux.range(1, CHUNKS).map((integer) -> randomBuffer(chunkSize));
 		}
 
 		private DataBuffer randomBuffer(int size) {

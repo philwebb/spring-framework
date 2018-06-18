@@ -49,7 +49,7 @@ public abstract class AbstractSingleValueEncoder<T> extends AbstractEncoder<T> {
 
 		return Flux.from(inputStream).
 				take(1).
-				concatMap(t -> encode(t, bufferFactory, elementType, mimeType, hints));
+				concatMap((t) -> encode(t, bufferFactory, elementType, mimeType, hints));
 	}
 
 	/**

@@ -52,37 +52,37 @@ public class WebFluxConfigurerComposite implements WebFluxConfigurer {
 
 	@Override
 	public void configureContentTypeResolver(RequestedContentTypeResolverBuilder builder) {
-		this.delegates.forEach(delegate -> delegate.configureContentTypeResolver(builder));
+		this.delegates.forEach((delegate) -> delegate.configureContentTypeResolver(builder));
 	}
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
-		this.delegates.forEach(delegate -> delegate.addCorsMappings(registry));
+		this.delegates.forEach((delegate) -> delegate.addCorsMappings(registry));
 	}
 
 	@Override
 	public void configurePathMatching(PathMatchConfigurer configurer) {
-		this.delegates.forEach(delegate -> delegate.configurePathMatching(configurer));
+		this.delegates.forEach((delegate) -> delegate.configurePathMatching(configurer));
 	}
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		this.delegates.forEach(delegate -> delegate.addResourceHandlers(registry));
+		this.delegates.forEach((delegate) -> delegate.addResourceHandlers(registry));
 	}
 
 	@Override
 	public void configureArgumentResolvers(ArgumentResolverConfigurer configurer) {
-		this.delegates.forEach(delegate -> delegate.configureArgumentResolvers(configurer));
+		this.delegates.forEach((delegate) -> delegate.configureArgumentResolvers(configurer));
 	}
 
 	@Override
 	public void configureHttpMessageCodecs(ServerCodecConfigurer configurer) {
-		this.delegates.forEach(delegate -> delegate.configureHttpMessageCodecs(configurer));
+		this.delegates.forEach((delegate) -> delegate.configureHttpMessageCodecs(configurer));
 	}
 
 	@Override
 	public void addFormatters(FormatterRegistry registry) {
-		this.delegates.forEach(delegate -> delegate.addFormatters(registry));
+		this.delegates.forEach((delegate) -> delegate.addFormatters(registry));
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class WebFluxConfigurerComposite implements WebFluxConfigurer {
 
 	@Override
 	public void configureViewResolvers(ViewResolverRegistry registry) {
-		this.delegates.forEach(delegate -> delegate.configureViewResolvers(registry));
+		this.delegates.forEach((delegate) -> delegate.configureViewResolvers(registry));
 	}
 
 	@Nullable

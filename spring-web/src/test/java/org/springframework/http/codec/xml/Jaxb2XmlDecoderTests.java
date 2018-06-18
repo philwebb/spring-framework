@@ -94,7 +94,7 @@ public class Jaxb2XmlDecoderTests extends AbstractDataBufferAllocatingTestCase {
 		Flux<List<XMLEvent>> result = this.decoder.split(xmlEvents, new QName("pojo"));
 
 		StepVerifier.create(result)
-				.consumeNextWith(events -> {
+				.consumeNextWith((events) -> {
 					assertEquals(8, events.size());
 					assertStartElement(events.get(0), "pojo");
 					assertStartElement(events.get(1), "foo");
@@ -117,7 +117,7 @@ public class Jaxb2XmlDecoderTests extends AbstractDataBufferAllocatingTestCase {
 
 
 		StepVerifier.create(result)
-				.consumeNextWith(events -> {
+				.consumeNextWith((events) -> {
 					assertEquals(8, events.size());
 					assertStartElement(events.get(0), "pojo");
 					assertStartElement(events.get(1), "foo");
@@ -128,7 +128,7 @@ public class Jaxb2XmlDecoderTests extends AbstractDataBufferAllocatingTestCase {
 					assertEndElement(events.get(6), "bar");
 					assertEndElement(events.get(7), "pojo");
 				})
-				.consumeNextWith(events -> {
+				.consumeNextWith((events) -> {
 					assertEquals(8, events.size());
 					assertStartElement(events.get(0), "pojo");
 					assertStartElement(events.get(1), "foo");

@@ -69,8 +69,8 @@ public class CandidateComponentsIndex {
 		List<Entry> candidates = this.index.get(stereotype);
 		if (candidates != null) {
 			return candidates.parallelStream()
-					.filter(t -> t.match(basePackage))
-					.map(t -> t.type)
+					.filter((t) -> t.match(basePackage))
+					.map((t) -> t.type)
 					.collect(Collectors.toSet());
 		}
 		return Collections.emptySet();

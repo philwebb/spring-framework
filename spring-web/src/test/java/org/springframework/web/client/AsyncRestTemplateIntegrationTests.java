@@ -183,7 +183,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 	@Test
 	public void headForHeadersCallbackWithLambdas() throws Exception {
 		ListenableFuture<HttpHeaders> headersFuture = this.template.headForHeaders(this.baseUrl + "/get");
-		headersFuture.addCallback(result -> assertTrue("No Content-Type header",
+		headersFuture.addCallback((result) -> assertTrue("No Content-Type header",
 				result.containsKey("Content-Type")), ex -> fail(ex.getMessage()));
 		waitTillDone(headersFuture);
 	}
@@ -225,7 +225,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		HttpEntity<String> entity = new HttpEntity<>(helloWorld, entityHeaders);
 		final URI expected = new URI(this.baseUrl + "/post/1");
 		ListenableFuture<URI> locationFuture = this.template.postForLocation(this.baseUrl + "/{method}", entity, "post");
-		locationFuture.addCallback(result -> assertEquals("Invalid location", expected, result),
+		locationFuture.addCallback((result) -> assertEquals("Invalid location", expected, result),
 				ex -> fail(ex.getMessage()));
 		waitTillDone(locationFuture);
 	}
@@ -392,7 +392,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 	@Test
 	public void notFoundCallbackWithLambdas() throws Exception {
 		ListenableFuture<?> future = this.template.execute(this.baseUrl + "/status/notfound", HttpMethod.GET, null, null);
-		future.addCallback(result -> fail("onSuccess not expected"), ex -> {
+		future.addCallback((result) -> fail("onSuccess not expected"), ex -> {
 				assertTrue(ex instanceof HttpClientErrorException);
 				HttpClientErrorException hcex = (HttpClientErrorException) ex;
 				assertEquals(HttpStatus.NOT_FOUND, hcex.getStatusCode());
@@ -442,7 +442,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 	@Test
 	public void serverErrorCallbackWithLambdas() throws Exception {
 		ListenableFuture<Void> future = this.template.execute(this.baseUrl + "/status/server", HttpMethod.GET, null, null);
-		future.addCallback(result -> fail("onSuccess not expected"), ex -> {
+		future.addCallback((result) -> fail("onSuccess not expected"), ex -> {
 				assertTrue(ex instanceof HttpServerErrorException);
 				HttpServerErrorException hsex = (HttpServerErrorException) ex;
 				assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, hsex.getStatusCode());
@@ -480,7 +480,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 	@Test
 	public void optionsForAllowCallbackWithLambdas() throws Exception{
 		ListenableFuture<Set<HttpMethod>> allowedFuture = this.template.optionsForAllow(new URI(this.baseUrl + "/get"));
-		allowedFuture.addCallback(result -> assertEquals("Invalid response",
+		allowedFuture.addCallback((result) -> assertEquals("Invalid response",
 				EnumSet.of(HttpMethod.GET, HttpMethod.OPTIONS, HttpMethod.HEAD,HttpMethod.TRACE), result),
 				ex -> fail(ex.getMessage()));
 		waitTillDone(allowedFuture);
@@ -527,7 +527,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		HttpEntity<?> requestEntity = new HttpEntity(requestHeaders);
 		ListenableFuture<ResponseEntity<String>> responseFuture =
 				this.template.exchange(this.baseUrl + "/{method}", HttpMethod.GET, requestEntity, String.class, "get");
-		responseFuture.addCallback(result -> assertEquals("Invalid content", helloWorld,
+		responseFuture.addCallback((result) -> assertEquals("Invalid content", helloWorld,
 				result.getBody()), ex -> fail(ex.getMessage()));
 		waitTillDone(responseFuture);
 	}
@@ -578,7 +578,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		ListenableFuture<ResponseEntity<Void>> resultFuture =
 				this.template.exchange(this.baseUrl + "/{method}", HttpMethod.POST, requestEntity, Void.class, "post");
 		final URI expected =new URI(this.baseUrl + "/post/1");
-		resultFuture.addCallback(result -> {
+		resultFuture.addCallback((result) -> {
 			assertEquals("Invalid location", expected, result.getHeaders().getLocation());
 			assertFalse(result.hasBody());
 			}, ex -> fail(ex.getMessage()));

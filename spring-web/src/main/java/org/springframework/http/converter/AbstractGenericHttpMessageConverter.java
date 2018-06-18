@@ -88,7 +88,7 @@ public abstract class AbstractGenericHttpMessageConverter<T> extends AbstractHtt
 
 		if (outputMessage instanceof StreamingHttpOutputMessage) {
 			StreamingHttpOutputMessage streamingOutputMessage = (StreamingHttpOutputMessage) outputMessage;
-			streamingOutputMessage.setBody(outputStream -> writeInternal(t, type, new HttpOutputMessage() {
+			streamingOutputMessage.setBody((outputStream) -> writeInternal(t, type, new HttpOutputMessage() {
 				@Override
 				public OutputStream getBody() {
 					return outputStream;

@@ -73,7 +73,7 @@ public class Jaxb2XmlEncoderTests extends AbstractDataBufferAllocatingTestCase {
 				MediaType.APPLICATION_XML, Collections.emptyMap());
 
 		StepVerifier.create(output)
-				.consumeNextWith(dataBuffer -> {
+				.consumeNextWith((dataBuffer) -> {
 					try {
 						String s = DataBufferTestUtils
 								.dumpString(dataBuffer, StandardCharsets.UTF_8);

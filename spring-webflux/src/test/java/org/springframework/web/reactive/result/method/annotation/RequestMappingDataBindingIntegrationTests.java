@@ -97,7 +97,7 @@ public class RequestMappingDataBindingIntegrationTests extends AbstractRequestMa
 		public void initBinder(WebDataBinder binder,
 				@RequestParam("date-pattern") Optional<String> optionalPattern) {
 
-			optionalPattern.ifPresent(pattern -> {
+			optionalPattern.ifPresent((pattern) -> {
 				CustomDateEditor dateEditor = new CustomDateEditor(new SimpleDateFormat(pattern), false);
 				binder.registerCustomEditor(Date.class, dateEditor);
 			});
@@ -110,7 +110,7 @@ public class RequestMappingDataBindingIntegrationTests extends AbstractRequestMa
 
 		@ModelAttribute
 		public Mono<Foo> addFooAttribute(@PathVariable("id") Optional<Long> optiponalId) {
-			return optiponalId.map(id -> Mono.just(new Foo(id))).orElse(Mono.empty());
+			return optiponalId.map((id) -> Mono.just(new Foo(id))).orElse(Mono.empty());
 		}
 
 		@PostMapping("/foos/{id}")

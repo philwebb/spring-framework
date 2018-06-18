@@ -448,7 +448,7 @@ public final class MockServerHttpRequest extends AbstractServerHttpRequest {
 
 		@Override
 		public BodyBuilder cookie(HttpCookie... cookies) {
-			Arrays.stream(cookies).forEach(cookie -> this.cookies.add(cookie.getName(), cookie));
+			Arrays.stream(cookies).forEach((cookie) -> this.cookies.add(cookie.getName(), cookie));
 			return this;
 		}
 
@@ -551,7 +551,7 @@ public final class MockServerHttpRequest extends AbstractServerHttpRequest {
 		private void applyCookiesIfNecessary() {
 			if (this.headers.get(HttpHeaders.COOKIE) == null) {
 				this.cookies.values().stream().flatMap(Collection::stream)
-						.forEach(cookie -> this.headers.add(HttpHeaders.COOKIE, cookie.toString()));
+						.forEach((cookie) -> this.headers.add(HttpHeaders.COOKIE, cookie.toString()));
 			}
 		}
 

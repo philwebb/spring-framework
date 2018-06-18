@@ -56,7 +56,7 @@ public class ListenableFutureTaskTests {
 
 		assertSame(s, task.get());
 		assertSame(s, task.completable().get());
-		task.completable().thenAccept(v -> assertSame(s, v));
+		task.completable().thenAccept((v) -> assertSame(s, v));
 	}
 
 	@Test
@@ -110,7 +110,7 @@ public class ListenableFutureTaskTests {
 
 		assertSame(s, task.get());
 		assertSame(s, task.completable().get());
-		task.completable().thenAccept(v -> assertSame(s, v));
+		task.completable().thenAccept((v) -> assertSame(s, v));
 	}
 
 	@Test

@@ -55,7 +55,7 @@ public class HttpHandlerConnectorTests {
 	@Test
 	public void adaptRequest() throws Exception {
 
-		TestHttpHandler handler = new TestHttpHandler(response -> {
+		TestHttpHandler handler = new TestHttpHandler((response) -> {
 			response.setStatusCode(HttpStatus.OK);
 			return response.setComplete();
 		});
@@ -85,7 +85,7 @@ public class HttpHandlerConnectorTests {
 
 		ResponseCookie cookie = ResponseCookie.from("custom-cookie", "c0").build();
 
-		TestHttpHandler handler = new TestHttpHandler(response -> {
+		TestHttpHandler handler = new TestHttpHandler((response) -> {
 			response.setStatusCode(HttpStatus.OK);
 			response.getHeaders().put("custom-header", Arrays.asList("h0", "h1"));
 			response.addCookie(cookie);

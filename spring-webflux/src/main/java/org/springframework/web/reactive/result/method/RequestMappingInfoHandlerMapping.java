@@ -200,8 +200,8 @@ public abstract class RequestMappingInfoHandlerMapping extends AbstractHandlerMe
 
 		public PartialMatchHelper(Set<RequestMappingInfo> infos, ServerWebExchange exchange) {
 			this.partialMatches.addAll(infos.stream().
-					filter(info -> info.getPatternsCondition().getMatchingCondition(exchange) != null).
-					map(info -> new PartialMatch(info, exchange)).
+					filter((info) -> info.getPatternsCondition().getMatchingCondition(exchange) != null).
+					map((info) -> new PartialMatch(info, exchange)).
 					collect(Collectors.toList()));
 		}
 
@@ -250,8 +250,8 @@ public abstract class RequestMappingInfoHandlerMapping extends AbstractHandlerMe
 		 */
 		public Set<HttpMethod> getAllowedMethods() {
 			return this.partialMatches.stream().
-					flatMap(m -> m.getInfo().getMethodsCondition().getMethods().stream()).
-					map(requestMethod -> HttpMethod.resolve(requestMethod.name())).
+					flatMap((m) -> m.getInfo().getMethodsCondition().getMethods().stream()).
+					map((requestMethod) -> HttpMethod.resolve(requestMethod.name())).
 					collect(Collectors.toSet());
 		}
 
@@ -261,7 +261,7 @@ public abstract class RequestMappingInfoHandlerMapping extends AbstractHandlerMe
 		 */
 		public Set<MediaType> getConsumableMediaTypes() {
 			return this.partialMatches.stream().filter(PartialMatch::hasMethodsMatch).
-					flatMap(m -> m.getInfo().getConsumesCondition().getConsumableMediaTypes().stream()).
+					flatMap((m) -> m.getInfo().getConsumesCondition().getConsumableMediaTypes().stream()).
 					collect(Collectors.toCollection(LinkedHashSet::new));
 		}
 
@@ -271,7 +271,7 @@ public abstract class RequestMappingInfoHandlerMapping extends AbstractHandlerMe
 		 */
 		public Set<MediaType> getProducibleMediaTypes() {
 			return this.partialMatches.stream().filter(PartialMatch::hasConsumesMatch).
-					flatMap(m -> m.getInfo().getProducesCondition().getProducibleMediaTypes().stream()).
+					flatMap((m) -> m.getInfo().getProducesCondition().getProducibleMediaTypes().stream()).
 					collect(Collectors.toCollection(LinkedHashSet::new));
 		}
 
@@ -281,7 +281,7 @@ public abstract class RequestMappingInfoHandlerMapping extends AbstractHandlerMe
 		 */
 		public List<Set<NameValueExpression<String>>> getParamConditions() {
 			return this.partialMatches.stream().filter(PartialMatch::hasProducesMatch).
-					map(match -> match.getInfo().getParamsCondition().getExpressions()).
+					map((match) -> match.getInfo().getParamsCondition().getExpressions()).
 					collect(Collectors.toList());
 		}
 
@@ -358,7 +358,7 @@ public abstract class RequestMappingInfoHandlerMapping extends AbstractHandlerMe
 		private static Set<HttpMethod> initAllowedHttpMethods(Set<HttpMethod> declaredMethods) {
 			if (declaredMethods.isEmpty()) {
 				return EnumSet.allOf(HttpMethod.class).stream()
-						.filter(method -> method != HttpMethod.TRACE)
+						.filter((method) -> method != HttpMethod.TRACE)
 						.collect(Collectors.toSet());
 			}
 			else {

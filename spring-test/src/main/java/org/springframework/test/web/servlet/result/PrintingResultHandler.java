@@ -153,7 +153,7 @@ public class PrintingResultHandler implements ResultHandler {
 			Enumeration<String> attrNames = session.getAttributeNames();
 			if (attrNames != null) {
 				return Collections.list(attrNames).stream().
-						collect(Collectors.toMap(n -> n, session::getAttribute));
+						collect(Collectors.toMap((n) -> n, session::getAttribute));
 			}
 		}
 		return Collections.emptyMap();

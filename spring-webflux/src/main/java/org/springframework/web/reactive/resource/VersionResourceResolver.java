@@ -185,8 +185,8 @@ public class VersionResourceResolver extends AbstractResourceResolver {
 		}
 
 		return chain.resolveResource(exchange, simplePath, locations)
-				.filterWhen(resource -> versionStrategy.getResourceVersion(resource)
-						.map(actual -> {
+				.filterWhen((resource) -> versionStrategy.getResourceVersion(resource)
+						.map((actual) -> {
 							if (candidate.equals(actual)) {
 								if (this.logger.isTraceEnabled()) {
 									this.logger.trace("Resource matches extracted version [" + candidate + "]");
@@ -201,7 +201,7 @@ public class VersionResourceResolver extends AbstractResourceResolver {
 								return false;
 							}
 						}))
-				.map(resource -> new FileNameVersionedResource(resource, candidate));
+				.map((resource) -> new FileNameVersionedResource(resource, candidate));
 	}
 
 	@Override
@@ -209,7 +209,7 @@ public class VersionResourceResolver extends AbstractResourceResolver {
 			List<? extends Resource> locations, ResourceResolverChain chain) {
 
 		return chain.resolveUrlPath(resourceUrlPath, locations)
-				.flatMap(baseUrl -> {
+				.flatMap((baseUrl) -> {
 					if (StringUtils.hasText(baseUrl)) {
 						VersionStrategy strategy = getStrategyForPath(resourceUrlPath);
 						if (strategy == null) {
@@ -220,8 +220,8 @@ public class VersionResourceResolver extends AbstractResourceResolver {
 									"for path \"" + resourceUrlPath + "\"");
 						}
 						return chain.resolveResource(null, baseUrl, locations)
-								.flatMap(resource -> strategy.getResourceVersion(resource)
-										.map(version -> {
+								.flatMap((resource) -> strategy.getResourceVersion(resource)
+										.map((version) -> {
 											if (this.logger.isTraceEnabled()) {
 												this.logger.trace("Determined version [" + version + "] for " + resource);
 											}

@@ -63,7 +63,7 @@ public class MockServerSpecTests {
 
 			@Override
 			public void beforeServerCreated(WebHttpHandlerBuilder builder) {
-				builder.filters(filters -> {
+				builder.filters((filters) -> {
 					filters.add(0, new TestWebFilter("Fwk-A"));
 					filters.add(1, new TestWebFilter("Fwk-B"));
 				});
@@ -79,7 +79,7 @@ public class MockServerSpecTests {
 
 		@Override
 		protected WebHttpHandlerBuilder initHttpHandlerBuilder() {
-			return WebHttpHandlerBuilder.webHandler(exchange -> {
+			return WebHttpHandlerBuilder.webHandler((exchange) -> {
 				DefaultDataBufferFactory factory = new DefaultDataBufferFactory();
 				String text = exchange.getAttributes().toString();
 				DataBuffer buffer = factory.wrap(text.getBytes(StandardCharsets.UTF_8));

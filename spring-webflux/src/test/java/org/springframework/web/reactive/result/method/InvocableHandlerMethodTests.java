@@ -74,7 +74,7 @@ public class InvocableHandlerMethodTests {
 	@Test
 	public void invokeAndHandle_withResponse() throws Exception {
 		ServerHttpResponse response = this.exchange.getResponse();
-		Method method = on(VoidController.class).mockCall(c -> c.response(response)).method();
+		Method method = on(VoidController.class).mockCall((c) -> c.response(response)).method();
 		HandlerResult result = invoke(new VoidController(), method, resolverFor(Mono.just(response)))
 				.block(Duration.ZERO);
 
@@ -85,7 +85,7 @@ public class InvocableHandlerMethodTests {
 	@Test
 	public void invokeAndHandle_withResponseAndMonoVoid() throws Exception {
 		ServerHttpResponse response = this.exchange.getResponse();
-		Method method = on(VoidController.class).mockCall(c -> c.responseMonoVoid(response)).method();
+		Method method = on(VoidController.class).mockCall((c) -> c.responseMonoVoid(response)).method();
 		HandlerResult result = invoke(new VoidController(), method, resolverFor(Mono.just(response)))
 				.block(Duration.ZERO);
 
@@ -95,7 +95,7 @@ public class InvocableHandlerMethodTests {
 
 	@Test
 	public void invokeAndHandle_withExchange() throws Exception {
-		Method method = on(VoidController.class).mockCall(c -> c.exchange(this.exchange)).method();
+		Method method = on(VoidController.class).mockCall((c) -> c.exchange(this.exchange)).method();
 		HandlerResult result = invoke(new VoidController(), method, resolverFor(Mono.just(this.exchange)))
 				.block(Duration.ZERO);
 
@@ -105,7 +105,7 @@ public class InvocableHandlerMethodTests {
 
 	@Test
 	public void invokeAndHandle_withExchangeAndMonoVoid() throws Exception {
-		Method method = on(VoidController.class).mockCall(c -> c.exchangeMonoVoid(this.exchange)).method();
+		Method method = on(VoidController.class).mockCall((c) -> c.exchangeMonoVoid(this.exchange)).method();
 		HandlerResult result = invoke(new VoidController(), method, resolverFor(Mono.just(this.exchange)))
 				.block(Duration.ZERO);
 
@@ -118,7 +118,7 @@ public class InvocableHandlerMethodTests {
 		ServerWebExchange exchange = MockServerWebExchange.from(
 				MockServerHttpRequest.get("/").ifModifiedSince(10 * 1000 * 1000));
 
-		Method method = on(VoidController.class).mockCall(c -> c.notModified(exchange)).method();
+		Method method = on(VoidController.class).mockCall((c) -> c.notModified(exchange)).method();
 		HandlerResult result = invoke(new VoidController(), method, resolverFor(Mono.just(exchange)))
 				.block(Duration.ZERO);
 
@@ -135,7 +135,7 @@ public class InvocableHandlerMethodTests {
 	@Test
 	public void invokeMethodWithNoValue() throws Exception {
 		Mono<Object> resolvedValue = Mono.empty();
-		Method method = on(TestController.class).mockCall(o -> o.singleArg(null)).method();
+		Method method = on(TestController.class).mockCall((o) -> o.singleArg(null)).method();
 		Mono<HandlerResult> mono = invoke(new TestController(), method, resolverFor(resolvedValue));
 
 		assertHandlerResultValue(mono, "success:null");
@@ -144,7 +144,7 @@ public class InvocableHandlerMethodTests {
 	@Test
 	public void invokeMethodWithValue() throws Exception {
 		Mono<Object> resolvedValue = Mono.just("value1");
-		Method method = on(TestController.class).mockCall(o -> o.singleArg(null)).method();
+		Method method = on(TestController.class).mockCall((o) -> o.singleArg(null)).method();
 		Mono<HandlerResult> mono = invoke(new TestController(), method, resolverFor(resolvedValue));
 
 		assertHandlerResultValue(mono, "success:value1");
@@ -152,7 +152,7 @@ public class InvocableHandlerMethodTests {
 
 	@Test
 	public void noMatchingResolver() throws Exception {
-		Method method = on(TestController.class).mockCall(o -> o.singleArg(null)).method();
+		Method method = on(TestController.class).mockCall((o) -> o.singleArg(null)).method();
 		Mono<HandlerResult> mono = invoke(new TestController(), method);
 
 		try {
@@ -168,7 +168,7 @@ public class InvocableHandlerMethodTests {
 	@Test
 	public void resolverThrowsException() throws Exception {
 		Mono<Object> resolvedValue = Mono.error(new UnsupportedMediaTypeStatusException("boo"));
-		Method method = on(TestController.class).mockCall(o -> o.singleArg(null)).method();
+		Method method = on(TestController.class).mockCall((o) -> o.singleArg(null)).method();
 		Mono<HandlerResult> mono = invoke(new TestController(), method, resolverFor(resolvedValue));
 
 		try {
@@ -183,7 +183,7 @@ public class InvocableHandlerMethodTests {
 	@Test
 	public void illegalArgumentExceptionIsWrappedWithInvocationDetails() throws Exception {
 		Mono<Object> resolvedValue = Mono.just(1);
-		Method method = on(TestController.class).mockCall(o -> o.singleArg(null)).method();
+		Method method = on(TestController.class).mockCall((o) -> o.singleArg(null)).method();
 		Mono<HandlerResult> mono = invoke(new TestController(), method, resolverFor(resolvedValue));
 
 		try {
@@ -242,7 +242,7 @@ public class InvocableHandlerMethodTests {
 
 	private void assertHandlerResultValue(Mono<HandlerResult> mono, String expected) {
 		StepVerifier.create(mono)
-				.consumeNextWith(result -> {
+				.consumeNextWith((result) -> {
 					assertEquals(expected, result.getReturnValue());
 				})
 				.expectComplete()

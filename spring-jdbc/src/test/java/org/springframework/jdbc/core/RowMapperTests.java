@@ -101,7 +101,7 @@ public class RowMapperTests {
 
 	@Test
 	public void preparedStatementCreatorWithRowMapper() throws SQLException {
-		this.result = this.template.query(con -> this.preparedStatement, this.testRowMapper);
+		this.result = this.template.query((con) -> this.preparedStatement, this.testRowMapper);
 		verify(this.preparedStatement).close();
 	}
 

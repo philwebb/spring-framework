@@ -114,7 +114,7 @@ public class SpringJUnit4ConcurrencyTests {
 		return (int) Arrays.stream(this.testClasses)
 				.map(ReflectionUtils::getUniqueDeclaredMethods)
 				.flatMap(Arrays::stream)
-				.filter(method -> hasAnnotation(method, annotationType))
+				.filter((method) -> hasAnnotation(method, annotationType))
 				.count();
 	}
 

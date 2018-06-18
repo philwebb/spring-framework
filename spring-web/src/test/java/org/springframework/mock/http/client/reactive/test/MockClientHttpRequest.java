@@ -117,7 +117,7 @@ public class MockClientHttpRequest extends AbstractClientHttpRequest {
 	@Override
 	protected void applyCookies() {
 		getCookies().values().stream().flatMap(Collection::stream)
-				.forEach(cookie -> getHeaders().add(HttpHeaders.COOKIE, cookie.toString()));
+				.forEach((cookie) -> getHeaders().add(HttpHeaders.COOKIE, cookie.toString()));
 	}
 
 	@Override
@@ -127,7 +127,7 @@ public class MockClientHttpRequest extends AbstractClientHttpRequest {
 
 	@Override
 	public Mono<Void> writeAndFlushWith(Publisher<? extends Publisher<? extends DataBuffer>> body) {
-		return writeWith(Flux.from(body).flatMap(p -> p));
+		return writeWith(Flux.from(body).flatMap((p) -> p));
 	}
 
 	@Override

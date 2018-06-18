@@ -227,7 +227,7 @@ public class AsyncTests {
 		@RequestMapping(params = "streamingJson")
 		public ResponseEntity<StreamingResponseBody> getStreamingJson() {
 			return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON_UTF8)
-					.body(os -> os.write("{\"name\":\"Joe\",\"someDouble\":0.5}".getBytes(StandardCharsets.UTF_8)));
+					.body((os) -> os.write("{\"name\":\"Joe\",\"someDouble\":0.5}".getBytes(StandardCharsets.UTF_8)));
 		}
 
 		@RequestMapping(params = "deferredResult")

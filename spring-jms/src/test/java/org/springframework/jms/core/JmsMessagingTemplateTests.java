@@ -602,7 +602,7 @@ public class JmsMessagingTemplateTests {
 	}
 
 	private void invokeMessageCreator() {
-		willAnswer(invocation -> {
+		willAnswer((invocation) -> {
 			MessageCreator messageCreator = (MessageCreator) invocation.getArguments()[1];
 			messageCreator.createMessage(null);
 			return null;

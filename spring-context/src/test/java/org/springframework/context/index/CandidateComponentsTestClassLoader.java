@@ -55,7 +55,7 @@ public class CandidateComponentsTestClassLoader extends ClassLoader {
 	 */
 	public static ClassLoader index(ClassLoader classLoader, Resource... resources) {
 		return new CandidateComponentsTestClassLoader(classLoader,
-				Collections.enumeration(Stream.of(resources).map(r -> {
+				Collections.enumeration(Stream.of(resources).map((r) -> {
 					try {
 						return r.getURL();
 					}

@@ -76,8 +76,8 @@ public class ConstructorArgumentValues {
 				(index, argValue) -> addOrMergeIndexedArgumentValue(index, argValue.copy())
 			);
 			other.genericArgumentValues.stream()
-					.filter(valueHolder -> !this.genericArgumentValues.contains(valueHolder))
-					.forEach(valueHolder -> addOrMergeGenericArgumentValue(valueHolder.copy()));
+					.filter((valueHolder) -> !this.genericArgumentValues.contains(valueHolder))
+					.forEach((valueHolder) -> addOrMergeGenericArgumentValue(valueHolder.copy()));
 		}
 	}
 

@@ -71,12 +71,12 @@ public class ByteBufferEncoderTests extends AbstractDataBufferAllocatingTestCase
 				ResolvableType.forClassWithGenerics(Publisher.class, ByteBuffer.class),
 				null, Collections.emptyMap());
 		StepVerifier.create(output)
-				.consumeNextWith(b -> {
+				.consumeNextWith((b) -> {
 					byte[] buf = new byte[3];
 					b.read(buf);
 					assertArrayEquals(fooBytes, buf);
 				})
-				.consumeNextWith(b -> {
+				.consumeNextWith((b) -> {
 					byte[] buf = new byte[3];
 					b.read(buf);
 					assertArrayEquals(barBytes, buf);

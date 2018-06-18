@@ -148,8 +148,8 @@ class UndertowServerHttpRequest extends AbstractServerHttpRequest {
 				onAllDataRead();
 				next.proceed();
 			});
-			this.channel.getReadSetter().set(c -> onDataAvailable());
-			this.channel.getCloseSetter().set(c -> onAllDataRead());
+			this.channel.getReadSetter().set((c) -> onDataAvailable());
+			this.channel.getCloseSetter().set((c) -> onAllDataRead());
 			this.channel.resumeReads();
 		}
 

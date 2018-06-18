@@ -70,7 +70,7 @@ public class DefaultWebClientTests {
 	@Test
 	public void uriBuilder() throws Exception {
 		WebClient client = builder().build();
-		client.get().uri(builder -> builder.path("/path").queryParam("q", "12").build()).exchange();
+		client.get().uri((builder) -> builder.path("/path").queryParam("q", "12").build()).exchange();
 
 		ClientRequest request = verifyExchange();
 		assertEquals("/base/path?q=12", request.url().toString());
@@ -80,7 +80,7 @@ public class DefaultWebClientTests {
 	@Test
 	public void uriBuilderWithPathOverride() throws Exception {
 		WebClient client = builder().build();
-		client.get().uri(builder -> builder.replacePath("/path").build()).exchange();
+		client.get().uri((builder) -> builder.replacePath("/path").build()).exchange();
 
 		ClientRequest request = verifyExchange();
 		assertEquals("/path", request.url().toString());
@@ -91,7 +91,7 @@ public class DefaultWebClientTests {
 	public void requestHeaderAndCookie() throws Exception {
 		WebClient client = builder().build();
 		client.get().uri("/path").accept(MediaType.APPLICATION_JSON)
-				.cookies(cookies -> cookies.add("id", "123"))	// SPR-16178
+				.cookies((cookies) -> cookies.add("id", "123"))	// SPR-16178
 				.exchange();
 
 		ClientRequest request = verifyExchange();
@@ -151,17 +151,17 @@ public class DefaultWebClientTests {
 		mutatedBuilder.defaultCookie("baz", "qux");
 		WebClient clientFromMutatedBuilder = mutatedBuilder.build();
 
-		client1.mutate().filters(filters -> assertEquals(1, filters.size()));
-		client1.mutate().defaultHeaders(headers -> assertEquals(1, headers.size()));
-		client1.mutate().defaultCookies(cookies -> assertEquals(1, cookies.size()));
+		client1.mutate().filters((filters) -> assertEquals(1, filters.size()));
+		client1.mutate().defaultHeaders((headers) -> assertEquals(1, headers.size()));
+		client1.mutate().defaultCookies((cookies) -> assertEquals(1, cookies.size()));
 
-		client2.mutate().filters(filters -> assertEquals(2, filters.size()));
-		client2.mutate().defaultHeaders(headers -> assertEquals(2, headers.size()));
-		client2.mutate().defaultCookies(cookies -> assertEquals(2, cookies.size()));
+		client2.mutate().filters((filters) -> assertEquals(2, filters.size()));
+		client2.mutate().defaultHeaders((headers) -> assertEquals(2, headers.size()));
+		client2.mutate().defaultCookies((cookies) -> assertEquals(2, cookies.size()));
 
-		clientFromMutatedBuilder.mutate().filters(filters -> assertEquals(2, filters.size()));
-		clientFromMutatedBuilder.mutate().defaultHeaders(headers -> assertEquals(2, headers.size()));
-		clientFromMutatedBuilder.mutate().defaultCookies(cookies -> assertEquals(2, cookies.size()));
+		clientFromMutatedBuilder.mutate().filters((filters) -> assertEquals(2, filters.size()));
+		clientFromMutatedBuilder.mutate().defaultHeaders((headers) -> assertEquals(2, headers.size()));
+		clientFromMutatedBuilder.mutate().defaultCookies((cookies) -> assertEquals(2, cookies.size()));
 	}
 
 	@Test
@@ -179,7 +179,7 @@ public class DefaultWebClientTests {
 	@Test
 	public void apply() {
 		WebClient client = builder()
-				.apply(builder -> builder.defaultHeader("Accept", "application/json").defaultCookie("id", "123"))
+				.apply((builder) -> builder.defaultHeader("Accept", "application/json").defaultCookie("id", "123"))
 				.build();
 		client.get().uri("/path").exchange();
 

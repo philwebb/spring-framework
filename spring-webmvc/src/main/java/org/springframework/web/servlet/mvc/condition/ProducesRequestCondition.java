@@ -204,7 +204,7 @@ public final class ProducesRequestCondition extends AbstractRequestCondition<Pro
 		}
 
 		Set<ProduceMediaTypeExpression> result = new LinkedHashSet<>(this.expressions);
-		result.removeIf(expression -> !expression.match(acceptedMediaTypes));
+		result.removeIf((expression) -> !expression.match(acceptedMediaTypes));
 		if (!result.isEmpty()) {
 			return new ProducesRequestCondition(result, this.contentNegotiationManager);
 		}

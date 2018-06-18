@@ -85,7 +85,7 @@ public class PathResourceResolver extends AbstractResourceResolver {
 			ResourceResolverChain chain) {
 
 		if (StringUtils.hasText(path)) {
-			return getResource(path, locations).map(resource -> path);
+			return getResource(path, locations).map((resource) -> path);
 		}
 		else {
 			return Mono.empty();
@@ -94,7 +94,7 @@ public class PathResourceResolver extends AbstractResourceResolver {
 
 	private Mono<Resource> getResource(String resourcePath, List<? extends Resource> locations) {
 		return Flux.fromIterable(locations)
-				.concatMap(location -> getResource(resourcePath, location))
+				.concatMap((location) -> getResource(resourcePath, location))
 				.next();
 	}
 

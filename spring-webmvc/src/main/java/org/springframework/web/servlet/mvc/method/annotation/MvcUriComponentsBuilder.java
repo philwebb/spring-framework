@@ -644,7 +644,7 @@ public class MvcUriComponentsBuilder {
 		}
 
 		// We may not have all URI var values, expand only what we have
-		return builder.build().expand(name ->
+		return builder.build().expand((name) ->
 				uriVars.getOrDefault(name, UriComponents.UriTemplateVariables.SKIP_VALUE));
 	}
 

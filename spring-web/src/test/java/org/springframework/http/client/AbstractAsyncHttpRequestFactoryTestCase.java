@@ -124,7 +124,7 @@ public abstract class AbstractAsyncHttpRequestFactoryTestCase extends AbstractMo
 
 		if (request instanceof StreamingHttpOutputMessage) {
 			StreamingHttpOutputMessage streamingRequest = (StreamingHttpOutputMessage) request;
-			streamingRequest.setBody(outputStream -> StreamUtils.copy(body, outputStream));
+			streamingRequest.setBody((outputStream) -> StreamUtils.copy(body, outputStream));
 		}
 		else {
 			StreamUtils.copy(body, request.getBody());
@@ -152,7 +152,7 @@ public abstract class AbstractAsyncHttpRequestFactoryTestCase extends AbstractMo
 
 		if (request instanceof StreamingHttpOutputMessage) {
 			StreamingHttpOutputMessage streamingRequest = (StreamingHttpOutputMessage) request;
-			streamingRequest.setBody(outputStream -> StreamUtils.copy(body, outputStream));
+			streamingRequest.setBody((outputStream) -> StreamUtils.copy(body, outputStream));
 		}
 		else {
 			StreamUtils.copy(body, request.getBody());

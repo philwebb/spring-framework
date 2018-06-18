@@ -97,7 +97,7 @@ class SessionAttributesHandler {
 	 */
 	public Map<String, Object> retrieveAttributes(WebSession session) {
 		Map<String, Object> attributes = new HashMap<>();
-		this.knownAttributeNames.forEach(name -> {
+		this.knownAttributeNames.forEach((name) -> {
 			Object value = session.getAttribute(name);
 			if (value != null) {
 				attributes.put(name, value);
@@ -113,7 +113,7 @@ class SessionAttributesHandler {
 	 * @param attributes candidate attributes for session storage
 	 */
 	public void storeAttributes(WebSession session, Map<String, ?> attributes) {
-		attributes.keySet().forEach(name -> {
+		attributes.keySet().forEach((name) -> {
 			Object value = attributes.get(name);
 			if (value != null && isHandlerSessionAttribute(name, value.getClass())) {
 				session.getAttributes().put(name, value);
@@ -128,7 +128,7 @@ class SessionAttributesHandler {
 	 * @param session the current session
 	 */
 	public void cleanupAttributes(WebSession session) {
-		this.knownAttributeNames.forEach(name -> session.getAttributes().remove(name));
+		this.knownAttributeNames.forEach((name) -> session.getAttributes().remove(name));
 	}
 
 }

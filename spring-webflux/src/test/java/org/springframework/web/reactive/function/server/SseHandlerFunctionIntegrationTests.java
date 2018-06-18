@@ -124,18 +124,18 @@ public class SseHandlerFunctionIntegrationTests extends AbstractRouterFunctionIn
 		Mono<ServerResponse> string(ServerRequest request) {
 			return ServerResponse.ok()
 					.contentType(MediaType.TEXT_EVENT_STREAM)
-					.body(INTERVAL.map(aLong -> "foo " + aLong), String.class);
+					.body(INTERVAL.map((aLong) -> "foo " + aLong), String.class);
 		}
 
 		Mono<ServerResponse> person(ServerRequest request) {
 			return ServerResponse.ok()
 					.contentType(MediaType.TEXT_EVENT_STREAM)
-					.body(INTERVAL.map(aLong -> new Person("foo " + aLong)), Person.class);
+					.body(INTERVAL.map((aLong) -> new Person("foo " + aLong)), Person.class);
 		}
 
 		Mono<ServerResponse> sse(ServerRequest request) {
 			Flux<ServerSentEvent<String>> body = INTERVAL
-					.map(aLong -> ServerSentEvent.builder("foo").id("" + aLong).comment("bar").build());
+					.map((aLong) -> ServerSentEvent.builder("foo").id("" + aLong).comment("bar").build());
 			return ServerResponse.ok().body(fromServerSentEvents(body));
 		}
 	}

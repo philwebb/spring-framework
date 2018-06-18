@@ -208,8 +208,8 @@ public abstract class RouterFunctions {
 	public static HttpHandler toHttpHandler(RouterFunction<?> routerFunction, HandlerStrategies strategies) {
 		WebHandler webHandler = toWebHandler(routerFunction, strategies);
 		return WebHttpHandlerBuilder.webHandler(webHandler)
-				.filters(filters -> filters.addAll(strategies.webFilters()))
-				.exceptionHandlers(handlers -> handlers.addAll(strategies.exceptionHandlers()))
+				.filters((filters) -> filters.addAll(strategies.webFilters()))
+				.exceptionHandlers((handlers) -> handlers.addAll(strategies.exceptionHandlers()))
 				.localeContextResolver(strategies.localeContextResolver())
 				.build();
 	}
@@ -240,8 +240,8 @@ public abstract class RouterFunctions {
 			addAttributes(exchange, request);
 			return routerFunction.route(request)
 					.defaultIfEmpty(notFound())
-					.flatMap(handlerFunction -> wrapException(() -> handlerFunction.handle(request)))
-					.flatMap(response -> wrapException(() -> response.writeTo(exchange,
+					.flatMap((handlerFunction) -> wrapException(() -> handlerFunction.handle(request)))
+					.flatMap((response) -> wrapException(() -> response.writeTo(exchange,
 							new HandlerStrategiesResponseContext(strategies))));
 		};
 	}
@@ -474,7 +474,7 @@ public abstract class RouterFunctions {
 		@Override
 		public Mono<HandlerFunction<T>> route(ServerRequest serverRequest) {
 			return this.predicate.nest(serverRequest)
-					.map(nestedRequest -> {
+					.map((nestedRequest) -> {
 								if (logger.isDebugEnabled()) {
 									logger.debug(
 											String.format(
@@ -482,7 +482,7 @@ public abstract class RouterFunctions {
 													this.predicate, serverRequest));
 								}
 								return this.routerFunction.route(nestedRequest)
-										.doOnNext(match -> {
+										.doOnNext((match) -> {
 											mergeTemplateVariables(serverRequest, nestedRequest.pathVariables());
 										});
 							}
