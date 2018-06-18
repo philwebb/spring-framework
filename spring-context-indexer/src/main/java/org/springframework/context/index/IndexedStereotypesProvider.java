@@ -78,7 +78,7 @@ class IndexedStereotypesProvider implements StereotypesProvider {
 				collectStereotypesOnTypes(seen, stereotypes, superClass);
 			}
 			this.typeHelper.getDirectInterfaces(type).forEach(
-					i -> collectStereotypesOnTypes(seen, stereotypes, i));
+					(i) -> collectStereotypesOnTypes(seen, stereotypes, i));
 		}
 	}
 

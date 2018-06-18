@@ -285,7 +285,7 @@ public class ThreadPoolTaskScheduler extends ExecutorConfigurationSupport
 		Future<?> scheduledFuture = executor.submit(errorHandlingTask(listenableFuture, false));
 		this.listenableFutureMap.put(scheduledFuture, listenableFuture);
 		listenableFuture.addCallback((result) -> this.listenableFutureMap.remove(scheduledFuture),
-				ex -> this.listenableFutureMap.remove(scheduledFuture));
+				(ex) -> this.listenableFutureMap.remove(scheduledFuture));
 	}
 
 	@Override

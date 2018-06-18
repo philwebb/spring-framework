@@ -378,7 +378,7 @@ public class ProxyFactoryTests {
 	@Test
 	public void testInterceptorWithoutJoinpoint() {
 		final TestBean target = new TestBean("tb");
-		ITestBean proxy = ProxyFactory.getProxy(ITestBean.class, (MethodInterceptor) invocation -> {
+		ITestBean proxy = ProxyFactory.getProxy(ITestBean.class, (MethodInterceptor) (invocation) -> {
 			assertNull(invocation.getThis());
 			return invocation.getMethod().invoke(target, invocation.getArguments());
 		});
