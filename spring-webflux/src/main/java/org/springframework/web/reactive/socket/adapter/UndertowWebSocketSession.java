@@ -40,7 +40,7 @@ import reactor.core.publisher.MonoProcessor;
 /**
  * Spring {@link WebSocketSession} implementation that adapts to an Undertow
  * {@link io.undertow.websockets.core.WebSocketChannel}.
- * 
+ *
  * @author Violeta Georgieva
  * @author Rossen Stoyanchev
  * @since 5.0

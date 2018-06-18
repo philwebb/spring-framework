@@ -61,7 +61,7 @@ public class ProtobufJsonFormatHttpMessageConverterTests {
 
 	@Test
 	public void extensionRegistryInitialized() {
-	    verify(this.registryInitializer, times(1)).initializeExtensionRegistry(any());
+		verify(this.registryInitializer, times(1)).initializeExtensionRegistry(any());
 	}
 
 	@Test

@@ -36,7 +36,7 @@ import io.undertow.websockets.core.WebSocketChannel;
 /**
  * Undertow {@link WebSocketConnectionCallback} implementation that adapts and
  * delegates to a Spring {@link WebSocketHandler}.
- * 
+ *
  * @author Violeta Georgieva
  * @author Rossen Stoyanchev
  * @since 5.0

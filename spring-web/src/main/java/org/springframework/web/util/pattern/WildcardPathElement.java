@@ -22,7 +22,7 @@ import org.springframework.web.util.pattern.PathPattern.MatchingContext;
 
 /**
  * A wildcard path element. In the pattern '/foo/&ast;/goo' the * is
- * represented by a WildcardPathElement. Within a path it matches at least 
+ * represented by a WildcardPathElement. Within a path it matches at least
  * one character but at the end of a path it can match zero characters.
  *
  * @author Andy Clement
@@ -36,7 +36,7 @@ class WildcardPathElement extends PathElement {
 
 
 	/**
-	 * Matching on a WildcardPathElement is quite straight forward. Scan the 
+	 * Matching on a WildcardPathElement is quite straight forward. Scan the
 	 * candidate from the candidateIndex onwards for the next separator or the end of the
 	 * candidate.
 	 */
@@ -53,7 +53,7 @@ class WildcardPathElement extends PathElement {
 			segmentData = ((PathContainer.PathSegment)element).valueToMatch();
 			pathIndex++;
 		}
-		
+
 		if (isNoMorePattern()) {
 			if (matchingContext.determineRemainingPath) {
 				matchingContext.remainingPathIndex = pathIndex;
@@ -72,7 +72,7 @@ class WildcardPathElement extends PathElement {
 				}
 			}
 		}
-		else { 
+		else {
 			// Within a path (e.g. /aa/*/bb) there must be at least one character to match the wildcard
 			if (segmentData == null || segmentData.length() == 0) {
 				return false;

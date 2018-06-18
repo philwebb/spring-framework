@@ -49,7 +49,7 @@ public class Jackson2JsonEncoder extends AbstractJackson2Encoder {
 
 	@Nullable
 	private final PrettyPrinter ssePrettyPrinter;
-	
+
 
 	public Jackson2JsonEncoder() {
 		this(Jackson2ObjectMapperBuilder.json().build());
@@ -71,7 +71,7 @@ public class Jackson2JsonEncoder extends AbstractJackson2Encoder {
 	@Override
 	protected ObjectWriter customizeWriter(ObjectWriter writer, @Nullable MimeType mimeType,
 			ResolvableType elementType, @Nullable Map<String, Object> hints) {
-		
+
 		return (this.ssePrettyPrinter != null &&
 				MediaType.TEXT_EVENT_STREAM.isCompatibleWith(mimeType) &&
 				writer.getConfig().isEnabled(SerializationFeature.INDENT_OUTPUT) ?

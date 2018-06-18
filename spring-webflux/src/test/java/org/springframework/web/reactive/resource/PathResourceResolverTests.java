@@ -39,7 +39,7 @@ public class PathResourceResolverTests {
 
 	private static final Duration TIMEOUT = Duration.ofSeconds(5);
 
-	
+
 	private final PathResourceResolver resolver = new PathResourceResolver();
 
 

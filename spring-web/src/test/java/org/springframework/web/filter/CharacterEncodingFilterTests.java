@@ -173,5 +173,5 @@ public class CharacterEncodingFilterTests {
 	private String filteredName(String prefix) {
 		return prefix + OncePerRequestFilter.ALREADY_FILTERED_SUFFIX;
 	}
-	
+
 }

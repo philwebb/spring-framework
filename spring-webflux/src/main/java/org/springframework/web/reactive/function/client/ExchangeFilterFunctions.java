@@ -91,7 +91,7 @@ public abstract class ExchangeFilterFunctions {
 						credentials -> {
 							ClientRequest authorizedRequest = ClientRequest.from(clientRequest)
 									.headers(headers -> headers.set(HttpHeaders.AUTHORIZATION,
-                                            authorization(credentials)))
+											authorization(credentials)))
 									.build();
 							return Mono.just(authorizedRequest);
 						})

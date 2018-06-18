@@ -32,7 +32,7 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * Tests for {@link HiddenHttpMethodFilter}.
- * 
+ *
  * @author Arjen Poutsma
  * @author Brian Clozel
  */

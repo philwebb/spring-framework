@@ -476,7 +476,7 @@ public class PathPatternParserTests {
 	}
 
 	private PathPattern.PathMatchInfo matchAndExtract(PathPattern pp, String path) {
-		 return pp.matchAndExtract(PathPatternTests.toPathContainer(path));
+		return pp.matchAndExtract(PathPatternTests.toPathContainer(path));
 	}
 
 	private PathContainer toPSC(String path) {

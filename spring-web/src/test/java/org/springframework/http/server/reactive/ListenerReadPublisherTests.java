@@ -32,7 +32,7 @@ import static org.mockito.Mockito.mock;
 
 /**
  * Unit tests for {@link AbstractListenerReadPublisher}
- * 
+ *
  * @author Violeta Georgieva
  * @since 5.0
  */

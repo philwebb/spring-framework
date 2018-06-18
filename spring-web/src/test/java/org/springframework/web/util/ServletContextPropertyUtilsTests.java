@@ -27,25 +27,24 @@ import static org.junit.Assert.assertEquals;
  */
 public class ServletContextPropertyUtilsTests {
 
-    @Test
-    public void resolveAsServletContextInitParameter() {
-        MockServletContext servletContext = new MockServletContext();
-        servletContext.setInitParameter("test.prop", "bar");
-        String resolved = ServletContextPropertyUtils.resolvePlaceholders("${test.prop:foo}", servletContext);
-        assertEquals("bar", resolved);
-    }
+	@Test
+	public void resolveAsServletContextInitParameter() {
+		MockServletContext servletContext = new MockServletContext();
+		servletContext.setInitParameter("test.prop", "bar");
+		String resolved = ServletContextPropertyUtils.resolvePlaceholders("${test.prop:foo}", servletContext);
+		assertEquals("bar", resolved);
+	}
 
-    @Test
-    public void fallbackToSystemProperties() {
-        MockServletContext servletContext = new MockServletContext();
-        System.setProperty("test.prop", "bar");
-        try {
-            String resolved = ServletContextPropertyUtils.resolvePlaceholders("${test.prop:foo}", servletContext);
-            assertEquals("bar", resolved);
-        }
+	@Test
+	public void fallbackToSystemProperties() {
+		MockServletContext servletContext = new MockServletContext();
+		System.setProperty("test.prop", "bar");
+		try {
+			String resolved = ServletContextPropertyUtils.resolvePlaceholders("${test.prop:foo}", servletContext);
+			assertEquals("bar", resolved);
+		}
 		finally {
-            System.clearProperty("test.prop");
-        }
-    }
-
+			System.clearProperty("test.prop");
+		}
+	}
 }
