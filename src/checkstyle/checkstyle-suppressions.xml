@@ -49,4 +49,6 @@
 	<suppress files="web[\\/]socket[\\/]WebSocketHttpHeaders" checks="JavadocVariable" />
 	<suppress files="sockjs[\\/]frame[\\/]SockJsFrameType" checks="JavadocVariable" />
 	<suppress files="sockjs[\\/]transport[\\/]TransportType" checks="JavadocVariable" />
+	<suppress files="test[\\/]java[\\/]org[\\/]springframework[\\/]core[\\/]env[\\/]scan.*[\\/]package-info.java" checks="OuterTypeFilename" />
+
 </suppressions>
