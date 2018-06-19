@@ -477,7 +477,7 @@ public class NotificationListenerTests extends AbstractMBeanServerTests {
 
 		public int getCount(String attribute) {
 			Integer count = (Integer) this.attributeCounts.get(attribute);
-			return (count == null) ? 0 : count.intValue();
+			return (count != null ? count.intValue() : 0);
 		}
 
 		public Object getLastHandback(String attributeName) {

@@ -264,7 +264,7 @@ final class TestNamespaceHandler extends NamespaceHandlerSupport {
 			Element element = (Element) node;
 			BeanDefinition def = definition.getBeanDefinition();
 
-			MutablePropertyValues mpvs = (def.getPropertyValues() == null) ? new MutablePropertyValues() : def.getPropertyValues();
+			MutablePropertyValues mpvs = (def.getPropertyValues() != null ? def.getPropertyValues() : new MutablePropertyValues());
 			mpvs.add("name", element.getAttribute("name"));
 			mpvs.add("age", element.getAttribute("age"));
 

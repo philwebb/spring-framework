@@ -591,7 +591,7 @@ public class ConcurrentReferenceHashMapTests {
 			}
 			// For testing we want more control of the hash
 			this.supplimentalHash = super.getHash(o);
-			return o == null ? 0 : o.hashCode();
+			return (o != null ? o.hashCode() : 0);
 		}
 
 		public int getSupplimentalHash() {
@@ -613,7 +613,7 @@ public class ConcurrentReferenceHashMapTests {
 					if (TestWeakConcurrentCache.this.disableTestHooks) {
 						return super.pollForPurge();
 					}
-					return TestWeakConcurrentCache.this.queue.isEmpty() ? null : TestWeakConcurrentCache.this.queue.removeFirst();
+					return (TestWeakConcurrentCache.this.queue.isEmpty() ? null : TestWeakConcurrentCache.this.queue.removeFirst());
 				}
 			};
 		}

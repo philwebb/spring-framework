@@ -573,8 +573,8 @@ public class DefaultLifecycleProcessorTests {
 
 
 	private static int getPhase(Lifecycle lifecycle) {
-		return (lifecycle instanceof SmartLifecycle) ?
-				((SmartLifecycle) lifecycle).getPhase() : 0;
+		return (lifecycle instanceof SmartLifecycle ?
+				((SmartLifecycle) lifecycle).getPhase() : 0);
 	}
 
 
