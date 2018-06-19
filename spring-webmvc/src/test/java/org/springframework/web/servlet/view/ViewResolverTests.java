@@ -304,7 +304,7 @@ public class ViewResolverTests {
 
 	@Test
 	public void testInternalResourceViewResolverWithJstl() throws Exception {
-		Locale locale = !Locale.GERMAN.equals(Locale.getDefault()) ? Locale.GERMAN : Locale.FRENCH;
+		Locale locale = (!Locale.GERMAN.equals(Locale.getDefault()) ? Locale.GERMAN : Locale.FRENCH);
 
 		MockServletContext sc = new MockServletContext();
 		StaticWebApplicationContext wac = new StaticWebApplicationContext();
@@ -342,7 +342,7 @@ public class ViewResolverTests {
 
 	@Test
 	public void testInternalResourceViewResolverWithJstlAndContextParam() throws Exception {
-		Locale locale = !Locale.GERMAN.equals(Locale.getDefault()) ? Locale.GERMAN : Locale.FRENCH;
+		Locale locale = (!Locale.GERMAN.equals(Locale.getDefault()) ? Locale.GERMAN : Locale.FRENCH);
 
 		MockServletContext sc = new MockServletContext();
 		sc.addInitParameter(Config.FMT_LOCALIZATION_CONTEXT, "org/springframework/web/context/WEB-INF/context-messages");

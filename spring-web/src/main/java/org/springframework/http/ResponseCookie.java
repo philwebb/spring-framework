@@ -188,7 +188,7 @@ public final class ResponseCookie extends HttpCookie {
 
 			@Override
 			public ResponseCookieBuilder maxAge(long maxAgeSeconds) {
-				this.maxAge = maxAgeSeconds >= 0 ? Duration.ofSeconds(maxAgeSeconds) : Duration.ofSeconds(-1);
+				this.maxAge = (maxAgeSeconds >= 0 ? Duration.ofSeconds(maxAgeSeconds) : Duration.ofSeconds(-1));
 				return this;
 			}
 

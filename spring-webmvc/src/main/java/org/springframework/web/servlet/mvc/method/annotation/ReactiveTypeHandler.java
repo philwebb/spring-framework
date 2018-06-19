@@ -159,8 +159,8 @@ class ReactiveTypeHandler {
 		Collection<MediaType> mediaTypes = (Collection<MediaType>) request.getAttribute(
 				HandlerMapping.PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE, RequestAttributes.SCOPE_REQUEST);
 
-		return CollectionUtils.isEmpty(mediaTypes) ?
-				this.contentNegotiationManager.resolveMediaTypes(request) : mediaTypes;
+		return (CollectionUtils.isEmpty(mediaTypes) ?
+				this.contentNegotiationManager.resolveMediaTypes(request) : mediaTypes);
 	}
 
 	private ResponseBodyEmitter getEmitter(MediaType mediaType) {

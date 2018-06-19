@@ -887,7 +887,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	@Override
 	protected void doService(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		if (this.logger.isDebugEnabled()) {
-			String resumed = WebAsyncUtils.getAsyncManager(request).hasConcurrentResult() ? " resumed" : "";
+			String resumed = (WebAsyncUtils.getAsyncManager(request).hasConcurrentResult() ? " resumed" : "");
 			this.logger.debug("DispatcherServlet with name '" + getServletName() + "'" + resumed +
 					" processing " + request.getMethod() + " request for [" + getRequestUri(request) + "]");
 		}

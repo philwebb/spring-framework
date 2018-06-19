@@ -395,7 +395,7 @@ public class FormHttpMessageConverter implements HttpMessageConverter<MultiValue
 		MediaType partContentType = partHeaders.getContentType();
 		for (HttpMessageConverter<?> messageConverter : this.partConverters) {
 			if (messageConverter.canWrite(partType, partContentType)) {
-				Charset charset = isFilenameCharsetSet() ? StandardCharsets.US_ASCII : this.charset;
+				Charset charset = (isFilenameCharsetSet() ? StandardCharsets.US_ASCII : this.charset);
 				HttpOutputMessage multipartMessage = new MultipartHttpOutputMessage(os, charset);
 				multipartMessage.getHeaders().setContentDispositionFormData(name, getFilename(partBody));
 				if (!partHeaders.isEmpty()) {

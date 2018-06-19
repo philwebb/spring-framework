@@ -74,7 +74,7 @@ public class RequestHeaderMethodArgumentResolver extends AbstractNamedValueMetho
 	protected Object resolveName(String name, MethodParameter parameter, NativeWebRequest request) throws Exception {
 		String[] headerValues = request.getHeaderValues(name);
 		if (headerValues != null) {
-			return (headerValues.length == 1 ? headerValues[0] : headerValues);
+			return (headerValues.length != 1 ? headerValues : headerValues[0]);
 		}
 		else {
 			return null;
