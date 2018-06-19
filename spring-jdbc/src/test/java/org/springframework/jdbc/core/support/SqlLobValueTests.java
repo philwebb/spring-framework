@@ -148,7 +148,7 @@ public class SqlLobValueTests  {
 			lob.setTypeValue(this.preparedStatement, 1, Types.CLOB, "test");
 			fail("IllegalArgumentException should have been thrown");
 		}
-		catch (IllegalArgumentException e) {
+		catch (IllegalArgumentException ex) {
 			// expected
 		}
 
@@ -176,7 +176,7 @@ public class SqlLobValueTests  {
 			lob.setTypeValue(this.preparedStatement, 1, Types.BLOB, "test");
 			fail("IllegalArgumentException should have been thrown");
 		}
-		catch (IllegalArgumentException e) {
+		catch (IllegalArgumentException ex) {
 			// expected
 		}
 	}

@@ -412,12 +412,12 @@ public abstract class AbstractTransactionAspectTests {
 			itb.exceptional(ex);
 			fail("Should have thrown exception");
 		}
-		catch (Throwable t) {
+		catch (Throwable nestedEx) {
 			if (rollbackException) {
-				assertEquals("Caught wrong exception", tex, t);
+				assertEquals("Caught wrong exception", tex, nestedEx);
 			}
 			else {
-				assertEquals("Caught wrong exception", ex, t);
+				assertEquals("Caught wrong exception", ex, nestedEx);
 			}
 		}
 

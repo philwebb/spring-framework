@@ -118,9 +118,9 @@ public class SqlScriptsTestExecutionListenerTests {
 			this.listener.beforeTestMethod(this.testContext);
 			fail("Should have thrown an IllegalStateException.");
 		}
-		catch (IllegalStateException e) {
-			// System.err.println(e.getMessage());
-			assertTrue("Exception message should contain: " + msg, e.getMessage().contains(msg));
+		catch (IllegalStateException ex) {
+			// System.err.println(ex.getMessage());
+			assertTrue("Exception message should contain: " + msg, ex.getMessage().contains(msg));
 		}
 	}
 

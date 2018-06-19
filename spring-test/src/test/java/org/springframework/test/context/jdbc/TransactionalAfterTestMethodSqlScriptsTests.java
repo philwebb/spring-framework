@@ -55,7 +55,7 @@ public class TransactionalAfterTestMethodSqlScriptsTests extends AbstractTransac
 				assertNumUsers(99);
 				fail("Should throw a BadSqlGrammarException after test01, assuming 'drop-schema.sql' was executed");
 			}
-			catch (BadSqlGrammarException e) {
+			catch (BadSqlGrammarException ex) {
 				/* expected */
 			}
 		}

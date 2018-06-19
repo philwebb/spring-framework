@@ -48,8 +48,8 @@ public class JsonPathRequestMatchersTests {
 		try {
 			request.getBody().write(REQUEST_CONTENT.getBytes());
 		}
-		catch (IOException e) {
-			throw new IllegalStateException(e);
+		catch (IOException ex) {
+			throw new IllegalStateException(ex);
 		}
 	}
 

@@ -51,8 +51,8 @@ public class JsonPathResultMatchersTests {
 			response.getWriter().print(new String(RESPONSE_CONTENT.getBytes("ISO-8859-1")));
 			stubMvcResult = new StubMvcResult(null, null, null, null, null, null, response);
 		}
-		catch (Exception e) {
-			throw new IllegalStateException(e);
+		catch (Exception ex) {
+			throw new IllegalStateException(ex);
 		}
 	}
 

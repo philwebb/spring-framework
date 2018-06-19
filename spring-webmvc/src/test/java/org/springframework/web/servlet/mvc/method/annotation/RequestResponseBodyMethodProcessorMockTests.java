@@ -177,10 +177,10 @@ public class RequestResponseBodyMethodProcessorMockTests {
 			testResolveArgumentWithValidation(new SimpleBean(null));
 			fail("Expected exception");
 		}
-		catch (MethodArgumentNotValidException e) {
-			assertEquals("simpleBean", e.getBindingResult().getObjectName());
-			assertEquals(1, e.getBindingResult().getErrorCount());
-			assertNotNull(e.getBindingResult().getFieldError("name"));
+		catch (MethodArgumentNotValidException ex) {
+			assertEquals("simpleBean", ex.getBindingResult().getObjectName());
+			assertEquals(1, ex.getBindingResult().getErrorCount());
+			assertNotNull(ex.getBindingResult().getFieldError("name"));
 		}
 	}
 
