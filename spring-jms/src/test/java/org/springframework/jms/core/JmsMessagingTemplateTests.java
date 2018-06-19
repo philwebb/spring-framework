@@ -625,8 +625,8 @@ public class JmsMessagingTemplateTests {
 			jmsMessage.setStringProperty("foo", "bar");
 			return jmsMessage;
 		}
-		catch (JMSException e) {
-			throw new IllegalStateException("Should not happen", e);
+		catch (JMSException ex) {
+			throw new IllegalStateException("Should not happen", ex);
 		}
 	}
 
@@ -641,8 +641,8 @@ public class JmsMessagingTemplateTests {
 			assertEquals("Wrong body message", "Hello", jmsMessage.getText());
 			assertEquals("Invalid foo property", "bar", jmsMessage.getStringProperty("foo"));
 		}
-		catch (JMSException e) {
-			throw new IllegalStateException("Wrong text message", e);
+		catch (JMSException ex) {
+			throw new IllegalStateException("Wrong text message", ex);
 		}
 	}
 

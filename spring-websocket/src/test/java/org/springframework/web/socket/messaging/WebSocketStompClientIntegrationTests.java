@@ -93,20 +93,20 @@ public class WebSocketStompClientIntegrationTests {
 		try {
 			this.server.undeployConfig();
 		}
-		catch (Throwable t) {
-			logger.error("Failed to undeploy application config", t);
+		catch (Throwable ex) {
+			logger.error("Failed to undeploy application config", ex);
 		}
 		try {
 			this.server.stop();
 		}
-		catch (Throwable t) {
-			logger.error("Failed to stop server", t);
+		catch (Throwable ex) {
+			logger.error("Failed to stop server", ex);
 		}
 		try {
 			this.wac.close();
 		}
-		catch (Throwable t) {
-			logger.error("Failed to close WebApplicationContext", t);
+		catch (Throwable ex) {
+			logger.error("Failed to close WebApplicationContext", ex);
 		}
 	}
 

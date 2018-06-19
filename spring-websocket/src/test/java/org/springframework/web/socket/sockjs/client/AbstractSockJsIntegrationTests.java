@@ -136,20 +136,20 @@ public abstract class AbstractSockJsIntegrationTests {
 		try {
 			this.server.undeployConfig();
 		}
-		catch (Throwable t) {
-			this.logger.error("Failed to undeploy application config", t);
+		catch (Throwable ex) {
+			this.logger.error("Failed to undeploy application config", ex);
 		}
 		try {
 			this.server.stop();
 		}
-		catch (Throwable t) {
-			this.logger.error("Failed to stop server", t);
+		catch (Throwable ex) {
+			this.logger.error("Failed to stop server", ex);
 		}
 		try {
 			this.wac.close();
 		}
-		catch (Throwable t) {
-			this.logger.error("Failed to close WebApplicationContext", t);
+		catch (Throwable ex) {
+			this.logger.error("Failed to close WebApplicationContext", ex);
 		}
 	}
 
@@ -312,8 +312,8 @@ public abstract class AbstractSockJsIntegrationTests {
 			try {
 				Thread.sleep(timeToSleep);
 			}
-			catch (InterruptedException e) {
-				throw new IllegalStateException("Interrupted while waiting for " + description, e);
+			catch (InterruptedException ex) {
+				throw new IllegalStateException("Interrupted while waiting for " + description, ex);
 			}
 		}
 		throw new IllegalStateException("Timed out waiting for " + description);
@@ -430,8 +430,8 @@ public abstract class AbstractSockJsIntegrationTests {
 						Thread.sleep(this.sleepDelayMap.get(suffix));
 						break;
 					}
-					catch (InterruptedException e) {
-						e.printStackTrace();
+					catch (InterruptedException ex) {
+						ex.printStackTrace();
 					}
 				}
 			}

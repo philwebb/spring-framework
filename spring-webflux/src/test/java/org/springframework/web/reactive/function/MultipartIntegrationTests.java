@@ -99,8 +99,8 @@ public class MultipartIntegrationTests extends AbstractRouterFunctionIntegration
 							assertEquals("foo.txt", ((FilePart) parts.get("fooPart")).filename());
 							assertEquals("bar", ((FormFieldPart) parts.get("barPart")).value());
 						}
-						catch(Exception e) {
-							return Mono.error(e);
+						catch(Exception ex) {
+							return Mono.error(ex);
 						}
 						return ServerResponse.ok().build();
 					});
@@ -114,8 +114,8 @@ public class MultipartIntegrationTests extends AbstractRouterFunctionIntegration
 							assertEquals("foo.txt", ((FilePart) parts.get(0)).filename());
 							assertEquals("bar", ((FormFieldPart) parts.get(1)).value());
 						}
-						catch(Exception e) {
-							return Mono.error(e);
+						catch(Exception ex) {
+							return Mono.error(ex);
 						}
 						return ServerResponse.ok().build();
 					});

@@ -96,8 +96,8 @@ class CallableInterceptorChain {
 					return result;
 				}
 			}
-			catch (Throwable t) {
-				return t;
+			catch (Throwable ex) {
+				return ex;
 			}
 		}
 		return CallableProcessingInterceptor.RESULT_NONE;
@@ -127,8 +127,8 @@ class CallableInterceptorChain {
 					return result;
 				}
 			}
-			catch (Throwable t) {
-				return t;
+			catch (Throwable ex) {
+				return ex;
 			}
 		}
 		return CallableProcessingInterceptor.RESULT_NONE;

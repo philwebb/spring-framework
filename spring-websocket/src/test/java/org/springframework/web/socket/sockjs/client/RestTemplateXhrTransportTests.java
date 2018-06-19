@@ -217,8 +217,8 @@ public class RestTemplateXhrTransportTests {
 			try {
 				extractor.extractData(this.responses.remove());
 			}
-			catch (Throwable t) {
-				throw new RestClientException("Failed to invoke extractor", t);
+			catch (Throwable ex) {
+				throw new RestClientException("Failed to invoke extractor", ex);
 			}
 			return null;
 		}

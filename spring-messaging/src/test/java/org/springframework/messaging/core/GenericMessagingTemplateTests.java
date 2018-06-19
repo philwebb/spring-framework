@@ -230,8 +230,8 @@ public class GenericMessagingTemplateTests {
 				replyChannel.send(new GenericMessage<>("response"));
 				failure.set(new IllegalStateException("Expected exception"));
 			}
-			catch (InterruptedException e) {
-				failure.set(e);
+			catch (InterruptedException ex) {
+				failure.set(ex);
 			}
 			catch (MessageDeliveryException ex) {
 				String expected = "Reply message received but the receiving thread has exited due to a timeout";
