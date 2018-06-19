@@ -480,9 +480,9 @@ public class StompHeaderAccessor extends SimpMessageHeaderAccessor {
 		}
 		Charset charset = mimeType.getCharset();
 		charset = (charset != null ? charset : StandardCharsets.UTF_8);
-		return (bytes.length < 80) ?
+		return (bytes.length < 80 ?
 				contentType + " payload=" + new String(bytes, charset) :
-				contentType + " payload=" + new String(Arrays.copyOf(bytes, 80), charset) + "...(truncated)";
+				contentType + " payload=" + new String(Arrays.copyOf(bytes, 80), charset) + "...(truncated)");
 	}
 
 

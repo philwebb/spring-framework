@@ -485,8 +485,8 @@ public class MessageBrokerBeanDefinitionParserTests {
 	}
 
 	private WebSocketHandler unwrapWebSocketHandler(WebSocketHandler handler) {
-		return (handler instanceof WebSocketHandlerDecorator) ?
-				((WebSocketHandlerDecorator) handler).getLastHandler() : handler;
+		return (handler instanceof WebSocketHandlerDecorator ?
+				((WebSocketHandlerDecorator) handler).getLastHandler() : handler);
 	}
 }
 

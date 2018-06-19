@@ -94,7 +94,7 @@ public class MappingContentNegotiationStrategyTests {
 
 		@Override
 		protected MediaType handleNoMatch(NativeWebRequest request, String mappingKey) {
-			return "xml".equals(mappingKey) ? MediaType.APPLICATION_XML : null;
+			return ("xml".equals(mappingKey) ? MediaType.APPLICATION_XML : null);
 		}
 	}
 

@@ -331,7 +331,7 @@ public class MockHttpServletResponse implements HttpServletResponse {
 
 	private String getCookieHeader(Cookie cookie) {
 		StringBuilder buf = new StringBuilder();
-		buf.append(cookie.getName()).append('=').append(cookie.getValue() == null ? "" : cookie.getValue());
+		buf.append(cookie.getName()).append('=').append(cookie.getValue() != null ? cookie.getValue() : "");
 		if (StringUtils.hasText(cookie.getPath())) {
 			buf.append("; Path=").append(cookie.getPath());
 		}
@@ -593,7 +593,7 @@ public class MockHttpServletResponse implements HttpServletResponse {
 			HttpHeaders headers = new HttpHeaders();
 			headers.add(HttpHeaders.CONTENT_LANGUAGE, value.toString());
 			Locale language = headers.getContentLanguage();
-			this.locale = language != null ? language : Locale.getDefault();
+			this.locale = (language != null ? language : Locale.getDefault());
 			return true;
 		}
 		else {
@@ -668,7 +668,7 @@ public class MockHttpServletResponse implements HttpServletResponse {
 		int count = this.includedUrls.size();
 		Assert.state(count <= 1,
 				() -> "More than 1 URL included - check getIncludedUrls instead: " + this.includedUrls);
-		return (count == 1 ? this.includedUrls.get(0) : null);
+		return (count != 1 ? null : this.includedUrls.get(0));
 	}
 
 	public void addIncludedUrl(String includedUrl) {

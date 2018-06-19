@@ -128,9 +128,9 @@ public abstract class ExchangeFilterFunctions {
 		Assert.notNull(exceptionFunction, "Function must not be null");
 
 		return ExchangeFilterFunction.ofResponseProcessor(
-				(response) -> statusPredicate.test(response.statusCode()) ?
+				(response) -> (statusPredicate.test(response.statusCode()) ?
 						Mono.error(exceptionFunction.apply(response)) :
-						Mono.just(response)
+						Mono.just(response))
 		);
 	}
 

@@ -118,7 +118,7 @@ public class ApplicationContextEventTests extends AbstractApplicationEventListen
 		else {
 			smc.multicastEvent(event);
 		}
-		int invocation = match ? 1 : 0;
+		int invocation = (match ? 1 : 0);
 		verify(listener, times(invocation)).onApplicationEvent(event);
 	}
 

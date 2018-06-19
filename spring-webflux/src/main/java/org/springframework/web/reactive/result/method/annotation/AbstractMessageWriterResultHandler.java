@@ -115,8 +115,8 @@ public abstract class AbstractMessageWriterResultHandler extends HandlerResultHa
 			@Nullable MethodParameter actualParameter, ServerWebExchange exchange) {
 
 		ResolvableType bodyType = ResolvableType.forMethodParameter(bodyParameter);
-		ResolvableType actualType = (actualParameter == null ?
-				bodyType : ResolvableType.forMethodParameter(actualParameter));
+		ResolvableType actualType = (actualParameter != null ?
+				ResolvableType.forMethodParameter(actualParameter) : bodyType);
 		Class<?> bodyClass = bodyType.resolve();
 		ReactiveAdapter adapter = getAdapterRegistry().getAdapter(bodyClass, body);
 

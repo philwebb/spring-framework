@@ -209,7 +209,7 @@ public class StandardJmsActivationSpecFactory implements JmsActivationSpecFactor
 		}
 		else if (bw.isWritableProperty("acknowledgeMode")) {
 			bw.setPropertyValue("acknowledgeMode",
-					ackMode == Session.DUPS_OK_ACKNOWLEDGE ? "Dups-ok-acknowledge" : "Auto-acknowledge");
+					ackMode != Session.DUPS_OK_ACKNOWLEDGE ? "Auto-acknowledge" : "Dups-ok-acknowledge");
 		}
 		else if (ackMode == Session.DUPS_OK_ACKNOWLEDGE) {
 			// Standard JCA 1.5 "acknowledgeMode" apparently not supported (e.g. WebSphere MQ 6.0.2.1)

@@ -557,7 +557,7 @@ public final class MockServerRequest implements ServerRequest {
 		@Override
 		public List<String> header(String headerName) {
 			List<String> headerValues = delegate().get(headerName);
-			return headerValues != null ? headerValues : Collections.emptyList();
+			return (headerValues != null ? headerValues : Collections.emptyList());
 		}
 
 		@Override
@@ -566,7 +566,7 @@ public final class MockServerRequest implements ServerRequest {
 		}
 
 		private OptionalLong toOptionalLong(long value) {
-			return value != -1 ? OptionalLong.of(value) : OptionalLong.empty();
+			return (value != -1 ? OptionalLong.of(value) : OptionalLong.empty());
 		}
 
 	}

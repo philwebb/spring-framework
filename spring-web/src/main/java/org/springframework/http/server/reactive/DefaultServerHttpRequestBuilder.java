@@ -200,7 +200,7 @@ class DefaultServerHttpRequestBuilder implements ServerHttpRequest.Builder {
 			this.methodValue = methodValue;
 			this.cookies = cookies;
 			this.remoteAddress = originalRequest.getRemoteAddress();
-			this.sslInfo = sslInfo != null ? sslInfo : originalRequest.getSslInfo();
+			this.sslInfo = (sslInfo != null ? sslInfo : originalRequest.getSslInfo());
 			this.body = body;
 			this.originalRequest = originalRequest;
 		}

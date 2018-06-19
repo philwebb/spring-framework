@@ -72,7 +72,7 @@ public class WebSocketHttpHeaders extends HttpHeaders {
 	 * Private constructor that can create read-only {@code WebSocketHttpHeader} instances.
 	 */
 	private WebSocketHttpHeaders(HttpHeaders headers, boolean readOnly) {
-		this.headers = readOnly ? HttpHeaders.readOnlyHttpHeaders(headers) : headers;
+		this.headers = (readOnly ? HttpHeaders.readOnlyHttpHeaders(headers) : headers);
 	}
 
 	/**

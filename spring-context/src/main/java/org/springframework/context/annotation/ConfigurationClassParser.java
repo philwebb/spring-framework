@@ -443,8 +443,8 @@ class ConfigurationClassParser {
 		boolean ignoreResourceNotFound = propertySource.getBoolean("ignoreResourceNotFound");
 
 		Class<? extends PropertySourceFactory> factoryClass = propertySource.getClass("factory");
-		PropertySourceFactory factory = (factoryClass == PropertySourceFactory.class ?
-				DEFAULT_PROPERTY_SOURCE_FACTORY : BeanUtils.instantiateClass(factoryClass));
+		PropertySourceFactory factory = (factoryClass != PropertySourceFactory.class ?
+				BeanUtils.instantiateClass(factoryClass) : DEFAULT_PROPERTY_SOURCE_FACTORY);
 
 		for (String location : locations) {
 			try {
@@ -553,7 +553,7 @@ class ConfigurationClassParser {
 		for (DeferredImportSelectorHolder deferredImport : deferredImports) {
 			Class<? extends Group> group = deferredImport.getImportSelector().getImportGroup();
 			DeferredImportSelectorGrouping grouping = groupings.computeIfAbsent(
-					(group == null ? deferredImport : group),
+					(group != null ? group : deferredImport),
 					(key) -> new DeferredImportSelectorGrouping(createGroup(group)));
 			grouping.add(deferredImport);
 			configurationClasses.put(deferredImport.getConfigurationClass().getMetadata(),

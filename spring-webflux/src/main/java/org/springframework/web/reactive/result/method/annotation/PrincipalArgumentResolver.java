@@ -53,7 +53,7 @@ public class PrincipalArgumentResolver extends HandlerMethodArgumentResolverSupp
 
 		Mono<Principal> principal = exchange.getPrincipal();
 		ReactiveAdapter adapter = getAdapterRegistry().getAdapter(parameter.getParameterType());
-		return adapter != null ? Mono.just(adapter.fromPublisher(principal)) : Mono.from(principal);
+		return (adapter != null ? Mono.just(adapter.fromPublisher(principal)) : Mono.from(principal));
 	}
 
 }

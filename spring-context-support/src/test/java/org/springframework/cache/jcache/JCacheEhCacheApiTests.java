@@ -71,7 +71,7 @@ public class JCacheEhCacheApiTests extends AbstractValueAdaptingCacheTests<JCach
 
 	@Override
 	protected JCacheCache getCache(boolean allowNull) {
-		return allowNull ? this.cache : this.cacheNoNull;
+		return (allowNull ? this.cache : this.cacheNoNull);
 	}
 
 	@Override

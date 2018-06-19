@@ -55,7 +55,7 @@ public class WebSessionArgumentResolver extends HandlerMethodArgumentResolverSup
 
 		Mono<WebSession> session = exchange.getSession();
 		ReactiveAdapter adapter = getAdapterRegistry().getAdapter(parameter.getParameterType());
-		return adapter != null ? Mono.just(adapter.fromPublisher(session)) : Mono.from(session);
+		return (adapter != null ? Mono.just(adapter.fromPublisher(session)) : Mono.from(session));
 	}
 
 }

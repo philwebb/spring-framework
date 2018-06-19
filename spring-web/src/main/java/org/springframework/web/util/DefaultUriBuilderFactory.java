@@ -217,8 +217,8 @@ public class DefaultUriBuilderFactory implements UriBuilderFactory {
 		private UriComponentsBuilder initUriComponentsBuilder(String uriTemplate) {
 			UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(uriTemplate);
 			UriComponents uriComponents = uriComponentsBuilder.build();
-			UriComponentsBuilder result = (uriComponents.getHost() == null ?
-					DefaultUriBuilderFactory.this.baseUri.cloneBuilder().uriComponents(uriComponents) : uriComponentsBuilder);
+			UriComponentsBuilder result = (uriComponents.getHost() != null ? uriComponentsBuilder
+					: DefaultUriBuilderFactory.this.baseUri.cloneBuilder().uriComponents(uriComponents));
 
 			if (shouldParsePath()) {
 				UriComponents uric = result.build();

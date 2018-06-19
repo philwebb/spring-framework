@@ -536,8 +536,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		if (classToMatch == null) {
 			classToMatch = FactoryBean.class;
 		}
-		Class<?>[] typesToMatch = (FactoryBean.class == classToMatch ?
-				new Class<?>[] {classToMatch} : new Class<?>[] {FactoryBean.class, classToMatch});
+		Class<?>[] typesToMatch = (FactoryBean.class != classToMatch
+				? new Class<?>[] { FactoryBean.class, classToMatch }
+				: new Class<?>[] { classToMatch });
 
 		// Check decorated bean definition, if any: We assume it'll be easier
 		// to determine the decorated bean's type than the proxy's type.

@@ -164,17 +164,17 @@ public class DateTimeFormatterRegistrar implements FormatterRegistrar {
 
 		registry.addFormatterForFieldType(LocalDate.class,
 				new TemporalAccessorPrinter(
-						df == DateTimeFormatter.ISO_DATE ? DateTimeFormatter.ISO_LOCAL_DATE : df),
+						df != DateTimeFormatter.ISO_DATE ? df : DateTimeFormatter.ISO_LOCAL_DATE),
 				new TemporalAccessorParser(LocalDate.class, df));
 
 		registry.addFormatterForFieldType(LocalTime.class,
 				new TemporalAccessorPrinter(
-						tf == DateTimeFormatter.ISO_TIME ? DateTimeFormatter.ISO_LOCAL_TIME : tf),
+						tf != DateTimeFormatter.ISO_TIME ? tf : DateTimeFormatter.ISO_LOCAL_TIME),
 				new TemporalAccessorParser(LocalTime.class, tf));
 
 		registry.addFormatterForFieldType(LocalDateTime.class,
 				new TemporalAccessorPrinter(
-						dtf == DateTimeFormatter.ISO_DATE_TIME ? DateTimeFormatter.ISO_LOCAL_DATE_TIME : dtf),
+						dtf != DateTimeFormatter.ISO_DATE_TIME ? dtf : DateTimeFormatter.ISO_LOCAL_DATE_TIME),
 				new TemporalAccessorParser(LocalDateTime.class, dtf));
 
 		registry.addFormatterForFieldType(ZonedDateTime.class,

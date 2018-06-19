@@ -113,7 +113,7 @@ public class ServerSentEventHttpMessageReader implements HttpMessageReader<Objec
 	private Mono<?> buildEvent(List<String> lines, ResolvableType valueType, boolean shouldWrap,
 			Map<String, Object> hints) {
 
-		ServerSentEvent.Builder<Object> sseBuilder = shouldWrap ? ServerSentEvent.builder() : null;
+		ServerSentEvent.Builder<Object> sseBuilder = (shouldWrap ? ServerSentEvent.builder() : null);
 		StringBuilder data = null;
 		StringBuilder comment = null;
 

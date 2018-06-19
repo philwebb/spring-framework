@@ -95,7 +95,7 @@ public class ConcurrencyThrottleInterceptorTests {
 				ex.printStackTrace();
 			}
 			threads[i] = new ConcurrencyThread(proxy,
-					i % 2 == 0 ? new OutOfMemoryError() : new IllegalStateException());
+					(i % 2 != 0 ? new IllegalStateException() : new OutOfMemoryError()));
 			threads[i].start();
 		}
 		for (int i = 0; i < NR_OF_THREADS; i++) {

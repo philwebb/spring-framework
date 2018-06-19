@@ -70,7 +70,7 @@ public class RequestMappingHandlerMappingTests {
 
 	@Test
 	public void resolveEmbeddedValuesInPatterns() {
-		this.handlerMapping.setEmbeddedValueResolver((value) -> "/${pattern}/bar".equals(value) ? "/foo/bar" : value);
+		this.handlerMapping.setEmbeddedValueResolver((value) -> ("/${pattern}/bar".equals(value) ? "/foo/bar" : value));
 
 		String[] patterns = new String[] { "/foo", "/${pattern}/bar" };
 		String[] result = this.handlerMapping.resolveEmbeddedValuesInPatterns(patterns);
@@ -80,7 +80,7 @@ public class RequestMappingHandlerMappingTests {
 
 	@Test
 	public void pathPrefix() throws NoSuchMethodException {
-		this.handlerMapping.setEmbeddedValueResolver((value) -> "/${prefix}".equals(value) ? "/api" : value);
+		this.handlerMapping.setEmbeddedValueResolver((value) -> ("/${prefix}".equals(value) ? "/api" : value));
 		this.handlerMapping.setPathPrefixes(Collections.singletonMap(
 				"/${prefix}", HandlerTypePredicate.forAnnotation(RestController.class)));
 

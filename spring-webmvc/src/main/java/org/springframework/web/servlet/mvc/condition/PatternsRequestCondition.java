@@ -206,9 +206,9 @@ public final class PatternsRequestCondition extends AbstractRequestCondition<Pat
 		String lookupPath = this.pathHelper.getLookupPathForRequest(request);
 		List<String> matches = getMatchingPatterns(lookupPath);
 
-		return matches.isEmpty() ? null :
+		return (matches.isEmpty() ? null :
 			new PatternsRequestCondition(matches, this.pathHelper, this.pathMatcher, this.useSuffixPatternMatch,
-					this.useTrailingSlashMatch, this.fileExtensions);
+					this.useTrailingSlashMatch, this.fileExtensions));
 	}
 
 	/**

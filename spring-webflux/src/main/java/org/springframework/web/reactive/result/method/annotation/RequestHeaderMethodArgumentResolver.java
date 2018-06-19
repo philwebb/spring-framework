@@ -82,7 +82,7 @@ public class RequestHeaderMethodArgumentResolver extends AbstractNamedValueSyncA
 		List<String> headerValues = exchange.getRequest().getHeaders().get(name);
 		Object result = null;
 		if (headerValues != null) {
-			result = (headerValues.size() == 1 ? headerValues.get(0) : headerValues);
+			result = (headerValues.size() != 1 ? headerValues : headerValues.get(0));
 		}
 		return result;
 	}
