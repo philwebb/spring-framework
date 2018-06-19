@@ -142,7 +142,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		Mono<Object> mono = this.handlerMapping.getHandler(exchange);
 
 		assertError(mono, MethodNotAllowedException.class,
-				ex -> assertEquals(EnumSet.of(HttpMethod.GET, HttpMethod.HEAD), ex.getSupportedMethods()));
+				(ex) -> assertEquals(EnumSet.of(HttpMethod.GET, HttpMethod.HEAD), ex.getSupportedMethods()));
 	}
 
 	@Test  // SPR-9603
@@ -170,7 +170,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		Mono<Object> mono = this.handlerMapping.getHandler(exchange);
 
 		assertError(mono, UnsupportedMediaTypeStatusException.class,
-				ex -> assertEquals("Response status 415 with reason \"Invalid mime type \"bogus\": " +
+				(ex) -> assertEquals("Response status 415 with reason \"Invalid mime type \"bogus\": " +
 								"does not contain '/'\"", ex.getMessage()));
 	}
 
@@ -184,7 +184,7 @@ public class RequestMappingInfoHandlerMappingTests {
 	public void getHandlerTestRequestParamMismatch() {
 		ServerWebExchange exchange = MockServerWebExchange.from(get("/params"));
 		Mono<Object> mono = this.handlerMapping.getHandler(exchange);
-		assertError(mono, ServerWebInputException.class, ex -> {
+		assertError(mono, ServerWebInputException.class, (ex) -> {
 			assertThat(ex.getReason(), containsString("[foo=bar]"));
 			assertThat(ex.getReason(), containsString("[bar=baz]"));
 		});
@@ -319,7 +319,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		ServerWebExchange exchange = MockServerWebExchange.from(request);
 		Mono<Object> mono = this.handlerMapping.getHandler(exchange);
 
-		assertError(mono, UnsupportedMediaTypeStatusException.class, ex ->
+		assertError(mono, UnsupportedMediaTypeStatusException.class, (ex) ->
 				assertEquals("Invalid supported consumable media types",
 						Collections.singletonList(new MediaType("application", "xml")),
 						ex.getSupportedMediaTypes()));
@@ -346,7 +346,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		ServerWebExchange exchange = MockServerWebExchange.from(get(url).accept(MediaType.APPLICATION_JSON));
 		Mono<Object> mono = this.handlerMapping.getHandler(exchange);
 
-		assertError(mono, NotAcceptableStatusException.class, ex ->
+		assertError(mono, NotAcceptableStatusException.class, (ex) ->
 				assertEquals("Invalid supported producible media types",
 						Collections.singletonList(new MediaType("application", "xml")),
 						ex.getSupportedMediaTypes()));

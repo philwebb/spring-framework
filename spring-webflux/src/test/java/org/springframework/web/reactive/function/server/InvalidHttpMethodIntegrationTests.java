@@ -32,9 +32,9 @@ public class InvalidHttpMethodIntegrationTests extends AbstractRouterFunctionInt
 	@Override
 	protected RouterFunction<?> routerFunction() {
 		return RouterFunctions.route(RequestPredicates.GET("/"),
-				request -> ServerResponse.ok().syncBody("FOO"))
+				(request) -> ServerResponse.ok().syncBody("FOO"))
 				.andRoute(RequestPredicates.all(),
-						request -> ServerResponse.ok().syncBody("BAR"));
+						(request) -> ServerResponse.ok().syncBody("BAR"));
 	}
 
 	@Test

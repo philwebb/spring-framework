@@ -137,7 +137,7 @@ public class CorsUtilsTests {
 	private ServerHttpRequest adaptFromForwardedHeaders(MockServerHttpRequest.BaseBuilder<?> builder) {
 		AtomicReference<ServerHttpRequest> requestRef = new AtomicReference<>();
 		MockServerWebExchange exchange = MockServerWebExchange.from(builder);
-		new ForwardedHeaderFilter().filter(exchange, exchange2 -> {
+		new ForwardedHeaderFilter().filter(exchange, (exchange2) -> {
 			requestRef.set(exchange2.getRequest());
 			return Mono.empty();
 		}).block();

@@ -109,7 +109,7 @@ class ModelInitializer {
 		modelMethods.forEach((invocable) -> resultList.add(invocable.invoke(exchange, bindingContext)));
 
 		return Mono
-				.zip(resultList, objectArray ->
+				.zip(resultList, (objectArray) ->
 						Arrays.stream(objectArray)
 								.map((object) -> handleResult(((HandlerResult) object), bindingContext))
 								.collect(Collectors.toList()))

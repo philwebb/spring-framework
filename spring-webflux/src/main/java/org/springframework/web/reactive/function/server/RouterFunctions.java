@@ -67,7 +67,7 @@ public abstract class RouterFunctions {
 	public static final String URI_TEMPLATE_VARIABLES_ATTRIBUTE =
 			RouterFunctions.class.getName() + ".uriTemplateVariables";
 
-	private static final HandlerFunction<ServerResponse> NOT_FOUND_HANDLER = request -> ServerResponse.notFound().build();
+	private static final HandlerFunction<ServerResponse> NOT_FOUND_HANDLER = (request) -> ServerResponse.notFound().build();
 
 
 	/**
@@ -235,7 +235,7 @@ public abstract class RouterFunctions {
 		Assert.notNull(routerFunction, "RouterFunction must not be null");
 		Assert.notNull(strategies, "HandlerStrategies must not be null");
 
-		return exchange -> {
+		return (exchange) -> {
 			ServerRequest request = new DefaultServerRequest(exchange, strategies.messageReaders());
 			addAttributes(exchange, request);
 			return routerFunction.route(request)

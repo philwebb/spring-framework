@@ -269,7 +269,7 @@ class ControllerMethodResolver {
 		});
 
 		this.initBinderMethodCache
-				.computeIfAbsent(handlerType, aClass -> selectMethods(handlerType, BINDER_METHODS))
+				.computeIfAbsent(handlerType, (aClass) -> selectMethods(handlerType, BINDER_METHODS))
 				.forEach((method) -> {
 					Object bean = handlerMethod.getBean();
 					result.add(getInitBinderMethod(bean, method));
@@ -301,7 +301,7 @@ class ControllerMethodResolver {
 		});
 
 		this.modelAttributeMethodCache
-				.computeIfAbsent(handlerType, aClass -> selectMethods(handlerType, ATTRIBUTE_METHODS))
+				.computeIfAbsent(handlerType, (aClass) -> selectMethods(handlerType, ATTRIBUTE_METHODS))
 				.forEach((method) -> {
 					Object bean = handlerMethod.getBean();
 					result.add(createAttributeMethod(bean, method));
@@ -374,11 +374,11 @@ class ControllerMethodResolver {
 
 
 	/** Filter for {@link InitBinder @InitBinder} methods. */
-	private static final ReflectionUtils.MethodFilter BINDER_METHODS = method ->
+	private static final ReflectionUtils.MethodFilter BINDER_METHODS = (method) ->
 			AnnotationUtils.findAnnotation(method, InitBinder.class) != null;
 
 	/** Filter for {@link ModelAttribute @ModelAttribute} methods. */
-	private static final ReflectionUtils.MethodFilter ATTRIBUTE_METHODS = method ->
+	private static final ReflectionUtils.MethodFilter ATTRIBUTE_METHODS = (method) ->
 			(AnnotationUtils.findAnnotation(method, RequestMapping.class) == null) &&
 					(AnnotationUtils.findAnnotation(method, ModelAttribute.class) != null);
 

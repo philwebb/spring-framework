@@ -65,7 +65,7 @@ public class MockClientHttpRequest extends AbstractClientHttpRequest {
 	}
 
 	private Function<Flux<DataBuffer>, Mono<Void>> initDefaultWriteHandler() {
-		return body -> {
+		return (body) -> {
 			this.body = body.cache();
 			return this.body.then();
 		};

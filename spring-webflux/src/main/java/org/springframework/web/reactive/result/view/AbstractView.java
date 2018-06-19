@@ -237,7 +237,7 @@ public abstract class AbstractView implements View, ApplicationContextAware {
 		}
 
 		return Mono.zip(valueMonos,
-				values -> {
+				(values) -> {
 					for (int i=0; i < values.length; i++) {
 						if (values[i] != NO_VALUE) {
 							model.put(names.get(i), values[i]);

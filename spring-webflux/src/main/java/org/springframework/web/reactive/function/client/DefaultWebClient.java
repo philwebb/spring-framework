@@ -397,7 +397,7 @@ class DefaultWebClient implements WebClient {
 		public <T> Mono<T> bodyToMono(Class<T> bodyType) {
 			// Use bodyToMono (vs BodyExtractors) to ensure proper handling of Void.class...
 			return this.responseMono.flatMap(
-					response -> bodyToPublisher(response, response.bodyToMono(bodyType),
+					(response) -> bodyToPublisher(response, response.bodyToMono(bodyType),
 							this::monoThrowableToMono));
 		}
 
@@ -405,7 +405,7 @@ class DefaultWebClient implements WebClient {
 		@SuppressWarnings("unchecked")
 		public <T> Mono<T> bodyToMono(ParameterizedTypeReference<T> typeReference) {
 			return this.responseMono.flatMap(
-					response -> bodyToPublisher(response, response.bodyToMono(typeReference),
+					(response) -> bodyToPublisher(response, response.bodyToMono(typeReference),
 							this::monoThrowableToMono));
 		}
 
@@ -416,14 +416,14 @@ class DefaultWebClient implements WebClient {
 		@Override
 		public <T> Flux<T> bodyToFlux(Class<T> elementType) {
 			return this.responseMono.flatMapMany(
-					response -> bodyToPublisher(response, response.bodyToFlux(elementType),
+					(response) -> bodyToPublisher(response, response.bodyToFlux(elementType),
 							this::monoThrowableToFlux));
 		}
 
 		@Override
 		public <T> Flux<T> bodyToFlux(ParameterizedTypeReference<T> typeReference) {
 			return this.responseMono.flatMapMany(
-					response -> bodyToPublisher(response, response.bodyToFlux(typeReference),
+					(response) -> bodyToPublisher(response, response.bodyToFlux(typeReference),
 							this::monoThrowableToFlux));
 		}
 

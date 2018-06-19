@@ -95,7 +95,7 @@ public class ModelAttributeMethodArgumentResolver extends HandlerMethodArgumentR
 			return true;
 		}
 		else if (this.useDefaultResolution) {
-			return checkParameterType(parameter, type -> !BeanUtils.isSimpleProperty(type));
+			return checkParameterType(parameter, (type) -> !BeanUtils.isSimpleProperty(type));
 		}
 		return false;
 	}

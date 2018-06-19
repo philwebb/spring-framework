@@ -51,7 +51,7 @@ public class RouterFunctionsTests {
 
 	@Test
 	public void routeMatch() throws Exception {
-		HandlerFunction<ServerResponse> handlerFunction = request -> ServerResponse.ok().build();
+		HandlerFunction<ServerResponse> handlerFunction = (request) -> ServerResponse.ok().build();
 
 		MockServerRequest request = MockServerRequest.builder().build();
 		RequestPredicate requestPredicate = mock(RequestPredicate.class);
@@ -71,7 +71,7 @@ public class RouterFunctionsTests {
 
 	@Test
 	public void routeNoMatch() throws Exception {
-		HandlerFunction<ServerResponse> handlerFunction = request -> ServerResponse.ok().build();
+		HandlerFunction<ServerResponse> handlerFunction = (request) -> ServerResponse.ok().build();
 
 		MockServerRequest request = MockServerRequest.builder().build();
 		RequestPredicate requestPredicate = mock(RequestPredicate.class);
@@ -88,8 +88,8 @@ public class RouterFunctionsTests {
 
 	@Test
 	public void nestMatch() throws Exception {
-		HandlerFunction<ServerResponse> handlerFunction = request -> ServerResponse.ok().build();
-		RouterFunction<ServerResponse> routerFunction = request -> Mono.just(handlerFunction);
+		HandlerFunction<ServerResponse> handlerFunction = (request) -> ServerResponse.ok().build();
+		RouterFunction<ServerResponse> routerFunction = (request) -> Mono.just(handlerFunction);
 
 		MockServerRequest request = MockServerRequest.builder().build();
 		RequestPredicate requestPredicate = mock(RequestPredicate.class);
@@ -107,8 +107,8 @@ public class RouterFunctionsTests {
 
 	@Test
 	public void nestNoMatch() throws Exception {
-		HandlerFunction<ServerResponse> handlerFunction = request -> ServerResponse.ok().build();
-		RouterFunction<ServerResponse> routerFunction = request -> Mono.just(handlerFunction);
+		HandlerFunction<ServerResponse> handlerFunction = (request) -> ServerResponse.ok().build();
+		RouterFunction<ServerResponse> routerFunction = (request) -> Mono.just(handlerFunction);
 
 		MockServerRequest request = MockServerRequest.builder().build();
 		RequestPredicate requestPredicate = mock(RequestPredicate.class);
@@ -125,7 +125,7 @@ public class RouterFunctionsTests {
 
 	@Test
 	public void toHttpHandlerNormal() throws Exception {
-		HandlerFunction<ServerResponse> handlerFunction = request -> ServerResponse.accepted().build();
+		HandlerFunction<ServerResponse> handlerFunction = (request) -> ServerResponse.accepted().build();
 		RouterFunction<ServerResponse> routerFunction =
 				RouterFunctions.route(RequestPredicates.all(), handlerFunction);
 
@@ -141,7 +141,7 @@ public class RouterFunctionsTests {
 	@Test
 	public void toHttpHandlerHandlerThrowsException() throws Exception {
 		HandlerFunction<ServerResponse> handlerFunction =
-				request -> {
+				(request) -> {
 					throw new IllegalStateException();
 				};
 		RouterFunction<ServerResponse> routerFunction =
@@ -159,7 +159,7 @@ public class RouterFunctionsTests {
 	@Test
 	public void toHttpHandlerHandlerReturnsException() throws Exception {
 		HandlerFunction<ServerResponse> handlerFunction =
-				request -> Mono.error(new IllegalStateException());
+				(request) -> Mono.error(new IllegalStateException());
 		RouterFunction<ServerResponse> routerFunction =
 				RouterFunctions.route(RequestPredicates.all(), handlerFunction);
 
@@ -175,7 +175,7 @@ public class RouterFunctionsTests {
 	@Test
 	public void toHttpHandlerHandlerResponseStatusException() throws Exception {
 		HandlerFunction<ServerResponse> handlerFunction =
-				request -> Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found"));
+				(request) -> Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found"));
 		RouterFunction<ServerResponse> routerFunction =
 				RouterFunctions.route(RequestPredicates.all(), handlerFunction);
 
@@ -192,7 +192,7 @@ public class RouterFunctionsTests {
 	public void toHttpHandlerHandlerReturnResponseStatusExceptionInResponseWriteTo() throws Exception {
 		HandlerFunction<ServerResponse> handlerFunction =
 				// Mono.<ServerResponse> is required for compilation in Eclipse
-				request -> Mono.<ServerResponse> just(new ServerResponse() {
+				(request) -> Mono.<ServerResponse> just(new ServerResponse() {
 					@Override
 					public HttpStatus statusCode() {
 						return HttpStatus.OK;
@@ -230,7 +230,7 @@ public class RouterFunctionsTests {
 	public void toHttpHandlerHandlerThrowResponseStatusExceptionInResponseWriteTo() throws Exception {
 		HandlerFunction<ServerResponse> handlerFunction =
 				// Mono.<ServerResponse> is required for compilation in Eclipse
-				request -> Mono.<ServerResponse> just(new ServerResponse() {
+				(request) -> Mono.<ServerResponse> just(new ServerResponse() {
 					@Override
 					public HttpStatus statusCode() {
 						return HttpStatus.OK;
@@ -276,7 +276,7 @@ public class RouterFunctionsTests {
 			}
 		};
 
-		HandlerFunction<ServerResponse> handlerFunction = request -> ServerResponse.accepted().build();
+		HandlerFunction<ServerResponse> handlerFunction = (request) -> ServerResponse.accepted().build();
 		RouterFunction<ServerResponse> routerFunction =
 				RouterFunctions.route(RequestPredicates.all(), handlerFunction);
 

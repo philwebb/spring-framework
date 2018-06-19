@@ -96,7 +96,7 @@ public class DefaultServerWebExchange implements ServerWebExchange {
 
 	private volatile boolean notModified;
 
-	private Function<String, String> urlTransformer = url -> url;
+	private Function<String, String> urlTransformer = (url) -> url;
 
 
 	public DefaultServerWebExchange(ServerHttpRequest request, ServerHttpResponse response,

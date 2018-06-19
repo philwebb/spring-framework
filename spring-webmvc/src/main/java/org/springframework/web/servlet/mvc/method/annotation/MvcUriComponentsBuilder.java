@@ -467,7 +467,7 @@ public class MvcUriComponentsBuilder {
 	}
 
 	private static Method getMethod(Class<?> controllerType, final String methodName, final Object... args) {
-		MethodFilter selector = method -> {
+		MethodFilter selector = (method) -> {
 			String name = method.getName();
 			int argLength = method.getParameterCount();
 			return (name.equals(methodName) && argLength == args.length);

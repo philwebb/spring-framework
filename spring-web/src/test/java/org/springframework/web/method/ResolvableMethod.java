@@ -276,7 +276,7 @@ public class ResolvableMethod {
 		 * Filter on methods with the given name.
 		 */
 		public Builder<T> named(String methodName) {
-			addFilter("methodName=" + methodName, m -> m.getName().equals(methodName));
+			addFilter("methodName=" + methodName, (m) -> m.getName().equals(methodName));
 			return this;
 		}
 
@@ -298,7 +298,7 @@ public class ResolvableMethod {
 		@SafeVarargs
 		public final Builder<T> annotPresent(Class<? extends Annotation>... annotationTypes) {
 			String message = "annotationPresent=" + Arrays.toString(annotationTypes);
-			addFilter(message, candidateMethod ->
+			addFilter(message, (candidateMethod) ->
 					Arrays.stream(annotationTypes).allMatch((annotType) ->
 							AnnotatedElementUtils.findMergedAnnotation(candidateMethod, annotType) != null));
 			return this;
@@ -310,7 +310,7 @@ public class ResolvableMethod {
 		@SafeVarargs
 		public final Builder<T> annotNotPresent(Class<? extends Annotation>... annotationTypes) {
 			String message = "annotationNotPresent=" + Arrays.toString(annotationTypes);
-			addFilter(message, candidateMethod -> {
+			addFilter(message, (candidateMethod) -> {
 				if (annotationTypes.length != 0) {
 					return Arrays.stream(annotationTypes).noneMatch((annotType) ->
 							AnnotatedElementUtils.findMergedAnnotation(candidateMethod, annotType) != null);
@@ -348,7 +348,7 @@ public class ResolvableMethod {
 		public Builder<T> returning(ResolvableType returnType) {
 			String expected = returnType.toString();
 			String message = "returnType=" + expected;
-			addFilter(message, m -> expected.equals(ResolvableType.forMethodReturnType(m).toString()));
+			addFilter(message, (m) -> expected.equals(ResolvableType.forMethodReturnType(m).toString()));
 			return this;
 		}
 

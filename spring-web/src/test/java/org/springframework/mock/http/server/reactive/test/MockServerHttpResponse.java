@@ -55,7 +55,7 @@ public class MockServerHttpResponse extends AbstractServerHttpResponse {
 
 	public MockServerHttpResponse() {
 		super(new DefaultDataBufferFactory());
-		this.writeHandler = body -> {
+		this.writeHandler = (body) -> {
 			this.body = body.cache();
 			return this.body.then();
 		};

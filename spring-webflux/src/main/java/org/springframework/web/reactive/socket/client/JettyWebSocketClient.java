@@ -165,7 +165,7 @@ public class JettyWebSocketClient extends WebSocketClientSupport implements WebS
 
 	private Object createJettyHandler(URI url, WebSocketHandler handler, MonoProcessor<Void> completion) {
 		return new JettyWebSocketHandlerAdapter(handler,
-				session -> {
+				(session) -> {
 					UpgradeResponse response = session.getUpgradeResponse();
 					HttpHeaders responseHeaders = new HttpHeaders();
 					response.getHeaders().forEach(responseHeaders::put);

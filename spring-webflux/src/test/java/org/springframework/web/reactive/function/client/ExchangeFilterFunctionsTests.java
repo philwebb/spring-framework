@@ -42,7 +42,7 @@ public class ExchangeFilterFunctionsTests {
 	public void andThen() {
 		ClientRequest request = ClientRequest.create(GET, URI.create("http://example.com")).build();
 		ClientResponse response = mock(ClientResponse.class);
-		ExchangeFunction exchange = r -> Mono.just(response);
+		ExchangeFunction exchange = (r) -> Mono.just(response);
 
 		boolean[] filtersInvoked = new boolean[2];
 		ExchangeFilterFunction filter1 = (r, n) -> {
@@ -72,7 +72,7 @@ public class ExchangeFilterFunctionsTests {
 	public void apply() {
 		ClientRequest request = ClientRequest.create(GET, URI.create("http://example.com")).build();
 		ClientResponse response = mock(ClientResponse.class);
-		ExchangeFunction exchange = r -> Mono.just(response);
+		ExchangeFunction exchange = (r) -> Mono.just(response);
 
 		boolean[] filterInvoked = new boolean[1];
 		ExchangeFilterFunction filter = (r, n) -> {
@@ -92,7 +92,7 @@ public class ExchangeFilterFunctionsTests {
 		ClientRequest request = ClientRequest.create(GET, URI.create("http://example.com")).build();
 		ClientResponse response = mock(ClientResponse.class);
 
-		ExchangeFunction exchange = r -> {
+		ExchangeFunction exchange = (r) -> {
 			assertTrue(r.headers().containsKey(HttpHeaders.AUTHORIZATION));
 			assertTrue(r.headers().getFirst(HttpHeaders.AUTHORIZATION).startsWith("Basic "));
 			return Mono.just(response);
@@ -117,7 +117,7 @@ public class ExchangeFilterFunctionsTests {
 				.build();
 		ClientResponse response = mock(ClientResponse.class);
 
-		ExchangeFunction exchange = r -> {
+		ExchangeFunction exchange = (r) -> {
 			assertTrue(r.headers().containsKey(HttpHeaders.AUTHORIZATION));
 			assertTrue(r.headers().getFirst(HttpHeaders.AUTHORIZATION).startsWith("Basic "));
 			return Mono.just(response);
@@ -134,7 +134,7 @@ public class ExchangeFilterFunctionsTests {
 		ClientRequest request = ClientRequest.create(GET, URI.create("http://example.com")).build();
 		ClientResponse response = mock(ClientResponse.class);
 
-		ExchangeFunction exchange = r -> {
+		ExchangeFunction exchange = (r) -> {
 			assertFalse(r.headers().containsKey(HttpHeaders.AUTHORIZATION));
 			return Mono.just(response);
 		};
@@ -151,10 +151,10 @@ public class ExchangeFilterFunctionsTests {
 		ClientResponse response = mock(ClientResponse.class);
 		when(response.statusCode()).thenReturn(HttpStatus.NOT_FOUND);
 
-		ExchangeFunction exchange = r -> Mono.just(response);
+		ExchangeFunction exchange = (r) -> Mono.just(response);
 
 		ExchangeFilterFunction errorHandler = ExchangeFilterFunctions.statusError(
-				HttpStatus::is4xxClientError, r -> new MyException());
+				HttpStatus::is4xxClientError, (r) -> new MyException());
 
 		Mono<ClientResponse> result = errorHandler.filter(request, exchange);
 
@@ -169,10 +169,10 @@ public class ExchangeFilterFunctionsTests {
 		ClientResponse response = mock(ClientResponse.class);
 		when(response.statusCode()).thenReturn(HttpStatus.NOT_FOUND);
 
-		ExchangeFunction exchange = r -> Mono.just(response);
+		ExchangeFunction exchange = (r) -> Mono.just(response);
 
 		ExchangeFilterFunction errorHandler = ExchangeFilterFunctions.statusError(
-				HttpStatus::is5xxServerError, r -> new MyException());
+				HttpStatus::is5xxServerError, (r) -> new MyException());
 
 		Mono<ClientResponse> result = errorHandler.filter(request, exchange);
 

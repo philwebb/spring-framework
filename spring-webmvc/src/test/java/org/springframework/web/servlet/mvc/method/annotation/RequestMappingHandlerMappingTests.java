@@ -134,7 +134,7 @@ public class RequestMappingHandlerMappingTests {
 	@Test
 	public void resolveEmbeddedValuesInPatterns() {
 		this.handlerMapping.setEmbeddedValueResolver(
-				value -> "/${pattern}/bar".equals(value) ? "/foo/bar" : value
+				(value) -> "/${pattern}/bar".equals(value) ? "/foo/bar" : value
 		);
 
 		String[] patterns = new String[] { "/foo", "/${pattern}/bar" };

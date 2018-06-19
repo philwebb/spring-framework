@@ -117,7 +117,7 @@ class DefaultClientResponse implements ClientResponse {
 					DataBufferUtils.release(buffer);
 					throw new ReadCancellationException();
 				})
-				.onErrorResume(ReadCancellationException.class, ex -> Mono.empty())
+				.onErrorResume(ReadCancellationException.class, (ex) -> Mono.empty())
 				.then();
 	}
 

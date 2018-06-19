@@ -57,7 +57,7 @@ public interface HandlerFilterFunction<T extends ServerResponse, R extends Serve
 	default HandlerFilterFunction<T, R> andThen(HandlerFilterFunction<T, T> after) {
 		Assert.notNull(after, "HandlerFilterFunction must not be null");
 		return (request, next) -> {
-			HandlerFunction<T> nextHandler = handlerRequest -> after.filter(handlerRequest, next);
+			HandlerFunction<T> nextHandler = (handlerRequest) -> after.filter(handlerRequest, next);
 			return filter(request, nextHandler);
 		};
 	}
@@ -69,7 +69,7 @@ public interface HandlerFilterFunction<T extends ServerResponse, R extends Serve
 	 */
 	default HandlerFunction<R> apply(HandlerFunction<T> handler) {
 		Assert.notNull(handler, "HandlerFunction must not be null");
-		return request -> this.filter(request, handler);
+		return (request) -> this.filter(request, handler);
 	}
 
 	/**

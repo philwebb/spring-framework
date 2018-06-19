@@ -81,7 +81,7 @@ public abstract class BodyExtractors {
 		return (inputMessage, context) ->
 				readWithMessageReaders(inputMessage, context, elementType,
 						(HttpMessageReader<T> reader) -> readToMono(inputMessage, context, elementType, reader),
-						ex -> Mono.from(unsupportedErrorHandler(inputMessage, ex)),
+						(ex) -> Mono.from(unsupportedErrorHandler(inputMessage, ex)),
 						Mono::empty);
 	}
 
@@ -110,7 +110,7 @@ public abstract class BodyExtractors {
 		return (inputMessage, context) ->
 				readWithMessageReaders(inputMessage, context, elementType,
 						(HttpMessageReader<T> reader) -> readToFlux(inputMessage, context, elementType, reader),
-						ex -> unsupportedErrorHandler(inputMessage, ex),
+						(ex) -> unsupportedErrorHandler(inputMessage, ex),
 						Flux::empty);
 	}
 

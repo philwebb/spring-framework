@@ -74,7 +74,7 @@ public abstract class RequestPredicates {
 	 * @return a predicate that always matches
 	 */
 	public static RequestPredicate all() {
-		return request -> true;
+		return (request) -> true;
 	}
 
 
@@ -107,7 +107,7 @@ public abstract class RequestPredicates {
 	 */
 	public static Function<String, RequestPredicate> pathPredicates(PathPatternParser patternParser) {
 		Assert.notNull(patternParser, "'patternParser' must not be null");
-		return pattern -> new PathPatternPredicate(patternParser.parse(pattern));
+		return (pattern) -> new PathPatternPredicate(patternParser.parse(pattern));
 	}
 
 	/**

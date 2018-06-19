@@ -46,7 +46,7 @@ import reactor.core.publisher.Mono;
  */
 public abstract class AbstractHandlerMapping extends ApplicationObjectSupport implements HandlerMapping, Ordered {
 
-	private static final WebHandler REQUEST_HANDLED_HANDLER = exchange -> Mono.empty();
+	private static final WebHandler REQUEST_HANDLED_HANDLER = (exchange) -> Mono.empty();
 
 
 	private final PathPatternParser patternParser;

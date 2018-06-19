@@ -153,7 +153,7 @@ public class RestTemplateXhrTransport extends AbstractXhrTransport {
 	 * A simple ResponseExtractor that reads the body into a String.
 	 */
 	private static final ResponseExtractor<ResponseEntity<String>> textResponseExtractor =
-			response -> {
+			(response) -> {
 				String body = StreamUtils.copyToString(response.getBody(), SockJsFrame.CHARSET);
 				return ResponseEntity.status(response.getRawStatusCode()).headers(response.getHeaders()).body(body);
 			};

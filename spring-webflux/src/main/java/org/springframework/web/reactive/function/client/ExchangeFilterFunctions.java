@@ -80,15 +80,15 @@ public abstract class ExchangeFilterFunctions {
 	 */
 	public static ExchangeFilterFunction basicAuthentication() {
 		return basicAuthenticationInternal(
-				request -> request.attribute(BASIC_AUTHENTICATION_CREDENTIALS_ATTRIBUTE).map((o) -> (Credentials)o));
+				(request) -> request.attribute(BASIC_AUTHENTICATION_CREDENTIALS_ATTRIBUTE).map((o) -> (Credentials)o));
 	}
 
 	private static ExchangeFilterFunction basicAuthenticationInternal(
 			Function<ClientRequest, Optional<Credentials>> credentialsFunction) {
 
 		return ExchangeFilterFunction.ofRequestProcessor(
-				clientRequest -> credentialsFunction.apply(clientRequest).map(
-						credentials -> {
+				(clientRequest) -> credentialsFunction.apply(clientRequest).map(
+						(credentials) -> {
 							ClientRequest authorizedRequest = ClientRequest.from(clientRequest)
 									.headers((headers) -> headers.set(HttpHeaders.AUTHORIZATION,
 											authorization(credentials)))
@@ -137,7 +137,7 @@ public abstract class ExchangeFilterFunctions {
 		Assert.notNull(exceptionFunction, "Function must not be null");
 
 		return ExchangeFilterFunction.ofResponseProcessor(
-				clientResponse -> {
+				(clientResponse) -> {
 					if (statusPredicate.test(clientResponse.statusCode())) {
 						return Mono.error(exceptionFunction.apply(clientResponse));
 					}
@@ -185,7 +185,7 @@ public abstract class ExchangeFilterFunctions {
 			Credentials credentials = new Credentials(username, password);
 			checkIllegalCharacters(username, password);
 
-			return attributes -> attributes.put(BASIC_AUTHENTICATION_CREDENTIALS_ATTRIBUTE, credentials);
+			return (attributes) -> attributes.put(BASIC_AUTHENTICATION_CREDENTIALS_ATTRIBUTE, credentials);
 		}
 
 		@Override
