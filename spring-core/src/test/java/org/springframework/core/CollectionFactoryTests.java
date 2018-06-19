@@ -81,7 +81,7 @@ public class CollectionFactoryTests {
 			ints.add(42);
 			fail("Should have thrown a ClassCastException");
 		}
-		catch (ClassCastException e) {
+		catch (ClassCastException ex) {
 			/* expected */
 		}
 	}
@@ -99,7 +99,7 @@ public class CollectionFactoryTests {
 			ints.add(42);
 			fail("Should have thrown a ClassCastException");
 		}
-		catch (ClassCastException e) {
+		catch (ClassCastException ex) {
 			/* expected */
 		}
 	}
@@ -127,7 +127,7 @@ public class CollectionFactoryTests {
 			map.put("foo", 1);
 			fail("Should have thrown a ClassCastException");
 		}
-		catch (ClassCastException e) {
+		catch (ClassCastException ex) {
 			/* expected */
 		}
 	}
@@ -145,7 +145,7 @@ public class CollectionFactoryTests {
 			map.put("foo", 1);
 			fail("Should have thrown a ClassCastException");
 		}
-		catch (ClassCastException e) {
+		catch (ClassCastException ex) {
 			/* expected */
 		}
 	}
@@ -163,7 +163,7 @@ public class CollectionFactoryTests {
 			map.put("foo", 1);
 			fail("Should have thrown a ClassCastException");
 		}
-		catch (ClassCastException e) {
+		catch (ClassCastException ex) {
 			/* expected */
 		}
 	}

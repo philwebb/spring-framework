@@ -77,12 +77,12 @@ public class CustomInterceptorTests {
 			this.cs.throwChecked(0L);
 			fail("Should have failed");
 		}
-		catch (RuntimeException e) {
-			assertNotNull("missing original exception", e.getCause());
-			assertEquals(IOException.class, e.getCause().getClass());
+		catch (RuntimeException ex) {
+			assertNotNull("missing original exception", ex.getCause());
+			assertEquals(IOException.class, ex.getCause().getClass());
 		}
-		catch (Exception e) {
-			fail("Wrong exception type " + e);
+		catch (Exception ex) {
+			fail("Wrong exception type " + ex);
 		}
 	}
 
@@ -122,8 +122,8 @@ public class CustomInterceptorTests {
 			try {
 				return super.invokeOperation(invoker);
 			}
-			catch (CacheOperationInvoker.ThrowableWrapper e) {
-				Throwable original = e.getOriginal();
+			catch (CacheOperationInvoker.ThrowableWrapper ex) {
+				Throwable original = ex.getOriginal();
 				if (original.getClass() == UnsupportedOperationException.class) {
 					return 55L;
 				}

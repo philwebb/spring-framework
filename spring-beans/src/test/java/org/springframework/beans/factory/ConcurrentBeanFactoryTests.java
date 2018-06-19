@@ -62,8 +62,8 @@ public class ConcurrentBeanFactoryTests {
 			DATE_1 = DATE_FORMAT.parse("2004/08/08");
 			DATE_2 = DATE_FORMAT.parse("2000/02/02");
 		}
-		catch (ParseException e) {
-			throw new RuntimeException(e);
+		catch (ParseException ex) {
+			throw new RuntimeException(ex);
 		}
 	}
 
@@ -112,8 +112,8 @@ public class ConcurrentBeanFactoryTests {
 				try {
 					this.set.wait();
 				}
-				catch (InterruptedException e) {
-					logger.info(e.toString());
+				catch (InterruptedException ex) {
+					logger.info(ex.toString());
 				}
 				logger.info(this.set.size() + " threads still active.");
 			}
@@ -141,8 +141,8 @@ public class ConcurrentBeanFactoryTests {
 					performTest();
 				}
 			}
-			catch (Throwable e) {
-				ConcurrentBeanFactoryTests.this.ex = e;
+			catch (Throwable ex) {
+				ConcurrentBeanFactoryTests.this.ex = ex;
 			}
 			finally {
 				synchronized (ConcurrentBeanFactoryTests.this.set) {

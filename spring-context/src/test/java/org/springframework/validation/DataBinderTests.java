@@ -1170,7 +1170,7 @@ public class DataBinderTests {
 		try {
 			tb.setTouchy("Rod");
 		}
-		catch (Exception e) {
+		catch (Exception ex) {
 			fail("Should not throw any Exception");
 		}
 		TestBean tb2 = new TestBean();

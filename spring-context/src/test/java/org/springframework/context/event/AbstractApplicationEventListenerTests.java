@@ -33,7 +33,7 @@ public abstract class AbstractApplicationEventListenerTests {
 		try {
 			return ResolvableType.forField(TestEvents.class.getField(fieldName));
 		}
-		catch (NoSuchFieldException e) {
+		catch (NoSuchFieldException ex) {
 			throw new IllegalStateException("No such field on Events '" + fieldName + "'");
 		}
 	}

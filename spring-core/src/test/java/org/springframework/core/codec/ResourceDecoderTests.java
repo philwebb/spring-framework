@@ -68,8 +68,8 @@ public class ResourceDecoderTests extends AbstractDataBufferAllocatingTestCase {
 						byte[] bytes = StreamUtils.copyToByteArray(resource.getInputStream());
 						assertEquals("foobar", new String(bytes));
 					}
-					catch (IOException e) {
-						fail(e.getMessage());
+					catch (IOException ex) {
+						fail(ex.getMessage());
 					}
 				})
 				.expectComplete()

@@ -70,7 +70,7 @@ class TestableAsyncUncaughtExceptionHandler
 		try {
 			this.latch.await(timeout, TimeUnit.MILLISECONDS);
 		}
-		catch (Exception e) {
+		catch (Exception ex) {
 			Thread.currentThread().interrupt();
 		}
 	}
