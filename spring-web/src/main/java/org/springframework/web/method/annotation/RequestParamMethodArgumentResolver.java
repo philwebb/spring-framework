@@ -177,13 +177,13 @@ public class RequestParamMethodArgumentResolver extends AbstractNamedValueMethod
 		if (multipartRequest != null) {
 			List<MultipartFile> files = multipartRequest.getFiles(name);
 			if (!files.isEmpty()) {
-				arg = (files.size() == 1 ? files.get(0) : files);
+				arg = (files.size() != 1 ? files : files.get(0));
 			}
 		}
 		if (arg == null) {
 			String[] paramValues = request.getParameterValues(name);
 			if (paramValues != null) {
-				arg = (paramValues.length == 1 ? paramValues[0] : paramValues);
+				arg = (paramValues.length != 1 ? paramValues : paramValues[0]);
 			}
 		}
 		return arg;

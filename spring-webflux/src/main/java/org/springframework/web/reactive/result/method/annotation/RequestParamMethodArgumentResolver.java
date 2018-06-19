@@ -102,7 +102,7 @@ public class RequestParamMethodArgumentResolver extends AbstractNamedValueSyncAr
 		List<String> paramValues = exchange.getRequest().getQueryParams().get(name);
 		Object result = null;
 		if (paramValues != null) {
-			result = (paramValues.size() == 1 ? paramValues.get(0) : paramValues);
+			result = (paramValues.size() != 1 ? paramValues : paramValues.get(0));
 		}
 		return result;
 	}

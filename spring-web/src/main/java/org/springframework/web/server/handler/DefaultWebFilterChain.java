@@ -46,7 +46,7 @@ public class DefaultWebFilterChain implements WebFilterChain {
 
 	public DefaultWebFilterChain(WebHandler handler, WebFilter... filters) {
 		Assert.notNull(handler, "WebHandler is required");
-		this.filters = ObjectUtils.isEmpty(filters) ? Collections.emptyList() : Arrays.asList(filters);
+		this.filters = (ObjectUtils.isEmpty(filters) ? Collections.emptyList() : Arrays.asList(filters));
 		this.handler = handler;
 		this.index = 0;
 	}

@@ -275,7 +275,7 @@ public class MessageTag extends HtmlEscapingAwareTag implements ArgumentAware {
 
 			// HTML and/or JavaScript escape, if demanded.
 			msg = htmlEscape(msg);
-			msg = this.javaScriptEscape ? JavaScriptUtils.javaScriptEscape(msg) : msg;
+			msg = (this.javaScriptEscape ? JavaScriptUtils.javaScriptEscape(msg) : msg);
 
 			// Expose as variable, if demanded, else write to the page.
 			if (this.var != null) {

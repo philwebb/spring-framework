@@ -735,7 +735,7 @@ public class MvcUriComponentsBuilder {
 				this.argumentValues = args;
 				Class<?> returnType = method.getReturnType();
 				try {
-					return (returnType == void.class ? null : returnType.cast(initProxy(returnType, this)));
+					return (returnType != void.class ? returnType.cast(initProxy(returnType, this)) : null);
 				}
 				catch (Throwable ex) {
 					throw new IllegalStateException(

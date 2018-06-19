@@ -218,7 +218,7 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 	}
 
 	private static String partDescription(Part part) {
-		return part instanceof FilePart ? part.name() + ":" + ((FilePart) part).filename() : part.name();
+		return (part instanceof FilePart ? part.name() + ":" + ((FilePart) part).filename() : part.name());
 	}
 
 	static class FormBean {

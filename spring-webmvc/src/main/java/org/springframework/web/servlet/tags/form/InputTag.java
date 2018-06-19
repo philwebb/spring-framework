@@ -370,7 +370,7 @@ public class InputTag extends AbstractHtmlInputElementTag {
 	 */
 	protected void writeValue(TagWriter tagWriter) throws JspException {
 		String value = getDisplayString(getBoundValue(), getPropertyEditor());
-		String type = hasDynamicTypeAttribute() ? (String) getDynamicAttributes().get("type") : getType();
+		String type = (hasDynamicTypeAttribute() ? (String) getDynamicAttributes().get("type") : getType());
 		tagWriter.writeAttribute("value", processFieldValue(getName(), value, type));
 	}
 

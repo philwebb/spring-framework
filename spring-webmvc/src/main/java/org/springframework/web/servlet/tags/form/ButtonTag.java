@@ -150,7 +150,7 @@ public class ButtonTag extends AbstractHtmlElementTag {
 	 * when the value is written.
 	 */
 	protected void writeValue(TagWriter tagWriter) throws JspException {
-		String valueToUse = (getValue() != null) ? getValue() : getDefaultValue();
+		String valueToUse = (getValue() != null ? getValue() : getDefaultValue());
 		tagWriter.writeAttribute("value", processFieldValue(getName(), valueToUse, getType()));
 	}
 

@@ -81,7 +81,7 @@ class ClientDefaultCodecsImpl extends BaseDefaultCodecs implements ClientCodecCo
 
 	@Nullable
 	private Decoder<?> getSseDecoder() {
-		return (this.sseDecoder != null ? this.sseDecoder : jackson2Present ? getJackson2JsonDecoder() : null);
+		return (this.sseDecoder != null ? this.sseDecoder : (jackson2Present ? getJackson2JsonDecoder() : null));
 	}
 
 	@Override

@@ -260,7 +260,7 @@ public class HandlerMethodMappingTests {
 		@Override
 		protected String getMappingForMethod(Method method, Class<?> handlerType) {
 			String methodName = method.getName();
-			return methodName.startsWith("handler") ? methodName : null;
+			return (methodName.startsWith("handler") ? methodName : null);
 		}
 
 		@Override
@@ -278,7 +278,7 @@ public class HandlerMethodMappingTests {
 		@Override
 		protected String getMatchingMapping(String pattern, HttpServletRequest request) {
 			String lookupPath = this.pathHelper.getLookupPathForRequest(request);
-			return this.pathMatcher.match(pattern, lookupPath) ? pattern : null;
+			return (this.pathMatcher.match(pattern, lookupPath) ? pattern : null);
 		}
 
 		@Override

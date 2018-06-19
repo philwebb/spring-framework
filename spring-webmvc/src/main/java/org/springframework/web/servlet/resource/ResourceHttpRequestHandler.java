@@ -574,7 +574,7 @@ public class ResourceHttpRequestHandler extends WebContentGenerator
 				prev = curr;
 			}
 		}
-		return sb != null ? sb.toString() : path;
+		return (sb != null ? sb.toString() : path);
 	}
 
 	private String cleanLeadingSlash(String path) {
@@ -641,7 +641,7 @@ public class ResourceHttpRequestHandler extends WebContentGenerator
 			return true;
 		}
 		if (path.contains(":/")) {
-			String relativePath = (path.charAt(0) == '/' ? path.substring(1) : path);
+			String relativePath = (path.charAt(0) != '/' ? path : path.substring(1));
 			if (ResourceUtils.isUrl(relativePath) || relativePath.startsWith("url:")) {
 				logger.warn("Path represents URL or has \"url:\" prefix.");
 				return true;
