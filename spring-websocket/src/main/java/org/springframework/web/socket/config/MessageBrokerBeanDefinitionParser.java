@@ -157,7 +157,7 @@ class MessageBrokerBeanDefinitionParser implements BeanDefinitionParser {
 				path = path.trim();
 				Assert.state(StringUtils.hasText(path), "Invalid <stomp-endpoint> path attribute: " + pathAttribute);
 				if (DomUtils.getChildElementByTagName(endpointElem, "sockjs") != null) {
-					path = path.endsWith("/") ? path + "**" : path + "/**";
+					path = (path.endsWith("/") ? path + "**" : path + "/**");
 				}
 				urlMap.put(path, requestHandler);
 			}
@@ -199,7 +199,7 @@ class MessageBrokerBeanDefinitionParser implements BeanDefinitionParser {
 		RootBeanDefinition handlerMappingDef = new RootBeanDefinition(WebSocketHandlerMapping.class);
 
 		String orderAttribute = element.getAttribute("order");
-		int order = orderAttribute.isEmpty() ? DEFAULT_MAPPING_ORDER : Integer.valueOf(orderAttribute);
+		int order = (orderAttribute.isEmpty() ? DEFAULT_MAPPING_ORDER : Integer.valueOf(orderAttribute));
 		handlerMappingDef.getPropertyValues().add("order", order);
 
 		String pathHelper = element.getAttribute("path-helper");

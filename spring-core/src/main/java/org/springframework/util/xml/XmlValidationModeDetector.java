@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -168,7 +168,7 @@ public class XmlValidationModeDetector {
 	@Nullable
 	private String consume(String line) {
 		int index = (this.inComment ? endComment(line) : startComment(line));
-		return (index == -1 ? null : line.substring(index));
+		return (index != -1 ? line.substring(index) : null);
 	}
 
 	/**
@@ -193,7 +193,7 @@ public class XmlValidationModeDetector {
 		if (index > - 1) {
 			this.inComment = inCommentIfPresent;
 		}
-		return (index == -1 ? index : index + token.length());
+		return (index != -1 ? index + token.length() : index);
 	}
 
 }

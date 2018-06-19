@@ -83,7 +83,7 @@ public class KotlinReflectionParameterNameDiscoverer implements ParameterNameDis
 			KParameter parameter = filteredParameters.get(i);
 			// extension receivers are not explicitly named, but require a name for Java interoperability
 			// $receiver is not a valid Kotlin identifier, but valid in Java, so it can be used here
-			String name = KParameter.Kind.EXTENSION_RECEIVER.equals(parameter.getKind())  ? "$receiver" : parameter.getName();
+			String name = (KParameter.Kind.EXTENSION_RECEIVER.equals(parameter.getKind())  ? "$receiver" : parameter.getName());
 			if (name == null) {
 				return null;
 			}

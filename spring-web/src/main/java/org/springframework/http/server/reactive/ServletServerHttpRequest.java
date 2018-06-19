@@ -175,7 +175,7 @@ class ServletServerHttpRequest extends AbstractServerHttpRequest {
 	@Nullable
 	protected SslInfo initSslInfo() {
 		X509Certificate[] certificates = getX509Certificates();
-		return certificates != null ? new DefaultSslInfo(getSslSessionId(), certificates) : null;
+		return (certificates != null ? new DefaultSslInfo(getSslSessionId(), certificates) : null);
 	}
 
 	@Nullable
@@ -235,7 +235,7 @@ class ServletServerHttpRequest extends AbstractServerHttpRequest {
 		@Override
 		public void onTimeout(AsyncEvent event) {
 			Throwable ex = event.getThrowable();
-			ex = ex != null ? ex : new IllegalStateException("Async operation timeout.");
+			ex = (ex != null ? ex : new IllegalStateException("Async operation timeout."));
 			bodyPublisher.onError(ex);
 		}
 

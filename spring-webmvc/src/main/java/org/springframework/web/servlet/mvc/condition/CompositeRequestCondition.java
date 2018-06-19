@@ -92,7 +92,7 @@ public class CompositeRequestCondition extends AbstractRequestCondition<Composit
 
 	@Override
 	protected Collection<?> getContent() {
-		return (isEmpty()) ? Collections.emptyList() : getConditions();
+		return (isEmpty() ? Collections.emptyList() : getConditions());
 	}
 
 	@Override

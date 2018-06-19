@@ -328,7 +328,7 @@ public class FormHttpMessageConverter implements HttpMessageConverter<MultiValue
 	protected String serializeForm(MultiValueMap<String, String> formData, Charset charset) {
 		StringBuilder builder = new StringBuilder();
 		formData.forEach((name, values) ->
-				values.forEach(value -> {
+				values.forEach((value) -> {
 					try {
 						if (builder.length() != 0) {
 							builder.append('&');
@@ -407,7 +407,7 @@ public class FormHttpMessageConverter implements HttpMessageConverter<MultiValue
 		MediaType partContentType = partHeaders.getContentType();
 		for (HttpMessageConverter<?> messageConverter : this.partConverters) {
 			if (messageConverter.canWrite(partType, partContentType)) {
-				Charset charset = isFilenameCharsetSet() ? StandardCharsets.US_ASCII : this.charset;
+				Charset charset = (isFilenameCharsetSet() ? StandardCharsets.US_ASCII : this.charset);
 				HttpOutputMessage multipartMessage = new MultipartHttpOutputMessage(os, charset);
 				multipartMessage.getHeaders().setContentDispositionFormData(name, getFilename(partBody));
 				if (!partHeaders.isEmpty()) {

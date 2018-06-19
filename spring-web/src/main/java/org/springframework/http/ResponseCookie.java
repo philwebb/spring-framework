@@ -156,7 +156,7 @@ public final class ResponseCookie extends HttpCookie {
 		if (!this.maxAge.isNegative()) {
 			sb.append("; Max-Age=").append(this.maxAge.getSeconds());
 			sb.append("; Expires=");
-			long millis = this.maxAge.getSeconds() > 0 ? System.currentTimeMillis() + this.maxAge.toMillis() : 0;
+			long millis = (this.maxAge.getSeconds() > 0 ? System.currentTimeMillis() + this.maxAge.toMillis() : 0);
 			sb.append(HttpHeaders.formatDate(millis));
 		}
 		if (this.secure) {
@@ -206,7 +206,7 @@ public final class ResponseCookie extends HttpCookie {
 
 			@Override
 			public ResponseCookieBuilder maxAge(long maxAgeSeconds) {
-				this.maxAge = maxAgeSeconds >= 0 ? Duration.ofSeconds(maxAgeSeconds) : Duration.ofSeconds(-1);
+				this.maxAge = (maxAgeSeconds >= 0 ? Duration.ofSeconds(maxAgeSeconds) : Duration.ofSeconds(-1));
 				return this;
 			}
 

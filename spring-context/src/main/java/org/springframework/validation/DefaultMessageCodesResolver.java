@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -245,7 +245,7 @@ public class DefaultMessageCodesResolver implements MessageCodesResolver, Serial
 			StringBuilder rtn = new StringBuilder();
 			for (String element : elements) {
 				if (StringUtils.hasLength(element)) {
-					rtn.append(rtn.length() == 0 ? "" : CODE_SEPARATOR);
+					rtn.append(rtn.length() != 0 ? CODE_SEPARATOR : "");
 					rtn.append(element);
 				}
 			}

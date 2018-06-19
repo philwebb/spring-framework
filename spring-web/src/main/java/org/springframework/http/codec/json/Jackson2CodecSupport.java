@@ -73,8 +73,8 @@ public abstract class Jackson2CodecSupport {
 	protected Jackson2CodecSupport(ObjectMapper objectMapper, MimeType... mimeTypes) {
 		Assert.notNull(objectMapper, "ObjectMapper must not be null");
 		this.objectMapper = objectMapper;
-		this.mimeTypes = !ObjectUtils.isEmpty(mimeTypes) ?
-				Collections.unmodifiableList(Arrays.asList(mimeTypes)) : DEFAULT_MIME_TYPES;
+		this.mimeTypes = (!ObjectUtils.isEmpty(mimeTypes) ?
+				Collections.unmodifiableList(Arrays.asList(mimeTypes)) : DEFAULT_MIME_TYPES);
 	}
 
 
@@ -114,7 +114,7 @@ public abstract class Jackson2CodecSupport {
 
 	@Nullable
 	protected MethodParameter getParameter(ResolvableType type) {
-		return type.getSource() instanceof MethodParameter ? (MethodParameter) type.getSource() : null;
+		return (type.getSource() instanceof MethodParameter ? (MethodParameter) type.getSource() : null);
 	}
 
 	@Nullable

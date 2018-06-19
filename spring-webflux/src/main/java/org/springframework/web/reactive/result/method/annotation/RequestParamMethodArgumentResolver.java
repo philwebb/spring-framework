@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -102,7 +102,7 @@ public class RequestParamMethodArgumentResolver extends AbstractNamedValueSyncAr
 		List<String> paramValues = exchange.getRequest().getQueryParams().get(name);
 		Object result = null;
 		if (paramValues != null) {
-			result = (paramValues.size() == 1 ? paramValues.get(0) : paramValues);
+			result = (paramValues.size() != 1 ? paramValues : paramValues.get(0));
 		}
 		return result;
 	}

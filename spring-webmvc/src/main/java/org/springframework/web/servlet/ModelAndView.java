@@ -356,7 +356,7 @@ public class ModelAndView {
 	}
 
 	private String formatView() {
-		return isReference() ? "\"" + this.view + "\"" : "[" + this.view + "]";
+		return (isReference() ? "\"" + this.view + "\"" : "[" + this.view + "]");
 	}
 
 }

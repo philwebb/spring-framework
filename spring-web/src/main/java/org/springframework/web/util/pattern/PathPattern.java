@@ -86,8 +86,8 @@ public class PathPattern implements Comparable<PathPattern> {
 	public static final Comparator<PathPattern> SPECIFICITY_COMPARATOR =
 			Comparator.nullsLast(
 					Comparator.<PathPattern>
-							comparingInt(p -> p.isCatchAll() ? 1 : 0)
-							.thenComparingInt(p -> p.isCatchAll() ? scoreByNormalizedLength(p) : 0)
+							comparingInt(p -> (p.isCatchAll() ? 1 : 0))
+							.thenComparingInt(p -> (p.isCatchAll() ? scoreByNormalizedLength(p) : 0))
 							.thenComparingInt(PathPattern::getScore)
 							.thenComparingInt(PathPattern::scoreByNormalizedLength)
 			);
@@ -206,9 +206,9 @@ public class PathPattern implements Comparable<PathPattern> {
 	@Nullable
 	public PathMatchInfo matchAndExtract(PathContainer pathContainer) {
 		if (this.head == null) {
-			return hasLength(pathContainer) &&
+			return (hasLength(pathContainer) &&
 				!(this.matchOptionalTrailingSeparator && pathContainerIsJustSeparator(pathContainer))
-				? null : PathMatchInfo.EMPTY;
+				? null : PathMatchInfo.EMPTY);
 		}
 		else if (!hasLength(pathContainer)) {
 			if (this.head instanceof WildcardTheRestPathElement || this.head instanceof CaptureTheRestPathElement) {
@@ -219,7 +219,7 @@ public class PathPattern implements Comparable<PathPattern> {
 			}
 		}
 		MatchingContext matchingContext = new MatchingContext(pathContainer, true);
-		return this.head.matches(0, matchingContext) ? matchingContext.getPathMatchResult() : null;
+		return (this.head.matches(0, matchingContext) ? matchingContext.getPathMatchResult() : null);
 	}
 
 	/**
@@ -398,8 +398,8 @@ public class PathPattern implements Comparable<PathPattern> {
 		String firstExtension = this.patternString.substring(starDotPos1 + 1);  // looking for the first extension
 		String p2string = pattern2string.patternString;
 		int dotPos2 = p2string.indexOf('.');
-		String file2 = (dotPos2 == -1 ? p2string : p2string.substring(0, dotPos2));
-		String secondExtension = (dotPos2 == -1 ? "" : p2string.substring(dotPos2));
+		String file2 = (dotPos2 != -1 ? p2string.substring(0, dotPos2) : p2string);
+		String secondExtension = (dotPos2 != -1 ? p2string.substring(dotPos2) : "");
 		boolean firstExtensionWild = (firstExtension.equals(".*") || firstExtension.equals(""));
 		boolean secondExtensionWild = (secondExtension.equals(".*") || secondExtension.equals(""));
 		if (!firstExtensionWild && !secondExtensionWild) {
@@ -541,8 +541,8 @@ public class PathPattern implements Comparable<PathPattern> {
 				@Nullable Map<String, MultiValueMap<String, String>> matrixVars) {
 
 			this.uriVariables = Collections.unmodifiableMap(uriVars);
-			this.matrixVariables = matrixVars != null ?
-					Collections.unmodifiableMap(matrixVars) : Collections.emptyMap();
+			this.matrixVariables = (matrixVars != null ?
+					Collections.unmodifiableMap(matrixVars) : Collections.emptyMap());
 		}
 
 
@@ -695,7 +695,7 @@ public class PathPattern implements Comparable<PathPattern> {
 		 * @return the decoded value
 		 */
 		String pathElementValue(int pathIndex) {
-			Element element = (pathIndex < this.pathLength) ? this.pathElements.get(pathIndex) : null;
+			Element element = (pathIndex < this.pathLength ? this.pathElements.get(pathIndex) : null);
 			if (element instanceof PathContainer.PathSegment) {
 				return ((PathContainer.PathSegment)element).valueToMatch();
 			}

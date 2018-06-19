@@ -94,7 +94,7 @@ public abstract class ExchangeFunctions {
 						if (logger.isDebugEnabled()) {
 							int code = response.getRawStatusCode();
 							HttpStatus status = HttpStatus.resolve(code);
-							String reason = status != null ? " " + status.getReasonPhrase() : "";
+							String reason = (status != null ? " " + status.getReasonPhrase() : "");
 							logger.debug("Response received, status: " + code + reason);
 						}
 						return new DefaultClientResponse(response, this.strategies);

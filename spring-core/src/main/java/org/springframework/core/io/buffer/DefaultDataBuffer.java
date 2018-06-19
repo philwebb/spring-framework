@@ -219,7 +219,7 @@ public class DefaultDataBuffer implements DataBuffer {
 	}
 
 	private static ByteBuffer allocate(int capacity, boolean direct) {
-		return direct ? ByteBuffer.allocateDirect(capacity) : ByteBuffer.allocate(capacity);
+		return (direct ? ByteBuffer.allocateDirect(capacity) : ByteBuffer.allocate(capacity));
 	}
 
 	@Override
@@ -461,7 +461,7 @@ public class DefaultDataBuffer implements DataBuffer {
 
 		@Override
 		public int read() {
-			return available() > 0 ? DefaultDataBuffer.this.read() & 0xFF : -1;
+			return (available() > 0 ? DefaultDataBuffer.this.read() & 0xFF : -1);
 		}
 
 		@Override

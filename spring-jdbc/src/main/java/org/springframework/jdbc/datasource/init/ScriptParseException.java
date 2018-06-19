@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ public class ScriptParseException extends ScriptException {
 
 	private static String buildMessage(String message, @Nullable EncodedResource resource) {
 		return String.format("Failed to parse SQL script from resource [%s]: %s",
-				(resource == null ? "<unknown>" : resource), message);
+				(resource != null ? resource : "<unknown>"), message);
 	}
 
 }

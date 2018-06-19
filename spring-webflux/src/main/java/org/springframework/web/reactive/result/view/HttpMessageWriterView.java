@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -117,9 +117,9 @@ public class HttpMessageWriterView implements View {
 			ServerWebExchange exchange) {
 
 		Object value = getObjectToRender(model);
-		return (value != null) ?
+		return (value != null ?
 				write(value, contentType, exchange) :
-				exchange.getResponse().setComplete();
+				exchange.getResponse().setComplete());
 	}
 
 	@Nullable

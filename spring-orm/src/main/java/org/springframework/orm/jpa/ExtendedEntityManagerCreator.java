@@ -491,9 +491,9 @@ public abstract class ExtendedEntityManagerCreator {
 		}
 
 		private RuntimeException convertException(RuntimeException ex) {
-			DataAccessException daex = (this.exceptionTranslator != null) ?
+			DataAccessException daex = (this.exceptionTranslator != null ?
 					this.exceptionTranslator.translateExceptionIfPossible(ex) :
-					EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(ex);
+					EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(ex));
 			return (daex != null ? daex : ex);
 		}
 	}

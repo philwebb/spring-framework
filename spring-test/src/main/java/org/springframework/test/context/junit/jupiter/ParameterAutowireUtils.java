@@ -151,7 +151,7 @@ abstract class ParameterAutowireUtils {
 				executable.getParameterAnnotations().length == executable.getParameterCount() - 1) {
 			// Bug in javac in JDK <9: annotation array excludes enclosing instance parameter
 			// for inner classes, so access it with the actual parameter index lowered by 1
-			return (index == 0 ? EMPTY_ANNOTATED_ELEMENT : executable.getParameters()[index - 1]);
+			return (index != 0 ? executable.getParameters()[index - 1] : EMPTY_ANNOTATED_ELEMENT);
 		}
 		return parameter;
 	}

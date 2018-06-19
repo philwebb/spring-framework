@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -480,9 +480,9 @@ public class StompHeaderAccessor extends SimpMessageHeaderAccessor {
 		}
 		Charset charset = mimeType.getCharset();
 		charset = (charset != null ? charset : StandardCharsets.UTF_8);
-		return (bytes.length < 80) ?
+		return (bytes.length < 80 ?
 				contentType + " payload=" + new String(bytes, charset) :
-				contentType + " payload=" + new String(Arrays.copyOf(bytes, 80), charset) + "...(truncated)";
+				contentType + " payload=" + new String(Arrays.copyOf(bytes, 80), charset) + "...(truncated)");
 	}
 
 

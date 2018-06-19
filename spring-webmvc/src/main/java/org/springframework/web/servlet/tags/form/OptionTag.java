@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -372,7 +372,7 @@ public class OptionTag extends AbstractHtmlElementBodyTag implements BodyTag {
 	 */
 	private String getLabelValue(Object resolvedValue) throws JspException {
 		String label = getLabel();
-		Object labelObj = (label == null ? resolvedValue : evaluate("label", label));
+		Object labelObj = (label != null ? evaluate("label", label) : resolvedValue);
 		return getDisplayString(labelObj, getBindStatus().getEditor());
 	}
 

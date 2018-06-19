@@ -123,8 +123,8 @@ public class RouterFunctionMapping extends AbstractHandlerMapping implements Ini
 		SortedRouterFunctionsContainer container = new SortedRouterFunctionsContainer();
 		obtainApplicationContext().getAutowireCapableBeanFactory().autowireBean(container);
 
-		return CollectionUtils.isEmpty(container.routerFunctions) ? Collections.emptyList() :
-				container.routerFunctions;
+		return (CollectionUtils.isEmpty(container.routerFunctions) ? Collections.emptyList() :
+				container.routerFunctions);
 	}
 
 	@Override
