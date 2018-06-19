@@ -603,7 +603,7 @@ public abstract class AbstractAspectJAdvice implements Advice, AspectJPrecedence
 		if (numBound != this.parameterTypes.length) {
 			throw new IllegalStateException("Required to bind " + this.parameterTypes.length +
 					" arguments, but only bound " + numBound + " (JoinPointMatch " +
-					(jpMatch == null ? "was NOT" : "WAS") + " bound in invocation)");
+					(jpMatch != null ? "WAS" : "was NOT") + " bound in invocation)");
 		}
 
 		return adviceInvocationArgs;

@@ -899,9 +899,9 @@ public class BeanDefinitionParserDelegate {
 	 */
 	@Nullable
 	public Object parsePropertyValue(Element ele, BeanDefinition bd, @Nullable String propertyName) {
-		String elementName = (propertyName != null) ?
+		String elementName = (propertyName != null ?
 						"<property> element for property '" + propertyName + "'" :
-						"<constructor-arg> element";
+						"<constructor-arg> element");
 
 		// Should only have one child element: ref, value, list, etc.
 		NodeList nl = ele.getChildNodes();
