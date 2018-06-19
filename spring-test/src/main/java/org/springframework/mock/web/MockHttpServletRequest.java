@@ -698,9 +698,9 @@ public class MockHttpServletRequest implements HttpServletRequest {
 	public BufferedReader getReader() throws UnsupportedEncodingException {
 		if (this.content != null) {
 			InputStream sourceStream = new ByteArrayInputStream(this.content);
-			Reader sourceReader = (this.characterEncoding != null) ?
+			Reader sourceReader = (this.characterEncoding != null ?
 					new InputStreamReader(sourceStream, this.characterEncoding) :
-					new InputStreamReader(sourceStream);
+					new InputStreamReader(sourceStream));
 			return new BufferedReader(sourceReader);
 		}
 		else {
@@ -955,7 +955,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 		this.headers.remove(HttpHeaders.COOKIE);
 		if (this.cookies != null) {
 			Arrays.stream(this.cookies)
-					.map((c) -> c.getName() + '=' + (c.getValue() == null ? "" : c.getValue()))
+					.map((c) -> c.getName() + '=' + (c.getValue() != null ? c.getValue() : ""))
 					.forEach((value) -> doAddHeaderValue(HttpHeaders.COOKIE, value, false));
 		}
 	}

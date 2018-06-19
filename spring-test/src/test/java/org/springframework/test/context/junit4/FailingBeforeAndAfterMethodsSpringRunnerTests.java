@@ -79,8 +79,8 @@ public class FailingBeforeAndAfterMethodsSpringRunnerTests {
 
 	@Test
 	public void runTestAndAssertCounters() throws Exception {
-		int expectedStartedCount = this.clazz.getSimpleName().startsWith("AlwaysFailingBeforeTestClass") ? 0 : 1;
-		int expectedFinishedCount = this.clazz.getSimpleName().startsWith("AlwaysFailingBeforeTestClass") ? 0 : 1;
+		int expectedStartedCount = (this.clazz.getSimpleName().startsWith("AlwaysFailingBeforeTestClass") ? 0 : 1);
+		int expectedFinishedCount = (this.clazz.getSimpleName().startsWith("AlwaysFailingBeforeTestClass") ? 0 : 1);
 
 		runTestsAndAssertCounters(getRunnerClass(), this.clazz, expectedStartedCount, 1, expectedFinishedCount, 0, 0);
 	}

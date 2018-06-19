@@ -212,8 +212,8 @@ public class DataSourceJtaTransactionTests {
 
 		given(this.connection.isReadOnly()).willReturn(true);
 
-		final DataSource dsToUse = useTransactionAwareDataSource ?
-				new TransactionAwareDataSourceProxy(this.dataSource) : this.dataSource;
+		final DataSource dsToUse = (useTransactionAwareDataSource ?
+				new TransactionAwareDataSourceProxy(this.dataSource) : this.dataSource);
 
 		JtaTransactionManager ptm = new JtaTransactionManager(this.userTransaction, this.transactionManager);
 		final TransactionTemplate tt = new TransactionTemplate(ptm);
@@ -463,8 +463,8 @@ public class DataSourceJtaTransactionTests {
 
 		given(this.connection.isReadOnly()).willReturn(true);
 
-		final DataSource dsToUse = useTransactionAwareDataSource ?
-				new TransactionAwareDataSourceProxy(this.dataSource) : this.dataSource;
+		final DataSource dsToUse = (useTransactionAwareDataSource ?
+				new TransactionAwareDataSourceProxy(this.dataSource) : this.dataSource);
 		if (dsToUse instanceof TransactionAwareDataSourceProxy) {
 			((TransactionAwareDataSourceProxy) dsToUse).setReobtainTransactionalConnections(true);
 		}
