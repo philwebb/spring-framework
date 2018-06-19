@@ -353,7 +353,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 	@Test
 	public void sessionAttributeExposure() throws Exception {
 		initServlet(
-				wac -> wac.registerBeanDefinition("viewResolver", new RootBeanDefinition(ModelExposingViewResolver.class)),
+				(wac) -> wac.registerBeanDefinition("viewResolver", new RootBeanDefinition(ModelExposingViewResolver.class)),
 				MySessionAttributesController.class);
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/myPage");
@@ -413,7 +413,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 	@Test
 	public void parameterizedAnnotatedInterface() throws Exception {
 		initServlet(
-				wac -> wac.registerBeanDefinition("viewResolver", new RootBeanDefinition(ModelExposingViewResolver.class)),
+				(wac) -> wac.registerBeanDefinition("viewResolver", new RootBeanDefinition(ModelExposingViewResolver.class)),
 				MyParameterizedControllerImpl.class);
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/myPage");
@@ -443,7 +443,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 	@Test
 	public void parameterizedAnnotatedInterfaceWithOverriddenMappingsInImpl() throws Exception {
 		initServlet(
-				wac -> wac.registerBeanDefinition("viewResolver", new RootBeanDefinition(ModelExposingViewResolver.class)),
+				(wac) -> wac.registerBeanDefinition("viewResolver", new RootBeanDefinition(ModelExposingViewResolver.class)),
 				MyParameterizedControllerImplWithOverriddenMappings.class);
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/myPage");
@@ -525,7 +525,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 	@Test
 	public void formController() throws Exception {
 		initServlet(
-				wac -> wac.registerBeanDefinition("viewResolver", new RootBeanDefinition(TestViewResolver.class)),
+				(wac) -> wac.registerBeanDefinition("viewResolver", new RootBeanDefinition(TestViewResolver.class)),
 				MyFormController.class);
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/myPath.do");
@@ -539,7 +539,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 	@Test
 	public void modelFormController() throws Exception {
 		initServlet(
-				wac -> wac.registerBeanDefinition("viewResolver", new RootBeanDefinition(TestViewResolver.class)),
+				(wac) -> wac.registerBeanDefinition("viewResolver", new RootBeanDefinition(TestViewResolver.class)),
 				MyModelFormController.class);
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/myPath.do");
@@ -553,7 +553,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 	@Test
 	public void lateBindingFormController() throws Exception {
 		initServlet(
-				wac -> wac.registerBeanDefinition("viewResolver", new RootBeanDefinition(TestViewResolver.class)),
+				(wac) -> wac.registerBeanDefinition("viewResolver", new RootBeanDefinition(TestViewResolver.class)),
 				LateBindingFormController.class);
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/myPath.do");

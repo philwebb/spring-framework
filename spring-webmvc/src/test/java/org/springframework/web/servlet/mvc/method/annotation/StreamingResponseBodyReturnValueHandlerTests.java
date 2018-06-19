@@ -88,7 +88,7 @@ public class StreamingResponseBodyReturnValueHandlerTests {
 		CountDownLatch latch = new CountDownLatch(1);
 
 		MethodParameter returnType = returnType(TestController.class, "handle");
-		StreamingResponseBody streamingBody = outputStream -> {
+		StreamingResponseBody streamingBody = (outputStream) -> {
 			outputStream.write("foo".getBytes(StandardCharsets.UTF_8));
 			latch.countDown();
 		};

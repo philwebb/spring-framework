@@ -97,14 +97,14 @@ public class SseHandlerFunctionIntegrationTests extends AbstractRouterFunctionIn
 				.bodyToFlux(new ParameterizedTypeReference<ServerSentEvent<String>>() {});
 
 		StepVerifier.create(result)
-				.consumeNextWith( event -> {
+				.consumeNextWith((event) -> {
 					assertEquals("0", event.id());
 					assertEquals("foo", event.data());
 					assertEquals("bar", event.comment());
 					assertNull(event.event());
 					assertNull(event.retry());
 				})
-				.consumeNextWith( event -> {
+				.consumeNextWith((event) -> {
 					assertEquals("1", event.id());
 					assertEquals("foo", event.data());
 					assertEquals("bar", event.comment());

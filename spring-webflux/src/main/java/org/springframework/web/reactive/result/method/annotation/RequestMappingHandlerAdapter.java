@@ -192,7 +192,7 @@ public class RequestMappingHandlerAdapter implements HandlerAdapter, Application
 		InvocableHandlerMethod invocableMethod = this.methodResolver.getRequestMappingMethod(handlerMethod);
 
 		Function<Throwable, Mono<HandlerResult>> exceptionHandler =
-				ex -> handleException(ex, handlerMethod, bindingContext, exchange);
+				(ex) -> handleException(ex, handlerMethod, bindingContext, exchange);
 
 		return this.modelInitializer
 				.initModel(handlerMethod, bindingContext, exchange)

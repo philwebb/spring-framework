@@ -50,7 +50,7 @@ public class HttpEntityArgumentResolver extends AbstractMessageReaderArgumentRes
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
 		return checkParameterTypeNoReactiveWrapper(parameter,
-				type -> HttpEntity.class.equals(type) || RequestEntity.class.equals(type));
+				(type) -> HttpEntity.class.equals(type) || RequestEntity.class.equals(type));
 	}
 
 	@Override

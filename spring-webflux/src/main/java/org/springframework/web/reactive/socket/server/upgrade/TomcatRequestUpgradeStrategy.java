@@ -138,7 +138,7 @@ public class TomcatRequestUpgradeStrategy implements RequestUpgradeStrategy {
 		DataBufferFactory bufferFactory = response.bufferFactory();
 
 		Endpoint endpoint = new StandardWebSocketHandlerAdapter(
-				handler, session -> new TomcatWebSocketSession(session, handshakeInfo, bufferFactory));
+				handler, (session) -> new TomcatWebSocketSession(session, handshakeInfo, bufferFactory));
 
 		String requestURI = servletRequest.getRequestURI();
 		DefaultServerEndpointConfig config = new DefaultServerEndpointConfig(requestURI, endpoint);

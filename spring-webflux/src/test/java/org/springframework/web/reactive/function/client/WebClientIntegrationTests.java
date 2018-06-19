@@ -89,7 +89,7 @@ public class WebClientIntegrationTests {
 
 		StepVerifier.create(result)
 				.consumeNextWith(
-						httpHeaders -> {
+						(httpHeaders) -> {
 							assertEquals(MediaType.TEXT_PLAIN, httpHeaders.getContentType());
 							assertEquals(13L, httpHeaders.getContentLength());
 						})
@@ -480,7 +480,7 @@ public class WebClientIntegrationTests {
 		Mono<String> result = this.webClient.get()
 				.uri("/greeting?name=Spring")
 				.retrieve()
-				.onStatus(HttpStatus::is5xxServerError, response -> Mono.just(new MyException("500 error!")))
+				.onStatus(HttpStatus::is5xxServerError, (response) -> Mono.just(new MyException("500 error!")))
 				.bodyToMono(String.class);
 
 		StepVerifier.create(result)
@@ -502,7 +502,7 @@ public class WebClientIntegrationTests {
 		Mono<String> result = this.webClient.get()
 				.uri("/greeting?name=Spring")
 				.retrieve()
-				.onStatus(HttpStatus::is5xxServerError, response -> Mono.just(new MyException("500 error!")))
+				.onStatus(HttpStatus::is5xxServerError, (response) -> Mono.just(new MyException("500 error!")))
 				.bodyToMono(new ParameterizedTypeReference<String>() {});
 
 		StepVerifier.create(result)
@@ -569,7 +569,7 @@ public class WebClientIntegrationTests {
 	public void shouldApplyErrorHandlingFilter() throws Exception {
 
 		ExchangeFilterFunction filter = ExchangeFilterFunction.ofResponseProcessor(
-				clientResponse -> {
+				(clientResponse) -> {
 					List<String> headerValues = clientResponse.headers().header("Foo");
 					return headerValues.isEmpty() ? Mono.error(
 							new MyException("Response does not contain Foo header")) :

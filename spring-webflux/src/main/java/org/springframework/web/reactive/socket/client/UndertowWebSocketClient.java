@@ -69,7 +69,7 @@ public class UndertowWebSocketClient extends WebSocketClientSupport implements W
 	 * @param worker the Xnio worker
 	 */
 	public UndertowWebSocketClient(XnioWorker worker) {
-		this(worker, builder -> {});
+		this(worker, (builder) -> {});
 	}
 
 	/**

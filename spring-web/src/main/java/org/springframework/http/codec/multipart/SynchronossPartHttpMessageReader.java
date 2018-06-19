@@ -149,7 +149,7 @@ public class SynchronossPartHttpMessageReader implements HttpMessageReader<Part>
 				finally {
 					DataBufferUtils.release(buffer);
 				}
-			}, ex -> {
+			}, (ex) -> {
 				try {
 					listener.onError("Request body input error", ex);
 					parser.close();

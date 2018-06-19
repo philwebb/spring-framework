@@ -295,7 +295,7 @@ public class ModelInitializerTests {
 		}
 	}
 
-	private static final ReflectionUtils.MethodFilter BINDER_METHODS = method ->
+	private static final ReflectionUtils.MethodFilter BINDER_METHODS = (method) ->
 			AnnotationUtils.findAnnotation(method, InitBinder.class) != null;
 
 }

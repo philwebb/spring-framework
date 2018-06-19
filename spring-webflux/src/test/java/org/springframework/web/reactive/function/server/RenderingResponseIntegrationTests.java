@@ -57,7 +57,7 @@ public class RenderingResponseIntegrationTests extends AbstractRouterFunctionInt
 		RouterFunction<RenderingResponse> normalRoute = route(GET("/normal"), handler::render);
 		RouterFunction<RenderingResponse> filteredRoute = route(GET("/filter"), handler::render)
 				.filter(ofResponseProcessor(
-						response -> RenderingResponse.from(response)
+						(response) -> RenderingResponse.from(response)
 								.modelAttribute("qux", "quux")
 								.build()));
 

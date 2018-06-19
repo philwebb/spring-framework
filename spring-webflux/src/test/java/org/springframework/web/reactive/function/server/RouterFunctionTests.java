@@ -32,9 +32,9 @@ public class RouterFunctionTests {
 
 	@Test
 	public void and() throws Exception {
-		HandlerFunction<ServerResponse> handlerFunction = request -> ServerResponse.ok().build();
-		RouterFunction<ServerResponse> routerFunction1 = request -> Mono.empty();
-		RouterFunction<ServerResponse> routerFunction2 = request -> Mono.just(handlerFunction);
+		HandlerFunction<ServerResponse> handlerFunction = (request) -> ServerResponse.ok().build();
+		RouterFunction<ServerResponse> routerFunction1 = (request) -> Mono.empty();
+		RouterFunction<ServerResponse> routerFunction2 = (request) -> Mono.just(handlerFunction);
 
 		RouterFunction<ServerResponse> result = routerFunction1.and(routerFunction2);
 		assertNotNull(result);
@@ -51,10 +51,10 @@ public class RouterFunctionTests {
 	@Test
 	public void andOther() throws Exception {
 		HandlerFunction<ServerResponse> handlerFunction =
-				request -> ServerResponse.ok().body(fromObject("42"));
-		RouterFunction<?> routerFunction1 = request -> Mono.empty();
+				(request) -> ServerResponse.ok().body(fromObject("42"));
+		RouterFunction<?> routerFunction1 = (request) -> Mono.empty();
 		RouterFunction<ServerResponse> routerFunction2 =
-				request -> Mono.just(handlerFunction);
+				(request) -> Mono.just(handlerFunction);
 
 		RouterFunction<?> result = routerFunction1.andOther(routerFunction2);
 		assertNotNull(result);
@@ -70,8 +70,8 @@ public class RouterFunctionTests {
 
 	@Test
 	public void andRoute() throws Exception {
-		RouterFunction<ServerResponse> routerFunction1 = request -> Mono.empty();
-		RequestPredicate requestPredicate = request -> true;
+		RouterFunction<ServerResponse> routerFunction1 = (request) -> Mono.empty();
+		RequestPredicate requestPredicate = (request) -> true;
 
 		RouterFunction<ServerResponse> result = routerFunction1.andRoute(requestPredicate, this::handlerMethod);
 		assertNotNull(result);
@@ -89,13 +89,13 @@ public class RouterFunctionTests {
 	public void filter() throws Exception {
 		Mono<String> stringMono = Mono.just("42");
 		HandlerFunction<EntityResponse<Mono<String>>> handlerFunction =
-				request -> EntityResponse.fromPublisher(stringMono, String.class).build();
+				(request) -> EntityResponse.fromPublisher(stringMono, String.class).build();
 		RouterFunction<EntityResponse<Mono<String>>> routerFunction =
-				request -> Mono.just(handlerFunction);
+				(request) -> Mono.just(handlerFunction);
 
 		HandlerFilterFunction<EntityResponse<Mono<String>>, EntityResponse<Mono<Integer>>> filterFunction =
 				(request, next) -> next.handle(request).flatMap(
-						response -> {
+						(response) -> {
 							Mono<Integer> intMono = response.entity()
 									.map(Integer::parseInt);
 							return EntityResponse.fromPublisher(intMono, Integer.class).build();
@@ -109,7 +109,7 @@ public class RouterFunctionTests {
 
 		StepVerifier.create(responseMono)
 				.consumeNextWith(
-						serverResponse -> {
+						(serverResponse) -> {
 							StepVerifier.create(serverResponse.entity())
 									.expectNext(42)
 									.expectComplete()

@@ -153,7 +153,7 @@ public class JettyRequestUpgradeStrategy implements RequestUpgradeStrategy, Life
 		DataBufferFactory factory = response.bufferFactory();
 
 		JettyWebSocketHandlerAdapter adapter = new JettyWebSocketHandlerAdapter(
-				handler, session -> new JettyWebSocketSession(session, handshakeInfo, factory));
+				handler, (session) -> new JettyWebSocketSession(session, handshakeInfo, factory));
 
 		startLazily(servletRequest);
 

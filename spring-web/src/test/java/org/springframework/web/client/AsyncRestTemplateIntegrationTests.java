@@ -123,7 +123,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 			assertFalse("No headers", entity.getHeaders().isEmpty());
 			assertEquals("Invalid content-type", textContentType, entity.getHeaders().getContentType());
 			assertEquals("Invalid status code", HttpStatus.OK, entity.getStatusCode());
-		}, ex -> fail(ex.getMessage()));
+		}, (ex) -> fail(ex.getMessage()));
 		waitTillDone(futureEntity);
 	}
 
@@ -184,7 +184,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 	public void headForHeadersCallbackWithLambdas() throws Exception {
 		ListenableFuture<HttpHeaders> headersFuture = this.template.headForHeaders(this.baseUrl + "/get");
 		headersFuture.addCallback((result) -> assertTrue("No Content-Type header",
-				result.containsKey("Content-Type")), ex -> fail(ex.getMessage()));
+				result.containsKey("Content-Type")), (ex) -> fail(ex.getMessage()));
 		waitTillDone(headersFuture);
 	}
 
@@ -226,7 +226,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		final URI expected = new URI(this.baseUrl + "/post/1");
 		ListenableFuture<URI> locationFuture = this.template.postForLocation(this.baseUrl + "/{method}", entity, "post");
 		locationFuture.addCallback((result) -> assertEquals("Invalid location", expected, result),
-				ex -> fail(ex.getMessage()));
+				(ex) -> fail(ex.getMessage()));
 		waitTillDone(locationFuture);
 	}
 
@@ -263,8 +263,8 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		ListenableFuture<ResponseEntity<String>> responseEntityFuture =
 				this.template.postForEntity(this.baseUrl + "/{method}", requestEntity, String.class, "post");
 		responseEntityFuture.addCallback(
-				result -> assertEquals("Invalid content", helloWorld, result.getBody()),
-				ex -> fail(ex.getMessage()));
+				(result) -> assertEquals("Invalid content", helloWorld, result.getBody()),
+				(ex) -> fail(ex.getMessage()));
 		waitTillDone(responseEntityFuture);
 	}
 
@@ -317,7 +317,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 	@Test
 	public void deleteCallbackWithLambdas() throws Exception  {
 		ListenableFuture<?> deletedFuture = this.template.delete(new URI(this.baseUrl + "/delete"));
-		deletedFuture.addCallback(Assert::assertNull, ex -> fail(ex.getMessage()));
+		deletedFuture.addCallback(Assert::assertNull, (ex) -> fail(ex.getMessage()));
 		waitTillDone(deletedFuture);
 	}
 
@@ -392,7 +392,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 	@Test
 	public void notFoundCallbackWithLambdas() throws Exception {
 		ListenableFuture<?> future = this.template.execute(this.baseUrl + "/status/notfound", HttpMethod.GET, null, null);
-		future.addCallback((result) -> fail("onSuccess not expected"), ex -> {
+		future.addCallback((result) -> fail("onSuccess not expected"), (ex) -> {
 				assertTrue(ex instanceof HttpClientErrorException);
 				HttpClientErrorException hcex = (HttpClientErrorException) ex;
 				assertEquals(HttpStatus.NOT_FOUND, hcex.getStatusCode());
@@ -442,7 +442,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 	@Test
 	public void serverErrorCallbackWithLambdas() throws Exception {
 		ListenableFuture<Void> future = this.template.execute(this.baseUrl + "/status/server", HttpMethod.GET, null, null);
-		future.addCallback((result) -> fail("onSuccess not expected"), ex -> {
+		future.addCallback((result) -> fail("onSuccess not expected"), (ex) -> {
 				assertTrue(ex instanceof HttpServerErrorException);
 				HttpServerErrorException hsex = (HttpServerErrorException) ex;
 				assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, hsex.getStatusCode());
@@ -482,7 +482,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		ListenableFuture<Set<HttpMethod>> allowedFuture = this.template.optionsForAllow(new URI(this.baseUrl + "/get"));
 		allowedFuture.addCallback((result) -> assertEquals("Invalid response",
 				EnumSet.of(HttpMethod.GET, HttpMethod.OPTIONS, HttpMethod.HEAD,HttpMethod.TRACE), result),
-				ex -> fail(ex.getMessage()));
+				(ex) -> fail(ex.getMessage()));
 		waitTillDone(allowedFuture);
 	}
 
@@ -528,7 +528,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		ListenableFuture<ResponseEntity<String>> responseFuture =
 				this.template.exchange(this.baseUrl + "/{method}", HttpMethod.GET, requestEntity, String.class, "get");
 		responseFuture.addCallback((result) -> assertEquals("Invalid content", helloWorld,
-				result.getBody()), ex -> fail(ex.getMessage()));
+				result.getBody()), (ex) -> fail(ex.getMessage()));
 		waitTillDone(responseFuture);
 	}
 
@@ -581,7 +581,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 		resultFuture.addCallback((result) -> {
 			assertEquals("Invalid location", expected, result.getHeaders().getLocation());
 			assertFalse(result.hasBody());
-			}, ex -> fail(ex.getMessage()));
+			}, (ex) -> fail(ex.getMessage()));
 		waitTillDone(resultFuture);
 	}
 
@@ -645,11 +645,11 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 
 			ListenableFuture<ClientHttpResponse> future = execution.executeAsync(request, body);
 			future.addCallback(
-					resp -> {
+					(resp) -> {
 						this.response = resp;
 						this.latch.countDown();
 					},
-					ex -> {
+					(ex) -> {
 						this.exception = ex;
 						this.latch.countDown();
 					});
