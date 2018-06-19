@@ -559,7 +559,7 @@ public class StompBrokerRelayMessageHandler extends AbstractBrokerMessageHandler
 	}
 
 	private String getTcpClientInfo() {
-		return this.tcpClient != null ? this.tcpClient.toString() : this.relayHost + ":" + this.relayPort;
+		return (this.tcpClient != null ? this.tcpClient.toString() : this.relayHost + ":" + this.relayPort);
 	}
 
 
@@ -807,8 +807,8 @@ public class StompBrokerRelayMessageHandler extends AbstractBrokerMessageHandler
 				}
 			}
 
-			final Message<?> messageToSend = (accessor.isMutable() && accessor.isModified()) ?
-					MessageBuilder.createMessage(message.getPayload(), accessor.getMessageHeaders()) : message;
+			final Message<?> messageToSend = (accessor.isMutable() && accessor.isModified() ?
+					MessageBuilder.createMessage(message.getPayload(), accessor.getMessageHeaders()) : message);
 
 			StompCommand command = accessor.getCommand();
 			if (StompBrokerRelayMessageHandler.this.logger.isDebugEnabled() && (StompCommand.SEND.equals(command) || StompCommand.SUBSCRIBE.equals(command) ||

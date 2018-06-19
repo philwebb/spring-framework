@@ -139,7 +139,7 @@ public class SQLErrorCodeSQLExceptionTranslatorTests {
 			protected DataAccessException customTranslate(String task, @Nullable String sql, SQLException sqlex) {
 				assertEquals(TASK, task);
 				assertEquals(SQL, sql);
-				return (sqlex == badSqlEx) ? customDex : null;
+				return (sqlex != badSqlEx ? null : customDex);
 			}
 		};
 		sext.setSqlErrorCodes(ERROR_CODES);

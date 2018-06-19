@@ -530,8 +530,8 @@ public class StompBrokerRelayMessageHandlerIntegrationTests {
 		}
 
 		protected String getPayloadAsText() {
-			return (this.payload instanceof byte[]) ?
-					new String((byte[]) this.payload, StandardCharsets.UTF_8) : this.payload.toString();
+			return (this.payload instanceof byte[] ?
+					new String((byte[]) this.payload, StandardCharsets.UTF_8) : this.payload.toString());
 		}
 	}
 

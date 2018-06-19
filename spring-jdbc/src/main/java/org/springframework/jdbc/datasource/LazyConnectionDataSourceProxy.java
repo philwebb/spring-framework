@@ -406,9 +406,9 @@ public class LazyConnectionDataSourceProxy extends DelegatingDataSource {
 				}
 
 				// Fetch physical Connection from DataSource.
-				this.target = (this.username != null) ?
+				this.target = (this.username != null ?
 						obtainTargetDataSource().getConnection(this.username, this.password) :
-						obtainTargetDataSource().getConnection();
+						obtainTargetDataSource().getConnection());
 
 				// If we still lack default connection properties, check them now.
 				checkDefaultConnectionProperties(this.target);

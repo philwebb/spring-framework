@@ -367,8 +367,8 @@ public class ActiveProfilesUtilsTests extends AbstractContextConfigurationUtilsT
 
 		@Override
 		public String[] resolve(Class<?> testClass) {
-			return testClass.isAnnotation() ? new String[] { "@" + testClass.getSimpleName() }
-					: new String[] { testClass.getSimpleName() };
+			return (testClass.isAnnotation() ? new String[] { "@" + testClass.getSimpleName() }
+					: new String[] { testClass.getSimpleName() });
 		}
 	}
 

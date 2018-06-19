@@ -122,7 +122,7 @@ public abstract class SharedEntityManagerCreator {
 		Class<?> emIfc = (emf instanceof EntityManagerFactoryInfo ?
 				((EntityManagerFactoryInfo) emf).getEntityManagerInterface() : EntityManager.class);
 		return createSharedEntityManager(emf, properties, synchronizedWithTransaction,
-				(emIfc == null ? NO_ENTITY_MANAGER_INTERFACES : new Class<?>[] {emIfc}));
+				(emIfc != null ? new Class<?>[] {emIfc} : NO_ENTITY_MANAGER_INTERFACES));
 	}
 
 	/**
@@ -378,7 +378,7 @@ public abstract class SharedEntityManagerCreator {
 			// Invoke method on actual Query object.
 			try {
 				Object retVal = method.invoke(this.target, args);
-				return (retVal == this.target ? proxy : retVal);
+				return (retVal != this.target ? retVal : proxy);
 			}
 			catch (InvocationTargetException ex) {
 				throw ex.getTargetException();

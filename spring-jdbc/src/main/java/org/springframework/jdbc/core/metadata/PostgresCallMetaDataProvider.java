@@ -61,7 +61,7 @@ public class PostgresCallMetaDataProvider extends GenericCallMetaDataProvider {
 	@Nullable
 	public String metaDataSchemaNameToUse(@Nullable String schemaName) {
 		// Use public schema if no schema specified
-		return (schemaName == null ? "public" : super.metaDataSchemaNameToUse(schemaName));
+		return (schemaName != null ? super.metaDataSchemaNameToUse(schemaName) : "public");
 	}
 
 	@Override

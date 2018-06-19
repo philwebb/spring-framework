@@ -1010,8 +1010,8 @@ public class JdbcTemplate extends JdbcAccessor implements JdbcOperations {
 						ps.addBatch();
 						if (n % batchSize == 0 || n == batchArgs.size()) {
 							if (this.logger.isDebugEnabled()) {
-								int batchIdx = (n % batchSize == 0) ? n / batchSize : (n / batchSize) + 1;
-								int items = n - ((n % batchSize == 0) ? n / batchSize - 1 : (n / batchSize)) * batchSize;
+								int batchIdx = (n % batchSize != 0 ? (n / batchSize) + 1 : n / batchSize);
+								int items = n - (n % batchSize != 0 ? (n / batchSize) : n / batchSize - 1) * batchSize;
 								this.logger.debug("Sending SQL batch update #" + batchIdx + " with " + items + " items");
 							}
 							rowsAffected.add(ps.executeBatch());
