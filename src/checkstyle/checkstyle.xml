@@ -137,8 +137,9 @@
 		</module>
 
 		<!-- Spring Conventions -->
-		<module name="io.spring.javaformat.checkstyle.check.LambdaCheck" />
-		<module name="io.spring.javaformat.checkstyle.check.TernaryCheck" />
-		<module name="io.spring.javaformat.checkstyle.check.CatchCheck" />
+		<module name="io.spring.javaformat.checkstyle.check.SpringLambdaCheck" />
+		<module name="io.spring.javaformat.checkstyle.check.SpringTernaryCheck" />
+		<module name="io.spring.javaformat.checkstyle.check.SpringCatchCheck" />
+		<module name="io.spring.javaformat.checkstyle.check.SpringJavadocCheck" />
  	</module>
 </module>
