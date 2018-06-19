@@ -82,7 +82,7 @@ public final class ParseState {
 	 */
 	@Nullable
 	public Entry peek() {
-		return this.state.isEmpty() ? null : this.state.peek();
+		return (this.state.isEmpty() ? null : this.state.peek());
 	}
 
 	/**
