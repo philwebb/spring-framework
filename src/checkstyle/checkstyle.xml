@@ -138,5 +138,6 @@
 
 		<!-- Spring Conventions -->
 		<module name="io.spring.javaformat.checkstyle.check.LambdaCheck" />
+		<module name="io.spring.javaformat.checkstyle.check.TernaryCheck" />
  	</module>
 </module>
