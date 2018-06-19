@@ -141,8 +141,8 @@ public class ConcurrentBeanFactoryTests {
 					performTest();
 				}
 			}
-			catch (Throwable e) {
-				ConcurrentBeanFactoryTests.this.ex = e;
+			catch (Throwable ex) {
+				ConcurrentBeanFactoryTests.this.ex = ex;
 			}
 			finally {
 				synchronized (ConcurrentBeanFactoryTests.this.set) {

@@ -136,20 +136,20 @@ public abstract class AbstractSockJsIntegrationTests {
 		try {
 			this.server.undeployConfig();
 		}
-		catch (Throwable t) {
-			this.logger.error("Failed to undeploy application config", t);
+		catch (Throwable ex) {
+			this.logger.error("Failed to undeploy application config", ex);
 		}
 		try {
 			this.server.stop();
 		}
-		catch (Throwable t) {
-			this.logger.error("Failed to stop server", t);
+		catch (Throwable ex) {
+			this.logger.error("Failed to stop server", ex);
 		}
 		try {
 			this.wac.close();
 		}
-		catch (Throwable t) {
-			this.logger.error("Failed to close WebApplicationContext", t);
+		catch (Throwable ex) {
+			this.logger.error("Failed to close WebApplicationContext", ex);
 		}
 	}
 

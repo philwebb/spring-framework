@@ -68,8 +68,8 @@ public class ConcurrentBeanWrapperTests {
 				try {
 					wait();
 				}
-				catch (InterruptedException e) {
-					this.logger.info(e.toString());
+				catch (InterruptedException ex) {
+					this.logger.info(ex.toString());
 				}
 				this.logger.info(this.set.size() + " threads still active.");
 			}
@@ -124,8 +124,8 @@ public class ConcurrentBeanWrapperTests {
 					performSet();
 				}
 			}
-			catch (Throwable e) {
-				this.test.ex = e;
+			catch (Throwable ex) {
+				this.test.ex = ex;
 			}
 			finally {
 				synchronized (this.test) {
