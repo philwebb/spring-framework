@@ -186,8 +186,8 @@ class PrecedenceTestAspect implements BeanNameAware, Ordered {
 		try {
 			ret = ((Integer)pjp.proceed()).intValue();
 		}
-		catch (Throwable t) {
-			throw new RuntimeException(t);
+		catch (Throwable ex) {
+			throw new RuntimeException(ex);
 		}
 		this.collaborator.aroundAdviceOne(this.name);
 		return ret;
@@ -199,8 +199,8 @@ class PrecedenceTestAspect implements BeanNameAware, Ordered {
 		try {
 			ret = ((Integer)pjp.proceed()).intValue();
 		}
-		catch (Throwable t) {
-			throw new RuntimeException(t);
+		catch (Throwable ex) {
+			throw new RuntimeException(ex);
 		}
 		this.collaborator.aroundAdviceTwo(this.name);
 		return ret;

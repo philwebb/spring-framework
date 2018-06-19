@@ -400,8 +400,8 @@ public class AnnotationDrivenEventListenerTests {
 			this.context.publishEvent(event);
 			fail("An exception should have thrown");
 		}
-		catch (IllegalStateException e) {
-			assertEquals("Wrong exception", "Test exception", e.getMessage());
+		catch (IllegalStateException ex) {
+			assertEquals("Wrong exception", "Test exception", ex.getMessage());
 			this.eventCollector.assertEvent(listener, event);
 			this.eventCollector.assertTotalEventsCount(1);
 		}

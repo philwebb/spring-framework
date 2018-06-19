@@ -91,7 +91,7 @@ public abstract class AbstractStaxHandlerTestCase {
 		try {
 			new Socket("www.springframework.org", 80).close();
 		}
-		catch (Exception e) {
+		catch (Exception ex) {
 			return false;
 		}
 		return true;

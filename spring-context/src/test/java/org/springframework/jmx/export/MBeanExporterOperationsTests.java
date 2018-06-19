@@ -117,8 +117,8 @@ public class MBeanExporterOperationsTests extends AbstractMBeanServerTests {
 			exporter.registerManagedResource(bean2);
 			fail("Shouldn't be able to register a runtime MBean with a reused ObjectName.");
 		}
-		catch (MBeanExportException e) {
-			assertEquals("Incorrect root cause", InstanceAlreadyExistsException.class, e.getCause().getClass());
+		catch (MBeanExportException ex) {
+			assertEquals("Incorrect root cause", InstanceAlreadyExistsException.class, ex.getCause().getClass());
 		}
 	}
 
