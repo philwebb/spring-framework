@@ -100,7 +100,7 @@ public class BooleanExpressionTests extends AbstractExpressionTests {
 		GenericConversionService conversionService = new GenericConversionService() {
 			@Override
 			protected Object convertNullSource(TypeDescriptor sourceType, TypeDescriptor targetType) {
-				return targetType.getType() == Boolean.class ? false : null;
+				return (targetType.getType() != Boolean.class ? null : false);
 			}
 		};
 		this.context.setTypeConverter(new StandardTypeConverter(conversionService));

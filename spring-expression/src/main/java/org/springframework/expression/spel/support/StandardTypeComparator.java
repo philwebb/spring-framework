@@ -55,7 +55,7 @@ public class StandardTypeComparator implements TypeComparator {
 	public int compare(@Nullable Object left, @Nullable Object right) throws SpelEvaluationException {
 		// If one is null, check if the other is
 		if (left == null) {
-			return (right == null ? 0 : -1);
+			return (right != null ? -1 : 0);
 		}
 		else if (right == null) {
 			return 1;  // left cannot be null at this point

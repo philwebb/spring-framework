@@ -111,8 +111,8 @@ public class FixedBackOff implements BackOff {
 		public String toString() {
 			final StringBuilder sb = new StringBuilder("FixedBackOff{");
 			sb.append("interval=").append(FixedBackOff.this.interval);
-			String attemptValue = (FixedBackOff.this.maxAttempts == Long.MAX_VALUE ?
-					"unlimited" : String.valueOf(FixedBackOff.this.maxAttempts));
+			String attemptValue = (FixedBackOff.this.maxAttempts != Long.MAX_VALUE ?
+					String.valueOf(FixedBackOff.this.maxAttempts) : "unlimited");
 			sb.append(", currentAttempts=").append(this.currentAttempts);
 			sb.append(", maxAttempts=").append(attemptValue);
 			sb.append('}');
