@@ -22,7 +22,6 @@ import java.io.Writer;
 import javax.servlet.ServletException;
 
 import org.junit.Test;
-
 import org.springframework.aop.Pointcut;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.aop.interceptor.SimpleTraceInterceptor;
