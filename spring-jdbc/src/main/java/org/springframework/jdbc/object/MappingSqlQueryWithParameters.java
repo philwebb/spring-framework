@@ -61,7 +61,7 @@ public abstract class MappingSqlQueryWithParameters<T> extends SqlQuery<T> {
 	/**
 	 * Convenient constructor with DataSource and SQL string.
 	 * @param ds DataSource to use to get connections
-	 * @param sql SQL to run
+	 * @param sql the SQL to run
 	 */
 	public MappingSqlQueryWithParameters(DataSource ds, String sql) {
 		super(ds, sql);

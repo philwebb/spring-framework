@@ -123,7 +123,7 @@ public class JobDetailFactoryBean
 	 * <p>Note: When using persistent Jobs whose JobDetail will be kept in the
 	 * database, do not put Spring-managed beans or an ApplicationContext
 	 * reference into the JobDataMap but rather into the SchedulerContext.
-	 * @param jobDataAsMap Map with String keys and any objects as values
+	 * @param jobDataAsMap a Map with String keys and any objects as values
 	 * (for example Spring-managed beans)
 	 * @see org.springframework.scheduling.quartz.SchedulerFactoryBean#setSchedulerContextAsMap
 	 */

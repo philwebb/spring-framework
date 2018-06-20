@@ -85,7 +85,7 @@ public abstract class SqlCall extends RdbmsOperation {
 	 * Create a new SqlCall object with SQL, but without parameters.
 	 * Must add parameters or settle with none.
 	 * @param ds DataSource to obtain connections from
-	 * @param sql SQL to execute
+	 * @param sql the SQL to execute
 	 */
 	public SqlCall(DataSource ds, String sql) {
 		setDataSource(ds);

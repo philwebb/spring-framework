@@ -185,7 +185,7 @@ public class MimeMessageHelper {
 	 * <p>The character encoding for the message will be taken from
 	 * the passed-in MimeMessage object, if carried there. Else,
 	 * JavaMail's default encoding will be used.
-	 * @param mimeMessage MimeMessage to work on
+	 * @param mimeMessage the mime message to work on
 	 * @see #MimeMessageHelper(javax.mail.internet.MimeMessage, boolean)
 	 * @see #getDefaultEncoding(javax.mail.internet.MimeMessage)
 	 * @see JavaMailSenderImpl#setDefaultEncoding
@@ -198,7 +198,7 @@ public class MimeMessageHelper {
 	 * Create a new MimeMessageHelper for the given MimeMessage,
 	 * assuming a simple text message (no multipart content,
 	 * i.e. no alternative texts and no inline elements or attachments).
-	 * @param mimeMessage MimeMessage to work on
+	 * @param mimeMessage the mime message to work on
 	 * @param encoding the character encoding to use for the message
 	 * @see #MimeMessageHelper(javax.mail.internet.MimeMessage, boolean)
 	 */
@@ -218,7 +218,7 @@ public class MimeMessageHelper {
 	 * <p>The character encoding for the message will be taken from
 	 * the passed-in MimeMessage object, if carried there. Else,
 	 * JavaMail's default encoding will be used.
-	 * @param mimeMessage MimeMessage to work on
+	 * @param mimeMessage the mime message to work on
 	 * @param multipart whether to create a multipart message that
 	 * supports alternative texts, inline elements and attachments
 	 * (corresponds to MULTIPART_MODE_MIXED_RELATED)
@@ -238,7 +238,7 @@ public class MimeMessageHelper {
 	 * <p>Consider using the MimeMessageHelper constructor that
 	 * takes a multipartMode argument to choose a specific multipart
 	 * mode other than MULTIPART_MODE_MIXED_RELATED.
-	 * @param mimeMessage MimeMessage to work on
+	 * @param mimeMessage the mime message to work on
 	 * @param multipart whether to create a multipart message that
 	 * supports alternative texts, inline elements and attachments
 	 * (corresponds to MULTIPART_MODE_MIXED_RELATED)
@@ -259,7 +259,7 @@ public class MimeMessageHelper {
 	 * <p>The character encoding for the message will be taken from
 	 * the passed-in MimeMessage object, if carried there. Else,
 	 * JavaMail's default encoding will be used.
-	 * @param mimeMessage MimeMessage to work on
+	 * @param mimeMessage the mime message to work on
 	 * @param multipartMode which kind of multipart message to create
 	 * (MIXED, RELATED, MIXED_RELATED, or NO)
 	 * @throws MessagingException if multipart creation failed
@@ -278,7 +278,7 @@ public class MimeMessageHelper {
 	 * Create a new MimeMessageHelper for the given MimeMessage,
 	 * in multipart mode (supporting alternative texts, inline
 	 * elements and attachments) if requested.
-	 * @param mimeMessage MimeMessage to work on
+	 * @param mimeMessage the mime message to work on
 	 * @param multipartMode which kind of multipart message to create
 	 * (MIXED, RELATED, MIXED_RELATED, or NO)
 	 * @param encoding the character encoding to use for the message

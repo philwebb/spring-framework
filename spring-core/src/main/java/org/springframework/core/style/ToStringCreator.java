@@ -169,7 +169,7 @@ public class ToStringCreator {
 
 	/**
 	 * Append the provided value.
-	 * @param value The value to append
+	 * @param value the value to append
 	 * @return this, to support call-chaining.
 	 */
 	public ToStringCreator append(Object value) {

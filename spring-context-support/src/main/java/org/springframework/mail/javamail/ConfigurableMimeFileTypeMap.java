@@ -137,7 +137,7 @@ public class ConfigurableMimeFileTypeMap extends FileTypeMap implements Initiali
 	 * passing in an InputStream from the mapping resource (if any) and registering
 	 * the mapping lines programmatically.
 	 * @param mappingLocation a {@code mime.types} mapping resource (can be {@code null})
-	 * @param mappings MIME type mapping lines (can be {@code null})
+	 * @param mappings an array of MIME type mapping lines (can be {@code null})
 	 * @return the compiled FileTypeMap
 	 * @throws IOException if resource access failed
 	 * @see javax.activation.MimetypesFileTypeMap#MimetypesFileTypeMap(java.io.InputStream)

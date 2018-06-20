@@ -92,7 +92,7 @@ public class MessageSourceAccessor {
 	 * Retrieve the message for the given code and the given Locale.
 	 * @param code code of the message
 	 * @param defaultMessage the String to return if the lookup fails
-	 * @param locale Locale in which to do lookup
+	 * @param locale the Locale in which to do lookup
 	 * @return the message
 	 */
 	public String getMessage(String code, String defaultMessage, Locale locale) {

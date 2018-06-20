@@ -38,7 +38,7 @@ public class JdbcUpdateAffectedIncorrectNumberOfRowsException extends IncorrectU
 
 	/**
 	 * Constructor for JdbcUpdateAffectedIncorrectNumberOfRowsException.
-	 * @param sql SQL we were tring to execute
+	 * @param sql the SQL we were trying to execute
 	 * @param expected the expected number of rows affected
 	 * @param actual the actual number of rows affected
 	 */
