@@ -24,7 +24,6 @@ import java.util.function.Supplier;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
 import org.springframework.util.StringUtils;
 
 import static org.junit.Assert.assertEquals;
