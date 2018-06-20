@@ -91,7 +91,7 @@ public class SQLErrorCodeSQLExceptionTranslator extends AbstractFallbackSQLExcep
 	 * Create a SQL error code translator for the given DataSource.
 	 * Invoking this constructor will cause a Connection to be obtained
 	 * from the DataSource to get the meta-data.
-	 * @param dataSource DataSource to use to find meta-data and establish
+	 * @param dataSource the DataSource to use to find meta-data and establish
 	 * which error codes are usable
 	 * @see SQLErrorCodesFactory
 	 */
@@ -128,7 +128,7 @@ public class SQLErrorCodeSQLExceptionTranslator extends AbstractFallbackSQLExcep
 	 * Set the DataSource for this translator.
 	 * <p>Setting this property will cause a Connection to be obtained from
 	 * the DataSource to get the meta-data.
-	 * @param dataSource DataSource to use to find meta-data and establish
+	 * @param dataSource the DataSource to use to find meta-data and establish
 	 * which error codes are usable
 	 * @see SQLErrorCodesFactory#getErrorCodes(javax.sql.DataSource)
 	 * @see java.sql.DatabaseMetaData#getDatabaseProductName()

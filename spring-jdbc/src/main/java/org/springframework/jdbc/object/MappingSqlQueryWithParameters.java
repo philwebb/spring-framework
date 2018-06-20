@@ -60,7 +60,7 @@ public abstract class MappingSqlQueryWithParameters<T> extends SqlQuery<T> {
 
 	/**
 	 * Convenient constructor with DataSource and SQL string.
-	 * @param ds DataSource to use to get connections
+	 * @param ds the DataSource to use to get connections
 	 * @param sql the SQL to run
 	 */
 	public MappingSqlQueryWithParameters(DataSource ds, String sql) {
@@ -80,7 +80,7 @@ public abstract class MappingSqlQueryWithParameters<T> extends SqlQuery<T> {
 	/**
 	 * Subclasses must implement this method to convert each row
 	 * of the ResultSet into an object of the result type.
-	 * @param rs ResultSet we're working through
+	 * @param rs the ResultSet we're working through
 	 * @param rowNum row number (from 0) we're up to
 	 * @param parameters to the query (passed to the execute() method).
 	 * Subclasses are rarely interested in these.

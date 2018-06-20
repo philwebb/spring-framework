@@ -48,7 +48,7 @@ public abstract class UpdatableSqlQuery<T> extends SqlQuery<T> {
 
 	/**
 	 * Convenient constructor with DataSource and SQL string.
-	 * @param ds DataSource to use to get connections
+	 * @param ds the DataSource to use to get connections
 	 * @param sql the SQL to run
 	 */
 	public UpdatableSqlQuery(DataSource ds, String sql) {
@@ -69,7 +69,7 @@ public abstract class UpdatableSqlQuery<T> extends SqlQuery<T> {
 	/**
 	 * Subclasses must implement this method to update each row of the
 	 * ResultSet and optionally create object of the result type.
-	 * @param rs ResultSet we're working through
+	 * @param rs the ResultSet we're working through
 	 * @param rowNum row number (from 0) we're up to
 	 * @param context passed to the execute() method.
 	 * It can be {@code null} if no contextual information is need.  If you

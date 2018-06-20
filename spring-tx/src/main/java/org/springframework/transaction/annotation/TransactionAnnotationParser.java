@@ -44,7 +44,7 @@ public interface TransactionAnnotationParser {
 	 * metadata attribute class. Returns {@code null} if the method/class
 	 * is not transactional.
 	 * @param ae the annotated method or class
-	 * @return TransactionAttribute the configured transaction attribute,
+	 * @return the configured transaction attribute,
 	 * or {@code null} if none was found
 	 * @see AnnotationTransactionAttributeSource#determineTransactionAttribute
 	 */

@@ -40,7 +40,7 @@ public interface TransactionAttributeSource {
 	 * @param method the method to introspect
 	 * @param targetClass the target class (may be {@code null},
 	 * in which case the declaring class of the method must be used)
-	 * @return TransactionAttribute the matching transaction attribute,
+	 * @return the TransactionAttribute the matching transaction attribute,
 	 * or {@code null} if none found
 	 */
 	@Nullable

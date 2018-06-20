@@ -469,7 +469,7 @@ public interface NamedParameterJdbcOperations {
 	 * returning generated keys.
 	 * @param sql the SQL containing named parameters
 	 * @param paramSource container of arguments and SQL types to bind to the query
-	 * @param generatedKeyHolder KeyHolder that will hold the generated keys
+	 * @param generatedKeyHolder a {@link KeyHolder} that will hold the generated keys
 	 * @return the number of rows affected
 	 * @throws org.springframework.dao.DataAccessException if there is any problem issuing the update
 	 * @see MapSqlParameterSource
@@ -483,7 +483,7 @@ public interface NamedParameterJdbcOperations {
 	 * returning generated keys.
 	 * @param sql the SQL containing named parameters
 	 * @param paramSource container of arguments and SQL types to bind to the query
-	 * @param generatedKeyHolder KeyHolder that will hold the generated keys
+	 * @param generatedKeyHolder a {@link KeyHolder} that will hold the generated keys
 	 * @param keyColumnNames names of the columns that will have keys generated for them
 	 * @return the number of rows affected
 	 * @throws org.springframework.dao.DataAccessException if there is any problem issuing the update

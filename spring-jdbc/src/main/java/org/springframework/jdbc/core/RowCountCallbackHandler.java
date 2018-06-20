@@ -91,7 +91,7 @@ public class RowCountCallbackHandler implements RowCallbackHandler {
 	/**
 	 * Subclasses may override this to perform custom extraction
 	 * or processing. This class's implementation does nothing.
-	 * @param rs ResultSet to extract data from. This method is
+	 * @param rs the ResultSet to extract data from. This method is
 	 * invoked for each row
 	 * @param rowNum number of the current row (starting from 0)
 	 */

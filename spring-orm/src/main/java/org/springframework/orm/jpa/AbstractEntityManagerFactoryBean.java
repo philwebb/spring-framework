@@ -505,7 +505,7 @@ public abstract class AbstractEntityManagerFactoryBean implements
 	/**
 	 * Subclasses must implement this method to create the EntityManagerFactory
 	 * that will be returned by the {@code getObject()} method.
-	 * @return EntityManagerFactory instance returned by this FactoryBean
+	 * @return the EntityManagerFactory instance returned by this FactoryBean
 	 * @throws PersistenceException if the EntityManager cannot be created
 	 */
 	protected abstract EntityManagerFactory createNativeEntityManagerFactory() throws PersistenceException;

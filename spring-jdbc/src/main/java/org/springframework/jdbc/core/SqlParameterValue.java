@@ -44,7 +44,7 @@ public class SqlParameterValue extends SqlParameter {
 
 	/**
 	 * Create a new SqlParameterValue, supplying the SQL type.
-	 * @param sqlType SQL type of the parameter according to {@code java.sql.Types}
+	 * @param sqlType the SQL type of the parameter according to {@code java.sql.Types}
 	 * @param value the value object
 	 */
 	public SqlParameterValue(int sqlType, @Nullable Object value) {
@@ -54,7 +54,7 @@ public class SqlParameterValue extends SqlParameter {
 
 	/**
 	 * Create a new SqlParameterValue, supplying the SQL type.
-	 * @param sqlType SQL type of the parameter according to {@code java.sql.Types}
+	 * @param sqlType the SQL type of the parameter according to {@code java.sql.Types}
 	 * @param typeName the type name of the parameter (optional)
 	 * @param value the value object
 	 */
@@ -65,7 +65,7 @@ public class SqlParameterValue extends SqlParameter {
 
 	/**
 	 * Create a new SqlParameterValue, supplying the SQL type.
-	 * @param sqlType SQL type of the parameter according to {@code java.sql.Types}
+	 * @param sqlType the SQL type of the parameter according to {@code java.sql.Types}
 	 * @param scale the number of digits after the decimal point
 	 * (for DECIMAL and NUMERIC types)
 	 * @param value the value object

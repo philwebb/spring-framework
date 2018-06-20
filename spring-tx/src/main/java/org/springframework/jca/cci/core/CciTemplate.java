@@ -93,7 +93,7 @@ public class CciTemplate implements CciOperations {
 	/**
 	 * Construct a new CciTemplate, given a ConnectionFactory to obtain Connections from.
 	 * Note: This will trigger eager initialization of the exception translator.
-	 * @param connectionFactory JCA ConnectionFactory to obtain Connections from
+	 * @param connectionFactory the JCA ConnectionFactory to obtain Connections from
 	 */
 	public CciTemplate(ConnectionFactory connectionFactory) {
 		setConnectionFactory(connectionFactory);
@@ -103,7 +103,7 @@ public class CciTemplate implements CciOperations {
 	/**
 	 * Construct a new CciTemplate, given a ConnectionFactory to obtain Connections from.
 	 * Note: This will trigger eager initialization of the exception translator.
-	 * @param connectionFactory JCA ConnectionFactory to obtain Connections from
+	 * @param connectionFactory the JCA ConnectionFactory to obtain Connections from
 	 * @param connectionSpec the CCI ConnectionSpec to obtain Connections for
 	 * (may be {@code null})
 	 */

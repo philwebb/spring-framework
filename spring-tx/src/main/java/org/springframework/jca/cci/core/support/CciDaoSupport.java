@@ -137,7 +137,7 @@ public abstract class CciDaoSupport extends DaoSupport {
 	/**
 	 * Close the given CCI Connection, created via this bean's ConnectionFactory,
 	 * if it isn't bound to the thread.
-	 * @param con Connection to close
+	 * @param con the Connection to close
 	 * @see org.springframework.jca.cci.connection.ConnectionFactoryUtils#releaseConnection
 	 */
 	protected final void releaseConnection(Connection con) {

@@ -100,7 +100,7 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 	 * <p>To find out about specific transaction characteristics, consider using
 	 * TransactionSynchronizationManager's {@code isSynchronizationActive()}
 	 * and/or {@code isActualTransactionActive()} methods.
-	 * @return TransactionInfo bound to this thread, or {@code null} if none
+	 * @return the TransactionInfo bound to this thread, or {@code null} if none
 	 * @see TransactionInfo#hasTransaction()
 	 * @see org.springframework.transaction.support.TransactionSynchronizationManager#isSynchronizationActive()
 	 * @see org.springframework.transaction.support.TransactionSynchronizationManager#isActualTransactionActive()

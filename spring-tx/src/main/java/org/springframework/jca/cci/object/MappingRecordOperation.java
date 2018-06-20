@@ -57,7 +57,7 @@ public abstract class MappingRecordOperation extends EisOperation {
 	/**
 	 * Convenient constructor with ConnectionFactory and specifications
 	 * (connection and interaction).
-	 * @param connectionFactory ConnectionFactory to use to obtain connections
+	 * @param connectionFactory the ConnectionFactory to use to obtain connections
 	 */
 	public MappingRecordOperation(ConnectionFactory connectionFactory, InteractionSpec interactionSpec) {
 		getCciTemplate().setConnectionFactory(connectionFactory);

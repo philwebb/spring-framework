@@ -125,7 +125,7 @@ public class TransactionAwareDataSourceProxy extends DelegatingDataSource {
 	/**
 	 * Wraps the given Connection with a proxy that delegates every method call to it
 	 * but delegates {@code close()} calls to DataSourceUtils.
-	 * @param targetDataSource DataSource that the Connection came from
+	 * @param targetDataSource the DataSource that the Connection came from
 	 * @return the wrapped Connection
 	 * @see java.sql.Connection#close()
 	 * @see DataSourceUtils#doReleaseConnection

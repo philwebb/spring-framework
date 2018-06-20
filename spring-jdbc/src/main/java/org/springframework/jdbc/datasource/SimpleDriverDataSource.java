@@ -93,7 +93,7 @@ public class SimpleDriverDataSource extends AbstractDriverBasedDataSource {
 	 * Create a new DriverManagerDataSource with the given standard Driver parameters.
 	 * @param driver the JDBC Driver object
 	 * @param url the JDBC URL to use for accessing the DriverManager
-	 * @param conProps JDBC connection properties
+	 * @param conProps the JDBC connection properties
 	 * @see java.sql.Driver#connect(String, java.util.Properties)
 	 */
 	public SimpleDriverDataSource(Driver driver, String url, Properties conProps) {
