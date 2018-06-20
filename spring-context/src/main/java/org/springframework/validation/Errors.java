@@ -194,7 +194,7 @@ public interface Errors {
 
 	/**
 	 * Get all errors, both global and field ones.
-	 * @return List of {@link ObjectError} instances
+	 * @return a list of {@link ObjectError} instances
 	 */
 	List<ObjectError> getAllErrors();
 
@@ -214,7 +214,7 @@ public interface Errors {
 
 	/**
 	 * Get all global errors.
-	 * @return List of ObjectError instances
+	 * @return a list of {@link ObjectError} instances
 	 */
 	List<ObjectError> getGlobalErrors();
 

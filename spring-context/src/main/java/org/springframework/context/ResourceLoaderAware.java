@@ -69,7 +69,7 @@ public interface ResourceLoaderAware extends Aware {
 	 * <p>Invoked after population of normal bean properties but before an init callback
 	 * like InitializingBean's {@code afterPropertiesSet} or a custom init-method.
 	 * Invoked before ApplicationContextAware's {@code setApplicationContext}.
-	 * @param resourceLoader ResourceLoader object to be used by this object
+	 * @param resourceLoader the ResourceLoader object to be used by this object
 	 * @see org.springframework.core.io.support.ResourcePatternResolver
 	 * @see org.springframework.core.io.support.ResourcePatternUtils#getResourcePatternResolver
 	 */

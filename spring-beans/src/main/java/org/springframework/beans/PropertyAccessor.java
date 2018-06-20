@@ -156,7 +156,7 @@ public interface PropertyAccessor {
 	 * <p>Bulk updates from PropertyValues are more powerful: This method is
 	 * provided for convenience. Behavior will be identical to that of
 	 * the {@link #setPropertyValues(PropertyValues)} method.
-	 * @param map Map to take properties from. Contains property value objects,
+	 * @param map a Map to take properties from. Contains property value objects,
 	 * keyed by property name
 	 * @throws InvalidPropertyException if there is no such property or
 	 * if the property isn't writable
@@ -177,7 +177,7 @@ public interface PropertyAccessor {
 	 * This exception can be examined later to see all binding errors.
 	 * Properties that were successfully updated remain changed.
 	 * <p>Does not allow unknown fields or invalid fields.
-	 * @param pvs PropertyValues to set on the target object
+	 * @param pvs a PropertyValues to set on the target object
 	 * @throws InvalidPropertyException if there is no such property or
 	 * if the property isn't writable
 	 * @throws PropertyBatchUpdateException if one or more PropertyAccessExceptions
@@ -197,7 +197,7 @@ public interface PropertyAccessor {
 	 * {@link PropertyBatchUpdateException} containing all the individual errors.
 	 * This exception can be examined later to see all binding errors.
 	 * Properties that were successfully updated remain changed.
-	 * @param pvs PropertyValues to set on the target object
+	 * @param pvs a PropertyValues to set on the target object
 	 * @param ignoreUnknown should we ignore unknown properties (not found in the bean)
 	 * @throws InvalidPropertyException if there is no such property or
 	 * if the property isn't writable
@@ -219,7 +219,7 @@ public interface PropertyAccessor {
 	 * {@link PropertyBatchUpdateException} containing all the individual errors.
 	 * This exception can be examined later to see all binding errors.
 	 * Properties that were successfully updated remain changed.
-	 * @param pvs PropertyValues to set on the target object
+	 * @param pvs a PropertyValues to set on the target object
 	 * @param ignoreUnknown should we ignore unknown properties (not found in the bean)
 	 * @param ignoreInvalid should we ignore invalid properties (found but not accessible)
 	 * @throws InvalidPropertyException if there is no such property or
