@@ -313,7 +313,7 @@ public abstract class CommonsFileUploadSupport {
 	 * Cleanup the Spring MultipartFiles created during multipart parsing,
 	 * potentially holding temporary data on disk.
 	 * <p>Deletes the underlying Commons FileItem instances.
-	 * @param multipartFiles Collection of MultipartFile instances
+	 * @param multipartFiles a Collection of MultipartFile instances
 	 * @see org.apache.commons.fileupload.FileItem#delete()
 	 */
 	protected void cleanupFileItems(MultiValueMap<String, MultipartFile> multipartFiles) {

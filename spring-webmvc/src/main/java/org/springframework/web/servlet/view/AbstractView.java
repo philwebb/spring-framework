@@ -182,7 +182,7 @@ public abstract class AbstractView extends WebApplicationObjectSupport implement
 	 * the View instance configuration. "Dynamic" attributes, on the other hand,
 	 * are values passed in as part of the model.
 	 * <p>Can be populated with a "map" or "props" element in XML bean definitions.
-	 * @param attributes Map with name Strings as keys and attribute objects as values
+	 * @param attributes a Map with name Strings as keys and attribute objects as values
 	 */
 	public void setAttributesMap(@Nullable Map<String, ?> attributes) {
 		if (attributes != null) {
@@ -434,7 +434,7 @@ public abstract class AbstractView extends WebApplicationObjectSupport implement
 	 * Expose the model objects in the given map as request attributes.
 	 * Names will be taken from the model Map.
 	 * This method is suitable for all resources reachable by {@link javax.servlet.RequestDispatcher}.
-	 * @param model Map of model objects to expose
+	 * @param model a Map of model objects to expose
 	 * @param request current HTTP request
 	 */
 	protected void exposeModelAsRequestAttributes(Map<String, Object> model,

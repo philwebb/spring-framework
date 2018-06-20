@@ -110,7 +110,7 @@ public abstract class AbstractWebSocketClient implements WebSocketClient {
 	/**
 	 * Perform the actual handshake to establish a connection to the server.
 	 * @param webSocketHandler the client-side handler for WebSocket messages
-	 * @param headers HTTP headers to use for the handshake, with unwanted (forbidden)
+	 * @param headers the HTTP headers to use for the handshake, with unwanted (forbidden)
 	 * headers filtered out (never {@code null})
 	 * @param uri the target URI for the handshake (never {@code null})
 	 * @param subProtocols requested sub-protocols, or an empty list

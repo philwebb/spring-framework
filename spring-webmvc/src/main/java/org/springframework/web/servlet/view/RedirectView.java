@@ -369,7 +369,7 @@ public class RedirectView extends AbstractUrlBasedView implements SmartView {
 	 * attributes or URI variables from the current request. Model attributes
 	 * referenced in the URL are removed from the model.
 	 * @param targetUrl the redirect URL
-	 * @param model Map that contains model attributes
+	 * @param model a Map that contains model attributes
 	 * @param currentUriVariables current request URI variables to use
 	 * @param encodingScheme the encoding scheme to use
 	 * @throws UnsupportedEncodingException if string encoding failed
@@ -436,7 +436,7 @@ public class RedirectView extends AbstractUrlBasedView implements SmartView {
 	 * Append query properties to the redirect URL.
 	 * Stringifies, URL-encodes and formats model attributes as query properties.
 	 * @param targetUrl the StringBuilder to append the properties to
-	 * @param model Map that contains model attributes
+	 * @param model a Map that contains model attributes
 	 * @param encodingScheme the encoding scheme to use
 	 * @throws UnsupportedEncodingException if string encoding failed
 	 * @see #queryProperties

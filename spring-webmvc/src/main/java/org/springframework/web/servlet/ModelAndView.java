@@ -85,7 +85,7 @@ public class ModelAndView {
 	/**
 	 * Convenient constructor when there is no model data to expose.
 	 * Can also be used in conjunction with {@code addObject}.
-	 * @param view View object to render
+	 * @param view the View object to render
 	 * @see #addObject
 	 */
 	public ModelAndView(View view) {
@@ -96,7 +96,7 @@ public class ModelAndView {
 	 * Create a new ModelAndView given a view name and a model.
 	 * @param viewName name of the View to render, to be resolved
 	 * by the DispatcherServlet's ViewResolver
-	 * @param model Map of model names (Strings) to model objects
+	 * @param model a Map of model names (Strings) to model objects
 	 * (Objects). Model entries may not be {@code null}, but the
 	 * model Map may be {@code null} if there is no model data.
 	 */
@@ -112,8 +112,8 @@ public class ModelAndView {
 	 * <em>Note: the supplied model data is copied into the internal
 	 * storage of this class. You should not consider to modify the supplied
 	 * Map after supplying it to this class</em>
-	 * @param view View object to render
-	 * @param model Map of model names (Strings) to model objects
+	 * @param view the View object to render
+	 * @param model a Map of model names (Strings) to model objects
 	 * (Objects). Model entries may not be {@code null}, but the
 	 * model Map may be {@code null} if there is no model data.
 	 */
@@ -141,7 +141,7 @@ public class ModelAndView {
 	 * Create a new ModelAndView given a view name, model, and HTTP status.
 	 * @param viewName name of the View to render, to be resolved
 	 * by the DispatcherServlet's ViewResolver
-	 * @param model Map of model names (Strings) to model objects
+	 * @param model a Map of model names (Strings) to model objects
 	 * (Objects). Model entries may not be {@code null}, but the
 	 * model Map may be {@code null} if there is no model data.
 	 * @param status an HTTP status code to use for the response
@@ -170,7 +170,7 @@ public class ModelAndView {
 
 	/**
 	 * Convenient constructor to take a single model object.
-	 * @param view View object to render
+	 * @param view the View object to render
 	 * @param modelName name of the single entry in the model
 	 * @param modelObject the single model object
 	 */
