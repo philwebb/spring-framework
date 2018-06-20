@@ -121,33 +121,33 @@ public class MockHttpServletRequestTests {
 	@Test  // SPR-16505
 	public void getReaderTwice() throws IOException {
 		byte[] bytes = "body".getBytes(Charset.defaultCharset());
-		request.setContent(bytes);
-		assertSame(request.getReader(), request.getReader());
+		this.request.setContent(bytes);
+		assertSame(this.request.getReader(), this.request.getReader());
 	}
 
 	@Test  // SPR-16505
 	public void getInputStreamTwice() throws IOException {
 		byte[] bytes = "body".getBytes(Charset.defaultCharset());
-		request.setContent(bytes);
-		assertSame(request.getInputStream(), request.getInputStream());
+		this.request.setContent(bytes);
+		assertSame(this.request.getInputStream(), this.request.getInputStream());
 	}
 
 	@Test  // SPR-16499
 	public void getReaderAfterGettingInputStream() throws IOException {
-		exception.expect(IllegalStateException.class);
-		exception.expectMessage(
+		this.exception.expect(IllegalStateException.class);
+		this.exception.expectMessage(
 				"Cannot call getReader() after getInputStream() has already been called for the current request");
-		request.getInputStream();
-		request.getReader();
+		this.request.getInputStream();
+		this.request.getReader();
 	}
 
 	@Test  // SPR-16499
 	public void getInputStreamAfterGettingReader() throws IOException {
-		exception.expect(IllegalStateException.class);
-		exception.expectMessage(
+		this.exception.expect(IllegalStateException.class);
+		this.exception.expectMessage(
 				"Cannot call getInputStream() after getReader() has already been called for the current request");
-		request.getReader();
-		request.getInputStream();
+		this.request.getReader();
+		this.request.getInputStream();
 	}
 
 	@Test
