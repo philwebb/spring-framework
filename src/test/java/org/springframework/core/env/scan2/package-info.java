@@ -18,6 +18,7 @@
  * Mirrors the structure of beans and environment-specific config files
  * in EnvironmentIntegrationTests-context.xml
  */
+
 package org.springframework.core.env.scan2;
 
 import static org.springframework.core.env.EnvironmentSystemIntegrationTests.Constants.DEV_BEAN_NAME;
