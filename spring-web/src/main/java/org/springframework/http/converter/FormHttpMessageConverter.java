@@ -329,7 +329,7 @@ public class FormHttpMessageConverter implements HttpMessageConverter<MultiValue
 	protected String serializeForm(MultiValueMap<String, String> formData, Charset charset) {
 		StringBuilder builder = new StringBuilder();
 		formData.forEach((name, values) ->
-				values.forEach(value -> {
+				values.forEach((value) -> {
 					try {
 						if (builder.length() != 0) {
 							builder.append('&');

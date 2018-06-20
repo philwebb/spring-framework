@@ -152,7 +152,7 @@ public class FormHttpMessageWriter implements HttpMessageWriter<MultiValueMap<St
 	protected String serializeForm(MultiValueMap<String, String> formData, Charset charset) {
 		StringBuilder builder = new StringBuilder();
 		formData.forEach((name, values) ->
-				values.forEach(value -> {
+				values.forEach((value) -> {
 					try {
 						if (builder.length() != 0) {
 							builder.append('&');
