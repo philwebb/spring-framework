@@ -47,8 +47,8 @@ class MetadataCollector {
 
 	/**
 	 * Create a new {@code MetadataProcessor} instance.
-	 * @param processingEnvironment The processing environment of the build
-	 * @param previousMetadata Any previous metadata or {@code null}
+	 * @param processingEnvironment the processing environment of the build
+	 * @param previousMetadata any previous metadata or {@code null}
 	 */
 	public MetadataCollector(ProcessingEnvironment processingEnvironment,
 			CandidateComponentsMetadata previousMetadata) {

@@ -227,7 +227,7 @@ public abstract class ClassUtils {
 	 * @param name the name of the Class
 	 * @param classLoader the class loader to use
 	 * (may be {@code null}, which indicates the default class loader)
-	 * @return Class instance for the supplied name
+	 * @return a class instance for the supplied name
 	 * @throws ClassNotFoundException if the class was not found
 	 * @throws LinkageError if the class file could not be loaded
 	 * @see Class#forName(String, boolean, ClassLoader)
@@ -298,7 +298,7 @@ public abstract class ClassUtils {
 	 * @param className the name of the Class
 	 * @param classLoader the class loader to use
 	 * (may be {@code null}, which indicates the default class loader)
-	 * @return Class instance for the supplied name
+	 * @return a class instance for the supplied name
 	 * @throws IllegalArgumentException if the class name was not resolvable
 	 * (that is, the class could not be found or the class file could not be loaded)
 	 * @see #forName(String, ClassLoader)

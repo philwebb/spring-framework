@@ -1405,7 +1405,7 @@ public class JdbcTemplate extends JdbcAccessor implements JdbcOperations {
 	/**
 	 * Translate the given {@link SQLException} into a generic {@link DataAccessException}.
 	 * @param task readable text describing the task being attempted
-	 * @param sql SQL query or update that caused the problem (may be {@code null})
+	 * @param sql the SQL query or update that caused the problem (may be {@code null})
 	 * @param ex the offending {@code SQLException}
 	 * @return a DataAccessException wrapping the {@code SQLException} (never {@code null})
 	 * @since 5.0

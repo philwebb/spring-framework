@@ -49,7 +49,7 @@ public abstract class UpdatableSqlQuery<T> extends SqlQuery<T> {
 	/**
 	 * Convenient constructor with DataSource and SQL string.
 	 * @param ds DataSource to use to get connections
-	 * @param sql SQL to run
+	 * @param sql the SQL to run
 	 */
 	public UpdatableSqlQuery(DataSource ds, String sql) {
 		super(ds, sql);

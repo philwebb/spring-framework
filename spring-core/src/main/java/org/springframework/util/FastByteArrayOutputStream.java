@@ -469,7 +469,7 @@ public class FastByteArrayOutputStream extends OutputStream {
 
 		/**
 		 * Update the message digest with the remaining bytes in this stream.
-		 * @param messageDigest The message digest to update
+		 * @param messageDigest the message digest to update
 		 */
 		@Override
 		public void updateMessageDigest(MessageDigest messageDigest) {
@@ -479,7 +479,7 @@ public class FastByteArrayOutputStream extends OutputStream {
 		/**
 		 * Update the message digest with the next len bytes in this stream.
 		 * Avoids creating new byte arrays and use internal buffers for performance.
-		 * @param messageDigest The message digest to update
+		 * @param messageDigest the message digest to update
 		 * @param len how many bytes to read from this stream and use to update the message digest
 		 */
 		@Override

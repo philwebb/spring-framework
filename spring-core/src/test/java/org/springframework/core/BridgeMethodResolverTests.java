@@ -908,7 +908,7 @@ public class BridgeMethodResolverTests {
 			implements ConvenientGenericRepository<T, ID> {
 
 		/**
-		 * @param c Mandatory. The domain class this repository is responsible for.
+		 * @param c mandatory domain class this repository is responsible for.
 		 */
 		// Since it is impossible to determine the actual type of a type
 		// parameter (!), we resort to requiring the caller to provide the

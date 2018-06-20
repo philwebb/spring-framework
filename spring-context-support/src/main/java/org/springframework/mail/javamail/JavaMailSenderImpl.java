@@ -405,7 +405,7 @@ public class JavaMailSenderImpl implements JavaMailSender {
 
 	/**
 	 * Actually send the given array of MimeMessages via JavaMail.
-	 * @param mimeMessages MimeMessage objects to send
+	 * @param mimeMessages the MimeMessage objects to send
 	 * @param originalMessages corresponding original message objects
 	 * that the MimeMessages have been created from (with same array
 	 * length and indices as the "mimeMessages" array), if any
