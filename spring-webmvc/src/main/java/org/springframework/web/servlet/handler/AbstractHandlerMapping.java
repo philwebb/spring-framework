@@ -377,11 +377,11 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 
 		HandlerExecutionChain executionChain = getHandlerExecutionChain(handler, request);
 
-		if (logger.isTraceEnabled()) {
-			logger.trace("Mapped to " + handler);
+		if (this.logger.isTraceEnabled()) {
+			this.logger.trace("Mapped to " + handler);
 		}
-		else if (logger.isDebugEnabled()) {
-			logger.debug("Mapped to " + executionChain.getHandler());
+		else if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Mapped to " + executionChain.getHandler());
 		}
 
 		if (CorsUtils.isCorsRequest(request)) {

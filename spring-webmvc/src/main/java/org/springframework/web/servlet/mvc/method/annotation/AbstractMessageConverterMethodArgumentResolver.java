@@ -223,8 +223,8 @@ public abstract class AbstractMessageConverterMethodArgumentResolver implements 
 			throw new HttpMediaTypeNotSupportedException(contentType, this.allSupportedMediaTypes);
 		}
 
-		if (logger.isDebugEnabled()) {
-			logger.debug("Read \"" + contentType + "\" to " +
+		if (this.logger.isDebugEnabled()) {
+			this.logger.debug("Read \"" + contentType + "\" to " +
 					"[" + (body instanceof String ? "\"" + body + "\"" : body) + "]");
 		}
 

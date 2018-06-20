@@ -127,7 +127,7 @@ public class SimpleUrlHandlerMapping extends AbstractUrlHandlerMapping {
 				}
 				registerHandler(url, handler);
 			});
-			if (logger.isDebugEnabled()) {
+			if (this.logger.isDebugEnabled()) {
 				List<String> patterns = new ArrayList<>();
 				if (getRootHandler() != null) {
 					patterns.add("/");
@@ -136,7 +136,7 @@ public class SimpleUrlHandlerMapping extends AbstractUrlHandlerMapping {
 					patterns.add("/**");
 				}
 				patterns.addAll(getHandlerMap().keySet());
-				logger.debug("Patterns " + patterns + " in " + formatMappingName());
+				this.logger.debug("Patterns " + patterns + " in " + formatMappingName());
 			}
 		}
 	}

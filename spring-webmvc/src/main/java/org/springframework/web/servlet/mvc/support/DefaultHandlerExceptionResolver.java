@@ -233,7 +233,7 @@ public class DefaultHandlerExceptionResolver extends AbstractHandlerExceptionRes
 
 		}
 		catch (Exception handlerEx) {
-			logger.warn("Failure while trying to resolve exception [" + ex.getClass().getName() + "]", handlerEx);
+			this.logger.warn("Failure while trying to resolve exception [" + ex.getClass().getName() + "]", handlerEx);
 			return null;
 		}
 	}
