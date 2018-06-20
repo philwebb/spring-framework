@@ -71,7 +71,7 @@ public interface HandlerAdapter {
 	 * to the {@code supports} method of this interface, which must have
 	 * returned {@code true}.
 	 * @throws Exception in case of errors
-	 * @return ModelAndView object with the name of the view and the required
+	 * @return a ModelAndView object with the name of the view and the required
 	 * model data, or {@code null} if the request has been handled directly
 	 */
 	@Nullable

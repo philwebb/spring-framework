@@ -183,7 +183,7 @@ public abstract class UriComponents implements Serializable {
 	/**
 	 * Replace all URI template variables with the values from the given {@link
 	 * UriTemplateVariables}.
-	 * @param uriVariables URI template values
+	 * @param uriVariables the URI template values
 	 * @return the expanded URI components
 	 */
 	abstract UriComponents expandInternal(UriTemplateVariables uriVariables);
