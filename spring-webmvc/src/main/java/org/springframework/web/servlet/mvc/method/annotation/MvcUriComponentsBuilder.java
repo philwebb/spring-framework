@@ -552,9 +552,9 @@ public class MvcUriComponentsBuilder {
 	}
 
 	private static UriComponentsBuilder getBaseUrlToUse(@Nullable UriComponentsBuilder baseUrl) {
-		return baseUrl == null ?
-				ServletUriComponentsBuilder.fromCurrentServletMapping() :
-				baseUrl.cloneBuilder();
+		return (baseUrl != null ?
+				baseUrl.cloneBuilder() :
+				ServletUriComponentsBuilder.fromCurrentServletMapping());
 	}
 
 	private static String getPathPrefix(Class<?> controllerType) {
@@ -772,8 +772,8 @@ public class MvcUriComponentsBuilder {
 		private static <T> T initProxy(
 				Class<?> controllerType, @Nullable ControllerMethodInvocationInterceptor interceptor) {
 
-			interceptor = interceptor != null ?
-					interceptor : new ControllerMethodInvocationInterceptor(controllerType);
+			interceptor = (interceptor != null ?
+					interceptor : new ControllerMethodInvocationInterceptor(controllerType));
 
 			if (controllerType == Object.class) {
 				return (T) interceptor;

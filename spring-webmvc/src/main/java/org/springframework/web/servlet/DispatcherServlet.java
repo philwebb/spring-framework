@@ -997,8 +997,8 @@ public class DispatcherServlet extends FrameworkServlet {
 						.collect(Collectors.joining(", ", ", parameters={", "}"));
 			}
 
-			String dispatchType = !request.getDispatcherType().equals(DispatcherType.REQUEST) ?
-					" [" + request.getDispatcherType().name() + "]" : "";
+			String dispatchType = (!request.getDispatcherType().equals(DispatcherType.REQUEST) ?
+					" [" + request.getDispatcherType().name() + "]" : "");
 
 			String message = request.getMethod() + " " + getRequestUri(request) + dispatchType + params;
 
