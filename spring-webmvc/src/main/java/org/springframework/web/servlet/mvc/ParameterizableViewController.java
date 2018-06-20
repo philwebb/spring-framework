@@ -70,7 +70,7 @@ public class ParameterizableViewController extends AbstractController {
 		if (this.view instanceof String) {
 			String viewName = (String) this.view;
 			if (getStatusCode() != null && getStatusCode().is3xxRedirection()) {
-				return viewName.startsWith("redirect:") ? viewName : "redirect:" + viewName;
+				return (viewName.startsWith("redirect:") ? viewName : "redirect:" + viewName);
 			}
 			else {
 				return viewName;
