@@ -198,7 +198,7 @@ public class MBeanExporter extends MBeanRegistrationSupport implements MBeanExpo
 	 * Bean instances are typically linked in through bean references.
 	 * Bean names will be resolved as beans in the current factory, respecting
 	 * lazy-init markers (that is, not triggering initialization of such beans).
-	 * @param beans Map with JMX names as keys and bean instances or bean names
+	 * @param beans a Map with JMX names as keys and bean instances or bean names
 	 * as values
 	 * @see #setNamingStrategy
 	 * @see org.springframework.jmx.export.naming.KeyNamingStrategy

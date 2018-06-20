@@ -41,7 +41,7 @@ public interface CacheAnnotationParser {
 	 * metadata attribute class. Returns {@code null} if the class
 	 * is not cacheable.
 	 * @param type the annotated class
-	 * @return CacheOperation the configured caching operation,
+	 * @return the configured caching operation,
 	 * or {@code null} if none was found
 	 * @see AnnotationCacheOperationSource#findCacheOperations(Class)
 	 */
@@ -55,7 +55,7 @@ public interface CacheAnnotationParser {
 	 * metadata attribute class. Returns {@code null} if the method
 	 * is not cacheable.
 	 * @param method the annotated method
-	 * @return CacheOperation the configured caching operation,
+	 * @return the configured caching operation,
 	 * or {@code null} if none was found
 	 * @see AnnotationCacheOperationSource#findCacheOperations(Method)
 	 */

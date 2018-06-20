@@ -54,7 +54,7 @@ public abstract class AopContext {
 	 * Try to return the current AOP proxy. This method is usable only if the
 	 * calling method has been invoked via AOP, and the AOP framework has been set
 	 * to expose proxies. Otherwise, this method will throw an IllegalStateException.
-	 * @return Object the current AOP proxy (never returns {@code null})
+	 * @return the current AOP proxy (never returns {@code null})
 	 * @throws IllegalStateException if the proxy cannot be found, because the
 	 * method was invoked outside an AOP invocation context, or because the
 	 * AOP framework has not been configured to expose the proxy

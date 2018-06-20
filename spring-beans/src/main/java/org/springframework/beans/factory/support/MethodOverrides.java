@@ -76,7 +76,7 @@ public class MethodOverrides {
 
 	/**
 	 * Return all method overrides contained by this object.
-	 * @return Set of MethodOverride objects
+	 * @return a Set of MethodOverride objects
 	 * @see MethodOverride
 	 */
 	public Set<MethodOverride> getOverrides() {

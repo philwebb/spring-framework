@@ -61,7 +61,7 @@ public abstract class ExposeBeanNameAdvisors {
 	/**
 	 * Find the bean name for the given invocation. Assumes that an ExposeBeanNameAdvisor
 	 * has been included in the interceptor chain.
-	 * @param mi MethodInvocation that should contain the bean name as an attribute
+	 * @param mi the MethodInvocation that should contain the bean name as an attribute
 	 * @return the bean name (never {@code null})
 	 * @throws IllegalStateException if the bean name has not been exposed
 	 */

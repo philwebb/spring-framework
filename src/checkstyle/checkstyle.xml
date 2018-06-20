@@ -140,6 +140,6 @@
 		<module name="io.spring.javaformat.checkstyle.check.SpringLambdaCheck" />
 		<module name="io.spring.javaformat.checkstyle.check.SpringTernaryCheck" />
 		<module name="io.spring.javaformat.checkstyle.check.SpringCatchCheck" />
-<!-- 		<module name="io.spring.javaformat.checkstyle.check.SpringJavadocCheck" />
- --> 	</module>
+		<module name="io.spring.javaformat.checkstyle.check.SpringJavadocCheck" />
+ 	</module>
 </module>
