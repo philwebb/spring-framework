@@ -33,6 +33,9 @@ import org.springframework.util.StringUtils;
  */
 class ProfilesParser {
 
+	private ProfilesParser() {
+	}
+
 	static Profiles parse(String... expressions) {
 		Assert.notEmpty(expressions, "Must specify at least one profile");
 		Profiles[] parsed = new Profiles[expressions.length];
