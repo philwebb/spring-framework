@@ -53,7 +53,7 @@ public interface SqlReturnType {
 	 * Get the type value from the specific object.
 	 * @param cs the CallableStatement to operate on
 	 * @param paramIndex the index of the parameter for which we need to set the value
-	 * @param sqlType SQL type of the parameter we are setting
+	 * @param sqlType the SQL type of the parameter we are setting
 	 * @param typeName the type name of the parameter (optional)
 	 * @return the target value
 	 * @throws SQLException if a SQLException is encountered setting parameter values

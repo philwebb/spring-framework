@@ -297,7 +297,7 @@ public abstract class RdbmsOperation implements InitializingBean {
 	 * Add one or more declared parameters. Used for configuring this operation
 	 * when used in a bean factory.  Each parameter will specify SQL type and (optionally)
 	 * the parameter's name.
-	 * @param parameters Array containing the declared {@link SqlParameter} objects
+	 * @param parameters an array containing the declared {@link SqlParameter} objects
 	 * @see #declaredParameters
 	 */
 	public void setParameters(SqlParameter... parameters) {

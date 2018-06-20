@@ -930,7 +930,7 @@ public interface JdbcOperations {
 	 * @param sql the SQL statement to execute.
 	 * @param batchArgs the List of Object arrays containing the batch of arguments for the query
 	 * @param batchSize batch size
-	 * @param pss ParameterizedPreparedStatementSetter to use
+	 * @param pss the ParameterizedPreparedStatementSetter to use
 	 * @return an array containing for each batch another array containing the numbers of rows affected
 	 * by each update in the batch
 	 */
@@ -979,7 +979,7 @@ public interface JdbcOperations {
 	 * required parameters.
 	 * @param csc object that provides SQL and any necessary parameters
 	 * @param declaredParameters list of declared SqlParameter objects
-	 * @return Map of extracted out parameters
+	 * @return a Map of extracted out parameters
 	 * @throws DataAccessException if there is any problem issuing the update
 	 */
 	Map<String, Object> call(CallableStatementCreator csc, List<SqlParameter> declaredParameters)

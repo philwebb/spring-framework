@@ -102,7 +102,7 @@ public class MethodMapTransactionAttributeSource
 
 	/**
 	 * Initialize the specified {@link #setMethodMap(java.util.Map) "methodMap"}, if any.
-	 * @param methodMap Map from method names to {@code TransactionAttribute} instances
+	 * @param methodMap a Map from method names to {@code TransactionAttribute} instances
 	 * @see #setMethodMap
 	 */
 	protected void initMethodMap(@Nullable Map<String, TransactionAttribute> methodMap) {

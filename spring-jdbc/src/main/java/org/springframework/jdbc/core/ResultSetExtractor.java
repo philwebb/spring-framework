@@ -53,7 +53,7 @@ public interface ResultSetExtractor<T> {
 
 	/**
 	 * Implementations must implement this method to process the entire ResultSet.
-	 * @param rs ResultSet to extract data from. Implementations should
+	 * @param rs the ResultSet to extract data from. Implementations should
 	 * not close this: it will be closed by the calling JdbcTemplate.
 	 * @return an arbitrary result object, or {@code null} if none
 	 * (the extractor will typically be stateful in the latter case).

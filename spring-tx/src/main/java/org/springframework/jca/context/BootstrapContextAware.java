@@ -38,7 +38,7 @@ public interface BootstrapContextAware extends Aware {
 	 * callback like InitializingBean's {@code afterPropertiesSet} or a
 	 * custom init-method. Invoked after ApplicationContextAware's
 	 * {@code setApplicationContext}.
-	 * @param bootstrapContext BootstrapContext object to be used by this object
+	 * @param bootstrapContext the BootstrapContext object to be used by this object
 	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet
 	 * @see org.springframework.context.ApplicationContextAware#setApplicationContext
 	 */

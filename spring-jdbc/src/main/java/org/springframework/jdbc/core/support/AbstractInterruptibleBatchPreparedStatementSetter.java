@@ -66,7 +66,7 @@ public abstract class AbstractInterruptibleBatchPreparedStatementSetter
 	/**
 	 * Check for available values and set them on the given PreparedStatement.
 	 * If no values are available anymore, return {@code false}.
-	 * @param ps PreparedStatement we'll invoke setter methods on
+	 * @param ps the PreparedStatement we'll invoke setter methods on
 	 * @param i index of the statement we're issuing in the batch, starting from 0
 	 * @return whether there were values to apply (that is, whether the applied
 	 * parameters should be added to the batch and this method should be called

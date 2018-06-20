@@ -48,7 +48,7 @@ public abstract class StoredProcedure extends SqlCall {
 
 	/**
 	 * Create a new object wrapper for a stored procedure.
-	 * @param ds DataSource to use throughout the lifetime
+	 * @param ds the DataSource to use throughout the lifetime
 	 * of this object to obtain connections
 	 * @param name name of the stored procedure in the database
 	 */
@@ -59,7 +59,7 @@ public abstract class StoredProcedure extends SqlCall {
 
 	/**
 	 * Create a new object wrapper for a stored procedure.
-	 * @param jdbcTemplate JdbcTemplate which wraps DataSource
+	 * @param jdbcTemplate the JdbcTemplate which wraps DataSource
 	 * @param name name of the stored procedure in the database
 	 */
 	protected StoredProcedure(JdbcTemplate jdbcTemplate, String name) {

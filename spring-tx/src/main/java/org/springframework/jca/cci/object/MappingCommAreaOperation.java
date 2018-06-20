@@ -46,7 +46,7 @@ public abstract class MappingCommAreaOperation extends MappingRecordOperation {
 
 	/**
 	 * Create a new MappingCommAreaQuery.
-	 * @param connectionFactory ConnectionFactory to use to obtain connections
+	 * @param connectionFactory the ConnectionFactory to use to obtain connections
 	 * @param interactionSpec specification to configure the interaction
 	 */
 	public MappingCommAreaOperation(ConnectionFactory connectionFactory, InteractionSpec interactionSpec) {

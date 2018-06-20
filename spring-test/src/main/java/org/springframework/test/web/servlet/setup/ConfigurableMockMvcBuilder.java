@@ -63,7 +63,7 @@ public interface ConfigurableMockMvcBuilder<B extends ConfigurableMockMvcBuilder
 	 * </pre>
 	 * <p>Filters will be invoked in the order in which they are provided.
 	 * @param filter the filter to add
-	 * @param urlPatterns URL patterns to map to; if empty, "/*" is used by default
+	 * @param urlPatterns the URL patterns to map to; if empty, "/*" is used by default
 	 */
 	<T extends B> T addFilter(Filter filter, String... urlPatterns);
 

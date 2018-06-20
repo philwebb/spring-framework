@@ -231,7 +231,7 @@ public abstract class DataAccessUtils {
 	 * Return a translated exception if this is appropriate,
 	 * otherwise return the given exception as-is.
 	 * @param rawException an exception that we may wish to translate
-	 * @param pet PersistenceExceptionTranslator to use to perform the translation
+	 * @param pet the PersistenceExceptionTranslator to use to perform the translation
 	 * @return a translated persistence exception if translation is possible,
 	 * or the raw exception if it is not
 	 */

@@ -334,7 +334,7 @@ public abstract class SqlQuery<T> extends SqlOperation {
 
 	/**
 	 * Generic object finder method for named parameters.
-	 * @param paramMap Map of parameter name to parameter object,
+	 * @param paramMap a Map of parameter name to parameter object,
 	 * matching named parameters specified in the SQL statement.
 	 * Ordering is not significant.
 	 * @param context contextual information passed to the {@code mapRow}
@@ -351,7 +351,7 @@ public abstract class SqlQuery<T> extends SqlOperation {
 
 	/**
 	 * Convenient method to execute without context.
-	 * @param paramMap Map of parameter name to parameter object,
+	 * @param paramMap a Map of parameter name to parameter object,
 	 * matching named parameters specified in the SQL statement.
 	 * Ordering is not significant.
 	 */

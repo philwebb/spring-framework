@@ -149,7 +149,7 @@ public class AnnotationTransactionAttributeSource extends AbstractFallbackTransa
 	 * Returns {@code null} if it's not transactional.
 	 * <p>Can be overridden to support custom annotations that carry transaction metadata.
 	 * @param ae the annotated method or class
-	 * @return TransactionAttribute the configured transaction attribute,
+	 * @return the configured transaction attribute,
 	 * or {@code null} if none was found
 	 */
 	@Nullable

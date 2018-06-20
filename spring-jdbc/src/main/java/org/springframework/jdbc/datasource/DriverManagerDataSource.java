@@ -99,7 +99,7 @@ public class DriverManagerDataSource extends AbstractDriverBasedDataSource {
 	 * Create a new DriverManagerDataSource with the given JDBC URL,
 	 * not specifying a username or password for JDBC access.
 	 * @param url the JDBC URL to use for accessing the DriverManager
-	 * @param conProps JDBC connection properties
+	 * @param conProps the JDBC connection properties
 	 * @see java.sql.DriverManager#getConnection(String)
 	 */
 	public DriverManagerDataSource(String url, Properties conProps) {

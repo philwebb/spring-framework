@@ -526,7 +526,7 @@ public class LocalSessionFactoryBean extends HibernateExceptionTranslator
 	 * <p>The default implementation invokes LocalSessionFactoryBuilder's buildSessionFactory.
 	 * A custom implementation could prepare the instance in a specific way (e.g. applying
 	 * a custom ServiceRegistry) or use a custom SessionFactoryImpl subclass.
-	 * @param sfb LocalSessionFactoryBuilder prepared by this LocalSessionFactoryBean
+	 * @param sfb a LocalSessionFactoryBuilder prepared by this LocalSessionFactoryBean
 	 * @return the SessionFactory instance
 	 * @see LocalSessionFactoryBuilder#buildSessionFactory
 	 */
