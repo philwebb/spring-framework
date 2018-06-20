@@ -31,7 +31,7 @@ import org.springframework.util.StringUtils;
  * @author Phillip Webb
  * @since 5.1
  */
-class ProfilesParser {
+final class ProfilesParser {
 
 	private ProfilesParser() {
 	}
