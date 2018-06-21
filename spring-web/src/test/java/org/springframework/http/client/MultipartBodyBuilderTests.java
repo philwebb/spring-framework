@@ -18,8 +18,6 @@ package org.springframework.http.client;
 
 import org.junit.Test;
 import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
-
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.io.ClassPathResource;
@@ -30,7 +28,10 @@ import org.springframework.http.client.MultipartBodyBuilder.PublisherEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import static org.junit.Assert.*;
+import reactor.core.publisher.Flux;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Arjen Poutsma

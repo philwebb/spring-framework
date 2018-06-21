@@ -25,10 +25,9 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.util.ObjectUtils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Keith Donald

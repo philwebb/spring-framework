@@ -19,6 +19,7 @@ package org.springframework.test.web.servlet.samples.standalone;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.concurrent.CompletableFuture;
+
 import javax.servlet.AsyncContext;
 import javax.servlet.AsyncListener;
 import javax.servlet.Filter;
@@ -34,7 +35,6 @@ import javax.servlet.http.HttpServletResponseWrapper;
 import javax.validation.Valid;
 
 import org.junit.Test;
-
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.test.web.Person;

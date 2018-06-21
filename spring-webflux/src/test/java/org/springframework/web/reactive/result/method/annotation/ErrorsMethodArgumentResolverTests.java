@@ -21,9 +21,6 @@ import java.time.Duration;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import reactor.core.publisher.Mono;
-import reactor.core.publisher.MonoProcessor;
-
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ReactiveAdapterRegistry;
 import org.springframework.core.ResolvableType;
@@ -36,7 +33,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.method.ResolvableMethod;
 import org.springframework.web.reactive.BindingContext;
 
-import static org.junit.Assert.*;
+import reactor.core.publisher.Mono;
+import reactor.core.publisher.MonoProcessor;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for {@link ErrorsMethodArgumentResolver}.

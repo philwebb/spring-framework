@@ -18,7 +18,6 @@ package org.springframework.web.cors.reactive;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;

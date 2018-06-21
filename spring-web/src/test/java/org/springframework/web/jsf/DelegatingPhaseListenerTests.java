@@ -22,11 +22,11 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 
 import org.junit.Test;
-
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.support.StaticListableBeanFactory;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Colin Sampaleanu

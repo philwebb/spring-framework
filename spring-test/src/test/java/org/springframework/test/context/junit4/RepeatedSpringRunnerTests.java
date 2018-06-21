@@ -27,14 +27,13 @@ import org.junit.runner.RunWith;
 import org.junit.runner.Runner;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-
 import org.springframework.test.annotation.Repeat;
 import org.springframework.test.annotation.Timed;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.util.ClassUtils;
 
-import static org.junit.Assert.*;
-import static org.springframework.test.context.junit4.JUnitTestingUtils.*;
+import static org.junit.Assert.assertEquals;
+import static org.springframework.test.context.junit4.JUnitTestingUtils.runTestsAndAssertCounters;
 
 /**
  * Verifies proper handling of the following in conjunction with the

@@ -21,7 +21,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Test;
-
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.test.context.BootstrapTestUtils;

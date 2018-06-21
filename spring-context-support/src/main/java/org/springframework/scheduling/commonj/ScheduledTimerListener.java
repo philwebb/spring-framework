@@ -16,9 +16,9 @@
 
 package org.springframework.scheduling.commonj;
 
-import commonj.timers.TimerListener;
-
 import org.springframework.lang.Nullable;
+
+import commonj.timers.TimerListener;
 
 /**
  * JavaBean that describes a scheduled TimerListener, consisting of

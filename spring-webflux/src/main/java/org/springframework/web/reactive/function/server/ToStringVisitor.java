@@ -18,9 +18,9 @@ package org.springframework.web.reactive.function.server;
 
 import java.util.function.Function;
 
-import reactor.core.publisher.Mono;
-
 import org.springframework.core.io.Resource;
+
+import reactor.core.publisher.Mono;
 
 /**
  * Implementation of {@link RouterFunctions.Visitor} that creates a formatted string representation

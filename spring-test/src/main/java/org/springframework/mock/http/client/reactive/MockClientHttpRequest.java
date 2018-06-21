@@ -21,9 +21,6 @@ import java.util.Collection;
 import java.util.function.Function;
 
 import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.core.io.buffer.DefaultDataBufferFactory;
@@ -33,6 +30,9 @@ import org.springframework.http.client.reactive.AbstractClientHttpRequest;
 import org.springframework.http.client.reactive.ClientHttpRequest;
 import org.springframework.util.Assert;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * Mock implementation of {@link ClientHttpRequest}.

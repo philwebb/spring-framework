@@ -17,13 +17,13 @@
 package org.springframework.web.reactive.function.server;
 
 import org.junit.Test;
-import reactor.core.publisher.Mono;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import static org.junit.Assert.*;
+import reactor.core.publisher.Mono;
+
+import static org.junit.Assert.assertEquals;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RequestPredicates.path;
 import static org.springframework.web.reactive.function.server.RouterFunctions.nest;

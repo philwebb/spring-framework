@@ -23,8 +23,6 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-import reactor.core.publisher.Mono;
-
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ReactiveAdapterRegistry;
 import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
@@ -33,6 +31,8 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.reactive.HandlerMapping;
+
+import reactor.core.publisher.Mono;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

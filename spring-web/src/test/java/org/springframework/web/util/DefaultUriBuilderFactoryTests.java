@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
-
 import org.springframework.web.util.DefaultUriBuilderFactory.EncodingMode;
 
 import static java.util.Collections.singletonMap;

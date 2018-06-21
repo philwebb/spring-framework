@@ -20,19 +20,20 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.core.ResolvableType;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.lang.Nullable;
+import org.springframework.util.MimeType;
+
 import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import reactor.core.publisher.Flux;
 
-import org.springframework.core.ResolvableType;
-import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import org.springframework.lang.Nullable;
-import org.springframework.util.MimeType;
+import reactor.core.publisher.Flux;
 
 /**
  * Encode from an {@code Object} stream to a byte stream of JSON objects using Jackson 2.9.

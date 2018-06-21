@@ -19,6 +19,7 @@ package org.springframework.jms.core;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
+
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.DeliveryMode;
@@ -35,7 +36,6 @@ import javax.naming.Context;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.jms.InvalidClientIDException;
 import org.springframework.jms.InvalidDestinationException;
 import org.springframework.jms.InvalidSelectorException;
@@ -60,8 +60,15 @@ import org.springframework.jndi.JndiTemplate;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verify;
 
 /**
  * Unit tests for the JmsTemplate implemented using JMS 1.1.

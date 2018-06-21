@@ -21,15 +21,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.gargoylesoftware.htmlunit.WebRequest;
-import com.gargoylesoftware.htmlunit.WebResponse;
-import com.gargoylesoftware.htmlunit.WebResponseData;
-import com.gargoylesoftware.htmlunit.util.NameValuePair;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import com.gargoylesoftware.htmlunit.WebRequest;
+import com.gargoylesoftware.htmlunit.WebResponse;
+import com.gargoylesoftware.htmlunit.WebResponseData;
+import com.gargoylesoftware.htmlunit.util.NameValuePair;
 
 /**
  * Builder used internally to create {@link WebResponse WebResponses}.

@@ -19,10 +19,9 @@ package org.springframework.expression.spel.ast;
 import java.util.Arrays;
 
 import org.junit.Test;
-
 import org.springframework.core.convert.TypeDescriptor;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Andy Wilkinson

@@ -26,7 +26,6 @@ import javax.transaction.UserTransaction;
 
 import org.hibernate.TransactionException;
 import org.hibernate.engine.transaction.jta.platform.spi.JtaPlatform;
-
 import org.springframework.lang.Nullable;
 import org.springframework.transaction.jta.UserTransactionAdapter;
 import org.springframework.util.Assert;

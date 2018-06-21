@@ -18,6 +18,7 @@ package org.springframework.oxm;
 
 import java.io.ByteArrayInputStream;
 import java.io.StringReader;
+
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -32,6 +33,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.util.xml.StaxUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
@@ -39,9 +41,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import org.springframework.util.xml.StaxUtils;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Arjen Poutsma

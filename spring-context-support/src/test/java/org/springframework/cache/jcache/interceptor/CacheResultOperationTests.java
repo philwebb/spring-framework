@@ -19,16 +19,20 @@ package org.springframework.cache.jcache.interceptor;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.Set;
+
 import javax.cache.annotation.CacheInvocationParameter;
 import javax.cache.annotation.CacheKey;
 import javax.cache.annotation.CacheMethodDetails;
 import javax.cache.annotation.CacheResult;
 
 import org.junit.Test;
-
 import org.springframework.beans.factory.annotation.Value;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Stephane Nicoll

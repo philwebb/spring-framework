@@ -28,7 +28,6 @@ import org.apache.http.concurrent.FutureCallback;
 import org.apache.http.nio.client.HttpAsyncClient;
 import org.apache.http.nio.entity.NByteArrayEntity;
 import org.apache.http.protocol.HttpContext;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.concurrent.FailureCallback;
 import org.springframework.util.concurrent.FutureAdapter;

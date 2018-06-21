@@ -36,13 +36,15 @@ import org.springframework.test.context.transaction.programmatic.ProgrammaticTxM
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
 import org.testng.IHookCallBack;
 import org.testng.ITestResult;
 import org.testng.annotations.Test;
 
-import static org.junit.Assert.*;
-import static org.springframework.test.transaction.TransactionTestUtils.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.springframework.test.transaction.TransactionTestUtils.assertInTransaction;
 
 /**
  * This class is a copy of the JUnit-based {@link ProgrammaticTxMgmtTests} class

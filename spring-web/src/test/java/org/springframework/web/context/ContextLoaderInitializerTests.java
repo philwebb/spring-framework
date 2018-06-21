@@ -17,17 +17,17 @@
 package org.springframework.web.context;
 
 import java.util.EventListener;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletException;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.mock.web.test.MockServletContext;
 import org.springframework.web.context.support.StaticWebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test case for {@link AbstractContextLoaderInitializer}.

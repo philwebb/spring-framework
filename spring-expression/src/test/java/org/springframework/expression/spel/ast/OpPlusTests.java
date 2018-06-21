@@ -22,7 +22,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import org.junit.Test;
-
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.expression.TypedValue;
@@ -31,7 +30,7 @@ import org.springframework.expression.spel.SpelEvaluationException;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.expression.spel.support.StandardTypeConverter;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Unit tests for SpEL's plus operator.

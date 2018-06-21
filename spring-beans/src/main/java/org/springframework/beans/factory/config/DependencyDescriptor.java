@@ -26,9 +26,6 @@ import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Optional;
 
-import kotlin.reflect.KProperty;
-import kotlin.reflect.jvm.ReflectJvmMapping;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.InjectionPoint;
@@ -40,6 +37,9 @@ import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.core.ResolvableType;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ObjectUtils;
+
+import kotlin.reflect.KProperty;
+import kotlin.reflect.jvm.ReflectJvmMapping;
 
 /**
  * Descriptor for a specific dependency that is about to be injected.

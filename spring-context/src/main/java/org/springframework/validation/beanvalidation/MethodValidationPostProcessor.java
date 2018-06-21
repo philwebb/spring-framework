@@ -17,11 +17,11 @@
 package org.springframework.validation.beanvalidation;
 
 import java.lang.annotation.Annotation;
+
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
 import org.aopalliance.aop.Advice;
-
 import org.springframework.aop.Pointcut;
 import org.springframework.aop.framework.autoproxy.AbstractBeanFactoryAwareAdvisingPostProcessor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;

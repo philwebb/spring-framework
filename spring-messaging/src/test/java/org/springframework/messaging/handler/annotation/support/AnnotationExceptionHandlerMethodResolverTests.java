@@ -22,12 +22,12 @@ import java.net.BindException;
 import java.net.SocketException;
 
 import org.junit.Test;
-
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ClassUtils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Test fixture for {@link AnnotationExceptionHandlerMethodResolver} tests.

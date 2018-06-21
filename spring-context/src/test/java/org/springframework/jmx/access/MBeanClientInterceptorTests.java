@@ -22,6 +22,7 @@ import java.lang.reflect.Method;
 import java.net.BindException;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.management.Descriptor;
 import javax.management.MBeanServerConnection;
 import javax.management.remote.JMXConnectorServer;
@@ -29,7 +30,6 @@ import javax.management.remote.JMXConnectorServerFactory;
 import javax.management.remote.JMXServiceURL;
 
 import org.junit.Test;
-
 import org.springframework.jmx.AbstractMBeanServerTests;
 import org.springframework.jmx.IJmxTestBean;
 import org.springframework.jmx.JmxException;
@@ -40,8 +40,11 @@ import org.springframework.tests.Assume;
 import org.springframework.tests.TestGroup;
 import org.springframework.util.SocketUtils;
 
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeTrue;
 
 /**
  * To run the tests in the class, set the following Java system property:

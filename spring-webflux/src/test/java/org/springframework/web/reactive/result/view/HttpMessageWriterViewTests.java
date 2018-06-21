@@ -25,8 +25,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.junit.Test;
-import reactor.test.StepVerifier;
-
 import org.springframework.core.codec.CharSequenceEncoder;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.support.DataBufferTestUtils;
@@ -37,6 +35,8 @@ import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.ModelMap;
+
+import reactor.test.StepVerifier;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;

@@ -21,6 +21,7 @@ import java.util.EnumSet;
 import java.util.EventListener;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.FilterRegistration.Dynamic;
@@ -32,7 +33,6 @@ import javax.servlet.ServletRegistration;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mock.web.test.MockServletConfig;
@@ -43,7 +43,10 @@ import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test case for {@link AbstractAnnotationConfigDispatcherServletInitializer}.

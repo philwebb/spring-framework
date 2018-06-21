@@ -18,13 +18,13 @@ package org.springframework.validation.beanvalidation2;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
 import javax.validation.Validator;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.Default;
 
 import org.junit.Test;
-
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -40,7 +40,9 @@ import org.springframework.validation.beanvalidation.CustomValidatorBean;
 import org.springframework.validation.beanvalidation.MethodValidationInterceptor;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 /**
  * @author Juergen Hoeller

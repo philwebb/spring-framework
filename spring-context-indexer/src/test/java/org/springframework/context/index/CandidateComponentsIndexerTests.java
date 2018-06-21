@@ -19,6 +19,7 @@ package org.springframework.context.index;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+
 import javax.annotation.ManagedBean;
 import javax.inject.Named;
 import javax.persistence.Converter;
@@ -31,11 +32,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
-
 import org.springframework.context.index.sample.AbstractController;
 import org.springframework.context.index.sample.MetaControllerIndexed;
 import org.springframework.context.index.sample.SampleComponent;
 import org.springframework.context.index.sample.SampleController;
+import org.springframework.context.index.sample.SampleEmbedded;
 import org.springframework.context.index.sample.SampleMetaController;
 import org.springframework.context.index.sample.SampleMetaIndexedController;
 import org.springframework.context.index.sample.SampleNonStaticEmbedded;
@@ -46,7 +47,6 @@ import org.springframework.context.index.sample.cdi.SampleManagedBean;
 import org.springframework.context.index.sample.cdi.SampleNamed;
 import org.springframework.context.index.sample.jpa.SampleConverter;
 import org.springframework.context.index.sample.jpa.SampleEmbeddable;
-import org.springframework.context.index.sample.SampleEmbedded;
 import org.springframework.context.index.sample.jpa.SampleEntity;
 import org.springframework.context.index.sample.jpa.SampleMappedSuperClass;
 import org.springframework.context.index.sample.type.Repo;
@@ -59,9 +59,10 @@ import org.springframework.context.index.test.TestCompiler;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ClassUtils;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-import static org.springframework.context.index.Metadata.*;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.sameInstance;
+import static org.junit.Assert.assertThat;
+import static org.springframework.context.index.Metadata.hasComponent;
 
 /**
  * Tests for {@link CandidateComponentsIndexer}.

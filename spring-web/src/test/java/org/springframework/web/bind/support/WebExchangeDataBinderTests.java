@@ -24,8 +24,6 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import reactor.core.publisher.Mono;
-
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -40,6 +38,8 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
+
+import reactor.core.publisher.Mono;
 
 import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertArrayEquals;

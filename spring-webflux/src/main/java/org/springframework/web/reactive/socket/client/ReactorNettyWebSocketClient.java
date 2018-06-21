@@ -18,11 +18,6 @@ package org.springframework.web.reactive.socket.client;
 import java.net.URI;
 import java.util.List;
 
-import io.netty.buffer.ByteBufAllocator;
-import reactor.core.publisher.Mono;
-import reactor.netty.http.client.HttpClient;
-import reactor.netty.http.websocket.WebsocketInbound;
-
 import org.springframework.core.io.buffer.NettyDataBufferFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.StringUtils;
@@ -30,6 +25,10 @@ import org.springframework.web.reactive.socket.HandshakeInfo;
 import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.WebSocketSession;
 import org.springframework.web.reactive.socket.adapter.ReactorNettyWebSocketSession;
+
+import reactor.core.publisher.Mono;
+import reactor.netty.http.client.HttpClient;
+import reactor.netty.http.websocket.WebsocketInbound;
 
 /**
  * {@link WebSocketClient} implementation for use with Reactor Netty.

@@ -20,12 +20,11 @@ import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 
 import org.junit.Test;
-
 import org.springframework.jmx.JmxTestBean;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Rob Harrop

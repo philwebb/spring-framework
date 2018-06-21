@@ -21,18 +21,21 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 
+import org.hamcrest.Matchers;
+import org.junit.After;
+import org.junit.Before;
+import org.springframework.http.MediaType;
+
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
 import okio.Buffer;
-import org.hamcrest.Matchers;
-import org.junit.After;
-import org.junit.Before;
 
-import org.springframework.http.MediaType;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Brian Clozel

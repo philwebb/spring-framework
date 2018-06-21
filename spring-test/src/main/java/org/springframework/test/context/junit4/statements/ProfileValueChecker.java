@@ -21,7 +21,6 @@ import java.lang.reflect.Method;
 
 import org.junit.AssumptionViolatedException;
 import org.junit.runners.model.Statement;
-
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.test.annotation.IfProfileValue;

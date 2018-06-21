@@ -17,12 +17,14 @@
 package org.springframework.context.annotation;
 
 import org.junit.Test;
-
 import org.springframework.stereotype.Component;
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests ensuring that nested static @Configuration classes are automatically detected

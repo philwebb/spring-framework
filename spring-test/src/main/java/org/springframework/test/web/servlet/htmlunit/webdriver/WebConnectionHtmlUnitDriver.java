@@ -16,14 +16,14 @@
 
 package org.springframework.test.web.servlet.htmlunit.webdriver;
 
+import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
+
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.WebConnection;
-import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
-
-import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
 
 /**
  * {@code WebConnectionHtmlUnitDriver} enables configuration of the

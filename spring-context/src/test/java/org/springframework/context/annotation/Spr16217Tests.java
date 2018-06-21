@@ -18,7 +18,6 @@ package org.springframework.context.annotation;
 
 import org.junit.Ignore;
 import org.junit.Test;
-
 import org.springframework.core.type.AnnotatedTypeMetadata;
 
 /**

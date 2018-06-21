@@ -16,10 +16,7 @@
 
 package org.springframework.test.web.servlet.htmlunit.webdriver;
 
-import com.gargoylesoftware.htmlunit.BrowserVersion;
-import com.gargoylesoftware.htmlunit.WebClient;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
-
 import org.springframework.lang.Nullable;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.htmlunit.MockMvcWebConnectionBuilderSupport;
@@ -27,6 +24,9 @@ import org.springframework.test.web.servlet.htmlunit.WebRequestMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcConfigurer;
 import org.springframework.util.Assert;
 import org.springframework.web.context.WebApplicationContext;
+
+import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.WebClient;
 
 /**
  * {@code MockMvcHtmlUnitDriverBuilder} simplifies the building of an

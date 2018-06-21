@@ -30,11 +30,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
-import org.xnio.OptionMap;
-import org.xnio.Xnio;
-import reactor.core.publisher.Flux;
-import reactor.util.function.Tuple3;
-
 import org.springframework.context.Lifecycle;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -60,6 +55,11 @@ import org.springframework.web.reactive.socket.server.upgrade.ReactorNettyReques
 import org.springframework.web.reactive.socket.server.upgrade.TomcatRequestUpgradeStrategy;
 import org.springframework.web.reactive.socket.server.upgrade.UndertowRequestUpgradeStrategy;
 import org.springframework.web.server.adapter.WebHttpHandlerBuilder;
+import org.xnio.OptionMap;
+import org.xnio.Xnio;
+
+import reactor.core.publisher.Flux;
+import reactor.util.function.Tuple3;
 
 /**
  * Base class for WebSocket integration tests. Sub-classes must implement

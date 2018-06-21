@@ -25,11 +25,14 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import org.junit.Test;
-
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.sameInstance;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Phillip Webb

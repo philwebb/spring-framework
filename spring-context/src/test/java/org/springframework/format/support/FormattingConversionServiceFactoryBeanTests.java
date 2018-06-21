@@ -26,7 +26,6 @@ import java.util.Locale;
 import java.util.Set;
 
 import org.junit.Test;
-
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.core.convert.ConversionFailedException;
@@ -39,7 +38,9 @@ import org.springframework.format.Parser;
 import org.springframework.format.Printer;
 import org.springframework.format.annotation.NumberFormat;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author Rossen Stoyanchev

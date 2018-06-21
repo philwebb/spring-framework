@@ -20,9 +20,6 @@ import java.io.IOException;
 import java.util.Collections;
 
 import org.junit.Test;
-import reactor.core.publisher.Flux;
-import reactor.test.StepVerifier;
-
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -31,8 +28,14 @@ import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.util.StreamUtils;
 
-import static org.junit.Assert.*;
-import static org.springframework.core.ResolvableType.*;
+import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.springframework.core.ResolvableType.forClass;
 
 /**
  * @author Arjen Poutsma

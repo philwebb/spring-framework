@@ -38,10 +38,15 @@ import org.junit.Test;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.empty;
-import static org.junit.Assert.*;
-import static org.springframework.core.CollectionFactory.*;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+import static org.springframework.core.CollectionFactory.createApproximateCollection;
+import static org.springframework.core.CollectionFactory.createApproximateMap;
+import static org.springframework.core.CollectionFactory.createCollection;
+import static org.springframework.core.CollectionFactory.createMap;
 
 /**
  * Unit tests for {@link CollectionFactory}.

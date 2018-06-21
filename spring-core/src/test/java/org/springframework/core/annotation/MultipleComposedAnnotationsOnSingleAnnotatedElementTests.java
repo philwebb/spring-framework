@@ -29,8 +29,11 @@ import java.util.Set;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-import static org.springframework.core.annotation.AnnotatedElementUtils.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.springframework.core.annotation.AnnotatedElementUtils.findAllMergedAnnotations;
+import static org.springframework.core.annotation.AnnotatedElementUtils.getAllMergedAnnotations;
 
 /**
  * Unit tests that verify support for finding multiple composed annotations on

@@ -20,10 +20,11 @@ import java.beans.PropertyEditor;
 import java.net.URI;
 
 import org.junit.Test;
-
 import org.springframework.util.ClassUtils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Juergen Hoeller

@@ -18,6 +18,7 @@ package org.springframework.orm.hibernate5;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+
 import javax.persistence.PersistenceException;
 import javax.sql.DataSource;
 
@@ -30,7 +31,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;

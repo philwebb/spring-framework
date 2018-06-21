@@ -18,11 +18,11 @@ package org.springframework.jdbc.datasource.embedded;
 
 import java.sql.SQLException;
 import java.util.Properties;
+
 import javax.sql.DataSource;
 
 import org.apache.commons.logging.LogFactory;
 import org.apache.derby.jdbc.EmbeddedDriver;
-
 import org.springframework.lang.Nullable;
 
 /**

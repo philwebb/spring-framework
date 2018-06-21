@@ -22,11 +22,12 @@ import javax.persistence.spi.PersistenceUnitInfo;
 
 import org.junit.After;
 import org.junit.Before;
-
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 /**
  * Superclass for unit tests for EntityManagerFactory-creating beans.

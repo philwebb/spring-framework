@@ -19,7 +19,6 @@ package org.springframework.dao.annotation;
 import java.lang.annotation.Annotation;
 
 import org.aopalliance.aop.Advice;
-
 import org.springframework.aop.Pointcut;
 import org.springframework.aop.support.AbstractPointcutAdvisor;
 import org.springframework.aop.support.annotation.AnnotationMatchingPointcut;

@@ -18,8 +18,10 @@ package org.springframework.cache.interceptor;
 
 import org.junit.Test;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertThat;
 
 /**
  * Tests for {@link SimpleKeyGenerator} and {@link SimpleKey}.

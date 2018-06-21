@@ -18,7 +18,6 @@ package org.springframework.web.method.support;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.core.MethodParameter;
 
 import static org.junit.Assert.assertFalse;

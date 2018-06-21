@@ -18,7 +18,6 @@ package org.springframework.aop.config;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.context.ApplicationContext;
@@ -33,7 +32,10 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 
 import static java.lang.String.format;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Integration tests for scoped proxy use in conjunction with aop: namespace.

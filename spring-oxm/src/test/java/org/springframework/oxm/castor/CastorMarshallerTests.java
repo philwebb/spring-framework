@@ -20,6 +20,7 @@ import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.xml.transform.Source;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamResult;
@@ -28,18 +29,23 @@ import org.castor.xml.XMLProperties;
 import org.exolab.castor.xml.XercesXMLSerializerFactory;
 import org.junit.Test;
 import org.mockito.InOrder;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.oxm.AbstractMarshallerTests;
 import org.w3c.dom.Node;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xmlunit.builder.Input;
 import org.xmlunit.xpath.JAXPXPathEngine;
 
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.oxm.AbstractMarshallerTests;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-import static org.xmlunit.matchers.CompareMatcher.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.mock;
+import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;
 
 /**
  * Tests the {@link CastorMarshaller} class.

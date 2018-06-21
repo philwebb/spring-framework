@@ -27,7 +27,6 @@ import javax.jms.Session;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.jms.listener.SessionAwareMessageListener;
 import org.springframework.jms.support.JmsHeaderMapper;
 import org.springframework.jms.support.JmsUtils;

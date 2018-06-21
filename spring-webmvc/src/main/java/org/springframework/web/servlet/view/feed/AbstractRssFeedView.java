@@ -18,13 +18,14 @@ package org.springframework.web.servlet.view.feed;
 
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.MediaType;
+
 import com.rometools.rome.feed.rss.Channel;
 import com.rometools.rome.feed.rss.Item;
-
-import org.springframework.http.MediaType;
 
 /**
  * Abstract superclass for RSS Feed views, using the

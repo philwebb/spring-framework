@@ -18,14 +18,11 @@ package org.springframework.http.codec.xml;
 
 import java.util.Collections;
 import java.util.List;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.XMLEvent;
 
 import org.junit.Test;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
-
 import org.springframework.core.ResolvableType;
 import org.springframework.core.io.buffer.AbstractDataBufferAllocatingTestCase;
 import org.springframework.core.io.buffer.DataBuffer;
@@ -37,6 +34,10 @@ import org.springframework.http.codec.xml.jaxb.XmlRootElementWithNameAndNamespac
 import org.springframework.http.codec.xml.jaxb.XmlType;
 import org.springframework.http.codec.xml.jaxb.XmlTypeWithName;
 import org.springframework.http.codec.xml.jaxb.XmlTypeWithNameAndNamespace;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

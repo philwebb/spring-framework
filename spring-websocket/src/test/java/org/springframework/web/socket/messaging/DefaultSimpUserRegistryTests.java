@@ -23,7 +23,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.junit.Test;
-
 import org.springframework.messaging.Message;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageType;
@@ -33,7 +32,9 @@ import org.springframework.messaging.simp.user.SimpUser;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.socket.CloseStatus;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 /**
  * Test fixture for

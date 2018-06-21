@@ -21,7 +21,6 @@ import java.util.Collections;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.ui.Model;
@@ -47,7 +46,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.mock;
+import static org.mockito.Mockito.mock;
 
 /**
  * Text fixture for {@link ModelFactory} tests.

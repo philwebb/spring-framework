@@ -20,12 +20,12 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.Tag;
 
 import org.junit.Test;
-
 import org.springframework.mock.web.test.MockPageContext;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.web.servlet.tags.NestedPathTag;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Rob Harrop

@@ -23,7 +23,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.CacheTestUtils;
 import org.springframework.cache.annotation.CacheEvict;

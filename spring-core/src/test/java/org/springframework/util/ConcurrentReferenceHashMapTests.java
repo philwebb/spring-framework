@@ -33,7 +33,6 @@ import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
 import org.springframework.lang.Nullable;
 import org.springframework.util.ConcurrentReferenceHashMap.Entry;
 import org.springframework.util.ConcurrentReferenceHashMap.Reference;
@@ -41,8 +40,12 @@ import org.springframework.util.ConcurrentReferenceHashMap.Restructure;
 import org.springframework.util.comparator.ComparableComparator;
 import org.springframework.util.comparator.NullSafeComparator;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
 
 /**
  * Tests for {@link ConcurrentReferenceHashMap}.

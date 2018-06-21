@@ -18,15 +18,15 @@ package org.springframework.beans.factory.serviceloader;
 
 import java.util.List;
 import java.util.ServiceLoader;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.junit.Test;
-
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeTrue;
 
 /**
  * @author Juergen Hoeller

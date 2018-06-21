@@ -24,12 +24,15 @@ import javax.xml.transform.Source;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.oxm.Marshaller;
 import org.springframework.oxm.Unmarshaller;
 
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /**
  * @author Arjen Poutsma

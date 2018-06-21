@@ -21,12 +21,10 @@ import java.io.Serializable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Method;
+
 import javax.ejb.TransactionAttributeType;
 
-import groovy.lang.GroovyObject;
-import groovy.lang.MetaClass;
 import org.junit.Test;
-
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -38,7 +36,14 @@ import org.springframework.transaction.interceptor.TransactionAttribute;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
 import org.springframework.util.SerializationTestUtils;
 
-import static org.junit.Assert.*;
+import groovy.lang.GroovyObject;
+import groovy.lang.MetaClass;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Colin Sampaleanu

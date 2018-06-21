@@ -22,14 +22,14 @@ import javax.servlet.http.HttpServletResponseWrapper;
 import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.test.MockFilterChain;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.mock.web.test.MockHttpServletResponse;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
 
 /**
  * Unit tests for {@link RelativeRedirectFilter}.

@@ -20,7 +20,6 @@ import java.util.Collections;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.util.DigestUtils;

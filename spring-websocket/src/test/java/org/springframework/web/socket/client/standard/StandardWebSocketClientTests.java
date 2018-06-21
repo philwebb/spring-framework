@@ -16,9 +16,6 @@
 
 package org.springframework.web.socket.client.standard;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
 import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
@@ -32,12 +29,17 @@ import javax.websocket.WebSocketContainer;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.AbstractWebSocketHandler;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /**
  * Test fixture for {@link StandardWebSocketClient}.

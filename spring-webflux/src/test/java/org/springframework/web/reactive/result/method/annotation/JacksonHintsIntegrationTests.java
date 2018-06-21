@@ -19,11 +19,7 @@ package org.springframework.web.reactive.result.method.annotation;
 import java.util.Arrays;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import org.junit.Test;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
@@ -37,7 +33,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.config.EnableWebFlux;
 
-import static org.junit.Assert.*;
+import com.fasterxml.jackson.annotation.JsonView;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Sebastien Deleuze

@@ -24,6 +24,7 @@ import java.lang.reflect.Proxy;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
 import javax.persistence.PersistenceException;
 
 import org.apache.commons.logging.Log;
@@ -40,7 +41,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Example;
-
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;

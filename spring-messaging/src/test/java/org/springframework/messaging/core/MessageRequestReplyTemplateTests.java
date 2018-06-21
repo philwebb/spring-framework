@@ -21,11 +21,11 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 /**
  * Unit tests for request and reply operations in {@link AbstractMessagingTemplate}.

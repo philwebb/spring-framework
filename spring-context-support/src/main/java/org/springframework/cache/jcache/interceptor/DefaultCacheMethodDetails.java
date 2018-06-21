@@ -21,9 +21,10 @@ import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
+
 import javax.cache.annotation.CacheMethodDetails;
 
-import static java.util.Arrays.*;
+import static java.util.Arrays.asList;
 
 /**
  * The default {@link CacheMethodDetails} implementation.

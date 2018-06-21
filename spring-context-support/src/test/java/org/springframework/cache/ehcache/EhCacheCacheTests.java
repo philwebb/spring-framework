@@ -16,20 +16,21 @@
 
 package org.springframework.cache.ehcache;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.cache.AbstractCacheTests;
+import org.springframework.tests.Assume;
+import org.springframework.tests.TestGroup;
+
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
 import net.sf.ehcache.config.CacheConfiguration;
 import net.sf.ehcache.config.Configuration;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
-import org.springframework.cache.AbstractCacheTests;
-import org.springframework.tests.Assume;
-import org.springframework.tests.TestGroup;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * @author Costin Leau

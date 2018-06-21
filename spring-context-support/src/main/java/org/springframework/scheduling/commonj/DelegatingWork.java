@@ -16,10 +16,10 @@
 
 package org.springframework.scheduling.commonj;
 
-import commonj.work.Work;
-
 import org.springframework.scheduling.SchedulingAwareRunnable;
 import org.springframework.util.Assert;
+
+import commonj.work.Work;
 
 /**
  * Simple Work adapter that delegates to a given Runnable.

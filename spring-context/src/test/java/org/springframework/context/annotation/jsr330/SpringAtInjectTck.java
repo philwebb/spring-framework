@@ -16,7 +16,6 @@
 
 package org.springframework.context.annotation.jsr330;
 
-import junit.framework.Test;
 import org.atinject.tck.Tck;
 import org.atinject.tck.auto.Car;
 import org.atinject.tck.auto.Convertible;
@@ -28,11 +27,12 @@ import org.atinject.tck.auto.Tire;
 import org.atinject.tck.auto.V8Engine;
 import org.atinject.tck.auto.accessories.Cupholder;
 import org.atinject.tck.auto.accessories.SpareTire;
-
 import org.springframework.context.annotation.AnnotatedBeanDefinitionReader;
 import org.springframework.context.annotation.Jsr330ScopeMetadataResolver;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.GenericApplicationContext;
+
+import junit.framework.Test;
 
 /**
  * @author Juergen Hoeller

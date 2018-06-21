@@ -19,15 +19,19 @@ package org.springframework.mock.web;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Test;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.util.WebUtils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for {@link MockHttpServletResponse}.

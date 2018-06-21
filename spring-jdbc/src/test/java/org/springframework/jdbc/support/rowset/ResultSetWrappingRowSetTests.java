@@ -27,11 +27,12 @@ import java.sql.Timestamp;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.jdbc.InvalidResultSetAccessException;
 
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 /**
  * @author Thomas Risberg

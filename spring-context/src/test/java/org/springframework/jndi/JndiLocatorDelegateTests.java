@@ -17,12 +17,13 @@
 package org.springframework.jndi;
 
 import java.lang.reflect.Field;
+
 import javax.naming.spi.NamingManager;
 
 import org.junit.Test;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
 
 /**
  * Tests for {@link JndiLocatorDelegate}.

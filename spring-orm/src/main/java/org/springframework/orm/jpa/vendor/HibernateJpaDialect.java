@@ -19,6 +19,7 @@ package org.springframework.orm.jpa.vendor;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.SQLException;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 
@@ -46,7 +47,6 @@ import org.hibernate.exception.DataException;
 import org.hibernate.exception.JDBCConnectionException;
 import org.hibernate.exception.LockAcquisitionException;
 import org.hibernate.exception.SQLGrammarException;
-
 import org.springframework.dao.CannotAcquireLockException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataAccessResourceFailureException;

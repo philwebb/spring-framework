@@ -20,7 +20,6 @@ import java.lang.reflect.Method;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.aop.Advisor;
 import org.springframework.aop.AfterReturningAdvice;
 import org.springframework.aop.BeforeAdvice;
@@ -35,7 +34,7 @@ import org.springframework.aop.aspectj.AspectJPointcutAdvisor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.lang.Nullable;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Adrian Colyer

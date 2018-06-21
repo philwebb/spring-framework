@@ -18,12 +18,12 @@ package org.springframework.mock.web;
 
 import java.util.Map;
 import java.util.Set;
+
 import javax.servlet.FilterRegistration;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletRegistration;
 
 import org.junit.Test;
-
 import org.springframework.http.MediaType;
 
 import static org.junit.Assert.assertEquals;

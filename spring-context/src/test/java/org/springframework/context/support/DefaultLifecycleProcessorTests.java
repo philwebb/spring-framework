@@ -19,7 +19,6 @@ package org.springframework.context.support;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.junit.Test;
-
 import org.springframework.beans.DirectFieldAccessor;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -30,7 +29,11 @@ import org.springframework.context.SmartLifecycle;
 import org.springframework.tests.Assume;
 import org.springframework.tests.TestGroup;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Mark Fisher

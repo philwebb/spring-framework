@@ -16,13 +16,13 @@
 
 package org.springframework.test.web.servlet.htmlunit;
 
-import com.gargoylesoftware.htmlunit.WebClient;
-
 import org.springframework.lang.Nullable;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcConfigurer;
 import org.springframework.util.Assert;
 import org.springframework.web.context.WebApplicationContext;
+
+import com.gargoylesoftware.htmlunit.WebClient;
 
 /**
  * {@code MockMvcWebClientBuilder} simplifies the creation of an HtmlUnit

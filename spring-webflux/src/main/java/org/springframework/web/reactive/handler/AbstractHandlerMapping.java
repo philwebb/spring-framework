@@ -18,8 +18,6 @@ package org.springframework.web.reactive.handler;
 
 import java.util.Map;
 
-import reactor.core.publisher.Mono;
-
 import org.springframework.context.support.ApplicationObjectSupport;
 import org.springframework.core.Ordered;
 import org.springframework.lang.Nullable;
@@ -34,6 +32,8 @@ import org.springframework.web.reactive.HandlerMapping;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebHandler;
 import org.springframework.web.util.pattern.PathPatternParser;
+
+import reactor.core.publisher.Mono;
 
 /**
  * Abstract base class for {@link org.springframework.web.reactive.HandlerMapping}

@@ -24,7 +24,6 @@ import javax.cache.spi.CachingProvider;
 import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;

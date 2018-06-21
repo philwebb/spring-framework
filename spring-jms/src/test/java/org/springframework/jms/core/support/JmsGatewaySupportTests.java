@@ -17,14 +17,14 @@ package org.springframework.jms.core.support;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.jms.ConnectionFactory;
 
 import org.junit.Test;
-
 import org.springframework.jms.core.JmsTemplate;
 
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 /**
  * @author Mark Pollack

@@ -28,7 +28,6 @@ import java.util.concurrent.Future;
 
 import org.junit.Test;
 import org.mockito.Mockito;
-
 import org.springframework.aop.Advisor;
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
@@ -52,7 +51,10 @@ import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.startsWith;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Tests use of @EnableAsync on @Configuration classes.

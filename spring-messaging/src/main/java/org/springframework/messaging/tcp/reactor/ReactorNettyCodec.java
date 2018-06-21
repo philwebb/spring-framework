@@ -19,9 +19,9 @@ import java.util.Collection;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-import io.netty.buffer.ByteBuf;
-
 import org.springframework.messaging.Message;
+
+import io.netty.buffer.ByteBuf;
 
 /**
  * Simple holder for a decoding {@link Function} and an encoding

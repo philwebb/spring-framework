@@ -18,14 +18,13 @@ package org.springframework.web.reactive.socket.server.upgrade;
 
 import java.io.IOException;
 import java.util.function.Supplier;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.websocket.api.WebSocketPolicy;
 import org.eclipse.jetty.websocket.server.WebSocketServerFactory;
-import reactor.core.publisher.Mono;
-
 import org.springframework.context.Lifecycle;
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.core.io.buffer.DataBufferFactory;
@@ -41,6 +40,8 @@ import org.springframework.web.reactive.socket.adapter.JettyWebSocketHandlerAdap
 import org.springframework.web.reactive.socket.adapter.JettyWebSocketSession;
 import org.springframework.web.reactive.socket.server.RequestUpgradeStrategy;
 import org.springframework.web.server.ServerWebExchange;
+
+import reactor.core.publisher.Mono;
 
 
 /**

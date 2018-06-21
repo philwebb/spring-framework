@@ -17,7 +17,6 @@
 package org.springframework.test.web.reactive.server.samples;
 
 import org.junit.Test;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

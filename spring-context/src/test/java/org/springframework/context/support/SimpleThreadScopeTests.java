@@ -17,11 +17,12 @@
 package org.springframework.context.support;
 
 import org.junit.Test;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
 
 /**
  * @author Arjen Poutsma

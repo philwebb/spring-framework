@@ -28,7 +28,6 @@ import org.aspectj.weaver.patterns.IScope;
 import org.aspectj.weaver.patterns.PatternParser;
 import org.aspectj.weaver.patterns.SimpleScope;
 import org.aspectj.weaver.patterns.TypePattern;
-
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.lang.Nullable;

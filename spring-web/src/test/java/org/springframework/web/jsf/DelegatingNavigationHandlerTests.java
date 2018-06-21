@@ -20,12 +20,11 @@ import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
 
 import org.junit.Test;
-
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.support.StaticListableBeanFactory;
 import org.springframework.lang.Nullable;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Colin Sampaleanu

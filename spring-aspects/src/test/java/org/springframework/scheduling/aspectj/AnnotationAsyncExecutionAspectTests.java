@@ -24,7 +24,6 @@ import java.util.concurrent.Future;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -40,7 +39,10 @@ import org.springframework.util.concurrent.ListenableFuture;
 
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 /**
  * Unit tests for {@link AnnotationAsyncExecutionAspect}.

@@ -17,12 +17,14 @@
 package org.springframework.web.servlet.tags.form;
 
 import java.io.Writer;
+
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.Tag;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * @author Rob Harrop

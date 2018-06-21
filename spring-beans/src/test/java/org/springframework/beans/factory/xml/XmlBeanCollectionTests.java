@@ -31,7 +31,6 @@ import java.util.TreeSet;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.beans.factory.config.ListFactoryBean;
@@ -42,7 +41,10 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.tests.sample.beans.HasMap;
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Tests for collections in XML bean definitions.

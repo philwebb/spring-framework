@@ -28,7 +28,6 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -49,7 +48,7 @@ import org.springframework.web.util.pattern.PathPatternParser;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 
 /**
  * Unit tests for {@link RequestMappingHandlerMapping}.

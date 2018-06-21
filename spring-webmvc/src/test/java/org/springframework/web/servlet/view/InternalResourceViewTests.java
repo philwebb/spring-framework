@@ -19,10 +19,10 @@ package org.springframework.web.servlet.view;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Test;
-
 import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.mock.web.test.MockHttpServletResponse;
 import org.springframework.mock.web.test.MockRequestDispatcher;
@@ -30,8 +30,10 @@ import org.springframework.mock.web.test.MockServletContext;
 import org.springframework.web.servlet.View;
 import org.springframework.web.util.WebUtils;
 
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /**
  * Unit tests for {@link InternalResourceView}.

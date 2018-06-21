@@ -18,8 +18,6 @@ package org.springframework.context.annotation;
 
 import java.util.Set;
 
-import org.w3c.dom.Element;
-
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.parsing.BeanComponentDefinition;
@@ -27,6 +25,7 @@ import org.springframework.beans.factory.parsing.CompositeComponentDefinition;
 import org.springframework.beans.factory.xml.BeanDefinitionParser;
 import org.springframework.beans.factory.xml.ParserContext;
 import org.springframework.lang.Nullable;
+import org.w3c.dom.Element;
 
 /**
  * Parser for the &lt;context:annotation-config/&gt; element.

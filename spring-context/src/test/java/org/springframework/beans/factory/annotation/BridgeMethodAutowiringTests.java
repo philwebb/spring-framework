@@ -20,11 +20,10 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.junit.Test;
-
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 public class BridgeMethodAutowiringTests {
 

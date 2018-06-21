@@ -19,13 +19,14 @@ package org.springframework.context.annotation;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
-import example.scannable.FooService;
-import example.scannable.ServiceInvocationCounter;
 import org.junit.Test;
-
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import static org.junit.Assert.*;
+import example.scannable.FooService;
+import example.scannable.ServiceInvocationCounter;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Mark Fisher

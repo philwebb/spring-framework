@@ -18,8 +18,6 @@ package org.springframework.http.server.reactive;
 import java.util.function.Supplier;
 
 import org.reactivestreams.Publisher;
-import reactor.core.publisher.Mono;
-
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.http.HttpHeaders;
@@ -28,6 +26,8 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
+
+import reactor.core.publisher.Mono;
 
 /**
  * Wraps another {@link ServerHttpResponse} and delegates all methods to it.

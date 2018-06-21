@@ -20,11 +20,12 @@ import java.nio.ByteBuffer;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.core.convert.converter.Converter;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.sameInstance;
+import static org.junit.Assert.assertThat;
 
 /**
  * Tests for {@link ByteBufferConverter}.

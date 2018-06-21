@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
-
 import org.springframework.core.MethodParameter;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -29,7 +28,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.method.annotation.RequestHeaderMethodArgumentResolver;
 import org.springframework.web.method.annotation.RequestParamMethodArgumentResolver;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for

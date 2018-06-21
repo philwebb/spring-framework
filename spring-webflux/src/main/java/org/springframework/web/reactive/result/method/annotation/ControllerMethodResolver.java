@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -50,7 +49,7 @@ import org.springframework.web.reactive.result.method.InvocableHandlerMethod;
 import org.springframework.web.reactive.result.method.SyncHandlerMethodArgumentResolver;
 import org.springframework.web.reactive.result.method.SyncInvocableHandlerMethod;
 
-import static org.springframework.core.MethodIntrospector.*;
+import static org.springframework.core.MethodIntrospector.selectMethods;
 
 /**
  * Package-private class to assist {@link RequestMappingHandlerAdapter} with

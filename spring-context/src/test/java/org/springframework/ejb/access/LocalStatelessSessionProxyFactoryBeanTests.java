@@ -17,17 +17,23 @@
 package org.springframework.ejb.access;
 
 import java.lang.reflect.Proxy;
+
 import javax.ejb.CreateException;
 import javax.ejb.EJBLocalHome;
 import javax.ejb.EJBLocalObject;
 import javax.naming.NamingException;
 
 import org.junit.Test;
-
 import org.springframework.jndi.JndiTemplate;
 
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 /**
  * @author Rod Johnson

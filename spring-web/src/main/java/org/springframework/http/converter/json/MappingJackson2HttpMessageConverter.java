@@ -18,11 +18,11 @@ package org.springframework.http.converter.json;
 
 import java.io.IOException;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
+
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Implementation of {@link org.springframework.http.converter.HttpMessageConverter} that can read and

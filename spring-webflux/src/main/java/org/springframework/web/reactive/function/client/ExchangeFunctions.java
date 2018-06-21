@@ -20,12 +20,12 @@ import java.net.URI;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import reactor.core.publisher.Mono;
-
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.reactive.ClientHttpConnector;
 import org.springframework.util.Assert;
+
+import reactor.core.publisher.Mono;
 
 /**
  * Static factory methods to create an {@link ExchangeFunction}.

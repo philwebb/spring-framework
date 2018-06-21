@@ -17,12 +17,12 @@
 package org.springframework.web.servlet.config.annotation;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mock.web.test.MockHttpServletRequest;

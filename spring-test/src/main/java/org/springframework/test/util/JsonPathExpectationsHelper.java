@@ -19,17 +19,19 @@ package org.springframework.test.util;
 import java.util.List;
 import java.util.Map;
 
-import com.jayway.jsonpath.JsonPath;
 import org.hamcrest.Matcher;
-
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.core.IsInstanceOf.*;
-import static org.springframework.test.util.AssertionErrors.*;
+import com.jayway.jsonpath.JsonPath;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.springframework.test.util.AssertionErrors.assertEquals;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
+import static org.springframework.test.util.AssertionErrors.fail;
 
 /**
  * A helper class for applying assertions via JSON path expressions.

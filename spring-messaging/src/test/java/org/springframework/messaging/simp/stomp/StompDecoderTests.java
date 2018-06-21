@@ -21,7 +21,6 @@ import java.nio.ByteBuffer;
 import java.util.List;
 
 import org.junit.Test;
-
 import org.springframework.messaging.Message;
 import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.util.InvalidMimeTypeException;

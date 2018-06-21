@@ -19,11 +19,12 @@ package org.springframework.core.io.support;
 import java.beans.PropertyEditor;
 
 import org.junit.Test;
-
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.io.Resource;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Dave Syer

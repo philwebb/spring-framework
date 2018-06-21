@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import org.junit.Test;
-
 import org.springframework.http.MockHttpOutputMessage;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.mock.web.test.MockHttpServletRequest;
@@ -29,8 +28,10 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 /**
  * Unit tests for {@link StandardMultipartHttpServletRequest}.

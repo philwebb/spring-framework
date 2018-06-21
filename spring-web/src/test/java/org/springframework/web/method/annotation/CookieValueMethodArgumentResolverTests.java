@@ -17,11 +17,11 @@
 package org.springframework.web.method.annotation;
 
 import java.lang.reflect.Method;
+
 import javax.servlet.http.Cookie;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.SynthesizingMethodParameter;
 import org.springframework.mock.web.test.MockHttpServletRequest;
@@ -31,7 +31,10 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.ServletWebRequest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Test fixture with {@link org.springframework.web.method.annotation.AbstractCookieValueMethodArgumentResolver}.

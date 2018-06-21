@@ -17,7 +17,6 @@
 package org.springframework.web.socket.adapter.jetty;
 
 import org.eclipse.jetty.websocket.api.extensions.ExtensionConfig;
-
 import org.springframework.web.socket.WebSocketExtension;
 
 /**

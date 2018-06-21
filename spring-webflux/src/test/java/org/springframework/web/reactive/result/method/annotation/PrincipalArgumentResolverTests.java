@@ -17,10 +17,7 @@ package org.springframework.web.reactive.result.method.annotation;
 
 import java.security.Principal;
 
-import io.reactivex.Single;
 import org.junit.Test;
-import reactor.core.publisher.Mono;
-
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ReactiveAdapterRegistry;
 import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
@@ -28,6 +25,9 @@ import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.web.method.ResolvableMethod;
 import org.springframework.web.reactive.BindingContext;
 import org.springframework.web.server.ServerWebExchange;
+
+import io.reactivex.Single;
+import reactor.core.publisher.Mono;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;

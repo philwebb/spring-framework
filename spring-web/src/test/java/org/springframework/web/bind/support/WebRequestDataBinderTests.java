@@ -16,9 +16,6 @@
 
 package org.springframework.web.bind.support;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-
 import java.beans.PropertyEditorSupport;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,7 +24,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.junit.Test;
-
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.PropertyValues;
 import org.springframework.mock.web.test.MockHttpServletRequest;
@@ -38,6 +34,14 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.web.bind.ServletRequestParameterPropertyValues;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.multipart.support.StringMultipartFileEditor;
+
+import static org.hamcrest.Matchers.isA;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Juergen Hoeller

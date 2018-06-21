@@ -26,7 +26,6 @@ import java.util.TreeMap;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.beans.factory.config.FieldRetrievingFactoryBean;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.beans.factory.parsing.ComponentDefinition;
@@ -38,7 +37,10 @@ import org.springframework.tests.sample.beans.CustomEnum;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.LinkedCaseInsensitiveMap;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Rob Harrop

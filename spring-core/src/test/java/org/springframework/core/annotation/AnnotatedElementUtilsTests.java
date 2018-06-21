@@ -28,6 +28,7 @@ import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
 import javax.annotation.Resource;
 
 import org.junit.Ignore;
@@ -35,18 +36,35 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.internal.ArrayComparisonFailure;
 import org.junit.rules.ExpectedException;
-
+import org.springframework.core.annotation.AnnotationUtilsTests.WebController;
+import org.springframework.core.annotation.AnnotationUtilsTests.WebMapping;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Indexed;
 import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
 
-import static java.util.Arrays.*;
-import static java.util.stream.Collectors.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-import static org.springframework.core.annotation.AnnotatedElementUtils.*;
-import static org.springframework.core.annotation.AnnotationUtilsTests.*;
+import static java.util.Arrays.asList;
+import static java.util.Arrays.stream;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.either;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.springframework.core.annotation.AnnotatedElementUtils.findAllMergedAnnotations;
+import static org.springframework.core.annotation.AnnotatedElementUtils.findMergedAnnotation;
+import static org.springframework.core.annotation.AnnotatedElementUtils.getAllAnnotationAttributes;
+import static org.springframework.core.annotation.AnnotatedElementUtils.getAllMergedAnnotations;
+import static org.springframework.core.annotation.AnnotatedElementUtils.getMergedAnnotation;
+import static org.springframework.core.annotation.AnnotatedElementUtils.getMergedAnnotationAttributes;
+import static org.springframework.core.annotation.AnnotatedElementUtils.getMetaAnnotationTypes;
+import static org.springframework.core.annotation.AnnotatedElementUtils.hasMetaAnnotationTypes;
+import static org.springframework.core.annotation.AnnotatedElementUtils.isAnnotated;
+import static org.springframework.core.annotation.AnnotationUtilsTests.asArray;
 
 /**
  * Unit tests for {@link AnnotatedElementUtils}.

@@ -25,7 +25,6 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Method;
 
 import org.junit.Test;
-
 import org.springframework.aop.Advisor;
 import org.springframework.aop.MethodBeforeAdvice;
 import org.springframework.aop.ThrowsAdvice;
@@ -34,7 +33,8 @@ import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.core.OverridingClassLoader;
 import org.springframework.lang.Nullable;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * @author Dave Syer

@@ -20,8 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.reactivestreams.Publisher;
-import reactor.core.publisher.Mono;
-
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import org.springframework.http.MediaType;
@@ -29,6 +27,8 @@ import org.springframework.http.ReactiveHttpOutputMessage;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.lang.Nullable;
+
+import reactor.core.publisher.Mono;
 
 /**
  * Strategy for encoding a stream of objects of type {@code <T>} and writing

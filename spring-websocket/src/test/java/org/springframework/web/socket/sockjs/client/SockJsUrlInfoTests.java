@@ -20,12 +20,13 @@ import java.net.URI;
 
 import org.junit.Assert;
 import org.junit.Test;
-
 import org.springframework.web.socket.sockjs.transport.TransportType;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for {@code SockJsUrlInfo}.

@@ -22,7 +22,6 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.annotation.DirtiesContext;
@@ -32,8 +31,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 
-import static org.junit.Assert.*;
-import static org.springframework.test.context.cache.ContextCacheTestUtils.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+import static org.springframework.test.context.cache.ContextCacheTestUtils.assertContextCacheStatistics;
+import static org.springframework.test.context.cache.ContextCacheTestUtils.resetContextCache;
 
 /**
  * JUnit 4 based unit test which verifies correct {@link ContextCache

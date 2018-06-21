@@ -16,14 +16,8 @@
 
 package org.springframework.context.annotation;
 
-import example.scannable.CustomComponent;
-import example.scannable.FooService;
-import example.scannable.FooServiceImpl;
-import example.scannable.NamedStubDao;
-import example.scannable.StubFooDao;
 import org.aspectj.lang.annotation.Aspect;
 import org.junit.Test;
-
 import org.springframework.beans.BeanInstantiationException;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -39,7 +33,17 @@ import org.springframework.core.type.filter.AssignableTypeFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.junit.Assert.*;
+import example.scannable.CustomComponent;
+import example.scannable.FooService;
+import example.scannable.FooServiceImpl;
+import example.scannable.NamedStubDao;
+import example.scannable.StubFooDao;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author Mark Fisher

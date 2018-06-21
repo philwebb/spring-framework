@@ -20,7 +20,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import org.junit.Test;
-
 import org.springframework.core.annotation.AnnotationUtilsTests.GroovyImplicitAliasesContextConfigClass;
 import org.springframework.core.annotation.AnnotationUtilsTests.ImplicitAliasesContextConfig;
 import org.springframework.core.annotation.AnnotationUtilsTests.Location1ImplicitAliasesContextConfigClass;
@@ -29,8 +28,8 @@ import org.springframework.core.annotation.AnnotationUtilsTests.Location3Implici
 import org.springframework.core.annotation.AnnotationUtilsTests.ValueImplicitAliasesContextConfigClass;
 import org.springframework.core.annotation.AnnotationUtilsTests.XmlImplicitAliasesContextConfigClass;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * Abstract base class for tests involving concrete implementations of

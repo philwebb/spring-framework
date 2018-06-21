@@ -21,11 +21,11 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.lang.Nullable;
+
 import kotlin.reflect.KFunction;
 import kotlin.reflect.KParameter;
 import kotlin.reflect.jvm.ReflectJvmMapping;
-
-import org.springframework.lang.Nullable;
 
 /**
  * {@link ParameterNameDiscoverer} implementation which uses Kotlin's reflection facilities

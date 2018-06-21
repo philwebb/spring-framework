@@ -21,7 +21,7 @@ import java.text.ParseException;
 import org.junit.Test;
 import org.quartz.SimpleTrigger;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Stephane Nicoll

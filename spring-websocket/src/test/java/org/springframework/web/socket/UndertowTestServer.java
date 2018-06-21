@@ -18,11 +18,17 @@ package org.springframework.web.socket;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.DispatcherServlet;
+import org.xnio.OptionMap;
+import org.xnio.Xnio;
 
 import io.undertow.Undertow;
 import io.undertow.server.HttpHandler;
@@ -33,11 +39,6 @@ import io.undertow.servlet.api.InstanceFactory;
 import io.undertow.servlet.api.InstanceHandle;
 import io.undertow.servlet.api.ServletInfo;
 import io.undertow.websockets.jsr.WebSocketDeploymentInfo;
-import org.xnio.OptionMap;
-import org.xnio.Xnio;
-
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.servlet.DispatcherServlet;
 
 import static io.undertow.servlet.Servlets.defaultContainer;
 import static io.undertow.servlet.Servlets.deployment;

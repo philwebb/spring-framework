@@ -23,11 +23,16 @@ import org.junit.AssumptionViolatedException;
 import org.junit.Before;
 import org.junit.Test;
 
-import static java.util.stream.Collectors.*;
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
-import static org.springframework.tests.Assume.*;
-import static org.springframework.tests.TestGroup.*;
+import static java.util.stream.Collectors.joining;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.startsWith;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+import static org.springframework.tests.Assume.TEST_GROUPS_SYSTEM_PROPERTY;
+import static org.springframework.tests.TestGroup.CI;
+import static org.springframework.tests.TestGroup.JMXMP;
+import static org.springframework.tests.TestGroup.PERFORMANCE;
 
 /**
  * Tests for {@link Assume}.

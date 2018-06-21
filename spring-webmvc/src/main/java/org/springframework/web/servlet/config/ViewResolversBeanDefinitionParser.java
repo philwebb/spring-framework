@@ -18,8 +18,6 @@ package org.springframework.web.servlet.config;
 
 import java.util.List;
 
-import org.w3c.dom.Element;
-
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.parsing.BeanComponentDefinition;
@@ -38,6 +36,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 import org.springframework.web.servlet.view.groovy.GroovyMarkupViewResolver;
 import org.springframework.web.servlet.view.script.ScriptTemplateViewResolver;
 import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
+import org.w3c.dom.Element;
 
 /**
  * Parse the {@code view-resolvers} MVC namespace element and register

@@ -17,7 +17,6 @@
 package org.springframework.expression.spel.standard;
 
 import org.junit.Test;
-
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.ExpressionException;
 import org.springframework.expression.ParseException;
@@ -28,7 +27,12 @@ import org.springframework.expression.spel.ast.OpAnd;
 import org.springframework.expression.spel.ast.OpOr;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author Andy Clement

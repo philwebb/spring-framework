@@ -20,8 +20,6 @@ import java.net.URI;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
-import reactor.core.publisher.MonoProcessor;
-
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -30,8 +28,12 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.http.client.reactive.MockClientHttpRequest;
 import org.springframework.mock.http.client.reactive.MockClientHttpResponse;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import reactor.core.publisher.MonoProcessor;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
 
 /**
  * Unit tests for {@link HeaderAssertions}.

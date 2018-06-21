@@ -18,7 +18,6 @@ package org.springframework.mock.http.server.reactive;
 import java.util.Arrays;
 
 import org.junit.Test;
-
 import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpHeaders;
 

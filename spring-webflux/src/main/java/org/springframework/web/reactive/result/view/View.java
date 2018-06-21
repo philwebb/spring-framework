@@ -20,12 +20,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import reactor.core.publisher.Mono;
-
 import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
 import org.springframework.web.reactive.HandlerResult;
 import org.springframework.web.server.ServerWebExchange;
+
+import reactor.core.publisher.Mono;
 
 /**
  * Contract to render {@link HandlerResult} to the HTTP response.

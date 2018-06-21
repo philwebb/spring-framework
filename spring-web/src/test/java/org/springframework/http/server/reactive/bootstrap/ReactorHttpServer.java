@@ -18,9 +18,9 @@ package org.springframework.http.server.reactive.bootstrap;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import reactor.netty.DisposableServer;
-
 import org.springframework.http.server.reactive.ReactorHttpHandlerAdapter;
+
+import reactor.netty.DisposableServer;
 
 /**
  * @author Stephane Maldini

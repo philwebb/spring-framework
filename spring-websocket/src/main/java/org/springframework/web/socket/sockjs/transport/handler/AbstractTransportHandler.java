@@ -18,7 +18,6 @@ package org.springframework.web.socket.sockjs.transport.handler;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.web.socket.sockjs.transport.SockJsServiceConfig;

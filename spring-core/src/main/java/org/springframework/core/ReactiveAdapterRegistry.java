@@ -23,16 +23,16 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
-import io.reactivex.BackpressureStrategy;
-import io.reactivex.Flowable;
 import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import rx.RxReactiveStreams;
-
 import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
+
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Flowable;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import rx.RxReactiveStreams;
 
 /**
  * A registry of adapters to adapt Reactive Streams {@link Publisher} to/from

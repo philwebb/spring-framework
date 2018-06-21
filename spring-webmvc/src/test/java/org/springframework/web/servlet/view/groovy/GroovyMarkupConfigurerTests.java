@@ -21,18 +21,21 @@ import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.Locale;
 
-import groovy.text.TemplateEngine;
-import groovy.text.markup.MarkupTemplateEngine;
-import groovy.text.markup.TemplateConfiguration;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.StaticApplicationContext;
 
-import static org.junit.Assert.*;
+import groovy.text.TemplateEngine;
+import groovy.text.markup.MarkupTemplateEngine;
+import groovy.text.markup.TemplateConfiguration;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 /**
  * Unit tests for

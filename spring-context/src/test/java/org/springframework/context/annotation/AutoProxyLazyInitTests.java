@@ -19,7 +19,6 @@ package org.springframework.context.annotation;
 import javax.annotation.PreDestroy;
 
 import org.junit.Test;
-
 import org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator;
 import org.springframework.aop.framework.autoproxy.target.LazyInitTargetSourceCreator;
 import org.springframework.aop.target.AbstractBeanFactoryBasedTargetSource;
@@ -27,7 +26,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ApplicationContextEvent;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Juergen Hoeller

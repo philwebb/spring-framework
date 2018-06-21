@@ -19,7 +19,6 @@ package org.springframework.web.socket.sockjs.transport.handler;
 import java.util.Collections;
 
 import org.junit.Test;
-
 import org.springframework.messaging.SubscribableChannel;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.web.socket.WebSocketHandler;
@@ -28,8 +27,8 @@ import org.springframework.web.socket.messaging.StompSubProtocolHandler;
 import org.springframework.web.socket.messaging.SubProtocolWebSocketHandler;
 import org.springframework.web.socket.sockjs.transport.session.WebSocketServerSockJsSession;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 /**
  * Unit tests for {@link SockJsWebSocketHandler}.

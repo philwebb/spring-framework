@@ -20,7 +20,6 @@ import java.time.Duration;
 import java.time.Instant;
 
 import org.junit.Test;
-
 import org.springframework.web.server.WebSession;
 
 import static junit.framework.TestCase.assertSame;

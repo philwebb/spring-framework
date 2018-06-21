@@ -19,10 +19,11 @@ package org.springframework.beans.propertyeditors;
 import java.io.Reader;
 
 import org.junit.Test;
-
 import org.springframework.util.ClassUtils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for the {@link ReaderEditor} class.

@@ -18,7 +18,6 @@ package org.springframework.web.servlet.support;
 import java.util.Arrays;
 
 import org.junit.Test;
-
 import org.springframework.mock.web.test.MockHttpServletResponse;
 
 import static org.junit.Assert.assertEquals;

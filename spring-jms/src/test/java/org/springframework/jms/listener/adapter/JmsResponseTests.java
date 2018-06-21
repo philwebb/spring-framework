@@ -23,7 +23,6 @@ import javax.jms.Session;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
 import org.springframework.jms.support.destination.DestinationResolver;
 
 import static org.junit.Assert.assertSame;

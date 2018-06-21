@@ -17,6 +17,7 @@
 package org.springframework.jca.cci.core;
 
 import java.sql.SQLException;
+
 import javax.resource.NotSupportedException;
 import javax.resource.ResourceException;
 import javax.resource.cci.Connection;
@@ -32,7 +33,6 @@ import javax.resource.cci.ResultSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.jca.cci.CannotCreateRecordException;

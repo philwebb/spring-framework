@@ -21,11 +21,14 @@ import javax.jms.Session;
 import javax.naming.NamingException;
 
 import org.junit.Test;
-
 import org.springframework.jms.StubTopic;
 
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 /**
  * @author Rick Evans

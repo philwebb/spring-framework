@@ -19,12 +19,12 @@ package org.springframework.cache.ehcache;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.springframework.core.io.Resource;
+
 import net.sf.ehcache.CacheException;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.config.Configuration;
 import net.sf.ehcache.config.ConfigurationFactory;
-
-import org.springframework.core.io.Resource;
 
 /**
  * Convenient builder methods for EhCache 2.5+ {@link CacheManager} setup,

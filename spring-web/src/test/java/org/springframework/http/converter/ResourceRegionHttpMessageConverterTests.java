@@ -27,7 +27,6 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
-
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;

@@ -22,16 +22,19 @@ import java.util.Properties;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.springframework.beans.factory.config.YamlProcessor.DocumentMatcher;
+import org.springframework.beans.factory.config.YamlProcessor.MatchStatus;
+import org.springframework.beans.factory.config.YamlProcessor.ResolutionMethod;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.ClassPathResource;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.DuplicateKeyException;
 import org.yaml.snakeyaml.scanner.ScannerException;
 
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.ClassPathResource;
-
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-import static org.springframework.beans.factory.config.YamlProcessor.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
 
 /**
  * Tests for {@link YamlPropertiesFactoryBean}.

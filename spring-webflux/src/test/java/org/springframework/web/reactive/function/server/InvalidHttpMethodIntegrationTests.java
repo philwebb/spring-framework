@@ -16,12 +16,13 @@
 
 package org.springframework.web.reactive.function.server;
 
+import org.junit.Test;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Arjen Poutsma

@@ -18,8 +18,6 @@ package com.foo;
 
 import java.util.List;
 
-import org.w3c.dom.Element;
-
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
@@ -28,6 +26,7 @@ import org.springframework.beans.factory.xml.AbstractBeanDefinitionParser;
 import org.springframework.beans.factory.xml.ParserContext;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.xml.DomUtils;
+import org.w3c.dom.Element;
 
 public class ComponentBeanDefinitionParser extends AbstractBeanDefinitionParser {
 

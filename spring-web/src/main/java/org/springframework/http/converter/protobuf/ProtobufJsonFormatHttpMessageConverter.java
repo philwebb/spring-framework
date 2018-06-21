@@ -16,9 +16,9 @@
 
 package org.springframework.http.converter.protobuf;
 
-import com.google.protobuf.util.JsonFormat;
-
 import org.springframework.lang.Nullable;
+
+import com.google.protobuf.util.JsonFormat;
 
 /**
  * Subclass of {@link ProtobufHttpMessageConverter} which enforces the use of Protobuf 3 and

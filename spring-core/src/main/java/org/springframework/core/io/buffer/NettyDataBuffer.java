@@ -22,11 +22,11 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.function.IntPredicate;
 
+import org.springframework.util.Assert;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
-
-import org.springframework.util.Assert;
 
 /**
  * Implementation of the {@code DataBuffer} interface that wraps a Netty

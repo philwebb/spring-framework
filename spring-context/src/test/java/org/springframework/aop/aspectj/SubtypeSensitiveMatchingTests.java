@@ -20,11 +20,11 @@ import java.io.Serializable;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.aop.framework.Advised;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Adrian Colyer

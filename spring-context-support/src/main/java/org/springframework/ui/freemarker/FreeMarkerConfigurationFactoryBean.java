@@ -18,13 +18,13 @@ package org.springframework.ui.freemarker;
 
 import java.io.IOException;
 
-import freemarker.template.Configuration;
-import freemarker.template.TemplateException;
-
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.lang.Nullable;
+
+import freemarker.template.Configuration;
+import freemarker.template.TemplateException;
 
 /**
  * Factory bean that creates a FreeMarker Configuration and provides it as

@@ -16,10 +16,8 @@
 
 package org.springframework.util.xml;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
+import java.io.StringReader;
+import java.io.StringWriter;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -30,8 +28,11 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.stream.StreamResult;
-import java.io.StringReader;
-import java.io.StringWriter;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;

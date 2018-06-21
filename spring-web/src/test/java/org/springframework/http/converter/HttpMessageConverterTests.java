@@ -19,7 +19,6 @@ package org.springframework.http.converter;
 import java.io.IOException;
 
 import org.junit.Test;
-
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;

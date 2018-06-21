@@ -19,6 +19,7 @@ package org.springframework.web.reactive.socket.client;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+
 import javax.websocket.ClientEndpointConfig;
 import javax.websocket.ClientEndpointConfig.Configurator;
 import javax.websocket.ContainerProvider;
@@ -27,10 +28,6 @@ import javax.websocket.HandshakeResponse;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 
-import reactor.core.publisher.Mono;
-import reactor.core.publisher.MonoProcessor;
-import reactor.core.scheduler.Schedulers;
-
 import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.core.io.buffer.DefaultDataBufferFactory;
 import org.springframework.http.HttpHeaders;
@@ -38,6 +35,10 @@ import org.springframework.web.reactive.socket.HandshakeInfo;
 import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.adapter.StandardWebSocketHandlerAdapter;
 import org.springframework.web.reactive.socket.adapter.StandardWebSocketSession;
+
+import reactor.core.publisher.Mono;
+import reactor.core.publisher.MonoProcessor;
+import reactor.core.scheduler.Schedulers;
 
 /**
  * {@link WebSocketClient} implementation for use with the Java WebSocket API.

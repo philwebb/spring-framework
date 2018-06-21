@@ -19,10 +19,10 @@ package org.springframework.http.server.reactive;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import reactor.core.publisher.Mono;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.util.Assert;
+
+import reactor.core.publisher.Mono;
 
 /**
  * {@code HttpHandler} delegating requests to one of several {@code HttpHandler}'s

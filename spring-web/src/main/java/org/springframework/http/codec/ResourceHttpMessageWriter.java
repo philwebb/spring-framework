@@ -24,9 +24,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import org.springframework.core.ResolvableType;
 import org.springframework.core.codec.ResourceDecoder;
 import org.springframework.core.codec.ResourceEncoder;
@@ -48,7 +45,10 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.lang.Nullable;
 import org.springframework.util.MimeTypeUtils;
 
-import static java.util.Collections.*;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import static java.util.Collections.emptyMap;
 
 /**
  * {@code HttpMessageWriter} that can write a {@link Resource}.

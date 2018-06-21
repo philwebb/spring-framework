@@ -20,11 +20,12 @@ import javax.naming.Context;
 import javax.naming.NamingException;
 
 import org.junit.Test;
-
 import org.springframework.tests.mock.jndi.SimpleNamingContext;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 /**
  * Unit tests for {@link JndiPropertySource}.

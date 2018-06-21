@@ -19,8 +19,6 @@ package org.springframework.web.socket.config;
 import java.util.Arrays;
 import java.util.List;
 
-import org.w3c.dom.Element;
-
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConstructorArgumentValues;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
@@ -38,6 +36,7 @@ import org.springframework.web.socket.server.support.OriginHandshakeInterceptor;
 import org.springframework.web.socket.server.support.WebSocketHandlerMapping;
 import org.springframework.web.socket.server.support.WebSocketHttpRequestHandler;
 import org.springframework.web.socket.sockjs.support.SockJsHttpRequestHandler;
+import org.w3c.dom.Element;
 
 /**
  * Parses the configuration for the {@code <websocket:handlers/>} namespace

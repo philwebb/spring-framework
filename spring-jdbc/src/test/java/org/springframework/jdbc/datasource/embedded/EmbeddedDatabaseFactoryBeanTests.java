@@ -19,13 +19,12 @@ package org.springframework.jdbc.datasource.embedded;
 import javax.sql.DataSource;
 
 import org.junit.Test;
-
 import org.springframework.core.io.ClassRelativeResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Keith Donald

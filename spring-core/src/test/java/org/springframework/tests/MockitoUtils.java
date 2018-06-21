@@ -23,8 +23,9 @@ import org.mockito.internal.stubbing.InvocationContainerImpl;
 import org.mockito.internal.util.MockUtil;
 import org.mockito.invocation.Invocation;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * General test utilities for use with {@link Mockito}.

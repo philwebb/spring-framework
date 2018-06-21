@@ -20,7 +20,6 @@ import java.time.Duration;
 import java.util.Collections;
 
 import org.junit.Test;
-
 import org.springframework.beans.FatalBeanException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;

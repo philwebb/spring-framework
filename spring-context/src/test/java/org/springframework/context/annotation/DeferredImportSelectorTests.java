@@ -17,12 +17,12 @@
 package org.springframework.context.annotation;
 
 import org.junit.Test;
-
 import org.springframework.context.annotation.DeferredImportSelector.Group;
 import org.springframework.core.type.AnnotationMetadata;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.mockito.Mockito.mock;
 
 /**
  * Tests for {@link DeferredImportSelector}.

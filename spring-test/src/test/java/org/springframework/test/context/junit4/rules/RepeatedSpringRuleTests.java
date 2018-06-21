@@ -27,7 +27,6 @@ import org.junit.Test;
 import org.junit.runner.Runner;
 import org.junit.runners.JUnit4;
 import org.junit.runners.Parameterized.Parameters;
-
 import org.springframework.test.annotation.Repeat;
 import org.springframework.test.annotation.Timed;
 import org.springframework.test.context.TestExecutionListeners;

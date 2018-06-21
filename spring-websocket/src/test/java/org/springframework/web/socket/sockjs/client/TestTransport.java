@@ -22,7 +22,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.mockito.ArgumentCaptor;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;

@@ -16,11 +16,6 @@
 
 package org.springframework.http.converter.xml;
 
-import static org.junit.Assert.*;
-import static org.xmlunit.diff.ComparisonType.*;
-import static org.xmlunit.diff.DifferenceEvaluators.*;
-import static org.xmlunit.matchers.CompareMatcher.*;
-
 import java.nio.charset.StandardCharsets;
 
 import javax.xml.bind.Marshaller;
@@ -36,8 +31,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.xmlunit.diff.DifferenceEvaluator;
-
 import org.springframework.aop.framework.AdvisedSupport;
 import org.springframework.aop.framework.AopProxy;
 import org.springframework.aop.framework.DefaultAopProxyFactory;
@@ -47,6 +40,17 @@ import org.springframework.http.MediaType;
 import org.springframework.http.MockHttpInputMessage;
 import org.springframework.http.MockHttpOutputMessage;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.xmlunit.diff.DifferenceEvaluator;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.xmlunit.diff.ComparisonType.XML_STANDALONE;
+import static org.xmlunit.diff.DifferenceEvaluators.Default;
+import static org.xmlunit.diff.DifferenceEvaluators.chain;
+import static org.xmlunit.diff.DifferenceEvaluators.downgradeDifferencesToEqual;
+import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;
 
 /**
  * Tests for {@link Jaxb2RootElementHttpMessageConverter}.

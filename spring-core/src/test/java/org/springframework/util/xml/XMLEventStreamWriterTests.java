@@ -16,15 +16,16 @@
 
 package org.springframework.util.xml;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.w3c.dom.Node;
-import org.xmlunit.util.Predicate;
+import java.io.StringWriter;
 
 import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLOutputFactory;
-import java.io.StringWriter;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.w3c.dom.Node;
+import org.xmlunit.util.Predicate;
 
 import static org.junit.Assert.assertThat;
 import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;

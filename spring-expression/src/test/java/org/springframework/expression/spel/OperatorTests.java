@@ -20,11 +20,10 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import org.junit.Test;
-
 import org.springframework.expression.spel.ast.Operator;
 import org.springframework.expression.spel.standard.SpelExpression;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests the evaluation of expressions using relational operators.

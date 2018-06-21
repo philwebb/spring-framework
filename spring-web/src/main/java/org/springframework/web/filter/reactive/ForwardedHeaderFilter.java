@@ -20,8 +20,6 @@ import java.net.URI;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import reactor.core.publisher.Mono;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.lang.Nullable;
@@ -29,6 +27,8 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import reactor.core.publisher.Mono;
 
 /**
  * Extract values from "Forwarded" and "X-Forwarded-*" headers, and use them to

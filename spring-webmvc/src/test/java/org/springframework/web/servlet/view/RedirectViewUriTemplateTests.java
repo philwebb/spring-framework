@@ -21,7 +21,6 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.mock.web.test.MockHttpServletResponse;
 import org.springframework.ui.ModelMap;
@@ -30,7 +29,7 @@ import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.support.SessionFlashMapManager;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class RedirectViewUriTemplateTests {
 

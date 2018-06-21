@@ -21,7 +21,6 @@ import java.util.Iterator;
 import java.util.stream.Collectors;
 
 import org.junit.Test;
-
 import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.util.pattern.PathPattern;

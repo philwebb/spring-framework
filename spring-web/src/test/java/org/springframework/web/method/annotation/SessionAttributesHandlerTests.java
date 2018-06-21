@@ -20,7 +20,6 @@ package org.springframework.web.method.annotation;
 import java.util.HashSet;
 
 import org.junit.Test;
-
 import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.ui.ModelMap;

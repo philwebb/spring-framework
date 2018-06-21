@@ -19,7 +19,8 @@ package org.springframework.web.reactive.resource;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Unit tests for {@link FixedVersionStrategy}.

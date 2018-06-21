@@ -19,12 +19,16 @@ package org.springframework.util.xml;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
 import javax.xml.XMLConstants;
 
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.anyOf;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
 
 /**
  * @author Arjen Poutsma

@@ -23,13 +23,15 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-import test.annotation.EmptySpringAnnotation;
-import test.annotation.transaction.Tx;
-
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.junit.Assert.*;
+import test.annotation.EmptySpringAnnotation;
+import test.annotation.transaction.Tx;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 
 /**
  * Java 5 specific {@link AspectJExpressionPointcutTests}.

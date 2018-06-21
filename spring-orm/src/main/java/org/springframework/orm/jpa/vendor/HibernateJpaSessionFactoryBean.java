@@ -17,10 +17,10 @@
 package org.springframework.orm.jpa.vendor;
 
 import java.lang.reflect.Method;
+
 import javax.persistence.EntityManagerFactory;
 
 import org.hibernate.SessionFactory;
-
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.lang.Nullable;
 import org.springframework.orm.jpa.EntityManagerFactoryAccessor;

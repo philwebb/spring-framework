@@ -18,6 +18,7 @@ package org.springframework.orm.hibernate5;
 
 import java.lang.reflect.Method;
 import java.util.Map;
+
 import javax.persistence.PersistenceException;
 import javax.sql.DataSource;
 
@@ -52,7 +53,6 @@ import org.hibernate.exception.JDBCConnectionException;
 import org.hibernate.exception.LockAcquisitionException;
 import org.hibernate.exception.SQLGrammarException;
 import org.hibernate.service.UnknownServiceException;
-
 import org.springframework.dao.CannotAcquireLockException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataAccessResourceFailureException;

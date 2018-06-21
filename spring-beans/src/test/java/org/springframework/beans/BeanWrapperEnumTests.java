@@ -20,12 +20,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.junit.Test;
-
 import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.tests.sample.beans.CustomEnum;
 import org.springframework.tests.sample.beans.GenericBean;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Juergen Hoeller

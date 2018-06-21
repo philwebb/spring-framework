@@ -21,13 +21,10 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Locale;
 
-import freemarker.template.Configuration;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import reactor.test.StepVerifier;
-
 import org.springframework.context.ApplicationContextException;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.buffer.DataBuffer;
@@ -35,6 +32,9 @@ import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.ModelMap;
+
+import freemarker.template.Configuration;
+import reactor.test.StepVerifier;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

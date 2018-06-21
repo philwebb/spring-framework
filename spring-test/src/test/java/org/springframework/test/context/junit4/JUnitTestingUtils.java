@@ -25,7 +25,6 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.RunWith;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
-
 import org.springframework.beans.BeanUtils;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
