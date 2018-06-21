@@ -44,7 +44,7 @@ public class CompositeStringExpression implements Expression {
 
 	private final String expressionString;
 
-	/** The array of expressions that make up the composite expression */
+	/** The array of expressions that make up the composite expression. */
 	private final Expression[] expressions;
 
 

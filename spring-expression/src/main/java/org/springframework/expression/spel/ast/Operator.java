@@ -73,7 +73,8 @@ public abstract class Operator extends SpelNodeImpl {
 	}
 
 	/**
-	 * String format for all operators is the same '(' [operand] [operator] [operand] ')'
+	 * String format for all operators is the same
+	 * {@code '(' [operand] [operator] [operand] ')'}.
 	 */
 	@Override
 	public String toStringAST() {
