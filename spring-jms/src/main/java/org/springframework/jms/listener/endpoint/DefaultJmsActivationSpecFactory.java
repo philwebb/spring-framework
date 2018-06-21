@@ -62,7 +62,7 @@ public class DefaultJmsActivationSpecFactory extends StandardJmsActivationSpecFa
 	private static final String ACTIVATION_SPEC_IMPL_SUFFIX = "ActivationSpecImpl";
 
 
-	/** Logger available to subclasses */
+	/** Logger available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 
 

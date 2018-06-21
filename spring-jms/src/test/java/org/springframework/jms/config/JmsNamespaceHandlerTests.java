@@ -390,7 +390,7 @@ public class JmsNamespaceHandlerTests {
 
 	/**
 	 * Internal extension that registers a {@link ReaderEventListener} to store
-	 * registered {@link ComponentDefinition}s.
+	 * registered {@link ComponentDefinition ComponentDefinitions}.
 	 */
 	private static class ToolingTestApplicationContext extends ClassPathXmlApplicationContext {
 
