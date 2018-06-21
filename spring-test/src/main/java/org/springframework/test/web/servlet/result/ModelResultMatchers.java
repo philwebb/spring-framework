@@ -82,7 +82,7 @@ public class ModelResultMatchers {
 	}
 
     /**
-     * Assert the given model attributes do not exist
+     * Assert the given model attributes do not exist.
      */
     public ResultMatcher attributeDoesNotExist(final String... names) {
         return result -> {

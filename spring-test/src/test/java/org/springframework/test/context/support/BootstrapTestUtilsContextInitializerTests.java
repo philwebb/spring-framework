@@ -30,7 +30,7 @@ import org.springframework.test.context.MergedContextConfiguration;
 import org.springframework.web.context.support.GenericWebApplicationContext;
 
 /**
- * Unit tests for {@link BootstrapTestUtils} involving {@link ApplicationContextInitializer}s.
+ * Unit tests for {@link BootstrapTestUtils} involving {@link ApplicationContextInitializer BootstrapTestUtils} involving {@link ApplicationContextInitializers}.
  *
  * @author Sam Brannen
  * @since 3.1

@@ -84,7 +84,7 @@ public class HandlerResultMatchers {
 	 * public class SimpleController {
 	 *
 	 *     &#064;RequestMapping("/")
-	 *     public ResponseEntity<Void> handle() {
+	 *     public ResponseEntity&lt;Void&gt; handle() {
 	 *         return ResponseEntity.ok().build();
 	 *     }
 	 * }

@@ -54,7 +54,7 @@ public abstract class ProfileValueUtils {
 	 * &#064;ProfileValueSourceConfiguration} is not present on the specified
 	 * class or if a custom {@link ProfileValueSource} is not declared, the
 	 * default {@link SystemProfileValueSource} will be returned instead.
-	 * @param testClass The test class for which the ProfileValueSource should
+	 * @param testClass the test class for which the ProfileValueSource should
 	 * be retrieved
 	 * @return the configured (or default) ProfileValueSource for the specified
 	 * class

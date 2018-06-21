@@ -71,7 +71,8 @@ public class PrintingResultHandler implements ResultHandler {
 	}
 
 	/**
-	 * @return the result value printer
+	 * Return the result value printer.
+	 * @return the printer
 	 */
 	protected ResultValuePrinter getPrinter() {
 		return this.printer;

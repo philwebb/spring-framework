@@ -83,7 +83,7 @@ import org.springframework.util.ReflectionUtils;
  */
 public class SimpleNamingContextBuilder implements InitialContextFactoryBuilder {
 
-	/** An instance of this class bound to JNDI */
+	/** An instance of this class bound to JNDI. */
 	@Nullable
 	private static volatile SimpleNamingContextBuilder activated;
 

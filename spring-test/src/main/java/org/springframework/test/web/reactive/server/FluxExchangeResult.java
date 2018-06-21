@@ -61,7 +61,7 @@ public class FluxExchangeResult<T> extends ExchangeResult {
 	 * consumed from the (possibly infinite) stream:
 	 *
 	 * <pre>
-	 * FluxExchangeResult<Person> result = this.client.get()
+	 * FluxExchangeResult&lt;Person&gt; result = this.client.get()
 	 * 	.uri("/persons")
 	 * 	.accept(TEXT_EVENT_STREAM)
 	 * 	.exchange()
