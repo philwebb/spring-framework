@@ -505,29 +505,53 @@ public class ReflectionHelperTests extends AbstractExpressionTests {
 		String xY = "xY";
 		String xyZ = "xyZ";
 
-		public String getProperty() { return property; }
+		public String getProperty() {
+			return property;
+		}
 
-		public void setProperty(String value) { property = value; }
+		public void setProperty(String value) {
+			property = value;
+		}
 
-		public void setProperty2(String value) { property2 = value; }
+		public void setProperty2(String value) {
+			property2 = value;
+		}
 
-		public String getProperty3() { return property3; }
+		public String getProperty3() {
+			return property3;
+		}
 
-		public boolean isProperty4() { return property4; }
+		public boolean isProperty4() {
+			return property4;
+		}
 
-		public String getiD() { return iD; }
+		public String getiD() {
+			return iD;
+		}
 
-		public String getId() { return id; }
+		public String getId() {
+			return id;
+		}
 
-		public String getID() { return ID; }
+		public String getID() {
+			return ID;
+		}
 
-		public String getXY() { return xY; }
+		public String getXY() {
+			return xY;
+		}
 
-		public String getXyZ() { return xyZ; }
+		public String getXyZ() {
+			return xyZ;
+		}
 
-		public String getpEBS() { return pEBS; }
+		public String getpEBS() {
+			return pEBS;
+		}
 
-		public void setpEBS(String pEBS) { this.pEBS = pEBS; }
+		public void setpEBS(String pEBS) {
+			this.pEBS = pEBS;
+		}
 	}
 
 }

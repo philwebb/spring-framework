@@ -66,8 +66,9 @@ class HtmlCharacterEntityDecoder {
 					this.originalMessage.indexOf('&', this.nextPotentialReferencePosition);
 
 			if (this.nextSemicolonPosition != -1 &&
-					this.nextSemicolonPosition < this.nextPotentialReferencePosition)
+					this.nextSemicolonPosition < this.nextPotentialReferencePosition) {
 				this.nextSemicolonPosition = this.originalMessage.indexOf(';', this.nextPotentialReferencePosition + 1);
+			}
 
 			boolean isPotentialReference = (this.nextPotentialReferencePosition != -1 &&
 					this.nextSemicolonPosition != -1 &&
@@ -98,8 +99,9 @@ class HtmlCharacterEntityDecoder {
 				this.currentPosition = skipUntilIndex;
 			}
 			else {
-				while (this.currentPosition < skipUntilIndex)
+				while (this.currentPosition < skipUntilIndex) {
 					this.decodedMessage.append(this.originalMessage.charAt(this.currentPosition++));
+				}
 			}
 		}
 	}

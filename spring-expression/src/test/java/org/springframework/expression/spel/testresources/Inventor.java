@@ -191,14 +191,16 @@ public class Inventor {
 	}
 
 	public int aVarargsMethod(String... strings) {
-		if (strings == null)
+		if (strings == null) {
 			return 0;
+		}
 		return strings.length;
 	}
 
 	public int aVarargsMethod2(int i, String... strings) {
-		if (strings == null)
+		if (strings == null) {
 			return i;
+		}
 		return strings.length + i;
 	}
 
@@ -214,10 +216,19 @@ public class Inventor {
 		this.accessedThroughGetSet = b;
 	}
 
-	public Date getBirthdate() { return birthdate;}
+	public Date getBirthdate() {
+		return birthdate;
+	}
 
-	public String getFoo() { return foo; }
-	public void setFoo(String s) { foo = s; }
+	public String getFoo() {
+		return foo;
+	}
 
-	public String getNationality() { return nationality; }
+	public void setFoo(String s) {
+		foo = s;
+	}
+
+	public String getNationality() {
+		return nationality;
+	}
 }

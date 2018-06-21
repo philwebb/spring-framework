@@ -311,8 +311,9 @@ class Rollback {
 	 * @org.springframework.transaction.interceptor.NoRollbackRule ( "ServletException" )
 	 */
 	public void echoException(Exception ex) throws Exception {
-		if (ex != null)
+		if (ex != null) {
 			throw ex;
+		}
 	}
 
 }

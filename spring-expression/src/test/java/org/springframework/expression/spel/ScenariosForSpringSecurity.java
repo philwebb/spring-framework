@@ -156,16 +156,24 @@ public class ScenariosForSpringSecurity extends AbstractExpressionTests {
 
 		private String n;
 
-		Person(String n) { this.n = n; }
+		Person(String n) {
+			this.n = n;
+		}
 
-		public String[] getRoles() { return new String[]{"NONE"}; }
+		public String[] getRoles() {
+			return new String[] { "NONE" };
+		}
 
 		public boolean hasAnyRole(String... roles) {
-			if (roles == null) return true;
+			if (roles == null) {
+				return true;
+			}
 			String[] myRoles = getRoles();
 			for (int i = 0; i < myRoles.length; i++) {
 				for (int j = 0; j < roles.length; j++) {
-					if (myRoles[i].equals(roles[j])) return true;
+					if (myRoles[i].equals(roles[j])) {
+						return true;
+					}
 				}
 			}
 			return false;
@@ -179,7 +187,9 @@ public class ScenariosForSpringSecurity extends AbstractExpressionTests {
 			return true;
 		}
 
-		public String getName() { return n; }
+		public String getName() {
+			return n;
+		}
 	}
 
 
@@ -190,7 +200,9 @@ public class ScenariosForSpringSecurity extends AbstractExpressionTests {
 		}
 
 		@Override
-		public String[] getRoles() { return new String[]{"MANAGER"};}
+		public String[] getRoles() {
+			return new String[] { "MANAGER" };
+		}
 	}
 
 
@@ -201,7 +213,9 @@ public class ScenariosForSpringSecurity extends AbstractExpressionTests {
 		}
 
 		@Override
-		public String[] getRoles() { return new String[]{"TELLER"};}
+		public String[] getRoles() {
+			return new String[] { "TELLER" };
+		}
 	}
 
 
@@ -212,7 +226,9 @@ public class ScenariosForSpringSecurity extends AbstractExpressionTests {
 		}
 
 		@Override
-		public String[] getRoles() { return new String[]{"SUPERVISOR"};}
+		public String[] getRoles() {
+			return new String[] { "SUPERVISOR" };
+		}
 	}
 
 
@@ -255,7 +271,9 @@ public class ScenariosForSpringSecurity extends AbstractExpressionTests {
 
 		Person activePerson;
 
-		void setPerson(Person p) { this.activePerson = p; }
+		void setPerson(Person p) {
+			this.activePerson = p;
+		}
 
 		@Override
 		public boolean canRead(EvaluationContext context, Object target, String name) throws AccessException {

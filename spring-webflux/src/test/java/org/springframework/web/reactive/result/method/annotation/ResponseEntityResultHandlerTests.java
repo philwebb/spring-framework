@@ -385,31 +385,52 @@ public class ResponseEntityResultHandlerTests {
 		}
 	}
 
-
 	@SuppressWarnings("unused")
 	private static class TestController {
 
-		ResponseEntity<String> responseEntityString() { return null; }
+		ResponseEntity<String> responseEntityString() {
+			return null;
+		}
 
-		ResponseEntity<Void> responseEntityVoid() { return null; }
+		ResponseEntity<Void> responseEntityVoid() {
+			return null;
+		}
 
-		HttpHeaders httpHeaders() { return null; }
+		HttpHeaders httpHeaders() {
+			return null;
+		}
 
-		Mono<ResponseEntity<String>> mono() { return null; }
+		Mono<ResponseEntity<String>> mono() {
+			return null;
+		}
 
-		Single<ResponseEntity<String>> single() { return null; }
+		Single<ResponseEntity<String>> single() {
+			return null;
+		}
 
-		CompletableFuture<ResponseEntity<String>> completableFuture() { return null; }
+		CompletableFuture<ResponseEntity<String>> completableFuture() {
+			return null;
+		}
 
-		String string() { return null; }
+		String string() {
+			return null;
+		}
 
-		Completable completable() { return null; }
+		Completable completable() {
+			return null;
+		}
 
-		Mono<ResponseEntity<?>> monoResponseEntityWildcard() { return null; }
+		Mono<ResponseEntity<?>> monoResponseEntityWildcard() {
+			return null;
+		}
 
-		Flux<?> fluxWildcard() { return null; }
+		Flux<?> fluxWildcard() {
+			return null;
+		}
 
-		Object object() { return null; }
+		Object object() {
+			return null;
+		}
 	}
 
 }
