@@ -65,7 +65,7 @@ public class UndertowWebSocketClient extends WebSocketClientSupport implements W
 
 	/**
 	 * Constructor with the {@link XnioWorker} to pass to
-	 * {@link io.undertow.websockets.client.WebSocketClient#connectionBuilder}
+	 * {@link io.undertow.websockets.client.WebSocketClient#connectionBuilder}.
 	 * @param worker the Xnio worker
 	 */
 	public UndertowWebSocketClient(XnioWorker worker) {
@@ -93,7 +93,7 @@ public class UndertowWebSocketClient extends WebSocketClientSupport implements W
 	}
 
 	/**
-	 * Return the configured {@code Consumer<ConnectionBuilder}.
+	 * Return the configured <code>Consumer&lt;ConnectionBuilder&gt;</code>.
 	 */
 	public Consumer<ConnectionBuilder> getConnectionBuilderConsumer() {
 		return this.builderConsumer;

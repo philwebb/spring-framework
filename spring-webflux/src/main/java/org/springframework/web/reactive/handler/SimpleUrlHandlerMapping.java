@@ -104,7 +104,7 @@ public class SimpleUrlHandlerMapping extends AbstractUrlHandlerMapping {
 
 	/**
 	 * Register all handlers specified in the URL map for the corresponding paths.
-	 * @param urlMap Map with URL paths as keys and handler beans or bean names as values
+	 * @param urlMap a Map with URL paths as keys and handler beans or bean names as values
 	 * @throws BeansException if a handler couldn't be registered
 	 * @throws IllegalStateException if there is a conflicting handler registered
 	 */

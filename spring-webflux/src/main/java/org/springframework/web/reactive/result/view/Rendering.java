@@ -87,6 +87,8 @@ public interface Rendering {
 
 	/**
 	 * Defines a builder for {@link Rendering}.
+	 *
+	 * @param <B> a self reference to the builder type
 	 */
 	interface Builder<B extends Builder<B>> {
 

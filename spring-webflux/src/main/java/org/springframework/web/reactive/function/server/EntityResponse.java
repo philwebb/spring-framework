@@ -40,6 +40,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 /**
  * Entity-specific subtype of {@link ServerResponse} that exposes entity data.
  *
+ * @param <T> the entity type
  * @author Arjen Poutsma
  * @author Juergen Hoeller
  * @since 5.0
@@ -100,6 +101,8 @@ public interface EntityResponse<T> extends ServerResponse {
 
 	/**
 	 * Defines a builder for {@code EntityResponse}.
+	 *
+	 * @param <T> a self reference to the builder type
 	 */
 	interface Builder<T> {
 

@@ -22,7 +22,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.web.server.ServerWebExchange;
 
 /**
- * A contract for invoking a chain of {@link ResourceTransformer}s where each resolver
+ * A contract for invoking a chain of {@link ResourceTransformer ResourceTransformers} where each resolver
  * is given a reference to the chain allowing it to delegate when necessary.
  *
  * @author Rossen Stoyanchev
