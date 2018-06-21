@@ -41,7 +41,7 @@ public class ExpressionException extends RuntimeException {
 	public ExpressionException(String message) {
 		super(message);
 		this.expressionString = null;
-		this.position = -1;
+		this.position = 0;
 	}
 
 	/**
@@ -52,7 +52,7 @@ public class ExpressionException extends RuntimeException {
 	public ExpressionException(String message, Throwable cause) {
 		super(message, cause);
 		this.expressionString = null;
-		this.position = -1;
+		this.position = 0;
 	}
 
 	/**
