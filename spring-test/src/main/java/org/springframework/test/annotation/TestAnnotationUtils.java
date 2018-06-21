@@ -26,7 +26,12 @@ import org.springframework.core.annotation.AnnotatedElementUtils;
  * @author Sam Brannen
  * @since 4.2
  */
-public class TestAnnotationUtils {
+public final class TestAnnotationUtils {
+
+
+	private TestAnnotationUtils() {
+	}
+
 
 	/**
 	 * Get the {@code timeout} configured via the {@link Timed @Timed}

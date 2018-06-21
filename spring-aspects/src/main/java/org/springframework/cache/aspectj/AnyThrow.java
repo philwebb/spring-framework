@@ -22,7 +22,11 @@ package org.springframework.cache.aspectj;
  *
  * @author Stephane Nicoll
  */
-class AnyThrow {
+final class AnyThrow {
+
+	private AnyThrow() {
+	}
+
 
 	static void throwUnchecked(Throwable e) {
 		AnyThrow.<RuntimeException>throwAny(e);

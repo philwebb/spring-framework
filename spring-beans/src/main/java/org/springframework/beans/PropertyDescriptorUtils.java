@@ -30,7 +30,12 @@ import org.springframework.util.ObjectUtils;
  * @author Chris Beams
  * @author Juergen Hoeller
  */
-class PropertyDescriptorUtils {
+final class PropertyDescriptorUtils {
+
+
+	private PropertyDescriptorUtils() {
+	}
+
 
 	/**
 	 * See {@link java.beans.FeatureDescriptor}.

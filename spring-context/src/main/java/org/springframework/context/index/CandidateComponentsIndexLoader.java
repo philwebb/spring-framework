@@ -39,7 +39,7 @@ import org.springframework.util.ConcurrentReferenceHashMap;
  * @author Stephane Nicoll
  * @since 5.0
  */
-public class CandidateComponentsIndexLoader {
+public final class CandidateComponentsIndexLoader {
 
 	/**
 	 * The location to look for components.
@@ -65,6 +65,10 @@ public class CandidateComponentsIndexLoader {
 
 	private static final ConcurrentMap<ClassLoader, CandidateComponentsIndex> cache =
 			new ConcurrentReferenceHashMap<>();
+
+
+	private CandidateComponentsIndexLoader() {
+	}
 
 
 	/**

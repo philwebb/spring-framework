@@ -250,7 +250,7 @@ public class PropertyPlaceholderConfigurer extends PlaceholderConfigurerSupport 
 	}
 
 
-	private class PropertyPlaceholderConfigurerResolver implements PlaceholderResolver {
+	private final class PropertyPlaceholderConfigurerResolver implements PlaceholderResolver {
 
 		private final Properties props;
 

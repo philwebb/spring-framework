@@ -30,7 +30,7 @@ import org.springframework.lang.Nullable;
 public class HttpSessionRequiredException extends ServletException {
 
 	@Nullable
-	private String expectedAttribute;
+	private final String expectedAttribute;
 
 
 	/**
@@ -39,6 +39,7 @@ public class HttpSessionRequiredException extends ServletException {
 	 */
 	public HttpSessionRequiredException(String msg) {
 		super(msg);
+		this.expectedAttribute = null;
 	}
 
 	/**

@@ -21,4 +21,7 @@ public class ProfileMetaAnnotatedComponent {
 
 	public static final String BEAN_NAME = "profileMetaAnnotatedComponent";
 
+	public void example() {
+	}
+
 }

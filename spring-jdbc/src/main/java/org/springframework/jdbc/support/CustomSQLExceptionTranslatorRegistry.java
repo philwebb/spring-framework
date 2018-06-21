@@ -33,7 +33,7 @@ import org.springframework.lang.Nullable;
  * @since 3.1.1
  * @see SQLErrorCodesFactory
  */
-public class CustomSQLExceptionTranslatorRegistry {
+public final class CustomSQLExceptionTranslatorRegistry {
 
 	private static final Log logger = LogFactory.getLog(CustomSQLExceptionTranslatorRegistry.class);
 

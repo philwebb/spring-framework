@@ -30,10 +30,10 @@ import org.springframework.lang.Nullable;
 public class ObjectOptimisticLockingFailureException extends OptimisticLockingFailureException {
 
 	@Nullable
-	private Object persistentClass;
+	private final Object persistentClass;
 
 	@Nullable
-	private Object identifier;
+	private final Object identifier;
 
 
 	/**
@@ -44,6 +44,8 @@ public class ObjectOptimisticLockingFailureException extends OptimisticLockingFa
 	 */
 	public ObjectOptimisticLockingFailureException(String msg, Throwable cause) {
 		super(msg, cause);
+		this.persistentClass = null;
+		this.identifier = null;
 	}
 
 	/**

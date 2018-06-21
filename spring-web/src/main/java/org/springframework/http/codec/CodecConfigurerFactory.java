@@ -36,7 +36,7 @@ import org.springframework.util.ClassUtils;
  * @see ClientCodecConfigurer#create()
  * @see ServerCodecConfigurer#create()
  */
-class CodecConfigurerFactory {
+final class CodecConfigurerFactory {
 
 	private static final String DEFAULT_CONFIGURERS_PATH = "CodecConfigurer.properties";
 
@@ -56,6 +56,10 @@ class CodecConfigurerFactory {
 		catch (IOException | ClassNotFoundException ex) {
 			throw new IllegalStateException(ex);
 		}
+	}
+
+
+	private CodecConfigurerFactory() {
 	}
 
 

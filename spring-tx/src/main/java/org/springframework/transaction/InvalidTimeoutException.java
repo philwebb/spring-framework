@@ -27,7 +27,7 @@ package org.springframework.transaction;
 @SuppressWarnings("serial")
 public class InvalidTimeoutException extends TransactionUsageException {
 
-	private int timeout;
+	private final int timeout;
 
 
 	/**

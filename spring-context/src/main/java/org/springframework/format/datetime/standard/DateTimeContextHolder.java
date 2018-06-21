@@ -35,6 +35,10 @@ public final class DateTimeContextHolder {
 			new NamedThreadLocal<>("DateTimeContext");
 
 
+	private DateTimeContextHolder() {
+	}
+
+
 	/**
 	 * Reset the DateTimeContext for the current thread.
 	 */

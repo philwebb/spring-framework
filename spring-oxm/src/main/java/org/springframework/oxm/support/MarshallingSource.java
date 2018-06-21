@@ -102,7 +102,7 @@ public class MarshallingSource extends SAXSource {
 	}
 
 
-	private static class MarshallingXMLReader implements XMLReader {
+	private static final class MarshallingXMLReader implements XMLReader {
 
 		private final Marshaller marshaller;
 

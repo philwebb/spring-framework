@@ -38,6 +38,10 @@ public final class JodaTimeContextHolder {
 			new NamedThreadLocal<>("JodaTimeContext");
 
 
+	private JodaTimeContextHolder() {
+	}
+
+
 	/**
 	 * Reset the JodaTimeContext for the current thread.
 	 */

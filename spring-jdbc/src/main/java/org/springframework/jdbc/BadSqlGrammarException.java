@@ -34,7 +34,7 @@ import org.springframework.dao.InvalidDataAccessResourceUsageException;
 @SuppressWarnings("serial")
 public class BadSqlGrammarException extends InvalidDataAccessResourceUsageException {
 
-	private String sql;
+	private final String sql;
 
 
 	/**

@@ -31,7 +31,7 @@ import org.springframework.lang.Nullable;
 public abstract class PropertyAccessException extends BeansException {
 
 	@Nullable
-	private transient PropertyChangeEvent propertyChangeEvent;
+	private final PropertyChangeEvent propertyChangeEvent;
 
 
 	/**
@@ -52,6 +52,7 @@ public abstract class PropertyAccessException extends BeansException {
 	 */
 	public PropertyAccessException(String msg, @Nullable Throwable cause) {
 		super(msg, cause);
+		this.propertyChangeEvent = null;
 	}
 
 
