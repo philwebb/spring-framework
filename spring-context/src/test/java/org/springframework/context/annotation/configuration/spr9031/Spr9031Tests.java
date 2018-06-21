@@ -72,7 +72,8 @@ public class Spr9031Tests {
 	static class LowLevelConfig {
 		// fails to wire when LowLevelConfig is processed with ASM because nested @Filter
 		// annotation is not parsed
-		@Autowired Spr9031Component scanned;
+		@Autowired
+		Spr9031Component scanned;
 	}
 
 	public @interface MarkerAnnotation {}

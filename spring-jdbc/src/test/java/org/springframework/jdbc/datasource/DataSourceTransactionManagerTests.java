@@ -1242,7 +1242,8 @@ public class DataSourceTransactionManagerTests  {
 		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
 	}
 
-	@Test public void testTransactionWithPropagationNotSupported() throws Exception {
+	@Test
+	public void testTransactionWithPropagationNotSupported() throws Exception {
 		TransactionTemplate tt = new TransactionTemplate(tm);
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_NOT_SUPPORTED);
 		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));

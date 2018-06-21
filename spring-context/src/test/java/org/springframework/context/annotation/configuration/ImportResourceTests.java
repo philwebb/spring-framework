@@ -160,7 +160,8 @@ public class ImportResourceTests {
 	@Configuration
 	@ImportResource("classpath:org/springframework/context/annotation/configuration/ImportXmlConfig-context.xml")
 	static class ImportXmlAutowiredConfig {
-		@Autowired TestBean xmlDeclaredBean;
+		@Autowired
+		TestBean xmlDeclaredBean;
 
 		public @Bean String xmlBeanName() {
 			return xmlDeclaredBean.getName();

@@ -144,7 +144,7 @@ public @interface Sql {
 	 * local vs. global configuration, inheritance, overrides, etc.
 	 * <p>Defaults to an empty {@link SqlConfig @SqlConfig} instance.
 	 */
-	SqlConfig config() default @SqlConfig();
+	SqlConfig config() default @SqlConfig;
 
 
 	/**

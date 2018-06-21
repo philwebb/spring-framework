@@ -366,7 +366,8 @@ public class EnableAsyncTests {
 	@EnableAsync
 	static class AsyncConfigWithMockito {
 
-		@Bean @Lazy
+		@Bean
+		@Lazy
 		public AsyncBean asyncBean() {
 			return Mockito.mock(AsyncBean.class);
 		}

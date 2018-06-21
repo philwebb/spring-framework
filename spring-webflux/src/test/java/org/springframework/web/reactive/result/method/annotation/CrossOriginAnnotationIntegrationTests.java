@@ -228,7 +228,8 @@ public class CrossOriginAnnotationIntegrationTests extends AbstractRequestMappin
 	static class WebConfig {
 	}
 
-	@RestController @SuppressWarnings("unused")
+	@RestController
+	@SuppressWarnings("unused")
 	private static class MethodLevelController {
 
 		@GetMapping("/no")

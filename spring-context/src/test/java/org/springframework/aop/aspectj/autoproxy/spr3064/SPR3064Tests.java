@@ -64,7 +64,7 @@ public class SPR3064Tests {
 @Aspect
 class TransactionInterceptor {
 
-	@Around(value="execution(* *..Service.*(..)) && @annotation(transaction)")
+	@Around("execution(* *..Service.*(..)) && @annotation(transaction)")
 	public Object around(ProceedingJoinPoint pjp, Transaction transaction) throws Throwable {
 		throw new RuntimeException("advice invoked");
 		//return pjp.proceed();

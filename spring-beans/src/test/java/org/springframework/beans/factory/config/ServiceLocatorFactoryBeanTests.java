@@ -168,7 +168,8 @@ public class ServiceLocatorFactoryBeanTests {
 		catch (NoSuchBeanDefinitionException ex) { /* expected */ }
 	}
 
-	@Ignore @Test // worked when using an ApplicationContext (see commented), fails when using BeanFactory
+	@Test
+	@Ignore // worked when using an ApplicationContext (see commented), fails when using BeanFactory
 	public void testCombinedLocatorInterface() {
 		bf.registerBeanDefinition("testService", genericBeanDefinition(TestService.class).getBeanDefinition());
 		bf.registerAlias("testService", "1");
@@ -201,7 +202,8 @@ public class ServiceLocatorFactoryBeanTests {
 		assertTrue(factory.toString().indexOf("TestServiceLocator3") != -1);
 	}
 
-	@Ignore @Test // worked when using an ApplicationContext (see commented), fails when using BeanFactory
+	@Test
+	@Ignore // worked when using an ApplicationContext (see commented), fails when using BeanFactory
 	public void testServiceMappings() {
 		bf.registerBeanDefinition("testService1", genericBeanDefinition(TestService.class).getBeanDefinition());
 		bf.registerBeanDefinition("testService2", genericBeanDefinition(ExtendedTestService.class).getBeanDefinition());

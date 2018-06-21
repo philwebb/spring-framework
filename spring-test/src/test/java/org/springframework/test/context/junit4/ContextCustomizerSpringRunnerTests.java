@@ -43,7 +43,8 @@ import static org.junit.Assert.*;
 @BootstrapWith(CustomTestContextBootstrapper.class)
 public class ContextCustomizerSpringRunnerTests {
 
-	@Autowired String foo;
+	@Autowired
+	String foo;
 
 
 	@Test

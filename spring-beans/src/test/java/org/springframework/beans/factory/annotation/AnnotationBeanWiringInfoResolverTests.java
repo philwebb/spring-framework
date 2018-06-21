@@ -71,7 +71,7 @@ public class AnnotationBeanWiringInfoResolverTests {
 	}
 
 
-	@Configurable()
+	@Configurable
 	private static class Soap {
 	}
 

@@ -274,16 +274,17 @@ public class PropertySourceAnnotationTests {
 	}
 
 	@Configuration
-	@PropertySource(value="classpath:${unresolvable}/p1.properties")
+	@PropertySource("classpath:${unresolvable}/p1.properties")
 	static class ConfigWithUnresolvablePlaceholder {
 	}
 
 
 	@Configuration
-	@PropertySource(value="classpath:${unresolvable:org/springframework/context/annotation}/p1.properties")
+	@PropertySource("classpath:${unresolvable:org/springframework/context/annotation}/p1.properties")
 	static class ConfigWithUnresolvablePlaceholderAndDefault {
 
-		@Inject Environment env;
+		@Inject
+		Environment env;
 
 		@Bean
 		public TestBean testBean() {
@@ -293,10 +294,11 @@ public class PropertySourceAnnotationTests {
 
 
 	@Configuration
-	@PropertySource(value="classpath:${path.to.properties}/p1.properties")
+	@PropertySource("classpath:${path.to.properties}/p1.properties")
 	static class ConfigWithResolvablePlaceholder {
 
-		@Inject Environment env;
+		@Inject
+		Environment env;
 
 		@Bean
 		public TestBean testBean() {
@@ -306,10 +308,11 @@ public class PropertySourceAnnotationTests {
 
 
 	@Configuration
-	@PropertySource(value="classpath:${path.to.properties}/p1.properties")
+	@PropertySource("classpath:${path.to.properties}/p1.properties")
 	static class ConfigWithResolvablePlaceholderAndFactoryBean {
 
-		@Inject Environment env;
+		@Inject
+		Environment env;
 
 		@Bean
 		public FactoryBean testBean() {
@@ -336,7 +339,8 @@ public class PropertySourceAnnotationTests {
 	@PropertySource(name="p1", value="classpath:org/springframework/context/annotation/p1.properties")
 	static class ConfigWithExplicitName {
 
-		@Inject Environment env;
+		@Inject
+		Environment env;
 
 		@Bean
 		public TestBean testBean() {
@@ -349,7 +353,8 @@ public class PropertySourceAnnotationTests {
 	@PropertySource("classpath:org/springframework/context/annotation/p1.properties")
 	static class ConfigWithImplicitName {
 
-		@Inject Environment env;
+		@Inject
+		Environment env;
 
 		@Bean
 		public TestBean testBean() {
@@ -363,9 +368,11 @@ public class PropertySourceAnnotationTests {
 	@ComponentScan("org.springframework.context.annotation.spr12111")
 	static class ConfigWithTestProfileBeans {
 
-		@Inject Environment env;
+		@Inject
+		Environment env;
 
-		@Bean @Profile("test")
+		@Bean
+		@Profile("test")
 		public TestBean testBean() {
 			return new TestBean(env.getProperty("testbean.name"));
 		}
@@ -385,7 +392,7 @@ public class PropertySourceAnnotationTests {
 
 
 	@Configuration
-	@MyPropertySource(value = "classpath:org/springframework/context/annotation/p2.properties")
+	@MyPropertySource("classpath:org/springframework/context/annotation/p2.properties")
 	static class WithCustomFactoryAsMeta {
 	}
 
@@ -427,8 +434,7 @@ public class PropertySourceAnnotationTests {
 
 
 	@Configuration
-	@PropertySource(
-			value = {
+	@PropertySource({
 					"classpath:org/springframework/context/annotation/p1.properties",
 					"classpath:org/springframework/context/annotation/p2.properties"
 			})
@@ -439,7 +445,7 @@ public class PropertySourceAnnotationTests {
 	@Configuration
 	@PropertySources({
 		@PropertySource("classpath:org/springframework/context/annotation/p1.properties"),
-		@PropertySource("classpath:${base.package}/p2.properties"),
+		@PropertySource("classpath:${base.package}/p2.properties")
 	})
 	static class ConfigWithPropertySources {
 	}
@@ -448,7 +454,7 @@ public class PropertySourceAnnotationTests {
 	@Configuration
 	@PropertySources({
 		@PropertySource(name = "psName", value = "classpath:org/springframework/context/annotation/p1.properties"),
-		@PropertySource(name = "psName", value = "classpath:org/springframework/context/annotation/p2.properties"),
+		@PropertySource(name = "psName", value = "classpath:org/springframework/context/annotation/p2.properties")
 	})
 	static class ConfigWithNamedPropertySources {
 	}
@@ -476,7 +482,7 @@ public class PropertySourceAnnotationTests {
 
 
 	@Configuration
-	@PropertySource(value = {})
+	@PropertySource({})
 	static class ConfigWithEmptyResourceLocations {
 	}
 
@@ -502,8 +508,7 @@ public class PropertySourceAnnotationTests {
 
 
 	@Configuration
-	@PropertySource(
-			value = {
+	@PropertySource({
 					"classpath:org/springframework/context/annotation/p1.properties",
 					"classpath:org/springframework/context/annotation/p2.properties",
 					"classpath:org/springframework/context/annotation/p3.properties",

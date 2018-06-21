@@ -833,7 +833,8 @@ public class CommonAnnotationBeanPostProcessorTests {
 
 	private static class LazyResourceFieldInjectionBean {
 
-		@Resource @Lazy
+		@Resource
+		@Lazy
 		private ITestBean testBean;
 	}
 
@@ -842,7 +843,8 @@ public class CommonAnnotationBeanPostProcessorTests {
 
 		private ITestBean testBean;
 
-		@Resource @Lazy
+		@Resource
+		@Lazy
 		public void setTestBean(ITestBean testBean) {
 			this.testBean = testBean;
 		}
@@ -853,7 +855,8 @@ public class CommonAnnotationBeanPostProcessorTests {
 
 		private TestBean testBean;
 
-		@Resource @Lazy
+		@Resource
+		@Lazy
 		public void setTestBean(TestBean testBean) {
 			this.testBean = testBean;
 		}
