@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,7 +65,7 @@ public class UndertowWebSocketClient extends WebSocketClientSupport implements W
 
 	/**
 	 * Constructor with the {@link XnioWorker} to pass to
-	 * {@link io.undertow.websockets.client.WebSocketClient#connectionBuilder}
+	 * {@link io.undertow.websockets.client.WebSocketClient#connectionBuilder}.
 	 * @param worker the Xnio worker
 	 */
 	public UndertowWebSocketClient(XnioWorker worker) {
@@ -93,7 +93,7 @@ public class UndertowWebSocketClient extends WebSocketClientSupport implements W
 	}
 
 	/**
-	 * Return the configured {@code Consumer<ConnectionBuilder}.
+	 * Return the configured <code>Consumer&lt;ConnectionBuilder&gt;</code>.
 	 */
 	public Consumer<ConnectionBuilder> getConnectionBuilderConsumer() {
 		return this.builderConsumer;

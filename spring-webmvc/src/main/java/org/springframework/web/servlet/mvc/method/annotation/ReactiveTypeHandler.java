@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -249,7 +249,7 @@ class ReactiveTypeHandler {
 				schedule();
 			}
 		}
-		
+
 		private void schedule() {
 			try {
 				this.taskExecutor.execute(this);
@@ -264,7 +264,7 @@ class ReactiveTypeHandler {
 				}
 			}
 		}
-		
+
 		@Override
 		public void run() {
 			if (this.done) {
@@ -291,7 +291,7 @@ class ReactiveTypeHandler {
 					return;
 				}
 			}
-			
+
 			if (isTerminated) {
 				this.done = true;
 				Throwable ex = this.error;
@@ -310,7 +310,7 @@ class ReactiveTypeHandler {
 				}
 				return;
 			}
-			
+
 			if (this.executing.decrementAndGet() != 0) {
 				schedule();
 			}
@@ -452,6 +452,9 @@ class ReactiveTypeHandler {
 		}
 	}
 
+	/**
+	 * List of collect values where all elements are a specified type.
+	 */
 	@SuppressWarnings("serial")
 	static class CollectedValuesList extends ArrayList<Object> {
 
