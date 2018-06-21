@@ -38,6 +38,7 @@ import org.springframework.util.concurrent.SuccessCallback;
  * <p>As of Spring 4.2, this class also supports passing execution exceptions back
  * to the caller.
  *
+ * @param <V> the value type
  * @author Juergen Hoeller
  * @author Rossen Stoyanchev
  * @since 3.0

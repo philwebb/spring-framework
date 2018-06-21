@@ -543,7 +543,6 @@ public abstract class AbstractAopProxyTests {
 	 * Check that although a method is eligible for advice chain optimization and
 	 * direct reflective invocation, it doesn't happen if we've asked to see the proxy,
 	 * so as to guarantee a consistent programming model.
-	 * @throws Throwable
 	 */
 	@Test
 	public void testTargetCanGetInvocationEvenIfNoAdviceChain() throws Throwable {

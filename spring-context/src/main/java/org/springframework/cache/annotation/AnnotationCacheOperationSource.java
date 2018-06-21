@@ -120,7 +120,7 @@ public class AnnotationCacheOperationSource extends AbstractFallbackCacheOperati
 	/**
 	 * Determine the cache operation(s) for the given {@link CacheOperationProvider}.
 	 * <p>This implementation delegates to configured
-	 * {@link CacheAnnotationParser}s for parsing known annotations into
+	 * {@link CacheAnnotationParser CacheAnnotationParsers} for parsing known annotations into
 	 * Spring's metadata attribute class.
 	 * <p>Can be overridden to support custom annotations that carry
 	 * caching metadata.

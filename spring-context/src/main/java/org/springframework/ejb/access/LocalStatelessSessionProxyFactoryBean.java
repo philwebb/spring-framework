@@ -52,14 +52,14 @@ import org.springframework.util.ClassUtils;
 public class LocalStatelessSessionProxyFactoryBean extends LocalSlsbInvokerInterceptor
 		implements FactoryBean<Object>, BeanClassLoaderAware {
 
-	/** The business interface of the EJB we're proxying */
+	/** The business interface of the EJB we're proxying. */
 	@Nullable
 	private Class<?> businessInterface;
 
 	@Nullable
 	private ClassLoader beanClassLoader = ClassUtils.getDefaultClassLoader();
 
-	/** EJBLocalObject */
+	/** EJBLocalObject. */
 	@Nullable
 	private Object proxy;
 

@@ -25,7 +25,7 @@ import org.springframework.lang.Nullable;
  * Extended variant of the standard {@link ApplicationListener} interface,
  * exposing further metadata such as the supported event type.
  *
- * <p>Users are <bold>strongly advised</bold> to use the {@link GenericApplicationListener}
+ * <p>Users are <b>strongly advised</b> to use the {@link GenericApplicationListener}
  * interface instead as it provides an improved detection of generics-based
  * event types.
  *

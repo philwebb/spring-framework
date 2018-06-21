@@ -20,8 +20,10 @@ import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.lang.Nullable;
 
 /**
+ * Registry of imported class {@link AnnotationMetadata}.
+ *
  * @author Juergen Hoeller
- * @author Phil Webb
+ * @author Phillip Webb
  */
 interface ImportRegistry {
 

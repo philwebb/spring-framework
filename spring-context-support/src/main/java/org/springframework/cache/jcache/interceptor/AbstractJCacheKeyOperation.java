@@ -28,6 +28,7 @@ import org.springframework.cache.interceptor.KeyGenerator;
 /**
  * A base {@link JCacheOperation} that operates with a key.
  *
+ * @param <A> the annotation type
  * @author Stephane Nicoll
  * @since 4.1
  */

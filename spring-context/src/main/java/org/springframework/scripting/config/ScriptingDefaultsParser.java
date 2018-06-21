@@ -25,6 +25,8 @@ import org.springframework.beans.factory.xml.ParserContext;
 import org.springframework.util.StringUtils;
 
 /**
+ * A {@link BeanDefinitionParser} for use when loading scripting XML.
+ *
  * @author Mark Fisher
  * @since 2.5
  */

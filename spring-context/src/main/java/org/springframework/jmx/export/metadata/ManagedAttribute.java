@@ -29,6 +29,9 @@ import org.springframework.lang.Nullable;
  */
 public class ManagedAttribute extends AbstractJmxAttribute {
 
+	/**
+	 * Empty attributes.
+	 */
 	public static final ManagedAttribute EMPTY = new ManagedAttribute();
 
 

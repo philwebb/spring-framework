@@ -34,6 +34,8 @@ import org.springframework.util.CollectionUtils;
 /**
  * A base interceptor for JSR-107 cache annotations.
  *
+ * @param <O> the operation type
+ * @param <A> the annotation type
  * @author Stephane Nicoll
  * @since 4.1
  */

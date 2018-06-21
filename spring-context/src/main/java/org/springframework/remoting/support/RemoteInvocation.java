@@ -49,7 +49,7 @@ import org.springframework.util.ClassUtils;
  */
 public class RemoteInvocation implements Serializable {
 
-	/** use serialVersionUID from Spring 1.1 for interoperability */
+	/** use serialVersionUID from Spring 1.1 for interoperability. */
 	private static final long serialVersionUID = 6876024250231820554L;
 
 

@@ -29,12 +29,15 @@ import org.springframework.util.Assert;
  * based on an {@link AdviceMode} value from an annotation (such as the {@code @Enable*}
  * annotations).
  *
+ * @param <A> annotation containing {@linkplain #getAdviceModeAttributeName() AdviceMode attribute}
  * @author Chris Beams
  * @since 3.1
- * @param <A> annotation containing {@linkplain #getAdviceModeAttributeName() AdviceMode attribute}
  */
 public abstract class AdviceModeImportSelector<A extends Annotation> implements ImportSelector {
 
+	/**
+	 * The default advice mode attribute name.
+	 */
 	public static final String DEFAULT_ADVICE_MODE_ATTRIBUTE_NAME = "mode";
 
 

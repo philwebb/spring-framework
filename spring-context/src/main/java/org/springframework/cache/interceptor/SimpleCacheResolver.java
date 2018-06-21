@@ -24,7 +24,7 @@ import org.springframework.cache.CacheManager;
 /**
  * A simple {@link CacheResolver} that resolves the {@link Cache} instance(s)
  * based on a configurable {@link CacheManager} and the name of the
- * cache(s) as provided by {@link BasicOperation#getCacheNames() getCacheNames()}
+ * cache(s) as provided by {@link BasicOperation#getCacheNames() getCacheNames()}.
  *
  * @author Stephane Nicoll
  * @since 4.1

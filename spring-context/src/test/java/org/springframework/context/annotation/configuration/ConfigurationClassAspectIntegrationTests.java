@@ -39,7 +39,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 /**
- * System tests covering use of AspectJ {@link Aspect}s in conjunction with {@link Configuration} classes.
+ * System tests covering use of AspectJ {@link Aspect Aspects} in conjunction with {@link Configuration} classes.
  * {@link Bean} methods may return aspects, or Configuration classes may themselves be annotated with Aspect.
  * In the latter case, advice methods are declared inline within the Configuration class.  This makes for a
  * particularly convenient syntax requiring no extra artifact for the aspect.

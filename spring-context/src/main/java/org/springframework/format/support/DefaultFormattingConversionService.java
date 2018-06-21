@@ -78,7 +78,7 @@ public class DefaultFormattingConversionService extends FormattingConversionServ
 	 * Create a new {@code DefaultFormattingConversionService} with the set of
 	 * {@linkplain DefaultConversionService#addDefaultConverters default converters} and,
 	 * based on the value of {@code registerDefaultFormatters}, the set of
-	 * {@linkplain #addDefaultFormatters default formatters}
+	 * {@linkplain #addDefaultFormatters default formatters}.
 	 * @param embeddedValueResolver delegated to {@link #setEmbeddedValueResolver(StringValueResolver)}
 	 * prior to calling {@link #addDefaultFormatters}.
 	 * @param registerDefaultFormatters whether to register default formatters

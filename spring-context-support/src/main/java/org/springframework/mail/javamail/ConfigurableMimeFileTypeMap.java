@@ -93,7 +93,7 @@ public class ConfigurableMimeFileTypeMap extends FileTypeMap implements Initiali
 	/**
 	 * Specify additional MIME type mappings as lines that follow the
 	 * {@code mime.types} file format, as specified by the
-	 * Java Activation Framework, for example:<br>
+	 * Java Activation Framework. For example:<br>
 	 * {@code text/html  html htm HTML HTM}
 	 */
 	public void setMappings(String... mappings) {
@@ -136,7 +136,7 @@ public class ConfigurableMimeFileTypeMap extends FileTypeMap implements Initiali
 	 * passing in an InputStream from the mapping resource (if any) and registering
 	 * the mapping lines programmatically.
 	 * @param mappingLocation a {@code mime.types} mapping resource (can be {@code null})
-	 * @param mappings MIME type mapping lines (can be {@code null})
+	 * @param mappings an array of MIME type mapping lines (can be {@code null})
 	 * @return the compiled FileTypeMap
 	 * @throws IOException if resource access failed
 	 * @see javax.activation.MimetypesFileTypeMap#MimetypesFileTypeMap(java.io.InputStream)

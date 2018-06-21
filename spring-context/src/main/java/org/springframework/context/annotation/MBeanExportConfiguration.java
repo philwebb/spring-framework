@@ -131,8 +131,14 @@ public class MBeanExportConfiguration implements ImportAware, EnvironmentAware, 
 	}
 
 
+	/**
+	 * Specific platforms that might need custom MBean handling.
+	 */
 	public enum SpecificPlatform {
 
+		/**
+		 * Weblogic.
+		 */
 		WEBLOGIC("weblogic.management.Helper") {
 			@Override
 			public MBeanServer getMBeanServer() {
@@ -145,6 +151,9 @@ public class MBeanExportConfiguration implements ImportAware, EnvironmentAware, 
 			}
 		},
 
+		/**
+		 * Websphere.
+		 */
 		WEBSPHERE("com.ibm.websphere.management.AdminServiceFactory") {
 			@Override
 			public MBeanServer getMBeanServer() {

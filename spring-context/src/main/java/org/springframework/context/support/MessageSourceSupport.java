@@ -43,7 +43,7 @@ public abstract class MessageSourceSupport {
 
 	private static final MessageFormat INVALID_MESSAGE_FORMAT = new MessageFormat("");
 
-	/** Logger available to subclasses */
+	/** Logger available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	private boolean alwaysUseMessageFormat = false;

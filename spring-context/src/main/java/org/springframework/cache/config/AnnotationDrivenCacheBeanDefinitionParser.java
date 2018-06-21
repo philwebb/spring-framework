@@ -175,12 +175,12 @@ class AnnotationDrivenCacheBeanDefinitionParser implements BeanDefinitionParser 
 		}
 
 		/**
-		 * Registers a
+		 * Registers a cache aspect.
 		 * <pre class="code">
-		 * <bean id="cacheAspect" class="org.springframework.cache.aspectj.AnnotationCacheAspect" factory-method="aspectOf">
-		 *   <property name="cacheManager" ref="cacheManager"/>
-		 *   <property name="keyGenerator" ref="keyGenerator"/>
-		 * </bean>
+		 * &lt;bean id="cacheAspect" class="org.springframework.cache.aspectj.AnnotationCacheAspect" factory-method="aspectOf"&gt;
+		 *   &lt;property name="cacheManager" ref="cacheManager"/&gt;
+		 *   &lt;property name="keyGenerator" ref="keyGenerator"/&gt;
+		 * &lt;/bean&gt;
 		 * </pre>
 		 */
 		private static void registerCacheAspect(Element element, ParserContext parserContext) {

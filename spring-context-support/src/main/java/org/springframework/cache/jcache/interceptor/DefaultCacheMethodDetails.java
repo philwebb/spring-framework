@@ -28,6 +28,7 @@ import static java.util.Arrays.*;
 /**
  * The default {@link CacheMethodDetails} implementation.
  *
+ * @param <A> the annotation type
  * @author Stephane Nicoll
  * @since 4.1
  */
