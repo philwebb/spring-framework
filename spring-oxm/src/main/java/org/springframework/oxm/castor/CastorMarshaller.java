@@ -708,7 +708,7 @@ public class CastorMarshaller extends AbstractMarshaller implements Initializing
 	 * {@code org.springframework.oxm} hierarchy.
 	 * <p>A boolean flag is used to indicate whether this exception occurs during marshalling or
 	 * unmarshalling, since Castor itself does not make this distinction in its exception hierarchy.
-	 * @param ex Castor {@code XMLException} that occurred
+	 * @param ex the Castor {@code XMLException} that occurred
 	 * @param marshalling indicates whether the exception occurs during marshalling ({@code true}),
 	 * or unmarshalling ({@code false})
 	 * @return the corresponding {@code XmlMappingException}

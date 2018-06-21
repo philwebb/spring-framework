@@ -73,7 +73,7 @@ public abstract class AbstractMarshaller implements Marshaller, Unmarshaller {
 	private static final EntityResolver NO_OP_ENTITY_RESOLVER =
 			(publicId, systemId) -> new InputSource(new StringReader(""));
 
-	/** Logger available to subclasses */
+	/** Logger available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	private boolean supportDtd = false;
