@@ -79,7 +79,7 @@ public class MockClientHttpResponse implements ClientHttpResponse {
 		String headerName = HttpHeaders.SET_COOKIE;
 		if (!getCookies().isEmpty() && this.headers.get(headerName) == null) {
 			getCookies().values().stream().flatMap(Collection::stream)
-					.forEach(cookie -> getHeaders().add(headerName, cookie.toString()));
+					.forEach((cookie) -> getHeaders().add(headerName, cookie.toString()));
 		}
 		return this.headers;
 	}
@@ -125,7 +125,7 @@ public class MockClientHttpResponse implements ClientHttpResponse {
 					DataBufferUtils.release(current);
 					return previous;
 				})
-				.map(buffer -> dumpString(buffer, charset));
+				.map((buffer) -> dumpString(buffer, charset));
 	}
 
 	private static String dumpString(DataBuffer buffer, Charset charset) {

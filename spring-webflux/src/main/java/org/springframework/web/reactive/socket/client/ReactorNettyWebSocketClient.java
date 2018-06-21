@@ -76,7 +76,7 @@ public class ReactorNettyWebSocketClient extends WebSocketClientSupport implemen
 		List<String> protocols = beforeHandshake(url, httpHeaders, handler);
 
 		return getHttpClient()
-				.headers(nettyHeaders -> setNettyHeaders(httpHeaders, nettyHeaders))
+				.headers((nettyHeaders) -> setNettyHeaders(httpHeaders, nettyHeaders))
 				.websocket(StringUtils.collectionToCommaDelimitedString(protocols))
 				.uri(url.toString())
 				.handle((inbound, outbound) -> {
@@ -95,7 +95,7 @@ public class ReactorNettyWebSocketClient extends WebSocketClientSupport implemen
 	private HttpHeaders toHttpHeaders(WebsocketInbound inbound) {
 		HttpHeaders headers = new HttpHeaders();
 		io.netty.handler.codec.http.HttpHeaders nettyHeaders = inbound.headers();
-		nettyHeaders.forEach(entry -> {
+		nettyHeaders.forEach((entry) -> {
 			String name = entry.getKey();
 			headers.put(name, nettyHeaders.getAll(name));
 		});

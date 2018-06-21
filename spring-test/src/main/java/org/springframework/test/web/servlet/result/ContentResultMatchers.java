@@ -74,7 +74,7 @@ public class ContentResultMatchers {
 	 * {@link #contentTypeCompatibleWith(MediaType)}.
 	 */
 	public ResultMatcher contentType(final MediaType contentType) {
-		return result -> {
+		return (result) -> {
 			String actual = result.getResponse().getContentType();
 			assertTrue("Content type not set", actual != null);
 			if (actual != null) {
@@ -96,7 +96,7 @@ public class ContentResultMatchers {
 	 * content type as defined by {@link MediaType#isCompatibleWith(MediaType)}.
 	 */
 	public ResultMatcher contentTypeCompatibleWith(final MediaType contentType) {
-		return result -> {
+		return (result) -> {
 			String actual = result.getResponse().getContentType();
 			assertTrue("Content type not set", actual != null);
 			if (actual != null) {
@@ -112,7 +112,7 @@ public class ContentResultMatchers {
 	 * @see HttpServletResponse#getCharacterEncoding()
 	 */
 	public ResultMatcher encoding(final String characterEncoding) {
-		return result -> {
+		return (result) -> {
 			String actual = result.getResponse().getCharacterEncoding();
 			assertEquals("Character encoding", characterEncoding, actual);
 		};
@@ -126,21 +126,21 @@ public class ContentResultMatchers {
 	 * </pre>
 	 */
 	public ResultMatcher string(final Matcher<? super String> matcher) {
-		return result -> assertThat("Response content", result.getResponse().getContentAsString(), matcher);
+		return (result) -> assertThat("Response content", result.getResponse().getContentAsString(), matcher);
 	}
 
 	/**
 	 * Assert the response body content as a String.
 	 */
 	public ResultMatcher string(final String expectedContent) {
-		return result -> assertEquals("Response content", expectedContent, result.getResponse().getContentAsString());
+		return (result) -> assertEquals("Response content", expectedContent, result.getResponse().getContentAsString());
 	}
 
 	/**
 	 * Assert the response body content as a byte array.
 	 */
 	public ResultMatcher bytes(final byte[] expectedContent) {
-		return result -> assertEquals("Response content", expectedContent, result.getResponse().getContentAsByteArray());
+		return (result) -> assertEquals("Response content", expectedContent, result.getResponse().getContentAsByteArray());
 	}
 
 	/**
@@ -154,7 +154,7 @@ public class ContentResultMatchers {
 	 * @see MockMvcResultMatchers#xpath(String, Map, Object...)
 	 */
 	public ResultMatcher xml(final String xmlContent) {
-		return result -> {
+		return (result) -> {
 			String content = result.getResponse().getContentAsString();
 			this.xmlHelper.assertXmlEqual(xmlContent, content);
 		};
@@ -165,7 +165,7 @@ public class ContentResultMatchers {
 	 * {@link Matcher}.
 	 */
 	public ResultMatcher node(final Matcher<? super Node> matcher) {
-		return result -> {
+		return (result) -> {
 			String content = result.getResponse().getContentAsString();
 			this.xmlHelper.assertNode(content, matcher);
 		};
@@ -177,7 +177,7 @@ public class ContentResultMatchers {
 	 * @see <a href="http://code.google.com/p/xml-matchers/">xml-matchers</a>
 	 */
 	public ResultMatcher source(final Matcher<? super Source> matcher) {
-		return result -> {
+		return (result) -> {
 			String content = result.getResponse().getContentAsString();
 			this.xmlHelper.assertSource(content, matcher);
 		};
@@ -210,7 +210,7 @@ public class ContentResultMatchers {
 	 * @since 4.2
 	 */
 	public ResultMatcher json(final String jsonContent, final boolean strict) {
-		return result -> {
+		return (result) -> {
 			String content = result.getResponse().getContentAsString();
 			this.jsonHelper.assertJsonEqual(jsonContent, content, strict);
 		};

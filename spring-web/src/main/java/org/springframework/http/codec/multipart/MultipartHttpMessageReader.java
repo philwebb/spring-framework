@@ -91,7 +91,7 @@ public class MultipartHttpMessageReader implements HttpMessageReader<MultiValueM
 
 	private LinkedMultiValueMap<String, Part> toMultiValueMap(Map<String, Collection<Part>> map) {
 		return new LinkedMultiValueMap<>(map.entrySet().stream()
-				.collect(Collectors.toMap(Map.Entry::getKey, e -> toList(e.getValue()))));
+				.collect(Collectors.toMap(Map.Entry::getKey, (e) -> toList(e.getValue()))));
 	}
 
 	private List<Part> toList(Collection<Part> collection) {

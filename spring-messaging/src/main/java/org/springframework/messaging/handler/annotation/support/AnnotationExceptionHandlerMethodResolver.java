@@ -49,7 +49,7 @@ public class AnnotationExceptionHandlerMethodResolver extends AbstractExceptionH
 
 	private static Map<Class<? extends Throwable>, Method> initExceptionMappings(Class<?> handlerType) {
 		Map<Method, MessageExceptionHandler> methods = MethodIntrospector.selectMethods(handlerType,
-				(MethodIntrospector.MetadataLookup<MessageExceptionHandler>) method ->
+				(MethodIntrospector.MetadataLookup<MessageExceptionHandler>) (method) ->
 						AnnotationUtils.findAnnotation(method, MessageExceptionHandler.class));
 
 		Map<Class<? extends Throwable>, Method> result = new HashMap<>();

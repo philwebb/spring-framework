@@ -164,8 +164,8 @@ public final class WebHttpHandlerBuilder {
 
 		SortedBeanContainer container = new SortedBeanContainer();
 		context.getAutowireCapableBeanFactory().autowireBean(container);
-		builder.filters(filters -> filters.addAll(container.getFilters()));
-		builder.exceptionHandlers(handlers -> handlers.addAll(container.getExceptionHandlers()));
+		builder.filters((filters) -> filters.addAll(container.getFilters()));
+		builder.exceptionHandlers((handlers) -> handlers.addAll(container.getExceptionHandlers()));
 
 		try {
 			builder.sessionManager(

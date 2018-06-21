@@ -108,7 +108,7 @@ public abstract class AbstractMockMvcBuilder<B extends AbstractMockMvcBuilder<B>
 
 	public final <T extends B> T dispatchOptions(boolean dispatchOptions) {
 		return addDispatcherServletCustomizer(
-				dispatcherServlet -> dispatcherServlet.setDispatchOptionsRequest(dispatchOptions));
+				(dispatcherServlet) -> dispatcherServlet.setDispatchOptionsRequest(dispatchOptions));
 	}
 
 	public final <T extends B> T apply(MockMvcConfigurer configurer) {

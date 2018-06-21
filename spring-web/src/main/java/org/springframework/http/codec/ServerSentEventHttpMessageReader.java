@@ -106,8 +106,8 @@ public class ServerSentEventHttpMessageReader implements HttpMessageReader<Objec
 		ResolvableType valueType = (shouldWrap ? elementType.getGeneric(0) : elementType);
 
 		return stringDecoder.decode(message.getBody(), STRING_TYPE, null, Collections.emptyMap())
-				.bufferUntil(line -> line.equals(""))
-				.concatMap(lines -> buildEvent(lines, valueType, shouldWrap, hints));
+				.bufferUntil((line) -> line.equals(""))
+				.concatMap((lines) -> buildEvent(lines, valueType, shouldWrap, hints));
 	}
 
 	private Mono<?> buildEvent(List<String> lines, ResolvableType valueType, boolean shouldWrap,
@@ -145,7 +145,7 @@ public class ServerSentEventHttpMessageReader implements HttpMessageReader<Objec
 			if (comment != null) {
 				sseBuilder.comment(comment.toString().substring(0, comment.length() - 1));
 			}
-			return decodedData.map(o -> {
+			return decodedData.map((o) -> {
 				sseBuilder.data(o);
 				return sseBuilder.build();
 			});

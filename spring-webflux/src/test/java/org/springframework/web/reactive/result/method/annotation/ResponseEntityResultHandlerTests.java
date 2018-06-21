@@ -355,7 +355,7 @@ public class ResponseEntityResultHandlerTests {
 
 	private void assertResponseBody(MockServerWebExchange exchange, String responseBody) {
 		StepVerifier.create(exchange.getResponse().getBody())
-				.consumeNextWith(buf -> assertEquals(responseBody,
+				.consumeNextWith((buf) -> assertEquals(responseBody,
 						DataBufferTestUtils.dumpString(buf, StandardCharsets.UTF_8)))
 				.expectComplete()
 				.verify();

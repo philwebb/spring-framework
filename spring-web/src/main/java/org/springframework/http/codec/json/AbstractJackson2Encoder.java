@@ -115,14 +115,14 @@ public abstract class AbstractJackson2Encoder extends Jackson2CodecSupport imple
 		JsonEncoding encoding = getJsonEncoding(mimeType);
 
 		if (inputStream instanceof Mono) {
-			return Flux.from(inputStream).map(value ->
+			return Flux.from(inputStream).map((value) ->
 					encodeValue(value, mimeType, bufferFactory, elementType, hints, encoding));
 		}
 
 		for (MediaType streamingMediaType : this.streamingMediaTypes) {
 			if (streamingMediaType.isCompatibleWith(mimeType)) {
 				byte[] separator = STREAM_SEPARATORS.getOrDefault(streamingMediaType, NEWLINE_SEPARATOR);
-				return Flux.from(inputStream).map(value -> {
+				return Flux.from(inputStream).map((value) -> {
 					DataBuffer buffer = encodeValue(value, mimeType, bufferFactory, elementType, hints, encoding);
 					if (separator != null) {
 						buffer.write(separator);
@@ -133,7 +133,7 @@ public abstract class AbstractJackson2Encoder extends Jackson2CodecSupport imple
 		}
 
 		ResolvableType listType = ResolvableType.forClassWithGenerics(List.class, elementType);
-		return Flux.from(inputStream).collectList().map(list ->
+		return Flux.from(inputStream).collectList().map((list) ->
 				encodeValue(list, mimeType, bufferFactory, listType, hints, encoding)).flux();
 	}
 

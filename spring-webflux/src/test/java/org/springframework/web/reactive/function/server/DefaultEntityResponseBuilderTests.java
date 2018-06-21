@@ -81,7 +81,7 @@ public class DefaultEntityResponseBuilderTests {
 		String body = "foo";
 		Mono<EntityResponse<String>> result = EntityResponse.fromObject(body).status(HttpStatus.CREATED).build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> HttpStatus.CREATED.equals(response.statusCode()))
+				.expectNextMatches((response) -> HttpStatus.CREATED.equals(response.statusCode()))
 				.expectComplete()
 				.verify();
 	}
@@ -92,7 +92,7 @@ public class DefaultEntityResponseBuilderTests {
 		Mono<EntityResponse<String>> result = EntityResponse.fromObject(body).allow(HttpMethod.GET).build();
 		Set<HttpMethod> expected = EnumSet.of(HttpMethod.GET);
 		StepVerifier.create(result)
-				.expectNextMatches(response -> expected.equals(response.headers().getAllow()))
+				.expectNextMatches((response) -> expected.equals(response.headers().getAllow()))
 				.expectComplete()
 				.verify();
 	}
@@ -102,7 +102,7 @@ public class DefaultEntityResponseBuilderTests {
 		String body = "foo";
 		Mono<EntityResponse<String>> result = EntityResponse.fromObject(body).contentLength(42).build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> Long.valueOf(42).equals(response.headers().getContentLength()))
+				.expectNextMatches((response) -> Long.valueOf(42).equals(response.headers().getContentLength()))
 				.expectComplete()
 				.verify();
 	}
@@ -113,7 +113,7 @@ public class DefaultEntityResponseBuilderTests {
 		Mono<EntityResponse<String>>
 				result = EntityResponse.fromObject(body).contentType(MediaType.APPLICATION_JSON).build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> MediaType.APPLICATION_JSON.equals(response.headers().getContentType()))
+				.expectNextMatches((response) -> MediaType.APPLICATION_JSON.equals(response.headers().getContentType()))
 				.expectComplete()
 				.verify();
 	}
@@ -123,7 +123,7 @@ public class DefaultEntityResponseBuilderTests {
 		String body = "foo";
 		Mono<EntityResponse<String>> result = EntityResponse.fromObject(body).eTag("foo").build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> "\"foo\"".equals(response.headers().getETag()))
+				.expectNextMatches((response) -> "\"foo\"".equals(response.headers().getETag()))
 				.expectComplete()
 				.verify();
 	}
@@ -135,7 +135,7 @@ public class DefaultEntityResponseBuilderTests {
 		Mono<EntityResponse<String>> result = EntityResponse.fromObject(body).lastModified(now).build();
 		Long expected = now.toInstant().toEpochMilli() / 1000;
 		StepVerifier.create(result)
-				.expectNextMatches(response -> expected.equals(response.headers().getLastModified() / 1000))
+				.expectNextMatches((response) -> expected.equals(response.headers().getLastModified() / 1000))
 				.expectComplete()
 				.verify();
 	}
@@ -146,7 +146,7 @@ public class DefaultEntityResponseBuilderTests {
 		Mono<EntityResponse<String>>
 				result = EntityResponse.fromObject(body).cacheControl(CacheControl.noCache()).build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> "no-cache".equals(response.headers().getCacheControl()))
+				.expectNextMatches((response) -> "no-cache".equals(response.headers().getCacheControl()))
 				.expectComplete()
 				.verify();
 	}
@@ -157,7 +157,7 @@ public class DefaultEntityResponseBuilderTests {
 		Mono<EntityResponse<String>> result = EntityResponse.fromObject(body).varyBy("foo").build();
 		List<String> expected = Collections.singletonList("foo");
 		StepVerifier.create(result)
-				.expectNextMatches(response -> expected.equals(response.headers().getVary()))
+				.expectNextMatches((response) -> expected.equals(response.headers().getVary()))
 				.expectComplete()
 				.verify();
 	}
@@ -168,7 +168,7 @@ public class DefaultEntityResponseBuilderTests {
 		HttpHeaders headers = new HttpHeaders();
 		Mono<EntityResponse<String>> result = EntityResponse.fromObject(body).headers(headers).build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> headers.equals(response.headers()))
+				.expectNextMatches((response) -> headers.equals(response.headers()))
 				.expectComplete()
 				.verify();
 	}
@@ -178,9 +178,9 @@ public class DefaultEntityResponseBuilderTests {
 		MultiValueMap<String, ResponseCookie> newCookies = new LinkedMultiValueMap<>();
 		newCookies.add("name", ResponseCookie.from("name", "value").build());
 		Mono<EntityResponse<String>> result =
-				EntityResponse.fromObject("foo").cookies(cookies -> cookies.addAll(newCookies)).build();
+				EntityResponse.fromObject("foo").cookies((cookies) -> cookies.addAll(newCookies)).build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> newCookies.equals(response.cookies()))
+				.expectNextMatches((response) -> newCookies.equals(response.cookies()))
 				.expectComplete()
 				.verify();
 	}
@@ -206,7 +206,7 @@ public class DefaultEntityResponseBuilderTests {
 			}
 		};
 		StepVerifier.create(result)
-				.consumeNextWith(response -> {
+				.consumeNextWith((response) -> {
 					StepVerifier.create(response.entity())
 							.expectNext(body)
 							.expectComplete()

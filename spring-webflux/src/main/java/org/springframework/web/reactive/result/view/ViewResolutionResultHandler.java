@@ -197,7 +197,7 @@ public class ViewResolutionResultHandler extends HandlerResultHandlerSupport
 
 		return valueMono
 				.switchIfEmpty(exchange.isNotModified() ? Mono.empty() : NO_VALUE_MONO)
-				.flatMap(returnValue -> {
+				.flatMap((returnValue) -> {
 
 					Mono<List<View>> viewsMono;
 					Model model = result.getModel();
@@ -249,7 +249,7 @@ public class ViewResolutionResultHandler extends HandlerResultHandlerSupport
 
 					updateBindingContext(result.getBindingContext(), exchange);
 
-					return viewsMono.flatMap(views -> render(views, model.asMap(), exchange));
+					return viewsMono.flatMap((views) -> render(views, model.asMap(), exchange));
 				});
 	}
 
@@ -270,9 +270,9 @@ public class ViewResolutionResultHandler extends HandlerResultHandlerSupport
 
 	private Mono<List<View>> resolveViews(String viewName, Locale locale) {
 		return Flux.fromIterable(getViewResolvers())
-				.concatMap(resolver -> resolver.resolveViewName(viewName, locale))
+				.concatMap((resolver) -> resolver.resolveViewName(viewName, locale))
 				.collectList()
-				.map(views -> {
+				.map((views) -> {
 					if (views.isEmpty()) {
 						throw new IllegalStateException(
 								"Could not resolve view with name '" + viewName + "'.");
@@ -284,7 +284,7 @@ public class ViewResolutionResultHandler extends HandlerResultHandlerSupport
 
 	private String getNameForReturnValue(MethodParameter returnType) {
 		return Optional.ofNullable(returnType.getMethodAnnotation(ModelAttribute.class))
-				.filter(ann -> StringUtils.hasText(ann.value()))
+				.filter((ann) -> StringUtils.hasText(ann.value()))
 				.map(ModelAttribute::value)
 				.orElse(Conventions.getVariableNameForParameter(returnType));
 	}
@@ -292,9 +292,9 @@ public class ViewResolutionResultHandler extends HandlerResultHandlerSupport
 	private void updateBindingContext(BindingContext context, ServerWebExchange exchange) {
 		Map<String, Object> model = context.getModel().asMap();
 		model.keySet().stream()
-				.filter(name -> isBindingCandidate(name, model.get(name)))
-				.filter(name -> !model.containsKey(BindingResult.MODEL_KEY_PREFIX + name))
-				.forEach(name -> {
+				.filter((name) -> isBindingCandidate(name, model.get(name)))
+				.filter((name) -> !model.containsKey(BindingResult.MODEL_KEY_PREFIX + name))
+				.forEach((name) -> {
 					WebExchangeDataBinder binder = context.createDataBinder(exchange, model.get(name), name);
 					model.put(BindingResult.MODEL_KEY_PREFIX + name, binder.getBindingResult());
 				});
@@ -331,7 +331,7 @@ public class ViewResolutionResultHandler extends HandlerResultHandlerSupport
 
 	private List<MediaType> getMediaTypes(List<View> views) {
 		return views.stream()
-				.flatMap(view -> view.getSupportedMediaTypes().stream())
+				.flatMap((view) -> view.getSupportedMediaTypes().stream())
 				.collect(Collectors.toList());
 	}
 

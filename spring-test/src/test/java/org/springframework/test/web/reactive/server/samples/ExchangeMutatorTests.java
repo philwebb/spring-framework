@@ -110,7 +110,7 @@ public class ExchangeMutatorTests {
 
 		@Override
 		public void beforeServerCreated(WebHttpHandlerBuilder builder) {
-			builder.filters(filters -> filters.add(0, this.filter));
+			builder.filters((filters) -> filters.add(0, this.filter));
 		}
 
 		@Override
@@ -119,8 +119,8 @@ public class ExchangeMutatorTests {
 				@Nullable ClientHttpConnector connector) {
 
 			Assert.notNull(httpHandlerBuilder, "Not a mock server");
-			httpHandlerBuilder.filters(filters -> {
-				filters.removeIf(filter -> filter instanceof IdentityFilter);
+			httpHandlerBuilder.filters((filters) -> {
+				filters.removeIf((filter) -> filter instanceof IdentityFilter);
 				filters.add(0, this.filter);
 			});
 		}

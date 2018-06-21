@@ -205,12 +205,12 @@ public class AsyncTests {
 
 		@RequestMapping(params = "streaming")
 		public StreamingResponseBody getStreaming() {
-			return os -> os.write("name=Joe".getBytes(StandardCharsets.UTF_8));
+			return (os) -> os.write("name=Joe".getBytes(StandardCharsets.UTF_8));
 		}
 
 		@RequestMapping(params = "streamingSlow")
 		public StreamingResponseBody getStreamingSlow() {
-			return os -> {
+			return (os) -> {
 				os.write("name=Joe".getBytes());
 				try {
 					Thread.sleep(200);
@@ -225,7 +225,7 @@ public class AsyncTests {
 		@RequestMapping(params = "streamingJson")
 		public ResponseEntity<StreamingResponseBody> getStreamingJson() {
 			return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON_UTF8)
-					.body(os -> os.write("{\"name\":\"Joe\",\"someDouble\":0.5}".getBytes(StandardCharsets.UTF_8)));
+					.body((os) -> os.write("{\"name\":\"Joe\",\"someDouble\":0.5}".getBytes(StandardCharsets.UTF_8)));
 		}
 
 		@RequestMapping(params = "deferredResult")

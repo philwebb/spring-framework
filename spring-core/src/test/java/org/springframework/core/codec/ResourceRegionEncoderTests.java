@@ -134,7 +134,7 @@ public class ResourceRegionEncoderTests extends AbstractDataBufferAllocatingTest
 				});
 
 		StepVerifier.create(reduced)
-				.consumeNextWith(buf -> {
+				.consumeNextWith((buf) -> {
 					String content = DataBufferTestUtils.dumpString(buf, StandardCharsets.UTF_8);
 					String[] ranges = StringUtils.tokenizeToStringArray(content, "\r\n",
 							false, true);

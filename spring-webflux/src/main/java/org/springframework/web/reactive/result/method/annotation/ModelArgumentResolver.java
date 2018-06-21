@@ -44,7 +44,7 @@ public class ModelArgumentResolver extends HandlerMethodArgumentResolverSupport
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
 		return checkParameterTypeNoReactiveWrapper(parameter,
-				type -> Model.class.isAssignableFrom(type) || Map.class.isAssignableFrom(type));
+				(type) -> Model.class.isAssignableFrom(type) || Map.class.isAssignableFrom(type));
 	}
 
 	@Override

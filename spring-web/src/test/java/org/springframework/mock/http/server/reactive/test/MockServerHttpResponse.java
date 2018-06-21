@@ -55,7 +55,7 @@ public class MockServerHttpResponse extends AbstractServerHttpResponse {
 
 	public MockServerHttpResponse() {
 		super(new DefaultDataBufferFactory());
-		this.writeHandler = body -> {
+		this.writeHandler = (body) -> {
 			this.body = body.cache();
 			return this.body.then();
 		};
@@ -93,7 +93,7 @@ public class MockServerHttpResponse extends AbstractServerHttpResponse {
 	@Override
 	protected void applyCookies() {
 		getCookies().values().stream().flatMap(Collection::stream)
-				.forEach(cookie -> getHeaders().add(HttpHeaders.SET_COOKIE, cookie.toString()));
+				.forEach((cookie) -> getHeaders().add(HttpHeaders.SET_COOKIE, cookie.toString()));
 	}
 
 	@Override
@@ -135,7 +135,7 @@ public class MockServerHttpResponse extends AbstractServerHttpResponse {
 					DataBufferUtils.release(current);
 					return previous;
 				})
-				.map(buffer -> bufferToString(buffer, charset));
+				.map((buffer) -> bufferToString(buffer, charset));
 	}
 
 	private static String bufferToString(DataBuffer buffer, Charset charset) {

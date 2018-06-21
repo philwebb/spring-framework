@@ -196,9 +196,9 @@ public class SpringClassRule implements TestRule {
 
 	private static Optional<Field> findSpringMethodRuleField(Class<?> testClass) {
 		return Arrays.stream(testClass.getFields())
-				.filter(field -> !Modifier.isStatic(field.getModifiers()))
-				.filter(field -> Modifier.isPublic(field.getModifiers()))
-				.filter(field -> SpringMethodRule.class.isAssignableFrom(field.getType()))
+				.filter((field) -> !Modifier.isStatic(field.getModifiers()))
+				.filter((field) -> Modifier.isPublic(field.getModifiers()))
+				.filter((field) -> SpringMethodRule.class.isAssignableFrom(field.getType()))
 				.findFirst();
 	}
 

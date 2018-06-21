@@ -107,7 +107,7 @@ public class StandardWebSocketClient extends WebSocketClientSupport implements W
 	private StandardWebSocketHandlerAdapter createEndpoint(URI url, WebSocketHandler handler,
 			MonoProcessor<Void> completion, DefaultConfigurator configurator) {
 
-		return new StandardWebSocketHandlerAdapter(handler, session -> {
+		return new StandardWebSocketHandlerAdapter(handler, (session) -> {
 			HttpHeaders responseHeaders = configurator.getResponseHeaders();
 			HandshakeInfo info = afterHandshake(url, responseHeaders);
 			return createWebSocketSession(session, info, completion);

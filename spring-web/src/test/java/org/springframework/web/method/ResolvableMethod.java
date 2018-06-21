@@ -116,7 +116,7 @@ import static java.util.stream.Collectors.*;
  * Locate a method by invoking it through a proxy of the target handler:
  *
  * <pre>
- * ResolvableMethod.on(TestController.class).mockCall(o -> o.handle(null)).method();
+ * ResolvableMethod.on(TestController.class).mockCall((o) -> o.handle(null)).method();
  * </pre>
  *
  * @author Rossen Stoyanchev
@@ -277,7 +277,7 @@ public class ResolvableMethod {
 		 * Filter on methods with the given name.
 		 */
 		public Builder<T> named(String methodName) {
-			addFilter("methodName=" + methodName, m -> m.getName().equals(methodName));
+			addFilter("methodName=" + methodName, (m) -> m.getName().equals(methodName));
 			return this;
 		}
 
@@ -299,8 +299,8 @@ public class ResolvableMethod {
 		@SafeVarargs
 		public final Builder<T> annotPresent(Class<? extends Annotation>... annotationTypes) {
 			String message = "annotationPresent=" + Arrays.toString(annotationTypes);
-			addFilter(message, candidateMethod ->
-					Arrays.stream(annotationTypes).allMatch(annotType ->
+			addFilter(message, (candidateMethod) ->
+					Arrays.stream(annotationTypes).allMatch((annotType) ->
 							AnnotatedElementUtils.findMergedAnnotation(candidateMethod, annotType) != null));
 			return this;
 		}
@@ -311,9 +311,9 @@ public class ResolvableMethod {
 		@SafeVarargs
 		public final Builder<T> annotNotPresent(Class<? extends Annotation>... annotationTypes) {
 			String message = "annotationNotPresent=" + Arrays.toString(annotationTypes);
-			addFilter(message, candidateMethod -> {
+			addFilter(message, (candidateMethod) -> {
 				if (annotationTypes.length != 0) {
-					return Arrays.stream(annotationTypes).noneMatch(annotType ->
+					return Arrays.stream(annotationTypes).noneMatch((annotType) ->
 							AnnotatedElementUtils.findMergedAnnotation(candidateMethod, annotType) != null);
 				}
 				else {
@@ -349,7 +349,7 @@ public class ResolvableMethod {
 		public Builder<T> returning(ResolvableType returnType) {
 			String expected = returnType.toString();
 			String message = "returnType=" + expected;
-			addFilter(message, m -> expected.equals(ResolvableType.forMethodReturnType(m).toString()));
+			addFilter(message, (m) -> expected.equals(ResolvableType.forMethodReturnType(m).toString()));
 			return this;
 		}
 
@@ -368,7 +368,7 @@ public class ResolvableMethod {
 		}
 
 		private boolean isMatch(Method method) {
-			return this.filters.stream().allMatch(p -> p.test(method));
+			return this.filters.stream().allMatch((p) -> p.test(method));
 		}
 
 		private String formatMethods(Set<Method> methods) {
@@ -525,7 +525,7 @@ public class ResolvableMethod {
 		 */
 		@SafeVarargs
 		public final ArgResolver annotPresent(Class<? extends Annotation>... annotationTypes) {
-			this.filters.add(param -> Arrays.stream(annotationTypes).allMatch(param::hasParameterAnnotation));
+			this.filters.add((param) -> Arrays.stream(annotationTypes).allMatch(param::hasParameterAnnotation));
 			return this;
 		}
 
@@ -535,7 +535,7 @@ public class ResolvableMethod {
 		 */
 		@SafeVarargs
 		public final ArgResolver annotNotPresent(Class<? extends Annotation>... annotationTypes) {
-			this.filters.add(param ->
+			this.filters.add((param) ->
 					(annotationTypes.length != 0) ?
 							Arrays.stream(annotationTypes).noneMatch(param::hasParameterAnnotation) :
 							param.getParameterAnnotations().length == 0);
@@ -563,7 +563,7 @@ public class ResolvableMethod {
 		 * @param type the expected type
 		 */
 		public MethodParameter arg(ResolvableType type) {
-			this.filters.add(p -> type.toString().equals(ResolvableType.forMethodParameter(p).toString()));
+			this.filters.add((p) -> type.toString().equals(ResolvableType.forMethodParameter(p).toString()));
 			return arg();
 		}
 
@@ -585,7 +585,7 @@ public class ResolvableMethod {
 			for (int i = 0; i < ResolvableMethod.this.method.getParameterCount(); i++) {
 				MethodParameter param = new SynthesizingMethodParameter(ResolvableMethod.this.method, i);
 				param.initParameterNameDiscovery(nameDiscoverer);
-				if (this.filters.stream().allMatch(p -> p.test(param))) {
+				if (this.filters.stream().allMatch((p) -> p.test(param))) {
 					matches.add(param);
 				}
 			}

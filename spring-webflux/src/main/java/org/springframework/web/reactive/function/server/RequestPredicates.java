@@ -74,7 +74,7 @@ public abstract class RequestPredicates {
 	 * @return a predicate that always matches
 	 */
 	public static RequestPredicate all() {
-		return request -> true;
+		return (request) -> true;
 	}
 
 
@@ -107,7 +107,7 @@ public abstract class RequestPredicates {
 	 */
 	public static Function<String, RequestPredicate> pathPredicates(PathPatternParser patternParser) {
 		Assert.notNull(patternParser, "'patternParser' must not be null");
-		return pattern -> new PathPatternPredicate(patternParser.parse(pattern));
+		return (pattern) -> new PathPatternPredicate(patternParser.parse(pattern));
 	}
 
 	/**
@@ -136,7 +136,7 @@ public abstract class RequestPredicates {
 				MediaType contentType =
 						headers.contentType().orElse(MediaType.APPLICATION_OCTET_STREAM);
 				boolean match = mediaTypeSet.stream()
-						.anyMatch(mediaType -> mediaType.includes(contentType));
+						.anyMatch((mediaType) -> mediaType.includes(contentType));
 				traceMatch("Content-Type", mediaTypeSet, contentType, match);
 				return match;
 			}
@@ -170,7 +170,7 @@ public abstract class RequestPredicates {
 					MediaType.sortBySpecificityAndQuality(acceptedMediaTypes);
 				}
 				boolean match = acceptedMediaTypes.stream()
-						.anyMatch(acceptedMediaType -> mediaTypeSet.stream()
+						.anyMatch((acceptedMediaType) -> mediaTypeSet.stream()
 								.anyMatch(acceptedMediaType::isCompatibleWith));
 				traceMatch("Accept", mediaTypeSet, acceptedMediaTypes, match);
 				return match;
@@ -384,7 +384,7 @@ public abstract class RequestPredicates {
 		@Override
 		public Optional<ServerRequest> nest(ServerRequest request) {
 			return Optional.ofNullable(this.pattern.matchStartOfPath(request.pathContainer()))
-					.map(info -> new SubPathServerRequestWrapper(request, info));
+					.map((info) -> new SubPathServerRequestWrapper(request, info));
 		}
 
 		private void mergeTemplateVariables(ServerRequest request, Map<String, String> variables) {

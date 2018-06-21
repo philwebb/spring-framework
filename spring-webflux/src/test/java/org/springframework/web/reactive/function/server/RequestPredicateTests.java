@@ -27,9 +27,9 @@ public class RequestPredicateTests {
 
 	@Test
 	public void and() throws Exception {
-		RequestPredicate predicate1 = request -> true;
-		RequestPredicate predicate2 = request -> true;
-		RequestPredicate predicate3 = request -> false;
+		RequestPredicate predicate1 = (request) -> true;
+		RequestPredicate predicate2 = (request) -> true;
+		RequestPredicate predicate3 = (request) -> false;
 
 		MockServerRequest request = MockServerRequest.builder().build();
 		assertTrue(predicate1.and(predicate2).test(request));
@@ -39,13 +39,13 @@ public class RequestPredicateTests {
 
 	@Test
 	public void negate() throws Exception {
-		RequestPredicate predicate = request -> false;
+		RequestPredicate predicate = (request) -> false;
 		RequestPredicate negated = predicate.negate();
 
 		MockServerRequest mockRequest = MockServerRequest.builder().build();
 		assertTrue(negated.test(mockRequest));
 
-		predicate = request -> true;
+		predicate = (request) -> true;
 		negated = predicate.negate();
 
 		assertFalse(negated.test(mockRequest));
@@ -53,9 +53,9 @@ public class RequestPredicateTests {
 
 	@Test
 	public void or() throws Exception {
-		RequestPredicate predicate1 = request -> true;
-		RequestPredicate predicate2 = request -> false;
-		RequestPredicate predicate3 = request -> false;
+		RequestPredicate predicate1 = (request) -> true;
+		RequestPredicate predicate2 = (request) -> false;
+		RequestPredicate predicate3 = (request) -> false;
 
 		MockServerRequest request = MockServerRequest.builder().build();
 		assertTrue(predicate1.or(predicate2).test(request));

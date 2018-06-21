@@ -141,7 +141,7 @@ public class ChannelSendOperatorTests {
 
 
 		public Publisher<Void> send(Publisher<String> publisher) {
-			return subscriber -> Executors.newSingleThreadScheduledExecutor().schedule(() ->
+			return (subscriber) -> Executors.newSingleThreadScheduledExecutor().schedule(() ->
 							publisher.subscribe(new WriteSubscriber(subscriber)),50, TimeUnit.MILLISECONDS);
 		}
 

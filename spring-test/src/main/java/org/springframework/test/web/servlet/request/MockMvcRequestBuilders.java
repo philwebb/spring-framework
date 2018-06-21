@@ -268,7 +268,7 @@ public abstract class MockMvcRequestBuilders {
 		// There must be an async result before dispatching
 		mvcResult.getAsyncResult();
 
-		return servletContext -> {
+		return (servletContext) -> {
 			MockHttpServletRequest request = mvcResult.getRequest();
 			request.setDispatcherType(DispatcherType.ASYNC);
 			request.setAsyncStarted(false);

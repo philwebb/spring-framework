@@ -61,7 +61,7 @@ public class HandlerResultMatchers {
 	 * Assert the type of the handler that processed the request.
 	 */
 	public ResultMatcher handlerType(final Class<?> type) {
-		return result -> {
+		return (result) -> {
 			Object handler = result.getHandler();
 			assertTrue("No handler", handler != null);
 			if (handler != null) {
@@ -99,7 +99,7 @@ public class HandlerResultMatchers {
 	 * or the "mock" controller itself after an invocation
 	 */
 	public ResultMatcher methodCall(final Object obj) {
-		return result -> {
+		return (result) -> {
 			if (!(obj instanceof MethodInvocationInfo)) {
 				fail(String.format("The supplied object [%s] is not an instance of %s. " +
 						"Ensure that you invoke the handler method via MvcUriComponentsBuilder.on().",
@@ -117,7 +117,7 @@ public class HandlerResultMatchers {
 	 * using the given Hamcrest {@link Matcher}.
 	 */
 	public ResultMatcher methodName(final Matcher<? super String> matcher) {
-		return result -> {
+		return (result) -> {
 			HandlerMethod handlerMethod = getHandlerMethod(result);
 			assertThat("Handler method", handlerMethod.getMethod().getName(), matcher);
 		};
@@ -127,7 +127,7 @@ public class HandlerResultMatchers {
 	 * Assert the name of the controller method used to process the request.
 	 */
 	public ResultMatcher methodName(final String name) {
-		return result -> {
+		return (result) -> {
 			HandlerMethod handlerMethod = getHandlerMethod(result);
 			assertEquals("Handler method", name, handlerMethod.getMethod().getName());
 		};
@@ -137,7 +137,7 @@ public class HandlerResultMatchers {
 	 * Assert the controller method used to process the request.
 	 */
 	public ResultMatcher method(final Method method) {
-		return result -> {
+		return (result) -> {
 			HandlerMethod handlerMethod = getHandlerMethod(result);
 			assertEquals("Handler method", method, handlerMethod.getMethod());
 		};

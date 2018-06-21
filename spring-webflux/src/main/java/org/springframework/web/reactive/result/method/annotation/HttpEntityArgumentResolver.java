@@ -50,7 +50,7 @@ public class HttpEntityArgumentResolver extends AbstractMessageReaderArgumentRes
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
 		return checkParameterTypeNoReactiveWrapper(parameter,
-				type -> HttpEntity.class.equals(type) || RequestEntity.class.equals(type));
+				(type) -> HttpEntity.class.equals(type) || RequestEntity.class.equals(type));
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class HttpEntityArgumentResolver extends AbstractMessageReaderArgumentRes
 
 		Class<?> entityType = parameter.getParameterType();
 		return readBody(parameter.nested(), parameter, false, bindingContext, exchange)
-				.map(body -> createEntity(body, entityType, exchange.getRequest()))
+				.map((body) -> createEntity(body, entityType, exchange.getRequest()))
 				.defaultIfEmpty(createEntity(null, entityType, exchange.getRequest()));
 	}
 

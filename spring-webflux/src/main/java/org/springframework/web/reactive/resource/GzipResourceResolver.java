@@ -50,7 +50,7 @@ public class GzipResourceResolver extends AbstractResourceResolver {
 			String requestPath, List<? extends Resource> locations, ResourceResolverChain chain) {
 
 		return chain.resolveResource(exchange, requestPath, locations)
-				.map(resource -> {
+				.map((resource) -> {
 					if (exchange == null || isGzipAccepted(exchange)) {
 						try {
 							Resource gzipped = new GzippedResource(resource);

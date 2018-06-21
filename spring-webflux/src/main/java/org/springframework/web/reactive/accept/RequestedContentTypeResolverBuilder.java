@@ -93,7 +93,7 @@ public class RequestedContentTypeResolverBuilder {
 						Collections.singletonList(new HeaderContentTypeResolver()) :
 						this.candidates.stream().map(Supplier::get).collect(Collectors.toList());
 
-		return exchange -> {
+		return (exchange) -> {
 			for (RequestedContentTypeResolver resolver : resolvers) {
 				List<MediaType> mediaTypes = resolver.resolveMediaTypes(exchange);
 				if (mediaTypes.equals(RequestedContentTypeResolver.MEDIA_TYPE_ALL_LIST)) {

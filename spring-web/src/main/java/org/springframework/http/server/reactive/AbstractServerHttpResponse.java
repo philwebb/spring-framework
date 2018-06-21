@@ -173,13 +173,13 @@ public abstract class AbstractServerHttpResponse implements ServerHttpResponse {
 	@Override
 	public final Mono<Void> writeWith(Publisher<? extends DataBuffer> body) {
 		return new ChannelSendOperator<>(body,
-				writePublisher -> doCommit(() -> writeWithInternal(writePublisher)));
+				(writePublisher) -> doCommit(() -> writeWithInternal(writePublisher)));
 	}
 
 	@Override
 	public final Mono<Void> writeAndFlushWith(Publisher<? extends Publisher<? extends DataBuffer>> body) {
 		return new ChannelSendOperator<>(body,
-				writePublisher -> doCommit(() -> writeAndFlushWithInternal(writePublisher)));
+				(writePublisher) -> doCommit(() -> writeAndFlushWithInternal(writePublisher)));
 	}
 
 	@Override

@@ -80,7 +80,7 @@ public class DefaultWebSessionManager implements WebSessionManager {
 	public Mono<WebSession> getSession(ServerWebExchange exchange) {
 		return Mono.defer(() -> retrieveSession(exchange)
 				.switchIfEmpty(this.sessionStore.createWebSession())
-				.doOnNext(session -> exchange.getResponse().beforeCommit(() -> save(exchange, session))));
+				.doOnNext((session) -> exchange.getResponse().beforeCommit(() -> save(exchange, session))));
 	}
 
 	private Mono<WebSession> retrieveSession(ServerWebExchange exchange) {

@@ -115,7 +115,7 @@ public class CandidateComponentsIndexer implements Processor {
 
 	private void addMetadataFor(Element element) {
 		Set<String> stereotypes = new LinkedHashSet<>();
-		this.stereotypesProviders.forEach(p -> stereotypes.addAll(p.getStereotypes(element)));
+		this.stereotypesProviders.forEach((p) -> stereotypes.addAll(p.getStereotypes(element)));
 		if (!stereotypes.isEmpty()) {
 			this.metadataCollector.add(new ItemMetadata(this.typeHelper.getType(element), stereotypes));
 		}

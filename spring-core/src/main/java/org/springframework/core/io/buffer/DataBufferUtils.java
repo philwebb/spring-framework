@@ -133,7 +133,7 @@ public abstract class DataBufferUtils {
 		Assert.isTrue(bufferSize > 0, "'bufferSize' must be > 0");
 
 		return Flux.using(channelSupplier,
-				channel -> {
+				(channel) -> {
 					ReadableByteChannelGenerator generator =
 							new ReadableByteChannelGenerator(channel, dataBufferFactory,
 									bufferSize);
@@ -223,7 +223,7 @@ public abstract class DataBufferUtils {
 		ByteBuffer byteBuffer = dataBuffer.asByteBuffer(0, bufferSize);
 
 		return Flux.using(channelSupplier,
-				channel -> Flux.create(sink -> {
+				(channel) -> Flux.create((sink) -> {
 							CompletionHandler<Integer, DataBuffer> completionHandler =
 									new AsynchronousFileChannelReadCompletionHandler(channel,
 											sink, position, dataBufferFactory, bufferSize);
@@ -325,8 +325,8 @@ public abstract class DataBufferUtils {
 		Assert.notNull(channel, "'channel' must not be null");
 
 		Flux<DataBuffer> flux = Flux.from(source);
-		return Flux.create(sink ->
-				flux.subscribe(dataBuffer -> {
+		return Flux.create((sink) ->
+				flux.subscribe((dataBuffer) -> {
 							try {
 								ByteBuffer byteBuffer = dataBuffer.asByteBuffer();
 								while (byteBuffer.hasRemaining()) {
@@ -363,7 +363,7 @@ public abstract class DataBufferUtils {
 		Assert.isTrue(position >= 0, "'position' must be >= 0");
 
 		Flux<DataBuffer> flux = Flux.from(source);
-		return Flux.create(sink ->
+		return Flux.create((sink) ->
 				flux.subscribe(new AsynchronousFileChannelWriteCompletionHandler(sink, channel, position)));
 	}
 
@@ -396,12 +396,12 @@ public abstract class DataBufferUtils {
 		AtomicLong byteCountDown = new AtomicLong(maxByteCount);
 
 		return Flux.from(publisher).
-				takeWhile(dataBuffer -> {
+				takeWhile((dataBuffer) -> {
 					int delta = -dataBuffer.readableByteCount();
 					long currentCount = byteCountDown.getAndAdd(delta);
 					return currentCount >= 0;
 				}).
-				map(dataBuffer -> {
+				map((dataBuffer) -> {
 					long currentCount = byteCountDown.get();
 					if (currentCount >= 0) {
 						return dataBuffer;
@@ -428,7 +428,7 @@ public abstract class DataBufferUtils {
 		AtomicLong byteCountDown = new AtomicLong(maxByteCount);
 
 		return Flux.from(publisher).
-				skipUntil(dataBuffer -> {
+				skipUntil((dataBuffer) -> {
 					int delta = -dataBuffer.readableByteCount();
 					long currentCount = byteCountDown.addAndGet(delta);
 					if (currentCount < 0) {
@@ -439,7 +439,7 @@ public abstract class DataBufferUtils {
 						return false;
 					}
 				}).
-				map(dataBuffer -> {
+				map((dataBuffer) -> {
 					long currentCount = byteCountDown.get();
 					// slice first buffer, then let others flow through
 					if (currentCount < 0) {
@@ -497,8 +497,8 @@ public abstract class DataBufferUtils {
 
 		return Flux.from(dataBuffers)
 				.collectList()
-				.filter(list -> !list.isEmpty())
-				.map(list -> {
+				.filter((list) -> !list.isEmpty())
+				.map((list) -> {
 					DataBufferFactory bufferFactory = list.get(0).factory();
 					return bufferFactory.join(list);
 				});

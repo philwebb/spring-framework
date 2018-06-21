@@ -222,7 +222,7 @@ public class JmsListenerAnnotationBeanPostProcessor
 		if (!this.nonAnnotatedClasses.contains(bean.getClass())) {
 			Class<?> targetClass = AopProxyUtils.ultimateTargetClass(bean);
 			Map<Method, Set<JmsListener>> annotatedMethods = MethodIntrospector.selectMethods(targetClass,
-					(MethodIntrospector.MetadataLookup<Set<JmsListener>>) method -> {
+					(MethodIntrospector.MetadataLookup<Set<JmsListener>>) (method) -> {
 						Set<JmsListener> listenerMethods = AnnotatedElementUtils.getMergedRepeatableAnnotations(
 								method, JmsListener.class, JmsListeners.class);
 						return (!listenerMethods.isEmpty() ? listenerMethods : null);
@@ -236,7 +236,7 @@ public class JmsListenerAnnotationBeanPostProcessor
 			else {
 				// Non-empty set of methods
 				annotatedMethods.forEach((method, listeners) ->
-						listeners.forEach(listener ->
+						listeners.forEach((listener) ->
 								processJmsListener(listener, method, bean)));
 				if (this.logger.isDebugEnabled()) {
 					this.logger.debug(annotatedMethods.size() + " @JmsListener methods processed on bean '" + beanName +

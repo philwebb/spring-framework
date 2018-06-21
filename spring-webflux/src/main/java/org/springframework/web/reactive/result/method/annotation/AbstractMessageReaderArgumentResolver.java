@@ -98,7 +98,7 @@ public abstract class AbstractMessageReaderArgumentResolver extends HandlerMetho
 		Assert.notNull(adapterRegistry, "ReactiveAdapterRegistry is required");
 		this.messageReaders = messageReaders;
 		this.supportedMediaTypes = messageReaders.stream()
-				.flatMap(converter -> converter.getReadableMediaTypes().stream())
+				.flatMap((converter) -> converter.getReadableMediaTypes().stream())
 				.collect(Collectors.toList());
 	}
 
@@ -157,13 +157,13 @@ public abstract class AbstractMessageReaderArgumentResolver extends HandlerMetho
 				Map<String, Object> readHints = Collections.emptyMap();
 				if (adapter != null && adapter.isMultiValue()) {
 					Flux<?> flux = reader.read(actualType, elementType, request, response, readHints);
-					flux = flux.onErrorResume(ex -> Flux.error(handleReadError(bodyParam, ex)));
+					flux = flux.onErrorResume((ex) -> Flux.error(handleReadError(bodyParam, ex)));
 					if (isBodyRequired) {
 						flux = flux.switchIfEmpty(Flux.error(() -> handleMissingBody(bodyParam)));
 					}
 					Object[] hints = extractValidationHints(bodyParam);
 					if (hints != null) {
-						flux = flux.doOnNext(target ->
+						flux = flux.doOnNext((target) ->
 								validate(target, hints, bodyParam, bindingContext, exchange));
 					}
 					return Mono.just(adapter.fromPublisher(flux));
@@ -171,13 +171,13 @@ public abstract class AbstractMessageReaderArgumentResolver extends HandlerMetho
 				else {
 					// Single-value (with or without reactive type wrapper)
 					Mono<?> mono = reader.readMono(actualType, elementType, request, response, readHints);
-					mono = mono.onErrorResume(ex -> Mono.error(handleReadError(bodyParam, ex)));
+					mono = mono.onErrorResume((ex) -> Mono.error(handleReadError(bodyParam, ex)));
 					if (isBodyRequired) {
 						mono = mono.switchIfEmpty(Mono.error(() -> handleMissingBody(bodyParam)));
 					}
 					Object[] hints = extractValidationHints(bodyParam);
 					if (hints != null) {
-						mono = mono.doOnNext(target ->
+						mono = mono.doOnNext((target) ->
 								validate(target, hints, bodyParam, bindingContext, exchange));
 					}
 					return adapter != null ? Mono.just(adapter.fromPublisher(mono)) : Mono.from(mono);
@@ -189,7 +189,7 @@ public abstract class AbstractMessageReaderArgumentResolver extends HandlerMetho
 
 		HttpMethod method = request.getMethod();
 		if (contentType == null && method != null && SUPPORTED_METHODS.contains(method)) {
-			Flux<DataBuffer> body = request.getBody().doOnNext(o -> {
+			Flux<DataBuffer> body = request.getBody().doOnNext((o) -> {
 				// Body not empty, back to 415..
 				throw new UnsupportedMediaTypeStatusException(mediaType, this.supportedMediaTypes, elementType);
 			});

@@ -867,7 +867,7 @@ public class RestTemplate extends InterceptingHttpAccessor implements RestOperat
 		public void doWithRequest(ClientHttpRequest request) throws IOException {
 			if (this.responseType != null) {
 				List<MediaType> allSupportedMediaTypes = getMessageConverters().stream()
-						.filter(converter -> canReadResponse(this.responseType, converter))
+						.filter((converter) -> canReadResponse(this.responseType, converter))
 						.flatMap(this::getSupportedMediaTypes)
 						.distinct()
 						.sorted(MediaType.SPECIFICITY_COMPARATOR)
@@ -894,7 +894,7 @@ public class RestTemplate extends InterceptingHttpAccessor implements RestOperat
 		private Stream<MediaType> getSupportedMediaTypes(HttpMessageConverter<?> messageConverter) {
 			return messageConverter.getSupportedMediaTypes()
 					.stream()
-					.map(mediaType -> {
+					.map((mediaType) -> {
 						if (mediaType.getCharset() != null) {
 							return new MediaType(mediaType.getType(), mediaType.getSubtype());
 						}

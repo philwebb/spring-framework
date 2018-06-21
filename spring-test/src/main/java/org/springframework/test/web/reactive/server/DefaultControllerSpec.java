@@ -130,11 +130,11 @@ class DefaultControllerSpec extends AbstractMockServerSpec<WebTestClient.Control
 
 	private ApplicationContext initApplicationContext() {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-		this.controllers.forEach(controller -> {
+		this.controllers.forEach((controller) -> {
 			String name = controller.getClass().getName();
 			context.registerBean(name, Object.class, () -> controller);
 		});
-		this.controllerAdvice.forEach(advice -> {
+		this.controllerAdvice.forEach((advice) -> {
 			String name = advice.getClass().getName();
 			context.registerBean(name, Object.class, () -> advice);
 		});

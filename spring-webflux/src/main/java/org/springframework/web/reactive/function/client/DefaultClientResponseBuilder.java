@@ -62,8 +62,8 @@ final class DefaultClientResponseBuilder implements ClientResponse.Builder {
 		Assert.notNull(other, "ClientResponse must not be null");
 		this.strategies = other.strategies();
 		statusCode(other.statusCode());
-		headers(headers -> headers.addAll(other.headers().asHttpHeaders()));
-		cookies(cookies -> cookies.addAll(other.cookies()));
+		headers((headers) -> headers.addAll(other.headers().asHttpHeaders()));
+		cookies((cookies) -> cookies.addAll(other.cookies()));
 	}
 
 
@@ -116,7 +116,7 @@ final class DefaultClientResponseBuilder implements ClientResponse.Builder {
 		releaseBody();
 		DataBufferFactory dataBufferFactory = new DefaultDataBufferFactory();
 		this.body = Flux.just(body).
-				map(s -> {
+				map((s) -> {
 					byte[] bytes = body.getBytes(StandardCharsets.UTF_8);
 					return dataBufferFactory.wrap(bytes);
 				});

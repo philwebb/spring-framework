@@ -81,7 +81,7 @@ public class TransactionalEventListenerTests {
 	@Test
 	public void immediately() {
 		load(ImmediateTestListener.class);
-		this.transactionTemplate.execute(status -> {
+		this.transactionTemplate.execute((status) -> {
 			getContext().publishEvent("test");
 			getEventCollector().assertEvents(EventCollector.IMMEDIATELY, "test");
 			getEventCollector().assertTotalEventsCount(1);
@@ -96,7 +96,7 @@ public class TransactionalEventListenerTests {
 	public void immediatelyImpactsCurrentTransaction() {
 		load(ImmediateTestListener.class, BeforeCommitTestListener.class);
 		try {
-			this.transactionTemplate.execute(status -> {
+			this.transactionTemplate.execute((status) -> {
 				getContext().publishEvent("FAIL");
 				fail("Should have thrown an exception at this point");
 				return null;
@@ -113,7 +113,7 @@ public class TransactionalEventListenerTests {
 	@Test
 	public void afterCompletionCommit() {
 		load(AfterCompletionTestListener.class);
-		this.transactionTemplate.execute(status -> {
+		this.transactionTemplate.execute((status) -> {
 			getContext().publishEvent("test");
 			getEventCollector().assertNoEventReceived();
 			return null;
@@ -126,7 +126,7 @@ public class TransactionalEventListenerTests {
 	@Test
 	public void afterCompletionRollback() {
 		load(AfterCompletionTestListener.class);
-		this.transactionTemplate.execute(status -> {
+		this.transactionTemplate.execute((status) -> {
 			getContext().publishEvent("test");
 			getEventCollector().assertNoEventReceived();
 			status.setRollbackOnly();
@@ -140,7 +140,7 @@ public class TransactionalEventListenerTests {
 	@Test
 	public void afterCommit() {
 		load(AfterCompletionExplicitTestListener.class);
-		this.transactionTemplate.execute(status -> {
+		this.transactionTemplate.execute((status) -> {
 			getContext().publishEvent("test");
 			getEventCollector().assertNoEventReceived();
 			return null;
@@ -153,7 +153,7 @@ public class TransactionalEventListenerTests {
 	@Test
 	public void afterCommitWithTransactionalComponentListenerProxiedViaDynamicProxy() {
 		load(TransactionalConfiguration.class, TransactionalComponentTestListener.class);
-		this.transactionTemplate.execute(status -> {
+		this.transactionTemplate.execute((status) -> {
 			getContext().publishEvent("SKIP");
 			getEventCollector().assertNoEventReceived();
 			return null;
@@ -164,7 +164,7 @@ public class TransactionalEventListenerTests {
 	@Test
 	public void afterRollback() {
 		load(AfterCompletionExplicitTestListener.class);
-		this.transactionTemplate.execute(status -> {
+		this.transactionTemplate.execute((status) -> {
 			getContext().publishEvent("test");
 			getEventCollector().assertNoEventReceived();
 			status.setRollbackOnly();
@@ -177,7 +177,7 @@ public class TransactionalEventListenerTests {
 	@Test
 	public void beforeCommit() {
 		load(BeforeCommitTestListener.class);
-		this.transactionTemplate.execute(status -> {
+		this.transactionTemplate.execute((status) -> {
 			TransactionSynchronizationManager.registerSynchronization(new EventTransactionSynchronization(10) {
 				@Override
 				public void beforeCommit(boolean readOnly) {
@@ -204,7 +204,7 @@ public class TransactionalEventListenerTests {
 	public void beforeCommitWithException() { // Validates the custom synchronization is invoked
 		load(BeforeCommitTestListener.class);
 		try {
-			this.transactionTemplate.execute(status -> {
+			this.transactionTemplate.execute((status) -> {
 				TransactionSynchronizationManager.registerSynchronization(new EventTransactionSynchronization(10) {
 					@Override
 					public void beforeCommit(boolean readOnly) {
@@ -227,7 +227,7 @@ public class TransactionalEventListenerTests {
 	@Test
 	public void regularTransaction() {
 		load(ImmediateTestListener.class, BeforeCommitTestListener.class, AfterCompletionExplicitTestListener.class);
-		this.transactionTemplate.execute(status -> {
+		this.transactionTemplate.execute((status) -> {
 			TransactionSynchronizationManager.registerSynchronization(new EventTransactionSynchronization(10) {
 				@Override
 				public void beforeCommit(boolean readOnly) {
@@ -273,7 +273,7 @@ public class TransactionalEventListenerTests {
 	@Test
 	public void conditionFoundOnTransactionalEventListener() {
 		load(ImmediateTestListener.class);
-		this.transactionTemplate.execute(status -> {
+		this.transactionTemplate.execute((status) -> {
 			getContext().publishEvent("SKIP");
 			getEventCollector().assertNoEventReceived();
 			return null;
@@ -284,7 +284,7 @@ public class TransactionalEventListenerTests {
 	@Test
 	public void afterCommitMetaAnnotation() throws Exception {
 		load(AfterCommitMetaAnnotationTestListener.class);
-		this.transactionTemplate.execute(status -> {
+		this.transactionTemplate.execute((status) -> {
 			getContext().publishEvent("test");
 			getEventCollector().assertNoEventReceived();
 			return null;
@@ -297,7 +297,7 @@ public class TransactionalEventListenerTests {
 	@Test
 	public void conditionFoundOnMetaAnnotation() {
 		load(AfterCommitMetaAnnotationTestListener.class);
-		this.transactionTemplate.execute(status -> {
+		this.transactionTemplate.execute((status) -> {
 			getContext().publishEvent("SKIP");
 			getEventCollector().assertNoEventReceived();
 			return null;

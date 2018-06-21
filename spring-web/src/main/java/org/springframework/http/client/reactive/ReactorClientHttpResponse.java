@@ -59,7 +59,7 @@ class ReactorClientHttpResponse implements ClientHttpResponse {
 	@Override
 	public Flux<DataBuffer> getBody() {
 		return this.inbound.receive()
-				.map(byteBuf -> {
+				.map((byteBuf) -> {
 					byteBuf.retain();
 					return this.bufferFactory.wrap(byteBuf);
 				});
@@ -68,7 +68,7 @@ class ReactorClientHttpResponse implements ClientHttpResponse {
 	@Override
 	public HttpHeaders getHeaders() {
 		HttpHeaders headers = new HttpHeaders();
-		this.response.responseHeaders().entries().forEach(e -> headers.add(e.getKey(), e.getValue()));
+		this.response.responseHeaders().entries().forEach((e) -> headers.add(e.getKey(), e.getValue()));
 		return headers;
 	}
 
@@ -86,7 +86,7 @@ class ReactorClientHttpResponse implements ClientHttpResponse {
 	public MultiValueMap<String, ResponseCookie> getCookies() {
 		MultiValueMap<String, ResponseCookie> result = new LinkedMultiValueMap<>();
 		this.response.cookies().values().stream().flatMap(Collection::stream)
-				.forEach(cookie ->
+				.forEach((cookie) ->
 					result.add(cookie.name(), ResponseCookie.from(cookie.name(), cookie.value())
 							.domain(cookie.domain())
 							.path(cookie.path())

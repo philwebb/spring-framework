@@ -123,7 +123,7 @@ public class MultiServerUserRegistryTests {
 		this.registry.addRemoteRegistryDto(message, this.converter, 20000);
 
 		assertEquals(3, this.registry.getUserCount());
-		Set<SimpSubscription> matches = this.registry.findSubscriptions(s -> s.getDestination().equals("/match"));
+		Set<SimpSubscription> matches = this.registry.findSubscriptions((s) -> s.getDestination().equals("/match"));
 		assertEquals(2, matches.size());
 		Iterator<SimpSubscription> iterator = matches.iterator();
 		Set<String> sessionIds = new HashSet<>(2);

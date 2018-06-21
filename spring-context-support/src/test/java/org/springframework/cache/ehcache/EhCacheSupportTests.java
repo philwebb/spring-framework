@@ -242,7 +242,7 @@ public class EhCacheSupportTests {
 			EhCacheFactoryBean cacheFb = new EhCacheFactoryBean();
 			cacheFb.setCacheManager(cm);
 			cacheFb.setCacheName("myCache1");
-			cacheFb.setCacheEntryFactory(key -> key);
+			cacheFb.setCacheEntryFactory((key) -> key);
 			assertEquals(cacheFb.getObjectType(), SelfPopulatingCache.class);
 			cacheFb.afterPropertiesSet();
 			Ehcache myCache1 = cm.getEhcache("myCache1");

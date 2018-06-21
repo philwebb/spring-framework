@@ -86,7 +86,7 @@ public class DispatcherHandlerErrorTests {
 		Mono<Void> publisher = this.dispatcherHandler.handle(exchange);
 
 		StepVerifier.create(publisher)
-				.consumeErrorWith(error -> {
+				.consumeErrorWith((error) -> {
 					assertThat(error, instanceOf(ResponseStatusException.class));
 					assertThat(error.getMessage(),
 							is("Response status 404 NOT_FOUND with reason \"No matching handler\""));
@@ -100,7 +100,7 @@ public class DispatcherHandlerErrorTests {
 		Mono<Void> publisher = this.dispatcherHandler.handle(exchange);
 
 		StepVerifier.create(publisher)
-				.consumeErrorWith(error -> assertSame(EXCEPTION, error))
+				.consumeErrorWith((error) -> assertSame(EXCEPTION, error))
 				.verify();
 	}
 
@@ -110,7 +110,7 @@ public class DispatcherHandlerErrorTests {
 		Mono<Void> publisher = this.dispatcherHandler.handle(exchange);
 
 		StepVerifier.create(publisher)
-				.consumeErrorWith(error -> assertSame(EXCEPTION, error))
+				.consumeErrorWith((error) -> assertSame(EXCEPTION, error))
 				.verify();
 	}
 
@@ -120,7 +120,7 @@ public class DispatcherHandlerErrorTests {
 		Mono<Void> publisher = this.dispatcherHandler.handle(exchange);
 
 		StepVerifier.create(publisher)
-				.consumeErrorWith(error -> {
+				.consumeErrorWith((error) -> {
 					assertThat(error, instanceOf(IllegalStateException.class));
 					assertThat(error.getMessage(), startsWith("No HandlerResultHandler"));
 				})
@@ -135,7 +135,7 @@ public class DispatcherHandlerErrorTests {
 		Mono<Void> publisher = this.dispatcherHandler.handle(exchange);
 
 		StepVerifier.create(publisher)
-				.consumeErrorWith(error -> assertThat(error, instanceOf(NotAcceptableStatusException.class)))
+				.consumeErrorWith((error) -> assertThat(error, instanceOf(NotAcceptableStatusException.class)))
 				.verify();
 	}
 
@@ -147,7 +147,7 @@ public class DispatcherHandlerErrorTests {
 		Mono<Void> publisher = this.dispatcherHandler.handle(exchange);
 
 		StepVerifier.create(publisher)
-				.consumeErrorWith(error -> assertSame(EXCEPTION, error))
+				.consumeErrorWith((error) -> assertSame(EXCEPTION, error))
 				.verify();
 	}
 
@@ -214,7 +214,7 @@ public class DispatcherHandlerErrorTests {
 		@RequestMapping("/request-body")
 		@ResponseBody
 		public Publisher<String> requestBody(@RequestBody Publisher<String> body) {
-			return Mono.from(body).map(s -> "hello " + s);
+			return Mono.from(body).map((s) -> "hello " + s);
 		}
 	}
 

@@ -86,11 +86,11 @@ public abstract class ExchangeFunctions {
 			URI url = request.url();
 
 			return this.connector
-					.connect(httpMethod, url, httpRequest -> request.writeTo(httpRequest, this.strategies))
-					.doOnSubscribe(subscription -> logger.debug("Subscriber present"))
-					.doOnRequest(n -> logger.debug("Demand signaled"))
+					.connect(httpMethod, url, (httpRequest) -> request.writeTo(httpRequest, this.strategies))
+					.doOnSubscribe((subscription) -> logger.debug("Subscriber present"))
+					.doOnRequest((n) -> logger.debug("Demand signaled"))
 					.doOnCancel(() -> logger.debug("Cancelling request"))
-					.map(response -> {
+					.map((response) -> {
 						if (logger.isDebugEnabled()) {
 							int code = response.getRawStatusCode();
 							HttpStatus status = HttpStatus.resolve(code);

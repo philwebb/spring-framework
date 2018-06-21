@@ -60,11 +60,11 @@ public class TestContextConcurrencyTests {
 		// Run the actual test several times in order to increase the chance of threads
 		// stepping on each others' toes by overwriting the same mutable state in the
 		// TestContext.
-		IntStream.range(1, 20).forEach(i -> {
+		IntStream.range(1, 20).forEach((i) -> {
 			actualMethods.clear();
 			// Execute TestExecutionListener in parallel, thereby simulating parallel
 			// test method execution.
-			stream(TestCase.class.getDeclaredMethods()).parallel().forEach(testMethod -> {
+			stream(TestCase.class.getDeclaredMethods()).parallel().forEach((testMethod) -> {
 				try {
 					tcm.beforeTestClass();
 					tcm.beforeTestMethod(testInstance, testMethod);

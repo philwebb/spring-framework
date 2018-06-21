@@ -312,7 +312,7 @@ public class DataBufferUtilsTests extends AbstractDataBufferAllocatingTestCase {
 	}
 
 	private Answer<Integer> putByte(int b) {
-		return invocation -> {
+		return (invocation) -> {
 			ByteBuffer buffer = invocation.getArgument(0);
 			buffer.put((byte) b);
 			return 1;

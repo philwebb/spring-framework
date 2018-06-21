@@ -85,7 +85,7 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 
 		StepVerifier
 				.create(result)
-				.consumeNextWith(response -> assertEquals(HttpStatus.OK, response.statusCode()))
+				.consumeNextWith((response) -> assertEquals(HttpStatus.OK, response.statusCode()))
 				.verifyComplete();
 	}
 
@@ -99,7 +99,7 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 				.bodyToMono(String.class);
 
 		StepVerifier.create(result)
-				.consumeNextWith(body -> assertEquals(
+				.consumeNextWith((body) -> assertEquals(
 						"Map[[fieldPart],[fileParts:foo.txt,fileParts:logo.png],[jsonPart]]", body))
 				.verifyComplete();
 	}
@@ -114,7 +114,7 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 				.bodyToMono(String.class);
 
 		StepVerifier.create(result)
-				.consumeNextWith(body -> assertEquals(
+				.consumeNextWith((body) -> assertEquals(
 						"[fieldPart,fileParts:foo.txt,fileParts:logo.png,jsonPart]", body))
 				.verifyComplete();
 	}
@@ -129,7 +129,7 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 				.bodyToMono(String.class);
 
 		StepVerifier.create(result)
-				.consumeNextWith(body -> assertEquals(
+				.consumeNextWith((body) -> assertEquals(
 						"FormBean[fieldValue,[fileParts:foo.txt,fileParts:logo.png]]", body))
 				.verifyComplete();
 	}
@@ -173,15 +173,15 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 			assertEquals("Jason", person.getName());
 
 			StepVerifier.create(partFluxDescription(filePartsFlux))
-					.consumeNextWith(content -> assertEquals("[fileParts:foo.txt,fileParts:logo.png]", content))
+					.consumeNextWith((content) -> assertEquals("[fileParts:foo.txt,fileParts:logo.png]", content))
 					.verifyComplete();
 
 			StepVerifier.create(filePartsMono)
-					.consumeNextWith(filePart -> assertEquals("fileParts:foo.txt", partDescription(filePart)))
+					.consumeNextWith((filePart) -> assertEquals("fileParts:foo.txt", partDescription(filePart)))
 					.verifyComplete();
 
 			StepVerifier.create(personMono)
-					.consumeNextWith(p -> assertEquals("Jason", p.getName()))
+					.consumeNextWith((p) -> assertEquals("Jason", p.getName()))
 					.verifyComplete();
 		}
 
@@ -203,7 +203,7 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 
 	private static String partMapDescription(MultiValueMap<String, Part> partsMap) {
 		return partsMap.keySet().stream().sorted()
-				.map(key -> partListDescription(partsMap.get(key)))
+				.map((key) -> partListDescription(partsMap.get(key)))
 				.collect(Collectors.joining(",", "Map[", "]"));
 	}
 

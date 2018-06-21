@@ -408,16 +408,16 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 		DataBuffer buffer = createDataBuffer(3);
 		buffer.write(new byte[]{'a', 'b', 'c'});
 
-		int result = buffer.indexOf(b -> b == 'c', 0);
+		int result = buffer.indexOf((b) -> b == 'c', 0);
 		assertEquals(2, result);
 
-		result = buffer.indexOf(b -> b == 'c', Integer.MIN_VALUE);
+		result = buffer.indexOf((b) -> b == 'c', Integer.MIN_VALUE);
 		assertEquals(2, result);
 
-		result = buffer.indexOf(b -> b == 'c', Integer.MAX_VALUE);
+		result = buffer.indexOf((b) -> b == 'c', Integer.MAX_VALUE);
 		assertEquals(-1, result);
 
-		result = buffer.indexOf(b -> b == 'z', 0);
+		result = buffer.indexOf((b) -> b == 'z', 0);
 		assertEquals(-1, result);
 
 		release(buffer);
@@ -428,25 +428,25 @@ public class DataBufferTests extends AbstractDataBufferAllocatingTestCase {
 		DataBuffer buffer = createDataBuffer(3);
 		buffer.write(new byte[]{'a', 'b', 'c'});
 
-		int result = buffer.lastIndexOf(b -> b == 'b', 2);
+		int result = buffer.lastIndexOf((b) -> b == 'b', 2);
 		assertEquals(1, result);
 
-		result = buffer.lastIndexOf(b -> b == 'c', 2);
+		result = buffer.lastIndexOf((b) -> b == 'c', 2);
 		assertEquals(2, result);
 
-		result = buffer.lastIndexOf(b -> b == 'b', Integer.MAX_VALUE);
+		result = buffer.lastIndexOf((b) -> b == 'b', Integer.MAX_VALUE);
 		assertEquals(1, result);
 
-		result = buffer.lastIndexOf(b -> b == 'c', Integer.MAX_VALUE);
+		result = buffer.lastIndexOf((b) -> b == 'c', Integer.MAX_VALUE);
 		assertEquals(2, result);
 
-		result = buffer.lastIndexOf(b -> b == 'b', Integer.MIN_VALUE);
+		result = buffer.lastIndexOf((b) -> b == 'b', Integer.MIN_VALUE);
 		assertEquals(-1, result);
 
-		result = buffer.lastIndexOf(b -> b == 'c', Integer.MIN_VALUE);
+		result = buffer.lastIndexOf((b) -> b == 'c', Integer.MIN_VALUE);
 		assertEquals(-1, result);
 
-		result = buffer.lastIndexOf(b -> b == 'z', 0);
+		result = buffer.lastIndexOf((b) -> b == 'z', 0);
 		assertEquals(-1, result);
 
 		release(buffer);

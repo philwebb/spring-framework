@@ -366,7 +366,7 @@ public class MvcNamespaceTests {
 
 		Map<String, MappedInterceptor> beans = this.appContext.getBeansOfType(MappedInterceptor.class);
 		List<Class<?>> interceptors = beans.values().stream()
-				.map(mappedInterceptor -> mappedInterceptor.getInterceptor().getClass())
+				.map((mappedInterceptor) -> mappedInterceptor.getInterceptor().getClass())
 				.collect(Collectors.toList());
 		assertThat(interceptors, containsInAnyOrder(ConversionServiceExposingInterceptor.class,
 				ResourceUrlProviderExposingInterceptor.class));

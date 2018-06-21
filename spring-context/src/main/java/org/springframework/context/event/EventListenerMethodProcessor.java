@@ -141,7 +141,7 @@ public class EventListenerMethodProcessor implements SmartInitializingSingleton,
 			Map<Method, EventListener> annotatedMethods = null;
 			try {
 				annotatedMethods = MethodIntrospector.selectMethods(targetType,
-						(MethodIntrospector.MetadataLookup<EventListener>) method ->
+						(MethodIntrospector.MetadataLookup<EventListener>) (method) ->
 								AnnotatedElementUtils.findMergedAnnotation(method, EventListener.class));
 			}
 			catch (Throwable ex) {

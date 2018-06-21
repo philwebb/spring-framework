@@ -76,7 +76,7 @@ public class KotlinReflectionParameterNameDiscoverer implements ParameterNameDis
 		List<KParameter> filteredParameters = parameters
 				.stream()
 				// Extension receivers of extension methods must be included as they appear as normal method parameters in Java
-				.filter(p -> KParameter.Kind.VALUE.equals(p.getKind()) || KParameter.Kind.EXTENSION_RECEIVER.equals(p.getKind()))
+				.filter((p) -> KParameter.Kind.VALUE.equals(p.getKind()) || KParameter.Kind.EXTENSION_RECEIVER.equals(p.getKind()))
 				.collect(Collectors.toList());
 		String[] parameterNames = new String[filteredParameters.size()];
 		for (int i = 0; i < filteredParameters.size(); i++) {

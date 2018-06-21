@@ -407,7 +407,7 @@ public class PersistenceAnnotationBeanPostProcessor
 			final LinkedList<InjectionMetadata.InjectedElement> currElements =
 					new LinkedList<>();
 
-			ReflectionUtils.doWithLocalFields(targetClass, field -> {
+			ReflectionUtils.doWithLocalFields(targetClass, (field) -> {
 				if (field.isAnnotationPresent(PersistenceContext.class) ||
 						field.isAnnotationPresent(PersistenceUnit.class)) {
 					if (Modifier.isStatic(field.getModifiers())) {
@@ -417,7 +417,7 @@ public class PersistenceAnnotationBeanPostProcessor
 				}
 			});
 
-			ReflectionUtils.doWithLocalMethods(targetClass, method -> {
+			ReflectionUtils.doWithLocalMethods(targetClass, (method) -> {
 				Method bridgedMethod = BridgeMethodResolver.findBridgedMethod(method);
 				if (!BridgeMethodResolver.isVisibilityBridgeMethodPair(method, bridgedMethod)) {
 					return;

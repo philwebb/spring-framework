@@ -97,7 +97,7 @@ public class BooleanExpressionTests extends AbstractExpressionTests {
 		evaluateAndCheckError("!null", SpelMessage.TYPE_CONVERSION_ERROR, 1, "null", "boolean");
 		evaluateAndCheckError("null ? 'foo' : 'bar'", SpelMessage.TYPE_CONVERSION_ERROR, 0, "null", "boolean");
 
-		// with null conversion (null -> false)
+		// with null conversion ((null) -> false)
 		GenericConversionService conversionService = new GenericConversionService() {
 			@Override
 			protected Object convertNullSource(TypeDescriptor sourceType, TypeDescriptor targetType) {

@@ -36,7 +36,7 @@ public class TagIdGeneratorTests {
 	@Test
 	public void nextId() {
 		// Repeat a few times just to be sure...
-		IntStream.rangeClosed(1, 5).forEach(i -> assertNextId());
+		IntStream.rangeClosed(1, 5).forEach((i) -> assertNextId());
 	}
 
 	private void assertNextId() {

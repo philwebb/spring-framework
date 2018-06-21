@@ -73,9 +73,9 @@ final class DefaultClientRequestBuilder implements ClientRequest.Builder {
 		Assert.notNull(other, "ClientRequest must not be null");
 		this.method = other.method();
 		this.url = other.url();
-		headers(headers -> headers.addAll(other.headers()));
-		cookies(cookies -> cookies.addAll(other.cookies()));
-		attributes(attributes -> attributes.putAll(other.attributes()));
+		headers((headers) -> headers.addAll(other.headers()));
+		cookies((cookies) -> cookies.addAll(other.cookies()));
+		attributes((attributes) -> attributes.putAll(other.attributes()));
 		body(other.body());
 	}
 
@@ -227,14 +227,14 @@ final class DefaultClientRequestBuilder implements ClientRequest.Builder {
 			HttpHeaders requestHeaders = request.getHeaders();
 			if (!this.headers.isEmpty()) {
 				this.headers.entrySet().stream()
-						.filter(entry -> !requestHeaders.containsKey(entry.getKey()))
-						.forEach(entry -> requestHeaders
+						.filter((entry) -> !requestHeaders.containsKey(entry.getKey()))
+						.forEach((entry) -> requestHeaders
 								.put(entry.getKey(), entry.getValue()));
 			}
 
 			MultiValueMap<String, HttpCookie> requestCookies = request.getCookies();
 			if (!this.cookies.isEmpty()) {
-				this.cookies.forEach((name, values) -> values.forEach(value -> {
+				this.cookies.forEach((name, values) -> values.forEach((value) -> {
 					HttpCookie cookie = new HttpCookie(name, value);
 					requestCookies.add(name, cookie);
 				}));

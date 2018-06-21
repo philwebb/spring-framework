@@ -67,7 +67,7 @@ public class DefaultServerResponseBuilderTests {
 		ServerResponse other = ServerResponse.ok().header("foo", "bar").build().block();
 		Mono<ServerResponse> result = ServerResponse.from(other).build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> HttpStatus.OK.equals(response.statusCode()) &&
+				.expectNextMatches((response) -> HttpStatus.OK.equals(response.statusCode()) &&
 						"bar".equals(response.headers().getFirst("foo")))
 				.expectComplete()
 				.verify();
@@ -77,7 +77,7 @@ public class DefaultServerResponseBuilderTests {
 	public void status() throws Exception {
 		Mono<ServerResponse> result = ServerResponse.status(HttpStatus.CREATED).build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> HttpStatus.CREATED.equals(response.statusCode()))
+				.expectNextMatches((response) -> HttpStatus.CREATED.equals(response.statusCode()))
 				.expectComplete()
 				.verify();
 	}
@@ -86,7 +86,7 @@ public class DefaultServerResponseBuilderTests {
 	public void ok() throws Exception {
 		Mono<ServerResponse> result = ServerResponse.ok().build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> HttpStatus.OK.equals(response.statusCode()))
+				.expectNextMatches((response) -> HttpStatus.OK.equals(response.statusCode()))
 				.expectComplete()
 				.verify();
 
@@ -97,7 +97,7 @@ public class DefaultServerResponseBuilderTests {
 		URI location = URI.create("http://example.com");
 		Mono<ServerResponse> result = ServerResponse.created(location).build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> HttpStatus.CREATED.equals(response.statusCode()) &&
+				.expectNextMatches((response) -> HttpStatus.CREATED.equals(response.statusCode()) &&
 						location.equals(response.headers().getLocation()))
 				.expectComplete()
 				.verify();
@@ -107,7 +107,7 @@ public class DefaultServerResponseBuilderTests {
 	public void accepted() throws Exception {
 		Mono<ServerResponse> result = ServerResponse.accepted().build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> HttpStatus.ACCEPTED.equals(response.statusCode()))
+				.expectNextMatches((response) -> HttpStatus.ACCEPTED.equals(response.statusCode()))
 				.expectComplete()
 				.verify();
 
@@ -117,7 +117,7 @@ public class DefaultServerResponseBuilderTests {
 	public void noContent() throws Exception {
 		Mono<ServerResponse> result = ServerResponse.noContent().build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> HttpStatus.NO_CONTENT.equals(response.statusCode()))
+				.expectNextMatches((response) -> HttpStatus.NO_CONTENT.equals(response.statusCode()))
 				.expectComplete()
 				.verify();
 
@@ -128,7 +128,7 @@ public class DefaultServerResponseBuilderTests {
 		URI location = URI.create("http://example.com");
 		Mono<ServerResponse> result = ServerResponse.seeOther(location).build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> HttpStatus.SEE_OTHER.equals(response.statusCode()) &&
+				.expectNextMatches((response) -> HttpStatus.SEE_OTHER.equals(response.statusCode()) &&
 						location.equals(response.headers().getLocation()))
 				.expectComplete()
 				.verify();
@@ -139,7 +139,7 @@ public class DefaultServerResponseBuilderTests {
 		URI location = URI.create("http://example.com");
 		Mono<ServerResponse> result = ServerResponse.temporaryRedirect(location).build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> HttpStatus.TEMPORARY_REDIRECT.equals(response.statusCode()) &&
+				.expectNextMatches((response) -> HttpStatus.TEMPORARY_REDIRECT.equals(response.statusCode()) &&
 						location.equals(response.headers().getLocation()))
 				.expectComplete()
 				.verify();
@@ -150,7 +150,7 @@ public class DefaultServerResponseBuilderTests {
 		URI location = URI.create("http://example.com");
 		Mono<ServerResponse> result = ServerResponse.permanentRedirect(location).build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> HttpStatus.PERMANENT_REDIRECT.equals(response.statusCode()) &&
+				.expectNextMatches((response) -> HttpStatus.PERMANENT_REDIRECT.equals(response.statusCode()) &&
 						location.equals(response.headers().getLocation()))
 				.expectComplete()
 				.verify();
@@ -160,7 +160,7 @@ public class DefaultServerResponseBuilderTests {
 	public void badRequest() throws Exception {
 		Mono<ServerResponse> result = ServerResponse.badRequest().build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> HttpStatus.BAD_REQUEST.equals(response.statusCode()))
+				.expectNextMatches((response) -> HttpStatus.BAD_REQUEST.equals(response.statusCode()))
 				.expectComplete()
 				.verify();
 
@@ -170,7 +170,7 @@ public class DefaultServerResponseBuilderTests {
 	public void notFound() throws Exception {
 		Mono<ServerResponse> result = ServerResponse.notFound().build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> HttpStatus.NOT_FOUND.equals(response.statusCode()))
+				.expectNextMatches((response) -> HttpStatus.NOT_FOUND.equals(response.statusCode()))
 				.expectComplete()
 				.verify();
 
@@ -180,7 +180,7 @@ public class DefaultServerResponseBuilderTests {
 	public void unprocessableEntity() throws Exception {
 		Mono<ServerResponse> result = ServerResponse.unprocessableEntity().build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> HttpStatus.UNPROCESSABLE_ENTITY.equals(response.statusCode()))
+				.expectNextMatches((response) -> HttpStatus.UNPROCESSABLE_ENTITY.equals(response.statusCode()))
 				.expectComplete()
 				.verify();
 
@@ -191,7 +191,7 @@ public class DefaultServerResponseBuilderTests {
 		Mono<ServerResponse> result = ServerResponse.ok().allow(HttpMethod.GET).build();
 		Set<HttpMethod> expected = EnumSet.of(HttpMethod.GET);
 		StepVerifier.create(result)
-				.expectNextMatches(response -> expected.equals(response.headers().getAllow()))
+				.expectNextMatches((response) -> expected.equals(response.headers().getAllow()))
 				.expectComplete()
 				.verify();
 
@@ -201,7 +201,7 @@ public class DefaultServerResponseBuilderTests {
 	public void contentLength() throws Exception {
 		Mono<ServerResponse> result = ServerResponse.ok().contentLength(42).build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> Long.valueOf(42).equals(response.headers().getContentLength()))
+				.expectNextMatches((response) -> Long.valueOf(42).equals(response.headers().getContentLength()))
 				.expectComplete()
 				.verify();
 
@@ -212,7 +212,7 @@ public class DefaultServerResponseBuilderTests {
 		Mono<ServerResponse>
 				result = ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> MediaType.APPLICATION_JSON.equals(response.headers().getContentType()))
+				.expectNextMatches((response) -> MediaType.APPLICATION_JSON.equals(response.headers().getContentType()))
 				.expectComplete()
 				.verify();
 	}
@@ -221,7 +221,7 @@ public class DefaultServerResponseBuilderTests {
 	public void eTag() throws Exception {
 		Mono<ServerResponse> result = ServerResponse.ok().eTag("foo").build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> "\"foo\"".equals(response.headers().getETag()))
+				.expectNextMatches((response) -> "\"foo\"".equals(response.headers().getETag()))
 				.expectComplete()
 				.verify();
 
@@ -233,7 +233,7 @@ public class DefaultServerResponseBuilderTests {
 		Mono<ServerResponse> result = ServerResponse.ok().lastModified(now).build();
 		Long expected = now.toInstant().toEpochMilli() / 1000;
 		StepVerifier.create(result)
-				.expectNextMatches(response -> expected.equals(response.headers().getLastModified() / 1000))
+				.expectNextMatches((response) -> expected.equals(response.headers().getLastModified() / 1000))
 				.expectComplete()
 				.verify();
 	}
@@ -243,7 +243,7 @@ public class DefaultServerResponseBuilderTests {
 		Mono<ServerResponse>
 				result = ServerResponse.ok().cacheControl(CacheControl.noCache()).build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> "no-cache".equals(response.headers().getCacheControl()))
+				.expectNextMatches((response) -> "no-cache".equals(response.headers().getCacheControl()))
 				.expectComplete()
 				.verify();
 	}
@@ -253,7 +253,7 @@ public class DefaultServerResponseBuilderTests {
 		Mono<ServerResponse> result = ServerResponse.ok().varyBy("foo").build();
 		List<String> expected = Collections.singletonList("foo");
 		StepVerifier.create(result)
-				.expectNextMatches(response -> expected.equals(response.headers().getVary()))
+				.expectNextMatches((response) -> expected.equals(response.headers().getVary()))
 				.expectComplete()
 				.verify();
 
@@ -264,7 +264,7 @@ public class DefaultServerResponseBuilderTests {
 		HttpStatus statusCode = HttpStatus.ACCEPTED;
 		Mono<ServerResponse> result = ServerResponse.status(statusCode).build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> statusCode.equals(response.statusCode()))
+				.expectNextMatches((response) -> statusCode.equals(response.statusCode()))
 				.expectComplete()
 				.verify();
 
@@ -275,9 +275,9 @@ public class DefaultServerResponseBuilderTests {
 		HttpHeaders newHeaders = new HttpHeaders();
 		newHeaders.set("foo", "bar");
 		Mono<ServerResponse> result =
-				ServerResponse.ok().headers(headers -> headers.addAll(newHeaders)).build();
+				ServerResponse.ok().headers((headers) -> headers.addAll(newHeaders)).build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> newHeaders.equals(response.headers()))
+				.expectNextMatches((response) -> newHeaders.equals(response.headers()))
 				.expectComplete()
 				.verify();
 
@@ -288,9 +288,9 @@ public class DefaultServerResponseBuilderTests {
 		MultiValueMap<String, ResponseCookie> newCookies = new LinkedMultiValueMap<>();
 		newCookies.add("name", ResponseCookie.from("name", "value").build());
 		Mono<ServerResponse> result =
-				ServerResponse.ok().cookies(cookies -> cookies.addAll(newCookies)).build();
+				ServerResponse.ok().cookies((cookies) -> cookies.addAll(newCookies)).build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> newCookies.equals(response.cookies()))
+				.expectNextMatches((response) -> newCookies.equals(response.cookies()))
 				.expectComplete()
 				.verify();
 	}
@@ -306,7 +306,7 @@ public class DefaultServerResponseBuilderTests {
 		MockServerHttpRequest request = MockServerHttpRequest.get("http://example.com").build();
 		MockServerWebExchange exchange = MockServerWebExchange.from(request);
 
-		result.flatMap(res -> res.writeTo(exchange, EMPTY_CONTEXT)).block();
+		result.flatMap((res) -> res.writeTo(exchange, EMPTY_CONTEXT)).block();
 
 		MockServerHttpResponse response = exchange.getResponse();
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -323,7 +323,7 @@ public class DefaultServerResponseBuilderTests {
 		MockServerHttpRequest request = MockServerHttpRequest.get("http://example.com").build();
 		MockServerWebExchange exchange = MockServerWebExchange.from(request);
 
-		result.flatMap(res -> res.writeTo(exchange, EMPTY_CONTEXT)).block();
+		result.flatMap((res) -> res.writeTo(exchange, EMPTY_CONTEXT)).block();
 
 		MockServerHttpResponse response = exchange.getResponse();
 		StepVerifier.create(response.getBody()).expectComplete().verify();

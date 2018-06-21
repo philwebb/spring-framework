@@ -61,14 +61,14 @@ public abstract class ReflectionUtils {
 	 * Pre-built FieldFilter that matches all non-static, non-final fields.
 	 */
 	public static final FieldFilter COPYABLE_FIELDS =
-			field -> !(Modifier.isStatic(field.getModifiers()) || Modifier.isFinal(field.getModifiers()));
+			(field) -> !(Modifier.isStatic(field.getModifiers()) || Modifier.isFinal(field.getModifiers()));
 
 
 	/**
 	 * Pre-built MethodFilter that matches all non-bridge methods.
 	 */
 	public static final MethodFilter NON_BRIDGED_METHODS =
-			(method -> !method.isBridge());
+			((method) -> !method.isBridge());
 
 
 	/**
@@ -76,7 +76,7 @@ public abstract class ReflectionUtils {
 	 * which are not declared on {@code java.lang.Object}.
 	 */
 	public static final MethodFilter USER_DECLARED_METHODS =
-			(method -> (!method.isBridge() && !method.isSynthetic() && method.getDeclaringClass() != Object.class));
+			((method) -> (!method.isBridge() && !method.isSynthetic() && method.getDeclaringClass() != Object.class));
 
 
 	/**
@@ -617,7 +617,7 @@ public abstract class ReflectionUtils {
 	 */
 	public static Method[] getUniqueDeclaredMethods(Class<?> leafClass) {
 		final List<Method> methods = new ArrayList<>(32);
-		doWithMethods(leafClass, method -> {
+		doWithMethods((leafClass), (method) -> {
 			boolean knownSignature = false;
 			Method methodBeingOverriddenWithCovariantReturnType = null;
 			for (Method existingMethod : methods) {
@@ -795,7 +795,7 @@ public abstract class ReflectionUtils {
 			throw new IllegalArgumentException("Destination class [" + dest.getClass().getName() +
 					"] must be same or subclass as source class [" + src.getClass().getName() + "]");
 		}
-		doWithFields(src.getClass(), field -> {
+		doWithFields(src.getClass(), (field) -> {
 			makeAccessible(field);
 			Object srcValue = field.get(src);
 			field.set(dest, srcValue);

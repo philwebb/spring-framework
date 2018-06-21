@@ -56,7 +56,7 @@ public abstract class AbstractDecoder<T> implements Decoder<T> {
 		if (mimeType == null) {
 			return true;
 		}
-		return this.decodableMimeTypes.stream().anyMatch(candidate -> candidate.isCompatibleWith(mimeType));
+		return this.decodableMimeTypes.stream().anyMatch((candidate) -> candidate.isCompatibleWith(mimeType));
 	}
 
 	@Override

@@ -233,7 +233,7 @@ public class HandshakeWebSocketService implements WebSocketService, Lifecycle {
 
 		String protocol = selectProtocol(headers, handler);
 
-		return initAttributes(exchange).flatMap(attributes ->
+		return initAttributes(exchange).flatMap((attributes) ->
 				this.upgradeStrategy.upgrade(exchange, handler, protocol,
 						() -> createHandshakeInfo(exchange, request, protocol, attributes))
 		);
@@ -264,9 +264,9 @@ public class HandshakeWebSocketService implements WebSocketService, Lifecycle {
 		if (this.sessionAttributePredicate == null) {
 			return EMPTY_ATTRIBUTES;
 		}
-		return exchange.getSession().map(session ->
+		return exchange.getSession().map((session) ->
 				session.getAttributes().entrySet().stream()
-						.filter(entry -> this.sessionAttributePredicate.test(entry.getKey()))
+						.filter((entry) -> this.sessionAttributePredicate.test(entry.getKey()))
 						.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
 	}
 

@@ -149,11 +149,11 @@ public final class CachedIntrospectionResults {
 	 * @param classLoader the ClassLoader to clear the cache for
 	 */
 	public static void clearClassLoader(@Nullable ClassLoader classLoader) {
-		acceptedClassLoaders.removeIf(registeredLoader ->
+		acceptedClassLoaders.removeIf((registeredLoader) ->
 				isUnderneathClassLoader(registeredLoader, classLoader));
-		strongClassCache.keySet().removeIf(beanClass ->
+		strongClassCache.keySet().removeIf((beanClass) ->
 				isUnderneathClassLoader(beanClass.getClassLoader(), classLoader));
-		softClassCache.keySet().removeIf(beanClass ->
+		softClassCache.keySet().removeIf((beanClass) ->
 				isUnderneathClassLoader(beanClass.getClassLoader(), classLoader));
 	}
 

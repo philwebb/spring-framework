@@ -74,7 +74,7 @@ public class ResponseEntityTests {
 				.expectStatus().isOk()
 				.expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
 				.expectBody(Person.class)
-				.consumeWith(result -> assertEquals(new Person("John"), result.getResponseBody()));
+				.consumeWith((result) -> assertEquals(new Person("John"), result.getResponseBody()));
 	}
 
 	@Test
@@ -117,7 +117,7 @@ public class ResponseEntityTests {
 		StepVerifier.create(result.getResponseBody())
 				.expectNext(new Person("N0"), new Person("N1"), new Person("N2"))
 				.expectNextCount(4)
-				.consumeNextWith(person -> assertThat(person.getName(), endsWith("7")))
+				.consumeNextWith((person) -> assertThat(person.getName(), endsWith("7")))
 				.thenCancel()
 				.verify();
 	}
@@ -159,7 +159,7 @@ public class ResponseEntityTests {
 		@GetMapping(produces = "text/event-stream")
 		Flux<Person> getPersonStream() {
 			return Flux.interval(ofMillis(100)).take(50).onBackpressureBuffer(50)
-					.map(index -> new Person("N" + index));
+					.map((index) -> new Person("N" + index));
 		}
 
 		@PostMapping

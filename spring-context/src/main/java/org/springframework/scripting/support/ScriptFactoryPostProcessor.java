@@ -232,7 +232,7 @@ public class ScriptFactoryPostProcessor extends InstantiationAwareBeanPostProces
 
 		// Filter out BeanPostProcessors that are part of the AOP infrastructure,
 		// since those are only meant to apply to beans defined in the original factory.
-		this.scriptBeanFactory.getBeanPostProcessors().removeIf(beanPostProcessor ->
+		this.scriptBeanFactory.getBeanPostProcessors().removeIf((beanPostProcessor) ->
 				beanPostProcessor instanceof AopInfrastructureBean);
 	}
 

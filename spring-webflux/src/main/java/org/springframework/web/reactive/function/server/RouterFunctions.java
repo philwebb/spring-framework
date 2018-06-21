@@ -67,7 +67,7 @@ public abstract class RouterFunctions {
 	public static final String URI_TEMPLATE_VARIABLES_ATTRIBUTE =
 			RouterFunctions.class.getName() + ".uriTemplateVariables";
 
-	private static final HandlerFunction<ServerResponse> NOT_FOUND_HANDLER = request -> ServerResponse.notFound().build();
+	private static final HandlerFunction<ServerResponse> NOT_FOUND_HANDLER = (request) -> ServerResponse.notFound().build();
 
 
 	/**
@@ -208,8 +208,8 @@ public abstract class RouterFunctions {
 	public static HttpHandler toHttpHandler(RouterFunction<?> routerFunction, HandlerStrategies strategies) {
 		WebHandler webHandler = toWebHandler(routerFunction, strategies);
 		return WebHttpHandlerBuilder.webHandler(webHandler)
-				.filters(filters -> filters.addAll(strategies.webFilters()))
-				.exceptionHandlers(handlers -> handlers.addAll(strategies.exceptionHandlers()))
+				.filters((filters) -> filters.addAll(strategies.webFilters()))
+				.exceptionHandlers((handlers) -> handlers.addAll(strategies.exceptionHandlers()))
 				.localeContextResolver(strategies.localeContextResolver())
 				.build();
 	}
@@ -235,13 +235,13 @@ public abstract class RouterFunctions {
 		Assert.notNull(routerFunction, "RouterFunction must not be null");
 		Assert.notNull(strategies, "HandlerStrategies must not be null");
 
-		return exchange -> {
+		return (exchange) -> {
 			ServerRequest request = new DefaultServerRequest(exchange, strategies.messageReaders());
 			addAttributes(exchange, request);
 			return routerFunction.route(request)
 					.defaultIfEmpty(notFound())
-					.flatMap(handlerFunction -> wrapException(() -> handlerFunction.handle(request)))
-					.flatMap(response -> wrapException(() -> response.writeTo(exchange,
+					.flatMap((handlerFunction) -> wrapException(() -> handlerFunction.handle(request)))
+					.flatMap((response) -> wrapException(() -> response.writeTo(exchange,
 							new HandlerStrategiesResponseContext(strategies))));
 		};
 	}
@@ -474,7 +474,7 @@ public abstract class RouterFunctions {
 		@Override
 		public Mono<HandlerFunction<T>> route(ServerRequest serverRequest) {
 			return this.predicate.nest(serverRequest)
-					.map(nestedRequest -> {
+					.map((nestedRequest) -> {
 								if (logger.isDebugEnabled()) {
 									logger.debug(
 											String.format(
@@ -482,7 +482,7 @@ public abstract class RouterFunctions {
 													this.predicate, serverRequest));
 								}
 								return this.routerFunction.route(nestedRequest)
-										.doOnNext(match -> {
+										.doOnNext((match) -> {
 											mergeTemplateVariables(serverRequest, nestedRequest.pathVariables());
 										});
 							}

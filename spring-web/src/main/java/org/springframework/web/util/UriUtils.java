@@ -312,7 +312,7 @@ public abstract class UriUtils {
 	 */
 	public static Object[] encodeUriVariables(Object... uriVariables) {
 		return Arrays.stream(uriVariables)
-				.map(value -> {
+				.map((value) -> {
 					String stringValue = (value != null ? value.toString() : "");
 					return encode(stringValue, StandardCharsets.UTF_8);
 				})

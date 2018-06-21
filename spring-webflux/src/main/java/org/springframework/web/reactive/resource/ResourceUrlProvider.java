@@ -100,7 +100,7 @@ public class ResourceUrlProvider implements ApplicationListener<ContextRefreshed
 		List<SimpleUrlHandlerMapping> mappings = new ArrayList<>(beans.values());
 		AnnotationAwareOrderComparator.sort(mappings);
 
-		mappings.forEach(mapping ->
+		mappings.forEach((mapping) ->
 			mapping.getHandlerMap().forEach((pattern, handler) -> {
 				if (handler instanceof ResourceWebHandler) {
 					ResourceWebHandler resourceHandler = (ResourceWebHandler) handler;
@@ -135,7 +135,7 @@ public class ResourceUrlProvider implements ApplicationListener<ContextRefreshed
 		if (logger.isTraceEnabled()) {
 			logger.trace("Getting resource URL for lookup path \"" + lookupPath + "\"");
 		}
-		return resolveResourceUrl(parsedLookupPath).map(resolvedPath ->
+		return resolveResourceUrl(parsedLookupPath).map((resolvedPath) ->
 				request.getPath().contextPath().value() + resolvedPath + query);
 	}
 
@@ -154,11 +154,11 @@ public class ResourceUrlProvider implements ApplicationListener<ContextRefreshed
 
 	private Mono<String> resolveResourceUrl(PathContainer lookupPath) {
 		return this.handlerMap.entrySet().stream()
-				.filter(entry -> entry.getKey().matches(lookupPath))
+				.filter((entry) -> entry.getKey().matches(lookupPath))
 				.sorted((entry1, entry2) ->
 						PathPattern.SPECIFICITY_COMPARATOR.compare(entry1.getKey(), entry2.getKey()))
 				.findFirst()
-				.map(entry -> {
+				.map((entry) -> {
 					PathContainer path = entry.getKey().extractPathWithinPattern(lookupPath);
 					int endIndex = lookupPath.elements().size() - path.elements().size();
 					PathContainer mapping = lookupPath.subPath(0, endIndex);
@@ -170,7 +170,7 @@ public class ResourceUrlProvider implements ApplicationListener<ContextRefreshed
 					List<ResourceResolver> resolvers = handler.getResourceResolvers();
 					ResourceResolverChain chain = new DefaultResourceResolverChain(resolvers);
 					return chain.resolveUrlPath(path.value(), handler.getLocations())
-							.map(resolvedPath -> {
+							.map((resolvedPath) -> {
 								if (logger.isTraceEnabled()) {
 									logger.trace("Resolved public resource URL path \"" + resolvedPath + "\"");
 								}

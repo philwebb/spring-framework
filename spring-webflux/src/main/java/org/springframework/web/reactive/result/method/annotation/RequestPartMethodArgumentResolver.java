@@ -75,7 +75,7 @@ public class RequestPartMethodArgumentResolver extends AbstractMessageReaderArgu
 		String name = getPartName(parameter, requestPart);
 
 		Flux<Part> parts = exchange.getMultipartData()
-				.flatMapMany(map -> {
+				.flatMapMany((map) -> {
 					List<Part> list = map.get(name);
 					if (CollectionUtils.isEmpty(list)) {
 						return isRequired ?
@@ -141,7 +141,7 @@ public class RequestPartMethodArgumentResolver extends AbstractMessageReaderArgu
 	private Flux<?> decodePartValues(Flux<Part> parts, MethodParameter elementType, BindingContext bindingContext,
 			ServerWebExchange exchange, boolean isRequired) {
 
-		return parts.flatMap(part -> {
+		return parts.flatMap((part) -> {
 			ServerHttpRequest partRequest = new PartServerHttpRequest(exchange.getRequest(), part);
 			ServerWebExchange partExchange = exchange.mutate().request(partRequest).build();
 			return readBody(elementType, isRequired, bindingContext, partExchange);

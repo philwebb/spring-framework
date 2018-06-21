@@ -51,7 +51,7 @@ abstract class AbstractMonoToListenableFutureAdapter<S, T> implements Listenable
 	protected AbstractMonoToListenableFutureAdapter(Mono<S> mono) {
 		Assert.notNull(mono, "Mono must not be null");
 		this.monoProcessor = mono
-				.doOnSuccess(result -> {
+				.doOnSuccess((result) -> {
 					T adapted;
 					try {
 						adapted = adapt(result);

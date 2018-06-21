@@ -52,7 +52,7 @@ public interface ExchangeFilterFunction {
 	default ExchangeFilterFunction andThen(ExchangeFilterFunction afterFilter) {
 		Assert.notNull(afterFilter, "ExchangeFilterFunction must not be null");
 		return (request, next) ->
-				filter(request, afterRequest -> afterFilter.filter(afterRequest, next));
+				filter(request, (afterRequest) -> afterFilter.filter(afterRequest, next));
 	}
 
 	/**
@@ -63,7 +63,7 @@ public interface ExchangeFilterFunction {
 	 */
 	default ExchangeFunction apply(ExchangeFunction exchange) {
 		Assert.notNull(exchange, "ExchangeFunction must not be null");
-		return request -> this.filter(request, exchange);
+		return (request) -> this.filter(request, exchange);
 	}
 
 	/**

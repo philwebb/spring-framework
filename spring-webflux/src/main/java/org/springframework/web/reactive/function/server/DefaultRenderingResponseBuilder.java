@@ -190,11 +190,11 @@ final class DefaultRenderingResponseBuilder implements RenderingResponse.Builder
 			Stream<ViewResolver> viewResolverStream = context.viewResolvers().stream();
 
 			return Flux.fromStream(viewResolverStream)
-					.concatMap(viewResolver -> viewResolver.resolveViewName(name(), locale))
+					.concatMap((viewResolver) -> viewResolver.resolveViewName(name(), locale))
 					.next()
 					.switchIfEmpty(Mono.error(() ->
 							new IllegalArgumentException("Could not resolve view with name '" + name() + "'")))
-					.flatMap(view -> {
+					.flatMap((view) -> {
 						List<MediaType> mediaTypes = view.getSupportedMediaTypes();
 						return view.render(model(),
 								contentType == null && !mediaTypes.isEmpty() ? mediaTypes.get(0) : contentType,

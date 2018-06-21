@@ -3119,7 +3119,7 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 		}
 
 		public TestBean consumeOptionalTestBean() {
-			this.testBeanFactory.ifAvailable(tb -> this.consumedTestBean = tb);
+			this.testBeanFactory.ifAvailable((tb) -> this.consumedTestBean = tb);
 			return this.consumedTestBean;
 		}
 
@@ -3132,7 +3132,7 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 		}
 
 		public TestBean consumeUniqueTestBean() {
-			this.testBeanFactory.ifUnique(tb -> this.consumedTestBean = tb);
+			this.testBeanFactory.ifUnique((tb) -> this.consumedTestBean = tb);
 			return this.consumedTestBean;
 		}
 	}

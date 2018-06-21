@@ -174,7 +174,7 @@ public final class HandlerTypePredicate implements Predicate<Class<?>> {
 		 * @param packageClasses one or more base package names
 		 */
 		public Builder basePackageClass(Class<?>... packageClasses) {
-			Arrays.stream(packageClasses).forEach(clazz -> addBasePackage(ClassUtils.getPackageName(clazz)));
+			Arrays.stream(packageClasses).forEach((clazz) -> addBasePackage(ClassUtils.getPackageName(clazz)));
 			return this;
 		}
 

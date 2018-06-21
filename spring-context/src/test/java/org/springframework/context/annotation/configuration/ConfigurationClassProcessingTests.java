@@ -119,7 +119,7 @@ public class ConfigurationClassProcessingTests {
 		BeanFactory factory = initBeanFactory(testClass);
 
 		assertSame(testBean, factory.getBean(beanName));
-		Arrays.stream(factory.getAliases(beanName)).map(factory::getBean).forEach(alias -> assertSame(testBean, alias));
+		Arrays.stream(factory.getAliases(beanName)).map(factory::getBean).forEach((alias) -> assertSame(testBean, alias));
 
 		// method name should not be registered
 		this.exception.expect(NoSuchBeanDefinitionException.class);
@@ -541,7 +541,7 @@ public class ConfigurationClassProcessingTests {
 			Supplier<TestBean> testBeanSupplier = () -> new TestBean(ctx.getBean("spouse", TestBean.class));
 			ctx.registerBean(TestBean.class,
 					testBeanSupplier,
-					bd -> bd.setPrimary(true));
+					(bd) -> bd.setPrimary(true));
 		}
 
 		@Bean

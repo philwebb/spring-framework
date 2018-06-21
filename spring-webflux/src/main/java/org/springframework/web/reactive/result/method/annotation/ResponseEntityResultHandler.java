@@ -127,7 +127,7 @@ public class ResponseEntityResultHandler extends AbstractMessageWriterResultHand
 			bodyParameter = actualParameter.nested();
 		}
 
-		return returnValueMono.flatMap(returnValue -> {
+		return returnValueMono.flatMap((returnValue) -> {
 			HttpEntity<?> httpEntity;
 			if (returnValue instanceof HttpEntity) {
 				httpEntity = (HttpEntity<?>) returnValue;
@@ -156,8 +156,8 @@ public class ResponseEntityResultHandler extends AbstractMessageWriterResultHand
 
 			if (!entityHeaders.isEmpty()) {
 				entityHeaders.entrySet().stream()
-						.filter(entry -> !responseHeaders.containsKey(entry.getKey()))
-						.forEach(entry -> responseHeaders.put(entry.getKey(), entry.getValue()));
+						.filter((entry) -> !responseHeaders.containsKey(entry.getKey()))
+						.forEach((entry) -> responseHeaders.put(entry.getKey(), entry.getValue()));
 			}
 
 			if(httpEntity.getBody() == null || returnValue instanceof HttpHeaders) {

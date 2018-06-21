@@ -293,10 +293,10 @@ public class SimpleMessageListenerContainer extends AbstractMessageListenerConta
 		MessageConsumer consumer = createConsumer(session, destination);
 
 		if (this.taskExecutor != null) {
-			consumer.setMessageListener(message -> this.taskExecutor.execute(() -> processMessage(message, session)));
+			consumer.setMessageListener((message) -> this.taskExecutor.execute(() -> processMessage(message, session)));
 		}
 		else {
-			consumer.setMessageListener(message -> processMessage(message, session));
+			consumer.setMessageListener((message) -> processMessage(message, session));
 		}
 
 		return consumer;

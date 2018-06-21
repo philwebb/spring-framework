@@ -113,7 +113,7 @@ class Netty4ClientHttpRequest extends AbstractAsyncClientHttpRequest implements 
 	protected ListenableFuture<ClientHttpResponse> executeInternal(final HttpHeaders headers) throws IOException {
 		final SettableListenableFuture<ClientHttpResponse> responseFuture = new SettableListenableFuture<>();
 
-		ChannelFutureListener connectionListener = future -> {
+		ChannelFutureListener connectionListener = (future) -> {
 			if (future.isSuccess()) {
 				Channel channel = future.channel();
 				channel.pipeline().addLast(new RequestExecuteHandler(responseFuture));

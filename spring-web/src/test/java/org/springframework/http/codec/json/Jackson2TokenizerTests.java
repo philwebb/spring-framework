@@ -194,7 +194,7 @@ public class Jackson2TokenizerTests extends AbstractDataBufferAllocatingTestCase
 				tokenizeArrayElements);
 
 		Flux<String> result = tokenBufferFlux
-				.map(tokenBuffer -> {
+				.map((tokenBuffer) -> {
 					try {
 						TreeNode root = this.objectMapper.readTree(tokenBuffer.asParser());
 						return this.objectMapper.writeValueAsString(root);
@@ -205,7 +205,7 @@ public class Jackson2TokenizerTests extends AbstractDataBufferAllocatingTestCase
 				});
 
 		StepVerifier.FirstStep<String> builder = StepVerifier.create(result);
-		expected.forEach(s -> builder.assertNext(new JSONAssertConsumer(s)));
+		expected.forEach((s) -> builder.assertNext(new JSONAssertConsumer(s)));
 		builder.verifyComplete();
 	}
 

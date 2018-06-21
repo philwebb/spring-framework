@@ -60,7 +60,7 @@ public class LocaleContextResolverIntegrationTests extends AbstractRequestMappin
 				.exchange();
 
 		StepVerifier.create(result)
-				.consumeNextWith(response -> {
+				.consumeNextWith((response) -> {
 					assertEquals(HttpStatus.OK, response.statusCode());
 					assertEquals(Locale.GERMANY, response.headers().asHttpHeaders().getContentLanguage());
 				})

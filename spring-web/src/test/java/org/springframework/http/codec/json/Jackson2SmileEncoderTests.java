@@ -85,7 +85,7 @@ public class Jackson2SmileEncoderTests extends AbstractDataBufferAllocatingTestC
 
 		ObjectMapper mapper = Jackson2ObjectMapperBuilder.smile().build();
 		StepVerifier.create(output)
-				.consumeNextWith(dataBuffer -> readPojo(mapper, List.class, dataBuffer))
+				.consumeNextWith((dataBuffer) -> readPojo(mapper, List.class, dataBuffer))
 				.verifyComplete();
 	}
 
@@ -101,9 +101,9 @@ public class Jackson2SmileEncoderTests extends AbstractDataBufferAllocatingTestC
 
 		ObjectMapper mapper = Jackson2ObjectMapperBuilder.smile().build();
 		StepVerifier.create(output)
-				.consumeNextWith(dataBuffer -> readPojo(mapper, Pojo.class, dataBuffer))
-				.consumeNextWith(dataBuffer -> readPojo(mapper, Pojo.class, dataBuffer))
-				.consumeNextWith(dataBuffer -> readPojo(mapper, Pojo.class, dataBuffer))
+				.consumeNextWith((dataBuffer) -> readPojo(mapper, Pojo.class, dataBuffer))
+				.consumeNextWith((dataBuffer) -> readPojo(mapper, Pojo.class, dataBuffer))
+				.consumeNextWith((dataBuffer) -> readPojo(mapper, Pojo.class, dataBuffer))
 				.verifyComplete();
 	}
 

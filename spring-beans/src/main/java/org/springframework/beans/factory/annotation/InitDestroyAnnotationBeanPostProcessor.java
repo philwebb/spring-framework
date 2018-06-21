@@ -204,7 +204,7 @@ public class InitDestroyAnnotationBeanPostProcessor
 			final LinkedList<LifecycleElement> currInitMethods = new LinkedList<>();
 			final LinkedList<LifecycleElement> currDestroyMethods = new LinkedList<>();
 
-			ReflectionUtils.doWithLocalMethods(targetClass, method -> {
+			ReflectionUtils.doWithLocalMethods(targetClass, (method) -> {
 				if (this.initAnnotationType != null && method.isAnnotationPresent(this.initAnnotationType)) {
 					LifecycleElement element = new LifecycleElement(method);
 					currInitMethods.add(element);

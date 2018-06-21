@@ -208,7 +208,7 @@ public class StompHeaders implements MultiValueMap<String, String>, Serializable
 			set(ACCEPT_VERSION, null);
 			return;
 		}
-		Arrays.stream(acceptVersions).forEach(version ->
+		Arrays.stream(acceptVersions).forEach((version) ->
 				Assert.isTrue(version != null && (version.equals("1.1") || version.equals("1.2")),
 						"Invalid version: " + version));
 		set(ACCEPT_VERSION, StringUtils.arrayToCommaDelimitedString(acceptVersions));
@@ -445,13 +445,13 @@ public class StompHeaders implements MultiValueMap<String, String>, Serializable
 	 */
 	@Override
 	public void add(String headerName, @Nullable String headerValue) {
-		List<String> headerValues = this.headers.computeIfAbsent(headerName, k -> new LinkedList<>());
+		List<String> headerValues = this.headers.computeIfAbsent(headerName, (k) -> new LinkedList<>());
 		headerValues.add(headerValue);
 	}
 
 	@Override
 	public void addAll(String headerName, List<? extends String> headerValues) {
-		List<String> currentValues = this.headers.computeIfAbsent(headerName, k -> new LinkedList<>());
+		List<String> currentValues = this.headers.computeIfAbsent(headerName, (k) -> new LinkedList<>());
 		currentValues.addAll(headerValues);
 	}
 

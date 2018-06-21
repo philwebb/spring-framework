@@ -315,7 +315,7 @@ public class MessageReaderArgumentResolverTests {
 	@SuppressWarnings("Convert2MethodRef")
 	private AbstractMessageReaderArgumentResolver resolver(Decoder<?>... decoders) {
 		List<HttpMessageReader<?>> readers = new ArrayList<>();
-		Arrays.asList(decoders).forEach(decoder -> readers.add(new DecoderHttpMessageReader<>(decoder)));
+		Arrays.asList(decoders).forEach((decoder) -> readers.add(new DecoderHttpMessageReader<>(decoder)));
 		return new AbstractMessageReaderArgumentResolver(readers) {
 			@Override
 			public boolean supportsParameter(MethodParameter parameter) {

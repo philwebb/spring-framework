@@ -29,7 +29,7 @@ import reactor.core.publisher.Mono;
  *
  * Mono&lt;String&gt; result = exchangeFunction
  *     .exchange(request)
- *     .then(response -> response.bodyToMono(String.class));
+ *     .then((response) -> response.bodyToMono(String.class));
  * </pre>
  *
  * @author Arjen Poutsma

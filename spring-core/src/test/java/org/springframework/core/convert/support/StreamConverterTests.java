@@ -150,7 +150,7 @@ public class StreamConverterTests {
 		assertTrue("Converted object must be a stream", result instanceof Stream);
 		@SuppressWarnings("unchecked")
 		Stream<Boolean> content = (Stream<Boolean>) result;
-		assertEquals(2, content.filter(x -> x).count());
+		assertEquals(2, content.filter((x) -> x).count());
 	}
 
 	@Test

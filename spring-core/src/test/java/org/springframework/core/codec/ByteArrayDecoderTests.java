@@ -61,8 +61,8 @@ public class ByteArrayDecoderTests extends AbstractDataBufferAllocatingTestCase 
 				null, Collections.emptyMap());
 
 		StepVerifier.create(output)
-				.consumeNextWith(bytes -> assertArrayEquals("foo".getBytes(), bytes))
-				.consumeNextWith(bytes -> assertArrayEquals("bar".getBytes(), bytes))
+				.consumeNextWith((bytes) -> assertArrayEquals("foo".getBytes(), bytes))
+				.consumeNextWith((bytes) -> assertArrayEquals("bar".getBytes(), bytes))
 				.expectComplete()
 				.verify();
 	}
@@ -77,7 +77,7 @@ public class ByteArrayDecoderTests extends AbstractDataBufferAllocatingTestCase 
 				null, Collections.emptyMap());
 
 		StepVerifier.create(output)
-				.consumeNextWith(bytes -> assertArrayEquals("foobar".getBytes(), bytes))
+				.consumeNextWith((bytes) -> assertArrayEquals("foobar".getBytes(), bytes))
 				.expectComplete()
 				.verify();
 	}

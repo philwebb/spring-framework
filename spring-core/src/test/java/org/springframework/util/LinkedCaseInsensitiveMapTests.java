@@ -91,16 +91,16 @@ public class LinkedCaseInsensitiveMapTests {
 		assertNull(this.map.putIfAbsent("key", "value1"));
 		assertEquals("value1", this.map.putIfAbsent("KEY", "value2"));
 		assertEquals("value1", this.map.put("Key", "value3"));
-		assertEquals("value3", this.map.computeIfAbsent("key", key -> "value1"));
-		assertEquals("value3", this.map.computeIfAbsent("KEY", key -> "value2"));
-		assertEquals("value3", this.map.computeIfAbsent("Key", key -> "value3"));
+		assertEquals("value3", this.map.computeIfAbsent("key", (key) -> "value1"));
+		assertEquals("value3", this.map.computeIfAbsent("KEY", (key) -> "value2"));
+		assertEquals("value3", this.map.computeIfAbsent("Key", (key) -> "value3"));
 	}
 
 	@Test
 	public void computeIfAbsentWithComputedValue() {
-		assertEquals("value1", this.map.computeIfAbsent("key", key -> "value1"));
-		assertEquals("value1", this.map.computeIfAbsent("KEY", key -> "value2"));
-		assertEquals("value1", this.map.computeIfAbsent("Key", key -> "value3"));
+		assertEquals("value1", this.map.computeIfAbsent("key", (key) -> "value1"));
+		assertEquals("value1", this.map.computeIfAbsent("KEY", (key) -> "value2"));
+		assertEquals("value1", this.map.computeIfAbsent("Key", (key) -> "value3"));
 	}
 
 	@Test

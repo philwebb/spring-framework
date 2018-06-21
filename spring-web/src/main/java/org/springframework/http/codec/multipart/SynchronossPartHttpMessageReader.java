@@ -137,7 +137,7 @@ public class SynchronossPartHttpMessageReader implements HttpMessageReader<Part>
 					.usePartBodyStreamStorageFactory(this.streamStorageFactory)
 					.forNIO(listener);
 
-			this.inputMessage.getBody().subscribe(buffer -> {
+			this.inputMessage.getBody().subscribe((buffer) -> {
 				byte[] resultBytes = new byte[buffer.readableByteCount()];
 				buffer.read(resultBytes);
 				try {
@@ -149,7 +149,7 @@ public class SynchronossPartHttpMessageReader implements HttpMessageReader<Part>
 				finally {
 					DataBufferUtils.release(buffer);
 				}
-			}, ex -> {
+			}, (ex) -> {
 				try {
 					listener.onError("Request body input error", ex);
 					parser.close();

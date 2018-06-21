@@ -44,15 +44,15 @@ public class DefaultServerWebExchangeTests {
 	@Test
 	public void transformUrlWithEncoder() {
 		ServerWebExchange exchange = createExchange();
-		exchange.addUrlTransformer(s -> s + "?nonce=123");
+		exchange.addUrlTransformer((s) -> s + "?nonce=123");
 		assertEquals("/foo?nonce=123", exchange.transformUrl("/foo"));
 	}
 
 	@Test
 	public void transformUrlWithMultipleEncoders() {
 		ServerWebExchange exchange = createExchange();
-		exchange.addUrlTransformer(s -> s + ";p=abc");
-		exchange.addUrlTransformer(s -> s + "?q=123");
+		exchange.addUrlTransformer((s) -> s + ";p=abc");
+		exchange.addUrlTransformer((s) -> s + "?q=123");
 		assertEquals("/foo;p=abc?q=123", exchange.transformUrl("/foo"));
 	}
 

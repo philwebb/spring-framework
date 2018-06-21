@@ -188,7 +188,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 		if (handlerType != null) {
 			final Class<?> userType = ClassUtils.getUserClass(handlerType);
 			Map<Method, T> methods = MethodIntrospector.selectMethods(userType,
-					(MethodIntrospector.MetadataLookup<T>) method -> getMappingForMethod(method, userType));
+					(MethodIntrospector.MetadataLookup<T>) (method) -> getMappingForMethod(method, userType));
 			if (this.logger.isDebugEnabled()) {
 				this.logger.debug(methods.size() + " request handler methods found on " + userType + ": " + methods);
 			}

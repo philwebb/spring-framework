@@ -283,11 +283,11 @@ public class WebFluxConfigurationSupportTests {
 
 
 	private void assertHasMessageReader(List<HttpMessageReader<?>> readers, ResolvableType type, MediaType mediaType) {
-		assertTrue(readers.stream().anyMatch(c -> mediaType == null || c.canRead(type, mediaType)));
+		assertTrue(readers.stream().anyMatch((c) -> mediaType == null || c.canRead(type, mediaType)));
 	}
 
 	private void assertHasMessageWriter(List<HttpMessageWriter<?>> writers, ResolvableType type, MediaType mediaType) {
-		assertTrue(writers.stream().anyMatch(c -> mediaType == null || c.canWrite(type, mediaType)));
+		assertTrue(writers.stream().anyMatch((c) -> mediaType == null || c.canWrite(type, mediaType)));
 	}
 
 	private ApplicationContext loadConfig(Class<?>... configurationClasses) {

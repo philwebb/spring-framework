@@ -58,7 +58,7 @@ public class HandshakeWebSocketServiceTests {
 
 		TestRequestUpgradeStrategy upgradeStrategy = new TestRequestUpgradeStrategy();
 		HandshakeWebSocketService service = new HandshakeWebSocketService(upgradeStrategy);
-		service.setSessionAttributePredicate(name -> Arrays.asList("a1", "a3", "a5").contains(name));
+		service.setSessionAttributePredicate((name) -> Arrays.asList("a1", "a3", "a5").contains(name));
 
 		service.handleRequest(exchange, mock(WebSocketHandler.class)).block();
 

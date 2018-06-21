@@ -430,7 +430,7 @@ public abstract class AbstractJdbcInsert {
 
 		if (this.tableMetaDataContext.isGetGeneratedKeysSupported()) {
 			getJdbcTemplate().update(
-					con -> {
+					(con) -> {
 						PreparedStatement ps = prepareStatementForGeneratedKeys(con);
 						setParameterValues(ps, values, getInsertTypes());
 						return ps;
@@ -470,7 +470,7 @@ public abstract class AbstractJdbcInsert {
 				keyHolder.getKeyList().add(keys);
 			}
 			else {
-				getJdbcTemplate().execute((ConnectionCallback<Object>) con -> {
+				getJdbcTemplate().execute((ConnectionCallback<Object>) (con) -> {
 					// Do the insert
 					PreparedStatement ps = null;
 					try {

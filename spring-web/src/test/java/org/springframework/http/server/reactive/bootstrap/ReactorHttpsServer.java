@@ -38,7 +38,7 @@ public class ReactorHttpsServer extends AbstractHttpServer {
 	protected void initServer() {
 		this.reactorHandler = createHttpHandlerAdapter();
 		this.reactorServer = reactor.netty.http.server.HttpServer.create()
-			.tcpConfiguration(server -> server.host(getHost()).secure())
+			.tcpConfiguration((server) -> server.host(getHost()).secure())
 			.port(getPort());
 	}
 

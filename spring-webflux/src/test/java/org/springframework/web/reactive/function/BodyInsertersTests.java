@@ -188,7 +188,7 @@ public class BodyInsertersTests {
 		byte[] expectedBytes = Files.readAllBytes(body.getFile().toPath());
 
 		StepVerifier.create(response.getBody())
-				.consumeNextWith(dataBuffer -> {
+				.consumeNextWith((dataBuffer) -> {
 					byte[] resultBytes = new byte[dataBuffer.readableByteCount()];
 					dataBuffer.read(resultBytes);
 					DataBufferUtils.release(dataBuffer);
@@ -231,7 +231,7 @@ public class BodyInsertersTests {
 		System.arraycopy(allBytes, rangeStart, expectedBytes, 0, expectedBytes.length);
 
 		StepVerifier.create(response.getBody())
-				.consumeNextWith(dataBuffer -> {
+				.consumeNextWith((dataBuffer) -> {
 					byte[] resultBytes = new byte[dataBuffer.readableByteCount()];
 					dataBuffer.read(resultBytes);
 					DataBufferUtils.release(dataBuffer);
@@ -269,7 +269,7 @@ public class BodyInsertersTests {
 		StepVerifier.create(result).expectComplete().verify();
 
 		StepVerifier.create(request.getBody())
-				.consumeNextWith(dataBuffer -> {
+				.consumeNextWith((dataBuffer) -> {
 					byte[] resultBytes = new byte[dataBuffer.readableByteCount()];
 					dataBuffer.read(resultBytes);
 					DataBufferUtils.release(dataBuffer);
@@ -294,7 +294,7 @@ public class BodyInsertersTests {
 		StepVerifier.create(result).expectComplete().verify();
 
 		StepVerifier.create(request.getBody())
-				.consumeNextWith(dataBuffer -> {
+				.consumeNextWith((dataBuffer) -> {
 					byte[] resultBytes = new byte[dataBuffer.readableByteCount()];
 					dataBuffer.read(resultBytes);
 					DataBufferUtils.release(dataBuffer);
@@ -333,7 +333,7 @@ public class BodyInsertersTests {
 		StepVerifier.create(result).expectComplete().verify();
 
 		StepVerifier.create(DataBufferUtils.join(request.getBody()))
-				.consumeNextWith(dataBuffer -> {
+				.consumeNextWith((dataBuffer) -> {
 					byte[] resultBytes = new byte[dataBuffer.readableByteCount()];
 					dataBuffer.read(resultBytes);
 					DataBufferUtils.release(dataBuffer);

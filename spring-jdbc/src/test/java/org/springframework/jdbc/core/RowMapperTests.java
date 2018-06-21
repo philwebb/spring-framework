@@ -98,13 +98,13 @@ public class RowMapperTests {
 
 	@Test
 	public void preparedStatementCreatorWithRowMapper() throws SQLException {
-		this.result = this.template.query(con -> this.preparedStatement, this.testRowMapper);
+		this.result = this.template.query((con) -> this.preparedStatement, this.testRowMapper);
 		verify(this.preparedStatement).close();
 	}
 
 	@Test
 	public void preparedStatementSetterWithRowMapper() throws SQLException {
-		this.result = this.template.query("some SQL", ps -> ps.setString(1, "test"), this.testRowMapper);
+		this.result = this.template.query("some SQL", (ps) -> ps.setString(1, "test"), this.testRowMapper);
 		verify(this.preparedStatement).setString(1, "test");
 		verify(this.preparedStatement).close();
 	}

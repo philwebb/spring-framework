@@ -41,7 +41,7 @@ public class WebFilterTests {
 			return exchange.getResponse().writeWith(Mono.just(buffer));
 		};
 
-		WebTestClient client = WebTestClient.bindToWebHandler(exchange -> Mono.empty())
+		WebTestClient client = WebTestClient.bindToWebHandler((exchange) -> Mono.empty())
 				.webFilter(filter)
 				.build();
 

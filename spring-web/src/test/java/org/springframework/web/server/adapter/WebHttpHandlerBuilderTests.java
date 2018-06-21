@@ -132,7 +132,7 @@ public class WebHttpHandlerBuilderTests {
 
 		@Bean
 		public WebHandler webHandler() {
-			return exchange -> {
+			return (exchange) -> {
 				String value = exchange.getAttributeOrDefault(ATTRIBUTE, "none");
 				return writeToResponse(exchange, value);
 			};
@@ -158,7 +158,7 @@ public class WebHttpHandlerBuilderTests {
 
 		@Bean
 		public WebHandler webHandler() {
-			return exchange -> Mono.error(new Exception());
+			return (exchange) -> Mono.error(new Exception());
 		}
 	}
 
@@ -169,7 +169,7 @@ public class WebHttpHandlerBuilderTests {
 
 		@Bean
 		public WebHandler webHandler() {
-			return exchange -> writeToResponse(exchange, "handled");
+			return (exchange) -> writeToResponse(exchange, "handled");
 		}
 	}
 

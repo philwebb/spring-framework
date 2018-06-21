@@ -62,7 +62,7 @@ public class XpathResultMatchers {
 	 * given Hamcrest {@link Matcher}.
 	 */
 	public ResultMatcher node(final Matcher<? super Node> matcher) {
-		return result -> {
+		return (result) -> {
 			MockHttpServletResponse response = result.getResponse();
 			this.xpathHelper.assertNode(response.getContentAsByteArray(), getDefinedEncoding(response), matcher);
 		};
@@ -80,7 +80,7 @@ public class XpathResultMatchers {
 	 * Evaluate the XPath and assert that content exists.
 	 */
 	public ResultMatcher exists() {
-		return result -> {
+		return (result) -> {
 			MockHttpServletResponse response = result.getResponse();
 			this.xpathHelper.exists(response.getContentAsByteArray(), getDefinedEncoding(response));
 		};
@@ -90,7 +90,7 @@ public class XpathResultMatchers {
 	 * Evaluate the XPath and assert that content doesn't exist.
 	 */
 	public ResultMatcher doesNotExist() {
-		return result -> {
+		return (result) -> {
 			MockHttpServletResponse response = result.getResponse();
 			this.xpathHelper.doesNotExist(response.getContentAsByteArray(), getDefinedEncoding(response));
 		};
@@ -101,7 +101,7 @@ public class XpathResultMatchers {
 	 * Hamcrest {@link Matcher}.
 	 */
 	public ResultMatcher nodeCount(final Matcher<Integer> matcher) {
-		return result -> {
+		return (result) -> {
 			MockHttpServletResponse response = result.getResponse();
 			this.xpathHelper.assertNodeCount(response.getContentAsByteArray(), getDefinedEncoding(response), matcher);
 		};
@@ -111,7 +111,7 @@ public class XpathResultMatchers {
 	 * Evaluate the XPath and assert the number of nodes found.
 	 */
 	public ResultMatcher nodeCount(final int expectedCount) {
-		return result -> {
+		return (result) -> {
 			MockHttpServletResponse response = result.getResponse();
 			this.xpathHelper.assertNodeCount(response.getContentAsByteArray(), getDefinedEncoding(response), expectedCount);
 		};
@@ -122,7 +122,7 @@ public class XpathResultMatchers {
 	 * Hamcrest {@link Matcher}.
 	 */
 	public ResultMatcher string(final Matcher<? super String> matcher) {
-		return result -> {
+		return (result) -> {
 			MockHttpServletResponse response = result.getResponse();
 			this.xpathHelper.assertString(response.getContentAsByteArray(), getDefinedEncoding(response), matcher);
 		};
@@ -132,7 +132,7 @@ public class XpathResultMatchers {
 	 * Apply the XPath and assert the {@link String} value found.
 	 */
 	public ResultMatcher string(final String expectedValue) {
-		return result -> {
+		return (result) -> {
 			MockHttpServletResponse response = result.getResponse();
 			this.xpathHelper.assertString(response.getContentAsByteArray(), getDefinedEncoding(response), expectedValue);
 		};
@@ -143,7 +143,7 @@ public class XpathResultMatchers {
 	 * given Hamcrest {@link Matcher}.
 	 */
 	public ResultMatcher number(final Matcher<? super Double> matcher) {
-		return result -> {
+		return (result) -> {
 			MockHttpServletResponse response = result.getResponse();
 			this.xpathHelper.assertNumber(response.getContentAsByteArray(), getDefinedEncoding(response), matcher);
 		};
@@ -153,7 +153,7 @@ public class XpathResultMatchers {
 	 * Evaluate the XPath and assert the {@link Double} value found.
 	 */
 	public ResultMatcher number(final Double expectedValue) {
-		return result -> {
+		return (result) -> {
 			MockHttpServletResponse response = result.getResponse();
 			this.xpathHelper.assertNumber(response.getContentAsByteArray(), getDefinedEncoding(response), expectedValue);
 		};
@@ -163,7 +163,7 @@ public class XpathResultMatchers {
 	 * Evaluate the XPath and assert the {@link Boolean} value found.
 	 */
 	public ResultMatcher booleanValue(final Boolean value) {
-		return result -> {
+		return (result) -> {
 			MockHttpServletResponse response = result.getResponse();
 			this.xpathHelper.assertBoolean(response.getContentAsByteArray(), getDefinedEncoding(response), value);
 		};

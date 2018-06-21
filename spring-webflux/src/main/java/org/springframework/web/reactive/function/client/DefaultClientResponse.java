@@ -113,11 +113,11 @@ class DefaultClientResponse implements ClientResponse {
 	@SuppressWarnings("unchecked")
 	private <T> Mono<T> consumeAndCancel() {
 		return (Mono<T>) this.response.getBody()
-				.map(buffer -> {
+				.map((buffer) -> {
 					DataBufferUtils.release(buffer);
 					throw new ReadCancellationException();
 				})
-				.onErrorResume(ReadCancellationException.class, ex -> Mono.empty())
+				.onErrorResume(ReadCancellationException.class, (ex) -> Mono.empty())
 				.then();
 	}
 
@@ -175,7 +175,7 @@ class DefaultClientResponse implements ClientResponse {
 		HttpHeaders headers = headers().asHttpHeaders();
 		HttpStatus statusCode = statusCode();
 		return bodyMono
-				.map(body -> new ResponseEntity<>(body, headers, statusCode))
+				.map((body) -> new ResponseEntity<>(body, headers, statusCode))
 				.switchIfEmpty(Mono.defer(
 						() -> Mono.just(new ResponseEntity<>(headers, statusCode))));
 	}
@@ -195,7 +195,7 @@ class DefaultClientResponse implements ClientResponse {
 		HttpStatus statusCode = statusCode();
 		return bodyFlux
 				.collectList()
-				.map(body -> new ResponseEntity<>(body, headers, statusCode));
+				.map((body) -> new ResponseEntity<>(body, headers, statusCode));
 	}
 
 

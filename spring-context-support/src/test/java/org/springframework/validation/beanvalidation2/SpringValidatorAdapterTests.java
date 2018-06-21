@@ -469,7 +469,7 @@ public class SpringValidatorAdapterTests {
 		@Override
 		public boolean isValid(Object value, ConstraintValidatorContext context) {
 			List<Field> fieldsErros = new ArrayList<>();
-			Arrays.asList(value.getClass().getDeclaredFields()).forEach(f -> {
+			Arrays.asList(value.getClass().getDeclaredFields()).forEach((f) -> {
 				f.setAccessible(true);
 				try {
 					if (!f.getName().equals(ID) && f.get(value) == null) {

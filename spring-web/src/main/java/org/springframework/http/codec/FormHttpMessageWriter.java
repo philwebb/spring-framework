@@ -129,7 +129,7 @@ public class FormHttpMessageWriter implements HttpMessageWriter<MultiValueMap<St
 		Charset charset = mediaType.getCharset();
 		Assert.notNull(charset, "No charset"); // should never occur
 
-		return Mono.from(inputStream).flatMap(form -> {
+		return Mono.from(inputStream).flatMap((form) -> {
 					String value = serializeForm(form, charset);
 					ByteBuffer byteBuffer = charset.encode(value);
 					DataBuffer buffer = message.bufferFactory().wrap(byteBuffer);

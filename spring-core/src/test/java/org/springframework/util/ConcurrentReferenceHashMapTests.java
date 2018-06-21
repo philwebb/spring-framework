@@ -495,7 +495,7 @@ public class ConcurrentReferenceHashMapTests {
 	@Ignore("Intended for use during development only")
 	public void shouldBeFasterThanSynchronizedMap() throws InterruptedException {
 		Map<Integer, WeakReference<String>> synchronizedMap = Collections.synchronizedMap(new WeakHashMap<Integer, WeakReference<String>>());
-		StopWatch mapTime = timeMultiThreaded("SynchronizedMap", synchronizedMap, v -> new WeakReference<>(String.valueOf(v)));
+		StopWatch mapTime = timeMultiThreaded("SynchronizedMap", synchronizedMap, (v) -> new WeakReference<>(String.valueOf(v)));
 		System.out.println(mapTime.prettyPrint());
 
 		this.map.setDisableTestHooks(true);

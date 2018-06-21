@@ -170,7 +170,7 @@ public class JdbcTemplateTests {
 	@Test
 	public void testStringsWithPreparedStatementSetter() throws Exception {
 		final Integer argument = 99;
-		doTestStrings(null, null, null, argument, (template, sql, rch) -> template.query(sql, ps -> {
+		doTestStrings(null, null, null, argument, (template, sql, rch) -> template.query(sql, (ps) -> {
 			ps.setObject(1, argument);
 		}, rch));
 	}
@@ -325,7 +325,7 @@ public class JdbcTemplateTests {
 
 		this.thrown.expect(sameInstance(runtimeException));
 		try {
-			this.template.query(sql, (RowCallbackHandler) rs -> {
+			this.template.query(sql, (RowCallbackHandler) (rs) -> {
 				throw runtimeException;
 			});
 		}
@@ -856,7 +856,7 @@ public class JdbcTemplateTests {
 
 		given(this.preparedStatement.executeUpdate()).willReturn(expectedRowsUpdated);
 
-		PreparedStatementSetter pss = ps -> ps.setString(1, name);
+		PreparedStatementSetter pss = (ps) -> ps.setString(1, name);
 		int actualRowsUpdated = new JdbcTemplate(this.dataSource).update(sql, pss);
 		assertEquals("updated correct # of rows", actualRowsUpdated, expectedRowsUpdated);
 		verify(this.preparedStatement).setString(1, name);
@@ -871,7 +871,7 @@ public class JdbcTemplateTests {
 		SQLException sqlException = new SQLException();
 		given(this.preparedStatement.executeUpdate()).willThrow(sqlException);
 
-		PreparedStatementSetter pss = ps -> ps.setString(1, name);
+		PreparedStatementSetter pss = (ps) -> ps.setString(1, name);
 		this.thrown.expect(DataAccessException.class);
 		this.thrown.expect(exceptionCause(sameInstance(sqlException)));
 		try {
@@ -915,7 +915,7 @@ public class JdbcTemplateTests {
 		this.thrown.expect(SQLWarningException.class);
 		this.thrown.expect(exceptionCause(sameInstance(warnings)));
 		try {
-			t.query(sql, rs -> {
+			t.query(sql, (rs) -> {
 				rs.getByte(1);
 			});
 		}
@@ -938,7 +938,7 @@ public class JdbcTemplateTests {
 		// Too long: truncation
 
 		this.template.setIgnoreWarnings(true);
-		this.template.query(sql, rs -> {
+		this.template.query(sql, (rs) -> {
 			rs.getByte(1);
 		});
 
@@ -959,7 +959,7 @@ public class JdbcTemplateTests {
 		this.thrown.expect(BadSqlGrammarException.class);
 		this.thrown.expect(exceptionCause(sameInstance(sqlException)));
 		try {
-			this.template.query(sql, (RowCallbackHandler) rs -> {
+			this.template.query(sql, (RowCallbackHandler) (rs) -> {
 				throw sqlException;
 			});
 			fail("Should have thrown BadSqlGrammarException");
@@ -987,7 +987,7 @@ public class JdbcTemplateTests {
 		this.thrown.expect(BadSqlGrammarException.class);
 		this.thrown.expect(exceptionCause(sameInstance(sqlException)));
 		try {
-			template.query(sql, (RowCallbackHandler) rs -> {
+			template.query(sql, (RowCallbackHandler) (rs) -> {
 				throw sqlException;
 			});
 		}
@@ -1021,7 +1021,7 @@ public class JdbcTemplateTests {
 		this.thrown.expect(BadSqlGrammarException.class);
 		this.thrown.expect(exceptionCause(sameInstance(sqlException)));
 		try {
-			template.query(sql, (RowCallbackHandler) rs -> {
+			template.query(sql, (RowCallbackHandler) (rs) -> {
 				throw sqlException;
 			});
 		}
@@ -1040,7 +1040,7 @@ public class JdbcTemplateTests {
 		given(this.connection.createStatement()).willReturn(this.statement);
 
 		try {
-			this.template.query("my query", (ResultSetExtractor<Object>) rs -> {
+			this.template.query("my query", (ResultSetExtractor<Object>) (rs) -> {
 				throw new InvalidDataAccessApiUsageException("");
 			});
 			fail("Should have thrown InvalidDataAccessApiUsageException");
@@ -1050,8 +1050,8 @@ public class JdbcTemplateTests {
 		}
 
 		try {
-			this.template.query(con -> con.prepareStatement("my query"),
-					(ResultSetExtractor<Object>) rs2 -> {
+			this.template.query((con) -> con.prepareStatement("my query"),
+					(ResultSetExtractor<Object>) (rs2) -> {
 							throw new InvalidDataAccessApiUsageException("");
 			}		);
 			fail("Should have thrown InvalidDataAccessApiUsageException");
@@ -1072,13 +1072,13 @@ public class JdbcTemplateTests {
 		given(this.callableStatement.execute()).willReturn(true);
 		given(this.callableStatement.getUpdateCount()).willReturn(-1);
 
-		SqlParameter param = new SqlReturnResultSet("", (RowCallbackHandler) rs -> {
+		SqlParameter param = new SqlReturnResultSet("", (RowCallbackHandler) (rs) -> {
 			throw new InvalidDataAccessApiUsageException("");
 		});
 
 		this.thrown.expect(InvalidDataAccessApiUsageException.class);
 		try {
-			this.template.call(conn -> conn.prepareCall("my query"), Collections.singletonList(param));
+			this.template.call((conn) -> conn.prepareCall("my query"), Collections.singletonList(param));
 		}
 		finally {
 			verify(this.resultSet).close();
@@ -1101,7 +1101,7 @@ public class JdbcTemplateTests {
 				this.template.isResultsMapCaseInsensitive());
 
 		Map<String, Object> out = this.template.call(
-				conn -> conn.prepareCall("my query"), Collections.singletonList(new SqlOutParameter("a", 12)));
+				(conn) -> conn.prepareCall("my query"), Collections.singletonList(new SqlOutParameter("a", 12)));
 
 		assertThat(out, instanceOf(LinkedCaseInsensitiveMap.class));
 		assertNotNull("we should have gotten the result with upper case", out.get("A"));

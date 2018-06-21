@@ -1184,7 +1184,7 @@ public class AnnotationUtilsTests {
 		Map<String, Object>[] filters = (Map[]) attributes.get("excludeFilters");
 		assertNotNull(filters);
 
-		List<String> patterns = stream(filters).map(m -> (String) m.get("pattern")).collect(toList());
+		List<String> patterns = stream(filters).map((m) -> (String) m.get("pattern")).collect(toList());
 		assertEquals(asList("*Foo", "*Bar"), patterns);
 
 		// Modify nested maps
@@ -1471,7 +1471,7 @@ public class AnnotationUtilsTests {
 		ContextConfig[] configs = synthesizedHierarchy.value();
 		assertNotNull(configs);
 		assertTrue("nested annotations must be synthesized",
-				stream(configs).allMatch(c -> c instanceof SynthesizedAnnotation));
+				stream(configs).allMatch((c) -> c instanceof SynthesizedAnnotation));
 
 		List<String> locations = stream(configs).map(ContextConfig::location).collect(toList());
 		assertThat(locations, is(expectedLocations));

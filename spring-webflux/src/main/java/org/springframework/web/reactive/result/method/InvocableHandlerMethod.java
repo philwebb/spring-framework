@@ -133,7 +133,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 	public Mono<HandlerResult> invoke(ServerWebExchange exchange, BindingContext bindingContext,
 			Object... providedArgs) {
 
-		return resolveArguments(exchange, bindingContext, providedArgs).flatMap(args -> {
+		return resolveArguments(exchange, bindingContext, providedArgs).flatMap((args) -> {
 			try {
 				Object value = doInvoke(args);
 
@@ -170,7 +170,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 		}
 		try {
 			List<Mono<Object>> argMonos = Stream.of(getMethodParameters())
-					.map(param -> {
+					.map((param) -> {
 						param.initParameterNameDiscovery(this.parameterNameDiscoverer);
 						return findProvidedArgument(param, providedArgs)
 								.map(Mono::just)
@@ -183,8 +183,8 @@ public class InvocableHandlerMethod extends HandlerMethod {
 					.collect(Collectors.toList());
 
 			// Create Mono with array of resolved values...
-			return Mono.zip(argMonos, argValues ->
-					Stream.of(argValues).map(o -> o != NO_ARG_VALUE ? o : null).toArray());
+			return Mono.zip(argMonos, (argValues) ->
+					Stream.of(argValues).map((o) -> o != NO_ARG_VALUE ? o : null).toArray());
 		}
 		catch (Throwable ex) {
 			return Mono.error(ex);
@@ -196,13 +196,13 @@ public class InvocableHandlerMethod extends HandlerMethod {
 			return Optional.empty();
 		}
 		return Arrays.stream(providedArgs)
-				.filter(arg -> parameter.getParameterType().isInstance(arg))
+				.filter((arg) -> parameter.getParameterType().isInstance(arg))
 				.findFirst();
 	}
 
 	private HandlerMethodArgumentResolver findResolver(MethodParameter param) {
 		return this.resolvers.stream()
-				.filter(r -> r.supportsParameter(param))
+				.filter((r) -> r.supportsParameter(param))
 				.findFirst()
 				.orElseThrow(() -> getArgumentError("No suitable resolver for", param, null));
 	}
@@ -213,7 +213,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 		try {
 			return resolver.resolveArgument(parameter, bindingContext, exchange)
 					.defaultIfEmpty(NO_ARG_VALUE)
-					.doOnError(cause -> {
+					.doOnError((cause) -> {
 						if (this.logger.isDebugEnabled()) {
 							this.logger.debug(getDetailedErrorMessage("Failed to resolve", parameter), cause);
 						}
@@ -250,7 +250,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 
 	private String getInvocationErrorMessage(Object[] args) {
 		String argumentDetails = IntStream.range(0, args.length)
-				.mapToObj(i -> (args[i] != null ?
+				.mapToObj((i) -> (args[i] != null ?
 						"[" + i + "][type=" + args[i].getClass().getName() + "][value=" + args[i] + "]" :
 						"[" + i + "][null]"))
 				.collect(Collectors.joining(",", " ", " "));

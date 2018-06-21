@@ -360,7 +360,7 @@ public class ScriptTemplateView extends AbstractUrlBasedView {
 			Assert.state(url != null, "'url' not set");
 			String template = getTemplate(url);
 
-			Function<String, String> templateLoader = path -> {
+			Function<String, String> templateLoader = (path) -> {
 				try {
 					return getTemplate(path);
 				}

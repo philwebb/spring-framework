@@ -134,7 +134,7 @@ public class MessageWriterResultHandlerTests {
 
 		assertNull(this.exchange.getResponse().getHeaders().get("Content-Type"));
 		StepVerifier.create(this.exchange.getResponse().getBody())
-				.expectErrorMatches(ex -> ex.getMessage().startsWith("No content was written")).verify();
+				.expectErrorMatches((ex) -> ex.getMessage().startsWith("No content was written")).verify();
 	}
 
 	@Test  // SPR-13135
@@ -185,7 +185,7 @@ public class MessageWriterResultHandlerTests {
 
 	private void assertResponseBody(String responseBody) {
 		StepVerifier.create(this.exchange.getResponse().getBody())
-				.consumeNextWith(buf -> assertEquals(responseBody, dumpString(buf, StandardCharsets.UTF_8)))
+				.consumeNextWith((buf) -> assertEquals(responseBody, dumpString(buf, StandardCharsets.UTF_8)))
 				.expectComplete()
 				.verify();
 	}

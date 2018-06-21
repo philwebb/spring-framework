@@ -46,7 +46,7 @@ import org.springframework.web.util.pattern.PathPatternParser;
  */
 public abstract class AbstractHandlerMapping extends ApplicationObjectSupport implements HandlerMapping, Ordered {
 
-	private static final WebHandler REQUEST_HANDLED_HANDLER = exchange -> Mono.empty();
+	private static final WebHandler REQUEST_HANDLED_HANDLER = (exchange) -> Mono.empty();
 
 
 	private final PathPatternParser patternParser;
@@ -144,7 +144,7 @@ public abstract class AbstractHandlerMapping extends ApplicationObjectSupport im
 
 	@Override
 	public Mono<Object> getHandler(ServerWebExchange exchange) {
-		return getHandlerInternal(exchange).map(handler -> {
+		return getHandlerInternal(exchange).map((handler) -> {
 			if (CorsUtils.isCorsRequest(exchange.getRequest())) {
 				CorsConfiguration configA = this.globalCorsConfigSource.getCorsConfiguration(exchange);
 				CorsConfiguration configB = getCorsConfiguration(handler, exchange);

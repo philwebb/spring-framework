@@ -70,12 +70,12 @@ class WiretapConnector implements ClientHttpConnector {
 		AtomicReference<WiretapClientHttpRequest> requestRef = new AtomicReference<>();
 
 		return this.delegate
-				.connect(method, uri, request -> {
+				.connect(method, uri, (request) -> {
 					WiretapClientHttpRequest wrapped = new WiretapClientHttpRequest(request);
 					requestRef.set(wrapped);
 					return requestCallback.apply(wrapped);
 				})
-				.map(response ->  {
+				.map((response) ->  {
 					WiretapClientHttpRequest wrappedRequest = requestRef.get();
 					String header = WebTestClient.WEBTESTCLIENT_REQUEST_ID;
 					String requestId = wrappedRequest.getHeaders().getFirst(header);
@@ -160,7 +160,7 @@ class WiretapConnector implements ClientHttpConnector {
 		public Mono<Void> writeAndFlushWith(Publisher<? extends Publisher<? extends DataBuffer>> publisher) {
 			return super.writeAndFlushWith(
 					Flux.from(publisher)
-							.map(p -> Flux.from(p).doOnNext(this::handleOnNext).doOnError(this::handleError))
+							.map((p) -> Flux.from(p).doOnNext(this::handleOnNext).doOnError(this::handleError))
 							.doOnError(this::handleError)
 							.doOnCancel(this::handleOnComplete)
 							.doOnComplete(this::handleOnComplete));

@@ -134,7 +134,7 @@ public class ExecutorSubscribableChannelTests {
 
 	@Test
 	public void concurrentModification() throws Exception {
-		this.channel.subscribe(message1 -> this.channel.unsubscribe(this.handler));
+		this.channel.subscribe((message1) -> this.channel.unsubscribe(this.handler));
 		this.channel.subscribe(this.handler);
 		this.channel.send(this.message);
 		verify(this.handler).handleMessage(this.message);

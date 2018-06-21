@@ -951,8 +951,8 @@ public class MockHttpServletRequest implements HttpServletRequest {
 		this.headers.remove(HttpHeaders.COOKIE);
 		if (this.cookies != null) {
 			Arrays.stream(this.cookies)
-					.map(c -> c.getName() + '=' + (c.getValue() == null ? "" : c.getValue()))
-					.forEach(value -> doAddHeaderValue(HttpHeaders.COOKIE, value, false));
+					.map((c) -> c.getName() + '=' + (c.getValue() == null ? "" : c.getValue()))
+					.forEach((value) -> doAddHeaderValue(HttpHeaders.COOKIE, value, false));
 		}
 	}
 

@@ -47,7 +47,7 @@ public class ExceptionHandlerMethodResolver {
 	/**
 	 * A filter for selecting {@code @ExceptionHandler} methods.
 	 */
-	public static final MethodFilter EXCEPTION_HANDLER_METHODS = method ->
+	public static final MethodFilter EXCEPTION_HANDLER_METHODS = (method) ->
 			(AnnotationUtils.findAnnotation(method, ExceptionHandler.class) != null);
 
 

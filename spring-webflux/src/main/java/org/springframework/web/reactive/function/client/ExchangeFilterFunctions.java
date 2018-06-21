@@ -64,7 +64,7 @@ public abstract class ExchangeFilterFunctions {
 		Assert.notNull(user, "'user' must not be null");
 		Assert.notNull(password, "'password' must not be null");
 		checkIllegalCharacters(user, password);
-		return basicAuthenticationInternal(request -> Optional.of(new Credentials(user, password)));
+		return basicAuthenticationInternal((request) -> Optional.of(new Credentials(user, password)));
 	}
 
 	/**
@@ -77,17 +77,17 @@ public abstract class ExchangeFilterFunctions {
 	 * @see Credentials#basicAuthenticationCredentials(String, String)
 	 */
 	public static ExchangeFilterFunction basicAuthentication() {
-		return basicAuthenticationInternal(request ->
+		return basicAuthenticationInternal((request) ->
 				request.attribute(BASIC_AUTHENTICATION_CREDENTIALS_ATTRIBUTE)
-						.map(credentials -> (Credentials) credentials));
+				.map((credentials) -> (Credentials) credentials));
 	}
 
 	private static ExchangeFilterFunction basicAuthenticationInternal(
 			Function<ClientRequest, Optional<Credentials>> credentialsFunction) {
 
-		return ExchangeFilterFunction.ofRequestProcessor(request ->
+		return ExchangeFilterFunction.ofRequestProcessor((request) ->
 				credentialsFunction.apply(request)
-						.map(credentials -> Mono.just(insertAuthorizationHeader(request, credentials)))
+						.map((credentials) -> Mono.just(insertAuthorizationHeader(request, credentials)))
 						.orElse(Mono.just(request)));
 	}
 
@@ -104,7 +104,7 @@ public abstract class ExchangeFilterFunctions {
 	}
 
 	private static ClientRequest insertAuthorizationHeader(ClientRequest request, Credentials credentials) {
-		return ClientRequest.from(request).headers(headers -> {
+		return ClientRequest.from(request).headers((headers) -> {
 			String credentialsString = credentials.username + ":" + credentials.password;
 			byte[] credentialBytes = credentialsString.getBytes(StandardCharsets.ISO_8859_1);
 			byte[] encodedBytes = Base64.getEncoder().encode(credentialBytes);
@@ -128,7 +128,7 @@ public abstract class ExchangeFilterFunctions {
 		Assert.notNull(exceptionFunction, "Function must not be null");
 
 		return ExchangeFilterFunction.ofResponseProcessor(
-				response -> statusPredicate.test(response.statusCode()) ?
+				(response) -> statusPredicate.test(response.statusCode()) ?
 						Mono.error(exceptionFunction.apply(response)) :
 						Mono.just(response)
 		);
@@ -174,7 +174,7 @@ public abstract class ExchangeFilterFunctions {
 		public static Consumer<Map<String, Object>> basicAuthenticationCredentials(String user, String password) {
 			Credentials credentials = new Credentials(user, password);
 			checkIllegalCharacters(user, password);
-			return map -> map.put(BASIC_AUTHENTICATION_CREDENTIALS_ATTRIBUTE, credentials);
+			return (map) -> map.put(BASIC_AUTHENTICATION_CREDENTIALS_ATTRIBUTE, credentials);
 		}
 
 

@@ -206,7 +206,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 */
 	public <T> void registerBean(@Nullable String beanName, Class<T> annotatedClass, Object... constructorArguments) {
 		this.reader.doRegisterBean(annotatedClass, null, beanName, null,
-				bd -> {
+				(bd) -> {
 					for (Object arg : constructorArguments) {
 						bd.getConstructorArgumentValues().addGenericArgumentValue(arg);
 					}

@@ -156,7 +156,7 @@ public class PathVariableMethodArgumentResolverTests {
 		Mono<Object> mono = this.resolver.resolveArgument(this.paramOptional, bindingContext, this.exchange);
 
 		StepVerifier.create(mono)
-				.consumeNextWith(value -> {
+				.consumeNextWith((value) -> {
 					assertTrue(value instanceof Optional);
 					assertFalse(((Optional<?>) value).isPresent());
 				})

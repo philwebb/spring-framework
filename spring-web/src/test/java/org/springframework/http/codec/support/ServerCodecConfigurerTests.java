@@ -113,11 +113,11 @@ public class ServerCodecConfigurerTests {
 		this.configurer.defaultCodecs().jackson2JsonEncoder(encoder);
 
 		assertSame(encoder, this.configurer.getWriters().stream()
-				.filter(writer -> ServerSentEventHttpMessageWriter.class.equals(writer.getClass()))
-				.map(writer -> (ServerSentEventHttpMessageWriter) writer)
+				.filter((writer) -> ServerSentEventHttpMessageWriter.class.equals(writer.getClass()))
+				.map((writer) -> (ServerSentEventHttpMessageWriter) writer)
 				.findFirst()
 				.map(ServerSentEventHttpMessageWriter::getEncoder)
-				.filter(e -> e == encoder).orElse(null));
+				.filter((e) -> e == encoder).orElse(null));
 	}
 
 

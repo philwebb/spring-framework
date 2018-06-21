@@ -131,14 +131,14 @@ public class SseIntegrationTests extends AbstractHttpHandlerIntegrationTests {
 
 	private void verifyPersonEvents(Flux<ServerSentEvent<Person>> result) {
 		StepVerifier.create(result)
-				.consumeNextWith( event -> {
+				.consumeNextWith((event) -> {
 					assertEquals("0", event.id());
 					assertEquals(new Person("foo 0"), event.data());
 					assertEquals("bar 0", event.comment());
 					assertNull(event.event());
 					assertNull(event.retry());
 				})
-				.consumeNextWith( event -> {
+				.consumeNextWith((event) -> {
 					assertEquals("1", event.id());
 					assertEquals(new Person("foo 1"), event.data());
 					assertEquals("bar 1", event.comment());
@@ -184,17 +184,17 @@ public class SseIntegrationTests extends AbstractHttpHandlerIntegrationTests {
 
 		@GetMapping("/string")
 		Flux<String> string() {
-			return INTERVAL.map(l -> "foo " + l);
+			return INTERVAL.map((l) -> "foo " + l);
 		}
 
 		@GetMapping("/person")
 		Flux<Person> person() {
-			return INTERVAL.map(l -> new Person("foo " + l));
+			return INTERVAL.map((l) -> new Person("foo " + l));
 		}
 
 		@GetMapping("/event")
 		Flux<ServerSentEvent<Person>> sse() {
-			return INTERVAL.take(2).map(l ->
+			return INTERVAL.take(2).map((l) ->
 					ServerSentEvent.builder(new Person("foo " + l))
 							.id(Long.toString(l))
 							.comment("bar " + l)
@@ -203,7 +203,7 @@ public class SseIntegrationTests extends AbstractHttpHandlerIntegrationTests {
 
 		@GetMapping("/infinite")
 		Flux<String> infinite() {
-			return Flux.just(0, 1).map(l -> "foo " + l)
+			return Flux.just(0, 1).map((l) -> "foo " + l)
 					.mergeWith(Flux.never())
 					.doOnCancel(() -> this.cancellation.onComplete());
 		}

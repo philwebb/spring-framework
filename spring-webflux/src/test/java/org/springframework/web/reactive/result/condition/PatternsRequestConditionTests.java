@@ -189,7 +189,7 @@ public class PatternsRequestConditionTests {
 	private PatternsRequestCondition createPatternsCondition(String... patterns) {
 		return new PatternsRequestCondition(Arrays
 				.stream(patterns)
-				.map(rawPattern -> this.parser.parse(rawPattern))
+				.map((rawPattern) -> this.parser.parse(rawPattern))
 				.collect(Collectors.toList()));
 	}
 

@@ -137,7 +137,7 @@ public class ContextPathCompositeHandlerTests {
 	}
 
 	private void assertNotInvoked(TestHttpHandler... handlers) {
-		Arrays.stream(handlers).forEach(handler -> assertFalse(handler.wasInvoked()));
+		Arrays.stream(handlers).forEach((handler) -> assertFalse(handler.wasInvoked()));
 	}
 
 

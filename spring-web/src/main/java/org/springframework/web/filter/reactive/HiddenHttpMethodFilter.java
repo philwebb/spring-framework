@@ -83,7 +83,7 @@ public class HiddenHttpMethodFilter implements WebFilter {
 		}
 
 		return exchange.getFormData()
-				.map(formData -> {
+				.map((formData) -> {
 					String method = formData.getFirst(this.methodParamName);
 					return StringUtils.hasLength(method) ? mapExchange(exchange, method) : exchange;
 				})
@@ -94,7 +94,7 @@ public class HiddenHttpMethodFilter implements WebFilter {
 		HttpMethod httpMethod = HttpMethod.resolve(methodParamValue.toUpperCase(Locale.ENGLISH));
 		Assert.notNull(httpMethod, () -> "HttpMethod '" + methodParamValue + "' not supported");
 		if (ALLOWED_METHODS.contains(httpMethod)) {
-			return exchange.mutate().request(builder -> builder.method(httpMethod)).build();
+			return exchange.mutate().request((builder) -> builder.method(httpMethod)).build();
 		}
 		else {
 			return exchange;

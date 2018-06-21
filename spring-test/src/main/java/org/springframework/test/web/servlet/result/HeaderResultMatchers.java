@@ -57,7 +57,7 @@ public class HeaderResultMatchers {
 	 * String {@code Matcher}.
 	 */
 	public ResultMatcher string(final String name, final Matcher<? super String> matcher) {
-		return result -> assertThat("Response header '" + name + "'", result.getResponse().getHeader(name), matcher);
+		return (result) -> assertThat("Response header '" + name + "'", result.getResponse().getHeader(name), matcher);
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class HeaderResultMatchers {
 	 * @since 4.3
 	 */
 	public <T> ResultMatcher stringValues(final String name, final Matcher<Iterable<String>> matcher) {
-		return result -> {
+		return (result) -> {
 			List<String> values = result.getResponse().getHeaders(name);
 			assertThat("Response header '" + name + "'", values, matcher);
 		};
@@ -76,7 +76,7 @@ public class HeaderResultMatchers {
 	 * Assert the primary value of the response header as a String value.
 	 */
 	public ResultMatcher string(final String name, final String value) {
-		return result -> assertEquals("Response header '" + name + "'", value, result.getResponse().getHeader(name));
+		return (result) -> assertEquals("Response header '" + name + "'", value, result.getResponse().getHeader(name));
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class HeaderResultMatchers {
 	 * @since 4.3
 	 */
 	public ResultMatcher stringValues(final String name, final String... values) {
-		return result -> {
+		return (result) -> {
 			List<Object> actual = result.getResponse().getHeaderValues(name);
 			assertEquals("Response header '" + name + "'", Arrays.asList(values), actual);
 		};
@@ -95,7 +95,7 @@ public class HeaderResultMatchers {
 	 * @since 5.0.3
 	 */
 	public ResultMatcher exists(final String name) {
-		return result -> assertTrue("Response should contain header '" + name + "'",
+		return (result) -> assertTrue("Response should contain header '" + name + "'",
 				result.getResponse().containsHeader(name));
 	}
 
@@ -104,7 +104,7 @@ public class HeaderResultMatchers {
 	 * @since 4.0
 	 */
 	public ResultMatcher doesNotExist(final String name) {
-		return result -> assertTrue("Response should not contain header '" + name + "'",
+		return (result) -> assertTrue("Response should not contain header '" + name + "'",
 				!result.getResponse().containsHeader(name));
 	}
 
@@ -115,7 +115,7 @@ public class HeaderResultMatchers {
 	 * header, or if the supplied {@code value} does not match the primary value.
 	 */
 	public ResultMatcher longValue(final String name, final long value) {
-		return result -> {
+		return (result) -> {
 			MockHttpServletResponse response = result.getResponse();
 			assertTrue("Response does not contain header '" + name + "'", response.containsHeader(name));
 			String headerValue = response.getHeader(name);
@@ -135,7 +135,7 @@ public class HeaderResultMatchers {
 	 * @see <a href="https://tools.ietf.org/html/rfc7231#section-7.1.1.1">Section 7.1.1.1 of RFC 7231</a>
 	 */
 	public ResultMatcher dateValue(final String name, final long value) {
-		return result -> {
+		return (result) -> {
 			SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
 			format.setTimeZone(TimeZone.getTimeZone("GMT"));
 			String formatted = format.format(new Date(value));

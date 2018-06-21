@@ -116,7 +116,7 @@ public abstract class AbstractListenerWebSocketSession<T> extends AbstractWebSoc
 		if (this.sendCalled.compareAndSet(false, true)) {
 			WebSocketSendProcessor sendProcessor = new WebSocketSendProcessor();
 			this.sendProcessor = sendProcessor;
-			return Mono.from(subscriber -> {
+			return Mono.from((subscriber) -> {
 					messages.subscribe(sendProcessor);
 					sendProcessor.subscribe(subscriber);
 			});

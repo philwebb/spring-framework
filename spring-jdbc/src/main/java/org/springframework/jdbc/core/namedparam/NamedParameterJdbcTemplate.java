@@ -334,7 +334,7 @@ public class NamedParameterJdbcTemplate implements NamedParameterJdbcOperations 
 			String sql, SqlParameterSource paramSource, KeyHolder generatedKeyHolder, @Nullable String[] keyColumnNames)
 			throws DataAccessException {
 
-		PreparedStatementCreator psc = getPreparedStatementCreator(sql, paramSource, pscf -> {
+		PreparedStatementCreator psc = getPreparedStatementCreator(sql, paramSource, (pscf) -> {
 			if (keyColumnNames != null) {
 				pscf.setGeneratedKeysColumnNames(keyColumnNames);
 			}

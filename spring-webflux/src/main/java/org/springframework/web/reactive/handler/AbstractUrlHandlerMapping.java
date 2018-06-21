@@ -114,11 +114,11 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping {
 	@Nullable
 	protected Object lookupHandler(PathContainer lookupPath, ServerWebExchange exchange) throws Exception {
 		return this.handlerMap.entrySet().stream()
-				.filter(entry -> entry.getKey().matches(lookupPath))
+				.filter((entry) -> entry.getKey().matches(lookupPath))
 				.sorted((entry1, entry2) ->
 						PathPattern.SPECIFICITY_COMPARATOR.compare(entry1.getKey(), entry2.getKey()))
 				.findFirst()
-				.map(entry -> {
+				.map((entry) -> {
 					PathPattern pattern = entry.getKey();
 					if (this.logger.isDebugEnabled()) {
 						this.logger.debug("Matching pattern for request [" + lookupPath + "] is " + pattern);

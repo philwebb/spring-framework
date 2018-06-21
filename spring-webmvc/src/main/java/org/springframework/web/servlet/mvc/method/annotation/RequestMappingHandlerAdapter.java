@@ -1015,13 +1015,13 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 	/**
 	 * MethodFilter that matches {@link InitBinder @InitBinder} methods.
 	 */
-	public static final MethodFilter INIT_BINDER_METHODS = method ->
+	public static final MethodFilter INIT_BINDER_METHODS = (method) ->
 			AnnotationUtils.findAnnotation(method, InitBinder.class) != null;
 
 	/**
 	 * MethodFilter that matches {@link ModelAttribute @ModelAttribute} methods.
 	 */
-	public static final MethodFilter MODEL_ATTRIBUTE_METHODS = method ->
+	public static final MethodFilter MODEL_ATTRIBUTE_METHODS = (method) ->
 			((AnnotationUtils.findAnnotation(method, RequestMapping.class) == null) &&
 			(AnnotationUtils.findAnnotation(method, ModelAttribute.class) != null));
 

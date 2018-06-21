@@ -79,8 +79,8 @@ public class ForwardedHeaderFilter implements WebFilter {
 		ServerWebExchange mutatedExchange;
 
 		if (this.removeOnly) {
-			mutatedExchange = exchange.mutate().request(builder ->
-					builder.headers(headers -> {
+			mutatedExchange = exchange.mutate().request((builder) ->
+					builder.headers((headers) -> {
 						FORWARDED_HEADER_NAMES.forEach(headers::remove);
 					}))
 					.build();
@@ -89,7 +89,7 @@ public class ForwardedHeaderFilter implements WebFilter {
 			URI uri = UriComponentsBuilder.fromHttpRequest(exchange.getRequest()).build().toUri();
 			String prefix = getForwardedPrefix(exchange.getRequest().getHeaders());
 
-			mutatedExchange = exchange.mutate().request(builder -> {
+			mutatedExchange = exchange.mutate().request((builder) -> {
 				builder.uri(uri);
 				if (prefix != null) {
 					builder.path(prefix + uri.getPath());

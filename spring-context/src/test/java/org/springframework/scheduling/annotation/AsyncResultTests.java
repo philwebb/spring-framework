@@ -51,7 +51,7 @@ public class AsyncResultTests {
 		assertSame(value, values.iterator().next());
 		assertSame(value, future.get());
 		assertSame(value, future.completable().get());
-		future.completable().thenAccept(v -> assertSame(value, v));
+		future.completable().thenAccept((v) -> assertSame(value, v));
 	}
 
 	@Test
@@ -95,7 +95,7 @@ public class AsyncResultTests {
 		assertSame(value, values.iterator().next());
 		assertSame(value, future.get());
 		assertSame(value, future.completable().get());
-		future.completable().thenAccept(v -> assertSame(value, v));
+		future.completable().thenAccept((v) -> assertSame(value, v));
 	}
 
 	@Test

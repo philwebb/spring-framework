@@ -46,7 +46,7 @@ public class PathResourceLookupFunctionTests {
 
 		File expected = new ClassPathResource("response.txt", getClass()).getFile();
 		StepVerifier.create(result)
-				.expectNextMatches(resource -> {
+				.expectNextMatches((resource) -> {
 					try {
 						return expected.equals(resource.getFile());
 					}
@@ -70,7 +70,7 @@ public class PathResourceLookupFunctionTests {
 		String path = "org/springframework/web/reactive/function/server/child/response.txt";
 		File expected = new ClassPathResource(path).getFile();
 		StepVerifier.create(result)
-				.expectNextMatches(resource -> {
+				.expectNextMatches((resource) -> {
 					try {
 						return expected.equals(resource.getFile());
 					}
@@ -106,7 +106,7 @@ public class PathResourceLookupFunctionTests {
 		ClassPathResource defaultResource = new ClassPathResource("response.txt", getClass());
 
 		Function<ServerRequest, Mono<Resource>> customLookupFunction =
-				lookupFunction.andThen(resourceMono -> resourceMono
+				lookupFunction.andThen((resourceMono) -> resourceMono
 								.switchIfEmpty(Mono.just(defaultResource)));
 
 		MockServerRequest request = MockServerRequest.builder()
@@ -115,7 +115,7 @@ public class PathResourceLookupFunctionTests {
 
 		Mono<Resource> result = customLookupFunction.apply(request);
 		StepVerifier.create(result)
-				.expectNextMatches(resource -> {
+				.expectNextMatches((resource) -> {
 					try {
 						return defaultResource.getFile().equals(resource.getFile());
 					}

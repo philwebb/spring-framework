@@ -123,7 +123,7 @@ public class DefaultMessageListenerContainerTests {
 	private ConnectionFactory createFailingContainerFactory() {
 		try {
 			ConnectionFactory connectionFactory = mock(ConnectionFactory.class);
-			given(connectionFactory.createConnection()).will(invocation -> {
+			given(connectionFactory.createConnection()).will((invocation) -> {
 				throw new JMSException("Test exception");
 			});
 			return connectionFactory;

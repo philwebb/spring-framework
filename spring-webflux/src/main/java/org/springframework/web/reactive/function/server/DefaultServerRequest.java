@@ -61,7 +61,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 class DefaultServerRequest implements ServerRequest {
 
 	private static final Function<UnsupportedMediaTypeException, UnsupportedMediaTypeStatusException> ERROR_MAPPER =
-			ex -> (ex.getContentType() != null ?
+			(ex) -> (ex.getContentType() != null ?
 					new UnsupportedMediaTypeStatusException(
 							ex.getContentType(), ex.getSupportedMediaTypes(), ex.getBodyType()) :
 					new UnsupportedMediaTypeStatusException(ex.getMessage()));

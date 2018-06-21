@@ -247,7 +247,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 		if (handlerType != null) {
 			final Class<?> userType = ClassUtils.getUserClass(handlerType);
 			Map<Method, T> methods = MethodIntrospector.selectMethods(userType,
-					(MethodIntrospector.MetadataLookup<T>) method -> {
+					(MethodIntrospector.MetadataLookup<T>) (method) -> {
 						try {
 							return getMappingForMethod(method, userType);
 						}

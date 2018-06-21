@@ -122,7 +122,7 @@ public class ResourceWebHandlerTests {
 		assertEquals(1, headers.get("Accept-Ranges").size());
 
 		StepVerifier.create(exchange.getResponse().getBody())
-				.expectErrorMatches(ex -> ex.getMessage().startsWith("No content was written"))
+				.expectErrorMatches((ex) -> ex.getMessage().startsWith("No content was written"))
 				.verify();
 	}
 
@@ -275,7 +275,7 @@ public class ResourceWebHandlerTests {
 		ServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get(""));
 		setPathWithinHandlerMapping(exchange, requestPath);
 		StepVerifier.create(handler.handle(exchange))
-				.expectErrorSatisfies(err -> {
+				.expectErrorSatisfies((err) -> {
 					assertThat(err, instanceOf(ResponseStatusException.class));
 					assertEquals(HttpStatus.NOT_FOUND, ((ResponseStatusException) err).getStatus());
 				}).verify(TIMEOUT);
@@ -321,7 +321,7 @@ public class ResourceWebHandlerTests {
 		ServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.method(httpMethod, ""));
 		setPathWithinHandlerMapping(exchange, requestPath);
 		StepVerifier.create(this.handler.handle(exchange))
-				.expectErrorSatisfies(err -> {
+				.expectErrorSatisfies((err) -> {
 					assertThat(err, instanceOf(ResponseStatusException.class));
 					assertEquals(HttpStatus.NOT_FOUND, ((ResponseStatusException) err).getStatus());
 				})
@@ -416,7 +416,7 @@ public class ResourceWebHandlerTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get(""));
 		setPathWithinHandlerMapping(exchange, "js/");
 		StepVerifier.create(this.handler.handle(exchange))
-				.expectErrorSatisfies(err -> {
+				.expectErrorSatisfies((err) -> {
 					assertThat(err, instanceOf(ResponseStatusException.class));
 					assertEquals(HttpStatus.NOT_FOUND, ((ResponseStatusException) err).getStatus());
 				}).verify(TIMEOUT);
@@ -427,7 +427,7 @@ public class ResourceWebHandlerTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get(""));
 		setPathWithinHandlerMapping(exchange, "underscorejs/");
 		StepVerifier.create(this.handler.handle(exchange))
-				.expectErrorSatisfies(err -> {
+				.expectErrorSatisfies((err) -> {
 					assertThat(err, instanceOf(ResponseStatusException.class));
 					assertEquals(HttpStatus.NOT_FOUND, ((ResponseStatusException) err).getStatus());
 				}).verify(TIMEOUT);
@@ -438,7 +438,7 @@ public class ResourceWebHandlerTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get(""));
 		setPathWithinHandlerMapping(exchange, "");
 		StepVerifier.create(this.handler.handle(exchange))
-				.expectErrorSatisfies(err -> {
+				.expectErrorSatisfies((err) -> {
 					assertThat(err, instanceOf(ResponseStatusException.class));
 					assertEquals(HttpStatus.NOT_FOUND, ((ResponseStatusException) err).getStatus());
 				}).verify(TIMEOUT);
@@ -469,7 +469,7 @@ public class ResourceWebHandlerTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(request);
 		setPathWithinHandlerMapping(exchange, "not-there.css");
 		StepVerifier.create(this.handler.handle(exchange))
-				.expectErrorSatisfies(err -> {
+				.expectErrorSatisfies((err) -> {
 					assertThat(err, instanceOf(ResponseStatusException.class));
 					assertEquals(HttpStatus.NOT_FOUND, ((ResponseStatusException) err).getStatus());
 				}).verify(TIMEOUT);
@@ -591,7 +591,7 @@ public class ResourceWebHandlerTests {
 				});
 
 		StepVerifier.create(reduced)
-				.consumeNextWith(buf -> {
+				.consumeNextWith((buf) -> {
 					String content = DataBufferTestUtils.dumpString(buf, StandardCharsets.UTF_8);
 					String[] ranges = StringUtils.tokenizeToStringArray(content, "\r\n", false, true);
 
@@ -640,7 +640,7 @@ public class ResourceWebHandlerTests {
 
 	private void assertResponseBody(MockServerWebExchange exchange, String responseBody) {
 		StepVerifier.create(exchange.getResponse().getBody())
-				.consumeNextWith(buf -> assertEquals(responseBody,
+				.consumeNextWith((buf) -> assertEquals(responseBody,
 						DataBufferTestUtils.dumpString(buf, StandardCharsets.UTF_8)))
 				.expectComplete()
 				.verify();

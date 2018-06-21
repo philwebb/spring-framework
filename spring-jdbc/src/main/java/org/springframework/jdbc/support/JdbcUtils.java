@@ -354,7 +354,7 @@ public abstract class JdbcUtils {
 			throws MetaDataAccessException {
 
 		return (T) extractDatabaseMetaData(dataSource,
-				dbmd -> {
+				(dbmd) -> {
 					try {
 						return DatabaseMetaData.class.getMethod(metaDataMethodName).invoke(dbmd);
 					}

@@ -101,7 +101,7 @@ public abstract class AbstractNamedValueArgumentResolver extends HandlerMethodAr
 		Model model = bindingContext.getModel();
 
 		return resolveName(resolvedName.toString(), nestedParameter, exchange)
-				.map(arg -> {
+				.map((arg) -> {
 					if ("".equals(arg) && namedValueInfo.defaultValue != null) {
 						arg = resolveStringValue(namedValueInfo.defaultValue);
 					}

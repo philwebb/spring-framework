@@ -53,7 +53,7 @@ public class WebLogicRequestUpgradeStrategy extends AbstractTyrusRequestUpgradeS
 
 	private static final WebLogicServletWriterHelper servletWriterHelper = new WebLogicServletWriterHelper();
 
-	private static final Connection.CloseListener noOpCloseListener = (reason -> {});
+	private static final Connection.CloseListener noOpCloseListener = ((reason) -> {});
 
 
 	@Override

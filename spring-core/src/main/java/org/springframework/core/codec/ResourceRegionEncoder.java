@@ -87,7 +87,7 @@ public class ResourceRegionEncoder extends AbstractEncoder<ResourceRegion> {
 
 		if (inputStream instanceof Mono) {
 			return ((Mono<? extends ResourceRegion>) inputStream)
-					.flatMapMany(region -> writeResourceRegion(region, bufferFactory));
+					.flatMapMany((region) -> writeResourceRegion(region, bufferFactory));
 		}
 		else {
 			Assert.notNull(hints, "'hints' must not be null");
@@ -99,7 +99,7 @@ public class ResourceRegionEncoder extends AbstractEncoder<ResourceRegion> {
 					(mimeType != null ? getAsciiBytes("Content-Type: " + mimeType + "\r\n") : new byte[0]);
 
 			Flux<DataBuffer> regions = Flux.from(inputStream).
-					concatMap(region ->
+					concatMap((region) ->
 							Flux.concat(
 									getRegionPrefix(bufferFactory, startBoundary, contentType, region),
 									writeResourceRegion(region, bufferFactory)

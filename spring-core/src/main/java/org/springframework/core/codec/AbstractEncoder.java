@@ -51,7 +51,7 @@ public abstract class AbstractEncoder<T> implements Encoder<T> {
 		if (mimeType == null) {
 			return true;
 		}
-		return this.encodableMimeTypes.stream().anyMatch(candidate -> candidate.isCompatibleWith(mimeType));
+		return this.encodableMimeTypes.stream().anyMatch((candidate) -> candidate.isCompatibleWith(mimeType));
 	}
 
 }

@@ -40,8 +40,8 @@ public class RouterFunctionMappingTests {
 
 	@Test
 	public void normal() {
-		HandlerFunction<ServerResponse> handlerFunction = request -> ServerResponse.ok().build();
-		RouterFunction<ServerResponse> routerFunction = request -> Mono.just(handlerFunction);
+		HandlerFunction<ServerResponse> handlerFunction = (request) -> ServerResponse.ok().build();
+		RouterFunction<ServerResponse> routerFunction = (request) -> Mono.just(handlerFunction);
 
 		RouterFunctionMapping mapping = new RouterFunctionMapping(routerFunction);
 		mapping.setMessageReaders(this.codecConfigurer.getReaders());
@@ -56,7 +56,7 @@ public class RouterFunctionMappingTests {
 
 	@Test
 	public void noMatch() {
-		RouterFunction<ServerResponse> routerFunction = request -> Mono.empty();
+		RouterFunction<ServerResponse> routerFunction = (request) -> Mono.empty();
 		RouterFunctionMapping mapping = new RouterFunctionMapping(routerFunction);
 		mapping.setMessageReaders(this.codecConfigurer.getReaders());
 

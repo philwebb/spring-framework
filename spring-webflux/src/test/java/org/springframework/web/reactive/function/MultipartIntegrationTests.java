@@ -55,7 +55,7 @@ public class MultipartIntegrationTests extends AbstractRouterFunctionIntegration
 
 		StepVerifier
 				.create(result)
-				.consumeNextWith(response -> assertEquals(HttpStatus.OK, response.statusCode()))
+				.consumeNextWith((response) -> assertEquals(HttpStatus.OK, response.statusCode()))
 				.verifyComplete();
 	}
 
@@ -69,7 +69,7 @@ public class MultipartIntegrationTests extends AbstractRouterFunctionIntegration
 
 		StepVerifier
 				.create(result)
-				.consumeNextWith(response -> assertEquals(HttpStatus.OK, response.statusCode()))
+				.consumeNextWith((response) -> assertEquals(HttpStatus.OK, response.statusCode()))
 				.verifyComplete();
 	}
 
@@ -92,7 +92,7 @@ public class MultipartIntegrationTests extends AbstractRouterFunctionIntegration
 		public Mono<ServerResponse> multipartData(ServerRequest request) {
 			return request
 					.body(BodyExtractors.toMultipartData())
-					.flatMap(map -> {
+					.flatMap((map) -> {
 						Map<String, Part> parts = map.toSingleValueMap();
 						try {
 							assertEquals(2, parts.size());
@@ -108,7 +108,7 @@ public class MultipartIntegrationTests extends AbstractRouterFunctionIntegration
 
 		public Mono<ServerResponse> parts(ServerRequest request) {
 			return request.body(BodyExtractors.toParts()).collectList()
-					.flatMap(parts -> {
+					.flatMap((parts) -> {
 						try {
 							assertEquals(2, parts.size());
 							assertEquals("foo.txt", ((FilePart) parts.get(0)).filename());

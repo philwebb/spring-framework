@@ -76,7 +76,7 @@ public class InterceptorRegistry {
 
 
 	private static final Comparator<Object> INTERCEPTOR_ORDER_COMPARATOR =
-			OrderComparator.INSTANCE.withSourceProvider(object -> {
+			OrderComparator.INSTANCE.withSourceProvider((object) -> {
 				if (object instanceof InterceptorRegistration) {
 					return (Ordered) ((InterceptorRegistration) object)::getOrder;
 				}

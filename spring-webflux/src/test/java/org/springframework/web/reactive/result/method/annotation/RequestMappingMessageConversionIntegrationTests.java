@@ -563,54 +563,54 @@ public class RequestMappingMessageConversionIntegrationTests extends AbstractReq
 		@PostMapping("/completable-future")
 		public CompletableFuture<Person> transformCompletableFuture(
 				@RequestBody CompletableFuture<Person> personFuture) {
-			return personFuture.thenApply(person -> new Person(person.getName().toUpperCase()));
+			return personFuture.thenApply((person) -> new Person(person.getName().toUpperCase()));
 		}
 
 		@PostMapping("/mono")
 		public Mono<Person> transformMono(@RequestBody Mono<Person> personFuture) {
-			return personFuture.map(person -> new Person(person.getName().toUpperCase()));
+			return personFuture.map((person) -> new Person(person.getName().toUpperCase()));
 		}
 
 		@PostMapping("/single")
 		public Single<Person> transformSingle(@RequestBody Single<Person> personFuture) {
-			return personFuture.map(person -> new Person(person.getName().toUpperCase()));
+			return personFuture.map((person) -> new Person(person.getName().toUpperCase()));
 		}
 
 		@PostMapping("/rxjava2-single")
 		public io.reactivex.Single<Person> transformRxJava2Single(@RequestBody io.reactivex.Single<Person> personFuture) {
-			return personFuture.map(person -> new Person(person.getName().toUpperCase()));
+			return personFuture.map((person) -> new Person(person.getName().toUpperCase()));
 		}
 
 		@PostMapping("/rxjava2-maybe")
 		public Maybe<Person> transformRxJava2Maybe(@RequestBody Maybe<Person> personFuture) {
-			return personFuture.map(person -> new Person(person.getName().toUpperCase()));
+			return personFuture.map((person) -> new Person(person.getName().toUpperCase()));
 		}
 
 		@PostMapping("/publisher")
 		public Publisher<Person> transformPublisher(@RequestBody Publisher<Person> persons) {
 			return Flux
 					.from(persons)
-					.map(person -> new Person(person.getName().toUpperCase()));
+					.map((person) -> new Person(person.getName().toUpperCase()));
 		}
 
 		@PostMapping("/flux")
 		public Flux<Person> transformFlux(@RequestBody Flux<Person> persons) {
-			return persons.map(person -> new Person(person.getName().toUpperCase()));
+			return persons.map((person) -> new Person(person.getName().toUpperCase()));
 		}
 
 		@PostMapping("/observable")
 		public Observable<Person> transformObservable(@RequestBody Observable<Person> persons) {
-			return persons.map(person -> new Person(person.getName().toUpperCase()));
+			return persons.map((person) -> new Person(person.getName().toUpperCase()));
 		}
 
 		@PostMapping("/rxjava2-observable")
 		public io.reactivex.Observable<Person> transformObservable(@RequestBody io.reactivex.Observable<Person> persons) {
-			return persons.map(person -> new Person(person.getName().toUpperCase()));
+			return persons.map((person) -> new Person(person.getName().toUpperCase()));
 		}
 
 		@PostMapping("/flowable")
 		public Flowable<Person> transformFlowable(@RequestBody Flowable<Person> persons) {
-			return persons.map(person -> new Person(person.getName().toUpperCase()));
+			return persons.map((person) -> new Person(person.getName().toUpperCase()));
 		}
 	}
 
@@ -650,7 +650,7 @@ public class RequestMappingMessageConversionIntegrationTests extends AbstractReq
 
 		@PostMapping("/observable")
 		public Observable<Void> createWithObservable(@RequestBody Observable<Person> observable) {
-			return observable.toList().doOnNext(this.persons::addAll).flatMap(document -> Observable.empty());
+			return observable.toList().doOnNext(this.persons::addAll).flatMap((document) -> Observable.empty());
 		}
 
 		@PostMapping("/rxjava2-observable")

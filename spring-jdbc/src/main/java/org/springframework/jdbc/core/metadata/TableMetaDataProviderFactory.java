@@ -49,7 +49,7 @@ public final class TableMetaDataProviderFactory {
 	 */
 	public static TableMetaDataProvider createMetaDataProvider(DataSource dataSource, TableMetaDataContext context) {
 		try {
-			return (TableMetaDataProvider) JdbcUtils.extractDatabaseMetaData(dataSource, databaseMetaData -> {
+			return (TableMetaDataProvider) JdbcUtils.extractDatabaseMetaData(dataSource, (databaseMetaData) -> {
 				String databaseProductName =
 						JdbcUtils.commonDatabaseName(databaseMetaData.getDatabaseProductName());
 				boolean accessTableColumnMetaData = context.isAccessTableColumnMetaData();

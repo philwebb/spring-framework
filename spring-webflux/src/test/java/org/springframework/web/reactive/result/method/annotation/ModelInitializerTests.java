@@ -213,7 +213,7 @@ public class ModelInitializerTests {
 		List<SyncInvocableHandlerMethod> binderMethods =
 				MethodIntrospector.selectMethods(controller.getClass(), BINDER_METHODS)
 						.stream()
-						.map(method -> new SyncInvocableHandlerMethod(controller, method))
+						.map((method) -> new SyncInvocableHandlerMethod(controller, method))
 						.collect(Collectors.toList());
 
 		WebBindingInitializer bindingInitializer = new ConfigurableWebBindingInitializer();
@@ -264,7 +264,7 @@ public class ModelInitializerTests {
 		@ModelAttribute
 		public Mono<Void> voidMonoMethodBean(Model model) {
 			return Mono.just("Void Mono Method Bean")
-					.doOnNext(name -> model.addAttribute("voidMonoMethodBean", new TestBean(name)))
+					.doOnNext((name) -> model.addAttribute("voidMonoMethodBean", new TestBean(name)))
 					.then();
 		}
 
@@ -295,7 +295,7 @@ public class ModelInitializerTests {
 		}
 	}
 
-	private static final ReflectionUtils.MethodFilter BINDER_METHODS = method ->
+	private static final ReflectionUtils.MethodFilter BINDER_METHODS = (method) ->
 			AnnotationUtils.findAnnotation(method, InitBinder.class) != null;
 
 }

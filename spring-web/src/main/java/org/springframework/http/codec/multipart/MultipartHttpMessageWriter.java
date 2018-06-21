@@ -173,7 +173,7 @@ public class MultipartHttpMessageWriter implements HttpMessageWriter<MultiValueM
 		Class<?> rawClass = elementType.getRawClass();
 		return rawClass != null && MultiValueMap.class.isAssignableFrom(rawClass) &&
 				(mediaType == null ||
-						this.supportedMediaTypes.stream().anyMatch(m -> m.isCompatibleWith(mediaType)));
+						this.supportedMediaTypes.stream().anyMatch((m) -> m.isCompatibleWith(mediaType)));
 	}
 
 	@Override
@@ -181,7 +181,7 @@ public class MultipartHttpMessageWriter implements HttpMessageWriter<MultiValueM
 			ResolvableType elementType, @Nullable MediaType mediaType, ReactiveHttpOutputMessage outputMessage,
 			Map<String, Object> hints) {
 
-		return Mono.from(inputStream).flatMap(map -> {
+		return Mono.from(inputStream).flatMap((map) -> {
 			if (this.formWriter == null || isMultipart(map, mediaType)) {
 				return writeMultipart(map, outputMessage);
 			}
@@ -218,7 +218,7 @@ public class MultipartHttpMessageWriter implements HttpMessageWriter<MultiValueM
 		outputMessage.getHeaders().setContentType(new MediaType(MediaType.MULTIPART_FORM_DATA, params));
 
 		Flux<DataBuffer> body = Flux.fromIterable(map.entrySet())
-				.concatMap(entry -> encodePartValues(boundary, entry.getKey(), entry.getValue()))
+				.concatMap((entry) -> encodePartValues(boundary, entry.getKey(), entry.getValue()))
 				.concatWith(Mono.just(generateLastLine(boundary)));
 
 		return outputMessage.writeWith(body);
@@ -233,7 +233,7 @@ public class MultipartHttpMessageWriter implements HttpMessageWriter<MultiValueM
 	}
 
 	private Flux<DataBuffer> encodePartValues(byte[] boundary, String name, List<?> values) {
-		return Flux.concat(values.stream().map(v ->
+		return Flux.concat(values.stream().map((v) ->
 				encodePart(boundary, name, v)).collect(Collectors.toList()));
 	}
 
@@ -268,7 +268,7 @@ public class MultipartHttpMessageWriter implements HttpMessageWriter<MultiValueM
 				outputHeaders.setContentDispositionFormData(name, ((Resource) body).getFilename());
 			}
 			else if (Resource.class.equals(resolvableType.getRawClass())) {
-				body = (T) Mono.from((Publisher<?>) body).doOnNext(o -> outputHeaders
+				body = (T) Mono.from((Publisher<?>) body).doOnNext((o) -> outputHeaders
 						.setContentDispositionFormData(name, ((Resource) o).getFilename()));
 			}
 			else {
@@ -280,7 +280,7 @@ public class MultipartHttpMessageWriter implements HttpMessageWriter<MultiValueM
 
 		final ResolvableType finalBodyType = resolvableType;
 		Optional<HttpMessageWriter<?>> writer = this.partWriters.stream()
-				.filter(partWriter -> partWriter.canWrite(finalBodyType, contentType))
+				.filter((partWriter) -> partWriter.canWrite(finalBodyType, contentType))
 				.findFirst();
 
 		if (!writer.isPresent()) {

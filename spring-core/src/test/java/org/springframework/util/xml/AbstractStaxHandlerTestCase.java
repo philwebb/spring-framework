@@ -55,7 +55,7 @@ public abstract class AbstractStaxHandlerTestCase {
 					"<?pi content?><root xmlns='namespace'><prefix:child xmlns:prefix='namespace2' prefix:attr='value'>content</prefix:child>" +
 					"</root>";
 
-	private static final Predicate<Node> nodeFilter = (n -> n.getNodeType() != Node.COMMENT_NODE &&
+	private static final Predicate<Node> nodeFilter = ((n) -> n.getNodeType() != Node.COMMENT_NODE &&
 			n.getNodeType() != Node.DOCUMENT_TYPE_NODE && n.getNodeType() != Node.PROCESSING_INSTRUCTION_NODE);
 
 

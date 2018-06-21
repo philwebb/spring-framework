@@ -993,7 +993,7 @@ public class DispatcherServlet extends FrameworkServlet {
 			String params = "";
 			if (!this.disableLoggingRequestDetails) {
 				params = request.getParameterMap().entrySet().stream()
-						.map(entry -> entry.getKey() + ":" + Arrays.toString(entry.getValue()))
+						.map((entry) -> entry.getKey() + ":" + Arrays.toString(entry.getValue()))
 						.collect(Collectors.joining(", ", ", parameters={", "}"));
 			}
 
@@ -1006,7 +1006,7 @@ public class DispatcherServlet extends FrameworkServlet {
 				String headers = "";
 				if (!this.disableLoggingRequestDetails) {
 					headers = Collections.list(request.getHeaderNames()).stream()
-							.map(name -> name + ":" + Collections.list(request.getHeaders(name)))
+							.map((name) -> name + ":" + Collections.list(request.getHeaders(name)))
 							.collect(Collectors.joining(", ", ", headers={", "}"));
 				}
 				this.logger.trace(message + headers + " in DispatcherServlet '" + getServletName() + "'");

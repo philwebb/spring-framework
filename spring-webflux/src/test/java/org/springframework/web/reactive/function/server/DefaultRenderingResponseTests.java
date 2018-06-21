@@ -58,7 +58,7 @@ public class DefaultRenderingResponseTests {
 		String name = "foo";
 		Mono<RenderingResponse> result = RenderingResponse.create(name).build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> name.equals(response.name()))
+				.expectNextMatches((response) -> name.equals(response.name()))
 				.expectComplete()
 				.verify();
 	}
@@ -68,7 +68,7 @@ public class DefaultRenderingResponseTests {
 		HttpHeaders headers = new HttpHeaders();
 		Mono<RenderingResponse> result = RenderingResponse.create("foo").headers(headers).build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> headers.equals(response.headers()))
+				.expectNextMatches((response) -> headers.equals(response.headers()))
 				.expectComplete()
 				.verify();
 
@@ -79,7 +79,7 @@ public class DefaultRenderingResponseTests {
 		Mono<RenderingResponse> result = RenderingResponse.create("foo")
 				.modelAttribute("foo", "bar").build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> "bar".equals(response.model().get("foo")))
+				.expectNextMatches((response) -> "bar".equals(response.model().get("foo")))
 				.expectComplete()
 				.verify();
 	}
@@ -89,7 +89,7 @@ public class DefaultRenderingResponseTests {
 		Mono<RenderingResponse> result = RenderingResponse.create("foo")
 				.modelAttribute("bar").build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> "bar".equals(response.model().get("string")))
+				.expectNextMatches((response) -> "bar".equals(response.model().get("string")))
 				.expectComplete()
 				.verify();
 	}
@@ -100,7 +100,7 @@ public class DefaultRenderingResponseTests {
 		Mono<RenderingResponse> result = RenderingResponse.create("foo")
 				.modelAttributes(model).build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> "bar".equals(response.model().get("foo")))
+				.expectNextMatches((response) -> "bar".equals(response.model().get("foo")))
 				.expectComplete()
 				.verify();
 	}
@@ -111,7 +111,7 @@ public class DefaultRenderingResponseTests {
 		Mono<RenderingResponse> result = RenderingResponse.create("foo")
 				.modelAttributes(model).build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> "bar".equals(response.model().get("string")))
+				.expectNextMatches((response) -> "bar".equals(response.model().get("string")))
 				.expectComplete()
 				.verify();
 	}
@@ -121,9 +121,9 @@ public class DefaultRenderingResponseTests {
 		MultiValueMap<String, ResponseCookie> newCookies = new LinkedMultiValueMap<>();
 		newCookies.add("name", ResponseCookie.from("name", "value").build());
 		Mono<RenderingResponse> result =
-				RenderingResponse.create("foo").cookies(cookies -> cookies.addAll(newCookies)).build();
+				RenderingResponse.create("foo").cookies((cookies) -> cookies.addAll(newCookies)).build();
 		StepVerifier.create(result)
-				.expectNextMatches(response -> newCookies.equals(response.cookies()))
+				.expectNextMatches((response) -> newCookies.equals(response.cookies()))
 				.expectComplete()
 				.verify();
 	}
@@ -147,7 +147,7 @@ public class DefaultRenderingResponseTests {
 		when(mockConfig.viewResolvers()).thenReturn(viewResolvers);
 
 		StepVerifier.create(result)
-				.expectNextMatches(response -> "view".equals(response.name()) &&
+				.expectNextMatches((response) -> "view".equals(response.name()) &&
 						model.equals(response.model()))
 				.expectComplete()
 				.verify();
@@ -168,7 +168,7 @@ public class DefaultRenderingResponseTests {
 		ServerResponse.Context context = mock(ServerResponse.Context.class);
 		when(context.viewResolvers()).thenReturn(viewResolvers);
 
-		StepVerifier.create(result.flatMap(response -> response.writeTo(exchange, context)))
+		StepVerifier.create(result.flatMap((response) -> response.writeTo(exchange, context)))
 				.verifyComplete();
 
 		assertEquals(ViewResolverSupport.DEFAULT_CONTENT_TYPE, exchange.getResponse().getHeaders().getContentType());

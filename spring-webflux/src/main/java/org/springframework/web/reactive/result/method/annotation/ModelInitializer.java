@@ -87,13 +87,13 @@ class ModelInitializer {
 		}
 
 		return exchange.getSession()
-				.flatMap(session -> {
+				.flatMap((session) -> {
 					Map<String, Object> attributes = sessionAttributesHandler.retrieveAttributes(session);
 					bindingContext.getModel().mergeAttributes(attributes);
 					bindingContext.setSessionContext(sessionAttributesHandler, session);
 					return invokeModelAttributeMethods(bindingContext, modelMethods, exchange)
-							.doOnSuccess(aVoid ->
-								findModelAttributes(handlerMethod, sessionAttributesHandler).forEach(name -> {
+							.doOnSuccess((aVoid) ->
+								findModelAttributes(handlerMethod, sessionAttributesHandler).forEach((name) -> {
 									if (!bindingContext.getModel().containsAttribute(name)) {
 										Object value = session.getRequiredAttribute(name);
 										bindingContext.getModel().addAttribute(name, value);
@@ -106,12 +106,12 @@ class ModelInitializer {
 			List<InvocableHandlerMethod> modelMethods, ServerWebExchange exchange) {
 
 		List<Mono<HandlerResult>> resultList = new ArrayList<>();
-		modelMethods.forEach(invocable -> resultList.add(invocable.invoke(exchange, bindingContext)));
+		modelMethods.forEach((invocable) -> resultList.add(invocable.invoke(exchange, bindingContext)));
 
 		return Mono
-				.zip(resultList, objectArray ->
+				.zip(resultList, (objectArray) ->
 						Arrays.stream(objectArray)
-								.map(object -> handleResult(((HandlerResult) object), bindingContext))
+								.map((object) -> handleResult(((HandlerResult) object), bindingContext))
 								.collect(Collectors.toList()))
 				.flatMap(Mono::when);
 	}
@@ -137,7 +137,7 @@ class ModelInitializer {
 	private String getAttributeName(MethodParameter param) {
 		return Optional
 				.ofNullable(AnnotatedElementUtils.findMergedAnnotation(param.getAnnotatedElement(), ModelAttribute.class))
-				.filter(ann -> StringUtils.hasText(ann.value()))
+				.filter((ann) -> StringUtils.hasText(ann.value()))
 				.map(ModelAttribute::value)
 				.orElse(Conventions.getVariableNameForParameter(param));
 	}

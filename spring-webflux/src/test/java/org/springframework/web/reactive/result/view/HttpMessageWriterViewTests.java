@@ -129,7 +129,7 @@ public class HttpMessageWriterViewTests {
 		this.view.render(this.model, MediaType.APPLICATION_JSON, this.exchange).block(Duration.ZERO);
 
 		StepVerifier.create(this.exchange.getResponse().getBody())
-				.consumeNextWith(buf -> assertEquals("{\"foo\":\"f\",\"bar\":\"b\"}", dumpString(buf)))
+				.consumeNextWith((buf) -> assertEquals("{\"foo\":\"f\",\"bar\":\"b\"}", dumpString(buf)))
 				.expectComplete()
 				.verify();
 	}

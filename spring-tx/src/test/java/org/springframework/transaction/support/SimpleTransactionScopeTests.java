@@ -150,7 +150,7 @@ public class SimpleTransactionScopeTests {
 			TransactionTemplate tt = new TransactionTemplate(tm);
 			Set<DerivedTestBean> finallyDestroy = new HashSet<>();
 
-			tt.execute(status -> {
+			tt.execute((status) -> {
 				TestBean bean1 = context.getBean(TestBean.class);
 				assertSame(bean1, context.getBean(TestBean.class));
 
@@ -176,7 +176,7 @@ public class SimpleTransactionScopeTests {
 				Set<DerivedTestBean> immediatelyDestroy = new HashSet<>();
 				TransactionTemplate tt2 = new TransactionTemplate(tm);
 				tt2.setPropagationBehavior(TransactionTemplate.PROPAGATION_REQUIRED);
-				tt2.execute(status2 -> {
+				tt2.execute((status2) -> {
 					DerivedTestBean bean2c = context.getBean(DerivedTestBean.class);
 					immediatelyDestroy.add(bean2c);
 					assertSame(bean2c, context.getBean(DerivedTestBean.class));
