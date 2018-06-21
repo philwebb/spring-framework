@@ -26,8 +26,9 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.util.StringUtils;
 
 /**
- * A base {@link HeaderMapper} implementation
+ * A base {@link HeaderMapper} implementation.
  *
+ * @param <T> type of the instance to and from which headers will be mapped
  * @author Stephane Nicoll
  * @since 4.1
  */

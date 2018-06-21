@@ -34,6 +34,7 @@ import org.springframework.util.Assert;
 /**
  * Abstract base class for implementations of {@link MessageSendingOperations}.
  *
+ * @param <D> the destination type
  * @author Mark Fisher
  * @author Rossen Stoyanchev
  * @author Stephane Nicoll

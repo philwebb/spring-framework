@@ -114,6 +114,9 @@ import org.springframework.util.StringUtils;
  */
 public class MessageHeaderAccessor {
 
+	/**
+	 * The default charset used for headers.
+	 */
 	public static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
 	private static final MimeType[] READABLE_MIME_TYPES = new MimeType[] {

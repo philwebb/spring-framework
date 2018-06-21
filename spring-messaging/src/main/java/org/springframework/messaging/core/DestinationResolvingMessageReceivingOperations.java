@@ -24,6 +24,7 @@ import org.springframework.messaging.MessagingException;
  * Extends {@link MessageReceivingOperations} and adds operations for receiving messages
  * from a destination specified as a (resolvable) String name.
  *
+ * @param <D> the type of destination to receive messages from
  * @author Mark Fisher
  * @author Rossen Stoyanchev
  * @since 4.0

@@ -47,8 +47,14 @@ import org.springframework.util.Assert;
 public class GenericMessagingTemplate extends AbstractDestinationResolvingMessagingTemplate<MessageChannel>
 		implements BeanFactoryAware {
 
+	/**
+	 * The default header key used for a send timeout.
+	 */
 	public static final String DEFAULT_SEND_TIMEOUT_HEADER = "sendTimeout";
 
+	/**
+	 * The default header key used for a receive timeout.
+	 */
 	public static final String DEFAULT_RECEIVE_TIMEOUT_HEADER = "receiveTimeout";
 
 	private volatile long sendTimeout = -1;

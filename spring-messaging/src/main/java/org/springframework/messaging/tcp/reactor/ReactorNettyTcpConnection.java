@@ -29,6 +29,7 @@ import org.springframework.util.concurrent.ListenableFuture;
 /**
  * Reactor Netty based implementation of {@link TcpConnection}.
  *
+ * @param <P> the type of payload for outbound messages
  * @author Rossen Stoyanchev
  * @since 5.0
  */

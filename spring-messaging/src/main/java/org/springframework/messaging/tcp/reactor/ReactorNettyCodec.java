@@ -26,14 +26,15 @@ import org.springframework.messaging.Message;
 /**
  * Simple holder for a decoding {@link Function} and an encoding
  * {@link BiConsumer} to use with Reactor Netty.
- *
+ * 
+ * @param <P> the message payload type
  * @author Rossen Stoyanchev
  * @since 5.0
  */
 public interface ReactorNettyCodec<P> {
 
 	/**
-	 * Decode the input {@link ByteBuf} into one or more {@link Message}s.
+	 * Decode the input {@link ByteBuf} into one or more {@link Message ByteBuf} into one or more {@link Messages}.
 	 * @param inputBuffer the input buffer to decode from
 	 * @return 0 or more decoded messages
 	 */
