@@ -78,6 +78,7 @@ public abstract class AbstractNamedValueMethodArgumentResolver implements Handle
 	}
 
 	/**
+	 * Create a new {@link AbstractNamedValueMethodArgumentResolver} instance.
 	 * @param beanFactory a bean factory to use for resolving ${...} placeholder
 	 * and #{...} SpEL expressions in default values, or {@code null} if default
 	 * values are not expected to contain expressions

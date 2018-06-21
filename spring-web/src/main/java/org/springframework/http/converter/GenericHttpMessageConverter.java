@@ -29,6 +29,7 @@ import org.springframework.lang.Nullable;
  * into a target object of a specified generic type and a source object of a specified
  * generic type into an HTTP response.
  *
+ * @param <T> the converted object type
  * @author Arjen Poutsma
  * @author Rossen Stoyanchev
  * @author Sebastien Deleuze

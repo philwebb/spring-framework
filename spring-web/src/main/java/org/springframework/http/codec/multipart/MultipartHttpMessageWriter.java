@@ -77,6 +77,9 @@ import org.springframework.util.MultiValueMap;
  */
 public class MultipartHttpMessageWriter implements HttpMessageWriter<MultiValueMap<String, ?>> {
 
+	/**
+	 * THe default charset used by the writer.
+	 */
 	public static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
 

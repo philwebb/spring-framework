@@ -75,6 +75,8 @@ public class PathExtensionContentNegotiationStrategy extends AbstractMappingCont
 	}
 
 	/**
+	 * Indicate whether to use the Java Activation Framework as a fallback option
+	 * to map from file extensions to media types.
 	 * @deprecated as of 5.0, in favor of {@link #setUseRegisteredExtensionsOnly(boolean)}.
 	 */
 	@Deprecated

@@ -44,6 +44,9 @@ import javax.xml.ws.WebServiceProvider;
  */
 public class SimpleJaxWsServiceExporter extends AbstractJaxWsServiceExporter {
 
+	/**
+	 * The default base address.
+	 */
 	public static final String DEFAULT_BASE_ADDRESS = "http://localhost:8080/";
 
 	private String baseAddress = DEFAULT_BASE_ADDRESS;

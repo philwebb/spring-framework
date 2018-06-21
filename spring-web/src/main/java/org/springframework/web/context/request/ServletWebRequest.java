@@ -63,13 +63,13 @@ public class ServletWebRequest extends ServletRequestAttributes implements Nativ
 	private static final List<String> SAFE_METHODS = Arrays.asList("GET", "HEAD");
 
 	/**
-	 * Pattern matching ETag multiple field values in headers such as "If-Match", "If-None-Match"
+	 * Pattern matching ETag multiple field values in headers such as "If-Match", "If-None-Match".
 	 * @see <a href="https://tools.ietf.org/html/rfc7232#section-2.3">Section 2.3 of RFC 7232</a>
 	 */
 	private static final Pattern ETAG_HEADER_VALUE_PATTERN = Pattern.compile("\\*|\\s*((W\\/)?(\"[^\"]*\"))\\s*,?");
 
 	/**
-	 * Date formats as specified in the HTTP RFC
+	 * Date formats as specified in the HTTP RFC.
 	 * @see <a href="https://tools.ietf.org/html/rfc7231#section-7.1.1.1">Section 7.1.1.1 of RFC 7231</a>
 	 */
 	private static final String[] DATE_FORMATS = new String[] {

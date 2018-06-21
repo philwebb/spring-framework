@@ -44,16 +44,16 @@ import org.springframework.util.Assert;
  */
 public abstract class TagUtils {
 
-	/** Constant identifying the page scope */
+	/** Constant identifying the page scope. */
 	public static final String SCOPE_PAGE = "page";
 
-	/** Constant identifying the request scope */
+	/** Constant identifying the request scope. */
 	public static final String SCOPE_REQUEST = "request";
 
-	/** Constant identifying the session scope */
+	/** Constant identifying the session scope. */
 	public static final String SCOPE_SESSION = "session";
 
-	/** Constant identifying the application scope */
+	/** Constant identifying the application scope. */
 	public static final String SCOPE_APPLICATION = "application";
 
 

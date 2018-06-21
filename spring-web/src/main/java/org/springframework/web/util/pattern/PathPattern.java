@@ -93,26 +93,26 @@ public class PathPattern implements Comparable<PathPattern> {
 			);
 
 
-	/** The text of the parsed pattern */
+	/** The text of the parsed pattern. */
 	private final String patternString;
 
-	/** The parser used to construct this pattern */
+	/** The parser used to construct this pattern. */
 	private final PathPatternParser parser;
 
-	/** The separator used when parsing the pattern */
+	/** The separator used when parsing the pattern. */
 	private final char separator;
 
-	/** If this pattern has no trailing slash, allow candidates to include one and still match successfully */
+	/** If this pattern has no trailing slash, allow candidates to include one and still match successfully. */
 	private final boolean matchOptionalTrailingSeparator;
 
-	/** Will this match candidates in a case sensitive way? (case sensitivity  at parse time) */
+	/** Will this match candidates in a case sensitive way? (case sensitivity  at parse time). */
 	private final boolean caseSensitive;
 
-	/** First path element in the parsed chain of path elements for this pattern */
+	/** First path element in the parsed chain of path elements for this pattern. */
 	@Nullable
 	private final PathElement head;
 
-	/** How many variables are captured in this pattern */
+	/** How many variables are captured in this pattern. */
 	private int capturedVariableCount;
 
 	/**
@@ -124,7 +124,7 @@ public class PathPattern implements Comparable<PathPattern> {
 	private int normalizedLength;
 
 	/**
-	 * Does the pattern end with '&lt;separator&gt;*'
+	 * Does the pattern end with '&lt;separator&gt;*'.
 	 */
 	private boolean endsWithSeparatorWildcard = false;
 
@@ -138,7 +138,7 @@ public class PathPattern implements Comparable<PathPattern> {
 	 */
 	private int score;
 
-	/** Does the pattern end with {*...} */
+	/** Does the pattern end with {*...}. */
 	private boolean catchAll = false;
 
 
@@ -464,7 +464,8 @@ public class PathPattern implements Comparable<PathPattern> {
 	}
 
 	/**
-	 * @return string form of the pattern built from walking the path element chain
+	 * Return the string form of the pattern built from walking the path element chain.
+	 * @return the string form of the pattern
 	 */
 	String computePatternString() {
 		StringBuilder buf = new StringBuilder();
@@ -504,8 +505,9 @@ public class PathPattern implements Comparable<PathPattern> {
 	}
 
 	/**
+	 * Return if the container is not null and has more than zero elements.
 	 * @param container a path container
-	 * @return true if the container is not null and has more than zero elements
+	 * @return {@code true} has more than zero elements
 	 */
 	private boolean hasLength(@Nullable PathContainer container) {
 		return container != null && container.elements().size() > 0;
@@ -679,16 +681,18 @@ public class PathPattern implements Comparable<PathPattern> {
 		}
 
 		/**
+		 * Return if element at specified index is a separator.
 		 * @param pathIndex possible index of a separator
-		 * @return true if element at specified index is a separator
+		 * @return {@code true} if element is a separator
 		 */
 		boolean isSeparator(int pathIndex) {
 			return this.pathElements.get(pathIndex) instanceof Separator;
 		}
 
 		/**
+		 * Return the decoded value of the specified element.
 		 * @param pathIndex path element index
-		 * @return decoded value of the specified element
+		 * @return the decoded value
 		 */
 		String pathElementValue(int pathIndex) {
 			Element element = (pathIndex < this.pathLength) ? this.pathElements.get(pathIndex) : null;

@@ -60,6 +60,7 @@ import org.springframework.util.StreamUtils;
  * Implementation of {@link org.springframework.http.converter.HttpMessageConverter}
  * that can read and write {@link Source} objects.
  *
+ * @param <T> the converted object type
  * @author Arjen Poutsma
  * @author Rossen Stoyanchev
  * @since 3.0

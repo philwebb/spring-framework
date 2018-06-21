@@ -40,14 +40,14 @@ import org.springframework.web.util.WebUtils;
 @SuppressWarnings("serial")
 public class ServletRequestParameterPropertyValues extends MutablePropertyValues {
 
-	/** Default prefix separator */
+	/** Default prefix separator. */
 	public static final String DEFAULT_PREFIX_SEPARATOR = "_";
 
 
 	/**
 	 * Create new ServletRequestPropertyValues using no prefix
 	 * (and hence, no prefix separator).
-	 * @param request HTTP request
+	 * @param request the HTTP request
 	 */
 	public ServletRequestParameterPropertyValues(ServletRequest request) {
 		this(request, null, null);
@@ -56,7 +56,7 @@ public class ServletRequestParameterPropertyValues extends MutablePropertyValues
 	/**
 	 * Create new ServletRequestPropertyValues using the given prefix and
 	 * the default prefix separator (the underscore character "_").
-	 * @param request HTTP request
+	 * @param request the HTTP request
 	 * @param prefix the prefix for parameters (the full prefix will
 	 * consist of this plus the separator)
 	 * @see #DEFAULT_PREFIX_SEPARATOR
@@ -68,7 +68,7 @@ public class ServletRequestParameterPropertyValues extends MutablePropertyValues
 	/**
 	 * Create new ServletRequestPropertyValues supplying both prefix and
 	 * prefix separator.
-	 * @param request HTTP request
+	 * @param request the HTTP request
 	 * @param prefix the prefix for parameters (the full prefix will
 	 * consist of this plus the separator)
 	 * @param prefixSeparator separator delimiting prefix (e.g. "spring")

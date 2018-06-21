@@ -81,7 +81,7 @@ import org.springframework.web.util.NestedServletException;
 public abstract class GenericFilterBean implements Filter, BeanNameAware, EnvironmentAware,
 		EnvironmentCapable, ServletContextAware, InitializingBean, DisposableBean {
 
-	/** Logger available to subclasses */
+	/** Logger available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	@Nullable
@@ -333,7 +333,7 @@ public abstract class GenericFilterBean implements Filter, BeanNameAware, Enviro
 
 		/**
 		 * Create new FilterConfigPropertyValues.
-		 * @param config FilterConfig we'll use to take PropertyValues from
+		 * @param config the FilterConfig we'll use to take PropertyValues from
 		 * @param requiredProperties set of property names we need, where
 		 * we can't accept default values
 		 * @throws ServletException if any required properties are missing

@@ -83,7 +83,8 @@ class DeferredResultInterceptorChain {
 	}
 
 	/**
-	 * @return true to continue error handling, or false to bypass any further
+	 * Determine if further error handling should be bypassed.
+	 * @return {@code true} to continue error handling, or false to bypass any further
 	 * error handling
 	 */
 	public boolean triggerAfterError(NativeWebRequest request, DeferredResult<?> deferredResult, Throwable ex)

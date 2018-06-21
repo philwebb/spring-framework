@@ -43,7 +43,7 @@ import org.springframework.lang.Nullable;
  */
 public class NestedServletException extends ServletException {
 
-	/** Use serialVersionUID from Spring 1.2 for interoperability */
+	/** Use serialVersionUID from Spring 1.2 for interoperability. */
 	private static final long serialVersionUID = -5292377985529381145L;
 
 	static {

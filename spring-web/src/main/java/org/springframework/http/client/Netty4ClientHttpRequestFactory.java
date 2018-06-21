@@ -115,8 +115,8 @@ public class Netty4ClientHttpRequestFactory implements ClientHttpRequestFactory,
 	/**
 	 * Set the default maximum response size.
 	 * <p>By default this is set to {@link #DEFAULT_MAX_RESPONSE_SIZE}.
-	 * @see HttpObjectAggregator#HttpObjectAggregator(int)
 	 * @since 4.1.5
+	 * @see HttpObjectAggregator#HttpObjectAggregator(int)
 	 */
 	public void setMaxResponseSize(int maxResponseSize) {
 		this.maxResponseSize = maxResponseSize;

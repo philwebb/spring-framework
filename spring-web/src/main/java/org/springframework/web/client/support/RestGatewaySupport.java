@@ -35,7 +35,7 @@ import org.springframework.web.client.RestTemplate;
  */
 public class RestGatewaySupport {
 
-	/** Logger available to subclasses */
+	/** Logger available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	private RestTemplate restTemplate;

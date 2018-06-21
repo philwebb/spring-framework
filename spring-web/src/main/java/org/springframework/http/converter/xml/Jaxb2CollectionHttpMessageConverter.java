@@ -55,6 +55,7 @@ import org.springframework.util.xml.StaxUtils;
  * annotated with {@link XmlRootElement} and {@link XmlType}. Note that this converter
  * does not support writing.
  *
+ * @param <T> the converted object type
  * @author Arjen Poutsma
  * @author Rossen Stoyanchev
  * @since 3.2

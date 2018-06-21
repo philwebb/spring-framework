@@ -155,7 +155,7 @@ public class CharacterEncodingFilter extends OncePerRequestFilter {
 	}
 
 	/**
-	 * Return whether the encoding should be forced on requests
+	 * Return whether the encoding should be forced on requests.
 	 * @since 4.3
 	 */
 	public boolean isForceRequestEncoding() {

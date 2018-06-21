@@ -27,7 +27,7 @@ import org.springframework.web.server.WebExceptionHandler;
 import org.springframework.web.server.WebHandler;
 
 /**
- * WebHandler decorator that invokes one or more {@link WebExceptionHandler}s
+ * WebHandler decorator that invokes one or more {@link WebExceptionHandler WebExceptionHandlers}
  * after the delegate {@link WebHandler}.
  *
  * @author Rossen Stoyanchev

@@ -42,6 +42,9 @@ import org.springframework.util.StreamUtils;
  */
 public class StringHttpMessageConverter extends AbstractHttpMessageConverter<String> {
 
+	/**
+	 * The default charset used by the converter.
+	 */
 	public static final Charset DEFAULT_CHARSET = StandardCharsets.ISO_8859_1;
 
 
@@ -105,7 +108,7 @@ public class StringHttpMessageConverter extends AbstractHttpMessageConverter<Str
 
 
 	/**
-	 * Return the list of supported {@link Charset}s.
+	 * Return the list of supported {@link Charset Charsets}.
 	 * <p>By default, returns {@link Charset#availableCharsets()}.
 	 * Can be overridden in subclasses.
 	 * @return the list of accepted charsets

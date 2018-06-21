@@ -41,6 +41,7 @@ import org.springframework.util.Assert;
  * from the extra information available on the server side such as the request
  * or controller method parameter annotations.
  *
+ * @param <T> the type of objects in the decoded output stream
  * @author Arjen Poutsma
  * @author Sebastien Deleuze
  * @author Rossen Stoyanchev

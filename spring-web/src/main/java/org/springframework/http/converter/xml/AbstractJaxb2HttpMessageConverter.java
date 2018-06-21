@@ -30,6 +30,7 @@ import org.springframework.util.Assert;
  * Abstract base class for {@link org.springframework.http.converter.HttpMessageConverter HttpMessageConverters}
  * that use JAXB2. Creates {@link JAXBContext} object lazily.
  *
+ * @param <T> the converted object type
  * @author Arjen Poutsma
  * @author Rossen Stoyanchev
  * @since 3.0

@@ -42,6 +42,7 @@ import org.springframework.util.Assert;
  * {@link #setSupportedMediaTypes(List) supportedMediaTypes} bean property. It also adds
  * support for {@code Content-Type} and {@code Content-Length} when writing to output messages.
  *
+ * @param <T> the converted object type
  * @author Arjen Poutsma
  * @author Juergen Hoeller
  * @author Sebastien Deleuze
@@ -49,7 +50,7 @@ import org.springframework.util.Assert;
  */
 public abstract class AbstractHttpMessageConverter<T> implements HttpMessageConverter<T> {
 
-	/** Logger available to subclasses */
+	/** Logger available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	private List<MediaType> supportedMediaTypes = Collections.emptyList();

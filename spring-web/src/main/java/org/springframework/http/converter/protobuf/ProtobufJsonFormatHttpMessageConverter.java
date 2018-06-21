@@ -62,7 +62,7 @@ public class ProtobufJsonFormatHttpMessageConverter extends ProtobufHttpMessageC
 	/**
 	 * Construct a new {@code ProtobufJsonFormatHttpMessageConverter} with the given
 	 * {@link JsonFormat.Parser} and {@link JsonFormat.Printer} configuration, also
-	 * accepting an initializer that allows the registration of message extensions
+	 * accepting an initializer that allows the registration of message extensions.
 	 * @param parser the JSON parser configuration
 	 * @param printer the JSON printer configuration
 	 * @param registryInitializer an initializer for message extensions

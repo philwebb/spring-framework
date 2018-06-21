@@ -441,12 +441,12 @@ public final class ContentDisposition {
 	public interface Builder {
 
 		/**
-		 * Set the value of the {@literal name} parameter
+		 * Set the value of the {@literal name} parameter.
 		 */
 		Builder name(String name);
 
 		/**
-		 * Set the value of the {@literal filename} parameter
+		 * Set the value of the {@literal filename} parameter.
 		 */
 		Builder filename(String filename);
 
@@ -463,7 +463,7 @@ public final class ContentDisposition {
 		Builder filename(String filename, Charset charset);
 
 		/**
-		 * Set the value of the {@literal size} parameter
+		 * Set the value of the {@literal size} parameter.
 		 */
 		Builder size(Long size);
 
@@ -483,7 +483,7 @@ public final class ContentDisposition {
 		Builder readDate(ZonedDateTime readDate);
 
 		/**
-		 * Build the content disposition
+		 * Build the content disposition.
 		 */
 		ContentDisposition build();
 	}

@@ -27,7 +27,7 @@ import org.springframework.http.MockHttpOutputMessage;
 
 import static org.junit.Assert.*;
 
-/** @author Arjen Poutsma */
+/** @author Arjen Poutsma. */
 public class ByteArrayHttpMessageConverterTests {
 
 	private ByteArrayHttpMessageConverter converter;
