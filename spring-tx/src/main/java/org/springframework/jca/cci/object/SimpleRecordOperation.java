@@ -42,7 +42,7 @@ public class SimpleRecordOperation extends EisOperation {
 	/**
 	 * Convenient constructor with ConnectionFactory and specifications
 	 * (connection and interaction).
-	 * @param connectionFactory ConnectionFactory to use to obtain connections
+	 * @param connectionFactory the ConnectionFactory to use to obtain connections
 	 */
 	public SimpleRecordOperation(ConnectionFactory connectionFactory, InteractionSpec interactionSpec) {
 		getCciTemplate().setConnectionFactory(connectionFactory);

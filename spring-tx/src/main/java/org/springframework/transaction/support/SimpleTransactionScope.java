@@ -92,6 +92,9 @@ public class SimpleTransactionScope implements Scope {
 	}
 
 
+	/**
+	 * Holder for scoped objects.
+	 */
 	static class ScopedObjectsHolder {
 
 		final Map<String, Object> scopedInstances = new HashMap<>();

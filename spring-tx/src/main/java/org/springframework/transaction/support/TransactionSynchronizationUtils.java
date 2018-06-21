@@ -125,7 +125,7 @@ public abstract class TransactionSynchronizationUtils {
 	/**
 	 * Actually invoke the {@code afterCommit} methods of the
 	 * given Spring TransactionSynchronization objects.
-	 * @param synchronizations List of TransactionSynchronization objects
+	 * @param synchronizations a List of TransactionSynchronization objects
 	 * @see TransactionSynchronization#afterCommit()
 	 */
 	public static void invokeAfterCommit(@Nullable List<TransactionSynchronization> synchronizations) {
@@ -138,9 +138,9 @@ public abstract class TransactionSynchronizationUtils {
 
 	/**
 	 * Trigger {@code afterCompletion} callbacks on all currently registered synchronizations.
-	 * @see TransactionSynchronizationManager#getSynchronizations()
 	 * @param completionStatus the completion status according to the
 	 * constants in the TransactionSynchronization interface
+	 * @see TransactionSynchronizationManager#getSynchronizations()
 	 * @see TransactionSynchronization#afterCompletion(int)
 	 * @see TransactionSynchronization#STATUS_COMMITTED
 	 * @see TransactionSynchronization#STATUS_ROLLED_BACK
@@ -154,7 +154,7 @@ public abstract class TransactionSynchronizationUtils {
 	/**
 	 * Actually invoke the {@code afterCompletion} methods of the
 	 * given Spring TransactionSynchronization objects.
-	 * @param synchronizations List of TransactionSynchronization objects
+	 * @param synchronizations a List of TransactionSynchronization objects
 	 * @param completionStatus the completion status according to the
 	 * constants in the TransactionSynchronization interface
 	 * @see TransactionSynchronization#afterCompletion(int)

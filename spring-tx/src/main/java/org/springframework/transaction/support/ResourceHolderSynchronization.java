@@ -20,6 +20,8 @@ package org.springframework.transaction.support;
  * {@link TransactionSynchronization} implementation that manages a
  * {@link ResourceHolder} bound through {@link TransactionSynchronizationManager}.
  *
+ * @param <H> the resource holder type
+ * @param <K> the resource key type
  * @author Juergen Hoeller
  * @since 2.5.5
  */

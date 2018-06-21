@@ -80,7 +80,7 @@ public class CciLocalTransactionManager extends AbstractPlatformTransactionManag
 
 	/**
 	 * Create a new CciLocalTransactionManager instance.
-	 * @param connectionFactory CCI ConnectionFactory to manage local transactions for
+	 * @param connectionFactory the CCI ConnectionFactory to manage local transactions for
 	 */
 	public CciLocalTransactionManager(ConnectionFactory connectionFactory) {
 		setConnectionFactory(connectionFactory);
