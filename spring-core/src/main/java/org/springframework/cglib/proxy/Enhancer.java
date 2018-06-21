@@ -653,8 +653,9 @@ public class Enhancer extends AbstractClassGenerator {
 	public void generateClass(ClassVisitor v) throws Exception {
 		Class sc = (superclass == null) ? Object.class : superclass;
 
-		if (TypeUtils.isFinal(sc.getModifiers()))
+		if (TypeUtils.isFinal(sc.getModifiers())) {
 			throw new IllegalArgumentException("Cannot subclass final class " + sc.getName());
+		}
 		List constructors = new ArrayList(Arrays.asList(sc.getDeclaredConstructors()));
 		filterConstructors(sc, constructors);
 
@@ -756,8 +757,9 @@ public class Enhancer extends AbstractClassGenerator {
 	 */
 	protected void filterConstructors(Class sc, List constructors) {
 		CollectionUtils.filter(constructors, new VisibilityPredicate(sc, true));
-		if (constructors.size() == 0)
+		if (constructors.size() == 0) {
 			throw new IllegalArgumentException("No visible constructors in " + sc);
+		}
 	}
 
 	/**
@@ -1029,8 +1031,9 @@ public class Enhancer extends AbstractClassGenerator {
 			e.return_value();
 			e.end_method();
 		}
-		if (!classOnly && !seenNull && arguments == null)
+		if (!classOnly && !seenNull && arguments == null) {
 			throw new IllegalArgumentException("Superclass has no null constructors but no arguments were given");
+		}
 	}
 
 	private int[] getCallbackKeys() {

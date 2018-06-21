@@ -345,8 +345,9 @@ public class ReflectUtils {
 	}
 
 	public static String[] getNames(Class[] classes) {
-		if (classes == null)
+		if (classes == null) {
 			return null;
+		}
 		String[] names = new String[classes.length];
 		for (int i = 0; i < names.length; i++) {
 			names[i] = classes[i].getName();
@@ -439,8 +440,9 @@ public class ReflectUtils {
 		if (type == Object.class) {
 			list.addAll(OBJECT_METHODS);
 		}
-		else
+		else {
 			list.addAll(java.util.Arrays.asList(type.getDeclaredMethods()));
+		}
 
 		Class superclass = type.getSuperclass();
 		if (superclass != null) {
@@ -551,8 +553,9 @@ public class ReflectUtils {
 			private ClassInfo ci;
 
 			public ClassInfo getClassInfo() {
-				if (ci == null)
+				if (ci == null) {
 					ci = ReflectUtils.getClassInfo(member.getDeclaringClass());
+				}
 				return ci;
 			}
 
