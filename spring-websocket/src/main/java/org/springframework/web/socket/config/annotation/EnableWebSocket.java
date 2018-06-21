@@ -26,7 +26,7 @@ import org.springframework.context.annotation.Import;
 
 /**
  * Add this annotation to an {@code @Configuration} class to configure
- * processing WebSocket requests:
+ * processing WebSocket requests. A typical configuration would look like this:
  *
  * <pre class="code">
  * &#064;Configuration

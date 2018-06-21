@@ -289,6 +289,7 @@ public abstract class AbstractSockJsService implements SockJsService, CorsConfig
 	}
 
 	/**
+	 * Return if automatic addition of CORS headers has been disabled.
 	 * @since 4.1.2
 	 * @see #setSuppressCors(boolean)
 	 */
@@ -318,6 +319,7 @@ public abstract class AbstractSockJsService implements SockJsService, CorsConfig
 	}
 
 	/**
+	 * Return configure allowed {@code Origin} header values.
 	 * @since 4.1.2
 	 * @see #setAllowedOrigins
 	 */

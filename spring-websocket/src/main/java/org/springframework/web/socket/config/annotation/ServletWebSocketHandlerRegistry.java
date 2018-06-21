@@ -33,7 +33,7 @@ import org.springframework.web.socket.server.support.WebSocketHandlerMapping;
 import org.springframework.web.util.UrlPathHelper;
 
 /**
- * A {@link WebSocketHandlerRegistry} that maps {@link WebSocketHandler}s to URLs for use
+ * A {@link WebSocketHandlerRegistry} that maps {@link WebSocketHandler WebSocketHandlerRegistry} that maps {@link WebSocketHandlers} to URLs for use
  * in a Servlet container.
  *
  * @author Rossen Stoyanchev

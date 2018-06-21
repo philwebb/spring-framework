@@ -78,7 +78,7 @@ import org.springframework.web.socket.sockjs.support.SockJsHttpRequestHandler;
  * <p>Registers a Spring MVC {@link org.springframework.web.servlet.HandlerMapping}
  * with order 1 to map HTTP WebSocket handshake requests from STOMP/WebSocket clients.
  *
- * <p>Registers the following {@link org.springframework.messaging.MessageChannel}s:
+ * <p>Registers the following {@link org.springframework.messaging.MessageChannel org.springframework.messaging.MessageChannels}:
  * <ul>
  * <li>"clientInboundChannel" for receiving messages from clients (e.g. WebSocket clients)
  * <li>"clientOutboundChannel" for sending messages to clients (e.g. WebSocket clients)
