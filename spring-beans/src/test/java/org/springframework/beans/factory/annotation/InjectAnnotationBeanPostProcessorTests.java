@@ -342,7 +342,7 @@ public class InjectAnnotationBeanPostProcessorTests {
 			bf.getBean("annotatedBean");
 			fail("should have failed, more than one bean of type");
 		}
-		catch (BeanCreationException e) {
+		catch (BeanCreationException ex) {
 			// expected
 		}
 		bf.destroySingletons();

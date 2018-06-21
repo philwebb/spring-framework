@@ -54,12 +54,12 @@ class CacheRemoveEntryInterceptor extends AbstractKeyCacheInterceptor<CacheRemov
 			}
 			return result;
 		}
-		catch (CacheOperationInvoker.ThrowableWrapper t) {
-			Throwable ex = t.getOriginal();
+		catch (CacheOperationInvoker.ThrowableWrapper wrapperException) {
+			Throwable ex = wrapperException.getOriginal();
 			if (!earlyRemove && operation.getExceptionTypeFilter().match(ex.getClass())) {
 				removeValue(context);
 			}
-			throw t;
+			throw wrapperException;
 		}
 	}
 

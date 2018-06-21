@@ -239,7 +239,7 @@ public class AsyncAnnotationBeanPostProcessorTests {
 			testBean.failWithVoid();
 			exceptionHandler.assertCalledWith(m, UnsupportedOperationException.class);
 		}
-		catch (Exception e) {
+		catch (Exception ex) {
 			fail("No unexpected exception should have been received");
 		}
 	}
@@ -312,7 +312,7 @@ public class AsyncAnnotationBeanPostProcessorTests {
 			try {
 				this.latch.await(timeout, TimeUnit.MILLISECONDS);
 			}
-			catch (Exception e) {
+			catch (Exception ex) {
 				Thread.currentThread().interrupt();
 			}
 		}

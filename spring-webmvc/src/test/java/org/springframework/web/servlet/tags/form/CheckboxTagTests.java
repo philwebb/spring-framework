@@ -617,7 +617,7 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 			this.tag.doStartTag();
 			fail("Should not be able to render with a null value when binding to a non-boolean.");
 		}
-		catch (IllegalArgumentException e) {
+		catch (IllegalArgumentException ex) {
 			// success
 		}
 	}
@@ -651,8 +651,8 @@ public class CheckboxTagTests extends AbstractFormTagTests {
 			this.tag.setDynamicAttribute(null, "type", "email");
 			fail("Expected exception");
 		}
-		catch (IllegalArgumentException e) {
-			assertEquals("Attribute type=\"email\" is not allowed", e.getMessage());
+		catch (IllegalArgumentException ex) {
+			assertEquals("Attribute type=\"email\" is not allowed", ex.getMessage());
 		}
 	}
 

@@ -171,7 +171,7 @@ public class EmbeddedDatabaseBuilderTests {
 
 			fail("Should have thrown a ScriptStatementFailedException");
 		}
-		catch (ScriptStatementFailedException e) {
+		catch (ScriptStatementFailedException ex) {
 			// expected
 		}
 		finally {

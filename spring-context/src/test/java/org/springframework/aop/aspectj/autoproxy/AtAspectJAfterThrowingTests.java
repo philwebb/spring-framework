@@ -47,7 +47,7 @@ public class AtAspectJAfterThrowingTests {
 		try {
 			bean.unreliableFileOperation();
 		}
-		catch (IOException e) {
+		catch (IOException ex) {
 			//
 		}
 

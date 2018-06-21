@@ -95,7 +95,7 @@ public class ConcurrentBeanWrapperTests {
 		try {
 			p.store(buffer, null);
 		}
-		catch (IOException e) {
+		catch (IOException ex) {
 			// ByteArrayOutputStream does not throw
 			// any IOException
 		}

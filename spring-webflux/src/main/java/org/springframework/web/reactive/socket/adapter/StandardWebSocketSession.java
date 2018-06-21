@@ -101,8 +101,8 @@ public class StandardWebSocketSession extends AbstractListenerWebSocketSession<S
 			CloseReason.CloseCode code = CloseCodes.getCloseCode(status.getCode());
 			getDelegate().close(new CloseReason(code, status.getReason()));
 		}
-		catch (IOException e) {
-			return Mono.error(e);
+		catch (IOException ex) {
+			return Mono.error(ex);
 		}
 		return Mono.empty();
 	}

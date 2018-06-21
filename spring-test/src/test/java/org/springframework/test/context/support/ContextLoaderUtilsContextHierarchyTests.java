@@ -315,11 +315,11 @@ public class ContextLoaderUtilsContextHierarchyTests extends AbstractContextConf
 			buildContextHierarchyMap(testClass);
 			fail("Should throw an IllegalStateException");
 		}
-		catch (IllegalStateException e) {
+		catch (IllegalStateException ex) {
 			String msg = String.format(
 				"The @ContextConfiguration elements configured via @ContextHierarchy in test class [%s] and its superclasses must define unique contexts per hierarchy level.",
 				testClass.getName());
-			assertEquals(msg, e.getMessage());
+			assertEquals(msg, ex.getMessage());
 		}
 	}
 

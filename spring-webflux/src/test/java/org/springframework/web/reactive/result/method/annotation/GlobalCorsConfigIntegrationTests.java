@@ -92,8 +92,8 @@ public class GlobalCorsConfigIntegrationTests extends AbstractRequestMappingInte
 			performGet("/cors-restricted", this.headers, String.class);
 			fail();
 		}
-		catch (HttpClientErrorException e) {
-			assertEquals(HttpStatus.FORBIDDEN, e.getStatusCode());
+		catch (HttpClientErrorException ex) {
+			assertEquals(HttpStatus.FORBIDDEN, ex.getStatusCode());
 		}
 	}
 
@@ -130,8 +130,8 @@ public class GlobalCorsConfigIntegrationTests extends AbstractRequestMappingInte
 			performOptions("/cors-restricted", this.headers, String.class);
 			fail();
 		}
-		catch (HttpClientErrorException e) {
-			assertEquals(HttpStatus.FORBIDDEN, e.getStatusCode());
+		catch (HttpClientErrorException ex) {
+			assertEquals(HttpStatus.FORBIDDEN, ex.getStatusCode());
 		}
 	}
 
@@ -142,8 +142,8 @@ public class GlobalCorsConfigIntegrationTests extends AbstractRequestMappingInte
 			performOptions("/welcome", this.headers, String.class);
 			fail();
 		}
-		catch (HttpClientErrorException e) {
-			assertEquals(HttpStatus.FORBIDDEN, e.getStatusCode());
+		catch (HttpClientErrorException ex) {
+			assertEquals(HttpStatus.FORBIDDEN, ex.getStatusCode());
 		}
 	}
 

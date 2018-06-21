@@ -50,9 +50,9 @@ public class Spr8510Tests {
 			cll.contextInitialized(new ServletContextEvent(sc));
 			fail("expected exception");
 		}
-		catch (Throwable t) {
+		catch (Throwable ex) {
 			// assert that an attempt was made to load the correct XML
-			assertTrue(t.getMessage(), t.getMessage().endsWith(
+			assertTrue(ex.getMessage(), ex.getMessage().endsWith(
 					"Could not open ServletContext resource [/programmatic.xml]"));
 		}
 	}
@@ -77,9 +77,9 @@ public class Spr8510Tests {
 			cll.contextInitialized(new ServletContextEvent(sc));
 			fail("expected exception");
 		}
-		catch (Throwable t) {
+		catch (Throwable ex) {
 			// assert that an attempt was made to load the correct XML
-			assertTrue(t.getMessage(), t.getMessage().endsWith(
+			assertTrue(ex.getMessage(), ex.getMessage().endsWith(
 					"Could not open ServletContext resource [/from-init-param.xml]"));
 		}
 	}
@@ -101,9 +101,9 @@ public class Spr8510Tests {
 			cll.contextInitialized(new ServletContextEvent(sc));
 			fail("expected exception");
 		}
-		catch (Throwable t) {
+		catch (Throwable ex) {
 			// assert that an attempt was made to load the correct XML
-			assertTrue(t.getMessage().endsWith(
+			assertTrue(ex.getMessage().endsWith(
 					"Could not open ServletContext resource [/from-init-param.xml]"));
 		}
 	}
@@ -129,10 +129,10 @@ public class Spr8510Tests {
 			cll.contextInitialized(new ServletContextEvent(sc));
 			fail("expected exception");
 		}
-		catch (Throwable t) {
+		catch (Throwable ex) {
 			// assert that an attempt was made to load the correct XML
-			System.out.println(t.getMessage());
-			assertTrue(t.getMessage().endsWith(
+			System.out.println(ex.getMessage());
+			assertTrue(ex.getMessage().endsWith(
 					"Could not open ServletContext resource [/from-init-param.xml]"));
 		}
 	}
@@ -155,10 +155,10 @@ public class Spr8510Tests {
 			cll.contextInitialized(new ServletContextEvent(sc));
 			fail("expected exception");
 		}
-		catch (Throwable t) {
+		catch (Throwable ex) {
 			// assert that an attempt was made to load the correct XML
-			System.out.println(t.getMessage());
-			assertTrue(t.getMessage().endsWith(
+			System.out.println(ex.getMessage());
+			assertTrue(ex.getMessage().endsWith(
 					"Could not open ServletContext resource [/WEB-INF/applicationContext.xml]"));
 		}
 	}

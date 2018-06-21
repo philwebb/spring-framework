@@ -668,7 +668,7 @@ public class DefaultLifecycleProcessorTests {
 					try {
 						Thread.sleep(delay);
 					}
-					catch (InterruptedException e) {
+					catch (InterruptedException ex) {
 						// ignore
 					}
 					finally {

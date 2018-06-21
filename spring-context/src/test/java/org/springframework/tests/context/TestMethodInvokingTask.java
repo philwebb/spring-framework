@@ -37,7 +37,7 @@ public class TestMethodInvokingTask {
 			try {
 				this.lock.wait();
 			}
-			catch (InterruptedException e) {
+			catch (InterruptedException ex) {
 				// fall through
 			}
 		}

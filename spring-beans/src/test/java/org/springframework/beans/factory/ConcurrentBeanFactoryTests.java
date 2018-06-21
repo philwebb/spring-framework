@@ -61,8 +61,8 @@ public class ConcurrentBeanFactoryTests {
 			DATE_1 = DATE_FORMAT.parse("2004/08/08");
 			DATE_2 = DATE_FORMAT.parse("2000/02/02");
 		}
-		catch (ParseException e) {
-			throw new RuntimeException(e);
+		catch (ParseException ex) {
+			throw new RuntimeException(ex);
 		}
 	}
 
@@ -111,8 +111,8 @@ public class ConcurrentBeanFactoryTests {
 				try {
 					set.wait();
 				}
-				catch (InterruptedException e) {
-					logger.info(e.toString());
+				catch (InterruptedException ex) {
+					logger.info(ex.toString());
 				}
 				logger.info(set.size() + " threads still active.");
 			}

@@ -90,8 +90,8 @@ public class TransactionalTestExecutionListenerTests {
 			listener.beforeTestMethod(testContext);
 			fail("Should have thrown an IllegalStateException");
 		}
-		catch (IllegalStateException e) {
-			assertTrue(e.getMessage().startsWith(
+		catch (IllegalStateException ex) {
+			assertTrue(ex.getMessage().startsWith(
 					"Failed to retrieve PlatformTransactionManager for @Transactional test"));
 		}
 	}

@@ -76,8 +76,8 @@ public class ConcurrentWebSocketSessionDecoratorTests {
 			try {
 				concurrentSession.sendMessage(message);
 			}
-			catch (IOException e) {
-				e.printStackTrace();
+			catch (IOException ex) {
+				ex.printStackTrace();
 			}
 		});
 
@@ -116,8 +116,8 @@ public class ConcurrentWebSocketSessionDecoratorTests {
 			try {
 				concurrentSession.sendMessage(message);
 			}
-			catch (IOException e) {
-				e.printStackTrace();
+			catch (IOException ex) {
+				ex.printStackTrace();
 			}
 		});
 
@@ -158,8 +158,8 @@ public class ConcurrentWebSocketSessionDecoratorTests {
 			try {
 				concurrentSession.sendMessage(message);
 			}
-			catch (IOException e) {
-				e.printStackTrace();
+			catch (IOException ex) {
+				ex.printStackTrace();
 			}
 		});
 
@@ -221,8 +221,8 @@ public class ConcurrentWebSocketSessionDecoratorTests {
 			try {
 				concurrentSession.sendMessage(message);
 			}
-			catch (IOException e) {
-				e.printStackTrace();
+			catch (IOException ex) {
+				ex.printStackTrace();
 			}
 		});
 
@@ -265,8 +265,8 @@ public class ConcurrentWebSocketSessionDecoratorTests {
 				this.releaseLatch.set(new CountDownLatch(1));
 				this.releaseLatch.get().await();
 			}
-			catch (InterruptedException e) {
-				e.printStackTrace();
+			catch (InterruptedException ex) {
+				ex.printStackTrace();
 			}
 		}
 

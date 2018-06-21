@@ -114,8 +114,9 @@ public class MarshallingHttpMessageConverterTests {
 			converter.read(Object.class, inputMessage);
 			fail("HttpMessageNotReadableException should be thrown");
 		}
-		catch (HttpMessageNotReadableException e) {
-			assertTrue("Invalid exception hierarchy", e.getCause() == ex);
+		catch (HttpMessageNotReadableException notReadableException) {
+			assertTrue("Invalid exception hierarchy",
+					notReadableException.getCause() == ex);
 		}
 	}
 
@@ -148,8 +149,9 @@ public class MarshallingHttpMessageConverterTests {
 			converter.write(body, null, outputMessage);
 			fail("HttpMessageNotWritableException should be thrown");
 		}
-		catch (HttpMessageNotWritableException e) {
-			assertTrue("Invalid exception hierarchy", e.getCause() == ex);
+		catch (HttpMessageNotWritableException notWritableException) {
+			assertTrue("Invalid exception hierarchy",
+					notWritableException.getCause() == ex);
 		}
 	}
 

@@ -236,8 +236,8 @@ public class Jaxb2MarshallerTests extends AbstractMarshallerTests<Jaxb2Marshalle
 					Object returnValue = method.invoke(primitives);
 					marshaller.marshal(returnValue, new StreamResult(new ByteArrayOutputStream()));
 				}
-				catch (InvocationTargetException e) {
-					fail(e.getMessage());
+				catch (InvocationTargetException ex) {
+					fail(ex.getMessage());
 				}
 			}
 		}, new ReflectionUtils.MethodFilter() {
@@ -261,8 +261,8 @@ public class Jaxb2MarshallerTests extends AbstractMarshallerTests<Jaxb2Marshalle
 					Object returnValue = method.invoke(standardClasses);
 					marshaller.marshal(returnValue, new StreamResult(new ByteArrayOutputStream()));
 				}
-				catch (InvocationTargetException e) {
-					fail(e.getMessage());
+				catch (InvocationTargetException ex) {
+					fail(ex.getMessage());
 				}
 			}
 		}, new ReflectionUtils.MethodFilter() {
