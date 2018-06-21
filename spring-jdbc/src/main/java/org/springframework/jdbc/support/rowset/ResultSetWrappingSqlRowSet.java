@@ -32,7 +32,7 @@ import org.springframework.jdbc.InvalidResultSetAccessException;
 
 /**
  * The default implementation of Spring's {@link SqlRowSet} interface, wrapping a
- * {@link java.sql.ResultSet}, catching any {@link SQLException}s and translating
+ * {@link java.sql.ResultSet}, catching any {@link SQLException java.sql.ResultSet}, catching any {@link SQLExceptions} and translating
  * them to a corresponding Spring {@link InvalidResultSetAccessException}.
  *
  * <p>The passed-in ResultSet should already be disconnected if the SqlRowSet is supposed
@@ -63,7 +63,7 @@ import org.springframework.jdbc.InvalidResultSetAccessException;
  */
 public class ResultSetWrappingSqlRowSet implements SqlRowSet {
 
-	/** use serialVersionUID from Spring 1.2 for interoperability */
+	/** use serialVersionUID from Spring 1.2 for interoperability. */
 	private static final long serialVersionUID = -4688694393146734764L;
 
 

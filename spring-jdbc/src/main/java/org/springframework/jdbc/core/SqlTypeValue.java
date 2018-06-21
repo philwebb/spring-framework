@@ -57,7 +57,7 @@ public interface SqlTypeValue {
 	 * Set the type value on the given PreparedStatement.
 	 * @param ps the PreparedStatement to work on
 	 * @param paramIndex the index of the parameter for which we need to set the value
-	 * @param sqlType SQL type of the parameter we are setting
+	 * @param sqlType the SQL type of the parameter we are setting
 	 * @param typeName the type name of the parameter (optional)
 	 * @throws SQLException if a SQLException is encountered while setting parameter values
 	 * @see java.sql.Types

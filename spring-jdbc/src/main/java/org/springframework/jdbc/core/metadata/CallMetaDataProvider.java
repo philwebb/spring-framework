@@ -166,7 +166,7 @@ public interface CallMetaDataProvider {
 
 	/**
 	 * Get the call parameter meta-data that is currently used.
-	 * @return List of {@link CallParameterMetaData}
+	 * @return a List of {@link CallParameterMetaData}
 	 */
 	List<CallParameterMetaData> getCallParameterMetaData();
 

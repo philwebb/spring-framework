@@ -38,6 +38,7 @@ import org.springframework.util.NumberUtils;
  * for the single column will be extracted from the {@code ResultSet}
  * and converted into the specified target type.
  *
+ * @param <T> the result type
  * @author Juergen Hoeller
  * @author Kazuki Shimizu
  * @since 1.2

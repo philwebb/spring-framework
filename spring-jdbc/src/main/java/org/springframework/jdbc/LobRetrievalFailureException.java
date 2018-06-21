@@ -40,7 +40,7 @@ public class LobRetrievalFailureException extends DataRetrievalFailureException 
 	/**
 	 * Constructor for LobRetrievalFailureException.
 	 * @param msg the detail message
-	 * @param ex IOException root cause
+	 * @param ex the root cause IOException
 	 */
 	public LobRetrievalFailureException(String msg, IOException ex) {
 		super(msg, ex);

@@ -119,7 +119,7 @@ public interface TableMetaDataProvider {
 
 	/**
 	 * Get the table parameter meta-data that is currently used.
-	 * @return List of {@link TableParameterMetaData}
+	 * @return a List of {@link TableParameterMetaData}
 	 */
 	List<TableParameterMetaData> getTableParameterMetaData();
 

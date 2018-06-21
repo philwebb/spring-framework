@@ -72,8 +72,8 @@ public class BatchSqlUpdate extends SqlUpdate {
 
 	/**
 	 * Construct an update object with a given DataSource and SQL.
-	 * @param ds DataSource to use to obtain connections
-	 * @param sql SQL statement to execute
+	 * @param ds the DataSource to use to obtain connections
+	 * @param sql the SQL statement to execute
 	 */
 	public BatchSqlUpdate(DataSource ds, String sql) {
 		super(ds, sql);
@@ -82,9 +82,9 @@ public class BatchSqlUpdate extends SqlUpdate {
 	/**
 	 * Construct an update object with a given DataSource, SQL
 	 * and anonymous parameters.
-	 * @param ds DataSource to use to obtain connections
-	 * @param sql SQL statement to execute
-	 * @param types SQL types of the parameters, as defined in the
+	 * @param ds the DataSource to use to obtain connections
+	 * @param sql the SQL statement to execute
+	 * @param types the SQL types of the parameters, as defined in the
 	 * {@code java.sql.Types} class
 	 * @see java.sql.Types
 	 */
@@ -96,9 +96,9 @@ public class BatchSqlUpdate extends SqlUpdate {
 	 * Construct an update object with a given DataSource, SQL,
 	 * anonymous parameters and specifying the maximum number of rows
 	 * that may be affected.
-	 * @param ds DataSource to use to obtain connections
-	 * @param sql SQL statement to execute
-	 * @param types SQL types of the parameters, as defined in the
+	 * @param ds the DataSource to use to obtain connections
+	 * @param sql the SQL statement to execute
+	 * @param types the SQL types of the parameters, as defined in the
 	 * {@code java.sql.Types} class
 	 * @param batchSize the number of statements that will trigger
 	 * an automatic intermediate flush

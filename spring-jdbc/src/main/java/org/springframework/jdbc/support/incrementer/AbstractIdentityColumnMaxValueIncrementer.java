@@ -39,10 +39,10 @@ public abstract class AbstractIdentityColumnMaxValueIncrementer extends Abstract
 
 	private boolean deleteSpecificValues = false;
 
-	/** The current cache of values */
+	/** The current cache of values. */
 	private long[] valueCache;
 
-	/** The next id to serve from the value cache */
+	/** The next id to serve from the value cache. */
 	private int nextValueIndex = -1;
 
 

@@ -55,10 +55,10 @@ import javax.sql.DataSource;
  */
 public class DerbyMaxValueIncrementer extends AbstractIdentityColumnMaxValueIncrementer {
 
-	/** The default for dummy name */
+	/** The default for dummy name. */
 	private static final String DEFAULT_DUMMY_NAME = "dummy";
 
-	/** The name of the dummy column used for inserts */
+	/** The name of the dummy column used for inserts. */
 	private String dummyName = DEFAULT_DUMMY_NAME;
 
 

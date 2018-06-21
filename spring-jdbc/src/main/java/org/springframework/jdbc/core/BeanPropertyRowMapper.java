@@ -70,34 +70,35 @@ import org.springframework.util.StringUtils;
  * <p>Please note that this class is designed to provide convenience rather than high performance.
  * For best performance, consider using a custom {@link RowMapper} implementation.
  *
+ * @param <T> the result type
  * @author Thomas Risberg
  * @author Juergen Hoeller
  * @since 2.5
  */
 public class BeanPropertyRowMapper<T> implements RowMapper<T> {
 
-	/** Logger available to subclasses */
+	/** Logger available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	/** The class we are mapping to */
+	/** The class we are mapping to. */
 	@Nullable
 	private Class<T> mappedClass;
 
-	/** Whether we're strictly validating */
+	/** Whether we're strictly validating. */
 	private boolean checkFullyPopulated = false;
 
-	/** Whether we're defaulting primitives when mapping a null value */
+	/** Whether we're defaulting primitives when mapping a null value. */
 	private boolean primitivesDefaultedForNullValue = false;
 
-	/** ConversionService for binding JDBC values to bean properties */
+	/** ConversionService for binding JDBC values to bean properties. */
 	@Nullable
 	private ConversionService conversionService = DefaultConversionService.getSharedInstance();
 
-	/** Map of the fields we provide mapping for */
+	/** Map of the fields we provide mapping for. */
 	@Nullable
 	private Map<String, PropertyDescriptor> mappedFields;
 
-	/** Set of bean properties we provide mapping for */
+	/** Set of bean properties we provide mapping for. */
 	@Nullable
 	private Set<String> mappedProperties;
 

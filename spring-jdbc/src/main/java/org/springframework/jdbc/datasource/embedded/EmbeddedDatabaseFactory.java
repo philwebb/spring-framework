@@ -64,7 +64,7 @@ import org.springframework.util.Assert;
 public class EmbeddedDatabaseFactory {
 
 	/**
-	 * Default name for an embedded database: {@value}
+	 * Default name for an embedded database: {@value}.
 	 */
 	public static final String DEFAULT_DATABASE_NAME = "testdb";
 
@@ -91,8 +91,8 @@ public class EmbeddedDatabaseFactory {
 	 * generation of a pseudo-random unique ID to be used as the database name.
 	 * <p>Setting this flag to {@code true} overrides any explicit name set
 	 * via {@link #setDatabaseName}.
-	 * @see #setDatabaseName
 	 * @since 4.2
+	 * @see #setDatabaseName
 	 */
 	public void setGenerateUniqueDatabaseName(boolean generateUniqueDatabaseName) {
 		this.generateUniqueDatabaseName = generateUniqueDatabaseName;
