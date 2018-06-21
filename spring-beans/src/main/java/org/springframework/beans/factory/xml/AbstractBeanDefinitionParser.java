@@ -50,10 +50,10 @@ import org.springframework.util.StringUtils;
  */
 public abstract class AbstractBeanDefinitionParser implements BeanDefinitionParser {
 
-	/** Constant for the "id" attribute */
+	/** Constant for the "id" attribute. */
 	public static final String ID_ATTRIBUTE = "id";
 
-	/** Constant for the "name" attribute */
+	/** Constant for the "name" attribute. */
 	public static final String NAME_ATTRIBUTE = "name";
 
 

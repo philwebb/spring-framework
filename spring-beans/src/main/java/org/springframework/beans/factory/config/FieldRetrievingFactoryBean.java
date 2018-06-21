@@ -35,14 +35,15 @@ import org.springframework.util.StringUtils;
  *
  * <p>Typically used for retrieving public static final constants. Usage example:
  *
- * <pre class="code">// standard definition for exposing a static field, specifying the "staticField" property
+ * <pre class="code">
+ * // standard definition for exposing a static field, specifying the "staticField" property
  * &lt;bean id="myField" class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"&gt;
  *   &lt;property name="staticField" value="java.sql.Connection.TRANSACTION_SERIALIZABLE"/&gt;
  * &lt;/bean&gt;
  *
  * // convenience version that specifies a static field pattern as bean name
  * &lt;bean id="java.sql.Connection.TRANSACTION_SERIALIZABLE"
- *       class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/&gt;</pre>
+ *       class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/&gt;
  * </pre>
  *
  * <p>If you are using Spring 2.0, you can also use the following style of configuration for

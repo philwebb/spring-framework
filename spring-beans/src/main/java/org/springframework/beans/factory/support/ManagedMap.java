@@ -27,6 +27,8 @@ import org.springframework.lang.Nullable;
  * Tag collection class used to hold managed Map values, which may
  * include runtime bean references (to be resolved into bean objects).
  *
+ * @param <K> the key type
+ * @param <V> the value type
  * @author Juergen Hoeller
  * @author Rob Harrop
  * @since 27.05.2003

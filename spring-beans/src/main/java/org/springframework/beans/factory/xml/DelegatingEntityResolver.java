@@ -38,10 +38,10 @@ import org.springframework.util.Assert;
  */
 public class DelegatingEntityResolver implements EntityResolver {
 
-	/** Suffix for DTD files */
+	/** Suffix for DTD files. */
 	public static final String DTD_SUFFIX = ".dtd";
 
-	/** Suffix for schema definition files */
+	/** Suffix for schema definition files. */
 	public static final String XSD_SUFFIX = ".xsd";
 
 

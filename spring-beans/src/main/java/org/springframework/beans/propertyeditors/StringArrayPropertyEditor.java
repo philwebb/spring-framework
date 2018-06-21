@@ -37,7 +37,7 @@ import org.springframework.util.StringUtils;
 public class StringArrayPropertyEditor extends PropertyEditorSupport {
 
 	/**
-	 * Default separator for splitting a String: a comma (",")
+	 * Default separator for splitting a String: a comma (",").
 	 */
 	public static final String DEFAULT_SEPARATOR = ",";
 

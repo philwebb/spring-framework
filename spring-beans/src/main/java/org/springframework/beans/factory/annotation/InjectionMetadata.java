@@ -94,6 +94,7 @@ public class InjectionMetadata {
 	}
 
 	/**
+	 * Clear property skipping for the contained elements.
 	 * @since 3.2.13
 	 */
 	public void clear(@Nullable PropertyValues pvs) {
@@ -113,6 +114,9 @@ public class InjectionMetadata {
 	}
 
 
+	/**
+	 * A single injected element.
+	 */
 	public abstract static class InjectedElement {
 
 		protected final Member member;
@@ -226,6 +230,7 @@ public class InjectionMetadata {
 		}
 
 		/**
+		 * Clear property skipping for this element.
 		 * @since 3.2.13
 		 */
 		protected void clearPropertySkipping(@Nullable PropertyValues pvs) {

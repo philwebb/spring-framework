@@ -46,7 +46,7 @@ public interface PropertyValues {
 	 * Return the changes since the previous PropertyValues.
 	 * Subclasses should also override {@code equals}.
 	 * @param old old property values
-	 * @return PropertyValues updated or new properties.
+	 * @return the updated or new properties.
 	 * Return empty PropertyValues if there are no changes.
 	 * @see Object#equals
 	 */
