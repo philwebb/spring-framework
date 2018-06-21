@@ -37,11 +37,11 @@ import org.springframework.util.Assert;
  */
 public class HotSwappableTargetSource implements TargetSource, Serializable {
 
-	/** use serialVersionUID from Spring 1.2 for interoperability */
+	/** use serialVersionUID from Spring 1.2 for interoperability. */
 	private static final long serialVersionUID = 7497929212653839187L;
 
 
-	/** The current target object */
+	/** The current target object. */
 	private Object target;
 
 

@@ -21,7 +21,8 @@ import java.io.Serializable;
 import org.springframework.aop.ClassFilter;
 
 /**
- * Simple ClassFilter implementation that passes classes (and optionally subclasses)
+ * Simple ClassFilter implementation that passes classes (and optionally subclasses).
+ *
  * @author Rod Johnson
  */
 @SuppressWarnings("serial")

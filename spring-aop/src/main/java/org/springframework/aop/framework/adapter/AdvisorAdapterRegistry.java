@@ -50,7 +50,7 @@ public interface AdvisorAdapterRegistry {
 	 * given Advisor in an interception-based framework.
 	 * <p>Don't worry about the pointcut associated with the Advisor,
 	 * if it's a PointcutAdvisor: just return an interceptor.
-	 * @param advisor Advisor to find an interceptor for
+	 * @param advisor the Advisor to find an interceptor for
 	 * @return an array of MethodInterceptors to expose this Advisor's behavior
 	 * @throws UnknownAdviceTypeException if the Advisor type is
 	 * not understood by any registered AdvisorAdapter.
@@ -61,7 +61,7 @@ public interface AdvisorAdapterRegistry {
 	 * Register the given AdvisorAdapter. Note that it is not necessary to register
 	 * adapters for an AOP Alliance Interceptors or Spring Advices: these must be
 	 * automatically recognized by an AdvisorAdapterRegistry implementation.
-	 * @param adapter AdvisorAdapter that understands a particular Advisor
+	 * @param adapter the AdvisorAdapter that understands a particular Advisor
 	 * or Advice types
 	 */
 	void registerAdvisorAdapter(AdvisorAdapter adapter);

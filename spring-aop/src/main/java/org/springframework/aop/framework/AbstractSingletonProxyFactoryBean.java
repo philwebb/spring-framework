@@ -54,7 +54,7 @@ public abstract class AbstractSingletonProxyFactoryBean extends ProxyConfig
 	@Nullable
 	private Object[] postInterceptors;
 
-	/** Default is global AdvisorAdapterRegistry */
+	/** Default is global AdvisorAdapterRegistry. */
 	private AdvisorAdapterRegistry advisorAdapterRegistry = GlobalAdvisorAdapterRegistry.getInstance();
 
 	@Nullable

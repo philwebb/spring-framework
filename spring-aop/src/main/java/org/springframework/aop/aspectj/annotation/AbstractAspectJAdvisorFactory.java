@@ -61,7 +61,7 @@ public abstract class AbstractAspectJAdvisorFactory implements AspectJAdvisorFac
 	private static final String AJC_MAGIC = "ajc$";
 
 
-	/** Logger available to subclasses */
+	/** Logger available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	protected final ParameterNameDiscoverer parameterNameDiscoverer = new AspectJAnnotationParameterNameDiscoverer();
@@ -123,7 +123,7 @@ public abstract class AbstractAspectJAdvisorFactory implements AspectJAdvisorFac
 
 	/**
 	 * Find and return the first AspectJ annotation on the given method
-	 * (there <i>should</i> only be one anyway...)
+	 * (there <i>should</i> only be one anyway...).
 	 */
 	@SuppressWarnings("unchecked")
 	@Nullable
@@ -151,6 +151,9 @@ public abstract class AbstractAspectJAdvisorFactory implements AspectJAdvisorFac
 	}
 
 
+	/**
+	 * AspectJ annotation types.
+	 */
 	protected enum AspectJAnnotationType {
 
 		AtPointcut,
@@ -165,6 +168,7 @@ public abstract class AbstractAspectJAdvisorFactory implements AspectJAdvisorFac
 	/**
 	 * Class modelling an AspectJ annotation, exposing its type enumeration and
 	 * pointcut String.
+	 * @param <A> the annotation type
 	 */
 	protected static class AspectJAnnotation<A extends Annotation> {
 

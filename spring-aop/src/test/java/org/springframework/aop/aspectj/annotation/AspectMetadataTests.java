@@ -26,9 +26,9 @@ import org.springframework.aop.aspectj.annotation.AbstractAspectJAdvisorFactoryT
 import static org.junit.Assert.*;
 
 /**
- * @since 2.0
  * @author Rod Johnson
  * @author Chris Beams
+ * @since 2.0
  */
 public class AspectMetadataTests {
 
