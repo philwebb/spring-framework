@@ -71,6 +71,9 @@ import org.springframework.web.servlet.view.AbstractUrlBasedView;
  */
 public class ScriptTemplateView extends AbstractUrlBasedView {
 
+	/**
+	 * The default content type for the view.
+	 */
 	public static final String DEFAULT_CONTENT_TYPE = "text/html";
 
 	private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;

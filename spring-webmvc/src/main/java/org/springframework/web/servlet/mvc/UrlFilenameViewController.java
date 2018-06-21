@@ -53,7 +53,7 @@ public class UrlFilenameViewController extends AbstractUrlViewController {
 
 	private String suffix = "";
 
-	/** Request URL path String --> view name String */
+	/** Request URL path String to view name String. */
 	private final Map<String, String> viewNameCache = new ConcurrentHashMap<>(256);
 
 

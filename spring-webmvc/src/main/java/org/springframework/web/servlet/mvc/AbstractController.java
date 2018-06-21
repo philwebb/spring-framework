@@ -30,7 +30,7 @@ import org.springframework.web.util.WebUtils;
  * Convenient superclass for controller implementations, using the Template Method
  * design pattern.
  *
- * <p><b><a name="workflow">Workflow
+ * <p><b>Workflow
  * (<a href="Controller.html#workflow">and that defined by interface</a>):</b><br>
  * <ol>
  * <li>{@link #handleRequest(HttpServletRequest, HttpServletResponse) handleRequest()}
@@ -50,7 +50,7 @@ import org.springframework.web.util.WebUtils;
  * (<a href="Controller.html#config">and those defined by interface</a>):</b><br>
  * <table border="1">
  * <tr>
- * <td><b>name</b></th>
+ * <td><b>name</b></td>
  * <td><b>default</b></td>
  * <td><b>description</b></td>
  * </tr>

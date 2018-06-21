@@ -58,7 +58,7 @@ public abstract class RequestContextAwareTag extends TagSupport implements TryCa
 			"org.springframework.web.servlet.tags.REQUEST_CONTEXT";
 
 
-	/** Logger available to subclasses */
+	/** Logger available to subclasses. */
 	protected final Log logger = LogFactory.getLog(getClass());
 
 

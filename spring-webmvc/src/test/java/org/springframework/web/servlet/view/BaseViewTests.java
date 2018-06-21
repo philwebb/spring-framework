@@ -311,7 +311,7 @@ public class BaseViewTests {
 
 		boolean initialized;
 
-		/** Captured model in render */
+		/** Captured model in render. */
 		Map<String, Object> model;
 
 		TestView(WebApplicationContext wac) {

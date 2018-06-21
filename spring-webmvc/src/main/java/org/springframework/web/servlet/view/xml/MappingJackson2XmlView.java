@@ -45,6 +45,9 @@ import org.springframework.web.servlet.view.json.AbstractJackson2View;
  */
 public class MappingJackson2XmlView extends AbstractJackson2View {
 
+	/**
+	 * The default content type for the view.
+	 */
 	public static final String DEFAULT_CONTENT_TYPE = "application/xml";
 
 

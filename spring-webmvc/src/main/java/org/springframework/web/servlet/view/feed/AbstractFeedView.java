@@ -40,6 +40,7 @@ import org.springframework.web.servlet.view.AbstractView;
  *
  * <p>Thanks to Jettro Coenradie and Sergio Bossa for the original feed view prototype!
  *
+ * @param <T> the {@link WireFeed} type
  * @author Arjen Poutsma
  * @author Juergen Hoeller
  * @since 3.0

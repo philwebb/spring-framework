@@ -39,7 +39,7 @@ import org.springframework.web.context.WebApplicationContext;
  */
 public class SimpleSpringPreparerFactory extends AbstractSpringPreparerFactory {
 
-	/** Cache of shared ViewPreparer instances: bean name -> bean instance */
+	/** Cache of shared ViewPreparer instances: bean name -> bean instance. */
 	private final Map<String, ViewPreparer> sharedPreparers = new ConcurrentHashMap<>(16);
 
 

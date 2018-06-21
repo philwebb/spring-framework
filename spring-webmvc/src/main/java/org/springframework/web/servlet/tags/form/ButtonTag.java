@@ -156,7 +156,7 @@ public class ButtonTag extends AbstractHtmlElementTag {
 
 	/**
 	 * Return the default value.
-	 * @return The default value if none supplied.
+	 * @return the default value if none supplied
 	 */
 	protected String getDefaultValue() {
 		return "Submit";

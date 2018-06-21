@@ -42,7 +42,7 @@ public class InterceptorRegistry {
 	/**
 	 * Adds the provided {@link HandlerInterceptor}.
 	 * @param interceptor the interceptor to add
-	 * @return An {@link InterceptorRegistration} that allows you optionally configure the
+	 * @return an {@link InterceptorRegistration} that allows you optionally configure the
 	 * registered interceptor further for example adding URL patterns it should apply to.
 	 */
 	public InterceptorRegistration addInterceptor(HandlerInterceptor interceptor) {
@@ -54,7 +54,7 @@ public class InterceptorRegistry {
 	/**
 	 * Adds the provided {@link WebRequestInterceptor}.
 	 * @param interceptor the interceptor to add
-	 * @return An {@link InterceptorRegistration} that allows you optionally configure the
+	 * @return an {@link InterceptorRegistration} that allows you optionally configure the
 	 * registered interceptor further for example adding URL patterns it should apply to.
 	 */
 	public InterceptorRegistration addWebRequestInterceptor(WebRequestInterceptor interceptor) {

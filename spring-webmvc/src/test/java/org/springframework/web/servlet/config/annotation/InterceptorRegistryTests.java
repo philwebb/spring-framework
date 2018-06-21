@@ -46,8 +46,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
- * Test fixture with a {@link InterceptorRegistry}, two {@link HandlerInterceptor}s and two
- * {@link WebRequestInterceptor}s.
+ * Test fixture with a {@link InterceptorRegistry}, two {@link HandlerInterceptor InterceptorRegistry}, two {@link HandlerInterceptors} and two
+ * {@link WebRequestInterceptor WebRequestInterceptors}.
  *
  * @author Rossen Stoyanchev
  * @author Eko Kurniawan Khannedy

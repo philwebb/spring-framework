@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * A contract for {@code "name!=value"} style expression used to specify request
  * parameters and request header conditions in {@code @RequestMapping}.
  *
+ * @param <T> the value type
  * @author Rossen Stoyanchev
  * @since 3.1
  * @see RequestMapping#params()
