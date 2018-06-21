@@ -31,6 +31,7 @@ import org.springframework.util.MimeType;
  * Abstract base class for {@link org.springframework.core.codec.Encoder}
  * classes that can only deal with a single value.
  *
+ * @param <T> the element type
  * @author Arjen Poutsma
  * @since 5.0
  */
@@ -57,7 +58,7 @@ public abstract class AbstractSingleValueEncoder<T> extends AbstractEncoder<T> {
 	 * @param dataBufferFactory a buffer factory used to create the output
 	 * @param type the stream element type to process
 	 * @param mimeType the mime type to process
-	 * @param hints Additional information about how to do decode, optional
+	 * @param hints additional information about how to do decode, optional
 	 * @return the output stream
 	 */
 	protected abstract Flux<DataBuffer> encode(T t, DataBufferFactory dataBufferFactory,

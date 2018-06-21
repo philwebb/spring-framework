@@ -32,10 +32,10 @@ import org.springframework.util.MimeType;
  * Strategy for decoding a {@link DataBuffer} input stream into an output stream
  * of elements of type {@code <T>}.
  *
+ * @param <T> the type of elements in the output stream
  * @author Sebastien Deleuze
  * @author Rossen Stoyanchev
  * @since 5.0
- * @param <T> the type of elements in the output stream
  */
 public interface Decoder<T> {
 

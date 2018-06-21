@@ -38,7 +38,7 @@ import static org.junit.Assert.*;
 
 /**
  * @author Keith Donald
- * @author Phil Webb
+ * @author Phillip Webb
  * @author Juergen Hoeller
  */
 public class MapToMapConverterTests {

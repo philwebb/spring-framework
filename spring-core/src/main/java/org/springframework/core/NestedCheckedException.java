@@ -38,7 +38,7 @@ import org.springframework.lang.Nullable;
  */
 public abstract class NestedCheckedException extends Exception {
 
-	/** Use serialVersionUID from Spring 1.2 for interoperability */
+	/** Use serialVersionUID from Spring 1.2 for interoperability. */
 	private static final long serialVersionUID = 7100714597678207546L;
 
 	static {

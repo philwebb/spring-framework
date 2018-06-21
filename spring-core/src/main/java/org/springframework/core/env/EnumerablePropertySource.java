@@ -37,6 +37,7 @@ import org.springframework.util.ObjectUtils;
  * (via {@link #getProperty(String)}) in order to evaluate whether it is present
  * or not.
  *
+ * @param <T> the source type
  * @author Chris Beams
  * @author Juergen Hoeller
  * @since 3.1

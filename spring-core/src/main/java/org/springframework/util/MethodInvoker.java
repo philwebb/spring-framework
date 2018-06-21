@@ -53,7 +53,7 @@ public class MethodInvoker {
 	@Nullable
 	private Object[] arguments;
 
-	/** The method we will call */
+	/** The method we will call. */
 	@Nullable
 	private Method methodObject;
 

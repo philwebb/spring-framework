@@ -48,6 +48,7 @@ import org.springframework.util.ObjectUtils;
  * annotation provides a convenient and declarative way of adding property sources to the
  * enclosing {@code Environment}.
  *
+ * @param <T> the source type
  * @author Chris Beams
  * @since 3.1
  * @see PropertySources
@@ -88,7 +89,7 @@ public abstract class PropertySource<T> {
 
 
 	/**
-	 * Return the name of this {@code PropertySource}
+	 * Return the name of this {@code PropertySource}.
 	 */
 	public String getName() {
 		return this.name;
@@ -218,6 +219,9 @@ public abstract class PropertySource<T> {
 
 
 	/**
+	 * A {@code PropertySource} implementation intended for collection comparison
+	 * purposes.
+	 *
 	 * @see PropertySource#named(String)
 	 */
 	static class ComparisonPropertySource extends StubPropertySource {

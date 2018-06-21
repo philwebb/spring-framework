@@ -21,11 +21,11 @@ package org.springframework.core.convert.converter;
  *
  * <p>Implementations may additionally implement {@link ConditionalConverter}.
  *
+ * @param <S> the source type converters created by this factory can convert from
+ * @param <R> the target range (or base) type converters created by this factory can convert to;
  * @author Keith Donald
  * @since 3.0
  * @see ConditionalConverter
- * @param <S> the source type converters created by this factory can convert from
- * @param <R> the target range (or base) type converters created by this factory can convert to;
  * for example {@link Number} for a set of number subtypes.
  */
 public interface ConverterFactory<S, R> {

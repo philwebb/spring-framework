@@ -198,6 +198,7 @@ import org.springframework.util.StringUtils;
  * be considered either 'option' or 'non-option' arguments and as described above can be
  * accessed through the normal {@code PropertySource} and {@code Environment} APIs.
  *
+ * @param <T> the source type
  * @author Chris Beams
  * @since 3.1
  * @see PropertySource
@@ -206,10 +207,10 @@ import org.springframework.util.StringUtils;
  */
 public abstract class CommandLinePropertySource<T> extends EnumerablePropertySource<T> {
 
-	/** The default name given to {@link CommandLinePropertySource} instances: {@value} */
+	/** The default name given to {@link CommandLinePropertySource} instances: {@value}. */
 	public static final String COMMAND_LINE_PROPERTY_SOURCE_NAME = "commandLineArgs";
 
-	/** The default name of the property representing non-option arguments: {@value} */
+	/** The default name of the property representing non-option arguments: {@value}. */
 	public static final String DEFAULT_NON_OPTION_ARGS_PROPERTY_NAME = "nonOptionArgs";
 
 

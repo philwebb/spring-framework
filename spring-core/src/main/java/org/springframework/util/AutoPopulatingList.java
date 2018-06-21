@@ -36,6 +36,7 @@ import java.util.ListIterator;
  *
  * <p>Inspired by {@code LazyList} from Commons Collections.
  *
+ * @param <E> the element type
  * @author Rob Harrop
  * @author Juergen Hoeller
  * @since 2.0
@@ -243,6 +244,8 @@ public class AutoPopulatingList<E> implements List<E>, Serializable {
 	/**
 	 * Factory interface for creating elements for an index-based access
 	 * data structure such as a {@link java.util.List}.
+	 *
+	 * @param <E> the element type
 	 */
 	@FunctionalInterface
 	public interface ElementFactory<E> {

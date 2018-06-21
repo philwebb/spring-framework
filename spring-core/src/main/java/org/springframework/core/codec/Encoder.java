@@ -33,10 +33,10 @@ import org.springframework.util.MimeType;
  * Strategy to encode a stream of Objects of type {@code <T>} into an output
  * stream of bytes.
  *
+ * @param <T> the type of elements in the input stream
  * @author Sebastien Deleuze
  * @author Rossen Stoyanchev
  * @since 5.0
- * @param <T> the type of elements in the input stream
  */
 public interface Encoder<T> {
 

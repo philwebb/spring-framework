@@ -57,7 +57,7 @@ public abstract class ConcurrencyThrottleSupport implements Serializable {
 	public static final int NO_CONCURRENCY = 0;
 
 
-	/** Transient to optimize serialization */
+	/** Transient to optimize serialization. */
 	protected transient Log logger = LogFactory.getLog(getClass());
 
 	private transient Object monitor = new Object();

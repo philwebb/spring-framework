@@ -25,6 +25,7 @@ import org.springframework.util.Assert;
  * A Comparator that will safely compare nulls to be lower or higher than
  * other objects. Can decorate a given Comparator or work on Comparables.
  *
+ * @param <T> the type of objects that may be compared by this comparator
  * @author Keith Donald
  * @author Juergen Hoeller
  * @since 1.2.2

@@ -35,13 +35,13 @@ import org.springframework.lang.Nullable;
  */
 public abstract class SystemPropertyUtils {
 
-	/** Prefix for system property placeholders: "${" */
+	/** Prefix for system property placeholders: "${". */
 	public static final String PLACEHOLDER_PREFIX = "${";
 
-	/** Suffix for system property placeholders: "}" */
+	/** Suffix for system property placeholders: "}". */
 	public static final String PLACEHOLDER_SUFFIX = "}";
 
-	/** Value separator for system property placeholders: ":" */
+	/** Value separator for system property placeholders: ":". */
 	public static final String VALUE_SEPARATOR = ":";
 
 
@@ -57,9 +57,9 @@ public abstract class SystemPropertyUtils {
 	 * corresponding system property values.
 	 * @param text the String to resolve
 	 * @return the resolved String
+	 * @throws IllegalArgumentException if there is an unresolvable placeholder
 	 * @see #PLACEHOLDER_PREFIX
 	 * @see #PLACEHOLDER_SUFFIX
-	 * @throws IllegalArgumentException if there is an unresolvable placeholder
 	 */
 	public static String resolvePlaceholders(String text) {
 		return resolvePlaceholders(text, false);
@@ -72,9 +72,9 @@ public abstract class SystemPropertyUtils {
 	 * @param text the String to resolve
 	 * @param ignoreUnresolvablePlaceholders whether unresolved placeholders are to be ignored
 	 * @return the resolved String
+	 * @throws IllegalArgumentException if there is an unresolvable placeholder
 	 * @see #PLACEHOLDER_PREFIX
 	 * @see #PLACEHOLDER_SUFFIX
-	 * @throws IllegalArgumentException if there is an unresolvable placeholder
 	 * and the "ignoreUnresolvablePlaceholders" flag is {@code false}
 	 */
 	public static String resolvePlaceholders(String text, boolean ignoreUnresolvablePlaceholders) {

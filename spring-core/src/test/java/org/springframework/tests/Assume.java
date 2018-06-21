@@ -28,7 +28,7 @@ import static org.junit.Assume.*;
  * conditions hold {@code true}. If the assumption fails, it means the test should be
  * skipped.
  *
- * <p>Tests can be categorized into {@link TestGroup}s. Active groups are enabled using
+ * <p>Tests can be categorized into {@link TestGroup TestGroups}. Active groups are enabled using
  * the 'testGroups' system property, usually activated from the gradle command line:
  *
  * <pre class="code">

@@ -27,9 +27,9 @@ import org.springframework.lang.Nullable;
  * from an underlying {@linkplain #getSource source} such as an
  * {@code Annotation} or a {@code Map}.
  *
+ * @param <S> the type of source supported by this extractor
  * @author Sam Brannen
  * @since 4.2
- * @param <S> the type of source supported by this extractor
  * @see SynthesizedAnnotationInvocationHandler
  */
 interface AnnotationAttributeExtractor<S> {

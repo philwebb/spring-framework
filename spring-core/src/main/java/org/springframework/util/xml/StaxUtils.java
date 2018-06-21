@@ -243,7 +243,7 @@ public abstract class StaxUtils {
 
 	/**
 	 * Create a {@link XMLEventReader} from the given list of {@link XMLEvent}.
-	 * @param events the list of {@link XMLEvent}s.
+	 * @param events the list of {@link XMLEvent XMLEvents}.
 	 * @return an {@code XMLEventReader} that reads from the given events
 	 * @since 5.0
 	 */

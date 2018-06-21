@@ -41,6 +41,7 @@ import org.springframework.util.MimeType;
  * along different boundaries (e.g. on new line characters for {@code String})
  * or always reduce to a single data buffer (e.g. {@code Resource}).
  *
+ * @param <T> the element type
  * @author Rossen Stoyanchev
  * @since 5.0
  */
