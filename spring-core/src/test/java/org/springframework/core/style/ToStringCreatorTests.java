@@ -35,7 +35,9 @@ import static org.junit.Assert.*;
  */
 public class ToStringCreatorTests {
 
-	private SomeObject s1, s2, s3;
+	private SomeObject s1;
+	private SomeObject s2;
+	private SomeObject s3;
 
 
 	@Before

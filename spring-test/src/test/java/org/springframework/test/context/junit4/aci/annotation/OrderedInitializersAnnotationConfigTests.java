@@ -60,7 +60,13 @@ public class OrderedInitializersAnnotationConfigTests {
 	private static final String PROFILE_TWO = "two";
 
 	@Autowired
-	private String foo, bar, baz;
+	private String foo;
+
+	@Autowired
+	private String bar;
+
+	@Autowired
+	private String baz;
 
 
 	@Test
