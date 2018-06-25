@@ -65,7 +65,7 @@ public class OperatorInstanceof extends Operator {
 		if (rightValue == null || !(rightValue instanceof Class)) {
 			throw new SpelEvaluationException(getRightOperand().getStartPosition(),
 					SpelMessage.INSTANCEOF_OPERATOR_NEEDS_CLASS_OPERAND,
-					(rightValue != null ? rightValue.getClass().getName() : "null"));
+					(rightValue == null ? "null" : rightValue.getClass().getName()));
 		}
 		Class<?> rightClass = (Class<?>) rightValue;
 		if (leftValue == null) {

@@ -109,7 +109,7 @@ class HtmlCharacterEntityDecoder {
 	private void processPossibleReference() {
 		if (this.nextPotentialReferencePosition != -1) {
 			boolean isNumberedReference = (this.originalMessage.charAt(this.currentPosition + 1) == '#');
-			boolean wasProcessable = (isNumberedReference ? processNumberedReference() : processNamedReference());
+			boolean wasProcessable = isNumberedReference ? processNumberedReference() : processNamedReference();
 			if (wasProcessable) {
 				this.currentPosition = this.nextSemicolonPosition + 1;
 			}

@@ -89,9 +89,9 @@ public class RequestedContentTypeResolverBuilder {
 	public RequestedContentTypeResolver build() {
 
 		List<RequestedContentTypeResolver> resolvers =
-				(this.candidates.isEmpty() ?
+				this.candidates.isEmpty() ?
 						Collections.singletonList(new HeaderContentTypeResolver()) :
-						this.candidates.stream().map(Supplier::get).collect(Collectors.toList()));
+						this.candidates.stream().map(Supplier::get).collect(Collectors.toList());
 
 		return exchange -> {
 			for (RequestedContentTypeResolver resolver : resolvers) {

@@ -115,7 +115,7 @@ class ResourcesBeanDefinitionParser implements BeanDefinitionParser {
 
 		String orderValue = element.getAttribute("order");
 		// Use a default of near-lowest precedence, still allowing for even lower precedence in other mappings
-		Object order = (StringUtils.hasText(orderValue) ? orderValue : Ordered.LOWEST_PRECEDENCE - 1);
+		Object order = StringUtils.hasText(orderValue) ? orderValue : Ordered.LOWEST_PRECEDENCE - 1;
 		handlerMappingDef.getPropertyValues().add("order", order);
 
 		RuntimeBeanReference corsRef = MvcNamespaceUtils.registerCorsConfigurations(null, context, source);

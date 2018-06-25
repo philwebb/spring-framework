@@ -257,7 +257,7 @@ public class CronSequenceGenerator {
 	 */
 	private void reset(Calendar calendar, List<Integer> fields) {
 		for (int field : fields) {
-			calendar.set(field, field != Calendar.DAY_OF_MONTH ? 0 : 1);
+			calendar.set(field, field == Calendar.DAY_OF_MONTH ? 1 : 0);
 		}
 	}
 

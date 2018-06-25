@@ -98,7 +98,7 @@ final class SimpleBufferingClientHttpRequest extends AbstractBufferingClientHttp
 			}
 			else {
 				for (String headerValue : headerValues) {
-					String actualHeaderValue = (headerValue != null ? headerValue : "");
+					String actualHeaderValue = headerValue != null ? headerValue : "";
 					connection.addRequestProperty(headerName, actualHeaderValue);
 				}
 			}

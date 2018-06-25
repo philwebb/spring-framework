@@ -196,7 +196,7 @@ public class ScriptTemplateView extends AbstractUrlBasedView {
 		}
 		if (this.resourceLoaderPaths == null) {
 			String resourceLoaderPath = viewConfig.getResourceLoaderPath();
-			setResourceLoaderPath(resourceLoaderPath != null ? resourceLoaderPath : DEFAULT_RESOURCE_LOADER_PATH);
+			setResourceLoaderPath(resourceLoaderPath == null ? DEFAULT_RESOURCE_LOADER_PATH : resourceLoaderPath);
 		}
 		if (this.sharedEngine == null && viewConfig.isSharedEngine() != null) {
 			this.sharedEngine = viewConfig.isSharedEngine();

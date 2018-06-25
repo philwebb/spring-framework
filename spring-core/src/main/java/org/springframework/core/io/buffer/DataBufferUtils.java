@@ -280,7 +280,7 @@ public abstract class DataBufferUtils {
 		}
 
 		Flux<DataBuffer> result = readByteChannel(resource::readableChannel, dataBufferFactory, bufferSize);
-		return (position != 0 ? skipUntilByteCount(result, position) : result);
+		return position == 0 ? result : skipUntilByteCount(result, position);
 	}
 
 

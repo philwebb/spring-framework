@@ -552,9 +552,9 @@ public class MvcUriComponentsBuilder {
 	}
 
 	private static UriComponentsBuilder getBaseUrlToUse(@Nullable UriComponentsBuilder baseUrl) {
-		return (baseUrl != null ?
-				baseUrl.cloneBuilder() :
-				ServletUriComponentsBuilder.fromCurrentServletMapping());
+		return baseUrl == null ?
+				ServletUriComponentsBuilder.fromCurrentServletMapping() :
+				baseUrl.cloneBuilder();
 	}
 
 	private static String getPathPrefix(Class<?> controllerType) {
@@ -735,7 +735,7 @@ public class MvcUriComponentsBuilder {
 				this.argumentValues = args;
 				Class<?> returnType = method.getReturnType();
 				try {
-					return (returnType != void.class ? returnType.cast(initProxy(returnType, this)) : null);
+					return (returnType == void.class ? null : returnType.cast(initProxy(returnType, this)));
 				}
 				catch (Throwable ex) {
 					throw new IllegalStateException(
@@ -772,8 +772,8 @@ public class MvcUriComponentsBuilder {
 		private static <T> T initProxy(
 				Class<?> controllerType, @Nullable ControllerMethodInvocationInterceptor interceptor) {
 
-			interceptor = (interceptor != null ?
-					interceptor : new ControllerMethodInvocationInterceptor(controllerType));
+			interceptor = interceptor != null ?
+					interceptor : new ControllerMethodInvocationInterceptor(controllerType);
 
 			if (controllerType == Object.class) {
 				return (T) interceptor;

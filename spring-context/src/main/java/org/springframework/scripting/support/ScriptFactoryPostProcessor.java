@@ -272,7 +272,7 @@ public class ScriptFactoryPostProcessor extends InstantiationAwareBeanPostProces
 				return scriptedType;
 			}
 			else if (!ObjectUtils.isEmpty(interfaces)) {
-				return (interfaces.length != 1 ? createCompositeInterface(interfaces) : interfaces[0]);
+				return (interfaces.length == 1 ? interfaces[0] : createCompositeInterface(interfaces));
 			}
 			else {
 				if (bd.isSingleton()) {

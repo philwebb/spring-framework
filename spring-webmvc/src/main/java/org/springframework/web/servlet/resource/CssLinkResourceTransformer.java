@@ -229,7 +229,7 @@ public class CssLinkResourceTransformer extends ResourceTransformerSupport {
 
 		@Override
 		public int compareTo(ContentChunkInfo other) {
-			return (this.start < other.start ? -1 : (this.start != other.start ? 1 : 0));
+			return (this.start < other.start ? -1 : (this.start == other.start ? 0 : 1));
 		}
 
 		@Override

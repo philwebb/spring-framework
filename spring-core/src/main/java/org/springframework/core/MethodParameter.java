@@ -368,7 +368,7 @@ public class MethodParameter {
 	 * @see #nested()
 	 */
 	public MethodParameter nestedIfOptional() {
-		return (getParameterType() != Optional.class ? this : nested());
+		return (getParameterType() == Optional.class ? nested() : this);
 	}
 
 	/**

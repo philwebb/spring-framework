@@ -221,7 +221,7 @@ public class StompHeaders implements MultiValueMap<String, String>, Serializable
 	@Nullable
 	public String[] getAcceptVersion() {
 		String value = getFirst(ACCEPT_VERSION);
-		return (value != null ? StringUtils.commaDelimitedListToStringArray(value) : null);
+		return value != null ? StringUtils.commaDelimitedListToStringArray(value) : null;
 	}
 
 	/**
@@ -432,7 +432,7 @@ public class StompHeaders implements MultiValueMap<String, String>, Serializable
 	@Nullable
 	public String getFirst(String headerName) {
 		List<String> headerValues = this.headers.get(headerName);
-		return (headerValues != null ? headerValues.get(0) : null);
+		return headerValues != null ? headerValues.get(0) : null;
 	}
 
 	/**

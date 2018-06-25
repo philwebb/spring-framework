@@ -228,7 +228,7 @@ public abstract class SpelNodeImpl implements SpelNode, Opcodes {
 				generateCodeForArgument(mv, cf, arguments[p], paramDescriptors[p]);
 			}
 
-			SpelNodeImpl lastChild = (childCount != 0 ? arguments[childCount - 1] : null);
+			SpelNodeImpl lastChild = (childCount == 0 ? null : arguments[childCount - 1]);
 			String arrayType = paramDescriptors[paramDescriptors.length - 1];
 			// Determine if the final passed argument is already suitably packaged in array
 			// form to be passed to the method

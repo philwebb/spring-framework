@@ -95,7 +95,7 @@ public class MultipartHttpMessageReader implements HttpMessageReader<MultiValueM
 	}
 
 	private List<Part> toList(Collection<Part> collection) {
-		return (collection instanceof List ? (List<Part>) collection : new ArrayList<>(collection));
+		return collection instanceof List ? (List<Part>) collection : new ArrayList<>(collection);
 	}
 
 }

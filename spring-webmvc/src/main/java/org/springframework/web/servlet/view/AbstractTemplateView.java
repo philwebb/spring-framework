@@ -125,7 +125,7 @@ public abstract class AbstractTemplateView extends AbstractUrlBasedView {
 				}
 				Object attributeValue = request.getAttribute(attribute);
 				if (logger.isDebugEnabled()) {
-					exposed = (exposed != null ? exposed : new LinkedHashMap<>());
+					exposed = exposed != null ? exposed : new LinkedHashMap<>();
 					exposed.put(attribute, attributeValue);
 				}
 				model.put(attribute, attributeValue);
@@ -147,7 +147,7 @@ public abstract class AbstractTemplateView extends AbstractUrlBasedView {
 					}
 					Object attributeValue = session.getAttribute(attribute);
 					if (logger.isDebugEnabled()) {
-						exposed = (exposed != null ? exposed : new LinkedHashMap<>());
+						exposed = exposed != null ? exposed : new LinkedHashMap<>();
 						exposed.put(attribute, attributeValue);
 					}
 					model.put(attribute, attributeValue);

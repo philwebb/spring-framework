@@ -222,7 +222,7 @@ public abstract class StatementCreatorUtils {
 			logger.trace("Setting SQL statement parameter value: column index " + paramIndex +
 					", parameter value [" + inValueToUse +
 					"], value class [" + (inValueToUse != null ? inValueToUse.getClass().getName() : "null") +
-					"], SQL type " + (sqlTypeToUse != SqlTypeValue.TYPE_UNKNOWN ? Integer.toString(sqlTypeToUse) : "unknown"));
+					"], SQL type " + (sqlTypeToUse == SqlTypeValue.TYPE_UNKNOWN ? "unknown" : Integer.toString(sqlTypeToUse)));
 		}
 
 		if (inValueToUse == null) {

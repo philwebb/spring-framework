@@ -242,7 +242,7 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 	}
 
 	protected String formatMappingName() {
-		return (this.beanName != null ? "'" + this.beanName + "'" : "<unknown>");
+		return this.beanName != null ? "'" + this.beanName + "'" : "<unknown>";
 	}
 
 

@@ -215,7 +215,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 	 * @return the resulting hash code
 	 */
 	protected int getHash(@Nullable Object o) {
-		int hash = (o != null ? o.hashCode() : 0);
+		int hash = o == null ? 0 : o.hashCode();
 		hash += (hash << 15) ^ 0xffffcd7d;
 		hash ^= (hash >>> 10);
 		hash += (hash << 3);
@@ -771,7 +771,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 		private final EnumSet<TaskOption> options;
 
 		public Task(TaskOption... options) {
-			this.options = (options.length != 0 ? EnumSet.of(options[0], options) : EnumSet.noneOf(TaskOption.class));
+			this.options = (options.length == 0 ? EnumSet.noneOf(TaskOption.class) : EnumSet.of(options[0], options));
 		}
 
 		public boolean hasOption(TaskOption option) {

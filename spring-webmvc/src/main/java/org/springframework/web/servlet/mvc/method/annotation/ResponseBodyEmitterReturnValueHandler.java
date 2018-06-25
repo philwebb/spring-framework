@@ -103,9 +103,9 @@ public class ResponseBodyEmitterReturnValueHandler implements HandlerMethodRetur
 	@Override
 	public boolean supportsReturnType(MethodParameter returnType) {
 
-		Class<?> bodyType = (ResponseEntity.class.isAssignableFrom(returnType.getParameterType()) ?
+		Class<?> bodyType = ResponseEntity.class.isAssignableFrom(returnType.getParameterType()) ?
 				ResolvableType.forMethodParameter(returnType).getGeneric(0).resolve() :
-				returnType.getParameterType());
+				returnType.getParameterType();
 
 		return bodyType != null && (ResponseBodyEmitter.class.isAssignableFrom(bodyType) ||
 				this.reactiveHandler.isReactiveType(bodyType));
@@ -192,7 +192,7 @@ public class ResponseBodyEmitterReturnValueHandler implements HandlerMethodRetur
 		@SuppressWarnings("unchecked")
 		private <T> void sendInternal(T data, @Nullable MediaType mediaType) throws IOException {
 			if (logger.isTraceEnabled()) {
-				String format = (mediaType != null ? "\"" + mediaType + "\" from " : "");
+				String format = mediaType != null ? "\"" + mediaType + "\" from " : "";
 				logger.trace("Writing " + format + "[" +
 						(data instanceof CharSequence ? "\"" + data + "\"" : data) + "]");
 			}

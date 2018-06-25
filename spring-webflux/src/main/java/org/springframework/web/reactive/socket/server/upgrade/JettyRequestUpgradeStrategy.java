@@ -95,9 +95,9 @@ public class JettyRequestUpgradeStrategy implements RequestUpgradeStrategy, Life
 			if (!isRunning() && servletContext != null) {
 				this.running = true;
 				try {
-					this.factory = (this.webSocketPolicy != null ?
+					this.factory = this.webSocketPolicy != null ?
 							new WebSocketServerFactory(servletContext, this.webSocketPolicy) :
-							new WebSocketServerFactory(servletContext));
+							new WebSocketServerFactory(servletContext);
 					this.factory.setCreator((request, response) -> {
 						WebSocketHandlerContainer container = adapterHolder.get();
 						String protocol = container.getProtocol();

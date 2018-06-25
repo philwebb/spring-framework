@@ -74,7 +74,7 @@ public class PathMatchConfigurer {
 	 * @since 5.1
 	 */
 	public PathMatchConfigurer addPathPrefix(String prefix, Predicate<Class<?>> predicate) {
-		this.pathPrefixes = (this.pathPrefixes != null ? this.pathPrefixes : new LinkedHashMap<>());
+		this.pathPrefixes = this.pathPrefixes == null ? new LinkedHashMap<>() : this.pathPrefixes;
 		this.pathPrefixes.put(prefix, predicate);
 		return this;
 	}

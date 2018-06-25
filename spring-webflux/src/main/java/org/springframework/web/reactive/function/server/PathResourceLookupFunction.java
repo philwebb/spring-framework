@@ -96,7 +96,7 @@ class PathResourceLookupFunction implements Function<ServerRequest, Mono<Resourc
 				if (i == 0 || (i == 1 && slash)) {
 					return path;
 				}
-				path = (slash ? "/" + path.substring(i) : path.substring(i));
+				path = slash ? "/" + path.substring(i) : path.substring(i);
 				return path;
 			}
 		}
@@ -108,7 +108,7 @@ class PathResourceLookupFunction implements Function<ServerRequest, Mono<Resourc
 			return true;
 		}
 		if (path.contains(":/")) {
-			String relativePath = (path.charAt(0) != '/' ? path : path.substring(1));
+			String relativePath = (path.charAt(0) == '/' ? path.substring(1) : path);
 			if (ResourceUtils.isUrl(relativePath) || relativePath.startsWith("url:")) {
 				return true;
 			}

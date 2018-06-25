@@ -129,14 +129,14 @@ public abstract class AbstractServerHttpResponse implements ServerHttpResponse {
 
 	@Override
 	public HttpHeaders getHeaders() {
-		return (this.state.get() != State.COMMITTED ? this.headers
-				: HttpHeaders.readOnlyHttpHeaders(this.headers));
+		return (this.state.get() == State.COMMITTED ?
+				HttpHeaders.readOnlyHttpHeaders(this.headers) : this.headers);
 	}
 
 	@Override
 	public MultiValueMap<String, ResponseCookie> getCookies() {
-		return (this.state.get() != State.COMMITTED ? this.cookies
-				: CollectionUtils.unmodifiableMultiValueMap(this.cookies));
+		return (this.state.get() == State.COMMITTED ?
+				CollectionUtils.unmodifiableMultiValueMap(this.cookies) : this.cookies);
 	}
 
 	@Override
@@ -184,7 +184,7 @@ public abstract class AbstractServerHttpResponse implements ServerHttpResponse {
 
 	@Override
 	public Mono<Void> setComplete() {
-		return (!isCommitted() ? doCommit(null) : Mono.empty());
+		return !isCommitted() ? doCommit(null) : Mono.empty();
 	}
 
 	/**

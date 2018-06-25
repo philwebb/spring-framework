@@ -149,9 +149,9 @@ public class ForwardedHeaderFilter extends OncePerRequestFilter {
 			HttpServletRequest wrappedRequest =
 					new ForwardedHeaderExtractingRequest(request, this.pathHelper);
 
-			HttpServletResponse wrappedResponse = (this.relativeRedirects ?
+			HttpServletResponse wrappedResponse = this.relativeRedirects ?
 					RelativeRedirectResponseWrapper.wrapIfNecessary(response, HttpStatus.SEE_OTHER) :
-					new ForwardedHeaderExtractingResponse(response, wrappedRequest));
+					new ForwardedHeaderExtractingResponse(response, wrappedRequest);
 
 			filterChain.doFilter(wrappedRequest, wrappedResponse);
 		}
@@ -236,12 +236,12 @@ public class ForwardedHeaderFilter extends OncePerRequestFilter {
 			this.scheme = uriComponents.getScheme();
 			this.secure = "https".equals(this.scheme);
 			this.host = uriComponents.getHost();
-			this.port = (port != -1 ? port : (this.secure ? 443 : 80));
+			this.port = (port == -1 ? (this.secure ? 443 : 80) : port);
 
 			String prefix = getForwardedPrefix(request);
 			this.contextPath = (prefix != null ? prefix : request.getContextPath());
 			this.requestUri = this.contextPath + pathHelper.getPathWithinApplication(request);
-			this.requestUrl = this.scheme + "://" + this.host + (port != -1 ? ":" + port : "") + this.requestUri;
+			this.requestUrl = this.scheme + "://" + this.host + (port == -1 ? "" : ":" + port) + this.requestUri;
 		}
 
 		@Nullable

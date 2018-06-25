@@ -386,7 +386,7 @@ public class ResourceWebHandler implements WebHandler, InitializingBean {
 				prev = curr;
 			}
 		}
-		return (sb != null ? sb.toString() : path);
+		return sb != null ? sb.toString() : path;
 	}
 
 	private String cleanLeadingSlash(String path) {
@@ -399,7 +399,7 @@ public class ResourceWebHandler implements WebHandler, InitializingBean {
 				if (i == 0 || (i == 1 && slash)) {
 					return path;
 				}
-				path = (slash ? "/" + path.substring(i) : path.substring(i));
+				path = slash ? "/" + path.substring(i) : path.substring(i);
 				if (logger.isTraceEnabled()) {
 					logger.trace("Path after trimming leading '/' and control characters: " + path);
 				}
@@ -460,7 +460,7 @@ public class ResourceWebHandler implements WebHandler, InitializingBean {
 			return true;
 		}
 		if (path.contains(":/")) {
-			String relativePath = (path.charAt(0) != '/' ? path : path.substring(1));
+			String relativePath = (path.charAt(0) == '/' ? path.substring(1) : path);
 			if (ResourceUtils.isUrl(relativePath) || relativePath.startsWith("url:")) {
 				if (logger.isTraceEnabled()) {
 					logger.trace("Path represents URL or has \"url:\" prefix.");

@@ -569,8 +569,8 @@ public class AntPathMatcher implements PathMatcher {
 
 		String ext1 = pattern1.substring(starDotPos1 + 1);
 		int dotPos2 = pattern2.indexOf('.');
-		String file2 = (dotPos2 != -1 ? pattern2.substring(0, dotPos2) : pattern2);
-		String ext2 = (dotPos2 != -1 ? pattern2.substring(dotPos2) : "");
+		String file2 = (dotPos2 == -1 ? pattern2 : pattern2.substring(0, dotPos2));
+		String ext2 = (dotPos2 == -1 ? "" : pattern2.substring(dotPos2));
 		boolean ext1All = (ext1.equals(".*") || ext1.equals(""));
 		boolean ext2All = (ext2.equals(".*") || ext2.equals(""));
 		if (!ext1All && !ext2All) {

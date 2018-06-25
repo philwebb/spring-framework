@@ -207,7 +207,7 @@ public class RequiredAnnotationBeanPostProcessor extends InstantiationAwareBeanP
 	private String buildExceptionMessage(List<String> invalidProperties, String beanName) {
 		int size = invalidProperties.size();
 		StringBuilder sb = new StringBuilder();
-		sb.append(size != 1 ? "Properties" :  "Property");
+		sb.append(size == 1 ? "Property" : "Properties");
 		for (int i = 0; i < size; i++) {
 			String propertyName = invalidProperties.get(i);
 			if (i > 0) {
@@ -220,7 +220,7 @@ public class RequiredAnnotationBeanPostProcessor extends InstantiationAwareBeanP
 			}
 			sb.append(" '").append(propertyName).append("'");
 		}
-		sb.append(size != 1 ? " are" : " is");
+		sb.append(size == 1 ? " is" : " are");
 		sb.append(" required for bean '").append(beanName).append("'");
 		return sb.toString();
 	}

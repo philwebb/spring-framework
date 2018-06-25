@@ -613,7 +613,7 @@ public class ResolvableType implements Serializable {
 					result = result.getSuperType();
 				}
 				Integer index = (typeIndexesPerLevel != null ? typeIndexesPerLevel.get(i) : null);
-				index = (index != null ? index : result.getGenerics().length - 1);
+				index = (index == null ? result.getGenerics().length - 1 : index);
 				result = result.getGeneric(index);
 			}
 		}
@@ -640,7 +640,7 @@ public class ResolvableType implements Serializable {
 	public ResolvableType getGeneric(@Nullable int... indexes) {
 		ResolvableType[] generics = getGenerics();
 		if (indexes == null || indexes.length == 0) {
-			return (generics.length != 0 ? generics[0] : NONE);
+			return (generics.length == 0 ? NONE : generics[0]);
 		}
 		ResolvableType generic = this;
 		for (int index : indexes) {
@@ -917,7 +917,7 @@ public class ResolvableType implements Serializable {
 	 * Custom serialization support for {@link #NONE}.
 	 */
 	private Object readResolve() {
-		return (this.type != EmptyType.INSTANCE ? this : NONE);
+		return (this.type == EmptyType.INSTANCE ? NONE : this);
 	}
 
 	/**
@@ -1010,7 +1010,7 @@ public class ResolvableType implements Serializable {
 	public static ResolvableType forClass(Class<?> baseType, Class<?> implementationClass) {
 		Assert.notNull(baseType, "Base type must not be null");
 		ResolvableType asType = forType(implementationClass).as(baseType);
-		return (asType != NONE ? asType : forType(baseType));
+		return (asType == NONE ? forType(baseType) : asType);
 	}
 
 	/**
@@ -1596,7 +1596,7 @@ public class ResolvableType implements Serializable {
 		}
 
 		private boolean isAssignable(ResolvableType source, ResolvableType from) {
-			return (this.kind != Kind.UPPER ? from.isAssignableFrom(source) : source.isAssignableFrom(from));
+			return (this.kind == Kind.UPPER ? source.isAssignableFrom(from) : from.isAssignableFrom(source));
 		}
 
 		/**
@@ -1623,7 +1623,7 @@ public class ResolvableType implements Serializable {
 			}
 			WildcardType wildcardType = (WildcardType) resolveToWildcard.type;
 			Kind boundsType = (wildcardType.getLowerBounds().length > 0 ? Kind.LOWER : Kind.UPPER);
-			Type[] bounds = (boundsType != Kind.UPPER ? wildcardType.getLowerBounds() : wildcardType.getUpperBounds());
+			Type[] bounds = (boundsType == Kind.UPPER ? wildcardType.getUpperBounds() : wildcardType.getLowerBounds());
 			ResolvableType[] resolvableBounds = new ResolvableType[bounds.length];
 			for (int i = 0; i < bounds.length; i++) {
 				resolvableBounds[i] = ResolvableType.forType(bounds[i], type.variableResolver);

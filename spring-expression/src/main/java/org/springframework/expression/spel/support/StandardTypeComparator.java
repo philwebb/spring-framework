@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2018 the original author or authors.
+ * Copyright 2002-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,7 +55,7 @@ public class StandardTypeComparator implements TypeComparator {
 	public int compare(@Nullable Object left, @Nullable Object right) throws SpelEvaluationException {
 		// If one is null, check if the other is
 		if (left == null) {
-			return (right != null ? -1 : 0);
+			return (right == null ? 0 : -1);
 		}
 		else if (right == null) {
 			return 1;  // left cannot be null at this point

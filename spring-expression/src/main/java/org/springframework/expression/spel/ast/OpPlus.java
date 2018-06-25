@@ -128,12 +128,12 @@ public class OpPlus extends Operator {
 
 		if (leftOperand instanceof String) {
 			return new TypedValue(
-					leftOperand + (rightOperand != null ? convertTypedValueToString(operandTwoValue, state) : "null"));
+					leftOperand + (rightOperand == null ? "null" : convertTypedValueToString(operandTwoValue, state)));
 		}
 
 		if (rightOperand instanceof String) {
 			return new TypedValue(
-					(leftOperand != null ? convertTypedValueToString(operandOneValue, state) : "null") + rightOperand);
+					(leftOperand == null ? "null" : convertTypedValueToString(operandOneValue, state)) + rightOperand);
 		}
 
 		return state.operate(Operation.ADD, leftOperand, rightOperand);

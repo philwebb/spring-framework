@@ -127,8 +127,8 @@ public final class PatternsRequestCondition extends AbstractRequestCondition<Pat
 			return this;
 		}
 		SortedSet<PathPattern> matches = getMatchingPatterns(exchange);
-		return (matches.isEmpty() ? null :
-				new PatternsRequestCondition(matches));
+		return matches.isEmpty() ? null :
+				new PatternsRequestCondition(matches);
 	}
 
 	/**

@@ -94,7 +94,7 @@ final class DefaultPathContainer implements PathContainer {
 			return EMPTY_PATH;
 		}
 		String separator = "/";
-		Separator separatorElement = (separator.equals(SEPARATOR.value()) ? SEPARATOR : () -> separator);
+		Separator separatorElement = separator.equals(SEPARATOR.value()) ? SEPARATOR : () -> separator;
 		List<Element> elements = new ArrayList<>();
 		int begin;
 		if (path.length() > 0 && path.startsWith(separator)) {

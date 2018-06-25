@@ -620,9 +620,9 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 
 	private int getBodyAdviceCount(Class<?> adviceType) {
 		List<Object> advice = this.requestResponseBodyAdvice;
-		return (RequestBodyAdvice.class.isAssignableFrom(adviceType) ?
+		return RequestBodyAdvice.class.isAssignableFrom(adviceType) ?
 				RequestResponseBodyAdviceChain.getAdviceByType(advice, RequestBodyAdvice.class).size() :
-				RequestResponseBodyAdviceChain.getAdviceByType(advice, ResponseBodyAdvice.class).size());
+				RequestResponseBodyAdviceChain.getAdviceByType(advice, ResponseBodyAdvice.class).size();
 	}
 
 	/**

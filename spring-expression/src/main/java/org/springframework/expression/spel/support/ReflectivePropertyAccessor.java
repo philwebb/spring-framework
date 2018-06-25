@@ -197,7 +197,7 @@ public class ReflectivePropertyAccessor implements PropertyAccessor {
 		}
 
 		if (invoker == null || invoker.member instanceof Field) {
-			Field field = (Field) (invoker != null ? invoker.member : null);
+			Field field = (Field) (invoker == null ? null : invoker.member);
 			if (field == null) {
 				field = findField(name, type, target);
 				if (field != null) {
@@ -439,7 +439,7 @@ public class ReflectivePropertyAccessor implements PropertyAccessor {
 	private Method[] getSortedMethods(Class<?> clazz) {
 		return this.sortedMethodsCache.computeIfAbsent(clazz, key -> {
 			Method[] methods = key.getMethods();
-			Arrays.sort(methods, (o1, o2) -> (o1.isBridge() != o2.isBridge() ? (o1.isBridge() ? 1 : -1) : 0));
+			Arrays.sort(methods, (o1, o2) -> (o1.isBridge() == o2.isBridge() ? 0 : (o1.isBridge() ? 1 : -1)));
 			return methods;
 		});
 	}

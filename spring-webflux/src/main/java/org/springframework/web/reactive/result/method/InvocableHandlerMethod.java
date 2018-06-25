@@ -147,7 +147,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 				boolean asyncVoid = isAsyncVoidReturnType(returnType, adapter);
 				if ((value == null || asyncVoid) && isResponseHandled(args, exchange)) {
 					logger.debug("Response fully handled in controller method");
-					return (asyncVoid ? Mono.from(adapter.toPublisher(value)) : Mono.empty());
+					return asyncVoid ? Mono.from(adapter.toPublisher(value)) : Mono.empty();
 				}
 
 				HandlerResult result = new HandlerResult(this, value, returnType, bindingContext);
@@ -184,7 +184,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 
 			// Create Mono with array of resolved values...
 			return Mono.zip(argMonos, argValues ->
-					Stream.of(argValues).map((o) -> (o != NO_ARG_VALUE ? o : null)).toArray());
+					Stream.of(argValues).map(o -> o != NO_ARG_VALUE ? o : null).toArray());
 		}
 		catch (Throwable ex) {
 			return Mono.error(ex);

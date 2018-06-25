@@ -254,7 +254,7 @@ public class ModelAttributeMethodArgumentResolver extends HandlerMethodArgumentR
 				value = (value instanceof List ? ((List<?>) value).toArray() : value);
 				MethodParameter methodParam = new MethodParameter(ctor, i);
 				if (value == null && methodParam.isOptional()) {
-					args[i] = (methodParam.getParameterType() != Optional.class ? null : Optional.empty());
+					args[i] = (methodParam.getParameterType() == Optional.class ? Optional.empty() : null);
 				}
 				else {
 					args[i] = binder.convertIfNecessary(value, paramTypes[i], methodParam);

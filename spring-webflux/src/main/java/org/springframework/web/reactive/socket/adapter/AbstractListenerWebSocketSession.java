@@ -106,9 +106,9 @@ public abstract class AbstractListenerWebSocketSession<T> extends AbstractWebSoc
 
 	@Override
 	public Flux<WebSocketMessage> receive() {
-		return (canSuspendReceiving() ?
+		return canSuspendReceiving() ?
 				Flux.from(this.receivePublisher) :
-				Flux.from(this.receivePublisher).onBackpressureBuffer(RECEIVE_BUFFER_SIZE));
+				Flux.from(this.receivePublisher).onBackpressureBuffer(RECEIVE_BUFFER_SIZE);
 	}
 
 	@Override

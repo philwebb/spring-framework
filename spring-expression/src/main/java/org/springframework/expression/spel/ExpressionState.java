@@ -236,8 +236,8 @@ public class ExpressionState {
 			return new TypedValue(returnValue);
 		}
 		else {
-			String leftType = (left != null ? left.getClass().getName() : "null");
-			String rightType = (right != null ? right.getClass().getName() : "null");
+			String leftType = (left == null ? "null" : left.getClass().getName());
+			String rightType = (right == null? "null" : right.getClass().getName());
 			throw new SpelEvaluationException(SpelMessage.OPERATOR_NOT_SUPPORTED_BETWEEN_TYPES, op, leftType, rightType);
 		}
 	}

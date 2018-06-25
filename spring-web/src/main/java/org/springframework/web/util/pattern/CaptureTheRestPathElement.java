@@ -76,9 +76,8 @@ class CaptureTheRestPathElement extends PathElement {
 					}
 				}
 			}
-			matchingContext.set(this.variableName,
-					pathToString(pathIndex, matchingContext.pathElements),
-					parametersCollector != null ? parametersCollector : NO_PARAMETERS);
+			matchingContext.set(this.variableName, pathToString(pathIndex, matchingContext.pathElements),
+					parametersCollector == null?NO_PARAMETERS:parametersCollector);
 		}
 		return true;
 	}

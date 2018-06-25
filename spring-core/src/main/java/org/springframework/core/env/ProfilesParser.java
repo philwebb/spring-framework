@@ -95,7 +95,7 @@ final class ProfilesParser {
 			return elements.get(0);
 		}
 		Profiles[] profiles = elements.toArray(new Profiles[0]);
-		return (operator != Operator.AND ? or(profiles) : and(profiles));
+		return (operator == Operator.AND ? and(profiles) : or(profiles));
 	}
 
 	private static void assertWellFormed(String expression, boolean wellFormed) {

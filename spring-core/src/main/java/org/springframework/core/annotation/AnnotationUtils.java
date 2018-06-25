@@ -2099,8 +2099,8 @@ public abstract class AnnotationUtils {
 			this.sourceAnnotationType = (Class<? extends Annotation>) declaringClass;
 			this.sourceAttributeName = sourceAttribute.getName();
 
-			this.aliasedAnnotationType = (Annotation.class != aliasFor.annotation() ?
-					aliasFor.annotation() : this.sourceAnnotationType);
+			this.aliasedAnnotationType = (Annotation.class == aliasFor.annotation() ?
+					this.sourceAnnotationType : aliasFor.annotation());
 			this.aliasedAttributeName = getAliasedAttributeName(aliasFor, sourceAttribute);
 			if (this.aliasedAnnotationType == this.sourceAnnotationType &&
 					this.aliasedAttributeName.equals(this.sourceAttributeName)) {

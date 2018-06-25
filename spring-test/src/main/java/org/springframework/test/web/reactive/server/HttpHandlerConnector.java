@@ -117,7 +117,7 @@ public class HttpHandlerConnector implements ClientHttpConnector {
 	}
 
 	private ServerHttpResponse prepareResponse(ServerHttpResponse response, ServerHttpRequest request) {
-		return (request.getMethod() != HttpMethod.HEAD ? response : new HttpHeadResponseDecorator(response));
+		return (request.getMethod() == HttpMethod.HEAD ? new HttpHeadResponseDecorator(response) : response);
 	}
 
 	private ClientHttpResponse adaptResponse(MockServerHttpResponse response, Flux<DataBuffer> body) {

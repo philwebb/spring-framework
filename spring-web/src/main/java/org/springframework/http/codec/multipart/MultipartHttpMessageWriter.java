@@ -288,7 +288,7 @@ public class MultipartHttpMessageWriter implements HttpMessageWriter<MultiValueM
 		}
 
 		Publisher<T> bodyPublisher =
-				(body instanceof Publisher ? (Publisher<T>) body : Mono.just(body));
+				body instanceof Publisher ? (Publisher<T>) body : Mono.just(body);
 
 		// The writer will call MultipartHttpOutputMessage#write which doesn't actually write
 		// but only stores the body Flux and returns Mono.empty().

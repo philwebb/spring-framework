@@ -769,7 +769,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 					}
 				}
 				else {
-					uniqueCandidate = (commonType != null ? null : factoryMethod);
+					uniqueCandidate = (commonType == null ? factoryMethod : null);
 					commonType = ClassUtils.determineCommonAncestor(factoryMethod.getReturnType(), commonType);
 					if (commonType == null) {
 						// Ambiguous return types found: return null to indicate "not determinable".

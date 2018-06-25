@@ -673,7 +673,7 @@ public abstract class ReflectionUtils {
 				else {
 					result = declaredMethods;
 				}
-				declaredMethodsCache.put(clazz, (result.length != 0 ? result : NO_METHODS));
+				declaredMethodsCache.put(clazz, (result.length == 0 ? NO_METHODS : result));
 			}
 			catch (Throwable ex) {
 				throw new IllegalStateException("Failed to introspect Class [" + clazz.getName() +
@@ -772,7 +772,7 @@ public abstract class ReflectionUtils {
 		if (result == null) {
 			try {
 				result = clazz.getDeclaredFields();
-				declaredFieldsCache.put(clazz, (result.length != 0 ? result : NO_FIELDS));
+				declaredFieldsCache.put(clazz, (result.length == 0 ? NO_FIELDS : result));
 			}
 			catch (Throwable ex) {
 				throw new IllegalStateException("Failed to introspect Class [" + clazz.getName() +

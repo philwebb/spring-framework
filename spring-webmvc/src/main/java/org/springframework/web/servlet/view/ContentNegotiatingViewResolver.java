@@ -231,8 +231,8 @@ public class ContentNegotiatingViewResolver extends WebApplicationObjectSupport
 			}
 		}
 
-		String mediaTypeInfo = (logger.isDebugEnabled() && requestedMediaTypes != null ?
-				" given " + requestedMediaTypes.toString() : "");
+		String mediaTypeInfo = logger.isDebugEnabled() && requestedMediaTypes != null ?
+				" given " + requestedMediaTypes.toString() : "";
 
 		if (this.useNotAcceptableStatusCode) {
 			if (logger.isDebugEnabled()) {

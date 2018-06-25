@@ -160,8 +160,8 @@ public class ResourceHttpMessageWriter implements HttpMessageWriter<Resource> {
 		if (message instanceof ZeroCopyHttpOutputMessage && resource.isFile()) {
 			try {
 				File file = resource.getFile();
-				long pos = (region != null ? region.getPosition() : 0);
-				long count = (region != null ? region.getCount() : file.length());
+				long pos = region != null ? region.getPosition() : 0;
+				long count = region != null ? region.getCount() : file.length();
 				return Optional.of(((ZeroCopyHttpOutputMessage) message).writeWith(file, pos, count));
 			}
 			catch (IOException ex) {

@@ -335,7 +335,7 @@ public final class WebAsyncManager {
 
 	private String formatRequestUri() {
 		HttpServletRequest request = this.asyncWebRequest.getNativeRequest(HttpServletRequest.class);
-		return (request != null ? urlPathHelper.getRequestUri(request) : "servlet container");
+		return request != null ? urlPathHelper.getRequestUri(request) : "servlet container";
 	}
 
 	private void setConcurrentResultAndDispatch(Object result) {

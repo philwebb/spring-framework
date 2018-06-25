@@ -205,8 +205,8 @@ public class SendToMethodReturnValueHandler implements HandlerMethodReturnValueH
 			return new DestinationHelper(headers, c1, c2);
 		}
 
-		return (m1 != null || m2 != null ?
-			new DestinationHelper(headers, m1, m2) : new DestinationHelper(headers, c1, c2));
+		return m1 != null || m2 != null ?
+			new DestinationHelper(headers, m1, m2) : new DestinationHelper(headers, c1, c2);
 	}
 
 	@Nullable
