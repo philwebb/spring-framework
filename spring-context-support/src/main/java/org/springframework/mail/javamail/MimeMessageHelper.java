@@ -566,8 +566,8 @@ public class MimeMessageHelper {
 
 	public void setReplyTo(String replyTo, String personal) throws MessagingException, UnsupportedEncodingException {
 		Assert.notNull(replyTo, "Reply-to address must not be null");
-		InternetAddress replyToAddress = (getEncoding() != null) ?
-				new InternetAddress(replyTo, personal, getEncoding()) : new InternetAddress(replyTo, personal);
+		InternetAddress replyToAddress = (getEncoding() != null ?
+				new InternetAddress(replyTo, personal, getEncoding()) : new InternetAddress(replyTo, personal));
 		setReplyTo(replyToAddress);
 	}
 
