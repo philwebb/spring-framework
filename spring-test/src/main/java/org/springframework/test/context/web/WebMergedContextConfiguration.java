@@ -69,7 +69,7 @@ public class WebMergedContextConfiguration extends MergedContextConfiguration {
 	 */
 	public WebMergedContextConfiguration(MergedContextConfiguration mergedConfig, String resourceBasePath) {
 		super(mergedConfig);
-		this.resourceBasePath = !StringUtils.hasText(resourceBasePath) ? "" : resourceBasePath;
+		this.resourceBasePath = (!StringUtils.hasText(resourceBasePath) ? "" : resourceBasePath);
 	}
 
 	/**

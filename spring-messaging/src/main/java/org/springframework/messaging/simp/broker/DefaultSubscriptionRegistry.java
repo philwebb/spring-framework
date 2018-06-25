@@ -130,7 +130,7 @@ public class DefaultSubscriptionRegistry extends AbstractSubscriptionRegistry {
 	 * @since 4.2
 	 */
 	public void setSelectorHeaderName(@Nullable String selectorHeaderName) {
-		this.selectorHeaderName = StringUtils.hasText(selectorHeaderName) ? selectorHeaderName : null;
+		this.selectorHeaderName = (StringUtils.hasText(selectorHeaderName) ? selectorHeaderName : null);
 	}
 
 	/**
@@ -544,7 +544,7 @@ public class DefaultSubscriptionRegistry extends AbstractSubscriptionRegistry {
 		public TypedValue read(EvaluationContext context, @Nullable Object target, String name) {
 			Object value;
 			if (target instanceof Message) {
-				value = name.equals("headers") ? ((Message) target).getHeaders() : null;
+				value = (name.equals("headers") ? ((Message) target).getHeaders() : null);
 			}
 			else if (target instanceof MessageHeaders) {
 				MessageHeaders headers = (MessageHeaders) target;

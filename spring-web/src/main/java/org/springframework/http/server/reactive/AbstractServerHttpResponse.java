@@ -184,7 +184,7 @@ public abstract class AbstractServerHttpResponse implements ServerHttpResponse {
 
 	@Override
 	public Mono<Void> setComplete() {
-		return !isCommitted() ? doCommit(null) : Mono.empty();
+		return (!isCommitted() ? doCommit(null) : Mono.empty());
 	}
 
 	/**

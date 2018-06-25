@@ -82,7 +82,7 @@ class CallableInterceptorChain {
 				}
 			}
 		}
-		return (exceptionResult != null) ? exceptionResult : concurrentResult;
+		return (exceptionResult != null ? exceptionResult : concurrentResult);
 	}
 
 	public Object triggerAfterTimeout(NativeWebRequest request, Callable<?> task) {

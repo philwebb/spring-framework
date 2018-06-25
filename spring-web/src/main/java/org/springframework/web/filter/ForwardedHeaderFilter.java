@@ -149,9 +149,9 @@ public class ForwardedHeaderFilter extends OncePerRequestFilter {
 			HttpServletRequest wrappedRequest =
 					new ForwardedHeaderExtractingRequest(request, this.pathHelper);
 
-			HttpServletResponse wrappedResponse = this.relativeRedirects ?
+			HttpServletResponse wrappedResponse = (this.relativeRedirects ?
 					RelativeRedirectResponseWrapper.wrapIfNecessary(response, HttpStatus.SEE_OTHER) :
-					new ForwardedHeaderExtractingResponse(response, wrappedRequest);
+					new ForwardedHeaderExtractingResponse(response, wrappedRequest));
 
 			filterChain.doFilter(wrappedRequest, wrappedResponse);
 		}

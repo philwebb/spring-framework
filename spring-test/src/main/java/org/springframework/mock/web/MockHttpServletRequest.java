@@ -717,9 +717,9 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
 		if (this.content != null) {
 			InputStream sourceStream = new ByteArrayInputStream(this.content);
-			Reader sourceReader = (this.characterEncoding != null) ?
+			Reader sourceReader = (this.characterEncoding != null ?
 					new InputStreamReader(sourceStream, this.characterEncoding) :
-					new InputStreamReader(sourceStream);
+					new InputStreamReader(sourceStream));
 			this.reader = new BufferedReader(sourceReader);
 		}
 		else {

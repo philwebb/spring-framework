@@ -215,7 +215,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 	 * @return the resulting hash code
 	 */
 	protected int getHash(@Nullable Object o) {
-		int hash = o == null ? 0 : o.hashCode();
+		int hash = (o == null ? 0 : o.hashCode());
 		hash += (hash << 15) ^ 0xffffcd7d;
 		hash ^= (hash >>> 10);
 		hash += (hash << 3);

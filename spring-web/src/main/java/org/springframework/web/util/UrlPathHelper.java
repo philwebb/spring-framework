@@ -507,7 +507,7 @@ public class UrlPathHelper {
 		while (semicolonIndex != -1) {
 			int slashIndex = requestUri.indexOf('/', semicolonIndex);
 			String start = requestUri.substring(0, semicolonIndex);
-			requestUri = (slashIndex != -1) ? start + requestUri.substring(slashIndex) : start;
+			requestUri = (slashIndex != -1 ? start + requestUri.substring(slashIndex) : start);
 			semicolonIndex = requestUri.indexOf(';', semicolonIndex);
 		}
 		return requestUri;

@@ -398,7 +398,7 @@ public class SQLErrorCodeSQLExceptionTranslator extends AbstractFallbackSQLExcep
 
 	private void logTranslation(String task, @Nullable String sql, SQLException sqlEx, boolean custom) {
 		if (logger.isDebugEnabled()) {
-			String intro = custom ? "Custom translation of" : "Translating";
+			String intro = (custom ? "Custom translation of" : "Translating");
 			logger.debug(intro + " SQLException with SQL state '" + sqlEx.getSQLState() +
 					"', error code '" + sqlEx.getErrorCode() + "', message [" + sqlEx.getMessage() + "]" +
 					(sql != null ? "; SQL was [" + sql + "]": "") + " for task [" + task + "]");

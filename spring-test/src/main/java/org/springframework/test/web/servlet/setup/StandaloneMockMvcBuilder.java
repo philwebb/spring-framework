@@ -456,7 +456,7 @@ public class StandaloneMockMvcBuilder extends AbstractMockMvcBuilder<StandaloneM
 
 		@Override
 		public ContentNegotiationManager mvcContentNegotiationManager() {
-			return (contentNegotiationManager != null) ? contentNegotiationManager : super.mvcContentNegotiationManager();
+			return (contentNegotiationManager != null ? contentNegotiationManager : super.mvcContentNegotiationManager());
 		}
 
 		@Override
@@ -473,7 +473,7 @@ public class StandaloneMockMvcBuilder extends AbstractMockMvcBuilder<StandaloneM
 
 		@Override
 		public Validator mvcValidator() {
-			Validator mvcValidator = (validator != null) ? validator : super.mvcValidator();
+			Validator mvcValidator = (validator != null ? validator : super.mvcValidator());
 			if (mvcValidator instanceof InitializingBean) {
 				try {
 					((InitializingBean) mvcValidator).afterPropertiesSet();
