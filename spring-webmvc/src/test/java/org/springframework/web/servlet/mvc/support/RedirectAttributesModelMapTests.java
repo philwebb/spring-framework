@@ -29,7 +29,7 @@ import org.springframework.format.support.FormattingConversionService;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.validation.DataBinder;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  *

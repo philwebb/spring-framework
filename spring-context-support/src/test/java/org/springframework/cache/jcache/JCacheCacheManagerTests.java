@@ -25,7 +25,8 @@ import org.junit.Before;
 
 import org.springframework.cache.transaction.AbstractTransactionSupportingCacheManagerTests;
 
-import static org.mockito.BDDMockito.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 /**
  * @author Stephane Nicoll

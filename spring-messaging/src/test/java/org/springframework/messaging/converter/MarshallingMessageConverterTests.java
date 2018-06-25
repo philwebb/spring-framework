@@ -16,14 +16,8 @@
 
 package org.springframework.messaging.converter;
 
-import static org.junit.Assert.*;
-import static org.xmlunit.diff.ComparisonType.*;
-import static org.xmlunit.diff.DifferenceEvaluators.*;
-import static org.xmlunit.matchers.CompareMatcher.*;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.junit.Before;
@@ -33,6 +27,15 @@ import org.xmlunit.diff.DifferenceEvaluator;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.xmlunit.diff.ComparisonType.XML_STANDALONE;
+import static org.xmlunit.diff.DifferenceEvaluators.Default;
+import static org.xmlunit.diff.DifferenceEvaluators.chain;
+import static org.xmlunit.diff.DifferenceEvaluators.downgradeDifferencesToEqual;
+import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;
 
 /**
  * @author Arjen Poutsma

@@ -21,8 +21,8 @@ import java.lang.annotation.RetentionPolicy;
 
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * Unit tests for {@link AnnotationAsyncExecutionInterceptor}.

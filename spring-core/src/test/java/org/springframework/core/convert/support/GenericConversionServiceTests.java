@@ -49,10 +49,17 @@ import org.springframework.tests.TestGroup;
 import org.springframework.util.StopWatch;
 import org.springframework.util.StringUtils;
 
-import static java.util.Comparator.*;
-import static java.util.stream.Collectors.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static java.util.Comparator.naturalOrder;
+import static java.util.stream.Collectors.toList;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Unit tests for {@link GenericConversionService}.

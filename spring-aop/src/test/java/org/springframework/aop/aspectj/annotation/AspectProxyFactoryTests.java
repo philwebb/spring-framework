@@ -28,7 +28,8 @@ import test.aop.PerThisAspect;
 
 import org.springframework.util.SerializationTestUtils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Rob Harrop

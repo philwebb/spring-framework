@@ -20,12 +20,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
+
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelCompiler;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for compilation of {@link MapAccessor}.

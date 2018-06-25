@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,9 @@ import javax.transaction.RollbackException;
 import javax.transaction.Status;
 import javax.transaction.UserTransaction;
 
+import com.ibm.wsspi.uow.UOWAction;
+import com.ibm.wsspi.uow.UOWException;
+import com.ibm.wsspi.uow.UOWManager;
 import org.junit.Test;
 
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -33,12 +36,14 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import com.ibm.wsspi.uow.UOWAction;
-import com.ibm.wsspi.uow.UOWException;
-import com.ibm.wsspi.uow.UOWManager;
-
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /**
  * @author Juergen Hoeller

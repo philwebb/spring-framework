@@ -33,8 +33,10 @@ import org.junit.rules.ExpectedException;
 import static org.hamcrest.CoreMatchers.isA;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.startsWith;
-import static org.junit.Assert.*;
-import static org.springframework.core.annotation.AnnotatedElementUtils.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.springframework.core.annotation.AnnotatedElementUtils.findMergedRepeatableAnnotations;
+import static org.springframework.core.annotation.AnnotatedElementUtils.getMergedRepeatableAnnotations;
 
 /**
  * Unit tests that verify support for getting and finding all composed, repeatable

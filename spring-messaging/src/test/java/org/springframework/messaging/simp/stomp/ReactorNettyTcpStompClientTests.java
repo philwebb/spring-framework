@@ -40,8 +40,9 @@ import org.springframework.util.Assert;
 import org.springframework.util.SocketUtils;
 import org.springframework.util.concurrent.ListenableFuture;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Integration tests for {@link ReactorNettyTcpStompClient}.

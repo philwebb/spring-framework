@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.role.ComponentWithRole;
 import org.springframework.context.annotation.role.ComponentWithoutRole;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * Tests the use of the @Role and @Description annotation on @Bean methods and @Component classes.

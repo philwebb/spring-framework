@@ -29,8 +29,9 @@ import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.transaction.AfterTransaction;
 
-import static org.junit.Assert.*;
-import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 
 /**
  * Transactional integration tests for {@link Sql @Sql} that verify proper

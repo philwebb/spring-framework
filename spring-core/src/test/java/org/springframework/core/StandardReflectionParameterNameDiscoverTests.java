@@ -22,8 +22,8 @@ import org.junit.Test;
 
 import org.springframework.util.ReflectionUtils;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Tests for StandardReflectionParameterNameDiscoverer

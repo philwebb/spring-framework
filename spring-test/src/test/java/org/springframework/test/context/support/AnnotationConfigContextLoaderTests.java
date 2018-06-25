@@ -22,8 +22,9 @@ import org.junit.rules.ExpectedException;
 
 import org.springframework.test.context.MergedContextConfiguration;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Unit tests for {@link AnnotationConfigContextLoader}.

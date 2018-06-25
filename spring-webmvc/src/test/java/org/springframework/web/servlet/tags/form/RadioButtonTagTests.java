@@ -25,7 +25,6 @@ import javax.servlet.jsp.tagext.Tag;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-
 import org.junit.Test;
 
 import org.springframework.tests.sample.beans.Pet;
@@ -33,7 +32,10 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author Rob Harrop

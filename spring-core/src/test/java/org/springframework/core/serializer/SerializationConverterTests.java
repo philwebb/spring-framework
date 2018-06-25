@@ -25,7 +25,10 @@ import org.springframework.core.serializer.support.DeserializingConverter;
 import org.springframework.core.serializer.support.SerializationFailedException;
 import org.springframework.core.serializer.support.SerializingConverter;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author Gary Russell

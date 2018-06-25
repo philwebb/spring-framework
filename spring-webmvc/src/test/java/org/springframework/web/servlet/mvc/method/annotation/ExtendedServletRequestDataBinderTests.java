@@ -28,7 +28,7 @@ import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.servlet.HandlerMapping;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test fixture for {@link ExtendedServletRequestDataBinder}.

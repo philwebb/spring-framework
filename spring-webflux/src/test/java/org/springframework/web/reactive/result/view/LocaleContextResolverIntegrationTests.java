@@ -39,9 +39,9 @@ import org.springframework.web.reactive.config.WebFluxConfigurationSupport;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.result.method.annotation.AbstractRequestMappingIntegrationTests;
-import org.springframework.web.server.i18n.LocaleContextResolver;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.i18n.FixedLocaleContextResolver;
+import org.springframework.web.server.i18n.LocaleContextResolver;
 
 import static org.junit.Assert.assertEquals;
 

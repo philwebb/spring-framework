@@ -29,7 +29,8 @@ import org.springframework.cache.AbstractCacheTests;
 import org.springframework.tests.Assume;
 import org.springframework.tests.TestGroup;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * @author Costin Leau

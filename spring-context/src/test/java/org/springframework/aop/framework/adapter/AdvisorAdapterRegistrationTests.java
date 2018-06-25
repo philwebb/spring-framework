@@ -31,7 +31,8 @@ import org.springframework.aop.framework.Advised;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.tests.sample.beans.ITestBean;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * TestCase for AdvisorAdapterRegistrationManager mechanism.

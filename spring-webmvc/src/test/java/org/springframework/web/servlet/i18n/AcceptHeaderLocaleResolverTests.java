@@ -25,8 +25,16 @@ import org.junit.Test;
 
 import org.springframework.mock.web.test.MockHttpServletRequest;
 
-import static java.util.Locale.*;
-import static org.junit.Assert.*;
+import static java.util.Locale.CANADA;
+import static java.util.Locale.ENGLISH;
+import static java.util.Locale.GERMAN;
+import static java.util.Locale.GERMANY;
+import static java.util.Locale.JAPAN;
+import static java.util.Locale.JAPANESE;
+import static java.util.Locale.KOREA;
+import static java.util.Locale.UK;
+import static java.util.Locale.US;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Unit tests for {@link AcceptHeaderLocaleResolver}.

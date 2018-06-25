@@ -19,7 +19,6 @@ package org.springframework.web.servlet.view;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -33,10 +32,13 @@ import org.springframework.web.context.support.ServletContextResource;
 import org.springframework.web.context.support.StaticWebApplicationContext;
 import org.springframework.web.servlet.View;
 
-import static org.hamcrest.CoreMatchers.*;
-
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+import static org.junit.Assume.assumeTrue;
 
 /**
  * @author Rod Johnson

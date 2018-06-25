@@ -55,7 +55,8 @@ import org.springframework.format.datetime.joda.JodaDateTimeFormatAnnotationForm
 import org.springframework.format.datetime.joda.ReadablePartialPrinter;
 import org.springframework.format.number.NumberStyleFormatter;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * @author Keith Donald

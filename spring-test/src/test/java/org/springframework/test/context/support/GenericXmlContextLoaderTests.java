@@ -22,7 +22,7 @@ import org.junit.rules.ExpectedException;
 
 import org.springframework.test.context.MergedContextConfiguration;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.containsString;
 
 /**
  * Unit tests for {@link GenericXmlContextLoader}.

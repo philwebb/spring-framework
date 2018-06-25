@@ -20,7 +20,7 @@ import org.junit.Test;
 
 import org.springframework.aop.support.AopUtils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Juergen Hoeller

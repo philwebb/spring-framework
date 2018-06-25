@@ -20,7 +20,7 @@ import org.junit.Test;
 
 import org.springframework.test.context.ContextConfiguration;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Sam Brannen

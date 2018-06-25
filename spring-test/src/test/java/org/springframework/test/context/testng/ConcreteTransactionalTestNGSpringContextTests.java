@@ -35,8 +35,12 @@ import org.springframework.tests.sample.beans.Pet;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.springframework.test.transaction.TransactionTestUtils.*;
-import static org.testng.Assert.*;
+import static org.springframework.test.transaction.TransactionTestUtils.assertInTransaction;
+import static org.springframework.test.transaction.TransactionTestUtils.inTransaction;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertTrue;
 
 /**
  * Combined integration test for {@link AbstractTestNGSpringContextTests} and

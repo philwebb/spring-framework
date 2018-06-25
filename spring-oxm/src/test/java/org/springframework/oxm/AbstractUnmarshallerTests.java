@@ -41,7 +41,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 import org.springframework.util.xml.StaxUtils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Arjen Poutsma

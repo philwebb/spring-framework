@@ -40,8 +40,11 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.core.io.support.PropertySourceFactory;
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.isA;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests the processing of @PropertySource annotations on @Configuration classes.

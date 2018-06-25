@@ -32,7 +32,8 @@ import org.springframework.http.StreamingHttpOutputMessage;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StreamUtils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Arjen Poutsma

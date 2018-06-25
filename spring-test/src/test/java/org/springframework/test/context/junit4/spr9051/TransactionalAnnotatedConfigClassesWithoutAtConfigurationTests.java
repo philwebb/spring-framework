@@ -31,7 +31,8 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.tests.sample.beans.Employee;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
 
 /**
  * Concrete implementation of {@link AbstractTransactionalAnnotatedConfigClassTests}

@@ -22,7 +22,7 @@ import org.junit.Test;
 
 import org.springframework.context.ApplicationContext;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Keith Donald

@@ -34,7 +34,7 @@ import reactor.core.publisher.Mono;
 import org.springframework.tests.sample.objects.TestObject;
 import org.springframework.util.ClassUtils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Unit tests for {@link Conventions}.

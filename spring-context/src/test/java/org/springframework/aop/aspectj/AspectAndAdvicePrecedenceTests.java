@@ -29,7 +29,7 @@ import org.springframework.core.Ordered;
 import org.springframework.lang.Nullable;
 import org.springframework.tests.sample.beans.ITestBean;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 /**
  * @author Adrian Colyer

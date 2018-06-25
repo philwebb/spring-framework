@@ -33,7 +33,8 @@ import org.junit.runners.Parameterized;
 
 import org.springframework.core.io.buffer.support.DataBufferTestUtils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Arjen Poutsma

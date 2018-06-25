@@ -33,7 +33,7 @@ import org.springframework.format.support.FormattingConversionService;
 import org.springframework.util.StringValueResolver;
 import org.springframework.validation.DataBinder;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Keith Donald

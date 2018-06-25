@@ -21,9 +21,13 @@ import org.junit.Test;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.aop.support.AopUtils;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
-import static org.springframework.test.util.AopTestUtils.*;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.springframework.test.util.AopTestUtils.getTargetObject;
+import static org.springframework.test.util.AopTestUtils.getUltimateTargetObject;
 
 /**
  * Unit tests for {@link AopTestUtils}.

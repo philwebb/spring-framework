@@ -26,10 +26,13 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.MergedContextConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import static java.util.Arrays.*;
-import static java.util.stream.Collectors.*;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 /**
  * Unit tests for the LRU eviction policy in {@link DefaultContextCache}.

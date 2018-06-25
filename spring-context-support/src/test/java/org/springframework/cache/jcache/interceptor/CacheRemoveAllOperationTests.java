@@ -22,7 +22,7 @@ import javax.cache.annotation.CacheRemoveAll;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Stephane Nicoll

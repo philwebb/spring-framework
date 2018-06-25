@@ -16,9 +16,6 @@
 
 package org.springframework.web.socket.config.annotation;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
 import java.util.Map;
 
 import org.junit.Before;
@@ -32,6 +29,11 @@ import org.springframework.web.socket.messaging.StompSubProtocolHandler;
 import org.springframework.web.socket.messaging.SubProtocolHandler;
 import org.springframework.web.socket.messaging.SubProtocolWebSocketHandler;
 import org.springframework.web.util.UrlPathHelper;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.mockito.Mockito.mock;
 
 /**
  * Test fixture for

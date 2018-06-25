@@ -19,7 +19,6 @@ package org.springframework.test.context.transaction.programmatic;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
 import javax.sql.DataSource;
 
 import org.junit.Rule;
@@ -48,8 +47,11 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.*;
-import static org.springframework.test.transaction.TransactionTestUtils.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.springframework.test.transaction.TransactionTestUtils.assertInTransaction;
 
 /**
  * JUnit-based integration tests that verify support for programmatic transaction

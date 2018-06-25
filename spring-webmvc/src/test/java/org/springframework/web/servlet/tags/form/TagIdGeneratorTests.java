@@ -17,14 +17,13 @@
 package org.springframework.web.servlet.tags.form;
 
 import java.util.stream.IntStream;
-
 import javax.servlet.jsp.PageContext;
 
 import org.junit.Test;
 
 import org.springframework.mock.web.test.MockPageContext;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Rob Harrop

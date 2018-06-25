@@ -17,13 +17,16 @@
 package org.springframework.jdbc.datasource.embedded;
 
 import org.junit.Test;
+
 import org.springframework.core.io.ClassRelativeResourceLoader;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.CannotReadScriptException;
 import org.springframework.jdbc.datasource.init.ScriptStatementFailedException;
 
-import static org.junit.Assert.*;
-import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.DERBY;
+import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.H2;
 
 /**
  * Integration tests for {@link EmbeddedDatabaseBuilder}.

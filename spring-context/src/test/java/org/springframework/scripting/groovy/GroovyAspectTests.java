@@ -26,7 +26,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.util.ClassUtils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * @author Dave Syer

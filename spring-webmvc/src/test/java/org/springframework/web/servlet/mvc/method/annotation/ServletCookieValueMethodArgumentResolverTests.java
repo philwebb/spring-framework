@@ -29,7 +29,7 @@ import org.springframework.mock.web.test.MockHttpServletResponse;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.context.request.ServletWebRequest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test fixture with {@link ServletCookieValueMethodArgumentResolver}.

@@ -26,12 +26,16 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
+import org.springframework.core.annotation.AnnotationUtilsTests.ImplicitAliasesContextConfig;
+import org.springframework.core.annotation.AnnotationUtilsTests.RequestMethod;
+import org.springframework.core.annotation.AnnotationUtilsTests.WebMapping;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-import static org.springframework.core.annotation.AnnotationUtilsTests.*;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.springframework.core.annotation.AnnotationUtilsTests.asArray;
 
 /**
  * Unit tests for {@link MapAnnotationAttributeExtractor}.

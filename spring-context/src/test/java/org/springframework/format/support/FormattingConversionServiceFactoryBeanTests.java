@@ -39,7 +39,9 @@ import org.springframework.format.Parser;
 import org.springframework.format.Printer;
 import org.springframework.format.annotation.NumberFormat;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author Rossen Stoyanchev

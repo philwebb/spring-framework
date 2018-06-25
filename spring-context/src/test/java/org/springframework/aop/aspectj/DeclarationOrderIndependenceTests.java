@@ -25,7 +25,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Adrian Colyer

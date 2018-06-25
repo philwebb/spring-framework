@@ -31,7 +31,7 @@ import org.junit.runners.Parameterized.Parameters;
 
 import org.springframework.scheduling.TriggerContext;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Dave Syer

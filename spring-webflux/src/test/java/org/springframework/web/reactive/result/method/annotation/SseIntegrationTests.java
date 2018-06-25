@@ -43,9 +43,10 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.adapter.WebHttpHandlerBuilder;
 
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
-import static org.springframework.http.MediaType.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assume.assumeTrue;
+import static org.springframework.http.MediaType.TEXT_EVENT_STREAM;
 
 /**
  * @author Sebastien Deleuze

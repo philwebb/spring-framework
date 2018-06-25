@@ -49,7 +49,7 @@ import org.springframework.web.util.pattern.PathPatternParser;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 
 /**
  * Unit tests for {@link RequestMappingHandlerMapping}.

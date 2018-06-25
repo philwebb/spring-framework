@@ -23,7 +23,7 @@ import org.junit.Test;
 
 import org.springframework.expression.spel.standard.SpelExpression;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * These are tests for language features that are not yet considered 'live'. Either missing implementation or

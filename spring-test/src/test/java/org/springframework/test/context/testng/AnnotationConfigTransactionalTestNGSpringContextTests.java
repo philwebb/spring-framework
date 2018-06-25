@@ -38,8 +38,10 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.springframework.test.transaction.TransactionTestUtils.*;
-import static org.testng.Assert.*;
+import static org.springframework.test.transaction.TransactionTestUtils.assertInTransaction;
+import static org.springframework.test.transaction.TransactionTestUtils.inTransaction;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
 
 /**
  * Integration tests that verify support for

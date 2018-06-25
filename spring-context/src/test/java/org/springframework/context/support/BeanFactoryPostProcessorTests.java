@@ -36,7 +36,9 @@ import org.springframework.core.PriorityOrdered;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.Assert;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests the interaction between {@link ApplicationContext} implementations and

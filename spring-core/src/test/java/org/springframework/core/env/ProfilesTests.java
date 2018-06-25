@@ -27,7 +27,10 @@ import org.junit.rules.ExpectedException;
 
 import org.springframework.util.StringUtils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Tests for {@link Profiles}.
@@ -124,7 +127,7 @@ public class ProfilesTests {
 		assertFalse(profiles.matches(activeProfiles("spring")));
 		assertTrue(profiles.matches(activeProfiles("framework")));
 	}
-	
+
 	@Test
 	public void ofSingleInvertedExpression() {
 		Profiles profiles = Profiles.of("(!spring)");
@@ -255,7 +258,7 @@ public class ProfilesTests {
 			assertTrue(ex.getMessage().contains("Malformed"));
 		}
 	}
-	
+
 	private static Predicate<String> activeProfiles(String... profiles) {
 		return new MockActiveProfiles(profiles);
 	}

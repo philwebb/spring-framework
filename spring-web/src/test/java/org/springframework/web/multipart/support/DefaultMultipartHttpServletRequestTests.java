@@ -25,7 +25,8 @@ import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Unit tests for {@link DefaultMultipartHttpServletRequest}.

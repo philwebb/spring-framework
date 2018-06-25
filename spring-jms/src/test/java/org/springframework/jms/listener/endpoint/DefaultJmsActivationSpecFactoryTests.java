@@ -25,8 +25,10 @@ import org.springframework.jca.StubResourceAdapter;
 import org.springframework.jms.StubQueue;
 import org.springframework.jms.support.destination.DestinationResolver;
 
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 /**
  * @author Agim Emruli

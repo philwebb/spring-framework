@@ -20,7 +20,7 @@ import org.junit.Test;
 
 import org.springframework.test.context.TestPropertySource;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Integration tests that verify support for contributing additional properties

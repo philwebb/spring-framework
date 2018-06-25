@@ -28,8 +28,10 @@ import org.junit.Test;
 import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.dao.TypeMismatchDataAccessException;
 
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 /**
  * Tests for {@link SingleColumnRowMapper}.

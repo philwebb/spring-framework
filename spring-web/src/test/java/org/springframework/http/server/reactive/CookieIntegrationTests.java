@@ -27,8 +27,8 @@ import reactor.core.publisher.Mono;
 
 import org.springframework.http.HttpCookie;
 import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import static org.hamcrest.CoreMatchers.equalTo;

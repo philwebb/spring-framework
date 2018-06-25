@@ -58,9 +58,15 @@ import org.xmlunit.xpath.JAXPXPathEngine;
 
 import org.springframework.util.xml.StaxUtils;
 
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
-import static org.xmlunit.matchers.CompareMatcher.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.mock;
+import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;
 
 /**
  * @author Arjen Poutsma

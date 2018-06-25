@@ -26,8 +26,8 @@ import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.Resource;
 import org.springframework.tests.sample.beans.SideEffectBean;
 
-import static org.junit.Assert.*;
-import static org.springframework.tests.TestResourceUtils.*;
+import static org.junit.Assert.assertEquals;
+import static org.springframework.tests.TestResourceUtils.qualifiedResource;
 
 /**
  * @author Rod Johnson

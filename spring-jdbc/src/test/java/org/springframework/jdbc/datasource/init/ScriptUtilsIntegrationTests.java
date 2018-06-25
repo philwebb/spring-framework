@@ -23,7 +23,7 @@ import org.junit.Test;
 
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
-import static org.springframework.jdbc.datasource.init.ScriptUtils.*;
+import static org.springframework.jdbc.datasource.init.ScriptUtils.executeSqlScript;
 
 /**
  * Integration tests for {@link ScriptUtils}.

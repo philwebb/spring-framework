@@ -30,7 +30,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.mvc.annotation.ResponseStatusExceptionResolver;
 import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Base class for tests using on the DispatcherServlet and HandlerMethod infrastructure classes:

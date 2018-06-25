@@ -24,8 +24,11 @@ import org.junit.rules.ExpectedException;
 
 import org.springframework.util.ConcurrencyThrottleSupport;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.startsWith;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Rick Evans

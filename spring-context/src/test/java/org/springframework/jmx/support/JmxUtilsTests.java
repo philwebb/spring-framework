@@ -33,7 +33,9 @@ import org.springframework.jmx.JmxTestBean;
 import org.springframework.jmx.export.TestDynamicMBean;
 import org.springframework.util.ObjectUtils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Rob Harrop

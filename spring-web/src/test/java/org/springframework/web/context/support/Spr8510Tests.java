@@ -25,7 +25,8 @@ import org.springframework.mock.web.test.MockServletContext;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.ContextLoaderListener;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Tests the interaction between a WebApplicationContext and ContextLoaderListener with

@@ -31,8 +31,8 @@ import javax.xml.transform.stream.StreamSource;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.core.io.ClassPathResource;
@@ -40,10 +40,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.mock.web.test.MockHttpServletResponse;
 
-import org.xml.sax.SAXException;
-
-import static java.util.Collections.*;
-import static org.junit.Assert.*;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.singletonMap;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Rob Harrop

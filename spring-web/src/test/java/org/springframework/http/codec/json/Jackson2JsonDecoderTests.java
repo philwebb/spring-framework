@@ -41,6 +41,8 @@ import org.springframework.core.io.buffer.AbstractDataBufferAllocatingTestCase;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DefaultDataBufferFactory;
 import org.springframework.http.codec.Pojo;
+import org.springframework.http.codec.json.JacksonViewBean.MyJacksonView1;
+import org.springframework.http.codec.json.JacksonViewBean.MyJacksonView3;
 import org.springframework.util.MimeType;
 
 import static java.util.Arrays.asList;
@@ -55,9 +57,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 import static org.springframework.http.MediaType.APPLICATION_STREAM_JSON;
 import static org.springframework.http.MediaType.APPLICATION_XML;
-import static org.springframework.http.codec.json.Jackson2JsonDecoder.JSON_VIEW_HINT;
-import static org.springframework.http.codec.json.JacksonViewBean.MyJacksonView1;
-import static org.springframework.http.codec.json.JacksonViewBean.MyJacksonView3;
+import static org.springframework.http.codec.json.Jackson2CodecSupport.JSON_VIEW_HINT;
 
 /**
  * Unit tests for {@link Jackson2JsonDecoder}.

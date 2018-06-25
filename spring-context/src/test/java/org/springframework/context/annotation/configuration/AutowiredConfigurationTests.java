@@ -44,8 +44,11 @@ import org.springframework.core.io.Resource;
 import org.springframework.tests.sample.beans.Colour;
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * System tests covering use of {@link Autowired} and {@link Value} within

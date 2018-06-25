@@ -23,8 +23,12 @@ import org.junit.rules.TestName;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Shared tests for {@link CacheManager} that inherit from

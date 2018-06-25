@@ -17,6 +17,7 @@
 package org.springframework.context.expression;
 
 import org.junit.Test;
+
 import org.springframework.beans.factory.BeanIsNotAFactoryException;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -29,7 +30,8 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * Unit tests for expressions accessing beans and factory beans.

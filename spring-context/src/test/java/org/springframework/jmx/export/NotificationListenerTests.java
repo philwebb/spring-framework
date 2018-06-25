@@ -35,7 +35,8 @@ import org.springframework.jmx.access.NotificationListenerRegistrar;
 import org.springframework.jmx.export.naming.SelfNaming;
 import org.springframework.jmx.support.ObjectNameManager;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * @author Rob Harrop

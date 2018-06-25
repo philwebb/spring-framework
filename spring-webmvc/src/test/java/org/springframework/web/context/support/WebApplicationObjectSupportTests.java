@@ -25,7 +25,8 @@ import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.mock.web.test.MockServletContext;
 import org.springframework.web.util.WebUtils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * @author Juergen Hoeller

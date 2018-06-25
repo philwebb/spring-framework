@@ -30,7 +30,9 @@ import org.junit.rules.ExpectedException;
 
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 
-import static org.mockito.BDDMockito.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /**
  * Mock object based tests for SimpleJdbcInsert.
