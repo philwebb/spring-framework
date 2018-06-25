@@ -150,9 +150,6 @@
 		<module name="io.spring.javaformat.checkstyle.check.SpringLambdaCheck">
 			<property name="singleArgumentParentheses" value="false" />
 		</module>
-		<module name="io.spring.javaformat.checkstyle.check.SpringTernaryCheck">
-			<property name="equalsTest" value="any" />
-		</module>
 		<module name="io.spring.javaformat.checkstyle.check.SpringCatchCheck" />
 		<module name="io.spring.javaformat.checkstyle.check.SpringJavadocCheck" />
  	</module>
