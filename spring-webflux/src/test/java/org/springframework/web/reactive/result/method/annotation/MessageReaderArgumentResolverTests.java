@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -103,7 +103,8 @@ public class MessageReaderArgumentResolverTests {
 
 	// More extensive "empty body" tests in RequestBody- and HttpEntityArgumentResolverTests
 
-	@Test @SuppressWarnings("unchecked") // SPR-9942
+	@Test
+	@SuppressWarnings("unchecked") // SPR-9942
 	public void emptyBody() throws Exception {
 		MockServerHttpRequest request = post("/path").contentType(MediaType.APPLICATION_JSON).build();
 		ServerWebExchange exchange = MockServerWebExchange.from(request);

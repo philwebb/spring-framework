@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -429,7 +429,8 @@ public class ViewResolutionResultHandlerTests {
 
 		String string() { return null; }
 		Mono<String> monoString() { return null; }
-		@ModelAttribute("myString") String stringWithAnnotation() { return null; }
+		@ModelAttribute("myString")
+		String stringWithAnnotation() { return null; }
 
 		Rendering rendering() { return null; }
 		Mono<Rendering> monoRendering() { return null; }
@@ -444,12 +445,14 @@ public class ViewResolutionResultHandlerTests {
 		Model model() { return null; }
 
 		Map<?,?> map() { return null; }
-		@ModelAttribute("myMap") Map<?,?> mapWithAnnotation() { return null; }
+		@ModelAttribute("myMap")
+		Map<?,?> mapWithAnnotation() { return null; }
 
 		TestBean testBean() { return null; }
 
 		Long longValue() { return null; }
-		@ModelAttribute("myLong") Long longModelAttribute() { return null; }
+		@ModelAttribute("myLong")
+		Long longModelAttribute() { return null; }
 
 		Mono<?> monoWildcard() { return null; }
 	}

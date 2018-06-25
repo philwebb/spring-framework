@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -95,7 +95,8 @@ public class ImportedConfigurationClassEnhancementTests {
 
 	static class Config {
 
-		@Autowired ConfigToBeAutowired autowiredConfig;
+		@Autowired
+		ConfigToBeAutowired autowiredConfig;
 	}
 
 	@Import(ConfigToBeAutowired.class)
@@ -111,7 +112,8 @@ public class ImportedConfigurationClassEnhancementTests {
 	@Import(TestBean.class)
 	static class ConfigThatImportsNonConfigClass {
 
-		@Autowired TestBean testBean;
+		@Autowired
+		TestBean testBean;
 	}
 
 }

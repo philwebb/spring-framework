@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,8 @@ public class FactoryMethodComponent {
 		return null;
 	}
 
-	@Bean @Qualifier("public")
+	@Bean
+	@Qualifier("public")
 	public TestBean publicInstance() {
 		return new TestBean("publicInstance");
 	}
@@ -51,7 +52,8 @@ public class FactoryMethodComponent {
 		return new TestBean("publicInstance");
 	}
 
-	@Bean @BeanAge(1)
+	@Bean
+	@BeanAge(1)
 	protected TestBean protectedInstance(@Qualifier("public") TestBean spouse, @Value("#{privateInstance.age}") String country) {
 		TestBean tb = new TestBean("protectedInstance", 1);
 		tb.setSpouse(tb);
@@ -59,12 +61,14 @@ public class FactoryMethodComponent {
 		return tb;
 	}
 
-	@Bean @Scope("prototype")
+	@Bean
+	@Scope("prototype")
 	private TestBean privateInstance() {
 		return new TestBean("privateInstance", i++);
 	}
 
-	@Bean @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
+	@Bean
+	@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
 	public TestBean requestScopedInstance() {
 		return new TestBean("requestScopedInstance", 3);
 	}

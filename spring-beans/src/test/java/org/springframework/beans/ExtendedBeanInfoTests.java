@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,8 @@ public class ExtendedBeanInfoTests {
 
 	@Test
 	public void standardReadMethodOnly() throws IntrospectionException {
-		@SuppressWarnings("unused") class C {
+		@SuppressWarnings("unused")
+		class C {
 			public String getFoo() { return null; }
 		}
 
@@ -58,7 +59,8 @@ public class ExtendedBeanInfoTests {
 
 	@Test
 	public void standardWriteMethodOnly() throws IntrospectionException {
-		@SuppressWarnings("unused") class C {
+		@SuppressWarnings("unused")
+		class C {
 			public void setFoo(String f) { }
 		}
 
@@ -74,7 +76,8 @@ public class ExtendedBeanInfoTests {
 
 	@Test
 	public void standardReadAndWriteMethods() throws IntrospectionException {
-		@SuppressWarnings("unused") class C {
+		@SuppressWarnings("unused")
+		class C {
 			public void setFoo(String f) { }
 			public String getFoo() { return null; }
 		}
@@ -91,7 +94,8 @@ public class ExtendedBeanInfoTests {
 
 	@Test
 	public void nonStandardWriteMethodOnly() throws IntrospectionException {
-		@SuppressWarnings("unused") class C {
+		@SuppressWarnings("unused")
+		class C {
 			public C setFoo(String foo) { return this; }
 		}
 
@@ -107,7 +111,8 @@ public class ExtendedBeanInfoTests {
 
 	@Test
 	public void standardReadAndNonStandardWriteMethods() throws IntrospectionException {
-		@SuppressWarnings("unused") class C {
+		@SuppressWarnings("unused")
+		class C {
 			public String getFoo() { return null; }
 			public C setFoo(String foo) { return this; }
 		}
@@ -128,7 +133,8 @@ public class ExtendedBeanInfoTests {
 
 	@Test
 	public void standardReadAndNonStandardIndexedWriteMethod() throws IntrospectionException {
-		@SuppressWarnings("unused") class C {
+		@SuppressWarnings("unused")
+		class C {
 			public String[] getFoo() { return null; }
 			public C setFoo(int i, String foo) { return this; }
 		}
@@ -148,7 +154,8 @@ public class ExtendedBeanInfoTests {
 
 	@Test
 	public void standardReadMethodsAndOverloadedNonStandardWriteMethods() throws Exception {
-		@SuppressWarnings("unused") class C {
+		@SuppressWarnings("unused")
+		class C {
 			public String getFoo() { return null; }
 			public C setFoo(String foo) { return this; }
 			public C setFoo(Number foo) { return this; }
@@ -178,7 +185,8 @@ public class ExtendedBeanInfoTests {
 
 	@Test
 	public void cornerSpr9414() throws IntrospectionException {
-		@SuppressWarnings("unused") class Parent {
+		@SuppressWarnings("unused")
+		class Parent {
 			public Number getProperty1() {
 				return 1;
 			}
@@ -219,10 +227,12 @@ public class ExtendedBeanInfoTests {
 
 	@Test
 	public void standardReadMethodInSuperclassAndNonStandardWriteMethodInSubclass() throws Exception {
-		@SuppressWarnings("unused") class B {
+		@SuppressWarnings("unused")
+		class B {
 			public String getFoo() { return null; }
 		}
-		@SuppressWarnings("unused") class C extends B {
+		@SuppressWarnings("unused")
+		class C extends B {
 			public C setFoo(String foo) { return this; }
 		}
 
@@ -294,7 +304,8 @@ public class ExtendedBeanInfoTests {
 
 	@Test
 	public void nonPublicStandardReadAndWriteMethods() throws Exception {
-		@SuppressWarnings("unused") class C {
+		@SuppressWarnings("unused")
+		class C {
 			String getFoo() { return null; }
 			C setFoo(String foo) { return this; }
 		}
@@ -315,7 +326,8 @@ public class ExtendedBeanInfoTests {
 	 */
 	@Test
 	public void readMethodReturnsSupertypeOfWriteMethodParameter() throws IntrospectionException {
-		@SuppressWarnings("unused") class C {
+		@SuppressWarnings("unused")
+		class C {
 			public Number getFoo() { return null; }
 			public void setFoo(Integer foo) { }
 		}
@@ -330,7 +342,8 @@ public class ExtendedBeanInfoTests {
 
 	@Test
 	public void indexedReadMethodReturnsSupertypeOfIndexedWriteMethodParameter() throws IntrospectionException {
-		@SuppressWarnings("unused") class C {
+		@SuppressWarnings("unused")
+		class C {
 			public Number getFoos(int index) { return null; }
 			public void setFoos(int index, Integer foo) { }
 		}
@@ -349,7 +362,8 @@ public class ExtendedBeanInfoTests {
 	 */
 	@Test
 	public void readMethodReturnsSubtypeOfWriteMethodParameter() throws IntrospectionException {
-		@SuppressWarnings("unused") class C {
+		@SuppressWarnings("unused")
+		class C {
 			public Integer getFoo() { return null; }
 			public void setFoo(Number foo) { }
 		}
@@ -366,7 +380,8 @@ public class ExtendedBeanInfoTests {
 
 	@Test
 	public void indexedReadMethodReturnsSubtypeOfIndexedWriteMethodParameter() throws IntrospectionException {
-		@SuppressWarnings("unused") class C {
+		@SuppressWarnings("unused")
+		class C {
 			public Integer getFoos(int index) { return null; }
 			public void setFoo(int index, Number foo) { }
 		}
@@ -582,7 +597,8 @@ public class ExtendedBeanInfoTests {
 
 	@Test
 	public void subclassWriteMethodWithCovariantReturnType() throws IntrospectionException {
-		@SuppressWarnings("unused") class B {
+		@SuppressWarnings("unused")
+		class B {
 			public String getFoo() { return null; }
 			public Number setFoo(String foo) { return null; }
 		}
@@ -611,7 +627,8 @@ public class ExtendedBeanInfoTests {
 
 	@Test
 	public void nonStandardReadMethodAndStandardWriteMethod() throws IntrospectionException {
-		@SuppressWarnings("unused") class C {
+		@SuppressWarnings("unused")
+		class C {
 			public void getFoo() { }
 			public void setFoo(String foo) { }
 		}
@@ -632,7 +649,8 @@ public class ExtendedBeanInfoTests {
 	 */
 	@Test
 	public void emptyPropertiesIgnored() throws IntrospectionException {
-		@SuppressWarnings("unused") class C {
+		@SuppressWarnings("unused")
+		class C {
 			public Object set(Object o) { return null; }
 			public Object set(int i, Object o) { return null; }
 		}
@@ -645,7 +663,8 @@ public class ExtendedBeanInfoTests {
 
 	@Test
 	public void overloadedNonStandardWriteMethodsOnly_orderA() throws IntrospectionException, SecurityException, NoSuchMethodException {
-		@SuppressWarnings("unused") class C {
+		@SuppressWarnings("unused")
+		class C {
 			public Object setFoo(String p) { return new Object(); }
 			public Object setFoo(int p) { return new Object(); }
 		}
@@ -673,7 +692,8 @@ public class ExtendedBeanInfoTests {
 
 	@Test
 	public void overloadedNonStandardWriteMethodsOnly_orderB() throws IntrospectionException, SecurityException, NoSuchMethodException {
-		@SuppressWarnings("unused") class C {
+		@SuppressWarnings("unused")
+		class C {
 			public Object setFoo(int p) { return new Object(); }
 			public Object setFoo(String p) { return new Object(); }
 		}
@@ -708,7 +728,8 @@ public class ExtendedBeanInfoTests {
 	 */
 	@Test
 	public void reproSpr8522() throws IntrospectionException {
-		@SuppressWarnings("unused") class C {
+		@SuppressWarnings("unused")
+		class C {
 			public Object setDateFormat(String pattern) { return new Object(); }
 			public Object setDateFormat(int style) { return new Object(); }
 			public Object setDateFormat(int dateStyle, int timeStyle) { return new Object(); }
@@ -836,7 +857,8 @@ public class ExtendedBeanInfoTests {
 
 	@Test
 	public void cornerSpr8937AndSpr12582() throws IntrospectionException {
-		@SuppressWarnings("unused") class A {
+		@SuppressWarnings("unused")
+		class A {
 			public void setAddress(String addr){ }
 			public void setAddress(int index, String addr) { }
 			public String getAddress(int index){ return null; }

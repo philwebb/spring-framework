@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2014 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -113,7 +113,8 @@ interface NonAnnotatedService {
 }
 
 interface AnnotatedService {
-	@Transactional void m();
+	@Transactional
+	void m();
 }
 
 class NonAnnotatedServiceImpl implements AnnotatedService {
@@ -123,9 +124,11 @@ class NonAnnotatedServiceImpl implements AnnotatedService {
 
 class AnnotatedServiceImpl implements NonAnnotatedService {
 	@Override
-	@Transactional public void m() { }
+	@Transactional
+	public void m() { }
 }
 
 class AnnotatedServiceWithoutInterface {
-	@Transactional public void m() { }
+	@Transactional
+	public void m() { }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -104,7 +104,7 @@ public class ArgumentBindingTests {
 @Aspect
 class PointcutWithAnnotationArgument {
 
-	@Around(value = "execution(* org.springframework..*.*(..)) && @annotation(transaction)")
+	@Around("execution(* org.springframework..*.*(..)) && @annotation(transaction)")
 	public Object around(ProceedingJoinPoint pjp, Transactional transaction) throws Throwable {
 		System.out.println("Invoked with transaction " + transaction);
 		throw new IllegalStateException();

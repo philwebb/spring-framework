@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -571,25 +571,25 @@ public class UriTemplateServletAnnotationControllerHandlerMethodTests extends Ab
 	@RequestMapping("/category")
 	public static class MultiPathController {
 
-		@RequestMapping(value = {"/{category}/page/{page}", "/*/{category}/page/{page}"})
+		@RequestMapping({"/{category}/page/{page}", "/*/{category}/page/{page}"})
 		public void category(@PathVariable String category, @PathVariable int page, Writer writer) throws IOException {
 			writer.write("handle1-");
 			writer.write("category-" + category);
 			writer.write("page-" + page);
 		}
 
-		@RequestMapping(value = {"/{category}", "/*/{category}"})
+		@RequestMapping({"/{category}", "/*/{category}"})
 		public void category(@PathVariable String category, Writer writer) throws IOException {
 			writer.write("handle2-");
 			writer.write("category-" + category);
 		}
 
-		@RequestMapping(value = {""})
+		@RequestMapping({""})
 		public void category(Writer writer) throws IOException {
 			writer.write("handle3");
 		}
 
-		@RequestMapping(value = {"/page/{page}"})
+		@RequestMapping({"/page/{page}"})
 		public void category(@PathVariable int page, Writer writer) throws IOException {
 			writer.write("handle4-");
 			writer.write("page-" + page);

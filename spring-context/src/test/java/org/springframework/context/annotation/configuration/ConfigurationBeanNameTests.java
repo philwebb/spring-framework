@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2012 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -85,12 +85,14 @@ public class ConfigurationBeanNameTests {
 	static class A {
 		@Component("nested")
 		static class B {
-			@Bean public String nestedBean() { return ""; }
+			@Bean
+			public String nestedBean() { return ""; }
 		}
 	}
 
 	@Configuration("imported")
 	static class C {
-		@Bean public String s() { return "s"; }
+		@Bean
+		public String s() { return "s"; }
 	}
 }

@@ -94,10 +94,8 @@ public class DestinationVariableMethodArgumentResolverTests {
 	}
 
 	@SuppressWarnings("unused")
-	private void handleMessage(
-			@DestinationVariable String foo,
-			@DestinationVariable(value = "name") String param1,
-			String param3) {
+	private void handleMessage(@DestinationVariable String foo,
+			@DestinationVariable("name") String param1, String param3) {
 	}
 
 }

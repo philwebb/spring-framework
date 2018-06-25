@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -77,9 +77,11 @@ public class SendToMethodReturnValueHandlerTests {
 
 	private SendToMethodReturnValueHandler jsonHandler;
 
-	@Mock private MessageChannel messageChannel;
+	@Mock
+	private MessageChannel messageChannel;
 
-	@Captor private ArgumentCaptor<Message<?>> messageCaptor;
+	@Captor
+	private ArgumentCaptor<Message<?>> messageCaptor;
 
 	private MethodParameter noAnnotationsReturnType = param("handleNoAnnotations");
 	private MethodParameter sendToReturnType = param("handleAndSendTo");
@@ -667,7 +669,8 @@ public class SendToMethodReturnValueHandlerTests {
 	}
 
 
-	@MySendTo(dest = "/dest-default") @SuppressWarnings("unused")
+	@MySendTo(dest = "/dest-default")
+	@SuppressWarnings("unused")
 	private static class SendToTestBean {
 
 		String handleNoAnnotation() {
@@ -686,7 +689,8 @@ public class SendToMethodReturnValueHandlerTests {
 	}
 
 
-	@MySendToUser(dest = "/dest-default") @SuppressWarnings("unused")
+	@MySendToUser(dest = "/dest-default")
+	@SuppressWarnings("unused")
 	private static class SendToUserTestBean {
 
 		String handleNoAnnotation() {
@@ -705,7 +709,8 @@ public class SendToMethodReturnValueHandlerTests {
 	}
 
 
-	@MySendToUser(dest = "/dest-default") @SuppressWarnings("unused")
+	@MySendToUser(dest = "/dest-default")
+	@SuppressWarnings("unused")
 	private static class SendToUserWithSendToOverrideTestBean {
 
 		@SendTo

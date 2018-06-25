@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -170,10 +170,12 @@ public class LazyAutowiredAnnotationBeanPostProcessorTests {
 
 	public static class FieldResourceInjectionBean implements TestBeanHolder {
 
-		@Autowired @Lazy
+		@Autowired
+		@Lazy
 		private TestBean testBean;
 
-		@Autowired @Lazy
+		@Autowired
+		@Lazy
 		private List<TestBean> testBeans;
 
 		public TestBean getTestBean() {
@@ -188,10 +190,12 @@ public class LazyAutowiredAnnotationBeanPostProcessorTests {
 
 	public static class OptionalFieldResourceInjectionBean implements TestBeanHolder {
 
-		@Autowired(required = false) @Lazy
+		@Autowired(required = false)
+		@Lazy
 		private TestBean testBean;
 
-		@Autowired(required = false) @Lazy
+		@Autowired(required = false)
+		@Lazy
 		private List<TestBean> testBeans;
 
 		public TestBean getTestBean() {
@@ -237,7 +241,8 @@ public class LazyAutowiredAnnotationBeanPostProcessorTests {
 
 		private TestBean testBean;
 
-		@Autowired @Lazy
+		@Autowired
+		@Lazy
 		public void setTestBean(TestBean testBean) {
 			if (this.testBean != null) {
 				throw new IllegalStateException("Already called");
@@ -288,7 +293,8 @@ public class LazyAutowiredAnnotationBeanPostProcessorTests {
 
 		private final TestBean testBean;
 
-		@Autowired @Lazy
+		@Autowired
+		@Lazy
 		public ConstructorResourceInjectionBeanWithConstructorLevelLazy(TestBean testBean) {
 			this.testBean = testBean;
 		}

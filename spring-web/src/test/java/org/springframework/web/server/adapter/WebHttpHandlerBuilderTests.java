@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -109,12 +109,14 @@ public class WebHttpHandlerBuilderTests {
 
 		private static final String ATTRIBUTE = "attr";
 
-		@Bean @Order(2)
+		@Bean
+		@Order(2)
 		public WebFilter filterA() {
 			return createFilter("FilterA");
 		}
 
-		@Bean @Order(1)
+		@Bean
+		@Order(1)
 		public WebFilter filterB() {
 			return createFilter("FilterB");
 		}

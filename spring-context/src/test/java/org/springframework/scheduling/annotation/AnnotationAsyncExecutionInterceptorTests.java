@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2012 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,23 +37,40 @@ public class AnnotationAsyncExecutionInterceptorTests {
 	public void testGetExecutorQualifier() throws SecurityException, NoSuchMethodException {
 		AnnotationAsyncExecutionInterceptor i = new AnnotationAsyncExecutionInterceptor(null);
 		{ // method level
-			class C { @Async("qMethod") void m() { } }
+			class C {
+				@Async("qMethod")
+				void m() { }
+			}
 			assertThat(i.getExecutorQualifier(C.class.getDeclaredMethod("m")), is("qMethod"));
 		}
 		{ // class level
-			@Async("qClass") class C { void m() { } }
+			@Async("qClass")
+			class C {
+				void m() { }
+			}
 			assertThat(i.getExecutorQualifier(C.class.getDeclaredMethod("m")), is("qClass"));
 		}
 		{ // method and class level -> method value overrides
-			@Async("qClass") class C { @Async("qMethod") void m() { } }
+			@Async("qClass")
+			class C {
+				@Async("qMethod")
+				void m() { }
+			}
 			assertThat(i.getExecutorQualifier(C.class.getDeclaredMethod("m")), is("qMethod"));
 		}
 		{ // method and class level -> method value, even if empty, overrides
-			@Async("qClass") class C { @Async void m() { } }
+			@Async("qClass")
+			class C {
+				@Async
+				void m() { }
+			}
 			assertThat(i.getExecutorQualifier(C.class.getDeclaredMethod("m")), is(""));
 		}
 		{ // meta annotation with qualifier
-			@MyAsync class C { void m() { } }
+			@MyAsync
+			class C {
+				void m() { }
+			}
 			assertThat(i.getExecutorQualifier(C.class.getDeclaredMethod("m")), is("qMeta"));
 		}
 	}

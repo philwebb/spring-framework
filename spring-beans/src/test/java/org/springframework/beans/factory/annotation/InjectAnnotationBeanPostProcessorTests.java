@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -848,7 +848,8 @@ public class InjectAnnotationBeanPostProcessorTests {
 		}
 
 		@Override
-		@Inject @Required
+		@Inject
+		@Required
 		public void setTestBean2(TestBean testBean2) {
 			super.setTestBean2(testBean2);
 		}
@@ -1337,7 +1338,8 @@ public class InjectAnnotationBeanPostProcessorTests {
 
 	public static class NullableFieldInjectionBean {
 
-		@Inject @Nullable
+		@Inject
+		@Nullable
 		private TestBean testBean;
 
 		public TestBean getTestBean() {

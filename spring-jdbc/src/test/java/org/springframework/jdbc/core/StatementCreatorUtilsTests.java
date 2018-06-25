@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -125,7 +125,8 @@ public class StatementCreatorUtilsTests {
 		verify(preparedStatement).setObject(1, "test", Types.CHAR);
 	}
 
-	@Test public void testSetParameterValueWithStringAndUnknownType() throws SQLException {
+	@Test
+	public void testSetParameterValueWithStringAndUnknownType() throws SQLException {
 		StatementCreatorUtils.setParameterValue(preparedStatement, 1, SqlTypeValue.TYPE_UNKNOWN, null, "test");
 		verify(preparedStatement).setString(1, "test");
 	}

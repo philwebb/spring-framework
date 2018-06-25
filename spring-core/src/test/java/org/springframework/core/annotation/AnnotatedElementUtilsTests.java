@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -825,7 +825,7 @@ public class AnnotatedElementUtilsTests {
 	@interface ComposedTransactionalComponent {
 	}
 
-	@AliasedTransactional(value = "aliasForQualifier")
+	@AliasedTransactional("aliasForQualifier")
 	@Component
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface AliasedTransactionalComponent {
@@ -874,7 +874,7 @@ public class AnnotatedElementUtilsTests {
 		String[] locations() default {};
 	}
 
-	@ContextConfig(value = "duplicateDeclaration")
+	@ContextConfig("duplicateDeclaration")
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface InvalidConventionBasedComposedContextConfig {
 
@@ -988,7 +988,7 @@ public class AnnotatedElementUtilsTests {
 	 *
 	 * If 'value' were not shadowed, such a declaration would not make sense.
 	 */
-	@ContextConfig(value = "duplicateDeclaration")
+	@ContextConfig("duplicateDeclaration")
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface ShadowedAliasComposedContextConfig {
 
