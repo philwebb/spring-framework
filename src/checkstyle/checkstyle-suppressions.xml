@@ -28,7 +28,7 @@
 	<suppress files="SpelMessage" checks="JavadocVariable|JavadocStyle" />
 
 	<!-- spring-jcl -->
-	<suppress files="[\\/]src[\\/]main[\\/]java[\\/]org[\\/]apache[\\/]commons[\\/]logging[\\/]" checks="Header" />
+	<suppress files="[\\/]src[\\/]main[\\/]java[\\/]org[\\/]apache[\\/]commons[\\/]logging[\\/]" checks="Header|SpringNoThis" />
 
 	<!-- spring-jdbc -->
 	<suppress files="ResultSetWrappingSqlRowSet" checks="JavadocStyle" />
