@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2006 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,12 +39,18 @@ public class Pet {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 
 		final Pet pet = (Pet) o;
 
-		if (name != null ? !name.equals(pet.name) : pet.name != null) return false;
+		if (name != null ? !name.equals(pet.name) : pet.name != null) {
+			return false;
+		}
 
 		return true;
 	}

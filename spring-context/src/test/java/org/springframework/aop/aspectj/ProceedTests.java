@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2012 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -151,9 +151,14 @@ class ProceedTestingAspect implements Ordered {
 	private float lastBeforeFloatValue;
 	private int order;
 
-	public void setOrder(int order) { this.order = order; }
+	public void setOrder(int order) {
+		this.order = order;
+	}
+
 	@Override
-	public int getOrder() { return this.order; }
+	public int getOrder() {
+		return this.order;
+	}
 
 	public Object capitalize(ProceedingJoinPoint pjp, String value) throws Throwable {
 		return pjp.proceed(new Object[] {value.toUpperCase()});

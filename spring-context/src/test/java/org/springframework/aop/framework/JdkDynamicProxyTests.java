@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -195,10 +195,16 @@ public class JdkDynamicProxyTests extends AbstractAopProxyTests implements Seria
 
 		@Override
 		public boolean equals(Object o) {
-			if (this == o) return true;
-			if (o == null || getClass() != o.getClass()) return false;
+			if (this == o) {
+				return true;
+			}
+			if (o == null || getClass() != o.getClass()) {
+				return false;
+			}
 			Person person = (Person) o;
-			if (!name.equals(person.name)) return false;
+			if (!name.equals(person.name)) {
+				return false;
+			}
 			return true;
 		}
 

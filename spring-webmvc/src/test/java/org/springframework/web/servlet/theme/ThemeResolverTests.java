@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,8 +46,9 @@ public class ThemeResolverTests {
 		// set new theme name
 		try {
 			themeResolver.setThemeName(request, response, TEST_THEME_NAME);
-			if (!shouldSet)
+			if (!shouldSet) {
 				fail("should not be able to set Theme name");
+			}
 			// check new theme namelocale
 			themeName = themeResolver.resolveThemeName(request);
 			assertEquals(TEST_THEME_NAME, themeName);
@@ -56,8 +57,9 @@ public class ThemeResolverTests {
 			assertEquals(themeName, defaultName);
 		}
 		catch (UnsupportedOperationException ex) {
-			if (shouldSet)
+			if (shouldSet) {
 				fail("should be able to set Theme name");
+			}
 		}
 	}
 

@@ -29,7 +29,9 @@ public class PlaceOfBirth {
 	 * country - but as it is just a test object, it is ok.
 	 */
 	@Override
-	public String toString() {return city;}
+	public String toString() {
+		return city;
+	}
 
 	public String getCity() {
 		return city;

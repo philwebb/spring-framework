@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -70,7 +70,8 @@ public class CorsWebFilterTests {
 				HttpHeaders headers = filterExchange.getResponse().getHeaders();
 				assertEquals("http://domain2.com", headers.getFirst(ACCESS_CONTROL_ALLOW_ORIGIN));
 				assertEquals("header3, header4", headers.getFirst(ACCESS_CONTROL_EXPOSE_HEADERS));
-			} catch (AssertionError ex) {
+			}
+			catch (AssertionError ex) {
 				return Mono.error(ex);
 			}
 			return Mono.empty();

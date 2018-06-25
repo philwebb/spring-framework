@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,21 +33,24 @@ public class LifecycleContextBean extends LifecycleBean implements ApplicationCo
 	@Override
 	public void setBeanFactory(BeanFactory beanFactory) {
 		super.setBeanFactory(beanFactory);
-		if (this.owningContext != null)
+		if (this.owningContext != null) {
 			throw new RuntimeException("Factory called setBeanFactory after setApplicationContext");
+		}
 	}
 
 	@Override
 	public void afterPropertiesSet() {
 		super.afterPropertiesSet();
-		if (this.owningContext == null)
+		if (this.owningContext == null) {
 			throw new RuntimeException("Factory didn't call setAppliationContext before afterPropertiesSet on lifecycle bean");
+		}
 	}
 
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		if (this.owningFactory == null)
+		if (this.owningFactory == null) {
 			throw new RuntimeException("Factory called setApplicationContext before setBeanFactory");
+		}
 
 		this.owningContext = applicationContext;
 	}

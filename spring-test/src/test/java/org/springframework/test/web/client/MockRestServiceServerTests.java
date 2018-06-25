@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -116,8 +116,9 @@ public class MockRestServiceServerTests {
 	public void followUpRequestAfterFailure() {
 		MockRestServiceServer server = MockRestServiceServer.bindTo(this.restTemplate).build();
 
-		server.expect(requestTo("/some-service/some-endpoint"))
-				.andRespond(request -> { throw new SocketException("pseudo network error"); });
+		server.expect(requestTo("/some-service/some-endpoint")).andRespond(request -> {
+			throw new SocketException("pseudo network error");
+		});
 
 		server.expect(requestTo("/reporting-service/report-error"))
 				.andExpect(method(POST)).andRespond(withSuccess());

@@ -427,34 +427,75 @@ public class ViewResolutionResultHandlerTests {
 	@SuppressWarnings("unused")
 	private static class Handler {
 
-		String string() { return null; }
-		Mono<String> monoString() { return null; }
+		String string() {
+			return null;
+		}
+
+		Mono<String> monoString() {
+			return null;
+		}
+
 		@ModelAttribute("myString")
-		String stringWithAnnotation() { return null; }
+		String stringWithAnnotation() {
+			return null;
+		}
 
-		Rendering rendering() { return null; }
-		Mono<Rendering> monoRendering() { return null; }
+		Rendering rendering() {
+			return null;
+		}
 
-		View view() { return null; }
-		Mono<View> monoView() { return null; }
+		Mono<Rendering> monoRendering() {
+			return null;
+		}
 
-		void voidMethod() { }
-		Mono<Void> monoVoid() { return null; }
-		Completable completable() { return null; }
+		View view() {
+			return null;
+		}
 
-		Model model() { return null; }
+		Mono<View> monoView() {
+			return null;
+		}
 
-		Map<?,?> map() { return null; }
+		void voidMethod() {
+		}
+
+		Mono<Void> monoVoid() {
+			return null;
+		}
+
+		Completable completable() {
+			return null;
+		}
+
+		Model model() {
+			return null;
+		}
+
+		Map<?, ?> map() {
+			return null;
+		}
+
 		@ModelAttribute("myMap")
-		Map<?,?> mapWithAnnotation() { return null; }
+		Map<?, ?> mapWithAnnotation() {
+			return null;
+		}
 
-		TestBean testBean() { return null; }
+		TestBean testBean() {
+			return null;
+		}
 
-		Long longValue() { return null; }
+		Long longValue() {
+			return null;
+		}
+
 		@ModelAttribute("myLong")
-		Long longModelAttribute() { return null; }
+		Long longModelAttribute() {
+			return null;
+		}
 
-		Mono<?> monoWildcard() { return null; }
+		Mono<?> monoWildcard() {
+			return null;
+		}
 	}
 
 }

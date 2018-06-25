@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2012 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,9 @@ public class ExtendedBeanInfoFactoryTests {
 	public void shouldNotSupportClassHavingOnlyVoidReturningSetter() throws IntrospectionException {
 		@SuppressWarnings("unused")
 		class C {
-			public void setFoo(String s) { }
+
+			public void setFoo(String s) {
+			}
 		}
 		assertThat(factory.getBeanInfo(C.class), nullValue());
 	}
@@ -45,7 +47,10 @@ public class ExtendedBeanInfoFactoryTests {
 	public void shouldSupportClassHavingNonVoidReturningSetter() throws IntrospectionException {
 		@SuppressWarnings("unused")
 		class C {
-			public C setFoo(String s) { return this; }
+
+			public C setFoo(String s) {
+				return this;
+			}
 		}
 		assertThat(factory.getBeanInfo(C.class), notNullValue());
 	}
@@ -54,7 +59,10 @@ public class ExtendedBeanInfoFactoryTests {
 	public void shouldSupportClassHavingNonVoidReturningIndexedSetter() throws IntrospectionException {
 		@SuppressWarnings("unused")
 		class C {
-			public C setFoo(int i, String s) { return this; }
+
+			public C setFoo(int i, String s) {
+				return this;
+			}
 		}
 		assertThat(factory.getBeanInfo(C.class), notNullValue());
 	}
@@ -63,7 +71,9 @@ public class ExtendedBeanInfoFactoryTests {
 	public void shouldNotSupportClassHavingNonPublicNonVoidReturningIndexedSetter() throws IntrospectionException {
 		@SuppressWarnings("unused")
 		class C {
-			void setBar(String s) { }
+
+			void setBar(String s) {
+			}
 		}
 		assertThat(factory.getBeanInfo(C.class), nullValue());
 	}
@@ -72,7 +82,10 @@ public class ExtendedBeanInfoFactoryTests {
 	public void shouldNotSupportClassHavingNonVoidReturningParameterlessSetter() throws IntrospectionException {
 		@SuppressWarnings("unused")
 		class C {
-			C setBar() { return this; }
+
+			C setBar() {
+				return this;
+			}
 		}
 		assertThat(factory.getBeanInfo(C.class), nullValue());
 	}
@@ -81,7 +94,10 @@ public class ExtendedBeanInfoFactoryTests {
 	public void shouldNotSupportClassHavingNonVoidReturningMethodNamedSet() throws IntrospectionException {
 		@SuppressWarnings("unused")
 		class C {
-			C set(String s) { return this; }
+
+			C set(String s) {
+				return this;
+			}
 		}
 		assertThat(factory.getBeanInfo(C.class), nullValue());
 	}

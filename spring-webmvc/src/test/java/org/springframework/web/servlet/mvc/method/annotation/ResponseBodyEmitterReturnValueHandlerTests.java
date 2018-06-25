@@ -295,24 +295,41 @@ public class ResponseBodyEmitterReturnValueHandlerTests {
 	@SuppressWarnings("unused")
 	private static class TestController {
 
-		private ResponseBodyEmitter h1() { return null; }
+		private ResponseBodyEmitter h1() {
+			return null;
+		}
 
-		private ResponseEntity<ResponseBodyEmitter> h2() { return null; }
+		private ResponseEntity<ResponseBodyEmitter> h2() {
+			return null;
+		}
 
-		private SseEmitter h3() { return null; }
+		private SseEmitter h3() {
+			return null;
+		}
 
-		private ResponseEntity<SseEmitter> h4() { return null; }
+		private ResponseEntity<SseEmitter> h4() {
+			return null;
+		}
 
-		private ResponseEntity<String> h5() { return null; }
+		private ResponseEntity<String> h5() {
+			return null;
+		}
 
-		private ResponseEntity<AtomicReference<String>> h6() { return null; }
+		private ResponseEntity<AtomicReference<String>> h6() {
+			return null;
+		}
 
-		private ResponseEntity<?> h7() { return null; }
+		private ResponseEntity<?> h7() {
+			return null;
+		}
 
-		private Flux<String> h8() { return null; }
+		private Flux<String> h8() {
+			return null;
+		}
 
-		private ResponseEntity<Flux<String>> h9() { return null; }
-
+		private ResponseEntity<Flux<String>> h9() {
+			return null;
+		}
 	}
 
 

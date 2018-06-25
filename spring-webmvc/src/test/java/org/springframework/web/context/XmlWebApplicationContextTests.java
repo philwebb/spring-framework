@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -183,22 +183,25 @@ public class XmlWebApplicationContextTests extends AbstractApplicationContextTes
 
 		@Override
 		public void afterPropertiesSet() {
-			if (this.initMethodInvoked)
+			if (this.initMethodInvoked) {
 				fail();
+			}
 			this.afterPropertiesSetInvoked = true;
 		}
 
 		/** Init method */
 		public void customInit() throws ServletException {
-			if (!this.afterPropertiesSetInvoked)
+			if (!this.afterPropertiesSetInvoked) {
 				fail();
+			}
 			this.initMethodInvoked = true;
 		}
 
 		@Override
 		public void destroy() {
-			if (this.customDestroyed)
+			if (this.customDestroyed) {
 				fail();
+			}
 			if (this.destroyed) {
 				throw new IllegalStateException("Already destroyed");
 			}
@@ -206,8 +209,9 @@ public class XmlWebApplicationContextTests extends AbstractApplicationContextTes
 		}
 
 		public void customDestroy() {
-			if (!this.destroyed)
+			if (!this.destroyed) {
 				fail();
+			}
 			if (this.customDestroyed) {
 				throw new IllegalStateException("Already customDestroyed");
 			}

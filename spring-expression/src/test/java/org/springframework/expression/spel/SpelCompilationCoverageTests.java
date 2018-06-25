@@ -5086,7 +5086,9 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 			return mh;
 		}
 
-		public int[] getIa() { return new int[] {5,3}; }
+		public int[] getIa() {
+			return new int[] { 5, 3 };
+		}
 
 		@SuppressWarnings({"rawtypes", "unchecked"})
 		public List getList() {
@@ -5299,13 +5301,17 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 
 	public static class FooObject {
 
-		public Object getObject() { return "hello"; }
+		public Object getObject() {
+			return "hello";
+		}
 	}
 
 
 	public static class FooString {
 
-		public String getObject() { return "hello"; }
+		public String getObject() {
+			return "hello";
+		}
 	}
 
 
@@ -5458,10 +5464,21 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 
 		public boolean b;
 
-		public boolean gettrue() { return true; }
-		public boolean getfalse() { return false; }
-		public boolean getA() { return a; }
-		public boolean getB() { return b; }
+		public boolean gettrue() {
+			return true;
+		}
+
+		public boolean getfalse() {
+			return false;
+		}
+
+		public boolean getA() {
+			return a;
+		}
+
+		public boolean getB() {
+			return b;
+		}
 	}
 
 
@@ -5549,25 +5566,54 @@ public class SpelCompilationCoverageTests extends AbstractExpressionTests {
 			field = null;
 		}
 
-		public void one() { i = 1; }
+		public void one() {
+			i = 1;
+		}
 
-		public static void two() { _i = 1; }
+		public static void two() {
+			_i = 1;
+		}
 
-		public String three() { return "hello"; }
-		public long four() { return 3277700L; }
+		public String three() {
+			return "hello";
+		}
 
-		public static String five() { return "hello"; }
-		public static long six() { return 3277700L; }
+		public long four() {
+			return 3277700L;
+		}
 
-		public void seven(String toset) { s = toset; }
+		public static String five() {
+			return "hello";
+		}
+
+		public static long six() {
+			return 3277700L;
+		}
+
+		public void seven(String toset) {
+			s = toset;
+		}
 		// public void seven(Number n) { s = n.toString(); }
 
-		public void takeNumber(Number n) { s = n.toString(); }
-		public void takeString(String s) { this.s = s; }
-		public static void eight(String toset) { _s = toset; }
+		public void takeNumber(Number n) {
+			s = n.toString();
+		}
 
-		public void nine(int toset) { i = toset; }
-		public static void ten(int toset) { _i = toset; }
+		public void takeString(String s) {
+			this.s = s;
+		}
+
+		public static void eight(String toset) {
+			_s = toset;
+		}
+
+		public void nine(int toset) {
+			i = toset;
+		}
+
+		public static void ten(int toset) {
+			_i = toset;
+		}
 
 		public void eleven(String... vargs) {
 			if (vargs == null) {

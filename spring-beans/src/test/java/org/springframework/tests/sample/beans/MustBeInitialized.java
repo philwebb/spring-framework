@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2012 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,8 +40,9 @@ public class MustBeInitialized implements InitializingBean {
 	 * managed the bean's lifecycle correctly
 	 */
 	public void businessMethod() {
-		if (!this.inited)
+		if (!this.inited) {
 			throw new RuntimeException("Factory didn't call afterPropertiesSet() on MustBeInitialized object");
+		}
 	}
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -292,7 +292,9 @@ public class ConfigurationClassWithConditionTests {
 	static class ImportsNotCreated {
 
 		static {
-			if (true) throw new RuntimeException();
+			if (true) {
+				throw new RuntimeException();
+			}
 		}
 	}
 
@@ -300,14 +302,18 @@ public class ConfigurationClassWithConditionTests {
 	static class ConfigurationNotCreated {
 
 		static {
-			if (true) throw new RuntimeException();
+			if (true) {
+				throw new RuntimeException();
+			}
 		}
 	}
 
 	static class RegistrarNotCreated implements ImportBeanDefinitionRegistrar {
 
 		static {
-			if (true) throw new RuntimeException();
+			if (true) {
+				throw new RuntimeException();
+			}
 		}
 
 		@Override
@@ -319,7 +325,9 @@ public class ConfigurationClassWithConditionTests {
 	static class ImportSelectorNotCreated implements ImportSelector {
 
 		static {
-			if (true) throw new RuntimeException();
+			if (true) {
+				throw new RuntimeException();
+			}
 		}
 
 		@Override

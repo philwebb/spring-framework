@@ -48,8 +48,11 @@ public class BeanAnnotationAttributePropagationTests {
 	public void initMethodMetadataIsPropagated() {
 		@Configuration
 		class Config {
-			@Bean(initMethod="start")
-			Object foo() { return null; }
+
+			@Bean(initMethod = "start")
+			Object foo() {
+				return null;
+			}
 		}
 
 		assertEquals("init method name was not propagated",
@@ -60,8 +63,11 @@ public class BeanAnnotationAttributePropagationTests {
 	public void destroyMethodMetadataIsPropagated() {
 		@Configuration
 		class Config {
-			@Bean(destroyMethod="destroy")
-			Object foo() { return null; }
+
+			@Bean(destroyMethod = "destroy")
+			Object foo() {
+				return null;
+			}
 		}
 
 		assertEquals("destroy method name was not propagated",
@@ -72,9 +78,12 @@ public class BeanAnnotationAttributePropagationTests {
 	public void dependsOnMetadataIsPropagated() {
 		@Configuration
 		class Config {
+
 			@Bean
-			@DependsOn({"bar", "baz"})
-			Object foo() { return null; }
+			@DependsOn({ "bar", "baz" })
+			Object foo() {
+				return null;
+			}
 		}
 
 		assertArrayEquals("dependsOn metadata was not propagated",
@@ -85,9 +94,12 @@ public class BeanAnnotationAttributePropagationTests {
 	public void primaryMetadataIsPropagated() {
 		@Configuration
 		class Config {
+
 			@Primary
 			@Bean
-			Object foo() { return null; }
+			Object foo() {
+				return null;
+			}
 		}
 
 		assertTrue("primary metadata was not propagated",
@@ -98,8 +110,11 @@ public class BeanAnnotationAttributePropagationTests {
 	public void primaryMetadataIsFalseByDefault() {
 		@Configuration
 		class Config {
+
 			@Bean
-			Object foo() { return null; }
+			Object foo() {
+				return null;
+			}
 		}
 
 		assertFalse("@Bean methods should be non-primary by default",
@@ -110,9 +125,12 @@ public class BeanAnnotationAttributePropagationTests {
 	public void lazyMetadataIsPropagated() {
 		@Configuration
 		class Config {
+
 			@Lazy
 			@Bean
-			Object foo() { return null; }
+			Object foo() {
+				return null;
+			}
 		}
 
 		assertTrue("lazy metadata was not propagated",
@@ -123,8 +141,11 @@ public class BeanAnnotationAttributePropagationTests {
 	public void lazyMetadataIsFalseByDefault() {
 		@Configuration
 		class Config {
+
 			@Bean
-			Object foo() { return null; }
+			Object foo() {
+				return null;
+			}
 		}
 
 		assertFalse("@Bean methods should be non-lazy by default",
@@ -136,8 +157,11 @@ public class BeanAnnotationAttributePropagationTests {
 		@Lazy
 		@Configuration
 		class Config {
+
 			@Bean
-			Object foo() { return null; }
+			Object foo() {
+				return null;
+			}
 		}
 
 		assertTrue("@Bean methods declared in a @Lazy @Configuration should be lazily instantiated",
@@ -149,9 +173,12 @@ public class BeanAnnotationAttributePropagationTests {
 		@Lazy
 		@Configuration
 		class Config {
+
 			@Lazy(false)
 			@Bean
-			Object foo() { return null; }
+			Object foo() {
+				return null;
+			}
 		}
 
 		assertFalse("@Lazy(false) @Bean methods declared in a @Lazy @Configuration should be eagerly instantiated",
@@ -163,8 +190,11 @@ public class BeanAnnotationAttributePropagationTests {
 		@Lazy(false)
 		@Configuration
 		class Config { // will probably never happen, doesn't make much sense
+
 			@Bean
-			Object foo() { return null; }
+			Object foo() {
+				return null;
+			}
 		}
 
 		assertFalse("@Lazy(false) @Configuration should produce eager bean definitions",

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -138,11 +138,27 @@ class InitDestroyBean {
 	boolean destroyMethod2Called;
 	boolean destroyMethod3Called;
 
-	void initMethod1() { this.initMethod1Called = true; }
-	void initMethod2() { this.initMethod2Called = true; }
-	void initMethod3() { this.initMethod3Called = true; }
+	void initMethod1() {
+		this.initMethod1Called = true;
+	}
 
-	void destroyMethod1() { this.destroyMethod1Called = true; }
-	void destroyMethod2() { this.destroyMethod2Called = true; }
-	void destroyMethod3() { this.destroyMethod3Called = true; }
+	void initMethod2() {
+		this.initMethod2Called = true;
+	}
+
+	void initMethod3() {
+		this.initMethod3Called = true;
+	}
+
+	void destroyMethod1() {
+		this.destroyMethod1Called = true;
+	}
+
+	void destroyMethod2() {
+		this.destroyMethod2Called = true;
+	}
+
+	void destroyMethod3() {
+		this.destroyMethod3Called = true;
+	}
 }

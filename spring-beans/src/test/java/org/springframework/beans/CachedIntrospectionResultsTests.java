@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2014 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,8 +69,14 @@ public class CachedIntrospectionResultsTests {
 		// given a class with a non-void returning setter method
 		@SuppressWarnings("unused")
 		class C {
-			public Object setFoo(String s) { return this; }
-			public String getFoo() { return null; }
+
+			public Object setFoo(String s) {
+				return this;
+			}
+
+			public String getFoo() {
+				return null;
+			}
 		}
 
 		// CachedIntrospectionResults should delegate to ExtendedBeanInfo

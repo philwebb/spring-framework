@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -141,13 +141,21 @@ public class DeferredResultReturnValueHandlerTests {
 	@SuppressWarnings("unused")
 	static class TestController {
 
-		String handleString() { return null; }
+		String handleString() {
+			return null;
+		}
 
-		DeferredResult<String> handleDeferredResult() { return null; }
+		DeferredResult<String> handleDeferredResult() {
+			return null;
+		}
 
-		ListenableFuture<String> handleListenableFuture() { return null; }
+		ListenableFuture<String> handleListenableFuture() {
+			return null;
+		}
 
-		CompletableFuture<String> handleCompletableFuture() { return null; }
+		CompletableFuture<String> handleCompletableFuture() {
+			return null;
+		}
 	}
 
 }
