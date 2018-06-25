@@ -60,7 +60,7 @@ public class RunPrepareTestInstanceCallbacks extends Statement {
 	 */
 	@Override
 	public void evaluate() throws Throwable {
-		this.testContextManager.prepareTestInstance(testInstance);
+		this.testContextManager.prepareTestInstance(this.testInstance);
 		this.next.evaluate();
 	}
 

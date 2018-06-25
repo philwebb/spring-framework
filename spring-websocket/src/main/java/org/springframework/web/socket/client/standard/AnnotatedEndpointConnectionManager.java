@@ -108,12 +108,12 @@ public class AnnotatedEndpointConnectionManager extends ConnectionManagerSupport
 				if (logger.isInfoEnabled()) {
 					logger.info("Connecting to WebSocket at " + getUri());
 				}
-				Object endpointToUse = endpoint;
+				Object endpointToUse = this.endpoint;
 				if (endpointToUse == null) {
-					Assert.state(endpointProvider != null, "No endpoint set");
-					endpointToUse = endpointProvider.getHandler();
+					Assert.state(this.endpointProvider != null, "No endpoint set");
+					endpointToUse = this.endpointProvider.getHandler();
 				}
-				session = webSocketContainer.connectToServer(endpointToUse, getUri());
+				this.session = this.webSocketContainer.connectToServer(endpointToUse, getUri());
 				logger.info("Successfully connected to WebSocket");
 			}
 			catch (Throwable ex) {

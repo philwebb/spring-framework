@@ -96,7 +96,7 @@ public class ConfigurableWebBindingInitializer implements WebBindingInitializer 
 	 * Return whether to use direct field access instead of bean property access.
 	 */
 	public boolean isDirectFieldAccess() {
-		return directFieldAccess;
+		return this.directFieldAccess;
 	}
 
 	/**

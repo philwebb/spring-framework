@@ -293,7 +293,7 @@ public class FormattingConversionService extends GenericConversionService
 
 		@Override
 		public Set<ConvertiblePair> getConvertibleTypes() {
-			return Collections.singleton(new ConvertiblePair(String.class, fieldType));
+			return Collections.singleton(new ConvertiblePair(String.class, this.fieldType));
 		}
 
 		@Override

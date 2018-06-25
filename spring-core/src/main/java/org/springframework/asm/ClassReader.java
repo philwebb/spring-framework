@@ -187,13 +187,13 @@ public class ClassReader {
         }
 		*/
         // parses the constant pool
-        items = new int[readUnsignedShort(off + 8)];
-        int n = items.length;
-        strings = new String[n];
+        this.items = new int[readUnsignedShort(off + 8)];
+        int n = this.items.length;
+        this.strings = new String[n];
         int max = 0;
         int index = off + 10;
         for (int i = 1; i < n; ++i) {
-            items[i] = index + 1;
+            this.items[i] = index + 1;
             int size;
             switch (b[index]) {
             case ClassWriter.FIELD:
@@ -230,9 +230,9 @@ public class ClassReader {
             }
             index += size;
         }
-        maxStringLength = max;
+        this.maxStringLength = max;
         // the class header information starts just after the constant pool
-        header = index;
+        this.header = index;
     }
 
     /**
@@ -245,7 +245,7 @@ public class ClassReader {
      * @see ClassVisitor#visit(int, int, String, String, String, String[])
      */
     public int getAccess() {
-        return readUnsignedShort(header);
+        return readUnsignedShort(this.header);
     }
 
     /**
@@ -257,7 +257,7 @@ public class ClassReader {
      * @see ClassVisitor#visit(int, int, String, String, String, String[])
      */
     public String getClassName() {
-        return readClass(header + 2, new char[maxStringLength]);
+        return readClass(this.header + 2, new char[this.maxStringLength]);
     }
 
     /**
@@ -271,7 +271,7 @@ public class ClassReader {
      * @see ClassVisitor#visit(int, int, String, String, String, String[])
      */
     public String getSuperName() {
-        return readClass(header + 4, new char[maxStringLength]);
+        return readClass(this.header + 4, new char[this.maxStringLength]);
     }
 
     /**
@@ -284,11 +284,11 @@ public class ClassReader {
      * @see ClassVisitor#visit(int, int, String, String, String, String[])
      */
     public String[] getInterfaces() {
-        int index = header + 6;
+        int index = this.header + 6;
         int n = readUnsignedShort(index);
         String[] interfaces = new String[n];
         if (n > 0) {
-            char[] buf = new char[maxStringLength];
+            char[] buf = new char[this.maxStringLength];
             for (int i = 0; i < n; ++i) {
                 index += 2;
                 interfaces[i] = readClass(index, buf);
@@ -305,19 +305,19 @@ public class ClassReader {
      *            the {@link ClassWriter} to copy constant pool into.
      */
     void copyPool(final ClassWriter classWriter) {
-        char[] buf = new char[maxStringLength];
-        int ll = items.length;
+        char[] buf = new char[this.maxStringLength];
+        int ll = this.items.length;
         Item[] items2 = new Item[ll];
         for (int i = 1; i < ll; i++) {
-            int index = items[i];
-            int tag = b[index - 1];
+            int index = this.items[i];
+            int tag = this.b[index - 1];
             Item item = new Item(i);
             int nameType;
             switch (tag) {
             case ClassWriter.FIELD:
             case ClassWriter.METH:
             case ClassWriter.IMETH:
-                nameType = items[readUnsignedShort(index + 2)];
+                nameType = this.items[readUnsignedShort(index + 2)];
                 item.set(tag, readClass(index, buf), readUTF8(nameType, buf),
                         readUTF8(nameType + 2, buf));
                 break;
@@ -340,18 +340,18 @@ public class ClassReader {
                 ++i;
                 break;
             case ClassWriter.UTF8: {
-                String s = strings[i];
+                String s = this.strings[i];
                 if (s == null) {
-                    index = items[i];
-                    s = strings[i] = readUTF(index + 2,
+                    index = this.items[i];
+                    s = this.strings[i] = readUTF(index + 2,
                             readUnsignedShort(index), buf);
                 }
                 item.set(tag, s, null, null);
                 break;
             }
             case ClassWriter.HANDLE: {
-                int fieldOrMethodRef = items[readUnsignedShort(index + 1)];
-                nameType = items[readUnsignedShort(fieldOrMethodRef + 2)];
+                int fieldOrMethodRef = this.items[readUnsignedShort(index + 1)];
+                nameType = this.items[readUnsignedShort(fieldOrMethodRef + 2)];
                 item.set(ClassWriter.HANDLE_BASE + readByte(index),
                         readClass(fieldOrMethodRef, buf),
                         readUTF8(nameType, buf), readUTF8(nameType + 2, buf));
@@ -361,7 +361,7 @@ public class ClassReader {
                 if (classWriter.bootstrapMethods == null) {
                     copyBootstrapMethods(classWriter, items2, buf);
                 }
-                nameType = items[readUnsignedShort(index + 2)];
+                nameType = this.items[readUnsignedShort(index + 2)];
                 item.set(readUTF8(nameType, buf), readUTF8(nameType + 2, buf),
                         readUnsignedShort(index));
                 break;
@@ -380,8 +380,8 @@ public class ClassReader {
             items2[index2] = item;
         }
 
-        int off = items[1] - 1;
-        classWriter.pool.putByteArray(b, off, header - off);
+        int off = this.items[1] - 1;
+        classWriter.pool.putByteArray(this.b, off, this.header - off);
         classWriter.items = items2;
         classWriter.threshold = (int) (0.75d * ll);
         classWriter.index = ll;
@@ -428,7 +428,7 @@ public class ClassReader {
         }
         int attrSize = readInt(u + 4);
         ByteVector bootstrapMethods = new ByteVector(attrSize + 62);
-        bootstrapMethods.putByteArray(b, u + 10, attrSize - 2);
+        bootstrapMethods.putByteArray(this.b, u + 10, attrSize - 2);
         classWriter.bootstrapMethodsCount = boostrapMethodCount;
         classWriter.bootstrapMethods = bootstrapMethods;
     }
@@ -550,8 +550,8 @@ public class ClassReader {
      */
     public void accept(final ClassVisitor classVisitor,
             final Attribute[] attrs, final int flags) {
-        int u = header; // current offset in the class file
-        char[] c = new char[maxStringLength]; // buffer used to read strings
+        int u = this.header; // current offset in the class file
+        char[] c = new char[this.maxStringLength]; // buffer used to read strings
 
         Context context = new Context();
         context.attrs = attrs;
@@ -599,8 +599,8 @@ public class ClassReader {
                 enclosingOwner = readClass(u + 8, c);
                 int item = readUnsignedShort(u + 10);
                 if (item != 0) {
-                    enclosingName = readUTF8(items[item], c);
-                    enclosingDesc = readUTF8(items[item] + 2, c);
+                    enclosingName = readUTF8(this.items[item], c);
+                    enclosingDesc = readUTF8(this.items[item] + 2, c);
                 }
             } else if (SIGNATURES && "Signature".equals(attrName)) {
                 signature = readUTF8(u + 8, c);
@@ -649,7 +649,7 @@ public class ClassReader {
         }
 
         // visits the class declaration
-        classVisitor.visit(readInt(items[1] - 7), access, name, signature,
+        classVisitor.visit(readInt(this.items[1] - 7), access, name, signature,
                 superClass, interfaces);
 
         // visits the source and debug info
@@ -720,7 +720,7 @@ public class ClassReader {
         }
 
         // visits the fields and methods
-        u = header + 10 + 2 * interfaces.length;
+        u = this.header + 10 + 2 * interfaces.length;
         for (int i = readUnsignedShort(u - 2); i > 0; --i) {
             u = readField(classVisitor, context, u);
         }
@@ -1106,7 +1106,7 @@ public class ClassReader {
 
         // visit the method parameters
         if (methodParameters != 0) {
-            for (int i = b[methodParameters] & 0xFF, v = methodParameters + 1; i > 0; --i, v = v + 4) {
+            for (int i = this.b[methodParameters] & 0xFF, v = methodParameters + 1; i > 0; --i, v = v + 4) {
                 mv.visitParameter(readUTF8(v, c), readUnsignedShort(v + 2));
             }
         }
@@ -1277,7 +1277,7 @@ public class ClassReader {
             Label start = readLabel(readUnsignedShort(u + 2), labels);
             Label end = readLabel(readUnsignedShort(u + 4), labels);
             Label handler = readLabel(readUnsignedShort(u + 6), labels);
-            String type = readUTF8(items[readUnsignedShort(u + 8)], c);
+            String type = readUTF8(this.items[readUnsignedShort(u + 8)], c);
             mv.visitTryCatchBlock(start, end, handler, type);
             u += 8;
         }
@@ -1638,10 +1638,10 @@ public class ClassReader {
                 break;
             case ClassWriter.FIELDORMETH_INSN:
             case ClassWriter.ITFMETH_INSN: {
-                int cpIndex = items[readUnsignedShort(u + 1)];
+                int cpIndex = this.items[readUnsignedShort(u + 1)];
                 boolean itf = b[cpIndex - 1] == ClassWriter.IMETH;
                 String iowner = readClass(cpIndex, c);
-                cpIndex = items[readUnsignedShort(cpIndex + 2)];
+                cpIndex = this.items[readUnsignedShort(cpIndex + 2)];
                 String iname = readUTF8(cpIndex, c);
                 String idesc = readUTF8(cpIndex + 2, c);
                 if (opcode < Opcodes.INVOKEVIRTUAL) {
@@ -1657,7 +1657,7 @@ public class ClassReader {
                 break;
             }
             case ClassWriter.INDYMETH_INSN: {
-                int cpIndex = items[readUnsignedShort(u + 1)];
+                int cpIndex = this.items[readUnsignedShort(u + 1)];
                 int bsmIndex = context.bootstrapMethods[readUnsignedShort(cpIndex)];
                 Handle bsm = (Handle) readConst(readUnsignedShort(bsmIndex), c);
                 int bsmArgCount = readUnsignedShort(bsmIndex + 2);
@@ -1667,7 +1667,7 @@ public class ClassReader {
                     bsmArgs[i] = readConst(readUnsignedShort(bsmIndex), c);
                     bsmIndex += 2;
                 }
-                cpIndex = items[readUnsignedShort(cpIndex + 2)];
+                cpIndex = this.items[readUnsignedShort(cpIndex + 2)];
                 String iname = readUTF8(cpIndex, c);
                 String idesc = readUTF8(cpIndex + 2, c);
                 mv.visitInvokeDynamicInsn(iname, idesc, bsm, bsmArgs);
@@ -1856,7 +1856,7 @@ public class ClassReader {
             }
             int pathLength = readByte(u);
             if ((target >>> 24) == 0x42) {
-                TypePath path = pathLength == 0 ? null : new TypePath(b, u);
+                TypePath path = pathLength == 0 ? null : new TypePath(this.b, u);
                 u += 1 + 2 * pathLength;
                 u = readAnnotationValues(u + 2, c, true,
                         mv.visitTryCatchAnnotation(target, path,
@@ -1939,7 +1939,7 @@ public class ClassReader {
         }
         int pathLength = readByte(u);
         context.typeRef = target;
-        context.typePath = pathLength == 0 ? null : new TypePath(b, u);
+        context.typePath = pathLength == 0 ? null : new TypePath(this.b, u);
         return u + 1 + 2 * pathLength;
     }
 
@@ -1959,7 +1959,7 @@ public class ClassReader {
     private void readParameterAnnotations(final MethodVisitor mv,
             final Context context, int v, final boolean visible) {
         int i;
-        int n = b[v++] & 0xFF;
+        int n = this.b[v++] & 0xFF;
         // workaround for a bug in javac (javac compiler generates a parameter
         // annotation array whose size is equal to the number of parameters in
         // the Java source file, while it should generate an array whose size is
@@ -2042,7 +2042,7 @@ public class ClassReader {
             final AnnotationVisitor av) {
         int i;
         if (av == null) {
-            switch (b[v] & 0xFF) {
+            switch (this.b[v] & 0xFF) {
             case 'e': // enum_const_value
                 return v + 5;
             case '@': // annotation_value
@@ -2053,7 +2053,7 @@ public class ClassReader {
                 return v + 3;
             }
         }
-        switch (b[v++] & 0xFF) {
+        switch (this.b[v++] & 0xFF) {
         case 'I': // pointer to CONSTANT_Integer
         case 'J': // pointer to CONSTANT_Long
         case 'F': // pointer to CONSTANT_Float
@@ -2062,21 +2062,21 @@ public class ClassReader {
             v += 2;
             break;
         case 'B': // pointer to CONSTANT_Byte
-            av.visit(name, (byte) readInt(items[readUnsignedShort(v)]));
+            av.visit(name, (byte) readInt(this.items[readUnsignedShort(v)]));
             v += 2;
             break;
         case 'Z': // pointer to CONSTANT_Boolean
             av.visit(name,
-                    readInt(items[readUnsignedShort(v)]) == 0 ? Boolean.FALSE
+                    readInt(this.items[readUnsignedShort(v)]) == 0 ? Boolean.FALSE
                             : Boolean.TRUE);
             v += 2;
             break;
         case 'S': // pointer to CONSTANT_Short
-            av.visit(name, (short) readInt(items[readUnsignedShort(v)]));
+            av.visit(name, (short) readInt(this.items[readUnsignedShort(v)]));
             v += 2;
             break;
         case 'C': // pointer to CONSTANT_Char
-            av.visit(name, (char) readInt(items[readUnsignedShort(v)]));
+            av.visit(name, (char) readInt(this.items[readUnsignedShort(v)]));
             v += 2;
             break;
         case 's': // pointer to CONSTANT_Utf8
@@ -2106,7 +2106,7 @@ public class ClassReader {
             case 'B':
                 byte[] bv = new byte[size];
                 for (i = 0; i < size; i++) {
-                    bv[i] = (byte) readInt(items[readUnsignedShort(v)]);
+                    bv[i] = (byte) readInt(this.items[readUnsignedShort(v)]);
                     v += 3;
                 }
                 av.visit(name, bv);
@@ -2115,7 +2115,7 @@ public class ClassReader {
             case 'Z':
                 boolean[] zv = new boolean[size];
                 for (i = 0; i < size; i++) {
-                    zv[i] = readInt(items[readUnsignedShort(v)]) != 0;
+                    zv[i] = readInt(this.items[readUnsignedShort(v)]) != 0;
                     v += 3;
                 }
                 av.visit(name, zv);
@@ -2124,7 +2124,7 @@ public class ClassReader {
             case 'S':
                 short[] sv = new short[size];
                 for (i = 0; i < size; i++) {
-                    sv[i] = (short) readInt(items[readUnsignedShort(v)]);
+                    sv[i] = (short) readInt(this.items[readUnsignedShort(v)]);
                     v += 3;
                 }
                 av.visit(name, sv);
@@ -2133,7 +2133,7 @@ public class ClassReader {
             case 'C':
                 char[] cv = new char[size];
                 for (i = 0; i < size; i++) {
-                    cv[i] = (char) readInt(items[readUnsignedShort(v)]);
+                    cv[i] = (char) readInt(this.items[readUnsignedShort(v)]);
                     v += 3;
                 }
                 av.visit(name, cv);
@@ -2142,7 +2142,7 @@ public class ClassReader {
             case 'I':
                 int[] iv = new int[size];
                 for (i = 0; i < size; i++) {
-                    iv[i] = readInt(items[readUnsignedShort(v)]);
+                    iv[i] = readInt(this.items[readUnsignedShort(v)]);
                     v += 3;
                 }
                 av.visit(name, iv);
@@ -2151,7 +2151,7 @@ public class ClassReader {
             case 'J':
                 long[] lv = new long[size];
                 for (i = 0; i < size; i++) {
-                    lv[i] = readLong(items[readUnsignedShort(v)]);
+                    lv[i] = readLong(this.items[readUnsignedShort(v)]);
                     v += 3;
                 }
                 av.visit(name, lv);
@@ -2161,7 +2161,7 @@ public class ClassReader {
                 float[] fv = new float[size];
                 for (i = 0; i < size; i++) {
                     fv[i] = Float
-                            .intBitsToFloat(readInt(items[readUnsignedShort(v)]));
+                            .intBitsToFloat(readInt(this.items[readUnsignedShort(v)]));
                     v += 3;
                 }
                 av.visit(name, fv);
@@ -2171,7 +2171,7 @@ public class ClassReader {
                 double[] dv = new double[size];
                 for (i = 0; i < size; i++) {
                     dv[i] = Double
-                            .longBitsToDouble(readLong(items[readUnsignedShort(v)]));
+                            .longBitsToDouble(readLong(this.items[readUnsignedShort(v)]));
                     v += 3;
                 }
                 av.visit(name, dv);
@@ -2199,7 +2199,7 @@ public class ClassReader {
             if ("<init>".equals(frame.name)) {
                 locals[local++] = Opcodes.UNINITIALIZED_THIS;
             } else {
-                locals[local++] = readClass(header + 2, frame.buffer);
+                locals[local++] = readClass(this.header + 2, frame.buffer);
             }
         }
         int i = 1;
@@ -2268,7 +2268,7 @@ public class ClassReader {
         int tag;
         int delta;
         if (zip) {
-            tag = b[stackMap++] & 0xFF;
+            tag = this.b[stackMap++] & 0xFF;
         } else {
             tag = MethodWriter.FULL_FRAME;
             frame.offset = -1;
@@ -2354,7 +2354,7 @@ public class ClassReader {
      */
     private int readFrameType(final Object[] frame, final int index, int v,
             final char[] buf, final Label[] labels) {
-        int type = b[v++] & 0xFF;
+        int type = this.b[v++] & 0xFF;
         switch (type) {
         case 0:
             frame[index] = Opcodes.TOP;
@@ -2420,7 +2420,7 @@ public class ClassReader {
      */
     private int getAttributes() {
         // skips the header
-        int u = header + 8 + readUnsignedShort(header + 6) * 2;
+        int u = this.header + 8 + readUnsignedShort(this.header + 6) * 2;
         // skips fields and methods
         for (int i = readUnsignedShort(u); i > 0; --i) {
             for (int j = readUnsignedShort(u + 8); j > 0; --j) {
@@ -2493,7 +2493,7 @@ public class ClassReader {
      * @return the number of constant pool items in {@link #b b}.
      */
     public int getItemCount() {
-        return items.length;
+        return this.items.length;
     }
 
     /**
@@ -2507,7 +2507,7 @@ public class ClassReader {
      *         one.
      */
     public int getItem(final int item) {
-        return items[item];
+        return this.items[item];
     }
 
     /**
@@ -2518,7 +2518,7 @@ public class ClassReader {
      *         of the class.
      */
     public int getMaxStringLength() {
-        return maxStringLength;
+        return this.maxStringLength;
     }
 
     /**
@@ -2531,7 +2531,7 @@ public class ClassReader {
      * @return the read value.
      */
     public int readByte(final int index) {
-        return b[index] & 0xFF;
+        return this.b[index] & 0xFF;
     }
 
     /**
@@ -2610,12 +2610,12 @@ public class ClassReader {
         if (index == 0 || item == 0) {
             return null;
         }
-        String s = strings[item];
+        String s = this.strings[item];
         if (s != null) {
             return s;
         }
-        index = items[item];
-        return strings[item] = readUTF(index + 2, readUnsignedShort(index), buf);
+        index = this.items[item];
+        return this.strings[item] = readUTF(index + 2, readUnsignedShort(index), buf);
     }
 
     /**
@@ -2678,7 +2678,7 @@ public class ClassReader {
         // computes the start index of the item in b
         // and reads the CONSTANT_Utf8 item designated by
         // the first two bytes of this item
-        return readUTF8(items[readUnsignedShort(index)], buf);
+        return readUTF8(this.items[readUnsignedShort(index)], buf);
     }
 
     /**
@@ -2747,8 +2747,8 @@ public class ClassReader {
      *         the given constant pool item.
      */
     public Object readConst(final int item, final char[] buf) {
-        int index = items[item];
-        switch (b[index - 1]) {
+        int index = this.items[item];
+        switch (this.b[index - 1]) {
         case ClassWriter.INT:
             return readInt(index);
         case ClassWriter.FLOAT:
@@ -2767,7 +2767,7 @@ public class ClassReader {
             int tag = readByte(index);
             int[] items = this.items;
             int cpIndex = items[readUnsignedShort(index + 1)];
-            boolean itf = b[cpIndex - 1] == ClassWriter.IMETH;
+            boolean itf = this.b[cpIndex - 1] == ClassWriter.IMETH;
             String owner = readClass(cpIndex, buf);
             cpIndex = items[readUnsignedShort(cpIndex + 2)];
             String name = readUTF8(cpIndex, buf);

@@ -147,7 +147,7 @@ public class StandardWebSocketClient extends AbstractWebSocketClient {
 		final Endpoint endpoint = new StandardWebSocketHandlerAdapter(webSocketHandler, session);
 
 		Callable<WebSocketSession> connectTask = () -> {
-			webSocketContainer.connectToServer(endpoint, endpointConfig, uri);
+			this.webSocketContainer.connectToServer(endpoint, endpointConfig, uri);
 			return session;
 		};
 

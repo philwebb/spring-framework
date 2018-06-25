@@ -109,8 +109,8 @@ public abstract class ClassVisitor {
      */
     public void visit(int version, int access, String name, String signature,
             String superName, String[] interfaces) {
-        if (cv != null) {
-            cv.visit(version, access, name, signature, superName, interfaces);
+        if (this.cv != null) {
+            this.cv.visit(version, access, name, signature, superName, interfaces);
         }
     }
 
@@ -126,8 +126,8 @@ public abstract class ClassVisitor {
      *            <tt>null</tt>.
      */
     public void visitSource(String source, String debug) {
-        if (cv != null) {
-            cv.visitSource(source, debug);
+        if (this.cv != null) {
+            this.cv.visitSource(source, debug);
         }
     }
 
@@ -144,11 +144,11 @@ public abstract class ClassVisitor {
      *         this visitor is not interested in visiting this module.
      */
     public ModuleVisitor visitModule(String name, int access, String version) {
-        if (api < Opcodes.ASM6) {
+        if (this.api < Opcodes.ASM6) {
             throw new RuntimeException();
         }
-        if (cv != null) {
-            return cv.visitModule(name, access, version);
+        if (this.cv != null) {
+            return this.cv.visitModule(name, access, version);
         }
         return null;
     }
@@ -169,8 +169,8 @@ public abstract class ClassVisitor {
      *            enclosing class.
      */
     public void visitOuterClass(String owner, String name, String desc) {
-        if (cv != null) {
-            cv.visitOuterClass(owner, name, desc);
+        if (this.cv != null) {
+            this.cv.visitOuterClass(owner, name, desc);
         }
     }
 
@@ -185,8 +185,8 @@ public abstract class ClassVisitor {
      *         this visitor is not interested in visiting this annotation.
      */
     public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
-        if (cv != null) {
-            return cv.visitAnnotation(desc, visible);
+        if (this.cv != null) {
+            return this.cv.visitAnnotation(desc, visible);
         }
         return null;
     }
@@ -220,8 +220,8 @@ public abstract class ClassVisitor {
             throw new RuntimeException();
         }
         */
-        if (cv != null) {
-            return cv.visitTypeAnnotation(typeRef, typePath, desc, visible);
+        if (this.cv != null) {
+            return this.cv.visitTypeAnnotation(typeRef, typePath, desc, visible);
         }
         return null;
     }
@@ -233,8 +233,8 @@ public abstract class ClassVisitor {
      *            an attribute.
      */
     public void visitAttribute(Attribute attr) {
-        if (cv != null) {
-            cv.visitAttribute(attr);
+        if (this.cv != null) {
+            this.cv.visitAttribute(attr);
         }
     }
 
@@ -258,8 +258,8 @@ public abstract class ClassVisitor {
      */
     public void visitInnerClass(String name, String outerName,
             String innerName, int access) {
-        if (cv != null) {
-            cv.visitInnerClass(name, outerName, innerName, access);
+        if (this.cv != null) {
+            this.cv.visitInnerClass(name, outerName, innerName, access);
         }
     }
 
@@ -292,8 +292,8 @@ public abstract class ClassVisitor {
      */
     public FieldVisitor visitField(int access, String name, String desc,
             String signature, Object value) {
-        if (cv != null) {
-            return cv.visitField(access, name, desc, signature, value);
+        if (this.cv != null) {
+            return this.cv.visitField(access, name, desc, signature, value);
         }
         return null;
     }
@@ -325,8 +325,8 @@ public abstract class ClassVisitor {
      */
     public MethodVisitor visitMethod(int access, String name, String desc,
             String signature, String[] exceptions) {
-        if (cv != null) {
-            return cv.visitMethod(access, name, desc, signature, exceptions);
+        if (this.cv != null) {
+            return this.cv.visitMethod(access, name, desc, signature, exceptions);
         }
         return null;
     }
@@ -337,8 +337,8 @@ public abstract class ClassVisitor {
      * the class have been visited.
      */
     public void visitEnd() {
-        if (cv != null) {
-            cv.visitEnd();
+        if (this.cv != null) {
+            this.cv.visitEnd();
         }
     }
 }

@@ -379,8 +379,8 @@ public class Enhancer extends AbstractClassGenerator {
 	 * @return a new instance
 	 */
 	public Object create() {
-		classOnly = false;
-		argumentTypes = null;
+		this.classOnly = false;
+		this.argumentTypes = null;
 		return createHelper();
 	}
 
@@ -394,7 +394,7 @@ public class Enhancer extends AbstractClassGenerator {
 	 * @return a new instance
 	 */
 	public Object create(Class[] argumentTypes, Object[] arguments) {
-		classOnly = false;
+		this.classOnly = false;
 		if (argumentTypes == null || arguments == null || argumentTypes.length != arguments.length) {
 			throw new IllegalArgumentException("Arguments must be non-null and of equal length");
 		}
@@ -412,7 +412,7 @@ public class Enhancer extends AbstractClassGenerator {
 	 * @see #create(Class[], Object[])
 	 */
 	public Class createClass() {
-		classOnly = true;
+		this.classOnly = true;
 		return (Class) createHelper();
 	}
 
@@ -421,58 +421,58 @@ public class Enhancer extends AbstractClassGenerator {
 	 * @param sUID the field value, or null to avoid generating field.
 	 */
 	public void setSerialVersionUID(Long sUID) {
-		serialVersionUID = sUID;
+		this.serialVersionUID = sUID;
 	}
 
 	private void preValidate() {
-		if (callbackTypes == null) {
-			callbackTypes = CallbackInfo.determineTypes(callbacks, false);
-			validateCallbackTypes = true;
+		if (this.callbackTypes == null) {
+			this.callbackTypes = CallbackInfo.determineTypes(this.callbacks, false);
+			this.validateCallbackTypes = true;
 		}
-		if (filter == null) {
-			if (callbackTypes.length > 1) {
+		if (this.filter == null) {
+			if (this.callbackTypes.length > 1) {
 				throw new IllegalStateException("Multiple callback types possible but no filter specified");
 			}
-			filter = ALL_ZERO;
+			this.filter = ALL_ZERO;
 		}
 	}
 
 	private void validate() {
-		if (classOnly ^ (callbacks == null)) {
-			if (classOnly) {
+		if (this.classOnly ^ (this.callbacks == null)) {
+			if (this.classOnly) {
 				throw new IllegalStateException("createClass does not accept callbacks");
 			}
 			else {
 				throw new IllegalStateException("Callbacks are required");
 			}
 		}
-		if (classOnly && (callbackTypes == null)) {
+		if (this.classOnly && (this.callbackTypes == null)) {
 			throw new IllegalStateException("Callback types are required");
 		}
-		if (validateCallbackTypes) {
-			callbackTypes = null;
+		if (this.validateCallbackTypes) {
+			this.callbackTypes = null;
 		}
-		if (callbacks != null && callbackTypes != null) {
-			if (callbacks.length != callbackTypes.length) {
+		if (this.callbacks != null && this.callbackTypes != null) {
+			if (this.callbacks.length != this.callbackTypes.length) {
 				throw new IllegalStateException("Lengths of callback and callback types array must be the same");
 			}
-			Type[] check = CallbackInfo.determineTypes(callbacks);
+			Type[] check = CallbackInfo.determineTypes(this.callbacks);
 			for (int i = 0; i < check.length; i++) {
-				if (!check[i].equals(callbackTypes[i])) {
-					throw new IllegalStateException("Callback " + check[i] + " is not assignable to " + callbackTypes[i]);
+				if (!check[i].equals(this.callbackTypes[i])) {
+					throw new IllegalStateException("Callback " + check[i] + " is not assignable to " + this.callbackTypes[i]);
 				}
 			}
 		}
-		else if (callbacks != null) {
-			callbackTypes = CallbackInfo.determineTypes(callbacks);
+		else if (this.callbacks != null) {
+			this.callbackTypes = CallbackInfo.determineTypes(this.callbacks);
 		}
-		if (interfaces != null) {
-			for (int i = 0; i < interfaces.length; i++) {
-				if (interfaces[i] == null) {
+		if (this.interfaces != null) {
+			for (int i = 0; i < this.interfaces.length; i++) {
+				if (this.interfaces[i] == null) {
 					throw new IllegalStateException("Interfaces cannot be null");
 				}
-				if (!interfaces[i].isInterface()) {
-					throw new IllegalStateException(interfaces[i] + " is not an interface");
+				if (!this.interfaces[i].isInterface()) {
+					throw new IllegalStateException(this.interfaces[i] + " is not an interface");
 				}
 			}
 		}
@@ -496,7 +496,7 @@ public class Enhancer extends AbstractClassGenerator {
 		public EnhancerFactoryData(Class generatedClass, Class[] primaryConstructorArgTypes, boolean classOnly) {
 			this.generatedClass = generatedClass;
 			try {
-				setThreadCallbacks = getCallbacksSetter(generatedClass, SET_THREAD_CALLBACKS_NAME);
+				this.setThreadCallbacks = getCallbacksSetter(generatedClass, SET_THREAD_CALLBACKS_NAME);
 				if (classOnly) {
 					this.primaryConstructorArgTypes = null;
 					this.primaryConstructor = null;
@@ -527,14 +527,14 @@ public class Enhancer extends AbstractClassGenerator {
 			setThreadCallbacks(callbacks);
 			try {
 				// Explicit reference equality is added here just in case Arrays.equals does not have one
-				if (primaryConstructorArgTypes == argumentTypes ||
-						Arrays.equals(primaryConstructorArgTypes, argumentTypes)) {
+				if (this.primaryConstructorArgTypes == argumentTypes ||
+						Arrays.equals(this.primaryConstructorArgTypes, argumentTypes)) {
 					// If we have relevant Constructor instance at hand, just call it
 					// This skips "get constructors" machinery
-					return ReflectUtils.newInstance(primaryConstructor, arguments);
+					return ReflectUtils.newInstance(this.primaryConstructor, arguments);
 				}
 				// Take a slow path if observing unexpected argument types
-				return ReflectUtils.newInstance(generatedClass, argumentTypes, arguments);
+				return ReflectUtils.newInstance(this.generatedClass, argumentTypes, arguments);
 			}
 			finally {
 				// clear thread callbacks to allow them to be gc'd
@@ -545,7 +545,7 @@ public class Enhancer extends AbstractClassGenerator {
 
 		private void setThreadCallbacks(Callback[] callbacks) {
 			try {
-				setThreadCallbacks.invoke(generatedClass, (Object) callbacks);
+				this.setThreadCallbacks.invoke(this.generatedClass, (Object) callbacks);
 			}
 			catch (IllegalAccessException e) {
 				throw new CodeGenerationException(e);
@@ -558,13 +558,13 @@ public class Enhancer extends AbstractClassGenerator {
 
 	private Object createHelper() {
 		preValidate();
-		Object key = KEY_FACTORY.newInstance((superclass != null) ? superclass.getName() : null,
-				ReflectUtils.getNames(interfaces),
-				filter == ALL_ZERO ? null : new WeakCacheKey<CallbackFilter>(filter),
-				callbackTypes,
-				useFactory,
-				interceptDuringConstruction,
-				serialVersionUID);
+		Object key = KEY_FACTORY.newInstance((this.superclass != null) ? this.superclass.getName() : null,
+				ReflectUtils.getNames(this.interfaces),
+				this.filter == ALL_ZERO ? null : new WeakCacheKey<CallbackFilter>(this.filter),
+				this.callbackTypes,
+				this.useFactory,
+				this.interceptDuringConstruction,
+				this.serialVersionUID);
 		this.currentKey = key;
 		Object result = super.create(key);
 		return result;
@@ -573,21 +573,21 @@ public class Enhancer extends AbstractClassGenerator {
 	@Override
 	protected Class generate(ClassLoaderData data) {
 		validate();
-		if (superclass != null) {
-			setNamePrefix(superclass.getName());
+		if (this.superclass != null) {
+			setNamePrefix(this.superclass.getName());
 		}
-		else if (interfaces != null) {
-			setNamePrefix(interfaces[ReflectUtils.findPackageProtected(interfaces)].getName());
+		else if (this.interfaces != null) {
+			setNamePrefix(this.interfaces[ReflectUtils.findPackageProtected(this.interfaces)].getName());
 		}
 		return super.generate(data);
 	}
 
 	protected ClassLoader getDefaultClassLoader() {
-		if (superclass != null) {
-			return superclass.getClassLoader();
+		if (this.superclass != null) {
+			return this.superclass.getClassLoader();
 		}
-		else if (interfaces != null) {
-			return interfaces[0].getClassLoader();
+		else if (this.interfaces != null) {
+			return this.interfaces[0].getClassLoader();
 		}
 		else {
 			return null;
@@ -595,11 +595,11 @@ public class Enhancer extends AbstractClassGenerator {
 	}
 
 	protected ProtectionDomain getProtectionDomain() {
-		if (superclass != null) {
-			return ReflectUtils.getProtectionDomain(superclass);
+		if (this.superclass != null) {
+			return ReflectUtils.getProtectionDomain(this.superclass);
 		}
-		else if (interfaces != null) {
-			return ReflectUtils.getProtectionDomain(interfaces[0]);
+		else if (this.interfaces != null) {
+			return ReflectUtils.getProtectionDomain(this.interfaces[0]);
 		}
 		else {
 			return null;
@@ -651,7 +651,7 @@ public class Enhancer extends AbstractClassGenerator {
 	}
 
 	public void generateClass(ClassVisitor v) throws Exception {
-		Class sc = (superclass == null) ? Object.class : superclass;
+		Class sc = (this.superclass == null) ? Object.class : this.superclass;
 
 		if (TypeUtils.isFinal(sc.getModifiers())) {
 			throw new IllegalArgumentException("Cannot subclass final class " + sc.getName());
@@ -665,7 +665,7 @@ public class Enhancer extends AbstractClassGenerator {
 		List actualMethods = new ArrayList();
 		List interfaceMethods = new ArrayList();
 		final Set forcePublic = new HashSet();
-		getMethods(sc, interfaces, actualMethods, interfaceMethods, forcePublic);
+		getMethods(sc, this.interfaces, actualMethods, interfaceMethods, forcePublic);
 
 		List methods = CollectionUtils.transform(actualMethods, new Transformer() {
 			public Object transform(Object value) {
@@ -683,14 +683,14 @@ public class Enhancer extends AbstractClassGenerator {
 		});
 
 		ClassEmitter e = new ClassEmitter(v);
-		if (currentData == null) {
+		if (this.currentData == null) {
 			e.begin_class(Constants.V1_2,
 					Constants.ACC_PUBLIC,
 					getClassName(),
 					Type.getType(sc),
-					(useFactory ?
-							TypeUtils.add(TypeUtils.getTypes(interfaces), FACTORY) :
-							TypeUtils.getTypes(interfaces)),
+					(this.useFactory ?
+							TypeUtils.add(TypeUtils.getTypes(this.interfaces), FACTORY) :
+							TypeUtils.getTypes(this.interfaces)),
 					Constants.SOURCE_FILE);
 		}
 		else {
@@ -705,22 +705,22 @@ public class Enhancer extends AbstractClassGenerator {
 
 		e.declare_field(Constants.ACC_PRIVATE, BOUND_FIELD, Type.BOOLEAN_TYPE, null);
 		e.declare_field(Constants.ACC_PUBLIC | Constants.ACC_STATIC, FACTORY_DATA_FIELD, OBJECT_TYPE, null);
-		if (!interceptDuringConstruction) {
+		if (!this.interceptDuringConstruction) {
 			e.declare_field(Constants.ACC_PRIVATE, CONSTRUCTED_FIELD, Type.BOOLEAN_TYPE, null);
 		}
 		e.declare_field(Constants.PRIVATE_FINAL_STATIC, THREAD_CALLBACKS_FIELD, THREAD_LOCAL, null);
 		e.declare_field(Constants.PRIVATE_FINAL_STATIC, STATIC_CALLBACKS_FIELD, CALLBACK_ARRAY, null);
-		if (serialVersionUID != null) {
-			e.declare_field(Constants.PRIVATE_FINAL_STATIC, Constants.SUID_FIELD_NAME, Type.LONG_TYPE, serialVersionUID);
+		if (this.serialVersionUID != null) {
+			e.declare_field(Constants.PRIVATE_FINAL_STATIC, Constants.SUID_FIELD_NAME, Type.LONG_TYPE, this.serialVersionUID);
 		}
 
-		for (int i = 0; i < callbackTypes.length; i++) {
-			e.declare_field(Constants.ACC_PRIVATE, getCallbackField(i), callbackTypes[i], null);
+		for (int i = 0; i < this.callbackTypes.length; i++) {
+			e.declare_field(Constants.ACC_PRIVATE, getCallbackField(i), this.callbackTypes[i], null);
 		}
 		// This is declared private to avoid "public field" pollution
 		e.declare_field(Constants.ACC_PRIVATE | Constants.ACC_STATIC, CALLBACK_FILTER_FIELD, OBJECT_TYPE, null);
 
-		if (currentData == null) {
+		if (this.currentData == null) {
 			emitMethods(e, methods, actualMethods);
 			emitConstructors(e, constructorInfo);
 		}
@@ -731,7 +731,7 @@ public class Enhancer extends AbstractClassGenerator {
 		emitSetStaticCallbacks(e);
 		emitBindCallbacks(e);
 
-		if (useFactory || currentData != null) {
+		if (this.useFactory || this.currentData != null) {
 			int[] keys = getCallbackKeys();
 			emitNewInstanceCallbacks(e);
 			emitNewInstanceCallback(e);
@@ -772,7 +772,7 @@ public class Enhancer extends AbstractClassGenerator {
 	 * @throws Exception if something goes wrong
 	 */
 	protected Object firstInstance(Class type) throws Exception {
-		if (classOnly) {
+		if (this.classOnly) {
 			return type;
 		}
 		else {
@@ -783,7 +783,7 @@ public class Enhancer extends AbstractClassGenerator {
 	protected Object nextInstance(Object instance) {
 		EnhancerFactoryData data = (EnhancerFactoryData) instance;
 
-		if (classOnly) {
+		if (this.classOnly) {
 			return data.generatedClass;
 		}
 
@@ -793,7 +793,7 @@ public class Enhancer extends AbstractClassGenerator {
 			argumentTypes = Constants.EMPTY_CLASS_ARRAY;
 			arguments = null;
 		}
-		return data.newInstance(argumentTypes, arguments, callbacks);
+		return data.newInstance(argumentTypes, arguments, this.callbacks);
 	}
 
 	@Override
@@ -802,7 +802,7 @@ public class Enhancer extends AbstractClassGenerator {
 		if (argumentTypes == null) {
 			argumentTypes = Constants.EMPTY_CLASS_ARRAY;
 		}
-		EnhancerFactoryData factoryData = new EnhancerFactoryData(klass, argumentTypes, classOnly);
+		EnhancerFactoryData factoryData = new EnhancerFactoryData(klass, argumentTypes, this.classOnly);
 		Field factoryDataField = null;
 		try {
 			// The subsequent dance is performed just once for each class,
@@ -824,7 +824,7 @@ public class Enhancer extends AbstractClassGenerator {
 
 	@Override
 	protected Object unwrapCachedValue(Object cached) {
-		if (currentKey instanceof EnhancerKey) {
+		if (this.currentKey instanceof EnhancerKey) {
 			EnhancerFactoryData data = ((WeakReference<EnhancerFactoryData>) cached).get();
 			return data;
 		}
@@ -920,12 +920,12 @@ public class Enhancer extends AbstractClassGenerator {
 	 * @return newly created instance
 	 */
 	private Object createUsingReflection(Class type) {
-		setThreadCallbacks(type, callbacks);
+		setThreadCallbacks(type, this.callbacks);
 		try {
 
-			if (argumentTypes != null) {
+			if (this.argumentTypes != null) {
 
-				return ReflectUtils.newInstance(type, argumentTypes, arguments);
+				return ReflectUtils.newInstance(type, this.argumentTypes, this.arguments);
 
 			}
 			else {
@@ -1010,7 +1010,7 @@ public class Enhancer extends AbstractClassGenerator {
 		boolean seenNull = false;
 		for (Iterator it = constructors.iterator(); it.hasNext(); ) {
 			MethodInfo constructor = (MethodInfo) it.next();
-			if (currentData != null && !"()V".equals(constructor.getSignature().getDescriptor())) {
+			if (this.currentData != null && !"()V".equals(constructor.getSignature().getDescriptor())) {
 				continue;
 			}
 			CodeEmitter e = EmitUtils.begin_method(ce, constructor, Constants.ACC_PUBLIC);
@@ -1020,9 +1020,9 @@ public class Enhancer extends AbstractClassGenerator {
 			Signature sig = constructor.getSignature();
 			seenNull = seenNull || sig.getDescriptor().equals("()V");
 			e.super_invoke_constructor(sig);
-			if (currentData == null) {
+			if (this.currentData == null) {
 				e.invoke_static_this(BIND_CALLBACKS);
-				if (!interceptDuringConstruction) {
+				if (!this.interceptDuringConstruction) {
 					e.load_this();
 					e.push(1);
 					e.putfield(CONSTRUCTED_FIELD);
@@ -1031,14 +1031,14 @@ public class Enhancer extends AbstractClassGenerator {
 			e.return_value();
 			e.end_method();
 		}
-		if (!classOnly && !seenNull && arguments == null) {
+		if (!this.classOnly && !seenNull && this.arguments == null) {
 			throw new IllegalArgumentException("Superclass has no null constructors but no arguments were given");
 		}
 	}
 
 	private int[] getCallbackKeys() {
-		int[] keys = new int[callbackTypes.length];
-		for (int i = 0; i < callbackTypes.length; i++) {
+		int[] keys = new int[this.callbackTypes.length];
+		for (int i = 0; i < this.callbackTypes.length; i++) {
 			keys[i] = i;
 		}
 		return keys;
@@ -1089,10 +1089,10 @@ public class Enhancer extends AbstractClassGenerator {
 		CodeEmitter e = ce.begin_method(Constants.ACC_PUBLIC, SET_CALLBACKS, null);
 		e.load_this();
 		e.load_arg(0);
-		for (int i = 0; i < callbackTypes.length; i++) {
+		for (int i = 0; i < this.callbackTypes.length; i++) {
 			e.dup2();
 			e.aaload(i);
-			e.checkcast(callbackTypes[i]);
+			e.checkcast(this.callbackTypes[i]);
 			e.putfield(getCallbackField(i));
 		}
 		e.return_value();
@@ -1104,9 +1104,9 @@ public class Enhancer extends AbstractClassGenerator {
 		e.load_this();
 		e.invoke_static_this(BIND_CALLBACKS);
 		e.load_this();
-		e.push(callbackTypes.length);
+		e.push(this.callbackTypes.length);
 		e.newarray(CALLBACK);
-		for (int i = 0; i < callbackTypes.length; i++) {
+		for (int i = 0; i < this.callbackTypes.length; i++) {
 			e.dup();
 			e.push(i);
 			e.load_this();
@@ -1126,11 +1126,11 @@ public class Enhancer extends AbstractClassGenerator {
 	}
 
 	private Type getThisType(CodeEmitter e) {
-		if (currentData == null) {
+		if (this.currentData == null) {
 			return e.getClassEmitter().getClassType();
 		}
 		else {
-			return Type.getType(currentData.generatedClass);
+			return Type.getType(this.currentData.generatedClass);
 		}
 	}
 
@@ -1147,7 +1147,7 @@ public class Enhancer extends AbstractClassGenerator {
 
 	private void emitNewInstanceCallback(ClassEmitter ce) {
 		CodeEmitter e = ce.begin_method(Constants.ACC_PUBLIC, SINGLE_NEW_INSTANCE, null);
-		switch (callbackTypes.length) {
+		switch (this.callbackTypes.length) {
 			case 0:
 				// TODO: make sure Callback is null
 				break;
@@ -1200,7 +1200,7 @@ public class Enhancer extends AbstractClassGenerator {
 	}
 
 	private void emitMethods(final ClassEmitter ce, List methods, List actualMethods) {
-		CallbackGenerator[] generators = CallbackInfo.getGenerators(callbackTypes);
+		CallbackGenerator[] generators = CallbackInfo.getGenerators(this.callbackTypes);
 
 		Map groups = new HashMap();
 		final Map indexes = new HashMap();
@@ -1214,8 +1214,8 @@ public class Enhancer extends AbstractClassGenerator {
 		while (it1.hasNext()) {
 			MethodInfo method = (MethodInfo) it1.next();
 			Method actualMethod = (it2 != null) ? (Method) it2.next() : null;
-			int index = filter.accept(actualMethod);
-			if (index >= callbackTypes.length) {
+			int index = this.filter.accept(actualMethod);
+			if (index >= this.callbackTypes.length) {
 				throw new IllegalArgumentException("Callback filter returned an index that is too large: " + index);
 			}
 			originalModifiers.put(method, (actualMethod != null ? actualMethod.getModifiers() : method.getModifiers()));
@@ -1250,7 +1250,7 @@ public class Enhancer extends AbstractClassGenerator {
 		final Object[] state = new Object[1];
 		CallbackGenerator.Context context = new CallbackGenerator.Context() {
 			public ClassLoader getClassLoader() {
-				return Enhancer.this.getClassLoader();
+				return getClassLoader();
 			}
 
 			public int getOriginalModifiers(MethodInfo method) {
@@ -1325,7 +1325,7 @@ public class Enhancer extends AbstractClassGenerator {
 				return e;
 			}
 		};
-		for (int i = 0; i < callbackTypes.length; i++) {
+		for (int i = 0; i < this.callbackTypes.length; i++) {
 			CallbackGenerator gen = generators[i];
 			if (!seenGen.contains(gen)) {
 				seenGen.add(gen);
@@ -1417,12 +1417,12 @@ public class Enhancer extends AbstractClassGenerator {
 		e.checkcast(CALLBACK_ARRAY);
 		e.load_local(me);
 		e.swap();
-		for (int i = callbackTypes.length - 1; i >= 0; i--) {
+		for (int i = this.callbackTypes.length - 1; i >= 0; i--) {
 			if (i != 0) {
 				e.dup2();
 			}
 			e.aaload(i);
-			e.checkcast(callbackTypes[i]);
+			e.checkcast(this.callbackTypes[i]);
 			e.putfield(getCallbackField(i));
 		}
 

@@ -116,16 +116,16 @@ public class WebSocketConnectionManager extends ConnectionManagerSupport {
 
 	@Override
 	public void startInternal() {
-		if (this.client instanceof Lifecycle && !((Lifecycle) client).isRunning()) {
-			((Lifecycle) client).start();
+		if (this.client instanceof Lifecycle && !((Lifecycle) this.client).isRunning()) {
+			((Lifecycle) this.client).start();
 		}
 		super.startInternal();
 	}
 
 	@Override
 	public void stopInternal() throws Exception {
-		if (this.client instanceof Lifecycle && ((Lifecycle) client).isRunning()) {
-			((Lifecycle) client).stop();
+		if (this.client instanceof Lifecycle && ((Lifecycle) this.client).isRunning()) {
+			((Lifecycle) this.client).stop();
 		}
 		super.stopInternal();
 	}

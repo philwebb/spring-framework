@@ -116,8 +116,8 @@ public abstract class MethodVisitor {
             throw new RuntimeException();
         }
         */
-        if (mv != null) {
-            mv.visitParameter(name, access);
+        if (this.mv != null) {
+            this.mv.visitParameter(name, access);
         }
     }
 
@@ -132,8 +132,8 @@ public abstract class MethodVisitor {
      *         annotation visitor, followed by visitEnd.
      */
     public AnnotationVisitor visitAnnotationDefault() {
-        if (mv != null) {
-            return mv.visitAnnotationDefault();
+        if (this.mv != null) {
+            return this.mv.visitAnnotationDefault();
         }
         return null;
     }
@@ -149,8 +149,8 @@ public abstract class MethodVisitor {
      *         this visitor is not interested in visiting this annotation.
      */
     public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
-        if (mv != null) {
-            return mv.visitAnnotation(desc, visible);
+        if (this.mv != null) {
+            return this.mv.visitAnnotation(desc, visible);
         }
         return null;
     }
@@ -187,8 +187,8 @@ public abstract class MethodVisitor {
             throw new RuntimeException();
         }
         */
-        if (mv != null) {
-            return mv.visitTypeAnnotation(typeRef, typePath, desc, visible);
+        if (this.mv != null) {
+            return this.mv.visitTypeAnnotation(typeRef, typePath, desc, visible);
         }
         return null;
     }
@@ -207,8 +207,8 @@ public abstract class MethodVisitor {
      */
     public AnnotationVisitor visitParameterAnnotation(int parameter,
             String desc, boolean visible) {
-        if (mv != null) {
-            return mv.visitParameterAnnotation(parameter, desc, visible);
+        if (this.mv != null) {
+            return this.mv.visitParameterAnnotation(parameter, desc, visible);
         }
         return null;
     }
@@ -220,8 +220,8 @@ public abstract class MethodVisitor {
      *            an attribute.
      */
     public void visitAttribute(Attribute attr) {
-        if (mv != null) {
-            mv.visitAttribute(attr);
+        if (this.mv != null) {
+            this.mv.visitAttribute(attr);
         }
     }
 
@@ -229,8 +229,8 @@ public abstract class MethodVisitor {
      * Starts the visit of the method's code, if any (i.e. non abstract method).
      */
     public void visitCode() {
-        if (mv != null) {
-            mv.visitCode();
+        if (this.mv != null) {
+            this.mv.visitCode();
         }
     }
 
@@ -311,8 +311,8 @@ public abstract class MethodVisitor {
      */
     public void visitFrame(int type, int nLocal, Object[] local, int nStack,
             Object[] stack) {
-        if (mv != null) {
-            mv.visitFrame(type, nLocal, local, nStack, stack);
+        if (this.mv != null) {
+            this.mv.visitFrame(type, nLocal, local, nStack, stack);
         }
     }
 
@@ -341,8 +341,8 @@ public abstract class MethodVisitor {
      *            or MONITOREXIT.
      */
     public void visitInsn(int opcode) {
-        if (mv != null) {
-            mv.visitInsn(opcode);
+        if (this.mv != null) {
+            this.mv.visitInsn(opcode);
         }
     }
 
@@ -365,8 +365,8 @@ public abstract class MethodVisitor {
      *            {@link Opcodes#T_INT} or {@link Opcodes#T_LONG}.
      */
     public void visitIntInsn(int opcode, int operand) {
-        if (mv != null) {
-            mv.visitIntInsn(opcode, operand);
+        if (this.mv != null) {
+            this.mv.visitIntInsn(opcode, operand);
         }
     }
 
@@ -383,8 +383,8 @@ public abstract class MethodVisitor {
      *            the index of a local variable.
      */
     public void visitVarInsn(int opcode, int var) {
-        if (mv != null) {
-            mv.visitVarInsn(opcode, var);
+        if (this.mv != null) {
+            this.mv.visitVarInsn(opcode, var);
         }
     }
 
@@ -401,8 +401,8 @@ public abstract class MethodVisitor {
      *            {@link Type#getInternalName() getInternalName}).
      */
     public void visitTypeInsn(int opcode, String type) {
-        if (mv != null) {
-            mv.visitTypeInsn(opcode, type);
+        if (this.mv != null) {
+            this.mv.visitTypeInsn(opcode, type);
         }
     }
 
@@ -423,8 +423,8 @@ public abstract class MethodVisitor {
      */
     public void visitFieldInsn(int opcode, String owner, String name,
             String desc) {
-        if (mv != null) {
-            mv.visitFieldInsn(opcode, owner, name, desc);
+        if (this.mv != null) {
+            this.mv.visitFieldInsn(opcode, owner, name, desc);
         }
     }
 
@@ -447,13 +447,13 @@ public abstract class MethodVisitor {
     @Deprecated
     public void visitMethodInsn(int opcode, String owner, String name,
             String desc) {
-        if (api >= Opcodes.ASM5) {
+        if (this.api >= Opcodes.ASM5) {
             boolean itf = opcode == Opcodes.INVOKEINTERFACE;
             visitMethodInsn(opcode, owner, name, desc, itf);
             return;
         }
-        if (mv != null) {
-            mv.visitMethodInsn(opcode, owner, name, desc);
+        if (this.mv != null) {
+            this.mv.visitMethodInsn(opcode, owner, name, desc);
         }
     }
 
@@ -477,7 +477,7 @@ public abstract class MethodVisitor {
      */
     public void visitMethodInsn(int opcode, String owner, String name,
             String desc, boolean itf) {
-        if (api < Opcodes.ASM5) {
+        if (this.api < Opcodes.ASM5) {
             if (itf != (opcode == Opcodes.INVOKEINTERFACE)) {
                 throw new IllegalArgumentException(
                         "INVOKESPECIAL/STATIC on interfaces require ASM 5");
@@ -485,8 +485,8 @@ public abstract class MethodVisitor {
             visitMethodInsn(opcode, owner, name, desc);
             return;
         }
-        if (mv != null) {
-            mv.visitMethodInsn(opcode, owner, name, desc, itf);
+        if (this.mv != null) {
+            this.mv.visitMethodInsn(opcode, owner, name, desc, itf);
         }
     }
 
@@ -508,8 +508,8 @@ public abstract class MethodVisitor {
      */
     public void visitInvokeDynamicInsn(String name, String desc, Handle bsm,
             Object... bsmArgs) {
-        if (mv != null) {
-            mv.visitInvokeDynamicInsn(name, desc, bsm, bsmArgs);
+        if (this.mv != null) {
+            this.mv.visitInvokeDynamicInsn(name, desc, bsm, bsmArgs);
         }
     }
 
@@ -528,8 +528,8 @@ public abstract class MethodVisitor {
      *            instruction may jump.
      */
     public void visitJumpInsn(int opcode, Label label) {
-        if (mv != null) {
-            mv.visitJumpInsn(opcode, label);
+        if (this.mv != null) {
+            this.mv.visitJumpInsn(opcode, label);
         }
     }
 
@@ -541,8 +541,8 @@ public abstract class MethodVisitor {
      *            a {@link Label Label} object.
      */
     public void visitLabel(Label label) {
-        if (mv != null) {
-            mv.visitLabel(label);
+        if (this.mv != null) {
+            this.mv.visitLabel(label);
         }
     }
 
@@ -595,8 +595,8 @@ public abstract class MethodVisitor {
      *            classes whose version is 51.0.
      */
     public void visitLdcInsn(Object cst) {
-        if (mv != null) {
-            mv.visitLdcInsn(cst);
+        if (this.mv != null) {
+            this.mv.visitLdcInsn(cst);
         }
     }
 
@@ -609,8 +609,8 @@ public abstract class MethodVisitor {
      *            amount to increment the local variable by.
      */
     public void visitIincInsn(int var, int increment) {
-        if (mv != null) {
-            mv.visitIincInsn(var, increment);
+        if (this.mv != null) {
+            this.mv.visitIincInsn(var, increment);
         }
     }
 
@@ -629,8 +629,8 @@ public abstract class MethodVisitor {
      */
     public void visitTableSwitchInsn(int min, int max, Label dflt,
             Label... labels) {
-        if (mv != null) {
-            mv.visitTableSwitchInsn(min, max, dflt, labels);
+        if (this.mv != null) {
+            this.mv.visitTableSwitchInsn(min, max, dflt, labels);
         }
     }
 
@@ -646,8 +646,8 @@ public abstract class MethodVisitor {
      *            beginning of the handler block for the <tt>keys[i]</tt> key.
      */
     public void visitLookupSwitchInsn(Label dflt, int[] keys, Label[] labels) {
-        if (mv != null) {
-            mv.visitLookupSwitchInsn(dflt, keys, labels);
+        if (this.mv != null) {
+            this.mv.visitLookupSwitchInsn(dflt, keys, labels);
         }
     }
 
@@ -660,8 +660,8 @@ public abstract class MethodVisitor {
      *            number of dimensions of the array to allocate.
      */
     public void visitMultiANewArrayInsn(String desc, int dims) {
-        if (mv != null) {
-            mv.visitMultiANewArrayInsn(desc, dims);
+        if (this.mv != null) {
+            this.mv.visitMultiANewArrayInsn(desc, dims);
         }
     }
 
@@ -703,8 +703,8 @@ public abstract class MethodVisitor {
             throw new RuntimeException();
         }
         */
-        if (mv != null) {
-            return mv.visitInsnAnnotation(typeRef, typePath, desc, visible);
+        if (this.mv != null) {
+            return this.mv.visitInsnAnnotation(typeRef, typePath, desc, visible);
         }
         return null;
     }
@@ -732,8 +732,8 @@ public abstract class MethodVisitor {
      */
     public void visitTryCatchBlock(Label start, Label end, Label handler,
             String type) {
-        if (mv != null) {
-            mv.visitTryCatchBlock(start, end, handler, type);
+        if (this.mv != null) {
+            this.mv.visitTryCatchBlock(start, end, handler, type);
         }
     }
 
@@ -765,8 +765,8 @@ public abstract class MethodVisitor {
             throw new RuntimeException();
         }
         */
-        if (mv != null) {
-            return mv.visitTryCatchAnnotation(typeRef, typePath, desc, visible);
+        if (this.mv != null) {
+            return this.mv.visitTryCatchAnnotation(typeRef, typePath, desc, visible);
         }
         return null;
     }
@@ -796,8 +796,8 @@ public abstract class MethodVisitor {
      */
     public void visitLocalVariable(String name, String desc, String signature,
             Label start, Label end, int index) {
-        if (mv != null) {
-            mv.visitLocalVariable(name, desc, signature, start, end, index);
+        if (this.mv != null) {
+            this.mv.visitLocalVariable(name, desc, signature, start, end, index);
         }
     }
 
@@ -838,8 +838,8 @@ public abstract class MethodVisitor {
             throw new RuntimeException();
         }
         */
-        if (mv != null) {
-            return mv.visitLocalVariableAnnotation(typeRef, typePath, start,
+        if (this.mv != null) {
+            return this.mv.visitLocalVariableAnnotation(typeRef, typePath, start,
                     end, index, desc, visible);
         }
         return null;
@@ -858,8 +858,8 @@ public abstract class MethodVisitor {
      *             visitor (by the {@link #visitLabel visitLabel} method).
      */
     public void visitLineNumber(int line, Label start) {
-        if (mv != null) {
-            mv.visitLineNumber(line, start);
+        if (this.mv != null) {
+            this.mv.visitLineNumber(line, start);
         }
     }
 
@@ -873,8 +873,8 @@ public abstract class MethodVisitor {
      *            maximum number of local variables for the method.
      */
     public void visitMaxs(int maxStack, int maxLocals) {
-        if (mv != null) {
-            mv.visitMaxs(maxStack, maxLocals);
+        if (this.mv != null) {
+            this.mv.visitMaxs(maxStack, maxLocals);
         }
     }
 
@@ -884,8 +884,8 @@ public abstract class MethodVisitor {
      * attributes of the method have been visited.
      */
     public void visitEnd() {
-        if (mv != null) {
-            mv.visitEnd();
+        if (this.mv != null) {
+            this.mv.visitEnd();
         }
     }
 }

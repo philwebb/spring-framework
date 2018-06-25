@@ -85,7 +85,7 @@ class InterceptingAsyncClientHttpRequest extends AbstractBufferingAsyncClientHtt
 
 	@Override
 	public URI getURI() {
-		return uri;
+		return this.uri;
 	}
 
 

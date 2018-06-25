@@ -35,7 +35,7 @@ public class DefaultEventListenerFactory implements EventListenerFactory, Ordere
 
 	@Override
 	public int getOrder() {
-		return order;
+		return this.order;
 	}
 
 	public void setOrder(int order) {

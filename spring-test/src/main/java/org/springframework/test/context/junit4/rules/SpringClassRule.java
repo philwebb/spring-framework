@@ -227,10 +227,10 @@ public class SpringClassRule implements TestRule {
 		@Override
 		public void evaluate() throws Throwable {
 			try {
-				next.evaluate();
+				this.next.evaluate();
 			}
 			finally {
-				testContextManagerCache.remove(testClass);
+				testContextManagerCache.remove(this.testClass);
 			}
 		}
 	}

@@ -486,7 +486,7 @@ public abstract class AbstractMessageListenerContainer extends AbstractJmsListen
 	@Override
 	public boolean isReplyPubSubDomain() {
 		if (this.replyPubSubDomain != null) {
-			return replyPubSubDomain;
+			return this.replyPubSubDomain;
 		}
 		else {
 			return isPubSubDomain();

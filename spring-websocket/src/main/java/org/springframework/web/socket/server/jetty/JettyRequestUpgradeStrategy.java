@@ -115,7 +115,7 @@ public class JettyRequestUpgradeStrategy implements RequestUpgradeStrategy, Serv
 			this.running = true;
 			try {
 				if (this.factory == null) {
-					this.factory = new WebSocketServerFactory(servletContext, this.policy);
+					this.factory = new WebSocketServerFactory(this.servletContext, this.policy);
 				}
 				this.factory.setCreator((request, response) -> {
                     WebSocketHandlerContainer container = containerHolder.get();

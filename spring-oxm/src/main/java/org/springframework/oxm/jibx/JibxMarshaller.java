@@ -230,8 +230,8 @@ public class JibxMarshaller extends AbstractMarshaller implements InitializingBe
 			}
 		}
 		else if (this.targetPackage != null) {
-			if (!StringUtils.hasLength(bindingName)) {
-				bindingName = DEFAULT_BINDING_NAME;
+			if (!StringUtils.hasLength(this.bindingName)) {
+				this.bindingName = DEFAULT_BINDING_NAME;
 			}
 			if (logger.isInfoEnabled()) {
 				logger.info("Configured for target package [" + this.targetPackage	+ "] using binding [" + this.bindingName + "]");
@@ -290,9 +290,9 @@ public class JibxMarshaller extends AbstractMarshaller implements InitializingBe
 	}
 
 	private void marshalDocument(IMarshallingContext marshallingContext, Object graph) throws IOException, JiBXException {
-		if (StringUtils.hasLength(docTypeRootElementName)) {
+		if (StringUtils.hasLength(this.docTypeRootElementName)) {
 			IXMLWriter xmlWriter = marshallingContext.getXmlWriter();
-			xmlWriter.writeDocType(docTypeRootElementName, docTypeSystemId, docTypePublicId, docTypeInternalSubset);
+			xmlWriter.writeDocType(this.docTypeRootElementName, this.docTypeSystemId, this.docTypePublicId, this.docTypeInternalSubset);
 		}
 		marshallingContext.marshalDocument(graph);
 	}
@@ -391,7 +391,7 @@ public class JibxMarshaller extends AbstractMarshaller implements InitializingBe
 	protected Object unmarshalInputStream(InputStream inputStream) throws XmlMappingException, IOException {
 		try {
 			IUnmarshallingContext unmarshallingContext = createUnmarshallingContext();
-			return unmarshallingContext.unmarshalDocument(inputStream, encoding);
+			return unmarshallingContext.unmarshalDocument(inputStream, this.encoding);
 		}
 		catch (JiBXException ex) {
 			throw convertJibxException(ex, false);
