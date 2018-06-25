@@ -147,7 +147,9 @@
 		</module>
 
 		<!-- Spring Conventions -->
-		<module name="io.spring.javaformat.checkstyle.check.SpringLambdaCheck" />
+		<module name="io.spring.javaformat.checkstyle.check.SpringLambdaCheck">
+			<property name="singleArgumentParentheses" value="false" />
+		</module>
 		<module name="io.spring.javaformat.checkstyle.check.SpringTernaryCheck" />
 		<module name="io.spring.javaformat.checkstyle.check.SpringCatchCheck" />
 		<module name="io.spring.javaformat.checkstyle.check.SpringJavadocCheck" />
