@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import static org.junit.Assume.*;
  * conditions hold {@code true}. If the assumption fails, it means the test should be
  * skipped.
  *
- * <p>Tests can be categorized into {@link TestGroup}s. Active groups are enabled using
+ * <p>Tests can be categorized into {@link TestGroup TestGroups}. Active groups are enabled using
  * the 'testGroups' system property, usually activated from the gradle command line:
  *
  * <pre class="code">

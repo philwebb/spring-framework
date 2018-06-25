@@ -38,12 +38,12 @@ import static org.junit.Assert.*;
  */
 public abstract class AbstractApplicationContextTests extends AbstractListableBeanFactoryTests {
 
-	/** Must be supplied as XML */
+	/** Must be supplied as XML. */
 	public static final String TEST_NAMESPACE = "testNamespace";
 
 	protected ConfigurableApplicationContext applicationContext;
 
-	/** Subclass must register this */
+	/** Subclass must register this. */
 	protected TestListener listener = new TestListener();
 
 	protected TestListener parentListener = new TestListener();

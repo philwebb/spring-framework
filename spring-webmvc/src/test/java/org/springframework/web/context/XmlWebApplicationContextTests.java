@@ -189,7 +189,7 @@ public class XmlWebApplicationContextTests extends AbstractApplicationContextTes
 			this.afterPropertiesSetInvoked = true;
 		}
 
-		/** Init method */
+		/** Init method. */
 		public void customInit() throws ServletException {
 			if (!this.afterPropertiesSetInvoked) {
 				fail();

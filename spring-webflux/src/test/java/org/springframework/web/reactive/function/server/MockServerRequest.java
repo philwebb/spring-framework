@@ -291,6 +291,7 @@ public class MockServerRequest implements ServerRequest {
 		Builder session(WebSession session);
 
 		/**
+		 * Sets the request {@link Principal}.
 		 * @deprecated in favor of {@link #principal(Principal)}
 		 */
 		@Deprecated

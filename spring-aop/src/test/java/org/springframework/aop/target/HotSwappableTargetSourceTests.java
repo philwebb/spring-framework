@@ -43,7 +43,7 @@ public class HotSwappableTargetSourceTests {
 
 	private static final Resource CONTEXT = qualifiedResource(HotSwappableTargetSourceTests.class, "context.xml");
 
-	/** Initial count value set in bean factory XML */
+	/** Initial count value set in bean factory XML. */
 	private static final int INITIAL_COUNT = 10;
 
 	private DefaultListableBeanFactory beanFactory;
@@ -106,12 +106,6 @@ public class HotSwappableTargetSourceTests {
 		assertEquals(target1.getCount(), proxied.getCount());
 	}
 
-
-	/**
-	 *
-	 * @param invalid
-	 * @return the message
-	 */
 	private IllegalArgumentException testRejectsSwapToInvalidValue(Object invalid) {
 		HotSwappableTargetSource swapper = (HotSwappableTargetSource) this.beanFactory.getBean("swapper");
 		IllegalArgumentException aopex = null;
