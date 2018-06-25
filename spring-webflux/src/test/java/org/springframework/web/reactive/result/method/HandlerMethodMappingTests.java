@@ -152,7 +152,7 @@ public class HandlerMethodMappingTests {
 		@Override
 		protected String getMappingForMethod(Method method, Class<?> handlerType) {
 			String methodName = method.getName();
-			return methodName.startsWith("handler") ? methodName : null;
+			return (methodName.startsWith("handler") ? methodName : null);
 		}
 
 		@Override

@@ -112,7 +112,7 @@ public abstract class AbstractRowMapperTests {
 
 			given(this.resultSetMetaData.getColumnCount()).willReturn(4);
 			given(this.resultSetMetaData.getColumnLabel(1)).willReturn(
-					type == MockType.THREE ? "Last Name" : "name");
+					type != MockType.THREE ? "name" : "Last Name");
 			given(this.resultSetMetaData.getColumnLabel(2)).willReturn("age");
 			given(this.resultSetMetaData.getColumnLabel(3)).willReturn("birth_date");
 			given(this.resultSetMetaData.getColumnLabel(4)).willReturn("balance");

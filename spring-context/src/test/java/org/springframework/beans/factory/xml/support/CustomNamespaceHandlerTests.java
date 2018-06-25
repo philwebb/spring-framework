@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -262,7 +262,7 @@ final class TestNamespaceHandler extends NamespaceHandlerSupport {
 			Element element = (Element) node;
 			BeanDefinition def = definition.getBeanDefinition();
 
-			MutablePropertyValues mpvs = (def.getPropertyValues() == null) ? new MutablePropertyValues() : def.getPropertyValues();
+			MutablePropertyValues mpvs = (def.getPropertyValues() != null ? def.getPropertyValues() : new MutablePropertyValues());
 			mpvs.add("name", element.getAttribute("name"));
 			mpvs.add("age", element.getAttribute("age"));
 

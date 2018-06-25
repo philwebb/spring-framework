@@ -370,7 +370,7 @@ public class ServletInvocableHandlerMethodTests {
 		}
 
 		public Object dynamicReturnValue(@RequestParam(required=false) String param) {
-			return (param != null) ? "view" : new RedirectView("redirectView");
+			return (param != null ? "view" : new RedirectView("redirectView"));
 		}
 	}
 

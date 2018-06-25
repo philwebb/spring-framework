@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -300,7 +300,7 @@ public class ViewResolverTests {
 
 	@Test
 	public void testInternalResourceViewResolverWithJstl() throws Exception {
-		Locale locale = !Locale.GERMAN.equals(Locale.getDefault()) ? Locale.GERMAN : Locale.FRENCH;
+		Locale locale = (!Locale.GERMAN.equals(Locale.getDefault()) ? Locale.GERMAN : Locale.FRENCH);
 
 		MockServletContext sc = new MockServletContext();
 		StaticWebApplicationContext wac = new StaticWebApplicationContext();
@@ -338,7 +338,7 @@ public class ViewResolverTests {
 
 	@Test
 	public void testInternalResourceViewResolverWithJstlAndContextParam() throws Exception {
-		Locale locale = !Locale.GERMAN.equals(Locale.getDefault()) ? Locale.GERMAN : Locale.FRENCH;
+		Locale locale = (!Locale.GERMAN.equals(Locale.getDefault()) ? Locale.GERMAN : Locale.FRENCH);
 
 		MockServletContext sc = new MockServletContext();
 		sc.addInitParameter(Config.FMT_LOCALIZATION_CONTEXT, "org/springframework/web/context/WEB-INF/context-messages");

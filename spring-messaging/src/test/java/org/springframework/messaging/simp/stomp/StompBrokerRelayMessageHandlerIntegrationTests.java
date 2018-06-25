@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -531,8 +531,8 @@ public class StompBrokerRelayMessageHandlerIntegrationTests {
 		}
 
 		protected String getPayloadAsText() {
-			return (this.payload instanceof byte[]) ?
-					new String((byte[]) this.payload, StandardCharsets.UTF_8) : this.payload.toString();
+			return (this.payload instanceof byte[] ?
+					new String((byte[]) this.payload, StandardCharsets.UTF_8) : this.payload.toString());
 		}
 	}
 

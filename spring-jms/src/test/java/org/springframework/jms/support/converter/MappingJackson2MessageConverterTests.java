@@ -302,7 +302,7 @@ public class MappingJackson2MessageConverterTests {
 
 		@Override
 		public int hashCode() {
-			return this.foo != null ? this.foo.hashCode() : 0;
+			return (this.foo != null ? this.foo.hashCode() : 0);
 		}
 	}
 

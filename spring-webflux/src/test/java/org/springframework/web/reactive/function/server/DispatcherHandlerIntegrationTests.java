@@ -190,7 +190,7 @@ public class DispatcherHandlerIntegrationTests extends AbstractHttpHandlerIntegr
 
 		@Override
 		public int hashCode() {
-			return this.name != null ? this.name.hashCode() : 0;
+			return (this.name != null ? this.name.hashCode() : 0);
 		}
 
 		@Override

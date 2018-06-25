@@ -152,7 +152,7 @@ public class JacksonStreamingIntegrationTests extends AbstractHttpHandlerIntegra
 
 		@Override
 		public int hashCode() {
-			return this.name != null ? this.name.hashCode() : 0;
+			return (this.name != null ? this.name.hashCode() : 0);
 		}
 
 		@Override

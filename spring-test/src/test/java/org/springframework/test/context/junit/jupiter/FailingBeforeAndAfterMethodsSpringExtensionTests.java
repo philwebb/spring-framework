@@ -131,11 +131,11 @@ class FailingBeforeAndAfterMethodsSpringExtensionTests {
 	}
 
 	private int getExpectedStartedCount(Class<?> testClass) {
-		return (testClass == AlwaysFailingBeforeTestClassTestCase.class ? 0 : 1);
+		return (testClass != AlwaysFailingBeforeTestClassTestCase.class ? 1 : 0);
 	}
 
 	private int getExpectedSucceededCount(Class<?> testClass) {
-		return (testClass == AlwaysFailingAfterTestClassTestCase.class ? 1 : 0);
+		return (testClass != AlwaysFailingAfterTestClassTestCase.class ? 0 : 1);
 	}
 
 	private int getExpectedFailedCount(Class<?> testClass) {

@@ -217,9 +217,9 @@ public class ResolvableMethod {
 
 	private String formatParameter(Parameter param) {
 		Annotation[] annot = param.getAnnotations();
-		return annot.length > 0 ?
+		return (annot.length > 0 ?
 				Arrays.stream(annot).map(this::formatAnnotation).collect(joining(",", "[", "]")) + " " + param :
-				param.toString();
+				param.toString());
 	}
 
 	private String formatAnnotation(Annotation annotation) {
@@ -536,9 +536,9 @@ public class ResolvableMethod {
 		@SafeVarargs
 		public final ArgResolver annotNotPresent(Class<? extends Annotation>... annotationTypes) {
 			this.filters.add(param ->
-					(annotationTypes.length != 0) ?
+					(annotationTypes.length != 0 ?
 							Arrays.stream(annotationTypes).noneMatch(param::hasParameterAnnotation) :
-							param.getParameterAnnotations().length == 0);
+							param.getParameterAnnotations().length == 0));
 			return this;
 		}
 

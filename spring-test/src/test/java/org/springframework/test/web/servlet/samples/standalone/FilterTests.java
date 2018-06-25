@@ -204,8 +204,8 @@ public class FilterTests {
 
 				@Override
 				public AsyncContext getAsyncContext() {
-					return super.getAsyncContext() != null ?
-							new AsyncContextWrapper(super.getAsyncContext()) : null;
+					return (super.getAsyncContext() != null ?
+							new AsyncContextWrapper(super.getAsyncContext()) : null);
 				}
 
 			}, new HttpServletResponseWrapper(response));

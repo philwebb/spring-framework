@@ -220,8 +220,8 @@ public class FormattingConversionServiceTests {
 		assertEquals(new LocalDate(2009, 11, 2), new LocalDate(dates.get(2)));
 
 		Object model = modelClass.newInstance();
-		ConfigurablePropertyAccessor accessor = directFieldAccess ? PropertyAccessorFactory.forDirectFieldAccess(model) :
-				PropertyAccessorFactory.forBeanPropertyAccess(model);
+		ConfigurablePropertyAccessor accessor = (directFieldAccess ? PropertyAccessorFactory.forDirectFieldAccess(model) :
+				PropertyAccessorFactory.forBeanPropertyAccess(model));
 		accessor.setConversionService(this.formattingService);
 		accessor.setPropertyValue("dates", "10-31-09,11-1-09,11-2-09");
 		dates = (List<Date>) accessor.getPropertyValue("dates");

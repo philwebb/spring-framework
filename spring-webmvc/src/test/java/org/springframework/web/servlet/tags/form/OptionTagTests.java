@@ -559,7 +559,7 @@ public class OptionTagTests extends AbstractHtmlElementTagTests {
 		public static RulesVariant fromId(String id) {
 			String[] s = id.split("-", 2);
 			String rules = s[0];
-			String variant = s.length > 1 ? s[1] : null;
+			String variant = (s.length > 1 ? s[1] : null);
 			return new RulesVariant(rules, variant);
 		}
 

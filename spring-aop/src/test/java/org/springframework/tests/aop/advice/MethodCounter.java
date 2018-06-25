@@ -40,7 +40,7 @@ public class MethodCounter implements Serializable {
 
 	protected void count(String methodName) {
 		Integer i = this.map.get(methodName);
-		i = (i != null) ? new Integer(i.intValue() + 1) : new Integer(1);
+		i = (i != null ? new Integer(i.intValue() + 1) : new Integer(1));
 		this.map.put(methodName, i);
 		++this.allCount;
 	}

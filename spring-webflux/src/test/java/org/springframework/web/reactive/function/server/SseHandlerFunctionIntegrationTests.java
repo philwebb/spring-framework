@@ -175,7 +175,7 @@ public class SseHandlerFunctionIntegrationTests extends AbstractRouterFunctionIn
 
 		@Override
 		public int hashCode() {
-			return this.name != null ? this.name.hashCode() : 0;
+			return (this.name != null ? this.name.hashCode() : 0);
 		}
 
 		@Override

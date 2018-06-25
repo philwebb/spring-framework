@@ -568,9 +568,9 @@ public class WebClientIntegrationTests {
 		ExchangeFilterFunction filter = ExchangeFilterFunction.ofResponseProcessor(
 				clientResponse -> {
 					List<String> headerValues = clientResponse.headers().header("Foo");
-					return headerValues.isEmpty() ? Mono.error(
+					return (headerValues.isEmpty() ? Mono.error(
 							new MyException("Response does not contain Foo header")) :
-							Mono.just(clientResponse);
+							Mono.just(clientResponse));
 				}
 		);
 

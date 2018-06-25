@@ -369,7 +369,7 @@ public class ContextLoaderTests {
 			environment.getPropertySources().addFirst(new PropertySource<Object>("testPropertySource") {
 				@Override
 				public Object getProperty(String key) {
-					return "name".equals(key) ? "testName" : null;
+					return ("name".equals(key) ? "testName" : null);
 				}
 			});
 		}
