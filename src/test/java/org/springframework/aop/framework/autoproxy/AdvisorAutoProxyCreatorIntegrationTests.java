@@ -242,7 +242,7 @@ class OrderedTxCheckAdvisor extends StaticMethodMatcherPointcutAdvisor implement
 	}
 
 	public boolean isRequireTransactionContext() {
-		return requireTransactionContext;
+		return this.requireTransactionContext;
 	}
 
 
