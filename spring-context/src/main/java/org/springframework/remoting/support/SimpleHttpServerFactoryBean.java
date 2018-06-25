@@ -163,8 +163,8 @@ public class SimpleHttpServerFactoryBean implements FactoryBean<HttpServer>, Ini
 				}
 			});
 		}
-		if (this.logger.isInfoEnabled()) {
-			this.logger.info("Starting HttpServer at address " + address);
+		if (logger.isInfoEnabled()) {
+			logger.info("Starting HttpServer at address " + address);
 		}
 		this.server.start();
 	}

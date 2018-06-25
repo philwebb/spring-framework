@@ -45,7 +45,7 @@ public class CommonsLogWriter extends Writer {
 
 	public void write(char ch) {
 		if (ch == '\n' && this.buffer.length() > 0) {
-			this.logger.debug(this.buffer.toString());
+			logger.debug(this.buffer.toString());
 			this.buffer.setLength(0);
 		}
 		else {
@@ -58,7 +58,7 @@ public class CommonsLogWriter extends Writer {
 		for (int i = 0; i < length; i++) {
 			char ch = buffer[offset + i];
 			if (ch == '\n' && this.buffer.length() > 0) {
-				this.logger.debug(this.buffer.toString());
+				logger.debug(this.buffer.toString());
 				this.buffer.setLength(0);
 			}
 			else {

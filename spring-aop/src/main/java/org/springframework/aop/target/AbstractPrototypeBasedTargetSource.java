@@ -74,8 +74,8 @@ public abstract class AbstractPrototypeBasedTargetSource extends AbstractBeanFac
 	 * @param target the bean instance to destroy
 	 */
 	protected void destroyPrototypeInstance(Object target) {
-		if (this.logger.isDebugEnabled()) {
-			this.logger.debug("Destroying instance of bean '" + getTargetBeanName() + "'");
+		if (logger.isDebugEnabled()) {
+			logger.debug("Destroying instance of bean '" + getTargetBeanName() + "'");
 		}
 		if (getBeanFactory() instanceof ConfigurableBeanFactory) {
 			((ConfigurableBeanFactory) getBeanFactory()).destroyBean(getTargetBeanName(), target);

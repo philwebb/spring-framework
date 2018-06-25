@@ -491,8 +491,8 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	@Override
 	protected final void initServletBean() throws ServletException {
 		getServletContext().log("Initializing Spring FrameworkServlet '" + getServletName() + "'");
-		if (this.logger.isInfoEnabled()) {
-			this.logger.info("FrameworkServlet '" + getServletName() + "': initialization started");
+		if (logger.isInfoEnabled()) {
+			logger.info("FrameworkServlet '" + getServletName() + "': initialization started");
 		}
 		long startTime = System.currentTimeMillis();
 
@@ -501,13 +501,13 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 			initFrameworkServlet();
 		}
 		catch (ServletException | RuntimeException ex) {
-			this.logger.error("Context initialization failed", ex);
+			logger.error("Context initialization failed", ex);
 			throw ex;
 		}
 
-		if (this.logger.isInfoEnabled()) {
+		if (logger.isInfoEnabled()) {
 			long elapsedTime = System.currentTimeMillis() - startTime;
-			this.logger.info("FrameworkServlet '" + getServletName() + "': initialization completed in " +
+			logger.info("FrameworkServlet '" + getServletName() + "': initialization completed in " +
 					elapsedTime + " ms");
 		}
 	}
@@ -566,8 +566,8 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 			// Publish the context as a servlet context attribute.
 			String attrName = getServletContextAttributeName();
 			getServletContext().setAttribute(attrName, wac);
-			if (this.logger.isTraceEnabled()) {
-				this.logger.trace("Published WebApplicationContext of servlet '" + getServletName() +
+			if (logger.isTraceEnabled()) {
+				logger.trace("Published WebApplicationContext of servlet '" + getServletName() +
 						"' as ServletContext attribute [" + attrName + "]");
 			}
 		}
@@ -616,8 +616,8 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	 */
 	protected WebApplicationContext createWebApplicationContext(@Nullable ApplicationContext parent) {
 		Class<?> contextClass = getContextClass();
-		if (this.logger.isTraceEnabled()) {
-			this.logger.trace("Servlet '" + getServletName() +
+		if (logger.isTraceEnabled()) {
+			logger.trace("Servlet '" + getServletName() +
 					"' will create custom WebApplicationContext context of class '" +
 					contextClass.getName() + "'" + ", parent context [" + parent + "]");
 		}
@@ -991,7 +991,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 
 			if (logger.isDebugEnabled()) {
 				if (failureCause != null) {
-					this.logger.debug("Failed to complete request: ", failureCause);
+					logger.debug("Failed to complete request: ", failureCause);
 				}
 				else {
 					if (asyncManager.isConcurrentHandlingStarted()) {
@@ -999,7 +999,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 					}
 					else {
 						HttpStatus status = HttpStatus.resolve(response.getStatus());
-						this.logger.debug("Completed " + (status != null ? status : response.getStatus()));
+						logger.debug("Completed " + (status != null ? status : response.getStatus()));
 					}
 				}
 			}

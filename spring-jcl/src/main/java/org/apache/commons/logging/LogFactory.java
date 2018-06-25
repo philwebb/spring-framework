@@ -603,7 +603,7 @@ public abstract class LogFactory {
 		}
 
 		private void log(java.util.logging.Level level, Object message, Throwable exception) {
-			if (logger.isLoggable(level)) {
+			if (this.logger.isLoggable(level)) {
 				LogRecord rec;
 				if (message instanceof LogRecord) {
 					rec = (LogRecord) message;

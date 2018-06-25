@@ -78,7 +78,7 @@ public class FailFastProblemReporter implements ProblemReporter {
 	 */
 	@Override
 	public void warning(Problem problem) {
-		this.logger.warn(problem, problem.getRootCause());
+		logger.warn(problem, problem.getRootCause());
 	}
 
 }
