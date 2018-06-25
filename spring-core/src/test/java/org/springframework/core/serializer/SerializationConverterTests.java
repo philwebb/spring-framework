@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2010 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,9 +49,9 @@ public class SerializationConverterTests {
 			toBytes.convert(new Object());
 			fail("Expected IllegalArgumentException");
 		}
-		catch (SerializationFailedException e) {
-			assertNotNull(e.getCause());
-			assertTrue(e.getCause() instanceof IllegalArgumentException);
+		catch (SerializationFailedException ex) {
+			assertNotNull(ex.getCause());
+			assertTrue(ex.getCause() instanceof IllegalArgumentException);
 		}
 	}
 
@@ -62,9 +62,9 @@ public class SerializationConverterTests {
 			toBytes.convert(new UnSerializable());
 			fail("Expected SerializationFailureException");
 		}
-		catch (SerializationFailedException e) {
-			assertNotNull(e.getCause());
-			assertTrue(e.getCause() instanceof NotSerializableException);
+		catch (SerializationFailedException ex) {
+			assertNotNull(ex.getCause());
+			assertTrue(ex.getCause() instanceof NotSerializableException);
 		}
 	}
 

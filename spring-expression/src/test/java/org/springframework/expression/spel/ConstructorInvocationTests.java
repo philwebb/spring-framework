@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -130,13 +130,13 @@ public class ConstructorInvocationTests extends AbstractExpressionTests {
 			o = expr.getValue(eContext);
 			fail("Should have failed");
 		}
-		catch (Exception e) {
+		catch (Exception ex) {
 			// A problem occurred whilst attempting to construct an object of type
 			// 'org.springframework.expression.spel.ConstructorInvocationTests$Tester'
 			// using arguments '(java.lang.Integer)'
-			int idx = e.getMessage().indexOf("Tester");
+			int idx = ex.getMessage().indexOf("Tester");
 			if (idx == -1) {
-				fail("Expected reference to Tester in :" + e.getMessage());
+				fail("Expected reference to Tester in :" + ex.getMessage());
 			}
 			// normal
 		}
@@ -149,12 +149,12 @@ public class ConstructorInvocationTests extends AbstractExpressionTests {
 			o = expr.getValue(eContext);
 			fail("Should have failed");
 		}
-		catch (Exception e) {
+		catch (Exception ex) {
 			// A problem occurred whilst attempting to construct an object of type
 			// 'org.springframework.expression.spel.ConstructorInvocationTests$Tester'
 			// using arguments '(java.lang.Integer)'
-			if (e instanceof SpelEvaluationException) {
-				e.printStackTrace();
+			if (ex instanceof SpelEvaluationException) {
+				ex.printStackTrace();
 				fail("Should not have been wrapped");
 			}
 		}

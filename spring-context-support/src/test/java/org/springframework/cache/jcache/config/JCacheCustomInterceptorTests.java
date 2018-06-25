@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -87,12 +87,12 @@ public class JCacheCustomInterceptorTests {
 			cs.cacheWithCheckedException("id", true);
 			fail("Should have failed");
 		}
-		catch (RuntimeException e) {
-			assertNotNull("missing original exception", e.getCause());
-			assertEquals(IOException.class, e.getCause().getClass());
+		catch (RuntimeException ex) {
+			assertNotNull("missing original exception", ex.getCause());
+			assertEquals(IOException.class, ex.getCause().getClass());
 		}
-		catch (Exception e) {
-			fail("Wrong exception type " + e);
+		catch (Exception ex) {
+			fail("Wrong exception type " + ex);
 		}
 	}
 
@@ -146,8 +146,8 @@ public class JCacheCustomInterceptorTests {
 			try {
 				return super.invokeOperation(invoker);
 			}
-			catch (CacheOperationInvoker.ThrowableWrapper e) {
-				Throwable original = e.getOriginal();
+			catch (CacheOperationInvoker.ThrowableWrapper ex) {
+				Throwable original = ex.getOriginal();
 				if (original.getClass() == UnsupportedOperationException.class) {
 					return 55L;
 				}

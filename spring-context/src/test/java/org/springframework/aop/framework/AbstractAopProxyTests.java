@@ -1531,8 +1531,8 @@ public abstract class AbstractAopProxyTests {
 			proxied.exceptional(exc);
 			fail();
 		}
-		catch (Throwable t) {
-			assertSame(exc, t);
+		catch (Throwable ex) {
+			assertSame(exc, ex);
 		}
 		assertEquals(2, car.getCalls());
 	}

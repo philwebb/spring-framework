@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -145,7 +145,7 @@ public class SqlLobValueTests  {
 			lob.setTypeValue(preparedStatement, 1, Types.CLOB, "test");
 			fail("IllegalArgumentException should have been thrown");
 		}
-		catch (IllegalArgumentException e) {
+		catch (IllegalArgumentException ex) {
 			// expected
 		}
 
@@ -173,7 +173,7 @@ public class SqlLobValueTests  {
 			lob.setTypeValue(preparedStatement, 1, Types.BLOB, "test");
 			fail("IllegalArgumentException should have been thrown");
 		}
-		catch (IllegalArgumentException e) {
+		catch (IllegalArgumentException ex) {
 			// expected
 		}
 	}

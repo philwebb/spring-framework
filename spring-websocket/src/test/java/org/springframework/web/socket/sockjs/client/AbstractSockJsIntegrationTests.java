@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -136,20 +136,20 @@ public abstract class AbstractSockJsIntegrationTests {
 		try {
 			this.server.undeployConfig();
 		}
-		catch (Throwable t) {
-			logger.error("Failed to undeploy application config", t);
+		catch (Throwable ex) {
+			logger.error("Failed to undeploy application config", ex);
 		}
 		try {
 			this.server.stop();
 		}
-		catch (Throwable t) {
-			logger.error("Failed to stop server", t);
+		catch (Throwable ex) {
+			logger.error("Failed to stop server", ex);
 		}
 		try {
 			this.wac.close();
 		}
-		catch (Throwable t) {
-			logger.error("Failed to close WebApplicationContext", t);
+		catch (Throwable ex) {
+			logger.error("Failed to close WebApplicationContext", ex);
 		}
 	}
 
@@ -312,8 +312,8 @@ public abstract class AbstractSockJsIntegrationTests {
 			try {
 				Thread.sleep(timeToSleep);
 			}
-			catch (InterruptedException e) {
-				throw new IllegalStateException("Interrupted while waiting for " + description, e);
+			catch (InterruptedException ex) {
+				throw new IllegalStateException("Interrupted while waiting for " + description, ex);
 			}
 		}
 		throw new IllegalStateException("Timed out waiting for " + description);
@@ -430,8 +430,8 @@ public abstract class AbstractSockJsIntegrationTests {
 						Thread.sleep(this.sleepDelayMap.get(suffix));
 						break;
 					}
-					catch (InterruptedException e) {
-						e.printStackTrace();
+					catch (InterruptedException ex) {
+						ex.printStackTrace();
 					}
 				}
 			}

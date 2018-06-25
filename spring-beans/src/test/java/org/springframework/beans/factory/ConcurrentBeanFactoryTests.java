@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,8 +62,8 @@ public class ConcurrentBeanFactoryTests {
 			DATE_1 = DATE_FORMAT.parse("2004/08/08");
 			DATE_2 = DATE_FORMAT.parse("2000/02/02");
 		}
-		catch (ParseException e) {
-			throw new RuntimeException(e);
+		catch (ParseException ex) {
+			throw new RuntimeException(ex);
 		}
 	}
 
@@ -112,8 +112,8 @@ public class ConcurrentBeanFactoryTests {
 				try {
 					set.wait();
 				}
-				catch (InterruptedException e) {
-					logger.info(e.toString());
+				catch (InterruptedException ex) {
+					logger.info(ex.toString());
 				}
 				logger.info(set.size() + " threads still active.");
 			}
@@ -141,8 +141,8 @@ public class ConcurrentBeanFactoryTests {
 					performTest();
 				}
 			}
-			catch (Throwable e) {
-				ex = e;
+			catch (Throwable ex) {
+				ConcurrentBeanFactoryTests.this.ex = ex;
 			}
 			finally {
 				synchronized (set) {

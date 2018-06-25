@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -101,26 +101,26 @@ public abstract class AbstractWebSocketIntegrationTests {
 				((Lifecycle) this.webSocketClient).stop();
 			}
 		}
-		catch (Throwable t) {
-			logger.error("Failed to stop WebSocket client", t);
+		catch (Throwable ex) {
+			logger.error("Failed to stop WebSocket client", ex);
 		}
 		try {
 			this.server.undeployConfig();
 		}
-		catch (Throwable t) {
-			logger.error("Failed to undeploy application config", t);
+		catch (Throwable ex) {
+			logger.error("Failed to undeploy application config", ex);
 		}
 		try {
 			this.server.stop();
 		}
-		catch (Throwable t) {
-			logger.error("Failed to stop server", t);
+		catch (Throwable ex) {
+			logger.error("Failed to stop server", ex);
 		}
 		try {
 			this.wac.close();
 		}
-		catch (Throwable t) {
-			logger.error("Failed to close WebApplicationContext", t);
+		catch (Throwable ex) {
+			logger.error("Failed to close WebApplicationContext", ex);
 		}
 	}
 

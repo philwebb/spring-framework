@@ -123,8 +123,8 @@ public class ExpressionEvaluatorTests {
 			new SpelExpressionParser().parseExpression("#result").getValue(context);
 			fail("Should have failed to parse expression, result not available");
 		}
-		catch (VariableNotAvailableException e) {
-			assertEquals("wrong variable name", "result", e.getName());
+		catch (VariableNotAvailableException ex) {
+			assertEquals("wrong variable name", "result", ex.getName());
 		}
 	}
 

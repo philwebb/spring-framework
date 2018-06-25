@@ -60,8 +60,8 @@ public class QualifierAnnotationTests {
 			context.refresh();
 			fail("Should have thrown a BeanCreationException");
 		}
-		catch (BeanCreationException e) {
-			assertTrue(e.getMessage().contains("found 6"));
+		catch (BeanCreationException ex) {
+			assertTrue(ex.getMessage().contains("found 6"));
 		}
 	}
 
@@ -197,8 +197,8 @@ public class QualifierAnnotationTests {
 			context.refresh();
 			fail("should have thrown a BeanCreationException");
 		}
-		catch (BeanCreationException e) {
-			assertTrue(e.getMessage().contains("found 6"));
+		catch (BeanCreationException ex) {
+			assertTrue(ex.getMessage().contains("found 6"));
 		}
 	}
 

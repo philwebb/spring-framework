@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -615,8 +615,8 @@ public class JmsMessagingTemplateTests {
 			jmsMessage.setStringProperty("foo", "bar");
 			return jmsMessage;
 		}
-		catch (JMSException e) {
-			throw new IllegalStateException("Should not happen", e);
+		catch (JMSException ex) {
+			throw new IllegalStateException("Should not happen", ex);
 		}
 	}
 
@@ -631,8 +631,8 @@ public class JmsMessagingTemplateTests {
 			assertEquals("Wrong body message", "Hello", jmsMessage.getText());
 			assertEquals("Invalid foo property", "bar", jmsMessage.getStringProperty("foo"));
 		}
-		catch (JMSException e) {
-			throw new IllegalStateException("Wrong text message", e);
+		catch (JMSException ex) {
+			throw new IllegalStateException("Wrong text message", ex);
 		}
 	}
 

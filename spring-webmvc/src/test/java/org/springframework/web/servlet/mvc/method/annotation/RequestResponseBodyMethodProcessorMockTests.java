@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -163,10 +163,10 @@ public class RequestResponseBodyMethodProcessorMockTests {
 			testResolveArgumentWithValidation(new SimpleBean(null));
 			fail("Expected exception");
 		}
-		catch (MethodArgumentNotValidException e) {
-			assertEquals("simpleBean", e.getBindingResult().getObjectName());
-			assertEquals(1, e.getBindingResult().getErrorCount());
-			assertNotNull(e.getBindingResult().getFieldError("name"));
+		catch (MethodArgumentNotValidException ex) {
+			assertEquals("simpleBean", ex.getBindingResult().getObjectName());
+			assertEquals(1, ex.getBindingResult().getErrorCount());
+			assertNotNull(ex.getBindingResult().getFieldError("name"));
 		}
 	}
 

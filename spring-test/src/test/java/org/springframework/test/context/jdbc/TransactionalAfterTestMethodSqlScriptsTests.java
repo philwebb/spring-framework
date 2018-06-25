@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2014 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,7 +55,7 @@ public class TransactionalAfterTestMethodSqlScriptsTests extends AbstractTransac
 				assertNumUsers(99);
 				fail("Should throw a BadSqlGrammarException after test01, assuming 'drop-schema.sql' was executed");
 			}
-			catch (BadSqlGrammarException e) {
+			catch (BadSqlGrammarException ex) {
 				/* expected */
 			}
 		}

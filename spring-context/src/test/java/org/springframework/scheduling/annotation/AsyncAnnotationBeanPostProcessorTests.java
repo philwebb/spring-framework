@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -239,7 +239,7 @@ public class AsyncAnnotationBeanPostProcessorTests {
 			testBean.failWithVoid();
 			exceptionHandler.assertCalledWith(m, UnsupportedOperationException.class);
 		}
-		catch (Exception e) {
+		catch (Exception ex) {
 			fail("No unexpected exception should have been received");
 		}
 	}
@@ -312,7 +312,7 @@ public class AsyncAnnotationBeanPostProcessorTests {
 			try {
 				this.latch.await(timeout, TimeUnit.MILLISECONDS);
 			}
-			catch (Exception e) {
+			catch (Exception ex) {
 				Thread.currentThread().interrupt();
 			}
 		}

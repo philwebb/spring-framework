@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -243,9 +243,9 @@ public abstract class AbstractPropertyAccessorTests {
 			accessor.getPropertyValue("address.country.name");
 			fail("Should have failed to get value with null intermediate path");
 		}
-		catch (NullValueInNestedPathException e) {
-			assertEquals("address", e.getPropertyName());
-			assertEquals(Person.class, e.getBeanClass());
+		catch (NullValueInNestedPathException ex) {
+			assertEquals("address", ex.getPropertyName());
+			assertEquals(Person.class, ex.getBeanClass());
 		}
 	}
 
@@ -278,9 +278,9 @@ public abstract class AbstractPropertyAccessorTests {
 			accessor.getPropertyValue("foo");
 			fail("Should have failed to get an unknown property.");
 		}
-		catch (NotReadablePropertyException e) {
-			assertEquals(Simple.class, e.getBeanClass());
-			assertEquals("foo", e.getPropertyName());
+		catch (NotReadablePropertyException ex) {
+			assertEquals(Simple.class, ex.getBeanClass());
+			assertEquals("foo", ex.getPropertyName());
 		}
 	}
 
@@ -401,9 +401,9 @@ public abstract class AbstractPropertyAccessorTests {
 			accessor.setPropertyValue("address.country.name", "UK");
 			fail("Should have failed to set value with intermediate null value");
 		}
-		catch (NullValueInNestedPathException e) {
-			assertEquals("address.country", e.getPropertyName());
-			assertEquals(Person.class, e.getBeanClass());
+		catch (NullValueInNestedPathException ex) {
+			assertEquals("address.country", ex.getPropertyName());
+			assertEquals(Person.class, ex.getBeanClass());
 		}
 		assertThat(target.address.country, is(nullValue())); // Not touched
 	}
@@ -1482,11 +1482,11 @@ public abstract class AbstractPropertyAccessorTests {
 			accessor.setPropertyValue("name1", "value");
 			fail("Should have failed to set an unknown property.");
 		}
-		catch (NotWritablePropertyException e) {
-			assertEquals(Simple.class, e.getBeanClass());
-			assertEquals("name1", e.getPropertyName());
-			assertEquals("Invalid number of possible matches", 1, e.getPossibleMatches().length);
-			assertEquals("name", e.getPossibleMatches()[0]);
+		catch (NotWritablePropertyException ex) {
+			assertEquals(Simple.class, ex.getBeanClass());
+			assertEquals("name1", ex.getPropertyName());
+			assertEquals("Invalid number of possible matches", 1, ex.getPossibleMatches().length);
+			assertEquals("name", ex.getPossibleMatches()[0]);
 		}
 	}
 
@@ -1499,9 +1499,9 @@ public abstract class AbstractPropertyAccessorTests {
 			accessor.setPropertyValue("foo", "value");
 			fail("Should have failed to set an unknown property.");
 		}
-		catch (NotWritablePropertyException e) {
-			assertEquals(Simple.class, e.getBeanClass());
-			assertEquals("foo", e.getPropertyName());
+		catch (NotWritablePropertyException ex) {
+			assertEquals(Simple.class, ex.getBeanClass());
+			assertEquals("foo", ex.getPropertyName());
 		}
 	}
 
@@ -1515,7 +1515,7 @@ public abstract class AbstractPropertyAccessorTests {
 			value.setOptional(true);
 			accessor.setPropertyValue(value);
 		}
-		catch (NotWritablePropertyException e) {
+		catch (NotWritablePropertyException ex) {
 			fail("Should not have failed to set an unknown optional property.");
 		}
 	}

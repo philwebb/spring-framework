@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -117,8 +117,8 @@ public class MBeanExporterOperationsTests extends AbstractMBeanServerTests {
 			exporter.registerManagedResource(bean2);
 			fail("Shouldn't be able to register a runtime MBean with a reused ObjectName.");
 		}
-		catch (MBeanExportException e) {
-			assertEquals("Incorrect root cause", InstanceAlreadyExistsException.class, e.getCause().getClass());
+		catch (MBeanExportException ex) {
+			assertEquals("Incorrect root cause", InstanceAlreadyExistsException.class, ex.getCause().getClass());
 		}
 	}
 
