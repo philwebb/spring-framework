@@ -148,7 +148,7 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 
 	@Test
 	public void testXMLBasedConfig() {
-		 evaluate("(T(java.lang.Math).random() * 100.0 )>0",true,Boolean.class);
+		evaluate("(T(java.lang.Math).random() * 100.0 )>0",true,Boolean.class);
 	}
 
 	// Section 7.5
@@ -398,8 +398,8 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 	public void testConstructors() throws Exception {
 		StandardEvaluationContext societyContext = new StandardEvaluationContext();
 		societyContext.setRootObject(new IEEE());
-		Inventor einstein =
-			   this.parser.parseExpression("new org.springframework.expression.spel.testresources.Inventor('Albert Einstein',new java.util.Date(), 'German')").getValue(Inventor.class);
+		Inventor einstein = this.parser.parseExpression(
+				"new org.springframework.expression.spel.testresources.Inventor('Albert Einstein',new java.util.Date(), 'German')").getValue(Inventor.class);
 		assertEquals("Albert Einstein", einstein.getName());
 		//create new inventor instance within add method of List
 		this.parser.parseExpression("Members2.add(new org.springframework.expression.spel.testresources.Inventor('Albert Einstein', 'German'))").getValue(societyContext);
@@ -488,7 +488,7 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 	@Test
 	public void testTemplating() throws Exception {
 		String randomPhrase =
-			   this.parser.parseExpression("random number is ${T(java.lang.Math).random()}", new TemplatedParserContext()).getValue(String.class);
+				this.parser.parseExpression("random number is ${T(java.lang.Math).random()}", new TemplatedParserContext()).getValue(String.class);
 		assertTrue(randomPhrase.startsWith("random number"));
 	}
 

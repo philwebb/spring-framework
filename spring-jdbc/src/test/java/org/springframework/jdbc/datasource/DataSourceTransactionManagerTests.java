@@ -209,7 +209,7 @@ public class DataSourceTransactionManagerTests  {
 		}
 
 		final DataSource dsToUse = (lazyConnection ? new LazyConnectionDataSourceProxy(this.ds) : this.ds);
-		 this.tm = new DataSourceTransactionManager(dsToUse);
+		this.tm = new DataSourceTransactionManager(dsToUse);
 		TransactionTemplate tt = new TransactionTemplate(this.tm);
 		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(dsToUse));
 		assertTrue("Synchronization not active", !TransactionSynchronizationManager.isSynchronizationActive());

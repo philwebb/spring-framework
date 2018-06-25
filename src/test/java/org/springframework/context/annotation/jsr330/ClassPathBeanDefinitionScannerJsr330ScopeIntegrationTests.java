@@ -335,12 +335,12 @@ public class ClassPathBeanDefinitionScannerJsr330ScopeIntegrationTests {
 	}
 
 
- 	public static interface IScopedTestBean {
+	public static interface IScopedTestBean {
 
- 		String getName();
+		String getName();
 
- 		void setName(String name);
- 	}
+		void setName(String name);
+	}
 
 
 	public static abstract class ScopedTestBean implements IScopedTestBean {

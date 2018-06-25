@@ -444,9 +444,9 @@ public class BeanUtilsTests {
 			this.value = aValue;
 		}
 	}
-	
+
 	private static class BeanWithSingleNonDefaultConstructor {
-		
+
 		private final String name;
 
 		public BeanWithSingleNonDefaultConstructor(String name) {

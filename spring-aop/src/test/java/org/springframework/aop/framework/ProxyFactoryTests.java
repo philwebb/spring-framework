@@ -216,7 +216,7 @@ public class ProxyFactoryTests {
 		TimeStamped ts = (TimeStamped) factory.getProxy();
 		assertTrue(ts.getTimeStamp() == t);
 		// Shouldn't fail;
-		 ((IOther) ts).absquatulate();
+		((IOther) ts).absquatulate();
 	}
 
 	@Test
