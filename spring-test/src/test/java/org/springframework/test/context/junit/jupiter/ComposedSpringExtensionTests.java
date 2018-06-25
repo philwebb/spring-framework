@@ -61,15 +61,15 @@ class ComposedSpringExtensionTests {
 	@DisplayName("ApplicationContext injected into method")
 	void applicationContextInjected(ApplicationContext applicationContext) {
 		assertNotNull(applicationContext, "ApplicationContext should have been injected into method by Spring");
-		assertEquals(dilbert, applicationContext.getBean("dilbert", Person.class));
+		assertEquals(this.dilbert, applicationContext.getBean("dilbert", Person.class));
 	}
 
 	@Test
 	@DisplayName("Spring @Beans injected into fields")
 	void springBeansInjected() {
-		assertNotNull(dilbert, "Person should have been @Autowired by Spring");
-		assertEquals("Dilbert", dilbert.getName(), "Person's name");
-		assertEquals(2, people.size(), "Number of Person objects in context");
+		assertNotNull(this.dilbert, "Person should have been @Autowired by Spring");
+		assertEquals("Dilbert", this.dilbert.getName(), "Person's name");
+		assertEquals(2, this.people.size(), "Number of Person objects in context");
 	}
 
 }

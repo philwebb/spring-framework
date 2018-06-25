@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2012 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,24 +41,24 @@ public class CallCountingTransactionManager extends AbstractPlatformTransactionM
 	@Override
 	protected void doBegin(Object transaction, TransactionDefinition definition) {
 		this.lastDefinition = definition;
-		++begun;
-		++inflight;
+		++this.begun;
+		++this.inflight;
 	}
 
 	@Override
 	protected void doCommit(DefaultTransactionStatus status) {
-		++commits;
-		--inflight;
+		++this.commits;
+		--this.inflight;
 	}
 
 	@Override
 	protected void doRollback(DefaultTransactionStatus status) {
-		++rollbacks;
-		--inflight;
+		++this.rollbacks;
+		--this.inflight;
 	}
 
 	public void clear() {
-		begun = commits = rollbacks = inflight = 0;
+		this.begun = this.commits = this.rollbacks = this.inflight = 0;
 	}
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,33 +39,33 @@ public class CachedExpressionEvaluatorTests {
 	@Test
 	public void parseNewExpression() {
 		Method method = ReflectionUtils.findMethod(getClass(), "toString");
-		Expression expression = expressionEvaluator.getTestExpression("true", method, getClass());
+		Expression expression = this.expressionEvaluator.getTestExpression("true", method, getClass());
 		hasParsedExpression("true");
 		assertEquals(true, expression.getValue());
-		assertEquals("Expression should be in cache", 1, expressionEvaluator.testCache.size());
+		assertEquals("Expression should be in cache", 1, this.expressionEvaluator.testCache.size());
 	}
 
 	@Test
 	public void cacheExpression() {
 		Method method = ReflectionUtils.findMethod(getClass(), "toString");
 
-		expressionEvaluator.getTestExpression("true", method, getClass());
-		expressionEvaluator.getTestExpression("true", method, getClass());
-		expressionEvaluator.getTestExpression("true", method, getClass());
+		this.expressionEvaluator.getTestExpression("true", method, getClass());
+		this.expressionEvaluator.getTestExpression("true", method, getClass());
+		this.expressionEvaluator.getTestExpression("true", method, getClass());
 		hasParsedExpression("true");
-		assertEquals("Only one expression should be in cache", 1, expressionEvaluator.testCache.size());
+		assertEquals("Only one expression should be in cache", 1, this.expressionEvaluator.testCache.size());
 	}
 
 	@Test
 	public void cacheExpressionBasedOnConcreteType() {
 		Method method = ReflectionUtils.findMethod(getClass(), "toString");
-		expressionEvaluator.getTestExpression("true", method, getClass());
-		expressionEvaluator.getTestExpression("true", method, Object.class);
-		assertEquals("Cached expression should be based on type", 2, expressionEvaluator.testCache.size());
+		this.expressionEvaluator.getTestExpression("true", method, getClass());
+		this.expressionEvaluator.getTestExpression("true", method, Object.class);
+		assertEquals("Cached expression should be based on type", 2, this.expressionEvaluator.testCache.size());
 	}
 
 	private void hasParsedExpression(String expression) {
-		verify(expressionEvaluator.getParser(), times(1)).parseExpression(expression);
+		verify(this.expressionEvaluator.getParser(), times(1)).parseExpression(expression);
 	}
 
 	private static class TestExpressionEvaluator extends CachedExpressionEvaluator {

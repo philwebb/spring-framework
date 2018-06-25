@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -73,7 +73,7 @@ public abstract class AbstractTransactionSupportingCacheManagerTests<T extends C
 	@Test
 	public void getOnNewCache() {
 		T cacheManager = getCacheManager(false);
-		String cacheName = name.getMethodName();
+		String cacheName = this.name.getMethodName();
 		addNativeCache(cacheName);
 		assertFalse(cacheManager.getCacheNames().contains(cacheName));
 		try {
@@ -88,7 +88,7 @@ public abstract class AbstractTransactionSupportingCacheManagerTests<T extends C
 	@Test
 	public void getOnUnknownCache() {
 		T cacheManager = getCacheManager(false);
-		String cacheName = name.getMethodName();
+		String cacheName = this.name.getMethodName();
 		assertFalse(cacheManager.getCacheNames().contains(cacheName));
 		assertThat(cacheManager.getCache(cacheName), nullValue());
 	}
@@ -101,7 +101,7 @@ public abstract class AbstractTransactionSupportingCacheManagerTests<T extends C
 
 	@Test
 	public void getTransactionalOnNewCache() {
-		String cacheName = name.getMethodName();
+		String cacheName = this.name.getMethodName();
 		T cacheManager = getCacheManager(true);
 		assertFalse(cacheManager.getCacheNames().contains(cacheName));
 		addNativeCache(cacheName);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,15 +55,15 @@ public class ResourceBundleViewResolverTests {
 
 	@Before
 	public void setUp() throws Exception {
-		rb.setBasename(PROPS_FILE);
-		rb.setCache(getCache());
-		rb.setDefaultParentView("testParent");
+		this.rb.setBasename(PROPS_FILE);
+		this.rb.setCache(getCache());
+		this.rb.setDefaultParentView("testParent");
 
-		wac.setServletContext(new MockServletContext());
-		wac.refresh();
+		this.wac.setServletContext(new MockServletContext());
+		this.wac.refresh();
 
 		// This will be propagated to views, so we need it.
-		rb.setApplicationContext(wac);
+		this.rb.setApplicationContext(this.wac);
 	}
 
 	/**
@@ -78,14 +78,14 @@ public class ResourceBundleViewResolverTests {
 	@Test
 	public void parentsAreAbstract() throws Exception {
 		try {
-			rb.resolveViewName("debug.Parent", Locale.ENGLISH);
+			this.rb.resolveViewName("debug.Parent", Locale.ENGLISH);
 			fail("Should have thrown BeanIsAbstractException");
 		}
 		catch (BeanIsAbstractException ex) {
 			// expected
 		}
 		try {
-			rb.resolveViewName("testParent", Locale.ENGLISH);
+			this.rb.resolveViewName("testParent", Locale.ENGLISH);
 			fail("Should have thrown BeanIsAbstractException");
 		}
 		catch (BeanIsAbstractException ex) {
@@ -95,7 +95,7 @@ public class ResourceBundleViewResolverTests {
 
 	@Test
 	public void debugViewEnglish() throws Exception {
-		View v = rb.resolveViewName("debugView", Locale.ENGLISH);
+		View v = this.rb.resolveViewName("debugView", Locale.ENGLISH);
 		assertThat(v, instanceOf(InternalResourceView.class));
 		InternalResourceView jv = (InternalResourceView) v;
 		assertEquals("debugView must have correct URL", "jsp/debug/debug.jsp", jv.getUrl());
@@ -110,7 +110,7 @@ public class ResourceBundleViewResolverTests {
 
 	@Test
 	public void debugViewFrench() throws Exception {
-		View v = rb.resolveViewName("debugView", Locale.FRENCH);
+		View v = this.rb.resolveViewName("debugView", Locale.FRENCH);
 		assertThat(v, instanceOf(InternalResourceView.class));
 		InternalResourceView jv = (InternalResourceView) v;
 		assertEquals("French debugView must have correct URL", "jsp/debug/deboug.jsp", jv.getUrl());
@@ -124,7 +124,7 @@ public class ResourceBundleViewResolverTests {
 		rb.setCache(getCache());
 		rb.setDefaultParentView("testParent");
 		rb.setLocalesToInitialize(new Locale[] {Locale.ENGLISH, Locale.FRENCH});
-		rb.setApplicationContext(wac);
+		rb.setApplicationContext(this.wac);
 
 		View v = rb.resolveViewName("debugView", Locale.FRENCH);
 		assertThat(v, instanceOf(InternalResourceView.class));
@@ -135,31 +135,31 @@ public class ResourceBundleViewResolverTests {
 
 	@Test
 	public void sameBundleOnlyCachedOnce() throws Exception {
-		assumeTrue(rb.isCache());
+		assumeTrue(this.rb.isCache());
 
-		View v1 = rb.resolveViewName("debugView", Locale.ENGLISH);
-		View v2 = rb.resolveViewName("debugView", Locale.UK);
+		View v1 = this.rb.resolveViewName("debugView", Locale.ENGLISH);
+		View v2 = this.rb.resolveViewName("debugView", Locale.UK);
 		assertSame(v1, v2);
 	}
 
 	@Test
 	public void noSuchViewEnglish() throws Exception {
-		assertNull(rb.resolveViewName("xxxxxxweorqiwuopeir", Locale.ENGLISH));
+		assertNull(this.rb.resolveViewName("xxxxxxweorqiwuopeir", Locale.ENGLISH));
 	}
 
 	@Test
 	public void onSetContextCalledOnce() throws Exception {
-		TestView tv = (TestView) rb.resolveViewName("test", Locale.ENGLISH);
-		tv = (TestView) rb.resolveViewName("test", Locale.ENGLISH);
-		tv = (TestView) rb.resolveViewName("test", Locale.ENGLISH);
+		TestView tv = (TestView) this.rb.resolveViewName("test", Locale.ENGLISH);
+		tv = (TestView) this.rb.resolveViewName("test", Locale.ENGLISH);
+		tv = (TestView) this.rb.resolveViewName("test", Locale.ENGLISH);
 		assertEquals("test has correct name", "test", tv.getBeanName());
 		assertEquals("test should have been initialized once, not ", 1, tv.initCount);
 	}
 
 	@Test(expected = MissingResourceException.class)
 	public void noSuchBasename() throws Exception {
-		rb.setBasename("weoriwoierqupowiuer");
-		rb.resolveViewName("debugView", Locale.ENGLISH);
+		this.rb.setBasename("weoriwoierqupowiuer");
+		this.rb.resolveViewName("debugView", Locale.ENGLISH);
 	}
 
 
@@ -180,7 +180,7 @@ public class ResourceBundleViewResolverTests {
 
 		@Override
 		protected void initApplicationContext() {
-			++initCount;
+			++this.initCount;
 		}
 	}
 

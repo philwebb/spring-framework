@@ -28,7 +28,7 @@ public class CastorObject {
 	private Integer value;
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -36,7 +36,7 @@ public class CastorObject {
 	}
 
 	public Integer getValue() {
-		return value;
+		return this.value;
 	}
 
 	public void setValue(Integer value) {

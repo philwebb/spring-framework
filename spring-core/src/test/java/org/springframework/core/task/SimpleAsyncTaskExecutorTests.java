@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ public class SimpleAsyncTaskExecutorTests {
 		SimpleAsyncTaskExecutor executor = new SimpleAsyncTaskExecutor();
 		executor.setConcurrencyLimit(ConcurrencyThrottleSupport.NO_CONCURRENCY);
 		assertTrue(executor.isThrottleActive());
-		exception.expect(IllegalStateException.class);
+		this.exception.expect(IllegalStateException.class);
 		executor.execute(new NoOpRunnable());
 	}
 
@@ -79,7 +79,7 @@ public class SimpleAsyncTaskExecutorTests {
 
 	@Test
 	public void throwsExceptionWhenSuppliedWithNullRunnable() throws Exception {
-		exception.expect(IllegalArgumentException.class);
+		this.exception.expect(IllegalArgumentException.class);
 		new SimpleAsyncTaskExecutor().execute(null);
 	}
 

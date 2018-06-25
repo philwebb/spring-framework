@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -180,7 +180,7 @@ public class PrintingResultHandlerTests {
 
 		String heading = "MockHttpServletResponse";
 		assertValue(heading, "Status", this.response.getStatus());
-		assertValue(heading, "Error message", response.getErrorMessage());
+		assertValue(heading, "Error message", this.response.getErrorMessage());
 		assertValue(heading, "Headers", headers);
 		assertValue(heading, "Content type", this.response.getContentType());
 		assertValue(heading, "Body", this.response.getContentAsString());
@@ -267,7 +267,7 @@ public class PrintingResultHandlerTests {
 	public void printHandlerMethod() throws Exception {
 		HandlerMethod handlerMethod = new HandlerMethod(this, "handle");
 		this.mvcResult.setHandler(handlerMethod);
-		this.handler.handle(mvcResult);
+		this.handler.handle(this.mvcResult);
 
 		assertValue("Handler", "Type", this.getClass().getName());
 		assertValue("Handler", "Method", handlerMethod);
@@ -318,7 +318,7 @@ public class PrintingResultHandlerTests {
 
 	@Test
 	public void flashMapNull() throws Exception {
-		this.handler.handle(mvcResult);
+		this.handler.handle(this.mvcResult);
 
 		assertValue("FlashMap", "Type", null);
 	}

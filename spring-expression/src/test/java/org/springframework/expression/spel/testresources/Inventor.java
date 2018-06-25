@@ -62,48 +62,48 @@ public class Inventor {
 		this.birthdate = birthdate;
 		this.nationality = nationality;
 		this.arrayContainer = new ArrayContainer();
-		testMap = new HashMap<>();
-		testMap.put("monday", "montag");
-		testMap.put("tuesday", "dienstag");
-		testMap.put("wednesday", "mittwoch");
-		testMap.put("thursday", "donnerstag");
-		testMap.put("friday", "freitag");
-		testMap.put("saturday", "samstag");
-		testMap.put("sunday", "sonntag");
-		listOneFive.add(1);
-		listOneFive.add(5);
-		booleanList.add(false);
-		booleanList.add(false);
-		listOfNumbersUpToTen.add(1);
-		listOfNumbersUpToTen.add(2);
-		listOfNumbersUpToTen.add(3);
-		listOfNumbersUpToTen.add(4);
-		listOfNumbersUpToTen.add(5);
-		listOfNumbersUpToTen.add(6);
-		listOfNumbersUpToTen.add(7);
-		listOfNumbersUpToTen.add(8);
-		listOfNumbersUpToTen.add(9);
-		listOfNumbersUpToTen.add(10);
-		mapOfNumbersUpToTen.put(1,"one");
-		mapOfNumbersUpToTen.put(2,"two");
-		mapOfNumbersUpToTen.put(3,"three");
-		mapOfNumbersUpToTen.put(4,"four");
-		mapOfNumbersUpToTen.put(5,"five");
-		mapOfNumbersUpToTen.put(6,"six");
-		mapOfNumbersUpToTen.put(7,"seven");
-		mapOfNumbersUpToTen.put(8,"eight");
-		mapOfNumbersUpToTen.put(9,"nine");
-		mapOfNumbersUpToTen.put(10,"ten");
+		this.testMap = new HashMap<>();
+		this.testMap.put("monday", "montag");
+		this.testMap.put("tuesday", "dienstag");
+		this.testMap.put("wednesday", "mittwoch");
+		this.testMap.put("thursday", "donnerstag");
+		this.testMap.put("friday", "freitag");
+		this.testMap.put("saturday", "samstag");
+		this.testMap.put("sunday", "sonntag");
+		this.listOneFive.add(1);
+		this.listOneFive.add(5);
+		this.booleanList.add(false);
+		this.booleanList.add(false);
+		this.listOfNumbersUpToTen.add(1);
+		this.listOfNumbersUpToTen.add(2);
+		this.listOfNumbersUpToTen.add(3);
+		this.listOfNumbersUpToTen.add(4);
+		this.listOfNumbersUpToTen.add(5);
+		this.listOfNumbersUpToTen.add(6);
+		this.listOfNumbersUpToTen.add(7);
+		this.listOfNumbersUpToTen.add(8);
+		this.listOfNumbersUpToTen.add(9);
+		this.listOfNumbersUpToTen.add(10);
+		this.mapOfNumbersUpToTen.put(1,"one");
+		this.mapOfNumbersUpToTen.put(2,"two");
+		this.mapOfNumbersUpToTen.put(3,"three");
+		this.mapOfNumbersUpToTen.put(4,"four");
+		this.mapOfNumbersUpToTen.put(5,"five");
+		this.mapOfNumbersUpToTen.put(6,"six");
+		this.mapOfNumbersUpToTen.put(7,"seven");
+		this.mapOfNumbersUpToTen.put(8,"eight");
+		this.mapOfNumbersUpToTen.put(9,"nine");
+		this.mapOfNumbersUpToTen.put(10,"ten");
 	}
 
 	public void setPlaceOfBirth(PlaceOfBirth placeOfBirth2) {
-		placeOfBirth = placeOfBirth2;
+		this.placeOfBirth = placeOfBirth2;
 		this.placesLived = new PlaceOfBirth[] { placeOfBirth2 };
 		this.placesLivedList.add(placeOfBirth2);
 	}
 
 	public String[] getInventions() {
-		return inventions;
+		return this.inventions;
 	}
 
 	public void setInventions(String[] inventions) {
@@ -111,11 +111,11 @@ public class Inventor {
 	}
 
 	public PlaceOfBirth getPlaceOfBirth() {
-		return placeOfBirth;
+		return this.placeOfBirth;
 	}
 
 	public int throwException(int valueIn) throws Exception {
-		counter++;
+		this.counter++;
 		if (valueIn==1) {
 			throw new IllegalArgumentException("IllegalArgumentException for 1");
 		}
@@ -136,11 +136,11 @@ public class Inventor {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public boolean getWonNobelPrize() {
-		return wonNobelPrize;
+		return this.wonNobelPrize;
 	}
 
 	public void setWonNobelPrize(boolean wonNobelPrize) {
@@ -148,7 +148,7 @@ public class Inventor {
 	}
 
 	public PlaceOfBirth[] getPlacesLived() {
-		return placesLived;
+		return this.placesLived;
 	}
 
 	public void setPlacesLived(PlaceOfBirth[] placesLived) {
@@ -156,7 +156,7 @@ public class Inventor {
 	}
 
 	public List<PlaceOfBirth> getPlacesLivedList() {
-		return placesLivedList;
+		return this.placesLivedList;
 	}
 
 	public void setPlacesLivedList(List<PlaceOfBirth> placesLivedList) {
@@ -209,7 +209,7 @@ public class Inventor {
 	}
 
 	public boolean getSomeProperty() {
-		return accessedThroughGetSet;
+		return this.accessedThroughGetSet;
 	}
 
 	public void setSomeProperty(boolean b) {
@@ -217,18 +217,18 @@ public class Inventor {
 	}
 
 	public Date getBirthdate() {
-		return birthdate;
+		return this.birthdate;
 	}
 
 	public String getFoo() {
-		return foo;
+		return this.foo;
 	}
 
 	public void setFoo(String s) {
-		foo = s;
+		this.foo = s;
 	}
 
 	public String getNationality() {
-		return nationality;
+		return this.nationality;
 	}
 }

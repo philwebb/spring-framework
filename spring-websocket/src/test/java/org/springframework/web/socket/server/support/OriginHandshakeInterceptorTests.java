@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,8 +52,8 @@ public class OriginHandshakeInterceptorTests extends AbstractHttpRequestTests {
 		this.servletRequest.addHeader(HttpHeaders.ORIGIN, "http://mydomain1.com");
 		List<String> allowed = Collections.singletonList("http://mydomain1.com");
 		OriginHandshakeInterceptor interceptor = new OriginHandshakeInterceptor(allowed);
-		assertTrue(interceptor.beforeHandshake(request, response, wsHandler, attributes));
-		assertNotEquals(servletResponse.getStatus(), HttpStatus.FORBIDDEN.value());
+		assertTrue(interceptor.beforeHandshake(this.request, this.response, wsHandler, attributes));
+		assertNotEquals(this.servletResponse.getStatus(), HttpStatus.FORBIDDEN.value());
 	}
 
 	@Test
@@ -63,8 +63,8 @@ public class OriginHandshakeInterceptorTests extends AbstractHttpRequestTests {
 		this.servletRequest.addHeader(HttpHeaders.ORIGIN, "http://mydomain1.com");
 		List<String> allowed = Collections.singletonList("http://mydomain2.com");
 		OriginHandshakeInterceptor interceptor = new OriginHandshakeInterceptor(allowed);
-		assertFalse(interceptor.beforeHandshake(request, response, wsHandler, attributes));
-		assertEquals(servletResponse.getStatus(), HttpStatus.FORBIDDEN.value());
+		assertFalse(interceptor.beforeHandshake(this.request, this.response, wsHandler, attributes));
+		assertEquals(this.servletResponse.getStatus(), HttpStatus.FORBIDDEN.value());
 	}
 
 	@Test
@@ -74,8 +74,8 @@ public class OriginHandshakeInterceptorTests extends AbstractHttpRequestTests {
 		this.servletRequest.addHeader(HttpHeaders.ORIGIN, "http://mydomain2.com");
 		List<String> allowed = Arrays.asList("http://mydomain1.com", "http://mydomain2.com", "http://mydomain3.com");
 		OriginHandshakeInterceptor interceptor = new OriginHandshakeInterceptor(allowed);
-		assertTrue(interceptor.beforeHandshake(request, response, wsHandler, attributes));
-		assertNotEquals(servletResponse.getStatus(), HttpStatus.FORBIDDEN.value());
+		assertTrue(interceptor.beforeHandshake(this.request, this.response, wsHandler, attributes));
+		assertNotEquals(this.servletResponse.getStatus(), HttpStatus.FORBIDDEN.value());
 	}
 
 	@Test
@@ -85,8 +85,8 @@ public class OriginHandshakeInterceptorTests extends AbstractHttpRequestTests {
 		this.servletRequest.addHeader(HttpHeaders.ORIGIN, "http://mydomain4.com");
 		List<String> allowed = Arrays.asList("http://mydomain1.com", "http://mydomain2.com", "http://mydomain3.com");
 		OriginHandshakeInterceptor interceptor = new OriginHandshakeInterceptor(allowed);
-		assertFalse(interceptor.beforeHandshake(request, response, wsHandler, attributes));
-		assertEquals(servletResponse.getStatus(), HttpStatus.FORBIDDEN.value());
+		assertFalse(interceptor.beforeHandshake(this.request, this.response, wsHandler, attributes));
+		assertEquals(this.servletResponse.getStatus(), HttpStatus.FORBIDDEN.value());
 	}
 
 	@Test
@@ -98,8 +98,8 @@ public class OriginHandshakeInterceptorTests extends AbstractHttpRequestTests {
 		Set<String> allowedOrigins = new ConcurrentSkipListSet<>();
 		allowedOrigins.add("http://mydomain1.com");
 		interceptor.setAllowedOrigins(allowedOrigins);
-		assertFalse(interceptor.beforeHandshake(request, response, wsHandler, attributes));
-		assertEquals(servletResponse.getStatus(), HttpStatus.FORBIDDEN.value());
+		assertFalse(interceptor.beforeHandshake(this.request, this.response, wsHandler, attributes));
+		assertEquals(this.servletResponse.getStatus(), HttpStatus.FORBIDDEN.value());
 	}
 
 	@Test
@@ -109,8 +109,8 @@ public class OriginHandshakeInterceptorTests extends AbstractHttpRequestTests {
 		this.servletRequest.addHeader(HttpHeaders.ORIGIN, "http://mydomain1.com");
 		OriginHandshakeInterceptor interceptor = new OriginHandshakeInterceptor();
 		interceptor.setAllowedOrigins(Collections.singletonList("*"));
-		assertTrue(interceptor.beforeHandshake(request, response, wsHandler, attributes));
-		assertNotEquals(servletResponse.getStatus(), HttpStatus.FORBIDDEN.value());
+		assertTrue(interceptor.beforeHandshake(this.request, this.response, wsHandler, attributes));
+		assertNotEquals(this.servletResponse.getStatus(), HttpStatus.FORBIDDEN.value());
 	}
 
 	@Test
@@ -120,8 +120,8 @@ public class OriginHandshakeInterceptorTests extends AbstractHttpRequestTests {
 		this.servletRequest.addHeader(HttpHeaders.ORIGIN, "http://mydomain2.com");
 		this.servletRequest.setServerName("mydomain2.com");
 		OriginHandshakeInterceptor interceptor = new OriginHandshakeInterceptor(Collections.emptyList());
-		assertTrue(interceptor.beforeHandshake(request, response, wsHandler, attributes));
-		assertNotEquals(servletResponse.getStatus(), HttpStatus.FORBIDDEN.value());
+		assertTrue(interceptor.beforeHandshake(this.request, this.response, wsHandler, attributes));
+		assertNotEquals(this.servletResponse.getStatus(), HttpStatus.FORBIDDEN.value());
 	}
 
 	@Test
@@ -131,8 +131,8 @@ public class OriginHandshakeInterceptorTests extends AbstractHttpRequestTests {
 		this.servletRequest.addHeader(HttpHeaders.ORIGIN, "http://mydomain2.com");
 		this.servletRequest.setServerName("mydomain2.com");
 		OriginHandshakeInterceptor interceptor = new OriginHandshakeInterceptor(Arrays.asList("http://mydomain1.com"));
-		assertTrue(interceptor.beforeHandshake(request, response, wsHandler, attributes));
-		assertNotEquals(servletResponse.getStatus(), HttpStatus.FORBIDDEN.value());
+		assertTrue(interceptor.beforeHandshake(this.request, this.response, wsHandler, attributes));
+		assertNotEquals(this.servletResponse.getStatus(), HttpStatus.FORBIDDEN.value());
 	}
 
 	@Test
@@ -142,8 +142,8 @@ public class OriginHandshakeInterceptorTests extends AbstractHttpRequestTests {
 		this.servletRequest.addHeader(HttpHeaders.ORIGIN, "http://mydomain3.com");
 		this.servletRequest.setServerName("mydomain2.com");
 		OriginHandshakeInterceptor interceptor = new OriginHandshakeInterceptor(Collections.emptyList());
-		assertFalse(interceptor.beforeHandshake(request, response, wsHandler, attributes));
-		assertEquals(servletResponse.getStatus(), HttpStatus.FORBIDDEN.value());
+		assertFalse(interceptor.beforeHandshake(this.request, this.response, wsHandler, attributes));
+		assertEquals(this.servletResponse.getStatus(), HttpStatus.FORBIDDEN.value());
 	}
 
 }

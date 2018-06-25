@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -151,12 +151,12 @@ public class FactoryBeanTests {
 		}
 
 		public Beta getBeta() {
-			return beta;
+			return this.beta;
 		}
 
 		@Override
 		public void afterPropertiesSet() {
-			Assert.notNull(beta, "'beta' property is required");
+			Assert.notNull(this.beta, "'beta' property is required");
 		}
 	}
 
@@ -172,7 +172,7 @@ public class FactoryBeanTests {
 		}
 
 		public Gamma getGamma() {
-			return gamma;
+			return this.gamma;
 		}
 
 		public void setName(String name) {
@@ -180,12 +180,12 @@ public class FactoryBeanTests {
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		@Override
 		public void afterPropertiesSet() {
-			Assert.notNull(gamma, "'gamma' property is required");
+			Assert.notNull(this.gamma, "'gamma' property is required");
 		}
 	}
 
@@ -252,15 +252,15 @@ public class FactoryBeanTests {
 
 		@Override
 		public T getObject() {
-			if (instance == null) {
-				instance = beanFactory.getBean(instanceName, type);
+			if (this.instance == null) {
+				this.instance = this.beanFactory.getBean(this.instanceName, this.type);
 			}
-			return instance;
+			return this.instance;
 		}
 
 		@Override
 		public Class<?> getObjectType() {
-			return type;
+			return this.type;
 		}
 
 		@Override
@@ -284,17 +284,17 @@ public class FactoryBeanTests {
 			if (bean instanceof FactoryBean) {
 				return bean;
 			}
-			AtomicInteger c = count.get(beanName);
+			AtomicInteger c = this.count.get(beanName);
 			if (c == null) {
 				c = new AtomicInteger(0);
-				count.put(beanName, c);
+				this.count.put(beanName, c);
 			}
 			c.incrementAndGet();
 			return bean;
 		}
 
 		public int getCount(String beanName) {
-			AtomicInteger c = count.get(beanName);
+			AtomicInteger c = this.count.get(beanName);
 			if (c != null) {
 				return c.intValue();
 			}
@@ -310,7 +310,7 @@ public class FactoryBeanTests {
 		private BeanImpl2 impl2;
 
 		public BeanImpl2 getImpl2() {
-			return impl2;
+			return this.impl2;
 		}
 
 		public void setImpl2(BeanImpl2 impl2) {
@@ -324,7 +324,7 @@ public class FactoryBeanTests {
 		private BeanImpl1 impl1;
 
 		public BeanImpl1 getImpl1() {
-			return impl1;
+			return this.impl1;
 		}
 
 		public void setImpl1(BeanImpl1 impl1) {

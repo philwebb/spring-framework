@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2014 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -77,7 +77,7 @@ public class LobSupportTests {
 	public void testAbstractLobStreamingResultSetExtractorNoRows() throws SQLException {
 		ResultSet rset = mock(ResultSet.class);
 		AbstractLobStreamingResultSetExtractor<Void> lobRse = getResultSetExtractor(false);
-		thrown.expect(IncorrectResultSizeDataAccessException.class);
+		this.thrown.expect(IncorrectResultSizeDataAccessException.class);
 		try {
 			lobRse.extractData(rset);
 		}
@@ -101,7 +101,7 @@ public class LobSupportTests {
 		ResultSet rset = mock(ResultSet.class);
 		given(rset.next()).willReturn(true, true, false);
 		AbstractLobStreamingResultSetExtractor<Void> lobRse = getResultSetExtractor(false);
-		thrown.expect(IncorrectResultSizeDataAccessException.class);
+		this.thrown.expect(IncorrectResultSizeDataAccessException.class);
 		try {
 			lobRse.extractData(rset);
 		}
@@ -116,7 +116,7 @@ public class LobSupportTests {
 		ResultSet rset = mock(ResultSet.class);
 		given(rset.next()).willReturn(true);
 		AbstractLobStreamingResultSetExtractor<Void> lobRse = getResultSetExtractor(true);
-		thrown.expect(LobRetrievalFailureException.class);
+		this.thrown.expect(LobRetrievalFailureException.class);
 		lobRse.extractData(rset);
 	}
 

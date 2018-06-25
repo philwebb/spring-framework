@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -107,7 +107,7 @@ public class ViewControllerRegistryTests {
 		redirectView.render(Collections.emptyMap(), this.request, this.response);
 
 		assertEquals(308, this.response.getStatus());
-		assertEquals("/redirectTo?a=b", response.getRedirectedUrl());
+		assertEquals("/redirectTo?a=b", this.response.getRedirectedUrl());
 		assertNotNull(redirectView.getApplicationContext());
 	}
 

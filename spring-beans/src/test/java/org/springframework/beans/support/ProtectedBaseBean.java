@@ -29,7 +29,7 @@ class ProtectedBaseBean {
 	}
 
 	public String getSomeProperty() {
-		return someProperty;
+		return this.someProperty;
 	}
 
 }

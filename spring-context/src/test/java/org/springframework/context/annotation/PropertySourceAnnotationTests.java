@@ -225,8 +225,8 @@ public class PropertySourceAnnotationTests {
 
 	@Test
 	public void withMissingPropertySource() {
-		thrown.expect(BeanDefinitionStoreException.class);
-		thrown.expectCause(isA(FileNotFoundException.class));
+		this.thrown.expect(BeanDefinitionStoreException.class);
+		this.thrown.expectCause(isA(FileNotFoundException.class));
 		new AnnotationConfigApplicationContext(ConfigWithMissingPropertySource.class);
 	}
 
@@ -288,7 +288,7 @@ public class PropertySourceAnnotationTests {
 
 		@Bean
 		public TestBean testBean() {
-			return new TestBean(env.getProperty("testbean.name"));
+			return new TestBean(this.env.getProperty("testbean.name"));
 		}
 	}
 
@@ -302,7 +302,7 @@ public class PropertySourceAnnotationTests {
 
 		@Bean
 		public TestBean testBean() {
-			return new TestBean(env.getProperty("testbean.name"));
+			return new TestBean(this.env.getProperty("testbean.name"));
 		}
 	}
 
@@ -316,7 +316,7 @@ public class PropertySourceAnnotationTests {
 
 		@Bean
 		public FactoryBean testBean() {
-			final String name = env.getProperty("testbean.name");
+			final String name = this.env.getProperty("testbean.name");
 			return new FactoryBean() {
 				@Override
 				public Object getObject() {
@@ -344,7 +344,7 @@ public class PropertySourceAnnotationTests {
 
 		@Bean
 		public TestBean testBean() {
-			return new TestBean(env.getProperty("testbean.name"));
+			return new TestBean(this.env.getProperty("testbean.name"));
 		}
 	}
 
@@ -358,7 +358,7 @@ public class PropertySourceAnnotationTests {
 
 		@Bean
 		public TestBean testBean() {
-			return new TestBean(env.getProperty("testbean.name"));
+			return new TestBean(this.env.getProperty("testbean.name"));
 		}
 	}
 
@@ -374,7 +374,7 @@ public class PropertySourceAnnotationTests {
 		@Bean
 		@Profile("test")
 		public TestBean testBean() {
-			return new TestBean(env.getProperty("testbean.name"));
+			return new TestBean(this.env.getProperty("testbean.name"));
 		}
 	}
 

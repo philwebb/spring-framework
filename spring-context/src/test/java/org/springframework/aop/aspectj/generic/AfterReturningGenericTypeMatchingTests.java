@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,51 +52,51 @@ public class AfterReturningGenericTypeMatchingTests {
 		ClassPathXmlApplicationContext ctx =
 			new ClassPathXmlApplicationContext(getClass().getSimpleName() + "-context.xml", getClass());
 
-		counterAspect = (CounterAspect) ctx.getBean("counterAspect");
-		counterAspect.reset();
+		this.counterAspect = (CounterAspect) ctx.getBean("counterAspect");
+		this.counterAspect.reset();
 
-		testBean = (GenericReturnTypeVariationClass) ctx.getBean("testBean");
+		this.testBean = (GenericReturnTypeVariationClass) ctx.getBean("testBean");
 	}
 
 	@Test
 	public void testReturnTypeExactMatching() {
-		testBean.getStrings();
-		assertEquals(1, counterAspect.getStringsInvocationsCount);
-		assertEquals(0, counterAspect.getIntegersInvocationsCount);
+		this.testBean.getStrings();
+		assertEquals(1, this.counterAspect.getStringsInvocationsCount);
+		assertEquals(0, this.counterAspect.getIntegersInvocationsCount);
 
-		counterAspect.reset();
+		this.counterAspect.reset();
 
-		testBean.getIntegers();
-		assertEquals(0, counterAspect.getStringsInvocationsCount);
-		assertEquals(1, counterAspect.getIntegersInvocationsCount);
+		this.testBean.getIntegers();
+		assertEquals(0, this.counterAspect.getStringsInvocationsCount);
+		assertEquals(1, this.counterAspect.getIntegersInvocationsCount);
 	}
 
 	@Test
 	public void testReturnTypeRawMatching() {
-		testBean.getStrings();
-		assertEquals(1, counterAspect.getRawsInvocationsCount);
+		this.testBean.getStrings();
+		assertEquals(1, this.counterAspect.getRawsInvocationsCount);
 
-		counterAspect.reset();
+		this.counterAspect.reset();
 
-		testBean.getIntegers();
-		assertEquals(1, counterAspect.getRawsInvocationsCount);
+		this.testBean.getIntegers();
+		assertEquals(1, this.counterAspect.getRawsInvocationsCount);
 	}
 
 	@Test
 	public void testReturnTypeUpperBoundMatching() {
-		testBean.getIntegers();
-		assertEquals(1, counterAspect.getNumbersInvocationsCount);
+		this.testBean.getIntegers();
+		assertEquals(1, this.counterAspect.getNumbersInvocationsCount);
 	}
 
 	@Test
 	public void testReturnTypeLowerBoundMatching() {
-		testBean.getTestBeans();
-		assertEquals(1, counterAspect.getTestBeanInvocationsCount);
+		this.testBean.getTestBeans();
+		assertEquals(1, this.counterAspect.getTestBeanInvocationsCount);
 
-		counterAspect.reset();
+		this.counterAspect.reset();
 
-		testBean.getEmployees();
-		assertEquals(0, counterAspect.getTestBeanInvocationsCount);
+		this.testBean.getEmployees();
+		assertEquals(0, this.counterAspect.getTestBeanInvocationsCount);
 	}
 
 }
@@ -141,35 +141,35 @@ class CounterAspect {
 
 	@AfterReturning(pointcut = "anyTestMethod()", returning = "ret")
 	public void incrementGetRawsInvocationsCount(Collection<?> ret) {
-		getRawsInvocationsCount++;
+		this.getRawsInvocationsCount++;
 	}
 
 	@AfterReturning(pointcut = "anyTestMethod()", returning = "ret")
 	public void incrementGetStringsInvocationsCount(Collection<String> ret) {
-		getStringsInvocationsCount++;
+		this.getStringsInvocationsCount++;
 	}
 
 	@AfterReturning(pointcut = "anyTestMethod()", returning = "ret")
 	public void incrementGetIntegersInvocationsCount(Collection<Integer> ret) {
-		getIntegersInvocationsCount++;
+		this.getIntegersInvocationsCount++;
 	}
 
 	@AfterReturning(pointcut = "anyTestMethod()", returning = "ret")
 	public void incrementGetNumbersInvocationsCount(Collection<? extends Number> ret) {
-		getNumbersInvocationsCount++;
+		this.getNumbersInvocationsCount++;
 	}
 
 	@AfterReturning(pointcut = "anyTestMethod()", returning = "ret")
 	public void incrementTestBeanInvocationsCount(Collection<? super TestBean> ret) {
-		getTestBeanInvocationsCount++;
+		this.getTestBeanInvocationsCount++;
 	}
 
 	public void reset() {
-		getRawsInvocationsCount = 0;
-		getStringsInvocationsCount = 0;
-		getIntegersInvocationsCount = 0;
-		getNumbersInvocationsCount = 0;
-		getTestBeanInvocationsCount = 0;
+		this.getRawsInvocationsCount = 0;
+		this.getStringsInvocationsCount = 0;
+		this.getIntegersInvocationsCount = 0;
+		this.getNumbersInvocationsCount = 0;
+		this.getTestBeanInvocationsCount = 0;
 	}
 }
 

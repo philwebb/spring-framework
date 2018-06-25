@@ -45,9 +45,9 @@ public class ThreadPoolTaskSchedulerTests extends AbstractSchedulingTaskExecutor
 
 	@Override
 	protected AsyncListenableTaskExecutor buildExecutor() {
-		scheduler.setThreadNamePrefix(THREAD_NAME_PREFIX);
-		scheduler.afterPropertiesSet();
-		return scheduler;
+		this.scheduler.setThreadNamePrefix(THREAD_NAME_PREFIX);
+		this.scheduler.afterPropertiesSet();
+		return this.scheduler;
 	}
 
 
@@ -55,8 +55,8 @@ public class ThreadPoolTaskSchedulerTests extends AbstractSchedulingTaskExecutor
 	public void executeFailingRunnableWithErrorHandler() {
 		TestTask task = new TestTask(0);
 		TestErrorHandler errorHandler = new TestErrorHandler(1);
-		scheduler.setErrorHandler(errorHandler);
-		scheduler.execute(task);
+		this.scheduler.setErrorHandler(errorHandler);
+		this.scheduler.execute(task);
 		await(errorHandler);
 		assertNotNull(errorHandler.lastError);
 	}
@@ -65,8 +65,8 @@ public class ThreadPoolTaskSchedulerTests extends AbstractSchedulingTaskExecutor
 	public void submitFailingRunnableWithErrorHandler() throws Exception {
 		TestTask task = new TestTask(0);
 		TestErrorHandler errorHandler = new TestErrorHandler(1);
-		scheduler.setErrorHandler(errorHandler);
-		Future<?> future = scheduler.submit(task);
+		this.scheduler.setErrorHandler(errorHandler);
+		Future<?> future = this.scheduler.submit(task);
 		Object result = future.get(1000, TimeUnit.MILLISECONDS);
 		assertTrue(future.isDone());
 		assertNull(result);
@@ -77,8 +77,8 @@ public class ThreadPoolTaskSchedulerTests extends AbstractSchedulingTaskExecutor
 	public void submitFailingCallableWithErrorHandler() throws Exception {
 		TestCallable task = new TestCallable(0);
 		TestErrorHandler errorHandler = new TestErrorHandler(1);
-		scheduler.setErrorHandler(errorHandler);
-		Future<String> future = scheduler.submit(task);
+		this.scheduler.setErrorHandler(errorHandler);
+		Future<String> future = this.scheduler.submit(task);
 		Object result = future.get(1000, TimeUnit.MILLISECONDS);
 		assertTrue(future.isDone());
 		assertNull(result);
@@ -88,7 +88,7 @@ public class ThreadPoolTaskSchedulerTests extends AbstractSchedulingTaskExecutor
 	@Test
 	public void scheduleOneTimeTask() throws Exception {
 		TestTask task = new TestTask(1);
-		Future<?> future = scheduler.schedule(task, new Date());
+		Future<?> future = this.scheduler.schedule(task, new Date());
 		Object result = future.get(1000, TimeUnit.MILLISECONDS);
 		assertNull(result);
 		assertTrue(future.isDone());
@@ -98,7 +98,7 @@ public class ThreadPoolTaskSchedulerTests extends AbstractSchedulingTaskExecutor
 	@Test(expected = ExecutionException.class)
 	public void scheduleOneTimeFailingTaskWithoutErrorHandler() throws Exception {
 		TestTask task = new TestTask(0);
-		Future<?> future = scheduler.schedule(task, new Date());
+		Future<?> future = this.scheduler.schedule(task, new Date());
 		try {
 			future.get(1000, TimeUnit.MILLISECONDS);
 		}
@@ -112,8 +112,8 @@ public class ThreadPoolTaskSchedulerTests extends AbstractSchedulingTaskExecutor
 	public void scheduleOneTimeFailingTaskWithErrorHandler() throws Exception {
 		TestTask task = new TestTask(0);
 		TestErrorHandler errorHandler = new TestErrorHandler(1);
-		scheduler.setErrorHandler(errorHandler);
-		Future<?> future = scheduler.schedule(task, new Date());
+		this.scheduler.setErrorHandler(errorHandler);
+		Future<?> future = this.scheduler.schedule(task, new Date());
 		Object result = future.get(1000, TimeUnit.MILLISECONDS);
 		assertTrue(future.isDone());
 		assertNull(result);
@@ -123,7 +123,7 @@ public class ThreadPoolTaskSchedulerTests extends AbstractSchedulingTaskExecutor
 	@Test
 	public void scheduleTriggerTask() throws Exception {
 		TestTask task = new TestTask(3);
-		Future<?> future = scheduler.schedule(task, new TestTrigger(3));
+		Future<?> future = this.scheduler.schedule(task, new TestTrigger(3));
 		Object result = future.get(1000, TimeUnit.MILLISECONDS);
 		assertNull(result);
 		await(task);
@@ -178,11 +178,11 @@ public class ThreadPoolTaskSchedulerTests extends AbstractSchedulingTaskExecutor
 
 		@Override
 		public void run() {
-			lastThread = Thread.currentThread();
-			if (actualRunCount.incrementAndGet() > expectedRunCount) {
+			this.lastThread = Thread.currentThread();
+			if (this.actualRunCount.incrementAndGet() > this.expectedRunCount) {
 				throw new RuntimeException("intentional test failure");
 			}
-			latch.countDown();
+			this.latch.countDown();
 		}
 	}
 
@@ -199,7 +199,7 @@ public class ThreadPoolTaskSchedulerTests extends AbstractSchedulingTaskExecutor
 
 		@Override
 		public String call() throws Exception {
-			if (actualRunCount.incrementAndGet() > expectedRunCount) {
+			if (this.actualRunCount.incrementAndGet() > this.expectedRunCount) {
 				throw new RuntimeException("intentional test failure");
 			}
 			return Thread.currentThread().getName();

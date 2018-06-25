@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ public class JettyWebSocketSessionTests {
 	@SuppressWarnings("resource")
 	public void getPrincipalWithConstructorArg() {
 		TestPrincipal user = new TestPrincipal("joe");
-		JettyWebSocketSession session = new JettyWebSocketSession(attributes, user);
+		JettyWebSocketSession session = new JettyWebSocketSession(this.attributes, user);
 
 		assertSame(user, session.getPrincipal());
 	}
@@ -66,7 +66,7 @@ public class JettyWebSocketSessionTests {
 		given(nativeSession.getUpgradeRequest()).willReturn(request);
 		given(nativeSession.getUpgradeResponse()).willReturn(response);
 
-		JettyWebSocketSession session = new JettyWebSocketSession(attributes);
+		JettyWebSocketSession session = new JettyWebSocketSession(this.attributes);
 		session.initializeNativeSession(nativeSession);
 
 		reset(nativeSession);
@@ -88,7 +88,7 @@ public class JettyWebSocketSessionTests {
 		given(nativeSession.getUpgradeRequest()).willReturn(request);
 		given(nativeSession.getUpgradeResponse()).willReturn(response);
 
-		JettyWebSocketSession session = new JettyWebSocketSession(attributes);
+		JettyWebSocketSession session = new JettyWebSocketSession(this.attributes);
 		session.initializeNativeSession(nativeSession);
 
 		reset(nativeSession);
@@ -112,7 +112,7 @@ public class JettyWebSocketSessionTests {
 		given(nativeSession.getUpgradeRequest()).willReturn(request);
 		given(nativeSession.getUpgradeResponse()).willReturn(response);
 
-		JettyWebSocketSession session = new JettyWebSocketSession(attributes);
+		JettyWebSocketSession session = new JettyWebSocketSession(this.attributes);
 		session.initializeNativeSession(nativeSession);
 
 		reset(nativeSession);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,26 +56,26 @@ public class RequestAndSessionScopedBeansWacTests {
 		final String beanName = "requestScopedTestBean";
 		final String contextPath = "/path";
 
-		assertNull(request.getAttribute(beanName));
+		assertNull(this.request.getAttribute(beanName));
 
-		request.setContextPath(contextPath);
-		TestBean testBean = wac.getBean(beanName, TestBean.class);
+		this.request.setContextPath(contextPath);
+		TestBean testBean = this.wac.getBean(beanName, TestBean.class);
 
 		assertEquals(contextPath, testBean.getName());
-		assertSame(testBean, request.getAttribute(beanName));
-		assertSame(testBean, wac.getBean(beanName, TestBean.class));
+		assertSame(testBean, this.request.getAttribute(beanName));
+		assertSame(testBean, this.wac.getBean(beanName, TestBean.class));
 	}
 
 	@Test
 	public void sessionScope() throws Exception {
 		final String beanName = "sessionScopedTestBean";
 
-		assertNull(session.getAttribute(beanName));
+		assertNull(this.session.getAttribute(beanName));
 
-		TestBean testBean = wac.getBean(beanName, TestBean.class);
+		TestBean testBean = this.wac.getBean(beanName, TestBean.class);
 
-		assertSame(testBean, session.getAttribute(beanName));
-		assertSame(testBean, wac.getBean(beanName, TestBean.class));
+		assertSame(testBean, this.session.getAttribute(beanName));
+		assertSame(testBean, this.wac.getBean(beanName, TestBean.class));
 	}
 
 }

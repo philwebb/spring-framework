@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,16 +51,16 @@ public class SimpleJdbcInsertTests {
 
 	@Before
 	public void setUp() throws Exception {
-		connection = mock(Connection.class);
-		databaseMetaData = mock(DatabaseMetaData.class);
-		dataSource = mock(DataSource.class);
-		given(connection.getMetaData()).willReturn(databaseMetaData);
-		given(dataSource.getConnection()).willReturn(connection);
+		this.connection = mock(Connection.class);
+		this.databaseMetaData = mock(DatabaseMetaData.class);
+		this.dataSource = mock(DataSource.class);
+		given(this.connection.getMetaData()).willReturn(this.databaseMetaData);
+		given(this.dataSource.getConnection()).willReturn(this.connection);
 	}
 
 	@After
 	public void verifyClosed() throws Exception {
-		verify(connection).close();
+		verify(this.connection).close();
 	}
 
 
@@ -68,16 +68,16 @@ public class SimpleJdbcInsertTests {
 	public void testNoSuchTable() throws Exception {
 		ResultSet resultSet = mock(ResultSet.class);
 		given(resultSet.next()).willReturn(false);
-		given(databaseMetaData.getDatabaseProductName()).willReturn("MyDB");
-		given(databaseMetaData.getDatabaseProductName()).willReturn("MyDB");
-		given(databaseMetaData.getDatabaseProductVersion()).willReturn("1.0");
-		given(databaseMetaData.getUserName()).willReturn("me");
-		given(databaseMetaData.storesLowerCaseIdentifiers()).willReturn(true);
-		given(databaseMetaData.getTables(null, null, "x", null)).willReturn(resultSet);
+		given(this.databaseMetaData.getDatabaseProductName()).willReturn("MyDB");
+		given(this.databaseMetaData.getDatabaseProductName()).willReturn("MyDB");
+		given(this.databaseMetaData.getDatabaseProductVersion()).willReturn("1.0");
+		given(this.databaseMetaData.getUserName()).willReturn("me");
+		given(this.databaseMetaData.storesLowerCaseIdentifiers()).willReturn(true);
+		given(this.databaseMetaData.getTables(null, null, "x", null)).willReturn(resultSet);
 
-		SimpleJdbcInsert insert = new SimpleJdbcInsert(dataSource).withTableName("x");
+		SimpleJdbcInsert insert = new SimpleJdbcInsert(this.dataSource).withTableName("x");
 		// Shouldn't succeed in inserting into table which doesn't exist
-		thrown.expect(InvalidDataAccessApiUsageException.class);
+		this.thrown.expect(InvalidDataAccessApiUsageException.class);
 		try {
 			insert.execute(new HashMap<>());
 		}

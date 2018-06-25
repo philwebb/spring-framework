@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -92,13 +92,13 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 
 	@Test
 	public void getString() {
-		String s = template.getForObject(baseUrl + "/{method}", String.class, "get");
+		String s = this.template.getForObject(this.baseUrl + "/{method}", String.class, "get");
 		assertEquals("Invalid content", helloWorld, s);
 	}
 
 	@Test
 	public void getEntity() {
-		ResponseEntity<String> entity = template.getForEntity(baseUrl + "/{method}", String.class, "get");
+		ResponseEntity<String> entity = this.template.getForEntity(this.baseUrl + "/{method}", String.class, "get");
 		assertEquals("Invalid content", helloWorld, entity.getBody());
 		assertFalse("No headers", entity.getHeaders().isEmpty());
 		assertEquals("Invalid content-type", textContentType, entity.getHeaders().getContentType());
@@ -107,40 +107,40 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 
 	@Test
 	public void getNoResponse() {
-		String s = template.getForObject(baseUrl + "/get/nothing", String.class);
+		String s = this.template.getForObject(this.baseUrl + "/get/nothing", String.class);
 		assertNull("Invalid content", s);
 	}
 
 	@Test
 	public void getNoContentTypeHeader() throws UnsupportedEncodingException {
-		byte[] bytes = template.getForObject(baseUrl + "/get/nocontenttype", byte[].class);
+		byte[] bytes = this.template.getForObject(this.baseUrl + "/get/nocontenttype", byte[].class);
 		assertArrayEquals("Invalid content", helloWorld.getBytes("UTF-8"), bytes);
 	}
 
 	@Test
 	public void getNoContent() {
-		String s = template.getForObject(baseUrl + "/status/nocontent", String.class);
+		String s = this.template.getForObject(this.baseUrl + "/status/nocontent", String.class);
 		assertNull("Invalid content", s);
 
-		ResponseEntity<String> entity = template.getForEntity(baseUrl + "/status/nocontent", String.class);
+		ResponseEntity<String> entity = this.template.getForEntity(this.baseUrl + "/status/nocontent", String.class);
 		assertEquals("Invalid response code", HttpStatus.NO_CONTENT, entity.getStatusCode());
 		assertNull("Invalid content", entity.getBody());
 	}
 
 	@Test
 	public void getNotModified() {
-		String s = template.getForObject(baseUrl + "/status/notmodified", String.class);
+		String s = this.template.getForObject(this.baseUrl + "/status/notmodified", String.class);
 		assertNull("Invalid content", s);
 
-		ResponseEntity<String> entity = template.getForEntity(baseUrl + "/status/notmodified", String.class);
+		ResponseEntity<String> entity = this.template.getForEntity(this.baseUrl + "/status/notmodified", String.class);
 		assertEquals("Invalid response code", HttpStatus.NOT_MODIFIED, entity.getStatusCode());
 		assertNull("Invalid content", entity.getBody());
 	}
 
 	@Test
 	public void postForLocation() throws URISyntaxException {
-		URI location = template.postForLocation(baseUrl + "/{method}", helloWorld, "post");
-		assertEquals("Invalid location", new URI(baseUrl + "/post/1"), location);
+		URI location = this.template.postForLocation(this.baseUrl + "/{method}", helloWorld, "post");
+		assertEquals("Invalid location", new URI(this.baseUrl + "/post/1"), location);
 	}
 
 	@Test
@@ -148,13 +148,13 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 		HttpHeaders entityHeaders = new HttpHeaders();
 		entityHeaders.setContentType(new MediaType("text", "plain", StandardCharsets.ISO_8859_1));
 		HttpEntity<String> entity = new HttpEntity<>(helloWorld, entityHeaders);
-		URI location = template.postForLocation(baseUrl + "/{method}", entity, "post");
-		assertEquals("Invalid location", new URI(baseUrl + "/post/1"), location);
+		URI location = this.template.postForLocation(this.baseUrl + "/{method}", entity, "post");
+		assertEquals("Invalid location", new URI(this.baseUrl + "/post/1"), location);
 	}
 
 	@Test
 	public void postForObject() throws URISyntaxException {
-		String s = template.postForObject(baseUrl + "/{method}", helloWorld, String.class, "post");
+		String s = this.template.postForObject(this.baseUrl + "/{method}", helloWorld, String.class, "post");
 		assertEquals("Invalid content", helloWorld, s);
 	}
 
@@ -163,14 +163,14 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 		// JDK client does not support the PATCH method
 		Assume.assumeThat(this.clientHttpRequestFactory,
 				Matchers.not(Matchers.instanceOf(SimpleClientHttpRequestFactory.class)));
-		String s = template.patchForObject(baseUrl + "/{method}", helloWorld, String.class, "patch");
+		String s = this.template.patchForObject(this.baseUrl + "/{method}", helloWorld, String.class, "patch");
 		assertEquals("Invalid content", helloWorld, s);
 	}
 
 	@Test
 	public void notFound() {
 		try {
-			template.execute(baseUrl + "/status/notfound", HttpMethod.GET, null, null);
+			this.template.execute(this.baseUrl + "/status/notfound", HttpMethod.GET, null, null);
 			fail("HttpClientErrorException expected");
 		}
 		catch (HttpClientErrorException ex) {
@@ -183,7 +183,7 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 	@Test
 	public void serverError() {
 		try {
-			template.execute(baseUrl + "/status/server", HttpMethod.GET, null, null);
+			this.template.execute(this.baseUrl + "/status/server", HttpMethod.GET, null, null);
 			fail("HttpServerErrorException expected");
 		}
 		catch (HttpServerErrorException ex) {
@@ -195,20 +195,20 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 
 	@Test
 	public void optionsForAllow() throws URISyntaxException {
-		Set<HttpMethod> allowed = template.optionsForAllow(new URI(baseUrl + "/get"));
+		Set<HttpMethod> allowed = this.template.optionsForAllow(new URI(this.baseUrl + "/get"));
 		assertEquals("Invalid response",
 				EnumSet.of(HttpMethod.GET, HttpMethod.OPTIONS, HttpMethod.HEAD, HttpMethod.TRACE), allowed);
 	}
 
 	@Test
 	public void uri() throws InterruptedException, URISyntaxException {
-		String result = template.getForObject(baseUrl + "/uri/{query}", String.class, "Z\u00fcrich");
+		String result = this.template.getForObject(this.baseUrl + "/uri/{query}", String.class, "Z\u00fcrich");
 		assertEquals("Invalid request URI", "/uri/Z%C3%BCrich", result);
 
-		result = template.getForObject(baseUrl + "/uri/query={query}", String.class, "foo@bar");
+		result = this.template.getForObject(this.baseUrl + "/uri/query={query}", String.class, "foo@bar");
 		assertEquals("Invalid request URI", "/uri/query=foo@bar", result);
 
-		result = template.getForObject(baseUrl + "/uri/query={query}", String.class, "T\u014dky\u014d");
+		result = this.template.getForObject(this.baseUrl + "/uri/query={query}", String.class, "T\u014dky\u014d");
 		assertEquals("Invalid request URI", "/uri/query=T%C5%8Dky%C5%8D", result);
 	}
 
@@ -221,7 +221,7 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 		Resource logo = new ClassPathResource("/org/springframework/http/converter/logo.jpg");
 		parts.add("logo", logo);
 
-		template.postForLocation(baseUrl + "/multipart", parts);
+		this.template.postForLocation(this.baseUrl + "/multipart", parts);
 	}
 
 	@Test
@@ -231,7 +231,7 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 		form.add("name 2", "value 2+1");
 		form.add("name 2", "value 2+2");
 
-		template.postForLocation(baseUrl + "/form", form);
+		this.template.postForLocation(this.baseUrl + "/form", form);
 	}
 
 	@Test
@@ -240,7 +240,7 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 		requestHeaders.set("MyHeader", "MyValue");
 		HttpEntity<String> requestEntity = new HttpEntity<>(requestHeaders);
 		ResponseEntity<String> response =
-				template.exchange(baseUrl + "/{method}", HttpMethod.GET, requestEntity, String.class, "get");
+				this.template.exchange(this.baseUrl + "/{method}", HttpMethod.GET, requestEntity, String.class, "get");
 		assertEquals("Invalid content", helloWorld, response.getBody());
 	}
 
@@ -250,8 +250,8 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 		requestHeaders.set("MyHeader", "MyValue");
 		requestHeaders.setContentType(MediaType.TEXT_PLAIN);
 		HttpEntity<String> entity = new HttpEntity<>(helloWorld, requestHeaders);
-		HttpEntity<Void> result = template.exchange(baseUrl + "/{method}", POST, entity, Void.class, "post");
-		assertEquals("Invalid location", new URI(baseUrl + "/post/1"), result.getHeaders().getLocation());
+		HttpEntity<Void> result = this.template.exchange(this.baseUrl + "/{method}", POST, entity, Void.class, "post");
+		assertEquals("Invalid location", new URI(this.baseUrl + "/post/1"), result.getHeaders().getLocation());
 		assertFalse(result.hasBody());
 	}
 
@@ -264,7 +264,7 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 		bean.setWith2("with");
 		bean.setWithout("without");
 		HttpEntity<MySampleBean> entity = new HttpEntity<>(bean, entityHeaders);
-		String s = template.postForObject(baseUrl + "/jsonpost", entity, String.class);
+		String s = this.template.postForObject(this.baseUrl + "/jsonpost", entity, String.class);
 		assertTrue(s.contains("\"with1\":\"with\""));
 		assertTrue(s.contains("\"with2\":\"with\""));
 		assertTrue(s.contains("\"without\":\"without\""));
@@ -278,7 +278,7 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 		MappingJacksonValue jacksonValue = new MappingJacksonValue(bean);
 		jacksonValue.setSerializationView(MyJacksonView1.class);
 		HttpEntity<MappingJacksonValue> entity = new HttpEntity<>(jacksonValue, entityHeaders);
-		String s = template.postForObject(baseUrl + "/jsonpost", entity, String.class);
+		String s = this.template.postForObject(this.baseUrl + "/jsonpost", entity, String.class);
 		assertTrue(s.contains("\"with1\":\"with\""));
 		assertFalse(s.contains("\"with2\":\"with\""));
 		assertFalse(s.contains("\"without\":\"without\""));
@@ -286,7 +286,7 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 
 	@Test  // SPR-12123
 	public void serverPort() {
-		String s = template.getForObject("http://localhost:{port}/get", String.class, port);
+		String s = this.template.getForObject("http://localhost:{port}/get", String.class, this.port);
 		assertEquals("Invalid content", helloWorld, s);
 	}
 
@@ -297,17 +297,17 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 		list.add(new Bar("bar"));
 		ParameterizedTypeReference<?> typeReference = new ParameterizedTypeReference<List<ParentClass>>() {};
 		RequestEntity<List<ParentClass>> entity = RequestEntity
-				.post(new URI(baseUrl + "/jsonpost"))
+				.post(new URI(this.baseUrl + "/jsonpost"))
 				.contentType(new MediaType("application", "json", StandardCharsets.UTF_8))
 				.body(list, typeReference.getType());
-		String content = template.exchange(entity, String.class).getBody();
+		String content = this.template.exchange(entity, String.class).getBody();
 		assertTrue(content.contains("\"type\":\"foo\""));
 		assertTrue(content.contains("\"type\":\"bar\""));
 	}
 
 	@Test  // SPR-15015
 	public void postWithoutBody() throws Exception {
-		assertNull(template.postForObject(baseUrl + "/jsonpost", null, String.class));
+		assertNull(this.template.postForObject(this.baseUrl + "/jsonpost", null, String.class));
 	}
 
 
@@ -336,7 +336,7 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 		}
 
 		public String getWith1() {
-			return with1;
+			return this.with1;
 		}
 
 		public void setWith1(String with1) {
@@ -344,7 +344,7 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 		}
 
 		public String getWith2() {
-			return with2;
+			return this.with2;
 		}
 
 		public void setWith2(String with2) {
@@ -352,7 +352,7 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 		}
 
 		public String getWithout() {
-			return without;
+			return this.without;
 		}
 
 		public void setWithout(String without) {
@@ -374,7 +374,7 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 		}
 
 		public String getParentProperty() {
-			return parentProperty;
+			return this.parentProperty;
 		}
 
 		public void setParentProperty(String parentProperty) {

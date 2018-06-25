@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2012 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,26 +76,26 @@ public class AtBeanLiteModeScopeTests {
 
 	@Test
 	public void singletonLiteBean() {
-		assertNotNull(injectedSingletonBean);
-		assertTrue(injectedSingletonBean.isInitialized());
+		assertNotNull(this.injectedSingletonBean);
+		assertTrue(this.injectedSingletonBean.isInitialized());
 
-		LifecycleBean retrievedSingletonBean = applicationContext.getBean("singleton", LifecycleBean.class);
+		LifecycleBean retrievedSingletonBean = this.applicationContext.getBean("singleton", LifecycleBean.class);
 		assertNotNull(retrievedSingletonBean);
 		assertTrue(retrievedSingletonBean.isInitialized());
 
-		assertSame(injectedSingletonBean, retrievedSingletonBean);
+		assertSame(this.injectedSingletonBean, retrievedSingletonBean);
 	}
 
 	@Test
 	public void prototypeLiteBean() {
-		assertNotNull(injectedPrototypeBean);
-		assertTrue(injectedPrototypeBean.isInitialized());
+		assertNotNull(this.injectedPrototypeBean);
+		assertTrue(this.injectedPrototypeBean.isInitialized());
 
-		LifecycleBean retrievedPrototypeBean = applicationContext.getBean("prototype", LifecycleBean.class);
+		LifecycleBean retrievedPrototypeBean = this.applicationContext.getBean("prototype", LifecycleBean.class);
 		assertNotNull(retrievedPrototypeBean);
 		assertTrue(retrievedPrototypeBean.isInitialized());
 
-		assertNotSame(injectedPrototypeBean, retrievedPrototypeBean);
+		assertNotSame(this.injectedPrototypeBean, retrievedPrototypeBean);
 	}
 
 }

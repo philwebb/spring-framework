@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ public class CauchoRemotingTests {
 	@Test
 	public void hessianProxyFactoryBeanWithClassInsteadOfInterface() throws Exception {
 		HessianProxyFactoryBean factory = new HessianProxyFactoryBean();
-		exception.expect(IllegalArgumentException.class);
+		this.exception.expect(IllegalArgumentException.class);
 		factory.setServiceInterface(TestBean.class);
 	}
 
@@ -62,7 +62,7 @@ public class CauchoRemotingTests {
 		assertTrue(factory.getObject() instanceof ITestBean);
 		ITestBean bean = (ITestBean) factory.getObject();
 
-		exception.expect(RemoteAccessException.class);
+		this.exception.expect(RemoteAccessException.class);
 		bean.setName("test");
 	}
 
@@ -80,7 +80,7 @@ public class CauchoRemotingTests {
 		assertTrue(factory.getObject() instanceof ITestBean);
 		ITestBean bean = (ITestBean) factory.getObject();
 
-		exception.expect(RemoteAccessException.class);
+		this.exception.expect(RemoteAccessException.class);
 		bean.setName("test");
 	}
 
@@ -103,7 +103,7 @@ public class CauchoRemotingTests {
 		assertEquals("bean", proxyFactory.password);
 		assertTrue(proxyFactory.overloadEnabled);
 
-		exception.expect(RemoteAccessException.class);
+		this.exception.expect(RemoteAccessException.class);
 		bean.setName("test");
 	}
 

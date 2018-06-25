@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,11 +39,11 @@ public class CaffeineCacheTests extends AbstractValueAdaptingCacheTests<Caffeine
 
 	@Before
 	public void setUp() {
-		nativeCache = Caffeine.newBuilder().build();
-		cache = new CaffeineCache(CACHE_NAME, nativeCache);
+		this.nativeCache = Caffeine.newBuilder().build();
+		this.cache = new CaffeineCache(CACHE_NAME, this.nativeCache);
 		com.github.benmanes.caffeine.cache.Cache<Object, Object> nativeCacheNoNull
 				= Caffeine.newBuilder().build();
-		cacheNoNull =  new CaffeineCache(CACHE_NAME_NO_NULL, nativeCacheNoNull, false);
+		this.cacheNoNull =  new CaffeineCache(CACHE_NAME_NO_NULL, nativeCacheNoNull, false);
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public class CaffeineCacheTests extends AbstractValueAdaptingCacheTests<Caffeine
 
 	@Override
 	protected Object getNativeCache() {
-		return nativeCache;
+		return this.nativeCache;
 	}
 
 	@Test

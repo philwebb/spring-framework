@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2014 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,14 +68,14 @@ public class HybridContextLoaderTests {
 
 	@Test
 	public void verifyContentsOfHybridApplicationContext() {
-		assertEquals("XML", fooFromXml);
-		assertEquals("Java", fooFromJava);
+		assertEquals("XML", this.fooFromXml);
+		assertEquals("Java", this.fooFromJava);
 
 		// Note: the XML bean definition for "enigma" always wins since
 		// ConfigurationClassBeanDefinitionReader.isOverriddenByExistingDefinition()
 		// lets XML bean definitions override those "discovered" later via an
 		// @Bean method.
-		assertEquals("enigma from XML", enigma);
+		assertEquals("enigma from XML", this.enigma);
 	}
 
 }

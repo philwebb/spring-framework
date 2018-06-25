@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,27 +50,27 @@ public class BeanNamePointcutAtAspectTests {
 		ClassPathXmlApplicationContext ctx =
 				new ClassPathXmlApplicationContext(getClass().getSimpleName() + ".xml", getClass());
 
-		counterAspect = (CounterAspect) ctx.getBean("counterAspect");
-		testBean1 = (ITestBean) ctx.getBean("testBean1");
-		testBean3 = (ITestBean) ctx.getBean("testBean3");
+		this.counterAspect = (CounterAspect) ctx.getBean("counterAspect");
+		this.testBean1 = (ITestBean) ctx.getBean("testBean1");
+		this.testBean3 = (ITestBean) ctx.getBean("testBean3");
 	}
 
 	@Test
 	public void testMatchingBeanName() {
-		assertTrue("Expected a proxy", testBean1 instanceof Advised);
+		assertTrue("Expected a proxy", this.testBean1 instanceof Advised);
 
 		// Call two methods to test for SPR-3953-like condition
-		testBean1.setAge(20);
-		testBean1.setName("");
-		assertEquals(2, counterAspect.count);
+		this.testBean1.setAge(20);
+		this.testBean1.setName("");
+		assertEquals(2, this.counterAspect.count);
 	}
 
 	@Test
 	public void testNonMatchingBeanName() {
-		assertFalse("Didn't expect a proxy", testBean3 instanceof Advised);
+		assertFalse("Didn't expect a proxy", this.testBean3 instanceof Advised);
 
-		testBean3.setAge(20);
-		assertEquals(0, counterAspect.count);
+		this.testBean3.setAge(20);
+		assertEquals(0, this.counterAspect.count);
 	}
 
 	@Test
@@ -100,7 +100,7 @@ class CounterAspect {
 
 	@Before("execution(* set*(..)) && bean(testBean1)")
 	public void increment1ForAnonymousPointcut() {
-		count++;
+		this.count++;
 	}
 
 }

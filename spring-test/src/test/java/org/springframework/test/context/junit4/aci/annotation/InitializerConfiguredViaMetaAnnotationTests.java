@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,9 +66,9 @@ public class InitializerConfiguredViaMetaAnnotationTests {
 
 	@Test
 	public void beansFromInitializerAndComposedAnnotation() {
-		assertEquals(2, strings.size());
-		assertEquals("foo", foo);
-		assertEquals("bar", bar);
+		assertEquals(2, this.strings.size());
+		assertEquals("foo", this.foo);
+		assertEquals("bar", this.bar);
 	}
 
 

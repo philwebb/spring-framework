@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,17 +59,17 @@ public class WriteOnlyHandlerIntegrationTests extends AbstractHttpHandlerIntegra
 
 		this.body = randomBytes();
 		RequestEntity<byte[]> request = RequestEntity.post(
-				new URI("http://localhost:" + port)).body(
+				new URI("http://localhost:" + this.port)).body(
 						"".getBytes(StandardCharsets.UTF_8));
 		ResponseEntity<byte[]> response = restTemplate.exchange(request, byte[].class);
 
-		assertArrayEquals(body, response.getBody());
+		assertArrayEquals(this.body, response.getBody());
 	}
 
 
 	private byte[] randomBytes() {
 		byte[] buffer = new byte[REQUEST_SIZE];
-		rnd.nextBytes(buffer);
+		this.rnd.nextBytes(buffer);
 		return buffer;
 	}
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ public class AsyncIntegrationTests extends AbstractHttpHandlerIntegrationTests {
 	@Test
 	@Ignore  // TODO: fragile due to socket failures
 	public void basicTest() throws Exception {
-		URI url = new URI("http://localhost:" + port);
+		URI url = new URI("http://localhost:" + this.port);
 		ResponseEntity<String> response = new RestTemplate().exchange(
 				RequestEntity.get(url).build(), String.class);
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -95,7 +95,7 @@ public class InvocableHandlerMethodTests {
 
 	@Test
 	public void invokeAndHandle_withExchange() throws Exception {
-		Method method = on(VoidController.class).mockCall(c -> c.exchange(exchange)).method();
+		Method method = on(VoidController.class).mockCall(c -> c.exchange(this.exchange)).method();
 		HandlerResult result = invoke(new VoidController(), method, resolverFor(Mono.just(this.exchange)))
 				.block(Duration.ZERO);
 
@@ -105,7 +105,7 @@ public class InvocableHandlerMethodTests {
 
 	@Test
 	public void invokeAndHandle_withExchangeAndMonoVoid() throws Exception {
-		Method method = on(VoidController.class).mockCall(c -> c.exchangeMonoVoid(exchange)).method();
+		Method method = on(VoidController.class).mockCall(c -> c.exchangeMonoVoid(this.exchange)).method();
 		HandlerResult result = invoke(new VoidController(), method, resolverFor(Mono.just(this.exchange)))
 				.block(Duration.ZERO);
 

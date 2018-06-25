@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ public class PublisherHandlerFunctionIntegrationTests extends AbstractRouterFunc
 	@Test
 	public void mono() throws Exception {
 		ResponseEntity<Person> result =
-				restTemplate.getForEntity("http://localhost:" + port + "/mono", Person.class);
+				this.restTemplate.getForEntity("http://localhost:" + this.port + "/mono", Person.class);
 
 		assertEquals(HttpStatus.OK, result.getStatusCode());
 		assertEquals("John", result.getBody().getName());
@@ -66,7 +66,7 @@ public class PublisherHandlerFunctionIntegrationTests extends AbstractRouterFunc
 	public void flux() throws Exception {
 		ParameterizedTypeReference<List<Person>> reference = new ParameterizedTypeReference<List<Person>>() {};
 		ResponseEntity<List<Person>> result =
-				restTemplate.exchange("http://localhost:" + port + "/flux", HttpMethod.GET, null, reference);
+				this.restTemplate.exchange("http://localhost:" + this.port + "/flux", HttpMethod.GET, null, reference);
 
 		assertEquals(HttpStatus.OK, result.getStatusCode());
 		List<Person> body = result.getBody();
@@ -77,10 +77,10 @@ public class PublisherHandlerFunctionIntegrationTests extends AbstractRouterFunc
 
 	@Test
 	public void postMono() {
-		URI uri = URI.create("http://localhost:" + port + "/mono");
+		URI uri = URI.create("http://localhost:" + this.port + "/mono");
 		Person person = new Person("Jack");
 		RequestEntity<Person> requestEntity = RequestEntity.post(uri).body(person);
-		ResponseEntity<Person> result = restTemplate.exchange(requestEntity, Person.class);
+		ResponseEntity<Person> result = this.restTemplate.exchange(requestEntity, Person.class);
 
 		assertEquals(HttpStatus.OK, result.getStatusCode());
 		assertEquals("Jack", result.getBody().getName());
@@ -121,7 +121,7 @@ public class PublisherHandlerFunctionIntegrationTests extends AbstractRouterFunc
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		@SuppressWarnings("unused")
@@ -148,7 +148,7 @@ public class PublisherHandlerFunctionIntegrationTests extends AbstractRouterFunc
 
 		@Override
 		public String toString() {
-			return "Person{" + "name='" + name + '\'' + '}';
+			return "Person{" + "name='" + this.name + '\'' + '}';
 		}
 	}
 

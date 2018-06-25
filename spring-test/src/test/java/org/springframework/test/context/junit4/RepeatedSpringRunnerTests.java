@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -89,10 +89,10 @@ public class RepeatedSpringRunnerTests {
 	public void assertRepetitions() throws Exception {
 		invocationCount.set(0);
 
-		runTestsAndAssertCounters(getRunnerClass(), this.testClass, expectedStartedCount, expectedFailureCount,
-			expectedFinishedCount, 0, 0);
+		runTestsAndAssertCounters(getRunnerClass(), this.testClass, this.expectedStartedCount, this.expectedFailureCount,
+			this.expectedFinishedCount, 0, 0);
 
-		assertEquals("invocations for [" + testClass + "]:", expectedInvocationCount, invocationCount.get());
+		assertEquals("invocations for [" + this.testClass + "]:", this.expectedInvocationCount, invocationCount.get());
 	}
 
 

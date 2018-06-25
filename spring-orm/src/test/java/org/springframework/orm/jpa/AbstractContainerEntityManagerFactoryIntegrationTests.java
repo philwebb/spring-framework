@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,9 +43,9 @@ public abstract class AbstractContainerEntityManagerFactoryIntegrationTests exte
 
 	@Test
 	public void testEntityManagerFactoryImplementsEntityManagerFactoryInfo() {
-		assertTrue(Proxy.isProxyClass(entityManagerFactory.getClass()));
-		assertTrue("Must have introduced config interface", entityManagerFactory instanceof EntityManagerFactoryInfo);
-		EntityManagerFactoryInfo emfi = (EntityManagerFactoryInfo) entityManagerFactory;
+		assertTrue(Proxy.isProxyClass(this.entityManagerFactory.getClass()));
+		assertTrue("Must have introduced config interface", this.entityManagerFactory instanceof EntityManagerFactoryInfo);
+		EntityManagerFactoryInfo emfi = (EntityManagerFactoryInfo) this.entityManagerFactory;
 		// assertEquals("Person", emfi.getPersistenceUnitName());
 		assertNotNull("PersistenceUnitInfo must be available", emfi.getPersistenceUnitInfo());
 		assertNotNull("Raw EntityManagerFactory must be available", emfi.getNativeEntityManagerFactory());
@@ -80,19 +80,19 @@ public abstract class AbstractContainerEntityManagerFactoryIntegrationTests exte
 	@Test
 	@SuppressWarnings({ "unused", "unchecked" })
 	public void testEntityManagerProxyIsProxy() {
-		assertTrue(Proxy.isProxyClass(sharedEntityManager.getClass()));
-		Query q = sharedEntityManager.createQuery("select p from Person as p");
+		assertTrue(Proxy.isProxyClass(this.sharedEntityManager.getClass()));
+		Query q = this.sharedEntityManager.createQuery("select p from Person as p");
 		List<Person> people = q.getResultList();
 
-		assertTrue("Should be open to start with", sharedEntityManager.isOpen());
-		sharedEntityManager.close();
-		assertTrue("Close should have been silently ignored", sharedEntityManager.isOpen());
+		assertTrue("Should be open to start with", this.sharedEntityManager.isOpen());
+		this.sharedEntityManager.close();
+		assertTrue("Close should have been silently ignored", this.sharedEntityManager.isOpen());
 	}
 
 	@Test
 	public void testBogusQuery() {
 		try {
-			Query query = sharedEntityManager.createQuery("It's raining toads");
+			Query query = this.sharedEntityManager.createQuery("It's raining toads");
 			// required in OpenJPA case
 			query.executeUpdate();
 			fail("Should have thrown a RuntimeException");
@@ -105,7 +105,7 @@ public abstract class AbstractContainerEntityManagerFactoryIntegrationTests exte
 	@Test
 	public void testGetReferenceWhenNoRow() {
 		try {
-			Person notThere = sharedEntityManager.getReference(Person.class, 666);
+			Person notThere = this.sharedEntityManager.getReference(Person.class, 666);
 
 			// We may get here (as with Hibernate).
 			// Either behaviour is valid: throw exception on first access
@@ -125,13 +125,13 @@ public abstract class AbstractContainerEntityManagerFactoryIntegrationTests exte
 			tony.setFirstName("Tony");
 			tony.setLastName("Blair");
 			tony.setDriversLicense(new DriversLicense("8439DK"));
-			sharedEntityManager.persist(tony);
+			this.sharedEntityManager.persist(tony);
 			setComplete();
 			endTransaction();
 
 			startNewTransaction();
-			sharedEntityManager.clear();
-			Person newTony = entityManagerFactory.createEntityManager().getReference(Person.class, tony.getId());
+			this.sharedEntityManager.clear();
+			Person newTony = this.entityManagerFactory.createEntityManager().getReference(Person.class, tony.getId());
 			assertNotSame(newTony, tony);
 			endTransaction();
 
@@ -151,8 +151,8 @@ public abstract class AbstractContainerEntityManagerFactoryIntegrationTests exte
 		String firstName = "Tony";
 		insertPerson(firstName);
 
-		assertTrue(Proxy.isProxyClass(sharedEntityManager.getClass()));
-		Query q = sharedEntityManager.createQuery("select p from Person as p");
+		assertTrue(Proxy.isProxyClass(this.sharedEntityManager.getClass()));
+		Query q = this.sharedEntityManager.createQuery("select p from Person as p");
 		List<Person> people = q.getResultList();
 
 		assertEquals(1, people.size());
@@ -161,13 +161,13 @@ public abstract class AbstractContainerEntityManagerFactoryIntegrationTests exte
 
 	protected void insertPerson(String firstName) {
 		String INSERT_PERSON = "INSERT INTO PERSON (ID, FIRST_NAME, LAST_NAME) VALUES (?, ?, ?)";
-		jdbcTemplate.update(INSERT_PERSON, 1, firstName, "Blair");
+		this.jdbcTemplate.update(INSERT_PERSON, 1, firstName, "Blair");
 	}
 
 	@Test
 	public void testEntityManagerProxyRejectsProgrammaticTxManagement() {
 		try {
-			sharedEntityManager.getTransaction();
+			this.sharedEntityManager.getTransaction();
 			fail("Should not be able to create transactions on container managed EntityManager");
 		}
 		catch (IllegalStateException ex) {
@@ -176,7 +176,7 @@ public abstract class AbstractContainerEntityManagerFactoryIntegrationTests exte
 
 	@Test
 	public void testInstantiateAndSaveWithSharedEmProxy() {
-		testInstantiateAndSave(sharedEntityManager);
+		testInstantiateAndSave(this.sharedEntityManager);
 	}
 
 	protected void testInstantiateAndSave(EntityManager em) {
@@ -193,7 +193,7 @@ public abstract class AbstractContainerEntityManagerFactoryIntegrationTests exte
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testQueryNoPersons() {
-		EntityManager em = entityManagerFactory.createEntityManager();
+		EntityManager em = this.entityManagerFactory.createEntityManager();
 		Query q = em.createQuery("select p from Person as p");
 		List<Person> people = q.getResultList();
 		assertEquals(0, people.size());
@@ -209,7 +209,7 @@ public abstract class AbstractContainerEntityManagerFactoryIntegrationTests exte
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testQueryNoPersonsNotTransactional() {
-		EntityManager em = entityManagerFactory.createEntityManager();
+		EntityManager em = this.entityManagerFactory.createEntityManager();
 		Query q = em.createQuery("select p from Person as p");
 		List<Person> people = q.getResultList();
 		assertEquals(0, people.size());
@@ -225,7 +225,7 @@ public abstract class AbstractContainerEntityManagerFactoryIntegrationTests exte
 	@Test
 	@SuppressWarnings({ "unused", "unchecked" })
 	public void testQueryNoPersonsShared() {
-		EntityManager em = SharedEntityManagerCreator.createSharedEntityManager(entityManagerFactory);
+		EntityManager em = SharedEntityManagerCreator.createSharedEntityManager(this.entityManagerFactory);
 		Query q = em.createQuery("select p from Person as p");
 		q.setFlushMode(FlushModeType.AUTO);
 		List<Person> people = q.getResultList();
@@ -243,7 +243,7 @@ public abstract class AbstractContainerEntityManagerFactoryIntegrationTests exte
 	public void testQueryNoPersonsSharedNotTransactional() {
 		endTransaction();
 
-		EntityManager em = SharedEntityManagerCreator.createSharedEntityManager(entityManagerFactory);
+		EntityManager em = SharedEntityManagerCreator.createSharedEntityManager(this.entityManagerFactory);
 		Query q = em.createQuery("select p from Person as p");
 		q.setFlushMode(FlushModeType.AUTO);
 		List<Person> people = q.getResultList();
@@ -270,8 +270,8 @@ public abstract class AbstractContainerEntityManagerFactoryIntegrationTests exte
 
 	@Test
 	public void testCanSerializeProxies() throws Exception {
-		assertNotNull(SerializationTestUtils.serializeAndDeserialize(entityManagerFactory));
-		assertNotNull(SerializationTestUtils.serializeAndDeserialize(sharedEntityManager));
+		assertNotNull(SerializationTestUtils.serializeAndDeserialize(this.entityManagerFactory));
+		assertNotNull(SerializationTestUtils.serializeAndDeserialize(this.sharedEntityManager));
 	}
 
 }

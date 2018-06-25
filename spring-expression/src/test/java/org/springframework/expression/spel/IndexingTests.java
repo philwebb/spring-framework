@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -145,7 +145,7 @@ public class IndexingTests {
 		SpelExpressionParser parser = new SpelExpressionParser(new SpelParserConfiguration(true, false));
 		Expression expression = parser.parseExpression("parameterizedMap");
 		assertEquals("java.util.Map<java.lang.Integer, java.lang.Integer>", expression.getValueTypeDescriptor(this).toString());
-		assertEquals(property, expression.getValue(this));
+		assertEquals(this.property, expression.getValue(this));
 		expression = parser.parseExpression("parameterizedMap['9']");
 		assertEquals(null, expression.getValue(this));
 		expression.setValue(this, "37");
@@ -248,7 +248,7 @@ public class IndexingTests {
 		SpelExpressionParser parser = new SpelExpressionParser(configuration);
 		Expression expression = parser.parseExpression("property");
 		assertEquals("@org.springframework.expression.spel.IndexingTests$FieldAnnotation java.lang.Object", expression.getValueTypeDescriptor(this).toString());
-		assertEquals(property, expression.getValue(this));
+		assertEquals(this.property, expression.getValue(this));
 		expression = parser.parseExpression("property[0]");
 		try {
 			assertEquals("bar", expression.getValue(this));
@@ -310,7 +310,7 @@ public class IndexingTests {
 
 	@Test
 	public void emptyList() {
-		listOfScalarNotGeneric = new ArrayList();
+		this.listOfScalarNotGeneric = new ArrayList();
 		SpelExpressionParser parser = new SpelExpressionParser();
 		Expression expression = parser.parseExpression("listOfScalarNotGeneric");
 		assertEquals("java.util.ArrayList<?>", expression.getValueTypeDescriptor(this).toString());
@@ -320,9 +320,9 @@ public class IndexingTests {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void resolveCollectionElementType() {
-		listNotGeneric = new ArrayList(2);
-		listNotGeneric.add(5);
-		listNotGeneric.add(6);
+		this.listNotGeneric = new ArrayList(2);
+		this.listNotGeneric.add(5);
+		this.listNotGeneric.add(6);
 		SpelExpressionParser parser = new SpelExpressionParser();
 		Expression expression = parser.parseExpression("listNotGeneric");
 		assertEquals("@org.springframework.expression.spel.IndexingTests$FieldAnnotation java.util.ArrayList<?>", expression.getValueTypeDescriptor(this).toString());
@@ -348,9 +348,9 @@ public class IndexingTests {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void resolveMapKeyValueTypes() {
-		mapNotGeneric = new HashMap();
-		mapNotGeneric.put("baseAmount", 3.11);
-		mapNotGeneric.put("bonusAmount", 7.17);
+		this.mapNotGeneric = new HashMap();
+		this.mapNotGeneric.put("baseAmount", 3.11);
+		this.mapNotGeneric.put("bonusAmount", 7.17);
 		SpelExpressionParser parser = new SpelExpressionParser();
 		Expression expression = parser.parseExpression("mapNotGeneric");
 		assertEquals("@org.springframework.expression.spel.IndexingTests$FieldAnnotation java.util.HashMap<?, ?>", expression.getValueTypeDescriptor(this).toString());
@@ -362,8 +362,8 @@ public class IndexingTests {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testListOfScalar() {
-		listOfScalarNotGeneric = new ArrayList(1);
-		listOfScalarNotGeneric.add("5");
+		this.listOfScalarNotGeneric = new ArrayList(1);
+		this.listOfScalarNotGeneric.add("5");
 		SpelExpressionParser parser = new SpelExpressionParser();
 		Expression expression = parser.parseExpression("listOfScalarNotGeneric[0]");
 		assertEquals(new Integer(5), expression.getValue(this, Integer.class));
@@ -375,10 +375,10 @@ public class IndexingTests {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testListsOfMap() {
-		listOfMapsNotGeneric = new ArrayList();
+		this.listOfMapsNotGeneric = new ArrayList();
 		Map map = new HashMap();
 		map.put("fruit", "apple");
-		listOfMapsNotGeneric.add(map);
+		this.listOfMapsNotGeneric.add(map);
 		SpelExpressionParser parser = new SpelExpressionParser();
 		Expression expression = parser.parseExpression("listOfMapsNotGeneric[0]['fruit']");
 		assertEquals("apple", expression.getValue(this, String.class));

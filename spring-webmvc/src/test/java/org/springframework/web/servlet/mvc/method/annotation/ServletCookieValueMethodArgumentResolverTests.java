@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,31 +51,31 @@ public class ServletCookieValueMethodArgumentResolverTests {
 
 	@Before
 	public void setup() throws Exception {
-		resolver = new ServletCookieValueMethodArgumentResolver(null);
-		request = new MockHttpServletRequest();
-		webRequest = new ServletWebRequest(request, new MockHttpServletResponse());
+		this.resolver = new ServletCookieValueMethodArgumentResolver(null);
+		this.request = new MockHttpServletRequest();
+		this.webRequest = new ServletWebRequest(this.request, new MockHttpServletResponse());
 
 		Method method = getClass().getMethod("params", Cookie.class, String.class);
-		cookieParameter = new SynthesizingMethodParameter(method, 0);
-		cookieStringParameter = new SynthesizingMethodParameter(method, 1);
+		this.cookieParameter = new SynthesizingMethodParameter(method, 0);
+		this.cookieStringParameter = new SynthesizingMethodParameter(method, 1);
 	}
 
 
 	@Test
 	public void resolveCookieArgument() throws Exception {
 		Cookie expected = new Cookie("name", "foo");
-		request.setCookies(expected);
+		this.request.setCookies(expected);
 
-		Cookie result = (Cookie) resolver.resolveArgument(cookieParameter, null, webRequest, null);
+		Cookie result = (Cookie) this.resolver.resolveArgument(this.cookieParameter, null, this.webRequest, null);
 		assertEquals("Invalid result", expected, result);
 	}
 
 	@Test
 	public void resolveCookieStringArgument() throws Exception {
 		Cookie cookie = new Cookie("name", "foo");
-		request.setCookies(cookie);
+		this.request.setCookies(cookie);
 
-		String result = (String) resolver.resolveArgument(cookieStringParameter, null, webRequest, null);
+		String result = (String) this.resolver.resolveArgument(this.cookieStringParameter, null, this.webRequest, null);
 		assertEquals("Invalid result", cookie.getValue(), result);
 	}
 

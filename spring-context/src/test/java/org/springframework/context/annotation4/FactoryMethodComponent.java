@@ -64,7 +64,7 @@ public class FactoryMethodComponent {
 	@Bean
 	@Scope("prototype")
 	private TestBean privateInstance() {
-		return new TestBean("privateInstance", i++);
+		return new TestBean("privateInstance", this.i++);
 	}
 
 	@Bean

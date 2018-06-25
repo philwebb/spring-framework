@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ public class ApplicationManagedEntityManagerIntegrationTests extends AbstractEnt
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testEntityManagerProxyIsProxy() {
-		EntityManager em = entityManagerFactory.createEntityManager();
+		EntityManager em = this.entityManagerFactory.createEntityManager();
 		assertTrue(Proxy.isProxyClass(em.getClass()));
 		Query q = em.createQuery("select p from Person as p");
 		List<Person> people = q.getResultList();
@@ -54,20 +54,20 @@ public class ApplicationManagedEntityManagerIntegrationTests extends AbstractEnt
 
 	@Test
 	public void testEntityManagerProxyAcceptsProgrammaticTxJoining() {
-		EntityManager em = entityManagerFactory.createEntityManager();
+		EntityManager em = this.entityManagerFactory.createEntityManager();
 		em.joinTransaction();
 	}
 
 	@Test
 	public void testInstantiateAndSave() {
-		EntityManager em = entityManagerFactory.createEntityManager();
+		EntityManager em = this.entityManagerFactory.createEntityManager();
 		em.joinTransaction();
 		doInstantiateAndSave(em);
 	}
 
 	@Test
 	public void testCannotFlushWithoutGettingTransaction() {
-		EntityManager em = entityManagerFactory.createEntityManager();
+		EntityManager em = this.entityManagerFactory.createEntityManager();
 		try {
 			doInstantiateAndSave(em);
 			fail("Should have thrown TransactionRequiredException");
@@ -80,7 +80,7 @@ public class ApplicationManagedEntityManagerIntegrationTests extends AbstractEnt
 		// If Hibernate throws an exception due to flush(),
 		// it actually HAS flushed, meaning that the database
 		// was updated outside the transaction
-		deleteAllPeopleUsingEntityManager(sharedEntityManager);
+		deleteAllPeopleUsingEntityManager(this.sharedEntityManager);
 		setComplete();
 	}
 
@@ -103,7 +103,7 @@ public class ApplicationManagedEntityManagerIntegrationTests extends AbstractEnt
 
 	@Test
 	public void testReuseInNewTransaction() {
-		EntityManager em = entityManagerFactory.createEntityManager();
+		EntityManager em = this.entityManagerFactory.createEntityManager();
 		em.joinTransaction();
 
 		doInstantiateAndSave(em);
@@ -139,7 +139,7 @@ public class ApplicationManagedEntityManagerIntegrationTests extends AbstractEnt
 
 	@Test
 	public void testRollbackOccurs() {
-		EntityManager em = entityManagerFactory.createEntityManager();
+		EntityManager em = this.entityManagerFactory.createEntityManager();
 		em.joinTransaction();
 		doInstantiateAndSave(em);
 		endTransaction();	// Should rollback
@@ -148,7 +148,7 @@ public class ApplicationManagedEntityManagerIntegrationTests extends AbstractEnt
 
 	@Test
 	public void testCommitOccurs() {
-		EntityManager em = entityManagerFactory.createEntityManager();
+		EntityManager em = this.entityManagerFactory.createEntityManager();
 		em.joinTransaction();
 		doInstantiateAndSave(em);
 

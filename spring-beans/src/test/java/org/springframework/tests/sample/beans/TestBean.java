@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -152,7 +152,7 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 	}
 
 	public String getBeanName() {
-		return beanName;
+		return this.beanName;
 	}
 
 	@Override
@@ -161,7 +161,7 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 	}
 
 	public BeanFactory getBeanFactory() {
-		return beanFactory;
+		return this.beanFactory;
 	}
 
 	public void setPostProcessed(boolean postProcessed) {
@@ -169,12 +169,12 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 	}
 
 	public boolean isPostProcessed() {
-		return postProcessed;
+		return this.postProcessed;
 	}
 
 	@Override
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	@Override
@@ -183,7 +183,7 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 	}
 
 	public String getSex() {
-		return sex;
+		return this.sex;
 	}
 
 	public void setSex(String sex) {
@@ -195,7 +195,7 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 
 	@Override
 	public int getAge() {
-		return age;
+		return this.age;
 	}
 
 	@Override
@@ -204,7 +204,7 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 	}
 
 	public boolean isJedi() {
-		return jedi;
+		return this.jedi;
 	}
 
 	public void setJedi(boolean jedi) {
@@ -223,11 +223,11 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 
 	@Override
 	public ITestBean[] getSpouses() {
-		return (spouse != null ? new ITestBean[] {spouse} : null);
+		return (this.spouse != null ? new ITestBean[] {this.spouse} : null);
 	}
 
 	public String getTouchy() {
-		return touchy;
+		return this.touchy;
 	}
 
 	public void setTouchy(String touchy) throws Exception {
@@ -241,7 +241,7 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 	}
 
 	public String getCountry() {
-		return country;
+		return this.country;
 	}
 
 	public void setCountry(String country) {
@@ -250,7 +250,7 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 
 	@Override
 	public String[] getStringArray() {
-		return stringArray;
+		return this.stringArray;
 	}
 
 	@Override
@@ -260,7 +260,7 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 
 	@Override
 	public Integer[] getSomeIntegerArray() {
-		return someIntegerArray;
+		return this.someIntegerArray;
 	}
 
 	@Override
@@ -270,7 +270,7 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 
 	@Override
 	public Integer[][] getNestedIntegerArray() {
-		return nestedIntegerArray;
+		return this.nestedIntegerArray;
 	}
 
 	@Override
@@ -280,7 +280,7 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 
 	@Override
 	public int[] getSomeIntArray() {
-		return someIntArray;
+		return this.someIntArray;
 	}
 
 	@Override
@@ -290,7 +290,7 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 
 	@Override
 	public int[][] getNestedIntArray() {
-		return nestedIntArray;
+		return this.nestedIntArray;
 	}
 
 	@Override
@@ -299,7 +299,7 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 	}
 
 	public Date getDate() {
-		return date;
+		return this.date;
 	}
 
 	public void setDate(Date date) {
@@ -307,7 +307,7 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 	}
 
 	public Float getMyFloat() {
-		return myFloat;
+		return this.myFloat;
 	}
 
 	public void setMyFloat(Float myFloat) {
@@ -315,7 +315,7 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 	}
 
 	public Collection<? super Object> getFriends() {
-		return friends;
+		return this.friends;
 	}
 
 	public void setFriends(Collection<? super Object> friends) {
@@ -323,7 +323,7 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 	}
 
 	public Set<?> getSomeSet() {
-		return someSet;
+		return this.someSet;
 	}
 
 	public void setSomeSet(Set<?> someSet) {
@@ -331,7 +331,7 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 	}
 
 	public Map<?, ?> getSomeMap() {
-		return someMap;
+		return this.someMap;
 	}
 
 	public void setSomeMap(Map<?, ?> someMap) {
@@ -339,7 +339,7 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 	}
 
 	public List<?> getSomeList() {
-		return someList;
+		return this.someList;
 	}
 
 	public void setSomeList(List<?> someList) {
@@ -347,7 +347,7 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 	}
 
 	public Properties getSomeProperties() {
-		return someProperties;
+		return this.someProperties;
 	}
 
 	public void setSomeProperties(Properties someProperties) {
@@ -356,7 +356,7 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 
 	@Override
 	public INestedTestBean getDoctor() {
-		return doctor;
+		return this.doctor;
 	}
 
 	public void setDoctor(INestedTestBean doctor) {
@@ -365,7 +365,7 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 
 	@Override
 	public INestedTestBean getLawyer() {
-		return lawyer;
+		return this.lawyer;
 	}
 
 	public void setLawyer(INestedTestBean lawyer) {
@@ -373,7 +373,7 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 	}
 
 	public Number getSomeNumber() {
-		return someNumber;
+		return this.someNumber;
 	}
 
 	public void setSomeNumber(Number someNumber) {
@@ -381,7 +381,7 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 	}
 
 	public Colour getFavouriteColour() {
-		return favouriteColour;
+		return this.favouriteColour;
 	}
 
 	public void setFavouriteColour(Colour favouriteColour) {
@@ -389,7 +389,7 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 	}
 
 	public Boolean getSomeBoolean() {
-		return someBoolean;
+		return this.someBoolean;
 	}
 
 	public void setSomeBoolean(Boolean someBoolean) {
@@ -398,7 +398,7 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 
 	@Override
 	public IndexedTestBean getNestedIndexedBean() {
-		return nestedIndexedBean;
+		return this.nestedIndexedBean;
 	}
 
 	public void setNestedIndexedBean(IndexedTestBean nestedIndexedBean) {
@@ -406,7 +406,7 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 	}
 
 	public List<?> getOtherColours() {
-		return otherColours;
+		return this.otherColours;
 	}
 
 	public void setOtherColours(List<?> otherColours) {
@@ -414,7 +414,7 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 	}
 
 	public List<?> getPets() {
-		return pets;
+		return this.pets;
 	}
 
 	public void setPets(List<?> pets) {
@@ -453,7 +453,7 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 
 	@Override
 	public int haveBirthday() {
-		return age++;
+		return this.age++;
 	}
 
 
@@ -462,7 +462,7 @@ public class TestBean implements BeanNameAware, BeanFactoryAware, ITestBean, IOt
 	}
 
 	public boolean wasDestroyed() {
-		return destroyed;
+		return this.destroyed;
 	}
 
 

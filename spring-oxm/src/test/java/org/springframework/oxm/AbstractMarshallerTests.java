@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,8 +56,8 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 
 	@Before
 	public final void setUp() throws Exception {
-		marshaller = createMarshaller();
-		flights = createFlights();
+		this.marshaller = createMarshaller();
+		this.flights = createFlights();
 	}
 
 	protected abstract M createMarshaller() throws Exception;
@@ -71,7 +71,7 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 		DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
 		Document result = builder.newDocument();
 		DOMResult domResult = new DOMResult(result);
-		marshaller.marshal(flights, domResult);
+		this.marshaller.marshal(this.flights, domResult);
 		Document expected = builder.newDocument();
 		Element flightsElement = expected.createElementNS("http://samples.springframework.org/flight", "tns:flights");
 		Attr namespace = expected.createAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:tns");
@@ -93,7 +93,7 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 		documentBuilderFactory.setNamespaceAware(true);
 		DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
 		DOMResult domResult = new DOMResult();
-		marshaller.marshal(flights, domResult);
+		this.marshaller.marshal(this.flights, domResult);
 		assertTrue("DOMResult does not contain a Document", domResult.getNode() instanceof Document);
 		Document result = (Document) domResult.getNode();
 		Document expected = builder.newDocument();
@@ -115,7 +115,7 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 	public void marshalStreamResultWriter() throws Exception {
 		StringWriter writer = new StringWriter();
 		StreamResult result = new StreamResult(writer);
-		marshaller.marshal(flights, result);
+		this.marshaller.marshal(this.flights, result);
 		assertThat("Marshaller writes invalid StreamResult", writer.toString(), isSimilarTo(EXPECTED_STRING));
 	}
 
@@ -123,7 +123,7 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 	public void marshalStreamResultOutputStream() throws Exception {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		StreamResult result = new StreamResult(os);
-		marshaller.marshal(flights, result);
+		this.marshaller.marshal(this.flights, result);
 		assertThat("Marshaller writes invalid StreamResult", new String(os.toByteArray(), "UTF-8"),
 				isSimilarTo(EXPECTED_STRING));
 	}
@@ -134,7 +134,7 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 		StringWriter writer = new StringWriter();
 		XMLStreamWriter streamWriter = outputFactory.createXMLStreamWriter(writer);
 		Result result = StaxUtils.createStaxResult(streamWriter);
-		marshaller.marshal(flights, result);
+		this.marshaller.marshal(this.flights, result);
 		assertThat("Marshaller writes invalid StreamResult", writer.toString(), isSimilarTo(EXPECTED_STRING));
 	}
 
@@ -144,7 +144,7 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 		StringWriter writer = new StringWriter();
 		XMLEventWriter eventWriter = outputFactory.createXMLEventWriter(writer);
 		Result result = StaxUtils.createStaxResult(eventWriter);
-		marshaller.marshal(flights, result);
+		this.marshaller.marshal(this.flights, result);
 		assertThat("Marshaller writes invalid StreamResult", writer.toString(), isSimilarTo(EXPECTED_STRING));
 	}
 
@@ -154,7 +154,7 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 		StringWriter writer = new StringWriter();
 		XMLStreamWriter streamWriter = outputFactory.createXMLStreamWriter(writer);
 		StAXResult result = new StAXResult(streamWriter);
-		marshaller.marshal(flights, result);
+		this.marshaller.marshal(this.flights, result);
 		assertThat("Marshaller writes invalid StreamResult", writer.toString(), isSimilarTo(EXPECTED_STRING));
 	}
 
@@ -164,7 +164,7 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 		StringWriter writer = new StringWriter();
 		XMLEventWriter eventWriter = outputFactory.createXMLEventWriter(writer);
 		StAXResult result = new StAXResult(eventWriter);
-		marshaller.marshal(flights, result);
+		this.marshaller.marshal(this.flights, result);
 		assertThat("Marshaller writes invalid StreamResult", writer.toString(), isSimilarTo(EXPECTED_STRING));
 	}
 

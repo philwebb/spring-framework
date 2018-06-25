@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -213,7 +213,7 @@ public class JacksonHintsIntegrationTests extends AbstractRequestMappingIntegrat
 		}
 
 		public String getWithView1() {
-			return withView1;
+			return this.withView1;
 		}
 
 		public void setWithView1(String withView1) {
@@ -221,7 +221,7 @@ public class JacksonHintsIntegrationTests extends AbstractRequestMappingIntegrat
 		}
 
 		public String getWithView2() {
-			return withView2;
+			return this.withView2;
 		}
 
 		public void setWithView2(String withView2) {
@@ -229,7 +229,7 @@ public class JacksonHintsIntegrationTests extends AbstractRequestMappingIntegrat
 		}
 
 		public String getWithoutView() {
-			return withoutView;
+			return this.withoutView;
 		}
 
 		public void setWithoutView(String withoutView) {

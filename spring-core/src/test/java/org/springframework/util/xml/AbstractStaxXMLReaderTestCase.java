@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,17 +62,17 @@ public abstract class AbstractStaxXMLReaderTestCase {
 	@SuppressWarnings("deprecation")  // on JDK 9
 	public void setUp() throws Exception {
 		inputFactory = XMLInputFactory.newInstance();
-		standardReader = org.xml.sax.helpers.XMLReaderFactory.createXMLReader();
-		standardContentHandler = mockContentHandler();
-		standardReader.setContentHandler(standardContentHandler);
+		this.standardReader = org.xml.sax.helpers.XMLReaderFactory.createXMLReader();
+		this.standardContentHandler = mockContentHandler();
+		this.standardReader.setContentHandler(this.standardContentHandler);
 	}
 
 
 	@Test
 	public void contentHandlerNamespacesNoPrefixes() throws Exception {
-		standardReader.setFeature("http://xml.org/sax/features/namespaces", true);
-		standardReader.setFeature("http://xml.org/sax/features/namespace-prefixes", false);
-		standardReader.parse(new InputSource(createTestInputStream()));
+		this.standardReader.setFeature("http://xml.org/sax/features/namespaces", true);
+		this.standardReader.setFeature("http://xml.org/sax/features/namespace-prefixes", false);
+		this.standardReader.parse(new InputSource(createTestInputStream()));
 
 		AbstractStaxXMLReader staxXmlReader = createStaxXmlReader(createTestInputStream());
 		ContentHandler contentHandler = mockContentHandler();
@@ -81,14 +81,14 @@ public abstract class AbstractStaxXMLReaderTestCase {
 		staxXmlReader.setContentHandler(contentHandler);
 		staxXmlReader.parse(new InputSource());
 
-		verifyIdenticalInvocations(standardContentHandler, contentHandler);
+		verifyIdenticalInvocations(this.standardContentHandler, contentHandler);
 	}
 
 	@Test
 	public void contentHandlerNamespacesPrefixes() throws Exception {
-		standardReader.setFeature("http://xml.org/sax/features/namespaces", true);
-		standardReader.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
-		standardReader.parse(new InputSource(createTestInputStream()));
+		this.standardReader.setFeature("http://xml.org/sax/features/namespaces", true);
+		this.standardReader.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
+		this.standardReader.parse(new InputSource(createTestInputStream()));
 
 		AbstractStaxXMLReader staxXmlReader = createStaxXmlReader(createTestInputStream());
 		ContentHandler contentHandler = mockContentHandler();
@@ -97,14 +97,14 @@ public abstract class AbstractStaxXMLReaderTestCase {
 		staxXmlReader.setContentHandler(contentHandler);
 		staxXmlReader.parse(new InputSource());
 
-		verifyIdenticalInvocations(standardContentHandler, contentHandler);
+		verifyIdenticalInvocations(this.standardContentHandler, contentHandler);
 	}
 
 	@Test
 	public void contentHandlerNoNamespacesPrefixes() throws Exception {
-		standardReader.setFeature("http://xml.org/sax/features/namespaces", false);
-		standardReader.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
-		standardReader.parse(new InputSource(createTestInputStream()));
+		this.standardReader.setFeature("http://xml.org/sax/features/namespaces", false);
+		this.standardReader.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
+		this.standardReader.parse(new InputSource(createTestInputStream()));
 
 		AbstractStaxXMLReader staxXmlReader = createStaxXmlReader(createTestInputStream());
 		ContentHandler contentHandler = mockContentHandler();
@@ -113,7 +113,7 @@ public abstract class AbstractStaxXMLReaderTestCase {
 		staxXmlReader.setContentHandler(contentHandler);
 		staxXmlReader.parse(new InputSource());
 
-		verifyIdenticalInvocations(standardContentHandler, contentHandler);
+		verifyIdenticalInvocations(this.standardContentHandler, contentHandler);
 	}
 
 	@Test
@@ -140,9 +140,9 @@ public abstract class AbstractStaxXMLReaderTestCase {
 		Resource testLexicalHandlerXml = new ClassPathResource("testLexicalHandler.xml", getClass());
 
 		LexicalHandler expectedLexicalHandler = mockLexicalHandler();
-		standardReader.setContentHandler(null);
-		standardReader.setProperty("http://xml.org/sax/properties/lexical-handler", expectedLexicalHandler);
-		standardReader.parse(new InputSource(testLexicalHandlerXml.getInputStream()));
+		this.standardReader.setContentHandler(null);
+		this.standardReader.setProperty("http://xml.org/sax/properties/lexical-handler", expectedLexicalHandler);
+		this.standardReader.parse(new InputSource(testLexicalHandlerXml.getInputStream()));
 		inputFactory.setProperty("javax.xml.stream.isCoalescing", Boolean.FALSE);
 		inputFactory.setProperty("http://java.sun.com/xml/stream/properties/report-cdata-event", Boolean.TRUE);
 		inputFactory.setProperty("javax.xml.stream.isReplacingEntityReferences", Boolean.FALSE);
@@ -262,11 +262,11 @@ public abstract class AbstractStaxXMLReaderTestCase {
 			}
 			for (int i = 0; i < other.getLength(); i++) {
 				boolean found = false;
-				for (int j = 0; j < attributes.getLength(); j++) {
-					if (other.getURI(i).equals(attributes.getURI(j))
-							&& other.getQName(i).equals(attributes.getQName(j))
-							&& other.getType(i).equals(attributes.getType(j))
-							&& other.getValue(i).equals(attributes.getValue(j))) {
+				for (int j = 0; j < this.attributes.getLength(); j++) {
+					if (other.getURI(i).equals(this.attributes.getURI(j))
+							&& other.getQName(i).equals(this.attributes.getQName(j))
+							&& other.getType(i).equals(this.attributes.getType(j))
+							&& other.getValue(i).equals(this.attributes.getValue(j))) {
 						found = true;
 						break;
 					}

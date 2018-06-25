@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -126,7 +126,7 @@ public class HttpMessageWriterViewTests {
 		this.model.addAttribute("pojoData", pojoData);
 		this.view.setModelKeys(Collections.singleton("pojoData"));
 
-		this.view.render(this.model, MediaType.APPLICATION_JSON, exchange).block(Duration.ZERO);
+		this.view.render(this.model, MediaType.APPLICATION_JSON, this.exchange).block(Duration.ZERO);
 
 		StepVerifier.create(this.exchange.getResponse().getBody())
 				.consumeNextWith(buf -> assertEquals("{\"foo\":\"f\",\"bar\":\"b\"}", dumpString(buf)))

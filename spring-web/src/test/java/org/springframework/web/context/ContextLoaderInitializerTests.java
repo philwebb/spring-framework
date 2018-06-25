@@ -46,21 +46,21 @@ public class ContextLoaderInitializerTests {
 
 	@Before
 	public void setUp() throws Exception {
-		servletContext = new MyMockServletContext();
-		initializer = new MyContextLoaderInitializer();
-		eventListener = null;
+		this.servletContext = new MyMockServletContext();
+		this.initializer = new MyContextLoaderInitializer();
+		this.eventListener = null;
 	}
 
 	@Test
 	public void register() throws ServletException {
-		initializer.onStartup(servletContext);
+		this.initializer.onStartup(this.servletContext);
 
-		assertTrue(eventListener instanceof ContextLoaderListener);
-		ContextLoaderListener cll = (ContextLoaderListener) eventListener;
-		cll.contextInitialized(new ServletContextEvent(servletContext));
+		assertTrue(this.eventListener instanceof ContextLoaderListener);
+		ContextLoaderListener cll = (ContextLoaderListener) this.eventListener;
+		cll.contextInitialized(new ServletContextEvent(this.servletContext));
 
 		WebApplicationContext applicationContext = WebApplicationContextUtils
-				.getRequiredWebApplicationContext(servletContext);
+				.getRequiredWebApplicationContext(this.servletContext);
 
 		assertTrue(applicationContext.containsBean(BEAN_NAME));
 		assertTrue(applicationContext.getBean(BEAN_NAME) instanceof MyBean);

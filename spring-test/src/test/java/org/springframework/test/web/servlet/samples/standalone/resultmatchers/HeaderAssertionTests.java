@@ -79,14 +79,14 @@ public class HeaderAssertionTests {
 
 	@Test
 	public void stringWithCorrectResponseHeaderValue() throws Exception {
-		this.mockMvc.perform(get("/persons/1").header(IF_MODIFIED_SINCE, minuteAgo))
-				.andExpect(header().string(LAST_MODIFIED, now));
+		this.mockMvc.perform(get("/persons/1").header(IF_MODIFIED_SINCE, this.minuteAgo))
+				.andExpect(header().string(LAST_MODIFIED, this.now));
 	}
 
 	@Test
 	public void stringWithMatcherAndCorrectResponseHeaderValue() throws Exception {
-		this.mockMvc.perform(get("/persons/1").header(IF_MODIFIED_SINCE, minuteAgo))
-				.andExpect(header().string(LAST_MODIFIED, equalTo(now)));
+		this.mockMvc.perform(get("/persons/1").header(IF_MODIFIED_SINCE, this.minuteAgo))
+				.andExpect(header().string(LAST_MODIFIED, equalTo(this.now)));
 	}
 
 	@Test
@@ -103,7 +103,7 @@ public class HeaderAssertionTests {
 
 	@Test
 	public void dateValueWithCorrectResponseHeaderValue() throws Exception {
-		this.mockMvc.perform(get("/persons/1").header(IF_MODIFIED_SINCE, minuteAgo))
+		this.mockMvc.perform(get("/persons/1").header(IF_MODIFIED_SINCE, this.minuteAgo))
 				.andExpect(header().dateValue(LAST_MODIFIED, this.currentTime));
 	}
 
@@ -115,14 +115,14 @@ public class HeaderAssertionTests {
 
 	@Test
 	public void stringWithMissingResponseHeader() throws Exception {
-		this.mockMvc.perform(get("/persons/1").header(IF_MODIFIED_SINCE, now))
+		this.mockMvc.perform(get("/persons/1").header(IF_MODIFIED_SINCE, this.now))
 				.andExpect(status().isNotModified())
 				.andExpect(header().stringValues("X-Custom-Header"));
 	}
 
 	@Test
 	public void stringWithMatcherAndMissingResponseHeader() throws Exception {
-		this.mockMvc.perform(get("/persons/1").header(IF_MODIFIED_SINCE, now))
+		this.mockMvc.perform(get("/persons/1").header(IF_MODIFIED_SINCE, this.now))
 				.andExpect(status().isNotModified())
 				.andExpect(header().string("X-Custom-Header", nullValue()));
 	}
@@ -130,7 +130,7 @@ public class HeaderAssertionTests {
 	@Test
 	public void longValueWithMissingResponseHeader() throws Exception {
 		try {
-			this.mockMvc.perform(get("/persons/1").header(IF_MODIFIED_SINCE, now))
+			this.mockMvc.perform(get("/persons/1").header(IF_MODIFIED_SINCE, this.now))
 					.andExpect(status().isNotModified())
 					.andExpect(header().longValue("X-Custom-Header", 99L));
 
@@ -166,18 +166,18 @@ public class HeaderAssertionTests {
 
 	@Test
 	public void stringWithIncorrectResponseHeaderValue() throws Exception {
-		assertIncorrectResponseHeader(header().string(LAST_MODIFIED, secondLater), secondLater);
+		assertIncorrectResponseHeader(header().string(LAST_MODIFIED, this.secondLater), this.secondLater);
 	}
 
 	@Test
 	public void stringWithMatcherAndIncorrectResponseHeaderValue() throws Exception {
-		assertIncorrectResponseHeader(header().string(LAST_MODIFIED, equalTo(secondLater)), secondLater);
+		assertIncorrectResponseHeader(header().string(LAST_MODIFIED, equalTo(this.secondLater)), this.secondLater);
 	}
 
 	@Test
 	public void dateValueWithIncorrectResponseHeaderValue() throws Exception {
 		long unexpected = this.currentTime + 1000;
-		assertIncorrectResponseHeader(header().dateValue(LAST_MODIFIED, unexpected), secondLater);
+		assertIncorrectResponseHeader(header().dateValue(LAST_MODIFIED, unexpected), this.secondLater);
 	}
 
 	@Test(expected = AssertionError.class)
@@ -189,7 +189,7 @@ public class HeaderAssertionTests {
 	private void assertIncorrectResponseHeader(ResultMatcher matcher, String unexpected) throws Exception {
 		try {
 			this.mockMvc.perform(get("/persons/1")
-					.header(IF_MODIFIED_SINCE, minuteAgo))
+					.header(IF_MODIFIED_SINCE, this.minuteAgo))
 					.andExpect(matcher);
 
 			fail(ERROR_MESSAGE);
@@ -202,7 +202,7 @@ public class HeaderAssertionTests {
 			// Unfortunately, we can't control formatting from JUnit or Hamcrest.
 			assertMessageContains(err, "Response header '" + LAST_MODIFIED + "'");
 			assertMessageContains(err, unexpected);
-			assertMessageContains(err, now);
+			assertMessageContains(err, this.now);
 		}
 	}
 

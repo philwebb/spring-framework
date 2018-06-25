@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,7 +72,7 @@ public class BeanFactoryUtilsTests {
 
 		this.dependentBeansFactory = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(this.dependentBeansFactory).loadBeanDefinitions(DEPENDENT_BEANS_CONTEXT);
-		dependentBeansFactory.preInstantiateSingletons();
+		this.dependentBeansFactory.preInstantiateSingletons();
 		this.listableBeanFactory = child;
 	}
 
@@ -111,7 +111,7 @@ public class BeanFactoryUtilsTests {
 		assertEquals(1, names.size());
 		assertTrue(names.contains("indexedBean"));
 		// Distinguish from default ListableBeanFactory behavior
-		assertTrue(listableBeanFactory.getBeanNamesForType(IndexedTestBean.class).length == 0);
+		assertTrue(this.listableBeanFactory.getBeanNamesForType(IndexedTestBean.class).length == 0);
 	}
 
 	@Test
@@ -281,7 +281,7 @@ public class BeanFactoryUtilsTests {
 		assertEquals(1, names.size());
 		assertTrue(names.contains("annotatedBean"));
 		// Distinguish from default ListableBeanFactory behavior
-		assertTrue(listableBeanFactory.getBeanNamesForAnnotation(TestAnnotation.class).length == 0);
+		assertTrue(this.listableBeanFactory.getBeanNamesForAnnotation(TestAnnotation.class).length == 0);
 	}
 
 	@Test

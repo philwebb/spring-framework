@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -340,10 +340,10 @@ public class CommonsMultipartResolverTests {
 					FilterChain filterChain) throws ServletException, IOException {
 				super.doFilterInternal(request, response, filterChain);
 				super.doFilterInternal(request, response, filterChain);
-				if (invoked) {
+				if (this.invoked) {
 					throw new ServletException("Should not have been invoked twice");
 				}
-				invoked = true;
+				this.invoked = true;
 			}
 		};
 		filter.init(filterConfig);
@@ -423,17 +423,17 @@ public class CommonsMultipartResolverTests {
 
 		@Override
 		public InputStream getInputStream() throws IOException {
-			return new ByteArrayInputStream(value.getBytes());
+			return new ByteArrayInputStream(this.value.getBytes());
 		}
 
 		@Override
 		public String getContentType() {
-			return contentType;
+			return this.contentType;
 		}
 
 		@Override
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		@Override
@@ -443,12 +443,12 @@ public class CommonsMultipartResolverTests {
 
 		@Override
 		public long getSize() {
-			return value.length();
+			return this.value.length();
 		}
 
 		@Override
 		public byte[] get() {
-			return value.getBytes();
+			return this.value.getBytes();
 		}
 
 		@Override
@@ -458,7 +458,7 @@ public class CommonsMultipartResolverTests {
 
 		@Override
 		public String getString() {
-			return value;
+			return this.value;
 		}
 
 		@Override
@@ -473,7 +473,7 @@ public class CommonsMultipartResolverTests {
 
 		@Override
 		public String getFieldName() {
-			return fieldName;
+			return this.fieldName;
 		}
 
 		@Override
@@ -518,7 +518,7 @@ public class CommonsMultipartResolverTests {
 		}
 
 		public MultipartFile[] getField1() {
-			return field1;
+			return this.field1;
 		}
 
 		public void setField2(byte[] field2) {
@@ -526,7 +526,7 @@ public class CommonsMultipartResolverTests {
 		}
 
 		public byte[] getField2() {
-			return field2;
+			return this.field2;
 		}
 	}
 
@@ -541,7 +541,7 @@ public class CommonsMultipartResolverTests {
 		}
 
 		public String[] getField1() {
-			return field1;
+			return this.field1;
 		}
 
 		public void setField2(String field2) {
@@ -549,7 +549,7 @@ public class CommonsMultipartResolverTests {
 		}
 
 		public String getField2() {
-			return field2;
+			return this.field2;
 		}
 	}
 

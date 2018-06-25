@@ -55,7 +55,7 @@ public class StreamingSimpleClientHttpRequestFactoryTests extends AbstractHttpRe
 
 		ClientHttpResponse response = null;
 		try {
-			ClientHttpRequest request = factory.createRequest(new URI(baseUrl + "/echo"), HttpMethod.GET);
+			ClientHttpRequest request = factory.createRequest(new URI(this.baseUrl + "/echo"), HttpMethod.GET);
 			response = request.execute();
 			assertEquals("Invalid response status", HttpStatus.OK, response.getStatusCode());
 			HttpHeaders responseHeaders = response.getHeaders();
@@ -74,7 +74,7 @@ public class StreamingSimpleClientHttpRequestFactoryTests extends AbstractHttpRe
 		Random rnd = new Random();
 		ClientHttpResponse response = null;
 		try {
-			ClientHttpRequest request = factory.createRequest(new URI(baseUrl + "/methods/post"), HttpMethod.POST);
+			ClientHttpRequest request = this.factory.createRequest(new URI(this.baseUrl + "/methods/post"), HttpMethod.POST);
 			final int BUF_SIZE = 4096;
 			final int ITERATIONS = Integer.MAX_VALUE / BUF_SIZE;
 			// final int contentLength = ITERATIONS * BUF_SIZE;

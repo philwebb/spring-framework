@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2006 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,19 +27,19 @@ public class QuartzTestBean {
 
 
 	public void doImport() {
-		++importCount;
+		++this.importCount;
 	}
 
 	public void doExport() {
-		++exportCount;
+		++this.exportCount;
 	}
 
 	public int getImportCount() {
-		return importCount;
+		return this.importCount;
 	}
 
 	public int getExportCount() {
-		return exportCount;
+		return this.exportCount;
 	}
 
 }

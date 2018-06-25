@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -104,7 +104,7 @@ public class ViewResolverRegistryTests {
 	public void beanName() {
 		this.registry.beanName();
 		assertEquals(1, this.registry.getViewResolvers().size());
-		assertEquals(BeanNameViewResolver.class, registry.getViewResolvers().get(0).getClass());
+		assertEquals(BeanNameViewResolver.class, this.registry.getViewResolvers().get(0).getClass());
 	}
 
 	@Test
@@ -210,7 +210,7 @@ public class ViewResolverRegistryTests {
 		assertNotNull(this.registry.getViewResolvers());
 		assertEquals(1, this.registry.getViewResolvers().size());
 		assertEquals(resolverType, this.registry.getViewResolvers().get(0).getClass());
-		return (T) registry.getViewResolvers().get(0);
+		return (T) this.registry.getViewResolvers().get(0);
 	}
 
 	private void checkPropertyValues(ViewResolver resolver, Object... nameValuePairs) {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -75,12 +75,12 @@ public class CommonsPool2TargetSourceTests {
 	}
 
 	private void testFunctionality(String name) {
-		SideEffectBean pooled = (SideEffectBean) beanFactory.getBean(name);
+		SideEffectBean pooled = (SideEffectBean) this.beanFactory.getBean(name);
 		assertEquals(INITIAL_COUNT, pooled.getCount());
 		pooled.doWork();
 		assertEquals(INITIAL_COUNT + 1, pooled.getCount());
 
-		pooled = (SideEffectBean) beanFactory.getBean(name);
+		pooled = (SideEffectBean) this.beanFactory.getBean(name);
 		// Just check that it works--we can't make assumptions
 		// about the count
 		pooled.doWork();
@@ -99,9 +99,9 @@ public class CommonsPool2TargetSourceTests {
 
 	@Test
 	public void testConfigMixin() {
-		SideEffectBean pooled = (SideEffectBean) beanFactory.getBean("pooledWithMixin");
+		SideEffectBean pooled = (SideEffectBean) this.beanFactory.getBean("pooledWithMixin");
 		assertEquals(INITIAL_COUNT, pooled.getCount());
-		PoolingConfig conf = (PoolingConfig) beanFactory.getBean("pooledWithMixin");
+		PoolingConfig conf = (PoolingConfig) this.beanFactory.getBean("pooledWithMixin");
 		// TODO one invocation from setup
 		//assertEquals(1, conf.getInvocations());
 		pooled.doWork();
@@ -114,7 +114,7 @@ public class CommonsPool2TargetSourceTests {
 
 	@Test
 	public void testTargetSourceSerializableWithoutConfigMixin() throws Exception {
-		CommonsPool2TargetSource cpts = (CommonsPool2TargetSource) beanFactory.getBean("personPoolTargetSource");
+		CommonsPool2TargetSource cpts = (CommonsPool2TargetSource) this.beanFactory.getBean("personPoolTargetSource");
 
 		SingletonTargetSource serialized = (SingletonTargetSource) SerializationTestUtils.serializeAndDeserialize(cpts);
 		assertTrue(serialized.getTarget() instanceof Person);
@@ -123,7 +123,7 @@ public class CommonsPool2TargetSourceTests {
 
 	@Test
 	public void testProxySerializableWithoutConfigMixin() throws Exception {
-		Person pooled = (Person) beanFactory.getBean("pooledPerson");
+		Person pooled = (Person) this.beanFactory.getBean("pooledPerson");
 
 		//System.out.println(((Advised) pooled).toProxyConfigString());
 		assertTrue(((Advised) pooled).getTargetSource() instanceof CommonsPool2TargetSource);
@@ -173,7 +173,7 @@ public class CommonsPool2TargetSourceTests {
 
 	@Test
 	public void testHitMaxSizeLoadedFromContext() throws Exception {
-		Advised person = (Advised) beanFactory.getBean("maxSizePooledPerson");
+		Advised person = (Advised) this.beanFactory.getBean("maxSizePooledPerson");
 		CommonsPool2TargetSource targetSource = (CommonsPool2TargetSource) person.getTargetSource();
 
 		int maxSize = targetSource.getMaxSize();

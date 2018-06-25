@@ -43,7 +43,7 @@ public class StubArgumentResolver implements HandlerMethodArgumentResolver {
 	}
 
 	public List<MethodParameter> getResolvedParameters() {
-		return resolvedParameters;
+		return this.resolvedParameters;
 	}
 
 	@Override

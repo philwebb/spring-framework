@@ -87,7 +87,7 @@ public class IndexedTestBean {
 
 
 	public TestBean[] getArray() {
-		return array;
+		return this.array;
 	}
 
 	public void setArray(TestBean[] array) {
@@ -95,7 +95,7 @@ public class IndexedTestBean {
 	}
 
 	public Collection<?> getCollection() {
-		return collection;
+		return this.collection;
 	}
 
 	public void setCollection(Collection<?> collection) {
@@ -103,7 +103,7 @@ public class IndexedTestBean {
 	}
 
 	public List getList() {
-		return list;
+		return this.list;
 	}
 
 	public void setList(List list) {
@@ -111,7 +111,7 @@ public class IndexedTestBean {
 	}
 
 	public Set<?> getSet() {
-		return set;
+		return this.set;
 	}
 
 	public void setSet(Set<? super Object> set) {
@@ -119,7 +119,7 @@ public class IndexedTestBean {
 	}
 
 	public SortedSet<? super Object> getSortedSet() {
-		return sortedSet;
+		return this.sortedSet;
 	}
 
 	public void setSortedSet(SortedSet<? super Object> sortedSet) {
@@ -127,7 +127,7 @@ public class IndexedTestBean {
 	}
 
 	public Map getMap() {
-		return map;
+		return this.map;
 	}
 
 	public void setMap(Map map) {
@@ -135,7 +135,7 @@ public class IndexedTestBean {
 	}
 
 	public SortedMap getSortedMap() {
-		return sortedMap;
+		return this.sortedMap;
 	}
 
 	public void setSortedMap(SortedMap sortedMap) {

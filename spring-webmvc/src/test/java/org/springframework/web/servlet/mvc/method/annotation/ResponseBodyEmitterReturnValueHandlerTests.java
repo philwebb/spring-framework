@@ -341,7 +341,7 @@ public class ResponseBodyEmitterReturnValueHandlerTests {
 		private String name;
 
 		public Long getId() {
-			return id;
+			return this.id;
 		}
 
 		public void setId(Long id) {
@@ -349,7 +349,7 @@ public class ResponseBodyEmitterReturnValueHandlerTests {
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String name) {

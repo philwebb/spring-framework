@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ public class Flights {
 	private List<String> strings = new ArrayList<>();
 
 	public List<Flight> getFlights() {
-		return flights;
+		return this.flights;
 	}
 
 	public void setFlights(List<Flight> flights) {
@@ -34,7 +34,7 @@ public class Flights {
 	}
 
 	public List<String> getStrings() {
-		return strings;
+		return this.strings;
 	}
 
 	public void setStrings(List<String> strings) {

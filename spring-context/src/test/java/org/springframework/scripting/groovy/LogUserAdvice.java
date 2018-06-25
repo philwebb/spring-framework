@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,12 +30,12 @@ public class LogUserAdvice implements MethodBeforeAdvice, ThrowsAdvice {
 
 	@Override
 	public void before(Method method, Object[] objects, @Nullable Object o) throws Throwable {
-		countBefore++;
+		this.countBefore++;
 		// System.out.println("Method:" + method.getName());
 	}
 
 	public void afterThrowing(Exception e) throws Throwable {
-		countThrows++;
+		this.countThrows++;
 		// System.out.println("***********************************************************************************");
 		// System.out.println("Exception caught:");
 		// System.out.println("***********************************************************************************");
@@ -44,16 +44,16 @@ public class LogUserAdvice implements MethodBeforeAdvice, ThrowsAdvice {
 	}
 
 	public int getCountBefore() {
-		return countBefore;
+		return this.countBefore;
 	}
 
 	public int getCountThrows() {
-		return countThrows;
+		return this.countThrows;
 	}
 
 	public void reset() {
-		countThrows = 0;
-		countBefore = 0;
+		this.countThrows = 0;
+		this.countBefore = 0;
 	}
 
 }

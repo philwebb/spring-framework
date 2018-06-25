@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -198,7 +198,7 @@ public class OptionTagTests extends AbstractHtmlElementTagTests {
 		this.tag.setValue("foo");
 		this.tag.setLabel("Foo");
 		try {
-			tag.doStartTag();
+			this.tag.doStartTag();
 			fail("Must not be able to use <option> tag without exposed context.");
 		}
 		catch (IllegalStateException ex) {
@@ -468,9 +468,9 @@ public class OptionTagTests extends AbstractHtmlElementTagTests {
 	@Test
 	public void optionTagNotNestedWithinSelectTag() throws Exception {
 		try {
-			tag.setParent(null);
-			tag.setValue("foo");
-			tag.doStartTag();
+			this.tag.setParent(null);
+			this.tag.setValue("foo");
+			this.tag.doStartTag();
 			fail("Must throw an IllegalStateException when not nested within a <select/> tag.");
 		}
 		catch (IllegalStateException ex) {
@@ -536,7 +536,7 @@ public class OptionTagTests extends AbstractHtmlElementTagTests {
 		}
 
 		public String getRules() {
-			return rules;
+			return this.rules;
 		}
 
 		private void setVariant(String variant) {
@@ -544,7 +544,7 @@ public class OptionTagTests extends AbstractHtmlElementTagTests {
 		}
 
 		public String getVariant() {
-			return variant;
+			return this.variant;
 		}
 
 		public String toId() {
@@ -552,7 +552,7 @@ public class OptionTagTests extends AbstractHtmlElementTagTests {
 				return this.rules + "-" + this.variant;
 			}
 			else {
-				return rules;
+				return this.rules;
 			}
 		}
 

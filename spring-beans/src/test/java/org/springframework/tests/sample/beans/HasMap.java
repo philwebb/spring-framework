@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ public class HasMap {
 	}
 
 	public Map<?, ?> getMap() {
-		return map;
+		return this.map;
 	}
 
 	public void setMap(Map<?, ?> map) {
@@ -61,7 +61,7 @@ public class HasMap {
 	}
 
 	public Set<?> getSet() {
-		return set;
+		return this.set;
 	}
 
 	public void setSet(Set<?> set) {
@@ -69,7 +69,7 @@ public class HasMap {
 	}
 
 	public Properties getProps() {
-		return props;
+		return this.props;
 	}
 
 	public void setProps(Properties props) {
@@ -77,7 +77,7 @@ public class HasMap {
 	}
 
 	public Object[] getObjectArray() {
-		return objectArray;
+		return this.objectArray;
 	}
 
 	public void setObjectArray(Object[] objectArray) {
@@ -85,15 +85,15 @@ public class HasMap {
 	}
 
 	public Integer[] getIntegerArray() {
-		return intArray;
+		return this.intArray;
 	}
 
 	public void setIntegerArray(Integer[] is) {
-		intArray = is;
+		this.intArray = is;
 	}
 
 	public Class<?>[] getClassArray() {
-		return classArray;
+		return this.classArray;
 	}
 
 	public void setClassArray(Class<?>[] classArray) {
@@ -101,7 +101,7 @@ public class HasMap {
 	}
 
 	public List<Class<?>> getClassList() {
-		return classList;
+		return this.classList;
 	}
 
 	public void setClassList(List<Class<?>> classList) {
@@ -109,7 +109,7 @@ public class HasMap {
 	}
 
 	public IdentityHashMap getIdentityMap() {
-		return identityMap;
+		return this.identityMap;
 	}
 
 	public void setIdentityMap(IdentityHashMap identityMap) {
@@ -117,7 +117,7 @@ public class HasMap {
 	}
 
 	public CopyOnWriteArraySet getConcurrentSet() {
-		return concurrentSet;
+		return this.concurrentSet;
 	}
 
 	public void setConcurrentSet(CopyOnWriteArraySet concurrentSet) {

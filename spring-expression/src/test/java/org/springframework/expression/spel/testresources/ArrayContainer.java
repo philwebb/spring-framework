@@ -33,13 +33,13 @@ public class ArrayContainer {
 
 	public ArrayContainer() {
 		// setup some values
-		ints[0] = 42;
-		longs[0] = 42L;
-		doubles[0] = 42.0d;
-		bytes[0] = 42;
-		chars[0] = 42;
-		shorts[0] = 42;
-		booleans[0] = true;
-		floats[0] = 42.0f;
+		this.ints[0] = 42;
+		this.longs[0] = 42L;
+		this.doubles[0] = 42.0d;
+		this.bytes[0] = 42;
+		this.chars[0] = 42;
+		this.shorts[0] = 42;
+		this.booleans[0] = true;
+		this.floats[0] = 42.0f;
 	}
 }

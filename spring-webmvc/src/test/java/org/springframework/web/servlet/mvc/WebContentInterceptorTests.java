@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,9 +43,9 @@ public class WebContentInterceptorTests {
 		WebContentInterceptor interceptor = new WebContentInterceptor();
 		interceptor.setCacheSeconds(10);
 
-		interceptor.preHandle(request, response, null);
+		interceptor.preHandle(this.request, this.response, null);
 
-		Iterable<String> cacheControlHeaders = response.getHeaders("Cache-Control");
+		Iterable<String> cacheControlHeaders = this.response.getHeaders("Cache-Control");
 		assertThat(cacheControlHeaders, Matchers.hasItem("max-age=10"));
 	}
 
@@ -59,17 +59,17 @@ public class WebContentInterceptorTests {
 		interceptor.setCacheMappings(mappings);
 
 		// request.setRequestURI("http://localhost:7070/example/adminhandle.vm");
-		request.setRequestURI("example/adminhandle.vm");
-		interceptor.preHandle(request, response, null);
+		this.request.setRequestURI("example/adminhandle.vm");
+		interceptor.preHandle(this.request, this.response, null);
 
-		Iterable<String> cacheControlHeaders = response.getHeaders("Cache-Control");
+		Iterable<String> cacheControlHeaders = this.response.getHeaders("Cache-Control");
 		assertThat(cacheControlHeaders, Matchers.emptyIterable());
 
 		// request.setRequestURI("http://localhost:7070/example/bingo.html");
-		request.setRequestURI("example/bingo.html");
-		interceptor.preHandle(request, response, null);
+		this.request.setRequestURI("example/bingo.html");
+		interceptor.preHandle(this.request, this.response, null);
 
-		cacheControlHeaders = response.getHeaders("Cache-Control");
+		cacheControlHeaders = this.response.getHeaders("Cache-Control");
 		assertThat(cacheControlHeaders, Matchers.hasItem("max-age=10"));
 	}
 
@@ -78,9 +78,9 @@ public class WebContentInterceptorTests {
 		WebContentInterceptor interceptor = new WebContentInterceptor();
 		interceptor.setCacheSeconds(0);
 
-		interceptor.preHandle(request, response, null);
+		interceptor.preHandle(this.request, this.response, null);
 
-		Iterable<String> cacheControlHeaders = response.getHeaders("Cache-Control");
+		Iterable<String> cacheControlHeaders = this.response.getHeaders("Cache-Control");
 		assertThat(cacheControlHeaders, Matchers.contains("no-store"));
 	}
 
@@ -89,11 +89,11 @@ public class WebContentInterceptorTests {
 		WebContentInterceptor interceptor = new WebContentInterceptor();
 		interceptor.setCacheSeconds(-1);
 
-		interceptor.preHandle(request, response, null);
+		interceptor.preHandle(this.request, this.response, null);
 
-		Iterable<String> expiresHeaders = response.getHeaders("Expires");
+		Iterable<String> expiresHeaders = this.response.getHeaders("Expires");
 		assertThat(expiresHeaders, Matchers.emptyIterable());
-		Iterable<String> cacheControlHeaders = response.getHeaders("Cache-Control");
+		Iterable<String> cacheControlHeaders = this.response.getHeaders("Cache-Control");
 		assertThat(cacheControlHeaders, Matchers.emptyIterable());
 	}
 
@@ -102,13 +102,13 @@ public class WebContentInterceptorTests {
 	public void cachingConfigAndPragmaHeader() throws Exception {
 		WebContentInterceptor interceptor = new WebContentInterceptor();
 		interceptor.setCacheSeconds(10);
-		response.setHeader("Pragma", "no-cache");
-		response.setHeader("Expires", "0");
+		this.response.setHeader("Pragma", "no-cache");
+		this.response.setHeader("Expires", "0");
 
-		interceptor.preHandle(request, response, null);
+		interceptor.preHandle(this.request, this.response, null);
 
-		assertThat(response.getHeader("Pragma"), is(""));
-		assertThat(response.getHeader("Expires"), is(""));
+		assertThat(this.response.getHeader("Pragma"), is(""));
+		assertThat(this.response.getHeader("Expires"), is(""));
 	}
 
 	// SPR-13252, SPR-14053
@@ -118,13 +118,13 @@ public class WebContentInterceptorTests {
 		WebContentInterceptor interceptor = new WebContentInterceptor();
 		interceptor.setCacheSeconds(10);
 		interceptor.setAlwaysMustRevalidate(true);
-		response.setHeader("Pragma", "no-cache");
-		response.setHeader("Expires", "0");
+		this.response.setHeader("Pragma", "no-cache");
+		this.response.setHeader("Expires", "0");
 
-		interceptor.preHandle(request, response, null);
+		interceptor.preHandle(this.request, this.response, null);
 
-		assertThat(response.getHeader("Pragma"), is(""));
-		assertThat(response.getHeader("Expires"), is(""));
+		assertThat(this.response.getHeader("Pragma"), is(""));
+		assertThat(this.response.getHeader("Expires"), is(""));
 	}
 
 	@SuppressWarnings("deprecation")
@@ -139,24 +139,24 @@ public class WebContentInterceptorTests {
 		interceptor.setCacheMappings(mappings);
 
 		// request.setRequestURI("http://example.org/foo/page.html");
-		request.setRequestURI("foo/page.html");
-		interceptor.preHandle(request, response, null);
+		this.request.setRequestURI("foo/page.html");
+		interceptor.preHandle(this.request, this.response, null);
 
-		Iterable<String> expiresHeaders = response.getHeaders("Expires");
+		Iterable<String> expiresHeaders = this.response.getHeaders("Expires");
 		assertThat(expiresHeaders, Matchers.iterableWithSize(1));
-		Iterable<String> cacheControlHeaders = response.getHeaders("Cache-Control");
+		Iterable<String> cacheControlHeaders = this.response.getHeaders("Cache-Control");
 		assertThat(cacheControlHeaders, Matchers.contains("no-cache", "no-store"));
-		Iterable<String> pragmaHeaders = response.getHeaders("Pragma");
+		Iterable<String> pragmaHeaders = this.response.getHeaders("Pragma");
 		assertThat(pragmaHeaders, Matchers.contains("no-cache"));
 
 		// request.setRequestURI("http://example.org/page.cache.html");
-		request = new MockHttpServletRequest("GET", "foo/page.cache.html");
-		response = new MockHttpServletResponse();
-		interceptor.preHandle(request, response, null);
+		this.request = new MockHttpServletRequest("GET", "foo/page.cache.html");
+		this.response = new MockHttpServletResponse();
+		interceptor.preHandle(this.request, this.response, null);
 
-		expiresHeaders = response.getHeaders("Expires");
+		expiresHeaders = this.response.getHeaders("Expires");
 		assertThat(expiresHeaders, Matchers.iterableWithSize(1));
-		cacheControlHeaders = response.getHeaders("Cache-Control");
+		cacheControlHeaders = this.response.getHeaders("Cache-Control");
 		assertThat(cacheControlHeaders, Matchers.contains("max-age=10, must-revalidate"));
 	}
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ public class DateRange {
 	private Date endDate;
 
 	public Date getStartDate() {
-		return startDate;
+		return this.startDate;
 	}
 
 	public void setStartDate(Date startDate) {
@@ -36,7 +36,7 @@ public class DateRange {
 	}
 
 	public Date getEndDate() {
-		return endDate;
+		return this.endDate;
 	}
 
 	public void setEndDate(Date endDate) {

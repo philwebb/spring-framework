@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,14 +62,14 @@ public class MultipleDataSourcesAndTransactionManagersTransactionalSqlScriptsTes
 	@Test
 	@Sql("data-add-dogbert.sql")
 	public void database1() {
-		assertUsers(new JdbcTemplate(dataSource1), "Dilbert", "Dogbert");
+		assertUsers(new JdbcTemplate(this.dataSource1), "Dilbert", "Dogbert");
 	}
 
 	@Test
 	@Transactional(transactionManager = "txMgr2")
 	@Sql(scripts = "data-add-catbert.sql", config = @SqlConfig(dataSource = "dataSource2", transactionManager = "txMgr2"))
 	public void database2() {
-		assertUsers(new JdbcTemplate(dataSource2), "Dilbert", "Catbert");
+		assertUsers(new JdbcTemplate(this.dataSource2), "Dilbert", "Catbert");
 	}
 
 	private void assertUsers(JdbcTemplate jdbcTemplate, String... users) {

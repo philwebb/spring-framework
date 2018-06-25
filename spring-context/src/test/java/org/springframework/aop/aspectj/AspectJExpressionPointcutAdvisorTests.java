@@ -41,17 +41,17 @@ public class AspectJExpressionPointcutAdvisorTests {
 	public void setUp() {
 		ClassPathXmlApplicationContext ctx =
 			new ClassPathXmlApplicationContext(getClass().getSimpleName() + ".xml", getClass());
-		testBean = (ITestBean) ctx.getBean("testBean");
-		interceptor = (CallCountingInterceptor) ctx.getBean("interceptor");
+		this.testBean = (ITestBean) ctx.getBean("testBean");
+		this.interceptor = (CallCountingInterceptor) ctx.getBean("interceptor");
 	}
 
 	@Test
 	public void testPointcutting() {
-		assertEquals("Count should be 0", 0, interceptor.getCount());
-		testBean.getSpouses();
-		assertEquals("Count should be 1", 1, interceptor.getCount());
-		testBean.getSpouse();
-		assertEquals("Count should be 1", 1, interceptor.getCount());
+		assertEquals("Count should be 0", 0, this.interceptor.getCount());
+		this.testBean.getSpouses();
+		assertEquals("Count should be 1", 1, this.interceptor.getCount());
+		this.testBean.getSpouse();
+		assertEquals("Count should be 1", 1, this.interceptor.getCount());
 	}
 
 }
@@ -63,12 +63,12 @@ class CallCountingInterceptor implements MethodInterceptor {
 
 	@Override
 	public Object invoke(MethodInvocation methodInvocation) throws Throwable {
-		count++;
+		this.count++;
 		return methodInvocation.proceed();
 	}
 
 	public int getCount() {
-		return count;
+		return this.count;
 	}
 
 	public void reset() {

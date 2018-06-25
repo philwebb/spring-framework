@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -218,7 +218,7 @@ public class ModelAttributeMethodArgumentResolverTests {
 
 		String bindingResultKey = BindingResult.MODEL_KEY_PREFIX + modelKey;
 
-		Map<String, Object> map = bindContext.getModel().asMap();
+		Map<String, Object> map = this.bindContext.getModel().asMap();
 		assertEquals(map.toString(), 2, map.size());
 		assertSame(foo, map.get(modelKey));
 		assertNotNull(map.get(bindingResultKey));
@@ -295,7 +295,7 @@ public class ModelAttributeMethodArgumentResolverTests {
 		String key = "bar";
 		String bindingResultKey = BindingResult.MODEL_KEY_PREFIX + key;
 
-		Map<String, Object> map = bindContext.getModel().asMap();
+		Map<String, Object> map = this.bindContext.getModel().asMap();
 		assertEquals(map.toString(), 2, map.size());
 		assertSame(bar, map.get(key));
 		assertNotNull(map.get(bindingResultKey));
@@ -344,7 +344,7 @@ public class ModelAttributeMethodArgumentResolverTests {
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String name) {
@@ -376,7 +376,7 @@ public class ModelAttributeMethodArgumentResolverTests {
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public int getAge() {
@@ -384,7 +384,7 @@ public class ModelAttributeMethodArgumentResolverTests {
 		}
 
 		public int getCount() {
-			return count;
+			return this.count;
 		}
 
 		public void setCount(int count) {

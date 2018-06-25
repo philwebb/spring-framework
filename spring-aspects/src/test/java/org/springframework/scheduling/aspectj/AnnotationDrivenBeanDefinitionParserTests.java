@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,20 +49,20 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 
 	@Test
 	public void asyncAspectRegistered() {
-		assertTrue(context.containsBean(TaskManagementConfigUtils.ASYNC_EXECUTION_ASPECT_BEAN_NAME));
+		assertTrue(this.context.containsBean(TaskManagementConfigUtils.ASYNC_EXECUTION_ASPECT_BEAN_NAME));
 	}
 
 	@Test
 	public void asyncPostProcessorExecutorReference() {
-		Object executor = context.getBean("testExecutor");
-		Object aspect = context.getBean(TaskManagementConfigUtils.ASYNC_EXECUTION_ASPECT_BEAN_NAME);
+		Object executor = this.context.getBean("testExecutor");
+		Object aspect = this.context.getBean(TaskManagementConfigUtils.ASYNC_EXECUTION_ASPECT_BEAN_NAME);
 		assertSame(executor, new DirectFieldAccessor(aspect).getPropertyValue("defaultExecutor"));
 	}
 
 	@Test
 	public void asyncPostProcessorExceptionHandlerReference() {
-		Object exceptionHandler = context.getBean("testExceptionHandler");
-		Object aspect = context.getBean(TaskManagementConfigUtils.ASYNC_EXECUTION_ASPECT_BEAN_NAME);
+		Object exceptionHandler = this.context.getBean("testExceptionHandler");
+		Object aspect = this.context.getBean(TaskManagementConfigUtils.ASYNC_EXECUTION_ASPECT_BEAN_NAME);
 		assertSame(exceptionHandler, new DirectFieldAccessor(aspect).getPropertyValue("exceptionHandler"));
 	}
 

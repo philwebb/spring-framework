@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2012 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,20 +38,20 @@ public class DeclareParentsDelegateRefTests {
 	public void setUp() {
 		ClassPathXmlApplicationContext ctx =
 			new ClassPathXmlApplicationContext(getClass().getSimpleName() + ".xml", getClass());
-		noMethodsBean = (NoMethodsBean) ctx.getBean("noMethodsBean");
-		counter = (Counter) ctx.getBean("counter");
-		counter.reset();
+		this.noMethodsBean = (NoMethodsBean) ctx.getBean("noMethodsBean");
+		this.counter = (Counter) ctx.getBean("counter");
+		this.counter.reset();
 	}
 
 	@Test
 	public void testIntroductionWasMade() {
-		assertTrue("Introduction must have been made", noMethodsBean instanceof ICounter);
+		assertTrue("Introduction must have been made", this.noMethodsBean instanceof ICounter);
 	}
 
 	@Test
 	public void testIntroductionDelegation() {
-		((ICounter)noMethodsBean).increment();
-		assertEquals("Delegate's counter should be updated", 1, counter.getCount());
+		((ICounter)this.noMethodsBean).increment();
+		assertEquals("Delegate's counter should be updated", 1, this.counter.getCount());
 	}
 
 }

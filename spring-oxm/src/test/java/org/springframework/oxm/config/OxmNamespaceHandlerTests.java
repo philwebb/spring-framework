@@ -39,13 +39,13 @@ public class OxmNamespaceHandlerTests {
 
 	@Test
 	public void jaxb2ContextPathMarshaller() {
-		Jaxb2Marshaller jaxb2Marshaller = applicationContext.getBean("jaxb2ContextPathMarshaller", Jaxb2Marshaller.class);
+		Jaxb2Marshaller jaxb2Marshaller = this.applicationContext.getBean("jaxb2ContextPathMarshaller", Jaxb2Marshaller.class);
 		assertNotNull(jaxb2Marshaller);
 	}
 
 	@Test
 	public void jaxb2ClassesToBeBoundMarshaller() {
-		Jaxb2Marshaller jaxb2Marshaller = applicationContext.getBean("jaxb2ClassesMarshaller", Jaxb2Marshaller.class);
+		Jaxb2Marshaller jaxb2Marshaller = this.applicationContext.getBean("jaxb2ClassesMarshaller", Jaxb2Marshaller.class);
 		assertNotNull(jaxb2Marshaller);
 	}
 

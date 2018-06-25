@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -77,10 +77,10 @@ public class Jaxb2UnmarshallerTests extends AbstractUnmarshallerTests<Jaxb2Marsh
 
 	@Test
 	public void marshalAttachments() throws Exception {
-		unmarshaller = new Jaxb2Marshaller();
-		unmarshaller.setClassesToBeBound(BinaryObject.class);
-		unmarshaller.setMtomEnabled(true);
-		unmarshaller.afterPropertiesSet();
+		this.unmarshaller = new Jaxb2Marshaller();
+		this.unmarshaller.setClassesToBeBound(BinaryObject.class);
+		this.unmarshaller.setMtomEnabled(true);
+		this.unmarshaller.afterPropertiesSet();
 		MimeContainer mimeContainer = mock(MimeContainer.class);
 
 		Resource logo = new ClassPathResource("spring-ws.png", getClass());
@@ -99,7 +99,7 @@ public class Jaxb2UnmarshallerTests extends AbstractUnmarshallerTests<Jaxb2Marsh
 				"</binaryObject>";
 
 		StringReader reader = new StringReader(content);
-		Object result = unmarshaller.unmarshal(new StreamSource(reader), mimeContainer);
+		Object result = this.unmarshaller.unmarshal(new StreamSource(reader), mimeContainer);
 		assertTrue("Result is not a BinaryObject", result instanceof BinaryObject);
 		BinaryObject object = (BinaryObject) result;
 		assertNotNull("bytes property not set", object.getBytes());
@@ -116,7 +116,7 @@ public class Jaxb2UnmarshallerTests extends AbstractUnmarshallerTests<Jaxb2Marsh
 		streamReader.nextTag(); // skip to flights
 		streamReader.nextTag(); // skip to flight
 		Source source = StaxUtils.createStaxSource(streamReader);
-		JAXBElement<FlightType> element = (JAXBElement<FlightType>) unmarshaller.unmarshal(source);
+		JAXBElement<FlightType> element = (JAXBElement<FlightType>) this.unmarshaller.unmarshal(source);
 		FlightType flight = element.getValue();
 		testFlight(flight);
 	}
@@ -125,12 +125,12 @@ public class Jaxb2UnmarshallerTests extends AbstractUnmarshallerTests<Jaxb2Marsh
 	@SuppressWarnings("unchecked")
 	public void unmarshalAnXmlReferingToAWrappedXmlElementDecl() throws Exception {
 		// SPR-10714
-		unmarshaller = new Jaxb2Marshaller();
-		unmarshaller.setPackagesToScan(new String[] { "org.springframework.oxm.jaxb" });
-		unmarshaller.afterPropertiesSet();
+		this.unmarshaller = new Jaxb2Marshaller();
+		this.unmarshaller.setPackagesToScan(new String[] { "org.springframework.oxm.jaxb" });
+		this.unmarshaller.afterPropertiesSet();
 		Source source = new StreamSource(new StringReader(
 				"<brand-airplane><name>test</name></brand-airplane>"));
-		JAXBElement<Airplane> airplane = (JAXBElement<Airplane>) unmarshaller.unmarshal(source);
+		JAXBElement<Airplane> airplane = (JAXBElement<Airplane>) this.unmarshaller.unmarshal(source);
 		assertEquals("Unmarshalling via explicit @XmlRegistry tag should return correct type",
 				"test", airplane.getValue().getName());
 	}
@@ -140,7 +140,7 @@ public class Jaxb2UnmarshallerTests extends AbstractUnmarshallerTests<Jaxb2Marsh
 		Resource resource = new ClassPathResource("jaxb2.xml", getClass());
 		File file = resource.getFile();
 
-		Flights f = (Flights) unmarshaller.unmarshal(new StreamSource(file));
+		Flights f = (Flights) this.unmarshaller.unmarshal(new StreamSource(file));
 		testFlights(f);
 	}
 

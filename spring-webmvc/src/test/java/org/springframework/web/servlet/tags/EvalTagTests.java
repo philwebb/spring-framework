@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,105 +49,105 @@ public class EvalTagTests extends AbstractTagTests {
 
 	@Before
 	public void setup() throws Exception {
-		context = createPageContext();
+		this.context = createPageContext();
 		FormattingConversionServiceFactoryBean factory = new FormattingConversionServiceFactoryBean();
 		factory.afterPropertiesSet();
-		context.getRequest().setAttribute("org.springframework.core.convert.ConversionService", factory.getObject());
-		context.getRequest().setAttribute("bean", new Bean());
-		tag = new EvalTag();
-		tag.setPageContext(context);
+		this.context.getRequest().setAttribute("org.springframework.core.convert.ConversionService", factory.getObject());
+		this.context.getRequest().setAttribute("bean", new Bean());
+		this.tag = new EvalTag();
+		this.tag.setPageContext(this.context);
 	}
 
 
 	@Test
 	public void printScopedAttributeResult() throws Exception {
-		tag.setExpression("bean.method()");
-		int action = tag.doStartTag();
+		this.tag.setExpression("bean.method()");
+		int action = this.tag.doStartTag();
 		assertEquals(Tag.EVAL_BODY_INCLUDE, action);
-		action = tag.doEndTag();
+		action = this.tag.doEndTag();
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("foo", ((MockHttpServletResponse) context.getResponse()).getContentAsString());
+		assertEquals("foo", ((MockHttpServletResponse) this.context.getResponse()).getContentAsString());
 	}
 
 	@Test
 	public void printNullAsEmptyString() throws Exception {
-		tag.setExpression("bean.null");
-		int action = tag.doStartTag();
+		this.tag.setExpression("bean.null");
+		int action = this.tag.doStartTag();
 		assertEquals(Tag.EVAL_BODY_INCLUDE, action);
-		action = tag.doEndTag();
+		action = this.tag.doEndTag();
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("", ((MockHttpServletResponse) context.getResponse()).getContentAsString());
+		assertEquals("", ((MockHttpServletResponse) this.context.getResponse()).getContentAsString());
 	}
 
 	@Test
 	public void printFormattedScopedAttributeResult() throws Exception {
 		PercentStyleFormatter formatter = new PercentStyleFormatter();
-		tag.setExpression("bean.formattable");
-		int action = tag.doStartTag();
+		this.tag.setExpression("bean.formattable");
+		int action = this.tag.doStartTag();
 		assertEquals(Tag.EVAL_BODY_INCLUDE, action);
-		action = tag.doEndTag();
+		action = this.tag.doEndTag();
 		assertEquals(Tag.EVAL_PAGE, action);
 		assertEquals(formatter.print(new BigDecimal(".25"), Locale.getDefault()),
-				((MockHttpServletResponse) context.getResponse()).getContentAsString());
+				((MockHttpServletResponse) this.context.getResponse()).getContentAsString());
 	}
 
 	@Test
 	public void printHtmlEscapedAttributeResult() throws Exception {
-		tag.setExpression("bean.html()");
-		tag.setHtmlEscape(true);
-		int action = tag.doStartTag();
+		this.tag.setExpression("bean.html()");
+		this.tag.setHtmlEscape(true);
+		int action = this.tag.doStartTag();
 		assertEquals(Tag.EVAL_BODY_INCLUDE, action);
-		action = tag.doEndTag();
+		action = this.tag.doEndTag();
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("&lt;p&gt;", ((MockHttpServletResponse) context.getResponse()).getContentAsString());
+		assertEquals("&lt;p&gt;", ((MockHttpServletResponse) this.context.getResponse()).getContentAsString());
 	}
 
 	@Test
 	public void printJavaScriptEscapedAttributeResult() throws Exception {
-		tag.setExpression("bean.js()");
-		tag.setJavaScriptEscape(true);
-		int action = tag.doStartTag();
+		this.tag.setExpression("bean.js()");
+		this.tag.setJavaScriptEscape(true);
+		int action = this.tag.doStartTag();
 		assertEquals(Tag.EVAL_BODY_INCLUDE, action);
-		action = tag.doEndTag();
+		action = this.tag.doEndTag();
 		assertEquals(Tag.EVAL_PAGE, action);
 		assertEquals("function foo() { alert(\\\"hi\\\") }",
-				((MockHttpServletResponse)context.getResponse()).getContentAsString());
+				((MockHttpServletResponse)this.context.getResponse()).getContentAsString());
 	}
 
 	@Test
 	public void setFormattedScopedAttributeResult() throws Exception {
-		tag.setExpression("bean.formattable");
-		tag.setVar("foo");
-		int action = tag.doStartTag();
+		this.tag.setExpression("bean.formattable");
+		this.tag.setVar("foo");
+		int action = this.tag.doStartTag();
 		assertEquals(Tag.EVAL_BODY_INCLUDE, action);
-		action = tag.doEndTag();
+		action = this.tag.doEndTag();
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals(new BigDecimal(".25"), context.getAttribute("foo"));
+		assertEquals(new BigDecimal(".25"), this.context.getAttribute("foo"));
 	}
 
 	@Test  // SPR-6923
 	public void nestedPropertyWithAttributeName() throws Exception {
-		tag.setExpression("bean.bean");
-		tag.setVar("foo");
-		int action = tag.doStartTag();
+		this.tag.setExpression("bean.bean");
+		this.tag.setVar("foo");
+		int action = this.tag.doStartTag();
 		assertEquals(Tag.EVAL_BODY_INCLUDE, action);
-		action = tag.doEndTag();
+		action = this.tag.doEndTag();
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("not the bean object", context.getAttribute("foo"));
+		assertEquals("not the bean object", this.context.getAttribute("foo"));
 	}
 
 	@Test
 	public void accessUsingBeanSyntax() throws Exception {
 		GenericApplicationContext wac = (GenericApplicationContext)
-				context.getRequest().getAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE);
-		wac.getDefaultListableBeanFactory().registerSingleton("bean2", context.getRequest().getAttribute("bean"));
-		tag.setExpression("@bean2.bean");
-		tag.setVar("foo");
-		int action = tag.doStartTag();
+				this.context.getRequest().getAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE);
+		wac.getDefaultListableBeanFactory().registerSingleton("bean2", this.context.getRequest().getAttribute("bean"));
+		this.tag.setExpression("@bean2.bean");
+		this.tag.setVar("foo");
+		int action = this.tag.doStartTag();
 		assertEquals(Tag.EVAL_BODY_INCLUDE, action);
-		action = tag.doEndTag();
+		action = this.tag.doEndTag();
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("not the bean object", context.getAttribute("foo"));
+		assertEquals("not the bean object", this.context.getAttribute("foo"));
 	}
 
 	@Test
@@ -155,25 +155,25 @@ public class EvalTagTests extends AbstractTagTests {
 		Map<String, Object> map = new HashMap<>();
 		map.put("key.foo", "value.foo");
 		GenericApplicationContext wac = (GenericApplicationContext)
-		context.getRequest().getAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE);
+		this.context.getRequest().getAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE);
 		wac.getEnvironment().getPropertySources().addFirst(new MapPropertySource("mapSource", map));
-		wac.getDefaultListableBeanFactory().registerSingleton("bean2", context.getRequest().getAttribute("bean"));
-		tag.setExpression("@environment['key.foo']");
-		int action = tag.doStartTag();
+		wac.getDefaultListableBeanFactory().registerSingleton("bean2", this.context.getRequest().getAttribute("bean"));
+		this.tag.setExpression("@environment['key.foo']");
+		int action = this.tag.doStartTag();
 		assertEquals(Tag.EVAL_BODY_INCLUDE, action);
-		action = tag.doEndTag();
+		action = this.tag.doEndTag();
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("value.foo", ((MockHttpServletResponse) context.getResponse()).getContentAsString());
+		assertEquals("value.foo", ((MockHttpServletResponse) this.context.getResponse()).getContentAsString());
 	}
 
 	@Test
 	public void mapAccess() throws Exception {
-		tag.setExpression("bean.map.key");
-		int action = tag.doStartTag();
+		this.tag.setExpression("bean.map.key");
+		int action = this.tag.doStartTag();
 		assertEquals(Tag.EVAL_BODY_INCLUDE, action);
-		action = tag.doEndTag();
+		action = this.tag.doEndTag();
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("value", ((MockHttpServletResponse) context.getResponse()).getContentAsString());
+		assertEquals("value", ((MockHttpServletResponse) this.context.getResponse()).getContentAsString());
 	}
 
 

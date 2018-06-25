@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2014 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -75,8 +75,8 @@ public class HandlerExecutionChainTests {
 		given(this.interceptor2.preHandle(this.request, this.response, this.handler)).willReturn(true);
 		given(this.interceptor3.preHandle(this.request, this.response, this.handler)).willReturn(true);
 
-		this.chain.applyPreHandle(request, response);
-		this.chain.applyPostHandle(request, response, mav);
+		this.chain.applyPreHandle(this.request, this.response);
+		this.chain.applyPostHandle(this.request, this.response, mav);
 		this.chain.triggerAfterCompletion(this.request, this.response, null);
 
 		verify(this.interceptor1).postHandle(this.request, this.response, this.handler, mav);
@@ -94,13 +94,13 @@ public class HandlerExecutionChainTests {
 		given(this.interceptor2.preHandle(this.request, this.response, this.handler)).willReturn(true);
 		given(this.interceptor3.preHandle(this.request, this.response, this.handler)).willReturn(true);
 
-		this.chain.applyPreHandle(request, response);
-		this.chain.applyAfterConcurrentHandlingStarted(request, response);
+		this.chain.applyPreHandle(this.request, this.response);
+		this.chain.applyAfterConcurrentHandlingStarted(this.request, this.response);
 		this.chain.triggerAfterCompletion(this.request, this.response, null);
 
-		verify(this.interceptor1).afterConcurrentHandlingStarted(request, response, this.handler);
-		verify(this.interceptor2).afterConcurrentHandlingStarted(request, response, this.handler);
-		verify(this.interceptor3).afterConcurrentHandlingStarted(request, response, this.handler);
+		verify(this.interceptor1).afterConcurrentHandlingStarted(this.request, this.response, this.handler);
+		verify(this.interceptor2).afterConcurrentHandlingStarted(this.request, this.response, this.handler);
+		verify(this.interceptor3).afterConcurrentHandlingStarted(this.request, this.response, this.handler);
 	}
 
 	@Test
@@ -108,7 +108,7 @@ public class HandlerExecutionChainTests {
 		given(this.interceptor1.preHandle(this.request, this.response, this.handler)).willReturn(true);
 		given(this.interceptor2.preHandle(this.request, this.response, this.handler)).willReturn(false);
 
-		this.chain.applyPreHandle(request, response);
+		this.chain.applyPreHandle(this.request, this.response);
 
 		verify(this.interceptor1).afterCompletion(this.request, this.response, this.handler, null);
 	}
@@ -127,7 +127,7 @@ public class HandlerExecutionChainTests {
 		given(this.interceptor2.preHandle(this.request, this.response, this.handler)).willThrow(ex);
 
 		try {
-			this.chain.applyPreHandle(request, response);
+			this.chain.applyPreHandle(this.request, this.response);
 		}
 		catch (Exception actual) {
 			assertSame(ex, actual);
@@ -146,7 +146,7 @@ public class HandlerExecutionChainTests {
 		given(this.interceptor2.preHandle(this.request, this.response, this.handler)).willReturn(true);
 		given(this.interceptor3.preHandle(this.request, this.response, this.handler)).willReturn(true);
 
-		this.chain.applyPreHandle(request, response);
+		this.chain.applyPreHandle(this.request, this.response);
 		this.chain.triggerAfterCompletion(this.request, this.response, ex);
 
 		verify(this.interceptor3).afterCompletion(this.request, this.response, this.handler, ex);

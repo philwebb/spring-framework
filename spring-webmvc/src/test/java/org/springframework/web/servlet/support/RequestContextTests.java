@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,20 +49,20 @@ public class RequestContextTests {
 	public void init() {
 		GenericWebApplicationContext applicationContext = new GenericWebApplicationContext();
 		applicationContext.refresh();
-		servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, applicationContext);
+		this.servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, applicationContext);
 	}
 
 	@Test
 	public void testGetContextUrl() throws Exception {
-		request.setContextPath("foo/");
-		RequestContext context = new RequestContext(request, response, servletContext, model);
+		this.request.setContextPath("foo/");
+		RequestContext context = new RequestContext(this.request, this.response, this.servletContext, this.model);
 		assertEquals("foo/bar", context.getContextUrl("bar"));
 	}
 
 	@Test
 	public void testGetContextUrlWithMap() throws Exception {
-		request.setContextPath("foo/");
-		RequestContext context = new RequestContext(request, response, servletContext, model);
+		this.request.setContextPath("foo/");
+		RequestContext context = new RequestContext(this.request, this.response, this.servletContext, this.model);
 		Map<String, Object> map = new HashMap<>();
 		map.put("foo", "bar");
 		map.put("spam", "bucket");
@@ -71,8 +71,8 @@ public class RequestContextTests {
 
 	@Test
 	public void testGetContextUrlWithMapEscaping() throws Exception {
-		request.setContextPath("foo/");
-		RequestContext context = new RequestContext(request, response, servletContext, model);
+		this.request.setContextPath("foo/");
+		RequestContext context = new RequestContext(this.request, this.response, this.servletContext, this.model);
 		Map<String, Object> map = new HashMap<>();
 		map.put("foo", "bar baz");
 		map.put("spam", "&bucket=");
@@ -81,14 +81,14 @@ public class RequestContextTests {
 
 	@Test
 	public void testPathToServlet() throws Exception {
-		request.setContextPath("/app");
-		request.setServletPath("/servlet");
-		RequestContext context = new RequestContext(request, response, servletContext, model);
+		this.request.setContextPath("/app");
+		this.request.setServletPath("/servlet");
+		RequestContext context = new RequestContext(this.request, this.response, this.servletContext, this.model);
 
 		assertEquals("/app/servlet", context.getPathToServlet());
 
-		request.setAttribute(WebUtils.FORWARD_CONTEXT_PATH_ATTRIBUTE, "/origApp");
-		request.setAttribute(WebUtils.FORWARD_SERVLET_PATH_ATTRIBUTE, "/origServlet");
+		this.request.setAttribute(WebUtils.FORWARD_CONTEXT_PATH_ATTRIBUTE, "/origApp");
+		this.request.setAttribute(WebUtils.FORWARD_SERVLET_PATH_ATTRIBUTE, "/origServlet");
 
 		assertEquals("/origApp/origServlet", context.getPathToServlet());
 	}

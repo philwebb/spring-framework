@@ -270,7 +270,7 @@ public class JdbcTemplateTests {
 			@Override
 			public String doInConnection(Connection con) {
 				assertTrue(con instanceof ConnectionProxy);
-				assertSame(JdbcTemplateTests.this.connection, ((ConnectionProxy) con).getTargetConnection());
+				assertSame(connection, ((ConnectionProxy) con).getTargetConnection());
 				return "test";
 			}
 		});

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,40 +64,40 @@ public class DomContentHandlerTests {
 	public void setUp() throws Exception {
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		documentBuilderFactory.setNamespaceAware(true);
-		documentBuilder = documentBuilderFactory.newDocumentBuilder();
-		result = documentBuilder.newDocument();
-		xmlReader = org.xml.sax.helpers.XMLReaderFactory.createXMLReader();
+		this.documentBuilder = documentBuilderFactory.newDocumentBuilder();
+		this.result = this.documentBuilder.newDocument();
+		this.xmlReader = org.xml.sax.helpers.XMLReaderFactory.createXMLReader();
 	}
 
 
 	@Test
 	public void contentHandlerDocumentNamespacePrefixes() throws Exception {
-		xmlReader.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
-		handler = new DomContentHandler(result);
-		expected = documentBuilder.parse(new InputSource(new StringReader(XML_1)));
-		xmlReader.setContentHandler(handler);
-		xmlReader.parse(new InputSource(new StringReader(XML_1)));
-		assertThat("Invalid result", result, isSimilarTo(expected));
+		this.xmlReader.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
+		this.handler = new DomContentHandler(this.result);
+		this.expected = this.documentBuilder.parse(new InputSource(new StringReader(XML_1)));
+		this.xmlReader.setContentHandler(this.handler);
+		this.xmlReader.parse(new InputSource(new StringReader(XML_1)));
+		assertThat("Invalid result", this.result, isSimilarTo(this.expected));
 	}
 
 	@Test
 	public void contentHandlerDocumentNoNamespacePrefixes() throws Exception {
-		handler = new DomContentHandler(result);
-		expected = documentBuilder.parse(new InputSource(new StringReader(XML_1)));
-		xmlReader.setContentHandler(handler);
-		xmlReader.parse(new InputSource(new StringReader(XML_1)));
-		assertThat("Invalid result", result, isSimilarTo(expected));
+		this.handler = new DomContentHandler(this.result);
+		this.expected = this.documentBuilder.parse(new InputSource(new StringReader(XML_1)));
+		this.xmlReader.setContentHandler(this.handler);
+		this.xmlReader.parse(new InputSource(new StringReader(XML_1)));
+		assertThat("Invalid result", this.result, isSimilarTo(this.expected));
 	}
 
 	@Test
 	public void contentHandlerElement() throws Exception {
-		Element rootElement = result.createElementNS("namespace", "root");
-		result.appendChild(rootElement);
-		handler = new DomContentHandler(rootElement);
-		expected = documentBuilder.parse(new InputSource(new StringReader(XML_2_EXPECTED)));
-		xmlReader.setContentHandler(handler);
-		xmlReader.parse(new InputSource(new StringReader(XML_2_SNIPPET)));
-		assertThat("Invalid result", result, isSimilarTo(expected));
+		Element rootElement = this.result.createElementNS("namespace", "root");
+		this.result.appendChild(rootElement);
+		this.handler = new DomContentHandler(rootElement);
+		this.expected = this.documentBuilder.parse(new InputSource(new StringReader(XML_2_EXPECTED)));
+		this.xmlReader.setContentHandler(this.handler);
+		this.xmlReader.parse(new InputSource(new StringReader(XML_2_SNIPPET)));
+		assertThat("Invalid result", this.result, isSimilarTo(this.expected));
 	}
 
 }

@@ -49,11 +49,11 @@ public class AnnotationConfigTestNGSpringContextTests extends AbstractTestNGSpri
 
 	@Test
 	void autowiringFromConfigClass() {
-		assertNotNull(employee, "The employee should have been autowired.");
-		assertEquals(employee.getName(), "John Smith");
+		assertNotNull(this.employee, "The employee should have been autowired.");
+		assertEquals(this.employee.getName(), "John Smith");
 
-		assertNotNull(pet, "The pet should have been autowired.");
-		assertEquals(pet.getName(), "Fido");
+		assertNotNull(this.pet, "The pet should have been autowired.");
+		assertEquals(this.pet.getName(), "Fido");
 	}
 
 

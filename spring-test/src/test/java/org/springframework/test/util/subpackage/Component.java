@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2011 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,8 +52,8 @@ public class Component {
 
 	@PostConstruct
 	protected void init() {
-		Assert.state(number != null, "number must not be null");
-		Assert.state(StringUtils.hasText(text), "text must not be empty");
+		Assert.state(this.number != null, "number must not be null");
+		Assert.state(StringUtils.hasText(this.text), "text must not be empty");
 	}
 
 	@PreDestroy

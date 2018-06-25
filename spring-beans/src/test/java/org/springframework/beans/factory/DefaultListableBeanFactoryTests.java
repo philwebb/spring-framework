@@ -1456,8 +1456,8 @@ public class DefaultListableBeanFactoryTests {
 		bd2.setPrimary(true);
 		lbf.registerBeanDefinition("bd1", bd1);
 		lbf.registerBeanDefinition("bd2", bd2);
-		thrown.expect(NoUniqueBeanDefinitionException.class);
-		thrown.expectMessage(containsString("more than one 'primary'"));
+		this.thrown.expect(NoUniqueBeanDefinitionException.class);
+		this.thrown.expectMessage(containsString("more than one 'primary'"));
 		lbf.getBean(TestBean.class);
 	}
 
@@ -1501,9 +1501,9 @@ public class DefaultListableBeanFactoryTests {
 		RootBeanDefinition bd2 = new RootBeanDefinition(HighPriorityTestBean.class);
 		lbf.registerBeanDefinition("bd1", bd1);
 		lbf.registerBeanDefinition("bd2", bd2);
-		thrown.expect(NoUniqueBeanDefinitionException.class);
-		thrown.expectMessage(containsString("Multiple beans found with the same priority"));
-		thrown.expectMessage(containsString("5"));  // conflicting priority
+		this.thrown.expect(NoUniqueBeanDefinitionException.class);
+		this.thrown.expectMessage(containsString("Multiple beans found with the same priority"));
+		this.thrown.expectMessage(containsString("5"));  // conflicting priority
 		lbf.getBean(TestBean.class);
 	}
 
@@ -1583,7 +1583,7 @@ public class DefaultListableBeanFactoryTests {
 		lbf.registerBeanDefinition("bd1", bd1);
 		lbf.registerBeanDefinition("bd2", bd2);
 
-		thrown.expect(NoUniqueBeanDefinitionException.class);
+		this.thrown.expect(NoUniqueBeanDefinitionException.class);
 		lbf.getBean(ConstructorDependency.class, 42);
 	}
 
@@ -1610,8 +1610,8 @@ public class DefaultListableBeanFactoryTests {
 
 		lbf.registerBeanDefinition("bd1", bd1);
 		lbf.registerBeanDefinition("bd2", bd2);
-		thrown.expect(NoUniqueBeanDefinitionException.class);
-		thrown.expectMessage(containsString("more than one 'primary'"));
+		this.thrown.expect(NoUniqueBeanDefinitionException.class);
+		this.thrown.expectMessage(containsString("more than one 'primary'"));
 		lbf.getBean(ConstructorDependency.class, 42);
 	}
 
@@ -3319,7 +3319,7 @@ public class DefaultListableBeanFactoryTests {
 		}
 
 		public NonPublicEnum getNonPublicEnum() {
-			return nonPublicEnum;
+			return this.nonPublicEnum;
 		}
 	}
 

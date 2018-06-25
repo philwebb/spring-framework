@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,20 +39,20 @@ public class ClassFiltersTests {
 
 	@Test
 	public void testUnion() {
-		assertTrue(exceptionFilter.matches(RuntimeException.class));
-		assertFalse(exceptionFilter.matches(TestBean.class));
-		assertFalse(itbFilter.matches(Exception.class));
-		assertTrue(itbFilter.matches(TestBean.class));
-		ClassFilter union = ClassFilters.union(exceptionFilter, itbFilter);
+		assertTrue(this.exceptionFilter.matches(RuntimeException.class));
+		assertFalse(this.exceptionFilter.matches(TestBean.class));
+		assertFalse(this.itbFilter.matches(Exception.class));
+		assertTrue(this.itbFilter.matches(TestBean.class));
+		ClassFilter union = ClassFilters.union(this.exceptionFilter, this.itbFilter);
 		assertTrue(union.matches(RuntimeException.class));
 		assertTrue(union.matches(TestBean.class));
 	}
 
 	@Test
 	public void testIntersection() {
-		assertTrue(exceptionFilter.matches(RuntimeException.class));
-		assertTrue(hasRootCauseFilter.matches(NestedRuntimeException.class));
-		ClassFilter intersection = ClassFilters.intersection(exceptionFilter, hasRootCauseFilter);
+		assertTrue(this.exceptionFilter.matches(RuntimeException.class));
+		assertTrue(this.hasRootCauseFilter.matches(NestedRuntimeException.class));
+		ClassFilter intersection = ClassFilters.intersection(this.exceptionFilter, this.hasRootCauseFilter);
 		assertFalse(intersection.matches(RuntimeException.class));
 		assertFalse(intersection.matches(TestBean.class));
 		assertTrue(intersection.matches(NestedRuntimeException.class));

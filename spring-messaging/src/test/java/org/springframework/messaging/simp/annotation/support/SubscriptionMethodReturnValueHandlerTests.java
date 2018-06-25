@@ -235,7 +235,7 @@ public class SubscriptionMethodReturnValueHandlerTests {
 		private String withoutView;
 
 		public String getWithView1() {
-			return withView1;
+			return this.withView1;
 		}
 
 		public void setWithView1(String withView1) {
@@ -243,7 +243,7 @@ public class SubscriptionMethodReturnValueHandlerTests {
 		}
 
 		public String getWithView2() {
-			return withView2;
+			return this.withView2;
 		}
 
 		public void setWithView2(String withView2) {
@@ -251,7 +251,7 @@ public class SubscriptionMethodReturnValueHandlerTests {
 		}
 
 		public String getWithoutView() {
-			return withoutView;
+			return this.withoutView;
 		}
 
 		public void setWithoutView(String withoutView) {

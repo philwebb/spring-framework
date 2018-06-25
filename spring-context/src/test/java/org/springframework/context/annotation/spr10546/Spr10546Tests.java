@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,8 +37,8 @@ public class Spr10546Tests {
 
 	@After
 	public void closeContext() {
-		if (context != null) {
-			context.close();
+		if (this.context != null) {
+			this.context.close();
 		}
 	}
 
@@ -62,10 +62,10 @@ public class Spr10546Tests {
 	@Test
 	public void enclosingConfigFirstParentDefinesBeanWithScanning() {
 		AnnotationConfigApplicationContext ctx= new AnnotationConfigApplicationContext();
-		context = ctx;
+		this.context = ctx;
 		ctx.scan(AEnclosingConfig.class.getPackage().getName());
 		ctx.refresh();
-		assertThat(context.getBean("myBean",String.class), equalTo("myBean"));
+		assertThat(this.context.getBean("myBean",String.class), equalTo("myBean"));
 	}
 
 	@Test
@@ -143,7 +143,7 @@ public class Spr10546Tests {
 	}
 
 	private void assertLoadsMyBean(Class<?>... annotatedClasses) {
-		context = new AnnotationConfigApplicationContext(annotatedClasses);
-		assertThat(context.getBean("myBean",String.class), equalTo("myBean"));
+		this.context = new AnnotationConfigApplicationContext(annotatedClasses);
+		assertThat(this.context.getBean("myBean",String.class), equalTo("myBean"));
 	}
 }

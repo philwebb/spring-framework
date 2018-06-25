@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2014 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ public class DefaultPropertiesFileDetectionTestPropertySourceTests {
 	}
 
 	protected void assertEnvironmentValue(String key, String expected) {
-		assertEquals("Value of key [" + key + "].", expected, env.getProperty(key));
+		assertEquals("Value of key [" + key + "].", expected, this.env.getProperty(key));
 	}
 
 

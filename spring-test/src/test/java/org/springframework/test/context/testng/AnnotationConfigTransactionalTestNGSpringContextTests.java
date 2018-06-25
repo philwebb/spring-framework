@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,11 +76,11 @@ public class AnnotationConfigTransactionalTestNGSpringContextTests
 
 
 	private int createPerson(String name) {
-		return jdbcTemplate.update("INSERT INTO person VALUES(?)", name);
+		return this.jdbcTemplate.update("INSERT INTO person VALUES(?)", name);
 	}
 
 	private int deletePerson(String name) {
-		return jdbcTemplate.update("DELETE FROM person WHERE name=?", name);
+		return this.jdbcTemplate.update("DELETE FROM person WHERE name=?", name);
 	}
 
 	private void assertNumRowsInPersonTable(int expectedNumRows, String testState) {
@@ -111,11 +111,11 @@ public class AnnotationConfigTransactionalTestNGSpringContextTests
 	@Test
 	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	void autowiringFromConfigClass() {
-		assertNotNull(employee, "The employee should have been autowired.");
-		assertEquals(employee.getName(), "John Smith");
+		assertNotNull(this.employee, "The employee should have been autowired.");
+		assertEquals(this.employee.getName(), "John Smith");
 
-		assertNotNull(pet, "The pet should have been autowired.");
-		assertEquals(pet.getName(), "Fido");
+		assertNotNull(this.pet, "The pet should have been autowired.");
+		assertEquals(this.pet.getName(), "Fido");
 	}
 
 	@BeforeTransaction

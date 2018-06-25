@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,8 +71,8 @@ public class FreeMarkerViewTests {
 
 		fv.setUrl("anythingButNull");
 
-		exception.expect(ApplicationContextException.class);
-		exception.expectMessage(containsString("FreeMarkerConfig"));
+		this.exception.expect(ApplicationContextException.class);
+		this.exception.expectMessage(containsString("FreeMarkerConfig"));
 		fv.setApplicationContext(wac);
 	}
 
@@ -80,8 +80,8 @@ public class FreeMarkerViewTests {
 	public void noTemplateName() throws Exception {
 		FreeMarkerView fv = new FreeMarkerView();
 
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage(containsString("url"));
+		this.exception.expect(IllegalArgumentException.class);
+		this.exception.expectMessage(containsString("url"));
 		fv.afterPropertiesSet();
 	}
 

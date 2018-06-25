@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,25 +61,25 @@ public class RequestHeaderMapMethodArgumentResolverTests {
 
 	@Before
 	public void setUp() throws Exception {
-		resolver = new RequestHeaderMapMethodArgumentResolver();
+		this.resolver = new RequestHeaderMapMethodArgumentResolver();
 
 		Method method = getClass().getMethod("params", Map.class, MultiValueMap.class, HttpHeaders.class, Map.class);
-		paramMap = new SynthesizingMethodParameter(method, 0);
-		paramMultiValueMap = new SynthesizingMethodParameter(method, 1);
-		paramHttpHeaders = new SynthesizingMethodParameter(method, 2);
-		paramUnsupported = new SynthesizingMethodParameter(method, 3);
+		this.paramMap = new SynthesizingMethodParameter(method, 0);
+		this.paramMultiValueMap = new SynthesizingMethodParameter(method, 1);
+		this.paramHttpHeaders = new SynthesizingMethodParameter(method, 2);
+		this.paramUnsupported = new SynthesizingMethodParameter(method, 3);
 
-		request = new MockHttpServletRequest();
-		webRequest = new ServletWebRequest(request, new MockHttpServletResponse());
+		this.request = new MockHttpServletRequest();
+		this.webRequest = new ServletWebRequest(this.request, new MockHttpServletResponse());
 	}
 
 
 	@Test
 	public void supportsParameter() {
-		assertTrue("Map parameter not supported", resolver.supportsParameter(paramMap));
-		assertTrue("MultiValueMap parameter not supported", resolver.supportsParameter(paramMultiValueMap));
-		assertTrue("HttpHeaders parameter not supported", resolver.supportsParameter(paramHttpHeaders));
-		assertFalse("non-@RequestParam map supported", resolver.supportsParameter(paramUnsupported));
+		assertTrue("Map parameter not supported", this.resolver.supportsParameter(this.paramMap));
+		assertTrue("MultiValueMap parameter not supported", this.resolver.supportsParameter(this.paramMultiValueMap));
+		assertTrue("HttpHeaders parameter not supported", this.resolver.supportsParameter(this.paramHttpHeaders));
+		assertFalse("non-@RequestParam map supported", this.resolver.supportsParameter(this.paramUnsupported));
 	}
 
 	@Test
@@ -87,9 +87,9 @@ public class RequestHeaderMapMethodArgumentResolverTests {
 		String name = "foo";
 		String value = "bar";
 		Map<String, String> expected = Collections.singletonMap(name, value);
-		request.addHeader(name, value);
+		this.request.addHeader(name, value);
 
-		Object result = resolver.resolveArgument(paramMap, null, webRequest, null);
+		Object result = this.resolver.resolveArgument(this.paramMap, null, this.webRequest, null);
 
 		assertTrue(result instanceof Map);
 		assertEquals("Invalid result", expected, result);
@@ -101,14 +101,14 @@ public class RequestHeaderMapMethodArgumentResolverTests {
 		String value1 = "bar";
 		String value2 = "baz";
 
-		request.addHeader(name, value1);
-		request.addHeader(name, value2);
+		this.request.addHeader(name, value1);
+		this.request.addHeader(name, value2);
 
 		MultiValueMap<String, String> expected = new LinkedMultiValueMap<>(1);
 		expected.add(name, value1);
 		expected.add(name, value2);
 
-		Object result = resolver.resolveArgument(paramMultiValueMap, null, webRequest, null);
+		Object result = this.resolver.resolveArgument(this.paramMultiValueMap, null, this.webRequest, null);
 
 		assertTrue(result instanceof MultiValueMap);
 		assertEquals("Invalid result", expected, result);
@@ -120,14 +120,14 @@ public class RequestHeaderMapMethodArgumentResolverTests {
 		String value1 = "bar";
 		String value2 = "baz";
 
-		request.addHeader(name, value1);
-		request.addHeader(name, value2);
+		this.request.addHeader(name, value1);
+		this.request.addHeader(name, value2);
 
 		HttpHeaders expected = new HttpHeaders();
 		expected.add(name, value1);
 		expected.add(name, value2);
 
-		Object result = resolver.resolveArgument(paramHttpHeaders, null, webRequest, null);
+		Object result = this.resolver.resolveArgument(this.paramHttpHeaders, null, this.webRequest, null);
 
 		assertTrue(result instanceof HttpHeaders);
 		assertEquals("Invalid result", expected, result);

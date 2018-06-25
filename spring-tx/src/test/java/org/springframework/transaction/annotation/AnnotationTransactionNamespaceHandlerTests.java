@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,7 +63,7 @@ public class AnnotationTransactionNamespaceHandlerTests {
 	@Test
 	public void invokeTransactional() throws Exception {
 		TransactionalTestBean testBean = getTestBean();
-		CallCountingTransactionManager ptm = (CallCountingTransactionManager) context.getBean("transactionManager");
+		CallCountingTransactionManager ptm = (CallCountingTransactionManager) this.context.getBean("transactionManager");
 
 		// try with transactional
 		assertEquals("Should not have any started transactions", 0, ptm.begun);
@@ -89,7 +89,7 @@ public class AnnotationTransactionNamespaceHandlerTests {
 	@Test
 	public void nonPublicMethodsNotAdvised() {
 		TransactionalTestBean testBean = getTestBean();
-		CallCountingTransactionManager ptm = (CallCountingTransactionManager) context.getBean("transactionManager");
+		CallCountingTransactionManager ptm = (CallCountingTransactionManager) this.context.getBean("transactionManager");
 
 		assertEquals("Should not have any started transactions", 0, ptm.begun);
 		testBean.annotationsOnProtectedAreIgnored();
@@ -111,7 +111,7 @@ public class AnnotationTransactionNamespaceHandlerTests {
 	}
 
 	private TransactionalTestBean getTestBean() {
-		return (TransactionalTestBean) context.getBean("testBean");
+		return (TransactionalTestBean) this.context.getBean("testBean");
 	}
 
 

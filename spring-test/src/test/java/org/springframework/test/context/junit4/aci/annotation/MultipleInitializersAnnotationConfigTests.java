@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2012 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,9 +53,9 @@ public class MultipleInitializersAnnotationConfigTests {
 
 	@Test
 	public void activeBeans() {
-		assertEquals("foo", foo);
-		assertEquals("foo", bar);
-		assertEquals("dev profile config", baz);
+		assertEquals("foo", this.foo);
+		assertEquals("foo", this.bar);
+		assertEquals("dev profile config", this.baz);
 	}
 
 }

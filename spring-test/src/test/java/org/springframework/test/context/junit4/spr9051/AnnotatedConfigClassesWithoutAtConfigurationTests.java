@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -90,12 +90,12 @@ public class AnnotatedConfigClassesWithoutAtConfigurationTests {
 
 	@Test
 	public void testSPR_9051() throws Exception {
-		assertNotNull(enigma);
-		assertNotNull(lifecycleBean);
-		assertTrue(lifecycleBean.isInitialized());
+		assertNotNull(this.enigma);
+		assertNotNull(this.lifecycleBean);
+		assertTrue(this.lifecycleBean.isInitialized());
 		Set<String> names = new HashSet<>();
-		names.add(enigma.toString());
-		names.add(lifecycleBean.getName());
+		names.add(this.enigma.toString());
+		names.add(this.lifecycleBean.getName());
 		assertEquals(names, new HashSet<>(Arrays.asList("enigma #1", "enigma #2")));
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,52 +44,52 @@ public class AfterThrowingAdviceBindingTests {
 		ClassPathXmlApplicationContext ctx =
 			new ClassPathXmlApplicationContext(getClass().getSimpleName() + ".xml", getClass());
 
-		testBean = (ITestBean) ctx.getBean("testBean");
-		afterThrowingAdviceAspect = (AfterThrowingAdviceBindingTestAspect) ctx.getBean("testAspect");
+		this.testBean = (ITestBean) ctx.getBean("testBean");
+		this.afterThrowingAdviceAspect = (AfterThrowingAdviceBindingTestAspect) ctx.getBean("testAspect");
 
-		mockCollaborator = mock(AfterThrowingAdviceBindingCollaborator.class);
-		afterThrowingAdviceAspect.setCollaborator(mockCollaborator);
+		this.mockCollaborator = mock(AfterThrowingAdviceBindingCollaborator.class);
+		this.afterThrowingAdviceAspect.setCollaborator(this.mockCollaborator);
 	}
 
 	@Test(expected = Throwable.class)
 	public void testSimpleAfterThrowing() throws Throwable {
 		this.testBean.exceptional(new Throwable());
-		verify(mockCollaborator).noArgs();
+		verify(this.mockCollaborator).noArgs();
 	}
 
 	@Test(expected = Throwable.class)
 	public void testAfterThrowingWithBinding() throws Throwable {
 		Throwable t = new Throwable();
 		this.testBean.exceptional(t);
-		verify(mockCollaborator).oneThrowable(t);
+		verify(this.mockCollaborator).oneThrowable(t);
 	}
 
 	@Test(expected = Throwable.class)
 	public void testAfterThrowingWithNamedTypeRestriction() throws Throwable {
 		Throwable t = new Throwable();
 		this.testBean.exceptional(t);
-		verify(mockCollaborator).noArgs();
-		verify(mockCollaborator).oneThrowable(t);
-		verify(mockCollaborator).noArgsOnThrowableMatch();
+		verify(this.mockCollaborator).noArgs();
+		verify(this.mockCollaborator).oneThrowable(t);
+		verify(this.mockCollaborator).noArgsOnThrowableMatch();
 	}
 
 	@Test(expected = Throwable.class)
 	public void testAfterThrowingWithRuntimeExceptionBinding() throws Throwable {
 		RuntimeException ex = new RuntimeException();
 		this.testBean.exceptional(ex);
-		verify(mockCollaborator).oneRuntimeException(ex);
+		verify(this.mockCollaborator).oneRuntimeException(ex);
 	}
 
 	@Test(expected = Throwable.class)
 	public void testAfterThrowingWithTypeSpecified() throws Throwable {
 		this.testBean.exceptional(new Throwable());
-		verify(mockCollaborator).noArgsOnThrowableMatch();
+		verify(this.mockCollaborator).noArgsOnThrowableMatch();
 	}
 
 	@Test(expected = Throwable.class)
 	public void testAfterThrowingWithRuntimeTypeSpecified() throws Throwable {
 		this.testBean.exceptional(new RuntimeException());
-		verify(mockCollaborator).noArgsOnRuntimeExceptionMatch();
+		verify(this.mockCollaborator).noArgsOnRuntimeExceptionMatch();
 	}
 
 }

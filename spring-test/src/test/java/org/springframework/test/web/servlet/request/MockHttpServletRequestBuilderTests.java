@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -489,10 +489,10 @@ public class MockHttpServletRequestBuilderTests {
 						.with(requestAttr(ATTR).value("default"))
 						.with(requestAttr(ATTR).value(EXPECTED));
 
-		builder.merge(defaultBuilder);
+		this.builder.merge(defaultBuilder);
 
-		MockHttpServletRequest request = builder.buildRequest(servletContext);
-		request = builder.postProcessRequest(request);
+		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
+		request = this.builder.postProcessRequest(request);
 
 		assertEquals(EXPECTED, request.getAttribute(ATTR));
 	}
@@ -540,7 +540,7 @@ public class MockHttpServletRequestBuilderTests {
 		}
 
 		public MockHttpServletRequest postProcessRequest(MockHttpServletRequest request) {
-			request.setAttribute(attr, value);
+			request.setAttribute(this.attr, this.value);
 			return request;
 		}
 	}

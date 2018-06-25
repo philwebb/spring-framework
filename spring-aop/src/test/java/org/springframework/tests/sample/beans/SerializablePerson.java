@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ public class SerializablePerson implements Person, Serializable {
 
 	@Override
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class SerializablePerson implements Person, Serializable {
 
 	@Override
 	public int getAge() {
-		return age;
+		return this.age;
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class SerializablePerson implements Person, Serializable {
 			return false;
 		}
 		SerializablePerson p = (SerializablePerson) other;
-		return p.age == age && ObjectUtils.nullSafeEquals(name, p.name);
+		return p.age == this.age && ObjectUtils.nullSafeEquals(this.name, p.name);
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -78,15 +78,15 @@ public class HttpEntityMethodProcessorTests {
 	@Before
 	public void setup() throws Exception {
 		Method method = getClass().getDeclaredMethod("handle", HttpEntity.class, HttpEntity.class);
-		paramList = new MethodParameter(method, 0);
-		paramSimpleBean = new MethodParameter(method, 1);
+		this.paramList = new MethodParameter(method, 0);
+		this.paramSimpleBean = new MethodParameter(method, 1);
 
-		mavContainer = new ModelAndViewContainer();
-		binderFactory = new ValidatingBinderFactory();
-		servletRequest = new MockHttpServletRequest();
-		servletResponse = new MockHttpServletResponse();
-		servletRequest.setMethod("POST");
-		webRequest = new ServletWebRequest(servletRequest, servletResponse);
+		this.mavContainer = new ModelAndViewContainer();
+		this.binderFactory = new ValidatingBinderFactory();
+		this.servletRequest = new MockHttpServletRequest();
+		this.servletResponse = new MockHttpServletResponse();
+		this.servletRequest.setMethod("POST");
+		this.webRequest = new ServletWebRequest(this.servletRequest, this.servletResponse);
 	}
 
 
@@ -102,7 +102,7 @@ public class HttpEntityMethodProcessorTests {
 
 		@SuppressWarnings("unchecked")
 		HttpEntity<SimpleBean> result = (HttpEntity<SimpleBean>) processor.resolveArgument(
-				paramSimpleBean, mavContainer, webRequest, binderFactory);
+				this.paramSimpleBean, this.mavContainer, this.webRequest, this.binderFactory);
 
 		assertNotNull(result);
 		assertEquals("Jad", result.getBody().getName());
@@ -136,7 +136,7 @@ public class HttpEntityMethodProcessorTests {
 
 		@SuppressWarnings("unchecked")
 		HttpEntity<List<SimpleBean>> result = (HttpEntity<List<SimpleBean>>) processor.resolveArgument(
-				paramList, mavContainer, webRequest, binderFactory);
+				this.paramList, this.mavContainer, this.webRequest, this.binderFactory);
 
 		assertNotNull(result);
 		assertEquals("Jad", result.getBody().get(0).getName());
@@ -159,7 +159,7 @@ public class HttpEntityMethodProcessorTests {
 
 		@SuppressWarnings("unchecked")
 		HttpEntity<SimpleBean> result = (HttpEntity<SimpleBean>)
-				processor.resolveArgument(methodParam, mavContainer, webRequest, binderFactory);
+				processor.resolveArgument(methodParam, this.mavContainer, this.webRequest, this.binderFactory);
 
 		assertNotNull(result);
 		assertEquals("Jad", result.getBody().getName());
@@ -194,10 +194,10 @@ public class HttpEntityMethodProcessorTests {
 		ResponseEntity<StringBuilder> returnValue = ResponseEntity.ok(new StringBuilder("Foo"));
 
 		HttpEntityMethodProcessor processor = new HttpEntityMethodProcessor(converters);
-		processor.handleReturnValue(returnValue, returnType, mavContainer, webRequest);
+		processor.handleReturnValue(returnValue, returnType, this.mavContainer, this.webRequest);
 
-		assertEquals("text/plain;charset=ISO-8859-1", servletResponse.getHeader("Content-Type"));
-		assertEquals("Foo", servletResponse.getContentAsString());
+		assertEquals("text/plain;charset=ISO-8859-1", this.servletResponse.getHeader("Content-Type"));
+		assertEquals("Foo", this.servletResponse.getContentAsString());
 	}
 
 
@@ -240,7 +240,7 @@ public class HttpEntityMethodProcessorTests {
 
 		@Override
 		public Long getId() {
-			return id;
+			return this.id;
 		}
 
 		@Override
@@ -249,7 +249,7 @@ public class HttpEntityMethodProcessorTests {
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		@SuppressWarnings("unused")
@@ -285,7 +285,7 @@ public class HttpEntityMethodProcessorTests {
 		}
 
 		public String getParentProperty() {
-			return parentProperty;
+			return this.parentProperty;
 		}
 
 		public void setParentProperty(String parentProperty) {

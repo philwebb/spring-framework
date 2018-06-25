@@ -44,16 +44,16 @@ public abstract class AbstractHttpRequestFactoryTestCase extends AbstractMockWeb
 
 	@Before
 	public final void createFactory() throws Exception {
-		factory = createRequestFactory();
-		if (factory instanceof InitializingBean) {
-			((InitializingBean) factory).afterPropertiesSet();
+		this.factory = createRequestFactory();
+		if (this.factory instanceof InitializingBean) {
+			((InitializingBean) this.factory).afterPropertiesSet();
 		}
 	}
 
 	@After
 	public final void destroyFactory() throws Exception {
-		if (factory instanceof DisposableBean) {
-			((DisposableBean) factory).destroy();
+		if (this.factory instanceof DisposableBean) {
+			((DisposableBean) this.factory).destroy();
 		}
 	}
 
@@ -63,8 +63,8 @@ public abstract class AbstractHttpRequestFactoryTestCase extends AbstractMockWeb
 
 	@Test
 	public void status() throws Exception {
-		URI uri = new URI(baseUrl + "/status/notfound");
-		ClientHttpRequest request = factory.createRequest(uri, HttpMethod.GET);
+		URI uri = new URI(this.baseUrl + "/status/notfound");
+		ClientHttpRequest request = this.factory.createRequest(uri, HttpMethod.GET);
 		assertEquals("Invalid HTTP method", HttpMethod.GET, request.getMethod());
 		assertEquals("Invalid HTTP URI", uri, request.getURI());
 
@@ -79,7 +79,7 @@ public abstract class AbstractHttpRequestFactoryTestCase extends AbstractMockWeb
 
 	@Test
 	public void echo() throws Exception {
-		ClientHttpRequest request = factory.createRequest(new URI(baseUrl + "/echo"), HttpMethod.PUT);
+		ClientHttpRequest request = this.factory.createRequest(new URI(this.baseUrl + "/echo"), HttpMethod.PUT);
 		assertEquals("Invalid HTTP method", HttpMethod.PUT, request.getMethod());
 
 		String headerName = "MyHeader";
@@ -114,7 +114,7 @@ public abstract class AbstractHttpRequestFactoryTestCase extends AbstractMockWeb
 
 	@Test(expected = IllegalStateException.class)
 	public void multipleWrites() throws Exception {
-		ClientHttpRequest request = factory.createRequest(new URI(baseUrl + "/echo"), HttpMethod.POST);
+		ClientHttpRequest request = this.factory.createRequest(new URI(this.baseUrl + "/echo"), HttpMethod.POST);
 
 		final byte[] body = "Hello World".getBytes("UTF-8");
 		if (request instanceof StreamingHttpOutputMessage) {
@@ -135,7 +135,7 @@ public abstract class AbstractHttpRequestFactoryTestCase extends AbstractMockWeb
 
 	@Test(expected = UnsupportedOperationException.class)
 	public void headersAfterExecute() throws Exception {
-		ClientHttpRequest request = factory.createRequest(new URI(baseUrl + "/echo"), HttpMethod.POST);
+		ClientHttpRequest request = this.factory.createRequest(new URI(this.baseUrl + "/echo"), HttpMethod.POST);
 
 		request.getHeaders().add("MyHeader", "value");
 		byte[] body = "Hello World".getBytes("UTF-8");
@@ -163,7 +163,7 @@ public abstract class AbstractHttpRequestFactoryTestCase extends AbstractMockWeb
 	protected void assertHttpMethod(String path, HttpMethod method) throws Exception {
 		ClientHttpResponse response = null;
 		try {
-			ClientHttpRequest request = factory.createRequest(new URI(baseUrl + "/methods/" + path), method);
+			ClientHttpRequest request = this.factory.createRequest(new URI(this.baseUrl + "/methods/" + path), method);
 			if (method == HttpMethod.POST || method == HttpMethod.PUT || method == HttpMethod.PATCH) {
 				// requires a body
 				try {
@@ -186,8 +186,8 @@ public abstract class AbstractHttpRequestFactoryTestCase extends AbstractMockWeb
 
 	@Test
 	public void queryParameters() throws Exception {
-		URI uri = new URI(baseUrl + "/params?param1=value&param2=value1&param2=value2");
-		ClientHttpRequest request = factory.createRequest(uri, HttpMethod.GET);
+		URI uri = new URI(this.baseUrl + "/params?param1=value&param2=value1&param2=value2");
+		ClientHttpRequest request = this.factory.createRequest(uri, HttpMethod.GET);
 
 		ClientHttpResponse response = request.execute();
 		try {

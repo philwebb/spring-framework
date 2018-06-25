@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,44 +45,44 @@ public class MockServletContextTests {
 
 	@Test
 	public void listFiles() {
-		Set<String> paths = sc.getResourcePaths("/web");
+		Set<String> paths = this.sc.getResourcePaths("/web");
 		assertNotNull(paths);
 		assertTrue(paths.contains("/web/MockServletContextTests.class"));
 	}
 
 	@Test
 	public void listSubdirectories() {
-		Set<String> paths = sc.getResourcePaths("/");
+		Set<String> paths = this.sc.getResourcePaths("/");
 		assertNotNull(paths);
 		assertTrue(paths.contains("/web/"));
 	}
 
 	@Test
 	public void listNonDirectory() {
-		Set<String> paths = sc.getResourcePaths("/web/MockServletContextTests.class");
+		Set<String> paths = this.sc.getResourcePaths("/web/MockServletContextTests.class");
 		assertNull(paths);
 	}
 
 	@Test
 	public void listInvalidPath() {
-		Set<String> paths = sc.getResourcePaths("/web/invalid");
+		Set<String> paths = this.sc.getResourcePaths("/web/invalid");
 		assertNull(paths);
 	}
 
 	@Test
 	public void registerContextAndGetContext() {
 		MockServletContext sc2 = new MockServletContext();
-		sc.setContextPath("/");
-		sc.registerContext("/second", sc2);
-		assertSame(sc, sc.getContext("/"));
-		assertSame(sc2, sc.getContext("/second"));
+		this.sc.setContextPath("/");
+		this.sc.registerContext("/second", sc2);
+		assertSame(this.sc, this.sc.getContext("/"));
+		assertSame(sc2, this.sc.getContext("/second"));
 	}
 
 	@Test
 	public void getMimeType() {
-		assertEquals("text/html", sc.getMimeType("test.html"));
-		assertEquals("image/gif", sc.getMimeType("test.gif"));
-		assertNull(sc.getMimeType("test.foobar"));
+		assertEquals("text/html", this.sc.getMimeType("test.html"));
+		assertEquals("image/gif", this.sc.getMimeType("test.gif"));
+		assertNull(this.sc.getMimeType("test.foobar"));
 	}
 
 	/**
@@ -91,52 +91,52 @@ public class MockServletContextTests {
 	 */
 	@Test
 	public void getMimeTypeWithCustomConfiguredType() {
-		sc.addMimeType("enigma", new MediaType("text", "enigma"));
-		assertEquals("text/enigma", sc.getMimeType("filename.enigma"));
+		this.sc.addMimeType("enigma", new MediaType("text", "enigma"));
+		assertEquals("text/enigma", this.sc.getMimeType("filename.enigma"));
 	}
 
 	@Test
 	public void servletVersion() {
-		assertEquals(3, sc.getMajorVersion());
-		assertEquals(1, sc.getMinorVersion());
-		assertEquals(3, sc.getEffectiveMajorVersion());
-		assertEquals(1, sc.getEffectiveMinorVersion());
+		assertEquals(3, this.sc.getMajorVersion());
+		assertEquals(1, this.sc.getMinorVersion());
+		assertEquals(3, this.sc.getEffectiveMajorVersion());
+		assertEquals(1, this.sc.getEffectiveMinorVersion());
 
-		sc.setMajorVersion(4);
-		sc.setMinorVersion(0);
-		sc.setEffectiveMajorVersion(4);
-		sc.setEffectiveMinorVersion(0);
-		assertEquals(4, sc.getMajorVersion());
-		assertEquals(0, sc.getMinorVersion());
-		assertEquals(4, sc.getEffectiveMajorVersion());
-		assertEquals(0, sc.getEffectiveMinorVersion());
+		this.sc.setMajorVersion(4);
+		this.sc.setMinorVersion(0);
+		this.sc.setEffectiveMajorVersion(4);
+		this.sc.setEffectiveMinorVersion(0);
+		assertEquals(4, this.sc.getMajorVersion());
+		assertEquals(0, this.sc.getMinorVersion());
+		assertEquals(4, this.sc.getEffectiveMajorVersion());
+		assertEquals(0, this.sc.getEffectiveMinorVersion());
 	}
 
 	@Test
 	public void registerAndUnregisterNamedDispatcher() throws Exception {
 		final String name = "test-servlet";
 		final String url = "/test";
-		assertNull(sc.getNamedDispatcher(name));
+		assertNull(this.sc.getNamedDispatcher(name));
 
-		sc.registerNamedDispatcher(name, new MockRequestDispatcher(url));
-		RequestDispatcher namedDispatcher = sc.getNamedDispatcher(name);
+		this.sc.registerNamedDispatcher(name, new MockRequestDispatcher(url));
+		RequestDispatcher namedDispatcher = this.sc.getNamedDispatcher(name);
 		assertNotNull(namedDispatcher);
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		namedDispatcher.forward(new MockHttpServletRequest(sc), response);
+		namedDispatcher.forward(new MockHttpServletRequest(this.sc), response);
 		assertEquals(url, response.getForwardedUrl());
 
-		sc.unregisterNamedDispatcher(name);
-		assertNull(sc.getNamedDispatcher(name));
+		this.sc.unregisterNamedDispatcher(name);
+		assertNull(this.sc.getNamedDispatcher(name));
 	}
 
 	@Test
 	public void getNamedDispatcherForDefaultServlet() throws Exception {
 		final String name = "default";
-		RequestDispatcher namedDispatcher = sc.getNamedDispatcher(name);
+		RequestDispatcher namedDispatcher = this.sc.getNamedDispatcher(name);
 		assertNotNull(namedDispatcher);
 
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		namedDispatcher.forward(new MockHttpServletRequest(sc), response);
+		namedDispatcher.forward(new MockHttpServletRequest(this.sc), response);
 		assertEquals(name, response.getForwardedUrl());
 	}
 
@@ -144,16 +144,16 @@ public class MockServletContextTests {
 	public void setDefaultServletName() throws Exception {
 		final String originalDefault = "default";
 		final String newDefault = "test";
-		assertNotNull(sc.getNamedDispatcher(originalDefault));
+		assertNotNull(this.sc.getNamedDispatcher(originalDefault));
 
-		sc.setDefaultServletName(newDefault);
-		assertEquals(newDefault, sc.getDefaultServletName());
-		assertNull(sc.getNamedDispatcher(originalDefault));
+		this.sc.setDefaultServletName(newDefault);
+		assertEquals(newDefault, this.sc.getDefaultServletName());
+		assertNull(this.sc.getNamedDispatcher(originalDefault));
 
-		RequestDispatcher namedDispatcher = sc.getNamedDispatcher(newDefault);
+		RequestDispatcher namedDispatcher = this.sc.getNamedDispatcher(newDefault);
 		assertNotNull(namedDispatcher);
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		namedDispatcher.forward(new MockHttpServletRequest(sc), response);
+		namedDispatcher.forward(new MockHttpServletRequest(this.sc), response);
 		assertEquals(newDefault, response.getForwardedUrl());
 	}
 
@@ -162,7 +162,7 @@ public class MockServletContextTests {
 	 */
 	@Test
 	public void getServletRegistration() {
-		assertNull(sc.getServletRegistration("servlet"));
+		assertNull(this.sc.getServletRegistration("servlet"));
 	}
 
 	/**
@@ -170,7 +170,7 @@ public class MockServletContextTests {
 	 */
 	@Test
 	public void getServletRegistrations() {
-		Map<String, ? extends ServletRegistration> servletRegistrations = sc.getServletRegistrations();
+		Map<String, ? extends ServletRegistration> servletRegistrations = this.sc.getServletRegistrations();
 		assertNotNull(servletRegistrations);
 		assertEquals(0, servletRegistrations.size());
 	}
@@ -180,7 +180,7 @@ public class MockServletContextTests {
 	 */
 	@Test
 	public void getFilterRegistration() {
-		assertNull(sc.getFilterRegistration("filter"));
+		assertNull(this.sc.getFilterRegistration("filter"));
 	}
 
 	/**
@@ -188,7 +188,7 @@ public class MockServletContextTests {
 	 */
 	@Test
 	public void getFilterRegistrations() {
-		Map<String, ? extends FilterRegistration> filterRegistrations = sc.getFilterRegistrations();
+		Map<String, ? extends FilterRegistration> filterRegistrations = this.sc.getFilterRegistrations();
 		assertNotNull(filterRegistrations);
 		assertEquals(0, filterRegistrations.size());
 	}

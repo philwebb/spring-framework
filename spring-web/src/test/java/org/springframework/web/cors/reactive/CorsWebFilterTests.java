@@ -54,13 +54,13 @@ public class CorsWebFilterTests {
 
 	@Before
 	public void setup() throws Exception {
-		config.setAllowedOrigins(Arrays.asList("http://domain1.com", "http://domain2.com"));
-		config.setAllowedMethods(Arrays.asList("GET", "POST"));
-		config.setAllowedHeaders(Arrays.asList("header1", "header2"));
-		config.setExposedHeaders(Arrays.asList("header3", "header4"));
-		config.setMaxAge(123L);
-		config.setAllowCredentials(false);
-		filter = new CorsWebFilter(r -> config);
+		this.config.setAllowedOrigins(Arrays.asList("http://domain1.com", "http://domain2.com"));
+		this.config.setAllowedMethods(Arrays.asList("GET", "POST"));
+		this.config.setAllowedHeaders(Arrays.asList("header1", "header2"));
+		this.config.setExposedHeaders(Arrays.asList("header3", "header4"));
+		this.config.setMaxAge(123L);
+		this.config.setAllowCredentials(false);
+		this.filter = new CorsWebFilter(r -> this.config);
 	}
 
 	@Test
@@ -97,7 +97,7 @@ public class CorsWebFilterTests {
 
 		WebFilterChain filterChain = (filterExchange) -> Mono.error(
 				new AssertionError("Invalid requests must not be forwarded to the filter chain"));
-		filter.filter(exchange, filterChain);
+		this.filter.filter(exchange, filterChain);
 
 		assertNull(exchange.getResponse().getHeaders().getFirst(ACCESS_CONTROL_ALLOW_ORIGIN));
 	}
@@ -116,7 +116,7 @@ public class CorsWebFilterTests {
 
 		WebFilterChain filterChain = (filterExchange) -> Mono.error(
 				new AssertionError("Preflight requests must not be forwarded to the filter chain"));
-		filter.filter(exchange, filterChain);
+		this.filter.filter(exchange, filterChain);
 
 		HttpHeaders headers = exchange.getResponse().getHeaders();
 		assertEquals("http://domain2.com", headers.getFirst(ACCESS_CONTROL_ALLOW_ORIGIN));
@@ -139,7 +139,7 @@ public class CorsWebFilterTests {
 		WebFilterChain filterChain = (filterExchange) -> Mono.error(
 				new AssertionError("Preflight requests must not be forwarded to the filter chain"));
 
-		filter.filter(exchange, filterChain);
+		this.filter.filter(exchange, filterChain);
 
 		assertNull(exchange.getResponse().getHeaders().getFirst(ACCESS_CONTROL_ALLOW_ORIGIN));
 	}

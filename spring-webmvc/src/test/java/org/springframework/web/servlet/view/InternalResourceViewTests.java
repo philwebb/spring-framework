@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ public class InternalResourceViewTests {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void rejectsNullUrl() throws Exception {
-		view.afterPropertiesSet();
+		this.view.afterPropertiesSet();
 	}
 
 	@Test
@@ -73,16 +73,16 @@ public class InternalResourceViewTests {
 		request.setPathInfo(";mypathinfo");
 		request.setQueryString("?param1=value1");
 
-		view.setUrl(url);
-		view.setServletContext(new MockServletContext() {
+		this.view.setUrl(url);
+		this.view.setServletContext(new MockServletContext() {
 			@Override
 			public int getMinorVersion() {
 				return 4;
 			}
 		});
 
-		view.render(model, request, response);
-		assertEquals(url, response.getForwardedUrl());
+		this.view.render(model, request, this.response);
+		assertEquals(url, this.response.getForwardedUrl());
 
 		model.forEach((key, value) -> assertEquals("Values for model key '" + key
 				+ "' must match", value, request.getAttribute(key)));
@@ -90,48 +90,48 @@ public class InternalResourceViewTests {
 
 	@Test
 	public void alwaysInclude() throws Exception {
-		given(request.getAttribute(View.PATH_VARIABLES)).willReturn(null);
-		given(request.getRequestDispatcher(url)).willReturn(new MockRequestDispatcher(url));
+		given(this.request.getAttribute(View.PATH_VARIABLES)).willReturn(null);
+		given(this.request.getRequestDispatcher(url)).willReturn(new MockRequestDispatcher(url));
 
-		view.setUrl(url);
-		view.setAlwaysInclude(true);
+		this.view.setUrl(url);
+		this.view.setAlwaysInclude(true);
 
 		// Can now try multiple tests
-		view.render(model, request, response);
-		assertEquals(url, response.getIncludedUrl());
+		this.view.render(model, this.request, this.response);
+		assertEquals(url, this.response.getIncludedUrl());
 
-		model.forEach((key, value) -> verify(request).setAttribute(key, value));
+		model.forEach((key, value) -> verify(this.request).setAttribute(key, value));
 	}
 
 	@Test
 	public void includeOnAttribute() throws Exception {
-		given(request.getAttribute(View.PATH_VARIABLES)).willReturn(null);
-		given(request.getAttribute(WebUtils.INCLUDE_REQUEST_URI_ATTRIBUTE)).willReturn("somepath");
-		given(request.getRequestDispatcher(url)).willReturn(new MockRequestDispatcher(url));
+		given(this.request.getAttribute(View.PATH_VARIABLES)).willReturn(null);
+		given(this.request.getAttribute(WebUtils.INCLUDE_REQUEST_URI_ATTRIBUTE)).willReturn("somepath");
+		given(this.request.getRequestDispatcher(url)).willReturn(new MockRequestDispatcher(url));
 
-		view.setUrl(url);
+		this.view.setUrl(url);
 
 		// Can now try multiple tests
-		view.render(model, request, response);
-		assertEquals(url, response.getIncludedUrl());
+		this.view.render(model, this.request, this.response);
+		assertEquals(url, this.response.getIncludedUrl());
 
-		model.forEach((key, value) -> verify(request).setAttribute(key, value));
+		model.forEach((key, value) -> verify(this.request).setAttribute(key, value));
 	}
 
 	@Test
 	public void includeOnCommitted() throws Exception {
-		given(request.getAttribute(View.PATH_VARIABLES)).willReturn(null);
-		given(request.getAttribute(WebUtils.INCLUDE_REQUEST_URI_ATTRIBUTE)).willReturn(null);
-		given(request.getRequestDispatcher(url)).willReturn(new MockRequestDispatcher(url));
+		given(this.request.getAttribute(View.PATH_VARIABLES)).willReturn(null);
+		given(this.request.getAttribute(WebUtils.INCLUDE_REQUEST_URI_ATTRIBUTE)).willReturn(null);
+		given(this.request.getRequestDispatcher(url)).willReturn(new MockRequestDispatcher(url));
 
-		response.setCommitted(true);
-		view.setUrl(url);
+		this.response.setCommitted(true);
+		this.view.setUrl(url);
 
 		// Can now try multiple tests
-		view.render(model, request, response);
-		assertEquals(url, response.getIncludedUrl());
+		this.view.render(model, this.request, this.response);
+		assertEquals(url, this.response.getIncludedUrl());
 
-		model.forEach((k, v) -> verify(request).setAttribute(k, v));
+		model.forEach((k, v) -> verify(this.request).setAttribute(k, v));
 	}
 
 }

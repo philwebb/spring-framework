@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -125,20 +125,20 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		GenericWebApplicationContext context = new GenericWebApplicationContext();
 		context.refresh();
 
-		handlerAdapter = new RequestMappingHandlerAdapter();
-		handlerAdapter.setWebBindingInitializer(bindingInitializer);
-		handlerAdapter.setCustomArgumentResolvers(customResolvers);
-		handlerAdapter.setApplicationContext(context);
-		handlerAdapter.setBeanFactory(context.getBeanFactory());
-		handlerAdapter.afterPropertiesSet();
+		this.handlerAdapter = new RequestMappingHandlerAdapter();
+		this.handlerAdapter.setWebBindingInitializer(bindingInitializer);
+		this.handlerAdapter.setCustomArgumentResolvers(customResolvers);
+		this.handlerAdapter.setApplicationContext(context);
+		this.handlerAdapter.setBeanFactory(context.getBeanFactory());
+		this.handlerAdapter.afterPropertiesSet();
 
-		request = new MockHttpServletRequest();
-		response = new MockHttpServletResponse();
+		this.request = new MockHttpServletRequest();
+		this.response = new MockHttpServletResponse();
 
-		request.setMethod("POST");
+		this.request.setMethod("POST");
 
 		// Expose request to the current thread (for SpEL expressions)
-		RequestContextHolder.setRequestAttributes(new ServletWebRequest(request));
+		RequestContextHolder.setRequestAttributes(new ServletWebRequest(this.request));
 	}
 
 	@After
@@ -160,27 +160,27 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		TestBean sessionAttribute = new TestBean();
 		TestBean requestAttribute = new TestBean();
 
-		request.addHeader("Content-Type", "text/plain; charset=utf-8");
-		request.addHeader("header", "headerValue");
-		request.addHeader("anotherHeader", "anotherHeaderValue");
-		request.addParameter("datePattern", datePattern);
-		request.addParameter("dateParam", formattedDate);
-		request.addParameter("paramByConvention", "paramByConventionValue");
-		request.addParameter("age", "25");
-		request.setCookies(new Cookie("cookie", "99"));
-		request.setContent("Hello World".getBytes("UTF-8"));
-		request.setUserPrincipal(new User());
-		request.setContextPath("/contextPath");
-		request.setServletPath("/main");
+		this.request.addHeader("Content-Type", "text/plain; charset=utf-8");
+		this.request.addHeader("header", "headerValue");
+		this.request.addHeader("anotherHeader", "anotherHeaderValue");
+		this.request.addParameter("datePattern", datePattern);
+		this.request.addParameter("dateParam", formattedDate);
+		this.request.addParameter("paramByConvention", "paramByConventionValue");
+		this.request.addParameter("age", "25");
+		this.request.setCookies(new Cookie("cookie", "99"));
+		this.request.setContent("Hello World".getBytes("UTF-8"));
+		this.request.setUserPrincipal(new User());
+		this.request.setContextPath("/contextPath");
+		this.request.setServletPath("/main");
 		System.setProperty("systemHeader", "systemHeaderValue");
 		Map<String, String> uriTemplateVars = new HashMap<>();
 		uriTemplateVars.put("pathvar", "pathvarValue");
-		request.setAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, uriTemplateVars);
-		request.getSession().setAttribute("sessionAttribute", sessionAttribute);
-		request.setAttribute("requestAttribute", requestAttribute);
+		this.request.setAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, uriTemplateVars);
+		this.request.getSession().setAttribute("sessionAttribute", sessionAttribute);
+		this.request.setAttribute("requestAttribute", requestAttribute);
 
 		HandlerMethod handlerMethod = handlerMethod("handle", parameterTypes);
-		ModelAndView mav = handlerAdapter.handle(request, response, handlerMethod);
+		ModelAndView mav = this.handlerAdapter.handle(this.request, this.response, handlerMethod);
 		ModelMap model = mav.getModelMap();
 
 		assertEquals("viewName", mav.getViewName());
@@ -203,7 +203,7 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		TestBean modelAttr = (TestBean) model.get("modelAttr");
 		assertEquals(25, modelAttr.getAge());
 		assertEquals("Set by model method [modelAttr]", modelAttr.getName());
-		assertSame(modelAttr, request.getSession().getAttribute("modelAttr"));
+		assertSame(modelAttr, this.request.getSession().getAttribute("modelAttr"));
 
 		BindingResult bindingResult = (BindingResult) model.get(BindingResult.MODEL_KEY_PREFIX + "modelAttr");
 		assertSame(modelAttr, bindingResult.getTarget());
@@ -213,7 +213,7 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		TestBean modelAttrByConvention = (TestBean) model.get(conventionAttrName);
 		assertEquals(25, modelAttrByConvention.getAge());
 		assertEquals("Set by model method [modelAttrByConvention]", modelAttrByConvention.getName());
-		assertSame(modelAttrByConvention, request.getSession().getAttribute(conventionAttrName));
+		assertSame(modelAttrByConvention, this.request.getSession().getAttribute(conventionAttrName));
 
 		bindingResult = (BindingResult) model.get(BindingResult.MODEL_KEY_PREFIX + conventionAttrName);
 		assertSame(modelAttrByConvention, bindingResult.getTarget());
@@ -232,68 +232,68 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 	public void handleRequestBody() throws Exception {
 		Class<?>[] parameterTypes = new Class<?>[] {byte[].class};
 
-		request.setMethod("POST");
-		request.addHeader("Content-Type", "text/plain; charset=utf-8");
-		request.setContent("Hello Server".getBytes("UTF-8"));
+		this.request.setMethod("POST");
+		this.request.addHeader("Content-Type", "text/plain; charset=utf-8");
+		this.request.setContent("Hello Server".getBytes("UTF-8"));
 
 		HandlerMethod handlerMethod = handlerMethod("handleRequestBody", parameterTypes);
 
-		ModelAndView mav = handlerAdapter.handle(request, response, handlerMethod);
+		ModelAndView mav = this.handlerAdapter.handle(this.request, this.response, handlerMethod);
 
 		assertNull(mav);
-		assertEquals("Handled requestBody=[Hello Server]", new String(response.getContentAsByteArray(), "UTF-8"));
-		assertEquals(HttpStatus.ACCEPTED.value(), response.getStatus());
+		assertEquals("Handled requestBody=[Hello Server]", new String(this.response.getContentAsByteArray(), "UTF-8"));
+		assertEquals(HttpStatus.ACCEPTED.value(), this.response.getStatus());
 	}
 
 	@Test
 	public void handleAndValidateRequestBody() throws Exception {
 		Class<?>[] parameterTypes = new Class<?>[] {TestBean.class, Errors.class};
 
-		request.addHeader("Content-Type", "text/plain; charset=utf-8");
-		request.setContent("Hello Server".getBytes("UTF-8"));
+		this.request.addHeader("Content-Type", "text/plain; charset=utf-8");
+		this.request.setContent("Hello Server".getBytes("UTF-8"));
 
 		HandlerMethod handlerMethod = handlerMethod("handleAndValidateRequestBody", parameterTypes);
 
-		ModelAndView mav = handlerAdapter.handle(request, response, handlerMethod);
+		ModelAndView mav = this.handlerAdapter.handle(this.request, this.response, handlerMethod);
 
 		assertNull(mav);
-		assertEquals("Error count [1]", new String(response.getContentAsByteArray(), "UTF-8"));
-		assertEquals(HttpStatus.ACCEPTED.value(), response.getStatus());
+		assertEquals("Error count [1]", new String(this.response.getContentAsByteArray(), "UTF-8"));
+		assertEquals(HttpStatus.ACCEPTED.value(), this.response.getStatus());
 	}
 
 	@Test
 	public void handleHttpEntity() throws Exception {
 		Class<?>[] parameterTypes = new Class<?>[] {HttpEntity.class};
 
-		request.addHeader("Content-Type", "text/plain; charset=utf-8");
-		request.setContent("Hello Server".getBytes("UTF-8"));
+		this.request.addHeader("Content-Type", "text/plain; charset=utf-8");
+		this.request.setContent("Hello Server".getBytes("UTF-8"));
 
 		HandlerMethod handlerMethod = handlerMethod("handleHttpEntity", parameterTypes);
 
-		ModelAndView mav = handlerAdapter.handle(request, response, handlerMethod);
+		ModelAndView mav = this.handlerAdapter.handle(this.request, this.response, handlerMethod);
 
 		assertNull(mav);
-		assertEquals(HttpStatus.ACCEPTED.value(), response.getStatus());
-		assertEquals("Handled requestBody=[Hello Server]", new String(response.getContentAsByteArray(), "UTF-8"));
-		assertEquals("headerValue", response.getHeader("header"));
+		assertEquals(HttpStatus.ACCEPTED.value(), this.response.getStatus());
+		assertEquals("Handled requestBody=[Hello Server]", new String(this.response.getContentAsByteArray(), "UTF-8"));
+		assertEquals("headerValue", this.response.getHeader("header"));
 		// set because of @SesstionAttributes
-		assertEquals("no-store", response.getHeader("Cache-Control"));
+		assertEquals("no-store", this.response.getHeader("Cache-Control"));
 	}
 
 	// SPR-13867
 	@Test
 	public void handleHttpEntityWithCacheControl() throws Exception {
 		Class<?>[] parameterTypes = new Class<?>[] {HttpEntity.class};
-		request.addHeader("Content-Type", "text/plain; charset=utf-8");
-		request.setContent("Hello Server".getBytes("UTF-8"));
+		this.request.addHeader("Content-Type", "text/plain; charset=utf-8");
+		this.request.setContent("Hello Server".getBytes("UTF-8"));
 
 		HandlerMethod handlerMethod = handlerMethod("handleHttpEntityWithCacheControl", parameterTypes);
-		ModelAndView mav = handlerAdapter.handle(request, response, handlerMethod);
+		ModelAndView mav = this.handlerAdapter.handle(this.request, this.response, handlerMethod);
 
 		assertNull(mav);
-		assertEquals(HttpStatus.OK.value(), response.getStatus());
-		assertEquals("Handled requestBody=[Hello Server]", new String(response.getContentAsByteArray(), "UTF-8"));
-		assertThat(response.getHeaderValues("Cache-Control"), Matchers.contains("max-age=3600"));
+		assertEquals(HttpStatus.OK.value(), this.response.getStatus());
+		assertEquals("Handled requestBody=[Hello Server]", new String(this.response.getContentAsByteArray(), "UTF-8"));
+		assertThat(this.response.getHeaderValues("Cache-Control"), Matchers.contains("max-age=3600"));
 	}
 
 	@Test
@@ -302,7 +302,7 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		multipartRequest.addFile(new MockMultipartFile("requestPart", "", "text/plain", "content".getBytes("UTF-8")));
 
 		HandlerMethod handlerMethod = handlerMethod("handleRequestPart", String.class, Model.class);
-		ModelAndView mav = handlerAdapter.handle(multipartRequest, response, handlerMethod);
+		ModelAndView mav = this.handlerAdapter.handle(multipartRequest, this.response, handlerMethod);
 
 		assertNotNull(mav);
 		assertEquals("content", mav.getModelMap().get("requestPart"));
@@ -314,7 +314,7 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		multipartRequest.addFile(new MockMultipartFile("requestPart", "", "text/plain", "content".getBytes("UTF-8")));
 
 		HandlerMethod handlerMethod = handlerMethod("handleAndValidateRequestPart", String.class, Errors.class, Model.class);
-		ModelAndView mav = handlerAdapter.handle(multipartRequest, response, handlerMethod);
+		ModelAndView mav = this.handlerAdapter.handle(multipartRequest, this.response, handlerMethod);
 
 		assertNotNull(mav);
 		assertEquals(1, mav.getModelMap().get("error count"));
@@ -323,14 +323,14 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 	@Test
 	public void handleAndCompleteSession() throws Exception {
 		HandlerMethod handlerMethod = handlerMethod("handleAndCompleteSession", SessionStatus.class);
-		handlerAdapter.handle(request, response, handlerMethod);
+		this.handlerAdapter.handle(this.request, this.response, handlerMethod);
 
-		assertFalse(request.getSession().getAttributeNames().hasMoreElements());
+		assertFalse(this.request.getSession().getAttributeNames().hasMoreElements());
 	}
 
 	private HandlerMethod handlerMethod(String methodName, Class<?>... paramTypes) throws Exception {
-		Method method = handler.getClass().getDeclaredMethod(methodName, paramTypes);
-		return new InvocableHandlerMethod(handler, method);
+		Method method = this.handler.getClass().getDeclaredMethod(methodName, paramTypes);
+		return new InvocableHandlerMethod(this.handler, method);
 	}
 
 

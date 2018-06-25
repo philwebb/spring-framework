@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2012 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,8 +62,8 @@ public class NullPrimitiveTests {
 
 		Foo foo = (Foo) factory.getProxy();
 
-		thrown.expect(AopInvocationException.class);
-		thrown.expectMessage("Foo.getValue()");
+		this.thrown.expect(AopInvocationException.class);
+		this.thrown.expectMessage("Foo.getValue()");
 		assertEquals(0, foo.getValue());
 	}
 
@@ -87,8 +87,8 @@ public class NullPrimitiveTests {
 
 		Bar bar = (Bar) factory.getProxy();
 
-		thrown.expect(AopInvocationException.class);
-		thrown.expectMessage("Bar.getValue()");
+		this.thrown.expect(AopInvocationException.class);
+		this.thrown.expectMessage("Bar.getValue()");
 		assertEquals(0, bar.getValue());
 	}
 

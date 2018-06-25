@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -124,7 +124,7 @@ public class InterceptorRegistryTests {
 	@Test
 	public void addInterceptorsWithCustomPathMatcher() {
 		PathMatcher pathMatcher = Mockito.mock(PathMatcher.class);
-		this.registry.addInterceptor(interceptor1).addPathPatterns("/path1/**").pathMatcher(pathMatcher);
+		this.registry.addInterceptor(this.interceptor1).addPathPatterns("/path1/**").pathMatcher(pathMatcher);
 
 		MappedInterceptor mappedInterceptor = (MappedInterceptor) this.registry.getInterceptors().get(0);
 		assertSame(pathMatcher, mappedInterceptor.getPathMatcher());
@@ -189,7 +189,7 @@ public class InterceptorRegistryTests {
 
 		@Override
 		public void preHandle(WebRequest request) throws Exception {
-			preHandleInvoked = true;
+			this.preHandleInvoked = true;
 		}
 
 		@Override

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,7 +67,7 @@ public class FormContentTests {
 		}
 
 		public String getD1() {
-			return d1;
+			return this.d1;
 		}
 
 		public void setD1(String d1) {
@@ -75,7 +75,7 @@ public class FormContentTests {
 		}
 
 		public String getD2() {
-			return d2;
+			return this.d2;
 		}
 
 		public void setD2(String d2) {

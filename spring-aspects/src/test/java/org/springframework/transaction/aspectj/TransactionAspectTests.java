@@ -48,63 +48,63 @@ public class TransactionAspectTests {
 
 	@Before
 	public void initContext() {
-		AnnotationTransactionAspect.aspectOf().setTransactionManager(txManager);
+		AnnotationTransactionAspect.aspectOf().setTransactionManager(this.txManager);
 	}
 
 
 	@Test
 	public void testCommitOnAnnotatedClass() throws Throwable {
-		txManager.clear();
-		assertEquals(0, txManager.begun);
-		annotationOnlyOnClassWithNoInterface.echo(null);
-		assertEquals(1, txManager.commits);
+		this.txManager.clear();
+		assertEquals(0, this.txManager.begun);
+		this.annotationOnlyOnClassWithNoInterface.echo(null);
+		assertEquals(1, this.txManager.commits);
 	}
 
 	@Test
 	public void commitOnAnnotatedProtectedMethod() throws Throwable {
-		txManager.clear();
-		assertEquals(0, txManager.begun);
-		beanWithAnnotatedProtectedMethod.doInTransaction();
-		assertEquals(1, txManager.commits);
+		this.txManager.clear();
+		assertEquals(0, this.txManager.begun);
+		this.beanWithAnnotatedProtectedMethod.doInTransaction();
+		assertEquals(1, this.txManager.commits);
 	}
 
 	@Test
 	public void commitOnAnnotatedPrivateMethod() throws Throwable {
-		txManager.clear();
-		assertEquals(0, txManager.begun);
-		beanWithAnnotatedPrivateMethod.doSomething();
-		assertEquals(1, txManager.commits);
+		this.txManager.clear();
+		assertEquals(0, this.txManager.begun);
+		this.beanWithAnnotatedPrivateMethod.doSomething();
+		assertEquals(1, this.txManager.commits);
 	}
 
 	@Test
 	public void commitOnNonAnnotatedNonPublicMethodInTransactionalType() throws Throwable {
-		txManager.clear();
-		assertEquals(0, txManager.begun);
-		annotationOnlyOnClassWithNoInterface.nonTransactionalMethod();
-		assertEquals(0, txManager.begun);
+		this.txManager.clear();
+		assertEquals(0, this.txManager.begun);
+		this.annotationOnlyOnClassWithNoInterface.nonTransactionalMethod();
+		assertEquals(0, this.txManager.begun);
 	}
 
 	@Test
 	public void commitOnAnnotatedMethod() throws Throwable {
-		txManager.clear();
-		assertEquals(0, txManager.begun);
-		methodAnnotationOnly.echo(null);
-		assertEquals(1, txManager.commits);
+		this.txManager.clear();
+		assertEquals(0, this.txManager.begun);
+		this.methodAnnotationOnly.echo(null);
+		assertEquals(1, this.txManager.commits);
 	}
 
 	@Test
 	public void notTransactional() throws Throwable {
-		txManager.clear();
-		assertEquals(0, txManager.begun);
+		this.txManager.clear();
+		assertEquals(0, this.txManager.begun);
 		new NotTransactional().noop();
-		assertEquals(0, txManager.begun);
+		assertEquals(0, this.txManager.begun);
 	}
 
 	@Test
 	public void defaultCommitOnAnnotatedClass() throws Throwable {
 		final Exception ex = new Exception();
 		try {
-			testRollback(() -> annotationOnlyOnClassWithNoInterface.echo(ex), false);
+			testRollback(() -> this.annotationOnlyOnClassWithNoInterface.echo(ex), false);
 			fail("Should have thrown Exception");
 		}
 		catch (Exception ex2) {
@@ -116,7 +116,7 @@ public class TransactionAspectTests {
 	public void defaultRollbackOnAnnotatedClass() throws Throwable {
 		final RuntimeException ex = new RuntimeException();
 		try {
-			testRollback(() -> annotationOnlyOnClassWithNoInterface.echo(ex), true);
+			testRollback(() -> this.annotationOnlyOnClassWithNoInterface.echo(ex), true);
 			fail("Should have thrown RuntimeException");
 		}
 		catch (RuntimeException ex2) {
@@ -163,21 +163,21 @@ public class TransactionAspectTests {
 
 
 	protected void testRollback(TransactionOperationCallback toc, boolean rollback) throws Throwable {
-		txManager.clear();
-		assertEquals(0, txManager.begun);
+		this.txManager.clear();
+		assertEquals(0, this.txManager.begun);
 		try {
 			toc.performTransactionalOperation();
 		}
 		finally {
-			assertEquals(1, txManager.begun);
-			assertEquals(rollback ? 0 : 1, txManager.commits);
-			assertEquals(rollback ? 1 : 0, txManager.rollbacks);
+			assertEquals(1, this.txManager.begun);
+			assertEquals(rollback ? 0 : 1, this.txManager.commits);
+			assertEquals(rollback ? 1 : 0, this.txManager.rollbacks);
 		}
 	}
 
 	protected void testNotTransactional(TransactionOperationCallback toc, Throwable expected) throws Throwable {
-		txManager.clear();
-		assertEquals(0, txManager.begun);
+		this.txManager.clear();
+		assertEquals(0, this.txManager.begun);
 		try {
 			toc.performTransactionalOperation();
 		}
@@ -188,7 +188,7 @@ public class TransactionAspectTests {
 			assertSame(expected, ex);
 		}
 		finally {
-			assertEquals(0, txManager.begun);
+			assertEquals(0, this.txManager.begun);
 		}
 	}
 

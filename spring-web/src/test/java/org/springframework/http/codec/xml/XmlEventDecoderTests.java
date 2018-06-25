@@ -63,7 +63,7 @@ public class XmlEventDecoderTests extends AbstractDataBufferAllocatingTestCase {
 
 	@Test
 	public void toXMLEventsNonAalto() {
-		decoder.useAalto = false;
+		this.decoder.useAalto = false;
 
 		Flux<XMLEvent> events =
 				this.decoder.decode(Flux.just(stringBuffer(XML)), null, null, Collections.emptyMap());

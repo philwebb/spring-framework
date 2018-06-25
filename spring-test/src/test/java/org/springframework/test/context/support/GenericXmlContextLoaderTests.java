@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2014 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,8 +41,8 @@ public class GenericXmlContextLoaderTests {
 
 	@Test
 	public void configMustNotContainAnnotatedClasses() throws Exception {
-		expectedException.expect(IllegalStateException.class);
-		expectedException.expectMessage(containsString("does not support annotated classes"));
+		this.expectedException.expect(IllegalStateException.class);
+		this.expectedException.expectMessage(containsString("does not support annotated classes"));
 
 		GenericXmlContextLoader loader = new GenericXmlContextLoader();
 		MergedContextConfiguration mergedConfig = new MergedContextConfiguration(getClass(), EMPTY_STRING_ARRAY,

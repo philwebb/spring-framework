@@ -64,23 +64,23 @@ public class SpringValidatorAdapterTests {
 
 	private final Validator nativeValidator = Validation.buildDefaultValidatorFactory().getValidator();
 
-	private final SpringValidatorAdapter validatorAdapter = new SpringValidatorAdapter(nativeValidator);
+	private final SpringValidatorAdapter validatorAdapter = new SpringValidatorAdapter(this.nativeValidator);
 
 	private final StaticMessageSource messageSource = new StaticMessageSource();
 
 
 	@Before
 	public void setupSpringValidatorAdapter() {
-		messageSource.addMessage("Size", Locale.ENGLISH, "Size of {0} is must be between {2} and {1}");
-		messageSource.addMessage("Same", Locale.ENGLISH, "{2} must be same value with {1}");
-		messageSource.addMessage("password", Locale.ENGLISH, "Password");
-		messageSource.addMessage("confirmPassword", Locale.ENGLISH, "Password(Confirm)");
+		this.messageSource.addMessage("Size", Locale.ENGLISH, "Size of {0} is must be between {2} and {1}");
+		this.messageSource.addMessage("Same", Locale.ENGLISH, "{2} must be same value with {1}");
+		this.messageSource.addMessage("password", Locale.ENGLISH, "Password");
+		this.messageSource.addMessage("confirmPassword", Locale.ENGLISH, "Password(Confirm)");
 	}
 
 
 	@Test
 	public void testUnwrap() {
-		Validator nativeValidator = validatorAdapter.unwrap(Validator.class);
+		Validator nativeValidator = this.validatorAdapter.unwrap(Validator.class);
 		assertSame(this.nativeValidator, nativeValidator);
 	}
 
@@ -91,13 +91,13 @@ public class SpringValidatorAdapterTests {
 		testBean.setConfirmPassword("pass");
 
 		BeanPropertyBindingResult errors = new BeanPropertyBindingResult(testBean, "testBean");
-		validatorAdapter.validate(testBean, errors);
+		this.validatorAdapter.validate(testBean, errors);
 
 		assertThat(errors.getFieldErrorCount("password"), is(1));
 		assertThat(errors.getFieldValue("password"), is("pass"));
 		FieldError error = errors.getFieldError("password");
 		assertNotNull(error);
-		assertThat(messageSource.getMessage(error, Locale.ENGLISH), is("Size of Password is must be between 8 and 128"));
+		assertThat(this.messageSource.getMessage(error, Locale.ENGLISH), is("Size of Password is must be between 8 and 128"));
 		assertTrue(error.contains(ConstraintViolation.class));
 		assertThat(error.unwrap(ConstraintViolation.class).getPropertyPath().toString(), is("password"));
 	}
@@ -109,13 +109,13 @@ public class SpringValidatorAdapterTests {
 		testBean.setConfirmPassword("PASSWORD");
 
 		BeanPropertyBindingResult errors = new BeanPropertyBindingResult(testBean, "testBean");
-		validatorAdapter.validate(testBean, errors);
+		this.validatorAdapter.validate(testBean, errors);
 
 		assertThat(errors.getFieldErrorCount("password"), is(1));
 		assertThat(errors.getFieldValue("password"), is("password"));
 		FieldError error = errors.getFieldError("password");
 		assertNotNull(error);
-		assertThat(messageSource.getMessage(error, Locale.ENGLISH), is("Password must be same value with Password(Confirm)"));
+		assertThat(this.messageSource.getMessage(error, Locale.ENGLISH), is("Password must be same value with Password(Confirm)"));
 		assertTrue(error.contains(ConstraintViolation.class));
 		assertThat(error.unwrap(ConstraintViolation.class).getPropertyPath().toString(), is("password"));
 	}
@@ -127,7 +127,7 @@ public class SpringValidatorAdapterTests {
 		testBean.setConfirmEmail("TEST@EXAMPLE.IO");
 
 		BeanPropertyBindingResult errors = new BeanPropertyBindingResult(testBean, "testBean");
-		validatorAdapter.validate(testBean, errors);
+		this.validatorAdapter.validate(testBean, errors);
 
 		assertThat(errors.getFieldErrorCount("email"), is(1));
 		assertThat(errors.getFieldValue("email"), is("test@example.com"));
@@ -136,8 +136,8 @@ public class SpringValidatorAdapterTests {
 		FieldError error2 = errors.getFieldError("confirmEmail");
 		assertNotNull(error1);
 		assertNotNull(error2);
-		assertThat(messageSource.getMessage(error1, Locale.ENGLISH), is("email must be same value with confirmEmail"));
-		assertThat(messageSource.getMessage(error2, Locale.ENGLISH), is("Email required"));
+		assertThat(this.messageSource.getMessage(error1, Locale.ENGLISH), is("email must be same value with confirmEmail"));
+		assertThat(this.messageSource.getMessage(error2, Locale.ENGLISH), is("Email required"));
 		assertTrue(error1.contains(ConstraintViolation.class));
 		assertThat(error1.unwrap(ConstraintViolation.class).getPropertyPath().toString(), is("email"));
 		assertTrue(error2.contains(ConstraintViolation.class));
@@ -146,14 +146,14 @@ public class SpringValidatorAdapterTests {
 
 	@Test  // SPR-15123
 	public void testApplyMessageSourceResolvableToStringArgumentValueWithAlwaysUseMessageFormat() {
-		messageSource.setAlwaysUseMessageFormat(true);
+		this.messageSource.setAlwaysUseMessageFormat(true);
 
 		TestBean testBean = new TestBean();
 		testBean.setEmail("test@example.com");
 		testBean.setConfirmEmail("TEST@EXAMPLE.IO");
 
 		BeanPropertyBindingResult errors = new BeanPropertyBindingResult(testBean, "testBean");
-		validatorAdapter.validate(testBean, errors);
+		this.validatorAdapter.validate(testBean, errors);
 
 		assertThat(errors.getFieldErrorCount("email"), is(1));
 		assertThat(errors.getFieldValue("email"), is("test@example.com"));
@@ -162,8 +162,8 @@ public class SpringValidatorAdapterTests {
 		FieldError error2 = errors.getFieldError("confirmEmail");
 		assertNotNull(error1);
 		assertNotNull(error2);
-		assertThat(messageSource.getMessage(error1, Locale.ENGLISH), is("email must be same value with confirmEmail"));
-		assertThat(messageSource.getMessage(error2, Locale.ENGLISH), is("Email required"));
+		assertThat(this.messageSource.getMessage(error1, Locale.ENGLISH), is("email must be same value with confirmEmail"));
+		assertThat(this.messageSource.getMessage(error2, Locale.ENGLISH), is("Email required"));
 		assertTrue(error1.contains(ConstraintViolation.class));
 		assertThat(error1.unwrap(ConstraintViolation.class).getPropertyPath().toString(), is("email"));
 		assertTrue(error2.contains(ConstraintViolation.class));
@@ -177,7 +177,7 @@ public class SpringValidatorAdapterTests {
 		parent.getChildList().addAll(createChildren(parent));
 
 		BeanPropertyBindingResult errors = new BeanPropertyBindingResult(parent, "parent");
-		validatorAdapter.validate(parent, errors);
+		this.validatorAdapter.validate(parent, errors);
 
 		assertTrue(errors.getErrorCount() > 0);
 	}
@@ -189,7 +189,7 @@ public class SpringValidatorAdapterTests {
 		parent.getChildSet().addAll(createChildren(parent));
 
 		BeanPropertyBindingResult errors = new BeanPropertyBindingResult(parent, "parent");
-		validatorAdapter.validate(parent, errors);
+		this.validatorAdapter.validate(parent, errors);
 
 		assertTrue(errors.getErrorCount() > 0);
 	}
@@ -224,7 +224,7 @@ public class SpringValidatorAdapterTests {
 		private String confirmEmail;
 
 		public String getPassword() {
-			return password;
+			return this.password;
 		}
 
 		public void setPassword(String password) {
@@ -232,7 +232,7 @@ public class SpringValidatorAdapterTests {
 		}
 
 		public String getConfirmPassword() {
-			return confirmPassword;
+			return this.confirmPassword;
 		}
 
 		public void setConfirmPassword(String confirmPassword) {
@@ -240,7 +240,7 @@ public class SpringValidatorAdapterTests {
 		}
 
 		public String getEmail() {
-			return email;
+			return this.email;
 		}
 
 		public void setEmail(String email) {
@@ -248,7 +248,7 @@ public class SpringValidatorAdapterTests {
 		}
 
 		public String getConfirmEmail() {
-			return confirmEmail;
+			return this.confirmEmail;
 		}
 
 		public void setConfirmEmail(String confirmEmail) {
@@ -302,23 +302,23 @@ public class SpringValidatorAdapterTests {
 		private String message;
 
 		public void initialize(Same constraintAnnotation) {
-			field = constraintAnnotation.field();
-			comparingField = constraintAnnotation.comparingField();
-			message = constraintAnnotation.message();
+			this.field = constraintAnnotation.field();
+			this.comparingField = constraintAnnotation.comparingField();
+			this.message = constraintAnnotation.message();
 		}
 
 		public boolean isValid(Object value, ConstraintValidatorContext context) {
 			BeanWrapper beanWrapper = new BeanWrapperImpl(value);
-			Object fieldValue = beanWrapper.getPropertyValue(field);
-			Object comparingFieldValue = beanWrapper.getPropertyValue(comparingField);
+			Object fieldValue = beanWrapper.getPropertyValue(this.field);
+			Object comparingFieldValue = beanWrapper.getPropertyValue(this.comparingField);
 			boolean matched = ObjectUtils.nullSafeEquals(fieldValue, comparingFieldValue);
 			if (matched) {
 				return true;
 			}
 			else {
 				context.disableDefaultConstraintViolation();
-				context.buildConstraintViolationWithTemplate(message)
-						.addPropertyNode(field)
+				context.buildConstraintViolationWithTemplate(this.message)
+						.addPropertyNode(this.field)
 						.addConstraintViolation();
 				return false;
 			}
@@ -340,7 +340,7 @@ public class SpringValidatorAdapterTests {
 		private List<Child> childList = new LinkedList<>();
 
 		public Integer getId() {
-			return id;
+			return this.id;
 		}
 
 		public void setId(Integer id) {
@@ -348,7 +348,7 @@ public class SpringValidatorAdapterTests {
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String name) {
@@ -356,7 +356,7 @@ public class SpringValidatorAdapterTests {
 		}
 
 		public Set<Child> getChildSet() {
-			return childSet;
+			return this.childSet;
 		}
 
 		public void setChildSet(Set<Child> childSet) {
@@ -364,7 +364,7 @@ public class SpringValidatorAdapterTests {
 		}
 
 		public List<Child> getChildList() {
-			return childList;
+			return this.childList;
 		}
 
 		public void setChildList(List<Child> childList) {
@@ -388,7 +388,7 @@ public class SpringValidatorAdapterTests {
 		private Parent parent;
 
 		public Integer getId() {
-			return id;
+			return this.id;
 		}
 
 		public void setId(Integer id) {
@@ -396,7 +396,7 @@ public class SpringValidatorAdapterTests {
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String name) {
@@ -404,7 +404,7 @@ public class SpringValidatorAdapterTests {
 		}
 
 		public Integer getAge() {
-			return age;
+			return this.age;
 		}
 
 		public void setAge(Integer age) {
@@ -412,7 +412,7 @@ public class SpringValidatorAdapterTests {
 		}
 
 		public Parent getParent() {
-			return parent;
+			return this.parent;
 		}
 
 		public void setParent(Parent parent) {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,12 +55,12 @@ public class JmsListenerContainerFactoryIntegrationTests {
 
 	private final JmsEndpointSampleBean sample = new JmsEndpointSampleBean();
 
-	private JmsEndpointSampleInterface listener = sample;
+	private JmsEndpointSampleInterface listener = this.sample;
 
 
 	@Before
 	public void setup() {
-		initializeFactory(factory);
+		initializeFactory(this.factory);
 	}
 
 
@@ -90,10 +90,10 @@ public class JmsListenerContainerFactoryIntegrationTests {
 
 	@Test
 	public void parameterAnnotationWithJdkProxy() throws JMSException {
-		ProxyFactory pf = new ProxyFactory(sample);
-		listener = (JmsEndpointSampleInterface) pf.getProxy();
+		ProxyFactory pf = new ProxyFactory(this.sample);
+		this.listener = (JmsEndpointSampleInterface) pf.getProxy();
 
-		containerFactory.setMessageConverter(new UpperCaseMessageConverter());
+		this.containerFactory.setMessageConverter(new UpperCaseMessageConverter());
 
 		MethodJmsListenerEndpoint endpoint = createDefaultMethodJmsEndpoint(
 				JmsEndpointSampleInterface.class, "handleIt", String.class, String.class);
@@ -106,11 +106,11 @@ public class JmsListenerContainerFactoryIntegrationTests {
 
 	@Test
 	public void parameterAnnotationWithCglibProxy() throws JMSException {
-		ProxyFactory pf = new ProxyFactory(sample);
+		ProxyFactory pf = new ProxyFactory(this.sample);
 		pf.setProxyTargetClass(true);
-		listener = (JmsEndpointSampleBean) pf.getProxy();
+		this.listener = (JmsEndpointSampleBean) pf.getProxy();
 
-		containerFactory.setMessageConverter(new UpperCaseMessageConverter());
+		this.containerFactory.setMessageConverter(new UpperCaseMessageConverter());
 
 		MethodJmsListenerEndpoint endpoint = createDefaultMethodJmsEndpoint(
 				JmsEndpointSampleBean.class, "handleIt", String.class, String.class);
@@ -124,7 +124,7 @@ public class JmsListenerContainerFactoryIntegrationTests {
 
 	@SuppressWarnings("unchecked")
 	private void invokeListener(JmsListenerEndpoint endpoint, Message message) throws JMSException {
-		DefaultMessageListenerContainer messageListenerContainer = containerFactory.createListenerContainer(endpoint);
+		DefaultMessageListenerContainer messageListenerContainer = this.containerFactory.createListenerContainer(endpoint);
 		Object listener = messageListenerContainer.getMessageListener();
 		if (listener instanceof SessionAwareMessageListener) {
 			((SessionAwareMessageListener<Message>) listener).onMessage(message, mock(Session.class));
@@ -135,12 +135,12 @@ public class JmsListenerContainerFactoryIntegrationTests {
 	}
 
 	private void assertListenerMethodInvocation(String methodName) {
-		assertTrue("Method " + methodName + " should have been invoked", sample.invocations.get(methodName));
+		assertTrue("Method " + methodName + " should have been invoked", this.sample.invocations.get(methodName));
 	}
 
 	private MethodJmsListenerEndpoint createMethodJmsEndpoint(DefaultMessageHandlerMethodFactory factory, Method method) {
 		MethodJmsListenerEndpoint endpoint = new MethodJmsListenerEndpoint();
-		endpoint.setBean(listener);
+		endpoint.setBean(this.listener);
 		endpoint.setMethod(method);
 		endpoint.setMessageHandlerMethodFactory(factory);
 		return endpoint;
@@ -167,7 +167,7 @@ public class JmsListenerContainerFactoryIntegrationTests {
 		private final Map<String, Boolean> invocations = new HashMap<>();
 
 		public void handleIt(@Payload String msg, @Header("my-header") String myHeader) {
-			invocations.put("handleIt", true);
+			this.invocations.put("handleIt", true);
 			assertEquals("Unexpected payload message", "FOO-BAR", msg);
 			assertEquals("Unexpected header value", "my-value", myHeader);
 		}

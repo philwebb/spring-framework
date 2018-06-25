@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2014 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,14 +41,14 @@ public class CachePutOperationTests extends AbstractCacheOperationTests<CachePut
 	public void simplePut() {
 		CachePutOperation operation = createSimpleOperation();
 
-		CacheInvocationParameter[] allParameters = operation.getAllParameters(2L, sampleInstance);
+		CacheInvocationParameter[] allParameters = operation.getAllParameters(2L, this.sampleInstance);
 		assertEquals(2, allParameters.length);
 		assertCacheInvocationParameter(allParameters[0], Long.class, 2L, 0);
-		assertCacheInvocationParameter(allParameters[1], SampleObject.class, sampleInstance, 1);
+		assertCacheInvocationParameter(allParameters[1], SampleObject.class, this.sampleInstance, 1);
 
-		CacheInvocationParameter valueParameter = operation.getValueParameter(2L, sampleInstance);
+		CacheInvocationParameter valueParameter = operation.getValueParameter(2L, this.sampleInstance);
 		assertNotNull(valueParameter);
-		assertCacheInvocationParameter(valueParameter, SampleObject.class, sampleInstance, 1);
+		assertCacheInvocationParameter(valueParameter, SampleObject.class, this.sampleInstance, 1);
 	}
 
 	@Test
@@ -56,7 +56,7 @@ public class CachePutOperationTests extends AbstractCacheOperationTests<CachePut
 		CacheMethodDetails<CachePut> methodDetails = create(CachePut.class,
 				SampleObject.class, "noCacheValue", Long.class);
 
-		thrown.expect(IllegalArgumentException.class);
+		this.thrown.expect(IllegalArgumentException.class);
 		createDefaultOperation(methodDetails);
 	}
 
@@ -65,7 +65,7 @@ public class CachePutOperationTests extends AbstractCacheOperationTests<CachePut
 		CacheMethodDetails<CachePut> methodDetails = create(CachePut.class,
 				SampleObject.class, "multiCacheValues", Long.class, SampleObject.class, SampleObject.class);
 
-		thrown.expect(IllegalArgumentException.class);
+		this.thrown.expect(IllegalArgumentException.class);
 		createDefaultOperation(methodDetails);
 	}
 
@@ -73,7 +73,7 @@ public class CachePutOperationTests extends AbstractCacheOperationTests<CachePut
 	public void invokeWithWrongParameters() {
 		CachePutOperation operation = createSimpleOperation();
 
-		thrown.expect(IllegalStateException.class);
+		this.thrown.expect(IllegalStateException.class);
 		operation.getValueParameter(2L);
 	}
 
@@ -89,7 +89,7 @@ public class CachePutOperationTests extends AbstractCacheOperationTests<CachePut
 	}
 
 	private CachePutOperation createDefaultOperation(CacheMethodDetails<CachePut> methodDetails) {
-		return new CachePutOperation(methodDetails, defaultCacheResolver, defaultKeyGenerator);
+		return new CachePutOperation(methodDetails, this.defaultCacheResolver, this.defaultKeyGenerator);
 	}
 
 }

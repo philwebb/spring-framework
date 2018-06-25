@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2012 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -201,7 +201,7 @@ public class RequiredAnnotationBeanPostProcessorTests {
 
 
 		public int getAge() {
-			return age;
+			return this.age;
 		}
 
 		@Required
@@ -210,7 +210,7 @@ public class RequiredAnnotationBeanPostProcessorTests {
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		@MyRequired
@@ -219,7 +219,7 @@ public class RequiredAnnotationBeanPostProcessorTests {
 		}
 
 		public String getFavouriteColour() {
-			return favouriteColour;
+			return this.favouriteColour;
 		}
 
 		@Required
@@ -228,7 +228,7 @@ public class RequiredAnnotationBeanPostProcessorTests {
 		}
 
 		public String getJobTitle() {
-			return jobTitle;
+			return this.jobTitle;
 		}
 
 		@Required

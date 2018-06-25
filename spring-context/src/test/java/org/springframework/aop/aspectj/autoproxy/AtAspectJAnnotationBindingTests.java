@@ -41,26 +41,26 @@ public class AtAspectJAnnotationBindingTests {
 
 	@Before
 	public void setUp() {
-		ctx = new ClassPathXmlApplicationContext(getClass().getSimpleName() + "-context.xml", getClass());
-		testBean = (AnnotatedTestBean) ctx.getBean("testBean");
+		this.ctx = new ClassPathXmlApplicationContext(getClass().getSimpleName() + "-context.xml", getClass());
+		this.testBean = (AnnotatedTestBean) this.ctx.getBean("testBean");
 	}
 
 
 	@Test
 	public void testAnnotationBindingInAroundAdvice() {
-		assertEquals("this value doThis", testBean.doThis());
-		assertEquals("that value doThat", testBean.doThat());
-		assertEquals(2, testBean.doArray().length);
+		assertEquals("this value doThis", this.testBean.doThis());
+		assertEquals("that value doThat", this.testBean.doThat());
+		assertEquals(2, this.testBean.doArray().length);
 	}
 
 	@Test
 	public void testNoMatchingWithoutAnnotationPresent() {
-		assertEquals("doTheOther", testBean.doTheOther());
+		assertEquals("doTheOther", this.testBean.doTheOther());
 	}
 
 	@Test
 	public void testPointcutEvaulatedAgainstArray() {
-		ctx.getBean("arrayFactoryBean");
+		this.ctx.getBean("arrayFactoryBean");
 	}
 
 }

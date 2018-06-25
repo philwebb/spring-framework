@@ -2937,17 +2937,17 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 
 		@Override
 		public boolean canRead(Class<?> clazz, @Nullable MediaType mediaType) {
-			return supportedMediaTypes.contains(mediaType);
+			return this.supportedMediaTypes.contains(mediaType);
 		}
 
 		@Override
 		public boolean canWrite(Class<?> clazz, @Nullable MediaType mediaType) {
-			return supportedMediaTypes.contains(mediaType);
+			return this.supportedMediaTypes.contains(mediaType);
 		}
 
 		@Override
 		public List<MediaType> getSupportedMediaTypes() {
-			return supportedMediaTypes;
+			return this.supportedMediaTypes;
 		}
 
 		@Override
@@ -3209,9 +3209,9 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		public Instant createdAfter;
 
 		public boolean accept(E entity) {
-			return (createdBy == null || createdBy.equals(entity.createdBy)) &&
-					(createdBefore == null || createdBefore.compareTo(entity.createdDate) >= 0) &&
-					(createdAfter == null || createdAfter.compareTo(entity.createdDate) >= 0);
+			return (this.createdBy == null || this.createdBy.equals(entity.createdBy)) &&
+					(this.createdBefore == null || this.createdBefore.compareTo(entity.createdDate) >= 0) &&
+					(this.createdAfter == null || this.createdAfter.compareTo(entity.createdDate) >= 0);
 		}
 	}
 
@@ -3221,7 +3221,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 
 		@Override
 		public boolean accept(Article entity) {
-			return super.accept(entity) && (query == null || (entity.title.contains(query) || entity.content.contains(query)));
+			return super.accept(entity) && (this.query == null || (entity.title.contains(this.query) || entity.content.contains(this.query)));
 		}
 	}
 
@@ -3397,7 +3397,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		private String name;
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String name) {

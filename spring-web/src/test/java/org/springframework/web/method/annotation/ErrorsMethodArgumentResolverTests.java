@@ -48,15 +48,15 @@ public class ErrorsMethodArgumentResolverTests {
 
 	@Before
 	public void setup() throws Exception {
-		paramErrors = new MethodParameter(getClass().getDeclaredMethod("handle", Errors.class), 0);
-		bindingResult = new WebDataBinder(new Object(), "attr").getBindingResult();
-		webRequest = new ServletWebRequest(new MockHttpServletRequest());
+		this.paramErrors = new MethodParameter(getClass().getDeclaredMethod("handle", Errors.class), 0);
+		this.bindingResult = new WebDataBinder(new Object(), "attr").getBindingResult();
+		this.webRequest = new ServletWebRequest(new MockHttpServletRequest());
 	}
 
 
 	@Test
 	public void supports() {
-		resolver.supportsParameter(paramErrors);
+		this.resolver.supportsParameter(this.paramErrors);
 	}
 
 	@Test
@@ -67,24 +67,24 @@ public class ErrorsMethodArgumentResolverTests {
 		mavContainer.addAttribute("ignore3", "value3");
 		mavContainer.addAttribute("ignore4", "value4");
 		mavContainer.addAttribute("ignore5", "value5");
-		mavContainer.addAllAttributes(bindingResult.getModel());
+		mavContainer.addAllAttributes(this.bindingResult.getModel());
 
-		Object actual = resolver.resolveArgument(paramErrors, mavContainer, webRequest, null);
-		assertSame(actual, bindingResult);
+		Object actual = this.resolver.resolveArgument(this.paramErrors, mavContainer, this.webRequest, null);
+		assertSame(actual, this.bindingResult);
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void bindingResultNotFound() throws Exception {
 		ModelAndViewContainer mavContainer = new ModelAndViewContainer();
-		mavContainer.addAllAttributes(bindingResult.getModel());
+		mavContainer.addAllAttributes(this.bindingResult.getModel());
 		mavContainer.addAttribute("ignore1", "value1");
 
-		resolver.resolveArgument(paramErrors, mavContainer, webRequest, null);
+		this.resolver.resolveArgument(this.paramErrors, mavContainer, this.webRequest, null);
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void noBindingResult() throws Exception {
-		resolver.resolveArgument(paramErrors, new ModelAndViewContainer(), webRequest, null);
+		this.resolver.resolveArgument(this.paramErrors, new ModelAndViewContainer(), this.webRequest, null);
 	}
 
 

@@ -113,8 +113,8 @@ public class StreamConverterTests {
 		Stream<Integer> stream = Arrays.asList(1, 2, 3).stream();
 		TypeDescriptor arrayOfLongs = new TypeDescriptor(Types.class.getField("arrayOfLongs")); ;
 
-		thrown.expect(ConversionFailedException.class);
-		thrown.expectCause(is(instanceOf(ConverterNotFoundException.class)));
+		this.thrown.expect(ConversionFailedException.class);
+		this.thrown.expectCause(is(instanceOf(ConverterNotFoundException.class)));
 		this.conversionService.convert(stream, arrayOfLongs);
 	}
 
@@ -178,7 +178,7 @@ public class StreamConverterTests {
 
 	@Test
 	public void shouldFailToConvertIfNoStream() throws NoSuchFieldException {
-		thrown.expect(IllegalStateException.class);
+		this.thrown.expect(IllegalStateException.class);
 		this.streamConverter.convert(new Object(), new TypeDescriptor(Types.class.getField("listOfStrings")),
 				new TypeDescriptor(Types.class.getField("arrayOfLongs")));
 	}

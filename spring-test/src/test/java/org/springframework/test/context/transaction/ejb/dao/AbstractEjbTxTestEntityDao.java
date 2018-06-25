@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2014 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,10 +40,10 @@ public abstract class AbstractEjbTxTestEntityDao implements TestEntityDao {
 
 
 	protected final TestEntity getTestEntity(String name) {
-		TestEntity te = entityManager.find(TestEntity.class, name);
+		TestEntity te = this.entityManager.find(TestEntity.class, name);
 		if (te == null) {
 			te = new TestEntity(name, 0);
-			entityManager.persist(te);
+			this.entityManager.persist(te);
 		}
 		return te;
 	}

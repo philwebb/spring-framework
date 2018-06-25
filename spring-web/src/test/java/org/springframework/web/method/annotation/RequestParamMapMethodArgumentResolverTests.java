@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,37 +56,37 @@ public class RequestParamMapMethodArgumentResolverTests {
 
 	@Before
 	public void setUp() throws Exception {
-		resolver = new RequestParamMapMethodArgumentResolver();
+		this.resolver = new RequestParamMapMethodArgumentResolver();
 
-		request = new MockHttpServletRequest();
-		webRequest = new ServletWebRequest(request, new MockHttpServletResponse());
+		this.request = new MockHttpServletRequest();
+		this.webRequest = new ServletWebRequest(this.request, new MockHttpServletResponse());
 	}
 
 
 	@Test
 	public void supportsParameter() {
 		MethodParameter param = this.testMethod.annot(requestParam().noName()).arg(Map.class);
-		assertTrue(resolver.supportsParameter(param));
+		assertTrue(this.resolver.supportsParameter(param));
 
 		param = this.testMethod.annotPresent(RequestParam.class).arg(MultiValueMap.class);
-		assertTrue(resolver.supportsParameter(param));
+		assertTrue(this.resolver.supportsParameter(param));
 
 		param = this.testMethod.annot(requestParam().name("name")).arg(Map.class);
-		assertFalse(resolver.supportsParameter(param));
+		assertFalse(this.resolver.supportsParameter(param));
 
 		param = this.testMethod.annotNotPresent(RequestParam.class).arg(Map.class);
-		assertFalse(resolver.supportsParameter(param));
+		assertFalse(this.resolver.supportsParameter(param));
 	}
 
 	@Test
 	public void resolveMapArgument() throws Exception {
 		String name = "foo";
 		String value = "bar";
-		request.addParameter(name, value);
+		this.request.addParameter(name, value);
 		Map<String, String> expected = Collections.singletonMap(name, value);
 
 		MethodParameter param = this.testMethod.annot(requestParam().noName()).arg(Map.class);
-		Object result = resolver.resolveArgument(param, null, webRequest, null);
+		Object result = this.resolver.resolveArgument(param, null, this.webRequest, null);
 
 		assertTrue(result instanceof Map);
 		assertEquals("Invalid result", expected, result);
@@ -97,14 +97,14 @@ public class RequestParamMapMethodArgumentResolverTests {
 		String name = "foo";
 		String value1 = "bar";
 		String value2 = "baz";
-		request.addParameter(name, value1, value2);
+		this.request.addParameter(name, value1, value2);
 
 		MultiValueMap<String, String> expected = new LinkedMultiValueMap<>(1);
 		expected.add(name, value1);
 		expected.add(name, value2);
 
 		MethodParameter param = this.testMethod.annotPresent(RequestParam.class).arg(MultiValueMap.class);
-		Object result = resolver.resolveArgument(param, null, webRequest, null);
+		Object result = this.resolver.resolveArgument(param, null, this.webRequest, null);
 
 		assertTrue(result instanceof MultiValueMap);
 		assertEquals("Invalid result", expected, result);

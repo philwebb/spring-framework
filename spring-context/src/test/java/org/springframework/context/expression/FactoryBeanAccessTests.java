@@ -116,14 +116,14 @@ public class FactoryBeanAccessTests {
 		StaticApplicationContext ac = new StaticApplicationContext();
 
 		public SimpleBeanResolver() {
-			ac.registerSingleton("car", CarFactoryBean.class);
-			ac.registerSingleton("boat", Boat.class);
+			this.ac.registerSingleton("car", CarFactoryBean.class);
+			this.ac.registerSingleton("boat", Boat.class);
 		}
 
 		@Override
 		public Object resolve(EvaluationContext context, String beanName)
 				throws AccessException {
-			return ac.getBean(beanName);
+			return this.ac.getBean(beanName);
 		}
 	}
 

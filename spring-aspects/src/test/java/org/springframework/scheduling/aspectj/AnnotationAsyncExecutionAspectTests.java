@@ -61,8 +61,8 @@ public class AnnotationAsyncExecutionAspectTests {
 	public void setUp() {
 		Assume.group(TestGroup.PERFORMANCE);
 
-		executor = new CountingExecutor();
-		AnnotationAsyncExecutionAspect.aspectOf().setExecutor(executor);
+		this.executor = new CountingExecutor();
+		AnnotationAsyncExecutionAspect.aspectOf().setExecutor(this.executor);
 	}
 
 
@@ -70,10 +70,10 @@ public class AnnotationAsyncExecutionAspectTests {
 	public void asyncMethodGetsRoutedAsynchronously() {
 		ClassWithoutAsyncAnnotation obj = new ClassWithoutAsyncAnnotation();
 		obj.incrementAsync();
-		executor.waitForCompletion();
+		this.executor.waitForCompletion();
 		assertEquals(1, obj.counter);
-		assertEquals(1, executor.submitStartCounter);
-		assertEquals(1, executor.submitCompleteCounter);
+		assertEquals(1, this.executor.submitStartCounter);
+		assertEquals(1, this.executor.submitCompleteCounter);
 	}
 
 	@Test
@@ -83,8 +83,8 @@ public class AnnotationAsyncExecutionAspectTests {
 		// No need to executor.waitForCompletion() as future.get() will have the same effect
 		assertEquals(5, future.get().intValue());
 		assertEquals(1, obj.counter);
-		assertEquals(1, executor.submitStartCounter);
-		assertEquals(1, executor.submitCompleteCounter);
+		assertEquals(1, this.executor.submitStartCounter);
+		assertEquals(1, this.executor.submitCompleteCounter);
 	}
 
 	@Test
@@ -92,8 +92,8 @@ public class AnnotationAsyncExecutionAspectTests {
 		ClassWithoutAsyncAnnotation obj = new ClassWithoutAsyncAnnotation();
 		obj.increment();
 		assertEquals(1, obj.counter);
-		assertEquals(0, executor.submitStartCounter);
-		assertEquals(0, executor.submitCompleteCounter);
+		assertEquals(0, this.executor.submitStartCounter);
+		assertEquals(0, this.executor.submitCompleteCounter);
 	}
 
 	@Test
@@ -102,10 +102,10 @@ public class AnnotationAsyncExecutionAspectTests {
 
 		ClassWithAsyncAnnotation obj = new ClassWithAsyncAnnotation();
 		obj.increment();
-		executor.waitForCompletion();
+		this.executor.waitForCompletion();
 		assertEquals(1, obj.counter);
-		assertEquals(1, executor.submitStartCounter);
-		assertEquals(1, executor.submitCompleteCounter);
+		assertEquals(1, this.executor.submitStartCounter);
+		assertEquals(1, this.executor.submitCompleteCounter);
 	}
 
 	@Test
@@ -114,8 +114,8 @@ public class AnnotationAsyncExecutionAspectTests {
 		Future<Integer> future = obj.incrementReturningAFuture();
 		assertEquals(5, future.get().intValue());
 		assertEquals(1, obj.counter);
-		assertEquals(1, executor.submitStartCounter);
-		assertEquals(1, executor.submitCompleteCounter);
+		assertEquals(1, this.executor.submitStartCounter);
+		assertEquals(1, this.executor.submitCompleteCounter);
 	}
 
 	/*
@@ -161,7 +161,7 @@ public class AnnotationAsyncExecutionAspectTests {
 			exceptionHandler.assertCalledWith(m, UnsupportedOperationException.class);
 		}
 		finally {
-			AnnotationAsyncExecutionAspect.aspectOf().setExceptionHandler(defaultExceptionHandler);
+			AnnotationAsyncExecutionAspect.aspectOf().setExceptionHandler(this.defaultExceptionHandler);
 		}
 	}
 
@@ -183,7 +183,7 @@ public class AnnotationAsyncExecutionAspectTests {
 			}
 		}
 		finally {
-			AnnotationAsyncExecutionAspect.aspectOf().setExceptionHandler(defaultExceptionHandler);
+			AnnotationAsyncExecutionAspect.aspectOf().setExceptionHandler(this.defaultExceptionHandler);
 
 		}
 	}
@@ -198,9 +198,9 @@ public class AnnotationAsyncExecutionAspectTests {
 
 		@Override
 		public <T> Future<T> submit(Callable<T> task) {
-			submitStartCounter++;
+			this.submitStartCounter++;
 			Future<T> future = super.submit(task);
-			submitCompleteCounter++;
+			this.submitCompleteCounter++;
 			synchronized (this) {
 				notifyAll();
 			}
@@ -224,16 +224,16 @@ public class AnnotationAsyncExecutionAspectTests {
 
 		@Async
 		public void incrementAsync() {
-			counter++;
+			this.counter++;
 		}
 
 		public void increment() {
-			counter++;
+			this.counter++;
 		}
 
 		@Async
 		public Future<Integer> incrementReturningAFuture() {
-			counter++;
+			this.counter++;
 			return new AsyncResult<Integer>(5);
 		}
 
@@ -256,7 +256,7 @@ public class AnnotationAsyncExecutionAspectTests {
 		int counter;
 
 		public void increment() {
-			counter++;
+			this.counter++;
 		}
 
 		// Manually check that there is a warning from the 'declare warning' statement in
@@ -268,7 +268,7 @@ public class AnnotationAsyncExecutionAspectTests {
 		*/
 
 		public Future<Integer> incrementReturningAFuture() {
-			counter++;
+			this.counter++;
 			return new AsyncResult<Integer>(5);
 		}
 	}

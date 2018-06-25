@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,9 +52,9 @@ public class JamonPerformanceMonitorInterceptorTests {
 
 	@Test
 	public void testInvokeUnderTraceWithNormalProcessing() throws Throwable {
-		given(mi.getMethod()).willReturn(String.class.getMethod("toString"));
+		given(this.mi.getMethod()).willReturn(String.class.getMethod("toString"));
 
-		interceptor.invokeUnderTrace(mi, log);
+		this.interceptor.invokeUnderTrace(this.mi, this.log);
 
 		assertTrue("jamon must track the method being invoked", MonitorFactory.getNumRows() > 0);
 		assertTrue("The jamon report must contain the toString method that was invoked",
@@ -63,11 +63,11 @@ public class JamonPerformanceMonitorInterceptorTests {
 
 	@Test
 	public void testInvokeUnderTraceWithExceptionTracking() throws Throwable {
-		given(mi.getMethod()).willReturn(String.class.getMethod("toString"));
-		given(mi.proceed()).willThrow(new IllegalArgumentException());
+		given(this.mi.getMethod()).willReturn(String.class.getMethod("toString"));
+		given(this.mi.proceed()).willThrow(new IllegalArgumentException());
 
 		try {
-			interceptor.invokeUnderTrace(mi, log);
+			this.interceptor.invokeUnderTrace(this.mi, this.log);
 			fail("Must have propagated the IllegalArgumentException");
 		}
 		catch (IllegalArgumentException expected) {

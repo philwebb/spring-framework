@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -121,7 +121,7 @@ public class RedirectViewTests {
 		Map<String, String> attributes = Collections.singletonMap("foo", "bar");
 		this.exchange.getAttributes().put(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, attributes);
 		RedirectView view = new RedirectView(url);
-		view.render(new HashMap<>(), MediaType.TEXT_HTML, exchange).block();
+		view.render(new HashMap<>(), MediaType.TEXT_HTML, this.exchange).block();
 		assertEquals(URI.create("http://url.somewhere.com?foo=bar"), this.exchange.getResponse().getHeaders().getLocation());
 	}
 

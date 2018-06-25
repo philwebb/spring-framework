@@ -27,7 +27,7 @@ public class ConcretePerson extends AbstractPerson {
 
 
 	public BigDecimal getBalance() {
-		return balance;
+		return this.balance;
 	}
 
 	public void setBalance(BigDecimal balance) {

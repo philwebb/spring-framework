@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -209,7 +209,7 @@ class MultiplyReturnValueInterceptor implements MethodInterceptor {
 
 	@Override
 	public Object invoke(MethodInvocation mi) throws Throwable {
-		++invocations;
+		++this.invocations;
 		int result = (Integer) mi.proceed();
 		return result * this.multiple;
 	}
@@ -223,7 +223,7 @@ class TraceAfterReturningAdvice implements AfterReturningAdvice {
 
 	@Override
 	public void afterReturning(Object returnValue, Method method, Object[] args, Object target) throws Throwable {
-		++afterTakesInt;
+		++this.afterTakesInt;
 	}
 
 	public static Advisor advisor() {
@@ -250,12 +250,12 @@ class TraceAspect {
 
 	@Before("execution(String *.*(..))")
 	public void traceWithoutJoinPoint() {
-		++beforeStringReturn;
+		++this.beforeStringReturn;
 	}
 
 	@AfterReturning("execution(void *.*(int))")
 	public void traceWithoutJoinPoint2() {
-		++afterTakesInt;
+		++this.afterTakesInt;
 	}
 
 }
@@ -267,7 +267,7 @@ class TraceBeforeAdvice implements MethodBeforeAdvice {
 
 	@Override
 	public void before(Method method, Object[] args, Object target) throws Throwable {
-		++beforeStringReturn;
+		++this.beforeStringReturn;
 	}
 
 	public static Advisor advisor() {

@@ -25,6 +25,6 @@ public class Company {
 	}
 
 	public String getAddress() {
-		return address;
+		return this.address;
 	}
 }

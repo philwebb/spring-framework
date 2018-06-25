@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,39 +46,39 @@ public class SimpleScopeTests {
 
 	@Before
 	public void setUp() {
-		beanFactory = new DefaultListableBeanFactory();
+		this.beanFactory = new DefaultListableBeanFactory();
 		Scope scope = new NoOpScope() {
 			private int index;
 			private List<TestBean> objects = new LinkedList<>(); {
-				objects.add(new TestBean());
-				objects.add(new TestBean());
+				this.objects.add(new TestBean());
+				this.objects.add(new TestBean());
 			}
 			@Override
 			public Object get(String name, ObjectFactory<?> objectFactory) {
-				if (index >= objects.size()) {
-					index = 0;
+				if (this.index >= this.objects.size()) {
+					this.index = 0;
 				}
-				return objects.get(index++);
+				return this.objects.get(this.index++);
 			}
 		};
 
-		beanFactory.registerScope("myScope", scope);
+		this.beanFactory.registerScope("myScope", scope);
 
-		String[] scopeNames = beanFactory.getRegisteredScopeNames();
+		String[] scopeNames = this.beanFactory.getRegisteredScopeNames();
 		assertEquals(1, scopeNames.length);
 		assertEquals("myScope", scopeNames[0]);
-		assertSame(scope, beanFactory.getRegisteredScope("myScope"));
+		assertSame(scope, this.beanFactory.getRegisteredScope("myScope"));
 
-		XmlBeanDefinitionReader xbdr = new XmlBeanDefinitionReader(beanFactory);
+		XmlBeanDefinitionReader xbdr = new XmlBeanDefinitionReader(this.beanFactory);
 		xbdr.loadBeanDefinitions(CONTEXT);
 	}
 
 	@Test
 	public void testCanGetScopedObject() {
-		TestBean tb1 = (TestBean) beanFactory.getBean("usesScope");
-		TestBean tb2 = (TestBean) beanFactory.getBean("usesScope");
+		TestBean tb1 = (TestBean) this.beanFactory.getBean("usesScope");
+		TestBean tb2 = (TestBean) this.beanFactory.getBean("usesScope");
 		assertNotSame(tb1, tb2);
-		TestBean tb3 = (TestBean) beanFactory.getBean("usesScope");
+		TestBean tb3 = (TestBean) this.beanFactory.getBean("usesScope");
 		assertSame(tb3, tb1);
 	}
 

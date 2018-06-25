@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,32 +52,32 @@ public class TargetPointcutSelectionTests {
 		ClassPathXmlApplicationContext ctx =
 				new ClassPathXmlApplicationContext(getClass().getSimpleName() + ".xml", getClass());
 
-		testImpl1 = (TestInterface) ctx.getBean("testImpl1");
-		testImpl2 = (TestInterface) ctx.getBean("testImpl2");
-		testAspectForTestImpl1 = (TestAspect) ctx.getBean("testAspectForTestImpl1");
-		testAspectForAbstractTestImpl = (TestAspect) ctx.getBean("testAspectForAbstractTestImpl");
-		testInterceptor = (TestInterceptor) ctx.getBean("testInterceptor");
+		this.testImpl1 = (TestInterface) ctx.getBean("testImpl1");
+		this.testImpl2 = (TestInterface) ctx.getBean("testImpl2");
+		this.testAspectForTestImpl1 = (TestAspect) ctx.getBean("testAspectForTestImpl1");
+		this.testAspectForAbstractTestImpl = (TestAspect) ctx.getBean("testAspectForAbstractTestImpl");
+		this.testInterceptor = (TestInterceptor) ctx.getBean("testInterceptor");
 
-		testAspectForTestImpl1.count = 0;
-		testAspectForAbstractTestImpl.count = 0;
-		testInterceptor.count = 0;
+		this.testAspectForTestImpl1.count = 0;
+		this.testAspectForAbstractTestImpl.count = 0;
+		this.testInterceptor.count = 0;
 	}
 
 
 	@Test
 	public void targetSelectionForMatchedType() {
-		testImpl1.interfaceMethod();
-		assertEquals("Should have been advised by POJO advice for impl", 1, testAspectForTestImpl1.count);
-		assertEquals("Should have been advised by POJO advice for base type", 1, testAspectForAbstractTestImpl.count);
-		assertEquals("Should have been advised by advisor", 1, testInterceptor.count);
+		this.testImpl1.interfaceMethod();
+		assertEquals("Should have been advised by POJO advice for impl", 1, this.testAspectForTestImpl1.count);
+		assertEquals("Should have been advised by POJO advice for base type", 1, this.testAspectForAbstractTestImpl.count);
+		assertEquals("Should have been advised by advisor", 1, this.testInterceptor.count);
 	}
 
 	@Test
 	public void targetNonSelectionForMismatchedType() {
-		testImpl2.interfaceMethod();
-		assertEquals("Shouldn't have been advised by POJO advice for impl", 0, testAspectForTestImpl1.count);
-		assertEquals("Should have been advised by POJO advice for base type", 1, testAspectForAbstractTestImpl.count);
-		assertEquals("Shouldn't have been advised by advisor", 0, testInterceptor.count);
+		this.testImpl2.interfaceMethod();
+		assertEquals("Shouldn't have been advised by POJO advice for impl", 0, this.testAspectForTestImpl1.count);
+		assertEquals("Should have been advised by POJO advice for base type", 1, this.testAspectForAbstractTestImpl.count);
+		assertEquals("Shouldn't have been advised by advisor", 0, this.testInterceptor.count);
 	}
 
 
@@ -110,7 +110,7 @@ public class TargetPointcutSelectionTests {
 		public int count;
 
 		public void increment() {
-			count++;
+			this.count++;
 		}
 	}
 

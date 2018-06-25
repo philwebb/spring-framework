@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,36 +66,36 @@ public class PathVariableMethodArgumentResolverTests {
 
 	@Before
 	public void setup() throws Exception {
-		resolver = new PathVariableMethodArgumentResolver();
-		mavContainer = new ModelAndViewContainer();
-		request = new MockHttpServletRequest();
-		webRequest = new ServletWebRequest(request, new MockHttpServletResponse());
+		this.resolver = new PathVariableMethodArgumentResolver();
+		this.mavContainer = new ModelAndViewContainer();
+		this.request = new MockHttpServletRequest();
+		this.webRequest = new ServletWebRequest(this.request, new MockHttpServletResponse());
 
 		Method method = ReflectionUtils.findMethod(getClass(), "handle", (Class<?>[]) null);
-		paramNamedString = new SynthesizingMethodParameter(method, 0);
-		paramString = new SynthesizingMethodParameter(method, 1);
-		paramNotRequired = new SynthesizingMethodParameter(method, 2);
-		paramOptional = new SynthesizingMethodParameter(method, 3);
+		this.paramNamedString = new SynthesizingMethodParameter(method, 0);
+		this.paramString = new SynthesizingMethodParameter(method, 1);
+		this.paramNotRequired = new SynthesizingMethodParameter(method, 2);
+		this.paramOptional = new SynthesizingMethodParameter(method, 3);
 	}
 
 
 	@Test
 	public void supportsParameter() {
-		assertTrue("Parameter with @PathVariable annotation", resolver.supportsParameter(paramNamedString));
-		assertFalse("Parameter without @PathVariable annotation", resolver.supportsParameter(paramString));
+		assertTrue("Parameter with @PathVariable annotation", this.resolver.supportsParameter(this.paramNamedString));
+		assertFalse("Parameter without @PathVariable annotation", this.resolver.supportsParameter(this.paramString));
 	}
 
 	@Test
 	public void resolveArgument() throws Exception {
 		Map<String, String> uriTemplateVars = new HashMap<>();
 		uriTemplateVars.put("name", "value");
-		request.setAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, uriTemplateVars);
+		this.request.setAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, uriTemplateVars);
 
-		String result = (String) resolver.resolveArgument(paramNamedString, mavContainer, webRequest, null);
+		String result = (String) this.resolver.resolveArgument(this.paramNamedString, this.mavContainer, this.webRequest, null);
 		assertEquals("PathVariable not resolved correctly", "value", result);
 
 		@SuppressWarnings("unchecked")
-		Map<String, Object> pathVars = (Map<String, Object>) request.getAttribute(View.PATH_VARIABLES);
+		Map<String, Object> pathVars = (Map<String, Object>) this.request.getAttribute(View.PATH_VARIABLES);
 		assertNotNull(pathVars);
 		assertEquals(1, pathVars.size());
 		assertEquals("value", pathVars.get("name"));
@@ -105,13 +105,13 @@ public class PathVariableMethodArgumentResolverTests {
 	public void resolveArgumentNotRequired() throws Exception {
 		Map<String, String> uriTemplateVars = new HashMap<>();
 		uriTemplateVars.put("name", "value");
-		request.setAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, uriTemplateVars);
+		this.request.setAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, uriTemplateVars);
 
-		String result = (String) resolver.resolveArgument(paramNotRequired, mavContainer, webRequest, null);
+		String result = (String) this.resolver.resolveArgument(this.paramNotRequired, this.mavContainer, this.webRequest, null);
 		assertEquals("PathVariable not resolved correctly", "value", result);
 
 		@SuppressWarnings("unchecked")
-		Map<String, Object> pathVars = (Map<String, Object>) request.getAttribute(View.PATH_VARIABLES);
+		Map<String, Object> pathVars = (Map<String, Object>) this.request.getAttribute(View.PATH_VARIABLES);
 		assertNotNull(pathVars);
 		assertEquals(1, pathVars.size());
 		assertEquals("value", pathVars.get("name"));
@@ -121,7 +121,7 @@ public class PathVariableMethodArgumentResolverTests {
 	public void resolveArgumentWrappedAsOptional() throws Exception {
 		Map<String, String> uriTemplateVars = new HashMap<>();
 		uriTemplateVars.put("name", "value");
-		request.setAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, uriTemplateVars);
+		this.request.setAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, uriTemplateVars);
 
 		ConfigurableWebBindingInitializer initializer = new ConfigurableWebBindingInitializer();
 		initializer.setConversionService(new DefaultConversionService());
@@ -129,11 +129,11 @@ public class PathVariableMethodArgumentResolverTests {
 
 		@SuppressWarnings("unchecked")
 		Optional<String> result = (Optional<String>)
-				resolver.resolveArgument(paramOptional, mavContainer, webRequest, binderFactory);
+				this.resolver.resolveArgument(this.paramOptional, this.mavContainer, this.webRequest, binderFactory);
 		assertEquals("PathVariable not resolved correctly", "value", result.get());
 
 		@SuppressWarnings("unchecked")
-		Map<String, Object> pathVars = (Map<String, Object>) request.getAttribute(View.PATH_VARIABLES);
+		Map<String, Object> pathVars = (Map<String, Object>) this.request.getAttribute(View.PATH_VARIABLES);
 		assertNotNull(pathVars);
 		assertEquals(1, pathVars.size());
 		assertEquals(Optional.of("value"), pathVars.get("name"));
@@ -143,16 +143,16 @@ public class PathVariableMethodArgumentResolverTests {
 	public void resolveArgumentWithExistingPathVars() throws Exception {
 		Map<String, String> uriTemplateVars = new HashMap<>();
 		uriTemplateVars.put("name", "value");
-		request.setAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, uriTemplateVars);
+		this.request.setAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, uriTemplateVars);
 
 		uriTemplateVars.put("oldName", "oldValue");
-		request.setAttribute(View.PATH_VARIABLES, uriTemplateVars);
+		this.request.setAttribute(View.PATH_VARIABLES, uriTemplateVars);
 
-		String result = (String) resolver.resolveArgument(paramNamedString, mavContainer, webRequest, null);
+		String result = (String) this.resolver.resolveArgument(this.paramNamedString, this.mavContainer, this.webRequest, null);
 		assertEquals("PathVariable not resolved correctly", "value", result);
 
 		@SuppressWarnings("unchecked")
-		Map<String, Object> pathVars = (Map<String, Object>) request.getAttribute(View.PATH_VARIABLES);
+		Map<String, Object> pathVars = (Map<String, Object>) this.request.getAttribute(View.PATH_VARIABLES);
 		assertNotNull(pathVars);
 		assertEquals(2, pathVars.size());
 		assertEquals("value", pathVars.get("name"));
@@ -161,13 +161,13 @@ public class PathVariableMethodArgumentResolverTests {
 
 	@Test(expected = MissingPathVariableException.class)
 	public void handleMissingValue() throws Exception {
-		resolver.resolveArgument(paramNamedString, mavContainer, webRequest, null);
+		this.resolver.resolveArgument(this.paramNamedString, this.mavContainer, this.webRequest, null);
 		fail("Unresolved path variable should lead to exception");
 	}
 
 	@Test
 	public void nullIfNotRequired() throws Exception {
-		assertNull(resolver.resolveArgument(paramNotRequired, mavContainer, webRequest, null));
+		assertNull(this.resolver.resolveArgument(this.paramNotRequired, this.mavContainer, this.webRequest, null));
 	}
 
 	@Test
@@ -176,7 +176,7 @@ public class PathVariableMethodArgumentResolverTests {
 		initializer.setConversionService(new DefaultConversionService());
 		WebDataBinderFactory binderFactory = new DefaultDataBinderFactory(initializer);
 
-		assertEquals(Optional.empty(), resolver.resolveArgument(paramOptional, mavContainer, webRequest, binderFactory));
+		assertEquals(Optional.empty(), this.resolver.resolveArgument(this.paramOptional, this.mavContainer, this.webRequest, binderFactory));
 	}
 
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ public class MapDataSourceLookupTests {
 		MapDataSourceLookup lookup = new MapDataSourceLookup();
 		Map dataSources = lookup.getDataSources();
 
-		exception.expect(UnsupportedOperationException.class);
+		this.exception.expect(UnsupportedOperationException.class);
 		dataSources.put("", "");
 	}
 
@@ -94,7 +94,7 @@ public class MapDataSourceLookupTests {
 		dataSources.put(DATA_SOURCE_NAME, new Object());
 		MapDataSourceLookup lookup = new MapDataSourceLookup(dataSources);
 
-		exception.expect(ClassCastException.class);
+		this.exception.expect(ClassCastException.class);
 		lookup.getDataSource(DATA_SOURCE_NAME);
 	}
 
@@ -102,7 +102,7 @@ public class MapDataSourceLookupTests {
 	public void getDataSourceWhereSuppliedMapHasNoEntryForSpecifiedKey() throws Exception {
 		MapDataSourceLookup lookup = new MapDataSourceLookup();
 
-		exception.expect(DataSourceLookupFailureException.class);
+		this.exception.expect(DataSourceLookupFailureException.class);
 		lookup.getDataSource(DATA_SOURCE_NAME);
 	}
 

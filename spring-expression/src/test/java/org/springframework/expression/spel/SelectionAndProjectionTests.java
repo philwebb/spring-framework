@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -296,12 +296,12 @@ public class SelectionAndProjectionTests {
 
 		ListTestBean() {
 			for (int i = 0; i < 10; i++) {
-				integers.add(i);
+				this.integers.add(i);
 			}
 		}
 
 		public List<Integer> getIntegers() {
-			return integers;
+			return this.integers;
 		}
 	}
 
@@ -312,12 +312,12 @@ public class SelectionAndProjectionTests {
 
 		SetTestBean() {
 			for (int i = 0; i < 10; i++) {
-				integers.add(i);
+				this.integers.add(i);
 			}
 		}
 
 		public Set<Integer> getIntegers() {
-			return integers;
+			return this.integers;
 		}
 	}
 
@@ -328,7 +328,7 @@ public class SelectionAndProjectionTests {
 
 		IterableTestBean() {
 			for (int i = 0; i < 10; i++) {
-				integers.add(i);
+				this.integers.add(i);
 			}
 		}
 
@@ -351,17 +351,17 @@ public class SelectionAndProjectionTests {
 
 		ArrayTestBean() {
 			for (int i = 0; i < 10; i++) {
-				ints[i] = i;
-				integers[i] = i;
+				this.ints[i] = i;
+				this.integers[i] = i;
 			}
 		}
 
 		public int[] getInts() {
-			return ints;
+			return this.ints;
 		}
 
 		public Integer[] getIntegers() {
-			return integers;
+			return this.integers;
 		}
 	}
 
@@ -372,15 +372,15 @@ public class SelectionAndProjectionTests {
 
 		MapTestBean() {
 			// colors.put("black", "schwarz");
-			colors.put("red", "rot");
-			colors.put("brown", "braun");
-			colors.put("blue", "blau");
-			colors.put("yellow", "gelb");
-			colors.put("beige", "beige");
+			this.colors.put("red", "rot");
+			this.colors.put("brown", "braun");
+			this.colors.put("blue", "blau");
+			this.colors.put("yellow", "gelb");
+			this.colors.put("beige", "beige");
 		}
 
 		public Map<String, String> getColors() {
-			return colors;
+			return this.colors;
 		}
 	}
 

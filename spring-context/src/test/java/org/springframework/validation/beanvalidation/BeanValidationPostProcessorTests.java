@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -117,7 +117,7 @@ public class BeanValidationPostProcessorTests {
 		private String stringValue;
 
 		public TestBean getTestBean() {
-			return testBean;
+			return this.testBean;
 		}
 
 		public void setTestBean(TestBean testBean) {
@@ -125,7 +125,7 @@ public class BeanValidationPostProcessorTests {
 		}
 
 		public String getStringValue() {
-			return stringValue;
+			return this.stringValue;
 		}
 
 		public void setStringValue(String stringValue) {
@@ -145,7 +145,7 @@ public class BeanValidationPostProcessorTests {
 		private TestBean testBean;
 
 		public TestBean getTestBean() {
-			return testBean;
+			return this.testBean;
 		}
 
 		public void setTestBean(TestBean testBean) {

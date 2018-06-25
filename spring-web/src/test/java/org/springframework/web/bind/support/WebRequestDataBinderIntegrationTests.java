@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -105,7 +105,7 @@ public class WebRequestDataBinderIntegrationTests {
 		parts.add("firstPart", firstPart);
 		parts.add("secondPart", "secondValue");
 
-		template.postForLocation(baseUrl + "/parts", parts);
+		this.template.postForLocation(baseUrl + "/parts", parts);
 
 		assertNotNull(bean.getFirstPart());
 		assertNotNull(bean.getSecondPart());
@@ -122,7 +122,7 @@ public class WebRequestDataBinderIntegrationTests {
 		Resource logo = new ClassPathResource("/org/springframework/http/converter/logo.jpg");
 		parts.add("partList", logo);
 
-		template.postForLocation(baseUrl + "/partlist", parts);
+		this.template.postForLocation(baseUrl + "/partlist", parts);
 
 		assertNotNull(bean.getPartList());
 		assertEquals(parts.get("partList").size(), bean.getPartList().size());
@@ -136,7 +136,7 @@ public class WebRequestDataBinderIntegrationTests {
 
 		@Override
 		public void service(HttpServletRequest request, HttpServletResponse response) {
-			WebRequestDataBinder binder = new WebRequestDataBinder(bean);
+			WebRequestDataBinder binder = new WebRequestDataBinder(this.bean);
 			ServletWebRequest webRequest = new ServletWebRequest(request, response);
 			binder.bind(webRequest);
 			response.setStatus(HttpServletResponse.SC_OK);
@@ -155,7 +155,7 @@ public class WebRequestDataBinderIntegrationTests {
 		public Part secondPart;
 
 		public Part getFirstPart() {
-			return firstPart;
+			return this.firstPart;
 		}
 
 		@SuppressWarnings("unused")
@@ -164,7 +164,7 @@ public class WebRequestDataBinderIntegrationTests {
 		}
 
 		public Part getSecondPart() {
-			return secondPart;
+			return this.secondPart;
 		}
 
 		@SuppressWarnings("unused")
@@ -184,7 +184,7 @@ public class WebRequestDataBinderIntegrationTests {
 		public List<Part> partList;
 
 		public List<Part> getPartList() {
-			return partList;
+			return this.partList;
 		}
 
 		@SuppressWarnings("unused")

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -102,7 +102,7 @@ public class MethodInvocationProceedingJoinPointTests {
 
 				// Try reentrant call--will go through this advice.
 				// Be sure to increment depth to avoid infinite recursion
-				if (depth++ == 0) {
+				if (this.depth++ == 0) {
 					// Check that toString doesn't cause a problem
 					thisProxy.toString();
 					// Change age, so this will be returned by invocation

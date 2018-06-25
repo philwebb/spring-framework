@@ -68,11 +68,11 @@ public class PathVariableMethodArgumentResolverTests {
 		this.resolver = new PathVariableMethodArgumentResolver(null, ReactiveAdapterRegistry.getSharedInstance());
 
 		Method method = ReflectionUtils.findMethod(getClass(), "handle", (Class<?>[]) null);
-		paramNamedString = new SynthesizingMethodParameter(method, 0);
-		paramString = new SynthesizingMethodParameter(method, 1);
-		paramNotRequired = new SynthesizingMethodParameter(method, 2);
-		paramOptional = new SynthesizingMethodParameter(method, 3);
-		paramMono = new SynthesizingMethodParameter(method, 4);
+		this.paramNamedString = new SynthesizingMethodParameter(method, 0);
+		this.paramString = new SynthesizingMethodParameter(method, 1);
+		this.paramNotRequired = new SynthesizingMethodParameter(method, 2);
+		this.paramOptional = new SynthesizingMethodParameter(method, 3);
+		this.paramMono = new SynthesizingMethodParameter(method, 4);
 	}
 
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,94 +57,94 @@ public class AfterReturningAdviceBindingTests {
 		ClassPathXmlApplicationContext ctx =
 			new ClassPathXmlApplicationContext(getClass().getSimpleName() + ".xml", getClass());
 
-		afterAdviceAspect = (AfterReturningAdviceBindingTestAspect) ctx.getBean("testAspect");
+		this.afterAdviceAspect = (AfterReturningAdviceBindingTestAspect) ctx.getBean("testAspect");
 
-		mockCollaborator = mock(AfterReturningAdviceBindingCollaborator.class);
-		afterAdviceAspect.setCollaborator(mockCollaborator);
+		this.mockCollaborator = mock(AfterReturningAdviceBindingCollaborator.class);
+		this.afterAdviceAspect.setCollaborator(this.mockCollaborator);
 
-		testBeanProxy = (ITestBean) ctx.getBean("testBean");
-		assertTrue(AopUtils.isAopProxy(testBeanProxy));
+		this.testBeanProxy = (ITestBean) ctx.getBean("testBean");
+		assertTrue(AopUtils.isAopProxy(this.testBeanProxy));
 
 		// we need the real target too, not just the proxy...
-		this.testBeanTarget = (TestBean) ((Advised)testBeanProxy).getTargetSource().getTarget();
+		this.testBeanTarget = (TestBean) ((Advised)this.testBeanProxy).getTargetSource().getTarget();
 	}
 
 
 	@Test
 	public void testOneIntArg() {
-		testBeanProxy.setAge(5);
-		verify(mockCollaborator).oneIntArg(5);
+		this.testBeanProxy.setAge(5);
+		verify(this.mockCollaborator).oneIntArg(5);
 	}
 
 	@Test
 	public void testOneObjectArg() {
-		testBeanProxy.getAge();
-		verify(mockCollaborator).oneObjectArg(this.testBeanProxy);
+		this.testBeanProxy.getAge();
+		verify(this.mockCollaborator).oneObjectArg(this.testBeanProxy);
 	}
 
 	@Test
 	public void testOneIntAndOneObjectArgs() {
-		testBeanProxy.setAge(5);
-		verify(mockCollaborator).oneIntAndOneObject(5,this.testBeanProxy);
+		this.testBeanProxy.setAge(5);
+		verify(this.mockCollaborator).oneIntAndOneObject(5,this.testBeanProxy);
 	}
 
 	@Test
 	public void testNeedsJoinPoint() {
-		testBeanProxy.getAge();
-		verify(mockCollaborator).needsJoinPoint("getAge");
+		this.testBeanProxy.getAge();
+		verify(this.mockCollaborator).needsJoinPoint("getAge");
 	}
 
 	@Test
 	public void testNeedsJoinPointStaticPart() {
-		testBeanProxy.getAge();
-		verify(mockCollaborator).needsJoinPointStaticPart("getAge");
+		this.testBeanProxy.getAge();
+		verify(this.mockCollaborator).needsJoinPointStaticPart("getAge");
 	}
 
 	@Test
 	public void testReturningString() {
-		testBeanProxy.setName("adrian");
-		testBeanProxy.getName();
-		verify(mockCollaborator).oneString("adrian");
+		this.testBeanProxy.setName("adrian");
+		this.testBeanProxy.getName();
+		verify(this.mockCollaborator).oneString("adrian");
 	}
 
 	@Test
 	public void testReturningObject() {
-		testBeanProxy.returnsThis();
-		verify(mockCollaborator).oneObjectArg(this.testBeanTarget);
+		this.testBeanProxy.returnsThis();
+		verify(this.mockCollaborator).oneObjectArg(this.testBeanTarget);
 	}
 
 	@Test
 	public void testReturningBean() {
-		testBeanProxy.returnsThis();
-		verify(mockCollaborator).oneTestBeanArg(this.testBeanTarget);
+		this.testBeanProxy.returnsThis();
+		verify(this.mockCollaborator).oneTestBeanArg(this.testBeanTarget);
 	}
 
 	@Test
 	public void testReturningBeanArray() {
 		this.testBeanTarget.setSpouse(new TestBean());
 		ITestBean[] spouses = this.testBeanTarget.getSpouses();
-		testBeanProxy.getSpouses();
-		verify(mockCollaborator).testBeanArrayArg(spouses);
+		this.testBeanProxy.getSpouses();
+		verify(this.mockCollaborator).testBeanArrayArg(spouses);
 	}
 
 	@Test
 	public void testNoInvokeWhenReturningParameterTypeDoesNotMatch() {
-		testBeanProxy.setSpouse(this.testBeanProxy);
-		testBeanProxy.getSpouse();
-		verifyZeroInteractions(mockCollaborator);
+		this.testBeanProxy.setSpouse(this.testBeanProxy);
+		this.testBeanProxy.getSpouse();
+		verifyZeroInteractions(this.mockCollaborator);
 	}
 
 	@Test
 	public void testReturningByType() {
-		testBeanProxy.returnsThis();
-		verify(mockCollaborator).objectMatchNoArgs();
+		this.testBeanProxy.returnsThis();
+		verify(this.mockCollaborator).objectMatchNoArgs();
 	}
 
 	@Test
 	public void testReturningPrimitive() {
-		testBeanProxy.setAge(20);
-		testBeanProxy.haveBirthday();
-		verify(mockCollaborator).oneInt(20);
+		this.testBeanProxy.setAge(20);
+		this.testBeanProxy.haveBirthday();
+		verify(this.mockCollaborator).oneInt(20);
 	}
 
 }

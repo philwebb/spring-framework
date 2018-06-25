@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,20 +31,20 @@ public class ParamTests {
 
 	@Test
 	public void name() {
-		param.setName("name");
-		assertEquals("name", param.getName());
+		this.param.setName("name");
+		assertEquals("name", this.param.getName());
 	}
 
 	@Test
 	public void value() {
-		param.setValue("value");
-		assertEquals("value", param.getValue());
+		this.param.setValue("value");
+		assertEquals("value", this.param.getValue());
 	}
 
 	@Test
 	public void nullDefaults() {
-		assertNull(param.getName());
-		assertNull(param.getValue());
+		assertNull(this.param.getName());
+		assertNull(this.param.getValue());
 	}
 
 }

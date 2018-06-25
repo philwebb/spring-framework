@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,12 +40,12 @@ public class ScriptUtilsIntegrationTests extends AbstractDatabaseInitializationT
 
 	@Before
 	public void setUpSchema() throws SQLException {
-		executeSqlScript(db.getConnection(), usersSchema());
+		executeSqlScript(this.db.getConnection(), usersSchema());
 	}
 
 	@Test
 	public void executeSqlScriptContainingMuliLineComments() throws SQLException {
-		executeSqlScript(db.getConnection(), resource("test-data-with-multi-line-comments.sql"));
+		executeSqlScript(this.db.getConnection(), resource("test-data-with-multi-line-comments.sql"));
 		assertUsersDatabaseCreated("Hoeller", "Brannen");
 	}
 
@@ -54,7 +54,7 @@ public class ScriptUtilsIntegrationTests extends AbstractDatabaseInitializationT
 	 */
 	@Test
 	public void executeSqlScriptContainingSingleQuotesNestedInsideDoubleQuotes() throws SQLException {
-		executeSqlScript(db.getConnection(), resource("users-data-with-single-quotes-nested-in-double-quotes.sql"));
+		executeSqlScript(this.db.getConnection(), resource("users-data-with-single-quotes-nested-in-double-quotes.sql"));
 		assertUsersDatabaseCreated("Hoeller", "Brannen");
 	}
 

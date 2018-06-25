@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,33 +35,33 @@ public class CurrencyStyleFormatterTests {
 
 	@Test
 	public void formatValue() {
-		assertEquals("$23.00", formatter.print(new BigDecimal("23"), Locale.US));
+		assertEquals("$23.00", this.formatter.print(new BigDecimal("23"), Locale.US));
 	}
 
 	@Test
 	public void parseValue() throws ParseException {
-		assertEquals(new BigDecimal("23.56"), formatter.parse("$23.56", Locale.US));
+		assertEquals(new BigDecimal("23.56"), this.formatter.parse("$23.56", Locale.US));
 	}
 
 	@Test(expected = ParseException.class)
 	public void parseBogusValue() throws ParseException {
-		formatter.parse("bogus", Locale.US);
+		this.formatter.parse("bogus", Locale.US);
 	}
 
 	@Test
 	public void parseValueDefaultRoundDown() throws ParseException {
 		this.formatter.setRoundingMode(RoundingMode.DOWN);
-		assertEquals(new BigDecimal("23.56"), formatter.parse("$23.567", Locale.US));
+		assertEquals(new BigDecimal("23.56"), this.formatter.parse("$23.567", Locale.US));
 	}
 
 	@Test
 	public void parseWholeValue() throws ParseException {
-		assertEquals(new BigDecimal("23.00"), formatter.parse("$23", Locale.US));
+		assertEquals(new BigDecimal("23.00"), this.formatter.parse("$23", Locale.US));
 	}
 
 	@Test(expected = ParseException.class)
 	public void parseValueNotLenientFailure() throws ParseException {
-		formatter.parse("$23.56bogus", Locale.US);
+		this.formatter.parse("$23.56bogus", Locale.US);
 	}
 
 }

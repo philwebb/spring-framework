@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,89 +44,89 @@ public class ParamTagTests extends AbstractTagTests {
 	@Before
 	public void setUp() throws Exception {
 		PageContext context = createPageContext();
-		tag.setPageContext(context);
-		tag.setParent(parent);
+		this.tag.setPageContext(context);
+		this.tag.setParent(this.parent);
 	}
 
 	@Test
 	public void paramWithNameAndValue() throws JspException {
-		tag.setName("name");
-		tag.setValue("value");
+		this.tag.setName("name");
+		this.tag.setValue("value");
 
-		int action = tag.doEndTag();
+		int action = this.tag.doEndTag();
 
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("name", parent.getParam().getName());
-		assertEquals("value", parent.getParam().getValue());
+		assertEquals("name", this.parent.getParam().getName());
+		assertEquals("value", this.parent.getParam().getValue());
 	}
 
 	@Test
 	public void paramWithBodyValue() throws JspException {
-		tag.setName("name");
-		tag.setBodyContent(new MockBodyContent("value", new MockHttpServletResponse()));
+		this.tag.setName("name");
+		this.tag.setBodyContent(new MockBodyContent("value", new MockHttpServletResponse()));
 
-		int action = tag.doEndTag();
+		int action = this.tag.doEndTag();
 
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("name", parent.getParam().getName());
-		assertEquals("value", parent.getParam().getValue());
+		assertEquals("name", this.parent.getParam().getName());
+		assertEquals("value", this.parent.getParam().getValue());
 	}
 
 	@Test
 	public void paramWithImplicitNullValue() throws JspException {
-		tag.setName("name");
+		this.tag.setName("name");
 
-		int action = tag.doEndTag();
+		int action = this.tag.doEndTag();
 
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("name", parent.getParam().getName());
-		assertNull(parent.getParam().getValue());
+		assertEquals("name", this.parent.getParam().getName());
+		assertNull(this.parent.getParam().getValue());
 	}
 
 	@Test
 	public void paramWithExplicitNullValue() throws JspException {
-		tag.setName("name");
-		tag.setValue(null);
+		this.tag.setName("name");
+		this.tag.setValue(null);
 
-		int action = tag.doEndTag();
+		int action = this.tag.doEndTag();
 
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("name", parent.getParam().getName());
-		assertNull(parent.getParam().getValue());
+		assertEquals("name", this.parent.getParam().getName());
+		assertNull(this.parent.getParam().getValue());
 	}
 
 	@Test
 	public void paramWithValueThenReleaseThenBodyValue() throws JspException {
-		tag.setName("name1");
-		tag.setValue("value1");
+		this.tag.setName("name1");
+		this.tag.setValue("value1");
 
-		int action = tag.doEndTag();
-
-		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("name1", parent.getParam().getName());
-		assertEquals("value1", parent.getParam().getValue());
-
-		tag.release();
-
-		parent = new MockParamSupportTag();
-		tag.setPageContext(createPageContext());
-		tag.setParent(parent);
-		tag.setName("name2");
-		tag.setBodyContent(new MockBodyContent("value2", new MockHttpServletResponse()));
-
-		action = tag.doEndTag();
+		int action = this.tag.doEndTag();
 
 		assertEquals(Tag.EVAL_PAGE, action);
-		assertEquals("name2", parent.getParam().getName());
-		assertEquals("value2", parent.getParam().getValue());
+		assertEquals("name1", this.parent.getParam().getName());
+		assertEquals("value1", this.parent.getParam().getValue());
+
+		this.tag.release();
+
+		this.parent = new MockParamSupportTag();
+		this.tag.setPageContext(createPageContext());
+		this.tag.setParent(this.parent);
+		this.tag.setName("name2");
+		this.tag.setBodyContent(new MockBodyContent("value2", new MockHttpServletResponse()));
+
+		action = this.tag.doEndTag();
+
+		assertEquals(Tag.EVAL_PAGE, action);
+		assertEquals("name2", this.parent.getParam().getName());
+		assertEquals("value2", this.parent.getParam().getValue());
 	}
 
 	@Test(expected = JspException.class)
 	public void paramWithNoParent() throws Exception {
-		tag.setName("name");
-		tag.setValue("value");
-		tag.setParent(null);
-		tag.doEndTag();
+		this.tag.setName("name");
+		this.tag.setValue("value");
+		this.tag.setParent(null);
+		this.tag.doEndTag();
 	}
 
 	@SuppressWarnings("serial")
@@ -140,7 +140,7 @@ public class ParamTagTests extends AbstractTagTests {
 		}
 
 		public Param getParam() {
-			return param;
+			return this.param;
 		}
 
 	}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,7 +67,7 @@ public class MessagingMessageListenerAdapterTests {
 
 	@Before
 	public void setup() {
-		initializeFactory(factory);
+		initializeFactory(this.factory);
 	}
 
 	@Test
@@ -164,8 +164,8 @@ public class MessagingMessageListenerAdapterTests {
 		listener.setMessageConverter(messageConverter);
 		listener.onMessage(jmsMessage, session);
 		verify(messageConverter, times(1)).fromMessage(jmsMessage);
-		assertEquals(1, sample.simples.size());
-		assertEquals("FooBar", sample.simples.get(0).getPayload());
+		assertEquals(1, this.sample.simples.size());
+		assertEquals("FooBar", this.sample.simples.get(0).getPayload());
 	}
 
 	@Test
@@ -358,7 +358,7 @@ public class MessagingMessageListenerAdapterTests {
 
 	protected MessagingMessageListenerAdapter createInstance(Method m) {
 		MessagingMessageListenerAdapter adapter = new MessagingMessageListenerAdapter();
-		adapter.setHandlerMethod(factory.createInvocableHandlerMethod(sample, m));
+		adapter.setHandlerMethod(this.factory.createInvocableHandlerMethod(this.sample, m));
 		return adapter;
 	}
 
@@ -372,7 +372,7 @@ public class MessagingMessageListenerAdapterTests {
 				return payload;
 			}
 		};
-		adapter.setHandlerMethod(factory.createInvocableHandlerMethod(sample, method));
+		adapter.setHandlerMethod(this.factory.createInvocableHandlerMethod(this.sample, method));
 		return adapter;
 	}
 
@@ -388,7 +388,7 @@ public class MessagingMessageListenerAdapterTests {
 		public final List<Message<String>> simples = new ArrayList<>();
 
 		public void simple(Message<String> input) {
-			simples.add(input);
+			this.simples.add(input);
 		}
 
 		public Message<String> echo(Message<String> input) {
@@ -464,7 +464,7 @@ public class MessagingMessageListenerAdapterTests {
 		}
 
 		public int getCounter() {
-			return counter;
+			return this.counter;
 		}
 
 		public void setCounter(int counter) {
@@ -472,7 +472,7 @@ public class MessagingMessageListenerAdapterTests {
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String name) {
@@ -480,7 +480,7 @@ public class MessagingMessageListenerAdapterTests {
 		}
 
 		public String getDescription() {
-			return description;
+			return this.description;
 		}
 
 		public void setDescription(String description) {

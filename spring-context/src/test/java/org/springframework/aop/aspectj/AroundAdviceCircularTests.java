@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2008 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,9 +30,9 @@ public class AroundAdviceCircularTests extends AroundAdviceBindingTests {
 
 	@Test
 	public void testBothBeansAreProxies() {
-		Object tb = ctx.getBean("testBean");
+		Object tb = this.ctx.getBean("testBean");
 		assertTrue(AopUtils.isAopProxy(tb));
-		Object tb2 = ctx.getBean("testBean2");
+		Object tb2 = this.ctx.getBean("testBean2");
 		assertTrue(AopUtils.isAopProxy(tb2));
 	}
 

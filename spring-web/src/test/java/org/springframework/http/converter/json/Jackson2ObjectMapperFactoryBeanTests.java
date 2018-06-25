@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -439,7 +439,7 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 		}
 
 		public String getProperty1() {
-			return property1;
+			return this.property1;
 		}
 
 		public void setProperty1(String property1) {
@@ -447,7 +447,7 @@ public class Jackson2ObjectMapperFactoryBeanTests {
 		}
 
 		public String getProperty2() {
-			return property2;
+			return this.property2;
 		}
 
 		public void setProperty2(String property2) {

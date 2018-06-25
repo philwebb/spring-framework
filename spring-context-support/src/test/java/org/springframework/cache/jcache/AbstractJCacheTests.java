@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,9 +46,9 @@ public abstract class AbstractJCacheTests {
 
 	protected final CacheManager cacheManager = createSimpleCacheManager("default", "simpleCache");
 
-	protected final CacheResolver defaultCacheResolver = new SimpleCacheResolver(cacheManager);
+	protected final CacheResolver defaultCacheResolver = new SimpleCacheResolver(this.cacheManager);
 
-	protected final CacheResolver defaultExceptionCacheResolver = new SimpleExceptionCacheResolver(cacheManager);
+	protected final CacheResolver defaultExceptionCacheResolver = new SimpleExceptionCacheResolver(this.cacheManager);
 
 	protected final KeyGenerator defaultKeyGenerator = new SimpleKeyGenerator();
 

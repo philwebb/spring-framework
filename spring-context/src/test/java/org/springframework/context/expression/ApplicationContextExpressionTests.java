@@ -468,7 +468,7 @@ public class ApplicationContextExpressionTests {
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setCountry(String country) {
@@ -476,7 +476,7 @@ public class ApplicationContextExpressionTests {
 		}
 
 		public String getCountry() {
-			return country;
+			return this.country;
 		}
 
 		public void setCountry2(String country2) {
@@ -484,7 +484,7 @@ public class ApplicationContextExpressionTests {
 		}
 
 		public String getCountry2() {
-			return country2;
+			return this.country2;
 		}
 	}
 

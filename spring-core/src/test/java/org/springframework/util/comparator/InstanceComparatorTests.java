@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,32 +41,32 @@ public class InstanceComparatorTests {
 	@Test
 	public void shouldCompareClasses() throws Exception {
 		Comparator<Object> comparator = new InstanceComparator<>(C1.class, C2.class);
-		assertThat(comparator.compare(c1, c1), is(0));
-		assertThat(comparator.compare(c1, c2), is(-1));
-		assertThat(comparator.compare(c2, c1), is(1));
-		assertThat(comparator.compare(c2, c3), is(-1));
-		assertThat(comparator.compare(c2, c4), is(-1));
-		assertThat(comparator.compare(c3, c4), is(0));
+		assertThat(comparator.compare(this.c1, this.c1), is(0));
+		assertThat(comparator.compare(this.c1, this.c2), is(-1));
+		assertThat(comparator.compare(this.c2, this.c1), is(1));
+		assertThat(comparator.compare(this.c2, this.c3), is(-1));
+		assertThat(comparator.compare(this.c2, this.c4), is(-1));
+		assertThat(comparator.compare(this.c3, this.c4), is(0));
 	}
 
 	@Test
 	public void shouldCompareInterfaces() throws Exception {
 		Comparator<Object> comparator = new InstanceComparator<>(I1.class, I2.class);
-		assertThat(comparator.compare(c1, c1), is(0));
-		assertThat(comparator.compare(c1, c2), is(0));
-		assertThat(comparator.compare(c2, c1), is(0));
-		assertThat(comparator.compare(c1, c3), is(-1));
-		assertThat(comparator.compare(c3, c1), is(1));
-		assertThat(comparator.compare(c3, c4), is(0));
+		assertThat(comparator.compare(this.c1, this.c1), is(0));
+		assertThat(comparator.compare(this.c1, this.c2), is(0));
+		assertThat(comparator.compare(this.c2, this.c1), is(0));
+		assertThat(comparator.compare(this.c1, this.c3), is(-1));
+		assertThat(comparator.compare(this.c3, this.c1), is(1));
+		assertThat(comparator.compare(this.c3, this.c4), is(0));
 	}
 
 	@Test
 	public void shouldCompareMix() throws Exception {
 		Comparator<Object> comparator = new InstanceComparator<>(I1.class, C3.class);
-		assertThat(comparator.compare(c1, c1), is(0));
-		assertThat(comparator.compare(c3, c4), is(-1));
-		assertThat(comparator.compare(c3, null), is(-1));
-		assertThat(comparator.compare(c4, null), is(0));
+		assertThat(comparator.compare(this.c1, this.c1), is(0));
+		assertThat(comparator.compare(this.c3, this.c4), is(-1));
+		assertThat(comparator.compare(this.c3, null), is(-1));
+		assertThat(comparator.compare(this.c4, null), is(0));
 	}
 
 	private static interface I1 {

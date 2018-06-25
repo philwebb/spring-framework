@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -155,7 +155,7 @@ public class ScriptTemplateViewTests {
 		ExecutorService executor = Executors.newFixedThreadPool(4);
 		List<Future<Boolean>> results = new ArrayList<>();
 		for (int i = 0; i < iterations; i++) {
-			results.add(executor.submit(() -> view.getEngine() != null));
+			results.add(executor.submit(() -> this.view.getEngine() != null));
 		}
 		assertEquals(iterations, results.size());
 		for (int i = 0; i < iterations; i++) {

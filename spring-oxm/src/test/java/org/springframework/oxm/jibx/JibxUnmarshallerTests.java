@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -81,10 +81,10 @@ public class JibxUnmarshallerTests extends AbstractUnmarshallerTests<JibxMarshal
 	@Test
 	public void unmarshalStreamSourceInputStreamUsingNonDefaultEncoding() throws Exception {
 		String encoding = "ISO-8859-1";
-		unmarshaller.setEncoding(encoding);
+		this.unmarshaller.setEncoding(encoding);
 
 		StreamSource source = new StreamSource(new ByteArrayInputStream(INPUT_STRING_WITH_SPECIAL_CHARACTERS.getBytes(encoding)));
-		Object flights = unmarshaller.unmarshal(source);
+		Object flights = this.unmarshaller.unmarshal(source);
 		testFlights(flights);
 
 		FlightType flight = ((Flights)flights).getFlight(0);

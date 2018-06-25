@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,8 +38,8 @@ public class Spr12278Tests {
 
 	@After
 	public void close() {
-		if (context != null) {
-			context.close();
+		if (this.context != null) {
+			this.context.close();
 		}
 	}
 
@@ -59,8 +59,8 @@ public class Spr12278Tests {
 
 	@Test
 	public void componentTwoSpecificConstructorsNoHint() {
-		thrown.expect(BeanCreationException.class);
-		thrown.expectMessage(NoSuchMethodException.class.getName());
+		this.thrown.expect(BeanCreationException.class);
+		this.thrown.expectMessage(NoSuchMethodException.class.getName());
 		new AnnotationConfigApplicationContext(BaseConfiguration.class,
 				TwoSpecificConstructorsComponent.class);
 	}

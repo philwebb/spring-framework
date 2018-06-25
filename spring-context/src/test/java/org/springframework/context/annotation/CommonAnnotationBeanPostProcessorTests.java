@@ -636,11 +636,11 @@ public class CommonAnnotationBeanPostProcessorTests {
 		}
 
 		public TestBean getTestBean() {
-			return testBean;
+			return this.testBean;
 		}
 
 		public TestBean getTestBean2() {
-			return testBean2;
+			return this.testBean2;
 		}
 	}
 
@@ -683,19 +683,19 @@ public class CommonAnnotationBeanPostProcessorTests {
 		}
 
 		public ITestBean getTestBean3() {
-			return testBean3;
+			return this.testBean3;
 		}
 
 		public B getTestBean4() {
-			return testBean4;
+			return this.testBean4;
 		}
 
 		public INestedTestBean getTestBean5() {
-			return testBean5;
+			return this.testBean5;
 		}
 
 		public INestedTestBean getTestBean6() {
-			return testBean6;
+			return this.testBean6;
 		}
 
 		@Override
@@ -750,7 +750,7 @@ public class CommonAnnotationBeanPostProcessorTests {
 
 		@Override
 		public void increaseCounter() {
-			counter++;
+			this.counter++;
 		}
 	}
 
@@ -793,11 +793,11 @@ public class CommonAnnotationBeanPostProcessorTests {
 		}
 
 		public ITestBean getTestBean3() {
-			return testBean3;
+			return this.testBean3;
 		}
 
 		public ITestBean getTestBean4() {
-			return testBean4;
+			return this.testBean4;
 		}
 
 		@Override

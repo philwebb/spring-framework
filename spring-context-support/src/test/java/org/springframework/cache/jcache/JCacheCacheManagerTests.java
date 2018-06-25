@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,26 +41,26 @@ public class JCacheCacheManagerTests extends AbstractTransactionSupportingCacheM
 
 	@Before
 	public void setupOnce() {
-		cacheManagerMock = new CacheManagerMock();
-		cacheManagerMock.addCache(CACHE_NAME);
+		this.cacheManagerMock = new CacheManagerMock();
+		this.cacheManagerMock.addCache(CACHE_NAME);
 
-		cacheManager = new JCacheCacheManager(cacheManagerMock.getCacheManager());
-		cacheManager.setTransactionAware(false);
-		cacheManager.afterPropertiesSet();
+		this.cacheManager = new JCacheCacheManager(this.cacheManagerMock.getCacheManager());
+		this.cacheManager.setTransactionAware(false);
+		this.cacheManager.afterPropertiesSet();
 
-		transactionalCacheManager = new JCacheCacheManager(cacheManagerMock.getCacheManager());
-		transactionalCacheManager.setTransactionAware(true);
-		transactionalCacheManager.afterPropertiesSet();
+		this.transactionalCacheManager = new JCacheCacheManager(this.cacheManagerMock.getCacheManager());
+		this.transactionalCacheManager.setTransactionAware(true);
+		this.transactionalCacheManager.afterPropertiesSet();
 	}
 
 
 	@Override
 	protected JCacheCacheManager getCacheManager(boolean transactionAware) {
 		if (transactionAware) {
-			return transactionalCacheManager;
+			return this.transactionalCacheManager;
 		}
 		else {
-			return cacheManager;
+			return this.cacheManager;
 		}
 	}
 
@@ -71,12 +71,12 @@ public class JCacheCacheManagerTests extends AbstractTransactionSupportingCacheM
 
 	@Override
 	protected void addNativeCache(String cacheName) {
-		cacheManagerMock.addCache(cacheName);
+		this.cacheManagerMock.addCache(cacheName);
 	}
 
 	@Override
 	protected void removeNativeCache(String cacheName) {
-		cacheManagerMock.removeCache(cacheName);
+		this.cacheManagerMock.removeCache(cacheName);
 	}
 
 
@@ -89,24 +89,24 @@ public class JCacheCacheManagerTests extends AbstractTransactionSupportingCacheM
 		private CacheManagerMock() {
 			this.cacheNames = new ArrayList<>();
 			this.cacheManager = mock(CacheManager.class);
-			given(cacheManager.getCacheNames()).willReturn(cacheNames);
+			given(this.cacheManager.getCacheNames()).willReturn(this.cacheNames);
 		}
 
 		private CacheManager getCacheManager() {
-			return cacheManager;
+			return this.cacheManager;
 		}
 
 		@SuppressWarnings("unchecked")
 		public void addCache(String name) {
-			cacheNames.add(name);
+			this.cacheNames.add(name);
 			Cache cache = mock(Cache.class);
 			given(cache.getName()).willReturn(name);
-			given(cacheManager.getCache(name)).willReturn(cache);
+			given(this.cacheManager.getCache(name)).willReturn(cache);
 		}
 
 		public void removeCache(String name) {
-			cacheNames.remove(name);
-			given(cacheManager.getCache(name)).willReturn(null);
+			this.cacheNames.remove(name);
+			given(this.cacheManager.getCache(name)).willReturn(null);
 		}
 	}
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,10 +58,10 @@ public class HandlerAssertionTests {
 
 	@Test
 	public void methodCallOnNonMock() throws Exception {
-		exception.expect(AssertionError.class);
-		exception.expectMessage("The supplied object [bogus] is not an instance of");
-		exception.expectMessage(MvcUriComponentsBuilder.MethodInvocationInfo.class.getName());
-		exception.expectMessage("Ensure that you invoke the handler method via MvcUriComponentsBuilder.on()");
+		this.exception.expect(AssertionError.class);
+		this.exception.expectMessage("The supplied object [bogus] is not an instance of");
+		this.exception.expectMessage(MvcUriComponentsBuilder.MethodInvocationInfo.class.getName());
+		this.exception.expectMessage("Ensure that you invoke the handler method via MvcUriComponentsBuilder.on()");
 
 		this.mockMvc.perform(get("/")).andExpect(handler().methodCall("bogus"));
 	}

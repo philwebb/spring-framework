@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ public class StandardClasses {
 	private DatatypeFactory factory;
 
 	public StandardClasses() throws DatatypeConfigurationException {
-		factory = DatatypeFactory.newInstance();
+		this.factory = DatatypeFactory.newInstance();
 	}
 
 	/*
@@ -95,12 +95,12 @@ public class StandardClasses {
 
 	public JAXBElement<XMLGregorianCalendar> standardClassXMLGregorianCalendar() throws DatatypeConfigurationException {
 		XMLGregorianCalendar calendar =
-				factory.newXMLGregorianCalendar((GregorianCalendar) Calendar.getInstance());
+				this.factory.newXMLGregorianCalendar((GregorianCalendar) Calendar.getInstance());
 		return new JAXBElement<>(NAME, XMLGregorianCalendar.class, calendar);
 	}
 
 	public JAXBElement<Duration> standardClassDuration() {
-		Duration duration = factory.newDuration(42000);
+		Duration duration = this.factory.newDuration(42000);
 		return new JAXBElement<>(NAME, Duration.class, duration);
 	}
 

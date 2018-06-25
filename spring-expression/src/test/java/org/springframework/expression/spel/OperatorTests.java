@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2014 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -400,9 +400,9 @@ public class OperatorTests extends AbstractExpressionTests {
 		evaluate("null + 'ab'", "nullab", String.class);
 
 		// AST:
-		SpelExpression expr = (SpelExpression)parser.parseExpression("+3");
+		SpelExpression expr = (SpelExpression)this.parser.parseExpression("+3");
 		assertEquals("+3",expr.toStringAST());
-		expr = (SpelExpression)parser.parseExpression("2+3");
+		expr = (SpelExpression)this.parser.parseExpression("2+3");
 		assertEquals("(2 + 3)",expr.toStringAST());
 
 		// use as a unary operator
@@ -424,9 +424,9 @@ public class OperatorTests extends AbstractExpressionTests {
 		evaluate("3.0f - 5.0f", -2.0f, Float.class);
 		evaluateAndCheckError("'ab' - 2", SpelMessage.OPERATOR_NOT_SUPPORTED_BETWEEN_TYPES);
 		evaluateAndCheckError("2-'ab'", SpelMessage.OPERATOR_NOT_SUPPORTED_BETWEEN_TYPES);
-		SpelExpression expr = (SpelExpression)parser.parseExpression("-3");
+		SpelExpression expr = (SpelExpression)this.parser.parseExpression("-3");
 		assertEquals("-3", expr.toStringAST());
-		expr = (SpelExpression)parser.parseExpression("2-3");
+		expr = (SpelExpression)this.parser.parseExpression("2-3");
 		assertEquals("(2 - 3)", expr.toStringAST());
 
 		evaluate("-5d",-5d,Double.class);
@@ -496,40 +496,40 @@ public class OperatorTests extends AbstractExpressionTests {
 
 	@Test
 	public void testOperatorNames() throws Exception {
-		Operator node = getOperatorNode((SpelExpression)parser.parseExpression("1==3"));
+		Operator node = getOperatorNode((SpelExpression)this.parser.parseExpression("1==3"));
 		assertEquals("==",node.getOperatorName());
 
-		node = getOperatorNode((SpelExpression)parser.parseExpression("1!=3"));
+		node = getOperatorNode((SpelExpression)this.parser.parseExpression("1!=3"));
 		assertEquals("!=",node.getOperatorName());
 
-		node = getOperatorNode((SpelExpression)parser.parseExpression("3/3"));
+		node = getOperatorNode((SpelExpression)this.parser.parseExpression("3/3"));
 		assertEquals("/",node.getOperatorName());
 
-		node = getOperatorNode((SpelExpression)parser.parseExpression("3+3"));
+		node = getOperatorNode((SpelExpression)this.parser.parseExpression("3+3"));
 		assertEquals("+",node.getOperatorName());
 
-		node = getOperatorNode((SpelExpression)parser.parseExpression("3-3"));
+		node = getOperatorNode((SpelExpression)this.parser.parseExpression("3-3"));
 		assertEquals("-",node.getOperatorName());
 
-		node = getOperatorNode((SpelExpression)parser.parseExpression("3<4"));
+		node = getOperatorNode((SpelExpression)this.parser.parseExpression("3<4"));
 		assertEquals("<",node.getOperatorName());
 
-		node = getOperatorNode((SpelExpression)parser.parseExpression("3<=4"));
+		node = getOperatorNode((SpelExpression)this.parser.parseExpression("3<=4"));
 		assertEquals("<=",node.getOperatorName());
 
-		node = getOperatorNode((SpelExpression)parser.parseExpression("3*4"));
+		node = getOperatorNode((SpelExpression)this.parser.parseExpression("3*4"));
 		assertEquals("*",node.getOperatorName());
 
-		node = getOperatorNode((SpelExpression)parser.parseExpression("3%4"));
+		node = getOperatorNode((SpelExpression)this.parser.parseExpression("3%4"));
 		assertEquals("%",node.getOperatorName());
 
-		node = getOperatorNode((SpelExpression)parser.parseExpression("3>=4"));
+		node = getOperatorNode((SpelExpression)this.parser.parseExpression("3>=4"));
 		assertEquals(">=",node.getOperatorName());
 
-		node = getOperatorNode((SpelExpression)parser.parseExpression("3 between 4"));
+		node = getOperatorNode((SpelExpression)this.parser.parseExpression("3 between 4"));
 		assertEquals("between",node.getOperatorName());
 
-		node = getOperatorNode((SpelExpression)parser.parseExpression("3 ^ 4"));
+		node = getOperatorNode((SpelExpression)this.parser.parseExpression("3 ^ 4"));
 		assertEquals("^",node.getOperatorName());
 	}
 

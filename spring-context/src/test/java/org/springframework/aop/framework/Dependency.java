@@ -24,10 +24,10 @@ class Dependency {
 	private int value = 0;
 
 	public void method() {
-		value++;
+		this.value++;
 	}
 
 	public int getValue() {
-		return value;
+		return this.value;
 	}
 }

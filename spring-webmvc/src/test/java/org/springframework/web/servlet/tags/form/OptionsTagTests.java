@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,7 +69,7 @@ public class OptionsTagTests extends AbstractHtmlElementTagTests {
 				return new TagWriter(getWriter());
 			}
 		};
-		selectTag = new SelectTag() {
+		this.selectTag = new SelectTag() {
 			@Override
 			protected TagWriter createTagWriter() {
 				return new TagWriter(getWriter());
@@ -81,8 +81,8 @@ public class OptionsTagTests extends AbstractHtmlElementTagTests {
 				return "testName";
 			}
 		};
-		selectTag.setPageContext(getPageContext());
-		this.tag.setParent(selectTag);
+		this.selectTag.setPageContext(getPageContext());
+		this.tag.setParent(this.selectTag);
 		this.tag.setPageContext(getPageContext());
 	}
 

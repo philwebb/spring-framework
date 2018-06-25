@@ -53,7 +53,7 @@ public abstract class AbstractHttpServer implements HttpServer {
 	}
 
 	public String getHost() {
-		return host;
+		return this.host;
 	}
 
 	@Override

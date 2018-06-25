@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2014 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,38 +33,38 @@ public class ProxyFactoryBeanTests {
 
 	@Before
 	public void setUp() {
-		factoryBean = new ProxyFactoryBean();
+		this.factoryBean = new ProxyFactoryBean();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void noType() {
-		factoryBean.setType(null);
-		factoryBean.afterPropertiesSet();
+		this.factoryBean.setType(null);
+		this.factoryBean.afterPropertiesSet();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void noHostname() {
-		factoryBean.setHostname("");
-		factoryBean.afterPropertiesSet();
+		this.factoryBean.setHostname("");
+		this.factoryBean.afterPropertiesSet();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void noPort() {
-		factoryBean.setHostname("example.com");
-		factoryBean.afterPropertiesSet();
+		this.factoryBean.setHostname("example.com");
+		this.factoryBean.afterPropertiesSet();
 	}
 
 	@Test
 	public void normal() {
 		Proxy.Type type = Proxy.Type.HTTP;
-		factoryBean.setType(type);
+		this.factoryBean.setType(type);
 		String hostname = "example.com";
-		factoryBean.setHostname(hostname);
+		this.factoryBean.setHostname(hostname);
 		int port = 8080;
-		factoryBean.setPort(port);
-		factoryBean.afterPropertiesSet();
+		this.factoryBean.setPort(port);
+		this.factoryBean.afterPropertiesSet();
 
-		Proxy result = factoryBean.getObject();
+		Proxy result = this.factoryBean.getObject();
 
 		assertEquals(type, result.type());
 		InetSocketAddress address = (InetSocketAddress) result.address();

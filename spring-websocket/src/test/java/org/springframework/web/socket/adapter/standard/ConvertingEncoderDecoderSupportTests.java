@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -83,36 +83,36 @@ public class ConvertingEncoderDecoderSupportTests {
 
 	@Test
 	public void encodeToText() throws Exception {
-		assertThat(new MyTextEncoder().encode(myType), equalTo(CONVERTED_TEXT));
+		assertThat(new MyTextEncoder().encode(this.myType), equalTo(CONVERTED_TEXT));
 	}
 
 	@Test
 	public void encodeToTextCannotConvert() throws Exception {
 		setup(NoConvertersConfig.class);
-		thown.expect(EncodeException.class);
-		thown.expectCause(isA(ConverterNotFoundException.class));
-		new MyTextEncoder().encode(myType);
+		this.thown.expect(EncodeException.class);
+		this.thown.expectCause(isA(ConverterNotFoundException.class));
+		new MyTextEncoder().encode(this.myType);
 	}
 
 	@Test
 	public void encodeToBinary() throws Exception {
-		assertThat(new MyBinaryEncoder().encode(myType).array(),
+		assertThat(new MyBinaryEncoder().encode(this.myType).array(),
 				equalTo(CONVERTED_BYTES.array()));
 	}
 
 	@Test
 	public void encodeToBinaryCannotConvert() throws Exception {
 		setup(NoConvertersConfig.class);
-		thown.expect(EncodeException.class);
-		thown.expectCause(isA(ConverterNotFoundException.class));
-		new MyBinaryEncoder().encode(myType);
+		this.thown.expect(EncodeException.class);
+		this.thown.expectCause(isA(ConverterNotFoundException.class));
+		new MyBinaryEncoder().encode(this.myType);
 	}
 
 	@Test
 	public void decodeFromText() throws Exception {
 		Decoder.Text<MyType> decoder = new MyTextDecoder();
 		assertThat(decoder.willDecode(CONVERTED_TEXT), is(true));
-		assertThat(decoder.decode(CONVERTED_TEXT), equalTo(myType));
+		assertThat(decoder.decode(CONVERTED_TEXT), equalTo(this.myType));
 	}
 
 	@Test
@@ -120,8 +120,8 @@ public class ConvertingEncoderDecoderSupportTests {
 		setup(NoConvertersConfig.class);
 		Decoder.Text<MyType> decoder = new MyTextDecoder();
 		assertThat(decoder.willDecode(CONVERTED_TEXT), is(false));
-		thown.expect(DecodeException.class);
-		thown.expectCause(isA(ConverterNotFoundException.class));
+		this.thown.expect(DecodeException.class);
+		this.thown.expectCause(isA(ConverterNotFoundException.class));
 		decoder.decode(CONVERTED_TEXT);
 	}
 
@@ -129,7 +129,7 @@ public class ConvertingEncoderDecoderSupportTests {
 	public void decodeFromBinary() throws Exception {
 		Decoder.Binary<MyType> decoder = new MyBinaryDecoder();
 		assertThat(decoder.willDecode(CONVERTED_BYTES), is(true));
-		assertThat(decoder.decode(CONVERTED_BYTES), equalTo(myType));
+		assertThat(decoder.decode(CONVERTED_BYTES), equalTo(this.myType));
 	}
 
 	@Test
@@ -137,30 +137,30 @@ public class ConvertingEncoderDecoderSupportTests {
 		setup(NoConvertersConfig.class);
 		Decoder.Binary<MyType> decoder = new MyBinaryDecoder();
 		assertThat(decoder.willDecode(CONVERTED_BYTES), is(false));
-		thown.expect(DecodeException.class);
-		thown.expectCause(isA(ConverterNotFoundException.class));
+		this.thown.expect(DecodeException.class);
+		this.thown.expectCause(isA(ConverterNotFoundException.class));
 		decoder.decode(CONVERTED_BYTES);
 	}
 
 	@Test
 	public void encodeAndDecodeText() throws Exception {
 		MyTextEncoderDecoder encoderDecoder = new MyTextEncoderDecoder();
-		String encoded = encoderDecoder.encode(myType);
-		assertThat(encoderDecoder.decode(encoded), equalTo(myType));
+		String encoded = encoderDecoder.encode(this.myType);
+		assertThat(encoderDecoder.decode(encoded), equalTo(this.myType));
 	}
 
 	@Test
 	public void encodeAndDecodeBytes() throws Exception {
 		MyBinaryEncoderDecoder encoderDecoder = new MyBinaryEncoderDecoder();
-		ByteBuffer encoded = encoderDecoder.encode(myType);
-		assertThat(encoderDecoder.decode(encoded), equalTo(myType));
+		ByteBuffer encoded = encoderDecoder.encode(this.myType);
+		assertThat(encoderDecoder.decode(encoded), equalTo(this.myType));
 	}
 
 	@Test
 	public void autowiresIntoEncoder() throws Exception {
 		WithAutowire withAutowire = new WithAutowire();
 		withAutowire.init(null);
-		assertThat(withAutowire.config, equalTo(applicationContext.getBean(Config.class)));
+		assertThat(withAutowire.config, equalTo(this.applicationContext.getBean(Config.class)));
 	}
 
 	@Test
@@ -168,9 +168,9 @@ public class ConvertingEncoderDecoderSupportTests {
 		ContextLoaderTestUtils.setCurrentWebApplicationContext(null);
 		WithAutowire encoder = new WithAutowire();
 		encoder.init(null);
-		thown.expect(IllegalStateException.class);
-		thown.expectMessage("Unable to locate the Spring ApplicationContext");
-		encoder.encode(myType);
+		this.thown.expect(IllegalStateException.class);
+		this.thown.expectMessage("Unable to locate the Spring ApplicationContext");
+		encoder.encode(this.myType);
 	}
 
 	@Test
@@ -178,9 +178,9 @@ public class ConvertingEncoderDecoderSupportTests {
 		setup(NoConfig.class);
 		MyBinaryEncoder encoder = new MyBinaryEncoder();
 		encoder.init(null);
-		thown.expect(IllegalStateException.class);
-		thown.expectMessage("Unable to find ConversionService");
-		encoder.encode(myType);
+		this.thown.expect(IllegalStateException.class);
+		this.thown.expectMessage("Unable to find ConversionService");
+		encoder.encode(this.myType);
 	}
 
 	@Configuration
@@ -229,13 +229,13 @@ public class ConvertingEncoderDecoderSupportTests {
 
 		@Override
 		public int hashCode() {
-			return value.hashCode();
+			return this.value.hashCode();
 		}
 
 		@Override
 		public boolean equals(Object obj) {
 			if (obj instanceof MyType) {
-				return ((MyType)obj).value.equals(value);
+				return ((MyType)obj).value.equals(this.value);
 			}
 			return false;
 		}

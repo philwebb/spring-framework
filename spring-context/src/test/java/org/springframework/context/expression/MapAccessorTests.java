@@ -72,12 +72,12 @@ public class MapAccessorTests {
 		Map<String,Object> map = new HashMap<>();
 
 		public MapGetter() {
-			map.put("foo", "bar");
+			this.map.put("foo", "bar");
 		}
 
 		@SuppressWarnings("rawtypes")
 		public Map getMap() {
-			return map;
+			return this.map;
 		}
 	}
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -139,16 +139,16 @@ public class HandlerMethodAnnotationDetectionTests {
 		request.addHeader("header1", dateA);
 		request.addHeader("header2", dateB);
 
-		HandlerExecutionChain chain = handlerMapping.getHandler(request);
+		HandlerExecutionChain chain = this.handlerMapping.getHandler(request);
 		assertNotNull(chain);
 
-		ModelAndView mav = handlerAdapter.handle(request, new MockHttpServletResponse(), chain.getHandler());
+		ModelAndView mav = this.handlerAdapter.handle(request, new MockHttpServletResponse(), chain.getHandler());
 
 		assertEquals("model attr1:", dateFormat.parse(dateA), mav.getModel().get("attr1"));
 		assertEquals("model attr2:", dateFormat.parse(dateB), mav.getModel().get("attr2"));
 
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		exceptionResolver.resolveException(request, response, chain.getHandler(), new Exception("failure"));
+		this.exceptionResolver.resolveException(request, response, chain.getHandler(), new Exception("failure"));
 		assertEquals("text/plain;charset=ISO-8859-1", response.getHeader("Content-Type"));
 		assertEquals("failure", response.getContentAsString());
 	}

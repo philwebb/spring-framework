@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2014 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,8 +50,8 @@ public class JCacheNamespaceDrivenTests extends AbstractJCacheAnnotationTests {
 
 	@Test
 	public void testCacheErrorHandler() {
-		JCacheInterceptor ci = ctx.getBean(JCacheInterceptor.class);
-		assertSame(ctx.getBean("errorHandler", CacheErrorHandler.class), ci.getErrorHandler());
+		JCacheInterceptor ci = this.ctx.getBean(JCacheInterceptor.class);
+		assertSame(this.ctx.getBean("errorHandler", CacheErrorHandler.class), ci.getErrorHandler());
 	}
 
 }

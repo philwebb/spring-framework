@@ -2674,7 +2674,7 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 
 		@Override
 		public void markSubInjected() {
-			subInjected = true;
+			this.subInjected = true;
 		}
 	}
 
@@ -3119,8 +3119,8 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 		}
 
 		public TestBean consumeOptionalTestBean() {
-			this.testBeanFactory.ifAvailable(tb -> consumedTestBean = tb);
-			return consumedTestBean;
+			this.testBeanFactory.ifAvailable(tb -> this.consumedTestBean = tb);
+			return this.consumedTestBean;
 		}
 
 		public TestBean getUniqueTestBean() {
@@ -3132,8 +3132,8 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 		}
 
 		public TestBean consumeUniqueTestBean() {
-			this.testBeanFactory.ifUnique(tb -> consumedTestBean = tb);
-			return consumedTestBean;
+			this.testBeanFactory.ifUnique(tb -> this.consumedTestBean = tb);
+			return this.consumedTestBean;
 		}
 	}
 
@@ -3781,7 +3781,7 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 
 		@Override
 		public String doSomethingGeneric(T o) {
-			return gi2.doSomethingMoreGeneric(o) + "_somethingGeneric_" + o;
+			return this.gi2.doSomethingMoreGeneric(o) + "_somethingGeneric_" + o;
 		}
 
 		public static GenericInterface1<String> create() {
@@ -4086,7 +4086,7 @@ public class AutowiredAnnotationBeanPostProcessorTests {
 
 		@Override
 		public TestBean getObject() {
-			return exposedTestBean;
+			return this.exposedTestBean;
 		}
 
 		@Override

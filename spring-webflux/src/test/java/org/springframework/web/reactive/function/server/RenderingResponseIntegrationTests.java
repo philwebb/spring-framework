@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -75,7 +75,7 @@ public class RenderingResponseIntegrationTests extends AbstractRouterFunctionInt
 	@Test
 	public void normal() throws Exception {
 		ResponseEntity<String> result =
-				restTemplate.getForEntity("http://localhost:" + port + "/normal", String.class);
+				this.restTemplate.getForEntity("http://localhost:" + this.port + "/normal", String.class);
 
 		assertEquals(HttpStatus.OK, result.getStatusCode());
 		Map<String, String> body = parseBody(result.getBody());
@@ -87,7 +87,7 @@ public class RenderingResponseIntegrationTests extends AbstractRouterFunctionInt
 	@Test
 	public void filter() throws Exception {
 		ResponseEntity<String> result =
-				restTemplate.getForEntity("http://localhost:" + port + "/filter", String.class);
+				this.restTemplate.getForEntity("http://localhost:" + this.port + "/filter", String.class);
 
 		assertEquals(HttpStatus.OK, result.getStatusCode());
 		Map<String, String> body = parseBody(result.getBody());

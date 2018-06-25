@@ -264,7 +264,7 @@ public class MappingJackson2MessageConverterTests {
 		private byte[] bytes;
 
 		public byte[] getBytes() {
-			return bytes;
+			return this.bytes;
 		}
 
 		public void setBytes(byte[] bytes) {
@@ -272,7 +272,7 @@ public class MappingJackson2MessageConverterTests {
 		}
 
 		public boolean isBool() {
-			return bool;
+			return this.bool;
 		}
 
 		public void setBool(boolean bool) {
@@ -280,7 +280,7 @@ public class MappingJackson2MessageConverterTests {
 		}
 
 		public String getString() {
-			return string;
+			return this.string;
 		}
 
 		public void setString(String string) {
@@ -288,7 +288,7 @@ public class MappingJackson2MessageConverterTests {
 		}
 
 		public int getNumber() {
-			return number;
+			return this.number;
 		}
 
 		public void setNumber(int number) {
@@ -296,7 +296,7 @@ public class MappingJackson2MessageConverterTests {
 		}
 
 		public float getFraction() {
-			return fraction;
+			return this.fraction;
 		}
 
 		public void setFraction(float fraction) {
@@ -304,7 +304,7 @@ public class MappingJackson2MessageConverterTests {
 		}
 
 		public String[] getArray() {
-			return array;
+			return this.array;
 		}
 
 		public void setArray(String[] array) {
@@ -329,7 +329,7 @@ public class MappingJackson2MessageConverterTests {
 		private String withoutView;
 
 		public String getWithView1() {
-			return withView1;
+			return this.withView1;
 		}
 
 		public void setWithView1(String withView1) {
@@ -337,7 +337,7 @@ public class MappingJackson2MessageConverterTests {
 		}
 
 		public String getWithView2() {
-			return withView2;
+			return this.withView2;
 		}
 
 		public void setWithView2(String withView2) {
@@ -345,7 +345,7 @@ public class MappingJackson2MessageConverterTests {
 		}
 
 		public String getWithoutView() {
-			return withoutView;
+			return this.withoutView;
 		}
 
 		public void setWithoutView(String withoutView) {

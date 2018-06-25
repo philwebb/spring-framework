@@ -52,8 +52,8 @@ public class SqlScriptsTestExecutionListenerTests {
 	@Test
 	public void missingValueAndScriptsAndStatementsAtClassLevel() throws Exception {
 		Class<?> clazz = MissingValueAndScriptsAndStatementsAtClassLevel.class;
-		BDDMockito.<Class<?>> given(testContext.getTestClass()).willReturn(clazz);
-		given(testContext.getTestMethod()).willReturn(clazz.getDeclaredMethod("foo"));
+		BDDMockito.<Class<?>> given(this.testContext.getTestClass()).willReturn(clazz);
+		given(this.testContext.getTestMethod()).willReturn(clazz.getDeclaredMethod("foo"));
 
 		assertExceptionContains(clazz.getSimpleName() + ".sql");
 	}
@@ -61,8 +61,8 @@ public class SqlScriptsTestExecutionListenerTests {
 	@Test
 	public void missingValueAndScriptsAndStatementsAtMethodLevel() throws Exception {
 		Class<?> clazz = MissingValueAndScriptsAndStatementsAtMethodLevel.class;
-		BDDMockito.<Class<?>> given(testContext.getTestClass()).willReturn(clazz);
-		given(testContext.getTestMethod()).willReturn(clazz.getDeclaredMethod("foo"));
+		BDDMockito.<Class<?>> given(this.testContext.getTestClass()).willReturn(clazz);
+		given(this.testContext.getTestMethod()).willReturn(clazz.getDeclaredMethod("foo"));
 
 		assertExceptionContains(clazz.getSimpleName() + ".foo" + ".sql");
 	}
@@ -70,17 +70,17 @@ public class SqlScriptsTestExecutionListenerTests {
 	@Test
 	public void valueAndScriptsDeclared() throws Exception {
 		Class<?> clazz = ValueAndScriptsDeclared.class;
-		BDDMockito.<Class<?>> given(testContext.getTestClass()).willReturn(clazz);
-		given(testContext.getTestMethod()).willReturn(clazz.getDeclaredMethod("foo"));
+		BDDMockito.<Class<?>> given(this.testContext.getTestClass()).willReturn(clazz);
+		given(this.testContext.getTestMethod()).willReturn(clazz.getDeclaredMethod("foo"));
 
-		exception.expect(AnnotationConfigurationException.class);
-		exception.expectMessage(either(
+		this.exception.expect(AnnotationConfigurationException.class);
+		this.exception.expectMessage(either(
 				containsString("attribute 'value' and its alias 'scripts'")).or(
 				containsString("attribute 'scripts' and its alias 'value'")));
-		exception.expectMessage(either(containsString("values of [{foo}] and [{bar}]")).or(
+		this.exception.expectMessage(either(containsString("values of [{foo}] and [{bar}]")).or(
 				containsString("values of [{bar}] and [{foo}]")));
-		exception.expectMessage(containsString("but only one is permitted"));
-		listener.beforeTestMethod(testContext);
+		this.exception.expectMessage(containsString("but only one is permitted"));
+		this.listener.beforeTestMethod(this.testContext);
 	}
 
 	@Test
@@ -90,9 +90,9 @@ public class SqlScriptsTestExecutionListenerTests {
 		given(ctx.getAutowireCapableBeanFactory()).willReturn(mock(AutowireCapableBeanFactory.class));
 
 		Class<?> clazz = IsolatedWithoutTxMgr.class;
-		BDDMockito.<Class<?>> given(testContext.getTestClass()).willReturn(clazz);
-		given(testContext.getTestMethod()).willReturn(clazz.getDeclaredMethod("foo"));
-		given(testContext.getApplicationContext()).willReturn(ctx);
+		BDDMockito.<Class<?>> given(this.testContext.getTestClass()).willReturn(clazz);
+		given(this.testContext.getTestMethod()).willReturn(clazz.getDeclaredMethod("foo"));
+		given(this.testContext.getApplicationContext()).willReturn(ctx);
 
 		assertExceptionContains("cannot execute SQL scripts using Transaction Mode [ISOLATED] without a PlatformTransactionManager");
 	}
@@ -104,16 +104,16 @@ public class SqlScriptsTestExecutionListenerTests {
 		given(ctx.getAutowireCapableBeanFactory()).willReturn(mock(AutowireCapableBeanFactory.class));
 
 		Class<?> clazz = MissingDataSourceAndTxMgr.class;
-		BDDMockito.<Class<?>> given(testContext.getTestClass()).willReturn(clazz);
-		given(testContext.getTestMethod()).willReturn(clazz.getDeclaredMethod("foo"));
-		given(testContext.getApplicationContext()).willReturn(ctx);
+		BDDMockito.<Class<?>> given(this.testContext.getTestClass()).willReturn(clazz);
+		given(this.testContext.getTestMethod()).willReturn(clazz.getDeclaredMethod("foo"));
+		given(this.testContext.getApplicationContext()).willReturn(ctx);
 
 		assertExceptionContains("supply at least a DataSource or PlatformTransactionManager");
 	}
 
 	private void assertExceptionContains(String msg) throws Exception {
 		try {
-			listener.beforeTestMethod(testContext);
+			this.listener.beforeTestMethod(this.testContext);
 			fail("Should have thrown an IllegalStateException.");
 		}
 		catch (IllegalStateException ex) {

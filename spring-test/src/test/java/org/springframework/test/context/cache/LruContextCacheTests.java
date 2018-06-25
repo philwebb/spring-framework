@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,16 +68,16 @@ public class LruContextCacheTests {
 		assertEquals(0, cache.size());
 		assertEquals(1, cache.getMaxSize());
 
-		cache.put(fooConfig, fooContext);
+		cache.put(fooConfig, this.fooContext);
 		assertCacheContents(cache, "Foo");
 
-		cache.put(fooConfig, fooContext);
+		cache.put(fooConfig, this.fooContext);
 		assertCacheContents(cache, "Foo");
 
-		cache.put(barConfig, barContext);
+		cache.put(barConfig, this.barContext);
 		assertCacheContents(cache, "Bar");
 
-		cache.put(fooConfig, fooContext);
+		cache.put(fooConfig, this.fooContext);
 		assertCacheContents(cache, "Foo");
 	}
 
@@ -87,19 +87,19 @@ public class LruContextCacheTests {
 		assertEquals(0, cache.size());
 		assertEquals(3, cache.getMaxSize());
 
-		cache.put(fooConfig, fooContext);
+		cache.put(fooConfig, this.fooContext);
 		assertCacheContents(cache, "Foo");
 
-		cache.put(fooConfig, fooContext);
+		cache.put(fooConfig, this.fooContext);
 		assertCacheContents(cache, "Foo");
 
-		cache.put(barConfig, barContext);
+		cache.put(barConfig, this.barContext);
 		assertCacheContents(cache, "Foo", "Bar");
 
-		cache.put(bazConfig, bazContext);
+		cache.put(bazConfig, this.bazContext);
 		assertCacheContents(cache, "Foo", "Bar", "Baz");
 
-		cache.put(abcConfig, abcContext);
+		cache.put(abcConfig, this.abcContext);
 		assertCacheContents(cache, "Bar", "Baz", "Abc");
 	}
 
@@ -108,9 +108,9 @@ public class LruContextCacheTests {
 		DefaultContextCache cache = new DefaultContextCache(3);
 
 		// Note: when a new entry is added it is considered the MRU entry and inserted at the tail.
-		cache.put(fooConfig, fooContext);
-		cache.put(barConfig, barContext);
-		cache.put(bazConfig, bazContext);
+		cache.put(fooConfig, this.fooContext);
+		cache.put(barConfig, this.barContext);
+		cache.put(bazConfig, this.bazContext);
 		assertCacheContents(cache, "Foo", "Bar", "Baz");
 
 		// Note: the MRU entry is moved to the tail when accessed.
@@ -131,20 +131,20 @@ public class LruContextCacheTests {
 	public void ensureEvictedContextsAreClosed() {
 		DefaultContextCache cache = new DefaultContextCache(2);
 
-		cache.put(fooConfig, fooContext);
-		cache.put(barConfig, barContext);
+		cache.put(fooConfig, this.fooContext);
+		cache.put(barConfig, this.barContext);
 		assertCacheContents(cache, "Foo", "Bar");
 
-		cache.put(bazConfig, bazContext);
+		cache.put(bazConfig, this.bazContext);
 		assertCacheContents(cache, "Bar", "Baz");
-		verify(fooContext, times(1)).close();
+		verify(this.fooContext, times(1)).close();
 
-		cache.put(abcConfig, abcContext);
+		cache.put(abcConfig, this.abcContext);
 		assertCacheContents(cache, "Baz", "Abc");
-		verify(barContext, times(1)).close();
+		verify(this.barContext, times(1)).close();
 
-		verify(abcContext, never()).close();
-		verify(bazContext, never()).close();
+		verify(this.abcContext, never()).close();
+		verify(this.bazContext, never()).close();
 	}
 
 

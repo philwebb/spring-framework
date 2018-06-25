@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,15 +65,15 @@ public class ContextLoaderUtilsConfigurationAttributesTests extends AbstractCont
 
 	@Test
 	public void resolveConfigAttributesWithConflictingLocations() {
-		exception.expect(AnnotationConfigurationException.class);
-		exception.expectMessage(containsString(ConflictingLocations.class.getName()));
-		exception.expectMessage(either(
+		this.exception.expect(AnnotationConfigurationException.class);
+		this.exception.expectMessage(containsString(ConflictingLocations.class.getName()));
+		this.exception.expectMessage(either(
 				containsString("attribute 'value' and its alias 'locations'")).or(
 				containsString("attribute 'locations' and its alias 'value'")));
-		exception.expectMessage(either(
+		this.exception.expectMessage(either(
 				containsString("values of [{x}] and [{y}]")).or(
 				containsString("values of [{y}] and [{x}]")));
-		exception.expectMessage(containsString("but only one is permitted"));
+		this.exception.expectMessage(containsString("but only one is permitted"));
 		resolveContextConfigurationAttributes(ConflictingLocations.class);
 	}
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,8 +79,8 @@ public class DefaultMessageHandlerMethodFactoryTests {
 		InvocableHandlerMethod invocableHandlerMethod =
 				createInvocableHandlerMethod(instance, "simpleString", String.class);
 
-		invocableHandlerMethod.invoke(MessageBuilder.withPayload(sample).build());
-		assertMethodInvocation(sample, "simpleString");
+		invocableHandlerMethod.invoke(MessageBuilder.withPayload(this.sample).build());
+		assertMethodInvocation(this.sample, "simpleString");
 	}
 
 	@Test
@@ -95,7 +95,7 @@ public class DefaultMessageHandlerMethodFactoryTests {
 		InvocableHandlerMethod invocableHandlerMethod =
 				createInvocableHandlerMethod(instance, "simpleString", String.class);
 
-		thrown.expect(MessageConversionException.class);
+		this.thrown.expect(MessageConversionException.class);
 		invocableHandlerMethod.invoke(MessageBuilder.withPayload(123).build());
 	}
 
@@ -109,7 +109,7 @@ public class DefaultMessageHandlerMethodFactoryTests {
 		InvocableHandlerMethod invocableHandlerMethod =
 				createInvocableHandlerMethod(instance, "simpleString", String.class);
 
-		thrown.expect(MessageConversionException.class);
+		this.thrown.expect(MessageConversionException.class);
 		invocableHandlerMethod.invoke(MessageBuilder.withPayload(123).build());
 	}
 
@@ -125,7 +125,7 @@ public class DefaultMessageHandlerMethodFactoryTests {
 				createInvocableHandlerMethod(instance, "customArgumentResolver", Locale.class);
 
 		invocableHandlerMethod.invoke(MessageBuilder.withPayload(123).build());
-		assertMethodInvocation(sample, "customArgumentResolver");
+		assertMethodInvocation(this.sample, "customArgumentResolver");
 	}
 
 	@Test
@@ -142,14 +142,14 @@ public class DefaultMessageHandlerMethodFactoryTests {
 		InvocableHandlerMethod invocableHandlerMethod =
 				createInvocableHandlerMethod(instance, "customArgumentResolver", Locale.class);
 		invocableHandlerMethod.invoke(message);
-		assertMethodInvocation(sample, "customArgumentResolver");
+		assertMethodInvocation(this.sample, "customArgumentResolver");
 
 		// This won't work as no resolver is known for the payload
 		InvocableHandlerMethod invocableHandlerMethod2 =
 				createInvocableHandlerMethod(instance, "simpleString", String.class);
 
-		thrown.expect(MethodArgumentResolutionException.class);
-		thrown.expectMessage("No suitable resolver for");
+		this.thrown.expect(MethodArgumentResolutionException.class);
+		this.thrown.expectMessage("No suitable resolver for");
 		invocableHandlerMethod2.invoke(message);
 	}
 
@@ -161,7 +161,7 @@ public class DefaultMessageHandlerMethodFactoryTests {
 		InvocableHandlerMethod invocableHandlerMethod =
 				createInvocableHandlerMethod(instance, "payloadValidation", String.class);
 		invocableHandlerMethod.invoke(MessageBuilder.withPayload("failure").build());
-		assertMethodInvocation(sample, "payloadValidation");
+		assertMethodInvocation(this.sample, "payloadValidation");
 	}
 
 	@Test
@@ -184,7 +184,7 @@ public class DefaultMessageHandlerMethodFactoryTests {
 
 		InvocableHandlerMethod invocableHandlerMethod =
 				createInvocableHandlerMethod(instance, "payloadValidation", String.class);
-		thrown.expect(MethodArgumentNotValidException.class);
+		this.thrown.expect(MethodArgumentNotValidException.class);
 		invocableHandlerMethod.invoke(MessageBuilder.withPayload("failure").build());
 	}
 
@@ -195,7 +195,7 @@ public class DefaultMessageHandlerMethodFactoryTests {
 
 	private InvocableHandlerMethod createInvocableHandlerMethod(
 			DefaultMessageHandlerMethodFactory factory, String methodName, Class<?>... parameterTypes) {
-		return factory.createInvocableHandlerMethod(sample, getListenerMethod(methodName, parameterTypes));
+		return factory.createInvocableHandlerMethod(this.sample, getListenerMethod(methodName, parameterTypes));
 	}
 
 	private DefaultMessageHandlerMethodFactory createInstance() {
@@ -216,15 +216,15 @@ public class DefaultMessageHandlerMethodFactoryTests {
 		private final Map<String, Boolean> invocations = new HashMap<>();
 
 		public void simpleString(String value) {
-			invocations.put("simpleString", true);
+			this.invocations.put("simpleString", true);
 		}
 
 		public void payloadValidation(@Payload @Validated String value) {
-			invocations.put("payloadValidation", true);
+			this.invocations.put("payloadValidation", true);
 		}
 
 		public void customArgumentResolver(Locale locale) {
-			invocations.put("customArgumentResolver", true);
+			this.invocations.put("customArgumentResolver", true);
 			assertEquals("Wrong value for locale", Locale.getDefault(), locale);
 		}
 	}

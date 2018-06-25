@@ -173,7 +173,7 @@ public class PagedListHolderTests {
 		private String extendedInfo = "";
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String name) {
@@ -181,7 +181,7 @@ public class PagedListHolderTests {
 		}
 
 		public String getAge() {
-			return age;
+			return this.age;
 		}
 
 		public void setAge(String age) {
@@ -189,7 +189,7 @@ public class PagedListHolderTests {
 		}
 
 		public String getExtendedInfo() {
-			return extendedInfo;
+			return this.extendedInfo;
 		}
 
 		public void setExtendedInfo(String extendedInfo) {
@@ -207,13 +207,13 @@ public class PagedListHolderTests {
 
 			final MockFilter mockFilter = (MockFilter) o;
 
-			if (!age.equals(mockFilter.age)) {
+			if (!this.age.equals(mockFilter.age)) {
 				return false;
 			}
-			if (!extendedInfo.equals(mockFilter.extendedInfo)) {
+			if (!this.extendedInfo.equals(mockFilter.extendedInfo)) {
 				return false;
 			}
-			if (!name.equals(mockFilter.name)) {
+			if (!this.name.equals(mockFilter.name)) {
 				return false;
 			}
 
@@ -223,9 +223,9 @@ public class PagedListHolderTests {
 		@Override
 		public int hashCode() {
 			int result;
-			result = name.hashCode();
-			result = 29 * result + age.hashCode();
-			result = 29 * result + extendedInfo.hashCode();
+			result = this.name.hashCode();
+			result = 29 * result + this.age.hashCode();
+			result = 29 * result + this.extendedInfo.hashCode();
 			return result;
 		}
 	}

@@ -108,7 +108,7 @@ public class JmsTemplateTests {
 		destMan.setJndiTemplate(new JndiTemplate() {
 			@Override
 			protected Context createInitialContext() {
-				return JmsTemplateTests.this.jndiContext;
+				return jndiContext;
 			}
 		});
 		template.setDestinationResolver(destMan);

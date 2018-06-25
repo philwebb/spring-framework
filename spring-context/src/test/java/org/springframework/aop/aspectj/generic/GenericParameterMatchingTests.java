@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2012 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,29 +47,29 @@ public class GenericParameterMatchingTests {
 		ClassPathXmlApplicationContext ctx =
 			new ClassPathXmlApplicationContext(getClass().getSimpleName() + "-context.xml", getClass());
 
-		counterAspect = (CounterAspect) ctx.getBean("counterAspect");
-		counterAspect.reset();
+		this.counterAspect = (CounterAspect) ctx.getBean("counterAspect");
+		this.counterAspect.reset();
 
-		testBean = (GenericInterface<String>) ctx.getBean("testBean");
+		this.testBean = (GenericInterface<String>) ctx.getBean("testBean");
 	}
 
 
 	@Test
 	public void testGenericInterfaceGenericArgExecution() {
-		testBean.save("");
-		assertEquals(1, counterAspect.genericInterfaceGenericArgExecutionCount);
+		this.testBean.save("");
+		assertEquals(1, this.counterAspect.genericInterfaceGenericArgExecutionCount);
 	}
 
 	@Test
 	public void testGenericInterfaceGenericCollectionArgExecution() {
-		testBean.saveAll(null);
-		assertEquals(1, counterAspect.genericInterfaceGenericCollectionArgExecutionCount);
+		this.testBean.saveAll(null);
+		assertEquals(1, this.counterAspect.genericInterfaceGenericCollectionArgExecutionCount);
 	}
 
 	@Test
 	public void testGenericInterfaceSubtypeGenericCollectionArgExecution() {
-		testBean.saveAll(null);
-		assertEquals(1, counterAspect.genericInterfaceSubtypeGenericCollectionArgExecutionCount);
+		this.testBean.saveAll(null);
+		assertEquals(1, this.counterAspect.genericInterfaceSubtypeGenericCollectionArgExecutionCount);
 	}
 
 
@@ -101,9 +101,9 @@ public class GenericParameterMatchingTests {
 		int genericInterfaceSubtypeGenericCollectionArgExecutionCount;
 
 		public void reset() {
-			genericInterfaceGenericArgExecutionCount = 0;
-			genericInterfaceGenericCollectionArgExecutionCount = 0;
-			genericInterfaceSubtypeGenericCollectionArgExecutionCount = 0;
+			this.genericInterfaceGenericArgExecutionCount = 0;
+			this.genericInterfaceGenericCollectionArgExecutionCount = 0;
+			this.genericInterfaceSubtypeGenericCollectionArgExecutionCount = 0;
 		}
 
 		@Pointcut("execution(* org.springframework.aop.aspectj.generic.GenericParameterMatchingTests.GenericInterface.save(..))")
@@ -117,17 +117,17 @@ public class GenericParameterMatchingTests {
 
 		@Before("genericInterfaceGenericArgExecution()")
 		public void incrementGenericInterfaceGenericArgExecution() {
-			genericInterfaceGenericArgExecutionCount++;
+			this.genericInterfaceGenericArgExecutionCount++;
 		}
 
 		@Before("GenericInterfaceGenericCollectionArgExecution()")
 		public void incrementGenericInterfaceGenericCollectionArgExecution() {
-			genericInterfaceGenericCollectionArgExecutionCount++;
+			this.genericInterfaceGenericCollectionArgExecutionCount++;
 		}
 
 		@Before("genericInterfaceSubtypeGenericCollectionArgExecution()")
 		public void incrementGenericInterfaceSubtypeGenericCollectionArgExecution() {
-			genericInterfaceSubtypeGenericCollectionArgExecutionCount++;
+			this.genericInterfaceSubtypeGenericCollectionArgExecutionCount++;
 		}
 	}
 

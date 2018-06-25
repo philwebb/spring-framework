@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,7 +60,7 @@ public class DerivedTestBean extends TestBean implements Serializable, BeanNameA
 
 	@Override
 	public String getBeanName() {
-		return beanName;
+		return this.beanName;
 	}
 
 	public void setActualSpouse(TestBean spouse) {
@@ -82,7 +82,7 @@ public class DerivedTestBean extends TestBean implements Serializable, BeanNameA
 	}
 
 	public boolean wasInitialized() {
-		return initialized;
+		return this.initialized;
 	}
 
 
@@ -93,7 +93,7 @@ public class DerivedTestBean extends TestBean implements Serializable, BeanNameA
 
 	@Override
 	public boolean wasDestroyed() {
-		return destroyed;
+		return this.destroyed;
 	}
 
 }

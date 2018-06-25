@@ -188,7 +188,7 @@ public class ScenariosForSpringSecurity extends AbstractExpressionTests {
 		}
 
 		public String getName() {
-			return n;
+			return this.n;
 		}
 	}
 
@@ -282,7 +282,7 @@ public class ScenariosForSpringSecurity extends AbstractExpressionTests {
 
 		@Override
 		public TypedValue read(EvaluationContext context, Object target, String name) throws AccessException {
-			return new TypedValue(activePerson);
+			return new TypedValue(this.activePerson);
 		}
 
 		@Override
@@ -320,7 +320,7 @@ public class ScenariosForSpringSecurity extends AbstractExpressionTests {
 					Method m = HasRoleExecutor.class.getMethod("hasRole", String[].class);
 					Object[] args = arguments;
 					if (args != null) {
-						ReflectionHelper.convertAllArguments(tc, args, m);
+						ReflectionHelper.convertAllArguments(this.tc, args, m);
 					}
 					if (m.isVarArgs()) {
 						args = ReflectionHelper.setupArgumentsForVarargsInvocation(m.getParameterTypes(), args);

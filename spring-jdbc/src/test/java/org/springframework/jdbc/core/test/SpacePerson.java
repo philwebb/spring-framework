@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ public class SpacePerson {
 	private BigDecimal balance;
 
 	public String getLastName() {
-		return lastName;
+		return this.lastName;
 	}
 
 	public void setLastName(String lastName) {
@@ -41,7 +41,7 @@ public class SpacePerson {
 	}
 
 	public long getAge() {
-		return age;
+		return this.age;
 	}
 
 	public void setAge(long age) {
@@ -49,7 +49,7 @@ public class SpacePerson {
 	}
 
 	public LocalDateTime getBirthDate() {
-		return birthDate;
+		return this.birthDate;
 	}
 
 	public void setBirthDate(LocalDateTime birthDate) {
@@ -57,7 +57,7 @@ public class SpacePerson {
 	}
 
 	public BigDecimal getBalance() {
-		return balance;
+		return this.balance;
 	}
 
 	public void setBalance(BigDecimal balanace) {

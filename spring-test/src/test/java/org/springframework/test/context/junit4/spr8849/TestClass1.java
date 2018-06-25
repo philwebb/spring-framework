@@ -53,7 +53,7 @@ public class TestClass1 {
 
 	@Test
 	public void dummyTest() {
-		assertNotNull(dataSource);
+		assertNotNull(this.dataSource);
 	}
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,35 +56,35 @@ public class PrioritizedParameterNameDiscovererTests {
 	private final Method anyMethod;
 
 	public PrioritizedParameterNameDiscovererTests() throws SecurityException, NoSuchMethodException {
-		anyMethod = TestObject.class.getMethod("getAge");
+		this.anyMethod = TestObject.class.getMethod("getAge");
 	}
 
 	@Test
 	public void noParametersDiscoverers() {
 		ParameterNameDiscoverer pnd = new PrioritizedParameterNameDiscoverer();
-		assertNull(pnd.getParameterNames(anyMethod));
+		assertNull(pnd.getParameterNames(this.anyMethod));
 		assertNull(pnd.getParameterNames((Constructor<?>) null));
 	}
 
 	@Test
 	public void orderedParameterDiscoverers1() {
 		PrioritizedParameterNameDiscoverer pnd = new PrioritizedParameterNameDiscoverer();
-		pnd.addDiscoverer(returnsFooBar);
-		assertTrue(Arrays.equals(FOO_BAR, pnd.getParameterNames(anyMethod)));
+		pnd.addDiscoverer(this.returnsFooBar);
+		assertTrue(Arrays.equals(FOO_BAR, pnd.getParameterNames(this.anyMethod)));
 		assertTrue(Arrays.equals(FOO_BAR, pnd.getParameterNames((Constructor<?>) null)));
-		pnd.addDiscoverer(returnsSomethingElse);
-		assertTrue(Arrays.equals(FOO_BAR, pnd.getParameterNames(anyMethod)));
+		pnd.addDiscoverer(this.returnsSomethingElse);
+		assertTrue(Arrays.equals(FOO_BAR, pnd.getParameterNames(this.anyMethod)));
 		assertTrue(Arrays.equals(FOO_BAR, pnd.getParameterNames((Constructor<?>) null)));
 	}
 
 	@Test
 	public void orderedParameterDiscoverers2() {
 		PrioritizedParameterNameDiscoverer pnd = new PrioritizedParameterNameDiscoverer();
-		pnd.addDiscoverer(returnsSomethingElse);
-		assertTrue(Arrays.equals(SOMETHING_ELSE, pnd.getParameterNames(anyMethod)));
+		pnd.addDiscoverer(this.returnsSomethingElse);
+		assertTrue(Arrays.equals(SOMETHING_ELSE, pnd.getParameterNames(this.anyMethod)));
 		assertTrue(Arrays.equals(SOMETHING_ELSE, pnd.getParameterNames((Constructor<?>) null)));
-		pnd.addDiscoverer(returnsFooBar);
-		assertTrue(Arrays.equals(SOMETHING_ELSE, pnd.getParameterNames(anyMethod)));
+		pnd.addDiscoverer(this.returnsFooBar);
+		assertTrue(Arrays.equals(SOMETHING_ELSE, pnd.getParameterNames(this.anyMethod)));
 		assertTrue(Arrays.equals(SOMETHING_ELSE, pnd.getParameterNames((Constructor<?>) null)));
 	}
 

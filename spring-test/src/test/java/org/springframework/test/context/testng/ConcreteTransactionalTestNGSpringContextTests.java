@@ -80,11 +80,11 @@ public class ConcreteTransactionalTestNGSpringContextTests extends AbstractTrans
 
 
 	private int createPerson(String name) {
-		return jdbcTemplate.update("INSERT INTO person VALUES(?)", name);
+		return this.jdbcTemplate.update("INSERT INTO person VALUES(?)", name);
 	}
 
 	private int deletePerson(String name) {
-		return jdbcTemplate.update("DELETE FROM person WHERE name=?", name);
+		return this.jdbcTemplate.update("DELETE FROM person WHERE name=?", name);
 	}
 
 	@Override
@@ -146,7 +146,7 @@ public class ConcreteTransactionalTestNGSpringContextTests extends AbstractTrans
 	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	void verifyBeanInitialized() {
 		assertInTransaction(false);
-		assertTrue(beanInitialized,
+		assertTrue(this.beanInitialized,
 			"This test instance should have been initialized due to InitializingBean semantics.");
 	}
 
@@ -154,7 +154,7 @@ public class ConcreteTransactionalTestNGSpringContextTests extends AbstractTrans
 	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	void verifyBeanNameSet() {
 		assertInTransaction(false);
-		assertEquals(beanName, getClass().getName(),
+		assertEquals(this.beanName, getClass().getName(),
 			"The bean name of this test instance should have been set due to BeanNameAware semantics.");
 	}
 
@@ -162,31 +162,31 @@ public class ConcreteTransactionalTestNGSpringContextTests extends AbstractTrans
 	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	void verifyAnnotationAutowiredFields() {
 		assertInTransaction(false);
-		assertNull(nonrequiredLong, "The nonrequiredLong field should NOT have been autowired.");
-		assertNotNull(pet, "The pet field should have been autowired.");
-		assertEquals(pet.getName(), "Fido", "pet's name.");
+		assertNull(this.nonrequiredLong, "The nonrequiredLong field should NOT have been autowired.");
+		assertNotNull(this.pet, "The pet field should have been autowired.");
+		assertEquals(this.pet.getName(), "Fido", "pet's name.");
 	}
 
 	@Test
 	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	void verifyAnnotationAutowiredMethods() {
 		assertInTransaction(false);
-		assertNotNull(employee, "The setEmployee() method should have been autowired.");
-		assertEquals(employee.getName(), "John Smith", "employee's name.");
+		assertNotNull(this.employee, "The setEmployee() method should have been autowired.");
+		assertEquals(this.employee.getName(), "John Smith", "employee's name.");
 	}
 
 	@Test
 	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	void verifyResourceAnnotationInjectedFields() {
 		assertInTransaction(false);
-		assertEquals(foo, "Foo", "The foo field should have been injected via @Resource.");
+		assertEquals(this.foo, "Foo", "The foo field should have been injected via @Resource.");
 	}
 
 	@Test
 	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	void verifyResourceAnnotationInjectedMethods() {
 		assertInTransaction(false);
-		assertEquals(bar, "Bar", "The setBar() method should have been injected via @Resource.");
+		assertEquals(this.bar, "Bar", "The setBar() method should have been injected via @Resource.");
 	}
 
 	@BeforeTransaction

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,27 +49,27 @@ public class KeyHolderTests {
 
 	@Test
 	public void singleKey() {
-		kh.getKeyList().addAll(singletonList(singletonMap("key", 1)));
+		this.kh.getKeyList().addAll(singletonList(singletonMap("key", 1)));
 
-		assertEquals("single key should be returned", 1, kh.getKey().intValue());
+		assertEquals("single key should be returned", 1, this.kh.getKey().intValue());
 	}
 
 	@Test
 	public void singleKeyNonNumeric() {
-		kh.getKeyList().addAll(singletonList(singletonMap("key", "1")));
+		this.kh.getKeyList().addAll(singletonList(singletonMap("key", "1")));
 
-		exception.expect(DataRetrievalFailureException.class);
-		exception.expectMessage(startsWith("The generated key is not of a supported numeric type."));
-		kh.getKey().intValue();
+		this.exception.expect(DataRetrievalFailureException.class);
+		this.exception.expectMessage(startsWith("The generated key is not of a supported numeric type."));
+		this.kh.getKey().intValue();
 	}
 
 	@Test
 	public void noKeyReturnedInMap() {
-		kh.getKeyList().addAll(singletonList(emptyMap()));
+		this.kh.getKeyList().addAll(singletonList(emptyMap()));
 
-		exception.expect(DataRetrievalFailureException.class);
-		exception.expectMessage(startsWith("Unable to retrieve the generated key."));
-		kh.getKey();
+		this.exception.expect(DataRetrievalFailureException.class);
+		this.exception.expectMessage(startsWith("Unable to retrieve the generated key."));
+		this.kh.getKey();
 	}
 
 	@Test
@@ -78,12 +78,12 @@ public class KeyHolderTests {
 			put("key", 1);
 			put("seq", 2);
 		}};
-		kh.getKeyList().addAll(singletonList(m));
+		this.kh.getKeyList().addAll(singletonList(m));
 
-		assertEquals("two keys should be in the map", 2, kh.getKeys().size());
-		exception.expect(InvalidDataAccessApiUsageException.class);
-		exception.expectMessage(startsWith("The getKey method should only be used when a single key is returned."));
-		kh.getKey();
+		assertEquals("two keys should be in the map", 2, this.kh.getKeys().size());
+		this.exception.expect(InvalidDataAccessApiUsageException.class);
+		this.exception.expectMessage(startsWith("The getKey method should only be used when a single key is returned."));
+		this.kh.getKey();
 	}
 
 	@Test
@@ -92,12 +92,12 @@ public class KeyHolderTests {
 			put("key", 1);
 			put("seq", 2);
 		}};
-		kh.getKeyList().addAll(asList(m, m));
+		this.kh.getKeyList().addAll(asList(m, m));
 
-		assertEquals("two rows should be in the list", 2, kh.getKeyList().size());
-		exception.expect(InvalidDataAccessApiUsageException.class);
-		exception.expectMessage(startsWith("The getKeys method should only be used when keys for a single row are returned."));
-		kh.getKeys();
+		assertEquals("two rows should be in the list", 2, this.kh.getKeyList().size());
+		this.exception.expect(InvalidDataAccessApiUsageException.class);
+		this.exception.expectMessage(startsWith("The getKeys method should only be used when keys for a single row are returned."));
+		this.kh.getKeys();
 	}
 
 }

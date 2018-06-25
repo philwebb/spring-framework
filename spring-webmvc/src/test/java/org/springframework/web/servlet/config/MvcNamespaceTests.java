@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -170,15 +170,15 @@ public class MvcNamespaceTests {
 	@Before
 	public void setUp() throws Exception {
 		TestMockServletContext servletContext = new TestMockServletContext();
-		appContext = new XmlWebApplicationContext();
-		appContext.setServletContext(servletContext);
+		this.appContext = new XmlWebApplicationContext();
+		this.appContext.setServletContext(servletContext);
 		LocaleContextHolder.setLocale(Locale.US);
 
 		String attributeName = WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE;
-		appContext.getServletContext().setAttribute(attributeName, appContext);
+		this.appContext.getServletContext().setAttribute(attributeName, this.appContext);
 
-		handler = new TestController();
-		handlerMethod = new InvocableHandlerMethod(handler, TestController.class.getMethod("testBind",
+		this.handler = new TestController();
+		this.handlerMethod = new InvocableHandlerMethod(this.handler, TestController.class.getMethod("testBind",
 				Date.class, Double.class, TestBean.class, BindingResult.class));
 	}
 
@@ -187,18 +187,18 @@ public class MvcNamespaceTests {
 	public void testDefaultConfig() throws Exception {
 		loadBeanDefinitions("mvc-config.xml");
 
-		RequestMappingHandlerMapping mapping = appContext.getBean(RequestMappingHandlerMapping.class);
+		RequestMappingHandlerMapping mapping = this.appContext.getBean(RequestMappingHandlerMapping.class);
 		assertNotNull(mapping);
 		assertEquals(0, mapping.getOrder());
 		assertTrue(mapping.getUrlPathHelper().shouldRemoveSemicolonContent());
-		mapping.setDefaultHandler(handlerMethod);
+		mapping.setDefaultHandler(this.handlerMethod);
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/foo.json");
 		NativeWebRequest webRequest = new ServletWebRequest(request);
 		ContentNegotiationManager manager = mapping.getContentNegotiationManager();
 		assertEquals(Collections.singletonList(MediaType.APPLICATION_JSON), manager.resolveMediaTypes(webRequest));
 
-		RequestMappingHandlerAdapter adapter = appContext.getBean(RequestMappingHandlerAdapter.class);
+		RequestMappingHandlerAdapter adapter = this.appContext.getBean(RequestMappingHandlerAdapter.class);
 		assertNotNull(adapter);
 		assertEquals(false, new DirectFieldAccessor(adapter).getPropertyValue("ignoreDefaultModelOnRedirect"));
 
@@ -216,10 +216,10 @@ public class MvcNamespaceTests {
 			}
 		}
 
-		assertNotNull(appContext.getBean(FormattingConversionServiceFactoryBean.class));
-		assertNotNull(appContext.getBean(ConversionService.class));
-		assertNotNull(appContext.getBean(LocalValidatorFactoryBean.class));
-		assertNotNull(appContext.getBean(Validator.class));
+		assertNotNull(this.appContext.getBean(FormattingConversionServiceFactoryBean.class));
+		assertNotNull(this.appContext.getBean(ConversionService.class));
+		assertNotNull(this.appContext.getBean(LocalValidatorFactoryBean.class));
+		assertNotNull(this.appContext.getBean(Validator.class));
 
 		// default web binding initializer behavior test
 		request = new MockHttpServletRequest("GET", "/");
@@ -231,13 +231,13 @@ public class MvcNamespaceTests {
 		assertEquals(1, chain.getInterceptors().length);
 		assertTrue(chain.getInterceptors()[0] instanceof ConversionServiceExposingInterceptor);
 		ConversionServiceExposingInterceptor interceptor = (ConversionServiceExposingInterceptor) chain.getInterceptors()[0];
-		interceptor.preHandle(request, response, handlerMethod);
-		assertSame(appContext.getBean(ConversionService.class), request.getAttribute(ConversionService.class.getName()));
+		interceptor.preHandle(request, response, this.handlerMethod);
+		assertSame(this.appContext.getBean(ConversionService.class), request.getAttribute(ConversionService.class.getName()));
 
-		adapter.handle(request, response, handlerMethod);
-		assertTrue(handler.recordedValidationError);
-		assertEquals(LocalDate.parse("2009-10-31").toDate(), handler.date);
-		assertEquals(Double.valueOf(0.9999), handler.percent);
+		adapter.handle(request, response, this.handlerMethod);
+		assertTrue(this.handler.recordedValidationError);
+		assertEquals(LocalDate.parse("2009-10-31").toDate(), this.handler.date);
+		assertEquals(Double.valueOf(0.9999), this.handler.percent);
 
 		CompositeUriComponentsContributor uriComponentsContributor = this.appContext.getBean(
 				MvcUriComponentsBuilder.MVC_URI_COMPONENTS_CONTRIBUTOR_BEAN_NAME,
@@ -257,9 +257,9 @@ public class MvcNamespaceTests {
 	public void testCustomConversionService() throws Exception {
 		loadBeanDefinitions("mvc-config-custom-conversion-service.xml");
 
-		RequestMappingHandlerMapping mapping = appContext.getBean(RequestMappingHandlerMapping.class);
+		RequestMappingHandlerMapping mapping = this.appContext.getBean(RequestMappingHandlerMapping.class);
 		assertNotNull(mapping);
-		mapping.setDefaultHandler(handlerMethod);
+		mapping.setDefaultHandler(this.handlerMethod);
 
 		// default web binding initializer behavior test
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/");
@@ -271,12 +271,12 @@ public class MvcNamespaceTests {
 		assertEquals(1, chain.getInterceptors().length);
 		assertTrue(chain.getInterceptors()[0] instanceof ConversionServiceExposingInterceptor);
 		ConversionServiceExposingInterceptor interceptor = (ConversionServiceExposingInterceptor) chain.getInterceptors()[0];
-		interceptor.preHandle(request, response, handler);
-		assertSame(appContext.getBean("conversionService"), request.getAttribute(ConversionService.class.getName()));
+		interceptor.preHandle(request, response, this.handler);
+		assertSame(this.appContext.getBean("conversionService"), request.getAttribute(ConversionService.class.getName()));
 
-		RequestMappingHandlerAdapter adapter = appContext.getBean(RequestMappingHandlerAdapter.class);
+		RequestMappingHandlerAdapter adapter = this.appContext.getBean(RequestMappingHandlerAdapter.class);
 		assertNotNull(adapter);
-		adapter.handle(request, response, handlerMethod);
+		adapter.handle(request, response, this.handlerMethod);
 	}
 
 	@Test
@@ -287,11 +287,11 @@ public class MvcNamespaceTests {
 	private void doTestCustomValidator(String xml) throws Exception {
 		loadBeanDefinitions(xml);
 
-		RequestMappingHandlerMapping mapping = appContext.getBean(RequestMappingHandlerMapping.class);
+		RequestMappingHandlerMapping mapping = this.appContext.getBean(RequestMappingHandlerMapping.class);
 		assertNotNull(mapping);
 		assertFalse(mapping.getUrlPathHelper().shouldRemoveSemicolonContent());
 
-		RequestMappingHandlerAdapter adapter = appContext.getBean(RequestMappingHandlerAdapter.class);
+		RequestMappingHandlerAdapter adapter = this.appContext.getBean(RequestMappingHandlerAdapter.class);
 		assertNotNull(adapter);
 		assertEquals(true, new DirectFieldAccessor(adapter).getPropertyValue("ignoreDefaultModelOnRedirect"));
 
@@ -299,19 +299,19 @@ public class MvcNamespaceTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addParameter("date", "2009-10-31");
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		adapter.handle(request, response, handlerMethod);
+		adapter.handle(request, response, this.handlerMethod);
 
-		assertTrue(appContext.getBean(TestValidator.class).validatorInvoked);
-		assertFalse(handler.recordedValidationError);
+		assertTrue(this.appContext.getBean(TestValidator.class).validatorInvoked);
+		assertFalse(this.handler.recordedValidationError);
 	}
 
 	@Test
 	public void testInterceptors() throws Exception {
 		loadBeanDefinitions("mvc-config-interceptors.xml");
 
-		RequestMappingHandlerMapping mapping = appContext.getBean(RequestMappingHandlerMapping.class);
+		RequestMappingHandlerMapping mapping = this.appContext.getBean(RequestMappingHandlerMapping.class);
 		assertNotNull(mapping);
-		mapping.setDefaultHandler(handlerMethod);
+		mapping.setDefaultHandler(this.handlerMethod);
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/");
 		request.setRequestURI("/accounts/12345");
@@ -343,28 +343,28 @@ public class MvcNamespaceTests {
 	public void testResources() throws Exception {
 		loadBeanDefinitions("mvc-config-resources.xml");
 
-		HttpRequestHandlerAdapter adapter = appContext.getBean(HttpRequestHandlerAdapter.class);
+		HttpRequestHandlerAdapter adapter = this.appContext.getBean(HttpRequestHandlerAdapter.class);
 		assertNotNull(adapter);
 
-		RequestMappingHandlerMapping mapping = appContext.getBean(RequestMappingHandlerMapping.class);
+		RequestMappingHandlerMapping mapping = this.appContext.getBean(RequestMappingHandlerMapping.class);
 		ContentNegotiationManager manager = mapping.getContentNegotiationManager();
 
-		ResourceHttpRequestHandler handler = appContext.getBean(ResourceHttpRequestHandler.class);
+		ResourceHttpRequestHandler handler = this.appContext.getBean(ResourceHttpRequestHandler.class);
 		assertNotNull(handler);
 		assertSame(manager, handler.getContentNegotiationManager());
 
-		SimpleUrlHandlerMapping resourceMapping = appContext.getBean(SimpleUrlHandlerMapping.class);
+		SimpleUrlHandlerMapping resourceMapping = this.appContext.getBean(SimpleUrlHandlerMapping.class);
 		assertNotNull(resourceMapping);
 		assertEquals(Ordered.LOWEST_PRECEDENCE - 1, resourceMapping.getOrder());
 
-		BeanNameUrlHandlerMapping beanNameMapping = appContext.getBean(BeanNameUrlHandlerMapping.class);
+		BeanNameUrlHandlerMapping beanNameMapping = this.appContext.getBean(BeanNameUrlHandlerMapping.class);
 		assertNotNull(beanNameMapping);
 		assertEquals(2, beanNameMapping.getOrder());
 
-		ResourceUrlProvider urlProvider = appContext.getBean(ResourceUrlProvider.class);
+		ResourceUrlProvider urlProvider = this.appContext.getBean(ResourceUrlProvider.class);
 		assertNotNull(urlProvider);
 
-		Map<String, MappedInterceptor> beans = appContext.getBeansOfType(MappedInterceptor.class);
+		Map<String, MappedInterceptor> beans = this.appContext.getBeansOfType(MappedInterceptor.class);
 		List<Class<?>> interceptors = beans.values().stream()
 				.map(mappedInterceptor -> mappedInterceptor.getInterceptor().getClass())
 				.collect(Collectors.toList());
@@ -391,12 +391,12 @@ public class MvcNamespaceTests {
 	public void testResourcesWithOptionalAttributes() throws Exception {
 		loadBeanDefinitions("mvc-config-resources-optional-attrs.xml");
 
-		SimpleUrlHandlerMapping mapping = appContext.getBean(SimpleUrlHandlerMapping.class);
+		SimpleUrlHandlerMapping mapping = this.appContext.getBean(SimpleUrlHandlerMapping.class);
 		assertNotNull(mapping);
 		assertEquals(5, mapping.getOrder());
 		assertNotNull(mapping.getUrlMap().get("/resources/**"));
 
-		ResourceHttpRequestHandler handler = appContext.getBean((String) mapping.getUrlMap().get("/resources/**"),
+		ResourceHttpRequestHandler handler = this.appContext.getBean((String) mapping.getUrlMap().get("/resources/**"),
 				ResourceHttpRequestHandler.class);
 		assertNotNull(handler);
 		assertEquals(3600, handler.getCacheSeconds());
@@ -406,11 +406,11 @@ public class MvcNamespaceTests {
 	public void testResourcesWithResolversTransformers() throws Exception {
 		loadBeanDefinitions("mvc-config-resources-chain.xml");
 
-		SimpleUrlHandlerMapping mapping = appContext.getBean(SimpleUrlHandlerMapping.class);
+		SimpleUrlHandlerMapping mapping = this.appContext.getBean(SimpleUrlHandlerMapping.class);
 		assertNotNull(mapping);
 		assertNotNull(mapping.getUrlMap().get("/resources/**"));
 		String beanName = (String) mapping.getUrlMap().get("/resources/**");
-		ResourceHttpRequestHandler handler = appContext.getBean(beanName, ResourceHttpRequestHandler.class);
+		ResourceHttpRequestHandler handler = this.appContext.getBean(beanName, ResourceHttpRequestHandler.class);
 		assertNotNull(handler);
 
 		assertNotNull(handler.getUrlPathHelper());
@@ -452,10 +452,10 @@ public class MvcNamespaceTests {
 	public void testResourcesWithResolversTransformersCustom() throws Exception {
 		loadBeanDefinitions("mvc-config-resources-chain-no-auto.xml");
 
-		SimpleUrlHandlerMapping mapping = appContext.getBean(SimpleUrlHandlerMapping.class);
+		SimpleUrlHandlerMapping mapping = this.appContext.getBean(SimpleUrlHandlerMapping.class);
 		assertNotNull(mapping);
 		assertNotNull(mapping.getUrlMap().get("/resources/**"));
-		ResourceHttpRequestHandler handler = appContext.getBean((String) mapping.getUrlMap().get("/resources/**"),
+		ResourceHttpRequestHandler handler = this.appContext.getBean((String) mapping.getUrlMap().get("/resources/**"),
 				ResourceHttpRequestHandler.class);
 		assertNotNull(handler);
 
@@ -485,13 +485,13 @@ public class MvcNamespaceTests {
 	public void testDefaultServletHandler() throws Exception {
 		loadBeanDefinitions("mvc-config-default-servlet.xml");
 
-		HttpRequestHandlerAdapter adapter = appContext.getBean(HttpRequestHandlerAdapter.class);
+		HttpRequestHandlerAdapter adapter = this.appContext.getBean(HttpRequestHandlerAdapter.class);
 		assertNotNull(adapter);
 
-		DefaultServletHttpRequestHandler handler = appContext.getBean(DefaultServletHttpRequestHandler.class);
+		DefaultServletHttpRequestHandler handler = this.appContext.getBean(DefaultServletHttpRequestHandler.class);
 		assertNotNull(handler);
 
-		SimpleUrlHandlerMapping mapping = appContext.getBean(SimpleUrlHandlerMapping.class);
+		SimpleUrlHandlerMapping mapping = this.appContext.getBean(SimpleUrlHandlerMapping.class);
 		assertNotNull(mapping);
 		assertEquals(Ordered.LOWEST_PRECEDENCE, mapping.getOrder());
 
@@ -511,13 +511,13 @@ public class MvcNamespaceTests {
 	public void testDefaultServletHandlerWithOptionalAttributes() throws Exception {
 		loadBeanDefinitions("mvc-config-default-servlet-optional-attrs.xml");
 
-		HttpRequestHandlerAdapter adapter = appContext.getBean(HttpRequestHandlerAdapter.class);
+		HttpRequestHandlerAdapter adapter = this.appContext.getBean(HttpRequestHandlerAdapter.class);
 		assertNotNull(adapter);
 
-		DefaultServletHttpRequestHandler handler = appContext.getBean(DefaultServletHttpRequestHandler.class);
+		DefaultServletHttpRequestHandler handler = this.appContext.getBean(DefaultServletHttpRequestHandler.class);
 		assertNotNull(handler);
 
-		SimpleUrlHandlerMapping mapping = appContext.getBean(SimpleUrlHandlerMapping.class);
+		SimpleUrlHandlerMapping mapping = this.appContext.getBean(SimpleUrlHandlerMapping.class);
 		assertNotNull(mapping);
 		assertEquals(Ordered.LOWEST_PRECEDENCE, mapping.getOrder());
 
@@ -537,9 +537,9 @@ public class MvcNamespaceTests {
 	public void testBeanDecoration() throws Exception {
 		loadBeanDefinitions("mvc-config-bean-decoration.xml");
 
-		RequestMappingHandlerMapping mapping = appContext.getBean(RequestMappingHandlerMapping.class);
+		RequestMappingHandlerMapping mapping = this.appContext.getBean(RequestMappingHandlerMapping.class);
 		assertNotNull(mapping);
-		mapping.setDefaultHandler(handlerMethod);
+		mapping.setDefaultHandler(this.handlerMethod);
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/");
 
@@ -558,11 +558,11 @@ public class MvcNamespaceTests {
 	public void testViewControllers() throws Exception {
 		loadBeanDefinitions("mvc-config-view-controllers.xml");
 
-		RequestMappingHandlerMapping mapping = appContext.getBean(RequestMappingHandlerMapping.class);
+		RequestMappingHandlerMapping mapping = this.appContext.getBean(RequestMappingHandlerMapping.class);
 		assertNotNull(mapping);
-		mapping.setDefaultHandler(handlerMethod);
+		mapping.setDefaultHandler(this.handlerMethod);
 
-		BeanNameUrlHandlerMapping beanNameMapping = appContext.getBean(BeanNameUrlHandlerMapping.class);
+		BeanNameUrlHandlerMapping beanNameMapping = this.appContext.getBean(BeanNameUrlHandlerMapping.class);
 		assertNotNull(beanNameMapping);
 		assertEquals(2, beanNameMapping.getOrder());
 
@@ -575,10 +575,10 @@ public class MvcNamespaceTests {
 		assertTrue(chain.getInterceptors()[1] instanceof LocaleChangeInterceptor);
 		assertTrue(chain.getInterceptors()[2] instanceof ThemeChangeInterceptor);
 
-		SimpleUrlHandlerMapping mapping2 = appContext.getBean(SimpleUrlHandlerMapping.class);
+		SimpleUrlHandlerMapping mapping2 = this.appContext.getBean(SimpleUrlHandlerMapping.class);
 		assertNotNull(mapping2);
 
-		SimpleControllerHandlerAdapter adapter = appContext.getBean(SimpleControllerHandlerAdapter.class);
+		SimpleControllerHandlerAdapter adapter = this.appContext.getBean(SimpleControllerHandlerAdapter.class);
 		assertNotNull(adapter);
 
 		request = new MockHttpServletRequest("GET", "/foo");
@@ -639,8 +639,8 @@ public class MvcNamespaceTests {
 	public void testViewControllersOnWebSphere() throws Exception {
 		loadBeanDefinitions("mvc-config-view-controllers.xml");
 
-		SimpleUrlHandlerMapping mapping2 = appContext.getBean(SimpleUrlHandlerMapping.class);
-		SimpleControllerHandlerAdapter adapter = appContext.getBean(SimpleControllerHandlerAdapter.class);
+		SimpleUrlHandlerMapping mapping2 = this.appContext.getBean(SimpleUrlHandlerMapping.class);
+		SimpleControllerHandlerAdapter adapter = this.appContext.getBean(SimpleControllerHandlerAdapter.class);
 
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setMethod("GET");
@@ -706,7 +706,7 @@ public class MvcNamespaceTests {
 	public void testContentNegotiationManager() throws Exception {
 		loadBeanDefinitions("mvc-config-content-negotiation-manager.xml");
 
-		RequestMappingHandlerMapping mapping = appContext.getBean(RequestMappingHandlerMapping.class);
+		RequestMappingHandlerMapping mapping = this.appContext.getBean(RequestMappingHandlerMapping.class);
 		ContentNegotiationManager manager = mapping.getContentNegotiationManager();
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/foo.xml");
@@ -728,7 +728,7 @@ public class MvcNamespaceTests {
 	public void testAsyncSupportOptions() throws Exception {
 		loadBeanDefinitions("mvc-config-async-support.xml");
 
-		RequestMappingHandlerAdapter adapter = appContext.getBean(RequestMappingHandlerAdapter.class);
+		RequestMappingHandlerAdapter adapter = this.appContext.getBean(RequestMappingHandlerAdapter.class);
 		assertNotNull(adapter);
 
 		DirectFieldAccessor fieldAccessor = new DirectFieldAccessor(adapter);
@@ -788,7 +788,7 @@ public class MvcNamespaceTests {
 		assertEquals(InternalResourceViewResolver.class, resolvers.get(6).getClass());
 		assertEquals(InternalResourceViewResolver.class, resolvers.get(7).getClass());
 
-		TilesConfigurer tilesConfigurer = appContext.getBean(TilesConfigurer.class);
+		TilesConfigurer tilesConfigurer = this.appContext.getBean(TilesConfigurer.class);
 		assertNotNull(tilesConfigurer);
 		String[] definitions = {
 				"/org/springframework/web/servlet/resource/tiles/tiles1.xml",
@@ -800,18 +800,18 @@ public class MvcNamespaceTests {
 		assertEquals(UnresolvingLocaleDefinitionsFactory.class, accessor.getPropertyValue("definitionsFactoryClass"));
 		assertEquals(SpringBeanPreparerFactory.class, accessor.getPropertyValue("preparerFactoryClass"));
 
-		FreeMarkerConfigurer freeMarkerConfigurer = appContext.getBean(FreeMarkerConfigurer.class);
+		FreeMarkerConfigurer freeMarkerConfigurer = this.appContext.getBean(FreeMarkerConfigurer.class);
 		assertNotNull(freeMarkerConfigurer);
 		accessor = new DirectFieldAccessor(freeMarkerConfigurer);
 		assertArrayEquals(new String[] {"/", "/test"}, (String[]) accessor.getPropertyValue("templateLoaderPaths"));
 
-		GroovyMarkupConfigurer groovyMarkupConfigurer = appContext.getBean(GroovyMarkupConfigurer.class);
+		GroovyMarkupConfigurer groovyMarkupConfigurer = this.appContext.getBean(GroovyMarkupConfigurer.class);
 		assertNotNull(groovyMarkupConfigurer);
 		assertEquals("/test", groovyMarkupConfigurer.getResourceLoaderPath());
 		assertTrue(groovyMarkupConfigurer.isAutoIndent());
 		assertFalse(groovyMarkupConfigurer.isCacheTemplates());
 
-		ScriptTemplateConfigurer scriptTemplateConfigurer = appContext.getBean(ScriptTemplateConfigurer.class);
+		ScriptTemplateConfigurer scriptTemplateConfigurer = this.appContext.getBean(ScriptTemplateConfigurer.class);
 		assertNotNull(scriptTemplateConfigurer);
 		assertEquals("render", scriptTemplateConfigurer.getRenderFunction());
 		assertEquals(MediaType.TEXT_PLAIN_VALUE, scriptTemplateConfigurer.getContentType());
@@ -861,17 +861,17 @@ public class MvcNamespaceTests {
 	public void testPathMatchingHandlerMappings() throws Exception {
 		loadBeanDefinitions("mvc-config-path-matching-mappings.xml");
 
-		RequestMappingHandlerMapping requestMapping = appContext.getBean(RequestMappingHandlerMapping.class);
+		RequestMappingHandlerMapping requestMapping = this.appContext.getBean(RequestMappingHandlerMapping.class);
 		assertNotNull(requestMapping);
 		assertEquals(TestPathHelper.class, requestMapping.getUrlPathHelper().getClass());
 		assertEquals(TestPathMatcher.class, requestMapping.getPathMatcher().getClass());
 
-		SimpleUrlHandlerMapping viewController = appContext.getBean(VIEWCONTROLLER_BEAN_NAME, SimpleUrlHandlerMapping.class);
+		SimpleUrlHandlerMapping viewController = this.appContext.getBean(VIEWCONTROLLER_BEAN_NAME, SimpleUrlHandlerMapping.class);
 		assertNotNull(viewController);
 		assertEquals(TestPathHelper.class, viewController.getUrlPathHelper().getClass());
 		assertEquals(TestPathMatcher.class, viewController.getPathMatcher().getClass());
 
-		for (SimpleUrlHandlerMapping handlerMapping : appContext.getBeansOfType(SimpleUrlHandlerMapping.class).values()) {
+		for (SimpleUrlHandlerMapping handlerMapping : this.appContext.getBeansOfType(SimpleUrlHandlerMapping.class).values()) {
 			assertNotNull(handlerMapping);
 			assertEquals(TestPathHelper.class, handlerMapping.getUrlPathHelper().getClass());
 			assertEquals(TestPathMatcher.class, handlerMapping.getPathMatcher().getClass());
@@ -882,10 +882,10 @@ public class MvcNamespaceTests {
 	public void testCorsMinimal() throws Exception {
 		loadBeanDefinitions("mvc-config-cors-minimal.xml");
 
-		String[] beanNames = appContext.getBeanNamesForType(AbstractHandlerMapping.class);
+		String[] beanNames = this.appContext.getBeanNamesForType(AbstractHandlerMapping.class);
 		assertEquals(2, beanNames.length);
 		for (String beanName : beanNames) {
-			AbstractHandlerMapping handlerMapping = (AbstractHandlerMapping)appContext.getBean(beanName);
+			AbstractHandlerMapping handlerMapping = (AbstractHandlerMapping)this.appContext.getBean(beanName);
 			assertNotNull(handlerMapping);
 			Map<String, CorsConfiguration> configs = handlerMapping.getCorsConfigurations();
 			assertNotNull(configs);
@@ -905,10 +905,10 @@ public class MvcNamespaceTests {
 	public void testCors() throws Exception {
 		loadBeanDefinitions("mvc-config-cors.xml");
 
-		String[] beanNames = appContext.getBeanNamesForType(AbstractHandlerMapping.class);
+		String[] beanNames = this.appContext.getBeanNamesForType(AbstractHandlerMapping.class);
 		assertEquals(2, beanNames.length);
 		for (String beanName : beanNames) {
-			AbstractHandlerMapping handlerMapping = (AbstractHandlerMapping)appContext.getBean(beanName);
+			AbstractHandlerMapping handlerMapping = (AbstractHandlerMapping)this.appContext.getBean(beanName);
 			assertNotNull(handlerMapping);
 			Map<String, CorsConfiguration> configs = handlerMapping.getCorsConfigurations();
 			assertNotNull(configs);
@@ -1008,7 +1008,7 @@ public class MvcNamespaceTests {
 
 		@SuppressWarnings("unused")
 		public String getField() {
-			return field;
+			return this.field;
 		}
 
 		@SuppressWarnings("unused")

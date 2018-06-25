@@ -62,21 +62,21 @@ public class ScopingTests {
 
 	@Before
 	public void setUp() throws Exception {
-		customScope = new CustomScope();
-		ctx = createContext(ScopedConfigurationClass.class);
+		this.customScope = new CustomScope();
+		this.ctx = createContext(ScopedConfigurationClass.class);
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		if (ctx != null) {
-			ctx.close();
+		if (this.ctx != null) {
+			this.ctx.close();
 		}
 	}
 
 	private GenericApplicationContext createContext(Class<?> configClass) {
 		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
-		if (customScope != null) {
-			beanFactory.registerScope(SCOPE, customScope);
+		if (this.customScope != null) {
+			beanFactory.registerScope(SCOPE, this.customScope);
 		}
 		beanFactory.registerBeanDefinition("config", new RootBeanDefinition(configClass));
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(beanFactory);
@@ -97,49 +97,49 @@ public class ScopingTests {
 
 	private void genericTestScope(String beanName) throws Exception {
 		String message = "scope is ignored";
-		Object bean1 = ctx.getBean(beanName);
-		Object bean2 = ctx.getBean(beanName);
+		Object bean1 = this.ctx.getBean(beanName);
+		Object bean2 = this.ctx.getBean(beanName);
 
 		assertSame(message, bean1, bean2);
 
-		Object bean3 = ctx.getBean(beanName);
+		Object bean3 = this.ctx.getBean(beanName);
 
 		assertSame(message, bean1, bean3);
 
 		// make the scope create a new object
-		customScope.createNewScope = true;
+		this.customScope.createNewScope = true;
 
-		Object newBean1 = ctx.getBean(beanName);
+		Object newBean1 = this.ctx.getBean(beanName);
 		assertNotSame(message, bean1, newBean1);
 
-		Object sameBean1 = ctx.getBean(beanName);
+		Object sameBean1 = this.ctx.getBean(beanName);
 
 		assertSame(message, newBean1, sameBean1);
 
 		// make the scope create a new object
-		customScope.createNewScope = true;
+		this.customScope.createNewScope = true;
 
-		Object newBean2 = ctx.getBean(beanName);
+		Object newBean2 = this.ctx.getBean(beanName);
 		assertNotSame(message, newBean1, newBean2);
 
 		// make the scope create a new object .. again
-		customScope.createNewScope = true;
+		this.customScope.createNewScope = true;
 
-		Object newBean3 = ctx.getBean(beanName);
+		Object newBean3 = this.ctx.getBean(beanName);
 		assertNotSame(message, newBean2, newBean3);
 	}
 
 	@Test
 	public void testSameScopeOnDifferentBeans() throws Exception {
-		Object beanAInScope = ctx.getBean("scopedClass");
-		Object beanBInScope = ctx.getBean("scopedInterface");
+		Object beanAInScope = this.ctx.getBean("scopedClass");
+		Object beanBInScope = this.ctx.getBean("scopedInterface");
 
 		assertNotSame(beanAInScope, beanBInScope);
 
-		customScope.createNewScope = true;
+		this.customScope.createNewScope = true;
 
-		Object newBeanAInScope = ctx.getBean("scopedClass");
-		Object newBeanBInScope = ctx.getBean("scopedInterface");
+		Object newBeanAInScope = this.ctx.getBean("scopedClass");
+		Object newBeanBInScope = this.ctx.getBean("scopedInterface");
 
 		assertNotSame(newBeanAInScope, newBeanBInScope);
 		assertNotSame(newBeanAInScope, beanAInScope);
@@ -151,14 +151,14 @@ public class ScopingTests {
 		String beanName = "scopedProxyInterface";
 
 		// get hidden bean
-		Object bean = ctx.getBean("scopedTarget." + beanName);
+		Object bean = this.ctx.getBean("scopedTarget." + beanName);
 
 		assertFalse(bean instanceof ScopedObject);
 	}
 
 	@Test
 	public void testScopedProxyConfiguration() throws Exception {
-		TestBean singleton = (TestBean) ctx.getBean("singletonWithScopedInterfaceDep");
+		TestBean singleton = (TestBean) this.ctx.getBean("singletonWithScopedInterfaceDep");
 		ITestBean spouse = singleton.getSpouse();
 		assertTrue("scoped bean is not wrapped by the scoped-proxy", spouse instanceof ScopedObject);
 
@@ -169,28 +169,28 @@ public class ScopingTests {
 		// get hidden bean
 		assertEquals(flag, spouse.getName());
 
-		ITestBean spouseFromBF = (ITestBean) ctx.getBean(scopedBeanName);
+		ITestBean spouseFromBF = (ITestBean) this.ctx.getBean(scopedBeanName);
 		assertEquals(spouse.getName(), spouseFromBF.getName());
 		// the scope proxy has kicked in
 		assertNotSame(spouse, spouseFromBF);
 
 		// create a new bean
-		customScope.createNewScope = true;
+		this.customScope.createNewScope = true;
 
 		// get the bean again from the BF
-		spouseFromBF = (ITestBean) ctx.getBean(scopedBeanName);
+		spouseFromBF = (ITestBean) this.ctx.getBean(scopedBeanName);
 		// make sure the name has been updated
 		assertSame(spouse.getName(), spouseFromBF.getName());
 		assertNotSame(spouse, spouseFromBF);
 
 		// get the bean again
-		spouseFromBF = (ITestBean) ctx.getBean(scopedBeanName);
+		spouseFromBF = (ITestBean) this.ctx.getBean(scopedBeanName);
 		assertSame(spouse.getName(), spouseFromBF.getName());
 	}
 
 	@Test
 	public void testScopedProxyConfigurationWithClasses() throws Exception {
-		TestBean singleton = (TestBean) ctx.getBean("singletonWithScopedClassDep");
+		TestBean singleton = (TestBean) this.ctx.getBean("singletonWithScopedClassDep");
 		ITestBean spouse = singleton.getSpouse();
 		assertTrue("scoped bean is not wrapped by the scoped-proxy", spouse instanceof ScopedObject);
 
@@ -201,23 +201,23 @@ public class ScopingTests {
 		// get hidden bean
 		assertEquals(flag, spouse.getName());
 
-		TestBean spouseFromBF = (TestBean) ctx.getBean(scopedBeanName);
+		TestBean spouseFromBF = (TestBean) this.ctx.getBean(scopedBeanName);
 		assertEquals(spouse.getName(), spouseFromBF.getName());
 		// the scope proxy has kicked in
 		assertNotSame(spouse, spouseFromBF);
 
 		// create a new bean
-		customScope.createNewScope = true;
+		this.customScope.createNewScope = true;
 		flag = "boo";
 
 		// get the bean again from the BF
-		spouseFromBF = (TestBean) ctx.getBean(scopedBeanName);
+		spouseFromBF = (TestBean) this.ctx.getBean(scopedBeanName);
 		// make sure the name has been updated
 		assertSame(spouse.getName(), spouseFromBF.getName());
 		assertNotSame(spouse, spouseFromBF);
 
 		// get the bean again
-		spouseFromBF = (TestBean) ctx.getBean(scopedBeanName);
+		spouseFromBF = (TestBean) this.ctx.getBean(scopedBeanName);
 		assertSame(spouse.getName(), spouseFromBF.getName());
 	}
 
@@ -241,7 +241,7 @@ public class ScopingTests {
 		}
 
 		public Foo getFoo() {
-			return foo;
+			return this.foo;
 		}
 	}
 
@@ -335,20 +335,20 @@ public class ScopingTests {
 
 		@Override
 		public Object get(String name, ObjectFactory<?> objectFactory) {
-			if (createNewScope) {
-				beans.clear();
+			if (this.createNewScope) {
+				this.beans.clear();
 				// reset the flag back
-				createNewScope = false;
+				this.createNewScope = false;
 			}
 
-			Object bean = beans.get(name);
+			Object bean = this.beans.get(name);
 			// if a new object is requested or none exists under the current
 			// name, create one
 			if (bean == null) {
-				beans.put(name, objectFactory.getObject());
+				this.beans.put(name, objectFactory.getObject());
 			}
 
-			return beans.get(name);
+			return this.beans.get(name);
 		}
 
 		@Override
@@ -363,7 +363,7 @@ public class ScopingTests {
 
 		@Override
 		public Object remove(String name) {
-			return beans.remove(name);
+			return this.beans.remove(name);
 		}
 
 		@Override

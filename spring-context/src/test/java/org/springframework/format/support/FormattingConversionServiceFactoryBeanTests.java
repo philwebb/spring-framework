@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -155,7 +155,7 @@ public class FormattingConversionServiceFactoryBeanTests {
 		private int specialInt;
 
 		public int getSpecialInt() {
-			return specialInt;
+			return this.specialInt;
 		}
 
 		public void setSpecialInt(int field) {
@@ -185,12 +185,12 @@ public class FormattingConversionServiceFactoryBeanTests {
 		private final Set<Class<?>> fieldTypes = new HashSet<>(1);
 
 		public SpecialIntAnnotationFormatterFactory() {
-			fieldTypes.add(Integer.class);
+			this.fieldTypes.add(Integer.class);
 		}
 
 		@Override
 		public Set<Class<?>> getFieldTypes() {
-			return fieldTypes;
+			return this.fieldTypes;
 		}
 
 		@Override

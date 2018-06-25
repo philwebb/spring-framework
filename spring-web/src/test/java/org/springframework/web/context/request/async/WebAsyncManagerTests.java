@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ public class WebAsyncManagerTests {
 	@Before
 	public void setup() {
 		this.servletRequest = new MockHttpServletRequest();
-		this.asyncManager = WebAsyncUtils.getAsyncManager(servletRequest);
+		this.asyncManager = WebAsyncUtils.getAsyncManager(this.servletRequest);
 		this.asyncManager.setTaskExecutor(new SyncTaskExecutor());
 		this.asyncWebRequest = mock(AsyncWebRequest.class);
 		this.asyncManager.setAsyncWebRequest(this.asyncWebRequest);
@@ -278,7 +278,7 @@ public class WebAsyncManagerTests {
 		verifyDefaultAsyncScenario();
 		verify(interceptor).beforeConcurrentHandling(this.asyncWebRequest, deferredResult);
 		verify(interceptor).preProcess(this.asyncWebRequest, deferredResult);
-		verify(interceptor).postProcess(asyncWebRequest, deferredResult, concurrentResult);
+		verify(interceptor).postProcess(this.asyncWebRequest, deferredResult, concurrentResult);
 		verify(this.asyncWebRequest).setTimeout(1000L);
 	}
 

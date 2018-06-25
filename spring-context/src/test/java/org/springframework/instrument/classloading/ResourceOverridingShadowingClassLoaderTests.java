@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2012 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,47 +34,47 @@ public class ResourceOverridingShadowingClassLoaderTests {
 
 	private ClassLoader thisClassLoader = getClass().getClassLoader();
 
-	private ResourceOverridingShadowingClassLoader overridingLoader = new ResourceOverridingShadowingClassLoader(thisClassLoader);
+	private ResourceOverridingShadowingClassLoader overridingLoader = new ResourceOverridingShadowingClassLoader(this.thisClassLoader);
 
 
 	@Test
 	public void testFindsExistingResourceWithGetResourceAndNoOverrides() {
-		assertNotNull(thisClassLoader.getResource(EXISTING_RESOURCE));
-		assertNotNull(overridingLoader.getResource(EXISTING_RESOURCE));
+		assertNotNull(this.thisClassLoader.getResource(EXISTING_RESOURCE));
+		assertNotNull(this.overridingLoader.getResource(EXISTING_RESOURCE));
 	}
 
 	@Test
 	public void testDoesNotFindExistingResourceWithGetResourceAndNullOverride() {
-		assertNotNull(thisClassLoader.getResource(EXISTING_RESOURCE));
-		overridingLoader.override(EXISTING_RESOURCE, null);
-		assertNull(overridingLoader.getResource(EXISTING_RESOURCE));
+		assertNotNull(this.thisClassLoader.getResource(EXISTING_RESOURCE));
+		this.overridingLoader.override(EXISTING_RESOURCE, null);
+		assertNull(this.overridingLoader.getResource(EXISTING_RESOURCE));
 	}
 
 	@Test
 	public void testFindsExistingResourceWithGetResourceAsStreamAndNoOverrides() {
-		assertNotNull(thisClassLoader.getResourceAsStream(EXISTING_RESOURCE));
-		assertNotNull(overridingLoader.getResourceAsStream(EXISTING_RESOURCE));
+		assertNotNull(this.thisClassLoader.getResourceAsStream(EXISTING_RESOURCE));
+		assertNotNull(this.overridingLoader.getResourceAsStream(EXISTING_RESOURCE));
 	}
 
 	@Test
 	public void testDoesNotFindExistingResourceWithGetResourceAsStreamAndNullOverride() {
-		assertNotNull(thisClassLoader.getResourceAsStream(EXISTING_RESOURCE));
-		overridingLoader.override(EXISTING_RESOURCE, null);
-		assertNull(overridingLoader.getResourceAsStream(EXISTING_RESOURCE));
+		assertNotNull(this.thisClassLoader.getResourceAsStream(EXISTING_RESOURCE));
+		this.overridingLoader.override(EXISTING_RESOURCE, null);
+		assertNull(this.overridingLoader.getResourceAsStream(EXISTING_RESOURCE));
 	}
 
 	@Test
 	public void testFindsExistingResourceWithGetResourcesAndNoOverrides() throws IOException {
-		assertNotNull(thisClassLoader.getResources(EXISTING_RESOURCE));
-		assertNotNull(overridingLoader.getResources(EXISTING_RESOURCE));
-		assertEquals(1, countElements(overridingLoader.getResources(EXISTING_RESOURCE)));
+		assertNotNull(this.thisClassLoader.getResources(EXISTING_RESOURCE));
+		assertNotNull(this.overridingLoader.getResources(EXISTING_RESOURCE));
+		assertEquals(1, countElements(this.overridingLoader.getResources(EXISTING_RESOURCE)));
 	}
 
 	@Test
 	public void testDoesNotFindExistingResourceWithGetResourcesAndNullOverride() throws IOException {
-		assertNotNull(thisClassLoader.getResources(EXISTING_RESOURCE));
-		overridingLoader.override(EXISTING_RESOURCE, null);
-		assertEquals(0, countElements(overridingLoader.getResources(EXISTING_RESOURCE)));
+		assertNotNull(this.thisClassLoader.getResources(EXISTING_RESOURCE));
+		this.overridingLoader.override(EXISTING_RESOURCE, null);
+		assertEquals(0, countElements(this.overridingLoader.getResources(EXISTING_RESOURCE)));
 	}
 
 	private int countElements(Enumeration<?> e) {

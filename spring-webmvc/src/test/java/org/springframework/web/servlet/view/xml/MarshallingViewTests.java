@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,19 +48,19 @@ public class MarshallingViewTests {
 
 	@Before
 	public void createView() throws Exception {
-		marshallerMock = mock(Marshaller.class);
-		view = new MarshallingView(marshallerMock);
+		this.marshallerMock = mock(Marshaller.class);
+		this.view = new MarshallingView(this.marshallerMock);
 	}
 
 
 	@Test
 	public void getContentType() {
-		assertEquals("Invalid content type", "application/xml", view.getContentType());
+		assertEquals("Invalid content type", "application/xml", this.view.getContentType());
 	}
 
 	@Test
 	public void isExposePathVars() {
-		assertEquals("Must not expose path variables", false, view.isExposePathVariables());
+		assertEquals("Must not expose path variables", false, this.view.isExposePathVariables());
 	}
 
 	@Test
@@ -72,17 +72,17 @@ public class MarshallingViewTests {
 	public void renderModelKey() throws Exception {
 		Object toBeMarshalled = new Object();
 		String modelKey = "key";
-		view.setModelKey(modelKey);
+		this.view.setModelKey(modelKey);
 		Map<String, Object> model = new HashMap<>();
 		model.put(modelKey, toBeMarshalled);
 
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 
-		given(marshallerMock.supports(Object.class)).willReturn(true);
-		marshallerMock.marshal(eq(toBeMarshalled), isA(StreamResult.class));
+		given(this.marshallerMock.supports(Object.class)).willReturn(true);
+		this.marshallerMock.marshal(eq(toBeMarshalled), isA(StreamResult.class));
 
-		view.render(model, request, response);
+		this.view.render(model, request, response);
 		assertEquals("Invalid content type", "application/xml", response.getContentType());
 		assertEquals("Invalid content length", 0, response.getContentLength());
 	}
@@ -91,17 +91,17 @@ public class MarshallingViewTests {
 	public void renderModelKeyWithJaxbElement() throws Exception {
 		String toBeMarshalled = "value";
 		String modelKey = "key";
-		view.setModelKey(modelKey);
+		this.view.setModelKey(modelKey);
 		Map<String, Object> model = new HashMap<>();
 		model.put(modelKey, new JAXBElement<>(new QName("model"), String.class, toBeMarshalled));
 
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 
-		given(marshallerMock.supports(String.class)).willReturn(true);
-		marshallerMock.marshal(eq(toBeMarshalled), isA(StreamResult.class));
+		given(this.marshallerMock.supports(String.class)).willReturn(true);
+		this.marshallerMock.marshal(eq(toBeMarshalled), isA(StreamResult.class));
 
-		view.render(model, request, response);
+		this.view.render(model, request, response);
 		assertEquals("Invalid content type", "application/xml", response.getContentType());
 		assertEquals("Invalid content length", 0, response.getContentLength());
 	}
@@ -110,7 +110,7 @@ public class MarshallingViewTests {
 	public void renderInvalidModelKey() throws Exception {
 		Object toBeMarshalled = new Object();
 		String modelKey = "key";
-		view.setModelKey("invalidKey");
+		this.view.setModelKey("invalidKey");
 		Map<String, Object> model = new HashMap<>();
 		model.put(modelKey, toBeMarshalled);
 
@@ -118,7 +118,7 @@ public class MarshallingViewTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 
 		try {
-			view.render(model, request, response);
+			this.view.render(model, request, response);
 			fail("IllegalStateException expected");
 		}
 		catch (IllegalStateException ex) {
@@ -137,7 +137,7 @@ public class MarshallingViewTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 
 		try {
-			view.render(model, request, response);
+			this.view.render(model, request, response);
 			fail("IllegalStateException expected");
 		}
 		catch (IllegalStateException ex) {
@@ -150,17 +150,17 @@ public class MarshallingViewTests {
 	public void renderModelKeyUnsupported() throws Exception {
 		Object toBeMarshalled = new Object();
 		String modelKey = "key";
-		view.setModelKey(modelKey);
+		this.view.setModelKey(modelKey);
 		Map<String, Object> model = new HashMap<>();
 		model.put(modelKey, toBeMarshalled);
 
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 
-		given(marshallerMock.supports(Object.class)).willReturn(false);
+		given(this.marshallerMock.supports(Object.class)).willReturn(false);
 
 		try {
-			view.render(model, request, response);
+			this.view.render(model, request, response);
 			fail("IllegalStateException expected");
 		}
 		catch (IllegalStateException ex) {
@@ -178,12 +178,12 @@ public class MarshallingViewTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 
-		given(marshallerMock.supports(Object.class)).willReturn(true);
+		given(this.marshallerMock.supports(Object.class)).willReturn(true);
 
-		view.render(model, request, response);
+		this.view.render(model, request, response);
 		assertEquals("Invalid content type", "application/xml", response.getContentType());
 		assertEquals("Invalid content length", 0, response.getContentLength());
-		verify(marshallerMock).marshal(eq(toBeMarshalled), isA(StreamResult.class));
+		verify(this.marshallerMock).marshal(eq(toBeMarshalled), isA(StreamResult.class));
 	}
 
 	@Test
@@ -197,13 +197,13 @@ public class MarshallingViewTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 
-		given(marshallerMock.supports(BeanPropertyBindingResult.class)).willReturn(true);
-		given(marshallerMock.supports(Object.class)).willReturn(true);
+		given(this.marshallerMock.supports(BeanPropertyBindingResult.class)).willReturn(true);
+		given(this.marshallerMock.supports(Object.class)).willReturn(true);
 
-		view.render(model, request, response);
+		this.view.render(model, request, response);
 		assertEquals("Invalid content type", "application/xml", response.getContentType());
 		assertEquals("Invalid content length", 0, response.getContentLength());
-		verify(marshallerMock).marshal(eq(toBeMarshalled), isA(StreamResult.class));
+		verify(this.marshallerMock).marshal(eq(toBeMarshalled), isA(StreamResult.class));
 	}
 
 	@Test
@@ -216,10 +216,10 @@ public class MarshallingViewTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 
-		given(marshallerMock.supports(Object.class)).willReturn(false);
+		given(this.marshallerMock.supports(Object.class)).willReturn(false);
 
 		try {
-			view.render(model, request, response);
+			this.view.render(model, request, response);
 			fail("IllegalStateException expected");
 		}
 		catch (IllegalStateException ex) {

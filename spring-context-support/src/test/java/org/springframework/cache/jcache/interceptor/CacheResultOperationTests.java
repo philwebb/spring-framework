@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2014 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,8 +40,8 @@ public class CacheResultOperationTests extends AbstractCacheOperationTests<Cache
 		CacheMethodDetails<CacheResult> methodDetails = create(CacheResult.class,
 				SampleObject.class, "simpleGet", Long.class);
 
-		return new CacheResultOperation(methodDetails, defaultCacheResolver, defaultKeyGenerator,
-				defaultExceptionCacheResolver);
+		return new CacheResultOperation(methodDetails, this.defaultCacheResolver, this.defaultKeyGenerator,
+				this.defaultExceptionCacheResolver);
 	}
 
 	@Test
@@ -52,7 +52,7 @@ public class CacheResultOperationTests extends AbstractCacheOperationTests<Cache
 		assertNotNull(operation.getExceptionCacheResolver());
 
 		assertNull(operation.getExceptionCacheName());
-		assertEquals(defaultExceptionCacheResolver, operation.getExceptionCacheResolver());
+		assertEquals(this.defaultExceptionCacheResolver, operation.getExceptionCacheResolver());
 
 		CacheInvocationParameter[] allParameters = operation.getAllParameters(2L);
 		assertEquals(1, allParameters.length);
@@ -81,7 +81,7 @@ public class CacheResultOperationTests extends AbstractCacheOperationTests<Cache
 				SampleObject.class, "anotherSimpleGet", String.class, Long.class);
 		CacheResultOperation operation = createDefaultOperation(methodDetails);
 
-		thrown.expect(IllegalStateException.class);
+		this.thrown.expect(IllegalStateException.class);
 		operation.getAllParameters("bar"); // missing one argument
 	}
 
@@ -91,7 +91,7 @@ public class CacheResultOperationTests extends AbstractCacheOperationTests<Cache
 				SampleObject.class, "anotherSimpleGet", String.class, Long.class);
 		CacheResultOperation operation = createDefaultOperation(methodDetails);
 
-		thrown.expect(IllegalStateException.class);
+		this.thrown.expect(IllegalStateException.class);
 		operation.getKeyParameters("bar"); // missing one argument
 	}
 
@@ -124,7 +124,7 @@ public class CacheResultOperationTests extends AbstractCacheOperationTests<Cache
 
 	private CacheResultOperation createDefaultOperation(CacheMethodDetails<CacheResult> methodDetails) {
 		return new CacheResultOperation(methodDetails,
-				defaultCacheResolver, defaultKeyGenerator, defaultCacheResolver);
+				this.defaultCacheResolver, this.defaultKeyGenerator, this.defaultCacheResolver);
 	}
 
 }

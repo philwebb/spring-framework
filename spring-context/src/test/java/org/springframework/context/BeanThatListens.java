@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2012 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,18 +45,18 @@ public class BeanThatListens implements ApplicationListener<ApplicationEvent> {
 
 	@Override
 	public void onApplicationEvent(ApplicationEvent event) {
-		eventCount++;
-		if (beanThatBroadcasts != null) {
-			beanThatBroadcasts.receivedCount++;
+		this.eventCount++;
+		if (this.beanThatBroadcasts != null) {
+			this.beanThatBroadcasts.receivedCount++;
 		}
 	}
 
 	public int getEventCount() {
-		return eventCount;
+		return this.eventCount;
 	}
 
 	public void zero() {
-		eventCount = 0;
+		this.eventCount = 0;
 	}
 
 }

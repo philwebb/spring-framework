@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -216,8 +216,8 @@ public class FormTagTests extends AbstractHtmlElementTagTests {
 	@Test
 	public void withNullResolvedCommand() throws Exception {
 		try {
-			tag.setModelAttribute(null);
-			tag.doStartTag();
+			this.tag.setModelAttribute(null);
+			this.tag.doStartTag();
 			fail("Must not be able to have a command name that resolves to null");
 		}
 		catch (IllegalArgumentException ex) {
@@ -231,8 +231,8 @@ public class FormTagTests extends AbstractHtmlElementTagTests {
 	@Test
 	public void xssExploitWhenActionIsResolvedFromQueryString() throws Exception {
 		String xssQueryString = QUERY_STRING + "&stuff=\"><script>alert('XSS!')</script>";
-		request.setQueryString(xssQueryString);
-		tag.doStartTag();
+		this.request.setQueryString(xssQueryString);
+		this.tag.doStartTag();
 		assertEquals("<form id=\"command\" action=\"/my/form?foo=bar&amp;stuff=&quot;&gt;&lt;" +
 						"script&gt;alert(&#39;XSS!&#39;)&lt;/script&gt;\" method=\"post\">", getOutput());
 	}
@@ -357,7 +357,7 @@ public class FormTagTests extends AbstractHtmlElementTagTests {
 	public void defaultActionEncoded() throws Exception {
 
 		this.request.setRequestURI("/a b c");
-		request.setQueryString("");
+		this.request.setQueryString("");
 
 		this.tag.doStartTag();
 		this.tag.doEndTag();

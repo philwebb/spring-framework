@@ -99,7 +99,7 @@ public class DummyFactory
 	}
 
 	public String getBeanName() {
-		return beanName;
+		return this.beanName;
 	}
 
 	@Override
@@ -109,7 +109,7 @@ public class DummyFactory
 	}
 
 	public BeanFactory getBeanFactory() {
-		return beanFactory;
+		return this.beanFactory;
 	}
 
 	public void setPostProcessed(boolean postProcessed) {
@@ -117,7 +117,7 @@ public class DummyFactory
 	}
 
 	public boolean isPostProcessed() {
-		return postProcessed;
+		return this.postProcessed;
 	}
 
 	public void setOtherTestBean(TestBean otherTestBean) {
@@ -126,12 +126,12 @@ public class DummyFactory
 	}
 
 	public TestBean getOtherTestBean() {
-		return otherTestBean;
+		return this.otherTestBean;
 	}
 
 	@Override
 	public void afterPropertiesSet() {
-		if (initialized) {
+		if (this.initialized) {
 			throw new RuntimeException("Cannot call afterPropertiesSet twice on the one bean");
 		}
 		this.initialized = true;
@@ -142,7 +142,7 @@ public class DummyFactory
 	 * afterPropertiesSet() method from the InitializingBean interface?
 	 */
 	public boolean wasInitialized() {
-		return initialized;
+		return this.initialized;
 	}
 
 	public static boolean wasPrototypeCreated() {

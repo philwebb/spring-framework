@@ -134,9 +134,9 @@ public class HiddenInputTagTests extends AbstractFormTagTests {
 	@Override
 	protected TestBean createTestBean() {
 		this.bean = new TestBean();
-		bean.setName("Sally Greenwood");
-		bean.setMyFloat(new Float("12.34"));
-		return bean;
+		this.bean.setName("Sally Greenwood");
+		this.bean.setMyFloat(new Float("12.34"));
+		return this.bean;
 	}
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2008 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,11 +27,11 @@ public class TwoAdviceAspect {
 
 	@Around("execution(* getAge())")
 	public int returnCallCount(ProceedingJoinPoint pjp) throws Exception {
-		return totalCalls;
+		return this.totalCalls;
 	}
 
 	@Before("execution(* setAge(int)) && args(newAge)")
 	public void countSet(int newAge) throws Exception {
-		++totalCalls;
+		++this.totalCalls;
 	}
 }

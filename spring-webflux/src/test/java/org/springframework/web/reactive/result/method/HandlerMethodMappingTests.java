@@ -60,8 +60,8 @@ public class HandlerMethodMappingTests {
 	public void setup() throws Exception {
 		this.mapping = new MyHandlerMethodMapping();
 		this.handler = new MyHandler();
-		this.method1 = handler.getClass().getMethod("handlerMethod1");
-		this.method2 = handler.getClass().getMethod("handlerMethod2");
+		this.method1 = this.handler.getClass().getMethod("handlerMethod1");
+		this.method2 = this.handler.getClass().getMethod("handlerMethod2");
 	}
 
 
@@ -164,7 +164,7 @@ public class HandlerMethodMappingTests {
 
 		@Override
 		protected Comparator<String> getMappingComparator(ServerWebExchange exchange) {
-			return (o1, o2) -> PathPattern.SPECIFICITY_COMPARATOR.compare(parser.parse(o1), parser.parse(o2));
+			return (o1, o2) -> PathPattern.SPECIFICITY_COMPARATOR.compare(this.parser.parse(o1), this.parser.parse(o2));
 		}
 
 	}

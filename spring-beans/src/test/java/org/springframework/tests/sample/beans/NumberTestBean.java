@@ -45,7 +45,7 @@ public class NumberTestBean {
 	private BigDecimal bigDecimal;
 
 	public short getShort1() {
-		return short1;
+		return this.short1;
 	}
 
 	public void setShort1(short short1) {
@@ -53,7 +53,7 @@ public class NumberTestBean {
 	}
 
 	public Short getShort2() {
-		return short2;
+		return this.short2;
 	}
 
 	public void setShort2(Short short2) {
@@ -61,7 +61,7 @@ public class NumberTestBean {
 	}
 
 	public int getInt1() {
-		return int1;
+		return this.int1;
 	}
 
 	public void setInt1(int int1) {
@@ -69,7 +69,7 @@ public class NumberTestBean {
 	}
 
 	public Integer getInt2() {
-		return int2;
+		return this.int2;
 	}
 
 	public void setInt2(Integer int2) {
@@ -77,7 +77,7 @@ public class NumberTestBean {
 	}
 
 	public long getLong1() {
-		return long1;
+		return this.long1;
 	}
 
 	public void setLong1(long long1) {
@@ -85,7 +85,7 @@ public class NumberTestBean {
 	}
 
 	public Long getLong2() {
-		return long2;
+		return this.long2;
 	}
 
 	public void setLong2(Long long2) {
@@ -93,7 +93,7 @@ public class NumberTestBean {
 	}
 
 	public BigInteger getBigInteger() {
-		return bigInteger;
+		return this.bigInteger;
 	}
 
 	public void setBigInteger(BigInteger bigInteger) {
@@ -101,7 +101,7 @@ public class NumberTestBean {
 	}
 
 	public float getFloat1() {
-		return float1;
+		return this.float1;
 	}
 
 	public void setFloat1(float float1) {
@@ -109,7 +109,7 @@ public class NumberTestBean {
 	}
 
 	public Float getFloat2() {
-		return float2;
+		return this.float2;
 	}
 
 	public void setFloat2(Float float2) {
@@ -117,7 +117,7 @@ public class NumberTestBean {
 	}
 
 	public double getDouble1() {
-		return double1;
+		return this.double1;
 	}
 
 	public void setDouble1(double double1) {
@@ -125,7 +125,7 @@ public class NumberTestBean {
 	}
 
 	public Double getDouble2() {
-		return double2;
+		return this.double2;
 	}
 
 	public void setDouble2(Double double2) {
@@ -133,7 +133,7 @@ public class NumberTestBean {
 	}
 
 	public BigDecimal getBigDecimal() {
-		return bigDecimal;
+		return this.bigDecimal;
 	}
 
 	public void setBigDecimal(BigDecimal bigDecimal) {

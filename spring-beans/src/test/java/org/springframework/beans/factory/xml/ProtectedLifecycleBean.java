@@ -54,7 +54,7 @@ class ProtectedLifecycleBean implements BeanNameAware, BeanFactoryAware, Initial
 	}
 
 	public boolean isInitMethodDeclared() {
-		return initMethodDeclared;
+		return this.initMethodDeclared;
 	}
 
 	@Override
@@ -63,7 +63,7 @@ class ProtectedLifecycleBean implements BeanNameAware, BeanFactoryAware, Initial
 	}
 
 	public String getBeanName() {
-		return beanName;
+		return this.beanName;
 	}
 
 	@Override
@@ -142,7 +142,7 @@ class ProtectedLifecycleBean implements BeanNameAware, BeanFactoryAware, Initial
 	}
 
 	public boolean isDestroyed() {
-		return destroyed;
+		return this.destroyed;
 	}
 
 

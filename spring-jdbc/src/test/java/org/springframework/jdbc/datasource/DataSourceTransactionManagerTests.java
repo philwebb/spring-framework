@@ -66,10 +66,10 @@ public class DataSourceTransactionManagerTests  {
 
 	@Before
 	public void setup() throws Exception {
-		ds = mock(DataSource.class);
-		con = mock(Connection.class);
-		given(ds.getConnection()).willReturn(con);
-		tm = new DataSourceTransactionManager(ds);
+		this.ds = mock(DataSource.class);
+		this.con = mock(Connection.class);
+		given(this.ds.getConnection()).willReturn(this.con);
+		this.tm = new DataSourceTransactionManager(this.ds);
 	}
 
 	@After
@@ -115,17 +115,17 @@ public class DataSourceTransactionManagerTests  {
 			boolean autoCommit, boolean lazyConnection, final boolean createStatement) throws Exception {
 
 		if (lazyConnection) {
-			given(con.getAutoCommit()).willReturn(autoCommit);
-			given(con.getTransactionIsolation()).willReturn(Connection.TRANSACTION_READ_COMMITTED);
+			given(this.con.getAutoCommit()).willReturn(autoCommit);
+			given(this.con.getTransactionIsolation()).willReturn(Connection.TRANSACTION_READ_COMMITTED);
 		}
 
 		if (!lazyConnection || createStatement) {
-			given(con.getAutoCommit()).willReturn(autoCommit);
+			given(this.con.getAutoCommit()).willReturn(autoCommit);
 		}
 
-		final DataSource dsToUse = (lazyConnection ? new LazyConnectionDataSourceProxy(ds) : ds);
-		tm = new DataSourceTransactionManager(dsToUse);
-		TransactionTemplate tt = new TransactionTemplate(tm);
+		final DataSource dsToUse = (lazyConnection ? new LazyConnectionDataSourceProxy(this.ds) : this.ds);
+		this.tm = new DataSourceTransactionManager(dsToUse);
+		TransactionTemplate tt = new TransactionTemplate(this.tm);
 		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(dsToUse));
 		assertTrue("Synchronization not active", !TransactionSynchronizationManager.isSynchronizationActive());
 
@@ -153,16 +153,16 @@ public class DataSourceTransactionManagerTests  {
 		assertTrue("Synchronization not active", !TransactionSynchronizationManager.isSynchronizationActive());
 
 		if (autoCommit && (!lazyConnection || createStatement)) {
-			InOrder ordered = inOrder(con);
-			ordered.verify(con).setAutoCommit(false);
-			ordered.verify(con).commit();
-			ordered.verify(con).setAutoCommit(true);
+			InOrder ordered = inOrder(this.con);
+			ordered.verify(this.con).setAutoCommit(false);
+			ordered.verify(this.con).commit();
+			ordered.verify(this.con).setAutoCommit(true);
 		}
 		if (createStatement) {
-			verify(con, times(2)).close();
+			verify(this.con, times(2)).close();
 		}
 		else {
-			verify(con).close();
+			verify(this.con).close();
 		}
 	}
 
@@ -200,17 +200,17 @@ public class DataSourceTransactionManagerTests  {
 			boolean autoCommit, boolean lazyConnection, final boolean createStatement) throws Exception {
 
 		if (lazyConnection) {
-			given(con.getAutoCommit()).willReturn(autoCommit);
-			given(con.getTransactionIsolation()).willReturn(Connection.TRANSACTION_READ_COMMITTED);
+			given(this.con.getAutoCommit()).willReturn(autoCommit);
+			given(this.con.getTransactionIsolation()).willReturn(Connection.TRANSACTION_READ_COMMITTED);
 		}
 
 		if (!lazyConnection || createStatement) {
-			given(con.getAutoCommit()).willReturn(autoCommit);
+			given(this.con.getAutoCommit()).willReturn(autoCommit);
 		}
 
-		final DataSource dsToUse = (lazyConnection ? new LazyConnectionDataSourceProxy(ds) : ds);
-		 tm = new DataSourceTransactionManager(dsToUse);
-		TransactionTemplate tt = new TransactionTemplate(tm);
+		final DataSource dsToUse = (lazyConnection ? new LazyConnectionDataSourceProxy(this.ds) : this.ds);
+		 this.tm = new DataSourceTransactionManager(dsToUse);
+		TransactionTemplate tt = new TransactionTemplate(this.tm);
 		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(dsToUse));
 		assertTrue("Synchronization not active", !TransactionSynchronizationManager.isSynchronizationActive());
 
@@ -241,33 +241,33 @@ public class DataSourceTransactionManagerTests  {
 			assertTrue("Correct exception thrown", ex2.equals(ex));
 		}
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		assertTrue("Synchronization not active", !TransactionSynchronizationManager.isSynchronizationActive());
 
 		if (autoCommit && (!lazyConnection || createStatement)) {
-			InOrder ordered = inOrder(con);
-			ordered.verify(con).setAutoCommit(false);
-			ordered.verify(con).rollback();
-			ordered.verify(con).setAutoCommit(true);
+			InOrder ordered = inOrder(this.con);
+			ordered.verify(this.con).setAutoCommit(false);
+			ordered.verify(this.con).rollback();
+			ordered.verify(this.con).setAutoCommit(true);
 		}
 		if (createStatement) {
-			verify(con, times(2)).close();
+			verify(this.con, times(2)).close();
 		}
 		else {
-			verify(con).close();
+			verify(this.con).close();
 		}
 	}
 
 	@Test
 	public void testTransactionRollbackOnly() throws Exception {
-		tm.setTransactionSynchronization(DataSourceTransactionManager.SYNCHRONIZATION_NEVER);
-		TransactionTemplate tt = new TransactionTemplate(tm);
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		this.tm.setTransactionSynchronization(DataSourceTransactionManager.SYNCHRONIZATION_NEVER);
+		TransactionTemplate tt = new TransactionTemplate(this.tm);
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		assertTrue("Synchronization not active", !TransactionSynchronizationManager.isSynchronizationActive());
 
-		ConnectionHolder conHolder = new ConnectionHolder(con);
+		ConnectionHolder conHolder = new ConnectionHolder(this.con);
 		conHolder.setTransactionActive(true);
-		TransactionSynchronizationManager.bindResource(ds, conHolder);
+		TransactionSynchronizationManager.bindResource(this.ds, conHolder);
 		final RuntimeException ex = new RuntimeException("Application exception");
 		try {
 			tt.execute(new TransactionCallbackWithoutResult() {
@@ -287,10 +287,10 @@ public class DataSourceTransactionManagerTests  {
 			assertEquals("Correct exception thrown", ex, ex2);
 		}
 		finally {
-			TransactionSynchronizationManager.unbindResource(ds);
+			TransactionSynchronizationManager.unbindResource(this.ds);
 		}
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 	}
 
 	@Test
@@ -304,23 +304,23 @@ public class DataSourceTransactionManagerTests  {
 	}
 
 	private void doTestParticipatingTransactionWithRollbackOnly(boolean failEarly) throws Exception {
-		given(con.isReadOnly()).willReturn(false);
+		given(this.con.isReadOnly()).willReturn(false);
 		if (failEarly) {
-			tm.setFailEarlyOnGlobalRollbackOnly(true);
+			this.tm.setFailEarlyOnGlobalRollbackOnly(true);
 		}
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		assertTrue("Synchronization not active", !TransactionSynchronizationManager.isSynchronizationActive());
 
-		TransactionStatus ts = tm.getTransaction(new DefaultTransactionDefinition());
+		TransactionStatus ts = this.tm.getTransaction(new DefaultTransactionDefinition());
 		TestTransactionSynchronization synch =
-				new TestTransactionSynchronization(ds, TransactionSynchronization.STATUS_ROLLED_BACK);
+				new TestTransactionSynchronization(this.ds, TransactionSynchronization.STATUS_ROLLED_BACK);
 		TransactionSynchronizationManager.registerSynchronization(synch);
 
 		boolean outerTransactionBoundaryReached = false;
 		try {
 			assertTrue("Is new transaction", ts.isNewTransaction());
 
-			final TransactionTemplate tt = new TransactionTemplate(tm);
+			final TransactionTemplate tt = new TransactionTemplate(this.tm);
 			tt.execute(new TransactionCallbackWithoutResult() {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus status) throws RuntimeException {
@@ -341,14 +341,14 @@ public class DataSourceTransactionManagerTests  {
 			});
 
 			outerTransactionBoundaryReached = true;
-			tm.commit(ts);
+			this.tm.commit(ts);
 
 			fail("Should have thrown UnexpectedRollbackException");
 		}
 		catch (UnexpectedRollbackException ex) {
 			// expected
 			if (!outerTransactionBoundaryReached) {
-				tm.rollback(ts);
+				this.tm.rollback(ts);
 			}
 			if (failEarly) {
 				assertFalse(outerTransactionBoundaryReached);
@@ -358,25 +358,25 @@ public class DataSourceTransactionManagerTests  {
 			}
 		}
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		assertFalse(synch.beforeCommitCalled);
 		assertTrue(synch.beforeCompletionCalled);
 		assertFalse(synch.afterCommitCalled);
 		assertTrue(synch.afterCompletionCalled);
-		verify(con).rollback();
-		verify(con).close();
+		verify(this.con).rollback();
+		verify(this.con).close();
 	}
 
 	@Test
 	public void testParticipatingTransactionWithIncompatibleIsolationLevel() throws Exception {
-		tm.setValidateExistingTransaction(true);
+		this.tm.setValidateExistingTransaction(true);
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		assertTrue("Synchronization not active", !TransactionSynchronizationManager.isSynchronizationActive());
 
 		try {
-			final TransactionTemplate tt = new TransactionTemplate(tm);
-			final TransactionTemplate tt2 = new TransactionTemplate(tm);
+			final TransactionTemplate tt = new TransactionTemplate(this.tm);
+			final TransactionTemplate tt2 = new TransactionTemplate(this.tm);
 			tt2.setIsolationLevel(TransactionDefinition.ISOLATION_SERIALIZABLE);
 
 			tt.execute(new TransactionCallbackWithoutResult() {
@@ -399,23 +399,23 @@ public class DataSourceTransactionManagerTests  {
 			// expected
 		}
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
-		verify(con).rollback();
-		verify(con).close();
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
+		verify(this.con).rollback();
+		verify(this.con).close();
 	}
 
 	@Test
 	public void testParticipatingTransactionWithIncompatibleReadOnly() throws Exception {
-		willThrow(new SQLException("read-only not supported")).given(con).setReadOnly(true);
-		tm.setValidateExistingTransaction(true);
+		willThrow(new SQLException("read-only not supported")).given(this.con).setReadOnly(true);
+		this.tm.setValidateExistingTransaction(true);
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		assertTrue("Synchronization not active", !TransactionSynchronizationManager.isSynchronizationActive());
 
 		try {
-			final TransactionTemplate tt = new TransactionTemplate(tm);
+			final TransactionTemplate tt = new TransactionTemplate(this.tm);
 			tt.setReadOnly(true);
-			final TransactionTemplate tt2 = new TransactionTemplate(tm);
+			final TransactionTemplate tt2 = new TransactionTemplate(this.tm);
 			tt2.setReadOnly(false);
 
 			tt.execute(new TransactionCallbackWithoutResult() {
@@ -438,21 +438,21 @@ public class DataSourceTransactionManagerTests  {
 			// expected
 		}
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
-		verify(con).rollback();
-		verify(con).close();
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
+		verify(this.con).rollback();
+		verify(this.con).close();
 	}
 
 	@Test
 	public void testParticipatingTransactionWithTransactionStartedFromSynch() throws Exception {
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		assertTrue("Synchronization not active", !TransactionSynchronizationManager.isSynchronizationActive());
 
-		final TransactionTemplate tt = new TransactionTemplate(tm);
+		final TransactionTemplate tt = new TransactionTemplate(this.tm);
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
 
 		final TestTransactionSynchronization synch =
-				new TestTransactionSynchronization(ds, TransactionSynchronization.STATUS_COMMITTED) {
+				new TestTransactionSynchronization(this.ds, TransactionSynchronization.STATUS_COMMITTED) {
 					@Override
 					protected void doAfterCompletion(int status) {
 						super.doAfterCompletion(status);
@@ -474,14 +474,14 @@ public class DataSourceTransactionManagerTests  {
 			}
 		});
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		assertTrue(synch.beforeCommitCalled);
 		assertTrue(synch.beforeCompletionCalled);
 		assertTrue(synch.afterCommitCalled);
 		assertTrue(synch.afterCompletionCalled);
 		assertTrue(synch.afterCompletionException instanceof IllegalStateException);
-		verify(con, times(2)).commit();
-		verify(con, times(2)).close();
+		verify(this.con, times(2)).commit();
+		verify(this.con, times(2)).close();
 	}
 
 	@Test
@@ -490,13 +490,13 @@ public class DataSourceTransactionManagerTests  {
 		final Connection con2 = mock(Connection.class);
 		given(ds2.getConnection()).willReturn(con2);
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		assertTrue("Synchronization not active", !TransactionSynchronizationManager.isSynchronizationActive());
 
-		final TransactionTemplate tt = new TransactionTemplate(tm);
+		final TransactionTemplate tt = new TransactionTemplate(this.tm);
 
 		final TestTransactionSynchronization synch =
-				new TestTransactionSynchronization(ds, TransactionSynchronization.STATUS_COMMITTED) {
+				new TestTransactionSynchronization(this.ds, TransactionSynchronization.STATUS_COMMITTED) {
 					@Override
 					protected void doAfterCompletion(int status) {
 						super.doAfterCompletion(status);
@@ -512,29 +512,29 @@ public class DataSourceTransactionManagerTests  {
 			}
 		});
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		assertTrue(synch.beforeCommitCalled);
 		assertTrue(synch.beforeCompletionCalled);
 		assertTrue(synch.afterCommitCalled);
 		assertTrue(synch.afterCompletionCalled);
 		assertNull(synch.afterCompletionException);
-		verify(con).commit();
-		verify(con).close();
+		verify(this.con).commit();
+		verify(this.con).close();
 		verify(con2).close();
 	}
 
 	@Test
 	public void testParticipatingTransactionWithRollbackOnlyAndInnerSynch() throws Exception {
-		tm.setTransactionSynchronization(DataSourceTransactionManager.SYNCHRONIZATION_NEVER);
-		DataSourceTransactionManager tm2 = new DataSourceTransactionManager(ds);
+		this.tm.setTransactionSynchronization(DataSourceTransactionManager.SYNCHRONIZATION_NEVER);
+		DataSourceTransactionManager tm2 = new DataSourceTransactionManager(this.ds);
 		// tm has no synch enabled (used at outer level), tm2 has synch enabled (inner level)
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		assertTrue("Synchronization not active", !TransactionSynchronizationManager.isSynchronizationActive());
 
-		TransactionStatus ts = tm.getTransaction(new DefaultTransactionDefinition());
+		TransactionStatus ts = this.tm.getTransaction(new DefaultTransactionDefinition());
 		final TestTransactionSynchronization synch =
-				new TestTransactionSynchronization(ds, TransactionSynchronization.STATUS_UNKNOWN);
+				new TestTransactionSynchronization(this.ds, TransactionSynchronization.STATUS_UNKNOWN);
 
 		try {
 			assertTrue("Is new transaction", ts.isNewTransaction());
@@ -560,7 +560,7 @@ public class DataSourceTransactionManagerTests  {
 				}
 			});
 
-			tm.commit(ts);
+			this.tm.commit(ts);
 
 			fail("Should have thrown UnexpectedRollbackException");
 		}
@@ -568,20 +568,20 @@ public class DataSourceTransactionManagerTests  {
 			// expected
 		}
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		assertFalse(synch.beforeCommitCalled);
 		assertTrue(synch.beforeCompletionCalled);
 		assertFalse(synch.afterCommitCalled);
 		assertTrue(synch.afterCompletionCalled);
-		verify(con).rollback();
-		verify(con).close();
+		verify(this.con).rollback();
+		verify(this.con).close();
 	}
 
 	@Test
 	public void testPropagationRequiresNewWithExistingTransaction() throws Exception {
-		final TransactionTemplate tt = new TransactionTemplate(tm);
+		final TransactionTemplate tt = new TransactionTemplate(this.tm);
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		assertTrue("Synchronization not active", !TransactionSynchronizationManager.isSynchronizationActive());
 
 		tt.execute(new TransactionCallbackWithoutResult() {
@@ -608,10 +608,10 @@ public class DataSourceTransactionManagerTests  {
 			}
 		});
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
-		verify(con).rollback();
-		verify(con).commit();
-		verify(con, times(2)).close();
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
+		verify(this.con).rollback();
+		verify(this.con).commit();
+		verify(this.con, times(2)).close();
 	}
 
 	@Test
@@ -620,14 +620,14 @@ public class DataSourceTransactionManagerTests  {
 		final DataSource ds2 = mock(DataSource.class);
 		given(ds2.getConnection()).willReturn(con2);
 
-		final TransactionTemplate tt = new TransactionTemplate(tm);
+		final TransactionTemplate tt = new TransactionTemplate(this.tm);
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
 
 		PlatformTransactionManager tm2 = new DataSourceTransactionManager(ds2);
 		final TransactionTemplate tt2 = new TransactionTemplate(tm2);
 		tt2.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds2));
 		assertTrue("Synchronization not active", !TransactionSynchronizationManager.isSynchronizationActive());
 
@@ -655,10 +655,10 @@ public class DataSourceTransactionManagerTests  {
 			}
 		});
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds2));
-		verify(con).commit();
-		verify(con).close();
+		verify(this.con).commit();
+		verify(this.con).close();
 		verify(con2).rollback();
 		verify(con2).close();
 	}
@@ -670,7 +670,7 @@ public class DataSourceTransactionManagerTests  {
 		given(ds2.getConnection()).willThrow(failure);
 
 
-		final TransactionTemplate tt = new TransactionTemplate(tm);
+		final TransactionTemplate tt = new TransactionTemplate(this.tm);
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
 
 		DataSourceTransactionManager tm2 = new DataSourceTransactionManager(ds2);
@@ -678,7 +678,7 @@ public class DataSourceTransactionManagerTests  {
 		final TransactionTemplate tt2 = new TransactionTemplate(tm2);
 		tt2.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds2));
 		assertTrue("Synchronization not active", !TransactionSynchronizationManager.isSynchronizationActive());
 
@@ -704,17 +704,17 @@ public class DataSourceTransactionManagerTests  {
 			assertSame(failure, ex.getCause());
 		}
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds2));
-		verify(con).rollback();
-		verify(con).close();
+		verify(this.con).rollback();
+		verify(this.con).close();
 	}
 
 	@Test
 	public void testPropagationNotSupportedWithExistingTransaction() throws Exception {
-		final TransactionTemplate tt = new TransactionTemplate(tm);
+		final TransactionTemplate tt = new TransactionTemplate(this.tm);
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		assertTrue("Synchronization not active", !TransactionSynchronizationManager.isSynchronizationActive());
 
 		tt.execute(new TransactionCallbackWithoutResult() {
@@ -741,16 +741,16 @@ public class DataSourceTransactionManagerTests  {
 			}
 		});
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
-		verify(con).commit();
-		verify(con).close();
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
+		verify(this.con).commit();
+		verify(this.con).close();
 	}
 
 	@Test
 	public void testPropagationNeverWithExistingTransaction() throws Exception {
-		final TransactionTemplate tt = new TransactionTemplate(tm);
+		final TransactionTemplate tt = new TransactionTemplate(this.tm);
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		assertTrue("Synchronization not active", !TransactionSynchronizationManager.isSynchronizationActive());
 
 		try {
@@ -773,16 +773,16 @@ public class DataSourceTransactionManagerTests  {
 			// expected
 		}
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
-		verify(con).rollback();
-		verify(con).close();
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
+		verify(this.con).rollback();
+		verify(this.con).close();
 	}
 
 	@Test
 	public void testPropagationSupportsAndRequiresNew() throws Exception {
-		TransactionTemplate tt = new TransactionTemplate(tm);
+		TransactionTemplate tt = new TransactionTemplate(this.tm);
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_SUPPORTS);
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		assertTrue("Synchronization not active", !TransactionSynchronizationManager.isSynchronizationActive());
 
 		tt.execute(new TransactionCallbackWithoutResult() {
@@ -804,21 +804,21 @@ public class DataSourceTransactionManagerTests  {
 			}
 		});
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
-		verify(con).commit();
-		verify(con).close();
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
+		verify(this.con).commit();
+		verify(this.con).close();
 	}
 
 	@Test
 	public void testPropagationSupportsAndRequiresNewWithEarlyAccess() throws Exception {
 		final Connection con1 = mock(Connection.class);
 		final Connection con2 = mock(Connection.class);
-		given(ds.getConnection()).willReturn(con1, con2);
+		given(this.ds.getConnection()).willReturn(con1, con2);
 
 		final
-		TransactionTemplate tt = new TransactionTemplate(tm);
+		TransactionTemplate tt = new TransactionTemplate(this.tm);
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_SUPPORTS);
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		assertTrue("Synchronization not active", !TransactionSynchronizationManager.isSynchronizationActive());
 
 		tt.execute(new TransactionCallbackWithoutResult() {
@@ -843,7 +843,7 @@ public class DataSourceTransactionManagerTests  {
 			}
 		});
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		verify(con1).close();
 		verify(con2).commit();
 		verify(con2).close();
@@ -851,14 +851,14 @@ public class DataSourceTransactionManagerTests  {
 
 	@Test
 	public void testTransactionWithIsolationAndReadOnly() throws Exception {
-		given(con.getTransactionIsolation()).willReturn(Connection.TRANSACTION_READ_COMMITTED);
-		given(con.getAutoCommit()).willReturn(true);
+		given(this.con.getTransactionIsolation()).willReturn(Connection.TRANSACTION_READ_COMMITTED);
+		given(this.con.getAutoCommit()).willReturn(true);
 
-		TransactionTemplate tt = new TransactionTemplate(tm);
+		TransactionTemplate tt = new TransactionTemplate(this.tm);
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
 		tt.setIsolationLevel(TransactionDefinition.ISOLATION_SERIALIZABLE);
 		tt.setReadOnly(true);
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		tt.execute(new TransactionCallbackWithoutResult() {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus status) {
@@ -868,28 +868,28 @@ public class DataSourceTransactionManagerTests  {
 			}
 		});
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
-		InOrder ordered = inOrder(con);
-		ordered.verify(con).setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-		ordered.verify(con).setAutoCommit(false);
-		ordered.verify(con).commit();
-		ordered.verify(con).setAutoCommit(true);
-		ordered.verify(con).setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-		verify(con).close();
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
+		InOrder ordered = inOrder(this.con);
+		ordered.verify(this.con).setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+		ordered.verify(this.con).setAutoCommit(false);
+		ordered.verify(this.con).commit();
+		ordered.verify(this.con).setAutoCommit(true);
+		ordered.verify(this.con).setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+		verify(this.con).close();
 	}
 
 	@Test
 	public void testTransactionWithEnforceReadOnly() throws Exception {
-		tm.setEnforceReadOnly(true);
+		this.tm.setEnforceReadOnly(true);
 
-		given(con.getAutoCommit()).willReturn(true);
+		given(this.con.getAutoCommit()).willReturn(true);
 		Statement stmt = mock(Statement.class);
-		given(con.createStatement()).willReturn(stmt);
+		given(this.con.createStatement()).willReturn(stmt);
 
-		TransactionTemplate tt = new TransactionTemplate(tm);
+		TransactionTemplate tt = new TransactionTemplate(this.tm);
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
 		tt.setReadOnly(true);
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		tt.execute(new TransactionCallbackWithoutResult() {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus status) {
@@ -899,14 +899,14 @@ public class DataSourceTransactionManagerTests  {
 			}
 		});
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
-		InOrder ordered = inOrder(con, stmt);
-		ordered.verify(con).setAutoCommit(false);
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
+		InOrder ordered = inOrder(this.con, stmt);
+		ordered.verify(this.con).setAutoCommit(false);
 		ordered.verify(stmt).executeUpdate("SET TRANSACTION READ ONLY");
 		ordered.verify(stmt).close();
-		ordered.verify(con).commit();
-		ordered.verify(con).setAutoCommit(true);
-		ordered.verify(con).close();
+		ordered.verify(this.con).commit();
+		ordered.verify(this.con).setAutoCommit(true);
+		ordered.verify(this.con).close();
 	}
 
 	@Test
@@ -923,12 +923,12 @@ public class DataSourceTransactionManagerTests  {
 		Assume.group(TestGroup.PERFORMANCE);
 
 		PreparedStatement ps = mock(PreparedStatement.class);
-		given(con.getAutoCommit()).willReturn(true);
-		given(con.prepareStatement("some SQL statement")).willReturn(ps);
+		given(this.con.getAutoCommit()).willReturn(true);
+		given(this.con.prepareStatement("some SQL statement")).willReturn(ps);
 
-		TransactionTemplate tt = new TransactionTemplate(tm);
+		TransactionTemplate tt = new TransactionTemplate(this.tm);
 		tt.setTimeout(timeout);
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 
 		try {
 			tt.execute(new TransactionCallbackWithoutResult() {
@@ -962,27 +962,27 @@ public class DataSourceTransactionManagerTests  {
 			}
 		}
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		if (timeout > 1) {
 			verify(ps).setQueryTimeout(timeout - 1);
-			verify(con).commit();
+			verify(this.con).commit();
 		}
 		else {
-			verify(con).rollback();
+			verify(this.con).rollback();
 		}
-		InOrder ordered = inOrder(con);
-		ordered.verify(con).setAutoCommit(false);
-		ordered.verify(con).setAutoCommit(true);
-		verify(con).close();
+		InOrder ordered = inOrder(this.con);
+		ordered.verify(this.con).setAutoCommit(false);
+		ordered.verify(this.con).setAutoCommit(true);
+		verify(this.con).close();
 
 	}
 
 	@Test
 	public void testTransactionAwareDataSourceProxy() throws Exception {
-		given(con.getAutoCommit()).willReturn(true);
+		given(this.con.getAutoCommit()).willReturn(true);
 
-		TransactionTemplate tt = new TransactionTemplate(tm);
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		TransactionTemplate tt = new TransactionTemplate(this.tm);
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		tt.execute(new TransactionCallbackWithoutResult() {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus status) {
@@ -1000,21 +1000,21 @@ public class DataSourceTransactionManagerTests  {
 			}
 		});
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
-		InOrder ordered = inOrder(con);
-		ordered.verify(con).setAutoCommit(false);
-		ordered.verify(con).commit();
-		ordered.verify(con).setAutoCommit(true);
-		verify(con).close();
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
+		InOrder ordered = inOrder(this.con);
+		ordered.verify(this.con).setAutoCommit(false);
+		ordered.verify(this.con).commit();
+		ordered.verify(this.con).setAutoCommit(true);
+		verify(this.con).close();
 	}
 
 	@Test
 	public void testTransactionAwareDataSourceProxyWithSuspension() throws Exception {
-		given(con.getAutoCommit()).willReturn(true);
+		given(this.con.getAutoCommit()).willReturn(true);
 
-		final TransactionTemplate tt = new TransactionTemplate(tm);
+		final TransactionTemplate tt = new TransactionTemplate(this.tm);
 		tt.setPropagationBehavior(TransactionTemplate.PROPAGATION_REQUIRES_NEW);
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 
 		tt.execute(new TransactionCallbackWithoutResult() {
 			@Override
@@ -1058,21 +1058,21 @@ public class DataSourceTransactionManagerTests  {
 			}
 		});
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
-		InOrder ordered = inOrder(con);
-		ordered.verify(con).setAutoCommit(false);
-		ordered.verify(con).commit();
-		ordered.verify(con).setAutoCommit(true);
-		verify(con, times(2)).close();
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
+		InOrder ordered = inOrder(this.con);
+		ordered.verify(this.con).setAutoCommit(false);
+		ordered.verify(this.con).commit();
+		ordered.verify(this.con).setAutoCommit(true);
+		verify(this.con, times(2)).close();
 	}
 
 	@Test
 	public void testTransactionAwareDataSourceProxyWithSuspensionAndReobtaining() throws Exception {
-		given(con.getAutoCommit()).willReturn(true);
+		given(this.con.getAutoCommit()).willReturn(true);
 
-		final TransactionTemplate tt = new TransactionTemplate(tm);
+		final TransactionTemplate tt = new TransactionTemplate(this.tm);
 		tt.setPropagationBehavior(TransactionTemplate.PROPAGATION_REQUIRES_NEW);
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 
 		tt.execute(new TransactionCallbackWithoutResult() {
 			@Override
@@ -1117,12 +1117,12 @@ public class DataSourceTransactionManagerTests  {
 			}
 		});
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
-		InOrder ordered = inOrder(con);
-		ordered.verify(con).setAutoCommit(false);
-		ordered.verify(con).commit();
-		ordered.verify(con).setAutoCommit(true);
-		verify(con, times(2)).close();
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
+		InOrder ordered = inOrder(this.con);
+		ordered.verify(this.con).setAutoCommit(false);
+		ordered.verify(this.con).commit();
+		ordered.verify(this.con).setAutoCommit(true);
+		verify(this.con, times(2)).close();
 	}
 
 	/**
@@ -1130,9 +1130,9 @@ public class DataSourceTransactionManagerTests  {
 	 */
 	@Test
 	public void testTransactionWithExceptionOnBegin() throws Exception {
-		willThrow(new SQLException("Cannot begin")).given(con).getAutoCommit();
+		willThrow(new SQLException("Cannot begin")).given(this.con).getAutoCommit();
 
-		TransactionTemplate tt = new TransactionTemplate(tm);
+		TransactionTemplate tt = new TransactionTemplate(this.tm);
 		try {
 			tt.execute(new TransactionCallbackWithoutResult() {
 				@Override
@@ -1146,15 +1146,15 @@ public class DataSourceTransactionManagerTests  {
 			// expected
 		}
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
-		verify(con).close();
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
+		verify(this.con).close();
 	}
 
 	@Test
 	public void testTransactionWithExceptionOnCommit() throws Exception {
-		willThrow(new SQLException("Cannot commit")).given(con).commit();
+		willThrow(new SQLException("Cannot commit")).given(this.con).commit();
 
-		TransactionTemplate tt = new TransactionTemplate(tm);
+		TransactionTemplate tt = new TransactionTemplate(this.tm);
 		try {
 			tt.execute(new TransactionCallbackWithoutResult() {
 				@Override
@@ -1168,16 +1168,16 @@ public class DataSourceTransactionManagerTests  {
 			// expected
 		}
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
-		verify(con).close();
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
+		verify(this.con).close();
 	}
 
 	@Test
 	public void testTransactionWithExceptionOnCommitAndRollbackOnCommitFailure() throws Exception {
-		willThrow(new SQLException("Cannot commit")).given(con).commit();
+		willThrow(new SQLException("Cannot commit")).given(this.con).commit();
 
-		tm.setRollbackOnCommitFailure(true);
-		TransactionTemplate tt = new TransactionTemplate(tm);
+		this.tm.setRollbackOnCommitFailure(true);
+		TransactionTemplate tt = new TransactionTemplate(this.tm);
 		try {
 			tt.execute(new TransactionCallbackWithoutResult() {
 				@Override
@@ -1191,17 +1191,17 @@ public class DataSourceTransactionManagerTests  {
 			// expected
 		}
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
-		verify(con).rollback();
-		verify(con).close();
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
+		verify(this.con).rollback();
+		verify(this.con).close();
 	}
 
 	@Test
 	public void testTransactionWithExceptionOnRollback() throws Exception {
-		given(con.getAutoCommit()).willReturn(true);
-		willThrow(new SQLException("Cannot rollback")).given(con).rollback();
+		given(this.con.getAutoCommit()).willReturn(true);
+		willThrow(new SQLException("Cannot rollback")).given(this.con).rollback();
 
-		TransactionTemplate tt = new TransactionTemplate(tm);
+		TransactionTemplate tt = new TransactionTemplate(this.tm);
 		try {
 			tt.execute(new TransactionCallbackWithoutResult() {
 				@Override
@@ -1215,19 +1215,19 @@ public class DataSourceTransactionManagerTests  {
 			// expected
 		}
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
-		InOrder ordered = inOrder(con);
-		ordered.verify(con).setAutoCommit(false);
-		ordered.verify(con).rollback();
-		ordered.verify(con).setAutoCommit(true);
-		verify(con).close();
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
+		InOrder ordered = inOrder(this.con);
+		ordered.verify(this.con).setAutoCommit(false);
+		ordered.verify(this.con).rollback();
+		ordered.verify(this.con).setAutoCommit(true);
+		verify(this.con).close();
 	}
 
 	@Test
 	public void testTransactionWithPropagationSupports() throws Exception {
-		TransactionTemplate tt = new TransactionTemplate(tm);
+		TransactionTemplate tt = new TransactionTemplate(this.tm);
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_SUPPORTS);
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 
 		tt.execute(new TransactionCallbackWithoutResult() {
 			@Override
@@ -1239,14 +1239,14 @@ public class DataSourceTransactionManagerTests  {
 			}
 		});
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 	}
 
 	@Test
 	public void testTransactionWithPropagationNotSupported() throws Exception {
-		TransactionTemplate tt = new TransactionTemplate(tm);
+		TransactionTemplate tt = new TransactionTemplate(this.tm);
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_NOT_SUPPORTED);
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 
 		tt.execute(new TransactionCallbackWithoutResult() {
 			@Override
@@ -1256,14 +1256,14 @@ public class DataSourceTransactionManagerTests  {
 			}
 		});
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 	}
 
 	@Test
 	public void testTransactionWithPropagationNever() throws Exception {
-		TransactionTemplate tt = new TransactionTemplate(tm);
+		TransactionTemplate tt = new TransactionTemplate(this.tm);
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_NEVER);
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 
 		tt.execute(new TransactionCallbackWithoutResult() {
 			@Override
@@ -1273,7 +1273,7 @@ public class DataSourceTransactionManagerTests  {
 			}
 		});
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 	}
 
 	@Test
@@ -1291,14 +1291,14 @@ public class DataSourceTransactionManagerTests  {
 		Savepoint sp = mock(Savepoint.class);
 
 		given(md.supportsSavepoints()).willReturn(true);
-		given(con.getMetaData()).willReturn(md);
+		given(this.con.getMetaData()).willReturn(md);
 		for (int i = 1; i <= count; i++) {
-			given(con.setSavepoint(ConnectionHolder.SAVEPOINT_NAME_PREFIX + i)).willReturn(sp);
+			given(this.con.setSavepoint(ConnectionHolder.SAVEPOINT_NAME_PREFIX + i)).willReturn(sp);
 		}
 
-		final TransactionTemplate tt = new TransactionTemplate(tm);
+		final TransactionTemplate tt = new TransactionTemplate(this.tm);
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_NESTED);
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		assertTrue("Synchronization not active", !TransactionSynchronizationManager.isSynchronizationActive());
 
 		tt.execute(new TransactionCallbackWithoutResult() {
@@ -1322,10 +1322,10 @@ public class DataSourceTransactionManagerTests  {
 			}
 		});
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
-		verify(con, times(count)).releaseSavepoint(sp);
-		verify(con).commit();
-		verify(con).close();
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
+		verify(this.con, times(count)).releaseSavepoint(sp);
+		verify(this.con).commit();
+		verify(this.con).close();
 	}
 
 	@Test
@@ -1334,12 +1334,12 @@ public class DataSourceTransactionManagerTests  {
 		Savepoint sp = mock(Savepoint.class);
 
 		given(md.supportsSavepoints()).willReturn(true);
-		given(con.getMetaData()).willReturn(md);
-		given(con.setSavepoint("SAVEPOINT_1")).willReturn(sp);
+		given(this.con.getMetaData()).willReturn(md);
+		given(this.con.setSavepoint("SAVEPOINT_1")).willReturn(sp);
 
-		final TransactionTemplate tt = new TransactionTemplate(tm);
+		final TransactionTemplate tt = new TransactionTemplate(this.tm);
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_NESTED);
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		assertTrue("Synchronization not active", !TransactionSynchronizationManager.isSynchronizationActive());
 
 		tt.execute(new TransactionCallbackWithoutResult() {
@@ -1362,12 +1362,12 @@ public class DataSourceTransactionManagerTests  {
 			}
 		});
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
-		verify(con).rollback(sp);
-		verify(con).releaseSavepoint(sp);
-		verify(con).commit();
-		verify(con).isReadOnly();
-		verify(con).close();
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
+		verify(this.con).rollback(sp);
+		verify(this.con).releaseSavepoint(sp);
+		verify(this.con).commit();
+		verify(this.con).isReadOnly();
+		verify(this.con).close();
 	}
 
 	@Test
@@ -1376,12 +1376,12 @@ public class DataSourceTransactionManagerTests  {
 		Savepoint sp = mock(Savepoint.class);
 
 		given(md.supportsSavepoints()).willReturn(true);
-		given(con.getMetaData()).willReturn(md);
-		given(con.setSavepoint("SAVEPOINT_1")).willReturn(sp);
+		given(this.con.getMetaData()).willReturn(md);
+		given(this.con.setSavepoint("SAVEPOINT_1")).willReturn(sp);
 
-		final TransactionTemplate tt = new TransactionTemplate(tm);
+		final TransactionTemplate tt = new TransactionTemplate(this.tm);
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_NESTED);
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		assertTrue("Synchronization not active", !TransactionSynchronizationManager.isSynchronizationActive());
 
 		tt.execute(new TransactionCallbackWithoutResult() {
@@ -1420,12 +1420,12 @@ public class DataSourceTransactionManagerTests  {
 			}
 		});
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
-		verify(con).rollback(sp);
-		verify(con).releaseSavepoint(sp);
-		verify(con).commit();
-		verify(con).isReadOnly();
-		verify(con).close();
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
+		verify(this.con).rollback(sp);
+		verify(this.con).releaseSavepoint(sp);
+		verify(this.con).commit();
+		verify(this.con).isReadOnly();
+		verify(this.con).close();
 	}
 
 	@Test
@@ -1434,12 +1434,12 @@ public class DataSourceTransactionManagerTests  {
 		Savepoint sp = mock(Savepoint.class);
 
 		given(md.supportsSavepoints()).willReturn(true);
-		given(con.getMetaData()).willReturn(md);
-		given(con.setSavepoint("SAVEPOINT_1")).willReturn(sp);
+		given(this.con.getMetaData()).willReturn(md);
+		given(this.con.setSavepoint("SAVEPOINT_1")).willReturn(sp);
 
-		final TransactionTemplate tt = new TransactionTemplate(tm);
+		final TransactionTemplate tt = new TransactionTemplate(this.tm);
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_NESTED);
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		assertTrue("Synchronization not active", !TransactionSynchronizationManager.isSynchronizationActive());
 
 		tt.execute(new TransactionCallbackWithoutResult() {
@@ -1478,12 +1478,12 @@ public class DataSourceTransactionManagerTests  {
 			}
 		});
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
-		verify(con).rollback(sp);
-		verify(con).releaseSavepoint(sp);
-		verify(con).commit();
-		verify(con).isReadOnly();
-		verify(con).close();
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
+		verify(this.con).rollback(sp);
+		verify(this.con).releaseSavepoint(sp);
+		verify(this.con).commit();
+		verify(this.con).isReadOnly();
+		verify(this.con).close();
 	}
 
 	@Test
@@ -1492,12 +1492,12 @@ public class DataSourceTransactionManagerTests  {
 		Savepoint sp = mock(Savepoint.class);
 
 		given(md.supportsSavepoints()).willReturn(true);
-		given(con.getMetaData()).willReturn(md);
-		given(con.setSavepoint("SAVEPOINT_1")).willReturn(sp);
+		given(this.con.getMetaData()).willReturn(md);
+		given(this.con.setSavepoint("SAVEPOINT_1")).willReturn(sp);
 
-		final TransactionTemplate tt = new TransactionTemplate(tm);
+		final TransactionTemplate tt = new TransactionTemplate(this.tm);
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_NESTED);
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		assertTrue("Synchronization not active", !TransactionSynchronizationManager.isSynchronizationActive());
 
 		tt.execute(new TransactionCallbackWithoutResult() {
@@ -1510,11 +1510,11 @@ public class DataSourceTransactionManagerTests  {
 			}
 		});
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
-		verify(con).releaseSavepoint(sp);
-		verify(con).commit();
-		verify(con).close();
-		verify(ds).getConnection();
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
+		verify(this.con).releaseSavepoint(sp);
+		verify(this.con).commit();
+		verify(this.con).close();
+		verify(this.ds).getConnection();
 	}
 
 	@Test
@@ -1523,12 +1523,12 @@ public class DataSourceTransactionManagerTests  {
 		Savepoint sp = mock(Savepoint.class);
 
 		given(md.supportsSavepoints()).willReturn(true);
-		given(con.getMetaData()).willReturn(md);
-		given(con.setSavepoint("SAVEPOINT_1")).willReturn(sp);
+		given(this.con.getMetaData()).willReturn(md);
+		given(this.con.setSavepoint("SAVEPOINT_1")).willReturn(sp);
 
-		final TransactionTemplate tt = new TransactionTemplate(tm);
+		final TransactionTemplate tt = new TransactionTemplate(this.tm);
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_NESTED);
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		assertTrue("Synchronization not active", !TransactionSynchronizationManager.isSynchronizationActive());
 
 		tt.execute(new TransactionCallbackWithoutResult() {
@@ -1541,17 +1541,17 @@ public class DataSourceTransactionManagerTests  {
 			}
 		});
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
-		verify(con).rollback(sp);
-		verify(con).commit();
-		verify(con).close();
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
+		verify(this.con).rollback(sp);
+		verify(this.con).commit();
+		verify(this.con).close();
 	}
 
 	@Test
 	public void testTransactionWithPropagationNested() throws Exception {
-		final TransactionTemplate tt = new TransactionTemplate(tm);
+		final TransactionTemplate tt = new TransactionTemplate(this.tm);
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_NESTED);
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		assertTrue("Synchronization not active", !TransactionSynchronizationManager.isSynchronizationActive());
 
 		tt.execute(new TransactionCallbackWithoutResult() {
@@ -1561,16 +1561,16 @@ public class DataSourceTransactionManagerTests  {
 			}
 		});
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
-		verify(con).commit();
-		verify(con).close();
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
+		verify(this.con).commit();
+		verify(this.con).close();
 	}
 
 	@Test
 	public void testTransactionWithPropagationNestedAndRollback() throws Exception {
-		final TransactionTemplate tt = new TransactionTemplate(tm);
+		final TransactionTemplate tt = new TransactionTemplate(this.tm);
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_NESTED);
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
 		assertTrue("Synchronization not active", !TransactionSynchronizationManager.isSynchronizationActive());
 
 		tt.execute(new TransactionCallbackWithoutResult() {
@@ -1581,9 +1581,9 @@ public class DataSourceTransactionManagerTests  {
 			}
 		});
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(ds));
-		verify(con).rollback();
-		verify(con).close();
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.ds));
+		verify(this.con).rollback();
+		verify(this.con).close();
 	}
 
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,10 +62,10 @@ public class ContentNegotiatingViewResolverTests {
 		StaticWebApplicationContext wac = new StaticWebApplicationContext();
 		wac.setServletContext(new MockServletContext());
 		wac.refresh();
-		viewResolver = new ContentNegotiatingViewResolver();
-		viewResolver.setApplicationContext(wac);
-		request = new MockHttpServletRequest("GET", "/test");
-		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+		this.viewResolver = new ContentNegotiatingViewResolver();
+		this.viewResolver.setApplicationContext(wac);
+		this.request = new MockHttpServletRequest("GET", "/test");
+		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(this.request));
 	}
 
 	@After
@@ -76,20 +76,20 @@ public class ContentNegotiatingViewResolverTests {
 	@Test
 	public void getMediaTypeAcceptHeaderWithProduces() throws Exception {
 		Set<MediaType> producibleTypes = Collections.singleton(MediaType.APPLICATION_XHTML_XML);
-		request.setAttribute(HandlerMapping.PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE, producibleTypes);
-		request.addHeader("Accept", "text/html,application/xml;q=0.9,application/xhtml+xml,*/*;q=0.8");
-		viewResolver.afterPropertiesSet();
-		List<MediaType> result = viewResolver.getMediaTypes(request);
+		this.request.setAttribute(HandlerMapping.PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE, producibleTypes);
+		this.request.addHeader("Accept", "text/html,application/xml;q=0.9,application/xhtml+xml,*/*;q=0.8");
+		this.viewResolver.afterPropertiesSet();
+		List<MediaType> result = this.viewResolver.getMediaTypes(this.request);
 		assertEquals("Invalid content type", new MediaType("application", "xhtml+xml"), result.get(0));
 	}
 
 	@Test
 	public void resolveViewNameWithPathExtension() throws Exception {
-		request.setRequestURI("/test.xls");
+		this.request.setRequestURI("/test.xls");
 
 		ViewResolver viewResolverMock = mock(ViewResolver.class);
-		viewResolver.setViewResolvers(Collections.singletonList(viewResolverMock));
-		viewResolver.afterPropertiesSet();
+		this.viewResolver.setViewResolvers(Collections.singletonList(viewResolverMock));
+		this.viewResolver.afterPropertiesSet();
 
 		View viewMock = mock(View.class, "application_xls");
 
@@ -100,22 +100,22 @@ public class ContentNegotiatingViewResolverTests {
 		given(viewResolverMock.resolveViewName(viewName + ".xls", locale)).willReturn(viewMock);
 		given(viewMock.getContentType()).willReturn("application/vnd.ms-excel");
 
-		View result = viewResolver.resolveViewName(viewName, locale);
+		View result = this.viewResolver.resolveViewName(viewName, locale);
 		assertSame("Invalid view", viewMock, result);
 	}
 
 	@Test
 	public void resolveViewNameWithAcceptHeader() throws Exception {
-		request.addHeader("Accept", "application/vnd.ms-excel");
+		this.request.addHeader("Accept", "application/vnd.ms-excel");
 
 		Map<String, MediaType> mapping = Collections.singletonMap("xls", MediaType.valueOf("application/vnd.ms-excel"));
 		MappingMediaTypeFileExtensionResolver extensionsResolver = new MappingMediaTypeFileExtensionResolver(mapping);
 		ContentNegotiationManager manager = new ContentNegotiationManager(new HeaderContentNegotiationStrategy());
 		manager.addFileExtensionResolvers(extensionsResolver);
-		viewResolver.setContentNegotiationManager(manager);
+		this.viewResolver.setContentNegotiationManager(manager);
 
 		ViewResolver viewResolverMock = mock(ViewResolver.class);
-		viewResolver.setViewResolvers(Collections.singletonList(viewResolverMock));
+		this.viewResolver.setViewResolvers(Collections.singletonList(viewResolverMock));
 
 		View viewMock = mock(View.class, "application_xls");
 
@@ -126,33 +126,33 @@ public class ContentNegotiatingViewResolverTests {
 		given(viewResolverMock.resolveViewName(viewName + ".xls", locale)).willReturn(viewMock);
 		given(viewMock.getContentType()).willReturn("application/vnd.ms-excel");
 
-		View result = viewResolver.resolveViewName(viewName, locale);
+		View result = this.viewResolver.resolveViewName(viewName, locale);
 		assertSame("Invalid view", viewMock, result);
 	}
 
 	@Test
 	public void resolveViewNameWithInvalidAcceptHeader() throws Exception {
-		request.addHeader("Accept", "application");
+		this.request.addHeader("Accept", "application");
 
 		ViewResolver viewResolverMock = mock(ViewResolver.class);
-		viewResolver.setViewResolvers(Collections.singletonList(viewResolverMock));
-		viewResolver.afterPropertiesSet();
+		this.viewResolver.setViewResolvers(Collections.singletonList(viewResolverMock));
+		this.viewResolver.afterPropertiesSet();
 
-		View result = viewResolver.resolveViewName("test", Locale.ENGLISH);
+		View result = this.viewResolver.resolveViewName("test", Locale.ENGLISH);
 		assertNull(result);
 	}
 
 	@Test
 	public void resolveViewNameWithRequestParameter() throws Exception {
-		request.addParameter("format", "xls");
+		this.request.addParameter("format", "xls");
 
 		Map<String, MediaType> mapping = Collections.singletonMap("xls", MediaType.valueOf("application/vnd.ms-excel"));
 		ParameterContentNegotiationStrategy paramStrategy = new ParameterContentNegotiationStrategy(mapping);
-		viewResolver.setContentNegotiationManager(new ContentNegotiationManager(paramStrategy));
+		this.viewResolver.setContentNegotiationManager(new ContentNegotiationManager(paramStrategy));
 
 		ViewResolver viewResolverMock = mock(ViewResolver.class);
-		viewResolver.setViewResolvers(Collections.singletonList(viewResolverMock));
-		viewResolver.afterPropertiesSet();
+		this.viewResolver.setViewResolvers(Collections.singletonList(viewResolverMock));
+		this.viewResolver.afterPropertiesSet();
 
 		View viewMock = mock(View.class, "application_xls");
 
@@ -163,22 +163,22 @@ public class ContentNegotiatingViewResolverTests {
 		given(viewResolverMock.resolveViewName(viewName + ".xls", locale)).willReturn(viewMock);
 		given(viewMock.getContentType()).willReturn("application/vnd.ms-excel");
 
-		View result = viewResolver.resolveViewName(viewName, locale);
+		View result = this.viewResolver.resolveViewName(viewName, locale);
 		assertSame("Invalid view", viewMock, result);
 	}
 
 	@Test
 	public void resolveViewNameWithDefaultContentType() throws Exception {
-		request.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+		this.request.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
 
 		MediaType mediaType = new MediaType("application", "xml");
 		FixedContentNegotiationStrategy fixedStrategy = new FixedContentNegotiationStrategy(mediaType);
-		viewResolver.setContentNegotiationManager(new ContentNegotiationManager(fixedStrategy));
+		this.viewResolver.setContentNegotiationManager(new ContentNegotiationManager(fixedStrategy));
 
 		ViewResolver viewResolverMock1 = mock(ViewResolver.class, "viewResolver1");
 		ViewResolver viewResolverMock2 = mock(ViewResolver.class, "viewResolver2");
-		viewResolver.setViewResolvers(Arrays.asList(viewResolverMock1, viewResolverMock2));
-		viewResolver.afterPropertiesSet();
+		this.viewResolver.setViewResolvers(Arrays.asList(viewResolverMock1, viewResolverMock2));
+		this.viewResolver.afterPropertiesSet();
 
 		View viewMock1 = mock(View.class, "application_xml");
 		View viewMock2 = mock(View.class, "text_html");
@@ -191,19 +191,19 @@ public class ContentNegotiatingViewResolverTests {
 		given(viewMock1.getContentType()).willReturn("application/xml");
 		given(viewMock2.getContentType()).willReturn("text/html;charset=ISO-8859-1");
 
-		View result = viewResolver.resolveViewName(viewName, locale);
+		View result = this.viewResolver.resolveViewName(viewName, locale);
 		assertSame("Invalid view", viewMock1, result);
 	}
 
 	@Test
 	public void resolveViewNameAcceptHeader() throws Exception {
-		request.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+		this.request.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
 
 		ViewResolver viewResolverMock1 = mock(ViewResolver.class);
 		ViewResolver viewResolverMock2 = mock(ViewResolver.class);
-		viewResolver.setViewResolvers(Arrays.asList(viewResolverMock1, viewResolverMock2));
+		this.viewResolver.setViewResolvers(Arrays.asList(viewResolverMock1, viewResolverMock2));
 
-		viewResolver.afterPropertiesSet();
+		this.viewResolver.afterPropertiesSet();
 
 		View viewMock1 = mock(View.class, "application_xml");
 		View viewMock2 = mock(View.class, "text_html");
@@ -216,7 +216,7 @@ public class ContentNegotiatingViewResolverTests {
 		given(viewMock1.getContentType()).willReturn("application/xml");
 		given(viewMock2.getContentType()).willReturn("text/html;charset=ISO-8859-1");
 
-		View result = viewResolver.resolveViewName(viewName, locale);
+		View result = this.viewResolver.resolveViewName(viewName, locale);
 		assertSame("Invalid view", viewMock2, result);
 	}
 
@@ -224,13 +224,13 @@ public class ContentNegotiatingViewResolverTests {
 
 	@Test
 	public void resolveViewNameAcceptHeaderSortByQuality() throws Exception {
-		request.addHeader("Accept", "text/plain;q=0.5, application/json");
+		this.request.addHeader("Accept", "text/plain;q=0.5, application/json");
 
-		viewResolver.setContentNegotiationManager(new ContentNegotiationManager(new HeaderContentNegotiationStrategy()));
+		this.viewResolver.setContentNegotiationManager(new ContentNegotiationManager(new HeaderContentNegotiationStrategy()));
 
 		ViewResolver htmlViewResolver = mock(ViewResolver.class);
 		ViewResolver jsonViewResolver = mock(ViewResolver.class);
-		viewResolver.setViewResolvers(Arrays.asList(htmlViewResolver, jsonViewResolver));
+		this.viewResolver.setViewResolvers(Arrays.asList(htmlViewResolver, jsonViewResolver));
 
 		View htmlView = mock(View.class, "text_html");
 		View jsonViewMock = mock(View.class, "application_json");
@@ -243,7 +243,7 @@ public class ContentNegotiatingViewResolverTests {
 		given(htmlView.getContentType()).willReturn("text/html");
 		given(jsonViewMock.getContentType()).willReturn("application/json");
 
-		View result = viewResolver.resolveViewName(viewName, locale);
+		View result = this.viewResolver.resolveViewName(viewName, locale);
 		assertSame("Invalid view", jsonViewMock, result);
 	}
 
@@ -251,12 +251,12 @@ public class ContentNegotiatingViewResolverTests {
 
 	@Test
 	public void resolveViewNameAcceptHeaderWithSuffix() throws Exception {
-		request.addHeader("Accept", "application/vnd.example-v2+xml");
+		this.request.addHeader("Accept", "application/vnd.example-v2+xml");
 
 		ViewResolver viewResolverMock = mock(ViewResolver.class);
-		viewResolver.setViewResolvers(Arrays.asList(viewResolverMock));
+		this.viewResolver.setViewResolvers(Arrays.asList(viewResolverMock));
 
-		viewResolver.afterPropertiesSet();
+		this.viewResolver.afterPropertiesSet();
 
 		View viewMock = mock(View.class, "application_xml");
 
@@ -266,19 +266,19 @@ public class ContentNegotiatingViewResolverTests {
 		given(viewResolverMock.resolveViewName(viewName, locale)).willReturn(viewMock);
 		given(viewMock.getContentType()).willReturn("application/*+xml");
 
-		View result = viewResolver.resolveViewName(viewName, locale);
+		View result = this.viewResolver.resolveViewName(viewName, locale);
 
 		assertSame("Invalid view", viewMock, result);
-		assertEquals(new MediaType("application", "vnd.example-v2+xml"), request.getAttribute(View.SELECTED_CONTENT_TYPE));
+		assertEquals(new MediaType("application", "vnd.example-v2+xml"), this.request.getAttribute(View.SELECTED_CONTENT_TYPE));
 	}
 
 	@Test
 	public void resolveViewNameAcceptHeaderDefaultView() throws Exception {
-		request.addHeader("Accept", "application/json");
+		this.request.addHeader("Accept", "application/json");
 
 		ViewResolver viewResolverMock1 = mock(ViewResolver.class);
 		ViewResolver viewResolverMock2 = mock(ViewResolver.class);
-		viewResolver.setViewResolvers(Arrays.asList(viewResolverMock1, viewResolverMock2));
+		this.viewResolver.setViewResolvers(Arrays.asList(viewResolverMock1, viewResolverMock2));
 
 		View viewMock1 = mock(View.class, "application_xml");
 		View viewMock2 = mock(View.class, "text_html");
@@ -286,9 +286,9 @@ public class ContentNegotiatingViewResolverTests {
 
 		List<View> defaultViews = new ArrayList<>();
 		defaultViews.add(viewMock3);
-		viewResolver.setDefaultViews(defaultViews);
+		this.viewResolver.setDefaultViews(defaultViews);
 
-		viewResolver.afterPropertiesSet();
+		this.viewResolver.afterPropertiesSet();
 
 		String viewName = "view";
 		Locale locale = Locale.ENGLISH;
@@ -299,19 +299,19 @@ public class ContentNegotiatingViewResolverTests {
 		given(viewMock2.getContentType()).willReturn("text/html;charset=ISO-8859-1");
 		given(viewMock3.getContentType()).willReturn("application/json");
 
-		View result = viewResolver.resolveViewName(viewName, locale);
+		View result = this.viewResolver.resolveViewName(viewName, locale);
 		assertSame("Invalid view", viewMock3, result);
 	}
 
 	@Test
 	public void resolveViewNameFilename() throws Exception {
-		request.setRequestURI("/test.html");
+		this.request.setRequestURI("/test.html");
 
 		ViewResolver viewResolverMock1 = mock(ViewResolver.class, "viewResolver1");
 		ViewResolver viewResolverMock2 = mock(ViewResolver.class, "viewResolver2");
-		viewResolver.setViewResolvers(Arrays.asList(viewResolverMock1, viewResolverMock2));
+		this.viewResolver.setViewResolvers(Arrays.asList(viewResolverMock1, viewResolverMock2));
 
-		viewResolver.afterPropertiesSet();
+		this.viewResolver.afterPropertiesSet();
 
 		View viewMock1 = mock(View.class, "application_xml");
 		View viewMock2 = mock(View.class, "text_html");
@@ -326,21 +326,21 @@ public class ContentNegotiatingViewResolverTests {
 		given(viewMock1.getContentType()).willReturn("application/xml");
 		given(viewMock2.getContentType()).willReturn("text/html;charset=ISO-8859-1");
 
-		View result = viewResolver.resolveViewName(viewName, locale);
+		View result = this.viewResolver.resolveViewName(viewName, locale);
 		assertSame("Invalid view", viewMock2, result);
 	}
 
 	@Test
 	public void resolveViewNameFilenameDefaultView() throws Exception {
-		request.setRequestURI("/test.json");
+		this.request.setRequestURI("/test.json");
 
 		Map<String, MediaType> mapping = Collections.singletonMap("json", MediaType.APPLICATION_JSON);
 		PathExtensionContentNegotiationStrategy pathStrategy = new PathExtensionContentNegotiationStrategy(mapping);
-		viewResolver.setContentNegotiationManager(new ContentNegotiationManager(pathStrategy));
+		this.viewResolver.setContentNegotiationManager(new ContentNegotiationManager(pathStrategy));
 
 		ViewResolver viewResolverMock1 = mock(ViewResolver.class);
 		ViewResolver viewResolverMock2 = mock(ViewResolver.class);
-		viewResolver.setViewResolvers(Arrays.asList(viewResolverMock1, viewResolverMock2));
+		this.viewResolver.setViewResolvers(Arrays.asList(viewResolverMock1, viewResolverMock2));
 
 		View viewMock1 = mock(View.class, "application_xml");
 		View viewMock2 = mock(View.class, "text_html");
@@ -348,9 +348,9 @@ public class ContentNegotiatingViewResolverTests {
 
 		List<View> defaultViews = new ArrayList<>();
 		defaultViews.add(viewMock3);
-		viewResolver.setDefaultViews(defaultViews);
+		this.viewResolver.setDefaultViews(defaultViews);
 
-		viewResolver.afterPropertiesSet();
+		this.viewResolver.afterPropertiesSet();
 
 		String viewName = "view";
 		Locale locale = Locale.ENGLISH;
@@ -363,18 +363,18 @@ public class ContentNegotiatingViewResolverTests {
 		given(viewMock2.getContentType()).willReturn("text/html;charset=ISO-8859-1");
 		given(viewMock3.getContentType()).willReturn("application/json");
 
-		View result = viewResolver.resolveViewName(viewName, locale);
+		View result = this.viewResolver.resolveViewName(viewName, locale);
 		assertSame("Invalid view", viewMock3, result);
 	}
 
 	@Test
 	public void resolveViewContentTypeNull() throws Exception {
-		request.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+		this.request.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
 
 		ViewResolver viewResolverMock = mock(ViewResolver.class);
-		viewResolver.setViewResolvers(Collections.singletonList(viewResolverMock));
+		this.viewResolver.setViewResolvers(Collections.singletonList(viewResolverMock));
 
-		viewResolver.afterPropertiesSet();
+		this.viewResolver.afterPropertiesSet();
 
 		View viewMock = mock(View.class, "application_xml");
 
@@ -384,14 +384,14 @@ public class ContentNegotiatingViewResolverTests {
 		given(viewResolverMock.resolveViewName(viewName, locale)).willReturn(viewMock);
 		given(viewMock.getContentType()).willReturn(null);
 
-		View result = viewResolver.resolveViewName(viewName, locale);
+		View result = this.viewResolver.resolveViewName(viewName, locale);
 		assertNull("Invalid view", result);
 	}
 
 	@Test
 	public void resolveViewNameRedirectView() throws Exception {
-		request.addHeader("Accept", "application/json");
-		request.setRequestURI("/test");
+		this.request.addHeader("Accept", "application/json");
+		this.request.setRequestURI("/test");
 
 		StaticWebApplicationContext webAppContext = new StaticWebApplicationContext();
 		webAppContext.setServletContext(new MockServletContext());
@@ -400,13 +400,13 @@ public class ContentNegotiatingViewResolverTests {
 		UrlBasedViewResolver urlViewResolver = new InternalResourceViewResolver();
 		urlViewResolver.setApplicationContext(webAppContext);
 		ViewResolver xmlViewResolver = mock(ViewResolver.class);
-		viewResolver.setViewResolvers(Arrays.<ViewResolver>asList(xmlViewResolver, urlViewResolver));
+		this.viewResolver.setViewResolvers(Arrays.<ViewResolver>asList(xmlViewResolver, urlViewResolver));
 
 		View xmlView = mock(View.class, "application_xml");
 		View jsonView = mock(View.class, "application_json");
-		viewResolver.setDefaultViews(Arrays.asList(jsonView));
+		this.viewResolver.setDefaultViews(Arrays.asList(jsonView));
 
-		viewResolver.afterPropertiesSet();
+		this.viewResolver.afterPropertiesSet();
 
 		String viewName = "redirect:anotherTest";
 		Locale locale = Locale.ENGLISH;
@@ -414,18 +414,18 @@ public class ContentNegotiatingViewResolverTests {
 		given(xmlViewResolver.resolveViewName(viewName, locale)).willReturn(xmlView);
 		given(jsonView.getContentType()).willReturn("application/json");
 
-		View actualView = viewResolver.resolveViewName(viewName, locale);
+		View actualView = this.viewResolver.resolveViewName(viewName, locale);
 		assertEquals("Invalid view", RedirectView.class, actualView.getClass());
 	}
 
 	@Test
 	public void resolveViewNoMatch() throws Exception {
-		request.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9");
+		this.request.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9");
 
 		ViewResolver viewResolverMock = mock(ViewResolver.class);
-		viewResolver.setViewResolvers(Collections.singletonList(viewResolverMock));
+		this.viewResolver.setViewResolvers(Collections.singletonList(viewResolverMock));
 
-		viewResolver.afterPropertiesSet();
+		this.viewResolver.afterPropertiesSet();
 
 		View viewMock = mock(View.class, "application_xml");
 
@@ -435,19 +435,19 @@ public class ContentNegotiatingViewResolverTests {
 		given(viewResolverMock.resolveViewName(viewName, locale)).willReturn(viewMock);
 		given(viewMock.getContentType()).willReturn("application/pdf");
 
-		View result = viewResolver.resolveViewName(viewName, locale);
+		View result = this.viewResolver.resolveViewName(viewName, locale);
 		assertNull("Invalid view", result);
 	}
 
 	@Test
 	public void resolveViewNoMatchUseUnacceptableStatus() throws Exception {
-		viewResolver.setUseNotAcceptableStatusCode(true);
-		request.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9");
+		this.viewResolver.setUseNotAcceptableStatusCode(true);
+		this.request.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9");
 
 		ViewResolver viewResolverMock = mock(ViewResolver.class);
-		viewResolver.setViewResolvers(Collections.singletonList(viewResolverMock));
+		this.viewResolver.setViewResolvers(Collections.singletonList(viewResolverMock));
 
-		viewResolver.afterPropertiesSet();
+		this.viewResolver.afterPropertiesSet();
 
 		View viewMock = mock(View.class, "application_xml");
 
@@ -457,10 +457,10 @@ public class ContentNegotiatingViewResolverTests {
 		given(viewResolverMock.resolveViewName(viewName, locale)).willReturn(viewMock);
 		given(viewMock.getContentType()).willReturn("application/pdf");
 
-		View result = viewResolver.resolveViewName(viewName, locale);
+		View result = this.viewResolver.resolveViewName(viewName, locale);
 		assertNotNull("Invalid view", result);
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		result.render(null, request, response);
+		result.render(null, this.request, response);
 		assertEquals("Invalid status code set", 406, response.getStatus());
 	}
 
@@ -473,17 +473,17 @@ public class ContentNegotiatingViewResolverTests {
 		InternalResourceViewResolver nestedResolver = new InternalResourceViewResolver();
 		nestedResolver.setApplicationContext(webAppContext);
 		nestedResolver.setViewClass(InternalResourceView.class);
-		viewResolver.setViewResolvers(new ArrayList<>(Arrays.asList(nestedResolver)));
+		this.viewResolver.setViewResolvers(new ArrayList<>(Arrays.asList(nestedResolver)));
 
 		FixedContentNegotiationStrategy fixedStrategy = new FixedContentNegotiationStrategy(MediaType.TEXT_HTML);
-		viewResolver.setContentNegotiationManager(new ContentNegotiationManager(fixedStrategy));
+		this.viewResolver.setContentNegotiationManager(new ContentNegotiationManager(fixedStrategy));
 
-		viewResolver.afterPropertiesSet();
+		this.viewResolver.afterPropertiesSet();
 
 		String viewName = "view";
 		Locale locale = Locale.ENGLISH;
 
-		View result = viewResolver.resolveViewName(viewName, locale);
+		View result = this.viewResolver.resolveViewName(viewName, locale);
 		assertNotNull("Invalid view", result);
 	}
 

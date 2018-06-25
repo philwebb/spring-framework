@@ -282,7 +282,7 @@ public class EnableAsyncTests {
 		}
 
 		public Thread getThreadOfExecution() {
-			return threadOfExecution;
+			return this.threadOfExecution;
 		}
 	}
 
@@ -305,7 +305,7 @@ public class EnableAsyncTests {
 		}
 
 		public AsyncBean getAsyncBean() {
-			return asyncBean;
+			return this.asyncBean;
 		}
 	}
 
@@ -461,7 +461,7 @@ public class EnableAsyncTests {
 
 		@Override
 		public Thread getThreadOfExecution() {
-			return threadOfExecution;
+			return this.threadOfExecution;
 		}
 	}
 

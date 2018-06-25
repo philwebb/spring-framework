@@ -307,7 +307,7 @@ public class ValidatorFactoryTests {
 		public boolean expectsAutowiredValidator = false;
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String name) {
@@ -315,7 +315,7 @@ public class ValidatorFactoryTests {
 		}
 
 		public ValidAddress getAddress() {
-			return address;
+			return this.address;
 		}
 
 		public void setAddress(ValidAddress address) {
@@ -323,7 +323,7 @@ public class ValidatorFactoryTests {
 		}
 
 		public List<ValidAddress> getAddressList() {
-			return addressList;
+			return this.addressList;
 		}
 
 		public void setAddressList(List<ValidAddress> addressList) {
@@ -331,7 +331,7 @@ public class ValidatorFactoryTests {
 		}
 
 		public Set<ValidAddress> getAddressSet() {
-			return addressSet;
+			return this.addressSet;
 		}
 
 		public void setAddressSet(Set<ValidAddress> addressSet) {
@@ -346,7 +346,7 @@ public class ValidatorFactoryTests {
 		private String street;
 
 		public String getStreet() {
-			return street;
+			return this.street;
 		}
 
 		public void setStreet(String street) {
@@ -398,7 +398,7 @@ public class ValidatorFactoryTests {
 		private InnerBean inner = new InnerBean();
 
 		public InnerBean getInner() {
-			return inner;
+			return this.inner;
 		}
 	}
 
@@ -409,7 +409,7 @@ public class ValidatorFactoryTests {
 		private InnerBean inner = new InnerBean();
 
 		public Optional<InnerBean> getInner() {
-			return Optional.ofNullable(inner);
+			return Optional.ofNullable(this.inner);
 		}
 	}
 
@@ -419,7 +419,7 @@ public class ValidatorFactoryTests {
 		private String value;
 
 		public String getValue() {
-			return value;
+			return this.value;
 		}
 		public void setValue(String value) {
 			this.value = value;
@@ -464,11 +464,11 @@ public class ValidatorFactoryTests {
 		private List<String> list = new LinkedList<>();
 
 		public void addString(String value) {
-			list.add(value);
+			this.list.add(value);
 		}
 
 		public List<String> getList() {
-			return list;
+			return this.list;
 		}
 	}
 

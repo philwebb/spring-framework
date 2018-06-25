@@ -110,7 +110,7 @@ public class RequestMappingHandlerAdapterTests {
 		this.handlerAdapter.afterPropertiesSet();
 
 		this.handlerAdapter.handle(this.request, this.response, handlerMethod);
-		assertTrue(response.getHeader("Cache-Control").contains("max-age"));
+		assertTrue(this.response.getHeader("Cache-Control").contains("max-age"));
 	}
 
 	@Test
@@ -137,7 +137,7 @@ public class RequestMappingHandlerAdapterTests {
 		this.request.setAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE, new FlashMap());
 
 		HandlerMethod handlerMethod = handlerMethod(new RedirectAttributeController(), "handle", Model.class);
-		ModelAndView mav = this.handlerAdapter.handle(request, response, handlerMethod);
+		ModelAndView mav = this.handlerAdapter.handle(this.request, this.response, handlerMethod);
 
 		assertTrue("Without RedirectAttributes arg, model should be empty", mav.getModel().isEmpty());
 	}

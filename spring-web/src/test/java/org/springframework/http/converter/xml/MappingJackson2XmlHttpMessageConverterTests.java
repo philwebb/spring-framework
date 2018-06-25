@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,16 +51,16 @@ public class MappingJackson2XmlHttpMessageConverterTests {
 
 	@Test
 	public void canRead() {
-		assertTrue(converter.canRead(MyBean.class, new MediaType("application", "xml")));
-		assertTrue(converter.canRead(MyBean.class, new MediaType("text", "xml")));
-		assertTrue(converter.canRead(MyBean.class, new MediaType("application", "soap+xml")));
+		assertTrue(this.converter.canRead(MyBean.class, new MediaType("application", "xml")));
+		assertTrue(this.converter.canRead(MyBean.class, new MediaType("text", "xml")));
+		assertTrue(this.converter.canRead(MyBean.class, new MediaType("application", "soap+xml")));
 	}
 
 	@Test
 	public void canWrite() {
-		assertTrue(converter.canWrite(MyBean.class, new MediaType("application", "xml")));
-		assertTrue(converter.canWrite(MyBean.class, new MediaType("text", "xml")));
-		assertTrue(converter.canWrite(MyBean.class, new MediaType("application", "soap+xml")));
+		assertTrue(this.converter.canWrite(MyBean.class, new MediaType("application", "xml")));
+		assertTrue(this.converter.canWrite(MyBean.class, new MediaType("text", "xml")));
+		assertTrue(this.converter.canWrite(MyBean.class, new MediaType("application", "soap+xml")));
 	}
 
 	@Test
@@ -75,7 +75,7 @@ public class MappingJackson2XmlHttpMessageConverterTests {
 				"<bytes>AQI=</bytes></MyBean>";
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(body.getBytes("UTF-8"));
 		inputMessage.getHeaders().setContentType(new MediaType("application", "xml"));
-		MyBean result = (MyBean) converter.read(MyBean.class, inputMessage);
+		MyBean result = (MyBean) this.converter.read(MyBean.class, inputMessage);
 		assertEquals("Foo", result.getString());
 		assertEquals(42, result.getNumber());
 		assertEquals(42F, result.getFraction(), 0F);
@@ -94,7 +94,7 @@ public class MappingJackson2XmlHttpMessageConverterTests {
 		body.setArray(new String[]{"Foo", "Bar"});
 		body.setBool(true);
 		body.setBytes(new byte[]{0x1, 0x2});
-		converter.write(body, null, outputMessage);
+		this.converter.write(body, null, outputMessage);
 		String result = outputMessage.getBodyAsString(StandardCharsets.UTF_8);
 		assertTrue(result.contains("<string>Foo</string>"));
 		assertTrue(result.contains("<number>42</number>"));
@@ -112,7 +112,7 @@ public class MappingJackson2XmlHttpMessageConverterTests {
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(body.getBytes("UTF-8"));
 		inputMessage.getHeaders().setContentType(new MediaType("application", "xml"));
 		this.thrown.expect(HttpMessageNotReadableException.class);
-		converter.read(MyBean.class, inputMessage);
+		this.converter.read(MyBean.class, inputMessage);
 	}
 
 	@Test
@@ -120,7 +120,7 @@ public class MappingJackson2XmlHttpMessageConverterTests {
 		String body = "<MyBean><string>string</string><unknownProperty>value</unknownProperty></MyBean>";
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(body.getBytes("UTF-8"));
 		inputMessage.getHeaders().setContentType(new MediaType("application", "xml"));
-		converter.read(MyBean.class, inputMessage);
+		this.converter.read(MyBean.class, inputMessage);
 		// Assert no HttpMessageNotReadableException is thrown
 	}
 
@@ -206,7 +206,7 @@ public class MappingJackson2XmlHttpMessageConverterTests {
 		private byte[] bytes;
 
 		public byte[] getBytes() {
-			return bytes;
+			return this.bytes;
 		}
 
 		public void setBytes(byte[] bytes) {
@@ -214,7 +214,7 @@ public class MappingJackson2XmlHttpMessageConverterTests {
 		}
 
 		public boolean isBool() {
-			return bool;
+			return this.bool;
 		}
 
 		public void setBool(boolean bool) {
@@ -222,7 +222,7 @@ public class MappingJackson2XmlHttpMessageConverterTests {
 		}
 
 		public String getString() {
-			return string;
+			return this.string;
 		}
 
 		public void setString(String string) {
@@ -230,7 +230,7 @@ public class MappingJackson2XmlHttpMessageConverterTests {
 		}
 
 		public int getNumber() {
-			return number;
+			return this.number;
 		}
 
 		public void setNumber(int number) {
@@ -238,7 +238,7 @@ public class MappingJackson2XmlHttpMessageConverterTests {
 		}
 
 		public float getFraction() {
-			return fraction;
+			return this.fraction;
 		}
 
 		public void setFraction(float fraction) {
@@ -246,7 +246,7 @@ public class MappingJackson2XmlHttpMessageConverterTests {
 		}
 
 		public String[] getArray() {
-			return array;
+			return this.array;
 		}
 
 		public void setArray(String[] array) {
@@ -272,7 +272,7 @@ public class MappingJackson2XmlHttpMessageConverterTests {
 		private String withoutView;
 
 		public String getWithView1() {
-			return withView1;
+			return this.withView1;
 		}
 
 		public void setWithView1(String withView1) {
@@ -280,7 +280,7 @@ public class MappingJackson2XmlHttpMessageConverterTests {
 		}
 
 		public String getWithView2() {
-			return withView2;
+			return this.withView2;
 		}
 
 		public void setWithView2(String withView2) {
@@ -288,7 +288,7 @@ public class MappingJackson2XmlHttpMessageConverterTests {
 		}
 
 		public String getWithoutView() {
-			return withoutView;
+			return this.withoutView;
 		}
 
 		public void setWithoutView(String withoutView) {

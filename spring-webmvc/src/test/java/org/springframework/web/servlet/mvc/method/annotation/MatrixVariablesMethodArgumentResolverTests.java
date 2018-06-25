@@ -63,7 +63,7 @@ public class MatrixVariablesMethodArgumentResolverTests {
 		this.resolver = new MatrixVariableMethodArgumentResolver();
 		this.mavContainer = new ModelAndViewContainer();
 		this.request = new MockHttpServletRequest();
-		this.webRequest = new ServletWebRequest(request, new MockHttpServletResponse());
+		this.webRequest = new ServletWebRequest(this.request, new MockHttpServletResponse());
 
 		Map<String, MultiValueMap<String, String>> params = new LinkedHashMap<>();
 		this.request.setAttribute(HandlerMapping.MATRIX_VARIABLES_ATTRIBUTE, params);
@@ -106,7 +106,7 @@ public class MatrixVariablesMethodArgumentResolverTests {
 	@Test
 	public void resolveArgumentDefaultValue() throws Exception {
 		MethodParameter param = this.testMethod.annot(matrixAttribute().name("year")).arg(int.class);
-		assertEquals("2013", resolver.resolveArgument(param, this.mavContainer, this.webRequest, null));
+		assertEquals("2013", this.resolver.resolveArgument(param, this.mavContainer, this.webRequest, null));
 	}
 
 	@Test(expected = ServletRequestBindingException.class)

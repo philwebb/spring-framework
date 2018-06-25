@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -117,11 +117,11 @@ class SimpleBeforeAdviceImpl implements SimpleBeforeAdvice {
 
 	@Override
 	public void before() throws Throwable {
-		++invocationCounter;
+		++this.invocationCounter;
 	}
 
 	public int getInvocationCounter() {
-		return invocationCounter;
+		return this.invocationCounter;
 	}
 
 }
@@ -137,7 +137,7 @@ final class SimpleBeforeAdviceInterceptor implements MethodInterceptor {
 
 	@Override
 	public Object invoke(MethodInvocation mi) throws Throwable {
-		advice.before();
+		this.advice.before();
 		return mi.proceed();
 	}
 }

@@ -48,7 +48,7 @@ public class CustomInterceptorTests {
 	@Before
 	public void setup() {
 		this.ctx = new AnnotationConfigApplicationContext(EnableCachingConfig.class);
-		this.cs = ctx.getBean("service", CacheableService.class);
+		this.cs = this.ctx.getBean("service", CacheableService.class);
 	}
 
 	@After

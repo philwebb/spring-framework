@@ -183,7 +183,7 @@ public class LazyAutowiredAnnotationBeanPostProcessorTests {
 		}
 
 		public List<TestBean> getTestBeans() {
-			return testBeans;
+			return this.testBeans;
 		}
 	}
 

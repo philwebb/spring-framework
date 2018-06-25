@@ -57,7 +57,7 @@ class NestedTestsWithConstructorInjectionWithSpringAndJUnitJupiterTests {
 
 	@Test
 	void topLevelTest() {
-		assertEquals("foo", foo);
+		assertEquals("foo", this.foo);
 	}
 
 	@Nested
@@ -74,7 +74,7 @@ class NestedTestsWithConstructorInjectionWithSpringAndJUnitJupiterTests {
 		@Test
 		void nestedTest() throws Exception {
 			assertEquals("foo", foo);
-			assertEquals("bar", bar);
+			assertEquals("bar", this.bar);
 		}
 	}
 
@@ -91,7 +91,7 @@ class NestedTestsWithConstructorInjectionWithSpringAndJUnitJupiterTests {
 		@Test
 		void nestedTest() throws Exception {
 			assertEquals("foo", foo);
-			assertEquals("bar", bar);
+			assertEquals("bar", this.bar);
 		}
 	}
 
@@ -108,7 +108,7 @@ class NestedTestsWithConstructorInjectionWithSpringAndJUnitJupiterTests {
 		@Test
 		void nestedTest() throws Exception {
 			assertEquals("foo", foo);
-			assertEquals("bar", bar);
+			assertEquals("bar", this.bar);
 		}
 	}
 
@@ -127,8 +127,8 @@ class NestedTestsWithConstructorInjectionWithSpringAndJUnitJupiterTests {
 		@Test
 		void nestedTest() throws Exception {
 			assertEquals("foo", foo);
-			assertEquals("bar", bar);
-			assertEquals(42, answer);
+			assertEquals("bar", this.bar);
+			assertEquals(42, this.answer);
 		}
 	}
 

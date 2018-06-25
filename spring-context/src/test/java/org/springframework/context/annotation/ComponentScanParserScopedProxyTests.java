@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -105,9 +105,9 @@ public class ComponentScanParserScopedProxyTests {
 	@Test
 	@SuppressWarnings("resource")
 	public void testInvalidConfigScopedProxy() throws Exception {
-		exception.expect(BeanDefinitionParsingException.class);
-		exception.expectMessage(containsString("Cannot define both 'scope-resolver' and 'scoped-proxy' on <component-scan> tag"));
-		exception.expectMessage(containsString("Offending resource: class path resource [org/springframework/context/annotation/scopedProxyInvalidConfigTests.xml]"));
+		this.exception.expect(BeanDefinitionParsingException.class);
+		this.exception.expectMessage(containsString("Cannot define both 'scope-resolver' and 'scoped-proxy' on <component-scan> tag"));
+		this.exception.expectMessage(containsString("Offending resource: class path resource [org/springframework/context/annotation/scopedProxyInvalidConfigTests.xml]"));
 
 		new ClassPathXmlApplicationContext("org/springframework/context/annotation/scopedProxyInvalidConfigTests.xml");
 	}

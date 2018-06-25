@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,22 +79,22 @@ public class JmsNamespaceHandlerTests {
 
 	@Test
 	public void testBeansCreated() {
-		Map<String, ?> containers = context.getBeansOfType(DefaultMessageListenerContainer.class);
+		Map<String, ?> containers = this.context.getBeansOfType(DefaultMessageListenerContainer.class);
 		assertEquals("Context should contain 3 JMS listener containers", 3, containers.size());
 
-		containers = context.getBeansOfType(GenericMessageEndpointManager.class);
+		containers = this.context.getBeansOfType(GenericMessageEndpointManager.class);
 		assertEquals("Context should contain 3 JCA endpoint containers", 3, containers.size());
 
 		Map<String, JmsListenerContainerFactory> containerFactories =
-				context.getBeansOfType(JmsListenerContainerFactory.class);
+				this.context.getBeansOfType(JmsListenerContainerFactory.class);
 		assertEquals("Context should contain 3 JmsListenerContainerFactory instances", 3, containerFactories.size());
 	}
 
 	@Test
 	public void testContainerConfiguration() throws Exception {
-		Map<String, DefaultMessageListenerContainer> containers = context.getBeansOfType(DefaultMessageListenerContainer.class);
-		ConnectionFactory defaultConnectionFactory = context.getBean(DEFAULT_CONNECTION_FACTORY, ConnectionFactory.class);
-		ConnectionFactory explicitConnectionFactory = context.getBean(EXPLICIT_CONNECTION_FACTORY, ConnectionFactory.class);
+		Map<String, DefaultMessageListenerContainer> containers = this.context.getBeansOfType(DefaultMessageListenerContainer.class);
+		ConnectionFactory defaultConnectionFactory = this.context.getBean(DEFAULT_CONNECTION_FACTORY, ConnectionFactory.class);
+		ConnectionFactory explicitConnectionFactory = this.context.getBean(EXPLICIT_CONNECTION_FACTORY, ConnectionFactory.class);
 
 		int defaultConnectionFactoryCount = 0;
 		int explicitConnectionFactoryCount = 0;
@@ -114,13 +114,13 @@ public class JmsNamespaceHandlerTests {
 
 	@Test
 	public void testJcaContainerConfiguration() throws Exception {
-		Map<String, JmsMessageEndpointManager> containers = context.getBeansOfType(JmsMessageEndpointManager.class);
+		Map<String, JmsMessageEndpointManager> containers = this.context.getBeansOfType(JmsMessageEndpointManager.class);
 
 		assertTrue("listener3 not found", containers.containsKey("listener3"));
 		JmsMessageEndpointManager listener3 = containers.get("listener3");
 		assertEquals("Wrong resource adapter",
-				context.getBean("testResourceAdapter"), listener3.getResourceAdapter());
-		assertEquals("Wrong activation spec factory", context.getBean("testActivationSpecFactory"),
+				this.context.getBean("testResourceAdapter"), listener3.getResourceAdapter());
+		assertEquals("Wrong activation spec factory", this.context.getBean("testActivationSpecFactory"),
 				new DirectFieldAccessor(listener3).getPropertyValue("activationSpecFactory"));
 
 
@@ -129,9 +129,9 @@ public class JmsNamespaceHandlerTests {
 		assertEquals("Wrong message listener", MessageListenerAdapter.class, messageListener.getClass());
 		MessageListenerAdapter adapter = (MessageListenerAdapter) messageListener;
 		DirectFieldAccessor adapterFieldAccessor = new DirectFieldAccessor(adapter);
-		assertEquals("Message converter not set properly", context.getBean("testMessageConverter"),
+		assertEquals("Message converter not set properly", this.context.getBean("testMessageConverter"),
 				adapterFieldAccessor.getPropertyValue("messageConverter"));
-		assertEquals("Wrong delegate", context.getBean("testBean1"),
+		assertEquals("Wrong delegate", this.context.getBean("testBean1"),
 				adapterFieldAccessor.getPropertyValue("delegate"));
 		assertEquals("Wrong method name", "setName",
 				adapterFieldAccessor.getPropertyValue("defaultListenerMethod"));
@@ -140,18 +140,18 @@ public class JmsNamespaceHandlerTests {
 	@Test
 	public void testJmsContainerFactoryConfiguration() {
 		Map<String, DefaultJmsListenerContainerFactory> containers =
-				context.getBeansOfType(DefaultJmsListenerContainerFactory.class);
+				this.context.getBeansOfType(DefaultJmsListenerContainerFactory.class);
 		DefaultJmsListenerContainerFactory factory = containers.get("testJmsFactory");
 		assertNotNull("No factory registered with testJmsFactory id", factory);
 
 		DefaultMessageListenerContainer container =
 				factory.createListenerContainer(createDummyEndpoint());
 		assertEquals("explicit connection factory not set",
-				context.getBean(EXPLICIT_CONNECTION_FACTORY), container.getConnectionFactory());
+				this.context.getBean(EXPLICIT_CONNECTION_FACTORY), container.getConnectionFactory());
 		assertEquals("explicit destination resolver not set",
-				context.getBean("testDestinationResolver"), container.getDestinationResolver());
+				this.context.getBean("testDestinationResolver"), container.getDestinationResolver());
 		assertEquals("explicit message converter not set",
-				context.getBean("testMessageConverter"), container.getMessageConverter());
+				this.context.getBean("testMessageConverter"), container.getMessageConverter());
 		assertEquals("Wrong pub/sub", true, container.isPubSubDomain());
 		assertEquals("Wrong durable flag", true, container.isSubscriptionDurable());
 		assertEquals("wrong cache", DefaultMessageListenerContainer.CACHE_CONNECTION, container.getCacheLevel());
@@ -159,22 +159,22 @@ public class JmsNamespaceHandlerTests {
 		assertEquals("wrong concurrency", 5, container.getMaxConcurrentConsumers());
 		assertEquals("wrong prefetch", 50, container.getMaxMessagesPerTask());
 		assertEquals("Wrong phase", 99, container.getPhase());
-		assertSame(context.getBean("testBackOff"), new DirectFieldAccessor(container).getPropertyValue("backOff"));
+		assertSame(this.context.getBean("testBackOff"), new DirectFieldAccessor(container).getPropertyValue("backOff"));
 	}
 
 	@Test
 	public void testJcaContainerFactoryConfiguration() {
 		Map<String, DefaultJcaListenerContainerFactory> containers =
-				context.getBeansOfType(DefaultJcaListenerContainerFactory.class);
+				this.context.getBeansOfType(DefaultJcaListenerContainerFactory.class);
 		DefaultJcaListenerContainerFactory factory = containers.get("testJcaFactory");
 		assertNotNull("No factory registered with testJcaFactory id", factory);
 
 		JmsMessageEndpointManager container =
 				factory.createListenerContainer(createDummyEndpoint());
 		assertEquals("explicit resource adapter not set",
-				context.getBean("testResourceAdapter"),container.getResourceAdapter());
+				this.context.getBean("testResourceAdapter"),container.getResourceAdapter());
 		assertEquals("explicit message converter not set",
-				context.getBean("testMessageConverter"), container.getActivationSpecConfig().getMessageConverter());
+				this.context.getBean("testMessageConverter"), container.getActivationSpecConfig().getMessageConverter());
 		assertEquals("Wrong pub/sub", true, container.isPubSubDomain());
 		assertEquals("wrong concurrency", 5, container.getActivationSpecConfig().getMaxConcurrency());
 		assertEquals("Wrong prefetch", 50, container.getActivationSpecConfig().getPrefetchSize());
@@ -183,9 +183,9 @@ public class JmsNamespaceHandlerTests {
 
 	@Test
 	public void testListeners() throws Exception {
-		TestBean testBean1 = context.getBean("testBean1", TestBean.class);
-		TestBean testBean2 = context.getBean("testBean2", TestBean.class);
-		TestMessageListener testBean3 = context.getBean("testBean3", TestMessageListener.class);
+		TestBean testBean1 = this.context.getBean("testBean1", TestBean.class);
+		TestBean testBean2 = this.context.getBean("testBean2", TestBean.class);
+		TestMessageListener testBean3 = this.context.getBean("testBean3", TestMessageListener.class);
 
 		assertNull(testBean1.getName());
 		assertNull(testBean2.getName());
@@ -214,7 +214,7 @@ public class JmsNamespaceHandlerTests {
 
 	@Test
 	public void testRecoveryInterval() {
-		Object testBackOff = context.getBean("testBackOff");
+		Object testBackOff = this.context.getBean("testBackOff");
 		BackOff backOff1 = getBackOff("listener1");
 		BackOff backOff2 = getBackOff("listener2");
 		long recoveryInterval3 = getRecoveryInterval(DefaultMessageListenerContainer.class.getName() + "#0");
@@ -303,28 +303,28 @@ public class JmsNamespaceHandlerTests {
 	@Test
 	public void testComponentRegistration() {
 		assertTrue("Parser should have registered a component named 'listener1'",
-				context.containsComponentDefinition("listener1"));
+				this.context.containsComponentDefinition("listener1"));
 		assertTrue("Parser should have registered a component named 'listener2'",
-				context.containsComponentDefinition("listener2"));
+				this.context.containsComponentDefinition("listener2"));
 		assertTrue("Parser should have registered a component named 'listener3'",
-				context.containsComponentDefinition("listener3"));
+				this.context.containsComponentDefinition("listener3"));
 		assertTrue("Parser should have registered a component named '"
 				+ DefaultMessageListenerContainer.class.getName() + "#0'",
-				context.containsComponentDefinition(DefaultMessageListenerContainer.class.getName() + "#0"));
+				this.context.containsComponentDefinition(DefaultMessageListenerContainer.class.getName() + "#0"));
 		assertTrue("Parser should have registered a component named '"
 				+ JmsMessageEndpointManager.class.getName() + "#0'",
-				context.containsComponentDefinition(JmsMessageEndpointManager.class.getName() + "#0"));
+				this.context.containsComponentDefinition(JmsMessageEndpointManager.class.getName() + "#0"));
 		assertTrue("Parser should have registered a component named 'testJmsFactory",
-				context.containsComponentDefinition("testJmsFactory"));
+				this.context.containsComponentDefinition("testJmsFactory"));
 		assertTrue("Parser should have registered a component named 'testJcaFactory",
-				context.containsComponentDefinition("testJcaFactory"));
+				this.context.containsComponentDefinition("testJcaFactory"));
 		assertTrue("Parser should have registered a component named 'testJcaFactory",
-				context.containsComponentDefinition("onlyJmsFactory"));
+				this.context.containsComponentDefinition("onlyJmsFactory"));
 	}
 
 	@Test
 	public void testSourceExtraction() {
-		Iterator<ComponentDefinition> iterator = context.getRegisteredComponents();
+		Iterator<ComponentDefinition> iterator = this.context.getRegisteredComponents();
 		while (iterator.hasNext()) {
 			ComponentDefinition compDef = iterator.next();
 			assertNotNull("CompositeComponentDefinition '" + compDef.getName() + "' has no source attachment", compDef.getSource());

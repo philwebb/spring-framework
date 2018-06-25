@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2012 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,18 +40,18 @@ public class BinaryObject {
 	public BinaryObject(byte[] bytes, DataHandler dataHandler) {
 		this.bytes = bytes;
 		this.dataHandler = dataHandler;
-		swaDataHandler = dataHandler;
+		this.swaDataHandler = dataHandler;
 	}
 
 	public byte[] getBytes() {
-		return bytes;
+		return this.bytes;
 	}
 
 	public DataHandler getDataHandler() {
-		return dataHandler;
+		return this.dataHandler;
 	}
 
 	public DataHandler getSwaDataHandler() {
-		return swaDataHandler;
+		return this.swaDataHandler;
 	}
 }

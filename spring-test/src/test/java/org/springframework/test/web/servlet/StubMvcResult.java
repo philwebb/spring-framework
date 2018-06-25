@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2012 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,41 +61,41 @@ public class StubMvcResult implements MvcResult {
 
 	@Override
 	public MockHttpServletRequest getRequest() {
-		return request;
+		return this.request;
 	}
 
 	@Override
 	public Object getHandler() {
-		return handler;
+		return this.handler;
 	}
 
 	@Override
 	public HandlerInterceptor[] getInterceptors() {
-		return interceptors;
+		return this.interceptors;
 	}
 
 	@Override
 	public Exception getResolvedException() {
-		return resolvedException;
+		return this.resolvedException;
 	}
 
 	@Override
 	public ModelAndView getModelAndView() {
-		return mav;
+		return this.mav;
 	}
 
 	@Override
 	public FlashMap getFlashMap() {
-		return flashMap;
+		return this.flashMap;
 	}
 
 	@Override
 	public MockHttpServletResponse getResponse() {
-		return response;
+		return this.response;
 	}
 
 	public ModelAndView getMav() {
-		return mav;
+		return this.mav;
 	}
 
 	public void setMav(ModelAndView mav) {

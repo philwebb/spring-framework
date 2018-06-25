@@ -48,7 +48,7 @@ public class DefaultClientResponseBuilderTests {
 	public void normal() {
 		Flux<DataBuffer> body = Flux.just("baz")
 				.map(s -> s.getBytes(StandardCharsets.UTF_8))
-				.map(dataBufferFactory::wrap);
+				.map(this.dataBufferFactory::wrap);
 
 		ClientResponse response = ClientResponse.create(HttpStatus.BAD_GATEWAY, ExchangeStrategies.withDefaults())
 				.header("foo", "bar")
@@ -71,7 +71,7 @@ public class DefaultClientResponseBuilderTests {
 	public void from() throws Exception {
 		Flux<DataBuffer> otherBody = Flux.just("foo", "bar")
 				.map(s -> s.getBytes(StandardCharsets.UTF_8))
-				.map(dataBufferFactory::wrap);
+				.map(this.dataBufferFactory::wrap);
 
 		ClientResponse other = ClientResponse.create(HttpStatus.BAD_REQUEST, ExchangeStrategies.withDefaults())
 				.header("foo", "bar")
@@ -81,7 +81,7 @@ public class DefaultClientResponseBuilderTests {
 
 		Flux<DataBuffer> body = Flux.just("baz")
 				.map(s -> s.getBytes(StandardCharsets.UTF_8))
-				.map(dataBufferFactory::wrap);
+				.map(this.dataBufferFactory::wrap);
 
 		ClientResponse result = ClientResponse.from(other)
 				.headers(httpHeaders -> httpHeaders.set("foo", "baar"))

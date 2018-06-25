@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,13 +45,13 @@ public class DefaultProfileAnnotationConfigTests {
 
 	@Test
 	public void pet() {
-		assertNotNull(pet);
-		assertEquals("Fido", pet.getName());
+		assertNotNull(this.pet);
+		assertEquals("Fido", this.pet.getName());
 	}
 
 	@Test
 	public void employee() {
-		assertNull("employee bean should not be created for the default profile", employee);
+		assertNull("employee bean should not be created for the default profile", this.employee);
 	}
 
 }

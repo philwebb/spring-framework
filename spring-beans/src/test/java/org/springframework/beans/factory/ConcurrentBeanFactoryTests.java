@@ -100,32 +100,32 @@ public class ConcurrentBeanFactoryTests {
 		for (int i = 0; i < 100; i++) {
 			TestRun run = new TestRun();
 			run.setDaemon(true);
-			set.add(run);
+			this.set.add(run);
 		}
-		for (Iterator<TestRun> it = new HashSet<>(set).iterator(); it.hasNext();) {
+		for (Iterator<TestRun> it = new HashSet<>(this.set).iterator(); it.hasNext();) {
 			TestRun run = it.next();
 			run.start();
 		}
-		logger.info("Thread creation over, " + set.size() + " still active.");
-		synchronized (set) {
-			while (!set.isEmpty() && ex == null) {
+		logger.info("Thread creation over, " + this.set.size() + " still active.");
+		synchronized (this.set) {
+			while (!this.set.isEmpty() && this.ex == null) {
 				try {
-					set.wait();
+					this.set.wait();
 				}
 				catch (InterruptedException ex) {
 					logger.info(ex.toString());
 				}
-				logger.info(set.size() + " threads still active.");
+				logger.info(this.set.size() + " threads still active.");
 			}
 		}
-		if (ex != null) {
-			fail(ex.getMessage());
+		if (this.ex != null) {
+			fail(this.ex.getMessage());
 		}
 	}
 
 	private void performTest() {
-		ConcurrentBean b1 = (ConcurrentBean) factory.getBean("bean1");
-		ConcurrentBean b2 = (ConcurrentBean) factory.getBean("bean2");
+		ConcurrentBean b1 = (ConcurrentBean) this.factory.getBean("bean1");
+		ConcurrentBean b2 = (ConcurrentBean) this.factory.getBean("bean2");
 
 		assertEquals(DATE_1, b1.getDate());
 		assertEquals(DATE_2, b2.getDate());
@@ -142,7 +142,7 @@ public class ConcurrentBeanFactoryTests {
 				}
 			}
 			catch (Throwable ex) {
-				ConcurrentBeanFactoryTests.this.ex = ex;
+				ex = ex;
 			}
 			finally {
 				synchronized (set) {
@@ -159,7 +159,7 @@ public class ConcurrentBeanFactoryTests {
 		private Date date;
 
 		public Date getDate() {
-			return date;
+			return this.date;
 		}
 
 		public void setDate(Date date) {

@@ -28,7 +28,7 @@ public class BooleanTestBean {
 	private Boolean bool2;
 
 	public boolean isBool1() {
-		return bool1;
+		return this.bool1;
 	}
 
 	public void setBool1(boolean bool1) {
@@ -36,7 +36,7 @@ public class BooleanTestBean {
 	}
 
 	public Boolean getBool2() {
-		return bool2;
+		return this.bool2;
 	}
 
 	public void setBool2(Boolean bool2) {

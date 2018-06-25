@@ -65,9 +65,9 @@ public class DestinationVariableMethodArgumentResolverTests {
 
 	@Test
 	public void supportsParameter() {
-		assertTrue(resolver.supportsParameter(paramAnnotated));
-		assertTrue(resolver.supportsParameter(paramAnnotatedValue));
-		assertFalse(resolver.supportsParameter(paramNotAnnotated));
+		assertTrue(this.resolver.supportsParameter(this.paramAnnotated));
+		assertTrue(this.resolver.supportsParameter(this.paramAnnotatedValue));
+		assertFalse(this.resolver.supportsParameter(this.paramNotAnnotated));
 	}
 
 	@Test

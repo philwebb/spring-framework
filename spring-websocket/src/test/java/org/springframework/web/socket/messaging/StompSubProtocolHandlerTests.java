@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -497,7 +497,7 @@ public class StompSubProtocolHandlerTests {
 		TextMessage textMessage = new TextMessage(new StompEncoder().encode(message));
 
 		this.protocolHandler.handleMessageFromClient(this.session, textMessage, testChannel);
-		assertEquals(Collections.<WebSocketMessage<?>>emptyList(), session.getSentMessages());
+		assertEquals(Collections.<WebSocketMessage<?>>emptyList(), this.session.getSentMessages());
 
 		this.protocolHandler.afterSessionEnded(this.session, CloseStatus.BAD_DATA, testChannel);
 		assertEquals(Collections.<WebSocketMessage<?>>emptyList(), this.session.getSentMessages());
@@ -523,7 +523,7 @@ public class StompSubProtocolHandlerTests {
 
 		@Override
 		public void publishEvent(ApplicationEvent event) {
-			events.add(event);
+			this.events.add(event);
 		}
 
 		@Override
@@ -557,7 +557,7 @@ public class StompSubProtocolHandlerTests {
 
 		@Override
 		public Message<?> preSend(Message<?> message, MessageChannel channel) {
-			TestPrincipal user = new TestPrincipal(name);
+			TestPrincipal user = new TestPrincipal(this.name);
 			MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class).setUser(user);
 			return message;
 		}

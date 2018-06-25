@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2012 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,61 +47,61 @@ public class DefaultRequestToViewNameTranslatorTests {
 
 	@Test
 	public void testGetViewNameLeavesLeadingSlashIfSoConfigured() {
-		request.setRequestURI(CONTEXT_PATH + "/" + VIEW_NAME + "/");
+		this.request.setRequestURI(CONTEXT_PATH + "/" + VIEW_NAME + "/");
 		this.translator.setStripLeadingSlash(false);
 		assertViewName("/" + VIEW_NAME);
 	}
 
 	@Test
 	public void testGetViewNameLeavesTrailingSlashIfSoConfigured() {
-		request.setRequestURI(CONTEXT_PATH + "/" + VIEW_NAME + "/");
+		this.request.setRequestURI(CONTEXT_PATH + "/" + VIEW_NAME + "/");
 		this.translator.setStripTrailingSlash(false);
 		assertViewName(VIEW_NAME + "/");
 	}
 
 	@Test
 	public void testGetViewNameLeavesExtensionIfSoConfigured() {
-		request.setRequestURI(CONTEXT_PATH + "/" + VIEW_NAME + EXTENSION);
+		this.request.setRequestURI(CONTEXT_PATH + "/" + VIEW_NAME + EXTENSION);
 		this.translator.setStripExtension(false);
 		assertViewName(VIEW_NAME + EXTENSION);
 	}
 
 	@Test
 	public void testGetViewNameWithDefaultConfiguration() {
-		request.setRequestURI(CONTEXT_PATH + VIEW_NAME + EXTENSION);
+		this.request.setRequestURI(CONTEXT_PATH + VIEW_NAME + EXTENSION);
 		assertViewName(VIEW_NAME);
 	}
 
 	@Test
 	public void testGetViewNameWithCustomSeparator() {
-		request.setRequestURI(CONTEXT_PATH + VIEW_NAME + "/fiona" + EXTENSION);
+		this.request.setRequestURI(CONTEXT_PATH + VIEW_NAME + "/fiona" + EXTENSION);
 		this.translator.setSeparator("_");
 		assertViewName(VIEW_NAME + "_fiona");
 	}
 
 	@Test
 	public void testGetViewNameWithNoExtension() {
-		request.setRequestURI(CONTEXT_PATH + VIEW_NAME);
+		this.request.setRequestURI(CONTEXT_PATH + VIEW_NAME);
 		assertViewName(VIEW_NAME);
 	}
 
 	@Test
 	public void testGetViewNameWithSemicolonContent() {
-		request.setRequestURI(CONTEXT_PATH + VIEW_NAME + ";a=A;b=B");
+		this.request.setRequestURI(CONTEXT_PATH + VIEW_NAME + ";a=A;b=B");
 		assertViewName(VIEW_NAME);
 	}
 
 	@Test
 	public void testGetViewNameWithPrefix() {
 		final String prefix = "fiona_";
-		request.setRequestURI(CONTEXT_PATH + VIEW_NAME);
+		this.request.setRequestURI(CONTEXT_PATH + VIEW_NAME);
 		this.translator.setPrefix(prefix);
 		assertViewName(prefix + VIEW_NAME);
 	}
 
 	@Test
 	public void testGetViewNameWithNullPrefix() {
-		request.setRequestURI(CONTEXT_PATH + VIEW_NAME);
+		this.request.setRequestURI(CONTEXT_PATH + VIEW_NAME);
 		this.translator.setPrefix(null);
 		assertViewName(VIEW_NAME);
 	}
@@ -109,14 +109,14 @@ public class DefaultRequestToViewNameTranslatorTests {
 	@Test
 	public void testGetViewNameWithSuffix() {
 		final String suffix = ".fiona";
-		request.setRequestURI(CONTEXT_PATH + VIEW_NAME);
+		this.request.setRequestURI(CONTEXT_PATH + VIEW_NAME);
 		this.translator.setSuffix(suffix);
 		assertViewName(VIEW_NAME + suffix);
 	}
 
 	@Test
 	public void testGetViewNameWithNullSuffix() {
-		request.setRequestURI(CONTEXT_PATH + VIEW_NAME);
+		this.request.setRequestURI(CONTEXT_PATH + VIEW_NAME);
 		this.translator.setSuffix(null);
 		assertViewName(VIEW_NAME);
 	}

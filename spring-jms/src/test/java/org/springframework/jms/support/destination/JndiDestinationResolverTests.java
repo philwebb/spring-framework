@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2014 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -119,11 +119,11 @@ public class JndiDestinationResolverTests {
 
 		@Override
 		protected <T> T lookup(String jndiName, Class<T> requiredType) throws NamingException {
-			if (called) {
+			if (this.called) {
 				fail("Must not be delegating to lookup(..), must be resolving from cache.");
 			}
 			assertEquals(DESTINATION_NAME, jndiName);
-			called = true;
+			this.called = true;
 			return requiredType.cast(DESTINATION);
 		}
 	}

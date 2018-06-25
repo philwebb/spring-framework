@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,18 +49,18 @@ public class MockHttpOutputMessage implements HttpOutputMessage {
 	 * the underlying headers, e.g. via a previously obtained instance.
 	 */
 	public HttpHeaders getWrittenHeaders() {
-		return writtenHeaders;
+		return this.writtenHeaders;
 	}
 
 	@Override
 	public OutputStream getBody() throws IOException {
 		writeHeaders();
-		return body;
+		return this.body;
 	}
 
 	public byte[] getBodyAsBytes() {
 		writeHeaders();
-		return body.toByteArray();
+		return this.body.toByteArray();
 	}
 
 	public String getBodyAsString(Charset charset) {

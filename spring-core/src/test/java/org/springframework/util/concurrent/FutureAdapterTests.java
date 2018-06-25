@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,8 +39,8 @@ public class FutureAdapterTests {
 	@Before
 	@SuppressWarnings("unchecked")
 	public void setUp() {
-		adaptee = mock(Future.class);
-		adapter = new FutureAdapter<String, Integer>(adaptee) {
+		this.adaptee = mock(Future.class);
+		this.adapter = new FutureAdapter<String, Integer>(this.adaptee) {
 			@Override
 			protected String adapt(Integer adapteeResult) throws ExecutionException {
 				return adapteeResult.toString();
@@ -50,36 +50,36 @@ public class FutureAdapterTests {
 
 	@Test
 	public void cancel() throws Exception {
-		given(adaptee.cancel(true)).willReturn(true);
-		boolean result = adapter.cancel(true);
+		given(this.adaptee.cancel(true)).willReturn(true);
+		boolean result = this.adapter.cancel(true);
 		assertTrue(result);
 	}
 
 	@Test
 	public void isCancelled() {
-		given(adaptee.isCancelled()).willReturn(true);
-		boolean result = adapter.isCancelled();
+		given(this.adaptee.isCancelled()).willReturn(true);
+		boolean result = this.adapter.isCancelled();
 		assertTrue(result);
 	}
 
 	@Test
 	public void isDone() {
-		given(adaptee.isDone()).willReturn(true);
-		boolean result = adapter.isDone();
+		given(this.adaptee.isDone()).willReturn(true);
+		boolean result = this.adapter.isDone();
 		assertTrue(result);
 	}
 
 	@Test
 	public void get() throws Exception {
-		given(adaptee.get()).willReturn(42);
-		String result = adapter.get();
+		given(this.adaptee.get()).willReturn(42);
+		String result = this.adapter.get();
 		assertEquals("42", result);
 	}
 
 	@Test
 	public void getTimeOut() throws Exception {
-		given(adaptee.get(1, TimeUnit.SECONDS)).willReturn(42);
-		String result = adapter.get(1, TimeUnit.SECONDS);
+		given(this.adaptee.get(1, TimeUnit.SECONDS)).willReturn(42);
+		String result = this.adapter.get(1, TimeUnit.SECONDS);
 		assertEquals("42", result);
 	}
 

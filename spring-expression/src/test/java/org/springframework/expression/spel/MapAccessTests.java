@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -136,7 +136,7 @@ public class MapAccessTests extends AbstractExpressionTests {
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String name) {
@@ -144,7 +144,7 @@ public class MapAccessTests extends AbstractExpressionTests {
 		}
 
 		public TestBean getTestBean() {
-			return testBean;
+			return this.testBean;
 		}
 
 		public void setTestBean(TestBean testBean) {
@@ -152,7 +152,7 @@ public class MapAccessTests extends AbstractExpressionTests {
 		}
 
 		public String getDescription() {
-			return description;
+			return this.description;
 		}
 
 		public void setDescription(String description) {
@@ -160,7 +160,7 @@ public class MapAccessTests extends AbstractExpressionTests {
 		}
 
 		public Integer getPriority() {
-			return priority;
+			return this.priority;
 		}
 
 		public void setPriority(Integer priority) {
@@ -168,7 +168,7 @@ public class MapAccessTests extends AbstractExpressionTests {
 		}
 
 		public Map<String,String> getProperties() {
-			return properties;
+			return this.properties;
 		}
 
 		public void setProperties(Map<String,String> properties) {

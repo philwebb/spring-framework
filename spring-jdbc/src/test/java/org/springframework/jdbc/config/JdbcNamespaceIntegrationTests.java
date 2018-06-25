@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -117,7 +117,7 @@ public class JdbcNamespaceIntegrationTests {
 			JdbcTemplate template = new JdbcTemplate(dataSource);
 			assertNumRowsInTestTable(template, 1);
 			context.getBean(DataSourceInitializer.class).destroy();
-			expected.expect(BadSqlGrammarException.class); // Table has been dropped
+			this.expected.expect(BadSqlGrammarException.class); // Table has been dropped
 			assertNumRowsInTestTable(template, 1);
 		}
 		finally {
@@ -133,7 +133,7 @@ public class JdbcNamespaceIntegrationTests {
 			JdbcTemplate template = new JdbcTemplate(dataSource);
 			assertNumRowsInTestTable(template, 1);
 			context.getBean(EmbeddedDatabaseFactoryBean.class).destroy();
-			expected.expect(BadSqlGrammarException.class); // Table has been dropped
+			this.expected.expect(BadSqlGrammarException.class); // Table has been dropped
 			assertNumRowsInTestTable(template, 1);
 		}
 		finally {
@@ -149,7 +149,7 @@ public class JdbcNamespaceIntegrationTests {
 			JdbcTemplate template = new JdbcTemplate(dataSource);
 			assertNumRowsInTestTable(template, 1);
 			context.getBean(EmbeddedDatabaseFactoryBean.class).destroy();
-			expected.expect(BadSqlGrammarException.class); // Table has been dropped
+			this.expected.expect(BadSqlGrammarException.class); // Table has been dropped
 			assertNumRowsInTestTable(template, 1);
 		}
 		finally {

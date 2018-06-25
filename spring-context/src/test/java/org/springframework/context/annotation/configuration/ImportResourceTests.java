@@ -164,7 +164,7 @@ public class ImportResourceTests {
 		TestBean xmlDeclaredBean;
 
 		public @Bean String xmlBeanName() {
-			return xmlDeclaredBean.getName();
+			return this.xmlDeclaredBean.getName();
 		}
 	}
 

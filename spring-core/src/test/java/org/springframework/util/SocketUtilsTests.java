@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,13 +46,13 @@ public class SocketUtilsTests {
 
 	@Test
 	public void findAvailableTcpPortWithZeroMinPort() {
-		exception.expect(IllegalArgumentException.class);
+		this.exception.expect(IllegalArgumentException.class);
 		SocketUtils.findAvailableTcpPort(0);
 	}
 
 	@Test
 	public void findAvailableTcpPortWithNegativeMinPort() {
-		exception.expect(IllegalArgumentException.class);
+		this.exception.expect(IllegalArgumentException.class);
 		SocketUtils.findAvailableTcpPort(-500);
 	}
 
@@ -74,9 +74,9 @@ public class SocketUtilsTests {
 		int port = SocketUtils.findAvailableTcpPort();
 		ServerSocket socket = ServerSocketFactory.getDefault().createServerSocket(port, 1, InetAddress.getByName("localhost"));
 		try {
-			exception.expect(IllegalStateException.class);
-			exception.expectMessage(startsWith("Could not find an available TCP port"));
-			exception.expectMessage(endsWith("after 1 attempts"));
+			this.exception.expect(IllegalStateException.class);
+			this.exception.expectMessage(startsWith("Could not find an available TCP port"));
+			this.exception.expectMessage(endsWith("after 1 attempts"));
 			// will only look for the exact port
 			SocketUtils.findAvailableTcpPort(port, port);
 		}
@@ -121,7 +121,7 @@ public class SocketUtilsTests {
 
 	@Test
 	public void findAvailableTcpPortsWithRequestedNumberGreaterThanSizeOfRange() {
-		exception.expect(IllegalArgumentException.class);
+		this.exception.expect(IllegalArgumentException.class);
 		findAvailableTcpPorts(50, 45000, 45010);
 	}
 
@@ -130,13 +130,13 @@ public class SocketUtilsTests {
 
 	@Test
 	public void findAvailableUdpPortWithZeroMinPort() {
-		exception.expect(IllegalArgumentException.class);
+		this.exception.expect(IllegalArgumentException.class);
 		SocketUtils.findAvailableUdpPort(0);
 	}
 
 	@Test
 	public void findAvailableUdpPortWithNegativeMinPort() {
-		exception.expect(IllegalArgumentException.class);
+		this.exception.expect(IllegalArgumentException.class);
 		SocketUtils.findAvailableUdpPort(-500);
 	}
 
@@ -151,9 +151,9 @@ public class SocketUtilsTests {
 		int port = SocketUtils.findAvailableUdpPort();
 		DatagramSocket socket = new DatagramSocket(port, InetAddress.getByName("localhost"));
 		try {
-			exception.expect(IllegalStateException.class);
-			exception.expectMessage(startsWith("Could not find an available UDP port"));
-			exception.expectMessage(endsWith("after 1 attempts"));
+			this.exception.expect(IllegalStateException.class);
+			this.exception.expectMessage(startsWith("Could not find an available UDP port"));
+			this.exception.expectMessage(endsWith("after 1 attempts"));
 			// will only look for the exact port
 			SocketUtils.findAvailableUdpPort(port, port);
 		}
@@ -198,7 +198,7 @@ public class SocketUtilsTests {
 
 	@Test
 	public void findAvailableUdpPortsWithRequestedNumberGreaterThanSizeOfRange() {
-		exception.expect(IllegalArgumentException.class);
+		this.exception.expect(IllegalArgumentException.class);
 		findAvailableUdpPorts(50, 45000, 45010);
 	}
 

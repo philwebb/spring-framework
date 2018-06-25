@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,8 +43,8 @@ public class DeclarationOrderIndependenceTests {
 	public void setUp() {
 		ClassPathXmlApplicationContext ctx =
 			new ClassPathXmlApplicationContext(getClass().getSimpleName() + ".xml", getClass());
-		aspect = (TopsyTurvyAspect) ctx.getBean("topsyTurvyAspect");
-		target = (TopsyTurvyTarget) ctx.getBean("topsyTurvyTarget");
+		this.aspect = (TopsyTurvyAspect) ctx.getBean("topsyTurvyAspect");
+		this.target = (TopsyTurvyTarget) ctx.getBean("topsyTurvyTarget");
 	}
 
 	@Test
@@ -153,7 +153,7 @@ class TopsyTurvyTargetImpl implements TopsyTurvyTarget {
 
 	@Override
 	public int getX() {
-		return x;
+		return this.x;
 	}
 
 }

@@ -104,7 +104,7 @@ public class BooleanExpressionTests extends AbstractExpressionTests {
 				return targetType.getType() == Boolean.class ? false : null;
 			}
 		};
-		context.setTypeConverter(new StandardTypeConverter(conversionService));
+		this.context.setTypeConverter(new StandardTypeConverter(conversionService));
 
 		evaluate("null or true", Boolean.TRUE, Boolean.class, false);
 		evaluate("null and true", Boolean.FALSE, Boolean.class, false);

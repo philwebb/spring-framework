@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -107,7 +107,7 @@ public class PayloadArgumentResolverTests {
 	@Test
 	public void resolveRequired() throws Exception {
 		Message<?> message = MessageBuilder.withPayload("ABC".getBytes()).build();
-		Object actual = this.resolver.resolveArgument(paramAnnotated, message);
+		Object actual = this.resolver.resolveArgument(this.paramAnnotated, message);
 
 		assertEquals("ABC", actual);
 	}
@@ -116,15 +116,15 @@ public class PayloadArgumentResolverTests {
 	public void resolveRequiredEmpty() throws Exception {
 		Message<?> message = MessageBuilder.withPayload("").build();
 
-		thrown.expect(MethodArgumentNotValidException.class); // Required but empty
-		this.resolver.resolveArgument(paramAnnotated, message);
+		this.thrown.expect(MethodArgumentNotValidException.class); // Required but empty
+		this.resolver.resolveArgument(this.paramAnnotated, message);
 	}
 
 	@Test
 	public void resolveRequiredEmptyNonAnnotatedParameter() throws Exception {
 		Message<?> message = MessageBuilder.withPayload("").build();
 
-		thrown.expect(MethodArgumentNotValidException.class); // Required but empty
+		this.thrown.expect(MethodArgumentNotValidException.class); // Required but empty
 		this.resolver.resolveArgument(this.paramNotAnnotated, message);
 	}
 
@@ -144,8 +144,8 @@ public class PayloadArgumentResolverTests {
 	public void resolveNonConvertibleParam() throws Exception {
 		Message<?> notEmptyMessage = MessageBuilder.withPayload(123).build();
 
-		thrown.expect(MessageConversionException.class);
-		thrown.expectMessage("Cannot convert");
+		this.thrown.expect(MessageConversionException.class);
+		this.thrown.expectMessage("Cannot convert");
 		this.resolver.resolveArgument(this.paramAnnotatedRequired, notEmptyMessage);
 	}
 
@@ -153,8 +153,8 @@ public class PayloadArgumentResolverTests {
 	public void resolveSpelExpressionNotSupported() throws Exception {
 		Message<?> message = MessageBuilder.withPayload("ABC".getBytes()).build();
 
-		thrown.expect(IllegalStateException.class);
-		this.resolver.resolveArgument(paramWithSpelExpression, message);
+		this.thrown.expect(IllegalStateException.class);
+		this.resolver.resolveArgument(this.paramWithSpelExpression, message);
 	}
 
 	@Test
@@ -168,7 +168,7 @@ public class PayloadArgumentResolverTests {
 		// See testValidator()
 		Message<?> message = MessageBuilder.withPayload("invalidValue".getBytes()).build();
 
-		thrown.expect(MethodArgumentNotValidException.class);
+		this.thrown.expect(MethodArgumentNotValidException.class);
 		this.resolver.resolveArgument(this.paramValidated, message);
 	}
 
@@ -176,7 +176,7 @@ public class PayloadArgumentResolverTests {
 	public void resolveFailValidationNoConversionNecessary() throws Exception {
 		Message<?> message = MessageBuilder.withPayload("invalidValue").build();
 
-		thrown.expect(MethodArgumentNotValidException.class);
+		this.thrown.expect(MethodArgumentNotValidException.class);
 		this.resolver.resolveArgument(this.paramValidated, message);
 	}
 
@@ -186,7 +186,7 @@ public class PayloadArgumentResolverTests {
 		assertEquals("ABC", this.resolver.resolveArgument(this.paramNotAnnotated, notEmptyMessage));
 
 		Message<?> emptyStringMessage = MessageBuilder.withPayload("").build();
-		thrown.expect(MethodArgumentNotValidException.class);
+		this.thrown.expect(MethodArgumentNotValidException.class);
 		this.resolver.resolveArgument(this.paramValidated, emptyStringMessage);
 	}
 
@@ -195,8 +195,8 @@ public class PayloadArgumentResolverTests {
 		// See testValidator()
 		Message<?> message = MessageBuilder.withPayload("invalidValue".getBytes()).build();
 
-		thrown.expect(MethodArgumentNotValidException.class);
-		thrown.expectMessage("invalid value");
+		this.thrown.expect(MethodArgumentNotValidException.class);
+		this.thrown.expectMessage("invalid value");
 		assertEquals("invalidValue", this.resolver.resolveArgument(this.paramValidatedNotAnnotated, message));
 	}
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -102,7 +102,7 @@ public class ChannelInterceptorTests {
 			private void assertInput(Message<?> message, MessageChannel channel, boolean sent) {
 				assertNotNull(message);
 				assertNotNull(channel);
-				assertSame(ChannelInterceptorTests.this.channel, channel);
+				assertSame(channel, channel);
 				assertTrue(sent);
 			}
 		});
@@ -216,7 +216,7 @@ public class ChannelInterceptorTests {
 		@Override
 		public Message<?> preSend(Message<?> message, MessageChannel channel) {
 			assertNotNull(message);
-			counter.incrementAndGet();
+			this.counter.incrementAndGet();
 			return message;
 		}
 

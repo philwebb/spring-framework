@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ public class XsltViewTests {
 	@Test(expected = IllegalArgumentException.class)
 	public void withNoSource() throws Exception {
 		final XsltView view = getXsltView(HTML_OUTPUT);
-		view.render(emptyMap(), request, response);
+		view.render(emptyMap(), this.request, this.response);
 	}
 
 	@Test(expected = IllegalArgumentException.class)

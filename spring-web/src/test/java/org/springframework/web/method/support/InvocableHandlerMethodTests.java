@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,9 +60,9 @@ public class InvocableHandlerMethodTests {
 		HandlerMethodArgumentResolverComposite composite = new HandlerMethodArgumentResolverComposite();
 		composite.addResolver(intResolver);
 		composite.addResolver(stringResolver);
-		handlerMethod.setHandlerMethodArgumentResolvers(composite);
+		this.handlerMethod.setHandlerMethodArgumentResolvers(composite);
 
-		Object returnValue = handlerMethod.invokeForRequest(webRequest, null);
+		Object returnValue = this.handlerMethod.invokeForRequest(this.webRequest, null);
 		assertEquals(1, intResolver.getResolvedParameters().size());
 		assertEquals(1, stringResolver.getResolvedParameters().size());
 		assertEquals("99-value", returnValue);
@@ -78,9 +78,9 @@ public class InvocableHandlerMethodTests {
 		HandlerMethodArgumentResolverComposite composite = new HandlerMethodArgumentResolverComposite();
 		composite.addResolver(intResolver);
 		composite.addResolver(stringResolver);
-		handlerMethod.setHandlerMethodArgumentResolvers(composite);
+		this.handlerMethod.setHandlerMethodArgumentResolvers(composite);
 
-		Object returnValue = handlerMethod.invokeForRequest(webRequest, null);
+		Object returnValue = this.handlerMethod.invokeForRequest(this.webRequest, null);
 		assertEquals(1, intResolver.getResolvedParameters().size());
 		assertEquals(1, stringResolver.getResolvedParameters().size());
 		assertEquals("null-null", returnValue);
@@ -89,7 +89,7 @@ public class InvocableHandlerMethodTests {
 	@Test
 	public void cannotResolveArg() throws Exception {
 		try {
-			handlerMethod.invokeForRequest(webRequest, null);
+			this.handlerMethod.invokeForRequest(this.webRequest, null);
 			fail("Expected exception");
 		}
 		catch (IllegalStateException ex) {
@@ -99,7 +99,7 @@ public class InvocableHandlerMethodTests {
 
 	@Test
 	public void resolveProvidedArg() throws Exception {
-		Object returnValue = handlerMethod.invokeForRequest(webRequest, null, 99, "value");
+		Object returnValue = this.handlerMethod.invokeForRequest(this.webRequest, null, 99, "value");
 
 		assertEquals(String.class, returnValue.getClass());
 		assertEquals("99-value", returnValue);
@@ -113,9 +113,9 @@ public class InvocableHandlerMethodTests {
 		HandlerMethodArgumentResolverComposite composite = new HandlerMethodArgumentResolverComposite();
 		composite.addResolver(intResolver);
 		composite.addResolver(stringResolver);
-		handlerMethod.setHandlerMethodArgumentResolvers(composite);
+		this.handlerMethod.setHandlerMethodArgumentResolvers(composite);
 
-		Object returnValue = handlerMethod.invokeForRequest(webRequest, null, 2, "value2");
+		Object returnValue = this.handlerMethod.invokeForRequest(this.webRequest, null, 2, "value2");
 		assertEquals("2-value2", returnValue);
 	}
 
@@ -123,10 +123,10 @@ public class InvocableHandlerMethodTests {
 	public void exceptionInResolvingArg() throws Exception {
 		HandlerMethodArgumentResolverComposite composite = new HandlerMethodArgumentResolverComposite();
 		composite.addResolver(new ExceptionRaisingArgumentResolver());
-		handlerMethod.setHandlerMethodArgumentResolvers(composite);
+		this.handlerMethod.setHandlerMethodArgumentResolvers(composite);
 
 		try {
-			handlerMethod.invokeForRequest(webRequest, null);
+			this.handlerMethod.invokeForRequest(this.webRequest, null);
 			fail("Expected exception");
 		}
 		catch (HttpMessageNotReadableException ex) {
@@ -142,10 +142,10 @@ public class InvocableHandlerMethodTests {
 		HandlerMethodArgumentResolverComposite composite = new HandlerMethodArgumentResolverComposite();
 		composite.addResolver(intResolver);
 		composite.addResolver(stringResolver);
-		handlerMethod.setHandlerMethodArgumentResolvers(composite);
+		this.handlerMethod.setHandlerMethodArgumentResolvers(composite);
 
 		try {
-			handlerMethod.invokeForRequest(webRequest, null);
+			this.handlerMethod.invokeForRequest(this.webRequest, null);
 			fail("Expected exception");
 		}
 		catch (IllegalStateException ex) {
@@ -219,7 +219,7 @@ public class InvocableHandlerMethodTests {
 	private void invokeExceptionRaisingHandler(Throwable expected) throws Exception {
 		Method method = ExceptionRaisingHandler.class.getDeclaredMethod("raiseException");
 		Object handler = new ExceptionRaisingHandler(expected);
-		new InvocableHandlerMethod(handler, method).invokeForRequest(webRequest, null);
+		new InvocableHandlerMethod(handler, method).invokeForRequest(this.webRequest, null);
 		fail("Expected exception");
 	}
 
@@ -246,7 +246,7 @@ public class InvocableHandlerMethodTests {
 		}
 
 		public void raiseException() throws Throwable {
-			throw t;
+			throw this.t;
 		}
 	}
 

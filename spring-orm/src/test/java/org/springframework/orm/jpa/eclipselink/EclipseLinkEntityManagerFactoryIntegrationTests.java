@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,14 +39,14 @@ public class EclipseLinkEntityManagerFactoryIntegrationTests extends AbstractCon
 
 	@Test
 	public void testCanCastNativeEntityManagerFactoryToEclipseLinkEntityManagerFactoryImpl() {
-		EntityManagerFactoryInfo emfi = (EntityManagerFactoryInfo) entityManagerFactory;
+		EntityManagerFactoryInfo emfi = (EntityManagerFactoryInfo) this.entityManagerFactory;
 		assertTrue(emfi.getNativeEntityManagerFactory().getClass().getName().endsWith("EntityManagerFactoryImpl"));
 	}
 
 	@Test
 	public void testCanCastSharedEntityManagerProxyToEclipseLinkEntityManager() {
-		assertTrue(sharedEntityManager instanceof JpaEntityManager);
-		JpaEntityManager eclipselinkEntityManager = (JpaEntityManager) sharedEntityManager;
+		assertTrue(this.sharedEntityManager instanceof JpaEntityManager);
+		JpaEntityManager eclipselinkEntityManager = (JpaEntityManager) this.sharedEntityManager;
 		assertNotNull(eclipselinkEntityManager.getActiveSession());
 	}
 

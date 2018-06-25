@@ -70,9 +70,9 @@ public class PathVariableMapMethodArgumentResolverTests {
 
 	@Test
 	public void supportsParameter() {
-		assertTrue(resolver.supportsParameter(paramMap));
-		assertFalse(resolver.supportsParameter(paramNamedMap));
-		assertFalse(resolver.supportsParameter(paramMapNoAnnot));
+		assertTrue(this.resolver.supportsParameter(this.paramMap));
+		assertFalse(this.resolver.supportsParameter(this.paramNamedMap));
+		assertFalse(this.resolver.supportsParameter(this.paramMapNoAnnot));
 		try {
 			this.resolver.supportsParameter(this.paramMonoMap);
 			fail();

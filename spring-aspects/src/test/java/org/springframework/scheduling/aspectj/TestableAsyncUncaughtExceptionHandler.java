@@ -48,21 +48,21 @@ class TestableAsyncUncaughtExceptionHandler
 
 	@Override
 	public void handleUncaughtException(Throwable ex, Method method, Object... params) {
-		descriptor = new UncaughtExceptionDescriptor(ex, method);
+		this.descriptor = new UncaughtExceptionDescriptor(ex, method);
 		this.latch.countDown();
-		if (throwUnexpectedException) {
+		if (this.throwUnexpectedException) {
 			throw new IllegalStateException("Test exception");
 		}
 	}
 
 	public boolean isCalled() {
-		return descriptor != null;
+		return this.descriptor != null;
 	}
 
 	public void assertCalledWith(Method expectedMethod, Class<? extends Throwable> expectedExceptionType) {
-		assertNotNull("Handler not called", descriptor);
-		assertEquals("Wrong exception type", expectedExceptionType, descriptor.ex.getClass());
-		assertEquals("Wrong method", expectedMethod, descriptor.method);
+		assertNotNull("Handler not called", this.descriptor);
+		assertEquals("Wrong exception type", expectedExceptionType, this.descriptor.ex.getClass());
+		assertEquals("Wrong method", expectedMethod, this.descriptor.method);
 	}
 
 	public void await(long timeout) {

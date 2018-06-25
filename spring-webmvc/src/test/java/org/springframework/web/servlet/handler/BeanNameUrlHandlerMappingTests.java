@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,15 +45,15 @@ public class BeanNameUrlHandlerMappingTests {
 	@Before
 	public void setUp() throws Exception {
 		MockServletContext sc = new MockServletContext("");
-		wac = new XmlWebApplicationContext();
-		wac.setServletContext(sc);
-		wac.setConfigLocations(new String[] {CONF});
-		wac.refresh();
+		this.wac = new XmlWebApplicationContext();
+		this.wac.setServletContext(sc);
+		this.wac.setConfigLocations(new String[] {CONF});
+		this.wac.refresh();
 	}
 
 	@Test
 	public void requestsWithoutHandlers() throws Exception {
-		HandlerMapping hm = (HandlerMapping) wac.getBean("handlerMapping");
+		HandlerMapping hm = (HandlerMapping) this.wac.getBean("handlerMapping");
 
 		MockHttpServletRequest req = new MockHttpServletRequest("GET", "/mypath/nonsense.html");
 		req.setContextPath("/myapp");
@@ -67,7 +67,7 @@ public class BeanNameUrlHandlerMappingTests {
 
 	@Test
 	public void requestsWithSubPaths() throws Exception {
-		HandlerMapping hm = (HandlerMapping) wac.getBean("handlerMapping");
+		HandlerMapping hm = (HandlerMapping) this.wac.getBean("handlerMapping");
 		doTestRequestsWithSubPaths(hm);
 	}
 
@@ -75,12 +75,12 @@ public class BeanNameUrlHandlerMappingTests {
 	public void requestsWithSubPathsInParentContext() throws Exception {
 		BeanNameUrlHandlerMapping hm = new BeanNameUrlHandlerMapping();
 		hm.setDetectHandlersInAncestorContexts(true);
-		hm.setApplicationContext(new StaticApplicationContext(wac));
+		hm.setApplicationContext(new StaticApplicationContext(this.wac));
 		doTestRequestsWithSubPaths(hm);
 	}
 
 	private void doTestRequestsWithSubPaths(HandlerMapping hm) throws Exception {
-		Object bean = wac.getBean("godCtrl");
+		Object bean = this.wac.getBean("godCtrl");
 
 		MockHttpServletRequest req = new MockHttpServletRequest("GET", "/mypath/welcome.html");
 		HandlerExecutionChain hec = hm.getHandler(req);
@@ -122,8 +122,8 @@ public class BeanNameUrlHandlerMappingTests {
 	public void requestsWithFullPaths() throws Exception {
 		BeanNameUrlHandlerMapping hm = new BeanNameUrlHandlerMapping();
 		hm.setAlwaysUseFullPath(true);
-		hm.setApplicationContext(wac);
-		Object bean = wac.getBean("godCtrl");
+		hm.setApplicationContext(this.wac);
+		Object bean = this.wac.getBean("godCtrl");
 
 		MockHttpServletRequest req = new MockHttpServletRequest("GET", "/mypath/welcome.html");
 		HandlerExecutionChain hec = hm.getHandler(req);
@@ -153,8 +153,8 @@ public class BeanNameUrlHandlerMappingTests {
 
 	@Test
 	public void asteriskMatches() throws Exception {
-		HandlerMapping hm = (HandlerMapping) wac.getBean("handlerMapping");
-		Object bean = wac.getBean("godCtrl");
+		HandlerMapping hm = (HandlerMapping) this.wac.getBean("handlerMapping");
+		Object bean = this.wac.getBean("godCtrl");
 
 		MockHttpServletRequest req = new MockHttpServletRequest("GET", "/mypath/test.html");
 		HandlerExecutionChain hec = hm.getHandler(req);
@@ -171,10 +171,10 @@ public class BeanNameUrlHandlerMappingTests {
 
 	@Test
 	public void overlappingMappings() throws Exception {
-		BeanNameUrlHandlerMapping hm = (BeanNameUrlHandlerMapping) wac.getBean("handlerMapping");
+		BeanNameUrlHandlerMapping hm = (BeanNameUrlHandlerMapping) this.wac.getBean("handlerMapping");
 		Object anotherHandler = new Object();
 		hm.registerHandler("/mypath/testaross*", anotherHandler);
-		Object bean = wac.getBean("godCtrl");
+		Object bean = this.wac.getBean("godCtrl");
 
 		MockHttpServletRequest req = new MockHttpServletRequest("GET", "/mypath/test.html");
 		HandlerExecutionChain hec = hm.getHandler(req);
@@ -191,7 +191,7 @@ public class BeanNameUrlHandlerMappingTests {
 
 	@Test
 	public void doubleMappings() throws ServletException {
-		BeanNameUrlHandlerMapping hm = (BeanNameUrlHandlerMapping) wac.getBean("handlerMapping");
+		BeanNameUrlHandlerMapping hm = (BeanNameUrlHandlerMapping) this.wac.getBean("handlerMapping");
 		try {
 			hm.registerHandler("/mypath/welcome.html", new Object());
 			fail("Should have thrown IllegalStateException");

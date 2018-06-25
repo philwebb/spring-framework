@@ -40,7 +40,7 @@ public class LocalVariableTableParameterNameDiscovererTests {
 	@Test
 	public void methodParameterNameDiscoveryNoArgs() throws NoSuchMethodException {
 		Method getName = TestObject.class.getMethod("getName");
-		String[] names = discoverer.getParameterNames(getName);
+		String[] names = this.discoverer.getParameterNames(getName);
 		assertNotNull("should find method info", names);
 		assertEquals("no argument names", 0, names.length);
 	}
@@ -48,7 +48,7 @@ public class LocalVariableTableParameterNameDiscovererTests {
 	@Test
 	public void methodParameterNameDiscoveryWithArgs() throws NoSuchMethodException {
 		Method setName = TestObject.class.getMethod("setName", String.class);
-		String[] names = discoverer.getParameterNames(setName);
+		String[] names = this.discoverer.getParameterNames(setName);
 		assertNotNull("should find method info", names);
 		assertEquals("one argument", 1, names.length);
 		assertEquals("name", names[0]);
@@ -57,7 +57,7 @@ public class LocalVariableTableParameterNameDiscovererTests {
 	@Test
 	public void consParameterNameDiscoveryNoArgs() throws NoSuchMethodException {
 		Constructor<TestObject> noArgsCons = TestObject.class.getConstructor();
-		String[] names = discoverer.getParameterNames(noArgsCons);
+		String[] names = this.discoverer.getParameterNames(noArgsCons);
 		assertNotNull("should find cons info", names);
 		assertEquals("no argument names", 0, names.length);
 	}
@@ -65,7 +65,7 @@ public class LocalVariableTableParameterNameDiscovererTests {
 	@Test
 	public void consParameterNameDiscoveryArgs() throws NoSuchMethodException {
 		Constructor<TestObject> twoArgCons = TestObject.class.getConstructor(String.class, int.class);
-		String[] names = discoverer.getParameterNames(twoArgCons);
+		String[] names = this.discoverer.getParameterNames(twoArgCons);
 		assertNotNull("should find cons info", names);
 		assertEquals("one argument", 2, names.length);
 		assertEquals("name", names[0]);
@@ -75,7 +75,7 @@ public class LocalVariableTableParameterNameDiscovererTests {
 	@Test
 	public void staticMethodParameterNameDiscoveryNoArgs() throws NoSuchMethodException {
 		Method m = getClass().getMethod("staticMethodNoLocalVars");
-		String[] names = discoverer.getParameterNames(m);
+		String[] names = this.discoverer.getParameterNames(m);
 		assertNotNull("should find method info", names);
 		assertEquals("no argument names", 0, names.length);
 	}
@@ -85,14 +85,14 @@ public class LocalVariableTableParameterNameDiscovererTests {
 		Class<? extends LocalVariableTableParameterNameDiscovererTests> clazz = this.getClass();
 
 		Method m1 = clazz.getMethod("staticMethod", Long.TYPE, Long.TYPE);
-		String[] names = discoverer.getParameterNames(m1);
+		String[] names = this.discoverer.getParameterNames(m1);
 		assertNotNull("should find method info", names);
 		assertEquals("two arguments", 2, names.length);
 		assertEquals("x", names[0]);
 		assertEquals("y", names[1]);
 
 		Method m2 = clazz.getMethod("staticMethod", Long.TYPE, Long.TYPE, Long.TYPE);
-		names = discoverer.getParameterNames(m2);
+		names = this.discoverer.getParameterNames(m2);
 		assertNotNull("should find method info", names);
 		assertEquals("three arguments", 3, names.length);
 		assertEquals("x", names[0]);
@@ -105,13 +105,13 @@ public class LocalVariableTableParameterNameDiscovererTests {
 		Class<InnerClass> clazz = InnerClass.class;
 
 		Method m1 = clazz.getMethod("staticMethod", Long.TYPE);
-		String[] names = discoverer.getParameterNames(m1);
+		String[] names = this.discoverer.getParameterNames(m1);
 		assertNotNull("should find method info", names);
 		assertEquals("one argument", 1, names.length);
 		assertEquals("x", names[0]);
 
 		Method m2 = clazz.getMethod("staticMethod", Long.TYPE, Long.TYPE);
-		names = discoverer.getParameterNames(m2);
+		names = this.discoverer.getParameterNames(m2);
 		assertNotNull("should find method info", names);
 		assertEquals("two arguments", 2, names.length);
 		assertEquals("x", names[0]);
@@ -123,14 +123,14 @@ public class LocalVariableTableParameterNameDiscovererTests {
 		Class<? extends LocalVariableTableParameterNameDiscovererTests> clazz = this.getClass();
 
 		Method m1 = clazz.getMethod("instanceMethod", Double.TYPE, Double.TYPE);
-		String[] names = discoverer.getParameterNames(m1);
+		String[] names = this.discoverer.getParameterNames(m1);
 		assertNotNull("should find method info", names);
 		assertEquals("two arguments", 2, names.length);
 		assertEquals("x", names[0]);
 		assertEquals("y", names[1]);
 
 		Method m2 = clazz.getMethod("instanceMethod", Double.TYPE, Double.TYPE, Double.TYPE);
-		names = discoverer.getParameterNames(m2);
+		names = this.discoverer.getParameterNames(m2);
 		assertNotNull("should find method info", names);
 		assertEquals("three arguments", 3, names.length);
 		assertEquals("x", names[0]);
@@ -143,13 +143,13 @@ public class LocalVariableTableParameterNameDiscovererTests {
 		Class<InnerClass> clazz = InnerClass.class;
 
 		Method m1 = clazz.getMethod("instanceMethod", String.class);
-		String[] names = discoverer.getParameterNames(m1);
+		String[] names = this.discoverer.getParameterNames(m1);
 		assertNotNull("should find method info", names);
 		assertEquals("one argument", 1, names.length);
 		assertEquals("aa", names[0]);
 
 		Method m2 = clazz.getMethod("instanceMethod", String.class, String.class);
-		names = discoverer.getParameterNames(m2);
+		names = this.discoverer.getParameterNames(m2);
 		assertNotNull("should find method info", names);
 		assertEquals("two arguments", 2, names.length);
 		assertEquals("aa", names[0]);
@@ -161,23 +161,23 @@ public class LocalVariableTableParameterNameDiscovererTests {
 		Class<?> clazz = GenerifiedClass.class;
 
 		Constructor<?> ctor = clazz.getDeclaredConstructor(Object.class);
-		String[] names = discoverer.getParameterNames(ctor);
+		String[] names = this.discoverer.getParameterNames(ctor);
 		assertEquals(1, names.length);
 		assertEquals("key", names[0]);
 
 		ctor = clazz.getDeclaredConstructor(Object.class, Object.class);
-		names = discoverer.getParameterNames(ctor);
+		names = this.discoverer.getParameterNames(ctor);
 		assertEquals(2, names.length);
 		assertEquals("key", names[0]);
 		assertEquals("value", names[1]);
 
 		Method m = clazz.getMethod("generifiedStaticMethod", Object.class);
-		names = discoverer.getParameterNames(m);
+		names = this.discoverer.getParameterNames(m);
 		assertEquals(1, names.length);
 		assertEquals("param", names[0]);
 
 		m = clazz.getMethod("generifiedMethod", Object.class, long.class, Object.class, Object.class);
-		names = discoverer.getParameterNames(m);
+		names = this.discoverer.getParameterNames(m);
 		assertEquals(4, names.length);
 		assertEquals("param", names[0]);
 		assertEquals("x", names[1]);
@@ -185,21 +185,21 @@ public class LocalVariableTableParameterNameDiscovererTests {
 		assertEquals("value", names[3]);
 
 		m = clazz.getMethod("voidStaticMethod", Object.class, long.class, int.class);
-		names = discoverer.getParameterNames(m);
+		names = this.discoverer.getParameterNames(m);
 		assertEquals(3, names.length);
 		assertEquals("obj", names[0]);
 		assertEquals("x", names[1]);
 		assertEquals("i", names[2]);
 
 		m = clazz.getMethod("nonVoidStaticMethod", Object.class, long.class, int.class);
-		names = discoverer.getParameterNames(m);
+		names = this.discoverer.getParameterNames(m);
 		assertEquals(3, names.length);
 		assertEquals("obj", names[0]);
 		assertEquals("x", names[1]);
 		assertEquals("i", names[2]);
 
 		m = clazz.getMethod("getDate");
-		names = discoverer.getParameterNames(m);
+		names = this.discoverer.getParameterNames(m);
 		assertEquals(0, names.length);
 	}
 
@@ -211,15 +211,15 @@ public class LocalVariableTableParameterNameDiscovererTests {
 		String methodName = "list";
 
 		Method m = clazz.getMethod(methodName);
-		String[] names = discoverer.getParameterNames(m);
+		String[] names = this.discoverer.getParameterNames(m);
 		assertNull(names);
 
 		m = clazz.getMethod(methodName, PrintStream.class);
-		names = discoverer.getParameterNames(m);
+		names = this.discoverer.getParameterNames(m);
 		assertNull(names);
 
 		m = clazz.getMethod(methodName, PrintStream.class, int.class);
-		names = discoverer.getParameterNames(m);
+		names = this.discoverer.getParameterNames(m);
 		assertNull(names);
 	}
 

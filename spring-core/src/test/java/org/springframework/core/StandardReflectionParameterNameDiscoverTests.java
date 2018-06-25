@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,13 +35,13 @@ public class StandardReflectionParameterNameDiscoverTests {
 
     @Before
     public void setup() {
-        parameterNameDiscoverer = new StandardReflectionParameterNameDiscoverer();
+        this.parameterNameDiscoverer = new StandardReflectionParameterNameDiscoverer();
     }
 
     @Test
     public void getParameterNamesOnInterface() {
         Method method = ReflectionUtils.findMethod(MessageService.class,"sendMessage", String.class);
-        String[] actualParams = parameterNameDiscoverer.getParameterNames(method);
+        String[] actualParams = this.parameterNameDiscoverer.getParameterNames(method);
         assertThat(actualParams, is(new String[]{"message"}));
     }
 

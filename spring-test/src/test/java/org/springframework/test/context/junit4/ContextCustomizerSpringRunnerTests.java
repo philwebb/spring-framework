@@ -49,7 +49,7 @@ public class ContextCustomizerSpringRunnerTests {
 
 	@Test
 	public void injectedBean() {
-		assertEquals("foo", foo);
+		assertEquals("foo", this.foo);
 	}
 
 

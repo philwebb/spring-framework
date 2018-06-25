@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,15 +49,15 @@ public class DelegatingPhaseListenerTests {
 	@Test
 	public void beforeAndAfterPhaseWithSingleTarget() {
 		TestListener target = new TestListener();
-		beanFactory.addBean("testListener", target);
+		this.beanFactory.addBean("testListener", target);
 
-		assertEquals(PhaseId.ANY_PHASE, delPhaseListener.getPhaseId());
-		PhaseEvent event = new PhaseEvent(facesContext, PhaseId.INVOKE_APPLICATION, new MockLifecycle());
+		assertEquals(PhaseId.ANY_PHASE, this.delPhaseListener.getPhaseId());
+		PhaseEvent event = new PhaseEvent(this.facesContext, PhaseId.INVOKE_APPLICATION, new MockLifecycle());
 
-		delPhaseListener.beforePhase(event);
+		this.delPhaseListener.beforePhase(event);
 		assertTrue(target.beforeCalled);
 
-		delPhaseListener.afterPhase(event);
+		this.delPhaseListener.afterPhase(event);
 		assertTrue(target.afterCalled);
 	}
 
@@ -65,17 +65,17 @@ public class DelegatingPhaseListenerTests {
 	public void beforeAndAfterPhaseWithMultipleTargets() {
 		TestListener target1 = new TestListener();
 		TestListener target2 = new TestListener();
-		beanFactory.addBean("testListener1", target1);
-		beanFactory.addBean("testListener2", target2);
+		this.beanFactory.addBean("testListener1", target1);
+		this.beanFactory.addBean("testListener2", target2);
 
-		assertEquals(PhaseId.ANY_PHASE, delPhaseListener.getPhaseId());
-		PhaseEvent event = new PhaseEvent(facesContext, PhaseId.INVOKE_APPLICATION, new MockLifecycle());
+		assertEquals(PhaseId.ANY_PHASE, this.delPhaseListener.getPhaseId());
+		PhaseEvent event = new PhaseEvent(this.facesContext, PhaseId.INVOKE_APPLICATION, new MockLifecycle());
 
-		delPhaseListener.beforePhase(event);
+		this.delPhaseListener.beforePhase(event);
 		assertTrue(target1.beforeCalled);
 		assertTrue(target2.beforeCalled);
 
-		delPhaseListener.afterPhase(event);
+		this.delPhaseListener.afterPhase(event);
 		assertTrue(target1.afterCalled);
 		assertTrue(target2.afterCalled);
 	}
@@ -94,12 +94,12 @@ public class DelegatingPhaseListenerTests {
 
 		@Override
 		public void beforePhase(PhaseEvent arg0) {
-			beforeCalled = true;
+			this.beforeCalled = true;
 		}
 
 		@Override
 		public void afterPhase(PhaseEvent arg0) {
-			afterCalled = true;
+			this.afterCalled = true;
 		}
 	}
 

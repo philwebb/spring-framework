@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,41 +42,41 @@ public class EncodedResourceTests {
 
 	@Test
 	public void equalsWithNullOtherObject() {
-		assertFalse(new EncodedResource(resource).equals(null));
+		assertFalse(new EncodedResource(this.resource).equals(null));
 	}
 
 	@Test
 	public void equalsWithSameEncoding() {
-		EncodedResource er1 = new EncodedResource(resource, UTF8);
-		EncodedResource er2 = new EncodedResource(resource, UTF8);
+		EncodedResource er1 = new EncodedResource(this.resource, UTF8);
+		EncodedResource er2 = new EncodedResource(this.resource, UTF8);
 		assertEquals(er1, er2);
 	}
 
 	@Test
 	public void equalsWithDifferentEncoding() {
-		EncodedResource er1 = new EncodedResource(resource, UTF8);
-		EncodedResource er2 = new EncodedResource(resource, UTF16);
+		EncodedResource er1 = new EncodedResource(this.resource, UTF8);
+		EncodedResource er2 = new EncodedResource(this.resource, UTF16);
 		assertNotEquals(er1, er2);
 	}
 
 	@Test
 	public void equalsWithSameCharset() {
-		EncodedResource er1 = new EncodedResource(resource, UTF8_CS);
-		EncodedResource er2 = new EncodedResource(resource, UTF8_CS);
+		EncodedResource er1 = new EncodedResource(this.resource, UTF8_CS);
+		EncodedResource er2 = new EncodedResource(this.resource, UTF8_CS);
 		assertEquals(er1, er2);
 	}
 
 	@Test
 	public void equalsWithDifferentCharset() {
-		EncodedResource er1 = new EncodedResource(resource, UTF8_CS);
-		EncodedResource er2 = new EncodedResource(resource, UTF16_CS);
+		EncodedResource er1 = new EncodedResource(this.resource, UTF8_CS);
+		EncodedResource er2 = new EncodedResource(this.resource, UTF16_CS);
 		assertNotEquals(er1, er2);
 	}
 
 	@Test
 	public void equalsWithEncodingAndCharset() {
-		EncodedResource er1 = new EncodedResource(resource, UTF8);
-		EncodedResource er2 = new EncodedResource(resource, UTF8_CS);
+		EncodedResource er1 = new EncodedResource(this.resource, UTF8);
+		EncodedResource er2 = new EncodedResource(this.resource, UTF8_CS);
 		assertNotEquals(er1, er2);
 	}
 

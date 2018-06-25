@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2007 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ public class Customer {
 
 
 	public int getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(int id) {
@@ -35,7 +35,7 @@ public class Customer {
 	}
 
 	public String getForename() {
-		return forename;
+		return this.forename;
 	}
 
 	public void setForename(String forename) {
@@ -45,7 +45,7 @@ public class Customer {
 
 	@Override
 	public String toString() {
-		return "Customer: id=" + id + "; forename=" + forename;
+		return "Customer: id=" + this.id + "; forename=" + this.forename;
 	}
 
 }

@@ -91,9 +91,9 @@ public class ObjectToStringHttpMessageConverterTests {
 
 	@Test
 	public void defaultCharset() throws IOException {
-		this.converter.write(Integer.valueOf(5), null, response);
+		this.converter.write(Integer.valueOf(5), null, this.response);
 
-		assertEquals("ISO-8859-1", servletResponse.getCharacterEncoding());
+		assertEquals("ISO-8859-1", this.servletResponse.getCharacterEncoding());
 	}
 
 	@Test

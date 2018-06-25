@@ -35,7 +35,7 @@ public class TestBean {
 	 * @return Returns the name.
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class TestBean {
 	 * @return Returns the list.
 	 */
 	public List<?> getList() {
-		return list;
+		return this.list;
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class TestBean {
 	 * @return Returns the object.
 	 */
 	public Object getObjRef() {
-		return objRef;
+		return this.objRef;
 	}
 
 	/**

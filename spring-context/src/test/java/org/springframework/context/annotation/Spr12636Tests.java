@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,8 +50,8 @@ public class Spr12636Tests {
 		this.context = new AnnotationConfigApplicationContext(
 				UserServiceTwo.class, UserServiceOne.class, UserServiceCollector.class);
 		UserServiceCollector bean = this.context.getBean(UserServiceCollector.class);
-		assertSame(context.getBean("serviceOne", UserService.class), bean.userServices.get(0));
-		assertSame(context.getBean("serviceTwo", UserService.class), bean.userServices.get(1));
+		assertSame(this.context.getBean("serviceOne", UserService.class), bean.userServices.get(0));
+		assertSame(this.context.getBean("serviceTwo", UserService.class), bean.userServices.get(1));
 
 	}
 

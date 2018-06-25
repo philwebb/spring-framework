@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,7 +66,7 @@ public class HandlerResultHandlerTests {
 		exchange.getAttributes().put(HandlerMapping.PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE, Collections.singleton(IMAGE_GIF));
 
 		List<MediaType> mediaTypes = Arrays.asList(IMAGE_JPEG, IMAGE_GIF, IMAGE_PNG);
-		MediaType actual = resultHandler.selectMediaType(exchange, () -> mediaTypes);
+		MediaType actual = this.resultHandler.selectMediaType(exchange, () -> mediaTypes);
 
 		assertEquals(IMAGE_GIF, actual);
 	}

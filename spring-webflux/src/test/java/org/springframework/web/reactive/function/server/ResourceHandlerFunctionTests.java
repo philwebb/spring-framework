@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ public class ResourceHandlerFunctionTests {
 	@Before
 	public void createContext() {
 		HandlerStrategies strategies = HandlerStrategies.withDefaults();
-		context = new ServerResponse.Context() {
+		this.context = new ServerResponse.Context() {
 			@Override
 			public List<HttpMessageWriter<?>> messageWriters() {
 				return strategies.messageWriters();
@@ -86,7 +86,7 @@ public class ResourceHandlerFunctionTests {
 					@SuppressWarnings("unchecked")
 					EntityResponse<Resource> entityResponse = (EntityResponse<Resource>) response;
 					assertEquals(this.resource, entityResponse.entity());
-					return response.writeTo(exchange, context);
+					return response.writeTo(exchange, this.context);
 				});
 
 		StepVerifier.create(result)
@@ -122,7 +122,7 @@ public class ResourceHandlerFunctionTests {
 			@SuppressWarnings("unchecked")
 			EntityResponse<Resource> entityResponse = (EntityResponse<Resource>) response;
 			assertEquals(this.resource.getFilename(), entityResponse.entity().getFilename());
-			return response.writeTo(exchange, context);
+			return response.writeTo(exchange, this.context);
 		});
 
 		StepVerifier.create(result).expectComplete().verify();
@@ -144,7 +144,7 @@ public class ResourceHandlerFunctionTests {
 			assertEquals(HttpStatus.OK, response.statusCode());
 			assertEquals(EnumSet.of(HttpMethod.GET, HttpMethod.HEAD, HttpMethod.OPTIONS),
 					response.headers().getAllow());
-			return response.writeTo(exchange, context);
+			return response.writeTo(exchange, this.context);
 		});
 
 

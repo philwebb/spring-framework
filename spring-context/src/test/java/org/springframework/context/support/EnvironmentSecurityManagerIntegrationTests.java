@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2014 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,15 +49,15 @@ public class EnvironmentSecurityManagerIntegrationTests {
 
 	@Before
 	public void setUp() {
-		originalSecurityManager = System.getSecurityManager();
-		env = StandardEnvironmentTests.getModifiableSystemEnvironment();
-		env.put(AbstractEnvironment.ACTIVE_PROFILES_PROPERTY_NAME, "p1");
+		this.originalSecurityManager = System.getSecurityManager();
+		this.env = StandardEnvironmentTests.getModifiableSystemEnvironment();
+		this.env.put(AbstractEnvironment.ACTIVE_PROFILES_PROPERTY_NAME, "p1");
 	}
 
 	@After
 	public void tearDown() {
-		env.remove(AbstractEnvironment.ACTIVE_PROFILES_PROPERTY_NAME);
-		System.setSecurityManager(originalSecurityManager);
+		this.env.remove(AbstractEnvironment.ACTIVE_PROFILES_PROPERTY_NAME);
+		System.setSecurityManager(this.originalSecurityManager);
 	}
 
 

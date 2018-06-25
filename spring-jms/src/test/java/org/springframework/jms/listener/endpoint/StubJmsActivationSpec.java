@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2007 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ public class StubJmsActivationSpec extends StubActivationSpec {
 
 
 	public String getDestinationType() {
-		return destinationType;
+		return this.destinationType;
 	}
 
 	public void setDestinationType(String destinationType) {
@@ -52,7 +52,7 @@ public class StubJmsActivationSpec extends StubActivationSpec {
 	}
 
 	public String getSubscriptionDurability() {
-		return subscriptionDurability;
+		return this.subscriptionDurability;
 	}
 
 	public void setSubscriptionDurability(String subscriptionDurability) {
@@ -60,7 +60,7 @@ public class StubJmsActivationSpec extends StubActivationSpec {
 	}
 
 	public String getSubscriptionName() {
-		return subscriptionName;
+		return this.subscriptionName;
 	}
 
 	public void setSubscriptionName(String subscriptionName) {
@@ -68,7 +68,7 @@ public class StubJmsActivationSpec extends StubActivationSpec {
 	}
 
 	public String getClientId() {
-		return clientId;
+		return this.clientId;
 	}
 
 	public void setClientId(String clientId) {
@@ -76,7 +76,7 @@ public class StubJmsActivationSpec extends StubActivationSpec {
 	}
 
 	public String getMessageSelector() {
-		return messageSelector;
+		return this.messageSelector;
 	}
 
 	public void setMessageSelector(String messageSelector) {
@@ -84,7 +84,7 @@ public class StubJmsActivationSpec extends StubActivationSpec {
 	}
 
 	public String getAcknowledgeMode() {
-		return acknowledgeMode;
+		return this.acknowledgeMode;
 	}
 
 	public void setAcknowledgeMode(String acknowledgeMode) {

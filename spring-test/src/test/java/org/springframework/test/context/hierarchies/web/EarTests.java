@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,9 +58,9 @@ public class EarTests {
 
 	@Test
 	public void verifyEarConfig() {
-		assertFalse(context instanceof WebApplicationContext);
-		assertNull(context.getParent());
-		assertEquals("ear", ear);
+		assertFalse(this.context instanceof WebApplicationContext);
+		assertNull(this.context.getParent());
+		assertEquals("ear", this.ear);
 	}
 
 }

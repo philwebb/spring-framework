@@ -202,7 +202,7 @@ public class JdkDynamicProxyTests extends AbstractAopProxyTests implements Seria
 				return false;
 			}
 			Person person = (Person) o;
-			if (!name.equals(person.name)) {
+			if (!this.name.equals(person.name)) {
 				return false;
 			}
 			return true;
@@ -210,7 +210,7 @@ public class JdkDynamicProxyTests extends AbstractAopProxyTests implements Seria
 
 		@Override
 		public int hashCode() {
-			return name.hashCode();
+			return this.name.hashCode();
 		}
 	}
 

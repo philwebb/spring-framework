@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,7 +66,7 @@ public class Pojo {
 
 	@Override
 	public int hashCode() {
-		return 31 * foo.hashCode() + bar.hashCode();
+		return 31 * this.foo.hashCode() + this.bar.hashCode();
 	}
 
 	@Override

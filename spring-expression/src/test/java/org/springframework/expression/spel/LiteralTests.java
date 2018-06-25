@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2012 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -164,11 +164,11 @@ public class LiteralTests extends AbstractExpressionTests {
 
 	@Test
 	public void testNotWritable() throws Exception {
-		SpelExpression expr = (SpelExpression)parser.parseExpression("37");
+		SpelExpression expr = (SpelExpression)this.parser.parseExpression("37");
 		assertFalse(expr.isWritable(new StandardEvaluationContext()));
-		expr = (SpelExpression)parser.parseExpression("37L");
+		expr = (SpelExpression)this.parser.parseExpression("37L");
 		assertFalse(expr.isWritable(new StandardEvaluationContext()));
-		expr = (SpelExpression)parser.parseExpression("true");
+		expr = (SpelExpression)this.parser.parseExpression("true");
 		assertFalse(expr.isWritable(new StandardEvaluationContext()));
 	}
 }

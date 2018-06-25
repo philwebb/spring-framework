@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ public class DefaultMessageCodesResolverTests {
 
 	@Test
 	public void shouldResolveMessageCode() throws Exception {
-		String[] codes = resolver.resolveMessageCodes("errorCode", "objectName");
+		String[] codes = this.resolver.resolveMessageCodes("errorCode", "objectName");
 		assertThat(codes, is(equalTo(new String[] {
 				"errorCode.objectName",
 				"errorCode" })));
@@ -43,7 +43,7 @@ public class DefaultMessageCodesResolverTests {
 
 	@Test
 	public void shouldResolveFieldMessageCode() throws Exception {
-		String[] codes = resolver.resolveMessageCodes("errorCode", "objectName", "field",
+		String[] codes = this.resolver.resolveMessageCodes("errorCode", "objectName", "field",
 				TestBean.class);
 		assertThat(codes, is(equalTo(new String[] {
 				"errorCode.objectName.field",
@@ -54,7 +54,7 @@ public class DefaultMessageCodesResolverTests {
 
 	@Test
 	public void shouldResolveIndexedFieldMessageCode() throws Exception {
-		String[] codes = resolver.resolveMessageCodes("errorCode", "objectName", "a.b[3].c[5].d",
+		String[] codes = this.resolver.resolveMessageCodes("errorCode", "objectName", "a.b[3].c[5].d",
 				TestBean.class);
 		assertThat(codes, is(equalTo(new String[] {
 				"errorCode.objectName.a.b[3].c[5].d",
@@ -70,8 +70,8 @@ public class DefaultMessageCodesResolverTests {
 
 	@Test
 	public void shouldResolveMessageCodeWithPrefix() throws Exception {
-		resolver.setPrefix("prefix.");
-		String[] codes = resolver.resolveMessageCodes("errorCode", "objectName");
+		this.resolver.setPrefix("prefix.");
+		String[] codes = this.resolver.resolveMessageCodes("errorCode", "objectName");
 		assertThat(codes, is(equalTo(new String[] {
 				"prefix.errorCode.objectName",
 				"prefix.errorCode" })));
@@ -79,8 +79,8 @@ public class DefaultMessageCodesResolverTests {
 
 	@Test
 	public void shouldResolveFieldMessageCodeWithPrefix() throws Exception {
-		resolver.setPrefix("prefix.");
-		String[] codes = resolver.resolveMessageCodes("errorCode", "objectName", "field",
+		this.resolver.setPrefix("prefix.");
+		String[] codes = this.resolver.resolveMessageCodes("errorCode", "objectName", "field",
 				TestBean.class);
 		assertThat(codes, is(equalTo(new String[] {
 				"prefix.errorCode.objectName.field",
@@ -91,8 +91,8 @@ public class DefaultMessageCodesResolverTests {
 
 	@Test
 	public void shouldSupportNullPrefix() throws Exception {
-		resolver.setPrefix(null);
-		String[] codes = resolver.resolveMessageCodes("errorCode", "objectName", "field",
+		this.resolver.setPrefix(null);
+		String[] codes = this.resolver.resolveMessageCodes("errorCode", "objectName", "field",
 				TestBean.class);
 		assertThat(codes, is(equalTo(new String[] {
 				"errorCode.objectName.field",
@@ -103,7 +103,7 @@ public class DefaultMessageCodesResolverTests {
 
 	@Test
 	public void shouldSupportMalformedIndexField() throws Exception {
-		String[] codes = resolver.resolveMessageCodes("errorCode", "objectName", "field[",
+		String[] codes = this.resolver.resolveMessageCodes("errorCode", "objectName", "field[",
 				TestBean.class);
 		assertThat(codes, is(equalTo(new String[] {
 				"errorCode.objectName.field[",
@@ -114,7 +114,7 @@ public class DefaultMessageCodesResolverTests {
 
 	@Test
 	public void shouldSupportNullFieldType() throws Exception {
-		String[] codes = resolver.resolveMessageCodes("errorCode", "objectName", "field",
+		String[] codes = this.resolver.resolveMessageCodes("errorCode", "objectName", "field",
 				null);
 		assertThat(codes, is(equalTo(new String[] {
 				"errorCode.objectName.field",
@@ -124,8 +124,8 @@ public class DefaultMessageCodesResolverTests {
 
 	@Test
 	public void shouldSupportPostfixFormat() throws Exception {
-		resolver.setMessageCodeFormatter(Format.POSTFIX_ERROR_CODE);
-		String[] codes = resolver.resolveMessageCodes("errorCode", "objectName");
+		this.resolver.setMessageCodeFormatter(Format.POSTFIX_ERROR_CODE);
+		String[] codes = this.resolver.resolveMessageCodes("errorCode", "objectName");
 		assertThat(codes, is(equalTo(new String[] {
 				"objectName.errorCode",
 				"errorCode" })));
@@ -133,8 +133,8 @@ public class DefaultMessageCodesResolverTests {
 
 	@Test
 	public void shouldSupportFieldPostfixFormat() throws Exception {
-		resolver.setMessageCodeFormatter(Format.POSTFIX_ERROR_CODE);
-		String[] codes = resolver.resolveMessageCodes("errorCode", "objectName", "field",
+		this.resolver.setMessageCodeFormatter(Format.POSTFIX_ERROR_CODE);
+		String[] codes = this.resolver.resolveMessageCodes("errorCode", "objectName", "field",
 				TestBean.class);
 		assertThat(codes, is(equalTo(new String[] {
 				"objectName.field.errorCode",
@@ -145,14 +145,14 @@ public class DefaultMessageCodesResolverTests {
 
 	@Test
 	public void shouldSupportCustomFormat() throws Exception {
-		resolver.setMessageCodeFormatter(new MessageCodeFormatter() {
+		this.resolver.setMessageCodeFormatter(new MessageCodeFormatter() {
 			@Override
 			public String format(String errorCode, String objectName, String field) {
 				return DefaultMessageCodesResolver.Format.toDelimitedString(
 						"CUSTOM-" + errorCode, objectName, field);
 			}
 		});
-		String[] codes = resolver.resolveMessageCodes("errorCode", "objectName");
+		String[] codes = this.resolver.resolveMessageCodes("errorCode", "objectName");
 		assertThat(codes, is(equalTo(new String[] {
 				"CUSTOM-errorCode.objectName",
 				"CUSTOM-errorCode" })));

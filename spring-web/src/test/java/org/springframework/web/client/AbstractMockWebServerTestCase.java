@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -99,7 +99,7 @@ public class AbstractMockWebServerTestCase {
 		Buffer buf = new Buffer();
 		buf.write(responseBody);
 		return new MockResponse()
-				.setHeader("Location", baseUrl + location)
+				.setHeader("Location", this.baseUrl + location)
 				.setHeader("Content-Type", contentType)
 				.setHeader("Content-Length", responseBody.length)
 				.setBody(buf)
@@ -113,7 +113,7 @@ public class AbstractMockWebServerTestCase {
 			assertNotNull("No content-type", request.getHeader("Content-Type"));
 		}
 		return new MockResponse()
-				.setHeader("Location", baseUrl + location)
+				.setHeader("Location", this.baseUrl + location)
 				.setHeader("Content-Type", contentType)
 				.setHeader("Content-Length", request.getBody().size())
 				.setBody(request.getBody())

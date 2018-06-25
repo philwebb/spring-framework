@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,22 +37,22 @@ public class MockPageContextTests {
 
 	@Test
 	public void setAttributeWithNoScopeUsesPageScope() throws Exception {
-		ctx.setAttribute(key, value);
-		assertEquals(value, ctx.getAttribute(key, PageContext.PAGE_SCOPE));
-		assertNull(ctx.getAttribute(key, PageContext.APPLICATION_SCOPE));
-		assertNull(ctx.getAttribute(key, PageContext.REQUEST_SCOPE));
-		assertNull(ctx.getAttribute(key, PageContext.SESSION_SCOPE));
+		this.ctx.setAttribute(this.key, this.value);
+		assertEquals(this.value, this.ctx.getAttribute(this.key, PageContext.PAGE_SCOPE));
+		assertNull(this.ctx.getAttribute(this.key, PageContext.APPLICATION_SCOPE));
+		assertNull(this.ctx.getAttribute(this.key, PageContext.REQUEST_SCOPE));
+		assertNull(this.ctx.getAttribute(this.key, PageContext.SESSION_SCOPE));
 	}
 
 	@Test
 	public void removeAttributeWithNoScopeSpecifiedRemovesValueFromAllScopes() throws Exception {
-		ctx.setAttribute(key, value, PageContext.APPLICATION_SCOPE);
-		ctx.removeAttribute(key);
+		this.ctx.setAttribute(this.key, this.value, PageContext.APPLICATION_SCOPE);
+		this.ctx.removeAttribute(this.key);
 
-		assertNull(ctx.getAttribute(key, PageContext.PAGE_SCOPE));
-		assertNull(ctx.getAttribute(key, PageContext.APPLICATION_SCOPE));
-		assertNull(ctx.getAttribute(key, PageContext.REQUEST_SCOPE));
-		assertNull(ctx.getAttribute(key, PageContext.SESSION_SCOPE));
+		assertNull(this.ctx.getAttribute(this.key, PageContext.PAGE_SCOPE));
+		assertNull(this.ctx.getAttribute(this.key, PageContext.APPLICATION_SCOPE));
+		assertNull(this.ctx.getAttribute(this.key, PageContext.REQUEST_SCOPE));
+		assertNull(this.ctx.getAttribute(this.key, PageContext.SESSION_SCOPE));
 	}
 
 }

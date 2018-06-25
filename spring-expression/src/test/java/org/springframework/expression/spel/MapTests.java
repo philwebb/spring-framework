@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,18 +44,18 @@ public class MapTests extends AbstractExpressionTests {
 
 	@Test
 	public void testInlineMapCreation01() {
-		evaluate("{'a':1, 'b':2, 'c':3, 'd':4, 'e':5}", "{a=1, b=2, c=3, d=4, e=5}", unmodifiableClass);
-		evaluate("{'a':1}", "{a=1}", unmodifiableClass);
+		evaluate("{'a':1, 'b':2, 'c':3, 'd':4, 'e':5}", "{a=1, b=2, c=3, d=4, e=5}", this.unmodifiableClass);
+		evaluate("{'a':1}", "{a=1}", this.unmodifiableClass);
 	}
 
 	@Test
 	public void testInlineMapCreation02() {
-		evaluate("{'abc':'def', 'uvw':'xyz'}", "{abc=def, uvw=xyz}", unmodifiableClass);
+		evaluate("{'abc':'def', 'uvw':'xyz'}", "{abc=def, uvw=xyz}", this.unmodifiableClass);
 	}
 
 	@Test
 	public void testInlineMapCreation03() {
-		evaluate("{:}", "{}", unmodifiableClass);
+		evaluate("{:}", "{}", this.unmodifiableClass);
 	}
 
 	@Test
@@ -69,9 +69,9 @@ public class MapTests extends AbstractExpressionTests {
 
 	@Test
 	public void testInlineMapAndNesting() {
-		evaluate("{a:{a:1,b:2,c:3},b:{d:4,e:5,f:6}}", "{a={a=1, b=2, c=3}, b={d=4, e=5, f=6}}", unmodifiableClass);
-		evaluate("{a:{x:1,y:'2',z:3},b:{u:4,v:{'a','b'},w:5,x:6}}", "{a={x=1, y=2, z=3}, b={u=4, v=[a, b], w=5, x=6}}", unmodifiableClass);
-		evaluate("{a:{1,2,3},b:{4,5,6}}", "{a=[1, 2, 3], b=[4, 5, 6]}", unmodifiableClass);
+		evaluate("{a:{a:1,b:2,c:3},b:{d:4,e:5,f:6}}", "{a={a=1, b=2, c=3}, b={d=4, e=5, f=6}}", this.unmodifiableClass);
+		evaluate("{a:{x:1,y:'2',z:3},b:{u:4,v:{'a','b'},w:5,x:6}}", "{a={x=1, y=2, z=3}, b={u=4, v=[a, b], w=5, x=6}}", this.unmodifiableClass);
+		evaluate("{a:{1,2,3},b:{4,5,6}}", "{a=[1, 2, 3], b=[4, 5, 6]}", this.unmodifiableClass);
 	}
 
 	@Test
@@ -134,7 +134,7 @@ public class MapTests extends AbstractExpressionTests {
 	@Test(expected = UnsupportedOperationException.class)
 	public void testInlineMapWriting() {
 		// list should be unmodifiable
-		evaluate("{a:1, b:2, c:3, d:4, e:5}[a]=6", "[a:1,b: 2,c: 3,d: 4,e: 5]", unmodifiableClass);
+		evaluate("{a:1, b:2, c:3, d:4, e:5}[a]=6", "[a:1,b: 2,c: 3,d: 4,e: 5]", this.unmodifiableClass);
 	}
 
 	@Test
@@ -186,15 +186,15 @@ public class MapTests extends AbstractExpressionTests {
 		public Map foo;
 
 		public MapHolder() {
-			foo = new HashMap();
-			foo.put("NEW", "VALUE");
-			foo.put("new", "value");
-			foo.put("T", "TV");
-			foo.put("t", "tv");
-			foo.put("abc.def", "value");
-			foo.put("VALUE","37");
-			foo.put("value","38");
-			foo.put("TV","new");
+			this.foo = new HashMap();
+			this.foo.put("NEW", "VALUE");
+			this.foo.put("new", "value");
+			this.foo.put("T", "TV");
+			this.foo.put("t", "tv");
+			this.foo.put("abc.def", "value");
+			this.foo.put("VALUE","37");
+			this.foo.put("value","38");
+			this.foo.put("TV","new");
 		}
 	}
 

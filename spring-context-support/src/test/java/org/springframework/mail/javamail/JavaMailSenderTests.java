@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -509,7 +509,7 @@ public class JavaMailSenderTests {
 		MockJavaMailSender sender = new MockJavaMailSender();
 		sender.setHost(null);
 
-		thrown.expect(MessagingException.class);
+		this.thrown.expect(MessagingException.class);
 		sender.testConnection();
 	}
 
@@ -521,7 +521,7 @@ public class JavaMailSenderTests {
 		@Override
 		protected Transport getTransport(Session session) throws NoSuchProviderException {
 			this.transport = new MockTransport(session, null);
-			return transport;
+			return this.transport;
 		}
 	}
 
@@ -540,27 +540,27 @@ public class JavaMailSenderTests {
 		}
 
 		public String getConnectedHost() {
-			return connectedHost;
+			return this.connectedHost;
 		}
 
 		public int getConnectedPort() {
-			return connectedPort;
+			return this.connectedPort;
 		}
 
 		public String getConnectedUsername() {
-			return connectedUsername;
+			return this.connectedUsername;
 		}
 
 		public String getConnectedPassword() {
-			return connectedPassword;
+			return this.connectedPassword;
 		}
 
 		public boolean isCloseCalled() {
-			return closeCalled;
+			return this.closeCalled;
 		}
 
 		public List<Message> getSentMessages() {
-			return sentMessages;
+			return this.sentMessages;
 		}
 
 		public MimeMessage getSentMessage(int index) {
@@ -581,7 +581,7 @@ public class JavaMailSenderTests {
 
 		@Override
 		public synchronized void close() throws MessagingException {
-			if ("".equals(connectedHost)) {
+			if ("".equals(this.connectedHost)) {
 				throw new MessagingException("close failure");
 			}
 			this.closeCalled = true;

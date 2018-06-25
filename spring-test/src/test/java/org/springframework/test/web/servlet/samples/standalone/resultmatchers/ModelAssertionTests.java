@@ -60,7 +60,7 @@ public class ModelAssertionTests {
 
 	@Test
 	public void testAttributeEqualTo() throws Exception {
-		mockMvc.perform(get("/"))
+		this.mockMvc.perform(get("/"))
 			.andExpect(model().attribute("integer", 3))
 			.andExpect(model().attribute("string", "a string value"))
 			.andExpect(model().attribute("integer", equalTo(3))) // Hamcrest...
@@ -70,7 +70,7 @@ public class ModelAssertionTests {
 
 	@Test
 	public void testAttributeExists() throws Exception {
-		mockMvc.perform(get("/"))
+		this.mockMvc.perform(get("/"))
 			.andExpect(model().attributeExists("integer", "string", "person"))
 			.andExpect(model().attribute("integer", notNullValue()))  // Hamcrest...
 			.andExpect(model().attribute("INTEGER", nullValue()));
@@ -78,7 +78,7 @@ public class ModelAssertionTests {
 
 	@Test
 	public void testAttributeHamcrestMatchers() throws Exception {
-		mockMvc.perform(get("/"))
+		this.mockMvc.perform(get("/"))
 			.andExpect(model().attribute("integer", equalTo(3)))
 			.andExpect(model().attribute("string", allOf(startsWith("a string"), endsWith("value"))))
 			.andExpect(model().attribute("person", hasProperty("name", equalTo("a name"))));
@@ -86,12 +86,12 @@ public class ModelAssertionTests {
 
 	@Test
 	public void testHasErrors() throws Exception {
-		mockMvc.perform(post("/persons")).andExpect(model().attributeHasErrors("person"));
+		this.mockMvc.perform(post("/persons")).andExpect(model().attributeHasErrors("person"));
 	}
 
 	@Test
 	public void testHasNoErrors() throws Exception {
-		mockMvc.perform(get("/")).andExpect(model().hasNoErrors());
+		this.mockMvc.perform(get("/")).andExpect(model().hasNoErrors());
 	}
 
 

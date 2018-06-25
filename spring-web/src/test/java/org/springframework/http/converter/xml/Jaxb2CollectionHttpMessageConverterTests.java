@@ -63,19 +63,19 @@ public class Jaxb2CollectionHttpMessageConverterTests {
 
 	@Before
 	public void setUp() {
-		converter = new Jaxb2CollectionHttpMessageConverter<Collection<Object>>();
-		rootElementListType = new ParameterizedTypeReference<List<RootElement>>() {}.getType();
-		rootElementSetType = new ParameterizedTypeReference<Set<RootElement>>() {}.getType();
-		typeListType = new ParameterizedTypeReference<List<TestType>>() {}.getType();
-		typeSetType = new ParameterizedTypeReference<Set<TestType>>() {}.getType();
+		this.converter = new Jaxb2CollectionHttpMessageConverter<Collection<Object>>();
+		this.rootElementListType = new ParameterizedTypeReference<List<RootElement>>() {}.getType();
+		this.rootElementSetType = new ParameterizedTypeReference<Set<RootElement>>() {}.getType();
+		this.typeListType = new ParameterizedTypeReference<List<TestType>>() {}.getType();
+		this.typeSetType = new ParameterizedTypeReference<Set<TestType>>() {}.getType();
 	}
 
 
 	@Test
 	public void canRead() throws Exception {
-		assertTrue(converter.canRead(rootElementListType, null, null));
-		assertTrue(converter.canRead(rootElementSetType, null, null));
-		assertTrue(converter.canRead(typeSetType, null, null));
+		assertTrue(this.converter.canRead(this.rootElementListType, null, null));
+		assertTrue(this.converter.canRead(this.rootElementSetType, null, null));
+		assertTrue(this.converter.canRead(this.typeSetType, null, null));
 	}
 
 	@Test
@@ -83,7 +83,7 @@ public class Jaxb2CollectionHttpMessageConverterTests {
 	public void readXmlRootElementList() throws Exception {
 		String content = "<list><rootElement><type s=\"1\"/></rootElement><rootElement><type s=\"2\"/></rootElement></list>";
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(content.getBytes("UTF-8"));
-		List<RootElement> result = (List<RootElement>) converter.read(rootElementListType, null, inputMessage);
+		List<RootElement> result = (List<RootElement>) this.converter.read(this.rootElementListType, null, inputMessage);
 
 		assertEquals("Invalid result", 2, result.size());
 		assertEquals("Invalid result", "1", result.get(0).type.s);
@@ -95,7 +95,7 @@ public class Jaxb2CollectionHttpMessageConverterTests {
 	public void readXmlRootElementSet() throws Exception {
 		String content = "<set><rootElement><type s=\"1\"/></rootElement><rootElement><type s=\"2\"/></rootElement></set>";
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(content.getBytes("UTF-8"));
-		Set<RootElement> result = (Set<RootElement>) converter.read(rootElementSetType, null, inputMessage);
+		Set<RootElement> result = (Set<RootElement>) this.converter.read(this.rootElementSetType, null, inputMessage);
 
 		assertEquals("Invalid result", 2, result.size());
 		assertTrue("Invalid result", result.contains(new RootElement("1")));
@@ -107,7 +107,7 @@ public class Jaxb2CollectionHttpMessageConverterTests {
 	public void readXmlTypeList() throws Exception {
 		String content = "<list><foo s=\"1\"/><bar s=\"2\"/></list>";
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(content.getBytes("UTF-8"));
-		List<TestType> result = (List<TestType>) converter.read(typeListType, null, inputMessage);
+		List<TestType> result = (List<TestType>) this.converter.read(this.typeListType, null, inputMessage);
 
 		assertEquals("Invalid result", 2, result.size());
 		assertEquals("Invalid result", "1", result.get(0).s);
@@ -119,7 +119,7 @@ public class Jaxb2CollectionHttpMessageConverterTests {
 	public void readXmlTypeSet() throws Exception {
 		String content = "<set><foo s=\"1\"/><bar s=\"2\"/></set>";
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(content.getBytes("UTF-8"));
-		Set<TestType> result = (Set<TestType>) converter.read(typeSetType, null, inputMessage);
+		Set<TestType> result = (Set<TestType>) this.converter.read(this.typeSetType, null, inputMessage);
 
 		assertEquals("Invalid result", 2, result.size());
 		assertTrue("Invalid result", result.contains(new TestType("1")));
@@ -136,7 +136,7 @@ public class Jaxb2CollectionHttpMessageConverterTests {
 				"  <list><rootElement><type s=\"1\"/><external>&ext;</external></rootElement></list>";
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(content.getBytes("UTF-8"));
 
-		converter = new Jaxb2CollectionHttpMessageConverter<Collection<Object>>() {
+		this.converter = new Jaxb2CollectionHttpMessageConverter<Collection<Object>>() {
 			@Override
 			protected XMLInputFactory createXmlInputFactory() {
 				XMLInputFactory inputFactory = super.createXmlInputFactory();
@@ -146,7 +146,7 @@ public class Jaxb2CollectionHttpMessageConverterTests {
 		};
 
 		try {
-			Collection<RootElement> result = converter.read(rootElementListType, null, inputMessage);
+			Collection<RootElement> result = this.converter.read(this.rootElementListType, null, inputMessage);
 			assertEquals(1, result.size());
 			assertEquals("", result.iterator().next().external);
 		}
@@ -174,7 +174,7 @@ public class Jaxb2CollectionHttpMessageConverterTests {
 			}
 		};
 
-		Collection<RootElement> result = c.read(rootElementListType, null, inputMessage);
+		Collection<RootElement> result = c.read(this.rootElementListType, null, inputMessage);
 		assertEquals(1, result.size());
 		assertEquals("Foo Bar", result.iterator().next().external);
 	}
@@ -235,7 +235,7 @@ public class Jaxb2CollectionHttpMessageConverterTests {
 
 		@Override
 		public int hashCode() {
-			return type.hashCode();
+			return this.type.hashCode();
 		}
 	}
 
@@ -267,7 +267,7 @@ public class Jaxb2CollectionHttpMessageConverterTests {
 
 		@Override
 		public int hashCode() {
-			return s.hashCode();
+			return this.s.hashCode();
 		}
 	}
 

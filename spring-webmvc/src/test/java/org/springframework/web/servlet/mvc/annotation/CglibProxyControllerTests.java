@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2012 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,7 +55,7 @@ public class CglibProxyControllerTests {
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/test");
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		servlet.service(request, response);
+		this.servlet.service(request, response);
 		assertEquals("doIt", response.getContentAsString());
 	}
 
@@ -65,7 +65,7 @@ public class CglibProxyControllerTests {
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/test");
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		servlet.service(request, response);
+		this.servlet.service(request, response);
 		assertEquals("doIt", response.getContentAsString());
 	}
 
@@ -75,14 +75,14 @@ public class CglibProxyControllerTests {
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/hotels/bookings");
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		servlet.service(request, response);
+		this.servlet.service(request, response);
 		assertEquals("doIt", response.getContentAsString());
 	}
 
 
 	@SuppressWarnings("serial")
 	private void initServlet(final Class<?> controllerClass) throws ServletException {
-		servlet = new DispatcherServlet() {
+		this.servlet = new DispatcherServlet() {
 			@Override
 			protected WebApplicationContext createWebApplicationContext(@Nullable WebApplicationContext parent) {
 				GenericWebApplicationContext wac = new GenericWebApplicationContext();
@@ -98,7 +98,7 @@ public class CglibProxyControllerTests {
 				return wac;
 			}
 		};
-		servlet.init(new MockServletConfig());
+		this.servlet.init(new MockServletConfig());
 	}
 
 

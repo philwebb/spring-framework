@@ -50,14 +50,14 @@ public class DataFieldMaxValueIncrementerTests {
 
 	@Test
 	public void testHanaSequenceMaxValueIncrementer() throws SQLException {
-		given(dataSource.getConnection()).willReturn(connection);
-		given(connection.createStatement()).willReturn(statement);
-		given(statement.executeQuery("select myseq.nextval from dummy")).willReturn(resultSet);
-		given(resultSet.next()).willReturn(true);
-		given(resultSet.getLong(1)).willReturn(10L, 12L);
+		given(this.dataSource.getConnection()).willReturn(this.connection);
+		given(this.connection.createStatement()).willReturn(this.statement);
+		given(this.statement.executeQuery("select myseq.nextval from dummy")).willReturn(this.resultSet);
+		given(this.resultSet.next()).willReturn(true);
+		given(this.resultSet.getLong(1)).willReturn(10L, 12L);
 
 		HanaSequenceMaxValueIncrementer incrementer = new HanaSequenceMaxValueIncrementer();
-		incrementer.setDataSource(dataSource);
+		incrementer.setDataSource(this.dataSource);
 		incrementer.setIncrementerName("myseq");
 		incrementer.setPaddingLength(2);
 		incrementer.afterPropertiesSet();
@@ -65,21 +65,21 @@ public class DataFieldMaxValueIncrementerTests {
 		assertEquals(10, incrementer.nextLongValue());
 		assertEquals("12", incrementer.nextStringValue());
 
-		verify(resultSet, times(2)).close();
-		verify(statement, times(2)).close();
-		verify(connection, times(2)).close();
+		verify(this.resultSet, times(2)).close();
+		verify(this.statement, times(2)).close();
+		verify(this.connection, times(2)).close();
 	}
 
 	@Test
 	public void testHsqlMaxValueIncrementer() throws SQLException {
-		given(dataSource.getConnection()).willReturn(connection);
-		given(connection.createStatement()).willReturn(statement);
-		given(statement.executeQuery("select max(identity()) from myseq")).willReturn(resultSet);
-		given(resultSet.next()).willReturn(true);
-		given(resultSet.getLong(1)).willReturn(0L, 1L, 2L, 3L, 4L, 5L);
+		given(this.dataSource.getConnection()).willReturn(this.connection);
+		given(this.connection.createStatement()).willReturn(this.statement);
+		given(this.statement.executeQuery("select max(identity()) from myseq")).willReturn(this.resultSet);
+		given(this.resultSet.next()).willReturn(true);
+		given(this.resultSet.getLong(1)).willReturn(0L, 1L, 2L, 3L, 4L, 5L);
 
 		HsqlMaxValueIncrementer incrementer = new HsqlMaxValueIncrementer();
-		incrementer.setDataSource(dataSource);
+		incrementer.setDataSource(this.dataSource);
 		incrementer.setIncrementerName("myseq");
 		incrementer.setColumnName("seq");
 		incrementer.setCacheSize(3);
@@ -92,24 +92,24 @@ public class DataFieldMaxValueIncrementerTests {
 		assertEquals(3, incrementer.nextIntValue());
 		assertEquals(4, incrementer.nextLongValue());
 
-		verify(statement, times(6)).executeUpdate("insert into myseq values(null)");
-		verify(statement).executeUpdate("delete from myseq where seq < 2");
-		verify(statement).executeUpdate("delete from myseq where seq < 5");
-		verify(resultSet, times(6)).close();
-		verify(statement, times(2)).close();
-		verify(connection, times(2)).close();
+		verify(this.statement, times(6)).executeUpdate("insert into myseq values(null)");
+		verify(this.statement).executeUpdate("delete from myseq where seq < 2");
+		verify(this.statement).executeUpdate("delete from myseq where seq < 5");
+		verify(this.resultSet, times(6)).close();
+		verify(this.statement, times(2)).close();
+		verify(this.connection, times(2)).close();
 	}
 
 	@Test
 	public void testHsqlMaxValueIncrementerWithDeleteSpecificValues() throws SQLException {
-		given(dataSource.getConnection()).willReturn(connection);
-		given(connection.createStatement()).willReturn(statement);
-		given(statement.executeQuery("select max(identity()) from myseq")).willReturn(resultSet);
-		given(resultSet.next()).willReturn(true);
-		given(resultSet.getLong(1)).willReturn(0L, 1L, 2L, 3L, 4L, 5L);
+		given(this.dataSource.getConnection()).willReturn(this.connection);
+		given(this.connection.createStatement()).willReturn(this.statement);
+		given(this.statement.executeQuery("select max(identity()) from myseq")).willReturn(this.resultSet);
+		given(this.resultSet.next()).willReturn(true);
+		given(this.resultSet.getLong(1)).willReturn(0L, 1L, 2L, 3L, 4L, 5L);
 
 		HsqlMaxValueIncrementer incrementer = new HsqlMaxValueIncrementer();
-		incrementer.setDataSource(dataSource);
+		incrementer.setDataSource(this.dataSource);
 		incrementer.setIncrementerName("myseq");
 		incrementer.setColumnName("seq");
 		incrementer.setCacheSize(3);
@@ -123,24 +123,24 @@ public class DataFieldMaxValueIncrementerTests {
 		assertEquals(3, incrementer.nextIntValue());
 		assertEquals(4, incrementer.nextLongValue());
 
-		verify(statement, times(6)).executeUpdate("insert into myseq values(null)");
-		verify(statement).executeUpdate("delete from myseq where seq in (-1, 0, 1)");
-		verify(statement).executeUpdate("delete from myseq where seq in (2, 3, 4)");
-		verify(resultSet, times(6)).close();
-		verify(statement, times(2)).close();
-		verify(connection, times(2)).close();
+		verify(this.statement, times(6)).executeUpdate("insert into myseq values(null)");
+		verify(this.statement).executeUpdate("delete from myseq where seq in (-1, 0, 1)");
+		verify(this.statement).executeUpdate("delete from myseq where seq in (2, 3, 4)");
+		verify(this.resultSet, times(6)).close();
+		verify(this.statement, times(2)).close();
+		verify(this.connection, times(2)).close();
 	}
 
 	@Test
 	public void testMySQLMaxValueIncrementer() throws SQLException {
-		given(dataSource.getConnection()).willReturn(connection);
-		given(connection.createStatement()).willReturn(statement);
-		given(statement.executeQuery("select last_insert_id()")).willReturn(resultSet);
-		given(resultSet.next()).willReturn(true);
-		given(resultSet.getLong(1)).willReturn(2L, 4L);
+		given(this.dataSource.getConnection()).willReturn(this.connection);
+		given(this.connection.createStatement()).willReturn(this.statement);
+		given(this.statement.executeQuery("select last_insert_id()")).willReturn(this.resultSet);
+		given(this.resultSet.next()).willReturn(true);
+		given(this.resultSet.getLong(1)).willReturn(2L, 4L);
 
 		MySQLMaxValueIncrementer incrementer = new MySQLMaxValueIncrementer();
-		incrementer.setDataSource(dataSource);
+		incrementer.setDataSource(this.dataSource);
 		incrementer.setIncrementerName("myseq");
 		incrementer.setColumnName("seq");
 		incrementer.setCacheSize(2);
@@ -152,22 +152,22 @@ public class DataFieldMaxValueIncrementerTests {
 		assertEquals("3", incrementer.nextStringValue());
 		assertEquals(4, incrementer.nextLongValue());
 
-		verify(statement, times(2)).executeUpdate("update myseq set seq = last_insert_id(seq + 2)");
-		verify(resultSet, times(2)).close();
-		verify(statement, times(2)).close();
-		verify(connection, times(2)).close();
+		verify(this.statement, times(2)).executeUpdate("update myseq set seq = last_insert_id(seq + 2)");
+		verify(this.resultSet, times(2)).close();
+		verify(this.statement, times(2)).close();
+		verify(this.connection, times(2)).close();
 	}
 
 	@Test
 	public void testOracleSequenceMaxValueIncrementer() throws SQLException {
-		given(dataSource.getConnection()).willReturn(connection);
-		given(connection.createStatement()).willReturn(statement);
-		given(statement.executeQuery("select myseq.nextval from dual")).willReturn(resultSet);
-		given(resultSet.next()).willReturn(true);
-		given(resultSet.getLong(1)).willReturn(10L, 12L);
+		given(this.dataSource.getConnection()).willReturn(this.connection);
+		given(this.connection.createStatement()).willReturn(this.statement);
+		given(this.statement.executeQuery("select myseq.nextval from dual")).willReturn(this.resultSet);
+		given(this.resultSet.next()).willReturn(true);
+		given(this.resultSet.getLong(1)).willReturn(10L, 12L);
 
 		OracleSequenceMaxValueIncrementer incrementer = new OracleSequenceMaxValueIncrementer();
-		incrementer.setDataSource(dataSource);
+		incrementer.setDataSource(this.dataSource);
 		incrementer.setIncrementerName("myseq");
 		incrementer.setPaddingLength(2);
 		incrementer.afterPropertiesSet();
@@ -175,21 +175,21 @@ public class DataFieldMaxValueIncrementerTests {
 		assertEquals(10, incrementer.nextLongValue());
 		assertEquals("12", incrementer.nextStringValue());
 
-		verify(resultSet, times(2)).close();
-		verify(statement, times(2)).close();
-		verify(connection, times(2)).close();
+		verify(this.resultSet, times(2)).close();
+		verify(this.statement, times(2)).close();
+		verify(this.connection, times(2)).close();
 	}
 
 	@Test
 	public void testPostgresSequenceMaxValueIncrementer() throws SQLException {
-		given(dataSource.getConnection()).willReturn(connection);
-		given(connection.createStatement()).willReturn(statement);
-		given(statement.executeQuery("select nextval('myseq')")).willReturn(resultSet);
-		given(resultSet.next()).willReturn(true);
-		given(resultSet.getLong(1)).willReturn(10L, 12L);
+		given(this.dataSource.getConnection()).willReturn(this.connection);
+		given(this.connection.createStatement()).willReturn(this.statement);
+		given(this.statement.executeQuery("select nextval('myseq')")).willReturn(this.resultSet);
+		given(this.resultSet.next()).willReturn(true);
+		given(this.resultSet.getLong(1)).willReturn(10L, 12L);
 
 		PostgresSequenceMaxValueIncrementer incrementer = new PostgresSequenceMaxValueIncrementer();
-		incrementer.setDataSource(dataSource);
+		incrementer.setDataSource(this.dataSource);
 		incrementer.setIncrementerName("myseq");
 		incrementer.setPaddingLength(5);
 		incrementer.afterPropertiesSet();
@@ -197,9 +197,9 @@ public class DataFieldMaxValueIncrementerTests {
 		assertEquals("00010", incrementer.nextStringValue());
 		assertEquals(12, incrementer.nextIntValue());
 
-		verify(resultSet, times(2)).close();
-		verify(statement, times(2)).close();
-		verify(connection, times(2)).close();
+		verify(this.resultSet, times(2)).close();
+		verify(this.statement, times(2)).close();
+		verify(this.connection, times(2)).close();
 	}
 
 }

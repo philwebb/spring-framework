@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ public class HttpComponentsAsyncClientHttpRequestFactoryTests extends AbstractAs
 		HttpComponentsAsyncClientHttpRequestFactory factory =
 				new HttpComponentsAsyncClientHttpRequestFactory();
 
-		URI uri = new URI(baseUrl + "/status/ok");
+		URI uri = new URI(this.baseUrl + "/status/ok");
 		HttpComponentsAsyncClientHttpRequest request = (HttpComponentsAsyncClientHttpRequest)
 				factory.createAsyncRequest(uri, HttpMethod.GET);
 
@@ -68,7 +68,7 @@ public class HttpComponentsAsyncClientHttpRequestFactoryTests extends AbstractAs
 				.build();
 		HttpComponentsAsyncClientHttpRequestFactory factory = new HttpComponentsAsyncClientHttpRequestFactory(client);
 
-		URI uri = new URI(baseUrl + "/status/ok");
+		URI uri = new URI(this.baseUrl + "/status/ok");
 		HttpComponentsAsyncClientHttpRequest request = (HttpComponentsAsyncClientHttpRequest)
 				factory.createAsyncRequest(uri, HttpMethod.GET);
 

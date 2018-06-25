@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -135,14 +135,14 @@ public class TextareaTagTests extends AbstractFormTagTests {
 	protected TestBean createTestBean() {
 		// set up test data
 		this.rob = new TestBean();
-		rob.setName("Rob");
-		rob.setMyFloat(new Float(12.34));
+		this.rob.setName("Rob");
+		this.rob.setMyFloat(new Float(12.34));
 
 		TestBean sally = new TestBean();
 		sally.setName("Sally");
-		rob.setSpouse(sally);
+		this.rob.setSpouse(sally);
 
-		return rob;
+		return this.rob;
 	}
 
 }

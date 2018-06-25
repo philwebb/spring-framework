@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2014 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,7 +68,7 @@ public class JCacheKeyGeneratorTests {
 		assertSame(first, second);
 
 		Object key = new SimpleKey(1L);
-		assertEquals(first, cache.get(key).get());
+		assertEquals(first, this.cache.get(key).get());
 	}
 
 	@Test
@@ -79,7 +79,7 @@ public class JCacheKeyGeneratorTests {
 		assertSame(first, second);
 
 		Object key = new SimpleKey(1L, "foo", "bar");
-		assertEquals(first, cache.get(key).get());
+		assertEquals(first, this.cache.get(key).get());
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class JCacheKeyGeneratorTests {
 		assertSame(first, second);
 
 		Object key = new SimpleKey(1L);
-		assertEquals(first, cache.get(key).get());
+		assertEquals(first, this.cache.get(key).get());
 	}
 
 
@@ -123,17 +123,17 @@ public class JCacheKeyGeneratorTests {
 
 		@CacheResult
 		public Object get(long id) {
-			return counter.getAndIncrement();
+			return this.counter.getAndIncrement();
 		}
 
 		@CacheResult
 		public Object get(long id, String... items) {
-			return counter.getAndIncrement();
+			return this.counter.getAndIncrement();
 		}
 
 		@CacheResult
 		public Object getFiltered(@CacheKey long id, String... items) {
-			return counter.getAndIncrement();
+			return this.counter.getAndIncrement();
 		}
 
 	}
@@ -151,7 +151,7 @@ public class JCacheKeyGeneratorTests {
 		public Object generate(Object target, Method method, Object... params) {
 			assertTrue("Unexpected parameters: expected: "
 							+ Arrays.toString(this.expectedParams) + " but got: " + Arrays.toString(params),
-					Arrays.equals(expectedParams, params));
+					Arrays.equals(this.expectedParams, params));
 			return new SimpleKey(params);
 		}
 	}

@@ -269,10 +269,10 @@ public class RadioButtonTagTests extends AbstractFormTagTests {
 	@Override
 	protected TestBean createTestBean() {
 		this.bean = new TestBean();
-		bean.setSex("M");
-		bean.setMyFloat(getFloat());
-		bean.setPets(Collections.singletonList(new Pet("Rudiger")));
-		return bean;
+		this.bean.setSex("M");
+		this.bean.setMyFloat(getFloat());
+		this.bean.setPets(Collections.singletonList(new Pet("Rudiger")));
+		return this.bean;
 	}
 
 

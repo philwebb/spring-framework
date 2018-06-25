@@ -98,13 +98,13 @@ public class SqlQueryTests  {
 		this.resultSet = mock(ResultSet.class);
 		given(this.dataSource.getConnection()).willReturn(this.connection);
 		given(this.connection.prepareStatement(anyString())).willReturn(this.preparedStatement);
-		given(preparedStatement.executeQuery()).willReturn(resultSet);
+		given(this.preparedStatement.executeQuery()).willReturn(this.resultSet);
 	}
 
 	@Test
 	public void testQueryWithoutParams() throws SQLException {
-		given(resultSet.next()).willReturn(true, false);
-		given(resultSet.getInt(1)).willReturn(1);
+		given(this.resultSet.next()).willReturn(true, false);
+		given(this.resultSet.getInt(1)).willReturn(1);
 
 		SqlQuery<Integer> query = new MappingSqlQueryWithParameters<Integer>() {
 			@Override
@@ -115,15 +115,15 @@ public class SqlQueryTests  {
 				return rs.getInt(1);
 			}
 		};
-		query.setDataSource(dataSource);
+		query.setDataSource(this.dataSource);
 		query.setSql(SELECT_ID);
 		query.compile();
 		List<Integer> list = query.execute();
 
 		assertThat(list, is(equalTo(Arrays.asList(1))));
-		verify(connection).prepareStatement(SELECT_ID);
-		verify(resultSet).close();
-		verify(preparedStatement).close();
+		verify(this.connection).prepareStatement(SELECT_ID);
+		verify(this.resultSet).close();
+		verify(this.preparedStatement).close();
 	}
 
 	@Test
@@ -134,13 +134,13 @@ public class SqlQueryTests  {
 				return rs.getInt(1);
 			}
 		};
-		query.setDataSource(dataSource);
+		query.setDataSource(this.dataSource);
 		query.setSql(SELECT_ID_WHERE);
 		query.declareParameter(new SqlParameter(COLUMN_NAMES[0], COLUMN_TYPES[0]));
 		query.declareParameter(new SqlParameter(COLUMN_NAMES[1], COLUMN_TYPES[1]));
 		query.compile();
 
-		thrown.expect(InvalidDataAccessApiUsageException.class);
+		this.thrown.expect(InvalidDataAccessApiUsageException.class);
 		query.execute();
 	}
 
@@ -152,48 +152,48 @@ public class SqlQueryTests  {
 				return rs.getInt(1);
 			}
 		};
-		query.setDataSource(dataSource);
+		query.setDataSource(this.dataSource);
 		query.setSql(SELECT_ID_WHERE);
 		query.declareParameter(new SqlParameter(COLUMN_NAMES[0], COLUMN_TYPES[0]));
 		query.declareParameter(new SqlParameter(COLUMN_NAMES[1], COLUMN_TYPES[1]));
 		query.compile();
 
-		thrown.expect(InvalidDataAccessApiUsageException.class);
+		this.thrown.expect(InvalidDataAccessApiUsageException.class);
 		query.executeByNamedParam(Collections.singletonMap(COLUMN_NAMES[0], "value"));
 	}
 
 	@Test
 	public void testStringQueryWithResults() throws Exception {
 		String[] dbResults = new String[] { "alpha", "beta", "charlie" };
-		given(resultSet.next()).willReturn(true, true, true, false);
-		given(resultSet.getString(1)).willReturn(dbResults[0], dbResults[1], dbResults[2]);
-		StringQuery query = new StringQuery(dataSource, SELECT_FORENAME);
+		given(this.resultSet.next()).willReturn(true, true, true, false);
+		given(this.resultSet.getString(1)).willReturn(dbResults[0], dbResults[1], dbResults[2]);
+		StringQuery query = new StringQuery(this.dataSource, SELECT_FORENAME);
 		query.setRowsExpected(3);
 		String[] results = query.run();
 		assertThat(results, is(equalTo(dbResults)));
-		verify(connection).prepareStatement(SELECT_FORENAME);
-		verify(resultSet).close();
-		verify(preparedStatement).close();
-		verify(connection).close();
+		verify(this.connection).prepareStatement(SELECT_FORENAME);
+		verify(this.resultSet).close();
+		verify(this.preparedStatement).close();
+		verify(this.connection).close();
 	}
 
 	@Test
 	public void testStringQueryWithoutResults() throws SQLException {
-		given(resultSet.next()).willReturn(false);
-		StringQuery query = new StringQuery(dataSource, SELECT_FORENAME_EMPTY);
+		given(this.resultSet.next()).willReturn(false);
+		StringQuery query = new StringQuery(this.dataSource, SELECT_FORENAME_EMPTY);
 		String[] results = query.run();
 		assertThat(results, is(equalTo(new String[0])));
-		verify(connection).prepareStatement(SELECT_FORENAME_EMPTY);
-		verify(resultSet).close();
-		verify(preparedStatement).close();
-		verify(connection).close();
+		verify(this.connection).prepareStatement(SELECT_FORENAME_EMPTY);
+		verify(this.resultSet).close();
+		verify(this.preparedStatement).close();
+		verify(this.connection).close();
 	}
 
 	@Test
 	public void testFindCustomerIntInt() throws SQLException {
-		given(resultSet.next()).willReturn(true, false);
-		given(resultSet.getInt("id")).willReturn(1);
-		given(resultSet.getString("forename")).willReturn("rod");
+		given(this.resultSet.next()).willReturn(true, false);
+		given(this.resultSet.getInt("id")).willReturn(1);
+		given(this.resultSet.getString("forename")).willReturn("rod");
 
 		class CustomerQuery extends MappingSqlQuery<Customer> {
 
@@ -217,24 +217,24 @@ public class SqlQueryTests  {
 			}
 		}
 
-		CustomerQuery query = new CustomerQuery(dataSource);
+		CustomerQuery query = new CustomerQuery(this.dataSource);
 		Customer cust = query.findCustomer(1, 1);
 
 		assertTrue("Customer id was assigned correctly", cust.getId() == 1);
 		assertTrue("Customer forename was assigned correctly", cust.getForename().equals("rod"));
-		verify(preparedStatement).setObject(1, 1, Types.NUMERIC);
-		verify(preparedStatement).setObject(2, 1, Types.NUMERIC);
-		verify(connection).prepareStatement(SELECT_ID_WHERE);
-		verify(resultSet).close();
-		verify(preparedStatement).close();
-		verify(connection).close();
+		verify(this.preparedStatement).setObject(1, 1, Types.NUMERIC);
+		verify(this.preparedStatement).setObject(2, 1, Types.NUMERIC);
+		verify(this.connection).prepareStatement(SELECT_ID_WHERE);
+		verify(this.resultSet).close();
+		verify(this.preparedStatement).close();
+		verify(this.connection).close();
 	}
 
 	@Test
 	public void testFindCustomerString() throws SQLException {
-		given(resultSet.next()).willReturn(true, false);
-		given(resultSet.getInt("id")).willReturn(1);
-		given(resultSet.getString("forename")).willReturn("rod");
+		given(this.resultSet.next()).willReturn(true, false);
+		given(this.resultSet.getInt("id")).willReturn(1);
+		given(this.resultSet.getString("forename")).willReturn("rod");
 
 		class CustomerQuery extends MappingSqlQuery<Customer> {
 
@@ -257,30 +257,30 @@ public class SqlQueryTests  {
 			}
 		}
 
-		CustomerQuery query = new CustomerQuery(dataSource);
+		CustomerQuery query = new CustomerQuery(this.dataSource);
 		Customer cust = query.findCustomer("rod");
 
 		assertTrue("Customer id was assigned correctly", cust.getId() == 1);
 		assertTrue("Customer forename was assigned correctly",
 				cust.getForename().equals("rod"));
-		verify(preparedStatement).setString(1, "rod");
-		verify(connection).prepareStatement(SELECT_ID_FORENAME_WHERE);
-		verify(resultSet).close();
-		verify(preparedStatement).close();
-		verify(connection).close();
+		verify(this.preparedStatement).setString(1, "rod");
+		verify(this.connection).prepareStatement(SELECT_ID_FORENAME_WHERE);
+		verify(this.resultSet).close();
+		verify(this.preparedStatement).close();
+		verify(this.connection).close();
 	}
 
 	@Test
 	public void testFindCustomerMixed() throws SQLException {
-		reset(connection);
+		reset(this.connection);
 		PreparedStatement preparedStatement2 = mock(PreparedStatement.class);
 		ResultSet resultSet2 = mock(ResultSet.class);
 		given(preparedStatement2.executeQuery()).willReturn(resultSet2);
-		given(resultSet.next()).willReturn(true, false);
-		given(resultSet.getInt("id")).willReturn(1);
-		given(resultSet.getString("forename")).willReturn("rod");
+		given(this.resultSet.next()).willReturn(true, false);
+		given(this.resultSet.getInt("id")).willReturn(1);
+		given(this.resultSet.getString("forename")).willReturn("rod");
 		given(resultSet2.next()).willReturn(false);
-		given(connection.prepareStatement(SELECT_ID_WHERE)).willReturn(preparedStatement, preparedStatement2);
+		given(this.connection.prepareStatement(SELECT_ID_WHERE)).willReturn(this.preparedStatement, preparedStatement2);
 
 		class CustomerQuery extends MappingSqlQuery<Customer> {
 
@@ -304,7 +304,7 @@ public class SqlQueryTests  {
 			}
 		}
 
-		CustomerQuery query = new CustomerQuery(dataSource);
+		CustomerQuery query = new CustomerQuery(this.dataSource);
 
 		Customer cust1 = query.findCustomer(1, "rod");
 		assertTrue("Found customer", cust1 != null);
@@ -313,22 +313,22 @@ public class SqlQueryTests  {
 		Customer cust2 = query.findCustomer(1, "Roger");
 		assertTrue("No customer found", cust2 == null);
 
-		verify(preparedStatement).setObject(1, 1, Types.INTEGER);
-		verify(preparedStatement).setString(2, "rod");
+		verify(this.preparedStatement).setObject(1, 1, Types.INTEGER);
+		verify(this.preparedStatement).setString(2, "rod");
 		verify(preparedStatement2).setObject(1, 1, Types.INTEGER);
 		verify(preparedStatement2).setString(2, "Roger");
-		verify(resultSet).close();
+		verify(this.resultSet).close();
 		verify(resultSet2).close();
-		verify(preparedStatement).close();
+		verify(this.preparedStatement).close();
 		verify(preparedStatement2).close();
-		verify(connection, times(2)).close();
+		verify(this.connection, times(2)).close();
 	}
 
 	@Test
 	public void testFindTooManyCustomers() throws SQLException {
-		given(resultSet.next()).willReturn(true, true, false);
-		given(resultSet.getInt("id")).willReturn(1, 2);
-		given(resultSet.getString("forename")).willReturn("rod", "rod");
+		given(this.resultSet.next()).willReturn(true, true, false);
+		given(this.resultSet.getInt("id")).willReturn(1, 2);
+		given(this.resultSet.getString("forename")).willReturn("rod", "rod");
 
 		class CustomerQuery extends MappingSqlQuery<Customer> {
 
@@ -351,25 +351,25 @@ public class SqlQueryTests  {
 			}
 		}
 
-		CustomerQuery query = new CustomerQuery(dataSource);
-		thrown.expect(IncorrectResultSizeDataAccessException.class);
+		CustomerQuery query = new CustomerQuery(this.dataSource);
+		this.thrown.expect(IncorrectResultSizeDataAccessException.class);
 		try {
 			query.findCustomer("rod");
 		}
 		finally {
-			verify(preparedStatement).setString(1, "rod");
-			verify(connection).prepareStatement(SELECT_ID_FORENAME_WHERE);
-			verify(resultSet).close();
-			verify(preparedStatement).close();
-			verify(connection).close();
+			verify(this.preparedStatement).setString(1, "rod");
+			verify(this.connection).prepareStatement(SELECT_ID_FORENAME_WHERE);
+			verify(this.resultSet).close();
+			verify(this.preparedStatement).close();
+			verify(this.connection).close();
 		}
 	}
 
 	@Test
 	public void testListCustomersIntInt() throws SQLException {
-		given(resultSet.next()).willReturn(true, true, false);
-		given(resultSet.getInt("id")).willReturn(1, 2);
-		given(resultSet.getString("forename")).willReturn("rod", "dave");
+		given(this.resultSet.next()).willReturn(true, true, false);
+		given(this.resultSet.getInt("id")).willReturn(1, 2);
+		given(this.resultSet.getString("forename")).willReturn("rod", "dave");
 
 		class CustomerQuery extends MappingSqlQuery<Customer> {
 
@@ -389,24 +389,24 @@ public class SqlQueryTests  {
 			}
 		}
 
-		CustomerQuery query = new CustomerQuery(dataSource);
+		CustomerQuery query = new CustomerQuery(this.dataSource);
 		List<Customer> list = query.execute(1, 1);
 		assertTrue("2 results in list", list.size() == 2);
 		assertThat(list.get(0).getForename(), is("rod"));
 		assertThat(list.get(1).getForename(), is("dave"));
-		verify(preparedStatement).setObject(1, 1, Types.NUMERIC);
-		verify(preparedStatement).setObject(2, 1, Types.NUMERIC);
-		verify(connection).prepareStatement(SELECT_ID_WHERE);
-		verify(resultSet).close();
-		verify(preparedStatement).close();
-		verify(connection).close();
+		verify(this.preparedStatement).setObject(1, 1, Types.NUMERIC);
+		verify(this.preparedStatement).setObject(2, 1, Types.NUMERIC);
+		verify(this.connection).prepareStatement(SELECT_ID_WHERE);
+		verify(this.resultSet).close();
+		verify(this.preparedStatement).close();
+		verify(this.connection).close();
 	}
 
 	@Test
 	public void testListCustomersString() throws SQLException {
-		given(resultSet.next()).willReturn(true, true, false);
-		given(resultSet.getInt("id")).willReturn(1, 2);
-		given(resultSet.getString("forename")).willReturn("rod", "dave");
+		given(this.resultSet.next()).willReturn(true, true, false);
+		given(this.resultSet.getInt("id")).willReturn(1, 2);
+		given(this.resultSet.getString("forename")).willReturn("rod", "dave");
 
 		class CustomerQuery extends MappingSqlQuery<Customer> {
 
@@ -425,27 +425,27 @@ public class SqlQueryTests  {
 			}
 		}
 
-		CustomerQuery query = new CustomerQuery(dataSource);
+		CustomerQuery query = new CustomerQuery(this.dataSource);
 		List<Customer> list = query.execute("one");
 		assertTrue("2 results in list", list.size() == 2);
 		assertThat(list.get(0).getForename(), is("rod"));
 		assertThat(list.get(1).getForename(), is("dave"));
-		verify(preparedStatement).setString(1, "one");
-		verify(connection).prepareStatement(SELECT_ID_FORENAME_WHERE);
-		verify(resultSet).close();
-		verify(preparedStatement).close();
-		verify(connection).close();
+		verify(this.preparedStatement).setString(1, "one");
+		verify(this.connection).prepareStatement(SELECT_ID_FORENAME_WHERE);
+		verify(this.resultSet).close();
+		verify(this.preparedStatement).close();
+		verify(this.connection).close();
 	}
 
 	@Test
 	public void testFancyCustomerQuery() throws SQLException {
-		given(resultSet.next()).willReturn(true, false);
-		given(resultSet.getInt("id")).willReturn(1);
-		given(resultSet.getString("forename")).willReturn("rod");
+		given(this.resultSet.next()).willReturn(true, false);
+		given(this.resultSet.getInt("id")).willReturn(1);
+		given(this.resultSet.getString("forename")).willReturn("rod");
 
-		given(connection.prepareStatement(SELECT_ID_FORENAME_WHERE,
+		given(this.connection.prepareStatement(SELECT_ID_FORENAME_WHERE,
 				ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY)
-			).willReturn(preparedStatement);
+			).willReturn(this.preparedStatement);
 
 		class CustomerQuery extends MappingSqlQuery<Customer> {
 
@@ -469,14 +469,14 @@ public class SqlQueryTests  {
 			}
 		}
 
-		CustomerQuery query = new CustomerQuery(dataSource);
+		CustomerQuery query = new CustomerQuery(this.dataSource);
 		Customer cust = query.findCustomer(1);
 		assertTrue("Customer id was assigned correctly", cust.getId() == 1);
 		assertTrue("Customer forename was assigned correctly", cust.getForename().equals("rod"));
-		verify(preparedStatement).setObject(1, 1, Types.NUMERIC);
-		verify(resultSet).close();
-		verify(preparedStatement).close();
-		verify(connection).close();
+		verify(this.preparedStatement).setObject(1, 1, Types.NUMERIC);
+		verify(this.resultSet).close();
+		verify(this.preparedStatement).close();
+		verify(this.connection).close();
 	}
 
 	@Test
@@ -507,8 +507,8 @@ public class SqlQueryTests  {
 		}
 
 		// Query should not succeed since parameter declaration did not specify parameter name
-		CustomerQuery query = new CustomerQuery(dataSource);
-		thrown.expect(InvalidDataAccessApiUsageException.class);
+		CustomerQuery query = new CustomerQuery(this.dataSource);
+		this.thrown.expect(InvalidDataAccessApiUsageException.class);
 		query.findCustomer(1);
 	}
 
@@ -526,12 +526,12 @@ public class SqlQueryTests  {
 
 	private void doTestNamedParameterCustomerQuery(final boolean namedDeclarations)
 			throws SQLException {
-		given(resultSet.next()).willReturn(true, false);
-		given(resultSet.getInt("id")).willReturn(1);
-		given(resultSet.getString("forename")).willReturn("rod");
-		given(connection.prepareStatement(SELECT_ID_FORENAME_NAMED_PARAMETERS_PARSED,
+		given(this.resultSet.next()).willReturn(true, false);
+		given(this.resultSet.getInt("id")).willReturn(1);
+		given(this.resultSet.getString("forename")).willReturn("rod");
+		given(this.connection.prepareStatement(SELECT_ID_FORENAME_NAMED_PARAMETERS_PARSED,
 				ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY)
-			).willReturn(preparedStatement);
+			).willReturn(this.preparedStatement);
 
 		class CustomerQuery extends MappingSqlQuery<Customer> {
 
@@ -565,26 +565,26 @@ public class SqlQueryTests  {
 			}
 		}
 
-		CustomerQuery query = new CustomerQuery(dataSource);
+		CustomerQuery query = new CustomerQuery(this.dataSource);
 		Customer cust = query.findCustomer(1, "UK");
 		assertTrue("Customer id was assigned correctly", cust.getId() == 1);
 		assertTrue("Customer forename was assigned correctly", cust.getForename().equals("rod"));
-		verify(preparedStatement).setObject(1, 1, Types.NUMERIC);
-		verify(preparedStatement).setString(2, "UK");
-		verify(resultSet).close();
-		verify(preparedStatement).close();
-		verify(connection).close();
+		verify(this.preparedStatement).setObject(1, 1, Types.NUMERIC);
+		verify(this.preparedStatement).setString(2, "UK");
+		verify(this.resultSet).close();
+		verify(this.preparedStatement).close();
+		verify(this.connection).close();
 	}
 
 	@Test
 	public void testNamedParameterInListQuery() throws SQLException {
-		given(resultSet.next()).willReturn(true, true, false);
-		given(resultSet.getInt("id")).willReturn(1, 2);
-		given(resultSet.getString("forename")).willReturn("rod", "juergen");
+		given(this.resultSet.next()).willReturn(true, true, false);
+		given(this.resultSet.getInt("id")).willReturn(1, 2);
+		given(this.resultSet.getString("forename")).willReturn("rod", "juergen");
 
-		given(connection.prepareStatement(SELECT_ID_FORENAME_WHERE_ID_IN_LIST_1,
+		given(this.connection.prepareStatement(SELECT_ID_FORENAME_WHERE_ID_IN_LIST_1,
 				ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY)
-			).willReturn(preparedStatement);
+			).willReturn(this.preparedStatement);
 
 		class CustomerQuery extends MappingSqlQuery<Customer> {
 
@@ -610,7 +610,7 @@ public class SqlQueryTests  {
 			}
 		}
 
-		CustomerQuery query = new CustomerQuery(dataSource);
+		CustomerQuery query = new CustomerQuery(this.dataSource);
 		List<Integer> ids = new ArrayList<>();
 		ids.add(1);
 		ids.add(2);
@@ -621,21 +621,21 @@ public class SqlQueryTests  {
 		assertEquals("First customer forename was assigned correctly", cust.get(0).getForename(), "rod");
 		assertEquals("Second customer id was assigned correctly", cust.get(1).getId(), 2);
 		assertEquals("Second customer forename was assigned correctly", cust.get(1).getForename(), "juergen");
-		verify(preparedStatement).setObject(1, 1, Types.NUMERIC);
-		verify(preparedStatement).setObject(2, 2, Types.NUMERIC);
-		verify(resultSet).close();
-		verify(preparedStatement).close();
-		verify(connection).close();
+		verify(this.preparedStatement).setObject(1, 1, Types.NUMERIC);
+		verify(this.preparedStatement).setObject(2, 2, Types.NUMERIC);
+		verify(this.resultSet).close();
+		verify(this.preparedStatement).close();
+		verify(this.connection).close();
 	}
 
 	@Test
 	public void testNamedParameterQueryReusingParameter() throws SQLException {
-		given(resultSet.next()).willReturn(true, true, false);
-		given(resultSet.getInt("id")).willReturn(1, 2);
-		given(resultSet.getString("forename")).willReturn("rod", "juergen");
+		given(this.resultSet.next()).willReturn(true, true, false);
+		given(this.resultSet.getInt("id")).willReturn(1, 2);
+		given(this.resultSet.getString("forename")).willReturn("rod", "juergen");
 
-		given(connection.prepareStatement(SELECT_ID_FORENAME_WHERE_ID_REUSED_1,
-				ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY)).willReturn(preparedStatement)
+		given(this.connection.prepareStatement(SELECT_ID_FORENAME_WHERE_ID_REUSED_1,
+				ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY)).willReturn(this.preparedStatement)
 ;
 
 		class CustomerQuery extends MappingSqlQuery<Customer> {
@@ -662,7 +662,7 @@ public class SqlQueryTests  {
 			}
 		}
 
-		CustomerQuery query = new CustomerQuery(dataSource);
+		CustomerQuery query = new CustomerQuery(this.dataSource);
 		List<Customer> cust = query.findCustomers(1);
 
 		assertEquals("We got two customers back", 2, cust.size());
@@ -671,19 +671,19 @@ public class SqlQueryTests  {
 		assertEquals("Second customer id was assigned correctly", cust.get(1).getId(), 2);
 		assertEquals("Second customer forename was assigned correctly", cust.get(1).getForename(), "juergen");
 
-		verify(preparedStatement).setObject(1, 1, Types.NUMERIC);
-		verify(preparedStatement).setObject(2, 1, Types.NUMERIC);
-		verify(resultSet).close();
-		verify(preparedStatement).close();
-		verify(connection).close();
+		verify(this.preparedStatement).setObject(1, 1, Types.NUMERIC);
+		verify(this.preparedStatement).setObject(2, 1, Types.NUMERIC);
+		verify(this.resultSet).close();
+		verify(this.preparedStatement).close();
+		verify(this.connection).close();
 	}
 
 	@Test
 	public void testNamedParameterUsingInvalidQuestionMarkPlaceHolders()
 			throws SQLException {
 		given(
-		connection.prepareStatement(SELECT_ID_FORENAME_WHERE_ID_REUSED_1,
-				ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY)).willReturn(preparedStatement);
+		this.connection.prepareStatement(SELECT_ID_FORENAME_WHERE_ID_REUSED_1,
+				ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY)).willReturn(this.preparedStatement);
 
 		class CustomerQuery extends MappingSqlQuery<Customer> {
 
@@ -709,18 +709,18 @@ public class SqlQueryTests  {
 			}
 		}
 
-		CustomerQuery query = new CustomerQuery(dataSource);
-		thrown.expect(InvalidDataAccessApiUsageException.class);
+		CustomerQuery query = new CustomerQuery(this.dataSource);
+		this.thrown.expect(InvalidDataAccessApiUsageException.class);
 		query.findCustomers(1);
 	}
 
 	@Test
 	public void testUpdateCustomers() throws SQLException {
-		given(resultSet.next()).willReturn(true, true, false);
-		given(resultSet.getInt("id")).willReturn(1, 2);
-		given(connection.prepareStatement(SELECT_ID_FORENAME_WHERE_ID,
+		given(this.resultSet.next()).willReturn(true, true, false);
+		given(this.resultSet.getInt("id")).willReturn(1, 2);
+		given(this.connection.prepareStatement(SELECT_ID_FORENAME_WHERE_ID,
 				ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE)
-			).willReturn(preparedStatement);
+			).willReturn(this.preparedStatement);
 
 		class CustomerUpdateQuery extends UpdatableSqlQuery<Customer> {
 
@@ -738,18 +738,18 @@ public class SqlQueryTests  {
 			}
 		}
 
-		CustomerUpdateQuery query = new CustomerUpdateQuery(dataSource);
+		CustomerUpdateQuery query = new CustomerUpdateQuery(this.dataSource);
 		Map<Integer, String> values = new HashMap<>(2);
 		values.put(1, "Rod");
 		values.put(2, "Thomas");
 		query.execute(2, values);
-		verify(resultSet).updateString(2, "Rod");
-		verify(resultSet).updateString(2, "Thomas");
-		verify(resultSet, times(2)).updateRow();
-		verify(preparedStatement).setObject(1, 2, Types.NUMERIC);
-		verify(resultSet).close();
-		verify(preparedStatement).close();
-		verify(connection).close();
+		verify(this.resultSet).updateString(2, "Rod");
+		verify(this.resultSet).updateString(2, "Thomas");
+		verify(this.resultSet, times(2)).updateRow();
+		verify(this.preparedStatement).setObject(1, 2, Types.NUMERIC);
+		verify(this.resultSet).close();
+		verify(this.preparedStatement).close();
+		verify(this.connection).close();
 	}
 
 	private static class StringQuery extends MappingSqlQuery<String> {

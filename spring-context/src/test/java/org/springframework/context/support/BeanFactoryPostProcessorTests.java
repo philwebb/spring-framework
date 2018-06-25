@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -169,7 +169,7 @@ public class BeanFactoryPostProcessorTests {
 
 		@Override
 		public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
-			wasCalled = true;
+			this.wasCalled = true;
 		}
 	}
 
@@ -270,7 +270,7 @@ public class BeanFactoryPostProcessorTests {
 		}
 
 		public ListeningBean getListeningBean() {
-			return listeningBean;
+			return this.listeningBean;
 		}
 
 		@Override

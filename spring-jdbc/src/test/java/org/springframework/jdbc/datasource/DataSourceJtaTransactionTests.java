@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,12 +63,12 @@ public class DataSourceJtaTransactionTests {
 
 	@Before
 	public void setup() throws Exception {
-		connection =mock(Connection.class);
-		dataSource = mock(DataSource.class);
-		userTransaction = mock(UserTransaction.class);
-		transactionManager = mock(TransactionManager.class);
-		transaction = mock(Transaction.class);
-		given(dataSource.getConnection()).willReturn(connection);
+		this.connection =mock(Connection.class);
+		this.dataSource = mock(DataSource.class);
+		this.userTransaction = mock(UserTransaction.class);
+		this.transactionManager = mock(TransactionManager.class);
+		this.transaction = mock(Transaction.class);
+		given(this.dataSource.getConnection()).willReturn(this.connection);
 	}
 
 	@After
@@ -93,17 +93,17 @@ public class DataSourceJtaTransactionTests {
 
 	private void doTestJtaTransaction(final boolean rollback) throws Exception {
 		if (rollback) {
-			given(userTransaction.getStatus()).willReturn(
+			given(this.userTransaction.getStatus()).willReturn(
 					Status.STATUS_NO_TRANSACTION,Status.STATUS_ACTIVE);
 		}
 		else {
-			given(userTransaction.getStatus()).willReturn(
+			given(this.userTransaction.getStatus()).willReturn(
 					Status.STATUS_NO_TRANSACTION, Status.STATUS_ACTIVE, Status.STATUS_ACTIVE);
 		}
 
-		JtaTransactionManager ptm = new JtaTransactionManager(userTransaction);
+		JtaTransactionManager ptm = new JtaTransactionManager(this.userTransaction);
 		TransactionTemplate tt = new TransactionTemplate(ptm);
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(dataSource));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.dataSource));
 		assertTrue("JTA synchronizations not active", !TransactionSynchronizationManager.isSynchronizationActive());
 
 		tt.execute(new TransactionCallbackWithoutResult() {
@@ -127,13 +127,13 @@ public class DataSourceJtaTransactionTests {
 			}
 		});
 
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(dataSource));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.dataSource));
 		assertTrue("JTA synchronizations not active", !TransactionSynchronizationManager.isSynchronizationActive());
-		verify(userTransaction).begin();
+		verify(this.userTransaction).begin();
 		if (rollback) {
-			verify(userTransaction).rollback();
+			verify(this.userTransaction).rollback();
 		}
-		verify(connection).close();
+		verify(this.connection).close();
 	}
 
 	@Test
@@ -190,22 +190,22 @@ public class DataSourceJtaTransactionTests {
 			final boolean rollback, final boolean openOuterConnection, final boolean accessAfterResume,
 			final boolean useTransactionAwareDataSource) throws Exception {
 
-		given(transactionManager.suspend()).willReturn(transaction);
+		given(this.transactionManager.suspend()).willReturn(this.transaction);
 		if (rollback) {
-			given(userTransaction.getStatus()).willReturn(Status.STATUS_NO_TRANSACTION,
+			given(this.userTransaction.getStatus()).willReturn(Status.STATUS_NO_TRANSACTION,
 					Status.STATUS_ACTIVE);
 		}
 		else {
-			given(userTransaction.getStatus()).willReturn(Status.STATUS_NO_TRANSACTION,
+			given(this.userTransaction.getStatus()).willReturn(Status.STATUS_NO_TRANSACTION,
 					Status.STATUS_ACTIVE, Status.STATUS_ACTIVE);
 		}
 
-		given(connection.isReadOnly()).willReturn(true);
+		given(this.connection.isReadOnly()).willReturn(true);
 
 		final DataSource dsToUse = useTransactionAwareDataSource ?
-				new TransactionAwareDataSourceProxy(dataSource) : dataSource;
+				new TransactionAwareDataSourceProxy(this.dataSource) : this.dataSource;
 
-		JtaTransactionManager ptm = new JtaTransactionManager(userTransaction, transactionManager);
+		JtaTransactionManager ptm = new JtaTransactionManager(this.userTransaction, this.transactionManager);
 		final TransactionTemplate tt = new TransactionTemplate(ptm);
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
 		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(dsToUse));
@@ -290,20 +290,20 @@ public class DataSourceJtaTransactionTests {
 
 		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(dsToUse));
 		assertTrue("JTA synchronizations not active", !TransactionSynchronizationManager.isSynchronizationActive());
-		verify(userTransaction, times(6)).begin();
-		verify(transactionManager, times(5)).resume(transaction);
+		verify(this.userTransaction, times(6)).begin();
+		verify(this.transactionManager, times(5)).resume(this.transaction);
 		if (rollback) {
-			verify(userTransaction, times(5)).commit();
-			verify(userTransaction).rollback();
+			verify(this.userTransaction, times(5)).commit();
+			verify(this.userTransaction).rollback();
 		}
 		else {
-			verify(userTransaction, times(6)).commit();
+			verify(this.userTransaction, times(6)).commit();
 		}
 		if (accessAfterResume && !openOuterConnection) {
-			verify(connection, times(7)).close();
+			verify(this.connection, times(7)).close();
 		}
 		else {
-			verify(connection, times(6)).close();
+			verify(this.connection, times(6)).close();
 		}
 	}
 
@@ -331,15 +331,15 @@ public class DataSourceJtaTransactionTests {
 			final boolean requiresNew, boolean notSupported) throws Exception {
 
 		if (notSupported) {
-			given(userTransaction.getStatus()).willReturn(
+			given(this.userTransaction.getStatus()).willReturn(
 					Status.STATUS_ACTIVE,
 					Status.STATUS_NO_TRANSACTION,
 					Status.STATUS_ACTIVE,
 					Status.STATUS_ACTIVE);
-			given(transactionManager.suspend()).willReturn(transaction);
+			given(this.transactionManager.suspend()).willReturn(this.transaction);
 		}
 		else {
-			given(userTransaction.getStatus()).willReturn(
+			given(this.userTransaction.getStatus()).willReturn(
 					Status.STATUS_NO_TRANSACTION,
 					Status.STATUS_NO_TRANSACTION,
 					Status.STATUS_ACTIVE,
@@ -351,7 +351,7 @@ public class DataSourceJtaTransactionTests {
 		final Connection connection2 = mock(Connection.class);
 		given(dataSource.getConnection()).willReturn(connection1, connection2);
 
-		final JtaTransactionManager ptm = new JtaTransactionManager(userTransaction, transactionManager);
+		final JtaTransactionManager ptm = new JtaTransactionManager(this.userTransaction, this.transactionManager);
 		TransactionTemplate tt = new TransactionTemplate(ptm);
 		tt.setPropagationBehavior(notSupported ?
 				TransactionDefinition.PROPAGATION_NOT_SUPPORTED : TransactionDefinition.PROPAGATION_SUPPORTS);
@@ -387,10 +387,10 @@ public class DataSourceJtaTransactionTests {
 			}
 		});
 		assertFalse(TransactionSynchronizationManager.isSynchronizationActive());
-		verify(userTransaction).begin();
-		verify(userTransaction).commit();
+		verify(this.userTransaction).begin();
+		verify(this.userTransaction).commit();
 		if (notSupported) {
-			verify(transactionManager).resume(transaction);
+			verify(this.transactionManager).resume(this.transaction);
 		}
 		verify(connection2).close();
 		verify(connection1).close();
@@ -439,27 +439,27 @@ public class DataSourceJtaTransactionTests {
 	private void doTestJtaTransactionWithPropagationRequiresNewAndBeginException(boolean suspendException,
 			final boolean openOuterConnection, final boolean useTransactionAwareDataSource) throws Exception {
 
-		given(userTransaction.getStatus()).willReturn(
+		given(this.userTransaction.getStatus()).willReturn(
 				Status.STATUS_NO_TRANSACTION,
 				Status.STATUS_ACTIVE,
 				Status.STATUS_ACTIVE);
 		if (suspendException) {
-			given(transactionManager.suspend()).willThrow(new SystemException());
+			given(this.transactionManager.suspend()).willThrow(new SystemException());
 		}
 		else {
-			given(transactionManager.suspend()).willReturn(transaction);
-			willThrow(new SystemException()).given(userTransaction).begin();
+			given(this.transactionManager.suspend()).willReturn(this.transaction);
+			willThrow(new SystemException()).given(this.userTransaction).begin();
 		}
 
-		given(connection.isReadOnly()).willReturn(true);
+		given(this.connection.isReadOnly()).willReturn(true);
 
 		final DataSource dsToUse = useTransactionAwareDataSource ?
-				new TransactionAwareDataSourceProxy(dataSource) : dataSource;
+				new TransactionAwareDataSourceProxy(this.dataSource) : this.dataSource;
 		if (dsToUse instanceof TransactionAwareDataSourceProxy) {
 			((TransactionAwareDataSourceProxy) dsToUse).setReobtainTransactionalConnections(true);
 		}
 
-		JtaTransactionManager ptm = new JtaTransactionManager(userTransaction, transactionManager);
+		JtaTransactionManager ptm = new JtaTransactionManager(this.userTransaction, this.transactionManager);
 		final TransactionTemplate tt = new TransactionTemplate(ptm);
 		tt.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
 		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(dsToUse));
@@ -528,23 +528,23 @@ public class DataSourceJtaTransactionTests {
 		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(dsToUse));
 		assertTrue("JTA synchronizations not active", !TransactionSynchronizationManager.isSynchronizationActive());
 
-		verify(userTransaction).begin();
+		verify(this.userTransaction).begin();
 		if (suspendException) {
-			verify(userTransaction).rollback();
+			verify(this.userTransaction).rollback();
 		}
 
 		if (suspendException) {
-			verify(connection, atLeastOnce()).close();
+			verify(this.connection, atLeastOnce()).close();
 		}
 		else {
-			verify(connection, never()).close();
+			verify(this.connection, never()).close();
 		}
 	}
 
 	@Test
 	public void testJtaTransactionWithConnectionHolderStillBound() throws Exception {
 		@SuppressWarnings("serial")
-		JtaTransactionManager ptm = new JtaTransactionManager(userTransaction) {
+		JtaTransactionManager ptm = new JtaTransactionManager(this.userTransaction) {
 
 			@Override
 			protected void doRegisterAfterCompletionWithJtaTransaction(
@@ -567,10 +567,10 @@ public class DataSourceJtaTransactionTests {
 			}
 		};
 		TransactionTemplate tt = new TransactionTemplate(ptm);
-		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(dataSource));
+		assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.dataSource));
 		assertTrue("JTA synchronizations not active", !TransactionSynchronizationManager.isSynchronizationActive());
 
-		given(userTransaction.getStatus()).willReturn(Status.STATUS_ACTIVE);
+		given(this.userTransaction.getStatus()).willReturn(Status.STATUS_ACTIVE);
 		for (int i = 0; i < 3; i++) {
 			final boolean releaseCon = (i != 1);
 
@@ -593,19 +593,19 @@ public class DataSourceJtaTransactionTests {
 			});
 
 			if (!releaseCon) {
-				assertTrue("Still has connection holder", TransactionSynchronizationManager.hasResource(dataSource));
+				assertTrue("Still has connection holder", TransactionSynchronizationManager.hasResource(this.dataSource));
 			}
 			else {
-				assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(dataSource));
+				assertTrue("Hasn't thread connection", !TransactionSynchronizationManager.hasResource(this.dataSource));
 			}
 			assertTrue("JTA synchronizations not active", !TransactionSynchronizationManager.isSynchronizationActive());
 		}
-		verify(connection, times(3)).close();
+		verify(this.connection, times(3)).close();
 	}
 
 	@Test
 	public void testJtaTransactionWithIsolationLevelDataSourceAdapter() throws Exception {
-		given(userTransaction.getStatus()).willReturn(
+		given(this.userTransaction.getStatus()).willReturn(
 				Status.STATUS_NO_TRANSACTION,
 				Status.STATUS_ACTIVE,
 				Status.STATUS_ACTIVE,
@@ -614,10 +614,10 @@ public class DataSourceJtaTransactionTests {
 				Status.STATUS_ACTIVE);
 
 		final IsolationLevelDataSourceAdapter dsToUse = new IsolationLevelDataSourceAdapter();
-		dsToUse.setTargetDataSource(dataSource);
+		dsToUse.setTargetDataSource(this.dataSource);
 		dsToUse.afterPropertiesSet();
 
-		JtaTransactionManager ptm = new JtaTransactionManager(userTransaction);
+		JtaTransactionManager ptm = new JtaTransactionManager(this.userTransaction);
 		ptm.setAllowCustomIsolationLevels(true);
 
 		TransactionTemplate tt = new TransactionTemplate(ptm);
@@ -643,11 +643,11 @@ public class DataSourceJtaTransactionTests {
 			}
 		});
 
-		verify(userTransaction, times(2)).begin();
-		verify(userTransaction, times(2)).commit();
-		verify(connection).setReadOnly(true);
-		verify(connection).setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
-		verify(connection, times(2)).close();
+		verify(this.userTransaction, times(2)).begin();
+		verify(this.userTransaction, times(2)).commit();
+		verify(this.connection).setReadOnly(true);
+		verify(this.connection).setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+		verify(this.connection, times(2)).close();
 	}
 
 	@Test
@@ -661,7 +661,7 @@ public class DataSourceJtaTransactionTests {
 	}
 
 	private void doTestJtaTransactionWithIsolationLevelDataSourceRouter(boolean dataSourceLookup) throws Exception {
-given(		userTransaction.getStatus()).willReturn(Status.STATUS_NO_TRANSACTION, Status.STATUS_ACTIVE, Status.STATUS_ACTIVE, Status.STATUS_NO_TRANSACTION, Status.STATUS_ACTIVE, Status.STATUS_ACTIVE);
+given(		this.userTransaction.getStatus()).willReturn(Status.STATUS_NO_TRANSACTION, Status.STATUS_ACTIVE, Status.STATUS_ACTIVE, Status.STATUS_NO_TRANSACTION, Status.STATUS_ACTIVE, Status.STATUS_ACTIVE);
 
 		final DataSource dataSource1 = mock(DataSource.class);
 		final Connection connection1 = mock(Connection.class);
@@ -688,7 +688,7 @@ given(		userTransaction.getStatus()).willReturn(Status.STATUS_NO_TRANSACTION, St
 		dsToUse.setTargetDataSources(targetDataSources);
 		dsToUse.afterPropertiesSet();
 
-		JtaTransactionManager ptm = new JtaTransactionManager(userTransaction);
+		JtaTransactionManager ptm = new JtaTransactionManager(this.userTransaction);
 		ptm.setAllowCustomIsolationLevels(true);
 
 		TransactionTemplate tt = new TransactionTemplate(ptm);
@@ -713,8 +713,8 @@ given(		userTransaction.getStatus()).willReturn(Status.STATUS_NO_TRANSACTION, St
 			}
 		});
 
-		verify(userTransaction, times(2)).begin();
-		verify(userTransaction, times(2)).commit();
+		verify(this.userTransaction, times(2)).begin();
+		verify(this.userTransaction, times(2)).commit();
 		verify(connection1).close();
 		verify(connection2).close();
 	}

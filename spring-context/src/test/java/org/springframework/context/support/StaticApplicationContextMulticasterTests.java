@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,23 +59,23 @@ public class StaticApplicationContextMulticasterTests extends AbstractApplicatio
 		parent.registerSingleton(StaticApplicationContext.APPLICATION_EVENT_MULTICASTER_BEAN_NAME,
 				TestApplicationEventMulticaster.class, null);
 		parent.refresh();
-		parent.addApplicationListener(parentListener) ;
+		parent.addApplicationListener(this.parentListener) ;
 
 		parent.getStaticMessageSource().addMessage("code1", Locale.getDefault(), "message1");
 
 		this.sac = new StaticApplicationContext(parent);
-		sac.registerSingleton("beanThatListens", BeanThatListens.class, new MutablePropertyValues());
-		sac.registerSingleton("aca", ACATester.class, new MutablePropertyValues());
-		sac.registerPrototype("aca-prototype", ACATester.class, new MutablePropertyValues());
-		PropertiesBeanDefinitionReader reader = new PropertiesBeanDefinitionReader(sac.getDefaultListableBeanFactory());
+		this.sac.registerSingleton("beanThatListens", BeanThatListens.class, new MutablePropertyValues());
+		this.sac.registerSingleton("aca", ACATester.class, new MutablePropertyValues());
+		this.sac.registerPrototype("aca-prototype", ACATester.class, new MutablePropertyValues());
+		PropertiesBeanDefinitionReader reader = new PropertiesBeanDefinitionReader(this.sac.getDefaultListableBeanFactory());
 		Resource resource = new ClassPathResource("testBeans.properties", getClass());
 		reader.loadBeanDefinitions(new EncodedResource(resource, "ISO-8859-1"));
-		sac.refresh();
-		sac.addApplicationListener(listener);
+		this.sac.refresh();
+		this.sac.addApplicationListener(this.listener);
 
-		sac.getStaticMessageSource().addMessage("code2", Locale.getDefault(), "message2");
+		this.sac.getStaticMessageSource().addMessage("code2", Locale.getDefault(), "message2");
 
-		return sac;
+		return this.sac;
 	}
 
 	@Test

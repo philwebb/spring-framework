@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2014 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,23 +47,23 @@ public abstract class AbstractDatabaseInitializationTests {
 
 	@Before
 	public void setUp() {
-		db = new EmbeddedDatabaseBuilder().setType(getEmbeddedDatabaseType()).build();
-		jdbcTemplate = new JdbcTemplate(db);
+		this.db = new EmbeddedDatabaseBuilder().setType(getEmbeddedDatabaseType()).build();
+		this.jdbcTemplate = new JdbcTemplate(this.db);
 	}
 
 	@After
 	public void shutDown() {
 		if (TransactionSynchronizationManager.isSynchronizationActive()) {
 			TransactionSynchronizationManager.clear();
-			TransactionSynchronizationManager.unbindResource(db);
+			TransactionSynchronizationManager.unbindResource(this.db);
 		}
-		db.shutdown();
+		this.db.shutdown();
 	}
 
 	abstract EmbeddedDatabaseType getEmbeddedDatabaseType();
 
 	Resource resource(String path) {
-		return resourceLoader.getResource(path);
+		return this.resourceLoader.getResource(path);
 	}
 
 	Resource defaultSchema() {
@@ -77,7 +77,7 @@ public abstract class AbstractDatabaseInitializationTests {
 	void assertUsersDatabaseCreated(String... lastNames) {
 		for (String lastName : lastNames) {
 			assertThat("Did not find user with last name [" + lastName + "].",
-				jdbcTemplate.queryForObject("select count(0) from users where last_name = ?", Integer.class, lastName),
+				this.jdbcTemplate.queryForObject("select count(0) from users where last_name = ?", Integer.class, lastName),
 				equalTo(1));
 		}
 	}

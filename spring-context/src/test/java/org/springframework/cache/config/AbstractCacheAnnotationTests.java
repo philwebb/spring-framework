@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,9 +61,9 @@ public abstract class AbstractCacheAnnotationTests {
 	@Before
 	public void setup() {
 		this.ctx = getApplicationContext();
-		this.cs = ctx.getBean("service", CacheableService.class);
-		this.ccs = ctx.getBean("classService", CacheableService.class);
-		this.cm = ctx.getBean("cacheManager", CacheManager.class);
+		this.cs = this.ctx.getBean("service", CacheableService.class);
+		this.ccs = this.ctx.getBean("classService", CacheableService.class);
+		this.cm = this.ctx.getBean("cacheManager", CacheManager.class);
 
 		Collection<String> cn = this.cm.getCacheNames();
 		assertTrue(cn.contains("testCache"));

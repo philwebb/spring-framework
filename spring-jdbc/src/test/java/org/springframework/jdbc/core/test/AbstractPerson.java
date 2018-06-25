@@ -31,7 +31,7 @@ public abstract class AbstractPerson {
 
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -39,7 +39,7 @@ public abstract class AbstractPerson {
 	}
 
 	public long getAge() {
-		return age;
+		return this.age;
 	}
 
 	public void setAge(long age) {
@@ -47,7 +47,7 @@ public abstract class AbstractPerson {
 	}
 
 	public Date getBirth_date() {
-		return birth_date;
+		return this.birth_date;
 	}
 
 	public void setBirth_date(Date birth_date) {

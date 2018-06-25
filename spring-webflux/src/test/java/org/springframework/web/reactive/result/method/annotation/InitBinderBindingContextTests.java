@@ -66,7 +66,7 @@ public class InitBinderBindingContextTests {
 	@Test
 	public void createBinderWithGlobalInitialization() throws Exception {
 		ConversionService conversionService = new DefaultFormattingConversionService();
-		bindingInitializer.setConversionService(conversionService);
+		this.bindingInitializer.setConversionService(conversionService);
 
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/"));
 		BindingContext context = createBindingContext("initBinder", WebDataBinder.class);

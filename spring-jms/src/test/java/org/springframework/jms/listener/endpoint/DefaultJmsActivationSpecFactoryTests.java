@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,10 +47,10 @@ public class DefaultJmsActivationSpecFactoryTests {
 
 	@Test
 	public void activeMQResourceAdapterSetup() {
-		activationSpecConfig.setAcknowledgeMode(Session.SESSION_TRANSACTED);
+		this.activationSpecConfig.setAcknowledgeMode(Session.SESSION_TRANSACTED);
 		JmsActivationSpecFactory activationSpecFactory = new DefaultJmsActivationSpecFactory();
 		StubActiveMQActivationSpec spec = (StubActiveMQActivationSpec) activationSpecFactory.createActivationSpec(
-				new StubActiveMQResourceAdapter(), activationSpecConfig);
+				new StubActiveMQResourceAdapter(), this.activationSpecConfig);
 
 		assertEquals(5, spec.getMaxSessions());
 		assertEquals(3, spec.getMaxMessagesPerSessions());
@@ -68,7 +68,7 @@ public class DefaultJmsActivationSpecFactoryTests {
 		activationSpecFactory.setDestinationResolver(destinationResolver);
 
 		StubWebSphereActivationSpecImpl spec = (StubWebSphereActivationSpecImpl) activationSpecFactory
-				.createActivationSpec(new StubWebSphereResourceAdapterImpl(), activationSpecConfig);
+				.createActivationSpec(new StubWebSphereResourceAdapterImpl(), this.activationSpecConfig);
 
 		assertEquals(destination, spec.getDestination());
 		assertEquals(5, spec.getMaxConcurrency());
@@ -104,15 +104,15 @@ public class DefaultJmsActivationSpecFactoryTests {
 		}
 
 		public int getMaxSessions() {
-			return maxSessions;
+			return this.maxSessions;
 		}
 
 		public int getMaxMessagesPerSessions() {
-			return maxMessagesPerSessions;
+			return this.maxMessagesPerSessions;
 		}
 
 		public String getDestination() {
-			return destination;
+			return this.destination;
 		}
 
 		public void setDestination(String destination) {
@@ -120,7 +120,7 @@ public class DefaultJmsActivationSpecFactoryTests {
 		}
 
 		public boolean isUseRAManagedTransaction() {
-			return useRAManagedTransaction;
+			return this.useRAManagedTransaction;
 		}
 
 		public void setUseRAManagedTransaction(boolean useRAManagedTransaction) {
@@ -143,11 +143,11 @@ public class DefaultJmsActivationSpecFactoryTests {
 		}
 
 		public Destination getDestination() {
-			return destination;
+			return this.destination;
 		}
 
 		public int getMaxConcurrency() {
-			return maxConcurrency;
+			return this.maxConcurrency;
 		}
 
 		public void setMaxConcurrency(int maxConcurrency) {
@@ -155,7 +155,7 @@ public class DefaultJmsActivationSpecFactoryTests {
 		}
 
 		public int getMaxBatchSize() {
-			return maxBatchSize;
+			return this.maxBatchSize;
 		}
 
 		public void setMaxBatchSize(int maxBatchSize) {

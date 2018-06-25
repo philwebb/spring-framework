@@ -65,8 +65,8 @@ public class HandlerMethodMappingTests {
 	public void setUp() throws Exception {
 		this.mapping = new MyHandlerMethodMapping();
 		this.handler = new MyHandler();
-		this.method1 = handler.getClass().getMethod("handlerMethod1");
-		this.method2 = handler.getClass().getMethod("handlerMethod2");
+		this.method1 = this.handler.getClass().getMethod("handlerMethod1");
+		this.method2 = this.handler.getClass().getMethod("handlerMethod2");
 	}
 
 
@@ -82,7 +82,7 @@ public class HandlerMethodMappingTests {
 		this.mapping.registerMapping(key, this.handler, this.method1);
 
 		HandlerMethod result = this.mapping.getHandlerInternal(new MockHttpServletRequest("GET", key));
-		assertEquals(method1, result.getMethod());
+		assertEquals(this.method1, result.getMethod());
 	}
 
 	@Test
@@ -91,7 +91,7 @@ public class HandlerMethodMappingTests {
 		this.mapping.registerMapping("/f*", this.handler, this.method2);
 
 		HandlerMethod result = this.mapping.getHandlerInternal(new MockHttpServletRequest("GET", "/foo"));
-		assertEquals(method1, result.getMethod());
+		assertEquals(this.method1, result.getMethod());
 	}
 
 	@Test(expected = IllegalStateException.class)
@@ -157,11 +157,11 @@ public class HandlerMethodMappingTests {
 
 		CorsConfiguration config = this.mapping.getMappingRegistry().getCorsConfiguration(handlerMethod1);
 		assertNotNull(config);
-		assertEquals("http://" + handler.hashCode() + name1, config.getAllowedOrigins().get(0));
+		assertEquals("http://" + this.handler.hashCode() + name1, config.getAllowedOrigins().get(0));
 
 		config = this.mapping.getMappingRegistry().getCorsConfiguration(handlerMethod2);
 		assertNotNull(config);
-		assertEquals("http://" + handler.hashCode() + name2, config.getAllowedOrigins().get(0));
+		assertEquals("http://" + this.handler.hashCode() + name2, config.getAllowedOrigins().get(0));
 	}
 
 	@Test
@@ -216,7 +216,7 @@ public class HandlerMethodMappingTests {
 		assertNotNull(this.mapping.getHandlerInternal(new MockHttpServletRequest("GET", key)));
 
 		this.mapping.unregisterMapping(key);
-		assertNull(mapping.getHandlerInternal(new MockHttpServletRequest("GET", key)));
+		assertNull(this.mapping.getHandlerInternal(new MockHttpServletRequest("GET", key)));
 		assertNull(this.mapping.getMappingRegistry().getMappingsByUrl(key));
 		assertNull(this.mapping.getMappingRegistry().getHandlerMethodsByMappingName(this.method1.getName()));
 		assertNull(this.mapping.getMappingRegistry().getCorsConfiguration(handlerMethod));

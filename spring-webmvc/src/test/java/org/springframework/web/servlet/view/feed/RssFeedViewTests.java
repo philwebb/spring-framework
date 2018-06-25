@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ public class RssFeedViewTests {
 		model.put("2", "This is entry 2");
 		model.put("1", "This is entry 1");
 
-		view.render(model, request, response);
+		this.view.render(model, request, response);
 		assertEquals("Invalid content-type", "application/rss+xml", response.getContentType());
 		String expected = "<rss version=\"2.0\">" +
 				"<channel><title>Test Feed</title>" +

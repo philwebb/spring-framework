@@ -30,12 +30,12 @@ public class TestDataSourceWrapper extends AbstractDataSource {
 
 	@Override
 	public Connection getConnection() throws SQLException {
-		return target.getConnection();
+		return this.target.getConnection();
 	}
 
 	@Override
 	public Connection getConnection(String username, String password) throws SQLException {
-		return target.getConnection(username, password);
+		return this.target.getConnection(username, password);
 	}
 
 }

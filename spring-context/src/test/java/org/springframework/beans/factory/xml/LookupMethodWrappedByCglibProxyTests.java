@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ public class LookupMethodWrappedByCglibProxyTests {
 
 	@Test
 	public void testAutoProxiedLookup() {
-		OverloadLookup olup = (OverloadLookup) applicationContext.getBean("autoProxiedOverload");
+		OverloadLookup olup = (OverloadLookup) this.applicationContext.getBean("autoProxiedOverload");
 		ITestBean jenny = olup.newTestBean();
 		assertEquals("Jenny", jenny.getName());
 		assertEquals("foo", olup.testMethod());
@@ -59,7 +59,7 @@ public class LookupMethodWrappedByCglibProxyTests {
 
 	@Test
 	public void testRegularlyProxiedLookup() {
-		OverloadLookup olup = (OverloadLookup) applicationContext.getBean("regularlyProxiedOverload");
+		OverloadLookup olup = (OverloadLookup) this.applicationContext.getBean("regularlyProxiedOverload");
 		ITestBean jenny = olup.newTestBean();
 		assertEquals("Jenny", jenny.getName());
 		assertEquals("foo", olup.testMethod());
@@ -77,7 +77,7 @@ public class LookupMethodWrappedByCglibProxyTests {
 	}
 
 	private DebugInterceptor getInterceptor() {
-		return (DebugInterceptor) applicationContext.getBean("interceptor");
+		return (DebugInterceptor) this.applicationContext.getBean("interceptor");
 	}
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,24 +41,24 @@ public class CustomScopeConfigurerTests {
 
 	@Before
 	public void setUp() {
-		factory = new DefaultListableBeanFactory();
+		this.factory = new DefaultListableBeanFactory();
 	}
 
 	@Test
 	public void testWithNoScopes() throws Exception {
 		CustomScopeConfigurer figurer = new CustomScopeConfigurer();
-		figurer.postProcessBeanFactory(factory);
+		figurer.postProcessBeanFactory(this.factory);
 	}
 
 	@Test
 	public void testSunnyDayWithBonaFideScopeInstance() throws Exception {
 		Scope scope = mock(Scope.class);
-		factory.registerScope(FOO_SCOPE, scope);
+		this.factory.registerScope(FOO_SCOPE, scope);
 		Map<String, Object> scopes = new HashMap<>();
 		scopes.put(FOO_SCOPE, scope);
 		CustomScopeConfigurer figurer = new CustomScopeConfigurer();
 		figurer.setScopes(scopes);
-		figurer.postProcessBeanFactory(factory);
+		figurer.postProcessBeanFactory(this.factory);
 	}
 
 	@Test
@@ -67,8 +67,8 @@ public class CustomScopeConfigurerTests {
 		scopes.put(FOO_SCOPE, NoOpScope.class);
 		CustomScopeConfigurer figurer = new CustomScopeConfigurer();
 		figurer.setScopes(scopes);
-		figurer.postProcessBeanFactory(factory);
-		assertTrue(factory.getRegisteredScope(FOO_SCOPE) instanceof NoOpScope);
+		figurer.postProcessBeanFactory(this.factory);
+		assertTrue(this.factory.getRegisteredScope(FOO_SCOPE) instanceof NoOpScope);
 	}
 
 	@Test
@@ -77,8 +77,8 @@ public class CustomScopeConfigurerTests {
 		scopes.put(FOO_SCOPE, NoOpScope.class.getName());
 		CustomScopeConfigurer figurer = new CustomScopeConfigurer();
 		figurer.setScopes(scopes);
-		figurer.postProcessBeanFactory(factory);
-		assertTrue(factory.getRegisteredScope(FOO_SCOPE) instanceof NoOpScope);
+		figurer.postProcessBeanFactory(this.factory);
+		assertTrue(this.factory.getRegisteredScope(FOO_SCOPE) instanceof NoOpScope);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -87,7 +87,7 @@ public class CustomScopeConfigurerTests {
 		scopes.put(FOO_SCOPE, null);
 		CustomScopeConfigurer figurer = new CustomScopeConfigurer();
 		figurer.setScopes(scopes);
-		figurer.postProcessBeanFactory(factory);
+		figurer.postProcessBeanFactory(this.factory);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -96,7 +96,7 @@ public class CustomScopeConfigurerTests {
 		scopes.put(FOO_SCOPE, this); // <-- not a valid value...
 		CustomScopeConfigurer figurer = new CustomScopeConfigurer();
 		figurer.setScopes(scopes);
-		figurer.postProcessBeanFactory(factory);
+		figurer.postProcessBeanFactory(this.factory);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -106,7 +106,7 @@ public class CustomScopeConfigurerTests {
 		scopes.put(this, new NoOpScope()); // <-- not a valid value (the key)...
 		CustomScopeConfigurer figurer = new CustomScopeConfigurer();
 		figurer.setScopes(scopes);
-		figurer.postProcessBeanFactory(factory);
+		figurer.postProcessBeanFactory(this.factory);
 	}
 
 }

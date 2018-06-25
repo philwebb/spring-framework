@@ -58,7 +58,7 @@ public class HandlerMethodReturnValueHandlerCompositeTests {
 		this.handlers = new HandlerMethodReturnValueHandlerComposite();
 		this.handlers.addHandler(this.integerHandler);
 
-		mavContainer = new ModelAndViewContainer();
+		this.mavContainer = new ModelAndViewContainer();
 	}
 
 	@Test

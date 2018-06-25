@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2012 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ public class DependenciesBean implements BeanFactoryAware {
 	}
 
 	public int getAge() {
-		return age;
+		return this.age;
 	}
 
 	public void setName(String name) {
@@ -49,7 +49,7 @@ public class DependenciesBean implements BeanFactoryAware {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setSpouse(TestBean spouse) {
@@ -57,7 +57,7 @@ public class DependenciesBean implements BeanFactoryAware {
 	}
 
 	public TestBean getSpouse() {
-		return spouse;
+		return this.spouse;
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class DependenciesBean implements BeanFactoryAware {
 	}
 
 	public BeanFactory getBeanFactory() {
-		return beanFactory;
+		return this.beanFactory;
 	}
 
 }

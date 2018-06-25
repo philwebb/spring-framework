@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,11 +33,11 @@ public class ImplementsNoInterfaces {
 	}
 
 	public String getName() {
-		return testBean.getName();
+		return this.testBean.getName();
 	}
 
 	public void setName(String name) {
-		testBean.setName(name);
+		this.testBean.setName(name);
 	}
 
 }

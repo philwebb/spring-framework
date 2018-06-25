@@ -232,7 +232,7 @@ public class AutowiredConfigurationTests {
 
 		@Bean
 		public TestBean testBean() {
-			return new TestBean(colour.toString());
+			return new TestBean(this.colour.toString());
 		}
 	}
 
@@ -328,13 +328,13 @@ public class AutowiredConfigurationTests {
 		@Bean
 		@Scope("prototype")
 		public TestBean testBean() {
-			return new TestBean(name);
+			return new TestBean(this.name);
 		}
 
 		@Bean
 		@Scope("prototype")
 		public TestBean testBean2() {
-			return new TestBean(name2);
+			return new TestBean(this.name2);
 		}
 	}
 
@@ -362,13 +362,13 @@ public class AutowiredConfigurationTests {
 		@Bean
 		@Scope("prototype")
 		public TestBean testBean() {
-			return new TestBean(name);
+			return new TestBean(this.name);
 		}
 
 		@Bean
 		@Scope("prototype")
 		public TestBean testBean2() {
-			return new TestBean(name2);
+			return new TestBean(this.name2);
 		}
 	}
 
@@ -399,13 +399,13 @@ public class AutowiredConfigurationTests {
 		@Bean
 		@Scope("prototype")
 		public TestBean testBean() {
-			return new TestBean(name);
+			return new TestBean(this.name);
 		}
 
 		@Bean
 		@Scope("prototype")
 		public TestBean testBean2() {
-			return new TestBean(name2);
+			return new TestBean(this.name2);
 		}
 	}
 
@@ -426,13 +426,13 @@ public class AutowiredConfigurationTests {
 		@Bean
 		@Scope("prototype")
 		public TestBean testBean() {
-			return new TestBean(name.get());
+			return new TestBean(this.name.get());
 		}
 
 		@Bean
 		@Scope("prototype")
 		public TestBean testBean2() {
-			return new TestBean(name2.get());
+			return new TestBean(this.name2.get());
 		}
 	}
 
@@ -453,13 +453,13 @@ public class AutowiredConfigurationTests {
 		@Bean
 		@Scope("prototype")
 		public TestBean testBean() {
-			return new TestBean(name.get());
+			return new TestBean(this.name.get());
 		}
 
 		@Bean
 		@Scope("prototype")
 		public TestBean testBean2() {
-			return new TestBean(name2.get());
+			return new TestBean(this.name2.get());
 		}
 	}
 
@@ -500,7 +500,7 @@ public class AutowiredConfigurationTests {
 
 		@Bean
 		public TestBean testBean() throws IOException {
-			return new TestBean(hostname, (int) resource.contentLength());
+			return new TestBean(this.hostname, (int) this.resource.contentLength());
 		}
 	}
 

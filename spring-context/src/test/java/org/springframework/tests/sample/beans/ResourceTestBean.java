@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2011 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ public class ResourceTestBean {
 
 
 	public Resource getResource() {
-		return resource;
+		return this.resource;
 	}
 
 	public void setResource(Resource resource) {
@@ -59,7 +59,7 @@ public class ResourceTestBean {
 	}
 
 	public ContextResource getContextResource() {
-		return contextResource;
+		return this.contextResource;
 	}
 
 	public void setContextResource(ContextResource contextResource) {
@@ -67,7 +67,7 @@ public class ResourceTestBean {
 	}
 
 	public InputStream getInputStream() {
-		return inputStream;
+		return this.inputStream;
 	}
 
 	public void setInputStream(InputStream inputStream) {
@@ -75,7 +75,7 @@ public class ResourceTestBean {
 	}
 
 	public Resource[] getResourceArray() {
-		return resourceArray;
+		return this.resourceArray;
 	}
 
 	public void setResourceArray(Resource[] resourceArray) {
@@ -83,7 +83,7 @@ public class ResourceTestBean {
 	}
 
 	public Map<String, Resource> getResourceMap() {
-		return resourceMap;
+		return this.resourceMap;
 	}
 
 	public void setResourceMap(Map<String, Resource> resourceMap) {
@@ -91,7 +91,7 @@ public class ResourceTestBean {
 	}
 
 	public Map<String, Resource[]> getResourceArrayMap() {
-		return resourceArrayMap;
+		return this.resourceArrayMap;
 	}
 
 	public void setResourceArrayMap(Map<String, Resource[]> resourceArrayMap) {

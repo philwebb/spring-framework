@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2007 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,14 +34,14 @@ public class GenericBridgeMethodMatchingClassProxyTests extends GenericBridgeMet
 
 	@Test
 	public void testGenericDerivedInterfaceMethodThroughClass() {
-		((DerivedStringParameterizedClass) testBean).genericDerivedInterfaceMethod("");
-		assertEquals(1, counterAspect.count);
+		((DerivedStringParameterizedClass) this.testBean).genericDerivedInterfaceMethod("");
+		assertEquals(1, this.counterAspect.count);
 	}
 
 	@Test
 	public void testGenericBaseInterfaceMethodThroughClass() {
-		((DerivedStringParameterizedClass) testBean).genericBaseInterfaceMethod("");
-		assertEquals(1, counterAspect.count);
+		((DerivedStringParameterizedClass) this.testBean).genericBaseInterfaceMethod("");
+		assertEquals(1, this.counterAspect.count);
 	}
 
 }

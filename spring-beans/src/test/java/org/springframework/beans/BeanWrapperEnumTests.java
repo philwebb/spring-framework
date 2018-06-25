@@ -193,7 +193,7 @@ public class BeanWrapperEnumTests {
 		private NonPublicEnum nonPublicEnum;
 
 		public NonPublicEnum getNonPublicEnum() {
-			return nonPublicEnum;
+			return this.nonPublicEnum;
 		}
 
 		public void setNonPublicEnum(NonPublicEnum nonPublicEnum) {

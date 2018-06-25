@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -86,17 +86,17 @@ public class StopWatchTests {
 
 	@Test
 	public void validUsageNotKeepingTaskList() throws Exception {
-		sw.setKeepTaskList(false);
+		this.sw.setKeepTaskList(false);
 		long int1 = 166L;
 		long int2 = 45L;
 		String name1 = "Task 1";
 		String name2 = "Task 2";
 
-		assertFalse(sw.isRunning());
-		sw.start(name1);
+		assertFalse(this.sw.isRunning());
+		this.sw.start(name1);
 		Thread.sleep(int1);
-		assertTrue(sw.isRunning());
-		sw.stop();
+		assertTrue(this.sw.isRunning());
+		this.sw.stop();
 
 		// TODO are timings off in JUnit? Why do these assertions sometimes fail
 		// under both Ant and Eclipse?
@@ -106,46 +106,46 @@ public class StopWatchTests {
 		// int1);
 		// assertTrue("Unexpected timing " + sw.getTotalTime(), sw.getTotalTime() <= int1
 		// + fudgeFactor);
-		sw.start(name2);
+		this.sw.start(name2);
 		Thread.sleep(int2);
-		sw.stop();
+		this.sw.stop();
 		// assertTrue("Unexpected timing " + sw.getTotalTime(), sw.getTotalTime() >= int1
 		// + int2);
 		// assertTrue("Unexpected timing " + sw.getTotalTime(), sw.getTotalTime() <= int1
 		// + int2 + fudgeFactor);
 
-		assertTrue(sw.getTaskCount() == 2);
-		String pp = sw.prettyPrint();
+		assertTrue(this.sw.getTaskCount() == 2);
+		String pp = this.sw.prettyPrint();
 		assertTrue(pp.contains("kept"));
 
-		String toString = sw.toString();
+		String toString = this.sw.toString();
 		assertFalse(toString.contains(name1));
 		assertFalse(toString.contains(name2));
 
-		exception.expect(UnsupportedOperationException.class);
-		sw.getTaskInfo();
+		this.exception.expect(UnsupportedOperationException.class);
+		this.sw.getTaskInfo();
 	}
 
 	@Test
 	public void failureToStartBeforeGettingTimings() {
-		exception.expect(IllegalStateException.class);
-		sw.getLastTaskTimeMillis();
+		this.exception.expect(IllegalStateException.class);
+		this.sw.getLastTaskTimeMillis();
 	}
 
 	@Test
 	public void failureToStartBeforeStop() {
-		exception.expect(IllegalStateException.class);
-		sw.stop();
+		this.exception.expect(IllegalStateException.class);
+		this.sw.stop();
 	}
 
 	@Test
 	public void rejectsStartTwice() {
-		sw.start("");
-		sw.stop();
-		sw.start("");
-		assertTrue(sw.isRunning());
-		exception.expect(IllegalStateException.class);
-		sw.start("");
+		this.sw.start("");
+		this.sw.stop();
+		this.sw.start("");
+		assertTrue(this.sw.isRunning());
+		this.exception.expect(IllegalStateException.class);
+		this.sw.start("");
 	}
 
 }

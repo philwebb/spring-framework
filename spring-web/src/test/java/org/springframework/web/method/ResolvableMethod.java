@@ -299,9 +299,9 @@ public class ResolvableMethod {
 		@SafeVarargs
 		public final Builder<T> annotPresent(Class<? extends Annotation>... annotationTypes) {
 			String message = "annotationPresent=" + Arrays.toString(annotationTypes);
-			addFilter(message, method ->
+			addFilter(message, candidateMethod ->
 					Arrays.stream(annotationTypes).allMatch(annotType ->
-							AnnotatedElementUtils.findMergedAnnotation(method, annotType) != null));
+							AnnotatedElementUtils.findMergedAnnotation(candidateMethod, annotType) != null));
 			return this;
 		}
 
@@ -311,13 +311,13 @@ public class ResolvableMethod {
 		@SafeVarargs
 		public final Builder<T> annotNotPresent(Class<? extends Annotation>... annotationTypes) {
 			String message = "annotationNotPresent=" + Arrays.toString(annotationTypes);
-			addFilter(message, method -> {
+			addFilter(message, candidateMethod -> {
 				if (annotationTypes.length != 0) {
 					return Arrays.stream(annotationTypes).noneMatch(annotType ->
-							AnnotatedElementUtils.findMergedAnnotation(method, annotType) != null);
+							AnnotatedElementUtils.findMergedAnnotation(candidateMethod, annotType) != null);
 				}
 				else {
-					return method.getAnnotations().length == 0;
+					return candidateMethod.getAnnotations().length == 0;
 				}
 			});
 			return this;

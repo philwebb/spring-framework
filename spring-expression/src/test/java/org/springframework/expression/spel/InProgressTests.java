@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2012 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -78,7 +78,7 @@ public class InProgressTests extends AbstractExpressionTests {
 
 	@Test
 	public void testProjection06() throws Exception {
-		SpelExpression expr = (SpelExpression) parser.parseExpression("'abc'.![true]");
+		SpelExpression expr = (SpelExpression) this.parser.parseExpression("'abc'.![true]");
 		assertEquals("'abc'.![true]", expr.toStringAST());
 	}
 
@@ -141,11 +141,11 @@ public class InProgressTests extends AbstractExpressionTests {
 
 	@Test
 	public void testSelectionAST() throws Exception {
-		SpelExpression expr = (SpelExpression) parser.parseExpression("'abc'.^[true]");
+		SpelExpression expr = (SpelExpression) this.parser.parseExpression("'abc'.^[true]");
 		assertEquals("'abc'.^[true]", expr.toStringAST());
-		expr = (SpelExpression) parser.parseExpression("'abc'.?[true]");
+		expr = (SpelExpression) this.parser.parseExpression("'abc'.?[true]");
 		assertEquals("'abc'.?[true]", expr.toStringAST());
-		expr = (SpelExpression) parser.parseExpression("'abc'.$[true]");
+		expr = (SpelExpression) this.parser.parseExpression("'abc'.$[true]");
 		assertEquals("'abc'.$[true]", expr.toStringAST());
 	}
 

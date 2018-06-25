@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,22 +57,22 @@ public class DispatcherServletInitializerTests {
 
 	@Test
 	public void register() throws ServletException {
-		initializer.onStartup(servletContext);
+		this.initializer.onStartup(this.servletContext);
 
-		assertEquals(1, servlets.size());
-		assertNotNull(servlets.get(SERVLET_NAME));
+		assertEquals(1, this.servlets.size());
+		assertNotNull(this.servlets.get(SERVLET_NAME));
 
-		DispatcherServlet servlet = (DispatcherServlet) servlets.get(SERVLET_NAME);
+		DispatcherServlet servlet = (DispatcherServlet) this.servlets.get(SERVLET_NAME);
 		assertEquals(MyDispatcherServlet.class, servlet.getClass());
 		WebApplicationContext servletContext = servlet.getWebApplicationContext();
 
 		assertTrue(servletContext.containsBean("bean"));
 		assertTrue(servletContext.getBean("bean") instanceof MyBean);
 
-		assertEquals(1, registrations.size());
-		assertNotNull(registrations.get(SERVLET_NAME));
+		assertEquals(1, this.registrations.size());
+		assertNotNull(this.registrations.get(SERVLET_NAME));
 
-		MockServletRegistration registration = registrations.get(SERVLET_NAME);
+		MockServletRegistration registration = this.registrations.get(SERVLET_NAME);
 		assertEquals(Collections.singleton(SERVLET_MAPPING), registration.getMappings());
 		assertEquals(1, registration.getLoadOnStartup());
 		assertEquals(ROLE_NAME, registration.getRunAsRole());

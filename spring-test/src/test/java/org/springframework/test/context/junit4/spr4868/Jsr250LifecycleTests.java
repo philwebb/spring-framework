@@ -107,13 +107,13 @@ public class Jsr250LifecycleTests {
 	@Test
 	public void test1() {
 		logger.info("test1()");
-		assertNotNull(lifecycleBean);
+		assertNotNull(this.lifecycleBean);
 	}
 
 	@Test
 	public void test2() {
 		logger.info("test2()");
-		assertNotNull(lifecycleBean);
+		assertNotNull(this.lifecycleBean);
 	}
 
 }

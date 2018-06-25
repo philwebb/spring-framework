@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,9 +56,9 @@ public class SingleTestClassWithSingleLevelContextHierarchyTests {
 
 	@Test
 	public void loadContextHierarchy() {
-		assertNotNull("child ApplicationContext", context);
-		assertNull("parent ApplicationContext", context.getParent());
-		assertEquals("foo", foo);
+		assertNotNull("child ApplicationContext", this.context);
+		assertNull("parent ApplicationContext", this.context.getParent());
+		assertEquals("foo", this.foo);
 	}
 
 }

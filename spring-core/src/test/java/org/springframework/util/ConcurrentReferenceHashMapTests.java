@@ -509,7 +509,7 @@ public class ConcurrentReferenceHashMapTests {
 	@Test
 	public void shouldSupportNullReference() {
 		// GC could happen during restructure so we must be able to create a reference for a null entry
-		map.createReferenceManager().createReference(null, 1234, null);
+		this.map.createReferenceManager().createReference(null, 1234, null);
 	}
 
 	/**
@@ -600,17 +600,17 @@ public class ConcurrentReferenceHashMapTests {
 			return new ReferenceManager() {
 				@Override
 				public Reference<K, V> createReference(Entry<K, V> entry, int hash, @Nullable Reference<K, V> next) {
-					if (TestWeakConcurrentCache.this.disableTestHooks) {
+					if (disableTestHooks) {
 						return super.createReference(entry, hash, next);
 					}
-					return new MockReference<>(entry, hash, next, TestWeakConcurrentCache.this.queue);
+					return new MockReference<>(entry, hash, next, queue);
 				}
 				@Override
 				public Reference<K, V> pollForPurge() {
-					if (TestWeakConcurrentCache.this.disableTestHooks) {
+					if (disableTestHooks) {
 						return super.pollForPurge();
 					}
-					return TestWeakConcurrentCache.this.queue.isEmpty() ? null : TestWeakConcurrentCache.this.queue.removeFirst();
+					return queue.isEmpty() ? null : queue.removeFirst();
 				}
 			};
 		}

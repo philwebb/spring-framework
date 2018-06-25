@@ -32,8 +32,8 @@ public class DevProfileXmlConfigTests extends DefaultProfileXmlConfigTests {
 	@Test
 	@Override
 	public void employee() {
-		assertNotNull("employee bean should be loaded for the 'dev' profile", employee);
-		assertEquals("John Smith", employee.getName());
+		assertNotNull("employee bean should be loaded for the 'dev' profile", this.employee);
+		assertEquals("John Smith", this.employee.getName());
 	}
 
 }

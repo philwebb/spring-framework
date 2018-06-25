@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2017 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -842,8 +842,8 @@ public class PathPatternTests {
 	public void extractUriTemplateVarsRegexCapturingGroups() {
 		PathPatternParser ppp = new PathPatternParser();
 		PathPattern pathPattern = ppp.parse("/web/{id:foo(bar)?}_{goo}");
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage(containsString("The number of capturing groups in the pattern"));
+		this.exception.expect(IllegalArgumentException.class);
+		this.exception.expectMessage(containsString("The number of capturing groups in the pattern"));
 		matchAndExtract(pathPattern,"/web/foobar_goo");
 	}
 
@@ -893,7 +893,7 @@ public class PathPatternTests {
 	@Test
 	public void combineWithTwoFileExtensionPatterns() {
 		TestPathCombiner pathMatcher = new TestPathCombiner();
-		exception.expect(IllegalArgumentException.class);
+		this.exception.expect(IllegalArgumentException.class);
 		pathMatcher.combine("/*.html", "/*.txt");
 	}
 
@@ -1220,8 +1220,8 @@ public class PathPatternTests {
 		PathPatternParser pp = new PathPatternParser();
 
 		public String combine(String string1, String string2) {
-			PathPattern pattern1 = pp.parse(string1);
-			PathPattern pattern2 = pp.parse(string2);
+			PathPattern pattern1 = this.pp.parse(string1);
+			PathPattern pattern2 = this.pp.parse(string2);
 			return pattern1.combine(pattern2).getPatternString();
 		}
 

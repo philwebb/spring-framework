@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,136 +44,136 @@ public class SimpleNamespaceContextTests {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void getNamespaceURI_withNull() throws Exception {
-		context.getNamespaceURI(null);
+		this.context.getNamespaceURI(null);
 	}
 
 	@Test
 	public void getNamespaceURI() {
-		context.bindNamespaceUri(XMLConstants.XMLNS_ATTRIBUTE, additionalNamespaceUri);
+		this.context.bindNamespaceUri(XMLConstants.XMLNS_ATTRIBUTE, this.additionalNamespaceUri);
 		assertThat("Always returns \"http://www.w3.org/2000/xmlns/\" for \"xmlns\"",
-				context.getNamespaceURI(XMLConstants.XMLNS_ATTRIBUTE), is(XMLConstants.XMLNS_ATTRIBUTE_NS_URI));
-		context.bindNamespaceUri(XMLConstants.XML_NS_PREFIX, additionalNamespaceUri);
+				this.context.getNamespaceURI(XMLConstants.XMLNS_ATTRIBUTE), is(XMLConstants.XMLNS_ATTRIBUTE_NS_URI));
+		this.context.bindNamespaceUri(XMLConstants.XML_NS_PREFIX, this.additionalNamespaceUri);
 		assertThat("Always returns \"http://www.w3.org/XML/1998/namespace\" for \"xml\"",
-				context.getNamespaceURI(XMLConstants.XML_NS_PREFIX), is(XMLConstants.XML_NS_URI));
+				this.context.getNamespaceURI(XMLConstants.XML_NS_PREFIX), is(XMLConstants.XML_NS_URI));
 
-		assertThat("Returns \"\" for an unbound prefix", context.getNamespaceURI(unboundPrefix),
+		assertThat("Returns \"\" for an unbound prefix", this.context.getNamespaceURI(this.unboundPrefix),
 				is(XMLConstants.NULL_NS_URI));
-		context.bindNamespaceUri(prefix, namespaceUri);
-		assertThat("Returns the bound namespace URI for a bound prefix", context.getNamespaceURI(prefix),
-				is(namespaceUri));
+		this.context.bindNamespaceUri(this.prefix, this.namespaceUri);
+		assertThat("Returns the bound namespace URI for a bound prefix", this.context.getNamespaceURI(this.prefix),
+				is(this.namespaceUri));
 
 		assertThat("By default returns URI \"\" for the default namespace prefix",
-				context.getNamespaceURI(XMLConstants.DEFAULT_NS_PREFIX), is(XMLConstants.NULL_NS_URI));
-		context.bindDefaultNamespaceUri(defaultNamespaceUri);
+				this.context.getNamespaceURI(XMLConstants.DEFAULT_NS_PREFIX), is(XMLConstants.NULL_NS_URI));
+		this.context.bindDefaultNamespaceUri(this.defaultNamespaceUri);
 		assertThat("Returns the set URI for the default namespace prefix",
-				context.getNamespaceURI(XMLConstants.DEFAULT_NS_PREFIX), is(defaultNamespaceUri));
+				this.context.getNamespaceURI(XMLConstants.DEFAULT_NS_PREFIX), is(this.defaultNamespaceUri));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void getPrefix_withNull() throws Exception {
-		context.getPrefix(null);
+		this.context.getPrefix(null);
 	}
 
 	@Test
 	public void getPrefix() {
 		assertThat("Always returns \"xmlns\" for \"http://www.w3.org/2000/xmlns/\"",
-				context.getPrefix(XMLConstants.XMLNS_ATTRIBUTE_NS_URI), is(XMLConstants.XMLNS_ATTRIBUTE));
+				this.context.getPrefix(XMLConstants.XMLNS_ATTRIBUTE_NS_URI), is(XMLConstants.XMLNS_ATTRIBUTE));
 		assertThat("Always returns \"xml\" for \"http://www.w3.org/XML/1998/namespace\"",
-				context.getPrefix(XMLConstants.XML_NS_URI), is(XMLConstants.XML_NS_PREFIX));
+				this.context.getPrefix(XMLConstants.XML_NS_URI), is(XMLConstants.XML_NS_PREFIX));
 
-		assertThat("Returns null for an unbound namespace URI", context.getPrefix(unboundNamespaceUri),
+		assertThat("Returns null for an unbound namespace URI", this.context.getPrefix(this.unboundNamespaceUri),
 				is(nullValue()));
-		context.bindNamespaceUri("prefix1", namespaceUri);
-		context.bindNamespaceUri("prefix2", namespaceUri);
-		assertThat("Returns a prefix for a bound namespace URI", context.getPrefix(namespaceUri),
+		this.context.bindNamespaceUri("prefix1", this.namespaceUri);
+		this.context.bindNamespaceUri("prefix2", this.namespaceUri);
+		assertThat("Returns a prefix for a bound namespace URI", this.context.getPrefix(this.namespaceUri),
 				anyOf(is("prefix1"), is("prefix2")));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void getPrefixes_withNull() throws Exception {
-		context.getPrefixes(null);
+		this.context.getPrefixes(null);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
 	public void getPrefixes_IteratorIsNotModifiable() throws Exception {
-		context.bindNamespaceUri(prefix, namespaceUri);
-		Iterator<String> iterator = context.getPrefixes(namespaceUri);
+		this.context.bindNamespaceUri(this.prefix, this.namespaceUri);
+		Iterator<String> iterator = this.context.getPrefixes(this.namespaceUri);
 		iterator.remove();
 	}
 
 	@Test
 	public void getPrefixes() {
 		assertThat("Returns only \"xmlns\" for \"http://www.w3.org/2000/xmlns/\"",
-				getItemSet(context.getPrefixes(XMLConstants.XMLNS_ATTRIBUTE_NS_URI)),
+				getItemSet(this.context.getPrefixes(XMLConstants.XMLNS_ATTRIBUTE_NS_URI)),
 				is(makeSet(XMLConstants.XMLNS_ATTRIBUTE)));
 		assertThat("Returns only \"xml\" for \"http://www.w3.org/XML/1998/namespace\"",
-				getItemSet(context.getPrefixes(XMLConstants.XML_NS_URI)), is(makeSet(XMLConstants.XML_NS_PREFIX)));
+				getItemSet(this.context.getPrefixes(XMLConstants.XML_NS_URI)), is(makeSet(XMLConstants.XML_NS_PREFIX)));
 
-		assertThat("Returns empty iterator for unbound prefix", context.getPrefixes("unbound Namespace URI").hasNext(),
+		assertThat("Returns empty iterator for unbound prefix", this.context.getPrefixes("unbound Namespace URI").hasNext(),
 				is(false));
-		context.bindNamespaceUri("prefix1", namespaceUri);
-		context.bindNamespaceUri("prefix2", namespaceUri);
+		this.context.bindNamespaceUri("prefix1", this.namespaceUri);
+		this.context.bindNamespaceUri("prefix2", this.namespaceUri);
 		assertThat("Returns all prefixes (and only those) bound to the namespace URI",
-				getItemSet(context.getPrefixes(namespaceUri)), is(makeSet("prefix1", "prefix2")));
+				getItemSet(this.context.getPrefixes(this.namespaceUri)), is(makeSet("prefix1", "prefix2")));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void bindNamespaceUri_withNullNamespaceUri() {
-		context.bindNamespaceUri("prefix", null);
+		this.context.bindNamespaceUri("prefix", null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void bindNamespaceUri_withNullPrefix() {
-		context.bindNamespaceUri(null, namespaceUri);
+		this.context.bindNamespaceUri(null, this.namespaceUri);
 	}
 
 	@Test
 	public void bindNamespaceUri() {
-		context.bindNamespaceUri(prefix, namespaceUri);
-		assertThat("The Namespace URI was bound to the prefix", context.getNamespaceURI(prefix), is(namespaceUri));
-		assertThat("The prefix was bound to the namespace URI", getItemSet(context.getPrefixes(namespaceUri)),
-				hasItem(prefix));
+		this.context.bindNamespaceUri(this.prefix, this.namespaceUri);
+		assertThat("The Namespace URI was bound to the prefix", this.context.getNamespaceURI(this.prefix), is(this.namespaceUri));
+		assertThat("The prefix was bound to the namespace URI", getItemSet(this.context.getPrefixes(this.namespaceUri)),
+				hasItem(this.prefix));
 	}
 
 	@Test
 	public void getBoundPrefixes() {
-		context.bindNamespaceUri("prefix1", namespaceUri);
-		context.bindNamespaceUri("prefix2", namespaceUri);
-		context.bindNamespaceUri("prefix3", additionalNamespaceUri);
-		assertThat("Returns all bound prefixes", getItemSet(context.getBoundPrefixes()),
+		this.context.bindNamespaceUri("prefix1", this.namespaceUri);
+		this.context.bindNamespaceUri("prefix2", this.namespaceUri);
+		this.context.bindNamespaceUri("prefix3", this.additionalNamespaceUri);
+		assertThat("Returns all bound prefixes", getItemSet(this.context.getBoundPrefixes()),
 				is(makeSet("prefix1", "prefix2", "prefix3")));
 	}
 
 	@Test
 	public void clear() {
-		context.bindNamespaceUri("prefix1", namespaceUri);
-		context.bindNamespaceUri("prefix2", namespaceUri);
-		context.bindNamespaceUri("prefix3", additionalNamespaceUri);
-		context.clear();
-		assertThat("All bound prefixes were removed", context.getBoundPrefixes().hasNext(), is(false));
-		assertThat("All bound namespace URIs were removed", context.getPrefixes(namespaceUri).hasNext(), is(false));
+		this.context.bindNamespaceUri("prefix1", this.namespaceUri);
+		this.context.bindNamespaceUri("prefix2", this.namespaceUri);
+		this.context.bindNamespaceUri("prefix3", this.additionalNamespaceUri);
+		this.context.clear();
+		assertThat("All bound prefixes were removed", this.context.getBoundPrefixes().hasNext(), is(false));
+		assertThat("All bound namespace URIs were removed", this.context.getPrefixes(this.namespaceUri).hasNext(), is(false));
 	}
 
 	@Test
 	public void removeBinding() {
-		context.removeBinding(unboundPrefix);
+		this.context.removeBinding(this.unboundPrefix);
 
-		context.bindNamespaceUri(prefix, namespaceUri);
-		context.removeBinding(prefix);
-		assertThat("Returns default namespace URI for removed prefix", context.getNamespaceURI(prefix),
+		this.context.bindNamespaceUri(this.prefix, this.namespaceUri);
+		this.context.removeBinding(this.prefix);
+		assertThat("Returns default namespace URI for removed prefix", this.context.getNamespaceURI(this.prefix),
 				is(XMLConstants.NULL_NS_URI));
 		assertThat("#getPrefix returns null when all prefixes for a namespace URI were removed",
-				context.getPrefix(namespaceUri), is(nullValue()));
+				this.context.getPrefix(this.namespaceUri), is(nullValue()));
 		assertThat("#getPrefixes returns an empty iterator when all prefixes for a namespace URI were removed",
-				context.getPrefixes(namespaceUri).hasNext(), is(false));
+				this.context.getPrefixes(this.namespaceUri).hasNext(), is(false));
 
-		context.bindNamespaceUri("prefix1", additionalNamespaceUri);
-		context.bindNamespaceUri("prefix2", additionalNamespaceUri);
-		context.removeBinding("prefix1");
-		assertThat("Prefix was unbound", context.getNamespaceURI("prefix1"), is(XMLConstants.NULL_NS_URI));
+		this.context.bindNamespaceUri("prefix1", this.additionalNamespaceUri);
+		this.context.bindNamespaceUri("prefix2", this.additionalNamespaceUri);
+		this.context.removeBinding("prefix1");
+		assertThat("Prefix was unbound", this.context.getNamespaceURI("prefix1"), is(XMLConstants.NULL_NS_URI));
 		assertThat("#getPrefix returns a bound prefix after removal of another prefix for the same namespace URI",
-				context.getPrefix(additionalNamespaceUri), is("prefix2"));
-		assertThat("Prefix was removed from namespace URI", getItemSet(context.getPrefixes(additionalNamespaceUri)),
+				this.context.getPrefix(this.additionalNamespaceUri), is("prefix2"));
+		assertThat("Prefix was removed from namespace URI", getItemSet(this.context.getPrefixes(this.additionalNamespaceUri)),
 				is(makeSet("prefix2")));
 	}
 

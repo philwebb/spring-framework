@@ -77,12 +77,12 @@ public class XStreamMarshallerTests {
 
 	@Before
 	public void createMarshaller() {
-		marshaller = new XStreamMarshaller();
+		this.marshaller = new XStreamMarshaller();
 		Map<String, String> aliases = new HashMap<>();
 		aliases.put("flight", Flight.class.getName());
-		marshaller.setAliases(aliases);
-		flight = new Flight();
-		flight.setFlightNumber(42L);
+		this.marshaller.setAliases(aliases);
+		this.flight = new Flight();
+		this.flight.setFlightNumber(42L);
 	}
 
 
@@ -92,7 +92,7 @@ public class XStreamMarshallerTests {
 		DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
 		Document document = builder.newDocument();
 		DOMResult domResult = new DOMResult(document);
-		marshaller.marshal(flight, domResult);
+		this.marshaller.marshal(this.flight, domResult);
 		Document expected = builder.newDocument();
 		Element flightElement = expected.createElement("flight");
 		expected.appendChild(flightElement);
@@ -116,7 +116,7 @@ public class XStreamMarshallerTests {
 
 		// marshall into the existent document
 		DOMResult domResult = new DOMResult(flightsElement);
-		marshaller.marshal(flight, domResult);
+		this.marshaller.marshal(this.flight, domResult);
 
 		Document expected = builder.newDocument();
 		Element eRootElement = expected.createElement("root");
@@ -136,7 +136,7 @@ public class XStreamMarshallerTests {
 	public void marshalStreamResultWriter() throws Exception {
 		StringWriter writer = new StringWriter();
 		StreamResult result = new StreamResult(writer);
-		marshaller.marshal(flight, result);
+		this.marshaller.marshal(this.flight, result);
 		assertThat("Marshaller writes invalid StreamResult", writer.toString(), isSimilarTo(EXPECTED_STRING));
 	}
 
@@ -144,7 +144,7 @@ public class XStreamMarshallerTests {
 	public void marshalStreamResultOutputStream() throws Exception {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		StreamResult result = new StreamResult(os);
-		marshaller.marshal(flight, result);
+		this.marshaller.marshal(this.flight, result);
 		String s = new String(os.toByteArray(), "UTF-8");
 		assertThat("Marshaller writes invalid StreamResult", s, isSimilarTo(EXPECTED_STRING));
 	}
@@ -153,7 +153,7 @@ public class XStreamMarshallerTests {
 	public void marshalSaxResult() throws Exception {
 		ContentHandler contentHandler = mock(ContentHandler.class);
 		SAXResult result = new SAXResult(contentHandler);
-		marshaller.marshal(flight, result);
+		this.marshaller.marshal(this.flight, result);
 		InOrder ordered = inOrder(contentHandler);
 		ordered.verify(contentHandler).startDocument();
 		ordered.verify(contentHandler).startElement(eq(""), eq("flight"), eq("flight"), isA(Attributes.class));
@@ -170,7 +170,7 @@ public class XStreamMarshallerTests {
 		StringWriter writer = new StringWriter();
 		XMLStreamWriter streamWriter = outputFactory.createXMLStreamWriter(writer);
 		Result result = StaxUtils.createStaxResult(streamWriter);
-		marshaller.marshal(flight, result);
+		this.marshaller.marshal(this.flight, result);
 		assertThat("Marshaller writes invalid StreamResult", writer.toString(), isSimilarTo(EXPECTED_STRING));
 	}
 
@@ -180,54 +180,54 @@ public class XStreamMarshallerTests {
 		StringWriter writer = new StringWriter();
 		XMLEventWriter eventWriter = outputFactory.createXMLEventWriter(writer);
 		Result result = StaxUtils.createStaxResult(eventWriter);
-		marshaller.marshal(flight, result);
+		this.marshaller.marshal(this.flight, result);
 		assertThat("Marshaller writes invalid StreamResult", writer.toString(), isSimilarTo(EXPECTED_STRING));
 	}
 
 	@Test
 	public void converters() throws Exception {
-		marshaller.setConverters(new EncodedByteArrayConverter());
+		this.marshaller.setConverters(new EncodedByteArrayConverter());
 		byte[] buf = new byte[]{0x1, 0x2};
 		Writer writer = new StringWriter();
-		marshaller.marshal(buf, new StreamResult(writer));
+		this.marshaller.marshal(buf, new StreamResult(writer));
 		assertThat(writer.toString(), isSimilarTo("<byte-array>AQI=</byte-array>"));
 		Reader reader = new StringReader(writer.toString());
-		byte[] bufResult = (byte[]) marshaller.unmarshal(new StreamSource(reader));
+		byte[] bufResult = (byte[]) this.marshaller.unmarshal(new StreamSource(reader));
 		assertTrue("Invalid result", Arrays.equals(buf, bufResult));
 	}
 
 	@Test
 	public void useAttributesFor() throws Exception {
-		marshaller.setUseAttributeForTypes(Long.TYPE);
+		this.marshaller.setUseAttributeForTypes(Long.TYPE);
 		Writer writer = new StringWriter();
-		marshaller.marshal(flight, new StreamResult(writer));
+		this.marshaller.marshal(this.flight, new StreamResult(writer));
 		String expected = "<flight flightNumber=\"42\" />";
 		assertThat("Marshaller does not use attributes", writer.toString(), isSimilarTo(expected));
 	}
 
 	@Test
 	public void useAttributesForStringClassMap() throws Exception {
-		marshaller.setUseAttributeFor(Collections.singletonMap("flightNumber", Long.TYPE));
+		this.marshaller.setUseAttributeFor(Collections.singletonMap("flightNumber", Long.TYPE));
 		Writer writer = new StringWriter();
-		marshaller.marshal(flight, new StreamResult(writer));
+		this.marshaller.marshal(this.flight, new StreamResult(writer));
 		String expected = "<flight flightNumber=\"42\" />";
 		assertThat("Marshaller does not use attributes", writer.toString(), isSimilarTo(expected));
 	}
 
 	@Test
 	public void useAttributesForClassStringMap() throws Exception {
-		marshaller.setUseAttributeFor(Collections.singletonMap(Flight.class, "flightNumber"));
+		this.marshaller.setUseAttributeFor(Collections.singletonMap(Flight.class, "flightNumber"));
 		Writer writer = new StringWriter();
-		marshaller.marshal(flight, new StreamResult(writer));
+		this.marshaller.marshal(this.flight, new StreamResult(writer));
 		String expected = "<flight flightNumber=\"42\" />";
 		assertThat("Marshaller does not use attributes", writer.toString(), isSimilarTo(expected));
 	}
 
 	@Test
 	public void useAttributesForClassStringListMap() throws Exception {
-		marshaller.setUseAttributeFor(Collections.singletonMap(Flight.class, Collections.singletonList("flightNumber")));
+		this.marshaller.setUseAttributeFor(Collections.singletonMap(Flight.class, Collections.singletonList("flightNumber")));
 		Writer writer = new StringWriter();
-		marshaller.marshal(flight, new StreamResult(writer));
+		this.marshaller.marshal(this.flight, new StreamResult(writer));
 		String expected = "<flight flightNumber=\"42\" />";
 		assertThat("Marshaller does not use attributes", writer.toString(), isSimilarTo(expected));
 	}
@@ -239,10 +239,10 @@ public class XStreamMarshallerTests {
 		aliases.put("flight", Flight.class);
 		FlightSubclass flight = new FlightSubclass();
 		flight.setFlightNumber(42);
-		marshaller.setAliasesByType(aliases);
+		this.marshaller.setAliasesByType(aliases);
 
 		Writer writer = new StringWriter();
-		marshaller.marshal(flight, new StreamResult(writer));
+		this.marshaller.marshal(flight, new StreamResult(writer));
 		assertThat("Marshaller does not use attributes", writer.toString(), isSimilarTo(EXPECTED_STRING));
 	}
 
@@ -253,18 +253,18 @@ public class XStreamMarshallerTests {
 		aliases.put("flight", Flight.class.getName());
 		FlightSubclass flight = new FlightSubclass();
 		flight.setFlightNumber(42);
-		marshaller.setAliasesByType(aliases);
+		this.marshaller.setAliasesByType(aliases);
 
 		Writer writer = new StringWriter();
-		marshaller.marshal(flight, new StreamResult(writer));
+		this.marshaller.marshal(flight, new StreamResult(writer));
 		assertThat("Marshaller does not use attributes", writer.toString(), isSimilarTo(EXPECTED_STRING));
 	}
 
 	@Test
 	public void fieldAliases() throws Exception {
-		marshaller.setFieldAliases(Collections.singletonMap("org.springframework.oxm.xstream.Flight.flightNumber", "flightNo"));
+		this.marshaller.setFieldAliases(Collections.singletonMap("org.springframework.oxm.xstream.Flight.flightNumber", "flightNo"));
 		Writer writer = new StringWriter();
-		marshaller.marshal(flight, new StreamResult(writer));
+		this.marshaller.marshal(this.flight, new StreamResult(writer));
 		String expected = "<flight><flightNo>42</flightNo></flight>";
 		assertThat("Marshaller does not use aliases", writer.toString(), isSimilarTo(expected));
 	}
@@ -273,9 +273,9 @@ public class XStreamMarshallerTests {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void omitFields() throws Exception {
 		Map omittedFieldsMap = Collections.singletonMap(Flight.class, "flightNumber");
-		marshaller.setOmittedFields(omittedFieldsMap);
+		this.marshaller.setOmittedFields(omittedFieldsMap);
 		Writer writer = new StringWriter();
-		marshaller.marshal(flight, new StreamResult(writer));
+		this.marshaller.marshal(this.flight, new StreamResult(writer));
 		assertXpathNotExists("/flight/flightNumber", writer.toString());
 	}
 
@@ -283,19 +283,19 @@ public class XStreamMarshallerTests {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void implicitCollections() throws Exception {
 		Flights flights = new Flights();
-		flights.getFlights().add(flight);
+		flights.getFlights().add(this.flight);
 		flights.getStrings().add("42");
 
 		Map<String, Class<?>> aliases = new HashMap<>();
 		aliases.put("flight", Flight.class);
 		aliases.put("flights", Flights.class);
-		marshaller.setAliases(aliases);
+		this.marshaller.setAliases(aliases);
 
 		Map implicitCollections = Collections.singletonMap(Flights.class, "flights,strings");
-		marshaller.setImplicitCollections(implicitCollections);
+		this.marshaller.setImplicitCollections(implicitCollections);
 
 		Writer writer = new StringWriter();
-		marshaller.marshal(flights, new StreamResult(writer));
+		this.marshaller.marshal(flights, new StreamResult(writer));
 		String result = writer.toString();
 		assertXpathNotExists("/flights/flights", result);
 		assertXpathExists("/flights/flight", result);
@@ -305,11 +305,11 @@ public class XStreamMarshallerTests {
 
 	@Test
 	public void jettisonDriver() throws Exception {
-		marshaller.setStreamDriver(new JettisonMappedXmlDriver());
+		this.marshaller.setStreamDriver(new JettisonMappedXmlDriver());
 		Writer writer = new StringWriter();
-		marshaller.marshal(flight, new StreamResult(writer));
+		this.marshaller.marshal(this.flight, new StreamResult(writer));
 		assertEquals("Invalid result", "{\"flight\":{\"flightNumber\":42}}", writer.toString());
-		Object o = marshaller.unmarshal(new StreamSource(new StringReader(writer.toString())));
+		Object o = this.marshaller.unmarshal(new StreamSource(new StringReader(writer.toString())));
 		assertTrue("Unmarshalled object is not Flights", o instanceof Flight);
 		Flight unflight = (Flight) o;
 		assertNotNull("Flight is null", unflight);
@@ -318,7 +318,7 @@ public class XStreamMarshallerTests {
 
 	@Test
 	public void jsonDriver() throws Exception {
-		marshaller.setStreamDriver(new JsonHierarchicalStreamDriver() {
+		this.marshaller.setStreamDriver(new JsonHierarchicalStreamDriver() {
 			@Override
 			public HierarchicalStreamWriter createWriter(Writer writer) {
 				return new JsonWriter(writer, JsonWriter.DROP_ROOT_MODE,
@@ -328,18 +328,18 @@ public class XStreamMarshallerTests {
 		});
 
 		Writer writer = new StringWriter();
-		marshaller.marshal(flight, new StreamResult(writer));
+		this.marshaller.marshal(this.flight, new StreamResult(writer));
 		assertEquals("Invalid result", "{\"flightNumber\": 42}", writer.toString());
 	}
 
 	@Test
 	public void annotatedMarshalStreamResultWriter() throws Exception {
-		marshaller.setAnnotatedClasses(Flight.class);
+		this.marshaller.setAnnotatedClasses(Flight.class);
 		StringWriter writer = new StringWriter();
 		StreamResult result = new StreamResult(writer);
 		Flight flight = new Flight();
 		flight.setFlightNumber(42);
-		marshaller.marshal(flight, result);
+		this.marshaller.marshal(flight, result);
 		String expected = "<flight><number>42</number></flight>";
 		assertThat("Marshaller writes invalid StreamResult", writer.toString(), isSimilarTo(expected));
 	}

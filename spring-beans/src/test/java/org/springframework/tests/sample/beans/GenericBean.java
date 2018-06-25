@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -115,7 +115,7 @@ public class GenericBean<T> {
 
 
 	public Set<Integer> getIntegerSet() {
-		return integerSet;
+		return this.integerSet;
 	}
 
 	public void setIntegerSet(Set<Integer> integerSet) {
@@ -123,7 +123,7 @@ public class GenericBean<T> {
 	}
 
 	public Set<? extends Number> getNumberSet() {
-		return numberSet;
+		return this.numberSet;
 	}
 
 	public void setNumberSet(Set<? extends Number> numberSet) {
@@ -131,7 +131,7 @@ public class GenericBean<T> {
 	}
 
 	public Set<ITestBean> getTestBeanSet() {
-		return testBeanSet;
+		return this.testBeanSet;
 	}
 
 	public void setTestBeanSet(Set<ITestBean> testBeanSet) {
@@ -139,7 +139,7 @@ public class GenericBean<T> {
 	}
 
 	public List<Resource> getResourceList() {
-		return resourceList;
+		return this.resourceList;
 	}
 
 	public void setResourceList(List<Resource> resourceList) {
@@ -147,7 +147,7 @@ public class GenericBean<T> {
 	}
 
 	public List<TestBean> getTestBeanList() {
-		return testBeanList;
+		return this.testBeanList;
 	}
 
 	public void setTestBeanList(List<TestBean> testBeanList) {
@@ -155,11 +155,11 @@ public class GenericBean<T> {
 	}
 
 	public List<List<Integer>> getListOfLists() {
-		return listOfLists;
+		return this.listOfLists;
 	}
 
 	public ArrayList<String[]> getListOfArrays() {
-		return listOfArrays;
+		return this.listOfArrays;
 	}
 
 	public void setListOfArrays(ArrayList<String[]> listOfArrays) {
@@ -171,7 +171,7 @@ public class GenericBean<T> {
 	}
 
 	public List<Map<Integer, Long>> getListOfMaps() {
-		return listOfMaps;
+		return this.listOfMaps;
 	}
 
 	public void setListOfMaps(List<Map<Integer, Long>> listOfMaps) {
@@ -179,11 +179,11 @@ public class GenericBean<T> {
 	}
 
 	public Map getPlainMap() {
-		return plainMap;
+		return this.plainMap;
 	}
 
 	public Map<Short, Integer> getShortMap() {
-		return shortMap;
+		return this.shortMap;
 	}
 
 	public void setShortMap(Map<Short, Integer> shortMap) {
@@ -191,7 +191,7 @@ public class GenericBean<T> {
 	}
 
 	public HashMap<Long, ?> getLongMap() {
-		return longMap;
+		return this.longMap;
 	}
 
 	public void setLongMap(HashMap<Long, ?> longMap) {
@@ -199,7 +199,7 @@ public class GenericBean<T> {
 	}
 
 	public Map<Number, Collection<? extends Object>> getCollectionMap() {
-		return collectionMap;
+		return this.collectionMap;
 	}
 
 	public void setCollectionMap(Map<Number, Collection<? extends Object>> collectionMap) {
@@ -207,7 +207,7 @@ public class GenericBean<T> {
 	}
 
 	public Map<String, Map<Integer, Long>> getMapOfMaps() {
-		return mapOfMaps;
+		return this.mapOfMaps;
 	}
 
 	public void setMapOfMaps(Map<String, Map<Integer, Long>> mapOfMaps) {
@@ -215,7 +215,7 @@ public class GenericBean<T> {
 	}
 
 	public Map<Integer, List<Integer>> getMapOfLists() {
-		return mapOfLists;
+		return this.mapOfLists;
 	}
 
 	public void setMapOfLists(Map<Integer, List<Integer>> mapOfLists) {
@@ -223,7 +223,7 @@ public class GenericBean<T> {
 	}
 
 	public T getGenericProperty() {
-		return genericProperty;
+		return this.genericProperty;
 	}
 
 	public void setGenericProperty(T genericProperty) {
@@ -231,7 +231,7 @@ public class GenericBean<T> {
 	}
 
 	public List<T> getGenericListProperty() {
-		return genericListProperty;
+		return this.genericListProperty;
 	}
 
 	public void setGenericListProperty(List<T> genericListProperty) {
@@ -239,7 +239,7 @@ public class GenericBean<T> {
 	}
 
 	public CustomEnum getCustomEnum() {
-		return customEnum;
+		return this.customEnum;
 	}
 
 	public void setCustomEnum(CustomEnum customEnum) {
@@ -247,7 +247,7 @@ public class GenericBean<T> {
 	}
 
 	public CustomEnum[] getCustomEnumArray() {
-		return customEnumArray;
+		return this.customEnumArray;
 	}
 
 	public void setCustomEnumArray(CustomEnum[] customEnum) {
@@ -255,7 +255,7 @@ public class GenericBean<T> {
 	}
 
 	public Set<CustomEnum> getCustomEnumSet() {
-		return customEnumSet;
+		return this.customEnumSet;
 	}
 
 	public void setCustomEnumSet(Set<CustomEnum> customEnumSet) {
@@ -263,7 +263,7 @@ public class GenericBean<T> {
 	}
 
 	public Set<CustomEnum> getCustomEnumSetMismatch() {
-		return customEnumSet;
+		return this.customEnumSet;
 	}
 
 	public void setCustomEnumSetMismatch(Set<String> customEnumSet) {
@@ -274,7 +274,7 @@ public class GenericBean<T> {
 	}
 
 	public EnumSet<CustomEnum> getStandardEnumSet() {
-		return standardEnumSet;
+		return this.standardEnumSet;
 	}
 
 	public void setStandardEnumSet(EnumSet<CustomEnum> standardEnumSet) {
@@ -282,7 +282,7 @@ public class GenericBean<T> {
 	}
 
 	public EnumMap<CustomEnum, Integer> getStandardEnumMap() {
-		return standardEnumMap;
+		return this.standardEnumMap;
 	}
 
 	public void setStandardEnumMap(EnumMap<CustomEnum, Integer> standardEnumMap) {

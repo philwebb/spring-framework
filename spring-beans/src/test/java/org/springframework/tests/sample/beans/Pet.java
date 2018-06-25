@@ -29,7 +29,7 @@ public class Pet {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class Pet {
 
 		final Pet pet = (Pet) o;
 
-		if (name != null ? !name.equals(pet.name) : pet.name != null) {
+		if (this.name != null ? !this.name.equals(pet.name) : pet.name != null) {
 			return false;
 		}
 
@@ -57,7 +57,7 @@ public class Pet {
 
 	@Override
 	public int hashCode() {
-		return (name != null ? name.hashCode() : 0);
+		return (this.name != null ? this.name.hashCode() : 0);
 	}
 
 }
