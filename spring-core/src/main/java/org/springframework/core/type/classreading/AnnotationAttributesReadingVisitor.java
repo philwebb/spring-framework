@@ -44,18 +44,18 @@ import org.springframework.util.ObjectUtils;
  */
 final class AnnotationAttributesReadingVisitor extends RecursiveAnnotationAttributesVisitor {
 
-	private final MultiValueMap<String, AnnotationAttributes> attributesMap;
+	private final MultiValueMap<String, AnnotationAttributes> annotationAttributes;
 
-	private final Map<String, Set<String>> metaAnnotationMap;
+	private final Map<String, Set<String>> metaAnnotations;
 
 
 	public AnnotationAttributesReadingVisitor(String annotationType,
-			MultiValueMap<String, AnnotationAttributes> attributesMap, Map<String, Set<String>> metaAnnotationMap,
+			MultiValueMap<String, AnnotationAttributes> annotationAttributes, Map<String, Set<String>> metaAnnotations,
 			@Nullable ClassLoader classLoader) {
 
 		super(annotationType, new AnnotationAttributes(annotationType, classLoader), classLoader);
-		this.attributesMap = attributesMap;
-		this.metaAnnotationMap = metaAnnotationMap;
+		this.annotationAttributes = annotationAttributes;
+		this.metaAnnotations = metaAnnotations;
 	}
 
 
@@ -65,9 +65,9 @@ final class AnnotationAttributesReadingVisitor extends RecursiveAnnotationAttrib
 
 		Class<? extends Annotation> annotationClass = this.attributes.annotationType();
 		if (annotationClass != null) {
-			List<AnnotationAttributes> attributeList = this.attributesMap.get(this.annotationType);
+			List<AnnotationAttributes> attributeList = this.annotationAttributes.get(this.annotationType);
 			if (attributeList == null) {
-				this.attributesMap.add(this.annotationType, this.attributes);
+				this.annotationAttributes.add(this.annotationType, this.attributes);
 			}
 			else {
 				attributeList.add(0, this.attributes);
@@ -85,7 +85,7 @@ final class AnnotationAttributesReadingVisitor extends RecursiveAnnotationAttrib
 							for (Annotation ann : visited) {
 								metaAnnotationTypeNames.add(ann.annotationType().getName());
 							}
-							this.metaAnnotationMap.put(annotationClass.getName(), metaAnnotationTypeNames);
+							this.metaAnnotations.put(annotationClass.getName(), metaAnnotationTypeNames);
 						}
 					}
 				}
@@ -107,7 +107,7 @@ final class AnnotationAttributesReadingVisitor extends RecursiveAnnotationAttrib
 				// IllegalAccessExceptions otherwise, and we don't want to mess with
 				// accessibility in a SecurityManager environment.
 				if (Modifier.isPublic(annotationType.getModifiers())) {
-					this.attributesMap.add(annotationName,
+					this.annotationAttributes.add(annotationName,
 							AnnotationUtils.getAnnotationAttributes(annotation, false, true));
 				}
 				for (Annotation metaMetaAnnotation : annotationType.getAnnotations()) {
