@@ -42,34 +42,28 @@ final class SimpleMetadataReader implements MetadataReader {
 
 	private final Resource resource;
 
-	private final ClassMetadata classMetadata;
-
 	private final AnnotationMetadata annotationMetadata;
 
 
 	SimpleMetadataReader(Resource resource, @Nullable ClassLoader classLoader) throws IOException {
-		InputStream is = new BufferedInputStream(resource.getInputStream());
-		ClassReader classReader;
-		try {
-			classReader = new ClassReader(is);
-		}
-		catch (IllegalArgumentException ex) {
-			throw new NestedIOException("ASM ClassReader failed to parse class file - " +
-					"probably due to a new Java class file version that isn't supported yet: " + resource, ex);
-		}
-		finally {
-			is.close();
-		}
-
-		AnnotationMetadataReadingVisitor visitor = new AnnotationMetadataReadingVisitor(classLoader);
-		classReader.accept(visitor, ClassReader.SKIP_DEBUG);
-
-		this.annotationMetadata = visitor;
-		// (since AnnotationMetadataReadingVisitor extends ClassMetadataReadingVisitor)
-		this.classMetadata = visitor;
+		SimpleAnnotationMetadataReadingVistor visitor = new SimpleAnnotationMetadataReadingVistor(classLoader);
+		getClassReader(resource).accept(visitor, ClassReader.SKIP_DEBUG);
+		this.annotationMetadata = visitor.getMetadata();
 		this.resource = resource;
 	}
 
+	private ClassReader getClassReader(Resource resource)
+			throws IOException, NestedIOException {
+		try (InputStream is = new BufferedInputStream(resource.getInputStream())) {
+			try {
+				return new ClassReader(is);
+			}
+			catch (IllegalArgumentException ex) {
+				throw new NestedIOException("ASM ClassReader failed to parse class file - " +
+						"probably due to a new Java class file version that isn't supported yet: " + resource, ex);
+			}
+		}
+	}
 
 	@Override
 	public Resource getResource() {
@@ -78,12 +72,11 @@ final class SimpleMetadataReader implements MetadataReader {
 
 	@Override
 	public ClassMetadata getClassMetadata() {
-		return this.classMetadata;
+		return this.annotationMetadata;
 	}
 
 	@Override
 	public AnnotationMetadata getAnnotationMetadata() {
 		return this.annotationMetadata;
 	}
-
 }
