@@ -104,11 +104,6 @@ public class AnnotationMetadataReadingVisitor extends ClassMetadataReadingVisito
 	}
 
 	@Override
-	public boolean hasAnnotation(String annotationName) {
-		return this.annotationSet.contains(annotationName);
-	}
-
-	@Override
 	public boolean hasMetaAnnotation(String metaAnnotationType) {
 		Collection<Set<String>> allMetaTypes = this.metaAnnotationMap.values();
 		for (Set<String> metaTypes : allMetaTypes) {
@@ -127,12 +122,6 @@ public class AnnotationMetadataReadingVisitor extends ClassMetadataReadingVisito
 
 	@Override
 	@Nullable
-	public AnnotationAttributes getAnnotationAttributes(String annotationName) {
-		return getAnnotationAttributes(annotationName, false);
-	}
-
-	@Override
-	@Nullable
 	public AnnotationAttributes getAnnotationAttributes(String annotationName, boolean classValuesAsString) {
 		AnnotationAttributes raw = AnnotationReadingVisitorUtils.getMergedAnnotationAttributes(
 				this.attributesMap, this.metaAnnotationMap, annotationName);
@@ -141,12 +130,6 @@ public class AnnotationMetadataReadingVisitor extends ClassMetadataReadingVisito
 		}
 		return AnnotationReadingVisitorUtils.convertClassValues(
 				"class '" + getClassName() + "'", this.classLoader, raw, classValuesAsString);
-	}
-
-	@Override
-	@Nullable
-	public MultiValueMap<String, Object> getAllAnnotationAttributes(String annotationName) {
-		return getAllAnnotationAttributes(annotationName, false);
 	}
 
 	@Override
