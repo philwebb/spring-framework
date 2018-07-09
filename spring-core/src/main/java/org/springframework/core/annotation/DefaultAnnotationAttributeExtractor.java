@@ -33,7 +33,9 @@ import org.springframework.util.ReflectionUtils;
  * @see AbstractAliasAwareAnnotationAttributeExtractor
  * @see MapAnnotationAttributeExtractor
  * @see AnnotationUtils#synthesizeAnnotation
+ * @deprecated since 5.2 in favor of {@link MergedAnnotations}
  */
+@Deprecated
 class DefaultAnnotationAttributeExtractor extends AbstractAliasAwareAnnotationAttributeExtractor<Annotation> {
 
 	/**

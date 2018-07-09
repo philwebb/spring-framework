@@ -30,7 +30,9 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.AutowireCandidateQualifier;
 import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.core.annotation.XAnnotation;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.annotation.XAnnotations;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
@@ -152,6 +154,11 @@ public abstract class BeanFactoryAnnotationUtils {
 					if (bd instanceof RootBeanDefinition) {
 						Method factoryMethod = ((RootBeanDefinition) bd).getResolvedFactoryMethod();
 						if (factoryMethod != null) {
+							XAnnotation<Qualifier> annotation = XAnnotations.from(factoryMethod).get(Qualifier.class);
+							// FIXME PW
+//							if (annotation.isPresent()) {
+//								return qualifier.test(annotation.getValue(String.class));
+//							}
 							Qualifier targetAnnotation = AnnotationUtils.getAnnotation(factoryMethod, Qualifier.class);
 							if (targetAnnotation != null) {
 								return qualifier.test(targetAnnotation.value());
@@ -162,6 +169,11 @@ public abstract class BeanFactoryAnnotationUtils {
 				// Corresponding qualifier on bean implementation class? (for custom user types)
 				Class<?> beanType = beanFactory.getType(beanName);
 				if (beanType != null) {
+					//FIXME PW
+//					Annotation<Qualifier> annotation = Annotations.from(beanType).get(Qualifier.class);
+//					if(annotation.isPresent()) {
+//						return qualifier.test(annotation.getValue(String.class));
+//					}
 					Qualifier targetAnnotation = AnnotationUtils.getAnnotation(beanType, Qualifier.class);
 					if (targetAnnotation != null) {
 						return qualifier.test(targetAnnotation.value());

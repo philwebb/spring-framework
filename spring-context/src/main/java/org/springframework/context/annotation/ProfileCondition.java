@@ -16,6 +16,11 @@
 
 package org.springframework.context.annotation;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.core.annotation.XAnnotation;
+import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 import org.springframework.util.MultiValueMap;
@@ -33,6 +38,12 @@ class ProfileCondition implements Condition {
 
 	@Override
 	public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
+		
+//		Environment environment = context.getEnvironment();
+//		return metadata.getAnnotations().getAll(Profile.class).stream()
+//				.map(annotation -> Profiles.of(annotation.getValue(String[].class)))
+//				.anyMatch(environment::acceptsProfiles);
+		
 		MultiValueMap<String, Object> attrs = metadata.getAllAnnotationAttributes(Profile.class.getName());
 		if (attrs != null) {
 			for (Object value : attrs.get("value")) {

@@ -171,5 +171,4 @@ public final class SimpleAnnotationMetadata extends SimpleAnnotatedTypeMetadata 
 
 		INTERFACE, ANNOTATION, ABSTRACT, FINAL, INDEPENDENT_INNER_CLASS
 	}
-
 }

@@ -19,6 +19,8 @@ package org.springframework.context.annotation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -78,6 +80,7 @@ class ConditionEvaluator {
 	 * @return if the item should be skipped
 	 */
 	public boolean shouldSkip(@Nullable AnnotatedTypeMetadata metadata, @Nullable ConfigurationPhase phase) {
+		metadata.getAnnotations().get(Conditional.class).isPresent();
 		if (metadata == null || !metadata.isAnnotated(Conditional.class.getName())) {
 			return false;
 		}
@@ -115,6 +118,10 @@ class ConditionEvaluator {
 
 	@SuppressWarnings("unchecked")
 	private List<String[]> getConditionClasses(AnnotatedTypeMetadata metadata) {
+		metadata.getAnnotations().getAll(Conditional.class).stream().map(
+				annotation -> annotation.getValue(String[].class)).filter(
+						Objects::nonNull).collect(Collectors.toList());
+
 		MultiValueMap<String, Object> attributes = metadata.getAllAnnotationAttributes(Conditional.class.getName(), true);
 		Object values = (attributes != null ? attributes.get("value") : null);
 		return (List<String[]>) (values != null ? values : Collections.emptyList());

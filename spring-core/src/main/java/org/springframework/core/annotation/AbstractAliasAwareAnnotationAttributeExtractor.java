@@ -36,7 +36,9 @@ import org.springframework.util.ObjectUtils;
  * @see Annotation
  * @see AliasFor
  * @see AnnotationUtils#synthesizeAnnotation(Annotation, Object)
+ * @deprecated since 5.2 in favor of {@link MergedAnnotations}
  */
+@Deprecated
 abstract class AbstractAliasAwareAnnotationAttributeExtractor<S> implements AnnotationAttributeExtractor<S> {
 
 	private final Class<? extends Annotation> annotationType;

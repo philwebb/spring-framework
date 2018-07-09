@@ -38,6 +38,7 @@ import org.springframework.core.Conventions;
 import org.springframework.core.Ordered;
 import org.springframework.core.PriorityOrdered;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.annotation.XAnnotations;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
@@ -197,6 +198,10 @@ public class RequiredAnnotationBeanPostProcessor extends InstantiationAwareBeanP
 	 */
 	protected boolean isRequiredProperty(PropertyDescriptor propertyDescriptor) {
 		Method setter = propertyDescriptor.getWriteMethod();
+		if (setter == null) {
+			return false;
+		}
+		// FIXME PW return Annotations.from(setter).get(getRequiredAnnotationType()).isPresent();
 		return (setter != null && AnnotationUtils.getAnnotation(setter, getRequiredAnnotationType()) != null);
 	}
 

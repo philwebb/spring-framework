@@ -47,7 +47,9 @@ public interface AnnotatedTypeMetadata {
 	 * type to look for
 	 * @return whether a matching annotation is defined
 	 */
+	@Deprecated
 	boolean isAnnotated(String annotationName);
+	// annotations.get(annotationName).isPresent();
 
 	/**
 	 * Retrieve the attributes of the annotation of the given type, if any (i.e. if
@@ -60,9 +62,11 @@ public interface AnnotatedTypeMetadata {
 	 * {@code null} if no matching annotation is defined.
 	 */
 	@Nullable
+	@Deprecated
 	default Map<String, Object> getAnnotationAttributes(String annotationName) {
 		return getAnnotationAttributes(annotationName, false);
 	}
+	// annotations.get(annotationName).asMap();
 
 	/**
 	 * Retrieve the attributes of the annotation of the given type, if any (i.e. if
@@ -78,7 +82,11 @@ public interface AnnotatedTypeMetadata {
 	 * {@code null} if no matching annotation is defined.
 	 */
 	@Nullable
+	@Deprecated
 	Map<String, Object> getAnnotationAttributes(String annotationName, boolean classValuesAsString);
+
+	// annotations.get(annotationName, WITH_IMPLICIT_OVERRIDES).asMap(classValuesAsStrings)
+
 
 	/**
 	 * Retrieve all attributes of all annotations of the given type, if any (i.e. if
@@ -92,6 +100,7 @@ public interface AnnotatedTypeMetadata {
 	 * @see #getAllAnnotationAttributes(String, boolean)
 	 */
 	@Nullable
+	@Deprecated
 	default MultiValueMap<String, Object> getAllAnnotationAttributes(String annotationName) {
 		return getAllAnnotationAttributes(annotationName, false);
 	}
@@ -109,6 +118,9 @@ public interface AnnotatedTypeMetadata {
 	 * @see #getAllAnnotationAttributes(String)
 	 */
 	@Nullable
+	@Deprecated
 	MultiValueMap<String, Object> getAllAnnotationAttributes(String annotationName, boolean classValuesAsString);
+
+	// annotations.getAllOfType(annotationName).collect(someHowConvertIntoMultiValueMap, classValuesAsString)
 
 }

@@ -40,6 +40,8 @@ public interface AnnotationMetadata extends ClassMetadata, AnnotatedTypeMetadata
 	 */
 	Set<String> getAnnotationTypes();
 
+	// annotations.getAll().filter(depth=0).map(toName);
+
 	/**
 	 * Get the fully qualified class names of all meta-annotation types that
 	 * are <em>present</em> on the given annotation type on the underlying class.
@@ -48,6 +50,8 @@ public interface AnnotationMetadata extends ClassMetadata, AnnotatedTypeMetadata
 	 * @return the meta-annotation type names, or an empty set if none found
 	 */
 	Set<String> getMetaAnnotationTypes(String annotationName);
+	// 		getAnnotations().getAllFrom(annotationName).map(...);
+
 
 	/**
 	 * Determine whether an annotation of the given type is <em>present</em> on
@@ -57,6 +61,7 @@ public interface AnnotationMetadata extends ClassMetadata, AnnotatedTypeMetadata
 	 * @return {@code true} if a matching annotation is present
 	 */
 	default boolean hasAnnotation(String annotationName) {
+		// annotations.getAll.anyMatch(depth=0)
 		return getAnnotationTypes().contains(annotationName);
 	}
 
@@ -68,6 +73,7 @@ public interface AnnotationMetadata extends ClassMetadata, AnnotatedTypeMetadata
 	 * @return {@code true} if a matching meta-annotation is present
 	 */
 	boolean hasMetaAnnotation(String metaAnnotationName);
+	// annotations.get(metaAnnotationName).isPresent();
 
 	/**
 	 * Determine whether the underlying class has any methods that are
@@ -76,6 +82,7 @@ public interface AnnotationMetadata extends ClassMetadata, AnnotatedTypeMetadata
 	 * type to look for
 	 */
 	boolean hasAnnotatedMethods(String annotationName);
+	// methods.stream().anyMatch(method.getannotations.get(annotationName).isPresent());
 
 	/**
 	 * Retrieve the method metadata for all methods that are annotated
@@ -89,5 +96,6 @@ public interface AnnotationMetadata extends ClassMetadata, AnnotatedTypeMetadata
 	 * the annotation type.
 	 */
 	Set<MethodMetadata> getAnnotatedMethods(String annotationName);
+	// methods.stream.filter(method.getAnnotations.get(annotationName).isPresent).collect(ToSet());
 
 }
