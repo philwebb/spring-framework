@@ -43,6 +43,7 @@ import org.springframework.util.StringUtils;
  * @author Chris Beams
  * @since 2.5
  */
+@Deprecated
 class ClassMetadataReadingVisitor extends ClassVisitor implements ClassMetadata {
 
 	private String className = "";
