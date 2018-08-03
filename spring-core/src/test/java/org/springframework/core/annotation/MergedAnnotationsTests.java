@@ -29,7 +29,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
 
 /**
  * Tests for {@link MergedAnnotations}.
@@ -136,8 +135,7 @@ public class MergedAnnotationsTests {
 		assertThat(annotations.get(Example.class).getAttribute("value",
 				String.class)).contains("b");
 		assertThat(
-				annotations.get("Missing").getAttribute("value", String.class)).contains(
-						"b");
+				annotations.get("Missing").getAttribute("value", String.class)).isEmpty();
 	}
 
 	@Test

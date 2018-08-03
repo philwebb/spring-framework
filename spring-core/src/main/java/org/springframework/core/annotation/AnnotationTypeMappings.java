@@ -117,6 +117,7 @@ class AnnotationTypeMappings {
 			MappableAnnotation annotation) {
 		String className = annotation.getAnnotationType().getClassName();
 		return !(className.startsWith("java.lang.annotation")
+				|| className.startsWith("org.springframework.lang.")
 				|| parent.isDescendant(className));
 	}
 
