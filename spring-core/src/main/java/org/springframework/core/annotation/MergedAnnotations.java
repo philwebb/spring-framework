@@ -115,7 +115,7 @@ import org.springframework.util.Assert;
  * @since 5.1
  * @see MergedAnnotation
  */
-interface MergedAnnotations extends Iterable<MergedAnnotation<?>> {
+public interface MergedAnnotations extends Iterable<MergedAnnotation<?>> {
 
 	/**
 	 * Return if the specified annotation is either directly present, or

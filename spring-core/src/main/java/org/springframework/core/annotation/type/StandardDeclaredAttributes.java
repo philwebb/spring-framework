@@ -92,9 +92,6 @@ class StandardDeclaredAttributes implements DeclaredAttributes {
 			if (value instanceof Class) {
 				return ClassReference.of((Class<?>) value);
 			}
-			if (value instanceof Enum<?>) {
-				return EnumValueReference.of((Enum<?>) value);
-			}
 			if (value instanceof Class<?>[]) {
 				Class<?>[] classes = (Class<?>[]) value;
 				ClassReference[] references = new ClassReference[classes.length];
@@ -102,6 +99,9 @@ class StandardDeclaredAttributes implements DeclaredAttributes {
 					references[i] = ClassReference.of(classes[i]);
 				}
 				return references;
+			}
+			if (value instanceof Enum<?>) {
+				return EnumValueReference.of((Enum<?>) value);
 			}
 			if (value instanceof Enum<?>[]) {
 				Enum<?>[] enums = (Enum<?>[]) value;
@@ -113,6 +113,14 @@ class StandardDeclaredAttributes implements DeclaredAttributes {
 			}
 			if (value instanceof Annotation) {
 				return new StandardDeclaredAnnotation((Annotation) value).getAttributes();
+			}
+			if (value instanceof Annotation[]) {
+				Annotation[] annotations = (Annotation[]) value;
+				DeclaredAttributes[] attributes = new DeclaredAttributes[annotations.length];
+				for (int i = 0; i < attributes.length; i++) {
+					attributes[i] = new StandardDeclaredAnnotation(annotations[i]).getAttributes();
+				}
+				return attributes;
 			}
 		}
 		return value;

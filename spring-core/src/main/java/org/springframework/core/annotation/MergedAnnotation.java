@@ -32,7 +32,7 @@ import java.util.function.Predicate;
  * @since 5.1
  * @see MergedAnnotations
  */
-interface MergedAnnotation<A extends Annotation> {
+public interface MergedAnnotation<A extends Annotation> {
 
 	/**
 	 * Return if the annotation is either directly or meta-present on the
