@@ -30,6 +30,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import org.springframework.core.annotation.type.AnnotationType;
 import org.springframework.core.annotation.type.AnnotationTypeResolver;
@@ -142,10 +143,7 @@ abstract class AbstractMergedAnnotation<A extends java.lang.annotation.Annotatio
 
 	@Override
 	public String getType() {
-		if (!isPresent()) {
-			throw new IllegalStateException(
-					"Unable to get type for non-present annotation");
-		}
+		Assert.state(isPresent(), "Unable to get type for missing annotation");
 		return this.annotationType.getClassName();
 	}
 
@@ -257,7 +255,8 @@ abstract class AbstractMergedAnnotation<A extends java.lang.annotation.Annotatio
 		return getAnnotation(attributeName);
 	}
 
-	protected <T extends Annotation> MergedAnnotation<T> getAnnotation(String attributeName) {
+	protected <T extends Annotation> MergedAnnotation<T> getAnnotation(
+			String attributeName) {
 		DeclaredAttributes nestedAttributes = getRequiredAttribute(attributeName,
 				DeclaredAttributes.class);
 		AttributeType attributeType = getAttributeType(attributeName);
@@ -312,29 +311,62 @@ abstract class AbstractMergedAnnotation<A extends java.lang.annotation.Annotatio
 
 	@Override
 	public Map<String, Object> asMap(MapValues... options) {
-		if (!isPresent()) {
-			throw new IllegalStateException(
-					"Unable to get map for non-present annotation");
-		}
-		Map<String, Object> map = new LinkedHashMap<>();
+		return asMap(null, options);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <T extends Map<String, Object>> T asMap(Supplier<T> supplier,
+			MapValues... options) {
+		Assert.state(isPresent(), "Unable to get map for missing annotation");
+		T map = (supplier != null) ? supplier.get()
+				: (T) new LinkedHashMap<String, Object>();
 		for (AttributeType attributeType : this.annotationType.getAttributeTypes()) {
 			Class<?> type = resolveClassName(attributeType.getClassName());
+			type = getTypeForMapValueOption(options, type);
 			String name = attributeType.getAttributeName();
 			Object value = getOptionalAttribute(name, type, true);
 			if (value != null) {
-				map.put(name, value);
+				map.put(name, getValueForMapValueOption(value, supplier, options));
 			}
 		}
-		return Collections.unmodifiableMap(map);
+		return (supplier != null) ? map : (T) Collections.unmodifiableMap(map);
+	}
+
+	private Class<?> getTypeForMapValueOption(MapValues[] options, Class<?> type) {
+		Class<?> componentType = type.isArray() ? type.getComponentType() : type;
+		if (MapValues.CLASS_TO_STRING.isIn(options) && componentType == Class.class) {
+			return type.isArray() ? String[].class : String.class;
+		}
+		if (MapValues.ANNOTATION_TO_MAP.isIn(options) && componentType.isAnnotation()) {
+			return type.isArray() ? MergedAnnotation[].class : MergedAnnotation.class;
+		}
+		return type;
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private <T extends Map<String, Object>> Object getValueForMapValueOption(Object value,
+			Supplier<T> supplier, MapValues... options) {
+		if (MapValues.ANNOTATION_TO_MAP.isIn(options)) {
+			if (value instanceof MergedAnnotation[]) {
+				MergedAnnotation[] mergedAnnotations = (MergedAnnotation[]) value;
+				Map[] maps = new Map[mergedAnnotations.length];
+				for (int i = 0; i < maps.length; i++) {
+					maps[i] = mergedAnnotations[i].asMap(supplier, options);
+				}
+				return maps;
+			}
+			if (value instanceof MergedAnnotation) {
+				value = ((MergedAnnotation<?>) value).asMap(supplier, options);
+			}
+		}
+		return value;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public A synthesize() {
-		if (!isPresent()) {
-			throw new IllegalStateException(
-					"Unable to get type for non-present annotation");
-		}
+		Assert.state(isPresent(), "Unable to synthesize missing annotation");
 		ClassLoader classLoader = this.resolver.getClassLoader();
 		Class<A> annotationType = (Class<A>) ClassUtils.resolveClassName(getType(),
 				classLoader);
@@ -450,19 +482,19 @@ abstract class AbstractMergedAnnotation<A extends java.lang.annotation.Annotatio
 
 	private Object adaptDeclaredAttributes(DeclaredAttributes attributeValue,
 			AttributeType attributeType, Class<?> requiredType) {
-		if (requiredType.isAnnotation()) {
-			MergedAnnotation<?> nested = createNested(this.annotationType,
+		if (requiredType.isAnnotation() || requiredType == MergedAnnotation.class) {
+			AnnotationType nestedType = this.resolver.resolve(
+					attributeType.getClassName().replace("[]", ""));
+			MergedAnnotation<?> nestedAnnotation = createNested(nestedType,
 					attributeValue);
-			Object result = nested.synthesize();
-			if (requiredType.isInstance(result)) {
-				return result;
-			}
+			return requiredType.isAnnotation() ? nestedAnnotation.synthesize()
+					: nestedAnnotation;
 		}
 		return extract(attributeValue, requiredType);
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T> T extract(Object value, Class<T> type) {
+	protected final <T> T extract(Object value, Class<T> type) {
 		Assert.notNull(type, "Type must not be null");
 		if (type == Object.class) {
 			return (T) value;

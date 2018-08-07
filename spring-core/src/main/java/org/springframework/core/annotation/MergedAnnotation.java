@@ -23,6 +23,9 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
+
+import org.springframework.lang.Nullable;
 
 /**
  * A single merged annotation returned from a {@link MergedAnnotations}
@@ -355,6 +358,17 @@ public interface MergedAnnotation<A extends Annotation> {
 	Map<String, Object> asMap(MapValues... options);
 
 	/**
+	 * Return a {@link Map} of the supplied type that contains all the
+	 * annotation attributes. The {@link MapValues} options may be used to
+	 * change the way that values are added.
+	 * @param supplier a map supplier or null to return an immutable map
+	 * @param options map value options
+	 * @return a map containing the attributes and values
+	 */
+	<T extends Map<String, Object>> T asMap(@Nullable Supplier<T> supplier,
+			MapValues... options);
+
+	/**
 	 * Return a type-safe synthesized version of this annotation that can be
 	 * used directly in code. The result is synthesized using a JDK
 	 * {@link Proxy} and as a result may incur a computational cost when first
@@ -396,7 +410,16 @@ public interface MergedAnnotation<A extends Annotation> {
 		 * Convert any nested annotation or annotation arrays to maps rather
 		 * than synthesizing the values.
 		 */
-		NESTED_ANNOTATIONS_TO_MAP
+		ANNOTATION_TO_MAP;
+
+		protected boolean isIn(MapValues... options) {
+			for (MapValues candidate : options) {
+				if (candidate == this) {
+					return true;
+				}
+			}
+			return false;
+		}
 
 	}
 

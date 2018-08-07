@@ -49,9 +49,4 @@ class StandardDeclaredAnnotation implements DeclaredAnnotation {
 		return this.attributes;
 	}
 
-	@Override
-	public String toString() {
-		return "@" + getClassName() + getAttributes();
-	}
-
 }

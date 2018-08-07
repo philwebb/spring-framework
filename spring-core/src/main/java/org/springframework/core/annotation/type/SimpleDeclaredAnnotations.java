@@ -45,14 +45,4 @@ class SimpleDeclaredAnnotations implements DeclaredAnnotations {
 		return this.declaredAnnotations.iterator();
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder result = new StringBuilder();
-		for (DeclaredAnnotation annotation : this) {
-			result.append(result.length() == 0 ? "" : "\n");
-			result.append(annotation);
-		}
-		return result.toString();
-	}
-
 }

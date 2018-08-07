@@ -16,8 +16,6 @@
 
 package org.springframework.core.annotation.type;
 
-import org.springframework.core.style.ToStringCreator;
-
 /**
  * Simple in-memory {@link AnnotationType} implementation.
  *
@@ -52,13 +50,6 @@ class SimpleAnnotationType implements AnnotationType {
 	@Override
 	public AttributeTypes getAttributeTypes() {
 		return this.attributeTypes;
-	}
-
-	@Override
-	public String toString() {
-		return new ToStringCreator(this).append("className", this.className).append(
-				"declaredAnnotations", this.declaredAnnotations).append("attributeTypes",
-						this.attributeTypes).toString();
 	}
 
 }

@@ -55,6 +55,7 @@ import static org.springframework.core.annotation.AnnotationUtils.*;
  * @author Phillip Webb
  * @author Oleg Zhurakousky
  */
+@SuppressWarnings("deprecation")
 public class AnnotationUtilsTests {
 
 	@Rule

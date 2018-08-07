@@ -54,12 +54,6 @@ class SynthesizedMergedAnnotationInvocationHandler<A extends Annotation>
 
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args) {
-		if (isAnnotationTypeMethod(method)) {
-			return this.type;
-		}
-		if (isAttributeMethod(method)) {
-			return getAttributeValue(method);
-		}
 		if (ReflectionUtils.isEqualsMethod(method)) {
 			return annotationEquals(args[0]);
 		}
@@ -68,6 +62,12 @@ class SynthesizedMergedAnnotationInvocationHandler<A extends Annotation>
 		}
 		if (ReflectionUtils.isToStringMethod(method)) {
 			return this.annotation.toString();
+		}
+		if (isAnnotationTypeMethod(method)) {
+			return this.type;
+		}
+		if (isAttributeMethod(method)) {
+			return getAttributeValue(method);
 		}
 		throw new AnnotationConfigurationException(String.format(
 				"Method [%s] is unsupported for synthesized annotation type [%s]", method,
@@ -82,7 +82,8 @@ class SynthesizedMergedAnnotationInvocationHandler<A extends Annotation>
 	private Object getAttributeValue(Method method) {
 		String name = method.getName();
 		Class<?> type = method.getReturnType();
-		return this.annotation.getAttribute(name, type).get();
+		return this.annotation.getAttribute(name, type).orElseThrow(
+				() -> new IllegalStateException("No value for attribute " + name));
 	}
 
 	/**

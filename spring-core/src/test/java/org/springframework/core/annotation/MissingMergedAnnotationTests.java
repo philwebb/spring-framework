@@ -24,8 +24,7 @@ import static org.junit.Assert.*;
 /**
  * Tests for {@link MissingMergedAnnotation}.
  *
- * @author pwebb
- * @since 5.0
+ * @author Phillip Webb
  */
 public class MissingMergedAnnotationTests {
 

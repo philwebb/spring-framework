@@ -48,8 +48,4 @@ class SimpleDeclaredAnnotation implements DeclaredAnnotation {
 		return this.attributes;
 	}
 
-	@Override
-	public String toString() {
-		return "@" + this.className + this.attributes;
-	}
 }

@@ -24,7 +24,9 @@ import java.util.Optional;
 
 import org.junit.Test;
 
+import org.springframework.core.annotation.MergedAnnotation.MapValues;
 import org.springframework.core.annotation.type.AnnotationType;
+import org.springframework.core.annotation.type.AnnotationTypeResolver;
 import org.springframework.core.annotation.type.AttributeType;
 import org.springframework.core.annotation.type.AttributeTypes;
 import org.springframework.core.annotation.type.ClassReference;
@@ -43,6 +45,9 @@ import static org.junit.Assert.fail;
  * @author Phillip Webb
  */
 public abstract class AbstractMergedAnnotationTests {
+
+	private AnnotationTypeResolver resolver = AnnotationTypeResolver.get(
+			ClassUtils.getDefaultClassLoader());
 
 	@Test
 	public void getTypeReturnsType() {
@@ -552,36 +557,20 @@ public abstract class AbstractMergedAnnotationTests {
 
 	@Test
 	public void getFromEmptyObjectArraySupportsEveryArrayType() {
-		fail();
-		// Object[] empty = new Object[] {};
-		// assertThat(DeclaredAttributeValue.get(empty,
-		// byte[].class)).isEqualTo(new byte[] {});
-		// assertThat(DeclaredAttributeValue.get(empty,
-		// boolean[].class)).isEqualTo(
-		// new boolean[] {});
-		// assertThat(DeclaredAttributeValue.get(empty,
-		// char[].class)).isEqualTo(new char[] {});
-		// assertThat(DeclaredAttributeValue.get(empty,
-		// short[].class)).isEqualTo(new short[] {});
-		// assertThat(DeclaredAttributeValue.get(empty,
-		// int[].class)).isEqualTo(new int[] {});
-		// assertThat(DeclaredAttributeValue.get(empty,
-		// long[].class)).isEqualTo(new long[] {});
-		// assertThat(DeclaredAttributeValue.get(empty,
-		// float[].class)).isEqualTo(new float[] {});
-		// assertThat(DeclaredAttributeValue.get(empty,
-		// double[].class)).isEqualTo(new double[] {});
-		// assertThat(DeclaredAttributeValue.get(empty,
-		// String[].class)).isEqualTo(new String[] {});
-		// assertThat(DeclaredAttributeValue.get(empty,
-		// ClassReference[].class)).isEqualTo(
-		// new ClassReference[] {});
-		// assertThat(DeclaredAttributeValue.get(empty,
-		// EnumValueReference[].class)).isEqualTo(
-		// new EnumValueReference[] {});
-		// assertThat(DeclaredAttributeValue.get(empty,
-		// DeclaredAttributes[].class)).isEqualTo(
-		// new DeclaredAttributes[] {});
+		AbstractMergedAnnotation<?> annotation = (AbstractMergedAnnotation<?>) createTwoAttributeAnnotation();
+		Object[] empty = {};
+		assertThat(annotation.extract(empty, byte[].class)).isEqualTo(new byte[] {});
+		assertThat(annotation.extract(empty, boolean[].class)).isEqualTo(new boolean[] {});
+		assertThat(annotation.extract(empty, char[].class)).isEqualTo(new char[] {});
+		assertThat(annotation.extract(empty, short[].class)).isEqualTo(new short[] {});
+		assertThat(annotation.extract(empty, int[].class)).isEqualTo(new int[] {});
+		assertThat(annotation.extract(empty, long[].class)).isEqualTo(new long[] {});
+		assertThat(annotation.extract(empty, float[].class)).isEqualTo(new float[] {});
+		assertThat(annotation.extract(empty, double[].class)).isEqualTo(new double[] {});
+		assertThat(annotation.extract(empty, String[].class)).isEqualTo(new String[] {});
+		assertThat(annotation.extract(empty, ClassReference[].class)).isEqualTo(new ClassReference[] {});
+		assertThat(annotation.extract(empty, EnumValueReference[].class)).isEqualTo(new EnumValueReference[] {});
+		assertThat(annotation.extract(empty, DeclaredAttributes[].class)).isEqualTo(new DeclaredAttributes[] {});
 	}
 
 	@Test
@@ -616,32 +605,93 @@ public abstract class AbstractMergedAnnotationTests {
 
 	@Test
 	public void asMapWhenClassAndMapClassToStringOptionContainsString() {
-		fail();
+		AnnotationType annotationType = this.resolver.resolve(
+				ClassExample.class.getName());
+		DeclaredAttributes attributes = DeclaredAttributes.of("value",
+				ClassReference.of(StringBuilder.class));
+		MergedAnnotation<?> annotation = create(annotationType, attributes);
+		Map<String, Object> map = annotation.asMap(MapValues.CLASS_TO_STRING);
+		assertThat(map).containsOnly(entry("value", StringBuilder.class.getName()));
 	}
 
 	@Test
 	public void asMapWhenClassArrayAndMapClassToStringOptionContainsStringArray() {
-		fail();
+		AnnotationType annotationType = this.resolver.resolve(
+				ClassesExample.class.getName());
+		DeclaredAttributes attributes = DeclaredAttributes.of("value",
+				new ClassReference[] { ClassReference.of(StringBuffer.class) });
+		MergedAnnotation<?> annotation = create(annotationType, attributes);
+		Map<String, Object> map = annotation.asMap(MapValues.CLASS_TO_STRING);
+		assertThat(map).containsOnly(
+				entry("value", new String[] { StringBuffer.class.getName() }));
 	}
 
 	@Test
 	public void asMapWhenNestedContainsSynthesized() {
-		fail();
+		AnnotationType annotationType = this.resolver.resolve(
+				NestedExample.class.getName());
+		DeclaredAttributes attributes = DeclaredAttributes.of("value",
+				DeclaredAttributes.of("value", "test"));
+		MergedAnnotation<?> annotation = create(annotationType, attributes);
+		Map<String, Object> map = annotation.asMap();
+		assertThat(map).hasSize(1).containsKey("value");
+		Example example = (Example) map.get("value");
+		assertThat(example.value()).isEqualTo("test");
 	}
 
 	@Test
 	public void asMapWhenNestedArrayContainsSynthesized() {
-		fail();
+		AnnotationType annotationType = this.resolver.resolve(
+				NestedArrayExample.class.getName());
+		DeclaredAttributes attributes = DeclaredAttributes.of("value",
+				new DeclaredAttributes[] { DeclaredAttributes.of("value", "test") });
+		MergedAnnotation<?> annotation = create(annotationType, attributes);
+		Map<String, Object> map = annotation.asMap();
+		assertThat(map).hasSize(1).containsKey("value");
+		Example[] example = (Example[]) map.get("value");
+		assertThat(example[0].value()).isEqualTo("test");
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void asMapWhenNestedAndNestedAnnotationsToMapOptionContainsNestedMap() {
-		fail();
+		AnnotationType annotationType = this.resolver.resolve(
+				NestedExample.class.getName());
+		DeclaredAttributes attributes = DeclaredAttributes.of("value",
+				DeclaredAttributes.of("value", "test"));
+		MergedAnnotation<?> annotation = create(annotationType, attributes);
+		Map<String, Object> map = annotation.asMap(MapValues.ANNOTATION_TO_MAP);
+		assertThat(map).hasSize(1).containsKey("value");
+		Map<String, Object> example = (Map<String, Object>) map.get("value");
+		assertThat(example).containsOnly(entry("value", "test"));
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void asMapWhenNestedArrayAndNestedAnnotationsToMapOptionContainsNestedMap() {
-		fail();
+		AnnotationType annotationType = this.resolver.resolve(
+				NestedArrayExample.class.getName());
+		DeclaredAttributes attributes = DeclaredAttributes.of("value",
+				new DeclaredAttributes[] { DeclaredAttributes.of("value", "test") });
+		MergedAnnotation<?> annotation = create(annotationType, attributes);
+		Map<String, Object> map = annotation.asMap(MapValues.ANNOTATION_TO_MAP);
+		assertThat(map).hasSize(1).containsKey("value");
+		Map<String, Object>[] example = (Map<String, Object>[]) map.get("value");
+		assertThat(example[0]).containsOnly(entry("value", "test"));
+	}
+
+	@Test
+	public void asSuppliedMapWhenNestedAndNestedAnnotationsToMapOptionContainsNestedMap() {
+		AnnotationType annotationType = this.resolver.resolve(
+				NestedExample.class.getName());
+		DeclaredAttributes attributes = DeclaredAttributes.of("value",
+				DeclaredAttributes.of("value", "test"));
+		MergedAnnotation<?> annotation = create(annotationType, attributes);
+		AnnotationAttributes map = annotation.asMap(AnnotationAttributes::new,
+				MapValues.ANNOTATION_TO_MAP);
+		assertThat(map).hasSize(1).containsKey("value");
+		AnnotationAttributes example = (AnnotationAttributes) map.get("value");
+		assertThat(example).containsOnly(entry("value", "test"));
 	}
 
 	private MergedAnnotation<?> createTwoAttributeAnnotation() {
@@ -686,6 +736,34 @@ public abstract class AbstractMergedAnnotationTests {
 
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface AttributesArrayExample {
+
+		Example[] value();
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface ClassExample {
+
+		Class<?> value();
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface ClassesExample {
+
+		Class<?>[] value();
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface NestedExample {
+
+		Example value();
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface NestedArrayExample {
 
 		Example[] value();
 
