@@ -16,6 +16,7 @@
 
 package org.springframework.core.annotation;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -24,9 +25,9 @@ import static org.junit.Assert.*;
 /**
  * Tests for {@link MappedAnnotations}
  *
- * @author pwebb
- * @since 5.0
+ * @author Phillip Webb
  */
+@Ignore
 public class MappedAnnotationsTests {
 
 	@Test
