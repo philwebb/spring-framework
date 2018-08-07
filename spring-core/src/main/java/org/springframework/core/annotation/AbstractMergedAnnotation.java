@@ -47,6 +47,7 @@ import org.springframework.util.ObjectUtils;
  *
  * @author Phillip Webb
  * @since 5.1
+ * @param <A> the annotation type
  */
 abstract class AbstractMergedAnnotation<A extends java.lang.annotation.Annotation>
 		implements MergedAnnotation<A> {
@@ -84,7 +85,7 @@ abstract class AbstractMergedAnnotation<A extends java.lang.annotation.Annotatio
 	private static final Map<Class<?>, Object> EMPTY_ARRAY;
 	static {
 		Map<Class<?>, Object> emptyArray = new HashMap<>();
-		SUPPORTED_TYPES.stream().filter(Class::isArray).forEach((type) -> emptyArray.put(
+		SUPPORTED_TYPES.stream().filter(Class::isArray).forEach(type -> emptyArray.put(
 				type, Array.newInstance(type.getComponentType(), 0)));
 		emptyArray.put(Object.class, new Object[0]);
 		EMPTY_ARRAY = Collections.unmodifiableMap(emptyArray);
@@ -534,7 +535,7 @@ abstract class AbstractMergedAnnotation<A extends java.lang.annotation.Annotatio
 
 	/**
 	 * Get a single underlying attribute value.
-	 * @param attributeName The attribute name
+	 * @param attributeName the attribute name
 	 * @param merged {@code true} if the merged value should be returned, or
 	 * {@code false} to return the original unmerged value.
 	 * @return the attribute value or {@code null}

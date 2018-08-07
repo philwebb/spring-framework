@@ -26,7 +26,7 @@ import org.springframework.util.LinkedMultiValueMap;
 /**
  * {@link MethodMetadata} returned from a {@link SimpleMetadataReader}.
  *
- * @author pwebb
+ * @author Phillip Webb
  * @since 5.1
  */
 public class SimpleMethodMetadata extends SimpleAnnotatedTypeMetadata
@@ -54,7 +54,7 @@ public class SimpleMethodMetadata extends SimpleAnnotatedTypeMetadata
 
 
 	Set<Flag> getFlags() {
-		return flags;
+		return this.flags;
 	}
 
 	@Override
@@ -64,17 +64,17 @@ public class SimpleMethodMetadata extends SimpleAnnotatedTypeMetadata
 
 	@Override
 	public boolean isAbstract() {
-		return flags.contains(Flag.ABSTRACT);
+		return this.flags.contains(Flag.ABSTRACT);
 	}
 
 	@Override
 	public boolean isStatic() {
-		return flags.contains(Flag.STATIC);
+		return this.flags.contains(Flag.STATIC);
 	}
 
 	@Override
 	public boolean isFinal() {
-		return flags.contains(Flag.FINAL);
+		return this.flags.contains(Flag.FINAL);
 	}
 
 	@Override
@@ -97,7 +97,10 @@ public class SimpleMethodMetadata extends SimpleAnnotatedTypeMetadata
 		return "method '" + this.methodName + "'";
 	}
 
-	public enum Flag {
+	/**
+	 * Metadata flags.
+	 */
+	enum Flag {
 
 		ABSTRACT, STATIC, FINAL, OVERRIDABLE
 

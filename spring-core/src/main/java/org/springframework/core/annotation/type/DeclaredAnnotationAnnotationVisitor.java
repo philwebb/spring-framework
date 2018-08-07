@@ -34,7 +34,7 @@ class DeclaredAnnotationAnnotationVisitor extends AnnotationVisitor {
 	DeclaredAnnotationAnnotationVisitor(String type,
 			Consumer<DeclaredAnnotation> consumer) {
 		super(SpringAsmInfo.ASM_VERSION,
-				new DeclaredAttributesAnnotationVisitor((attributes) -> consumer.accept(
+				new DeclaredAttributesAnnotationVisitor(attributes -> consumer.accept(
 						new SimpleDeclaredAnnotation(type, attributes))));
 	}
 

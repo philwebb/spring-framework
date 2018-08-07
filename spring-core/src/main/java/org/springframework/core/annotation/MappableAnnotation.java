@@ -78,7 +78,7 @@ final class MappableAnnotation {
 		Assert.notNull(resolver, "Resolver must not be null");
 		Assert.notNull(annotations, "Annotations must not be null");
 		return StreamSupport.stream(annotations.spliterator(), false).flatMap(
-				(annotation) -> MappableAnnotation.from(resolver, annotation));
+				annotation -> MappableAnnotation.from(resolver, annotation));
 	}
 
 	public static Stream<MappableAnnotation> from(AnnotationTypeResolver resolver,

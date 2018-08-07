@@ -203,7 +203,7 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<?>> {
 	 * include those as well you should use
 	 * {@link #from(AnnotatedElement, SearchStrategy)} with an appropriate
 	 * {@link SearchStrategy}.
-	 * @param source the source element
+	 * @param element the source element
 	 * @return a {@link MergedAnnotations} instance containing the element
 	 * annotations
 	 */
@@ -236,7 +236,7 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<?>> {
 	 * any number of additional {@link MergedAnnotation#isFromInherited()
 	 * inherited} annotations.
 	 * @param resolver an annotation type resolver
-	 * @param source the source of the annotations
+	 * @param annotations the source of the annotations
 	 * @return a {@link MergedAnnotations} instance containing the merged
 	 * annotations
 	 */

@@ -40,7 +40,7 @@ import org.springframework.util.StringUtils;
  * {@code @AliasFor} target)</li>
  * <li>Any implicit or explicit mirrored attributes (i.e. attributes that all
  * should return the same value</li>
- * <ul>
+ * </ul>
  * <p>
  * An {@link AnnotationTypeMapping} can be used to
  * {@link #map(DeclaredAnnotation) map} a {@link MappableAnnotation} to a

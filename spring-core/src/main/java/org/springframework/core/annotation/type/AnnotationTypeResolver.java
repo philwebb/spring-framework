@@ -45,7 +45,7 @@ public interface AnnotationTypeResolver {
 
 	/**
 	 * Get an ASM based {@link AnnotationTypeResolver} for the specified
-	 * class loader
+	 * class loader.
 	 * @param classLoader the source class loader
 	 * @return an {@link AnnotationTypeResolver}
 	 */

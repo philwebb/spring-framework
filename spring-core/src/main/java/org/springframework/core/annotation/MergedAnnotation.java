@@ -33,6 +33,7 @@ import org.springframework.lang.Nullable;
  *
  * @author Phillip Webb
  * @since 5.1
+ * @param <A> the annotation type
  * @see MergedAnnotations
  */
 public interface MergedAnnotation<A extends Annotation> {
@@ -284,7 +285,7 @@ public interface MergedAnnotation<A extends Annotation> {
 	/**
 	 * Return a required enum array attribute value from the annotation.
 	 * @param attributeName the attribute name
-	 * @param the enum type
+	 * @param type the enum type
 	 * @return the value as a enum array
 	 * @throws NoSuchElementException if there is no matching attribute
 	 */

@@ -777,10 +777,10 @@ public abstract class AnnotatedElementUtils {
 	 * @throws IllegalArgumentException if the {@code element} or {@code annotationType}
 	 * is {@code null}, or if the container type cannot be resolved
 	 * @since 4.3
+	 * @deprecated since 5.2 in favor of {@link MergedAnnotations}
 	 * @see #findMergedAnnotation(AnnotatedElement, Class)
 	 * @see #findAllMergedAnnotations(AnnotatedElement, Class)
 	 * @see #findMergedRepeatableAnnotations(AnnotatedElement, Class, Class)
-	 * @deprecated since 5.2 in favor of {@link MergedAnnotations}
 	 */
 	public static <A extends Annotation> Set<A> findMergedRepeatableAnnotations(AnnotatedElement element,
 			Class<A> annotationType) {

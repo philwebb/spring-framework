@@ -205,7 +205,7 @@ class SimpleAnnotationMetadataReadingVistor extends ClassVisitor {
 	}
 
 
-	private class MethodMetadataVisitor extends MethodVisitor {
+	private final class MethodMetadataVisitor extends MethodVisitor {
 
 		private final String methodName;
 
@@ -239,7 +239,7 @@ class SimpleAnnotationMetadataReadingVistor extends ClassVisitor {
 			return new SimpleMethodMetadata(
 					SimpleAnnotationMetadataReadingVistor.this.classLoader,
 					this.annotationAttributes, this.metaAnnotations, this.methodName, flags,
-					declaringClassName, returnTypeName);
+					declaringClassName, this.returnTypeName);
 		}
 
 		private Set<SimpleMethodMetadata.Flag> getFlags() {

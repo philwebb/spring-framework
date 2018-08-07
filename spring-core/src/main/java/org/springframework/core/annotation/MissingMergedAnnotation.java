@@ -28,9 +28,9 @@ import org.springframework.core.annotation.type.DeclaredAttributes;
  * A {@link MappableAnnotation} used as the implementation of
  * {@link MergedAnnotation#missing()}.
  *
- * @param <A> the annotation type
  * @author Phillip Webb
  * @since 5.1
+ * @param <A> the annotation type
  */
 class MissingMergedAnnotation<A extends Annotation> extends AbstractMergedAnnotation<A> {
 

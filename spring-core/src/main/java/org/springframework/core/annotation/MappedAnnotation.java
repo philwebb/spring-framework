@@ -27,9 +27,9 @@ import org.springframework.core.annotation.type.DeclaredAttributes;
 /**
  * {@link MergedAnnotation} backed by a {@link AnnotationTypeMapping}.
  *
- * @param <A>
  * @author Phillip Webb
  * @since 5.1
+ * @param <A> the annotation type
  */
 class MappedAnnotation<A extends Annotation> extends AbstractMergedAnnotation<A> {
 

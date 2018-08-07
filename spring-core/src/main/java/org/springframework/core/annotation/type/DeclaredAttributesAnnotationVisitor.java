@@ -42,7 +42,7 @@ class DeclaredAttributesAnnotationVisitor extends AttributeValuesAnnotationVisit
 	 * @see #accept(DeclaredAttributes)
 	 */
 	protected DeclaredAttributesAnnotationVisitor() {
-		this.consumer = (attribute) -> {
+		this.consumer = attribute -> {
 			throw new IllegalStateException("Accept method not overridden");
 		};
 	}

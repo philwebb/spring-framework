@@ -35,6 +35,7 @@ import org.springframework.util.ReflectionUtils.MethodCallback;
  * @author Sam Brannen
  * @author Phillip Webb
  * @since 5.1
+ * @param <A> the annotation type
  * @see Annotation
  * @see AnnotationAttributeExtractor
  * @see AnnotationUtils#synthesizeAnnotation(Annotation, AnnotatedElement)
@@ -141,7 +142,7 @@ class SynthesizedMergedAnnotationInvocationHandler<A extends Annotation>
 		private boolean isEqual(Method method) {
 			ReflectionUtils.makeAccessible(method);
 			Object thisValue = getAttributeValue(method);
-			Object otherValue = ReflectionUtils.invokeMethod(method, other);
+			Object otherValue = ReflectionUtils.invokeMethod(method, this.other);
 			return ObjectUtils.nullSafeEquals(thisValue, otherValue);
 		}
 

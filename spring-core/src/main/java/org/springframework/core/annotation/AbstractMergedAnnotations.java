@@ -67,7 +67,7 @@ abstract class AbstractMergedAnnotations implements MergedAnnotations {
 	public <A extends Annotation> Stream<MergedAnnotation<A>> stream(
 			String annotationType) {
 		return (Stream) stream().filter(
-				(annotation) -> Objects.equals(annotation.getType(), annotationType));
+				annotation -> Objects.equals(annotation.getType(), annotationType));
 	}
 
 	private String getClassName(Class<?> annotationType) {

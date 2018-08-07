@@ -167,7 +167,10 @@ public final class SimpleAnnotationMetadata extends SimpleAnnotatedTypeMetadata 
 		return "class '" + this.className + "'";
 	}
 
-	public enum Flag {
+	/**
+	 * Metadata flags.
+	 */
+	enum Flag {
 
 		INTERFACE, ANNOTATION, ABSTRACT, FINAL, INDEPENDENT_INNER_CLASS
 	}
