@@ -63,10 +63,4 @@ public class SimpleAttributeTypeTests {
 		assertThat(this.type.getDefaultValue()).isEqualTo("defaultValue");
 	}
 
-	@Test
-	public void toStringReturnsString() {
-		assertThat(this.type.toString()).isEqualTo("@Declared(value = \"test\")\n" +
-				"className attributeName() default \"defaultValue\"");
-	}
-
 }

@@ -79,11 +79,4 @@ class SimpleDeclaredAttributes implements DeclaredAttributes {
 		return value;
 	}
 
-	@Override
-	public String toString() {
-		AnnotationToStringCreator creator = new AnnotationToStringCreator();
-		this.values.forEach(creator::append);
-		return creator.toString();
-	}
-
 }

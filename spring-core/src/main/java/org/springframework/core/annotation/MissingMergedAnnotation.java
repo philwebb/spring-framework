@@ -21,6 +21,9 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import org.springframework.core.annotation.type.AnnotationType;
+import org.springframework.core.annotation.type.DeclaredAttributes;
+
 /**
  * A {@link MappableAnnotation} used as the implementation of
  * {@link MergedAnnotation#missing()}.
@@ -48,6 +51,11 @@ class MissingMergedAnnotation<A extends Annotation> extends AbstractMergedAnnota
 	}
 
 	@Override
+	public String toString() {
+		return "(missing)";
+	}
+
+	@Override
 	protected Object getAttributeValue(String attributeName, boolean merged) {
 		return null;
 	}
@@ -56,6 +64,13 @@ class MissingMergedAnnotation<A extends Annotation> extends AbstractMergedAnnota
 	protected AbstractMergedAnnotation<A> cloneWithAttributeFilter(
 			Predicate<String> predicate) {
 		return this;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	protected <T extends Annotation> MergedAnnotation<T> createNested(AnnotationType type,
+			DeclaredAttributes attributes) {
+		return (MergedAnnotation<T>) this;
 	}
 
 }

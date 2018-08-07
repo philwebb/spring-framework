@@ -14,23 +14,18 @@
  * limitations under the License.
  */
 
-package org.springframework.core.annotation;
-
-import org.junit.Test;
-
-import static org.junit.Assert.*;
-
+package org.springframework.core.annotation.type;
 
 /**
- * Tests for {@link SynthesizedMergedAnnotationInvocationHandler}.
+ * Exception throw if an annotation type cannot be resolved.
  *
  * @author Phillip Webb
+ * @since 5.1
  */
-public class SynthesizedMergedAnnotationInvocationHandlerTests {
+public class AnnotationResolveException extends RuntimeException {
 
-	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public AnnotationResolveException(Throwable cause) {
+		super("Unable to resolve annotation", cause);
 	}
 
 }

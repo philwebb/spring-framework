@@ -26,10 +26,12 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import org.springframework.core.annotation.MergedAnnotation.MapValues;
+import org.springframework.core.annotation.MergedAnnotationsTests.NestedExplicitAlaisMirror;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.*;
 
 /**
  * Tests for {@link MergedAnnotations}.
@@ -157,7 +159,7 @@ public class MergedAnnotationsTests {
 	}
 
 	@Test
-	public void getAnAttributeValueWithAnWithExplicitAlaisMirror() {
+	public void getAttributeValueWithAnWithExplicitAlaisMirror() {
 		MergedAnnotations annotations = MergedAnnotations.from(
 				WithExplicitAlaisMirror.class);
 		MergedAnnotation<?> annotation = annotations.get(ExplicitAlaisMirror.class);
@@ -166,21 +168,29 @@ public class MergedAnnotationsTests {
 	}
 
 	@Test
-	public void getANestedAttributeValueWithAnWithExplicitAlaisMirror() {
+	public void getNestedAttributeValueWithAnWithExplicitAlaisMirror() {
 		MergedAnnotations annotations = MergedAnnotations.from(
 				WithNestedExplicitAlaisMirror.class);
 		MergedAnnotation<?> annotation = annotations.get(NestedExplicitAlaisMirror.class);
-		MergedAnnotation<?> nested = annotation.getAnnotation("mirror", ExplicitAlaisMirror.class);
-		MergedAnnotation<?>[] nestedArray = annotation.getAnnotationArray("mirrors", ExplicitAlaisMirror.class);
+		MergedAnnotation<?> nested = annotation.getAnnotation("mirror",
+				ExplicitAlaisMirror.class);
+		MergedAnnotation<?>[] nestedArray = annotation.getAnnotationArray("mirrors",
+				ExplicitAlaisMirror.class);
 		assertThat(nested.getString("one")).isEqualTo("b");
 		assertThat(nested.getString("two")).isEqualTo("b");
 		assertThat(nestedArray[0].getString("one")).isEqualTo("c");
-		assertThat(nestedArray[2].getString("two")).isEqualTo("c");
+		assertThat(nestedArray[0].getString("two")).isEqualTo("c");
 	}
 
 	@Test
-	public void testName() {
-
+	public void toStringMatches() {
+		String expected = WithNestedExplicitAlaisMirror.class.getDeclaredAnnotation(NestedExplicitAlaisMirror.class).toString();
+		expected = expected.replace("two=x, one=b", "one=b, two=b");
+		expected = expected.replace("two=c, one=x", "one=c, two=c");
+		MergedAnnotations annotations = MergedAnnotations.from(
+				WithNestedExplicitAlaisMirror.class);
+		MergedAnnotation<?> annotation = annotations.get(NestedExplicitAlaisMirror.class);
+		assertThat(annotation.toString()).isEqualTo(expected);
 	}
 
 	//
@@ -289,9 +299,7 @@ public class MergedAnnotationsTests {
 	@interface ExplicitAlaisMirror {
 
 		@AliasFor("two")
-		String one()
-
-		default "x";
+		String one() default "x";
 
 		@AliasFor("one")
 		String two() default "x";

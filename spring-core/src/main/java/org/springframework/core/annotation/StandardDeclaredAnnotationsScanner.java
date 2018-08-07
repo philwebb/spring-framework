@@ -32,6 +32,9 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.springframework.core.BridgeMethodResolver;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
@@ -52,6 +55,9 @@ class StandardDeclaredAnnotationsScanner implements Iterable<DeclaredAnnotations
 
 	private static Map<AnnotatedElement, Results<?>> cache = new ConcurrentReferenceHashMap<>(
 			256);
+
+	@Nullable
+	private static transient Log logger;
 
 	private final Results<?> results;
 
@@ -111,8 +117,31 @@ class StandardDeclaredAnnotationsScanner implements Iterable<DeclaredAnnotations
 
 		private DeclaredAnnotations adapt(Collection<Annotation> source) {
 			List<DeclaredAnnotation> annotations = new ArrayList<>(source.size());
-			source.stream().map(DeclaredAnnotation::from).forEach(annotations::add);
+			source.stream().forEach(annotation -> {
+				try {
+					annotations.add(DeclaredAnnotation.from(annotation));
+				}
+				catch (Throwable ex) {
+					handleIntrospectionFailure(ex);
+				}
+			});
 			return DeclaredAnnotations.of(annotations);
+		}
+
+		private void handleIntrospectionFailure(Throwable ex) {
+			Log logger = getLogger();
+			if (logger.isInfoEnabled()) {
+				logger.info("Failed to introspect annotations on " + this.element + ": " + ex);
+			}
+		}
+
+		private Log getLogger() {
+			Log logger = StandardDeclaredAnnotationsScanner.logger;
+			if (logger == null) {
+				logger = LogFactory.getLog(StandardDeclaredAnnotationsScanner.class);
+				StandardDeclaredAnnotationsScanner.logger = logger;
+			}
+			return logger;
 		}
 
 		protected final Collection<Class<?>> getFullHierarchy(Class<?> type,
@@ -256,7 +285,5 @@ class StandardDeclaredAnnotationsScanner implements Iterable<DeclaredAnnotations
 		}
 
 	}
-
-	// FIXME handleIntrospectionFailure in general
 
 }

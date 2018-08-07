@@ -48,9 +48,11 @@ import org.springframework.util.ConcurrentReferenceHashMap;
  */
 class SimpleAnnotationTypeResolver implements AnnotationTypeResolver {
 
-	private static final Map<ClassLoader, SimpleAnnotationTypeResolver> resolverCache = new ConcurrentReferenceHashMap<>(4);
+	private static final Map<ClassLoader, SimpleAnnotationTypeResolver> resolverCache = new ConcurrentReferenceHashMap<>(
+			4);
 
-	private static final Map<Resource, AnnotationType> resourceCache = new ConcurrentReferenceHashMap<>(4);
+	private static final Map<Resource, AnnotationType> resourceCache = new ConcurrentReferenceHashMap<>(
+			4);
 
 	private final ResourceLoader resourceLoader;
 
@@ -61,9 +63,7 @@ class SimpleAnnotationTypeResolver implements AnnotationTypeResolver {
 
 	@Override
 	public AnnotationType resolve(String className) {
-		if (className == null) {
-			return null;
-		}
+		Assert.notNull(className, "ClassName must not be null");
 		return resolve(className, true);
 	}
 
@@ -88,7 +88,7 @@ class SimpleAnnotationTypeResolver implements AnnotationTypeResolver {
 			}
 		}
 		catch (IOException ex) {
-			throw new IllegalStateException(ex);
+			throw new AnnotationResolveException(ex);
 		}
 	}
 
@@ -127,10 +127,16 @@ class SimpleAnnotationTypeResolver implements AnnotationTypeResolver {
 	}
 
 	public static SimpleAnnotationTypeResolver get(ClassLoader classLoader) {
-		Assert.notNull(classLoader, "ClassLoader must not be null");
+		if (classLoader == null) {
+			return createResolver(classLoader);
+		}
 		return resolverCache.computeIfAbsent(classLoader,
-				key -> new SimpleAnnotationTypeResolver(
-						new DefaultResourceLoader(classLoader)));
+				SimpleAnnotationTypeResolver::createResolver);
+	}
+
+	private static SimpleAnnotationTypeResolver createResolver(ClassLoader classLoader) {
+		DefaultResourceLoader resourceLoader = new DefaultResourceLoader(classLoader);
+		return new SimpleAnnotationTypeResolver(resourceLoader);
 	}
 
 	/**

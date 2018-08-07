@@ -56,9 +56,4 @@ public class SimpleAttributeTypesTests {
 		assertThat(this.types.iterator()).containsOnly(this.type);
 	}
 
-	@Test
-	public void toStringReturnsString() {
-		assertThat(this.types.toString()).isEqualTo("className test()");
-	}
-
 }

@@ -50,12 +50,6 @@ public class StandardDeclaredAnnotationTests {
 		assertThat(this.annotation.getAttributes().get("value")).isNotNull();
 	}
 
-	@Test
-	public void toStringReturnsString() {
-		assertThat(this.annotation.toString()).isEqualTo(
-				"@" + ExampleAnnotation.class.getName() + "(value = \"str\")");
-	}
-
 	@ExampleAnnotation("str")
 	static class ExampleClass {
 

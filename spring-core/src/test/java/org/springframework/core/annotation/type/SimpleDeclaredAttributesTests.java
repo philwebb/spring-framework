@@ -62,12 +62,6 @@ public class SimpleDeclaredAttributesTests {
 		assertThat(first).isNotSameAs(second);
 	}
 
-	@Test
-	public void toStringReturnsString() {
-		assertThat(getAttributes(new String[] { "test" }).toString()).isEqualTo(
-				"(value = { \"test\" })");
-	}
-
 	private SimpleDeclaredAttributes getAttributes(Object value) {
 		return new SimpleDeclaredAttributes(Collections.singletonMap("value", value));
 	}

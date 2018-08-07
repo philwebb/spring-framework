@@ -49,23 +49,20 @@ class StandardDeclaredAttributes implements DeclaredAttributes {
 		Map<String, Method> attributeMethods = new LinkedHashMap<>(candidates.length);
 		for (Method candidate : candidates) {
 			if (isAttributeMethod(candidate)) {
-				candidate.setAccessible(true);
+				assertAttibuteMethodIsCallable(candidate);
 				attributeMethods.put(candidate.getName(), candidate);
 			}
 		}
 		return Collections.unmodifiableMap(attributeMethods);
 	}
 
-	private boolean isAttributeMethod(Method method) {
-		return (method.getParameterCount() == 0 && method.getReturnType() != void.class);
+	private void assertAttibuteMethodIsCallable(Method candidate) {
+		candidate.setAccessible(true);
+		get(candidate);
 	}
 
-	public String toString() {
-		AnnotationToStringCreator creator = new AnnotationToStringCreator();
-		this.attributeMethods.forEach((name, method) -> {
-			creator.append(name, get(method));
-		});
-		return creator.toString();
+	private boolean isAttributeMethod(Method method) {
+		return (method.getParameterCount() == 0 && method.getReturnType() != void.class);
 	}
 
 	@Override

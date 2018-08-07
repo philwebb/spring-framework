@@ -254,17 +254,26 @@ abstract class AbstractMergedAnnotation<A extends java.lang.annotation.Annotatio
 	@Override
 	public <T extends Annotation> MergedAnnotation<T> getAnnotation(String attributeName,
 			Class<T> type) throws NoSuchElementException {
+		return getAnnotation(attributeName);
+	}
+
+	protected <T extends Annotation> MergedAnnotation<T> getAnnotation(String attributeName) {
 		DeclaredAttributes nestedAttributes = getRequiredAttribute(attributeName,
 				DeclaredAttributes.class);
 		AttributeType attributeType = getAttributeType(attributeName);
 		AnnotationType nestedType = this.resolver.resolve(attributeType.getClassName());
-		return new Nested<>(this.resolver, nestedType, nestedAttributes, null);
+		return createNested(nestedType, nestedAttributes);
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public <T extends Annotation> MergedAnnotation<T>[] getAnnotationArray(
 			String attributeName, Class<T> type) throws NoSuchElementException {
+		return getAnnotationArray(attributeName);
+	}
+
+	@SuppressWarnings("unchecked")
+	protected final <T extends Annotation> MergedAnnotation<T>[] getAnnotationArray(
+			String attributeName) {
 		DeclaredAttributes[] nestedAttributes = getRequiredAttribute(attributeName,
 				DeclaredAttributes[].class);
 		AttributeType attributeType = getAttributeType(attributeName);
@@ -273,8 +282,7 @@ abstract class AbstractMergedAnnotation<A extends java.lang.annotation.Annotatio
 		AnnotationType nestedType = this.resolver.resolve(componentType);
 		MergedAnnotation<T>[] result = new MergedAnnotation[nestedAttributes.length];
 		for (int i = 0; i < nestedAttributes.length; i++) {
-			result[i] = new Nested<>(this.resolver, nestedType, nestedAttributes[i],
-					null);
+			result[i] = createNested(nestedType, nestedAttributes[i]);
 		}
 		return result;
 	}
@@ -331,7 +339,7 @@ abstract class AbstractMergedAnnotation<A extends java.lang.annotation.Annotatio
 		Class<A> annotationType = (Class<A>) ClassUtils.resolveClassName(getType(),
 				classLoader);
 		InvocationHandler handler = new SynthesizedMergedAnnotationInvocationHandler<>(
-				annotationType, this);
+				this, annotationType);
 		Class<?>[] interfaces = new Class<?>[] { annotationType,
 			SynthesizedAnnotation.class };
 		return (A) Proxy.newProxyInstance(classLoader, interfaces, handler);
@@ -443,8 +451,8 @@ abstract class AbstractMergedAnnotation<A extends java.lang.annotation.Annotatio
 	private Object adaptDeclaredAttributes(DeclaredAttributes attributeValue,
 			AttributeType attributeType, Class<?> requiredType) {
 		if (requiredType.isAnnotation()) {
-			Nested<?> nested = new Nested<>(this.resolver, this.annotationType,
-					attributeValue, null);
+			MergedAnnotation<?> nested = createNested(this.annotationType,
+					attributeValue);
 			Object result = nested.synthesize();
 			if (requiredType.isInstance(result)) {
 				return result;
@@ -493,6 +501,15 @@ abstract class AbstractMergedAnnotation<A extends java.lang.annotation.Annotatio
 	}
 
 	/**
+	 * Get a single underlying attribute value.
+	 * @param attributeName The attribute name
+	 * @param merged {@code true} if the merged value should be returned, or
+	 * {@code false} to return the original unmerged value.
+	 * @return the attribute value or {@code null}
+	 */
+	protected abstract Object getAttributeValue(String attributeName, boolean merged);
+
+	/**
 	 * Create a copy of the current {@link MergedAnnotation} with a different
 	 * filter predicate.
 	 * @param predicate the new filter predicate
@@ -502,44 +519,13 @@ abstract class AbstractMergedAnnotation<A extends java.lang.annotation.Annotatio
 			Predicate<String> predicate);
 
 	/**
-	 * Get a single underlying attribute value.
-	 * @param attributeName The attribute name
-	 * @param merged {@code true} if the merged value should be returned, or
-	 * {@code false} to return the original unmerged value.
-	 * @return the attribute value or {@code null}
+	 * Create a {@link MergedAnnotation} for the given nested annotation
+	 * details.
+	 * @param type the nested annotation type
+	 * @param attributes the nested annotation attributes
+	 * @return a new {@link MergedAnnotation} instance
 	 */
-	protected abstract Object getAttributeValue(String attributeName, boolean merged);
+	protected abstract <T extends Annotation> MergedAnnotation<T> createNested(
+			AnnotationType type, DeclaredAttributes attributes);
 
-	// FIXME equals / hashcode ?
-	// FIXME toString
-
-	/**
-	 * {@link MergedAnnotation} used for nested annotation values.
-	 */
-	static class Nested<A extends Annotation> extends AbstractMergedAnnotation<A> {
-
-		// FIXME this won't work because explicit aliases won't be supported.
-		// Test then replace
-
-		private final DeclaredAttributes attributes;
-
-		protected Nested(AnnotationTypeResolver resolver, AnnotationType annotationType,
-				DeclaredAttributes attributes, Predicate<String> attributeFilter) {
-			super(resolver, annotationType, attributeFilter);
-			this.attributes = attributes;
-		}
-
-		@Override
-		protected AbstractMergedAnnotation<A> cloneWithAttributeFilter(
-				Predicate<String> attributeFilter) {
-			return new Nested<>(getResolver(), getAnnotationType(), this.attributes,
-					attributeFilter);
-		}
-
-		@Override
-		protected Object getAttributeValue(String attributeName, boolean merged) {
-			return this.attributes.get(attributeName);
-		}
-
-	}
 }

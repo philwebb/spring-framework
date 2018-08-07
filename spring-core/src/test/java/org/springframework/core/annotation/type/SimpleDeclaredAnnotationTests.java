@@ -51,9 +51,4 @@ public class SimpleDeclaredAnnotationTests {
 		assertThat(this.annotation.getAttributes()).isSameAs(this.attributes);
 	}
 
-	@Test
-	public void toStringReturnsString() {
-		assertThat(this.annotation.toString()).isEqualTo("@ClassName(value = \"test\")");
-	}
-
 }

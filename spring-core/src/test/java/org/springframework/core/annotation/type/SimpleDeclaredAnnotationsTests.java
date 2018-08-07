@@ -59,9 +59,4 @@ public class SimpleDeclaredAnnotationsTests {
 		assertThat(this.annotations.find("missing")).isNull();
 	}
 
-	@Test
-	public void toStringReturnsString() {
-		assertThat(this.annotations.toString()).isEqualTo("@one\n@two");
-	}
-
 }

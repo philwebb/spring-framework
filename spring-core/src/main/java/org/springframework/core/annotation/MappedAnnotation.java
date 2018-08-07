@@ -17,8 +17,11 @@
 package org.springframework.core.annotation;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.util.function.Predicate;
 
+import org.springframework.core.annotation.type.AnnotationType;
+import org.springframework.core.annotation.type.AttributeType;
 import org.springframework.core.annotation.type.DeclaredAttributes;
 
 /**
@@ -36,9 +39,8 @@ class MappedAnnotation<A extends Annotation> extends AbstractMergedAnnotation<A>
 
 	private final boolean inherted;
 
-	MappedAnnotation(AnnotationTypeMapping mapping,
-			DeclaredAttributes mappedAttributes, boolean inherted,
-			Predicate<String> attributeFilter) {
+	MappedAnnotation(AnnotationTypeMapping mapping, DeclaredAttributes mappedAttributes,
+			boolean inherted, Predicate<String> attributeFilter) {
 		super(mapping.getResolver(), mapping.getAnnotationType(), attributeFilter);
 		this.mapping = mapping;
 		this.mappedAttributes = mappedAttributes;
@@ -61,10 +63,35 @@ class MappedAnnotation<A extends Annotation> extends AbstractMergedAnnotation<A>
 	}
 
 	@Override
-	protected AbstractMergedAnnotation<A> cloneWithAttributeFilter(
-			Predicate<String> attributeFilter) {
-		return new MappedAnnotation<>(this.mapping, this.mappedAttributes,
-				this.inherted, attributeFilter);
+	public String toString() {
+		StringBuilder attributes = new StringBuilder();
+		this.mapping.getAnnotationType().getAttributeTypes().forEach(attributeType -> {
+			attributes.append(attributes.length() > 0 ? ", " : "");
+			attributes.append(toString(attributeType));
+		});
+		return "@" + getType() + "(" + attributes + ")";
+	}
+
+	private String toString(AttributeType attributeType) {
+		String name = attributeType.getAttributeName();
+		Object value = getAttributeValue(name, true);
+		if (value instanceof DeclaredAttributes) {
+			value = getAnnotation(name);
+		}
+		else if (value instanceof DeclaredAttributes[]) {
+			value = getAnnotationArray(name);
+		}
+		if(value.getClass().isArray()) {
+			StringBuilder content = new StringBuilder();
+			content.append("[");
+			for (int i = 0; i < Array.getLength(value); i++) {
+				content.append(i > 0 ? ", " : "");
+				content.append(Array.get(value, i));
+			}
+			content.append("]");
+			value = content.toString();
+		}
+		return (value != null) ? name + "=" + value : "";
 	}
 
 	@Override
@@ -72,6 +99,28 @@ class MappedAnnotation<A extends Annotation> extends AbstractMergedAnnotation<A>
 		DeclaredAttributes attributes = merged ? this.mappedAttributes
 				: this.mapping.getSource().getAttributes();
 		return attributes.get(attributeName);
+	}
+
+	@Override
+	protected AbstractMergedAnnotation<A> cloneWithAttributeFilter(
+			Predicate<String> attributeFilter) {
+		return new MappedAnnotation<>(this.mapping, this.mappedAttributes, this.inherted,
+				attributeFilter);
+	}
+
+	@Override
+	protected <T extends Annotation> MergedAnnotation<T> createNested(AnnotationType type,
+			DeclaredAttributes attributes) {
+		return createNested(new MappableAnnotation(getResolver(), type, attributes));
+	}
+
+	private <T extends Annotation> MergedAnnotation<T> createNested(
+			MappableAnnotation mappable) {
+		AnnotationTypeMappings mappings = AnnotationTypeMappings.get(getResolver(),
+				mappable.getAnnotationType());
+		AnnotationTypeMapping mapping = mappings.getMapping(
+				mappable.getAnnotationType().getClassName());
+		return mapping.map(mappable, this.inherted);
 	}
 
 }

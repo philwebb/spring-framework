@@ -23,9 +23,9 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Objects;
 
-import org.springframework.lang.Nullable;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.util.ReflectionUtils.MethodCallback;
 
 /**
  * {@link InvocationHandler} for an {@link Annotation} that Spring has
@@ -33,7 +33,7 @@ import org.springframework.util.ReflectionUtils;
  * functionality.
  *
  * @author Sam Brannen
- * @author Phillip WEbb
+ * @author Phillip Webb
  * @since 5.1
  * @see Annotation
  * @see AnnotationAttributeExtractor
@@ -42,18 +42,24 @@ import org.springframework.util.ReflectionUtils;
 class SynthesizedMergedAnnotationInvocationHandler<A extends Annotation>
 		implements InvocationHandler {
 
-	private final Class<A> annotationType;
-
 	private final MergedAnnotation<?> annotation;
 
-	SynthesizedMergedAnnotationInvocationHandler(Class<A> annotationType,
-			MergedAnnotation<A> mergedAnnotation) {
-		this.annotationType = annotationType;
-		this.annotation = mergedAnnotation;
+	private final Class<A> type;
+
+	SynthesizedMergedAnnotationInvocationHandler(MergedAnnotation<A> annotation,
+			Class<A> type) {
+		this.type = type;
+		this.annotation = annotation;
 	}
 
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args) {
+		if (isAnnotationTypeMethod(method)) {
+			return this.type;
+		}
+		if (isAttributeMethod(method)) {
+			return getAttributeValue(method);
+		}
 		if (ReflectionUtils.isEqualsMethod(method)) {
 			return annotationEquals(args[0]);
 		}
@@ -63,24 +69,14 @@ class SynthesizedMergedAnnotationInvocationHandler<A extends Annotation>
 		if (ReflectionUtils.isToStringMethod(method)) {
 			return this.annotation.toString();
 		}
-		if (isAnnotationTypeMethod(method)) {
-			return this.annotationType;
-		}
-		if (isAttributeMethod(method)) {
-			return getAttributeValue(method);
-		}
 		throw new AnnotationConfigurationException(String.format(
 				"Method [%s] is unsupported for synthesized annotation type [%s]", method,
-				this.annotationType));
+				this.type));
 	}
 
 	private boolean isAnnotationTypeMethod(Method method) {
 		return Objects.equals(method.getName(), "annotationType")
 				&& method.getParameterCount() == 0;
-	}
-
-	private boolean isAttributeMethod(@Nullable Method method) {
-		return method.getParameterCount() == 0 && method.getReturnType() != void.class;
 	}
 
 	private Object getAttributeValue(Method method) {
@@ -98,20 +94,12 @@ class SynthesizedMergedAnnotationInvocationHandler<A extends Annotation>
 		if (this == other) {
 			return true;
 		}
-//		if (!annotationType().isInstance(other)) {
-//			return false;
-//		}
-//
-//		for (Method attributeMethod : AnnotationUtils.getAttributeMethods(
-//				annotationType())) {
-//			Object thisValue = getAttributeValue(attributeMethod);
-//			Object otherValue = ReflectionUtils.invokeMethod(attributeMethod, other);
-//			if (!ObjectUtils.nullSafeEquals(thisValue, otherValue)) {
-//				return false;
-//			}
-//		}
-		// FIXME we need to also look at equals in mergedannotation
-		return false;
+		if (!this.type.isInstance(other)) {
+			return false;
+		}
+		EqualsCheck check = new EqualsCheck(other);
+		ReflectionUtils.doWithLocalMethods(this.type, check, this::isAttributeMethod);
+		return check.isEquals();
 	}
 
 	/**
@@ -119,59 +107,100 @@ class SynthesizedMergedAnnotationInvocationHandler<A extends Annotation>
 	 * algorithm.
 	 */
 	private int annotationHashCode() {
-		int result = 0;
-//
-//		for (Method attributeMethod : AnnotationUtils.getAttributeMethods(
-//				annotationType())) {
-//			Object value = getAttributeValue(attributeMethod);
-//			int hashCode;
-//			if (value.getClass().isArray()) {
-//				hashCode = hashCodeForArray(value);
-//			}
-//			else {
-//				hashCode = value.hashCode();
-//			}
-//			result += (127 * attributeMethod.getName().hashCode()) ^ hashCode;
-//		}
-		// FIXME
-		return result;
+		HashCodeGenerator generator = new HashCodeGenerator();
+		ReflectionUtils.doWithLocalMethods(this.type, generator, this::isAttributeMethod);
+		return generator.getHashCode();
+	}
+
+	private boolean isAttributeMethod(Method method) {
+		return method.getParameterCount() == 0 && method.getReturnType() != void.class;
 	}
 
 	/**
-	 * WARNING: we can NOT use any of the {@code nullSafeHashCode()} methods in
-	 * Spring's {@link ObjectUtils} because those hash code generation
-	 * algorithms do not comply with the requirements specified in
-	 * {@link Annotation#hashCode()}.
-	 * @param array the array to compute the hash code for
+	 * {@link MethodCallback} used to implement {@code equals}.
 	 */
-	private int hashCodeForArray(Object array) {
-		if (array instanceof boolean[]) {
-			return Arrays.hashCode((boolean[]) array);
-		}
-		if (array instanceof byte[]) {
-			return Arrays.hashCode((byte[]) array);
-		}
-		if (array instanceof char[]) {
-			return Arrays.hashCode((char[]) array);
-		}
-		if (array instanceof double[]) {
-			return Arrays.hashCode((double[]) array);
-		}
-		if (array instanceof float[]) {
-			return Arrays.hashCode((float[]) array);
-		}
-		if (array instanceof int[]) {
-			return Arrays.hashCode((int[]) array);
-		}
-		if (array instanceof long[]) {
-			return Arrays.hashCode((long[]) array);
-		}
-		if (array instanceof short[]) {
-			return Arrays.hashCode((short[]) array);
+	private class EqualsCheck implements MethodCallback {
+
+		private final Object other;
+
+		private boolean equals = true;
+
+		public EqualsCheck(Object other) {
+			this.other = other;
 		}
 
-		// else
-		return Arrays.hashCode((Object[]) array);
+		@Override
+		public void doWith(Method method)
+				throws IllegalArgumentException, IllegalAccessException {
+			if (method.getParameterCount() == 0 && method.getReturnType() != void.class) {
+				this.equals = this.equals && isEqual(method);
+			}
+		}
+
+		private boolean isEqual(Method method) {
+			ReflectionUtils.makeAccessible(method);
+			Object thisValue = getAttributeValue(method);
+			Object otherValue = ReflectionUtils.invokeMethod(method, other);
+			return ObjectUtils.nullSafeEquals(thisValue, otherValue);
+		}
+
+		public boolean isEquals() {
+			return this.equals;
+		}
+
+	}
+
+	/**
+	 * {@link MethodCallback} used to implement {@code hashCode}.
+	 */
+	private class HashCodeGenerator implements MethodCallback {
+
+		private int hashCode;
+
+		@Override
+		public void doWith(Method method)
+				throws IllegalArgumentException, IllegalAccessException {
+			Object value = getAttributeValue(method);
+			int valueHashCode = getValueHashCode(value);
+			this.hashCode += (127 * method.getName().hashCode()) ^ valueHashCode;
+		}
+
+		private int getValueHashCode(Object value) {
+			// NOTE: ObjectUtils doesn't comply to to Annotation#hashCode()
+			if (value instanceof boolean[]) {
+				return Arrays.hashCode((boolean[]) value);
+			}
+			if (value instanceof byte[]) {
+				return Arrays.hashCode((byte[]) value);
+			}
+			if (value instanceof char[]) {
+				return Arrays.hashCode((char[]) value);
+			}
+			if (value instanceof double[]) {
+				return Arrays.hashCode((double[]) value);
+			}
+			if (value instanceof float[]) {
+				return Arrays.hashCode((float[]) value);
+			}
+			if (value instanceof int[]) {
+				return Arrays.hashCode((int[]) value);
+			}
+			if (value instanceof long[]) {
+				return Arrays.hashCode((long[]) value);
+			}
+			if (value instanceof short[]) {
+				return Arrays.hashCode((short[]) value);
+			}
+			if (value instanceof Object[]) {
+				return Arrays.hashCode((Object[]) value);
+			}
+			return value.hashCode();
+		}
+
+		public int getHashCode() {
+			return this.hashCode;
+		}
+
 	}
 
 }

@@ -65,16 +65,4 @@ class SimpleAttributeType implements AttributeType {
 		return this.defaultValue;
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder result = new StringBuilder();
-		this.declaredAnnotations.forEach(annotation -> result.append(annotation + "\n"));
-		result.append(this.className + " " + this.attributeName + "()");
-		if (this.defaultValue != null) {
-			result.append(" default "
-					+ new AnnotationToStringCreator().append(this.defaultValue));
-		}
-		return result.toString();
-	}
-
 }

@@ -48,8 +48,10 @@ public class SimpleAnnotationTypeResolverTests {
 	}
 
 	@Test
-	public void resolveWhenSourceClassNameIsNullReturnsNull() {
-		assertThat(resolver.resolve(null)).isNull();
+	public void resolveWhenSourceClassNameIsNullThrowsException() {
+		this.thrown.expect(IllegalArgumentException.class);
+		this.thrown.expectMessage("ClassName must not be null");
+		this.resolver.resolve(null);
 	}
 
 	@Test

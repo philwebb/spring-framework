@@ -63,12 +63,6 @@ public class StandardDeclaredAttributesTests {
 					EnumValueReference.of(ExampleEnum.THREE) });
 	}
 
-	@Test
-	public void toStringReturnsString() {
-		assertThat(this.attributes.toString()).startsWith("(").endsWith(")").contains(
-				"classArray = { java.lang.String.class, java.lang.StringBuilder.class }");
-	}
-
 	@ExampleAnnotation(stringValue = "str", byteArray = { 1, 2,
 		3 }, classValue = String.class, classArray = { String.class,
 			StringBuilder.class }, enumValue = ExampleEnum.ONE, enumArray = {
