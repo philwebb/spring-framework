@@ -49,6 +49,7 @@ import static org.springframework.core.annotation.AnnotatedElementUtils.*;
  * @see AnnotatedElementUtilsTests
  * @see MultipleComposedAnnotationsOnSingleAnnotatedElementTests
  */
+@SuppressWarnings("deprecation")
 public class ComposedRepeatableAnnotationsTests {
 
 	@Rule
