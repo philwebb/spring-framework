@@ -213,6 +213,20 @@ public class ReflectionUtilsTests {
 	}
 
 	@Test
+	public void doWithMethodWhenHasFilterFindsNonFilteredMethods() {
+		ListSavingMethodCallback mc = new ListSavingMethodCallback();
+		ReflectionUtils.doWithMethods(TestObjectSubclass.class, mc,
+				candidate -> candidate.getDeclaringClass() != TestObjectSubclass.class);
+		int absquatulateCount = 0;
+		for (String name : mc.getMethodNames()) {
+			if (name.equals("absquatulate")) {
+				++absquatulateCount;
+			}
+		}
+		assertEquals("Found 1 absquatulates", 1, absquatulateCount);
+	}
+
+	@Test
 	public void findMethod() throws Exception {
 		assertNotNull(ReflectionUtils.findMethod(B.class, "bar", String.class));
 		assertNotNull(ReflectionUtils.findMethod(B.class, "foo", Integer.class));
