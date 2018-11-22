@@ -543,8 +543,26 @@ public abstract class ReflectionUtils {
 	 * @see #doWithMethods
 	 */
 	public static void doWithLocalMethods(Class<?> clazz, MethodCallback mc) {
+		doWithLocalMethods(clazz, mc, null);
+	}
+
+	/**
+	 * Perform the given callback operation on all matching methods of the given
+	 * class, as locally declared or equivalent thereof (such as default methods
+	 * on Java 8 based interfaces that the given class implements).
+	 * @param clazz the class to introspect
+	 * @param mc the callback to invoke for each method
+	 * @param mf the filter that determines the methods to apply the callback to
+	 * @throws IllegalStateException if introspection fails
+	 * @since 5.2
+	 * @see #doWithMethods
+	 */
+	public static void doWithLocalMethods(Class<?> clazz, MethodCallback mc, @Nullable MethodFilter mf) {
 		Method[] methods = getDeclaredMethods(clazz);
 		for (Method method : methods) {
+			if (mf != null && !mf.matches(method)) {
+				continue;
+			}
 			try {
 				mc.doWith(method);
 			}
