@@ -94,7 +94,7 @@ configure(allprojects) { project ->
 
 	compileJava.options*.compilerArgs = commonCompilerArgs +
 			["-Xlint:varargs", "-Xlint:fallthrough", "-Xlint:rawtypes",
-			 "-Xlint:deprecation", "-Xlint:unchecked", "-Werror"]
+			 "-Xlint:deprecation", "-Xlint:unchecked"]
 
 	compileTestJava.options*.compilerArgs = commonCompilerArgs +
 			["-Xlint:-varargs", "-Xlint:-fallthrough", "-Xlint:-rawtypes",
@@ -164,6 +164,7 @@ configure(allprojects) { project ->
 			exclude module: "mockito-core"
 		}
 		testCompile("org.hamcrest:hamcrest-all:1.3")
+		testCompile("org.assertj:assertj-core:3.10.0")
 		testRuntime("org.apache.logging.log4j:log4j-core:${log4jVersion}")
 		testRuntime("org.apache.logging.log4j:log4j-slf4j-impl:${log4jVersion}")
 		testRuntime("org.apache.logging.log4j:log4j-jul:${log4jVersion}")
