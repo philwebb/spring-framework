@@ -1,5 +1,5 @@
 /**
- * Core support package for annotations, meta-annotations, and merged
+ * Core support package for annotations, meta-annotations, and composed
  * annotations with attribute overrides.
  */
 @NonNullApi

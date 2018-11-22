@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -167,9 +166,7 @@ public class AnnotationUtilsTests {
 	}
 
 	@Test
-	@Ignore
 	public void findMethodAnnotationOnBridgedMethod() throws Exception {
-		// FIXME this doesn't seem right
 		Method bridgedMethod = SimpleFoo.class.getMethod("something", String.class);
 		assertFalse(bridgedMethod.isBridge());
 
@@ -308,12 +305,6 @@ public class AnnotationUtilsTests {
 	public void findClassAnnotationOnSubSubNonInheritedAnnotationInterface() {
 		Order order = findAnnotation(SubSubNonInheritedAnnotationInterface.class, Order.class);
 		assertNotNull("Should find @Order on SubSubNonInheritedAnnotationInterface", order);
-	}
-
-	@Test
-	public void temp() {
-		assertEquals(InheritedAnnotationClass.class,
-				findAnnotationDeclaringClass(Transactional.class, SubInheritedAnnotationClass.class));
 	}
 
 	@Test
@@ -572,7 +563,7 @@ public class AnnotationUtilsTests {
 		exception.expect(AnnotationConfigurationException.class);
 		exception.expectMessage(startsWith("Attribute 'value' in"));
 		exception.expectMessage(containsString(BrokenContextConfig.class.getName()));
-		exception.expectMessage(containsString("@AliasFor 'location'"));
+		exception.expectMessage(containsString("@AliasFor [location]"));
 
 		getRepeatableAnnotations(BrokenConfigHierarchyTestCase.class, BrokenContextConfig.class, BrokenHierarchy.class);
 	}
