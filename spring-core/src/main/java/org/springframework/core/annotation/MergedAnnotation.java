@@ -18,7 +18,6 @@ package org.springframework.core.annotation;
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Inherited;
-import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Comparator;
 import java.util.Map;
@@ -27,6 +26,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.lang.Nullable;
 
 /**
@@ -436,11 +436,16 @@ public interface MergedAnnotation<A extends Annotation> {
 
 	}
 
+	/**
+	 * Finds annotations of a specific type by searching on a source.
+	 *
+	 * @param <A> the annotation type to find
+	 */
 	static interface Finder<A extends Annotation> {
 
-		Map<Method, MergedAnnotation<A>> fromMethods(Class<?> type);
+		// Map<Method, MergedAnnotation<A>> fromMethods(Class<?> type);
 
-		Map<Method, MergedAnnotation<A>> fromLocalMethods(Class<?> type);
+		// Map<Method, MergedAnnotation<A>> fromLocalMethods(Class<?> type);
 
 		// FIXME will return something that allows access to the method and MergedAnnotation
 		// something a bit like a Map<Method, MergedAnnotation<T>> but perhaps not exactly that

@@ -107,7 +107,7 @@ class AnnotationsScanner implements Iterable<DeclaredAnnotations> {
 		}
 
 		protected final E getSource() {
-			return source;
+			return this.source;
 		}
 
 		static Results<?> create(AnnotatedElement element) {
@@ -287,7 +287,7 @@ class AnnotationsScanner implements Iterable<DeclaredAnnotations> {
 
 	}
 
-	private static class TypeHierarchy {
+	private static final class TypeHierarchy {
 
 		private final Set<Class<?>> hierarchy = new LinkedHashSet<>();
 

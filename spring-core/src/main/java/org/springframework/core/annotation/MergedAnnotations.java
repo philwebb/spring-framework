@@ -217,8 +217,6 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<?>> {
 	 * depending on the {@link SearchStrategy}, related inherited elements.
 	 * @param element the source element
 	 * @param searchStrategy the search strategy to use
-	 * @param repeatableContainers the strategy used to find repeatable
-	 * annotation containers
 	 * @return a {@link MergedAnnotations} instance containing the merged
 	 * element annotations
 	 */

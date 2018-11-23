@@ -32,7 +32,7 @@ import java.util.function.Predicate;
  * @since 5.1
  * @param <A> the annotation type
  */
-class MissingMergedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
+final class MissingMergedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 
 	private static final MissingMergedAnnotation<?> INSTANCE = new MissingMergedAnnotation<>();
 

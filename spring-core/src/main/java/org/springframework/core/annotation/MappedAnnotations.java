@@ -39,10 +39,8 @@ class MappedAnnotations extends AbstractMergedAnnotations {
 			AnnotationTypeResolver resolver, RepeatableContainers repeatableContainers) {
 		DeclaredAnnotationsMapper mapper = new DeclaredAnnotationsMapper(resolver,
 				repeatableContainers);
-		this.hierarchy = () -> {
-			return StreamSupport.stream(annotations.spliterator(), false).map(
-					mapper::map);
-		};
+		this.hierarchy = () -> StreamSupport.stream(annotations.spliterator(), false).map(
+				mapper::map);
 	}
 
 	MappedAnnotations(Iterable<MappableAnnotation> annotations) {
@@ -104,7 +102,7 @@ class MappedAnnotations extends AbstractMergedAnnotations {
 		}
 
 		public Element map(DeclaredAnnotations annotations) {
-			return () -> MappableAnnotation.from(resolver, repeatableContainers,
+			return () -> MappableAnnotation.from(this.resolver, this.repeatableContainers,
 					annotations);
 		}
 

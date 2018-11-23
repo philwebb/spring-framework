@@ -374,7 +374,7 @@ class AnnotationTypeMapping {
 
 		@Override
 		public Object get(String name) {
-			Reference mirror = mirrors.get(name);
+			Reference mirror = this.mirrors.get(name);
 			if (mirror != null) {
 				name = mirror.getAttribute().getAttributeName();
 			}

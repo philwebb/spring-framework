@@ -59,7 +59,7 @@ public abstract class RepeatableContainers {
 	AnnotationType findContainedRepeatableType(AnnotationTypeResolver resolver,
 			AnnotationType type, DeclaredAttributes attributes) {
 		return (this.parent != null)
-				? parent.findContainedRepeatableType(resolver, type, attributes)
+				? this.parent.findContainedRepeatableType(resolver, type, attributes)
 				: null;
 	}
 
@@ -82,7 +82,7 @@ public abstract class RepeatableContainers {
 
 	/**
 	 * Return a {@link RepeatableContainers} instance that searches using Java's
-	 * {@link Repeatable @Repeatable} annotation
+	 * {@link Repeatable @Repeatable} annotation.
 	 * @return a {@link RepeatableContainers} instance
 	 */
 	public static RepeatableContainers standardRepeatables() {
@@ -146,7 +146,7 @@ public abstract class RepeatableContainers {
 		AnnotationType findContainedRepeatableType(AnnotationTypeResolver resolver,
 				AnnotationType type, DeclaredAttributes attributes) {
 			if (type.getClassName().equals(this.container.getName())) {
-				return resolver.resolve(repeatable.getName());
+				return resolver.resolve(this.repeatable.getName());
 			}
 			return super.findContainedRepeatableType(resolver, type, attributes);
 		}

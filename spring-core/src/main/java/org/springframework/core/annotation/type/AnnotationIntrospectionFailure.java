@@ -25,11 +25,16 @@ import org.springframework.lang.Nullable;
 
 /**
  * Class to log annotation introspection failures.
+ *
+ * @author Phillip Webb
  */
-class AnnotationIntrospectionFailure {
+final class AnnotationIntrospectionFailure {
 
 	@Nullable
 	private static Log logger;
+
+	private AnnotationIntrospectionFailure() {
+	}
 
 	static void log(AnnotatedElement element, Throwable ex) {
 		Log logger = getLogger();
