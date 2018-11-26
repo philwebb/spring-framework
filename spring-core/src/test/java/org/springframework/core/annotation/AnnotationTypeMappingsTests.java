@@ -495,7 +495,7 @@ public class AnnotationTypeMappingsTests {
 		String type = MultipleAnnotations.class.getName();
 		AnnotationTypeMappings mappings = getMappings(type);
 		Stream<AnnotationTypeMapping> annotations = mappings.getAllMappings();
-		assertThat(annotations).hasSize(9);
+		assertThat(annotations).hasSize(7);
 	}
 
 	@Test

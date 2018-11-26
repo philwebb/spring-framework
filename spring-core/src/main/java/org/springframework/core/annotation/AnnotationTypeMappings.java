@@ -119,8 +119,7 @@ class AnnotationTypeMappings {
 	private boolean isMappable(AnnotationTypeMapping parent,
 			MappableAnnotation annotation) {
 		String className = annotation.getAnnotationType().getClassName();
-		if (className.startsWith("java.lang.annotation.")
-				&& !className.endsWith("Repeatable")) {
+		if (className.startsWith("java.lang.annotation.")){
 			return false;
 		}
 		if (className.startsWith("org.springframework.lang.")) {
