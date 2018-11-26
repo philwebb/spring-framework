@@ -18,8 +18,10 @@ package org.springframework.core.annotation;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.core.BridgeMethodResolver;
 import org.springframework.lang.Nullable;
@@ -92,7 +94,9 @@ public abstract class AnnotatedElementUtils {
 	 * typically for use with other methods on {@link AnnotatedElementUtils}.
 	 * @param annotations the annotations to expose through the {@code AnnotatedElement}
 	 * @since 4.3
+	 * @deprecated since 5.2 in favor of {@link MergedAnnotations#of(annotations)}
 	 */
+	@Deprecated
 	public static AnnotatedElement forAnnotations(final Annotation... annotations) {
 		return InternalAnnotatedElementUtils.forAnnotations(annotations);
 	}
@@ -110,9 +114,19 @@ public abstract class AnnotatedElementUtils {
 	 * @since 4.2
 	 * @see #getMetaAnnotationTypes(AnnotatedElement, String)
 	 * @see #hasMetaAnnotationTypes
+	 * @deprecated since 5.2 in favor of {@link MergedAnnotations}
 	 */
+	@Deprecated
 	public static Set<String> getMetaAnnotationTypes(AnnotatedElement element, Class<? extends Annotation> annotationType) {
-		return InternalAnnotatedElementUtils.getMetaAnnotationTypes(element, annotationType);
+		return DeprecatedAnnotationMethod.of(() ->
+			InternalAnnotatedElementUtils.getMetaAnnotationTypes(element, annotationType)
+		).isReplacedBy(() -> {
+			MergedAnnotations annotations = MergedAnnotations.from(element);
+			MergedAnnotation<?> parent = annotations.get(annotationType);
+			return annotations.stream().filter(parent::isParentOf)
+					.map(MergedAnnotation::getType)
+					.collect(Collectors.toCollection(LinkedHashSet::new));
+		});
 	}
 
 	/**
@@ -128,9 +142,20 @@ public abstract class AnnotatedElementUtils {
 	 * or an empty set if none found
 	 * @see #getMetaAnnotationTypes(AnnotatedElement, Class)
 	 * @see #hasMetaAnnotationTypes
+	 * @deprecated since 5.2 in favor of {@link MergedAnnotations}
 	 */
+	@Deprecated
 	public static Set<String> getMetaAnnotationTypes(AnnotatedElement element, String annotationName) {
-		return InternalAnnotatedElementUtils.getMetaAnnotationTypes(element, annotationName);
+		return DeprecatedAnnotationMethod.of(() ->
+			InternalAnnotatedElementUtils.getMetaAnnotationTypes(element, annotationName)
+		).withDescription(()-> element + " " + annotationName
+		).isReplacedBy(() -> {
+			MergedAnnotations annotations = MergedAnnotations.from(element);
+			MergedAnnotation<?> parent = annotations.get(annotationName);
+			return annotations.stream().filter(parent::isParentOf)
+					.map(MergedAnnotation::getType)
+					.collect(Collectors.toCollection(LinkedHashSet::new));
+		});
 	}
 
 	/**
