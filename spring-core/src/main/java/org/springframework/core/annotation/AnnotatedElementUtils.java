@@ -25,6 +25,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.core.BridgeMethodResolver;
+import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.lang.Nullable;
 import org.springframework.util.MultiValueMap;
 
@@ -121,7 +122,7 @@ public abstract class AnnotatedElementUtils {
 	public static Set<String> getMetaAnnotationTypes(AnnotatedElement element, Class<? extends Annotation> annotationType) {
 		return DeprecatedAnnotationMethod.of(() ->
 			InternalAnnotatedElementUtils.getMetaAnnotationTypes(element, annotationType)
-		).withDescription(()-> element + " " + annotationType
+		).withDescription(() -> element + " " + annotationType
 		).isReplacedBy(() -> getMetaAnnotationTypes(element, element.getAnnotation(annotationType)));
 	}
 
@@ -144,7 +145,7 @@ public abstract class AnnotatedElementUtils {
 	public static Set<String> getMetaAnnotationTypes(AnnotatedElement element, String annotationName) {
 		return DeprecatedAnnotationMethod.of(() ->
 			InternalAnnotatedElementUtils.getMetaAnnotationTypes(element, annotationName)
-		).withDescription(()-> element + " " + annotationName
+		).withDescription(() -> element + " " + annotationName
 		).isReplacedBy(() -> {
 			for (Annotation annotation : element.getAnnotations()) {
 				if (annotation.annotationType().getName().equals(annotationName)) {
@@ -175,9 +176,16 @@ public abstract class AnnotatedElementUtils {
 	 * @return {@code true} if a matching meta-annotation is present
 	 * @since 4.2.3
 	 * @see #getMetaAnnotationTypes
+	 * @deprecated since 5.2 in favor of {@link MergedAnnotations}
 	 */
+	@Deprecated
 	public static boolean hasMetaAnnotationTypes(AnnotatedElement element, Class<? extends Annotation> annotationType) {
-		return InternalAnnotatedElementUtils.hasMetaAnnotationTypes(element, annotationType);
+		return DeprecatedAnnotationMethod.of(() ->
+			InternalAnnotatedElementUtils.hasMetaAnnotationTypes(element, annotationType)
+		).isReplacedBy(() ->
+			MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS)
+				.stream(annotationType).anyMatch(MergedAnnotation::isMetaPresent)
+		);
 	}
 
 	/**
@@ -191,9 +199,16 @@ public abstract class AnnotatedElementUtils {
 	 * meta-annotation type to find
 	 * @return {@code true} if a matching meta-annotation is present
 	 * @see #getMetaAnnotationTypes
+	 * @deprecated since 5.2 in favor of {@link MergedAnnotations}
 	 */
+	@Deprecated
 	public static boolean hasMetaAnnotationTypes(AnnotatedElement element, String annotationName) {
-		return InternalAnnotatedElementUtils.hasMetaAnnotationTypes(element, annotationName);
+		return DeprecatedAnnotationMethod.of(() ->
+			InternalAnnotatedElementUtils.hasMetaAnnotationTypes(element, annotationName)
+		).isReplacedBy(() ->
+			MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS)
+				.stream(annotationName).anyMatch(MergedAnnotation::isMetaPresent)
+		);
 	}
 
 	/**
