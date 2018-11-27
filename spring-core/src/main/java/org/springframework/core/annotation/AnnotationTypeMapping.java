@@ -290,6 +290,9 @@ class AnnotationTypeMapping {
 
 		@Override
 		public Object get(String name) {
+			Assert.notNull(name, "Name must not be null");
+			AttributeType type = this.source.getAnnotationType()
+					.getAttributeTypes().get(name);
 			Object result = null;
 			Reference alias = this.aliases.get(name);
 			if (alias != null) {
@@ -302,11 +305,25 @@ class AnnotationTypeMapping {
 			if (result == null) {
 				result = this.source.getAttributes().get(name);
 			}
+			if (result != null && isArrayAttributeType(type)
+					&& !ObjectUtils.isArray(result)) {
+				result = wrapInArray(result);
+			}
 			return result;
 		}
 
 		private boolean isConventionRestricted(String name) {
 			return "value".equals(name);
+		}
+
+		private boolean isArrayAttributeType(AttributeType type) {
+			return type != null && type.getClassName().endsWith("[]");
+		}
+
+		private Object wrapInArray(Object result) {
+			Object array = Array.newInstance(result.getClass(), 1);
+			Array.set(array, 0, result);
+			return array;
 		}
 
 	}

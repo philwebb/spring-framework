@@ -22,28 +22,25 @@ import java.util.function.Supplier;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
-import static org.assertj.core.api.Assertions.entry;
-import static org.assertj.core.api.Assertions.registerFormatterForType;
-
 /**
- * Internal class used to check updated implementations of deprecated methods.
+ * Internal class used to help migrate methods to a new implementation.
  *
  * @author Phillip Webb
  * @since 5.2
  */
-final class DeprecatedAnnotationMethod {
+final class MigrateMethod {
 
-	private DeprecatedAnnotationMethod() {
+	private MigrateMethod() {
 	}
 
 	/**
-	 * Create a new {@link ReplacementAnnotationMethod} builder for the
+	 * Create a new {@link ReplacementMethod} builder for the
 	 * deprecated method.
-	 * @param deprecatedMethod the deprecated method
+	 * @param originalMethod the original method being migrated
 	 * @return a replacement builder.
 	 */
-	static <T> ReplacementAnnotationMethod<T> of(Supplier<T> deprecatedMethod) {
-		return new ReplacementAnnotationMethod<>(deprecatedMethod);
+	static <T> ReplacementMethod<T> from(Supplier<T> originalMethod) {
+		return new ReplacementMethod<>(originalMethod);
 	}
 
 	/**
@@ -51,14 +48,14 @@ final class DeprecatedAnnotationMethod {
 	 * method.
 	 * @param <T> the return type
 	 */
-	static class ReplacementAnnotationMethod<T> {
+	static class ReplacementMethod<T> {
 
-		private final Supplier<T> deprecatedMethod;
+		private final Supplier<T> originalMethod;
 
 		private Supplier<String> description;
 
-		ReplacementAnnotationMethod(Supplier<T> deprecatedMethod) {
-			this.deprecatedMethod = deprecatedMethod;
+		ReplacementMethod(Supplier<T> deprecatedMethod) {
+			this.originalMethod = deprecatedMethod;
 		}
 
 		/**
@@ -66,7 +63,7 @@ final class DeprecatedAnnotationMethod {
 		 * @param description a description supplier
 		 * @return this instance
 		 */
-		public ReplacementAnnotationMethod<T> withDescription(
+		public ReplacementMethod<T> withDescription(
 				Supplier<String> description) {
 			this.description = description;
 			return this;
@@ -74,14 +71,14 @@ final class DeprecatedAnnotationMethod {
 
 		/**
 		 * Provide the replacement method that should be used instead of the
-		 * deprecated one. The replacement method is called, and when approprate
+		 * deprecated one. The replacement method is called, and when appropriate
 		 * the result is checked against the deprecated method.
 		 * @param replacementMethod the replacement method
 		 * @return the result of the replacement method
 		 */
-		public T replacedBy(Supplier<T> replacementMethod) {
+		public T to(Supplier<T> replacementMethod) {
 			T result = replacementMethod.get();
-			T expectedResult = this.deprecatedMethod.get();
+			T expectedResult = this.originalMethod.get();
 			Assert.state(isEquivalent(result, expectedResult),
 					() -> "Expected " + expectedResult + " got " + result
 							+ (this.description != null

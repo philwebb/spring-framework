@@ -27,14 +27,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import org.springframework.core.annotation.AnnotatedElementUtilsTests.ContextConfig;
 import org.springframework.core.annotation.type.AnnotationType;
 import org.springframework.core.annotation.type.AnnotationTypeResolver;
 import org.springframework.core.annotation.type.DeclaredAttributes;
 import org.springframework.util.ClassUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
 
 /**
  * Tests for {@link AnnotationTypeMappings}, {@link AnnotationTypeMapping} and
@@ -366,7 +364,7 @@ public class AnnotationTypeMappingsTests {
 
 	@Test
 	public void getMappingWhenHasAliasForExplcitMirrorWithShadowedAttributeMapsAttributes() {
-		// See SPR-14069 and commit d22480b0ebc9bb65fd297c69a44ef963661acca5 
+		// See SPR-14069 and commit d22480b0ebc9bb65fd297c69a44ef963661acca5
 		AnnotationType type = resolve(AliasForExplcitMirrorWithShadowedAttribute.class);
 		AnnotationTypeMappings mappings = getMappings(type);
 		MappableAnnotation annotation = createMappable(type,
