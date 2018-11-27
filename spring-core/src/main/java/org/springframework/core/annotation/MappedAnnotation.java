@@ -514,14 +514,14 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 	@SuppressWarnings("unchecked")
 	protected final <T> T extract(Object value, Class<T> type) {
 		Assert.notNull(type, "Type must not be null");
+		if (value == null) {
+			return null;
+		}
 		if (type == Object.class) {
 			return (T) value;
 		}
 		Assert.isTrue(SUPPORTED_TYPES.contains(type),
 				() -> "Type " + type.getName() + " is not supported");
-		if (value == null) {
-			return null;
-		}
 		if (type.isArray()) {
 			if (isEmptyObjectArray(value)) {
 				return (T) EMPTY_ARRAY.get(type);

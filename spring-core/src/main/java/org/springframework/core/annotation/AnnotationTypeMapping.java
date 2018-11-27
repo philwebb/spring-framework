@@ -157,7 +157,7 @@ class AnnotationTypeMapping {
 			attributes = new MappedAttributes(parentMappedAttributes, this.source, this.aliases);
 		}
 		if (!this.mirrorSets.isEmpty()) {
-			attributes = new MirroredAttributes(attributes, this.mirrorSets);
+			attributes = new MirroredAttributes(attributes,  this.source, this.mirrorSets);
 		}
 		return attributes;
 	}
@@ -314,15 +314,18 @@ class AnnotationTypeMapping {
 	/**
 	 * {@link DeclaredAttributes} decorator to apply mirroring rules.
 	 */
-	private class MirroredAttributes implements DeclaredAttributes {
+	private static class MirroredAttributes implements DeclaredAttributes {
 
 		private final DeclaredAttributes attributes;
+
+		private final MappableAnnotation source;
 
 		private final Map<String, Reference> mirrors;
 
 		public MirroredAttributes(DeclaredAttributes attributes,
-				List<MirrorSet> mirrorSets) {
+				MappableAnnotation source, List<MirrorSet> mirrorSets) {
 			this.attributes = attributes;
+			this.source = source;
 			this.mirrors = getMirrors(mirrorSets);
 		}
 
@@ -349,25 +352,40 @@ class AnnotationTypeMapping {
 				String name = attribute.getAttributeName();
 				Object value = this.attributes.get(name);
 				if (value != null && !isSameAsDefaultValue(value, attribute)) {
-					if (result != null && !ObjectUtils.nullSafeEquals(lastValue, value)) {
-						Class<?> declaringClass = getSource().getDeclaringClass();
-						String on = (declaringClass != null)
-								? " declared on " + declaringClass.getName()
-								: "";
-						String annotationType = result.getMapping().getAnnotationType().getClassName();
-						String lastName = result.getAttribute().getAttributeName();
-						throw new AnnotationConfigurationException(String.format(
-								"Different @AliasFor mirror values for annotation [%s]%s, "
-										+ "attribute '%s' and its alias '%s' are declared with values of [%s] and [%s].",
-								annotationType, on, lastName, name,
-								ObjectUtils.nullSafeToString(lastValue),
-								ObjectUtils.nullSafeToString(value)));
+					if (result != null) {
+						checkMirrorPossibleAttributeResult(name, result, value, lastValue);
 					}
 					result = candidate;
 					lastValue = value;
 				}
 			}
 			return result;
+		}
+
+		private void checkMirrorPossibleAttributeResult(String name, Reference result,
+				Object value, Object lastValue) {
+			if (ObjectUtils.nullSafeEquals(value, lastValue)
+					|| isShadow(result, value, lastValue)) {
+				return;
+			}
+			Class<?> declaringClass = this.source.getDeclaringClass();
+			String on = (declaringClass != null)
+					? " declared on " + declaringClass.getName()
+					: "";
+			String annotationType = result.getMapping().getAnnotationType().getClassName();
+			String lastName = result.getAttribute().getAttributeName();
+			throw new AnnotationConfigurationException(String.format(
+					"Different @AliasFor mirror values for annotation [%s]%s, "
+							+ "attribute '%s' and its alias '%s' are declared with values of [%s] and [%s].",
+					annotationType, on, lastName, name,
+					ObjectUtils.nullSafeToString(lastValue),
+					ObjectUtils.nullSafeToString(value)));
+		}
+
+		private boolean isShadow(Reference result, Object value, Object lastValue) {
+			Object attributeValue = this.source.getAttributes().get(
+					result.getAttribute().getAttributeName());
+			return ObjectUtils.nullSafeEquals(lastValue, attributeValue);
 		}
 
 		private boolean isSameAsDefaultValue(Object value, AttributeType attribute) {

@@ -123,7 +123,7 @@ public abstract class AnnotatedElementUtils {
 		return DeprecatedAnnotationMethod.of(() ->
 			InternalAnnotatedElementUtils.getMetaAnnotationTypes(element, annotationType)
 		).withDescription(() -> element + " " + annotationType
-		).isReplacedBy(() -> getMetaAnnotationTypes(element, element.getAnnotation(annotationType)));
+		).replacedBy(() -> getMetaAnnotationTypes(element, element.getAnnotation(annotationType)));
 	}
 
 	/**
@@ -146,7 +146,7 @@ public abstract class AnnotatedElementUtils {
 		return DeprecatedAnnotationMethod.of(() ->
 			InternalAnnotatedElementUtils.getMetaAnnotationTypes(element, annotationName)
 		).withDescription(() -> element + " " + annotationName
-		).isReplacedBy(() -> {
+		).replacedBy(() -> {
 			for (Annotation annotation : element.getAnnotations()) {
 				if (annotation.annotationType().getName().equals(annotationName)) {
 					return getMetaAnnotationTypes(element, annotation);
@@ -182,7 +182,7 @@ public abstract class AnnotatedElementUtils {
 	public static boolean hasMetaAnnotationTypes(AnnotatedElement element, Class<? extends Annotation> annotationType) {
 		return DeprecatedAnnotationMethod.of(() ->
 			InternalAnnotatedElementUtils.hasMetaAnnotationTypes(element, annotationType)
-		).isReplacedBy(() ->
+		).replacedBy(() ->
 			MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS)
 				.stream(annotationType).anyMatch(MergedAnnotation::isMetaPresent)
 		);
@@ -205,7 +205,7 @@ public abstract class AnnotatedElementUtils {
 	public static boolean hasMetaAnnotationTypes(AnnotatedElement element, String annotationName) {
 		return DeprecatedAnnotationMethod.of(() ->
 			InternalAnnotatedElementUtils.hasMetaAnnotationTypes(element, annotationName)
-		).isReplacedBy(() ->
+		).replacedBy(() ->
 			MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS)
 				.stream(annotationName).anyMatch(MergedAnnotation::isMetaPresent)
 		);
@@ -224,9 +224,16 @@ public abstract class AnnotatedElementUtils {
 	 * @return {@code true} if a matching annotation is present
 	 * @since 4.2.3
 	 * @see #hasAnnotation(AnnotatedElement, Class)
+	 * @deprecated since 5.2 in favor of {@link MergedAnnotations}
 	 */
+	@Deprecated
 	public static boolean isAnnotated(AnnotatedElement element, Class<? extends Annotation> annotationType) {
-		return InternalAnnotatedElementUtils.isAnnotated(element, annotationType);
+		return DeprecatedAnnotationMethod.of(() ->
+			InternalAnnotatedElementUtils.isAnnotated(element, annotationType)
+		).replacedBy(() ->
+			MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS)
+				.isPresent(annotationType)
+		);
 	}
 
 	/**
@@ -242,7 +249,12 @@ public abstract class AnnotatedElementUtils {
 	 * @return {@code true} if a matching annotation is present
 	 */
 	public static boolean isAnnotated(AnnotatedElement element, String annotationName) {
-		return InternalAnnotatedElementUtils.isAnnotated(element, annotationName);
+		return DeprecatedAnnotationMethod.of(() ->
+			InternalAnnotatedElementUtils.isAnnotated(element, annotationName))
+		.replacedBy(() ->
+			MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS)
+				.isPresent(annotationName)
+		);
 	}
 
 	/**
@@ -265,8 +277,14 @@ public abstract class AnnotatedElementUtils {
 	@Nullable
 	public static AnnotationAttributes getMergedAnnotationAttributes(
 			AnnotatedElement element, Class<? extends Annotation> annotationType) {
-		return InternalAnnotatedElementUtils.getMergedAnnotationAttributes(element,
-				annotationType);
+		return DeprecatedAnnotationMethod.of(() ->
+			InternalAnnotatedElementUtils.getMergedAnnotationAttributes(element,
+				annotationType))
+			.replacedBy(() ->
+				MergedAnnotations.from(element)
+					.get(annotationType)
+					.asMap(annotation -> new AnnotationAttributes())
+		);
 	}
 
 	/**

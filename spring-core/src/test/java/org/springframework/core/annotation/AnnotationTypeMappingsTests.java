@@ -27,12 +27,14 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import org.springframework.core.annotation.AnnotatedElementUtilsTests.ContextConfig;
 import org.springframework.core.annotation.type.AnnotationType;
 import org.springframework.core.annotation.type.AnnotationTypeResolver;
 import org.springframework.core.annotation.type.DeclaredAttributes;
 import org.springframework.util.ClassUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.*;
 
 /**
  * Tests for {@link AnnotationTypeMappings}, {@link AnnotationTypeMapping} and
@@ -360,6 +362,19 @@ public class AnnotationTypeMappingsTests {
 		// Should not get attribute since convention restricted and not an explicit alias
 		assertThat(mapped.getString("value")).isEqualTo("on-annotation");
 		assertThat(mapped.getString("alais")).isEqualTo("on-annotation");
+	}
+
+	@Test
+	public void getMappingWhenHasAliasForExplcitMirrorWithShadowedAttributeMapsAttributes() {
+		// See SPR-14069 and commit d22480b0ebc9bb65fd297c69a44ef963661acca5 
+		AnnotationType type = resolve(AliasForExplcitMirrorWithShadowedAttribute.class);
+		AnnotationTypeMappings mappings = getMappings(type);
+		MappableAnnotation annotation = createMappable(type,
+				DeclaredAttributes.of("shadow", "on-attribute"));
+		MergedAnnotation<Annotation> mapped = mappings.getMapping(
+				AliasForExplicitValueMirror.class.getName()).map(annotation, false);
+		assertThat(mapped.getString("value")).isEqualTo("on-attribute");
+		assertThat(mapped.getString("alais")).isEqualTo("on-attribute");
 	}
 
 	@Test
@@ -761,6 +776,15 @@ public class AnnotationTypeMappingsTests {
 	@interface AliasForImplicitValueMirrorWithDifferentAttributeAndAnnotationValues {
 
 		String value() default "on-attribute";
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@AliasForExplicitValueMirror("on-annotation")
+	@interface AliasForExplcitMirrorWithShadowedAttribute {
+
+		@AliasFor(annotation = AliasForExplicitValueMirror.class, attribute = "alais")
+		String shadow() default "on-attribute";
 
 	}
 

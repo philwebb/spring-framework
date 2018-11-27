@@ -75,7 +75,7 @@ final class DeprecatedAnnotationMethod {
 		 * @param replacementMethod the replacement method
 		 * @return the result of the replacement method
 		 */
-		public T isReplacedBy(Supplier<T> replacementMethod) {
+		public T replacedBy(Supplier<T> replacementMethod) {
 			T result = replacementMethod.get();
 			T expectedResult = this.deprecatedMethod.get();
 			Assert.state(ObjectUtils.nullSafeEquals(result, expectedResult),
