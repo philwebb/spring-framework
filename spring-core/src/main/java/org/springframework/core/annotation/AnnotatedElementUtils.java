@@ -18,6 +18,7 @@ package org.springframework.core.annotation;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -120,13 +121,8 @@ public abstract class AnnotatedElementUtils {
 	public static Set<String> getMetaAnnotationTypes(AnnotatedElement element, Class<? extends Annotation> annotationType) {
 		return DeprecatedAnnotationMethod.of(() ->
 			InternalAnnotatedElementUtils.getMetaAnnotationTypes(element, annotationType)
-		).isReplacedBy(() -> {
-			MergedAnnotations annotations = MergedAnnotations.from(element);
-			MergedAnnotation<?> parent = annotations.get(annotationType);
-			return annotations.stream().filter(parent::isParentOf)
-					.map(MergedAnnotation::getType)
-					.collect(Collectors.toCollection(LinkedHashSet::new));
-		});
+		).withDescription(()-> element + " " + annotationType
+		).isReplacedBy(() -> getMetaAnnotationTypes(element, element.getAnnotation(annotationType)));
 	}
 
 	/**
@@ -150,12 +146,22 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.getMetaAnnotationTypes(element, annotationName)
 		).withDescription(()-> element + " " + annotationName
 		).isReplacedBy(() -> {
-			MergedAnnotations annotations = MergedAnnotations.from(element);
-			MergedAnnotation<?> parent = annotations.get(annotationName);
-			return annotations.stream().filter(parent::isParentOf)
-					.map(MergedAnnotation::getType)
-					.collect(Collectors.toCollection(LinkedHashSet::new));
+			for (Annotation annotation : element.getAnnotations()) {
+				if (annotation.annotationType().getName().equals(annotationName)) {
+					return getMetaAnnotationTypes(element, annotation);
+				}
+			}
+			return Collections.emptySet();
 		});
+	}
+
+	private static Set<String> getMetaAnnotationTypes(AnnotatedElement element, Annotation annotation) {
+		if (annotation == null) {
+			return Collections.emptySet();
+		}
+		MergedAnnotations merged = MergedAnnotations.from(annotation.annotationType());
+		return merged.stream().map(MergedAnnotation::getType).collect(
+				Collectors.toCollection(LinkedHashSet::new));
 	}
 
 	/**

@@ -350,6 +350,19 @@ public class AnnotationTypeMappingsTests {
 	}
 
 	@Test
+	public void getMappingWhenHasAliasForImplicitValueMirrorWithDifferentAttributeAndAnnotationValuesMapsAttributes() {
+		AnnotationType type = resolve(AliasForImplicitValueMirrorWithDifferentAttributeAndAnnotationValues.class);
+		AnnotationTypeMappings mappings = getMappings(type);
+		MappableAnnotation annotation = createMappable(type,
+				DeclaredAttributes.of("value", "on-attribute"));
+		MergedAnnotation<Annotation> mapped = mappings.getMapping(
+				AliasForExplicitValueMirror.class.getName()).map(annotation, false);
+		// Should not get attribute since convention restricted and not an explicit alias
+		assertThat(mapped.getString("value")).isEqualTo("on-annotation");
+		assertThat(mapped.getString("alais")).isEqualTo("on-annotation");
+	}
+
+	@Test
 	public void getMappingWhenHasMissingValueShouldReturnNull() {
 		AnnotationType type = resolve(Example.class);
 		AnnotationTypeMappings mappings = getMappings(type);
@@ -731,6 +744,26 @@ public class AnnotationTypeMappingsTests {
 		String two() default "";
 
 	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface AliasForExplicitValueMirror {
+
+		@AliasFor("alais")
+		String value() default "";
+
+		@AliasFor("value")
+		String alais() default "";
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@AliasForExplicitValueMirror("on-annotation")
+	@interface AliasForImplicitValueMirrorWithDifferentAttributeAndAnnotationValues {
+
+		String value() default "on-attribute";
+
+	}
+
 
 	@Retention(RetentionPolicy.RUNTIME)
 	@Example

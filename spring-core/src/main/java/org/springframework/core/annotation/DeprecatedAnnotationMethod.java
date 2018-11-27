@@ -27,34 +27,60 @@ import org.springframework.util.ObjectUtils;
  * @author Phillip Webb
  * @since 5.2
  */
-class DeprecatedAnnotationMethod {
+final class DeprecatedAnnotationMethod {
 
+	private DeprecatedAnnotationMethod() {
+	}
+
+	/**
+	 * Create a new {@link ReplacementAnnotationMethod} builder for the
+	 * deprecated method.
+	 * @param deprecatedMethod the deprecated method
+	 * @return a replacement builder.
+	 */
 	static <T> ReplacementAnnotationMethod<T> of(Supplier<T> deprecatedMethod) {
 		return new ReplacementAnnotationMethod<>(deprecatedMethod);
 	}
 
+	/**
+	 * Builder to complete replacement details for a deprecated annotation
+	 * method.
+	 * @param <T> the return type
+	 */
 	static class ReplacementAnnotationMethod<T> {
 
 		private final Supplier<T> deprecatedMethod;
 
 		private Supplier<String> description;
 
-		public ReplacementAnnotationMethod(Supplier<T> deprecatedMethod) {
+		ReplacementAnnotationMethod(Supplier<T> deprecatedMethod) {
 			this.deprecatedMethod = deprecatedMethod;
 		}
 
+		/**
+		 * Add a description for the method.
+		 * @param description a description supplier
+		 * @return this instance
+		 */
 		public ReplacementAnnotationMethod<T> withDescription(
 				Supplier<String> description) {
 			this.description = description;
 			return this;
 		}
 
+		/**
+		 * Provide the replacement method that should be used instead of the
+		 * deprecated one. The replacement method is called, and when approprate
+		 * the result is checked against the deprecated method.
+		 * @param replacementMethod the replacement method
+		 * @return the result of the replacement method
+		 */
 		public T isReplacedBy(Supplier<T> replacementMethod) {
 			T result = replacementMethod.get();
 			T expectedResult = this.deprecatedMethod.get();
 			Assert.state(ObjectUtils.nullSafeEquals(result, expectedResult),
 					() -> "Expected " + expectedResult + " got " + result
-							+ (description != null ? " on " + description.get() : ""));
+							+ (this.description != null ? " [" + this.description.get() + "]" : ""));
 			return result;
 		}
 

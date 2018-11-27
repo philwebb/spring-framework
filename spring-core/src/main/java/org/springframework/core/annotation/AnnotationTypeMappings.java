@@ -86,6 +86,9 @@ class AnnotationTypeMappings {
 
 	private List<AnnotationTypeMapping> buildMappings(AnnotationTypeResolver resolver,
 			RepeatableContainers repeatableContainers) {
+		if (!isMappable(this.source.getClassName())) {
+			return Collections.emptyList();
+		}
 		List<AnnotationTypeMapping> mappings = new ArrayList<>();
 		Deque<AnnotationTypeMapping> queue = new ArrayDeque<>();
 		MappableAnnotation root = new MappableAnnotation(resolver, repeatableContainers,
@@ -118,14 +121,18 @@ class AnnotationTypeMappings {
 
 	private boolean isMappable(AnnotationTypeMapping parent,
 			MappableAnnotation annotation) {
-		String className = annotation.getAnnotationType().getClassName();
-		if (className.startsWith("java.lang.annotation.")){
+		String annotationType = annotation.getAnnotationType().getClassName();
+		return isMappable(annotationType) && !parent.isAlreadyMapped(annotationType);
+	}
+
+	private boolean isMappable(String annotationType) {
+		if (annotationType.startsWith("java.lang.annotation.")){
 			return false;
 		}
-		if (className.startsWith("org.springframework.lang.")) {
+		if (annotationType.startsWith("org.springframework.lang.")) {
 			return false;
 		}
-		return !parent.isAlreadyMapped(className);
+		return true;
 	}
 
 	private Map<String, AnnotationTypeMapping> buildMappingForType(

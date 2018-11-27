@@ -82,6 +82,8 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * @return {@code true} if this annotation is a descendant
 	 */
 	boolean isParentOf(MergedAnnotation<?> annotation);
+	// FIXME name of this. Needs to show it's grandparent etc
+
 
 	/**
 	 * Return the depth of this annotation related to its use as a

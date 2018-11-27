@@ -31,6 +31,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.*;
 
 /**
  * Tests for {@link MergedAnnotations}.
@@ -199,6 +200,16 @@ public class MergedAnnotationsTests {
 				WithMetaExampleAndInheritedExample.class);
 		MergedAnnotation<Example> annotation = annotations.get(Example.class);
 		assertThat(annotation.getString("value")).isEqualTo("b");
+	}
+
+	@Test
+	public void selfAnnotated() {
+		MergedAnnotations annotations = MergedAnnotations.from(
+				SelfAnnotatedExample.class);
+		MergedAnnotation<SelfAnnotatedExample> annotation = annotations.get(
+				SelfAnnotatedExample.class);
+		assertThat(annotation.getString("value")).isEqualTo("test");
+		assertThat(annotations.stream(SelfAnnotatedExample.class)).hasSize(1);
 	}
 
 	//
@@ -374,6 +385,14 @@ public class MergedAnnotationsTests {
 
 		@AliasFor(annotation = ExampleArray.class, attribute = "test")
 		String test() default "";
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@SelfAnnotatedExample("test")
+	@interface SelfAnnotatedExample {
+
+		String value() default "";
 
 	}
 

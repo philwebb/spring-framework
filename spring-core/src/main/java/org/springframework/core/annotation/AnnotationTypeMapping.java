@@ -97,6 +97,15 @@ class AnnotationTypeMapping {
 	}
 
 	void addMirrorSet(Collection<Reference> references) {
+		for (Reference reference : references) {
+			Assert.state(equals(reference.getMapping()),
+					"Invalid mirror mapping reference");
+			String attributeName = reference.getAttribute().getAttributeName();
+			Reference aliasTo = this.aliases.get(attributeName);
+			if(aliasTo != null && equals(aliasTo.getMapping())) {
+				this.aliases.remove(attributeName);
+			}
+		}
 		this.mirrorSets.add(new MirrorSet(references));
 	}
 
@@ -129,10 +138,16 @@ class AnnotationTypeMapping {
 		if (annotation == null) {
 			return MergedAnnotation.missing();
 		}
-		DeclaredAttributes mappedAttributes = mapAttributes(
-				annotation.getAttributes());
-		return new MappedAnnotation<>(this, mappedAttributes,
-				annotation.getDeclaringClass(), inherited, null);
+		try {
+			DeclaredAttributes mappedAttributes = mapAttributes(
+					annotation.getAttributes());
+			return new MappedAnnotation<>(this, mappedAttributes,
+					annotation.getDeclaringClass(), inherited, null);
+		}
+		catch (Exception ex) {
+			throw new AnnotationConfigurationException("Unable to map attributes of "
+					+ annotation.getAnnotationType().getClassName(), ex);
+		}
 	}
 
 	DeclaredAttributes mapAttributes(DeclaredAttributes rootAttributes) {
