@@ -85,6 +85,7 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 		Map<Class<?>, Object> emptyArray = new HashMap<>();
 		SUPPORTED_TYPES.stream().filter(Class::isArray).forEach(type -> emptyArray.put(
 				type, Array.newInstance(type.getComponentType(), 0)));
+		emptyArray.put(Class.class, new Class<?>[0]);
 		emptyArray.put(Object.class, new Object[0]);
 		EMPTY_ARRAY = Collections.unmodifiableMap(emptyArray);
 	}
@@ -520,16 +521,12 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 		if (type == Object.class) {
 			return (T) value;
 		}
+		if (type.isArray() && isEmptyObjectArray(value)) {
+			return (T) (EMPTY_ARRAY.containsKey(type) ? EMPTY_ARRAY.get(type)
+					: Array.newInstance(type.getComponentType(), 0));
+		}
 		Assert.isTrue(SUPPORTED_TYPES.contains(type),
 				() -> "Type " + type.getName() + " is not supported");
-		if (type.isArray()) {
-			if (isEmptyObjectArray(value)) {
-				return (T) EMPTY_ARRAY.get(type);
-			}
-			if(type.getComponentType().isInstance(value)) {
-				return (T) wrapInArray(value, type);
-			}
-		}
 		Assert.state(type.isInstance(value),
 				"Value " + value.getClass().getName() + " is not a " + type.getName());
 		return (T) value;
@@ -539,12 +536,6 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 	private boolean isEmptyObjectArray(Object value) {
 		return Objects.equals(value.getClass(), Object[].class)
 				&& ((Object[]) value).length == 0;
-	}
-
-	private Object wrapInArray(Object value, Class<?> type) {
-		Object array = Array.newInstance(type.getComponentType(), 1);
-		Array.set(array, 0, value);
-		return  array;
 	}
 
 	private AttributeType getAttributeType(String attributeName) {

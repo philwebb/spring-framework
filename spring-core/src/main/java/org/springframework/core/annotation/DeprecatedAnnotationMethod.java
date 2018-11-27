@@ -16,10 +16,14 @@
 
 package org.springframework.core.annotation;
 
+import java.util.Map;
 import java.util.function.Supplier;
 
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
+
+import static org.assertj.core.api.Assertions.entry;
+import static org.assertj.core.api.Assertions.registerFormatterForType;
 
 /**
  * Internal class used to check updated implementations of deprecated methods.
@@ -78,10 +82,37 @@ final class DeprecatedAnnotationMethod {
 		public T replacedBy(Supplier<T> replacementMethod) {
 			T result = replacementMethod.get();
 			T expectedResult = this.deprecatedMethod.get();
-			Assert.state(ObjectUtils.nullSafeEquals(result, expectedResult),
+			Assert.state(isEquivalent(result, expectedResult),
 					() -> "Expected " + expectedResult + " got " + result
-							+ (this.description != null ? " [" + this.description.get() + "]" : ""));
+							+ (this.description != null
+									? " [" + this.description.get() + "]"
+									: ""));
 			return result;
+		}
+
+		private boolean isEquivalent(Object result, Object expectedResult) {
+			if (ObjectUtils.nullSafeEquals(result, result)) {
+				return true;
+			}
+			if (result instanceof Map && expectedResult instanceof Map) {
+				return isEquivalentMap((Map<?, ?>) result, (Map<?, ?>) expectedResult);
+			}
+			return false;
+		}
+
+		private boolean isEquivalentMap(Map<?, ?> result, Map<?, ?> expectedResult) {
+			if (result.size() != expectedResult.size()) {
+				return false;
+			}
+			for (Map.Entry<?, ?> entry : result.entrySet()) {
+				if (!expectedResult.containsKey(entry.getKey())) {
+					return false;
+				}
+				if (!isEquivalent(entry.getValue(), expectedResult.get(entry.getKey()))) {
+					return false;
+				}
+			}
+			return true;
 		}
 
 	}
