@@ -250,6 +250,11 @@ final class MissingMergedAnnotation<A extends Annotation> implements MergedAnnot
 	}
 
 	@Override
+	public Optional<A> synthesize(Predicate<MergedAnnotation<A>> conditioan) {
+		return Optional.empty();
+	}
+
+	@Override
 	public String toString() {
 		return "(missing)";
 	}

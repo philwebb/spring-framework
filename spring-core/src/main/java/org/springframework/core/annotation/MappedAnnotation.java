@@ -388,7 +388,9 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 	@Override
 	@SuppressWarnings("unchecked")
 	public A synthesize() {
-		Assert.state(isPresent(), "Unable to synthesize missing annotation");
+		if(!isPresent()) {
+			throw new NoSuchElementException("Unable to synthesize missing annotation");
+		}
 		ClassLoader classLoader = this.mapping.getResolver().getClassLoader();
 		Class<A> annotationType = (Class<A>) ClassUtils.resolveClassName(getType(),
 				classLoader);

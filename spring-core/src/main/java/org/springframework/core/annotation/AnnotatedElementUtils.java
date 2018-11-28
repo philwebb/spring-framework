@@ -388,10 +388,18 @@ public abstract class AnnotatedElementUtils {
 	 * @see #getMergedAnnotationAttributes(AnnotatedElement, Class)
 	 * @see #findMergedAnnotation(AnnotatedElement, Class)
 	 * @see AnnotationUtils#synthesizeAnnotation(Map, Class, AnnotatedElement)
+	 * @deprecated since 5.2 in favor of {@link MergedAnnotations}
 	 */
+	@Deprecated
 	@Nullable
 	public static <A extends Annotation> A getMergedAnnotation(AnnotatedElement element, Class<A> annotationType) {
-		return InternalAnnotatedElementUtils.getMergedAnnotation(element, annotationType);
+		return MigrateMethod.from(() ->
+			InternalAnnotatedElementUtils.getMergedAnnotation(element, annotationType)
+		).to(() ->
+			MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS,
+					RepeatableContainers.none()).get(annotationType).synthesize(
+							MergedAnnotation::isPresent).orElse(null)
+		);
 	}
 
 	/**

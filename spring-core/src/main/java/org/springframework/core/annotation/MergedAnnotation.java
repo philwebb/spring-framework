@@ -382,8 +382,28 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * {@link Proxy} and as a result may incur a computational cost when first
 	 * invoked.
 	 * @return a sythesized version of the annotation.
+	 * @throws NoSuchElementException on a missing annotation
 	 */
-	A synthesize();
+	A synthesize() throws NoSuchElementException;
+
+	/**
+	 * Optionally return type-safe synthesized version of this annotation based
+	 * on a condition predicate. The result is synthesized using a JDK
+	 * {@link Proxy} and as a result may incur a computational cost when first
+	 * invoked.
+	 * @param condition the test to determine if the annotation can be
+	 * sythesized
+	 * @return a optional containing the sythesized version of the annotation or
+	 * an empty optional if the condition doesn't match
+	 * @throws NoSuchElementException on a missing annotation
+	 */
+	default Optional<A> synthesize(Predicate<MergedAnnotation<A>> condition)
+			throws NoSuchElementException {
+		if (condition.test(this)) {
+			return Optional.of(synthesize());
+		}
+		return Optional.empty();
+	}
 
 	/**
 	 * Return an {@link MergedAnnotation} that represents a missing annotation
