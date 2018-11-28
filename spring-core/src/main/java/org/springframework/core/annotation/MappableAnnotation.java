@@ -54,7 +54,7 @@ final class MappableAnnotation {
 			Class<?> declaringClass) {
 		this.resolver = resolver;
 		this.repeatableContainers = repeatableContainers;
-		this.type = resolver.resolve(annotation.getClassName());
+		this.type = resolver.resolve(annotation.getClassName()); //FIXME could be null
 		this.attributes = annotation.getAttributes();
 		this.declaringClass = declaringClass;
 	}

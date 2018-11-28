@@ -32,9 +32,8 @@ public interface AnnotationTypeResolver {
 	 * Return the {@link AnnotationType} for the given type.
 	 * @param className the class name of the type to resolve
 	 * @return a resolved type or {@code null}
-	 * @throws AnnotationResolveException if the annotation type cannot be resolved
 	 */
-	AnnotationType resolve(String className) throws AnnotationResolveException;
+	AnnotationType resolve(String className);
 
 	/**
 	 * Expose the ClassLoader used by this resolver.

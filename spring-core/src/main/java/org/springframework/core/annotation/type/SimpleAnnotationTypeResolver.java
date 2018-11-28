@@ -88,7 +88,7 @@ class SimpleAnnotationTypeResolver implements AnnotationTypeResolver {
 			}
 		}
 		catch (IOException ex) {
-			throw new AnnotationResolveException(ex);
+			return null;
 		}
 	}
 

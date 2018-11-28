@@ -111,7 +111,7 @@ public abstract class RepeatableContainers {
 			AttributeType valueType = type.getAttributeTypes().get("value");
 			if (value != null && value instanceof DeclaredAttributes[]) {
 				String elementType = valueType.getClassName().replace("[]", "");
-				AnnotationType repeatableType = resolver.resolve(elementType);
+				AnnotationType repeatableType = resolver.resolve(elementType); // FIXME could be null
 				if (hasAnnotation(repeatableType, REPEATABLE)) {
 					return repeatableType;
 				}
@@ -146,7 +146,7 @@ public abstract class RepeatableContainers {
 		AnnotationType findContainedRepeatableType(AnnotationTypeResolver resolver,
 				AnnotationType type, DeclaredAttributes attributes) {
 			if (type.getClassName().equals(this.container.getName())) {
-				return resolver.resolve(this.repeatable.getName());
+				return resolver.resolve(this.repeatable.getName()); // FIXME could be null
 			}
 			return super.findContainedRepeatableType(resolver, type, attributes);
 		}

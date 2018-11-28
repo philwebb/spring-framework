@@ -22,6 +22,8 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.springframework.core.BridgeMethodResolver;
@@ -281,10 +283,9 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.getMergedAnnotationAttributes(element,
 				annotationType))
 			.to(() ->
-				MergedAnnotations.from(element)
-					.get(annotationType)
-					.asMap(annotation -> new AnnotationAttributes())
-		);
+				MergedAnnotations.from(element).get(annotationType).asMap(
+						conditionalAttributes(MergedAnnotation::isPresent))
+			);
 	}
 
 	/**
@@ -739,6 +740,16 @@ public abstract class AnnotatedElementUtils {
 			Class<A> annotationType, @Nullable Class<? extends Annotation> containerType) {
 		return InternalAnnotatedElementUtils.findMergedRepeatableAnnotations(element,
 				annotationType, containerType);
+	}
+
+	private static Function<MergedAnnotation<?>, AnnotationAttributes> conditionalAttributes(
+			Predicate<MergedAnnotation<?>> predicate) {
+		return annotation -> {
+			if (predicate.test(annotation)) {
+				return new AnnotationAttributes();
+			}
+			return null;
+		};
 	}
 
 }

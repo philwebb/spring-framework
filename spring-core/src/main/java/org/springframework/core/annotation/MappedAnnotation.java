@@ -269,7 +269,7 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 				DeclaredAttributes.class);
 		AttributeType attributeType = getAttributeType(attributeName);
 		AnnotationType nestedType = this.mapping.getResolver().resolve(
-				attributeType.getClassName());
+				attributeType.getClassName()); // FIXME could be null
 		return createNested(nestedType, nestedAttributes);
 	}
 
@@ -287,7 +287,7 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 		AttributeType attributeType = getAttributeType(attributeName);
 		String arrayType = attributeType.getClassName();
 		String componentType = arrayType.substring(0, arrayType.length() - 2);
-		AnnotationType nestedType = this.mapping.getResolver().resolve(componentType);
+		AnnotationType nestedType = this.mapping.getResolver().resolve(componentType); // FIXME could be null
 		MergedAnnotation<T>[] result = new MergedAnnotation[nestedAttributes.length];
 		for (int i = 0; i < nestedAttributes.length; i++) {
 			result[i] = createNested(nestedType, nestedAttributes[i]);
@@ -335,6 +335,9 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 		Assert.state(isPresent(), "Unable to get map for missing annotation");
 		T map = (factory != null) ? factory.apply(this)
 				: (T) new LinkedHashMap<String, Object>();
+		if (map == null) {
+			return null;
+		}
 		for (AttributeType attributeType : this.mapping.getAnnotationType().getAttributeTypes()) {
 			Class<?> type = resolveClassName(attributeType.getClassName());
 			type = ClassUtils.resolvePrimitiveIfNecessary(type);

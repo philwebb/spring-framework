@@ -173,11 +173,10 @@ class AnnotationTypeMappings {
 		AliasForDescriptor descriptor = getAliasForDescriptor(target,
 				target.getAttribute());
 		if (descriptor == null) {
-			return null;
+			return target;
 		}
 		Reference nextTarget = getTarget(target, descriptor);
-		boolean isExplicitMirror = nextTarget.isForSameAnnotation(target);
-		if (isExplicitMirror) {
+		if (nextTarget.isForSameAnnotation(target)) {
 			int compare = target.getAttribute().getAttributeName().compareTo(
 					nextTarget.getAttribute().getAttributeName());
 			return (compare < 0) ? target : nextTarget;
