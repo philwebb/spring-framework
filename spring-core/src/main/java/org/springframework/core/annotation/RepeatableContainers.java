@@ -36,6 +36,8 @@ import org.springframework.util.ObjectUtils;
  * The {@link #and(Class, Class)} method can be used to register additional
  * relationships for annotations that do not wish to use
  * {@link Repeatable @Repeatable}.
+ * <p>
+ * To completely disable repeatable support use {@link #none()}.
  *
  * @author Phillip Webb
  * @since 5.1
@@ -89,19 +91,22 @@ public abstract class RepeatableContainers {
 		return StandardRepeatableContainers.INSTANCE;
 	}
 
+	public static RepeatableContainers none() {
+		return NoRepeatableContainers.INSTANCE;
+	}
+
 	/**
 	 * Standard {@link RepeatableContainers} implementation that searches using
 	 * Java's {@link Repeatable @Repeatable} annotation.
 	 */
 	private static class StandardRepeatableContainers extends RepeatableContainers {
 
-		private static StandardRepeatableContainers INSTANCE = new StandardRepeatableContainers(
-				null);
+		private static StandardRepeatableContainers INSTANCE = new StandardRepeatableContainers();
 
 		private static final String REPEATABLE = Repeatable.class.getName();
 
-		StandardRepeatableContainers(RepeatableContainers parent) {
-			super(parent);
+		StandardRepeatableContainers() {
+			super(null);
 		}
 
 		@Override
@@ -167,6 +172,19 @@ public abstract class RepeatableContainers {
 			hashCode = 31 * hashCode + this.container.hashCode();
 			hashCode = 31 * hashCode + this.repeatable.hashCode();
 			return hashCode;
+		}
+
+	}
+
+	/**
+	 * No repeatable containers.
+	 */
+	private static class NoRepeatableContainers extends RepeatableContainers {
+
+		private static NoRepeatableContainers INSTANCE = new NoRepeatableContainers();
+
+		NoRepeatableContainers() {
+			super(null);
 		}
 
 	}

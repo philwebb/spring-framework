@@ -434,4 +434,15 @@ public class AnnotationAttributes extends LinkedHashMap<String, Object> {
 		return new AnnotationAttributes(map);
 	}
 
+	/**
+	 * Factory method used to create {@link AnnotationAttributes} only when the
+	 * specific annotation is present.
+	 * @param annotation the source annotation
+	 * @return a new {@link AnnotationAttributes} instance of {@code null}
+	 * @since 5.2
+	 */
+	static AnnotationAttributes createIfAnnotationPresent(MergedAnnotation<?> annotation) {
+		return annotation.isPresent() ? new AnnotationAttributes() : null;
+	}
+
 }

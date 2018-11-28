@@ -20,6 +20,7 @@ import java.lang.annotation.Annotation;
 import java.lang.annotation.Inherited;
 import java.lang.reflect.Proxy;
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -434,6 +435,24 @@ public interface MergedAnnotation<A extends Annotation> {
 				}
 			}
 			return false;
+		}
+
+		/**
+		 * Factory method to create a {@link MapValues} array from a set of
+		 * boolean flags.
+		 * @param classToString if {@link MapValues#CLASS_TO_STRING} is included
+		 * @param annotationsToMap if {@link MapValues#ANNOTATION_TO_MAP} is included
+		 * @return a new {@link MapValues} array
+		 */
+		static MapValues[] get(boolean classToString, boolean annotationsToMap) {
+			EnumSet<MapValues> result = EnumSet.noneOf(MapValues.class);
+			if (classToString) {
+				result.add(MapValues.CLASS_TO_STRING);
+			}
+			if (annotationsToMap) {
+				result.add(MapValues.ANNOTATION_TO_MAP);
+			}
+			return result.toArray(new MapValues[0]);
 		}
 
 	}

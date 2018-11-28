@@ -34,8 +34,7 @@ final class MigrateMethod {
 	}
 
 	/**
-	 * Create a new {@link ReplacementMethod} builder for the
-	 * deprecated method.
+	 * Create a new {@link ReplacementMethod} builder for the deprecated method.
 	 * @param originalMethod the original method being migrated
 	 * @return a replacement builder.
 	 */
@@ -63,16 +62,15 @@ final class MigrateMethod {
 		 * @param description a description supplier
 		 * @return this instance
 		 */
-		public ReplacementMethod<T> withDescription(
-				Supplier<String> description) {
+		public ReplacementMethod<T> withDescription(Supplier<String> description) {
 			this.description = description;
 			return this;
 		}
 
 		/**
 		 * Provide the replacement method that should be used instead of the
-		 * deprecated one. The replacement method is called, and when appropriate
-		 * the result is checked against the deprecated method.
+		 * deprecated one. The replacement method is called, and when
+		 * appropriate the result is checked against the deprecated method.
 		 * @param replacementMethod the replacement method
 		 * @return the result of the replacement method
 		 */
@@ -88,11 +86,27 @@ final class MigrateMethod {
 		}
 
 		private boolean isEquivalent(Object result, Object expectedResult) {
-			if (ObjectUtils.nullSafeEquals(result, result)) {
+			if (ObjectUtils.nullSafeEquals(result, expectedResult)) {
 				return true;
+			}
+			if (result == null || expectedResult == null) {
+				return false;
 			}
 			if (result instanceof Map && expectedResult instanceof Map) {
 				return isEquivalentMap((Map<?, ?>) result, (Map<?, ?>) expectedResult);
+			}
+			if (result instanceof Object[] && expectedResult instanceof Object[]) {
+				return isEquivalentArray((Object[]) result, (Object[]) expectedResult);
+			}
+			if (result instanceof Object[] && !(expectedResult instanceof Object[])) {
+				if (isEquivalentArray((Object[]) result, new Object[] { expectedResult })) {
+					return true;
+				}
+			}
+			if (!(result instanceof Object[]) && expectedResult instanceof Object[]) {
+				if (isEquivalentArray(new Object[] { result }, (Object[]) expectedResult )) {
+					return true;
+				}
 			}
 			return false;
 		}
@@ -106,6 +120,18 @@ final class MigrateMethod {
 					return false;
 				}
 				if (!isEquivalent(entry.getValue(), expectedResult.get(entry.getKey()))) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		private boolean isEquivalentArray(Object[] result, Object[] expectedResult) {
+			if (result.length != expectedResult.length) {
+				return false;
+			}
+			for (int i = 0; i < result.length; i++) {
+				if (!isEquivalent(result[i], expectedResult[i])) {
 					return false;
 				}
 			}

@@ -616,7 +616,7 @@ public class AnnotatedElementUtilsTests {
 	public void findMergedAnnotationAttributesWithSingleElementOverridingAnArrayViaConvention() {
 		assertComponentScanAttributes(ConventionBasedSinglePackageComponentScanClass.class, "com.example.app.test");
 	}
-
+	
 	@Test
 	public void findMergedAnnotationAttributesWithSingleElementOverridingAnArrayViaAliasFor() {
 		assertComponentScanAttributes(AliasForBasedSinglePackageComponentScanClass.class, "com.example.app.test");

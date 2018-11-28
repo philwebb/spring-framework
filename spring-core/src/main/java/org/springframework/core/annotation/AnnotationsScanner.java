@@ -95,7 +95,13 @@ class AnnotationsScanner implements Iterable<DeclaredAnnotations> {
 
 		protected final Iterable<DeclaredAnnotations> getResult(
 				SearchStrategy searchStrategy) {
-			return this.results.computeIfAbsent(searchStrategy, this::compute);
+			// Use distinct get and put calls rather than computeIfAbsent
+			Iterable<DeclaredAnnotations> result = this.results.get(searchStrategy);
+			if (result == null) {
+				result = compute(searchStrategy);
+				this.results.put(searchStrategy, result);
+			}
+			return result;
 		}
 
 		protected abstract Iterable<DeclaredAnnotations> compute(
