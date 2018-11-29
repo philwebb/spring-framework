@@ -18,6 +18,7 @@ package org.springframework.core.annotation;
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Repeatable;
+import java.lang.reflect.Method;
 
 import org.springframework.core.annotation.type.AnnotationType;
 import org.springframework.core.annotation.type.AnnotationTypeResolver;
@@ -52,8 +53,6 @@ public abstract class RepeatableContainers {
 
 	public RepeatableContainers and(Class<? extends Annotation> container,
 			Class<? extends Annotation> repeatable) {
-		Assert.notNull(container, "Container must not be null");
-		Assert.notNull(repeatable, "Repeatable must not be null");
 		return new ExplicitRepeatableContainer(this, container, repeatable);
 	}
 
@@ -89,6 +88,11 @@ public abstract class RepeatableContainers {
 	 */
 	public static RepeatableContainers standardRepeatables() {
 		return StandardRepeatableContainers.INSTANCE;
+	}
+
+	public static RepeatableContainers of(Class<? extends Annotation> container,
+			Class<? extends Annotation> repeatable) {
+		return new ExplicitRepeatableContainer(null, container, repeatable);
 	}
 
 	public static RepeatableContainers none() {
@@ -136,15 +140,43 @@ public abstract class RepeatableContainers {
 	 */
 	private static class ExplicitRepeatableContainer extends RepeatableContainers {
 
-		private Class<?> container;
+		private Class<? extends Annotation> container;
 
-		private Class<?> repeatable;
+		private Class<? extends Annotation> repeatable;
 
-		ExplicitRepeatableContainer(RepeatableContainers parent, Class<?> container,
-				Class<?> repeatable) {
+		ExplicitRepeatableContainer(RepeatableContainers parent, Class<? extends Annotation> container,
+				Class<? extends Annotation> repeatable) {
 			super(parent);
+			validate(container, repeatable);
 			this.container = container;
 			this.repeatable = repeatable;
+		}
+
+		private void validate(Class<? extends Annotation> container,
+				Class<? extends Annotation> repeatable) {
+			Assert.notNull(container, "Container must not be null");
+			Assert.notNull(repeatable, "Repeatable must not be null");
+			try {
+				Method method = container.getDeclaredMethod("value");
+				Class<?> returnType = method.getReturnType();
+				if (!returnType.isArray()
+						|| returnType.getComponentType() != repeatable) {
+					throw new AnnotationConfigurationException("Container type ["
+							+ container.getName()
+							+ "] must declare a 'value' attribute for an array of type ["
+							+ repeatable.getName() + "]");
+				}
+			}
+			catch (AnnotationConfigurationException ex) {
+				throw ex;
+			}
+			catch (Throwable ex) {
+				throw new AnnotationConfigurationException(
+						"Invalid declaration of container type [" + container.getName()
+								+ "] for repeatable annotation [" + repeatable.getName()
+								+ "]",
+						ex);
+			}
 		}
 
 		@Override

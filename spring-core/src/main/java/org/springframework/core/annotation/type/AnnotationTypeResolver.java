@@ -23,7 +23,7 @@ import java.lang.reflect.AnnotatedElement;
  * name.
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  * @see SimpleAnnotationTypeResolver
  */
 public interface AnnotationTypeResolver {

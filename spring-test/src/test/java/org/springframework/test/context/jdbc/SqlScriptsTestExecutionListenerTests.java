@@ -79,7 +79,8 @@ public class SqlScriptsTestExecutionListenerTests {
 				containsString("attribute 'scripts' and its alias 'value'")));
 		exception.expectMessage(either(containsString("values of [{foo}] and [{bar}]")).or(
 				containsString("values of [{bar}] and [{foo}]")));
-		exception.expectMessage(containsString("but only one is permitted"));
+		exception.expectMessage(either(containsString("but only one is permitted")).or(
+				containsString("Different @AliasFor mirror values")));
 		listener.beforeTestMethod(testContext);
 	}
 

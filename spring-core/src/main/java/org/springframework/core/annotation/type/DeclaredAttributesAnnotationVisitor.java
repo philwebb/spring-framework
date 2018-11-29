@@ -28,7 +28,7 @@ import org.springframework.util.Assert;
  * {@link DeclaredAttributes}.
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  */
 class DeclaredAttributesAnnotationVisitor extends AttributeValuesAnnotationVisitor {
 

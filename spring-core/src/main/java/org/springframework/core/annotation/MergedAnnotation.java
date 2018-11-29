@@ -427,7 +427,7 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * {@link #getDepth()}.
 	 * @return a depth based comparator
 	 */
-	static <A extends Annotation> Comparator<? super MergedAnnotation<A>> comparingDepth() {
+	static <A extends Annotation> Comparator<MergedAnnotation<A>> comparingDepth() {
 		return Comparator.comparingInt(MergedAnnotation::getDepth);
 	}
 

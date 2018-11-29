@@ -25,7 +25,7 @@ import java.util.Iterator;
  * Simple in-memory {@link DeclaredAnnotations} implementation.
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  */
 class SimpleDeclaredAnnotations implements DeclaredAnnotations {
 
@@ -52,6 +52,11 @@ class SimpleDeclaredAnnotations implements DeclaredAnnotations {
 	@Override
 	public Iterator<DeclaredAnnotation> iterator() {
 		return this.declaredAnnotations.iterator();
+	}
+
+	@Override
+	public String toString() {
+		return AnnotationString.get(this);
 	}
 
 }

@@ -22,7 +22,7 @@ import org.springframework.util.Assert;
  * Simple in-memory {@link DeclaredAnnotation} implementation.
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  * @see DeclaredAnnotation#of
  */
 class SimpleDeclaredAnnotation implements DeclaredAnnotation {
@@ -46,6 +46,11 @@ class SimpleDeclaredAnnotation implements DeclaredAnnotation {
 	@Override
 	public DeclaredAttributes getAttributes() {
 		return this.attributes;
+	}
+
+	@Override
+	public String toString() {
+		return AnnotationString.get(this);
 	}
 
 }

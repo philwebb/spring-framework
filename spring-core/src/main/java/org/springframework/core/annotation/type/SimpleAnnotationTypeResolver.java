@@ -44,7 +44,7 @@ import org.springframework.util.ConcurrentReferenceHashMap;
  * {@link org.springframework.asm.ClassReader}.
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  */
 class SimpleAnnotationTypeResolver implements AnnotationTypeResolver {
 

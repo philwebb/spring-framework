@@ -22,12 +22,14 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.springframework.core.BridgeMethodResolver;
 import org.springframework.core.annotation.MergedAnnotation.MapValues;
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
 
 /**
@@ -421,10 +423,19 @@ public abstract class AnnotatedElementUtils {
 	 * @see #getMergedAnnotation(AnnotatedElement, Class)
 	 * @see #getAllAnnotationAttributes(AnnotatedElement, String)
 	 * @see #findAllMergedAnnotations(AnnotatedElement, Class)
+	 * @deprecated since 5.2 in favor of {@link MergedAnnotations}
 	 */
+	@Deprecated
 	public static <A extends Annotation> Set<A> getAllMergedAnnotations(AnnotatedElement element, Class<A> annotationType) {
-		return InternalAnnotatedElementUtils.getAllMergedAnnotations(element,
-				annotationType);
+		return MigrateMethod.from(() ->
+			InternalAnnotatedElementUtils.getAllMergedAnnotations(element,
+					annotationType)
+		).to(() ->
+			MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS,
+					RepeatableContainers.none()).stream(annotationType).map(
+							MergedAnnotation::synthesize).collect(
+									Collectors.toCollection(LinkedHashSet::new))
+		);
 	}
 
 	/**
@@ -444,10 +455,20 @@ public abstract class AnnotatedElementUtils {
 	 * or an empty set if none were found
 	 * @since 5.1
 	 * @see #getAllMergedAnnotations(AnnotatedElement, Class)
+	 * @deprecated since 5.2 in favor of {@link MergedAnnotations}
 	 */
+	@Deprecated
 	public static Set<Annotation> getAllMergedAnnotations(AnnotatedElement element, Set<Class<? extends Annotation>> annotationTypes) {
-		return InternalAnnotatedElementUtils.getAllMergedAnnotations(element,
-				annotationTypes);
+		return MigrateMethod.from(() ->
+			InternalAnnotatedElementUtils.getAllMergedAnnotations(element,
+					annotationTypes)
+		).to(() -> {
+			Predicate<MergedAnnotation<?>> filter = typeNameFilter(annotationTypes);
+			return MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS,
+					RepeatableContainers.none()).stream().filter(filter).map(
+							MergedAnnotation::synthesize).collect(
+									Collectors.toCollection(LinkedHashSet::new));
+		});
 	}
 
 	/**
@@ -473,11 +494,21 @@ public abstract class AnnotatedElementUtils {
 	 * @see #getMergedAnnotation(AnnotatedElement, Class)
 	 * @see #getAllMergedAnnotations(AnnotatedElement, Class)
 	 * @see #getMergedRepeatableAnnotations(AnnotatedElement, Class, Class)
+	 * @deprecated since 5.2 in favor of {@link MergedAnnotations}
 	 */
+	@Deprecated
 	public static <A extends Annotation> Set<A> getMergedRepeatableAnnotations(AnnotatedElement element,
 			Class<A> annotationType) {
-		return InternalAnnotatedElementUtils.getMergedRepeatableAnnotations(element,
-				annotationType);
+		return MigrateMethod.from(() ->
+			InternalAnnotatedElementUtils.getMergedRepeatableAnnotations(element,
+					annotationType)
+		).to(() ->
+			MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS,
+					RepeatableContainers.standardRepeatables()).stream(annotationType).sorted(
+							MergedAnnotation.comparingDepth()).map(
+									MergedAnnotation::synthesize).collect(
+											Collectors.toCollection(LinkedHashSet::new))
+		);
 	}
 
 	/**
@@ -505,11 +536,23 @@ public abstract class AnnotatedElementUtils {
 	 * @since 4.3
 	 * @see #getMergedAnnotation(AnnotatedElement, Class)
 	 * @see #getAllMergedAnnotations(AnnotatedElement, Class)
+	 * @deprecated since 5.2 in favor of {@link MergedAnnotations}
 	 */
+	@Deprecated
 	public static <A extends Annotation> Set<A> getMergedRepeatableAnnotations(AnnotatedElement element,
 			Class<A> annotationType, @Nullable Class<? extends Annotation> containerType) {
-		return InternalAnnotatedElementUtils.getMergedRepeatableAnnotations(element,
-				annotationType, containerType);
+		return MigrateMethod.from(() ->
+			InternalAnnotatedElementUtils.getMergedRepeatableAnnotations(element,
+					annotationType, containerType)
+		).to(() -> {
+			RepeatableContainers repeatableContainers = containerType != null
+					? RepeatableContainers.of(containerType, annotationType)
+					: RepeatableContainers.standardRepeatables();
+			return MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS,
+					repeatableContainers).stream(annotationType).map(
+							MergedAnnotation::synthesize).collect(
+									Collectors.toCollection(LinkedHashSet::new));
+		});
 	}
 
 	/**
@@ -774,6 +817,13 @@ public abstract class AnnotatedElementUtils {
 			Class<A> annotationType, @Nullable Class<? extends Annotation> containerType) {
 		return InternalAnnotatedElementUtils.findMergedRepeatableAnnotations(element,
 				annotationType, containerType);
+	}
+
+	private static Predicate<MergedAnnotation<?>> typeNameFilter(Set<Class<? extends Annotation>> annotationTypes) {
+		Assert.notNull(annotationTypes, "AnnotationTypes must not be null");
+		Set<String> annotationNames = annotationTypes.stream().map(
+				Class::getName).collect(Collectors.toSet());
+		return annotation -> annotationNames.contains(annotation.getType());
 	}
 
 }

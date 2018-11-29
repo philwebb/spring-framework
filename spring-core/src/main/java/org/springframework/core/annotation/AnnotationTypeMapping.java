@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import org.springframework.core.annotation.type.AbstractDeclaredAttributes;
 import org.springframework.core.annotation.type.AnnotationType;
 import org.springframework.core.annotation.type.AnnotationTypeResolver;
 import org.springframework.core.annotation.type.AttributeType;
@@ -272,7 +273,7 @@ class AnnotationTypeMapping {
 	/**
 	 * {@link DeclaredAttributes} decorator to apply mapping rules.
 	 */
-	private static class MappedAttributes implements DeclaredAttributes {
+	private static class MappedAttributes extends AbstractDeclaredAttributes {
 
 		private final DeclaredAttributes attributes;
 
@@ -326,12 +327,17 @@ class AnnotationTypeMapping {
 			return array;
 		}
 
+		@Override
+		public Set<String> names() {
+			return this.source.getAnnotationType().getAttributeTypes().names();
+		}
+
 	}
 
 	/**
 	 * {@link DeclaredAttributes} decorator to apply mirroring rules.
 	 */
-	private static class MirroredAttributes implements DeclaredAttributes {
+	private static class MirroredAttributes extends AbstractDeclaredAttributes {
 
 		private final DeclaredAttributes attributes;
 
@@ -421,6 +427,10 @@ class AnnotationTypeMapping {
 					&& Array.getLength(defaultValue) == 0;
 		}
 
+		@Override
+		public Set<String> names() {
+			return this.attributes.names();
+		}
 
 		@Override
 		public Object get(String name) {

@@ -24,7 +24,7 @@ import java.lang.reflect.Method;
  * implemented without using reflection.
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  */
 public interface AttributeType {
 

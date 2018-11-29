@@ -24,7 +24,7 @@ import java.lang.annotation.Annotation;
  * necessarily use reflection.
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  */
 public interface DeclaredAnnotation {
 
@@ -38,6 +38,8 @@ public interface DeclaredAnnotation {
 	 * @return the class name of the annotation
 	 */
 	String getClassName();
+
+	// FIXME we're not consistent with naming. Should we use getType or getClassName?
 
 	/**
 	 * Return the attributes of of the declared annotation.

@@ -21,6 +21,7 @@ import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.util.Assert;
 
@@ -29,9 +30,9 @@ import org.springframework.util.Assert;
  * using standard Java reflection.
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  */
-class StandardDeclaredAttributes implements DeclaredAttributes {
+class StandardDeclaredAttributes extends AbstractDeclaredAttributes {
 
 	private final Annotation annotation;
 
@@ -72,6 +73,11 @@ class StandardDeclaredAttributes implements DeclaredAttributes {
 			return null;
 		}
 		return get(method);
+	}
+
+	@Override
+	public Set<String> names() {
+		return this.attributeMethods.keySet();
 	}
 
 	private Object get(Method method) {

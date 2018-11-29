@@ -19,6 +19,7 @@ package org.springframework.core.annotation.type;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.util.Assert;
 
@@ -26,10 +27,10 @@ import org.springframework.util.Assert;
  * Simple in-memory {@link DeclaredAttributes} implementation.
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  * @see DeclaredAttributes#of
  */
-class SimpleDeclaredAttributes implements DeclaredAttributes {
+class SimpleDeclaredAttributes extends AbstractDeclaredAttributes {
 
 	private final Map<String, Object> values;
 
@@ -43,6 +44,11 @@ class SimpleDeclaredAttributes implements DeclaredAttributes {
 			map.put(pairs[i].toString(), pairs[i + 1]);
 		}
 		this.values = Collections.unmodifiableMap(map);
+	}
+
+	@Override
+	public Set<String> names() {
+		return this.values.keySet();
 	}
 
 	@Override

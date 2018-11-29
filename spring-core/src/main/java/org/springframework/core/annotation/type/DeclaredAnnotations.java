@@ -33,7 +33,7 @@ import org.springframework.lang.Nullable;
  *
  * @author Phillip Webb
  * @author Stephane Nicoll
- * @since 5.1
+ * @since 5.2
  */
 @FunctionalInterface
 public interface DeclaredAnnotations extends Iterable<DeclaredAnnotation> {

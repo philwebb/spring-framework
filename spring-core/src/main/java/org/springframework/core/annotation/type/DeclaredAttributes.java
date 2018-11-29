@@ -17,20 +17,26 @@
 package org.springframework.core.annotation.type;
 
 import java.util.Collections;
+import java.util.Set;
 
 /**
  * Provides access to annotation attributes.
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  */
-@FunctionalInterface
-public interface DeclaredAttributes {
+public interface DeclaredAttributes extends Iterable<DeclaredAttribute> {
 
 	/**
 	 * Constant that can be used when there are no declared attributes.
 	 */
 	DeclaredAttributes NONE = new SimpleDeclaredAttributes(Collections.emptyMap());
+
+	/**
+	 * Return a stream of all attribute names.
+	 * @return all attribute names
+	 */
+	Set<String> names();
 
 	/**
 	 * Return the value of a specific annotation attribute. The resulting

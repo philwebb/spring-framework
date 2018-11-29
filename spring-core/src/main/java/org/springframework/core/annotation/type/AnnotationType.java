@@ -22,7 +22,7 @@ package org.springframework.core.annotation.type;
  * implemented without using reflection.
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  * @see AttributeType
  */
 public interface AnnotationType {

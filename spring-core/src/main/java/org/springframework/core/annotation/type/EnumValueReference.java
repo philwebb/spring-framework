@@ -24,7 +24,7 @@ import org.springframework.util.Assert;
  * A {@link DeclaredAttributes} value that a references to an enum value.
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  * @see DeclaredAttributes
  * @see ClassReference
  */

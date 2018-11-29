@@ -27,7 +27,7 @@ import org.springframework.util.Assert;
  * indicate array type.
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  * @see DeclaredAttributes
  * @see EnumValueReference
  */

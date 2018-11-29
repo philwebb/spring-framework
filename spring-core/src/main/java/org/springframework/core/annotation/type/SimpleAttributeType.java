@@ -22,7 +22,7 @@ import org.springframework.util.Assert;
  * Simple in-memory {@link AttributeType} implementation.
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  */
 class SimpleAttributeType implements AttributeType {
 
@@ -63,6 +63,11 @@ class SimpleAttributeType implements AttributeType {
 	@Override
 	public Object getDefaultValue() {
 		return this.defaultValue;
+	}
+
+	@Override
+	public String toString() {
+		return AnnotationString.get(this);
 	}
 
 }

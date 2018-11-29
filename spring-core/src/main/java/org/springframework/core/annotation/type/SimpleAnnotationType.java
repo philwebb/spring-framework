@@ -20,7 +20,7 @@ package org.springframework.core.annotation.type;
  * Simple in-memory {@link AnnotationType} implementation.
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  */
 class SimpleAnnotationType implements AnnotationType {
 
@@ -50,6 +50,11 @@ class SimpleAnnotationType implements AnnotationType {
 	@Override
 	public AttributeTypes getAttributeTypes() {
 		return this.attributeTypes;
+	}
+
+	@Override
+	public String toString() {
+		return AnnotationString.get(this);
 	}
 
 }

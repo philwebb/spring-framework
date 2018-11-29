@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -31,7 +32,7 @@ import org.springframework.util.Assert;
  * Simple in-memory {@link AttributeTypes} implementation.
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  */
 class SimpleAttributeTypes implements AttributeTypes {
 
@@ -54,6 +55,11 @@ class SimpleAttributeTypes implements AttributeTypes {
 	}
 
 	@Override
+	public Set<String> names() {
+		return this.types.keySet();
+	}
+
+	@Override
 	public AttributeType get(String name) {
 		return this.types.get(name);
 	}
@@ -62,6 +68,11 @@ class SimpleAttributeTypes implements AttributeTypes {
 	@Override
 	public Iterator<AttributeType> iterator() {
 		return this.types.values().iterator();
+	}
+
+	@Override
+	public String toString() {
+		return AnnotationString.get(this);
 	}
 
 }

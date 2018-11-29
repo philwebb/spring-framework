@@ -16,37 +16,26 @@
 
 package org.springframework.core.annotation.type;
 
-import java.lang.annotation.Annotation;
-
-import org.springframework.util.Assert;
+import java.util.Iterator;
+import java.util.Objects;
 
 /**
- * {@link DeclaredAnnotation} backed by an {@link Annotation} and implemented
- * using standard Java reflection.
+ * Abstract {@link DeclaredAttributes} base class.
  *
- * @author Phillip webb
+ * @author Phillip Webb
  * @since 5.2
  */
-class StandardDeclaredAnnotation implements DeclaredAnnotation {
-
-	private final Annotation annotation;
-
-	private final DeclaredAttributes attributes;
-
-	public StandardDeclaredAnnotation(Annotation annotation) {
-		Assert.notNull(annotation, "Annotation must not be null");
-		this.annotation = annotation;
-		this.attributes = new StandardDeclaredAttributes(annotation);
-	}
+public abstract class AbstractDeclaredAttributes implements DeclaredAttributes {
 
 	@Override
-	public String getClassName() {
-		return this.annotation.annotationType().getName();
+	public Iterator<DeclaredAttribute> iterator() {
+		return names().stream().map(this::getDeclaredAttribute).filter(
+				Objects::nonNull).iterator();
 	}
 
-	@Override
-	public DeclaredAttributes getAttributes() {
-		return this.attributes;
+	private DeclaredAttribute getDeclaredAttribute(String name) {
+		Object value = get(name);
+		return value != null ? DeclaredAttribute.of(name, value) : null;
 	}
 
 	@Override

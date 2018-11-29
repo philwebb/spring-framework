@@ -16,32 +16,26 @@
 
 package org.springframework.core.annotation.type;
 
-import java.util.Set;
+import java.util.Map;
 
 /**
- * A collection of {@link AttributeType} instances.
+ * Provides access to a single annotation attribute.
  *
  * @author Phillip Webb
  * @since 5.2
  */
-public interface AttributeTypes extends Iterable<AttributeType> {
+public interface DeclaredAttribute {
 
-	Set<String> names();
+	String getName();
 
-	/**
-	 * Return a the matching attribute type for the given attribute name.
-	 * @param name the attribute name
-	 * @return the attribute type or {@code null}
-	 */
-	AttributeType get(String name);
+	Object getValue();
 
-	/**
-	 * Create a new in-memory {@link AttributeTypes} containing the specified types.
-	 * @param types the contained types
-	 * @return a new {@link AttributeTypes} instance
-	 */
-	static AttributeTypes of(AttributeType...types) {
-		return new SimpleAttributeTypes(types);
+	static DeclaredAttribute from(Map.Entry<String, Object> entry) {
+		return of(entry.getKey(), entry.getValue());
+	}
+
+	static DeclaredAttribute of(String name, Object value) {
+		return new SimpleDeclaredAttribute(name, value);
 	}
 
 }

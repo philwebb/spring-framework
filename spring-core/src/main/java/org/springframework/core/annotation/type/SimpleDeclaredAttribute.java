@@ -16,37 +16,35 @@
 
 package org.springframework.core.annotation.type;
 
-import java.lang.annotation.Annotation;
-
 import org.springframework.util.Assert;
 
 /**
- * {@link DeclaredAnnotation} backed by an {@link Annotation} and implemented
- * using standard Java reflection.
+ * Simple in-memory {@link DeclaredAttribute} implementation.
  *
- * @author Phillip webb
+ * @author Phillip Webb
  * @since 5.2
  */
-class StandardDeclaredAnnotation implements DeclaredAnnotation {
+class SimpleDeclaredAttribute implements DeclaredAttribute {
 
-	private final Annotation annotation;
+	private final String name;
 
-	private final DeclaredAttributes attributes;
+	private final Object value;
 
-	public StandardDeclaredAnnotation(Annotation annotation) {
-		Assert.notNull(annotation, "Annotation must not be null");
-		this.annotation = annotation;
-		this.attributes = new StandardDeclaredAttributes(annotation);
+	SimpleDeclaredAttribute(String name, Object value) {
+		Assert.notNull(name, "Name must not be null");
+		Assert.notNull(value, "Value must not be null");
+		this.name = name;
+		this.value = value;
 	}
 
 	@Override
-	public String getClassName() {
-		return this.annotation.annotationType().getName();
+	public String getName() {
+		return this.name;
 	}
 
 	@Override
-	public DeclaredAttributes getAttributes() {
-		return this.attributes;
+	public Object getValue() {
+		return this.value;
 	}
 
 	@Override

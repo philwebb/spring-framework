@@ -27,7 +27,7 @@ import org.springframework.asm.Type;
  * {@link DeclaredAnnotation}.
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  */
 class DeclaredAnnotationAnnotationVisitor extends AnnotationVisitor {
 

@@ -33,7 +33,7 @@ import org.springframework.asm.Type;
  * ASM {@link AnnotationVisitor} to collect attribute values.
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  * @see DeclaredAttributesAnnotationVisitor
  */
 class AttributeValuesAnnotationVisitor extends AnnotationVisitor {
