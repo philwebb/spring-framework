@@ -297,12 +297,12 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 
 	@Override
 	public <T> Optional<T> getAttribute(String attributeName, Class<T> type) {
-		return Optional.ofNullable(getOptionalAttribute(attributeName, type, true));
+		return Optional.ofNullable(getAttributeValue(attributeName, type, false));
 	}
 
 	@Override
 	public <T> Optional<T> getNonMergedAttribute(String attributeName, Class<T> type) {
-		return Optional.ofNullable(getOptionalAttribute(attributeName, type, false));
+		return Optional.ofNullable(getAttributeValue(attributeName, type, true));
 	}
 
 	public Class<?> getDeclaringClass() {
@@ -338,12 +338,13 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 		if (map == null) {
 			return null;
 		}
+		boolean nonMerged = MapValues.NON_MERGED.isIn(options);
 		for (AttributeType attributeType : this.mapping.getAnnotationType().getAttributeTypes()) {
 			Class<?> type = resolveClassName(attributeType.getClassName());
 			type = ClassUtils.resolvePrimitiveIfNecessary(type);
 			type = getTypeForMapValueOption(options, type);
 			String name = attributeType.getAttributeName();
-			Object value = getOptionalAttribute(name, type, true);
+			Object value = getAttributeValue(name, type, nonMerged);
 			if (value != null) {
 				map.put(name, getValueForMapValueOption(value, factory, options));
 			}
@@ -402,7 +403,7 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 	}
 
 	private <T> T getRequiredAttribute(String attributeName, Class<T> type) {
-		T result = getOptionalAttribute(attributeName, type, true);
+		T result = getAttributeValue(attributeName, type, false);
 		if (result == null) {
 			throw new NoSuchElementException(
 					"No attribute named '" + attributeName + "' present");
@@ -411,13 +412,13 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T> T getOptionalAttribute(String attributeName, Class<T> type,
-			boolean merged) {
+	private <T> T getAttributeValue(String attributeName, Class<T> type,
+			boolean nonMerged) {
 		AttributeType attributeType = getAttributeType(attributeName);
 		if (attributeType == null) {
 			return null;
 		}
-		Object value = getAttributeValue(attributeName, merged);
+		Object value = getAttributeValue(attributeName, nonMerged);
 		if (value == null) {
 			value = attributeType.getDefaultValue();
 		}
@@ -570,7 +571,7 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 
 	private String toString(AttributeType attributeType) {
 		String name = attributeType.getAttributeName();
-		Object value = getAttributeValue(name, true);
+		Object value = getAttributeValue(name, false);
 		if (value instanceof DeclaredAttributes) {
 			value = getAnnotation(name);
 		}
@@ -590,9 +591,10 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 		return (value != null) ? name + "=" + value : "";
 	}
 
-	private Object getAttributeValue(String attributeName, boolean merged) {
-		DeclaredAttributes attributes = merged ? this.mappedAttributes
-				: this.mapping.getSource().getAttributes();
+	private Object getAttributeValue(String attributeName, boolean nonMerged) {
+		DeclaredAttributes attributes = nonMerged
+				? this.mapping.getSource().getAttributes()
+				: this.mappedAttributes;
 		return attributes.get(attributeName);
 	}
 

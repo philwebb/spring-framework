@@ -24,6 +24,7 @@ import java.util.EnumSet;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -446,7 +447,13 @@ public interface MergedAnnotation<A extends Annotation> {
 		 * Convert any nested annotation or annotation arrays to maps rather
 		 * than synthesizing the values.
 		 */
-		ANNOTATION_TO_MAP;
+		ANNOTATION_TO_MAP,
+
+		/**
+		 * Use the non-merged value.
+		 * @see MergedAnnotation#getNonMergedAttribute(String, Class)
+		 */
+		NON_MERGED;
 
 		protected boolean isIn(MapValues... options) {
 			for (MapValues candidate : options) {
@@ -464,15 +471,18 @@ public interface MergedAnnotation<A extends Annotation> {
 		 * @param annotationsToMap if {@link MapValues#ANNOTATION_TO_MAP} is included
 		 * @return a new {@link MapValues} array
 		 */
-		static MapValues[] get(boolean classToString, boolean annotationsToMap) {
+		static MapValues[] get(boolean classToString, boolean annotationsToMap, boolean nonMerged) {
 			EnumSet<MapValues> result = EnumSet.noneOf(MapValues.class);
-			if (classToString) {
-				result.add(MapValues.CLASS_TO_STRING);
-			}
-			if (annotationsToMap) {
-				result.add(MapValues.ANNOTATION_TO_MAP);
-			}
+			addIfTrue(result, MapValues.CLASS_TO_STRING, classToString);
+			addIfTrue(result, MapValues.ANNOTATION_TO_MAP, annotationsToMap);
+			addIfTrue(result, MapValues.NON_MERGED, nonMerged);
 			return result.toArray(new MapValues[0]);
+		}
+
+		private static <T> void addIfTrue(Set<T> result, T value, boolean test) {
+			if (test) {
+				result.add(value);
+			}
 		}
 
 	}

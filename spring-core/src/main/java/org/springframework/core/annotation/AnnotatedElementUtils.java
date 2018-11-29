@@ -23,6 +23,8 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.core.BridgeMethodResolver;
@@ -30,6 +32,7 @@ import org.springframework.core.annotation.MergedAnnotation.MapValues;
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 /**
@@ -369,7 +372,7 @@ public abstract class AnnotatedElementUtils {
 			MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS,
 					RepeatableContainers.none()).get(annotationName).asMap(
 							AnnotationAttributes::createIfAnnotationPresent,
-							MapValues.get(classValuesAsString, nestedAnnotationsAsMap))
+							MapValues.get(classValuesAsString, nestedAnnotationsAsMap, false))
 		);
 	}
 
@@ -568,11 +571,19 @@ public abstract class AnnotatedElementUtils {
 	 * @return a {@link MultiValueMap} keyed by attribute name, containing the annotation
 	 * attributes from all annotations found, or {@code null} if not found
 	 * @see #getAllAnnotationAttributes(AnnotatedElement, String, boolean, boolean)
+	 * @deprecated since 5.2 in favor of {@link MergedAnnotations}
 	 */
+	@Deprecated
 	@Nullable
 	public static MultiValueMap<String, Object> getAllAnnotationAttributes(AnnotatedElement element, String annotationName) {
-		return InternalAnnotatedElementUtils.getAllAnnotationAttributes(element,
-				annotationName);
+		return MigrateMethod.from(() ->
+			InternalAnnotatedElementUtils.getAllAnnotationAttributes(element,
+					annotationName)
+		).to(() ->
+			MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS,
+					RepeatableContainers.none()).stream(annotationName).collect(
+									allAnnotationAttributes(MapValues.NON_MERGED))
+		);
 	}
 
 	/**
@@ -596,8 +607,19 @@ public abstract class AnnotatedElementUtils {
 	@Nullable
 	public static MultiValueMap<String, Object> getAllAnnotationAttributes(AnnotatedElement element,
 			String annotationName, final boolean classValuesAsString, final boolean nestedAnnotationsAsMap) {
-		return InternalAnnotatedElementUtils.getAllAnnotationAttributes(element,
-				annotationName, classValuesAsString, nestedAnnotationsAsMap);
+		return MigrateMethod.from(() ->
+			InternalAnnotatedElementUtils.getAllAnnotationAttributes(element,
+					annotationName, classValuesAsString, nestedAnnotationsAsMap)
+		).to(() ->
+			// FIXME stream() returns the same element if it can be reached twice
+			// need to think about this one
+
+
+			MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS,
+					RepeatableContainers.none()).stream(annotationName).peek(System.out::println).collect(
+							allAnnotationAttributes(MapValues.get(classValuesAsString,
+									nestedAnnotationsAsMap, true)))
+		);
 	}
 
 	/**
@@ -824,6 +846,24 @@ public abstract class AnnotatedElementUtils {
 		Set<String> annotationNames = annotationTypes.stream().map(
 				Class::getName).collect(Collectors.toSet());
 		return annotation -> annotationNames.contains(annotation.getType());
+	}
+
+	private static Collector<MergedAnnotation<?>, ?, MultiValueMap<String, Object>> allAnnotationAttributes(
+			MapValues... options) {
+		Supplier<MultiValueMap<String, Object>> supplier = LinkedMultiValueMap::new;
+		return Collector.of(supplier,
+				(map, annotation) -> annotation.asMap(options).forEach(map::add),
+				AnnotatedElementUtils::merge, AnnotatedElementUtils::mapOrNull);
+	}
+
+	private static <K, V> MultiValueMap<K, V> merge(MultiValueMap<K, V> map,
+			MultiValueMap<K, V> additions) {
+		map.addAll(additions);
+		return map;
+	}
+
+	private static <K, V> MultiValueMap<K, V> mapOrNull(MultiValueMap<K, V> map) {
+		return map.isEmpty() ? null : map;
 	}
 
 }

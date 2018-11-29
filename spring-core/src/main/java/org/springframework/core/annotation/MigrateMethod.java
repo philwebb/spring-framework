@@ -16,6 +16,7 @@
 
 package org.springframework.core.annotation;
 
+import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -95,16 +96,21 @@ final class MigrateMethod {
 			if (result instanceof Map && expectedResult instanceof Map) {
 				return isEquivalentMap((Map<?, ?>) result, (Map<?, ?>) expectedResult);
 			}
+			if (result instanceof List && expectedResult instanceof List) {
+				return isEquivalentList((List<?>) result, (List<?>) expectedResult);
+			}
 			if (result instanceof Object[] && expectedResult instanceof Object[]) {
 				return isEquivalentArray((Object[]) result, (Object[]) expectedResult);
 			}
 			if (result instanceof Object[] && !(expectedResult instanceof Object[])) {
-				if (isEquivalentArray((Object[]) result, new Object[] { expectedResult })) {
+				if (isEquivalentArray((Object[]) result,
+						new Object[] { expectedResult })) {
 					return true;
 				}
 			}
 			if (!(result instanceof Object[]) && expectedResult instanceof Object[]) {
-				if (isEquivalentArray(new Object[] { result }, (Object[]) expectedResult )) {
+				if (isEquivalentArray(new Object[] { result },
+						(Object[]) expectedResult)) {
 					return true;
 				}
 			}
@@ -120,6 +126,18 @@ final class MigrateMethod {
 					return false;
 				}
 				if (!isEquivalent(entry.getValue(), expectedResult.get(entry.getKey()))) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		private boolean isEquivalentList(List<?> result, List<?> expectedResult) {
+			if (result.size() != expectedResult.size()) {
+				return false;
+			}
+			for (int i = 0; i < result.size(); i++) {
+				if (!isEquivalent(result.get(i), expectedResult.get(i))) {
 					return false;
 				}
 			}
