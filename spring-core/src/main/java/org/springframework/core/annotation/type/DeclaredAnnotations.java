@@ -50,7 +50,7 @@ public interface DeclaredAnnotations extends Iterable<DeclaredAnnotation> {
 	 * @return the declaring class or {@code null}
 	 */
 	default Class<?> getDeclaringClass() {
-		// FIXME this is not ideal. Best to drop it here and insead create
+		// FIXME this is not ideal. Best to drop it here and instead create
 		// a sub-interface that exposes AnnotatedElement
 		return null;
 	}
