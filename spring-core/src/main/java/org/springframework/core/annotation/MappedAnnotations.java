@@ -43,7 +43,7 @@ class MappedAnnotations extends AbstractMergedAnnotations {
 				mapper::map);
 	}
 
-	private MappedAnnotations(Iterable<MappableAnnotation> annotations) {
+	MappedAnnotations(Iterable<MappableAnnotation> annotations) {
 		this.hierarchy = () -> Stream.of(Element.of(annotations));
 	}
 

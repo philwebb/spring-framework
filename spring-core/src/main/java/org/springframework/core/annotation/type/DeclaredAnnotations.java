@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.stream.StreamSupport;
 
 import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
 
 /**
  * A collection of {@link DeclaredAnnotation} instances.
@@ -40,7 +41,8 @@ public interface DeclaredAnnotations extends Iterable<DeclaredAnnotation> {
 	 * {@link DeclaredAnnotation} instances that can be used when there are no
 	 * declared annotations.
 	 */
-	static final DeclaredAnnotations NONE = () -> Collections.emptyIterator();
+	static final DeclaredAnnotations NONE = new SimpleDeclaredAnnotations(new Object(),
+			Collections.emptySet());
 
 	// FIXME DC
 	Object getSource();
@@ -85,8 +87,10 @@ public interface DeclaredAnnotations extends Iterable<DeclaredAnnotation> {
 	 * @param annotations the contained annotations
 	 * @return a new {@link DeclaredAnnotations} instance
 	 */
-	static DeclaredAnnotations of(DeclaredAnnotation... annotations) {
-		return new SimpleDeclaredAnnotations(annotations);
+	static DeclaredAnnotations of(Object source, DeclaredAnnotation... annotations) {
+		Assert.notNull(source, "Source must not be null");
+		Assert.notNull(annotations, "Annotations must not be null");
+		return new SimpleDeclaredAnnotations(source, annotations);
 	}
 
 	/**
@@ -95,8 +99,10 @@ public interface DeclaredAnnotations extends Iterable<DeclaredAnnotation> {
 	 * @param annotations the contained annotations
 	 * @return a new {@link DeclaredAnnotations} instance
 	 */
-	static DeclaredAnnotations of(Collection<DeclaredAnnotation> annotations) {
-		return new SimpleDeclaredAnnotations(annotations);
+	static DeclaredAnnotations of(Object source, Collection<DeclaredAnnotation> annotations) {
+		Assert.notNull(source, "Source must not be null");
+		Assert.notNull(annotations, "Annotations must not be null");
+		return new SimpleDeclaredAnnotations(source, annotations);
 	}
 
 }

@@ -169,13 +169,15 @@ class SimpleAnnotationTypeResolver implements AnnotationTypeResolver {
 		@Override
 		public MethodVisitor visitMethod(int access, String name, String desc,
 				String signature, String[] exceptions) {
-			String type = Type.getReturnType(desc).getClassName();
-			return new AnnotationTypeMethodVisitor(name, type, this.attributeTypes::add);
+			String returnType = Type.getReturnType(desc).getClassName();
+			return new AnnotationTypeMethodVisitor(this.type, name, returnType,
+					this.attributeTypes::add);
 		}
 
 		public AnnotationType getAnnotationType() {
 			return new SimpleAnnotationType(this.type,
-					new SimpleDeclaredAnnotations(this.declaredAnnotations),
+					new SimpleDeclaredAnnotations(new Source(this.type),
+							this.declaredAnnotations),
 					new SimpleAttributeTypes(this.attributeTypes));
 		}
 
@@ -185,6 +187,8 @@ class SimpleAnnotationTypeResolver implements AnnotationTypeResolver {
 	 * {@link MethodVisitor} used to parse the annotation method bytecode.
 	 */
 	private static class AnnotationTypeMethodVisitor extends MethodVisitor {
+
+		private final String declaringClass;
 
 		private final String name;
 
@@ -196,9 +200,10 @@ class SimpleAnnotationTypeResolver implements AnnotationTypeResolver {
 
 		private Object defaultValue;
 
-		public AnnotationTypeMethodVisitor(String name, String type,
-				Consumer<AttributeType> consumer) {
+		public AnnotationTypeMethodVisitor(String declaringClass, String name,
+				String type, Consumer<AttributeType> consumer) {
 			super(SpringAsmInfo.ASM_VERSION);
+			this.declaringClass = declaringClass;
 			this.name = name;
 			this.type = type;
 			this.consumer = consumer;
@@ -221,10 +226,46 @@ class SimpleAnnotationTypeResolver implements AnnotationTypeResolver {
 
 		@Override
 		public void visitEnd() {
+			Source source = new Source(
+					this.type + ":" + this.declaringClass + "." + this.name);
 			AttributeType attributeType = new SimpleAttributeType(this.name, this.type,
-					new SimpleDeclaredAnnotations(this.declaredAnnotations),
+					new SimpleDeclaredAnnotations(source, this.declaredAnnotations),
 					this.defaultValue);
 			this.consumer.accept(attributeType);
+		}
+
+	}
+
+	/**
+	 * ASM source for use with {@link DeclaredAnnotations}.
+	 */
+	private static class Source {
+
+		private final String name;
+
+		public Source(String name) {
+			this.name = name;
+		}
+
+		@Override
+		public int hashCode() {
+			return this.name.hashCode();
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+			if (obj == null || getClass() != obj.getClass()) {
+				return false;
+			}
+			return this.name.equals(((Source) obj).name);
+		}
+
+		@Override
+		public String toString() {
+			return this.name;
 		}
 
 	}

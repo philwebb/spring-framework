@@ -133,21 +133,22 @@ class AnnotationTypeMapping {
 		return new MappedAnnotation<>(this, mappedAttributes, inherited, null);
 	}
 
-	public <A extends Annotation> MergedAnnotation<A> map(MappableAnnotation annotation,
-			boolean inherited) {
-		if (annotation == null) {
-			return MergedAnnotation.missing();
-		}
-		try {
-			DeclaredAttributes mappedAttributes = mapAttributes(
-					annotation.getAttributes());
-			return new MappedAnnotation<>(this, mappedAttributes, inherited, null);
-		}
-		catch (Exception ex) {
-			throw new AnnotationConfigurationException("Unable to map attributes of "
-					+ annotation.getAnnotationType().getClassName(), ex);
-		}
-	}
+	// FIXME
+//	public <A extends Annotation> MergedAnnotation<A> map(MappableAnnotation annotation,
+//			boolean inherited) {
+//		if (annotation == null) {
+//			return MergedAnnotation.missing();
+//		}
+//		try {
+//			DeclaredAttributes mappedAttributes = mapAttributes(
+//					annotation.getAttributes());
+//			return new MappedAnnotation<>(this, mappedAttributes, inherited, null);
+//		}
+//		catch (Exception ex) {
+//			throw new AnnotationConfigurationException("Unable to map attributes of "
+//					+ annotation.getAnnotationType().getClassName(), ex);
+//		}
+//	}
 
 	private DeclaredAttributes mapAttributes(DeclaredAttributes rootAttributes) {
 		DeclaredAttributes mappedAttributes = rootAttributes;

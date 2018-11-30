@@ -29,15 +29,23 @@ import java.util.Iterator;
  */
 class SimpleDeclaredAnnotations implements DeclaredAnnotations {
 
+	private final Object source;
+
 	private final Collection<DeclaredAnnotation> declaredAnnotations;
 
-	SimpleDeclaredAnnotations(DeclaredAnnotation[] annotations) {
-		this(Arrays.asList(annotations));
+	SimpleDeclaredAnnotations(Object source, DeclaredAnnotation[] annotations) {
+		this(source, Arrays.asList(annotations));
 	}
 
-	SimpleDeclaredAnnotations(Collection<DeclaredAnnotation> declaredAnnotations) {
+	SimpleDeclaredAnnotations(Object source, Collection<DeclaredAnnotation> declaredAnnotations) {
+		this.source = source;
 		this.declaredAnnotations = Collections.unmodifiableCollection(
 				declaredAnnotations);
+	}
+
+	@Override
+	public Object getSource() {
+		return this.source;
 	}
 
 	@Override
