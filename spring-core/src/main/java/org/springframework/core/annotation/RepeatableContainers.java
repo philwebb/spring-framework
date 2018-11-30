@@ -19,10 +19,12 @@ package org.springframework.core.annotation;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Repeatable;
 import java.lang.reflect.Method;
+import java.util.function.BiConsumer;
 
 import org.springframework.core.annotation.type.AnnotationType;
 import org.springframework.core.annotation.type.AnnotationTypeResolver;
 import org.springframework.core.annotation.type.AttributeType;
+import org.springframework.core.annotation.type.DeclaredAnnotation;
 import org.springframework.core.annotation.type.DeclaredAttributes;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
@@ -34,9 +36,8 @@ import org.springframework.util.ObjectUtils;
  * strategy that respects Java's {@link Repeatable @Repeatable} support and
  * should be suitable for most situations.
  * <p>
- * The {@link #and(Class, Class)} method can be used to register additional
- * relationships for annotations that do not wish to use
- * {@link Repeatable @Repeatable}.
+ * The {@link #of} method can be used to register relationships for annotations
+ * that do not wish to use {@link Repeatable @Repeatable}.
  * <p>
  * To completely disable repeatable support use {@link #none()}.
  *
@@ -56,12 +57,36 @@ public abstract class RepeatableContainers {
 		return new ExplicitRepeatableContainer(this, container, repeatable);
 	}
 
+	void withEach(AnnotationTypeResolver resolver, DeclaredAnnotation annotation,
+			BiConsumer<AnnotationType, DeclaredAttributes> consumer) {
+		AnnotationType annotationType = resolver.resolve(annotation.getClassName());
+		DeclaredAttributes attributes = annotation.getAttributes();
+		AnnotationType repeatableAnnotationType = findContainedRepeatable(resolver,
+				annotationType, attributes);
+		if (repeatableAnnotationType == null) {
+			consumer.accept(annotationType, attributes);
+		}
+		else {
+			doWithRepeated(repeatableAnnotationType,
+					(DeclaredAttributes[]) attributes.get("value"), consumer);
+		}
+	}
+
+	private void doWithRepeated(AnnotationType annotationType,
+			DeclaredAttributes[] repeateAttributes,
+			BiConsumer<AnnotationType, DeclaredAttributes> consumer) {
+		for (DeclaredAttributes attributes : repeateAttributes) {
+			consumer.accept(annotationType, attributes);
+		}
+	}
+
 	@Nullable
-	AnnotationType findContainedRepeatableType(AnnotationTypeResolver resolver,
-			AnnotationType type, DeclaredAttributes attributes) {
-		return (this.parent != null)
-				? this.parent.findContainedRepeatableType(resolver, type, attributes)
-				: null;
+	protected AnnotationType findContainedRepeatable(AnnotationTypeResolver resolver,
+			AnnotationType annotationType, DeclaredAttributes attributes) {
+		if (this.parent == null) {
+			return null;
+		}
+		return this.parent.findContainedRepeatable(resolver, annotationType, attributes);
 	}
 
 	@Override
@@ -114,18 +139,18 @@ public abstract class RepeatableContainers {
 		}
 
 		@Override
-		public AnnotationType findContainedRepeatableType(AnnotationTypeResolver resolver,
+		public AnnotationType findContainedRepeatable(AnnotationTypeResolver resolver,
 				AnnotationType type, DeclaredAttributes attributes) {
 			Object value = attributes.get("value");
 			AttributeType valueType = type.getAttributeTypes().get("value");
 			if (value != null && value instanceof DeclaredAttributes[]) {
 				String elementType = valueType.getClassName().replace("[]", "");
-				AnnotationType repeatableType = resolver.resolve(elementType); // FIXME could be null
+				AnnotationType repeatableType = resolver.resolve(elementType);
 				if (hasAnnotation(repeatableType, REPEATABLE)) {
 					return repeatableType;
 				}
 			}
-			return super.findContainedRepeatableType(resolver, type, attributes);
+			return super.findContainedRepeatable(resolver, type, attributes);
 		}
 
 		private boolean hasAnnotation(AnnotationType contained, String name) {
@@ -144,7 +169,8 @@ public abstract class RepeatableContainers {
 
 		private Class<? extends Annotation> repeatable;
 
-		ExplicitRepeatableContainer(RepeatableContainers parent, Class<? extends Annotation> container,
+		ExplicitRepeatableContainer(RepeatableContainers parent,
+				Class<? extends Annotation> container,
 				Class<? extends Annotation> repeatable) {
 			super(parent);
 			validate(container, repeatable);
@@ -180,12 +206,12 @@ public abstract class RepeatableContainers {
 		}
 
 		@Override
-		AnnotationType findContainedRepeatableType(AnnotationTypeResolver resolver,
+		protected AnnotationType findContainedRepeatable(AnnotationTypeResolver resolver,
 				AnnotationType type, DeclaredAttributes attributes) {
 			if (type.getClassName().equals(this.container.getName())) {
-				return resolver.resolve(this.repeatable.getName()); // FIXME could be null
+				return resolver.resolve(this.repeatable.getName());
 			}
-			return super.findContainedRepeatableType(resolver, type, attributes);
+			return super.findContainedRepeatable(resolver, type, attributes);
 		}
 
 		@Override

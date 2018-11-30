@@ -34,6 +34,7 @@ public interface AnnotationTypeResolver {
 	 * @return a resolved type or {@code null}
 	 */
 	AnnotationType resolve(String className);
+	// FIXME search for usages and check null;
 
 	/**
 	 * Expose the ClassLoader used by this resolver.

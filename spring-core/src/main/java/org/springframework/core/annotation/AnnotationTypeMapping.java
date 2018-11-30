@@ -66,32 +66,23 @@ class AnnotationTypeMapping {
 
 	private final AnnotationTypeMapping parent;
 
-	private final MappableAnnotation source;
-
 	private final int depth;
 
 	private final Map<String, Reference> aliases = new LinkedHashMap<>();
 
 	private final List<MirrorSet> mirrorSets = new ArrayList<>();
 
-	AnnotationTypeMapping(AnnotationTypeResolver resolver, AnnotationTypeMapping parent,
-			MappableAnnotation source) {
+	AnnotationTypeMapping(AnnotationTypeResolver resolver,
+			AnnotationType source) {
+	}
+
+	// FIXME A type mapping should not need a MappableAnnotation
+	AnnotationTypeMapping(AnnotationTypeResolver resolver, AnnotationTypeMapping parent, AnnotationType annotationType, DeclaredAttributes attributes) {
 		this.resolver = resolver;
 		this.parent = parent;
-		this.source = source;
 		this.depth = (parent == null ? 0 : parent.depth + 1);
 	}
 
-	boolean isAlreadyMapped(String className) {
-		AnnotationTypeMapping candidate = this;
-		while (candidate != null) {
-			if (candidate.getAnnotationType().getClassName().equals(className)) {
-				return true;
-			}
-			candidate = candidate.getParent();
-		}
-		return false;
-	}
 
 	void addAlias(Reference from, Reference to) {
 		this.aliases.putIfAbsent(from.getAttribute().getAttributeName(), to);
@@ -110,24 +101,17 @@ class AnnotationTypeMapping {
 		this.mirrorSets.add(new MirrorSet(references));
 	}
 
+	public AnnotationType getAnnotationType() {
+		throw new UnsupportedOperationException("Auto-generated method stub");
+	}
+
+	// FIXME check usage
 	AnnotationTypeResolver getResolver() {
 		return this.resolver;
 	}
 
 	AnnotationTypeMapping getParent() {
 		return this.parent;
-	}
-
-	public MappableAnnotation getSource() {
-		return this.source;
-	}
-
-	AnnotationType getAnnotationType() {
-		return this.source.getAnnotationType();
-	}
-
-	DeclaredAttributes getAttributes() {
-		return this.source.getAttributes();
 	}
 
 	int getDepth() {
@@ -155,10 +139,10 @@ class AnnotationTypeMapping {
 		DeclaredAttributes attributes = rootAttributes;
 		if (getParent() != null) {
 			DeclaredAttributes parentMappedAttributes = getParent().mapAttributes(rootAttributes);
-			attributes = new MappedAttributes(parentMappedAttributes, this.source, this.aliases);
+			attributes = new MappedAttributes(parentMappedAttributes, this.aliases);
 		}
 		if (!this.mirrorSets.isEmpty()) {
-			attributes = new MirroredAttributes(attributes,  this.source, this.mirrorSets);
+			attributes = new MirroredAttributes(attributes, this.mirrorSets);
 		}
 		return attributes;
 	}
@@ -273,19 +257,15 @@ class AnnotationTypeMapping {
 	/**
 	 * {@link DeclaredAttributes} decorator to apply mapping rules.
 	 */
-	private static class MappedAttributes extends AbstractDeclaredAttributes {
+	private class MappedAttributes extends AbstractDeclaredAttributes {
 
 		private final DeclaredAttributes attributes;
-
-		private final MappableAnnotation source;
 
 		private final Map<String, Reference> aliases;
 
 		public MappedAttributes(DeclaredAttributes attributes,
-				MappableAnnotation source,
 				Map<String, Reference> aliases) {
 			this.attributes = attributes;
-			this.source = source;
 			this.aliases = aliases;
 		}
 
@@ -341,14 +321,10 @@ class AnnotationTypeMapping {
 
 		private final DeclaredAttributes attributes;
 
-		private final MappableAnnotation source;
-
 		private final Map<String, Reference> mirrors;
 
-		public MirroredAttributes(DeclaredAttributes attributes,
-				MappableAnnotation source, List<MirrorSet> mirrorSets) {
+		public MirroredAttributes(DeclaredAttributes attributes, List<MirrorSet> mirrorSets) {
 			this.attributes = attributes;
-			this.source = source;
 			this.mirrors = getMirrors(mirrorSets);
 		}
 

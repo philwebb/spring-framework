@@ -37,7 +37,11 @@ import org.springframework.util.Assert;
  * @author Phillip Webb
  * @since 5.1
  */
+@Deprecated
 final class MappableAnnotation {
+
+	// FIXME this class is very odd. I think repeatable stuff should move then
+	// it becomes much lighter
 
 	private final AnnotationTypeResolver resolver;
 

@@ -89,50 +89,58 @@ class AnnotationTypeMappings {
 		if (!isMappable(this.source.getClassName())) {
 			return Collections.emptyList();
 		}
-		List<AnnotationTypeMapping> mappings = new ArrayList<>();
+		List<AnnotationTypeMapping> result = new ArrayList<>();
 		Deque<AnnotationTypeMapping> queue = new ArrayDeque<>();
-		MappableAnnotation root = new MappableAnnotation(resolver, repeatableContainers,
-				this.source, DeclaredAttributes.NONE);
-		queue.add(new AnnotationTypeMapping(resolver, null, root));
+		queue.add(new AnnotationTypeMapping(resolver, this.source));
 		while (!queue.isEmpty()) {
 			AnnotationTypeMapping mapping = queue.removeFirst();
-			mappings.add(mapping);
+			result.add(mapping);
 			addMappings(queue, resolver, repeatableContainers, mapping,
 					mapping.getAnnotationType());
 		}
-		return Collections.unmodifiableList(mappings);
+		return Collections.unmodifiableList(result);
 	}
 
 	private void addMappings(Deque<AnnotationTypeMapping> queue,
 			AnnotationTypeResolver resolver, RepeatableContainers repeatableContainers,
 			AnnotationTypeMapping parent, AnnotationType type) {
-		MappableAnnotation.from(resolver, repeatableContainers,
-				type.getDeclaredAnnotations()).forEach(
-						annotation -> addMapping(queue, resolver, parent, annotation));
-	}
-
-	private void addMapping(Deque<AnnotationTypeMapping> queue,
-			AnnotationTypeResolver resolver, AnnotationTypeMapping parent,
-			MappableAnnotation annotation) {
-		if (isMappable(parent, annotation)) {
-			queue.addLast(new AnnotationTypeMapping(resolver, parent, annotation));
+		for (DeclaredAnnotation metaAnnotation : type.getDeclaredAnnotations()) {
+			repeatableContainers.withEach(resolver, metaAnnotation,
+					(annotation, attributes) -> addMapping(resolver, repeatableContainers,
+							queue, parent, annotation, attributes));
 		}
 	}
 
-	private boolean isMappable(AnnotationTypeMapping parent,
-			MappableAnnotation annotation) {
-		String annotationType = annotation.getAnnotationType().getClassName();
-		return isMappable(annotationType) && !parent.isAlreadyMapped(annotationType);
+	private void addMapping(AnnotationTypeResolver resolver,
+			RepeatableContainers repeatableContainers, Deque<AnnotationTypeMapping> queue,
+			AnnotationTypeMapping parent, AnnotationType annotation,
+			DeclaredAttributes attributes) {
+		if (isMappable(parent, annotation)) {
+			AnnotationTypeMapping mapping = new AnnotationTypeMapping(resolver, parent,
+					annotation, attributes);
+			queue.addLast(mapping);
+		}
+	}
+
+	private boolean isMappable(AnnotationTypeMapping parent, AnnotationType annotation) {
+		String annotationType = annotation.getClassName();
+		return isMappable(annotationType) && !isAlreadyMapped(parent, annotationType);
 	}
 
 	private boolean isMappable(String annotationType) {
-		if (annotationType.startsWith("java.lang.annotation.")){
-			return false;
+		return (annotationType.startsWith("java.lang.annotation.")
+				|| annotationType.startsWith("org.springframework.lang."));
+	}
+
+	private boolean isAlreadyMapped(AnnotationTypeMapping parent, String annotationType) {
+		AnnotationTypeMapping mapping = parent;
+		while (mapping != null) {
+			if (mapping.getAnnotationType().getClassName().equals(annotationType)) {
+				return true;
+			}
+			mapping = mapping.getParent();
 		}
-		if (annotationType.startsWith("org.springframework.lang.")) {
-			return false;
-		}
-		return true;
+		return false;
 	}
 
 	private Map<String, AnnotationTypeMapping> buildMappingForType(
@@ -250,8 +258,6 @@ class AnnotationTypeMappings {
 				&& Objects.equals(descriptor.getAttribute(), targetAttribute);
 	}
 
-
-
 	private AliasForDescriptor getMirrorAliasForDescriptor(Reference source,
 			Reference target) {
 		DeclaredAnnotation mirrorAliasFor = target.getAttribute().getDeclaredAnnotations().find(
@@ -290,6 +296,7 @@ class AnnotationTypeMappings {
 		return this.mappingForType.get(annotationType);
 	}
 
+	@Deprecated
 	public static AnnotationTypeMappings get(MappableAnnotation annotation) {
 		return get(annotation.getResolver(), annotation.getRepeatableContainers(),
 				annotation.getAnnotationType());
