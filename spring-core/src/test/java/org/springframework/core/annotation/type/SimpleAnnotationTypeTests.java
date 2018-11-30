@@ -38,7 +38,7 @@ public class SimpleAnnotationTypeTests {
 
 	@Before
 	public void setup() {
-		this.declaredAnnotations = new SimpleDeclaredAnnotations(null, Collections.emptyList());
+		this.declaredAnnotations = new SimpleDeclaredAnnotations(Collections.emptyList());
 		this.attributeTypes = new SimpleAttributeTypes(Collections.emptyList());
 		this.type = new SimpleAnnotationType("className", this.declaredAnnotations,
 				this.attributeTypes);

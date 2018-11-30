@@ -725,10 +725,10 @@ public class MappedAnnotationTest {
 	private MappedAnnotation<?> create(AnnotationType type,
 			DeclaredAttributes attributes) {
 		MappableAnnotation source = new MappableAnnotation(this.resolver,
-				RepeatableContainers.standardRepeatables(), type, attributes, null);
+				RepeatableContainers.standardRepeatables(), type, attributes);
 		AnnotationTypeMapping mapping = new AnnotationTypeMapping(this.resolver, null,
 				source);
-		return new MappedAnnotation<>(mapping, attributes, null, false, null);
+		return new MappedAnnotation<>(mapping, attributes, false, null);
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)

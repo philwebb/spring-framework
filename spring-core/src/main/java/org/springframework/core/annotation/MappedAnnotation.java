@@ -94,18 +94,14 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 
 	private final DeclaredAttributes mappedAttributes;
 
-	private final Class<?> declaringClass;
-
 	private final boolean inherted;
 
 	private final Predicate<String> attributeFilter;
 
 	MappedAnnotation(AnnotationTypeMapping mapping, DeclaredAttributes mappedAttributes,
-			Class<?> declaringClass, boolean inherted,
-			Predicate<String> attributeFilter) {
+			boolean inherted, Predicate<String> attributeFilter) {
 		this.mapping = mapping;
 		this.mappedAttributes = mappedAttributes;
-		this.declaringClass = declaringClass;
 		this.inherted = inherted;
 		this.attributeFilter = attributeFilter;
 	}
@@ -305,10 +301,6 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 		return Optional.ofNullable(getAttributeValue(attributeName, type, true));
 	}
 
-	public Class<?> getDeclaringClass() {
-		return this.declaringClass;
-	}
-
 	@Override
 	public MergedAnnotation<A> filterDefaultValues() {
 		return filterAttributes(this::hasNonDefaultValue);
@@ -320,7 +312,7 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 				? this.attributeFilter.and(attributeFilter)
 				: attributeFilter;
 		return new MappedAnnotation<>(this.mapping, this.mappedAttributes,
-				this.declaringClass, this.inherted, attributeFilter);
+				this.inherted, attributeFilter);
 	}
 
 	@Override
@@ -602,8 +594,7 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 			DeclaredAttributes attributes) {
 		// FIXME the MappableAnnotation constructor is off
 		return createNested(new MappableAnnotation(this.mapping.getResolver(),
-				this.mapping.getSource().getRepeatableContainers(), type, attributes,
-				this.declaringClass));
+				this.mapping.getSource().getRepeatableContainers(), type, attributes));
 	}
 
 	private <T extends Annotation> MergedAnnotation<T> createNested(

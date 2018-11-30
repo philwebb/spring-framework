@@ -538,7 +538,7 @@ public class AnnotationTypeMappingsTests {
 	private MappableAnnotation createMappable(AnnotationType type,
 			DeclaredAttributes attributes) {
 		return new MappableAnnotation(this.resolver,
-				RepeatableContainers.standardRepeatables(), type, attributes, null);
+				RepeatableContainers.standardRepeatables(), type, attributes);
 	}
 
 	private AnnotationType resolve(Class<?> type) {

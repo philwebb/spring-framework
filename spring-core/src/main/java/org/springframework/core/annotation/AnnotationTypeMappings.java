@@ -92,7 +92,7 @@ class AnnotationTypeMappings {
 		List<AnnotationTypeMapping> mappings = new ArrayList<>();
 		Deque<AnnotationTypeMapping> queue = new ArrayDeque<>();
 		MappableAnnotation root = new MappableAnnotation(resolver, repeatableContainers,
-				this.source, DeclaredAttributes.NONE, null);
+				this.source, DeclaredAttributes.NONE);
 		queue.add(new AnnotationTypeMapping(resolver, null, root));
 		while (!queue.isEmpty()) {
 			AnnotationTypeMapping mapping = queue.removeFirst();

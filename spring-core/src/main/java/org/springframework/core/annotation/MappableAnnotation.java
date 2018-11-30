@@ -47,26 +47,21 @@ final class MappableAnnotation {
 
 	private final DeclaredAttributes attributes;
 
-	private final Class<?> declaringClass;
-
 	MappableAnnotation(AnnotationTypeResolver resolver,
-			RepeatableContainers repeatableContainers, DeclaredAnnotation annotation,
-			Class<?> declaringClass) {
+			RepeatableContainers repeatableContainers, DeclaredAnnotation annotation) {
 		this.resolver = resolver;
 		this.repeatableContainers = repeatableContainers;
 		this.type = resolver.resolve(annotation.getClassName()); //FIXME could be null
 		this.attributes = annotation.getAttributes();
-		this.declaringClass = declaringClass;
 	}
 
 	MappableAnnotation(AnnotationTypeResolver resolver,
 			RepeatableContainers repeatableContainers, AnnotationType type,
-			DeclaredAttributes attributes, Class<?> declaringClass) {
+			DeclaredAttributes attributes) {
 		this.resolver = resolver;
 		this.repeatableContainers = repeatableContainers;
 		this.type = type;
 		this.attributes = attributes;
-		this.declaringClass = declaringClass;
 	}
 
 	public AnnotationTypeResolver getResolver() {
@@ -85,22 +80,17 @@ final class MappableAnnotation {
 		return this.attributes;
 	}
 
-	public Class<?> getDeclaringClass() {
-		return this.declaringClass;
-	}
-
 	public static Stream<MappableAnnotation> from(AnnotationTypeResolver resolver,
 			RepeatableContainers repeatableContainers, DeclaredAnnotations annotations) {
 		Assert.notNull(resolver, "Resolver must not be null");
 		Assert.notNull(annotations, "Annotations must not be null");
 		return StreamSupport.stream(annotations.spliterator(), false).flatMap(
 				annotation -> MappableAnnotation.from(resolver, repeatableContainers,
-						annotation, annotations.getDeclaringClass()));
+						annotation));
 	}
 
 	public static Stream<MappableAnnotation> from(AnnotationTypeResolver resolver,
-			RepeatableContainers repeatableContainers, DeclaredAnnotation annotation,
-			Class<?> declaringClass) {
+			RepeatableContainers repeatableContainers, DeclaredAnnotation annotation) {
 		Assert.notNull(resolver, "Resolver must not be null");
 		Assert.notNull(annotation, "Annotation must not be null");
 		AnnotationType type = resolver.resolve(annotation.getClassName());
@@ -112,11 +102,11 @@ final class MappableAnnotation {
 				resolver, type, attributes);
 		if (containedRepeatable == null) {
 			return Stream.of(new MappableAnnotation(resolver, repeatableContainers, type,
-					attributes, declaringClass));
+					attributes));
 		}
 		return Stream.of((DeclaredAttributes[]) attributes.get("value")).map(
 				repeatAttributes -> new MappableAnnotation(resolver, repeatableContainers,
-						containedRepeatable, repeatAttributes, declaringClass));
+						containedRepeatable, repeatAttributes));
 	}
 
 }

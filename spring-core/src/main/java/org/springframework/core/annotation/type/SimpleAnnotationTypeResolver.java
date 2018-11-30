@@ -175,7 +175,7 @@ class SimpleAnnotationTypeResolver implements AnnotationTypeResolver {
 
 		public AnnotationType getAnnotationType() {
 			return new SimpleAnnotationType(this.type,
-					new SimpleDeclaredAnnotations(null, this.declaredAnnotations),
+					new SimpleDeclaredAnnotations(this.declaredAnnotations),
 					new SimpleAttributeTypes(this.attributeTypes));
 		}
 
@@ -222,7 +222,7 @@ class SimpleAnnotationTypeResolver implements AnnotationTypeResolver {
 		@Override
 		public void visitEnd() {
 			AttributeType attributeType = new SimpleAttributeType(this.name, this.type,
-					new SimpleDeclaredAnnotations(null, this.declaredAnnotations),
+					new SimpleDeclaredAnnotations(this.declaredAnnotations),
 					this.defaultValue);
 			this.consumer.accept(attributeType);
 		}

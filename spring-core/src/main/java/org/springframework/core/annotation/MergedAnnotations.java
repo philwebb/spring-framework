@@ -190,7 +190,7 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<?>> {
 					annotation.annotationType().getClassLoader());
 			DeclaredAnnotation declaredAnnotation = DeclaredAnnotation.from(annotation);
 			MappableAnnotation mappableAnnotation = new MappableAnnotation(resolver,
-					RepeatableContainers.standardRepeatables(), declaredAnnotation, null);
+					RepeatableContainers.standardRepeatables(), declaredAnnotation);
 			mappableAnnotations.add(mappableAnnotation);
 		}
 		return new MappedAnnotations(mappableAnnotations);

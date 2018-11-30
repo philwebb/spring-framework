@@ -40,7 +40,7 @@ public class SimpleDeclaredAnnotationsTests {
 	public void setup() {
 		this.one = new SimpleDeclaredAnnotation("one", DeclaredAttributes.NONE);
 		this.two = new SimpleDeclaredAnnotation("two", DeclaredAttributes.NONE);
-		this.annotations = new SimpleDeclaredAnnotations(null,
+		this.annotations = new SimpleDeclaredAnnotations(
 				Arrays.asList(this.one, this.two));
 	}
 

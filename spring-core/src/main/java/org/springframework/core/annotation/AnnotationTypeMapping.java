@@ -143,7 +143,7 @@ class AnnotationTypeMapping {
 			DeclaredAttributes mappedAttributes = mapAttributes(
 					annotation.getAttributes());
 			return new MappedAnnotation<>(this, mappedAttributes,
-					annotation.getDeclaringClass(), inherited, null);
+					inherited, null);
 		}
 		catch (Exception ex) {
 			throw new AnnotationConfigurationException("Unable to map attributes of "
@@ -391,7 +391,7 @@ class AnnotationTypeMapping {
 					|| isShadow(result, value, lastValue)) {
 				return;
 			}
-			Class<?> declaringClass = this.source.getDeclaringClass();
+			Class<?> declaringClass = null; // FIXME this.source.getDeclaringClass();
 			String on = (declaringClass != null)
 					? " declared on " + declaringClass.getName()
 					: "";

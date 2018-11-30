@@ -47,7 +47,7 @@ public class MappableAnnotationTests {
 	public void getAnnotationTypeReturnsType() {
 		AnnotationType type = createMockType();
 		MappableAnnotation mappable = new MappableAnnotation(this.resolver, RepeatableContainers.standardRepeatables(),
-				type, DeclaredAttributes.NONE,null);
+				type, DeclaredAttributes.NONE);
 		assertThat(mappable.getAnnotationType()).isSameAs(type);
 	}
 
@@ -55,7 +55,7 @@ public class MappableAnnotationTests {
 	public void getAttributesReturnsAttributes() {
 		DeclaredAttributes attributes = DeclaredAttributes.of("value", "test");
 		MappableAnnotation mappable = new MappableAnnotation(this.resolver,
-				RepeatableContainers.standardRepeatables(), createMockType(), attributes,null);
+				RepeatableContainers.standardRepeatables(), createMockType(), attributes);
 		assertThat(mappable.getAttributes()).isSameAs(attributes);
 	}
 

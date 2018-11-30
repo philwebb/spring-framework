@@ -18,7 +18,6 @@ package org.springframework.core.annotation.type;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -45,17 +44,6 @@ public interface DeclaredAnnotations extends Iterable<DeclaredAnnotation> {
 	static final DeclaredAnnotations NONE = () -> Collections.emptyIterator();
 
 	/**
-	 * Return the class that declared the annotations or {@code null} if the
-	 * declaring class is not known.
-	 * @return the declaring class or {@code null}
-	 */
-	default Class<?> getDeclaringClass() {
-		// FIXME this is not ideal. Best to drop it here and instead create
-		// a sub-interface that exposes AnnotatedElement
-		return null;
-	}
-
-	/**
 	 * Find a declared annotation of the specified type.
 	 * @param annotationType the type required
 	 * @return a declared annotation or {@code null}
@@ -76,23 +64,17 @@ public interface DeclaredAnnotations extends Iterable<DeclaredAnnotation> {
 
 	// FIXME DC
 	static DeclaredAnnotations from(AnnotatedElement element, Collection<Annotation> annotations) {
-		Class<?> declaringClass = null;
-		if (element instanceof Class) {
-			declaringClass = (Class<?>) element;
-		}
-		if (element instanceof Method) {
-			declaringClass = ((Method) element).getDeclaringClass();
-		}
 		List<DeclaredAnnotation> adapted = new ArrayList<>();
 		for (Annotation annotation : annotations) {
 			try {
+				// FIXME pass element?
 				adapted.add(DeclaredAnnotation.from(annotation));
 			}
 			catch (Throwable ex) {
 				AnnotationIntrospectionFailure.log(element, ex);
 			}
 		}
-		return of(declaringClass, adapted);
+		return of(adapted);
 	}
 
 	/**
@@ -102,20 +84,8 @@ public interface DeclaredAnnotations extends Iterable<DeclaredAnnotation> {
 	 * @return a new {@link DeclaredAnnotations} instance
 	 */
 	static DeclaredAnnotations of(DeclaredAnnotation... annotations) {
-		return of(null, annotations);
+		return new SimpleDeclaredAnnotations(annotations);
 	}
-
-	/**
-	 * Create a new in-memory {@link DeclaredAnnotations} containing the
-	 * specified annotations.
-	 * @param declaringClass the class that declared the annotations
-	 * @param annotations the contained annotations
-	 * @return a new {@link DeclaredAnnotations} instance
-	 */
-	static DeclaredAnnotations of(Class<?> declaringClass, DeclaredAnnotation... annotations) {
-		return new SimpleDeclaredAnnotations(declaringClass, annotations);
-	}
-
 
 	/**
 	 * Create a new in-memory {@link DeclaredAnnotations} containing the
@@ -124,18 +94,7 @@ public interface DeclaredAnnotations extends Iterable<DeclaredAnnotation> {
 	 * @return a new {@link DeclaredAnnotations} instance
 	 */
 	static DeclaredAnnotations of(Collection<DeclaredAnnotation> annotations) {
-		return of(null, annotations);
-	}
-
-	/**
-	 * Create a new in-memory {@link DeclaredAnnotations} containing the
-	 * specified annotations.
-	 * @param declaringClass the class that declared the annotations
-	 * @param annotations the contained annotations
-	 * @return a new {@link DeclaredAnnotations} instance
-	 */
-	static DeclaredAnnotations of(Class<?> declaringClass, Collection<DeclaredAnnotation> annotations) {
-		return new SimpleDeclaredAnnotations(declaringClass, annotations);
+		return new SimpleDeclaredAnnotations(annotations);
 	}
 
 }
