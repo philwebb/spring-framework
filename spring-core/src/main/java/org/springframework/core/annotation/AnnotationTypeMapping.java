@@ -62,60 +62,75 @@ import org.springframework.util.StringUtils;
  */
 class AnnotationTypeMapping {
 
+	// FIXME check usage
 	private final AnnotationTypeResolver resolver;
 
 	private final AnnotationTypeMapping parent;
 
 	private final int depth;
 
+	private final AnnotationType annotationType;
+
+	private final DeclaredAttributes annotationAttributes;
+
 	private final Map<String, Reference> aliases = new LinkedHashMap<>();
 
 	private final List<MirrorSet> mirrorSets = new ArrayList<>();
 
 	AnnotationTypeMapping(AnnotationTypeResolver resolver,
-			AnnotationType source) {
+			AnnotationType annotationType) {
+		this(resolver, null, annotationType, DeclaredAttributes.NONE);
 	}
 
-	// FIXME A type mapping should not need a MappableAnnotation
-	AnnotationTypeMapping(AnnotationTypeResolver resolver, AnnotationTypeMapping parent, AnnotationType annotationType, DeclaredAttributes attributes) {
+	AnnotationTypeMapping(AnnotationTypeResolver resolver, AnnotationTypeMapping parent,
+			AnnotationType annotationType, DeclaredAttributes attributes) {
 		this.resolver = resolver;
 		this.parent = parent;
 		this.depth = (parent == null ? 0 : parent.depth + 1);
+		this.annotationType = annotationType;
+		this.annotationAttributes = attributes;
 	}
 
-
-	void addAlias(Reference from, Reference to) {
+	public void addAlias(Reference from, Reference to) {
 		this.aliases.putIfAbsent(from.getAttribute().getAttributeName(), to);
 	}
 
-	void addMirrorSet(Collection<Reference> references) {
+	public void addMirrorSet(Collection<Reference> references) {
 		for (Reference reference : references) {
 			Assert.state(equals(reference.getMapping()),
 					"Invalid mirror mapping reference");
 			String attributeName = reference.getAttribute().getAttributeName();
 			Reference aliasTo = this.aliases.get(attributeName);
-			if(aliasTo != null && equals(aliasTo.getMapping())) {
+			if (aliasTo != null && equals(aliasTo.getMapping())) {
 				this.aliases.remove(attributeName);
 			}
 		}
 		this.mirrorSets.add(new MirrorSet(references));
 	}
 
-	public AnnotationType getAnnotationType() {
-		throw new UnsupportedOperationException("Auto-generated method stub");
-	}
-
-	// FIXME check usage
-	AnnotationTypeResolver getResolver() {
+	public AnnotationTypeResolver getResolver() {
 		return this.resolver;
 	}
 
-	AnnotationTypeMapping getParent() {
+	public AnnotationTypeMapping getParent() {
 		return this.parent;
 	}
 
-	int getDepth() {
+	public AnnotationType getAnnotationType() {
+		return this.annotationType;
+	}
+
+	public DeclaredAttributes getAnnotationAttributes() {
+		return this.annotationAttributes;
+	}
+
+	public int getDepth() {
 		return this.depth;
+	}
+
+	public <A extends Annotation> MappedAnnotation<A> map(DeclaredAttributes attributes, boolean inherited) {
+		DeclaredAttributes mappedAttributes = mapAttributes(attributes);
+		return new MappedAnnotation<>(this, mappedAttributes, inherited, null);
 	}
 
 	public <A extends Annotation> MergedAnnotation<A> map(MappableAnnotation annotation,
@@ -126,8 +141,7 @@ class AnnotationTypeMapping {
 		try {
 			DeclaredAttributes mappedAttributes = mapAttributes(
 					annotation.getAttributes());
-			return new MappedAnnotation<>(this, mappedAttributes,
-					inherited, null);
+			return new MappedAnnotation<>(this, mappedAttributes, inherited, null);
 		}
 		catch (Exception ex) {
 			throw new AnnotationConfigurationException("Unable to map attributes of "
@@ -135,16 +149,233 @@ class AnnotationTypeMapping {
 		}
 	}
 
-	DeclaredAttributes mapAttributes(DeclaredAttributes rootAttributes) {
-		DeclaredAttributes attributes = rootAttributes;
+	private DeclaredAttributes mapAttributes(DeclaredAttributes rootAttributes) {
+		DeclaredAttributes mappedAttributes = rootAttributes;
 		if (getParent() != null) {
-			DeclaredAttributes parentMappedAttributes = getParent().mapAttributes(rootAttributes);
-			attributes = new MappedAttributes(parentMappedAttributes, this.aliases);
+			DeclaredAttributes parentAttributes = getParent().mapAttributes(
+					rootAttributes);
+			mappedAttributes = new ParentMappedAttributes(this.annotationType,
+					this.annotationAttributes, parentAttributes, this.aliases);
 		}
 		if (!this.mirrorSets.isEmpty()) {
-			attributes = new MirroredAttributes(attributes, this.mirrorSets);
+			mappedAttributes = new MirroredAttributes(this.annotationAttributes, mappedAttributes,
+					this.mirrorSets);
 		}
-		return attributes;
+		return mappedAttributes;
+	}
+
+	/**
+	 * {@link DeclaredAttributes} decorator to apply mapping rules.
+	 */
+	private class ParentMappedAttributes extends AbstractDeclaredAttributes {
+
+		private final AnnotationType annotationType;
+
+		private final DeclaredAttributes annotationAttributes;
+
+		private final DeclaredAttributes parentAttributes;
+
+		private final Map<String, Reference> aliases;
+
+		public ParentMappedAttributes(AnnotationType annotationType,
+				DeclaredAttributes annotationAttributes,
+				DeclaredAttributes parentAttributes, Map<String, Reference> aliases) {
+			this.annotationType = annotationType;
+			this.annotationAttributes = annotationAttributes;
+			this.parentAttributes = parentAttributes;
+			this.aliases = aliases;
+		}
+
+		@Override
+		public Object get(String name) {
+			Assert.notNull(name, "Name must not be null");
+			AttributeType type = this.annotationType.getAttributeTypes().get(name);
+			Object result = null;
+			Reference alias = this.aliases.get(name);
+			if (alias != null) {
+				String aliasName = alias.getAttribute().getAttributeName();
+				result = this.parentAttributes.get(aliasName);
+			}
+			if (result == null && !isConventionRestricted(name)) {
+				result = this.parentAttributes.get(name);
+			}
+			if (result == null) {
+				result = this.annotationAttributes.get(name);
+			}
+			if (result != null && isArrayAttributeType(type)
+					&& !ObjectUtils.isArray(result)) {
+				result = wrapInArray(result);
+			}
+			return result;
+		}
+
+		private boolean isConventionRestricted(String name) {
+			return "value".equals(name);
+		}
+
+		private boolean isArrayAttributeType(AttributeType type) {
+			return type != null && type.getClassName().endsWith("[]");
+		}
+
+		private Object wrapInArray(Object result) {
+			Object array = Array.newInstance(result.getClass(), 1);
+			Array.set(array, 0, result);
+			return array;
+		}
+
+		@Override
+		public Set<String> names() {
+			return this.annotationType.getAttributeTypes().names();
+		}
+
+	}
+
+	/**
+	 * {@link DeclaredAttributes} decorator to apply mirroring rules.
+	 */
+	private static class MirroredAttributes extends AbstractDeclaredAttributes {
+
+		private final DeclaredAttributes annotationAttributes;
+
+		private final DeclaredAttributes sourceAttributes;
+
+		private final Map<String, Reference> mirrors;
+
+		public MirroredAttributes(DeclaredAttributes annotationAttributes,
+				DeclaredAttributes sourceAttributes, List<MirrorSet> mirrorSets) {
+			this.annotationAttributes = annotationAttributes;
+			this.sourceAttributes = sourceAttributes;
+			this.mirrors = getMirrors(mirrorSets);
+		}
+
+		private Map<String, Reference> getMirrors(List<MirrorSet> mirrorSets) {
+			Map<String, Reference> mirrors = new HashMap<>();
+			for (MirrorSet mirrorSet : mirrorSets) {
+				addMirrors(mirrors, mirrorSet);
+			}
+			return Collections.unmodifiableMap(mirrors);
+		}
+
+		private void addMirrors(Map<String, Reference> mirrors, MirrorSet mirrorSet) {
+			Reference inUse = getMirrorAttributeInUse(mirrorSet);
+			for (Reference mirror : mirrorSet) {
+				mirrors.put(mirror.getAttribute().getAttributeName(), inUse);
+			}
+		}
+
+		private Reference getMirrorAttributeInUse(MirrorSet mirrorSet) {
+			Reference result = null;
+			Object lastValue = null;
+			for (Reference candidate : mirrorSet) {
+				AttributeType attribute = candidate.getAttribute();
+				String name = attribute.getAttributeName();
+				Object value = this.sourceAttributes.get(name);
+				if (value != null && !isSameAsDefaultValue(value, attribute)) {
+					if (result != null) {
+						checkMirrorPossibleAttributeResult(name, result, value,
+								lastValue);
+					}
+					result = candidate;
+					lastValue = value;
+				}
+			}
+			return result;
+		}
+
+		private void checkMirrorPossibleAttributeResult(String name, Reference result,
+				Object value, Object lastValue) {
+			if (ObjectUtils.nullSafeEquals(value, lastValue)
+					|| isShadow(result, value, lastValue)) {
+				return;
+			}
+			// FIXME this.source.getDeclaringClass();
+			Class<?> declaringClass = null;
+			String on = (declaringClass != null)
+					? " declared on " + declaringClass.getName()
+					: "";
+			String annotationType = result.getMapping().getAnnotationType().getClassName();
+			String lastName = result.getAttribute().getAttributeName();
+			throw new AnnotationConfigurationException(String.format(
+					"Different @AliasFor mirror values for annotation [%s]%s, "
+							+ "attribute '%s' and its alias '%s' are declared with values of [%s] and [%s].",
+					annotationType, on, lastName, name,
+					ObjectUtils.nullSafeToString(lastValue),
+					ObjectUtils.nullSafeToString(value)));
+		}
+
+		private boolean isShadow(Reference result, Object value, Object lastValue) {
+			Object attributeValue = this.annotationAttributes.get(
+					result.getAttribute().getAttributeName());
+			return ObjectUtils.nullSafeEquals(lastValue, attributeValue);
+		}
+
+		private boolean isSameAsDefaultValue(Object value, AttributeType attribute) {
+			Object defaultValue = attribute.getDefaultValue();
+			if (ObjectUtils.nullSafeEquals(value, defaultValue)) {
+				return true;
+			}
+			if (isZeroLengthArray(defaultValue) && isZeroLengthArray(value)) {
+				return true;
+			}
+			return false;
+		}
+
+		private boolean isZeroLengthArray(Object defaultValue) {
+			return ObjectUtils.isArray(defaultValue)
+					&& Array.getLength(defaultValue) == 0;
+		}
+
+		@Override
+		public Set<String> names() {
+			return this.sourceAttributes.names();
+		}
+
+		@Override
+		public Object get(String name) {
+			Reference mirror = this.mirrors.get(name);
+			if (mirror != null) {
+				name = mirror.getAttribute().getAttributeName();
+			}
+			return this.sourceAttributes.get(name);
+		}
+
+	}
+
+	/**
+	 * A set of mirror attribute references.
+	 */
+	private static class MirrorSet implements Iterable<Reference> {
+
+		private final Set<Reference> references;
+
+		public MirrorSet(Collection<Reference> references) {
+			Iterator<Reference> iterator = references.iterator();
+			Reference source = iterator.next();
+			while (iterator.hasNext()) {
+				Reference mirror = iterator.next();
+				Object sourceDefault = source.getAttribute().getDefaultValue();
+				Object mirrorDefault = mirror.getAttribute().getDefaultValue();
+				if (sourceDefault == null || mirrorDefault == null) {
+					throw new AnnotationConfigurationException(String.format(
+							"Misconfigured aliases: %s and %s must declare default values.",
+							mirror, source));
+				}
+				if (!ObjectUtils.nullSafeEquals(sourceDefault, mirrorDefault)) {
+					throw new AnnotationConfigurationException(String.format(
+							"Misconfigured aliases: %s and %s must declare the same default value.",
+							mirror, source));
+				}
+			}
+			this.references = new LinkedHashSet<>(references);
+			Assert.isTrue(references.size() > 1,
+					"Mirrors must contain more than one reference");
+		}
+
+		@Override
+		public Iterator<Reference> iterator() {
+			return this.references.iterator();
+		}
+
 	}
 
 	/**
@@ -212,209 +443,6 @@ class AnnotationTypeMapping {
 					other.mapping.getAnnotationType().getClassName())
 					&& Objects.equals(this.attribute.getAttributeName(),
 							other.attribute.getAttributeName());
-		}
-
-	}
-
-	/**
-	 * A set of mirror attribute references.
-	 */
-	private static class MirrorSet implements Iterable<Reference> {
-
-		private final Set<Reference> references;
-
-		public MirrorSet(Collection<Reference> references) {
-			Iterator<Reference> iterator = references.iterator();
-			Reference source = iterator.next();
-			while (iterator.hasNext()) {
-				Reference mirror = iterator.next();
-				Object sourceDefault = source.getAttribute().getDefaultValue();
-				Object mirrorDefault = mirror.getAttribute().getDefaultValue();
-				if (sourceDefault == null || mirrorDefault == null) {
-					throw new AnnotationConfigurationException(String.format(
-							"Misconfigured aliases: %s and %s must declare default values.",
-							mirror, source));
-				}
-				if (!ObjectUtils.nullSafeEquals(sourceDefault, mirrorDefault)) {
-					throw new AnnotationConfigurationException(String.format(
-							"Misconfigured aliases: %s and %s must declare the same default value.",
-							mirror, source));
-				}
-			}
-			this.references = new LinkedHashSet<>(references);
-			Assert.isTrue(references.size() > 1,
-					"Mirrors must contain more than one reference");
-		}
-
-		@Override
-		public Iterator<Reference> iterator() {
-			return this.references.iterator();
-		}
-
-	}
-
-
-	/**
-	 * {@link DeclaredAttributes} decorator to apply mapping rules.
-	 */
-	private class MappedAttributes extends AbstractDeclaredAttributes {
-
-		private final DeclaredAttributes attributes;
-
-		private final Map<String, Reference> aliases;
-
-		public MappedAttributes(DeclaredAttributes attributes,
-				Map<String, Reference> aliases) {
-			this.attributes = attributes;
-			this.aliases = aliases;
-		}
-
-		@Override
-		public Object get(String name) {
-			Assert.notNull(name, "Name must not be null");
-			AttributeType type = this.source.getAnnotationType()
-					.getAttributeTypes().get(name);
-			Object result = null;
-			Reference alias = this.aliases.get(name);
-			if (alias != null) {
-				String aliasName = alias.getAttribute().getAttributeName();
-				result = this.attributes.get(aliasName);
-			}
-			if (result == null && !isConventionRestricted(name)) {
-				result = this.attributes.get(name);
-			}
-			if (result == null) {
-				result = this.source.getAttributes().get(name);
-			}
-			if (result != null && isArrayAttributeType(type)
-					&& !ObjectUtils.isArray(result)) {
-				result = wrapInArray(result);
-			}
-			return result;
-		}
-
-		private boolean isConventionRestricted(String name) {
-			return "value".equals(name);
-		}
-
-		private boolean isArrayAttributeType(AttributeType type) {
-			return type != null && type.getClassName().endsWith("[]");
-		}
-
-		private Object wrapInArray(Object result) {
-			Object array = Array.newInstance(result.getClass(), 1);
-			Array.set(array, 0, result);
-			return array;
-		}
-
-		@Override
-		public Set<String> names() {
-			return this.source.getAnnotationType().getAttributeTypes().names();
-		}
-
-	}
-
-	/**
-	 * {@link DeclaredAttributes} decorator to apply mirroring rules.
-	 */
-	private static class MirroredAttributes extends AbstractDeclaredAttributes {
-
-		private final DeclaredAttributes attributes;
-
-		private final Map<String, Reference> mirrors;
-
-		public MirroredAttributes(DeclaredAttributes attributes, List<MirrorSet> mirrorSets) {
-			this.attributes = attributes;
-			this.mirrors = getMirrors(mirrorSets);
-		}
-
-		private Map<String, Reference> getMirrors(List<MirrorSet> mirrorSets) {
-			Map<String, Reference> mirrors = new HashMap<>();
-			for (MirrorSet mirrorSet : mirrorSets) {
-				addMirrors(mirrors, mirrorSet);
-			}
-			return Collections.unmodifiableMap(mirrors);
-		}
-
-		private void addMirrors( Map<String, Reference> mirrors, MirrorSet mirrorSet) {
-			Reference inUse = getMirrorAttributeInUse(mirrorSet);
-			for (Reference mirror : mirrorSet) {
-				mirrors.put(mirror.getAttribute().getAttributeName(), inUse);
-			}
-		}
-
-		private Reference getMirrorAttributeInUse(MirrorSet mirrorSet) {
-			Reference result = null;
-			Object lastValue = null;
-			for (Reference candidate : mirrorSet) {
-				AttributeType attribute = candidate.getAttribute();
-				String name = attribute.getAttributeName();
-				Object value = this.attributes.get(name);
-				if (value != null && !isSameAsDefaultValue(value, attribute)) {
-					if (result != null) {
-						checkMirrorPossibleAttributeResult(name, result, value, lastValue);
-					}
-					result = candidate;
-					lastValue = value;
-				}
-			}
-			return result;
-		}
-
-		private void checkMirrorPossibleAttributeResult(String name, Reference result,
-				Object value, Object lastValue) {
-			if (ObjectUtils.nullSafeEquals(value, lastValue)
-					|| isShadow(result, value, lastValue)) {
-				return;
-			}
-			Class<?> declaringClass = null; // FIXME this.source.getDeclaringClass();
-			String on = (declaringClass != null)
-					? " declared on " + declaringClass.getName()
-					: "";
-			String annotationType = result.getMapping().getAnnotationType().getClassName();
-			String lastName = result.getAttribute().getAttributeName();
-			throw new AnnotationConfigurationException(String.format(
-					"Different @AliasFor mirror values for annotation [%s]%s, "
-							+ "attribute '%s' and its alias '%s' are declared with values of [%s] and [%s].",
-					annotationType, on, lastName, name,
-					ObjectUtils.nullSafeToString(lastValue),
-					ObjectUtils.nullSafeToString(value)));
-		}
-
-		private boolean isShadow(Reference result, Object value, Object lastValue) {
-			Object attributeValue = this.source.getAttributes().get(
-					result.getAttribute().getAttributeName());
-			return ObjectUtils.nullSafeEquals(lastValue, attributeValue);
-		}
-
-		private boolean isSameAsDefaultValue(Object value, AttributeType attribute) {
-			Object defaultValue = attribute.getDefaultValue();
-			if (ObjectUtils.nullSafeEquals(value, defaultValue)) {
-				return true;
-			}
-			if (isZeroLengthArray(defaultValue) && isZeroLengthArray(value)) {
-				return true;
-			}
-			return false;
-		}
-
-		private boolean isZeroLengthArray(Object defaultValue) {
-			return ObjectUtils.isArray(defaultValue)
-					&& Array.getLength(defaultValue) == 0;
-		}
-
-		@Override
-		public Set<String> names() {
-			return this.attributes.names();
-		}
-
-		@Override
-		public Object get(String name) {
-			Reference mirror = this.mirrors.get(name);
-			if (mirror != null) {
-				name = mirror.getAttribute().getAttributeName();
-			}
-			return this.attributes.get(name);
 		}
 
 	}

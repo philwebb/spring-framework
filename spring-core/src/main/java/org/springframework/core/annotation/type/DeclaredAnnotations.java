@@ -34,7 +34,6 @@ import org.springframework.lang.Nullable;
  * @author Stephane Nicoll
  * @since 5.2
  */
-@FunctionalInterface
 public interface DeclaredAnnotations extends Iterable<DeclaredAnnotation> {
 
 	/**
@@ -42,6 +41,9 @@ public interface DeclaredAnnotations extends Iterable<DeclaredAnnotation> {
 	 * declared annotations.
 	 */
 	static final DeclaredAnnotations NONE = () -> Collections.emptyIterator();
+
+	// FIXME DC
+	Object getSource();
 
 	/**
 	 * Find a declared annotation of the specified type.

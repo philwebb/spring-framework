@@ -94,15 +94,15 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 
 	private final DeclaredAttributes mappedAttributes;
 
-	private final boolean inherted;
+	private final boolean inherited;
 
 	private final Predicate<String> attributeFilter;
 
 	MappedAnnotation(AnnotationTypeMapping mapping, DeclaredAttributes mappedAttributes,
-			boolean inherted, Predicate<String> attributeFilter) {
+			boolean inherited, Predicate<String> attributeFilter) {
 		this.mapping = mapping;
 		this.mappedAttributes = mappedAttributes;
-		this.inherted = inherted;
+		this.inherited = inherited;
 		this.attributeFilter = attributeFilter;
 	}
 
@@ -138,7 +138,7 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 
 	@Override
 	public boolean isFromInherited() {
-		return this.inherted;
+		return this.inherited;
 	}
 
 	@Override
@@ -312,7 +312,7 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 				? this.attributeFilter.and(attributeFilter)
 				: attributeFilter;
 		return new MappedAnnotation<>(this.mapping, this.mappedAttributes,
-				this.inherted, attributeFilter);
+				this.inherited, attributeFilter);
 	}
 
 	@Override
@@ -585,26 +585,28 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 
 	private Object getAttributeValue(String attributeName, boolean nonMerged) {
 		DeclaredAttributes attributes = nonMerged
-				? this.mapping.getSource().getAttributes()
+				? this.mapping.getAnnotationAttributes()
 				: this.mappedAttributes;
 		return attributes.get(attributeName);
 	}
 
 	private <T extends Annotation> MergedAnnotation<T> createNested(AnnotationType type,
 			DeclaredAttributes attributes) {
+		throw new IllegalStateException();
+		// FIXME
 		// FIXME the MappableAnnotation constructor is off
-		return createNested(new MappableAnnotation(this.mapping.getResolver(),
-				this.mapping.getSource().getRepeatableContainers(), type, attributes));
+//		return createNested(new MappableAnnotation(this.mapping.getResolver(),
+//				this.mapping.getSource().getRepeatableContainers(), type, attributes));
 	}
 
-	private <T extends Annotation> MergedAnnotation<T> createNested(
-			MappableAnnotation mappable) {
-		AnnotationTypeMappings mappings = AnnotationTypeMappings.get(
-				this.mapping.getResolver(), mappable.getRepeatableContainers(),
-				mappable.getAnnotationType());
-		AnnotationTypeMapping mapping = mappings.getMapping(
-				mappable.getAnnotationType().getClassName());
-		return mapping.map(mappable, this.inherted);
-	}
+//	private <T extends Annotation> MergedAnnotation<T> createNested(
+//			MappableAnnotation mappable) {
+//		AnnotationTypeMappings mappings = AnnotationTypeMappings.get(
+//				this.mapping.getResolver(), mappable.getRepeatableContainers(),
+//				mappable.getAnnotationType());
+//		AnnotationTypeMapping mapping = mappings.getMapping(
+//				mappable.getAnnotationType().getClassName());
+//		return mapping.map(mappable, this.inherted);
+//	}
 
 }

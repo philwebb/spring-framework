@@ -61,8 +61,6 @@ class AnnotationTypeMappings {
 
 	static final String ALIAS_FOR_ANNOTATION = AliasFor.class.getName();
 
-	private final AnnotationType source;
-
 	private final List<AnnotationTypeMapping> mappings;
 
 	private final Map<String, AnnotationTypeMapping> mappingForType;
@@ -77,73 +75,14 @@ class AnnotationTypeMappings {
 	AnnotationTypeMappings(AnnotationTypeResolver resolver,
 			RepeatableContainers repeatableContainers, AnnotationType source) {
 		Assert.notNull(resolver, "Resolver must not be null");
+		Assert.notNull(resolver, "RepeatableContainers must not be null");
 		Assert.notNull(source, "Source must not be null");
-		this.source = source;
-		this.mappings = buildMappings(resolver, repeatableContainers);
-		this.mappingForType = buildMappingForType(this.mappings);
+		this.mappings = new MappingsBuilder(resolver, repeatableContainers).build(source);
+		this.mappingForType = groupByType(this.mappings);
 		processAliasForAnnotations();
 	}
 
-	private List<AnnotationTypeMapping> buildMappings(AnnotationTypeResolver resolver,
-			RepeatableContainers repeatableContainers) {
-		if (!isMappable(this.source.getClassName())) {
-			return Collections.emptyList();
-		}
-		List<AnnotationTypeMapping> result = new ArrayList<>();
-		Deque<AnnotationTypeMapping> queue = new ArrayDeque<>();
-		queue.add(new AnnotationTypeMapping(resolver, this.source));
-		while (!queue.isEmpty()) {
-			AnnotationTypeMapping mapping = queue.removeFirst();
-			result.add(mapping);
-			addMappings(queue, resolver, repeatableContainers, mapping,
-					mapping.getAnnotationType());
-		}
-		return Collections.unmodifiableList(result);
-	}
-
-	private void addMappings(Deque<AnnotationTypeMapping> queue,
-			AnnotationTypeResolver resolver, RepeatableContainers repeatableContainers,
-			AnnotationTypeMapping parent, AnnotationType type) {
-		for (DeclaredAnnotation metaAnnotation : type.getDeclaredAnnotations()) {
-			repeatableContainers.withEach(resolver, metaAnnotation,
-					(annotation, attributes) -> addMapping(resolver, repeatableContainers,
-							queue, parent, annotation, attributes));
-		}
-	}
-
-	private void addMapping(AnnotationTypeResolver resolver,
-			RepeatableContainers repeatableContainers, Deque<AnnotationTypeMapping> queue,
-			AnnotationTypeMapping parent, AnnotationType annotation,
-			DeclaredAttributes attributes) {
-		if (isMappable(parent, annotation)) {
-			AnnotationTypeMapping mapping = new AnnotationTypeMapping(resolver, parent,
-					annotation, attributes);
-			queue.addLast(mapping);
-		}
-	}
-
-	private boolean isMappable(AnnotationTypeMapping parent, AnnotationType annotation) {
-		String annotationType = annotation.getClassName();
-		return isMappable(annotationType) && !isAlreadyMapped(parent, annotationType);
-	}
-
-	private boolean isMappable(String annotationType) {
-		return (annotationType.startsWith("java.lang.annotation.")
-				|| annotationType.startsWith("org.springframework.lang."));
-	}
-
-	private boolean isAlreadyMapped(AnnotationTypeMapping parent, String annotationType) {
-		AnnotationTypeMapping mapping = parent;
-		while (mapping != null) {
-			if (mapping.getAnnotationType().getClassName().equals(annotationType)) {
-				return true;
-			}
-			mapping = mapping.getParent();
-		}
-		return false;
-	}
-
-	private Map<String, AnnotationTypeMapping> buildMappingForType(
+	private Map<String, AnnotationTypeMapping> groupByType(
 			List<AnnotationTypeMapping> mappings) {
 		Map<String, AnnotationTypeMapping> mappingForType = new HashMap<>();
 		mappings.forEach(mapping -> mappingForType.putIfAbsent(
@@ -310,6 +249,80 @@ class AnnotationTypeMappings {
 		ClassLoader classLoader = resolver.getClassLoader();
 		Cache perClassloadCache = cache.computeIfAbsent(classLoader, key -> new Cache());
 		return perClassloadCache.get(resolver, repeatableContainers, type);
+	}
+
+	/**
+	 * Builder used to create the mappings.
+	 */
+	private static class MappingsBuilder {
+
+		private final AnnotationTypeResolver resolver;
+
+		private final RepeatableContainers repeatableContainers;
+
+		public MappingsBuilder(AnnotationTypeResolver resolver,
+				RepeatableContainers repeatableContainers) {
+			this.resolver = resolver;
+			this.repeatableContainers = repeatableContainers;
+		}
+
+		public List<AnnotationTypeMapping> build(AnnotationType source) {
+			if (!isMappable(source.getClassName())) {
+				return Collections.emptyList();
+			}
+			List<AnnotationTypeMapping> result = new ArrayList<>();
+			Deque<AnnotationTypeMapping> queue = new ArrayDeque<>();
+			queue.add(new AnnotationTypeMapping(this.resolver, source));
+			while (!queue.isEmpty()) {
+				AnnotationTypeMapping mapping = queue.removeFirst();
+				result.add(mapping);
+				addMappings(queue, mapping, mapping.getAnnotationType());
+			}
+			return Collections.unmodifiableList(result);
+		}
+
+		private void addMappings(Deque<AnnotationTypeMapping> queue,
+
+				AnnotationTypeMapping parent, AnnotationType type) {
+			for (DeclaredAnnotation metaAnnotation : type.getDeclaredAnnotations()) {
+				repeatableContainers.withEach(resolver, metaAnnotation, (annotation,
+						attributes) -> addMapping(queue, parent, annotation, attributes));
+			}
+		}
+
+		private void addMapping(Deque<AnnotationTypeMapping> queue,
+				AnnotationTypeMapping parent, AnnotationType annotation,
+				DeclaredAttributes attributes) {
+			if (isMappable(parent, annotation)) {
+				AnnotationTypeMapping mapping = new AnnotationTypeMapping(this.resolver,
+						parent, annotation, attributes);
+				queue.addLast(mapping);
+			}
+		}
+
+		private boolean isMappable(AnnotationTypeMapping parent,
+				AnnotationType annotation) {
+			String annotationType = annotation.getClassName();
+			return isMappable(annotationType) && !isAlreadyMapped(parent, annotationType);
+		}
+
+		private boolean isMappable(String annotationType) {
+			return (annotationType.startsWith("java.lang.annotation.")
+					|| annotationType.startsWith("org.springframework.lang."));
+		}
+
+		private boolean isAlreadyMapped(AnnotationTypeMapping parent,
+				String annotationType) {
+			AnnotationTypeMapping mapping = parent;
+			while (mapping != null) {
+				if (mapping.getAnnotationType().getClassName().equals(annotationType)) {
+					return true;
+				}
+				mapping = mapping.getParent();
+			}
+			return false;
+		}
+
 	}
 
 	/**
