@@ -31,11 +31,11 @@ import org.springframework.core.annotation.type.DeclaredAnnotations;
  * @author Phillip Webb
  * @since 5.1
  */
-class MappedAnnotations extends AbstractMergedAnnotations {
+class TypeMappedAnnotations extends AbstractMergedAnnotations {
 
 	private final Hierarchy hierarchy;
 
-	MappedAnnotations(Iterable<DeclaredAnnotations> annotations,
+	TypeMappedAnnotations(Iterable<DeclaredAnnotations> annotations,
 			AnnotationTypeResolver resolver, RepeatableContainers repeatableContainers) {
 		DeclaredAnnotationsMapper mapper = new DeclaredAnnotationsMapper(resolver,
 				repeatableContainers);
@@ -43,7 +43,7 @@ class MappedAnnotations extends AbstractMergedAnnotations {
 				mapper::map);
 	}
 
-	MappedAnnotations(Iterable<MappableAnnotation> annotations) {
+	TypeMappedAnnotations(Iterable<MappableAnnotation> annotations) {
 		this.hierarchy = () -> Stream.of(Element.of(annotations));
 	}
 

@@ -23,12 +23,12 @@ import static org.junit.Assert.*;
 
 
 /**
- * Tests for {@link MappedAnnotations}
+ * Tests for {@link TypeMappedAnnotations}
  *
  * @author Phillip Webb
  */
 @Ignore
-public class MappedAnnotationsTests {
+public class TypeMappedAnnotationsTests {
 
 	@Test
 	public void test() {

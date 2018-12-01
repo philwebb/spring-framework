@@ -193,7 +193,7 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<?>> {
 					RepeatableContainers.standardRepeatables(), declaredAnnotation);
 			mappableAnnotations.add(mappableAnnotation);
 		}
-		return new MappedAnnotations(mappableAnnotations);
+		return new TypeMappedAnnotations(mappableAnnotations);
 	}
 
 	/**
@@ -276,7 +276,7 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<?>> {
 	 */
 	static MergedAnnotations from(Iterable<DeclaredAnnotations> annotations,
 			AnnotationTypeResolver resolver, RepeatableContainers repeatableContainers) {
-		return new MappedAnnotations(annotations, resolver, repeatableContainers);
+		return new TypeMappedAnnotations(annotations, resolver, repeatableContainers);
 	}
 
 	/**

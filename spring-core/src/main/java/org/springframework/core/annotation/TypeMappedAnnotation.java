@@ -48,7 +48,7 @@ import org.springframework.util.ObjectUtils;
  * @since 5.1
  * @param <A> the annotation type
  */
-class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
+class TypeMappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 
 	private static final Set<Class<?>> SUPPORTED_TYPES;
 	static {
@@ -98,8 +98,9 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 
 	private final Predicate<String> attributeFilter;
 
-	MappedAnnotation(AnnotationTypeMapping mapping, DeclaredAttributes mappedAttributes,
-			boolean inherited, Predicate<String> attributeFilter) {
+	TypeMappedAnnotation(AnnotationTypeMapping mapping,
+			DeclaredAttributes mappedAttributes, boolean inherited,
+			Predicate<String> attributeFilter) {
 		this.mapping = mapping;
 		this.mappedAttributes = mappedAttributes;
 		this.inherited = inherited;
@@ -126,7 +127,7 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 		if (annotation == null || annotation.getClass() != getClass()) {
 			return false;
 		}
-		AnnotationTypeMapping candidate = ((MappedAnnotation<?>) annotation).mapping.getParent();
+		AnnotationTypeMapping candidate = ((TypeMappedAnnotation<?>) annotation).mapping.getParent();
 		while (candidate != null) {
 			if (candidate == this.mapping) {
 				return true;
@@ -264,8 +265,8 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 		DeclaredAttributes nestedAttributes = getRequiredAttribute(attributeName,
 				DeclaredAttributes.class);
 		AttributeType attributeType = getAttributeType(attributeName);
-		AnnotationType nestedType = this.mapping.getResolver().resolve(
-				attributeType.getClassName()); // FIXME could be null
+		AnnotationType nestedType = AnnotationType.resolve(this.mapping.getClassLoader(),
+				attributeType.getClassName());
 		return createNested(nestedType, nestedAttributes);
 	}
 
@@ -283,7 +284,8 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 		AttributeType attributeType = getAttributeType(attributeName);
 		String arrayType = attributeType.getClassName();
 		String componentType = arrayType.substring(0, arrayType.length() - 2);
-		AnnotationType nestedType = this.mapping.getResolver().resolve(componentType); // FIXME could be null
+		AnnotationType nestedType = AnnotationType.resolve(this.mapping.getClassLoader(),
+				componentType);
 		MergedAnnotation<T>[] result = new MergedAnnotation[nestedAttributes.length];
 		for (int i = 0; i < nestedAttributes.length; i++) {
 			result[i] = createNested(nestedType, nestedAttributes[i]);
@@ -311,7 +313,7 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 		attributeFilter = (this.attributeFilter != null)
 				? this.attributeFilter.and(attributeFilter)
 				: attributeFilter;
-		return new MappedAnnotation<>(this.mapping, this.mappedAttributes,
+		return new TypeMappedAnnotation<>(this.mapping, this.mappedAttributes,
 				this.inherited, attributeFilter);
 	}
 
@@ -381,10 +383,10 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 	@Override
 	@SuppressWarnings("unchecked")
 	public A synthesize() {
-		if(!isPresent()) {
+		if (!isPresent()) {
 			throw new NoSuchElementException("Unable to synthesize missing annotation");
 		}
-		ClassLoader classLoader = this.mapping.getResolver().getClassLoader();
+		ClassLoader classLoader = this.mapping.getClassLoader();
 		Class<A> annotationType = (Class<A>) ClassUtils.resolveClassName(getType(),
 				classLoader);
 		InvocationHandler handler = new SynthesizedMergedAnnotationInvocationHandler<>(
@@ -500,7 +502,8 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 	private Object adaptDeclaredAttributes(DeclaredAttributes attributeValue,
 			AttributeType attributeType, Class<?> requiredType) {
 		if (requiredType.isAnnotation() || requiredType == MergedAnnotation.class) {
-			AnnotationType nestedType = this.mapping.getResolver().resolve(
+			AnnotationType nestedType = AnnotationType.resolve(
+					this.mapping.getClassLoader(),
 					attributeType.getClassName().replace("[]", ""));
 			MergedAnnotation<?> nestedAnnotation = createNested(nestedType,
 					attributeValue);
@@ -530,7 +533,6 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 		return (T) value;
 	}
 
-
 	private boolean isEmptyObjectArray(Object value) {
 		return Objects.equals(value.getClass(), Object[].class)
 				&& ((Object[]) value).length == 0;
@@ -547,8 +549,7 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 	}
 
 	private Class<?> resolveClassName(String className) {
-		return ClassUtils.resolveClassName(className,
-				this.mapping.getResolver().getClassLoader());
+		return ClassUtils.resolveClassName(className, this.mapping.getClassLoader());
 	}
 
 	@Override
@@ -584,29 +585,21 @@ class MappedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
 	}
 
 	private Object getAttributeValue(String attributeName, boolean nonMerged) {
-		DeclaredAttributes attributes = nonMerged
-				? this.mapping.getAnnotationAttributes()
+		DeclaredAttributes attributes = nonMerged ? this.mapping.getAnnotationAttributes()
 				: this.mappedAttributes;
 		return attributes.get(attributeName);
 	}
 
-	private <T extends Annotation> MergedAnnotation<T> createNested(AnnotationType type,
-			DeclaredAttributes attributes) {
-		throw new IllegalStateException();
-		// FIXME
-		// FIXME the MappableAnnotation constructor is off
-//		return createNested(new MappableAnnotation(this.mapping.getResolver(),
-//				this.mapping.getSource().getRepeatableContainers(), type, attributes));
+	private <T extends Annotation> TypeMappedAnnotation<T> createNested(
+			AnnotationType type, DeclaredAttributes attributes) {
+		AnnotationTypeMapping mapping = getNestedMapping(type);
+		return mapping.map(attributes, inherited);
 	}
 
-//	private <T extends Annotation> MergedAnnotation<T> createNested(
-//			MappableAnnotation mappable) {
-//		AnnotationTypeMappings mappings = AnnotationTypeMappings.get(
-//				this.mapping.getResolver(), mappable.getRepeatableContainers(),
-//				mappable.getAnnotationType());
-//		AnnotationTypeMapping mapping = mappings.getMapping(
-//				mappable.getAnnotationType().getClassName());
-//		return mapping.map(mappable, this.inherted);
-//	}
+	private AnnotationTypeMapping getNestedMapping(AnnotationType type) {
+		return AnnotationTypeMappings.get(this.mapping.getClassLoader(),
+				this.mapping.getRepeatableContainers(), type).getMapping(
+						type.getClassName());
+	}
 
 }

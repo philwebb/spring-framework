@@ -22,7 +22,6 @@ import java.lang.reflect.Method;
 import java.util.function.BiConsumer;
 
 import org.springframework.core.annotation.type.AnnotationType;
-import org.springframework.core.annotation.type.AnnotationTypeResolver;
 import org.springframework.core.annotation.type.AttributeType;
 import org.springframework.core.annotation.type.DeclaredAnnotation;
 import org.springframework.core.annotation.type.DeclaredAttributes;
@@ -57,11 +56,12 @@ public abstract class RepeatableContainers {
 		return new ExplicitRepeatableContainer(this, container, repeatable);
 	}
 
-	void withEach(AnnotationTypeResolver resolver, DeclaredAnnotation annotation,
+	void visit(ClassLoader classLoader, DeclaredAnnotation annotation,
 			BiConsumer<AnnotationType, DeclaredAttributes> consumer) {
-		AnnotationType annotationType = resolver.resolve(annotation.getClassName());
+		AnnotationType annotationType = AnnotationType.resolve(classLoader,
+				annotation.getClassName());
 		DeclaredAttributes attributes = annotation.getAttributes();
-		AnnotationType repeatableAnnotationType = findContainedRepeatable(resolver,
+		AnnotationType repeatableAnnotationType = findContainedRepeatable(classLoader,
 				annotationType, attributes);
 		if (repeatableAnnotationType == null) {
 			consumer.accept(annotationType, attributes);
@@ -81,12 +81,13 @@ public abstract class RepeatableContainers {
 	}
 
 	@Nullable
-	protected AnnotationType findContainedRepeatable(AnnotationTypeResolver resolver,
+	protected AnnotationType findContainedRepeatable(ClassLoader classLoader,
 			AnnotationType annotationType, DeclaredAttributes attributes) {
 		if (this.parent == null) {
 			return null;
 		}
-		return this.parent.findContainedRepeatable(resolver, annotationType, attributes);
+		return this.parent.findContainedRepeatable(classLoader, annotationType,
+				attributes);
 	}
 
 	@Override
@@ -139,18 +140,18 @@ public abstract class RepeatableContainers {
 		}
 
 		@Override
-		public AnnotationType findContainedRepeatable(AnnotationTypeResolver resolver,
+		public AnnotationType findContainedRepeatable(ClassLoader classLoader,
 				AnnotationType type, DeclaredAttributes attributes) {
 			Object value = attributes.get("value");
 			AttributeType valueType = type.getAttributeTypes().get("value");
 			if (value != null && value instanceof DeclaredAttributes[]) {
 				String elementType = valueType.getClassName().replace("[]", "");
-				AnnotationType repeatableType = resolver.resolve(elementType);
+				AnnotationType repeatableType = AnnotationType.resolve(classLoader, elementType);
 				if (hasAnnotation(repeatableType, REPEATABLE)) {
 					return repeatableType;
 				}
 			}
-			return super.findContainedRepeatable(resolver, type, attributes);
+			return super.findContainedRepeatable(classLoader, type, attributes);
 		}
 
 		private boolean hasAnnotation(AnnotationType contained, String name) {
@@ -206,12 +207,12 @@ public abstract class RepeatableContainers {
 		}
 
 		@Override
-		protected AnnotationType findContainedRepeatable(AnnotationTypeResolver resolver,
+		protected AnnotationType findContainedRepeatable(ClassLoader classLoader,
 				AnnotationType type, DeclaredAttributes attributes) {
 			if (type.getClassName().equals(this.container.getName())) {
-				return resolver.resolve(this.repeatable.getName());
+				return AnnotationType.resolve(classLoader, this.repeatable.getName());
 			}
-			return super.findContainedRepeatable(resolver, type, attributes);
+			return super.findContainedRepeatable(classLoader, type, attributes);
 		}
 
 		@Override

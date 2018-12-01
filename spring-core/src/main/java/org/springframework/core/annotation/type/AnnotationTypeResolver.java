@@ -26,7 +26,9 @@ import java.lang.reflect.AnnotatedElement;
  * @since 5.2
  * @see SimpleAnnotationTypeResolver
  */
-public interface AnnotationTypeResolver {
+ interface AnnotationTypeResolver {
+
+	// FIXME delete
 
 	/**
 	 * Return the {@link AnnotationType} for the given type.
@@ -36,12 +38,6 @@ public interface AnnotationTypeResolver {
 	AnnotationType resolve(String className);
 	// FIXME search for usages and check null;
 
-	/**
-	 * Expose the ClassLoader used by this resolver.
-	 * @return the ClassLoader (only {@code null} if even the system ClassLoader
-	 * isn't accessible)
-	 */
-	ClassLoader getClassLoader();
 
 	/**
 	 * Get an ASM based {@link AnnotationTypeResolver} for the specified

@@ -45,10 +45,16 @@ public interface AnnotationType {
 	 */
 	AttributeTypes getAttributeTypes();
 
+	// FIXME check usage for null
+	static AnnotationType resolve(ClassLoader classLoader, String annotationClassName) {
+		return null;
+	}
+
 	/**
 	 * Create a new in-memory {@link AnnotationType} with the specific values.
 	 * @param className the annotation class name
-	 * @param declaredAnnotations the annotations declared on the annotation itself
+	 * @param declaredAnnotations the annotations declared on the annotation
+	 * itself
 	 * @param attributeTypes the annotation attribute types
 	 * @return a new {@link AnnotationType} instance
 	 */

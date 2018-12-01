@@ -977,8 +977,8 @@ public abstract class NewAnnotationUtils {
 	}
 
 	private static Class<?> getDeclaringClass(MergedAnnotation<?> annotation) {
-		if (annotation instanceof MappedAnnotation)
-			return ((MappedAnnotation<?>) annotation).getDeclaringClass();
+		if (annotation instanceof TypeMappedAnnotation)
+			return ((TypeMappedAnnotation<?>) annotation).getDeclaringClass();
 		return null;
 	}
 

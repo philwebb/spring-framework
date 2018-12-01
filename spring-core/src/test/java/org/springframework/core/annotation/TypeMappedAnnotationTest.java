@@ -40,12 +40,12 @@ import static org.assertj.core.api.Assertions.entry;
 import static org.junit.Assert.fail;
 
 /**
- * Tests for {@link MappedAnnotation}.
+ * Tests for {@link TypeMappedAnnotation}.
  *
  * @author Phillip Webb
  * @since 5.0
  */
-public class MappedAnnotationTest {
+public class TypeMappedAnnotationTest {
 
 	private AnnotationTypeResolver resolver = AnnotationTypeResolver.get(
 			ClassUtils.getDefaultClassLoader());
@@ -558,7 +558,7 @@ public class MappedAnnotationTest {
 
 	@Test
 	public void getFromEmptyObjectArraySupportsEveryArrayType() {
-		MappedAnnotation<?> annotation = createTwoAttributeAnnotation();
+		TypeMappedAnnotation<?> annotation = createTwoAttributeAnnotation();
 		Object[] empty = {};
 		assertThat(annotation.extract(empty, byte[].class)).isEqualTo(new byte[] {});
 		assertThat(annotation.extract(empty, boolean[].class)).isEqualTo(
@@ -699,7 +699,7 @@ public class MappedAnnotationTest {
 		assertThat(example).containsOnly(entry("value", "test"));
 	}
 
-	private MappedAnnotation<?> createTwoAttributeAnnotation() {
+	private TypeMappedAnnotation<?> createTwoAttributeAnnotation() {
 		AttributeTypes attributeTypes = AttributeTypes.of(
 				AttributeType.of("one", ClassUtils.getQualifiedName(Integer.class),
 						DeclaredAnnotations.NONE, 1),
@@ -711,7 +711,7 @@ public class MappedAnnotationTest {
 		return create(annotationType, attributes);
 	}
 
-	private MappedAnnotation<?> create(Object value, Class<?> type, Object defaultValue) {
+	private TypeMappedAnnotation<?> create(Object value, Class<?> type, Object defaultValue) {
 		AttributeType attributeType = AttributeType.of("value",
 				ClassUtils.getQualifiedName(type), DeclaredAnnotations.NONE,
 				defaultValue);
@@ -722,13 +722,13 @@ public class MappedAnnotationTest {
 		return create(annotationType, attributes);
 	}
 
-	private MappedAnnotation<?> create(AnnotationType type,
+	private TypeMappedAnnotation<?> create(AnnotationType type,
 			DeclaredAttributes attributes) {
 		MappableAnnotation source = new MappableAnnotation(this.resolver,
 				RepeatableContainers.standardRepeatables(), type, attributes);
 		AnnotationTypeMapping mapping = new AnnotationTypeMapping(this.resolver, null,
 				source);
-		return new MappedAnnotation<>(mapping, attributes, false, null);
+		return new TypeMappedAnnotation<>(mapping, attributes, false, null);
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)

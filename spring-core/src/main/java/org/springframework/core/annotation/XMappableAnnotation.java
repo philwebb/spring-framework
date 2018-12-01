@@ -29,7 +29,7 @@ import org.springframework.util.Assert;
 
 /**
  * Source of an annotation declaration that can be handled by
- * {@link MappedAnnotations}. Encapsulates the {@link DeclaredAttributes} as
+ * {@link TypeMappedAnnotations}. Encapsulates the {@link DeclaredAttributes} as
  * well as the resolved {@link AnnotationType}. The {@code .from(...)} methods
  * also deal with transparently expanding containers of
  * {@link Repeatable @Repeatable} annotations.

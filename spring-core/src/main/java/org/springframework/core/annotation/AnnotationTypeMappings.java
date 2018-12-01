@@ -28,11 +28,11 @@ import java.util.stream.Stream;
 
 import org.springframework.core.annotation.AnnotationTypeMapping.Reference;
 import org.springframework.core.annotation.type.AnnotationType;
-import org.springframework.core.annotation.type.AnnotationTypeResolver;
 import org.springframework.core.annotation.type.AttributeType;
 import org.springframework.core.annotation.type.DeclaredAnnotation;
 import org.springframework.core.annotation.type.DeclaredAttributes;
 import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
 import org.springframework.util.ConcurrentReferenceHashMap;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -41,7 +41,7 @@ import org.springframework.util.MultiValueMap;
  * Provides {@link AnnotationTypeMapping} information for a single source
  * {@link AnnotationType}. Performs a recursive breadth first crawl of all
  * meta-annotations to ultimately provide a quick way to map a
- * {@link MappableAnnotation} to a {@link MappedAnnotation}.
+ * {@link MappableAnnotation} to a {@link TypeMappedAnnotation}.
  * <p>
  * Support convention based merging of meta-annotations as well as implicit and
  * explicit {@link AliasFor @AliasFor} aliases.
@@ -72,12 +72,12 @@ class AnnotationTypeMappings {
 	 * @param repeatableContainers strategy to extract repeatable containers
 	 * @param source the source annotation type
 	 */
-	AnnotationTypeMappings(AnnotationTypeResolver resolver,
+	AnnotationTypeMappings(ClassLoader classLoader,
 			RepeatableContainers repeatableContainers, AnnotationType source) {
-		Assert.notNull(resolver, "Resolver must not be null");
-		Assert.notNull(resolver, "RepeatableContainers must not be null");
+		Assert.notNull(repeatableContainers, "RepeatableContainers must not be null");
 		Assert.notNull(source, "Source must not be null");
-		this.mappings = new MappingsBuilder(resolver, repeatableContainers).build(source);
+		this.mappings = new MappingsBuilder(classLoader, repeatableContainers).build(
+				source);
 		this.mappingForType = groupByType(this.mappings);
 		processAliasForAnnotations();
 	}
@@ -235,20 +235,15 @@ class AnnotationTypeMappings {
 		return this.mappingForType.get(annotationType);
 	}
 
-	@Deprecated
-	public static AnnotationTypeMappings get(MappableAnnotation annotation) {
-		return get(annotation.getResolver(), annotation.getRepeatableContainers(),
-				annotation.getAnnotationType());
-	}
-
-	public static AnnotationTypeMappings get(AnnotationTypeResolver resolver,
+	public static AnnotationTypeMappings get(ClassLoader classLoader,
 			RepeatableContainers repeatableContainers, AnnotationType type) {
-		Assert.notNull(resolver, "Resolver must not be null");
 		Assert.notNull(type, "Type must not be null");
 		Assert.notNull(repeatableContainers, "RepeatableContainers must not be null");
-		ClassLoader classLoader = resolver.getClassLoader();
+		if (classLoader == null) {
+			classLoader = ClassUtils.getDefaultClassLoader();
+		}
 		Cache perClassloadCache = cache.computeIfAbsent(classLoader, key -> new Cache());
-		return perClassloadCache.get(resolver, repeatableContainers, type);
+		return perClassloadCache.get(classLoader, repeatableContainers, type);
 	}
 
 	/**
@@ -256,13 +251,13 @@ class AnnotationTypeMappings {
 	 */
 	private static class MappingsBuilder {
 
-		private final AnnotationTypeResolver resolver;
+		private final ClassLoader classLoader;
 
 		private final RepeatableContainers repeatableContainers;
 
-		public MappingsBuilder(AnnotationTypeResolver resolver,
+		public MappingsBuilder(ClassLoader classLoader,
 				RepeatableContainers repeatableContainers) {
-			this.resolver = resolver;
+			this.classLoader = classLoader;
 			this.repeatableContainers = repeatableContainers;
 		}
 
@@ -272,7 +267,8 @@ class AnnotationTypeMappings {
 			}
 			List<AnnotationTypeMapping> result = new ArrayList<>();
 			Deque<AnnotationTypeMapping> queue = new ArrayDeque<>();
-			queue.add(new AnnotationTypeMapping(this.resolver, source));
+			queue.add(new AnnotationTypeMapping(this.classLoader,
+					this.repeatableContainers, source));
 			while (!queue.isEmpty()) {
 				AnnotationTypeMapping mapping = queue.removeFirst();
 				result.add(mapping);
@@ -282,10 +278,9 @@ class AnnotationTypeMappings {
 		}
 
 		private void addMappings(Deque<AnnotationTypeMapping> queue,
-
 				AnnotationTypeMapping parent, AnnotationType type) {
 			for (DeclaredAnnotation metaAnnotation : type.getDeclaredAnnotations()) {
-				repeatableContainers.withEach(resolver, metaAnnotation, (annotation,
+				repeatableContainers.visit(this.classLoader, metaAnnotation, (annotation,
 						attributes) -> addMapping(queue, parent, annotation, attributes));
 			}
 		}
@@ -294,8 +289,9 @@ class AnnotationTypeMappings {
 				AnnotationTypeMapping parent, AnnotationType annotation,
 				DeclaredAttributes attributes) {
 			if (isMappable(parent, annotation)) {
-				AnnotationTypeMapping mapping = new AnnotationTypeMapping(this.resolver,
-						parent, annotation, attributes);
+				AnnotationTypeMapping mapping = new AnnotationTypeMapping(
+						this.classLoader, this.repeatableContainers, parent, annotation,
+						attributes);
 				queue.addLast(mapping);
 			}
 		}
@@ -332,11 +328,11 @@ class AnnotationTypeMappings {
 
 		private final Map<Key, AnnotationTypeMappings> mappings = new ConcurrentReferenceHashMap<>();
 
-		public AnnotationTypeMappings get(AnnotationTypeResolver resolver,
+		public AnnotationTypeMappings get(ClassLoader classLoader,
 				RepeatableContainers repeatableContainers, AnnotationType type) {
 			Key key = new Key(repeatableContainers, type);
 			return this.mappings.computeIfAbsent(key,
-					k -> new AnnotationTypeMappings(resolver, repeatableContainers,
+					k -> new AnnotationTypeMappings(classLoader, repeatableContainers,
 							type));
 		}
 

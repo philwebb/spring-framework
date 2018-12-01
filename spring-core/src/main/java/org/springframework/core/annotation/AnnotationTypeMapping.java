@@ -32,7 +32,6 @@ import java.util.Set;
 
 import org.springframework.core.annotation.type.AbstractDeclaredAttributes;
 import org.springframework.core.annotation.type.AnnotationType;
-import org.springframework.core.annotation.type.AnnotationTypeResolver;
 import org.springframework.core.annotation.type.AttributeType;
 import org.springframework.core.annotation.type.DeclaredAnnotation;
 import org.springframework.core.annotation.type.DeclaredAttributes;
@@ -62,8 +61,9 @@ import org.springframework.util.StringUtils;
  */
 class AnnotationTypeMapping {
 
-	// FIXME check usage
-	private final AnnotationTypeResolver resolver;
+	private final ClassLoader classLoader;
+
+	private final RepeatableContainers repeatableContainers;
 
 	private final AnnotationTypeMapping parent;
 
@@ -77,14 +77,17 @@ class AnnotationTypeMapping {
 
 	private final List<MirrorSet> mirrorSets = new ArrayList<>();
 
-	AnnotationTypeMapping(AnnotationTypeResolver resolver,
-			AnnotationType annotationType) {
-		this(resolver, null, annotationType, DeclaredAttributes.NONE);
+	AnnotationTypeMapping(ClassLoader classLoader,
+			RepeatableContainers repeatableContainers, AnnotationType annotationType) {
+		this(classLoader, repeatableContainers, null, annotationType,
+				DeclaredAttributes.NONE);
 	}
 
-	AnnotationTypeMapping(AnnotationTypeResolver resolver, AnnotationTypeMapping parent,
+	AnnotationTypeMapping(ClassLoader classLoader,
+			RepeatableContainers repeatableContainers, AnnotationTypeMapping parent,
 			AnnotationType annotationType, DeclaredAttributes attributes) {
-		this.resolver = resolver;
+		this.classLoader = classLoader;
+		this.repeatableContainers = repeatableContainers;
 		this.parent = parent;
 		this.depth = (parent == null ? 0 : parent.depth + 1);
 		this.annotationType = annotationType;
@@ -108,8 +111,12 @@ class AnnotationTypeMapping {
 		this.mirrorSets.add(new MirrorSet(references));
 	}
 
-	public AnnotationTypeResolver getResolver() {
-		return this.resolver;
+	public ClassLoader getClassLoader() {
+		return this.classLoader;
+	}
+
+	public RepeatableContainers getRepeatableContainers() {
+		return this.repeatableContainers;
 	}
 
 	public AnnotationTypeMapping getParent() {
@@ -128,39 +135,41 @@ class AnnotationTypeMapping {
 		return this.depth;
 	}
 
-	public <A extends Annotation> MappedAnnotation<A> map(DeclaredAttributes attributes, boolean inherited) {
+	public <A extends Annotation> TypeMappedAnnotation<A> map(
+			DeclaredAttributes attributes, boolean inherited) {
 		DeclaredAttributes mappedAttributes = mapAttributes(attributes);
-		return new MappedAnnotation<>(this, mappedAttributes, inherited, null);
+		return new TypeMappedAnnotation<>(this, mappedAttributes, inherited, null);
 	}
 
 	// FIXME
-//	public <A extends Annotation> MergedAnnotation<A> map(MappableAnnotation annotation,
-//			boolean inherited) {
-//		if (annotation == null) {
-//			return MergedAnnotation.missing();
-//		}
-//		try {
-//			DeclaredAttributes mappedAttributes = mapAttributes(
-//					annotation.getAttributes());
-//			return new MappedAnnotation<>(this, mappedAttributes, inherited, null);
-//		}
-//		catch (Exception ex) {
-//			throw new AnnotationConfigurationException("Unable to map attributes of "
-//					+ annotation.getAnnotationType().getClassName(), ex);
-//		}
-//	}
+	// public <A extends Annotation> MergedAnnotation<A> map(MappableAnnotation
+	// annotation,
+	// boolean inherited) {
+	// if (annotation == null) {
+	// return MergedAnnotation.missing();
+	// }
+	// try {
+	// DeclaredAttributes mappedAttributes = mapAttributes(
+	// annotation.getAttributes());
+	// return new MappedAnnotation<>(this, mappedAttributes, inherited, null);
+	// }
+	// catch (Exception ex) {
+	// throw new AnnotationConfigurationException("Unable to map attributes of "
+	// + annotation.getAnnotationType().getClassName(), ex);
+	// }
+	// }
 
 	private DeclaredAttributes mapAttributes(DeclaredAttributes rootAttributes) {
 		DeclaredAttributes mappedAttributes = rootAttributes;
-		if (getParent() != null) {
-			DeclaredAttributes parentAttributes = getParent().mapAttributes(
+		if (this.parent != null) {
+			DeclaredAttributes parentAttributes = this.parent.mapAttributes(
 					rootAttributes);
 			mappedAttributes = new ParentMappedAttributes(this.annotationType,
 					this.annotationAttributes, parentAttributes, this.aliases);
 		}
 		if (!this.mirrorSets.isEmpty()) {
-			mappedAttributes = new MirroredAttributes(this.annotationAttributes, mappedAttributes,
-					this.mirrorSets);
+			mappedAttributes = new MirroredAttributes(this.annotationAttributes,
+					mappedAttributes, this.mirrorSets);
 		}
 		return mappedAttributes;
 	}

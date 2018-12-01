@@ -48,6 +48,8 @@ import org.springframework.util.ConcurrentReferenceHashMap;
  */
 class SimpleAnnotationTypeResolver implements AnnotationTypeResolver {
 
+	// FIXME must be a tangle
+
 	private static final Map<ClassLoader, SimpleAnnotationTypeResolver> resolverCache = new ConcurrentReferenceHashMap<>(
 			4);
 
