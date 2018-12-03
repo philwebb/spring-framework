@@ -65,6 +65,11 @@ final class MissingMergedAnnotation<A extends Annotation> implements MergedAnnot
 	}
 
 	@Override
+	public MergedAnnotation<?> getParent() {
+		return null;
+	}
+
+	@Override
 	public boolean isFromInherited() {
 		return false;
 	}

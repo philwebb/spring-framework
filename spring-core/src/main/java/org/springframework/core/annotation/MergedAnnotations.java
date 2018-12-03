@@ -19,12 +19,8 @@ package org.springframework.core.annotation;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Inherited;
 import java.lang.reflect.AnnotatedElement;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Stream;
 
-import org.springframework.core.annotation.type.AnnotationTypeResolver;
-import org.springframework.core.annotation.type.DeclaredAnnotation;
 import org.springframework.core.annotation.type.DeclaredAnnotations;
 import org.springframework.util.Assert;
 
@@ -182,18 +178,17 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<?>> {
 	 * @return a {@link MergedAnnotations} instance containing the annotations
 	 */
 	static MergedAnnotations of(Annotation... annotations) {
-		Assert.notNull(annotations, "Annotations must not be null");
-		List<MappableAnnotation> mappableAnnotations = new ArrayList<>(
-				annotations.length);
-		for (Annotation annotation : annotations) {
-			AnnotationTypeResolver resolver = AnnotationTypeResolver.get(
-					annotation.annotationType().getClassLoader());
-			DeclaredAnnotation declaredAnnotation = DeclaredAnnotation.from(annotation);
-			MappableAnnotation mappableAnnotation = new MappableAnnotation(resolver,
-					RepeatableContainers.standardRepeatables(), declaredAnnotation);
-			mappableAnnotations.add(mappableAnnotation);
-		}
-		return new TypeMappedAnnotations(mappableAnnotations);
+		return new TypeMappedAnnotations(null, annotations);
+	}
+
+	/**
+	 * Create a new {@link MergedAnnotations} instance containing the specified
+	 * annotations.
+	 * @param annotations the annotations to include
+	 * @return a {@link MergedAnnotations} instance containing the annotations
+	 */
+	static MergedAnnotations of(AnnotatedElement source, Annotation... annotations) {
+		return new TypeMappedAnnotations(source, annotations);
 	}
 
 	/**
@@ -239,10 +234,8 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<?>> {
 	static MergedAnnotations from(AnnotatedElement element, SearchStrategy searchStrategy,
 			RepeatableContainers repeatableContainers) {
 		Assert.notNull(element, "Element must not be null");
-		AnnotationTypeResolver resolver = AnnotationTypeResolver.get(element);
-		AnnotationsScanner annotations = new AnnotationsScanner(
-				element, searchStrategy);
-		return from(annotations, resolver, repeatableContainers);
+		AnnotationsScanner annotations = new AnnotationsScanner(element, searchStrategy);
+		return from(annotations, null, repeatableContainers);
 	}
 
 	/**
@@ -257,8 +250,8 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<?>> {
 	 * annotations
 	 */
 	static MergedAnnotations from(Iterable<DeclaredAnnotations> annotations,
-			AnnotationTypeResolver resolver) {
-		return from(annotations, resolver, RepeatableContainers.standardRepeatables());
+			ClassLoader classLoader) {
+		return from(annotations, classLoader, RepeatableContainers.standardRepeatables());
 	}
 
 	/**
@@ -275,8 +268,8 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<?>> {
 	 * annotations
 	 */
 	static MergedAnnotations from(Iterable<DeclaredAnnotations> annotations,
-			AnnotationTypeResolver resolver, RepeatableContainers repeatableContainers) {
-		return new TypeMappedAnnotations(annotations, resolver, repeatableContainers);
+			ClassLoader classLoader, RepeatableContainers repeatableContainers) {
+		return new TypeMappedAnnotations(annotations, classLoader, repeatableContainers);
 	}
 
 	/**

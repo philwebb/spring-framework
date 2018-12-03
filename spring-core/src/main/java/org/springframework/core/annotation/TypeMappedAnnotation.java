@@ -138,6 +138,12 @@ class TypeMappedAnnotation<A extends Annotation> implements MergedAnnotation<A> 
 	}
 
 	@Override
+	public MergedAnnotation<?> getParent() {
+		// FIXME
+		throw new UnsupportedOperationException("Auto-generated method stub");
+	}
+
+	@Override
 	public boolean isFromInherited() {
 		return this.inherited;
 	}

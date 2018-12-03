@@ -237,8 +237,10 @@ class AnnotationTypeMappings {
 
 	public static AnnotationTypeMappings get(ClassLoader classLoader,
 			RepeatableContainers repeatableContainers, AnnotationType type) {
-		Assert.notNull(type, "Type must not be null");
 		Assert.notNull(repeatableContainers, "RepeatableContainers must not be null");
+		if (type == null) {
+			return null;
+		}
 		if (classLoader == null) {
 			classLoader = ClassUtils.getDefaultClassLoader();
 		}

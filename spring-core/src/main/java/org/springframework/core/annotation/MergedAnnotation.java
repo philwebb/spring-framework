@@ -86,6 +86,10 @@ public interface MergedAnnotation<A extends Annotation> {
 	boolean isParentOf(MergedAnnotation<?> annotation);
 	// FIXME name of this. Needs to show it's grandparent etc
 
+	// FIXME DC
+	MergedAnnotation<?> getParent();
+
+	// FIXME getSource?
 
 	/**
 	 * Return the depth of this annotation related to its use as a
@@ -486,6 +490,8 @@ public interface MergedAnnotation<A extends Annotation> {
 		}
 
 	}
+
+	// FIXME equal hashcode rules?
 
 	/**
 	 * Finds annotations of a specific type by searching on a source.

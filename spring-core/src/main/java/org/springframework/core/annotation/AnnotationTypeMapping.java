@@ -135,6 +135,7 @@ class AnnotationTypeMapping {
 		return this.depth;
 	}
 
+	// FIXME perhaps return MappedAnnotation?
 	public <A extends Annotation> TypeMappedAnnotation<A> map(
 			DeclaredAttributes attributes, boolean inherited) {
 		DeclaredAttributes mappedAttributes = mapAttributes(attributes);

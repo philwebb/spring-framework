@@ -17,148 +17,117 @@
 package org.springframework.core.annotation;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Member;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
-import org.springframework.core.annotation.type.AnnotationTypeResolver;
+import org.springframework.core.annotation.type.AnnotationType;
+import org.springframework.core.annotation.type.DeclaredAnnotation;
 import org.springframework.core.annotation.type.DeclaredAnnotations;
+import org.springframework.util.Assert;
 
 /**
  * {@link MergedAnnotations} implementation that uses
- * {@link AnnotationTypeMappings} to adapt sources {@link DeclaredAnnotations
- * annotations}.
+ * {@link AnnotationTypeMappings} to adapt annotations.
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  */
 class TypeMappedAnnotations extends AbstractMergedAnnotations {
 
-	private final Hierarchy hierarchy;
+	private List<Mappable> mappables = new ArrayList<>(10);
 
 	TypeMappedAnnotations(Iterable<DeclaredAnnotations> annotations,
-			AnnotationTypeResolver resolver, RepeatableContainers repeatableContainers) {
-		DeclaredAnnotationsMapper mapper = new DeclaredAnnotationsMapper(resolver,
-				repeatableContainers);
-		this.hierarchy = () -> StreamSupport.stream(annotations.spliterator(), false).map(
-				mapper::map);
+			ClassLoader classLoader, RepeatableContainers repeatableContainers) {
+		Assert.notNull(annotations, "Annotations must not be null");
+		boolean inherited = true;
+		for (DeclaredAnnotations declaredAnnotations : annotations) {
+			for (DeclaredAnnotation declaredAnnotation : declaredAnnotations) {
+				addMappable(classLoader, repeatableContainers, declaredAnnotation,
+						inherited);
+			}
+			inherited = false;
+		}
 	}
 
-	TypeMappedAnnotations(Iterable<MappableAnnotation> annotations) {
-		this.hierarchy = () -> Stream.of(Element.of(annotations));
+	TypeMappedAnnotations(AnnotatedElement source, Annotation[] annotations) {
+		Assert.notNull(annotations, "Annotations must not be null");
+		ClassLoader sourceClassLoader = getClassLoader(source);
+		for (Annotation annotation : annotations) {
+			ClassLoader classLoader = sourceClassLoader != null ? sourceClassLoader
+					: annotation.getClass().getClassLoader();
+			addMappable(classLoader, RepeatableContainers.none(),
+					DeclaredAnnotation.from(annotation), false);
+		}
+	}
+
+	private void addMappable(ClassLoader classLoader,
+			RepeatableContainers repeatableContainers, DeclaredAnnotation annotation,
+			boolean inherited) {
+		repeatableContainers.visit(classLoader, annotation, (type, attributes) -> {
+			AnnotationTypeMappings mappings = AnnotationTypeMappings.get(classLoader,
+					repeatableContainers, type);
+			if (mappings != null) {
+				this.mappables.add(new Mappable(annotation, inherited, mappings));
+			}
+		});
+	}
+
+	private ClassLoader getClassLoader(AnnotatedElement source) {
+		if (source instanceof Member) {
+			return getClassLoader(((Member) source).getDeclaringClass());
+		}
+		if (source instanceof Class) {
+			return ((Class<?>) source).getClassLoader();
+		}
+		return null;
 	}
 
 	@Override
 	public <A extends Annotation> MergedAnnotation<A> get(String annotationType) {
-		ElementGetter<A> getter = new ElementGetter<A>(annotationType);
-		return this.hierarchy.getElements().map(getter::get).filter(
-				MergedAnnotation::isPresent).findFirst().orElse(
-						MergedAnnotation.missing());
+		for (Mappable mappable : this.mappables) {
+			MergedAnnotation<A> annotation = mappable.get(annotationType);
+			if (annotation != null) {
+				return annotation;
+			}
+		}
+		return MergedAnnotation.missing();
 	}
 
 	@Override
 	public Stream<MergedAnnotation<?>> stream() {
-		ElementMapper mapper = new ElementMapper();
-		return this.hierarchy.getElements().flatMap(mapper::map);
+		return this.mappables.stream().flatMap(Mappable::stream);
 	}
 
-	/**
-	 * A hierarchy of elements where the first is immediate and subsequent are
-	 * inherited.
-	 */
-	@FunctionalInterface
-	private static interface Hierarchy {
+	private static class Mappable {
 
-		Stream<Element> getElements();
+		private final DeclaredAnnotation annotation;
 
-	}
+		private final boolean inherited;
 
-	/**
-	 * An element that contains {@link MappableAnnotation mappable annotations}.
-	 */
-	private static interface Element {
+		private final AnnotationTypeMappings mappings;
 
-		Stream<MappableAnnotation> getAnnotations();
-
-		static Element of(Iterable<MappableAnnotation> annotations) {
-			return () -> StreamSupport.stream(annotations.spliterator(), false);
+		public Mappable(DeclaredAnnotation annotation, boolean inherited,
+				AnnotationTypeMappings mappings) {
+			this.annotation = annotation;
+			this.inherited = inherited;
+			this.mappings = mappings;
 		}
 
-	}
-
-	/**
-	 * Maps a {@link DeclaredAnnotations} to an {@link Element}.
-	 */
-	private class DeclaredAnnotationsMapper {
-
-		private final AnnotationTypeResolver resolver;
-
-		private final RepeatableContainers repeatableContainers;
-
-		DeclaredAnnotationsMapper(AnnotationTypeResolver resolver,
-				RepeatableContainers repeatableContainers) {
-			super();
-			this.resolver = resolver;
-			this.repeatableContainers = repeatableContainers;
+		public <A extends Annotation> MergedAnnotation<A> get(String annotationType) {
+			AnnotationTypeMapping mapping = this.mappings.getMapping(annotationType);
+			return mapping != null ? map(mapping) : null;
 		}
 
-		public Element map(DeclaredAnnotations annotations) {
-			return () -> MappableAnnotation.from(this.resolver, this.repeatableContainers,
-					annotations);
+		public Stream<MergedAnnotation<?>> stream() {
+			return this.mappings.getAllMappings().map(this::map);
 		}
 
-	}
-
-	/**
-	 * Maps an {@link Element} to a stream of {@link MergedAnnotation}.
-	 */
-	private static class ElementMapper {
-
-		private boolean inherited = false;
-
-		public Stream<MergedAnnotation<?>> map(Element element) {
-			boolean inherited = this.inherited;
-			this.inherited = true;
-			return element.getAnnotations().flatMap(
-					annotation -> map(annotation, inherited));
-		}
-
-		private Stream<MergedAnnotation<?>> map(MappableAnnotation annotation,
-				boolean inherited) {
-			return AnnotationTypeMappings.get(annotation).getAllMappings().map(
-					mapping -> mapping.map(annotation, inherited));
-		}
-
-	}
-
-	/**
-	 * Maps an Element to a single {@link MergedAnnotation} of a given type.
-	 */
-	private class ElementGetter<A extends Annotation> {
-
-		private final String type;
-
-		private boolean inherited = false;
-
-		ElementGetter(String type) {
-			this.type = type;
-		}
-
-		public MergedAnnotation<A> get(Element element) {
-			boolean inherited = this.inherited;
-			this.inherited = true;
-			Stream<MergedAnnotation<A>> candidates = element.getAnnotations().map(
-					annotation -> get(annotation, inherited));
-			return candidates.filter(MergedAnnotation::isPresent).min(
-					MergedAnnotation.comparingDepth()).orElse(MergedAnnotation.missing());
-		}
-
-		private MergedAnnotation<A> get(MappableAnnotation annotation, boolean inherted) {
-			AnnotationTypeMappings mappings = AnnotationTypeMappings.get(annotation);
-			AnnotationTypeMapping mapping = mappings.getMapping(this.type);
-			if (mapping == null) {
-				return MergedAnnotation.missing();
-			}
-			return mapping.map(annotation, inherted);
+		private <A extends Annotation>  MergedAnnotation<A> map(AnnotationTypeMapping mapping) {
+			mapping.map(this.annotation.getAttributes(), this.inherited);
+			return null;
 		}
 
 	}
