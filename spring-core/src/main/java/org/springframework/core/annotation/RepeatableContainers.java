@@ -60,15 +60,17 @@ public abstract class RepeatableContainers {
 			BiConsumer<AnnotationType, DeclaredAttributes> consumer) {
 		AnnotationType annotationType = AnnotationType.resolve(classLoader,
 				annotation.getClassName());
-		DeclaredAttributes attributes = annotation.getAttributes();
-		AnnotationType repeatableAnnotationType = findContainedRepeatable(classLoader,
-				annotationType, attributes);
-		if (repeatableAnnotationType == null) {
-			consumer.accept(annotationType, attributes);
-		}
-		else {
-			doWithRepeated(repeatableAnnotationType,
-					(DeclaredAttributes[]) attributes.get("value"), consumer);
+		if (annotationType != null) {
+			DeclaredAttributes attributes = annotation.getAttributes();
+			AnnotationType repeatableAnnotationType = findContainedRepeatable(classLoader,
+					annotationType, attributes);
+			if (repeatableAnnotationType == null) {
+				consumer.accept(annotationType, attributes);
+			}
+			else {
+				doWithRepeated(repeatableAnnotationType,
+						(DeclaredAttributes[]) attributes.get("value"), consumer);
+			}
 		}
 	}
 

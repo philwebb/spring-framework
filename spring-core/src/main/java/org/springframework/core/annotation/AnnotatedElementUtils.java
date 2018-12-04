@@ -37,8 +37,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.ObjectUtils;
 
-import static org.hamcrest.Matchers.any;
-
 /**
  * General utility methods for finding annotations, meta-annotations, and
  * repeatable annotations on {@link AnnotatedElement AnnotatedElements}.

@@ -283,7 +283,7 @@ class AnnotationTypeMappings {
 		private void addMappings(Deque<AnnotationTypeMapping> queue,
 				AnnotationTypeMapping parent, AnnotationType type) {
 			for (DeclaredAnnotation metaAnnotation : type.getDeclaredAnnotations()) {
-				repeatableContainers.visit(this.classLoader, metaAnnotation, (annotation,
+				this.repeatableContainers.visit(this.classLoader, metaAnnotation, (annotation,
 						attributes) -> addMapping(queue, parent, annotation, attributes));
 			}
 		}

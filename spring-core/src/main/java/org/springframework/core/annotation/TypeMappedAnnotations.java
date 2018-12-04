@@ -21,6 +21,7 @@ import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import org.springframework.core.annotation.type.DeclaredAnnotation;
@@ -87,13 +88,26 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 
 	@Override
 	public <A extends Annotation> MergedAnnotation<A> get(String annotationType) {
+		get(annotationType, Mappable::is);
+	}
+
+	private <A extends Annotation> MergedAnnotation<A> get(String annotationType, Predicate<Mappable> predicate) {
+		MergedAnnotation<A> result = MergedAnnotation.missing();
 		for (Mappable mappable : this.mappables) {
-			MergedAnnotation<A> annotation = mappable.get(annotationType);
-			if (annotation != null) {
-				return annotation;
+			if(predicate.test(mappable)) {
+			MergedAnnotation<A> candidate = mappable.get(annotationType);
+			if (isBetterGetCandidate(candidate, result)) {
+				result = candidate;
+			}
 			}
 		}
-		return MergedAnnotation.missing();
+		return result;
+	}
+
+	private boolean isBetterGetCandidate(MergedAnnotation<?> candidate,
+			MergedAnnotation<?> previous) {
+		return candidate != null
+				&& (!previous.isPresent() || candidate.getDepth() < previous.getDepth());
 	}
 
 	@Override
@@ -114,6 +128,10 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 			this.inherited = inherited;
 			this.attributes = attributes;
 			this.mappings = mappings;
+		}
+
+		public boolean isInherited() {
+			return inherited;
 		}
 
 		public <A extends Annotation> MergedAnnotation<A> get(String annotationType) {

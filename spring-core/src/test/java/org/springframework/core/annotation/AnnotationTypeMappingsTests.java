@@ -20,6 +20,7 @@ import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 
@@ -29,6 +30,7 @@ import org.junit.rules.ExpectedException;
  *
  * @author Phillip Webb
  */
+@Ignore
 public class AnnotationTypeMappingsTests {
 
 	@Rule
