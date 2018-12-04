@@ -124,9 +124,9 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 			return this.mappings.getAllMappings().map(this::map);
 		}
 
-		private <A extends Annotation>  MergedAnnotation<A> map(AnnotationTypeMapping mapping) {
-			// mapping.map(this.annotation.getAttributes(), this.inherited);
-			return null;
+		private <A extends Annotation> MergedAnnotation<A> map(
+				AnnotationTypeMapping mapping) {
+			return new TypeMappedAnnotation(mapping, annotation.getAttributes(), this.inherited);
 		}
 
 	}

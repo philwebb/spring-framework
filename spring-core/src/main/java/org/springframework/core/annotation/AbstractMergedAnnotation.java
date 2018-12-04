@@ -102,7 +102,10 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 
 	@Override
 	public boolean isAncestorOf(MergedAnnotation<?> annotation) {
-		return false; // FIXME
+		if (getParent() == null) {
+			return false;
+		}
+		return getParent().equals(annotation) || getParent().isAncestorOf(annotation);
 	}
 
 	@Override
@@ -512,6 +515,13 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		return ClassUtils.resolveClassName(className, getClassLoader());
 	}
 
+	private AttributeType getAttributeType(String attributeName) {
+		if (isFiltered(attributeName)) {
+			return null;
+		}
+		return getAnnotationType().getAttributeTypes().get(attributeName);
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder attributes = new StringBuilder();
@@ -548,7 +558,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 
 	protected abstract AnnotationType getAnnotationType();
 
-	protected abstract AttributeType getAttributeType(String attributeName);
+	protected abstract boolean isFiltered(String attributeName);
 
 	protected abstract Object getAttributeValue(String attributeName, boolean nonMerged);
 

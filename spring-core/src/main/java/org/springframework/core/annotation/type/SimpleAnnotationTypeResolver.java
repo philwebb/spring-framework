@@ -19,8 +19,6 @@ package org.springframework.core.annotation.type;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -46,11 +44,9 @@ import org.springframework.util.ConcurrentReferenceHashMap;
  * @author Phillip Webb
  * @since 5.2
  */
-class SimpleAnnotationTypeResolver implements AnnotationTypeResolver {
+class SimpleAnnotationTypeResolver {
 
-	// FIXME must be a tangle
-
-	private static final Map<ClassLoader, SimpleAnnotationTypeResolver> resolverCache = new ConcurrentReferenceHashMap<>(
+	private static final Map<ClassLoader, SimpleAnnotationTypeResolver> cache = new ConcurrentReferenceHashMap<>(
 			4);
 
 	private static final Map<Resource, AnnotationType> resourceCache = new ConcurrentReferenceHashMap<>(
@@ -58,18 +54,17 @@ class SimpleAnnotationTypeResolver implements AnnotationTypeResolver {
 
 	private final ResourceLoader resourceLoader;
 
-	SimpleAnnotationTypeResolver(ResourceLoader resourceLoader) {
+	private SimpleAnnotationTypeResolver(ResourceLoader resourceLoader) {
 		Assert.notNull(resourceLoader, "ResourceLoader must not be null");
 		this.resourceLoader = resourceLoader;
 	}
 
-	@Override
 	public AnnotationType resolve(String className) {
 		Assert.notNull(className, "ClassName must not be null");
 		return resolve(className, true);
 	}
 
-	AnnotationType resolve(String className, boolean useCache) {
+	public AnnotationType resolve(String className, boolean useCache) {
 		String resourcePath = getResourcePath(className);
 		Resource resource = this.resourceLoader.getResource(resourcePath);
 		return resolve(resource, useCache);
@@ -108,31 +103,11 @@ class SimpleAnnotationTypeResolver implements AnnotationTypeResolver {
 				+ ClassUtils.CLASS_FILE_SUFFIX;
 	}
 
-	@Override
-	public ClassLoader getClassLoader() {
-		return this.resourceLoader.getClassLoader();
-	}
-
-	public static SimpleAnnotationTypeResolver get() {
-		return get((ClassLoader) null);
-	}
-
-	public static SimpleAnnotationTypeResolver get(AnnotatedElement element) {
-		Assert.notNull(element, "Element must not be null");
-		if (element instanceof Class) {
-			return get(((Class<?>) element).getClassLoader());
-		}
-		if (element instanceof Member) {
-			return get(((Member) element).getDeclaringClass());
-		}
-		return get((ClassLoader) null);
-	}
-
 	public static SimpleAnnotationTypeResolver get(ClassLoader classLoader) {
 		if (classLoader == null) {
 			return createResolver(classLoader);
 		}
-		return resolverCache.computeIfAbsent(classLoader,
+		return cache.computeIfAbsent(classLoader,
 				SimpleAnnotationTypeResolver::createResolver);
 	}
 

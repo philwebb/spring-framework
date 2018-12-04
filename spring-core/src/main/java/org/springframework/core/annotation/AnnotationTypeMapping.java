@@ -118,6 +118,14 @@ class AnnotationTypeMapping {
 		return this.annotationAttributes;
 	}
 
+	public Map<String, Reference> getAliases() {
+		return aliases;
+	}
+
+	public List<MirrorSet> getMirrorSets() {
+		return mirrorSets;
+	}
+
 	/**
 	 * A set of mirror attribute references.
 	 */

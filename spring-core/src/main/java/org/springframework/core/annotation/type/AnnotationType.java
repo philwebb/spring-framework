@@ -46,8 +46,8 @@ public interface AnnotationType {
 	AttributeTypes getAttributeTypes();
 
 	// FIXME check usage for null
-	static AnnotationType resolve(ClassLoader classLoader, String annotationClassName) {
-		return null;
+	static AnnotationType resolve(ClassLoader classLoader, String className) {
+		return SimpleAnnotationTypeResolver.get(classLoader).resolve(className);
 	}
 
 	/**
