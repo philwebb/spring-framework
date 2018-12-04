@@ -306,7 +306,7 @@ class AnnotationTypeMappings {
 		}
 
 		private boolean isMappable(String annotationType) {
-			return (annotationType.startsWith("java.lang.annotation.")
+			return !(annotationType.startsWith("java.lang.annotation.")
 					|| annotationType.startsWith("org.springframework.lang."));
 		}
 

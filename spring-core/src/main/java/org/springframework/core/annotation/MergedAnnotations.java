@@ -235,7 +235,7 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<?>> {
 			RepeatableContainers repeatableContainers) {
 		Assert.notNull(element, "Element must not be null");
 		AnnotationsScanner annotations = new AnnotationsScanner(element, searchStrategy);
-		return from(annotations, null, repeatableContainers);
+		return from(annotations, null, repeatableContainers); // FIXME we need ClassLoader from element
 	}
 
 	/**

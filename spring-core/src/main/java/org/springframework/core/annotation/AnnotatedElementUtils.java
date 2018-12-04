@@ -19,6 +19,7 @@ package org.springframework.core.annotation;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -34,6 +35,9 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.ObjectUtils;
+
+import static org.hamcrest.Matchers.any;
 
 /**
  * General utility methods for finding annotations, meta-annotations, and
@@ -581,7 +585,8 @@ public abstract class AnnotatedElementUtils {
 					annotationName)
 		).to(() ->
 			MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS,
-					RepeatableContainers.none()).stream(annotationName).collect(
+					RepeatableContainers.none()).stream(annotationName).filter(
+							oncePerParent()).peek(System.out::println).collect(
 									allAnnotationAttributes(MapValues.NON_MERGED))
 		);
 	}
@@ -611,14 +616,11 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.getAllAnnotationAttributes(element,
 					annotationName, classValuesAsString, nestedAnnotationsAsMap)
 		).to(() ->
-			// FIXME stream() returns the same element if it can be reached twice
-			// need to think about this one
-
-
 			MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS,
-					RepeatableContainers.none()).stream(annotationName).peek(System.out::println).collect(
-							allAnnotationAttributes(MapValues.get(classValuesAsString,
-									nestedAnnotationsAsMap, true)))
+					RepeatableContainers.none()).stream(annotationName).filter(
+							oncePerParent()).peek(System.out::println).collect(
+									allAnnotationAttributes(MapValues.get(classValuesAsString,
+											nestedAnnotationsAsMap, true)))
 		);
 	}
 
@@ -864,6 +866,49 @@ public abstract class AnnotatedElementUtils {
 
 	private static <K, V> MultiValueMap<K, V> mapOrNull(MultiValueMap<K, V> map) {
 		return map.isEmpty() ? null : map;
+	}
+
+	private static Predicate<MergedAnnotation<?>> oncePerParent() {
+		Set<PerParentReference> seen = new HashSet<>();
+		return annotaion -> seen.add(new PerParentReference(annotaion));
+	}
+
+	/**
+	 * Reference to a annotation type and parent type used for once-per-parent
+	 * filtering.
+	 */
+	private static class PerParentReference {
+
+		private final String type;
+
+		private final String parentType;
+
+		public PerParentReference(MergedAnnotation<?> annotaion) {
+			this.type = annotaion.getType();
+			this.parentType = annotaion.getParent() != null
+					? annotaion.getParent().getType()
+					: null;
+		}
+
+		@Override
+		public int hashCode() {
+			return this.type.hashCode() * 31
+					+ ObjectUtils.nullSafeHashCode(this.parentType);
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+			if (obj == null || getClass() != obj.getClass()) {
+				return false;
+			}
+			PerParentReference other = (PerParentReference) obj;
+			return this.type.equals(other.type)
+					&& ObjectUtils.nullSafeEquals(this.parentType, other.parentType);
+		}
+
 	}
 
 }

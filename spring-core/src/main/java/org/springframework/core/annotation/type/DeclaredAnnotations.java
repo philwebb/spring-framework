@@ -78,7 +78,7 @@ public interface DeclaredAnnotations extends Iterable<DeclaredAnnotation> {
 				AnnotationIntrospectionFailure.log(element, ex);
 			}
 		}
-		return of(adapted);
+		return of(element, adapted);
 	}
 
 	/**

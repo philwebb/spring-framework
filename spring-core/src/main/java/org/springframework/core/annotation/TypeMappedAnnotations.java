@@ -25,6 +25,7 @@ import java.util.stream.Stream;
 
 import org.springframework.core.annotation.type.DeclaredAnnotation;
 import org.springframework.core.annotation.type.DeclaredAnnotations;
+import org.springframework.core.annotation.type.DeclaredAttributes;
 import org.springframework.util.Assert;
 
 /**
@@ -69,7 +70,7 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 			AnnotationTypeMappings mappings = AnnotationTypeMappings.get(classLoader,
 					repeatableContainers, type);
 			if (mappings != null) {
-				this.mappables.add(new Mappable(annotation, inherited, mappings));
+				this.mappables.add(new Mappable(mappings, attributes, inherited));
 			}
 		});
 	}
@@ -102,16 +103,16 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 
 	private static class Mappable {
 
-		private final DeclaredAnnotation annotation;
+		private final AnnotationTypeMappings mappings;
+
+		private final DeclaredAttributes attributes;
 
 		private final boolean inherited;
 
-		private final AnnotationTypeMappings mappings;
-
-		public Mappable(DeclaredAnnotation annotation, boolean inherited,
-				AnnotationTypeMappings mappings) {
-			this.annotation = annotation;
+		public Mappable(AnnotationTypeMappings mappings, DeclaredAttributes attributes,
+				boolean inherited) {
 			this.inherited = inherited;
+			this.attributes = attributes;
 			this.mappings = mappings;
 		}
 
@@ -126,7 +127,7 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 
 		private <A extends Annotation> MergedAnnotation<A> map(
 				AnnotationTypeMapping mapping) {
-			return new TypeMappedAnnotation(mapping, annotation.getAttributes(), this.inherited);
+			return new TypeMappedAnnotation<A>(mapping, this.inherited, this.attributes);
 		}
 
 	}

@@ -25,7 +25,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import org.springframework.core.annotation.type.AnnotationType;
-import org.springframework.core.annotation.type.AttributeType;
 import org.springframework.core.annotation.type.DeclaredAttributes;
 
 /**
@@ -121,27 +120,21 @@ final class MissingMergedAnnotation<A extends Annotation>
 	}
 
 	@Override
-	protected AttributeType getAttributeType(String attributeName) {
-		throw new NoAttributeAccessException();
+	protected boolean isFiltered(String attributeName) {
+		return false;
 	}
 
 	@Override
 	protected Object getAttributeValue(String attributeName, boolean nonMerged) {
-		throw new NoAttributeAccessException();
+		throw new NoSuchElementException(
+				"Unable to get attribute value for missing annotation");
 	}
 
 	@Override
 	protected <T extends Annotation> MergedAnnotation<T> createNested(AnnotationType type,
 			DeclaredAttributes attributes) {
-		throw new NoAttributeAccessException();
-	}
-
-	private static class NoAttributeAccessException extends NoSuchElementException {
-
-		NoAttributeAccessException() {
-			super("Unable to get attribute value for missing annotation");
-		}
-
+		throw new NoSuchElementException(
+				"Unable to get nested value for missing annotation");
 	}
 
 }
