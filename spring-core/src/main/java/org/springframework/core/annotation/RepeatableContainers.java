@@ -41,7 +41,7 @@ import org.springframework.util.ObjectUtils;
  * To completely disable repeatable support use {@link #none()}.
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  */
 public abstract class RepeatableContainers {
 

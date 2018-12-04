@@ -48,7 +48,7 @@ import org.springframework.util.ConcurrentReferenceHashMap;
  * {@link AnnotatedElement}.
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  */
 class AnnotationsScanner implements Iterable<DeclaredAnnotations> {
 

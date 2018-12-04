@@ -36,7 +36,7 @@ import org.springframework.lang.Nullable;
  * collection.
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  * @param <A> the annotation type
  * @see MergedAnnotations
  */
@@ -78,13 +78,12 @@ public interface MergedAnnotation<A extends Annotation> {
 	boolean isFromInherited();
 
 	/**
-	 * Return this annotation is a parent of the specified annotation
+	 * Return this annotation is an ancestor of the specified annotation
 	 * annotation.
 	 * @param annotation the annotation to check
 	 * @return {@code true} if this annotation is a descendant
 	 */
-	boolean isParentOf(MergedAnnotation<?> annotation);
-	// FIXME name of this. Needs to show it's grandparent etc
+	boolean isAncestorOf(MergedAnnotation<?> annotation);
 
 	// FIXME DC
 	MergedAnnotation<?> getParent();
@@ -402,13 +401,8 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * an empty optional if the condition doesn't match
 	 * @throws NoSuchElementException on a missing annotation
 	 */
-	default Optional<A> synthesize(Predicate<MergedAnnotation<A>> condition)
-			throws NoSuchElementException {
-		if (condition.test(this)) {
-			return Optional.of(synthesize());
-		}
-		return Optional.empty();
-	}
+	Optional<A> synthesize(Predicate<MergedAnnotation<A>> condition)
+			throws NoSuchElementException;
 
 	/**
 	 * Return an {@link MergedAnnotation} that represents a missing annotation
@@ -472,10 +466,12 @@ public interface MergedAnnotation<A extends Annotation> {
 		 * Factory method to create a {@link MapValues} array from a set of
 		 * boolean flags.
 		 * @param classToString if {@link MapValues#CLASS_TO_STRING} is included
-		 * @param annotationsToMap if {@link MapValues#ANNOTATION_TO_MAP} is included
+		 * @param annotationsToMap if {@link MapValues#ANNOTATION_TO_MAP} is
+		 * included
 		 * @return a new {@link MapValues} array
 		 */
-		static MapValues[] get(boolean classToString, boolean annotationsToMap, boolean nonMerged) {
+		static MapValues[] get(boolean classToString, boolean annotationsToMap,
+				boolean nonMerged) {
 			EnumSet<MapValues> result = EnumSet.noneOf(MapValues.class);
 			addIfTrue(result, MapValues.CLASS_TO_STRING, classToString);
 			addIfTrue(result, MapValues.ANNOTATION_TO_MAP, annotationsToMap);
@@ -504,8 +500,10 @@ public interface MergedAnnotation<A extends Annotation> {
 
 		// Map<Method, MergedAnnotation<A>> fromLocalMethods(Class<?> type);
 
-		// FIXME will return something that allows access to the method and MergedAnnotation
-		// something a bit like a Map<Method, MergedAnnotation<T>> but perhaps not exactly that
+		// FIXME will return something that allows access to the method and
+		// MergedAnnotation
+		// something a bit like a Map<Method, MergedAnnotation<T>> but perhaps
+		// not exactly that
 
 	}
 

@@ -36,7 +36,7 @@ import org.springframework.util.ReflectionUtils.MethodCallback;
  *
  * @author Sam Brannen
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  * @param <A> the annotation type
  * @see Annotation
  * @see AnnotationAttributeExtractor

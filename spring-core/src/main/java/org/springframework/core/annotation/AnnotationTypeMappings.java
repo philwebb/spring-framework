@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+import org.springframework.core.annotation.AnnotationTypeMapping.MirrorSet;
 import org.springframework.core.annotation.AnnotationTypeMapping.Reference;
 import org.springframework.core.annotation.type.AnnotationType;
 import org.springframework.core.annotation.type.AttributeType;
@@ -41,16 +42,16 @@ import org.springframework.util.MultiValueMap;
  * Provides {@link AnnotationTypeMapping} information for a single source
  * {@link AnnotationType}. Performs a recursive breadth first crawl of all
  * meta-annotations to ultimately provide a quick way to map a
- * {@link MappableAnnotation} to a {@link TypeMappedAnnotation}.
+ * {@link DeclaredAnnotation} to a {@link TypeMappedAnnotation}.
  * <p>
- * Support convention based merging of meta-annotations as well as implicit and
+ * Supports convention based merging of meta-annotations as well as implicit and
  * explicit {@link AliasFor @AliasFor} aliases.
  * <p>
  * This class is designed to be cached so that meta-annotations only need to be
  * searched once, regardless of how many times they are actually used.
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  * @see #getMapping(String)
  * @see #getAllMappings()
  * @see AnnotationTypeMapping
@@ -111,7 +112,7 @@ class AnnotationTypeMappings {
 		}
 		for (List<Reference> references : ultimateTargets.values()) {
 			if (references.size() > 1) {
-				mapping.addMirrorSet(references);
+				mapping.addMirrorSet(new MirrorSet(references));
 			}
 		}
 	}
@@ -338,6 +339,9 @@ class AnnotationTypeMappings {
 							type));
 		}
 
+		/**
+		 * The cache key.
+		 */
 		private static final class Key {
 
 			private final RepeatableContainers repeatableContainers;

@@ -25,7 +25,7 @@ import java.util.stream.Stream;
  * Abstract base class for {@link MergedAnnotations} implementations.
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  */
 abstract class AbstractMergedAnnotations implements MergedAnnotations {
 

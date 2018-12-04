@@ -24,15 +24,20 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import org.springframework.core.annotation.type.AnnotationType;
+import org.springframework.core.annotation.type.AttributeType;
+import org.springframework.core.annotation.type.DeclaredAttributes;
+
 /**
  * A {@link MappableAnnotation} used as the implementation of
  * {@link MergedAnnotation#missing()}.
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  * @param <A> the annotation type
  */
-final class MissingMergedAnnotation<A extends Annotation> implements MergedAnnotation<A> {
+final class MissingMergedAnnotation<A extends Annotation>
+		extends AbstractMergedAnnotation<A> {
 
 	private static final MissingMergedAnnotation<?> INSTANCE = new MissingMergedAnnotation<>();
 
@@ -50,21 +55,6 @@ final class MissingMergedAnnotation<A extends Annotation> implements MergedAnnot
 	}
 
 	@Override
-	public boolean isDirectlyPresent() {
-		return false;
-	}
-
-	@Override
-	public boolean isMetaPresent() {
-		return false;
-	}
-
-	@Override
-	public boolean isParentOf(MergedAnnotation<?> annotation) {
-		return false;
-	}
-
-	@Override
 	public MergedAnnotation<?> getParent() {
 		return null;
 	}
@@ -75,147 +65,8 @@ final class MissingMergedAnnotation<A extends Annotation> implements MergedAnnot
 	}
 
 	@Override
-	public int getDepth() {
-		return 0;
-	}
-
-	@Override
-	public String getType() {
-		throw new NoSuchElementException("Unable to get type for missing annotation");
-	}
-
-	@Override
-	public boolean hasNonDefaultValue(String attributeName) {
-		return !hasDefaultValue(attributeName);
-	}
-
-	@Override
 	public boolean hasDefaultValue(String attributeName) {
 		return true;
-	}
-
-	@Override
-	public byte getByte(String attributeName) throws NoSuchElementException {
-		throw new NoAttributeAccessException();
-	}
-
-	@Override
-	public byte[] getByteArray(String attributeName) throws NoSuchElementException {
-		throw new NoAttributeAccessException();
-	}
-
-	@Override
-	public boolean getBoolean(String attributeName) throws NoSuchElementException {
-		throw new NoAttributeAccessException();
-	}
-
-	@Override
-	public boolean[] getBooleanArray(String attributeName) throws NoSuchElementException {
-		throw new NoAttributeAccessException();
-	}
-
-	@Override
-	public char getChar(String attributeName) throws NoSuchElementException {
-		throw new NoAttributeAccessException();
-	}
-
-	@Override
-	public char[] getCharArray(String attributeName) throws NoSuchElementException {
-		throw new NoAttributeAccessException();
-	}
-
-	@Override
-	public short getShort(String attributeName) throws NoSuchElementException {
-		throw new NoAttributeAccessException();
-	}
-
-	@Override
-	public short[] getShortArray(String attributeName) throws NoSuchElementException {
-		throw new NoAttributeAccessException();
-	}
-
-	@Override
-	public int getInt(String attributeName) throws NoSuchElementException {
-		throw new NoAttributeAccessException();
-	}
-
-	@Override
-	public int[] getIntArray(String attributeName) throws NoSuchElementException {
-		throw new NoAttributeAccessException();
-	}
-
-	@Override
-	public long getLong(String attributeName) throws NoSuchElementException {
-		throw new NoAttributeAccessException();
-	}
-
-	@Override
-	public long[] getLongArray(String attributeName) throws NoSuchElementException {
-		throw new NoAttributeAccessException();
-	}
-
-	@Override
-	public double getDouble(String attributeName) throws NoSuchElementException {
-		throw new NoAttributeAccessException();
-	}
-
-	@Override
-	public double[] getDoubleArray(String attributeName) throws NoSuchElementException {
-		throw new NoAttributeAccessException();
-	}
-
-	@Override
-	public float getFloat(String attributeName) throws NoSuchElementException {
-		throw new NoAttributeAccessException();
-	}
-
-	@Override
-	public float[] getFloatArray(String attributeName) throws NoSuchElementException {
-		throw new NoAttributeAccessException();
-	}
-
-	@Override
-	public String getString(String attributeName) throws NoSuchElementException {
-		throw new NoAttributeAccessException();
-	}
-
-	@Override
-	public String[] getStringArray(String attributeName) throws NoSuchElementException {
-		throw new NoAttributeAccessException();
-	}
-
-	@Override
-	public Class<?> getClass(String attributeName) throws NoSuchElementException {
-		throw new NoAttributeAccessException();
-	}
-
-	@Override
-	public Class<?>[] getClassArray(String attributeName) throws NoSuchElementException {
-		throw new NoAttributeAccessException();
-	}
-
-	@Override
-	public <E extends Enum<E>> E getEnum(String attributeName, Class<E> type)
-			throws NoSuchElementException {
-		throw new NoAttributeAccessException();
-	}
-
-	@Override
-	public <E extends Enum<E>> E[] getEnumArray(String attributeName, Class<E> type)
-			throws NoSuchElementException {
-		throw new NoAttributeAccessException();
-	}
-
-	@Override
-	public <T extends Annotation> MergedAnnotation<T> getAnnotation(String attributeName,
-			Class<T> type) throws NoSuchElementException {
-		throw new NoAttributeAccessException();
-	}
-
-	@Override
-	public <T extends Annotation> MergedAnnotation<T>[] getAnnotationArray(
-			String attributeName, Class<T> type) throws NoSuchElementException {
-		throw new NoAttributeAccessException();
 	}
 
 	@Override
@@ -226,11 +77,6 @@ final class MissingMergedAnnotation<A extends Annotation> implements MergedAnnot
 	@Override
 	public <T> Optional<T> getNonMergedAttribute(String attributeName, Class<T> type) {
 		return Optional.empty();
-	}
-
-	@Override
-	public MergedAnnotation<A> filterDefaultValues() {
-		return this;
 	}
 
 	@Override
@@ -262,6 +108,32 @@ final class MissingMergedAnnotation<A extends Annotation> implements MergedAnnot
 	@Override
 	public String toString() {
 		return "(missing)";
+	}
+
+	@Override
+	protected AnnotationType getAnnotationType() {
+		throw new NoSuchElementException("Unable to get type for missing annotation");
+	}
+
+	@Override
+	protected ClassLoader getClassLoader() {
+		return null;
+	}
+
+	@Override
+	protected AttributeType getAttributeType(String attributeName) {
+		throw new NoAttributeAccessException();
+	}
+
+	@Override
+	protected Object getAttributeValue(String attributeName, boolean nonMerged) {
+		throw new NoAttributeAccessException();
+	}
+
+	@Override
+	protected <T extends Annotation> MergedAnnotation<T> createNested(AnnotationType type,
+			DeclaredAttributes attributes) {
+		throw new NoAttributeAccessException();
 	}
 
 	private static class NoAttributeAccessException extends NoSuchElementException {

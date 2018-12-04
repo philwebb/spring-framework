@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-import org.springframework.core.annotation.type.AnnotationType;
 import org.springframework.core.annotation.type.DeclaredAnnotation;
 import org.springframework.core.annotation.type.DeclaredAnnotations;
 import org.springframework.util.Assert;
@@ -126,7 +125,7 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 		}
 
 		private <A extends Annotation>  MergedAnnotation<A> map(AnnotationTypeMapping mapping) {
-			mapping.map(this.annotation.getAttributes(), this.inherited);
+			// mapping.map(this.annotation.getAttributes(), this.inherited);
 			return null;
 		}
 

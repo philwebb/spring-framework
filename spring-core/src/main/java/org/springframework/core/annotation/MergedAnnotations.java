@@ -25,9 +25,9 @@ import org.springframework.core.annotation.type.DeclaredAnnotations;
 import org.springframework.util.Assert;
 
 /**
- * Provides access to a collection of merged annotations from a specific source.
- * Merged annotations represent a view of an annotation where the attribute
- * values may be "merged" form different sources, typically:
+ * Provides access to a collection of merged annotations collected from a
+ * specific source. Merged annotations represent a view of an annotation where
+ * the attribute values may be "merged" form different sources, typically:
  * <ul>
  * <li>Explicit and Implicit {@link AliasFor @AliasFor} declarations on one or
  * attributes within the annotations.</li>
@@ -109,7 +109,7 @@ import org.springframework.util.Assert;
  * </pre>
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  * @see MergedAnnotation
  */
 public interface MergedAnnotations extends Iterable<MergedAnnotation<?>> {

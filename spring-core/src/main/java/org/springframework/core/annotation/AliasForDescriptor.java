@@ -29,7 +29,7 @@ import org.springframework.util.StringUtils;
  * valid.
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  * @see AnnotationTypeMappings
  */
 class AliasForDescriptor {

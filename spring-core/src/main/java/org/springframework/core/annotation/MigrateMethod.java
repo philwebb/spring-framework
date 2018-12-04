@@ -24,7 +24,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
 /**
- * Internal class used to help migrate methods to a new implementation.
+ * Internal class used to help migrate annotation util methods to a new
+ * implementation.
  *
  * @author Phillip Webb
  * @since 5.2
