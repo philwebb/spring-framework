@@ -170,9 +170,9 @@ public abstract class AnnotatedElementUtils {
 		if (annotation == null) {
 			return Collections.emptySet();
 		}
-		return MergedAnnotations.from(annotation.annotationType(),
-				SearchStrategy.INHERITED_ANNOTATIONS,
-				RepeatableContainers.none()).stream().map(
+		return MergedAnnotations.from(RepeatableContainers.none(),
+				annotation.annotationType(),
+				SearchStrategy.INHERITED_ANNOTATIONS).stream().map(
 						MergedAnnotation::getType).collect(
 								Collectors.toCollection(LinkedHashSet::new));
 	}
@@ -195,8 +195,8 @@ public abstract class AnnotatedElementUtils {
 		return MigrateMethod.from(() ->
 			InternalAnnotatedElementUtils.hasMetaAnnotationTypes(element, annotationType)
 		).to(() ->
-			MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS,
-					RepeatableContainers.none()).stream(annotationType).anyMatch(
+			MergedAnnotations.from(RepeatableContainers.none(), element,
+					SearchStrategy.INHERITED_ANNOTATIONS).stream(annotationType).anyMatch(
 							MergedAnnotation::isMetaPresent)
 		);
 	}
@@ -219,8 +219,8 @@ public abstract class AnnotatedElementUtils {
 		return MigrateMethod.from(() ->
 			InternalAnnotatedElementUtils.hasMetaAnnotationTypes(element, annotationName)
 		).to(() ->
-			MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS,
-					RepeatableContainers.none()).stream(annotationName).anyMatch(
+			MergedAnnotations.from(RepeatableContainers.none(), element,
+					SearchStrategy.INHERITED_ANNOTATIONS).stream(annotationName).anyMatch(
 							MergedAnnotation::isMetaPresent)
 		);
 	}
@@ -245,8 +245,8 @@ public abstract class AnnotatedElementUtils {
 		return MigrateMethod.from(() ->
 			InternalAnnotatedElementUtils.isAnnotated(element, annotationType)
 		).to(() ->
-			MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS,
-					RepeatableContainers.none()).isPresent(annotationType)
+			MergedAnnotations.from(RepeatableContainers.none(), element,
+					SearchStrategy.INHERITED_ANNOTATIONS).isPresent(annotationType)
 		);
 	}
 
@@ -268,8 +268,8 @@ public abstract class AnnotatedElementUtils {
 		return MigrateMethod.from(() ->
 			InternalAnnotatedElementUtils.isAnnotated(element, annotationName))
 		.to(() ->
-			MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS,
-					RepeatableContainers.none()).isPresent(annotationName)
+			MergedAnnotations.from(RepeatableContainers.none(), element,
+					SearchStrategy.INHERITED_ANNOTATIONS).isPresent(annotationName)
 		);
 	}
 
@@ -299,8 +299,8 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.getMergedAnnotationAttributes(element,
 				annotationType))
 		.to(() ->
-			MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS,
-					RepeatableContainers.none()).get(annotationType).asMap(
+			MergedAnnotations.from(RepeatableContainers.none(), element,
+					SearchStrategy.INHERITED_ANNOTATIONS).get(annotationType).asMap(
 							AnnotationAttributes::createIfAnnotationPresent)
 		);
 	}
@@ -330,8 +330,8 @@ public abstract class AnnotatedElementUtils {
 		return MigrateMethod.from(() ->
 			InternalAnnotatedElementUtils.getMergedAnnotationAttributes(element, annotationName)
 		).to(() ->
-			MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS,
-					RepeatableContainers.none()).get(annotationName).asMap(
+			MergedAnnotations.from(RepeatableContainers.none(), element,
+					SearchStrategy.INHERITED_ANNOTATIONS).get(annotationName).asMap(
 							AnnotationAttributes::createIfAnnotationPresent)
 		);
 	}
@@ -371,8 +371,8 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.getMergedAnnotationAttributes(element,
 				annotationName, classValuesAsString, nestedAnnotationsAsMap)
 		).to(() ->
-			MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS,
-					RepeatableContainers.none()).get(annotationName).asMap(
+			MergedAnnotations.from(RepeatableContainers.none(), element,
+					SearchStrategy.INHERITED_ANNOTATIONS).get(annotationName).asMap(
 							AnnotationAttributes::createIfAnnotationPresent,
 							MapValues.get(classValuesAsString, nestedAnnotationsAsMap, false))
 		);
@@ -403,8 +403,8 @@ public abstract class AnnotatedElementUtils {
 		return MigrateMethod.from(() ->
 			InternalAnnotatedElementUtils.getMergedAnnotation(element, annotationType)
 		).to(() ->
-			MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS,
-					RepeatableContainers.none()).get(annotationType).synthesize(
+			MergedAnnotations.from(RepeatableContainers.none(), element,
+					SearchStrategy.INHERITED_ANNOTATIONS).get(annotationType).synthesize(
 							MergedAnnotation::isPresent).orElse(null)
 		);
 	}
@@ -436,8 +436,8 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.getAllMergedAnnotations(element,
 					annotationType)
 		).to(() ->
-			MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS,
-					RepeatableContainers.none()).stream(annotationType).map(
+			MergedAnnotations.from(RepeatableContainers.none(), element,
+					SearchStrategy.INHERITED_ANNOTATIONS).stream(annotationType).map(
 							MergedAnnotation::synthesize).collect(
 									Collectors.toCollection(LinkedHashSet::new))
 		);
@@ -469,8 +469,8 @@ public abstract class AnnotatedElementUtils {
 					annotationTypes)
 		).to(() -> {
 			Predicate<MergedAnnotation<?>> filter = typeNameFilter(annotationTypes);
-			return MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS,
-					RepeatableContainers.none()).stream().filter(filter).map(
+			return MergedAnnotations.from(RepeatableContainers.none(), element,
+					SearchStrategy.INHERITED_ANNOTATIONS).stream().filter(filter).map(
 							MergedAnnotation::synthesize).collect(
 									Collectors.toCollection(LinkedHashSet::new));
 		});
@@ -508,8 +508,8 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.getMergedRepeatableAnnotations(element,
 					annotationType)
 		).to(() ->
-			MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS,
-					RepeatableContainers.standardRepeatables()).stream(annotationType).sorted(
+			MergedAnnotations.from(RepeatableContainers.standardRepeatables(), element,
+					SearchStrategy.INHERITED_ANNOTATIONS).stream(annotationType).sorted(
 							MergedAnnotation.comparingDepth()).map(
 									MergedAnnotation::synthesize).collect(
 											Collectors.toCollection(LinkedHashSet::new))
@@ -553,8 +553,8 @@ public abstract class AnnotatedElementUtils {
 			RepeatableContainers repeatableContainers = containerType != null
 					? RepeatableContainers.of(containerType, annotationType)
 					: RepeatableContainers.standardRepeatables();
-			return MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS,
-					repeatableContainers).stream(annotationType).map(
+			return MergedAnnotations.from(repeatableContainers, element,
+					SearchStrategy.INHERITED_ANNOTATIONS).stream(annotationType).map(
 							MergedAnnotation::synthesize).collect(
 									Collectors.toCollection(LinkedHashSet::new));
 		});
@@ -582,8 +582,8 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.getAllAnnotationAttributes(element,
 					annotationName)
 		).to(() ->
-			MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS,
-					RepeatableContainers.none()).stream(annotationName).filter(
+			MergedAnnotations.from(RepeatableContainers.none(), element,
+					SearchStrategy.INHERITED_ANNOTATIONS).stream(annotationName).filter(
 							oncePerParent()).peek(System.out::println).collect(
 									allAnnotationAttributes(MapValues.NON_MERGED))
 		);
@@ -614,8 +614,8 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.getAllAnnotationAttributes(element,
 					annotationName, classValuesAsString, nestedAnnotationsAsMap)
 		).to(() ->
-			MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS,
-					RepeatableContainers.none()).stream(annotationName).filter(
+			MergedAnnotations.from(RepeatableContainers.none(), element,
+					SearchStrategy.INHERITED_ANNOTATIONS).stream(annotationName).filter(
 							oncePerParent()).peek(System.out::println).collect(
 									allAnnotationAttributes(MapValues.get(classValuesAsString,
 											nestedAnnotationsAsMap, true)))

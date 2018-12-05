@@ -470,8 +470,8 @@ public abstract class NewAnnotationUtils {
 		if(containerAnnotationType != null) {
 			containers = containers.and(containerAnnotationType, annotationType);
 		}
-		MergedAnnotations mergedAnnotations = MergedAnnotations.from(annotatedElement,
-				SearchStrategy.DIRECT, containers);
+		MergedAnnotations mergedAnnotations = MergedAnnotations.from(containers,
+				annotatedElement, SearchStrategy.DIRECT);
 		Set<A> result = mergedAnnotations.stream(annotationType).map(
 				MergedAnnotation::synthesize).collect(
 						Collectors.toCollection(LinkedHashSet::new));

@@ -39,15 +39,15 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 
 	private final List<Element> hierarchy;
 
-	TypeMappedAnnotations(AnnotatedElement source, Annotation[] annotations,
-			RepeatableContainers repeatableContainers) {
+	TypeMappedAnnotations(RepeatableContainers repeatableContainers, AnnotatedElement source,
+			Annotation[] annotations) {
 		this.hierarchy = Collections.singletonList(
 				new Element(source, annotations, repeatableContainers, false));
 	}
 
 	TypeMappedAnnotations(ClassLoader classLoader,
-			Iterable<DeclaredAnnotations> annotations,
-			RepeatableContainers repeatableContainers) {
+			RepeatableContainers repeatableContainers,
+			Iterable<DeclaredAnnotations> annotations) {
 		this.hierarchy = new ArrayList<>(getInitialSize(annotations));
 		boolean inherited = false;
 		for (DeclaredAnnotations declaredAnnotations : annotations) {

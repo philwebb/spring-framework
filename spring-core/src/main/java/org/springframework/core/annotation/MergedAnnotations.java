@@ -188,7 +188,7 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<?>> {
 	 * @return a {@link MergedAnnotations} instance containing the annotations
 	 */
 	static MergedAnnotations of(AnnotatedElement source, Annotation... annotations) {
-		return of(source, RepeatableContainers.standardRepeatables(), annotations);
+		return of(RepeatableContainers.standardRepeatables(), source, annotations);
 	}
 
 	/**
@@ -197,10 +197,10 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<?>> {
 	 * @param annotations the annotations to include
 	 * @return a {@link MergedAnnotations} instance containing the annotations
 	 */
-	static MergedAnnotations of(AnnotatedElement source,
-			RepeatableContainers repeatableContainers, Annotation... annotations) {
+	static MergedAnnotations of(RepeatableContainers repeatableContainers,
+			AnnotatedElement source, Annotation... annotations) {
 		Assert.notNull(annotations, "Annotations must not be null");
-		return new TypeMappedAnnotations(source, annotations, repeatableContainers);
+		return new TypeMappedAnnotations(repeatableContainers, source, annotations);
 	}
 
 	/**
@@ -229,27 +229,27 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<?>> {
 	 */
 	static MergedAnnotations from(AnnotatedElement element,
 			SearchStrategy searchStrategy) {
-		return from(element, searchStrategy, RepeatableContainers.standardRepeatables());
+		return from(RepeatableContainers.standardRepeatables(), element, searchStrategy);
 	}
 
 	/**
 	 * Create a new {@link MergedAnnotations} instance containing all
 	 * annotations and meta-annotations from the specified element and,
 	 * depending on the {@link SearchStrategy}, related inherited elements.
-	 * @param element the source element
-	 * @param searchStrategy the search strategy to use
 	 * @param repeatableContainers the strategy used to find repeatable
 	 * annotation containers
+	 * @param element the source element
+	 * @param searchStrategy the search strategy to use
 	 * @return a {@link MergedAnnotations} instance containing the merged
 	 * element annotations
 	 */
-	static MergedAnnotations from(AnnotatedElement element, SearchStrategy searchStrategy,
-			RepeatableContainers repeatableContainers) {
+	static MergedAnnotations from(RepeatableContainers repeatableContainers,
+			AnnotatedElement element, SearchStrategy searchStrategy) {
 		Assert.notNull(element, "Element must not be null");
 		Assert.notNull(searchStrategy, "SearchStrategy must not be null");
 		Assert.notNull(repeatableContainers, "RepeatableContainers must not be null");
 		AnnotationsScanner annotations = new AnnotationsScanner(element, searchStrategy);
-		return from(annotations, repeatableContainers);
+		return from(repeatableContainers, annotations);
 	}
 
 	/**
@@ -258,16 +258,16 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<?>> {
 	 * may return one immediate set of {@link DeclaredAnnotations} as well as
 	 * any number of additional {@link MergedAnnotation#isFromInherited()
 	 * inherited} annotations.
-	 * @param annotations the source of the annotations
 	 * @param repeatableContainers the strategy used to find repeatable
 	 * annotation containers
+	 * @param annotations the source of the annotations
 	 * @param resolver an annotation type resolver
 	 * @return a {@link MergedAnnotations} instance containing the merged
 	 * annotations
 	 */
-	static MergedAnnotations from(Iterable<DeclaredAnnotations> hierarchy,
-			RepeatableContainers repeatableContainers) {
-		return from(null, hierarchy, repeatableContainers);
+	static MergedAnnotations from(RepeatableContainers repeatableContainers,
+			Iterable<DeclaredAnnotations> hierarchy) {
+		return from(null, repeatableContainers, hierarchy);
 	}
 
 	/**
@@ -276,17 +276,17 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<?>> {
 	 * may return one immediate set of {@link DeclaredAnnotations} as well as
 	 * any number of additional {@link MergedAnnotation#isFromInherited()
 	 * inherited} annotations.
-	 * @param annotations the source of the annotations
 	 * @param repeatableContainers the strategy used to find repeatable
 	 * annotation containers
+	 * @param annotations the source of the annotations
 	 * @param resolver an annotation type resolver
 	 * @return a {@link MergedAnnotations} instance containing the merged
 	 * annotations
 	 */
 	static MergedAnnotations from(ClassLoader classLoader,
-			Iterable<DeclaredAnnotations> hierarchy,
-			RepeatableContainers repeatableContainers) {
-		return new TypeMappedAnnotations(classLoader, hierarchy, repeatableContainers);
+			RepeatableContainers repeatableContainers,
+			Iterable<DeclaredAnnotations> hierarchy) {
+		return new TypeMappedAnnotations(classLoader, repeatableContainers, hierarchy);
 	}
 
 	/**
