@@ -44,7 +44,7 @@ import org.springframework.util.ConcurrentReferenceHashMap;
  * @author Phillip Webb
  * @since 5.2
  */
-class SimpleAnnotationTypeResolver {
+final class SimpleAnnotationTypeResolver {
 
 	private static final Map<ClassLoader, SimpleAnnotationTypeResolver> cache = new ConcurrentReferenceHashMap<>(
 			4);

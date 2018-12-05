@@ -39,8 +39,8 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 
 	private final List<Element> hierarchy;
 
-	TypeMappedAnnotations(RepeatableContainers repeatableContainers, AnnotatedElement source,
-			Annotation[] annotations) {
+	TypeMappedAnnotations(RepeatableContainers repeatableContainers,
+			AnnotatedElement source, Annotation[] annotations) {
 		this.hierarchy = Collections.singletonList(
 				new Element(source, annotations, repeatableContainers, false));
 	}
@@ -153,13 +153,20 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 		}
 
 		public <A extends Annotation> MergedAnnotation<A> get(String annotationType) {
+			MergedAnnotation<A> result = null;
 			for (MappableAnnotation mappableAnnotation : this.mappableAnnotations) {
-				MergedAnnotation<A> result = mappableAnnotation.get(annotationType);
-				if (result != null) {
-					return result;
+				MergedAnnotation<A> candidate = mappableAnnotation.get(annotationType);
+				if (isBetterGetCandidate(candidate, result)) {
+					result = candidate;
 				}
 			}
-			return null;
+			return result;
+		}
+
+		private boolean isBetterGetCandidate(MergedAnnotation<?> candidate,
+				MergedAnnotation<?> previous) {
+			return candidate != null
+					&& (previous == null || candidate.getDepth() < previous.getDepth());
 		}
 
 		public Stream<MergedAnnotation<?>> stream() {

@@ -342,6 +342,7 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * matching attribute
 	 */
 	<T> Optional<T> getNonMergedAttribute(String attributeName, Class<T> type);
+	// FIXME be clear about mirrors
 
 	/**
 	 * Return a new view of the annotation with all attributes that have default

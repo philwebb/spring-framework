@@ -119,11 +119,11 @@ class AnnotationTypeMapping {
 	}
 
 	public Map<String, Reference> getAliases() {
-		return aliases;
+		return this.aliases;
 	}
 
 	public List<MirrorSet> getMirrorSets() {
-		return mirrorSets;
+		return this.mirrorSets;
 	}
 
 	/**

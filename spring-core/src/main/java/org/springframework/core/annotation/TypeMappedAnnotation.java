@@ -65,11 +65,9 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 			mappedAttributes = new ParentMappedAttributes(mapping,
 					parent.mappedAttributes);
 		}
-		if (!mapping.getMirrorSets().isEmpty()) {
-			mappedAttributes = new MirroredAttributes(mapping, mappedAttributes);
-		}
-		this.nonMappedAttributes = parent != null ? mapping.getAnnotationAttributes()
-				: rootAttributes;
+		mappedAttributes = MirroredAttributes.applyIfNecessary(mapping, mappedAttributes);
+		this.nonMappedAttributes = MirroredAttributes.applyIfNecessary(mapping,
+				parent != null ? mapping.getAnnotationAttributes() : rootAttributes);
 		this.mapping = mapping;
 		this.inherited = inherited;
 		this.mappedAttributes = mappedAttributes;
@@ -142,7 +140,7 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 	protected <T extends Annotation> MergedAnnotation<T> createNested(AnnotationType type,
 			DeclaredAttributes attributes) {
 		AnnotationTypeMapping nestedMapping = getNestedMapping(type);
-		return new TypeMappedAnnotation<>(nestedMapping, inherited, attributes);
+		return new TypeMappedAnnotation<>(nestedMapping, this.inherited, attributes);
 	}
 
 	private AnnotationTypeMapping getNestedMapping(AnnotationType type) {
@@ -323,6 +321,14 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 				name = mirror.getAttribute().getAttributeName();
 			}
 			return this.sourceAttributes.get(name);
+		}
+
+		public static DeclaredAttributes applyIfNecessary(AnnotationTypeMapping mapping,
+				DeclaredAttributes attributes) {
+			if (mapping.getMirrorSets().isEmpty()) {
+				return attributes;
+			}
+			return new MirroredAttributes(mapping, attributes);
 		}
 
 	}

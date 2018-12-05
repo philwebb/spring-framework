@@ -68,8 +68,7 @@ class AnnotationTypeMappings {
 
 	/**
 	 * Create a new {@link AliasedAnnotationType} instance for the given source.
-	 * @param resolver the {@link AnnotationTypeResolver} used to resolve
-	 * meta-annotations
+	 * @param classLoader the classloader used to read annotations
 	 * @param repeatableContainers strategy to extract repeatable containers
 	 * @param source the source annotation type
 	 */

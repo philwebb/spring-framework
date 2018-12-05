@@ -260,8 +260,7 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<?>> {
 	 * inherited} annotations.
 	 * @param repeatableContainers the strategy used to find repeatable
 	 * annotation containers
-	 * @param annotations the source of the annotations
-	 * @param resolver an annotation type resolver
+	 * @param hierarchy the hierarchy of {@link DeclaredAnnotations}
 	 * @return a {@link MergedAnnotations} instance containing the merged
 	 * annotations
 	 */
@@ -276,10 +275,10 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<?>> {
 	 * may return one immediate set of {@link DeclaredAnnotations} as well as
 	 * any number of additional {@link MergedAnnotation#isFromInherited()
 	 * inherited} annotations.
+	 * @param classLoader the classloader used to read annotations
 	 * @param repeatableContainers the strategy used to find repeatable
 	 * annotation containers
-	 * @param annotations the source of the annotations
-	 * @param resolver an annotation type resolver
+	 * @param hierarchy the hierarchy of {@link DeclaredAnnotations}
 	 * @return a {@link MergedAnnotations} instance containing the merged
 	 * annotations
 	 */

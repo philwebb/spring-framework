@@ -42,10 +42,11 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 
 /**
- * Abstract base class for {@link MergedAnnotation} implemenations.
+ * Abstract base class for {@link MergedAnnotation} implementations.
  *
  * @author Phillip Webb
  * @since 5.2
+ * @param <A> the annotation type
  */
 abstract class AbstractMergedAnnotation<A extends Annotation>
 		implements MergedAnnotation<A> {

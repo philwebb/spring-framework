@@ -858,7 +858,7 @@ public abstract class AnnotatedElementUtils {
 
 	private static <K, V> MultiValueMap<K, V> merge(MultiValueMap<K, V> map,
 			MultiValueMap<K, V> additions) {
-		map.addAll(additions);
+		map.addAll(additions); // FIXME
 		return map;
 	}
 
