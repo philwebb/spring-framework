@@ -188,8 +188,19 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<?>> {
 	 * @return a {@link MergedAnnotations} instance containing the annotations
 	 */
 	static MergedAnnotations of(AnnotatedElement source, Annotation... annotations) {
+		return of(source, RepeatableContainers.standardRepeatables(), annotations);
+	}
+
+	/**
+	 * Create a new {@link MergedAnnotations} instance containing the specified
+	 * annotations.
+	 * @param annotations the annotations to include
+	 * @return a {@link MergedAnnotations} instance containing the annotations
+	 */
+	static MergedAnnotations of(AnnotatedElement source,
+			RepeatableContainers repeatableContainers, Annotation... annotations) {
 		Assert.notNull(annotations, "Annotations must not be null");
-		return new TypeMappedAnnotations(source, annotations);
+		return new TypeMappedAnnotations(source, annotations, repeatableContainers);
 	}
 
 	/**
