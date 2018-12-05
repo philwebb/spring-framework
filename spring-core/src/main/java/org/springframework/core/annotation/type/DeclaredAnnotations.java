@@ -47,6 +47,9 @@ public interface DeclaredAnnotations extends Iterable<DeclaredAnnotation> {
 	// FIXME DC
 	Object getSource();
 
+	// FIXME DC
+	int size();
+
 	/**
 	 * Find a declared annotation of the specified type.
 	 * @param annotationType the type required

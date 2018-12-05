@@ -22,6 +22,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -69,7 +70,11 @@ class AnnotationsScanner implements Iterable<DeclaredAnnotations> {
 
 	@Override
 	public Iterator<DeclaredAnnotations> iterator() {
-		return this.results.get(this.searchStrategy);
+		return this.results.get(this.searchStrategy).iterator();
+	}
+
+	public int size() {
+		return this.results.get(this.searchStrategy).size();
 	}
 
 	/**
@@ -83,20 +88,15 @@ class AnnotationsScanner implements Iterable<DeclaredAnnotations> {
 
 		private final E source;
 
-		private Map<SearchStrategy, Iterable<DeclaredAnnotations>> results = new ConcurrentHashMap<>();
+		private Map<SearchStrategy, Collection<DeclaredAnnotations>> results = new ConcurrentHashMap<>();
 
 		Results(E source) {
 			this.source = source;
 		}
 
-		public final Iterator<DeclaredAnnotations> get(SearchStrategy searchStrategy) {
-			return getResult(searchStrategy).iterator();
-		}
-
-		protected final Iterable<DeclaredAnnotations> getResult(
+		public final Collection<DeclaredAnnotations> get(
 				SearchStrategy searchStrategy) {
-			// Use distinct get and put calls rather than computeIfAbsent
-			Iterable<DeclaredAnnotations> result = this.results.get(searchStrategy);
+			Collection<DeclaredAnnotations> result = this.results.get(searchStrategy);
 			if (result == null) {
 				result = compute(searchStrategy);
 				this.results.put(searchStrategy, result);
@@ -104,7 +104,7 @@ class AnnotationsScanner implements Iterable<DeclaredAnnotations> {
 			return result;
 		}
 
-		protected abstract Iterable<DeclaredAnnotations> compute(
+		protected abstract Collection<DeclaredAnnotations> compute(
 				SearchStrategy searchStrategy);
 
 		@SafeVarargs
@@ -138,7 +138,7 @@ class AnnotationsScanner implements Iterable<DeclaredAnnotations> {
 		}
 
 		@Override
-		protected Iterable<DeclaredAnnotations> compute(SearchStrategy searchStrategy) {
+		protected Collection<DeclaredAnnotations> compute(SearchStrategy searchStrategy) {
 			switch (searchStrategy) {
 				case DIRECT:
 					return computeDirect();
@@ -153,11 +153,11 @@ class AnnotationsScanner implements Iterable<DeclaredAnnotations> {
 					"Unsupported search strategy " + searchStrategy);
 		}
 
-		private Iterable<DeclaredAnnotations> computeDirect() {
+		private Collection<DeclaredAnnotations> computeDirect() {
 			return Collections.singleton(getDeclaredAnnotations(getSource()));
 		}
 
-		private Iterable<DeclaredAnnotations> computeInheritedAnnotations() {
+		private Collection<DeclaredAnnotations> computeInheritedAnnotations() {
 			Set<Annotation> present = asSet(getSource().getAnnotations());
 			return TypeHierarchy.superclasses(getSource()).stream().map(type -> {
 				Set<Annotation> annotations = asSet(type.getDeclaredAnnotations());
@@ -166,7 +166,7 @@ class AnnotationsScanner implements Iterable<DeclaredAnnotations> {
 			}).collect(Collectors.toList());
 		}
 
-		private Iterable<DeclaredAnnotations> computeWithHierarchy(
+		private Collection<DeclaredAnnotations> computeWithHierarchy(
 				Function<Class<?>, TypeHierarchy> hierarchyFactory) {
 			return hierarchyFactory.apply(getSource()).stream().map(
 					this::getDeclaredAnnotations).collect(Collectors.toList());
@@ -188,12 +188,12 @@ class AnnotationsScanner implements Iterable<DeclaredAnnotations> {
 		}
 
 		@Override
-		protected Iterable<DeclaredAnnotations> compute(SearchStrategy searchStrategy) {
+		protected Collection<DeclaredAnnotations> compute(SearchStrategy searchStrategy) {
 			switch (searchStrategy) {
 				case DIRECT:
 					return computeDirect();
 				case INHERITED_ANNOTATIONS:
-					return getResult(SearchStrategy.DIRECT);
+					return get(SearchStrategy.DIRECT);
 				case SUPER_CLASS:
 					return computeWithHierarchy(TypeHierarchy::superclasses);
 				case EXHAUSTIVE:
@@ -203,11 +203,11 @@ class AnnotationsScanner implements Iterable<DeclaredAnnotations> {
 					"Unsupported search strategy " + searchStrategy);
 		}
 
-		private Iterable<DeclaredAnnotations> computeDirect() {
+		private Collection<DeclaredAnnotations> computeDirect() {
 			return Collections.singleton(getAnnotations(getSource()));
 		}
 
-		private Iterable<DeclaredAnnotations> computeWithHierarchy(
+		private Collection<DeclaredAnnotations> computeWithHierarchy(
 				Function<Class<?>, TypeHierarchy> hierarchyFactory) {
 			Class<?> declaringClass = getSource().getDeclaringClass();
 			TypeHierarchy hierarchy = hierarchyFactory.apply(declaringClass).excluding(
@@ -283,9 +283,9 @@ class AnnotationsScanner implements Iterable<DeclaredAnnotations> {
 		}
 
 		@Override
-		protected Iterable<DeclaredAnnotations> compute(SearchStrategy searchStrategy) {
+		protected Collection<DeclaredAnnotations> compute(SearchStrategy searchStrategy) {
 			if (searchStrategy != SearchStrategy.DIRECT) {
-				return getResult(SearchStrategy.DIRECT);
+				return get(SearchStrategy.DIRECT);
 			}
 			return Collections.singleton(DeclaredAnnotations.from(getSource(),
 					getSource().getDeclaredAnnotations()));

@@ -49,6 +49,11 @@ class SimpleDeclaredAnnotations implements DeclaredAnnotations {
 	}
 
 	@Override
+	public int size() {
+		return this.declaredAnnotations.size();
+	}
+
+	@Override
 	public Iterator<DeclaredAnnotation> iterator() {
 		return this.declaredAnnotations.iterator();
 	}
