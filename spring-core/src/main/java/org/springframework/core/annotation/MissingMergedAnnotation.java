@@ -59,8 +59,8 @@ final class MissingMergedAnnotation<A extends Annotation>
 	}
 
 	@Override
-	public boolean isFromInherited() {
-		return false;
+	public int getAggregateIndex() {
+		return 0;
 	}
 
 	@Override

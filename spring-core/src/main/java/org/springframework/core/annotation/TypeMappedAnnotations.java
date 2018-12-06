@@ -40,38 +40,36 @@ import org.springframework.core.annotation.type.DeclaredAttributes;
  */
 class TypeMappedAnnotations extends AbstractMergedAnnotations {
 
-	private final List<MappableAnnotations> hierarchy;
+	private final List<MappableAnnotations> aggregates;
 
 	private volatile List<MergedAnnotation<?>> all;
 
 	TypeMappedAnnotations(RepeatableContainers repeatableContainers,
 			AnnotatedElement source, Annotation[] annotations) {
-		this.hierarchy = Collections.singletonList(new MappableAnnotations(source,
-				annotations, repeatableContainers, false));
+		this.aggregates = Collections.singletonList(
+				new MappableAnnotations(source, annotations, repeatableContainers));
 	}
 
 	TypeMappedAnnotations(ClassLoader classLoader,
 			RepeatableContainers repeatableContainers,
-			Iterable<DeclaredAnnotations> annotations) {
-		this.hierarchy = new ArrayList<>(getInitialSize(annotations));
-		boolean inherited = false;
-		for (DeclaredAnnotations declaredAnnotations : annotations) {
-			this.hierarchy.add(new MappableAnnotations(classLoader, declaredAnnotations,
-					repeatableContainers, inherited));
-			inherited = true;
+			Iterable<DeclaredAnnotations> aggregates) {
+		this.aggregates = new ArrayList<>(getInitialSize(aggregates));
+		for (DeclaredAnnotations declaredAnnotations : aggregates) {
+			this.aggregates.add(new MappableAnnotations(classLoader, declaredAnnotations,
+					repeatableContainers));
 		}
 	}
 
-	private int getInitialSize(Iterable<DeclaredAnnotations> annotations) {
-		if (annotations instanceof AnnotationsScanner) {
-			return ((AnnotationsScanner) annotations).size();
+	private int getInitialSize(Iterable<DeclaredAnnotations> aggregates) {
+		if (aggregates instanceof AnnotationsScanner) {
+			return ((AnnotationsScanner) aggregates).size();
 		}
 		return 10;
 	}
 
 	@Override
 	public <A extends Annotation> boolean isPresent(String annotationType) {
-		for (MappableAnnotations annotations : this.hierarchy) {
+		for (MappableAnnotations annotations : this.aggregates) {
 			if (annotations.isPresent(annotationType)) {
 				return true;
 			}
@@ -81,7 +79,7 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 
 	@Override
 	public <A extends Annotation> MergedAnnotation<A> get(String annotationType) {
-		for (MappableAnnotations annotations : this.hierarchy) {
+		for (MappableAnnotations annotations : this.aggregates) {
 			MergedAnnotation<A> result = annotations.get(annotationType);
 			if (result != null) {
 				return result;
@@ -106,7 +104,7 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 
 	private List<MergedAnnotation<?>> computeAll() {
 		List<MergedAnnotation<?>> result = new ArrayList<>(totalSize());
-		for (MappableAnnotations annotations : this.hierarchy) {
+		for (MappableAnnotations annotations : this.aggregates) {
 			List<Deque<MergedAnnotation<?>>> queues = new ArrayList<>(annotations.size());
 			for (MappableAnnotation annotation : annotations) {
 				queues.add(annotation.getQueue());
@@ -139,7 +137,7 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 
 	private int totalSize() {
 		int size = 0;
-		for (MappableAnnotations annotations : this.hierarchy) {
+		for (MappableAnnotations annotations : this.aggregates) {
 			size += annotations.totalSize();
 		}
 		return size;
@@ -153,37 +151,40 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 		private List<MappableAnnotation> mappableAnnotations;
 
 		public MappableAnnotations(AnnotatedElement source, Annotation[] annotations,
-				RepeatableContainers repeatableContainers, boolean inherited) {
+				RepeatableContainers repeatableContainers) {
 			this.mappableAnnotations = new ArrayList<>(annotations.length);
 			ClassLoader sourceClassLoader = getClassLoader(source);
 			for (Annotation annotation : annotations) {
 				ClassLoader classLoader = sourceClassLoader != null ? sourceClassLoader
 						: annotation.getClass().getClassLoader();
-				add(classLoader, DeclaredAnnotation.from(annotation),
-						repeatableContainers, inherited);
+				add(classLoader, 0, DeclaredAnnotation.from(annotation),
+						repeatableContainers);
 			}
 		}
 
 		public MappableAnnotations(ClassLoader classLoader,
 				DeclaredAnnotations annotations,
-				RepeatableContainers repeatableContainers, boolean inherited) {
+				RepeatableContainers repeatableContainers) {
 			this.mappableAnnotations = new ArrayList<>(annotations.size());
 			if (classLoader == null) {
 				classLoader = getClassLoader(annotations.getSource());
 			}
+			int aggregateIndex = 0;
 			for (DeclaredAnnotation annotation : annotations) {
-				add(classLoader, annotation, repeatableContainers, inherited);
+				add(classLoader, aggregateIndex, annotation, repeatableContainers);
+				aggregateIndex++;
 			}
 		}
 
-		private void add(ClassLoader classLoader, DeclaredAnnotation annotation,
-				RepeatableContainers repeatableContainers, boolean inherited) {
+		private void add(ClassLoader classLoader, int aggregateIndex,
+				DeclaredAnnotation annotation,
+				RepeatableContainers repeatableContainers) {
 			repeatableContainers.visit(classLoader, annotation, (type, attributes) -> {
 				AnnotationTypeMappings mappings = AnnotationTypeMappings.forType(
 						classLoader, repeatableContainers, type);
 				if (mappings != null) {
 					this.mappableAnnotations.add(
-							new MappableAnnotation(mappings, attributes, inherited));
+							new MappableAnnotation(mappings, aggregateIndex, attributes));
 				}
 			});
 
@@ -251,15 +252,15 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 
 		private final AnnotationTypeMappings mappings;
 
+		private final int aggregateIndex;
+
 		private final DeclaredAttributes attributes;
 
-		private final boolean inherited;
-
-		public MappableAnnotation(AnnotationTypeMappings mappings,
-				DeclaredAttributes attributes, boolean inherited) {
+		public MappableAnnotation(AnnotationTypeMappings mappings, int aggregateIndex,
+				DeclaredAttributes attributes) {
 			this.mappings = mappings;
+			this.aggregateIndex = aggregateIndex;
 			this.attributes = attributes;
-			this.inherited = inherited;
 		}
 
 		public boolean isPresent(String annotationType) {
@@ -281,7 +282,8 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 
 		private <A extends Annotation> MergedAnnotation<A> map(
 				AnnotationTypeMapping mapping) {
-			return new TypeMappedAnnotation<A>(mapping, this.inherited, this.attributes);
+			return new TypeMappedAnnotation<A>(mapping, this.aggregateIndex,
+					this.attributes);
 		}
 
 		public int size() {

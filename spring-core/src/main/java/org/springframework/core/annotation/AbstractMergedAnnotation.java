@@ -92,6 +92,11 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	}
 
 	@Override
+	public String getType() {
+		return getAnnotationType().getClassName();
+	}
+
+	@Override
 	public boolean isDirectlyPresent() {
 		return getDepth() == 0;
 	}
@@ -102,21 +107,16 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	}
 
 	@Override
-	public boolean isAncestorOf(MergedAnnotation<?> annotation) {
-		if (getParent() == null) {
-			return false;
-		}
-		return getParent().equals(annotation) || getParent().isAncestorOf(annotation);
-	}
-
-	@Override
 	public int getDepth() {
 		return getParent() != null ? getParent().getDepth() + 1 : 0;
 	}
 
 	@Override
-	public String getType() {
-		return getAnnotationType().getClassName();
+	public boolean isAncestorOf(MergedAnnotation<?> annotation) {
+		if (getParent() == null) {
+			return false;
+		}
+		return getParent().equals(annotation) || getParent().isAncestorOf(annotation);
 	}
 
 	@Override

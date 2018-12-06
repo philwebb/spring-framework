@@ -45,22 +45,22 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 
 	private final AnnotationTypeMapping mapping;
 
-	private final boolean inherited;
-
 	private final DeclaredAttributes mappedAttributes;
 
 	private final DeclaredAttributes nonMappedAttributes;
+
+	private final int aggregateIndex;
 
 	private final TypeMappedAnnotation<?> parent;
 
 	private final Predicate<String> attributeFilter;
 
-	TypeMappedAnnotation(AnnotationTypeMapping mapping, boolean inherited,
+	TypeMappedAnnotation(AnnotationTypeMapping mapping, int aggregateIndex,
 			DeclaredAttributes rootAttributes) {
 		TypeMappedAnnotation<?> parent = null;
 		DeclaredAttributes mappedAttributes = rootAttributes;
 		if (mapping.getParent() != null) {
-			parent = new TypeMappedAnnotation<>(mapping.getParent(), inherited,
+			parent = new TypeMappedAnnotation<>(mapping.getParent(), aggregateIndex,
 					rootAttributes);
 			mappedAttributes = new ParentMappedAttributes(mapping,
 					parent.mappedAttributes);
@@ -69,19 +69,19 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 		this.nonMappedAttributes = MirroredAttributes.applyIfNecessary(mapping,
 				parent != null ? mapping.getAnnotationAttributes() : rootAttributes);
 		this.mapping = mapping;
-		this.inherited = inherited;
 		this.mappedAttributes = mappedAttributes;
+		this.aggregateIndex = aggregateIndex;
 		this.parent = parent;
 		this.attributeFilter = null;
 	}
 
-	private TypeMappedAnnotation(AnnotationTypeMapping mapping, boolean inherited,
+	private TypeMappedAnnotation(AnnotationTypeMapping mapping, int aggregateIndex,
 			DeclaredAttributes mappedAttributes, DeclaredAttributes nonMappedAttributes,
 			TypeMappedAnnotation<?> parent, Predicate<String> attributeFilter) {
 		this.mapping = mapping;
-		this.inherited = inherited;
 		this.mappedAttributes = mappedAttributes;
 		this.nonMappedAttributes = nonMappedAttributes;
+		this.aggregateIndex = aggregateIndex;
 		this.parent = parent;
 		this.attributeFilter = attributeFilter;
 	}
@@ -92,13 +92,13 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 	}
 
 	@Override
-	public MergedAnnotation<?> getParent() {
-		return this.parent;
+	public int getAggregateIndex() {
+		return this.aggregateIndex;
 	}
 
 	@Override
-	public boolean isFromInherited() {
-		return this.inherited;
+	public MergedAnnotation<?> getParent() {
+		return this.parent;
 	}
 
 	@Override
@@ -107,7 +107,7 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 		if (this.attributeFilter != null) {
 			predicate = this.attributeFilter.and(predicate);
 		}
-		return new TypeMappedAnnotation<>(this.mapping, this.inherited,
+		return new TypeMappedAnnotation<>(this.mapping, this.aggregateIndex,
 				this.mappedAttributes, this.nonMappedAttributes, this.parent, predicate);
 	}
 
@@ -140,7 +140,7 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 	protected <T extends Annotation> MergedAnnotation<T> createNested(AnnotationType type,
 			DeclaredAttributes attributes) {
 		AnnotationTypeMapping nestedMapping = getNestedMapping(type);
-		return new TypeMappedAnnotation<>(nestedMapping, this.inherited, attributes);
+		return new TypeMappedAnnotation<>(nestedMapping, this.aggregateIndex, attributes);
 	}
 
 	private AnnotationTypeMapping getNestedMapping(AnnotationType type) {

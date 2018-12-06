@@ -254,38 +254,32 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<?>> {
 
 	/**
 	 * Create a new {@link MergedAnnotations} instance containing all
-	 * annotations and meta-annotations from the specified source. The source
-	 * may return one immediate set of {@link DeclaredAnnotations} as well as
-	 * any number of additional {@link MergedAnnotation#isFromInherited()
-	 * inherited} annotations.
+	 * annotations and meta-annotations from the specified aggregates.
 	 * @param repeatableContainers the strategy used to find repeatable
 	 * annotation containers
-	 * @param hierarchy the hierarchy of {@link DeclaredAnnotations}
+	 * @param aggregates the aggregates that make up the merged annotation
 	 * @return a {@link MergedAnnotations} instance containing the merged
 	 * annotations
 	 */
 	static MergedAnnotations from(RepeatableContainers repeatableContainers,
-			Iterable<DeclaredAnnotations> hierarchy) {
-		return from(null, repeatableContainers, hierarchy);
+			Iterable<DeclaredAnnotations> aggregates) {
+		return from(null, repeatableContainers, aggregates);
 	}
 
 	/**
 	 * Create a new {@link MergedAnnotations} instance containing all
-	 * annotations and meta-annotations from the specified source. The source
-	 * may return one immediate set of {@link DeclaredAnnotations} as well as
-	 * any number of additional {@link MergedAnnotation#isFromInherited()
-	 * inherited} annotations.
+	 * annotations and meta-annotations from the specified aggregates.
 	 * @param classLoader the classloader used to read annotations
 	 * @param repeatableContainers the strategy used to find repeatable
 	 * annotation containers
-	 * @param hierarchy the hierarchy of {@link DeclaredAnnotations}
+	 * @param aggregates the aggregates that make up the merged annotation
 	 * @return a {@link MergedAnnotations} instance containing the merged
 	 * annotations
 	 */
 	static MergedAnnotations from(ClassLoader classLoader,
 			RepeatableContainers repeatableContainers,
-			Iterable<DeclaredAnnotations> hierarchy) {
-		return new TypeMappedAnnotations(classLoader, repeatableContainers, hierarchy);
+			Iterable<DeclaredAnnotations> aggregates) {
+		return new TypeMappedAnnotations(classLoader, repeatableContainers, aggregates);
 	}
 
 	/**

@@ -43,6 +43,12 @@ import org.springframework.lang.Nullable;
 public interface MergedAnnotation<A extends Annotation> {
 
 	/**
+	 * Return the class name of the actual annotation type.
+	 * @return the annotation type
+	 */
+	String getType();
+
+	/**
 	 * Return if the annotation is present on the source. Considers
 	 * {@link #isDirectlyPresent() direct annotations},
 	 * {@link #isFromInherited() @Inherited annotations} and
@@ -70,27 +76,6 @@ public interface MergedAnnotation<A extends Annotation> {
 	boolean isMetaPresent();
 
 	/**
-	 * Return if the annotation is from an inherited source. An inherited source
-	 * can be a superclass, an implemented interface or a matching method on
-	 * either of those.
-	 * @return {@code true} if the annotation is from an inherited source
-	 */
-	boolean isFromInherited();
-
-	/**
-	 * Return this annotation is an ancestor of the specified annotation
-	 * annotation.
-	 * @param annotation the annotation to check
-	 * @return {@code true} if this annotation is a descendant
-	 */
-	boolean isAncestorOf(MergedAnnotation<?> annotation);
-
-	// FIXME DC
-	MergedAnnotation<?> getParent();
-
-	// FIXME getSource?
-
-	/**
 	 * Return the depth of this annotation related to its use as a
 	 * meta-annotation. A directly declared annotation has a depth of {@code 0},
 	 * a meta-annotation has a depth of {@code 1}, a meta-annotation on a
@@ -99,11 +84,19 @@ public interface MergedAnnotation<A extends Annotation> {
 	 */
 	int getDepth();
 
+	// FIXME DC
+	int getAggregateIndex();
+
+	// FIXME DC
+	MergedAnnotation<?> getParent();
+
 	/**
-	 * Return the class name of the actual annotation type.
-	 * @return the annotation type
+	 * Return this annotation is an ancestor of the specified annotation
+	 * annotation.
+	 * @param annotation the annotation to check
+	 * @return {@code true} if this annotation is a descendant
 	 */
-	String getType();
+	boolean isAncestorOf(MergedAnnotation<?> annotation);
 
 	/**
 	 * Return if the specified attribute name as a non-default value when
