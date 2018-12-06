@@ -208,28 +208,28 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<?>> {
 	 * annotations and meta-annotations from the specified element. The
 	 * resulting instance will not include inherited annotations, if you want to
 	 * include those as well you should use
-	 * {@link #from(AnnotatedElement, SearchStrategy)} with an appropriate
+	 * {@link #from(SearchStrategy, AnnotatedElement)} with an appropriate
 	 * {@link SearchStrategy}.
 	 * @param element the source element
 	 * @return a {@link MergedAnnotations} instance containing the element
 	 * annotations
 	 */
 	static MergedAnnotations from(AnnotatedElement element) {
-		return from(element, SearchStrategy.DIRECT);
+		return from(SearchStrategy.DIRECT, element);
 	}
 
 	/**
 	 * Create a new {@link MergedAnnotations} instance containing all
 	 * annotations and meta-annotations from the specified element and,
 	 * depending on the {@link SearchStrategy}, related inherited elements.
-	 * @param element the source element
 	 * @param searchStrategy the search strategy to use
+	 * @param element the source element
 	 * @return a {@link MergedAnnotations} instance containing the merged
 	 * element annotations
 	 */
-	static MergedAnnotations from(AnnotatedElement element,
-			SearchStrategy searchStrategy) {
-		return from(RepeatableContainers.standardRepeatables(), element, searchStrategy);
+	static MergedAnnotations from(SearchStrategy searchStrategy,
+			AnnotatedElement element) {
+		return from(RepeatableContainers.standardRepeatables(), searchStrategy, element);
 	}
 
 	/**
@@ -238,16 +238,16 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<?>> {
 	 * depending on the {@link SearchStrategy}, related inherited elements.
 	 * @param repeatableContainers the strategy used to find repeatable
 	 * annotation containers
-	 * @param element the source element
 	 * @param searchStrategy the search strategy to use
+	 * @param element the source element
 	 * @return a {@link MergedAnnotations} instance containing the merged
 	 * element annotations
 	 */
 	static MergedAnnotations from(RepeatableContainers repeatableContainers,
-			AnnotatedElement element, SearchStrategy searchStrategy) {
-		Assert.notNull(element, "Element must not be null");
-		Assert.notNull(searchStrategy, "SearchStrategy must not be null");
+			SearchStrategy searchStrategy, AnnotatedElement element) {
 		Assert.notNull(repeatableContainers, "RepeatableContainers must not be null");
+		Assert.notNull(searchStrategy, "SearchStrategy must not be null");
+		Assert.notNull(element, "Element must not be null");
 		AnnotationsScanner annotations = new AnnotationsScanner(element, searchStrategy);
 		return from(repeatableContainers, annotations);
 	}
@@ -290,7 +290,7 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<?>> {
 
 	/**
 	 * Search strategies supported by
-	 * {@link MergedAnnotations#from(AnnotatedElement, SearchStrategy)}.
+	 * {@link MergedAnnotations#from(SearchStrategy, AnnotatedElement)}.
 	 */
 	public static enum SearchStrategy {
 

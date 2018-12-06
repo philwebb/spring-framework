@@ -16,21 +16,7 @@
 
 package org.springframework.core.annotation;
 
-import java.lang.annotation.Repeatable;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.util.Map;
-import java.util.stream.Stream;
-
 import org.junit.Ignore;
-import org.junit.Test;
-
-import org.springframework.core.annotation.MergedAnnotation.MapValues;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
 
 /**
  * Tests for {@link MergedAnnotations}.
@@ -399,5 +385,11 @@ public class MergedAnnotationsTests {
 //	// FIXME MapAnnotationAttributeExtractor.java#L136
 //
 //	// FIXME test repeated
+
+	// FIXME test default value of meta-annotation
+//			AnnotatedElementUtils.findMergedAnnotationAttributes(
+//				MetaMetaConfigDefaultsTests.class, ContextConfiguration.class.getName(),
+//				false, false);
+
 
 }

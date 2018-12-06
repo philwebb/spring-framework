@@ -76,6 +76,7 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 
 	@Override
 	public <A extends Annotation> MergedAnnotation<A> get(String annotationType) {
+		// FIXME check what AnnotationUtils does. Should smallest meta-depth win or should nearest class win
 		for (Element element : this.hierarchy) {
 			MergedAnnotation<A> result = element.get(annotationType);
 			if (result != null) {
@@ -87,6 +88,8 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 
 	@Override
 	public Stream<MergedAnnotation<?>> stream() {
+		// FIXME Is the ordering correct here? Should we sort by depth?
+		// Should we create a list to save a ton of stack on flapmap
 		return this.hierarchy.stream().flatMap(Element::stream);
 	}
 

@@ -186,6 +186,9 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 			if (result == null) {
 				result = this.annotationAttributes.get(name);
 			}
+			if (result == null && type != null) {
+				result = type.getDefaultValue();
+			}
 			if (result != null && isArrayAttributeType(type)
 					&& !ObjectUtils.isArray(result)) {
 				result = wrapInArray(result);

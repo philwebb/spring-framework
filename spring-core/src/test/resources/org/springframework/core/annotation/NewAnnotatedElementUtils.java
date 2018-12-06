@@ -277,7 +277,7 @@ public abstract class NewAnnotatedElementUtils {
 	 */
 	@Deprecated
 	public static boolean isAnnotated(AnnotatedElement element, Class<? extends Annotation> annotationType) {
-		boolean result = MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS).isPresent(annotationType);
+		boolean result = MergedAnnotations.from(SearchStrategy.INHERITED_ANNOTATIONS, element).isPresent(annotationType);
 		return AnnotationUtils.checkResult(result, () -> {
 			// Shortcut: directly present on the element, with no processing needed?
 			if (element.isAnnotationPresent(annotationType)) {
@@ -302,7 +302,7 @@ public abstract class NewAnnotatedElementUtils {
 	 */
 	@Deprecated
 	public static boolean isAnnotated(AnnotatedElement element, String annotationName) {
-		boolean result = MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS).isPresent(annotationName);
+		boolean result = MergedAnnotations.from(SearchStrategy.INHERITED_ANNOTATIONS, element).isPresent(annotationName);
 		return AnnotationUtils.checkResult(result, () -> {
 			return Boolean.TRUE.equals(searchWithGetSemantics(element, null, annotationName, alwaysTrueAnnotationProcessor));
 		});
