@@ -170,8 +170,7 @@ public abstract class AnnotatedElementUtils {
 		if (annotation == null) {
 			return Collections.emptySet();
 		}
-		return getAnnotations(annotation.annotationType()).stream().sorted(
-				MergedAnnotation.comparingDepth()).map(
+		return getAnnotations(annotation.annotationType()).stream().map(
 				MergedAnnotation::getType).collect(toLinkedHashSet());
 	}
 
@@ -426,8 +425,7 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.getAllMergedAnnotations(element,
 					annotationType)
 		).to(() ->
-			getAnnotations(element).stream(annotationType).sorted(
-					MergedAnnotation.comparingDepth()).map(
+			getAnnotations(element).stream(annotationType).map(
 					MergedAnnotation::synthesize).collect(toLinkedHashSet())
 		);
 	}
@@ -457,7 +455,7 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.getAllMergedAnnotations(element,
 					annotationTypes)
 		).to(() ->
-			getAnnotations(element).stream().sorted(MergedAnnotation.comparingDepth()).filter(
+			getAnnotations(element).stream().filter(
 					matchingTypes(annotationTypes)).map(MergedAnnotation::synthesize).collect(
 							toLinkedHashSet())
 		);
@@ -495,8 +493,7 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.getMergedRepeatableAnnotations(element,
 					annotationType)
 		).to(() ->
-			getRepeatableAnnotations(element).stream(annotationType).sorted(
-					MergedAnnotation.comparingDepth()).map(
+			getRepeatableAnnotations(element).stream(annotationType).map(
 							MergedAnnotation::synthesize).collect(toLinkedHashSet())
 		);
 	}
@@ -536,7 +533,7 @@ public abstract class AnnotatedElementUtils {
 					annotationType, containerType)
 		).to(() ->
 			getRepeatableAnnotations(element, containerType, annotationType).stream(
-					annotationType).sorted(MergedAnnotation.comparingDepth()).map(
+					annotationType).map(
 							MergedAnnotation::synthesize).collect(toLinkedHashSet())
 		);
 	}
@@ -593,8 +590,7 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.getAllAnnotationAttributes(element,
 					annotationName, classValuesAsString, nestedAnnotationsAsMap)
 		).to(() ->
-			getAnnotations(element).stream(annotationName).sorted(
-					MergedAnnotation.comparingDepth()).filter(oncePerParent()).collect(
+			getAnnotations(element).stream(annotationName).filter(oncePerParent()).collect(
 					allAnnotationAttributes(MapValues.get(classValuesAsString,
 							nestedAnnotationsAsMap, true)))
 		);
@@ -754,8 +750,7 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.findAllMergedAnnotations(element,
 					annotationType)
 		).to(() ->
-			findAnnotations(element).stream(annotationType).sorted(
-					MergedAnnotation.comparingDepth()).map(
+			findAnnotations(element).stream(annotationType).map(
 							MergedAnnotation::synthesize).collect(toLinkedHashSet())
 		);
 	}
@@ -783,9 +778,7 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.findAllMergedAnnotations(element,
 					annotationTypes)
 		).to(()->
-			findAnnotations(element).stream().sorted(
-					MergedAnnotation.comparingDepth()).filter(matchingTypes(annotationTypes)).sorted(
-					MergedAnnotation.comparingDepth()).map(
+			findAnnotations(element).stream().filter(matchingTypes(annotationTypes)).map(
 							MergedAnnotation::synthesize).collect(toLinkedHashSet())
 		);
 	}
@@ -820,8 +813,7 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.findMergedRepeatableAnnotations(element,
 						annotationType)
 		).to(() ->
-			findRepeatableAnnotations(element).stream(annotationType).sorted(
-					MergedAnnotation.comparingDepth()).map(
+			findRepeatableAnnotations(element).stream(annotationType).map(
 							MergedAnnotation::synthesize).collect(toLinkedHashSet())
 		);
 	}
@@ -859,8 +851,7 @@ public abstract class AnnotatedElementUtils {
 					annotationType, containerType)
 		).to(() ->
 			findRepeatableAnnotations(element, containerType, annotationType).stream(
-					annotationType).sorted(
-							MergedAnnotation.comparingDepth()).map(MergedAnnotation::synthesize).collect(toLinkedHashSet())
+					annotationType).map(MergedAnnotation::synthesize).collect(toLinkedHashSet())
 		);
 	}
 
