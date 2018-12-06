@@ -19,8 +19,11 @@ package org.springframework.core.annotation;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Member;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Deque;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -37,12 +40,14 @@ import org.springframework.core.annotation.type.DeclaredAttributes;
  */
 class TypeMappedAnnotations extends AbstractMergedAnnotations {
 
-	private final List<Element> hierarchy;
+	private final List<MappableAnnotations> hierarchy;
+
+	private volatile List<MergedAnnotation<?>> all;
 
 	TypeMappedAnnotations(RepeatableContainers repeatableContainers,
 			AnnotatedElement source, Annotation[] annotations) {
-		this.hierarchy = Collections.singletonList(
-				new Element(source, annotations, repeatableContainers, false));
+		this.hierarchy = Collections.singletonList(new MappableAnnotations(source,
+				annotations, repeatableContainers, false));
 	}
 
 	TypeMappedAnnotations(ClassLoader classLoader,
@@ -51,7 +56,7 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 		this.hierarchy = new ArrayList<>(getInitialSize(annotations));
 		boolean inherited = false;
 		for (DeclaredAnnotations declaredAnnotations : annotations) {
-			this.hierarchy.add(new Element(classLoader, declaredAnnotations,
+			this.hierarchy.add(new MappableAnnotations(classLoader, declaredAnnotations,
 					repeatableContainers, inherited));
 			inherited = true;
 		}
@@ -66,8 +71,8 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 
 	@Override
 	public <A extends Annotation> boolean isPresent(String annotationType) {
-		for (Element element : this.hierarchy) {
-			if (element.isPresent(annotationType)) {
+		for (MappableAnnotations annotations : this.hierarchy) {
+			if (annotations.isPresent(annotationType)) {
 				return true;
 			}
 		}
@@ -76,9 +81,8 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 
 	@Override
 	public <A extends Annotation> MergedAnnotation<A> get(String annotationType) {
-		// FIXME check what AnnotationUtils does. Should smallest meta-depth win or should nearest class win
-		for (Element element : this.hierarchy) {
-			MergedAnnotation<A> result = element.get(annotationType);
+		for (MappableAnnotations annotations : this.hierarchy) {
+			MergedAnnotation<A> result = annotations.get(annotationType);
 			if (result != null) {
 				return result;
 			}
@@ -88,19 +92,67 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 
 	@Override
 	public Stream<MergedAnnotation<?>> stream() {
-		// FIXME Is the ordering correct here? Should we sort by depth?
-		// Should we create a list to save a ton of stack on flapmap
-		return this.hierarchy.stream().flatMap(Element::stream);
+		return getAll().stream();
+	}
+
+	private List<MergedAnnotation<?>> getAll() {
+		List<MergedAnnotation<?>> all = this.all;
+		if (all == null) {
+			all = computeAll();
+			this.all = all;
+		}
+		return all;
+	}
+
+	private List<MergedAnnotation<?>> computeAll() {
+		List<MergedAnnotation<?>> result = new ArrayList<>(totalSize());
+		for (MappableAnnotations annotations : this.hierarchy) {
+			List<Deque<MergedAnnotation<?>>> queues = new ArrayList<>(annotations.size());
+			for (MappableAnnotation annotation : annotations) {
+				queues.add(annotation.getQueue());
+			}
+			addAllInDepthOrder(result, queues);
+		}
+		return result;
+	}
+
+	private void addAllInDepthOrder(List<MergedAnnotation<?>> result,
+			List<Deque<MergedAnnotation<?>>> queues) {
+		int depth = 0;
+		boolean hasMore = true;
+		while (hasMore) {
+			hasMore = false;
+			for (Deque<MergedAnnotation<?>> queue : queues) {
+				hasMore = hasMore | addAllForDepth(result, queue, depth);
+			}
+			depth++;
+		}
+	}
+
+	private boolean addAllForDepth(List<MergedAnnotation<?>> result,
+			Deque<MergedAnnotation<?>> queue, int depth) {
+		while (!queue.isEmpty() && queue.peek().getDepth() <= depth) {
+			result.add(queue.pop());
+		}
+		return !queue.isEmpty();
+	}
+
+	private int totalSize() {
+		int size = 0;
+		for (MappableAnnotations annotations : this.hierarchy) {
+			size += annotations.totalSize();
+		}
+		return size;
 	}
 
 	/**
-	 * A single element in an inheritance hierarchy.
+	 * A collection of {@link MappableAnnotation mappable annotations}.
 	 */
-	private static class Element {
+	private static class MappableAnnotations implements Iterable<MappableAnnotation> {
 
 		private List<MappableAnnotation> mappableAnnotations;
 
-		public Element(AnnotatedElement source, Annotation[] annotations,
+		public MappableAnnotations(AnnotatedElement source, Annotation[] annotations,
 				RepeatableContainers repeatableContainers, boolean inherited) {
 			this.mappableAnnotations = new ArrayList<>(annotations.length);
 			ClassLoader sourceClassLoader = getClassLoader(source);
@@ -112,7 +164,8 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 			}
 		}
 
-		public Element(ClassLoader classLoader, DeclaredAnnotations annotations,
+		public MappableAnnotations(ClassLoader classLoader,
+				DeclaredAnnotations annotations,
 				RepeatableContainers repeatableContainers, boolean inherited) {
 			this.mappableAnnotations = new ArrayList<>(annotations.size());
 			if (classLoader == null) {
@@ -172,21 +225,27 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 					&& (previous == null || candidate.getDepth() < previous.getDepth());
 		}
 
-		public Stream<MergedAnnotation<?>> stream() {
-			// FIXME this ordering is wrong I think
-			// we should do the outer annotations, then the inner ones
-			// perhaps we need a queue like we have with the type
+		public int size() {
+			return this.mappableAnnotations.size();
+		}
 
+		public int totalSize() {
+			int size = 0;
+			for (MappableAnnotation mappableAnnotation : this.mappableAnnotations) {
+				size += mappableAnnotation.size();
+			}
+			return size;
+		}
 
-
-
-			return this.mappableAnnotations.stream().flatMap(MappableAnnotation::stream);
+		@Override
+		public Iterator<MappableAnnotation> iterator() {
+			return this.mappableAnnotations.iterator();
 		}
 
 	}
 
 	/**
-	 * A source annotation that is capable of being mapped.
+	 * A single mappable annotation.
 	 */
 	private static class MappableAnnotation {
 
@@ -212,13 +271,21 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 			return mapping != null ? map(mapping) : null;
 		}
 
-		public Stream<MergedAnnotation<?>> stream() {
-			return this.mappings.getAll().stream().map(this::map);
+		public Deque<MergedAnnotation<?>> getQueue() {
+			Deque<MergedAnnotation<?>> queue = new ArrayDeque<>(size());
+			for (AnnotationTypeMapping mapping : this.mappings.getAll()) {
+				queue.add(map(mapping));
+			}
+			return queue;
 		}
 
 		private <A extends Annotation> MergedAnnotation<A> map(
 				AnnotationTypeMapping mapping) {
 			return new TypeMappedAnnotation<A>(mapping, this.inherited, this.attributes);
+		}
+
+		public int size() {
+			return this.mappings.getAll().size();
 		}
 
 	}
