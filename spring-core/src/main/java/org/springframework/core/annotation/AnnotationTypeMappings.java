@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 import org.springframework.core.annotation.AnnotationTypeMapping.MirrorSet;
 import org.springframework.core.annotation.AnnotationTypeMapping.Reference;
@@ -53,7 +52,7 @@ import org.springframework.util.MultiValueMap;
  * @author Phillip Webb
  * @since 5.2
  * @see #getMapping(String)
- * @see #getAllMappings()
+ * @see #getAll()
  * @see AnnotationTypeMapping
  */
 class AnnotationTypeMappings {
@@ -132,7 +131,7 @@ class AnnotationTypeMappings {
 	}
 
 	private Reference getTarget(Reference source, AliasForDescriptor targetDescriptor) {
-		AnnotationTypeMapping targetNode = getMapping(targetDescriptor.getAnnotation());
+		AnnotationTypeMapping targetNode = get(targetDescriptor.getAnnotation());
 		if (targetNode == null) {
 			throw new AnnotationConfigurationException(String.format(
 					"@AliasFor declaration on %s declares an "
@@ -227,15 +226,15 @@ class AnnotationTypeMappings {
 				source.getAttribute().getAttributeName(), aliasFor);
 	}
 
-	public Stream<AnnotationTypeMapping> getAllMappings() {
-		return this.mappings.stream();
+	public List<AnnotationTypeMapping> getAll() {
+		return this.mappings;
 	}
 
-	public AnnotationTypeMapping getMapping(String annotationType) {
+	public AnnotationTypeMapping get(String annotationType) {
 		return this.mappingForType.get(annotationType);
 	}
 
-	public static AnnotationTypeMappings get(ClassLoader classLoader,
+	public static AnnotationTypeMappings forType(ClassLoader classLoader,
 			RepeatableContainers repeatableContainers, AnnotationType type) {
 		Assert.notNull(repeatableContainers, "RepeatableContainers must not be null");
 		if (type == null) {

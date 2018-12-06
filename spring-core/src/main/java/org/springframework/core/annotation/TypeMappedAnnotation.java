@@ -144,9 +144,8 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 	}
 
 	private AnnotationTypeMapping getNestedMapping(AnnotationType type) {
-		return AnnotationTypeMappings.get(this.mapping.getClassLoader(),
-				this.mapping.getRepeatableContainers(), type).getMapping(
-						type.getClassName());
+		return AnnotationTypeMappings.forType(this.mapping.getClassLoader(),
+				this.mapping.getRepeatableContainers(), type).get(type.getClassName());
 	}
 
 	/**

@@ -126,8 +126,8 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 		private void add(ClassLoader classLoader, DeclaredAnnotation annotation,
 				RepeatableContainers repeatableContainers, boolean inherited) {
 			repeatableContainers.visit(classLoader, annotation, (type, attributes) -> {
-				AnnotationTypeMappings mappings = AnnotationTypeMappings.get(classLoader,
-						repeatableContainers, type);
+				AnnotationTypeMappings mappings = AnnotationTypeMappings.forType(
+						classLoader, repeatableContainers, type);
 				if (mappings != null) {
 					this.mappableAnnotations.add(
 							new MappableAnnotation(mappings, attributes, inherited));
@@ -173,6 +173,13 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 		}
 
 		public Stream<MergedAnnotation<?>> stream() {
+			// FIXME this ordering is wrong I think
+			// we should do the outer annotations, then the inner ones
+			// perhaps we need a queue like we have with the type
+
+
+
+
 			return this.mappableAnnotations.stream().flatMap(MappableAnnotation::stream);
 		}
 
@@ -197,16 +204,16 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 		}
 
 		public boolean isPresent(String annotationType) {
-			return this.mappings.getMapping(annotationType) != null;
+			return this.mappings.get(annotationType) != null;
 		}
 
 		public <A extends Annotation> MergedAnnotation<A> get(String annotationType) {
-			AnnotationTypeMapping mapping = this.mappings.getMapping(annotationType);
+			AnnotationTypeMapping mapping = this.mappings.get(annotationType);
 			return mapping != null ? map(mapping) : null;
 		}
 
 		public Stream<MergedAnnotation<?>> stream() {
-			return this.mappings.getAllMappings().map(this::map);
+			return this.mappings.getAll().stream().map(this::map);
 		}
 
 		private <A extends Annotation> MergedAnnotation<A> map(
