@@ -430,7 +430,6 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.getAllMergedAnnotations(element,
 					annotationType)
 		).to(() ->
-			// FIXME uses aggregates but probably OK because not using find
 			getAnnotations(element).stream(annotationType).collect(toSynthesizedAnnotationSet())
 		);
 	}
@@ -460,7 +459,6 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.getAllMergedAnnotations(element,
 					annotationTypes)
 		).to(() ->
-			// FIXME uses aggregates but probably OK because not using find
 			getAnnotations(element).stream().filter(
 					matchingTypes(annotationTypes)).collect(toSynthesizedAnnotationSet())
 		);
@@ -498,9 +496,8 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.getMergedRepeatableAnnotations(element,
 					annotationType)
 		).to(() ->
-			// FIXME uses aggregates but probably OK because not using find
-			getRepeatableAnnotations(element).stream(annotationType).map(
-							MergedAnnotation::synthesize).collect(toLinkedHashSet())
+			getRepeatableAnnotations(element).stream(annotationType).collect(
+					toSynthesizedAnnotationSet())
 		);
 	}
 
@@ -538,10 +535,8 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.getMergedRepeatableAnnotations(element,
 					annotationType, containerType)
 		).to(() ->
-			// FIXME uses aggregates but probably OK because not using find
 			getRepeatableAnnotations(element, containerType, annotationType).stream(
-					annotationType).map(
-							MergedAnnotation::synthesize).collect(toLinkedHashSet())
+					annotationType).collect(toSynthesizedAnnotationSet())
 		);
 	}
 
@@ -659,7 +654,6 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.findMergedAnnotationAttributes(element,
 					annotationType, classValuesAsString, nestedAnnotationsAsMap)
 		).to(() ->
-			// FIXME uses aggregates and probably not OK
 			findAnnotations(element).get(annotationType).asMap(
 					AnnotationAttributes::createIfAnnotationPresent,
 					MapValues.get(classValuesAsString, nestedAnnotationsAsMap, false))
@@ -700,7 +694,6 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.findMergedAnnotationAttributes(element,
 				annotationName, classValuesAsString, nestedAnnotationsAsMap)
 		).to(() ->
-			// FIXME uses aggregates and probably not OK
 			findAnnotations(element).get(annotationName).asMap(
 					AnnotationAttributes::createIfAnnotationPresent,
 					MapValues.get(classValuesAsString, nestedAnnotationsAsMap, false))
@@ -732,7 +725,8 @@ public abstract class AnnotatedElementUtils {
 					annotationType)
 		).to(() ->
 			findAnnotations(element).get(annotationType).synthesize(
-					MergedAnnotation::isPresent).orElse(null)		);
+					MergedAnnotation::isPresent).orElse(null)
+		);
 	}
 
 	/**
@@ -759,7 +753,6 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.findAllMergedAnnotations(element,
 					annotationType)
 		).to(() ->
-			// FIXME uses aggregates and probably not OK
 			findAnnotations(element).stream(annotationType).collect(
 					toSynthesizedAggregateAnnotationSet())
 		);
@@ -788,9 +781,8 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.findAllMergedAnnotations(element,
 					annotationTypes)
 		).to(()->
-			// FIXME uses aggregates and probably not OK
-			findAnnotations(element).stream().filter(matchingTypes(annotationTypes)).map(
-							MergedAnnotation::synthesize).collect(toLinkedHashSet())
+			findAnnotations(element).stream().filter(matchingTypes(annotationTypes)).collect(
+					toSynthesizedAggregateAnnotationSet())
 		);
 	}
 
@@ -824,9 +816,8 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.findMergedRepeatableAnnotations(element,
 						annotationType)
 		).to(() ->
-			// FIXME uses aggregates and probably not OK
-			findRepeatableAnnotations(element).stream(annotationType).map(
-							MergedAnnotation::synthesize).collect(toLinkedHashSet())
+			findRepeatableAnnotations(element).stream(annotationType).collect(
+					toSynthesizedAggregateAnnotationSet())
 		);
 	}
 
@@ -863,7 +854,7 @@ public abstract class AnnotatedElementUtils {
 					annotationType, containerType)
 		).to(() ->
 			findRepeatableAnnotations(element, containerType, annotationType).stream(
-					annotationType).map(MergedAnnotation::synthesize).collect(toLinkedHashSet())
+					annotationType).collect(toSynthesizedAggregateAnnotationSet())
 		);
 	}
 
