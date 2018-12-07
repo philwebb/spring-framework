@@ -49,38 +49,43 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 
 	private final DeclaredAttributes nonMappedAttributes;
 
+	private final Object source;
+
 	private final int aggregateIndex;
 
 	private final TypeMappedAnnotation<?> parent;
 
 	private final Predicate<String> attributeFilter;
 
-	TypeMappedAnnotation(AnnotationTypeMapping mapping, int aggregateIndex,
+	TypeMappedAnnotation(AnnotationTypeMapping mapping, Object source, int aggregateIndex,
 			DeclaredAttributes rootAttributes) {
 		TypeMappedAnnotation<?> parent = null;
 		DeclaredAttributes mappedAttributes = rootAttributes;
 		if (mapping.getParent() != null) {
-			parent = new TypeMappedAnnotation<>(mapping.getParent(), aggregateIndex,
-					rootAttributes);
+			parent = new TypeMappedAnnotation<>(mapping.getParent(), source,
+					aggregateIndex, rootAttributes);
 			mappedAttributes = new ParentMappedAttributes(mapping,
 					parent.mappedAttributes);
 		}
-		mappedAttributes = MirroredAttributes.applyIfNecessary(mapping, mappedAttributes);
-		this.nonMappedAttributes = MirroredAttributes.applyIfNecessary(mapping,
+		mappedAttributes = MirroredAttributes.applyIfNecessary(mapping, source, mappedAttributes);
+		this.nonMappedAttributes = MirroredAttributes.applyIfNecessary(mapping, source,
 				parent != null ? mapping.getAnnotationAttributes() : rootAttributes);
 		this.mapping = mapping;
 		this.mappedAttributes = mappedAttributes;
+		this.source = source;
 		this.aggregateIndex = aggregateIndex;
 		this.parent = parent;
 		this.attributeFilter = null;
 	}
 
-	private TypeMappedAnnotation(AnnotationTypeMapping mapping, int aggregateIndex,
-			DeclaredAttributes mappedAttributes, DeclaredAttributes nonMappedAttributes,
-			TypeMappedAnnotation<?> parent, Predicate<String> attributeFilter) {
+	private TypeMappedAnnotation(AnnotationTypeMapping mapping, Object source,
+			int aggregateIndex, DeclaredAttributes mappedAttributes,
+			DeclaredAttributes nonMappedAttributes, TypeMappedAnnotation<?> parent,
+			Predicate<String> attributeFilter) {
 		this.mapping = mapping;
 		this.mappedAttributes = mappedAttributes;
 		this.nonMappedAttributes = nonMappedAttributes;
+		this.source = source;
 		this.aggregateIndex = aggregateIndex;
 		this.parent = parent;
 		this.attributeFilter = attributeFilter;
@@ -107,7 +112,7 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 		if (this.attributeFilter != null) {
 			predicate = this.attributeFilter.and(predicate);
 		}
-		return new TypeMappedAnnotation<>(this.mapping, this.aggregateIndex,
+		return new TypeMappedAnnotation<>(this.mapping, this.source, this.aggregateIndex,
 				this.mappedAttributes, this.nonMappedAttributes, this.parent, predicate);
 	}
 
@@ -140,7 +145,8 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 	protected <T extends Annotation> MergedAnnotation<T> createNested(AnnotationType type,
 			DeclaredAttributes attributes) {
 		AnnotationTypeMapping nestedMapping = getNestedMapping(type);
-		return new TypeMappedAnnotation<>(nestedMapping, this.aggregateIndex, attributes);
+		return new TypeMappedAnnotation<>(nestedMapping, this.source, this.aggregateIndex,
+				attributes);
 	}
 
 	private AnnotationTypeMapping getNestedMapping(AnnotationType type) {
@@ -223,13 +229,16 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 
 		private final DeclaredAttributes annotationAttributes;
 
+		private final Object source;
+
 		private final DeclaredAttributes sourceAttributes;
 
 		private final Map<String, Reference> mirrors;
 
-		MirroredAttributes(AnnotationTypeMapping mapping,
+		MirroredAttributes(AnnotationTypeMapping mapping, Object source,
 				DeclaredAttributes sourceAttributes) {
 			this.annotationAttributes = mapping.getAnnotationAttributes();
+			this.source = source;
 			this.sourceAttributes = sourceAttributes;
 			this.mirrors = getMirrors(mapping.getMirrorSets());
 		}
@@ -274,11 +283,7 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 					|| isShadow(result, value, lastValue)) {
 				return;
 			}
-			// FIXME this.source.getDeclaringClass();
-			Class<?> declaringClass = null;
-			String on = (declaringClass != null)
-					? " declared on " + declaringClass.getName()
-					: "";
+			String on = (this.source != null) ? " declared on " + this.source : "";
 			String annotationType = result.getMapping().getAnnotationType().getClassName();
 			String lastName = result.getAttribute().getAttributeName();
 			throw new AnnotationConfigurationException(String.format(
@@ -326,11 +331,11 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 		}
 
 		public static DeclaredAttributes applyIfNecessary(AnnotationTypeMapping mapping,
-				DeclaredAttributes attributes) {
+				Object source, DeclaredAttributes attributes) {
 			if (mapping.getMirrorSets().isEmpty()) {
 				return attributes;
 			}
-			return new MirroredAttributes(mapping, attributes);
+			return new MirroredAttributes(mapping, source, attributes);
 		}
 
 	}

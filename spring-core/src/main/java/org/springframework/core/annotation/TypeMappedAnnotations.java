@@ -42,7 +42,7 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 
 	private final List<MappableAnnotations> aggregates;
 
-	private volatile List<MergedAnnotation<?>> all;
+	private volatile List<MergedAnnotation<Annotation>> all;
 
 	TypeMappedAnnotations(RepeatableContainers repeatableContainers,
 			AnnotatedElement source, Annotation[] annotations) {
@@ -54,9 +54,11 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 			RepeatableContainers repeatableContainers,
 			Iterable<DeclaredAnnotations> aggregates) {
 		this.aggregates = new ArrayList<>(getInitialSize(aggregates));
+		int aggregateIndex = 0;
 		for (DeclaredAnnotations declaredAnnotations : aggregates) {
-			this.aggregates.add(new MappableAnnotations(classLoader, declaredAnnotations,
-					repeatableContainers));
+			this.aggregates.add(new MappableAnnotations(classLoader, aggregateIndex,
+					declaredAnnotations, repeatableContainers));
+			aggregateIndex++;
 		}
 	}
 
@@ -89,12 +91,12 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 	}
 
 	@Override
-	public Stream<MergedAnnotation<?>> stream() {
+	public Stream<MergedAnnotation<Annotation>> stream() {
 		return getAll().stream();
 	}
 
-	private List<MergedAnnotation<?>> getAll() {
-		List<MergedAnnotation<?>> all = this.all;
+	private List<MergedAnnotation<Annotation>> getAll() {
+		List<MergedAnnotation<Annotation>> all = this.all;
 		if (all == null) {
 			all = computeAll();
 			this.all = all;
@@ -102,10 +104,11 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 		return all;
 	}
 
-	private List<MergedAnnotation<?>> computeAll() {
-		List<MergedAnnotation<?>> result = new ArrayList<>(totalSize());
+	private List<MergedAnnotation<Annotation>> computeAll() {
+		List<MergedAnnotation<Annotation>> result = new ArrayList<>(totalSize());
 		for (MappableAnnotations annotations : this.aggregates) {
-			List<Deque<MergedAnnotation<?>>> queues = new ArrayList<>(annotations.size());
+			List<Deque<MergedAnnotation<Annotation>>> queues = new ArrayList<>(
+					annotations.size());
 			for (MappableAnnotation annotation : annotations) {
 				queues.add(annotation.getQueue());
 			}
@@ -114,21 +117,21 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 		return result;
 	}
 
-	private void addAllInDepthOrder(List<MergedAnnotation<?>> result,
-			List<Deque<MergedAnnotation<?>>> queues) {
+	private void addAllInDepthOrder(List<MergedAnnotation<Annotation>> result,
+			List<Deque<MergedAnnotation<Annotation>>> queues) {
 		int depth = 0;
 		boolean hasMore = true;
 		while (hasMore) {
 			hasMore = false;
-			for (Deque<MergedAnnotation<?>> queue : queues) {
+			for (Deque<MergedAnnotation<Annotation>> queue : queues) {
 				hasMore = hasMore | addAllForDepth(result, queue, depth);
 			}
 			depth++;
 		}
 	}
 
-	private boolean addAllForDepth(List<MergedAnnotation<?>> result,
-			Deque<MergedAnnotation<?>> queue, int depth) {
+	private boolean addAllForDepth(List<MergedAnnotation<Annotation>> result,
+			Deque<MergedAnnotation<Annotation>> queue, int depth) {
 		while (!queue.isEmpty() && queue.peek().getDepth() <= depth) {
 			result.add(queue.pop());
 		}
@@ -157,34 +160,33 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 			for (Annotation annotation : annotations) {
 				ClassLoader classLoader = sourceClassLoader != null ? sourceClassLoader
 						: annotation.getClass().getClassLoader();
-				add(classLoader, 0, DeclaredAnnotation.from(annotation),
+				add(classLoader, source, 0, DeclaredAnnotation.from(annotation),
 						repeatableContainers);
 			}
 		}
 
-		public MappableAnnotations(ClassLoader classLoader,
+		public MappableAnnotations(ClassLoader classLoader, int aggregateIndex,
 				DeclaredAnnotations annotations,
 				RepeatableContainers repeatableContainers) {
 			this.mappableAnnotations = new ArrayList<>(annotations.size());
 			if (classLoader == null) {
 				classLoader = getClassLoader(annotations.getSource());
 			}
-			int aggregateIndex = 0;
 			for (DeclaredAnnotation annotation : annotations) {
-				add(classLoader, aggregateIndex, annotation, repeatableContainers);
-				aggregateIndex++;
+				add(classLoader, annotations.getSource(), aggregateIndex, annotation,
+						repeatableContainers);
 			}
 		}
 
-		private void add(ClassLoader classLoader, int aggregateIndex,
+		private void add(ClassLoader classLoader, Object source, int aggregateIndex,
 				DeclaredAnnotation annotation,
 				RepeatableContainers repeatableContainers) {
 			repeatableContainers.visit(classLoader, annotation, (type, attributes) -> {
 				AnnotationTypeMappings mappings = AnnotationTypeMappings.forType(
 						classLoader, repeatableContainers, type);
 				if (mappings != null) {
-					this.mappableAnnotations.add(
-							new MappableAnnotation(mappings, aggregateIndex, attributes));
+					this.mappableAnnotations.add(new MappableAnnotation(mappings, source,
+							aggregateIndex, attributes));
 				}
 			});
 
@@ -252,13 +254,16 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 
 		private final AnnotationTypeMappings mappings;
 
+		private final Object source;
+
 		private final int aggregateIndex;
 
 		private final DeclaredAttributes attributes;
 
-		public MappableAnnotation(AnnotationTypeMappings mappings, int aggregateIndex,
-				DeclaredAttributes attributes) {
+		public MappableAnnotation(AnnotationTypeMappings mappings, Object source,
+				int aggregateIndex, DeclaredAttributes attributes) {
 			this.mappings = mappings;
+			this.source = source;
 			this.aggregateIndex = aggregateIndex;
 			this.attributes = attributes;
 		}
@@ -272,8 +277,8 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 			return mapping != null ? map(mapping) : null;
 		}
 
-		public Deque<MergedAnnotation<?>> getQueue() {
-			Deque<MergedAnnotation<?>> queue = new ArrayDeque<>(size());
+		public Deque<MergedAnnotation<Annotation>> getQueue() {
+			Deque<MergedAnnotation<Annotation>> queue = new ArrayDeque<>(size());
 			for (AnnotationTypeMapping mapping : this.mappings.getAll()) {
 				queue.add(map(mapping));
 			}
@@ -282,7 +287,7 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 
 		private <A extends Annotation> MergedAnnotation<A> map(
 				AnnotationTypeMapping mapping) {
-			return new TypeMappedAnnotation<A>(mapping, this.aggregateIndex,
+			return new TypeMappedAnnotation<A>(mapping, this.source, this.aggregateIndex,
 					this.attributes);
 		}
 

@@ -112,7 +112,7 @@ import org.springframework.util.Assert;
  * @since 5.2
  * @see MergedAnnotation
  */
-public interface MergedAnnotations extends Iterable<MergedAnnotation<?>> {
+public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>> {
 
 	/**
 	 * Return if the specified annotation is either directly present, or
@@ -169,7 +169,7 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<?>> {
 	 * collection.
 	 * @return a stream of annotations
 	 */
-	Stream<MergedAnnotation<?>> stream();
+	Stream<MergedAnnotation<Annotation>> stream();
 
 	/**
 	 * Create a new {@link MergedAnnotations} instance containing the specified

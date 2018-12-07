@@ -53,7 +53,7 @@ abstract class AbstractMergedAnnotations implements MergedAnnotations {
 	}
 
 	@Override
-	public Iterator<MergedAnnotation<?>> iterator() {
+	public Iterator<MergedAnnotation<Annotation>> iterator() {
 		return stream().iterator();
 	}
 
