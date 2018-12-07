@@ -19,6 +19,7 @@ package org.springframework.core.annotation;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Inherited;
 import java.lang.reflect.AnnotatedElement;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import org.springframework.core.annotation.type.DeclaredAnnotations;
@@ -146,7 +147,25 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 * @param annotationType the annotation type to get
 	 * @return a {@link MergedAnnotation} instance
 	 */
+	<A extends Annotation> MergedAnnotation<A> get(Class<A> annotationType,
+			Predicate<? super MergedAnnotation<A>> predicate);
+
+	/**
+	 * Return the nearest matching annotation or meta-annotation of the
+	 * specified type, or {@link MergedAnnotation#missing()} if none is present.
+	 * @param annotationType the annotation type to get
+	 * @return a {@link MergedAnnotation} instance
+	 */
 	<A extends Annotation> MergedAnnotation<A> get(String annotationType);
+
+	/**
+	 * Return the nearest matching annotation or meta-annotation of the
+	 * specified type, or {@link MergedAnnotation#missing()} if none is present.
+	 * @param annotationType the annotation type to get
+	 * @return a {@link MergedAnnotation} instance
+	 */
+	<A extends Annotation> MergedAnnotation<A> get(String annotationType,
+			Predicate<? super MergedAnnotation<A>> predicate);
 
 	/**
 	 * Stream all matching annotations or meta-annotations that match the

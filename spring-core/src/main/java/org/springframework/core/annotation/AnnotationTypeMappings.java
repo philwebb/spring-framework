@@ -304,8 +304,11 @@ class AnnotationTypeMappings {
 		}
 
 		private boolean isMappable(String annotationType) {
-			return !(annotationType.startsWith("java.lang.annotation.")
-					|| annotationType.startsWith("org.springframework.lang."));
+			if (annotationType.startsWith("java.lang.annotation.")
+					&& !annotationType.equals("java.lang.annotation.Repeatable")) {
+				return false;
+			}
+			return !annotationType.startsWith("org.springframework.lang.");
 		}
 
 		private boolean isAlreadyMapped(AnnotationTypeMapping parent,

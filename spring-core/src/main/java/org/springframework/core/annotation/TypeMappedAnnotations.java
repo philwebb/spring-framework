@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import org.springframework.core.annotation.type.DeclaredAnnotation;
@@ -80,9 +81,10 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 	}
 
 	@Override
-	public <A extends Annotation> MergedAnnotation<A> get(String annotationType) {
+	public <A extends Annotation> MergedAnnotation<A> get(String annotationType,
+			Predicate<? super MergedAnnotation<A>> predicate) {
 		for (MappableAnnotations annotations : this.aggregates) {
-			MergedAnnotation<A> result = annotations.get(annotationType);
+			MergedAnnotation<A> result = annotations.get(annotationType, predicate);
 			if (result != null) {
 				return result;
 			}
@@ -211,10 +213,12 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 			return false;
 		}
 
-		public <A extends Annotation> MergedAnnotation<A> get(String annotationType) {
+		public <A extends Annotation> MergedAnnotation<A> get(String annotationType,
+				Predicate<? super MergedAnnotation<A>> predicate) {
 			MergedAnnotation<A> result = null;
 			for (MappableAnnotation mappableAnnotation : this.mappableAnnotations) {
-				MergedAnnotation<A> candidate = mappableAnnotation.get(annotationType);
+				MergedAnnotation<A> candidate = mappableAnnotation.get(annotationType,
+						predicate);
 				if (isBetterGetCandidate(candidate, result)) {
 					result = candidate;
 				}
@@ -272,9 +276,21 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 			return this.mappings.get(annotationType) != null;
 		}
 
-		public <A extends Annotation> MergedAnnotation<A> get(String annotationType) {
-			AnnotationTypeMapping mapping = this.mappings.get(annotationType);
-			return mapping != null ? map(mapping) : null;
+		public <A extends Annotation> MergedAnnotation<A> get(String annotationType,
+				Predicate<? super MergedAnnotation<A>> predicate) {
+			if (predicate == null) {
+				AnnotationTypeMapping mapping = this.mappings.get(annotationType);
+				return mapping != null ? map(mapping) : null;
+			}
+			for (AnnotationTypeMapping mapping : this.mappings.getAll()) {
+				if (mapping.getAnnotationType().getClassName().equals(annotationType)) {
+					MergedAnnotation<A> mapped = map(mapping);
+					if (predicate.test(mapped)) {
+						return mapped;
+					}
+				}
+			}
+			return null;
 		}
 
 		public Deque<MergedAnnotation<Annotation>> getQueue() {
@@ -285,7 +301,7 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 			return queue;
 		}
 
-		private <A extends Annotation> MergedAnnotation<A> map(
+		private <A extends Annotation> TypeMappedAnnotation<A> map(
 				AnnotationTypeMapping mapping) {
 			return new TypeMappedAnnotation<A>(mapping, this.source, this.aggregateIndex,
 					this.attributes);

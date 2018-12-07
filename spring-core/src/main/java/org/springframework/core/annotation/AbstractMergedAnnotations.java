@@ -19,6 +19,7 @@ package org.springframework.core.annotation;
 import java.lang.annotation.Annotation;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
@@ -41,15 +42,28 @@ abstract class AbstractMergedAnnotations implements MergedAnnotations {
 
 	@Override
 	public <A extends Annotation> MergedAnnotation<A> get(Class<A> annotationType) {
-		return get(getClassName(annotationType));
+		return get(getClassName(annotationType), null);
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
+	public <A extends Annotation> MergedAnnotation<A> get(Class<A> annotationType,
+			Predicate<? super MergedAnnotation<A>> predicate) {
+		return get(getClassName(annotationType), predicate);
+	}
+
+	@Override
 	public <A extends Annotation> MergedAnnotation<A> get(String annotationType) {
-		return (MergedAnnotation<A>) stream().filter(
-				annotation -> annotation.getType().equals(
-						annotationType)).findFirst().orElse(MergedAnnotation.missing());
+		return get(annotationType, null);
+	}
+
+	@Override
+	public <A extends Annotation> MergedAnnotation<A> get(String annotationType,
+			Predicate<? super MergedAnnotation<A>> predicate) {
+		Stream<MergedAnnotation<A>> matches = stream(annotationType);
+		if (predicate != null) {
+			matches = matches.filter(predicate);
+		}
+		return matches.findFirst().orElse(MergedAnnotation.missing());
 	}
 
 	@Override

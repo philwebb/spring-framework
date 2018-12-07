@@ -363,7 +363,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	}
 
 	@Override
-	public Optional<A> synthesize(Predicate<MergedAnnotation<A>> condition)
+	public Optional<A> synthesize(Predicate<? super MergedAnnotation<A>> condition)
 			throws NoSuchElementException {
 		if (condition.test(this)) {
 			return Optional.of(synthesize());
