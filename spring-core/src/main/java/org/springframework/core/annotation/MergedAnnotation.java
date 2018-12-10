@@ -18,6 +18,7 @@ package org.springframework.core.annotation;
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Inherited;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Proxy;
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -29,6 +30,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
+import org.springframework.core.annotation.type.DeclaredAnnotations;
 import org.springframework.lang.Nullable;
 
 /**
@@ -42,6 +44,8 @@ import org.springframework.lang.Nullable;
  */
 public interface MergedAnnotation<A extends Annotation> {
 
+	// FIXME make comparable
+
 	/**
 	 * Return the class name of the actual annotation type.
 	 * @return the annotation type
@@ -50,8 +54,7 @@ public interface MergedAnnotation<A extends Annotation> {
 
 	/**
 	 * Return if the annotation is present on the source. Considers
-	 * {@link #isDirectlyPresent() direct annotations},
-	 * {@link #isFromInherited() @Inherited annotations} and
+	 * {@link #isDirectlyPresent() direct annotations}, and
 	 * {@link #isMetaPresent() meta-annotation} annotations within the context
 	 * of the {@link SearchStrategy} used.
 	 * @return {@code true} if the annotation is present
@@ -84,10 +87,34 @@ public interface MergedAnnotation<A extends Annotation> {
 	 */
 	int getDepth();
 
-	// FIXME DC
+	/**
+	 * Return the index of the aggregate collection containing this annotation.
+	 * Can be used to reorder a stream of annotations, for example, to give a
+	 * higher priority to annotations declared on a superclass or interface.
+	 * @return the aggregate index (starting at {@code 0})
+	 */
 	int getAggregateIndex();
 
-	// FIXME DC
+	/**
+	 * Return the source that ultimately declared the annotation, or
+	 * {@code null} if the source is not known. If this merged annotation was
+	 * created {@link MergedAnnotations#from(java.lang.reflect.AnnotatedElement)
+	 * from} an {@link AnnotatedElement} then this source will be an element of
+	 * the same type. If the annotation was loaded without using reflection, the
+	 * source is taken from {@link DeclaredAnnotations#getSource()}.
+	 * Meta-annotations will return the same source as the {@link #getParent()}.
+	 * @return the source, or {@code null}
+	 */
+	@Nullable
+	Object getSource();
+
+	/**
+	 * Return the parent of the meta-annotation, or {@code null} if the
+	 * annotation is not {@link #isMetaPresent() meta-present}.
+	 * @return the parent annotation or {@code null}
+	 * @see #isAncestorOf(MergedAnnotation)
+	 */
+	@Nullable
 	MergedAnnotation<?> getParent();
 
 	/**
@@ -95,6 +122,7 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * annotation.
 	 * @param annotation the annotation to check
 	 * @return {@code true} if this annotation is a descendant
+	 * @see #getParent()
 	 */
 	boolean isAncestorOf(MergedAnnotation<?> annotation);
 
@@ -327,15 +355,14 @@ public interface MergedAnnotation<A extends Annotation> {
 
 	/**
 	 * Return an optional non-merged attribute value of the specified type. This
-	 * method provides raw access to the original attribute value without
-	 * applying any of the merging rules.
+	 * method provides access to the original attribute value without applying
+	 * aliased merging rules, but still respecting any mirrored attributes.
 	 * @param attributeName the attribute name
 	 * @param type the attribute type
 	 * @return an optional value or {@link Optional#empty()} if there is no
 	 * matching attribute
 	 */
 	<T> Optional<T> getNonMergedAttribute(String attributeName, Class<T> type);
-	// FIXME be clear about mirrors
 
 	/**
 	 * Return a new view of the annotation with all attributes that have default
@@ -367,7 +394,7 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * Return a {@link Map} of the supplied type that contains all the
 	 * annotation attributes. The {@link MapValues} options may be used to
 	 * change the way that values are added.
-	 * @param factory a map factory or null to return an immutable map
+	 * @param factory a map factory or {@code null} to return an immutable map
 	 * @param options map value options
 	 * @return a map containing the attributes and values
 	 */
@@ -407,10 +434,12 @@ public interface MergedAnnotation<A extends Annotation> {
 		return MissingMergedAnnotation.getInstance();
 	}
 
+	// FIXME
 	static <A extends Annotation> Finder<A> find(String annotationType) {
 		return null;
 	}
 
+	// FIXME
 	static <A extends Annotation> Finder<A> find(Class<A> annotationType) {
 		return null;
 	}
@@ -420,6 +449,7 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * {@link #getDepth()}.
 	 * @return a depth based comparator
 	 */
+	// FIXME
 	static Comparator<MergedAnnotation<?>> comparingDepth() {
 		return Comparator.comparingInt(MergedAnnotation::getDepth);
 	}
@@ -447,7 +477,7 @@ public interface MergedAnnotation<A extends Annotation> {
 		 */
 		NON_MERGED;
 
-		protected boolean isIn(MapValues... options) {
+		protected final boolean isIn(MapValues... options) {
 			for (MapValues candidate : options) {
 				if (candidate == this) {
 					return true;
@@ -464,7 +494,7 @@ public interface MergedAnnotation<A extends Annotation> {
 		 * included
 		 * @return a new {@link MapValues} array
 		 */
-		static MapValues[] get(boolean classToString, boolean annotationsToMap,
+		public static MapValues[] of(boolean classToString, boolean annotationsToMap,
 				boolean nonMerged) {
 			EnumSet<MapValues> result = EnumSet.noneOf(MapValues.class);
 			addIfTrue(result, MapValues.CLASS_TO_STRING, classToString);

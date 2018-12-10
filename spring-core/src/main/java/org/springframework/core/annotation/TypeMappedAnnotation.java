@@ -102,6 +102,11 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 	}
 
 	@Override
+	public Object getSource() {
+		return this.source;
+	}
+
+	@Override
 	public MergedAnnotation<?> getParent() {
 		return this.parent;
 	}

@@ -369,7 +369,7 @@ public abstract class AnnotatedElementUtils {
 		).to(() ->
 			getAnnotations(element).get(annotationName).asMap(
 					AnnotationAttributes::createIfAnnotationPresent,
-					MapValues.get(classValuesAsString, nestedAnnotationsAsMap, false))
+					MapValues.of(classValuesAsString, nestedAnnotationsAsMap, false))
 		);
 	}
 
@@ -593,7 +593,7 @@ public abstract class AnnotatedElementUtils {
 					annotationName, classValuesAsString, nestedAnnotationsAsMap)
 		).to(() ->
 			getAnnotations(element).stream(annotationName).filter(oncePerParent()).collect(
-					allAnnotationAttributes(MapValues.get(classValuesAsString,
+					allAnnotationAttributes(MapValues.of(classValuesAsString,
 							nestedAnnotationsAsMap, true)))
 		);
 	}
@@ -656,7 +656,7 @@ public abstract class AnnotatedElementUtils {
 		).to(() ->
 			findAnnotations(element).get(annotationType).asMap(
 					AnnotationAttributes::createIfAnnotationPresent,
-					MapValues.get(classValuesAsString, nestedAnnotationsAsMap, false))
+					MapValues.of(classValuesAsString, nestedAnnotationsAsMap, false))
 		);
 	}
 
@@ -696,7 +696,7 @@ public abstract class AnnotatedElementUtils {
 		).to(() ->
 			findAnnotations(element).get(annotationName).asMap(
 					AnnotationAttributes::createIfAnnotationPresent,
-					MapValues.get(classValuesAsString, nestedAnnotationsAsMap, false))
+					MapValues.of(classValuesAsString, nestedAnnotationsAsMap, false))
 		);
 	}
 
@@ -939,6 +939,7 @@ public abstract class AnnotatedElementUtils {
 				AnnotatedElementUtils::toSynthesizedAnnotationSet);
 	}
 
+	// FIXME simplify with combined comparator. use sort before collect
 	private static <A extends Annotation> Collector<MergedAnnotation<A>, ?, Set<A>> toSynthesizedAggregateAnnotationSet() {
 		return Collector.of(AggregateOrderedList<A>::new, AggregateOrderedList::insert,
 				AggregateOrderedList::insertAll,

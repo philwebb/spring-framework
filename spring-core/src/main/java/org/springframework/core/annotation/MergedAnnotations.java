@@ -19,11 +19,11 @@ package org.springframework.core.annotation;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Inherited;
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Method;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import org.springframework.core.annotation.type.DeclaredAnnotations;
-import org.springframework.core.type.AnnotationMetadataTests.MetaAnnotation;
 import org.springframework.util.Assert;
 
 /**
@@ -236,6 +236,8 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	/**
 	 * Create a new {@link MergedAnnotations} instance containing the specified
 	 * annotations.
+	 * @param repeatableContainers the repeatable containers that may be used by
+	 * meta-annotations
 	 * @param source the source for the annotations. This source is used only
 	 * for information and logging. It does not need to <em>actually</em>
 	 * contain the specified annotations and it will not be searched.
@@ -251,8 +253,8 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	/**
 	 * Create a new {@link MergedAnnotations} instance containing all
 	 * annotations and meta-annotations from the specified element. The
-	 * resulting instance will not include inherited annotations, if you want to
-	 * include those as well you should use
+	 * resulting instance will not include any inherited annotations, if you
+	 * want to include those as well you should use
 	 * {@link #from(SearchStrategy, AnnotatedElement)} with an appropriate
 	 * {@link SearchStrategy}.
 	 * @param element the source element
@@ -281,8 +283,8 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 * Create a new {@link MergedAnnotations} instance containing all
 	 * annotations and meta-annotations from the specified element and,
 	 * depending on the {@link SearchStrategy}, related inherited elements.
-	 * @param repeatableContainers the strategy used to find repeatable
-	 * annotation containers
+	 * @param repeatableContainers the repeatable containers that may be used by
+	 * the element annotations or the meta-annotations
 	 * @param searchStrategy the search strategy to use
 	 * @param element the source element
 	 * @return a {@link MergedAnnotations} instance containing the merged
@@ -300,9 +302,10 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	/**
 	 * Create a new {@link MergedAnnotations} instance containing all
 	 * annotations and meta-annotations from the specified aggregates.
-	 * @param repeatableContainers the strategy used to find repeatable
-	 * annotation containers
-	 * @param aggregates the aggregates that make up the merged annotation
+	 * @param repeatableContainers the repeatable containers that may be used by
+	 * the element annotations or the meta-annotations
+	 * @param aggregates the aggregates that make up the merged annotation in
+	 * priority order. Commonly used to represent a complete class hierarchy
 	 * @return a {@link MergedAnnotations} instance containing the merged
 	 * annotations
 	 */
@@ -314,10 +317,11 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	/**
 	 * Create a new {@link MergedAnnotations} instance containing all
 	 * annotations and meta-annotations from the specified aggregates.
-	 * @param classLoader the classloader used to read annotations
-	 * @param repeatableContainers the strategy used to find repeatable
-	 * annotation containers
-	 * @param aggregates the aggregates that make up the merged annotation
+	 * @param classLoader the class loader used to read annotations
+	 * @param repeatableContainers the repeatable containers that may be used by
+	 * the element annotations or the meta-annotations
+	 * @param aggregates the aggregates that make up the merged annotation in
+	 * priority order. Commonly used to represent a complete class hierarchy
 	 * @return a {@link MergedAnnotations} instance containing the merged
 	 * annotations
 	 */
@@ -329,7 +333,9 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 
 	/**
 	 * Search strategies supported by
-	 * {@link MergedAnnotations#from(SearchStrategy, AnnotatedElement)}.
+	 * {@link MergedAnnotations#from(SearchStrategy, AnnotatedElement)}. Each
+	 * strategy creates a different set of aggregates that will be combined to
+	 * create the final {@link MergedAnnotations}.
 	 */
 	public static enum SearchStrategy {
 

@@ -54,6 +54,11 @@ final class MissingMergedAnnotation<A extends Annotation>
 	}
 
 	@Override
+	public Object getSource() {
+		return null;
+	}
+
+	@Override
 	public MergedAnnotation<?> getParent() {
 		return null;
 	}

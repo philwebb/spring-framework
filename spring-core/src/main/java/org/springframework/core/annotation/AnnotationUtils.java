@@ -565,15 +565,14 @@ public abstract class AnnotationUtils {
 	 */
 	@Nullable
 	public static Class<?> findAnnotationDeclaringClass(Class<? extends Annotation> annotationType, @Nullable Class<?> clazz) {
-		return MigrateMethod.from(() ->
+		return MigrateMethod.<Class<?>> from(() ->
 			InternalAnnotationUtils.findAnnotationDeclaringClass(annotationType,
 					clazz)
-		).to(() -> {
-			MergedAnnotations.from(RepeatableContainers.none(),
+		).to(() ->
+			(Class<?>) MergedAnnotations.from(RepeatableContainers.none(),
 					SearchStrategy.SUPER_CLASS, clazz).get(annotationType,
-							MergedAnnotation::isDirectlyPresent);
-			return null;
-		});
+							MergedAnnotation::isDirectlyPresent).getSource()
+		);
 	}
 
 	/**
