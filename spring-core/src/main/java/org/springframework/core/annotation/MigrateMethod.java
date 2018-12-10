@@ -44,6 +44,10 @@ final class MigrateMethod {
 		return new ReplacementMethod<>(originalMethod);
 	}
 
+	static ReplacementCall fromCall(Runnable originalMethod) {
+		return new ReplacementCall(originalMethod);
+	}
+
 	/**
 	 * Builder to complete replacement details for a deprecated annotation
 	 * method.
@@ -77,7 +81,7 @@ final class MigrateMethod {
 		 * @return the result of the replacement method
 		 */
 		public T to(Supplier<T> replacementMethod) {
-			T result = replacementMethod.get();
+			T result = tryInvoke(replacementMethod);
 			T expectedResult = this.originalMethod.get();
 			Assert.state(isEquivalent(result, expectedResult),
 					() -> "Expected " + expectedResult + " got " + result
@@ -85,6 +89,26 @@ final class MigrateMethod {
 									? " [" + this.description.get() + "]"
 									: ""));
 			return result;
+		}
+
+		private T tryInvoke(Supplier<T> replacementMethod) {
+			try {
+				return replacementMethod.get();
+			}
+			catch (RuntimeException expected) {
+				try {
+					this.originalMethod.get();
+					throw new Error("Expected exception not thrown", expected);
+				}
+				catch (RuntimeException actual) {
+					if (!expected.getClass().isInstance(actual)) {
+						throw new Error(
+								"Exception is not " + expected.getClass().getName(),
+								actual);
+					}
+					throw actual;
+				}
+			}
 		}
 
 		private boolean isEquivalent(Object result, Object expectedResult) {
@@ -155,6 +179,41 @@ final class MigrateMethod {
 				}
 			}
 			return true;
+		}
+
+	}
+
+	static class ReplacementCall {
+
+		private final Runnable originalMethod;
+
+		public ReplacementCall(Runnable originalMethod) {
+			this.originalMethod = originalMethod;
+		}
+
+		public void to(Runnable replacementMethod) {
+			tryInvoke(this.originalMethod);
+			replacementMethod.run();
+		}
+
+		private void tryInvoke(Runnable replacementMethod) {
+			try {
+				replacementMethod.run();
+			}
+			catch (RuntimeException expected) {
+				try {
+					this.originalMethod.run();
+					throw new Error("Expected exception not thrown", expected);
+				}
+				catch (RuntimeException actual) {
+					if (!expected.getClass().isInstance(actual)) {
+						throw new Error(
+								"Exception is not " + expected.getClass().getName(),
+								actual);
+					}
+					throw actual;
+				}
+			}
 		}
 
 	}

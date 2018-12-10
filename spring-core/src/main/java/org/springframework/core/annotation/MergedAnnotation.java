@@ -90,8 +90,11 @@ public interface MergedAnnotation<A extends Annotation> {
 	/**
 	 * Return the index of the aggregate collection containing this annotation.
 	 * Can be used to reorder a stream of annotations, for example, to give a
-	 * higher priority to annotations declared on a superclass or interface.
-	 * @return the aggregate index (starting at {@code 0})
+	 * higher priority to annotations declared on a superclass or interface. A
+	 * {@link #missing() missing} annotation will always return an aggregate
+	 * index of {@code -1}.
+	 * @return the aggregate index (starting at {@code 0}) or {@code -1} if the
+	 * annotation is missing
 	 */
 	int getAggregateIndex();
 
@@ -394,10 +397,12 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * Return a {@link Map} of the supplied type that contains all the
 	 * annotation attributes. The {@link MapValues} options may be used to
 	 * change the way that values are added.
-	 * @param factory a map factory or {@code null} to return an immutable map
+	 * @param factory a map factory or {@code null} to return an immutable map.
+	 * If the factory itself returns {@code null} then no map is created
 	 * @param options map value options
 	 * @return a map containing the attributes and values
 	 */
+	@Nullable
 	<T extends Map<String, Object>> T asMap(
 			@Nullable Function<MergedAnnotation<?>, T> factory, MapValues... options);
 

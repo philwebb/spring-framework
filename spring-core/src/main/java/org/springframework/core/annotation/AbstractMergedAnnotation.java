@@ -98,12 +98,12 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 
 	@Override
 	public boolean isDirectlyPresent() {
-		return getDepth() == 0;
+		return isPresent() && getDepth() == 0;
 	}
 
 	@Override
 	public boolean isMetaPresent() {
-		return getDepth() > 0;
+		return isPresent() && getDepth() > 0;
 	}
 
 	@Override

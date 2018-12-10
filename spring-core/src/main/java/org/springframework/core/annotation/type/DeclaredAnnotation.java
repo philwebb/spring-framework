@@ -48,6 +48,19 @@ public interface DeclaredAnnotation {
 	DeclaredAttributes getAttributes();
 
 	/**
+	 * Check the declared attributes of the given annotation, in particular
+	 * covering Google App Engine's late arrival of
+	 * {@code TypeNotPresentExceptionProxy} for {@code Class} values (instead of
+	 * early {@code Class.getAnnotations() failure}.
+	 * @param annotation the annotation to validate
+	 * @throws IllegalStateException if a declared {@code Class} attribute could
+	 * not be read
+	 */
+	static void validate(Annotation annotation) {
+		new StandardDeclaredAnnotation(annotation).validate();
+	}
+
+	/**
 	 * Create a new {@link DeclaredAnnotation} instance from the source Java
 	 * {@link Annotation}.
 	 * @param annotation the source annotation

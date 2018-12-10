@@ -24,6 +24,7 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import org.springframework.core.annotation.type.DeclaredAnnotations;
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
@@ -229,7 +230,7 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 * @return a {@link MergedAnnotations} instance containing the annotations
 	 * @see #from(AnnotatedElement)
 	 */
-	static MergedAnnotations of(AnnotatedElement source, Annotation... annotations) {
+	static MergedAnnotations of(@Nullable AnnotatedElement source, Annotation... annotations) {
 		return of(RepeatableContainers.standardRepeatables(), source, annotations);
 	}
 
@@ -245,7 +246,7 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 * @return a {@link MergedAnnotations} instance containing the annotations
 	 */
 	static MergedAnnotations of(RepeatableContainers repeatableContainers,
-			AnnotatedElement source, Annotation... annotations) {
+			@Nullable AnnotatedElement source, Annotation... annotations) {
 		Assert.notNull(annotations, "Annotations must not be null");
 		return new TypeMappedAnnotations(repeatableContainers, source, annotations);
 	}

@@ -66,6 +66,10 @@ class StandardDeclaredAttributes extends AbstractDeclaredAttributes {
 		return (method.getParameterCount() == 0 && method.getReturnType() != void.class);
 	}
 
+	public void validate() {
+		this.attributeMethods.values().forEach(this::get);
+	}
+
 	@Override
 	public Object get(String name) {
 		Method method = this.attributeMethods.get(name);
