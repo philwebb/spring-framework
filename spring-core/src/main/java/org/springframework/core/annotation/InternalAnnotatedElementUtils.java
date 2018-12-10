@@ -44,7 +44,7 @@ import org.springframework.util.MultiValueMap;
  * @author Sam Brannen
  * @see AliasFor
  * @see AnnotationAttributes
- * @see AnnotationUtils
+ * @see InternalAnnotationUtils
  * @see BridgeMethodResolver
  */
 abstract class InternalAnnotatedElementUtils {
@@ -123,7 +123,7 @@ abstract class InternalAnnotatedElementUtils {
 	 * @see #hasMetaAnnotationTypes
 	 */
 	public static Set<String> getMetaAnnotationTypes(AnnotatedElement element, String annotationName) {
-		return getMetaAnnotationTypes(element, AnnotationUtils.getAnnotation(element, annotationName));
+		return getMetaAnnotationTypes(element, InternalAnnotationUtils.getAnnotation(element, annotationName));
 	}
 
 	private static Set<String> getMetaAnnotationTypes(AnnotatedElement element, @Nullable Annotation composed) {
@@ -144,7 +144,7 @@ abstract class InternalAnnotatedElementUtils {
 			return types;
 		}
 		catch (Throwable ex) {
-			AnnotationUtils.rethrowAnnotationConfigurationException(ex);
+			InternalAnnotationUtils.rethrowAnnotationConfigurationException(ex);
 			throw new IllegalStateException("Failed to introspect annotations on " + element, ex);
 		}
 	}
@@ -255,7 +255,7 @@ abstract class InternalAnnotatedElementUtils {
 
 		AnnotationAttributes attributes = searchWithGetSemantics(element, annotationType, null,
 				new MergedAnnotationAttributesProcessor());
-		AnnotationUtils.postProcessAnnotationAttributes(element, attributes, false, false);
+		InternalAnnotationUtils.postProcessAnnotationAttributes(element, attributes, false, false);
 		return attributes;
 	}
 
@@ -314,7 +314,7 @@ abstract class InternalAnnotatedElementUtils {
 
 		AnnotationAttributes attributes = searchWithGetSemantics(element, null, annotationName,
 				new MergedAnnotationAttributesProcessor(classValuesAsString, nestedAnnotationsAsMap));
-		AnnotationUtils.postProcessAnnotationAttributes(element, attributes, classValuesAsString, nestedAnnotationsAsMap);
+		InternalAnnotationUtils.postProcessAnnotationAttributes(element, attributes, classValuesAsString, nestedAnnotationsAsMap);
 		return attributes;
 	}
 
@@ -327,31 +327,31 @@ abstract class InternalAnnotatedElementUtils {
 	 * <p>{@link AliasFor @AliasFor} semantics are fully supported, both
 	 * within a single annotation and within the annotation hierarchy.
 	 * <p>This method delegates to {@link #getMergedAnnotationAttributes(AnnotatedElement, Class)}
-	 * and {@link AnnotationUtils#synthesizeAnnotation(Map, Class, AnnotatedElement)}.
+	 * and {@link InternalAnnotationUtils#synthesizeAnnotation(Map, Class, AnnotatedElement)}.
 	 * @param element the annotated element
 	 * @param annotationType the annotation type to find
 	 * @return the merged, synthesized {@code Annotation}, or {@code null} if not found
 	 * @since 4.2
 	 * @see #getMergedAnnotationAttributes(AnnotatedElement, Class)
 	 * @see #findMergedAnnotation(AnnotatedElement, Class)
-	 * @see AnnotationUtils#synthesizeAnnotation(Map, Class, AnnotatedElement)
+	 * @see InternalAnnotationUtils#synthesizeAnnotation(Map, Class, AnnotatedElement)
 	 */
 	@Nullable
 	public static <A extends Annotation> A getMergedAnnotation(AnnotatedElement element, Class<A> annotationType) {
 		// Shortcut: directly present on the element, with no merging needed?
 		A annotation = element.getDeclaredAnnotation(annotationType);
 		if (annotation != null) {
-			return AnnotationUtils.synthesizeAnnotation(annotation, element);
+			return InternalAnnotationUtils.synthesizeAnnotation(annotation, element);
 		}
 
 		// Shortcut: no searchable annotations to be found on plain Java classes and org.springframework.lang types...
-		if (AnnotationUtils.hasPlainJavaAnnotationsOnly(element)) {
+		if (InternalAnnotationUtils.hasPlainJavaAnnotationsOnly(element)) {
 			return null;
 		}
 
 		// Exhaustive retrieval of merged annotation attributes...
 		AnnotationAttributes attributes = getMergedAnnotationAttributes(element, annotationType);
-		return (attributes != null ? AnnotationUtils.synthesizeAnnotation(attributes, annotationType, element) : null);
+		return (attributes != null ? InternalAnnotationUtils.synthesizeAnnotation(attributes, annotationType, element) : null);
 	}
 
 	/**
@@ -522,7 +522,7 @@ abstract class InternalAnnotatedElementUtils {
 			@Override
 			@Nullable
 			public Object process(@Nullable AnnotatedElement annotatedElement, Annotation annotation, int metaDepth) {
-				AnnotationAttributes annotationAttributes = AnnotationUtils.getAnnotationAttributes(
+				AnnotationAttributes annotationAttributes = InternalAnnotationUtils.getAnnotationAttributes(
 						annotation, classValuesAsString, nestedAnnotationsAsMap);
 				annotationAttributes.forEach(attributesMap::add);
 				return CONTINUE;
@@ -587,7 +587,7 @@ abstract class InternalAnnotatedElementUtils {
 
 		AnnotationAttributes attributes = searchWithFindSemantics(element, annotationType, null,
 				new MergedAnnotationAttributesProcessor(classValuesAsString, nestedAnnotationsAsMap));
-		AnnotationUtils.postProcessAnnotationAttributes(element, attributes, classValuesAsString, nestedAnnotationsAsMap);
+		InternalAnnotationUtils.postProcessAnnotationAttributes(element, attributes, classValuesAsString, nestedAnnotationsAsMap);
 		return attributes;
 	}
 
@@ -624,7 +624,7 @@ abstract class InternalAnnotatedElementUtils {
 
 		AnnotationAttributes attributes = searchWithFindSemantics(element, null, annotationName,
 				new MergedAnnotationAttributesProcessor(classValuesAsString, nestedAnnotationsAsMap));
-		AnnotationUtils.postProcessAnnotationAttributes(element, attributes, classValuesAsString, nestedAnnotationsAsMap);
+		InternalAnnotationUtils.postProcessAnnotationAttributes(element, attributes, classValuesAsString, nestedAnnotationsAsMap);
 		return attributes;
 	}
 
@@ -651,17 +651,17 @@ abstract class InternalAnnotatedElementUtils {
 		// Shortcut: directly present on the element, with no merging needed?
 		A annotation = element.getDeclaredAnnotation(annotationType);
 		if (annotation != null) {
-			return AnnotationUtils.synthesizeAnnotation(annotation, element);
+			return InternalAnnotationUtils.synthesizeAnnotation(annotation, element);
 		}
 
 		// Shortcut: no searchable annotations to be found on plain Java classes and org.springframework.lang types...
-		if (AnnotationUtils.hasPlainJavaAnnotationsOnly(element)) {
+		if (InternalAnnotationUtils.hasPlainJavaAnnotationsOnly(element)) {
 			return null;
 		}
 
 		// Exhaustive retrieval of merged annotation attributes...
 		AnnotationAttributes attributes = findMergedAnnotationAttributes(element, annotationType, false, false);
-		return (attributes != null ? AnnotationUtils.synthesizeAnnotation(attributes, annotationType, element) : null);
+		return (attributes != null ? InternalAnnotationUtils.synthesizeAnnotation(attributes, annotationType, element) : null);
 	}
 
 	/**
@@ -829,7 +829,7 @@ abstract class InternalAnnotatedElementUtils {
 					new HashSet<>(), 0);
 		}
 		catch (Throwable ex) {
-			AnnotationUtils.rethrowAnnotationConfigurationException(ex);
+			InternalAnnotationUtils.rethrowAnnotationConfigurationException(ex);
 			throw new IllegalStateException("Failed to introspect annotations on " + element, ex);
 		}
 	}
@@ -860,7 +860,7 @@ abstract class InternalAnnotatedElementUtils {
 		if (visited.add(element)) {
 			try {
 				// Start searching within locally declared annotations
-				List<Annotation> declaredAnnotations = Arrays.asList(AnnotationUtils.getDeclaredAnnotations(element));
+				List<Annotation> declaredAnnotations = Arrays.asList(InternalAnnotationUtils.getDeclaredAnnotations(element));
 				T result = searchWithGetSemanticsInAnnotations(element, declaredAnnotations,
 						annotationTypes, annotationName, containerType, processor, visited, metaDepth);
 				if (result != null) {
@@ -886,7 +886,7 @@ abstract class InternalAnnotatedElementUtils {
 				}
 			}
 			catch (Throwable ex) {
-				AnnotationUtils.handleIntrospectionFailure(element, ex);
+				InternalAnnotationUtils.handleIntrospectionFailure(element, ex);
 			}
 		}
 
@@ -924,7 +924,7 @@ abstract class InternalAnnotatedElementUtils {
 		// Search in annotations
 		for (Annotation annotation : annotations) {
 			Class<? extends Annotation> currentAnnotationType = annotation.annotationType();
-			if (!AnnotationUtils.isInJavaLangAnnotationPackage(currentAnnotationType)) {
+			if (!InternalAnnotationUtils.isInJavaLangAnnotationPackage(currentAnnotationType)) {
 				if (annotationTypes.contains(currentAnnotationType) ||
 						currentAnnotationType.getName().equals(annotationName) ||
 						processor.alwaysProcesses()) {
@@ -955,7 +955,7 @@ abstract class InternalAnnotatedElementUtils {
 		// Recursively search in meta-annotations
 		for (Annotation annotation : annotations) {
 			Class<? extends Annotation> currentAnnotationType = annotation.annotationType();
-			if (!AnnotationUtils.hasPlainJavaAnnotationsOnly(currentAnnotationType)) {
+			if (!InternalAnnotationUtils.hasPlainJavaAnnotationsOnly(currentAnnotationType)) {
 				T result = searchWithGetSemantics(currentAnnotationType, annotationTypes,
 						annotationName, containerType, processor, visited, metaDepth + 1);
 				if (result != null) {
@@ -1024,7 +1024,7 @@ abstract class InternalAnnotatedElementUtils {
 					element, annotationTypes, annotationName, containerType, processor, new HashSet<>(), 0);
 		}
 		catch (Throwable ex) {
-			AnnotationUtils.rethrowAnnotationConfigurationException(ex);
+			InternalAnnotationUtils.rethrowAnnotationConfigurationException(ex);
 			throw new IllegalStateException("Failed to introspect annotations on " + element, ex);
 		}
 	}
@@ -1056,14 +1056,14 @@ abstract class InternalAnnotatedElementUtils {
 		if (visited.add(element)) {
 			try {
 				// Locally declared annotations (ignoring @Inherited)
-				Annotation[] annotations = AnnotationUtils.getDeclaredAnnotations(element);
+				Annotation[] annotations = InternalAnnotationUtils.getDeclaredAnnotations(element);
 				if (annotations.length > 0) {
 					List<T> aggregatedResults = (processor.aggregates() ? new ArrayList<>() : null);
 
 					// Search in local annotations
 					for (Annotation annotation : annotations) {
 						Class<? extends Annotation> currentAnnotationType = annotation.annotationType();
-						if (!AnnotationUtils.isInJavaLangAnnotationPackage(currentAnnotationType)) {
+						if (!InternalAnnotationUtils.isInJavaLangAnnotationPackage(currentAnnotationType)) {
 							if (annotationTypes.contains(currentAnnotationType) ||
 									currentAnnotationType.getName().equals(annotationName) ||
 									processor.alwaysProcesses()) {
@@ -1094,7 +1094,7 @@ abstract class InternalAnnotatedElementUtils {
 					// Recursively search in meta-annotations
 					for (Annotation annotation : annotations) {
 						Class<? extends Annotation> currentAnnotationType = annotation.annotationType();
-						if (!AnnotationUtils.hasPlainJavaAnnotationsOnly(currentAnnotationType)) {
+						if (!InternalAnnotationUtils.hasPlainJavaAnnotationsOnly(currentAnnotationType)) {
 							T result = searchWithFindSemantics(currentAnnotationType, annotationTypes, annotationName,
 									containerType, processor, visited, metaDepth + 1);
 							if (result != null) {
@@ -1146,10 +1146,10 @@ abstract class InternalAnnotatedElementUtils {
 						if (clazz == null || clazz == Object.class) {
 							break;
 						}
-						Set<Method> annotatedMethods = AnnotationUtils.getAnnotatedMethodsInBaseType(clazz);
+						Set<Method> annotatedMethods = InternalAnnotationUtils.getAnnotatedMethodsInBaseType(clazz);
 						if (!annotatedMethods.isEmpty()) {
 							for (Method annotatedMethod : annotatedMethods) {
-								if (AnnotationUtils.isOverride(method, annotatedMethod)) {
+								if (InternalAnnotationUtils.isOverride(method, annotatedMethod)) {
 									Method resolvedSuperMethod = BridgeMethodResolver.findBridgedMethod(annotatedMethod);
 									result = searchWithFindSemantics(resolvedSuperMethod, annotationTypes,
 											annotationName, containerType, processor, visited, metaDepth);
@@ -1191,7 +1191,7 @@ abstract class InternalAnnotatedElementUtils {
 				}
 			}
 			catch (Throwable ex) {
-				AnnotationUtils.handleIntrospectionFailure(element, ex);
+				InternalAnnotationUtils.handleIntrospectionFailure(element, ex);
 			}
 		}
 		return null;
@@ -1203,10 +1203,10 @@ abstract class InternalAnnotatedElementUtils {
 			Processor<T> processor, Set<AnnotatedElement> visited, int metaDepth, Class<?>[] ifcs) {
 
 		for (Class<?> ifc : ifcs) {
-			Set<Method> annotatedMethods = AnnotationUtils.getAnnotatedMethodsInBaseType(ifc);
+			Set<Method> annotatedMethods = InternalAnnotationUtils.getAnnotatedMethodsInBaseType(ifc);
 			if (!annotatedMethods.isEmpty()) {
 				for (Method annotatedMethod : annotatedMethods) {
-					if (AnnotationUtils.isOverride(method, annotatedMethod)) {
+					if (InternalAnnotationUtils.isOverride(method, annotatedMethod)) {
 						T result = searchWithFindSemantics(annotatedMethod, annotationTypes, annotationName,
 								containerType, processor, visited, metaDepth);
 						if (result != null) {
@@ -1230,13 +1230,13 @@ abstract class InternalAnnotatedElementUtils {
 			@Nullable AnnotatedElement element, Annotation container) {
 
 		try {
-			A[] value = (A[]) AnnotationUtils.getValue(container);
+			A[] value = (A[]) InternalAnnotationUtils.getValue(container);
 			if (value != null) {
 				return value;
 			}
 		}
 		catch (Throwable ex) {
-			AnnotationUtils.handleIntrospectionFailure(element, ex);
+			InternalAnnotationUtils.handleIntrospectionFailure(element, ex);
 		}
 		// Unable to read value from repeating annotation container -> ignore it.
 		return (A[]) EMPTY_ANNOTATION_ARRAY;
@@ -1244,14 +1244,14 @@ abstract class InternalAnnotatedElementUtils {
 
 	/**
 	 * Resolve the container type for the supplied repeatable {@code annotationType}.
-	 * <p>Delegates to {@link AnnotationUtils#resolveContainerAnnotationType(Class)}.
+	 * <p>Delegates to {@link InternalAnnotationUtils#resolveContainerAnnotationType(Class)}.
 	 * @param annotationType the annotation type to resolve the container for
 	 * @return the container type (never {@code null})
 	 * @throws IllegalArgumentException if the container type cannot be resolved
 	 * @since 4.3
 	 */
 	private static Class<? extends Annotation> resolveContainerType(Class<? extends Annotation> annotationType) {
-		Class<? extends Annotation> containerType = AnnotationUtils.resolveContainerAnnotationType(annotationType);
+		Class<? extends Annotation> containerType = InternalAnnotationUtils.resolveContainerAnnotationType(annotationType);
 		if (containerType == null) {
 			throw new IllegalArgumentException(
 					"Annotation type must be a repeatable annotation: failed to resolve container type for " +
@@ -1273,7 +1273,7 @@ abstract class InternalAnnotatedElementUtils {
 			Class<? extends Annotation> containerType) {
 
 		try {
-			Method method = containerType.getDeclaredMethod(AnnotationUtils.VALUE);
+			Method method = containerType.getDeclaredMethod(InternalAnnotationUtils.VALUE);
 			Class<?> returnType = method.getReturnType();
 			if (!returnType.isArray() || returnType.getComponentType() != annotationType) {
 				String msg = String.format(
@@ -1283,7 +1283,7 @@ abstract class InternalAnnotatedElementUtils {
 			}
 		}
 		catch (Throwable ex) {
-			AnnotationUtils.rethrowAnnotationConfigurationException(ex);
+			InternalAnnotationUtils.rethrowAnnotationConfigurationException(ex);
 			String msg = String.format("Invalid declaration of container type [%s] for repeatable annotation [%s]",
 					containerType.getName(), annotationType.getName());
 			throw new AnnotationConfigurationException(msg, ex);
@@ -1302,10 +1302,10 @@ abstract class InternalAnnotatedElementUtils {
 
 		Set<A> annotations = new LinkedHashSet<>();
 		for (AnnotationAttributes attributes : aggregatedResults) {
-			AnnotationUtils.postProcessAnnotationAttributes(element, attributes, false, false);
+			InternalAnnotationUtils.postProcessAnnotationAttributes(element, attributes, false, false);
 			Class<? extends Annotation> annType = attributes.annotationType();
 			if (annType != null) {
-				annotations.add((A) AnnotationUtils.synthesizeAnnotation(attributes, annType, element));
+				annotations.add((A) InternalAnnotationUtils.synthesizeAnnotation(attributes, annType, element));
 			}
 		}
 		return annotations;
@@ -1473,8 +1473,8 @@ abstract class InternalAnnotatedElementUtils {
 	 * <p>A {@code MergedAnnotationAttributesProcessor} may optionally be
 	 * configured to {@linkplain #aggregates aggregate} results.
 	 * @since 4.2
-	 * @see AnnotationUtils#retrieveAnnotationAttributes
-	 * @see AnnotationUtils#postProcessAnnotationAttributes
+	 * @see InternalAnnotationUtils#retrieveAnnotationAttributes
+	 * @see InternalAnnotationUtils#postProcessAnnotationAttributes
 	 */
 	private static class MergedAnnotationAttributesProcessor implements Processor<AnnotationAttributes> {
 
@@ -1521,22 +1521,22 @@ abstract class InternalAnnotatedElementUtils {
 		@Override
 		@Nullable
 		public AnnotationAttributes process(@Nullable AnnotatedElement annotatedElement, Annotation annotation, int metaDepth) {
-			return AnnotationUtils.retrieveAnnotationAttributes(annotatedElement, annotation,
+			return InternalAnnotationUtils.retrieveAnnotationAttributes(annotatedElement, annotation,
 					this.classValuesAsString, this.nestedAnnotationsAsMap);
 		}
 
 		@Override
 		public void postProcess(@Nullable AnnotatedElement element, Annotation annotation, AnnotationAttributes attributes) {
-			annotation = AnnotationUtils.synthesizeAnnotation(annotation, element);
+			annotation = InternalAnnotationUtils.synthesizeAnnotation(annotation, element);
 			Class<? extends Annotation> targetAnnotationType = attributes.annotationType();
 
 			// Track which attribute values have already been replaced so that we can short
 			// circuit the search algorithms.
 			Set<String> valuesAlreadyReplaced = new HashSet<>();
 
-			for (Method attributeMethod : AnnotationUtils.getAttributeMethods(annotation.annotationType())) {
+			for (Method attributeMethod : InternalAnnotationUtils.getAttributeMethods(annotation.annotationType())) {
 				String attributeName = attributeMethod.getName();
-				String attributeOverrideName = AnnotationUtils.getAttributeOverrideName(attributeMethod, targetAnnotationType);
+				String attributeOverrideName = InternalAnnotationUtils.getAttributeOverrideName(attributeMethod, targetAnnotationType);
 
 				// Explicit annotation attribute override declared via @AliasFor
 				if (attributeOverrideName != null) {
@@ -1549,7 +1549,7 @@ abstract class InternalAnnotatedElementUtils {
 					valuesAlreadyReplaced.add(attributeOverrideName);
 
 					// Ensure all aliased attributes in the target annotation are overridden. (SPR-14069)
-					List<String> aliases = AnnotationUtils.getAttributeAliasMap(targetAnnotationType).get(attributeOverrideName);
+					List<String> aliases = InternalAnnotationUtils.getAttributeAliasMap(targetAnnotationType).get(attributeOverrideName);
 					if (aliases != null) {
 						for (String alias : aliases) {
 							if (!valuesAlreadyReplaced.contains(alias)) {
@@ -1562,7 +1562,7 @@ abstract class InternalAnnotatedElementUtils {
 					overrideAttributes(element, annotation, attributes, attributeName, targetAttributeNames);
 				}
 				// Implicit annotation attribute override based on convention
-				else if (!AnnotationUtils.VALUE.equals(attributeName) && attributes.containsKey(attributeName)) {
+				else if (!InternalAnnotationUtils.VALUE.equals(attributeName) && attributes.containsKey(attributeName)) {
 					overrideAttribute(element, annotation, attributes, attributeName, attributeName);
 				}
 			}
@@ -1588,8 +1588,8 @@ abstract class InternalAnnotatedElementUtils {
 		private Object getAdaptedValue(
 				@Nullable AnnotatedElement element, Annotation annotation, String sourceAttributeName) {
 
-			Object value = AnnotationUtils.getValue(annotation, sourceAttributeName);
-			return AnnotationUtils.adaptValue(element, value, this.classValuesAsString, this.nestedAnnotationsAsMap);
+			Object value = InternalAnnotationUtils.getValue(annotation, sourceAttributeName);
+			return InternalAnnotationUtils.adaptValue(element, value, this.classValuesAsString, this.nestedAnnotationsAsMap);
 		}
 	}
 
