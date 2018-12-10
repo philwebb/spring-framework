@@ -23,15 +23,17 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import org.springframework.core.annotation.type.DeclaredAnnotations;
+import org.springframework.core.type.AnnotationMetadataTests.MetaAnnotation;
 import org.springframework.util.Assert;
 
 /**
- * Provides access to a collection of merged annotations collected from a
- * specific source. Merged annotations represent a view of an annotation where
- * the attribute values may be "merged" form different sources, typically:
+ * Provides access to a collection of merged annotations, usually obtained from
+ * a from a source such as a {@link Class} or {@link Method}. Each merged
+ * annotation represent a view where the attribute values may be "merged" from
+ * different source values, typically:
  * <ul>
  * <li>Explicit and Implicit {@link AliasFor @AliasFor} declarations on one or
- * attributes within the annotations.</li>
+ * attributes within the annotation.</li>
  * <li>Explicit {@link AliasFor @AliasFor} declarations for a
  * meta-annotation.</li>
  * <li>Convention based attribute aliases for a meta-annotation</li>
@@ -82,11 +84,17 @@ import org.springframework.util.Assert;
  * </tr>
  * </table>
  * <p>
- * {@link MergedAnnotations} can be obtained {@link #from(AnnotatedElement) for}
- * any Java {@link AnnotatedElement}. They may also used from sources that don't
- * use reflection, but instead directly parse bytecode. From a
- * {@link MergedAnnotations} instance you can either {@link #get(String)} a
- * single annotation, or stream {@link #stream() stream all annotations} or just
+ * {@link MergedAnnotations} can be obtained {@link #from(AnnotatedElement)
+ * from} any Java {@link AnnotatedElement}. They may also used for sources that
+ * don't use reflection (such as those that directly parse bytecode).
+ * <p>
+ * Different {@link SearchStrategy search strategies} can be used to locate
+ * related source elements that contain the annotations to be aggregated
+ * together. For example, {@link SearchStrategy#EXHAUSTIVE} will search both
+ * superclasses and implemented interfaces.
+ * <p>
+ * From a {@link MergedAnnotations} instance you can either {@link #get(String)}
+ * a single annotation, or {@link #stream() stream all annotations} or just
  * those that match {@link #stream(String) a specific type}. You can also
  * quickly tell if an annotation {@link #isPresent(String) is present}.
  * <p>
@@ -145,6 +153,8 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 * Return the nearest matching annotation or meta-annotation of the
 	 * specified type, or {@link MergedAnnotation#missing()} if none is present.
 	 * @param annotationType the annotation type to get
+	 * @param predicate a predicate that must match, or {@code null} if only
+	 * type matching is required
 	 * @return a {@link MergedAnnotation} instance
 	 */
 	<A extends Annotation> MergedAnnotation<A> get(Class<A> annotationType,
@@ -162,22 +172,26 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 * Return the nearest matching annotation or meta-annotation of the
 	 * specified type, or {@link MergedAnnotation#missing()} if none is present.
 	 * @param annotationType the annotation type to get
+	 * @param predicate a predicate that must match, or {@code null} if only
+	 * type matching is required
 	 * @return a {@link MergedAnnotation} instance
 	 */
 	<A extends Annotation> MergedAnnotation<A> get(String annotationType,
 			Predicate<? super MergedAnnotation<A>> predicate);
 
 	/**
-	 * Stream all matching annotations or meta-annotations that match the
-	 * specified type.
+	 * Stream all annotations and meta-annotations that match the specified
+	 * type. The resulting stream follows the same ordering rules are
+	 * {@link #stream()}.
 	 * @param annotationType the annotation type to match
 	 * @return a stream of matching annotations
 	 */
 	<A extends Annotation> Stream<MergedAnnotation<A>> stream(Class<A> annotationType);
 
 	/**
-	 * Stream all matching annotations or meta-annotations that match the
-	 * specified type.
+	 * Stream all annotations and meta-annotations that match the specified
+	 * type.The resulting stream follows the same ordering rules are
+	 * {@link #stream()}.
 	 * @param annotationType the annotation type to match
 	 * @return a stream of matching annotations
 	 */
@@ -185,7 +199,11 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 
 	/**
 	 * Stream all contained annotations and meta-annotations contained in this
-	 * collection.
+	 * collection. The resulting stream is ordered first by the
+	 * {@link MergedAnnotation#getAggregateIndex() aggregate index}, and then by
+	 * the annotation depth (with the closest annotations first). This ordering
+	 * means that, for most use-cases, the most suitable annotations appear
+	 * earliest in the stream.
 	 * @return a stream of annotations
 	 */
 	Stream<MergedAnnotation<Annotation>> stream();
@@ -195,6 +213,7 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 * annotations.
 	 * @param annotations the annotations to include
 	 * @return a {@link MergedAnnotations} instance containing the annotations
+	 * @see #from(AnnotatedElement)
 	 */
 	static MergedAnnotations of(Annotation... annotations) {
 		return of(null, annotations);
@@ -203,8 +222,12 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	/**
 	 * Create a new {@link MergedAnnotations} instance containing the specified
 	 * annotations.
+	 * @param source the source for the annotations. This source is used only
+	 * for information and logging. It does not need to <em>actually</em>
+	 * contain the specified annotations and it will not be searched.
 	 * @param annotations the annotations to include
 	 * @return a {@link MergedAnnotations} instance containing the annotations
+	 * @see #from(AnnotatedElement)
 	 */
 	static MergedAnnotations of(AnnotatedElement source, Annotation... annotations) {
 		return of(RepeatableContainers.standardRepeatables(), source, annotations);
@@ -213,6 +236,9 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	/**
 	 * Create a new {@link MergedAnnotations} instance containing the specified
 	 * annotations.
+	 * @param source the source for the annotations. This source is used only
+	 * for information and logging. It does not need to <em>actually</em>
+	 * contain the specified annotations and it will not be searched.
 	 * @param annotations the annotations to include
 	 * @return a {@link MergedAnnotations} instance containing the annotations
 	 */
