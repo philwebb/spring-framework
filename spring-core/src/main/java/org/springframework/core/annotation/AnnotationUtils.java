@@ -129,8 +129,9 @@ public abstract class AnnotationUtils {
 		return MigrateMethod.from(() ->
 			InternalAnnotationUtils.getAnnotation(annotation, annotationType)
 		).to(() ->
-			MergedAnnotations.of(annotation).get(annotationType).synthesize(
-					AnnotationUtils::isSingleLevelPresent).orElse(null)
+			MergedAnnotations.of(annotation).get(
+					annotationType).withNonMergedAttributes().synthesize(
+							AnnotationUtils::isSingleLevelPresent).orElse(null)
 		);
 	}
 
@@ -154,8 +155,9 @@ public abstract class AnnotationUtils {
 			InternalAnnotationUtils.getAnnotation(annotatedElement, annotationType)
 		).to(() ->
 			MergedAnnotations.from(RepeatableContainers.none(), SearchStrategy.DIRECT,
-					annotatedElement).get(annotationType).synthesize(
-							AnnotationUtils::isSingleLevelPresent).orElse(null)
+					annotatedElement).get(
+							annotationType).withNonMergedAttributes().synthesize(
+									AnnotationUtils::isSingleLevelPresent).orElse(null)
 		);
 	}
 
@@ -181,7 +183,7 @@ public abstract class AnnotationUtils {
 			InternalAnnotationUtils.getAnnotation(method, annotationType)
 		).to(() ->
 			MergedAnnotations.from(RepeatableContainers.none(), SearchStrategy.DIRECT,
-					method).get(annotationType).synthesize(
+					method).get(annotationType).withNonMergedAttributes().synthesize(
 							AnnotationUtils::isSingleLevelPresent).orElse(null)		);
 	}
 
@@ -205,8 +207,9 @@ public abstract class AnnotationUtils {
 		).to(() ->
 			MergedAnnotations.from(RepeatableContainers.none(), SearchStrategy.DIRECT,
 					annotatedElement).stream().filter(
-							MergedAnnotation::isDirectlyPresent).collect(
-									toSynthesizedAnnotationArray())
+							MergedAnnotation::isDirectlyPresent).map(
+									MergedAnnotation::withNonMergedAttributes).collect(
+											toSynthesizedAnnotationArray())
 		);
 	}
 
@@ -230,8 +233,9 @@ public abstract class AnnotationUtils {
 			InternalAnnotationUtils.getAnnotations(method)
 		).to(()->
 			MergedAnnotations.from(RepeatableContainers.none(), SearchStrategy.DIRECT,
-					method).stream().filter(MergedAnnotation::isDirectlyPresent).collect(
-							toSynthesizedAnnotationArray())
+					method).stream().filter(MergedAnnotation::isDirectlyPresent).map(
+							MergedAnnotation::withNonMergedAttributes).collect(
+									toSynthesizedAnnotationArray())
 		);
 	}
 
@@ -272,7 +276,8 @@ public abstract class AnnotationUtils {
 		).to(() ->
 			MergedAnnotations.from(SearchStrategy.SUPER_CLASS, annotatedElement).stream(
 					annotationType).filter(
-							onFirstRunOf(MergedAnnotation::getAggregateIndex)).collect(
+							onFirstRunOf(MergedAnnotation::getAggregateIndex)).map(
+									MergedAnnotation::withNonMergedAttributes).collect(
 									toSynthesizedAnnotationSet())
 		);
 	}
@@ -315,16 +320,14 @@ public abstract class AnnotationUtils {
 			InternalAnnotationUtils.getRepeatableAnnotations(annotatedElement,
 					annotationType, containerAnnotationType)
 		).to(() ->
-			MergedAnnotations.from(
-					containerAnnotationType != null
-							? RepeatableContainers.of(containerAnnotationType, annotationType)
-							: RepeatableContainers.standardRepeatables(),
-					SearchStrategy.SUPER_CLASS, annotatedElement).stream(
-							annotationType).filter(
-									onFirstRunOf(MergedAnnotation::getAggregateIndex)).collect(
-													toSynthesizedAnnotationSet())
+			MergedAnnotations.from(containerAnnotationType != null
+					? RepeatableContainers.of(containerAnnotationType, annotationType)
+					: RepeatableContainers.standardRepeatables(), SearchStrategy.SUPER_CLASS,
+					annotatedElement).stream(annotationType).filter(
+							onFirstRunOf(MergedAnnotation::getAggregateIndex)).map(
+									MergedAnnotation::withNonMergedAttributes).collect(
+											toSynthesizedAnnotationSet())
 		);
-
 	}
 
 	/**
@@ -363,8 +366,9 @@ public abstract class AnnotationUtils {
 			InternalAnnotationUtils.getDeclaredRepeatableAnnotations(annotatedElement,
 					annotationType)
 		).to(() ->
-			MergedAnnotations.from(annotatedElement).stream(annotationType).collect(
-					toSynthesizedAnnotationSet())
+			MergedAnnotations.from(annotatedElement).stream(annotationType).map(
+					MergedAnnotation::withNonMergedAttributes).collect(
+							toSynthesizedAnnotationSet())
 		);
 	}
 
@@ -410,8 +414,9 @@ public abstract class AnnotationUtils {
 					containerAnnotationType != null
 							? RepeatableContainers.of(containerAnnotationType, annotationType)
 							: RepeatableContainers.standardRepeatables(),
-					SearchStrategy.DIRECT, annotatedElement).stream(annotationType).collect(
-							toSynthesizedAnnotationSet())
+					SearchStrategy.DIRECT, annotatedElement).stream(annotationType).map(
+							MergedAnnotation::withNonMergedAttributes).collect(
+									toSynthesizedAnnotationSet())
 		);
 	}
 
@@ -439,7 +444,7 @@ public abstract class AnnotationUtils {
 			InternalAnnotationUtils.findAnnotation(annotatedElement, annotationType)
 		).to(() ->
 			MergedAnnotations.from(RepeatableContainers.none(), SearchStrategy.DIRECT,
-					annotatedElement).get(annotationType).synthesize(
+					annotatedElement).get(annotationType).withNonMergedAttributes().synthesize(
 							MergedAnnotation::isPresent).orElse(null)
 		);
 	}
@@ -467,7 +472,7 @@ public abstract class AnnotationUtils {
 			InternalAnnotationUtils.findAnnotation(method, annotationType)
 		).to(() ->
 			MergedAnnotations.from(RepeatableContainers.none(), SearchStrategy.EXHAUSTIVE,
-					method).get(annotationType).synthesize(
+					method).get(annotationType).withNonMergedAttributes().synthesize(
 							MergedAnnotation::isPresent).orElse(null)
 		);
 	}
@@ -890,9 +895,9 @@ public abstract class AnnotationUtils {
 					annotation, classValuesAsString, nestedAnnotationsAsMap)
 		).to(() ->
 			MergedAnnotations.of(annotatedElement, annotation).get(
-				annotation.annotationType()).asMap(
+				annotation.annotationType()).withNonMergedAttributes().asMap(
 						createValidateAnnotationAttributes(annotation.annotationType()),
-						MapValues.of(classValuesAsString, nestedAnnotationsAsMap, false))
+						MapValues.of(classValuesAsString, nestedAnnotationsAsMap))
 		);
 	}
 

@@ -270,12 +270,12 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 
 	@Override
 	public <T> Optional<T> getAttribute(String attributeName, Class<T> type) {
-		return Optional.ofNullable(getAttributeValue(attributeName, type, false));
+		return Optional.ofNullable(getAttributeValue(attributeName, type));
 	}
 
 	@Override
 	public <T> Optional<T> getNonMergedAttribute(String attributeName, Class<T> type) {
-		return Optional.ofNullable(getAttributeValue(attributeName, type, true));
+		return Optional.ofNullable(getAttributeValue(attributeName, type));
 	}
 
 	@Override
@@ -298,13 +298,12 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		if (map == null) {
 			return null;
 		}
-		boolean nonMerged = MapValues.NON_MERGED.isIn(options);
 		for (AttributeType attributeType : getAnnotationType().getAttributeTypes()) {
 			Class<?> type = resolveClassName(attributeType.getClassName());
 			type = ClassUtils.resolvePrimitiveIfNecessary(type);
 			type = getTypeForMapValueOption(options, type);
 			String name = attributeType.getAttributeName();
-			Object value = getAttributeValue(name, type, nonMerged);
+			Object value = getAttributeValue(name, type);
 			if (value != null) {
 				map.put(name, getValueForMapValueOption(value, factory, options));
 			}
@@ -372,7 +371,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	}
 
 	private <T> T getRequiredAttribute(String attributeName, Class<T> type) {
-		T result = getAttributeValue(attributeName, type, false);
+		T result = getAttributeValue(attributeName, type);
 		if (result == null) {
 			throw new NoSuchElementException(
 					"No attribute named '" + attributeName + "' present");
@@ -381,13 +380,12 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T> T getAttributeValue(String attributeName, Class<T> type,
-			boolean nonMerged) {
+	private <T> T getAttributeValue(String attributeName, Class<T> type) {
 		AttributeType attributeType = getAttributeType(attributeName);
 		if (attributeType == null) {
 			return null;
 		}
-		Object value = getAttributeValue(attributeName, nonMerged);
+		Object value = getAttributeValue(attributeName);
 		if (value == null) {
 			value = attributeType.getDefaultValue();
 		}
@@ -535,7 +533,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 
 	private String toString(AttributeType attributeType) {
 		String name = attributeType.getAttributeName();
-		Object value = getAttributeValue(name, false);
+		Object value = getAttributeValue(name);
 		if (value instanceof DeclaredAttributes) {
 			value = getAnnotation(name);
 		}
@@ -561,7 +559,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 
 	protected abstract boolean isFiltered(String attributeName);
 
-	protected abstract Object getAttributeValue(String attributeName, boolean nonMerged);
+	protected abstract Object getAttributeValue(String attributeName);
 
 	protected abstract <T extends Annotation> MergedAnnotation<T> createNested(
 			AnnotationType type, DeclaredAttributes attributes);

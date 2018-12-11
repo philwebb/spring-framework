@@ -476,13 +476,7 @@ public interface MergedAnnotation<A extends Annotation> {
 		 * Convert any nested annotation or annotation arrays to maps rather
 		 * than synthesizing the values.
 		 */
-		ANNOTATION_TO_MAP,
-
-		/**
-		 * Use the non-merged value.
-		 * @see MergedAnnotation#getNonMergedAttribute(String, Class)
-		 */
-		NON_MERGED;
+		ANNOTATION_TO_MAP;
 
 		protected final boolean isIn(MapValues... options) {
 			for (MapValues candidate : options) {
@@ -501,12 +495,10 @@ public interface MergedAnnotation<A extends Annotation> {
 		 * included
 		 * @return a new {@link MapValues} array
 		 */
-		public static MapValues[] of(boolean classToString, boolean annotationsToMap,
-				boolean nonMerged) {
+		public static MapValues[] of(boolean classToString, boolean annotationsToMap) {
 			EnumSet<MapValues> result = EnumSet.noneOf(MapValues.class);
 			addIfTrue(result, MapValues.CLASS_TO_STRING, classToString);
 			addIfTrue(result, MapValues.ANNOTATION_TO_MAP, annotationsToMap);
-			addIfTrue(result, MapValues.NON_MERGED, nonMerged);
 			return result.toArray(new MapValues[0]);
 		}
 

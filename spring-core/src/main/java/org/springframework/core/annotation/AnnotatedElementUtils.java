@@ -369,7 +369,7 @@ public abstract class AnnotatedElementUtils {
 		).to(() ->
 			getAnnotations(element).get(annotationName).asMap(
 					AnnotationAttributes::createIfAnnotationPresent,
-					MapValues.of(classValuesAsString, nestedAnnotationsAsMap, false))
+					MapValues.of(classValuesAsString, nestedAnnotationsAsMap))
 		);
 	}
 
@@ -562,8 +562,9 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.getAllAnnotationAttributes(element,
 					annotationName)
 		).to(() ->
-			getAnnotations(element).stream(annotationName).filter(oncePerParent()).collect(
-					allAnnotationAttributes(MapValues.NON_MERGED))
+			getAnnotations(element).stream(annotationName).filter(oncePerParent()).map(
+					MergedAnnotation::withNonMergedAttributes).collect(
+							allAnnotationAttributes())
 		);
 	}
 
@@ -594,7 +595,7 @@ public abstract class AnnotatedElementUtils {
 		).to(() ->
 			getAnnotations(element).stream(annotationName).filter(oncePerParent()).collect(
 					allAnnotationAttributes(MapValues.of(classValuesAsString,
-							nestedAnnotationsAsMap, true)))
+							nestedAnnotationsAsMap)))
 		);
 	}
 
@@ -656,7 +657,7 @@ public abstract class AnnotatedElementUtils {
 		).to(() ->
 			findAnnotations(element).get(annotationType).asMap(
 					AnnotationAttributes::createIfAnnotationPresent,
-					MapValues.of(classValuesAsString, nestedAnnotationsAsMap, false))
+					MapValues.of(classValuesAsString, nestedAnnotationsAsMap))
 		);
 	}
 
@@ -696,7 +697,7 @@ public abstract class AnnotatedElementUtils {
 		).to(() ->
 			findAnnotations(element).get(annotationName).asMap(
 					AnnotationAttributes::createIfAnnotationPresent,
-					MapValues.of(classValuesAsString, nestedAnnotationsAsMap, false))
+					MapValues.of(classValuesAsString, nestedAnnotationsAsMap))
 		);
 	}
 

@@ -89,6 +89,11 @@ final class MissingMergedAnnotation<A extends Annotation>
 	}
 
 	@Override
+	public MergedAnnotation<A> withNonMergedAttributes() {
+		return this;
+	}
+
+	@Override
 	public Map<String, Object> asMap(MapValues... options) {
 		return Collections.emptyMap();
 	}
@@ -130,7 +135,7 @@ final class MissingMergedAnnotation<A extends Annotation>
 	}
 
 	@Override
-	protected Object getAttributeValue(String attributeName, boolean nonMerged) {
+	protected Object getAttributeValue(String attributeName) {
 		throw new NoSuchElementException(
 				"Unable to get attribute value for missing annotation");
 	}

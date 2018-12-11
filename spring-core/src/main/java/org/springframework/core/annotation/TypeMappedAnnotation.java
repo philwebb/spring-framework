@@ -55,6 +55,8 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 
 	private final TypeMappedAnnotation<?> parent;
 
+	private final boolean nonMergedAttributeValues;
+
 	private final Predicate<String> attributeFilter;
 
 	TypeMappedAnnotation(AnnotationTypeMapping mapping, Object source, int aggregateIndex,
@@ -67,7 +69,8 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 			mappedAttributes = new ParentMappedAttributes(mapping,
 					parent.mappedAttributes);
 		}
-		mappedAttributes = MirroredAttributes.applyIfNecessary(mapping, source, mappedAttributes);
+		mappedAttributes = MirroredAttributes.applyIfNecessary(mapping, source,
+				mappedAttributes);
 		this.nonMappedAttributes = MirroredAttributes.applyIfNecessary(mapping, source,
 				parent != null ? mapping.getAnnotationAttributes() : rootAttributes);
 		this.mapping = mapping;
@@ -76,12 +79,13 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 		this.aggregateIndex = aggregateIndex;
 		this.parent = parent;
 		this.attributeFilter = null;
+		this.nonMergedAttributeValues = false;
 	}
 
 	private TypeMappedAnnotation(AnnotationTypeMapping mapping, Object source,
 			int aggregateIndex, DeclaredAttributes mappedAttributes,
 			DeclaredAttributes nonMappedAttributes, TypeMappedAnnotation<?> parent,
-			Predicate<String> attributeFilter) {
+			Predicate<String> attributeFilter, boolean nonMergedAttributeValues) {
 		this.mapping = mapping;
 		this.mappedAttributes = mappedAttributes;
 		this.nonMappedAttributes = nonMappedAttributes;
@@ -89,6 +93,7 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 		this.aggregateIndex = aggregateIndex;
 		this.parent = parent;
 		this.attributeFilter = attributeFilter;
+		this.nonMergedAttributeValues = nonMergedAttributeValues;
 	}
 
 	@Override
@@ -118,7 +123,15 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 			predicate = this.attributeFilter.and(predicate);
 		}
 		return new TypeMappedAnnotation<>(this.mapping, this.source, this.aggregateIndex,
-				this.mappedAttributes, this.nonMappedAttributes, this.parent, predicate);
+				this.mappedAttributes, this.nonMappedAttributes, this.parent, predicate,
+				this.nonMergedAttributeValues);
+	}
+
+	@Override
+	public MergedAnnotation<A> withNonMergedAttributes() {
+		return new TypeMappedAnnotation<>(this.mapping, this.source, this.aggregateIndex,
+				this.mappedAttributes, this.nonMappedAttributes, this.parent,
+				this.attributeFilter, true);
 	}
 
 	@Override
@@ -140,8 +153,9 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 	}
 
 	@Override
-	protected Object getAttributeValue(String attributeName, boolean nonMerged) {
-		DeclaredAttributes attributes = nonMerged ? this.nonMappedAttributes
+	protected Object getAttributeValue(String attributeName) {
+		DeclaredAttributes attributes = this.nonMergedAttributeValues
+				? this.nonMappedAttributes
 				: this.mappedAttributes;
 		return attributes.get(attributeName);
 	}
