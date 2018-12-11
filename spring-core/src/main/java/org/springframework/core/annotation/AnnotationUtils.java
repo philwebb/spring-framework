@@ -549,8 +549,8 @@ public abstract class AnnotationUtils {
 			InternalAnnotationUtils.findAnnotation(clazz, annotationType)
 		).to(() ->
 			MergedAnnotations.from(RepeatableContainers.none(), SearchStrategy.EXHAUSTIVE,
-					clazz).get(annotationType).synthesize(MergedAnnotation::isPresent).orElse(
-							null)
+					clazz).get(annotationType).withNonMergedAttributes().synthesize(
+							MergedAnnotation::isPresent).orElse(null)
 		);
 	}
 
@@ -1473,7 +1473,7 @@ public abstract class AnnotationUtils {
 	private static <A extends Annotation> Collector<MergedAnnotation<?>, ?, Annotation[]> toSynthesizedAnnotationArray() {
 		return Collector.of(ArrayList::new,
 				(list, annotation) -> list.add(annotation.synthesize()),
-				AnnotationUtils::addAll, (list) -> list.toArray(new Annotation[0]));
+				AnnotationUtils::addAll, list -> list.toArray(new Annotation[0]));
 	}
 
 	private static <E, L extends List<E>> L addAll(L list, L additions) {
@@ -1504,7 +1504,7 @@ public abstract class AnnotationUtils {
 	}
 
 	private static Function<MergedAnnotation<?>, AnnotationAttributes> createValidateAnnotationAttributes(Class<? extends Annotation> annotationType) {
-		return (merged) -> {
+		return merged -> {
 			AnnotationAttributes attributes = new AnnotationAttributes(annotationType);
 			attributes.validated= true;
 			return attributes;

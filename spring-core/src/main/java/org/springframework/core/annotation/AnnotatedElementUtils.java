@@ -593,10 +593,10 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.getAllAnnotationAttributes(element,
 					annotationName, classValuesAsString, nestedAnnotationsAsMap)
 		).to(() ->
-			getAnnotations(element).stream(annotationName).filter(oncePerParent()).collect(
-					allAnnotationAttributes(MapValues.of(classValuesAsString,
-							nestedAnnotationsAsMap)))
-		);
+			getAnnotations(element).stream(annotationName).filter(oncePerParent()).map(
+					MergedAnnotation::withNonMergedAttributes).collect(
+							allAnnotationAttributes(MapValues.of(classValuesAsString,
+									nestedAnnotationsAsMap)))		);
 	}
 
 	/**

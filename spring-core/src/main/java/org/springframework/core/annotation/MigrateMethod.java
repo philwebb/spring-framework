@@ -44,8 +44,13 @@ final class MigrateMethod {
 		return new ReplacementMethod<>(originalMethod);
 	}
 
-	static ReplacementCall fromCall(Runnable originalMethod) {
-		return new ReplacementCall(originalMethod);
+	/**
+	 * Create a new {@link ReplacementVoidMethod} for the deprecated method.
+	 * @param originalMethod the original method being migrated
+	 * @return a replacement builder.
+	 */
+	static ReplacementVoidMethod fromCall(Runnable originalMethod) {
+		return new ReplacementVoidMethod(originalMethod);
 	}
 
 	/**
@@ -193,11 +198,15 @@ final class MigrateMethod {
 
 	}
 
-	static class ReplacementCall {
+	/**
+	 * Builder to complete replacement details for a deprecated annotation
+	 * method that returns void.
+	 */
+	static class ReplacementVoidMethod {
 
 		private final Runnable originalMethod;
 
-		public ReplacementCall(Runnable originalMethod) {
+		public ReplacementVoidMethod(Runnable originalMethod) {
 			this.originalMethod = originalMethod;
 		}
 
