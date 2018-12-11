@@ -59,6 +59,8 @@ final class MigrateMethod {
 
 		private Supplier<String> description;
 
+		private boolean skipOriginalExceptionCheck;
+
 		ReplacementMethod(Supplier<T> deprecatedMethod) {
 			this.originalMethod = deprecatedMethod;
 		}
@@ -70,6 +72,11 @@ final class MigrateMethod {
 		 */
 		public ReplacementMethod<T> withDescription(Supplier<String> description) {
 			this.description = description;
+			return this;
+		}
+
+		public ReplacementMethod<T> withSkippedOriginalExceptionCheck() {
+			this.skipOriginalExceptionCheck = true;
 			return this;
 		}
 
@@ -97,7 +104,10 @@ final class MigrateMethod {
 			}
 			catch (RuntimeException expected) {
 				try {
-					this.originalMethod.get();
+					T expectedResult = this.originalMethod.get();
+					if (this.skipOriginalExceptionCheck) {
+						return expectedResult;
+					}
 					throw new Error("Expected exception not thrown", expected);
 				}
 				catch (RuntimeException actual) {

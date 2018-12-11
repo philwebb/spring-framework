@@ -752,7 +752,7 @@ public abstract class AnnotatedElementUtils {
 		return MigrateMethod.from(() ->
 			InternalAnnotatedElementUtils.findAllMergedAnnotations(element,
 					annotationType)
-		).to(() ->
+		).withSkippedOriginalExceptionCheck().to(() ->
 			findAnnotations(element).stream(annotationType).collect(
 					toSynthesizedAggregateAnnotationSet())
 		);

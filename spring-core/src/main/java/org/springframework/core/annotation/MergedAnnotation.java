@@ -384,6 +384,8 @@ public interface MergedAnnotation<A extends Annotation> {
 	 */
 	MergedAnnotation<A> filterAttributes(Predicate<String> predicate);
 
+	MergedAnnotation<A> withNonMergedAttributes();
+
 	/**
 	 * Return an immutable {@link Map} that contains all the annotation
 	 * attributes. The {@link MapValues} options may be used to change the way

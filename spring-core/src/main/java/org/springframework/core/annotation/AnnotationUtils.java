@@ -536,6 +536,10 @@ public abstract class AnnotationUtils {
 	@Deprecated
 	@Nullable
 	public static <A extends Annotation> A findAnnotation(Class<?> clazz, Class<A> annotationType) {
+		if (isInJavaLangAnnotationPackage(annotationType)) {
+			// Merged annotations don't include java.lang types
+			return InternalAnnotationUtils.findAnnotation(clazz, annotationType);
+		}
 		return MigrateMethod.from(() ->
 			InternalAnnotationUtils.findAnnotation(clazz, annotationType)
 		).to(() ->
@@ -645,7 +649,7 @@ public abstract class AnnotationUtils {
 	public static boolean isAnnotationDeclaredLocally(Class<? extends Annotation> annotationType, Class<?> clazz) {
 		return MigrateMethod.from(() ->
 			InternalAnnotationUtils.isAnnotationDeclaredLocally(annotationType, clazz)
-		).to(() ->
+		).withSkippedOriginalExceptionCheck().to(() ->
 			MergedAnnotations.from(clazz).get(annotationType).isDirectlyPresent()
 		);
 	}
@@ -887,7 +891,7 @@ public abstract class AnnotationUtils {
 		).to(() ->
 			MergedAnnotations.of(annotatedElement, annotation).get(
 				annotation.annotationType()).asMap(
-						merged -> new AnnotationAttributes(annotation.annotationType()),
+						createValidateAnnotationAttributes(annotation.annotationType()),
 						MapValues.of(classValuesAsString, nestedAnnotationsAsMap, false))
 		);
 	}
@@ -1492,6 +1496,14 @@ public abstract class AnnotationUtils {
 		Set<String> annotationNames = annotationTypes.stream().map(
 				Class::getName).collect(Collectors.toSet());
 		return annotation -> annotationNames.contains(annotation.getType());
+	}
+
+	private static Function<MergedAnnotation<?>, AnnotationAttributes> createValidateAnnotationAttributes(Class<? extends Annotation> annotationType) {
+		return (merged) -> {
+			AnnotationAttributes attributes = new AnnotationAttributes(annotationType);
+			attributes.validated= true;
+			return attributes;
+		};
 	}
 
 	private static class FirstRunOfPredicate<A extends Annotation>
