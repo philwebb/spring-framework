@@ -20,6 +20,7 @@ import java.lang.annotation.Annotation;
 import java.lang.annotation.Inherited;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Proxy;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.Map;
@@ -42,9 +43,7 @@ import org.springframework.lang.Nullable;
  * @param <A> the annotation type
  * @see MergedAnnotations
  */
-public interface MergedAnnotation<A extends Annotation> {
-
-	// FIXME make comparable
+public interface MergedAnnotation<A extends Annotation>{
 
 	/**
 	 * Return the class name of the actual annotation type.
@@ -451,14 +450,25 @@ public interface MergedAnnotation<A extends Annotation> {
 		return null;
 	}
 
-	/**
-	 * Return a {@link Comparator} that compares merged annotations using
-	 * {@link #getDepth()}.
-	 * @return a depth based comparator
-	 */
-	// FIXME
-	static Comparator<MergedAnnotation<?>> comparingDepth() {
-		return Comparator.comparingInt(MergedAnnotation::getDepth);
+	static <A extends Annotation> Predicate<MergedAnnotation<A>> onTypeIn(Collection<?> types) {
+		return null;
+	}
+
+	@SafeVarargs
+	static <A extends Annotation> Predicate<MergedAnnotation<A>> onTypeIn(Class<? extends Annotation>... types) {
+		return null;
+	}
+
+	static <A extends Annotation> Predicate<MergedAnnotation<A>> onTypeIn(String... typeNames) {
+		return null;
+	}
+
+	static <A extends Annotation> Comparator<MergedAnnotation<A>> comparingDepth() {
+		return null;
+	}
+
+	static <A extends Annotation> Comparator<MergedAnnotation<A>> comparingHighAggregateIndexesFirst() {
+		return null;
 	}
 
 	/**

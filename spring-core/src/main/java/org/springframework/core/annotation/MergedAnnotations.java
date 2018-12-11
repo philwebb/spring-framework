@@ -20,12 +20,17 @@ import java.lang.annotation.Annotation;
 import java.lang.annotation.Inherited;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
+import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collector;
 import java.util.stream.Stream;
 
+import org.springframework.core.annotation.MergedAnnotation.MapValues;
 import org.springframework.core.annotation.type.DeclaredAnnotations;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+import org.springframework.util.MultiValueMap;
 
 /**
  * Provides access to a collection of merged annotations, usually obtained from
@@ -230,7 +235,8 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 * @return a {@link MergedAnnotations} instance containing the annotations
 	 * @see #from(AnnotatedElement)
 	 */
-	static MergedAnnotations of(@Nullable AnnotatedElement source, Annotation... annotations) {
+	static MergedAnnotations of(@Nullable AnnotatedElement source,
+			Annotation... annotations) {
 		return of(RepeatableContainers.standardRepeatables(), source, annotations);
 	}
 
@@ -330,6 +336,33 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 			RepeatableContainers repeatableContainers,
 			Iterable<DeclaredAnnotations> aggregates) {
 		return new TypeMappedAnnotations(classLoader, repeatableContainers, aggregates);
+	}
+
+	static <A extends Annotation> Predicate<MergedAnnotation<A>> onRunOf(Function<? super MergedAnnotation<A>, ?> valueExtractor) {
+		return null;
+	}
+
+	static <A extends Annotation> Predicate<MergedAnnotation<A>> onUnique(Function<MergedAnnotation<A>, Object> keyExtractor) {
+		return null;
+	}
+
+	static <A extends Annotation> Collector<MergedAnnotation<A>, ?, Set<A>> toAnnotationSet() {
+		return null;
+	}
+
+	static <A extends Annotation> Collector<MergedAnnotation<A>, ?, A[]> toAnnotationArray() {
+		return null;
+	}
+
+	static <A extends Annotation> Collector<MergedAnnotation<A>, ?, MultiValueMap<String, Object>> toMultiValueMap(
+			MapValues... options) {
+		return null;
+	}
+
+	static <A extends Annotation> Collector<MergedAnnotation<A>, ?, MultiValueMap<String, Object>> toMultiValueMap(
+			Function<MultiValueMap<String, Object>, MultiValueMap<String, Object>> finisher,
+			MapValues... options) {
+		return null;
 	}
 
 	/**

@@ -899,6 +899,7 @@ public abstract class AnnotatedElementUtils {
 				SearchStrategy.EXHAUSTIVE, element);
 	}
 
+	// MergedAnnotation.matchingTypeContainedIn()
 	private static <A extends Annotation> Predicate<MergedAnnotation<A>> matchingTypes(
 			Set<Class<? extends Annotation>> annotationTypes) {
 		Assert.notNull(annotationTypes, "AnnotationTypes must not be null");
@@ -907,11 +908,14 @@ public abstract class AnnotatedElementUtils {
 		return annotation -> annotationNames.contains(annotation.getType());
 	}
 
+	// MergedAnnotation.matchingOncePerParent(MergedAnnotation::getType)
 	private static Predicate<MergedAnnotation<?>> oncePerParent() {
 		Set<PerParentReference> seen = new HashSet<>();
 		return annotaion -> seen.add(new PerParentReference(annotaion));
 	}
 
+	// MergedAnnotations.toMultiValueMap()
+	// MergedAnnotations.toMultiValueMap(finisher)
 	private static Collector<MergedAnnotation<?>, ?, MultiValueMap<String, Object>> allAnnotationAttributes(
 			MapValues... options) {
 		Supplier<MultiValueMap<String, Object>> supplier = LinkedMultiValueMap::new;
@@ -934,6 +938,7 @@ public abstract class AnnotatedElementUtils {
 		return Collectors.toCollection(LinkedHashSet::new);
 	}
 
+	// MergedAnnotations.toAnnotationSet()
 	private static <A extends Annotation> Collector<MergedAnnotation<A>, ?, Set<A>> toSynthesizedAnnotationSet() {
 		return Collector.of(ArrayList<MergedAnnotation<A>>::new, List::add,
 				AnnotatedElementUtils::addAll,
@@ -941,6 +946,8 @@ public abstract class AnnotatedElementUtils {
 	}
 
 	// FIXME simplify with combined comparator. use sort before collect
+	// MergedAnnotation.comparingAggregateOrder
+
 	private static <A extends Annotation> Collector<MergedAnnotation<A>, ?, Set<A>> toSynthesizedAggregateAnnotationSet() {
 		return Collector.of(AggregateOrderedList<A>::new, AggregateOrderedList::insert,
 				AggregateOrderedList::insertAll,
