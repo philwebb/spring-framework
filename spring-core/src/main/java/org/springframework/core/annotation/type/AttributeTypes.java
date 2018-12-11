@@ -18,6 +18,8 @@ package org.springframework.core.annotation.type;
 
 import java.util.Set;
 
+import org.springframework.lang.Nullable;
+
 /**
  * A collection of {@link AttributeType} instances.
  *
@@ -26,13 +28,18 @@ import java.util.Set;
  */
 public interface AttributeTypes extends Iterable<AttributeType> {
 
-	Set<String> names();
+	/**
+	 * Return all attribute names that are contained in this collection.
+	 * @return all contained attribute names
+	 */
+	Set<String> attributeNames();
 
 	/**
 	 * Return a the matching attribute type for the given attribute name.
 	 * @param name the attribute name
 	 * @return the attribute type or {@code null}
 	 */
+	@Nullable
 	AttributeType get(String name);
 
 	/**

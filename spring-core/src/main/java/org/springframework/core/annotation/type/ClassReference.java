@@ -73,7 +73,7 @@ public final class ClassReference {
 	 * @return a {@link ClassReference} instance.
 	 */
 	public static ClassReference of(Class<?> classType) {
-		Assert.notNull(classType, "ClassType must not be empty");
+		Assert.notNull(classType, "ClassType must not be null");
 		return of(classType.getName());
 	}
 

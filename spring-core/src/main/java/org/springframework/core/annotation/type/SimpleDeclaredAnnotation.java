@@ -27,20 +27,20 @@ import org.springframework.util.Assert;
  */
 class SimpleDeclaredAnnotation implements DeclaredAnnotation {
 
-	private final String className;
+	private final String type;
 
 	private final DeclaredAttributes attributes;
 
-	SimpleDeclaredAnnotation(String className, DeclaredAttributes attributes) {
-		Assert.hasText(className, "ClassName must not be empty");
+	SimpleDeclaredAnnotation(String type, DeclaredAttributes attributes) {
+		Assert.hasText(type, "Type must not be empty");
 		Assert.notNull(attributes, "Attributes must not be null");
-		this.className = className;
+		this.type = type;
 		this.attributes = attributes;
 	}
 
 	@Override
-	public String getClassName() {
-		return this.className;
+	public String getType() {
+		return this.type;
 	}
 
 	@Override

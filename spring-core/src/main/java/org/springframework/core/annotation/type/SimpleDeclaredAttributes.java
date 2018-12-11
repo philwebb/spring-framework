@@ -39,6 +39,7 @@ class SimpleDeclaredAttributes extends AbstractDeclaredAttributes {
 	}
 
 	SimpleDeclaredAttributes(Object... pairs) {
+		Assert.notNull(pairs, "Pairs must not be null");
 		Map<String, Object> map = new LinkedHashMap<>();
 		for (int i = 0; i < pairs.length; i += 2) {
 			map.put(pairs[i].toString(), pairs[i + 1]);

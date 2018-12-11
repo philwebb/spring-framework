@@ -37,6 +37,7 @@ class StandardDeclaredAnnotation implements DeclaredAnnotation {
 		Assert.notNull(annotation, "Annotation must not be null");
 		this.annotation = annotation;
 		this.attributes = new StandardDeclaredAttributes(annotation);
+		validate();
 	}
 
 	public void validate() {
@@ -44,7 +45,7 @@ class StandardDeclaredAnnotation implements DeclaredAnnotation {
 	}
 
 	@Override
-	public String getClassName() {
+	public String getType() {
 		return this.annotation.annotationType().getName();
 	}
 

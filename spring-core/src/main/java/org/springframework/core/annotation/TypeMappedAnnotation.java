@@ -236,7 +236,7 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 
 		@Override
 		public Set<String> names() {
-			return this.annotationType.getAttributeTypes().names();
+			return this.annotationType.getAttributeTypes().attributeNames();
 		}
 
 	}

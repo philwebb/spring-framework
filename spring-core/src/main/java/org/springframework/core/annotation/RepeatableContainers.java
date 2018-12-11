@@ -58,8 +58,8 @@ public abstract class RepeatableContainers {
 
 	void visit(ClassLoader classLoader, DeclaredAnnotation annotation,
 			BiConsumer<AnnotationType, DeclaredAttributes> consumer) {
-		AnnotationType annotationType = AnnotationType.resolve(classLoader,
-				annotation.getClassName());
+		AnnotationType annotationType = AnnotationType.resolve(annotation.getType(),
+				classLoader);
 		if (annotationType != null) {
 			DeclaredAttributes attributes = annotation.getAttributes();
 			AnnotationType repeatableAnnotationType = findContainedRepeatable(classLoader,
@@ -148,7 +148,7 @@ public abstract class RepeatableContainers {
 			AttributeType valueType = type.getAttributeTypes().get("value");
 			if (value != null && value instanceof DeclaredAttributes[]) {
 				String elementType = valueType.getClassName().replace("[]", "");
-				AnnotationType repeatableType = AnnotationType.resolve(classLoader, elementType);
+				AnnotationType repeatableType = AnnotationType.resolve(elementType, classLoader);
 				if (hasAnnotation(repeatableType, REPEATABLE)) {
 					return repeatableType;
 				}
@@ -212,7 +212,7 @@ public abstract class RepeatableContainers {
 		protected AnnotationType findContainedRepeatable(ClassLoader classLoader,
 				AnnotationType type, DeclaredAttributes attributes) {
 			if (type.getClassName().equals(this.container.getName())) {
-				return AnnotationType.resolve(classLoader, this.repeatable.getName());
+				return AnnotationType.resolve(this.repeatable.getName(), classLoader);
 			}
 			return super.findContainedRepeatable(classLoader, type, attributes);
 		}

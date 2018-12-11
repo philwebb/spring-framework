@@ -28,18 +28,12 @@ import java.lang.annotation.Annotation;
  */
 public interface DeclaredAnnotation {
 
-	// FIXME Declared isn't quite right since it could be confused with getDeclaredAnnotations
-	// It's really Annotation (but that'll make the API hard to use)
-	// Perhaps ExplicitAnnotation or DefinedAnnotation or ExpressedAnnotation
-	// Probably DefinedAnnotation
-
 	/**
 	 * Return the class name of the annotation type.
 	 * @return the class name of the annotation
+	 * @see AnnotationType#resolve(String, ClassLoader)
 	 */
-	String getClassName();
-
-	// FIXME we're not consistent with naming. Should we use getType or getClassName?
+	String getType();
 
 	/**
 	 * Return the attributes of of the declared annotation.

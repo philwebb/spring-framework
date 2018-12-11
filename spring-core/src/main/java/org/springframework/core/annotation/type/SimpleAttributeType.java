@@ -16,6 +16,7 @@
 
 package org.springframework.core.annotation.type;
 
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
@@ -35,7 +36,7 @@ class SimpleAttributeType implements AttributeType {
 	private final Object defaultValue;
 
 	SimpleAttributeType(String attributeName, String className,
-			DeclaredAnnotations declaredAnnotations, Object defaultValue) {
+			DeclaredAnnotations declaredAnnotations, @Nullable Object defaultValue) {
 		Assert.notNull(attributeName, "AttributeName must not be null");
 		Assert.notNull(className, "ClassName must not be null");
 		Assert.notNull(declaredAnnotations, "DeclaredAnnotations must not be null");

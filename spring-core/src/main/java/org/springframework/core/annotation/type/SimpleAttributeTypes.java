@@ -55,7 +55,7 @@ class SimpleAttributeTypes implements AttributeTypes {
 	}
 
 	@Override
-	public Set<String> names() {
+	public Set<String> attributeNames() {
 		return this.types.keySet();
 	}
 

@@ -129,7 +129,7 @@ final class AnnotationString {
 			DeclaredAnnotation declaredAnnotation) {
 		result.append(prefix);
 		result.append("@");
-		result.append(declaredAnnotation.getClassName());
+		result.append(declaredAnnotation.getType());
 		DeclaredAttributes attributes = declaredAnnotation.getAttributes();
 		if (!attributes.names().isEmpty()) {
 			appendDeclaredAttributes(result, attributes);

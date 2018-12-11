@@ -18,6 +18,8 @@ package org.springframework.core.annotation.type;
 
 import java.util.Map;
 
+import org.springframework.util.Assert;
+
 /**
  * Provides access to a single annotation attribute.
  *
@@ -26,14 +28,36 @@ import java.util.Map;
  */
 public interface DeclaredAttribute {
 
+	/**
+	 * Return the name of the declared attribute.
+	 * @return the attribute name
+	 */
 	String getName();
 
+	/**
+	 * Return the value of the declared attribute.
+	 * @return the attribute value
+	 */
 	Object getValue();
 
+	/**
+	 * Create a new in-memory {@link DeclaredAttribute} instance from the
+	 * specified {@link Map.Entry map entry}.
+	 * @param entry the source map entry
+	 * @return a new {@link DeclaredAttribute} instance
+	 */
 	static DeclaredAttribute from(Map.Entry<String, Object> entry) {
+		Assert.notNull(entry, "Entry must not be null");
 		return of(entry.getKey(), entry.getValue());
 	}
 
+	/**
+	 * Create a new in-memory {@link DeclaredAttribute} instance from the
+	 * specified name and value.
+	 * @param name the attribute name
+	 * @param value the attribute value
+	 * @return a new {@link DeclaredAttribute} instance
+	 */
 	static DeclaredAttribute of(String name, Object value) {
 		return new SimpleDeclaredAttribute(name, value);
 	}

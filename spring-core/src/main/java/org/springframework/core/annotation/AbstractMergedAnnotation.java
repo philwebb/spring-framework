@@ -236,8 +236,9 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		DeclaredAttributes nestedAttributes = getRequiredAttribute(attributeName,
 				DeclaredAttributes.class);
 		AttributeType attributeType = getAttributeType(attributeName);
-		AnnotationType nestedType = AnnotationType.resolve(getClassLoader(),
-				attributeType.getClassName());
+		AnnotationType nestedType = AnnotationType.resolve(attributeType.getClassName(),
+				getClassLoader());
+		// FIXME check not null
 		return createNested(nestedType, nestedAttributes);
 	}
 
@@ -259,8 +260,9 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		AttributeType attributeType = getAttributeType(attributeName);
 		String arrayType = attributeType.getClassName();
 		String componentType = arrayType.substring(0, arrayType.length() - 2);
-		AnnotationType nestedType = AnnotationType.resolve(getClassLoader(),
-				componentType);
+		AnnotationType nestedType = AnnotationType.resolve(componentType,
+				getClassLoader());
+		// FIXME check not null
 		MergedAnnotation<T>[] result = new MergedAnnotation[nestedAttributes.length];
 		for (int i = 0; i < nestedAttributes.length; i++) {
 			result[i] = createNested(nestedType, nestedAttributes[i]);
@@ -455,8 +457,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	private Object adaptEnumValueReference(EnumValueReference attributeValue,
 			Class<?> requiredType) {
 		if (Enum.class.isAssignableFrom(requiredType)) {
-			String className = attributeValue.getEnumType().getClassName();
-			Class enumType = resolveClassName(className);
+			Class enumType = resolveClassName(attributeValue.getEnumType());
 			return Enum.valueOf(enumType, attributeValue.getValue());
 		}
 		return extract(attributeValue, requiredType);
@@ -475,8 +476,9 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	private Object adaptDeclaredAttributes(DeclaredAttributes attributeValue,
 			AttributeType attributeType, Class<?> requiredType) {
 		if (requiredType.isAnnotation() || requiredType == MergedAnnotation.class) {
-			AnnotationType nestedType = AnnotationType.resolve(getClassLoader(),
-					attributeType.getClassName().replace("[]", ""));
+			AnnotationType nestedType = AnnotationType.resolve(attributeType.getClassName().replace("[]", ""),
+					getClassLoader());
+			// FIXME check not null
 			MergedAnnotation<?> nestedAnnotation = createNested(nestedType,
 					attributeValue);
 			return requiredType.isAnnotation() ? nestedAnnotation.synthesize()

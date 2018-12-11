@@ -16,6 +16,8 @@
 
 package org.springframework.core.annotation.type;
 
+import org.springframework.util.Assert;
+
 /**
  * Simple in-memory {@link AnnotationType} implementation.
  *
@@ -32,6 +34,9 @@ class SimpleAnnotationType implements AnnotationType {
 
 	SimpleAnnotationType(String className, DeclaredAnnotations declaredAnnotations,
 			AttributeTypes attributeTypes) {
+		Assert.notNull(className, "ClassName must not be null");
+		Assert.notNull(declaredAnnotations, "DeclaredAnnotations must not be null");
+		Assert.notNull(attributeTypes, "AttributeTypes must not be null");
 		this.className = className;
 		this.declaredAnnotations = declaredAnnotations;
 		this.attributeTypes = attributeTypes;

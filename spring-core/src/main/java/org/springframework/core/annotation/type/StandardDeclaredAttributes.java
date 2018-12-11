@@ -95,40 +95,42 @@ class StandardDeclaredAttributes extends AbstractDeclaredAttributes {
 	}
 
 	private Object convert(Object value) {
-		if (value != null) {
-			if (value instanceof Class) {
-				return ClassReference.of((Class<?>) value);
+		if (value == null) {
+			return null;
+		}
+		if (value instanceof Class) {
+			return ClassReference.of((Class<?>) value);
+		}
+		if (value instanceof Class<?>[]) {
+			Class<?>[] classes = (Class<?>[]) value;
+			ClassReference[] references = new ClassReference[classes.length];
+			for (int i = 0; i < classes.length; i++) {
+				references[i] = ClassReference.of(classes[i]);
 			}
-			if (value instanceof Class<?>[]) {
-				Class<?>[] classes = (Class<?>[]) value;
-				ClassReference[] references = new ClassReference[classes.length];
-				for (int i = 0; i < classes.length; i++) {
-					references[i] = ClassReference.of(classes[i]);
-				}
-				return references;
+			return references;
+		}
+		if (value instanceof Enum<?>) {
+			return EnumValueReference.of((Enum<?>) value);
+		}
+		if (value instanceof Enum<?>[]) {
+			Enum<?>[] enums = (Enum<?>[]) value;
+			EnumValueReference[] references = new EnumValueReference[enums.length];
+			for (int i = 0; i < enums.length; i++) {
+				references[i] = EnumValueReference.of(enums[i]);
 			}
-			if (value instanceof Enum<?>) {
-				return EnumValueReference.of((Enum<?>) value);
+			return references;
+		}
+		if (value instanceof Annotation) {
+			return new StandardDeclaredAnnotation((Annotation) value).getAttributes();
+		}
+		if (value instanceof Annotation[]) {
+			Annotation[] annotations = (Annotation[]) value;
+			DeclaredAttributes[] attributes = new DeclaredAttributes[annotations.length];
+			for (int i = 0; i < attributes.length; i++) {
+				attributes[i] = new StandardDeclaredAnnotation(
+						annotations[i]).getAttributes();
 			}
-			if (value instanceof Enum<?>[]) {
-				Enum<?>[] enums = (Enum<?>[]) value;
-				EnumValueReference[] references = new EnumValueReference[enums.length];
-				for (int i = 0; i < enums.length; i++) {
-					references[i] = EnumValueReference.of(enums[i]);
-				}
-				return references;
-			}
-			if (value instanceof Annotation) {
-				return new StandardDeclaredAnnotation((Annotation) value).getAttributes();
-			}
-			if (value instanceof Annotation[]) {
-				Annotation[] annotations = (Annotation[]) value;
-				DeclaredAttributes[] attributes = new DeclaredAttributes[annotations.length];
-				for (int i = 0; i < attributes.length; i++) {
-					attributes[i] = new StandardDeclaredAnnotation(annotations[i]).getAttributes();
-				}
-				return attributes;
-			}
+			return attributes;
 		}
 		return value;
 	}

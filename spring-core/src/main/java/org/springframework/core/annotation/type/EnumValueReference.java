@@ -30,19 +30,27 @@ import org.springframework.util.Assert;
  */
 public final class EnumValueReference {
 
-	private final ClassReference enumType;
+	private final String enumType;
 
 	private final String value;
 
-	private EnumValueReference(ClassReference enumType, String value) {
+	private EnumValueReference(String enumType, String value) {
 		this.enumType = enumType;
 		this.value = value;
 	}
 
-	public ClassReference getEnumType() {
+	/**
+	 * Return the enum type class name
+	 * @return the enum type
+	 */
+	public String getEnumType() {
 		return this.enumType;
 	}
 
+	/**
+	 * Return the value of the enum.
+	 * @return the enum value
+	 */
 	public String getValue() {
 		return this.value;
 	}
@@ -70,16 +78,18 @@ public final class EnumValueReference {
 		return 31 * this.enumType.hashCode() + this.value.hashCode();
 	}
 
+	/**
+	 * Create a new {@link EnumValueReference} instance for the specified enum value.
+	 * @param enumValue the source enum value
+	 * @return a new {@link EnumValueReference} instance
+	 */
 	public static EnumValueReference of(Enum<?> enumValue) {
-		return of(ClassReference.of(enumValue.getDeclaringClass()), enumValue.name());
+		Assert.notNull(enumValue, "EnumValue must not be null");
+		return of(enumValue.getDeclaringClass().getName(), enumValue.name());
 	}
 
 	public static EnumValueReference of(String enumType, String value) {
-		return of(ClassReference.of(enumType), value);
-	}
-
-	public static EnumValueReference of(ClassReference enumType, String value) {
-		Assert.notNull(enumType, "EnumClass must not be null");
+		Assert.notNull(enumType, "EnumType must not be null");
 		Assert.hasLength(value, "Value must not be empty");
 		return new EnumValueReference(enumType, value);
 	}

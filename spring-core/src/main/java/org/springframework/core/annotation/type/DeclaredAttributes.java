@@ -19,6 +19,8 @@ package org.springframework.core.annotation.type;
 import java.util.Collections;
 import java.util.Set;
 
+import org.springframework.lang.Nullable;
+
 /**
  * Provides access to annotation attributes.
  *
@@ -72,6 +74,7 @@ public interface DeclaredAttributes extends Iterable<DeclaredAttribute> {
 	 * @param name the attribute name
 	 * @return the attribute value or {@code null}
 	 */
+	@Nullable
 	Object get(String name);
 
 	/**

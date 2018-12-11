@@ -16,6 +16,8 @@
 
 package org.springframework.core.annotation.type;
 
+import org.springframework.lang.Nullable;
+
 /**
  * Provides access to low-level type information relating to a single
  * annotation. Similar to inspecting an annotation {@link Class}, but may be
@@ -23,6 +25,7 @@ package org.springframework.core.annotation.type;
  *
  * @author Phillip Webb
  * @since 5.2
+ * @see DeclaredAnnotation#getType()
  * @see AttributeType
  */
 public interface AnnotationType {
@@ -45,11 +48,6 @@ public interface AnnotationType {
 	 */
 	AttributeTypes getAttributeTypes();
 
-	// FIXME check usage for null
-	static AnnotationType resolve(ClassLoader classLoader, String className) {
-		return SimpleAnnotationTypeResolver.get(classLoader).resolve(className);
-	}
-
 	/**
 	 * Create a new in-memory {@link AnnotationType} with the specific values.
 	 * @param className the annotation class name
@@ -63,4 +61,20 @@ public interface AnnotationType {
 		return new SimpleAnnotationType(className, declaredAnnotations, attributeTypes);
 	}
 
+	/**
+	 * Resolve the given annotation class name into an {@link AnnotationType}
+	 * instance.
+	 * @param className the name of the annotation class
+	 * @param classLoader the class loader to use (may be {@code null}, which
+	 * indicates the default class loader)
+	 * @return an {@link AnnotationType} instance
+	 * @throws IllegalArgumentException if the class name was not resolvable
+	 * (that is, the class could not be found or the class file could not be
+	 * loaded)
+	 */
+	@Nullable
+	static AnnotationType resolve(String className, @Nullable ClassLoader classLoader)
+			throws IllegalArgumentException {
+		return SimpleAnnotationTypeResolver.get(classLoader).resolve(className);
+	}
 }

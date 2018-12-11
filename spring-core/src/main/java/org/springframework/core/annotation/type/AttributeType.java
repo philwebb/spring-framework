@@ -18,6 +18,8 @@ package org.springframework.core.annotation.type;
 
 import java.lang.reflect.Method;
 
+import org.springframework.lang.Nullable;
+
 /**
  * Provides access to low-level type information relating to a single annotation
  * attribute. Similar to inspecting an annotation {@link Method}, but may be
@@ -63,18 +65,20 @@ public interface AttributeType {
 	 * types supported by {@link DeclaredAttributes#get(String)}.
 	 * @return the default value or {@code null}
 	 */
+	@Nullable
 	Object getDefaultValue();
 
 	/**
 	 * Create an in-memory {@link AttributeType} with the specified values.
 	 * @param attributeName the attribute name
 	 * @param className the class name of the attribute type
-	 * @param declaredAnnotations the annotations declared on the attribute method
+	 * @param declaredAnnotations the annotations declared on the attribute
+	 * method
 	 * @param defaultValue the default value, or {@code #null}
 	 * @return a new {@link AnnotationType} instance
 	 */
 	static AttributeType of(String attributeName, String className,
-			DeclaredAnnotations declaredAnnotations, Object defaultValue) {
+			DeclaredAnnotations declaredAnnotations, @Nullable Object defaultValue) {
 		return new SimpleAttributeType(attributeName, className, declaredAnnotations,
 				defaultValue);
 	}
