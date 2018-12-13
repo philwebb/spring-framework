@@ -75,7 +75,8 @@ public class DeclaredAttributesAnnotationVisitorTests {
 		assertThat(a.get("classArray")).isEqualTo(
 				new ClassReference[] { ClassReference.of(StringBuilder.class),
 					ClassReference.of(InputStream.class) });
-		assertThat(a.get("enumValue")).isEqualTo(EnumValueReference.from(ExampleEnum.ONE));
+		assertThat(a.get("enumValue")).isEqualTo(
+				EnumValueReference.from(ExampleEnum.ONE));
 		assertThat(a.get("enumArray")).isEqualTo(
 				new EnumValueReference[] { EnumValueReference.from(ExampleEnum.ONE),
 					EnumValueReference.from(ExampleEnum.TWO) });

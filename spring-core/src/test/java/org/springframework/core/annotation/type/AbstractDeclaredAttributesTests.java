@@ -36,8 +36,7 @@ public abstract class AbstractDeclaredAttributesTests {
 
 	@Test
 	public void toStringReturnsString() {
-		assertThat(createTestAttributes().toString()).isEqualTo(
-				"(value=\"test\")");
+		assertThat(createTestAttributes().toString()).isEqualTo("(value=\"test\")");
 	}
 
 	protected abstract DeclaredAttributes createTestAttributes();

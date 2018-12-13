@@ -41,7 +41,7 @@ import static org.mockito.Mockito.mock;
  */
 public class AnnotationTypeResolverTests {
 
-	private AnnotationTypeResolver resolver = AnnotationTypeResolver.get(
+	private final AnnotationTypeResolver resolver = AnnotationTypeResolver.get(
 			getClass().getClassLoader());
 
 	@Test

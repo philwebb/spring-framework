@@ -91,7 +91,7 @@ public class SimpleAnnotationTypeTests {
 
 	@Test
 	public void toStringReturnsString() {
-		assertThat(type.toString()).isEqualTo("@interface className {\n}");
+		assertThat(this.type.toString()).isEqualTo("@interface className {\n}");
 	}
 
 }
