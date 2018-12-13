@@ -34,7 +34,7 @@ class SimpleAnnotationType implements AnnotationType {
 
 	SimpleAnnotationType(String className, DeclaredAnnotations declaredAnnotations,
 			AttributeTypes attributeTypes) {
-		Assert.notNull(className, "ClassName must not be null");
+		Assert.hasText(className, "ClassName must not be empty");
 		Assert.notNull(declaredAnnotations, "DeclaredAnnotations must not be null");
 		Assert.notNull(attributeTypes, "AttributeTypes must not be null");
 		this.className = className;

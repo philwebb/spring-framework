@@ -17,6 +17,8 @@
 package org.springframework.core.annotation.type;
 
 import java.io.IOException;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 import org.junit.Test;
 
@@ -37,7 +39,7 @@ public class DeclaredAnnotationAnnotationVisitorTests {
 	@Test
 	public void visitShouldConsumeDeclaredAnnotation() throws Exception {
 		DeclaredAnnotation annotation = visit(WithExample.class, Example.class.getName());
-		assertThat(annotation.getClassName()).isEqualTo(Example.class.getName());
+		assertThat(annotation.getType()).isEqualTo(Example.class.getName());
 		assertThat(annotation.getAttributes().get("value")).isEqualTo("test");
 	}
 
@@ -59,14 +61,15 @@ public class DeclaredAnnotationAnnotationVisitorTests {
 		return result[0];
 	}
 
-	@interface Example {
+	@Retention(RetentionPolicy.RUNTIME)
+	private @interface Example {
 
 		String value();
 
 	}
 
 	@Example(value = "test")
-	static class WithExample {
+	private static class WithExample {
 
 	}
 

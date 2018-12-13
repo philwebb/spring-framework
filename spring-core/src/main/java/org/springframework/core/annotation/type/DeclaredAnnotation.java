@@ -51,7 +51,7 @@ public interface DeclaredAnnotation {
 	 * not be read
 	 */
 	static void validate(Annotation annotation) {
-		new StandardDeclaredAnnotation(annotation).validate();
+		new StandardDeclaredAttributes(annotation).forEach(DeclaredAttribute::getValue);
 	}
 
 	/**

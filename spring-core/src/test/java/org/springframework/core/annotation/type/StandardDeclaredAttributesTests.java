@@ -23,21 +23,47 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 /**
  * Tests for {@link StandardDeclaredAttributes}.
  *
  * @author Phillip Webb
  */
-public class StandardDeclaredAttributesTests {
+public class StandardDeclaredAttributesTests extends AbstractDeclaredAttributesTests {
 
 	private StandardDeclaredAttributes attributes;
 
 	@Before
 	public void setup() {
 		this.attributes = new StandardDeclaredAttributes(
-				ExampleClass.class.getDeclaredAnnotation(ExampleAnnotation.class));
+				WithExampleAnnotation.class.getDeclaredAnnotation(
+						ExampleAnnotation.class));
+	}
 
+	@Test
+	public void createWhenAnnotationIsNullThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(
+				() -> new StandardDeclaredAttributes(null)).withMessage(
+						"Annotation must not be null");
+	}
+
+	@Test
+	public void createWhenNotValidThrowsException() {
+		assertThatIllegalStateException().isThrownBy(() -> new StandardDeclaredAttributes(
+				createFailingAnnotation())).withMessageContaining(
+						"Could not obtain annotation attribute value");
+
+	}
+
+	@Test
+	public void namesReturnsNames() {
+		assertThat(this.attributes.names()).containsOnly("stringValue", "byteArray",
+				"classValue", "classArray", "enumValue", "enumArray", "annotationValue",
+				"annotationArray");
 	}
 
 	@Test
@@ -57,22 +83,50 @@ public class StandardDeclaredAttributesTests {
 	@Test
 	public void getWhenEnumReturnsEnumReference() {
 		assertThat(this.attributes.get("enumValue")).isEqualTo(
-				EnumValueReference.of(ExampleEnum.ONE));
+				EnumValueReference.from(ExampleEnum.ONE));
 		assertThat(this.attributes.get("enumArray")).isEqualTo(
-				new EnumValueReference[] { EnumValueReference.of(ExampleEnum.ONE),
-					EnumValueReference.of(ExampleEnum.THREE) });
+				new EnumValueReference[] { EnumValueReference.from(ExampleEnum.ONE),
+					EnumValueReference.from(ExampleEnum.THREE) });
 	}
 
-	@ExampleAnnotation(stringValue = "str", byteArray = { 1, 2,
-		3 }, classValue = String.class, classArray = { String.class,
-			StringBuilder.class }, enumValue = ExampleEnum.ONE, enumArray = {
-				ExampleEnum.ONE, ExampleEnum.THREE })
-	static class ExampleClass {
+	@Test
+	public void getWhenAnnotationReturnsDeclaredAttributes() {
+		DeclaredAttributes value = (DeclaredAttributes) this.attributes.get(
+				"annotationValue");
+		assertThat(value.get("value")).isEqualTo("abc");
+		DeclaredAttributes[] array = (DeclaredAttributes[]) this.attributes.get(
+				"annotationArray");
+		assertThat(array[0].get("value")).isEqualTo("def");
+	}
+
+	@Override
+	protected DeclaredAttributes createTestAttributes() {
+		return new StandardDeclaredAttributes(
+				WithTestAnnotation.class.getAnnotation(TestAnnotation.class));
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private TestAnnotation createFailingAnnotation() {
+		TestAnnotation annotation = mock(TestAnnotation.class);
+		given(annotation.annotationType()).willReturn((Class) TestAnnotation.class);
+		given(annotation.value()).willThrow(new NoClassDefFoundError("FailFailFail"));
+		return annotation;
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	private @interface TestAnnotation {
+
+		String value();
+
+	}
+
+	@TestAnnotation(value = "test")
+	private static class WithTestAnnotation {
 
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface ExampleAnnotation {
+	private @interface ExampleAnnotation {
 
 		String stringValue();
 
@@ -86,9 +140,27 @@ public class StandardDeclaredAttributesTests {
 
 		ExampleEnum[] enumArray();
 
+		TestAnnotation annotationValue();
+
+		TestAnnotation[] annotationArray();
 	}
 
-	enum ExampleEnum {
+	// @formatter:off
+	@ExampleAnnotation(
+			stringValue = "str",
+			byteArray = { 1, 2, 3 },
+			classValue = String.class,
+			classArray = { String.class, StringBuilder.class },
+			enumValue = ExampleEnum.ONE,
+			enumArray = { ExampleEnum.ONE, ExampleEnum.THREE },
+			annotationValue = @TestAnnotation("abc"),
+			annotationArray = { @TestAnnotation("def") })
+	private static class WithExampleAnnotation {
+
+	}
+	// @formatter:on
+
+	private enum ExampleEnum {
 
 		ONE, TWO, THREE
 

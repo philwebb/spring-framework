@@ -32,30 +32,42 @@ import org.springframework.util.Assert;
  */
 class SimpleDeclaredAttributes extends AbstractDeclaredAttributes {
 
-	private final Map<String, Object> values;
+	private final Map<String, Object> attributes;
 
-	SimpleDeclaredAttributes(Map<String, ?> values) {
-		this.values = Collections.unmodifiableMap(values);
+	SimpleDeclaredAttributes(Map<String, ?> attributes) {
+		Assert.notNull(attributes, "Attributes must not be null");
+		this.attributes = Collections.unmodifiableMap(attributes);
+	}
+
+	SimpleDeclaredAttributes(DeclaredAttribute... attributes) {
+		Assert.notNull(attributes, "Attributes must not be null");
+		Map<String, Object> values = new LinkedHashMap<>();
+		for (DeclaredAttribute attribute : attributes) {
+			values.put(attribute.getName(), attribute.getValue());
+		}
+		this.attributes = Collections.unmodifiableMap(values);
 	}
 
 	SimpleDeclaredAttributes(Object... pairs) {
 		Assert.notNull(pairs, "Pairs must not be null");
-		Map<String, Object> map = new LinkedHashMap<>();
+		Assert.isTrue(pairs.length % 2 == 0,
+				"Pairs must contain an even number of elements");
+		Map<String, Object> values = new LinkedHashMap<>();
 		for (int i = 0; i < pairs.length; i += 2) {
-			map.put(pairs[i].toString(), pairs[i + 1]);
+			values.put(pairs[i].toString(), pairs[i + 1]);
 		}
-		this.values = Collections.unmodifiableMap(map);
+		this.attributes = Collections.unmodifiableMap(values);
 	}
 
 	@Override
 	public Set<String> names() {
-		return this.values.keySet();
+		return this.attributes.keySet();
 	}
 
 	@Override
 	public Object get(String name) {
 		Assert.notNull(name, "Name must not be null");
-		Object value = this.values.get(name);
+		Object value = this.attributes.get(name);
 		if (value instanceof boolean[]) {
 			return ((boolean[]) value).clone();
 		}

@@ -16,13 +16,10 @@
 
 package org.springframework.core.annotation.type;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
-import org.springframework.core.annotation.type.ClassReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
  * Tests for {@link ClassReference}.
@@ -31,38 +28,34 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class ClassReferenceTests {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 	@Test
 	public void ofWhenNameIsNullThrowsException() {
-		this.thrown.expect(IllegalArgumentException.class);
-		this.thrown.expectMessage("ClassName must not be empty");
-		ClassReference.of((String) null);
+		assertThatIllegalArgumentException().isThrownBy(
+				() -> ClassReference.of((String) null)).withMessage(
+						"ClassName must not be empty");
 	}
 
 	@Test
 	public void ofWhenClassIsNullThrowsException() {
-		this.thrown.expect(IllegalArgumentException.class);
-		this.thrown.expectMessage("ClassType must not be empty");
-		ClassReference.of((Class<?>) null);
+		assertThatIllegalArgumentException().isThrownBy(
+				() -> ClassReference.of((Class<?>) null)).withMessage(
+						"ClassType must not be null");
 	}
 
 	@Test
 	public void ofWhenNameIsEmptyThrowsException() {
-		this.thrown.expect(IllegalArgumentException.class);
-		this.thrown.expectMessage("ClassName must not be empty");
-		ClassReference.of("");
+		assertThatIllegalArgumentException().isThrownBy(
+				() -> ClassReference.of("")).withMessage("ClassName must not be empty");
 	}
 
 	@Test
-	public void ofWhenClassReturnsClassReference() {
+	public void ofClassReturnsClassReference() {
 		ClassReference reference = ClassReference.of(String.class);
 		assertThat(reference.getClassName()).isEqualTo("java.lang.String");
 	}
 
 	@Test
-	public void ofReturnsClassReference() {
+	public void ofStringReturnsClassReference() {
 		ClassReference reference = ClassReference.of("io.spring.Framework");
 		assertThat(reference.getClassName()).isEqualTo("io.spring.Framework");
 	}

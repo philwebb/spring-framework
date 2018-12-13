@@ -75,6 +75,6 @@ public interface AnnotationType {
 	@Nullable
 	static AnnotationType resolve(String className, @Nullable ClassLoader classLoader)
 			throws IllegalArgumentException {
-		return SimpleAnnotationTypeResolver.get(classLoader).resolve(className);
+		return AnnotationTypeResolver.get(classLoader).resolve(className);
 	}
 }

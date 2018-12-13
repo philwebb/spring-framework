@@ -37,8 +37,8 @@ class SimpleAttributeType implements AttributeType {
 
 	SimpleAttributeType(String attributeName, String className,
 			DeclaredAnnotations declaredAnnotations, @Nullable Object defaultValue) {
-		Assert.notNull(attributeName, "AttributeName must not be null");
-		Assert.notNull(className, "ClassName must not be null");
+		Assert.hasText(attributeName, "AttributeName must not be null");
+		Assert.hasText(className, "ClassName must not be null");
 		Assert.notNull(declaredAnnotations, "DeclaredAnnotations must not be null");
 		this.attributeName = attributeName;
 		this.className = className;
@@ -62,6 +62,7 @@ class SimpleAttributeType implements AttributeType {
 	}
 
 	@Override
+	@Nullable
 	public Object getDefaultValue() {
 		return this.defaultValue;
 	}

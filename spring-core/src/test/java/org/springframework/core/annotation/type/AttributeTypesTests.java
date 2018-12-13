@@ -16,40 +16,23 @@
 
 package org.springframework.core.annotation.type;
 
-import org.springframework.util.Assert;
+import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Simple in-memory {@link DeclaredAttribute} implementation.
+ * Tests for {@link AttributeTypes}.
  *
  * @author Phillip Webb
- * @since 5.2
  */
-class SimpleDeclaredAttribute implements DeclaredAttribute {
+public class AttributeTypesTests {
 
-	private final String name;
-
-	private final Object value;
-
-	SimpleDeclaredAttribute(String name, Object value) {
-		Assert.hasText(name, "Name must not be empty");
-		Assert.notNull(value, "Value must not be null");
-		this.name = name;
-		this.value = value;
-	}
-
-	@Override
-	public String getName() {
-		return this.name;
-	}
-
-	@Override
-	public Object getValue() {
-		return this.value;
-	}
-
-	@Override
-	public String toString() {
-		return AnnotationString.get(this);
+	@Test
+	public void ofReturnsSimpleAttributeTypes() {
+		AttributeTypes types = AttributeTypes.of(AttributeType.of("value",
+				"java.lang.String", DeclaredAnnotations.NONE, null));
+		assertThat(types).isInstanceOf(SimpleAttributeTypes.class);
+		assertThat(types.get("value").getClassName()).isEqualTo("java.lang.String");
 	}
 
 }

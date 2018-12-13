@@ -33,15 +33,10 @@ class StandardDeclaredAnnotation implements DeclaredAnnotation {
 
 	private final StandardDeclaredAttributes attributes;
 
-	public StandardDeclaredAnnotation(Annotation annotation) {
+	StandardDeclaredAnnotation(Annotation annotation) {
 		Assert.notNull(annotation, "Annotation must not be null");
 		this.annotation = annotation;
 		this.attributes = new StandardDeclaredAttributes(annotation);
-		validate();
-	}
-
-	public void validate() {
-		this.attributes.validate();
 	}
 
 	@Override

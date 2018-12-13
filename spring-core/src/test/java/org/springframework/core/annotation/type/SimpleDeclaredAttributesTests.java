@@ -17,26 +17,101 @@
 package org.springframework.core.annotation.type;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
  * Tests for {@link SimpleDeclaredAttributes}.
  *
  * @author Phillip Webb
  */
-public class SimpleDeclaredAttributesTests {
+public class SimpleDeclaredAttributesTests extends AbstractDeclaredAttributesTests {
+
+	@Before
+	public void setup() {
+
+	}
+
+	@Test
+	public void createFromMapWhenValuesIsNullThrowException() {
+		assertThatIllegalArgumentException().isThrownBy(
+				() -> new SimpleDeclaredAttributes((Map<String, ?>) null)).withMessage(
+						"Attributes must not be null");
+	}
+
+	@Test
+	public void createFromAttributeArrayWhenAttributesIsNullThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(
+				() -> new SimpleDeclaredAttributes(
+						(DeclaredAttribute[]) null)).withMessage(
+								"Attributes must not be null");
+	}
+
+	@Test
+	public void createFromPairsWhenPairsIsNullThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(
+				() -> new SimpleDeclaredAttributes((Object[]) null)).withMessage(
+						"Pairs must not be null");
+
+	}
+
+	@Test
+	public void createFromPairsWhenPairsIsOddThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(
+				() -> new SimpleDeclaredAttributes("one", "two", "three")).withMessage(
+						"Pairs must contain an even number of elements");
+	}
+
+	@Test
+	public void createFromMapHasAttributes() {
+		Map<String, Object> map = new LinkedHashMap<>();
+		map.put("a", "b");
+		map.put("c", "d");
+		SimpleDeclaredAttributes attributes = new SimpleDeclaredAttributes(map);
+		assertThat(attributes.get("a")).isEqualTo("b");
+		assertThat(attributes.get("c")).isEqualTo("d");
+		assertThat(attributes.names()).containsExactly("a", "c");
+	}
+
+	@Test
+	public void createFromAttributesArrayHasAttributes() {
+		SimpleDeclaredAttributes attributes = new SimpleDeclaredAttributes(
+				DeclaredAttribute.of("a", "b"), DeclaredAttribute.of("c", "d"));
+		assertThat(attributes.get("a")).isEqualTo("b");
+		assertThat(attributes.get("c")).isEqualTo("d");
+		assertThat(attributes.names()).containsExactly("a", "c");
+	}
+
+	@Test
+	public void createFromPairsHasAttributes() {
+		SimpleDeclaredAttributes attributes = new SimpleDeclaredAttributes("a", "b", "c",
+				"d");
+		assertThat(attributes.get("a")).isEqualTo("b");
+		assertThat(attributes.get("c")).isEqualTo("d");
+		assertThat(attributes.names()).containsExactly("a", "c");
+	}
+
+	@Test
+	public void namesReturnsNames() {
+		SimpleDeclaredAttributes attributes = new SimpleDeclaredAttributes("a", "b", "c",
+				"d");
+		assertThat(attributes.names()).containsExactly("a", "c");
+	}
 
 	@Test
 	public void getShouldReturnValue() {
-		assertThat(getAttributes("test").get("value")).isEqualTo("test");
+		assertThat(createWithSingleValue("test").get("value")).isEqualTo("test");
 	}
 
 	@Test
 	public void getWhenMissingReturnsNull() {
-		assertThat(getAttributes("test").get("missing")).isNull();
+		assertThat(createWithSingleValue("test").get("missing")).isNull();
 	}
 
 	@Test
@@ -50,19 +125,24 @@ public class SimpleDeclaredAttributesTests {
 		assertCloned(new long[] { 1L });
 		assertCloned(new short[] { 1 });
 		assertCloned(new String[] { "s" });
-		assertCloned(new DeclaredAttributes[] { getAttributes("test") });
+		assertCloned(new DeclaredAttributes[] { createWithSingleValue("test") });
 		assertCloned(new ClassReference[] { ClassReference.of("test") });
 		assertCloned(new EnumValueReference[] { EnumValueReference.of("test", "ONE") });
 	}
 
 	private void assertCloned(Object value) {
-		SimpleDeclaredAttributes attributes = getAttributes(value);
+		SimpleDeclaredAttributes attributes = createWithSingleValue(value);
 		Object first = attributes.get("value");
 		Object second = attributes.get("value");
 		assertThat(first).isNotSameAs(second);
 	}
 
-	private SimpleDeclaredAttributes getAttributes(Object value) {
+	@Override
+	protected DeclaredAttributes createTestAttributes() {
+		return createWithSingleValue("test");
+	}
+
+	private SimpleDeclaredAttributes createWithSingleValue(Object value) {
 		return new SimpleDeclaredAttributes(Collections.singletonMap("value", value));
 	}
 

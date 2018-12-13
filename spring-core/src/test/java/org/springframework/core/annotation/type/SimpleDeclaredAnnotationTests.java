@@ -22,6 +22,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
  * Tests for {@link SimpleDeclaredAnnotation}.
@@ -38,17 +39,43 @@ public class SimpleDeclaredAnnotationTests {
 	public void setup() {
 		this.attributes = new SimpleDeclaredAttributes(
 				Collections.singletonMap("value", "test"));
-		this.annotation = new SimpleDeclaredAnnotation("ClassName", this.attributes);
+		this.annotation = new SimpleDeclaredAnnotation("Type", this.attributes);
 	}
 
 	@Test
-	public void getClassNameReturnsClassName() {
-		assertThat(this.annotation.getClassName()).isEqualTo("ClassName");
+	public void createWhenTypeIsNullThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(
+				() -> new SimpleDeclaredAnnotation(null,
+						DeclaredAttributes.NONE)).withMessage("Type must not be empty");
+	}
+
+	@Test
+	public void createWhenTypeIsEmptyThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(
+				() -> new SimpleDeclaredAnnotation("",
+						DeclaredAttributes.NONE)).withMessage("Type must not be empty");
+	}
+
+	@Test
+	public void createWhenAttributesIsNullThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(
+				() -> new SimpleDeclaredAnnotation("Type", null)).withMessage(
+						"Attributes must not be null");
+	}
+
+	@Test
+	public void getTypeReturnsType() {
+		assertThat(this.annotation.getType()).isEqualTo("Type");
 	}
 
 	@Test
 	public void getAttributesReturnsAttributes() {
 		assertThat(this.annotation.getAttributes()).isSameAs(this.attributes);
+	}
+
+	@Test
+	public void toStringReturnsString() {
+		assertThat(this.annotation.toString()).isEqualTo("@Type(value=\"test\")");
 	}
 
 }

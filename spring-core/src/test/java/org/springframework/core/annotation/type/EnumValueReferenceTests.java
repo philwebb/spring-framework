@@ -16,14 +16,10 @@
 
 package org.springframework.core.annotation.type;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
-import org.springframework.core.annotation.type.ClassReference;
-import org.springframework.core.annotation.type.EnumValueReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
  * Tests for {@link EnumValueReference}.
@@ -32,43 +28,46 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class EnumValueReferenceTests {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 	@Test
-	public void ofWhenEnumClassNameIsNullThrowsException() {
-		this.thrown.expect(IllegalArgumentException.class);
-		this.thrown.expectMessage("ClassName must not be empty");
-		EnumValueReference.of((String) null, "ONE");
+	public void fromEnumWhenEnumIsNullThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(
+				() -> EnumValueReference.from(null)).withMessage(
+						"EnumValue must not be null");
 	}
 
 	@Test
-	public void ofWhenEnumClassIsNullThrowsException() {
-		this.thrown.expect(IllegalArgumentException.class);
-		this.thrown.expectMessage("EnumClass must not be null");
-		EnumValueReference.of((ClassReference) null, "ONE");
+	public void ofWhenEnumTypeIsNullThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(
+				() -> EnumValueReference.of((String) null, "ONE")).withMessage(
+						"EnumType must not be empty");
 	}
 
 	@Test
 	public void ofWhenValueIsNullThrowsException() {
-		this.thrown.expect(IllegalArgumentException.class);
-		this.thrown.expectMessage("Value must not be empty");
-		EnumValueReference.of("io.spring.Number", null);
+		assertThatIllegalArgumentException().isThrownBy(
+				() -> EnumValueReference.of("io.spring.Number", null)).withMessage(
+						"Value must not be empty");
 	}
 
 	@Test
-	public void ofWhenValueIsEmptyShouldThrowException() {
-		this.thrown.expect(IllegalArgumentException.class);
-		this.thrown.expectMessage("Value must not be empty");
-		EnumValueReference.of("io.spring.Number", "");
+	public void ofWhenValueIsEmptyThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(
+				() -> EnumValueReference.of("io.spring.Number", "")).withMessage(
+						"Value must not be empty");
 	}
 
 	@Test
-	public void ofReturnsEnumValueReference() {
+	public void ofReturnsEnumValue() {
 		EnumValueReference reference = EnumValueReference.of("io.spring.Number", "ONE");
-		assertThat(reference.getEnumType()).isEqualTo(
-				ClassReference.of("io.spring.Number"));
+		assertThat(reference.getEnumType()).isEqualTo("io.spring.Number");
 		assertThat(reference.getValue()).isEqualTo("ONE");
+	}
+
+	@Test
+	public void fromReturnsEnumValue() {
+		EnumValueReference reference = EnumValueReference.from(TestEnum.TWO);
+		assertThat(reference.getEnumType()).isEqualTo(TestEnum.class.getName());
+		assertThat(reference.getValue()).isEqualTo("TWO");
 	}
 
 	@Test
@@ -86,6 +85,12 @@ public class EnumValueReferenceTests {
 		assertThat(reference1.hashCode()).isEqualTo(reference2.hashCode());
 		assertThat(reference1).isEqualTo(reference1).isEqualTo(reference2).isNotEqualTo(
 				reference3).isNotEqualTo(reference4);
+	}
+
+	private static enum TestEnum {
+
+		ONE, TWO, THREE
+
 	}
 
 }

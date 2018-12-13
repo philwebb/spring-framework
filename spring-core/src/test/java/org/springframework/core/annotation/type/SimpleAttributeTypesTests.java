@@ -17,11 +17,13 @@
 package org.springframework.core.annotation.type;
 
 import java.util.Arrays;
+import java.util.Collection;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
  * Tests for {@link SimpleAttributeTypes}.
@@ -36,9 +38,27 @@ public class SimpleAttributeTypesTests {
 
 	@Before
 	public void setup() {
-		this.type = new SimpleAttributeType("test", "className",
-				DeclaredAnnotations.NONE, null);
+		this.type = new SimpleAttributeType("test", "className", DeclaredAnnotations.NONE,
+				null);
 		this.types = new SimpleAttributeTypes(Arrays.asList(this.type));
+	}
+
+	@Test
+	public void createFromArrayWhenTypesIsNullThrowException() {
+		assertThatIllegalArgumentException().isThrownBy(
+				() -> new SimpleAttributeTypes((AttributeType[]) null)).withMessage(
+						"Types must not be null");
+	}
+
+	@Test
+	public void createFromCollectionWhenTypesIsNullThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(() -> new SimpleAttributeTypes(
+				(Collection<AttributeType>) null)).withMessage("Types must not be null");
+	}
+
+	@Test
+	public void attributeNamesReturnsNames() {
+		assertThat(types.attributeNames()).containsOnly("test");
 	}
 
 	@Test
@@ -52,8 +72,13 @@ public class SimpleAttributeTypesTests {
 	}
 
 	@Test
-	public void iteratorIteratsAttributeTypes() {
+	public void iteratorIteratesAttributeTypes() {
 		assertThat(this.types.iterator()).containsOnly(this.type);
+	}
+
+	@Test
+	public void toStringReturnsString() {
+		assertThat(types.toString()).isEqualTo("className test();");
 	}
 
 }

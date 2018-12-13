@@ -79,18 +79,24 @@ public final class EnumValueReference {
 	}
 
 	/**
-	 * Create a new {@link EnumValueReference} instance for the specified enum value.
+	 * Create a new {@link EnumValueReference} instance from the specified enum value.
 	 * @param enumValue the source enum value
 	 * @return a new {@link EnumValueReference} instance
 	 */
-	public static EnumValueReference of(Enum<?> enumValue) {
+	public static EnumValueReference from(Enum<?> enumValue) {
 		Assert.notNull(enumValue, "EnumValue must not be null");
 		return of(enumValue.getDeclaringClass().getName(), enumValue.name());
 	}
 
+	/**
+	 * Create a new {@link EnumValueReference} instance for the specified enum type and value.
+	 * @param enumType the enum type
+	 * @param value the enum value
+	 * @return a new {@link EnumValueReference} instance
+	 */
 	public static EnumValueReference of(String enumType, String value) {
-		Assert.notNull(enumType, "EnumType must not be null");
-		Assert.hasLength(value, "Value must not be empty");
+		Assert.hasText(enumType, "EnumType must not be empty");
+		Assert.hasText(value, "Value must not be empty");
 		return new EnumValueReference(enumType, value);
 	}
 

@@ -46,7 +46,6 @@ public class AttributeValuesAnnotationVisitorTests {
 		visit(WithSimpleTypes.class, attributes::put);
 		assertThat(attributes).containsOnly(entry("stringValue", "a"),
 				entry("intValue", 1), entry("charValue", 'c'));
-
 	}
 
 	@Test
@@ -62,7 +61,7 @@ public class AttributeValuesAnnotationVisitorTests {
 		Map<String, Object> attributes = new LinkedHashMap<>();
 		visit(WithEnumType.class, attributes::put);
 		assertThat(attributes).containsOnly(
-				entry("enumValue", EnumValueReference.of(ExampleEnum.ONE)));
+				entry("enumValue", EnumValueReference.from(ExampleEnum.ONE)));
 	}
 
 	@Test
@@ -82,7 +81,7 @@ public class AttributeValuesAnnotationVisitorTests {
 	public void visitConsumesEmptySimpleArrayTypes() throws Exception {
 		Map<String, Object> attributes = new LinkedHashMap<>();
 		visit(WithEmptySimpleArrayTypes.class, attributes::put);
-		// We can't easily detect the primite array type so we just use
+		// We can't easily detect the primitive array type so we just use
 		// an empty object array
 		assertThat(attributes).containsOnly(entry("byteArray", new Object[] {}),
 				entry("booleanArray", new Object[] {}),
@@ -107,7 +106,7 @@ public class AttributeValuesAnnotationVisitorTests {
 		Map<String, Object> attributes = new LinkedHashMap<>();
 		visit(WithEnumArrayType.class, attributes::put);
 		assertThat(attributes).containsOnly(entry("enumArray",
-				new EnumValueReference[] { EnumValueReference.of(ExampleEnum.ONE) }));
+				new EnumValueReference[] { EnumValueReference.from(ExampleEnum.ONE) }));
 	}
 
 	private void visit(Class<?> type, BiConsumer<String, Object> consumer)
@@ -127,7 +126,7 @@ public class AttributeValuesAnnotationVisitorTests {
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface SimpleTypes {
+	private @interface SimpleTypes {
 
 		String stringValue();
 
@@ -138,36 +137,36 @@ public class AttributeValuesAnnotationVisitorTests {
 	}
 
 	@SimpleTypes(stringValue = "a", intValue = 1, charValue = 'c')
-	static class WithSimpleTypes {
+	private static class WithSimpleTypes {
 
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface ClassType {
+	private @interface ClassType {
 
 		Class<? extends CharSequence> classValue();
 
 	}
 
 	@ClassType(classValue = StringBuilder.class)
-	static class WithClassType {
+	private static class WithClassType {
 
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface EnumType {
+	private @interface EnumType {
 
 		ExampleEnum enumValue();
 
 	}
 
 	@EnumType(enumValue = ExampleEnum.ONE)
-	static class WithEnumType {
+	private static class WithEnumType {
 
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface SimpleArrayTypes {
+	private @interface SimpleArrayTypes {
 
 		byte[] byteArray();
 
@@ -190,40 +189,40 @@ public class AttributeValuesAnnotationVisitorTests {
 	@SimpleArrayTypes(byteArray = { 1 }, booleanArray = { false }, charArray = {
 		'c' }, shortArray = { 1 }, intArray = {
 			1 }, longArray = { 1 }, floatArray = { 0.1f }, doubleArray = { 0.1 })
-	static class WithSimpleArrayTypes {
+	private static class WithSimpleArrayTypes {
 
 	}
 
 	@SimpleArrayTypes(byteArray = {}, booleanArray = {}, charArray = {}, shortArray = {}, intArray = {}, longArray = {}, floatArray = {}, doubleArray = {})
-	static class WithEmptySimpleArrayTypes {
+	private static class WithEmptySimpleArrayTypes {
 
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface ClassArrayType {
+	private @interface ClassArrayType {
 
 		Class<? extends CharSequence>[] classArray();
 
 	}
 
 	@ClassArrayType(classArray = { StringBuilder.class })
-	static class WithClassArrayType {
+	private static class WithClassArrayType {
 
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface EnumArrayType {
+	private @interface EnumArrayType {
 
 		ExampleEnum[] enumArray();
 
 	}
 
 	@EnumArrayType(enumArray = { ExampleEnum.ONE })
-	static class WithEnumArrayType {
+	private static class WithEnumArrayType {
 
 	}
 
-	static enum ExampleEnum {
+	private static enum ExampleEnum {
 
 		ONE, TWO, THREE
 

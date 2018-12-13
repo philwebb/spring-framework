@@ -21,6 +21,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
+import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
+
 /**
  * Simple in-memory {@link DeclaredAnnotations} implementation.
  *
@@ -31,16 +34,19 @@ class SimpleDeclaredAnnotations implements DeclaredAnnotations {
 
 	private final Object source;
 
-	private final Collection<DeclaredAnnotation> declaredAnnotations;
+	private final Collection<DeclaredAnnotation> annotations;
 
-	SimpleDeclaredAnnotations(Object source, DeclaredAnnotation[] annotations) {
-		this(source, Arrays.asList(annotations));
+	SimpleDeclaredAnnotations(@Nullable Object source, DeclaredAnnotation[] annotations) {
+		Assert.notNull(annotations, "Annotations must not be null");
+		this.source = source;
+		this.annotations = Collections.unmodifiableCollection(Arrays.asList(annotations));
 	}
 
-	SimpleDeclaredAnnotations(Object source, Collection<DeclaredAnnotation> declaredAnnotations) {
+	SimpleDeclaredAnnotations(@Nullable Object source,
+			Collection<DeclaredAnnotation> annotations) {
+		Assert.notNull(annotations, "Annotations must not be null");
 		this.source = source;
-		this.declaredAnnotations = Collections.unmodifiableCollection(
-				declaredAnnotations);
+		this.annotations = Collections.unmodifiableCollection(annotations);
 	}
 
 	@Override
@@ -50,12 +56,12 @@ class SimpleDeclaredAnnotations implements DeclaredAnnotations {
 
 	@Override
 	public int size() {
-		return this.declaredAnnotations.size();
+		return this.annotations.size();
 	}
 
 	@Override
 	public Iterator<DeclaredAnnotation> iterator() {
-		return this.declaredAnnotations.iterator();
+		return this.annotations.iterator();
 	}
 
 	@Override

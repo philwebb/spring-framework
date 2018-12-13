@@ -23,6 +23,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
  * Tests for {@link StandardDeclaredAnnotation}.
@@ -36,12 +37,20 @@ public class StandardDeclaredAnnotationTests {
 	@Before
 	public void setup() {
 		this.annotation = new StandardDeclaredAnnotation(
-				ExampleClass.class.getDeclaredAnnotation(ExampleAnnotation.class));
+				WithExampleAnnotation.class.getDeclaredAnnotation(
+						ExampleAnnotation.class));
 	}
 
 	@Test
-	public void getClassNameReturnsClassName() {
-		assertThat(this.annotation.getClassName()).isEqualTo(
+	public void createWhenAnnotationIsNullThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(
+				() -> new StandardDeclaredAnnotation(null)).withMessage(
+						"Annotation must not be null");
+	}
+
+	@Test
+	public void getTypeReturnsType() {
+		assertThat(this.annotation.getType()).isEqualTo(
 				ExampleAnnotation.class.getName());
 	}
 
@@ -50,15 +59,21 @@ public class StandardDeclaredAnnotationTests {
 		assertThat(this.annotation.getAttributes().get("value")).isNotNull();
 	}
 
-	@ExampleAnnotation("str")
-	static class ExampleClass {
-
+	@Test
+	public void toStringReturnsString() {
+		assertThat(this.annotation.toString()).isEqualTo(
+				"@" + ExampleAnnotation.class.getName() + "(value=\"str\")");
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface ExampleAnnotation {
+	private @interface ExampleAnnotation {
 
 		String value();
+
+	}
+
+	@ExampleAnnotation("str")
+	private static class WithExampleAnnotation {
 
 	}
 

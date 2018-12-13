@@ -22,42 +22,34 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.function.Consumer;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import org.springframework.asm.AnnotationVisitor;
 import org.springframework.asm.ClassReader;
 import org.springframework.asm.ClassVisitor;
 import org.springframework.asm.SpringAsmInfo;
-import org.springframework.core.annotation.type.ClassReference;
-import org.springframework.core.annotation.type.DeclaredAttributes;
-import org.springframework.core.annotation.type.DeclaredAttributesAnnotationVisitor;
-import org.springframework.core.annotation.type.EnumValueReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
- * Test for {@link DeclaredAttributesAnnotationVisitor}.
+ * Tests for {@link DeclaredAttributesAnnotationVisitor}.
  *
  * @author Phillip Webb
  */
 public class DeclaredAttributesAnnotationVisitorTests {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 	private DeclaredAttributes attributes;
 
 	@Test
 	public void createWhenConsumerIsNullThrowsException() {
-		this.thrown.expect(IllegalArgumentException.class);
-		this.thrown.expectMessage("DeclaredAttributesConsumer must not be null");
-		new DeclaredAttributesAnnotationVisitor(null);
+		assertThatIllegalArgumentException().isThrownBy(
+				() -> new DeclaredAttributesAnnotationVisitor(null)).withMessage(
+						"DeclaredAttributesConsumer must not be null");
 	}
 
 	@Test
-	public void applyCreatesExpectedAttributes() throws Exception {
+	public void acceptCreatesExpectedAttributes() throws Exception {
 		ClassReader reader = new ClassReader(ExampleClass.class.getName());
 		reader.accept(new Visitor(this::saveAttributes), ClassReader.SKIP_DEBUG);
 		DeclaredAttributes a = this.attributes;
@@ -83,10 +75,10 @@ public class DeclaredAttributesAnnotationVisitorTests {
 		assertThat(a.get("classArray")).isEqualTo(
 				new ClassReference[] { ClassReference.of(StringBuilder.class),
 					ClassReference.of(InputStream.class) });
-		assertThat(a.get("enumValue")).isEqualTo(EnumValueReference.of(ExampleEnum.ONE));
+		assertThat(a.get("enumValue")).isEqualTo(EnumValueReference.from(ExampleEnum.ONE));
 		assertThat(a.get("enumArray")).isEqualTo(
-				new EnumValueReference[] { EnumValueReference.of(ExampleEnum.ONE),
-					EnumValueReference.of(ExampleEnum.TWO) });
+				new EnumValueReference[] { EnumValueReference.from(ExampleEnum.ONE),
+					EnumValueReference.from(ExampleEnum.TWO) });
 		DeclaredAttributes nested = (DeclaredAttributes) a.get("nestedValue");
 		assertThat(nested.get("value")).isEqualTo("n");
 		DeclaredAttributes[] nestedArray = (DeclaredAttributes[]) a.get("nestedArray");

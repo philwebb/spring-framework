@@ -19,46 +19,79 @@ package org.springframework.core.annotation.type;
 import java.util.Collections;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
  * Tests for {@link SimpleAnnotationType}.
  *
  * @author Phillip Webb
  */
-@Ignore
 public class SimpleAnnotationTypeTests {
-//
-//	private SimpleDeclaredAnnotations declaredAnnotations;
-//
-//	private SimpleAttributeTypes attributeTypes;
-//
-//	private SimpleAnnotationType type;
-//
-//	@Before
-//	public void setup() {
-//		this.declaredAnnotations = new SimpleDeclaredAnnotations(Collections.emptyList());
-//		this.attributeTypes = new SimpleAttributeTypes(Collections.emptyList());
-//		this.type = new SimpleAnnotationType("className", this.declaredAnnotations,
-//				this.attributeTypes);
-//	}
-//
-//	@Test
-//	public void getClassNameReturnsClassName() {
-//		assertThat(this.type.getClassName()).isEqualTo("className");
-//	}
-//
-//	@Test
-//	public void getDeclaredAnnotationsReturnsDeclaredAnnotations() {
-//		assertThat(this.type.getDeclaredAnnotations()).isSameAs(this.declaredAnnotations);
-//	}
-//
-//	@Test
-//	public void getAttributeTypesReturnsAttributeTypes() {
-//		assertThat(this.type.getAttributeTypes()).isSameAs(this.attributeTypes);
-//	}
+
+	private SimpleDeclaredAnnotations declaredAnnotations;
+
+	private SimpleAttributeTypes attributeTypes;
+
+	private SimpleAnnotationType type;
+
+	@Before
+	public void setup() {
+		this.declaredAnnotations = new SimpleDeclaredAnnotations(new Object(),
+				Collections.emptyList());
+		this.attributeTypes = new SimpleAttributeTypes(Collections.emptyList());
+		this.type = new SimpleAnnotationType("className", this.declaredAnnotations,
+				this.attributeTypes);
+	}
+
+	@Test
+	public void createWhenClassNameIsNullThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(
+				() -> new SimpleAnnotationType(null, this.declaredAnnotations,
+						this.attributeTypes)).withMessage("ClassName must not be empty");
+	}
+
+	@Test
+	public void createWhenClassNameIsEmptyThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(() -> new SimpleAnnotationType("",
+				this.declaredAnnotations, this.attributeTypes)).withMessage(
+						"ClassName must not be empty");
+	}
+
+	@Test
+	public void createWhenDeclaredAnnotationsIsNullThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(() -> new SimpleAnnotationType(
+				"com.example.Component", null, this.attributeTypes)).withMessage(
+						"DeclaredAnnotations must not be null");
+	}
+
+	@Test
+	public void createWhenAttributeTypesIsNullThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(() -> new SimpleAnnotationType(
+				"com.example.Component", this.declaredAnnotations, null)).withMessage(
+						"AttributeTypes must not be null");
+	}
+
+	@Test
+	public void getClassNameReturnsClassName() {
+		assertThat(this.type.getClassName()).isEqualTo("className");
+	}
+
+	@Test
+	public void getDeclaredAnnotationsReturnsDeclaredAnnotations() {
+		assertThat(this.type.getDeclaredAnnotations()).isSameAs(this.declaredAnnotations);
+	}
+
+	@Test
+	public void getAttributeTypesReturnsAttributeTypes() {
+		assertThat(this.type.getAttributeTypes()).isSameAs(this.attributeTypes);
+	}
+
+	@Test
+	public void toStringReturnsString() {
+		assertThat(type.toString()).isEqualTo("@interface className {\n}");
+	}
 
 }

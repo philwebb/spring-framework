@@ -23,7 +23,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.StreamSupport;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -72,9 +71,12 @@ public interface DeclaredAnnotations extends Iterable<DeclaredAnnotation> {
 	 */
 	@Nullable
 	default DeclaredAnnotation find(String annotationType) {
-		return StreamSupport.stream(spliterator(), false).filter(
-				annotation -> annotation.getType().equals(
-						annotationType)).findFirst().orElse(null);
+		for (DeclaredAnnotation candidate : this) {
+			if (candidate.getType().equals(annotationType)) {
+				return candidate;
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -148,12 +150,13 @@ public interface DeclaredAnnotations extends Iterable<DeclaredAnnotation> {
 	/**
 	 * Create a new in-memory {@link DeclaredAnnotations} instance containing
 	 * the specified annotations.
+	 * @param source the annotation source or {@code null} if the source is
+	 * unknown
 	 * @param annotations the contained annotations
 	 * @return a new {@link DeclaredAnnotations} instance
 	 */
-	static DeclaredAnnotations of(Object source, DeclaredAnnotation... annotations) {
-		Assert.notNull(source, "Source must not be null");
-		Assert.notNull(annotations, "Annotations must not be null");
+	static DeclaredAnnotations of(@Nullable Object source,
+			DeclaredAnnotation... annotations) {
 		return new SimpleDeclaredAnnotations(source, annotations);
 	}
 
@@ -163,10 +166,8 @@ public interface DeclaredAnnotations extends Iterable<DeclaredAnnotation> {
 	 * @param annotations the contained annotations
 	 * @return a new {@link DeclaredAnnotations} instance
 	 */
-	static DeclaredAnnotations of(Object source,
+	static DeclaredAnnotations of(@Nullable Object source,
 			Collection<DeclaredAnnotation> annotations) {
-		Assert.notNull(source, "Source must not be null");
-		Assert.notNull(annotations, "Annotations must not be null");
 		return new SimpleDeclaredAnnotations(source, annotations);
 	}
 
@@ -221,7 +222,7 @@ public interface DeclaredAnnotations extends Iterable<DeclaredAnnotation> {
 		protected final static Log getLogger() {
 			Log logger = IntrospectionFailures.logger;
 			if (logger == null) {
-				logger = LogFactory.getLog(DeclaredAnnotation.class);
+				logger = LogFactory.getLog(DeclaredAnnotations.class);
 				IntrospectionFailures.logger = logger;
 			}
 			return logger;

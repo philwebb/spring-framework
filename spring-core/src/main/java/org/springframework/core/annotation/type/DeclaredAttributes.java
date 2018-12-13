@@ -79,6 +79,16 @@ public interface DeclaredAttributes extends Iterable<DeclaredAttribute> {
 
 	/**
 	 * Create a new in-memory {@link DeclaredAttributes} containing the
+	 * specified attributes.
+	 * @param attributes the contained attributes
+	 * @return a new {@link DeclaredAttributes} instance
+	 */
+	static DeclaredAttributes of(DeclaredAttribute...attributes) {
+		return new SimpleDeclaredAttributes(attributes);
+	}
+
+	/**
+	 * Create a new in-memory {@link DeclaredAttributes} containing the
 	 * specified name/value pairs.
 	 * @param pairs the names and values to add, alternating from name to value
 	 * @return a new {@link DeclaredAttributes} instance

@@ -33,36 +33,40 @@ import org.springframework.asm.Type;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ConcurrentReferenceHashMap;
 
 /**
- * {@link AnnotationTypeResolver} implementation based on an ASM
- * {@link org.springframework.asm.ClassReader}.
+ * ASM based annotation resolver used by
+ * {@link AnnotationType#resolve(String, ClassLoader)}.
  *
  * @author Phillip Webb
  * @since 5.2
  */
-final class SimpleAnnotationTypeResolver {
+final class AnnotationTypeResolver {
 
-	private static final Map<ClassLoader, SimpleAnnotationTypeResolver> cache = new ConcurrentReferenceHashMap<>(4);
+	private static final Map<ClassLoader, AnnotationTypeResolver> resolverCache = new ConcurrentReferenceHashMap<>(
+			4);
 
-	private static final Map<Resource, AnnotationType> resourceCache = new ConcurrentReferenceHashMap<>(4);
+	private static final Map<Resource, AnnotationType> resourceCache = new ConcurrentReferenceHashMap<>(
+			4);
 
 	private final ResourceLoader resourceLoader;
 
-	private SimpleAnnotationTypeResolver(ResourceLoader resourceLoader) {
-		Assert.notNull(resourceLoader, "ResourceLoader must not be null");
+	AnnotationTypeResolver(ResourceLoader resourceLoader) {
 		this.resourceLoader = resourceLoader;
 	}
 
+	@Nullable
 	public AnnotationType resolve(String className) {
-		Assert.notNull(className, "ClassName must not be null");
+		Assert.hasText(className, "ClassName must not be empty");
 		return resolve(className, true);
 	}
 
-	public AnnotationType resolve(String className, boolean useCache) {
+	@Nullable
+	AnnotationType resolve(String className, boolean useCache) {
 		String resourcePath = getResourcePath(className);
 		Resource resource = this.resourceLoader.getResource(resourcePath);
 		return resolve(resource, useCache);
@@ -77,6 +81,7 @@ final class SimpleAnnotationTypeResolver {
 
 	private AnnotationType load(Resource resource) {
 		try {
+			// FIXME consider throwing rather than returning null
 			try (InputStream inputStream = new BufferedInputStream(
 					resource.getInputStream())) {
 				return load(inputStream);
@@ -101,17 +106,17 @@ final class SimpleAnnotationTypeResolver {
 				+ ClassUtils.CLASS_FILE_SUFFIX;
 	}
 
-	public static SimpleAnnotationTypeResolver get(ClassLoader classLoader) {
+	public static AnnotationTypeResolver get(ClassLoader classLoader) {
 		if (classLoader == null) {
 			return createResolver(classLoader);
 		}
-		return cache.computeIfAbsent(classLoader,
-				SimpleAnnotationTypeResolver::createResolver);
+		return resolverCache.computeIfAbsent(classLoader,
+				AnnotationTypeResolver::createResolver);
 	}
 
-	private static SimpleAnnotationTypeResolver createResolver(ClassLoader classLoader) {
+	private static AnnotationTypeResolver createResolver(ClassLoader classLoader) {
 		DefaultResourceLoader resourceLoader = new DefaultResourceLoader(classLoader);
-		return new SimpleAnnotationTypeResolver(resourceLoader);
+		return new AnnotationTypeResolver(resourceLoader);
 	}
 
 	/**

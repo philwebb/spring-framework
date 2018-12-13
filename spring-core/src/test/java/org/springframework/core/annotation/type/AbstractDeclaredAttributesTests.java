@@ -16,40 +16,30 @@
 
 package org.springframework.core.annotation.type;
 
-import org.springframework.util.Assert;
+import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Simple in-memory {@link DeclaredAttribute} implementation.
+ * Tests for {@link AbstractDeclaredAttributes}.
  *
  * @author Phillip Webb
- * @since 5.2
  */
-class SimpleDeclaredAttribute implements DeclaredAttribute {
+public abstract class AbstractDeclaredAttributesTests {
 
-	private final String name;
-
-	private final Object value;
-
-	SimpleDeclaredAttribute(String name, Object value) {
-		Assert.hasText(name, "Name must not be empty");
-		Assert.notNull(value, "Value must not be null");
-		this.name = name;
-		this.value = value;
+	@Test
+	public void interatorIteratesDeclaredAttributes() {
+		DeclaredAttributes attributes = createTestAttributes();
+		assertThat(attributes).hasSize(1);
+		assertThat(attributes.iterator().next().getValue()).isEqualTo("test");
 	}
 
-	@Override
-	public String getName() {
-		return this.name;
+	@Test
+	public void toStringReturnsString() {
+		assertThat(createTestAttributes().toString()).isEqualTo(
+				"(value=\"test\")");
 	}
 
-	@Override
-	public Object getValue() {
-		return this.value;
-	}
-
-	@Override
-	public String toString() {
-		return AnnotationString.get(this);
-	}
+	protected abstract DeclaredAttributes createTestAttributes();
 
 }

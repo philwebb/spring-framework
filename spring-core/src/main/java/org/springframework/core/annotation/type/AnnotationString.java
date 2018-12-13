@@ -64,23 +64,28 @@ final class AnnotationString {
 	private static <T> String get(BiConsumer<StringBuilder, T> builder, T instance) {
 		StringBuilder result = new StringBuilder();
 		builder.accept(result, instance);
-		return result.toString();
+		return result.toString().trim();
 	}
 
 	private static void appendAnnotationType(StringBuilder result,
 			AnnotationType annotationType) {
 		appendDeclaredAnnotations(result, annotationType.getDeclaredAnnotations());
 		result.append("@interface " + annotationType.getClassName() + " {\n");
-		appendAttributeTypes(result, annotationType.getAttributeTypes());
+		appendAttributeTypes(result, "\t", annotationType.getAttributeTypes());
 		result.append("}");
 	}
 
 	private static void appendAttributeTypes(StringBuilder result,
 			AttributeTypes attributeTypes) {
+		appendAttributeTypes(result, "", attributeTypes);
+	}
+
+	private static void appendAttributeTypes(StringBuilder result, String prefix,
+			AttributeTypes attributeTypes) {
 		if (attributeTypes.iterator().hasNext()) {
 			result.append("\n");
 			for (AttributeType attributeType : attributeTypes) {
-				appendAttributeType(result, "\t", attributeType);
+				appendAttributeType(result, prefix, attributeType);
 				result.append("\n\n");
 			}
 		}

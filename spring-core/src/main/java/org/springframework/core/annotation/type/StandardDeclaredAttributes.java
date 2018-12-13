@@ -38,7 +38,7 @@ class StandardDeclaredAttributes extends AbstractDeclaredAttributes {
 
 	private final Map<String, Method> attributeMethods;
 
-	public StandardDeclaredAttributes(Annotation annotation) {
+	StandardDeclaredAttributes(Annotation annotation) {
 		Assert.notNull(annotation, "Annotation must not be null");
 		this.annotation = annotation;
 		this.attributeMethods = getAttributeMethods(annotation.annotationType());
@@ -66,8 +66,9 @@ class StandardDeclaredAttributes extends AbstractDeclaredAttributes {
 		return (method.getParameterCount() == 0 && method.getReturnType() != void.class);
 	}
 
-	public void validate() {
-		this.attributeMethods.values().forEach(this::get);
+	@Override
+	public Set<String> names() {
+		return this.attributeMethods.keySet();
 	}
 
 	@Override
@@ -77,11 +78,6 @@ class StandardDeclaredAttributes extends AbstractDeclaredAttributes {
 			return null;
 		}
 		return get(method);
-	}
-
-	@Override
-	public Set<String> names() {
-		return this.attributeMethods.keySet();
 	}
 
 	private Object get(Method method) {
@@ -110,13 +106,13 @@ class StandardDeclaredAttributes extends AbstractDeclaredAttributes {
 			return references;
 		}
 		if (value instanceof Enum<?>) {
-			return EnumValueReference.of((Enum<?>) value);
+			return EnumValueReference.from((Enum<?>) value);
 		}
 		if (value instanceof Enum<?>[]) {
 			Enum<?>[] enums = (Enum<?>[]) value;
 			EnumValueReference[] references = new EnumValueReference[enums.length];
 			for (int i = 0; i < enums.length; i++) {
-				references[i] = EnumValueReference.of(enums[i]);
+				references[i] = EnumValueReference.from(enums[i]);
 			}
 			return references;
 		}
