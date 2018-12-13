@@ -43,11 +43,12 @@ public interface AttributeTypes extends Iterable<AttributeType> {
 	AttributeType get(String name);
 
 	/**
-	 * Create a new in-memory {@link AttributeTypes} containing the specified types.
+	 * Create a new in-memory {@link AttributeTypes} containing the specified
+	 * types.
 	 * @param types the contained types
 	 * @return a new {@link AttributeTypes} instance
 	 */
-	static AttributeTypes of(AttributeType...types) {
+	static AttributeTypes of(AttributeType... types) {
 		return new SimpleAttributeTypes(types);
 	}
 

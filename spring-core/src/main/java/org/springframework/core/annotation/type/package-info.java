@@ -4,4 +4,5 @@
  * {@code org.springframework.core.annotation} rather than working directly with
  * these types.
  */
+
 package org.springframework.core.annotation.type;

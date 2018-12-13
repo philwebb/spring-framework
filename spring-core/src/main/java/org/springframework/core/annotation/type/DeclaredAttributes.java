@@ -83,7 +83,7 @@ public interface DeclaredAttributes extends Iterable<DeclaredAttribute> {
 	 * @param attributes the contained attributes
 	 * @return a new {@link DeclaredAttributes} instance
 	 */
-	static DeclaredAttributes of(DeclaredAttribute...attributes) {
+	static DeclaredAttributes of(DeclaredAttribute... attributes) {
 		return new SimpleDeclaredAttributes(attributes);
 	}
 

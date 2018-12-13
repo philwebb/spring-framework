@@ -79,7 +79,8 @@ public final class EnumValueReference {
 	}
 
 	/**
-	 * Create a new {@link EnumValueReference} instance from the specified enum value.
+	 * Create a new {@link EnumValueReference} instance from the specified enum
+	 * value.
 	 * @param enumValue the source enum value
 	 * @return a new {@link EnumValueReference} instance
 	 */
@@ -89,7 +90,8 @@ public final class EnumValueReference {
 	}
 
 	/**
-	 * Create a new {@link EnumValueReference} instance for the specified enum type and value.
+	 * Create a new {@link EnumValueReference} instance for the specified enum
+	 * type and value.
 	 * @param enumType the enum type
 	 * @param value the enum value
 	 * @return a new {@link EnumValueReference} instance
