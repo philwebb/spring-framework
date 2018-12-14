@@ -276,11 +276,6 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	}
 
 	@Override
-	public <T> Optional<T> getNonMergedAttribute(String attributeName, Class<T> type) {
-		return Optional.ofNullable(getAttributeValue(attributeName, type));
-	}
-
-	@Override
 	public MergedAnnotation<A> filterDefaultValues() {
 		return filterAttributes(this::hasNonDefaultValue);
 	}

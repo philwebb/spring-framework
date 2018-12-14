@@ -46,9 +46,11 @@ import static org.junit.Assert.fail;
  * @since 5.0
  */
 @Ignore
-public class TypeMappedAnnotationTest {
-//
-//	private AnnotationTypeResolver resolver = AnnotationTypeResolver.get(
+public class TypeMappedAnnotationTest extends AbstractMergedAnnotationTests {
+
+	// FIXME
+
+	//	private AnnotationTypeResolver resolver = AnnotationTypeResolver.get(
 //			ClassUtils.getDefaultClassLoader());
 //
 //	@Test

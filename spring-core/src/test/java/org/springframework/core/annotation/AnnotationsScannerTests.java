@@ -39,6 +39,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class AnnotationsScannerTests {
 
+	// FIXME revisit again
+
 	@Test
 	public void iteratorWhenDirectScanOnClassFindsAnnotations() {
 		Class<?> source = WithExampleAndOther.class;
@@ -178,7 +180,7 @@ public class AnnotationsScannerTests {
 			this.inherited = true;
 			return StreamSupport.stream(annotations.spliterator(), false).map(
 					annotation -> {
-						String name = ClassUtils.getShortName(annotation.getClassName());
+						String name = ClassUtils.getShortName(annotation.getType());
 						name = name.substring(name.lastIndexOf(".") + 1);
 						name = prefix + name;
 						return name;

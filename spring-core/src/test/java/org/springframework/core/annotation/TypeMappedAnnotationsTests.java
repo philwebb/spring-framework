@@ -27,12 +27,8 @@ import static org.junit.Assert.*;
  *
  * @author Phillip Webb
  */
-@Ignore
-public class TypeMappedAnnotationsTests {
+public class TypeMappedAnnotationsTests extends AbstractMergedAnnotationsTests {
 
-	@Test
-	public void test() {
-		fail("Not yet implemented");
-	}
+	// FIXME
 
 }

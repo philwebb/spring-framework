@@ -16,13 +16,19 @@
 
 package org.springframework.core.annotation;
 
+import org.junit.Test;
+
+import static org.junit.Assert.*;
+
+
 /**
- * Collector implementations exposed via {@link MergedAnnotation} or
- * {@link MergedAnnotations}.
+ * Tests for {@link AnnotationTypeMapping}.
  *
  * @author Phillip Webb
- * @since 5.2
  */
-class MergedAnnotationCollectors {
+public class AnnotationTypeMappingTests {
+
+	// FIXME revisit again
+
 
 }

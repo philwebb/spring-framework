@@ -16,13 +16,14 @@
 
 package org.springframework.core.annotation;
 
+
 /**
- * Collector implementations exposed via {@link MergedAnnotation} or
+ * Predicate implementations exposed via {@link MergedAnnotation} or
  * {@link MergedAnnotations}.
  *
  * @author Phillip Webb
  * @since 5.2
  */
-class MergedAnnotationCollectors {
+class MergedAnnotationPredicates {
 
 }

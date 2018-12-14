@@ -45,6 +45,8 @@ import org.springframework.util.ReflectionUtils.MethodCallback;
 class SynthesizedMergedAnnotationInvocationHandler<A extends Annotation>
 		implements InvocationHandler {
 
+	// FIXME implement SynthesizedAnnotation
+	
 	private final MergedAnnotation<?> annotation;
 
 	private final Class<A> type;

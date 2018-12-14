@@ -16,12 +16,13 @@
 
 package org.springframework.core.annotation;
 
-
 /**
+ * Tests for {@link RepeatableContainers}.
  *
- * @author pwebb
- * @since 5.0
+ * @author Phillip Webb
  */
-class MergedAnnotationFilters {
+public class RepeatableContainersTests {
+
+	// FIXME
 
 }

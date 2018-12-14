@@ -16,23 +16,13 @@
 
 package org.springframework.core.annotation;
 
-import org.junit.Ignore;
-import org.junit.Test;
-
-import static org.junit.Assert.fail;
-
-
 /**
  * Tests for {@link SynthesizedMergedAnnotationInvocationHandler}.
  *
  * @author Phillip Webb
  */
-@Ignore
 public class SynthesizedMergedAnnotationInvocationHandlerTests {
 
-	@Test
-	public void test() {
-		fail("Not yet implemented");
-	}
+	// FIXME
 
 }

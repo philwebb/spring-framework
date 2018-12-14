@@ -16,23 +16,175 @@
 
 package org.springframework.core.annotation;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-
 
 /**
  * Tests for {@link MissingMergedAnnotation}.
  *
  * @author Phillip Webb
  */
-@Ignore
 public class MissingMergedAnnotationTests {
 
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void getType() {
+
+	}
+
+	@Test
+	public void isDirectlyPresent() {
+
+	}
+
+	@Test
+	public void isMetaPresent() {
+
+	}
+	@Test
+	public void getDepth() {
+
+	}
+
+	@Test
+	public void isAncestorOf() {
+
+	}
+
+	@Test
+	public void hasNonDefaultValue() {
+
+	}
+
+	@Test
+	public void hasDefaultValue() {
+
+	}
+
+	@Test
+	public void getByte() {
+
+	}
+
+	@Test
+	public void getByteArray() {
+
+	}
+
+	@Test
+	public void getBoolean() {
+
+	}
+
+	@Test
+	public void getBooleanArray() {
+
+	}
+
+	@Test
+	public void getChar() {
+
+	}
+
+	@Test
+	public void getCharArray() {
+
+	}
+
+	@Test
+	public void getShort() {
+
+	}
+
+	@Test
+	public void getShortArray() {
+
+	}
+
+	@Test
+	public void getInt() {
+
+	}
+
+	@Test
+	public void getIntArray() {
+
+	}
+
+	@Test
+	public void getLong() {
+
+	}
+
+	@Test
+	public void getLongArray() {
+
+	}
+
+	@Test
+	public void getDouble() {
+
+	}
+
+	@Test
+	public void getDoubleArray() {
+
+	}
+
+	@Test
+	public void getFloat() {
+
+	}
+
+	@Test
+	public void getFloatArray() {
+
+	}
+
+	@Test
+	public void getString() {
+
+	}
+
+	@Test
+	public void getStringArray() {
+
+	}
+
+	@Test
+	public void getClass() {
+
+	}
+
+	@Test
+	public void getClassArray() {
+
+	}
+
+	@Test
+	public void getEnum() {
+
+	}
+
+	@Test
+	public void getEnumArray() {
+
+	}
+
+	@Test
+	public void getAnnotation() {
+
+	}
+
+	@Test
+	public void getAnnotationArray() {
+
+	}
+
+	@Test
+	public void getAttribute() {
+
 	}
 
 }
+

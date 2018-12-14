@@ -18,9 +18,11 @@ package org.springframework.core.annotation;
 
 
 /**
+ * Comparator implementations exposed via {@link MergedAnnotation} or
+ * {@link MergedAnnotations}.
  *
- * @author pwebb
- * @since 5.0
+ * @author Phillip Webb
+ * @since 5.2
  */
 class MergedAnnotationComparators {
 

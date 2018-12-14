@@ -33,6 +33,8 @@ import org.junit.rules.ExpectedException;
 @Ignore
 public class AnnotationTypeMappingsTests {
 
+	// FIXME revisit again
+
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
 //

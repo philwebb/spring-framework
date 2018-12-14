@@ -43,7 +43,7 @@ import org.springframework.lang.Nullable;
  * @param <A> the annotation type
  * @see MergedAnnotations
  */
-public interface MergedAnnotation<A extends Annotation>{
+public interface MergedAnnotation<A extends Annotation> {
 
 	/**
 	 * Return the class name of the actual annotation type.
@@ -356,17 +356,6 @@ public interface MergedAnnotation<A extends Annotation>{
 	<T> Optional<T> getAttribute(String attributeName, Class<T> type);
 
 	/**
-	 * Return an optional non-merged attribute value of the specified type. This
-	 * method provides access to the original attribute value without applying
-	 * aliased merging rules, but still respecting any mirrored attributes.
-	 * @param attributeName the attribute name
-	 * @param type the attribute type
-	 * @return an optional value or {@link Optional#empty()} if there is no
-	 * matching attribute
-	 */
-	<T> Optional<T> getNonMergedAttribute(String attributeName, Class<T> type);
-
-	/**
 	 * Return a new view of the annotation with all attributes that have default
 	 * values removed.
 	 * @return a filtered view of the annotation without any attributes that
@@ -383,6 +372,16 @@ public interface MergedAnnotation<A extends Annotation>{
 	 */
 	MergedAnnotation<A> filterAttributes(Predicate<String> predicate);
 
+	/**
+	 * Return a new view of the annotation that exposes non-merged attribute
+	 * values. Methods from this view will return attribute values with only
+	 * alias mirroring rules applied. Aliases to parent attributes will not be
+	 * applied.
+	 * @param attributeName the attribute name
+	 * @param type the attribute type
+	 * @return an optional value or {@link Optional#empty()} if there is no
+	 * matching attribute
+	 */
 	MergedAnnotation<A> withNonMergedAttributes();
 
 	/**
@@ -450,16 +449,19 @@ public interface MergedAnnotation<A extends Annotation>{
 		return null;
 	}
 
-	static <A extends Annotation> Predicate<MergedAnnotation<A>> onTypeIn(Collection<?> types) {
+	static <A extends Annotation> Predicate<MergedAnnotation<A>> onTypeIn(
+			Collection<?> types) {
 		return null;
 	}
 
 	@SafeVarargs
-	static <A extends Annotation> Predicate<MergedAnnotation<A>> onTypeIn(Class<? extends Annotation>... types) {
+	static <A extends Annotation> Predicate<MergedAnnotation<A>> onTypeIn(
+			Class<? extends Annotation>... types) {
 		return null;
 	}
 
-	static <A extends Annotation> Predicate<MergedAnnotation<A>> onTypeIn(String... typeNames) {
+	static <A extends Annotation> Predicate<MergedAnnotation<A>> onTypeIn(
+			String... typeNames) {
 		return null;
 	}
 

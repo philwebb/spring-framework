@@ -25,7 +25,10 @@ import org.junit.Ignore;
  */
 @Ignore
 public class MergedAnnotationsTests {
-//
+
+	// FIXME revisit
+
+
 //	@Test
 //	public void isAnnotationPresent() {
 //		MergedAnnotations annotations = MergedAnnotations.from(

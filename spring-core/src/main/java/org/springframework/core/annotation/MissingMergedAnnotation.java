@@ -79,11 +79,6 @@ final class MissingMergedAnnotation<A extends Annotation>
 	}
 
 	@Override
-	public <T> Optional<T> getNonMergedAttribute(String attributeName, Class<T> type) {
-		return Optional.empty();
-	}
-
-	@Override
 	public MergedAnnotation<A> filterAttributes(Predicate<String> predicate) {
 		return this;
 	}

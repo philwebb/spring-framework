@@ -17,12 +17,12 @@
 package org.springframework.core.annotation;
 
 /**
- * Collector implementations exposed via {@link MergedAnnotation} or
- * {@link MergedAnnotations}.
+ * Tests for {@link AbstractMergedAnnotations}.
  *
  * @author Phillip Webb
- * @since 5.2
  */
-class MergedAnnotationCollectors {
+public abstract class AbstractMergedAnnotationsTests {
+
+	// FIXME might not be possible
 
 }

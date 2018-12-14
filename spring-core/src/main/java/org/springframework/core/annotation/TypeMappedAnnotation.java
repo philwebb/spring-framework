@@ -38,7 +38,7 @@ import org.springframework.util.ObjectUtils;
  * {@link MergedAnnotation} backed by a {@link AnnotationTypeMapping}.
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  * @param <A> the annotation type
  */
 class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotation<A> {

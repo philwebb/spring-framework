@@ -94,8 +94,7 @@ class AnnotationsScanner implements Iterable<DeclaredAnnotations> {
 			this.source = source;
 		}
 
-		public final Collection<DeclaredAnnotations> get(
-				SearchStrategy searchStrategy) {
+		public final Collection<DeclaredAnnotations> get(SearchStrategy searchStrategy) {
 			Collection<DeclaredAnnotations> result = this.results.get(searchStrategy);
 			if (result == null) {
 				result = compute(searchStrategy);

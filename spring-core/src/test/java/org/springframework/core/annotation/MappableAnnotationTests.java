@@ -40,7 +40,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @Ignore
 public class MappableAnnotationTests {
-//
+
+	// FIXME needs to be moved
+
 //	private final AnnotationTypeResolver resolver = AnnotationTypeResolver.get(
 //			ClassUtils.getDefaultClassLoader());
 //
