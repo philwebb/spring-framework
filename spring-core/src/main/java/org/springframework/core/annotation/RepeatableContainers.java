@@ -168,9 +168,9 @@ public abstract class RepeatableContainers {
 	 */
 	private static class ExplicitRepeatableContainer extends RepeatableContainers {
 
-		private Class<? extends Annotation> container;
+		private final Class<? extends Annotation> container;
 
-		private Class<? extends Annotation> repeatable;
+		private final Class<? extends Annotation> repeatable;
 
 		ExplicitRepeatableContainer(RepeatableContainers parent,
 				Class<? extends Annotation> container,

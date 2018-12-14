@@ -1514,7 +1514,7 @@ public abstract class AnnotationUtils {
 	private static class FirstRunOfPredicate<A extends Annotation>
 			implements Predicate<MergedAnnotation<A>> {
 
-		private Function<? super MergedAnnotation<A>, ?> valueExtractor;
+		private final Function<? super MergedAnnotation<A>, ?> valueExtractor;
 
 		private boolean hasLastValue;
 

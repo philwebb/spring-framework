@@ -88,7 +88,7 @@ class AnnotationsScanner implements Iterable<DeclaredAnnotations> {
 
 		private final E source;
 
-		private Map<SearchStrategy, Collection<DeclaredAnnotations>> results = new ConcurrentHashMap<>();
+		private final Map<SearchStrategy, Collection<DeclaredAnnotations>> results = new ConcurrentHashMap<>();
 
 		Results(E source) {
 			this.source = source;

@@ -153,7 +153,7 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 	 */
 	private static class MappableAnnotations implements Iterable<MappableAnnotation> {
 
-		private List<MappableAnnotation> mappableAnnotations;
+		private final List<MappableAnnotation> mappableAnnotations;
 
 		public MappableAnnotations(AnnotatedElement source, Annotation[] annotations,
 				RepeatableContainers repeatableContainers) {
