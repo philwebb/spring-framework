@@ -27,6 +27,8 @@ import java.util.Objects;
  */
 public abstract class AbstractDeclaredAttributes implements DeclaredAttributes {
 
+	// FIXME hide
+
 	@Override
 	public Iterator<DeclaredAttribute> iterator() {
 		return names().stream().map(this::getDeclaredAttribute).filter(

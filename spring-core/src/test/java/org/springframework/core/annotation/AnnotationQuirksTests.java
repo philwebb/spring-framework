@@ -33,15 +33,18 @@ public class AnnotationQuirksTests {
 	public void foo() {
 		One annotation = AnnotatedElementUtils.getMergedAnnotation(WithThree.class,
 				One.class);
-		assertThat(annotation.oneValue()).isEqualTo("foo");
+		assertThat(annotation.a()).isEqualTo("foo");
+//		MergedAnnotation<One> annotation = MergedAnnotations.from(WithThree.class).get(One.class);
+//		//assertThat(annotation.getString("oneValue")).isEqualTo("foo");
+//		assertThat(annotation.getString("twoValue")).isEqualTo("12");
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
 	static @interface One {
 
-		String oneValue() default "11";
+		String a() default "1a";
 
-		String twoValue() default "12";
+		String b() default "1b";
 
 	}
 
@@ -49,8 +52,8 @@ public class AnnotationQuirksTests {
 	@Retention(RetentionPolicy.RUNTIME)
 	static @interface Two {
 
-		@AliasFor(annotation = One.class, attribute = "twoValue")
-		String threeValue() default "21";
+		@AliasFor(annotation = One.class, attribute = "b")
+		String a() default "2a";
 
 	}
 
@@ -58,12 +61,12 @@ public class AnnotationQuirksTests {
 	@Retention(RetentionPolicy.RUNTIME)
 	static @interface Three {
 
-		@AliasFor(annotation = One.class, attribute = "oneValue")
-		String threeValue() default "";
+		@AliasFor(annotation = One.class, attribute = "a")
+		String oneA() default "3a";
 
 	}
 
-	@Three(threeValue = "foo")
+	@Three(oneA = "foo")
 	static class WithThree {
 
 	}

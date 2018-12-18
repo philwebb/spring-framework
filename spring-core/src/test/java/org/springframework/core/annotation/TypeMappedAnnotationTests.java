@@ -24,6 +24,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import org.springframework.core.annotation.AnnotationTypeMapping.Reference;
@@ -50,6 +51,7 @@ import static org.junit.Assert.fail;
  * @author Phillip Webb
  * @since 5.0
  */
+@Ignore
 public class TypeMappedAnnotationTests {
 
 	private final Object source = new Object();

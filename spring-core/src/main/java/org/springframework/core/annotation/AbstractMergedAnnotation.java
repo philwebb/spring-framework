@@ -385,6 +385,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 
 	@SuppressWarnings("unchecked")
 	private <T> T getAttributeValue(String attributeName, Class<T> type) {
+		Assert.hasText(attributeName, "AttributeName must not be null");
 		AttributeType attributeType = getAttributeType(attributeName);
 		if (attributeType == null) {
 			return null;

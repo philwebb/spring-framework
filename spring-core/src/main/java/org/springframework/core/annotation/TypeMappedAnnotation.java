@@ -22,12 +22,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Predicate;
 
 import org.springframework.core.annotation.AnnotationTypeMapping.MirrorSet;
 import org.springframework.core.annotation.AnnotationTypeMapping.Reference;
-import org.springframework.core.annotation.type.AbstractDeclaredAttributes;
 import org.springframework.core.annotation.type.AnnotationType;
 import org.springframework.core.annotation.type.AttributeType;
 import org.springframework.core.annotation.type.DeclaredAttributes;
@@ -47,55 +45,53 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 
 	private final AnnotationTypeMapping mapping;
 
-	private final DeclaredAttributes mappedAttributes;
-
-	private final DeclaredAttributes nonMappedAttributes;
-
 	private final Object source;
 
 	private final int aggregateIndex;
 
 	private final TypeMappedAnnotation<?> parent;
 
-	private final boolean nonMergedAttributeValues;
+	private final Attributes attributes;
+
+	private final boolean nonMergedAttributes;
 
 	private final Predicate<String> attributeFilter;
 
 	TypeMappedAnnotation(AnnotationTypeMapping mapping, Object source, int aggregateIndex,
 			DeclaredAttributes rootAttributes) {
-		TypeMappedAnnotation<?> parent = null;
-		DeclaredAttributes mappedAttributes = rootAttributes;
-		if (mapping.getParent() != null) {
-			parent = new TypeMappedAnnotation<>(mapping.getParent(), source,
-					aggregateIndex, rootAttributes);
-			mappedAttributes = new ParentMappedAttributes(mapping,
-					parent.mappedAttributes);
-		}
-		mappedAttributes = MirroredAttributes.applyIfNecessary(mapping, source,
-				mappedAttributes);
-		this.nonMappedAttributes = MirroredAttributes.applyIfNecessary(mapping, source,
-				parent != null ? mapping.getAnnotationAttributes() : rootAttributes);
 		this.mapping = mapping;
-		this.mappedAttributes = mappedAttributes;
 		this.source = source;
 		this.aggregateIndex = aggregateIndex;
-		this.parent = parent;
+		this.parent = mapping.getParent() != null
+				? new TypeMappedAnnotation<>(mapping.getParent(), source, aggregateIndex,
+						rootAttributes)
+				: null;
+		this.attributes = createAttributes(mapping, source, rootAttributes, this.parent);
+		this.nonMergedAttributes = false;
 		this.attributeFilter = null;
-		this.nonMergedAttributeValues = false;
 	}
 
 	private TypeMappedAnnotation(AnnotationTypeMapping mapping, Object source,
-			int aggregateIndex, DeclaredAttributes mappedAttributes,
-			DeclaredAttributes nonMappedAttributes, TypeMappedAnnotation<?> parent,
-			Predicate<String> attributeFilter, boolean nonMergedAttributeValues) {
+			int aggregateIndex, TypeMappedAnnotation<?> parent, Attributes attributes,
+			Predicate<String> attributeFilter, boolean nonMergedAttributes) {
 		this.mapping = mapping;
-		this.mappedAttributes = mappedAttributes;
-		this.nonMappedAttributes = nonMappedAttributes;
 		this.source = source;
 		this.aggregateIndex = aggregateIndex;
 		this.parent = parent;
+		this.attributes = attributes;
+		this.nonMergedAttributes = nonMergedAttributes;
 		this.attributeFilter = attributeFilter;
-		this.nonMergedAttributeValues = nonMergedAttributeValues;
+	}
+
+	private Attributes createAttributes(AnnotationTypeMapping mapping, Object source,
+			DeclaredAttributes rootAttributes, TypeMappedAnnotation<?> parent) {
+		Attributes attributes = parent != null
+				? new ParentMappedAttributes(mapping, parent)
+				: new RootAttributes(rootAttributes);
+		if (!mapping.getMirrorSets().isEmpty()) {
+			attributes = new MirroredAttributes(mapping, this.source, attributes);
+		}
+		return attributes;
 	}
 
 	@Override
@@ -125,15 +121,13 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 			predicate = this.attributeFilter.and(predicate);
 		}
 		return new TypeMappedAnnotation<>(this.mapping, this.source, this.aggregateIndex,
-				this.mappedAttributes, this.nonMappedAttributes, this.parent, predicate,
-				this.nonMergedAttributeValues);
+				this.parent, this.attributes, predicate, this.nonMergedAttributes);
 	}
 
 	@Override
 	public MergedAnnotation<A> withNonMergedAttributes() {
 		return new TypeMappedAnnotation<>(this.mapping, this.source, this.aggregateIndex,
-				this.mappedAttributes, this.nonMappedAttributes, this.parent,
-				this.attributeFilter, true);
+				this.parent, this.attributes, this.attributeFilter, true);
 	}
 
 	@Override
@@ -156,10 +150,8 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 
 	@Override
 	protected Object getAttributeValue(String attributeName) {
-		DeclaredAttributes attributes = this.nonMergedAttributeValues
-				? this.nonMappedAttributes
-				: this.mappedAttributes;
-		return attributes.get(attributeName);
+		Assert.hasText(attributeName, "AttributeName must not be empty");
+		return this.attributes.get(attributeName, this.nonMergedAttributes);
 	}
 
 	@Override
@@ -175,51 +167,91 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 				this.mapping.getRepeatableContainers(), type).get(type.getClassName());
 	}
 
-	/**
-	 * {@link DeclaredAttributes} decorator to apply mapping rules.
-	 */
-	private static class ParentMappedAttributes extends AbstractDeclaredAttributes {
+	@FunctionalInterface
+	private static interface Attributes {
 
-		private final AnnotationType annotationType;
+		Object get(String name, boolean nonMerged);
 
-		private final DeclaredAttributes annotationAttributes;
+	}
 
-		private final Map<String, Reference> aliases;
+	private static class RootAttributes implements Attributes {
 
-		private final DeclaredAttributes parentAttributes;
+		private final DeclaredAttributes declaredAttributes;
 
-		public ParentMappedAttributes(AnnotationTypeMapping mapping,
-				DeclaredAttributes parentAttributes) {
-			this.annotationType = mapping.getAnnotationType();
-			this.annotationAttributes = mapping.getAnnotationAttributes();
-			this.aliases = mapping.getAliases();
-			this.parentAttributes = parentAttributes;
+		RootAttributes(DeclaredAttributes declaredAttributes) {
+			this.declaredAttributes = declaredAttributes;
 		}
 
 		@Override
-		public Object get(String name) {
-			Assert.notNull(name, "Name must not be null");
-			AttributeType type = this.annotationType.getAttributeTypes().get(name);
+		public Object get(String name, boolean nonMerged) {
+			return this.declaredAttributes.get(name);
+		}
+
+	}
+
+	private static class ParentMappedAttributes implements Attributes {
+
+		private final AnnotationTypeMapping mapping;
+
+		private final TypeMappedAnnotation<?> parent;
+
+		ParentMappedAttributes(AnnotationTypeMapping mapping,
+				TypeMappedAnnotation<?> parent) {
+			this.mapping = mapping;
+			this.parent = parent;
+		}
+
+		@Override
+		public Object get(String name, boolean nonMerged) {
+			if (nonMerged) {
+				return getNonMerged(name);
+			}
+			return getMerged(name);
+		}
+
+		private Object getNonMerged(String name) {
+			return this.mapping.getAnnotationAttributes().get(name);
+		}
+
+		private Object getMerged(String name) {
+			AnnotationType annotationType = this.mapping.getAnnotationType();
+			AttributeType type = annotationType.getAttributeTypes().get(name);
 			Object result = null;
-			Reference alias = this.aliases.get(name);
+			Reference alias = this.mapping.getAliases().get(name);
 			if (alias != null) {
-				String aliasName = alias.getAttribute().getAttributeName();
-				result = this.parentAttributes.get(aliasName);
+				TypeMappedAnnotation<?> aliasAnnotation = findParentWithMapping(
+						alias.getMapping());
+				if (aliasAnnotation != null) {
+					result = aliasAnnotation.getAttributeValue(
+							alias.getAttribute().getAttributeName());
+				}
 			}
 			if (result == null && !isConventionRestricted(name)) {
-				result = this.parentAttributes.get(name);
+				result = this.parent.getAttributeValue(name);
 			}
 			if (result == null) {
-				result = this.annotationAttributes.get(name);
+				result = this.mapping.getAnnotationAttributes().get(name);
 			}
-			if (result == null && type != null) {
-				result = type.getDefaultValue();
+			if (result == null) {
+				result = type != null ? type.getDefaultValue() : null;
 			}
 			if (result != null && isArrayAttributeType(type)
 					&& !ObjectUtils.isArray(result)) {
 				result = wrapInArray(result);
 			}
 			return result;
+		}
+
+		private TypeMappedAnnotation<?> findParentWithMapping(
+				AnnotationTypeMapping mapping) {
+			TypeMappedAnnotation<?> candidate = this.parent;
+			while (candidate != null) {
+				if (candidate.mapping.equals(mapping)) {
+					return candidate;
+				}
+				candidate = candidate.parent;
+			}
+			return null;
 		}
 
 		private boolean isConventionRestricted(String name) {
@@ -236,31 +268,23 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 			return array;
 		}
 
-		@Override
-		public Set<String> names() {
-			return this.annotationType.getAttributeTypes().attributeNames();
-		}
-
 	}
 
-	/**
-	 * {@link DeclaredAttributes} decorator to apply mirroring rules.
-	 */
-	private static class MirroredAttributes extends AbstractDeclaredAttributes {
+	private static class MirroredAttributes implements Attributes {
 
-		private final DeclaredAttributes annotationAttributes;
+		private final AnnotationTypeMapping mapping;
 
 		private final Object source;
 
-		private final DeclaredAttributes sourceAttributes;
+		private final Attributes attributes;
 
 		private final Map<String, Reference> mirrors;
 
-		MirroredAttributes(AnnotationTypeMapping mapping, Object source,
-				DeclaredAttributes sourceAttributes) {
-			this.annotationAttributes = mapping.getAnnotationAttributes();
+		public MirroredAttributes(AnnotationTypeMapping mapping, Object source,
+				Attributes attributes) {
+			this.mapping = mapping;
 			this.source = source;
-			this.sourceAttributes = sourceAttributes;
+			this.attributes = attributes;
 			this.mirrors = getMirrors(mapping.getMirrorSets());
 		}
 
@@ -285,7 +309,7 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 			for (Reference candidate : mirrorSet) {
 				AttributeType attribute = candidate.getAttribute();
 				String name = attribute.getAttributeName();
-				Object value = this.sourceAttributes.get(name);
+				Object value = this.attributes.get(name, false);
 				if (value != null && !isSameAsDefaultValue(value, attribute)) {
 					if (result != null) {
 						checkMirrorPossibleAttributeResult(name, result, value,
@@ -316,8 +340,8 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 		}
 
 		private boolean isShadow(Reference result, Object value, Object lastValue) {
-			Object attributeValue = this.annotationAttributes.get(
-					result.getAttribute().getAttributeName());
+			String name = result.getAttribute().getAttributeName();
+			Object attributeValue = this.mapping.getAnnotationAttributes().get(name);
 			return ObjectUtils.nullSafeEquals(lastValue, attributeValue);
 		}
 
@@ -338,25 +362,12 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 		}
 
 		@Override
-		public Set<String> names() {
-			return this.sourceAttributes.names();
-		}
-
-		@Override
-		public Object get(String name) {
+		public Object get(String name, boolean nonMerged) {
 			Reference mirror = this.mirrors.get(name);
 			if (mirror != null) {
 				name = mirror.getAttribute().getAttributeName();
 			}
-			return this.sourceAttributes.get(name);
-		}
-
-		public static DeclaredAttributes applyIfNecessary(AnnotationTypeMapping mapping,
-				Object source, DeclaredAttributes attributes) {
-			if (mapping.getMirrorSets().isEmpty()) {
-				return attributes;
-			}
-			return new MirroredAttributes(mapping, source, attributes);
+			return this.attributes.get(name, nonMerged);
 		}
 
 	}
