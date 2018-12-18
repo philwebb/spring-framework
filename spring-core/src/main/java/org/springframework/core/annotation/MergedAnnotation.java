@@ -120,15 +120,6 @@ public interface MergedAnnotation<A extends Annotation> {
 	MergedAnnotation<?> getParent();
 
 	/**
-	 * Return this annotation is an ancestor of the specified annotation
-	 * annotation.
-	 * @param annotation the annotation to check
-	 * @return {@code true} if this annotation is a descendant
-	 * @see #getParent()
-	 */
-	boolean isAncestorOf(MergedAnnotation<?> annotation);
-
-	/**
 	 * Return if the specified attribute name as a non-default value when
 	 * compared to the annotation declaration.
 	 * @param attributeName the attribute name
@@ -365,7 +356,8 @@ public interface MergedAnnotation<A extends Annotation> {
 	MergedAnnotation<A> filterDefaultValues();
 
 	/**
-	 * Return a new view of the annotation with matching attributes removed.
+	 * Return a new view of the annotation with only attributes that match the
+	 * given predicate.
 	 * @param predicate a predicate used to filter attribute names
 	 * @return a filtered view of the annotation
 	 * @see #filterDefaultValues()

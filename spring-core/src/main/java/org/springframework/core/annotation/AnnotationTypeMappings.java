@@ -104,7 +104,7 @@ class AnnotationTypeMappings {
 			if (targetDescriptor != null) {
 				Reference target = getTarget(source, targetDescriptor);
 				verifyAliasFor(source, target);
-				target.getMapping().addAlias(target, source);
+				target.getMapping().addAlias(target.getAttribute().getAttributeName(), source);
 				ultimateTargets.add(getUltimateTarget(target), source);
 			}
 		}

@@ -43,6 +43,8 @@ import org.springframework.util.ObjectUtils;
  */
 class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotation<A> {
 
+	// FIXME equals hashcode worry me
+
 	private final AnnotationTypeMapping mapping;
 
 	private final DeclaredAttributes mappedAttributes;
@@ -147,7 +149,7 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 	@Override
 	protected boolean isFiltered(String attributeName) {
 		if (this.attributeFilter != null) {
-			return this.attributeFilter.test(attributeName);
+			return !this.attributeFilter.test(attributeName);
 		}
 		return false;
 	}
@@ -176,7 +178,7 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 	/**
 	 * {@link DeclaredAttributes} decorator to apply mapping rules.
 	 */
-	private class ParentMappedAttributes extends AbstractDeclaredAttributes {
+	private static class ParentMappedAttributes extends AbstractDeclaredAttributes {
 
 		private final AnnotationType annotationType;
 

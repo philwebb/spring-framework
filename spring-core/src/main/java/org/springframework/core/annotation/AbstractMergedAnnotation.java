@@ -37,6 +37,7 @@ import org.springframework.core.annotation.type.AttributeType;
 import org.springframework.core.annotation.type.ClassReference;
 import org.springframework.core.annotation.type.DeclaredAttributes;
 import org.springframework.core.annotation.type.EnumValueReference;
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
@@ -109,14 +110,6 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	@Override
 	public int getDepth() {
 		return getParent() != null ? getParent().getDepth() + 1 : 0;
-	}
-
-	@Override
-	public boolean isAncestorOf(MergedAnnotation<?> annotation) {
-		if (getParent() == null) {
-			return false;
-		}
-		return getParent().equals(annotation) || getParent().isAncestorOf(annotation);
 	}
 
 	@Override
@@ -226,20 +219,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 			Class<T> type) throws NoSuchElementException {
 		Assert.notNull(attributeName, "AttributeName must not be null");
 		Assert.notNull(type, "Type must not be null");
-		MergedAnnotation<T> annotation = getAnnotation(attributeName);
-		Assert.isInstanceOf(type, annotation);
-		return annotation;
-	}
-
-	private <T extends Annotation> MergedAnnotation<T> getAnnotation(
-			String attributeName) {
-		DeclaredAttributes nestedAttributes = getRequiredAttribute(attributeName,
-				DeclaredAttributes.class);
-		AttributeType attributeType = getAttributeType(attributeName);
-		AnnotationType nestedType = AnnotationType.resolve(attributeType.getClassName(),
-				getClassLoader());
-		// FIXME check not null
-		return createNested(nestedType, nestedAttributes);
+		return getNested(attributeName, type);
 	}
 
 	@Override
@@ -247,27 +227,54 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 			String attributeName, Class<T> type) throws NoSuchElementException {
 		Assert.notNull(attributeName, "AttributeName must not be null");
 		Assert.notNull(type, "Type must not be null");
-		MergedAnnotation<T>[] annotationArray = getAnnotationArray(attributeName);
-		Assert.isInstanceOf(type, annotationArray);
-		return annotationArray;
+		return getNestedArray(attributeName, type);
+	}
+
+	private <T extends Annotation> MergedAnnotation<T> getNested(String attributeName,
+			@Nullable Class<?> expectedType) {
+		AttributeType attributeType = getAttributeType(attributeName);
+		Assert.state(!isArrayType(attributeType),
+				"Attribute '" + attributeName + "' is an array type");
+		AnnotationType nestedType = AnnotationType.resolve(attributeType.getClassName(),
+				getClassLoader());
+		assertType(attributeName, nestedType, expectedType);
+		DeclaredAttributes nestedAttributes = getRequiredAttribute(attributeName,
+				DeclaredAttributes.class);
+		return createNested(nestedType, nestedAttributes);
 	}
 
 	@SuppressWarnings("unchecked")
-	private final <T extends Annotation> MergedAnnotation<T>[] getAnnotationArray(
-			String attributeName) {
+	private final <T extends Annotation> MergedAnnotation<T>[] getNestedArray(
+			String attributeName, @Nullable Class<?> expectedElementType) {
+		AttributeType attributeType = getAttributeType(attributeName);
+		Assert.state(isArrayType(attributeType),
+				"Attribute '" + attributeName + "' is not an array type");
+		String arrayType = attributeType.getClassName();
+		String elementType = arrayType.substring(0, arrayType.length() - 2);
+		AnnotationType nestedType = AnnotationType.resolve(elementType, getClassLoader());
+		assertType(attributeName, nestedType, expectedElementType);
 		DeclaredAttributes[] nestedAttributes = getRequiredAttribute(attributeName,
 				DeclaredAttributes[].class);
-		AttributeType attributeType = getAttributeType(attributeName);
-		String arrayType = attributeType.getClassName();
-		String componentType = arrayType.substring(0, arrayType.length() - 2);
-		AnnotationType nestedType = AnnotationType.resolve(componentType,
-				getClassLoader());
-		// FIXME check not null
 		MergedAnnotation<T>[] result = new MergedAnnotation[nestedAttributes.length];
 		for (int i = 0; i < nestedAttributes.length; i++) {
 			result[i] = createNested(nestedType, nestedAttributes[i]);
 		}
 		return result;
+	}
+
+	private boolean isArrayType(AttributeType attributeType) {
+		return attributeType.getClassName().endsWith("[]");
+	}
+
+	private void assertType(String attributeName, AnnotationType actualType,
+			Class<?> expectedType) {
+		if (expectedType != null) {
+			String expectedName = expectedType.getName();
+			String actualName = actualType.getClassName();
+			Assert.state(expectedName.equals(actualName),
+					"Attribute '" + attributeName + "' is a " + actualName
+							+ " and cannot be cast to " + expectedName);
+		}
 	}
 
 	@Override
@@ -471,8 +478,8 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	private Object adaptDeclaredAttributes(DeclaredAttributes attributeValue,
 			AttributeType attributeType, Class<?> requiredType) {
 		if (requiredType.isAnnotation() || requiredType == MergedAnnotation.class) {
-			AnnotationType nestedType = AnnotationType.resolve(attributeType.getClassName().replace("[]", ""),
-					getClassLoader());
+			AnnotationType nestedType = AnnotationType.resolve(
+					attributeType.getClassName().replace("[]", ""), getClassLoader());
 			// FIXME check not null
 			MergedAnnotation<?> nestedAnnotation = createNested(nestedType,
 					attributeValue);
@@ -532,10 +539,10 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		String name = attributeType.getAttributeName();
 		Object value = getAttributeValue(name);
 		if (value instanceof DeclaredAttributes) {
-			value = getAnnotation(name);
+			value = getNested(name, null);
 		}
 		else if (value instanceof DeclaredAttributes[]) {
-			value = getAnnotationArray(name);
+			value = getNestedArray(name, null);
 		}
 		if (value != null && value.getClass().isArray()) {
 			StringBuilder content = new StringBuilder();

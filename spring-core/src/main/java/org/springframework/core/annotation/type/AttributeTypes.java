@@ -16,6 +16,7 @@
 
 package org.springframework.core.annotation.type;
 
+import java.util.Collections;
 import java.util.Set;
 
 import org.springframework.lang.Nullable;
@@ -27,6 +28,11 @@ import org.springframework.lang.Nullable;
  * @since 5.2
  */
 public interface AttributeTypes extends Iterable<AttributeType> {
+
+	/**
+	 * Constant that can be used when there are no attribute types.
+	 */
+	AttributeTypes NONE = new SimpleAttributeTypes(Collections.emptyList());
 
 	/**
 	 * Return all attribute names that are contained in this collection.

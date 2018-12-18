@@ -16,6 +16,8 @@
 
 package org.springframework.core.annotation.type;
 
+import java.lang.annotation.Annotation;
+
 import org.springframework.lang.Nullable;
 
 /**
@@ -62,6 +64,22 @@ public interface AnnotationType {
 	}
 
 	/**
+	 * Resolve the given annotation class into an {@link AnnotationType}
+	 * instance.
+	 * @param annotationClass the annotation class to resolve
+	 * @return an {@link AnnotationType} instance
+	 * @throws IllegalArgumentException if the class name was not resolvable
+	 * (that is, the class could not be found or the class file could not be
+	 * loaded)
+	 * @see #resolve(String, ClassLoader)
+	 */
+	@Nullable
+	static AnnotationType resolve(Class<? extends Annotation> annotationClass)
+			throws IllegalArgumentException {
+		return AnnotationTypeResolver.resolve(annotationClass);
+	}
+
+	/**
 	 * Resolve the given annotation class name into an {@link AnnotationType}
 	 * instance.
 	 * @param className the name of the annotation class
@@ -71,10 +89,11 @@ public interface AnnotationType {
 	 * @throws IllegalArgumentException if the class name was not resolvable
 	 * (that is, the class could not be found or the class file could not be
 	 * loaded)
+	 * @see #resolve(Class)
 	 */
 	@Nullable
 	static AnnotationType resolve(String className, @Nullable ClassLoader classLoader)
 			throws IllegalArgumentException {
-		return AnnotationTypeResolver.get(classLoader).resolve(className);
+		return AnnotationTypeResolver.resolve(className, classLoader);
 	}
 }

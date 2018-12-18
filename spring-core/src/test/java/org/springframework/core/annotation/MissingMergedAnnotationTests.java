@@ -16,9 +16,15 @@
 
 package org.springframework.core.annotation;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.util.NoSuchElementException;
+
+import org.assertj.core.api.ThrowableTypeAssert;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
  * Tests for {@link MissingMergedAnnotation}.
@@ -27,164 +33,240 @@ import static org.junit.Assert.*;
  */
 public class MissingMergedAnnotationTests {
 
-	@Test
-	public void getType() {
+	private MergedAnnotation<?> missing = MissingMergedAnnotation.getInstance();
 
+	@Test
+	public void getTypeThrowsNoSuchElementException() {
+		assertThatNoSuchElementException().isThrownBy(() -> this.missing.getType());
 	}
 
 	@Test
-	public void isDirectlyPresent() {
-
+	public void isPresentReturnsFalse() {
+		assertThat(this.missing.isPresent()).isFalse();
 	}
 
 	@Test
-	public void isMetaPresent() {
-
-	}
-	@Test
-	public void getDepth() {
-
+	public void isDirectlyPresentReturnsFalse() {
+		assertThat(this.missing.isDirectlyPresent()).isFalse();
 	}
 
 	@Test
-	public void isAncestorOf() {
-
+	public void isMetaPresentReturnsFalse() {
+		assertThat(this.missing.isMetaPresent()).isFalse();
 	}
 
 	@Test
-	public void hasNonDefaultValue() {
-
+	public void getDepthReturnsZero() {
+		assertThat(this.missing.getDepth()).isEqualTo(0);
 	}
 
 	@Test
-	public void hasDefaultValue() {
-
+	public void getAggregateIndexReturnsMinusOne() {
+		assertThat(this.missing.getAggregateIndex()).isEqualTo(-1);
 	}
 
 	@Test
-	public void getByte() {
-
+	public void getSourceReturnsNull() {
+		assertThat(this.missing.getSource()).isNull();
 	}
 
 	@Test
-	public void getByteArray() {
-
+	public void getParentReturnsNull() {
+		assertThat(this.missing.getParent()).isNull();
 	}
 
 	@Test
-	public void getBoolean() {
-
+	public void hasNonDefaultValueThrowsNoSuchElementException() {
+		assertThatNoSuchElementException().isThrownBy(
+				() -> this.missing.hasNonDefaultValue("value"));
 	}
 
 	@Test
-	public void getBooleanArray() {
-
+	public void hasDefaultValueThrowsNoSuchElementException() {
+		assertThatNoSuchElementException().isThrownBy(
+				() -> this.missing.hasDefaultValue("value"));
 	}
 
 	@Test
-	public void getChar() {
-
+	public void getByteThrowsNoSuchElementException() {
+		assertThatNoSuchElementException().isThrownBy(
+				() -> this.missing.getByte("value"));
 	}
 
 	@Test
-	public void getCharArray() {
-
+	public void getByteArrayThrowsNoSuchElementException() {
+		assertThatNoSuchElementException().isThrownBy(
+				() -> this.missing.getByteArray("value"));
 	}
 
 	@Test
-	public void getShort() {
-
+	public void getBooleanThrowsNoSuchElementException() {
+		assertThatNoSuchElementException().isThrownBy(
+				() -> this.missing.getBoolean("value"));
 	}
 
 	@Test
-	public void getShortArray() {
-
+	public void getBooleanArrayThrowsNoSuchElementException() {
+		assertThatNoSuchElementException().isThrownBy(
+				() -> this.missing.getBooleanArray("value"));
 	}
 
 	@Test
-	public void getInt() {
-
+	public void getCharThrowsNoSuchElementException() {
+		assertThatNoSuchElementException().isThrownBy(
+				() -> this.missing.getChar("value"));
 	}
 
 	@Test
-	public void getIntArray() {
-
+	public void getCharArrayThrowsNoSuchElementException() {
+		assertThatNoSuchElementException().isThrownBy(
+				() -> this.missing.getCharArray("value"));
 	}
 
 	@Test
-	public void getLong() {
-
+	public void getShortThrowsNoSuchElementException() {
+		assertThatNoSuchElementException().isThrownBy(
+				() -> this.missing.getShort("value"));
 	}
 
 	@Test
-	public void getLongArray() {
-
+	public void getShortArrayThrowsNoSuchElementException() {
+		assertThatNoSuchElementException().isThrownBy(
+				() -> this.missing.getShortArray("value"));
 	}
 
 	@Test
-	public void getDouble() {
-
+	public void getIntThrowsNoSuchElementException() {
+		assertThatNoSuchElementException().isThrownBy(() -> this.missing.getInt("value"));
 	}
 
 	@Test
-	public void getDoubleArray() {
-
+	public void getIntArrayThrowsNoSuchElementException() {
+		assertThatNoSuchElementException().isThrownBy(
+				() -> this.missing.getIntArray("value"));
 	}
 
 	@Test
-	public void getFloat() {
-
+	public void getLongThrowsNoSuchElementException() {
+		assertThatNoSuchElementException().isThrownBy(
+				() -> this.missing.getLong("value"));
 	}
 
 	@Test
-	public void getFloatArray() {
-
+	public void getLongArrayThrowsNoSuchElementException() {
+		assertThatNoSuchElementException().isThrownBy(
+				() -> this.missing.getLongArray("value"));
 	}
 
 	@Test
-	public void getString() {
-
+	public void getDoubleThrowsNoSuchElementException() {
+		assertThatNoSuchElementException().isThrownBy(
+				() -> this.missing.getDouble("value"));
 	}
 
 	@Test
-	public void getStringArray() {
-
+	public void getDoubleArrayThrowsNoSuchElementException() {
+		assertThatNoSuchElementException().isThrownBy(
+				() -> this.missing.getDoubleArray("value"));
 	}
 
 	@Test
-	public void getClass() {
-
+	public void getFloatThrowsNoSuchElementException() {
+		assertThatNoSuchElementException().isThrownBy(
+				() -> this.missing.getFloat("value"));
 	}
 
 	@Test
-	public void getClassArray() {
-
+	public void getFloatArrayThrowsNoSuchElementException() {
+		assertThatNoSuchElementException().isThrownBy(
+				() -> this.missing.getFloatArray("value"));
 	}
 
 	@Test
-	public void getEnum() {
-
+	public void getStringThrowsNoSuchElementException() {
+		assertThatNoSuchElementException().isThrownBy(
+				() -> this.missing.getString("value"));
 	}
 
 	@Test
-	public void getEnumArray() {
-
+	public void getStringArrayThrowsNoSuchElementException() {
+		assertThatNoSuchElementException().isThrownBy(
+				() -> this.missing.getStringArray("value"));
 	}
 
 	@Test
-	public void getAnnotation() {
-
+	public void getClassThrowsNoSuchElementException() {
+		assertThatNoSuchElementException().isThrownBy(
+				() -> this.missing.getClass("value"));
 	}
 
 	@Test
-	public void getAnnotationArray() {
-
+	public void getClassArrayThrowsNoSuchElementException() {
+		assertThatNoSuchElementException().isThrownBy(
+				() -> this.missing.getClassArray("value"));
 	}
 
 	@Test
-	public void getAttribute() {
+	public void getEnumThrowsNoSuchElementException() {
+		assertThatNoSuchElementException().isThrownBy(
+				() -> this.missing.getEnum("value", TestEnum.class));
+	}
+
+	@Test
+	public void getEnumArrayThrowsNoSuchElementException() {
+		assertThatNoSuchElementException().isThrownBy(
+				() -> this.missing.getEnumArray("value", TestEnum.class));
+	}
+
+	@Test
+	public void getAnnotationThrowsNoSuchElementException() {
+		assertThatNoSuchElementException().isThrownBy(
+				() -> this.missing.getAnnotation("value", TestAnnotation.class));
+	}
+
+	@Test
+	public void getAnnotationArrayThrowsNoSuchElementException() {
+		assertThatNoSuchElementException().isThrownBy(
+				() -> this.missing.getAnnotationArray("value", TestAnnotation.class));
+	}
+
+	@Test
+	public void getAttributeReturnsEmpty() {
+		assertThat(this.missing.getAttribute("value", Integer.class)).isEmpty();
+	}
+
+	@Test
+	public void synthesizeThrowsNoSuchElementException() {
+		assertThatNoSuchElementException().isThrownBy(() -> this.missing.synthesize());
+	}
+
+	@Test
+	public void synthesizeWithPredicateWhenPredicateMatchesThrowsNoSuchElementException() {
+		assertThatNoSuchElementException().isThrownBy(
+				() -> this.missing.synthesize((annotation) -> true));
+	}
+
+	@Test
+	public void synthesizeWithPredicateWhenPredicateDoesNotMatchReturnsEmpty() {
+		assertThat(this.missing.synthesize((annotation) -> false)).isEmpty();
+	}
+
+	@Test
+	public void toStringReturnsString() {
+		assertThat(this.missing.toString()).isEqualTo("(missing)");
+	}
+
+	private static ThrowableTypeAssert<NoSuchElementException> assertThatNoSuchElementException() {
+		return assertThatExceptionOfType(NoSuchElementException.class);
+	}
+
+	private static enum TestEnum {
+		ONE, TWO, THREE
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	private static @interface TestAnnotation {
 
 	}
 
 }
-

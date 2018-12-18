@@ -106,7 +106,17 @@ final class AnnotationTypeResolver {
 				+ ClassUtils.CLASS_FILE_SUFFIX;
 	}
 
-	public static AnnotationTypeResolver get(ClassLoader classLoader) {
+	public static AnnotationType resolve(Class<?> annotationClass) {
+		Assert.notNull(annotationClass, "AnnotationClass must not be null");
+		return resolve(annotationClass.getName(), annotationClass.getClassLoader());
+	}
+
+	public static AnnotationType resolve(String className, ClassLoader classLoader) {
+		Assert.hasText(className, "ClassName must not be null");
+		return get(classLoader).resolve(className);
+	}
+
+	private static AnnotationTypeResolver get(ClassLoader classLoader) {
 		if (classLoader == null) {
 			return createResolver(classLoader);
 		}

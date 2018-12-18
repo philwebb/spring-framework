@@ -69,8 +69,13 @@ final class MissingMergedAnnotation<A extends Annotation>
 	}
 
 	@Override
+	public boolean hasNonDefaultValue(String attributeName) {
+		throw new NoSuchElementException("Unable to check non-default value for missing annotation");
+	}
+
+	@Override
 	public boolean hasDefaultValue(String attributeName) {
-		return true;
+		throw new NoSuchElementException("Unable to check non-default value for missing annotation");
 	}
 
 	@Override
@@ -102,11 +107,6 @@ final class MissingMergedAnnotation<A extends Annotation>
 	@Override
 	public A synthesize() {
 		throw new NoSuchElementException("Unable to synthesize missing annotation");
-	}
-
-	@Override
-	public Optional<A> synthesize(Predicate<? super MergedAnnotation<A>> conditioan) {
-		return Optional.empty();
 	}
 
 	@Override

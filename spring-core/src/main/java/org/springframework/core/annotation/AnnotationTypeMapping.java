@@ -33,6 +33,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 /**
  * Provides mapping information for a single annotation (or meta-annotation) in
  * the context of a source {@link AnnotationType}. Each mapping includes:
@@ -81,8 +83,8 @@ class AnnotationTypeMapping {
 		this.annotationAttributes = attributes;
 	}
 
-	void addAlias(Reference from, Reference to) {
-		this.aliases.putIfAbsent(from.getAttribute().getAttributeName(), to);
+	void addAlias(String attributeName, Reference to) {
+		this.aliases.putIfAbsent(attributeName, to);
 	}
 
 	void addMirrorSet(MirrorSet mirrorSet) {
