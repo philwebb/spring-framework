@@ -120,7 +120,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	@Override
 	public boolean hasDefaultValue(String attributeName) {
 		Object value = getRequiredAttribute(attributeName, Object.class);
-		AttributeType type = getAttributeType(attributeName);
+		AttributeType type = getAttributeType(attributeName, true);
 		return ObjectUtils.nullSafeEquals(value, type.getDefaultValue());
 	}
 
@@ -232,7 +232,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 
 	private <T extends Annotation> MergedAnnotation<T> getNested(String attributeName,
 			@Nullable Class<?> expectedType) {
-		AttributeType attributeType = getAttributeType(attributeName);
+		AttributeType attributeType = getAttributeType(attributeName, true);
 		Assert.state(!isArrayType(attributeType),
 				"Attribute '" + attributeName + "' is an array type");
 		AnnotationType nestedType = AnnotationType.resolve(attributeType.getClassName(),
@@ -246,7 +246,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	@SuppressWarnings("unchecked")
 	private final <T extends Annotation> MergedAnnotation<T>[] getNestedArray(
 			String attributeName, @Nullable Class<?> expectedElementType) {
-		AttributeType attributeType = getAttributeType(attributeName);
+		AttributeType attributeType = getAttributeType(attributeName, true);
 		Assert.state(isArrayType(attributeType),
 				"Attribute '" + attributeName + "' is not an array type");
 		String arrayType = attributeType.getClassName();
@@ -271,9 +271,8 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		if (expectedType != null) {
 			String expectedName = expectedType.getName();
 			String actualName = actualType.getClassName();
-			Assert.state(expectedName.equals(actualName),
-					"Attribute '" + attributeName + "' is a " + actualName
-							+ " and cannot be cast to " + expectedName);
+			Assert.state(expectedName.equals(actualName), "Attribute '" + attributeName
+					+ "' is a " + actualName + " and cannot be cast to " + expectedName);
 		}
 	}
 
@@ -375,18 +374,19 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	}
 
 	private <T> T getRequiredAttribute(String attributeName, Class<T> type) {
-		T result = getAttributeValue(attributeName, type);
-		if (result == null) {
-			throw new NoSuchElementException(
-					"No attribute named '" + attributeName + "' present");
-		}
-		return result;
+		return getAttributeValue(attributeName, type, true);
 	}
 
 	@SuppressWarnings("unchecked")
 	private <T> T getAttributeValue(String attributeName, Class<T> type) {
+		return getAttributeValue(attributeName, type, false);
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> T getAttributeValue(String attributeName, Class<T> type,
+			boolean required) {
 		Assert.hasText(attributeName, "AttributeName must not be null");
-		AttributeType attributeType = getAttributeType(attributeName);
+		AttributeType attributeType = getAttributeType(attributeName, required);
 		if (attributeType == null) {
 			return null;
 		}
@@ -481,7 +481,6 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		if (requiredType.isAnnotation() || requiredType == MergedAnnotation.class) {
 			AnnotationType nestedType = AnnotationType.resolve(
 					attributeType.getClassName().replace("[]", ""), getClassLoader());
-			// FIXME check not null
 			MergedAnnotation<?> nestedAnnotation = createNested(nestedType,
 					attributeValue);
 			return requiredType.isAnnotation() ? nestedAnnotation.synthesize()
@@ -519,11 +518,14 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		return ClassUtils.resolveClassName(className, getClassLoader());
 	}
 
-	private AttributeType getAttributeType(String attributeName) {
-		if (isFiltered(attributeName)) {
-			return null;
+	private AttributeType getAttributeType(String attributeName, boolean required) {
+		AttributeType attributeType = isFiltered(attributeName) ? null
+				: getAnnotationType().getAttributeTypes().get(attributeName);
+		if (attributeType == null && required) {
+			throw new NoSuchElementException(
+					"No attribute named '" + attributeName + "' present");
 		}
-		return getAnnotationType().getAttributeTypes().get(attributeName);
+		return attributeType;
 	}
 
 	@Override

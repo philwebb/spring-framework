@@ -33,8 +33,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 /**
  * Provides mapping information for a single annotation (or meta-annotation) in
  * the context of a source {@link AnnotationType}. Each mapping includes:
@@ -83,8 +81,30 @@ class AnnotationTypeMapping {
 		this.annotationAttributes = attributes;
 	}
 
-	void addAlias(String attributeName, Reference to) {
-		this.aliases.putIfAbsent(attributeName, to);
+	void addAlias(Reference from, Reference to) {
+		Assert.state(equals(from.getMapping()), "Invalid mirror mapping reference");
+		addAlias(from.getAttribute().getAttributeName(), to);
+	}
+
+	void addAlias(String fromAttributeName, AnnotationTypeMapping toMapping,
+			String toAttributeName) {
+		addAlias(fromAttributeName, new Reference(toMapping,
+				toMapping.getAnnotationType().getAttributeTypes().get(toAttributeName)));
+	}
+
+	void addAlias(String fromAttributeName, Reference to) {
+		this.aliases.putIfAbsent(fromAttributeName, to);
+	}
+
+	void addMirrorSet(String... attributeNames) {
+		List<Reference> references = new ArrayList<>(attributeNames.length);
+		for (String attributeName : attributeNames) {
+			AttributeType attributeType = getAnnotationType().getAttributeTypes().get(
+					attributeName);
+			Assert.notNull(attributeType, "Missing attribute " + attributeName);
+			references.add(new Reference(this, attributeType));
+		}
+		addMirrorSet(new MirrorSet(references));
 	}
 
 	void addMirrorSet(MirrorSet mirrorSet) {

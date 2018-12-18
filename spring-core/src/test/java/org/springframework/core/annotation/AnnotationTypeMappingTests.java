@@ -18,6 +18,11 @@ package org.springframework.core.annotation;
 
 import org.junit.Test;
 
+import org.springframework.core.annotation.type.AttributeType;
+import org.springframework.core.annotation.type.DeclaredAnnotations;
+import org.springframework.core.annotation.type.DeclaredAttributes;
+
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
 
@@ -29,6 +34,22 @@ import static org.junit.Assert.*;
 public class AnnotationTypeMappingTests {
 
 	// FIXME revisit again
+//	@Test
+//	public void createWhenMirrorAttributesHaveDifferentDefaultValuesThrowsException() {
+//		AttributeType a = AttributeType.of("a", "java.lang.String",
+//				DeclaredAnnotations.NONE, "a");
+//		AttributeType b = AttributeType.of("b", "java.lang.String",
+//				DeclaredAnnotations.NONE, "b");
+//		AnnotationTypeMapping mapping = new AnnotationTypeMapping(
+//				getClass().getClassLoader(), RepeatableContainers.standardRepeatables(),
+//				null, createAnnotationType("com.example.Component", a, b),
+//				DeclaredAttributes.NONE);
+//		mapping.addMirrorSet("a", "b");
+//		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
+//				() -> new TypeMappedAnnotation<>(mapping, this.source,
+//						this.aggregateIndex, DeclaredAttributes.NONE)).withMessage(
+//								"Different @AliasFor mirror values");
+//	}
 
 
 }

@@ -135,7 +135,7 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * @return {@code true} if the attribute value is the same as the default
 	 * value
 	 */
-	boolean hasDefaultValue(String attributeName);
+	boolean hasDefaultValue(String attributeName) throws NoSuchElementException;
 
 	/**
 	 * Return a required byte attribute value from the annotation.

@@ -24,10 +24,8 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import org.springframework.core.annotation.AnnotationTypeMapping.Reference;
 import org.springframework.core.annotation.MergedAnnotation.MapValues;
 import org.springframework.core.annotation.type.AnnotationType;
 import org.springframework.core.annotation.type.AttributeType;
@@ -43,7 +41,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.entry;
-import static org.junit.Assert.fail;
 
 /**
  * Tests for {@link TypeMappedAnnotation}.
@@ -51,10 +48,9 @@ import static org.junit.Assert.fail;
  * @author Phillip Webb
  * @since 5.0
  */
-@Ignore
 public class TypeMappedAnnotationTests {
 
-	private final Object source = new Object();
+	private final Object source = "TypeMappedAnnotationTests";
 
 	private int aggregateIndex = 0;
 
@@ -165,6 +161,12 @@ public class TypeMappedAnnotationTests {
 	public void hasDefaultValueWhenHasNonDefaultValueReturnsFalse() {
 		MergedAnnotation<?> annotation = create(int.class, 456, 123);
 		assertThat(annotation.hasDefaultValue("value")).isFalse();
+	}
+
+	@Test
+	public void hasDefaultValueWhenMissingAttributeThrowsNoSuchElementException() {
+		MergedAnnotation<?> annotation = create(int.class, 456, 123);
+		assertThatNoSuchElementException(() -> annotation.hasDefaultValue("missing"));
 	}
 
 	@Test
@@ -725,28 +727,40 @@ public class TypeMappedAnnotationTests {
 	}
 
 	@Test
+	public void filterAttributesWhenAlreadyFilteredAppliesFilter() {
+		MergedAnnotation<?> annotation = createTwoAttributeAnnotation();
+		MergedAnnotation<?> filtered = annotation.filterAttributes(
+				"one"::equals).filterAttributes("two"::equals);
+		assertThat(filtered.getAttribute("one", Integer.class)).isEmpty();
+		assertThat(filtered.getAttribute("two", Integer.class)).isEmpty();
+	}
+
+	@Test
 	public void withNonMergedAttributesReturnsNonMerged() {
-		AttributeType parentAttributeType = AttributeType.of("name",
-				String.class.getName(), DeclaredAnnotations.NONE, "");
-		AnnotationType parentType = AnnotationType.of("com.example.Component",
-				DeclaredAnnotations.NONE, AttributeTypes.of(parentAttributeType));
-		AnnotationTypeMapping parentMapping = new AnnotationTypeMapping(
-				getClass().getClassLoader(), RepeatableContainers.standardRepeatables(),
-				null, parentType, DeclaredAttributes.NONE);
-		AttributeType attributeType = AttributeType.of("componentName",
-				String.class.getName(), DeclaredAnnotations.NONE, "");
-		AnnotationType type = AnnotationType.of("com.example.Service",
-				DeclaredAnnotations.NONE, AttributeTypes.of(attributeType));
-		AnnotationTypeMapping mapping = new AnnotationTypeMapping(
-				getClass().getClassLoader(), RepeatableContainers.standardRepeatables(),
-				parentMapping, type, DeclaredAttributes.NONE);
-		mapping.addAlias("componentName", new Reference(parentMapping, parentAttributeType));
-		fail();
+		AnnotationTypeMapping mapping = createWithStringAttribute(null,
+				"com.example.MyComponent", "myName");
+		AnnotationTypeMapping metaMapping = createWithStringAttribute(mapping,
+				"com.example.Component", "name");
+		metaMapping.addAlias("name", mapping, "myName");
+		MergedAnnotation<?> annotation = new TypeMappedAnnotation<>(metaMapping,
+				this.source, this.aggregateIndex,
+				DeclaredAttributes.of("myName", "test"));
+		assertThat(annotation.getString("name")).isEqualTo("test");
+		assertThat(annotation.withNonMergedAttributes().getString("name")).isEmpty();
 	}
 
 	@Test
 	public void withNonMergedWhenMirroredReturnsNonMergedButStillMirrored() {
-		fail();
+		AnnotationTypeMapping mapping = createWithStringAttribute(null,
+				"com.example.Component", "a", "b");
+		mapping.addMirrorSet("a", "b");
+		MergedAnnotation<?> annotation = new TypeMappedAnnotation<>(mapping, this.source,
+				this.aggregateIndex, DeclaredAttributes.of("a", "test"));
+		assertThat(annotation.getString("a")).isEqualTo("test");
+		assertThat(annotation.getString("b")).isEqualTo("test");
+		MergedAnnotation<?> nonMergedAnnotation = annotation.withNonMergedAttributes();
+		assertThat(nonMergedAnnotation.getString("a")).isEqualTo("test");
+		assertThat(nonMergedAnnotation.getString("b")).isEqualTo("test");
 	}
 
 	@Test
@@ -849,7 +863,13 @@ public class TypeMappedAnnotationTests {
 
 	@Test
 	public void asSuppliedMapWhenFactoryReturnsNullReturnsNull() {
-		fail();
+		AnnotationType annotationType = AnnotationType.resolve(
+				AnnotationValueAnnotation.class);
+		DeclaredAttributes attributes = DeclaredAttributes.of("value",
+				DeclaredAttributes.of("value", "test"));
+		MergedAnnotation<?> annotation = create(annotationType, attributes);
+		AnnotationAttributes map = annotation.asMap(source -> null);
+		assertThat(map).isNull();
 	}
 
 	@Test
@@ -863,15 +883,179 @@ public class TypeMappedAnnotationTests {
 
 	@Test
 	public void synthesizeWithPredicateWhenPredicateMatchesReturnsOptionalOfAnnotation() {
-		fail();
+		MergedAnnotation<StringValueAnnotation> annotation = create(
+				AnnotationType.resolve(StringValueAnnotation.class),
+				DeclaredAttributes.of("value", "hello"));
+		Optional<StringValueAnnotation> synthesized = annotation.synthesize(
+				mergedAnnotation -> true);
+		assertThat(synthesized.get().value()).isEqualTo("hello");
 	}
 
 	@Test
 	public void synthesizeWithPredicateWhenPredicateDoesNotMatchReturnsEmpty() {
-		fail();
+		MergedAnnotation<StringValueAnnotation> annotation = create(
+				AnnotationType.resolve(StringValueAnnotation.class),
+				DeclaredAttributes.of("value", "hello"));
+		Optional<StringValueAnnotation> synthesized = annotation.synthesize(
+				mergedAnnotation -> false);
+		assertThat(synthesized).isEmpty();
 	}
 
-	// FIXME mirror and alias tests
+	@Test
+	public void getAttributeWhenAlaisedMappedMapsAttribute() {
+		AnnotationTypeMapping mapping = createWithStringAttribute(null,
+				"com.example.MyComponent", "myName");
+		AnnotationTypeMapping metaMapping = createWithStringAttribute(mapping,
+				"com.example.Component", "name");
+		metaMapping.addAlias("name", mapping, "myName");
+		MergedAnnotation<?> annotation = new TypeMappedAnnotation<>(metaMapping,
+				this.source, this.aggregateIndex,
+				DeclaredAttributes.of("myName", "test"));
+		assertThat(annotation.getString("name")).isEqualTo("test");
+	}
+
+	@Test
+	public void getAttributeWhenConventionMappedMapsAttribute() {
+		AnnotationTypeMapping mapping = createWithStringAttribute(null,
+				"com.example.MyComponent", "name");
+		AnnotationTypeMapping metaMapping = createWithStringAttribute(mapping,
+				"com.example.Component", "name");
+		MergedAnnotation<?> annotation = new TypeMappedAnnotation<>(metaMapping,
+				this.source, this.aggregateIndex, DeclaredAttributes.of("name", "test"));
+		assertThat(annotation.getString("name")).isEqualTo("test");
+	}
+
+	@Test
+	public void getAttributeWhenConventionRestrictedDoesNotMapAttribute() {
+		AnnotationTypeMapping mapping = createWithStringAttribute(null,
+				"com.example.MyComponent", "value");
+		AnnotationTypeMapping metaMapping = createWithStringAttribute(mapping,
+				"com.example.Component", "value");
+		MergedAnnotation<?> annotation = new TypeMappedAnnotation<>(metaMapping,
+				this.source, this.aggregateIndex, DeclaredAttributes.of("value", "test"));
+		assertThat(annotation.getString("value")).isEmpty();
+		assertThat(annotation.getParent().getString("value")).isEqualTo("test");
+	}
+
+	@Test
+	public void getAttributeWhenNoAliasOrConventionMappingMapsToAnnotationAttributes() {
+		AnnotationTypeMapping mapping = createWithStringAttribute(null,
+				"com.example.MyComponent", "myName");
+		AnnotationType annotationType = AnnotationType.of("com.example.Component",
+				DeclaredAnnotations.NONE,
+				AttributeTypes.of(createStringAttributeType("name")));
+		AnnotationTypeMapping metaMapping = new AnnotationTypeMapping(
+				getClass().getClassLoader(), RepeatableContainers.standardRepeatables(),
+				mapping, annotationType, DeclaredAttributes.of("name", "test"));
+		MergedAnnotation<?> annotation = new TypeMappedAnnotation<>(metaMapping,
+				this.source, this.aggregateIndex, DeclaredAttributes.NONE);
+		assertThat(annotation.getString("name")).isEqualTo("test");
+		assertThat(annotation.getParent().getString("myName")).isEmpty();
+	}
+
+	@Test
+	public void getAttributeWhenNoAliasOrConventionOrAnnotationAttributeMapsToAnnotationDefault() {
+		AnnotationTypeMapping mapping = createWithStringAttribute(null,
+				"com.example.MyComponent", "myName");
+		AttributeType metaAttributeType = AttributeType.of("name", String.class.getName(),
+				DeclaredAnnotations.NONE, "test");
+		AnnotationType metaAnnotationType = createAnnotationType("com.example.Component",
+				metaAttributeType);
+		AnnotationTypeMapping metaMapping = new AnnotationTypeMapping(
+				getClass().getClassLoader(), RepeatableContainers.standardRepeatables(),
+				mapping, metaAnnotationType, DeclaredAttributes.NONE);
+		MergedAnnotation<?> annotation = new TypeMappedAnnotation<>(metaMapping,
+				this.source, this.aggregateIndex, DeclaredAttributes.NONE);
+		assertThat(annotation.getString("name")).isEqualTo("test");
+	}
+
+	@Test
+	public void getAttributeWhenMappingFromNonArrayToArrayWrapsResultInArray() {
+		AnnotationTypeMapping mapping = createWithStringAttribute(null,
+				"com.example.MyComponent", "name");
+		AttributeType metaAttributeType = AttributeType.of("name", "java.lang.String[]",
+				DeclaredAnnotations.NONE, new String[0]);
+		AnnotationType metaAnnotationType = createAnnotationType("com.example.Component",
+				metaAttributeType);
+		AnnotationTypeMapping metaMapping = new AnnotationTypeMapping(
+				getClass().getClassLoader(), RepeatableContainers.standardRepeatables(),
+				mapping, metaAnnotationType, DeclaredAttributes.NONE);
+		MergedAnnotation<?> annotation = new TypeMappedAnnotation<>(metaMapping,
+				this.source, this.aggregateIndex, DeclaredAttributes.of("name", "test"));
+		assertThat(annotation.getStringArray("name")).containsExactly("test");
+		assertThat(annotation.getParent().getString("name")).isEqualTo("test");
+	}
+
+	@Test
+	public void getAttributeWhenMirroredReturnsMirrorValues() {
+		AnnotationTypeMapping mapping = createWithStringAttribute(null,
+				"com.example.Component", "a", "b", "c");
+		mapping.addMirrorSet("a", "b", "c");
+		MergedAnnotation<?> annotation = new TypeMappedAnnotation<>(mapping, this.source,
+				this.aggregateIndex, DeclaredAttributes.of("b", "B"));
+		assertThat(annotation.getString("a")).isEqualTo("B");
+		assertThat(annotation.getString("b")).isEqualTo("B");
+		assertThat(annotation.getString("c")).isEqualTo("B");
+	}
+
+	@Test
+	public void getAttributeWhenMirroredToEmptyArrayReturnsMirrorValues() {
+		AttributeType a = AttributeType.of("a", "int[]", DeclaredAnnotations.NONE,
+				new Object[0]);
+		AttributeType b = AttributeType.of("b", "int[]", DeclaredAnnotations.NONE,
+				new Object[0]);
+		AnnotationTypeMapping mapping = new AnnotationTypeMapping(
+				getClass().getClassLoader(), RepeatableContainers.standardRepeatables(),
+				null, createAnnotationType("com.example.Component", a, b),
+				DeclaredAttributes.NONE);
+		mapping.addMirrorSet("a", "b");
+		MergedAnnotation<?> annotation = new TypeMappedAnnotation<>(mapping, this.source,
+				this.aggregateIndex, DeclaredAttributes.of("b", new int[] { 123 }));
+		assertThat(annotation.getIntArray("a")).containsExactly(123);
+		assertThat(annotation.getIntArray("b")).containsExactly(123);
+	}
+
+	@Test
+	public void getAttributeWhenMirroredToShadowReturnsMirroredValues() {
+		// See SPR-14069 for background
+		// Shadowing is when a meta-annotation is declared with a value that can
+		// be ignored because it is also referenced via an AliasFor attribute
+		// that must be provided by the user since it has no default.
+		// Ideally we'd not support this going forward, but we want to remain
+		// back-compatible as much as possible
+		AttributeType c = AttributeType.of("c", "java.lang.String",
+				DeclaredAnnotations.NONE, null);
+		AnnotationTypeMapping mapping = new AnnotationTypeMapping(
+				getClass().getClassLoader(), RepeatableContainers.standardRepeatables(),
+				null, createAnnotationType("com.example.MyComponent", c),
+				DeclaredAttributes.NONE);
+		AttributeType a = createStringAttributeType("a");
+		AttributeType b = createStringAttributeType("b");
+		AnnotationType metaAnnotationType = AnnotationType.of("com.example.Component",
+				DeclaredAnnotations.NONE, AttributeTypes.of(a, b));
+		AnnotationTypeMapping metaMapping = new AnnotationTypeMapping(
+				getClass().getClassLoader(), RepeatableContainers.standardRepeatables(),
+				mapping, metaAnnotationType,
+				DeclaredAttributes.of("a", "duplicateDeclaration"));
+		metaMapping.addMirrorSet("a", "b");
+		metaMapping.addAlias("b", mapping, "c");
+		MergedAnnotation<?> annotation = new TypeMappedAnnotation<>(metaMapping,
+				this.source, this.aggregateIndex, DeclaredAttributes.of("c", "C"));
+		assertThat(annotation.getString("a")).isEqualTo("C");
+		assertThat(annotation.getString("b")).isEqualTo("C");
+	}
+
+	@Test
+	public void createWhenMirrorAttributesHaveDifferentValuesThrowsException() {
+		AnnotationTypeMapping mapping = createWithStringAttribute(null,
+				"com.example.Component", "a", "b");
+		mapping.addMirrorSet("a", "b");
+		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
+				() -> new TypeMappedAnnotation<>(mapping, this.source,
+						this.aggregateIndex,
+						DeclaredAttributes.of("a", "A", "b", "B"))).withMessageContaining(
+								"Different @AliasFor mirror values");
+	}
 
 	private <A extends Annotation> TypeMappedAnnotation<A> createTwoAttributeAnnotation() {
 		AttributeTypes attributeTypes = AttributeTypes.of(
@@ -922,6 +1106,30 @@ public class TypeMappedAnnotationTests {
 		}
 		return new TypeMappedAnnotation<>(mapping, this.source, this.aggregateIndex,
 				DeclaredAttributes.NONE);
+	}
+
+	private AnnotationTypeMapping createWithStringAttribute(AnnotationTypeMapping parent,
+			String annotationClassName, String... attributeNames) {
+		AttributeType[] attributeTypes = new AttributeType[attributeNames.length];
+		for (int i = 0; i < attributeTypes.length; i++) {
+			attributeTypes[i] = createStringAttributeType(attributeNames[i]);
+		}
+		AnnotationType annotationType = createAnnotationType(annotationClassName,
+				attributeTypes);
+		return new AnnotationTypeMapping(getClass().getClassLoader(),
+				RepeatableContainers.standardRepeatables(), parent, annotationType,
+				DeclaredAttributes.NONE);
+	}
+
+	private AttributeType createStringAttributeType(String attributeName) {
+		return AttributeType.of(attributeName, String.class.getName(),
+				DeclaredAnnotations.NONE, "");
+	}
+
+	private AnnotationType createAnnotationType(String className,
+			AttributeType... attributeTypes) {
+		return AnnotationType.of(className, DeclaredAnnotations.NONE,
+				AttributeTypes.of(attributeTypes));
 	}
 
 	private void assertThatNoSuchElementException(ThrowingCallable throwingCallable) {
