@@ -350,7 +350,7 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 		return MergedAnnotationCollectors.toAnnotationSet();
 	}
 
-	static <A extends Annotation> Collector<MergedAnnotation<A>, ?, A[]> toAnnotationArray() {
+	static <A extends Annotation> Collector<MergedAnnotation<A>, ?, Annotation[]> toAnnotationArray() {
 		return MergedAnnotationCollectors.toAnnotationArray();
 	}
 

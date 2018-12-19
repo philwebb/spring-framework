@@ -19,23 +19,15 @@ package org.springframework.core.annotation;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import org.springframework.core.BridgeMethodResolver;
 import org.springframework.core.annotation.MergedAnnotation.MapValues;
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.core.annotation.type.DeclaredAnnotation;
 import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 
 /**
@@ -208,7 +200,7 @@ public abstract class AnnotationUtils {
 					annotatedElement).stream().filter(
 							MergedAnnotation::isDirectlyPresent).map(
 									MergedAnnotation::withNonMergedAttributes).collect(
-											toSynthesizedAnnotationArray())
+											MergedAnnotations.toAnnotationArray())
 		);
 	}
 
@@ -234,7 +226,7 @@ public abstract class AnnotationUtils {
 			MergedAnnotations.from(RepeatableContainers.none(), SearchStrategy.DIRECT,
 					method).stream().filter(MergedAnnotation::isDirectlyPresent).map(
 							MergedAnnotation::withNonMergedAttributes).collect(
-									toSynthesizedAnnotationArray())
+									MergedAnnotations.toAnnotationArray())
 		);
 	}
 
@@ -269,16 +261,7 @@ public abstract class AnnotationUtils {
 	@Deprecated
 	public static <A extends Annotation> Set<A> getRepeatableAnnotations(AnnotatedElement annotatedElement,
 			Class<A> annotationType) {
-		return MigrateMethod.from(() ->
-			InternalAnnotationUtils.getRepeatableAnnotations(annotatedElement,
-				annotationType)
-		).to(() ->
-			MergedAnnotations.from(SearchStrategy.SUPER_CLASS,
-					annotatedElement).stream(annotationType).filter(MergedAnnotations.onRunOf(
-							MergedAnnotation::getAggregateIndex)).map(
-									MergedAnnotation::withNonMergedAttributes).collect(
-											toSynthesizedAnnotationSet())
-		);
+		return getRepeatableAnnotations(annotatedElement, annotationType, null);
 	}
 
 	/**
@@ -325,7 +308,7 @@ public abstract class AnnotationUtils {
 					annotatedElement).stream(annotationType).filter(MergedAnnotations.onRunOf(
 							MergedAnnotation::getAggregateIndex)).map(
 									MergedAnnotation::withNonMergedAttributes).collect(
-											toSynthesizedAnnotationSet())
+											MergedAnnotations.toAnnotationSet())
 		);
 	}
 
@@ -361,14 +344,7 @@ public abstract class AnnotationUtils {
 	@Deprecated
 	public static <A extends Annotation> Set<A> getDeclaredRepeatableAnnotations(AnnotatedElement annotatedElement,
 			Class<A> annotationType) {
-		return MigrateMethod.from(() ->
-			InternalAnnotationUtils.getDeclaredRepeatableAnnotations(annotatedElement,
-					annotationType)
-		).to(() ->
-			MergedAnnotations.from(annotatedElement).stream(annotationType).map(
-					MergedAnnotation::withNonMergedAttributes).collect(
-							toSynthesizedAnnotationSet())
-		);
+		return getDeclaredRepeatableAnnotations(annotatedElement, annotationType, null);
 	}
 
 	/**
@@ -415,7 +391,7 @@ public abstract class AnnotationUtils {
 							: RepeatableContainers.standardRepeatables(),
 					SearchStrategy.DIRECT, annotatedElement).stream(annotationType).map(
 							MergedAnnotation::withNonMergedAttributes).collect(
-									toSynthesizedAnnotationSet())
+									MergedAnnotations.toAnnotationSet())
 		);
 	}
 
@@ -542,6 +518,7 @@ public abstract class AnnotationUtils {
 	public static <A extends Annotation> A findAnnotation(Class<?> clazz, Class<A> annotationType) {
 		if (isInJavaLangAnnotationPackage(annotationType)) {
 			// Merged annotations don't include java.lang types
+			// FIXME should we throw an exception here? There's only one test for this
 			return InternalAnnotationUtils.findAnnotation(clazz, annotationType);
 		}
 		return MigrateMethod.from(() ->
@@ -623,10 +600,11 @@ public abstract class AnnotationUtils {
 					annotationTypes, clazz)
 		).to(() ->
 			(Class<?>) MergedAnnotations.from(RepeatableContainers.none(),
-					SearchStrategy.SUPER_CLASS, clazz).stream().
-					filter(matchingTypes(annotationTypes).and(MergedAnnotation::isDirectlyPresent))
-					.map(MergedAnnotation::getSource)
-					.findFirst().orElse(null)
+					SearchStrategy.SUPER_CLASS, clazz).stream().filter(
+							MergedAnnotation.onTypeIn(annotationTypes).and(
+									MergedAnnotation::isDirectlyPresent)).map(
+											MergedAnnotation::getSource).findFirst().orElse(
+													null)
 		);
 	}
 
@@ -895,7 +873,7 @@ public abstract class AnnotationUtils {
 		).to(() ->
 			MergedAnnotations.of(annotatedElement, annotation).get(
 				annotation.annotationType()).withNonMergedAttributes().asMap(
-						createValidateAnnotationAttributes(annotation.annotationType()),
+						merged -> new AnnotationAttributes(annotation.annotationType(), true),
 						MapValues.of(classValuesAsString, nestedAnnotationsAsMap))
 		);
 	}
@@ -1455,54 +1433,9 @@ public abstract class AnnotationUtils {
 		InternalAnnotationUtils.clearCache();
 	}
 
-	// FIXME some copy/paste from element utils here. Do Seems like some of
-	// these methods might be generally useful
-
 	private static <A extends Annotation> boolean isSingleLevelPresent(
 			MergedAnnotation<A> mergedAnnotation) {
 		return mergedAnnotation.isPresent() && mergedAnnotation.getDepth() <= 1;
-	}
-
-	private static <A extends Annotation> Collector<MergedAnnotation<A>, ?, Set<A>> toSynthesizedAnnotationSet() {
-		return Collector.of(ArrayList<MergedAnnotation<A>>::new, List::add,
-				AnnotationUtils::addAll,
-				AnnotationUtils::toSynthesizedAnnotationSet);
-	}
-
-	private static <A extends Annotation> Collector<MergedAnnotation<?>, ?, Annotation[]> toSynthesizedAnnotationArray() {
-		return Collector.of(ArrayList::new,
-				(list, annotation) -> list.add(annotation.synthesize()),
-				AnnotationUtils::addAll, list -> list.toArray(new Annotation[0]));
-	}
-
-	private static <E, L extends List<E>> L addAll(L list, L additions) {
-		list.addAll(additions);
-		return list;
-	}
-
-	private static <A extends Annotation, M extends A> Set<A> toSynthesizedAnnotationSet(
-			Collection<? extends MergedAnnotation<M>> collection) {
-		Set<A> result = new LinkedHashSet<>(collection.size());
-		for (MergedAnnotation<M> annotation : collection) {
-			result.add(annotation.synthesize());
-		}
-		return result;
-	}
-
-	private static <A extends Annotation> Predicate<MergedAnnotation<A>> matchingTypes(
-			Collection<? extends Class<? extends Annotation>> annotationTypes) {
-		Assert.notNull(annotationTypes, "AnnotationTypes must not be null");
-		Set<String> annotationNames = annotationTypes.stream().map(
-				Class::getName).collect(Collectors.toSet());
-		return annotation -> annotationNames.contains(annotation.getType());
-	}
-
-	private static Function<MergedAnnotation<?>, AnnotationAttributes> createValidateAnnotationAttributes(Class<? extends Annotation> annotationType) {
-		return merged -> {
-			AnnotationAttributes attributes = new AnnotationAttributes(annotationType);
-			attributes.validated= true;
-			return attributes;
-		};
 	}
 
 }

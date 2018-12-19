@@ -46,8 +46,10 @@ class MergedAnnotationCollectors {
 				MergedAnnotationCollectors::toSynthesizedAnnotationSet);
 	}
 
-	static <A extends Annotation> Collector<MergedAnnotation<A>, ?, A[]> toAnnotationArray() {
-		return null;
+	static <A extends Annotation> Collector<MergedAnnotation<A>, ?, Annotation[]> toAnnotationArray() {
+		return Collector.of(ArrayList::new,
+				(list, annotation) -> list.add(annotation.synthesize()),
+				MergedAnnotationCollectors::addAll, list -> list.toArray(new Annotation[0]));
 	}
 
 	static <A extends Annotation> Collector<MergedAnnotation<A>, ?, MultiValueMap<String, Object>> toMultiValueMap(
