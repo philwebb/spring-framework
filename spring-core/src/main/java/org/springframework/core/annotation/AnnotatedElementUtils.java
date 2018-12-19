@@ -25,7 +25,6 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -33,7 +32,6 @@ import org.springframework.core.BridgeMethodResolver;
 import org.springframework.core.annotation.MergedAnnotation.MapValues;
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
 
 /**
@@ -449,7 +447,8 @@ public abstract class AnnotatedElementUtils {
 					annotationTypes)
 		).to(() ->
 			getAnnotations(element).stream().filter(
-					matchingTypes(annotationTypes)).collect(MergedAnnotations.toAnnotationSet())
+					MergedAnnotation.onTypeIn(annotationTypes)).collect(
+							MergedAnnotations.toAnnotationSet())
 		);
 	}
 
@@ -762,8 +761,9 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.findAllMergedAnnotations(element,
 					annotationTypes)
 		).to(()->
-			findAnnotations(element).stream().filter(matchingTypes(annotationTypes)).collect(
-					toSynthesizedAggregateAnnotationSet())
+			findAnnotations(element).stream().filter(
+					MergedAnnotation.onTypeIn(annotationTypes)).collect(
+							toSynthesizedAggregateAnnotationSet())
 		);
 	}
 
@@ -874,14 +874,6 @@ public abstract class AnnotatedElementUtils {
 		return map.isEmpty() ? null : map;
 	}
 
-	// MergedAnnotation.matchingTypeContainedIn()
-	private static <A extends Annotation> Predicate<MergedAnnotation<A>> matchingTypes(
-			Set<Class<? extends Annotation>> annotationTypes) {
-		Assert.notNull(annotationTypes, "AnnotationTypes must not be null");
-		Set<String> annotationNames = annotationTypes.stream().map(
-				Class::getName).collect(Collectors.toSet());
-		return annotation -> annotationNames.contains(annotation.getType());
-	}
 
 
 
