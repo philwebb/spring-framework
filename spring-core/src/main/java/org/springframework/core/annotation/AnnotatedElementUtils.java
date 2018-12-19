@@ -569,11 +569,16 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.getAllAnnotationAttributes(element,
 					annotationName, classValuesAsString, nestedAnnotationsAsMap)
 		).to(() ->
-			getAnnotations(element).stream(annotationName).filter(oncePerParent()).map(
-					MergedAnnotation::withNonMergedAttributes).collect(
-							MergedAnnotations.toMultiValueMap(
-									map -> map.isEmpty() ? null : map, MapValues.of(
-											classValuesAsString, nestedAnnotationsAsMap)))
+		getAnnotations(element).stream(annotationName).filter(
+				MergedAnnotations.onUnique(annotation -> annotation.getParent() != null
+						? annotation.getParent().getType() + ":"
+								+ annotation.getParent().getType()
+						: annotation.getType())).map(
+								MergedAnnotation::withNonMergedAttributes).collect(
+										MergedAnnotations.toMultiValueMap(
+												map -> map.isEmpty() ? null : map,
+												MapValues.of(classValuesAsString,
+														nestedAnnotationsAsMap)))
 		);
 	}
 
@@ -870,12 +875,6 @@ public abstract class AnnotatedElementUtils {
 		return annotation -> annotationNames.contains(annotation.getType());
 	}
 
-	private static <A extends Annotation> Predicate<MergedAnnotation<A>> oncePerParent() {
-		return MergedAnnotations.onUnique(annotation -> annotation.getParent() != null
-				? annotation.getParent().getType() + ":"
-						+ annotation.getParent().getType()
-				: annotation.getType());
-	}
 
 
 
