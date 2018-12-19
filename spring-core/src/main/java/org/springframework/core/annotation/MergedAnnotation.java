@@ -20,7 +20,6 @@ import java.lang.annotation.Annotation;
 import java.lang.annotation.Inherited;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Proxy;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
@@ -36,6 +35,8 @@ import java.util.stream.Collectors;
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.core.annotation.type.DeclaredAnnotations;
 import org.springframework.lang.Nullable;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 /**
  * A single merged annotation returned from a {@link MergedAnnotations}
@@ -444,23 +445,23 @@ public interface MergedAnnotation<A extends Annotation> {
 		return null;
 	}
 
+	static <A extends Annotation> Predicate<MergedAnnotation<A>> onTypeIn(
+			String... typeNames) {
+		return annotation -> ObjectUtils.containsElement(typeNames, annotation.getType());
+	}
+
 	@SafeVarargs
 	static <A extends Annotation> Predicate<MergedAnnotation<A>> onTypeIn(
 			Class<? extends Annotation>... types) {
-		return onTypeIn(Arrays.asList(types));
+		return (annotation) -> Arrays.stream(types).anyMatch(
+				type -> type.getName().equals(annotation.getType()));
 	}
 
 	static <A extends Annotation> Predicate<MergedAnnotation<A>> onTypeIn(
 			Collection<?> types) {
-		Set<String> typeNames = types.stream().map(
-				type -> type instanceof Class<?> ? ((Class<?>) type).getName()
-						: type.toString()).collect(Collectors.toSet());
-		return annotation -> typeNames.contains(annotation.getType());
-	}
-
-	static <A extends Annotation> Predicate<MergedAnnotation<A>> onTypeIn(
-			String... typeNames) {
-		return null;
+		return (annotation) -> types.stream().map(
+				type -> type instanceof Class ? ((Class<?>) type).getName() : type.toString()).anyMatch(
+								typeName -> typeName.equals(annotation.getType()));
 	}
 
 	static <A extends Annotation> Comparator<MergedAnnotation<A>> comparingDepth() {
