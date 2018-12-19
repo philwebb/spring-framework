@@ -41,7 +41,7 @@ import org.springframework.util.ObjectUtils;
  */
 class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotation<A> {
 
-	// FIXME equals hashcode worry me
+	// FIXME do we need equals/hashcode
 
 	private final AnnotationTypeMapping mapping;
 
@@ -167,6 +167,10 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 				this.mapping.getRepeatableContainers(), type).get(type.getClassName());
 	}
 
+	/**
+	 * Provides access to the attribute values with additional mapping and
+	 * mirroring rules applied.
+	 */
 	@FunctionalInterface
 	private static interface Attributes {
 
@@ -174,6 +178,9 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 
 	}
 
+	/**
+	 * Simple adapter used to expose the root {@link DeclaredAttributes}.
+	 */
 	private static class RootAttributes implements Attributes {
 
 		private final DeclaredAttributes declaredAttributes;
@@ -189,6 +196,10 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 
 	}
 
+	/**
+	 * Adapter used to expose attributes from the parent
+	 * {@link TypeMappedAnnotation}.
+	 */
 	private static class ParentMappedAttributes implements Attributes {
 
 		private final AnnotationTypeMapping mapping;
@@ -270,6 +281,9 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 
 	}
 
+	/**
+	 * Decorator used to support mirrored attributes.
+	 */
 	private static class MirroredAttributes implements Attributes {
 
 		private final AnnotationTypeMapping mapping;
