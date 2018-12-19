@@ -569,16 +569,13 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.getAllAnnotationAttributes(element,
 					annotationName, classValuesAsString, nestedAnnotationsAsMap)
 		).to(() ->
-		getAnnotations(element).stream(annotationName).filter(
-				MergedAnnotations.onUnique(annotation -> annotation.getParent() != null
-						? annotation.getParent().getType() + ":"
-								+ annotation.getParent().getType()
-						: annotation.getType())).map(
-								MergedAnnotation::withNonMergedAttributes).collect(
-										MergedAnnotations.toMultiValueMap(
-												map -> map.isEmpty() ? null : map,
-												MapValues.of(classValuesAsString,
-														nestedAnnotationsAsMap)))
+			getAnnotations(element).stream(annotationName).filter(MergedAnnotations.onUnique(
+					AnnotatedElementUtils::parentAndType)).map(
+							MergedAnnotation::withNonMergedAttributes).collect(
+									MergedAnnotations.toMultiValueMap(
+											AnnotatedElementUtils::nullIfEmpty,
+											MapValues.of(classValuesAsString,
+													nestedAnnotationsAsMap)))
 		);
 	}
 
@@ -866,6 +863,17 @@ public abstract class AnnotatedElementUtils {
 				SearchStrategy.EXHAUSTIVE, element);
 	}
 
+	private static Object parentAndType(MergedAnnotation<Annotation> annotation) {
+		if (annotation.getParent() == null) {
+			return annotation.getType();
+		}
+		return annotation.getParent().getType() + ":" + annotation.getParent().getType();
+	}
+	private static MultiValueMap<String, Object> nullIfEmpty(
+			MultiValueMap<String, Object> map) {
+		return map.isEmpty() ? null : map;
+	}
+
 	// MergedAnnotation.matchingTypeContainedIn()
 	private static <A extends Annotation> Predicate<MergedAnnotation<A>> matchingTypes(
 			Set<Class<? extends Annotation>> annotationTypes) {
@@ -874,6 +882,8 @@ public abstract class AnnotatedElementUtils {
 				Class::getName).collect(Collectors.toSet());
 		return annotation -> annotationNames.contains(annotation.getType());
 	}
+
+
 
 
 
