@@ -17,6 +17,8 @@
 package org.springframework.core.annotation;
 
 import java.lang.annotation.Annotation;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -35,8 +37,8 @@ class MergedAnnotationPredicates {
 		return new RunOfPredicate<>(valueExtractor);
 	}
 
-	static <A extends Annotation> Predicate<MergedAnnotation<A>> onUnique(Function<MergedAnnotation<A>, Object> keyExtractor) {
-		return null;
+	static <A extends Annotation, K> Predicate<MergedAnnotation<A>> onUnique(Function<? super MergedAnnotation<A>, K> keyExtractor) {
+		return new UniquePredicate<>(keyExtractor);
 	}
 
 
@@ -63,6 +65,24 @@ class MergedAnnotationPredicates {
 			Object value = this.valueExtractor.apply(annotation);
 			return ObjectUtils.nullSafeEquals(value, this.lastValue);
 
+		}
+
+	}
+
+	private static class UniquePredicate<A extends Annotation, K> implements Predicate<MergedAnnotation<A>> {
+
+		private final Function<? super MergedAnnotation<A>, K> keyExtractor;
+
+		private final Set<K> seen = new HashSet<>();
+
+		public UniquePredicate(Function<? super MergedAnnotation<A>, K> keyExtractor) {
+			this.keyExtractor = keyExtractor;
+		}
+
+		@Override
+		public boolean test(MergedAnnotation<A> annotation) {
+			K key = this.keyExtractor.apply(annotation);
+			return this.seen.add(key);
 		}
 
 	}

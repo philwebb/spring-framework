@@ -18,18 +18,14 @@ package org.springframework.core.annotation;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -38,9 +34,7 @@ import org.springframework.core.annotation.MergedAnnotation.MapValues;
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
-import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.util.ObjectUtils;
 
 /**
  * General utility methods for finding annotations, meta-annotations, and
@@ -564,7 +558,7 @@ public abstract class AnnotatedElementUtils {
 		).to(() ->
 			getAnnotations(element).stream(annotationName).filter(oncePerParent()).map(
 					MergedAnnotation::withNonMergedAttributes).collect(
-							allAnnotationAttributes())
+							MergedAnnotations.toMultiValueMap(map->map.isEmpty() ? null : map))
 		);
 	}
 
@@ -595,8 +589,10 @@ public abstract class AnnotatedElementUtils {
 		).to(() ->
 			getAnnotations(element).stream(annotationName).filter(oncePerParent()).map(
 					MergedAnnotation::withNonMergedAttributes).collect(
-							allAnnotationAttributes(MapValues.of(classValuesAsString,
-									nestedAnnotationsAsMap)))		);
+							MergedAnnotations.toMultiValueMap(
+									map -> map.isEmpty() ? null : map, MapValues.of(
+											classValuesAsString, nestedAnnotationsAsMap)))
+		);
 	}
 
 	/**
@@ -908,22 +904,13 @@ public abstract class AnnotatedElementUtils {
 		return annotation -> annotationNames.contains(annotation.getType());
 	}
 
-	// MergedAnnotation.matchingOncePerParent(MergedAnnotation::getType)
-	private static Predicate<MergedAnnotation<?>> oncePerParent() {
-		Set<PerParentReference> seen = new HashSet<>();
-		return annotaion -> seen.add(new PerParentReference(annotaion));
+	private static <A extends Annotation> Predicate<MergedAnnotation<A>> oncePerParent() {
+		return MergedAnnotations.onUnique(annotation -> annotation.getParent() != null
+				? annotation.getParent().getType() + ":"
+						+ annotation.getParent().getType()
+				: annotation.getType());
 	}
 
-	// MergedAnnotations.toMultiValueMap()
-	// MergedAnnotations.toMultiValueMap(finisher)
-	private static <A extends Annotation> Collector<MergedAnnotation<A>, ?, MultiValueMap<String, Object>> allAnnotationAttributes(
-			MapValues... options) {
-		return MergedAnnotations.toMultiValueMap(AnnotatedElementUtils::mapOrNull, options);
-	}
-
-	private static <K, V> MultiValueMap<K, V> mapOrNull(MultiValueMap<K, V> map) {
-		return map.isEmpty() ? null : map;
-	}
 
 
 	// FIXME simplify with combined comparator. use sort before collect
@@ -942,44 +929,6 @@ public abstract class AnnotatedElementUtils {
 			result.add(annotation.synthesize());
 		}
 		return result;
-	}
-
-	/**
-	 * Reference to a annotation type and parent type used for once-per-parent
-	 * filtering.
-	 */
-	private static class PerParentReference {
-
-		private final String type;
-
-		private final String parentType;
-
-		public PerParentReference(MergedAnnotation<?> annotaion) {
-			this.type = annotaion.getType();
-			this.parentType = annotaion.getParent() != null
-					? annotaion.getParent().getType()
-					: null;
-		}
-
-		@Override
-		public int hashCode() {
-			return this.type.hashCode() * 31
-					+ ObjectUtils.nullSafeHashCode(this.parentType);
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			}
-			if (obj == null || getClass() != obj.getClass()) {
-				return false;
-			}
-			PerParentReference other = (PerParentReference) obj;
-			return this.type.equals(other.type)
-					&& ObjectUtils.nullSafeEquals(this.parentType, other.parentType);
-		}
-
 	}
 
 	private static class AggregateOrderedList<A extends Annotation>
