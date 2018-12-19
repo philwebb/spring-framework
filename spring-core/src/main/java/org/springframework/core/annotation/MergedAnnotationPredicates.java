@@ -33,29 +33,29 @@ import org.springframework.util.ObjectUtils;
  * @author Phillip Webb
  * @since 5.2
  */
-class MergedAnnotationPredicates {
+public class MergedAnnotationPredicates {
 
-	static <A extends Annotation> Predicate<MergedAnnotation<A>> onRunOf(Function<? super MergedAnnotation<A>, ?> valueExtractor) {
+	public static <A extends Annotation> Predicate<MergedAnnotation<A>> runOf(Function<? super MergedAnnotation<A>, ?> valueExtractor) {
 		return new RunOfPredicate<>(valueExtractor);
 	}
 
-	static <A extends Annotation, K> Predicate<MergedAnnotation<A>> onUnique(Function<? super MergedAnnotation<A>, K> keyExtractor) {
+	public static <A extends Annotation, K> Predicate<MergedAnnotation<A>> unique(Function<? super MergedAnnotation<A>, K> keyExtractor) {
 		return new UniquePredicate<>(keyExtractor);
 	}
 
-	static <A extends Annotation> Predicate<MergedAnnotation<A>> onTypeIn(
+	public static <A extends Annotation> Predicate<MergedAnnotation<A>> typeIn(
 			String... typeNames) {
 		return annotation -> ObjectUtils.containsElement(typeNames, annotation.getType());
 	}
 
 	@SafeVarargs
-	static <A extends Annotation> Predicate<MergedAnnotation<A>> onTypeIn(
+	static <A extends Annotation> Predicate<MergedAnnotation<A>> typeIn(
 			Class<? extends Annotation>... types) {
 		return (annotation) -> Arrays.stream(types).anyMatch(
 				type -> type.getName().equals(annotation.getType()));
 	}
 
-	static <A extends Annotation> Predicate<MergedAnnotation<A>> onTypeIn(
+	static <A extends Annotation> Predicate<MergedAnnotation<A>> typeIn(
 			Collection<?> types) {
 		return (annotation) -> types.stream().map(
 				type -> type instanceof Class ? ((Class<?>) type).getName() : type.toString()).anyMatch(

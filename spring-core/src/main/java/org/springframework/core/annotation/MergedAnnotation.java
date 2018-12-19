@@ -20,9 +20,6 @@ import java.lang.annotation.Annotation;
 import java.lang.annotation.Inherited;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Proxy;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -30,13 +27,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.core.annotation.type.DeclaredAnnotations;
 import org.springframework.lang.Nullable;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.ObjectUtils;
 
 /**
  * A single merged annotation returned from a {@link MergedAnnotations}
@@ -442,14 +436,6 @@ public interface MergedAnnotation<A extends Annotation> {
 
 	// FIXME
 	static <A extends Annotation> Finder<A> find(Class<A> annotationType) {
-		return null;
-	}
-
-	static <A extends Annotation> Comparator<MergedAnnotation<A>> comparingDepth() {
-		return null;
-	}
-
-	static <A extends Annotation> Comparator<MergedAnnotation<A>> comparingHighAggregateIndexesFirst() {
 		return null;
 	}
 

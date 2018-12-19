@@ -200,7 +200,7 @@ public abstract class AnnotationUtils {
 					annotatedElement).stream().filter(
 							MergedAnnotation::isDirectlyPresent).map(
 									MergedAnnotation::withNonMergedAttributes).collect(
-											MergedAnnotations.toAnnotationArray())
+											MergedAnnotationCollectors.toAnnotationArray())
 		);
 	}
 
@@ -226,7 +226,7 @@ public abstract class AnnotationUtils {
 			MergedAnnotations.from(RepeatableContainers.none(), SearchStrategy.DIRECT,
 					method).stream().filter(MergedAnnotation::isDirectlyPresent).map(
 							MergedAnnotation::withNonMergedAttributes).collect(
-									MergedAnnotations.toAnnotationArray())
+									MergedAnnotationCollectors.toAnnotationArray())
 		);
 	}
 
@@ -305,10 +305,10 @@ public abstract class AnnotationUtils {
 			MergedAnnotations.from(containerAnnotationType != null
 					? RepeatableContainers.of(containerAnnotationType, annotationType)
 					: RepeatableContainers.standardRepeatables(), SearchStrategy.SUPER_CLASS,
-					annotatedElement).stream(annotationType).filter(MergedAnnotationPredicates.onRunOf(
+					annotatedElement).stream(annotationType).filter(MergedAnnotationPredicates.runOf(
 							MergedAnnotation::getAggregateIndex)).map(
 									MergedAnnotation::withNonMergedAttributes).collect(
-											MergedAnnotations.toAnnotationSet())
+											MergedAnnotationCollectors.toAnnotationSet())
 		);
 	}
 
@@ -391,7 +391,7 @@ public abstract class AnnotationUtils {
 							: RepeatableContainers.standardRepeatables(),
 					SearchStrategy.DIRECT, annotatedElement).stream(annotationType).map(
 							MergedAnnotation::withNonMergedAttributes).collect(
-									MergedAnnotations.toAnnotationSet())
+									MergedAnnotationCollectors.toAnnotationSet())
 		);
 	}
 
@@ -601,7 +601,7 @@ public abstract class AnnotationUtils {
 		).to(() ->
 			(Class<?>) MergedAnnotations.from(RepeatableContainers.none(),
 					SearchStrategy.SUPER_CLASS, clazz).stream().filter(
-							MergedAnnotationPredicates.onTypeIn(annotationTypes).and(
+							MergedAnnotationPredicates.typeIn(annotationTypes).and(
 									MergedAnnotation::isDirectlyPresent)).map(
 											MergedAnnotation::getSource).findFirst().orElse(
 													null)

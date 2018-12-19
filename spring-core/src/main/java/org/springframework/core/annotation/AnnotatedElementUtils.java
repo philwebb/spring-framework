@@ -417,7 +417,7 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.getAllMergedAnnotations(element,
 					annotationType)
 		).to(() ->
-			getAnnotations(element).stream(annotationType).collect(MergedAnnotations.toAnnotationSet())
+			getAnnotations(element).stream(annotationType).collect(MergedAnnotationCollectors.toAnnotationSet())
 		);
 	}
 
@@ -447,8 +447,8 @@ public abstract class AnnotatedElementUtils {
 					annotationTypes)
 		).to(() ->
 			getAnnotations(element).stream().filter(
-					MergedAnnotationPredicates.onTypeIn(annotationTypes)).collect(
-							MergedAnnotations.toAnnotationSet())
+					MergedAnnotationPredicates.typeIn(annotationTypes)).collect(
+							MergedAnnotationCollectors.toAnnotationSet())
 		);
 	}
 
@@ -518,7 +518,7 @@ public abstract class AnnotatedElementUtils {
 					annotationType, containerType)
 		).to(() ->
 			getRepeatableAnnotations(element, containerType, annotationType).stream(
-					annotationType).collect(MergedAnnotations.toAnnotationSet())
+					annotationType).collect(MergedAnnotationCollectors.toAnnotationSet())
 		);
 	}
 
@@ -568,10 +568,10 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.getAllAnnotationAttributes(element,
 					annotationName, classValuesAsString, nestedAnnotationsAsMap)
 		).to(() ->
-			getAnnotations(element).stream(annotationName).filter(MergedAnnotationPredicates.onUnique(
+			getAnnotations(element).stream(annotationName).filter(MergedAnnotationPredicates.unique(
 					AnnotatedElementUtils::parentAndType)).map(
 							MergedAnnotation::withNonMergedAttributes).collect(
-									MergedAnnotations.toMultiValueMap(
+									MergedAnnotationCollectors.toMultiValueMap(
 											AnnotatedElementUtils::nullIfEmpty,
 											MapValues.of(classValuesAsString,
 													nestedAnnotationsAsMap)))
@@ -762,7 +762,7 @@ public abstract class AnnotatedElementUtils {
 					annotationTypes)
 		).to(()->
 			findAnnotations(element).stream().filter(
-					MergedAnnotationPredicates.onTypeIn(annotationTypes)).collect(
+					MergedAnnotationPredicates.typeIn(annotationTypes)).collect(
 							toSynthesizedAggregateAnnotationSet())
 		);
 	}

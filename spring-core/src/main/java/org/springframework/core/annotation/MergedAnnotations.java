@@ -20,17 +20,12 @@ import java.lang.annotation.Annotation;
 import java.lang.annotation.Inherited;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
-import java.util.Set;
-import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collector;
 import java.util.stream.Stream;
 
-import org.springframework.core.annotation.MergedAnnotation.MapValues;
 import org.springframework.core.annotation.type.DeclaredAnnotations;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
-import org.springframework.util.MultiValueMap;
 
 /**
  * Provides access to a collection of merged annotations, usually obtained from
@@ -336,25 +331,6 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 			RepeatableContainers repeatableContainers,
 			Iterable<DeclaredAnnotations> aggregates) {
 		return new TypeMappedAnnotations(classLoader, repeatableContainers, aggregates);
-	}
-
-	static <A extends Annotation> Collector<MergedAnnotation<A>, ?, Set<A>> toAnnotationSet() {
-		return MergedAnnotationCollectors.toAnnotationSet();
-	}
-
-	static <A extends Annotation> Collector<MergedAnnotation<A>, ?, Annotation[]> toAnnotationArray() {
-		return MergedAnnotationCollectors.toAnnotationArray();
-	}
-
-	static <A extends Annotation> Collector<MergedAnnotation<A>, ?, MultiValueMap<String, Object>> toMultiValueMap(
-			MapValues... options) {
-		return MergedAnnotationCollectors.toMultiValueMap(options);
-	}
-
-	static <A extends Annotation> Collector<MergedAnnotation<A>, ?, MultiValueMap<String, Object>> toMultiValueMap(
-			Function<MultiValueMap<String, Object>, MultiValueMap<String, Object>> finisher,
-			MapValues... options) {
-		return MergedAnnotationCollectors.toMultiValueMap(finisher, options);
 	}
 
 	/**

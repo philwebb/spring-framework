@@ -38,21 +38,21 @@ import org.springframework.util.MultiValueMap;
  * @author Phillip Webb
  * @since 5.2
  */
-class MergedAnnotationCollectors {
+public class MergedAnnotationCollectors {
 
-	static <A extends Annotation> Collector<MergedAnnotation<A>, ?, Set<A>> toAnnotationSet() {
+	public static <A extends Annotation> Collector<MergedAnnotation<A>, ?, Set<A>> toAnnotationSet() {
 		return Collector.of(ArrayList<MergedAnnotation<A>>::new, List::add,
 				MergedAnnotationCollectors::addAll,
 				MergedAnnotationCollectors::toSynthesizedAnnotationSet);
 	}
 
-	static <A extends Annotation> Collector<MergedAnnotation<A>, ?, Annotation[]> toAnnotationArray() {
+	public static <A extends Annotation> Collector<MergedAnnotation<A>, ?, Annotation[]> toAnnotationArray() {
 		return Collector.of(ArrayList::new,
 				(list, annotation) -> list.add(annotation.synthesize()),
 				MergedAnnotationCollectors::addAll, list -> list.toArray(new Annotation[0]));
 	}
 
-	static <A extends Annotation> Collector<MergedAnnotation<A>, ?, MultiValueMap<String, Object>> toMultiValueMap(
+	public static <A extends Annotation> Collector<MergedAnnotation<A>, ?, MultiValueMap<String, Object>> toMultiValueMap(
 			MapValues... options) {
 		Supplier<MultiValueMap<String, Object>> supplier = LinkedMultiValueMap::new;
 		return Collector.of(supplier,
@@ -61,7 +61,7 @@ class MergedAnnotationCollectors {
 				Characteristics.IDENTITY_FINISH);
 	}
 
-	static <A extends Annotation> Collector<MergedAnnotation<A>, ?, MultiValueMap<String, Object>> toMultiValueMap(
+	public static <A extends Annotation> Collector<MergedAnnotation<A>, ?, MultiValueMap<String, Object>> toMultiValueMap(
 			Function<MultiValueMap<String, Object>, MultiValueMap<String, Object>> finisher,
 			MapValues... options) {
 		Supplier<MultiValueMap<String, Object>> supplier = LinkedMultiValueMap::new;
