@@ -367,10 +367,7 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * values. Methods from this view will return attribute values with only
 	 * alias mirroring rules applied. Aliases to parent attributes will not be
 	 * applied.
-	 * @param attributeName the attribute name
-	 * @param type the attribute type
-	 * @return an optional value or {@link Optional#empty()} if there is no
-	 * matching attribute
+	 * @return a non-merged view of the annotation
 	 */
 	MergedAnnotation<A> withNonMergedAttributes();
 

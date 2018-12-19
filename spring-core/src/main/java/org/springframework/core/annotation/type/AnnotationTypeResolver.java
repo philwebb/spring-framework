@@ -116,7 +116,7 @@ final class AnnotationTypeResolver {
 		return get(classLoader).resolve(className);
 	}
 
-	private static AnnotationTypeResolver get(ClassLoader classLoader) {
+	static AnnotationTypeResolver get(ClassLoader classLoader) {
 		if (classLoader == null) {
 			return createResolver(classLoader);
 		}

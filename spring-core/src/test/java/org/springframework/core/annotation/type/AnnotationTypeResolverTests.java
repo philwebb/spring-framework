@@ -47,7 +47,7 @@ public class AnnotationTypeResolverTests {
 	@Test
 	public void resolveWhenClassNameIsNullThrowsException() {
 		assertThatIllegalArgumentException().isThrownBy(
-				() -> this.resolver.resolve(null)).withMessage(
+				() -> this.resolver.resolve((String) null)).withMessage(
 						"ClassName must not be empty");
 	}
 

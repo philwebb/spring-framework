@@ -40,7 +40,7 @@ public final class EnumValueReference {
 	}
 
 	/**
-	 * Return the enum type class name
+	 * Return the enum type class name.
 	 * @return the enum type
 	 */
 	public String getEnumType() {

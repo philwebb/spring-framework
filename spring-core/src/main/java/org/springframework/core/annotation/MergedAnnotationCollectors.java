@@ -38,7 +38,10 @@ import org.springframework.util.MultiValueMap;
  * @author Phillip Webb
  * @since 5.2
  */
-public class MergedAnnotationCollectors {
+public final class MergedAnnotationCollectors {
+
+	private MergedAnnotationCollectors() {
+	}
 
 	public static <A extends Annotation> Collector<MergedAnnotation<A>, ?, Set<A>> toAnnotationSet() {
 		return Collector.of(ArrayList<MergedAnnotation<A>>::new, List::add,

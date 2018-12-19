@@ -17,9 +17,6 @@
 package org.springframework.core.annotation;
 
 import org.junit.Ignore;
-import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 
 /**
@@ -27,6 +24,7 @@ import static org.junit.Assert.*;
  *
  * @author Phillip Webb
  */
+@Ignore
 public class TypeMappedAnnotationsTests extends AbstractMergedAnnotationsTests {
 
 	// FIXME

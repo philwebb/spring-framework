@@ -17,10 +17,10 @@
 package org.springframework.core.annotation;
 
 import java.lang.annotation.Annotation;
-import java.util.Set;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -33,7 +33,10 @@ import org.springframework.util.ObjectUtils;
  * @author Phillip Webb
  * @since 5.2
  */
-public class MergedAnnotationPredicates {
+public final class MergedAnnotationPredicates {
+
+	private MergedAnnotationPredicates() {
+	}
 
 	public static <A extends Annotation> Predicate<MergedAnnotation<A>> runOf(Function<? super MergedAnnotation<A>, ?> valueExtractor) {
 		return new RunOfPredicate<>(valueExtractor);
@@ -51,13 +54,13 @@ public class MergedAnnotationPredicates {
 	@SafeVarargs
 	static <A extends Annotation> Predicate<MergedAnnotation<A>> typeIn(
 			Class<? extends Annotation>... types) {
-		return (annotation) -> Arrays.stream(types).anyMatch(
+		return annotation -> Arrays.stream(types).anyMatch(
 				type -> type.getName().equals(annotation.getType()));
 	}
 
 	static <A extends Annotation> Predicate<MergedAnnotation<A>> typeIn(
 			Collection<?> types) {
-		return (annotation) -> types.stream().map(
+		return annotation -> types.stream().map(
 				type -> type instanceof Class ? ((Class<?>) type).getName() : type.toString()).anyMatch(
 								typeName -> typeName.equals(annotation.getType()));
 	}

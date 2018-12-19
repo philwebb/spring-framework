@@ -16,11 +16,14 @@
 
 package org.springframework.core.annotation;
 
+import org.junit.Ignore;
+
 /**
  * Tests for {@link SynthesizedMergedAnnotationInvocationHandler}.
  *
  * @author Phillip Webb
  */
+@Ignore
 public class SynthesizedMergedAnnotationInvocationHandlerTests {
 
 	// FIXME
