@@ -445,25 +445,6 @@ public interface MergedAnnotation<A extends Annotation> {
 		return null;
 	}
 
-	static <A extends Annotation> Predicate<MergedAnnotation<A>> onTypeIn(
-			String... typeNames) {
-		return annotation -> ObjectUtils.containsElement(typeNames, annotation.getType());
-	}
-
-	@SafeVarargs
-	static <A extends Annotation> Predicate<MergedAnnotation<A>> onTypeIn(
-			Class<? extends Annotation>... types) {
-		return (annotation) -> Arrays.stream(types).anyMatch(
-				type -> type.getName().equals(annotation.getType()));
-	}
-
-	static <A extends Annotation> Predicate<MergedAnnotation<A>> onTypeIn(
-			Collection<?> types) {
-		return (annotation) -> types.stream().map(
-				type -> type instanceof Class ? ((Class<?>) type).getName() : type.toString()).anyMatch(
-								typeName -> typeName.equals(annotation.getType()));
-	}
-
 	static <A extends Annotation> Comparator<MergedAnnotation<A>> comparingDepth() {
 		return null;
 	}

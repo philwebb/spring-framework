@@ -447,7 +447,7 @@ public abstract class AnnotatedElementUtils {
 					annotationTypes)
 		).to(() ->
 			getAnnotations(element).stream().filter(
-					MergedAnnotation.onTypeIn(annotationTypes)).collect(
+					MergedAnnotationPredicates.onTypeIn(annotationTypes)).collect(
 							MergedAnnotations.toAnnotationSet())
 		);
 	}
@@ -568,7 +568,7 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.getAllAnnotationAttributes(element,
 					annotationName, classValuesAsString, nestedAnnotationsAsMap)
 		).to(() ->
-			getAnnotations(element).stream(annotationName).filter(MergedAnnotations.onUnique(
+			getAnnotations(element).stream(annotationName).filter(MergedAnnotationPredicates.onUnique(
 					AnnotatedElementUtils::parentAndType)).map(
 							MergedAnnotation::withNonMergedAttributes).collect(
 									MergedAnnotations.toMultiValueMap(
@@ -762,7 +762,7 @@ public abstract class AnnotatedElementUtils {
 					annotationTypes)
 		).to(()->
 			findAnnotations(element).stream().filter(
-					MergedAnnotation.onTypeIn(annotationTypes)).collect(
+					MergedAnnotationPredicates.onTypeIn(annotationTypes)).collect(
 							toSynthesizedAggregateAnnotationSet())
 		);
 	}

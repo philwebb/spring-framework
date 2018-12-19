@@ -338,14 +338,6 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 		return new TypeMappedAnnotations(classLoader, repeatableContainers, aggregates);
 	}
 
-	static <A extends Annotation> Predicate<MergedAnnotation<A>> onRunOf(Function<? super MergedAnnotation<A>, ?> valueExtractor) {
-		return MergedAnnotationPredicates.onRunOf(valueExtractor);
-	}
-
-	static <A extends Annotation> Predicate<MergedAnnotation<A>> onUnique(Function<MergedAnnotation<A>, Object> keyExtractor) {
-		return MergedAnnotationPredicates.onUnique(keyExtractor);
-	}
-
 	static <A extends Annotation> Collector<MergedAnnotation<A>, ?, Set<A>> toAnnotationSet() {
 		return MergedAnnotationCollectors.toAnnotationSet();
 	}

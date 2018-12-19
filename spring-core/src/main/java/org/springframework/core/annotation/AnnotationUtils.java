@@ -305,7 +305,7 @@ public abstract class AnnotationUtils {
 			MergedAnnotations.from(containerAnnotationType != null
 					? RepeatableContainers.of(containerAnnotationType, annotationType)
 					: RepeatableContainers.standardRepeatables(), SearchStrategy.SUPER_CLASS,
-					annotatedElement).stream(annotationType).filter(MergedAnnotations.onRunOf(
+					annotatedElement).stream(annotationType).filter(MergedAnnotationPredicates.onRunOf(
 							MergedAnnotation::getAggregateIndex)).map(
 									MergedAnnotation::withNonMergedAttributes).collect(
 											MergedAnnotations.toAnnotationSet())
@@ -601,7 +601,7 @@ public abstract class AnnotationUtils {
 		).to(() ->
 			(Class<?>) MergedAnnotations.from(RepeatableContainers.none(),
 					SearchStrategy.SUPER_CLASS, clazz).stream().filter(
-							MergedAnnotation.onTypeIn(annotationTypes).and(
+							MergedAnnotationPredicates.onTypeIn(annotationTypes).and(
 									MergedAnnotation::isDirectlyPresent)).map(
 											MergedAnnotation::getSource).findFirst().orElse(
 													null)
