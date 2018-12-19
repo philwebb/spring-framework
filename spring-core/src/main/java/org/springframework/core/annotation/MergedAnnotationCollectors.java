@@ -16,6 +16,21 @@
 
 package org.springframework.core.annotation;
 
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
+import java.util.stream.Collector.Characteristics;
+
+import org.springframework.core.annotation.MergedAnnotation.MapValues;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+
 /**
  * Collector implementations exposed via {@link MergedAnnotation} or
  * {@link MergedAnnotations}.
@@ -24,5 +39,56 @@ package org.springframework.core.annotation;
  * @since 5.2
  */
 class MergedAnnotationCollectors {
+
+	static <A extends Annotation> Collector<MergedAnnotation<A>, ?, Set<A>> toAnnotationSet() {
+		return Collector.of(ArrayList<MergedAnnotation<A>>::new, List::add,
+				MergedAnnotationCollectors::addAll,
+				MergedAnnotationCollectors::toSynthesizedAnnotationSet);
+	}
+
+	static <A extends Annotation> Collector<MergedAnnotation<A>, ?, A[]> toAnnotationArray() {
+		return null;
+	}
+
+	static <A extends Annotation> Collector<MergedAnnotation<A>, ?, MultiValueMap<String, Object>> toMultiValueMap(
+			MapValues... options) {
+		Supplier<MultiValueMap<String, Object>> supplier = LinkedMultiValueMap::new;
+		return Collector.of(supplier,
+				(map, annotation) -> annotation.asMap(options).forEach(map::add),
+				MergedAnnotationCollectors::merge, Function.identity(),
+				Characteristics.IDENTITY_FINISH);
+	}
+
+	static <A extends Annotation> Collector<MergedAnnotation<A>, ?, MultiValueMap<String, Object>> toMultiValueMap(
+			Function<MultiValueMap<String, Object>, MultiValueMap<String, Object>> finisher,
+			MapValues... options) {
+		Supplier<MultiValueMap<String, Object>> supplier = LinkedMultiValueMap::new;
+		return Collector.of(supplier,
+				(map, annotation) -> annotation.asMap(options).forEach(map::add),
+				MergedAnnotationCollectors::merge, finisher);
+	}
+
+	private static <E, L extends List<E>> L addAll(L list, L additions) {
+		list.addAll(additions);
+		return list;
+	}
+
+	private static <A extends Annotation, M extends A> Set<A> toSynthesizedAnnotationSet(
+			Collection<? extends MergedAnnotation<M>> collection) {
+		Set<A> result = new LinkedHashSet<>(collection.size());
+		for (MergedAnnotation<M> annotation : collection) {
+			result.add(annotation.synthesize());
+		}
+		return result;
+	}
+
+	private static <K, V> MultiValueMap<K, V> merge(MultiValueMap<K, V> map,
+			MultiValueMap<K, V> additions) {
+		map.addAll(additions);
+		return map;
+	}
+
+
+
 
 }

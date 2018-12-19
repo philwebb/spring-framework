@@ -339,30 +339,30 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	}
 
 	static <A extends Annotation> Predicate<MergedAnnotation<A>> onRunOf(Function<? super MergedAnnotation<A>, ?> valueExtractor) {
-		return null;
+		return MergedAnnotationPredicates.onRunOf(valueExtractor);
 	}
 
 	static <A extends Annotation> Predicate<MergedAnnotation<A>> onUnique(Function<MergedAnnotation<A>, Object> keyExtractor) {
-		return null;
+		return MergedAnnotationPredicates.onUnique(keyExtractor);
 	}
 
 	static <A extends Annotation> Collector<MergedAnnotation<A>, ?, Set<A>> toAnnotationSet() {
-		return null;
+		return MergedAnnotationCollectors.toAnnotationSet();
 	}
 
 	static <A extends Annotation> Collector<MergedAnnotation<A>, ?, A[]> toAnnotationArray() {
-		return null;
+		return MergedAnnotationCollectors.toAnnotationArray();
 	}
 
 	static <A extends Annotation> Collector<MergedAnnotation<A>, ?, MultiValueMap<String, Object>> toMultiValueMap(
 			MapValues... options) {
-		return null;
+		return MergedAnnotationCollectors.toMultiValueMap(options);
 	}
 
 	static <A extends Annotation> Collector<MergedAnnotation<A>, ?, MultiValueMap<String, Object>> toMultiValueMap(
 			Function<MultiValueMap<String, Object>, MultiValueMap<String, Object>> finisher,
 			MapValues... options) {
-		return null;
+		return MergedAnnotationCollectors.toMultiValueMap(finisher, options);
 	}
 
 	/**

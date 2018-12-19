@@ -176,7 +176,7 @@ public abstract class AnnotatedElementUtils {
 			return Collections.emptySet();
 		}
 		return getAnnotations(annotation.annotationType()).stream().map(
-				MergedAnnotation::getType).collect(toLinkedHashSet());
+				MergedAnnotation::getType).collect(Collectors.toCollection(LinkedHashSet::new));
 	}
 
 	/**
@@ -430,7 +430,7 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.getAllMergedAnnotations(element,
 					annotationType)
 		).to(() ->
-			getAnnotations(element).stream(annotationType).collect(toSynthesizedAnnotationSet())
+			getAnnotations(element).stream(annotationType).collect(MergedAnnotations.toAnnotationSet())
 		);
 	}
 
@@ -460,7 +460,7 @@ public abstract class AnnotatedElementUtils {
 					annotationTypes)
 		).to(() ->
 			getAnnotations(element).stream().filter(
-					matchingTypes(annotationTypes)).collect(toSynthesizedAnnotationSet())
+					matchingTypes(annotationTypes)).collect(MergedAnnotations.toAnnotationSet())
 		);
 	}
 
@@ -497,7 +497,7 @@ public abstract class AnnotatedElementUtils {
 					annotationType)
 		).to(() ->
 			getRepeatableAnnotations(element).stream(annotationType).collect(
-					toSynthesizedAnnotationSet())
+					MergedAnnotations.toAnnotationSet())
 		);
 	}
 
@@ -536,7 +536,7 @@ public abstract class AnnotatedElementUtils {
 					annotationType, containerType)
 		).to(() ->
 			getRepeatableAnnotations(element, containerType, annotationType).stream(
-					annotationType).collect(toSynthesizedAnnotationSet())
+					annotationType).collect(MergedAnnotations.toAnnotationSet())
 		);
 	}
 
@@ -916,34 +916,15 @@ public abstract class AnnotatedElementUtils {
 
 	// MergedAnnotations.toMultiValueMap()
 	// MergedAnnotations.toMultiValueMap(finisher)
-	private static Collector<MergedAnnotation<?>, ?, MultiValueMap<String, Object>> allAnnotationAttributes(
+	private static <A extends Annotation> Collector<MergedAnnotation<A>, ?, MultiValueMap<String, Object>> allAnnotationAttributes(
 			MapValues... options) {
-		Supplier<MultiValueMap<String, Object>> supplier = LinkedMultiValueMap::new;
-		return Collector.of(supplier,
-				(map, annotation) -> annotation.asMap(options).forEach(map::add),
-				AnnotatedElementUtils::merge, AnnotatedElementUtils::mapOrNull);
-	}
-
-	private static <K, V> MultiValueMap<K, V> merge(MultiValueMap<K, V> map,
-			MultiValueMap<K, V> additions) {
-		map.addAll(additions);
-		return map;
+		return MergedAnnotations.toMultiValueMap(AnnotatedElementUtils::mapOrNull, options);
 	}
 
 	private static <K, V> MultiValueMap<K, V> mapOrNull(MultiValueMap<K, V> map) {
 		return map.isEmpty() ? null : map;
 	}
 
-	private static <T> Collector<T, ?, Set<T>> toLinkedHashSet() {
-		return Collectors.toCollection(LinkedHashSet::new);
-	}
-
-	// MergedAnnotations.toAnnotationSet()
-	private static <A extends Annotation> Collector<MergedAnnotation<A>, ?, Set<A>> toSynthesizedAnnotationSet() {
-		return Collector.of(ArrayList<MergedAnnotation<A>>::new, List::add,
-				AnnotatedElementUtils::addAll,
-				AnnotatedElementUtils::toSynthesizedAnnotationSet);
-	}
 
 	// FIXME simplify with combined comparator. use sort before collect
 	// MergedAnnotation.comparingAggregateOrder
@@ -952,11 +933,6 @@ public abstract class AnnotatedElementUtils {
 		return Collector.of(AggregateOrderedList<A>::new, AggregateOrderedList::insert,
 				AggregateOrderedList::insertAll,
 				AnnotatedElementUtils::toSynthesizedAnnotationSet);
-	}
-
-	private static <E, L extends List<E>> L addAll(L list, L additions) {
-		list.addAll(additions);
-		return list;
 	}
 
 	private static <A extends Annotation, M extends A> Set<A> toSynthesizedAnnotationSet(

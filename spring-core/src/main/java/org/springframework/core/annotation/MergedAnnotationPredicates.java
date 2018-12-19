@@ -16,6 +16,11 @@
 
 package org.springframework.core.annotation;
 
+import java.lang.annotation.Annotation;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
+import org.springframework.util.ObjectUtils;
 
 /**
  * Predicate implementations exposed via {@link MergedAnnotation} or
@@ -25,5 +30,42 @@ package org.springframework.core.annotation;
  * @since 5.2
  */
 class MergedAnnotationPredicates {
+
+	static <A extends Annotation> Predicate<MergedAnnotation<A>> onRunOf(Function<? super MergedAnnotation<A>, ?> valueExtractor) {
+		return new RunOfPredicate<>(valueExtractor);
+	}
+
+	static <A extends Annotation> Predicate<MergedAnnotation<A>> onUnique(Function<MergedAnnotation<A>, Object> keyExtractor) {
+		return null;
+	}
+
+
+	private static class RunOfPredicate<A extends Annotation>
+			implements Predicate<MergedAnnotation<A>> {
+
+		private final Function<? super MergedAnnotation<A>, ?> valueExtractor;
+
+		private boolean hasLastValue;
+
+		private Object lastValue;
+
+		public RunOfPredicate(
+				Function<? super MergedAnnotation<A>, ?> valueExtractor) {
+			this.valueExtractor = valueExtractor;
+		}
+
+		@Override
+		public boolean test(MergedAnnotation<A> annotation) {
+			if(!this.hasLastValue) {
+				this.hasLastValue = true;
+				this.lastValue = this.valueExtractor.apply(annotation);
+			}
+			Object value = this.valueExtractor.apply(annotation);
+			return ObjectUtils.nullSafeEquals(value, this.lastValue);
+
+		}
+
+	}
+
 
 }

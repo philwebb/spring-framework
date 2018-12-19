@@ -36,7 +36,6 @@ import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.core.annotation.type.DeclaredAnnotation;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.ReflectionUtils;
 
 /**
@@ -274,11 +273,11 @@ public abstract class AnnotationUtils {
 			InternalAnnotationUtils.getRepeatableAnnotations(annotatedElement,
 				annotationType)
 		).to(() ->
-			MergedAnnotations.from(SearchStrategy.SUPER_CLASS, annotatedElement).stream(
-					annotationType).filter(
-							onFirstRunOf(MergedAnnotation::getAggregateIndex)).map(
+			MergedAnnotations.from(SearchStrategy.SUPER_CLASS,
+					annotatedElement).stream(annotationType).filter(MergedAnnotations.onRunOf(
+							MergedAnnotation::getAggregateIndex)).map(
 									MergedAnnotation::withNonMergedAttributes).collect(
-									toSynthesizedAnnotationSet())
+											toSynthesizedAnnotationSet())
 		);
 	}
 
@@ -323,8 +322,8 @@ public abstract class AnnotationUtils {
 			MergedAnnotations.from(containerAnnotationType != null
 					? RepeatableContainers.of(containerAnnotationType, annotationType)
 					: RepeatableContainers.standardRepeatables(), SearchStrategy.SUPER_CLASS,
-					annotatedElement).stream(annotationType).filter(
-							onFirstRunOf(MergedAnnotation::getAggregateIndex)).map(
+					annotatedElement).stream(annotationType).filter(MergedAnnotations.onRunOf(
+							MergedAnnotation::getAggregateIndex)).map(
 									MergedAnnotation::withNonMergedAttributes).collect(
 											toSynthesizedAnnotationSet())
 		);
@@ -1490,11 +1489,6 @@ public abstract class AnnotationUtils {
 		return result;
 	}
 
-	private static <A extends Annotation> Predicate<MergedAnnotation<A>> onFirstRunOf(
-			Function<? super MergedAnnotation<A>, ?> valueExtractor) {
-		return new FirstRunOfPredicate<>(valueExtractor);
-	}
-
 	private static <A extends Annotation> Predicate<MergedAnnotation<A>> matchingTypes(
 			Collection<? extends Class<? extends Annotation>> annotationTypes) {
 		Assert.notNull(annotationTypes, "AnnotationTypes must not be null");
@@ -1509,33 +1503,6 @@ public abstract class AnnotationUtils {
 			attributes.validated= true;
 			return attributes;
 		};
-	}
-
-	private static class FirstRunOfPredicate<A extends Annotation>
-			implements Predicate<MergedAnnotation<A>> {
-
-		private final Function<? super MergedAnnotation<A>, ?> valueExtractor;
-
-		private boolean hasLastValue;
-
-		private Object lastValue;
-
-		public FirstRunOfPredicate(
-				Function<? super MergedAnnotation<A>, ?> valueExtractor) {
-			this.valueExtractor = valueExtractor;
-		}
-
-		@Override
-		public boolean test(MergedAnnotation<A> annotation) {
-			if(!this.hasLastValue) {
-				this.hasLastValue = true;
-				this.lastValue = this.valueExtractor.apply(annotation);
-			}
-			Object value = this.valueExtractor.apply(annotation);
-			return ObjectUtils.nullSafeEquals(value, this.lastValue);
-
-		}
-
 	}
 
 }
