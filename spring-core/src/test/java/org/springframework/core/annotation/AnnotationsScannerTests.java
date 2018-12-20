@@ -16,6 +16,7 @@
 
 package org.springframework.core.annotation;
 
+import java.io.Serializable;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -375,6 +376,72 @@ public class AnnotationsScannerTests {
 				"4:TestInheritedAnnotation5", "5:TestAnnotation6");
 	}
 
+	@Test
+	public void exhaustiveStrategyOnBridgeMethodScansAnnotations() throws Exception {
+		Method source = BridgedMethod.class.getDeclaredMethod("method", Object.class);
+		assertThat(source.isBridge()).isTrue();
+		assertThat(scan(source, SearchStrategy.EXHAUSTIVE)).containsExactly(
+				"0:TestAnnotation1", "1:TestAnnotation2");
+	}
+
+	@Test
+	public void exhaustiveStrategyOnBridgedMethodScansAnnotations() throws Exception {
+		Method source = BridgedMethod.class.getDeclaredMethod("method", String.class);
+		assertThat(source.isBridge()).isFalse();
+		assertThat(scan(source, SearchStrategy.EXHAUSTIVE)).containsExactly(
+				"0:TestAnnotation1", "1:TestAnnotation2");
+	}
+
+	@Test
+	public void directStrategyOnBridgeMethodScansAnnotations() throws Exception {
+		Method source = BridgedMethod.class.getDeclaredMethod("method", Object.class);
+		assertThat(source.isBridge()).isTrue();
+		assertThat(scan(source, SearchStrategy.DIRECT)).containsExactly(
+				"0:TestAnnotation1");
+	}
+
+	@Test
+	public void dirextStrategyOnBridgedMethodScansAnnotations() throws Exception {
+		Method source = BridgedMethod.class.getDeclaredMethod("method", String.class);
+		assertThat(source.isBridge()).isFalse();
+		assertThat(scan(source, SearchStrategy.DIRECT)).containsExactly(
+				"0:TestAnnotation1");
+	}
+
+	@Test
+	public void exhaustiveStrategyOnMethodWithIgnorablesScansAnnotations()
+			throws Exception {
+		Method source = methodFrom(Ignoreable.class);
+		assertThat(scan(source, SearchStrategy.EXHAUSTIVE)).containsExactly(
+				"0:TestAnnotation1");
+	}
+
+	@Test
+	public void exhaustiveStrategyOnMethodWithMultipleCandidatesScansAnnotations()
+			throws Exception {
+		Method source = methodFrom(MultipleMethods.class);
+		assertThat(scan(source, SearchStrategy.EXHAUSTIVE)).containsExactly(
+				"0:TestAnnotation1");
+	}
+
+	@Test
+	public void exhaustiveStrategyOnMethodWithGenericParameterOverrideScansAnnotations()
+			throws Exception {
+		Method source = ReflectionUtils.findMethod(GenericOverride.class, "method",
+				String.class);
+		assertThat(scan(source, SearchStrategy.EXHAUSTIVE)).containsExactly(
+				"0:TestAnnotation1", "1:TestAnnotation2");
+	}
+
+	@Test
+	public void exhaustiveStrategyOnMethodWithGenericParameterNonOverrideScansAnnotations()
+			throws Exception {
+		Method source = ReflectionUtils.findMethod(GenericNonOverride.class, "method",
+				StringBuilder.class);
+		assertThat(scan(source, SearchStrategy.EXHAUSTIVE)).containsExactly(
+				"0:TestAnnotation1");
+	}
+
 	private Method methodFrom(Class<?> type) {
 		return ReflectionUtils.findMethod(type, "method");
 	}
@@ -598,4 +665,93 @@ public class AnnotationsScannerTests {
 
 	}
 
+	static class BridgedMethod implements BridgeMethod<String> {
+
+		@Override
+		@TestAnnotation1
+		public void method(String arg) {
+		}
+
+	}
+
+	static interface BridgeMethod<T> {
+
+		@TestAnnotation2
+		void method(T arg);
+
+	}
+
+	static class Ignoreable implements IgnoreableOverrideInterface1,
+			IgnoreableOverrideInterface2, Serializable {
+
+		@TestAnnotation1
+		public void method() {
+		}
+
+	}
+
+	static interface IgnoreableOverrideInterface1 {
+
+		@Deprecated
+		public void method();
+
+	}
+
+	static interface IgnoreableOverrideInterface2 {
+
+		@Deprecated
+		public void method();
+
+	}
+
+	static abstract class MultipleMethods implements MultipleMethodsInterface {
+
+		@TestAnnotation1
+		public void method() {
+		}
+
+	}
+
+	interface MultipleMethodsInterface {
+
+		@TestAnnotation2
+		void method(String arg);
+
+		@TestAnnotation2
+		void method1();
+
+	}
+
+	static class GenericOverride implements GenericOverrideInterface<String> {
+
+		@TestAnnotation1
+		public void method(String argument) {
+
+		}
+
+	}
+
+	static interface GenericOverrideInterface<T extends CharSequence> {
+
+		@TestAnnotation2
+		void method(T argument);
+
+	}
+
+	static abstract class GenericNonOverride
+			implements GenericNonOverrideInterface<String> {
+
+		@TestAnnotation1
+		public void method(StringBuilder argument) {
+
+		}
+
+	}
+
+	static interface GenericNonOverrideInterface<T extends CharSequence> {
+
+		@TestAnnotation2
+		void method(T argument);
+
+	}
 }
