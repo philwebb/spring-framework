@@ -278,7 +278,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 
 	@Override
 	public <T> Optional<T> getAttribute(String attributeName, Class<T> type) {
-		return Optional.ofNullable(getAttributeValue(attributeName, type));
+		return Optional.ofNullable(getAttributeValue(attributeName, type, false));
 	}
 
 	@Override
@@ -306,7 +306,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 			type = ClassUtils.resolvePrimitiveIfNecessary(type);
 			type = getTypeForMapValueOption(options, type);
 			String name = attributeType.getAttributeName();
-			Object value = getAttributeValue(name, type);
+			Object value = getAttributeValue(name, type, false);
 			if (value != null) {
 				map.put(name, getValueForMapValueOption(value, factory, options));
 			}
@@ -375,11 +375,6 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 
 	private <T> T getRequiredAttribute(String attributeName, Class<T> type) {
 		return getAttributeValue(attributeName, type, true);
-	}
-
-	@SuppressWarnings("unchecked")
-	private <T> T getAttributeValue(String attributeName, Class<T> type) {
-		return getAttributeValue(attributeName, type, false);
 	}
 
 	@SuppressWarnings("unchecked")
