@@ -78,7 +78,8 @@ class AnnotationsScanner implements Iterable<DeclaredAnnotations> {
 	}
 
 	/**
-	 * Cacheable results for a single {@link AnnotatedElement} source.
+	 * Cachable results for a single {@link AnnotatedElement} source.
+	 *
 	 * @param <E> the annotated element type
 	 * @see ClassResults
 	 * @see MethodResults
