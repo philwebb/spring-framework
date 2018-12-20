@@ -17,16 +17,22 @@
 package org.springframework.core.annotation;
 
 import org.junit.Ignore;
+import org.junit.Test;
+
+import static org.junit.Assert.fail;
 
 
 /**
- * Tests for {@link TypeMappedAnnotations}
  *
- * @author Phillip Webb
+ * @author pwebb
+ * @since 5.0
  */
 @Ignore
-public class TypeMappedAnnotationsTests {
+public class MergedAnnotationPredicatesTests {
 
-	// FIXME
+	@Test
+	public void test() {
+		fail("Not yet implemented");
+	}
 
 }

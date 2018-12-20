@@ -23,6 +23,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.IntFunction;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Collector.Characteristics;
@@ -54,6 +55,13 @@ public final class MergedAnnotationCollectors {
 				(list, annotation) -> list.add(annotation.synthesize()),
 				MergedAnnotationCollectors::addAll, list -> list.toArray(new Annotation[0]));
 	}
+
+	public static <A extends Annotation> Collector<MergedAnnotation<? super A>, ?, A[]> toAnnotationArray(IntFunction<A[]> generator) {
+		return Collector.of(ArrayList::new,
+				(list, annotation) -> list.add(annotation.synthesize()),
+				MergedAnnotationCollectors::addAll, list -> list.toArray(new Annotation[0]));
+	}
+
 
 	public static <A extends Annotation> Collector<MergedAnnotation<A>, ?, MultiValueMap<String, Object>> toMultiValueMap(
 			MapValues... options) {

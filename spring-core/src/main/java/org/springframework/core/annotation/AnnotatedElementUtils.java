@@ -18,14 +18,11 @@ package org.springframework.core.annotation;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.core.BridgeMethodResolver;
@@ -733,8 +730,9 @@ public abstract class AnnotatedElementUtils {
 			InternalAnnotatedElementUtils.findAllMergedAnnotations(element,
 					annotationType)
 		).withSkippedOriginalExceptionCheck().to(() ->
-			findAnnotations(element).stream(annotationType).collect(
-					toSynthesizedAggregateAnnotationSet())
+			findAnnotations(element).stream(annotationType).sorted(
+					highAggregateIndexesFirst()).collect(
+							MergedAnnotationCollectors.toAnnotationSet())
 		);
 	}
 
@@ -762,8 +760,9 @@ public abstract class AnnotatedElementUtils {
 					annotationTypes)
 		).to(()->
 			findAnnotations(element).stream().filter(
-					MergedAnnotationPredicates.typeIn(annotationTypes)).collect(
-							toSynthesizedAggregateAnnotationSet())
+					MergedAnnotationPredicates.typeIn(annotationTypes)).sorted(
+							highAggregateIndexesFirst()).collect(
+									MergedAnnotationCollectors.toAnnotationSet())
 		);
 	}
 
@@ -829,7 +828,8 @@ public abstract class AnnotatedElementUtils {
 					annotationType, containerType)
 		).to(() ->
 			findRepeatableAnnotations(element, containerType, annotationType).stream(
-					annotationType).collect(toSynthesizedAggregateAnnotationSet())
+					annotationType).sorted(highAggregateIndexesFirst()).collect(
+							MergedAnnotationCollectors.toAnnotationSet())
 		);
 	}
 
@@ -874,55 +874,8 @@ public abstract class AnnotatedElementUtils {
 		return map.isEmpty() ? null : map;
 	}
 
-
-
-
-
-
-
-	// FIXME simplify with combined comparator. use sort before collect
-	// MergedAnnotation.comparingAggregateOrder
-
-	private static <A extends Annotation> Collector<MergedAnnotation<A>, ?, Set<A>> toSynthesizedAggregateAnnotationSet() {
-		return Collector.of(AggregateOrderedList<A>::new, AggregateOrderedList::insert,
-				AggregateOrderedList::insertAll,
-				AnnotatedElementUtils::toSynthesizedAnnotationSet);
-	}
-
-	private static <A extends Annotation, M extends A> Set<A> toSynthesizedAnnotationSet(
-			Collection<? extends MergedAnnotation<M>> collection) {
-		Set<A> result = new LinkedHashSet<>(collection.size());
-		for (MergedAnnotation<M> annotation : collection) {
-			result.add(annotation.synthesize());
-		}
-		return result;
-	}
-
-	private static class AggregateOrderedList<A extends Annotation>
-			extends LinkedList<MergedAnnotation<A>> {
-
-		public void insert(MergedAnnotation<A> annotation) {
-			ListIterator<MergedAnnotation<A>> iterator = listIterator();
-			while (iterator.hasNext()) {
-				MergedAnnotation<A> current = iterator.next();
-				if (getAggregateIndex(annotation) > getAggregateIndex(current)) {
-					iterator.set(annotation);
-					iterator.add(current);
-					return;
-				}
-			}
-			iterator.add(annotation);
-		}
-
-		private int getAggregateIndex(MergedAnnotation<A> annotation) {
-			return ((MergedAnnotation<?>) annotation).getAggregateIndex();
-		}
-
-		public AggregateOrderedList<A> insertAll(AggregateOrderedList<A> additions) {
-			additions.forEach(this::insert);
-			return this;
-		}
-
+	private static <A extends Annotation> Comparator<MergedAnnotation<A>> highAggregateIndexesFirst() {
+		return Comparator.<MergedAnnotation<A>>comparingInt(MergedAnnotation::getAggregateIndex).reversed();
 	}
 
 }
