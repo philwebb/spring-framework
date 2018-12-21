@@ -396,49 +396,49 @@ public class TypeMappedAnnotationTests {
 	@Test
 	public void getClassWhenHasAttributeValueReturnsValue() {
 		MergedAnnotation<?> annotation = create(Class.class,
-				ClassReference.of(String.class), null);
+				ClassReference.from(String.class), null);
 		assertThat(annotation.getClass("value")).isEqualTo(String.class);
 	}
 
 	@Test
 	public void getClassWhenHasNoAttributeValueReturnsDefaultValue() {
 		MergedAnnotation<?> annotation = create(String.class, null,
-				ClassReference.of(String.class));
+				ClassReference.from(String.class));
 		assertThat(annotation.getClass("value")).isEqualTo(String.class);
 	}
 
 	@Test
 	public void getClassArrayWhenHasAttributeValueReturnsValue() {
 		MergedAnnotation<?> annotation = create(Class[].class,
-				new ClassReference[] { ClassReference.of(String.class) }, null);
+				new ClassReference[] { ClassReference.from(String.class) }, null);
 		assertThat(annotation.getClassArray("value")).containsExactly(String.class);
 	}
 
 	@Test
 	public void getClassArrayWhenHasNoAttributeValueReturnsDefaultValue() {
 		MergedAnnotation<?> annotation = create(ClassReference[].class, null,
-				new ClassReference[] { ClassReference.of(String.class) });
+				new ClassReference[] { ClassReference.from(String.class) });
 		assertThat(annotation.getClassArray("value")).containsExactly(String.class);
 	}
 
 	@Test
 	public void getClassAsStringWhenHasAttributeValueReturnsValue() {
 		MergedAnnotation<?> annotation = create(Class.class,
-				ClassReference.of(String.class), null);
+				ClassReference.from(String.class), null);
 		assertThat(annotation.getString("value")).isEqualTo(String.class.getName());
 	}
 
 	@Test
 	public void getClassAsStringWhenHasNoAttributeValueReturnsDefaultValue() {
 		MergedAnnotation<?> annotation = create(String.class, null,
-				ClassReference.of(String.class));
+				ClassReference.from(String.class));
 		assertThat(annotation.getString("value")).isEqualTo(String.class.getName());
 	}
 
 	@Test
 	public void getClassAsStringArrayWhenHasAttributeValueReturnsValue() {
 		MergedAnnotation<?> annotation = create(Class[].class,
-				new ClassReference[] { ClassReference.of(String.class) }, null);
+				new ClassReference[] { ClassReference.from(String.class) }, null);
 		assertThat(annotation.getStringArray("value")).containsExactly(
 				String.class.getName());
 	}
@@ -446,7 +446,7 @@ public class TypeMappedAnnotationTests {
 	@Test
 	public void getClassAsStringArrayWhenHasNoAttributeValueReturnsDefaultValue() {
 		MergedAnnotation<?> annotation = create(ClassReference[].class, null,
-				new ClassReference[] { ClassReference.of(String.class) });
+				new ClassReference[] { ClassReference.from(String.class) });
 		assertThat(annotation.getStringArray("value")).containsExactly(
 				String.class.getName());
 	}
@@ -614,7 +614,7 @@ public class TypeMappedAnnotationTests {
 	@Test
 	public void getClassReferenceAttributeAsClassAdapts() {
 		MergedAnnotation<?> annotation = create(Class.class,
-				ClassReference.of(String.class), null);
+				ClassReference.from(String.class), null);
 		assertThat(annotation.getAttribute("value", Class.class).get()).isEqualTo(
 				String.class);
 	}
@@ -622,7 +622,7 @@ public class TypeMappedAnnotationTests {
 	@Test
 	public void getAttributeForClassReferenceAsStringAdapts() {
 		MergedAnnotation<?> annotation = create(Class.class,
-				ClassReference.of(String.class), null);
+				ClassReference.from(String.class), null);
 		assertThat(annotation.getAttribute("value", String.class).get()).isEqualTo(
 				"java.lang.String");
 	}
@@ -630,7 +630,7 @@ public class TypeMappedAnnotationTests {
 	@Test
 	public void getAttributeForArrayAsClassArrayAdapts() {
 		MergedAnnotation<?> annotation = create(Class[].class,
-				new ClassReference[] { ClassReference.of(String.class) }, null);
+				new ClassReference[] { ClassReference.from(String.class) }, null);
 		assertThat(annotation.getAttribute("value", Class[].class).get()).containsExactly(
 				String.class);
 	}
@@ -638,7 +638,7 @@ public class TypeMappedAnnotationTests {
 	@Test
 	public void getAttributeForClassReferenceAsStringArrayAdapts() {
 		MergedAnnotation<?> annotation = create(Class[].class,
-				new ClassReference[] { ClassReference.of(String.class) }, null);
+				new ClassReference[] { ClassReference.from(String.class) }, null);
 		assertThat(
 				annotation.getAttribute("value", String[].class).get()).containsExactly(
 						"java.lang.String");
@@ -775,7 +775,7 @@ public class TypeMappedAnnotationTests {
 		AnnotationType annotationType = AnnotationType.resolve(
 				ClassValueAnnotation.class);
 		DeclaredAttributes attributes = DeclaredAttributes.of("value",
-				ClassReference.of(StringBuilder.class));
+				ClassReference.from(StringBuilder.class));
 		MergedAnnotation<?> annotation = create(annotationType, attributes);
 		Map<String, Object> map = annotation.asMap(MapValues.CLASS_TO_STRING);
 		assertThat(map).containsOnly(entry("value", StringBuilder.class.getName()));
@@ -786,7 +786,7 @@ public class TypeMappedAnnotationTests {
 		AnnotationType annotationType = AnnotationType.resolve(
 				ClassArrayValueAnnotation.class);
 		DeclaredAttributes attributes = DeclaredAttributes.of("value",
-				new ClassReference[] { ClassReference.of(StringBuffer.class) });
+				new ClassReference[] { ClassReference.from(StringBuffer.class) });
 		MergedAnnotation<?> annotation = create(annotationType, attributes);
 		Map<String, Object> map = annotation.asMap(MapValues.CLASS_TO_STRING);
 		assertThat(map).containsOnly(

@@ -68,11 +68,11 @@ public final class ClassReference {
 	}
 
 	/**
-	 * Create a {@link ClassReference} for the given class.
+	 * Create a {@link ClassReference} from the given class.
 	 * @param classType the source class type
 	 * @return a {@link ClassReference} instance.
 	 */
-	public static ClassReference of(Class<?> classType) {
+	public static ClassReference from(Class<?> classType) {
 		Assert.notNull(classType, "ClassType must not be null");
 		return of(classType.getName());
 	}

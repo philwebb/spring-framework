@@ -53,7 +53,7 @@ public class AttributeValuesAnnotationVisitorTests {
 		Map<String, Object> attributes = new LinkedHashMap<>();
 		visit(WithClassType.class, attributes::put);
 		assertThat(attributes).containsOnly(
-				entry("classValue", ClassReference.of(StringBuilder.class)));
+				entry("classValue", ClassReference.from(StringBuilder.class)));
 	}
 
 	@Test
@@ -97,7 +97,7 @@ public class AttributeValuesAnnotationVisitorTests {
 		Map<String, Object> attributes = new LinkedHashMap<>();
 		visit(WithClassArrayType.class, attributes::put);
 		assertThat(attributes).containsOnly(entry("classArray",
-				new ClassReference[] { ClassReference.of(StringBuilder.class) }));
+				new ClassReference[] { ClassReference.from(StringBuilder.class) }));
 	}
 
 	@Test

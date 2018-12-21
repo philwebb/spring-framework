@@ -72,6 +72,9 @@ import static org.springframework.core.annotation.AnnotationUtilsTests.asArray;
  */
 public class MergedAnnotationsBackCompatibiltyTests {
 
+	// FIXME merge AnnotationUtilsTests
+	// FIXME move
+
 	@Test
 	public void streamWhenNotAnnotatedReturnsEmpty() {
 		MergedAnnotations annotations = MergedAnnotations.from(NonAnnotatedClass.class);

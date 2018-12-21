@@ -71,10 +71,10 @@ public class DeclaredAttributesAnnotationVisitorTests {
 		assertThat(a.get("doubleArray")).isEqualTo(new double[] { 2.34, 2.35 });
 		assertThat(a.get("stringValue")).isEqualTo("st");
 		assertThat(a.get("stringArray")).isEqualTo(new String[] { "st", "ri" });
-		assertThat(a.get("classValue")).isEqualTo(ClassReference.of(StringBuilder.class));
+		assertThat(a.get("classValue")).isEqualTo(ClassReference.from(StringBuilder.class));
 		assertThat(a.get("classArray")).isEqualTo(
-				new ClassReference[] { ClassReference.of(StringBuilder.class),
-					ClassReference.of(InputStream.class) });
+				new ClassReference[] { ClassReference.from(StringBuilder.class),
+					ClassReference.from(InputStream.class) });
 		assertThat(a.get("enumValue")).isEqualTo(
 				EnumValueReference.from(ExampleEnum.ONE));
 		assertThat(a.get("enumArray")).isEqualTo(

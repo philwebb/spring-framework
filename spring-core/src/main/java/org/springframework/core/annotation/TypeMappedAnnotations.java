@@ -183,7 +183,7 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 		private void add(ClassLoader classLoader, Object source, int aggregateIndex,
 				DeclaredAnnotation annotation,
 				RepeatableContainers repeatableContainers) {
-			repeatableContainers.visit(classLoader, annotation, (type, attributes) -> {
+			repeatableContainers.visit(annotation, classLoader, (type, attributes) -> {
 				AnnotationTypeMappings mappings = AnnotationTypeMappings.forType(
 						classLoader, repeatableContainers, type);
 				if (mappings != null) {

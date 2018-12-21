@@ -305,7 +305,7 @@ public abstract class AnnotationUtils {
 			MergedAnnotations.from(containerAnnotationType != null
 					? RepeatableContainers.of(containerAnnotationType, annotationType)
 					: RepeatableContainers.standardRepeatables(), SearchStrategy.SUPER_CLASS,
-					annotatedElement).stream(annotationType).filter(MergedAnnotationPredicates.runOf(
+					annotatedElement).stream(annotationType).filter(MergedAnnotationPredicates.firstRunOf(
 							MergedAnnotation::getAggregateIndex)).map(
 									MergedAnnotation::withNonMergedAttributes).collect(
 											MergedAnnotationCollectors.toAnnotationSet())
@@ -1136,6 +1136,7 @@ public abstract class AnnotationUtils {
 	@Deprecated
 	public static <A extends Annotation> A synthesizeAnnotation(
 			A annotation, @Nullable AnnotatedElement annotatedElement) {
+		// FIXME do we need to support this one?
 		return InternalAnnotationUtils.synthesizeAnnotation(annotation, annotatedElement);
 	}
 

@@ -19,12 +19,11 @@ package org.springframework.core.annotation;
 import org.junit.Ignore;
 
 /**
- * Tests for {@link AnnotationTypeMappings}.
+ * Tests for {@link MergedAnnotation}.
  *
  * @author Phillip Webb
  */
 @Ignore
-public class AnnotationTypeMappingsTests {
-
+public class MergedAnnotationTests {
 
 }

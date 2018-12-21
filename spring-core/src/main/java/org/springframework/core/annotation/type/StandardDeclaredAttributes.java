@@ -95,13 +95,13 @@ class StandardDeclaredAttributes extends AbstractDeclaredAttributes {
 			return null;
 		}
 		if (value instanceof Class) {
-			return ClassReference.of((Class<?>) value);
+			return ClassReference.from((Class<?>) value);
 		}
 		if (value instanceof Class<?>[]) {
 			Class<?>[] classes = (Class<?>[]) value;
 			ClassReference[] references = new ClassReference[classes.length];
 			for (int i = 0; i < classes.length; i++) {
-				references[i] = ClassReference.of(classes[i]);
+				references[i] = ClassReference.from(classes[i]);
 			}
 			return references;
 		}

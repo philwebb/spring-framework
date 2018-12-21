@@ -681,6 +681,7 @@ public class AnnotationsScannerTests {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	static class Ignoreable implements IgnoreableOverrideInterface1,
 			IgnoreableOverrideInterface2, Serializable {
 

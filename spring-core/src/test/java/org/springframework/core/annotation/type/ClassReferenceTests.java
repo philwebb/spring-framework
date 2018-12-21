@@ -36,9 +36,9 @@ public class ClassReferenceTests {
 	}
 
 	@Test
-	public void ofWhenClassIsNullThrowsException() {
+	public void fromWhenClassIsNullThrowsException() {
 		assertThatIllegalArgumentException().isThrownBy(
-				() -> ClassReference.of((Class<?>) null)).withMessage(
+				() -> ClassReference.from((Class<?>) null)).withMessage(
 						"ClassType must not be null");
 	}
 
@@ -49,8 +49,8 @@ public class ClassReferenceTests {
 	}
 
 	@Test
-	public void ofClassReturnsClassReference() {
-		ClassReference reference = ClassReference.of(String.class);
+	public void fromReturnsClassReference() {
+		ClassReference reference = ClassReference.from(String.class);
 		assertThat(reference.getClassName()).isEqualTo("java.lang.String");
 	}
 

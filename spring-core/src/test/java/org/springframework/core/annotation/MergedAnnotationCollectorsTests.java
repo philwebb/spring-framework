@@ -17,22 +17,13 @@
 package org.springframework.core.annotation;
 
 import org.junit.Ignore;
-import org.junit.Test;
-
-import static org.junit.Assert.fail;
-
 
 /**
- * 
- * @author pwebb
- * @since 5.0
+ * Tests for {@link MergedAnnotationCollectors}.
+ *
+ * @author Phillip Webb
  */
 @Ignore
 public class MergedAnnotationCollectorsTests {
-
-	@Test
-	public void test() {
-		fail("Not yet implemented");
-	}
 
 }

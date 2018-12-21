@@ -75,9 +75,9 @@ public class StandardDeclaredAttributesTests extends AbstractDeclaredAttributesT
 	@Test
 	public void getWhenClassReturnsClassReference() {
 		assertThat(this.attributes.get("classValue")).isEqualTo(
-				ClassReference.of(String.class));
+				ClassReference.from(String.class));
 		assertThat(this.attributes.get("classArray")).isEqualTo(new ClassReference[] {
-			ClassReference.of(String.class), ClassReference.of(StringBuilder.class) });
+			ClassReference.from(String.class), ClassReference.from(StringBuilder.class) });
 	}
 
 	@Test

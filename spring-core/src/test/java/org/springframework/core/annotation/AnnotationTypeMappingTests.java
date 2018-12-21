@@ -17,14 +17,6 @@
 package org.springframework.core.annotation;
 
 import org.junit.Ignore;
-import org.junit.Test;
-
-import org.springframework.core.annotation.type.AttributeType;
-import org.springframework.core.annotation.type.DeclaredAnnotations;
-import org.springframework.core.annotation.type.DeclaredAttributes;
-
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.Assert.*;
 
 
 /**

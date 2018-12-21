@@ -21,11 +21,10 @@ import org.junit.Test;
 
 import static org.junit.Assert.fail;
 
-
 /**
+ * Tests for {@link MergedAnnotationPredicates}.
  *
- * @author pwebb
- * @since 5.0
+ * @author Phillip Webb
  */
 @Ignore
 public class MergedAnnotationPredicatesTests {
