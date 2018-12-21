@@ -16,14 +16,118 @@
 
 package org.springframework.core.annotation;
 
-import org.junit.Ignore;
+import java.lang.annotation.Annotation;
+import java.lang.annotation.Repeatable;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Stream;
+
+import org.junit.Test;
+
+import org.springframework.core.annotation.MergedAnnotation.MapValues;
+import org.springframework.util.MultiValueMap;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
  * Tests for {@link MergedAnnotationCollectors}.
  *
  * @author Phillip Webb
  */
-@Ignore
 public class MergedAnnotationCollectorsTests {
+
+	@Test
+	public void toAnnotationSetCollectsLinkedHashSetWithSynthesizedAnnotations() {
+		Set<TestAnnotation> set = stream().collect(
+				MergedAnnotationCollectors.toAnnotationSet());
+		assertThat(set).isInstanceOf(LinkedHashSet.class).flatExtracting(
+				TestAnnotation::value).containsExactly("a", "b", "c");
+		assertThat(set).allMatch(SynthesizedAnnotation.class::isInstance);
+	}
+
+	@Test
+	public void toAnnotationArrayCollectsAnnotationArrayWithSynthesizedAnnotations() {
+		Annotation[] array = stream().collect(
+				MergedAnnotationCollectors.toAnnotationArray());
+		assertThat(Arrays.stream(array).map(
+				annotation -> ((TestAnnotation) annotation).value())).containsExactly("a",
+						"b", "c");
+		assertThat(array).allMatch(SynthesizedAnnotation.class::isInstance);
+	}
+
+	@Test
+	public void toSuppliedAnnotationArrayCollectsAnnotationArrayWithSynthesizedAnnotations() {
+		TestAnnotation[] array = stream().collect(
+				MergedAnnotationCollectors.toAnnotationArray(TestAnnotation[]::new));
+		assertThat(Arrays.stream(array).map(TestAnnotation::value)).containsExactly("a",
+				"b", "c");
+		assertThat(array).allMatch(SynthesizedAnnotation.class::isInstance);
+	}
+
+	@Test
+	public void toMultiValueMapCollectsMultiValueMap() {
+		MultiValueMap<String, Object> map = stream().map(
+				MergedAnnotation::filterDefaultValues).collect(
+						MergedAnnotationCollectors.toMultiValueMap(
+								MapValues.CLASS_TO_STRING));
+		assertThat(map.get("value")).containsExactly("a", "b", "c");
+		assertThat(map.get("extra")).containsExactly("java.lang.String",
+				"java.lang.Integer");
+	}
+
+	@Test
+	public void toFinishedMultiValueMapCollectsMultiValueMap() {
+		MultiValueMap<String, Object> map = stream().collect(
+				MergedAnnotationCollectors.toMultiValueMap(result -> {
+					result.add("finished", true);
+					return result;
+				}));
+		assertThat(map.get("value")).containsExactly("a", "b", "c");
+		assertThat(map.get("extra")).containsExactly(void.class, String.class,
+				Integer.class);
+		assertThat(map.get("finished")).containsExactly(true);
+	}
+
+	@Test
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void toFinishedMultiValueMapWhenFinisherIsNullThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(() -> stream().collect(
+				MergedAnnotationCollectors.toMultiValueMap((Function) null))).withMessage(
+						"Finisher must not be null");
+	}
+
+	private Stream<MergedAnnotation<TestAnnotation>> stream() {
+		return MergedAnnotations.from(WithTestAnnotations.class).stream(
+				TestAnnotation.class);
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@Repeatable(TestAnnotations.class)
+	@interface TestAnnotation {
+
+		String value();
+
+		Class<?> extra() default void.class;
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface TestAnnotations {
+
+		TestAnnotation[] value();
+
+	}
+
+	@TestAnnotation("a")
+	@TestAnnotation(value = "b", extra = String.class)
+	@TestAnnotation(value = "c", extra = Integer.class)
+	static class WithTestAnnotations {
+
+	}
 
 }
