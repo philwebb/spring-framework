@@ -24,6 +24,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
 /**
@@ -46,8 +47,9 @@ public final class MergedAnnotationPredicates {
 	 * @param typeNames the names that should be matched
 	 * @return a {@link Predicate} to test the annotation type
 	 */
-	public static <A extends Annotation> Predicate<MergedAnnotation<A>> typeIn(
+	public static <A extends Annotation> Predicate<MergedAnnotation<? extends A>> typeIn(
 			String... typeNames) {
+		Assert.notNull(typeNames, "TypeNames must not be null");
 		return annotation -> ObjectUtils.containsElement(typeNames, annotation.getType());
 	}
 
@@ -60,8 +62,9 @@ public final class MergedAnnotationPredicates {
 	 * @return a {@link Predicate} to test the annotation type
 	 */
 	@SafeVarargs
-	public static <A extends Annotation> Predicate<MergedAnnotation<A>> typeIn(
+	public static <A extends Annotation> Predicate<MergedAnnotation<? extends A>> typeIn(
 			Class<? extends Annotation>... types) {
+		Assert.notNull(types, "Types must not be null");
 		return annotation -> Arrays.stream(types).anyMatch(
 				type -> type.getName().equals(annotation.getType()));
 	}
@@ -74,8 +77,9 @@ public final class MergedAnnotationPredicates {
 	 * @param types the type names or classes that should be matched
 	 * @return a {@link Predicate} to test the annotation type
 	 */
-	public static <A extends Annotation> Predicate<MergedAnnotation<A>> typeIn(
+	public static <A extends Annotation> Predicate<MergedAnnotation<? extends A>> typeIn(
 			Collection<?> types) {
+		Assert.notNull(types, "Types must not be null");
 		return annotation -> types.stream().map(
 				type -> type instanceof Class ? ((Class<?>) type).getName()
 						: type.toString()).anyMatch(
@@ -95,6 +99,7 @@ public final class MergedAnnotationPredicates {
 	 */
 	public static <A extends Annotation> Predicate<MergedAnnotation<A>> firstRunOf(
 			Function<? super MergedAnnotation<A>, ?> valueExtractor) {
+		Assert.notNull(valueExtractor, "ValueExtractor must not be null");
 		return new FirstRunOfPredicate<>(valueExtractor);
 	}
 
@@ -110,6 +115,7 @@ public final class MergedAnnotationPredicates {
 	 */
 	public static <A extends Annotation, K> Predicate<MergedAnnotation<A>> unique(
 			Function<? super MergedAnnotation<A>, K> keyExtractor) {
+		Assert.notNull(keyExtractor, "KeyExtractor must not be null");
 		return new UniquePredicate<>(keyExtractor);
 	}
 
