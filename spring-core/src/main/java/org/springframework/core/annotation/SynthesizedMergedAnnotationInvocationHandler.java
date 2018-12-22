@@ -45,17 +45,17 @@ import org.springframework.util.ReflectionUtils.MethodCallback;
 class SynthesizedMergedAnnotationInvocationHandler<A extends Annotation>
 		implements InvocationHandler {
 
-	// FIXME implement SynthesizedAnnotation
-
 	private final MergedAnnotation<?> annotation;
 
 	private final Class<A> type;
+
+	private volatile Integer hashCode;
 
 	SynthesizedMergedAnnotationInvocationHandler(MergedAnnotation<A> annotation,
 			Class<A> type) {
 		Assert.notNull(annotation, "Annotation must not be null");
 		Assert.notNull(type, "Type must not be null");
-		Assert.isTrue(type.isAnnotation(), "Type must be annotation");
+		Assert.isTrue(type.isAnnotation(), "Type must be an annotation");
 		this.type = type;
 		this.annotation = annotation;
 	}
@@ -116,9 +116,15 @@ class SynthesizedMergedAnnotationInvocationHandler<A extends Annotation>
 	 * algorithm.
 	 */
 	private int annotationHashCode() {
-		HashCodeGenerator generator = new HashCodeGenerator();
-		ReflectionUtils.doWithLocalMethods(this.type, generator, this::isAttributeMethod);
-		return generator.getHashCode();
+		Integer hashCode = this.hashCode;
+		if (hashCode == null) {
+			HashCodeGenerator generator = new HashCodeGenerator();
+			ReflectionUtils.doWithLocalMethods(this.type, generator,
+					this::isAttributeMethod);
+			hashCode = generator.getHashCode();
+			this.hashCode = hashCode;
+		}
+		return hashCode;
 	}
 
 	private boolean isAttributeMethod(Method method) {

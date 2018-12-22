@@ -16,34 +16,308 @@
 
 package org.springframework.core.annotation;
 
-import org.junit.Ignore;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
+import org.junit.Test;
+
+import org.springframework.core.annotation.AnnotationTypeMapping.MirrorSet;
+import org.springframework.core.annotation.AnnotationTypeMapping.Reference;
+import org.springframework.core.annotation.type.AnnotationType;
+import org.springframework.core.annotation.type.AttributeType;
+import org.springframework.core.annotation.type.AttributeTypes;
+import org.springframework.core.annotation.type.DeclaredAnnotations;
+import org.springframework.core.annotation.type.DeclaredAttributes;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 /**
  * Tests for {@link AnnotationTypeMapping}.
  *
  * @author Phillip Webb
  */
-@Ignore
 public class AnnotationTypeMappingTests {
 
-	// FIXME revisit again
-//	@Test
-//	public void createWhenMirrorAttributesHaveDifferentDefaultValuesThrowsException() {
-//		AttributeType a = AttributeType.of("a", "java.lang.String",
-//				DeclaredAnnotations.NONE, "a");
-//		AttributeType b = AttributeType.of("b", "java.lang.String",
-//				DeclaredAnnotations.NONE, "b");
-//		AnnotationTypeMapping mapping = new AnnotationTypeMapping(
-//				getClass().getClassLoader(), RepeatableContainers.standardRepeatables(),
-//				null, createAnnotationType("com.example.Component", a, b),
-//				DeclaredAttributes.NONE);
-//		mapping.addMirrorSet("a", "b");
-//		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
-//				() -> new TypeMappedAnnotation<>(mapping, this.source,
-//						this.aggregateIndex, DeclaredAttributes.NONE)).withMessage(
-//								"Different @AliasFor mirror values");
-//	}
+	private ClassLoader classLoader = getClass().getClassLoader();
 
+	private RepeatableContainers repeatableContainers = RepeatableContainers.standardRepeatables();
+
+	private AttributeType componentNameAttribute = AttributeType.of("componentName",
+			"java.lang.String", DeclaredAnnotations.NONE, "");
+
+	private AttributeType componentTextAttribute = AttributeType.of("componentText",
+			"java.lang.String", DeclaredAnnotations.NONE, "");
+
+	private AnnotationType componentType = AnnotationType.of("com.example.Component",
+			DeclaredAnnotations.NONE,
+			AttributeTypes.of(this.componentNameAttribute, this.componentTextAttribute));
+
+	private AnnotationTypeMapping componentMapping = new AnnotationTypeMapping(
+			this.classLoader, this.repeatableContainers, this.componentType);
+
+	private AttributeType serviceNameAttribute = AttributeType.of("serviceName",
+			"java.lang.String", DeclaredAnnotations.NONE, "");
+
+	private AttributeType serviceTextAttribute = AttributeType.of("serviceText",
+			"java.lang.String", DeclaredAnnotations.NONE, "");
+
+	private AnnotationType serviceType = AnnotationType.of("com.example.Service",
+			DeclaredAnnotations.NONE,
+			AttributeTypes.of(this.serviceNameAttribute, this.serviceTextAttribute));
+
+	private AnnotationTypeMapping serviceMapping = new AnnotationTypeMapping(
+			this.classLoader, this.repeatableContainers, this.serviceType);
+
+	@Test
+	public void addAlaisWhenFromDifferentMappingThrowsException() {
+		assertThatIllegalStateException().isThrownBy(() -> this.componentMapping.addAlias(
+				new Reference(this.serviceMapping, this.componentNameAttribute),
+				new Reference(this.serviceMapping,
+						this.serviceNameAttribute))).withMessage(
+								"Invalid mirror mapping reference");
+	}
+
+	@Test
+	public void addAliasAddsAlais() {
+		this.componentMapping.addAlias(
+				new Reference(this.componentMapping, this.componentNameAttribute),
+				new Reference(this.serviceMapping, this.serviceNameAttribute));
+		Reference aliasTo = this.componentMapping.getAliases().get("componentName");
+		assertThat(this.componentMapping.getAliases()).hasSize(1);
+		assertThat(aliasTo.getMapping()).isEqualTo(this.serviceMapping);
+		assertThat(aliasTo.getAttribute()).isEqualTo(this.serviceNameAttribute);
+	}
+
+	@Test
+	public void addAliasToMappingAndAttributeNameAddsAlais() {
+		this.componentMapping.addAlias("componentName", this.serviceMapping,
+				"serviceName");
+		Reference aliasTo = this.componentMapping.getAliases().get("componentName");
+		assertThat(this.componentMapping.getAliases()).hasSize(1);
+		assertThat(aliasTo.getMapping()).isEqualTo(this.serviceMapping);
+		assertThat(aliasTo.getAttribute()).isEqualTo(this.serviceNameAttribute);
+	}
+
+	@Test
+	public void allAliasWhenAlreadyHasAliasDoesNotAddAlias() {
+		this.componentMapping.addAlias(
+				new Reference(this.componentMapping, this.componentNameAttribute),
+				new Reference(this.serviceMapping, this.serviceNameAttribute));
+		this.componentMapping.addAlias(
+				new Reference(this.componentMapping, this.componentNameAttribute),
+				new Reference(this.serviceMapping, AttributeType.of("anotherAttribute",
+						"java.lang.String", DeclaredAnnotations.NONE, null)));
+		Reference aliasTo = this.componentMapping.getAliases().get("componentName");
+		assertThat(this.componentMapping.getAliases()).hasSize(1);
+		assertThat(aliasTo.getMapping()).isEqualTo(this.serviceMapping);
+		assertThat(aliasTo.getAttribute()).isEqualTo(this.serviceNameAttribute);
+	}
+
+	@Test
+	public void addMirrorSetFromNamesAddMirrorSet() {
+		this.componentMapping.addMirrorSet("componentName", "componentText");
+		assertThat(this.componentMapping.getMirrorSets()).hasSize(1);
+		MirrorSet mirrorSet = this.componentMapping.getMirrorSets().get(0);
+		List<Reference> mirrors = toList(mirrorSet);
+		assertThat(mirrors).hasSize(2);
+		assertThat(mirrors.get(0).getMapping()).isEqualTo(this.componentMapping);
+		assertThat(mirrors.get(0).getAttribute()).isEqualTo(this.componentNameAttribute);
+		assertThat(mirrors.get(1).getMapping()).isEqualTo(this.componentMapping);
+		assertThat(mirrors.get(1).getAttribute()).isEqualTo(this.componentTextAttribute);
+	}
+
+	@Test
+	public void addMirrorSetFromNamesWhenMissingAttributeThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(
+				() -> this.componentMapping.addMirrorSet("componentName",
+						"componentMissing")).withMessage(
+								"Missing attribute componentMissing");
+	}
+
+	@Test
+	public void addMirrorSetWhenFromDifferentMappingThrowsException() {
+		List<Reference> references = Arrays.asList(
+				new Reference(this.componentMapping, this.componentNameAttribute),
+				new Reference(this.serviceMapping, this.serviceNameAttribute));
+		MirrorSet mirrorSet = new MirrorSet(references);
+		assertThatIllegalStateException().isThrownBy(
+				() -> this.componentMapping.addMirrorSet(mirrorSet)).withMessage(
+						"Invalid mirror mapping reference");
+	}
+
+	@Test
+	public void addMirrorSetWhenExistingAliasToSelfRemovesAlaias() {
+		this.componentMapping.addAlias("componentName", this.componentMapping,
+				"componentText");
+		assertThat(this.componentMapping.getAliases()).isNotEmpty();
+		this.componentMapping.addMirrorSet("componentName", "componentText");
+		assertThat(this.componentMapping.getAliases()).isEmpty();
+	}
+
+	@Test
+	public void getClassLoaderReturnsClassLoader() {
+		assertThat(this.componentMapping.getClassLoader()).isEqualTo(
+				getClass().getClassLoader());
+	}
+
+	@Test
+	public void getRepeatableContainersReturnsRepeatableContainers() {
+		assertThat(this.componentMapping.getRepeatableContainers()).isEqualTo(
+				this.repeatableContainers);
+	}
+
+	@Test
+	public void getParentReturnsParent() {
+		AnnotationTypeMapping child = new AnnotationTypeMapping(
+				getClass().getClassLoader(), this.repeatableContainers,
+				this.componentMapping, this.serviceType, DeclaredAttributes.NONE);
+		assertThat(child.getParent()).isEqualTo(this.componentMapping);
+	}
+
+	@Test
+	public void getAnnotationAttributesReturnsAnnotationAttributes() {
+		DeclaredAttributes attributes = DeclaredAttributes.of("componentName", "test");
+		AnnotationTypeMapping mapping = new AnnotationTypeMapping(this.classLoader,
+				this.repeatableContainers, null, this.componentType, attributes);
+		assertThat(mapping.getAnnotationAttributes()).isEqualTo(attributes);
+	}
+
+	@Test
+	public void getAliasesReturnsAlaises() {
+		assertThat(componentMapping.getAliases()).isEmpty();
+		this.componentMapping.addAlias("componentName", this.serviceMapping,
+				"serviceName");
+		assertThat(componentMapping.getAliases()).isNotEmpty();
+	}
+
+	@Test
+	public void getMirrorSetsReturnsMirrorSets() {
+		assertThat(this.componentMapping.getMirrorSets()).isEmpty();
+		this.componentMapping.addMirrorSet("componentName", "componentText");
+		assertThat(this.componentMapping.getMirrorSets()).isNotEmpty();
+	}
+
+	@Test
+	public void addMirrorSetWhenHasNoDefaultValueThrowsException() {
+		AnnotationType type = AnnotationType.of("com.example.Component",
+				DeclaredAnnotations.NONE,
+				AttributeTypes.of(this.componentNameAttribute, AttributeType.of("test",
+						"java.lang.String", DeclaredAnnotations.NONE, null)));
+		AnnotationTypeMapping mapping = new AnnotationTypeMapping(this.classLoader,
+				this.repeatableContainers, type);
+		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
+				() -> mapping.addMirrorSet("componentName", "test")).withMessage(
+						"Misconfigured aliases: attribute 'test' in annotation "
+								+ "[com.example.Component] and attribute 'componentName' "
+								+ "in annotation [com.example.Component] must declare "
+								+ "default values.");
+	}
+
+	@Test
+	public void addMirrorSetWhenHasDifferentDefaultValuesThrowsException() {
+		AnnotationType type = AnnotationType.of("com.example.Component",
+				DeclaredAnnotations.NONE,
+				AttributeTypes.of(this.componentNameAttribute, AttributeType.of("test",
+						"java.lang.String", DeclaredAnnotations.NONE, "different")));
+		AnnotationTypeMapping mapping = new AnnotationTypeMapping(this.classLoader,
+				this.repeatableContainers, type);
+		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
+				() -> mapping.addMirrorSet("componentName", "test")).withMessage(
+						"Misconfigured aliases: attribute 'test' in annotation "
+								+ "[com.example.Component] and attribute 'componentName' in annotation "
+								+ "[com.example.Component] must declare the same default value.");
+	}
+
+	@Test
+	public void addMirrorWhenJustOneItemThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(
+				() -> this.componentMapping.addMirrorSet("componentName")).withMessage(
+						"Mirrors must contain more than one reference");
+	}
+
+	@Test
+	public void referenceGetMappingReturnsMapping() {
+		Reference reference = new Reference(this.componentMapping,
+				this.componentNameAttribute);
+		assertThat(reference.getMapping()).isEqualTo(this.componentMapping);
+	}
+
+	@Test
+	public void referenceGetAttributeTypeReturnsAttributeType() {
+		Reference reference = new Reference(this.componentMapping,
+				this.componentNameAttribute);
+		assertThat(reference.getAttribute()).isEqualTo(this.componentNameAttribute);
+	}
+
+	@Test
+	public void referenceIsForSameAnnotationWhenForSameAnnotationReturnsTrue() {
+		Reference reference = new Reference(this.componentMapping,
+				this.componentNameAttribute);
+		AnnotationTypeMapping sameType = new AnnotationTypeMapping(
+				getClass().getClassLoader(), this.repeatableContainers,
+				AnnotationType.of("com.example.Component", DeclaredAnnotations.NONE,
+						AttributeTypes.NONE));
+		Reference other = new Reference(sameType, this.componentNameAttribute);
+		assertThat(reference.isForSameAnnotation(other)).isTrue();
+	}
+
+	@Test
+	public void referenceIsForSameAnnotationWhenForDifferentAnnotationReturnsFalse() {
+		Reference reference = new Reference(this.componentMapping,
+				this.componentNameAttribute);
+		Reference other = new Reference(this.serviceMapping, this.serviceNameAttribute);
+		assertThat(reference.isForSameAnnotation(other)).isFalse();
+	}
+
+	@Test
+	public void referenceIsForSameAnnotationWhenReferenceIsNullReturnsFalse() {
+		Reference reference = new Reference(this.componentMapping,
+				this.componentNameAttribute);
+		assertThat(reference.isForSameAnnotation(null)).isFalse();
+	}
+
+	@Test
+	public void referenceToStringReturnsString() {
+		Reference reference = new Reference(this.componentMapping,
+				this.componentNameAttribute);
+		assertThat(reference.toString()).isEqualTo(
+				"attribute 'componentName' in annotation [com.example.Component]");
+	}
+
+	@Test
+	public void referenceToCapitalizedStringReturnsString() {
+		Reference reference = new Reference(this.componentMapping,
+				this.componentNameAttribute);
+		assertThat(reference.toCapitalizedString()).isEqualTo(
+				"Attribute 'componentName' in annotation [com.example.Component]");
+	}
+
+	@Test
+	public void referenceEqualsAndHashCode() {
+		Reference reference = new Reference(this.componentMapping,
+				this.componentNameAttribute);
+		AnnotationTypeMapping sameType = new AnnotationTypeMapping(
+				getClass().getClassLoader(), this.repeatableContainers,
+				AnnotationType.of("com.example.Component", DeclaredAnnotations.NONE,
+						AttributeTypes.NONE));
+		Reference other = new Reference(sameType, this.componentNameAttribute);
+		assertThat(reference.hashCode()).isEqualTo(other.hashCode());
+		assertThat(reference).isEqualTo(other);
+		assertThat(reference).isNotEqualTo(
+				new Reference(this.componentMapping, this.componentTextAttribute));
+		assertThat(reference).isNotEqualTo(
+				new Reference(this.serviceMapping, this.serviceNameAttribute));
+	}
+
+	private List<Reference> toList(MirrorSet mirrorSet) {
+		List<Reference> list = new ArrayList<>();
+		mirrorSet.iterator().forEachRemaining(list::add);
+		return list;
+	}
 
 }
