@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
  */
 public class MissingMergedAnnotationTests {
 
-	private MergedAnnotation<?> missing = MissingMergedAnnotation.getInstance();
+	private final MergedAnnotation<?> missing = MissingMergedAnnotation.getInstance();
 
 	@Test
 	public void getTypeThrowsNoSuchElementException() {

@@ -42,34 +42,34 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
  */
 public class AnnotationTypeMappingTests {
 
-	private ClassLoader classLoader = getClass().getClassLoader();
+	private final ClassLoader classLoader = getClass().getClassLoader();
 
-	private RepeatableContainers repeatableContainers = RepeatableContainers.standardRepeatables();
+	private final RepeatableContainers repeatableContainers = RepeatableContainers.standardRepeatables();
 
-	private AttributeType componentNameAttribute = AttributeType.of("componentName",
+	private final AttributeType componentNameAttribute = AttributeType.of("componentName",
 			"java.lang.String", DeclaredAnnotations.NONE, "");
 
-	private AttributeType componentTextAttribute = AttributeType.of("componentText",
+	private final AttributeType componentTextAttribute = AttributeType.of("componentText",
 			"java.lang.String", DeclaredAnnotations.NONE, "");
 
-	private AnnotationType componentType = AnnotationType.of("com.example.Component",
+	private final AnnotationType componentType = AnnotationType.of("com.example.Component",
 			DeclaredAnnotations.NONE,
 			AttributeTypes.of(this.componentNameAttribute, this.componentTextAttribute));
 
-	private AnnotationTypeMapping componentMapping = new AnnotationTypeMapping(
+	private final AnnotationTypeMapping componentMapping = new AnnotationTypeMapping(
 			this.classLoader, this.repeatableContainers, this.componentType);
 
-	private AttributeType serviceNameAttribute = AttributeType.of("serviceName",
+	private final AttributeType serviceNameAttribute = AttributeType.of("serviceName",
 			"java.lang.String", DeclaredAnnotations.NONE, "");
 
-	private AttributeType serviceTextAttribute = AttributeType.of("serviceText",
+	private final AttributeType serviceTextAttribute = AttributeType.of("serviceText",
 			"java.lang.String", DeclaredAnnotations.NONE, "");
 
-	private AnnotationType serviceType = AnnotationType.of("com.example.Service",
+	private final AnnotationType serviceType = AnnotationType.of("com.example.Service",
 			DeclaredAnnotations.NONE,
 			AttributeTypes.of(this.serviceNameAttribute, this.serviceTextAttribute));
 
-	private AnnotationTypeMapping serviceMapping = new AnnotationTypeMapping(
+	private final AnnotationTypeMapping serviceMapping = new AnnotationTypeMapping(
 			this.classLoader, this.repeatableContainers, this.serviceType);
 
 	@Test
@@ -188,10 +188,10 @@ public class AnnotationTypeMappingTests {
 
 	@Test
 	public void getAliasesReturnsAlaises() {
-		assertThat(componentMapping.getAliases()).isEmpty();
+		assertThat(this.componentMapping.getAliases()).isEmpty();
 		this.componentMapping.addAlias("componentName", this.serviceMapping,
 				"serviceName");
-		assertThat(componentMapping.getAliases()).isNotEmpty();
+		assertThat(this.componentMapping.getAliases()).isNotEmpty();
 	}
 
 	@Test

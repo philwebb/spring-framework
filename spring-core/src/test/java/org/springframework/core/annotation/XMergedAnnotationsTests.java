@@ -26,7 +26,7 @@ import org.junit.rules.ExpectedException;
  * @author Phillip Webb
  */
 @Ignore
-public class MergedAnnotationsTests {
+public class XMergedAnnotationsTests {
 
 	// FIXME revisit
 
