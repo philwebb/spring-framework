@@ -56,6 +56,7 @@ import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.entry;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.either;
@@ -426,23 +427,10 @@ public class XAnnotatedElementUtilsTests {
 
 	@Test
 	public void getMergedAnnotationAttributesWithInvalidConventionBasedComposedAnnotation() {
-		MergedAnnotation<?> annotation = MergedAnnotations.from(
-				SearchStrategy.INHERITED_ANNOTATIONS,
-				InvalidConventionBasedComposedContextConfigClass.class).get(
-						ContextConfig.class);
-
-		Class<?> element = InvalidConventionBasedComposedContextConfigClass.class;
-		exception.expect(AnnotationConfigurationException.class);
-		exception.expectMessage(
-				either(containsString("attribute 'value' and its alias 'locations'")).or(
-						containsString("attribute 'locations' and its alias 'value'")));
-		exception.expectMessage(either(containsString(
-				"values of [{duplicateDeclaration}] and [{requiredLocationsDeclaration}]")).or(
-						containsString(
-								"values of [{requiredLocationsDeclaration}] and [{duplicateDeclaration}]")));
-		exception.expectMessage(either(containsString("but only one is permitted")).or(
-				containsString("Different @AliasFor mirror values for annotation")));
-		getMergedAnnotationAttributes(element, ContextConfig.class);
+		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
+				() -> MergedAnnotations.from(SearchStrategy.INHERITED_ANNOTATIONS,
+						InvalidConventionBasedComposedContextConfigClass.class).get(
+								ContextConfig.class));
 	}
 
 	@Test

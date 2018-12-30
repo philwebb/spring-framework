@@ -338,7 +338,7 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 		private void checkMirrorPossibleAttributeResult(Reference candidate, Reference result,
 				Object value, Object lastValue) {
 			if (ObjectUtils.nullSafeEquals(value, lastValue)
-					|| isShadow(candidate, result, value, lastValue)) {
+					|| isShadow(candidate, result, lastValue)) {
 				return;
 			}
 			String on = (this.source != null) ? " declared on " + this.source : "";
@@ -352,18 +352,15 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 					ObjectUtils.nullSafeToString(value)));
 		}
 
-		private boolean isShadow(Reference candidate, Reference result, Object value, Object lastValue) {
-			if(!hasAliasForAnnotation(candidate) || !hasAliasForAnnotation(result)) {
+		private boolean isShadow(Reference candidate, Reference result,
+				Object lastValue) {
+			if (!this.mapping.getAliases().containsKey(
+					candidate.getAttribute().getAttributeName())) {
 				return false;
 			}
 			String name = result.getAttribute().getAttributeName();
 			Object attributeValue = this.mapping.getAnnotationAttributes().get(name);
 			return ObjectUtils.nullSafeEquals(lastValue, attributeValue);
-		}
-
-		private boolean hasAliasForAnnotation(Reference candidate) {
-			return candidate.getAttribute().getDeclaredAnnotations().find(
-					AliasFor.class.getName()) != null;
 		}
 
 		private boolean isSameAsDefaultValue(Object value, AttributeType attribute) {

@@ -1032,8 +1032,8 @@ public class TypeMappedAnnotationTests {
 				getClass().getClassLoader(), RepeatableContainers.standardRepeatables(),
 				null, createAnnotationType("com.example.MyComponent", c),
 				DeclaredAttributes.NONE);
-		AttributeType a = createStringAttributeType("a", aliasForAnnotations);
-		AttributeType b = createStringAttributeType("b", aliasForAnnotations);
+		AttributeType a = createStringAttributeType("a");
+		AttributeType b = createStringAttributeType("b");
 		AnnotationType metaAnnotationType = AnnotationType.of("com.example.Component",
 				DeclaredAnnotations.NONE, AttributeTypes.of(a, b));
 		AnnotationTypeMapping metaMapping = new AnnotationTypeMapping(
