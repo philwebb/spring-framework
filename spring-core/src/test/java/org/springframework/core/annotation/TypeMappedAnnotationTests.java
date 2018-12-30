@@ -31,6 +31,7 @@ import org.springframework.core.annotation.type.AnnotationType;
 import org.springframework.core.annotation.type.AttributeType;
 import org.springframework.core.annotation.type.AttributeTypes;
 import org.springframework.core.annotation.type.ClassReference;
+import org.springframework.core.annotation.type.DeclaredAnnotation;
 import org.springframework.core.annotation.type.DeclaredAnnotations;
 import org.springframework.core.annotation.type.DeclaredAttributes;
 import org.springframework.core.annotation.type.EnumValueReference;
@@ -1023,14 +1024,16 @@ public class TypeMappedAnnotationTests {
 		// that must be provided by the user since it has no default.
 		// Ideally we'd not support this going forward, but we want to remain
 		// back-compatible as much as possible
+		DeclaredAnnotations aliasForAnnotations = DeclaredAnnotations.of(null,
+				DeclaredAnnotation.of(AliasFor.class.getName(), DeclaredAttributes.NONE));
 		AttributeType c = AttributeType.of("c", "java.lang.String",
 				DeclaredAnnotations.NONE, null);
 		AnnotationTypeMapping mapping = new AnnotationTypeMapping(
 				getClass().getClassLoader(), RepeatableContainers.standardRepeatables(),
 				null, createAnnotationType("com.example.MyComponent", c),
 				DeclaredAttributes.NONE);
-		AttributeType a = createStringAttributeType("a");
-		AttributeType b = createStringAttributeType("b");
+		AttributeType a = createStringAttributeType("a", aliasForAnnotations);
+		AttributeType b = createStringAttributeType("b", aliasForAnnotations);
 		AnnotationType metaAnnotationType = AnnotationType.of("com.example.Component",
 				DeclaredAnnotations.NONE, AttributeTypes.of(a, b));
 		AnnotationTypeMapping metaMapping = new AnnotationTypeMapping(
@@ -1124,6 +1127,11 @@ public class TypeMappedAnnotationTests {
 	private AttributeType createStringAttributeType(String attributeName) {
 		return AttributeType.of(attributeName, String.class.getName(),
 				DeclaredAnnotations.NONE, "");
+	}
+
+	private AttributeType createStringAttributeType(String attributeName,
+			DeclaredAnnotations annotations) {
+		return AttributeType.of(attributeName, String.class.getName(), annotations, "");
 	}
 
 	private AnnotationType createAnnotationType(String className,

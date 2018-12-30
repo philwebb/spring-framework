@@ -183,6 +183,11 @@ class AnnotationTypeMapping {
 			return this.references.iterator();
 		}
 
+		@Override
+		public String toString() {
+			return this.references.toString();
+		}
+
 	}
 
 	/**

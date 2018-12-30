@@ -322,11 +322,10 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 			Object lastValue = null;
 			for (Reference candidate : mirrorSet) {
 				AttributeType attribute = candidate.getAttribute();
-				String name = attribute.getAttributeName();
-				Object value = this.attributes.get(name, false);
+				Object value = this.attributes.get(attribute.getAttributeName(), false);
 				if (value != null && !isSameAsDefaultValue(value, attribute)) {
 					if (result != null) {
-						checkMirrorPossibleAttributeResult(name, result, value,
+						checkMirrorPossibleAttributeResult(candidate, result, value,
 								lastValue);
 					}
 					result = candidate;
@@ -336,10 +335,10 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 			return result;
 		}
 
-		private void checkMirrorPossibleAttributeResult(String name, Reference result,
+		private void checkMirrorPossibleAttributeResult(Reference candidate, Reference result,
 				Object value, Object lastValue) {
 			if (ObjectUtils.nullSafeEquals(value, lastValue)
-					|| isShadow(result, value, lastValue)) {
+					|| isShadow(candidate, result, value, lastValue)) {
 				return;
 			}
 			String on = (this.source != null) ? " declared on " + this.source : "";
@@ -348,15 +347,23 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 			throw new AnnotationConfigurationException(String.format(
 					"Different @AliasFor mirror values for annotation [%s]%s, "
 							+ "attribute '%s' and its alias '%s' are declared with values of [%s] and [%s].",
-					annotationType, on, lastName, name,
+					annotationType, on, lastName, candidate.getAttribute().getAttributeName(),
 					ObjectUtils.nullSafeToString(lastValue),
 					ObjectUtils.nullSafeToString(value)));
 		}
 
-		private boolean isShadow(Reference result, Object value, Object lastValue) {
+		private boolean isShadow(Reference candidate, Reference result, Object value, Object lastValue) {
+			if(!hasAliasForAnnotation(candidate) || !hasAliasForAnnotation(result)) {
+				return false;
+			}
 			String name = result.getAttribute().getAttributeName();
 			Object attributeValue = this.mapping.getAnnotationAttributes().get(name);
 			return ObjectUtils.nullSafeEquals(lastValue, attributeValue);
+		}
+
+		private boolean hasAliasForAnnotation(Reference candidate) {
+			return candidate.getAttribute().getDeclaredAnnotations().find(
+					AliasFor.class.getName()) != null;
 		}
 
 		private boolean isSameAsDefaultValue(Object value, AttributeType attribute) {
