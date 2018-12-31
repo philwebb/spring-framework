@@ -16,7 +16,6 @@
 
 package org.springframework.core.annotation;
 
-import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
@@ -25,52 +24,35 @@ import java.lang.annotation.Target;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.stream.Stream;
 
 import javax.annotation.Resource;
 
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.internal.ArrayComparisonFailure;
 import org.junit.rules.ExpectedException;
 
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
-import org.springframework.core.annotation.XAnnotatedElementUtilsTests.ContextConfig;
 import org.springframework.core.annotation.XAnnotationUtilsTests.ExtendsBaseClassWithGenericAnnotatedMethod;
 import org.springframework.core.annotation.XAnnotationUtilsTests.ImplementsInterfaceWithGenericAnnotatedMethod;
 import org.springframework.core.annotation.XAnnotationUtilsTests.WebController;
 import org.springframework.core.annotation.XAnnotationUtilsTests.WebMapping;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Indexed;
-import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.ReflectionUtils;
 
-import static java.util.Arrays.asList;
-import static java.util.Arrays.stream;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.entry;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.either;
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static java.util.Arrays.*;
-import static java.util.stream.Collectors.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-import static org.springframework.core.annotation.AnnotatedElementUtils.*;
+import static org.springframework.core.annotation.AnnotatedElementUtils.findMergedAnnotation;
 
 /**
  * Unit tests for {@link AnnotatedElementUtils}.
@@ -435,64 +417,65 @@ public class XAnnotatedElementUtilsTests {
 
 	@Test
 	public void getMergedAnnotationAttributesWithShadowedAliasComposedAnnotation() {
-		Class<?> element = ShadowedAliasComposedContextConfigClass.class;
-		AnnotationAttributes attributes = getMergedAnnotationAttributes(element,
-				ContextConfig.class);
-
-		String[] expected = asArray("test.xml");
-
-		assertNotNull("Should find @ContextConfig on " + element.getSimpleName(),
-				attributes);
-		assertArrayEquals("locations", expected, attributes.getStringArray("locations"));
-		assertArrayEquals("value", expected, attributes.getStringArray("value"));
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				SearchStrategy.INHERITED_ANNOTATIONS,
+				ShadowedAliasComposedContextConfigClass.class).get(ContextConfig.class);
+		assertThat(annotation.getStringArray("locations")).containsExactly("test.xml");
+		assertThat(annotation.getStringArray("value")).containsExactly("test.xml");
 	}
 
 	@Test
 	public void findMergedAnnotationAttributesOnInheritedAnnotationInterface() {
-		AnnotationAttributes attributes = findMergedAnnotationAttributes(
-				InheritedAnnotationInterface.class, Transactional.class);
-		assertNotNull("Should find @Transactional on InheritedAnnotationInterface",
-				attributes);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				SearchStrategy.EXHAUSTIVE,
+				InheritedAnnotationInterface.class).get(Transactional.class);
+		assertThat(annotation.isPresent()).isTrue();
+		assertThat(annotation.getAggregateIndex()).isEqualTo(0);
 	}
 
 	@Test
 	public void findMergedAnnotationAttributesOnSubInheritedAnnotationInterface() {
-		AnnotationAttributes attributes = findMergedAnnotationAttributes(
-				SubInheritedAnnotationInterface.class, Transactional.class);
-		assertNotNull("Should find @Transactional on SubInheritedAnnotationInterface",
-				attributes);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				SearchStrategy.EXHAUSTIVE,
+				SubInheritedAnnotationInterface.class).get(Transactional.class);
+		assertThat(annotation.isPresent()).isTrue();
+		assertThat(annotation.getAggregateIndex()).isEqualTo(1);
 	}
 
 	@Test
 	public void findMergedAnnotationAttributesOnSubSubInheritedAnnotationInterface() {
-		AnnotationAttributes attributes = findMergedAnnotationAttributes(
-				SubSubInheritedAnnotationInterface.class, Transactional.class);
-		assertNotNull("Should find @Transactional on SubSubInheritedAnnotationInterface",
-				attributes);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				SearchStrategy.EXHAUSTIVE,
+				SubSubInheritedAnnotationInterface.class).get(Transactional.class);
+		assertThat(annotation.isPresent()).isTrue();
+		assertThat(annotation.getAggregateIndex()).isEqualTo(2);
 	}
 
 	@Test
 	public void findMergedAnnotationAttributesOnNonInheritedAnnotationInterface() {
-		AnnotationAttributes attributes = findMergedAnnotationAttributes(
-				NonInheritedAnnotationInterface.class, Order.class);
-		assertNotNull("Should find @Order on NonInheritedAnnotationInterface",
-				attributes);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				SearchStrategy.EXHAUSTIVE,
+				NonInheritedAnnotationInterface.class).get(Order.class);
+		assertThat(annotation.isPresent()).isTrue();
+		assertThat(annotation.getAggregateIndex()).isEqualTo(0);
 	}
 
 	@Test
 	public void findMergedAnnotationAttributesOnSubNonInheritedAnnotationInterface() {
-		AnnotationAttributes attributes = findMergedAnnotationAttributes(
-				SubNonInheritedAnnotationInterface.class, Order.class);
-		assertNotNull("Should find @Order on SubNonInheritedAnnotationInterface",
-				attributes);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				SearchStrategy.EXHAUSTIVE,
+				SubNonInheritedAnnotationInterface.class).get(Order.class);
+		assertThat(annotation.isPresent()).isTrue();
+		assertThat(annotation.getAggregateIndex()).isEqualTo(1);
 	}
 
 	@Test
 	public void findMergedAnnotationAttributesOnSubSubNonInheritedAnnotationInterface() {
-		AnnotationAttributes attributes = findMergedAnnotationAttributes(
-				SubSubNonInheritedAnnotationInterface.class, Order.class);
-		assertNotNull("Should find @Order on SubSubNonInheritedAnnotationInterface",
-				attributes);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				SearchStrategy.EXHAUSTIVE,
+				SubSubNonInheritedAnnotationInterface.class).get(Order.class);
+		assertThat(annotation.isPresent()).isTrue();
+		assertThat(annotation.getAggregateIndex()).isEqualTo(2);
 	}
 
 	@Test
@@ -500,22 +483,22 @@ public class XAnnotatedElementUtilsTests {
 			throws NoSuchMethodException {
 		Method method = ConcreteClassWithInheritedAnnotation.class.getMethod(
 				"handleFromInterface");
-		AnnotationAttributes attributes = findMergedAnnotationAttributes(method,
-				Order.class);
-		assertNotNull(
-				"Should find @Order on ConcreteClassWithInheritedAnnotation.handleFromInterface() method",
-				attributes);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				SearchStrategy.EXHAUSTIVE,
+				method).get(Order.class);
+		assertThat(annotation.isPresent()).isTrue();
+		assertThat(annotation.getAggregateIndex()).isEqualTo(1);
 	}
 
 	@Test
 	public void findMergedAnnotationAttributesInheritedFromAbstractMethod()
 			throws NoSuchMethodException {
 		Method method = ConcreteClassWithInheritedAnnotation.class.getMethod("handle");
-		AnnotationAttributes attributes = findMergedAnnotationAttributes(method,
-				Transactional.class);
-		assertNotNull(
-				"Should find @Transactional on ConcreteClassWithInheritedAnnotation.handle() method",
-				attributes);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				SearchStrategy.EXHAUSTIVE,
+				method).get(Transactional.class);
+		assertThat(annotation.isPresent()).isTrue();
+		assertThat(annotation.getAggregateIndex()).isEqualTo(1);
 	}
 
 	@Test
@@ -523,103 +506,64 @@ public class XAnnotatedElementUtilsTests {
 			throws NoSuchMethodException {
 		Method method = ConcreteClassWithInheritedAnnotation.class.getMethod(
 				"handleParameterized", String.class);
-		AnnotationAttributes attributes = findMergedAnnotationAttributes(method,
-				Transactional.class);
-		assertNotNull(
-				"Should find @Transactional on bridged ConcreteClassWithInheritedAnnotation.handleParameterized()",
-				attributes);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				SearchStrategy.EXHAUSTIVE,
+				method).get(Transactional.class);
+		assertThat(annotation.isPresent()).isTrue();
+		assertThat(annotation.getAggregateIndex()).isEqualTo(1);
 	}
 
-	/**
-	 * Bridge/bridged method setup code copied from
-	 * {@link org.springframework.core.BridgeMethodResolverTests#testWithGenericParameter()}.
-	 * @since 4.2
-	 */
 	@Test
 	public void findMergedAnnotationAttributesFromBridgeMethod() {
-		Method[] methods = StringGenericParameter.class.getMethods();
-		Method bridgeMethod = null;
-		Method bridgedMethod = null;
-
-		for (Method method : methods) {
-			if ("getFor".equals(method.getName())
-					&& !method.getParameterTypes()[0].equals(Integer.class)) {
-				if (method.getReturnType().equals(Object.class)) {
-					bridgeMethod = method;
-				}
-				else {
-					bridgedMethod = method;
-				}
-			}
-		}
+		List<Method> methods = new ArrayList<>();
+		ReflectionUtils.doWithLocalMethods(StringGenericParameter.class,
+				method -> "getFor".equals(method.getName()), methods::add);
+		Method bridgeMethod = methods.get(0).getReturnType().equals(Object.class)
+				? methods.get(0)
+				: methods.get(1);
+		Method bridgedMethod = methods.get(0).getReturnType().equals(Object.class)
+				? methods.get(1)
+				: methods.get(0);
 		assertTrue(bridgeMethod != null && bridgeMethod.isBridge());
 		assertTrue(bridgedMethod != null && !bridgedMethod.isBridge());
-
-		AnnotationAttributes attributes = findMergedAnnotationAttributes(bridgeMethod,
-				Order.class);
-		assertNotNull(
-				"Should find @Order on StringGenericParameter.getFor() bridge method",
-				attributes);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				SearchStrategy.EXHAUSTIVE,
+				bridgeMethod).get(Order.class);
+		assertThat(annotation.isPresent()).isTrue();
+		assertThat(annotation.getAggregateIndex()).isEqualTo(0);
 	}
 
 	@Test
 	public void findMergedAnnotationAttributesOnClassWithMetaAndLocalTxConfig() {
-		AnnotationAttributes attributes = findMergedAnnotationAttributes(
-				MetaAndLocalTxConfigClass.class, Transactional.class);
-		assertNotNull("Should find @Transactional on MetaAndLocalTxConfigClass",
-				attributes);
-		assertEquals("TX qualifier for MetaAndLocalTxConfigClass.", "localTxMgr",
-				attributes.getString("qualifier"));
+		MergedAnnotation<?> annotation = MergedAnnotations.from(SearchStrategy.EXHAUSTIVE,
+				MetaAndLocalTxConfigClass.class).get(Transactional.class);
+		assertThat(annotation.getString("qualifier")).isEqualTo("localTxMgr");
 	}
 
 	@Test
 	public void findAndSynthesizeAnnotationAttributesOnClassWithAttributeAliasesInTargetAnnotation() {
+		MergedAnnotation<AliasedTransactional> mergedAnnotation = MergedAnnotations.from(
+				SearchStrategy.EXHAUSTIVE, AliasedTransactionalComponentClass.class).get(
+						AliasedTransactional.class);
+		AliasedTransactional synthesizedAnnotation = mergedAnnotation.synthesize();
 		String qualifier = "aliasForQualifier";
-
-		// 1) Find and merge AnnotationAttributes from the annotation hierarchy
-		AnnotationAttributes attributes = findMergedAnnotationAttributes(
-				AliasedTransactionalComponentClass.class, AliasedTransactional.class);
-		assertNotNull("@AliasedTransactional on AliasedTransactionalComponentClass.",
-				attributes);
-
-		// 2) Synthesize the AnnotationAttributes back into the target
-		// annotation
-		AliasedTransactional annotation = AnnotationUtils.synthesizeAnnotation(attributes,
-				AliasedTransactional.class, AliasedTransactionalComponentClass.class);
-		assertNotNull(annotation);
-
-		// 3) Verify that the AnnotationAttributes and synthesized annotation
-		// are equivalent
-		assertEquals("TX value via attributes.", qualifier,
-				attributes.getString("value"));
-		assertEquals("TX value via synthesized annotation.", qualifier,
-				annotation.value());
-		assertEquals("TX qualifier via attributes.", qualifier,
-				attributes.getString("qualifier"));
-		assertEquals("TX qualifier via synthesized annotation.", qualifier,
-				annotation.qualifier());
+		assertThat(mergedAnnotation.getString("value")).isEqualTo(qualifier);
+		assertThat(mergedAnnotation.getString("qualifier")).isEqualTo(qualifier);
+		assertThat(synthesizedAnnotation.value()).isEqualTo(qualifier);
+		assertThat(synthesizedAnnotation.qualifier()).isEqualTo(qualifier);
 	}
 
 	@Test
 	public void findMergedAnnotationAttributesOnClassWithAttributeAliasInComposedAnnotationAndNestedAnnotationsInTargetAnnotation() {
-		AnnotationAttributes attributes = assertComponentScanAttributes(
+		MergedAnnotation<?> annotation = assertComponentScanAttributes(
 				TestComponentScanClass.class, "com.example.app.test");
-
-		Filter[] excludeFilters = attributes.getAnnotationArray("excludeFilters",
-				Filter.class);
-		assertNotNull(excludeFilters);
-
-		List<String> patterns = stream(excludeFilters).map(Filter::pattern).collect(
-				toList());
-		assertEquals(asList("*Test", "*Tests"), patterns);
+		MergedAnnotation<Filter>[] excludeFilters = annotation.getAnnotationArray(
+				"excludeFilters", Filter.class);
+		assertThat(Arrays.stream(excludeFilters).map(
+				filter -> filter.getString("pattern"))).containsExactly("*Test",
+						"*Tests");
 	}
 
-	/**
-	 * This test ensures that
-	 * {@link AnnotationUtils#postProcessAnnotationAttributes} uses
-	 * {@code ObjectUtils.nullSafeEquals()} to check for equality between
-	 * annotation attributes since attributes may be arrays.
-	 */
 	@Test
 	public void findMergedAnnotationAttributesOnClassWithBothAttributesOfAnAliasPairDeclared() {
 		assertComponentScanAttributes(
@@ -640,76 +584,31 @@ public class XAnnotatedElementUtilsTests {
 				"com.example.app.test");
 	}
 
-	private AnnotationAttributes assertComponentScanAttributes(Class<?> element,
+	private MergedAnnotation<?> assertComponentScanAttributes(Class<?> element,
 			String... expected) {
-		AnnotationAttributes attributes = findMergedAnnotationAttributes(element,
-				ComponentScan.class);
-
-		assertNotNull("Should find @ComponentScan on " + element, attributes);
-		assertArrayEquals("value: ", expected, attributes.getStringArray("value"));
-		assertArrayEquals("basePackages: ", expected,
-				attributes.getStringArray("basePackages"));
-
-		return attributes;
-	}
-
-	private AnnotationAttributes findMergedAnnotationAttributes(AnnotatedElement element,
-			Class<? extends Annotation> annotationType) {
-		Assert.notNull(annotationType, "annotationType must not be null");
-		return AnnotatedElementUtils.findMergedAnnotationAttributes(element,
-				annotationType.getName(), false, false);
-	}
-
-	@Test
-	public void findMergedAnnotationWithAttributeAliasesInTargetAnnotation() {
-		Class<?> element = AliasedTransactionalComponentClass.class;
-		AliasedTransactional annotation = findMergedAnnotation(element,
-				AliasedTransactional.class);
-		assertNotNull("@AliasedTransactional on " + element, annotation);
-		assertEquals("TX value via synthesized annotation.", "aliasForQualifier",
-				annotation.value());
-		assertEquals("TX qualifier via synthesized annotation.", "aliasForQualifier",
-				annotation.qualifier());
+		MergedAnnotation<?> annotation = MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, element).get(ComponentScan.class);
+		assertThat(annotation.getStringArray("value")).containsExactly(expected);
+		assertThat(annotation.getStringArray("basePackages")).containsExactly(expected);
+		return annotation;
 	}
 
 	@Test
 	public void findMergedAnnotationForMultipleMetaAnnotationsWithClashingAttributeNames() {
-		String[] xmlLocations = asArray("test.xml");
-		String[] propFiles = asArray("test.properties");
-
-		Class<?> element = AliasedComposedContextConfigAndTestPropSourceClass.class;
-
-		ContextConfig contextConfig = findMergedAnnotation(element, ContextConfig.class);
-		assertNotNull("@ContextConfig on " + element, contextConfig);
-		assertArrayEquals("locations", xmlLocations, contextConfig.locations());
-		assertArrayEquals("value", xmlLocations, contextConfig.value());
-
-		// Synthesized annotation
-		TestPropSource testPropSource = AnnotationUtils.findAnnotation(element,
-				TestPropSource.class);
-		assertArrayEquals("locations", propFiles, testPropSource.locations());
-		assertArrayEquals("value", propFiles, testPropSource.value());
-
-		// Merged annotation
-		testPropSource = findMergedAnnotation(element, TestPropSource.class);
-		assertNotNull("@TestPropSource on " + element, testPropSource);
-		assertArrayEquals("locations", propFiles, testPropSource.locations());
-		assertArrayEquals("value", propFiles, testPropSource.value());
+		MergedAnnotations annotations = MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, AliasedComposedContextConfigAndTestPropSourceClass.class);
+		MergedAnnotation<?> contextConfig = annotations.get(ContextConfig.class);
+		assertThat(contextConfig.getStringArray("locations")).containsExactly("test.xml");
+		assertThat(contextConfig.getStringArray("value")).containsExactly("test.xml");
+		MergedAnnotation<?> testPropSource = annotations.get(TestPropSource.class);
+		assertThat(testPropSource.getStringArray("locations")).containsExactly("test.properties");
+		assertThat(testPropSource.getStringArray("value")).containsExactly("test.properties");
 	}
 
 	@Test
 	public void findMergedAnnotationWithLocalAliasesThatConflictWithAttributesInMetaAnnotationByConvention() {
-		final String[] EMPTY = new String[0];
-		Class<?> element = SpringAppConfigClass.class;
-		ContextConfig contextConfig = findMergedAnnotation(element, ContextConfig.class);
-
-		assertNotNull("Should find @ContextConfig on " + element, contextConfig);
-		assertArrayEquals("locations for " + element, EMPTY, contextConfig.locations());
-		// 'value' in @SpringAppConfig should not override 'value' in
-		// @ContextConfig
-		assertArrayEquals("value for " + element, EMPTY, contextConfig.value());
-		assertArrayEquals("classes for " + element, new Class<?>[] { Number.class },
-				contextConfig.classes());
+		MergedAnnotation<?> annotation = MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, SpringAppConfigClass.class).get(ContextConfig.class);
+		assertThat(annotation.getStringArray("locations")).isEmpty();
+		assertThat(annotation.getStringArray("value")).isEmpty();
+		assertThat(annotation.getClassArray("classes")).containsExactly(Number.class);
 	}
 
 	@Test
@@ -727,14 +626,15 @@ public class XAnnotatedElementUtilsTests {
 
 	private void assertWebMapping(AnnotatedElement element)
 			throws ArrayComparisonFailure {
-		WebMapping webMapping = findMergedAnnotation(element, WebMapping.class);
-		assertNotNull(webMapping);
-		assertArrayEquals("value attribute: ", asArray("/test"), webMapping.value());
-		assertArrayEquals("path attribute: ", asArray("/test"), webMapping.path());
+		MergedAnnotation<?> annotation = MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, element).get(WebMapping.class);
+		assertThat(annotation.getStringArray("value")).containsExactly("/test");
+		assertThat(annotation.getStringArray("path")).containsExactly("/test");
 	}
 
 	@Test
 	public void javaLangAnnotationTypeViaFindMergedAnnotation() throws Exception {
+		// FIXME do we want to support java.lang annotations? If so how without adding too much complexity
+		MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, Date.class.getConstructor(String.class));
 		Constructor<?> deprecatedCtor = Date.class.getConstructor(String.class);
 		assertEquals(deprecatedCtor.getAnnotation(Deprecated.class),
 				findMergedAnnotation(deprecatedCtor, Deprecated.class));
@@ -744,42 +644,38 @@ public class XAnnotatedElementUtilsTests {
 
 	@Test
 	public void javaxAnnotationTypeViaFindMergedAnnotation() throws Exception {
-		assertEquals(ResourceHolder.class.getAnnotation(Resource.class),
-				findMergedAnnotation(ResourceHolder.class, Resource.class));
-		assertEquals(SpringAppConfigClass.class.getAnnotation(Resource.class),
-				findMergedAnnotation(SpringAppConfigClass.class, Resource.class));
+		assertThat(MergedAnnotations.from(ResourceHolder.class).get(
+				Resource.class).getString("name")).isEqualTo("x");
 	}
 
 	@Test
 	public void getAllMergedAnnotationsOnClassWithInterface() throws Exception {
-		Method m = TransactionalServiceImpl.class.getMethod("doIt");
-		Set<Transactional> allMergedAnnotations = getAllMergedAnnotations(m,
-				Transactional.class);
-		assertTrue(allMergedAnnotations.isEmpty());
+		Method method = TransactionalServiceImpl.class.getMethod("doIt");
+		assertThat(MergedAnnotations.from(SearchStrategy.INHERITED_ANNOTATIONS,
+				method).stream(Transactional.class)).isEmpty();
 	}
 
 	@Test
 	public void findAllMergedAnnotationsOnClassWithInterface() throws Exception {
-		Method m = TransactionalServiceImpl.class.getMethod("doIt");
-		Set<Transactional> allMergedAnnotations = findAllMergedAnnotations(m,
-				Transactional.class);
-		assertEquals(1, allMergedAnnotations.size());
+		Method method = TransactionalServiceImpl.class.getMethod("doIt");
+		assertThat(MergedAnnotations.from(SearchStrategy.EXHAUSTIVE,
+				method).stream(Transactional.class)).hasSize(1);
 	}
 
 	@Test // SPR-16060
 	public void findMethodAnnotationFromGenericInterface() throws Exception {
 		Method method = ImplementsInterfaceWithGenericAnnotatedMethod.class.getMethod(
 				"foo", String.class);
-		Order order = findMergedAnnotation(method, Order.class);
-		assertNotNull(order);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, method).get(Order.class);
+		assertThat(annotation.isPresent()).isTrue();
 	}
 
 	@Test // SPR-17146
 	public void findMethodAnnotationFromGenericSuperclass() throws Exception {
-		Method method = ExtendsBaseClassWithGenericAnnotatedMethod.class.getMethod("foo",
-				String.class);
-		Order order = findMergedAnnotation(method, Order.class);
-		assertNotNull(order);
+		Method method = ExtendsBaseClassWithGenericAnnotatedMethod.class.getMethod(
+				"foo", String.class);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, method).get(Order.class);
+		assertThat(annotation.isPresent()).isTrue();
 	}
 
 	@SafeVarargs
