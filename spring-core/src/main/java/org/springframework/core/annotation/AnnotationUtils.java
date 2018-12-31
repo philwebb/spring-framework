@@ -708,7 +708,7 @@ public abstract class AnnotationUtils {
 	 * {@code java.lang.annotation} package.
 	 * @param annotation the annotation to check
 	 * @return {@code true} if the annotation is in the {@code java.lang.annotation} package
-	 * @deprecated since 5.2
+	 * @deprecated since 5.2 in favor of {@link AnnotationFilter#JAVA}
 	 */
 	@Deprecated
 	public static boolean isInJavaLangAnnotationPackage(@Nullable Annotation annotation) {
@@ -734,7 +734,9 @@ public abstract class AnnotationUtils {
 	 * @param annotationType the name of the annotation type to check
 	 * @return {@code true} if the annotation is in the {@code java.lang.annotation} package
 	 * @since 4.2
+	 * @deprecated since 5.2 in favor of {@link AnnotationFilter#JAVA}
 	 */
+	@Deprecated
 	public static boolean isInJavaLangAnnotationPackage(@Nullable String annotationType) {
 		return InternalAnnotationUtils.isInJavaLangAnnotationPackage(annotationType);
 	}
