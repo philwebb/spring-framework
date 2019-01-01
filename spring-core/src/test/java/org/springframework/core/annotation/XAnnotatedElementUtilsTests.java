@@ -633,13 +633,11 @@ public class XAnnotatedElementUtilsTests {
 
 	@Test
 	public void javaLangAnnotationTypeViaFindMergedAnnotation() throws Exception {
-		// FIXME do we want to support java.lang annotations? If so how without adding too much complexity
-		MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, Date.class.getConstructor(String.class));
 		Constructor<?> deprecatedCtor = Date.class.getConstructor(String.class);
-		assertEquals(deprecatedCtor.getAnnotation(Deprecated.class),
-				findMergedAnnotation(deprecatedCtor, Deprecated.class));
-		assertEquals(Date.class.getAnnotation(Deprecated.class),
-				findMergedAnnotation(Date.class, Deprecated.class));
+		MergedAnnotation<?> annotation = MergedAnnotations.from(RepeatableContainers.standardRepeatables(),
+				AnnotationFilter.NONE, SearchStrategy.DIRECT, deprecatedCtor).get(
+						Deprecated.class);
+		assertThat(annotation.isPresent()).isTrue();
 	}
 
 	@Test

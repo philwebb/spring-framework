@@ -31,7 +31,6 @@ import org.springframework.core.annotation.type.AnnotationType;
 import org.springframework.core.annotation.type.AttributeType;
 import org.springframework.core.annotation.type.AttributeTypes;
 import org.springframework.core.annotation.type.ClassReference;
-import org.springframework.core.annotation.type.DeclaredAnnotation;
 import org.springframework.core.annotation.type.DeclaredAnnotations;
 import org.springframework.core.annotation.type.DeclaredAttributes;
 import org.springframework.core.annotation.type.EnumValueReference;
@@ -947,7 +946,8 @@ public class TypeMappedAnnotationTests {
 				AttributeTypes.of(createStringAttributeType("name")));
 		AnnotationTypeMapping metaMapping = new AnnotationTypeMapping(
 				getClass().getClassLoader(), RepeatableContainers.standardRepeatables(),
-				mapping, annotationType, DeclaredAttributes.of("name", "test"));
+				AnnotationFilter.PLAIN, mapping, annotationType,
+				DeclaredAttributes.of("name", "test"));
 		MergedAnnotation<?> annotation = new TypeMappedAnnotation<>(metaMapping,
 				this.source, this.aggregateIndex, DeclaredAttributes.NONE);
 		assertThat(annotation.getString("name")).isEqualTo("test");
@@ -964,7 +964,8 @@ public class TypeMappedAnnotationTests {
 				metaAttributeType);
 		AnnotationTypeMapping metaMapping = new AnnotationTypeMapping(
 				getClass().getClassLoader(), RepeatableContainers.standardRepeatables(),
-				mapping, metaAnnotationType, DeclaredAttributes.NONE);
+				AnnotationFilter.PLAIN, mapping, metaAnnotationType,
+				DeclaredAttributes.NONE);
 		MergedAnnotation<?> annotation = new TypeMappedAnnotation<>(metaMapping,
 				this.source, this.aggregateIndex, DeclaredAttributes.NONE);
 		assertThat(annotation.getString("name")).isEqualTo("test");
@@ -980,7 +981,8 @@ public class TypeMappedAnnotationTests {
 				metaAttributeType);
 		AnnotationTypeMapping metaMapping = new AnnotationTypeMapping(
 				getClass().getClassLoader(), RepeatableContainers.standardRepeatables(),
-				mapping, metaAnnotationType, DeclaredAttributes.NONE);
+				AnnotationFilter.PLAIN, mapping, metaAnnotationType,
+				DeclaredAttributes.NONE);
 		MergedAnnotation<?> annotation = new TypeMappedAnnotation<>(metaMapping,
 				this.source, this.aggregateIndex, DeclaredAttributes.of("name", "test"));
 		assertThat(annotation.getStringArray("name")).containsExactly("test");
@@ -1007,7 +1009,8 @@ public class TypeMappedAnnotationTests {
 				new Object[0]);
 		AnnotationTypeMapping mapping = new AnnotationTypeMapping(
 				getClass().getClassLoader(), RepeatableContainers.standardRepeatables(),
-				null, createAnnotationType("com.example.Component", a, b),
+				AnnotationFilter.PLAIN, null,
+				createAnnotationType("com.example.Component", a, b),
 				DeclaredAttributes.NONE);
 		mapping.addMirrorSet("a", "b");
 		MergedAnnotation<?> annotation = new TypeMappedAnnotation<>(mapping, this.source,
@@ -1024,13 +1027,12 @@ public class TypeMappedAnnotationTests {
 		// that must be provided by the user since it has no default.
 		// Ideally we'd not support this going forward, but we want to remain
 		// back-compatible as much as possible
-		DeclaredAnnotations aliasForAnnotations = DeclaredAnnotations.of(null,
-				DeclaredAnnotation.of(AliasFor.class.getName(), DeclaredAttributes.NONE));
 		AttributeType c = AttributeType.of("c", "java.lang.String",
 				DeclaredAnnotations.NONE, null);
 		AnnotationTypeMapping mapping = new AnnotationTypeMapping(
 				getClass().getClassLoader(), RepeatableContainers.standardRepeatables(),
-				null, createAnnotationType("com.example.MyComponent", c),
+				AnnotationFilter.PLAIN, null,
+				createAnnotationType("com.example.MyComponent", c),
 				DeclaredAttributes.NONE);
 		AttributeType a = createStringAttributeType("a");
 		AttributeType b = createStringAttributeType("b");
@@ -1038,7 +1040,7 @@ public class TypeMappedAnnotationTests {
 				DeclaredAnnotations.NONE, AttributeTypes.of(a, b));
 		AnnotationTypeMapping metaMapping = new AnnotationTypeMapping(
 				getClass().getClassLoader(), RepeatableContainers.standardRepeatables(),
-				mapping, metaAnnotationType,
+				AnnotationFilter.PLAIN, mapping, metaAnnotationType,
 				DeclaredAttributes.of("a", "duplicateDeclaration"));
 		metaMapping.addMirrorSet("a", "b");
 		metaMapping.addAlias("b", mapping, "c");
@@ -1091,7 +1093,7 @@ public class TypeMappedAnnotationTests {
 			AnnotationType annotationType, DeclaredAttributes rootAttributes) {
 		AnnotationTypeMapping mapping = new AnnotationTypeMapping(
 				getClass().getClassLoader(), RepeatableContainers.standardRepeatables(),
-				annotationType);
+				AnnotationFilter.PLAIN, annotationType);
 		return new TypeMappedAnnotation<>(mapping, this.source, this.aggregateIndex,
 				rootAttributes);
 	}
@@ -1104,8 +1106,8 @@ public class TypeMappedAnnotationTests {
 					"com.example.Annotation" + i, DeclaredAnnotations.NONE,
 					AttributeTypes.NONE);
 			mapping = new AnnotationTypeMapping(getClass().getClassLoader(),
-					RepeatableContainers.standardRepeatables(), mapping, annotationType,
-					DeclaredAttributes.NONE);
+					RepeatableContainers.standardRepeatables(), AnnotationFilter.PLAIN,
+					mapping, annotationType, DeclaredAttributes.NONE);
 		}
 		return new TypeMappedAnnotation<>(mapping, this.source, this.aggregateIndex,
 				DeclaredAttributes.NONE);
@@ -1120,18 +1122,13 @@ public class TypeMappedAnnotationTests {
 		AnnotationType annotationType = createAnnotationType(annotationClassName,
 				attributeTypes);
 		return new AnnotationTypeMapping(getClass().getClassLoader(),
-				RepeatableContainers.standardRepeatables(), parent, annotationType,
-				DeclaredAttributes.NONE);
+				RepeatableContainers.standardRepeatables(), AnnotationFilter.PLAIN,
+				parent, annotationType, DeclaredAttributes.NONE);
 	}
 
 	private AttributeType createStringAttributeType(String attributeName) {
 		return AttributeType.of(attributeName, String.class.getName(),
 				DeclaredAnnotations.NONE, "");
-	}
-
-	private AttributeType createStringAttributeType(String attributeName,
-			DeclaredAnnotations annotations) {
-		return AttributeType.of(attributeName, String.class.getName(), annotations, "");
 	}
 
 	private AnnotationType createAnnotationType(String className,

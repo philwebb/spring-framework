@@ -55,6 +55,8 @@ class AnnotationTypeMapping {
 
 	private final RepeatableContainers repeatableContainers;
 
+	private final AnnotationFilter annotationFilter;
+
 	private final AnnotationTypeMapping parent;
 
 	private final AnnotationType annotationType;
@@ -66,16 +68,19 @@ class AnnotationTypeMapping {
 	private final List<MirrorSet> mirrorSets = new ArrayList<>();
 
 	AnnotationTypeMapping(ClassLoader classLoader,
-			RepeatableContainers repeatableContainers, AnnotationType annotationType) {
-		this(classLoader, repeatableContainers, null, annotationType,
+			RepeatableContainers repeatableContainers, AnnotationFilter annotationFilter,
+			AnnotationType annotationType) {
+		this(classLoader, repeatableContainers, annotationFilter, null, annotationType,
 				DeclaredAttributes.NONE);
 	}
 
 	AnnotationTypeMapping(ClassLoader classLoader,
-			RepeatableContainers repeatableContainers, AnnotationTypeMapping parent,
-			AnnotationType annotationType, DeclaredAttributes attributes) {
+			RepeatableContainers repeatableContainers, AnnotationFilter annotationFilter,
+			AnnotationTypeMapping parent, AnnotationType annotationType,
+			DeclaredAttributes attributes) {
 		this.classLoader = classLoader;
 		this.repeatableContainers = repeatableContainers;
+		this.annotationFilter = annotationFilter;
 		this.parent = parent;
 		this.annotationType = annotationType;
 		this.annotationAttributes = attributes;
@@ -126,6 +131,10 @@ class AnnotationTypeMapping {
 
 	public RepeatableContainers getRepeatableContainers() {
 		return this.repeatableContainers;
+	}
+
+	public AnnotationFilter getAnnotationFilter() {
+		return this.annotationFilter;
 	}
 
 	public AnnotationTypeMapping getParent() {

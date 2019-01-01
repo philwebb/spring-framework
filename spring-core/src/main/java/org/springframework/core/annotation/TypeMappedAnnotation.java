@@ -164,7 +164,8 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 
 	private AnnotationTypeMapping getNestedMapping(AnnotationType type) {
 		return AnnotationTypeMappings.forType(this.mapping.getClassLoader(),
-				this.mapping.getRepeatableContainers(), type).get(type.getClassName());
+				this.mapping.getRepeatableContainers(), this.mapping.getAnnotationFilter(), type).get(
+						type.getClassName());
 	}
 
 	/**
@@ -335,8 +336,8 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 			return result;
 		}
 
-		private void checkMirrorPossibleAttributeResult(Reference candidate, Reference result,
-				Object value, Object lastValue) {
+		private void checkMirrorPossibleAttributeResult(Reference candidate,
+				Reference result, Object value, Object lastValue) {
 			if (ObjectUtils.nullSafeEquals(value, lastValue)
 					|| isShadow(candidate, result, lastValue)) {
 				return;
@@ -347,7 +348,8 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 			throw new AnnotationConfigurationException(String.format(
 					"Different @AliasFor mirror values for annotation [%s]%s, "
 							+ "attribute '%s' and its alias '%s' are declared with values of [%s] and [%s].",
-					annotationType, on, lastName, candidate.getAttribute().getAttributeName(),
+					annotationType, on, lastName,
+					candidate.getAttribute().getAttributeName(),
 					ObjectUtils.nullSafeToString(lastValue),
 					ObjectUtils.nullSafeToString(value)));
 		}

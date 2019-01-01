@@ -57,7 +57,7 @@ import org.springframework.util.MultiValueMap;
  */
 class AnnotationTypeMappings {
 
-	private static Map<ClassLoader, Cache> cache = new ConcurrentReferenceHashMap<>();
+	private static Map<ClassLoader, Cache> caches = new ConcurrentReferenceHashMap<>();
 
 	static final String ALIAS_FOR_ANNOTATION = AliasFor.class.getName();
 
@@ -66,17 +66,19 @@ class AnnotationTypeMappings {
 	private final Map<String, AnnotationTypeMapping> mappingForType;
 
 	/**
-	 * Create a new {@link AliasedAnnotationType} instance for the given source.
+	 * Create a new {@link AliasedAnnotationType} instance for the given source
+	 * annotation type.
 	 * @param classLoader the classloader used to read annotations
 	 * @param repeatableContainers strategy to extract repeatable containers
-	 * @param source the source annotation type
+	 * @param annotationFilter the annotation filter used to restrict the
+	 * annotations considered
+	 * @param type the source annotation type
 	 */
 	AnnotationTypeMappings(ClassLoader classLoader,
-			RepeatableContainers repeatableContainers, AnnotationType source) {
-		Assert.notNull(repeatableContainers, "RepeatableContainers must not be null");
-		Assert.notNull(source, "Source must not be null");
-		this.mappings = new MappingsBuilder(classLoader, repeatableContainers).build(
-				source);
+			RepeatableContainers repeatableContainers, AnnotationFilter annotationFilter,
+			AnnotationType type) {
+		this.mappings = new MappingsBuilder(classLoader, repeatableContainers,
+				annotationFilter).build(type);
 		this.mappingForType = groupByType(this.mappings);
 		processAliasForAnnotations();
 	}
@@ -104,7 +106,8 @@ class AnnotationTypeMappings {
 			if (targetDescriptor != null) {
 				Reference target = getTarget(source, targetDescriptor);
 				verifyAliasFor(source, target);
-				target.getMapping().addAlias(target.getAttribute().getAttributeName(), source);
+				target.getMapping().addAlias(target.getAttribute().getAttributeName(),
+						source);
 				ultimateTargets.add(getUltimateTarget(target), source);
 			}
 		}
@@ -235,16 +238,18 @@ class AnnotationTypeMappings {
 	}
 
 	public static AnnotationTypeMappings forType(ClassLoader classLoader,
-			RepeatableContainers repeatableContainers, AnnotationType type) {
+			RepeatableContainers repeatableContainers, AnnotationFilter annotationFilter,
+			AnnotationType type) {
 		Assert.notNull(repeatableContainers, "RepeatableContainers must not be null");
+		Assert.notNull(annotationFilter, "AnnotationFilter must not be null");
 		if (type == null) {
 			return null;
 		}
 		if (classLoader == null) {
 			classLoader = ClassUtils.getDefaultClassLoader();
 		}
-		Cache perClassloadCache = cache.computeIfAbsent(classLoader, key -> new Cache());
-		return perClassloadCache.get(classLoader, repeatableContainers, type);
+		Cache cache = caches.computeIfAbsent(classLoader, key -> new Cache());
+		return cache.get(classLoader, repeatableContainers, annotationFilter, type);
 	}
 
 	/**
@@ -256,22 +261,24 @@ class AnnotationTypeMappings {
 
 		private final RepeatableContainers repeatableContainers;
 
-		private final AnnotationFilter annotationFilter = AnnotationFilter.PLAIN;
+		private final AnnotationFilter annotationFilter;
 
 		public MappingsBuilder(ClassLoader classLoader,
-				RepeatableContainers repeatableContainers) {
+				RepeatableContainers repeatableContainers,
+				AnnotationFilter annotationFilter) {
 			this.classLoader = classLoader;
 			this.repeatableContainers = repeatableContainers;
+			this.annotationFilter = annotationFilter;
 		}
 
-		public List<AnnotationTypeMapping> build(AnnotationType source) {
-			if (isFiltered(source.getClassName())) {
+		public List<AnnotationTypeMapping> build(AnnotationType type) {
+			if (isFiltered(type.getClassName())) {
 				return Collections.emptyList();
 			}
 			List<AnnotationTypeMapping> result = new ArrayList<>();
 			Deque<AnnotationTypeMapping> queue = new ArrayDeque<>();
 			queue.add(new AnnotationTypeMapping(this.classLoader,
-					this.repeatableContainers, source));
+					this.repeatableContainers, this.annotationFilter, type));
 			while (!queue.isEmpty()) {
 				AnnotationTypeMapping mapping = queue.removeFirst();
 				result.add(mapping);
@@ -283,8 +290,9 @@ class AnnotationTypeMappings {
 		private void addMappings(Deque<AnnotationTypeMapping> queue,
 				AnnotationTypeMapping parent, AnnotationType type) {
 			for (DeclaredAnnotation metaAnnotation : type.getDeclaredAnnotations()) {
-				this.repeatableContainers.visit(metaAnnotation, this.classLoader, (annotation,
-						attributes) -> addMapping(queue, parent, annotation, attributes));
+				this.repeatableContainers.visit(metaAnnotation, this.classLoader,
+						(annotation, attributes) -> addMapping(queue, parent, annotation,
+								attributes));
 			}
 		}
 
@@ -293,8 +301,8 @@ class AnnotationTypeMappings {
 				DeclaredAttributes attributes) {
 			if (isMappable(parent, annotation)) {
 				AnnotationTypeMapping mapping = new AnnotationTypeMapping(
-						this.classLoader, this.repeatableContainers, parent, annotation,
-						attributes);
+						this.classLoader, this.repeatableContainers,
+						this.annotationFilter, parent, annotation, attributes);
 				queue.addLast(mapping);
 			}
 		}
@@ -302,7 +310,8 @@ class AnnotationTypeMappings {
 		private boolean isMappable(AnnotationTypeMapping parent,
 				AnnotationType annotation) {
 			String annotationType = annotation.getClassName();
-			return !isFiltered(annotationType) && !isAlreadyMapped(parent, annotationType);
+			return !isFiltered(annotationType)
+					&& !isAlreadyMapped(parent, annotationType);
 		}
 
 		private boolean isFiltered(String annotationType) {
@@ -331,11 +340,12 @@ class AnnotationTypeMappings {
 		private final Map<Key, AnnotationTypeMappings> mappings = new ConcurrentReferenceHashMap<>();
 
 		public AnnotationTypeMappings get(ClassLoader classLoader,
-				RepeatableContainers repeatableContainers, AnnotationType type) {
-			Key key = new Key(repeatableContainers, type);
-			return this.mappings.computeIfAbsent(key,
-					k -> new AnnotationTypeMappings(classLoader, repeatableContainers,
-							type));
+				RepeatableContainers repeatableContainers,
+				AnnotationFilter annotationFilter, AnnotationType type) {
+			return this.mappings.computeIfAbsent(
+					new Key(repeatableContainers, annotationFilter, type),
+					key -> new AnnotationTypeMappings(classLoader, repeatableContainers,
+							annotationFilter, type));
 		}
 
 		/**
@@ -345,11 +355,15 @@ class AnnotationTypeMappings {
 
 			private final RepeatableContainers repeatableContainers;
 
+			private final AnnotationFilter annotationFilter;
+
 			private final String type;
 
-			Key(RepeatableContainers repeatableContainers, AnnotationType type) {
-				this.type = type.getClassName();
+			Key(RepeatableContainers repeatableContainers,
+					AnnotationFilter annotationFilter, AnnotationType type) {
 				this.repeatableContainers = repeatableContainers;
+				this.annotationFilter = annotationFilter;
+				this.type = type.getClassName();
 			}
 
 			@Override
@@ -357,6 +371,7 @@ class AnnotationTypeMappings {
 				final int prime = 31;
 				int result = 1;
 				result = prime * result + this.repeatableContainers.hashCode();
+				result = prime * result + this.annotationFilter.hashCode();
 				result = prime * result + this.type.hashCode();
 				return result;
 			}
@@ -370,8 +385,9 @@ class AnnotationTypeMappings {
 					return false;
 				}
 				Key other = (Key) obj;
-				return this.type.equals(other.type)
-						&& this.repeatableContainers.equals(other.repeatableContainers);
+				return this.repeatableContainers.equals(other.repeatableContainers)
+						&& this.annotationFilter.equals(other.annotationFilter)
+						&& this.type.equals(other.type);
 			}
 
 		}

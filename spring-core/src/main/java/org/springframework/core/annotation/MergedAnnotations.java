@@ -232,7 +232,8 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 */
 	static MergedAnnotations of(@Nullable AnnotatedElement source,
 			Annotation... annotations) {
-		return of(RepeatableContainers.standardRepeatables(), source, annotations);
+		return of(RepeatableContainers.standardRepeatables(), AnnotationFilter.PLAIN,
+				source, annotations);
 	}
 
 	/**
@@ -240,6 +241,9 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 * annotations.
 	 * @param repeatableContainers the repeatable containers that may be used by
 	 * meta-annotations
+	 * @param annotationFilter an annotation filter used to restrict the
+	 * annotations considered. Note that the filter is used as a cache key so
+	 * should ideally be a shared singleton instance
 	 * @param source the source for the annotations. This source is used only
 	 * for information and logging. It does not need to <em>actually</em>
 	 * contain the specified annotations and it will not be searched.
@@ -247,9 +251,11 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 * @return a {@link MergedAnnotations} instance containing the annotations
 	 */
 	static MergedAnnotations of(RepeatableContainers repeatableContainers,
-			@Nullable AnnotatedElement source, Annotation... annotations) {
+			AnnotationFilter annotationFilter, @Nullable AnnotatedElement source,
+			Annotation... annotations) {
 		Assert.notNull(annotations, "Annotations must not be null");
-		return new TypeMappedAnnotations(repeatableContainers, source, annotations);
+		return new TypeMappedAnnotations(repeatableContainers, annotationFilter, source,
+				annotations);
 	}
 
 	/**
@@ -278,7 +284,8 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 */
 	static MergedAnnotations from(SearchStrategy searchStrategy,
 			AnnotatedElement element) {
-		return from(RepeatableContainers.standardRepeatables(), searchStrategy, element);
+		return from(RepeatableContainers.standardRepeatables(), AnnotationFilter.PLAIN,
+				searchStrategy, element);
 	}
 
 	/**
@@ -287,18 +294,23 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 * depending on the {@link SearchStrategy}, related inherited elements.
 	 * @param repeatableContainers the repeatable containers that may be used by
 	 * the element annotations or the meta-annotations
+	 * @param annotationFilter an annotation filter used to restrict the
+	 * annotations considered. Note that the filter is used as a cache key so
+	 * should ideally be a shared singleton instance
 	 * @param searchStrategy the search strategy to use
 	 * @param element the source element
 	 * @return a {@link MergedAnnotations} instance containing the merged
 	 * element annotations
 	 */
 	static MergedAnnotations from(RepeatableContainers repeatableContainers,
-			SearchStrategy searchStrategy, AnnotatedElement element) {
+			AnnotationFilter annotationFilter, SearchStrategy searchStrategy,
+			AnnotatedElement element) {
 		Assert.notNull(repeatableContainers, "RepeatableContainers must not be null");
+		Assert.notNull(annotationFilter, "AnnotationFilter must not be null");
 		Assert.notNull(searchStrategy, "SearchStrategy must not be null");
 		Assert.notNull(element, "Element must not be null");
 		AnnotationsScanner annotations = new AnnotationsScanner(element, searchStrategy);
-		return from(repeatableContainers, annotations);
+		return from(repeatableContainers, annotationFilter, annotations);
 	}
 
 	/**
@@ -306,14 +318,17 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 * annotations and meta-annotations from the specified aggregates.
 	 * @param repeatableContainers the repeatable containers that may be used by
 	 * the element annotations or the meta-annotations
+	 * @param annotationFilter an annotation filter used to restrict the
+	 * annotations considered. Note that the filter is used as a cache key so
+	 * should ideally be a shared singleton instance
 	 * @param aggregates the aggregates that make up the merged annotation in
 	 * priority order. Commonly used to represent a complete class hierarchy
 	 * @return a {@link MergedAnnotations} instance containing the merged
 	 * annotations
 	 */
 	static MergedAnnotations from(RepeatableContainers repeatableContainers,
-			Iterable<DeclaredAnnotations> aggregates) {
-		return from(null, repeatableContainers, aggregates);
+			AnnotationFilter annotationFilter, Iterable<DeclaredAnnotations> aggregates) {
+		return from(null, repeatableContainers, annotationFilter, aggregates);
 	}
 
 	/**
@@ -322,15 +337,20 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 * @param classLoader the class loader used to read annotations
 	 * @param repeatableContainers the repeatable containers that may be used by
 	 * the element annotations or the meta-annotations
+	 * @param annotationFilter an annotation filter used to restrict the
+	 * annotations considered. Note that the filter is used as a cache key so
+	 * should ideally be a shared singleton instance
+	 * {@link AnnotationFilter#PLAIN} is recommended for most purposes.
 	 * @param aggregates the aggregates that make up the merged annotation in
 	 * priority order. Commonly used to represent a complete class hierarchy
 	 * @return a {@link MergedAnnotations} instance containing the merged
 	 * annotations
 	 */
 	static MergedAnnotations from(ClassLoader classLoader,
-			RepeatableContainers repeatableContainers,
+			RepeatableContainers repeatableContainers, AnnotationFilter annotationFilter,
 			Iterable<DeclaredAnnotations> aggregates) {
-		return new TypeMappedAnnotations(classLoader, repeatableContainers, aggregates);
+		return new TypeMappedAnnotations(classLoader, repeatableContainers,
+				annotationFilter, aggregates);
 	}
 
 	/**

@@ -44,10 +44,10 @@ public interface AnnotationFilter {
 	static final AnnotationFilter JAVA = packages("java.lang.annotation");
 
 	/**
-	 * {@link AnnotationFilter} that always matches and can be used when no
+	 * {@link AnnotationFilter} that never matches and can be used when no
 	 * filtering is needed.
 	 */
-	static final AnnotationFilter NONE = annotationType ->  true;
+	static final AnnotationFilter NONE = annotationType ->  false;
 
 	/**
 	 * Test if the given annotation matches the filter.

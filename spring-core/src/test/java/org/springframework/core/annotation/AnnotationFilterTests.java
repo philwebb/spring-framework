@@ -106,13 +106,13 @@ public class AnnotationFilterTests {
 	}
 
 	@Test
-	public void noneWhenNonNullReturnsTrue() {
-		assertThat(AnnotationFilter.NONE.matches(Retention.class)).isTrue();
-		assertThat(AnnotationFilter.NONE.matches(Nullable.class)).isTrue();
-		assertThat(AnnotationFilter.NONE.matches(TestAnnotation.class)).isTrue();
-		assertThat(AnnotationFilter.NONE.matches((Annotation) null)).isTrue();
-		assertThat(AnnotationFilter.NONE.matches((Class<Annotation>) null)).isTrue();
-		assertThat(AnnotationFilter.NONE.matches((String) null)).isTrue();
+	public void noneWhenNonNullReturnsFalse() {
+		assertThat(AnnotationFilter.NONE.matches(Retention.class)).isFalse();
+		assertThat(AnnotationFilter.NONE.matches(Nullable.class)).isFalse();
+		assertThat(AnnotationFilter.NONE.matches(TestAnnotation.class)).isFalse();
+		assertThat(AnnotationFilter.NONE.matches((Annotation) null)).isFalse();
+		assertThat(AnnotationFilter.NONE.matches((Class<Annotation>) null)).isFalse();
+		assertThat(AnnotationFilter.NONE.matches((String) null)).isFalse();
 	}
 
 	@Test

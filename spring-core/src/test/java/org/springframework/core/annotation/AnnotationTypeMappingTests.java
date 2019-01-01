@@ -46,18 +46,21 @@ public class AnnotationTypeMappingTests {
 
 	private final RepeatableContainers repeatableContainers = RepeatableContainers.standardRepeatables();
 
+	private AnnotationFilter annotationFilter = AnnotationFilter.PLAIN;
+
 	private final AttributeType componentNameAttribute = AttributeType.of("componentName",
 			"java.lang.String", DeclaredAnnotations.NONE, "");
 
 	private final AttributeType componentTextAttribute = AttributeType.of("componentText",
 			"java.lang.String", DeclaredAnnotations.NONE, "");
 
-	private final AnnotationType componentType = AnnotationType.of("com.example.Component",
-			DeclaredAnnotations.NONE,
+	private final AnnotationType componentType = AnnotationType.of(
+			"com.example.Component", DeclaredAnnotations.NONE,
 			AttributeTypes.of(this.componentNameAttribute, this.componentTextAttribute));
 
 	private final AnnotationTypeMapping componentMapping = new AnnotationTypeMapping(
-			this.classLoader, this.repeatableContainers, this.componentType);
+			this.classLoader, this.repeatableContainers, this.annotationFilter,
+			this.componentType);
 
 	private final AttributeType serviceNameAttribute = AttributeType.of("serviceName",
 			"java.lang.String", DeclaredAnnotations.NONE, "");
@@ -70,7 +73,8 @@ public class AnnotationTypeMappingTests {
 			AttributeTypes.of(this.serviceNameAttribute, this.serviceTextAttribute));
 
 	private final AnnotationTypeMapping serviceMapping = new AnnotationTypeMapping(
-			this.classLoader, this.repeatableContainers, this.serviceType);
+			this.classLoader, this.repeatableContainers, this.annotationFilter,
+			this.serviceType);
 
 	@Test
 	public void addAlaisWhenFromDifferentMappingThrowsException() {
@@ -170,11 +174,19 @@ public class AnnotationTypeMappingTests {
 				this.repeatableContainers);
 	}
 
+
+	@Test
+	public void getAnnotationFilterReturnsAnnotationFilter() {
+		assertThat(this.componentMapping.getAnnotationFilter()).isEqualTo(
+				this.annotationFilter);
+	}
+
 	@Test
 	public void getParentReturnsParent() {
 		AnnotationTypeMapping child = new AnnotationTypeMapping(
 				getClass().getClassLoader(), this.repeatableContainers,
-				this.componentMapping, this.serviceType, DeclaredAttributes.NONE);
+				this.annotationFilter, this.componentMapping, this.serviceType,
+				DeclaredAttributes.NONE);
 		assertThat(child.getParent()).isEqualTo(this.componentMapping);
 	}
 
@@ -182,7 +194,8 @@ public class AnnotationTypeMappingTests {
 	public void getAnnotationAttributesReturnsAnnotationAttributes() {
 		DeclaredAttributes attributes = DeclaredAttributes.of("componentName", "test");
 		AnnotationTypeMapping mapping = new AnnotationTypeMapping(this.classLoader,
-				this.repeatableContainers, null, this.componentType, attributes);
+				this.repeatableContainers, this.annotationFilter, null,
+				this.componentType, attributes);
 		assertThat(mapping.getAnnotationAttributes()).isEqualTo(attributes);
 	}
 
@@ -208,7 +221,7 @@ public class AnnotationTypeMappingTests {
 				AttributeTypes.of(this.componentNameAttribute, AttributeType.of("test",
 						"java.lang.String", DeclaredAnnotations.NONE, null)));
 		AnnotationTypeMapping mapping = new AnnotationTypeMapping(this.classLoader,
-				this.repeatableContainers, type);
+				this.repeatableContainers, this.annotationFilter, type);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
 				() -> mapping.addMirrorSet("componentName", "test")).withMessage(
 						"Misconfigured aliases: attribute 'test' in annotation "
@@ -224,7 +237,7 @@ public class AnnotationTypeMappingTests {
 				AttributeTypes.of(this.componentNameAttribute, AttributeType.of("test",
 						"java.lang.String", DeclaredAnnotations.NONE, "different")));
 		AnnotationTypeMapping mapping = new AnnotationTypeMapping(this.classLoader,
-				this.repeatableContainers, type);
+				this.repeatableContainers, this.annotationFilter, type);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
 				() -> mapping.addMirrorSet("componentName", "test")).withMessage(
 						"Misconfigured aliases: attribute 'test' in annotation "
@@ -259,8 +272,8 @@ public class AnnotationTypeMappingTests {
 				this.componentNameAttribute);
 		AnnotationTypeMapping sameType = new AnnotationTypeMapping(
 				getClass().getClassLoader(), this.repeatableContainers,
-				AnnotationType.of("com.example.Component", DeclaredAnnotations.NONE,
-						AttributeTypes.NONE));
+				this.annotationFilter, AnnotationType.of("com.example.Component",
+						DeclaredAnnotations.NONE, AttributeTypes.NONE));
 		Reference other = new Reference(sameType, this.componentNameAttribute);
 		assertThat(reference.isForSameAnnotation(other)).isTrue();
 	}
@@ -302,8 +315,8 @@ public class AnnotationTypeMappingTests {
 				this.componentNameAttribute);
 		AnnotationTypeMapping sameType = new AnnotationTypeMapping(
 				getClass().getClassLoader(), this.repeatableContainers,
-				AnnotationType.of("com.example.Component", DeclaredAnnotations.NONE,
-						AttributeTypes.NONE));
+				this.annotationFilter, AnnotationType.of("com.example.Component",
+						DeclaredAnnotations.NONE, AttributeTypes.NONE));
 		Reference other = new Reference(sameType, this.componentNameAttribute);
 		assertThat(reference.hashCode()).isEqualTo(other.hashCode());
 		assertThat(reference).isEqualTo(other);
