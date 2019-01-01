@@ -50,7 +50,7 @@ final class AnnotationTypeResolver {
 	private static final Map<ClassLoader, AnnotationTypeResolver> resolverCache = new ConcurrentReferenceHashMap<>(
 			4);
 
-	private static final Map<Resource, AnnotationType> resourceCache = new ConcurrentReferenceHashMap<>(
+	private static final Map<Resource, Object> resourceCache = new ConcurrentReferenceHashMap<>(
 			4);
 
 	private final ResourceLoader resourceLoader;
@@ -67,28 +67,40 @@ final class AnnotationTypeResolver {
 
 	@Nullable
 	AnnotationType resolve(String className, boolean useCache) {
-		String resourcePath = getResourcePath(className);
-		Resource resource = this.resourceLoader.getResource(resourcePath);
-		return resolve(resource, useCache);
+		try {
+			String resourcePath = getResourcePath(className);
+			Resource resource = this.resourceLoader.getResource(resourcePath);
+			return resolve(resource, useCache);
+		}
+		catch (Exception ex) {
+			throw new UnresolvableAnnotationTypeException(className, ex);
+		}
 	}
 
-	private AnnotationType resolve(Resource resource, boolean useCache) {
+	private AnnotationType resolve(Resource resource, boolean useCache) throws Exception {
 		if (!useCache) {
 			return load(resource);
 		}
-		return resourceCache.computeIfAbsent(resource, this::load);
+		Object result = resourceCache.get(resource);
+		if (result == null) {
+			try {
+				result = load(resource);
+			}
+			catch (Exception ex) {
+				result = ex;
+			}
+			resourceCache.put(resource, result);
+		}
+		if (result instanceof Exception) {
+			throw (Exception) result;
+		}
+		return (AnnotationType) result;
 	}
 
-	private AnnotationType load(Resource resource) {
-		try {
-			// FIXME consider throwing rather than returning null
-			try (InputStream inputStream = new BufferedInputStream(
-					resource.getInputStream())) {
-				return load(inputStream);
-			}
-		}
-		catch (IOException ex) {
-			return null;
+	private AnnotationType load(Resource resource) throws Exception {
+		try (InputStream inputStream = new BufferedInputStream(
+				resource.getInputStream())) {
+			return load(inputStream);
 		}
 	}
 

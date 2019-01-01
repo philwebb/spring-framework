@@ -58,7 +58,7 @@ public final class MergedAnnotationPredicates {
 	 * {@link MergedAnnotation#getType() merged annotation type} is contained in
 	 * the specified array.
 	 * @param <A> the annotation type
-	 * @param typeNames the types that should be matched
+	 * @param types the types that should be matched
 	 * @return a {@link Predicate} to test the annotation type
 	 */
 	@SafeVarargs

@@ -60,7 +60,7 @@ public final class MergedAnnotationCollectors {
 	public static <A extends Annotation> Collector<MergedAnnotation<A>, ?, Set<A>> toAnnotationSet() {
 		return Collector.of(ArrayList<A>::new,
 				(list, annotation) -> list.add(annotation.synthesize()),
-				MergedAnnotationCollectors::addAll, (list) -> new LinkedHashSet<>(list));
+				MergedAnnotationCollectors::addAll, list -> new LinkedHashSet<>(list));
 	}
 
 	/**

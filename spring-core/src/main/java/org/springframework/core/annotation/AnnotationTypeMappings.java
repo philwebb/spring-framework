@@ -31,6 +31,7 @@ import org.springframework.core.annotation.type.AnnotationType;
 import org.springframework.core.annotation.type.AttributeType;
 import org.springframework.core.annotation.type.DeclaredAnnotation;
 import org.springframework.core.annotation.type.DeclaredAttributes;
+import org.springframework.core.annotation.type.UnresolvableAnnotationTypeException;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ConcurrentReferenceHashMap;
@@ -290,9 +291,14 @@ class AnnotationTypeMappings {
 		private void addMappings(Deque<AnnotationTypeMapping> queue,
 				AnnotationTypeMapping parent, AnnotationType type) {
 			for (DeclaredAnnotation metaAnnotation : type.getDeclaredAnnotations()) {
-				this.repeatableContainers.visit(metaAnnotation, this.classLoader,
-						(annotation, attributes) -> addMapping(queue, parent, annotation,
-								attributes));
+				try {
+					this.repeatableContainers.visit(metaAnnotation, this.classLoader,
+							(annotation, attributes) -> addMapping(queue, parent,
+									annotation, attributes));
+				}
+				catch (UnresolvableAnnotationTypeException ex) {
+					// Ignore as meta-annotation
+				}
 			}
 		}
 

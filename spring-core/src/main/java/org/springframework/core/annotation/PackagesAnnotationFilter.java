@@ -23,7 +23,7 @@ import org.springframework.util.Assert;
 
 /**
  * {@link AnnotationFilter} implementation used for
- * {@link AnnotationFilter#packages(String...)}
+ * {@link AnnotationFilter#packages(String...)}.
  *
  * @author Phillip Webb
  * @since 5.2

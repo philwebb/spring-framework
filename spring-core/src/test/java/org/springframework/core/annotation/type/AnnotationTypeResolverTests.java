@@ -29,6 +29,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -59,15 +60,14 @@ public class AnnotationTypeResolverTests {
 	}
 
 	@Test
-	public void resolveWhenResouceDoesNotLoadReturnsNull() throws Exception {
+	public void resolveWhenResouceDoesNotLoadThrowsException() throws Exception {
 		ResourceLoader resourceLoader = mock(ResourceLoader.class);
 		Resource resource = mock(Resource.class);
 		given(resourceLoader.getResource(anyString())).willReturn(resource);
 		given(resource.getInputStream()).willThrow(IOException.class);
 		AnnotationTypeResolver resolver = new AnnotationTypeResolver(resourceLoader);
-		AnnotationType resolved = resolver.resolve(
-				ExampleSimpleAnnotation.class.getName());
-		assertThat(resolved).isNull();
+		assertThatExceptionOfType(UnresolvableAnnotationTypeException.class).isThrownBy(
+				() -> resolver.resolve(ExampleSimpleAnnotation.class.getName()));
 	}
 
 	@Test
