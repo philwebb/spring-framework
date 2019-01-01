@@ -64,6 +64,11 @@ final class MissingMergedAnnotation<A extends Annotation>
 	}
 
 	@Override
+	public int getDepth() {
+		return -1;
+	}
+
+	@Override
 	public int getAggregateIndex() {
 		return -1;
 	}

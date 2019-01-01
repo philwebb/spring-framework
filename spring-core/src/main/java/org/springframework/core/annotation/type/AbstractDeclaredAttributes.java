@@ -25,9 +25,7 @@ import java.util.Objects;
  * @author Phillip Webb
  * @since 5.2
  */
-public abstract class AbstractDeclaredAttributes implements DeclaredAttributes {
-
-	// FIXME hide
+abstract class AbstractDeclaredAttributes implements DeclaredAttributes {
 
 	@Override
 	public Iterator<DeclaredAttribute> iterator() {

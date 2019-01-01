@@ -35,6 +35,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import org.springframework.core.Ordered;
+import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.core.annotation.subpackage.NonPublicAnnotatedClass;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
@@ -42,6 +43,7 @@ import org.springframework.util.ClassUtils;
 
 import static java.util.Arrays.*;
 import static java.util.stream.Collectors.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.springframework.core.annotation.AnnotationUtils.*;
@@ -71,81 +73,77 @@ public class XAnnotationUtilsTests {
 
 	@Test
 	public void findMethodAnnotationOnLeaf() throws Exception {
-		Method m = Leaf.class.getMethod("annotatedOnLeaf");
-		assertNotNull(m.getAnnotation(Order.class));
-		assertNotNull(getAnnotation(m, Order.class));
-		assertNotNull(findAnnotation(m, Order.class));
+		Method method = Leaf.class.getMethod("annotatedOnLeaf");
+		assertThat(method.getAnnotation(Order.class)).isNotNull();
+		assertThat(MergedAnnotations.from(method).get(Order.class).getDepth()).isEqualTo(0);
+		assertThat(MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, method).get(Order.class).getDepth()).isEqualTo(0);
 	}
 
-	// @since 4.2
 	@Test
 	public void findMethodAnnotationWithAnnotationOnMethodInInterface() throws Exception {
-		Method m = Leaf.class.getMethod("fromInterfaceImplementedByRoot");
+		Method method = Leaf.class.getMethod("fromInterfaceImplementedByRoot");
 		// @Order is not @Inherited
-		assertNull(m.getAnnotation(Order.class));
-		// getAnnotation() does not search on interfaces
-		assertNull(getAnnotation(m, Order.class));
-		// findAnnotation() does search on interfaces
-		assertNotNull(findAnnotation(m, Order.class));
+		assertThat(method.getAnnotation(Order.class)).isNull();
+		assertThat(MergedAnnotations.from(method).get(Order.class).getDepth()).isEqualTo(-1);
+		assertThat(MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, method).get(Order.class).getDepth()).isEqualTo(0);
 	}
 
-	// @since 4.2
 	@Test
 	public void findMethodAnnotationWithMetaAnnotationOnLeaf() throws Exception {
-		Method m = Leaf.class.getMethod("metaAnnotatedOnLeaf");
-		assertNull(m.getAnnotation(Order.class));
-		assertNotNull(getAnnotation(m, Order.class));
-		assertNotNull(findAnnotation(m, Order.class));
+		Method method = Leaf.class.getMethod("metaAnnotatedOnLeaf");
+		assertThat(method.getAnnotation(Order.class)).isNull();
+		assertThat(MergedAnnotations.from(method).get(Order.class).getDepth()).isEqualTo(1);
+		assertThat(MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, method).get(Order.class).getDepth()).isEqualTo(1);
 	}
 
-	// @since 4.2
 	@Test
 	public void findMethodAnnotationWithMetaMetaAnnotationOnLeaf() throws Exception {
-		Method m = Leaf.class.getMethod("metaMetaAnnotatedOnLeaf");
-		assertNull(m.getAnnotation(Component.class));
-		assertNull(getAnnotation(m, Component.class));
-		assertNotNull(findAnnotation(m, Component.class));
+		Method method = Leaf.class.getMethod("metaMetaAnnotatedOnLeaf");
+		assertThat(method.getAnnotation(Component.class)).isNull();
+		assertThat(MergedAnnotations.from(method).get(Component.class).getDepth()).isEqualTo(2);
+		assertThat(MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, method).get(Component.class).getDepth()).isEqualTo(2);
 	}
 
 	@Test
 	public void findMethodAnnotationOnRoot() throws Exception {
-		Method m = Leaf.class.getMethod("annotatedOnRoot");
-		assertNotNull(m.getAnnotation(Order.class));
-		assertNotNull(getAnnotation(m, Order.class));
-		assertNotNull(findAnnotation(m, Order.class));
+		Method method = Leaf.class.getMethod("annotatedOnRoot");
+		assertThat(method.getAnnotation(Order.class)).isNotNull();
+		assertThat(MergedAnnotations.from(method).get(Order.class).getDepth()).isEqualTo(0);
+		assertThat(MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, method).get(Order.class).getDepth()).isEqualTo(0);
 	}
 
-	// @since 4.2
 	@Test
 	public void findMethodAnnotationWithMetaAnnotationOnRoot() throws Exception {
-		Method m = Leaf.class.getMethod("metaAnnotatedOnRoot");
-		assertNull(m.getAnnotation(Order.class));
-		assertNotNull(getAnnotation(m, Order.class));
-		assertNotNull(findAnnotation(m, Order.class));
+		Method method = Leaf.class.getMethod("metaAnnotatedOnRoot");
+		assertThat(method.getAnnotation(Order.class)).isNull();
+		assertThat(MergedAnnotations.from(method).get(Order.class).getDepth()).isEqualTo(1);
+		assertThat(MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, method).get(Order.class).getDepth()).isEqualTo(1);
 	}
 
 	@Test
 	public void findMethodAnnotationOnRootButOverridden() throws Exception {
-		Method m = Leaf.class.getMethod("overrideWithoutNewAnnotation");
-		assertNull(m.getAnnotation(Order.class));
-		assertNull(getAnnotation(m, Order.class));
-		assertNotNull(findAnnotation(m, Order.class));
+		Method method = Leaf.class.getMethod("overrideWithoutNewAnnotation");
+		assertThat(method.getAnnotation(Order.class)).isNull();
+		assertThat(MergedAnnotations.from(method).get(Order.class).getDepth()).isEqualTo(-1);
+		assertThat(MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, method).get(Order.class).getDepth()).isEqualTo(0);
 	}
 
 	@Test
 	public void findMethodAnnotationNotAnnotated() throws Exception {
-		Method m = Leaf.class.getMethod("notAnnotated");
-		assertNull(findAnnotation(m, Order.class));
+		Method method = Leaf.class.getMethod("notAnnotated");
+		assertThat(method.getAnnotation(Order.class)).isNull();
+		assertThat(MergedAnnotations.from(method).get(Order.class).getDepth()).isEqualTo(-1);
+		assertThat(MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, method).get(Order.class).getDepth()).isEqualTo(-1);
 	}
 
 	@Test
 	public void findMethodAnnotationOnBridgeMethod() throws Exception {
-		Method bridgeMethod = SimpleFoo.class.getMethod("something", Object.class);
-		assertTrue(bridgeMethod.isBridge());
+		Method method = SimpleFoo.class.getMethod("something", Object.class);
+		assertThat(method.isBridge()).isTrue();
 
-		assertNull(bridgeMethod.getAnnotation(Order.class));
-		assertNull(getAnnotation(bridgeMethod, Order.class));
-		assertNotNull(findAnnotation(bridgeMethod, Order.class));
+		assertThat(method.getAnnotation(Order.class)).isNull();
+		assertThat(MergedAnnotations.from(method).get(Order.class).getDepth()).isEqualTo(-1);
+		assertThat(MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, method).get(Order.class).getDepth()).isEqualTo(0);
 
 		boolean runningInEclipse = Arrays.stream(new Exception().getStackTrace())
 				.anyMatch(element -> element.getClassName().startsWith("org.eclipse.jdt"));
@@ -159,70 +157,60 @@ public class XAnnotationUtilsTests {
 		// [2] https://bugs.eclipse.org/bugs/show_bug.cgi?id=495396
 		//
 		if (!runningInEclipse) {
-			assertNotNull(bridgeMethod.getAnnotation(Transactional.class));
+			assertThat(method.getAnnotation(Transactional.class)).isNotNull();
 		}
-		assertNotNull(getAnnotation(bridgeMethod, Transactional.class));
-		assertNotNull(findAnnotation(bridgeMethod, Transactional.class));
+		assertThat(MergedAnnotations.from(method).get(Transactional.class).getDepth()).isEqualTo(0);
+		assertThat(MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, method).get(Transactional.class).getDepth()).isEqualTo(0);
 	}
 
 	@Test
 	public void findMethodAnnotationOnBridgedMethod() throws Exception {
-		Method bridgedMethod = SimpleFoo.class.getMethod("something", String.class);
-		assertFalse(bridgedMethod.isBridge());
-
-		assertNull(bridgedMethod.getAnnotation(Order.class));
-		assertNull(getAnnotation(bridgedMethod, Order.class));
-		assertNotNull(findAnnotation(bridgedMethod, Order.class));
-
-		assertNotNull(bridgedMethod.getAnnotation(Transactional.class));
-		assertNotNull(getAnnotation(bridgedMethod, Transactional.class));
-		assertNotNull(findAnnotation(bridgedMethod, Transactional.class));
+		Method method = SimpleFoo.class.getMethod("something", String.class);
+		assertThat(method.isBridge()).isFalse();
+		assertThat(method.getAnnotation(Order.class)).isNull();
+		assertThat(MergedAnnotations.from(method).get(Order.class).getDepth()).isEqualTo(-1);
+		assertThat(MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, method).get(Order.class).getDepth()).isEqualTo(0);
+		assertThat(method.getAnnotation(Transactional.class)).isNotNull();
+		assertThat(MergedAnnotations.from(method).get(Transactional.class).getDepth()).isEqualTo(0);
+		assertThat(MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, method).get(Transactional.class).getDepth()).isEqualTo(0);
 	}
 
 	@Test
 	public void findMethodAnnotationFromInterface() throws Exception {
 		Method method = ImplementsInterfaceWithAnnotatedMethod.class.getMethod("foo");
-		Order order = findAnnotation(method, Order.class);
-		assertNotNull(order);
+		assertThat(MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, method).get(Order.class).getDepth()).isEqualTo(0);
 	}
 
 	@Test  // SPR-16060
 	public void findMethodAnnotationFromGenericInterface() throws Exception {
 		Method method = ImplementsInterfaceWithGenericAnnotatedMethod.class.getMethod("foo", String.class);
-		Order order = findAnnotation(method, Order.class);
-		assertNotNull(order);
+		assertThat(MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, method).get(Order.class).getDepth()).isEqualTo(0);
 	}
 
 	@Test  // SPR-17146
 	public void findMethodAnnotationFromGenericSuperclass() throws Exception {
 		Method method = ExtendsBaseClassWithGenericAnnotatedMethod.class.getMethod("foo", String.class);
-		Order order = findAnnotation(method, Order.class);
-		assertNotNull(order);
+		assertThat(MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, method).get(Order.class).getDepth()).isEqualTo(0);
 	}
 
 	@Test
 	public void findMethodAnnotationFromInterfaceOnSuper() throws Exception {
 		Method method = SubOfImplementsInterfaceWithAnnotatedMethod.class.getMethod("foo");
-		Order order = findAnnotation(method, Order.class);
-		assertNotNull(order);
+		assertThat(MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, method).get(Order.class).getDepth()).isEqualTo(0);
 	}
 
 	@Test
 	public void findMethodAnnotationFromInterfaceWhenSuperDoesNotImplementMethod() throws Exception {
 		Method method = SubOfAbstractImplementsInterfaceWithAnnotatedMethod.class.getMethod("foo");
-		Order order = findAnnotation(method, Order.class);
-		assertNotNull(order);
+		assertThat(MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, method).get(Order.class).getDepth()).isEqualTo(0);
 	}
 
-	// @since 4.1.2
 	@Test
 	public void findClassAnnotationFavorsMoreLocallyDeclaredComposedAnnotationsOverAnnotationsOnInterfaces() {
-		Component component = findAnnotation(ClassWithLocalMetaAnnotationAndMetaAnnotatedInterface.class, Component.class);
-		assertNotNull(component);
-		assertEquals("meta2", component.value());
+		MergedAnnotation<?> annotation = MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, ClassWithLocalMetaAnnotationAndMetaAnnotatedInterface.class).get(Component.class);
+		assertThat(annotation.getString("value")).isEqualTo("meta2");
 	}
 
-	// @since 4.0.3
 	@Test
 	public void findClassAnnotationFavorsMoreLocallyDeclaredComposedAnnotationsOverInheritedAnnotations() {
 		Transactional transactional = findAnnotation(SubSubClassWithInheritedAnnotation.class, Transactional.class);
@@ -230,7 +218,6 @@ public class XAnnotationUtilsTests {
 		assertTrue("readOnly flag for SubSubClassWithInheritedAnnotation", transactional.readOnly());
 	}
 
-	// @since 4.0.3
 	@Test
 	public void findClassAnnotationFavorsMoreLocallyDeclaredComposedAnnotationsOverInheritedComposedAnnotations() {
 		Component component = findAnnotation(SubSubClassWithInheritedMetaAnnotation.class, Component.class);

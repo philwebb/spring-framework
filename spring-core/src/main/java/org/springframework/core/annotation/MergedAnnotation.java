@@ -79,8 +79,9 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * Return the depth of this annotation related to its use as a
 	 * meta-annotation. A directly declared annotation has a depth of {@code 0},
 	 * a meta-annotation has a depth of {@code 1}, a meta-annotation on a
-	 * meta-annotation has a depth of {@code 2}, etc.
-	 * @return the annotation depth
+	 * meta-annotation has a depth of {@code 2}, etc. A {@link #missing()
+	 * missing} annotation will always return a depth of {@code -1}.
+	 * @return the annotation depth or {@code -1} if the annotation is missing
 	 */
 	int getDepth();
 

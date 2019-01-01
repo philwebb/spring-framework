@@ -1135,7 +1135,6 @@ public abstract class AnnotationUtils {
 	@Deprecated
 	public static <A extends Annotation> A synthesizeAnnotation(
 			A annotation, @Nullable AnnotatedElement annotatedElement) {
-		// FIXME do we need to support this one?
 		return InternalAnnotationUtils.synthesizeAnnotation(annotation, annotatedElement);
 	}
 
@@ -1435,7 +1434,8 @@ public abstract class AnnotationUtils {
 
 	private static <A extends Annotation> boolean isSingleLevelPresent(
 			MergedAnnotation<A> mergedAnnotation) {
-		return mergedAnnotation.isPresent() && mergedAnnotation.getDepth() <= 1;
+		int depth = mergedAnnotation.getDepth();
+		return depth == 0 || depth == 1;
 	}
 
 	private static AnnotationFilter getAnnotationFilter(

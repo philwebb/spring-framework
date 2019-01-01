@@ -61,6 +61,11 @@ public class MissingMergedAnnotationTests {
 	}
 
 	@Test
+	public void getDepthReturnsMinusOne() {
+		assertThat(this.missing.getDepth()).isEqualTo(-1);
+	}
+
+	@Test
 	public void getAggregateIndexReturnsMinusOne() {
 		assertThat(this.missing.getAggregateIndex()).isEqualTo(-1);
 	}
