@@ -50,9 +50,7 @@ import org.springframework.util.ReflectionUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.entry;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.springframework.core.annotation.AnnotatedElementUtils.findMergedAnnotation;
 
 /**
  * Unit tests for {@link AnnotatedElementUtils}.
@@ -66,8 +64,6 @@ import static org.springframework.core.annotation.AnnotatedElementUtils.findMerg
  * @see ComposedRepeatableAnnotationsTests
  */
 public class XAnnotatedElementUtilsTests {
-
-	private static final String TX_NAME = Transactional.class.getName();
 
 	@Rule
 	public final ExpectedException exception = ExpectedException.none();
