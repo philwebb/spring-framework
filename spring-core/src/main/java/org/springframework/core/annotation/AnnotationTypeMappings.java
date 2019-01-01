@@ -256,6 +256,8 @@ class AnnotationTypeMappings {
 
 		private final RepeatableContainers repeatableContainers;
 
+		private final AnnotationFilter annotationFilter = AnnotationFilter.PLAIN;
+
 		public MappingsBuilder(ClassLoader classLoader,
 				RepeatableContainers repeatableContainers) {
 			this.classLoader = classLoader;
@@ -263,7 +265,7 @@ class AnnotationTypeMappings {
 		}
 
 		public List<AnnotationTypeMapping> build(AnnotationType source) {
-			if (!isMappable(source.getClassName())) {
+			if (isFiltered(source.getClassName())) {
 				return Collections.emptyList();
 			}
 			List<AnnotationTypeMapping> result = new ArrayList<>();
@@ -300,15 +302,11 @@ class AnnotationTypeMappings {
 		private boolean isMappable(AnnotationTypeMapping parent,
 				AnnotationType annotation) {
 			String annotationType = annotation.getClassName();
-			return isMappable(annotationType) && !isAlreadyMapped(parent, annotationType);
+			return !isFiltered(annotationType) && !isAlreadyMapped(parent, annotationType);
 		}
 
-		private boolean isMappable(String annotationType) {
-			if (annotationType.startsWith("java.lang.annotation.")
-					) { // FIXME && !annotationType.equals("java.lang.annotation.Repeatable")
-				return false;
-			}
-			return !annotationType.startsWith("org.springframework.lang.");
+		private boolean isFiltered(String annotationType) {
+			return this.annotationFilter.matches(annotationType);
 		}
 
 		private boolean isAlreadyMapped(AnnotationTypeMapping parent,
