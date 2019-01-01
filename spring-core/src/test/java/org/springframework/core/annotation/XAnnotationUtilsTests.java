@@ -213,111 +213,121 @@ public class XAnnotationUtilsTests {
 
 	@Test
 	public void findClassAnnotationFavorsMoreLocallyDeclaredComposedAnnotationsOverInheritedAnnotations() {
-		Transactional transactional = findAnnotation(SubSubClassWithInheritedAnnotation.class, Transactional.class);
-		assertNotNull(transactional);
-		assertTrue("readOnly flag for SubSubClassWithInheritedAnnotation", transactional.readOnly());
+		MergedAnnotation<?> annotation = MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, SubSubClassWithInheritedAnnotation.class).get(Transactional.class);
+		assertThat(annotation.getBoolean("readOnly")).isTrue();
 	}
 
 	@Test
 	public void findClassAnnotationFavorsMoreLocallyDeclaredComposedAnnotationsOverInheritedComposedAnnotations() {
-		Component component = findAnnotation(SubSubClassWithInheritedMetaAnnotation.class, Component.class);
-		assertNotNull(component);
-		assertEquals("meta2", component.value());
+		MergedAnnotation<?> annotation = MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, SubSubClassWithInheritedMetaAnnotation.class).get(Component.class);
+		assertThat(annotation.getString("value")).isEqualTo("meta2");
 	}
 
 	@Test
 	public void findClassAnnotationOnMetaMetaAnnotatedClass() {
-		Component component = findAnnotation(MetaMetaAnnotatedClass.class, Component.class);
-		assertNotNull("Should find meta-annotation on composed annotation on class", component);
-		assertEquals("meta2", component.value());
+		MergedAnnotation<?> annotation = MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, MetaMetaAnnotatedClass.class).get(Component.class);
+		assertThat(annotation.getString("value")).isEqualTo("meta2");
 	}
 
 	@Test
 	public void findClassAnnotationOnMetaMetaMetaAnnotatedClass() {
-		Component component = findAnnotation(MetaMetaMetaAnnotatedClass.class, Component.class);
-		assertNotNull("Should find meta-annotation on meta-annotation on composed annotation on class", component);
-		assertEquals("meta2", component.value());
+		MergedAnnotation<?> annotation = MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, MetaMetaMetaAnnotatedClass.class).get(Component.class);
+		assertThat(annotation.getString("value")).isEqualTo("meta2");
 	}
 
 	@Test
 	public void findClassAnnotationOnAnnotatedClassWithMissingTargetMetaAnnotation() {
 		// TransactionalClass is NOT annotated or meta-annotated with @Component
-		Component component = findAnnotation(TransactionalClass.class, Component.class);
-		assertNull("Should not find @Component on TransactionalClass", component);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, TransactionalClass.class).get(Component.class);
+		assertThat(annotation.isPresent()).isFalse();
 	}
 
 	@Test
 	public void findClassAnnotationOnMetaCycleAnnotatedClassWithMissingTargetMetaAnnotation() {
-		Component component = findAnnotation(MetaCycleAnnotatedClass.class, Component.class);
-		assertNull("Should not find @Component on MetaCycleAnnotatedClass", component);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, MetaCycleAnnotatedClass.class).get(Component.class);
+		assertThat(annotation.isPresent()).isFalse();
 	}
 
-	// @since 4.2
 	@Test
 	public void findClassAnnotationOnInheritedAnnotationInterface() {
-		Transactional tx = findAnnotation(InheritedAnnotationInterface.class, Transactional.class);
-		assertNotNull("Should find @Transactional on InheritedAnnotationInterface", tx);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, InheritedAnnotationInterface.class).get(Transactional.class);
+		assertThat(annotation.getAggregateIndex()).isEqualTo(0);
 	}
 
-	// @since 4.2
 	@Test
 	public void findClassAnnotationOnSubInheritedAnnotationInterface() {
-		Transactional tx = findAnnotation(SubInheritedAnnotationInterface.class, Transactional.class);
-		assertNotNull("Should find @Transactional on SubInheritedAnnotationInterface", tx);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, SubInheritedAnnotationInterface.class).get(Transactional.class);
+		assertThat(annotation.getAggregateIndex()).isEqualTo(1);
 	}
 
-	// @since 4.2
 	@Test
 	public void findClassAnnotationOnSubSubInheritedAnnotationInterface() {
-		Transactional tx = findAnnotation(SubSubInheritedAnnotationInterface.class, Transactional.class);
-		assertNotNull("Should find @Transactional on SubSubInheritedAnnotationInterface", tx);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, SubSubInheritedAnnotationInterface.class).get(Transactional.class);
+		assertThat(annotation.getAggregateIndex()).isEqualTo(2);
 	}
 
-	// @since 4.2
 	@Test
 	public void findClassAnnotationOnNonInheritedAnnotationInterface() {
-		Order order = findAnnotation(NonInheritedAnnotationInterface.class, Order.class);
-		assertNotNull("Should find @Order on NonInheritedAnnotationInterface", order);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, NonInheritedAnnotationInterface.class).get(Order.class);
+		assertThat(annotation.getAggregateIndex()).isEqualTo(0);
 	}
 
-	// @since 4.2
 	@Test
 	public void findClassAnnotationOnSubNonInheritedAnnotationInterface() {
-		Order order = findAnnotation(SubNonInheritedAnnotationInterface.class, Order.class);
-		assertNotNull("Should find @Order on SubNonInheritedAnnotationInterface", order);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, SubNonInheritedAnnotationInterface.class).get(Order.class);
+		assertThat(annotation.getAggregateIndex()).isEqualTo(1);
 	}
 
-	// @since 4.2
 	@Test
 	public void findClassAnnotationOnSubSubNonInheritedAnnotationInterface() {
-		Order order = findAnnotation(SubSubNonInheritedAnnotationInterface.class, Order.class);
-		assertNotNull("Should find @Order on SubSubNonInheritedAnnotationInterface", order);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, SubSubNonInheritedAnnotationInterface.class).get(Order.class);
+		assertThat(annotation.getAggregateIndex()).isEqualTo(2);
 	}
 
 	@Test
 	public void findAnnotationDeclaringClassForAllScenarios() {
 		// no class-level annotation
-		assertNull(findAnnotationDeclaringClass(Transactional.class, NonAnnotatedInterface.class));
-		assertNull(findAnnotationDeclaringClass(Transactional.class, NonAnnotatedClass.class));
+		assertThat(MergedAnnotations.from(SearchStrategy.SUPER_CLASS,
+				NonAnnotatedInterface.class).get(Transactional.class,
+						MergedAnnotation::isDirectlyPresent).getSource()).isNull();
+		assertThat(MergedAnnotations.from(SearchStrategy.SUPER_CLASS,
+				NonAnnotatedClass.class).get(Transactional.class,
+						MergedAnnotation::isDirectlyPresent).getSource()).isNull();
 
 		// inherited class-level annotation; note: @Transactional is inherited
-		assertEquals(InheritedAnnotationInterface.class,
-				findAnnotationDeclaringClass(Transactional.class, InheritedAnnotationInterface.class));
-		assertNull(findAnnotationDeclaringClass(Transactional.class, SubInheritedAnnotationInterface.class));
-		assertEquals(InheritedAnnotationClass.class,
-				findAnnotationDeclaringClass(Transactional.class, InheritedAnnotationClass.class));
-		assertEquals(InheritedAnnotationClass.class,
-				findAnnotationDeclaringClass(Transactional.class, SubInheritedAnnotationClass.class));
+		assertThat(MergedAnnotations.from(SearchStrategy.SUPER_CLASS,
+				InheritedAnnotationInterface.class).get(Transactional.class,
+						MergedAnnotation::isDirectlyPresent).getSource()).isEqualTo(
+								InheritedAnnotationInterface.class);
+		assertThat(MergedAnnotations.from(SearchStrategy.SUPER_CLASS,
+				SubInheritedAnnotationInterface.class).get(Transactional.class,
+						MergedAnnotation::isDirectlyPresent).getSource()).isNull();
+		assertThat(MergedAnnotations.from(SearchStrategy.SUPER_CLASS,
+				InheritedAnnotationClass.class).get(Transactional.class,
+						MergedAnnotation::isDirectlyPresent).getSource()).isEqualTo(
+								InheritedAnnotationClass.class);
+		assertThat(MergedAnnotations.from(SearchStrategy.SUPER_CLASS,
+				SubInheritedAnnotationClass.class).get(Transactional.class,
+						MergedAnnotation::isDirectlyPresent).getSource()).isEqualTo(
+								InheritedAnnotationClass.class);
 
 		// non-inherited class-level annotation; note: @Order is not inherited,
-		// but findAnnotationDeclaringClass() should still find it on classes.
-		assertEquals(NonInheritedAnnotationInterface.class,
-				findAnnotationDeclaringClass(Order.class, NonInheritedAnnotationInterface.class));
-		assertNull(findAnnotationDeclaringClass(Order.class, SubNonInheritedAnnotationInterface.class));
-		assertEquals(NonInheritedAnnotationClass.class,
-				findAnnotationDeclaringClass(Order.class, NonInheritedAnnotationClass.class));
-		assertEquals(NonInheritedAnnotationClass.class,
-				findAnnotationDeclaringClass(Order.class, SubNonInheritedAnnotationClass.class));
+		// but we should still find it on classes.
+		assertThat(MergedAnnotations.from(SearchStrategy.SUPER_CLASS,
+				NonInheritedAnnotationInterface.class).get(Order.class,
+						MergedAnnotation::isDirectlyPresent).getSource()).isEqualTo(
+								NonInheritedAnnotationInterface.class);
+		assertThat(MergedAnnotations.from(SearchStrategy.SUPER_CLASS,
+				SubNonInheritedAnnotationInterface.class).get(Order.class,
+						MergedAnnotation::isDirectlyPresent).getSource()).isNull();
+		assertThat(MergedAnnotations.from(SearchStrategy.SUPER_CLASS,
+				NonInheritedAnnotationClass.class).get(Order.class,
+						MergedAnnotation::isDirectlyPresent).getSource()).isEqualTo(
+								NonInheritedAnnotationClass.class);
+		assertThat(MergedAnnotations.from(SearchStrategy.SUPER_CLASS,
+				SubNonInheritedAnnotationClass.class).get(Order.class,
+						MergedAnnotation::isDirectlyPresent).getSource()).isEqualTo(
+								NonInheritedAnnotationClass.class);
 	}
 
 	@Test
