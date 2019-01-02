@@ -90,7 +90,7 @@ class SynthesizedMergedAnnotationInvocationHandler<A extends Annotation>
 	private Object getAttributeValue(Method method) {
 		String name = method.getName();
 		Class<?> type = ClassUtils.resolvePrimitiveIfNecessary(method.getReturnType());
-		return this.annotation.getAttribute(name, type).orElseThrow(
+		return this.annotation.getValue(name, type).orElseThrow(
 				() -> new IllegalStateException("No value for attribute " + name));
 	}
 

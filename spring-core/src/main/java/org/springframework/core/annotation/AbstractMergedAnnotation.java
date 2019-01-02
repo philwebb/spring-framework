@@ -119,99 +119,99 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 
 	@Override
 	public boolean hasDefaultValue(String attributeName) {
-		Object value = getRequiredAttribute(attributeName, Object.class);
+		Object value = getRequiredValue(attributeName, Object.class);
 		AttributeType type = getAttributeType(attributeName, true);
 		return ObjectUtils.nullSafeEquals(value, type.getDefaultValue());
 	}
 
 	public byte getByte(String attributeName) {
-		return getRequiredAttribute(attributeName, Byte.class);
+		return getRequiredValue(attributeName, Byte.class);
 	}
 
 	public byte[] getByteArray(String attributeName) {
-		return getRequiredAttribute(attributeName, byte[].class);
+		return getRequiredValue(attributeName, byte[].class);
 	}
 
 	public boolean getBoolean(String attributeName) {
-		return getRequiredAttribute(attributeName, Boolean.class);
+		return getRequiredValue(attributeName, Boolean.class);
 	}
 
 	public boolean[] getBooleanArray(String attributeName) {
-		return getRequiredAttribute(attributeName, boolean[].class);
+		return getRequiredValue(attributeName, boolean[].class);
 	}
 
 	public char getChar(String attributeName) {
-		return getRequiredAttribute(attributeName, Character.class);
+		return getRequiredValue(attributeName, Character.class);
 	}
 
 	public char[] getCharArray(String attributeName) {
-		return getRequiredAttribute(attributeName, char[].class);
+		return getRequiredValue(attributeName, char[].class);
 	}
 
 	public short getShort(String attributeName) {
-		return getRequiredAttribute(attributeName, Short.class);
+		return getRequiredValue(attributeName, Short.class);
 	}
 
 	public short[] getShortArray(String attributeName) {
-		return getRequiredAttribute(attributeName, short[].class);
+		return getRequiredValue(attributeName, short[].class);
 	}
 
 	public int getInt(String attributeName) {
-		return getRequiredAttribute(attributeName, Integer.class);
+		return getRequiredValue(attributeName, Integer.class);
 	}
 
 	public int[] getIntArray(String attributeName) {
-		return getRequiredAttribute(attributeName, int[].class);
+		return getRequiredValue(attributeName, int[].class);
 	}
 
 	public long getLong(String attributeName) {
-		return getRequiredAttribute(attributeName, Long.class);
+		return getRequiredValue(attributeName, Long.class);
 	}
 
 	public long[] getLongArray(String attributeName) {
-		return getRequiredAttribute(attributeName, long[].class);
+		return getRequiredValue(attributeName, long[].class);
 	}
 
 	public double getDouble(String attributeName) {
-		return getRequiredAttribute(attributeName, Double.class);
+		return getRequiredValue(attributeName, Double.class);
 	}
 
 	public double[] getDoubleArray(String attributeName) {
-		return getRequiredAttribute(attributeName, double[].class);
+		return getRequiredValue(attributeName, double[].class);
 	}
 
 	public float getFloat(String attributeName) {
-		return getRequiredAttribute(attributeName, Float.class);
+		return getRequiredValue(attributeName, Float.class);
 	}
 
 	public float[] getFloatArray(String attributeName) {
-		return getRequiredAttribute(attributeName, float[].class);
+		return getRequiredValue(attributeName, float[].class);
 	}
 
 	public String getString(String attributeName) {
-		return getRequiredAttribute(attributeName, String.class);
+		return getRequiredValue(attributeName, String.class);
 	}
 
 	public String[] getStringArray(String attributeName) {
-		return getRequiredAttribute(attributeName, String[].class);
+		return getRequiredValue(attributeName, String[].class);
 	}
 
 	public Class<?> getClass(String attributeName) {
-		return getRequiredAttribute(attributeName, Class.class);
+		return getRequiredValue(attributeName, Class.class);
 	}
 
 	public Class<?>[] getClassArray(String attributeName) {
-		return getRequiredAttribute(attributeName, Class[].class);
+		return getRequiredValue(attributeName, Class[].class);
 	}
 
 	public <E extends Enum<E>> E getEnum(String attributeName, Class<E> type) {
-		return getRequiredAttribute(attributeName, type);
+		return getRequiredValue(attributeName, type);
 	}
 
 	@SuppressWarnings("unchecked")
 	public <E extends Enum<E>> E[] getEnumArray(String attributeName, Class<E> type) {
 		Class<?> arrayType = Array.newInstance(type, 0).getClass();
-		return (E[]) getRequiredAttribute(attributeName, arrayType);
+		return (E[]) getRequiredValue(attributeName, arrayType);
 	}
 
 	@Override
@@ -238,7 +238,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		AnnotationType nestedType = AnnotationType.resolve(attributeType.getClassName(),
 				getClassLoader());
 		assertType(attributeName, nestedType, expectedType);
-		DeclaredAttributes nestedAttributes = getRequiredAttribute(attributeName,
+		DeclaredAttributes nestedAttributes = getRequiredValue(attributeName,
 				DeclaredAttributes.class);
 		return createNested(nestedType, nestedAttributes);
 	}
@@ -253,7 +253,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		String elementType = arrayType.substring(0, arrayType.length() - 2);
 		AnnotationType nestedType = AnnotationType.resolve(elementType, getClassLoader());
 		assertType(attributeName, nestedType, expectedElementType);
-		DeclaredAttributes[] nestedAttributes = getRequiredAttribute(attributeName,
+		DeclaredAttributes[] nestedAttributes = getRequiredValue(attributeName,
 				DeclaredAttributes[].class);
 		MergedAnnotation<T>[] result = new MergedAnnotation[nestedAttributes.length];
 		for (int i = 0; i < nestedAttributes.length; i++) {
@@ -277,8 +277,20 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	}
 
 	@Override
-	public <T> Optional<T> getAttribute(String attributeName, Class<T> type) {
-		return Optional.ofNullable(getAttributeValue(attributeName, type, false));
+	public <T> Optional<T> getValue(String attributeName, Class<T> type) {
+		return Optional.ofNullable(getValue(attributeName, type, false));
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <T> Optional<T> getDefaultValue(String attributeName, Class<T> type) {
+		Assert.hasText(attributeName, "AttributeName must not be null");
+		AttributeType attributeType = getAttributeType(attributeName, false);
+		if (attributeType == null) {
+			return Optional.empty();
+		}
+		T value = (T) adapt(attributeType.getDefaultValue(), attributeType, type);
+		return Optional.ofNullable(value);
 	}
 
 	@Override
@@ -306,7 +318,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 			type = ClassUtils.resolvePrimitiveIfNecessary(type);
 			type = getTypeForMapValueOption(options, type);
 			String name = attributeType.getAttributeName();
-			Object value = getAttributeValue(name, type, false);
+			Object value = getValue(name, type, false);
 			if (value != null) {
 				map.put(name, getValueForMapValueOption(value, factory, options));
 			}
@@ -373,19 +385,19 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		return Optional.empty();
 	}
 
-	private <T> T getRequiredAttribute(String attributeName, Class<T> type) {
-		return getAttributeValue(attributeName, type, true);
+	private <T> T getRequiredValue(String attributeName, Class<T> type) {
+		return getValue(attributeName, type, true);
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T> T getAttributeValue(String attributeName, Class<T> type,
+	private <T> T getValue(String attributeName, Class<T> type,
 			boolean required) {
 		Assert.hasText(attributeName, "AttributeName must not be null");
 		AttributeType attributeType = getAttributeType(attributeName, required);
 		if (attributeType == null) {
 			return null;
 		}
-		Object value = getAttributeValue(attributeName);
+		Object value = getValue(attributeName);
 		if (value == null) {
 			value = attributeType.getDefaultValue();
 		}
@@ -535,7 +547,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 
 	private String toString(AttributeType attributeType) {
 		String name = attributeType.getAttributeName();
-		Object value = getAttributeValue(name);
+		Object value = getValue(name);
 		if (value instanceof DeclaredAttributes) {
 			value = getNested(name, null);
 		}
@@ -561,7 +573,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 
 	protected abstract boolean isFiltered(String attributeName);
 
-	protected abstract Object getAttributeValue(String attributeName);
+	protected abstract Object getValue(String attributeName);
 
 	protected abstract <T extends Annotation> MergedAnnotation<T> createNested(
 			AnnotationType type, DeclaredAttributes attributes);

@@ -149,7 +149,7 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 	}
 
 	@Override
-	protected Object getAttributeValue(String attributeName) {
+	protected Object getValue(String attributeName) {
 		Assert.hasText(attributeName, "AttributeName must not be empty");
 		return this.attributes.get(attributeName, this.nonMergedAttributes);
 	}
@@ -234,12 +234,12 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 				TypeMappedAnnotation<?> aliasAnnotation = findParentWithMapping(
 						alias.getMapping());
 				if (aliasAnnotation != null) {
-					result = aliasAnnotation.getAttributeValue(
+					result = aliasAnnotation.getValue(
 							alias.getAttribute().getAttributeName());
 				}
 			}
 			if (result == null && !isConventionRestricted(name)) {
-				result = this.parent.getAttributeValue(name);
+				result = this.parent.getValue(name);
 			}
 			if (result == null) {
 				result = this.mapping.getAnnotationAttributes().get(name);

@@ -598,94 +598,112 @@ public class TypeMappedAnnotationTests {
 	}
 
 	@Test
-	public void getAttributeWhenAvailableReturnsOptionalOf() {
+	public void getValueWhenAvailableReturnsOptionalOf() {
 		MergedAnnotation<?> annotation = create(byte.class, (byte) 123, null);
-		assertThat(annotation.getAttribute("value", Byte.class)).isEqualTo(
+		assertThat(annotation.getValue("value", Byte.class)).isEqualTo(
 				Optional.of((byte) 123));
 	}
 
 	@Test
-	public void getAttributeWhenMissingReturnsEmptyOptional() {
+	public void getValueWhenMissingReturnsEmptyOptional() {
 		MergedAnnotation<?> annotation = create(byte.class, (byte) 123, null);
-		assertThat(annotation.getAttribute("missing", Byte.class)).isEqualTo(
+		assertThat(annotation.getValue("missing", Byte.class)).isEqualTo(
 				Optional.empty());
 	}
 
 	@Test
-	public void getClassReferenceAttributeAsClassAdapts() {
+	public void getValueForClassReferenceAsClassAdapts() {
 		MergedAnnotation<?> annotation = create(Class.class,
 				ClassReference.from(String.class), null);
-		assertThat(annotation.getAttribute("value", Class.class).get()).isEqualTo(
+		assertThat(annotation.getValue("value", Class.class).get()).isEqualTo(
 				String.class);
 	}
 
 	@Test
-	public void getAttributeForClassReferenceAsStringAdapts() {
+	public void getValueForClassReferenceAsStringAdapts() {
 		MergedAnnotation<?> annotation = create(Class.class,
 				ClassReference.from(String.class), null);
-		assertThat(annotation.getAttribute("value", String.class).get()).isEqualTo(
+		assertThat(annotation.getValue("value", String.class).get()).isEqualTo(
 				"java.lang.String");
 	}
 
 	@Test
-	public void getAttributeForArrayAsClassArrayAdapts() {
+	public void getValueForArrayAsClassArrayAdapts() {
 		MergedAnnotation<?> annotation = create(Class[].class,
 				new ClassReference[] { ClassReference.from(String.class) }, null);
-		assertThat(annotation.getAttribute("value", Class[].class).get()).containsExactly(
+		assertThat(annotation.getValue("value", Class[].class).get()).containsExactly(
 				String.class);
 	}
 
 	@Test
-	public void getAttributeForClassReferenceAsStringArrayAdapts() {
+	public void getValueForClassReferenceAsStringArrayAdapts() {
 		MergedAnnotation<?> annotation = create(Class[].class,
 				new ClassReference[] { ClassReference.from(String.class) }, null);
 		assertThat(
-				annotation.getAttribute("value", String[].class).get()).containsExactly(
+				annotation.getValue("value", String[].class).get()).containsExactly(
 						"java.lang.String");
 	}
 
 	@Test
-	public void getAttributeForEnumValueReferenceAsEnumAdapts() {
+	public void getValueForEnumValueReferenceAsEnumAdapts() {
 		MergedAnnotation<?> annotation = create(EnumValueReference.class,
 				EnumValueReference.from(ExampleEnum.ONE), null);
-		assertThat(annotation.getAttribute("value", ExampleEnum.class).get()).isEqualTo(
+		assertThat(annotation.getValue("value", ExampleEnum.class).get()).isEqualTo(
 				ExampleEnum.ONE);
 	}
 
 	@Test
-	public void getAttributeForEnumValueReferenceArrayAsEnumArrayAdapts() {
+	public void getValueForEnumValueReferenceArrayAsEnumArrayAdapts() {
 		MergedAnnotation<?> annotation = create(EnumValueReference[].class,
 				new EnumValueReference[] { EnumValueReference.from(ExampleEnum.ONE) },
 				null);
-		assertThat(annotation.getAttribute("value",
+		assertThat(annotation.getValue("value",
 				ExampleEnum[].class).get()).containsExactly(ExampleEnum.ONE);
 	}
 
 	@Test
-	public void getAttributeForDeclaredAttributesAsAnnotationAdapts() {
+	public void getValueForDeclaredAttributesAsAnnotationAdapts() {
 		MergedAnnotation<?> annotation = create(StringValueAnnotation.class,
 				DeclaredAttributes.of("value", "test"), null);
-		StringValueAnnotation nested = annotation.getAttribute("value",
+		StringValueAnnotation nested = annotation.getValue("value",
 				StringValueAnnotation.class).get();
 		assertThat(nested.value()).isEqualTo("test");
 	}
 
 	@Test
-	public void getAttributeForDeclaredAttributesArrayAsAnnotationArrayAdapts() {
+	public void getValueForDeclaredAttributesArrayAsAnnotationArrayAdapts() {
 		MergedAnnotation<?> annotation = create(StringValueAnnotation[].class,
 				new DeclaredAttributes[] { DeclaredAttributes.of("value", "test") },
 				null);
-		StringValueAnnotation nested = annotation.getAttribute("value",
+		StringValueAnnotation nested = annotation.getValue("value",
 				StringValueAnnotation[].class).get()[0];
 		assertThat(nested.value()).isEqualTo("test");
 	}
 
 	@Test
-	public void getAttributeWhenUnsupportedTypeThrowsException() {
+	public void getValueWhenUnsupportedTypeThrowsException() {
 		MergedAnnotation<?> annotation = create(String.class, "test", null);
 		assertThatIllegalArgumentException().isThrownBy(
-				() -> annotation.getAttribute("value", InputStream.class)).withMessage(
+				() -> annotation.getValue("value", InputStream.class)).withMessage(
 						"Type " + InputStream.class.getName() + " is not supported");
+	}
+
+	@Test
+	public void getDefaultValueWhenHasDefaultValueReturnsDefaultValue() {
+		MergedAnnotation<?> annotation = create(int.class, 456, 123);
+		assertThat(annotation.getDefaultValue("value", Integer.class)).hasValue(123);
+	}
+
+	@Test
+	public void getDefaultValueWhenHasNoDefaultValueReturnsEmpty() {
+		MergedAnnotation<?> annotation = create(int.class, 456, null);
+		assertThat(annotation.getDefaultValue("value", Integer.class)).isEmpty();
+	}
+
+	@Test
+	public void getDefaultValueWhenAttributeIsMissingReturnsEmpty() {
+		MergedAnnotation<?> annotation = create(int.class, 456, 123);
+		assertThat(annotation.getDefaultValue("missing", Integer.class)).isEmpty();
 	}
 
 	@Test
@@ -714,16 +732,16 @@ public class TypeMappedAnnotationTests {
 	public void filterDefaultValueFiltersDefaultValues() {
 		MergedAnnotation<?> annotation = createTwoAttributeAnnotation();
 		MergedAnnotation<?> filtered = annotation.filterDefaultValues();
-		assertThat(filtered.getAttribute("one", Integer.class)).isEmpty();
-		assertThat(filtered.getAttribute("two", Integer.class)).hasValue(2);
+		assertThat(filtered.getValue("one", Integer.class)).isEmpty();
+		assertThat(filtered.getValue("two", Integer.class)).hasValue(2);
 	}
 
 	@Test
 	public void filterAttributesAppliesFilter() {
 		MergedAnnotation<?> annotation = createTwoAttributeAnnotation();
 		MergedAnnotation<?> filtered = annotation.filterAttributes("one"::equals);
-		assertThat(filtered.getAttribute("one", Integer.class)).hasValue(1);
-		assertThat(filtered.getAttribute("two", Integer.class)).isEmpty();
+		assertThat(filtered.getValue("one", Integer.class)).hasValue(1);
+		assertThat(filtered.getValue("two", Integer.class)).isEmpty();
 	}
 
 	@Test
@@ -731,8 +749,8 @@ public class TypeMappedAnnotationTests {
 		MergedAnnotation<?> annotation = createTwoAttributeAnnotation();
 		MergedAnnotation<?> filtered = annotation.filterAttributes(
 				"one"::equals).filterAttributes("two"::equals);
-		assertThat(filtered.getAttribute("one", Integer.class)).isEmpty();
-		assertThat(filtered.getAttribute("two", Integer.class)).isEmpty();
+		assertThat(filtered.getValue("one", Integer.class)).isEmpty();
+		assertThat(filtered.getValue("two", Integer.class)).isEmpty();
 	}
 
 	@Test

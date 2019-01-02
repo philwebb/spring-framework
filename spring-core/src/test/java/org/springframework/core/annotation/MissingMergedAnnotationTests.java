@@ -236,8 +236,13 @@ public class MissingMergedAnnotationTests {
 	}
 
 	@Test
-	public void getAttributeReturnsEmpty() {
-		assertThat(this.missing.getAttribute("value", Integer.class)).isEmpty();
+	public void getValueReturnsEmpty() {
+		assertThat(this.missing.getValue("value", Integer.class)).isEmpty();
+	}
+
+	@Test
+	public void getDefaultValueReturnsEmpty() {
+		assertThat(this.missing.getDefaultValue("value", Integer.class)).isEmpty();
 	}
 
 	@Test

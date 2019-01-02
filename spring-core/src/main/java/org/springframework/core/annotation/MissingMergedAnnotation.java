@@ -84,7 +84,12 @@ final class MissingMergedAnnotation<A extends Annotation>
 	}
 
 	@Override
-	public <T> Optional<T> getAttribute(String attributeName, Class<T> type) {
+	public <T> Optional<T> getValue(String attributeName, Class<T> type) {
+		return Optional.empty();
+	}
+
+	@Override
+	public <T> Optional<T> getDefaultValue(String attributeName, Class<T> type) {
 		return Optional.empty();
 	}
 
@@ -135,7 +140,7 @@ final class MissingMergedAnnotation<A extends Annotation>
 	}
 
 	@Override
-	protected Object getAttributeValue(String attributeName) {
+	protected Object getValue(String attributeName) {
 		throw new NoSuchElementException(
 				"Unable to get attribute value for missing annotation");
 	}

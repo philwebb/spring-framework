@@ -337,13 +337,23 @@ public interface MergedAnnotation<A extends Annotation> {
 			Class<T> type) throws NoSuchElementException;
 
 	/**
-	 * Return an optional attribute value of the specified type.
+	 * Return an optional attribute value from the annotation.
 	 * @param attributeName the attribute name
 	 * @param type the attribute type
 	 * @return an optional value or {@link Optional#empty()} if there is no
 	 * matching attribute
 	 */
-	<T> Optional<T> getAttribute(String attributeName, Class<T> type);
+	<T> Optional<T> getValue(String attributeName, Class<T> type);
+
+	/**
+	 * Return the default attribute value from the annotation as specified in
+	 * the annotation declaration.
+	 * @param attributeName the attribute name
+	 * @param type the attribute type
+	 * @return an optional of the default value or {@link Optional#empty()} if
+	 * there is no matching attribute or no defined default
+	 */
+	<T> Optional<T> getDefaultValue(String attributeName, Class<T> type);
 
 	/**
 	 * Return a new view of the annotation with all attributes that have default
