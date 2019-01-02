@@ -543,7 +543,12 @@ public class XAnnotationUtilsTests {
 
 	@Test
 	public void getDefaultValueFromAnnotation() throws Exception {
+
 		Method method = SimpleFoo.class.getMethod("something", Object.class);
+
+		MergedAnnotation<Order> annotation = MergedAnnotations.from(
+				SearchStrategy.EXHAUSTIVE, method).get(Order.class);
+
 		Order order = findAnnotation(method, Order.class);
 
 		assertEquals(Ordered.LOWEST_PRECEDENCE, getDefaultValue(order, VALUE));
