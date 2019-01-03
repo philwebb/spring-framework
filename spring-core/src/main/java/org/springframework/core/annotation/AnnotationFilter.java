@@ -17,8 +17,11 @@
 package org.springframework.core.annotation;
 
 import java.lang.annotation.Annotation;
+import java.util.Arrays;
+import java.util.Collection;
 
 import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
 
 /**
  * Filter that can be used to restrict annotations.
@@ -47,7 +50,7 @@ public interface AnnotationFilter {
 	 * {@link AnnotationFilter} that never matches and can be used when no
 	 * filtering is needed.
 	 */
-	static final AnnotationFilter NONE = annotationType ->  false;
+	static final AnnotationFilter NONE = annotationType -> false;
 
 	/**
 	 * Test if the given annotation matches the filter.
@@ -82,6 +85,38 @@ public interface AnnotationFilter {
 	 */
 	static AnnotationFilter packages(String... packages) {
 		return new PackagesAnnotationFilter(packages);
+	}
+
+	/**
+	 * Return an {@link AnnotationFilter} that is the most appropriate for, and
+	 * will always match all the given annotation types. Whenever possible,
+	 * {@link AnnotationFilter#PLAIN} will be returned.
+	 * @param annotationTypes the annotation types to check
+	 * @return the most appropriate annotation filter
+	 */
+	@SafeVarargs
+	static AnnotationFilter mostAppropriateFor(
+			Class<? extends Annotation>... annotationTypes) {
+		Assert.notNull(annotationTypes, "AnnotationTypes must not be null");
+		return mostAppropriateFor(Arrays.asList(annotationTypes));
+	}
+
+	/**
+	 * Return an {@link AnnotationFilter} that is the most appropriate for, and
+	 * will always match all the given annotation types. Whenever possible,
+	 * {@link AnnotationFilter#PLAIN} will be returned.
+	 * @param annotationTypes the annotation types to check
+	 * @return the most appropriate annotation filter
+	 */
+	static AnnotationFilter mostAppropriateFor(
+			Collection<Class<? extends Annotation>> annotationTypes) {
+		Assert.notNull(annotationTypes, "AnnotationTypes must not be null");
+		for (Class<? extends Annotation> annotationType : annotationTypes) {
+			if (AnnotationFilter.PLAIN.matches(annotationType)) {
+				return AnnotationFilter.NONE;
+			}
+		}
+		return AnnotationFilter.PLAIN;
 	}
 
 }

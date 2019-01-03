@@ -119,7 +119,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 
 	@Override
 	public boolean hasDefaultValue(String attributeName) {
-		Object value = getRequiredValue(attributeName, Object.class);
+		Object value = getRequiredValue(attributeName, null);
 		AttributeType type = getAttributeType(attributeName, true);
 		return ObjectUtils.nullSafeEquals(value, type.getDefaultValue());
 	}
@@ -205,11 +205,13 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	}
 
 	public <E extends Enum<E>> E getEnum(String attributeName, Class<E> type) {
+		Assert.notNull(type, "Type must not be null");
 		return getRequiredValue(attributeName, type);
 	}
 
 	@SuppressWarnings("unchecked")
 	public <E extends Enum<E>> E[] getEnumArray(String attributeName, Class<E> type) {
+		Assert.notNull(type, "Type must not be null");
 		Class<?> arrayType = Array.newInstance(type, 0).getClass();
 		return (E[]) getRequiredValue(attributeName, arrayType);
 	}
@@ -262,10 +264,6 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		return result;
 	}
 
-	private boolean isArrayType(AttributeType attributeType) {
-		return attributeType.getClassName().endsWith("[]");
-	}
-
 	private void assertType(String attributeName, AnnotationType actualType,
 			Class<?> expectedType) {
 		if (expectedType != null) {
@@ -277,8 +275,18 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	}
 
 	@Override
+	public Optional<Object> getValue(String attributeName) {
+		return getValue(attributeName, Object.class);
+	}
+
+	@Override
 	public <T> Optional<T> getValue(String attributeName, Class<T> type) {
 		return Optional.ofNullable(getValue(attributeName, type, false));
+	}
+
+	@Override
+	public Optional<Object> getDefaultValue(String attributeName) {
+		return getDefaultValue(attributeName, Object.class);
 	}
 
 	@Override
@@ -389,33 +397,48 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		return getValue(attributeName, type, true);
 	}
 
+	/**
+	 * Get an attribute value from the annotation.
+	 * @param attributeName the attribute name
+	 * @param type the attribute type. If {@code null} then the underlying
+	 * declared value is returned. If {@code Object.class} is used then the type
+	 * returned will match the actual annotation declaration (i.e.
+	 * {@link ClassReference} and {@link EnumValueReference} instances will be
+	 * resolved and {@link DeclaredAttributes} will be synthesize to an
+	 * annotation)
+	 * @param required if a non-null result is required
+	 * @return the attribute value
+	 */
 	@SuppressWarnings("unchecked")
-	private <T> T getValue(String attributeName, Class<T> type,
+	private <T> T getValue(String attributeName, @Nullable Class<T> type,
 			boolean required) {
 		Assert.hasText(attributeName, "AttributeName must not be null");
 		AttributeType attributeType = getAttributeType(attributeName, required);
 		if (attributeType == null) {
 			return null;
 		}
-		Object value = getValue(attributeName);
+		Object value = getAttributeValue(attributeName);
 		if (value == null) {
 			value = attributeType.getDefaultValue();
 		}
 		return (T) adapt(value, attributeType, type);
 	}
 
-	private Object adapt(Object attributeValue, AttributeType attributeType,
-			Class<?> requiredType) {
-		if (attributeValue instanceof ClassReference[] && requiredType.isArray()) {
+	private Object adapt(@Nullable Object attributeValue, AttributeType attributeType,
+			@Nullable Class<?> requiredType) {
+		if (requiredType == null) {
+			return attributeValue;
+		}
+		if (attributeValue instanceof ClassReference[]) {
 			return adaptClassReferenceArray((ClassReference[]) attributeValue,
 					requiredType.getComponentType());
 		}
 		if (attributeValue instanceof ClassReference) {
 			return adaptClassReference((ClassReference) attributeValue, requiredType);
 		}
-		if (attributeValue instanceof EnumValueReference[] && requiredType.isArray()) {
+		if (attributeValue instanceof EnumValueReference[]) {
 			return adaptEnumValueReferenceArray((EnumValueReference[]) attributeValue,
-					requiredType.getComponentType());
+					attributeType, requiredType.getComponentType());
 		}
 		if (attributeValue instanceof EnumValueReference) {
 			return adaptEnumValueReference((EnumValueReference) attributeValue,
@@ -434,6 +457,9 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 
 	private Object adaptClassReferenceArray(ClassReference[] attributeValue,
 			Class<?> componentType) {
+		if (componentType == null) {
+			componentType = Class.class;
+		}
 		Object result = Array.newInstance(componentType, attributeValue.length);
 		for (int i = 0; i < attributeValue.length; i++) {
 			Array.set(result, i, adaptClassReference(attributeValue[i], componentType));
@@ -447,14 +473,17 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		if (String.class.equals(requiredType)) {
 			return className;
 		}
-		if (Class.class.equals(requiredType)) {
+		if (Class.class.equals(requiredType) || Object.class.equals(requiredType)) {
 			return resolveClassName(className);
 		}
 		return extract(attributeValue, requiredType);
 	}
 
 	private Object adaptEnumValueReferenceArray(EnumValueReference[] attributeValue,
-			Class<?> componentType) {
+			AttributeType attributeType, Class<?> componentType) {
+		if (componentType == null) {
+			componentType = resolveClassName(getComponentClassName(attributeType));
+		}
 		Object result = Array.newInstance(componentType, attributeValue.length);
 		for (int i = 0; i < attributeValue.length; i++) {
 			Array.set(result, i,
@@ -466,7 +495,8 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private Object adaptEnumValueReference(EnumValueReference attributeValue,
 			Class<?> requiredType) {
-		if (Enum.class.isAssignableFrom(requiredType)) {
+		if (Enum.class.isAssignableFrom(requiredType)
+				|| Object.class.equals(requiredType)) {
 			Class enumType = resolveClassName(attributeValue.getEnumType());
 			return Enum.valueOf(enumType, attributeValue.getValue());
 		}
@@ -475,6 +505,9 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 
 	private Object adaptDeclaredAttributesArray(DeclaredAttributes[] attributeValue,
 			AttributeType attributeType, Class<?> componentType) {
+		if (componentType == null) {
+			componentType = resolveClassName(getComponentClassName(attributeType));
+		}
 		Object result = Array.newInstance(componentType, attributeValue.length);
 		for (int i = 0; i < attributeValue.length; i++) {
 			Array.set(result, i, adaptDeclaredAttributes(attributeValue[i], attributeType,
@@ -485,12 +518,14 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 
 	private Object adaptDeclaredAttributes(DeclaredAttributes attributeValue,
 			AttributeType attributeType, Class<?> requiredType) {
-		if (requiredType.isAnnotation() || requiredType == MergedAnnotation.class) {
+		if (requiredType.isAnnotation() || MergedAnnotation.class.equals(requiredType)
+				|| Object.class.equals(requiredType)) {
 			AnnotationType nestedType = AnnotationType.resolve(
-					attributeType.getClassName().replace("[]", ""), getClassLoader());
+					getComponentClassName(attributeType), getClassLoader());
 			MergedAnnotation<?> nestedAnnotation = createNested(nestedType,
 					attributeValue);
-			return requiredType.isAnnotation() ? nestedAnnotation.synthesize()
+			return requiredType.isAnnotation() || Object.class.equals(requiredType)
+					? nestedAnnotation.synthesize()
 					: nestedAnnotation;
 		}
 		return extract(attributeValue, requiredType);
@@ -521,6 +556,14 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 				&& ((Object[]) value).length == 0;
 	}
 
+	private boolean isArrayType(AttributeType attributeType) {
+		return attributeType.getClassName().endsWith("[]");
+	}
+
+	private String getComponentClassName(AttributeType attributeType) {
+		return attributeType.getClassName().replace("[]", "");
+	}
+
 	private Class<?> resolveClassName(String className) {
 		return ClassUtils.resolveClassName(className, getClassLoader());
 	}
@@ -547,7 +590,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 
 	private String toString(AttributeType attributeType) {
 		String name = attributeType.getAttributeName();
-		Object value = getValue(name);
+		Object value = getAttributeValue(name);
 		if (value instanceof DeclaredAttributes) {
 			value = getNested(name, null);
 		}
@@ -567,13 +610,31 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		return (value != null) ? name + "=" + value : "";
 	}
 
+	/**
+	 * Return the classloader that should be used to resolve types.
+	 * @return the classloader to use
+	 */
 	protected abstract ClassLoader getClassLoader();
 
+	/**
+	 * Return the actually annotation type for this instance
+	 * @return the annotation type
+	 */
 	protected abstract AnnotationType getAnnotationType();
 
+	/**
+	 * Test if the given attribute name should be filtered.
+	 * @param attributeName the attribute name
+	 * @return {@code true} if the attribute is filtered out
+	 */
 	protected abstract boolean isFiltered(String attributeName);
 
-	protected abstract Object getValue(String attributeName);
+	/**
+	 * Return the value of the given attribute
+	 * @param attributeName the attribute name
+	 * @return the value or {@code null}
+	 */
+	protected abstract Object getAttributeValue(String attributeName);
 
 	protected abstract <T extends Annotation> MergedAnnotation<T> createNested(
 			AnnotationType type, DeclaredAttributes attributes);

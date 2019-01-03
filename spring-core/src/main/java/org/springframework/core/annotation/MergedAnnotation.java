@@ -336,6 +336,15 @@ public interface MergedAnnotation<A extends Annotation> {
 	<T extends Annotation> MergedAnnotation<T>[] getAnnotationArray(String attributeName,
 			Class<T> type) throws NoSuchElementException;
 
+
+	/**
+	 * Return an optional attribute value from the annotation.
+	 * @param attributeName the attribute name
+	 * @return an optional value or {@link Optional#empty()} if there is no
+	 * matching attribute
+	 */
+	Optional<Object> getValue(String attributeName);
+
 	/**
 	 * Return an optional attribute value from the annotation.
 	 * @param attributeName the attribute name
@@ -344,6 +353,15 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * matching attribute
 	 */
 	<T> Optional<T> getValue(String attributeName, Class<T> type);
+
+	/**
+	 * Return the default attribute value from the annotation as specified in
+	 * the annotation declaration.
+	 * @param attributeName the attribute name
+	 * @return an optional of the default value or {@link Optional#empty()} if
+	 * there is no matching attribute or no defined default
+	 */
+	Optional<Object> getDefaultValue(String attributeName);
 
 	/**
 	 * Return the default attribute value from the annotation as specified in
@@ -435,6 +453,44 @@ public interface MergedAnnotation<A extends Annotation> {
 	 */
 	static <A extends Annotation> MergedAnnotation<A> missing() {
 		return MissingMergedAnnotation.getInstance();
+	}
+
+	/**
+	 * Create a new {@link MergedAnnotation} instance containing the specified
+	 * annotation.
+	 * @param annotation the annotation to include
+	 * @return a {@link MergedAnnotation} instance containing the annotation
+	 */
+	static <A extends Annotation> MergedAnnotation<A> of(A annotation) {
+		return of(null, annotation);
+	}
+
+	/**
+	 * Create a new {@link MergedAnnotations} instance for the specified
+	 * annotation.
+	 * @param source the source for the annotation. This source is used only for
+	 * information and logging. It does not need to <em>actually</em> contain
+	 * the specified annotations and it will not be searched.
+	 * @param annotation the annotation to include
+	 * @return a {@link MergedAnnotation} instance for the annotation
+	 */
+	static <A extends Annotation> MergedAnnotation<A> of(
+			@Nullable AnnotatedElement source, A annotation) {
+		return TypeMappedAnnotation.of(source, annotation);
+	}
+
+	/**
+	 * Create a new {@link MergedAnnotations} instance for the specified
+	 * annotation type. The resulting annotation will not have any attribute
+	 * values, but may still be used to query default values.
+	 * @param source the source for the annotation. This source is used only for
+	 * information and logging. It does not need to <em>actually</em> contain
+	 * the specified annotations and it will not be searched.
+	 * @param annotation the annotation to include
+	 * @return a {@link MergedAnnotation} instance for the annotation
+	 */
+	static <A extends Annotation> MergedAnnotation<A> of(Class<A> annotationType) {
+		return TypeMappedAnnotation.of(annotationType);
 	}
 
 	// FIXME

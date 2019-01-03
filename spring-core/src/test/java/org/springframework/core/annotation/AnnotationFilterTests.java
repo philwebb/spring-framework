@@ -19,6 +19,8 @@ package org.springframework.core.annotation;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.Arrays;
+import java.util.Collection;
 
 import org.junit.Test;
 
@@ -26,6 +28,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.ObjectUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
  * Tests for {@link AnnotationFilter}.
@@ -119,6 +122,50 @@ public class AnnotationFilterTests {
 	public void pacakgesReturnsPackagesAnnotationFilter() {
 		assertThat(AnnotationFilter.packages("com.example")).isInstanceOf(
 				PackagesAnnotationFilter.class);
+	}
+
+	@Test
+	public void mostAppropriateForCollectionWhenAnnotationTypesIsNullThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(
+				() -> AnnotationFilter.mostAppropriateFor(
+						(Collection<Class<? extends Annotation>>) null)).withMessage(
+								"AnnotationTypes must not be null");
+	}
+
+	@Test
+	public void mostAppropriateForCollectionReturnsPlainWhenPossible() {
+		AnnotationFilter filter = AnnotationFilter.mostAppropriateFor(
+				Arrays.asList(TestAnnotation.class, OtherAnnotation.class));
+		assertThat(filter).isSameAs(AnnotationFilter.PLAIN);
+	}
+
+	@Test
+	public void mostAppropriateForCollectionWhenCantUsePlainReturnsNone() {
+		AnnotationFilter filter = AnnotationFilter.mostAppropriateFor(Arrays.asList(
+				TestAnnotation.class, OtherAnnotation.class, Nullable.class));
+		assertThat(filter).isSameAs(AnnotationFilter.NONE);
+	}
+
+	@Test
+	public void mostAppropriateForArrayWhenAnnotationTypesIsNullThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(
+				() -> AnnotationFilter.mostAppropriateFor(
+						(Class<? extends Annotation>[]) null)).withMessage(
+								"AnnotationTypes must not be null");
+	}
+
+	@Test
+	public void mostAppropriateForArrayReturnsPlainWhenPossible() {
+		AnnotationFilter filter = AnnotationFilter.mostAppropriateFor(
+				TestAnnotation.class, OtherAnnotation.class);
+		assertThat(filter).isSameAs(AnnotationFilter.PLAIN);
+	}
+
+	@Test
+	public void mostAppropriateForArrayWhenCantUsePlainReturnsNone() {
+		AnnotationFilter filter = AnnotationFilter.mostAppropriateFor(
+				TestAnnotation.class, OtherAnnotation.class, Nullable.class);
+		assertThat(filter).isSameAs(AnnotationFilter.NONE);
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)

@@ -214,6 +214,7 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 * annotations.
 	 * @param annotations the annotations to include
 	 * @return a {@link MergedAnnotations} instance containing the annotations
+	 * @see #of(AnnotatedElement, Annotation...)
 	 * @see #from(AnnotatedElement)
 	 */
 	static MergedAnnotations of(Annotation... annotations) {
@@ -228,6 +229,7 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 * contain the specified annotations and it will not be searched.
 	 * @param annotations the annotations to include
 	 * @return a {@link MergedAnnotations} instance containing the annotations
+	 * @see #of(Annotation...)
 	 * @see #from(AnnotatedElement)
 	 */
 	static MergedAnnotations of(@Nullable AnnotatedElement source,
@@ -253,9 +255,7 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	static MergedAnnotations of(RepeatableContainers repeatableContainers,
 			AnnotationFilter annotationFilter, @Nullable AnnotatedElement source,
 			Annotation... annotations) {
-		Assert.notNull(annotations, "Annotations must not be null");
-		return new TypeMappedAnnotations(repeatableContainers, annotationFilter, source,
-				annotations);
+		return TypeMappedAnnotations.of(repeatableContainers, annotationFilter, source, annotations);
 	}
 
 	/**
@@ -349,7 +349,7 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	static MergedAnnotations from(ClassLoader classLoader,
 			RepeatableContainers repeatableContainers, AnnotationFilter annotationFilter,
 			Iterable<DeclaredAnnotations> aggregates) {
-		return new TypeMappedAnnotations(classLoader, repeatableContainers,
+		return TypeMappedAnnotations.from(classLoader, repeatableContainers,
 				annotationFilter, aggregates);
 	}
 

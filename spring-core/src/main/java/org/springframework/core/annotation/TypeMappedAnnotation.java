@@ -17,6 +17,7 @@
 package org.springframework.core.annotation;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Array;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,7 +29,9 @@ import org.springframework.core.annotation.AnnotationTypeMapping.MirrorSet;
 import org.springframework.core.annotation.AnnotationTypeMapping.Reference;
 import org.springframework.core.annotation.type.AnnotationType;
 import org.springframework.core.annotation.type.AttributeType;
+import org.springframework.core.annotation.type.DeclaredAnnotation;
 import org.springframework.core.annotation.type.DeclaredAttributes;
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
@@ -149,8 +152,7 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 	}
 
 	@Override
-	protected Object getValue(String attributeName) {
-		Assert.hasText(attributeName, "AttributeName must not be empty");
+	protected Object getAttributeValue(String attributeName) {
 		return this.attributes.get(attributeName, this.nonMergedAttributes);
 	}
 
@@ -164,8 +166,31 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 
 	private AnnotationTypeMapping getNestedMapping(AnnotationType type) {
 		return AnnotationTypeMappings.forType(this.mapping.getClassLoader(),
-				this.mapping.getRepeatableContainers(), this.mapping.getAnnotationFilter(), type).get(
-						type.getClassName());
+				this.mapping.getRepeatableContainers(),
+				this.mapping.getAnnotationFilter(), type).get(type.getClassName());
+	}
+
+	public static <A extends Annotation> TypeMappedAnnotation<A> of(
+			@Nullable AnnotatedElement source, A annotation) {
+		Assert.notNull(annotation, "Annotation must not be null");
+		Class<? extends Annotation> annotationType = annotation.annotationType();
+		AnnotationTypeMappings mappings = AnnotationTypeMappings.forType(
+				annotationType.getClassLoader(), RepeatableContainers.none(),
+				AnnotationFilter.mostAppropriateFor(annotationType),
+				AnnotationType.resolve(annotationType));
+		return new TypeMappedAnnotation<>(mappings.get(annotationType.getName()), source,
+				0, DeclaredAnnotation.from(annotation).getAttributes());
+	}
+
+	public static <A extends Annotation> TypeMappedAnnotation<A> of(
+			Class<A> annotationType) {
+		Assert.notNull(annotationType, "AnnotationType must not be null");
+		AnnotationTypeMappings mappings = AnnotationTypeMappings.forType(
+				annotationType.getClassLoader(), RepeatableContainers.none(),
+				AnnotationFilter.mostAppropriateFor(annotationType),
+				AnnotationType.resolve(annotationType));
+		return new TypeMappedAnnotation<>(mappings.get(annotationType.getName()), null, 0,
+				DeclaredAttributes.NONE);
 	}
 
 	/**
@@ -234,12 +259,12 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 				TypeMappedAnnotation<?> aliasAnnotation = findParentWithMapping(
 						alias.getMapping());
 				if (aliasAnnotation != null) {
-					result = aliasAnnotation.getValue(
+					result = aliasAnnotation.getAttributeValue(
 							alias.getAttribute().getAttributeName());
 				}
 			}
 			if (result == null && !isConventionRestricted(name)) {
-				result = this.parent.getValue(name);
+				result = this.parent.getAttributeValue(name);
 			}
 			if (result == null) {
 				result = this.mapping.getAnnotationAttributes().get(name);

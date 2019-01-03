@@ -535,7 +535,7 @@ public class XAnnotationUtilsTests {
 		Annotation[] declaredAnnotations = NonPublicAnnotatedClass.class.getDeclaredAnnotations();
 		assertEquals(1, declaredAnnotations.length);
 		Annotation annotation = declaredAnnotations[0];
-		MergedAnnotation<Annotation> mergedAnnotation = MergedAnnotations.of(annotation).stream().findFirst().get();
+		MergedAnnotation<Annotation> mergedAnnotation = MergedAnnotation.of(annotation);
 		assertThat(mergedAnnotation.getType()).contains("NonPublicAnnotation");
 		assertThat(mergedAnnotation.synthesize().annotationType().getSimpleName()).isEqualTo("NonPublicAnnotation");
 		assertThat(mergedAnnotation.getInt("value")).isEqualTo(42);

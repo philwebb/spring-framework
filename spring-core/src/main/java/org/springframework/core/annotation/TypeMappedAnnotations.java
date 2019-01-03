@@ -31,6 +31,8 @@ import java.util.stream.Stream;
 import org.springframework.core.annotation.type.DeclaredAnnotation;
 import org.springframework.core.annotation.type.DeclaredAnnotations;
 import org.springframework.core.annotation.type.DeclaredAttributes;
+import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
 
 /**
  * {@link MergedAnnotations} implementation that uses
@@ -45,14 +47,14 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 
 	private volatile List<MergedAnnotation<Annotation>> all;
 
-	TypeMappedAnnotations(RepeatableContainers repeatableContainers,
+	private TypeMappedAnnotations(RepeatableContainers repeatableContainers,
 			AnnotationFilter annotationFilter, AnnotatedElement source,
-			Annotation[] annotations) {
+			Annotation... annotations) {
 		this.aggregates = Collections.singletonList(new MappableAnnotations(source,
 				annotations, repeatableContainers, annotationFilter));
 	}
 
-	TypeMappedAnnotations(ClassLoader classLoader,
+	private TypeMappedAnnotations(ClassLoader classLoader,
 			RepeatableContainers repeatableContainers, AnnotationFilter annotationFilter,
 			Iterable<DeclaredAnnotations> aggregates) {
 		this.aggregates = new ArrayList<>(getInitialSize(aggregates));
@@ -147,6 +149,21 @@ class TypeMappedAnnotations extends AbstractMergedAnnotations {
 			size += annotations.totalSize();
 		}
 		return size;
+	}
+
+	public static TypeMappedAnnotations of(RepeatableContainers repeatableContainers,
+			AnnotationFilter annotationFilter, @Nullable AnnotatedElement source,
+			Annotation... annotations) {
+		Assert.notNull(annotations, "Annotations must not be null");
+		return new TypeMappedAnnotations(repeatableContainers, annotationFilter, source,
+				annotations);
+	}
+
+	public static TypeMappedAnnotations from(ClassLoader classLoader,
+			RepeatableContainers repeatableContainers, AnnotationFilter annotationFilter,
+			Iterable<DeclaredAnnotations> aggregates) {
+		return new TypeMappedAnnotations(classLoader, repeatableContainers,
+				annotationFilter, aggregates);
 	}
 
 	/**

@@ -140,7 +140,7 @@ final class MissingMergedAnnotation<A extends Annotation>
 	}
 
 	@Override
-	protected Object getValue(String attributeName) {
+	protected Object getAttributeValue(String attributeName) {
 		throw new NoSuchElementException(
 				"Unable to get attribute value for missing annotation");
 	}

@@ -19,7 +19,6 @@ package org.springframework.core.annotation;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -30,6 +29,7 @@ import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.core.annotation.type.DeclaredAnnotation;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.util.StringUtils;
 
 /**
  * General utility methods for working with annotations, handling meta-annotations,
@@ -305,7 +305,7 @@ public abstract class AnnotationUtils {
 		).to(() ->
 			MergedAnnotations.from(containerAnnotationType != null
 					? RepeatableContainers.of(containerAnnotationType, annotationType)
-					: RepeatableContainers.standardRepeatables(), getAnnotationFilter(annotationType), SearchStrategy.SUPER_CLASS,
+					: RepeatableContainers.standardRepeatables(), AnnotationFilter.mostAppropriateFor(annotationType), SearchStrategy.SUPER_CLASS,
 					annotatedElement).stream(annotationType).filter(MergedAnnotationPredicates.firstRunOf(
 							MergedAnnotation::getAggregateIndex)).map(
 									MergedAnnotation::withNonMergedAttributes).collect(
@@ -390,7 +390,7 @@ public abstract class AnnotationUtils {
 					containerAnnotationType != null
 							? RepeatableContainers.of(containerAnnotationType, annotationType)
 							: RepeatableContainers.standardRepeatables(),
-					getAnnotationFilter(containerAnnotationType),
+							AnnotationFilter.mostAppropriateFor(containerAnnotationType),
 					SearchStrategy.DIRECT, annotatedElement).stream(annotationType).map(
 							MergedAnnotation::withNonMergedAttributes).collect(
 									MergedAnnotationCollectors.toAnnotationSet())
@@ -420,7 +420,7 @@ public abstract class AnnotationUtils {
 		return MigrateMethod.from(() ->
 			InternalAnnotationUtils.findAnnotation(annotatedElement, annotationType)
 		).to(() ->
-			MergedAnnotations.from(RepeatableContainers.none(), getAnnotationFilter(annotationType),  SearchStrategy.DIRECT,
+			MergedAnnotations.from(RepeatableContainers.none(), AnnotationFilter.mostAppropriateFor(annotationType),  SearchStrategy.DIRECT,
 					annotatedElement).get(annotationType).withNonMergedAttributes().synthesize(
 							MergedAnnotation::isPresent).orElse(null)
 		);
@@ -448,7 +448,7 @@ public abstract class AnnotationUtils {
 		return MigrateMethod.from(() ->
 			InternalAnnotationUtils.findAnnotation(method, annotationType)
 		).to(() ->
-			MergedAnnotations.from(RepeatableContainers.none(), getAnnotationFilter(annotationType), SearchStrategy.EXHAUSTIVE,
+			MergedAnnotations.from(RepeatableContainers.none(), AnnotationFilter.mostAppropriateFor(annotationType), SearchStrategy.EXHAUSTIVE,
 					method).get(annotationType).withNonMergedAttributes().synthesize(
 							MergedAnnotation::isPresent).orElse(null)
 		);
@@ -521,7 +521,7 @@ public abstract class AnnotationUtils {
 		return MigrateMethod.from(() ->
 			InternalAnnotationUtils.findAnnotation(clazz, annotationType)
 		).to(() ->
-			MergedAnnotations.from(RepeatableContainers.none(), getAnnotationFilter(annotationType), SearchStrategy.EXHAUSTIVE,
+			MergedAnnotations.from(RepeatableContainers.none(), AnnotationFilter.mostAppropriateFor(annotationType), SearchStrategy.EXHAUSTIVE,
 					clazz).get(annotationType).withNonMergedAttributes().synthesize(
 							MergedAnnotation::isPresent).orElse(null)
 		);
@@ -558,7 +558,7 @@ public abstract class AnnotationUtils {
 					clazz)
 		).to(() ->
 			(Class<?>) MergedAnnotations.from(RepeatableContainers.none(),
-					getAnnotationFilter(annotationType), SearchStrategy.SUPER_CLASS, clazz).get(annotationType,
+					AnnotationFilter.mostAppropriateFor(annotationType), SearchStrategy.SUPER_CLASS, clazz).get(annotationType,
 							MergedAnnotation::isDirectlyPresent).getSource()
 		);
 	}
@@ -597,7 +597,7 @@ public abstract class AnnotationUtils {
 					annotationTypes, clazz)
 		).to(() ->
 			(Class<?>) MergedAnnotations.from(RepeatableContainers.none(),
-					getAnnotationFilter(annotationTypes), SearchStrategy.SUPER_CLASS, clazz).stream().filter(
+					AnnotationFilter.mostAppropriateFor(annotationTypes), SearchStrategy.SUPER_CLASS, clazz).stream().filter(
 							MergedAnnotationPredicates.typeIn(annotationTypes).and(
 									MergedAnnotation::isDirectlyPresent)).map(
 											MergedAnnotation::getSource).findFirst().orElse(
@@ -870,8 +870,7 @@ public abstract class AnnotationUtils {
 			InternalAnnotationUtils.getAnnotationAttributes(annotatedElement,
 					annotation, classValuesAsString, nestedAnnotationsAsMap)
 		).to(() ->
-			MergedAnnotations.of(annotatedElement, annotation).get(
-				annotation.annotationType()).withNonMergedAttributes().asMap(
+			MergedAnnotation.of(annotatedElement, annotation).withNonMergedAttributes().asMap(
 						merged -> new AnnotationAttributes(annotation.annotationType(), true),
 						MapValues.of(classValuesAsString, nestedAnnotationsAsMap))
 		);
@@ -1047,7 +1046,7 @@ public abstract class AnnotationUtils {
 	@Deprecated
 	@Nullable
 	public static Object getDefaultValue(Annotation annotation) {
-		return InternalAnnotationUtils.getDefaultValue(annotation);
+		return getDefaultValue(annotation, VALUE);
 	}
 
 	/**
@@ -1061,7 +1060,7 @@ public abstract class AnnotationUtils {
 	@Deprecated
 	@Nullable
 	public static Object getDefaultValue(@Nullable Annotation annotation, @Nullable String attributeName) {
-		return InternalAnnotationUtils.getDefaultValue(annotation, attributeName);
+		return annotation != null ? getDefaultValue(annotation.annotationType()) : null;
 	}
 
 	/**
@@ -1075,7 +1074,7 @@ public abstract class AnnotationUtils {
 	@Deprecated
 	@Nullable
 	public static Object getDefaultValue(Class<? extends Annotation> annotationType) {
-		return InternalAnnotationUtils.getDefaultValue(annotationType);
+		return getDefaultValue(annotationType, VALUE);
 	}
 
 	/**
@@ -1091,7 +1090,19 @@ public abstract class AnnotationUtils {
 	@Nullable
 	public static Object getDefaultValue(
 			@Nullable Class<? extends Annotation> annotationType, @Nullable String attributeName) {
-		return InternalAnnotationUtils.getDefaultValue(annotationType, attributeName);
+		// FIXME
+		if (true)
+			return InternalAnnotationUtils.getDefaultValue(annotationType, attributeName);
+
+		return MigrateMethod.from(() ->
+			InternalAnnotationUtils.getDefaultValue(annotationType, attributeName)
+		).to(() -> {
+			if (annotationType == null || !StringUtils.hasText(attributeName)) {
+				return null;
+			}
+			return MergedAnnotation.of(annotationType).getDefaultValue(attributeName,
+					Object.class).orElse(null);
+		});
 	}
 
 	/**
@@ -1436,24 +1447,6 @@ public abstract class AnnotationUtils {
 			MergedAnnotation<A> mergedAnnotation) {
 		int depth = mergedAnnotation.getDepth();
 		return depth == 0 || depth == 1;
-	}
-
-	private static AnnotationFilter getAnnotationFilter(
-			Collection<Class<? extends Annotation>> annotationTypes) {
-		for (Class<? extends Annotation> annotationType : annotationTypes) {
-			if (AnnotationFilter.PLAIN.matches(annotationType)) {
-				return AnnotationFilter.NONE;
-			}
-		}
-		return AnnotationFilter.PLAIN;
-	}
-
-	private static AnnotationFilter getAnnotationFilter(
-			Class<? extends Annotation> annotationType) {
-		if (AnnotationFilter.PLAIN.matches(annotationType)) {
-			return AnnotationFilter.NONE;
-		}
-		return AnnotationFilter.PLAIN;
 	}
 
 }

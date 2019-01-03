@@ -16,6 +16,7 @@
 package org.springframework.core.annotation;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -628,20 +629,35 @@ public class TypeMappedAnnotationTests {
 	}
 
 	@Test
-	public void getValueForArrayAsClassArrayAdapts() {
-		MergedAnnotation<?> annotation = create(Class[].class,
-				new ClassReference[] { ClassReference.from(String.class) }, null);
-		assertThat(annotation.getValue("value", Class[].class).get()).containsExactly(
+	public void getValueForClassReferenceAsObjectAdapts() {
+		MergedAnnotation<?> annotation = create(Class.class,
+				ClassReference.from(String.class), null);
+		assertThat(annotation.getValue("value", Object.class).get()).isEqualTo(
 				String.class);
 	}
 
 	@Test
-	public void getValueForClassReferenceAsStringArrayAdapts() {
+	public void getValueForClassReferenceArrayAsClassArrayAdapts() {
 		MergedAnnotation<?> annotation = create(Class[].class,
 				new ClassReference[] { ClassReference.from(String.class) }, null);
-		assertThat(
-				annotation.getValue("value", String[].class).get()).containsExactly(
-						"java.lang.String");
+		Class<?>[] value = annotation.getValue("value", Class[].class).get();
+		assertThat(value).containsExactly(String.class);
+	}
+
+	@Test
+	public void getValueForClassReferenceArrayAsStringArrayAdapts() {
+		MergedAnnotation<?> annotation = create(Class[].class,
+				new ClassReference[] { ClassReference.from(String.class) }, null);
+		String[] value = annotation.getValue("value", String[].class).get();
+		assertThat(value).containsExactly("java.lang.String");
+	}
+
+	@Test
+	public void getValueForClassReferenceArrayAsObjectAdapts() {
+		MergedAnnotation<?> annotation = create(Class[].class,
+				new ClassReference[] { ClassReference.from(String.class) }, null);
+		Class<?>[] value = (Class<?>[]) annotation.getValue("value", Object.class).get();
+		assertThat(value).containsExactly(String.class);
 	}
 
 	@Test
@@ -653,12 +669,30 @@ public class TypeMappedAnnotationTests {
 	}
 
 	@Test
+	public void getValueForEnumValueReferenceAsObjectAdapts() {
+		MergedAnnotation<?> annotation = create(EnumValueReference.class,
+				EnumValueReference.from(ExampleEnum.ONE), null);
+		assertThat(annotation.getValue("value", Object.class).get()).isEqualTo(
+				ExampleEnum.ONE);
+	}
+
+	@Test
 	public void getValueForEnumValueReferenceArrayAsEnumArrayAdapts() {
-		MergedAnnotation<?> annotation = create(EnumValueReference[].class,
+		MergedAnnotation<?> annotation = create(ExampleEnum[].class,
 				new EnumValueReference[] { EnumValueReference.from(ExampleEnum.ONE) },
 				null);
-		assertThat(annotation.getValue("value",
-				ExampleEnum[].class).get()).containsExactly(ExampleEnum.ONE);
+		ExampleEnum[] value = annotation.getValue("value", ExampleEnum[].class).get();
+		assertThat(value).containsExactly(ExampleEnum.ONE);
+	}
+
+	@Test
+	public void getValueForEnumValueReferenceArrayAsObjectAdapts() {
+		MergedAnnotation<?> annotation = create(ExampleEnum[].class,
+				new EnumValueReference[] { EnumValueReference.from(ExampleEnum.ONE) },
+				null);
+		ExampleEnum[] value = (ExampleEnum[]) annotation.getValue("value",
+				Object.class).get();
+		assertThat(value).containsExactly(ExampleEnum.ONE);
 	}
 
 	@Test
@@ -671,13 +705,32 @@ public class TypeMappedAnnotationTests {
 	}
 
 	@Test
+	public void getValueForDeclaredAttributesAsObjectAdapts() {
+		MergedAnnotation<?> annotation = create(StringValueAnnotation.class,
+				DeclaredAttributes.of("value", "test"), null);
+		StringValueAnnotation nested = (StringValueAnnotation) annotation.getValue(
+				"value", Object.class).get();
+		assertThat(nested.value()).isEqualTo("test");
+	}
+
+	@Test
 	public void getValueForDeclaredAttributesArrayAsAnnotationArrayAdapts() {
 		MergedAnnotation<?> annotation = create(StringValueAnnotation[].class,
 				new DeclaredAttributes[] { DeclaredAttributes.of("value", "test") },
 				null);
-		StringValueAnnotation nested = annotation.getValue("value",
-				StringValueAnnotation[].class).get()[0];
-		assertThat(nested.value()).isEqualTo("test");
+		StringValueAnnotation[] nested = annotation.getValue("value",
+				StringValueAnnotation[].class).get();
+		assertThat(nested[0].value()).isEqualTo("test");
+	}
+
+	@Test
+	public void getValueForDeclaredAttributesArrayAsObjectArrayAdapts() {
+		MergedAnnotation<?> annotation = create(StringValueAnnotation[].class,
+				new DeclaredAttributes[] { DeclaredAttributes.of("value", "test") },
+				null);
+		StringValueAnnotation[] nested = (StringValueAnnotation[]) annotation.getValue(
+				"value", Object.class).get();
+		assertThat(nested[0].value()).isEqualTo("test");
 	}
 
 	@Test
@@ -1080,6 +1133,51 @@ public class TypeMappedAnnotationTests {
 								"Different @AliasFor mirror values");
 	}
 
+	@Test
+	public void ofAnnotationTypeWhenAnnotationTypeIsNullThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(
+				() -> TypeMappedAnnotation.of((Class<Annotation>) null)).withMessage(
+						"AnnotationType must not be null");
+	}
+
+	@Test
+	public void ofAnnotationTypeReturnsAnnotation() {
+		TypeMappedAnnotation<?> annotation = TypeMappedAnnotation.of(
+				AnnotationTypeAnnotation.class);
+		assertThat(annotation.getType()).isEqualTo(
+				AnnotationTypeAnnotation.class.getName());
+		assertThat(annotation.getValue("classValue", Class.class)).contains(
+				InputStream.class);
+		assertThat(annotation.getValue("stringValue", String.class)).isEmpty();
+		assertThat(annotation.getDefaultValue("classValue", Class.class)).contains(
+				InputStream.class);
+		assertThat(annotation.getDefaultValue("stringValue", String.class)).isEmpty();
+	}
+
+	@Test
+	public void ofAnnotationWhenAnnotationIsNullThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(
+				() -> TypeMappedAnnotation.of(null, (Annotation) null)).withMessage(
+						"Annotation must not be null");
+	}
+
+	@Test
+	public void ofAnnotationReturnsAnnotation() {
+		TypeMappedAnnotation<?> annotation = TypeMappedAnnotation.of(
+				WithAnnotationTypeAnnotation.class,
+				WithAnnotationTypeAnnotation.class.getDeclaredAnnotation(
+						AnnotationTypeAnnotation.class));
+		assertThat(annotation.getType()).isEqualTo(
+				AnnotationTypeAnnotation.class.getName());
+		assertThat(annotation.getSource()).isEqualTo(WithAnnotationTypeAnnotation.class);
+		assertThat(annotation.getValue("classValue", Class.class)).contains(
+				OutputStream.class);
+		assertThat(annotation.getValue("stringValue", String.class)).contains("test");
+		assertThat(annotation.getDefaultValue("classValue", Class.class)).contains(
+				InputStream.class);
+		assertThat(annotation.getDefaultValue("stringValue", String.class)).isEmpty();
+	}
+
 	private <A extends Annotation> TypeMappedAnnotation<A> createTwoAttributeAnnotation() {
 		AttributeTypes attributeTypes = AttributeTypes.of(
 				AttributeType.of("one", ClassUtils.getQualifiedName(Integer.class),
@@ -1197,6 +1295,20 @@ public class TypeMappedAnnotationTests {
 	private static @interface ClassArrayValueAnnotation {
 
 		Class<?>[] value();
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	private static @interface AnnotationTypeAnnotation {
+
+		Class<?> classValue() default InputStream.class;
+
+		String stringValue();
+
+	}
+
+	@AnnotationTypeAnnotation(classValue = OutputStream.class, stringValue = "test")
+	private static class WithAnnotationTypeAnnotation {
 
 	}
 

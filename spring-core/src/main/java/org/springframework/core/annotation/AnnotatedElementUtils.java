@@ -109,7 +109,7 @@ public abstract class AnnotatedElementUtils {
 	 * {@code AnnotatedElement}
 	 * @since 4.3
 	 * @deprecated since 5.2 in favor of
-	 * {@link MergedAnnotations#of(annotations)}
+	 * {@link MergedAnnotation#of(annotations)}
 	 */
 	@Deprecated
 	public static AnnotatedElement forAnnotations(final Annotation... annotations) {
