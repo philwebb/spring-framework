@@ -1091,7 +1091,7 @@ public abstract class AnnotationUtils {
 	public static Object getDefaultValue(
 			@Nullable Class<? extends Annotation> annotationType, @Nullable String attributeName) {
 		// FIXME
-		if (true)
+		if (false)
 			return InternalAnnotationUtils.getDefaultValue(annotationType, attributeName);
 
 		return MigrateMethod.from(() ->
@@ -1100,8 +1100,7 @@ public abstract class AnnotationUtils {
 			if (annotationType == null || !StringUtils.hasText(attributeName)) {
 				return null;
 			}
-			return MergedAnnotation.of(annotationType).getDefaultValue(attributeName,
-					Object.class).orElse(null);
+			return MergedAnnotation.of(annotationType).getDefaultValue(attributeName).orElse(null);
 		});
 	}
 

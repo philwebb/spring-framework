@@ -431,10 +431,11 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		}
 		if (attributeValue instanceof ClassReference[]) {
 			return adaptClassReferenceArray((ClassReference[]) attributeValue,
-					requiredType.getComponentType());
+					attributeType, requiredType.getComponentType());
 		}
 		if (attributeValue instanceof ClassReference) {
-			return adaptClassReference((ClassReference) attributeValue, requiredType);
+			return adaptClassReference((ClassReference) attributeValue, attributeType,
+					requiredType);
 		}
 		if (attributeValue instanceof EnumValueReference[]) {
 			return adaptEnumValueReferenceArray((EnumValueReference[]) attributeValue,
@@ -442,7 +443,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		}
 		if (attributeValue instanceof EnumValueReference) {
 			return adaptEnumValueReference((EnumValueReference) attributeValue,
-					requiredType);
+					attributeType, requiredType);
 		}
 		if (attributeValue instanceof DeclaredAttributes[]) {
 			return adaptDeclaredAttributesArray((DeclaredAttributes[]) attributeValue,
@@ -452,23 +453,24 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 			return adaptDeclaredAttributes((DeclaredAttributes) attributeValue,
 					attributeType, requiredType);
 		}
-		return extract(attributeValue, requiredType);
+		return extract(attributeValue, attributeType, requiredType);
 	}
 
 	private Object adaptClassReferenceArray(ClassReference[] attributeValue,
-			Class<?> componentType) {
+			AttributeType attributeType, Class<?> componentType) {
 		if (componentType == null) {
 			componentType = Class.class;
 		}
 		Object result = Array.newInstance(componentType, attributeValue.length);
 		for (int i = 0; i < attributeValue.length; i++) {
-			Array.set(result, i, adaptClassReference(attributeValue[i], componentType));
+			Array.set(result, i,
+					adaptClassReference(attributeValue[i], attributeType, componentType));
 		}
 		return result;
 	}
 
 	private Object adaptClassReference(ClassReference attributeValue,
-			Class<?> requiredType) {
+			AttributeType attributeType, Class<?> requiredType) {
 		String className = attributeValue.getClassName();
 		if (String.class.equals(requiredType)) {
 			return className;
@@ -476,7 +478,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		if (Class.class.equals(requiredType) || Object.class.equals(requiredType)) {
 			return resolveClassName(className);
 		}
-		return extract(attributeValue, requiredType);
+		return extract(attributeValue, attributeType, requiredType);
 	}
 
 	private Object adaptEnumValueReferenceArray(EnumValueReference[] attributeValue,
@@ -486,21 +488,21 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		}
 		Object result = Array.newInstance(componentType, attributeValue.length);
 		for (int i = 0; i < attributeValue.length; i++) {
-			Array.set(result, i,
-					adaptEnumValueReference(attributeValue[i], componentType));
+			Array.set(result, i, adaptEnumValueReference(attributeValue[i], attributeType,
+					componentType));
 		}
 		return result;
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private Object adaptEnumValueReference(EnumValueReference attributeValue,
-			Class<?> requiredType) {
+			AttributeType attributeType, Class<?> requiredType) {
 		if (Enum.class.isAssignableFrom(requiredType)
 				|| Object.class.equals(requiredType)) {
 			Class enumType = resolveClassName(attributeValue.getEnumType());
 			return Enum.valueOf(enumType, attributeValue.getValue());
 		}
-		return extract(attributeValue, requiredType);
+		return extract(attributeValue, attributeType, requiredType);
 	}
 
 	private Object adaptDeclaredAttributesArray(DeclaredAttributes[] attributeValue,
@@ -528,27 +530,31 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 					? nestedAnnotation.synthesize()
 					: nestedAnnotation;
 		}
-		return extract(attributeValue, requiredType);
+		return extract(attributeValue, attributeType, requiredType);
 	}
 
 	@SuppressWarnings("unchecked")
-	protected final <T> T extract(Object value, Class<T> type) {
-		Assert.notNull(type, "Type must not be null");
-		if (value == null) {
+	private <T> T extract(Object attributeValue, AttributeType attributeType,
+			Class<T> requiredType) {
+		Assert.notNull(requiredType, "Type must not be null");
+		if (attributeValue == null) {
 			return null;
 		}
-		if (type == Object.class) {
-			return (T) value;
+		if (isArrayType(attributeType) && isEmptyObjectArray(attributeValue)) {
+			Class<?> componentType = resolveClassName(getComponentClassName(attributeType));
+			attributeValue = EMPTY_ARRAY.containsKey(componentType)
+					? EMPTY_ARRAY.get(componentType)
+					: Array.newInstance(componentType, 0);
 		}
-		if (type.isArray() && isEmptyObjectArray(value)) {
-			return (T) (EMPTY_ARRAY.containsKey(type) ? EMPTY_ARRAY.get(type)
-					: Array.newInstance(type.getComponentType(), 0));
+		if (Object.class.equals(requiredType)) {
+			return (T) attributeValue;
 		}
-		Assert.isTrue(SUPPORTED_TYPES.contains(type),
-				() -> "Type " + type.getName() + " is not supported");
-		Assert.state(type.isInstance(value),
-				"Value " + value.getClass().getName() + " is not a " + type.getName());
-		return (T) value;
+		Assert.isTrue(SUPPORTED_TYPES.contains(requiredType),
+				() -> "Type " + requiredType.getName() + " is not supported");
+		Assert.state(requiredType.isInstance(attributeValue),
+				"Value " + attributeValue.getClass().getName() + " is not a "
+						+ requiredType.getName());
+		return (T) attributeValue;
 	}
 
 	private boolean isEmptyObjectArray(Object value) {
