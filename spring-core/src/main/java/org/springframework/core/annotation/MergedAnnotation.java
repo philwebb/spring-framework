@@ -44,6 +44,11 @@ import org.springframework.lang.Nullable;
 public interface MergedAnnotation<A extends Annotation> {
 
 	/**
+	 * The attribute name for annotations with a single element.
+	 */
+	static final String VALUE = "value";
+
+	/**
 	 * Return the class name of the actual annotation type.
 	 * @return the annotation type
 	 */
@@ -336,7 +341,6 @@ public interface MergedAnnotation<A extends Annotation> {
 	<T extends Annotation> MergedAnnotation<T>[] getAnnotationArray(String attributeName,
 			Class<T> type) throws NoSuchElementException;
 
-
 	/**
 	 * Return an optional attribute value from the annotation.
 	 * @param attributeName the attribute name
@@ -348,7 +352,8 @@ public interface MergedAnnotation<A extends Annotation> {
 	/**
 	 * Return an optional attribute value from the annotation.
 	 * @param attributeName the attribute name
-	 * @param type the attribute type
+	 * @param type the attribute type. Must be compatible with the underlying
+	 * attribute type or {@code Object.class}.
 	 * @return an optional value or {@link Optional#empty()} if there is no
 	 * matching attribute
 	 */
@@ -367,7 +372,8 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * Return the default attribute value from the annotation as specified in
 	 * the annotation declaration.
 	 * @param attributeName the attribute name
-	 * @param type the attribute type
+	 * @param type the attribute type. Must be compatible with the underlying
+	 * attribute type or {@code Object.class}.
 	 * @return an optional of the default value or {@link Optional#empty()} if
 	 * there is no matching attribute or no defined default
 	 */
@@ -483,10 +489,7 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * Create a new {@link MergedAnnotations} instance for the specified
 	 * annotation type. The resulting annotation will not have any attribute
 	 * values, but may still be used to query default values.
-	 * @param source the source for the annotation. This source is used only for
-	 * information and logging. It does not need to <em>actually</em> contain
-	 * the specified annotations and it will not be searched.
-	 * @param annotation the annotation to include
+	 * @param annotationType the annotation type
 	 * @return a {@link MergedAnnotation} instance for the annotation
 	 */
 	static <A extends Annotation> MergedAnnotation<A> of(Class<A> annotationType) {

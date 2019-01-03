@@ -1090,10 +1090,6 @@ public abstract class AnnotationUtils {
 	@Nullable
 	public static Object getDefaultValue(
 			@Nullable Class<? extends Annotation> annotationType, @Nullable String attributeName) {
-		// FIXME
-		if (false)
-			return InternalAnnotationUtils.getDefaultValue(annotationType, attributeName);
-
 		return MigrateMethod.from(() ->
 			InternalAnnotationUtils.getDefaultValue(annotationType, attributeName)
 		).to(() -> {

@@ -28,6 +28,7 @@ import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Test;
 
 import org.springframework.core.annotation.MergedAnnotation.MapValues;
+import org.springframework.core.annotation.SynthesizedMergedAnnotationInvocationHandlerTests.TestEnum;
 import org.springframework.core.annotation.type.AnnotationType;
 import org.springframework.core.annotation.type.AttributeType;
 import org.springframework.core.annotation.type.AttributeTypes;
@@ -42,7 +43,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.entry;
-import static org.junit.Assert.*;
 
 /**
  * Tests for {@link TypeMappedAnnotation}.
@@ -769,41 +769,46 @@ public class TypeMappedAnnotationTests {
 
 	@Test
 	public void getValueWhenUnderlyingArrayIsEmptyObjectArrayReturnsCorrectType() {
-		assertExtractFromEmpty("byte[]", byte[].class, new byte[0]);
-		assertExtractFromEmpty("boolean[]", boolean[].class, new boolean[0]);
-		assertExtractFromEmpty("char[]", char[].class, new char[0]);
-		assertExtractFromEmpty("short[]", short[].class, new short[0]);
-		assertExtractFromEmpty("int[]", int[].class, new int[0]);
-		assertExtractFromEmpty("long[]", long[].class, new long[0]);
-		assertExtractFromEmpty("float[]", float[].class, new float[0]);
-		assertExtractFromEmpty("double[]", double[].class, new double[0]);
-		assertExtractFromEmpty("java.lang.String[]", String[].class, new String[0]);
-		// assertExtractFromEmpty(ClassReference[].class,
-		// ClassReference[].class,
-		// new ClassReference[0]);
-		// assertExtractFromEmpty(EnumValueReference[].class,
-		// EnumValueReference[].class,
-		// new EnumValueReference[0]);
-		// assertExtractFromEmpty(DeclaredAttributes[].class,
-		// DeclaredAttributes[].class,
-		// new DeclaredAttributes[0]);
+		assertGetValueFromEmptyArray("byte[]", byte[].class, new byte[0]);
+		assertGetValueFromEmptyArray("byte[]", Object.class, new byte[0]);
+		assertGetValueFromEmptyArray("boolean[]", boolean[].class, new boolean[0]);
+		assertGetValueFromEmptyArray("boolean[]", Object.class, new boolean[0]);
+		assertGetValueFromEmptyArray("char[]", char[].class, new char[0]);
+		assertGetValueFromEmptyArray("char[]", Object.class, new char[0]);
+		assertGetValueFromEmptyArray("short[]", short[].class, new short[0]);
+		assertGetValueFromEmptyArray("short[]", Object.class, new short[0]);
+		assertGetValueFromEmptyArray("int[]", int[].class, new int[0]);
+		assertGetValueFromEmptyArray("int[]", Object.class, new int[0]);
+		assertGetValueFromEmptyArray("long[]", long[].class, new long[0]);
+		assertGetValueFromEmptyArray("long[]", Object.class, new long[0]);
+		assertGetValueFromEmptyArray("float[]", float[].class, new float[0]);
+		assertGetValueFromEmptyArray("float[]", Object.class, new float[0]);
+		assertGetValueFromEmptyArray("double[]", double[].class, new double[0]);
+		assertGetValueFromEmptyArray("double[]", Object.class, new double[0]);
+		assertGetValueFromEmptyArray("java.lang.String[]", String[].class, new String[0]);
+		assertGetValueFromEmptyArray("java.lang.String[]", Object.class, new String[0]);
+		assertGetValueFromEmptyArray("java.lang.Class[]", Class[].class, new Class[0]);
+		assertGetValueFromEmptyArray("java.lang.Class[]", Object.class, new Class[0]);
+		assertGetValueFromEmptyArray(TestEnum.class.getName()+"[]", TestEnum[].class, new TestEnum[0]);
+		assertGetValueFromEmptyArray(TestEnum.class.getName()+"[]", Object.class, new TestEnum[0]);
+		assertGetValueFromEmptyArray(StringValueAnnotation.class.getName()+"[]", StringValueAnnotation[].class, new StringValueAnnotation[0]);
+		assertGetValueFromEmptyArray(StringValueAnnotation.class.getName()+"[]", Object.class, new StringValueAnnotation[0]);
+		assertGetValueFromEmptyArray(StringValueAnnotation.class.getName()+"[]", MergedAnnotation[].class, new MergedAnnotation[0]);
 	}
 
-	private void assertExtractFromEmpty(String attributeType, Class<?> requiredType,
+	private void assertGetValueFromEmptyArray(String attributeType, Class<?> requiredType,
 			Object expected) {
 		DeclaredAttributes rootAttributes = DeclaredAttributes.of("value", new Object[0]);
-		AttributeTypes attributeTypes = AttributeTypes.of(AttributeType.of("value", attributeType, DeclaredAnnotations.NONE, null));
-		AnnotationType annotationType = AnnotationType.of("com.example.Component", DeclaredAnnotations.NONE, attributeTypes);
-		AnnotationTypeMapping mapping = new AnnotationTypeMapping(getClass().getClassLoader(), RepeatableContainers.none(), AnnotationFilter.PLAIN, annotationType);
-		TypeMappedAnnotation<?> annotation = new TypeMappedAnnotation<>(mapping, this.source, this.aggregateIndex, rootAttributes);
-		annotation.getValue("value", requiredType);
-
-		//annotation.extract(attributeValue, attributeType, requiredType)
-
-//		TypeMappedAnnotation<?> annotation = createTwoAttributeAnnotation();
-//		Object[] empty = {};
-//		// assertThat(annotation.extract(empty byte[].class)).isEqualTo(new
-//		// byte[0]);
+		AttributeTypes attributeTypes = AttributeTypes.of(
+				AttributeType.of("value", attributeType, DeclaredAnnotations.NONE, null));
+		AnnotationType annotationType = AnnotationType.of("com.example.Component",
+				DeclaredAnnotations.NONE, attributeTypes);
+		AnnotationTypeMapping mapping = new AnnotationTypeMapping(
+				getClass().getClassLoader(), RepeatableContainers.none(),
+				AnnotationFilter.PLAIN, annotationType);
+		TypeMappedAnnotation<?> annotation = new TypeMappedAnnotation<>(mapping,
+				this.source, this.aggregateIndex, rootAttributes);
+		assertThat(annotation.getValue("value", requiredType).get()).isEqualTo(expected);
 	}
 
 	@Test

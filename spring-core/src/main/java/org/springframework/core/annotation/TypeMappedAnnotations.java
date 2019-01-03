@@ -41,7 +41,7 @@ import org.springframework.util.Assert;
  * @author Phillip Webb
  * @since 5.2
  */
-class TypeMappedAnnotations extends AbstractMergedAnnotations {
+final class TypeMappedAnnotations extends AbstractMergedAnnotations {
 
 	private final List<MappableAnnotations> aggregates;
 

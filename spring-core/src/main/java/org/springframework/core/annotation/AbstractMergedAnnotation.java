@@ -541,20 +541,36 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 			return null;
 		}
 		if (isArrayType(attributeType) && isEmptyObjectArray(attributeValue)) {
-			Class<?> componentType = resolveClassName(getComponentClassName(attributeType));
+			Class<?> componentType = requiredType.isArray()
+					? requiredType.getComponentType()
+					: resolveClassName(getComponentClassName(attributeType));
 			attributeValue = EMPTY_ARRAY.containsKey(componentType)
 					? EMPTY_ARRAY.get(componentType)
 					: Array.newInstance(componentType, 0);
+
 		}
 		if (Object.class.equals(requiredType)) {
 			return (T) attributeValue;
 		}
-		Assert.isTrue(SUPPORTED_TYPES.contains(requiredType),
+		Assert.isTrue(isSupportedForExtract(requiredType),
 				() -> "Type " + requiredType.getName() + " is not supported");
 		Assert.state(requiredType.isInstance(attributeValue),
 				"Value " + attributeValue.getClass().getName() + " is not a "
 						+ requiredType.getName());
 		return (T) attributeValue;
+	}
+
+	private <T> boolean isSupportedForExtract(Class<T> requiredType) {
+		if (requiredType.isArray()) {
+			Class<?> componentType = requiredType.getComponentType();
+			if (Class.class.equals(componentType)
+					|| Enum.class.isAssignableFrom(componentType)
+					|| componentType.isAnnotation()
+					|| MergedAnnotation.class.isAssignableFrom(componentType)) {
+				return true;
+			}
+		}
+		return SUPPORTED_TYPES.contains(requiredType);
 	}
 
 	private boolean isEmptyObjectArray(Object value) {
@@ -623,7 +639,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	protected abstract ClassLoader getClassLoader();
 
 	/**
-	 * Return the actually annotation type for this instance
+	 * Return the actually annotation type for this instance.
 	 * @return the annotation type
 	 */
 	protected abstract AnnotationType getAnnotationType();
@@ -636,7 +652,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	protected abstract boolean isFiltered(String attributeName);
 
 	/**
-	 * Return the value of the given attribute
+	 * Return the value of the given attribute.
 	 * @param attributeName the attribute name
 	 * @return the value or {@code null}
 	 */
