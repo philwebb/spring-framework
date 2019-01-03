@@ -1117,7 +1117,7 @@ public abstract class AnnotationUtils {
 	 */
 	@Deprecated
 	static <A extends Annotation> A synthesizeAnnotation(A annotation) {
-		return InternalAnnotationUtils.synthesizeAnnotation(annotation);
+		return synthesizeAnnotation(annotation, null);
 	}
 
 	/**
@@ -1141,11 +1141,13 @@ public abstract class AnnotationUtils {
 	@Deprecated
 	public static <A extends Annotation> A synthesizeAnnotation(
 			A annotation, @Nullable AnnotatedElement annotatedElement) {
+		// FIXME
 		return InternalAnnotationUtils.synthesizeAnnotation(annotation, annotatedElement);
 	}
 
 	@Deprecated
 	static <A extends Annotation> A synthesizeAnnotation(A annotation, @Nullable Object annotatedElement) {
+		// FIXME
 		return InternalAnnotationUtils.synthesizeAnnotation(annotation, annotatedElement);
 	}
 
@@ -1182,6 +1184,7 @@ public abstract class AnnotationUtils {
 	@Deprecated
 	public static <A extends Annotation> A synthesizeAnnotation(Map<String, Object> attributes,
 			Class<A> annotationType, @Nullable AnnotatedElement annotatedElement) {
+		// FIXME
 		return InternalAnnotationUtils.synthesizeAnnotation(attributes, annotationType,
 				annotatedElement);
 	}
@@ -1204,6 +1207,7 @@ public abstract class AnnotationUtils {
 	 */
 	@Deprecated
 	public static <A extends Annotation> A synthesizeAnnotation(Class<A> annotationType) {
+		// FIXME
 		return InternalAnnotationUtils.synthesizeAnnotation(annotationType);
 	}
 
@@ -1226,6 +1230,7 @@ public abstract class AnnotationUtils {
 	 */
 	@Deprecated
 	static Annotation[] synthesizeAnnotationArray(Annotation[] annotations, @Nullable Object annotatedElement) {
+		// FIXME
 		return InternalAnnotationUtils.synthesizeAnnotationArray(annotations,
 				annotatedElement);
 	}
@@ -1252,6 +1257,7 @@ public abstract class AnnotationUtils {
 	@Nullable
 	static <A extends Annotation> A[] synthesizeAnnotationArray(
 			@Nullable Map<String, Object>[] maps, Class<A> annotationType) {
+		// FIXME
 		return InternalAnnotationUtils.synthesizeAnnotationArray(maps, annotationType);
 	}
 
