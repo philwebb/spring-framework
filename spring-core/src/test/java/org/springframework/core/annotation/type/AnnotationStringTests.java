@@ -74,6 +74,14 @@ public class AnnotationStringTests {
 				"name=\"test\"");
 	}
 
+	@Test
+	public void getForDeclaredAttributeWhenEnumArrayReturnsString() {
+		DeclaredAttribute attribute = DeclaredAttribute.of("name",
+				new EnumValueReference[] { EnumValueReference.of("com.example", "ONE") });
+		assertThat(AnnotationString.get(attribute)).isEqualTo(
+				"name={ONE}");
+	}
+
 	private AnnotationType newAnnotationType() {
 		return AnnotationType.of("com.example.Component", newDeclaredAnnotations(),
 				newAttributeTypes());

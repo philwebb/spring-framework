@@ -73,7 +73,7 @@ public class EnumValueReferenceTests {
 	@Test
 	public void toStringReturnsEnumValue() {
 		EnumValueReference reference = EnumValueReference.of("io.spring.Number", "ONE");
-		assertThat(reference.toString()).isEqualTo("io.spring.Number.ONE");
+		assertThat(reference.toString()).isEqualTo("ONE");
 	}
 
 	@Test

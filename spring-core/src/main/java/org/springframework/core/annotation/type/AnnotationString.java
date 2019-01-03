@@ -161,9 +161,12 @@ final class AnnotationString {
 
 	private static void appendValue(StringBuilder result, Object value) {
 		if (ObjectUtils.isArray(value)) {
+			Object[] array = ObjectUtils.toObjectArray(value);
 			result.append("{");
-			result.append(StringUtils.arrayToCommaDelimitedString(
-					ObjectUtils.toObjectArray(value)));
+			for (int i = 0; i < array.length; i++) {
+				result.append(i > 0 ? ", " : "");
+				appendValue(result, array[i]);
+			}
 			result.append("}");
 		}
 		else if (value instanceof String) {

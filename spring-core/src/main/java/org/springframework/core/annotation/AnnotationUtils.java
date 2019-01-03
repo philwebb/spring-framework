@@ -1141,8 +1141,11 @@ public abstract class AnnotationUtils {
 	@Deprecated
 	public static <A extends Annotation> A synthesizeAnnotation(
 			A annotation, @Nullable AnnotatedElement annotatedElement) {
-		// FIXME
-		return InternalAnnotationUtils.synthesizeAnnotation(annotation, annotatedElement);
+		return MigrateMethod.from(()->
+			InternalAnnotationUtils.synthesizeAnnotation(annotation, annotatedElement)
+		).to(() ->
+			MergedAnnotation.of(annotatedElement, annotation).synthesize()
+		);
 	}
 
 	@Deprecated

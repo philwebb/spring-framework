@@ -70,7 +70,7 @@ public final class EnumValueReference {
 
 	@Override
 	public String toString() {
-		return this.enumType + "." + this.value;
+		return this.value;
 	}
 
 	@Override
