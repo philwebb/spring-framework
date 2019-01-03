@@ -1136,9 +1136,6 @@ public class AnnotationUtilsTests {
 		ImplicitAliasesWithDuplicateValuesContextConfig config = clazz.getAnnotation(annotationType);
 		assertNotNull(config);
 
-		ImplicitAliasesWithDuplicateValuesContextConfig synthesizedConfig = synthesizeAnnotation(config, clazz);
-		assertNotNull(synthesizedConfig);
-
 		exception.expect(AnnotationConfigurationException.class);
 		exception.expectMessage(startsWith("In annotation"));
 		exception.expectMessage(containsString(annotationType.getName()));
@@ -1149,8 +1146,7 @@ public class AnnotationUtilsTests {
 				containsString("attribute 'location2' and its alias 'location1'")));
 		exception.expectMessage(either(containsString("are present with values of [1] and [2]")).or(
 				containsString("are present with values of [2] and [1]")));
-
-		synthesizedConfig.location1();
+		synthesizeAnnotation(config, clazz).location1();
 	}
 
 	@Test
@@ -1244,8 +1240,8 @@ public class AnnotationUtilsTests {
 
 	@Test
 	public void synthesizeAnnotationWithAttributeAliasesWithDifferentValues() throws Exception {
-		ContextConfig contextConfig = synthesizeAnnotation(ContextConfigMismatch.class.getAnnotation(ContextConfig.class));
 		exception.expect(AnnotationConfigurationException.class);
+		ContextConfig contextConfig = synthesizeAnnotation(ContextConfigMismatch.class.getAnnotation(ContextConfig.class));
 		getValue(contextConfig);
 	}
 

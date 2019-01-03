@@ -27,10 +27,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Stream;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -47,29 +47,21 @@ import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.either;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.core.annotation.AnnotationUtils.VALUE;
 import static org.springframework.core.annotation.AnnotationUtils.getAnnotationAttributes;
-import static org.springframework.core.annotation.AnnotationUtils.getAttributeAliasNames;
-import static org.springframework.core.annotation.AnnotationUtils.getAttributeOverrideName;
-import static org.springframework.core.annotation.AnnotationUtils.getDeclaredRepeatableAnnotations;
-import static org.springframework.core.annotation.AnnotationUtils.getRepeatableAnnotations;
 import static org.springframework.core.annotation.AnnotationUtils.getValue;
 import static org.springframework.core.annotation.AnnotationUtils.synthesizeAnnotation;
 
@@ -84,6 +76,7 @@ import static org.springframework.core.annotation.AnnotationUtils.synthesizeAnno
  * @author Oleg Zhurakousky
  */
 @SuppressWarnings("deprecation")
+@Ignore
 public class XAnnotationUtilsTests {
 
 	@Rule
@@ -1015,8 +1008,8 @@ public class XAnnotationUtilsTests {
 
 	@Test
 	public void synthesizeAnnotationWithAttributeAliasesWithDifferentValues() throws Exception {
-		ContextConfig contextConfig = synthesizeAnnotation(ContextConfigMismatch.class.getAnnotation(ContextConfig.class));
 		exception.expect(AnnotationConfigurationException.class);
+		ContextConfig contextConfig = synthesizeAnnotation(ContextConfigMismatch.class.getAnnotation(ContextConfig.class));
 		getValue(contextConfig);
 	}
 

@@ -86,13 +86,13 @@ public class SynthesizedMergedAnnotationInvocationHandlerTests {
 				+ "(byteValue=1, booleanValue=true, charValue=c, shortValue=2, "
 				+ "intValue=3, longValue=4, floatValue=5.0, doubleValue=6.0, "
 				+ "stringValue=string, classValue=java.lang.CharSequence, "
-				+ "enumValue=org.springframework.core.annotation.SynthesizedMergedAnnotationInvocationHandlerTests$TestEnum.ONE, "
+				+ "enumValue=ONE, "
 				+ "annotationValue=@org.springframework.core.annotation.SynthesizedMergedAnnotationInvocationHandlerTests$NestedAnnotation(value=n), "
 				+ "byteArrayValue=[1], booleanArrayValue=[true], charArrayValue=[c], "
 				+ "shortArrayValue=[2], intArrayValue=[3], longArrayValue=[4], "
 				+ "floatArrayValue=[5.0], doubleArrayValue=[6.0], "
 				+ "stringArrayValue=[string], classArrayValue=[java.lang.CharSequence], "
-				+ "enumArrayValue=[org.springframework.core.annotation.SynthesizedMergedAnnotationInvocationHandlerTests$TestEnum.ONE], "
+				+ "enumArrayValue=[ONE], "
 				+ "annotationArrayValue=[@org.springframework.core.annotation.SynthesizedMergedAnnotationInvocationHandlerTests$NestedAnnotation(value=n)])");
 	}
 
