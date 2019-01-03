@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -64,12 +65,10 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.core.annotation.AnnotationUtils.VALUE;
-import static org.springframework.core.annotation.AnnotationUtils.findAnnotation;
 import static org.springframework.core.annotation.AnnotationUtils.getAnnotationAttributes;
 import static org.springframework.core.annotation.AnnotationUtils.getAttributeAliasNames;
 import static org.springframework.core.annotation.AnnotationUtils.getAttributeOverrideName;
 import static org.springframework.core.annotation.AnnotationUtils.getDeclaredRepeatableAnnotations;
-import static org.springframework.core.annotation.AnnotationUtils.getDefaultValue;
 import static org.springframework.core.annotation.AnnotationUtils.getRepeatableAnnotations;
 import static org.springframework.core.annotation.AnnotationUtils.getValue;
 import static org.springframework.core.annotation.AnnotationUtils.synthesizeAnnotation;
@@ -543,103 +542,94 @@ public class XAnnotationUtilsTests {
 
 	@Test
 	public void getDefaultValueFromAnnotation() throws Exception {
-
 		Method method = SimpleFoo.class.getMethod("something", Object.class);
-
 		MergedAnnotation<Order> annotation = MergedAnnotations.from(
 				SearchStrategy.EXHAUSTIVE, method).get(Order.class);
-
-		Order order = findAnnotation(method, Order.class);
-
-		assertEquals(Ordered.LOWEST_PRECEDENCE, getDefaultValue(order, VALUE));
-		assertEquals(Ordered.LOWEST_PRECEDENCE, getDefaultValue(order));
+		assertThat(annotation.getDefaultValue("value")).contains(Ordered.LOWEST_PRECEDENCE);
 	}
 
 	@Test
 	public void getDefaultValueFromNonPublicAnnotation() {
 		Annotation[] declaredAnnotations = NonPublicAnnotatedClass.class.getDeclaredAnnotations();
 		assertEquals(1, declaredAnnotations.length);
-		Annotation annotation = declaredAnnotations[0];
-		assertNotNull(annotation);
-		assertEquals("NonPublicAnnotation", annotation.annotationType().getSimpleName());
-		assertEquals(-1, getDefaultValue(annotation, VALUE));
-		assertEquals(-1, getDefaultValue(annotation));
+		Annotation declaredAnnotation = declaredAnnotations[0];
+		MergedAnnotation<?> annotation = MergedAnnotation.of(declaredAnnotation);
+		assertThat(annotation.getType()).isEqualTo("org.springframework.core.annotation.subpackage.NonPublicAnnotation");
+		assertThat(annotation.getDefaultValue("value")).contains(-1);
 	}
 
 	@Test
 	public void getDefaultValueFromAnnotationType() {
-		assertEquals(Ordered.LOWEST_PRECEDENCE, getDefaultValue(Order.class, VALUE));
-		assertEquals(Ordered.LOWEST_PRECEDENCE, getDefaultValue(Order.class));
+		MergedAnnotation<?> annotation = MergedAnnotation.of(Order.class);
+		assertThat(annotation.getDefaultValue("value")).contains(Ordered.LOWEST_PRECEDENCE);
 	}
 
 	@Test
 	public void findRepeatableAnnotationOnComposedAnnotation() {
-		Repeatable repeatable = findAnnotation(MyRepeatableMeta1.class, Repeatable.class);
-		assertNotNull(repeatable);
-		assertEquals(MyRepeatableContainer.class, repeatable.value());
+		MergedAnnotation<?> annotation = MergedAnnotations.from(RepeatableContainers.none(), AnnotationFilter.NONE,
+				SearchStrategy.EXHAUSTIVE, MyRepeatableMeta1.class).get(Repeatable.class);
+		assertThat(annotation.getClass("value")).isEqualTo(MyRepeatableContainer.class);
 	}
 
 	@Test
 	public void getRepeatableAnnotationsDeclaredOnMethod() throws Exception {
 		Method method = InterfaceWithRepeated.class.getMethod("foo");
-		Set<MyRepeatable> annotations = getRepeatableAnnotations(method, MyRepeatable.class, MyRepeatableContainer.class);
-		assertNotNull(annotations);
-		List<String> values = annotations.stream().map(MyRepeatable::value).collect(toList());
-		assertThat(values, is(asList("A", "B", "C", "meta1")));
+		Stream<MergedAnnotation<MyRepeatable>> annotations = MergedAnnotations.from(
+				SearchStrategy.EXHAUSTIVE, method).stream(MyRepeatable.class);
+		Stream<String> values = annotations.map(
+				annotation -> annotation.getString("value"));
+		assertThat(values).containsExactly("A", "B", "C", "meta1");
 	}
 
 	@Test
 	public void getRepeatableAnnotationsDeclaredOnClassWithMissingAttributeAliasDeclaration() throws Exception {
-		exception.expect(AnnotationConfigurationException.class);
-		exception.expectMessage(startsWith("Attribute 'value' in"));
-		exception.expectMessage(containsString(BrokenContextConfig.class.getName()));
-		exception.expectMessage(either(
-				containsString("@AliasFor [location]")).or(
-				containsString("@AliasFor 'location'")));
-
-		getRepeatableAnnotations(BrokenConfigHierarchyTestCase.class, BrokenContextConfig.class, BrokenHierarchy.class);
+		RepeatableContainers containers = RepeatableContainers.of(BrokenHierarchy.class,
+				BrokenContextConfig.class);
+		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
+				() -> MergedAnnotations.from(containers, AnnotationFilter.PLAIN,
+						SearchStrategy.EXHAUSTIVE,
+						BrokenConfigHierarchyTestCase.class)).withMessageStartingWith(
+								"Attribute 'value' in").withMessageContaining(
+										BrokenContextConfig.class.getName()).withMessageContaining(
+												"@AliasFor 'location'");
 	}
 
 	@Test
 	public void getRepeatableAnnotationsDeclaredOnClassWithAttributeAliases() {
-		final List<String> expectedLocations = asList("A", "B");
-
-		Set<ContextConfig> annotations = getRepeatableAnnotations(ConfigHierarchyTestCase.class, ContextConfig.class, null);
-		assertNotNull(annotations);
-		assertEquals("size if container type is omitted: ", 0, annotations.size());
-
-		annotations = getRepeatableAnnotations(ConfigHierarchyTestCase.class, ContextConfig.class, Hierarchy.class);
-		assertNotNull(annotations);
-
-		List<String> locations = annotations.stream().map(ContextConfig::location).collect(toList());
-		assertThat(locations, is(expectedLocations));
-
-		List<String> values = annotations.stream().map(ContextConfig::value).collect(toList());
-		assertThat(values, is(expectedLocations));
+		assertThat(MergedAnnotations.from(ConfigHierarchyTestCase.class).stream(
+				ContextConfig.class)).isEmpty();
+		RepeatableContainers containers = RepeatableContainers.of(Hierarchy.class,
+				ContextConfig.class);
+		MergedAnnotations annotations = MergedAnnotations.from(
+				containers, AnnotationFilter.NONE, SearchStrategy.DIRECT,
+				ConfigHierarchyTestCase.class);
+		assertThat(annotations.stream(ContextConfig.class).map(
+						annotation -> annotation.getString("location"))).containsExactly(
+								"A", "B");
+		assertThat(annotations.stream(ContextConfig.class).map(
+						annotation -> annotation.getString("value"))).containsExactly(
+								"A", "B");
 	}
 
 	@Test
 	public void getRepeatableAnnotationsDeclaredOnClass() {
-		final List<String> expectedValuesJava = asList("A", "B", "C");
-		final List<String> expectedValuesSpring = asList("A", "B", "C", "meta1");
-
 		// Java 8
-		MyRepeatable[] array = MyRepeatableClass.class.getAnnotationsByType(MyRepeatable.class);
-		assertNotNull(array);
-		List<String> values = stream(array).map(MyRepeatable::value).collect(toList());
-		assertThat(values, is(expectedValuesJava));
-
-		// Spring
-		Set<MyRepeatable> set = getRepeatableAnnotations(MyRepeatableClass.class, MyRepeatable.class, MyRepeatableContainer.class);
-		assertNotNull(set);
-		values = set.stream().map(MyRepeatable::value).collect(toList());
-		assertThat(values, is(expectedValuesSpring));
-
-		// When container type is omitted and therefore inferred from @Repeatable
-		set = getRepeatableAnnotations(MyRepeatableClass.class, MyRepeatable.class);
-		assertNotNull(set);
-		values = set.stream().map(MyRepeatable::value).collect(toList());
-		assertThat(values, is(expectedValuesSpring));
+		MyRepeatable[] array = MyRepeatableClass.class.getAnnotationsByType(
+				MyRepeatable.class);
+		assertThat(Arrays.stream(array).map(MyRepeatable::value)).containsExactly("A",
+				"B", "C");
+		// Explicit RepeatableContainers
+		MergedAnnotations explicit = MergedAnnotations.from(
+				RepeatableContainers.of(MyRepeatableContainer.class, MyRepeatable.class),
+				AnnotationFilter.PLAIN, SearchStrategy.DIRECT, MyRepeatableClass.class);
+		assertThat(explicit.stream(MyRepeatable.class).map(
+				annotation -> annotation.getString("value"))).containsExactly("A", "B",
+						"C", "meta1");
+		// Standard RepeatableContainers
+		MergedAnnotations standard = MergedAnnotations.from(MyRepeatableClass.class);
+		assertThat(standard.stream(MyRepeatable.class).map(
+				annotation -> annotation.getString("value"))).containsExactly("A", "B",
+						"C", "meta1");
 	}
 
 	@Test
