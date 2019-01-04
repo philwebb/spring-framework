@@ -35,7 +35,6 @@ import java.util.function.Predicate;
 import org.springframework.core.annotation.type.AnnotationType;
 import org.springframework.core.annotation.type.AttributeType;
 import org.springframework.core.annotation.type.ClassReference;
-import org.springframework.core.annotation.type.DeclaredAnnotation;
 import org.springframework.core.annotation.type.DeclaredAttributes;
 import org.springframework.core.annotation.type.EnumValueReference;
 import org.springframework.lang.Nullable;
@@ -91,6 +90,15 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		emptyArray.put(Class.class, new Class<?>[0]);
 		emptyArray.put(Object.class, new Object[0]);
 		EMPTY_ARRAY = Collections.unmodifiableMap(emptyArray);
+	}
+
+	private volatile A synthesizedAnnotation;
+
+	protected AbstractMergedAnnotation() {
+	}
+
+	protected AbstractMergedAnnotation(A synthesizedAnnotation) {
+		this.synthesizedAnnotation = synthesizedAnnotation;
 	}
 
 	@Override
@@ -370,28 +378,33 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public A synthesize() {
-		if (!isPresent()) {
-			throw new NoSuchElementException("Unable to synthesize missing annotation");
-		}
-		ClassLoader classLoader = getClassLoader();
-		Class<A> annotationType = (Class<A>) ClassUtils.resolveClassName(getType(),
-				classLoader);
-		InvocationHandler handler = new SynthesizedMergedAnnotationInvocationHandler<>(
-				this, annotationType);
-		Class<?>[] interfaces = new Class<?>[] { annotationType,
-			SynthesizedAnnotation.class };
-		return (A) Proxy.newProxyInstance(classLoader, interfaces, handler);
-	}
-
-	@Override
 	public Optional<A> synthesize(Predicate<? super MergedAnnotation<A>> condition)
 			throws NoSuchElementException {
 		if (condition.test(this)) {
 			return Optional.of(synthesize());
 		}
 		return Optional.empty();
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public A synthesize() {
+		if (!isPresent()) {
+			throw new NoSuchElementException("Unable to synthesize missing annotation");
+		}
+		A synthesized = this.synthesizedAnnotation;
+		if (synthesized == null) {
+			ClassLoader classLoader = getClassLoader();
+			Class<A> annotationType = (Class<A>) ClassUtils.resolveClassName(getType(),
+					classLoader);
+			InvocationHandler handler = new SynthesizedMergedAnnotationInvocationHandler<>(
+					this, annotationType);
+			Class<?>[] interfaces = new Class<?>[] { annotationType,
+				SynthesizedAnnotation.class };
+			synthesized = (A) Proxy.newProxyInstance(classLoader, interfaces, handler);
+			this.synthesizedAnnotation = synthesized;
+		}
+		return synthesized;
 	}
 
 	private <T> T getRequiredValue(String attributeName, Class<T> type) {

@@ -16,6 +16,7 @@
 
 package org.springframework.core.annotation;
 
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -28,8 +29,10 @@ import java.util.Set;
 
 import org.springframework.core.annotation.type.AnnotationType;
 import org.springframework.core.annotation.type.AttributeType;
+import org.springframework.core.annotation.type.AttributeTypes;
 import org.springframework.core.annotation.type.DeclaredAttributes;
 import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
@@ -129,14 +132,6 @@ class AnnotationTypeMapping {
 		return this.classLoader;
 	}
 
-	public RepeatableContainers getRepeatableContainers() {
-		return this.repeatableContainers;
-	}
-
-	public AnnotationFilter getAnnotationFilter() {
-		return this.annotationFilter;
-	}
-
 	public AnnotationTypeMapping getParent() {
 		return this.parent;
 	}
@@ -155,6 +150,43 @@ class AnnotationTypeMapping {
 
 	public List<MirrorSet> getMirrorSets() {
 		return this.mirrorSets;
+	}
+
+	public AnnotationTypeMapping getNested(String className) {
+		return getNested(AnnotationType.resolve(className, this.classLoader));
+	}
+
+	public AnnotationTypeMapping getNested(AnnotationType type) {
+		return AnnotationTypeMappings.forType(this.classLoader, this.repeatableContainers,
+				this.annotationFilter, type).get(type.getClassName());
+	}
+
+	public boolean canSkipSynthesize() {
+		try {
+			if (!this.mirrorSets.isEmpty() || !this.aliases.isEmpty()) {
+				return false;
+			}
+			return canSkipSynthesize(this.annotationType.getAttributeTypes());
+		}
+		catch (Exception ex) {
+			return false;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private boolean canSkipSynthesize(AttributeTypes attributeTypes) {
+		for (AttributeType attributeType : attributeTypes) {
+			Class<?> type = ClassUtils.resolveClassName(
+					attributeType.getClassName().replace("[]", ""), this.classLoader);
+			if (type.isAnnotation()) {
+				AnnotationType annotationType = AnnotationType.resolve(
+						(Class<? extends Annotation>) type);
+				if (!getNested(annotationType).canSkipSynthesize()) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	/**

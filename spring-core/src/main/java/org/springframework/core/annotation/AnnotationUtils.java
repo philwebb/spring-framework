@@ -1143,7 +1143,7 @@ public abstract class AnnotationUtils {
 			A annotation, @Nullable AnnotatedElement annotatedElement) {
 		return MigrateMethod.from(()->
 			InternalAnnotationUtils.synthesizeAnnotation(annotation, annotatedElement)
-		).to(() ->
+		).withSkippedOriginalExceptionCheck().to(() ->
 			MergedAnnotation.of(annotatedElement, annotation).synthesize()
 		);
 	}

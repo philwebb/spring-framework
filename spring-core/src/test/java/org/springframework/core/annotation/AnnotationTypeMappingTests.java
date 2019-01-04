@@ -16,6 +16,8 @@
 
 package org.springframework.core.annotation;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -54,9 +56,17 @@ public class AnnotationTypeMappingTests {
 	private final AttributeType componentTextAttribute = AttributeType.of("componentText",
 			"java.lang.String", DeclaredAnnotations.NONE, "");
 
+	private final AttributeType componentNestedAttribute = AttributeType.of(
+			"componentNested", Nested.class.getName(), DeclaredAnnotations.NONE, "");
+
+	private final AttributeType componentNestedWithMirrorAttribute = AttributeType.of(
+			"componentNested", NestedWithMirror.class.getName(), DeclaredAnnotations.NONE,
+			"");
+
 	private final AnnotationType componentType = AnnotationType.of(
 			"com.example.Component", DeclaredAnnotations.NONE,
-			AttributeTypes.of(this.componentNameAttribute, this.componentTextAttribute));
+			AttributeTypes.of(this.componentNameAttribute, this.componentTextAttribute,
+					this.componentNestedAttribute));
 
 	private final AnnotationTypeMapping componentMapping = new AnnotationTypeMapping(
 			this.classLoader, this.repeatableContainers, this.annotationFilter,
@@ -166,19 +176,6 @@ public class AnnotationTypeMappingTests {
 	public void getClassLoaderReturnsClassLoader() {
 		assertThat(this.componentMapping.getClassLoader()).isEqualTo(
 				getClass().getClassLoader());
-	}
-
-	@Test
-	public void getRepeatableContainersReturnsRepeatableContainers() {
-		assertThat(this.componentMapping.getRepeatableContainers()).isEqualTo(
-				this.repeatableContainers);
-	}
-
-
-	@Test
-	public void getAnnotationFilterReturnsAnnotationFilter() {
-		assertThat(this.componentMapping.getAnnotationFilter()).isEqualTo(
-				this.annotationFilter);
 	}
 
 	@Test
@@ -326,10 +323,65 @@ public class AnnotationTypeMappingTests {
 				new Reference(this.serviceMapping, this.serviceNameAttribute));
 	}
 
+	@Test
+	public void getNestedReturnsNestedMapping() {
+		AnnotationTypeMapping nested = this.componentMapping.getNested(
+				Nested.class.getName());
+		assertThat(nested.getAnnotationType().getClassName()).isEqualTo(
+				Nested.class.getName());
+	}
+
+	@Test
+	public void canSkipSynthesizeWhenHasMirrorSetReturnsFalse() {
+		this.componentMapping.addMirrorSet("componentName", "componentText");
+		assertThat(this.componentMapping.canSkipSynthesize()).isFalse();
+	}
+
+	@Test
+	public void canSkipSynthesizeWhenHasAliasesReturnsFalse() {
+		this.componentMapping.addAlias("componentName", this.serviceMapping,
+				"serviceName");
+		assertThat(this.componentMapping.canSkipSynthesize()).isFalse();
+	}
+
+	@Test
+	public void canSkipSynthesizeWhenHasNestedThatCantBeSkippedReturnsTrue() {
+		AnnotationType componentType = AnnotationType.of("com.example.Component",
+				DeclaredAnnotations.NONE,
+				AttributeTypes.of(this.componentNameAttribute,
+						this.componentTextAttribute,
+						this.componentNestedWithMirrorAttribute));
+		AnnotationTypeMapping componentMapping = new AnnotationTypeMapping(
+				this.classLoader, this.repeatableContainers, this.annotationFilter,
+				componentType);
+		assertThat(componentMapping.canSkipSynthesize()).isFalse();
+	}
+
+	@Test
+	public void canSkipSynthesizeWhenHasNoMirrosOrAliasesOrNestedReturnsTrue() {
+		assertThat(this.componentMapping.canSkipSynthesize()).isTrue();
+	}
+
 	private List<Reference> toList(MirrorSet mirrorSet) {
 		List<Reference> list = new ArrayList<>();
 		mirrorSet.iterator().forEachRemaining(list::add);
 		return list;
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface Nested {
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface NestedWithMirror {
+
+		@AliasFor("two")
+		String one() default "";
+
+		@AliasFor("one")
+		String two() default "";
+
 	}
 
 }

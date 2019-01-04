@@ -62,6 +62,12 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 
 	TypeMappedAnnotation(AnnotationTypeMapping mapping, Object source, int aggregateIndex,
 			DeclaredAttributes rootAttributes) {
+		this(mapping, source, aggregateIndex, rootAttributes, null);
+	}
+
+	private TypeMappedAnnotation(AnnotationTypeMapping mapping, Object source, int aggregateIndex,
+			DeclaredAttributes rootAttributes, A synthesizedAnnotation) {
+		super(synthesizedAnnotation);
 		this.mapping = mapping;
 		this.source = source;
 		this.aggregateIndex = aggregateIndex;
@@ -159,15 +165,9 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 	@Override
 	protected <T extends Annotation> MergedAnnotation<T> createNested(AnnotationType type,
 			DeclaredAttributes attributes) {
-		AnnotationTypeMapping nestedMapping = getNestedMapping(type);
+		AnnotationTypeMapping nestedMapping = this.mapping.getNested(type);
 		return new TypeMappedAnnotation<>(nestedMapping, this.source, this.aggregateIndex,
 				attributes);
-	}
-
-	private AnnotationTypeMapping getNestedMapping(AnnotationType type) {
-		return AnnotationTypeMappings.forType(this.mapping.getClassLoader(),
-				this.mapping.getRepeatableContainers(),
-				this.mapping.getAnnotationFilter(), type).get(type.getClassName());
 	}
 
 	public static <A extends Annotation> TypeMappedAnnotation<A> of(
@@ -178,8 +178,11 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 				annotationType.getClassLoader(), RepeatableContainers.none(),
 				AnnotationFilter.mostAppropriateFor(annotationType),
 				AnnotationType.resolve(annotationType));
-		return new TypeMappedAnnotation<>(mappings.get(annotationType.getName()), source,
-				0, DeclaredAnnotation.from(annotation).getAttributes());
+		AnnotationTypeMapping mapping = mappings.get(annotationType.getName());
+		DeclaredAttributes attributes = DeclaredAnnotation.from(annotation).getAttributes();
+		A preSynthesized = mapping.canSkipSynthesize()
+				|| annotation instanceof SynthesizedAnnotation ? annotation : null;
+		return new TypeMappedAnnotation<>(mapping, source, 0, attributes, preSynthesized);
 	}
 
 	public static <A extends Annotation> TypeMappedAnnotation<A> of(
@@ -189,8 +192,8 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 				annotationType.getClassLoader(), RepeatableContainers.none(),
 				AnnotationFilter.mostAppropriateFor(annotationType),
 				AnnotationType.resolve(annotationType));
-		return new TypeMappedAnnotation<>(mappings.get(annotationType.getName()), null, 0,
-				DeclaredAttributes.NONE);
+		AnnotationTypeMapping mapping = mappings.get(annotationType.getName());
+		return new TypeMappedAnnotation<>(mapping, null, 0, DeclaredAttributes.NONE);
 	}
 
 	/**
