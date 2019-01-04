@@ -31,7 +31,7 @@ import org.springframework.lang.Nullable;
 public interface DeclaredAttributes extends Iterable<DeclaredAttribute> {
 
 	/**
-	 * Type supported for declared attributes as defined in <a href=
+	 * Type supported for declared attributes. Defined in <a href=
 	 * "https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.6.1">
 	 * section 9.6.1</a> of the Java language specification, namely:
 	 * <ul>

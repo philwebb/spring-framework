@@ -105,7 +105,7 @@ public final class MergedAnnotationCollectors {
 	 * @param options the map conversion options
 	 * @return a {@link Collector} which collects and synthesizes the
 	 * annotations into a {@link LinkedMultiValueMap}
-	 * @see #toMultiValueMap(Function, MapValues...)
+	 * @see #toMultiValueMap(Function, MultiValueMap, MapValues...)
 	 */
 	public static <A extends Annotation> Collector<MergedAnnotation<A>, ?, MultiValueMap<String, Object>> toMultiValueMap(
 			MapValues... options) {
@@ -122,7 +122,7 @@ public final class MergedAnnotationCollectors {
 	 * @param finisher the finisher function for the new {@link MultiValueMap}
 	 * @return a {@link Collector} which collects and synthesizes the
 	 * annotations into a {@link LinkedMultiValueMap}
-	 * @see #toMultiValueMap(Function, MapValues...)
+	 * @see #toMultiValueMap(MapValues...)
 	 */
 	public static <A extends Annotation> Collector<MergedAnnotation<A>, ?, MultiValueMap<String, Object>> toMultiValueMap(
 			Function<MultiValueMap<String, Object>, MultiValueMap<String, Object>> finisher,

@@ -39,7 +39,7 @@ public class SimpleAttributeTypeTests {
 	public void setup() {
 		this.declaredAnnotations = new SimpleDeclaredAnnotations(new Object(),
 				Arrays.asList(new SimpleDeclaredAnnotation("Declared",
-						new SimpleDeclaredAttributes("value", "test"))));
+						SimpleDeclaredAttributes.of("value", "test"))));
 		this.type = new SimpleAttributeType("attributeName", "className",
 				this.declaredAnnotations, "defaultValue");
 	}

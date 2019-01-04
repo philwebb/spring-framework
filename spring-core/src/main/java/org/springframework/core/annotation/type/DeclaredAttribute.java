@@ -42,7 +42,7 @@ public interface DeclaredAttribute {
 
 	/**
 	 * Create a new in-memory {@link DeclaredAttribute} instance from the
-	 * specified {@link Map.Entry map entry}.
+	 * specified map entry.
 	 * @param entry the source map entry
 	 * @return a new {@link DeclaredAttribute} instance
 	 */

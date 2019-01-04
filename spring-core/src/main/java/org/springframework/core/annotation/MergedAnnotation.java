@@ -119,7 +119,6 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * Return the parent of the meta-annotation, or {@code null} if the
 	 * annotation is not {@link #isMetaPresent() meta-present}.
 	 * @return the parent annotation or {@code null}
-	 * @see #isAncestorOf(MergedAnnotation)
 	 */
 	@Nullable
 	MergedAnnotation<?> getParent();

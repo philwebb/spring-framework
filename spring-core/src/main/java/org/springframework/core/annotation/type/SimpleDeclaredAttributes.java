@@ -89,10 +89,10 @@ class SimpleDeclaredAttributes extends AbstractDeclaredAttributes {
 		return value;
 	}
 
-	static SimpleDeclaredAttributes from(Map<String, Object> attributes) {
+	static SimpleDeclaredAttributes from(Map<String, ?> attributes) {
 		Assert.notNull(attributes, "Attributes must not be null");
 		Map<String, Object> values = new LinkedHashMap<>();
-		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+		for (Map.Entry<String, ?> entry : attributes.entrySet()) {
 			values.put(entry.getKey(), convert(entry.getValue()));
 		}
 		return new SimpleDeclaredAttributes(values);

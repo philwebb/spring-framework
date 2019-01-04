@@ -20,7 +20,6 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,43 +32,36 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
  */
 public class SimpleDeclaredAttributesTests extends AbstractDeclaredAttributesTests {
 
-	@Before
-	public void setup() {
-
-	}
-
 	@Test
-	public void createFromMapWhenValuesIsNullThrowException() {
+	public void fromMapWhenValuesIsNullThrowException() {
 		assertThatIllegalArgumentException().isThrownBy(
-				() -> new SimpleDeclaredAttributes((Map<String, ?>) null)).withMessage(
+				() -> SimpleDeclaredAttributes.from((Map<String, ?>) null)).withMessage(
 						"Attributes must not be null");
 	}
 
 	@Test
-	public void createFromAttributeArrayWhenAttributesIsNullThrowsException() {
-		assertThatIllegalArgumentException().isThrownBy(
-				() -> new SimpleDeclaredAttributes(
-						(DeclaredAttribute[]) null)).withMessage(
-								"Attributes must not be null");
+	public void ofAttributeArrayWhenAttributesIsNullThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(() -> SimpleDeclaredAttributes.of(
+				(DeclaredAttribute[]) null)).withMessage("Attributes must not be null");
 	}
 
 	@Test
-	public void createFromPairsWhenPairsIsNullThrowsException() {
+	public void ofPairsWhenPairsIsNullThrowsException() {
 		assertThatIllegalArgumentException().isThrownBy(
-				() -> new SimpleDeclaredAttributes((Object[]) null)).withMessage(
+				() -> SimpleDeclaredAttributes.of((Object[]) null)).withMessage(
 						"Pairs must not be null");
 
 	}
 
 	@Test
-	public void createFromPairsWhenPairsIsOddThrowsException() {
+	public void ofPairsWhenPairsIsOddThrowsException() {
 		assertThatIllegalArgumentException().isThrownBy(
-				() -> new SimpleDeclaredAttributes("one", "two", "three")).withMessage(
+				() -> SimpleDeclaredAttributes.of("one", "two", "three")).withMessage(
 						"Pairs must contain an even number of elements");
 	}
 
 	@Test
-	public void createFromMapHasAttributes() {
+	public void createMapHasAttributes() {
 		Map<String, Object> map = new LinkedHashMap<>();
 		map.put("a", "b");
 		map.put("c", "d");
@@ -80,8 +72,8 @@ public class SimpleDeclaredAttributesTests extends AbstractDeclaredAttributesTes
 	}
 
 	@Test
-	public void createFromAttributesArrayHasAttributes() {
-		SimpleDeclaredAttributes attributes = new SimpleDeclaredAttributes(
+	public void ofAttributesArrayHasAttributes() {
+		SimpleDeclaredAttributes attributes = SimpleDeclaredAttributes.of(
 				DeclaredAttribute.of("a", "b"), DeclaredAttribute.of("c", "d"));
 		assertThat(attributes.get("a")).isEqualTo("b");
 		assertThat(attributes.get("c")).isEqualTo("d");
@@ -89,8 +81,8 @@ public class SimpleDeclaredAttributesTests extends AbstractDeclaredAttributesTes
 	}
 
 	@Test
-	public void createFromPairsHasAttributes() {
-		SimpleDeclaredAttributes attributes = new SimpleDeclaredAttributes("a", "b", "c",
+	public void ofPairsHasAttributes() {
+		SimpleDeclaredAttributes attributes = SimpleDeclaredAttributes.of("a", "b", "c",
 				"d");
 		assertThat(attributes.get("a")).isEqualTo("b");
 		assertThat(attributes.get("c")).isEqualTo("d");
@@ -99,7 +91,7 @@ public class SimpleDeclaredAttributesTests extends AbstractDeclaredAttributesTes
 
 	@Test
 	public void namesReturnsNames() {
-		SimpleDeclaredAttributes attributes = new SimpleDeclaredAttributes("a", "b", "c",
+		SimpleDeclaredAttributes attributes = SimpleDeclaredAttributes.of("a", "b", "c",
 				"d");
 		assertThat(attributes.names()).containsExactly("a", "c");
 	}
@@ -145,5 +137,7 @@ public class SimpleDeclaredAttributesTests extends AbstractDeclaredAttributesTes
 	private SimpleDeclaredAttributes createWithSingleValue(Object value) {
 		return new SimpleDeclaredAttributes(Collections.singletonMap("value", value));
 	}
+
+	// FIXME test for conversion and map stuff
 
 }

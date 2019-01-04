@@ -108,8 +108,7 @@ public abstract class AnnotatedElementUtils {
 	 * @param annotations the annotations to expose through the
 	 * {@code AnnotatedElement}
 	 * @since 4.3
-	 * @deprecated since 5.2 in favor of
-	 * {@link MergedAnnotation#of(annotations)}
+	 * @deprecated since 5.2 in favor of {@link MergedAnnotations}
 	 */
 	@Deprecated
 	public static AnnotatedElement forAnnotations(final Annotation... annotations) {
