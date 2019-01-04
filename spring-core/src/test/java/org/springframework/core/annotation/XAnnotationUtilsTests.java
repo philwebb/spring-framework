@@ -33,9 +33,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.MergedAnnotation.MapValues;
@@ -45,28 +43,9 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ClassUtils;
 
-import static java.util.Arrays.asList;
-import static java.util.Arrays.stream;
-import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.endsWith;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.startsWith;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.springframework.core.annotation.AnnotationUtils.VALUE;
-import static org.springframework.core.annotation.AnnotationUtils.getAnnotationAttributes;
-import static org.springframework.core.annotation.AnnotationUtils.getValue;
-import static org.springframework.core.annotation.AnnotationUtils.synthesizeAnnotation;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 /**
  * Unit tests for {@link AnnotationUtils}.
@@ -78,18 +57,12 @@ import static org.springframework.core.annotation.AnnotationUtils.synthesizeAnno
  * @author Phillip Webb
  * @author Oleg Zhurakousky
  */
-@SuppressWarnings("deprecation")
 public class XAnnotationUtilsTests {
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
-
 
 	@Before
 	public void clearCacheBeforeTests() {
 		AnnotationUtils.clearCache();
 	}
-
 
 	@Test
 	public void findMethodAnnotationOnLeaf() throws Exception {
@@ -380,7 +353,7 @@ public class XAnnotationUtilsTests {
 
 	@Test
 	public void findAnnotationDeclaringClassForTypesWithMultipleCandidateTypes() {
-		List<Class<? extends Annotation>> candidates = asList(Transactional.class,
+		List<Class<? extends Annotation>> candidates = Arrays.asList(Transactional.class,
 				Order.class);
 		// no class-level annotation
 		assertThat(getDirectlyPresentSourceWithTypeIn(NonAnnotatedInterface.class,
@@ -514,7 +487,7 @@ public class XAnnotationUtilsTests {
 	@Test
 	public void getValueFromNonPublicAnnotation() throws Exception {
 		Annotation[] declaredAnnotations = NonPublicAnnotatedClass.class.getDeclaredAnnotations();
-		assertEquals(1, declaredAnnotations.length);
+		assertThat(declaredAnnotations).hasSize(1);
 		Annotation annotation = declaredAnnotations[0];
 		MergedAnnotation<Annotation> mergedAnnotation = MergedAnnotation.from(annotation);
 		assertThat(mergedAnnotation.getType()).contains("NonPublicAnnotation");
@@ -533,7 +506,7 @@ public class XAnnotationUtilsTests {
 	@Test
 	public void getDefaultValueFromNonPublicAnnotation() {
 		Annotation[] declaredAnnotations = NonPublicAnnotatedClass.class.getDeclaredAnnotations();
-		assertEquals(1, declaredAnnotations.length);
+		assertThat(declaredAnnotations).hasSize(1);
 		Annotation declaredAnnotation = declaredAnnotations[0];
 		MergedAnnotation<?> annotation = MergedAnnotation.from(declaredAnnotation);
 		assertThat(annotation.getType()).isEqualTo("org.springframework.core.annotation.subpackage.NonPublicAnnotation");
@@ -923,7 +896,7 @@ public class XAnnotationUtilsTests {
 	public void synthesizeAnnotationFromMapWithoutAttributeAliases() throws Exception {
 		Component component = WebController.class.getAnnotation(Component.class);
 		assertThat(component).isNotNull();
-		Map<String, Object> map = Collections.singletonMap(VALUE, "webController");
+		Map<String, Object> map = Collections.singletonMap("value", "webController");
 		MergedAnnotation<Component> annotation = MergedAnnotation.from(Component.class, map);
 		Component synthesizedComponent = annotation.synthesize();
 		assertThat(synthesizedComponent).isInstanceOf(SynthesizedAnnotation.class);
@@ -959,7 +932,7 @@ public class XAnnotationUtilsTests {
 				annotation -> new LinkedHashMap<String, Object>(),
 				MapValues.ANNOTATION_TO_MAP);
 		Map<String, Object>[] filters = (Map[]) map.get("excludeFilters");
-		List<String> patterns = stream(filters).map(m -> (String) m.get("pattern")).collect(Collectors.toList());
+		List<String> patterns = Arrays.stream(filters).map(m -> (String) m.get("pattern")).collect(Collectors.toList());
 		assertThat(patterns).containsExactly("*Foo", "*Bar");
 		filters[0].put("pattern", "newFoo");
 		filters[0].put("enigma", 42);
@@ -1062,254 +1035,173 @@ public class XAnnotationUtilsTests {
 				+ AnnotationWithoutDefaults.class.getName());
 	}
 
-	//FIXME
-
 	@Test
 	public void synthesizeAnnotationFromMapWithAttributeOfIncorrectType() throws Exception {
-		Map<String, Object> map = Collections.singletonMap(VALUE, 42L);
-
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage(startsWith("Attributes map"));
-		exception.expectMessage(containsString("returned a value of type [java.lang.Long]"));
-		exception.expectMessage(containsString("for attribute 'value'"));
-		exception.expectMessage(containsString("but a value of type [java.lang.String] is required"));
-		exception.expectMessage(containsString("as defined by annotation type [" + Component.class.getName() + "]"));
-
-		synthesizeAnnotation(map, Component.class, null);
+		Map<String, Object> map = Collections.singletonMap("value", 42L);
+		MergedAnnotation<Component> annotation = MergedAnnotation.from(Component.class, map);
+		assertThatIllegalStateException().isThrownBy(()->
+		annotation.synthesize()).withMessage(
+				"Attribute 'value' in annotation org.springframework.stereotype.Component "
+				+ "should be of type java.lang.String but a java.lang.Long value was returned");
 	}
 
 	@Test
 	public void synthesizeAnnotationFromAnnotationAttributesWithoutAttributeAliases() throws Exception {
-		// 1) Get an annotation
 		Component component = WebController.class.getAnnotation(Component.class);
-		assertNotNull(component);
-
-		// 2) Convert the annotation into AnnotationAttributes
-		AnnotationAttributes attributes = getAnnotationAttributes(WebController.class, component);
-		assertNotNull(attributes);
-
-		// 3) Synthesize the AnnotationAttributes back into an annotation
-		Component synthesizedComponent = synthesizeAnnotation(attributes, Component.class, WebController.class);
-		assertNotNull(synthesizedComponent);
-
-		// 4) Verify that the original and synthesized annotations are equivalent
-		assertNotSame(component, synthesizedComponent);
-		assertEquals(component, synthesizedComponent);
-		assertEquals("value from component: ", "webController", component.value());
-		assertEquals("value from synthesized component: ", "webController", synthesizedComponent.value());
+		assertThat(component).isNotNull();
+		Map<String, Object> attributes = MergedAnnotation.from(component).asMap();
+		Component synthesized = MergedAnnotation.from(Component.class, attributes).synthesize();
+		assertThat(synthesized).isInstanceOf(SynthesizedAnnotation.class);
+		assertThat(synthesized).isEqualTo(component);
 	}
 
 	@Test
 	public void toStringForSynthesizedAnnotations() throws Exception {
 		Method methodWithPath = WebController.class.getMethod("handleMappedWithPathAttribute");
 		WebMapping webMappingWithAliases = methodWithPath.getAnnotation(WebMapping.class);
-		assertNotNull(webMappingWithAliases);
-
+		assertThat(webMappingWithAliases).isNotNull();
 		Method methodWithPathAndValue = WebController.class.getMethod("handleMappedWithSamePathAndValueAttributes");
 		WebMapping webMappingWithPathAndValue = methodWithPathAndValue.getAnnotation(WebMapping.class);
-		assertNotNull(webMappingWithPathAndValue);
-
-		WebMapping synthesizedWebMapping1 = synthesizeAnnotation(webMappingWithAliases);
-		assertNotNull(synthesizedWebMapping1);
-		WebMapping synthesizedWebMapping2 = synthesizeAnnotation(webMappingWithAliases);
-		assertNotNull(synthesizedWebMapping2);
-
-		assertThat(webMappingWithAliases.toString(), is(not(synthesizedWebMapping1.toString())));
+		assertThat(methodWithPathAndValue).isNotNull();
+		WebMapping synthesizedWebMapping1 = MergedAnnotation.from(webMappingWithAliases).synthesize();
+		WebMapping synthesizedWebMapping2 = MergedAnnotation.from(webMappingWithPathAndValue).synthesize();
+		assertThat(webMappingWithAliases.toString()).isNotEqualTo(synthesizedWebMapping1.toString());
 		assertToStringForWebMappingWithPathAndValue(synthesizedWebMapping1);
 		assertToStringForWebMappingWithPathAndValue(synthesizedWebMapping2);
 	}
 
 	private void assertToStringForWebMappingWithPathAndValue(WebMapping webMapping) {
-		String string = webMapping.toString();
-		assertThat(string, startsWith("@" + WebMapping.class.getName() + "("));
-		assertThat(string, containsString("value=[/test]"));
-		assertThat(string, containsString("path=[/test]"));
-		assertThat(string, containsString("name=bar"));
-		assertThat(string, containsString("method="));
-		assertThat(string, containsString("[GET, POST]"));
-		assertThat(string, endsWith(")"));
+		String prefix = "@" + WebMapping.class.getName() + "(";
+		assertThat(webMapping.toString()).startsWith(prefix).contains("value=[/test]",
+				"path=[/test]", "name=bar", "method=", "[GET, POST]").endsWith(")");
 	}
 
 	@Test
 	public void equalsForSynthesizedAnnotations() throws Exception {
 		Method methodWithPath = WebController.class.getMethod("handleMappedWithPathAttribute");
 		WebMapping webMappingWithAliases = methodWithPath.getAnnotation(WebMapping.class);
-		assertNotNull(webMappingWithAliases);
-
+		assertThat(webMappingWithAliases).isNotNull();
 		Method methodWithPathAndValue = WebController.class.getMethod("handleMappedWithSamePathAndValueAttributes");
 		WebMapping webMappingWithPathAndValue = methodWithPathAndValue.getAnnotation(WebMapping.class);
-		assertNotNull(webMappingWithPathAndValue);
-
-		WebMapping synthesizedWebMapping1 = synthesizeAnnotation(webMappingWithAliases);
-		assertNotNull(synthesizedWebMapping1);
-		WebMapping synthesizedWebMapping2 = synthesizeAnnotation(webMappingWithAliases);
-		assertNotNull(synthesizedWebMapping2);
-
+		assertThat(webMappingWithPathAndValue).isNotNull();
+		WebMapping synthesizedWebMapping1 = MergedAnnotation.from(webMappingWithAliases).synthesize();
+		WebMapping synthesizedWebMapping2 = MergedAnnotation.from(webMappingWithPathAndValue).synthesize();
 		// Equality amongst standard annotations
-		assertThat(webMappingWithAliases, is(webMappingWithAliases));
-		assertThat(webMappingWithPathAndValue, is(webMappingWithPathAndValue));
-
+		assertThat(webMappingWithAliases).isEqualTo(webMappingWithAliases);
+		assertThat(webMappingWithPathAndValue).isEqualTo(webMappingWithPathAndValue);
 		// Inequality amongst standard annotations
-		assertThat(webMappingWithAliases, is(not(webMappingWithPathAndValue)));
-		assertThat(webMappingWithPathAndValue, is(not(webMappingWithAliases)));
-
+		assertThat(webMappingWithAliases).isNotEqualTo(webMappingWithPathAndValue);
+		assertThat(webMappingWithPathAndValue).isNotEqualTo(webMappingWithAliases);
 		// Equality amongst synthesized annotations
-		assertThat(synthesizedWebMapping1, is(synthesizedWebMapping1));
-		assertThat(synthesizedWebMapping2, is(synthesizedWebMapping2));
-		assertThat(synthesizedWebMapping1, is(synthesizedWebMapping2));
-		assertThat(synthesizedWebMapping2, is(synthesizedWebMapping1));
-
+		assertThat(synthesizedWebMapping1).isEqualTo(synthesizedWebMapping1);
+		assertThat(synthesizedWebMapping2).isEqualTo(synthesizedWebMapping2);
+		assertThat(synthesizedWebMapping1).isEqualTo(synthesizedWebMapping2);
+		assertThat(synthesizedWebMapping2).isEqualTo(synthesizedWebMapping1);
 		// Equality between standard and synthesized annotations
-		assertThat(synthesizedWebMapping1, is(webMappingWithPathAndValue));
-		assertThat(webMappingWithPathAndValue, is(synthesizedWebMapping1));
-
+		assertThat(synthesizedWebMapping1).isEqualTo(webMappingWithPathAndValue);
+		assertThat(webMappingWithPathAndValue).isEqualTo(synthesizedWebMapping1);
 		// Inequality between standard and synthesized annotations
-		assertThat(synthesizedWebMapping1, is(not(webMappingWithAliases)));
-		assertThat(webMappingWithAliases, is(not(synthesizedWebMapping1)));
+		assertThat(synthesizedWebMapping1).isNotEqualTo(webMappingWithAliases);
+		assertThat(webMappingWithAliases).isNotEqualTo(synthesizedWebMapping1);
 	}
 
 	@Test
 	public void hashCodeForSynthesizedAnnotations() throws Exception {
 		Method methodWithPath = WebController.class.getMethod("handleMappedWithPathAttribute");
 		WebMapping webMappingWithAliases = methodWithPath.getAnnotation(WebMapping.class);
-		assertNotNull(webMappingWithAliases);
-
+		assertThat(webMappingWithAliases).isNotNull();
 		Method methodWithPathAndValue = WebController.class.getMethod("handleMappedWithSamePathAndValueAttributes");
 		WebMapping webMappingWithPathAndValue = methodWithPathAndValue.getAnnotation(WebMapping.class);
-		assertNotNull(webMappingWithPathAndValue);
-
-		WebMapping synthesizedWebMapping1 = synthesizeAnnotation(webMappingWithAliases);
-		assertNotNull(synthesizedWebMapping1);
-		WebMapping synthesizedWebMapping2 = synthesizeAnnotation(webMappingWithAliases);
-		assertNotNull(synthesizedWebMapping2);
-
+		assertThat(webMappingWithPathAndValue).isNotNull();
+		WebMapping synthesizedWebMapping1 = MergedAnnotation.from(webMappingWithAliases).synthesize();
+		assertThat(synthesizedWebMapping1).isNotNull();
+		WebMapping synthesizedWebMapping2 = MergedAnnotation.from(webMappingWithPathAndValue).synthesize();
+		assertThat(synthesizedWebMapping2).isNotNull();
 		// Equality amongst standard annotations
-		assertThat(webMappingWithAliases.hashCode(), is(webMappingWithAliases.hashCode()));
-		assertThat(webMappingWithPathAndValue.hashCode(), is(webMappingWithPathAndValue.hashCode()));
-
+		assertThat(webMappingWithAliases.hashCode()).isEqualTo(webMappingWithAliases.hashCode());
+		assertThat(webMappingWithPathAndValue.hashCode()).isEqualTo(webMappingWithPathAndValue.hashCode());
 		// Inequality amongst standard annotations
-		assertThat(webMappingWithAliases.hashCode(), is(not(webMappingWithPathAndValue.hashCode())));
-		assertThat(webMappingWithPathAndValue.hashCode(), is(not(webMappingWithAliases.hashCode())));
-
+		assertThat(webMappingWithAliases.hashCode()).isNotEqualTo(webMappingWithPathAndValue.hashCode());
+		assertThat(webMappingWithPathAndValue.hashCode()).isNotEqualTo(webMappingWithAliases.hashCode());
 		// Equality amongst synthesized annotations
-		assertThat(synthesizedWebMapping1.hashCode(), is(synthesizedWebMapping1.hashCode()));
-		assertThat(synthesizedWebMapping2.hashCode(), is(synthesizedWebMapping2.hashCode()));
-		assertThat(synthesizedWebMapping1.hashCode(), is(synthesizedWebMapping2.hashCode()));
-		assertThat(synthesizedWebMapping2.hashCode(), is(synthesizedWebMapping1.hashCode()));
-
+		assertThat(synthesizedWebMapping1.hashCode()).isEqualTo(synthesizedWebMapping1.hashCode());
+		assertThat(synthesizedWebMapping2.hashCode()).isEqualTo(synthesizedWebMapping2.hashCode());
+		assertThat(synthesizedWebMapping1.hashCode()).isEqualTo(synthesizedWebMapping2.hashCode());
+		assertThat(synthesizedWebMapping2.hashCode()).isEqualTo(synthesizedWebMapping1.hashCode());
 		// Equality between standard and synthesized annotations
-		assertThat(synthesizedWebMapping1.hashCode(), is(webMappingWithPathAndValue.hashCode()));
-		assertThat(webMappingWithPathAndValue.hashCode(), is(synthesizedWebMapping1.hashCode()));
-
+		assertThat(synthesizedWebMapping1.hashCode()).isEqualTo(webMappingWithPathAndValue.hashCode());
+		assertThat(webMappingWithPathAndValue.hashCode()).isEqualTo(synthesizedWebMapping1.hashCode());
 		// Inequality between standard and synthesized annotations
-		assertThat(synthesizedWebMapping1.hashCode(), is(not(webMappingWithAliases.hashCode())));
-		assertThat(webMappingWithAliases.hashCode(), is(not(synthesizedWebMapping1.hashCode())));
+		assertThat(synthesizedWebMapping1.hashCode()).isNotEqualTo(webMappingWithAliases.hashCode());
+		assertThat(webMappingWithAliases.hashCode()).isNotEqualTo(synthesizedWebMapping1.hashCode());
 	}
 
 	/**
-	 * Fully reflection-based test that verifies support for
-	 * {@linkplain AnnotationUtils#synthesizeAnnotation synthesizing annotations}
-	 * across packages with non-public visibility of user types (e.g., a non-public
-	 * annotation that uses {@code @AliasFor}).
+	 * Fully reflection-based test that verifies support for synthesizing
+	 * annotations across packages with non-public visibility of user types
+	 * (e.g., a non-public annotation that uses {@code @AliasFor}).
 	 */
 	@Test
 	@SuppressWarnings("unchecked")
 	public void synthesizeNonPublicAnnotationWithAttributeAliasesFromDifferentPackage() throws Exception {
-		Class<?> clazz =
+		Class<?> type =
 				ClassUtils.forName("org.springframework.core.annotation.subpackage.NonPublicAliasedAnnotatedClass", null);
 		Class<? extends Annotation> annotationType = (Class<? extends Annotation>)
 				ClassUtils.forName("org.springframework.core.annotation.subpackage.NonPublicAliasedAnnotation", null);
-
-		Annotation annotation = clazz.getAnnotation(annotationType);
-		assertNotNull(annotation);
-		Annotation synthesizedAnnotation = synthesizeAnnotation(annotation);
-		assertNotSame(annotation, synthesizedAnnotation);
-
-		assertNotNull(synthesizedAnnotation);
-		assertEquals("name attribute: ", "test", getValue(synthesizedAnnotation, "name"));
-		assertEquals("aliased path attribute: ", "/test", getValue(synthesizedAnnotation, "path"));
-		assertEquals("aliased path attribute: ", "/test", getValue(synthesizedAnnotation, "value"));
+		Annotation annotation = type.getAnnotation(annotationType);
+		assertThat(annotation).isNotNull();
+		MergedAnnotation<Annotation> mergedAnnotation = MergedAnnotation.from(annotation);
+		Annotation synthesizedAnnotation = mergedAnnotation.synthesize();
+		assertThat(synthesizedAnnotation).isInstanceOf(SynthesizedAnnotation.class);
+		assertThat(mergedAnnotation.getString("name")).isEqualTo("test");
+		assertThat(mergedAnnotation.getString("path")).isEqualTo("/test");
+		assertThat(mergedAnnotation.getString("value")).isEqualTo("/test");
 	}
 
 	@Test
 	public void synthesizeAnnotationWithAttributeAliasesInNestedAnnotations() throws Exception {
-		List<String> expectedLocations = asList("A", "B");
-
 		Hierarchy hierarchy = ConfigHierarchyTestCase.class.getAnnotation(Hierarchy.class);
-		assertNotNull(hierarchy);
-		Hierarchy synthesizedHierarchy = synthesizeAnnotation(hierarchy);
-		assertNotSame(hierarchy, synthesizedHierarchy);
-		assertThat(synthesizedHierarchy, instanceOf(SynthesizedAnnotation.class));
-
+		assertThat(hierarchy).isNotNull();
+		Hierarchy synthesizedHierarchy = MergedAnnotation.from(hierarchy).synthesize();
+		assertThat(synthesizedHierarchy).isInstanceOf(SynthesizedAnnotation.class);
 		ContextConfig[] configs = synthesizedHierarchy.value();
-		assertNotNull(configs);
-		assertTrue("nested annotations must be synthesized",
-				stream(configs).allMatch(c -> c instanceof SynthesizedAnnotation));
-
-		List<String> locations = stream(configs).map(ContextConfig::location).collect(toList());
-		assertThat(locations, is(expectedLocations));
-
-		List<String> values = stream(configs).map(ContextConfig::value).collect(toList());
-		assertThat(values, is(expectedLocations));
+		assertThat(configs).isNotNull();
+		assertThat(configs).allMatch(SynthesizedAnnotation.class::isInstance);
+		assertThat(Arrays.stream(configs).map(ContextConfig::location)).containsExactly("A", "B");
+		assertThat(Arrays.stream(configs).map(ContextConfig::value)).containsExactly("A", "B");
 	}
 
 	@Test
 	public void synthesizeAnnotationWithArrayOfAnnotations() throws Exception {
-		List<String> expectedLocations = asList("A", "B");
-
 		Hierarchy hierarchy = ConfigHierarchyTestCase.class.getAnnotation(Hierarchy.class);
-		assertNotNull(hierarchy);
-		Hierarchy synthesizedHierarchy = synthesizeAnnotation(hierarchy);
-		assertThat(synthesizedHierarchy, instanceOf(SynthesizedAnnotation.class));
-
+		assertThat(hierarchy).isNotNull();
+		Hierarchy synthesizedHierarchy = MergedAnnotation.from(hierarchy).synthesize();
+		assertThat(synthesizedHierarchy).isInstanceOf(SynthesizedAnnotation.class);
 		ContextConfig contextConfig = SimpleConfigTestCase.class.getAnnotation(ContextConfig.class);
-		assertNotNull(contextConfig);
-
+		assertThat(contextConfig).isNotNull();
 		ContextConfig[] configs = synthesizedHierarchy.value();
-		List<String> locations = stream(configs).map(ContextConfig::location).collect(toList());
-		assertThat(locations, is(expectedLocations));
-
+		assertThat(Arrays.stream(configs).map(ContextConfig::location)).containsExactly("A", "B");
 		// Alter array returned from synthesized annotation
 		configs[0] = contextConfig;
-
 		// Re-retrieve the array from the synthesized annotation
 		configs = synthesizedHierarchy.value();
-		List<String> values = stream(configs).map(ContextConfig::value).collect(toList());
-		assertThat(values, is(expectedLocations));
+		assertThat(Arrays.stream(configs).map(ContextConfig::location)).containsExactly("A", "B");
 	}
 
 	@Test
 	public void synthesizeAnnotationWithArrayOfChars() throws Exception {
 		CharsContainer charsContainer = GroupOfCharsClass.class.getAnnotation(CharsContainer.class);
-		assertNotNull(charsContainer);
-		CharsContainer synthesizedCharsContainer = synthesizeAnnotation(charsContainer);
-		assertThat(synthesizedCharsContainer, instanceOf(SynthesizedAnnotation.class));
-
+		assertThat(charsContainer).isNotNull();
+		CharsContainer synthesizedCharsContainer = MergedAnnotation.from(charsContainer).synthesize();
+		assertThat(synthesizedCharsContainer).isInstanceOf(SynthesizedAnnotation.class);
 		char[] chars = synthesizedCharsContainer.chars();
-		assertArrayEquals(new char[] { 'x', 'y', 'z' }, chars);
-
+		assertThat(chars).containsExactly('x', 'y', 'z');
 		// Alter array returned from synthesized annotation
 		chars[0] = '?';
-
 		// Re-retrieve the array from the synthesized annotation
 		chars = synthesizedCharsContainer.chars();
-		assertArrayEquals(new char[] { 'x', 'y', 'z' }, chars);
+		assertThat(chars).containsExactly('x', 'y', 'z');
 	}
-
-	@Test
-	public void interfaceWithAnnotatedMethods() {
-		assertTrue(AnnotationUtils.getAnnotatedMethodsInBaseType(NonAnnotatedInterface.class).isEmpty());
-		assertFalse(AnnotationUtils.getAnnotatedMethodsInBaseType(AnnotatedInterface.class).isEmpty());
-		assertTrue(AnnotationUtils.getAnnotatedMethodsInBaseType(NullableAnnotatedInterface.class).isEmpty());
-	}
-
-	// FIXME to here
-
-	@SafeVarargs
-	static <T> T[] asArray(T... arr) {
-		return arr;
-	}
-
 
 	@Component("meta1")
 	@Order

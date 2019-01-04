@@ -1197,7 +1197,7 @@ public abstract class AnnotationUtils {
 				return MergedAnnotation.from(annotatedElement, annotationType,
 						attributes).synthesize();
 			}
-			catch (NoSuchElementException ex) {
+			catch (NoSuchElementException | IllegalStateException ex) {
 				throw new IllegalArgumentException(ex);
 			}
 		});

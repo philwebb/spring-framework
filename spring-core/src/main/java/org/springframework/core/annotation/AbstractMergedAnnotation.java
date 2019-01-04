@@ -361,7 +361,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		if (!isPresent()) {
 			throw new NoSuchElementException("Unable to synthesize missing annotation");
 		}
-		checkAllAttributeValuesPresent();
+		checkAllAttributeValuesForSynthesize();
 		A synthesized = this.synthesizedAnnotation;
 		if (synthesized == null) {
 			ClassLoader classLoader = getClassLoader();
@@ -377,9 +377,11 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		return synthesized;
 	}
 
-	private void checkAllAttributeValuesPresent() {
+	private void checkAllAttributeValuesForSynthesize() {
 		for (AttributeType attributeType : getAnnotationType().getAttributeTypes()) {
-			getRequiredValue(attributeType.getAttributeName(), Object.class);
+			Class<?> type = ClassUtils.resolvePrimitiveIfNecessary(
+					resolveClassName(attributeType.getClassName()));
+			getRequiredValue(attributeType.getAttributeName(), type);
 		}
 	}
 
@@ -549,8 +551,10 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		Assert.isTrue(isSupportedForExtract(requiredType),
 				() -> "Type " + requiredType.getName() + " is not supported");
 		Assert.state(requiredType.isInstance(attributeValue),
-				"Value " + attributeValue.getClass().getName() + " is not a "
-						+ requiredType.getName());
+				"Attribute '" + attributeType.getAttributeName() + "' in annotation "
+						+ getType() + " should be of type " + attributeType.getClassName()
+						+ " but a " + attributeValue.getClass().getName()
+						+ " value was returned");
 		return (T) attributeValue;
 	}
 

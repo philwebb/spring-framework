@@ -32,10 +32,8 @@ import java.util.stream.Stream;
 
 import javax.annotation.Resource;
 
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.internal.ArrayComparisonFailure;
-import org.junit.rules.ExpectedException;
 
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.core.annotation.XAnnotationUtilsTests.ExtendsBaseClassWithGenericAnnotatedMethod;
@@ -50,7 +48,6 @@ import org.springframework.util.ReflectionUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.entry;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for {@link AnnotatedElementUtils}.
@@ -64,9 +61,6 @@ import static org.junit.Assert.assertTrue;
  * @see ComposedRepeatableAnnotationsTests
  */
 public class XAnnotatedElementUtilsTests {
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
 
 	@Test
 	public void getMetaAnnotationTypesOnNonAnnotatedClass() {
@@ -520,8 +514,8 @@ public class XAnnotatedElementUtilsTests {
 		Method bridgedMethod = methods.get(0).getReturnType().equals(Object.class)
 				? methods.get(1)
 				: methods.get(0);
-		assertTrue(bridgeMethod != null && bridgeMethod.isBridge());
-		assertTrue(bridgedMethod != null && !bridgedMethod.isBridge());
+		assertThat(bridgeMethod.isBridge()).isTrue();
+		assertThat(bridgedMethod.isBridge()).isFalse();
 		MergedAnnotation<?> annotation = MergedAnnotations.from(
 				SearchStrategy.EXHAUSTIVE,
 				bridgeMethod).get(Order.class);
