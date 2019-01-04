@@ -16,6 +16,7 @@
 
 package org.springframework.core.annotation;
 
+import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Repeatable;
@@ -26,10 +27,14 @@ import java.lang.reflect.AnnotatedElement;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import org.springframework.lang.Nullable;
+
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.hamcrest.CoreMatchers.isA;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.startsWith;
@@ -43,23 +48,18 @@ import static org.springframework.core.annotation.AnnotatedElementUtils.*;
  * <p>See <a href="https://jira.spring.io/browse/SPR-13973">SPR-13973</a>.
  *
  * @author Sam Brannen
- * @since 4.3
- * @see AnnotatedElementUtils#getMergedRepeatableAnnotations
- * @see AnnotatedElementUtils#findMergedRepeatableAnnotations
- * @see AnnotatedElementUtilsTests
- * @see MultipleComposedAnnotationsOnSingleAnnotatedElementTests
  */
 @SuppressWarnings("deprecation")
 public class XComposedRepeatableAnnotationsTests {
 
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
 
+	@Rule
+	public ExpectedException exception = ExpectedException.none();
 
 	@Test
 	public void getNonRepeatableAnnotation() {
-		expectNonRepeatableAnnotation();
-		getMergedRepeatableAnnotations(getClass(), NonRepeatable.class);
+		assertExceptionForNonRepeatableAnnotationIsThrownBy(()->
+		getMergedRepeatableAnnotations(getClass(), NonRepeatable.class));
 	}
 
 	@Test
@@ -123,8 +123,8 @@ public class XComposedRepeatableAnnotationsTests {
 
 	@Test
 	public void findNonRepeatableAnnotation() {
-		expectNonRepeatableAnnotation();
-		findMergedRepeatableAnnotations(getClass(), NonRepeatable.class);
+		assertExceptionForNonRepeatableAnnotationIsThrownBy(()->
+		findMergedRepeatableAnnotations(getClass(), NonRepeatable.class));
 	}
 
 	@Test
@@ -185,12 +185,25 @@ public class XComposedRepeatableAnnotationsTests {
 		assertFindRepeatableAnnotations(ComposedContainerClass.class);
 	}
 
-	private void expectNonRepeatableAnnotation() {
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage(startsWith("Annotation type must be a repeatable annotation"));
-		exception.expectMessage(containsString("failed to resolve container type for"));
-		exception.expectMessage(containsString(NonRepeatable.class.getName()));
+	public static <A extends Annotation> Set<A> getMergedRepeatableAnnotations(
+			AnnotatedElement element, Class<A> annotationType) {
+		return AnnotatedElementUtils.getMergedRepeatableAnnotations(element, annotationType);
 	}
+
+	public static <A extends Annotation> Set<A> getMergedRepeatableAnnotations(
+			AnnotatedElement element, Class<A> annotationType,
+			@Nullable Class<? extends Annotation> containerType) {
+		return AnnotatedElementUtils.getMergedRepeatableAnnotations(element, annotationType, containerType);
+	}
+
+	private void assertExceptionForNonRepeatableAnnotationIsThrownBy(ThrowingCallable throwingCallable) {
+		assertThatIllegalArgumentException().isThrownBy(
+				throwingCallable).withMessageStartingWith(
+						"Annotation type must be a repeatable annotation").withMessageContaining(
+								"failed to resolve container type for").withMessageContaining(
+										NonRepeatable.class.getName());
+	}
+
 
 	private void expectContainerMissingValueAttribute() {
 		exception.expect(AnnotationConfigurationException.class);
