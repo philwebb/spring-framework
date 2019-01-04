@@ -31,6 +31,7 @@ import java.util.function.Predicate;
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.core.annotation.type.DeclaredAnnotation;
 import org.springframework.core.annotation.type.DeclaredAnnotations;
+import org.springframework.core.annotation.type.DeclaredAttributes;
 import org.springframework.lang.Nullable;
 
 /**
@@ -43,6 +44,11 @@ import org.springframework.lang.Nullable;
  * @see MergedAnnotations
  */
 public interface MergedAnnotation<A extends Annotation> {
+
+	// FIXME equal hashcode rules?
+
+	// FIXME do we want getString() as a shortcut to getString(VALUE)
+	// it will bloat API, but is useful, especially as a method reference
 
 	/**
 	 * The attribute name for annotations with a single element.
@@ -493,41 +499,67 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * @return a {@link MergedAnnotation} instance for the annotation
 	 */
 	static <A extends Annotation> MergedAnnotation<A> from(Class<A> annotationType) {
-		// FIXME might be able to call method below
-		return TypeMappedAnnotation.from(annotationType);
+		return from(null, annotationType, null);
 	}
 
+	/**
+	 * Create a new {@link MergedAnnotations} instance from the specified
+	 * annotation type and attributes maps.
+	 * @param annotationType the annotation type
+	 * @param attributes the annotation attributes or {@code null} if just
+	 * default values should be used
+	 * @return a {@link MergedAnnotation} instance for the annotation and
+	 * attributes
+	 * @see DeclaredAttributes#from(Map)
+	 */
 	static <A extends Annotation> MergedAnnotation<A> from(Class<A> annotationType,
 			Map<String, ?> attributes) {
 		return from(null, annotationType, attributes);
 	}
 
-
-	static <A extends Annotation> MergedAnnotation<A> from(@Nullable AnnotatedElement source, Class<A> annotationType,
+	/**
+	 * Create a new {@link MergedAnnotations} instance from the specified
+	 * annotation type and attributes maps.
+	 * @param source the source for the annotation. This source is used only for
+	 * information and logging. It does not need to <em>actually</em> contain
+	 * the specified annotations and it will not be searched.
+	 * @param annotationType the annotation type
+	 * @param attributes the annotation attributes or {@code null} if just
+	 * default values should be used
+	 * @return a {@link MergedAnnotation} instance for the annotation and
+	 * attributes
+	 * @see DeclaredAttributes#from(Map)
+	 */
+	static <A extends Annotation> MergedAnnotation<A> from(
+			@Nullable AnnotatedElement source, Class<A> annotationType,
 			@Nullable Map<String, ?> attributes) {
 		return TypeMappedAnnotation.from(source, annotationType, attributes);
 	}
 
-
-	static <A extends Annotation> MergedAnnotation<A> of(
-			DeclaredAnnotation annotation) {
+	/**
+	 * Create a new {@link MergedAnnotation} instance of the specified annotation.
+	 * @param annotation the declared annotation
+	 * @return a {@link MergedAnnotation} instance for the annotation
+	 * @see #of(ClassLoader, AnnotatedElement, DeclaredAnnotation)
+	 */
+	static <A extends Annotation> MergedAnnotation<A> of(DeclaredAnnotation annotation) {
 		return of(null, null, annotation);
 	}
 
+	/**
+	 * Create a new {@link MergedAnnotation} instance of the specified annotation.
+	 * @param classLoader the class loader used to read annotations
+	 * @param source the source for the annotation. This source is used only for
+	 * information and logging. It does not need to <em>actually</em> contain
+	 * the specified annotations and it will not be searched.
+	 * @param annotation the declared annotation
+	 * @return a {@link MergedAnnotation} instance for the annotation
+	 * @see #of(ClassLoader, AnnotatedElement, DeclaredAnnotation)
+	 */
 	static <A extends Annotation> MergedAnnotation<A> of(
-			@Nullable ClassLoader classLoader, @Nullable AnnotatedElement source,
+			@Nullable ClassLoader classLoader, @Nullable Object source,
 			DeclaredAnnotation annotation) {
 		return TypeMappedAnnotation.of(classLoader, source, annotation);
-	}
-
-	// FIXME
-	static <A extends Annotation> Finder<A> find(String annotationType) {
-		return null;
-	}
-
-	// FIXME
-	static <A extends Annotation> Finder<A> find(Class<A> annotationType) {
-		return null;
 	}
 
 	/**
@@ -576,26 +608,6 @@ public interface MergedAnnotation<A extends Annotation> {
 				result.add(value);
 			}
 		}
-
-	}
-
-	// FIXME equal hashcode rules?
-
-	/**
-	 * Finds annotations of a specific type by searching on a source.
-	 *
-	 * @param <A> the annotation type to find
-	 */
-	static interface Finder<A extends Annotation> {
-
-		// Map<Method, MergedAnnotation<A>> fromMethods(Class<?> type);
-
-		// Map<Method, MergedAnnotation<A>> fromLocalMethods(Class<?> type);
-
-		// FIXME will return something that allows access to the method and
-		// MergedAnnotation
-		// something a bit like a Map<Method, MergedAnnotation<T>> but perhaps
-		// not exactly that
 
 	}
 

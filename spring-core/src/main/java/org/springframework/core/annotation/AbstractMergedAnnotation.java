@@ -648,6 +648,13 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	 */
 	protected abstract Object getAttributeValue(String attributeName);
 
+	/**
+	 * Return a new nested {@link MergedAnnotation} instance for the given
+	 * type and attributes.
+	 * @param type the nested annotation type
+	 * @param attributes the nested annotation attributes
+	 * @return the nested {@link MergedAnnotation}
+	 */
 	protected abstract <T extends Annotation> MergedAnnotation<T> createNested(
 			AnnotationType type, DeclaredAttributes attributes);
 

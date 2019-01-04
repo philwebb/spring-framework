@@ -138,6 +138,7 @@ public class SimpleDeclaredAttributesTests extends AbstractDeclaredAttributesTes
 		return new SimpleDeclaredAttributes(Collections.singletonMap("value", value));
 	}
 
+	// FIXME test map + map null
 	// FIXME test for conversion and map stuff
 
 }

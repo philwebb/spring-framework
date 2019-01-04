@@ -24,7 +24,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
- * Filter that can be used to restrict annotations.
+ * Filter that can be used to match specific annotations.
  *
  * @author Phillip Webb
  * @since 5.2

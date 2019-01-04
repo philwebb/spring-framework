@@ -151,7 +151,7 @@ final class TypeMappedAnnotations extends AbstractMergedAnnotations {
 		return size;
 	}
 
-	public static TypeMappedAnnotations from(RepeatableContainers repeatableContainers,
+	static TypeMappedAnnotations from(RepeatableContainers repeatableContainers,
 			AnnotationFilter annotationFilter, @Nullable AnnotatedElement source,
 			Annotation... annotations) {
 		Assert.notNull(annotations, "Annotations must not be null");
@@ -159,7 +159,7 @@ final class TypeMappedAnnotations extends AbstractMergedAnnotations {
 				annotations);
 	}
 
-	public static TypeMappedAnnotations of(ClassLoader classLoader,
+	static TypeMappedAnnotations of(ClassLoader classLoader,
 			RepeatableContainers repeatableContainers, AnnotationFilter annotationFilter,
 			Iterable<DeclaredAnnotations> aggregates) {
 		return new TypeMappedAnnotations(classLoader, repeatableContainers,

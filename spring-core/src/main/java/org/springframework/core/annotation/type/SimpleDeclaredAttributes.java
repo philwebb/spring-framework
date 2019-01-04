@@ -22,6 +22,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
@@ -32,6 +33,9 @@ import org.springframework.util.Assert;
  * @see DeclaredAttributes#of
  */
 class SimpleDeclaredAttributes extends AbstractDeclaredAttributes {
+
+	static final SimpleDeclaredAttributes NONE = new SimpleDeclaredAttributes(
+			Collections.emptyMap());
 
 	private final Map<String, Object> attributes;
 
@@ -89,8 +93,10 @@ class SimpleDeclaredAttributes extends AbstractDeclaredAttributes {
 		return value;
 	}
 
-	static SimpleDeclaredAttributes from(Map<String, ?> attributes) {
-		Assert.notNull(attributes, "Attributes must not be null");
+	static SimpleDeclaredAttributes from(@Nullable Map<String, ?> attributes) {
+		if (attributes == null) {
+			return NONE;
+		}
 		Map<String, Object> values = new LinkedHashMap<>();
 		for (Map.Entry<String, ?> entry : attributes.entrySet()) {
 			values.put(entry.getKey(), convert(entry.getValue()));

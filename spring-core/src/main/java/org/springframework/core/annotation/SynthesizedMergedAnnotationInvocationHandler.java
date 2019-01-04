@@ -181,7 +181,8 @@ class SynthesizedMergedAnnotationInvocationHandler<A extends Annotation>
 		}
 
 		private int getValueHashCode(Object value) {
-			// NOTE: ObjectUtils doesn't comply to to Annotation#hashCode()
+			// Use Arrays.hashCode since ObjectUtils doesn't comply to to
+			// Annotation#hashCode()
 			if (value instanceof boolean[]) {
 				return Arrays.hashCode((boolean[]) value);
 			}

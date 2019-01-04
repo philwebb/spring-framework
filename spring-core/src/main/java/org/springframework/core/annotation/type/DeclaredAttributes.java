@@ -16,7 +16,6 @@
 
 package org.springframework.core.annotation.type;
 
-import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
@@ -64,7 +63,7 @@ public interface DeclaredAttributes extends Iterable<DeclaredAttribute> {
 	/**
 	 * Constant that can be used when there are no declared attributes.
 	 */
-	DeclaredAttributes NONE = new SimpleDeclaredAttributes(Collections.emptyMap());
+	DeclaredAttributes NONE = SimpleDeclaredAttributes.NONE;
 
 	/**
 	 * Return a stream of all attribute names.
@@ -84,7 +83,7 @@ public interface DeclaredAttributes extends Iterable<DeclaredAttribute> {
 	@Nullable
 	Object get(String name);
 
-	static DeclaredAttributes from(Map<String, Object> attributes) {
+	static DeclaredAttributes from(@Nullable Map<String, ?> attributes) {
 		return SimpleDeclaredAttributes.from(attributes);
 	}
 

@@ -171,49 +171,50 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 				attributes);
 	}
 
-	public static <A extends Annotation> TypeMappedAnnotation<A> from(
+	static <A extends Annotation> TypeMappedAnnotation<A> from(
 			@Nullable AnnotatedElement source, A annotation) {
 		Assert.notNull(annotation, "Annotation must not be null");
 		Class<? extends Annotation> annotationType = annotation.annotationType();
-		AnnotationTypeMappings mappings = AnnotationTypeMappings.forType(
-				annotationType.getClassLoader(), RepeatableContainers.none(),
-				AnnotationFilter.mostAppropriateFor(annotationType),
-				AnnotationType.resolve(annotationType));
-		AnnotationTypeMapping mapping = mappings.get(annotationType.getName());
-		DeclaredAttributes attributes = DeclaredAnnotation.from(
-				annotation).getAttributes();
-		A preSynthesized = mapping.canSkipSynthesize()
-				|| annotation instanceof SynthesizedAnnotation ? annotation : null;
+		ClassLoader classLoader = annotationType.getClassLoader();
+		return of(classLoader, source, AnnotationType.resolve(annotationType),
+				DeclaredAnnotation.from(annotation).getAttributes(), annotation);
+	}
+
+	static <A extends Annotation> TypeMappedAnnotation<A> from(
+			@Nullable AnnotatedElement source, Class<A> annotationType,
+			@Nullable Map<String, ?> attributes) {
+		Assert.notNull(annotationType, "AnnotationType must not be null");
+		ClassLoader classLoader = annotationType.getClassLoader();
+		return of(classLoader, source, AnnotationType.resolve(annotationType),
+				DeclaredAttributes.from(attributes), null);
+	}
+
+	static <A extends Annotation> TypeMappedAnnotation<A> of(
+			@Nullable ClassLoader classLoader, @Nullable Object source,
+			DeclaredAnnotation annotation) {
+		Assert.notNull(annotation, "Annotation must not be null");
+		return of(classLoader, source,
+				AnnotationType.resolve(annotation.getType(), classLoader),
+				annotation.getAttributes(), null);
+	}
+
+	private static <A extends Annotation> TypeMappedAnnotation<A> of(
+			ClassLoader classLoader, Object source, AnnotationType annotationType,
+			DeclaredAttributes attributes, A annotation) {
+		AnnotationTypeMappings mappings = AnnotationTypeMappings.forType(classLoader,
+				RepeatableContainers.none(),
+				AnnotationFilter.mostAppropriateFor(annotationType.getClassName()),
+				annotationType);
+		AnnotationTypeMapping mapping = mappings.get(annotationType.getClassName());
+		A preSynthesized = preSynthesizeIfPossible(annotation, mapping);
 		return new TypeMappedAnnotation<>(mapping, source, 0, attributes, preSynthesized);
 	}
 
-	public static <A extends Annotation> TypeMappedAnnotation<A> from(
-			Class<A> annotationType) {
-		Assert.notNull(annotationType, "AnnotationType must not be null");
-		AnnotationTypeMappings mappings = AnnotationTypeMappings.forType(
-				annotationType.getClassLoader(), RepeatableContainers.none(),
-				AnnotationFilter.mostAppropriateFor(annotationType),
-				AnnotationType.resolve(annotationType));
-		AnnotationTypeMapping mapping = mappings.get(annotationType.getName());
-		return new TypeMappedAnnotation<>(mapping, null, 0, DeclaredAttributes.NONE);
-	}
-
-	public static <A extends Annotation> MergedAnnotation<A> of(
-			@Nullable ClassLoader classLoader, @Nullable AnnotatedElement source,
-			DeclaredAnnotation annotation) {
-		Assert.notNull(annotation, "Annotation must not be null");
-		AnnotationType annotationType = AnnotationType.resolve(annotation.getType(),
-				classLoader);
-		AnnotationTypeMappings mappings = AnnotationTypeMappings.forType(classLoader,
-				RepeatableContainers.none(),
-				AnnotationFilter.mostAppropriateFor(annotation.getType()),
-				annotationType);
-		AnnotationTypeMapping mapping = mappings.get(annotation.getType());
-		return new TypeMappedAnnotation<>(mapping, source, 0, annotation.getAttributes());
-	}
-
-	public static <A extends Annotation> MergedAnnotation<A> from(AnnotatedElement source,
-			Class<A> annotationType, @Nullable Map<String, ?> attributes) {
+	private static <A extends Annotation> A preSynthesizeIfPossible(A annotation,
+			AnnotationTypeMapping mapping) {
+		if (annotation instanceof SynthesizedAnnotation || mapping.canSkipSynthesize()) {
+			return annotation;
+		}
 		return null;
 	}
 

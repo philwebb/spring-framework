@@ -789,11 +789,16 @@ public class TypeMappedAnnotationTests {
 		assertGetValueFromEmptyArray("java.lang.String[]", Object.class, new String[0]);
 		assertGetValueFromEmptyArray("java.lang.Class[]", Class[].class, new Class[0]);
 		assertGetValueFromEmptyArray("java.lang.Class[]", Object.class, new Class[0]);
-		assertGetValueFromEmptyArray(TestEnum.class.getName()+"[]", TestEnum[].class, new TestEnum[0]);
-		assertGetValueFromEmptyArray(TestEnum.class.getName()+"[]", Object.class, new TestEnum[0]);
-		assertGetValueFromEmptyArray(StringValueAnnotation.class.getName()+"[]", StringValueAnnotation[].class, new StringValueAnnotation[0]);
-		assertGetValueFromEmptyArray(StringValueAnnotation.class.getName()+"[]", Object.class, new StringValueAnnotation[0]);
-		assertGetValueFromEmptyArray(StringValueAnnotation.class.getName()+"[]", MergedAnnotation[].class, new MergedAnnotation[0]);
+		assertGetValueFromEmptyArray(TestEnum.class.getName() + "[]", TestEnum[].class,
+				new TestEnum[0]);
+		assertGetValueFromEmptyArray(TestEnum.class.getName() + "[]", Object.class,
+				new TestEnum[0]);
+		assertGetValueFromEmptyArray(StringValueAnnotation.class.getName() + "[]",
+				StringValueAnnotation[].class, new StringValueAnnotation[0]);
+		assertGetValueFromEmptyArray(StringValueAnnotation.class.getName() + "[]",
+				Object.class, new StringValueAnnotation[0]);
+		assertGetValueFromEmptyArray(StringValueAnnotation.class.getName() + "[]",
+				MergedAnnotation[].class, new MergedAnnotation[0]);
 	}
 
 	private void assertGetValueFromEmptyArray(String attributeType, Class<?> requiredType,
@@ -1166,14 +1171,14 @@ public class TypeMappedAnnotationTests {
 	@Test
 	public void fromAnnotationTypeWhenAnnotationTypeIsNullThrowsException() {
 		assertThatIllegalArgumentException().isThrownBy(
-				() -> TypeMappedAnnotation.from((Class<Annotation>) null)).withMessage(
-						"AnnotationType must not be null");
+				() -> TypeMappedAnnotation.from(null, (Class<Annotation>) null,
+						null)).withMessage("AnnotationType must not be null");
 	}
 
 	@Test
 	public void fromAnnotationTypeReturnsAnnotation() {
 		TypeMappedAnnotation<?> annotation = TypeMappedAnnotation.from(
-				AnnotationTypeAnnotation.class);
+				null, AnnotationTypeAnnotation.class, null);
 		assertThat(annotation.getType()).isEqualTo(
 				AnnotationTypeAnnotation.class.getName());
 		assertThat(annotation.getValue("classValue", Class.class)).contains(
@@ -1347,5 +1352,7 @@ public class TypeMappedAnnotationTests {
 		ONE, TWO, THREE
 
 	}
+
+	// FIXME new from/of methods
 
 }

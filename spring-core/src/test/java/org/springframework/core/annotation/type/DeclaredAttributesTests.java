@@ -16,6 +16,8 @@
 
 package org.springframework.core.annotation.type;
 
+import java.util.Collections;
+
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,6 +45,14 @@ public class DeclaredAttributesTests {
 	@Test
 	public void ofPairsReturnsSimpleDeclaredAttributes() {
 		DeclaredAttributes declaredAttributes = DeclaredAttributes.of("value", "test");
+		assertThat(declaredAttributes).isInstanceOf(SimpleDeclaredAttributes.class);
+		assertThat(declaredAttributes.get("value")).isEqualTo("test");
+	}
+
+	@Test
+	public void fromMapReturnsSimpleDeclaredAttributes() {
+		DeclaredAttributes declaredAttributes = DeclaredAttributes.from(
+				Collections.singletonMap("value", "test"));
 		assertThat(declaredAttributes).isInstanceOf(SimpleDeclaredAttributes.class);
 		assertThat(declaredAttributes.get("value")).isEqualTo("test");
 	}

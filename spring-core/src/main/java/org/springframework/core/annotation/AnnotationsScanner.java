@@ -276,6 +276,9 @@ class AnnotationsScanner implements Iterable<DeclaredAnnotations> {
 		}
 	}
 
+	/**
+	 * Cacheable results for a single annotated element.
+	 */
 	private static class ElementResults extends Results<AnnotatedElement> {
 
 		public ElementResults(AnnotatedElement source) {
@@ -293,6 +296,10 @@ class AnnotationsScanner implements Iterable<DeclaredAnnotations> {
 
 	}
 
+	/**
+	 * Provides ordred access to the superclass and interface hierarchy of a
+	 * given class.
+	 */
 	private static final class TypeHierarchy {
 
 		private final Set<Class<?>> hierarchy = new LinkedHashSet<>();
