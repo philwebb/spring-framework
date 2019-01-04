@@ -19,7 +19,6 @@ package org.springframework.core.annotation;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Repeatable;
 import java.lang.reflect.Method;
-import java.util.function.BiConsumer;
 
 import org.springframework.core.annotation.type.AnnotationType;
 import org.springframework.core.annotation.type.AttributeType;
@@ -74,7 +73,7 @@ public abstract class RepeatableContainers {
 	 * @param consumer a consumer to be visited
 	 */
 	void visit(DeclaredAnnotation annotation, ClassLoader classLoader,
-			BiConsumer<AnnotationType, DeclaredAttributes> consumer) {
+			ContainedAnnotationConsumer consumer) {
 		AnnotationType annotationType = AnnotationType.resolve(annotation.getType(),
 				classLoader);
 		DeclaredAttributes attributes = annotation.getAttributes();
@@ -91,7 +90,7 @@ public abstract class RepeatableContainers {
 
 	private void doWithRepeated(AnnotationType annotationType,
 			DeclaredAttributes[] repeateAttributes,
-			BiConsumer<AnnotationType, DeclaredAttributes> consumer) {
+			ContainedAnnotationConsumer consumer) {
 		for (DeclaredAttributes attributes : repeateAttributes) {
 			consumer.accept(annotationType, attributes);
 		}
@@ -284,6 +283,16 @@ public abstract class RepeatableContainers {
 		NoRepeatableContainers() {
 			super(null);
 		}
+
+	}
+
+	/**
+	 * Consumer used to receive contained annotations.
+	 */
+	@FunctionalInterface
+	static interface ContainedAnnotationConsumer {
+
+		void accept(AnnotationType annotationType, DeclaredAttributes declaredAttributes);
 
 	}
 

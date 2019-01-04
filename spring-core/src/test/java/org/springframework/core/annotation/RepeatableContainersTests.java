@@ -164,7 +164,8 @@ public class RepeatableContainersTests {
 		MultiValueMap<String, Object> result = new LinkedMultiValueMap<>();
 		repeatableContainers.visit(annotation, getClass().getClassLoader(),
 				(annotationType, attributes) -> {
-					result.add(annotationType.getClassName(), attributes.get("value"));
+					result.add(annotationType.getClassName(),
+							attributes.get("value"));
 				});
 		return result;
 	}
