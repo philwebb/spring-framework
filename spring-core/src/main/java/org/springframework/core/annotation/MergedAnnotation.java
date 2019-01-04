@@ -493,8 +493,21 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * @return a {@link MergedAnnotation} instance for the annotation
 	 */
 	static <A extends Annotation> MergedAnnotation<A> from(Class<A> annotationType) {
+		// FIXME might be able to call method below
 		return TypeMappedAnnotation.from(annotationType);
 	}
+
+	static <A extends Annotation> MergedAnnotation<A> from(Class<A> annotationType,
+			Map<String, ?> attributes) {
+		return from(null, annotationType, attributes);
+	}
+
+
+	static <A extends Annotation> MergedAnnotation<A> from(@Nullable AnnotatedElement source, Class<A> annotationType,
+			@Nullable Map<String, ?> attributes) {
+		return TypeMappedAnnotation.from(source, annotationType, attributes);
+	}
+
 
 	static <A extends Annotation> MergedAnnotation<A> of(
 			DeclaredAnnotation annotation) {

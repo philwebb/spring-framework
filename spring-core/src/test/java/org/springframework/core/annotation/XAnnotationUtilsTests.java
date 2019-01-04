@@ -32,7 +32,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -41,8 +40,6 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.MergedAnnotation.MapValues;
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.core.annotation.subpackage.NonPublicAnnotatedClass;
-import org.springframework.core.annotation.type.DeclaredAnnotation;
-import org.springframework.core.annotation.type.DeclaredAttributes;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ClassUtils;
@@ -926,7 +923,7 @@ public class XAnnotationUtilsTests {
 		Component component = WebController.class.getAnnotation(Component.class);
 		assertThat(component).isNotNull();
 		Map<String, Object> map = Collections.singletonMap(VALUE, "webController");
-		MergedAnnotation<Component> annotation = MergedAnnotation.of(DeclaredAnnotation.of(Component.class, DeclaredAttributes.from(map)));
+		MergedAnnotation<Component> annotation = MergedAnnotation.from(Component.class, map);
 		Component synthesizedComponent = annotation.synthesize();
 		assertThat(synthesizedComponent).isInstanceOf(SynthesizedAnnotation.class);
 		assertThat(synthesizedComponent.value()).isEqualTo("webController");
@@ -945,9 +942,8 @@ public class XAnnotationUtilsTests {
 		assertThat(filterMap.get("pattern")).isEqualTo("*Foo");
 		filterMap.put("pattern", "newFoo");
 		filterMap.put("enigma", 42);
-		MergedAnnotation<ComponentScanSingleFilter> annotation = MergedAnnotation.of(
-				DeclaredAnnotation.of(ComponentScanSingleFilter.class,
-						DeclaredAttributes.from(map)));
+		MergedAnnotation<ComponentScanSingleFilter> annotation = MergedAnnotation.from(
+				ComponentScanSingleFilter.class, map);
 		ComponentScanSingleFilter synthesizedComponentScan = annotation.synthesize();
 		assertThat(synthesizedComponentScan).isInstanceOf(SynthesizedAnnotation.class);
 		assertThat(synthesizedComponentScan.value().pattern()).isEqualTo("newFoo");
@@ -968,9 +964,8 @@ public class XAnnotationUtilsTests {
 		filters[0].put("enigma", 42);
 		filters[1].put("pattern", "newBar");
 		filters[1].put("enigma", 42);
-		MergedAnnotation<ComponentScan> annotation = MergedAnnotation.of(
-				DeclaredAnnotation.of(ComponentScan.class,
-						DeclaredAttributes.from(map)));
+		MergedAnnotation<ComponentScan> annotation = MergedAnnotation.from(
+				ComponentScan.class, map);
 		ComponentScan synthesizedComponentScan = annotation.synthesize();
 		assertThat(synthesizedComponentScan).isInstanceOf(SynthesizedAnnotation.class);
 		assertThat(Arrays.stream(synthesizedComponentScan.excludeFilters()).map(

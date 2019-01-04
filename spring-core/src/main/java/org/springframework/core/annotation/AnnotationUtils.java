@@ -29,7 +29,6 @@ import org.springframework.core.BridgeMethodResolver;
 import org.springframework.core.annotation.MergedAnnotation.MapValues;
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.core.annotation.type.DeclaredAnnotation;
-import org.springframework.core.annotation.type.DeclaredAttributes;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
@@ -1192,13 +1191,10 @@ public abstract class AnnotationUtils {
 		return MigrateMethod.from(()->
 			InternalAnnotationUtils.synthesizeAnnotation(attributes, annotationType,
 					annotatedElement)
-		).to(()-> {
-			MergedAnnotation<A> annotation = MergedAnnotation.of(
-					annotationType.getClassLoader(), annotatedElement,
-					DeclaredAnnotation.of(annotationType,
-							DeclaredAttributes.from(attributes)));
-			return annotation.synthesize();
-		});
+		).to(()->
+			MergedAnnotation.from(
+					annotatedElement, annotationType, attributes).synthesize()
+		);
 	}
 
 	/**

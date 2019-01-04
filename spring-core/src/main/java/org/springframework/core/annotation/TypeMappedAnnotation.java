@@ -212,6 +212,11 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 		return new TypeMappedAnnotation<>(mapping, source, 0, annotation.getAttributes());
 	}
 
+	public static <A extends Annotation> MergedAnnotation<A> from(AnnotatedElement source,
+			Class<A> annotationType, @Nullable Map<String, ?> attributes) {
+		return null;
+	}
+
 	/**
 	 * Provides access to the attribute values with additional mapping and
 	 * mirroring rules applied.
