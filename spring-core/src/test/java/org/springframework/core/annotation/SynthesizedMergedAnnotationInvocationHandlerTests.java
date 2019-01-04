@@ -20,10 +20,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
@@ -142,12 +144,12 @@ public class SynthesizedMergedAnnotationInvocationHandlerTests {
 
 	@Test
 	public void invokeAttributeMethodWhenHasNotValueThrowsException() {
-		TestAnnotation synthesized = MergedAnnotations.from(WithTestAnnotation.class).get(
-				TestAnnotation.class).filterAttributes("byteValue"::equals).synthesize();
-		assertThat(synthesized.byteValue()).isEqualTo((byte) 1);
-		assertThatIllegalStateException().isThrownBy(
-				() -> synthesized.intValue()).withMessage(
-						"No value for attribute intValue");
+		MergedAnnotation<TestAnnotation> annotation = MergedAnnotations.from(
+				WithTestAnnotation.class).get(TestAnnotation.class).filterAttributes(
+						"byteValue"::equals);
+		assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(
+				() -> annotation.synthesize()).withMessageStartingWith(
+						"No attribute named");
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)

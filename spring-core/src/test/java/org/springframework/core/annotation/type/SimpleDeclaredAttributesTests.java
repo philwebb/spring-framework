@@ -33,10 +33,9 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 public class SimpleDeclaredAttributesTests extends AbstractDeclaredAttributesTests {
 
 	@Test
-	public void fromMapWhenValuesIsNullThrowException() {
-		assertThatIllegalArgumentException().isThrownBy(
-				() -> SimpleDeclaredAttributes.from((Map<String, ?>) null)).withMessage(
-						"Attributes must not be null");
+	public void fromMapWhenValuesIsNullReturnsNone() {
+		assertThat(SimpleDeclaredAttributes.from((Map<String, ?>) null)).isSameAs(
+				SimpleDeclaredAttributes.NONE);
 	}
 
 	@Test

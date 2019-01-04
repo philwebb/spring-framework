@@ -1305,9 +1305,10 @@ public class AnnotationUtilsTests {
 
 	private void assertMissingTextAttribute(Map<String, Object> attributes) {
 		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage(startsWith("Attributes map"));
-		exception.expectMessage(containsString("returned null for required attribute 'text'"));
-		exception.expectMessage(containsString("defined by annotation type [" + AnnotationWithoutDefaults.class.getName() + "]"));
+		exception.expectMessage(allOf(startsWith("Attributes map"),
+				containsString("returned null for required attribute 'text'"),
+				containsString("defined by annotation type ["
+						+ AnnotationWithoutDefaults.class.getName() + "]")));
 		synthesizeAnnotation(attributes, AnnotationWithoutDefaults.class, null);
 	}
 

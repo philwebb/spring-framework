@@ -361,6 +361,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		if (!isPresent()) {
 			throw new NoSuchElementException("Unable to synthesize missing annotation");
 		}
+		checkAllAttributeValuesPresent();
 		A synthesized = this.synthesizedAnnotation;
 		if (synthesized == null) {
 			ClassLoader classLoader = getClassLoader();
@@ -374,6 +375,12 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 			this.synthesizedAnnotation = synthesized;
 		}
 		return synthesized;
+	}
+
+	private void checkAllAttributeValuesPresent() {
+		for (AttributeType attributeType : getAnnotationType().getAttributeTypes()) {
+			getRequiredValue(attributeType.getAttributeName(), Object.class);
+		}
 	}
 
 	private <T> T getRequiredValue(String attributeName, Class<T> type) {
@@ -403,6 +410,10 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		Object value = getAttributeValue(attributeName);
 		if (value == null) {
 			value = attributeType.getDefaultValue();
+		}
+		if (value == null && required) {
+			throw new NoSuchElementException("No value found for attribute named '"
+					+ attributeName + "' in merged annotation " + getType());
 		}
 		return (T) adapt(value, attributeType, type);
 	}
@@ -577,8 +588,8 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		AttributeType attributeType = isFiltered(attributeName) ? null
 				: getAnnotationType().getAttributeTypes().get(attributeName);
 		if (attributeType == null && required) {
-			throw new NoSuchElementException(
-					"No attribute named '" + attributeName + "' present");
+			throw new NoSuchElementException("No attribute named '" + attributeName
+					+ "' present in merged annotation " + getType());
 		}
 		return attributeType;
 	}

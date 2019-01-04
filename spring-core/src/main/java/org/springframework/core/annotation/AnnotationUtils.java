@@ -23,6 +23,7 @@ import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.springframework.core.BridgeMethodResolver;
@@ -1191,10 +1192,15 @@ public abstract class AnnotationUtils {
 		return MigrateMethod.from(()->
 			InternalAnnotationUtils.synthesizeAnnotation(attributes, annotationType,
 					annotatedElement)
-		).to(()->
-			MergedAnnotation.from(
-					annotatedElement, annotationType, attributes).synthesize()
-		);
+		).to(()-> {
+			try {
+				return MergedAnnotation.from(annotatedElement, annotationType,
+						attributes).synthesize();
+			}
+			catch (NoSuchElementException ex) {
+				throw new IllegalArgumentException(ex);
+			}
+		});
 	}
 
 	/**

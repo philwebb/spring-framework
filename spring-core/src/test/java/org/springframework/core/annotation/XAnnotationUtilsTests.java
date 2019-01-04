@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -981,45 +982,41 @@ public class XAnnotationUtilsTests {
 		assertThat(synthesized.characters()).containsExactly('a','b','c');
 	}
 
-	// FIXME
-
 	@Test
 	public void synthesizeAnnotationFromDefaultsWithAttributeAliases() throws Exception {
-		ContextConfig contextConfig = synthesizeAnnotation(ContextConfig.class);
-		assertNotNull(contextConfig);
-		assertEquals("value: ", "", contextConfig.value());
-		assertEquals("location: ", "", contextConfig.location());
+		MergedAnnotation<ContextConfig> annotation = MergedAnnotation.from(ContextConfig.class);
+		ContextConfig synthesized = annotation.synthesize();
+		assertThat(synthesized.value()).isEqualTo("");
+		assertThat(synthesized.location()).isEqualTo("");
 	}
 
 	@Test
 	public void synthesizeAnnotationWithAttributeAliasesWithDifferentValues() throws Exception {
-		exception.expect(AnnotationConfigurationException.class);
-		ContextConfig contextConfig = synthesizeAnnotation(ContextConfigMismatch.class.getAnnotation(ContextConfig.class));
-		getValue(contextConfig);
+		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
+				() -> MergedAnnotation.from(ContextConfigMismatch.class.getAnnotation(
+						ContextConfig.class)).synthesize());
 	}
 
 	@Test
 	public void synthesizeAnnotationFromMapWithMinimalAttributesWithAttributeAliases() throws Exception {
 		Map<String, Object> map = Collections.singletonMap("location", "test.xml");
-		ContextConfig contextConfig = synthesizeAnnotation(map, ContextConfig.class, null);
-		assertNotNull(contextConfig);
-		assertEquals("value: ", "test.xml", contextConfig.value());
-		assertEquals("location: ", "test.xml", contextConfig.location());
+		MergedAnnotation<ContextConfig> annotation = MergedAnnotation.from(ContextConfig.class, map);
+		ContextConfig synthesized = annotation.synthesize();
+		assertThat(synthesized.value()).isEqualTo("test.xml");
+		assertThat(synthesized.location()).isEqualTo("test.xml");
 	}
 
 	@Test
 	public void synthesizeAnnotationFromMapWithAttributeAliasesThatOverrideArraysWithSingleElements() throws Exception {
-		Map<String, Object> map = Collections.singletonMap("value", "/foo");
-		Get get = synthesizeAnnotation(map, Get.class, null);
-		assertNotNull(get);
-		assertEquals("value: ", "/foo", get.value());
-		assertEquals("path: ", "/foo", get.path());
+		synthesizeAnnotationFromMapWithAttributeAliasesThatOverrideArraysWithSingleElements(Collections.singletonMap("value", "/foo"));
+		synthesizeAnnotationFromMapWithAttributeAliasesThatOverrideArraysWithSingleElements(Collections.singletonMap("path", "/foo"));
+	}
 
-		map = Collections.singletonMap("path", "/foo");
-		get = synthesizeAnnotation(map, Get.class, null);
-		assertNotNull(get);
-		assertEquals("value: ", "/foo", get.value());
-		assertEquals("path: ", "/foo", get.path());
+	private void synthesizeAnnotationFromMapWithAttributeAliasesThatOverrideArraysWithSingleElements(Map<String, Object> map) {
+		MergedAnnotation<Get> annotation = MergedAnnotation.from(Get.class, map);
+		Get synthesized = annotation.synthesize();
+		assertThat(synthesized.value()).isEqualTo("/foo");
+		assertThat(synthesized.path()).isEqualTo("/foo");
 	}
 
 	@Test
@@ -1034,14 +1031,14 @@ public class XAnnotationUtilsTests {
 
 	private void assertAnnotationSynthesisFromMapWithImplicitAliases(String attributeNameAndValue) throws Exception {
 		Map<String, Object> map = Collections.singletonMap(attributeNameAndValue, attributeNameAndValue);
-		ImplicitAliasesContextConfig config = synthesizeAnnotation(map, ImplicitAliasesContextConfig.class, null);
-		assertNotNull(config);
-		assertEquals("value: ", attributeNameAndValue, config.value());
-		assertEquals("location1: ", attributeNameAndValue, config.location1());
-		assertEquals("location2: ", attributeNameAndValue, config.location2());
-		assertEquals("location3: ", attributeNameAndValue, config.location3());
-		assertEquals("xmlFile: ", attributeNameAndValue, config.xmlFile());
-		assertEquals("groovyScript: ", attributeNameAndValue, config.groovyScript());
+		MergedAnnotation<ImplicitAliasesContextConfig> annotation = MergedAnnotation.from(ImplicitAliasesContextConfig.class, map);
+		ImplicitAliasesContextConfig synthesized = annotation.synthesize();
+		assertThat(synthesized.value()).isEqualTo(attributeNameAndValue);
+		assertThat(synthesized.location1()).isEqualTo(attributeNameAndValue);
+		assertThat(synthesized.location2()).isEqualTo(attributeNameAndValue);
+		assertThat(synthesized.location2()).isEqualTo(attributeNameAndValue);
+		assertThat(synthesized.xmlFile()).isEqualTo(attributeNameAndValue);
+		assertThat(synthesized.groovyScript()).isEqualTo(attributeNameAndValue);
 	}
 
 	@Test
@@ -1052,17 +1049,20 @@ public class XAnnotationUtilsTests {
 	@Test
 	public void synthesizeAnnotationFromMapWithNullAttributeValue() throws Exception {
 		Map<String, Object> map = Collections.singletonMap("text", null);
-		assertTrue(map.containsKey("text"));
+		assertThat(map).containsKey("text");
 		assertMissingTextAttribute(map);
 	}
 
 	private void assertMissingTextAttribute(Map<String, Object> attributes) {
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage(startsWith("Attributes map"));
-		exception.expectMessage(containsString("returned null for required attribute 'text'"));
-		exception.expectMessage(containsString("defined by annotation type [" + AnnotationWithoutDefaults.class.getName() + "]"));
-		synthesizeAnnotation(attributes, AnnotationWithoutDefaults.class, null);
+		assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(() -> {
+			MergedAnnotation<AnnotationWithoutDefaults> annotation = MergedAnnotation.from(
+					AnnotationWithoutDefaults.class, attributes);
+			annotation.synthesize();
+		}).withMessage("No value found for attribute named 'text' in merged annotation "
+				+ AnnotationWithoutDefaults.class.getName());
 	}
+
+	//FIXME
 
 	@Test
 	public void synthesizeAnnotationFromMapWithAttributeOfIncorrectType() throws Exception {
