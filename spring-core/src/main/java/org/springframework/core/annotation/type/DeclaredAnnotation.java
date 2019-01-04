@@ -18,6 +18,8 @@ package org.springframework.core.annotation.type;
 
 import java.lang.annotation.Annotation;
 
+import org.springframework.util.Assert;
+
 /**
  * An annotation directly declared on a a source. Similar to Java's
  * {@link Annotation} type, but may be backed by something that doesn't
@@ -62,6 +64,19 @@ public interface DeclaredAnnotation {
 	 */
 	static DeclaredAnnotation from(Annotation annotation) {
 		return new StandardDeclaredAnnotation(annotation);
+	}
+
+	/**
+	 * Create a new in-memory {@link DeclaredAnnotation} with the specific
+	 * values.
+	 * @param annotationType the type of the declared annotation
+	 * @param attributes the annotation attributes
+	 * @return a new {@link DeclaredAnnotation} instance
+	 */
+	static DeclaredAnnotation of(Class<? extends Annotation> annotationType,
+			DeclaredAttributes attributes) {
+		Assert.notNull(annotationType, "AnnotationType must not be null");
+		return of(annotationType.getName(), attributes);
 	}
 
 	/**

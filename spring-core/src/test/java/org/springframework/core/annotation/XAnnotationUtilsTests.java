@@ -25,8 +25,10 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.Before;
@@ -36,8 +38,11 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import org.springframework.core.Ordered;
+import org.springframework.core.annotation.MergedAnnotation.MapValues;
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.core.annotation.subpackage.NonPublicAnnotatedClass;
+import org.springframework.core.annotation.type.DeclaredAnnotation;
+import org.springframework.core.annotation.type.DeclaredAttributes;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ClassUtils;
@@ -76,7 +81,6 @@ import static org.springframework.core.annotation.AnnotationUtils.synthesizeAnno
  * @author Oleg Zhurakousky
  */
 @SuppressWarnings("deprecation")
-@Ignore
 public class XAnnotationUtilsTests {
 
 	@Rule
@@ -920,83 +924,69 @@ public class XAnnotationUtilsTests {
 	@Test
 	public void synthesizeAnnotationFromMapWithoutAttributeAliases() throws Exception {
 		Component component = WebController.class.getAnnotation(Component.class);
-		assertNotNull(component);
-
+		assertThat(component).isNotNull();
 		Map<String, Object> map = Collections.singletonMap(VALUE, "webController");
-		Component synthesizedComponent = synthesizeAnnotation(map, Component.class, WebController.class);
-		assertNotNull(synthesizedComponent);
-
-		assertNotSame(component, synthesizedComponent);
-		assertEquals("value from component: ", "webController", component.value());
-		assertEquals("value from synthesized component: ", "webController", synthesizedComponent.value());
+		MergedAnnotation<Component> annotation = MergedAnnotation.from(DeclaredAnnotation.of(Component.class, DeclaredAttributes.from(map)));
+		Component synthesizedComponent = annotation.synthesize();
+		assertThat(synthesizedComponent).isInstanceOf(SynthesizedAnnotation.class);
+		assertThat(synthesizedComponent.value()).isEqualTo("webController");
 	}
 
 	@Test
 	@SuppressWarnings("unchecked")
 	public void synthesizeAnnotationFromMapWithNestedMap() throws Exception {
 		ComponentScanSingleFilter componentScan = ComponentScanSingleFilterClass.class.getAnnotation(ComponentScanSingleFilter.class);
-		assertNotNull(componentScan);
-		assertEquals("value from ComponentScan: ", "*Foo", componentScan.value().pattern());
-
-		AnnotationAttributes attributes = getAnnotationAttributes(
-				ComponentScanSingleFilterClass.class, componentScan, false, true);
-		assertNotNull(attributes);
-		assertEquals(ComponentScanSingleFilter.class, attributes.annotationType());
-
-		Map<String, Object> filterMap = (Map<String, Object>) attributes.get("value");
-		assertNotNull(filterMap);
-		assertEquals("*Foo", filterMap.get("pattern"));
-
-		// Modify nested map
+		assertThat(componentScan).isNotNull();
+		assertThat(componentScan.value().pattern()).isEqualTo("*Foo");
+		Map<String, Object> map = MergedAnnotation.of(componentScan).asMap(
+				annotation -> new LinkedHashMap<String, Object>(),
+				MapValues.ANNOTATION_TO_MAP);
+		Map<String, Object> filterMap = (Map<String, Object>) map.get("value");
+		assertThat(filterMap.get("pattern")).isEqualTo("*Foo");
 		filterMap.put("pattern", "newFoo");
 		filterMap.put("enigma", 42);
-
-		ComponentScanSingleFilter synthesizedComponentScan = synthesizeAnnotation(
-				attributes, ComponentScanSingleFilter.class, ComponentScanSingleFilterClass.class);
-		assertNotNull(synthesizedComponentScan);
-
-		assertNotSame(componentScan, synthesizedComponentScan);
-		assertEquals("value from synthesized ComponentScan: ", "newFoo", synthesizedComponentScan.value().pattern());
+		MergedAnnotation<ComponentScanSingleFilter> annotation = MergedAnnotation.from(
+				DeclaredAnnotation.of(ComponentScanSingleFilter.class,
+						DeclaredAttributes.from(map)));
+		ComponentScanSingleFilter synthesizedComponentScan = annotation.synthesize();
+		assertThat(synthesizedComponentScan).isInstanceOf(SynthesizedAnnotation.class);
+		assertThat(synthesizedComponentScan.value().pattern()).isEqualTo("newFoo");
 	}
 
 	@Test
 	@SuppressWarnings("unchecked")
 	public void synthesizeAnnotationFromMapWithNestedArrayOfMaps() throws Exception {
 		ComponentScan componentScan = ComponentScanClass.class.getAnnotation(ComponentScan.class);
-		assertNotNull(componentScan);
-
-		AnnotationAttributes attributes = getAnnotationAttributes(ComponentScanClass.class, componentScan, false, true);
-		assertNotNull(attributes);
-		assertEquals(ComponentScan.class, attributes.annotationType());
-
-		Map<String, Object>[] filters = (Map[]) attributes.get("excludeFilters");
-		assertNotNull(filters);
-
-		List<String> patterns = stream(filters).map(m -> (String) m.get("pattern")).collect(toList());
-		assertEquals(asList("*Foo", "*Bar"), patterns);
-
-		// Modify nested maps
+		assertThat(componentScan).isNotNull();
+		Map<String, Object> map = MergedAnnotation.of(componentScan).asMap(
+				annotation -> new LinkedHashMap<String, Object>(),
+				MapValues.ANNOTATION_TO_MAP);
+		Map<String, Object>[] filters = (Map[]) map.get("excludeFilters");
+		List<String> patterns = stream(filters).map(m -> (String) m.get("pattern")).collect(Collectors.toList());
+		assertThat(patterns).containsExactly("*Foo", "*Bar");
 		filters[0].put("pattern", "newFoo");
 		filters[0].put("enigma", 42);
 		filters[1].put("pattern", "newBar");
 		filters[1].put("enigma", 42);
-
-		ComponentScan synthesizedComponentScan = synthesizeAnnotation(attributes, ComponentScan.class, ComponentScanClass.class);
-		assertNotNull(synthesizedComponentScan);
-
-		assertNotSame(componentScan, synthesizedComponentScan);
-		patterns = stream(synthesizedComponentScan.excludeFilters()).map(Filter::pattern).collect(toList());
-		assertEquals(asList("newFoo", "newBar"), patterns);
+		MergedAnnotation<ComponentScan> annotation = MergedAnnotation.from(
+				DeclaredAnnotation.of(ComponentScan.class,
+						DeclaredAttributes.from(map)));
+		ComponentScan synthesizedComponentScan = annotation.synthesize();
+		assertThat(synthesizedComponentScan).isInstanceOf(SynthesizedAnnotation.class);
+		assertThat(Arrays.stream(synthesizedComponentScan.excludeFilters()).map(
+				Filter::pattern)).containsExactly("newFoo", "newBar");
 	}
 
 	@Test
 	public void synthesizeAnnotationFromDefaultsWithoutAttributeAliases() throws Exception {
-		AnnotationWithDefaults annotationWithDefaults = synthesizeAnnotation(AnnotationWithDefaults.class);
-		assertNotNull(annotationWithDefaults);
-		assertEquals("text: ", "enigma", annotationWithDefaults.text());
-		assertTrue("predicate: ", annotationWithDefaults.predicate());
-		assertArrayEquals("characters: ", new char[] { 'a', 'b', 'c' }, annotationWithDefaults.characters());
+		MergedAnnotation<AnnotationWithDefaults> annotation = MergedAnnotation.of(AnnotationWithDefaults.class);
+		AnnotationWithDefaults synthesized = annotation.synthesize();
+		assertThat(synthesized.text()).isEqualTo("enigma");
+		assertThat(synthesized.predicate()).isTrue();
+		assertThat(synthesized.characters()).containsExactly('a','b','c');
 	}
+
+	// FIXME
 
 	@Test
 	public void synthesizeAnnotationFromDefaultsWithAttributeAliases() throws Exception {

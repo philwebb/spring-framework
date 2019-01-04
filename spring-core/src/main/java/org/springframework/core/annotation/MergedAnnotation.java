@@ -461,6 +461,8 @@ public interface MergedAnnotation<A extends Annotation> {
 		return MissingMergedAnnotation.getInstance();
 	}
 
+	// FIXME should of be from ?
+
 	/**
 	 * Create a new {@link MergedAnnotation} instance containing the specified
 	 * annotation.
