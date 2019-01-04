@@ -20,7 +20,6 @@ import java.util.Iterator;
 import java.util.function.BiConsumer;
 
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
 /**
  * Shared {@code toString} code for annotations.

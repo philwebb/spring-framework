@@ -18,6 +18,8 @@ package org.springframework.core.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -94,6 +96,11 @@ public class SynthesizedMergedAnnotationInvocationHandlerTests {
 				+ "stringArrayValue=[string], classArrayValue=[java.lang.CharSequence], "
 				+ "enumArrayValue=[ONE], "
 				+ "annotationArrayValue=[@org.springframework.core.annotation.SynthesizedMergedAnnotationInvocationHandlerTests$NestedAnnotation(value=n)])");
+		TestAnnotation java = WithTestAnnotation.class.getDeclaredAnnotation(
+				TestAnnotation.class);
+		List<String> javaToStringParts = Arrays.asList(java.toString().replace("interface ", "").split(", "));
+		List<String> springToStringParts = Arrays.asList(synthesized.toString().split(", "));
+		assertThat(springToStringParts).hasSameElementsAs(javaToStringParts);
 	}
 
 	@Test

@@ -638,12 +638,19 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 			content.append("[");
 			for (int i = 0; i < Array.getLength(value); i++) {
 				content.append(i > 0 ? ", " : "");
-				content.append(Array.get(value, i));
+				content.append(toStringForValue(Array.get(value, i)));
 			}
 			content.append("]");
 			value = content.toString();
 		}
-		return (value != null) ? name + "=" + value : "";
+		return (value != null) ? name + "=" + toStringForValue(value) : "";
+	}
+
+	private String toStringForValue(Object value) {
+		if (value instanceof Class) {
+			return ((Class<?>) value).getName();
+		}
+		return String.valueOf(value);
 	}
 
 	/**
