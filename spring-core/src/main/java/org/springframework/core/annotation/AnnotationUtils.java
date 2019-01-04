@@ -124,7 +124,7 @@ public abstract class AnnotationUtils {
 		return MigrateMethod.from(() ->
 			InternalAnnotationUtils.getAnnotation(annotation, annotationType)
 		).to(() ->
-			MergedAnnotations.of(annotation).get(
+			MergedAnnotations.from(annotation).get(
 					annotationType).withNonMergedAttributes().synthesize(
 							AnnotationUtils::isSingleLevelPresent).orElse(null)
 		);
@@ -873,7 +873,7 @@ public abstract class AnnotationUtils {
 			InternalAnnotationUtils.getAnnotationAttributes(annotatedElement,
 					annotation, classValuesAsString, nestedAnnotationsAsMap)
 		).to(() ->
-			MergedAnnotation.of(annotatedElement, annotation).withNonMergedAttributes().asMap(
+			MergedAnnotation.from(annotatedElement, annotation).withNonMergedAttributes().asMap(
 						merged -> new AnnotationAttributes(annotation.annotationType(), true),
 						MapValues.of(classValuesAsString, nestedAnnotationsAsMap))
 		);
@@ -1099,7 +1099,7 @@ public abstract class AnnotationUtils {
 			if (annotationType == null || !StringUtils.hasText(attributeName)) {
 				return null;
 			}
-			return MergedAnnotation.of(annotationType).getDefaultValue(attributeName).orElse(null);
+			return MergedAnnotation.from(annotationType).getDefaultValue(attributeName).orElse(null);
 		});
 	}
 
@@ -1147,7 +1147,7 @@ public abstract class AnnotationUtils {
 		return MigrateMethod.from(()->
 			InternalAnnotationUtils.synthesizeAnnotation(annotation, annotatedElement)
 		).withSkippedOriginalExceptionCheck().to(() ->
-			MergedAnnotation.of(annotatedElement, annotation).synthesize()
+			MergedAnnotation.from(annotatedElement, annotation).synthesize()
 		);
 	}
 
@@ -1193,10 +1193,11 @@ public abstract class AnnotationUtils {
 			InternalAnnotationUtils.synthesizeAnnotation(attributes, annotationType,
 					annotatedElement)
 		).to(()-> {
-			DeclaredAnnotation annotation = DeclaredAnnotation.of(
-					annotationType.getName(), DeclaredAttributes.from(attributes));
-			return MergedAnnotation.<A> from(annotationType.getClassLoader(),
-					annotatedElement, annotation).synthesize();
+			MergedAnnotation<A> annotation = MergedAnnotation.of(
+					annotationType.getClassLoader(), annotatedElement,
+					DeclaredAnnotation.of(annotationType,
+							DeclaredAttributes.from(attributes)));
+			return annotation.synthesize();
 		});
 	}
 

@@ -1164,15 +1164,15 @@ public class TypeMappedAnnotationTests {
 	}
 
 	@Test
-	public void ofAnnotationTypeWhenAnnotationTypeIsNullThrowsException() {
+	public void fromAnnotationTypeWhenAnnotationTypeIsNullThrowsException() {
 		assertThatIllegalArgumentException().isThrownBy(
-				() -> TypeMappedAnnotation.of((Class<Annotation>) null)).withMessage(
+				() -> TypeMappedAnnotation.from((Class<Annotation>) null)).withMessage(
 						"AnnotationType must not be null");
 	}
 
 	@Test
-	public void ofAnnotationTypeReturnsAnnotation() {
-		TypeMappedAnnotation<?> annotation = TypeMappedAnnotation.of(
+	public void fromAnnotationTypeReturnsAnnotation() {
+		TypeMappedAnnotation<?> annotation = TypeMappedAnnotation.from(
 				AnnotationTypeAnnotation.class);
 		assertThat(annotation.getType()).isEqualTo(
 				AnnotationTypeAnnotation.class.getName());
@@ -1185,15 +1185,15 @@ public class TypeMappedAnnotationTests {
 	}
 
 	@Test
-	public void ofAnnotationWhenAnnotationIsNullThrowsException() {
+	public void fromAnnotationWhenAnnotationIsNullThrowsException() {
 		assertThatIllegalArgumentException().isThrownBy(
-				() -> TypeMappedAnnotation.of(null, (Annotation) null)).withMessage(
+				() -> TypeMappedAnnotation.from(null, (Annotation) null)).withMessage(
 						"Annotation must not be null");
 	}
 
 	@Test
-	public void ofAnnotationReturnsAnnotation() {
-		TypeMappedAnnotation<?> annotation = TypeMappedAnnotation.of(
+	public void fromAnnotationReturnsAnnotation() {
+		TypeMappedAnnotation<?> annotation = TypeMappedAnnotation.from(
 				WithAnnotationTypeAnnotation.class,
 				WithAnnotationTypeAnnotation.class.getDeclaredAnnotation(
 						AnnotationTypeAnnotation.class));

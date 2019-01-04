@@ -518,7 +518,7 @@ public class XAnnotationUtilsTests {
 		Annotation[] declaredAnnotations = NonPublicAnnotatedClass.class.getDeclaredAnnotations();
 		assertEquals(1, declaredAnnotations.length);
 		Annotation annotation = declaredAnnotations[0];
-		MergedAnnotation<Annotation> mergedAnnotation = MergedAnnotation.of(annotation);
+		MergedAnnotation<Annotation> mergedAnnotation = MergedAnnotation.from(annotation);
 		assertThat(mergedAnnotation.getType()).contains("NonPublicAnnotation");
 		assertThat(mergedAnnotation.synthesize().annotationType().getSimpleName()).isEqualTo("NonPublicAnnotation");
 		assertThat(mergedAnnotation.getInt("value")).isEqualTo(42);
@@ -537,14 +537,14 @@ public class XAnnotationUtilsTests {
 		Annotation[] declaredAnnotations = NonPublicAnnotatedClass.class.getDeclaredAnnotations();
 		assertEquals(1, declaredAnnotations.length);
 		Annotation declaredAnnotation = declaredAnnotations[0];
-		MergedAnnotation<?> annotation = MergedAnnotation.of(declaredAnnotation);
+		MergedAnnotation<?> annotation = MergedAnnotation.from(declaredAnnotation);
 		assertThat(annotation.getType()).isEqualTo("org.springframework.core.annotation.subpackage.NonPublicAnnotation");
 		assertThat(annotation.getDefaultValue("value")).contains(-1);
 	}
 
 	@Test
 	public void getDefaultValueFromAnnotationType() {
-		MergedAnnotation<?> annotation = MergedAnnotation.of(Order.class);
+		MergedAnnotation<?> annotation = MergedAnnotation.from(Order.class);
 		assertThat(annotation.getDefaultValue("value")).contains(Ordered.LOWEST_PRECEDENCE);
 	}
 
@@ -679,7 +679,7 @@ public class XAnnotationUtilsTests {
 	public void synthesizeAnnotationWithoutAttributeAliases() throws Exception {
 		Component component = WebController.class.getAnnotation(Component.class);
 		assertThat(component).isNotNull();
-		Component synthesizedComponent = MergedAnnotation.of(component).synthesize();
+		Component synthesizedComponent = MergedAnnotation.from(component).synthesize();
 		assertThat(synthesizedComponent).isNotNull();
 		assertThat(synthesizedComponent).isEqualTo(component);
 		assertThat(synthesizedComponent.value()).isEqualTo("webController");
@@ -690,8 +690,8 @@ public class XAnnotationUtilsTests {
  		Method method = WebController.class.getMethod("handleMappedWithValueAttribute");
 		WebMapping webMapping = method.getAnnotation(WebMapping.class);
 		assertThat(webMapping).isNotNull();
-		WebMapping synthesizedWebMapping = MergedAnnotation.of(webMapping).synthesize();
-		WebMapping synthesizedAgainWebMapping = MergedAnnotation.of(synthesizedWebMapping).synthesize();
+		WebMapping synthesizedWebMapping = MergedAnnotation.from(webMapping).synthesize();
+		WebMapping synthesizedAgainWebMapping = MergedAnnotation.from(synthesizedWebMapping).synthesize();
 		assertThat(synthesizedWebMapping).isInstanceOf(SynthesizedAnnotation.class);
 		assertThat(synthesizedAgainWebMapping).isInstanceOf(SynthesizedAnnotation.class);
 		assertThat(synthesizedWebMapping).isEqualTo(synthesizedAgainWebMapping);
@@ -705,7 +705,7 @@ public class XAnnotationUtilsTests {
 		AliasForWithMissingAttributeDeclaration annotation = AliasForWithMissingAttributeDeclarationClass.class.getAnnotation(
 				AliasForWithMissingAttributeDeclaration.class);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
-				() -> MergedAnnotation.of(annotation)).withMessageStartingWith(
+				() -> MergedAnnotation.from(annotation)).withMessageStartingWith(
 						"@AliasFor declaration on attribute 'foo' in annotation").withMessageContaining(
 								AliasForWithMissingAttributeDeclaration.class.getName()).withMessageContaining(
 										"points to itself");
@@ -716,7 +716,7 @@ public class XAnnotationUtilsTests {
 		AliasForWithDuplicateAttributeDeclaration annotation = AliasForWithDuplicateAttributeDeclarationClass.class.getAnnotation(
 				AliasForWithDuplicateAttributeDeclaration.class);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
-				() -> MergedAnnotation.of(annotation)).withMessageStartingWith(
+				() -> MergedAnnotation.from(annotation)).withMessageStartingWith(
 						"In @AliasFor declared on attribute 'foo' in annotation").withMessageContaining(
 								AliasForWithDuplicateAttributeDeclaration.class.getName()).withMessageContaining(
 										"attribute 'attribute' and its alias 'value' are present with values of 'bar' and 'baz'");
@@ -727,7 +727,7 @@ public class XAnnotationUtilsTests {
 		AliasForNonexistentAttribute annotation = AliasForNonexistentAttributeClass.class.getAnnotation(
 				AliasForNonexistentAttribute.class);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
-				() -> MergedAnnotation.of(annotation)).withMessageStartingWith(
+				() -> MergedAnnotation.from(annotation)).withMessageStartingWith(
 						"@AliasFor declaration on attribute 'foo' in annotation").withMessageContaining(
 								AliasForNonexistentAttribute.class.getName()).withMessageContaining(
 										"declares an alias for 'bar' which is not present");
@@ -738,7 +738,7 @@ public class XAnnotationUtilsTests {
 		AliasForWithoutMirroredAliasFor annotation = AliasForWithoutMirroredAliasForClass.class.getAnnotation(
 				AliasForWithoutMirroredAliasFor.class);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
-				() -> MergedAnnotation.of(annotation)).withMessageStartingWith(
+				() -> MergedAnnotation.from(annotation)).withMessageStartingWith(
 						"Attribute 'bar' in").withMessageContaining(
 								AliasForWithoutMirroredAliasFor.class.getName()).withMessageContaining(
 										"@AliasFor 'foo'");
@@ -749,7 +749,7 @@ public class XAnnotationUtilsTests {
 		AliasForWithMirroredAliasForWrongAttribute annotation = AliasForWithMirroredAliasForWrongAttributeClass.class.getAnnotation(
 				AliasForWithMirroredAliasForWrongAttribute.class);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
-				() -> MergedAnnotation.of(annotation)).withMessageStartingWith(
+				() -> MergedAnnotation.from(annotation)).withMessageStartingWith(
 						"Attribute 'bar' in").withMessageContaining(
 								AliasForWithMirroredAliasForWrongAttribute.class.getName()).withMessageContaining(
 										"must be declared as an @AliasFor 'foo', not attribute 'quux'");
@@ -760,7 +760,7 @@ public class XAnnotationUtilsTests {
 		AliasForAttributeOfDifferentType annotation = AliasForAttributeOfDifferentTypeClass.class.getAnnotation(
 				AliasForAttributeOfDifferentType.class);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
-				() -> MergedAnnotation.of(annotation)).withMessageStartingWith(
+				() -> MergedAnnotation.from(annotation)).withMessageStartingWith(
 						"Misconfigured aliases").withMessageContaining(
 								AliasForAttributeOfDifferentType.class.getName()).withMessageContaining(
 										"attribute 'foo'").withMessageContaining(
@@ -773,7 +773,7 @@ public class XAnnotationUtilsTests {
 		AliasForWithMissingDefaultValues annotation =
 				AliasForWithMissingDefaultValuesClass.class.getAnnotation(AliasForWithMissingDefaultValues.class);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
-				() -> MergedAnnotation.of(annotation)).withMessageStartingWith(
+				() -> MergedAnnotation.from(annotation)).withMessageStartingWith(
 						"Misconfigured aliases").withMessageContaining(
 		AliasForWithMissingDefaultValues.class.getName()).withMessageContaining(
 		"attribute 'foo' in annotation").withMessageContaining(
@@ -786,7 +786,7 @@ public class XAnnotationUtilsTests {
 		AliasForAttributeWithDifferentDefaultValue annotation =
 				AliasForAttributeWithDifferentDefaultValueClass.class.getAnnotation(AliasForAttributeWithDifferentDefaultValue.class);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
-				() -> MergedAnnotation.of(annotation)).withMessageStartingWith("Misconfigured aliases").withMessageContaining(
+				() -> MergedAnnotation.from(annotation)).withMessageStartingWith("Misconfigured aliases").withMessageContaining(
 		AliasForAttributeWithDifferentDefaultValue.class.getName()).withMessageContaining(
 		"attribute 'foo' in annotation").withMessageContaining(
 				"attribute 'bar' in annotation").withMessageContaining(
@@ -799,7 +799,7 @@ public class XAnnotationUtilsTests {
 		AliasedComposedContextConfigNotMetaPresent annotation = AliasedComposedContextConfigNotMetaPresentClass.class.getAnnotation(
 				AliasedComposedContextConfigNotMetaPresent.class);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
-				() -> MergedAnnotation.of(annotation)).withMessageStartingWith(
+				() -> MergedAnnotation.from(annotation)).withMessageStartingWith(
 						"@AliasFor declaration on attribute 'xmlConfigFile' in annotation").withMessageContaining(
 								AliasedComposedContextConfigNotMetaPresent.class.getName()).withMessageContaining(
 										"declares an alias for attribute 'location' in annotation").withMessageContaining(
@@ -818,7 +818,7 @@ public class XAnnotationUtilsTests {
 	private void assertAnnotationSynthesisWithImplicitAliases(Class<?> clazz, String expected) throws Exception {
 		ImplicitAliasesContextConfig config = clazz.getAnnotation(ImplicitAliasesContextConfig.class);
 		assertThat(config).isNotNull();
-		ImplicitAliasesContextConfig synthesized = MergedAnnotation.of(config).synthesize();
+		ImplicitAliasesContextConfig synthesized = MergedAnnotation.from(config).synthesize();
 		assertThat(synthesized).isInstanceOf(SynthesizedAnnotation.class);
 		assertThat(synthesized.value()).isEqualTo(expected);
 		assertThat(synthesized.location1()).isEqualTo(expected);
@@ -842,7 +842,7 @@ public class XAnnotationUtilsTests {
 				ImplicitAliasesWithImpliedAliasNamesOmittedContextConfig.class);
 		assertThat(config).isNotNull();
 		ImplicitAliasesWithImpliedAliasNamesOmittedContextConfig synthesized =
-				MergedAnnotation.of(config).synthesize();
+				MergedAnnotation.from(config).synthesize();
 		assertThat(synthesized).isInstanceOf(SynthesizedAnnotation.class);
 		assertThat(synthesized.value()).isEqualTo(expected);
 		assertThat(synthesized.location()).isEqualTo(expected);
@@ -852,7 +852,7 @@ public class XAnnotationUtilsTests {
 	@Test
 	public void synthesizeAnnotationWithImplicitAliasesForAliasPair() throws Exception {
 		ImplicitAliasesForAliasPairContextConfig config = ImplicitAliasesForAliasPairContextConfigClass.class.getAnnotation(ImplicitAliasesForAliasPairContextConfig.class);
-		ImplicitAliasesForAliasPairContextConfig synthesized = MergedAnnotation.of(config).synthesize();
+		ImplicitAliasesForAliasPairContextConfig synthesized = MergedAnnotation.from(config).synthesize();
 		assertThat(synthesized).isInstanceOf(SynthesizedAnnotation.class);
 		assertThat(synthesized.xmlFile()).isEqualTo("test.xml");
 		assertThat(synthesized.groovyScript()).isEqualTo("test.xml");
@@ -861,7 +861,7 @@ public class XAnnotationUtilsTests {
 	@Test
 	public void synthesizeAnnotationWithTransitiveImplicitAliases() throws Exception {
 		TransitiveImplicitAliasesContextConfig config = TransitiveImplicitAliasesContextConfigClass.class.getAnnotation(TransitiveImplicitAliasesContextConfig.class);
-		TransitiveImplicitAliasesContextConfig synthesized = MergedAnnotation.of(config).synthesize();
+		TransitiveImplicitAliasesContextConfig synthesized = MergedAnnotation.from(config).synthesize();
 		assertThat(synthesized).isInstanceOf(SynthesizedAnnotation.class);
 		assertThat(synthesized.xml()).isEqualTo("test.xml");
 		assertThat(synthesized.groovy()).isEqualTo("test.xml");
@@ -870,7 +870,7 @@ public class XAnnotationUtilsTests {
 	@Test
 	public void synthesizeAnnotationWithTransitiveImplicitAliasesForAliasPair() throws Exception {
 		TransitiveImplicitAliasesForAliasPairContextConfig config = TransitiveImplicitAliasesForAliasPairContextConfigClass.class.getAnnotation(TransitiveImplicitAliasesForAliasPairContextConfig.class);
-		TransitiveImplicitAliasesForAliasPairContextConfig synthesized = MergedAnnotation.of(config).synthesize();
+		TransitiveImplicitAliasesForAliasPairContextConfig synthesized = MergedAnnotation.from(config).synthesize();
 		assertThat(synthesized).isInstanceOf(SynthesizedAnnotation.class);
 		assertThat(synthesized.xml()).isEqualTo("test.xml");
 		assertThat(synthesized.groovy()).isEqualTo("test.xml");
@@ -883,7 +883,7 @@ public class XAnnotationUtilsTests {
 		ImplicitAliasesWithMissingDefaultValuesContextConfig config = clazz.getAnnotation(
 				annotationType);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
-				() -> MergedAnnotation.of(clazz, config)).withMessageStartingWith(
+				() -> MergedAnnotation.from(clazz, config)).withMessageStartingWith(
 						"Misconfigured aliases:").withMessageContaining(
 								"attribute 'location1' in annotation ["
 										+ annotationType.getName()
@@ -900,7 +900,7 @@ public class XAnnotationUtilsTests {
 		Class<ImplicitAliasesWithDifferentDefaultValuesContextConfig> annotationType = ImplicitAliasesWithDifferentDefaultValuesContextConfig.class;
 		ImplicitAliasesWithDifferentDefaultValuesContextConfig config = clazz.getAnnotation(annotationType);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
-				() -> MergedAnnotation.of(clazz, config)).withMessageStartingWith(
+				() -> MergedAnnotation.from(clazz, config)).withMessageStartingWith(
 						"Misconfigured aliases:").withMessageContaining(
 								"attribute 'location1' in annotation ["
 										+ annotationType.getName()
@@ -917,7 +917,7 @@ public class XAnnotationUtilsTests {
 		Class<ImplicitAliasesWithDuplicateValuesContextConfig> annotationType = ImplicitAliasesWithDuplicateValuesContextConfig.class;
 		ImplicitAliasesWithDuplicateValuesContextConfig config = clazz.getAnnotation(annotationType);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
-				() -> MergedAnnotation.of(clazz, config)).withMessageStartingWith(
+				() -> MergedAnnotation.from(clazz, config)).withMessageStartingWith(
 						"Different @AliasFor mirror values for annotation").withMessageContaining(annotationType.getName()).withMessageContaining("declared on class").withMessageContaining(clazz.getName()).withMessageContaining("are declared with values of");
 	}
 
@@ -926,7 +926,7 @@ public class XAnnotationUtilsTests {
 		Component component = WebController.class.getAnnotation(Component.class);
 		assertThat(component).isNotNull();
 		Map<String, Object> map = Collections.singletonMap(VALUE, "webController");
-		MergedAnnotation<Component> annotation = MergedAnnotation.from(DeclaredAnnotation.of(Component.class, DeclaredAttributes.from(map)));
+		MergedAnnotation<Component> annotation = MergedAnnotation.of(DeclaredAnnotation.of(Component.class, DeclaredAttributes.from(map)));
 		Component synthesizedComponent = annotation.synthesize();
 		assertThat(synthesizedComponent).isInstanceOf(SynthesizedAnnotation.class);
 		assertThat(synthesizedComponent.value()).isEqualTo("webController");
@@ -938,14 +938,14 @@ public class XAnnotationUtilsTests {
 		ComponentScanSingleFilter componentScan = ComponentScanSingleFilterClass.class.getAnnotation(ComponentScanSingleFilter.class);
 		assertThat(componentScan).isNotNull();
 		assertThat(componentScan.value().pattern()).isEqualTo("*Foo");
-		Map<String, Object> map = MergedAnnotation.of(componentScan).asMap(
+		Map<String, Object> map = MergedAnnotation.from(componentScan).asMap(
 				annotation -> new LinkedHashMap<String, Object>(),
 				MapValues.ANNOTATION_TO_MAP);
 		Map<String, Object> filterMap = (Map<String, Object>) map.get("value");
 		assertThat(filterMap.get("pattern")).isEqualTo("*Foo");
 		filterMap.put("pattern", "newFoo");
 		filterMap.put("enigma", 42);
-		MergedAnnotation<ComponentScanSingleFilter> annotation = MergedAnnotation.from(
+		MergedAnnotation<ComponentScanSingleFilter> annotation = MergedAnnotation.of(
 				DeclaredAnnotation.of(ComponentScanSingleFilter.class,
 						DeclaredAttributes.from(map)));
 		ComponentScanSingleFilter synthesizedComponentScan = annotation.synthesize();
@@ -958,7 +958,7 @@ public class XAnnotationUtilsTests {
 	public void synthesizeAnnotationFromMapWithNestedArrayOfMaps() throws Exception {
 		ComponentScan componentScan = ComponentScanClass.class.getAnnotation(ComponentScan.class);
 		assertThat(componentScan).isNotNull();
-		Map<String, Object> map = MergedAnnotation.of(componentScan).asMap(
+		Map<String, Object> map = MergedAnnotation.from(componentScan).asMap(
 				annotation -> new LinkedHashMap<String, Object>(),
 				MapValues.ANNOTATION_TO_MAP);
 		Map<String, Object>[] filters = (Map[]) map.get("excludeFilters");
@@ -968,7 +968,7 @@ public class XAnnotationUtilsTests {
 		filters[0].put("enigma", 42);
 		filters[1].put("pattern", "newBar");
 		filters[1].put("enigma", 42);
-		MergedAnnotation<ComponentScan> annotation = MergedAnnotation.from(
+		MergedAnnotation<ComponentScan> annotation = MergedAnnotation.of(
 				DeclaredAnnotation.of(ComponentScan.class,
 						DeclaredAttributes.from(map)));
 		ComponentScan synthesizedComponentScan = annotation.synthesize();
@@ -979,7 +979,7 @@ public class XAnnotationUtilsTests {
 
 	@Test
 	public void synthesizeAnnotationFromDefaultsWithoutAttributeAliases() throws Exception {
-		MergedAnnotation<AnnotationWithDefaults> annotation = MergedAnnotation.of(AnnotationWithDefaults.class);
+		MergedAnnotation<AnnotationWithDefaults> annotation = MergedAnnotation.from(AnnotationWithDefaults.class);
 		AnnotationWithDefaults synthesized = annotation.synthesize();
 		assertThat(synthesized.text()).isEqualTo("enigma");
 		assertThat(synthesized.predicate()).isTrue();

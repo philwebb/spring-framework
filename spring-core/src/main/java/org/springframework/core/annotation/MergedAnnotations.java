@@ -210,56 +210,6 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	Stream<MergedAnnotation<Annotation>> stream();
 
 	/**
-	 * Create a new {@link MergedAnnotations} instance containing the specified
-	 * annotations.
-	 * @param annotations the annotations to include
-	 * @return a {@link MergedAnnotations} instance containing the annotations
-	 * @see #of(AnnotatedElement, Annotation...)
-	 * @see #from(AnnotatedElement)
-	 */
-	static MergedAnnotations of(Annotation... annotations) {
-		return of(null, annotations);
-	}
-
-	/**
-	 * Create a new {@link MergedAnnotations} instance containing the specified
-	 * annotations.
-	 * @param source the source for the annotations. This source is used only
-	 * for information and logging. It does not need to <em>actually</em>
-	 * contain the specified annotations and it will not be searched.
-	 * @param annotations the annotations to include
-	 * @return a {@link MergedAnnotations} instance containing the annotations
-	 * @see #of(Annotation...)
-	 * @see #from(AnnotatedElement)
-	 */
-	static MergedAnnotations of(@Nullable AnnotatedElement source,
-			Annotation... annotations) {
-		return of(RepeatableContainers.standardRepeatables(), AnnotationFilter.PLAIN,
-				source, annotations);
-	}
-
-	/**
-	 * Create a new {@link MergedAnnotations} instance containing the specified
-	 * annotations.
-	 * @param repeatableContainers the repeatable containers that may be used by
-	 * meta-annotations
-	 * @param annotationFilter an annotation filter used to restrict the
-	 * annotations considered. Note that the filter is used as a cache key so
-	 * should ideally be a shared singleton instance
-	 * @param source the source for the annotations. This source is used only
-	 * for information and logging. It does not need to <em>actually</em>
-	 * contain the specified annotations and it will not be searched.
-	 * @param annotations the annotations to include
-	 * @return a {@link MergedAnnotations} instance containing the annotations
-	 */
-	static MergedAnnotations of(RepeatableContainers repeatableContainers,
-			AnnotationFilter annotationFilter, @Nullable AnnotatedElement source,
-			Annotation... annotations) {
-		return TypeMappedAnnotations.of(repeatableContainers, annotationFilter, source,
-				annotations);
-	}
-
-	/**
 	 * Create a new {@link MergedAnnotations} instance containing all
 	 * annotations and meta-annotations from the specified element. The
 	 * resulting instance will not include any inherited annotations, if you
@@ -311,12 +261,62 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 		Assert.notNull(searchStrategy, "SearchStrategy must not be null");
 		Assert.notNull(element, "Element must not be null");
 		AnnotationsScanner annotations = new AnnotationsScanner(element, searchStrategy);
-		return from(repeatableContainers, annotationFilter, annotations);
+		return of(repeatableContainers, annotationFilter, annotations);
+	}
+
+	/**
+	 * Create a new {@link MergedAnnotations} instance from the specified
+	 * annotations.
+	 * @param annotations the annotations to include
+	 * @return a {@link MergedAnnotations} instance containing the annotations
+	 * @see #of(AnnotatedElement, Annotation...)
+	 * @see #from(AnnotatedElement)
+	 */
+	static MergedAnnotations from(Annotation... annotations) {
+		return from(null, annotations);
+	}
+
+	/**
+	 * Create a new {@link MergedAnnotations} instance from the specified
+	 * annotations.
+	 * @param source the source for the annotations. This source is used only
+	 * for information and logging. It does not need to <em>actually</em>
+	 * contain the specified annotations and it will not be searched.
+	 * @param annotations the annotations to include
+	 * @return a {@link MergedAnnotations} instance containing the annotations
+	 * @see #of(Annotation...)
+	 * @see #from(AnnotatedElement)
+	 */
+	static MergedAnnotations from(@Nullable AnnotatedElement source,
+			Annotation... annotations) {
+		return from(RepeatableContainers.standardRepeatables(), AnnotationFilter.PLAIN,
+				source, annotations);
+	}
+
+	/**
+	 * Create a new {@link MergedAnnotations} instance from the specified
+	 * annotations.
+	 * @param repeatableContainers the repeatable containers that may be used by
+	 * meta-annotations
+	 * @param annotationFilter an annotation filter used to restrict the
+	 * annotations considered. Note that the filter is used as a cache key so
+	 * should ideally be a shared singleton instance
+	 * @param source the source for the annotations. This source is used only
+	 * for information and logging. It does not need to <em>actually</em>
+	 * contain the specified annotations and it will not be searched.
+	 * @param annotations the annotations to include
+	 * @return a {@link MergedAnnotations} instance containing the annotations
+	 */
+	static MergedAnnotations from(RepeatableContainers repeatableContainers,
+			AnnotationFilter annotationFilter, @Nullable AnnotatedElement source,
+			Annotation... annotations) {
+		return TypeMappedAnnotations.from(repeatableContainers, annotationFilter, source,
+				annotations);
 	}
 
 	/**
 	 * Create a new {@link MergedAnnotations} instance containing all
-	 * annotations and meta-annotations from the specified aggregates.
+	 * annotations and meta-annotations of the specified aggregates.
 	 * @param repeatableContainers the repeatable containers that may be used by
 	 * the element annotations or the meta-annotations
 	 * @param annotationFilter an annotation filter used to restrict the
@@ -327,14 +327,14 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 * @return a {@link MergedAnnotations} instance containing the merged
 	 * annotations
 	 */
-	static MergedAnnotations from(RepeatableContainers repeatableContainers,
+	static MergedAnnotations of(RepeatableContainers repeatableContainers,
 			AnnotationFilter annotationFilter, Iterable<DeclaredAnnotations> aggregates) {
-		return from(null, repeatableContainers, annotationFilter, aggregates);
+		return of(null, repeatableContainers, annotationFilter, aggregates);
 	}
 
 	/**
 	 * Create a new {@link MergedAnnotations} instance containing all
-	 * annotations and meta-annotations from the specified aggregates.
+	 * annotations and meta-annotations of the specified aggregates.
 	 * @param classLoader the class loader used to read annotations
 	 * @param repeatableContainers the repeatable containers that may be used by
 	 * the element annotations or the meta-annotations
@@ -347,10 +347,10 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 * @return a {@link MergedAnnotations} instance containing the merged
 	 * annotations
 	 */
-	static MergedAnnotations from(@Nullable ClassLoader classLoader,
+	static MergedAnnotations of(@Nullable ClassLoader classLoader,
 			RepeatableContainers repeatableContainers, AnnotationFilter annotationFilter,
 			Iterable<DeclaredAnnotations> aggregates) {
-		return TypeMappedAnnotations.from(classLoader, repeatableContainers,
+		return TypeMappedAnnotations.of(classLoader, repeatableContainers,
 				annotationFilter, aggregates);
 	}
 

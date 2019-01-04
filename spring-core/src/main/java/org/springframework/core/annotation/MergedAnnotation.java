@@ -461,20 +461,18 @@ public interface MergedAnnotation<A extends Annotation> {
 		return MissingMergedAnnotation.getInstance();
 	}
 
-	// FIXME should of be from ?
-
 	/**
-	 * Create a new {@link MergedAnnotation} instance containing the specified
+	 * Create a new {@link MergedAnnotation} instance from the specified
 	 * annotation.
 	 * @param annotation the annotation to include
 	 * @return a {@link MergedAnnotation} instance containing the annotation
 	 */
-	static <A extends Annotation> MergedAnnotation<A> of(A annotation) {
-		return of(null, annotation);
+	static <A extends Annotation> MergedAnnotation<A> from(A annotation) {
+		return from(null, annotation);
 	}
 
 	/**
-	 * Create a new {@link MergedAnnotations} instance for the specified
+	 * Create a new {@link MergedAnnotations} instance from the specified
 	 * annotation.
 	 * @param source the source for the annotation. This source is used only for
 	 * information and logging. It does not need to <em>actually</em> contain
@@ -482,31 +480,31 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * @param annotation the annotation to include
 	 * @return a {@link MergedAnnotation} instance for the annotation
 	 */
-	static <A extends Annotation> MergedAnnotation<A> of(
+	static <A extends Annotation> MergedAnnotation<A> from(
 			@Nullable AnnotatedElement source, A annotation) {
-		return TypeMappedAnnotation.of(source, annotation);
+		return TypeMappedAnnotation.from(source, annotation);
 	}
 
 	/**
-	 * Create a new {@link MergedAnnotations} instance for the specified
+	 * Create a new {@link MergedAnnotations} instance from the specified
 	 * annotation type. The resulting annotation will not have any attribute
 	 * values, but may still be used to query default values.
 	 * @param annotationType the annotation type
 	 * @return a {@link MergedAnnotation} instance for the annotation
 	 */
-	static <A extends Annotation> MergedAnnotation<A> of(Class<A> annotationType) {
-		return TypeMappedAnnotation.of(annotationType);
+	static <A extends Annotation> MergedAnnotation<A> from(Class<A> annotationType) {
+		return TypeMappedAnnotation.from(annotationType);
 	}
 
-	static <A extends Annotation> MergedAnnotation<A> from(
+	static <A extends Annotation> MergedAnnotation<A> of(
 			DeclaredAnnotation annotation) {
-		return from(null, null, annotation);
+		return of(null, null, annotation);
 	}
 
-	static <A extends Annotation> MergedAnnotation<A> from(
+	static <A extends Annotation> MergedAnnotation<A> of(
 			@Nullable ClassLoader classLoader, @Nullable AnnotatedElement source,
 			DeclaredAnnotation annotation) {
-		return TypeMappedAnnotation.from(classLoader, source, annotation);
+		return TypeMappedAnnotation.of(classLoader, source, annotation);
 	}
 
 	// FIXME

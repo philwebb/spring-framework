@@ -75,6 +75,7 @@ public interface DeclaredAnnotation {
 	 */
 	static DeclaredAnnotation of(Class<? extends Annotation> annotationType,
 			DeclaredAttributes attributes) {
+		// FIXME delete and move to MA
 		Assert.notNull(annotationType, "AnnotationType must not be null");
 		return of(annotationType.getName(), attributes);
 	}
