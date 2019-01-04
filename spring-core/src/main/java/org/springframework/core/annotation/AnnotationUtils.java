@@ -18,7 +18,9 @@ package org.springframework.core.annotation;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,6 +29,7 @@ import org.springframework.core.BridgeMethodResolver;
 import org.springframework.core.annotation.MergedAnnotation.MapValues;
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.core.annotation.type.DeclaredAnnotation;
+import org.springframework.core.annotation.type.DeclaredAttributes;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
@@ -1150,7 +1153,6 @@ public abstract class AnnotationUtils {
 
 	@Deprecated
 	static <A extends Annotation> A synthesizeAnnotation(A annotation, @Nullable Object annotatedElement) {
-		// FIXME
 		return InternalAnnotationUtils.synthesizeAnnotation(annotation, annotatedElement);
 	}
 
@@ -1187,9 +1189,15 @@ public abstract class AnnotationUtils {
 	@Deprecated
 	public static <A extends Annotation> A synthesizeAnnotation(Map<String, Object> attributes,
 			Class<A> annotationType, @Nullable AnnotatedElement annotatedElement) {
-		// FIXME
-		return InternalAnnotationUtils.synthesizeAnnotation(attributes, annotationType,
-				annotatedElement);
+		return MigrateMethod.from(()->
+			InternalAnnotationUtils.synthesizeAnnotation(attributes, annotationType,
+					annotatedElement)
+		).to(()-> {
+			DeclaredAnnotation annotation = DeclaredAnnotation.of(
+					annotationType.getName(), DeclaredAttributes.from(attributes));
+			return MergedAnnotation.<A> from(annotationType.getClassLoader(),
+					annotatedElement, annotation).synthesize();
+		});
 	}
 
 	/**
@@ -1210,8 +1218,7 @@ public abstract class AnnotationUtils {
 	 */
 	@Deprecated
 	public static <A extends Annotation> A synthesizeAnnotation(Class<A> annotationType) {
-		// FIXME
-		return InternalAnnotationUtils.synthesizeAnnotation(annotationType);
+		return synthesizeAnnotation(Collections.emptyMap(), annotationType, null);
 	}
 
 	/**
@@ -1233,9 +1240,12 @@ public abstract class AnnotationUtils {
 	 */
 	@Deprecated
 	static Annotation[] synthesizeAnnotationArray(Annotation[] annotations, @Nullable Object annotatedElement) {
-		// FIXME
-		return InternalAnnotationUtils.synthesizeAnnotationArray(annotations,
-				annotatedElement);
+		Annotation[] synthesized = (Annotation[]) Array.newInstance(
+				annotations.getClass().getComponentType(), annotations.length);
+		for (int i = 0; i < annotations.length; i++) {
+			synthesized[i] = synthesizeAnnotation(annotations[i], annotatedElement);
+		}
+		return synthesized;
 	}
 
 	/**
@@ -1258,10 +1268,17 @@ public abstract class AnnotationUtils {
 	 */
 	@Deprecated
 	@Nullable
+	@SuppressWarnings("unchecked")
 	static <A extends Annotation> A[] synthesizeAnnotationArray(
 			@Nullable Map<String, Object>[] maps, Class<A> annotationType) {
-		// FIXME
-		return InternalAnnotationUtils.synthesizeAnnotationArray(maps, annotationType);
+		if (maps == null) {
+			return null;
+		}
+		A[] synthesized = (A[]) Array.newInstance(annotationType, maps.length);
+		for (int i = 0; i < maps.length; i++) {
+			synthesized[i] = synthesizeAnnotation(maps[i], annotationType, null);
+		}
+		return synthesized;
 	}
 
 	/**

@@ -108,11 +108,36 @@ public interface AnnotationFilter {
 	 * @param annotationTypes the annotation types to check
 	 * @return the most appropriate annotation filter
 	 */
-	static AnnotationFilter mostAppropriateFor(
-			Collection<Class<? extends Annotation>> annotationTypes) {
+	@SafeVarargs
+	static AnnotationFilter mostAppropriateFor(String... annotationTypes) {
 		Assert.notNull(annotationTypes, "AnnotationTypes must not be null");
-		for (Class<? extends Annotation> annotationType : annotationTypes) {
-			if (AnnotationFilter.PLAIN.matches(annotationType)) {
+		return mostAppropriateFor(Arrays.asList(annotationTypes));
+	}
+
+	/**
+	 * Return an {@link AnnotationFilter} that is the most appropriate for, and
+	 * will always match all the given annotation types. Whenever possible,
+	 * {@link AnnotationFilter#PLAIN} will be returned.
+	 * @param annotationTypes the annotation types to check (may be class names
+	 * or class types)
+	 * @return the most appropriate annotation filter
+	 */
+	@SuppressWarnings("unchecked")
+	static AnnotationFilter mostAppropriateFor(Collection<?> annotationTypes) {
+		Assert.notNull(annotationTypes, "AnnotationTypes must not be null");
+		for (Object annotationType : annotationTypes) {
+			if (annotationType == null) {
+				continue;
+			}
+			Assert.isTrue(
+					annotationType instanceof Class || annotationType instanceof String,
+					"AnnotationType must be a Class or String");
+			if (annotationType instanceof Class
+					&& PLAIN.matches((Class<Annotation>) annotationType)) {
+				return NONE;
+			}
+			if (annotationType instanceof String
+					&& PLAIN.matches((String) annotationType)) {
 				return AnnotationFilter.NONE;
 			}
 		}

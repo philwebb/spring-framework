@@ -16,6 +16,7 @@
 
 package org.springframework.core.annotation.type;
 
+import java.lang.reflect.Array;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -35,28 +36,8 @@ class SimpleDeclaredAttributes extends AbstractDeclaredAttributes {
 	private final Map<String, Object> attributes;
 
 	SimpleDeclaredAttributes(Map<String, ?> attributes) {
-		Assert.notNull(attributes, "Attributes must not be null");
 		this.attributes = Collections.unmodifiableMap(attributes);
-	}
-
-	SimpleDeclaredAttributes(DeclaredAttribute... attributes) {
-		Assert.notNull(attributes, "Attributes must not be null");
-		Map<String, Object> values = new LinkedHashMap<>();
-		for (DeclaredAttribute attribute : attributes) {
-			values.put(attribute.getName(), attribute.getValue());
-		}
-		this.attributes = Collections.unmodifiableMap(values);
-	}
-
-	SimpleDeclaredAttributes(Object... pairs) {
-		Assert.notNull(pairs, "Pairs must not be null");
-		Assert.isTrue(pairs.length % 2 == 0,
-				"Pairs must contain an even number of elements");
-		Map<String, Object> values = new LinkedHashMap<>();
-		for (int i = 0; i < pairs.length; i += 2) {
-			values.put(pairs[i].toString(), pairs[i + 1]);
-		}
-		this.attributes = Collections.unmodifiableMap(values);
+		validate();
 	}
 
 	@Override
@@ -68,6 +49,16 @@ class SimpleDeclaredAttributes extends AbstractDeclaredAttributes {
 	public Object get(String name) {
 		Assert.notNull(name, "Name must not be null");
 		Object value = this.attributes.get(name);
+		if (value != null && value.getClass().isArray()) {
+			value = cloneArray(value);
+		}
+		return value;
+	}
+
+	private Object cloneArray(Object value) {
+		if (Array.getLength(value) == 0) {
+			return value;
+		}
 		if (value instanceof boolean[]) {
 			return ((boolean[]) value).clone();
 		}
@@ -96,6 +87,35 @@ class SimpleDeclaredAttributes extends AbstractDeclaredAttributes {
 			return ((Object[]) value).clone();
 		}
 		return value;
+	}
+
+	static SimpleDeclaredAttributes from(Map<String, Object> attributes) {
+		Assert.notNull(attributes, "Attributes must not be null");
+		Map<String, Object> values = new LinkedHashMap<>();
+		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+			values.put(entry.getKey(), convert(entry.getValue()));
+		}
+		return new SimpleDeclaredAttributes(values);
+	}
+
+	static SimpleDeclaredAttributes of(DeclaredAttribute... attributes) {
+		Assert.notNull(attributes, "Attributes must not be null");
+		Map<String, Object> values = new LinkedHashMap<>();
+		for (DeclaredAttribute attribute : attributes) {
+			values.put(attribute.getName(), attribute.getValue());
+		}
+		return new SimpleDeclaredAttributes(values);
+	}
+
+	static SimpleDeclaredAttributes of(Object... pairs) {
+		Assert.notNull(pairs, "Pairs must not be null");
+		Assert.isTrue(pairs.length % 2 == 0,
+				"Pairs must contain an even number of elements");
+		Map<String, Object> values = new LinkedHashMap<>();
+		for (int i = 0; i < pairs.length; i += 2) {
+			values.put(pairs[i].toString(), pairs[i + 1]);
+		}
+		return new SimpleDeclaredAttributes(values);
 	}
 
 }

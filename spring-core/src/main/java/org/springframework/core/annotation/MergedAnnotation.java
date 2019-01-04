@@ -29,6 +29,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
+import org.springframework.core.annotation.type.DeclaredAnnotation;
 import org.springframework.core.annotation.type.DeclaredAnnotations;
 import org.springframework.lang.Nullable;
 
@@ -494,6 +495,17 @@ public interface MergedAnnotation<A extends Annotation> {
 	 */
 	static <A extends Annotation> MergedAnnotation<A> of(Class<A> annotationType) {
 		return TypeMappedAnnotation.of(annotationType);
+	}
+
+	static <A extends Annotation> MergedAnnotation<A> from(
+			DeclaredAnnotation annotation) {
+		return from(null, null, annotation);
+	}
+
+	static <A extends Annotation> MergedAnnotation<A> from(
+			@Nullable ClassLoader classLoader, @Nullable AnnotatedElement source,
+			DeclaredAnnotation annotation) {
+		return TypeMappedAnnotation.from(classLoader, source, annotation);
 	}
 
 	// FIXME

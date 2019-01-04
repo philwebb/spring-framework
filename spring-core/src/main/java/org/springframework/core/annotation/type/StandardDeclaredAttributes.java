@@ -90,45 +90,4 @@ class StandardDeclaredAttributes extends AbstractDeclaredAttributes {
 		}
 	}
 
-	private Object convert(Object value) {
-		if (value == null) {
-			return null;
-		}
-		if (value instanceof Class) {
-			return ClassReference.from((Class<?>) value);
-		}
-		if (value instanceof Class<?>[]) {
-			Class<?>[] classes = (Class<?>[]) value;
-			ClassReference[] references = new ClassReference[classes.length];
-			for (int i = 0; i < classes.length; i++) {
-				references[i] = ClassReference.from(classes[i]);
-			}
-			return references;
-		}
-		if (value instanceof Enum<?>) {
-			return EnumValueReference.from((Enum<?>) value);
-		}
-		if (value instanceof Enum<?>[]) {
-			Enum<?>[] enums = (Enum<?>[]) value;
-			EnumValueReference[] references = new EnumValueReference[enums.length];
-			for (int i = 0; i < enums.length; i++) {
-				references[i] = EnumValueReference.from(enums[i]);
-			}
-			return references;
-		}
-		if (value instanceof Annotation) {
-			return new StandardDeclaredAnnotation((Annotation) value).getAttributes();
-		}
-		if (value instanceof Annotation[]) {
-			Annotation[] annotations = (Annotation[]) value;
-			DeclaredAttributes[] attributes = new DeclaredAttributes[annotations.length];
-			for (int i = 0; i < attributes.length; i++) {
-				attributes[i] = new StandardDeclaredAnnotation(
-						annotations[i]).getAttributes();
-			}
-			return attributes;
-		}
-		return value;
-	}
-
 }

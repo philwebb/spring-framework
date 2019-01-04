@@ -255,7 +255,8 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	static MergedAnnotations of(RepeatableContainers repeatableContainers,
 			AnnotationFilter annotationFilter, @Nullable AnnotatedElement source,
 			Annotation... annotations) {
-		return TypeMappedAnnotations.of(repeatableContainers, annotationFilter, source, annotations);
+		return TypeMappedAnnotations.of(repeatableContainers, annotationFilter, source,
+				annotations);
 	}
 
 	/**
@@ -346,7 +347,7 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 * @return a {@link MergedAnnotations} instance containing the merged
 	 * annotations
 	 */
-	static MergedAnnotations from(ClassLoader classLoader,
+	static MergedAnnotations from(@Nullable ClassLoader classLoader,
 			RepeatableContainers repeatableContainers, AnnotationFilter annotationFilter,
 			Iterable<DeclaredAnnotations> aggregates) {
 		return TypeMappedAnnotations.from(classLoader, repeatableContainers,

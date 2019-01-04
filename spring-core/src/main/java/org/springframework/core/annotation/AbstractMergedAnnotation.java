@@ -23,12 +23,10 @@ import java.lang.reflect.Proxy;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -52,41 +50,12 @@ import org.springframework.util.ObjectUtils;
 abstract class AbstractMergedAnnotation<A extends Annotation>
 		implements MergedAnnotation<A> {
 
-	private static final Set<Class<?>> SUPPORTED_TYPES;
-	static {
-		Set<Class<?>> supportedTypes = new LinkedHashSet<>();
-		supportedTypes.add(Byte.class);
-		supportedTypes.add(byte[].class);
-		supportedTypes.add(Boolean.class);
-		supportedTypes.add(boolean[].class);
-		supportedTypes.add(Character.class);
-		supportedTypes.add(char[].class);
-		supportedTypes.add(Short.class);
-		supportedTypes.add(short[].class);
-		supportedTypes.add(Integer.class);
-		supportedTypes.add(int[].class);
-		supportedTypes.add(Long.class);
-		supportedTypes.add(long[].class);
-		supportedTypes.add(Float.class);
-		supportedTypes.add(float[].class);
-		supportedTypes.add(Double.class);
-		supportedTypes.add(double[].class);
-		supportedTypes.add(String.class);
-		supportedTypes.add(String[].class);
-		supportedTypes.add(ClassReference.class);
-		supportedTypes.add(ClassReference[].class);
-		supportedTypes.add(EnumValueReference.class);
-		supportedTypes.add(EnumValueReference[].class);
-		supportedTypes.add(DeclaredAttributes.class);
-		supportedTypes.add(DeclaredAttributes[].class);
-		SUPPORTED_TYPES = Collections.unmodifiableSet(supportedTypes);
-	}
-
 	private static final Map<Class<?>, Object> EMPTY_ARRAY;
 	static {
 		Map<Class<?>, Object> emptyArray = new HashMap<>();
-		SUPPORTED_TYPES.stream().filter(Class::isArray).forEach(type -> emptyArray.put(
-				type, Array.newInstance(type.getComponentType(), 0)));
+		DeclaredAttributes.SUPPORTED_TYPES.stream().filter(Class::isArray).forEach(
+				type -> emptyArray.put(type,
+						Array.newInstance(type.getComponentType(), 0)));
 		emptyArray.put(Class.class, new Class<?>[0]);
 		emptyArray.put(Object.class, new Object[0]);
 		EMPTY_ARRAY = Collections.unmodifiableMap(emptyArray);
@@ -584,7 +553,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 				return true;
 			}
 		}
-		return SUPPORTED_TYPES.contains(requiredType);
+		return DeclaredAttributes.SUPPORTED_TYPES.contains(requiredType);
 	}
 
 	private boolean isEmptyObjectArray(Object value) {

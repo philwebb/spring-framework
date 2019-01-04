@@ -196,6 +196,19 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 		return new TypeMappedAnnotation<>(mapping, null, 0, DeclaredAttributes.NONE);
 	}
 
+	public static <A extends Annotation> MergedAnnotation<A> from(ClassLoader classLoader,
+			@Nullable AnnotatedElement source, DeclaredAnnotation annotation) {
+		Assert.notNull(annotation, "Annotation must not be null");
+		AnnotationType annotationType = AnnotationType.resolve(annotation.getType(),
+				classLoader);
+		AnnotationTypeMappings mappings = AnnotationTypeMappings.forType(classLoader,
+				RepeatableContainers.none(),
+				AnnotationFilter.mostAppropriateFor(annotation.getType()),
+				annotationType);
+		AnnotationTypeMapping mapping = mappings.get(annotation.getType());
+		return new TypeMappedAnnotation<>(mapping, source, 0, annotation.getAttributes());
+	}
+
 	/**
 	 * Provides access to the attribute values with additional mapping and
 	 * mirroring rules applied.

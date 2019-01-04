@@ -17,6 +17,7 @@
 package org.springframework.core.annotation.type;
 
 import java.util.Collections;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.lang.Nullable;
@@ -30,19 +31,7 @@ import org.springframework.lang.Nullable;
 public interface DeclaredAttributes extends Iterable<DeclaredAttribute> {
 
 	/**
-	 * Constant that can be used when there are no declared attributes.
-	 */
-	DeclaredAttributes NONE = new SimpleDeclaredAttributes(Collections.emptyMap());
-
-	/**
-	 * Return a stream of all attribute names.
-	 * @return all attribute names
-	 */
-	Set<String> names();
-
-	/**
-	 * Return the value of a specific annotation attribute. The resulting
-	 * instance must be a type supported by <a href=
+	 * Type supported for declared attributes as defined in <a href=
 	 * "https://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.6.1">
 	 * section 9.6.1</a> of the Java language specification, namely:
 	 * <ul>
@@ -67,15 +56,37 @@ public interface DeclaredAttributes extends Iterable<DeclaredAttribute> {
 	 * <li>{@code String} / {@code String[]}</li>
 	 * <li>{@code ClassReference} / {@code ClassReference[]}</li>
 	 * <li>{@code EnumValueReference} / {@code EnumValueReference[]}</li>
-	 * <li>{@code Attributes} / {@code Attributes[]}</li>
+	 * <li>{@code DeclaredAttributes} / {@code DeclaredAttributes[]}</li>
 	 * </ul>
-	 * <p>
-	 * Any returned arrays values can be safely mutated by the caller.
+	 */
+	static final Set<Class<?>> SUPPORTED_TYPES = AbstractDeclaredAttributes.SUPPORTED_TYPES;
+
+	/**
+	 * Constant that can be used when there are no declared attributes.
+	 */
+	DeclaredAttributes NONE = new SimpleDeclaredAttributes(Collections.emptyMap());
+
+	/**
+	 * Return a stream of all attribute names.
+	 * @return all attribute names
+	 */
+	Set<String> names();
+
+	/**
+	 * Return the value of a specific annotation attribute. The resulting
+	 * instance must be a {@link #SUPPORTED_TYPES supported type} or an empty
+	 * {@code Object[]}. Any returned arrays values can be safely mutated by the
+	 * caller.
 	 * @param name the attribute name
 	 * @return the attribute value or {@code null}
+	 * @see #SUPPORTED_TYPES
 	 */
 	@Nullable
 	Object get(String name);
+
+	static DeclaredAttributes from(Map<String, Object> attributes) {
+		return SimpleDeclaredAttributes.from(attributes);
+	}
 
 	/**
 	 * Create a new in-memory {@link DeclaredAttributes} containing the
@@ -84,7 +95,7 @@ public interface DeclaredAttributes extends Iterable<DeclaredAttribute> {
 	 * @return a new {@link DeclaredAttributes} instance
 	 */
 	static DeclaredAttributes of(DeclaredAttribute... attributes) {
-		return new SimpleDeclaredAttributes(attributes);
+		return SimpleDeclaredAttributes.of(attributes);
 	}
 
 	/**
@@ -94,7 +105,7 @@ public interface DeclaredAttributes extends Iterable<DeclaredAttribute> {
 	 * @return a new {@link DeclaredAttributes} instance
 	 */
 	static DeclaredAttributes of(Object... pairs) {
-		return new SimpleDeclaredAttributes(pairs);
+		return SimpleDeclaredAttributes.of(pairs);
 	}
 
 }
