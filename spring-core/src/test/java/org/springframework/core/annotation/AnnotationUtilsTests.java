@@ -900,7 +900,9 @@ public class AnnotationUtilsTests {
 		exception.expect(AnnotationConfigurationException.class);
 		exception.expectMessage(startsWith("In @AliasFor declared on attribute 'foo' in annotation"));
 		exception.expectMessage(containsString(AliasForWithDuplicateAttributeDeclaration.class.getName()));
-		exception.expectMessage(containsString("attribute 'attribute' and its alias 'value' are present with values of [baz] and [bar]"));
+		exception.expectMessage(anyOf(
+				containsString("attribute 'attribute' and its alias 'value' are present with values of [baz] and [bar]"),
+				containsString("attribute 'attribute' and its alias 'value' are present with values of 'bar' and 'baz'")));
 		synthesizeAnnotation(annotation);
 	}
 
@@ -908,9 +910,14 @@ public class AnnotationUtilsTests {
 	public void synthesizeAnnotationWithAttributeAliasForNonexistentAttribute() throws Exception {
 		AliasForNonexistentAttribute annotation = AliasForNonexistentAttributeClass.class.getAnnotation(AliasForNonexistentAttribute.class);
 		exception.expect(AnnotationConfigurationException.class);
-		exception.expectMessage(startsWith("Attribute 'foo' in"));
-		exception.expectMessage(containsString(AliasForNonexistentAttribute.class.getName()));
-		exception.expectMessage(containsString("is declared as an @AliasFor nonexistent attribute 'bar'"));
+		exception.expectMessage(either(allOf(
+				startsWith("Attribute 'foo' in"),
+				containsString(AliasForNonexistentAttribute.class.getName()),
+				containsString("is declared as an @AliasFor nonexistent attribute 'bar'"))
+			).or(
+				containsString("@AliasFor declaration on attribute 'foo' in annotation ["
+						+ AliasForNonexistentAttribute.class.getName()
+						+ "] declares an alias for 'bar' which is not present")));
 		synthesizeAnnotation(annotation);
 	}
 
@@ -919,9 +926,9 @@ public class AnnotationUtilsTests {
 		AliasForWithoutMirroredAliasFor annotation =
 				AliasForWithoutMirroredAliasForClass.class.getAnnotation(AliasForWithoutMirroredAliasFor.class);
 		exception.expect(AnnotationConfigurationException.class);
-		exception.expectMessage(startsWith("Attribute 'bar' in"));
-		exception.expectMessage(containsString(AliasForWithoutMirroredAliasFor.class.getName()));
-		exception.expectMessage(containsString("@AliasFor [foo]"));
+		exception.expectMessage(allOf(startsWith("Attribute 'bar' in"),
+				containsString(AliasForWithoutMirroredAliasFor.class.getName()),
+				either(containsString("@AliasFor [foo]")).or(containsString("@AliasFor 'foo'"))));
 		synthesizeAnnotation(annotation);
 	}
 
@@ -932,8 +939,10 @@ public class AnnotationUtilsTests {
 		exception.expect(AnnotationConfigurationException.class);
 		exception.expectMessage(startsWith("Attribute 'bar' in"));
 		exception.expectMessage(containsString(AliasForWithMirroredAliasForWrongAttribute.class.getName()));
-		exception.expectMessage(either(containsString("must be declared as an @AliasFor [foo], not [quux]")).
-				or(containsString("is declared as an @AliasFor nonexistent attribute 'quux'")));
+		exception.expectMessage(anyOf(
+				containsString("must be declared as an @AliasFor [foo], not [quux]"),
+				containsString("is declared as an @AliasFor nonexistent attribute 'quux'"),
+				containsString("must be declared as an @AliasFor 'foo', not attribute 'quux'")));
 		synthesizeAnnotation(annotation);
 	}
 
@@ -983,7 +992,7 @@ public class AnnotationUtilsTests {
 		exception.expect(AnnotationConfigurationException.class);
 		exception.expectMessage(startsWith("@AliasFor declaration on attribute 'xmlConfigFile' in annotation"));
 		exception.expectMessage(containsString(AliasedComposedContextConfigNotMetaPresent.class.getName()));
-		exception.expectMessage(containsString("declares an alias for attribute 'location' in meta-annotation"));
+		exception.expectMessage(containsString("declares an alias for attribute 'location'"));
 		exception.expectMessage(containsString(ContextConfig.class.getName()));
 		exception.expectMessage(containsString("not meta-present"));
 		synthesizeAnnotation(annotation);
@@ -1137,15 +1146,14 @@ public class AnnotationUtilsTests {
 		assertNotNull(config);
 
 		exception.expect(AnnotationConfigurationException.class);
-		exception.expectMessage(startsWith("In annotation"));
+		exception.expectMessage(either(startsWith("In annotation")).or(startsWith("Different @AliasFor mirror values")));
 		exception.expectMessage(containsString(annotationType.getName()));
 		exception.expectMessage(containsString("declared on class"));
 		exception.expectMessage(containsString(clazz.getName()));
-		exception.expectMessage(containsString("and synthesized from"));
 		exception.expectMessage(either(containsString("attribute 'location1' and its alias 'location2'")).or(
 				containsString("attribute 'location2' and its alias 'location1'")));
-		exception.expectMessage(either(containsString("are present with values of [1] and [2]")).or(
-				containsString("are present with values of [2] and [1]")));
+		exception.expectMessage(either(containsString("with values of [1] and [2]")).or(
+				containsString("with values of [2] and [1]")));
 		synthesizeAnnotation(config, clazz).location1();
 	}
 
@@ -1305,10 +1313,12 @@ public class AnnotationUtilsTests {
 
 	private void assertMissingTextAttribute(Map<String, Object> attributes) {
 		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage(allOf(startsWith("Attributes map"),
+		exception.expectMessage(either(allOf(startsWith("Attributes map"),
 				containsString("returned null for required attribute 'text'"),
 				containsString("defined by annotation type ["
-						+ AnnotationWithoutDefaults.class.getName() + "]")));
+						+ AnnotationWithoutDefaults.class.getName() + "]"))).or(
+								containsString(
+										"No value found for attribute named 'text' in merged annotation")));
 		synthesizeAnnotation(attributes, AnnotationWithoutDefaults.class, null);
 	}
 
@@ -1316,12 +1326,16 @@ public class AnnotationUtilsTests {
 	public void synthesizeAnnotationFromMapWithAttributeOfIncorrectType() throws Exception {
 		Map<String, Object> map = Collections.singletonMap(VALUE, 42L);
 		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage(allOf(startsWith("Attributes map"),
+		exception.expectMessage(either(allOf(startsWith("Attributes map"),
 				containsString("returned a value of type [java.lang.Long]"),
 				containsString("for attribute 'value'"),
 				containsString("but a value of type [java.lang.String] is required"),
 				containsString("as defined by annotation type ["
-						+ Component.class.getName() + "]")));
+						+ Component.class.getName() + "]"))).or(
+								containsString("Attribute 'value' in annotation "
+										+ Component.class.getName()
+										+ " should be of type "
+										+ "java.lang.String but a java.lang.Long value was returned")));
 		synthesizeAnnotation(map, Component.class, null);
 	}
 
