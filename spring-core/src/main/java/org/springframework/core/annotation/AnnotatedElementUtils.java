@@ -17,7 +17,6 @@
 package org.springframework.core.annotation;
 
 import java.lang.annotation.Annotation;
-import java.lang.annotation.Repeatable;
 import java.lang.reflect.AnnotatedElement;
 import java.util.Collections;
 import java.util.Comparator;
@@ -27,18 +26,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.core.BridgeMethodResolver;
-import org.springframework.core.annotation.ComposedRepeatableAnnotationsTests.NonRepeatable;
 import org.springframework.core.annotation.MergedAnnotation.MapValues;
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
-import org.springframework.core.annotation.type.AnnotationType;
-import org.springframework.core.annotation.type.DeclaredAnnotation;
 import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
-
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.startsWith;
-import static org.junit.Assert.assertNotNull;
 
 /**
  * General utility methods for finding annotations, meta-annotations, and
