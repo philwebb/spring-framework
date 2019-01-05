@@ -27,7 +27,6 @@ import org.springframework.core.annotation.type.DeclaredAttributes;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.ReflectionUtils;
 
 /**
  * Strategy used to determine annotations that act as containers for other
@@ -143,12 +142,15 @@ public abstract class RepeatableContainers {
 	/**
 	 * Return a {@link RepeatableContainers} instance that uses a defined
 	 * container and repeatable type.
-	 * @param container the container annotation. This annotation must declare a
-	 * {@code value} attribute returning an array of repeatable annotations
+	 * @param container the container annotation or {@code null}. If specified,
+	 * this annotation must declare a {@code value} attribute returning an array
+	 * of repeatable annotations. If not specified, the container will be
+	 * deduced by inspecting the {@code @Repeatable} annotation on
+	 * {@code repeatable}.
 	 * @param repeatable the contained repeatable annotation
 	 * @return a {@link RepeatableContainers} instance
 	 */
-	public static RepeatableContainers of(Class<? extends Annotation> container,
+	public static RepeatableContainers of(@Nullable Class<? extends Annotation> container,
 			Class<? extends Annotation> repeatable) {
 		return new ExplicitRepeatableContainer(null, container, repeatable);
 	}
@@ -209,9 +211,13 @@ public abstract class RepeatableContainers {
 		private final Class<? extends Annotation> repeatable;
 
 		ExplicitRepeatableContainer(RepeatableContainers parent,
-				Class<? extends Annotation> container,
+				@Nullable Class<? extends Annotation> container,
 				Class<? extends Annotation> repeatable) {
 			super(parent);
+			Assert.notNull(repeatable, "Repeatable must not be null");
+			if(container == null) {
+				container = deduceContainer(repeatable);
+			}
 			validate(container, repeatable);
 			this.container = container;
 			this.repeatable = repeatable;
@@ -219,10 +225,9 @@ public abstract class RepeatableContainers {
 
 		private void validate(Class<? extends Annotation> container,
 				Class<? extends Annotation> repeatable) {
-			Assert.notNull(container, "Container must not be null");
-			Assert.notNull(repeatable, "Repeatable must not be null");
 			try {
-				Method method = ReflectionUtils.findMethod(container, "value");
+				Method method = container.getDeclaredMethod("value");
+				Assert.state(method != null, "No value method found");
 				Class<?> returnType = method != null ? method.getReturnType() : null;
 				if (returnType == null || !returnType.isArray()
 						|| returnType.getComponentType() != repeatable) {
@@ -242,6 +247,14 @@ public abstract class RepeatableContainers {
 								+ "]",
 						ex);
 			}
+		}
+
+		private Class<? extends Annotation> deduceContainer(
+				Class<? extends Annotation> annotationType) {
+			Repeatable repeatable = annotationType.getAnnotation(Repeatable.class);
+			Assert.notNull(repeatable, "Annotation type must be a repeatable annotation: "
+					+ "failed to resolve container type for " + annotationType.getName());
+			return repeatable.value();
 		}
 
 		@Override

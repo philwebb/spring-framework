@@ -30,6 +30,7 @@ import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 /**
  * Tests for {@link RepeatableContainers}.
@@ -104,10 +105,11 @@ public class RepeatableContainersTests {
 	public void ofExplicitWhenHasNoValueThrowsException() {
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
 				() -> RepeatableContainers.of(InvalidNoValue.class,
-						ExplicitRepeatable.class)).withMessage("Container type ["
-								+ InvalidNoValue.class.getName()
-								+ "] must declare a 'value' attribute for an array of type ["
-								+ ExplicitRepeatable.class.getName() + "]");
+						ExplicitRepeatable.class)).withMessageContaining(
+								"Invalid declaration of container type ["
+										+ InvalidNoValue.class.getName()
+										+ "] for repeatable annotation ["
+										+ ExplicitRepeatable.class.getName() + "]");
 	}
 
 	@Test
@@ -128,6 +130,31 @@ public class RepeatableContainersTests {
 								+ InvalidWrongArrayType.class.getName()
 								+ "] must declare a 'value' attribute for an array of type ["
 								+ ExplicitRepeatable.class.getName() + "]");
+	}
+
+	@Test
+	public void ofExplicitWhenAnnotationIsNullThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(
+				() -> RepeatableContainers.of(null, null)).withMessage(
+						"Repeatable must not be null");
+	}
+
+	@Test
+	public void ofExplicitWhenContainerIsNullDeducesContainer() {
+		RepeatableContainers repeatableContainers = RepeatableContainers.of(null,
+				StandardRepeatable.class);
+		assertThat(visit(WithStandardRepeatables.class, StandardContainer.class,
+				repeatableContainers).get(
+						StandardRepeatable.class.getName())).containsExactly("a", "b");
+	}
+
+	@Test
+	public void ofExplicitWhenContainerIsNullAndNotRepeatableThrowsException() {
+		assertThatIllegalArgumentException().isThrownBy(() -> RepeatableContainers.of(
+				null, ExplicitRepeatable.class)).withMessage(
+						"Annotation type must be a repeatable annotation: "
+								+ "failed to resolve container type for "
+								+ ExplicitRepeatable.class.getName());
 	}
 
 	@Test
@@ -164,8 +191,7 @@ public class RepeatableContainersTests {
 		MultiValueMap<String, Object> result = new LinkedMultiValueMap<>();
 		repeatableContainers.visit(annotation, getClass().getClassLoader(),
 				(annotationType, attributes) -> {
-					result.add(annotationType.getClassName(),
-							attributes.get("value"));
+					result.add(annotationType.getClassName(), attributes.get("value"));
 				});
 		return result;
 	}
