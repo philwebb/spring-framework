@@ -145,6 +145,14 @@ public class AnnotationTypeResolverTests {
 				ExampleAnnotatedAnnotation.class.getName());
 	}
 
+	@Test
+	public void resolveWhenAnnotationHasStaticFinalsDoesNotIncludeInitMethod()
+			throws Exception {
+		AnnotationType resolved = this.resolver.resolve(
+				StaticFinalsAnnotation.class.getName());
+		assertThat(resolved.getAttributeTypes().attributeNames()).containsOnly("value");
+	}
+
 	@Retention(RetentionPolicy.RUNTIME)
 	@Documented
 	private @interface ExampleSimpleAnnotation {
@@ -182,6 +190,17 @@ public class AnnotationTypeResolverTests {
 	private @interface AnnoatedAttributeAnnotation {
 
 		@ExampleSimpleAnnotation("test")
+		String value();
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface StaticFinalsAnnotation {
+
+		String[] EXAMPLE = { "*" };
+
+		String[] DEFAULT_ALLOWED_HEADERS = { "*" };
+
 		String value();
 
 	}

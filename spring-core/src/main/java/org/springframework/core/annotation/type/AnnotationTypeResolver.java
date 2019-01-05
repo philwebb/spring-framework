@@ -171,9 +171,13 @@ final class AnnotationTypeResolver {
 		@Override
 		public MethodVisitor visitMethod(int access, String name, String desc,
 				String signature, String[] exceptions) {
-			String returnType = Type.getReturnType(desc).getClassName();
-			return new AnnotationTypeMethodVisitor(this.type, name, returnType,
-					this.attributeTypes::add);
+			Type[] argumentTypes = Type.getArgumentTypes(desc);
+			Type returnType = Type.getReturnType(desc);
+			if (argumentTypes.length != 0 || returnType.getSort() == Type.VOID) {
+				return null;
+			}
+			return new AnnotationTypeMethodVisitor(this.type, name,
+					returnType.getClassName(), this.attributeTypes::add);
 		}
 
 		public AnnotationType getAnnotationType() {
