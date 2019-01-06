@@ -25,7 +25,6 @@ import java.util.stream.Stream;
 
 import org.springframework.core.annotation.type.DeclaredAnnotations;
 import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
 
 /**
  * Provides access to a collection of merged annotations, usually obtained from
@@ -159,7 +158,7 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 * @return a {@link MergedAnnotation} instance
 	 */
 	<A extends Annotation> MergedAnnotation<A> get(Class<A> annotationType,
-			Predicate<? super MergedAnnotation<A>> predicate);
+			@Nullable Predicate<? super MergedAnnotation<A>> predicate);
 
 	/**
 	 * Return the nearest matching annotation or meta-annotation of the
@@ -178,7 +177,7 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 * @return a {@link MergedAnnotation} instance
 	 */
 	<A extends Annotation> MergedAnnotation<A> get(String annotationType,
-			Predicate<? super MergedAnnotation<A>> predicate);
+			@Nullable Predicate<? super MergedAnnotation<A>> predicate);
 
 	/**
 	 * Stream all annotations and meta-annotations that match the specified
@@ -256,12 +255,7 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	static MergedAnnotations from(RepeatableContainers repeatableContainers,
 			AnnotationFilter annotationFilter, SearchStrategy searchStrategy,
 			AnnotatedElement element) {
-		Assert.notNull(repeatableContainers, "RepeatableContainers must not be null");
-		Assert.notNull(annotationFilter, "AnnotationFilter must not be null");
-		Assert.notNull(searchStrategy, "SearchStrategy must not be null");
-		Assert.notNull(element, "Element must not be null");
-		AnnotationsScanner annotations = new AnnotationsScanner(element, searchStrategy);
-		return of(repeatableContainers, annotationFilter, annotations);
+		return TypeMappedAnnotations.from(repeatableContainers, annotationFilter, searchStrategy, element);
 	}
 
 	/**

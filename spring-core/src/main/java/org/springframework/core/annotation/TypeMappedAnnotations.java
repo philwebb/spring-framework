@@ -83,11 +83,38 @@ final class TypeMappedAnnotations extends AbstractMergedAnnotations {
 		return false;
 	}
 
+	<A extends Annotation> MergedAnnotation<A> getFirst(Class<A> annotationType) {
+		return getFirst(getClassName(annotationType));
+	}
+
+	<A extends Annotation> MergedAnnotation<A> getFirst(String annotationType) {
+		return get(annotationType, null, this::selectFirst);
+	}
+
+	private <A extends Annotation> MergedAnnotation<A> selectFirst(MergedAnnotation<A> existing,
+			MergedAnnotation<A> candidate) {
+		return existing;
+	}
+
 	@Override
 	public <A extends Annotation> MergedAnnotation<A> get(String annotationType,
-			Predicate<? super MergedAnnotation<A>> predicate) {
+			@Nullable Predicate<? super MergedAnnotation<A>> predicate) {
+		return get(annotationType, predicate, this::selectLowestDepth );
+	}
+
+	private <A extends Annotation> MergedAnnotation<A> selectLowestDepth(MergedAnnotation<A> existing,
+			MergedAnnotation<A> candidate) {
+		if (candidate.getDepth() < existing.getDepth()) {
+			return candidate;
+		}
+		return existing;
+	}
+
+	private <A extends Annotation> MergedAnnotation<A> get(String annotationType,
+			@Nullable Predicate<? super MergedAnnotation<A>> predicate,
+			MergedAnnotationSelector<A> selector) {
 		for (MappableAnnotations annotations : this.aggregates) {
-			MergedAnnotation<A> result = annotations.get(annotationType, predicate);
+			MergedAnnotation<A> result = annotations.get(annotationType, predicate, selector);
 			if (result != null) {
 				return result;
 			}
@@ -152,6 +179,17 @@ final class TypeMappedAnnotations extends AbstractMergedAnnotations {
 	}
 
 	static TypeMappedAnnotations from(RepeatableContainers repeatableContainers,
+			AnnotationFilter annotationFilter, SearchStrategy searchStrategy,
+			AnnotatedElement element) {
+		Assert.notNull(repeatableContainers, "RepeatableContainers must not be null");
+		Assert.notNull(annotationFilter, "AnnotationFilter must not be null");
+		Assert.notNull(searchStrategy, "SearchStrategy must not be null");
+		Assert.notNull(element, "Element must not be null");
+		AnnotationsScanner annotations = new AnnotationsScanner(element, searchStrategy);
+		return of(null, repeatableContainers, annotationFilter, annotations);
+	}
+
+	static TypeMappedAnnotations from(RepeatableContainers repeatableContainers,
 			AnnotationFilter annotationFilter, @Nullable AnnotatedElement source,
 			Annotation... annotations) {
 		Assert.notNull(annotations, "Annotations must not be null");
@@ -211,7 +249,6 @@ final class TypeMappedAnnotations extends AbstractMergedAnnotations {
 							aggregateIndex, attributes));
 				}
 			});
-
 		}
 
 		private ClassLoader getClassLoader(Object source) {
@@ -234,22 +271,20 @@ final class TypeMappedAnnotations extends AbstractMergedAnnotations {
 		}
 
 		public <A extends Annotation> MergedAnnotation<A> get(String annotationType,
-				Predicate<? super MergedAnnotation<A>> predicate) {
+				@Nullable Predicate<? super MergedAnnotation<A>> predicate,
+				MergedAnnotationSelector<A> selector) {
 			MergedAnnotation<A> result = null;
 			for (MappableAnnotation mappableAnnotation : this.mappableAnnotations) {
 				MergedAnnotation<A> candidate = mappableAnnotation.get(annotationType,
 						predicate);
-				if (isBetterGetCandidate(candidate, result)) {
+				if (candidate != null && result == null) {
 					result = candidate;
+				}
+				else if (candidate != null) {
+					result = selector.select(result, candidate);
 				}
 			}
 			return result;
-		}
-
-		private boolean isBetterGetCandidate(MergedAnnotation<?> candidate,
-				MergedAnnotation<?> previous) {
-			return candidate != null
-					&& (previous == null || candidate.getDepth() < previous.getDepth());
 		}
 
 		public int size() {
@@ -268,6 +303,24 @@ final class TypeMappedAnnotations extends AbstractMergedAnnotations {
 		public Iterator<MappableAnnotation> iterator() {
 			return this.mappableAnnotations.iterator();
 		}
+
+	}
+
+	/**
+	 * Strategy interface used to select the most appropriate annotation.
+	 */
+	private interface MergedAnnotationSelector<A extends Annotation> {
+
+		/**
+		 * Select the annotation that is most appropriate from the selection
+		 * @param existing an existing annotation returned from an earlier
+		 * result
+		 * @param candidate a candidate annotation that may be better suited
+		 * @return the most appropriate annotation from the {@code existing} or
+		 * {@code candidate}
+		 */
+		MergedAnnotation<A> select(MergedAnnotation<A> existing,
+				MergedAnnotation<A> candidate);
 
 	}
 
@@ -297,7 +350,7 @@ final class TypeMappedAnnotations extends AbstractMergedAnnotations {
 		}
 
 		public <A extends Annotation> MergedAnnotation<A> get(String annotationType,
-				Predicate<? super MergedAnnotation<A>> predicate) {
+				@Nullable Predicate<? super MergedAnnotation<A>> predicate) {
 			if (predicate == null) {
 				AnnotationTypeMapping mapping = this.mappings.get(annotationType);
 				return mapping != null ? map(mapping) : null;

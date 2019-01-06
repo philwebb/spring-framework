@@ -22,6 +22,8 @@ import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import org.springframework.lang.Nullable;
+
 /**
  * Abstract base class for {@link MergedAnnotations} implementations.
  *
@@ -47,7 +49,7 @@ abstract class AbstractMergedAnnotations implements MergedAnnotations {
 
 	@Override
 	public <A extends Annotation> MergedAnnotation<A> get(Class<A> annotationType,
-			Predicate<? super MergedAnnotation<A>> predicate) {
+			@Nullable Predicate<? super MergedAnnotation<A>> predicate) {
 		return get(getClassName(annotationType), predicate);
 	}
 
@@ -58,7 +60,7 @@ abstract class AbstractMergedAnnotations implements MergedAnnotations {
 
 	@Override
 	public <A extends Annotation> MergedAnnotation<A> get(String annotationType,
-			Predicate<? super MergedAnnotation<A>> predicate) {
+			@Nullable Predicate<? super MergedAnnotation<A>> predicate) {
 		Stream<MergedAnnotation<A>> matches = stream(annotationType);
 		if (predicate != null) {
 			matches = matches.filter(predicate);
@@ -84,7 +86,7 @@ abstract class AbstractMergedAnnotations implements MergedAnnotations {
 				annotation -> Objects.equals(annotation.getType(), annotationType));
 	}
 
-	private String getClassName(Class<?> annotationType) {
+	protected final String getClassName(Class<?> annotationType) {
 		return (annotationType != null) ? annotationType.getName() : null;
 	}
 
