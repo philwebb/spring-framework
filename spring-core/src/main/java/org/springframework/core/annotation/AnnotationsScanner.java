@@ -108,11 +108,6 @@ class AnnotationsScanner implements Iterable<DeclaredAnnotations> {
 		protected abstract Collection<DeclaredAnnotations> compute(
 				SearchStrategy searchStrategy);
 
-		@SafeVarargs
-		protected final <T> Set<T> asSet(T... elements) {
-			return new LinkedHashSet<>(Arrays.asList(elements));
-		}
-
 		protected final E getSource() {
 			return this.source;
 		}
