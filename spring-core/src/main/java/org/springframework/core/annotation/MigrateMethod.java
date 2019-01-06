@@ -130,6 +130,10 @@ final class MigrateMethod {
 			if (ObjectUtils.nullSafeEquals(result, expectedResult)) {
 				return true;
 			}
+			if (result == null && String.valueOf(expectedResult).startsWith("@org.springframework.lang.")) {
+				// Original methods don't filter spring annotation but we do
+				return true;
+			}
 			if (result == null || expectedResult == null) {
 				return false;
 			}
