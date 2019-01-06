@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -158,12 +159,24 @@ class AnnotationsScanner implements Iterable<DeclaredAnnotations> {
 		}
 
 		private Collection<DeclaredAnnotations> computeInheritedAnnotations() {
-			Set<Annotation> present = asSet(getSource().getAnnotations());
+			Set<Class<?>> present = getAnnotationTypes(getSource().getAnnotations());
 			return TypeHierarchy.superclasses(getSource()).stream().map(type -> {
-				Set<Annotation> annotations = asSet(type.getDeclaredAnnotations());
-				annotations.retainAll(present);
+				Set<Annotation> annotations = new LinkedHashSet<>(present.size());
+				for (Annotation annotation : type.getDeclaredAnnotations()) {
+					if(present.remove(annotation.annotationType())) {
+						annotations.add(annotation);
+					}
+				}
 				return DeclaredAnnotations.from(type, annotations);
 			}).collect(Collectors.toList());
+		}
+
+		private Set<Class<?>> getAnnotationTypes(Annotation[] annotations) {
+			Set<Class<?>> types = new HashSet<>(annotations.length);
+			for (Annotation annotation : annotations) {
+				types.add(annotation.annotationType());
+			}
+			return types;
 		}
 
 		private Collection<DeclaredAnnotations> computeWithHierarchy(

@@ -17,11 +17,13 @@
 package org.springframework.core.annotation;
 
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -122,6 +124,16 @@ public class AnnotationsScannerTests {
 		Class<?> source = WithHierarchy.class;
 		assertThat(scan(source, SearchStrategy.INHERITED_ANNOTATIONS)).containsExactly(
 				"0:TestAnnotation1", "1:TestInheritedAnnotation2");
+	}
+
+	@Test
+	public void inheritedAnnotationsStrategyOnClassWhenHasAnnotationOnBothClassesIncudesOnlyOne() {
+		Class<?> source = WithSingleSuperclassAndDoubleInherited.class;
+		assertThat(Arrays.stream(source.getAnnotations()).map(
+				Annotation::annotationType).map(Class::getName)).containsExactly(
+						TestInheritedAnnotation2.class.getName());
+		assertThat(scan(source, SearchStrategy.INHERITED_ANNOTATIONS)).containsOnly(
+				"0:TestInheritedAnnotation2");
 	}
 
 	@Test
@@ -584,6 +596,15 @@ public class AnnotationsScannerTests {
 
 	@TestAnnotation1
 	static class WithSingleSuperclass extends SingleSuperclass {
+
+		@TestAnnotation1
+		public void method() {
+		}
+
+	}
+
+	@TestInheritedAnnotation2
+	static class WithSingleSuperclassAndDoubleInherited extends SingleSuperclass {
 
 		@TestAnnotation1
 		public void method() {
