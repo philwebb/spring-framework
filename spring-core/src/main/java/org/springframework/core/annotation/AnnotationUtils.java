@@ -149,7 +149,7 @@ public abstract class AnnotationUtils {
 		return MigrateMethod.from(() ->
 			InternalAnnotationUtils.getAnnotation(annotatedElement, annotationType)
 		).to(() ->
-			MergedAnnotations.from(RepeatableContainers.none(), AnnotationFilter.PLAIN, SearchStrategy.DIRECT,
+			MergedAnnotations.from(RepeatableContainers.none(), AnnotationFilter.PLAIN, SearchStrategy.INHERITED_ANNOTATIONS,
 					annotatedElement).get(
 							annotationType).withNonMergedAttributes().synthesize(
 									AnnotationUtils::isSingleLevelPresent).orElse(null)
@@ -177,7 +177,7 @@ public abstract class AnnotationUtils {
 		return MigrateMethod.from(() ->
 			InternalAnnotationUtils.getAnnotation(method, annotationType)
 		).to(() ->
-			MergedAnnotations.from(RepeatableContainers.none(), AnnotationFilter.PLAIN, SearchStrategy.DIRECT,
+			MergedAnnotations.from(RepeatableContainers.none(), AnnotationFilter.PLAIN, SearchStrategy.INHERITED_ANNOTATIONS,
 					method).get(annotationType).withNonMergedAttributes().synthesize(
 							AnnotationUtils::isSingleLevelPresent).orElse(null)		);
 	}
@@ -200,7 +200,7 @@ public abstract class AnnotationUtils {
 		return MigrateMethod.from(() ->
 			InternalAnnotationUtils.getAnnotations(annotatedElement)
 		).to(() ->
-			MergedAnnotations.from(RepeatableContainers.none(), AnnotationFilter.NONE, SearchStrategy.DIRECT,
+			MergedAnnotations.from(RepeatableContainers.none(), AnnotationFilter.NONE, SearchStrategy.INHERITED_ANNOTATIONS,
 					annotatedElement).stream().filter(
 							MergedAnnotation::isDirectlyPresent).map(
 									MergedAnnotation::withNonMergedAttributes).collect(
@@ -227,7 +227,7 @@ public abstract class AnnotationUtils {
 		return MigrateMethod.from(() ->
 			InternalAnnotationUtils.getAnnotations(method)
 		).to(()->
-			MergedAnnotations.from(RepeatableContainers.none(), AnnotationFilter.NONE, SearchStrategy.DIRECT,
+			MergedAnnotations.from(RepeatableContainers.none(), AnnotationFilter.NONE, SearchStrategy.INHERITED_ANNOTATIONS,
 					method).stream().filter(MergedAnnotation::isDirectlyPresent).map(
 							MergedAnnotation::withNonMergedAttributes).collect(
 									MergedAnnotationCollectors.toAnnotationArray())
