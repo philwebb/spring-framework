@@ -359,21 +359,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		return synthesized;
 	}
 
-	@SuppressWarnings("unchecked")
-	protected A doSynthesize() {
-		checkAllAttributeValuesForSynthesize();
-		Class<A> type = (Class<A>) resolveClassName(getType());
-		return SynthesizedMergedAnnotationInvocationHandler.createProxy(getClassLoader(),
-				this, type);
-	}
-
-	private void checkAllAttributeValuesForSynthesize() {
-		for (AttributeType attributeType : getAnnotationType().getAttributeTypes()) {
-			Class<?> type = ClassUtils.resolvePrimitiveIfNecessary(
-					resolveClassName(attributeType.getClassName()));
-			getRequiredValue(attributeType.getAttributeName(), type);
-		}
-	}
+	protected abstract A doSynthesize();
 
 	private <T> T getRequiredValue(String attributeName, Class<T> type) {
 		return getValue(attributeName, type, true);
@@ -628,7 +614,8 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	}
 
 	/**
-	 * Return the classloader that should be used to resolve types.
+	 * Return the classloader that should be used to resolve attribute value
+	 * types.
 	 * @return the classloader to use
 	 */
 	protected abstract ClassLoader getClassLoader();

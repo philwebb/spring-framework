@@ -64,7 +64,7 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 
 	private final Annotation sourceAnnotation;
 
-	private volatile ClassLoader classLoader;
+	private volatile ClassLoader synthesizedAnnotationClassLoader;
 
 	TypeMappedAnnotation(AnnotationTypeMapping mapping, Object source, int aggregateIndex,
 			DeclaredAttributes rootAttributes) {
@@ -152,7 +152,26 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 		if (this.sourceAnnotation != null && canSkipSynthesize(this.sourceAnnotation)) {
 			return (A) this.sourceAnnotation;
 		}
-		return super.doSynthesize();
+		ClassLoader classLoader = getSynthesizedAnnotationClassLoader();
+		Class<A> type = (Class<A>) ClassUtils.resolveClassName(getType(), classLoader);
+		return SynthesizedMergedAnnotationInvocationHandler.createProxy(this, type);
+	}
+
+	protected final ClassLoader getSynthesizedAnnotationClassLoader() {
+		ClassLoader classLoader = this.synthesizedAnnotationClassLoader;
+		if (classLoader == null) {
+			classLoader = this.parent != null
+					? this.parent.getSynthesizedAnnotationClassLoader()
+					: this.mapping.getClassLoader();
+			try {
+				classLoader = ClassUtils.forName(getType(), classLoader).getClassLoader();
+			}
+			catch (ClassNotFoundException | LinkageError ex) {
+				// Ignore and keep the existing classloader
+			}
+			this.synthesizedAnnotationClassLoader = classLoader;
+		}
+		return classLoader;
 	}
 
 	private boolean canSkipSynthesize(Annotation annotation) {
@@ -165,26 +184,10 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 
 	@Override
 	protected ClassLoader getClassLoader() {
-		ClassLoader classLoader = this.classLoader;
-		if (classLoader == null) {
-			classLoader = getParentClassLoader();
-			try {
-				classLoader = ClassUtils.forName(getType(), classLoader).getClassLoader();
-			}
-			catch (ClassNotFoundException | LinkageError ex) {
-				// Ignore and keep the parent classloader
-			}
-			this.classLoader = classLoader;
-		}
-		return classLoader;
-	}
-
-	private ClassLoader getParentClassLoader() {
-		if (this.parent != null) {
-			return this.parent.getClassLoader();
-		}
 		return this.mapping.getClassLoader();
 	}
+
+
 
 	@Override
 	protected AnnotationType getAnnotationType() {

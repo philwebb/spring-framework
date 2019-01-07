@@ -146,6 +146,11 @@ final class MissingMergedAnnotation<A extends Annotation>
 	}
 
 	@Override
+	protected A doSynthesize() {
+		throw new NoSuchElementException("Unable to synthesize missing annotation");
+	}
+
+	@Override
 	protected <T extends Annotation> MergedAnnotation<T> createNested(AnnotationType type,
 			DeclaredAttributes attributes) {
 		throw new NoSuchElementException(

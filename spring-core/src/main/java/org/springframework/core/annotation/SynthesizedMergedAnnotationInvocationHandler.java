@@ -22,6 +22,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 import org.springframework.util.Assert;
@@ -59,6 +60,12 @@ class SynthesizedMergedAnnotationInvocationHandler<A extends Annotation>
 		Assert.isTrue(type.isAnnotation(), "Type must be an annotation");
 		this.type = type;
 		this.annotation = annotation;
+		verifyAttributeMethods();
+	}
+
+	private void verifyAttributeMethods() {
+		ReflectionUtils.doWithLocalMethods(this.type, this::getAttributeValue,
+				this::isAttributeMethod);
 	}
 
 	@Override
@@ -92,7 +99,8 @@ class SynthesizedMergedAnnotationInvocationHandler<A extends Annotation>
 		String name = method.getName();
 		Class<?> type = ClassUtils.resolvePrimitiveIfNecessary(method.getReturnType());
 		return this.annotation.getValue(name, type).orElseThrow(
-				() -> new IllegalStateException("No value for attribute " + name));
+				() -> new NoSuchElementException("No value found for attribute named '" + name
+						+ "' in merged annotation " + this.annotation.getType()));
 	}
 
 	/**
@@ -133,8 +141,8 @@ class SynthesizedMergedAnnotationInvocationHandler<A extends Annotation>
 	}
 
 	@SuppressWarnings("unchecked")
-	static <A extends Annotation> A createProxy(ClassLoader classLoader,
-			MergedAnnotation<A> annotation, Class<A> type) {
+	static <A extends Annotation> A createProxy(MergedAnnotation<A> annotation, Class<A> type) {
+		ClassLoader classLoader = type.getClassLoader();
 		InvocationHandler handler = new SynthesizedMergedAnnotationInvocationHandler<>(
 				annotation, type);
 		Class<?>[] interfaces = isVisible(classLoader, SynthesizedAnnotation.class)

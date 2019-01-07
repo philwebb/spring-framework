@@ -86,7 +86,7 @@ public class SynthesizedMergedAnnotationInvocationHandlerTests {
 		MergedAnnotation<TestAnnotation> mergedAnnotation = MergedAnnotations.from(WithTestAnnotation.class).get(
 				TestAnnotation.class);
 		TestAnnotation synthesized = SynthesizedMergedAnnotationInvocationHandler.createProxy(
-				getClass().getClassLoader(), mergedAnnotation, TestAnnotation.class);
+				mergedAnnotation, TestAnnotation.class);
 		assertThat(synthesized.toString()).isEqualTo("@" + TestAnnotation.class.getName()
 				+ "(byteValue=1, booleanValue=true, charValue=c, shortValue=2, "
 				+ "intValue=3, longValue=4, floatValue=5.0, doubleValue=6.0, "
@@ -156,7 +156,7 @@ public class SynthesizedMergedAnnotationInvocationHandlerTests {
 						"byteValue"::equals);
 		assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(
 				() -> annotation.synthesize()).withMessageStartingWith(
-						"No attribute named");
+						"No value found for attribute named");
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
