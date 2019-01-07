@@ -1063,7 +1063,7 @@ public abstract class AnnotationUtils {
 	@Deprecated
 	@Nullable
 	public static Object getDefaultValue(@Nullable Annotation annotation, @Nullable String attributeName) {
-		return annotation != null ? getDefaultValue(annotation.annotationType()) : null;
+		return annotation != null ? getDefaultValue(annotation.annotationType(), attributeName) : null;
 	}
 
 	/**

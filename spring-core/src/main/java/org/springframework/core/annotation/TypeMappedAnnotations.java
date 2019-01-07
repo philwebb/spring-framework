@@ -93,6 +93,10 @@ final class TypeMappedAnnotations extends AbstractMergedAnnotations {
 
 	private <A extends Annotation> MergedAnnotation<A> selectFirst(MergedAnnotation<A> existing,
 			MergedAnnotation<A> candidate) {
+		// FIXME rename this and other first methods
+		if (existing.getDepth() > 0 && candidate.getDepth() == 0) {
+			return candidate;
+		}
 		return existing;
 	}
 
@@ -307,12 +311,12 @@ final class TypeMappedAnnotations extends AbstractMergedAnnotations {
 	}
 
 	/**
-	 * Strategy interface used to select the most appropriate annotation.
+	 * Strategy interface used to select between two annotations.
 	 */
 	private interface MergedAnnotationSelector<A extends Annotation> {
 
 		/**
-		 * Select the annotation that is most appropriate from the selection
+		 * Select the annotation that should be used.
 		 * @param existing an existing annotation returned from an earlier
 		 * result
 		 * @param candidate a candidate annotation that may be better suited

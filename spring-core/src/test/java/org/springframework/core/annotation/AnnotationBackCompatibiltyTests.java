@@ -22,6 +22,7 @@ import java.lang.annotation.RetentionPolicy;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.*;
 
 /**
  * Tests to ensure back-compatibility with Spring Framework 5.1.
@@ -40,6 +41,14 @@ public class AnnotationBackCompatibiltyTests {
 		// AnnotatedElementUtils finds first
 		TestAnnotation previousVersion = AnnotatedElementUtils.getMergedAnnotation(source, TestAnnotation.class);
 		assertThat(previousVersion.value()).isEqualTo("metaTest");
+	}
+
+	@Test
+	public void defaultValue() {
+		DefaultValueAnnotation synthesized = MergedAnnotations.from(WithDefaultValue.class).get(DefaultValueAnnotation.class).synthesize();
+		assertThat(synthesized).isInstanceOf(SynthesizedAnnotation.class);
+		Object defaultValue = AnnotationUtils.getDefaultValue(synthesized, "enumValue");
+		assertThat(defaultValue).isEqualTo(TestEnum.ONE);
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
@@ -70,6 +79,26 @@ public class AnnotationBackCompatibiltyTests {
 	@MetaMetaTestAnnotation
 	@TestAndMetaTestAnnotation
 	static class WithMetaMetaTestAnnotation1AndMetaTestAnnotation2 {
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface DefaultValueAnnotation {
+
+		TestEnum enumValue() default TestEnum.ONE;
+
+	}
+
+	@DefaultValueAnnotation
+	static class WithDefaultValue {
+
+	}
+
+	static enum TestEnum {
+
+		ONE,
+
+		TWO
 
 	}
 
