@@ -18,6 +18,7 @@ package org.springframework.core.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.net.URLClassLoader;
 
 import org.junit.Test;
 
@@ -49,6 +50,11 @@ public class AnnotationBackCompatibiltyTests {
 		assertThat(synthesized).isInstanceOf(SynthesizedAnnotation.class);
 		Object defaultValue = AnnotationUtils.getDefaultValue(synthesized, "enumValue");
 		assertThat(defaultValue).isEqualTo(TestEnum.ONE);
+	}
+
+	@Test
+	public void classLoader() {
+		// FIXME
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)

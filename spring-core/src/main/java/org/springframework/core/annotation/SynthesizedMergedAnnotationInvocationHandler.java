@@ -20,6 +20,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -129,6 +130,27 @@ class SynthesizedMergedAnnotationInvocationHandler<A extends Annotation>
 
 	private boolean isAttributeMethod(Method method) {
 		return method.getParameterCount() == 0 && method.getReturnType() != void.class;
+	}
+
+	@SuppressWarnings("unchecked")
+	static <A extends Annotation> A createProxy(ClassLoader classLoader,
+			MergedAnnotation<A> annotation, Class<A> type) {
+		InvocationHandler handler = new SynthesizedMergedAnnotationInvocationHandler<>(
+				annotation, type);
+		Class<?>[] interfaces = isVisible(classLoader, SynthesizedAnnotation.class)
+						? new Class<?>[] { type, SynthesizedAnnotation.class }
+						: new Class<?>[] { type };
+		return (A) Proxy.newProxyInstance(classLoader, interfaces, handler);
+	}
+
+	private static boolean isVisible(ClassLoader classLoader, Class<?> interfaceClass) {
+		try {
+			return Class.forName(interfaceClass.getName(), false,
+					classLoader) == interfaceClass;
+		}
+		catch (ClassNotFoundException ex) {
+			return false;
+		}
 	}
 
 	/**

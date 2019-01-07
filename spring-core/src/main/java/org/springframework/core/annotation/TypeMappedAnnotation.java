@@ -34,6 +34,7 @@ import org.springframework.core.annotation.type.DeclaredAttributes;
 import org.springframework.core.annotation.type.StandardDeclaredAttributes;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 
 /**
@@ -63,6 +64,8 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 
 	private final Annotation sourceAnnotation;
 
+	private volatile ClassLoader classLoader;
+
 	TypeMappedAnnotation(AnnotationTypeMapping mapping, Object source, int aggregateIndex,
 			DeclaredAttributes rootAttributes) {
 		this.mapping = mapping;
@@ -82,7 +85,8 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 
 	private TypeMappedAnnotation(AnnotationTypeMapping mapping, Object source,
 			int aggregateIndex, TypeMappedAnnotation<?> parent, Attributes attributes,
-			Predicate<String> attributeFilter, boolean nonMergedAttributes) {
+			boolean nonMergedAttributes, Predicate<String> attributeFilter,
+			Annotation sourceAnnotation) {
 		this.mapping = mapping;
 		this.source = source;
 		this.aggregateIndex = aggregateIndex;
@@ -90,7 +94,7 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 		this.attributes = attributes;
 		this.nonMergedAttributes = nonMergedAttributes;
 		this.attributeFilter = attributeFilter;
-		this.sourceAnnotation = null;
+		this.sourceAnnotation = sourceAnnotation;
 	}
 
 	private Attributes createAttributes(AnnotationTypeMapping mapping, Object source,
@@ -131,26 +135,54 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 			predicate = this.attributeFilter.and(predicate);
 		}
 		return new TypeMappedAnnotation<>(this.mapping, this.source, this.aggregateIndex,
-				this.parent, this.attributes, predicate, this.nonMergedAttributes);
+				this.parent, this.attributes, this.nonMergedAttributes, predicate,
+				this.sourceAnnotation);
 	}
 
 	@Override
 	public MergedAnnotation<A> withNonMergedAttributes() {
 		return new TypeMappedAnnotation<>(this.mapping, this.source, this.aggregateIndex,
-				this.parent, this.attributes, this.attributeFilter, true);
+				this.parent, this.attributes, true, this.attributeFilter,
+				this.sourceAnnotation);
 	}
 
 	@Override
-	protected Object synthesize(Class<A> annotationType) {
-		if (this.sourceAnnotation != null && (this.mapping.canSkipSynthesize()
-				|| this.sourceAnnotation instanceof SynthesizedAnnotation)) {
-			return this.sourceAnnotation;
+	@SuppressWarnings("unchecked")
+	protected A doSynthesize() {
+		if (this.sourceAnnotation != null && canSkipSynthesize(this.sourceAnnotation)) {
+			return (A) this.sourceAnnotation;
 		}
-		return super.synthesize(annotationType);
+		return super.doSynthesize();
+	}
+
+	private boolean canSkipSynthesize(Annotation annotation) {
+		if (this.attributeFilter != null) {
+			return false;
+		}
+		return this.mapping.canSkipSynthesize()
+				|| annotation instanceof SynthesizedAnnotation;
 	}
 
 	@Override
 	protected ClassLoader getClassLoader() {
+		ClassLoader classLoader = this.classLoader;
+		if (classLoader == null) {
+			classLoader = getParentClassLoader();
+			try {
+				classLoader = ClassUtils.forName(getType(), classLoader).getClassLoader();
+			}
+			catch (ClassNotFoundException | LinkageError ex) {
+				// Ignore and keep the parent classloader
+			}
+			this.classLoader = classLoader;
+		}
+		return classLoader;
+	}
+
+	private ClassLoader getParentClassLoader() {
+		if (this.parent != null) {
+			return this.parent.getClassLoader();
+		}
 		return this.mapping.getClassLoader();
 	}
 

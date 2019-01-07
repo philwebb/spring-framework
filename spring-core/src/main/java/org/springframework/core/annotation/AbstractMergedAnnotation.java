@@ -18,8 +18,6 @@ package org.springframework.core.annotation;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Proxy;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -349,31 +347,24 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public A synthesize() {
 		if (!isPresent()) {
 			throw new NoSuchElementException("Unable to synthesize missing annotation");
 		}
 		A synthesized = this.synthesizedAnnotation;
 		if (synthesized == null) {
-			Class<A> type = (Class<A>) ClassUtils.resolveClassName(getType(),
-					getClassLoader());
-			synthesized = (A) synthesize(type);
+			synthesized = doSynthesize();
 			this.synthesizedAnnotation = synthesized;
 		}
 		return synthesized;
 	}
 
-	protected Object synthesize(Class<A> annotationType) {
+	@SuppressWarnings("unchecked")
+	protected A doSynthesize() {
 		checkAllAttributeValuesForSynthesize();
-		ClassLoader classLoader = getClassLoader();
-		InvocationHandler handler = new SynthesizedMergedAnnotationInvocationHandler<>(
-				this, annotationType);
-		Class<?>[] interfaces = ClassUtils.isPresent(
-				SynthesizedAnnotation.class.getName(), classLoader)
-						? new Class<?>[] { annotationType, SynthesizedAnnotation.class }
-						: new Class<?>[] { annotationType };
-		return Proxy.newProxyInstance(classLoader, interfaces, handler);
+		Class<A> type = (Class<A>) resolveClassName(getType());
+		return SynthesizedMergedAnnotationInvocationHandler.createProxy(getClassLoader(),
+				this, type);
 	}
 
 	private void checkAllAttributeValuesForSynthesize() {
