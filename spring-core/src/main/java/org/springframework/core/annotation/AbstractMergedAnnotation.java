@@ -63,13 +63,6 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 
 	private volatile A synthesizedAnnotation;
 
-	protected AbstractMergedAnnotation() {
-	}
-
-	protected AbstractMergedAnnotation(A synthesizedAnnotation) {
-		this.synthesizedAnnotation = synthesizedAnnotation;
-	}
-
 	@Override
 	public String getType() {
 		return getAnnotationType().getClassName();
@@ -361,20 +354,26 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		if (!isPresent()) {
 			throw new NoSuchElementException("Unable to synthesize missing annotation");
 		}
-		checkAllAttributeValuesForSynthesize();
 		A synthesized = this.synthesizedAnnotation;
 		if (synthesized == null) {
-			ClassLoader classLoader = getClassLoader();
-			Class<A> annotationType = (Class<A>) ClassUtils.resolveClassName(getType(),
-					classLoader);
-			InvocationHandler handler = new SynthesizedMergedAnnotationInvocationHandler<>(
-					this, annotationType);
-			Class<?>[] interfaces = new Class<?>[] { annotationType,
-				SynthesizedAnnotation.class };
-			synthesized = (A) Proxy.newProxyInstance(classLoader, interfaces, handler);
+			Class<A> type = (Class<A>) ClassUtils.resolveClassName(getType(),
+					getClassLoader());
+			synthesized = (A) synthesize(type);
 			this.synthesizedAnnotation = synthesized;
 		}
 		return synthesized;
+	}
+
+	protected Object synthesize(Class<A> annotationType) {
+		checkAllAttributeValuesForSynthesize();
+		ClassLoader classLoader = getClassLoader();
+		InvocationHandler handler = new SynthesizedMergedAnnotationInvocationHandler<>(
+				this, annotationType);
+		Class<?>[] interfaces = ClassUtils.isPresent(
+				SynthesizedAnnotation.class.getName(), classLoader)
+						? new Class<?>[] { annotationType, SynthesizedAnnotation.class }
+						: new Class<?>[] { annotationType };
+		return Proxy.newProxyInstance(classLoader, interfaces, handler);
 	}
 
 	private void checkAllAttributeValuesForSynthesize() {
@@ -664,8 +663,8 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	protected abstract Object getAttributeValue(String attributeName);
 
 	/**
-	 * Return a new nested {@link MergedAnnotation} instance for the given
-	 * type and attributes.
+	 * Return a new nested {@link MergedAnnotation} instance for the given type
+	 * and attributes.
 	 * @param type the nested annotation type
 	 * @param attributes the nested annotation attributes
 	 * @return the nested {@link MergedAnnotation}

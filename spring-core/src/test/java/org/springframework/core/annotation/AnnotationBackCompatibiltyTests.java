@@ -85,7 +85,11 @@ public class AnnotationBackCompatibiltyTests {
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface DefaultValueAnnotation {
 
+		@AliasFor("enumAlais")
 		TestEnum enumValue() default TestEnum.ONE;
+
+		@AliasFor("enumValue")
+		TestEnum enumAlais() default TestEnum.ONE;
 
 	}
 

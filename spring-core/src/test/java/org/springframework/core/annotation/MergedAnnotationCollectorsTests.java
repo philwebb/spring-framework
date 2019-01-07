@@ -110,7 +110,11 @@ public class MergedAnnotationCollectorsTests {
 	@Repeatable(TestAnnotations.class)
 	@interface TestAnnotation {
 
-		String value();
+		@AliasFor("name")
+		String value() default "";
+
+		@AliasFor("value")
+		String name() default "";
 
 		Class<?> extra() default void.class;
 
@@ -124,8 +128,8 @@ public class MergedAnnotationCollectorsTests {
 	}
 
 	@TestAnnotation("a")
-	@TestAnnotation(value = "b", extra = String.class)
-	@TestAnnotation(value = "c", extra = Integer.class)
+	@TestAnnotation(name = "b", extra = String.class)
+	@TestAnnotation(name = "c", extra = Integer.class)
 	static class WithTestAnnotations {
 
 	}

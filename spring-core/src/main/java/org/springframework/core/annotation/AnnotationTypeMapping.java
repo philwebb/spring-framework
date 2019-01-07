@@ -163,7 +163,8 @@ class AnnotationTypeMapping {
 
 	public boolean canSkipSynthesize() {
 		try {
-			if (!this.mirrorSets.isEmpty() || !this.aliases.isEmpty()) {
+			if (this.parent != null || !this.mirrorSets.isEmpty()
+					|| !this.aliases.isEmpty()) {
 				return false;
 			}
 			return canSkipSynthesize(this.annotationType.getAttributeTypes());

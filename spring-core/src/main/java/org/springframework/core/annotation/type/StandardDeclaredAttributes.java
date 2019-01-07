@@ -32,7 +32,7 @@ import org.springframework.util.Assert;
  * @author Phillip Webb
  * @since 5.2
  */
-class StandardDeclaredAttributes extends AbstractDeclaredAttributes {
+public class StandardDeclaredAttributes extends AbstractDeclaredAttributes {
 
 	private final Annotation annotation;
 
@@ -64,6 +64,14 @@ class StandardDeclaredAttributes extends AbstractDeclaredAttributes {
 
 	private boolean isAttributeMethod(Method method) {
 		return (method.getParameterCount() == 0 && method.getReturnType() != void.class);
+	}
+
+	/**
+	 * Return the backing source annotation.
+	 * @return the source annotation
+	 */
+	public Annotation getAnnotation() {
+		return this.annotation;
 	}
 
 	@Override

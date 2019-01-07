@@ -84,7 +84,7 @@ public class SynthesizedMergedAnnotationInvocationHandlerTests {
 	@Test
 	public void invokeToStringReturnsToString() {
 		TestAnnotation synthesized = MergedAnnotations.from(WithTestAnnotation.class).get(
-				TestAnnotation.class).synthesize();
+				TestAnnotation.class).filterAttributes((attribute) -> true).synthesize();
 		assertThat(synthesized.toString()).isEqualTo("@" + TestAnnotation.class.getName()
 				+ "(byteValue=1, booleanValue=true, charValue=c, shortValue=2, "
 				+ "intValue=3, longValue=4, floatValue=5.0, doubleValue=6.0, "
@@ -99,9 +99,15 @@ public class SynthesizedMergedAnnotationInvocationHandlerTests {
 				+ "annotationArrayValue=[@org.springframework.core.annotation.SynthesizedMergedAnnotationInvocationHandlerTests$NestedAnnotation(value=n)])");
 		TestAnnotation java = WithTestAnnotation.class.getDeclaredAnnotation(
 				TestAnnotation.class);
-		List<String> javaToStringParts = Arrays.asList(java.toString().replace("interface ", "").split(", "));
-		List<String> springToStringParts = Arrays.asList(synthesized.toString().split(", "));
+		List<String> javaToStringParts = getToStringParts(java);
+		List<String> springToStringParts = getToStringParts(synthesized);
 		assertThat(springToStringParts).hasSameElementsAs(javaToStringParts);
+	}
+
+	private List<String> getToStringParts(TestAnnotation annotation) {
+		String string = annotation.toString();
+		string = string.substring(string.indexOf("(") + 1, string.lastIndexOf(")"));
+		return Arrays.asList(string.replace("interface ", "").split(", "));
 	}
 
 	@Test
@@ -170,7 +176,7 @@ public class SynthesizedMergedAnnotationInvocationHandlerTests {
 
 		double doubleValue();
 
-		String stringValue();
+		String stringValue() default "";
 
 		Class<?> classValue();
 
