@@ -709,7 +709,7 @@ public class MergedAnnotationsTests {
 	@Test // SPR-17146
 	public void findMethodAnnotationFromGenericSuperclass1() throws Exception {
 		// FIXME duped
-		Method method = XExtendsBaseClassWithGenericAnnotatedMethod.class.getMethod("foo",
+		Method method = ExtendsBaseClassWithGenericAnnotatedMethod.class.getMethod("foo",
 				String.class);
 		MergedAnnotation<?> annotation = MergedAnnotations.from(SearchStrategy.EXHAUSTIVE,
 				method).get(Order.class);
@@ -843,7 +843,7 @@ public class MergedAnnotationsTests {
 
 	@Test
 	public void findMethodAnnotationFromInterface() throws Exception {
-		Method method = XImplementsInterfaceWithAnnotatedMethod.class.getMethod("foo");
+		Method method = ImplementsInterfaceWithAnnotatedMethod.class.getMethod("foo");
 		assertThat(MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, method).get(
 				Order.class).getDepth()).isEqualTo(0);
 	}
@@ -858,7 +858,7 @@ public class MergedAnnotationsTests {
 
 	@Test // SPR-17146
 	public void findMethodAnnotationFromGenericSuperclass() throws Exception {
-		Method method = XExtendsBaseClassWithGenericAnnotatedMethod.class.getMethod("foo",
+		Method method = ExtendsBaseClassWithGenericAnnotatedMethod.class.getMethod("foo",
 				String.class);
 		assertThat(MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, method).get(
 				Order.class).getDepth()).isEqualTo(0);
@@ -866,7 +866,7 @@ public class MergedAnnotationsTests {
 
 	@Test
 	public void findMethodAnnotationFromInterfaceOnSuper() throws Exception {
-		Method method = XSubOfImplementsInterfaceWithAnnotatedMethod.class.getMethod(
+		Method method = SubOfImplementsInterfaceWithAnnotatedMethod.class.getMethod(
 				"foo");
 		assertThat(MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, method).get(
 				Order.class).getDepth()).isEqualTo(0);
@@ -875,7 +875,7 @@ public class MergedAnnotationsTests {
 	@Test
 	public void findMethodAnnotationFromInterfaceWhenSuperDoesNotImplementMethod()
 			throws Exception {
-		Method method = XSubOfAbstractImplementsInterfaceWithAnnotatedMethod.class.getMethod(
+		Method method = SubOfAbstractImplementsInterfaceWithAnnotatedMethod.class.getMethod(
 				"foo");
 		assertThat(MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, method).get(
 				Order.class).getDepth()).isEqualTo(0);
@@ -921,7 +921,7 @@ public class MergedAnnotationsTests {
 	public void findClassAnnotationOnAnnotatedClassWithMissingTargetMetaAnnotation() {
 		// TransactionalClass is NOT annotated or meta-annotated with @Component
 		MergedAnnotation<?> annotation = MergedAnnotations.from(SearchStrategy.EXHAUSTIVE,
-				XTransactionalClass.class).get(Component.class);
+				TransactionalClass.class).get(Component.class);
 		assertThat(annotation.isPresent()).isFalse();
 	}
 
@@ -1085,13 +1085,13 @@ public class MergedAnnotationsTests {
 				SubNonInheritedAnnotationClass.class, candidates)).isEqualTo(
 						NonInheritedAnnotationClass.class);
 		// class hierarchy mixed with @Transactional and @Order declarations
-		assertThat(getDirectlyPresentSourceWithTypeIn(XTransactionalClass.class,
-				candidates)).isEqualTo(XTransactionalClass.class);
-		assertThat(getDirectlyPresentSourceWithTypeIn(XTransactionalAndOrderedClass.class,
-				candidates)).isEqualTo(XTransactionalAndOrderedClass.class);
+		assertThat(getDirectlyPresentSourceWithTypeIn(TransactionalClass.class,
+				candidates)).isEqualTo(TransactionalClass.class);
+		assertThat(getDirectlyPresentSourceWithTypeIn(TransactionalAndOrderedClass.class,
+				candidates)).isEqualTo(TransactionalAndOrderedClass.class);
 		assertThat(getDirectlyPresentSourceWithTypeIn(
-				XSubTransactionalAndOrderedClass.class, candidates)).isEqualTo(
-						XTransactionalAndOrderedClass.class);
+				SubTransactionalAndOrderedClass.class, candidates)).isEqualTo(
+						TransactionalAndOrderedClass.class);
 	}
 
 	private Object getDirectlyPresentSourceWithTypeIn(Class<?> clazz,
@@ -1269,16 +1269,16 @@ public class MergedAnnotationsTests {
 	public void findRepeatableAnnotationOnComposedAnnotation() {
 		MergedAnnotation<?> annotation = MergedAnnotations.from(
 				RepeatableContainers.none(), AnnotationFilter.NONE,
-				SearchStrategy.EXHAUSTIVE, XMyRepeatableMeta1.class).get(
+				SearchStrategy.EXHAUSTIVE, MyRepeatableMeta1.class).get(
 						Repeatable.class);
-		assertThat(annotation.getClass("value")).isEqualTo(XMyRepeatableContainer.class);
+		assertThat(annotation.getClass("value")).isEqualTo(MyRepeatableContainer.class);
 	}
 
 	@Test
 	public void getRepeatableAnnotationsDeclaredOnMethod() throws Exception {
-		Method method = XInterfaceWithRepeated.class.getMethod("foo");
-		Stream<MergedAnnotation<XMyRepeatable>> annotations = MergedAnnotations.from(
-				SearchStrategy.EXHAUSTIVE, method).stream(XMyRepeatable.class);
+		Method method = InterfaceWithRepeated.class.getMethod("foo");
+		Stream<MergedAnnotation<MyRepeatable>> annotations = MergedAnnotations.from(
+				SearchStrategy.EXHAUSTIVE, method).stream(MyRepeatable.class);
 		Stream<String> values = annotations.map(
 				annotation -> annotation.getString("value"));
 		assertThat(values).containsExactly("A", "B", "C", "meta1");
@@ -1316,7 +1316,7 @@ public class MergedAnnotationsTests {
 
 	@Test
 	public void getRepeatableAnnotationsDeclaredOnClass() {
-		Class<?> element = XMyRepeatableClass.class;
+		Class<?> element = MyRepeatableClass.class;
 		String[] expectedValuesJava = { "A", "B", "C" };
 		String[] expectedValuesSpring = { "A", "B", "C", "meta1" };
 		testRepeatables(SearchStrategy.SUPER_CLASS, element, expectedValuesJava,
@@ -1325,7 +1325,7 @@ public class MergedAnnotationsTests {
 
 	@Test
 	public void getRepeatableAnnotationsDeclaredOnSuperclass() {
-		Class<?> element = XSubMyRepeatableClass.class;
+		Class<?> element = SubMyRepeatableClass.class;
 		String[] expectedValuesJava = { "A", "B", "C" };
 		String[] expectedValuesSpring = { "A", "B", "C", "meta1" };
 		testRepeatables(SearchStrategy.SUPER_CLASS, element, expectedValuesJava,
@@ -1334,7 +1334,7 @@ public class MergedAnnotationsTests {
 
 	@Test
 	public void getRepeatableAnnotationsDeclaredOnClassAndSuperclass() {
-		Class<?> element = XSubMyRepeatableWithAdditionalLocalDeclarationsClass.class;
+		Class<?> element = SubMyRepeatableWithAdditionalLocalDeclarationsClass.class;
 		String[] expectedValuesJava = { "X", "Y", "Z" };
 		String[] expectedValuesSpring = { "X", "Y", "Z", "meta2" };
 		testRepeatables(SearchStrategy.SUPER_CLASS, element, expectedValuesJava,
@@ -1343,7 +1343,7 @@ public class MergedAnnotationsTests {
 
 	@Test
 	public void getRepeatableAnnotationsDeclaredOnMultipleSuperclasses() {
-		Class<?> element = XSubSubMyRepeatableWithAdditionalLocalDeclarationsClass.class;
+		Class<?> element = SubSubMyRepeatableWithAdditionalLocalDeclarationsClass.class;
 		String[] expectedValuesJava = { "X", "Y", "Z" };
 		String[] expectedValuesSpring = { "X", "Y", "Z", "meta2" };
 		testRepeatables(SearchStrategy.SUPER_CLASS, element, expectedValuesJava,
@@ -1352,7 +1352,7 @@ public class MergedAnnotationsTests {
 
 	@Test
 	public void getDeclaredRepeatableAnnotationsDeclaredOnClass() {
-		Class<?> element = XMyRepeatableClass.class;
+		Class<?> element = MyRepeatableClass.class;
 		String[] expectedValuesJava = { "A", "B", "C" };
 		String[] expectedValuesSpring = { "A", "B", "C", "meta1" };
 		testRepeatables(SearchStrategy.SUPER_CLASS, element, expectedValuesJava,
@@ -1361,7 +1361,7 @@ public class MergedAnnotationsTests {
 
 	@Test
 	public void getDeclaredRepeatableAnnotationsDeclaredOnSuperclass() {
-		Class<?> element = XSubMyRepeatableClass.class;
+		Class<?> element = SubMyRepeatableClass.class;
 		String[] expectedValuesJava = {};
 		String[] expectedValuesSpring = {};
 		testRepeatables(SearchStrategy.DIRECT, element, expectedValuesJava,
@@ -1377,20 +1377,20 @@ public class MergedAnnotationsTests {
 
 	private void testJavaRepeatables(SearchStrategy searchStrategy, Class<?> element,
 			String[] expected) {
-		XMyRepeatable[] annotations = searchStrategy == SearchStrategy.DIRECT
-				? element.getDeclaredAnnotationsByType(XMyRepeatable.class)
-				: element.getAnnotationsByType(XMyRepeatable.class);
-		assertThat(Arrays.stream(annotations).map(XMyRepeatable::value)).containsExactly(
+		MyRepeatable[] annotations = searchStrategy == SearchStrategy.DIRECT
+				? element.getDeclaredAnnotationsByType(MyRepeatable.class)
+				: element.getAnnotationsByType(MyRepeatable.class);
+		assertThat(Arrays.stream(annotations).map(MyRepeatable::value)).containsExactly(
 				expected);
 	}
 
 	private void testExplicitRepeatables(SearchStrategy searchStrategy, Class<?> element,
 			String[] expected) {
 		MergedAnnotations annotations = MergedAnnotations.from(
-				RepeatableContainers.of(XMyRepeatableContainer.class,
-						XMyRepeatable.class),
+				RepeatableContainers.of(MyRepeatableContainer.class,
+						MyRepeatable.class),
 				AnnotationFilter.PLAIN, searchStrategy, element);
-		assertThat(annotations.stream(XMyRepeatable.class).filter(
+		assertThat(annotations.stream(MyRepeatable.class).filter(
 				MergedAnnotationPredicates.firstRunOf(
 						MergedAnnotation::getAggregateIndex)).map(
 								annotation -> annotation.getString(
@@ -1400,7 +1400,7 @@ public class MergedAnnotationsTests {
 	private void testStandardRepeatables(SearchStrategy searchStrategy, Class<?> element,
 			String[] expected) {
 		MergedAnnotations annotations = MergedAnnotations.from(searchStrategy, element);
-		assertThat(annotations.stream(XMyRepeatable.class).filter(
+		assertThat(annotations.stream(MyRepeatable.class).filter(
 				MergedAnnotationPredicates.firstRunOf(
 						MergedAnnotation::getAggregateIndex)).map(
 								annotation -> annotation.getString(
@@ -1659,9 +1659,9 @@ public class MergedAnnotationsTests {
 	@Test
 	public void synthesizeAnnotationWithImplicitAliasesWithDifferentDefaultValues()
 			throws Exception {
-		Class<?> clazz = XImplicitAliasesWithDifferentDefaultValuesContextConfigClass.class;
-		Class<XImplicitAliasesWithDifferentDefaultValuesContextConfig> annotationType = XImplicitAliasesWithDifferentDefaultValuesContextConfig.class;
-		XImplicitAliasesWithDifferentDefaultValuesContextConfig config = clazz.getAnnotation(
+		Class<?> clazz = ImplicitAliasesWithDifferentDefaultValuesSimpleContextConfigClass.class;
+		Class<ImplicitAliasesWithDifferentDefaultValuesSimpleContextConfig> annotationType = ImplicitAliasesWithDifferentDefaultValuesSimpleContextConfig.class;
+		ImplicitAliasesWithDifferentDefaultValuesSimpleContextConfig config = clazz.getAnnotation(
 				annotationType);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
 				() -> MergedAnnotation.from(clazz, config)).withMessageStartingWith(
@@ -1679,8 +1679,8 @@ public class MergedAnnotationsTests {
 	public void synthesizeAnnotationWithImplicitAliasesWithDuplicateValues()
 			throws Exception {
 		Class<?> clazz = XImplicitAliasesWithDuplicateValuesContextConfigClass.class;
-		Class<XImplicitAliasesWithDuplicateValuesContextConfig> annotationType = XImplicitAliasesWithDuplicateValuesContextConfig.class;
-		XImplicitAliasesWithDuplicateValuesContextConfig config = clazz.getAnnotation(
+		Class<ImplicitAliasesWithDuplicateValuesSimpleContextConfig> annotationType = ImplicitAliasesWithDuplicateValuesSimpleContextConfig.class;
+		ImplicitAliasesWithDuplicateValuesSimpleContextConfig config = clazz.getAnnotation(
 				annotationType);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
 				() -> MergedAnnotation.from(clazz, config)).withMessageStartingWith(
@@ -2841,72 +2841,72 @@ public class MergedAnnotationsTests {
 	}
 
 	@Transactional
-	public static class XTransactionalClass {
+	public static class TransactionalClass {
 	}
 
 	@Order
-	public static class XTransactionalAndOrderedClass extends XTransactionalClass {
+	public static class TransactionalAndOrderedClass extends TransactionalClass {
 	}
 
-	public static class XSubTransactionalAndOrderedClass
-			extends XTransactionalAndOrderedClass {
+	public static class SubTransactionalAndOrderedClass
+			extends TransactionalAndOrderedClass {
 	}
 
-	public interface XInterfaceWithAnnotatedMethod {
+	public interface InterfaceWithAnnotatedMethod {
 
 		@Order
 		void foo();
 	}
 
-	public static class XImplementsInterfaceWithAnnotatedMethod
-			implements XInterfaceWithAnnotatedMethod {
+	public static class ImplementsInterfaceWithAnnotatedMethod
+			implements InterfaceWithAnnotatedMethod {
 
 		@Override
 		public void foo() {
 		}
 	}
 
-	public static class XSubOfImplementsInterfaceWithAnnotatedMethod
-			extends XImplementsInterfaceWithAnnotatedMethod {
+	public static class SubOfImplementsInterfaceWithAnnotatedMethod
+			extends ImplementsInterfaceWithAnnotatedMethod {
 
 		@Override
 		public void foo() {
 		}
 	}
 
-	public abstract static class XAbstractDoesNotImplementInterfaceWithAnnotatedMethod
-			implements XInterfaceWithAnnotatedMethod {
+	public abstract static class AbstractDoesNotImplementInterfaceWithAnnotatedMethod
+			implements InterfaceWithAnnotatedMethod {
 	}
 
-	public static class XSubOfAbstractImplementsInterfaceWithAnnotatedMethod
-			extends XAbstractDoesNotImplementInterfaceWithAnnotatedMethod {
+	public static class SubOfAbstractImplementsInterfaceWithAnnotatedMethod
+			extends AbstractDoesNotImplementInterfaceWithAnnotatedMethod {
 
 		@Override
 		public void foo() {
 		}
 	}
 
-	public interface XInterfaceWithGenericAnnotatedMethod<T> {
+	public interface InterfaceWithGenericAnnotatedMethod<T> {
 
 		@Order
 		void foo(T t);
 	}
 
 	public static class ImplementsInterfaceWithGenericAnnotatedMethod
-			implements XInterfaceWithGenericAnnotatedMethod<String> {
+			implements InterfaceWithGenericAnnotatedMethod<String> {
 
 		public void foo(String t) {
 		}
 	}
 
-	public static abstract class XBaseClassWithGenericAnnotatedMethod<T> {
+	public static abstract class BaseClassWithGenericAnnotatedMethod<T> {
 
 		@Order
 		abstract void foo(T t);
 	}
 
-	public static class XExtendsBaseClassWithGenericAnnotatedMethod
-			extends XBaseClassWithGenericAnnotatedMethod<String> {
+	public static class ExtendsBaseClassWithGenericAnnotatedMethod
+			extends BaseClassWithGenericAnnotatedMethod<String> {
 
 		public void foo(String t) {
 		}
@@ -2914,60 +2914,60 @@ public class MergedAnnotationsTests {
 
 	@Retention(RetentionPolicy.RUNTIME)
 	@Inherited
-	@interface XMyRepeatableContainer {
+	@interface MyRepeatableContainer {
 
-		XMyRepeatable[] value();
+		MyRepeatable[] value();
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
 	@Inherited
-	@Repeatable(XMyRepeatableContainer.class)
-	@interface XMyRepeatable {
+	@Repeatable(MyRepeatableContainer.class)
+	@interface MyRepeatable {
 
 		String value();
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
 	@Inherited
-	@XMyRepeatable("meta1")
-	@interface XMyRepeatableMeta1 {
+	@MyRepeatable("meta1")
+	@interface MyRepeatableMeta1 {
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
 	@Inherited
-	@XMyRepeatable("meta2")
-	@interface XMyRepeatableMeta2 {
+	@MyRepeatable("meta2")
+	@interface MyRepeatableMeta2 {
 	}
 
-	interface XInterfaceWithRepeated {
+	interface InterfaceWithRepeated {
 
-		@XMyRepeatable("A")
-		@XMyRepeatableContainer({ @XMyRepeatable("B"), @XMyRepeatable("C") })
-		@XMyRepeatableMeta1
+		@MyRepeatable("A")
+		@MyRepeatableContainer({ @MyRepeatable("B"), @MyRepeatable("C") })
+		@MyRepeatableMeta1
 		void foo();
 	}
 
-	@XMyRepeatable("A")
-	@XMyRepeatableContainer({ @XMyRepeatable("B"), @XMyRepeatable("C") })
-	@XMyRepeatableMeta1
-	static class XMyRepeatableClass {
+	@MyRepeatable("A")
+	@MyRepeatableContainer({ @MyRepeatable("B"), @MyRepeatable("C") })
+	@MyRepeatableMeta1
+	static class MyRepeatableClass {
 	}
 
-	static class XSubMyRepeatableClass extends XMyRepeatableClass {
+	static class SubMyRepeatableClass extends MyRepeatableClass {
 	}
 
-	@XMyRepeatable("X")
-	@XMyRepeatableContainer({ @XMyRepeatable("Y"), @XMyRepeatable("Z") })
-	@XMyRepeatableMeta2
-	static class XSubMyRepeatableWithAdditionalLocalDeclarationsClass
-			extends XMyRepeatableClass {
+	@MyRepeatable("X")
+	@MyRepeatableContainer({ @MyRepeatable("Y"), @MyRepeatable("Z") })
+	@MyRepeatableMeta2
+	static class SubMyRepeatableWithAdditionalLocalDeclarationsClass
+			extends MyRepeatableClass {
 	}
 
-	static class XSubSubMyRepeatableWithAdditionalLocalDeclarationsClass
-			extends XSubMyRepeatableWithAdditionalLocalDeclarationsClass {
+	static class SubSubMyRepeatableWithAdditionalLocalDeclarationsClass
+			extends SubMyRepeatableWithAdditionalLocalDeclarationsClass {
 	}
 
-	enum XRequestMethod {
+	enum RequestMethod {
 		GET, POST
 	}
 
@@ -2985,7 +2985,7 @@ public class MergedAnnotationsTests {
 		@AliasFor(attribute = "value")
 		String[] path() default "";
 
-		XRequestMethod[] method() default {};
+		RequestMethod[] method() default {};
 	}
 
 	/**
@@ -2993,7 +2993,7 @@ public class MergedAnnotationsTests {
 	 * String arrays are overridden with single String elements.
 	 */
 	@Retention(RetentionPolicy.RUNTIME)
-	@XWebMapping(method = XRequestMethod.GET, name = "")
+	@XWebMapping(method = RequestMethod.GET, name = "")
 	@interface XGet {
 
 		@AliasFor(annotation = XWebMapping.class)
@@ -3008,7 +3008,7 @@ public class MergedAnnotationsTests {
 	 * the path is overridden by convention with single String element.
 	 */
 	@Retention(RetentionPolicy.RUNTIME)
-	@XWebMapping(method = XRequestMethod.POST, name = "")
+	@XWebMapping(method = RequestMethod.POST, name = "")
 	@interface XPost {
 
 		String path() default "";
@@ -3021,8 +3021,8 @@ public class MergedAnnotationsTests {
 		public void handleMappedWithValueAttribute() {
 		}
 
-		@XWebMapping(path = "/test", name = "bar", method = { XRequestMethod.GET,
-			XRequestMethod.POST })
+		@XWebMapping(path = "/test", name = "bar", method = { RequestMethod.GET,
+			RequestMethod.POST })
 		public void handleMappedWithPathAttribute() {
 		}
 
@@ -3042,7 +3042,7 @@ public class MergedAnnotationsTests {
 		 * mapping is logically "equal" to handleMappedWithPathAttribute().
 		 */
 		@XWebMapping(value = "/test", path = "/test", name = "bar", method = {
-			XRequestMethod.GET, XRequestMethod.POST })
+			RequestMethod.GET, RequestMethod.POST })
 		public void handleMappedWithSamePathAndValueAttributes() {
 		}
 
@@ -3342,7 +3342,7 @@ public class MergedAnnotationsTests {
 
 	@SimpleContextConfig
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface XImplicitAliasesWithDifferentDefaultValuesContextConfig {
+	@interface ImplicitAliasesWithDifferentDefaultValuesSimpleContextConfig {
 
 		@AliasFor(annotation = SimpleContextConfig.class, attribute = "location")
 		String location1() default "foo";
@@ -3351,13 +3351,13 @@ public class MergedAnnotationsTests {
 		String location2() default "bar";
 	}
 
-	@XImplicitAliasesWithDifferentDefaultValuesContextConfig(location1 = "1", location2 = "2")
-	static class XImplicitAliasesWithDifferentDefaultValuesContextConfigClass {
+	@ImplicitAliasesWithDifferentDefaultValuesSimpleContextConfig(location1 = "1", location2 = "2")
+	static class ImplicitAliasesWithDifferentDefaultValuesSimpleContextConfigClass {
 	}
 
 	@SimpleContextConfig
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface XImplicitAliasesWithDuplicateValuesContextConfig {
+	@interface ImplicitAliasesWithDuplicateValuesSimpleContextConfig {
 
 		@AliasFor(annotation = SimpleContextConfig.class, attribute = "location")
 		String location1() default "";
@@ -3366,7 +3366,7 @@ public class MergedAnnotationsTests {
 		String location2() default "";
 	}
 
-	@XImplicitAliasesWithDuplicateValuesContextConfig(location1 = "1", location2 = "2")
+	@ImplicitAliasesWithDuplicateValuesSimpleContextConfig(location1 = "1", location2 = "2")
 	static class XImplicitAliasesWithDuplicateValuesContextConfigClass {
 	}
 
