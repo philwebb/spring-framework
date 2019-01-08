@@ -130,10 +130,14 @@ final class MissingMergedAnnotation<A extends Annotation>
 	}
 
 	@Override
-	protected ClassLoader getClassLoader(ClassLoaderType context) {
+	protected ClassLoader getTypeClassLoader() {
 		return null;
 	}
 
+	@Override
+	protected ClassLoader getValueClassLoader() {
+		return null;
+	}
 	@Override
 	protected boolean isFiltered(String attributeName) {
 		return false;
@@ -146,7 +150,7 @@ final class MissingMergedAnnotation<A extends Annotation>
 	}
 
 	@Override
-	protected A doSynthesize() {
+	protected A createSynthesized() {
 		throw new NoSuchElementException("Unable to synthesize missing annotation");
 	}
 

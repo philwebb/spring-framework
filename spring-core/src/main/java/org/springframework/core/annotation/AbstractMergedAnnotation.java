@@ -31,6 +31,7 @@ import java.util.function.Predicate;
 import org.springframework.core.annotation.type.AnnotationType;
 import org.springframework.core.annotation.type.AttributeType;
 import org.springframework.core.annotation.type.ClassReference;
+import org.springframework.core.annotation.type.DeclaredAttribute;
 import org.springframework.core.annotation.type.DeclaredAttributes;
 import org.springframework.core.annotation.type.EnumValueReference;
 import org.springframework.lang.Nullable;
@@ -206,8 +207,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		AttributeType attributeType = getAttributeType(attributeName, true);
 		Assert.state(!isArrayType(attributeType),
 				"Attribute '" + attributeName + "' is an array type");
-		AnnotationType nestedType = AnnotationType.resolve(attributeType.getClassName(),
-				getClassLoader(ClassLoaderType.TYPE));
+		AnnotationType nestedType = resolveAnnotationType(attributeType.getClassName());
 		assertType(attributeName, nestedType, expectedType);
 		DeclaredAttributes nestedAttributes = getRequiredValue(attributeName,
 				DeclaredAttributes.class);
@@ -222,8 +222,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 				"Attribute '" + attributeName + "' is not an array type");
 		String arrayType = attributeType.getClassName();
 		String elementType = arrayType.substring(0, arrayType.length() - 2);
-		AnnotationType nestedType = AnnotationType.resolve(elementType,
-				getClassLoader(ClassLoaderType.TYPE));
+		AnnotationType nestedType = resolveAnnotationType(elementType);
 		assertType(attributeName, nestedType, expectedElementType);
 		DeclaredAttributes[] nestedAttributes = getRequiredValue(attributeName,
 				DeclaredAttributes[].class);
@@ -292,8 +291,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 			return null;
 		}
 		for (AttributeType attributeType : getAnnotationType().getAttributeTypes()) {
-			Class<?> type = ClassUtils.resolveClassName(attributeType.getClassName(),
-					getClassLoader(ClassLoaderType.TYPE));
+			Class<?> type = resolveTypeClass(attributeType.getClassName());
 			type = ClassUtils.resolvePrimitiveIfNecessary(type);
 			type = getTypeForMapValueOption(options, type);
 			String name = attributeType.getAttributeName();
@@ -355,13 +353,22 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		}
 		A synthesized = this.synthesizedAnnotation;
 		if (synthesized == null) {
-			synthesized = doSynthesize();
+			synthesized = createSynthesized();
 			this.synthesizedAnnotation = synthesized;
 		}
 		return synthesized;
 	}
 
-	protected abstract A doSynthesize();
+	/**
+	 * Factory method used to create the synthesized annotation. By default this
+	 * method create a proxy class. Subclasses may override to change how the
+	 * annotation is synthesized.
+	 */
+	@SuppressWarnings("unchecked")
+	protected A createSynthesized() {
+		Class<A> type = (Class<A>) resolveTypeClass(getType());
+		return SynthesizedMergedAnnotationInvocationHandler.createProxy(this, type);
+	}
 
 	private <T> T getRequiredValue(String attributeName, Class<T> type) {
 		return getValue(attributeName, type, true);
@@ -450,8 +457,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 			return className;
 		}
 		if (Class.class.equals(requiredType) || Object.class.equals(requiredType)) {
-			return ClassUtils.resolveClassName(className,
-					getClassLoader(ClassLoaderType.VALUE));
+			return resolveValueClass(className);
 		}
 		return extract(attributeValue, attributeType, requiredType);
 	}
@@ -459,9 +465,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	private Object adaptEnumValueReferenceArray(EnumValueReference[] attributeValue,
 			AttributeType attributeType, Class<?> componentType) {
 		if (componentType == null) {
-			componentType = ClassUtils.resolveClassName(
-					getComponentClassName(attributeType),
-					getClassLoader(ClassLoaderType.TYPE));
+			componentType = resolveTypeClass(getComponentClassName(attributeType));
 		}
 		Object result = Array.newInstance(componentType, attributeValue.length);
 		for (int i = 0; i < attributeValue.length; i++) {
@@ -476,8 +480,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 			AttributeType attributeType, Class<?> requiredType) {
 		if (Enum.class.isAssignableFrom(requiredType)
 				|| Object.class.equals(requiredType)) {
-			Class enumType = ClassUtils.resolveClassName(attributeValue.getEnumType(),
-					getClassLoader(ClassLoaderType.TYPE));
+			Class enumType = resolveTypeClass(attributeValue.getEnumType());
 			return Enum.valueOf(enumType, attributeValue.getValue());
 		}
 		return extract(attributeValue, attributeType, requiredType);
@@ -486,9 +489,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	private Object adaptDeclaredAttributesArray(DeclaredAttributes[] attributeValue,
 			AttributeType attributeType, Class<?> componentType) {
 		if (componentType == null) {
-			componentType = ClassUtils.resolveClassName(
-					getComponentClassName(attributeType),
-					getClassLoader(ClassLoaderType.TYPE));
+			componentType = resolveTypeClass(getComponentClassName(attributeType));
 		}
 		Object result = Array.newInstance(componentType, attributeValue.length);
 		for (int i = 0; i < attributeValue.length; i++) {
@@ -502,9 +503,8 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 			AttributeType attributeType, Class<?> requiredType) {
 		if (requiredType.isAnnotation() || MergedAnnotation.class.equals(requiredType)
 				|| Object.class.equals(requiredType)) {
-			AnnotationType nestedType = AnnotationType.resolve(
-					getComponentClassName(attributeType),
-					getClassLoader(ClassLoaderType.TYPE));
+			AnnotationType nestedType = resolveAnnotationType(
+					getComponentClassName(attributeType));
 			MergedAnnotation<?> nestedAnnotation = createNested(nestedType,
 					attributeValue);
 			return requiredType.isAnnotation() || Object.class.equals(requiredType)
@@ -524,8 +524,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		if (isArrayType(attributeType) && isEmptyObjectArray(attributeValue)) {
 			Class<?> componentType = requiredType.isArray()
 					? requiredType.getComponentType()
-					: ClassUtils.resolveClassName(getComponentClassName(attributeType),
-							getClassLoader(ClassLoaderType.TYPE));
+					: resolveTypeClass(getComponentClassName(attributeType));
 			attributeValue = EMPTY_ARRAY.containsKey(componentType)
 					? EMPTY_ARRAY.get(componentType)
 					: Array.newInstance(componentType, 0);
@@ -580,6 +579,18 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		return attributeType;
 	}
 
+	private Class<?> resolveTypeClass(String className) {
+		return ClassUtils.resolveClassName(className, getTypeClassLoader());
+	}
+
+	private Class<?> resolveValueClass(String className) {
+		return ClassUtils.resolveClassName(className, getValueClassLoader());
+	}
+
+	private AnnotationType resolveAnnotationType(String className) {
+		return AnnotationType.resolve(className, getTypeClassLoader());
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder attributes = new StringBuilder();
@@ -620,11 +631,32 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	}
 
 	/**
-	 * Return the classloader that should be used to resolve attribute value
-	 * types.
-	 * @return the classloader to use
+	 * Return the classloader that should be used to resolve types defined by
+	 * the annotation. This includes any {@link AttributeType attribute types}
+	 * as well as the {@link #getAnnotationType() annotation} itself.
+	 * <p>
+	 * For reflection based implementations, this classloader will be the one
+	 * that actually loads the annotation (i.e.
+	 * {@code annotation.annotationType().getClassLoader()}.
+	 * @return the classloader used to resolve types
 	 */
-	protected abstract ClassLoader getClassLoader(ClassLoaderType type);
+	@Nullable
+	protected abstract ClassLoader getTypeClassLoader();
+
+	/**
+	 * Return the classloader that should be used to resolve
+	 * {@link DeclaredAttribute#getValue() attribute values}. This may be
+	 * different to the {@link #getTypeClassLoader() type classloader} since an
+	 * annotation types loaded in a parent classloader may still be declared
+	 * with {@code Class} or {@code Class[]} references in a child classloader.
+	 * <p>
+	 * For reflection based implementations, this classloader will be the one
+	 * that loads the element that declares the annotation (i.e.
+	 * {@code sourceClass.getClassLoader}.
+	 * @return the classloader used to resolve attribute type
+	 */
+	@Nullable
+	protected abstract ClassLoader getValueClassLoader();
 
 	/**
 	 * Return the actually annotation type for this instance.
@@ -655,26 +687,5 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	 */
 	protected abstract <T extends Annotation> MergedAnnotation<T> createNested(
 			AnnotationType type, DeclaredAttributes attributes);
-
-	/**
-	 * The type of classloader required when resolving types.
-	 */
-	protected enum ClassLoaderType {
-
-		/**
-		 * The classloader that should be used to resolve types that are part of
-		 * the annotation declaration. For example, enums and nested
-		 * annotations.
-		 */
-		TYPE,
-
-		/**
-		 * The classloader that should be used to resolve actual values values.
-		 * For example, a reference when an annotation declares a {@code Class}
-		 * attribute.
-		 */
-		VALUE
-
-	}
 
 }

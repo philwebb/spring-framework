@@ -64,7 +64,7 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 
 	private final Annotation sourceAnnotation;
 
-	private volatile ClassLoader synthesizedAnnotationClassLoader;
+	private volatile ClassLoader typeClassLoader;
 
 	TypeMappedAnnotation(AnnotationTypeMapping mapping, Object source, int aggregateIndex,
 			DeclaredAttributes rootAttributes) {
@@ -148,13 +148,11 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 
 	@Override
 	@SuppressWarnings("unchecked")
-	protected A doSynthesize() {
+	protected A createSynthesized() {
 		if (this.sourceAnnotation != null && canSkipSynthesize(this.sourceAnnotation)) {
 			return (A) this.sourceAnnotation;
 		}
-		ClassLoader classLoader = getClassLoader(ClassLoaderType.TYPE);
-		Class<A> type = (Class<A>) ClassUtils.resolveClassName(getType(), classLoader);
-		return SynthesizedMergedAnnotationInvocationHandler.createProxy(this, type);
+		return super.createSynthesized();
 	}
 
 	private boolean canSkipSynthesize(Annotation annotation) {
@@ -166,23 +164,40 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 	}
 
 	@Override
-	protected ClassLoader getClassLoader(ClassLoaderType context) {
-		if (context == ClassLoaderType.VALUE) {
-			return this.mapping.getClassLoader();
-		}
-		ClassLoader classLoader = this.synthesizedAnnotationClassLoader;
+	protected ClassLoader getTypeClassLoader() {
+		ClassLoader classLoader = this.typeClassLoader;
 		if (classLoader == null) {
-			classLoader = this.parent != null ? this.parent.getClassLoader(context)
-					: this.mapping.getClassLoader();
+			classLoader = getAnnotationTypeClassLoader();
 			try {
+				// Try to use the classloader that can actually resolve the
+				// annotation type which could ultimately be a parent
+				// classloader
 				classLoader = ClassUtils.forName(getType(), classLoader).getClassLoader();
 			}
 			catch (ClassNotFoundException | LinkageError ex) {
-				// Ignore and keep the existing classloader
+				// Just fallback to previous classloader
 			}
-			this.synthesizedAnnotationClassLoader = classLoader;
+			this.typeClassLoader = classLoader;
 		}
 		return classLoader;
+	}
+
+	/**
+	 * Return the classloader that should be used to load {@link #getType()}.
+	 * For meta-annotation this will be the type classloader of the parent, for
+	 * regular annotations it will be the classloader provided by the mapping.
+	 * @return the classloader used to load {@link #getType()}
+	 */
+	private ClassLoader getAnnotationTypeClassLoader() {
+		if (this.parent != null) {
+			return this.parent.getTypeClassLoader();
+		}
+		return this.mapping.getClassLoader();
+	}
+
+	@Override
+	protected ClassLoader getValueClassLoader() {
+		return this.mapping.getClassLoader();
 	}
 
 	@Override
