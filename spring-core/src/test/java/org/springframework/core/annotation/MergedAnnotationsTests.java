@@ -1553,21 +1553,21 @@ public class MergedAnnotationsTests {
 	@Test
 	public void synthesizeAnnotationWithImplicitAliases() throws Exception {
 		assertAnnotationSynthesisWithImplicitAliases(
-				XValueImplicitAliasesContextConfigClass.class, "value");
+				ValueImplicitAliasesSimpleContextConfigClass.class, "value");
 		assertAnnotationSynthesisWithImplicitAliases(
-				XLocation1ImplicitAliasesContextConfigClass.class, "location1");
+				Location1ImplicitAliasesSimpleContextConfigClass.class, "location1");
 		assertAnnotationSynthesisWithImplicitAliases(
-				XXmlImplicitAliasesContextConfigClass.class, "xmlFile");
+				XmlImplicitAliasesSimpleContextConfigClass.class, "xmlFile");
 		assertAnnotationSynthesisWithImplicitAliases(
-				XGroovyImplicitAliasesContextConfigClass.class, "groovyScript");
+				GroovyImplicitAliasesSimpleContextConfigClass.class, "groovyScript");
 	}
 
 	private void assertAnnotationSynthesisWithImplicitAliases(Class<?> clazz,
 			String expected) throws Exception {
-		XImplicitAliasesContextConfig config = clazz.getAnnotation(
-				XImplicitAliasesContextConfig.class);
+		ImplicitAliasesSimpleContextConfig config = clazz.getAnnotation(
+				ImplicitAliasesSimpleContextConfig.class);
 		assertThat(config).isNotNull();
-		XImplicitAliasesContextConfig synthesized = MergedAnnotation.from(
+		ImplicitAliasesSimpleContextConfig synthesized = MergedAnnotation.from(
 				config).synthesize();
 		assertThat(synthesized).isInstanceOf(SynthesizedAnnotation.class);
 		assertThat(synthesized.value()).isEqualTo(expected);
@@ -1616,9 +1616,9 @@ public class MergedAnnotationsTests {
 
 	@Test
 	public void synthesizeAnnotationWithTransitiveImplicitAliases() throws Exception {
-		XTransitiveImplicitAliasesContextConfig config = XTransitiveImplicitAliasesContextConfigClass.class.getAnnotation(
-				XTransitiveImplicitAliasesContextConfig.class);
-		XTransitiveImplicitAliasesContextConfig synthesized = MergedAnnotation.from(
+		TransitiveImplicitAliasesSimpleContextConfig config = TransitiveImplicitAliasesContextSimpleConfigClass.class.getAnnotation(
+				TransitiveImplicitAliasesSimpleContextConfig.class);
+		TransitiveImplicitAliasesSimpleContextConfig synthesized = MergedAnnotation.from(
 				config).synthesize();
 		assertThat(synthesized).isInstanceOf(SynthesizedAnnotation.class);
 		assertThat(synthesized.xml()).isEqualTo("test.xml");
@@ -1628,9 +1628,9 @@ public class MergedAnnotationsTests {
 	@Test
 	public void synthesizeAnnotationWithTransitiveImplicitAliasesForAliasPair()
 			throws Exception {
-		XTransitiveImplicitAliasesForAliasPairContextConfig config = XTransitiveImplicitAliasesForAliasPairContextConfigClass.class.getAnnotation(
-				XTransitiveImplicitAliasesForAliasPairContextConfig.class);
-		XTransitiveImplicitAliasesForAliasPairContextConfig synthesized = MergedAnnotation.from(
+		TransitiveImplicitAliasesForAliasPairContextConfig config = TransitiveImplicitAliasesForAliasPairContextConfigClass.class.getAnnotation(
+				TransitiveImplicitAliasesForAliasPairContextConfig.class);
+		TransitiveImplicitAliasesForAliasPairContextConfig synthesized = MergedAnnotation.from(
 				config).synthesize();
 		assertThat(synthesized).isInstanceOf(SynthesizedAnnotation.class);
 		assertThat(synthesized.xml()).isEqualTo("test.xml");
@@ -1820,9 +1820,9 @@ public class MergedAnnotationsTests {
 			String attributeNameAndValue) throws Exception {
 		Map<String, Object> map = Collections.singletonMap(attributeNameAndValue,
 				attributeNameAndValue);
-		MergedAnnotation<XImplicitAliasesContextConfig> annotation = MergedAnnotation.from(
-				XImplicitAliasesContextConfig.class, map);
-		XImplicitAliasesContextConfig synthesized = annotation.synthesize();
+		MergedAnnotation<ImplicitAliasesSimpleContextConfig> annotation = MergedAnnotation.from(
+				ImplicitAliasesSimpleContextConfig.class, map);
+		ImplicitAliasesSimpleContextConfig synthesized = annotation.synthesize();
 		assertThat(synthesized.value()).isEqualTo(attributeNameAndValue);
 		assertThat(synthesized.location1()).isEqualTo(attributeNameAndValue);
 		assertThat(synthesized.location2()).isEqualTo(attributeNameAndValue);
@@ -3227,7 +3227,7 @@ public class MergedAnnotationsTests {
 
 	@SimpleContextConfig
 	@Retention(RetentionPolicy.RUNTIME)
-	public @interface XImplicitAliasesContextConfig {
+	public @interface ImplicitAliasesSimpleContextConfig {
 
 		@AliasFor(annotation = SimpleContextConfig.class, attribute = "location")
 		String xmlFile() default "";
@@ -3254,33 +3254,33 @@ public class MergedAnnotationsTests {
 	}
 
 	// Attribute value intentionally matches attribute name:
-	@XImplicitAliasesContextConfig(groovyScript = "groovyScript")
-	static class XGroovyImplicitAliasesContextConfigClass {
+	@ImplicitAliasesSimpleContextConfig(groovyScript = "groovyScript")
+	static class GroovyImplicitAliasesSimpleContextConfigClass {
 	}
 
 	// Attribute value intentionally matches attribute name:
-	@XImplicitAliasesContextConfig(xmlFile = "xmlFile")
-	static class XXmlImplicitAliasesContextConfigClass {
+	@ImplicitAliasesSimpleContextConfig(xmlFile = "xmlFile")
+	static class XmlImplicitAliasesSimpleContextConfigClass {
 	}
 
 	// Attribute value intentionally matches attribute name:
-	@XImplicitAliasesContextConfig("value")
-	static class XValueImplicitAliasesContextConfigClass {
+	@ImplicitAliasesSimpleContextConfig("value")
+	static class ValueImplicitAliasesSimpleContextConfigClass {
 	}
 
 	// Attribute value intentionally matches attribute name:
-	@XImplicitAliasesContextConfig(location1 = "location1")
-	static class XLocation1ImplicitAliasesContextConfigClass {
+	@ImplicitAliasesSimpleContextConfig(location1 = "location1")
+	static class Location1ImplicitAliasesSimpleContextConfigClass {
 	}
 
 	// Attribute value intentionally matches attribute name:
-	@XImplicitAliasesContextConfig(location2 = "location2")
-	static class XLocation2ImplicitAliasesContextConfigClass {
+	@ImplicitAliasesSimpleContextConfig(location2 = "location2")
+	static class Location2ImplicitAliasesSimpleContextConfigClass {
 	}
 
 	// Attribute value intentionally matches attribute name:
-	@XImplicitAliasesContextConfig(location3 = "location3")
-	static class XLocation3ImplicitAliasesContextConfigClass {
+	@ImplicitAliasesSimpleContextConfig(location3 = "location3")
+	static class Location3ImplicitAliasesSimpleContextConfigClass {
 	}
 
 	@SimpleContextConfig
@@ -3385,24 +3385,24 @@ public class MergedAnnotationsTests {
 	static class XImplicitAliasesForAliasPairContextConfigClass {
 	}
 
-	@XImplicitAliasesContextConfig
+	@ImplicitAliasesSimpleContextConfig
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface XTransitiveImplicitAliasesContextConfig {
+	@interface TransitiveImplicitAliasesSimpleContextConfig {
 
-		@AliasFor(annotation = XImplicitAliasesContextConfig.class, attribute = "xmlFile")
+		@AliasFor(annotation = ImplicitAliasesSimpleContextConfig.class, attribute = "xmlFile")
 		String xml() default "";
 
-		@AliasFor(annotation = XImplicitAliasesContextConfig.class, attribute = "groovyScript")
+		@AliasFor(annotation = ImplicitAliasesSimpleContextConfig.class, attribute = "groovyScript")
 		String groovy() default "";
 	}
 
-	@XTransitiveImplicitAliasesContextConfig(xml = "test.xml")
-	static class XTransitiveImplicitAliasesContextConfigClass {
+	@TransitiveImplicitAliasesSimpleContextConfig(xml = "test.xml")
+	static class TransitiveImplicitAliasesContextSimpleConfigClass {
 	}
 
 	@XImplicitAliasesForAliasPairContextConfig
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface XTransitiveImplicitAliasesForAliasPairContextConfig {
+	@interface TransitiveImplicitAliasesForAliasPairContextConfig {
 
 		@AliasFor(annotation = XImplicitAliasesForAliasPairContextConfig.class, attribute = "xmlFile")
 		String xml() default "";
@@ -3411,8 +3411,8 @@ public class MergedAnnotationsTests {
 		String groovy() default "";
 	}
 
-	@XTransitiveImplicitAliasesForAliasPairContextConfig(xml = "test.xml")
-	static class XTransitiveImplicitAliasesForAliasPairContextConfigClass {
+	@TransitiveImplicitAliasesForAliasPairContextConfig(xml = "test.xml")
+	static class TransitiveImplicitAliasesForAliasPairContextConfigClass {
 	}
 
 	@ComponentScan(excludeFilters = { @Filter(pattern = "*Foo"),
