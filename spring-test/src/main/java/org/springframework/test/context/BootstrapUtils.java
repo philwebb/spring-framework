@@ -25,6 +25,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationAttributes;
+import org.springframework.core.annotation.AnnotationConfigurationException;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 
@@ -136,6 +137,9 @@ abstract class BootstrapUtils {
 					BeanUtils.instantiateClass(clazz, TestContextBootstrapper.class);
 			testContextBootstrapper.setBootstrapContext(bootstrapContext);
 			return testContextBootstrapper;
+		}
+		catch (AnnotationConfigurationException ex) {
+			throw ex;
 		}
 		catch (IllegalStateException ex) {
 			throw ex;
