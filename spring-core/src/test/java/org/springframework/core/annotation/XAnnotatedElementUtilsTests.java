@@ -36,10 +36,10 @@ import org.junit.Test;
 import org.junit.internal.ArrayComparisonFailure;
 
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
-import org.springframework.core.annotation.XAnnotationUtilsTests.ExtendsBaseClassWithGenericAnnotatedMethod;
+import org.springframework.core.annotation.XAnnotationUtilsTests.XExtendsBaseClassWithGenericAnnotatedMethod;
 import org.springframework.core.annotation.XAnnotationUtilsTests.ImplementsInterfaceWithGenericAnnotatedMethod;
-import org.springframework.core.annotation.XAnnotationUtilsTests.WebController;
-import org.springframework.core.annotation.XAnnotationUtilsTests.WebMapping;
+import org.springframework.core.annotation.XAnnotationUtilsTests.XWebController;
+import org.springframework.core.annotation.XAnnotationUtilsTests.XWebMapping;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Indexed;
 import org.springframework.util.MultiValueMap;
@@ -604,19 +604,19 @@ public class XAnnotatedElementUtilsTests {
 	@Test
 	public void findMergedAnnotationWithSingleElementOverridingAnArrayViaConvention()
 			throws Exception {
-		assertWebMapping(WebController.class.getMethod("postMappedWithPathAttribute"));
+		assertWebMapping(XWebController.class.getMethod("postMappedWithPathAttribute"));
 	}
 
 	@Test
 	public void findMergedAnnotationWithSingleElementOverridingAnArrayViaAliasFor()
 			throws Exception {
-		assertWebMapping(WebController.class.getMethod("getMappedWithValueAttribute"));
-		assertWebMapping(WebController.class.getMethod("getMappedWithPathAttribute"));
+		assertWebMapping(XWebController.class.getMethod("getMappedWithValueAttribute"));
+		assertWebMapping(XWebController.class.getMethod("getMappedWithPathAttribute"));
 	}
 
 	private void assertWebMapping(AnnotatedElement element)
 			throws ArrayComparisonFailure {
-		MergedAnnotation<?> annotation = MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, element).get(WebMapping.class);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, element).get(XWebMapping.class);
 		assertThat(annotation.getStringArray("value")).containsExactly("/test");
 		assertThat(annotation.getStringArray("path")).containsExactly("/test");
 	}
@@ -660,7 +660,7 @@ public class XAnnotatedElementUtilsTests {
 
 	@Test // SPR-17146
 	public void findMethodAnnotationFromGenericSuperclass() throws Exception {
-		Method method = ExtendsBaseClassWithGenericAnnotatedMethod.class.getMethod(
+		Method method = XExtendsBaseClassWithGenericAnnotatedMethod.class.getMethod(
 				"foo", String.class);
 		MergedAnnotation<?> annotation = MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, method).get(Order.class);
 		assertThat(annotation.isPresent()).isTrue();
