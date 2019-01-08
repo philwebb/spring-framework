@@ -1301,16 +1301,16 @@ public class MergedAnnotationsTests {
 	@Test
 	public void getRepeatableAnnotationsDeclaredOnClassWithAttributeAliases() {
 		assertThat(MergedAnnotations.from(XConfigHierarchyTestCase.class).stream(
-				XContextConfig.class)).isEmpty();
+				SimpleContextConfig.class)).isEmpty();
 		RepeatableContainers containers = RepeatableContainers.of(XHierarchy.class,
-				XContextConfig.class);
+				SimpleContextConfig.class);
 		MergedAnnotations annotations = MergedAnnotations.from(containers,
 				AnnotationFilter.NONE, SearchStrategy.DIRECT,
 				XConfigHierarchyTestCase.class);
-		assertThat(annotations.stream(XContextConfig.class).map(
+		assertThat(annotations.stream(SimpleContextConfig.class).map(
 				annotation -> annotation.getString("location"))).containsExactly("A",
 						"B");
-		assertThat(annotations.stream(XContextConfig.class).map(
+		assertThat(annotations.stream(SimpleContextConfig.class).map(
 				annotation -> annotation.getString("value"))).containsExactly("A", "B");
 	}
 
@@ -1546,7 +1546,7 @@ public class MergedAnnotationsTests {
 						"@AliasFor declaration on attribute 'xmlConfigFile' in annotation").withMessageContaining(
 								XAliasedComposedContextConfigNotMetaPresent.class.getName()).withMessageContaining(
 										"declares an alias for attribute 'location' in annotation").withMessageContaining(
-												XContextConfig.class.getName()).withMessageContaining(
+												SimpleContextConfig.class.getName()).withMessageContaining(
 														"not meta-present");
 	}
 
@@ -1752,9 +1752,9 @@ public class MergedAnnotationsTests {
 	@Test
 	public void synthesizeAnnotationFromDefaultsWithoutAttributeAliases()
 			throws Exception {
-		MergedAnnotation<XAnnotationWithDefaults> annotation = MergedAnnotation.from(
-				XAnnotationWithDefaults.class);
-		XAnnotationWithDefaults synthesized = annotation.synthesize();
+		MergedAnnotation<AnnotationWithDefaults> annotation = MergedAnnotation.from(
+				AnnotationWithDefaults.class);
+		AnnotationWithDefaults synthesized = annotation.synthesize();
 		assertThat(synthesized.text()).isEqualTo("enigma");
 		assertThat(synthesized.predicate()).isTrue();
 		assertThat(synthesized.characters()).containsExactly('a', 'b', 'c');
@@ -1762,9 +1762,9 @@ public class MergedAnnotationsTests {
 
 	@Test
 	public void synthesizeAnnotationFromDefaultsWithAttributeAliases() throws Exception {
-		MergedAnnotation<XContextConfig> annotation = MergedAnnotation.from(
-				XContextConfig.class);
-		XContextConfig synthesized = annotation.synthesize();
+		MergedAnnotation<SimpleContextConfig> annotation = MergedAnnotation.from(
+				SimpleContextConfig.class);
+		SimpleContextConfig synthesized = annotation.synthesize();
 		assertThat(synthesized.value()).isEqualTo("");
 		assertThat(synthesized.location()).isEqualTo("");
 	}
@@ -1773,17 +1773,17 @@ public class MergedAnnotationsTests {
 	public void synthesizeAnnotationWithAttributeAliasesWithDifferentValues()
 			throws Exception {
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
-				() -> MergedAnnotation.from(XContextConfigMismatch.class.getAnnotation(
-						XContextConfig.class)).synthesize());
+				() -> MergedAnnotation.from(ContextConfigMismatch.class.getAnnotation(
+						SimpleContextConfig.class)).synthesize());
 	}
 
 	@Test
 	public void synthesizeAnnotationFromMapWithMinimalAttributesWithAttributeAliases()
 			throws Exception {
 		Map<String, Object> map = Collections.singletonMap("location", "test.xml");
-		MergedAnnotation<XContextConfig> annotation = MergedAnnotation.from(
-				XContextConfig.class, map);
-		XContextConfig synthesized = annotation.synthesize();
+		MergedAnnotation<SimpleContextConfig> annotation = MergedAnnotation.from(
+				SimpleContextConfig.class, map);
+		SimpleContextConfig synthesized = annotation.synthesize();
 		assertThat(synthesized.value()).isEqualTo("test.xml");
 		assertThat(synthesized.location()).isEqualTo("test.xml");
 	}
@@ -1845,11 +1845,11 @@ public class MergedAnnotationsTests {
 
 	private void assertMissingTextAttribute(Map<String, Object> attributes) {
 		assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(() -> {
-			MergedAnnotation<XAnnotationWithoutDefaults> annotation = MergedAnnotation.from(
-					XAnnotationWithoutDefaults.class, attributes);
+			MergedAnnotation<AnnotationWithoutDefaults> annotation = MergedAnnotation.from(
+					AnnotationWithoutDefaults.class, attributes);
 			annotation.synthesize();
 		}).withMessage("No value found for attribute named 'text' in merged annotation "
-				+ XAnnotationWithoutDefaults.class.getName());
+				+ AnnotationWithoutDefaults.class.getName());
 	}
 
 	@Test
@@ -2021,12 +2021,12 @@ public class MergedAnnotationsTests {
 		assertThat(hierarchy).isNotNull();
 		XHierarchy synthesizedHierarchy = MergedAnnotation.from(hierarchy).synthesize();
 		assertThat(synthesizedHierarchy).isInstanceOf(SynthesizedAnnotation.class);
-		XContextConfig[] configs = synthesizedHierarchy.value();
+		SimpleContextConfig[] configs = synthesizedHierarchy.value();
 		assertThat(configs).isNotNull();
 		assertThat(configs).allMatch(SynthesizedAnnotation.class::isInstance);
-		assertThat(Arrays.stream(configs).map(XContextConfig::location)).containsExactly(
+		assertThat(Arrays.stream(configs).map(SimpleContextConfig::location)).containsExactly(
 				"A", "B");
-		assertThat(Arrays.stream(configs).map(XContextConfig::value)).containsExactly("A",
+		assertThat(Arrays.stream(configs).map(SimpleContextConfig::value)).containsExactly("A",
 				"B");
 	}
 
@@ -2037,17 +2037,17 @@ public class MergedAnnotationsTests {
 		assertThat(hierarchy).isNotNull();
 		XHierarchy synthesizedHierarchy = MergedAnnotation.from(hierarchy).synthesize();
 		assertThat(synthesizedHierarchy).isInstanceOf(SynthesizedAnnotation.class);
-		XContextConfig contextConfig = XSimpleConfigTestCase.class.getAnnotation(
-				XContextConfig.class);
+		SimpleContextConfig contextConfig = XSimpleConfigTestCase.class.getAnnotation(
+				SimpleContextConfig.class);
 		assertThat(contextConfig).isNotNull();
-		XContextConfig[] configs = synthesizedHierarchy.value();
-		assertThat(Arrays.stream(configs).map(XContextConfig::location)).containsExactly(
+		SimpleContextConfig[] configs = synthesizedHierarchy.value();
+		assertThat(Arrays.stream(configs).map(SimpleContextConfig::location)).containsExactly(
 				"A", "B");
 		// Alter array returned from synthesized annotation
 		configs[0] = contextConfig;
 		// Re-retrieve the array from the synthesized annotation
 		configs = synthesizedHierarchy.value();
-		assertThat(Arrays.stream(configs).map(XContextConfig::location)).containsExactly(
+		assertThat(Arrays.stream(configs).map(SimpleContextConfig::location)).containsExactly(
 				"A", "B");
 	}
 
@@ -2221,6 +2221,19 @@ public class MergedAnnotationsTests {
 
 		Class<?>[] classes() default {};
 	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface SimpleContextConfig {
+
+		@AliasFor("location")
+		String value() default "";
+
+		@AliasFor("value")
+		String location() default "";
+
+		Class<?> configClass() default Object.class;
+	}
+
 
 	@ContextConfig
 	@Retention(RetentionPolicy.RUNTIME)
@@ -3040,21 +3053,6 @@ public class MergedAnnotationsTests {
 		}
 	}
 
-	/**
-	 * Mock of {@code org.springframework.test.context.ContextConfiguration}.
-	 */
-	@Retention(RetentionPolicy.RUNTIME)
-	@interface XContextConfig {
-
-		@AliasFor("location")
-		String value() default "";
-
-		@AliasFor("value")
-		String location() default "";
-
-		Class<?> klass() default Object.class;
-	}
-
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface XBrokenContextConfig {
 
@@ -3072,7 +3070,7 @@ public class MergedAnnotationsTests {
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface XHierarchy {
 
-		XContextConfig[] value();
+		SimpleContextConfig[] value();
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
@@ -3081,7 +3079,7 @@ public class MergedAnnotationsTests {
 		XBrokenContextConfig[] value();
 	}
 
-	@XHierarchy({ @XContextConfig("A"), @XContextConfig(location = "B") })
+	@XHierarchy({ @SimpleContextConfig("A"), @SimpleContextConfig(location = "B") })
 	static class XConfigHierarchyTestCase {
 	}
 
@@ -3089,7 +3087,7 @@ public class MergedAnnotationsTests {
 	static class XBrokenConfigHierarchyTestCase {
 	}
 
-	@XContextConfig("simple.xml")
+	@SimpleContextConfig("simple.xml")
 	static class XSimpleConfigTestCase {
 	}
 
@@ -3213,7 +3211,7 @@ public class MergedAnnotationsTests {
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface XAliasedComposedContextConfigNotMetaPresent {
 
-		@AliasFor(annotation = XContextConfig.class, attribute = "location")
+		@AliasFor(annotation = SimpleContextConfig.class, attribute = "location")
 		String xmlConfigFile();
 	}
 
@@ -3221,37 +3219,37 @@ public class MergedAnnotationsTests {
 	static class XAliasedComposedContextConfigNotMetaPresentClass {
 	}
 
-	@XContextConfig
+	@SimpleContextConfig
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface XAliasedComposedContextConfig {
 
-		@AliasFor(annotation = XContextConfig.class, attribute = "location")
+		@AliasFor(annotation = SimpleContextConfig.class, attribute = "location")
 		String xmlConfigFile();
 	}
 
-	@XContextConfig
+	@SimpleContextConfig
 	@Retention(RetentionPolicy.RUNTIME)
 	public @interface XImplicitAliasesContextConfig {
 
-		@AliasFor(annotation = XContextConfig.class, attribute = "location")
+		@AliasFor(annotation = SimpleContextConfig.class, attribute = "location")
 		String xmlFile() default "";
 
-		@AliasFor(annotation = XContextConfig.class, attribute = "location")
+		@AliasFor(annotation = SimpleContextConfig.class, attribute = "location")
 		String groovyScript() default "";
 
-		@AliasFor(annotation = XContextConfig.class, attribute = "location")
+		@AliasFor(annotation = SimpleContextConfig.class, attribute = "location")
 		String value() default "";
 
-		@AliasFor(annotation = XContextConfig.class, attribute = "location")
+		@AliasFor(annotation = SimpleContextConfig.class, attribute = "location")
 		String location1() default "";
 
-		@AliasFor(annotation = XContextConfig.class, attribute = "location")
+		@AliasFor(annotation = SimpleContextConfig.class, attribute = "location")
 		String location2() default "";
 
-		@AliasFor(annotation = XContextConfig.class, attribute = "location")
+		@AliasFor(annotation = SimpleContextConfig.class, attribute = "location")
 		String location3() default "";
 
-		@AliasFor(annotation = XContextConfig.class, attribute = "klass")
+		@AliasFor(annotation = SimpleContextConfig.class, attribute = "configClass")
 		Class<?> configClass() default Object.class;
 
 		String nonAliasedAttribute() default "";
@@ -3287,19 +3285,19 @@ public class MergedAnnotationsTests {
 	static class XLocation3ImplicitAliasesContextConfigClass {
 	}
 
-	@XContextConfig
+	@SimpleContextConfig
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface XImplicitAliasesWithImpliedAliasNamesOmittedContextConfig {
 
 		// intentionally omitted: attribute = "value"
-		@AliasFor(annotation = XContextConfig.class)
+		@AliasFor(annotation = SimpleContextConfig.class)
 		String value() default "";
 
 		// intentionally omitted: attribute = "locations"
-		@AliasFor(annotation = XContextConfig.class)
+		@AliasFor(annotation = SimpleContextConfig.class)
 		String location() default "";
 
-		@AliasFor(annotation = XContextConfig.class, attribute = "location")
+		@AliasFor(annotation = SimpleContextConfig.class, attribute = "location")
 		String xmlFile() default "";
 	}
 
@@ -3329,14 +3327,14 @@ public class MergedAnnotationsTests {
 	static class XXmlFilesImplicitAliasesWithImpliedAliasNamesOmittedContextConfigClass {
 	}
 
-	@XContextConfig
+	@SimpleContextConfig
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface XImplicitAliasesWithMissingDefaultValuesContextConfig {
 
-		@AliasFor(annotation = XContextConfig.class, attribute = "location")
+		@AliasFor(annotation = SimpleContextConfig.class, attribute = "location")
 		String location1();
 
-		@AliasFor(annotation = XContextConfig.class, attribute = "location")
+		@AliasFor(annotation = SimpleContextConfig.class, attribute = "location")
 		String location2();
 	}
 
@@ -3344,14 +3342,14 @@ public class MergedAnnotationsTests {
 	static class XImplicitAliasesWithMissingDefaultValuesContextConfigClass {
 	}
 
-	@XContextConfig
+	@SimpleContextConfig
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface XImplicitAliasesWithDifferentDefaultValuesContextConfig {
 
-		@AliasFor(annotation = XContextConfig.class, attribute = "location")
+		@AliasFor(annotation = SimpleContextConfig.class, attribute = "location")
 		String location1() default "foo";
 
-		@AliasFor(annotation = XContextConfig.class, attribute = "location")
+		@AliasFor(annotation = SimpleContextConfig.class, attribute = "location")
 		String location2() default "bar";
 	}
 
@@ -3359,14 +3357,14 @@ public class MergedAnnotationsTests {
 	static class XImplicitAliasesWithDifferentDefaultValuesContextConfigClass {
 	}
 
-	@XContextConfig
+	@SimpleContextConfig
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface XImplicitAliasesWithDuplicateValuesContextConfig {
 
-		@AliasFor(annotation = XContextConfig.class, attribute = "location")
+		@AliasFor(annotation = SimpleContextConfig.class, attribute = "location")
 		String location1() default "";
 
-		@AliasFor(annotation = XContextConfig.class, attribute = "location")
+		@AliasFor(annotation = SimpleContextConfig.class, attribute = "location")
 		String location2() default "";
 	}
 
@@ -3374,14 +3372,14 @@ public class MergedAnnotationsTests {
 	static class XImplicitAliasesWithDuplicateValuesContextConfigClass {
 	}
 
-	@XContextConfig
+	@SimpleContextConfig
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface XImplicitAliasesForAliasPairContextConfig {
 
-		@AliasFor(annotation = XContextConfig.class, attribute = "location")
+		@AliasFor(annotation = SimpleContextConfig.class, attribute = "location")
 		String xmlFile() default "";
 
-		@AliasFor(annotation = XContextConfig.class, value = "value")
+		@AliasFor(annotation = SimpleContextConfig.class, value = "value")
 		String groovyScript() default "";
 	}
 
@@ -3455,7 +3453,7 @@ public class MergedAnnotationsTests {
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface XAnnotationWithDefaults {
+	@interface AnnotationWithDefaults {
 
 		String text() default "enigma";
 
@@ -3465,13 +3463,13 @@ public class MergedAnnotationsTests {
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface XAnnotationWithoutDefaults {
+	@interface AnnotationWithoutDefaults {
 
 		String text();
 	}
 
-	@XContextConfig(value = "foo", location = "bar")
-	interface XContextConfigMismatch {
+	@SimpleContextConfig(value = "foo", location = "bar")
+	interface ContextConfigMismatch {
 	}
 
 }
