@@ -18,12 +18,10 @@ package org.springframework.core.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.net.URLClassLoader;
 
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
 
 /**
  * Tests to ensure back-compatibility with Spring Framework 5.1.
@@ -31,6 +29,7 @@ import static org.junit.Assert.*;
  * @author Phillip Webb
  * @since 5.2
  */
+@SuppressWarnings("deprecation")
 public class AnnotationBackCompatibiltyTests {
 
 	@Test
@@ -50,11 +49,6 @@ public class AnnotationBackCompatibiltyTests {
 		assertThat(synthesized).isInstanceOf(SynthesizedAnnotation.class);
 		Object defaultValue = AnnotationUtils.getDefaultValue(synthesized, "enumValue");
 		assertThat(defaultValue).isEqualTo(TestEnum.ONE);
-	}
-
-	@Test
-	public void classLoader() {
-		// FIXME
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
