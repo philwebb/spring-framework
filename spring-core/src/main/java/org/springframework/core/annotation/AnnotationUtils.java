@@ -18,14 +18,21 @@ package org.springframework.core.annotation;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.springframework.core.BridgeMethodResolver;
+import org.springframework.core.annotation.MergedAnnotation.MapValues;
+import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
+import org.springframework.core.annotation.type.DeclaredAnnotation;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.util.StringUtils;
 
 /**
  * General utility methods for working with annotations, handling meta-annotations,
@@ -112,7 +119,13 @@ public abstract class AnnotationUtils {
 	 */
 	@Nullable
 	public static <A extends Annotation> A getAnnotation(Annotation annotation, Class<A> annotationType) {
-		return InternalAnnotationUtils.getAnnotation(annotation, annotationType);
+		return MigrateMethod.from(() ->
+			InternalAnnotationUtils.getAnnotation(annotation, annotationType)
+		).to(() ->
+			MergedAnnotations.from(annotation).get(
+					annotationType).withNonMergedAttributes().synthesize(
+							AnnotationUtils::isSingleLevelPresent).orElse(null)
+		);
 	}
 
 	/**
@@ -129,7 +142,14 @@ public abstract class AnnotationUtils {
 	 */
 	@Nullable
 	public static <A extends Annotation> A getAnnotation(AnnotatedElement annotatedElement, Class<A> annotationType) {
-		return InternalAnnotationUtils.getAnnotation(annotatedElement, annotationType);
+		return MigrateMethod.from(() ->
+			InternalAnnotationUtils.getAnnotation(annotatedElement, annotationType)
+		).to(() ->
+			MergedAnnotations.from(RepeatableContainers.none(), AnnotationFilter.PLAIN, SearchStrategy.INHERITED_ANNOTATIONS,
+					annotatedElement).get(
+							annotationType).withNonMergedAttributes().synthesize(
+									AnnotationUtils::isSingleLevelPresent).orElse(null)
+		);
 	}
 
 	/**
@@ -148,7 +168,12 @@ public abstract class AnnotationUtils {
 	 */
 	@Nullable
 	public static <A extends Annotation> A getAnnotation(Method method, Class<A> annotationType) {
-		return InternalAnnotationUtils.getAnnotation(method, annotationType);
+		return MigrateMethod.from(() ->
+			InternalAnnotationUtils.getAnnotation(method, annotationType)
+		).to(() ->
+			MergedAnnotations.from(RepeatableContainers.none(), AnnotationFilter.PLAIN, SearchStrategy.INHERITED_ANNOTATIONS,
+					method).get(annotationType).withNonMergedAttributes().synthesize(
+							AnnotationUtils::isSingleLevelPresent).orElse(null)		);
 	}
 
 	/**
@@ -164,7 +189,15 @@ public abstract class AnnotationUtils {
 	 */
 	@Nullable
 	public static Annotation[] getAnnotations(AnnotatedElement annotatedElement) {
-		return InternalAnnotationUtils.getAnnotations(annotatedElement);
+		return MigrateMethod.from(() ->
+			InternalAnnotationUtils.getAnnotations(annotatedElement)
+		).to(() ->
+			MergedAnnotations.from(RepeatableContainers.none(), AnnotationFilter.NONE, SearchStrategy.INHERITED_ANNOTATIONS,
+					annotatedElement).stream().filter(
+							MergedAnnotation::isDirectlyPresent).map(
+									MergedAnnotation::withNonMergedAttributes).collect(
+											MergedAnnotationCollectors.toAnnotationArray())
+		);
 	}
 
 	/**
@@ -181,7 +214,14 @@ public abstract class AnnotationUtils {
 	 */
 	@Nullable
 	public static Annotation[] getAnnotations(Method method) {
-		return InternalAnnotationUtils.getAnnotations(method);
+		return MigrateMethod.from(() ->
+			InternalAnnotationUtils.getAnnotations(method)
+		).to(()->
+			MergedAnnotations.from(RepeatableContainers.none(), AnnotationFilter.NONE, SearchStrategy.INHERITED_ANNOTATIONS,
+					method).stream().filter(MergedAnnotation::isDirectlyPresent).map(
+							MergedAnnotation::withNonMergedAttributes).collect(
+									MergedAnnotationCollectors.toAnnotationArray())
+		);
 	}
 
 	/**
@@ -213,8 +253,7 @@ public abstract class AnnotationUtils {
 	 */
 	public static <A extends Annotation> Set<A> getRepeatableAnnotations(AnnotatedElement annotatedElement,
 			Class<A> annotationType) {
-		return InternalAnnotationUtils.getRepeatableAnnotations(annotatedElement,
-				annotationType);
+		return getRepeatableAnnotations(annotatedElement, annotationType, null);
 	}
 
 	/**
@@ -249,8 +288,18 @@ public abstract class AnnotationUtils {
 	 */
 	public static <A extends Annotation> Set<A> getRepeatableAnnotations(AnnotatedElement annotatedElement,
 			Class<A> annotationType, @Nullable Class<? extends Annotation> containerAnnotationType) {
-		return InternalAnnotationUtils.getRepeatableAnnotations(annotatedElement,
-				annotationType, containerAnnotationType);
+		return MigrateMethod.from(() ->
+			InternalAnnotationUtils.getRepeatableAnnotations(annotatedElement,
+					annotationType, containerAnnotationType)
+		).to(() ->
+			MergedAnnotations.from(containerAnnotationType != null
+					? RepeatableContainers.of(containerAnnotationType, annotationType)
+					: RepeatableContainers.standardRepeatables(), AnnotationFilter.mostAppropriateFor(annotationType), SearchStrategy.SUPER_CLASS,
+					annotatedElement).stream(annotationType).filter(MergedAnnotationPredicates.firstRunOf(
+							MergedAnnotation::getAggregateIndex)).map(
+									MergedAnnotation::withNonMergedAttributes).collect(
+											MergedAnnotationCollectors.toAnnotationSet())
+		);
 	}
 
 	/**
@@ -283,8 +332,7 @@ public abstract class AnnotationUtils {
 	 */
 	public static <A extends Annotation> Set<A> getDeclaredRepeatableAnnotations(AnnotatedElement annotatedElement,
 			Class<A> annotationType) {
-		return InternalAnnotationUtils.getDeclaredRepeatableAnnotations(annotatedElement,
-				annotationType);
+		return getDeclaredRepeatableAnnotations(annotatedElement, annotationType, null);
 	}
 
 	/**
@@ -319,8 +367,19 @@ public abstract class AnnotationUtils {
 	 */
 	public static <A extends Annotation> Set<A> getDeclaredRepeatableAnnotations(AnnotatedElement annotatedElement,
 			Class<A> annotationType, @Nullable Class<? extends Annotation> containerAnnotationType) {
-		return InternalAnnotationUtils.getDeclaredRepeatableAnnotations(annotatedElement,
-				annotationType, containerAnnotationType);
+		return MigrateMethod.from(() ->
+			InternalAnnotationUtils.getDeclaredRepeatableAnnotations(annotatedElement,
+					annotationType, containerAnnotationType)
+		).to(() ->
+			MergedAnnotations.from(
+					containerAnnotationType != null
+							? RepeatableContainers.of(containerAnnotationType, annotationType)
+							: RepeatableContainers.standardRepeatables(),
+							AnnotationFilter.mostAppropriateFor(containerAnnotationType),
+					SearchStrategy.DIRECT, annotatedElement).stream(annotationType).map(
+							MergedAnnotation::withNonMergedAttributes).collect(
+									MergedAnnotationCollectors.toAnnotationSet())
+		);
 	}
 
 	/**
@@ -341,7 +400,13 @@ public abstract class AnnotationUtils {
 	 */
 	@Nullable
 	public static <A extends Annotation> A findAnnotation(AnnotatedElement annotatedElement, Class<A> annotationType) {
-		return InternalAnnotationUtils.findAnnotation(annotatedElement, annotationType);
+		return MigrateMethod.from(() ->
+			InternalAnnotationUtils.findAnnotation(annotatedElement, annotationType)
+		).to(() ->
+			MergedAnnotations.from(RepeatableContainers.none(), AnnotationFilter.mostAppropriateFor(annotationType),  SearchStrategy.DIRECT,
+					annotatedElement).get(annotationType).withNonMergedAttributes().synthesize(
+							MergedAnnotation::isPresent).orElse(null)
+		);
 	}
 
 	/**
@@ -361,7 +426,13 @@ public abstract class AnnotationUtils {
 	 */
 	@Nullable
 	public static <A extends Annotation> A findAnnotation(Method method, @Nullable Class<A> annotationType) {
-		return InternalAnnotationUtils.findAnnotation(method, annotationType);
+		return MigrateMethod.from(() ->
+			InternalAnnotationUtils.findAnnotation(method, annotationType)
+		).to(() ->
+			MergedAnnotations.from(RepeatableContainers.none(), AnnotationFilter.mostAppropriateFor(annotationType), SearchStrategy.EXHAUSTIVE,
+					method).get(annotationType).withNonMergedAttributes().synthesize(
+							MergedAnnotation::isPresent).orElse(null)
+		);
 	}
 
 	/**
@@ -420,7 +491,13 @@ public abstract class AnnotationUtils {
 	 */
 	@Nullable
 	public static <A extends Annotation> A findAnnotation(Class<?> clazz, Class<A> annotationType) {
-		return InternalAnnotationUtils.findAnnotation(clazz, annotationType);
+		return MigrateMethod.from(() ->
+			InternalAnnotationUtils.findAnnotation(clazz, annotationType)
+		).to(() ->
+			MergedAnnotations.from(RepeatableContainers.none(), AnnotationFilter.mostAppropriateFor(annotationType), SearchStrategy.EXHAUSTIVE,
+					clazz).get(annotationType).withNonMergedAttributes().synthesize(
+							MergedAnnotation::isPresent).orElse(null)
+		);
 	}
 
 	/**
@@ -447,8 +524,14 @@ public abstract class AnnotationUtils {
 	 */
 	@Nullable
 	public static Class<?> findAnnotationDeclaringClass(Class<? extends Annotation> annotationType, @Nullable Class<?> clazz) {
-		return InternalAnnotationUtils.findAnnotationDeclaringClass(annotationType,
-				clazz);
+		return MigrateMethod.<Class<?>> from(() ->
+			InternalAnnotationUtils.findAnnotationDeclaringClass(annotationType,
+					clazz)
+		).to(() ->
+			(Class<?>) MergedAnnotations.from(RepeatableContainers.none(),
+					AnnotationFilter.mostAppropriateFor(annotationType), SearchStrategy.SUPER_CLASS, clazz).get(annotationType,
+							MergedAnnotation::isDirectlyPresent).getSource()
+		);
 	}
 
 	/**
@@ -478,8 +561,17 @@ public abstract class AnnotationUtils {
 	@Nullable
 	public static Class<?> findAnnotationDeclaringClassForTypes(
 			List<Class<? extends Annotation>> annotationTypes, @Nullable Class<?> clazz) {
-		return InternalAnnotationUtils.findAnnotationDeclaringClassForTypes(
-				annotationTypes, clazz);
+		return MigrateMethod.<Class<?>> from(() ->
+			InternalAnnotationUtils.findAnnotationDeclaringClassForTypes(
+					annotationTypes, clazz)
+		).to(() ->
+			(Class<?>) MergedAnnotations.from(RepeatableContainers.none(),
+					AnnotationFilter.mostAppropriateFor(annotationTypes), SearchStrategy.SUPER_CLASS, clazz).stream().filter(
+							MergedAnnotationPredicates.typeIn(annotationTypes).and(
+									MergedAnnotation::isDirectlyPresent)).map(
+											MergedAnnotation::getSource).findFirst().orElse(
+													null)
+		);
 	}
 
 	/**
@@ -501,7 +593,11 @@ public abstract class AnnotationUtils {
 	 * @see #isAnnotationInherited(Class, Class)
 	 */
 	public static boolean isAnnotationDeclaredLocally(Class<? extends Annotation> annotationType, Class<?> clazz) {
-		return InternalAnnotationUtils.isAnnotationDeclaredLocally(annotationType, clazz);
+		return MigrateMethod.from(() ->
+			InternalAnnotationUtils.isAnnotationDeclaredLocally(annotationType, clazz)
+		).withSkippedOriginalExceptionCheck().to(() ->
+			MergedAnnotations.from(clazz).get(annotationType).isDirectlyPresent()
+		);
 	}
 
 	/**
@@ -524,7 +620,14 @@ public abstract class AnnotationUtils {
 	 * @see #isAnnotationDeclaredLocally(Class, Class)
 	 */
 	public static boolean isAnnotationInherited(Class<? extends Annotation> annotationType, Class<?> clazz) {
-		return InternalAnnotationUtils.isAnnotationInherited(annotationType, clazz);
+		return MigrateMethod.from(() ->
+			InternalAnnotationUtils.isAnnotationInherited(annotationType, clazz)
+		).to(() ->
+			MergedAnnotations.from(SearchStrategy.INHERITED_ANNOTATIONS,
+					clazz).stream(annotationType).filter(
+						MergedAnnotation::isDirectlyPresent).findFirst().orElseGet(
+								MergedAnnotation::missing).getAggregateIndex() > 0
+		);
 	}
 
 	/**
@@ -537,8 +640,13 @@ public abstract class AnnotationUtils {
 	 */
 	public static boolean isAnnotationMetaPresent(Class<? extends Annotation> annotationType,
 			@Nullable Class<? extends Annotation> metaAnnotationType) {
-		return InternalAnnotationUtils.isAnnotationMetaPresent(annotationType,
-				metaAnnotationType);
+		return MigrateMethod.from(() ->
+			InternalAnnotationUtils.isAnnotationMetaPresent(annotationType,
+				metaAnnotationType)
+		).to(() ->
+			MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, annotationType).isPresent(
+					annotationType)
+		);
 	}
 
 	/**
@@ -598,7 +706,11 @@ public abstract class AnnotationUtils {
 	 * @see #getAnnotationAttributes(Annotation)
 	 */
 	public static void validateAnnotation(Annotation annotation) {
-		InternalAnnotationUtils.validateAnnotation(annotation);
+		MigrateMethod.fromCall(() ->
+			InternalAnnotationUtils.validateAnnotation(annotation)
+		).to(() ->
+			DeclaredAnnotation.validate(annotation)
+		);
 	}
 
 	/**
@@ -617,7 +729,7 @@ public abstract class AnnotationUtils {
 	 * @see #getAnnotationAttributes(AnnotatedElement, Annotation, boolean, boolean)
 	 */
 	public static Map<String, Object> getAnnotationAttributes(Annotation annotation) {
-		return InternalAnnotationUtils.getAnnotationAttributes(annotation);
+		return getAnnotationAttributes(null, annotation);
 	}
 
 	/**
@@ -635,8 +747,7 @@ public abstract class AnnotationUtils {
 	 * @see #getAnnotationAttributes(Annotation, boolean, boolean)
 	 */
 	public static Map<String, Object> getAnnotationAttributes(Annotation annotation, boolean classValuesAsString) {
-		return InternalAnnotationUtils.getAnnotationAttributes(annotation,
-				classValuesAsString);
+		return getAnnotationAttributes(annotation, classValuesAsString, false);
 	}
 
 	/**
@@ -657,8 +768,8 @@ public abstract class AnnotationUtils {
 	 */
 	public static AnnotationAttributes getAnnotationAttributes(Annotation annotation, boolean classValuesAsString,
 			boolean nestedAnnotationsAsMap) {
-		return InternalAnnotationUtils.getAnnotationAttributes(annotation,
-				classValuesAsString, nestedAnnotationsAsMap);
+		return getAnnotationAttributes(null, annotation, classValuesAsString,
+				nestedAnnotationsAsMap);
 	}
 
 	/**
@@ -675,8 +786,7 @@ public abstract class AnnotationUtils {
 	 * @see #getAnnotationAttributes(AnnotatedElement, Annotation, boolean, boolean)
 	 */
 	public static AnnotationAttributes getAnnotationAttributes(@Nullable AnnotatedElement annotatedElement, Annotation annotation) {
-		return InternalAnnotationUtils.getAnnotationAttributes(annotatedElement,
-				annotation);
+		return getAnnotationAttributes(annotatedElement, annotation, false, false);
 	}
 
 	/**
@@ -699,8 +809,14 @@ public abstract class AnnotationUtils {
 	 */
 	public static AnnotationAttributes getAnnotationAttributes(@Nullable AnnotatedElement annotatedElement,
 			Annotation annotation, boolean classValuesAsString, boolean nestedAnnotationsAsMap) {
-		return InternalAnnotationUtils.getAnnotationAttributes(annotatedElement,
-				annotation, classValuesAsString, nestedAnnotationsAsMap);
+		return MigrateMethod.from(() ->
+			InternalAnnotationUtils.getAnnotationAttributes(annotatedElement,
+					annotation, classValuesAsString, nestedAnnotationsAsMap)
+		).to(() ->
+			MergedAnnotation.from(annotatedElement, annotation).withNonMergedAttributes().asMap(
+						merged -> new AnnotationAttributes(annotation.annotationType(), true),
+						MapValues.of(classValuesAsString, nestedAnnotationsAsMap))
+		);
 	}
 
 	/**
@@ -857,7 +973,7 @@ public abstract class AnnotationUtils {
 	 */
 	@Nullable
 	public static Object getDefaultValue(Annotation annotation) {
-		return InternalAnnotationUtils.getDefaultValue(annotation);
+		return getDefaultValue(annotation, VALUE);
 	}
 
 	/**
@@ -869,7 +985,7 @@ public abstract class AnnotationUtils {
 	 */
 	@Nullable
 	public static Object getDefaultValue(@Nullable Annotation annotation, @Nullable String attributeName) {
-		return InternalAnnotationUtils.getDefaultValue(annotation, attributeName);
+		return annotation != null ? getDefaultValue(annotation.annotationType(), attributeName) : null;
 	}
 
 	/**
@@ -881,7 +997,7 @@ public abstract class AnnotationUtils {
 	 */
 	@Nullable
 	public static Object getDefaultValue(Class<? extends Annotation> annotationType) {
-		return InternalAnnotationUtils.getDefaultValue(annotationType);
+		return getDefaultValue(annotationType, VALUE);
 	}
 
 	/**
@@ -895,7 +1011,14 @@ public abstract class AnnotationUtils {
 	@Nullable
 	public static Object getDefaultValue(
 			@Nullable Class<? extends Annotation> annotationType, @Nullable String attributeName) {
-		return InternalAnnotationUtils.getDefaultValue(annotationType, attributeName);
+		return MigrateMethod.from(() ->
+			InternalAnnotationUtils.getDefaultValue(annotationType, attributeName)
+		).to(() -> {
+			if (annotationType == null || !StringUtils.hasText(attributeName)) {
+				return null;
+			}
+			return MergedAnnotation.from(annotationType).getDefaultValue(attributeName).orElse(null);
+		});
 	}
 
 	/**
@@ -913,7 +1036,7 @@ public abstract class AnnotationUtils {
 	 * @see #synthesizeAnnotation(Annotation, AnnotatedElement)
 	 */
 	static <A extends Annotation> A synthesizeAnnotation(A annotation) {
-		return InternalAnnotationUtils.synthesizeAnnotation(annotation);
+		return synthesizeAnnotation(annotation, null);
 	}
 
 	/**
@@ -935,7 +1058,11 @@ public abstract class AnnotationUtils {
 	 */
 	public static <A extends Annotation> A synthesizeAnnotation(
 			A annotation, @Nullable AnnotatedElement annotatedElement) {
-		return InternalAnnotationUtils.synthesizeAnnotation(annotation, annotatedElement);
+		return MigrateMethod.from(()->
+			InternalAnnotationUtils.synthesizeAnnotation(annotation, annotatedElement)
+		).withSkippedOriginalExceptionCheck().to(() ->
+			MergedAnnotation.from(annotatedElement, annotation).synthesize()
+		);
 	}
 
 	static <A extends Annotation> A synthesizeAnnotation(A annotation, @Nullable Object annotatedElement) {
@@ -973,8 +1100,18 @@ public abstract class AnnotationUtils {
 	 */
 	public static <A extends Annotation> A synthesizeAnnotation(Map<String, Object> attributes,
 			Class<A> annotationType, @Nullable AnnotatedElement annotatedElement) {
-		return InternalAnnotationUtils.synthesizeAnnotation(attributes, annotationType,
-				annotatedElement);
+		return MigrateMethod.from(()->
+			InternalAnnotationUtils.synthesizeAnnotation(attributes, annotationType,
+					annotatedElement)
+		).to(()-> {
+			try {
+				return MergedAnnotation.from(annotatedElement, annotationType,
+						attributes).synthesize();
+			}
+			catch (NoSuchElementException | IllegalStateException ex) {
+				throw new IllegalArgumentException(ex);
+			}
+		});
 	}
 
 	/**
@@ -993,7 +1130,7 @@ public abstract class AnnotationUtils {
 	 * @see #synthesizeAnnotation(Annotation, AnnotatedElement)
 	 */
 	public static <A extends Annotation> A synthesizeAnnotation(Class<A> annotationType) {
-		return InternalAnnotationUtils.synthesizeAnnotation(annotationType);
+		return synthesizeAnnotation(Collections.emptyMap(), annotationType, null);
 	}
 
 	/**
@@ -1013,8 +1150,12 @@ public abstract class AnnotationUtils {
 	 * @see #synthesizeAnnotation(Map, Class, AnnotatedElement)
 	 */
 	static Annotation[] synthesizeAnnotationArray(Annotation[] annotations, @Nullable Object annotatedElement) {
-		return InternalAnnotationUtils.synthesizeAnnotationArray(annotations,
-				annotatedElement);
+		Annotation[] synthesized = (Annotation[]) Array.newInstance(
+				annotations.getClass().getComponentType(), annotations.length);
+		for (int i = 0; i < annotations.length; i++) {
+			synthesized[i] = synthesizeAnnotation(annotations[i], annotatedElement);
+		}
+		return synthesized;
 	}
 
 	/**
@@ -1035,9 +1176,17 @@ public abstract class AnnotationUtils {
 	 * @see #synthesizeAnnotationArray(Annotation[], Object)
 	 */
 	@Nullable
+	@SuppressWarnings("unchecked")
 	static <A extends Annotation> A[] synthesizeAnnotationArray(
 			@Nullable Map<String, Object>[] maps, Class<A> annotationType) {
-		return InternalAnnotationUtils.synthesizeAnnotationArray(maps, annotationType);
+		if (maps == null) {
+			return null;
+		}
+		A[] synthesized = (A[]) Array.newInstance(annotationType, maps.length);
+		for (int i = 0; i < maps.length; i++) {
+			synthesized[i] = synthesizeAnnotation(maps[i], annotationType, null);
+		}
+		return synthesized;
 	}
 
 	/**
@@ -1199,7 +1348,14 @@ public abstract class AnnotationUtils {
 	 * @since 4.3.15
 	 */
 	public static void clearCache() {
+		// FIXME how do we expose this
 		InternalAnnotationUtils.clearCache();
+	}
+
+	private static <A extends Annotation> boolean isSingleLevelPresent(
+			MergedAnnotation<A> mergedAnnotation) {
+		int depth = mergedAnnotation.getDepth();
+		return depth == 0 || depth == 1;
 	}
 
 }
