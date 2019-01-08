@@ -1179,8 +1179,8 @@ public class MergedAnnotationsTests {
 	public void getAnnotationAttributesWithNestedAnnotations() {
 		MergedAnnotation<?> annotation = MergedAnnotations.from(
 				ComponentScanClass.class).get(XComponentScan.class);
-		MergedAnnotation<XFilter>[] filters = annotation.getAnnotationArray(
-				"excludeFilters", XFilter.class);
+		MergedAnnotation<Filter>[] filters = annotation.getAnnotationArray(
+				"excludeFilters", Filter.class);
 		assertThat(Arrays.stream(filters).map(
 				filter -> filter.getString("pattern"))).containsExactly("*Foo", "*Bar");
 	}
@@ -1706,8 +1706,8 @@ public class MergedAnnotationsTests {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void synthesizeAnnotationFromMapWithNestedMap() throws Exception {
-		XComponentScanSingleFilter componentScan = XComponentScanSingleFilterClass.class.getAnnotation(
-				XComponentScanSingleFilter.class);
+		ComponentScanSingleFilter componentScan = ComponentScanSingleFilterClass.class.getAnnotation(
+				ComponentScanSingleFilter.class);
 		assertThat(componentScan).isNotNull();
 		assertThat(componentScan.value().pattern()).isEqualTo("*Foo");
 		Map<String, Object> map = MergedAnnotation.from(componentScan).asMap(
@@ -1717,9 +1717,9 @@ public class MergedAnnotationsTests {
 		assertThat(filterMap.get("pattern")).isEqualTo("*Foo");
 		filterMap.put("pattern", "newFoo");
 		filterMap.put("enigma", 42);
-		MergedAnnotation<XComponentScanSingleFilter> annotation = MergedAnnotation.from(
-				XComponentScanSingleFilter.class, map);
-		XComponentScanSingleFilter synthesizedComponentScan = annotation.synthesize();
+		MergedAnnotation<ComponentScanSingleFilter> annotation = MergedAnnotation.from(
+				ComponentScanSingleFilter.class, map);
+		ComponentScanSingleFilter synthesizedComponentScan = annotation.synthesize();
 		assertThat(synthesizedComponentScan).isInstanceOf(SynthesizedAnnotation.class);
 		assertThat(synthesizedComponentScan.value().pattern()).isEqualTo("newFoo");
 	}
@@ -1746,7 +1746,7 @@ public class MergedAnnotationsTests {
 		XComponentScan synthesizedComponentScan = annotation.synthesize();
 		assertThat(synthesizedComponentScan).isInstanceOf(SynthesizedAnnotation.class);
 		assertThat(Arrays.stream(synthesizedComponentScan.excludeFilters()).map(
-				XFilter::pattern)).containsExactly("newFoo", "newBar");
+				Filter::pattern)).containsExactly("newFoo", "newBar");
 	}
 
 	@Test
@@ -2024,10 +2024,11 @@ public class MergedAnnotationsTests {
 		SimpleContextConfig[] configs = synthesizedHierarchy.value();
 		assertThat(configs).isNotNull();
 		assertThat(configs).allMatch(SynthesizedAnnotation.class::isInstance);
-		assertThat(Arrays.stream(configs).map(SimpleContextConfig::location)).containsExactly(
-				"A", "B");
-		assertThat(Arrays.stream(configs).map(SimpleContextConfig::value)).containsExactly("A",
-				"B");
+		assertThat(Arrays.stream(configs).map(
+				SimpleContextConfig::location)).containsExactly("A", "B");
+		assertThat(
+				Arrays.stream(configs).map(SimpleContextConfig::value)).containsExactly(
+						"A", "B");
 	}
 
 	@Test
@@ -2041,14 +2042,14 @@ public class MergedAnnotationsTests {
 				SimpleContextConfig.class);
 		assertThat(contextConfig).isNotNull();
 		SimpleContextConfig[] configs = synthesizedHierarchy.value();
-		assertThat(Arrays.stream(configs).map(SimpleContextConfig::location)).containsExactly(
-				"A", "B");
+		assertThat(Arrays.stream(configs).map(
+				SimpleContextConfig::location)).containsExactly("A", "B");
 		// Alter array returned from synthesized annotation
 		configs[0] = contextConfig;
 		// Re-retrieve the array from the synthesized annotation
 		configs = synthesizedHierarchy.value();
-		assertThat(Arrays.stream(configs).map(SimpleContextConfig::location)).containsExactly(
-				"A", "B");
+		assertThat(Arrays.stream(configs).map(
+				SimpleContextConfig::location)).containsExactly("A", "B");
 	}
 
 	@Test
@@ -2085,14 +2086,13 @@ public class MergedAnnotationsTests {
 
 	}
 
-
-//	@Retention(RetentionPolicy.RUNTIME)
-//	@Inherited
-//	@interface XTransactional {
-//
-//		boolean readOnly() default false;
-//
-//	}
+	// @Retention(RetentionPolicy.RUNTIME)
+	// @Inherited
+	// @interface XTransactional {
+	//
+	// boolean readOnly() default false;
+	//
+	// }
 
 	@Transactional
 	@Component
@@ -2233,7 +2233,6 @@ public class MergedAnnotationsTests {
 
 		Class<?> configClass() default Object.class;
 	}
-
 
 	@ContextConfig
 	@Retention(RetentionPolicy.RUNTIME)
@@ -2809,7 +2808,6 @@ public class MergedAnnotationsTests {
 		public void overrideWithoutNewAnnotation() {
 		}
 	}
-
 
 	public static abstract class SimpleGeneric<T> {
 
@@ -3417,25 +3415,17 @@ public class MergedAnnotationsTests {
 	static class XTransitiveImplicitAliasesForAliasPairContextConfigClass {
 	}
 
-	@Retention(RetentionPolicy.RUNTIME)
-	@Target({})
-	@interface XFilter {
-
-		String pattern();
-
-	}
-
 	/**
 	 * Mock of {@code org.springframework.context.annotation.ComponentScan}.
 	 */
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface XComponentScan {
 
-		XFilter[] excludeFilters() default {};
+		Filter[] excludeFilters() default {};
 	}
 
-	@XComponentScan(excludeFilters = { @XFilter(pattern = "*Foo"),
-		@XFilter(pattern = "*Bar") })
+	@XComponentScan(excludeFilters = { @Filter(pattern = "*Foo"),
+		@Filter(pattern = "*Bar") })
 	static class ComponentScanClass {
 	}
 
@@ -3443,13 +3433,13 @@ public class MergedAnnotationsTests {
 	 * Mock of {@code org.springframework.context.annotation.ComponentScan}.
 	 */
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface XComponentScanSingleFilter {
+	@interface ComponentScanSingleFilter {
 
-		XFilter value();
+		Filter value();
 	}
 
-	@XComponentScanSingleFilter(@XFilter(pattern = "*Foo"))
-	static class XComponentScanSingleFilterClass {
+	@ComponentScanSingleFilter(@Filter(pattern = "*Foo"))
+	static class ComponentScanSingleFilterClass {
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
