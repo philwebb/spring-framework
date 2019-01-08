@@ -649,20 +649,20 @@ public class MergedAnnotationsTests {
 	@Test
 	public void findMergedAnnotationWithSingleElementOverridingAnArrayViaConvention()
 			throws Exception {
-		assertWebMapping(XWebController.class.getMethod("postMappedWithPathAttribute"));
+		assertWebMapping(WebController.class.getMethod("postMappedWithPathAttribute"));
 	}
 
 	@Test
 	public void findMergedAnnotationWithSingleElementOverridingAnArrayViaAliasFor()
 			throws Exception {
-		assertWebMapping(XWebController.class.getMethod("getMappedWithValueAttribute"));
-		assertWebMapping(XWebController.class.getMethod("getMappedWithPathAttribute"));
+		assertWebMapping(WebController.class.getMethod("getMappedWithValueAttribute"));
+		assertWebMapping(WebController.class.getMethod("getMappedWithPathAttribute"));
 	}
 
 	private void assertWebMapping(AnnotatedElement element)
 			throws ArrayComparisonFailure {
 		MergedAnnotation<?> annotation = MergedAnnotations.from(SearchStrategy.EXHAUSTIVE,
-				element).get(XWebMapping.class);
+				element).get(WebMapping.class);
 		assertThat(annotation.getStringArray("value")).containsExactly("/test");
 		assertThat(annotation.getStringArray("path")).containsExactly("/test");
 	}
@@ -1170,7 +1170,7 @@ public class MergedAnnotationsTests {
 
 	@Test
 	public void getAnnotationAttributesWithoutAttributeAliases() {
-		MergedAnnotation<?> annotation = MergedAnnotations.from(XWebController.class).get(
+		MergedAnnotation<?> annotation = MergedAnnotations.from(WebController.class).get(
 				Component.class);
 		assertThat(annotation.getString("value")).isEqualTo("webController");
 	}
@@ -1187,9 +1187,9 @@ public class MergedAnnotationsTests {
 
 	@Test
 	public void getAnnotationAttributesWithAttributeAliases1() throws Exception {
-		Method method = XWebController.class.getMethod("handleMappedWithValueAttribute");
+		Method method = WebController.class.getMethod("handleMappedWithValueAttribute");
 		MergedAnnotation<?> annotation = MergedAnnotations.from(method).get(
-				XWebMapping.class);
+				WebMapping.class);
 		assertThat(annotation.getString("name")).isEqualTo("foo");
 		assertThat(annotation.getStringArray("value")).containsExactly("/test");
 		assertThat(annotation.getStringArray("path")).containsExactly("/test");
@@ -1197,9 +1197,9 @@ public class MergedAnnotationsTests {
 
 	@Test
 	public void getAnnotationAttributesWithAttributeAliases2() throws Exception {
-		Method method = XWebController.class.getMethod("handleMappedWithPathAttribute");
+		Method method = WebController.class.getMethod("handleMappedWithPathAttribute");
 		MergedAnnotation<?> annotation = MergedAnnotations.from(method).get(
-				XWebMapping.class);
+				WebMapping.class);
 		assertThat(annotation.getString("name")).isEqualTo("bar");
 		assertThat(annotation.getStringArray("value")).containsExactly("/test");
 		assertThat(annotation.getStringArray("path")).containsExactly("/test");
@@ -1208,11 +1208,11 @@ public class MergedAnnotationsTests {
 	@Test
 	public void getAnnotationAttributesWithAttributeAliasesWithDifferentValues()
 			throws Exception {
-		Method method = XWebController.class.getMethod(
+		Method method = WebController.class.getMethod(
 				"handleMappedWithDifferentPathAndValueAttributes");
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
 				() -> MergedAnnotations.from(method).get(
-						XWebMapping.class)).withMessageContaining(
+						WebMapping.class)).withMessageContaining(
 								"attribute 'value' and its alias 'path'").withMessageContaining(
 										"values of [{/enigma}] and [{/test}]");
 	}
@@ -1287,26 +1287,26 @@ public class MergedAnnotationsTests {
 	@Test
 	public void getRepeatableAnnotationsDeclaredOnClassWithMissingAttributeAliasDeclaration()
 			throws Exception {
-		RepeatableContainers containers = RepeatableContainers.of(XBrokenHierarchy.class,
-				XBrokenContextConfig.class);
+		RepeatableContainers containers = RepeatableContainers.of(BrokenHierarchy.class,
+				BrokenContextConfig.class);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
 				() -> MergedAnnotations.from(containers, AnnotationFilter.PLAIN,
 						SearchStrategy.EXHAUSTIVE,
-						XBrokenConfigHierarchyTestCase.class)).withMessageStartingWith(
+						BrokenConfigHierarchyClass.class)).withMessageStartingWith(
 								"Attribute 'value' in").withMessageContaining(
-										XBrokenContextConfig.class.getName()).withMessageContaining(
+										BrokenContextConfig.class.getName()).withMessageContaining(
 												"@AliasFor 'location'");
 	}
 
 	@Test
 	public void getRepeatableAnnotationsDeclaredOnClassWithAttributeAliases() {
-		assertThat(MergedAnnotations.from(XConfigHierarchyTestCase.class).stream(
+		assertThat(MergedAnnotations.from(SimpleConfigHierarchyClass.class).stream(
 				SimpleContextConfig.class)).isEmpty();
-		RepeatableContainers containers = RepeatableContainers.of(XHierarchy.class,
+		RepeatableContainers containers = RepeatableContainers.of(Hierarchy.class,
 				SimpleContextConfig.class);
 		MergedAnnotations annotations = MergedAnnotations.from(containers,
 				AnnotationFilter.NONE, SearchStrategy.DIRECT,
-				XConfigHierarchyTestCase.class);
+				SimpleConfigHierarchyClass.class);
 		assertThat(annotations.stream(SimpleContextConfig.class).map(
 				annotation -> annotation.getString("location"))).containsExactly("A",
 						"B");
@@ -1409,7 +1409,7 @@ public class MergedAnnotationsTests {
 
 	@Test
 	public void synthesizeAnnotationWithoutAttributeAliases() throws Exception {
-		Component component = XWebController.class.getAnnotation(Component.class);
+		Component component = WebController.class.getAnnotation(Component.class);
 		assertThat(component).isNotNull();
 		Component synthesizedComponent = MergedAnnotation.from(component).synthesize();
 		assertThat(synthesizedComponent).isNotNull();
@@ -1419,12 +1419,12 @@ public class MergedAnnotationsTests {
 
 	@Test
 	public void synthesizeAlreadySynthesizedAnnotation() throws Exception {
-		Method method = XWebController.class.getMethod("handleMappedWithValueAttribute");
-		XWebMapping webMapping = method.getAnnotation(XWebMapping.class);
+		Method method = WebController.class.getMethod("handleMappedWithValueAttribute");
+		WebMapping webMapping = method.getAnnotation(WebMapping.class);
 		assertThat(webMapping).isNotNull();
-		XWebMapping synthesizedWebMapping = MergedAnnotation.from(
+		WebMapping synthesizedWebMapping = MergedAnnotation.from(
 				webMapping).synthesize();
-		XWebMapping synthesizedAgainWebMapping = MergedAnnotation.from(
+		WebMapping synthesizedAgainWebMapping = MergedAnnotation.from(
 				synthesizedWebMapping).synthesize();
 		assertThat(synthesizedWebMapping).isInstanceOf(SynthesizedAnnotation.class);
 		assertThat(synthesizedAgainWebMapping).isInstanceOf(SynthesizedAnnotation.class);
@@ -1437,31 +1437,31 @@ public class MergedAnnotationsTests {
 	@Test
 	public void synthesizeAnnotationWhereAliasForIsMissingAttributeDeclaration()
 			throws Exception {
-		XAliasForWithMissingAttributeDeclaration annotation = XAliasForWithMissingAttributeDeclarationClass.class.getAnnotation(
-				XAliasForWithMissingAttributeDeclaration.class);
+		AliasForWithMissingAttributeDeclaration annotation = AliasForWithMissingAttributeDeclarationClass.class.getAnnotation(
+				AliasForWithMissingAttributeDeclaration.class);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
 				() -> MergedAnnotation.from(annotation)).withMessageStartingWith(
 						"@AliasFor declaration on attribute 'foo' in annotation").withMessageContaining(
-								XAliasForWithMissingAttributeDeclaration.class.getName()).withMessageContaining(
+								AliasForWithMissingAttributeDeclaration.class.getName()).withMessageContaining(
 										"points to itself");
 	}
 
 	@Test
 	public void synthesizeAnnotationWhereAliasForHasDuplicateAttributeDeclaration()
 			throws Exception {
-		XAliasForWithDuplicateAttributeDeclaration annotation = AliasForWithDuplicateAttributeDeclarationClass.class.getAnnotation(
-				XAliasForWithDuplicateAttributeDeclaration.class);
+		AliasForWithDuplicateAttributeDeclaration annotation = AliasForWithDuplicateAttributeDeclarationClass.class.getAnnotation(
+				AliasForWithDuplicateAttributeDeclaration.class);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
 				() -> MergedAnnotation.from(annotation)).withMessageStartingWith(
 						"In @AliasFor declared on attribute 'foo' in annotation").withMessageContaining(
-								XAliasForWithDuplicateAttributeDeclaration.class.getName()).withMessageContaining(
+								AliasForWithDuplicateAttributeDeclaration.class.getName()).withMessageContaining(
 										"attribute 'attribute' and its alias 'value' are present with values of 'bar' and 'baz'");
 	}
 
 	@Test
 	public void synthesizeAnnotationWithAttributeAliasForNonexistentAttribute()
 			throws Exception {
-		AliasForNonexistentAttribute annotation = XAliasForNonexistentAttributeClass.class.getAnnotation(
+		AliasForNonexistentAttribute annotation = AliasForNonexistentAttributeClass.class.getAnnotation(
 				AliasForNonexistentAttribute.class);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
 				() -> MergedAnnotation.from(annotation)).withMessageStartingWith(
@@ -1473,36 +1473,36 @@ public class MergedAnnotationsTests {
 	@Test
 	public void synthesizeAnnotationWithAttributeAliasWithoutMirroredAliasFor()
 			throws Exception {
-		XAliasForWithoutMirroredAliasFor annotation = XAliasForWithoutMirroredAliasForClass.class.getAnnotation(
-				XAliasForWithoutMirroredAliasFor.class);
+		AliasForWithoutMirroredAliasFor annotation = AliasForWithoutMirroredAliasForClass.class.getAnnotation(
+				AliasForWithoutMirroredAliasFor.class);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
 				() -> MergedAnnotation.from(annotation)).withMessageStartingWith(
 						"Attribute 'bar' in").withMessageContaining(
-								XAliasForWithoutMirroredAliasFor.class.getName()).withMessageContaining(
+								AliasForWithoutMirroredAliasFor.class.getName()).withMessageContaining(
 										"@AliasFor 'foo'");
 	}
 
 	@Test
 	public void synthesizeAnnotationWithAttributeAliasWithMirroredAliasForWrongAttribute()
 			throws Exception {
-		XAliasForWithMirroredAliasForWrongAttribute annotation = XAliasForWithMirroredAliasForWrongAttributeClass.class.getAnnotation(
-				XAliasForWithMirroredAliasForWrongAttribute.class);
+		AliasForWithMirroredAliasForWrongAttribute annotation = AliasForWithMirroredAliasForWrongAttributeClass.class.getAnnotation(
+				AliasForWithMirroredAliasForWrongAttribute.class);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
 				() -> MergedAnnotation.from(annotation)).withMessageStartingWith(
 						"Attribute 'bar' in").withMessageContaining(
-								XAliasForWithMirroredAliasForWrongAttribute.class.getName()).withMessageContaining(
+								AliasForWithMirroredAliasForWrongAttribute.class.getName()).withMessageContaining(
 										"must be declared as an @AliasFor 'foo', not attribute 'quux'");
 	}
 
 	@Test
 	public void synthesizeAnnotationWithAttributeAliasForAttributeOfDifferentType()
 			throws Exception {
-		XAliasForAttributeOfDifferentType annotation = XAliasForAttributeOfDifferentTypeClass.class.getAnnotation(
-				XAliasForAttributeOfDifferentType.class);
+		AliasForAttributeOfDifferentType annotation = AliasForAttributeOfDifferentTypeClass.class.getAnnotation(
+				AliasForAttributeOfDifferentType.class);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
 				() -> MergedAnnotation.from(annotation)).withMessageStartingWith(
 						"Misconfigured aliases").withMessageContaining(
-								XAliasForAttributeOfDifferentType.class.getName()).withMessageContaining(
+								AliasForAttributeOfDifferentType.class.getName()).withMessageContaining(
 										"attribute 'foo'").withMessageContaining(
 												"attribute 'bar'").withMessageContaining(
 														"same return type");
@@ -1511,12 +1511,12 @@ public class MergedAnnotationsTests {
 	@Test
 	public void synthesizeAnnotationWithAttributeAliasForWithMissingDefaultValues()
 			throws Exception {
-		XAliasForWithMissingDefaultValues annotation = XAliasForWithMissingDefaultValuesClass.class.getAnnotation(
-				XAliasForWithMissingDefaultValues.class);
+		AliasForWithMissingDefaultValues annotation = AliasForWithMissingDefaultValuesClass.class.getAnnotation(
+				AliasForWithMissingDefaultValues.class);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
 				() -> MergedAnnotation.from(annotation)).withMessageStartingWith(
 						"Misconfigured aliases").withMessageContaining(
-								XAliasForWithMissingDefaultValues.class.getName()).withMessageContaining(
+								AliasForWithMissingDefaultValues.class.getName()).withMessageContaining(
 										"attribute 'foo' in annotation").withMessageContaining(
 												"attribute 'bar' in annotation").withMessageContaining(
 														"default values");
@@ -1525,12 +1525,12 @@ public class MergedAnnotationsTests {
 	@Test
 	public void synthesizeAnnotationWithAttributeAliasForAttributeWithDifferentDefaultValue()
 			throws Exception {
-		XAliasForAttributeWithDifferentDefaultValue annotation = XAliasForAttributeWithDifferentDefaultValueClass.class.getAnnotation(
-				XAliasForAttributeWithDifferentDefaultValue.class);
+		AliasForAttributeWithDifferentDefaultValue annotation = AliasForAttributeWithDifferentDefaultValueClass.class.getAnnotation(
+				AliasForAttributeWithDifferentDefaultValue.class);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
 				() -> MergedAnnotation.from(annotation)).withMessageStartingWith(
 						"Misconfigured aliases").withMessageContaining(
-								XAliasForAttributeWithDifferentDefaultValue.class.getName()).withMessageContaining(
+								AliasForAttributeWithDifferentDefaultValue.class.getName()).withMessageContaining(
 										"attribute 'foo' in annotation").withMessageContaining(
 												"attribute 'bar' in annotation").withMessageContaining(
 														"same default value");
@@ -1539,12 +1539,12 @@ public class MergedAnnotationsTests {
 	@Test
 	public void synthesizeAnnotationWithAttributeAliasForMetaAnnotationThatIsNotMetaPresent()
 			throws Exception {
-		XAliasedComposedContextConfigNotMetaPresent annotation = XAliasedComposedContextConfigNotMetaPresentClass.class.getAnnotation(
-				XAliasedComposedContextConfigNotMetaPresent.class);
+		AliasedComposedContextConfigNotMetaPresent annotation = XAliasedComposedContextConfigNotMetaPresentClass.class.getAnnotation(
+				AliasedComposedContextConfigNotMetaPresent.class);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
 				() -> MergedAnnotation.from(annotation)).withMessageStartingWith(
 						"@AliasFor declaration on attribute 'xmlConfigFile' in annotation").withMessageContaining(
-								XAliasedComposedContextConfigNotMetaPresent.class.getName()).withMessageContaining(
+								AliasedComposedContextConfigNotMetaPresent.class.getName()).withMessageContaining(
 										"declares an alias for attribute 'location' in annotation").withMessageContaining(
 												SimpleContextConfig.class.getName()).withMessageContaining(
 														"not meta-present");
@@ -1693,7 +1693,7 @@ public class MergedAnnotationsTests {
 
 	@Test
 	public void synthesizeAnnotationFromMapWithoutAttributeAliases() throws Exception {
-		Component component = XWebController.class.getAnnotation(Component.class);
+		Component component = WebController.class.getAnnotation(Component.class);
 		assertThat(component).isNotNull();
 		Map<String, Object> map = Collections.singletonMap("value", "webController");
 		MergedAnnotation<Component> annotation = MergedAnnotation.from(Component.class,
@@ -1799,8 +1799,8 @@ public class MergedAnnotationsTests {
 
 	private void synthesizeAnnotationFromMapWithAttributeAliasesThatOverrideArraysWithSingleElements(
 			Map<String, Object> map) {
-		MergedAnnotation<XGet> annotation = MergedAnnotation.from(XGet.class, map);
-		XGet synthesized = annotation.synthesize();
+		MergedAnnotation<Get> annotation = MergedAnnotation.from(Get.class, map);
+		Get synthesized = annotation.synthesize();
 		assertThat(synthesized.value()).isEqualTo("/foo");
 		assertThat(synthesized.path()).isEqualTo("/foo");
 	}
@@ -1867,7 +1867,7 @@ public class MergedAnnotationsTests {
 	@Test
 	public void synthesizeAnnotationFromAnnotationAttributesWithoutAttributeAliases()
 			throws Exception {
-		Component component = XWebController.class.getAnnotation(Component.class);
+		Component component = WebController.class.getAnnotation(Component.class);
 		assertThat(component).isNotNull();
 		Map<String, Object> attributes = MergedAnnotation.from(component).asMap();
 		Component synthesized = MergedAnnotation.from(Component.class,
@@ -1878,19 +1878,19 @@ public class MergedAnnotationsTests {
 
 	@Test
 	public void toStringForSynthesizedAnnotations() throws Exception {
-		Method methodWithPath = XWebController.class.getMethod(
+		Method methodWithPath = WebController.class.getMethod(
 				"handleMappedWithPathAttribute");
-		XWebMapping webMappingWithAliases = methodWithPath.getAnnotation(
-				XWebMapping.class);
+		WebMapping webMappingWithAliases = methodWithPath.getAnnotation(
+				WebMapping.class);
 		assertThat(webMappingWithAliases).isNotNull();
-		Method methodWithPathAndValue = XWebController.class.getMethod(
+		Method methodWithPathAndValue = WebController.class.getMethod(
 				"handleMappedWithSamePathAndValueAttributes");
-		XWebMapping webMappingWithPathAndValue = methodWithPathAndValue.getAnnotation(
-				XWebMapping.class);
+		WebMapping webMappingWithPathAndValue = methodWithPathAndValue.getAnnotation(
+				WebMapping.class);
 		assertThat(methodWithPathAndValue).isNotNull();
-		XWebMapping synthesizedWebMapping1 = MergedAnnotation.from(
+		WebMapping synthesizedWebMapping1 = MergedAnnotation.from(
 				webMappingWithAliases).synthesize();
-		XWebMapping synthesizedWebMapping2 = MergedAnnotation.from(
+		WebMapping synthesizedWebMapping2 = MergedAnnotation.from(
 				webMappingWithPathAndValue).synthesize();
 		assertThat(webMappingWithAliases.toString()).isNotEqualTo(
 				synthesizedWebMapping1.toString());
@@ -1898,27 +1898,27 @@ public class MergedAnnotationsTests {
 		assertToStringForWebMappingWithPathAndValue(synthesizedWebMapping2);
 	}
 
-	private void assertToStringForWebMappingWithPathAndValue(XWebMapping webMapping) {
-		String prefix = "@" + XWebMapping.class.getName() + "(";
+	private void assertToStringForWebMappingWithPathAndValue(WebMapping webMapping) {
+		String prefix = "@" + WebMapping.class.getName() + "(";
 		assertThat(webMapping.toString()).startsWith(prefix).contains("value=[/test]",
 				"path=[/test]", "name=bar", "method=", "[GET, POST]").endsWith(")");
 	}
 
 	@Test
 	public void equalsForSynthesizedAnnotations() throws Exception {
-		Method methodWithPath = XWebController.class.getMethod(
+		Method methodWithPath = WebController.class.getMethod(
 				"handleMappedWithPathAttribute");
-		XWebMapping webMappingWithAliases = methodWithPath.getAnnotation(
-				XWebMapping.class);
+		WebMapping webMappingWithAliases = methodWithPath.getAnnotation(
+				WebMapping.class);
 		assertThat(webMappingWithAliases).isNotNull();
-		Method methodWithPathAndValue = XWebController.class.getMethod(
+		Method methodWithPathAndValue = WebController.class.getMethod(
 				"handleMappedWithSamePathAndValueAttributes");
-		XWebMapping webMappingWithPathAndValue = methodWithPathAndValue.getAnnotation(
-				XWebMapping.class);
+		WebMapping webMappingWithPathAndValue = methodWithPathAndValue.getAnnotation(
+				WebMapping.class);
 		assertThat(webMappingWithPathAndValue).isNotNull();
-		XWebMapping synthesizedWebMapping1 = MergedAnnotation.from(
+		WebMapping synthesizedWebMapping1 = MergedAnnotation.from(
 				webMappingWithAliases).synthesize();
-		XWebMapping synthesizedWebMapping2 = MergedAnnotation.from(
+		WebMapping synthesizedWebMapping2 = MergedAnnotation.from(
 				webMappingWithPathAndValue).synthesize();
 		// Equality amongst standard annotations
 		assertThat(webMappingWithAliases).isEqualTo(webMappingWithAliases);
@@ -1941,20 +1941,20 @@ public class MergedAnnotationsTests {
 
 	@Test
 	public void hashCodeForSynthesizedAnnotations() throws Exception {
-		Method methodWithPath = XWebController.class.getMethod(
+		Method methodWithPath = WebController.class.getMethod(
 				"handleMappedWithPathAttribute");
-		XWebMapping webMappingWithAliases = methodWithPath.getAnnotation(
-				XWebMapping.class);
+		WebMapping webMappingWithAliases = methodWithPath.getAnnotation(
+				WebMapping.class);
 		assertThat(webMappingWithAliases).isNotNull();
-		Method methodWithPathAndValue = XWebController.class.getMethod(
+		Method methodWithPathAndValue = WebController.class.getMethod(
 				"handleMappedWithSamePathAndValueAttributes");
-		XWebMapping webMappingWithPathAndValue = methodWithPathAndValue.getAnnotation(
-				XWebMapping.class);
+		WebMapping webMappingWithPathAndValue = methodWithPathAndValue.getAnnotation(
+				WebMapping.class);
 		assertThat(webMappingWithPathAndValue).isNotNull();
-		XWebMapping synthesizedWebMapping1 = MergedAnnotation.from(
+		WebMapping synthesizedWebMapping1 = MergedAnnotation.from(
 				webMappingWithAliases).synthesize();
 		assertThat(synthesizedWebMapping1).isNotNull();
-		XWebMapping synthesizedWebMapping2 = MergedAnnotation.from(
+		WebMapping synthesizedWebMapping2 = MergedAnnotation.from(
 				webMappingWithPathAndValue).synthesize();
 		assertThat(synthesizedWebMapping2).isNotNull();
 		// Equality amongst standard annotations
@@ -2016,10 +2016,10 @@ public class MergedAnnotationsTests {
 	@Test
 	public void synthesizeAnnotationWithAttributeAliasesInNestedAnnotations()
 			throws Exception {
-		XHierarchy hierarchy = XConfigHierarchyTestCase.class.getAnnotation(
-				XHierarchy.class);
+		Hierarchy hierarchy = SimpleConfigHierarchyClass.class.getAnnotation(
+				Hierarchy.class);
 		assertThat(hierarchy).isNotNull();
-		XHierarchy synthesizedHierarchy = MergedAnnotation.from(hierarchy).synthesize();
+		Hierarchy synthesizedHierarchy = MergedAnnotation.from(hierarchy).synthesize();
 		assertThat(synthesizedHierarchy).isInstanceOf(SynthesizedAnnotation.class);
 		SimpleContextConfig[] configs = synthesizedHierarchy.value();
 		assertThat(configs).isNotNull();
@@ -2033,12 +2033,12 @@ public class MergedAnnotationsTests {
 
 	@Test
 	public void synthesizeAnnotationWithArrayOfAnnotations() throws Exception {
-		XHierarchy hierarchy = XConfigHierarchyTestCase.class.getAnnotation(
-				XHierarchy.class);
+		Hierarchy hierarchy = SimpleConfigHierarchyClass.class.getAnnotation(
+				Hierarchy.class);
 		assertThat(hierarchy).isNotNull();
-		XHierarchy synthesizedHierarchy = MergedAnnotation.from(hierarchy).synthesize();
+		Hierarchy synthesizedHierarchy = MergedAnnotation.from(hierarchy).synthesize();
 		assertThat(synthesizedHierarchy).isInstanceOf(SynthesizedAnnotation.class);
-		SimpleContextConfig contextConfig = XSimpleConfigTestCase.class.getAnnotation(
+		SimpleContextConfig contextConfig = SimpleConfigClass.class.getAnnotation(
 				SimpleContextConfig.class);
 		assertThat(contextConfig).isNotNull();
 		SimpleContextConfig[] configs = synthesizedHierarchy.value();
@@ -2054,10 +2054,10 @@ public class MergedAnnotationsTests {
 
 	@Test
 	public void synthesizeAnnotationWithArrayOfChars() throws Exception {
-		XCharsContainer charsContainer = XGroupOfCharsClass.class.getAnnotation(
-				XCharsContainer.class);
+		CharsContainer charsContainer = GroupOfCharsClass.class.getAnnotation(
+				CharsContainer.class);
 		assertThat(charsContainer).isNotNull();
-		XCharsContainer synthesizedCharsContainer = MergedAnnotation.from(
+		CharsContainer synthesizedCharsContainer = MergedAnnotation.from(
 				charsContainer).synthesize();
 		assertThat(synthesizedCharsContainer).isInstanceOf(SynthesizedAnnotation.class);
 		char[] chars = synthesizedCharsContainer.chars();
@@ -2975,7 +2975,7 @@ public class MergedAnnotationsTests {
 	 * Mock of {@code org.springframework.web.bind.annotation.RequestMapping}.
 	 */
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface XWebMapping {
+	@interface WebMapping {
 
 		String name();
 
@@ -2993,13 +2993,13 @@ public class MergedAnnotationsTests {
 	 * String arrays are overridden with single String elements.
 	 */
 	@Retention(RetentionPolicy.RUNTIME)
-	@XWebMapping(method = RequestMethod.GET, name = "")
-	@interface XGet {
+	@WebMapping(method = RequestMethod.GET, name = "")
+	@interface Get {
 
-		@AliasFor(annotation = XWebMapping.class)
+		@AliasFor(annotation = WebMapping.class)
 		String value() default "";
 
-		@AliasFor(annotation = XWebMapping.class)
+		@AliasFor(annotation = WebMapping.class)
 		String path() default "";
 	}
 
@@ -3008,51 +3008,51 @@ public class MergedAnnotationsTests {
 	 * the path is overridden by convention with single String element.
 	 */
 	@Retention(RetentionPolicy.RUNTIME)
-	@XWebMapping(method = RequestMethod.POST, name = "")
-	@interface XPost {
+	@WebMapping(method = RequestMethod.POST, name = "")
+	@interface Post {
 
 		String path() default "";
 	}
 
 	@Component("webController")
-	static class XWebController {
+	static class WebController {
 
-		@XWebMapping(value = "/test", name = "foo")
+		@WebMapping(value = "/test", name = "foo")
 		public void handleMappedWithValueAttribute() {
 		}
 
-		@XWebMapping(path = "/test", name = "bar", method = { RequestMethod.GET,
+		@WebMapping(path = "/test", name = "bar", method = { RequestMethod.GET,
 			RequestMethod.POST })
 		public void handleMappedWithPathAttribute() {
 		}
 
-		@XGet("/test")
+		@Get("/test")
 		public void getMappedWithValueAttribute() {
 		}
 
-		@XGet(path = "/test")
+		@Get(path = "/test")
 		public void getMappedWithPathAttribute() {
 		}
 
-		@XPost(path = "/test")
+		@Post(path = "/test")
 		public void postMappedWithPathAttribute() {
 		}
 
 		/**
 		 * mapping is logically "equal" to handleMappedWithPathAttribute().
 		 */
-		@XWebMapping(value = "/test", path = "/test", name = "bar", method = {
+		@WebMapping(value = "/test", path = "/test", name = "bar", method = {
 			RequestMethod.GET, RequestMethod.POST })
 		public void handleMappedWithSamePathAndValueAttributes() {
 		}
 
-		@XWebMapping(value = "/enigma", path = "/test", name = "baz")
+		@WebMapping(value = "/enigma", path = "/test", name = "baz")
 		public void handleMappedWithDifferentPathAndValueAttributes() {
 		}
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface XBrokenContextConfig {
+	@interface BrokenContextConfig {
 
 		// Intentionally missing:
 		// @AliasFor("location")
@@ -3066,31 +3066,31 @@ public class MergedAnnotationsTests {
 	 * Mock of {@code org.springframework.test.context.ContextHierarchy}.
 	 */
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface XHierarchy {
+	@interface Hierarchy {
 
 		SimpleContextConfig[] value();
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface XBrokenHierarchy {
+	@interface BrokenHierarchy {
 
-		XBrokenContextConfig[] value();
+		BrokenContextConfig[] value();
 	}
 
-	@XHierarchy({ @SimpleContextConfig("A"), @SimpleContextConfig(location = "B") })
-	static class XConfigHierarchyTestCase {
+	@Hierarchy({ @SimpleContextConfig("A"), @SimpleContextConfig(location = "B") })
+	static class SimpleConfigHierarchyClass {
 	}
 
-	@XBrokenHierarchy(@XBrokenContextConfig)
-	static class XBrokenConfigHierarchyTestCase {
+	@BrokenHierarchy(@BrokenContextConfig)
+	static class BrokenConfigHierarchyClass {
 	}
 
 	@SimpleContextConfig("simple.xml")
-	static class XSimpleConfigTestCase {
+	static class SimpleConfigClass {
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface XCharsContainer {
+	@interface CharsContainer {
 
 		@AliasFor(attribute = "chars")
 		char[] value() default {};
@@ -3099,29 +3099,29 @@ public class MergedAnnotationsTests {
 		char[] chars() default {};
 	}
 
-	@XCharsContainer(chars = { 'x', 'y', 'z' })
-	static class XGroupOfCharsClass {
+	@CharsContainer(chars = { 'x', 'y', 'z' })
+	static class GroupOfCharsClass {
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface XAliasForWithMissingAttributeDeclaration {
+	@interface AliasForWithMissingAttributeDeclaration {
 
 		@AliasFor
 		String foo() default "";
 	}
 
-	@XAliasForWithMissingAttributeDeclaration
-	static class XAliasForWithMissingAttributeDeclarationClass {
+	@AliasForWithMissingAttributeDeclaration
+	static class AliasForWithMissingAttributeDeclarationClass {
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface XAliasForWithDuplicateAttributeDeclaration {
+	@interface AliasForWithDuplicateAttributeDeclaration {
 
 		@AliasFor(value = "bar", attribute = "baz")
 		String foo() default "";
 	}
 
-	@XAliasForWithDuplicateAttributeDeclaration
+	@AliasForWithDuplicateAttributeDeclaration
 	static class AliasForWithDuplicateAttributeDeclarationClass {
 	}
 
@@ -3133,11 +3133,11 @@ public class MergedAnnotationsTests {
 	}
 
 	@AliasForNonexistentAttribute
-	static class XAliasForNonexistentAttributeClass {
+	static class AliasForNonexistentAttributeClass {
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface XAliasForWithoutMirroredAliasFor {
+	@interface AliasForWithoutMirroredAliasFor {
 
 		@AliasFor("bar")
 		String foo() default "";
@@ -3145,12 +3145,12 @@ public class MergedAnnotationsTests {
 		String bar() default "";
 	}
 
-	@XAliasForWithoutMirroredAliasFor
-	static class XAliasForWithoutMirroredAliasForClass {
+	@AliasForWithoutMirroredAliasFor
+	static class AliasForWithoutMirroredAliasForClass {
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface XAliasForWithMirroredAliasForWrongAttribute {
+	@interface AliasForWithMirroredAliasForWrongAttribute {
 
 		@AliasFor(attribute = "bar")
 		String[] foo() default "";
@@ -3159,12 +3159,12 @@ public class MergedAnnotationsTests {
 		String[] bar() default "";
 	}
 
-	@XAliasForWithMirroredAliasForWrongAttribute
-	static class XAliasForWithMirroredAliasForWrongAttributeClass {
+	@AliasForWithMirroredAliasForWrongAttribute
+	static class AliasForWithMirroredAliasForWrongAttributeClass {
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface XAliasForAttributeOfDifferentType {
+	@interface AliasForAttributeOfDifferentType {
 
 		@AliasFor("bar")
 		String[] foo() default "";
@@ -3173,12 +3173,12 @@ public class MergedAnnotationsTests {
 		boolean bar() default true;
 	}
 
-	@XAliasForAttributeOfDifferentType
-	static class XAliasForAttributeOfDifferentTypeClass {
+	@AliasForAttributeOfDifferentType
+	static class AliasForAttributeOfDifferentTypeClass {
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface XAliasForWithMissingDefaultValues {
+	@interface AliasForWithMissingDefaultValues {
 
 		@AliasFor(attribute = "bar")
 		String foo();
@@ -3187,12 +3187,12 @@ public class MergedAnnotationsTests {
 		String bar();
 	}
 
-	@XAliasForWithMissingDefaultValues(foo = "foo", bar = "bar")
-	static class XAliasForWithMissingDefaultValuesClass {
+	@AliasForWithMissingDefaultValues(foo = "foo", bar = "bar")
+	static class AliasForWithMissingDefaultValuesClass {
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface XAliasForAttributeWithDifferentDefaultValue {
+	@interface AliasForAttributeWithDifferentDefaultValue {
 
 		@AliasFor("bar")
 		String foo() default "X";
@@ -3201,25 +3201,25 @@ public class MergedAnnotationsTests {
 		String bar() default "Z";
 	}
 
-	@XAliasForAttributeWithDifferentDefaultValue
-	static class XAliasForAttributeWithDifferentDefaultValueClass {
+	@AliasForAttributeWithDifferentDefaultValue
+	static class AliasForAttributeWithDifferentDefaultValueClass {
 	}
 
 	// @ContextConfig --> Intentionally NOT meta-present
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface XAliasedComposedContextConfigNotMetaPresent {
+	@interface AliasedComposedContextConfigNotMetaPresent {
 
 		@AliasFor(annotation = SimpleContextConfig.class, attribute = "location")
 		String xmlConfigFile();
 	}
 
-	@XAliasedComposedContextConfigNotMetaPresent(xmlConfigFile = "test.xml")
+	@AliasedComposedContextConfigNotMetaPresent(xmlConfigFile = "test.xml")
 	static class XAliasedComposedContextConfigNotMetaPresentClass {
 	}
 
 	@SimpleContextConfig
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface XAliasedComposedContextConfig {
+	@interface AliasedComposedSimpleContextConfig {
 
 		@AliasFor(annotation = SimpleContextConfig.class, attribute = "location")
 		String xmlConfigFile();
