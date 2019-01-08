@@ -630,7 +630,7 @@ public class MergedAnnotationsTests {
 		MergedAnnotation<?> contextConfig = annotations.get(ContextConfig.class);
 		assertThat(contextConfig.getStringArray("locations")).containsExactly("test.xml");
 		assertThat(contextConfig.getStringArray("value")).containsExactly("test.xml");
-		MergedAnnotation<?> testPropSource = annotations.get(TestPropSource.class);
+		MergedAnnotation<?> testPropSource = annotations.get(TestPropertySource.class);
 		assertThat(testPropSource.getStringArray("locations")).containsExactly(
 				"test.properties");
 		assertThat(testPropSource.getStringArray("value")).containsExactly(
@@ -1269,8 +1269,7 @@ public class MergedAnnotationsTests {
 	public void findRepeatableAnnotationOnComposedAnnotation() {
 		MergedAnnotation<?> annotation = MergedAnnotations.from(
 				RepeatableContainers.none(), AnnotationFilter.NONE,
-				SearchStrategy.EXHAUSTIVE, MyRepeatableMeta1.class).get(
-						Repeatable.class);
+				SearchStrategy.EXHAUSTIVE, MyRepeatableMeta1.class).get(Repeatable.class);
 		assertThat(annotation.getClass("value")).isEqualTo(MyRepeatableContainer.class);
 	}
 
@@ -1387,8 +1386,7 @@ public class MergedAnnotationsTests {
 	private void testExplicitRepeatables(SearchStrategy searchStrategy, Class<?> element,
 			String[] expected) {
 		MergedAnnotations annotations = MergedAnnotations.from(
-				RepeatableContainers.of(MyRepeatableContainer.class,
-						MyRepeatable.class),
+				RepeatableContainers.of(MyRepeatableContainer.class, MyRepeatable.class),
 				AnnotationFilter.PLAIN, searchStrategy, element);
 		assertThat(annotations.stream(MyRepeatable.class).filter(
 				MergedAnnotationPredicates.firstRunOf(
@@ -1422,8 +1420,7 @@ public class MergedAnnotationsTests {
 		Method method = WebController.class.getMethod("handleMappedWithValueAttribute");
 		WebMapping webMapping = method.getAnnotation(WebMapping.class);
 		assertThat(webMapping).isNotNull();
-		WebMapping synthesizedWebMapping = MergedAnnotation.from(
-				webMapping).synthesize();
+		WebMapping synthesizedWebMapping = MergedAnnotation.from(webMapping).synthesize();
 		WebMapping synthesizedAgainWebMapping = MergedAnnotation.from(
 				synthesizedWebMapping).synthesize();
 		assertThat(synthesizedWebMapping).isInstanceOf(SynthesizedAnnotation.class);
@@ -1880,8 +1877,7 @@ public class MergedAnnotationsTests {
 	public void toStringForSynthesizedAnnotations() throws Exception {
 		Method methodWithPath = WebController.class.getMethod(
 				"handleMappedWithPathAttribute");
-		WebMapping webMappingWithAliases = methodWithPath.getAnnotation(
-				WebMapping.class);
+		WebMapping webMappingWithAliases = methodWithPath.getAnnotation(WebMapping.class);
 		assertThat(webMappingWithAliases).isNotNull();
 		Method methodWithPathAndValue = WebController.class.getMethod(
 				"handleMappedWithSamePathAndValueAttributes");
@@ -1908,8 +1904,7 @@ public class MergedAnnotationsTests {
 	public void equalsForSynthesizedAnnotations() throws Exception {
 		Method methodWithPath = WebController.class.getMethod(
 				"handleMappedWithPathAttribute");
-		WebMapping webMappingWithAliases = methodWithPath.getAnnotation(
-				WebMapping.class);
+		WebMapping webMappingWithAliases = methodWithPath.getAnnotation(WebMapping.class);
 		assertThat(webMappingWithAliases).isNotNull();
 		Method methodWithPathAndValue = WebController.class.getMethod(
 				"handleMappedWithSamePathAndValueAttributes");
@@ -1943,8 +1938,7 @@ public class MergedAnnotationsTests {
 	public void hashCodeForSynthesizedAnnotations() throws Exception {
 		Method methodWithPath = WebController.class.getMethod(
 				"handleMappedWithPathAttribute");
-		WebMapping webMappingWithAliases = methodWithPath.getAnnotation(
-				WebMapping.class);
+		WebMapping webMappingWithAliases = methodWithPath.getAnnotation(WebMapping.class);
 		assertThat(webMappingWithAliases).isNotNull();
 		Method methodWithPathAndValue = WebController.class.getMethod(
 				"handleMappedWithSamePathAndValueAttributes");
@@ -2069,83 +2063,53 @@ public class MergedAnnotationsTests {
 		assertThat(chars).containsExactly('x', 'y', 'z');
 	}
 
-	// ---------------------------------------------------------------------------------------------------------------------
-	// END OF TESTS
-	// ---------------------------------------------------------------------------------------------------------------------
-
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target({ ElementType.TYPE, ElementType.METHOD })
 	@Inherited
 	@interface Transactional {
-
 		String value() default "";
-
 		String qualifier() default "transactionManager";
-
 		boolean readOnly() default false;
-
 	}
-
-	// @Retention(RetentionPolicy.RUNTIME)
-	// @Inherited
-	// @interface XTransactional {
-	//
-	// boolean readOnly() default false;
-	//
-	// }
 
 	@Transactional
 	@Component
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface TransactionalComponent {
-
 	}
 
 	@TransactionalComponent
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface ComposedTransactionalComponent {
-
 	}
 
-	// FIXME ORDER ANNOTATION
-
 	static class NonAnnotatedClass {
-
 	}
 
 	static interface NonAnnotatedInterface {
-
 	}
 
 	@TransactionalComponent
 	static class TransactionalComponentClass {
-
 	}
 
 	static class SubTransactionalComponentClass extends TransactionalComponentClass {
-
 	}
 
 	@ComposedTransactionalComponent
 	static class ComposedTransactionalComponentClass {
-
 	}
 
 	@AliasedTransactionalComponent
 	static class AliasedTransactionalComponentClass {
-
 	}
-
-	// FIXME ORDER CLASSES
 
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target({ ElementType.TYPE, ElementType.METHOD })
 	@Inherited
 	@interface AliasedTransactional {
-
 		@AliasFor(attribute = "qualifier")
 		String value() default "";
-
 		@AliasFor(attribute = "value")
 		String qualifier() default "";
 	}
@@ -2166,7 +2130,6 @@ public class MergedAnnotationsTests {
 	@Transactional
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface TxComposedWithOverride {
-
 		String qualifier() default "txMgr";
 	}
 
@@ -2194,43 +2157,29 @@ public class MergedAnnotationsTests {
 	@interface MetaAndLocalTxConfig {
 	}
 
-	/**
-	 * Mock of {@code org.springframework.test.context.TestPropertySource}.
-	 */
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface TestPropSource {
-
+	@interface TestPropertySource {
 		@AliasFor("locations")
 		String[] value() default {};
-
 		@AliasFor("value")
 		String[] locations() default {};
 	}
 
-	/**
-	 * Mock of {@code org.springframework.test.context.ContextConfiguration}.
-	 */
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface ContextConfig {
-
 		@AliasFor(attribute = "locations")
 		String[] value() default {};
-
 		@AliasFor(attribute = "value")
 		String[] locations() default {};
-
 		Class<?>[] classes() default {};
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface SimpleContextConfig {
-
 		@AliasFor("location")
 		String value() default "";
-
 		@AliasFor("value")
 		String location() default "";
-
 		Class<?> configClass() default Object.class;
 	}
 
@@ -2363,7 +2312,7 @@ public class MergedAnnotationsTests {
 	}
 
 	@ContextConfig(locations = "shadowed.xml")
-	@TestPropSource(locations = "test.properties")
+	@TestPropertySource(locations = "test.properties")
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface AliasedComposedContextConfigAndTestPropSource {
 
