@@ -1178,7 +1178,7 @@ public class MergedAnnotationsTests {
 	@Test
 	public void getAnnotationAttributesWithNestedAnnotations() {
 		MergedAnnotation<?> annotation = MergedAnnotations.from(
-				ComponentScanClass.class).get(XComponentScan.class);
+				ComponentScanClass.class).get(ComponentScan.class);
 		MergedAnnotation<Filter>[] filters = annotation.getAnnotationArray(
 				"excludeFilters", Filter.class);
 		assertThat(Arrays.stream(filters).map(
@@ -1727,8 +1727,8 @@ public class MergedAnnotationsTests {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void synthesizeAnnotationFromMapWithNestedArrayOfMaps() throws Exception {
-		XComponentScan componentScan = ComponentScanClass.class.getAnnotation(
-				XComponentScan.class);
+		ComponentScan componentScan = ComponentScanClass.class.getAnnotation(
+				ComponentScan.class);
 		assertThat(componentScan).isNotNull();
 		Map<String, Object> map = MergedAnnotation.from(componentScan).asMap(
 				annotation -> new LinkedHashMap<String, Object>(),
@@ -1741,9 +1741,9 @@ public class MergedAnnotationsTests {
 		filters[0].put("enigma", 42);
 		filters[1].put("pattern", "newBar");
 		filters[1].put("enigma", 42);
-		MergedAnnotation<XComponentScan> annotation = MergedAnnotation.from(
-				XComponentScan.class, map);
-		XComponentScan synthesizedComponentScan = annotation.synthesize();
+		MergedAnnotation<ComponentScan> annotation = MergedAnnotation.from(
+				ComponentScan.class, map);
+		ComponentScan synthesizedComponentScan = annotation.synthesize();
 		assertThat(synthesizedComponentScan).isInstanceOf(SynthesizedAnnotation.class);
 		assertThat(Arrays.stream(synthesizedComponentScan.excludeFilters()).map(
 				Filter::pattern)).containsExactly("newFoo", "newBar");
@@ -3415,16 +3415,7 @@ public class MergedAnnotationsTests {
 	static class XTransitiveImplicitAliasesForAliasPairContextConfigClass {
 	}
 
-	/**
-	 * Mock of {@code org.springframework.context.annotation.ComponentScan}.
-	 */
-	@Retention(RetentionPolicy.RUNTIME)
-	@interface XComponentScan {
-
-		Filter[] excludeFilters() default {};
-	}
-
-	@XComponentScan(excludeFilters = { @Filter(pattern = "*Foo"),
+	@ComponentScan(excludeFilters = { @Filter(pattern = "*Foo"),
 		@Filter(pattern = "*Bar") })
 	static class ComponentScanClass {
 	}
