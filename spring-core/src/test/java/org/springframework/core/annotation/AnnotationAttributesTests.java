@@ -29,6 +29,8 @@ import org.springframework.core.annotation.AnnotationUtilsTests.ImplicitAliasesC
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 /**
  * Unit tests for {@link AnnotationAttributes}.
@@ -219,6 +221,23 @@ public class AnnotationAttributesTests {
 		AnnotationUtils.registerDefaultValues(attributes);
 		AnnotationUtils.postProcessAnnotationAttributes(null, attributes, false);
 		aliases.stream().forEach(alias -> assertArrayEquals(new String[] {""}, attributes.getStringArray(alias)));
+	}
+
+	@Test
+	public void createIfAnnotationPresentWhenPresentReturnsAttributes() {
+		MergedAnnotation<?> annotation = mock(MergedAnnotation.class);
+		given(annotation.isPresent()).willReturn(true);
+		AnnotationAttributes attributes = AnnotationAttributes.createIfAnnotationPresent(
+				annotation);
+		assertThat(attributes, notNullValue());
+	}
+
+	@Test
+	public void createIfAnnotationPresentWhenNotPresentReturnsNull() {
+		MergedAnnotation<?> annotation = mock(MergedAnnotation.class);
+		AnnotationAttributes attributes = AnnotationAttributes.createIfAnnotationPresent(
+				annotation);
+		assertThat(attributes, nullValue());
 	}
 
 
