@@ -73,7 +73,9 @@ public class ContextLoaderUtilsConfigurationAttributesTests extends AbstractCont
 		exception.expectMessage(either(
 				containsString("values of [{x}] and [{y}]")).or(
 				containsString("values of [{y}] and [{x}]")));
-		exception.expectMessage(containsString("but only one is permitted"));
+		exception.expectMessage(either(
+				containsString("Different @AliasFor mirror values")).or(
+				containsString("but only one is permitted")));
 		resolveContextConfigurationAttributes(ConflictingLocations.class);
 	}
 
