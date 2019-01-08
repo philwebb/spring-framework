@@ -1580,10 +1580,10 @@ public class MergedAnnotationsTests {
 	public void synthesizeAnnotationWithImplicitAliasesWithImpliedAliasNamesOmitted()
 			throws Exception {
 		assertAnnotationSynthesisWithImplicitAliasesWithImpliedAliasNamesOmitted(
-				XValueImplicitAliasesWithImpliedAliasNamesOmittedContextConfigClass.class,
+				ValueImplicitAliasesWithImpliedAliasNamesOmittedSimpleContextConfigClass.class,
 				"value");
 		assertAnnotationSynthesisWithImplicitAliasesWithImpliedAliasNamesOmitted(
-				XLocationsImplicitAliasesWithImpliedAliasNamesOmittedContextConfigClass.class,
+				LocationsImplicitAliasesWithImpliedAliasNamesOmittedSimpleContextConfigClass.class,
 				"location");
 		assertAnnotationSynthesisWithImplicitAliasesWithImpliedAliasNamesOmitted(
 				XXmlFilesImplicitAliasesWithImpliedAliasNamesOmittedContextConfigClass.class,
@@ -1592,10 +1592,10 @@ public class MergedAnnotationsTests {
 
 	private void assertAnnotationSynthesisWithImplicitAliasesWithImpliedAliasNamesOmitted(
 			Class<?> clazz, String expected) {
-		XImplicitAliasesWithImpliedAliasNamesOmittedContextConfig config = clazz.getAnnotation(
-				XImplicitAliasesWithImpliedAliasNamesOmittedContextConfig.class);
+		ImplicitAliasesWithImpliedAliasNamesOmittedSimpleContextConfig config = clazz.getAnnotation(
+				ImplicitAliasesWithImpliedAliasNamesOmittedSimpleContextConfig.class);
 		assertThat(config).isNotNull();
-		XImplicitAliasesWithImpliedAliasNamesOmittedContextConfig synthesized = MergedAnnotation.from(
+		ImplicitAliasesWithImpliedAliasNamesOmittedSimpleContextConfig synthesized = MergedAnnotation.from(
 				config).synthesize();
 		assertThat(synthesized).isInstanceOf(SynthesizedAnnotation.class);
 		assertThat(synthesized.value()).isEqualTo(expected);
@@ -3285,7 +3285,7 @@ public class MergedAnnotationsTests {
 
 	@SimpleContextConfig
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface XImplicitAliasesWithImpliedAliasNamesOmittedContextConfig {
+	@interface ImplicitAliasesWithImpliedAliasNamesOmittedSimpleContextConfig {
 
 		// intentionally omitted: attribute = "value"
 		@AliasFor(annotation = SimpleContextConfig.class)
@@ -3299,29 +3299,29 @@ public class MergedAnnotationsTests {
 		String xmlFile() default "";
 	}
 
-	@XImplicitAliasesWithImpliedAliasNamesOmittedContextConfig
+	@ImplicitAliasesWithImpliedAliasNamesOmittedSimpleContextConfig
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface XTransitiveImplicitAliasesWithImpliedAliasNamesOmittedContextConfig {
+	@interface TransitiveImplicitAliasesWithImpliedAliasNamesOmittedSimpleContextConfig {
 
-		@AliasFor(annotation = XImplicitAliasesWithImpliedAliasNamesOmittedContextConfig.class, attribute = "xmlFile")
+		@AliasFor(annotation = ImplicitAliasesWithImpliedAliasNamesOmittedSimpleContextConfig.class, attribute = "xmlFile")
 		String xml() default "";
 
-		@AliasFor(annotation = XImplicitAliasesWithImpliedAliasNamesOmittedContextConfig.class, attribute = "location")
+		@AliasFor(annotation = ImplicitAliasesWithImpliedAliasNamesOmittedSimpleContextConfig.class, attribute = "location")
 		String groovy() default "";
 	}
 
 	// Attribute value intentionally matches attribute name:
-	@XImplicitAliasesWithImpliedAliasNamesOmittedContextConfig("value")
-	static class XValueImplicitAliasesWithImpliedAliasNamesOmittedContextConfigClass {
+	@ImplicitAliasesWithImpliedAliasNamesOmittedSimpleContextConfig("value")
+	static class ValueImplicitAliasesWithImpliedAliasNamesOmittedSimpleContextConfigClass {
 	}
 
 	// Attribute value intentionally matches attribute name:
-	@XImplicitAliasesWithImpliedAliasNamesOmittedContextConfig(location = "location")
-	static class XLocationsImplicitAliasesWithImpliedAliasNamesOmittedContextConfigClass {
+	@ImplicitAliasesWithImpliedAliasNamesOmittedSimpleContextConfig(location = "location")
+	static class LocationsImplicitAliasesWithImpliedAliasNamesOmittedSimpleContextConfigClass {
 	}
 
 	// Attribute value intentionally matches attribute name:
-	@XImplicitAliasesWithImpliedAliasNamesOmittedContextConfig(xmlFile = "xmlFile")
+	@ImplicitAliasesWithImpliedAliasNamesOmittedSimpleContextConfig(xmlFile = "xmlFile")
 	static class XXmlFilesImplicitAliasesWithImpliedAliasNamesOmittedContextConfigClass {
 	}
 
