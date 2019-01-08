@@ -130,7 +130,7 @@ final class MissingMergedAnnotation<A extends Annotation>
 	}
 
 	@Override
-	protected ClassLoader getClassLoader() {
+	protected ClassLoader getClassLoader(ClassLoaderType context) {
 		return null;
 	}
 

@@ -152,26 +152,9 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 		if (this.sourceAnnotation != null && canSkipSynthesize(this.sourceAnnotation)) {
 			return (A) this.sourceAnnotation;
 		}
-		ClassLoader classLoader = getSynthesizedAnnotationClassLoader();
+		ClassLoader classLoader = getClassLoader(ClassLoaderType.TYPE);
 		Class<A> type = (Class<A>) ClassUtils.resolveClassName(getType(), classLoader);
 		return SynthesizedMergedAnnotationInvocationHandler.createProxy(this, type);
-	}
-
-	protected final ClassLoader getSynthesizedAnnotationClassLoader() {
-		ClassLoader classLoader = this.synthesizedAnnotationClassLoader;
-		if (classLoader == null) {
-			classLoader = this.parent != null
-					? this.parent.getSynthesizedAnnotationClassLoader()
-					: this.mapping.getClassLoader();
-			try {
-				classLoader = ClassUtils.forName(getType(), classLoader).getClassLoader();
-			}
-			catch (ClassNotFoundException | LinkageError ex) {
-				// Ignore and keep the existing classloader
-			}
-			this.synthesizedAnnotationClassLoader = classLoader;
-		}
-		return classLoader;
 	}
 
 	private boolean canSkipSynthesize(Annotation annotation) {
@@ -183,11 +166,24 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 	}
 
 	@Override
-	protected ClassLoader getClassLoader() {
-		return this.mapping.getClassLoader();
+	protected ClassLoader getClassLoader(ClassLoaderType context) {
+		if (context == ClassLoaderType.VALUE) {
+			return this.mapping.getClassLoader();
+		}
+		ClassLoader classLoader = this.synthesizedAnnotationClassLoader;
+		if (classLoader == null) {
+			classLoader = this.parent != null ? this.parent.getClassLoader(context)
+					: this.mapping.getClassLoader();
+			try {
+				classLoader = ClassUtils.forName(getType(), classLoader).getClassLoader();
+			}
+			catch (ClassNotFoundException | LinkageError ex) {
+				// Ignore and keep the existing classloader
+			}
+			this.synthesizedAnnotationClassLoader = classLoader;
+		}
+		return classLoader;
 	}
-
-
 
 	@Override
 	protected AnnotationType getAnnotationType() {

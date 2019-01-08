@@ -19,10 +19,8 @@ package org.springframework.core.annotation;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.assertj.core.api.AssertJProxySetup;
 import org.junit.Test;
 
 import org.springframework.core.OverridingClassLoader;
@@ -61,7 +59,10 @@ public class MergedAnnotationClassLoaderTests {
 		// The meta-annotation should have been loaded by the parent
 		assertThat(metaAnnotation.getClass().getClassLoader()).isEqualTo(parent);
 		assertThat(metaAnnotation.getClass().getClassLoader()).isEqualTo(parent);
-		assertThat(getClassValueAttribute(metaAnnotation).getClassLoader()).isEqualTo(child);
+		assertThat(
+				getEnumAttribute(metaAnnotation).getClass().getClassLoader()).isEqualTo(
+						parent);
+		assertThat(getClassAttribute(metaAnnotation).getClassLoader()).isEqualTo(child);
 		// MergedAnnotation should follow the same class loader logic
 		MergedAnnotations mergedAnnotations = MergedAnnotations.from(source);
 		Annotation synthesized = mergedAnnotations.get(TEST_ANNOTATION).synthesize();
@@ -71,26 +72,36 @@ public class MergedAnnotationClassLoaderTests {
 		assertThat(synthesized.annotationType().getClassLoader()).isEqualTo(child);
 		assertThat(synthesizedMeta.getClass().getClassLoader()).isEqualTo(parent);
 		assertThat(synthesizedMeta.getClass().getClassLoader()).isEqualTo(parent);
-		assertThat(getClassValueAttribute(synthesizedMeta).getClassLoader()).isEqualTo(child);
+		assertThat(getClassAttribute(synthesizedMeta).getClassLoader()).isEqualTo(child);
+		assertThat(
+				getEnumAttribute(synthesizedMeta).getClass().getClassLoader()).isEqualTo(
+						parent);
 		assertThat(synthesized).isEqualTo(annotation);
 		assertThat(synthesizedMeta).isEqualTo(metaAnnotation);
+		// Also check utils version
+		Annotation utilsMeta = InternalAnnotatedElementUtils.getMergedAnnotation(source,
+				TestMetaAnnotation.class);
+		assertThat(utilsMeta.getClass().getClassLoader()).isEqualTo(parent);
+		assertThat(utilsMeta.getClass().getClassLoader()).isEqualTo(parent);
+		assertThat(getClassAttribute(utilsMeta).getClassLoader()).isEqualTo(child);
+		assertThat(getEnumAttribute(utilsMeta).getClass().getClassLoader()).isEqualTo(
+				parent);
+		assertThat(utilsMeta).isEqualTo(metaAnnotation);
 	}
 
-	/**
-	 * @param annotation
-	 * @return
-	 * @throws NoSuchMethodException
-	 * @throws IllegalAccessException
-	 * @throws InvocationTargetException
-	 */
-	private Class<?> getClassValueAttribute(Annotation annotation)
-			throws NoSuchMethodException, IllegalAccessException,
-			InvocationTargetException {
-		Method classValueMethod = annotation.annotationType().getDeclaredMethod(
-				"classValue");
+	private Class<?> getClassAttribute(Annotation annotation) throws Exception {
+		return (Class<?>) getAttributeValue(annotation, "classValue");
+	}
+
+	private Enum<?> getEnumAttribute(Annotation annotation) throws Exception {
+		return (Enum<?>) getAttributeValue(annotation, "enumValue");
+	}
+
+	private Object getAttributeValue(Annotation annotation, String name)
+			throws Exception {
+		Method classValueMethod = annotation.annotationType().getDeclaredMethod(name);
 		classValueMethod.setAccessible(true);
-		Class<?> classValue = (Class<?>) classValueMethod.invoke(annotation);
-		return classValue;
+		return classValueMethod.invoke(annotation);
 	}
 
 	private Annotation getDeclaredAnnotation(Class<?> element, String annotationType) {
@@ -128,9 +139,11 @@ public class MergedAnnotationClassLoaderTests {
 
 		Class<?> classValue();
 
+		TestEnum enumValue();
+
 	}
 
-	@TestMetaAnnotation(classValue = TestReference.class)
+	@TestMetaAnnotation(classValue = TestReference.class, enumValue = TestEnum.TWO)
 	@Retention(RetentionPolicy.RUNTIME)
 	static @interface TestAnnotation {
 
@@ -151,4 +164,9 @@ public class MergedAnnotationClassLoaderTests {
 
 	}
 
+	static enum TestEnum {
+
+		ONE, TWO, THREE
+
+	}
 }
