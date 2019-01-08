@@ -459,7 +459,9 @@ public class AnnotatedElementUtilsTests {
 		exception.expectMessage(either(
 				containsString("values of [{duplicateDeclaration}] and [{requiredLocationsDeclaration}]")).or(
 				containsString("values of [{requiredLocationsDeclaration}] and [{duplicateDeclaration}]")));
-		exception.expectMessage(containsString("but only one is permitted"));
+		exception.expectMessage(either(
+				containsString("but only one is permitted")).or(
+				containsString("Different @AliasFor mirror values for annotation")));
 		getMergedAnnotationAttributes(element, ContextConfig.class);
 	}
 
