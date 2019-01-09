@@ -149,8 +149,8 @@ public abstract class AnnotationUtils {
 		return MigrateMethod.from(() ->
 			InternalAnnotationUtils.getAnnotation(annotatedElement, annotationType)
 		).to(() ->
-			MergedAnnotations.from(RepeatableContainers.none(), AnnotationFilter.PLAIN, SearchStrategy.INHERITED_ANNOTATIONS,
-					annotatedElement).get(
+			MergedAnnotations.from(annotatedElement, SearchStrategy.INHERITED_ANNOTATIONS, RepeatableContainers.none(),
+					AnnotationFilter.PLAIN).get(
 							annotationType).withNonMergedAttributes().synthesize(
 									AnnotationUtils::isSingleLevelPresent).orElse(null)
 		);
@@ -177,8 +177,8 @@ public abstract class AnnotationUtils {
 		return MigrateMethod.from(() ->
 			InternalAnnotationUtils.getAnnotation(method, annotationType)
 		).to(() ->
-			MergedAnnotations.from(RepeatableContainers.none(), AnnotationFilter.PLAIN, SearchStrategy.INHERITED_ANNOTATIONS,
-					method).get(annotationType).withNonMergedAttributes().synthesize(
+			MergedAnnotations.from(method, SearchStrategy.INHERITED_ANNOTATIONS, RepeatableContainers.none(),
+					AnnotationFilter.PLAIN).get(annotationType).withNonMergedAttributes().synthesize(
 							AnnotationUtils::isSingleLevelPresent).orElse(null)		);
 	}
 
@@ -200,8 +200,8 @@ public abstract class AnnotationUtils {
 		return MigrateMethod.from(() ->
 			InternalAnnotationUtils.getAnnotations(annotatedElement)
 		).to(() ->
-			MergedAnnotations.from(RepeatableContainers.none(), AnnotationFilter.NONE, SearchStrategy.INHERITED_ANNOTATIONS,
-					annotatedElement).stream().filter(
+			MergedAnnotations.from(annotatedElement, SearchStrategy.INHERITED_ANNOTATIONS, RepeatableContainers.none(),
+					AnnotationFilter.NONE).stream().filter(
 							MergedAnnotation::isDirectlyPresent).map(
 									MergedAnnotation::withNonMergedAttributes).collect(
 											MergedAnnotationCollectors.toAnnotationArray())
@@ -227,8 +227,8 @@ public abstract class AnnotationUtils {
 		return MigrateMethod.from(() ->
 			InternalAnnotationUtils.getAnnotations(method)
 		).to(()->
-			MergedAnnotations.from(RepeatableContainers.none(), AnnotationFilter.NONE, SearchStrategy.INHERITED_ANNOTATIONS,
-					method).stream().filter(MergedAnnotation::isDirectlyPresent).map(
+			MergedAnnotations.from(method, SearchStrategy.INHERITED_ANNOTATIONS, RepeatableContainers.none(),
+					AnnotationFilter.NONE).stream().filter(MergedAnnotation::isDirectlyPresent).map(
 							MergedAnnotation::withNonMergedAttributes).collect(
 									MergedAnnotationCollectors.toAnnotationArray())
 		);
@@ -306,10 +306,10 @@ public abstract class AnnotationUtils {
 			InternalAnnotationUtils.getRepeatableAnnotations(annotatedElement,
 					annotationType, containerAnnotationType)
 		).to(() ->
-			MergedAnnotations.from(containerAnnotationType != null
-					? RepeatableContainers.of(containerAnnotationType, annotationType)
-					: RepeatableContainers.standardRepeatables(), AnnotationFilter.mostAppropriateFor(annotationType), SearchStrategy.SUPER_CLASS,
-					annotatedElement).stream(annotationType).filter(MergedAnnotationPredicates.firstRunOf(
+			MergedAnnotations.from(annotatedElement, SearchStrategy.SUPER_CLASS, containerAnnotationType != null
+							? RepeatableContainers.of(annotationType, containerAnnotationType)
+							: RepeatableContainers.standardRepeatables(),
+					AnnotationFilter.mostAppropriateFor(annotationType)).stream(annotationType).filter(MergedAnnotationPredicates.firstRunOf(
 							MergedAnnotation::getAggregateIndex)).map(
 									MergedAnnotation::withNonMergedAttributes).collect(
 											MergedAnnotationCollectors.toAnnotationSet())
@@ -390,11 +390,11 @@ public abstract class AnnotationUtils {
 					annotationType, containerAnnotationType)
 		).to(() ->
 			MergedAnnotations.from(
+					annotatedElement,
+							SearchStrategy.DIRECT,
 					containerAnnotationType != null
-							? RepeatableContainers.of(containerAnnotationType, annotationType)
-							: RepeatableContainers.standardRepeatables(),
-							AnnotationFilter.mostAppropriateFor(containerAnnotationType),
-					SearchStrategy.DIRECT, annotatedElement).stream(annotationType).map(
+							? RepeatableContainers.of(annotationType, containerAnnotationType)
+							: RepeatableContainers.standardRepeatables(), AnnotationFilter.mostAppropriateFor(containerAnnotationType)).stream(annotationType).map(
 							MergedAnnotation::withNonMergedAttributes).collect(
 									MergedAnnotationCollectors.toAnnotationSet())
 		);
@@ -423,8 +423,8 @@ public abstract class AnnotationUtils {
 		return MigrateMethod.from(() ->
 			InternalAnnotationUtils.findAnnotation(annotatedElement, annotationType)
 		).to(() ->
-			MergedAnnotations.from(RepeatableContainers.none(), AnnotationFilter.mostAppropriateFor(annotationType),  SearchStrategy.DIRECT,
-					annotatedElement).get(annotationType).withNonMergedAttributes().synthesize(
+			MergedAnnotations.from(annotatedElement, SearchStrategy.DIRECT,  RepeatableContainers.none(),
+					AnnotationFilter.mostAppropriateFor(annotationType)).get(annotationType).withNonMergedAttributes().synthesize(
 							MergedAnnotation::isPresent).orElse(null)
 		);
 	}
@@ -451,8 +451,8 @@ public abstract class AnnotationUtils {
 		return MigrateMethod.from(() ->
 			InternalAnnotationUtils.findAnnotation(method, annotationType)
 		).to(() ->
-			MergedAnnotations.from(RepeatableContainers.none(), AnnotationFilter.mostAppropriateFor(annotationType), SearchStrategy.EXHAUSTIVE,
-					method).get(annotationType).withNonMergedAttributes().synthesize(
+			MergedAnnotations.from(method, SearchStrategy.EXHAUSTIVE, RepeatableContainers.none(),
+					AnnotationFilter.mostAppropriateFor(annotationType)).get(annotationType).withNonMergedAttributes().synthesize(
 							MergedAnnotation::isPresent).orElse(null)
 		);
 	}
@@ -524,8 +524,8 @@ public abstract class AnnotationUtils {
 		return MigrateMethod.from(() ->
 			InternalAnnotationUtils.findAnnotation(clazz, annotationType)
 		).to(() ->
-			MergedAnnotations.from(RepeatableContainers.none(), AnnotationFilter.mostAppropriateFor(annotationType), SearchStrategy.EXHAUSTIVE,
-					clazz).get(annotationType).withNonMergedAttributes().synthesize(
+			MergedAnnotations.from(clazz, SearchStrategy.EXHAUSTIVE, RepeatableContainers.none(),
+					AnnotationFilter.mostAppropriateFor(annotationType)).get(annotationType).withNonMergedAttributes().synthesize(
 							MergedAnnotation::isPresent).orElse(null)
 		);
 	}
@@ -560,8 +560,8 @@ public abstract class AnnotationUtils {
 			InternalAnnotationUtils.findAnnotationDeclaringClass(annotationType,
 					clazz)
 		).to(() ->
-			(Class<?>) MergedAnnotations.from(RepeatableContainers.none(),
-					AnnotationFilter.mostAppropriateFor(annotationType), SearchStrategy.SUPER_CLASS, clazz).get(annotationType,
+			(Class<?>) MergedAnnotations.from(clazz,
+					SearchStrategy.SUPER_CLASS, RepeatableContainers.none(), AnnotationFilter.mostAppropriateFor(annotationType)).get(annotationType,
 							MergedAnnotation::isDirectlyPresent).getSource()
 		);
 	}
@@ -599,8 +599,8 @@ public abstract class AnnotationUtils {
 			InternalAnnotationUtils.findAnnotationDeclaringClassForTypes(
 					annotationTypes, clazz)
 		).to(() ->
-			(Class<?>) MergedAnnotations.from(RepeatableContainers.none(),
-					AnnotationFilter.mostAppropriateFor(annotationTypes), SearchStrategy.SUPER_CLASS, clazz).stream().filter(
+			(Class<?>) MergedAnnotations.from(clazz,
+					SearchStrategy.SUPER_CLASS, RepeatableContainers.none(), AnnotationFilter.mostAppropriateFor(annotationTypes)).stream().filter(
 							MergedAnnotationPredicates.typeIn(annotationTypes).and(
 									MergedAnnotation::isDirectlyPresent)).map(
 											MergedAnnotation::getSource).findFirst().orElse(
@@ -661,8 +661,8 @@ public abstract class AnnotationUtils {
 		return MigrateMethod.from(() ->
 			InternalAnnotationUtils.isAnnotationInherited(annotationType, clazz)
 		).to(() ->
-			MergedAnnotations.from(SearchStrategy.INHERITED_ANNOTATIONS,
-					clazz).stream(annotationType).filter(
+			MergedAnnotations.from(clazz,
+					SearchStrategy.INHERITED_ANNOTATIONS).stream(annotationType).filter(
 						MergedAnnotation::isDirectlyPresent).findFirst().orElseGet(
 								MergedAnnotation::missing).getAggregateIndex() > 0
 		);
@@ -684,7 +684,7 @@ public abstract class AnnotationUtils {
 			InternalAnnotationUtils.isAnnotationMetaPresent(annotationType,
 				metaAnnotationType)
 		).to(() ->
-			MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, annotationType).isPresent(
+			MergedAnnotations.from(annotationType, SearchStrategy.EXHAUSTIVE).isPresent(
 					annotationType)
 		);
 	}

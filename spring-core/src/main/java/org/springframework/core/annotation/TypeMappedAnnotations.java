@@ -47,16 +47,16 @@ final class TypeMappedAnnotations extends AbstractMergedAnnotations {
 
 	private volatile List<MergedAnnotation<Annotation>> all;
 
-	private TypeMappedAnnotations(RepeatableContainers repeatableContainers,
-			AnnotationFilter annotationFilter, AnnotatedElement source,
-			Annotation... annotations) {
+	private TypeMappedAnnotations(AnnotatedElement source,
+			Annotation[] annotations, RepeatableContainers repeatableContainers,
+			AnnotationFilter annotationFilter) {
 		this.aggregates = Collections.singletonList(new MappableAnnotations(source,
 				annotations, repeatableContainers, annotationFilter));
 	}
 
 	private TypeMappedAnnotations(ClassLoader classLoader,
-			RepeatableContainers repeatableContainers, AnnotationFilter annotationFilter,
-			Iterable<DeclaredAnnotations> aggregates) {
+			Iterable<DeclaredAnnotations> aggregates, RepeatableContainers repeatableContainers,
+			AnnotationFilter annotationFilter) {
 		this.aggregates = new ArrayList<>(getInitialSize(aggregates));
 		int aggregateIndex = 0;
 		for (DeclaredAnnotations declaredAnnotations : aggregates) {
@@ -182,30 +182,30 @@ final class TypeMappedAnnotations extends AbstractMergedAnnotations {
 		return size;
 	}
 
-	static TypeMappedAnnotations from(RepeatableContainers repeatableContainers,
-			AnnotationFilter annotationFilter, SearchStrategy searchStrategy,
-			AnnotatedElement element) {
+	static TypeMappedAnnotations from(AnnotatedElement element,
+			SearchStrategy searchStrategy, RepeatableContainers repeatableContainers,
+			AnnotationFilter annotationFilter) {
 		Assert.notNull(repeatableContainers, "RepeatableContainers must not be null");
 		Assert.notNull(annotationFilter, "AnnotationFilter must not be null");
 		Assert.notNull(searchStrategy, "SearchStrategy must not be null");
 		Assert.notNull(element, "Element must not be null");
 		AnnotationsScanner annotations = new AnnotationsScanner(element, searchStrategy);
-		return of(null, repeatableContainers, annotationFilter, annotations);
+		return of(null, annotations, repeatableContainers, annotationFilter);
 	}
 
-	static TypeMappedAnnotations from(RepeatableContainers repeatableContainers,
-			AnnotationFilter annotationFilter, @Nullable AnnotatedElement source,
-			Annotation... annotations) {
+	static TypeMappedAnnotations from(@Nullable AnnotatedElement source,
+			Annotation[] annotations, RepeatableContainers repeatableContainers,
+			AnnotationFilter annotationFilter) {
 		Assert.notNull(annotations, "Annotations must not be null");
-		return new TypeMappedAnnotations(repeatableContainers, annotationFilter, source,
-				annotations);
+		return new TypeMappedAnnotations(source, annotations, repeatableContainers,
+				annotationFilter);
 	}
 
 	static TypeMappedAnnotations of(ClassLoader classLoader,
-			RepeatableContainers repeatableContainers, AnnotationFilter annotationFilter,
-			Iterable<DeclaredAnnotations> aggregates) {
-		return new TypeMappedAnnotations(classLoader, repeatableContainers,
-				annotationFilter, aggregates);
+			Iterable<DeclaredAnnotations> aggregates, RepeatableContainers repeatableContainers,
+			AnnotationFilter annotationFilter) {
+		return new TypeMappedAnnotations(classLoader, aggregates,
+				repeatableContainers, annotationFilter);
 	}
 
 	/**

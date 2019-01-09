@@ -608,8 +608,8 @@ public abstract class NewAnnotationUtils {
 			return null;
 		}
 
-		MergedAnnotation<A> mergedAnnotation = MergedAnnotations.from(method,
-				SearchStrategy.EXHAUSTIVE).get(annotationType);
+		MergedAnnotation<A> mergedAnnotation = MergedAnnotations.from(SearchStrategy.EXHAUSTIVE,
+				method).get(annotationType);
 		A synthesized = mergedAnnotation.isPresent() ? mergedAnnotation.synthesize() : null;
 
 		return checkResult(synthesized, () -> {
@@ -801,7 +801,7 @@ public abstract class NewAnnotationUtils {
 	@Nullable
 	@Deprecated
 	public static <A extends Annotation> A findAnnotation(Class<?> clazz, Class<A> annotationType) {
-		MergedAnnotation<A> mergedAnnotation = MergedAnnotations.from(clazz, SearchStrategy.EXHAUSTIVE).get(annotationType);
+		MergedAnnotation<A> mergedAnnotation = MergedAnnotations.from(SearchStrategy.EXHAUSTIVE, clazz).get(annotationType);
 		A result = synthesizeIfPresent(mergedAnnotation);
 		return checkResult(result, () -> {
 			return findAnnotation(clazz, annotationType, true);
@@ -916,7 +916,7 @@ public abstract class NewAnnotationUtils {
 		if (clazz == null || clazz == Object.class) {
 			return null;
 		}
-		Class<?> result = MergedAnnotations.from(clazz, SearchStrategy.SUPER_CLASS).stream(
+		Class<?> result = MergedAnnotations.from(SearchStrategy.SUPER_CLASS, clazz).stream(
 				annotationType).filter(MergedAnnotation::isDirectlyPresent).map(
 						NewAnnotationUtils::getDeclaringClass).filter(
 								Objects::nonNull).findFirst().orElse(null);
@@ -963,7 +963,7 @@ public abstract class NewAnnotationUtils {
 		Set<String> names = annotationTypes.stream().map(Class::getName).collect(Collectors.toSet());
 		Predicate<MergedAnnotation<?>> filter = mergedAnnotation -> mergedAnnotation.isDirectlyPresent()
 				&& names.contains(mergedAnnotation.getType());
-		Class<?> result = MergedAnnotations.from(clazz, SearchStrategy.SUPER_CLASS).stream()
+		Class<?> result = MergedAnnotations.from(SearchStrategy.SUPER_CLASS, clazz).stream()
 				.filter(filter).map(NewAnnotationUtils::getDeclaringClass).filter(Objects::nonNull)
 				.findFirst().orElse(null);
 		return checkResult(result, () -> {

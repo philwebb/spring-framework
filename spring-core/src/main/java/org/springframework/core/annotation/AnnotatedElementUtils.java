@@ -852,31 +852,31 @@ public abstract class AnnotatedElementUtils {
 	}
 
 	private static TypeMappedAnnotations getAnnotations(AnnotatedElement element) {
-		return TypeMappedAnnotations.from(RepeatableContainers.none(), AnnotationFilter.PLAIN,
-				SearchStrategy.INHERITED_ANNOTATIONS, element);
+		return TypeMappedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS,
+				RepeatableContainers.none(), AnnotationFilter.PLAIN);
 	}
 
 	private static MergedAnnotations getRepeatableAnnotations(AnnotatedElement element,
 			Class<? extends Annotation> containerType,
 			Class<? extends Annotation> annotationType) {
-		RepeatableContainers repeatableContainers = RepeatableContainers.of(containerType,
-				annotationType);
-		return MergedAnnotations.from(repeatableContainers, AnnotationFilter.PLAIN,
-				SearchStrategy.INHERITED_ANNOTATIONS, element);
+		RepeatableContainers repeatableContainers = RepeatableContainers.of(annotationType,
+				containerType);
+		return MergedAnnotations.from(element, SearchStrategy.INHERITED_ANNOTATIONS,
+				repeatableContainers, AnnotationFilter.PLAIN);
 	}
 
 	private static TypeMappedAnnotations findAnnotations(AnnotatedElement element) {
-		return TypeMappedAnnotations.from(RepeatableContainers.none(), AnnotationFilter.PLAIN,
-				SearchStrategy.EXHAUSTIVE, element);
+		return TypeMappedAnnotations.from(element, SearchStrategy.EXHAUSTIVE,
+				RepeatableContainers.none(), AnnotationFilter.PLAIN);
 	}
 
 	private static MergedAnnotations findRepeatableAnnotations(AnnotatedElement element,
 			Class<? extends Annotation> containerType,
 			Class<? extends Annotation> annotationType) {
-		RepeatableContainers repeatableContainers = RepeatableContainers.of(containerType,
-				annotationType);
-		return MergedAnnotations.from(repeatableContainers, AnnotationFilter.PLAIN,
-				SearchStrategy.EXHAUSTIVE, element);
+		RepeatableContainers repeatableContainers = RepeatableContainers.of(annotationType,
+				containerType);
+		return MergedAnnotations.from(element, SearchStrategy.EXHAUSTIVE,
+				repeatableContainers, AnnotationFilter.PLAIN);
 	}
 
 	private static Object parentAndType(MergedAnnotation<Annotation> annotation) {

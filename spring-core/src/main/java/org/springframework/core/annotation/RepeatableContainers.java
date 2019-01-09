@@ -59,7 +59,7 @@ public abstract class RepeatableContainers {
 	 */
 	public RepeatableContainers and(Class<? extends Annotation> container,
 			Class<? extends Annotation> repeatable) {
-		return new ExplicitRepeatableContainer(this, container, repeatable);
+		return new ExplicitRepeatableContainer(this, repeatable, container);
 	}
 
 	/**
@@ -142,17 +142,17 @@ public abstract class RepeatableContainers {
 	/**
 	 * Return a {@link RepeatableContainers} instance that uses a defined
 	 * container and repeatable type.
+	 * @param repeatable the contained repeatable annotation
 	 * @param container the container annotation or {@code null}. If specified,
 	 * this annotation must declare a {@code value} attribute returning an array
 	 * of repeatable annotations. If not specified, the container will be
 	 * deduced by inspecting the {@code @Repeatable} annotation on
 	 * {@code repeatable}.
-	 * @param repeatable the contained repeatable annotation
 	 * @return a {@link RepeatableContainers} instance
 	 */
-	public static RepeatableContainers of(@Nullable Class<? extends Annotation> container,
-			Class<? extends Annotation> repeatable) {
-		return new ExplicitRepeatableContainer(null, container, repeatable);
+	public static RepeatableContainers of(Class<? extends Annotation> repeatable,
+			@Nullable Class<? extends Annotation> container) {
+		return new ExplicitRepeatableContainer(null, repeatable, container);
 	}
 
 	/**
@@ -206,25 +206,26 @@ public abstract class RepeatableContainers {
 	 */
 	private static class ExplicitRepeatableContainer extends RepeatableContainers {
 
-		private final Class<? extends Annotation> container;
-
 		private final Class<? extends Annotation> repeatable;
 
+		@Nullable
+		private final Class<? extends Annotation> container;
+
 		ExplicitRepeatableContainer(RepeatableContainers parent,
-				@Nullable Class<? extends Annotation> container,
-				Class<? extends Annotation> repeatable) {
+				Class<? extends Annotation> repeatable,
+				@Nullable Class<? extends Annotation> container) {
 			super(parent);
 			Assert.notNull(repeatable, "Repeatable must not be null");
 			if(container == null) {
 				container = deduceContainer(repeatable);
 			}
-			validate(container, repeatable);
-			this.container = container;
+			validate(repeatable, container);
 			this.repeatable = repeatable;
+			this.container = container;
 		}
 
-		private void validate(Class<? extends Annotation> container,
-				Class<? extends Annotation> repeatable) {
+		private void validate(Class<? extends Annotation> repeatable,
+				@Nullable Class<? extends Annotation> container) {
 			try {
 				Method method = container.getDeclaredMethod("value");
 				Assert.state(method != null, "No value method found");
@@ -250,11 +251,11 @@ public abstract class RepeatableContainers {
 		}
 
 		private Class<? extends Annotation> deduceContainer(
-				Class<? extends Annotation> annotationType) {
-			Repeatable repeatable = annotationType.getAnnotation(Repeatable.class);
-			Assert.notNull(repeatable, "Annotation type must be a repeatable annotation: "
-					+ "failed to resolve container type for " + annotationType.getName());
-			return repeatable.value();
+				Class<? extends Annotation> repeatable) {
+			Repeatable annotation = repeatable.getAnnotation(Repeatable.class);
+			Assert.notNull(annotation, "Annotation type must be a repeatable annotation: "
+					+ "failed to resolve container type for " + repeatable.getName());
+			return annotation.value();
 		}
 
 		@Override

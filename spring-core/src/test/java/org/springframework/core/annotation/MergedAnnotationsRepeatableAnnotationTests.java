@@ -231,9 +231,9 @@ public class MergedAnnotationsRepeatableAnnotationTests {
 	private <A extends Annotation> Set<A> getAnnotations(
 			Class<? extends Annotation> container, Class<A> repeatable,
 			SearchStrategy searchStrategy, AnnotatedElement element) {
-		RepeatableContainers containers = RepeatableContainers.of(container, repeatable);
-		MergedAnnotations annotations = MergedAnnotations.from(containers,
-				AnnotationFilter.PLAIN, searchStrategy, element);
+		RepeatableContainers containers = RepeatableContainers.of(repeatable, container);
+		MergedAnnotations annotations = MergedAnnotations.from(element,
+				searchStrategy, containers, AnnotationFilter.PLAIN);
 		return annotations.stream(repeatable).collect(
 				MergedAnnotationCollectors.toAnnotationSet());
 	}
