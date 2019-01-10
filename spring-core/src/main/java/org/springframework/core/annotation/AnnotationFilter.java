@@ -94,9 +94,8 @@ public interface AnnotationFilter {
 	 * @param annotationTypes the annotation types to check
 	 * @return the most appropriate annotation filter
 	 */
-	@SafeVarargs
 	static AnnotationFilter mostAppropriateFor(
-			Class<? extends Annotation>... annotationTypes) {
+			Class<?>... annotationTypes) {
 		Assert.notNull(annotationTypes, "AnnotationTypes must not be null");
 		return mostAppropriateFor(Arrays.asList(annotationTypes));
 	}
@@ -108,7 +107,6 @@ public interface AnnotationFilter {
 	 * @param annotationTypes the annotation types to check
 	 * @return the most appropriate annotation filter
 	 */
-	@SafeVarargs
 	static AnnotationFilter mostAppropriateFor(String... annotationTypes) {
 		Assert.notNull(annotationTypes, "AnnotationTypes must not be null");
 		return mostAppropriateFor(Arrays.asList(annotationTypes));

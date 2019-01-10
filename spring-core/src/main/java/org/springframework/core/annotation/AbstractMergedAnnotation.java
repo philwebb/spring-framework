@@ -214,7 +214,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		return createNested(nestedType, nestedAttributes);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	private final <T extends Annotation> MergedAnnotation<T>[] getNestedArray(
 			String attributeName, @Nullable Class<?> expectedElementType) {
 		AttributeType attributeType = getAttributeType(attributeName, true);
@@ -226,7 +226,7 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		assertType(attributeName, nestedType, expectedElementType);
 		DeclaredAttributes[] nestedAttributes = getRequiredValue(attributeName,
 				DeclaredAttributes[].class);
-		MergedAnnotation<T>[] result = new MergedAnnotation[nestedAttributes.length];
+		MergedAnnotation[] result = new MergedAnnotation[nestedAttributes.length];
 		for (int i = 0; i < nestedAttributes.length; i++) {
 			result[i] = createNested(nestedType, nestedAttributes[i]);
 		}
