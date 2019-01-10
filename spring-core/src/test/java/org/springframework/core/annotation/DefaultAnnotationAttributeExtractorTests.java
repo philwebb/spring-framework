@@ -24,7 +24,6 @@ import java.lang.annotation.Annotation;
  * @author Sam Brannen
  * @since 4.2.1
  */
-@SuppressWarnings("deprecation")
 public class DefaultAnnotationAttributeExtractorTests extends AbstractAliasAwareAnnotationAttributeExtractorTestCase {
 
 	@Override

@@ -31,9 +31,7 @@ import org.springframework.lang.Nullable;
  * @since 4.2
  * @param <S> the type of source supported by this extractor
  * @see SynthesizedAnnotationInvocationHandler
- * @deprecated since 5.2 in favor of {@link MergedAnnotations}
  */
-@Deprecated
 interface AnnotationAttributeExtractor<S> {
 
 	/**

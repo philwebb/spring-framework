@@ -59,7 +59,6 @@ import static org.springframework.core.annotation.AnnotationUtilsTests.*;
  * @see MultipleComposedAnnotationsOnSingleAnnotatedElementTests
  * @see ComposedRepeatableAnnotationsTests
  */
-@SuppressWarnings("deprecation")
 public class AnnotatedElementUtilsTests {
 
 	private static final String TX_NAME = Transactional.class.getName();

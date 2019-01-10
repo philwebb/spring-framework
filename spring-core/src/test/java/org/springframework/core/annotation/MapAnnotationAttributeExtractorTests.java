@@ -39,7 +39,7 @@ import static org.springframework.core.annotation.AnnotationUtilsTests.*;
  * @author Sam Brannen
  * @since 4.2.1
  */
-@SuppressWarnings({ "serial", "deprecation" })
+@SuppressWarnings("serial")
 public class MapAnnotationAttributeExtractorTests extends AbstractAliasAwareAnnotationAttributeExtractorTestCase {
 
 	@Override

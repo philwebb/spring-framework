@@ -40,7 +40,6 @@ import static org.mockito.Mockito.mock;
  * @author Juergen Hoeller
  * @since 3.1.1
  */
-@SuppressWarnings("deprecation")
 public class AnnotationAttributesTests {
 
 	private AnnotationAttributes attributes = new AnnotationAttributes();

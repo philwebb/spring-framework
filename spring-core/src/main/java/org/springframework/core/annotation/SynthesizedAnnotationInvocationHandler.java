@@ -40,9 +40,7 @@ import org.springframework.util.StringUtils;
  * @see Annotation
  * @see AnnotationAttributeExtractor
  * @see AnnotationUtils#synthesizeAnnotation(Annotation, AnnotatedElement)
- * @deprecated since 5.2 in favor of {@link MergedAnnotations}
  */
-@Deprecated
 class SynthesizedAnnotationInvocationHandler implements InvocationHandler {
 
 	private final AnnotationAttributeExtractor<?> attributeExtractor;

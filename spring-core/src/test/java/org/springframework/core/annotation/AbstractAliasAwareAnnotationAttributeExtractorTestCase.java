@@ -39,7 +39,6 @@ import static org.junit.Assert.*;
  * @author Sam Brannen
  * @since 4.2.1
  */
-@SuppressWarnings("deprecation")
 public abstract class AbstractAliasAwareAnnotationAttributeExtractorTestCase {
 
 	@Test
