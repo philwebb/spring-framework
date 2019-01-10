@@ -39,7 +39,6 @@ public interface MergedAnnotationIndex {
 	/**
 	 * Query the index to determine is a specific annotation or meta-annotation is present
 	 * on an annotated element.
-	 *
 	 * @param resourceLoader the resource loader that can be used to load the annotated
 	 * element
 	 * @param sourceClass the class name of the source element to check
@@ -98,6 +97,7 @@ public interface MergedAnnotationIndex {
 		/**
 		 * Returns {@code true} if the result is {@link #KNOWN_PRESENT} or
 		 * {@link #KNOWN_MISSING}.
+		 * 
 		 * @param result the result to check
 		 * @return if the result is known
 		 */

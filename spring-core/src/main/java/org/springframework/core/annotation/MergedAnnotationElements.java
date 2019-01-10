@@ -28,6 +28,8 @@ import java.lang.annotation.Annotation;
 public interface MergedAnnotationElements<E, A extends Annotation>
 		extends Iterable<MergedAnnotationElements.Item<E, A>> {
 
+	void forEach(E element, MergedAnnotation<A> annotation);
+
 	interface Item<E, A extends Annotation> {
 
 		E getElement();
