@@ -562,6 +562,14 @@ public interface MergedAnnotation<A extends Annotation> {
 		return TypeMappedAnnotation.of(classLoader, source, annotation);
 	}
 
+	static <A extends Annotation> MergedAnnotationFinder<A> find(Class<A> annotationType) {
+		return null;
+	}
+
+	static <A extends Annotation> MergedAnnotationFinder<A> find(String annotationType) {
+		return null;
+	}
+
 	/**
 	 * Options that effect the way map values are
 	 * {@link MergedAnnotation#asMap(MapValues...) converted}.
