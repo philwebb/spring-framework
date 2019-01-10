@@ -128,7 +128,9 @@ final class AnnotationTypeResolver {
 		return get(classLoader).resolve(className);
 	}
 
-	static AnnotationTypeResolver get(ClassLoader classLoader) {
+	static AnnotationTypeResolver get(@Nullable ClassLoader classLoader) {
+		classLoader = classLoader != null ? classLoader
+				: ClassUtils.getDefaultClassLoader();
 		if (classLoader == null) {
 			return createResolver(classLoader);
 		}

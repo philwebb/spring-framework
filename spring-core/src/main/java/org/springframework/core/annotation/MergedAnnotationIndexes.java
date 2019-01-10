@@ -48,7 +48,7 @@ public interface MergedAnnotationIndexes {
 	 * indexes
 	 */
 	static MergedAnnotationIndexes get(@Nullable ClassLoader classLoader) {
-		return null;
+		return SpringFactoriesLoaderMergedAnnotationIndexes.get(classLoader);
 	}
 
 }

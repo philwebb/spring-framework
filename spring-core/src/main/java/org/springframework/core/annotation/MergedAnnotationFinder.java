@@ -24,22 +24,28 @@ import org.springframework.core.MethodIntrospector;
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 
 /**
+ * Interface returned from {@link MergedAnnotation#find} that can be used to search for
+ * elements that are annotated or meta-annotated with a specific annotation type.
+ *
  * @param <A>
- * @author pwebb
+ * @author Phillip Webb
  * @since 5.2
+ * @see MergedAnnotation#find(Class)
+ * @see MergedAnnotation#find(String)
  * @see MethodIntrospector
  */
 public interface MergedAnnotationFinder<A extends Annotation> {
 
-	Object fromMethodsOf(Class<?> source);
+	MergedAnnotationElements<Method, A> fromMethodsOf(Class<?> source);
 
-	Object fromMethodsOf(Class<?> source, SearchStrategy searchStrategy);
+	MergedAnnotationElements<Method, A> fromMethodsOf(Class<?> source,
+			SearchStrategy searchStrategy);
 
-	Object fromMethodsOf(Class<?> source,
+	MergedAnnotationElements<Method, A> fromMethodsOf(Class<?> source,
 			Function<Method, MergedAnnotations> annotationsProvider);
 
-	<T, M> Object fromMethodsOf(T source, Function<T, String> classNameProvider,
-			Function<T, M[]> methodsProvider,
+	<T, M> MergedAnnotationElements<M, A> fromMethodsOf(T source,
+			Function<T, String> classNameProvider, Function<T, M[]> methodsProvider,
 			Function<Method, MergedAnnotations> annotationsProvider);
 
 }

@@ -18,6 +18,7 @@ package org.springframework.core.annotation;
 
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.lang.Nullable;
 
 /**
  * SPI that can be used to provide an annotation index so that potentially expensive
@@ -38,6 +39,7 @@ public interface MergedAnnotationIndex {
 	/**
 	 * Query the index to determine is a specific annotation or meta-annotation is present
 	 * on an annotated element.
+	 *
 	 * @param resourceLoader the resource loader that can be used to load the annotated
 	 * element
 	 * @param sourceClass the class name of the source element to check
@@ -91,7 +93,17 @@ public interface MergedAnnotationIndex {
 		 * It cannot be determined if the annotation is definitely present or definitely
 		 * missing. A full {@link MergedAnnotations} search will be required.
 		 */
-		UNKNOWN
+		UNKNOWN;
+
+		/**
+		 * Returns {@code true} if the result is {@link #KNOWN_PRESENT} or
+		 * {@link #KNOWN_MISSING}.
+		 * @param result the result to check
+		 * @return if the result is known
+		 */
+		public static boolean isKnown(@Nullable QueryResult result) {
+			return result == KNOWN_PRESENT || result == KNOWN_MISSING;
+		}
 
 	}
 
