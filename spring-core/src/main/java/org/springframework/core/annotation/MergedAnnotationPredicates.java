@@ -61,9 +61,8 @@ public final class MergedAnnotationPredicates {
 	 * @param types the types that should be matched
 	 * @return a {@link Predicate} to test the annotation type
 	 */
-	@SafeVarargs
 	public static <A extends Annotation> Predicate<MergedAnnotation<? extends A>> typeIn(
-			Class<? extends Annotation>... types) {
+			Class<?>... types) {
 		Assert.notNull(types, "Types must not be null");
 		return annotation -> Arrays.stream(types).anyMatch(
 				type -> type.getName().equals(annotation.getType()));

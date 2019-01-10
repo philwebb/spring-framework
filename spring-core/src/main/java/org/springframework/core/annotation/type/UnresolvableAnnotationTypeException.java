@@ -22,6 +22,7 @@ package org.springframework.core.annotation.type;
  * @author Phillip Webb
  * @since 5.2
  */
+@SuppressWarnings("serial")
 public class UnresolvableAnnotationTypeException extends RuntimeException {
 
 	public UnresolvableAnnotationTypeException(String className, Exception cause) {
