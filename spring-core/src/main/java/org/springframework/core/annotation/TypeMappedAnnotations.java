@@ -24,19 +24,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 import org.springframework.core.annotation.type.DeclaredAnnotation;
 import org.springframework.core.annotation.type.DeclaredAnnotations;
 import org.springframework.core.annotation.type.DeclaredAttributes;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+import org.springframework.util.ConcurrentReferenceHashMap;
 
 /**
- * {@link MergedAnnotations} implementation that uses
- * {@link AnnotationTypeMappings} to adapt annotations.
+ * {@link MergedAnnotations} implementation that uses {@link AnnotationTypeMappings} to
+ * adapt annotations.
  *
  * @author Phillip Webb
  * @since 5.2
@@ -45,17 +48,20 @@ final class TypeMappedAnnotations extends AbstractMergedAnnotations {
 
 	private final List<MappableAnnotations> aggregates;
 
-	private volatile List<MergedAnnotation<Annotation>> all;
+	private volatile Set<MergedAnnotation<Annotation>> all;
 
-	private TypeMappedAnnotations(AnnotatedElement source,
-			Annotation[] annotations, RepeatableContainers repeatableContainers,
+	private Map<String, Set<MergedAnnotation<?>>> allByType = new ConcurrentReferenceHashMap<>();
+
+	private TypeMappedAnnotations(AnnotatedElement source, Annotation[] annotations,
+			RepeatableContainers repeatableContainers,
 			AnnotationFilter annotationFilter) {
 		this.aggregates = Collections.singletonList(new MappableAnnotations(source,
 				annotations, repeatableContainers, annotationFilter));
 	}
 
 	private TypeMappedAnnotations(ClassLoader classLoader,
-			Iterable<DeclaredAnnotations> aggregates, RepeatableContainers repeatableContainers,
+			Iterable<DeclaredAnnotations> aggregates,
+			RepeatableContainers repeatableContainers,
 			AnnotationFilter annotationFilter) {
 		this.aggregates = new ArrayList<>(getInitialSize(aggregates));
 		int aggregateIndex = 0;
@@ -91,8 +97,8 @@ final class TypeMappedAnnotations extends AbstractMergedAnnotations {
 		return get(annotationType, null, this::selectFirst);
 	}
 
-	private <A extends Annotation> MergedAnnotation<A> selectFirst(MergedAnnotation<A> existing,
-			MergedAnnotation<A> candidate) {
+	private <A extends Annotation> MergedAnnotation<A> selectFirst(
+			MergedAnnotation<A> existing, MergedAnnotation<A> candidate) {
 		// FIXME rename this and other first methods
 		if (existing.getDepth() > 0 && candidate.getDepth() == 0) {
 			return candidate;
@@ -103,11 +109,11 @@ final class TypeMappedAnnotations extends AbstractMergedAnnotations {
 	@Override
 	public <A extends Annotation> MergedAnnotation<A> get(String annotationType,
 			@Nullable Predicate<? super MergedAnnotation<A>> predicate) {
-		return get(annotationType, predicate, this::selectLowestDepth );
+		return get(annotationType, predicate, this::selectLowestDepth);
 	}
 
-	private <A extends Annotation> MergedAnnotation<A> selectLowestDepth(MergedAnnotation<A> existing,
-			MergedAnnotation<A> candidate) {
+	private <A extends Annotation> MergedAnnotation<A> selectLowestDepth(
+			MergedAnnotation<A> existing, MergedAnnotation<A> candidate) {
 		if (candidate.getDepth() < existing.getDepth()) {
 			return candidate;
 		}
@@ -118,7 +124,8 @@ final class TypeMappedAnnotations extends AbstractMergedAnnotations {
 			@Nullable Predicate<? super MergedAnnotation<A>> predicate,
 			MergedAnnotationSelector<A> selector) {
 		for (MappableAnnotations annotations : this.aggregates) {
-			MergedAnnotation<A> result = annotations.get(annotationType, predicate, selector);
+			MergedAnnotation<A> result = annotations.get(annotationType, predicate,
+					selector);
 			if (result != null) {
 				return result;
 			}
@@ -127,12 +134,14 @@ final class TypeMappedAnnotations extends AbstractMergedAnnotations {
 	}
 
 	@Override
-	public Stream<MergedAnnotation<Annotation>> stream() {
-		return getAll().stream();
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public <A extends Annotation> Set<MergedAnnotation<A>> getAll(String annotationType) {
+		return (Set) this.allByType.computeIfAbsent(annotationType,
+				key -> (Set) super.getAll(key));
 	}
 
-	private List<MergedAnnotation<Annotation>> getAll() {
-		List<MergedAnnotation<Annotation>> all = this.all;
+	public Set<MergedAnnotation<Annotation>> getAll() {
+		Set<MergedAnnotation<Annotation>> all = this.all;
 		if (all == null) {
 			all = computeAll();
 			this.all = all;
@@ -140,8 +149,8 @@ final class TypeMappedAnnotations extends AbstractMergedAnnotations {
 		return all;
 	}
 
-	private List<MergedAnnotation<Annotation>> computeAll() {
-		List<MergedAnnotation<Annotation>> result = new ArrayList<>(totalSize());
+	private Set<MergedAnnotation<Annotation>> computeAll() {
+		Set<MergedAnnotation<Annotation>> result = new LinkedHashSet<>(totalSize());
 		for (MappableAnnotations annotations : this.aggregates) {
 			List<Deque<MergedAnnotation<Annotation>>> queues = new ArrayList<>(
 					annotations.size());
@@ -150,10 +159,10 @@ final class TypeMappedAnnotations extends AbstractMergedAnnotations {
 			}
 			addAllInDepthOrder(result, queues);
 		}
-		return result;
+		return Collections.unmodifiableSet(result);
 	}
 
-	private void addAllInDepthOrder(List<MergedAnnotation<Annotation>> result,
+	private void addAllInDepthOrder(Set<MergedAnnotation<Annotation>> result,
 			List<Deque<MergedAnnotation<Annotation>>> queues) {
 		int depth = 0;
 		boolean hasMore = true;
@@ -166,7 +175,7 @@ final class TypeMappedAnnotations extends AbstractMergedAnnotations {
 		}
 	}
 
-	private boolean addAllForDepth(List<MergedAnnotation<Annotation>> result,
+	private boolean addAllForDepth(Set<MergedAnnotation<Annotation>> result,
 			Deque<MergedAnnotation<Annotation>> queue, int depth) {
 		while (!queue.isEmpty() && queue.peek().getDepth() <= depth) {
 			result.add(queue.pop());
@@ -202,10 +211,11 @@ final class TypeMappedAnnotations extends AbstractMergedAnnotations {
 	}
 
 	static TypeMappedAnnotations of(ClassLoader classLoader,
-			Iterable<DeclaredAnnotations> aggregates, RepeatableContainers repeatableContainers,
+			Iterable<DeclaredAnnotations> aggregates,
+			RepeatableContainers repeatableContainers,
 			AnnotationFilter annotationFilter) {
-		return new TypeMappedAnnotations(classLoader, aggregates,
-				repeatableContainers, annotationFilter);
+		return new TypeMappedAnnotations(classLoader, aggregates, repeatableContainers,
+				annotationFilter);
 	}
 
 	/**
@@ -317,8 +327,7 @@ final class TypeMappedAnnotations extends AbstractMergedAnnotations {
 
 		/**
 		 * Select the annotation that should be used.
-		 * @param existing an existing annotation returned from an earlier
-		 * result
+		 * @param existing an existing annotation returned from an earlier result
 		 * @param candidate a candidate annotation that may be better suited
 		 * @return the most appropriate annotation from the {@code existing} or
 		 * {@code candidate}

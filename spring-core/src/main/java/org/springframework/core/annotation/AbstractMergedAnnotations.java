@@ -17,9 +17,13 @@
 package org.springframework.core.annotation;
 
 import java.lang.annotation.Annotation;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.lang.Nullable;
@@ -69,6 +73,18 @@ abstract class AbstractMergedAnnotations implements MergedAnnotations {
 	}
 
 	@Override
+	public <A extends Annotation> Set<MergedAnnotation<A>> getAll(
+			Class<A> annotationType) {
+		return getAll(getClassName(annotationType));
+	}
+
+	@Override
+	public <A extends Annotation> Set<MergedAnnotation<A>> getAll(String annotationType) {
+		return Collections.unmodifiableSet(stream(annotationType).collect(
+				Collectors.toCollection(LinkedHashSet<MergedAnnotation<A>>::new)));
+	}
+
+	@Override
 	public Iterator<MergedAnnotation<Annotation>> iterator() {
 		return stream().iterator();
 	}
@@ -84,6 +100,11 @@ abstract class AbstractMergedAnnotations implements MergedAnnotations {
 			String annotationType) {
 		return (Stream) stream().filter(
 				annotation -> Objects.equals(annotation.getType(), annotationType));
+	}
+
+	@Override
+	public Stream<MergedAnnotation<Annotation>> stream() {
+		return getAll().stream();
 	}
 
 	protected final String getClassName(Class<?> annotationType) {

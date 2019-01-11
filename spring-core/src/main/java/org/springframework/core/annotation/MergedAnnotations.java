@@ -20,6 +20,7 @@ import java.lang.annotation.Annotation;
 import java.lang.annotation.Inherited;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -178,6 +179,35 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 */
 	<A extends Annotation> MergedAnnotation<A> get(String annotationType,
 			@Nullable Predicate<? super MergedAnnotation<A>> predicate);
+
+	/**
+	 * Get all annotations and meta-annotations that match the specified
+	 * type. The resulting stream follows the same ordering rules are
+	 * {@link #getAll()}.
+	 * @param annotationType the annotation type to match
+	 * @return a stream of matching annotations
+	 */
+	<A extends Annotation> Set<MergedAnnotation<A>> getAll(Class<A> annotationType);
+
+	/**
+	 * Get all annotations and meta-annotations that match the specified
+	 * type.The resulting stream follows the same ordering rules are
+	 * {@link #getAll()}.
+	 * @param annotationType the annotation type to match
+	 * @return a stream of matching annotations
+	 */
+	<A extends Annotation> Set<MergedAnnotation<A>> getAll(String annotationType);
+
+	/**
+	 * Get all contained annotations and meta-annotations contained in this
+	 * collection. The resulting stream is ordered first by the
+	 * {@link MergedAnnotation#getAggregateIndex() aggregate index}, and then by
+	 * the annotation depth (with the closest annotations first). This ordering
+	 * means that, for most use-cases, the most suitable annotations appear
+	 * earliest in the stream.
+	 * @return a stream of annotations
+	 */
+	Set<MergedAnnotation<Annotation>> getAll();
 
 	/**
 	 * Stream all annotations and meta-annotations that match the specified

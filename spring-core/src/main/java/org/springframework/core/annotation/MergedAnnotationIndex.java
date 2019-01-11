@@ -29,6 +29,10 @@ import org.springframework.lang.Nullable;
  * The index provides a mechanism to answer if an annotation or meta-annotation is
  * {@link QueryResult#KNOWN_PRESENT} or {@link QueryResult#KNOWN_MISSING}. If the index is
  * unable to determine a result then {@link QueryResult#UNKNOWN} should be returned.
+ * <p>
+ * Special care should be taken if the index covers repeatable annotations since queries
+ * will be for the repeatable annotation, and not the container type. Indexes are
+ * responsible for crawling repeatable annotations themselves.
  *
  * @author Phillip Webb
  * @since 5.2
@@ -97,7 +101,7 @@ public interface MergedAnnotationIndex {
 		/**
 		 * Returns {@code true} if the result is {@link #KNOWN_PRESENT} or
 		 * {@link #KNOWN_MISSING}.
-		 * 
+		 *
 		 * @param result the result to check
 		 * @return if the result is known
 		 */
