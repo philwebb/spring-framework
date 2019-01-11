@@ -17,6 +17,7 @@
 package org.springframework.core.annotation;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
@@ -101,9 +102,16 @@ public class SynthesizingMethodParameter extends MethodParameter {
 
 	@Override
 	protected Annotation[] adaptAnnotationArray(Annotation[] annotations) {
-		return AnnotationUtils.synthesizeAnnotationArray(annotations, getAnnotatedElement());
+		if (AnnotationFilter.PLAIN.matches(getDeclaringClass().getName())) {
+			return annotations;
+		}
+		Annotation[] synthesized = (Annotation[]) Array.newInstance(
+				annotations.getClass().getComponentType(), annotations.length);
+		for (int i = 0; i < annotations.length; i++) {
+			synthesized[i] = AnnotationUtils.synthesizeAnnotation(annotations[i], getAnnotatedElement());
+		}
+		return synthesized;
 	}
-
 
 	@Override
 	public SynthesizingMethodParameter clone() {

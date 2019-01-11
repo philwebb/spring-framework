@@ -79,7 +79,7 @@ public class MergedAnnotationClassLoaderTests {
 		assertThat(synthesized).isEqualTo(annotation);
 		assertThat(synthesizedMeta).isEqualTo(metaAnnotation);
 		// Also check utils version
-		Annotation utilsMeta = InternalAnnotatedElementUtils.getMergedAnnotation(source,
+		Annotation utilsMeta = AnnotatedElementUtils.getMergedAnnotation(source,
 				TestMetaAnnotation.class);
 		assertThat(utilsMeta.getClass().getClassLoader()).isEqualTo(parent);
 		assertThat(utilsMeta.getClass().getClassLoader()).isEqualTo(parent);
