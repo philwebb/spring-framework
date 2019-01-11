@@ -25,12 +25,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.function.Function;
 
 import org.springframework.core.BridgeMethodResolver;
 import org.springframework.core.annotation.MergedAnnotation.MapValues;
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.core.annotation.type.DeclaredAnnotation;
 import org.springframework.lang.Nullable;
+import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -812,11 +814,23 @@ public abstract class AnnotationUtils {
 		return MigrateMethod.from(() ->
 			InternalAnnotationUtils.getAnnotationAttributes(annotatedElement,
 					annotation, classValuesAsString, nestedAnnotationsAsMap)
-		).to(() ->
-			MergedAnnotation.from(annotatedElement, annotation).withNonMergedAttributes().asMap(
-						merged -> new AnnotationAttributes(annotation.annotationType(), true),
-						MapValues.of(classValuesAsString, nestedAnnotationsAsMap))
-		);
+		).to(() -> {
+			ClassLoader classLoader = annotation.annotationType().getClassLoader();
+			return MergedAnnotation.from(annotatedElement,
+					annotation).withNonMergedAttributes().asMap(
+							getAnnotationAttributesFactory(classLoader),
+							MapValues.of(classValuesAsString, nestedAnnotationsAsMap));
+		});
+	}
+
+	@SuppressWarnings("unchecked")
+	private static Function<MergedAnnotation<?>, AnnotationAttributes> getAnnotationAttributesFactory(
+			ClassLoader classLoader) {
+		return annotation -> {
+			Class<Annotation> type = (Class<Annotation>) ClassUtils.resolveClassName(
+					annotation.getType(), classLoader);
+			return new AnnotationAttributes(type, true);
+		};
 	}
 
 	/**
