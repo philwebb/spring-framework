@@ -136,8 +136,12 @@ final class TypeMappedAnnotations extends AbstractMergedAnnotations {
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public <A extends Annotation> Set<MergedAnnotation<A>> getAll(String annotationType) {
-		return (Set) this.allByType.computeIfAbsent(annotationType,
-				key -> (Set) super.getAll(key));
+		Set<MergedAnnotation<?>> result = this.allByType.get(annotationType);
+		if (result == null) {
+			result = (Set) super.getAll(annotationType);
+			this.allByType.put(annotationType, result);
+		}
+		return (Set) result;
 	}
 
 	public Set<MergedAnnotation<Annotation>> getAll() {

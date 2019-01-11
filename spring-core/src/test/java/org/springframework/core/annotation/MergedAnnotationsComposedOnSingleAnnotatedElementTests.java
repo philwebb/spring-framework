@@ -37,13 +37,13 @@ import static org.assertj.core.api.Assertions.*;
 /**
  * Unit tests that verify support for finding multiple composed annotations on a single
  * annotated element.
- * <p>
- * See <a href="https://jira.spring.io/browse/SPR-13486">SPR-13486</a>.
  *
  * @author Phillip Webb
  * @author Sam Brannen
  */
 public class MergedAnnotationsComposedOnSingleAnnotatedElementTests {
+
+	// See SPR-13486
 
 	@Test
 	public void inheritedStrategyMultipleComposedAnnotationsOnClass() {
@@ -195,13 +195,10 @@ public class MergedAnnotationsComposedOnSingleAnnotatedElementTests {
 	@Retention(RetentionPolicy.RUNTIME)
 	@Inherited
 	@interface Cacheable {
-
 		@AliasFor("cacheName")
 		String value() default "";
-
 		@AliasFor("value")
 		String cacheName() default "";
-
 		String key() default "";
 	}
 
@@ -210,7 +207,6 @@ public class MergedAnnotationsComposedOnSingleAnnotatedElementTests {
 	@Retention(RetentionPolicy.RUNTIME)
 	@Inherited
 	@interface FooCache {
-
 		@AliasFor(annotation = Cacheable.class)
 		String key() default "";
 	}
@@ -220,7 +216,6 @@ public class MergedAnnotationsComposedOnSingleAnnotatedElementTests {
 	@Retention(RetentionPolicy.RUNTIME)
 	@Inherited
 	@interface BarCache {
-
 		@AliasFor(annotation = Cacheable.class)
 		String key();
 	}
@@ -229,7 +224,6 @@ public class MergedAnnotationsComposedOnSingleAnnotatedElementTests {
 	@Target({ ElementType.METHOD, ElementType.TYPE })
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface NoninheritedCache1 {
-
 		@AliasFor(annotation = Cacheable.class)
 		String key() default "";
 	}
@@ -238,7 +232,6 @@ public class MergedAnnotationsComposedOnSingleAnnotatedElementTests {
 	@Target({ ElementType.METHOD, ElementType.TYPE })
 	@Retention(RetentionPolicy.RUNTIME)
 	@interface NoninheritedCache2 {
-
 		@AliasFor(annotation = Cacheable.class)
 		String key() default "";
 	}
@@ -271,8 +264,7 @@ public class MergedAnnotationsComposedOnSingleAnnotatedElementTests {
 	private interface MultipleComposedCachesInterface {
 	}
 
-	private static class MultipleComposedCachesOnInterfaceClass
-			implements MultipleComposedCachesInterface {
+	private static class MultipleComposedCachesOnInterfaceClass implements MultipleComposedCachesInterface {
 	}
 
 	@BarCache(key = "barKey")
@@ -280,8 +272,7 @@ public class MergedAnnotationsComposedOnSingleAnnotatedElementTests {
 	}
 
 	@Cacheable(cacheName = "fooCache", key = "fooKey")
-	private static class ComposedCacheOnInterfaceAndLocalCacheClass
-			implements ComposedCacheInterface {
+	private static class ComposedCacheOnInterfaceAndLocalCacheClass implements ComposedCacheInterface {
 	}
 
 	@FooCache(key = "fooKey")
@@ -295,23 +286,16 @@ public class MergedAnnotationsComposedOnSingleAnnotatedElementTests {
 	}
 
 	public interface GenericParameter<T> {
-
 		T getFor(Class<T> cls);
 	}
 
 	@SuppressWarnings("unused")
 	private static class StringGenericParameter implements GenericParameter<String> {
-
 		@FooCache(key = "fooKey")
 		@BarCache(key = "barKey")
 		@Override
-		public String getFor(Class<String> cls) {
-			return "foo";
-		}
-
-		public String getFor(Integer integer) {
-			return "foo";
-		}
+		public String getFor(Class<String> cls) { return "foo"; }
+		public String getFor(Integer integer) { return "foo"; }
 	}
 
 	// @formatter:on

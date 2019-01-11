@@ -80,8 +80,10 @@ abstract class AbstractMergedAnnotations implements MergedAnnotations {
 
 	@Override
 	public <A extends Annotation> Set<MergedAnnotation<A>> getAll(String annotationType) {
-		return Collections.unmodifiableSet(stream(annotationType).collect(
-				Collectors.toCollection(LinkedHashSet<MergedAnnotation<A>>::new)));
+		Stream<MergedAnnotation<A>> annotations = stream(annotationType);
+		Set<MergedAnnotation<A>> set = annotations.collect(
+				Collectors.toCollection(LinkedHashSet<MergedAnnotation<A>>::new));
+		return Collections.unmodifiableSet(set);
 	}
 
 	@Override

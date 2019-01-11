@@ -28,11 +28,9 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ConcurrentReferenceHashMap;
 
-import static org.assertj.core.api.Assertions.*;
-
 /**
  * {@link MergedAnnotationIndexes} implementation backed by {@link SpringFactoriesLoader}
- * and used for {@link MergedAnnotationIndexes#get(ClassLoader)}
+ * and used for {@link MergedAnnotationIndexes#get(ClassLoader)}.
  *
  * @author Phillip Webb
  * @since 5.2

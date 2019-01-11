@@ -33,7 +33,6 @@ public interface MergedAnnotationIndexes {
 	/**
 	 * Query the indexes to determine is a specific annotation or meta-annotation is
 	 * present on an annotated element.
-	 * @param classLoader the classloader that could be used to load the annotated element
 	 * @param sourceClass the class name of the source element to check
 	 * @param annotationType the class name of the annotation or meta-annotation to check
 	 * @param scope the scope of the search

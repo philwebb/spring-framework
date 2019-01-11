@@ -616,8 +616,7 @@ public interface MergedAnnotation<A extends Annotation> {
 	/**
 	 * Interface returned from {@link MergedAnnotation#find} that can be used to search for
 	 * elements that are annotated or meta-annotated with a specific annotation type.
-	 *
-	 * @param <A>
+	 * @param <R> the result value type
 	 * @see MergedAnnotationIndex
 	 * @see MethodIntrospector
 	 */
