@@ -158,6 +158,10 @@ final class AnnotationTypeMappings {
 		return cache.computeIfAbsent(annotationFilter, Cache::new).get(annotationType);
 	}
 
+	static void clearCache() {
+		cache.clear();
+	}
+
 	/**
 	 * Cache created per {@link AnnotationFilter}.
 	 */
