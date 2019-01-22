@@ -91,9 +91,9 @@ class MapAnnotationAttributeExtractor extends AbstractAliasAwareAnnotationAttrib
 			Map<String, Object> originalAttributes, Class<? extends Annotation> annotationType) {
 
 		Map<String, Object> attributes = new LinkedHashMap<>(originalAttributes);
-		Map<String, List<String>> attributeAliasMap = AnnotationUtils.getAttributeAliasMap(annotationType);
+		Map<String, List<String>> attributeAliasMap = InternalAnnotationUtils.getAttributeAliasMap(annotationType);
 
-		for (Method attributeMethod : AnnotationUtils.getAttributeMethods(annotationType)) {
+		for (Method attributeMethod : InternalAnnotationUtils.getAttributeMethods(annotationType)) {
 			String attributeName = attributeMethod.getName();
 			Object attributeValue = attributes.get(attributeName);
 
@@ -158,7 +158,7 @@ class MapAnnotationAttributeExtractor extends AbstractAliasAwareAnnotationAttrib
 					Class<? extends Annotation> nestedAnnotationType =
 							(Class<? extends Annotation>) requiredReturnType.getComponentType();
 					Map<String, Object>[] maps = (Map<String, Object>[]) attributeValue;
-					attributes.put(attributeName, AnnotationUtils.synthesizeAnnotationArray(maps, nestedAnnotationType));
+					attributes.put(attributeName, InternalAnnotationUtils.synthesizeAnnotationArray(maps, nestedAnnotationType));
 					converted = true;
 				}
 
