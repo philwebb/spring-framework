@@ -2340,12 +2340,20 @@ abstract class InternalAnnotationUtils {
 	}
 
 
-	private static class DefaultValueHolder {
+	/**
+	 * Internal holder used to wrap default values.
+	 */
+	static class DefaultValueHolder {
 
 		final Object defaultValue;
 
 		public DefaultValueHolder(Object defaultValue) {
 			this.defaultValue = defaultValue;
+		}
+
+		@Override
+		public String toString() {
+			return "*" + this.defaultValue;
 		}
 	}
 
