@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -140,7 +139,8 @@ class ConfigurationClassParser {
 
 	private final DeferredImportSelectorHandler deferredImportSelectorHandler = new DeferredImportSelectorHandler();
 
-	private final Map<String, Object> sourceClassCache = new ConcurrentHashMap<>();
+	private final SourceClass objectSourceClass = new SourceClass(Object.class);
+
 
 	/**
 	 * Create a new {@link ConfigurationClassParser} instance that will be used
@@ -673,38 +673,21 @@ class ConfigurationClassParser {
 	 */
 	SourceClass asSourceClass(@Nullable String className) throws IOException {
 		if (className == null || className.startsWith("java.lang.annotation")) {
-			return asSourceClass(Object.class.getName());
+			return this.objectSourceClass;
 		}
-		Object result = sourceClassCache.computeIfAbsent(className,
-				this::computeSourceClass);
-		if (result instanceof SourceClass) {
-			return (SourceClass) result;
-		}
-		if (result instanceof IOException) {
-			throw (IOException) result;
-		}
-		throw (RuntimeException) result;
-	}
-
-	private Object computeSourceClass(String className) {
-		try {
-			if (className.startsWith("java")) {
-				// Never use ASM for core java types
-				try {
-					return new SourceClass(ClassUtils.forName(className,
-							this.resourceLoader.getClassLoader()));
-				}
-				catch (ClassNotFoundException ex) {
-					throw new NestedIOException(
-							"Failed to load class [" + className + "]", ex);
-				}
+		if (className.startsWith("java")) {
+			// Never use ASM for core java types
+			try {
+				return new SourceClass(ClassUtils.forName(className,
+						this.resourceLoader.getClassLoader()));
 			}
-			return new SourceClass(
-					this.metadataReaderFactory.getMetadataReader(className));
+			catch (ClassNotFoundException ex) {
+				throw new NestedIOException(
+						"Failed to load class [" + className + "]", ex);
+			}
 		}
-		catch (Exception ex) {
-			return ex;
-		}
+		return new SourceClass(
+				this.metadataReaderFactory.getMetadataReader(className));
 	}
 
 
