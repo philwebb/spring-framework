@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -113,7 +114,6 @@ class ConfigurationClassParser {
 	private static final Comparator<DeferredImportSelectorHolder> DEFERRED_IMPORT_COMPARATOR =
 			(o1, o2) -> AnnotationAwareOrderComparator.INSTANCE.compare(o1.getImportSelector(), o2.getImportSelector());
 
-
 	private final Log logger = LogFactory.getLog(getClass());
 
 	private final MetadataReaderFactory metadataReaderFactory;
@@ -140,6 +140,7 @@ class ConfigurationClassParser {
 
 	private final DeferredImportSelectorHandler deferredImportSelectorHandler = new DeferredImportSelectorHandler();
 
+	private final Map<String, Object> sourceClassCache = new ConcurrentHashMap<>();
 
 	/**
 	 * Create a new {@link ConfigurationClassParser} instance that will be used
@@ -671,19 +672,39 @@ class ConfigurationClassParser {
 	 * Factory method to obtain a {@link SourceClass} from a class name.
 	 */
 	SourceClass asSourceClass(@Nullable String className) throws IOException {
-		if (className == null) {
-			return new SourceClass(Object.class);
+		if (className == null || className.startsWith("java.lang.annotation")) {
+			return asSourceClass(Object.class.getName());
 		}
-		if (className.startsWith("java")) {
-			// Never use ASM for core java types
-			try {
-				return new SourceClass(ClassUtils.forName(className, this.resourceLoader.getClassLoader()));
-			}
-			catch (ClassNotFoundException ex) {
-				throw new NestedIOException("Failed to load class [" + className + "]", ex);
-			}
+		Object result = sourceClassCache.computeIfAbsent(className,
+				this::computeSourceClass);
+		if (result instanceof SourceClass) {
+			return (SourceClass) result;
 		}
-		return new SourceClass(this.metadataReaderFactory.getMetadataReader(className));
+		if (result instanceof IOException) {
+			throw (IOException) result;
+		}
+		throw (RuntimeException) result;
+	}
+
+	private Object computeSourceClass(String className) {
+		try {
+			if (className.startsWith("java")) {
+				// Never use ASM for core java types
+				try {
+					return new SourceClass(ClassUtils.forName(className,
+							this.resourceLoader.getClassLoader()));
+				}
+				catch (ClassNotFoundException ex) {
+					throw new NestedIOException(
+							"Failed to load class [" + className + "]", ex);
+				}
+			}
+			return new SourceClass(
+					this.metadataReaderFactory.getMetadataReader(className));
+		}
+		catch (Exception ex) {
+			return ex;
+		}
 	}
 
 
