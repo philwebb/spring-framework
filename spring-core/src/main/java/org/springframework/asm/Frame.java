@@ -1421,7 +1421,7 @@ class Frame {
       }
     } else {
       // Case of an array type, we need to build its descriptor first.
-      StringBuilder typeDescriptor = new StringBuilder();
+      StringBuilder typeDescriptor = new StringBuilder(32);
       while (arrayDimensions-- > 0) {
         typeDescriptor.append('[');
       }
