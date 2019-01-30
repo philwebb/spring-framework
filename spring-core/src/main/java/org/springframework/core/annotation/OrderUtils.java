@@ -16,12 +16,8 @@
 
 package org.springframework.core.annotation;
 
-import java.lang.annotation.Annotation;
-import java.util.Map;
-
+import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.lang.Nullable;
-import org.springframework.util.ClassUtils;
-import org.springframework.util.ConcurrentReferenceHashMap;
 
 /**
  * General utility for determining the order of an object based on its type declaration.
@@ -33,33 +29,10 @@ import org.springframework.util.ConcurrentReferenceHashMap;
  * @see Order
  * @see javax.annotation.Priority
  */
-@SuppressWarnings("unchecked")
 public abstract class OrderUtils {
 
-	/** Cache marker for a non-annotated Class. */
-	private static final Object NOT_ANNOTATED = new Object();
 
-
-	@Nullable
-	private static Class<? extends Annotation> priorityAnnotationType;
-
-	static {
-		try {
-			priorityAnnotationType = (Class<? extends Annotation>)
-					ClassUtils.forName("javax.annotation.Priority", OrderUtils.class.getClassLoader());
-		}
-		catch (Throwable ex) {
-			// javax.annotation.Priority not available
-			priorityAnnotationType = null;
-		}
-	}
-
-
-	/** Cache for @Order value (or NOT_ANNOTATED marker) per Class. */
-	private static final Map<Class<?>, Object> orderCache = new ConcurrentReferenceHashMap<>(64);
-
-	/** Cache for @Priority value (or NOT_ANNOTATED marker) per Class. */
-	private static final Map<Class<?>, Object> priorityCache = new ConcurrentReferenceHashMap<>();
+	private static final String JAVAX_PRIORITY_ANNOTATION = "javax.annotation.Priority";
 
 
 	/**
@@ -99,20 +72,25 @@ public abstract class OrderUtils {
 	 */
 	@Nullable
 	public static Integer getOrder(Class<?> type) {
-		Object cached = orderCache.get(type);
-		if (cached != null) {
-			return (cached instanceof Integer ? (Integer) cached : null);
+		return getOrder(MergedAnnotations.from(type, SearchStrategy.EXHAUSTIVE));
+	}
+
+	/**
+	 * Return the order from the specified annotations.
+	 * <p>Takes care of {@link Order @Order} and {@code @javax.annotation.Priority}.
+	 * @param type the source annotations
+	 * @return the order value, or {@code null} if none can be found
+	 */
+	static Integer getOrder(MergedAnnotations annotations) {
+		MergedAnnotation<Order> orderAnnotation = annotations.get(Order.class);
+		if (orderAnnotation.isPresent()) {
+			return orderAnnotation.getInt(MergedAnnotation.VALUE);
 		}
-		Order order = AnnotationUtils.findAnnotation(type, Order.class);
-		Integer result;
-		if (order != null) {
-			result = order.value();
+		MergedAnnotation<?> priorityAnnotation = annotations.get(JAVAX_PRIORITY_ANNOTATION);
+		if (priorityAnnotation.isPresent()) {
+			return priorityAnnotation.getInt(MergedAnnotation.VALUE);
 		}
-		else {
-			result = getPriority(type);
-		}
-		orderCache.put(type, (result != null ? result : NOT_ANNOTATED));
-		return result;
+		return null;
 	}
 
 	/**
@@ -123,20 +101,9 @@ public abstract class OrderUtils {
 	 */
 	@Nullable
 	public static Integer getPriority(Class<?> type) {
-		if (priorityAnnotationType == null) {
-			return null;
-		}
-		Object cached = priorityCache.get(type);
-		if (cached != null) {
-			return (cached instanceof Integer ? (Integer) cached : null);
-		}
-		Annotation priority = AnnotationUtils.findAnnotation(type, priorityAnnotationType);
-		Integer result = null;
-		if (priority != null) {
-			result = (Integer) AnnotationUtils.getValue(priority);
-		}
-		priorityCache.put(type, (result != null ? result : NOT_ANNOTATED));
-		return result;
+		return MergedAnnotations.from(type, SearchStrategy.EXHAUSTIVE).get(
+				JAVAX_PRIORITY_ANNOTATION).getValue(MergedAnnotation.VALUE,
+						Integer.class).orElse(null);
 	}
 
 }
