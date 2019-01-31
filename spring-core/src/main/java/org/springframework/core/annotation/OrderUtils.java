@@ -16,8 +16,12 @@
 
 package org.springframework.core.annotation;
 
+import java.lang.reflect.AnnotatedElement;
+import java.util.Map;
+
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.lang.Nullable;
+import org.springframework.util.ConcurrentReferenceHashMap;
 
 /**
  * General utility for determining the order of an object based on its type declaration.
@@ -31,8 +35,13 @@ import org.springframework.lang.Nullable;
  */
 public abstract class OrderUtils {
 
+	/** Cache marker for a non-annotated Class. */
+	private static final Object NOT_ANNOTATED = new Object();
 
 	private static final String JAVAX_PRIORITY_ANNOTATION = "javax.annotation.Priority";
+
+	/** Cache for @Order value (or NOT_ANNOTATED marker) per Class. */
+	private static final Map<AnnotatedElement, Object> orderCache = new ConcurrentReferenceHashMap<>(64);
 
 
 	/**
@@ -72,7 +81,7 @@ public abstract class OrderUtils {
 	 */
 	@Nullable
 	public static Integer getOrder(Class<?> type) {
-		return getOrder(MergedAnnotations.from(type, SearchStrategy.EXHAUSTIVE));
+		return getOrder(type, MergedAnnotations.from(type, SearchStrategy.EXHAUSTIVE));
 	}
 
 	/**
@@ -81,7 +90,20 @@ public abstract class OrderUtils {
 	 * @param type the source annotations
 	 * @return the order value, or {@code null} if none can be found
 	 */
-	static Integer getOrder(MergedAnnotations annotations) {
+	static Integer getOrder(AnnotatedElement element, MergedAnnotations annotations) {
+		if (!(element instanceof Class)) {
+			return findOrder(annotations);
+		}
+		Object cached = orderCache.get(element);
+		if (cached != null) {
+			return (cached instanceof Integer ? (Integer) cached : null);
+		}
+		Integer result = findOrder(annotations);
+		orderCache.put(element, result != null ? result : NOT_ANNOTATED);
+		return result;
+	}
+
+	private static Integer findOrder(MergedAnnotations annotations) {
 		MergedAnnotation<Order> orderAnnotation = annotations.get(Order.class);
 		if (orderAnnotation.isPresent()) {
 			return orderAnnotation.getInt(MergedAnnotation.VALUE);

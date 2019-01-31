@@ -74,7 +74,7 @@ public class AnnotationAwareOrderComparator extends OrderComparator {
 				: obj.getClass();
 		MergedAnnotations annotations = MergedAnnotations.from(element,
 				SearchStrategy.EXHAUSTIVE);
-		Integer order = OrderUtils.getOrder(annotations);
+		Integer order = OrderUtils.getOrder(element, annotations);
 		if (order == null  && obj instanceof DecoratingProxy) {
 			return findOrderFromAnnotation(((DecoratingProxy) obj).getDecoratedClass());
 		}
