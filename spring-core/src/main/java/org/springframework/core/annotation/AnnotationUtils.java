@@ -31,17 +31,11 @@ import java.util.Set;
 import java.util.function.Function;
 
 import org.springframework.core.BridgeMethodResolver;
-import org.springframework.core.annotation.AnnotationTypeMapping.MirrorSet;
-import org.springframework.core.annotation.AnnotationTypeMapping.Reference;
 import org.springframework.core.annotation.InternalAnnotationUtils.DefaultValueHolder;
 import org.springframework.core.annotation.MergedAnnotation.MapValues;
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
-import org.springframework.core.annotation.type.AnnotationType;
-import org.springframework.core.annotation.type.AnnotationTypeCache;
-import org.springframework.core.annotation.type.DeclaredAnnotation;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 /**
@@ -671,8 +665,10 @@ public abstract class AnnotationUtils {
 	public static void validateAnnotation(Annotation annotation) {
 		MigrateMethod.fromCall(() ->
 			InternalAnnotationUtils.validateAnnotation(annotation)
-		).to(() ->
-			DeclaredAnnotation.validate(annotation)
+		).to(() -> {
+			// FIXME
+			//DeclaredAnnotation.validate(annotation)
+		}
 		);
 	}
 
@@ -844,39 +840,40 @@ public abstract class AnnotationUtils {
 			InternalAnnotationUtils.postProcessAnnotationAttributes(annotatedElement, copy,
 					classValuesAsString)
 		).withArgumentCheck(copy, attributes).to(()-> {
-			if (attributes == null || attributes.annotationType() == null) {
-				return;
-			}
-			if (!attributes.validated) {
-				Class<? extends Annotation> annotationClass = attributes.annotationType();
-				AnnotationType annotationType = AnnotationType.resolve(annotationClass);
-				AnnotationTypeMapping mapping = AnnotationTypeMappings.forType(
-						annotationClass.getClassLoader(), RepeatableContainers.none(),
-						AnnotationFilter.mostAppropriateFor(annotationClass),
-						annotationType).get(annotationType.getClassName());
-				for (MirrorSet mirrorSet : mapping.getMirrorSets()) {
-					String targetName = getMirrorAttributeInUse(annotatedElement, attributes, mirrorSet);
-					if (targetName != null) {
-						Object targetValue = attributes.get(targetName);
-						for (Reference reference : mirrorSet) {
-							String name = reference.getAttribute().getAttributeName();
-							Object value = attributes.get(name);
-							if (!name.equals(targetName)) {
-								value = targetValue;
-							}
-							attributes.put(name, adaptValue(annotatedElement, value, classValuesAsString));
-						}
-					}
-				}
-			}
-			for (Map.Entry<String, Object> attributeEntry : attributes.entrySet()) {
-				String attributeName = attributeEntry.getKey();
-				Object value = attributeEntry.getValue();
-				if (value instanceof DefaultValueHolder) {
-					value = ((DefaultValueHolder) value).defaultValue;
-					attributes.put(attributeName, adaptValue(annotatedElement, value, classValuesAsString));
-				}
-			}
+			// FIXME
+//			if (attributes == null || attributes.annotationType() == null) {
+//				return;
+//			}
+//			if (!attributes.validated) {
+//				Class<? extends Annotation> annotationClass = attributes.annotationType();
+//				AnnotationType annotationType = AnnotationType.resolve(annotationClass);
+//				AnnotationTypeMapping mapping = AnnotationTypeMappings.forType(
+//						annotationClass.getClassLoader(), RepeatableContainers.none(),
+//						AnnotationFilter.mostAppropriateFor(annotationClass),
+//						annotationType).get(annotationType.getClassName());
+//				for (MirrorSet mirrorSet : mapping.getMirrorSets()) {
+//					String targetName = getMirrorAttributeInUse(annotatedElement, attributes, mirrorSet);
+//					if (targetName != null) {
+//						Object targetValue = attributes.get(targetName);
+//						for (Reference reference : mirrorSet) {
+//							String name = reference.getAttribute().getAttributeName();
+//							Object value = attributes.get(name);
+//							if (!name.equals(targetName)) {
+//								value = targetValue;
+//							}
+//							attributes.put(name, adaptValue(annotatedElement, value, classValuesAsString));
+//						}
+//					}
+//				}
+//			}
+//			for (Map.Entry<String, Object> attributeEntry : attributes.entrySet()) {
+//				String attributeName = attributeEntry.getKey();
+//				Object value = attributeEntry.getValue();
+//				if (value instanceof DefaultValueHolder) {
+//					value = ((DefaultValueHolder) value).defaultValue;
+//					attributes.put(attributeName, adaptValue(annotatedElement, value, classValuesAsString));
+//				}
+//			}
 		});
 	}
 
@@ -907,38 +904,6 @@ public abstract class AnnotationUtils {
 			return synthesized;
 		}
 		return value;
-	}
-
-	@Nullable
-	private static String getMirrorAttributeInUse(@Nullable Object annotatedElement,
-			AnnotationAttributes attributes, MirrorSet mirrorSet) {
-		String result = null;
-		for (Reference candidate : mirrorSet) {
-			String name = candidate.getAttribute().getAttributeName();
-			Object value = attributes.get(name);
-			if (value != null && !(value instanceof DefaultValueHolder)) {
-				if (result != null) {
-					String aliasedName = result;
-					Object aliasedValue = attributes.get(aliasedName);
-					if (!ObjectUtils.nullSafeEquals(value, aliasedValue)) {
-						String elementAsString = (annotatedElement != null
-								? annotatedElement.toString()
-								: "unknown element");
-						throw new AnnotationConfigurationException(
-								"In AnnotationAttributes for annotation ["
-										+ attributes.displayName + "] declared on "
-										+ elementAsString + ", " + "attribute '" + name
-										+ "' and its alias '" + aliasedName
-										+ "' are declared with values of ["
-										+ ObjectUtils.nullSafeToString(value) + "] and ["
-										+ ObjectUtils.nullSafeToString(aliasedValue) + "], "
-										+ "but only one is permitted.");
-					}
-				}
-				result = name;
-			}
-		}
-		return result;
 	}
 
 	/**
@@ -1168,9 +1133,6 @@ public abstract class AnnotationUtils {
 	 */
 	public static void clearCache() {
 		InternalAnnotationUtils.clearCache();
-		AnnotationTypeMappings.clearCache();
-		AnnotationsScanner.clearCache();
-		AnnotationTypeCache.clear();
 	}
 
 	private static <A extends Annotation> boolean isSingleLevelPresent(
