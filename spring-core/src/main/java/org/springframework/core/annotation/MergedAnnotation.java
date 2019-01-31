@@ -470,8 +470,8 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * @return a {@link MergedAnnotation} instance for the annotation
 	 */
 	static <A extends Annotation> MergedAnnotation<A> from(
-			@Nullable Object source, A annotation) {
-		throw new RuntimeException(); // FIXME
+			@Nullable AnnotatedElement source, A annotation) {
+		return StandardMergedAnnotations.from(source, annotation);
 	}
 
 	/**
@@ -512,9 +512,9 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * @see DeclaredAttributes#from(Map)
 	 */
 	static <A extends Annotation> MergedAnnotation<A> from(
-			@Nullable Object source, Class<A> annotationType,
+			@Nullable AnnotatedElement source, Class<A> annotationType,
 			@Nullable Map<String, ?> attributes) {
-		throw new RuntimeException(); // FIXME
+		return StandardMergedAnnotations.from(source, annotationType, attributes);
 	}
 
 	/**
