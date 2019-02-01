@@ -58,6 +58,9 @@ public abstract class RepeatableContainers {
 		return new ExplicitRepeatableContainer(this, repeatable, container);
 	}
 
+	Annotation[] findRepeatedAnnotations(Annotation annotation) {
+		return null;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
