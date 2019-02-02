@@ -27,7 +27,7 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
  */
 public class AnnotationTypeMappings {
 
-	public static AnnotationTypeMappings get(Class<? extends Annotation> annotationType) {
+	public static AnnotationTypeMappings lookup(Class<? extends Annotation> annotationType) {
 		return null;
 	}
 
@@ -39,7 +39,7 @@ public class AnnotationTypeMappings {
 		return 0;
 	}
 
-	public AnnotationTypeMapping getMapping(int index) {
+	public AnnotationTypeMapping get(int index) {
 		return null;
 	}
 

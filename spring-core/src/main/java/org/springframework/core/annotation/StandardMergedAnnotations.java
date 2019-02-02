@@ -18,9 +18,11 @@ package org.springframework.core.annotation;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -51,6 +53,8 @@ final class StandardMergedAnnotations implements MergedAnnotations {
 
 	private final AnnotationFilter annotationFilter;
 
+	private volatile List<Aggregate> aggregates;
+
 	private StandardMergedAnnotations(AnnotatedElement element,
 			SearchStrategy searchStrategy, RepeatableContainers repeatableContainers,
 			AnnotationFilter annotationFilter) {
@@ -75,7 +79,7 @@ final class StandardMergedAnnotations implements MergedAnnotations {
 
 	@Override
 	public Iterator<MergedAnnotation<Annotation>> iterator() {
-		return stream().iterator();
+		return Spliterators.iterator(spliterator());
 	}
 
 	@Override
@@ -112,10 +116,12 @@ final class StandardMergedAnnotations implements MergedAnnotations {
 		if (type == annotationType || type.getName().equals(annotationType)) {
 			return true;
 		}
-		Annotation[] repeating = this.repeatableContainers.findRepeatedAnnotations(
+		Annotation[] repeatedAnnotations = this.repeatableContainers.findRepeatedAnnotations(
 				annotation);
-		if (repeating != null) {
-			return repeating.length > 0 ? isPresent(annotationType, repeating[0]) : false;
+		if (repeatedAnnotations != null) {
+			return repeatedAnnotations.length > 0
+					? isPresent(annotationType, repeatedAnnotations[0])
+					: false;
 		}
 		return AnnotationTypeMappings.get(type).isPresent(annotationType,
 				this.annotationFilter);
@@ -142,7 +148,7 @@ final class StandardMergedAnnotations implements MergedAnnotations {
 		if (annotationType == null || this.annotationFilter.matches(annotationType)) {
 			return MergedAnnotation.missing();
 		}
-		return scan(annotationType, new GetSingleAnnotation<>());
+		return scan(annotationType, new FindMergedAnnotationProcessor<>());
 	}
 
 	@Override
@@ -164,7 +170,7 @@ final class StandardMergedAnnotations implements MergedAnnotations {
 		if (annotationType == null || this.annotationFilter.matches(annotationType)) {
 			return MergedAnnotation.missing();
 		}
-		return scan(annotationType, new GetSingleAnnotation<>());
+		return scan(annotationType, new FindMergedAnnotationProcessor<>());
 	}
 
 	@Override
@@ -183,6 +189,15 @@ final class StandardMergedAnnotations implements MergedAnnotations {
 	@Override
 	public Stream<MergedAnnotation<Annotation>> stream() {
 		throw new UnsupportedOperationException("Auto-generated method stub");
+	}
+
+	private List<Aggregate> getAggregates() {
+		List<Aggregate> aggregates = this.aggregates;
+		if (aggregates == null) {
+			aggregates = scan(null, new CollectAggregates());
+			this.aggregates = aggregates;
+		}
+		return aggregates;
 	}
 
 	public <C, R> R scan(C criteria, Processor<C, R> operation) {
@@ -209,7 +224,7 @@ final class StandardMergedAnnotations implements MergedAnnotations {
 	/**
 	 * {@link Processor} that finds a single {@link MergedAnnotation}.
 	 */
-	private class GetSingleAnnotation<A extends Annotation>
+	private class FindMergedAnnotationProcessor<A extends Annotation>
 			implements Processor<Object, MergedAnnotation<A>> {
 
 		private MergedAnnotationSelector<A> selector;
@@ -278,32 +293,93 @@ final class StandardMergedAnnotations implements MergedAnnotations {
 	}
 
 	/**
-	 * {@link Spliterator} used to consume merged annotations from multiple
-	 * aggregates in depth fist order.
+	 * {@link Processor} that finds a single {@link MergedAnnotation}.
 	 */
-	private class MergedAnnotationsSpliterator<A extends Annotation>
-			implements Spliterator<MergedAnnotation<A>> {
+	private class CollectAggregates implements Processor<Object, List<Aggregate>> {
 
-		private List<Aggregate> aggregates;
+		private final List<Aggregate> aggregates = new ArrayList<>();
 
-		public boolean tryAdvance(Consumer<? super MergedAnnotation<A>> action) {
-			Aggregate aggregate = findLowestDepthAggregate();
-			if (aggregate == null) {
-				return false;
-			}
-			aggregate.advance(action);
-			return true;
+		@Override
+		public List<Aggregate> process(Object criteria, int aggregateIndex, Object source,
+				Annotation[] annotations) {
+			this.aggregates.add(createAggregate(aggregateIndex, source, annotations));
+			return null;
 		}
 
-		private Aggregate findLowestDepthAggregate() {
-			Aggregate result = null;
-			for (Aggregate candidate : this.aggregates) {
-				if (result == null
-						|| candidate.getCurrentDepth() < result.getCurrentDepth()) {
-					result = candidate;
+		private Aggregate createAggregate(int aggregateIndex, Object source,
+				Annotation[] annotations) {
+			List<Annotation> aggregateAnnotations = getAggregateAnnotations(annotations);
+			return new Aggregate(aggregateIndex, source, aggregateAnnotations);
+		}
+
+		private List<Annotation> getAggregateAnnotations(Annotation[] annotations) {
+			List<Annotation> result = new ArrayList<>(annotations.length);
+			addAggregateAnnotations(result, annotations);
+			return result;
+		}
+
+		private void addAggregateAnnotations(List<Annotation> aggregateAnnotations,
+				Annotation[] annotations) {
+			for (Annotation annotation : annotations) {
+				if (!annotationFilter.matches(annotation)) {
+					Annotation[] repeatedAnnotations = repeatableContainers.findRepeatedAnnotations(
+							annotation);
+					if (repeatedAnnotations == null) {
+						addAggregateAnnotations(aggregateAnnotations,
+								repeatedAnnotations);
+					}
+					else {
+						aggregateAnnotations.add(annotation);
+					}
 				}
 			}
-			return result;
+		}
+
+	}
+
+	/**
+	 * {@link Spliterator} used to consume merged annotations from the
+	 * aggregates in depth fist order.
+	 */
+	private class AggregatesSpliterator<A extends Annotation>
+			implements Spliterator<MergedAnnotation<A>> {
+
+		private final List<Aggregate> aggregates;
+
+		private final int[][] positions;
+
+		public AggregatesSpliterator(List<Aggregate> aggregates) {
+			this.aggregates = aggregates;
+			this.positions = new int[aggregates.size()][];
+			for (int i = 0; i < aggregates.size(); i++) {
+				this.positions[i] = new int[aggregates.get(i).size()];
+			}
+		}
+
+		public boolean tryAdvance(Consumer<? super MergedAnnotation<A>> action) {
+			int aggregateIndex = -1;
+			int mappingsIndex = -1;
+			int lowestDepth = Integer.MAX_VALUE;
+			for (int i = 0; i < this.aggregates.size(); i++) {
+				Aggregate aggregate = this.aggregates.get(i);
+				for (int j = 0; j < aggregate.size(); j++) {
+					int postion = this.positions[i][j];
+					AnnotationTypeMapping mapping = aggregate.getMapping(j, postion);
+					if (mapping.getDepth() < lowestDepth) {
+						aggregateIndex = i;
+						mappingsIndex = j;
+						lowestDepth = mapping.getDepth();
+					}
+				}
+			}
+			if (aggregateIndex == -1) {
+				return false;
+			}
+			int postion = this.positions[aggregateIndex][mappingsIndex];
+			Aggregate aggregate = this.aggregates.get(aggregateIndex);
+			action.accept(aggregate.getMergedAnnotation(postion));
+			this.positions[aggregateIndex][mappingsIndex] = postion + 1;
+			return true;
 		}
 
 		@Override
@@ -322,55 +398,51 @@ final class StandardMergedAnnotations implements MergedAnnotations {
 			return NONNULL | IMMUTABLE;
 		}
 
-		private class Aggregate {
+	}
 
-			private int aggregateIndex;
+	private static class Aggregate {
 
-			private Annotation[] annotations;
+		private final int aggregateIndex;
 
-			private AnnotationTypeMappings[] mappings;
+		private final List<Annotation> annotations;
 
-			private int[] mappingPositions;
+		private final AnnotationTypeMappings[] mappings;
 
-			private int current;
-
-			private int getCurrentDepth() {
-				AnnotationTypeMapping mapping = getCurrentMapping();
-				return mapping != null ? mapping.getDepth() : Integer.MAX_VALUE;
+		public Aggregate(int aggregateIndex, Object source,
+				List<Annotation> annotations) {
+			this.aggregateIndex = aggregateIndex;
+			this.annotations = annotations;
+			this.mappings = new AnnotationTypeMappings[annotations.size()];
+			for (int i = 0; i < annotations.size(); i++) {
+				mappings[i] = AnnotationTypeMappings.lookup(
+						annotations.get(i).annotationType());
 			}
+		}
 
-			private AnnotationTypeMapping getCurrentMapping() {
-				if (this.current == -1) {
-					return null;
-				}
-				int position = this.mappingPositions[this.current];
-				return this.mappings[this.current].getMapping(position);
-			}
+		/**
+		 * @param j
+		 * @param postion
+		 * @return
+		 */
+		public AnnotationTypeMapping getMapping(int j, int postion) {
+			// TODO Auto-generated method stub
+			throw new UnsupportedOperationException("Auto-generated method stub");
+		}
 
-			public void advance(Consumer<? super MergedAnnotation<A>> action) {
-				int position = this.mappingPositions[this.current];
-				Annotation annotation = this.annotations[this.current];
-				AnnotationTypeMappings mappings = this.mappings[this.current];
-				AnnotationTypeMapping mapping = mappings.getMapping(position);
-				this.mappingPositions[this.current] = position++;
-				this.current = getNextIndex();
-				action.accept(StandardMergedAnnotation.from(annotation, mapping,
-						this.aggregateIndex));
-			}
+		/**
+		 * @param mappingIndex
+		 */
+		public <A extends Annotation> MergedAnnotation<A> getMergedAnnotation(int mappingIndex) {
+			// TODO Auto-generated method stub
+			throw new UnsupportedOperationException("Auto-generated method stub");
+		}
 
-			private int getNextIndex() {
-				int result = -1;
-				int lowestDepth = Integer.MAX_VALUE;
-				for (int i = 0; i < this.mappings.length; i++) {
-					AnnotationTypeMapping mapping = this.mappings[i].getMapping(
-							this.mappingPositions[i]);
-					if (mapping != null && mapping.getDepth() < lowestDepth) {
-						result = i;
-					}
-				}
-				return result;
-			}
+		public AnnotationTypeMappings getMappings(int index) {
+			return null;
+		}
 
+		public int size() {
+			return -1;
 		}
 
 	}
