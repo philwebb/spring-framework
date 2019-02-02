@@ -16,33 +16,30 @@
 
 package org.springframework.core.annotation;
 
-import java.lang.annotation.Annotation;
-
-import org.springframework.core.type.filter.AnnotationTypeFilter;
 
 /**
  *
  * @author pwebb
  * @since 5.1
  */
-public class AnnotationTypeMappings {
+public class AnnotationTypeMapping {
 
-	public static AnnotationTypeMappings get(Class<? extends Annotation> annotationType) {
-		return null;
+	/**
+	 * @param criteria
+	 * @param annotationFilter
+	 * @return
+	 */
+	public boolean isForType(Object annotationType, AnnotationFilter annotationFilter) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Auto-generated method stub");
 	}
 
-	public boolean isPresent(Object annotationType, AnnotationFilter annotationFilter) {
-		return false;
+	/**
+	 * @return
+	 */
+	public int getDepth() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Auto-generated method stub");
 	}
-
-	public int size() {
-		return 0;
-	}
-
-	public AnnotationTypeMapping getMapping(int index) {
-		return null;
-	}
-
-
 
 }

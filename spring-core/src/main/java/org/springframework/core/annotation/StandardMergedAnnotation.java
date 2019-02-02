@@ -18,31 +18,22 @@ package org.springframework.core.annotation;
 
 import java.lang.annotation.Annotation;
 
-import org.springframework.core.type.filter.AnnotationTypeFilter;
-
 /**
  *
  * @author pwebb
  * @since 5.1
  */
-public class AnnotationTypeMappings {
+public class StandardMergedAnnotation {
 
-	public static AnnotationTypeMappings get(Class<? extends Annotation> annotationType) {
-		return null;
+	/**
+	 * @param annotation
+	 * @param mapping
+	 * @return
+	 */
+	public static <A extends Annotation> MergedAnnotation<A> from(Annotation annotation,
+			AnnotationTypeMapping mapping, int aggregateIndex) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Auto-generated method stub");
 	}
-
-	public boolean isPresent(Object annotationType, AnnotationFilter annotationFilter) {
-		return false;
-	}
-
-	public int size() {
-		return 0;
-	}
-
-	public AnnotationTypeMapping getMapping(int index) {
-		return null;
-	}
-
-
 
 }

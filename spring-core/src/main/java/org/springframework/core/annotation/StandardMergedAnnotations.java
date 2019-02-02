@@ -19,10 +19,13 @@ package org.springframework.core.annotation;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Spliterator;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import org.springframework.core.annotation.AnnotationScanner.Processor;
 import org.springframework.lang.Nullable;
 
 /**
@@ -32,27 +35,42 @@ import org.springframework.lang.Nullable;
  */
 final class StandardMergedAnnotations implements MergedAnnotations {
 
+	@Nullable
 	private final Object source;
+
+	@Nullable
+	private final AnnotatedElement element;
+
+	@Nullable
+	private final SearchStrategy searchStrategy;
+
+	@Nullable
+	private final Annotation[] annotations;
 
 	private final RepeatableContainers repeatableContainers;
 
 	private final AnnotationFilter annotationFilter;
 
-	private final Annotation[] directlyPresent;
-
-	@Nullable
-	private final Supplier<Annotation[][]> aggregatesSupplier;
-
-	private volatile Annotation[][] aggregates;
-
-	public StandardMergedAnnotations(Object source,
-			RepeatableContainers repeatableContainers, AnnotationFilter annotationFilter,
-			Annotation[] directlyPresent, Supplier<Annotation[][]> aggregatesSupplier) {
-		this.source = source;
+	private StandardMergedAnnotations(AnnotatedElement element,
+			SearchStrategy searchStrategy, RepeatableContainers repeatableContainers,
+			AnnotationFilter annotationFilter) {
+		this.source = element;
+		this.element = element;
+		this.searchStrategy = searchStrategy;
+		this.annotations = null;
 		this.repeatableContainers = repeatableContainers;
 		this.annotationFilter = annotationFilter;
-		this.directlyPresent = directlyPresent;
-		this.aggregatesSupplier = aggregatesSupplier;
+	}
+
+	private StandardMergedAnnotations(@Nullable Object source, Annotation[] annotations,
+			RepeatableContainers repeatableContainers,
+			AnnotationFilter annotationFilter) {
+		this.source = source;
+		this.element = null;
+		this.searchStrategy = null;
+		this.annotations = annotations;
+		this.repeatableContainers = repeatableContainers;
+		this.annotationFilter = annotationFilter;
 	}
 
 	@Override
@@ -60,24 +78,47 @@ final class StandardMergedAnnotations implements MergedAnnotations {
 		return stream().iterator();
 	}
 
-	public <A extends Annotation> boolean isPresent(@Nullable Class<A> annotationType) {
+	@Override
+	public <A extends Annotation> boolean isPresent(Class<A> annotationType) {
 		if (annotationType == null || this.annotationFilter.matches(annotationType)) {
 			return false;
 		}
-		return isPresent(annotationType::equals);
+		return scan(annotationType, this::isPresent);
 	}
 
 	@Override
-	public <A extends Annotation> boolean isPresent(@Nullable String annotationType) {
+	public <A extends Annotation> boolean isPresent(String annotationType) {
 		if (annotationType == null || this.annotationFilter.matches(annotationType)) {
 			return false;
 		}
-		return isPresent(withClassName(annotationType));
+		return scan(annotationType, this::isPresent);
 	}
 
-	private boolean isPresent(Predicate<Class<? extends Annotation>> typePredicate) {
-		return isPresent(this.directlyPresent, this::getAggregates, typePredicate,
-				this.repeatableContainers, this.annotationFilter);
+	private boolean isPresent(Object annotationType, int aggregateIndex, Object source,
+			Annotation[] annotations) {
+		for (Annotation annotation : annotations) {
+			if (isPresent(annotationType, annotation)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean isPresent(Object annotationType, Annotation annotation) {
+		Class<? extends Annotation> type = annotation.annotationType();
+		if (this.annotationFilter.matches(type)) {
+			return false;
+		}
+		if (type == annotationType || type.getName().equals(annotationType)) {
+			return true;
+		}
+		Annotation[] repeating = this.repeatableContainers.findRepeatedAnnotations(
+				annotation);
+		if (repeating != null) {
+			return repeating.length > 0 ? isPresent(annotationType, repeating[0]) : false;
+		}
+		return AnnotationTypeMappings.get(type).isPresent(annotationType,
+				this.annotationFilter);
 	}
 
 	@Override
@@ -98,10 +139,10 @@ final class StandardMergedAnnotations implements MergedAnnotations {
 			@Nullable Class<A> annotationType,
 			@Nullable Predicate<? super MergedAnnotation<A>> predicate,
 			@Nullable MergedAnnotationSelector<A> selector) {
-		if (annotationType == null) {
+		if (annotationType == null || this.annotationFilter.matches(annotationType)) {
 			return MergedAnnotation.missing();
 		}
-		return get(annotationType::equals, predicate, selector);
+		return scan(annotationType, new GetSingleAnnotation<>());
 	}
 
 	@Override
@@ -117,26 +158,19 @@ final class StandardMergedAnnotations implements MergedAnnotations {
 	}
 
 	@Override
-	public <A extends Annotation> MergedAnnotation<A> get(String annotationType,
-			Predicate<? super MergedAnnotation<A>> predicate,
-			MergedAnnotationSelector<A> selector) {
-		if (annotationType == null) {
+	public <A extends Annotation> MergedAnnotation<A> get(@Nullable String annotationType,
+			@Nullable Predicate<? super MergedAnnotation<A>> predicate,
+			@Nullable MergedAnnotationSelector<A> selector) {
+		if (annotationType == null || this.annotationFilter.matches(annotationType)) {
 			return MergedAnnotation.missing();
 		}
-		return get(withClassName(annotationType), predicate, selector);
-	}
-
-	private <A extends Annotation> MergedAnnotation<A> get(
-			Predicate<Class<? extends Annotation>> typePredicate,
-			Predicate<? super MergedAnnotation<A>> predicate,
-			MergedAnnotationSelector<A> selector) {
-		// FIXME
-		return null;
+		return scan(annotationType, new GetSingleAnnotation<>());
 	}
 
 	@Override
 	public <A extends Annotation> Stream<MergedAnnotation<A>> stream(
 			Class<A> annotationType) {
+
 		throw new UnsupportedOperationException("Auto-generated method stub");
 	}
 
@@ -151,119 +185,194 @@ final class StandardMergedAnnotations implements MergedAnnotations {
 		throw new UnsupportedOperationException("Auto-generated method stub");
 	}
 
-	private Annotation[][] getAggregates() {
-		Annotation[][] aggregates = this.aggregates;
-		if (aggregates == null) {
-			aggregates = this.aggregatesSupplier.get();
-			this.aggregates = aggregates;
+	public <C, R> R scan(C criteria, Processor<C, R> operation) {
+		if (this.annotations != null) {
+			R runResult = operation.process(criteria, 0, this.source, this.annotations);
+			return operation.postProcess(runResult);
 		}
-		return aggregates;
+		return AnnotationScanner.search(this.searchStrategy, this.element, criteria,
+				operation);
 	}
 
-	static boolean isPresent(AnnotatedElement element,
-			Class<? extends Annotation> annotationType, SearchStrategy searchStrategy,
-			RepeatableContainers repeatableContainers,
-			AnnotationFilter annotationFilter) {
-		if (annotationType == null || annotationFilter.matches(annotationType)) {
-			return false;
-		}
-		return isPresent(element, annotationType::equals, searchStrategy,
-				repeatableContainers, annotationFilter);
-	}
-
-	static boolean isPresent(AnnotatedElement element, String annotationType,
+	public static MergedAnnotations from(AnnotatedElement element,
 			SearchStrategy searchStrategy, RepeatableContainers repeatableContainers,
 			AnnotationFilter annotationFilter) {
-		if (annotationType == null || annotationFilter.matches(annotationType)) {
-			return false;
-		}
-		return isPresent(element, withClassName(annotationType), searchStrategy,
-				repeatableContainers, annotationFilter);
+		return null;
 	}
 
-	private static boolean isPresent(AnnotatedElement element,
-			Predicate<Class<? extends Annotation>> predicate,
-			SearchStrategy searchStrategy, RepeatableContainers repeatableContainers,
+	public static MergedAnnotations from(@Nullable Object source,
+			Annotation[] annotations, RepeatableContainers repeatableContainers,
 			AnnotationFilter annotationFilter) {
-		return isPresent(AnnotationScanner.getDirectlyPresent(element, searchStrategy),
-				AnnotationScanner.getAggregatesSupplier(element, searchStrategy),
-				predicate, repeatableContainers, annotationFilter);
+		return null;
 	}
 
-	private static boolean isPresent(Annotation[] directlyPresent,
-			Supplier<Annotation[][]> aggregatesSupplier,
-			Predicate<Class<? extends Annotation>> typePredicate,
-			RepeatableContainers repeatableContainers,
-			AnnotationFilter annotationFilter) {
-		if (isPresent(directlyPresent, typePredicate, repeatableContainers,
-				annotationFilter)) {
-			return true;
-		}
-		Annotation[][] aggregates = aggregatesSupplier.get();
-		for (Annotation[] aggregateAnnotations : aggregates) {
-			if (isPresent(aggregateAnnotations, typePredicate, repeatableContainers,
-					annotationFilter)) {
-				return true;
-			}
-		}
-		return false;
-	}
+	/**
+	 * {@link Processor} that finds a single {@link MergedAnnotation}.
+	 */
+	private class GetSingleAnnotation<A extends Annotation>
+			implements Processor<Object, MergedAnnotation<A>> {
 
-	private static boolean isPresent(Annotation[] candidates,
-			Predicate<Class<? extends Annotation>> typePredicate,
-			RepeatableContainers repeatableContainers,
-			AnnotationFilter annotationFilter) {
-		for (Annotation candidate : candidates) {
-			if (isPresent(candidate, typePredicate, repeatableContainers,
-					annotationFilter)) {
-				return true;
-			}
-		}
-		return false;
-	}
+		private MergedAnnotationSelector<A> selector;
 
-	private static boolean isPresent(Annotation candidate,
-			Predicate<Class<? extends Annotation>> typePredicate,
-			RepeatableContainers repeatableContainers,
-			AnnotationFilter annotationFilter) {
-		Class<? extends Annotation> annotationType = candidate.annotationType();
-		if (annotationFilter.matches(annotationType)) {
-			return false;
-		}
-		Annotation[] repeatedAnnotations = repeatableContainers.findRepeatedAnnotations(
-				candidate);
-		if (repeatedAnnotations != null) {
-			for (Annotation repeatedAnnotation : repeatedAnnotations) {
-				if (isPresent(repeatedAnnotation, typePredicate, repeatableContainers,
-						annotationFilter)) {
-					return true;
+		@Nullable
+		private Predicate<? super MergedAnnotation<A>> predicate;
+
+		@Nullable
+		private MergedAnnotation<A> result;
+
+		@Override
+		public MergedAnnotation<A> process(Object type, int aggregateIndex, Object source,
+				Annotation[] annotations) {
+			for (Annotation annotation : annotations) {
+				if (annotationFilter.matches(annotation)) {
+					continue;
+				}
+				for (Annotation candidate : annotations) {
+					MergedAnnotation<A> result = process(type, aggregateIndex, source,
+							candidate);
+					if (result != null) {
+						return result;
+					}
 				}
 			}
+			return null;
 		}
-		return AnnotationTypeMappings.get(annotationType).isPresent(typePredicate,
-				annotationFilter);
+
+		private MergedAnnotation<A> process(Object type, int aggregateIndex,
+				Object source, Annotation annotation) {
+			Annotation[] repeatedAnnotations = repeatableContainers.findRepeatedAnnotations(
+					annotation);
+			if (repeatedAnnotations != null) {
+				return process(type, aggregateIndex, source, repeatedAnnotations);
+			}
+			AnnotationTypeMappings mappings = AnnotationTypeMappings.get(
+					annotation.annotationType());
+			for (int i = 0; i < mappings.size(); i++) {
+				AnnotationTypeMapping mapping = mappings.getMapping(i);
+				if (mapping.isForType(type, annotationFilter)) {
+					MergedAnnotation<A> candidate = StandardMergedAnnotation.from(
+							annotation, mapping, aggregateIndex);
+					if (candidate != null) {
+						if (this.selector.isBestCandidate(candidate)) {
+							return candidate;
+						}
+						updateLastResult(candidate);
+					}
+				}
+			}
+			return null;
+		}
+
+		private void updateLastResult(MergedAnnotation<A> candidate) {
+			this.result = this.result != null
+					? this.selector.select(this.result, candidate)
+					: this.result;
+		}
+
+		@Override
+		public MergedAnnotation<A> postProcess(MergedAnnotation<A> result) {
+			result = result != null ? result : this.result;
+			return result != null ? result : MergedAnnotation.missing();
+		}
+
 	}
 
-	static MergedAnnotations from(Object source, Annotation[] annotations,
-			RepeatableContainers repeatableContainers,
-			AnnotationFilter annotationFilter) {
-		return new StandardMergedAnnotations(source, repeatableContainers,
-				annotationFilter, annotations, null);
-	}
+	/**
+	 * {@link Spliterator} used to consume merged annotations from multiple
+	 * aggregates in depth fist order.
+	 */
+	private class MergedAnnotationsSpliterator<A extends Annotation>
+			implements Spliterator<MergedAnnotation<A>> {
 
-	static MergedAnnotations from(AnnotatedElement element, SearchStrategy searchStrategy,
-			RepeatableContainers repeatableContainers,
-			AnnotationFilter annotationFilter) {
-		Annotation[] directlyPresent = AnnotationScanner.getDirectlyPresent(element,
-				searchStrategy);
-		return new StandardMergedAnnotations(element, repeatableContainers,
-				annotationFilter, directlyPresent,
-				AnnotationScanner.getAggregatesSupplier(element, searchStrategy));
-	}
+		private List<Aggregate> aggregates;
 
-	private static Predicate<Class<? extends Annotation>> withClassName(
-			String annotationType) {
-		return candidate -> candidate.getName().equals(annotationType);
+		public boolean tryAdvance(Consumer<? super MergedAnnotation<A>> action) {
+			Aggregate aggregate = findLowestDepthAggregate();
+			if (aggregate == null) {
+				return false;
+			}
+			aggregate.advance(action);
+			return true;
+		}
+
+		private Aggregate findLowestDepthAggregate() {
+			Aggregate result = null;
+			for (Aggregate candidate : this.aggregates) {
+				if (result == null
+						|| candidate.getCurrentDepth() < result.getCurrentDepth()) {
+					result = candidate;
+				}
+			}
+			return result;
+		}
+
+		@Override
+		public Spliterator<MergedAnnotation<A>> trySplit() {
+			return null;
+		}
+
+		@Override
+		public long estimateSize() {
+			// FIXME
+			return Integer.MAX_VALUE;
+		}
+
+		@Override
+		public int characteristics() {
+			return NONNULL | IMMUTABLE;
+		}
+
+		private class Aggregate {
+
+			private int aggregateIndex;
+
+			private Annotation[] annotations;
+
+			private AnnotationTypeMappings[] mappings;
+
+			private int[] mappingPositions;
+
+			private int current;
+
+			private int getCurrentDepth() {
+				AnnotationTypeMapping mapping = getCurrentMapping();
+				return mapping != null ? mapping.getDepth() : Integer.MAX_VALUE;
+			}
+
+			private AnnotationTypeMapping getCurrentMapping() {
+				if (this.current == -1) {
+					return null;
+				}
+				int position = this.mappingPositions[this.current];
+				return this.mappings[this.current].getMapping(position);
+			}
+
+			public void advance(Consumer<? super MergedAnnotation<A>> action) {
+				int position = this.mappingPositions[this.current];
+				Annotation annotation = this.annotations[this.current];
+				AnnotationTypeMappings mappings = this.mappings[this.current];
+				AnnotationTypeMapping mapping = mappings.getMapping(position);
+				this.mappingPositions[this.current] = position++;
+				this.current = getNextIndex();
+				action.accept(StandardMergedAnnotation.from(annotation, mapping,
+						this.aggregateIndex));
+			}
+
+			private int getNextIndex() {
+				int result = -1;
+				int lowestDepth = Integer.MAX_VALUE;
+				for (int i = 0; i < this.mappings.length; i++) {
+					AnnotationTypeMapping mapping = this.mappings[i].getMapping(
+							this.mappingPositions[i]);
+					if (mapping != null && mapping.getDepth() < lowestDepth) {
+						result = i;
+					}
+				}
+				return result;
+			}
+
+		}
+
 	}
 
 }

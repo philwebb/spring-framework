@@ -18,7 +18,9 @@ package org.springframework.core.annotation;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
-import java.util.function.Supplier;
+import java.util.function.BiFunction;
+
+import io.reactivex.functions.BiPredicate;
 
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 
@@ -28,30 +30,25 @@ import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
  */
 class AnnotationScanner {
 
-	/**
-	 * @param element
-	 * @param searchStrategy
-	 */
-	public static Annotation[] getDirectlyPresent(AnnotatedElement element,
-			SearchStrategy searchStrategy) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Auto-generated method stub");
+	public static <C, R> R search(SearchStrategy searchStrategy, AnnotatedElement element,
+			C criteria, Processor<C, R> operation) {
+		return search(searchStrategy, element, criteria, null, operation);
 	}
 
-	/**
-	 * @param element
-	 * @param searchStrategy
-	 * @return
-	 */
-	public static Supplier<Annotation[][]> getAggregatesSupplier(AnnotatedElement element,
-			SearchStrategy searchStrategy) {
-		return () -> getAggregates(element, searchStrategy);
+	public static <C, R> R search(SearchStrategy searchStrategy, AnnotatedElement element,
+			C criteria, BiPredicate<C, Class<?>> classFilter, Processor<C, R> operation) {
+		return null;
 	}
 
-	private static Annotation[][] getAggregates(AnnotatedElement element,
-			SearchStrategy searchStrategy) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Auto-generated method stub");
+	@FunctionalInterface
+	static interface Processor<C, R> {
+
+		R process(C criteria, int aggregateIndex, Object source, Annotation[] annotations);
+
+		default R postProcess(R runResult) {
+			return runResult;
+		}
+
 	}
 
 }
