@@ -27,7 +27,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import org.springframework.core.annotation.AnnotationScanner.Processor;
+import org.springframework.core.annotation.AnnotationsScanner.Processor;
 import org.springframework.lang.Nullable;
 
 /**
@@ -123,7 +123,7 @@ final class StandardMergedAnnotations implements MergedAnnotations {
 					? isPresent(annotationType, repeatedAnnotations[0])
 					: false;
 		}
-		return AnnotationTypeMappings.get(type).isPresent(annotationType,
+		return AnnotationTypeMappings.lookup(type).isPresent(annotationType,
 				this.annotationFilter);
 	}
 
@@ -203,9 +203,9 @@ final class StandardMergedAnnotations implements MergedAnnotations {
 	public <C, R> R scan(C criteria, Processor<C, R> operation) {
 		if (this.annotations != null) {
 			R runResult = operation.process(criteria, 0, this.source, this.annotations);
-			return operation.postProcess(runResult);
+			return operation.getScanResult(runResult);
 		}
-		return AnnotationScanner.search(this.searchStrategy, this.element, criteria,
+		return AnnotationsScanner.scan(this.element, this.searchStrategy, criteria,
 				operation);
 	}
 
@@ -260,10 +260,10 @@ final class StandardMergedAnnotations implements MergedAnnotations {
 			if (repeatedAnnotations != null) {
 				return process(type, aggregateIndex, source, repeatedAnnotations);
 			}
-			AnnotationTypeMappings mappings = AnnotationTypeMappings.get(
+			AnnotationTypeMappings mappings = AnnotationTypeMappings.lookup(
 					annotation.annotationType());
 			for (int i = 0; i < mappings.size(); i++) {
-				AnnotationTypeMapping mapping = mappings.getMapping(i);
+				AnnotationTypeMapping mapping = mappings.get(i);
 				if (mapping.isForType(type, annotationFilter)) {
 					MergedAnnotation<A> candidate = StandardMergedAnnotation.from(
 							annotation, mapping, aggregateIndex);
@@ -285,7 +285,7 @@ final class StandardMergedAnnotations implements MergedAnnotations {
 		}
 
 		@Override
-		public MergedAnnotation<A> postProcess(MergedAnnotation<A> result) {
+		public MergedAnnotation<A> getScanResult(MergedAnnotation<A> result) {
 			result = result != null ? result : this.result;
 			return result != null ? result : MergedAnnotation.missing();
 		}
@@ -346,39 +346,38 @@ final class StandardMergedAnnotations implements MergedAnnotations {
 
 		private final List<Aggregate> aggregates;
 
-		private final int[][] positions;
+		private final int[][] currentMappingIndex;
 
 		public AggregatesSpliterator(List<Aggregate> aggregates) {
 			this.aggregates = aggregates;
-			this.positions = new int[aggregates.size()][];
+			this.currentMappingIndex = new int[aggregates.size()][];
 			for (int i = 0; i < aggregates.size(); i++) {
-				this.positions[i] = new int[aggregates.get(i).size()];
+				this.currentMappingIndex[i] = new int[aggregates.get(i).size()];
 			}
 		}
 
 		public boolean tryAdvance(Consumer<? super MergedAnnotation<A>> action) {
 			int aggregateIndex = -1;
-			int mappingsIndex = -1;
+			int annotationIndex = -1;
 			int lowestDepth = Integer.MAX_VALUE;
 			for (int i = 0; i < this.aggregates.size(); i++) {
 				Aggregate aggregate = this.aggregates.get(i);
 				for (int j = 0; j < aggregate.size(); j++) {
-					int postion = this.positions[i][j];
-					AnnotationTypeMapping mapping = aggregate.getMapping(j, postion);
+					int mappingIndex = this.currentMappingIndex[i][j];
+					AnnotationTypeMapping mapping = aggregate.getMapping(j, mappingIndex);
 					if (mapping.getDepth() < lowestDepth) {
 						aggregateIndex = i;
-						mappingsIndex = j;
-						lowestDepth = mapping.getDepth();
+						annotationIndex = j;
 					}
 				}
 			}
 			if (aggregateIndex == -1) {
 				return false;
 			}
-			int postion = this.positions[aggregateIndex][mappingsIndex];
+			int mappingIndex = this.currentMappingIndex[aggregateIndex][annotationIndex];
 			Aggregate aggregate = this.aggregates.get(aggregateIndex);
-			action.accept(aggregate.getMergedAnnotation(postion));
-			this.positions[aggregateIndex][mappingsIndex] = postion + 1;
+			action.accept(aggregate.getMergedAnnotation(annotationIndex, mappingIndex));
+			this.currentMappingIndex[aggregateIndex][annotationIndex] = mappingIndex + 1;
 			return true;
 		}
 
@@ -419,30 +418,17 @@ final class StandardMergedAnnotations implements MergedAnnotations {
 			}
 		}
 
-		/**
-		 * @param j
-		 * @param postion
-		 * @return
-		 */
-		public AnnotationTypeMapping getMapping(int j, int postion) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Auto-generated method stub");
+		public int size() {
+			return this.annotations.size();
 		}
 
-		/**
-		 * @param mappingIndex
-		 */
-		public <A extends Annotation> MergedAnnotation<A> getMergedAnnotation(int mappingIndex) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Auto-generated method stub");
-		}
-
-		public AnnotationTypeMappings getMappings(int index) {
+		public AnnotationTypeMapping getMapping(int annotationIndex, int mappingIndex) {
 			return null;
 		}
 
-		public int size() {
-			return -1;
+		public <A extends Annotation> MergedAnnotation<A> getMergedAnnotation(
+				int annotationIndex, int mappingIndex) {
+			return null;
 		}
 
 	}
