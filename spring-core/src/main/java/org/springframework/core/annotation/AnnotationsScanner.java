@@ -72,9 +72,8 @@ class AnnotationsScanner {
 	public static <C, R> R scan(AnnotatedElement element, SearchStrategy searchStrategy,
 			C criteria, @Nullable BiPredicate<C, Class<?>> classFilter,
 			Processor<C, R> processor) {
-		R processResult = process(element, searchStrategy, criteria, classFilter,
-				processor);
-		return processor.getScanResult(processResult);
+		return processor.getScanResult(
+				process(element, searchStrategy, criteria, classFilter, processor));
 	}
 
 	private static <C, R> R process(AnnotatedElement element,
@@ -96,24 +95,18 @@ class AnnotationsScanner {
 			Processor<C, R> processor) {
 		switch (searchStrategy) {
 			case DIRECT:
-				return processClassDirect(element, criteria, classFilter, processor);
+				return processElement(element, criteria, classFilter, processor);
 			case INHERITED_ANNOTATIONS:
 				return processClassInheritedAnnotations(element, criteria, classFilter,
 						processor);
 			case SUPER_CLASS:
-				return processClassSuperClass(element, criteria, classFilter, processor);
+				return processClassHierarchy(element, criteria, classFilter, processor,
+						new int[] { 0 }, false);
 			case EXHAUSTIVE:
-				return processClassExhaustive(element, criteria, classFilter, processor);
+				return processClassHierarchy(element, criteria, classFilter, processor,
+						new int[] { 0 }, true);
 		}
 		throw new IllegalStateException("Unsupported search strategy " + searchStrategy);
-	}
-
-	private static <C, R> R processClassDirect(Class<?> element, C criteria,
-			BiPredicate<C, Class<?>> classFilter, Processor<C, R> processor) {
-		if (isFiltered(element, criteria, classFilter)) {
-			return null;
-		}
-		return processElement(element, criteria, classFilter, processor);
 	}
 
 	private static <C, R> R processClassInheritedAnnotations(Class<?> element, C criteria,
@@ -155,40 +148,30 @@ class AnnotationsScanner {
 		return null;
 	}
 
-	private static <C, R> R processClassSuperClass(Class<?> element, C criteria,
-			@Nullable BiPredicate<C, Class<?>> classFilter, Processor<C, R> processor) {
-		return processClassHierarchy(element, new int[] { 0 }, false, criteria,
-				classFilter, processor);
-	}
-
-	private static <C, R> R processClassExhaustive(Class<?> element, C criteria,
-			@Nullable BiPredicate<C, Class<?>> classFilter, Processor<C, R> processor) {
-		return processClassHierarchy(element, new int[] { 0 }, true, criteria,
-				classFilter, processor);
-	}
-
-	private static <C, R> R processClassHierarchy(Class<?> source, int[] aggregateIndex,
-			boolean includeInterfaces, C criteria,
-			@Nullable BiPredicate<C, Class<?>> classFilter, Processor<C, R> processor) {
-		Annotation[] annotations = getDeclaredAnnotations(source, criteria, classFilter);
-		R result = processor.process(criteria, aggregateIndex[0], source, annotations);
+	private static <C, R> R processClassHierarchy(Class<?> sourceClass, C criteria,
+			@Nullable BiPredicate<C, Class<?>> classFilter, Processor<C, R> processor,
+			int[] aggregateIndex, boolean includeInterfaces) {
+		Annotation[] annotations = getDeclaredAnnotations(sourceClass, criteria,
+				classFilter);
+		R result = processor.process(criteria, aggregateIndex[0], sourceClass,
+				annotations);
 		if (result != null) {
 			return result;
 		}
 		aggregateIndex[0]++;
 		if (includeInterfaces) {
-			for (Class<?> interfaceType : source.getInterfaces()) {
-				R interfacesResult = processClassHierarchy(interfaceType, aggregateIndex,
-						includeInterfaces, criteria, classFilter, processor);
+			for (Class<?> interfaceType : sourceClass.getInterfaces()) {
+				R interfacesResult = processClassHierarchy(interfaceType, criteria,
+						classFilter, processor, aggregateIndex, includeInterfaces);
 				if (interfacesResult != null) {
 					return interfacesResult;
 				}
 			}
 		}
-		Class<?> superclass = source.getSuperclass();
+		Class<?> superclass = sourceClass.getSuperclass();
 		if (superclass != Object.class && superclass != null) {
-			R superclassResult = processClassHierarchy(superclass, aggregateIndex,
-					includeInterfaces, criteria, classFilter, processor);
+			R superclassResult = processClassHierarchy(superclass, criteria, classFilter,
+					processor, aggregateIndex, includeInterfaces);
 			if (superclassResult != null) {
 				return superclassResult;
 			}
@@ -196,69 +179,60 @@ class AnnotationsScanner {
 		return null;
 	}
 
-	private static <C, R> R processMethod(Method method, SearchStrategy searchStrategy,
+	private static <C, R> R processMethod(Method element, SearchStrategy searchStrategy,
 			C criteria, @Nullable BiPredicate<C, Class<?>> classFilter,
 			Processor<C, R> processor) {
 		switch (searchStrategy) {
 			case DIRECT:
 			case INHERITED_ANNOTATIONS:
-				return processMethodDirect(method, criteria, classFilter, processor);
+				return processMethodAnnotations(element, element.getDeclaringClass(),
+						criteria, 0, classFilter, processor);
 			case SUPER_CLASS:
-				return processMethodSuperClass(method, criteria, classFilter, processor);
+				return processMethodHierarchy(element.getDeclaringClass(), element,
+						criteria, classFilter, processor, new int[] { 0 }, false);
 			case EXHAUSTIVE:
-				return processMethodExhaustive(method, criteria, classFilter, processor);
+				return processMethodHierarchy(element.getDeclaringClass(), element,
+						criteria, classFilter, processor, new int[] { 0 }, true);
 		}
 		throw new IllegalStateException("Unsupported search strategy " + searchStrategy);
 	}
 
-	private static <C, R> R processMethodDirect(Method method, C criteria,
-			BiPredicate<C, Class<?>> classFilter, Processor<C, R> processor) {
-		return processMethodAnnotations(method, method.getDeclaringClass(), criteria, 0,
-				classFilter, processor);
-	}
-
-	private static <C, R> R processMethodSuperClass(Method element, C criteria,
-			BiPredicate<C, Class<?>> classFilter, Processor<C, R> processor) {
-		return processMethodHierarchy(element, element.getDeclaringClass(),
-				new int[] { 0 }, false, criteria, classFilter, processor);
-	}
-
-	private static <C, R> R processMethodExhaustive(Method element, C criteria,
-			BiPredicate<C, Class<?>> classFilter, Processor<C, R> processor) {
-		return processMethodHierarchy(element, element.getDeclaringClass(),
-				new int[] { 0 }, true, criteria, classFilter, processor);
-	}
-
-	private static <C, R> R processMethodHierarchy(Method element, Class<?> source,
-			int[] aggregateIndex, boolean includeInterfaces, C criteria,
-			@Nullable BiPredicate<C, Class<?>> classFilter, Processor<C, R> processor) {
-		if (element.getDeclaringClass() == source) {
-			processMethodAnnotations(element, source, criteria, aggregateIndex[0],
-					classFilter, processor);
+	private static <C, R> R processMethodHierarchy(Class<?> sourceClass, Method element,
+			C criteria, @Nullable BiPredicate<C, Class<?>> classFilter,
+			Processor<C, R> processor, int[] aggregateIndex, boolean includeInterfaces) {
+		if (element.getDeclaringClass() == sourceClass) {
+			R result = processMethodAnnotations(element, sourceClass, criteria,
+					aggregateIndex[0], classFilter, processor);
+			if (result != null) {
+				return result;
+			}
 		}
 		else {
-			for (Method method : getMethods(source)) {
-				if (isOverride(element, method)) {
-					processMethodAnnotations(method, source, criteria, aggregateIndex[0],
-							classFilter, processor);
+			for (Method candidate : getMethods(sourceClass, criteria, classFilter)) {
+				if (isOverride(element, candidate)) {
+					R result = processMethodAnnotations(candidate, sourceClass, criteria,
+							aggregateIndex[0], classFilter, processor);
+					if (result != null) {
+						return result;
+					}
 				}
 			}
 		}
 		aggregateIndex[0]++;
 		if (includeInterfaces) {
-			for (Class<?> interfaceType : source.getInterfaces()) {
-				R interfacesResult = processMethodHierarchy(element, interfaceType,
-						aggregateIndex, includeInterfaces, criteria, classFilter,
-						processor);
+			for (Class<?> interfaceType : sourceClass.getInterfaces()) {
+				R interfacesResult = processMethodHierarchy(interfaceType, element,
+						criteria, classFilter, processor, aggregateIndex,
+						includeInterfaces);
 				if (interfacesResult != null) {
 					return interfacesResult;
 				}
 			}
 		}
-		Class<?> superclass = source.getSuperclass();
+		Class<?> superclass = sourceClass.getSuperclass();
 		if (superclass != Object.class && superclass != null) {
-			R superclassResult = processMethodHierarchy(element, superclass,
-					aggregateIndex, includeInterfaces, criteria, classFilter, processor);
+			R superclassResult = processMethodHierarchy(superclass, element, criteria,
+					classFilter, processor, aggregateIndex, includeInterfaces);
 			if (superclassResult != null) {
 				return superclassResult;
 			}
@@ -266,32 +240,36 @@ class AnnotationsScanner {
 		return null;
 	}
 
-	private static Method[] getMethods(Class<?> type) {
+	private static <C> Method[] getMethods(Class<?> type, C criteria,
+			BiPredicate<C, Class<?>> classFilter) {
 		if (type == Object.class) {
 			return NO_METHODS;
 		}
 		if (type.isInterface() && ClassUtils.isJavaLanguageInterface(type)) {
 			return NO_METHODS;
 		}
+		if (isFiltered(type, criteria, classFilter)) {
+			return NO_METHODS;
+		}
 		return type.isInterface() ? type.getMethods() : type.getDeclaredMethods();
 	}
 
-	private static boolean isOverride(Method source, Method candidate) {
+	private static boolean isOverride(Method element, Method candidate) {
 		return !Modifier.isPrivate(candidate.getModifiers())
-				&& candidate.getName().equals(source.getName())
-				&& hasSameParameterTypes(source, candidate);
+				&& candidate.getName().equals(element.getName())
+				&& hasSameParameterTypes(element, candidate);
 	}
 
-	private static boolean hasSameParameterTypes(Method source, Method candidate) {
-		if (candidate.getParameterCount() != source.getParameterCount()) {
+	private static boolean hasSameParameterTypes(Method element, Method candidate) {
+		if (candidate.getParameterCount() != element.getParameterCount()) {
 			return false;
 		}
-		Class<?>[] sourceTypes = source.getParameterTypes();
+		Class<?>[] sourceTypes = element.getParameterTypes();
 		Class<?>[] candidateTypes = candidate.getParameterTypes();
 		if (Arrays.equals(candidateTypes, sourceTypes)) {
 			return true;
 		}
-		return hasSameGenericTypeParameters(source, candidate, sourceTypes);
+		return hasSameGenericTypeParameters(element, candidate, sourceTypes);
 	}
 
 	private static boolean hasSameGenericTypeParameters(Method source, Method candidate,
@@ -331,9 +309,8 @@ class AnnotationsScanner {
 
 	private static <C, R> R processElement(AnnotatedElement element, C criteria,
 			@Nullable BiPredicate<C, Class<?>> classFilter, Processor<C, R> processor) {
-		Annotation[] declaredAnnotations = getDeclaredAnnotations(element, criteria,
-				classFilter);
-		return processor.process(criteria, 0, element, declaredAnnotations);
+		return processor.process(criteria, 0, element,
+				getDeclaredAnnotations(element, criteria, classFilter));
 	}
 
 	private static <C, R> Annotation[] getDeclaredAnnotations(AnnotatedElement element,
