@@ -35,7 +35,7 @@ import org.springframework.lang.Nullable;
  * @author Phillip Webb
  * @since 5.1
  */
-final class StandardMergedAnnotations implements MergedAnnotations {
+final class TypeMappedAnnotations implements MergedAnnotations {
 
 	@Nullable
 	private final Object source;
@@ -55,7 +55,7 @@ final class StandardMergedAnnotations implements MergedAnnotations {
 
 	private volatile List<Aggregate> aggregates;
 
-	private StandardMergedAnnotations(AnnotatedElement element,
+	private TypeMappedAnnotations(AnnotatedElement element,
 			SearchStrategy searchStrategy, RepeatableContainers repeatableContainers,
 			AnnotationFilter annotationFilter) {
 		this.source = element;
@@ -66,7 +66,7 @@ final class StandardMergedAnnotations implements MergedAnnotations {
 		this.annotationFilter = annotationFilter;
 	}
 
-	private StandardMergedAnnotations(@Nullable Object source, Annotation[] annotations,
+	private TypeMappedAnnotations(@Nullable Object source, Annotation[] annotations,
 			RepeatableContainers repeatableContainers,
 			AnnotationFilter annotationFilter) {
 		this.source = source;
@@ -123,8 +123,9 @@ final class StandardMergedAnnotations implements MergedAnnotations {
 					? isPresent(annotationType, repeatedAnnotations[0])
 					: false;
 		}
-		return AnnotationTypeMappings.lookup(type).isPresent(annotationType,
-				this.annotationFilter);
+		return false;
+//		return AnnotationTypeMappings.forAnnotation(type).isPresent(annotationType,
+//				this.annotationFilter);
 	}
 
 	@Override
@@ -260,12 +261,12 @@ final class StandardMergedAnnotations implements MergedAnnotations {
 			if (repeatedAnnotations != null) {
 				return process(type, aggregateIndex, source, repeatedAnnotations);
 			}
-			AnnotationTypeMappings mappings = AnnotationTypeMappings.lookup(
+			AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotation(
 					annotation.annotationType());
 			for (int i = 0; i < mappings.size(); i++) {
 				AnnotationTypeMapping mapping = mappings.get(i);
-				if (mapping.isForType(type, annotationFilter)) {
-					MergedAnnotation<A> candidate = StandardMergedAnnotation.from(
+				//if (mapping.isForType(type, annotationFilter)) {
+					MergedAnnotation<A> candidate = TypeMappedAnnotation.from(
 							annotation, mapping, aggregateIndex);
 					if (candidate != null) {
 						if (this.selector.isBestCandidate(candidate)) {
@@ -273,7 +274,7 @@ final class StandardMergedAnnotations implements MergedAnnotations {
 						}
 						updateLastResult(candidate);
 					}
-				}
+				//}
 			}
 			return null;
 		}
@@ -413,7 +414,7 @@ final class StandardMergedAnnotations implements MergedAnnotations {
 			this.annotations = annotations;
 			this.mappings = new AnnotationTypeMappings[annotations.size()];
 			for (int i = 0; i < annotations.size(); i++) {
-				mappings[i] = AnnotationTypeMappings.lookup(
+				mappings[i] = AnnotationTypeMappings.forAnnotation(
 						annotations.get(i).annotationType());
 			}
 		}

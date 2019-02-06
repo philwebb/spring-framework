@@ -23,7 +23,7 @@ import java.lang.annotation.Annotation;
  * @author pwebb
  * @since 5.1
  */
-public class StandardMergedAnnotation {
+public class TypeMappedAnnotation {
 
 	/**
 	 * @param annotation

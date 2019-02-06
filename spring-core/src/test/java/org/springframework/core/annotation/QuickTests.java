@@ -21,12 +21,8 @@ import java.lang.annotation.RetentionPolicy;
 
 import org.junit.Test;
 
-import org.springframework.core.annotation.QuickTests.Foo;
-
-import static org.junit.Assert.*;
-
 /**
- * 
+ *
  * @author pwebb
  * @since 5.1
  */
@@ -34,30 +30,48 @@ public class QuickTests {
 
 	@Test
 	public void testName() {
-		Foo foo = InternalAnnotatedElementUtils.findMergedAnnotation(WithInheritedFoo.class, Foo.class);
-		System.out.println(foo.value());
+		System.out.println(
+				InternalAnnotatedElementUtils.findMergedAnnotation(WithA.class, A.class));
+
+		//		System.out.println(
+//				InternalAnnotatedElementUtils.findMergedAnnotation(WithA.class, A.class));
+//		System.out.println(
+//				InternalAnnotatedElementUtils.findMergedAnnotation(WithA.class, B.class));
+//		System.out.println(
+//				InternalAnnotatedElementUtils.findMergedAnnotation(WithA.class, C.class));
+//		System.out.println(
+//				InternalAnnotatedElementUtils.findMergedAnnotation(WithA.class, D.class));
 	}
-	
-	
+
 	@Retention(RetentionPolicy.RUNTIME)
-	static @interface Foo {
-		
-		String value();
-		
+	static @interface A {
+
+		@AliasFor("bar")
+		String foo() default "";
+
+		@AliasFor("baz")
+		String bar() default "";
+
+		@AliasFor("bar")
+		String baz() default "";
+
 	}
-	
-	@Foo("super")
-	static class SuperWithFoo {
-		
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@D
+	static @interface B {
+
 	}
-	
-	@Foo("interface")
-	static interface InterfaceWithFoo {
-		
+
+	@Retention(RetentionPolicy.RUNTIME)
+	static @interface D {
+
+		String foo() default "";
+
 	}
-	
-	static class WithInheritedFoo extends SuperWithFoo implements InterfaceWithFoo {
-		
+
+	@A(foo="foo")
+	private static class WithA {
 	}
-	
+
 }
