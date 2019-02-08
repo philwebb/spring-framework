@@ -18,15 +18,17 @@ package org.springframework.core.annotation;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.springframework.lang.Nullable;
-import org.springframework.util.ReflectionUtils;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 /**
  * Provides mapping information for a single annotation (or meta-annotation) in
@@ -48,69 +50,111 @@ class AnnotationTypeMapping {
 	@Nullable
 	private final Annotation annotation;
 
-	private final Map<String, Method> attributeMethods;
-
-	private Map<String, Set<Method>> mappedAttributes = new HashMap<>();
+	private final AnnotationAttributeMethods attributes;
 
 	@Nullable
-	private Map<Method, Set<Method>> aliases;
+	private Map<Method, Set<Method>> aliasTargetToAttributes = new HashMap<>();
+
+	private final List<Set<Method>> attributeToMappedAttributes;
 
 	@Nullable
 	private Set<Method> claimedAliases = new HashSet<>();
 
 	AnnotationTypeMapping(Class<? extends Annotation> annotationType) {
-		this.parent = null;
-		this.depth = 0;
-		this.annotationType = annotationType;
-		this.annotation = null;
-		this.attributeMethods = findAttributeMethods(annotationType);
-		this.aliases = findAliases(this.attributeMethods);
+		this(null, annotationType, null);
 	}
 
 	AnnotationTypeMapping(AnnotationTypeMapping parent, Annotation annotation) {
+		this(parent, annotation.annotationType(), annotation);
+	}
+
+	private AnnotationTypeMapping(@Nullable AnnotationTypeMapping parent,
+			Class<? extends Annotation> annotationType, @Nullable Annotation annotation) {
 		this.parent = parent;
-		this.depth = parent.getDepth() + 1;
-		this.annotationType = annotation.annotationType();
+		this.depth = parent == null ? 0 : parent.getDepth() + 1;
+		this.annotationType = annotationType;
 		this.annotation = annotation;
-		this.attributeMethods = findAttributeMethods(annotationType);
-		this.aliases = findAliases(this.attributeMethods);
+		this.attributes = AnnotationAttributeMethods.forAnnotationType(annotationType);
+		this.attributeToMappedAttributes = new ArrayList<>(this.attributes.size());
+		processAttributeAnnotations();
+		setupMappings();
 	}
 
-	private static Map<String, Method> findAttributeMethods(
-			Class<? extends Annotation> annotationType) {
-		Map<String, Method> attributeMethods = new HashMap<>();
-		ReflectionUtils.doWithLocalMethods(annotationType,
-				method -> attributeMethods.put(method.getName(), method),
-				AnnotationTypeMapping::isAttributeMethod);
-		return attributeMethods.isEmpty() ? Collections.emptyMap()
-				: Collections.unmodifiableMap(attributeMethods);
+	void afterAllMappingsSet() {
+		this.claimedAliases = null;
+		this.aliasTargetToAttributes = null;
 	}
 
-	private static boolean isAttributeMethod(Method method) {
-		return method.getParameterCount() == 0 && method.getReturnType() != void.class;
-	}
-
-	private static Map<Method, Set<Method>> findAliases(
-			Map<String, Method> attributeMethods) {
-		return null;
-	}
-
-	public void setupMappings() {
-		for (Method method : this.attributeMethods.values()) {
-			Set<Method> mappings = findMappings(method);
-			if (mappings != null) {
-				this.mappedAttributes.put(method.getName(), mappings);
+	private void processAttributeAnnotations() {
+		for (Method attribute : this.attributes) {
+			AliasFor aliasFor = attribute.getDeclaredAnnotation(AliasFor.class);
+			if (aliasFor != null) {
+				Method target = resolveAliasTarget(attribute, aliasFor);
+				Set<Method> targetAttributes = this.aliasTargetToAttributes.computeIfAbsent(
+						target, key -> new LinkedHashSet<>());
+				targetAttributes.add(attribute);
+				if (isImplicitMirror(target)) {
+					targetAttributes.add(attribute);
+				}
 			}
 		}
 	}
 
-	protected final Set<Method> findMappings(Method method) {
-		Set<Method> mapping = findMappingsByAlias(method);
-		return mapping != null ? mapping : findMappingsByConvention(method);
+	private boolean isImplicitMirror(Method target) {
+		return target.getDeclaringClass().equals(this.annotationType);
 	}
 
-	protected final Set<Method> findMappingsByAlias(Method method) {
-		Set<Method> aliasedBy = this.aliases.get(method);
+	private Method resolveAliasTarget(Method attribute, AliasFor aliasFor) {
+		if (StringUtils.hasText(aliasFor.value())
+				&& StringUtils.hasText(aliasFor.attribute())) {
+			throw new AnnotationConfigurationException(String.format(
+					"In @AliasFor declared on %s, attribute 'attribute' and its alias "
+							+ "'value' are present with values of '%s' and '%s', but "
+							+ "only one is permitted.",
+					AnnotationAttributeMethods.describe(attribute), aliasFor.attribute(),
+					aliasFor.value()));
+		}
+		Class<? extends Annotation> targetAnnotation = aliasFor.annotation();
+		if (targetAnnotation == Annotation.class) {
+			targetAnnotation = this.annotationType;
+		}
+		String targetAttribute = aliasFor.attribute();
+		if (!StringUtils.hasLength(targetAttribute)) {
+			targetAttribute = aliasFor.value();
+		}
+		if (!StringUtils.hasLength(targetAttribute)) {
+			targetAttribute = attribute.getName();
+		}
+		Method target = AnnotationAttributeMethods.get(targetAnnotation, targetAttribute);
+		if (target == null) {
+			// FIXME throw
+		}
+		if (target == attribute) {
+			// FIXME throw
+		}
+		// FIXME check return types match
+		// FIXME check default values match
+		return target;
+	}
+
+	private void setupMappings() {
+		for (Method attribute : this.attributes) {
+			this.attributeToMappedAttributes.add(findMappings(attribute));
+		}
+	}
+
+	@Nullable
+	protected final Set<Method> findMappings(Method attribute) {
+		Set<Method> mappings = findAliasTargetMappings(attribute);
+		if (mappings == null) {
+			mappings = findConventionMappings(attribute);
+		}
+		return mappings;
+	}
+
+	@Nullable
+	protected final Set<Method> findAliasTargetMappings(Method attribute) {
+		Set<Method> aliasedBy = this.aliasTargetToAttributes.get(attribute);
 		if (aliasedBy != null) {
 			this.claimedAliases.addAll(aliasedBy);
 		}
@@ -118,14 +162,15 @@ class AnnotationTypeMapping {
 			return aliasedBy;
 		}
 		if (aliasedBy == null) {
-			return this.parent.findMappingsByAlias(method);
+			return this.parent.findAliasTargetMappings(attribute);
 		}
 		if (aliasedBy.size() == 1) {
-			return this.parent.findMappingsByAlias(aliasedBy.iterator().next());
+			return this.parent.findAliasTargetMappings(aliasedBy.iterator().next());
 		}
 		Set<Method> mappings = new LinkedHashSet<>();
 		for (Method aliasedByMethod : aliasedBy) {
-			Set<Method> aliasMappings = this.parent.findMappingsByAlias(aliasedByMethod);
+			Set<Method> aliasMappings = this.parent.findAliasTargetMappings(
+					aliasedByMethod);
 			if (aliasMappings != null) {
 				mappings.addAll(aliasMappings);
 			}
@@ -133,19 +178,13 @@ class AnnotationTypeMapping {
 		return mappings.isEmpty() ? null : mappings;
 	}
 
-	protected final Set<Method> findMappingsByConvention(Method method) {
+	@Nullable
+	protected final Set<Method> findConventionMappings(Method method) {
 		if (this.parent == null || MergedAnnotation.VALUE.equals(method.getName())) {
 			return null;
 		}
-		Method parentMethod = this.parent.attributeMethods.get(method.getName());
+		Method parentMethod = this.parent.attributes.get(method.getName());
 		return parentMethod != null ? this.parent.findMappings(parentMethod) : null;
-	}
-
-	public void validate() {
-		this.mappedAttributes = this.mappedAttributes.isEmpty() ? Collections.emptyMap()
-				: Collections.unmodifiableMap(this.mappedAttributes);
-		this.claimedAliases = null;
-		this.aliases = null;
 	}
 
 	public AnnotationTypeMapping getParent() {
@@ -161,13 +200,55 @@ class AnnotationTypeMapping {
 	}
 
 	public MappedAttributes mapAttributes(Annotation rootAnnotation) {
-		return null;
+		return new MappedAttributes(rootAnnotation);
 	}
 
-	static class MappedAttributes {
+	class MappedAttributes {
+
+		private final Annotation rootAnnotation;
+
+		// FIXME this could be a simple array given the limited number of items
+		private final Method[] attributeToMappedAttribute = new Method[attributes.size()];
+
+		public MappedAttributes(Annotation rootAnnotation) {
+			this.rootAnnotation = rootAnnotation;
+			setupMappings();
+		}
+
+		private void setupMappings() {
+			for (int i = 0; i < attributes.size(); i++) {
+				Set<Method> mappedAttributes = attributeToMappedAttributes.get(i);
+				if(mappedAttributes != null) {
+					setupMapping(i, mappedAttributes);
+				}
+			}
+		}
+
+		private void setupMapping(int attributeIndex, Set<Method> mappedAttributes) {
+			if (mappedAttributes.size() == 1) {
+				this.attributeToMappedAttribute[attributeIndex] =
+						mappedAttributes.iterator().next();
+				return;
+			}
+			// FIXME find out which one is actually in use
+		}
 
 		public Object getValue(String attributeName) {
-			return null;
+			try {
+				int attributeIndex = attributes.indexOf(attributeName);
+				Assert.isTrue(attributeIndex >= 0, "Attribute not found");
+				Method mapped = this.attributeToMappedAttribute[attributeIndex];
+				if (mapped != null) {
+					return mapped.invoke(this.rootAnnotation);
+				}
+				Assert.notNull(annotation, "No meta-annotation found");
+				return attributes.get(attributeIndex).invoke(annotation);
+			}
+			catch (Exception ex) {
+				throw new IllegalStateException("Unable to retrieve value of attribute '"
+						+ attributeName + "' in annotation ["
+						+ getAnnotationType().getName() + "]", ex);
+			}
 		}
 
 	}

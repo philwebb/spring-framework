@@ -23,13 +23,15 @@ import java.lang.annotation.RetentionPolicy;
 
 import org.junit.Test;
 
+import org.springframework.core.annotation.AnnotationTypeMapping.MappedAttributes;
+import org.springframework.core.annotation.AnnotationTypeMappingsTests.PostMapping;
 import org.springframework.lang.UsesSunMisc;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 
 /**
- * Tests for {@link AnnotationTypeMappings}.
+ * Tests for {@link AnnotationTypeMappings} and {@link AnnotationTypeMapping}.
  *
  * @author Phillip Webb
  */
@@ -80,6 +82,46 @@ public class AnnotationTypeMappingsTests {
 				AnnotationTypeMapping::getAnnotationType).containsExactly(
 						WithRepeatedMetaAnnotations.class, Repeating.class,
 						Repeating.class);
+	}
+
+	@Test
+	public void forAnnotationTypeWhenSelfAnnotatedReturnsMapping() {
+		AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotationType(
+				SelfAnnotated.class);
+		assertThat(mappings.size()).isEqualTo(1);
+		assertThat(mappings.iterator()).flatExtracting(
+				AnnotationTypeMapping::getAnnotationType).containsExactly(
+						SelfAnnotated.class);
+	}
+
+	@Test
+	public void forAnnotationTypeWhenFormsLoopReturnsMapping() {
+		AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotationType(
+				LoopA.class);
+		assertThat(mappings.size()).isEqualTo(2);
+		assertThat(mappings.iterator()).flatExtracting(
+				AnnotationTypeMapping::getAnnotationType).containsExactly(LoopA.class,
+						LoopB.class);
+	}
+
+	@Test
+	public void forAnnotationTypeWhenHasAliasForWithBothValueAndAttributeThrowsException() {
+		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
+				() -> AnnotationTypeMappings.forAnnotationType(
+						AliasForWithBothValueAndAttribute.class)).withMessage(
+								"In @AliasFor declared on attribute 'test' in annotation ["
+										+ AliasForWithBothValueAndAttribute.class.getName()
+										+ "], attribute 'attribute' and its alias 'value' are present with values of 'foo' and 'bar', but only one is permitted.");
+	}
+
+	@Test
+	public void testName() {
+		PostMapping postMapping = WithPostMapping.class.getAnnotation(PostMapping.class);
+		AnnotationTypeMapping mapping = AnnotationTypeMappings.forAnnotationType(
+				postMapping.annotationType()).get(1);
+		MappedAttributes mappedAttributes = mapping.mapAttributes(postMapping);
+		System.out.println(mappedAttributes.getValue("path"));
+		System.out.println(mappedAttributes.getValue("method"));
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
@@ -146,6 +188,55 @@ public class AnnotationTypeMappingsTests {
 	static @interface Repeatings {
 
 		Repeating[] value();
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@SelfAnnotated
+	static @interface SelfAnnotated {
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@LoopB
+	static @interface LoopA {
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@LoopA
+	static @interface LoopB {
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	static @interface AliasForWithBothValueAndAttribute {
+
+		@AliasFor(value = "bar", attribute = "foo")
+		String test();
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@RequestMapping(method = "POST")
+	static @interface PostMapping {
+
+		@AliasFor(annotation = RequestMapping.class)
+		String path() default "";
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	static @interface RequestMapping {
+
+		String path() default "";
+
+		String method() default "";
+
+	}
+
+	@PostMapping(path = "/test")
+	private static class WithPostMapping {
 
 	}
 

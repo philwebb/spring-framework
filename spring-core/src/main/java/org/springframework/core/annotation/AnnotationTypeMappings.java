@@ -52,8 +52,7 @@ public class AnnotationTypeMappings implements Iterable<AnnotationTypeMapping> {
 	public AnnotationTypeMappings(Class<? extends Annotation> annotationType) {
 		this.mappings = new ArrayList<>();
 		addAllMappings(annotationType);
-		this.mappings.forEach(AnnotationTypeMapping::setupMappings);
-		this.mappings.forEach(AnnotationTypeMapping::validate);
+		this.mappings.forEach(AnnotationTypeMapping::afterAllMappingsSet);
 	}
 
 	private void addAllMappings(Class<? extends Annotation> annotationType) {
