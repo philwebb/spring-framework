@@ -23,6 +23,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
@@ -166,6 +167,11 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		return Optional.empty();
 	}
 
-	protected abstract <T> T getRequiredValue(String attributeName, Class<T> type);
+	private <T> T getRequiredValue(String attributeName, Class<T> type) {
+		return getValue(attributeName, type, true);
+	}
+
+	protected abstract <T> T getValue(String attributeName, @Nullable Class<T> type,
+			boolean required);
 
 }

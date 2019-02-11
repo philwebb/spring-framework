@@ -26,7 +26,7 @@ import org.springframework.lang.Nullable;
  * @param <C> the context type
  * @param <R> the result type
  * @see AnnotationsScanner
- * @see TypeMappedAnnotations
+ * @see MappedAnnotations
  */
 @FunctionalInterface
 interface AnnotationProcessor<C, R> {

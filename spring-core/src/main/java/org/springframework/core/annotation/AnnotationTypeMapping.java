@@ -26,6 +26,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiFunction;
 
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
@@ -206,21 +207,72 @@ class AnnotationTypeMapping {
 		return this.annotationType;
 	}
 
+	/**
+	 * Return mapped attributes for the given root annotation.
+	 * @param rootAnnotation the root annotation
+	 * @return the mapped attributes
+	 */
 	public MappedAttributes mapAttributes(Annotation rootAnnotation) {
-		return new MappedAttributes(rootAnnotation);
+		return mapAttributes(rootAnnotation,
+				AnnotationTypeMapping::extractAnnotationValue);
+	}
+
+	/**
+	 * Return mapped attributes for the given root annotation. The method is
+	 * designed to take alternative representations of an annotation (for
+	 * example ASM parsed bytecode). As long as a suitable value can be
+	 * extracted, any source object can be used.
+	 * <p>
+	 * The value extractor must return a type that is compatible with the method
+	 * return type, namely:
+	 * <ul>
+	 * <li>If the method return type is an {@link Annotation} then the extracted
+	 * value must be of type {@code <A>} (so that further extactions can be
+	 * applied)</li>
+	 * <li>If the method return type is {@code Class} then the value can either
+	 * be a {@code Class} or {@code String}</li>
+	 * <li>If the method return type is {@code Class[]} then the value can
+	 * either be a {@code Class[]} or {@code String[]}</li>
+	 * <li>For all other method return types the value must be an exact instance
+	 * match</li>
+	 * </ul>
+	 * @param rootAnnotation the root annotation that can have values extracted
+	 * from it
+	 * @param valueExtractor a function to extract values from the root
+	 * annotation.
+	 * @return the mapped attributes
+	 */
+	public <A> MappedAttributes mapAttributes(A rootAnnotation,
+			BiFunction<A, Method, Object> valueExtractor) {
+		return new MappedAttributes(rootAnnotation, valueExtractor);
+	}
+
+	private static Object extractAnnotationValue(Annotation annotation,
+			Method attributeMethod) {
+		try {
+			return attributeMethod.invoke(annotation);
+		}
+		catch (Exception ex) {
+			throw new IllegalStateException(ex);
+		}
 	}
 
 	/**
 	 * Allows access to annotation attributes with mapping rules applied.
 	 */
-	class MappedAttributes {
-
-		private final Annotation rootAnnotation;
+	public class MappedAttributes {
 
 		private final Method[] attributeToMappedAttribute = new Method[attributes.size()];
 
-		public MappedAttributes(Annotation rootAnnotation) {
+		private final Object rootAnnotation;
+
+		private final BiFunction<Object, Method, Object> valueExtractor;
+
+		@SuppressWarnings("unchecked")
+		MappedAttributes(Object rootAnnotation,
+				BiFunction<?, Method, Object> valueExtractor) {
 			this.rootAnnotation = rootAnnotation;
+			this.valueExtractor = (BiFunction<Object, Method, Object>) valueExtractor;
 			setupMappings();
 		}
 
@@ -252,32 +304,58 @@ class AnnotationTypeMapping {
 			return result;
 		}
 
-		private boolean hasDefaultValue(Method method) {
-			try {
-				return ObjectUtils.nullSafeEquals(method.invoke(this.rootAnnotation),
-						method.getDefaultValue());
+		private boolean hasDefaultValue(Method candidate) {
+			return equals(candidate.getDefaultValue(), getValue(candidate));
+		}
+
+		private boolean equals(Object value, Object extractedValue) {
+			if (ObjectUtils.nullSafeEquals(value, extractedValue)) {
+				return true;
 			}
-			catch (Exception ex) {
-				return false;
+			if (value instanceof Class && extractedValue instanceof String) {
+				// FIXME
 			}
+			if (value instanceof Class[] && extractedValue instanceof String[]) {
+				// FIXME
+			}
+			if (value instanceof Annotation && !(extractedValue instanceof Annotation)) {
+				Annotation annotation = (Annotation) value;
+				equals(annotation, extractedValue);
+			}
+			return false;
+		}
+
+		private boolean equals(Annotation value, Object extractedValue) {
+			for (Method attribute : AnnotationAttributeMethods.forAnnotationType(
+					value.annotationType())) {
+				if (equals(extractAnnotationValue(value, attribute),
+						this.valueExtractor.apply(extractedValue, attribute))) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		public AnnotationTypeMapping getMapping() {
+			return AnnotationTypeMapping.this;
 		}
 
 		public Object getValue(String attributeName) {
-			try {
-				int attributeIndex = attributes.indexOf(attributeName);
-				Assert.isTrue(attributeIndex >= 0, "Attribute not found");
-				Method mapped = this.attributeToMappedAttribute[attributeIndex];
-				if (mapped != null) {
-					return mapped.invoke(this.rootAnnotation);
-				}
-				Method attribute = attributes.get(attributeIndex);
-				return attribute.invoke(depth != 0 ? annotation : this.rootAnnotation);
+			int attributeIndex = attributes.indexOf(attributeName);
+			Assert.isTrue(attributeIndex >= 0, "Attribute not found");
+			Method mapped = this.attributeToMappedAttribute[attributeIndex];
+			if (mapped != null) {
+				return getValue(mapped);
 			}
-			catch (Exception ex) {
-				throw new IllegalStateException("Unable to retrieve value of attribute '"
-						+ attributeName + "' in annotation ["
-						+ getAnnotationType().getName() + "]", ex);
+			Method attribute = attributes.get(attributeIndex);
+			if (depth == 0) {
+				return getValue(attribute);
 			}
+			return extractAnnotationValue(annotation, attribute);
+		}
+
+		private Object getValue(Method method) {
+			return this.valueExtractor.apply(this.rootAnnotation, method);
 		}
 
 	}

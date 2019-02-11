@@ -35,7 +35,7 @@ import org.springframework.lang.Nullable;
  * @author Phillip Webb
  * @since 5.1
  */
-final class TypeMappedAnnotations implements MergedAnnotations {
+final class MappedAnnotations implements MergedAnnotations {
 
 	@Nullable
 	private final Object source;
@@ -56,7 +56,7 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 	@Nullable
 	private volatile List<Aggregate> aggregates;
 
-	private TypeMappedAnnotations(AnnotatedElement element, SearchStrategy searchStrategy,
+	private MappedAnnotations(AnnotatedElement element, SearchStrategy searchStrategy,
 			RepeatableContainers repeatableContainers,
 			AnnotationFilter annotationFilter) {
 		this.source = element;
@@ -67,7 +67,7 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		this.annotationFilter = annotationFilter;
 	}
 
-	private TypeMappedAnnotations(@Nullable Object source, Annotation[] annotations,
+	private MappedAnnotations(@Nullable Object source, Annotation[] annotations,
 			RepeatableContainers repeatableContainers,
 			AnnotationFilter annotationFilter) {
 		this.source = source;
@@ -234,14 +234,14 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 	public static MergedAnnotations from(AnnotatedElement element,
 			SearchStrategy searchStrategy, RepeatableContainers repeatableContainers,
 			AnnotationFilter annotationFilter) {
-		return new TypeMappedAnnotations(element, searchStrategy, repeatableContainers,
+		return new MappedAnnotations(element, searchStrategy, repeatableContainers,
 				annotationFilter);
 	}
 
 	public static MergedAnnotations from(@Nullable Object source,
 			Annotation[] annotations, RepeatableContainers repeatableContainers,
 			AnnotationFilter annotationFilter) {
-		return new TypeMappedAnnotations(source, annotations, repeatableContainers,
+		return new MappedAnnotations(source, annotations, repeatableContainers,
 				annotationFilter);
 	}
 
@@ -307,7 +307,7 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 			for (int i = 0; i < mappings.size(); i++) {
 				AnnotationTypeMapping mapping = mappings.get(i);
 				if (isMappingForType(mapping, annotationFilter, requiredType)) {
-					MergedAnnotation<A> candidate = new TypeMappedAnnotation<A>(source,
+					MergedAnnotation<A> candidate = new MappedAnnotation<A>(source,
 							annotation, mapping, aggregateIndex);
 					if (this.predicate == null || this.predicate.test(candidate)) {
 						if (this.selector.isBestCandidate(candidate)) {
@@ -411,7 +411,7 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 
 		public <A extends Annotation> MergedAnnotation<A> getMergedAnnotation(
 				int annotationIndex, int mappingIndex) {
-			return new TypeMappedAnnotation<A>(this.source,
+			return new MappedAnnotation<A>(this.source,
 					this.annotations.get(annotationIndex),
 					this.mappings[annotationIndex].get(mappingIndex),
 					this.aggregateIndex);

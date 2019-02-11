@@ -17,29 +17,31 @@
 package org.springframework.core.annotation;
 
 import java.lang.annotation.Annotation;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import org.springframework.core.annotation.AnnotationTypeMapping.MappedAttributes;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
 
 /**
  *
  * @author Phillip Webb
  * @since 5.2
  */
-public class TypeMappedAnnotation<A extends Annotation>
+public class MappedAnnotation<A extends Annotation>
 		extends AbstractMergedAnnotation<A> {
 
 	@Nullable
 	private final Object source;
 
-	private final Annotation rootAnnotation;
-
-	private final AnnotationTypeMapping mapping;
+	private final MappedAttributes attributes;
 
 	private final int aggregateIndex;
 
@@ -51,22 +53,20 @@ public class TypeMappedAnnotation<A extends Annotation>
 	@Nullable
 	private volatile A synthesizedAnnotation;
 
-	TypeMappedAnnotation(@Nullable Object source, Annotation rootAnnotation,
-			AnnotationTypeMapping mapping, int aggregateIndex) {
+	MappedAnnotation(@Nullable Object source, MappedAttributes attributes,
+			int aggregateIndex) {
 		this.source = source;
-		this.rootAnnotation = rootAnnotation;
-		this.mapping = mapping;
+		this.attributes = attributes;
 		this.aggregateIndex = aggregateIndex;
 		this.nonMergedAttributes = false;
 		this.attributeFilter = null;
 	}
 
-	TypeMappedAnnotation(@Nullable Object source, Annotation rootAnnotation,
-			AnnotationTypeMapping mapping, int aggregateIndex,
-			boolean nonMergedAttributes, Predicate<String> attributeFilter) {
+	MappedAnnotation(@Nullable Object source, MappedAttributes attributes,
+			int aggregateIndex, boolean nonMergedAttributes,
+			Predicate<String> attributeFilter) {
 		this.source = source;
-		this.rootAnnotation = rootAnnotation;
-		this.mapping = mapping;
+		this.attributes = attributes;
 		this.aggregateIndex = aggregateIndex;
 		this.nonMergedAttributes = nonMergedAttributes;
 		this.attributeFilter = attributeFilter;
@@ -74,7 +74,7 @@ public class TypeMappedAnnotation<A extends Annotation>
 
 	@Override
 	public String getType() {
-		return this.mapping.getAnnotationType().getName();
+		return this.attributes.getMapping().getAnnotationType().getName();
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class TypeMappedAnnotation<A extends Annotation>
 
 	@Override
 	public int getDepth() {
-		return this.mapping.getDepth();
+		return this.attributes.getMapping().getDepth();
 	}
 
 	@Override
@@ -100,15 +100,16 @@ public class TypeMappedAnnotation<A extends Annotation>
 	@Override
 	@Nullable
 	public MergedAnnotation<?> getParent() {
-		AnnotationTypeMapping parentMapping = this.mapping.getParent();
+		AnnotationTypeMapping parentMapping = this.attributes.getMapping().getParent();
 		if (parentMapping == null) {
 			return null;
 		}
 		// FIXME returning a new item here might not be optimal if we add
 		// caching at the aggregate level
 		// perhaps calling the mapping to get the parent mapping is best
-		return new TypeMappedAnnotation<>(this.source, this.rootAnnotation, parentMapping,
-				aggregateIndex);
+		return null;
+		// new TypeMappedAnnotation<>(this.source, this.rootAnnotation,
+		// parentMapping,; aggregateIndex);
 	}
 
 	@Override
@@ -122,8 +123,6 @@ public class TypeMappedAnnotation<A extends Annotation>
 		// return ObjectUtils.nullSafeEquals(value, type.getDefaultValue());
 	}
 
-
-
 	@Override
 	public <T extends Annotation> MergedAnnotation<T> getAnnotation(String attributeName,
 			Class<T> type) throws NoSuchElementException {
@@ -133,8 +132,10 @@ public class TypeMappedAnnotation<A extends Annotation>
 		T nestedAnnotation = getRequiredValue(attributeName, type);
 		AnnotationTypeMapping nestedMapping = AnnotationTypeMappings.forAnnotationType(
 				type).get(0);
-		return new TypeMappedAnnotation<>(this.source, nestedAnnotation, nestedMapping,
-				this.aggregateIndex);
+		// return new TypeMappedAnnotation<>(this.source, nestedAnnotation,
+		// nestedMapping,
+		// this.aggregateIndex);
+		return null;
 	}
 
 	@Override
@@ -175,41 +176,37 @@ public class TypeMappedAnnotation<A extends Annotation>
 		if (this.attributeFilter != null) {
 			predicate = this.attributeFilter.and(predicate);
 		}
-		return new TypeMappedAnnotation<>(this.source, this.rootAnnotation, this.mapping,
+		return new MappedAnnotation<>(this.source, this.attributes,
 				this.aggregateIndex, this.nonMergedAttributes, predicate);
 	}
 
 	@Override
 	public MergedAnnotation<A> withNonMergedAttributes() {
-		return new TypeMappedAnnotation<>(this.source, this.rootAnnotation, this.mapping,
+		return new MappedAnnotation<>(this.source, this.attributes,
 				this.aggregateIndex, true, this.attributeFilter);
 	}
-
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T extends Map<String, Object>> T asMap(
 			Function<MergedAnnotation<?>, T> factory, MapValues... options) {
 		Assert.state(isPresent(), "Unable to get map for missing annotation");
-		// T map = (factory != null) ? factory.apply(this)
-		// : (T) new LinkedHashMap<String, Object>();
-		// if (map == null) {
-		// return null;
-		// }
-		// for (AttributeType attributeType :
-		// getAnnotationType().getAttributeTypes()) {
-		// Class<?> type = resolveTypeClass(attributeType.getClassName());
-		// type = ClassUtils.resolvePrimitiveIfNecessary(type);
-		// type = getTypeForMapValueOption(options, type);
-		// String name = attributeType.getAttributeName();
-		// Object value = getValue(name, type, false);
-		// if (value != null) {
-		// map.put(name, getValueForMapValueOption(value, factory, options));
-		// }
-		// }
-		// return (factory != null) ? map : (T)
-		// Collections.unmodifiableMap(map);
-		return null; // FIXME
+		T map = (factory != null) ? factory.apply(this)
+				: (T) new LinkedHashMap<String, Object>();
+		if (map == null) {
+			return null;
+		}
+		for (AttributeType attributeType : getAnnotationType().getAttributeTypes()) {
+			Class<?> type = resolveTypeClass(attributeType.getClassName());
+			type = ClassUtils.resolvePrimitiveIfNecessary(type);
+			type = getTypeForMapValueOption(options, type);
+			String name = attributeType.getAttributeName();
+			Object value = getValue(name, type, false);
+			if (value != null) {
+				map.put(name, getValueForMapValueOption(value, factory, options));
+			}
+		}
+		return (factory != null) ? map : (T) Collections.unmodifiableMap(map);
 	}
 
 	@Override
@@ -235,10 +232,10 @@ public class TypeMappedAnnotation<A extends Annotation>
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T> T getValue(String attributeName, @Nullable Class<T> type,
+	protected <T> T getValue(String attributeName, @Nullable Class<T> type,
 			boolean required) {
-		// If it's an annotation and type is an object we should wrap it
 
+		// If it's an annotation and type is an object we should wrap it
 
 		// FIXME
 		return null;
