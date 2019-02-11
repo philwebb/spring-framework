@@ -16,6 +16,7 @@
 
 package org.springframework.core.annotation;
 
+import java.lang.annotation.Annotation;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
@@ -24,11 +25,9 @@ import java.lang.annotation.RetentionPolicy;
 import org.junit.Test;
 
 import org.springframework.core.annotation.AnnotationTypeMapping.MappedAttributes;
-import org.springframework.core.annotation.AnnotationTypeMappingsTests.PostMapping;
 import org.springframework.lang.UsesSunMisc;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.Assert.*;
 
 /**
  * Tests for {@link AnnotationTypeMappings} and {@link AnnotationTypeMapping}.
@@ -115,13 +114,54 @@ public class AnnotationTypeMappingsTests {
 	}
 
 	@Test
-	public void testName() {
-		PostMapping postMapping = WithPostMapping.class.getAnnotation(PostMapping.class);
+	public void mappingWhenMirroredReturnsMirroredValues() {
+		testExplicitMirror(WithExplicitMirrorA.class);
+		testExplicitMirror(WithExplicitMirrorB.class);
+	}
+
+	private void testExplicitMirror(Class<?> annotatedClass) {
+		ExplicitMirror annotation = annotatedClass.getAnnotation(ExplicitMirror.class);
 		AnnotationTypeMapping mapping = AnnotationTypeMappings.forAnnotationType(
-				postMapping.annotationType()).get(1);
-		MappedAttributes mappedAttributes = mapping.mapAttributes(postMapping);
-		System.out.println(mappedAttributes.getValue("path"));
-		System.out.println(mappedAttributes.getValue("method"));
+				annotation.annotationType()).get(0);
+		MappedAttributes attributes = mapping.mapAttributes(annotation);
+		assertThat(attributes.getValue("a")).isEqualTo("test");
+		assertThat(attributes.getValue("b")).isEqualTo("test");
+	}
+
+	@Test
+	public void mappingExplicitAliasToMetaAnnotationReturnsMappedValues() {
+		ExplicitAliasToMetaAnnotation annotation = WithExplicitAliasToMetaAnnotation.class.getAnnotation(
+				ExplicitAliasToMetaAnnotation.class);
+		AnnotationTypeMapping mapping = getMapping(annotation,
+				ExplicitAliasMetaAnnotationTarget.class);
+		MappedAttributes attributes = mapping.mapAttributes(annotation);
+		assertThat(attributes.getValue("aliased")).isEqualTo("aliased");
+		assertThat(attributes.getValue("nonAliased")).isEqualTo("nonAliased");
+	}
+
+	@Test
+	public void mappingConventionAliasToMetaAnnotationReturnsMappedValues() {
+		ConventionAliasToMetaAnnotation annotation = WithConventionAliasToMetaAnnotation.class.getAnnotation(
+				ConventionAliasToMetaAnnotation.class);
+		AnnotationTypeMapping mapping = getMapping(annotation,
+				ConventionAliasMetaAnnotationTarget.class);
+		MappedAttributes attributes = mapping.mapAttributes(annotation);
+		assertThat(attributes.getValue("value")).isEqualTo("");
+		assertThat(attributes.getValue("convention")).isEqualTo("convention");
+	}
+
+	private AnnotationTypeMapping getMapping(Annotation annotation,
+			Class<? extends Annotation> mappedAnnotationType) {
+		AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotationType(
+				annotation.annotationType());
+		for (int i = 0; i < mappings.size(); i++) {
+			AnnotationTypeMapping candidate = mappings.get(i);
+			if (candidate.getAnnotationType().equals(mappedAnnotationType)) {
+				return candidate;
+			}
+		}
+		throw new IllegalStateException(
+				"No mapping from " + annotation + " to " + mappedAnnotationType);
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
@@ -218,26 +258,70 @@ public class AnnotationTypeMappingsTests {
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@RequestMapping(method = "POST")
-	static @interface PostMapping {
+	static @interface ExplicitMirror {
 
-		@AliasFor(annotation = RequestMapping.class)
-		String path() default "";
+		@AliasFor("b")
+		String a() default "";
+
+		@AliasFor("a")
+		String b() default "";
+
+	}
+
+	@ExplicitMirror(a = "test")
+	static class WithExplicitMirrorA {
+
+	}
+
+	@ExplicitMirror(b = "test")
+	static class WithExplicitMirrorB {
 
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	static @interface RequestMapping {
+	@ExplicitAliasMetaAnnotationTarget(nonAliased = "nonAliased")
+	static @interface ExplicitAliasToMetaAnnotation {
 
-		String path() default "";
-
-		String method() default "";
-
-	}
-
-	@PostMapping(path = "/test")
-	private static class WithPostMapping {
+		@AliasFor(annotation = ExplicitAliasMetaAnnotationTarget.class)
+		String aliased() default "";
 
 	}
 
+	@Retention(RetentionPolicy.RUNTIME)
+	static @interface ExplicitAliasMetaAnnotationTarget {
+
+		String aliased() default "";
+
+		String nonAliased() default "";
+
+	}
+
+	@ExplicitAliasToMetaAnnotation(aliased = "aliased")
+	private static class WithExplicitAliasToMetaAnnotation {
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@ConventionAliasMetaAnnotationTarget
+	static @interface ConventionAliasToMetaAnnotation {
+
+		String value() default "";
+
+		String convention() default "";
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	static @interface ConventionAliasMetaAnnotationTarget {
+
+		String value() default "";
+
+		String convention() default "";
+
+	}
+
+	@ConventionAliasToMetaAnnotation(value = "value", convention = "convention")
+	private static class WithConventionAliasToMetaAnnotation {
+
+	}
 }

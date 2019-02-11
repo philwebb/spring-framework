@@ -34,7 +34,8 @@ import org.springframework.util.ClassUtils;
  * {@link AnnotatedElement}.
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
+ * @see AnnotationProcessor
  */
 class AnnotationsScanner {
 
@@ -47,14 +48,14 @@ class AnnotationsScanner {
 	 * call the processor as required.
 	 * @param element the source element to scan
 	 * @param searchStrategy the search strategy to use
-	 * @param criteria an optional criteria object that will be passed back to
-	 * the processor
+	 * @param context an optional context object that will be passed back to the
+	 * processor
 	 * @param processor the processor that receives the annotations
-	 * @return the result of {@link Processor#getScanResult(Object)}
+	 * @return the result of {@link AnnotationProcessor#getFinalResult(Object)}
 	 */
 	public static <C, R> R scan(AnnotatedElement element, SearchStrategy searchStrategy,
-			@Nullable C criteria, Processor<C, R> processor) {
-		return scan(element, searchStrategy, criteria, null, processor);
+			@Nullable C context, AnnotationProcessor<C, R> processor) {
+		return scan(element, searchStrategy, context, null, processor);
 	}
 
 	/**
@@ -62,23 +63,24 @@ class AnnotationsScanner {
 	 * call the processor as required.
 	 * @param element the source element to scan
 	 * @param searchStrategy the search strategy to use
-	 * @param criteria an optional criteria object that will be passed back to
-	 * the processor
+	 * @param context an optional context object that will be passed back to the
+	 * processor
 	 * @param classFilter an optional filter that can be used to entirely filter
 	 * out a specific class from the hierarchy
 	 * @param processor the processor that receives the annotations
-	 * @return the result of {@link Processor#getScanResult(Object)}
+	 * @return the result of {@link AnnotationProcessor#getFinalResult(Object)}
 	 */
 	public static <C, R> R scan(AnnotatedElement element, SearchStrategy searchStrategy,
-			C criteria, @Nullable BiPredicate<C, Class<?>> classFilter,
-			Processor<C, R> processor) {
-		return processor.getScanResult(
-				process(element, searchStrategy, criteria, classFilter, processor));
+			C context, @Nullable BiPredicate<C, Class<?>> classFilter,
+			AnnotationProcessor<C, R> processor) {
+		return processor.getFinalResult(
+				process(element, searchStrategy, context, classFilter, processor));
 	}
 
 	private static <C, R> R process(AnnotatedElement element,
 			SearchStrategy searchStrategy, C criteria,
-			@Nullable BiPredicate<C, Class<?>> classFilter, Processor<C, R> processor) {
+			@Nullable BiPredicate<C, Class<?>> classFilter,
+			AnnotationProcessor<C, R> processor) {
 		if (element instanceof Class) {
 			return processClass((Class<?>) element, searchStrategy, criteria, classFilter,
 					processor);
@@ -92,7 +94,7 @@ class AnnotationsScanner {
 
 	private static <C, R> R processClass(Class<?> element, SearchStrategy searchStrategy,
 			C criteria, @Nullable BiPredicate<C, Class<?>> classFilter,
-			Processor<C, R> processor) {
+			AnnotationProcessor<C, R> processor) {
 		switch (searchStrategy) {
 			case DIRECT:
 				return processElement(element, criteria, classFilter, processor);
@@ -110,7 +112,8 @@ class AnnotationsScanner {
 	}
 
 	private static <C, R> R processClassInheritedAnnotations(Class<?> element, C criteria,
-			@Nullable BiPredicate<C, Class<?>> classFilter, Processor<C, R> processor) {
+			@Nullable BiPredicate<C, Class<?>> classFilter,
+			AnnotationProcessor<C, R> processor) {
 		Annotation[] relevant = null;
 		int remaining = Integer.MAX_VALUE;
 		int aggregateIndex = 0;
@@ -149,8 +152,9 @@ class AnnotationsScanner {
 	}
 
 	private static <C, R> R processClassHierarchy(Class<?> sourceClass, C criteria,
-			@Nullable BiPredicate<C, Class<?>> classFilter, Processor<C, R> processor,
-			int[] aggregateIndex, boolean includeInterfaces) {
+			@Nullable BiPredicate<C, Class<?>> classFilter,
+			AnnotationProcessor<C, R> processor, int[] aggregateIndex,
+			boolean includeInterfaces) {
 		Annotation[] annotations = getDeclaredAnnotations(sourceClass, criteria,
 				classFilter);
 		R result = processor.process(criteria, aggregateIndex[0], sourceClass,
@@ -181,7 +185,7 @@ class AnnotationsScanner {
 
 	private static <C, R> R processMethod(Method element, SearchStrategy searchStrategy,
 			C criteria, @Nullable BiPredicate<C, Class<?>> classFilter,
-			Processor<C, R> processor) {
+			AnnotationProcessor<C, R> processor) {
 		switch (searchStrategy) {
 			case DIRECT:
 			case INHERITED_ANNOTATIONS:
@@ -199,7 +203,8 @@ class AnnotationsScanner {
 
 	private static <C, R> R processMethodHierarchy(Class<?> sourceClass, Method element,
 			C criteria, @Nullable BiPredicate<C, Class<?>> classFilter,
-			Processor<C, R> processor, int[] aggregateIndex, boolean includeInterfaces) {
+			AnnotationProcessor<C, R> processor, int[] aggregateIndex,
+			boolean includeInterfaces) {
 		if (element.getDeclaringClass() == sourceClass) {
 			R result = processMethodAnnotations(element, sourceClass, criteria,
 					aggregateIndex[0], classFilter, processor);
@@ -291,7 +296,7 @@ class AnnotationsScanner {
 
 	private static <C, R> R processMethodAnnotations(Method element, Class<?> source,
 			C criteria, int aggregateIndex, BiPredicate<C, Class<?>> classFilter,
-			Processor<C, R> processor) {
+			AnnotationProcessor<C, R> processor) {
 		Annotation[] annotations = getDeclaredAnnotations(element, criteria, classFilter);
 		R result = processor.process(criteria, aggregateIndex, source, annotations);
 		if (result != null) {
@@ -308,7 +313,8 @@ class AnnotationsScanner {
 	}
 
 	private static <C, R> R processElement(AnnotatedElement element, C criteria,
-			@Nullable BiPredicate<C, Class<?>> classFilter, Processor<C, R> processor) {
+			@Nullable BiPredicate<C, Class<?>> classFilter,
+			AnnotationProcessor<C, R> processor) {
 		return processor.process(criteria, 0, element,
 				getDeclaredAnnotations(element, criteria, classFilter));
 	}
@@ -344,43 +350,6 @@ class AnnotationsScanner {
 	private static <C> boolean isFiltered(Class<?> element, C criteria,
 			BiPredicate<C, Class<?>> classFilter) {
 		return classFilter != null && classFilter.test(criteria, element);
-	}
-
-	/**
-	 * Callback interface used to receive annotation details.
-	 * @param <C> the criteria type
-	 * @param <R> the result type
-	 */
-	@FunctionalInterface
-	static interface Processor<C, R> {
-
-		/**
-		 * Called when an array of annotations can be processed. This method may
-		 * return a {@code non-null} result to short-circuit any further search.
-		 * @param criteria the criteria passed to the {@code scan} method
-		 * @param aggregateIndex the aggregate index of the provided annotations
-		 * @param source the source of the annotations
-		 * @param annotations the annotations to process (may contain
-		 * {@code null} elements)
-		 * @return a {@code non-null} result if no further processing is
-		 * required
-		 */
-		@Nullable
-		R process(@Nullable C criteria, int aggregateIndex, Object source,
-				Annotation[] annotations);
-
-		/**
-		 * Return the final result to be returned from the {@code scan} method.
-		 * @param processResult result returned from {@link #process}, or
-		 * {@code null} if processing was not exited early. By default this
-		 * method returns the last process result.
-		 * @return the final result returned from the scan method.
-		 */
-		@Nullable
-		default R getScanResult(@Nullable R processResult) {
-			return processResult;
-		}
-
 	}
 
 }

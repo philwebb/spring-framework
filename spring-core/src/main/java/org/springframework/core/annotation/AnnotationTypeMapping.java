@@ -19,6 +19,7 @@ package org.springframework.core.annotation;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -28,6 +29,7 @@ import java.util.Set;
 
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 /**
@@ -53,9 +55,9 @@ class AnnotationTypeMapping {
 	private final AnnotationAttributeMethods attributes;
 
 	@Nullable
-	private Map<Method, Set<Method>> aliasTargetToAttributes = new HashMap<>();
+	private Map<Method, List<Method>> aliasTargetToAttributes = new HashMap<>();
 
-	private final List<Set<Method>> attributeToMappedAttributes;
+	private final List<List<Method>> attributeToMappedAttributes;
 
 	@Nullable
 	private Set<Method> claimedAliases = new HashSet<>();
@@ -90,8 +92,8 @@ class AnnotationTypeMapping {
 			AliasFor aliasFor = attribute.getDeclaredAnnotation(AliasFor.class);
 			if (aliasFor != null) {
 				Method target = resolveAliasTarget(attribute, aliasFor);
-				Set<Method> targetAttributes = this.aliasTargetToAttributes.computeIfAbsent(
-						target, key -> new LinkedHashSet<>());
+				List<Method> targetAttributes = this.aliasTargetToAttributes.computeIfAbsent(
+						target, key -> new ArrayList<>());
 				targetAttributes.add(attribute);
 				if (isImplicitMirror(target)) {
 					targetAttributes.add(attribute);
@@ -144,8 +146,8 @@ class AnnotationTypeMapping {
 	}
 
 	@Nullable
-	protected final Set<Method> findMappings(Method attribute) {
-		Set<Method> mappings = findAliasTargetMappings(attribute);
+	private List<Method> findMappings(Method attribute) {
+		List<Method> mappings = findAliasTargetMappings(attribute);
 		if (mappings == null) {
 			mappings = findConventionMappings(attribute);
 		}
@@ -153,8 +155,8 @@ class AnnotationTypeMapping {
 	}
 
 	@Nullable
-	protected final Set<Method> findAliasTargetMappings(Method attribute) {
-		Set<Method> aliasedBy = this.aliasTargetToAttributes.get(attribute);
+	private List<Method> findAliasTargetMappings(Method attribute) {
+		List<Method> aliasedBy = this.aliasTargetToAttributes.get(attribute);
 		if (aliasedBy != null) {
 			this.claimedAliases.addAll(aliasedBy);
 		}
@@ -165,26 +167,31 @@ class AnnotationTypeMapping {
 			return this.parent.findAliasTargetMappings(attribute);
 		}
 		if (aliasedBy.size() == 1) {
-			return this.parent.findAliasTargetMappings(aliasedBy.iterator().next());
+			return this.parent.findAliasTargetMappings(aliasedBy.get(0));
 		}
 		Set<Method> mappings = new LinkedHashSet<>();
 		for (Method aliasedByMethod : aliasedBy) {
-			Set<Method> aliasMappings = this.parent.findAliasTargetMappings(
+			List<Method> aliasMappings = this.parent.findAliasTargetMappings(
 					aliasedByMethod);
 			if (aliasMappings != null) {
 				mappings.addAll(aliasMappings);
 			}
 		}
-		return mappings.isEmpty() ? null : mappings;
+		return mappings.isEmpty() ? null : new ArrayList<>(mappings);
 	}
 
 	@Nullable
-	protected final Set<Method> findConventionMappings(Method method) {
-		if (this.parent == null || MergedAnnotation.VALUE.equals(method.getName())) {
+	protected final List<Method> findConventionMappings(Method attribute) {
+		if (MergedAnnotation.VALUE.equals(attribute.getName())) {
 			return null;
 		}
-		Method parentMethod = this.parent.attributes.get(method.getName());
-		return parentMethod != null ? this.parent.findMappings(parentMethod) : null;
+		if (this.parent == null) {
+			return this.annotationType.equals(attribute.getDeclaringClass())
+					? Collections.singletonList(attribute)
+					: null;
+		}
+		Method parentAttribute = this.parent.attributes.get(attribute.getName());
+		return parentAttribute != null ? this.parent.findMappings(parentAttribute) : null;
 	}
 
 	public AnnotationTypeMapping getParent() {
@@ -203,11 +210,13 @@ class AnnotationTypeMapping {
 		return new MappedAttributes(rootAnnotation);
 	}
 
+	/**
+	 * Allows access to annotation attributes with mapping rules applied.
+	 */
 	class MappedAttributes {
 
 		private final Annotation rootAnnotation;
 
-		// FIXME this could be a simple array given the limited number of items
 		private final Method[] attributeToMappedAttribute = new Method[attributes.size()];
 
 		public MappedAttributes(Annotation rootAnnotation) {
@@ -217,20 +226,40 @@ class AnnotationTypeMapping {
 
 		private void setupMappings() {
 			for (int i = 0; i < attributes.size(); i++) {
-				Set<Method> mappedAttributes = attributeToMappedAttributes.get(i);
-				if(mappedAttributes != null) {
-					setupMapping(i, mappedAttributes);
+				List<Method> mappedAttributes = attributeToMappedAttributes.get(i);
+				if (mappedAttributes != null) {
+					this.attributeToMappedAttribute[i] = getMappedAttribute(i,
+							mappedAttributes);
 				}
 			}
 		}
 
-		private void setupMapping(int attributeIndex, Set<Method> mappedAttributes) {
-			if (mappedAttributes.size() == 1) {
-				this.attributeToMappedAttribute[attributeIndex] =
-						mappedAttributes.iterator().next();
-				return;
+		private Method getMappedAttribute(int attributeIndex,
+				List<Method> mappedAttributes) {
+			if (mappedAttributes.isEmpty()) {
+				return null;
 			}
-			// FIXME find out which one is actually in use
+			if (mappedAttributes.size() == 1) {
+				return mappedAttributes.get(0);
+			}
+			Method result = null;
+			for (int i = 0; i < mappedAttributes.size(); i++) {
+				Method candidate = mappedAttributes.get(i);
+				if (!hasDefaultValue(candidate)) {
+					result = candidate;
+				}
+			}
+			return result;
+		}
+
+		private boolean hasDefaultValue(Method method) {
+			try {
+				return ObjectUtils.nullSafeEquals(method.invoke(this.rootAnnotation),
+						method.getDefaultValue());
+			}
+			catch (Exception ex) {
+				return false;
+			}
 		}
 
 		public Object getValue(String attributeName) {
@@ -241,8 +270,8 @@ class AnnotationTypeMapping {
 				if (mapped != null) {
 					return mapped.invoke(this.rootAnnotation);
 				}
-				Assert.notNull(annotation, "No meta-annotation found");
-				return attributes.get(attributeIndex).invoke(annotation);
+				Method attribute = attributes.get(attributeIndex);
+				return attribute.invoke(depth != 0 ? annotation : this.rootAnnotation);
 			}
 			catch (Exception ex) {
 				throw new IllegalStateException("Unable to retrieve value of attribute '"

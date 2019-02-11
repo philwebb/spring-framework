@@ -20,7 +20,6 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +42,7 @@ import org.springframework.util.ConcurrentReferenceHashMap;
  * @since 5.2
  * @see AnnotationTypeMapping
  */
-public class AnnotationTypeMappings implements Iterable<AnnotationTypeMapping> {
+public class AnnotationTypeMappings {
 
 	private static final Map<Class<? extends Annotation>, AnnotationTypeMappings> cache = new ConcurrentReferenceHashMap<>();
 
@@ -105,11 +104,6 @@ public class AnnotationTypeMappings implements Iterable<AnnotationTypeMapping> {
 			mapping = mapping.getParent();
 		}
 		return false;
-	}
-
-	@Override
-	public Iterator<AnnotationTypeMapping> iterator() {
-		return this.mappings.iterator();
 	}
 
 	public int size() {
