@@ -113,11 +113,6 @@ final class MissingMergedAnnotation<A extends Annotation>
 	}
 
 	@Override
-	public A synthesize() {
-		throw new NoSuchElementException("Unable to synthesize missing annotation");
-	}
-
-	@Override
 	public String toString() {
 		return "(missing)";
 	}
@@ -137,53 +132,18 @@ final class MissingMergedAnnotation<A extends Annotation>
 	}
 
 	@Override
-	protected <T> T getRequiredValue(String attributeName, Class<T> type) {
+	protected <T> T getValue(String attributeName, Class<T> type, boolean required) {
 		throw new NoSuchElementException(
 				"Unable to get attribute value for missing annotation");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * org.springframework.core.annotation.MergedAnnotation#getValue(java.lang.
-	 * String)
-	 */
-	@Override
-	public Optional<Object> getValue(String attributeName) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Auto-generated method stub");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * org.springframework.core.annotation.MergedAnnotation#getDefaultValue(java
-	 * .lang.String)
-	 */
-	@Override
-	public Optional<Object> getDefaultValue(String attributeName) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Auto-generated method stub");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * org.springframework.core.annotation.MergedAnnotation#synthesize(java.util
-	 * .function.Predicate)
-	 */
-	@Override
-	public Optional<A> synthesize(Predicate<? super MergedAnnotation<A>> condition)
-			throws NoSuchElementException {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Auto-generated method stub");
+	protected A createSynthesized() {
+		throw new NoSuchElementException("Unable to synthesize missing annotation");
 	}
 
 	@SuppressWarnings("unchecked")
 	static <A extends Annotation> MergedAnnotation<A> getInstance() {
 		return (MergedAnnotation<A>) INSTANCE;
 	}
+
 }

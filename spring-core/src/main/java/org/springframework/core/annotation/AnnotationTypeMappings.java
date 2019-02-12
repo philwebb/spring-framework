@@ -43,7 +43,7 @@ import org.springframework.util.ConcurrentReferenceHashMap;
  * @since 5.2
  * @see AnnotationTypeMapping
  */
-public class AnnotationTypeMappings implements Iterable<AnnotationTypeMapping> {
+class AnnotationTypeMappings implements Iterable<AnnotationTypeMapping> {
 
 	private static final Map<Class<? extends Annotation>, AnnotationTypeMappings> cache = new ConcurrentReferenceHashMap<>();
 

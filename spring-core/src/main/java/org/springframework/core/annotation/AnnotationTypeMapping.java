@@ -25,11 +25,10 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
-import java.util.function.BiFunction;
 
 import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
@@ -83,11 +82,6 @@ class AnnotationTypeMapping {
 		setupMappings();
 	}
 
-	void afterAllMappingsSet() {
-		this.claimedAliases = null;
-		this.aliasTargetToAttributes = null;
-	}
-
 	private void processAttributeAnnotations() {
 		for (Method attribute : this.attributes) {
 			AliasFor aliasFor = attribute.getDeclaredAnnotation(AliasFor.class);
@@ -96,18 +90,19 @@ class AnnotationTypeMapping {
 				List<Method> targetAttributes = this.aliasTargetToAttributes.computeIfAbsent(
 						target, key -> new ArrayList<>());
 				targetAttributes.add(attribute);
-				if (isImplicitMirror(target)) {
-					targetAttributes.add(attribute);
+				if (isAliasPair(target)) {
+					targetAttributes.add(target);
 				}
 			}
 		}
 	}
 
-	private boolean isImplicitMirror(Method target) {
-		return target.getDeclaringClass().equals(this.annotationType);
+	private Method resolveAliasTarget(Method attribute, AliasFor aliasFor) {
+		return resolveAliasTarget(attribute, aliasFor, true);
 	}
 
-	private Method resolveAliasTarget(Method attribute, AliasFor aliasFor) {
+	private Method resolveAliasTarget(Method attribute, AliasFor aliasFor,
+			boolean checkAliasPair) {
 		if (StringUtils.hasText(aliasFor.value())
 				&& StringUtils.hasText(aliasFor.attribute())) {
 			throw new AnnotationConfigurationException(String.format(
@@ -130,14 +125,60 @@ class AnnotationTypeMapping {
 		}
 		Method target = AnnotationAttributeMethods.get(targetAnnotation, targetAttribute);
 		if (target == null) {
-			// FIXME throw
+			if (targetAnnotation == this.annotationType) {
+				throw new AnnotationConfigurationException(String.format(
+						"@AliasFor declaration on %s declares an "
+								+ "alias for '%s' which is not present.",
+						AnnotationAttributeMethods.describe(attribute), targetAttribute));
+			}
+			throw new AnnotationConfigurationException(
+					String.format("%s is declared as an @AliasFor nonexistent %s.",
+							StringUtils.capitalize(
+									AnnotationAttributeMethods.describe(attribute)),
+							AnnotationAttributeMethods.describe(targetAnnotation,
+									targetAttribute)));
 		}
 		if (target == attribute) {
-			// FIXME throw
+			throw new AnnotationConfigurationException(String.format(
+					"@AliasFor declaration on %s points to itself. "
+							+ "Specify 'annotation' to point to a same-named "
+							+ "attribute on a meta-annotation.",
+					AnnotationAttributeMethods.describe(attribute)));
 		}
-		// FIXME check return types match
-		// FIXME check default values match
+		if (!isCompatibleReturnType(attribute.getReturnType(), target.getReturnType())) {
+			throw new AnnotationConfigurationException(String.format(
+					"Misconfigured aliases: %s and %s must declare the same return type.",
+					AnnotationAttributeMethods.describe(attribute),
+					AnnotationAttributeMethods.describe(target)));
+		}
+		if (isAliasPair(target) && checkAliasPair) {
+			AliasFor targetAliasFor = target.getAnnotation(AliasFor.class);
+			if (targetAliasFor == null) {
+				throw new AnnotationConfigurationException(
+						String.format("%s must be declared as an @AliasFor '%s'.",
+								StringUtils.capitalize(
+										AnnotationAttributeMethods.describe(target)),
+								attribute.getName()));
+			}
+			Method mirror = resolveAliasTarget(target, targetAliasFor, false);
+			if (mirror != attribute) {
+				throw new AnnotationConfigurationException(String.format(
+						"%s must be declared as an @AliasFor '%s', not '%s'.",
+						StringUtils.capitalize(
+								AnnotationAttributeMethods.describe(target)),
+						attribute.getName(), mirror.getName()));
+			}
+		}
 		return target;
+	}
+
+	private boolean isAliasPair(Method target) {
+		return target.getDeclaringClass().equals(this.annotationType);
+	}
+
+	private boolean isCompatibleReturnType(Class<?> attributeType, Class<?> targetType) {
+		return Objects.equals(attributeType, targetType)
+				|| Objects.equals(attributeType, targetType.getComponentType());
 	}
 
 	private void setupMappings() {
@@ -195,169 +236,106 @@ class AnnotationTypeMapping {
 		return parentAttribute != null ? this.parent.findMappings(parentAttribute) : null;
 	}
 
+	/**
+	 * Method called after all mappings have been set. At this point no further
+	 * lookups from child mappings will occur.
+	 */
+	void afterAllMappingsSet() {
+		for (Method attribute : this.attributes) {
+			AliasFor aliasFor = attribute.getDeclaredAnnotation(AliasFor.class);
+			if (aliasFor != null && !this.claimedAliases.contains(attribute)) {
+				Method target = resolveAliasTarget(attribute, aliasFor);
+				throw new AnnotationConfigurationException(String.format(
+						"@AliasFor declaration on %s declares an alias for %s which is not meta-present.",
+						AnnotationAttributeMethods.describe(attribute),
+						AnnotationAttributeMethods.describe(target)));
+			}
+		}
+		for (List<Method> attributes : this.aliasTargetToAttributes.values()) {
+			if (attributes != null && attributes.size() > 1) {
+				validateMirroredAttributes(attributes);
+			}
+		}
+		this.claimedAliases = null;
+		this.aliasTargetToAttributes = null;
+	}
+
+	private void validateMirroredAttributes(List<Method> attributes) {
+		Method firstAttribute = attributes.get(0);
+		Object firstDefaultValue = firstAttribute.getDefaultValue();
+		for (int i = 1; i <= attributes.size() - 1; i++) {
+			Method mirrorAttribute = attributes.get(i);
+			Object mirrorDefaultValue = mirrorAttribute.getDefaultValue();
+			if (firstDefaultValue == null || mirrorDefaultValue == null) {
+				throw new AnnotationConfigurationException(String.format(
+						"Misconfigured aliases: %s and %s must declare default values.",
+						AnnotationAttributeMethods.describe(firstAttribute),
+						AnnotationAttributeMethods.describe(mirrorAttribute)));
+			}
+			if (!ObjectUtils.nullSafeEquals(firstDefaultValue, mirrorDefaultValue)) {
+				throw new AnnotationConfigurationException(String.format(
+						"Misconfigured aliases: %s and %s must declare the same default value.",
+						AnnotationAttributeMethods.describe(firstAttribute),
+						AnnotationAttributeMethods.describe(mirrorAttribute)));
+			}
+		}
+	}
+
+	/**
+	 * Return the parent mapping or {@code null}.
+	 * @return the parent mapping
+	 */
+	@Nullable
 	public AnnotationTypeMapping getParent() {
 		return this.parent;
 	}
 
+	/**
+	 * Return the depth of this mapping.
+	 * @return the depth of the mapping
+	 */
 	public int getDepth() {
 		return this.depth;
 	}
 
+	/**
+	 * Return the type of the mapped annotation.
+	 * @return the annotation type
+	 */
 	public Class<? extends Annotation> getAnnotationType() {
 		return this.annotationType;
 	}
 
 	/**
-	 * Return mapped attributes for the given root annotation.
-	 * @param rootAnnotation the root annotation
-	 * @return the mapped attributes
+	 * Return the source annotation for this mapping. This will be the
+	 * meta-annotation, or {@code null} if this is the root mapping.
+	 * @return the source annotation of the mapping
 	 */
-	public MappedAttributes mapAttributes(Annotation rootAnnotation) {
-		return mapAttributes(rootAnnotation,
-				AnnotationTypeMapping::extractAnnotationValue);
+	@Nullable
+	public Annotation getAnnotation() {
+		return annotation;
 	}
 
 	/**
-	 * Return mapped attributes for the given root annotation. The method is
-	 * designed to take alternative representations of an annotation (for
-	 * example ASM parsed bytecode). As long as a suitable value can be
-	 * extracted, any source object can be used.
-	 * <p>
-	 * The value extractor must return a type that is compatible with the method
-	 * return type, namely:
-	 * <ul>
-	 * <li>If the method return type is an {@link Annotation} then the extracted
-	 * value must be of type {@code <A>} (so that further extactions can be
-	 * applied)</li>
-	 * <li>If the method return type is {@code Class} then the value can either
-	 * be a {@code Class} or {@code String}</li>
-	 * <li>If the method return type is {@code Class[]} then the value can
-	 * either be a {@code Class[]} or {@code String[]}</li>
-	 * <li>For all other method return types the value must be an exact instance
-	 * match</li>
-	 * </ul>
-	 * @param rootAnnotation the root annotation that can have values extracted
-	 * from it
-	 * @param valueExtractor a function to extract values from the root
-	 * annotation.
-	 * @return the mapped attributes
+	 * Return the annotation attributes for the mapping annotation type.
+	 * @return the attribute methods
 	 */
-	public <A> MappedAttributes mapAttributes(A rootAnnotation,
-			BiFunction<A, Method, Object> valueExtractor) {
-		return new MappedAttributes(rootAnnotation, valueExtractor);
-	}
-
-	private static Object extractAnnotationValue(Annotation annotation,
-			Method attributeMethod) {
-		try {
-			return attributeMethod.invoke(annotation);
-		}
-		catch (Exception ex) {
-			throw new IllegalStateException(ex);
-		}
+	public AnnotationAttributeMethods getAttributes() {
+		return this.attributes;
 	}
 
 	/**
-	 * Allows access to annotation attributes with mapping rules applied.
+	 * Return mapped attributes for the given attribute index or {@code null} if
+	 * there are none. The resulting methods can be invoked against the root
+	 * annotation in order to obtain the actual mapped value. If the returned
+	 * list contains more than one element then the mapping is for a mirrored
+	 * attribute.
+	 * @param attributeIndex the attribute index of the source attribute
+	 * @return the mapped attributes or {@code null}
 	 */
-	public class MappedAttributes {
-
-		private final Method[] attributeToMappedAttribute = new Method[attributes.size()];
-
-		private final Object rootAnnotation;
-
-		private final BiFunction<Object, Method, Object> valueExtractor;
-
-		@SuppressWarnings("unchecked")
-		MappedAttributes(Object rootAnnotation,
-				BiFunction<?, Method, Object> valueExtractor) {
-			this.rootAnnotation = rootAnnotation;
-			this.valueExtractor = (BiFunction<Object, Method, Object>) valueExtractor;
-			setupMappings();
-		}
-
-		private void setupMappings() {
-			for (int i = 0; i < attributes.size(); i++) {
-				List<Method> mappedAttributes = attributeToMappedAttributes.get(i);
-				if (mappedAttributes != null) {
-					this.attributeToMappedAttribute[i] = getMappedAttribute(i,
-							mappedAttributes);
-				}
-			}
-		}
-
-		private Method getMappedAttribute(int attributeIndex,
-				List<Method> mappedAttributes) {
-			if (mappedAttributes.isEmpty()) {
-				return null;
-			}
-			if (mappedAttributes.size() == 1) {
-				return mappedAttributes.get(0);
-			}
-			Method result = null;
-			for (int i = 0; i < mappedAttributes.size(); i++) {
-				Method candidate = mappedAttributes.get(i);
-				if (!hasDefaultValue(candidate)) {
-					result = candidate;
-				}
-			}
-			return result;
-		}
-
-		private boolean hasDefaultValue(Method candidate) {
-			return equals(candidate.getDefaultValue(), getValue(candidate));
-		}
-
-		private boolean equals(Object value, Object extractedValue) {
-			if (ObjectUtils.nullSafeEquals(value, extractedValue)) {
-				return true;
-			}
-			if (value instanceof Class && extractedValue instanceof String) {
-				// FIXME
-			}
-			if (value instanceof Class[] && extractedValue instanceof String[]) {
-				// FIXME
-			}
-			if (value instanceof Annotation && !(extractedValue instanceof Annotation)) {
-				Annotation annotation = (Annotation) value;
-				equals(annotation, extractedValue);
-			}
-			return false;
-		}
-
-		private boolean equals(Annotation value, Object extractedValue) {
-			for (Method attribute : AnnotationAttributeMethods.forAnnotationType(
-					value.annotationType())) {
-				if (equals(extractAnnotationValue(value, attribute),
-						this.valueExtractor.apply(extractedValue, attribute))) {
-					return true;
-				}
-			}
-			return false;
-		}
-
-		public AnnotationTypeMapping getMapping() {
-			return AnnotationTypeMapping.this;
-		}
-
-		public Object getValue(String attributeName) {
-			int attributeIndex = attributes.indexOf(attributeName);
-			Assert.isTrue(attributeIndex >= 0, "Attribute not found");
-			Method mapped = this.attributeToMappedAttribute[attributeIndex];
-			if (mapped != null) {
-				return getValue(mapped);
-			}
-			Method attribute = attributes.get(attributeIndex);
-			if (depth == 0) {
-				return getValue(attribute);
-			}
-			return extractAnnotationValue(annotation, attribute);
-		}
-
-		private Object getValue(Method method) {
-			return this.valueExtractor.apply(this.rootAnnotation, method);
-		}
-
+	@Nullable
+	public List<Method> getMappedAttributes(int attributeIndex) {
+		return this.attributeToMappedAttributes.get(attributeIndex);
 	}
 
 }

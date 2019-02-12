@@ -36,6 +36,8 @@ import org.springframework.util.Assert;
 abstract class AbstractMergedAnnotation<A extends Annotation>
 		implements MergedAnnotation<A> {
 
+	private volatile A synthesizedAnnotation;
+
 	@Override
 	public boolean isDirectlyPresent() {
 		return isPresent() && getDepth() == 0;
@@ -144,6 +146,16 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	}
 
 	@Override
+	public Optional<Object> getValue(String attributeName) {
+		return getValue(attributeName, Object.class);
+	}
+
+	@Override
+	public <T> Optional<T> getValue(String attributeName, Class<T> type) {
+		return Optional.ofNullable(getValue(attributeName, type, false));
+	}
+
+	@Override
 	public Optional<Object> getDefaultValue(String attributeName) {
 		return getDefaultValue(attributeName, Object.class);
 	}
@@ -167,11 +179,29 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		return Optional.empty();
 	}
 
+	@Override
+	public A synthesize() {
+		if (!isPresent()) {
+			throw new NoSuchElementException("Unable to synthesize missing annotation");
+		}
+		A synthesized = this.synthesizedAnnotation;
+		if (synthesized == null) {
+			synthesized = createSynthesized();
+			this.synthesizedAnnotation = synthesized;
+		}
+		return synthesized;
+	}
+
+	/**
+	 * Factory method used to create the synthesized annotation.
+	 */
+	protected abstract A createSynthesized();
+
 	private <T> T getRequiredValue(String attributeName, Class<T> type) {
 		return getValue(attributeName, type, true);
 	}
 
-	protected abstract <T> T getValue(String attributeName, @Nullable Class<T> type,
+	protected abstract <T> T getValue(String attributeName, Class<T> type,
 			boolean required);
 
 }

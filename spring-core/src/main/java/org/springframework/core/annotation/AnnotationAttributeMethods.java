@@ -127,8 +127,12 @@ final class AnnotationAttributeMethods implements Iterable<Method> {
 	}
 
 	public static String describe(Method attributeMethod) {
-		return "attribute '" + attributeMethod.getName() + "' in annotation ["
-				+ attributeMethod.getDeclaringClass().getName() + "]";
+		return describe(attributeMethod.getDeclaringClass(), attributeMethod.getName());
+	}
+
+	public static String describe(Class<?> annotationType, String attributeName) {
+		return "attribute '" + attributeName + "' in annotation ["
+				+ annotationType.getName() + "]";
 	}
 
 	/**

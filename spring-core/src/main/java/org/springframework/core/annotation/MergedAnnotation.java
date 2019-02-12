@@ -460,7 +460,7 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * @return an instance representing a missing annotation
 	 */
 	static <A extends Annotation> MergedAnnotation<A> missing() {
-		throw new RuntimeException(); // FIXME
+		return MissingMergedAnnotation.getInstance();
 	}
 
 	/**

@@ -187,9 +187,6 @@ final class MigrateMethod {
 			catch (RuntimeException expected) {
 				try {
 					T expectedResult = this.originalMethod.get();
-					if(true) {
-						return expectedResult;
-					}
 					if (this.skipOriginalExceptionCheck) {
 						return expectedResult;
 					}
