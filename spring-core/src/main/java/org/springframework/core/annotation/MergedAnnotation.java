@@ -484,7 +484,7 @@ public interface MergedAnnotation<A extends Annotation> {
 	 */
 	static <A extends Annotation> MergedAnnotation<A> from(@Nullable Object source,
 			A annotation) {
-		return null; // FIXME
+		return TypeMappedAnnotation.from(source, annotation);
 	}
 
 	/**

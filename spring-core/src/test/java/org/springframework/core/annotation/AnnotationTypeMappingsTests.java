@@ -27,6 +27,7 @@ import org.junit.Test;
 import org.springframework.lang.UsesSunMisc;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.Assert.*;
 
 /**
  * Tests for {@link AnnotationTypeMappings} and {@link AnnotationTypeMapping}.
@@ -285,6 +286,12 @@ public class AnnotationTypeMappingsTests {
 				Mapped.class.getDeclaredMethod("alias"));
 		assertThat(mapping.getMappedAttributes(1)).containsExactly(
 				Mapped.class.getDeclaredMethod("convention"));
+	}
+
+	@Test
+	public void getMappedAttributesWhenImplicitMirrorsReturnsAttributes() {
+		AnnotationTypeMapping mapping = AnnotationTypeMappings.forAnnotationType(ImplicitMirrors.class).get(0);
+		assertThat(mapping.getMappedAttributes(0)).containsExactly(values)
 	}
 
 	private AnnotationTypeMapping getMapping(AnnotationTypeMappings mappings,
@@ -555,6 +562,29 @@ public class AnnotationTypeMappingsTests {
 		String convention() default "";
 
 		String aliasTarget() default "";
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@ImplicitMorrorsTarget
+	static @interface ImplicitMirrors {
+
+		@AliasFor(annotation = ImplicitMorrorsTarget.class, attribute = "c")
+		String a();
+
+		@AliasFor(annotation = ImplicitMorrorsTarget.class, attribute = "c")
+		String b();
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	static @interface ImplicitMorrorsTarget {
+
+		@AliasFor("d")
+		String c() default "";
+
+		@AliasFor("c")
+		String d() default "";
 
 	}
 

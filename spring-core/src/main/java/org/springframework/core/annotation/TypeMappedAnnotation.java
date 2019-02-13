@@ -31,8 +31,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.ReflectionUtils;
 
-import static org.assertj.core.api.Assertions.*;
-
 /**
  *
  * @author Phillip Webb
@@ -95,14 +93,28 @@ public class TypeMappedAnnotation<A extends Annotation>
 			return mappedAttributes.get(0);
 		}
 		Method result = null;
+		Object lastValue = null;
 		for (int i = 0; i < mappedAttributes.size(); i++) {
-			Method candidate = mappedAttributes.get(i);
-			Object defaultValue = candidate.getDefaultValue();
-			Object value = this.valueExtractor.apply(candidate, this.annotation);
+			Method attribute = mappedAttributes.get(i);
+			Object defaultValue = attribute.getDefaultValue();
+			Object value = this.valueExtractor.apply(attribute, this.annotation);
 			if (!equivalent(defaultValue, value)) {
-				result = candidate;
+				if (result != null) {
+					String on = (this.source != null) ? " declared on " + this.source
+							: "";
+					throw new AnnotationConfigurationException(String.format(
+							"Different @AliasFor mirror values for annotation [%s]%s, "
+									+ "attribute '%s' and its alias '%s' are declared with values of [%s] and [%s].",
+							this.mapping.getAnnotationType().getName(), on,
+							result.getName(), attribute.getName(),
+							ObjectUtils.nullSafeToString(lastValue),
+							ObjectUtils.nullSafeToString(value)));
+				}
+				result = attribute;
+				lastValue = value;
 			}
 		}
+		// FIXME What to do
 		return result;
 	}
 
@@ -264,9 +276,10 @@ public class TypeMappedAnnotation<A extends Annotation>
 		return ReflectionUtils.invokeMethod(attribute, mapping.getAnnotation());
 	}
 
+	@SuppressWarnings("unchecked")
 	private <T> T adapt(@Nullable Object value, Class<?> attributeType, Class<T> type) {
-		if (value == null) {
-			return null;
+		if (value == null || type.isInstance(value)) {
+			return (T) value;
 		}
 		throw new UnsupportedOperationException("Auto-generated method stub");
 	}
@@ -298,6 +311,13 @@ public class TypeMappedAnnotation<A extends Annotation>
 			}
 		}
 		return false;
+	}
+
+	static <A extends Annotation> MergedAnnotation<A> from(Object source, A annotation) {
+		Assert.notNull(annotation, "Annotation must not be null");
+		AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotationType(
+				annotation.annotationType());
+		return new TypeMappedAnnotation<>(source, annotation, mappings.get(0), 0);
 	}
 
 }

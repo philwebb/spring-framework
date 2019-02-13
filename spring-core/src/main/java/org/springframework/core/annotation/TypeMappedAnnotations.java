@@ -281,7 +281,7 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		public MergedAnnotation<A> process(Object type, int aggregateIndex,
 				@Nullable Object source, Annotation[] annotations) {
 			for (Annotation annotation : annotations) {
-				if (annotationFilter.matches(annotation)) {
+				if (annotation == null || annotationFilter.matches(annotation)) {
 					continue;
 				}
 				for (Annotation candidate : annotations) {
@@ -323,7 +323,7 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		private void updateLastResult(MergedAnnotation<A> candidate) {
 			this.result = this.result != null
 					? this.selector.select(this.result, candidate)
-					: this.result;
+					: candidate;
 		}
 
 		@Override
