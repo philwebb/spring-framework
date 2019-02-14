@@ -19,7 +19,7 @@ package org.springframework.core.annotation;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import org.springframework.core.annotation.AnnotationTypeMapping.MirrorSets.MirrorSet;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
@@ -54,10 +55,12 @@ class AnnotationTypeMapping {
 
 	private final AnnotationAttributeMethods attributes;
 
-	@Nullable
-	private Map<Method, List<Method>> aliasTargetToAttributes = new HashMap<>();
+	private MirrorSets mirrorSets;
 
-	private final List<List<Method>> attributeToMappedAttributes;
+	@Nullable
+	private Map<Method, List<Method>> aliasesFrom = new HashMap<>();
+
+	private final List<Method> attributeMappings;
 
 	@Nullable
 	private Set<Method> claimedAliases = new HashSet<>();
@@ -77,22 +80,22 @@ class AnnotationTypeMapping {
 		this.annotationType = annotationType;
 		this.annotation = annotation;
 		this.attributes = AnnotationAttributeMethods.forAnnotationType(annotationType);
-		this.attributeToMappedAttributes = new ArrayList<>(this.attributes.size());
-		processAttributeAnnotations();
-		setupMappings();
+		this.mirrorSets = new MirrorSets();
+		this.attributeMappings = new ArrayList<>(this.attributes.size());
+		addAliasesFromEntries();
+		addAttributeMappings();
+		updateMirrorSets();
+		updatedClaimedAliases();
 	}
 
-	private void processAttributeAnnotations() {
+	private void addAliasesFromEntries() {
 		for (Method attribute : this.attributes) {
 			AliasFor aliasFor = attribute.getDeclaredAnnotation(AliasFor.class);
 			if (aliasFor != null) {
 				Method target = resolveAliasTarget(attribute, aliasFor);
-				List<Method> targetAttributes = this.aliasTargetToAttributes.computeIfAbsent(
-						target, key -> new ArrayList<>());
-				targetAttributes.add(attribute);
-				if (isAliasPair(target)) {
-					targetAttributes.add(target);
-				}
+				List<Method> aliasFrom = this.aliasesFrom.computeIfAbsent(target,
+						key -> new ArrayList<>());
+				aliasFrom.add(attribute);
 			}
 		}
 	}
@@ -181,66 +184,104 @@ class AnnotationTypeMapping {
 				|| Objects.equals(attributeType, targetType.getComponentType());
 	}
 
-	private void setupMappings() {
+	private void addAttributeMappings() {
 		for (Method attribute : this.attributes) {
-			this.attributeToMappedAttributes.add(findMappings(attribute));
+			this.attributeMappings.add(findMapping(attribute));
 		}
 	}
 
 	@Nullable
-	private List<Method> findMappings(Method attribute) {
-		List<Method> mappings = findAliasTargetMappings(attribute);
-		if (mappings == null) {
-			mappings = findConventionMappings(attribute);
+	private Method findMapping(Method attribute) {
+		Method mapping = findAliasTargetMapping(attribute);
+		if (mapping == null) {
+			mapping = findConventionMapping(attribute);
 		}
-		return mappings;
+		return mapping;
 	}
 
 	@Nullable
-	private List<Method> findAliasTargetMappings(Method attribute) {
-		List<Method> aliasedBy = this.aliasTargetToAttributes.get(attribute);
-		if (aliasedBy != null) {
-			this.claimedAliases.addAll(aliasedBy);
-		}
-		if (this.parent == null) {
-			return aliasedBy;
-		}
-		if (aliasedBy == null) {
-			return this.parent.findAliasTargetMappings(attribute);
-		}
-		if (aliasedBy.size() == 1) {
-			return this.parent.findAliasTargetMappings(aliasedBy.get(0));
-		}
-		Set<Method> mappings = new LinkedHashSet<>();
-		for (Method aliasedByMethod : aliasedBy) {
-			List<Method> aliasMappings = this.parent.findAliasTargetMappings(
-					aliasedByMethod);
-			if (aliasMappings != null) {
-				mappings.addAll(aliasMappings);
+	private Method findAliasTargetMapping(Method attribute) {
+		AnnotationTypeMapping typeMapping = this;
+		while (typeMapping.parent != null) {
+			List<Method> aliasesFrom = typeMapping.parent.aliasesFrom.get(attribute);
+			if (aliasesFrom != null) {
+				attribute = aliasesFrom.get(0);
 			}
+			typeMapping = typeMapping.parent;
 		}
-		return mappings.isEmpty() ? null : new ArrayList<>(mappings);
+		if (attribute.getDeclaringClass() == typeMapping.annotationType) {
+			return attribute;
+		}
+		return null;
 	}
 
 	@Nullable
-	protected final List<Method> findConventionMappings(Method attribute) {
+	protected final Method findConventionMapping(Method attribute) {
 		if (MergedAnnotation.VALUE.equals(attribute.getName())) {
 			return null;
 		}
-		if (this.parent == null) {
-			return this.annotationType.equals(attribute.getDeclaringClass())
-					? Collections.singletonList(attribute)
-					: null;
+		AnnotationTypeMapping typeMapping = this;
+		while (typeMapping.parent != null) {
+			Method parentAttribute = typeMapping.parent.attributes.get(
+					attribute.getName());
+			if (parentAttribute != null) {
+				return typeMapping.parent.findMapping(parentAttribute);
+			}
+			typeMapping = typeMapping.parent;
 		}
-		Method parentAttribute = this.parent.attributes.get(attribute.getName());
-		return parentAttribute != null ? this.parent.findMappings(parentAttribute) : null;
+		if (attribute.getDeclaringClass() == typeMapping.annotationType) {
+			return attribute;
+		}
+		return null;
 	}
+
+	private void updateMirrorSets() {
+		for (Method attribute : this.attributes) {
+			updateMirrorSets(attribute);
+		}
+	}
+
+	private void updateMirrorSets(Method attribute) {
+		Set<Method> aliases = new HashSet<>();
+		aliases.add(attribute);
+		AnnotationTypeMapping typeMapping = this;
+		while (typeMapping != null) {
+			boolean aliasesChanged = false;
+			for (Method alias : new LinkedHashSet<>(aliases)) {
+				List<Method> additionalAliases = typeMapping.aliasesFrom.get(alias);
+				if (additionalAliases != null) {
+					typeMapping.claimedAliases.addAll(additionalAliases);
+					if (aliases.addAll(additionalAliases)) {
+						aliasesChanged = true;
+					}
+				}
+			}
+			if (aliasesChanged) {
+				typeMapping.mirrorSets.updateFrom(aliases);
+			}
+			typeMapping = typeMapping.parent;
+		}
+	}
+
+	private void updatedClaimedAliases() {
+
+	}
+
 
 	/**
 	 * Method called after all mappings have been set. At this point no further
 	 * lookups from child mappings will occur.
 	 */
 	void afterAllMappingsSet() {
+		validateAllAliasesClaimed();
+		for (int i = 0; i < this.mirrorSets.size(); i++) {
+			validateMirrorSet(this.mirrorSets.get(i));
+		}
+		this.claimedAliases = null;
+		this.aliasesFrom = null;
+	}
+
+	private void validateAllAliasesClaimed() {
 		for (Method attribute : this.attributes) {
 			AliasFor aliasFor = attribute.getDeclaredAnnotation(AliasFor.class);
 			if (aliasFor != null && !this.claimedAliases.contains(attribute)) {
@@ -251,20 +292,13 @@ class AnnotationTypeMapping {
 						AnnotationAttributeMethods.describe(target)));
 			}
 		}
-		for (List<Method> attributes : this.aliasTargetToAttributes.values()) {
-			if (attributes != null && attributes.size() > 1) {
-				validateMirroredAttributes(attributes);
-			}
-		}
-		this.claimedAliases = null;
-		this.aliasTargetToAttributes = null;
 	}
 
-	private void validateMirroredAttributes(List<Method> attributes) {
-		Method firstAttribute = attributes.get(0);
+	private void validateMirrorSet(MirrorSet mirrorSet) {
+		Method firstAttribute = mirrorSet.get(0);
 		Object firstDefaultValue = firstAttribute.getDefaultValue();
-		for (int i = 1; i <= attributes.size() - 1; i++) {
-			Method mirrorAttribute = attributes.get(i);
+		for (int i = 1; i <= mirrorSet.size() - 1; i++) {
+			Method mirrorAttribute = mirrorSet.get(i);
 			Object mirrorDefaultValue = mirrorAttribute.getDefaultValue();
 			if (firstDefaultValue == null || mirrorDefaultValue == null) {
 				throw new AnnotationConfigurationException(String.format(
@@ -280,6 +314,7 @@ class AnnotationTypeMapping {
 			}
 		}
 	}
+
 
 	/**
 	 * Return the parent mapping or {@code null}.
@@ -325,17 +360,93 @@ class AnnotationTypeMapping {
 	}
 
 	/**
-	 * Return mapped attributes for the given attribute index or {@code null} if
-	 * there are none. The resulting methods can be invoked against the root
-	 * annotation in order to obtain the actual mapped value. If the returned
-	 * list contains more than one element then the mapping is for a mirrored
-	 * attribute.
+	 * Return mapped attribute for the given attribute index or {@code null} if
+	 * there is no mapping. The resulting methods can be invoked against the
+	 * root annotation in order to obtain the actual mapped value..
 	 * @param attributeIndex the attribute index of the source attribute
 	 * @return the mapped attributes or {@code null}
 	 */
 	@Nullable
-	public List<Method> getMappedAttributes(int attributeIndex) {
-		return this.attributeToMappedAttributes.get(attributeIndex);
+	public Method getMappedAttribute(int attributeIndex) {
+		return this.attributeMappings.get(attributeIndex);
+	}
+
+	/**
+	 * Return the mirror sets for this type mapping.
+	 * @return the mirrorSets the attribute mirror sets.
+	 */
+	public MirrorSets getMirrorSets() {
+		return this.mirrorSets;
+	}
+
+	class MirrorSets {
+
+		private MirrorSet[] mirrorSets;
+
+		private MirrorSet[] assigned;
+
+		MirrorSets() {
+			this.assigned = new MirrorSet[attributes.size()];
+			this.mirrorSets = new MirrorSet[0];
+		}
+
+		void updateFrom(Set<Method> aliases) {
+			MirrorSet mirrorSet = null;
+			for (int i = 0; i < attributes.size(); i++) {
+				Method attribute = attributes.get(i);
+				if (aliases.contains(attribute)) {
+					if (mirrorSet == null) {
+						mirrorSet = this.assigned[i] != null ? this.assigned[i]
+								: new MirrorSet();
+					}
+					assigned[i] = mirrorSet;
+				}
+			}
+			if (mirrorSet != null) {
+				mirrorSet.update();
+				LinkedHashSet<MirrorSet> unique = new LinkedHashSet<>(
+						Arrays.asList(this.assigned));
+				unique.remove(null);
+				this.mirrorSets = unique.toArray(new MirrorSet[0]);
+			}
+		}
+
+		public int size() {
+			return this.mirrorSets.length;
+		}
+
+		public MirrorSet get(int index) {
+			return this.mirrorSets[index];
+		}
+
+		class MirrorSet {
+
+			private int size;
+
+			private int[] indexes = new int[attributes.size()];
+
+			public void update() {
+				this.size = 0;
+				Arrays.fill(this.indexes, -1);
+				for (int i = 0; i < assigned.length; i++) {
+					if (assigned[i] == this) {
+						this.indexes[this.size] = i;
+						this.size++;
+					}
+				}
+			}
+
+			public int size() {
+				return this.size;
+			}
+
+			public Method get(int index) {
+				int attributeIndex = this.indexes[index];
+				return attributes.get(attributeIndex);
+			}
+
+		}
+
 	}
 
 }

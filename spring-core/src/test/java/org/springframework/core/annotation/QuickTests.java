@@ -32,45 +32,50 @@ public class QuickTests {
 	public void testName() {
 		System.out.println(
 				InternalAnnotatedElementUtils.findMergedAnnotation(WithA.class, A.class));
+		System.out.println(
+				InternalAnnotatedElementUtils.findMergedAnnotation(WithA.class, B.class));
+		System.out.println(
+				InternalAnnotatedElementUtils.findMergedAnnotation(WithA.class, C.class));
 
-		//		System.out.println(
-//				InternalAnnotatedElementUtils.findMergedAnnotation(WithA.class, A.class));
-//		System.out.println(
-//				InternalAnnotatedElementUtils.findMergedAnnotation(WithA.class, B.class));
-//		System.out.println(
-//				InternalAnnotatedElementUtils.findMergedAnnotation(WithA.class, C.class));
-//		System.out.println(
-//				InternalAnnotatedElementUtils.findMergedAnnotation(WithA.class, D.class));
+		// System.out.println(
+		// InternalAnnotatedElementUtils.findMergedAnnotation(WithA.class,
+		// A.class));
+		// System.out.println(
+		// InternalAnnotatedElementUtils.findMergedAnnotation(WithA.class,
+		// B.class));
+		// System.out.println(
+		// InternalAnnotatedElementUtils.findMergedAnnotation(WithA.class,
+		// C.class));
+		// System.out.println(
+		// InternalAnnotatedElementUtils.findMergedAnnotation(WithA.class,
+		// D.class));
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
+	@B
 	static @interface A {
 
-		@AliasFor("bar")
 		String foo() default "";
-
-		@AliasFor("baz")
-		String bar() default "";
-
-		@AliasFor("bar")
-		String baz() default "";
 
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@D
+	@C
 	static @interface B {
 
-	}
-
-	@Retention(RetentionPolicy.RUNTIME)
-	static @interface D {
-
+		@AliasFor(annotation = C.class, attribute = "bar")
 		String foo() default "";
 
 	}
 
-	@A(foo="foo")
+	@Retention(RetentionPolicy.RUNTIME)
+	static @interface C {
+
+		String bar() default "";
+
+	}
+
+	@A(foo = "foo")
 	private static class WithA {
 	}
 
