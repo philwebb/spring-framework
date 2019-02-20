@@ -30,53 +30,35 @@ public class QuickTests {
 
 	@Test
 	public void testName() {
-		System.out.println(
-				InternalAnnotatedElementUtils.findMergedAnnotation(WithA.class, A.class));
-		System.out.println(
-				InternalAnnotatedElementUtils.findMergedAnnotation(WithA.class, B.class));
-		System.out.println(
-				InternalAnnotatedElementUtils.findMergedAnnotation(WithA.class, C.class));
-
-		// System.out.println(
-		// InternalAnnotatedElementUtils.findMergedAnnotation(WithA.class,
-		// A.class));
-		// System.out.println(
-		// InternalAnnotatedElementUtils.findMergedAnnotation(WithA.class,
-		// B.class));
-		// System.out.println(
-		// InternalAnnotatedElementUtils.findMergedAnnotation(WithA.class,
-		// C.class));
-		// System.out.println(
-		// InternalAnnotatedElementUtils.findMergedAnnotation(WithA.class,
-		// D.class));
+		MergedAnnotation<?> annotation = MergedAnnotations.from(WithGetMapping.class).get(GetMapping.class);
+		System.out.println(annotation.getString("path"));
+		System.out.println(annotation.getString("value"));
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@B
-	static @interface A {
+	@RequestMapping(method = "get")
+	static @interface GetMapping {
 
-		String foo() default "";
+		@AliasFor(annotation = RequestMapping.class)
+		String path() default "";
+
+		@AliasFor(annotation = RequestMapping.class, attribute = "path")
+		String value() default "";
 
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@C
-	static @interface B {
+	static @interface RequestMapping {
 
-		@AliasFor(annotation = C.class, attribute = "bar")
-		String foo() default "";
+		String method();
 
-	}
-
-	@Retention(RetentionPolicy.RUNTIME)
-	static @interface C {
-
-		String bar() default "";
+		String path() default "";
 
 	}
 
-	@A(foo = "foo")
-	private static class WithA {
+	@GetMapping("foo")
+	static class WithGetMapping {
+
 	}
 
 }

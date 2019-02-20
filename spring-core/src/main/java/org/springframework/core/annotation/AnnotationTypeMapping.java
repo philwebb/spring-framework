@@ -367,6 +367,11 @@ class AnnotationTypeMapping {
 		return annotation;
 	}
 
+	@Nullable
+	public int[] getResolvedAnnotationMirrors() {
+		return resolvedAnnotationMirrors;
+	}
+
 	/**
 	 * Return the annotation attributes for the mapping annotation type.
 	 * @return the attribute methods

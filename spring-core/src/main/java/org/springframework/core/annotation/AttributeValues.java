@@ -16,27 +16,72 @@
 
 package org.springframework.core.annotation;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.function.BiFunction;
 
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.ReflectionUtils;
 
 /**
+ * Internal utilities for consistent handling of annotation attribute values.
  *
- * @author pwebb
- * @since 5.1
+ * @author Phillip Webb
+ * @since 5.2
+ * @see AttributeMethods
  */
-public class AttributeValues {
+class AttributeValues {
 
 	public static boolean isDefault(Method attribute, Object value,
 			BiFunction<Method, Object, Object> valueExtractor) {
-		return areEquivalent(attribute.getDefaultValue(),
-				value, valueExtractor);
+		return areEquivalent(attribute.getDefaultValue(), value, valueExtractor);
 	}
 
 	private static boolean areEquivalent(Object value, Object extractedValue,
 			BiFunction<Method, Object, Object> valueExtractor) {
-		return ObjectUtils.nullSafeEquals(value, extractedValue);
+		if (ObjectUtils.nullSafeEquals(value, extractedValue)) {
+			return true;
+		}
+		if (value instanceof Class && extractedValue instanceof String) {
+			return areEquivalent((Class<?>) value, (String) extractedValue);
+		}
+		if (value instanceof Class[] && extractedValue instanceof String[]) {
+			return areEquivalent((Class[]) value, (String[]) extractedValue);
+		}
+		if (value instanceof Annotation) {
+			return areEquivalent((Annotation) value, extractedValue, valueExtractor);
+		}
+		return false;
+	}
+
+	private static boolean areEquivalent(Class<?>[] value, String[] extractedValue) {
+		if (value.length != extractedValue.length) {
+			return false;
+		}
+		for (int i = 0; i < value.length; i++) {
+			if (!areEquivalent(value[i], extractedValue[i])) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static boolean areEquivalent(Class<?> value, String extractedValue) {
+		return value.getName().equals(extractedValue);
+	}
+
+	private static boolean areEquivalent(Annotation value, Object extractedValue,
+			BiFunction<Method, Object, Object> valueExtractor) {
+		AttributeMethods attributes = AttributeMethods.forAnnotationType(
+				value.annotationType());
+		for (int i = 0; i < attributes.size(); i++) {
+			Method attribute = attributes.get(i);
+			if (!areEquivalent(ReflectionUtils.invokeMethod(attribute, value),
+					valueExtractor.apply(attribute, extractedValue), valueExtractor)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

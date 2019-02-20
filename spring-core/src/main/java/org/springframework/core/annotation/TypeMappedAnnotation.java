@@ -18,7 +18,6 @@ package org.springframework.core.annotation;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -26,11 +25,8 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import org.springframework.core.annotation.AnnotationTypeMapping.MirrorSets;
-import org.springframework.core.annotation.AnnotationTypeMapping.MirrorSets.MirrorSet;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.ReflectionUtils;
 
 /**
@@ -52,9 +48,7 @@ public class TypeMappedAnnotation<A extends Annotation>
 
 	private final int aggregateIndex;
 
-	private final Method[] resolvedRootMirrorAttributes;
-
-	private final Method[] resolvedMirrorAttributes;
+	private final int[] resolvedAnnotationMirrors;
 
 	private final boolean useNonMergedValues;
 
@@ -77,67 +71,10 @@ public class TypeMappedAnnotation<A extends Annotation>
 		this.valueExtractor = valueExtractor;
 		this.mapping = mapping;
 		this.aggregateIndex = aggregateIndex;
-		this.resolvedRootMirrorAttributes = resolveMirrorAttributes(mapping.getRoot(),
+		this.resolvedAnnotationMirrors = mapping.getRoot().getMirrorSets().resolve(source,
 				annotation, valueExtractor);
-		this.resolvedMirrorAttributes = mapping.getDepth() == 0
-				? this.resolvedRootMirrorAttributes
-				: resolveMirrorAttributes(mapping, mapping.getAnnotation(),
-						ReflectionUtils::invokeMethod);
 		this.useNonMergedValues = false;
 		this.attributeFilter = null;
-	}
-
-	private static Method[] resolveMirrorAttributes(AnnotationTypeMapping mapping,
-			Object annotation, BiFunction<Method, Object, Object> valueExtractor) {
-		AttributeMethods attributes = mapping.getAttributes();
-		MirrorSets mirrorSets = mapping.getMirrorSets();
-		Method[] resolved = attributes.toArray();
-		for (int i = 0; i < mirrorSets.size(); i++) {
-			MirrorSet mirrorSet = mirrorSets.get(i);
-			Method inUse = resolvedMirrorAttribute(mirrorSet, annotation, valueExtractor);
-			for (int j = 0; i < mirrorSet.size(); j++) {
-				resolved[mirrorSet.getIndex(j)] = inUse;
-			}
-		}
-		return resolved;
-	}
-
-	private static Method resolvedMirrorAttribute(MirrorSet mirrorSet, Object annotation,
-			BiFunction<Method, Object, Object> valueExtractor) {
-		return null;
-	}
-
-	private Method getMappedAttribute(List<Method> mappedAttributes) {
-		if (mappedAttributes.isEmpty()) {
-			return null;
-		}
-		if (mappedAttributes.size() == 1) {
-			return mappedAttributes.get(0);
-		}
-		Method result = null;
-		Object lastValue = null;
-		for (int i = 0; i < mappedAttributes.size(); i++) {
-			Method attribute = mappedAttributes.get(i);
-			Object defaultValue = attribute.getDefaultValue();
-			Object value = this.valueExtractor.apply(attribute, this.annotation);
-			if (!equivalent(defaultValue, value)) {
-				if (result != null) {
-					String on = (this.source != null) ? " declared on " + this.source
-							: "";
-					throw new AnnotationConfigurationException(String.format(
-							"Different @AliasFor mirror values for annotation [%s]%s, "
-									+ "attribute '%s' and its alias '%s' are declared with values of [%s] and [%s].",
-							this.mapping.getAnnotationType().getName(), on,
-							result.getName(), attribute.getName(),
-							ObjectUtils.nullSafeToString(lastValue),
-							ObjectUtils.nullSafeToString(value)));
-				}
-				result = attribute;
-				lastValue = value;
-			}
-		}
-		// FIXME What to do
-		return result;
 	}
 
 	@Override
@@ -172,16 +109,15 @@ public class TypeMappedAnnotation<A extends Annotation>
 		if (parentMapping == null) {
 			return null;
 		}
+		// FIXME resolved mirrors wont change
 		return new TypeMappedAnnotation<>(this.source, this.annotation,
 				this.valueExtractor, parentMapping, this.aggregateIndex);
 	}
 
 	@Override
 	public boolean hasDefaultValue(String attributeName) {
-		int attributeIndex = getAttributeIndex(attributeName, true);
-		Object defaultValue = this.mapping.getAttributes().get(
-				attributeIndex).getDefaultValue();
-		return equivalent(defaultValue, getValue(attributeIndex));
+		// FIXME
+		return false;
 	}
 
 	@Override
@@ -287,16 +223,21 @@ public class TypeMappedAnnotation<A extends Annotation>
 	}
 
 	private Object getValue(int attributeIndex) {
-		int mapped = this.mapping.getMappedAttribute(attributeIndex);
-		if (mapped != -1 && !this.useNonMergedValues) {
-			Method resolved = this.resolvedRootMirrorAttributes[mapped];
-			return this.valueExtractor.apply(resolved, this.annotation);
+		int mapped = this.useNonMergedValues ? -1
+				: this.mapping.getMappedAttribute(attributeIndex);
+		if (mapped != -1) {
+			mapped = this.resolvedAnnotationMirrors[mapped];
+			Method attribute = this.mapping.getRoot().getAttributes().get(mapped);
+			return this.valueExtractor.apply(attribute, this.annotation);
 		}
-		Method resolved = this.resolvedMirrorAttributes[attributeIndex];
-		if (getDepth() == 0) {
-			return this.valueExtractor.apply(resolved, this.annotation);
+		if (getDepth() > 0) {
+			attributeIndex = this.mapping.getResolvedAnnotationMirrors()[attributeIndex];
+			Method attribute = this.mapping.getAttributes().get(attributeIndex);
+			return ReflectionUtils.invokeMethod(attribute, this.mapping.getAnnotation());
 		}
-		return ReflectionUtils.invokeMethod(resolved, mapping.getAnnotation());
+		attributeIndex = this.resolvedAnnotationMirrors[attributeIndex];
+		Method attribute = this.mapping.getAttributes().get(attributeIndex);
+		return this.valueExtractor.apply(attribute, this.annotation);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -305,35 +246,6 @@ public class TypeMappedAnnotation<A extends Annotation>
 			return (T) value;
 		}
 		throw new UnsupportedOperationException("Auto-generated method stub");
-	}
-
-	private static boolean equivalent(Object value, Object extractedValue) {
-		if (ObjectUtils.nullSafeEquals(value, extractedValue)) {
-			return true;
-		}
-		if (value instanceof Class && extractedValue instanceof String) {
-			// FIXME
-		}
-		if (value instanceof Class[] && extractedValue instanceof String[]) {
-			// FIXME
-		}
-		if (value instanceof Annotation) {
-			if (equivalent((Annotation) value, extractedValue)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private static boolean equivalent(Annotation value, Object extractedValue) {
-		for (Method attribute : AttributeMethods.forAnnotationType(
-				value.annotationType())) {
-			if (equivalent(ReflectionUtils.invokeMethod(attribute, value),
-					this.valueExtractor.apply(attribute, extractedValue))) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	static <A extends Annotation> MergedAnnotation<A> from(Object source, A annotation) {
