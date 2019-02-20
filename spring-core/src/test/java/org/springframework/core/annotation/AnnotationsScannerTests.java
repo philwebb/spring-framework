@@ -461,7 +461,7 @@ public class AnnotationsScannerTests {
 
 	private Stream<String> scan(AnnotatedElement element, SearchStrategy searchStrategy) {
 		List<String> result = new ArrayList<>();
-		AnnotationsScanner.scan(element, searchStrategy, null,
+		AnnotationsScanner.scan(null, element, searchStrategy,
 				(criteria, aggregateIndex, source, annotations) -> {
 					for (Annotation annotation : annotations) {
 						if (annotation != null) {

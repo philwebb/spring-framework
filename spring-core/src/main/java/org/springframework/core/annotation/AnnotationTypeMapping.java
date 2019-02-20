@@ -478,8 +478,8 @@ class AnnotationTypeMapping {
 					BiFunction<Method, Object, Object> valueExtractor) {
 				int result = -1;
 				Object lastValue = null;
-				for (int i = 0; i < attributes.size(); i++) {
-					Method attribute = attributes.get(i);
+				for (int i = 0; i < this.size; i++) {
+					Method attribute = attributes.get(this.indexes[i]);
 					Object value = valueExtractor.apply(attribute, annotation);
 					if (ObjectUtils.nullSafeEquals(lastValue, value)
 							|| AttributeValues.isDefault(attribute, value,
@@ -496,7 +496,7 @@ class AnnotationTypeMapping {
 								ObjectUtils.nullSafeToString(lastValue),
 								ObjectUtils.nullSafeToString(value)));
 					}
-					result = i;
+					result = this.indexes[i];
 					lastValue = value;
 				}
 				return result != -1 ? result : this.indexes[0];

@@ -25,7 +25,8 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.*;
 
 /**
- * Tests for {@link TypeMappedAnnotation}.
+ * Tests for {@link TypeMappedAnnotation}. See also
+ * {@link MergedAnnotationsTests} for a much more extensive collection of tests.
  *
  * @author Phillip Webb
  */

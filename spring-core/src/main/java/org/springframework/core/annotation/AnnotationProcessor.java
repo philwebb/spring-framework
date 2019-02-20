@@ -36,7 +36,7 @@ interface AnnotationProcessor<C, R> {
 	 * return a {@code non-null} result to short-circuit any further processing.
 	 * @param context context information relevant to the processor
 	 * @param aggregateIndex the aggregate index of the provided annotations
-	 * @param source the source of the annotations, if known
+	 * @param source the original source of the annotations, if known
 	 * @param annotations the annotations to process (this array may contain
 	 * {@code null} elements)
 	 * @return a {@code non-null} result if no further processing is required

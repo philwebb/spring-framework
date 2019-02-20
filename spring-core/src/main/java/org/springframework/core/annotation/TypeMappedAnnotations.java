@@ -227,7 +227,7 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 			R result = processor.process(criteria, 0, this.source, this.annotations);
 			return processor.getFinalResult(result);
 		}
-		return AnnotationsScanner.scan(this.element, this.searchStrategy, criteria,
+		return AnnotationsScanner.scan(criteria, this.element, this.searchStrategy,
 				processor);
 	}
 

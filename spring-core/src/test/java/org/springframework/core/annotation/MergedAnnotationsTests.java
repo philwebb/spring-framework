@@ -1172,11 +1172,13 @@ public class MergedAnnotationsTests {
 	public void getDirectWithAttributeAliasesWithDifferentValues() throws Exception {
 		Method method = WebController.class.getMethod(
 				"handleMappedWithDifferentPathAndValueAttributes");
+		MergedAnnotations.from(method).get(
+				RequestMapping.class);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
 				() -> MergedAnnotations.from(method).get(
 						RequestMapping.class)).withMessageContaining(
-								"attribute 'value' and its alias 'path'").withMessageContaining(
-										"values of [{/enigma}] and [{/test}]");
+								"attribute 'path' and its alias 'value'").withMessageContaining(
+										"values of [{/test}] and [{/enigma}]");
 	}
 
 	@Test
@@ -1415,7 +1417,7 @@ public class MergedAnnotationsTests {
 				() -> MergedAnnotation.from(annotation)).withMessageStartingWith(
 						"In @AliasFor declared on attribute 'foo' in annotation").withMessageContaining(
 								AliasForWithDuplicateAttributeDeclaration.class.getName()).withMessageContaining(
-										"attribute 'attribute' and its alias 'value' are present with values of 'bar' and 'baz'");
+										"attribute 'attribute' and its alias 'value' are present with values of 'baz' and 'bar'");
 	}
 
 	@Test
