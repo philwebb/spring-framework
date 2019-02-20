@@ -21,17 +21,20 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 import org.junit.Test;
 
 import org.springframework.core.annotation.AnnotationTypeMapping.MirrorSets;
 import org.springframework.core.annotation.AnnotationTypeMapping.MirrorSets.MirrorSet;
 import org.springframework.lang.UsesSunMisc;
+import org.springframework.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.Assert.*;
 
 /**
  * Tests for {@link AnnotationTypeMappings} and {@link AnnotationTypeMapping}.
@@ -156,8 +159,8 @@ public class AnnotationTypeMappingsTests {
 		AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotationType(
 				AliasForWithArrayCompatibleReturnTypes.class);
 		AnnotationTypeMapping mapping = getMapping(mappings,
-				AliasForWithArrayCompatibleReturnTypes.class);
-		assertThat(mapping.getMappedAttribute(0).getName()).isEqualTo("test");
+				AliasForWithArrayCompatibleReturnTypesTarget.class);
+		assertThat(getMappedAttribute(mapping, 0).getName()).isEqualTo("test");
 	}
 
 	@Test
@@ -276,7 +279,7 @@ public class AnnotationTypeMappingsTests {
 	public void getAttributesReturnsAttributes() {
 		AnnotationTypeMapping mapping = AnnotationTypeMappings.forAnnotationType(
 				Mapped.class).get(0);
-		AnnotationAttributeMethods attributes = mapping.getAttributes();
+		AttributeMethods attributes = mapping.getAttributes();
 		assertThat(attributes.size()).isEqualTo(2);
 		assertThat(attributes.get(0).getName()).isEqualTo("alias");
 		assertThat(attributes.get(1).getName()).isEqualTo("convention");
@@ -286,9 +289,9 @@ public class AnnotationTypeMappingsTests {
 	public void getMappedAttributeReturnsAttributes() throws Exception {
 		AnnotationTypeMapping mapping = AnnotationTypeMappings.forAnnotationType(
 				Mapped.class).get(1);
-		assertThat(mapping.getMappedAttribute(0)).isEqualTo(
+		assertThat(getMappedAttribute(mapping, 0)).isEqualTo(
 				Mapped.class.getDeclaredMethod("alias"));
-		assertThat(mapping.getMappedAttribute(1)).isEqualTo(
+		assertThat(getMappedAttribute(mapping, 1)).isEqualTo(
 				Mapped.class.getDeclaredMethod("convention"));
 	}
 
@@ -336,24 +339,90 @@ public class AnnotationTypeMappingsTests {
 		AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotationType(
 				ThreeDeepA.class);
 		AnnotationTypeMapping mappingA = mappings.get(0);
-		assertThat(mappingA.getMappedAttribute(0).getName()).isEqualTo("a1");
-		assertThat(mappingA.getMappedAttribute(1).getName()).isEqualTo("a2");
-		assertThat(mappingA.getMappedAttribute(2).getName()).isEqualTo("a3");
-		assertThat(mappingA.getMappedAttribute(3).getName()).isEqualTo("a4");
-		assertThat(mappingA.getMappedAttribute(4).getName()).isEqualTo("a5");
+		assertThat(getMappedAttribute(mappingA, 0)).isNull();
+		assertThat(getMappedAttribute(mappingA, 1)).isNull();
+		assertThat(getMappedAttribute(mappingA, 2)).isNull();
+		assertThat(getMappedAttribute(mappingA, 3)).isNull();
+		assertThat(getMappedAttribute(mappingA, 4)).isNull();
 		AnnotationTypeMapping mappingB = mappings.get(1);
-		assertThat(mappingB.getMappedAttribute(0).getName()).isEqualTo("a1");
-		assertThat(mappingB.getMappedAttribute(1).getName()).isEqualTo("a2");
+		assertThat(getMappedAttribute(mappingB, 0).getName()).isEqualTo("a1");
+		assertThat(getMappedAttribute(mappingB, 1).getName()).isEqualTo("a2");
 		AnnotationTypeMapping mappingC = mappings.get(2);
-		assertThat(mappingC.getMappedAttribute(0).getName()).isEqualTo("a1");
-		assertThat(mappingC.getMappedAttribute(1).getName()).isEqualTo("a4");
+		assertThat(getMappedAttribute(mappingC, 0).getName()).isEqualTo("a1");
+		assertThat(getMappedAttribute(mappingC, 1).getName()).isEqualTo("a4");
 	}
 
 	@Test
 	public void getMappedAttributesWhenHasDefinedAttributesReturnsMappedAttributes() {
-		AnnotationTypeMapping mapping = AnnotationTypeMappings.forAnnotationType(DefinedAttributes.class).get(1);
-		assertThat(mapping.getMappedAttribute(0)).isNull();
-		assertThat(mapping.getMappedAttribute(1).getName()).isEqualTo("value");
+		AnnotationTypeMapping mapping = AnnotationTypeMappings.forAnnotationType(
+				DefinedAttributes.class).get(1);
+		assertThat(getMappedAttribute(mapping, 0)).isNull();
+		assertThat(getMappedAttribute(mapping, 1).getName()).isEqualTo("value");
+	}
+
+	@Test
+	public void resolveMirrorsWhenAliasPairResolves() {
+		AnnotationTypeMapping mapping = AnnotationTypeMappings.forAnnotationType(
+				AliasPair.class).get(0);
+		Method[] resolvedA = resolveMirrorSets(mapping, WithAliasPairA.class,
+				AliasPair.class);
+		assertThat(resolvedA[0].getName()).isEqualTo("a");
+		assertThat(resolvedA[1].getName()).isEqualTo("a");
+		Method[] resolvedB = resolveMirrorSets(mapping, WithAliasPairB.class,
+				AliasPair.class);
+		assertThat(resolvedB[0].getName()).isEqualTo("b");
+		assertThat(resolvedB[1].getName()).isEqualTo("b");
+	}
+
+	@Test
+	public void resolveMirrorsWhenHasSameValuesUsesFirst() {
+		AnnotationTypeMapping mapping = AnnotationTypeMappings.forAnnotationType(
+				AliasPair.class).get(0);
+		Method[] resolved = resolveMirrorSets(mapping, WithSameValueAliasPair.class,
+				AliasPair.class);
+		assertThat(resolved[0].getName()).isEqualTo("a");
+		assertThat(resolved[1].getName()).isEqualTo("a");
+	}
+
+	@Test
+	public void resolveMirrorsWhenHasDefaultValuesUsesFirst() {
+		AnnotationTypeMapping mapping = AnnotationTypeMappings.forAnnotationType(
+				AliasPair.class).get(0);
+		Method[] resolved = resolveMirrorSets(mapping, WithDefaultValueAliasPair.class,
+				AliasPair.class);
+		assertThat(resolved[0].getName()).isEqualTo("a");
+		assertThat(resolved[1].getName()).isEqualTo("a");
+	}
+
+	@Test
+	public void resolveMirrorsWhenHasDifferentValuesThrowsException() {
+		AnnotationTypeMapping mapping = AnnotationTypeMappings.forAnnotationType(
+				AliasPair.class).get(0);
+		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
+				() -> resolveMirrorSets(mapping, WithDifferentValueAliasPair.class,
+						AliasPair.class)).withMessage(
+								"Different @AliasFor mirror values for annotation ["
+										+ AliasPair.class.getName() + "] declared on "
+										+ WithDifferentValueAliasPair.class.getName()
+										+ ", attribute 'a' and its alias 'b' are declared with values of [test1] and [test2].");
+	}
+
+	private Method[] resolveMirrorSets(AnnotationTypeMapping mapping, Class<?> element,
+			Class<? extends Annotation> annotationClass) {
+		Annotation annotation = element.getAnnotation(annotationClass);
+		int[] resolved = mapping.getMirrorSets().resolve(element.getName(),
+				annotation, ReflectionUtils::invokeMethod);
+		Method[] result = new Method[resolved.length];
+		for (int i = 0; i < resolved.length; i++) {
+			result[i] = mapping.getAttributes().get(resolved[i]);
+		}
+		return result;
+	}
+
+	@Nullable
+	private Method getMappedAttribute(AnnotationTypeMapping mapping, int attributeIndex) {
+		int mapped = mapping.getMappedAttribute(attributeIndex);
+		return mapped != -1 ? mapping.getRoot().getAttributes().get(mapped) : null;
 	}
 
 	private AnnotationTypeMapping getMapping(AnnotationTypeMappings mappings,
@@ -726,6 +795,31 @@ public class AnnotationTypeMappingsTests {
 		String a();
 
 		String b() default "";
+
+	}
+
+	@AliasPair(a = "test")
+	static class WithAliasPairA {
+
+	}
+
+	@AliasPair(b = "test")
+	static class WithAliasPairB {
+
+	}
+
+	@AliasPair(a = "test", b = "test")
+	static class WithSameValueAliasPair {
+
+	}
+
+	@AliasPair(a = "test1", b = "test2")
+	static class WithDifferentValueAliasPair {
+
+	}
+
+	@AliasPair
+	static class WithDefaultValueAliasPair {
 
 	}
 

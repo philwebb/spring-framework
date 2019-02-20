@@ -26,6 +26,8 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import org.springframework.core.annotation.AnnotationTypeMapping.MirrorSets;
+import org.springframework.core.annotation.AnnotationTypeMapping.MirrorSets.MirrorSet;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
@@ -50,7 +52,9 @@ public class TypeMappedAnnotation<A extends Annotation>
 
 	private final int aggregateIndex;
 
-	private final Method[] attributeToMappedAttribute;
+	private final Method[] resolvedRootMirrorAttributes;
+
+	private final Method[] resolvedMirrorAttributes;
 
 	private final boolean useNonMergedValues;
 
@@ -73,16 +77,34 @@ public class TypeMappedAnnotation<A extends Annotation>
 		this.valueExtractor = valueExtractor;
 		this.mapping = mapping;
 		this.aggregateIndex = aggregateIndex;
-		AnnotationAttributeMethods attributes = mapping.getAttributes();
-		this.attributeToMappedAttribute = new Method[attributes.size()];
-		for (int i = 0; i < attributes.size(); i++) {
-			List<Method> mappedAttributes = mapping.getMappedAttributes(i);
-			if (mappedAttributes != null) {
-				this.attributeToMappedAttribute[i] = getMappedAttribute(mappedAttributes);
-			}
-		}
+		this.resolvedRootMirrorAttributes = resolveMirrorAttributes(mapping.getRoot(),
+				annotation, valueExtractor);
+		this.resolvedMirrorAttributes = mapping.getDepth() == 0
+				? this.resolvedRootMirrorAttributes
+				: resolveMirrorAttributes(mapping, mapping.getAnnotation(),
+						ReflectionUtils::invokeMethod);
 		this.useNonMergedValues = false;
 		this.attributeFilter = null;
+	}
+
+	private static Method[] resolveMirrorAttributes(AnnotationTypeMapping mapping,
+			Object annotation, BiFunction<Method, Object, Object> valueExtractor) {
+		AttributeMethods attributes = mapping.getAttributes();
+		MirrorSets mirrorSets = mapping.getMirrorSets();
+		Method[] resolved = attributes.toArray();
+		for (int i = 0; i < mirrorSets.size(); i++) {
+			MirrorSet mirrorSet = mirrorSets.get(i);
+			Method inUse = resolvedMirrorAttribute(mirrorSet, annotation, valueExtractor);
+			for (int j = 0; i < mirrorSet.size(); j++) {
+				resolved[mirrorSet.getIndex(j)] = inUse;
+			}
+		}
+		return resolved;
+	}
+
+	private static Method resolvedMirrorAttribute(MirrorSet mirrorSet, Object annotation,
+			BiFunction<Method, Object, Object> valueExtractor) {
+		return null;
 	}
 
 	private Method getMappedAttribute(List<Method> mappedAttributes) {
@@ -265,15 +287,16 @@ public class TypeMappedAnnotation<A extends Annotation>
 	}
 
 	private Object getValue(int attributeIndex) {
-		Method mapped = this.attributeToMappedAttribute[attributeIndex];
-		if (mapped != null && !this.useNonMergedValues) {
-			return this.valueExtractor.apply(mapped, this.annotation);
+		int mapped = this.mapping.getMappedAttribute(attributeIndex);
+		if (mapped != -1 && !this.useNonMergedValues) {
+			Method resolved = this.resolvedRootMirrorAttributes[mapped];
+			return this.valueExtractor.apply(resolved, this.annotation);
 		}
-		Method attribute = this.mapping.getAttributes().get(attributeIndex);
+		Method resolved = this.resolvedMirrorAttributes[attributeIndex];
 		if (getDepth() == 0) {
-			return this.valueExtractor.apply(attribute, this.annotation);
+			return this.valueExtractor.apply(resolved, this.annotation);
 		}
-		return ReflectionUtils.invokeMethod(attribute, mapping.getAnnotation());
+		return ReflectionUtils.invokeMethod(resolved, mapping.getAnnotation());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -284,7 +307,7 @@ public class TypeMappedAnnotation<A extends Annotation>
 		throw new UnsupportedOperationException("Auto-generated method stub");
 	}
 
-	private boolean equivalent(Object value, Object extractedValue) {
+	private static boolean equivalent(Object value, Object extractedValue) {
 		if (ObjectUtils.nullSafeEquals(value, extractedValue)) {
 			return true;
 		}
@@ -302,8 +325,8 @@ public class TypeMappedAnnotation<A extends Annotation>
 		return false;
 	}
 
-	private boolean equivalent(Annotation value, Object extractedValue) {
-		for (Method attribute : AnnotationAttributeMethods.forAnnotationType(
+	private static boolean equivalent(Annotation value, Object extractedValue) {
+		for (Method attribute : AttributeMethods.forAnnotationType(
 				value.annotationType())) {
 			if (equivalent(ReflectionUtils.invokeMethod(attribute, value),
 					this.valueExtractor.apply(attribute, extractedValue))) {

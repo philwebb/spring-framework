@@ -132,7 +132,7 @@ public abstract class RepeatableContainers {
 
 		@Override
 		Annotation[] findRepeatedAnnotations(Annotation annotation) {
-			AnnotationAttributeMethods methods = AnnotationAttributeMethods.forAnnotationType(
+			AttributeMethods methods = AttributeMethods.forAnnotationType(
 					annotation.annotationType());
 			if (methods.isValueOnly()) {
 				Method method = methods.get("value");
@@ -169,7 +169,7 @@ public abstract class RepeatableContainers {
 			if (container == null) {
 				container = deduceContainer(repeatable);
 			}
-			Method valueMethod = AnnotationAttributeMethods.forAnnotationType(
+			Method valueMethod = AttributeMethods.forAnnotationType(
 					container).get("value");
 			validate(repeatable, container, valueMethod);
 			this.repeatable = repeatable;

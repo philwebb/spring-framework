@@ -25,29 +25,29 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.*;
 
 /**
- * Tests for {@link AnnotationAttributeMethods}.
+ * Tests for {@link AttributeMethods}.
  *
  * @author Phillip Webb
  */
-public class AnnotationAttributeMethodsTests {
+public class AttributeMethodsTests {
 
 	@Test
 	public void forAnnotationTypeWhenNullReturnsNone() {
-		AnnotationAttributeMethods methods = AnnotationAttributeMethods.forAnnotationType(
+		AttributeMethods methods = AttributeMethods.forAnnotationType(
 				null);
-		assertThat(methods).isSameAs(AnnotationAttributeMethods.NONE);
+		assertThat(methods).isSameAs(AttributeMethods.NONE);
 	}
 
 	@Test
 	public void forAnnotationWithNoAttributesReturnsNone() {
-		AnnotationAttributeMethods methods = AnnotationAttributeMethods.forAnnotationType(
+		AttributeMethods methods = AttributeMethods.forAnnotationType(
 				NoAttributes.class);
-		assertThat(methods).isSameAs(AnnotationAttributeMethods.NONE);
+		assertThat(methods).isSameAs(AttributeMethods.NONE);
 	}
 
 	@Test
 	public void forAnnotationWithMultipleAttributesReturnsAttributes() {
-		AnnotationAttributeMethods methods = AnnotationAttributeMethods.forAnnotationType(
+		AttributeMethods methods = AttributeMethods.forAnnotationType(
 				MultipleAttributes.class);
 		assertThat(methods.get("value").getName()).isEqualTo("value");
 		assertThat(methods.get("intValue").getName()).isEqualTo("intValue");
@@ -57,7 +57,7 @@ public class AnnotationAttributeMethodsTests {
 
 	@Test
 	public void forAnnotationWithOnlyValueAttributeReturnsAttributes() {
-		AnnotationAttributeMethods methods = AnnotationAttributeMethods.forAnnotationType(
+		AttributeMethods methods = AttributeMethods.forAnnotationType(
 				ValueOnly.class);
 		assertThat(methods.get("value").getName()).isEqualTo("value");
 		assertThat(methods.isValueOnly()).isTrue();

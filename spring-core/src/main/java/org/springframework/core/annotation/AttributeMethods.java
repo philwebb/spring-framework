@@ -33,9 +33,9 @@ import org.springframework.util.ConcurrentReferenceHashMap;
  * @author Phillip Webb
  * @since 5.2
  */
-final class AnnotationAttributeMethods implements Iterable<Method> {
+final class AttributeMethods implements Iterable<Method> {
 
-	private static final Map<Class<? extends Annotation>, AnnotationAttributeMethods> cache = new ConcurrentReferenceHashMap<>();
+	private static final Map<Class<? extends Annotation>, AttributeMethods> cache = new ConcurrentReferenceHashMap<>();
 
 	private static final Comparator<Method> methodComparator = (m1, m2) -> {
 		if (m1 != null && m2 != null) {
@@ -44,12 +44,11 @@ final class AnnotationAttributeMethods implements Iterable<Method> {
 		return m1 != null ? -1 : 1;
 	};
 
-	static final AnnotationAttributeMethods NONE = new AnnotationAttributeMethods(
-			new Method[0]);
+	static final AttributeMethods NONE = new AttributeMethods(new Method[0]);
 
 	private final Method[] attributeMethods;
 
-	public AnnotationAttributeMethods(Method[] attributeMethods) {
+	public AttributeMethods(Method[] attributeMethods) {
 		this.attributeMethods = attributeMethods;
 		for (Method method : attributeMethods) {
 			method.setAccessible(true);
@@ -79,7 +78,15 @@ final class AnnotationAttributeMethods implements Iterable<Method> {
 			}
 		}
 		return -1;
+	}
 
+	public int indexOf(Method method) {
+		for (int i = 0; i < this.attributeMethods.length; i++) {
+			if (this.attributeMethods[i] == method) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	public int size() {
@@ -95,16 +102,15 @@ final class AnnotationAttributeMethods implements Iterable<Method> {
 		return forAnnotationType(annotationType).get(name);
 	}
 
-	public static AnnotationAttributeMethods forAnnotationType(
+	public static AttributeMethods forAnnotationType(
 			@Nullable Class<? extends Annotation> annotationType) {
 		if (annotationType == null) {
 			return NONE;
 		}
-		return cache.computeIfAbsent(annotationType, AnnotationAttributeMethods::compute);
+		return cache.computeIfAbsent(annotationType, AttributeMethods::compute);
 	}
 
-	private static AnnotationAttributeMethods compute(
-			Class<? extends Annotation> annotationType) {
+	private static AttributeMethods compute(Class<? extends Annotation> annotationType) {
 		Method[] methods = annotationType.getDeclaredMethods();
 		int size = methods.length;
 		for (int i = 0; i < methods.length; i++) {
@@ -119,7 +125,7 @@ final class AnnotationAttributeMethods implements Iterable<Method> {
 		Arrays.sort(methods, methodComparator);
 		Method[] attributeMethods = new Method[size];
 		System.arraycopy(methods, 0, attributeMethods, 0, size);
-		return new AnnotationAttributeMethods(attributeMethods);
+		return new AttributeMethods(attributeMethods);
 	}
 
 	private static boolean isAttributeMethod(Method method) {
