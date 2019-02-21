@@ -27,6 +27,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import org.springframework.core.annotation.AnnotationTypeMapping.MirrorSets;
@@ -346,7 +347,7 @@ public class AnnotationTypeMappingsTests {
 		assertThat(getMappedAttribute(mappingA, 4)).isNull();
 		AnnotationTypeMapping mappingB = mappings.get(1);
 		assertThat(getMappedAttribute(mappingB, 0).getName()).isEqualTo("a1");
-		assertThat(getMappedAttribute(mappingB, 1).getName()).isEqualTo("a2");
+		assertThat(getMappedAttribute(mappingB, 1).getName()).isEqualTo("a1");
 		AnnotationTypeMapping mappingC = mappings.get(2);
 		assertThat(getMappedAttribute(mappingC, 0).getName()).isEqualTo("a1");
 		assertThat(getMappedAttribute(mappingC, 1).getName()).isEqualTo("a4");
@@ -407,11 +408,46 @@ public class AnnotationTypeMappingsTests {
 										+ ", attribute 'a' and its alias 'b' are declared with values of [test1] and [test2].");
 	}
 
+	@Test
+	public void resolveMirrorsWhenHasWithMulipleRoutesToAliasReturnsMirrors() {
+		AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotationType(
+				MulipleRoutesToAliasA.class);
+		AnnotationTypeMapping mappingsA = getMapping(mappings,
+				MulipleRoutesToAliasA.class);
+		assertThat(mappingsA.getMirrorSets().size()).isZero();
+		AnnotationTypeMapping mappingsB = getMapping(mappings,
+				MulipleRoutesToAliasB.class);
+		assertThat(getNames(mappingsB.getMirrorSets().get(0))).containsExactly("b1", "b2",
+				"b3");
+		AnnotationTypeMapping mappingsC = getMapping(mappings,
+				MulipleRoutesToAliasC.class);
+		assertThat(getNames(mappingsC.getMirrorSets().get(0))).containsExactly("c1",
+				"c2");
+	}
+
+	@Test
+	public void getMappedAttributeWhenHasWithMulipleRoutesToAliasReturnsMappedAttributes() {
+		AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotationType(
+				MulipleRoutesToAliasA.class);
+		AnnotationTypeMapping mappingsA = getMapping(mappings,
+				MulipleRoutesToAliasA.class);
+		assertThat(getMappedAttribute(mappingsA, 0)).isNull();
+		AnnotationTypeMapping mappingsB = getMapping(mappings,
+				MulipleRoutesToAliasB.class);
+		assertThat(getMappedAttribute(mappingsB, 0).getName()).isEqualTo("a1");
+		assertThat(getMappedAttribute(mappingsB, 1).getName()).isEqualTo("a1");
+		assertThat(getMappedAttribute(mappingsB, 2).getName()).isEqualTo("a1");
+		AnnotationTypeMapping mappingsC = getMapping(mappings,
+				MulipleRoutesToAliasC.class);
+		assertThat(getMappedAttribute(mappingsC, 0).getName()).isEqualTo("a1");
+		assertThat(getMappedAttribute(mappingsC, 1).getName()).isEqualTo("a1");
+	}
+
 	private Method[] resolveMirrorSets(AnnotationTypeMapping mapping, Class<?> element,
 			Class<? extends Annotation> annotationClass) {
 		Annotation annotation = element.getAnnotation(annotationClass);
-		int[] resolved = mapping.getMirrorSets().resolve(element.getName(),
-				annotation, ReflectionUtils::invokeMethod);
+		int[] resolved = mapping.getMirrorSets().resolve(element.getName(), annotation,
+				ReflectionUtils::invokeMethod);
 		Method[] result = new Method[resolved.length];
 		for (int i = 0; i < resolved.length; i++) {
 			result[i] = mapping.getAttributes().get(resolved[i]);
@@ -820,6 +856,41 @@ public class AnnotationTypeMappingsTests {
 
 	@AliasPair
 	static class WithDefaultValueAliasPair {
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@MulipleRoutesToAliasB
+	static @interface MulipleRoutesToAliasA {
+
+		@AliasFor(annotation = MulipleRoutesToAliasB.class, attribute = "b2")
+		String a1() default "";
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@MulipleRoutesToAliasC
+	static @interface MulipleRoutesToAliasB {
+
+		@AliasFor(annotation = MulipleRoutesToAliasC.class, attribute = "c2")
+		String b1() default "";
+
+		@AliasFor(annotation = MulipleRoutesToAliasC.class, attribute = "c2")
+		String b2() default "";
+
+		@AliasFor(annotation = MulipleRoutesToAliasC.class, attribute = "c1")
+		String b3() default "";
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	static @interface MulipleRoutesToAliasC {
+
+		@AliasFor("c2")
+		String c1() default "";
+
+		@AliasFor("c1")
+		String c2() default "";
 
 	}
 

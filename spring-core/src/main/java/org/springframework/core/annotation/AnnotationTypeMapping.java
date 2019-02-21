@@ -20,6 +20,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -28,11 +29,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 import org.springframework.core.annotation.AnnotationTypeMapping.MirrorSets.MirrorSet;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
 /**
@@ -89,9 +90,9 @@ class AnnotationTypeMapping {
 		this.attributes = AttributeMethods.forAnnotationType(annotationType);
 		this.mirrorSets = new MirrorSets();
 		this.attributeMappings = new int[this.attributes.size()];
+		Arrays.fill(this.attributeMappings, -1);
 		addAliasesFromEntries();
-		addAttributeMappings();
-		updateMirrorSets();
+		processAliases();
 	}
 
 	private void addAliasesFromEntries() {
@@ -186,19 +187,6 @@ class AnnotationTypeMapping {
 				|| Objects.equals(attributeType, targetType.getComponentType());
 	}
 
-	private void addAttributeMappings() {
-		AnnotationTypeMapping root = getRoot();
-		Arrays.fill(this.attributeMappings, -1);
-		if (root != this) {
-			for (int i = 0; i < this.attributes.size(); i++) {
-				Method mapped = findMapping(this.attributes.get(i));
-				if (mapped != null) {
-					this.attributeMappings[i] = root.attributes.indexOf(mapped);
-				}
-			}
-		}
-	}
-
 	@Nullable
 	private Method findMapping(Method attribute) {
 		Method mapping = findAliasTargetMapping(attribute);
@@ -244,37 +232,60 @@ class AnnotationTypeMapping {
 		return null;
 	}
 
-	private void updateMirrorSets() {
-		for (Method attribute : this.attributes) {
-			updateMirrorSets(attribute);
-		}
-		if(getDepth() > 0) {
-			this.resolvedAnnotationMirrors = this.mirrorSets.resolve(
-					getAnnotationType().getName(), this.annotation,
-					ReflectionUtils::invokeMethod);
+	private void processAliases() {
+		List<Method> aliases = new ArrayList<>();
+		for (int i = 0; i < this.attributes.size(); i++) {
+			aliases.clear();
+			aliases.add(this.attributes.get(i));
+			collectAliases(aliases);
+			System.out.println(this.attributes.get(i).getName() + " has "
+					+ aliases.stream().map(Method::getName).collect(Collectors.toList()));
+			if (aliases.size() > 1) {
+				processAliases(aliases);
+			}
 		}
 	}
 
-	private void updateMirrorSets(Method attribute) {
-		Set<Method> aliases = new HashSet<>();
-		aliases.add(attribute);
-		AnnotationTypeMapping typeMapping = this;
-		while (typeMapping != null) {
-			boolean aliasesChanged = false;
-			for (Method alias : new LinkedHashSet<>(aliases)) {
-				List<Method> additionalAliases = typeMapping.aliasesFrom.get(alias);
-				if (additionalAliases != null) {
-					typeMapping.claimedAliases.addAll(additionalAliases);
-					if (aliases.addAll(additionalAliases)) {
-						aliasesChanged = true;
+	private void collectAliases(List<Method> aliases) {
+		AnnotationTypeMapping mapping = this;
+		while (mapping != null) {
+			int size = aliases.size();
+			for (int j = 0; j < size; j++) {
+				List<Method> additional = mapping.aliasesFrom.get(aliases.get(j));
+				if (additional != null) {
+					aliases.addAll(additional);
+				}
+			}
+			mapping = mapping.parent;
+		}
+	}
+
+	private void processAliases(List<Method> aliases) {
+		int rootAttributeIndex = getFirstRootAttributeIndex(aliases);
+		AnnotationTypeMapping mapping = this;
+		while (mapping != null) {
+			if (rootAttributeIndex != -1 && mapping != this.root) {
+				for (int i = 0; i < mapping.attributes.size(); i++) {
+					if (aliases.contains(mapping.attributes.get(i))) {
+						mapping.attributeMappings[i] = rootAttributeIndex;
 					}
 				}
 			}
-			if (aliasesChanged) {
-				typeMapping.mirrorSets.updateFrom(aliases);
-			}
-			typeMapping = typeMapping.parent;
+			mapping.mirrorSets.updateFrom(aliases);
+			mapping.claimedAliases.addAll(aliases);
+			mapping = mapping.parent;
 		}
+	}
+
+
+	private int getFirstRootAttributeIndex(Collection<Method> aliases) {
+		AttributeMethods rootAttributes = this.root.getAttributes();
+		for (int i = 0; i < rootAttributes.size(); i++) {
+			if (aliases.contains(rootAttributes.get(i))) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	/**
@@ -412,16 +423,22 @@ class AnnotationTypeMapping {
 			this.mirrorSets = new MirrorSet[0];
 		}
 
-		void updateFrom(Set<Method> aliases) {
+		void updateFrom(Collection<Method> aliases) {
 			MirrorSet mirrorSet = null;
+			int size = 0;
+			int last = -1;
 			for (int i = 0; i < attributes.size(); i++) {
 				Method attribute = attributes.get(i);
 				if (aliases.contains(attribute)) {
-					if (mirrorSet == null) {
-						mirrorSet = this.assigned[i] != null ? this.assigned[i]
-								: new MirrorSet();
+					size++;
+					if (size > 1) {
+						if (mirrorSet == null) {
+							mirrorSet = new MirrorSet();
+							this.assigned[last] = mirrorSet;
+						}
+						this.assigned[i] = mirrorSet;
 					}
-					assigned[i] = mirrorSet;
+					last = i;
 				}
 			}
 			if (mirrorSet != null) {
