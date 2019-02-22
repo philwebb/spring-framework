@@ -70,8 +70,6 @@ class AnnotationTypeMapping {
 	@Nullable
 	private Set<Method> claimedAliases = new HashSet<>();
 
-	private int[] resolvedAnnotationMirrors;
-
 	AnnotationTypeMapping(Class<? extends Annotation> annotationType) {
 		this(null, annotationType, null);
 	}
@@ -266,11 +264,6 @@ class AnnotationTypeMapping {
 		for (int i = 0; i < this.mirrorSets.size(); i++) {
 			validateMirrorSet(this.mirrorSets.get(i));
 		}
-		if (this.depth > 0) {
-			this.resolvedAnnotationMirrors = this.mirrorSets.resolve(
-					this.getAnnotationType(), this.annotation,
-					ReflectionUtils::invokeMethod);
-		}
 		this.claimedAliases = null;
 	}
 
@@ -352,16 +345,6 @@ class AnnotationTypeMapping {
 	}
 
 	/**
-	 * Return mirrors attributes resolved against {@link #getAnnotation()}, or
-	 * {@code null} if this is the root mapping.
-	 * @return resolved annotation mirrors
-	 */
-	@Nullable
-	public int[] getResolvedAnnotationMirrors() {
-		return this.resolvedAnnotationMirrors;
-	}
-
-	/**
 	 * Return the annotation attributes for the mapping annotation type.
 	 * @return the attribute methods
 	 */
@@ -440,8 +423,8 @@ class AnnotationTypeMapping {
 			return this.mirrorSets[index];
 		}
 
-		public int[] resolve(Object source, Object annotation,
-				BiFunction<Method, Object, Object> valueExtractor) {
+		public <A> int[] resolve(Object source, A annotation,
+				BiFunction<Method, A, Object> valueExtractor) {
 			int[] result = new int[AnnotationTypeMapping.this.attributes.size()];
 			for (int i = 0; i < result.length; i++) {
 				result[i] = i;
@@ -476,15 +459,15 @@ class AnnotationTypeMapping {
 				}
 			}
 
-			private int resolve(Object source, Object annotation,
-					BiFunction<Method, Object, Object> valueExtractor) {
+			private <A> int resolve(Object source, A annotation,
+					BiFunction<Method, A, Object> valueExtractor) {
 				int result = -1;
 				Object lastValue = null;
 				for (int i = 0; i < this.size; i++) {
 					Method attribute = AnnotationTypeMapping.this.attributes.get(
 							this.indexes[i]);
 					Object value = valueExtractor.apply(attribute, annotation);
-					if (ObjectUtils.nullSafeEquals(lastValue, value)
+					if (value == null || ObjectUtils.nullSafeEquals(lastValue, value)
 							|| AttributeValues.isDefault(attribute, value,
 									valueExtractor)) {
 						continue;

@@ -57,9 +57,9 @@ import org.springframework.util.ReflectionUtils;
 import static org.assertj.core.api.Assertions.*;
 
 /**
- * Tests for {@link MergedAnnotations} and {@link MergedAnnotation}. These tests cover
- * common usage scenarios and were mainly ported from the original {@code AnnotationUtils}
- * and {@code AnnotatedElementUtils} tests.
+ * Tests for {@link MergedAnnotations} and {@link MergedAnnotation}. These tests
+ * cover common usage scenarios and were mainly ported from the original
+ * {@code AnnotationUtils} and {@code AnnotatedElementUtils} tests.
  *
  * @author Phillip Webb
  * @author Rod Johnson
@@ -175,9 +175,8 @@ public class MergedAnnotationsTests {
 	public void collectMultiValueMapFromClassWithLocalComposedAnnotationAndInheritedAnnotation() {
 		MultiValueMap<String, Object> map = MergedAnnotations.from(
 				SubClassWithInheritedAnnotation.class,
-				SearchStrategy.INHERITED_ANNOTATIONS).stream(
-						Transactional.class).collect(
-								MergedAnnotationCollectors.toMultiValueMap());
+				SearchStrategy.INHERITED_ANNOTATIONS).stream(Transactional.class).collect(
+						MergedAnnotationCollectors.toMultiValueMap());
 		assertThat(map).contains(
 				entry("qualifier", Arrays.asList("composed2", "transactionManager")));
 	}
@@ -186,9 +185,8 @@ public class MergedAnnotationsTests {
 	public void collectMultiValueMapFavorsInheritedAnnotationsOverMoreLocallyDeclaredComposedAnnotations() {
 		MultiValueMap<String, Object> map = MergedAnnotations.from(
 				SubSubClassWithInheritedAnnotation.class,
-				SearchStrategy.INHERITED_ANNOTATIONS).stream(
-						Transactional.class).collect(
-								MergedAnnotationCollectors.toMultiValueMap());
+				SearchStrategy.INHERITED_ANNOTATIONS).stream(Transactional.class).collect(
+						MergedAnnotationCollectors.toMultiValueMap());
 		assertThat(map).contains(entry("qualifier", Arrays.asList("transactionManager")));
 	}
 
@@ -196,26 +194,25 @@ public class MergedAnnotationsTests {
 	public void collectMultiValueMapFavorsInheritedComposedAnnotationsOverMoreLocallyDeclaredComposedAnnotations() {
 		MultiValueMap<String, Object> map = MergedAnnotations.from(
 				SubSubClassWithInheritedComposedAnnotation.class,
-				SearchStrategy.INHERITED_ANNOTATIONS).stream(
-						Transactional.class).collect(
-								MergedAnnotationCollectors.toMultiValueMap());
+				SearchStrategy.INHERITED_ANNOTATIONS).stream(Transactional.class).collect(
+						MergedAnnotationCollectors.toMultiValueMap());
 		assertThat(map).contains(entry("qualifier", Arrays.asList("composed1")));
 	}
 
 	/**
-	 * If the "value" entry contains both "DerivedTxConfig" AND "TxConfig", then the
-	 * algorithm is accidentally picking up shadowed annotations of the same type within
-	 * the class hierarchy. Such undesirable behavior would cause the logic in
+	 * If the "value" entry contains both "DerivedTxConfig" AND "TxConfig", then
+	 * the algorithm is accidentally picking up shadowed annotations of the same
+	 * type within the class hierarchy. Such undesirable behavior would cause
+	 * the logic in
 	 * {@link org.springframework.context.annotation.ProfileCondition} to fail.
 	 *
 	 * @see org.springframework.core.env.EnvironmentSystemIntegrationTests#mostSpecificDerivedClassDrivesEnvironment_withDevEnvAndDerivedDevConfigClass
 	 */
 	@Test
 	public void collectMultiValueMapFromClassWithLocalAnnotationThatShadowsAnnotationFromSuperclass() {
-		MultiValueMap<String, Object> map = MergedAnnotations.from(
-				DerivedTxConfig.class, SearchStrategy.INHERITED_ANNOTATIONS).stream(
-						Transactional.class).collect(
-								MergedAnnotationCollectors.toMultiValueMap());
+		MultiValueMap<String, Object> map = MergedAnnotations.from(DerivedTxConfig.class,
+				SearchStrategy.INHERITED_ANNOTATIONS).stream(Transactional.class).collect(
+						MergedAnnotationCollectors.toMultiValueMap());
 		assertThat(map).contains(entry("value", Arrays.asList("DerivedTxConfig")));
 	}
 
@@ -229,26 +226,23 @@ public class MergedAnnotationsTests {
 	public void collectMultiValueMapFromClassWithMultipleComposedAnnotations() {
 		MultiValueMap<String, Object> map = MergedAnnotations.from(
 				TxFromMultipleComposedAnnotations.class,
-				SearchStrategy.INHERITED_ANNOTATIONS).stream(
-						Transactional.class).collect(
-								MergedAnnotationCollectors.toMultiValueMap());
+				SearchStrategy.INHERITED_ANNOTATIONS).stream(Transactional.class).collect(
+						MergedAnnotationCollectors.toMultiValueMap());
 		assertThat(map).contains(
 				entry("value", Arrays.asList("TxInheritedComposed", "TxComposed")));
 	}
 
 	@Test
 	public void getWithInheritedAnnotationsFromClassWithLocalAnnotation() {
-		MergedAnnotation<?> annotation = MergedAnnotations.from(
-				TxConfig.class, SearchStrategy.INHERITED_ANNOTATIONS).get(
-						Transactional.class);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(TxConfig.class,
+				SearchStrategy.INHERITED_ANNOTATIONS).get(Transactional.class);
 		assertThat(annotation.getString("value")).isEqualTo("TxConfig");
 	}
 
 	@Test
 	public void getWithInheritedAnnotationsFromClassWithLocalAnnotationThatShadowsAnnotationFromSuperclass() {
-		MergedAnnotation<?> annotation = MergedAnnotations.from(
-				DerivedTxConfig.class, SearchStrategy.INHERITED_ANNOTATIONS).get(
-						Transactional.class);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(DerivedTxConfig.class,
+				SearchStrategy.INHERITED_ANNOTATIONS).get(Transactional.class);
 		assertThat(annotation.getString("value")).isEqualTo("DerivedTxConfig");
 	}
 
@@ -280,8 +274,7 @@ public class MergedAnnotationsTests {
 	public void getWithInheritedAnnotationsFavorsInheritedComposedAnnotationsOverMoreLocallyDeclaredComposedAnnotations() {
 		MergedAnnotation<?> annotation = MergedAnnotations.from(
 				SubSubClassWithInheritedComposedAnnotation.class,
-				SearchStrategy.INHERITED_ANNOTATIONS).get(
-						Transactional.class);
+				SearchStrategy.INHERITED_ANNOTATIONS).get(Transactional.class);
 		assertThat(annotation.getBoolean("readOnly")).isFalse();
 	}
 
@@ -313,8 +306,7 @@ public class MergedAnnotationsTests {
 	public void getWithInheritedAnnotationsAttributesWithConventionBasedComposedAnnotation() {
 		MergedAnnotation<?> annotation = MergedAnnotations.from(
 				ConventionBasedComposedContextConfigurationClass.class,
-				SearchStrategy.INHERITED_ANNOTATIONS).get(
-						ContextConfiguration.class);
+				SearchStrategy.INHERITED_ANNOTATIONS).get(ContextConfiguration.class);
 		assertThat(annotation.isPresent()).isTrue();
 		assertThat(annotation.getStringArray("locations")).containsExactly(
 				"explicitDeclaration");
@@ -328,8 +320,7 @@ public class MergedAnnotationsTests {
 		// xmlConfigFiles can be used because it has an AlaisFor annotation
 		MergedAnnotation<?> annotation = MergedAnnotations.from(
 				HalfConventionBasedAndHalfAliasedComposedContextConfigurationClass1.class,
-				SearchStrategy.INHERITED_ANNOTATIONS).get(
-						ContextConfiguration.class);
+				SearchStrategy.INHERITED_ANNOTATIONS).get(ContextConfiguration.class);
 		assertThat(annotation.getStringArray("locations")).containsExactly(
 				"explicitDeclaration");
 		assertThat(annotation.getStringArray("value")).containsExactly(
@@ -342,8 +333,7 @@ public class MergedAnnotationsTests {
 		// locations doesn't apply because it has no AlaisFor annotation
 		MergedAnnotation<?> annotation = MergedAnnotations.from(
 				HalfConventionBasedAndHalfAliasedComposedContextConfigurationClass2.class,
-				SearchStrategy.INHERITED_ANNOTATIONS).get(
-						ContextConfiguration.class);
+				SearchStrategy.INHERITED_ANNOTATIONS).get(ContextConfiguration.class);
 		assertThat(annotation.getStringArray("locations")).isEmpty();
 		assertThat(annotation.getStringArray("value")).isEmpty();
 	}
@@ -352,8 +342,7 @@ public class MergedAnnotationsTests {
 	public void WithInheritedAnnotationsFromAliasedComposedAnnotation() {
 		MergedAnnotation<?> annotation = MergedAnnotations.from(
 				AliasedComposedContextConfigurationClass.class,
-				SearchStrategy.INHERITED_ANNOTATIONS).get(
-						ContextConfiguration.class);
+				SearchStrategy.INHERITED_ANNOTATIONS).get(ContextConfiguration.class);
 		assertThat(annotation.getStringArray("value")).containsExactly("test.xml");
 		assertThat(annotation.getStringArray("locations")).containsExactly("test.xml");
 	}
@@ -362,8 +351,7 @@ public class MergedAnnotationsTests {
 	public void WithInheritedAnnotationsFromAliasedValueComposedAnnotation() {
 		MergedAnnotation<?> annotation = MergedAnnotations.from(
 				AliasedValueComposedContextConfigurationClass.class,
-				SearchStrategy.INHERITED_ANNOTATIONS).get(
-						ContextConfiguration.class);
+				SearchStrategy.INHERITED_ANNOTATIONS).get(ContextConfiguration.class);
 		assertThat(annotation.getStringArray("value")).containsExactly("test.xml");
 		assertThat(annotation.getStringArray("locations")).containsExactly("test.xml");
 	}
@@ -424,9 +412,8 @@ public class MergedAnnotationsTests {
 	}
 
 	private void testGetWithInherited(Class<?> element, String... expected) {
-		MergedAnnotation<?> annotation = MergedAnnotations.from(
-				element, SearchStrategy.INHERITED_ANNOTATIONS).get(
-						ContextConfiguration.class);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(element,
+				SearchStrategy.INHERITED_ANNOTATIONS).get(ContextConfiguration.class);
 		assertThat(annotation.getStringArray("locations")).isEqualTo(expected);
 		assertThat(annotation.getStringArray("value")).isEqualTo(expected);
 		assertThat(annotation.getClassArray("classes")).isEmpty();
@@ -435,7 +422,8 @@ public class MergedAnnotationsTests {
 	@Test
 	public void getWithInheritedAnnotationsFromInvalidConventionBasedComposedAnnotation() {
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
-				() -> MergedAnnotations.from(InvalidConventionBasedComposedContextConfigurationClass.class,
+				() -> MergedAnnotations.from(
+						InvalidConventionBasedComposedContextConfigurationClass.class,
 						SearchStrategy.INHERITED_ANNOTATIONS).get(
 								ContextConfiguration.class));
 	}
@@ -444,55 +432,60 @@ public class MergedAnnotationsTests {
 	public void getWithInheritedAnnotationsFromShadowedAliasComposedAnnotation() {
 		MergedAnnotation<?> annotation = MergedAnnotations.from(
 				ShadowedAliasComposedContextConfigurationClass.class,
-				SearchStrategy.INHERITED_ANNOTATIONS).get(
-						ContextConfiguration.class);
+				SearchStrategy.INHERITED_ANNOTATIONS).get(ContextConfiguration.class);
 		assertThat(annotation.getStringArray("locations")).containsExactly("test.xml");
 		assertThat(annotation.getStringArray("value")).containsExactly("test.xml");
 	}
 
 	@Test
 	public void getWithExhaustiveFromInheritedAnnotationInterface() {
-		MergedAnnotation<?> annotation = MergedAnnotations.from(InheritedAnnotationInterface.class,
-				SearchStrategy.EXHAUSTIVE).get(Transactional.class);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				InheritedAnnotationInterface.class, SearchStrategy.EXHAUSTIVE).get(
+						Transactional.class);
 		assertThat(annotation.isPresent()).isTrue();
 		assertThat(annotation.getAggregateIndex()).isEqualTo(0);
 	}
 
 	@Test
 	public void getWithExhaustiveFromSubInheritedAnnotationInterface() {
-		MergedAnnotation<?> annotation = MergedAnnotations.from(SubInheritedAnnotationInterface.class,
-				SearchStrategy.EXHAUSTIVE).get(Transactional.class);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				SubInheritedAnnotationInterface.class, SearchStrategy.EXHAUSTIVE).get(
+						Transactional.class);
 		assertThat(annotation.isPresent()).isTrue();
 		assertThat(annotation.getAggregateIndex()).isEqualTo(1);
 	}
 
 	@Test
 	public void getWithExhaustiveFromSubSubInheritedAnnotationInterface() {
-		MergedAnnotation<?> annotation = MergedAnnotations.from(SubSubInheritedAnnotationInterface.class,
-				SearchStrategy.EXHAUSTIVE).get(Transactional.class);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				SubSubInheritedAnnotationInterface.class, SearchStrategy.EXHAUSTIVE).get(
+						Transactional.class);
 		assertThat(annotation.isPresent()).isTrue();
 		assertThat(annotation.getAggregateIndex()).isEqualTo(2);
 	}
 
 	@Test
 	public void getWithExhaustiveFromNonInheritedAnnotationInterface() {
-		MergedAnnotation<?> annotation = MergedAnnotations.from(NonInheritedAnnotationInterface.class,
-				SearchStrategy.EXHAUSTIVE).get(Order.class);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				NonInheritedAnnotationInterface.class, SearchStrategy.EXHAUSTIVE).get(
+						Order.class);
 		assertThat(annotation.isPresent()).isTrue();
 		assertThat(annotation.getAggregateIndex()).isEqualTo(0);
 	}
 
 	@Test
 	public void getWithExhaustiveFromSubNonInheritedAnnotationInterface() {
-		MergedAnnotation<?> annotation = MergedAnnotations.from(SubNonInheritedAnnotationInterface.class,
-				SearchStrategy.EXHAUSTIVE).get(Order.class);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				SubNonInheritedAnnotationInterface.class, SearchStrategy.EXHAUSTIVE).get(
+						Order.class);
 		assertThat(annotation.isPresent()).isTrue();
 		assertThat(annotation.getAggregateIndex()).isEqualTo(1);
 	}
 
 	@Test
 	public void getWithExhaustiveFromSubSubNonInheritedAnnotationInterface() {
-		MergedAnnotation<?> annotation = MergedAnnotations.from(SubSubNonInheritedAnnotationInterface.class,
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				SubSubNonInheritedAnnotationInterface.class,
 				SearchStrategy.EXHAUSTIVE).get(Order.class);
 		assertThat(annotation.isPresent()).isTrue();
 		assertThat(annotation.getAggregateIndex()).isEqualTo(2);
@@ -551,8 +544,9 @@ public class MergedAnnotationsTests {
 
 	@Test
 	public void getWithExhaustiveFromClassWithMetaAndLocalTxConfig() {
-		MergedAnnotation<?> annotation = MergedAnnotations.from(MetaAndLocalTxConfigClass.class,
-				SearchStrategy.EXHAUSTIVE).get(Transactional.class);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				MetaAndLocalTxConfigClass.class, SearchStrategy.EXHAUSTIVE).get(
+						Transactional.class);
 		assertThat(annotation.getString("qualifier")).isEqualTo("localTxMgr");
 	}
 
@@ -609,7 +603,8 @@ public class MergedAnnotationsTests {
 
 	@Test
 	public void getWithExhaustiveWhenMultipleMetaAnnotationsHaveClashingAttributeNames() {
-		MergedAnnotations annotations = MergedAnnotations.from(AliasedComposedContextConfigurationAndTestPropertySourceClass.class,
+		MergedAnnotations annotations = MergedAnnotations.from(
+				AliasedComposedContextConfigurationAndTestPropertySourceClass.class,
 				SearchStrategy.EXHAUSTIVE);
 		MergedAnnotation<?> contextConfig = annotations.get(ContextConfiguration.class);
 		assertThat(contextConfig.getStringArray("locations")).containsExactly("test.xml");
@@ -623,8 +618,8 @@ public class MergedAnnotationsTests {
 
 	@Test
 	public void getWithExhaustiveWithLocalAliasesThatConflictWithAttributesInMetaAnnotationByConvention() {
-		MergedAnnotation<?> annotation = MergedAnnotations.from(SpringApplicationConfigurationClass.class,
-				SearchStrategy.EXHAUSTIVE).get(
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				SpringApplicationConfigurationClass.class, SearchStrategy.EXHAUSTIVE).get(
 						ContextConfiguration.class);
 		assertThat(annotation.getStringArray("locations")).isEmpty();
 		assertThat(annotation.getStringArray("value")).isEmpty();
@@ -674,7 +669,8 @@ public class MergedAnnotationsTests {
 	public void streamInheritedFromClassWithInterface() throws Exception {
 		Method method = TransactionalServiceImpl.class.getMethod("doIt");
 		assertThat(MergedAnnotations.from(method,
-				SearchStrategy.INHERITED_ANNOTATIONS).stream(Transactional.class)).isEmpty();
+				SearchStrategy.INHERITED_ANNOTATIONS).stream(
+						Transactional.class)).isEmpty();
 	}
 
 	@Test
@@ -778,9 +774,12 @@ public class MergedAnnotationsTests {
 		boolean runningInEclipse = Arrays.stream(
 				new Exception().getStackTrace()).anyMatch(
 						element -> element.getClassName().startsWith("org.eclipse.jdt"));
-		// As of JDK 8, invoking getAnnotation() on a bridge method actually finds an
-		// annotation on its 'bridged' method [1]; however, the Eclipse compiler will not
-		// support this until Eclipse 4.9 [2]. Thus, we effectively ignore the following
+		// As of JDK 8, invoking getAnnotation() on a bridge method actually
+		// finds an
+		// annotation on its 'bridged' method [1]; however, the Eclipse compiler
+		// will not
+		// support this until Eclipse 4.9 [2]. Thus, we effectively ignore the
+		// following
 		// assertion if the test is currently executing within the Eclipse IDE.
 		// [1] https://bugs.openjdk.java.net/browse/JDK-6695379
 		// [2] https://bugs.eclipse.org/bugs/show_bug.cgi?id=495396
@@ -852,37 +851,41 @@ public class MergedAnnotationsTests {
 
 	@Test
 	public void getDirectFromClassFavorsMoreLocallyDeclaredComposedAnnotationsOverAnnotationsOnInterfaces() {
-		MergedAnnotation<?> annotation = MergedAnnotations.from(ClassWithLocalMetaAnnotationAndMetaAnnotatedInterface.class,
-				SearchStrategy.EXHAUSTIVE).get(
-						Component.class);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				ClassWithLocalMetaAnnotationAndMetaAnnotatedInterface.class,
+				SearchStrategy.EXHAUSTIVE).get(Component.class);
 		assertThat(annotation.getString("value")).isEqualTo("meta2");
 	}
 
 	@Test
 	public void getDirectFromClassFavorsMoreLocallyDeclaredComposedAnnotationsOverInheritedAnnotations() {
-		MergedAnnotation<?> annotation = MergedAnnotations.from(SubSubClassWithInheritedAnnotation.class,
-				SearchStrategy.EXHAUSTIVE).get(Transactional.class);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				SubSubClassWithInheritedAnnotation.class, SearchStrategy.EXHAUSTIVE).get(
+						Transactional.class);
 		assertThat(annotation.getBoolean("readOnly")).isTrue();
 	}
 
 	@Test
 	public void getDirectFromClassFavorsMoreLocallyDeclaredComposedAnnotationsOverInheritedComposedAnnotations() {
-		MergedAnnotation<?> annotation = MergedAnnotations.from(SubSubClassWithInheritedMetaAnnotation.class,
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				SubSubClassWithInheritedMetaAnnotation.class,
 				SearchStrategy.EXHAUSTIVE).get(Component.class);
 		assertThat(annotation.getString("value")).isEqualTo("meta2");
 	}
 
 	@Test
 	public void getDirectFromClassgetDirectFromClassMetaMetaAnnotatedClass() {
-		MergedAnnotation<?> annotation = MergedAnnotations.from(MetaMetaAnnotatedClass.class,
-				SearchStrategy.EXHAUSTIVE).get(Component.class);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				MetaMetaAnnotatedClass.class, SearchStrategy.EXHAUSTIVE).get(
+						Component.class);
 		assertThat(annotation.getString("value")).isEqualTo("meta2");
 	}
 
 	@Test
 	public void getDirectFromClassWithMetaMetaMetaAnnotatedClass() {
-		MergedAnnotation<?> annotation = MergedAnnotations.from(MetaMetaMetaAnnotatedClass.class,
-				SearchStrategy.EXHAUSTIVE).get(Component.class);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				MetaMetaMetaAnnotatedClass.class, SearchStrategy.EXHAUSTIVE).get(
+						Component.class);
 		assertThat(annotation.getString("value")).isEqualTo("meta2");
 	}
 
@@ -896,49 +899,56 @@ public class MergedAnnotationsTests {
 
 	@Test
 	public void getDirectFromClassWithMetaCycleAnnotatedClassWithMissingTargetMetaAnnotation() {
-		MergedAnnotation<?> annotation = MergedAnnotations.from(MetaCycleAnnotatedClass.class,
-				SearchStrategy.EXHAUSTIVE).get(Component.class);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				MetaCycleAnnotatedClass.class, SearchStrategy.EXHAUSTIVE).get(
+						Component.class);
 		assertThat(annotation.isPresent()).isFalse();
 	}
 
 	@Test
 	public void getDirectFromClassWithInheritedAnnotationInterface() {
-		MergedAnnotation<?> annotation = MergedAnnotations.from(InheritedAnnotationInterface.class,
-				SearchStrategy.EXHAUSTIVE).get(Transactional.class);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				InheritedAnnotationInterface.class, SearchStrategy.EXHAUSTIVE).get(
+						Transactional.class);
 		assertThat(annotation.getAggregateIndex()).isEqualTo(0);
 	}
 
 	@Test
 	public void getDirectFromClassWithSubInheritedAnnotationInterface() {
-		MergedAnnotation<?> annotation = MergedAnnotations.from(SubInheritedAnnotationInterface.class,
-				SearchStrategy.EXHAUSTIVE).get(Transactional.class);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				SubInheritedAnnotationInterface.class, SearchStrategy.EXHAUSTIVE).get(
+						Transactional.class);
 		assertThat(annotation.getAggregateIndex()).isEqualTo(1);
 	}
 
 	@Test
 	public void getDirectFromClassWithSubSubInheritedAnnotationInterface() {
-		MergedAnnotation<?> annotation = MergedAnnotations.from(SubSubInheritedAnnotationInterface.class,
-				SearchStrategy.EXHAUSTIVE).get(Transactional.class);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				SubSubInheritedAnnotationInterface.class, SearchStrategy.EXHAUSTIVE).get(
+						Transactional.class);
 		assertThat(annotation.getAggregateIndex()).isEqualTo(2);
 	}
 
 	@Test
 	public void getDirectFromClassWithNonInheritedAnnotationInterface() {
-		MergedAnnotation<?> annotation = MergedAnnotations.from(NonInheritedAnnotationInterface.class,
-				SearchStrategy.EXHAUSTIVE).get(Order.class);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				NonInheritedAnnotationInterface.class, SearchStrategy.EXHAUSTIVE).get(
+						Order.class);
 		assertThat(annotation.getAggregateIndex()).isEqualTo(0);
 	}
 
 	@Test
 	public void getDirectFromClassWithSubNonInheritedAnnotationInterface() {
-		MergedAnnotation<?> annotation = MergedAnnotations.from(SubNonInheritedAnnotationInterface.class,
-				SearchStrategy.EXHAUSTIVE).get(Order.class);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				SubNonInheritedAnnotationInterface.class, SearchStrategy.EXHAUSTIVE).get(
+						Order.class);
 		assertThat(annotation.getAggregateIndex()).isEqualTo(1);
 	}
 
 	@Test
 	public void getDirectFromClassWithSubSubNonInheritedAnnotationInterface() {
-		MergedAnnotation<?> annotation = MergedAnnotations.from(SubSubNonInheritedAnnotationInterface.class,
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				SubSubNonInheritedAnnotationInterface.class,
 				SearchStrategy.EXHAUSTIVE).get(Order.class);
 		assertThat(annotation.getAggregateIndex()).isEqualTo(2);
 	}
@@ -950,7 +960,8 @@ public class MergedAnnotationsTests {
 				SearchStrategy.SUPER_CLASS).get(
 						Transactional.class).getSource()).isNull();
 		assertThat(MergedAnnotations.from(NonAnnotatedClass.class,
-				SearchStrategy.SUPER_CLASS).get(Transactional.class).getSource()).isNull();
+				SearchStrategy.SUPER_CLASS).get(
+						Transactional.class).getSource()).isNull();
 		// inherited class-level annotation; note: @Transactional is inherited
 		assertThat(MergedAnnotations.from(InheritedAnnotationInterface.class,
 				SearchStrategy.SUPER_CLASS).get(
@@ -970,20 +981,16 @@ public class MergedAnnotationsTests {
 		// non-inherited class-level annotation; note: @Order is not inherited,
 		// but we should still find it on classes.
 		assertThat(MergedAnnotations.from(NonInheritedAnnotationInterface.class,
-				SearchStrategy.SUPER_CLASS).get(
-						Order.class).getSource()).isEqualTo(
-								NonInheritedAnnotationInterface.class);
+				SearchStrategy.SUPER_CLASS).get(Order.class).getSource()).isEqualTo(
+						NonInheritedAnnotationInterface.class);
 		assertThat(MergedAnnotations.from(SubNonInheritedAnnotationInterface.class,
-				SearchStrategy.SUPER_CLASS).get(
-						Order.class).getSource()).isNull();
+				SearchStrategy.SUPER_CLASS).get(Order.class).getSource()).isNull();
 		assertThat(MergedAnnotations.from(NonInheritedAnnotationClass.class,
-				SearchStrategy.SUPER_CLASS).get(
-						Order.class).getSource()).isEqualTo(
-								NonInheritedAnnotationClass.class);
+				SearchStrategy.SUPER_CLASS).get(Order.class).getSource()).isEqualTo(
+						NonInheritedAnnotationClass.class);
 		assertThat(MergedAnnotations.from(SubNonInheritedAnnotationClass.class,
-				SearchStrategy.SUPER_CLASS).get(
-						Order.class).getSource()).isEqualTo(
-								NonInheritedAnnotationClass.class);
+				SearchStrategy.SUPER_CLASS).get(Order.class).getSource()).isEqualTo(
+						NonInheritedAnnotationClass.class);
 	}
 
 	@Test
@@ -1105,7 +1112,8 @@ public class MergedAnnotationsTests {
 		assertThat(MergedAnnotations.from(InheritedAnnotationInterface.class,
 				SearchStrategy.INHERITED_ANNOTATIONS).get(
 						Transactional.class).getAggregateIndex()).isEqualTo(0);
-		// Since we're not traversing interface hierarchies the following, though perhaps
+		// Since we're not traversing interface hierarchies the following,
+		// though perhaps
 		// counter intuitive, must be false:
 		assertThat(MergedAnnotations.from(SubInheritedAnnotationInterface.class,
 				SearchStrategy.INHERITED_ANNOTATIONS).get(
@@ -1205,8 +1213,8 @@ public class MergedAnnotationsTests {
 	public void getDefaultValueFromAnnotation() throws Exception {
 		Method method = TransactionalStringGeneric.class.getMethod("something",
 				Object.class);
-		MergedAnnotation<Order> annotation = MergedAnnotations.from(
-				method, SearchStrategy.EXHAUSTIVE).get(Order.class);
+		MergedAnnotation<Order> annotation = MergedAnnotations.from(method,
+				SearchStrategy.EXHAUSTIVE).get(Order.class);
 		assertThat(annotation.getDefaultValue("value")).contains(
 				Ordered.LOWEST_PRECEDENCE);
 	}
@@ -1231,9 +1239,9 @@ public class MergedAnnotationsTests {
 
 	@Test
 	public void getRepeatableOnComposedAnnotation() {
-		MergedAnnotation<?> annotation = MergedAnnotations.from(
-				MyRepeatableMeta1.class, SearchStrategy.EXHAUSTIVE,
-				RepeatableContainers.none(), AnnotationFilter.NONE).get(Repeatable.class);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(MyRepeatableMeta1.class,
+				SearchStrategy.EXHAUSTIVE, RepeatableContainers.none(),
+				AnnotationFilter.NONE).get(Repeatable.class);
 		assertThat(annotation.getClass("value")).isEqualTo(MyRepeatableContainer.class);
 	}
 
@@ -1250,15 +1258,16 @@ public class MergedAnnotationsTests {
 	@Test
 	public void getRepeatableDeclaredOnClassWithMissingAttributeAliasDeclaration()
 			throws Exception {
-		RepeatableContainers containers = RepeatableContainers.of(BrokenContextConfiguration.class,
-				BrokenHierarchy.class);
+		RepeatableContainers containers = RepeatableContainers.of(
+				BrokenContextConfiguration.class, BrokenHierarchy.class);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
-				() -> MergedAnnotations.from(BrokenHierarchyClass.class, SearchStrategy.EXHAUSTIVE,
-						containers,
-						AnnotationFilter.PLAIN)).withMessageStartingWith(
-								"Attribute 'value' in").withMessageContaining(
-										BrokenContextConfiguration.class.getName()).withMessageContaining(
-												"@AliasFor 'location'");
+				() -> MergedAnnotations.from(BrokenHierarchyClass.class,
+						SearchStrategy.EXHAUSTIVE, containers,
+						AnnotationFilter.PLAIN).get(
+								BrokenHierarchy.class)).withMessageStartingWith(
+										"Attribute 'value' in").withMessageContaining(
+												BrokenContextConfiguration.class.getName()).withMessageContaining(
+														"@AliasFor 'location'");
 	}
 
 	@Test
@@ -1348,9 +1357,9 @@ public class MergedAnnotationsTests {
 
 	private void testExplicitRepeatables(SearchStrategy searchStrategy, Class<?> element,
 			String[] expected) {
-		MergedAnnotations annotations = MergedAnnotations.from(
-				element,
-				searchStrategy, RepeatableContainers.of(MyRepeatable.class, MyRepeatableContainer.class), AnnotationFilter.PLAIN);
+		MergedAnnotations annotations = MergedAnnotations.from(element, searchStrategy,
+				RepeatableContainers.of(MyRepeatable.class, MyRepeatableContainer.class),
+				AnnotationFilter.PLAIN);
 		assertThat(annotations.stream(MyRepeatable.class).filter(
 				MergedAnnotationPredicates.firstRunOf(
 						MergedAnnotation::getAggregateIndex)).map(
@@ -1942,9 +1951,9 @@ public class MergedAnnotationsTests {
 	}
 
 	/**
-	 * Fully reflection-based test that verifies support for synthesizing annotations
-	 * across packages with non-public visibility of user types (e.g., a non-public
-	 * annotation that uses {@code @AliasFor}).
+	 * Fully reflection-based test that verifies support for synthesizing
+	 * annotations across packages with non-public visibility of user types
+	 * (e.g., a non-public annotation that uses {@code @AliasFor}).
 	 */
 	@Test
 	@SuppressWarnings("unchecked")

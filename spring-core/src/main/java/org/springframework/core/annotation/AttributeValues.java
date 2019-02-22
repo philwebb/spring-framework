@@ -32,13 +32,13 @@ import org.springframework.util.ReflectionUtils;
  */
 class AttributeValues {
 
-	public static boolean isDefault(Method attribute, Object value,
-			BiFunction<Method, Object, Object> valueExtractor) {
+	public static <A> boolean isDefault(Method attribute, Object value,
+			BiFunction<Method, A, Object> valueExtractor) {
 		return areEquivalent(attribute.getDefaultValue(), value, valueExtractor);
 	}
 
-	private static boolean areEquivalent(Object value, Object extractedValue,
-			BiFunction<Method, Object, Object> valueExtractor) {
+	private static <A> boolean areEquivalent(Object value, Object extractedValue,
+			BiFunction<Method, A, Object> valueExtractor) {
 		if (ObjectUtils.nullSafeEquals(value, extractedValue)) {
 			return true;
 		}
@@ -83,5 +83,6 @@ class AttributeValues {
 		}
 		return true;
 	}
+
 
 }

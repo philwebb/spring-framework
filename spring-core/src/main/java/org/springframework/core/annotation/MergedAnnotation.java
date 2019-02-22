@@ -32,6 +32,7 @@ import java.util.function.Predicate;
 import org.springframework.core.MethodIntrospector;
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
 
 /**
  * A single merged annotation returned from a {@link MergedAnnotations}
@@ -529,7 +530,7 @@ public interface MergedAnnotation<A extends Annotation> {
 	static <A extends Annotation> MergedAnnotation<A> from(
 			@Nullable AnnotatedElement source, Class<A> annotationType,
 			@Nullable Map<String, ?> attributes) {
-		throw new UnsupportedOperationException();
+		return TypeMappedAnnotation.from(source, annotationType, attributes);
 	}
 
 	/**

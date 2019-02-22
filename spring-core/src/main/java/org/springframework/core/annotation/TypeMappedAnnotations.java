@@ -364,7 +364,7 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		private void addAggregateAnnotations(List<Annotation> aggregateAnnotations,
 				Annotation[] annotations) {
 			for (Annotation annotation : annotations) {
-				if (!annotationFilter.matches(annotation)) {
+				if (annotation != null && !annotationFilter.matches(annotation)) {
 					Annotation[] repeatedAnnotations = repeatableContainers.findRepeatedAnnotations(
 							annotation);
 					if (repeatedAnnotations != null) {
