@@ -45,11 +45,15 @@ import org.springframework.util.ConcurrentReferenceHashMap;
  */
 class AnnotationTypeMappings implements Iterable<AnnotationTypeMapping> {
 
-	private static final Map<Class<? extends Annotation>, AnnotationTypeMappings> cache = new ConcurrentReferenceHashMap<>();
+	private static final Map<AnnotationFilter, Cache> cache = new ConcurrentReferenceHashMap<>();
+
+	private final AnnotationFilter filter;
 
 	private final List<AnnotationTypeMapping> mappings;
 
-	public AnnotationTypeMappings(Class<? extends Annotation> annotationType) {
+	public AnnotationTypeMappings(AnnotationFilter filter,
+			Class<? extends Annotation> annotationType) {
+		this.filter = filter;
 		this.mappings = new ArrayList<>();
 		addAllMappings(annotationType);
 		this.mappings.forEach(AnnotationTypeMapping::afterAllMappingsSet);
@@ -90,7 +94,7 @@ class AnnotationTypeMappings implements Iterable<AnnotationTypeMapping> {
 	}
 
 	private boolean isMappable(AnnotationTypeMapping parent, Annotation metaAnnotation) {
-		return !AnnotationFilter.PLAIN.matches(metaAnnotation)
+		return !filter.matches(metaAnnotation)
 				&& !isAlreadyMapped(parent, metaAnnotation);
 	}
 
@@ -121,8 +125,37 @@ class AnnotationTypeMappings implements Iterable<AnnotationTypeMapping> {
 
 	public static AnnotationTypeMappings forAnnotationType(
 			Class<? extends Annotation> annotationType) {
+		return forAnnotationType(annotationType, AnnotationFilter.PLAIN);
+	}
+
+	public static AnnotationTypeMappings forAnnotationType(
+			Class<? extends Annotation> annotationType,
+			AnnotationFilter annotationFilter) {
 		Assert.notNull(annotationType, "AnnotationType must not be null");
-		return cache.computeIfAbsent(annotationType, AnnotationTypeMappings::new);
+		Assert.notNull(annotationFilter, "AnnotationFilter must not be null");
+		return cache.computeIfAbsent(annotationFilter, Cache::new).get(annotationType);
+	}
+
+	private static class Cache {
+
+		private final AnnotationFilter filter;
+
+		private final Map<Class<? extends Annotation>, AnnotationTypeMappings> mappings;
+
+		public Cache(AnnotationFilter filter) {
+			this.filter = filter;
+			this.mappings = new ConcurrentReferenceHashMap<>();
+		}
+
+		public AnnotationTypeMappings get(Class<? extends Annotation> annotationType) {
+			return this.mappings.computeIfAbsent(annotationType, this::createMappings);
+		}
+
+		private AnnotationTypeMappings createMappings(
+				Class<? extends Annotation> annotationType) {
+			return new AnnotationTypeMappings(this.filter, annotationType);
+		}
+
 	}
 
 }

@@ -188,22 +188,25 @@ class AnnotationsScanner {
 				return processMethodAnnotations(context, 0, source, processor,
 						classFilter);
 			case SUPER_CLASS:
-				return processMethodHierarchy(context, new int[] { 0 }, source.getDeclaringClass(),
-						processor, classFilter, source, false);
+				return processMethodHierarchy(context, new int[] { 0 },
+						source.getDeclaringClass(), processor, classFilter, source,
+						false);
 			case EXHAUSTIVE:
-				return processMethodHierarchy(context, new int[] { 0 }, source.getDeclaringClass(),
-						processor, classFilter, source, true);
+				return processMethodHierarchy(context, new int[] { 0 },
+						source.getDeclaringClass(), processor, classFilter, source, true);
 		}
 		throw new IllegalStateException("Unsupported search strategy " + searchStrategy);
 	}
 
-	private static <C, R> R processMethodHierarchy(C context,
-			int[] aggregateIndex, Class<?> sourceClass, AnnotationProcessor<C, R> processor,
+	private static <C, R> R processMethodHierarchy(C context, int[] aggregateIndex,
+			Class<?> sourceClass, AnnotationProcessor<C, R> processor,
 			@Nullable BiPredicate<C, Class<?>> classFilter, Method rootMethod,
 			boolean includeInterfaces) {
+		boolean calledProcessor = false;
 		if (sourceClass == rootMethod.getDeclaringClass()) {
 			R result = processMethodAnnotations(context, aggregateIndex[0], rootMethod,
 					processor, classFilter);
+			calledProcessor = true;
 			if (result != null) {
 				return result;
 			}
@@ -213,13 +216,16 @@ class AnnotationsScanner {
 				if (isOverride(rootMethod, candidateMethod)) {
 					R result = processMethodAnnotations(context, aggregateIndex[0],
 							candidateMethod, processor, classFilter);
+					calledProcessor = true;
 					if (result != null) {
 						return result;
 					}
 				}
 			}
 		}
-		aggregateIndex[0]++;
+		if (calledProcessor) {
+			aggregateIndex[0]++;
+		}
 		if (includeInterfaces) {
 			for (Class<?> interfaceType : sourceClass.getInterfaces()) {
 				R interfacesResult = processMethodHierarchy(context, aggregateIndex,
@@ -232,8 +238,8 @@ class AnnotationsScanner {
 		}
 		Class<?> superclass = sourceClass.getSuperclass();
 		if (superclass != Object.class && superclass != null) {
-			R superclassResult = processMethodHierarchy(context, aggregateIndex, superclass,
-					processor, classFilter, rootMethod, includeInterfaces);
+			R superclassResult = processMethodHierarchy(context, aggregateIndex,
+					superclass, processor, classFilter, rootMethod, includeInterfaces);
 			if (superclassResult != null) {
 				return superclassResult;
 			}
@@ -340,7 +346,7 @@ class AnnotationsScanner {
 	}
 
 	private static boolean isIgnorable(Class<?> annotationType) {
-		return (annotationType == Nullable.class || annotationType == Deprecated.class
+		return (annotationType == Nullable.class
 				|| annotationType == FunctionalInterface.class);
 	}
 

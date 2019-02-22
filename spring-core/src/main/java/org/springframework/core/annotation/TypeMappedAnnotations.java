@@ -303,7 +303,7 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 				return process(type, aggregateIndex, source, repeatedAnnotations);
 			}
 			AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotationType(
-					annotation.annotationType());
+					annotation.annotationType(), annotationFilter);
 			for (int i = 0; i < mappings.size(); i++) {
 				AnnotationTypeMapping mapping = mappings.get(i);
 				if (isMappingForType(mapping, annotationFilter, requiredType)) {
@@ -337,7 +337,8 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 	/**
 	 * {@link AnnotationProcessor} that collects {@link Aggregate} instances.
 	 */
-	private class AggregatesCollector implements AnnotationProcessor<Object, List<Aggregate>> {
+	private class AggregatesCollector
+			implements AnnotationProcessor<Object, List<Aggregate>> {
 
 		private final List<Aggregate> aggregates = new ArrayList<>();
 
@@ -366,7 +367,7 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 				if (!annotationFilter.matches(annotation)) {
 					Annotation[] repeatedAnnotations = repeatableContainers.findRepeatedAnnotations(
 							annotation);
-					if (repeatedAnnotations == null) {
+					if (repeatedAnnotations != null) {
 						addAggregateAnnotations(aggregateAnnotations,
 								repeatedAnnotations);
 					}
@@ -375,6 +376,11 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 					}
 				}
 			}
+		}
+
+		@Override
+		public List<Aggregate> getFinalResult(List<Aggregate> processResult) {
+			return this.aggregates;
 		}
 
 	}
@@ -406,7 +412,8 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		}
 
 		public AnnotationTypeMapping getMapping(int annotationIndex, int mappingIndex) {
-			return this.mappings[annotationIndex].get(mappingIndex);
+			AnnotationTypeMappings mappings = this.mappings[annotationIndex];
+			return mappingIndex < mappings.size() ? mappings.get(mappingIndex) : null;
 		}
 
 		public <A extends Annotation> MergedAnnotation<A> getMergedAnnotation(
@@ -443,29 +450,45 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		}
 
 		public boolean tryAdvance(Consumer<? super MergedAnnotation<A>> action) {
-			int aggregateIndex = -1;
-			int annotationIndex = -1;
+			int aggregateResult = -1;
+			int annotationResult = -1;
 			int lowestDepth = Integer.MAX_VALUE;
-			for (int i = 0; i < this.aggregates.size(); i++) {
-				Aggregate aggregate = this.aggregates.get(i);
-				for (int j = 0; j < aggregate.size(); j++) {
-					int mappingIndex = this.currentMappingIndex[i][j];
-					AnnotationTypeMapping mapping = aggregate.getMapping(j, mappingIndex);
-					if (isMappingForType(mapping, annotationFilter, this.requiredType)
-							&& mapping.getDepth() < lowestDepth) {
-						aggregateIndex = i;
-						annotationIndex = j;
+			for (int aggregateIndex = 0; aggregateIndex < this.aggregates.size(); aggregateIndex++) {
+				Aggregate aggregate = this.aggregates.get(aggregateIndex);
+				for (int annotationIndex = 0; annotationIndex < aggregate.size(); annotationIndex++) {
+					AnnotationTypeMapping mapping = getNextMapping(aggregate,
+							aggregateIndex, annotationIndex);
+					if (mapping != null && mapping.getDepth() < lowestDepth) {
+						aggregateResult = aggregateIndex;
+						annotationResult = annotationIndex;
+						lowestDepth = mapping.getDepth();
+					}
+					if (lowestDepth == 0) {
+						break;
 					}
 				}
 			}
-			if (aggregateIndex == -1) {
+			if (aggregateResult == -1) {
 				return false;
 			}
-			int mappingIndex = this.currentMappingIndex[aggregateIndex][annotationIndex];
-			Aggregate aggregate = this.aggregates.get(aggregateIndex);
-			action.accept(aggregate.getMergedAnnotation(annotationIndex, mappingIndex));
-			this.currentMappingIndex[aggregateIndex][annotationIndex] = mappingIndex + 1;
+			Aggregate aggregate = this.aggregates.get(aggregateResult);
+			int mappingIndex = this.currentMappingIndex[aggregateResult][annotationResult];
+			this.currentMappingIndex[aggregateResult][annotationResult]++;
+			action.accept(aggregate.getMergedAnnotation(annotationResult, mappingIndex));
 			return true;
+		}
+
+		private AnnotationTypeMapping getNextMapping(Aggregate aggregate,
+				int aggregateIndex, int annotationIndex) {
+			AnnotationTypeMapping mapping = aggregate.getMapping(annotationIndex,
+					this.currentMappingIndex[aggregateIndex][annotationIndex]);
+			while (mapping != null
+					&& !isMappingForType(mapping, annotationFilter, this.requiredType)) {
+				this.currentMappingIndex[aggregateIndex][annotationIndex]++;
+				mapping = aggregate.getMapping(annotationIndex,
+						this.currentMappingIndex[aggregateIndex][annotationIndex]);
+			}
+			return mapping;
 		}
 
 		@Override

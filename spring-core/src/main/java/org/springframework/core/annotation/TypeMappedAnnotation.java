@@ -55,9 +55,6 @@ public class TypeMappedAnnotation<A extends Annotation>
 	@Nullable
 	private final Predicate<String> attributeFilter;
 
-	@Nullable
-	private volatile A synthesizedAnnotation;
-
 	TypeMappedAnnotation(@Nullable Object source, Annotation annotation,
 			AnnotationTypeMapping mapping, int aggregateIndex) {
 		this(source, annotation, ReflectionUtils::invokeMethod, mapping, aggregateIndex);
@@ -79,7 +76,7 @@ public class TypeMappedAnnotation<A extends Annotation>
 
 	@Override
 	public String getType() {
-		return this.mapping.getAnnotationType().getName();
+		return getAnnotationType().getName();
 	}
 
 	@Override
@@ -174,14 +171,6 @@ public class TypeMappedAnnotation<A extends Annotation>
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * org.springframework.core.annotation.MergedAnnotation#asMap(java.util.
-	 * function.Function,
-	 * org.springframework.core.annotation.MergedAnnotation.MapValues[])
-	 */
 	@Override
 	public <T extends Map<String, Object>> T asMap(
 			Function<MergedAnnotation<?>, T> factory, MapValues... options) {
@@ -189,16 +178,15 @@ public class TypeMappedAnnotation<A extends Annotation>
 		throw new UnsupportedOperationException("Auto-generated method stub");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.springframework.core.annotation.AbstractMergedAnnotation#
-	 * createSynthesized()
-	 */
 	@Override
 	protected A createSynthesized() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Auto-generated method stub");
+		return SynthesizedMergedAnnotationInvocationHandler.createProxy(this,
+				getAnnotationType());
+	}
+
+	@SuppressWarnings("unchecked")
+	private Class<A> getAnnotationType() {
+		return (Class<A>) this.mapping.getAnnotationType();
 	}
 
 	protected <T> T getValue(String attributeName, Class<T> type, boolean required) {

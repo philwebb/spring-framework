@@ -657,10 +657,10 @@ public class MergedAnnotationsTests {
 
 	@Test
 	public void getDirectWithJavaLangAnnotationType() throws Exception {
-		Constructor<?> deprecatedCtor = Date.class.getConstructor(String.class);
-		MergedAnnotation<?> annotation = MergedAnnotations.from(
-				deprecatedCtor, SearchStrategy.DIRECT,
-				RepeatableContainers.standardRepeatables(), AnnotationFilter.NONE).get(Deprecated.class);
+		Constructor<?> deprecatedConstructor = Date.class.getConstructor(String.class);
+		MergedAnnotation<?> annotation = MergedAnnotations.from(deprecatedConstructor,
+				SearchStrategy.DIRECT, RepeatableContainers.standardRepeatables(),
+				AnnotationFilter.NONE).get(Deprecated.class);
 		assertThat(annotation.isPresent()).isTrue();
 	}
 
@@ -1172,8 +1172,6 @@ public class MergedAnnotationsTests {
 	public void getDirectWithAttributeAliasesWithDifferentValues() throws Exception {
 		Method method = WebController.class.getMethod(
 				"handleMappedWithDifferentPathAndValueAttributes");
-		MergedAnnotations.from(method).get(
-				RequestMapping.class);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
 				() -> MergedAnnotations.from(method).get(
 						RequestMapping.class)).withMessageContaining(
