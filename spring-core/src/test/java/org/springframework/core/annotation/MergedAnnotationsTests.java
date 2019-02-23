@@ -1450,7 +1450,6 @@ public class MergedAnnotationsTests {
 	}
 
 	@Test
-	@Ignore
 	public void synthesizeWhenAttributeAliasWithMirroredAliasForWrongAttribute()
 			throws Exception {
 		AliasForWithMirroredAliasForWrongAttribute annotation = AliasForWithMirroredAliasForWrongAttributeClass.class.getAnnotation(
@@ -1824,7 +1823,7 @@ public class MergedAnnotationsTests {
 		assertThatIllegalStateException().isThrownBy(
 				() -> annotation.synthesize()).withMessage(
 						"Attribute 'value' in annotation org.springframework.stereotype.Component "
-								+ "should be of type java.lang.String but a java.lang.Long value was returned");
+								+ "should be compatible with java.lang.String but a java.lang.Long value was returned");
 	}
 
 	@Test

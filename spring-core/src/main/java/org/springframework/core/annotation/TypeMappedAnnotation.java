@@ -164,8 +164,7 @@ public class TypeMappedAnnotation<A extends Annotation>
 			return Optional.empty();
 		}
 		Method attribute = this.mapping.getAttributes().get(attributeIndex);
-		Object value = attribute.getDefaultValue();
-		return Optional.ofNullable(adapt(value, attribute.getReturnType(), type));
+		return Optional.ofNullable(adapt(attribute, attribute.getDefaultValue(), type));
 	}
 
 	@Override
@@ -281,15 +280,7 @@ public class TypeMappedAnnotation<A extends Annotation>
 			// FIXME ??? Is this correct
 			value = attribute.getDefaultValue();
 		}
-		try {
-			return adapt(value, attribute.getReturnType(), type);
-		}
-		catch (IllegalStateException ex) {
-			throw new IllegalStateException("Attribute '" + attribute.getName()
-					+ "' in annotation " + this.mapping.getAnnotationType().getName()
-					+ " should be compatible with " + attribute.getReturnType()
-					+ " and cannot be returned as a " + type.getName());
-		}
+		return adapt(attribute, value, type);
 	}
 
 	private Object getMappedValue(int attributeIndex) {
@@ -308,7 +299,86 @@ public class TypeMappedAnnotation<A extends Annotation>
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T> T adapt(Object value, Class<?> attributeType, Class<T> type) {
+	private <T> T adapt(Method attribute, @Nullable Object value, Class<T> type) {
+		if (value == null) {
+			return null;
+		}
+		value = adaptForAttribute(attribute, value);
+		if (value instanceof String && type == Class.class) {
+
+		}
+		else if (value instanceof String[] && type == Class[].class) {
+
+		}
+		else if (value instanceof Class && type == String.class) {
+
+		}
+		else if (value instanceof Class[] && type == String[].class) {
+
+		}
+		else if (value instanceof MergedAnnotation && type.isAnnotation()) {
+			MergedAnnotation<?> annotation = (MergedAnnotation<?>) value;
+			value = annotation.synthesize();
+		}
+		else if (value instanceof MergedAnnotation[] && type.isArray()
+				&& type.getComponentType().isAnnotation()) {
+			MergedAnnotation<?>[] annotations = (MergedAnnotation<?>[]) value;
+			Object array = Array.newInstance(type.getComponentType(), annotations.length);
+			for (int i = 0; i < annotations.length; i++) {
+				Array.set(array, i, annotations[i].synthesize());
+			}
+			value = array;
+		}
+		Assert.isInstanceOf(type, value, "Unable to return attribute type "
+				+ attribute.getReturnType() + " as a " + type);
+		return (T) value;
+	}
+
+	@SuppressWarnings("unchecked")
+	private Object adaptForAttribute(Method attribute, Object value) {
+		Class<?> attributeType = ClassUtils.resolvePrimitiveIfNecessary(
+				attribute.getReturnType());
+		if (attributeType.isArray() && !value.getClass().isArray()) {
+			Object array = Array.newInstance(value.getClass(), 1);
+			Array.set(array, 0, value);
+			return adaptForAttribute(attribute, array);
+		}
+		if (attributeType.isAnnotation()) {
+			return adaptToMergedAnnotation(value,
+					(Class<? extends Annotation>) attributeType);
+		}
+		if (attributeType.isArray() && attributeType.getComponentType().isAnnotation()
+				&& value.getClass().isArray()) {
+			MergedAnnotation<?>[] result = new MergedAnnotation[Array.getLength(value)];
+			for (int i = 0; i < result.length; i++) {
+				result[i] = adaptToMergedAnnotation(Array.get(value, i),
+						(Class<? extends Annotation>) attributeType.getComponentType());
+			}
+			return result;
+		}
+		if ((attributeType == Class.class && value instanceof String)
+				|| (attributeType == Class[].class && value instanceof String[])) {
+			return value;
+		}
+
+		Assert.state(attributeType.isInstance(value),
+				"Attribute '" + attribute.getName() + "' in annotation " + getType()
+						+ " should be compatible with " + attributeType.getName()
+						+ " but a " + value.getClass().getName() + " value was returned");
+		return value;
+	}
+
+	private MergedAnnotation<?> adaptToMergedAnnotation(Object value,
+			Class<? extends Annotation> annotationType) {
+		AnnotationFilter filter = AnnotationFilter.mostAppropriateFor(annotationType);
+		AnnotationTypeMapping mapping = AnnotationTypeMappings.forAnnotationType(
+				annotationType, filter).get(0);
+		return new TypeMappedAnnotation<>(this.source, value, getValueExtractorFor(value),
+				mapping, this.aggregateIndex);
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> T xadapt(Object value, Class<?> attributeType, Class<T> type) {
 		if (type == Object.class) {
 			type = (Class<T>) getDefaultAdaptType(attributeType);
 		}
@@ -325,7 +395,7 @@ public class TypeMappedAnnotation<A extends Annotation>
 			for (int i = 0; i < length; i++) {
 				Object element = valueType.isArray() ? Array.get(value, i) : value;
 				Array.set(result, i,
-						adapt(element, attributeType.getComponentType(), componentType));
+						xadapt(element, attributeType.getComponentType(), componentType));
 			}
 			return (T) result;
 		}
