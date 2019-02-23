@@ -1820,6 +1820,7 @@ public class MergedAnnotationsTests {
 		Map<String, Object> map = Collections.singletonMap("value", 42L);
 		MergedAnnotation<Component> annotation = MergedAnnotation.from(Component.class,
 				map);
+//		annotation.synthesize();
 		assertThatIllegalStateException().isThrownBy(
 				() -> annotation.synthesize()).withMessage(
 						"Attribute 'value' in annotation org.springframework.stereotype.Component "

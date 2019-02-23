@@ -19,6 +19,7 @@ package org.springframework.core.annotation;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+import java.nio.channels.IllegalSelectorException;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -280,7 +281,15 @@ public class TypeMappedAnnotation<A extends Annotation>
 			// FIXME ??? Is this correct
 			value = attribute.getDefaultValue();
 		}
-		return adapt(value, attribute.getReturnType(), type);
+		try {
+			return adapt(value, attribute.getReturnType(), type);
+		}
+		catch (IllegalStateException ex) {
+			throw new IllegalStateException("Attribute '" + attribute.getName()
+					+ "' in annotation " + this.mapping.getAnnotationType().getName()
+					+ " should be compatible with " + attribute.getReturnType()
+					+ " and cannot be returned as a " + type.getName());
+		}
 	}
 
 	private Object getMappedValue(int attributeIndex) {
@@ -341,7 +350,8 @@ public class TypeMappedAnnotation<A extends Annotation>
 			// FIXME resolve
 		}
 
-		throw new IllegalStateException("Unable to adapt " + value + " to " + type);
+		throw new IllegalStateException(
+				"Unable to adapt annotation value " + value + " to " + type);
 	}
 
 	private Class<?> getDefaultAdaptType(Class<?> attributeType) {

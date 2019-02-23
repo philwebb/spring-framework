@@ -83,7 +83,7 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		if (annotationType == null || this.annotationFilter.matches(annotationType)) {
 			return false;
 		}
-		return scan(annotationType, this::isPresent);
+		return Boolean.TRUE.equals(scan(annotationType, this::isPresent));
 	}
 
 	@Override
@@ -94,14 +94,14 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		return scan(annotationType, this::isPresent);
 	}
 
-	private boolean isPresent(Object requiredType, int aggregateIndex, Object source,
+	private Boolean isPresent(Object requiredType, int aggregateIndex, Object source,
 			Annotation[] annotations) {
 		for (Annotation annotation : annotations) {
 			if (isPresent(annotation, requiredType)) {
 				return true;
 			}
 		}
-		return false;
+		return null;
 	}
 
 	private boolean isPresent(Annotation annotation, Object requiredType) {
@@ -126,7 +126,10 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 	private boolean isPresent(AnnotationTypeMappings mappings, Object requiredType) {
 		for (int i = 0; i < mappings.size(); i++) {
 			AnnotationTypeMapping mapping = mappings.get(i);
-			isMappingForType(mapping, this.annotationFilter, requiredType);
+			if (isMappingForType(mapping, this.annotationFilter, requiredType)) {
+				return true;
+			}
+
 		}
 		return false;
 	}
