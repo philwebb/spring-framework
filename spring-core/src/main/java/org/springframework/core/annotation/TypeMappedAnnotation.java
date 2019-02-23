@@ -19,7 +19,6 @@ package org.springframework.core.annotation;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
-import java.nio.channels.IllegalSelectorException;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -32,7 +31,6 @@ import java.util.function.Predicate;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.ReflectionUtils;
 
 /**
@@ -375,63 +373,6 @@ public class TypeMappedAnnotation<A extends Annotation>
 				annotationType, filter).get(0);
 		return new TypeMappedAnnotation<>(this.source, value, getValueExtractorFor(value),
 				mapping, this.aggregateIndex);
-	}
-
-	@SuppressWarnings("unchecked")
-	private <T> T xadapt(Object value, Class<?> attributeType, Class<T> type) {
-		if (type == Object.class) {
-			type = (Class<T>) getDefaultAdaptType(attributeType);
-		}
-		boolean annotation = type.isAnnotation()
-				|| type.isArray() && type.getComponentType().isAnnotation();
-		if (value == null || (!annotation && type.isInstance(value))) {
-			return (T) value;
-		}
-		Class<? extends Object> valueType = value.getClass();
-		if (attributeType.isArray() && type.isArray()) {
-			Class<?> componentType = type.getComponentType();
-			int length = valueType.isArray() ? Array.getLength(value) : 1;
-			Object result = Array.newInstance(componentType, length);
-			for (int i = 0; i < length; i++) {
-				Object element = valueType.isArray() ? Array.get(value, i) : value;
-				Array.set(result, i,
-						xadapt(element, attributeType.getComponentType(), componentType));
-			}
-			return (T) result;
-		}
-		if (attributeType.isAnnotation()) {
-			Class<? extends Annotation> annotationType = (Class<? extends Annotation>) attributeType;
-			AnnotationFilter filter = AnnotationFilter.mostAppropriateFor(annotationType);
-			AnnotationTypeMapping mapping = AnnotationTypeMappings.forAnnotationType(
-					annotationType, filter).get(0);
-			MergedAnnotation<?> nested = new TypeMappedAnnotation<>(this.source, value,
-					getValueExtractorFor(value), mapping, this.aggregateIndex);
-			if (type == Object.class || MergedAnnotation.class.isAssignableFrom(type)) {
-				return (T) nested;
-			}
-			if (type.isAnnotation()) {
-				return (T) nested.synthesize();
-			}
-		}
-		if (value instanceof Class && type == String.class) {
-			return (T) ((Class<?>) value).getName();
-		}
-		if (value instanceof CharSequence && type == Class.class) {
-			// FIXME resolve
-		}
-
-		throw new IllegalStateException(
-				"Unable to adapt annotation value " + value + " to " + type);
-	}
-
-	private Class<?> getDefaultAdaptType(Class<?> attributeType) {
-		if (attributeType.isAnnotation()) {
-			return MergedAnnotation.class;
-		}
-		if (attributeType.isArray() && attributeType.getComponentType().isAnnotation()) {
-			return MergedAnnotation[].class;
-		}
-		return ClassUtils.resolvePrimitiveIfNecessary(attributeType);
 	}
 
 	private BiFunction<Method, Object, Object> getValueExtractorFor(Object value) {
