@@ -31,6 +31,10 @@ import org.springframework.lang.Nullable;
 @FunctionalInterface
 interface AnnotationProcessor<C, R> {
 
+	default R nextAggregate(C context, int aggregateIndex) {
+		return null;
+	}
+
 	/**
 	 * Called when an array of annotations can be processed. This method may
 	 * return a {@code non-null} result to short-circuit any further processing.

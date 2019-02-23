@@ -118,6 +118,10 @@ class AnnotationsScanner {
 		int aggregateIndex = 0;
 		Class<?> root = source;
 		while (source != null && source != Object.class && remaining > 0) {
+			R result = processor.nextAggregate(context, aggregateIndex);
+			if (result != null) {
+				return result;
+			}
 			if (!isFiltered(source, context, classFilter)) {
 				Annotation[] declaredAnnotations = getDeclaredAnnotations(context, source,
 						classFilter);
@@ -138,7 +142,7 @@ class AnnotationsScanner {
 						declaredAnnotations[i] = null;
 					}
 				}
-				R result = processor.process(context, aggregateIndex, source,
+				result = processor.process(context, aggregateIndex, source,
 						declaredAnnotations);
 				if (result != null) {
 					return result;
@@ -153,8 +157,12 @@ class AnnotationsScanner {
 	private static <C, R> R processClassHierarchy(C context, int[] aggregateIndex,
 			Class<?> source, AnnotationProcessor<C, R> processor,
 			@Nullable BiPredicate<C, Class<?>> classFilter, boolean includeInterfaces) {
+		R result = processor.nextAggregate(context, aggregateIndex[0]);
+		if (result != null) {
+			return result;
+		}
 		Annotation[] annotations = getDeclaredAnnotations(context, source, classFilter);
-		R result = processor.process(context, aggregateIndex[0], source, annotations);
+		result = processor.process(context, aggregateIndex[0], source, annotations);
 		if (result != null) {
 			return result;
 		}
@@ -185,7 +193,7 @@ class AnnotationsScanner {
 		switch (searchStrategy) {
 			case DIRECT:
 			case INHERITED_ANNOTATIONS:
-				return processMethodAnnotations(context, 0, source, processor,
+				return processMethodInheritedAnnotations(context, source, processor,
 						classFilter);
 			case SUPER_CLASS:
 				return processMethodHierarchy(context, new int[] { 0 },
@@ -198,13 +206,24 @@ class AnnotationsScanner {
 		throw new IllegalStateException("Unsupported search strategy " + searchStrategy);
 	}
 
+	private static <C, R> R processMethodInheritedAnnotations(C context, Method source,
+			AnnotationProcessor<C, R> processor, BiPredicate<C, Class<?>> classFilter) {
+		R result = processor.nextAggregate(context, 0);
+		return result != null ? result
+				: processMethodAnnotations(context, 0, source, processor, classFilter);
+	}
+
 	private static <C, R> R processMethodHierarchy(C context, int[] aggregateIndex,
 			Class<?> sourceClass, AnnotationProcessor<C, R> processor,
 			@Nullable BiPredicate<C, Class<?>> classFilter, Method rootMethod,
 			boolean includeInterfaces) {
+		R result = processor.nextAggregate(context, aggregateIndex[0]);
+		if (result != null) {
+			return result;
+		}
 		boolean calledProcessor = false;
 		if (sourceClass == rootMethod.getDeclaringClass()) {
-			R result = processMethodAnnotations(context, aggregateIndex[0], rootMethod,
+			result = processMethodAnnotations(context, aggregateIndex[0], rootMethod,
 					processor, classFilter);
 			calledProcessor = true;
 			if (result != null) {
@@ -214,7 +233,7 @@ class AnnotationsScanner {
 		else {
 			for (Method candidateMethod : getMethods(context, sourceClass, classFilter)) {
 				if (isOverride(rootMethod, candidateMethod)) {
-					R result = processMethodAnnotations(context, aggregateIndex[0],
+					result = processMethodAnnotations(context, aggregateIndex[0],
 							candidateMethod, processor, classFilter);
 					calledProcessor = true;
 					if (result != null) {
@@ -318,8 +337,10 @@ class AnnotationsScanner {
 	private static <C, R> R processElement(C context, AnnotatedElement source,
 			AnnotationProcessor<C, R> processor,
 			@Nullable BiPredicate<C, Class<?>> classFilter) {
-		return processor.process(context, 0, source,
-				getDeclaredAnnotations(context, source, classFilter));
+		R result = processor.nextAggregate(context, 0);
+		return result != null ? result
+				: processor.process(context, 0, source,
+						getDeclaredAnnotations(context, source, classFilter));
 	}
 
 	private static <C, R> Annotation[] getDeclaredAnnotations(C context,

@@ -34,7 +34,6 @@ import java.util.function.BiFunction;
 import org.springframework.core.annotation.AnnotationTypeMapping.MirrorSets.MirrorSet;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
 /**
@@ -242,13 +241,23 @@ class AnnotationTypeMapping {
 	}
 
 	private void addConventionMappings() {
-		if (this.depth > 0) {
-			AttributeMethods rootAttributes = this.root.getAttributes();
-			for (int i = 0; i < this.attributeMappings.length; i++) {
-				if (this.attributeMappings[i] == -1) {
-					String name = this.attributes.get(i).getName();
-					if (!MergedAnnotation.VALUE.equals(name)) {
-						this.attributeMappings[i] = rootAttributes.indexOf(name);
+		if (this.depth == 0) {
+			return;
+		}
+		AnnotationTypeMapping root = this.root;
+		AttributeMethods rootAttributes = root.getAttributes();
+		int[] mappings = this.attributeMappings;
+		for (int i = 0; i < mappings.length; i++) {
+			if (mappings[i] == -1) {
+				String name = this.attributes.get(i).getName();
+				MirrorSet mirrors = getMirrorSets().getAssigned(i);
+				int mapped = rootAttributes.indexOf(name);
+				if (!MergedAnnotation.VALUE.equals(name) && mapped != -1) {
+					mappings[i] = mapped;
+					if (mirrors != null) {
+						for (int j = 0; j < mirrors.size(); j++) {
+							mappings[mirrors.getAttributeIndex(j)] = mapped;
+						}
 					}
 				}
 			}
@@ -423,6 +432,10 @@ class AnnotationTypeMapping {
 			return this.mirrorSets[index];
 		}
 
+		MirrorSet getAssigned(int attributeIndex) {
+			return this.assigned[attributeIndex];
+		}
+
 		public <A> int[] resolve(Object source, A annotation,
 				BiFunction<Method, A, Object> valueExtractor) {
 			int[] result = new int[AnnotationTypeMapping.this.attributes.size()];
@@ -497,6 +510,10 @@ class AnnotationTypeMapping {
 			public Method get(int index) {
 				int attributeIndex = this.indexes[index];
 				return AnnotationTypeMapping.this.attributes.get(attributeIndex);
+			}
+
+			int getAttributeIndex(int index) {
+				return this.indexes[index];
 			}
 
 		}

@@ -246,10 +246,11 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 	}
 
 	private static boolean isMappingForType(AnnotationTypeMapping mapping,
-			AnnotationFilter annotationFilter, Object requiredType) {
+			AnnotationFilter annotationFilter, @Nullable Object requiredType) {
 		Class<? extends Annotation> actualType = mapping.getAnnotationType();
-		return !annotationFilter.matches(actualType) && (actualType == requiredType
-				|| actualType.getName().equals(requiredType));
+		return !annotationFilter.matches(actualType)
+				&& (requiredType == null || actualType == requiredType
+						|| actualType.getName().equals(requiredType));
 	}
 
 	/**
@@ -275,6 +276,11 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 			this.predicate = predicate;
 			this.selector = selector != null ? selector
 					: MergedAnnotationSelectors.nearest();
+		}
+
+		@Override
+		public MergedAnnotation<A> nextAggregate(Object context, int aggregateIndex) {
+			return this.result;
 		}
 
 		@Override
@@ -433,6 +439,7 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 	private class AggregatesSpliterator<A extends Annotation>
 			implements Spliterator<MergedAnnotation<A>> {
 
+		@Nullable
 		private Object requiredType;
 
 		private final List<Aggregate> aggregates;

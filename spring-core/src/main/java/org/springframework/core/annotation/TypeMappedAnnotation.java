@@ -31,6 +31,7 @@ import java.util.function.Predicate;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.ReflectionUtils;
 
 /**
@@ -163,7 +164,7 @@ public class TypeMappedAnnotation<A extends Annotation>
 		}
 		Method attribute = this.mapping.getAttributes().get(attributeIndex);
 		Object value = attribute.getDefaultValue();
-		return Optional.ofNullable(adapt(attribute, value, type));
+		return Optional.ofNullable(adapt(value, attribute.getReturnType(), type));
 	}
 
 	@Override
@@ -279,7 +280,7 @@ public class TypeMappedAnnotation<A extends Annotation>
 			// FIXME ??? Is this correct
 			value = attribute.getDefaultValue();
 		}
-		return adapt(attribute, value, type);
+		return adapt(value, attribute.getReturnType(), type);
 	}
 
 	private Object getMappedValue(int attributeIndex) {
@@ -298,44 +299,26 @@ public class TypeMappedAnnotation<A extends Annotation>
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T> T adapt(Method attribute, Object value, Class<T> requiredType) {
-		if (requiredType == Object.class) {
-			requiredType = (Class<T>) getDefaultAdaptType(attribute);
+	private <T> T adapt(Object value, Class<?> attributeType, Class<T> type) {
+		if (type == Object.class) {
+			type = (Class<T>) getDefaultAdaptType(attributeType);
 		}
-		else {
-			// FIXME assert supported type
-		}
-		return (T) adapt(value, attribute.getReturnType(), requiredType);
-	}
-
-	private Class<?> getDefaultAdaptType(Method attribute) {
-		Class<?> type = attribute.getReturnType();
-		if (type.isAnnotation()) {
-			return MergedAnnotation.class;
-		}
-		if (type.isArray() && type.getComponentType().isAnnotation()) {
-			return MergedAnnotation[].class;
-		}
-		return ClassUtils.resolvePrimitiveIfNecessary(type);
-	}
-
-	@SuppressWarnings("unchecked")
-	private Object adapt(Object value, Class<?> attributeType, Class<?> requiredType) {
-		if (value == null || requiredType.isInstance(value)) {
-			return value;
+		boolean annotation = type.isAnnotation()
+				|| type.isArray() && type.getComponentType().isAnnotation();
+		if (value == null || (!annotation && type.isInstance(value))) {
+			return (T) value;
 		}
 		Class<? extends Object> valueType = value.getClass();
-		if (requiredType.isArray() && attributeType.isArray()) {
-			Class<?> requiredComponentType = requiredType.getComponentType();
-			Class<?> attributeComponentType = attributeType.getComponentType();
+		if (attributeType.isArray() && type.isArray()) {
+			Class<?> componentType = type.getComponentType();
 			int length = valueType.isArray() ? Array.getLength(value) : 1;
-			Object result = Array.newInstance(requiredComponentType, length);
+			Object result = Array.newInstance(componentType, length);
 			for (int i = 0; i < length; i++) {
 				Object element = valueType.isArray() ? Array.get(value, i) : value;
 				Array.set(result, i,
-						adapt(element, attributeComponentType, requiredComponentType));
+						adapt(element, attributeType.getComponentType(), componentType));
 			}
-			return result;
+			return (T) result;
 		}
 		if (attributeType.isAnnotation()) {
 			Class<? extends Annotation> annotationType = (Class<? extends Annotation>) attributeType;
@@ -344,21 +327,31 @@ public class TypeMappedAnnotation<A extends Annotation>
 					annotationType, filter).get(0);
 			MergedAnnotation<?> nested = new TypeMappedAnnotation<>(this.source, value,
 					getValueExtractorFor(value), mapping, this.aggregateIndex);
-			if (MergedAnnotation.class.isAssignableFrom(requiredType)) {
-				return nested;
+			if (type == Object.class || MergedAnnotation.class.isAssignableFrom(type)) {
+				return (T) nested;
 			}
-			if (requiredType.isAnnotation()) {
-				return nested.synthesize();
+			if (type.isAnnotation()) {
+				return (T) nested.synthesize();
 			}
 		}
-		if (value instanceof Class && requiredType == String.class) {
-			return ((Class<?>) value).getName();
+		if (value instanceof Class && type == String.class) {
+			return (T) ((Class<?>) value).getName();
 		}
-		if (value instanceof CharSequence && requiredType == Class.class) {
+		if (value instanceof CharSequence && type == Class.class) {
 			// FIXME resolve
 		}
-		throw new IllegalStateException(
-				"Unable to adapt " + value + " to " + requiredType);
+
+		throw new IllegalStateException("Unable to adapt " + value + " to " + type);
+	}
+
+	private Class<?> getDefaultAdaptType(Class<?> attributeType) {
+		if (attributeType.isAnnotation()) {
+			return MergedAnnotation.class;
+		}
+		if (attributeType.isArray() && attributeType.getComponentType().isAnnotation()) {
+			return MergedAnnotation[].class;
+		}
+		return ClassUtils.resolvePrimitiveIfNecessary(attributeType);
 	}
 
 	private BiFunction<Method, Object, Object> getValueExtractorFor(Object value) {

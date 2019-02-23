@@ -27,7 +27,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import org.springframework.core.annotation.AnnotationTypeMapping.MirrorSets;
@@ -36,6 +35,7 @@ import org.springframework.lang.UsesSunMisc;
 import org.springframework.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.Assert.*;
 
 /**
  * Tests for {@link AnnotationTypeMappings} and {@link AnnotationTypeMapping}.
@@ -441,6 +441,14 @@ public class AnnotationTypeMappingsTests {
 				MulipleRoutesToAliasC.class);
 		assertThat(getMappedAttribute(mappingsC, 0).getName()).isEqualTo("a1");
 		assertThat(getMappedAttribute(mappingsC, 1).getName()).isEqualTo("a1");
+	}
+
+	@Test
+	public void getMappedAttributeWhenConventionToExplicitAliasesReturnsMappedAttributes() {
+		AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotationType(ConventionToExplicitAliases.class);
+		AnnotationTypeMapping mapping = getMapping(mappings, ConventionToExplicitAliasesTarget.class);
+		assertThat(mapping.getMappedAttribute(0)).isEqualTo(0);
+		assertThat(mapping.getMappedAttribute(1)).isEqualTo(0);
 	}
 
 	private Method[] resolveMirrorSets(AnnotationTypeMapping mapping, Class<?> element,
@@ -893,5 +901,25 @@ public class AnnotationTypeMappingsTests {
 		String c2() default "";
 
 	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@ConventionToExplicitAliasesTarget
+	static @interface ConventionToExplicitAliases {
+
+		String test() default "";
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	static @interface ConventionToExplicitAliasesTarget {
+
+		@AliasFor("test")
+		String value() default "";
+
+		@AliasFor("value")
+		String test() default "";
+
+	}
+
 
 }
