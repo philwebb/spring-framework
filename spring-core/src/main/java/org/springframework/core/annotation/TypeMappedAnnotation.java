@@ -62,6 +62,8 @@ public class TypeMappedAnnotation<A extends Annotation>
 
 	private final int[] resolvedMirrors;
 
+	private String string;
+
 	TypeMappedAnnotation(@Nullable Object source, Annotation annotation,
 			AnnotationTypeMapping mapping, int aggregateIndex) {
 		this(source, annotation, ReflectionUtils::invokeMethod, mapping, aggregateIndex);
@@ -252,13 +254,34 @@ public class TypeMappedAnnotation<A extends Annotation>
 				getAnnotationType());
 	}
 
-	@SuppressWarnings("unchecked")
-	private Class<A> getAnnotationType() {
-		return (Class<A>) this.mapping.getAnnotationType();
+	@Override
+	public String toString() {
+		String string = this.string;
+		if (string == null) {
+			StringBuilder builder = new StringBuilder();
+			builder.append("@");
+			builder.append(getType());
+			builder.append("(");
+			for (int i = 0; i < this.mapping.getAttributes().size(); i++) {
+				Method attribute = this.mapping.getAttributes().get(i);
+				builder.append(attribute.getName());
+				builder.append("=");
+				appendValue(builder, getValue(i, Object.class));
+			}
+			builder.append(")");
+			string = builder.toString();
+			this.string = string;
+		}
+		return string;
 	}
 
 	protected <T> T getValue(String attributeName, Class<T> type, boolean required) {
 		return getValue(getAttributeIndex(attributeName, required), type);
+	}
+
+	@SuppressWarnings("unchecked")
+	private Class<A> getAnnotationType() {
+		return (Class<A>) this.mapping.getAnnotationType();
 	}
 
 	private int getAttributeIndex(String attributeName, boolean required) {
@@ -302,6 +325,9 @@ public class TypeMappedAnnotation<A extends Annotation>
 			return null;
 		}
 		value = adaptForAttribute(attribute, value);
+		if (type == Object.class) {
+			type = (Class<T>) getDefaultAdaptType(attribute);
+		}
 		if (value instanceof String && type == Class.class) {
 
 		}
@@ -383,6 +409,17 @@ public class TypeMappedAnnotation<A extends Annotation>
 			return TypeMappedAnnotation::getAttributeFromMap;
 		}
 		return this.valueExtractor;
+	}
+
+	private Class<?> getDefaultAdaptType(Method attribute) {
+		Class<?> attributeType = attribute.getReturnType();
+		if (attributeType.isAnnotation()) {
+			return MergedAnnotation.class;
+		}
+		if (attributeType.isArray() && attributeType.getComponentType().isAnnotation()) {
+			return MergedAnnotation[].class;
+		}
+		return ClassUtils.resolvePrimitiveIfNecessary(attributeType);
 	}
 
 	private static Object getNonMirroredValue(Method attribute,
