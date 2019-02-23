@@ -248,8 +248,11 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 				annotationFilter);
 	}
 
-	private static boolean isMappingForType(AnnotationTypeMapping mapping,
+	private static boolean isMappingForType(@Nullable AnnotationTypeMapping mapping,
 			AnnotationFilter annotationFilter, @Nullable Object requiredType) {
+		if (mapping == null) {
+			return false;
+		}
 		Class<? extends Annotation> actualType = mapping.getAnnotationType();
 		return !annotationFilter.matches(actualType)
 				&& (requiredType == null || actualType == requiredType
@@ -447,58 +450,69 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 
 		private final List<Aggregate> aggregates;
 
-		private final int[][] currentMappingIndex;
+		private int aggregateCursor;
+
+		private int[] mappingCursors;
 
 		public AggregatesSpliterator(@Nullable Object requiredType,
 				List<Aggregate> aggregates) {
 			this.requiredType = requiredType;
 			this.aggregates = aggregates;
-			this.currentMappingIndex = new int[aggregates.size()][];
-			for (int i = 0; i < aggregates.size(); i++) {
-				this.currentMappingIndex[i] = new int[aggregates.get(i).size()];
-			}
+			this.aggregateCursor = 0;
 		}
 
 		public boolean tryAdvance(Consumer<? super MergedAnnotation<A>> action) {
-			int aggregateResult = -1;
-			int annotationResult = -1;
-			int lowestDepth = Integer.MAX_VALUE;
-			for (int aggregateIndex = 0; aggregateIndex < this.aggregates.size(); aggregateIndex++) {
-				Aggregate aggregate = this.aggregates.get(aggregateIndex);
-				for (int annotationIndex = 0; annotationIndex < aggregate.size(); annotationIndex++) {
-					AnnotationTypeMapping mapping = getNextMapping(aggregate,
-							aggregateIndex, annotationIndex);
-					if (mapping != null && mapping.getDepth() < lowestDepth) {
-						aggregateResult = aggregateIndex;
-						annotationResult = annotationIndex;
-						lowestDepth = mapping.getDepth();
-					}
-					if (lowestDepth == 0) {
-						break;
-					}
+			while (this.aggregateCursor < this.aggregates.size()) {
+				Aggregate aggregate = aggregates.get(this.aggregateCursor);
+				if (tryAdvance(aggregate, action)) {
+					return true;
 				}
+				this.aggregateCursor++;
+				this.mappingCursors = null;
 			}
-			if (aggregateResult == -1) {
-				return false;
-			}
-			Aggregate aggregate = this.aggregates.get(aggregateResult);
-			int mappingIndex = this.currentMappingIndex[aggregateResult][annotationResult];
-			this.currentMappingIndex[aggregateResult][annotationResult]++;
-			action.accept(aggregate.getMergedAnnotation(annotationResult, mappingIndex));
-			return true;
+			return false;
 		}
 
-		private AnnotationTypeMapping getNextMapping(Aggregate aggregate,
-				int aggregateIndex, int annotationIndex) {
-			AnnotationTypeMapping mapping = aggregate.getMapping(annotationIndex,
-					this.currentMappingIndex[aggregateIndex][annotationIndex]);
-			while (mapping != null
-					&& !isMappingForType(mapping, annotationFilter, this.requiredType)) {
-				this.currentMappingIndex[aggregateIndex][annotationIndex]++;
-				mapping = aggregate.getMapping(annotationIndex,
-						this.currentMappingIndex[aggregateIndex][annotationIndex]);
+		private boolean tryAdvance(Aggregate aggregate,
+				Consumer<? super MergedAnnotation<A>> action) {
+			if (this.mappingCursors == null) {
+				this.mappingCursors = new int[aggregate.size()];
 			}
-			return mapping;
+			int lowestDepth = Integer.MAX_VALUE;
+			int annotationResult = -1;
+			for (int annotationIndex = 0; annotationIndex < aggregate.size(); annotationIndex++) {
+				AnnotationTypeMapping mapping = getNextSuitableMapping(aggregate,
+						annotationIndex);
+				if (mapping != null && mapping.getDepth() < lowestDepth) {
+					annotationResult = annotationIndex;
+					lowestDepth = mapping.getDepth();
+				}
+				if (lowestDepth == 0) {
+					break;
+				}
+			}
+			if (annotationResult != -1) {
+				action.accept(aggregate.getMergedAnnotation(annotationResult,
+						this.mappingCursors[annotationResult]));
+				this.mappingCursors[annotationResult]++;
+				return true;
+			}
+			return false;
+		}
+
+		private AnnotationTypeMapping getNextSuitableMapping(Aggregate aggregate,
+				int annotationIndex) {
+			AnnotationTypeMapping mapping;
+			do {
+				mapping = aggregate.getMapping(annotationIndex,
+						this.mappingCursors[annotationIndex]);
+				if (isMappingForType(mapping, annotationFilter, this.requiredType)) {
+					return mapping;
+				}
+				this.mappingCursors[annotationIndex]++;
+			}
+			while (mapping != null);
+			return null;
 		}
 
 		@Override
