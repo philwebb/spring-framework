@@ -1856,6 +1856,8 @@ public class MergedAnnotationsTests {
 				webMappingWithPathAndValue).synthesize();
 		assertThat(webMappingWithAliases.toString()).isNotEqualTo(
 				synthesizedWebMapping1.toString());
+		System.out.println(synthesizedWebMapping1);
+		System.out.println(synthesizedWebMapping2);
 		assertToStringForWebMappingWithPathAndValue(synthesizedWebMapping1);
 		assertToStringForWebMappingWithPathAndValue(synthesizedWebMapping2);
 	}

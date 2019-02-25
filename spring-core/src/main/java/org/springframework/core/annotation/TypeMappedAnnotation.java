@@ -264,15 +264,36 @@ public class TypeMappedAnnotation<A extends Annotation>
 			builder.append("(");
 			for (int i = 0; i < this.mapping.getAttributes().size(); i++) {
 				Method attribute = this.mapping.getAttributes().get(i);
+				builder.append(i == 0 ? "" : ", ");
 				builder.append(attribute.getName());
 				builder.append("=");
-				appendValue(builder, getValue(i, Object.class));
+				builder.append(toString(getValue(i, Object.class)));
 			}
 			builder.append(")");
 			string = builder.toString();
 			this.string = string;
 		}
 		return string;
+	}
+
+	private Object toString(Object value) {
+		if (value == null) {
+			return "";
+		}
+		if (value instanceof Class) {
+			return ((Class<?>) value).getName();
+		}
+		if (value.getClass().isArray()) {
+			StringBuilder builder = new StringBuilder();
+			builder.append("[");
+			for (int i = 0; i < Array.getLength(value); i++) {
+				builder.append(i == 0 ? "" : ", ");
+				builder.append(toString(Array.get(value, i)));
+			}
+			builder.append("]");
+			return builder.toString();
+		}
+		return String.valueOf(value);
 	}
 
 	protected <T> T getValue(String attributeName, Class<T> type, boolean required) {
@@ -423,17 +444,21 @@ public class TypeMappedAnnotation<A extends Annotation>
 	}
 
 	private static Object getNonMirroredValue(Method attribute,
-			TypeMappedAnnotation<?> annotation) {
-		AnnotationTypeMapping mapping = annotation.mapping;
+			Object annotation) {
+		return ((TypeMappedAnnotation<?>) annotation).getNonMirroredValue(attribute);
+	}
+
+	private Object getNonMirroredValue(Method attribute) {
+		AnnotationTypeMapping mapping = this.mapping;
 		AttributeMethods attributes = mapping.getAttributes();
 		int attributeIndex = attributes.indexOf(attribute);
 		int mappedIndex = mapping.getMappedAttribute(attributeIndex);
 		if (mappedIndex != -1) {
 			Method mappedAttribute = mapping.getRoot().getAttributes().get(mappedIndex);
-			return annotation.valueExtractor.apply(mappedAttribute,
-					annotation.annotation);
+			return this.valueExtractor.apply(mappedAttribute, this.annotation);
 		}
 		return ReflectionUtils.invokeMethod(attribute, mapping.getAnnotation());
+
 	}
 
 	static <A extends Annotation> MergedAnnotation<A> from(@Nullable Object source,
