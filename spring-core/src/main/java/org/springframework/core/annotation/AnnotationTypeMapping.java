@@ -472,7 +472,7 @@ class AnnotationTypeMapping {
 				}
 			}
 
-			private <A> int resolve(Object source, A annotation,
+			public <A> int resolve(Object source, A annotation,
 					BiFunction<Method, Object, Object> valueExtractor) {
 				int result = -1;
 				Object lastValue = null;
@@ -500,7 +500,7 @@ class AnnotationTypeMapping {
 					result = this.indexes[i];
 					lastValue = value;
 				}
-				return result != -1 ? result : this.indexes[0];
+				return result;
 			}
 
 			public int size() {
@@ -512,7 +512,7 @@ class AnnotationTypeMapping {
 				return AnnotationTypeMapping.this.attributes.get(attributeIndex);
 			}
 
-			int getAttributeIndex(int index) {
+			public int getAttributeIndex(int index) {
 				return this.indexes[index];
 			}
 

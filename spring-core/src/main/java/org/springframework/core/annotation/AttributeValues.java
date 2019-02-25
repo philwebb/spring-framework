@@ -18,6 +18,7 @@ package org.springframework.core.annotation;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.Map;
 import java.util.function.BiFunction;
 
 import org.springframework.util.ObjectUtils;
@@ -84,5 +85,9 @@ class AttributeValues {
 		return true;
 	}
 
+	@SuppressWarnings("unchecked")
+	static Object fromMap(Method attribute, Object map) {
+		return map != null ? ((Map<String, ?>) map).get(attribute.getName()) : null;
+	}
 
 }

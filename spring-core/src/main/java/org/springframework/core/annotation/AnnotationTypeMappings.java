@@ -125,7 +125,8 @@ class AnnotationTypeMappings implements Iterable<AnnotationTypeMapping> {
 
 	public static AnnotationTypeMappings forAnnotationType(
 			Class<? extends Annotation> annotationType) {
-		return forAnnotationType(annotationType, AnnotationFilter.PLAIN);
+		return forAnnotationType(annotationType,
+				AnnotationFilter.mostAppropriateFor(annotationType));
 	}
 
 	public static AnnotationTypeMappings forAnnotationType(

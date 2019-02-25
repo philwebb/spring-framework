@@ -230,7 +230,8 @@ public class TypeMappedAnnotation<A extends Annotation>
 		AttributeMethods attributes = this.mapping.getAttributes();
 		for (int i = 0; i < attributes.size(); i++) {
 			Method attribute = attributes.get(i);
-			Object value = getValue(i, getTypeForMapOptions(attribute, options));
+			Object value = isFiltered(attribute.getName()) ? null
+					: getValue(i, getTypeForMapOptions(attribute, options));
 			if (value != null) {
 				map.put(attribute.getName(),
 						adaptValueForMapOptions(attribute, value, factory, options));
@@ -338,12 +339,20 @@ public class TypeMappedAnnotation<A extends Annotation>
 
 	private int getAttributeIndex(String attributeName, boolean required) {
 		Assert.hasText(attributeName, "AttributeName must not be null");
-		int attributeIndex = this.mapping.getAttributes().indexOf(attributeName);
+		int attributeIndex = isFiltered(attributeName) ? -1
+				: this.mapping.getAttributes().indexOf(attributeName);
 		if (attributeIndex == -1 && required) {
 			throw new NoSuchElementException("No attribute named '" + attributeName
 					+ "' present in merged annotation " + getType());
 		}
 		return attributeIndex;
+	}
+
+	private boolean isFiltered(String attributeName) {
+		if (this.attributeFilter != null) {
+			return !this.attributeFilter.test(attributeName);
+		}
+		return false;
 	}
 
 	private <T> T getValue(int attributeIndex, Class<T> type) {
@@ -356,15 +365,22 @@ public class TypeMappedAnnotation<A extends Annotation>
 		return adapt(attribute, value, type);
 	}
 
+	@Nullable
 	private Object getMappedValue(int attributeIndex) {
 		int mapped = this.useNonMergedValues ? -1
 				: this.mapping.getMappedAttribute(attributeIndex);
 		if (mapped != -1) {
 			int resolved = this.resolvedRootMirrors[mapped];
+			if (resolved == -1) {
+				return null;
+			}
 			Method attribute = this.mapping.getRoot().getAttributes().get(resolved);
 			return this.valueExtractor.apply(attribute, this.annotation);
 		}
 		int resolved = this.resolvedMirrors[attributeIndex];
+		if (resolved == -1) {
+			return null;
+		}
 		Method attribute = this.mapping.getAttributes().get(resolved);
 		return getDepth() > 0
 				? ReflectionUtils.invokeMethod(attribute, this.mapping.getAnnotation())
@@ -399,10 +415,15 @@ public class TypeMappedAnnotation<A extends Annotation>
 
 		}
 		else if (value instanceof Class && type == String.class) {
-
+			value = ((Class<?>) value).getName();
 		}
 		else if (value instanceof Class[] && type == String[].class) {
-
+			Class<?>[] classes = (Class[]) value;
+			String[] names = new String[classes.length];
+			for (int i = 0; i < classes.length; i++) {
+				names[i] = classes[i].getName();
+			}
+			value = names;
 		}
 		else if (value instanceof MergedAnnotation && type.isAnnotation()) {
 			MergedAnnotation<?> annotation = (MergedAnnotation<?>) value;
@@ -417,8 +438,8 @@ public class TypeMappedAnnotation<A extends Annotation>
 			}
 			value = array;
 		}
-		Assert.isInstanceOf(type, value, "Unable to return attribute type "
-				+ attribute.getReturnType() + " as a " + type);
+		Assert.isInstanceOf(type, value,
+				"Unable to adapt to " + type.getName() + " from value of type ");
 		return (T) value;
 	}
 
@@ -469,7 +490,7 @@ public class TypeMappedAnnotation<A extends Annotation>
 			return ReflectionUtils::invokeMethod;
 		}
 		if (value instanceof Map) {
-			return TypeMappedAnnotation::getAttributeFromMap;
+			return AttributeValues::fromMap;
 		}
 		return this.valueExtractor;
 	}
@@ -498,14 +519,8 @@ public class TypeMappedAnnotation<A extends Annotation>
 		Assert.notNull(annotationType, "AnnotationType must not be null");
 		AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotationType(
 				annotationType);
-		return new TypeMappedAnnotation<A>(source, attributes,
-				TypeMappedAnnotation::getAttributeFromMap, mappings.get(0), 0);
-	}
-
-	@SuppressWarnings("unchecked")
-	private static Object getAttributeFromMap(Method attribute, Object attributes) {
-		Map<String, ?> map = (Map<String, ?>) attributes;
-		return map != null ? map.get(attribute.getName()) : null;
+		return new TypeMappedAnnotation<A>(source, attributes, AttributeValues::fromMap,
+				mappings.get(0), 0);
 	}
 
 }

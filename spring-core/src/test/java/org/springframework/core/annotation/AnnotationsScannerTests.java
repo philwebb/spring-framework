@@ -31,6 +31,7 @@ import java.util.stream.Stream;
 import org.junit.Test;
 
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
+import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
@@ -704,14 +705,14 @@ public class AnnotationsScannerTests {
 
 	static interface IgnoreableOverrideInterface1 {
 
-		@Deprecated
+		@Nullable
 		public void method();
 
 	}
 
 	static interface IgnoreableOverrideInterface2 {
 
-		@Deprecated
+		@Nullable
 		public void method();
 
 	}

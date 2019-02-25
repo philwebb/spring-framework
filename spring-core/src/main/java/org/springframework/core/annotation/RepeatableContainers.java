@@ -169,8 +169,8 @@ public abstract class RepeatableContainers {
 			if (container == null) {
 				container = deduceContainer(repeatable);
 			}
-			Method valueMethod = AttributeMethods.forAnnotationType(
-					container).get("value");
+			Method valueMethod = AttributeMethods.forAnnotationType(container).get(
+					"value");
 			validate(repeatable, container, valueMethod);
 			this.repeatable = repeatable;
 			this.container = container;
@@ -181,7 +181,9 @@ public abstract class RepeatableContainers {
 				@Nullable Class<? extends Annotation> container,
 				@Nullable Method valueMethod) {
 			try {
-				Assert.state(valueMethod != null, "No value method found");
+				if (valueMethod == null) {
+					throw new NoSuchMethodException("No value method found");
+				}
 				Class<?> returnType = valueMethod.getReturnType();
 				if (!returnType.isArray()
 						|| returnType.getComponentType() != repeatable) {

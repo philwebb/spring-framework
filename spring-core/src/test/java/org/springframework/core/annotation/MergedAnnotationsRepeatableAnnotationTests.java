@@ -246,6 +246,7 @@ public class MergedAnnotationsRepeatableAnnotationTests {
 	}
 
 	private void missingValueAttributeRequirements(Exception ex) {
+		ex.printStackTrace();
 		assertThat(ex.getMessage()).startsWith(
 				"Invalid declaration of container type").contains(
 						ContainerMissingValueAttribute.class.getName(),
