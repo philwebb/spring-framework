@@ -1455,10 +1455,10 @@ public class MergedAnnotationsTests {
 		AliasForWithMirroredAliasForWrongAttribute annotation = AliasForWithMirroredAliasForWrongAttributeClass.class.getAnnotation(
 				AliasForWithMirroredAliasForWrongAttribute.class);
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
-				() -> MergedAnnotation.from(annotation)).withMessageStartingWith(
-						"Attribute 'bar' in").withMessageContaining(
-								AliasForWithMirroredAliasForWrongAttribute.class.getName()).withMessageContaining(
-										"must be declared as an @AliasFor 'foo', not attribute 'quux'");
+				() -> MergedAnnotation.from(annotation)).withMessage(
+						"@AliasFor declaration on attribute 'bar' in annotation ["
+								+ AliasForWithMirroredAliasForWrongAttribute.class.getName()
+								+ "] declares an alias for 'quux' which is not present.");
 	}
 
 	@Test
@@ -1819,7 +1819,7 @@ public class MergedAnnotationsTests {
 		Map<String, Object> map = Collections.singletonMap("value", 42L);
 		MergedAnnotation<Component> annotation = MergedAnnotation.from(Component.class,
 				map);
-//		annotation.synthesize();
+		// annotation.synthesize();
 		assertThatIllegalStateException().isThrownBy(
 				() -> annotation.synthesize()).withMessage(
 						"Attribute 'value' in annotation org.springframework.stereotype.Component "

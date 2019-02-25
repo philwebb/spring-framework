@@ -840,40 +840,39 @@ public abstract class AnnotationUtils {
 			InternalAnnotationUtils.postProcessAnnotationAttributes(annotatedElement, copy,
 					classValuesAsString)
 		).withArgumentCheck(copy, attributes).to(()-> {
-			// FIXME
-//			if (attributes == null || attributes.annotationType() == null) {
-//				return;
-//			}
-//			if (!attributes.validated) {
-//				Class<? extends Annotation> annotationClass = attributes.annotationType();
-//				AnnotationType annotationType = AnnotationType.resolve(annotationClass);
-//				AnnotationTypeMapping mapping = AnnotationTypeMappings.forType(
-//						annotationClass.getClassLoader(), RepeatableContainers.none(),
-//						AnnotationFilter.mostAppropriateFor(annotationClass),
-//						annotationType).get(annotationType.getClassName());
-//				for (MirrorSet mirrorSet : mapping.getMirrorSets()) {
-//					String targetName = getMirrorAttributeInUse(annotatedElement, attributes, mirrorSet);
-//					if (targetName != null) {
-//						Object targetValue = attributes.get(targetName);
-//						for (Reference reference : mirrorSet) {
-//							String name = reference.getAttribute().getAttributeName();
-//							Object value = attributes.get(name);
-//							if (!name.equals(targetName)) {
-//								value = targetValue;
-//							}
-//							attributes.put(name, adaptValue(annotatedElement, value, classValuesAsString));
-//						}
-//					}
-//				}
-//			}
-//			for (Map.Entry<String, Object> attributeEntry : attributes.entrySet()) {
-//				String attributeName = attributeEntry.getKey();
-//				Object value = attributeEntry.getValue();
-//				if (value instanceof DefaultValueHolder) {
-//					value = ((DefaultValueHolder) value).defaultValue;
-//					attributes.put(attributeName, adaptValue(annotatedElement, value, classValuesAsString));
-//				}
-//			}
+			if (attributes == null || attributes.annotationType() == null) {
+				return;
+			}
+			if (!attributes.validated) {
+				Class<? extends Annotation> annotationClass = attributes.annotationType();
+				AnnotationType annotationType = AnnotationType.resolve(annotationClass);
+				AnnotationTypeMapping mapping = AnnotationTypeMappings.forType(
+						annotationClass.getClassLoader(), RepeatableContainers.none(),
+						AnnotationFilter.mostAppropriateFor(annotationClass),
+						annotationType).get(annotationType.getClassName());
+				for (MirrorSet mirrorSet : mapping.getMirrorSets()) {
+					String targetName = getMirrorAttributeInUse(annotatedElement, attributes, mirrorSet);
+					if (targetName != null) {
+						Object targetValue = attributes.get(targetName);
+						for (Reference reference : mirrorSet) {
+							String name = reference.getAttribute().getAttributeName();
+							Object value = attributes.get(name);
+							if (!name.equals(targetName)) {
+								value = targetValue;
+							}
+							attributes.put(name, adaptValue(annotatedElement, value, classValuesAsString));
+						}
+					}
+				}
+			}
+			for (Map.Entry<String, Object> attributeEntry : attributes.entrySet()) {
+				String attributeName = attributeEntry.getKey();
+				Object value = attributeEntry.getValue();
+				if (value instanceof DefaultValueHolder) {
+					value = ((DefaultValueHolder) value).defaultValue;
+					attributes.put(attributeName, adaptValue(annotatedElement, value, classValuesAsString));
+				}
+			}
 		});
 	}
 
