@@ -34,12 +34,12 @@ import org.springframework.util.ReflectionUtils;
 class AttributeValues {
 
 	public static boolean isDefault(Method attribute, Object value,
-			BiFunction<Method, Object, Object> valueExtractor) {
+			BiFunction<Object, Method, Object> valueExtractor) {
 		return areEquivalent(attribute.getDefaultValue(), value, valueExtractor);
 	}
 
 	private static boolean areEquivalent(Object value, Object extractedValue,
-			BiFunction<Method, Object, Object> valueExtractor) {
+			BiFunction<Object, Method, Object> valueExtractor) {
 		if (ObjectUtils.nullSafeEquals(value, extractedValue)) {
 			return true;
 		}
@@ -72,21 +72,25 @@ class AttributeValues {
 	}
 
 	private static boolean areEquivalent(Annotation value, Object extractedValue,
-			BiFunction<Method, Object, Object> valueExtractor) {
+			BiFunction<Object, Method, Object> valueExtractor) {
 		AttributeMethods attributes = AttributeMethods.forAnnotationType(
 				value.annotationType());
 		for (int i = 0; i < attributes.size(); i++) {
 			Method attribute = attributes.get(i);
 			if (!areEquivalent(ReflectionUtils.invokeMethod(attribute, value),
-					valueExtractor.apply(attribute, extractedValue), valueExtractor)) {
+					valueExtractor.apply(extractedValue, attribute), valueExtractor)) {
 				return false;
 			}
 		}
 		return true;
 	}
 
+	static Object fromAnnotation(Object annotation, Method attribute) {
+		return ReflectionUtils.invokeMethod(attribute, annotation);
+	}
+
 	@SuppressWarnings("unchecked")
-	static Object fromMap(Method attribute, Object map) {
+	static Object fromMap(Object map, Method attribute) {
 		return map != null ? ((Map<String, ?>) map).get(attribute.getName()) : null;
 	}
 

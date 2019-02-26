@@ -454,7 +454,7 @@ class AnnotationTypeMapping {
 		}
 
 		public int[] resolve(Object source, Object annotation,
-				BiFunction<Method, Object, Object> valueExtractor) {
+				BiFunction<Object, Method, Object> valueExtractor) {
 			int[] result = new int[AnnotationTypeMapping.this.attributes.size()];
 			for (int i = 0; i < result.length; i++) {
 				result[i] = i;
@@ -490,13 +490,13 @@ class AnnotationTypeMapping {
 			}
 
 			public <A> int resolve(Object source, A annotation,
-					BiFunction<Method, Object, Object> valueExtractor) {
+					BiFunction<Object, Method, Object> valueExtractor) {
 				int result = -1;
 				Object lastValue = null;
 				for (int i = 0; i < this.size; i++) {
 					Method attribute = AnnotationTypeMapping.this.attributes.get(
 							this.indexes[i]);
-					Object value = valueExtractor.apply(attribute, annotation);
+					Object value = valueExtractor.apply(annotation, attribute);
 					boolean isDefaultValue = value == null || AttributeValues.isDefault(
 							attribute, value, valueExtractor);
 					if (isDefaultValue || ObjectUtils.nullSafeEquals(lastValue, value)) {

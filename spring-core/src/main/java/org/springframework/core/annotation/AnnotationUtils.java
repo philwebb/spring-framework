@@ -877,8 +877,8 @@ public abstract class AnnotationUtils {
 		});
 	}
 
-	private static Object fromAnnotationAttributes(Method attribute, Object attributes) {
-		Object result = AttributeValues.fromMap(attribute, attributes);
+	private static Object fromAnnotationAttributes(Object attributes, Method attribute) {
+		Object result = AttributeValues.fromMap(attributes, attribute);
 		return result instanceof DefaultValueHolder
 				? ((DefaultValueHolder) result).defaultValue
 				: result;
