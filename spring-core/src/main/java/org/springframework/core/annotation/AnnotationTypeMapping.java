@@ -502,7 +502,8 @@ class AnnotationTypeMapping {
 					if (isDefaultValue || ObjectUtils.nullSafeEquals(lastValue, value)) {
 						continue;
 					}
-					if (lastValue != null && !ObjectUtils.nullSafeEquals(lastValue, value)) {
+					if (lastValue != null
+							&& !ObjectUtils.nullSafeEquals(lastValue, value)) {
 						String on = (source != null) ? " declared on " + source : "";
 						throw new AnnotationConfigurationException(String.format(
 								"Different @AliasFor mirror values for annotation [%s]%s, "

@@ -33,6 +33,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
+import static org.assertj.core.api.Assertions.*;
+
 /**
  *
  * @author Phillip Webb
@@ -380,6 +382,18 @@ public class TypeMappedAnnotation<A extends Annotation>
 		return dunno(attributeIndex, this.mapping, resolveMirrors);
 	}
 
+	private Object getValueForMirrorResolution(Method attribute) {
+		int attributeIndex = this.mapping.getAttributes().indexOf(attribute);
+		int rootAttributeIndex = this.mapping.getAliasMapping(attributeIndex);
+		if (rootAttributeIndex == -1 && !VALUE.equals(attribute.getName())) {
+			rootAttributeIndex = this.mapping.getConventionMapping(attributeIndex);
+		}
+		if (rootAttributeIndex != -1) {
+			return dunno(rootAttributeIndex, this.mapping.getRoot(), false);
+		}
+		return dunno(attributeIndex, this.mapping, false);
+	}
+
 	private Object dunno(int attributeIndex, AnnotationTypeMapping mapping,
 			boolean resolveMirrors) {
 		int depth = mapping.getDepth();
@@ -508,9 +522,7 @@ public class TypeMappedAnnotation<A extends Annotation>
 	private static Object getValueForMirrorResolution(Method attribute,
 			Object annotation) {
 		TypeMappedAnnotation<?> typeMappedAnnotation = (TypeMappedAnnotation<?>) annotation;
-		AttributeMethods attributes = typeMappedAnnotation.mapping.getAttributes();
-		int attributeIndex = attributes.indexOf(attribute);
-		return typeMappedAnnotation.getMappedValue(attributeIndex, true, false, false);
+		return typeMappedAnnotation.getValueForMirrorResolution(attribute);
 	}
 
 	static <A extends Annotation> MergedAnnotation<A> from(@Nullable Object source,

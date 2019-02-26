@@ -80,9 +80,9 @@ final class AttributeMethods implements Iterable<Method> {
 		return -1;
 	}
 
-	public int indexOf(Method method) {
+	public int indexOf(Method attribute) {
 		for (int i = 0; i < this.attributeMethods.length; i++) {
-			if (this.attributeMethods[i] == method) {
+			if (this.attributeMethods[i] == attribute) {
 				return i;
 			}
 		}
