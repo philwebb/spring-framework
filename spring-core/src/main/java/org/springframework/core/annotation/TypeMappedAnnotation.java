@@ -153,7 +153,7 @@ public class TypeMappedAnnotation<A extends Annotation>
 	@Override
 	public boolean hasDefaultValue(String attributeName) {
 		int attributeIndex = getAttributeIndex(attributeName, true);
-		Object value = getMappedValue(attributeIndex, true, true, true);
+		Object value = getMappedValue(attributeIndex);
 		return value == null || AttributeValues.isDefault(
 				this.mapping.getAttributes().get(attributeIndex), value,
 				this.valueExtractor);
@@ -355,7 +355,7 @@ public class TypeMappedAnnotation<A extends Annotation>
 
 	private <T> T getValue(int attributeIndex, Class<T> type) {
 		Method attribute = this.mapping.getAttributes().get(attributeIndex);
-		Object value = getMappedValue(attributeIndex, true, true, true);
+		Object value = getMappedValue(attributeIndex);
 		if (value == null) {
 			// FIXME ??? Is this correct
 			value = attribute.getDefaultValue();
@@ -364,22 +364,15 @@ public class TypeMappedAnnotation<A extends Annotation>
 	}
 
 	@Nullable
-	private Object getMappedValue(int attributeIndex, boolean useAliasMapping,
-			boolean useConventionMapping,
-			boolean resolveMirrors) {
+	private Object getMappedValue(int attributeIndex) {
 		int rootAttributeIndex = -1;
-		if (!this.useNonMergedValues) { // FIXME make an arg? Perhaps we need options
-			if (useAliasMapping) {
-				rootAttributeIndex = this.mapping.getAliasMapping(attributeIndex);
-			}
-			if (rootAttributeIndex == -1 && useConventionMapping) {
+		if (!this.useNonMergedValues) {
+			rootAttributeIndex = this.mapping.getAliasMapping(attributeIndex);
+			if (rootAttributeIndex == -1) {
 				rootAttributeIndex = this.mapping.getConventionMapping(attributeIndex);
 			}
 		}
-		if (rootAttributeIndex != -1) {
-			return dunno(rootAttributeIndex, this.mapping.getRoot(), resolveMirrors);
-		}
-		return dunno(attributeIndex, this.mapping, resolveMirrors);
+		return dunno(attributeIndex, rootAttributeIndex, true);
 	}
 
 	private Object getValueForMirrorResolution(Method attribute) {
@@ -388,10 +381,14 @@ public class TypeMappedAnnotation<A extends Annotation>
 		if (rootAttributeIndex == -1 && !VALUE.equals(attribute.getName())) {
 			rootAttributeIndex = this.mapping.getConventionMapping(attributeIndex);
 		}
+		return dunno(attributeIndex, rootAttributeIndex, false);
+	}
+
+	private Object dunno(int attributeIndex, int rootAttributeIndex, boolean x) {
 		if (rootAttributeIndex != -1) {
-			return dunno(rootAttributeIndex, this.mapping.getRoot(), false);
+			return dunno(rootAttributeIndex, this.mapping.getRoot(), x);
 		}
-		return dunno(attributeIndex, this.mapping, false);
+		return dunno(attributeIndex, this.mapping, x);
 	}
 
 	private Object dunno(int attributeIndex, AnnotationTypeMapping mapping,
