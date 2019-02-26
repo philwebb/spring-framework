@@ -33,9 +33,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
-import static org.assertj.core.api.Assertions.*;
-
 /**
+ * {@link MergedAnnotation} backed by an {@link AnnotationTypeMapping}.
  *
  * @author Phillip Webb
  * @since 5.2
