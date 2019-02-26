@@ -16,15 +16,39 @@
 
 package org.springframework.core.annotation;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.Map;
+
+import org.springframework.util.ReflectionUtils;
 
 /**
  *
  * @author pwebb
  * @since 5.1
  */
-public interface AttributeValueExtractor {
+interface AttributeValueExtractor {
 
     Object apply(Object annotation, Method attribute);
+
+	static Object fromAnnotation(Object annotation, Method attribute) {
+		return ReflectionUtils.invokeMethod(attribute, annotation);
+	}
+
+	@SuppressWarnings("unchecked")
+	static Object fromMap(Object map, Method attribute) {
+		return map != null ? ((Map<String, ?>) map).get(attribute.getName()) : null;
+	}
+
+	static AttributeValueExtractor forValue(Object value, AttributeValueExtractor fallback) {
+		if (value instanceof Annotation) {
+			return AttributeValueExtractor::fromAnnotation;
+		}
+		if (value instanceof Map) {
+			return AttributeValueExtractor::fromMap;
+		}
+		return fallback;
+	}
+
 
 }

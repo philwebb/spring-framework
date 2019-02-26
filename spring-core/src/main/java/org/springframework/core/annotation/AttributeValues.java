@@ -85,13 +85,6 @@ class AttributeValues {
 		return true;
 	}
 
-	static Object fromAnnotation(Object annotation, Method attribute) {
-		return ReflectionUtils.invokeMethod(attribute, annotation);
-	}
 
-	@SuppressWarnings("unchecked")
-	static Object fromMap(Object map, Method attribute) {
-		return map != null ? ((Map<String, ?>) map).get(attribute.getName()) : null;
-	}
 
 }

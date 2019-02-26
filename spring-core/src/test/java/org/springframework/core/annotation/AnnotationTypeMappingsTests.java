@@ -161,7 +161,7 @@ public class AnnotationTypeMappingsTests {
 				AliasForWithArrayCompatibleReturnTypes.class);
 		AnnotationTypeMapping mapping = getMapping(mappings,
 				AliasForWithArrayCompatibleReturnTypesTarget.class);
-		assertThat(getMappedAttribute(mapping, 0).getName()).isEqualTo("test");
+		assertThat(getAliasMapping(mapping, 0).getName()).isEqualTo("test");
 	}
 
 	@Test
@@ -287,12 +287,18 @@ public class AnnotationTypeMappingsTests {
 	}
 
 	@Test
-	public void getMappedAttributeReturnsAttributes() throws Exception {
+	public void getAliasMappingReturnsAttributes() throws Exception {
 		AnnotationTypeMapping mapping = AnnotationTypeMappings.forAnnotationType(
 				Mapped.class).get(1);
-		assertThat(getMappedAttribute(mapping, 0)).isEqualTo(
+		assertThat(getAliasMapping(mapping, 0)).isEqualTo(
 				Mapped.class.getDeclaredMethod("alias"));
-		assertThat(getMappedAttribute(mapping, 1)).isEqualTo(
+	}
+
+	@Test
+	public void getConventionMappingReturnsAttributes() throws Exception {
+		AnnotationTypeMapping mapping = AnnotationTypeMappings.forAnnotationType(
+				Mapped.class).get(1);
+		assertThat(getConventionMapping(mapping, 1)).isEqualTo(
 				Mapped.class.getDeclaredMethod("convention"));
 	}
 
@@ -336,29 +342,29 @@ public class AnnotationTypeMappingsTests {
 	}
 
 	@Test
-	public void getMappedAttributeWhenThreeDeepReturnsMappedAttributes() {
+	public void getAliasMappingWhenThreeDeepReturnsMappedAttributes() {
 		AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotationType(
 				ThreeDeepA.class);
 		AnnotationTypeMapping mappingA = mappings.get(0);
-		assertThat(getMappedAttribute(mappingA, 0)).isNull();
-		assertThat(getMappedAttribute(mappingA, 1)).isNull();
-		assertThat(getMappedAttribute(mappingA, 2)).isNull();
-		assertThat(getMappedAttribute(mappingA, 3)).isNull();
-		assertThat(getMappedAttribute(mappingA, 4)).isNull();
+		assertThat(getAliasMapping(mappingA, 0)).isNull();
+		assertThat(getAliasMapping(mappingA, 1)).isNull();
+		assertThat(getAliasMapping(mappingA, 2)).isNull();
+		assertThat(getAliasMapping(mappingA, 3)).isNull();
+		assertThat(getAliasMapping(mappingA, 4)).isNull();
 		AnnotationTypeMapping mappingB = mappings.get(1);
-		assertThat(getMappedAttribute(mappingB, 0).getName()).isEqualTo("a1");
-		assertThat(getMappedAttribute(mappingB, 1).getName()).isEqualTo("a1");
+		assertThat(getAliasMapping(mappingB, 0).getName()).isEqualTo("a1");
+		assertThat(getAliasMapping(mappingB, 1).getName()).isEqualTo("a1");
 		AnnotationTypeMapping mappingC = mappings.get(2);
-		assertThat(getMappedAttribute(mappingC, 0).getName()).isEqualTo("a1");
-		assertThat(getMappedAttribute(mappingC, 1).getName()).isEqualTo("a4");
+		assertThat(getAliasMapping(mappingC, 0).getName()).isEqualTo("a1");
+		assertThat(getAliasMapping(mappingC, 1).getName()).isEqualTo("a4");
 	}
 
 	@Test
-	public void getMappedAttributesWhenHasDefinedAttributesReturnsMappedAttributes() {
+	public void getAliasMappingsWhenHasDefinedAttributesReturnsMappedAttributes() {
 		AnnotationTypeMapping mapping = AnnotationTypeMappings.forAnnotationType(
 				DefinedAttributes.class).get(1);
-		assertThat(getMappedAttribute(mapping, 0)).isNull();
-		assertThat(getMappedAttribute(mapping, 1).getName()).isEqualTo("value");
+		assertThat(getAliasMapping(mapping, 0)).isNull();
+		assertThat(getAliasMapping(mapping, 1).getName()).isEqualTo("value");
 	}
 
 	@Test
@@ -426,36 +432,36 @@ public class AnnotationTypeMappingsTests {
 	}
 
 	@Test
-	public void getMappedAttributeWhenHasWithMulipleRoutesToAliasReturnsMappedAttributes() {
+	public void getAliasMappingWhenHasWithMulipleRoutesToAliasReturnsMappedAttributes() {
 		AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotationType(
 				MulipleRoutesToAliasA.class);
 		AnnotationTypeMapping mappingsA = getMapping(mappings,
 				MulipleRoutesToAliasA.class);
-		assertThat(getMappedAttribute(mappingsA, 0)).isNull();
+		assertThat(getAliasMapping(mappingsA, 0)).isNull();
 		AnnotationTypeMapping mappingsB = getMapping(mappings,
 				MulipleRoutesToAliasB.class);
-		assertThat(getMappedAttribute(mappingsB, 0).getName()).isEqualTo("a1");
-		assertThat(getMappedAttribute(mappingsB, 1).getName()).isEqualTo("a1");
-		assertThat(getMappedAttribute(mappingsB, 2).getName()).isEqualTo("a1");
+		assertThat(getAliasMapping(mappingsB, 0).getName()).isEqualTo("a1");
+		assertThat(getAliasMapping(mappingsB, 1).getName()).isEqualTo("a1");
+		assertThat(getAliasMapping(mappingsB, 2).getName()).isEqualTo("a1");
 		AnnotationTypeMapping mappingsC = getMapping(mappings,
 				MulipleRoutesToAliasC.class);
-		assertThat(getMappedAttribute(mappingsC, 0).getName()).isEqualTo("a1");
-		assertThat(getMappedAttribute(mappingsC, 1).getName()).isEqualTo("a1");
+		assertThat(getAliasMapping(mappingsC, 0).getName()).isEqualTo("a1");
+		assertThat(getAliasMapping(mappingsC, 1).getName()).isEqualTo("a1");
 	}
 
 	@Test
-	public void getMappedAttributeWhenConventionToExplicitAliasesReturnsMappedAttributes() {
+	public void getConventionMappingWhenConventionToExplicitAliasesReturnsMappedAttributes() {
 		AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotationType(ConventionToExplicitAliases.class);
 		AnnotationTypeMapping mapping = getMapping(mappings, ConventionToExplicitAliasesTarget.class);
-		assertThat(mapping.getMappedAttribute(0)).isEqualTo(0);
-		assertThat(mapping.getMappedAttribute(1)).isEqualTo(0);
+		assertThat(mapping.getConventionMapping(0)).isEqualTo(0);
+		assertThat(mapping.getConventionMapping(1)).isEqualTo(0);
 	}
 
 	private Method[] resolveMirrorSets(AnnotationTypeMapping mapping, Class<?> element,
 			Class<? extends Annotation> annotationClass) {
 		Annotation annotation = element.getAnnotation(annotationClass);
 		int[] resolved = mapping.getMirrorSets().resolve(element.getName(), annotation,
-				ReflectionUtils::invokeMethod);
+				AttributeValueExtractor::fromAnnotation);
 		Method[] result = new Method[resolved.length];
 		for (int i = 0; i < resolved.length; i++) {
 			result[i] = resolved[i] != -1 ? mapping.getAttributes().get(resolved[i]) : null;
@@ -464,8 +470,14 @@ public class AnnotationTypeMappingsTests {
 	}
 
 	@Nullable
-	private Method getMappedAttribute(AnnotationTypeMapping mapping, int attributeIndex) {
-		int mapped = mapping.getMappedAttribute(attributeIndex);
+	private Method getAliasMapping(AnnotationTypeMapping mapping, int attributeIndex) {
+		int mapped = mapping.getAliasMapping(attributeIndex);
+		return mapped != -1 ? mapping.getRoot().getAttributes().get(mapped) : null;
+	}
+
+	@Nullable
+	private Method getConventionMapping(AnnotationTypeMapping mapping, int attributeIndex) {
+		int mapped = mapping.getConventionMapping(attributeIndex);
 		return mapped != -1 ? mapping.getRoot().getAttributes().get(mapped) : null;
 	}
 

@@ -322,8 +322,8 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 			for (int i = 0; i < mappings.size(); i++) {
 				AnnotationTypeMapping mapping = mappings.get(i);
 				if (isMappingForType(mapping, annotationFilter, requiredType)) {
-					MergedAnnotation<A> candidate = new TypeMappedAnnotation<>(source,
-							annotation, mapping, aggregateIndex);
+					MergedAnnotation<A> candidate = new TypeMappedAnnotation<>(mapping,
+							source, annotation, aggregateIndex);
 					if (this.predicate == null || this.predicate.test(candidate)) {
 						if (this.selector.isBestCandidate(candidate)) {
 							return candidate;
@@ -433,9 +433,9 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 
 		public <A extends Annotation> MergedAnnotation<A> getMergedAnnotation(
 				int annotationIndex, int mappingIndex) {
-			return new TypeMappedAnnotation<>(this.source,
+			return new TypeMappedAnnotation<>(this.mappings[annotationIndex].get(mappingIndex),
+					this.source,
 					this.annotations.get(annotationIndex),
-					this.mappings[annotationIndex].get(mappingIndex),
 					this.aggregateIndex);
 		}
 
