@@ -41,17 +41,13 @@ import org.springframework.util.ReflectionUtils;
 public class TypeMappedAnnotation<A extends Annotation>
 		extends AbstractMergedAnnotation<A> {
 
-	private static final BiFunction<Method, Object, Object> NON_MIRRORED_VALUE_EXTRACTOR = (
-			attribute,
-			annotation) -> ((TypeMappedAnnotation<?>) annotation).getNonMirroredValue(
-					attribute);
-
 	@Nullable
 	private final Object source;
 
 	@Nullable
 	private final Object annotation;
 
+	// FIXME switch order back
 	private final BiFunction<Method, Object, Object> valueExtractor;
 
 	private final AnnotationTypeMapping mapping;
@@ -93,10 +89,10 @@ public class TypeMappedAnnotation<A extends Annotation>
 		this.attributeFilter = null;
 		this.resolvedRootMirrors = resolvedRootMirrors != null ? resolvedRootMirrors
 				: mapping.getRoot().getMirrorSets().resolve(source, annotation,
-						valueExtractor);
+						this.valueExtractor);
 		this.resolvedMirrors = getDepth() == 0 ? this.resolvedRootMirrors
 				: mapping.getMirrorSets().resolve(source, this,
-						NON_MIRRORED_VALUE_EXTRACTOR);
+						TypeMappedAnnotation::getValueForMirrorResolution);
 	}
 
 	private <T> TypeMappedAnnotation(@Nullable Object source, @Nullable Object annotation,
@@ -155,7 +151,7 @@ public class TypeMappedAnnotation<A extends Annotation>
 	@Override
 	public boolean hasDefaultValue(String attributeName) {
 		int attributeIndex = getAttributeIndex(attributeName, true);
-		Object value = getMappedValue(attributeIndex);
+		Object value = getMappedValue(attributeIndex, true, true, true);
 		return value == null || AttributeValues.isDefault(
 				this.mapping.getAttributes().get(attributeIndex), value,
 				this.valueExtractor);
@@ -357,7 +353,7 @@ public class TypeMappedAnnotation<A extends Annotation>
 
 	private <T> T getValue(int attributeIndex, Class<T> type) {
 		Method attribute = this.mapping.getAttributes().get(attributeIndex);
-		Object value = getMappedValue(attributeIndex);
+		Object value = getMappedValue(attributeIndex, true, true, true);
 		if (value == null) {
 			// FIXME ??? Is this correct
 			value = attribute.getDefaultValue();
@@ -366,37 +362,40 @@ public class TypeMappedAnnotation<A extends Annotation>
 	}
 
 	@Nullable
-	private Object getMappedValue(int attributeIndex) {
-		int mapped = this.useNonMergedValues ? -1
-				: this.mapping.getMappedAttribute(attributeIndex);
-		if (mapped != -1) {
-			int resolved = this.resolvedRootMirrors[mapped];
-			if (resolved == -1) {
-				return null;
+	private Object getMappedValue(int attributeIndex, boolean useAliasMapping,
+			boolean useConventionMapping,
+			boolean resolveMirrors) {
+		int rootAttributeIndex = -1;
+		if (!this.useNonMergedValues) { // FIXME make an arg? Perhaps we need options
+			if (useAliasMapping) {
+				rootAttributeIndex = this.mapping.getAliasMapping(attributeIndex);
 			}
-			Method attribute = this.mapping.getRoot().getAttributes().get(resolved);
-			return this.valueExtractor.apply(attribute, this.annotation);
+			if (rootAttributeIndex == -1 && useConventionMapping) {
+				rootAttributeIndex = this.mapping.getConventionMapping(attributeIndex);
+			}
 		}
-		int resolved = this.resolvedMirrors[attributeIndex];
-		if (resolved == -1) {
-			return null;
+		if (rootAttributeIndex != -1) {
+			return dunno(rootAttributeIndex, this.mapping.getRoot(), resolveMirrors);
 		}
-		Method attribute = this.mapping.getAttributes().get(resolved);
-		return getDepth() > 0
-				? ReflectionUtils.invokeMethod(attribute, this.mapping.getAnnotation())
-				: this.valueExtractor.apply(attribute, this.annotation);
+		return dunno(attributeIndex, this.mapping, resolveMirrors);
 	}
 
-	private Object getNonMirroredValue(Method attribute) {
-		AttributeMethods attributes = this.mapping.getAttributes();
-		int attributeIndex = attributes.indexOf(attribute);
-		int mappedIndex = this.mapping.getMappedAttribute(attributeIndex);
-		if (mappedIndex != -1) {
-			return this.valueExtractor.apply(
-					this.mapping.getRoot().getAttributes().get(mappedIndex),
-					this.annotation);
+	private Object dunno(int attributeIndex, AnnotationTypeMapping mapping,
+			boolean resolveMirrors) {
+		int depth = mapping.getDepth();
+		AttributeMethods attributes = mapping.getAttributes();
+		if (resolveMirrors) {
+			int[] resolvedMirrors = depth != 0 ? this.resolvedMirrors
+					: this.resolvedRootMirrors;
+			attributeIndex = resolvedMirrors[attributeIndex];
 		}
-		return ReflectionUtils.invokeMethod(attribute, this.mapping.getAnnotation());
+		if (attributeIndex == -1) {
+			return null;
+		}
+		Method attribute = attributes.get(attributeIndex);
+		return depth > 0
+				? ReflectionUtils.invokeMethod(attribute, this.mapping.getAnnotation())
+				: this.valueExtractor.apply(attribute, this.annotation);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -504,6 +503,14 @@ public class TypeMappedAnnotation<A extends Annotation>
 			return MergedAnnotation[].class;
 		}
 		return ClassUtils.resolvePrimitiveIfNecessary(attributeType);
+	}
+
+	private static Object getValueForMirrorResolution(Method attribute,
+			Object annotation) {
+		TypeMappedAnnotation<?> typeMappedAnnotation = (TypeMappedAnnotation<?>) annotation;
+		AttributeMethods attributes = typeMappedAnnotation.mapping.getAttributes();
+		int attributeIndex = attributes.indexOf(attribute);
+		return typeMappedAnnotation.getMappedValue(attributeIndex, true, false, false);
 	}
 
 	static <A extends Annotation> MergedAnnotation<A> from(@Nullable Object source,
