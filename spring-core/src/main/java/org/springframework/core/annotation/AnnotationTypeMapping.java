@@ -436,6 +436,7 @@ class AnnotationTypeMapping {
 			return this.assigned[attributeIndex];
 		}
 
+		// FIXME bit inconsistent with the other resolve returning -1
 		public int[] resolve(Object source, Object annotation,
 				BiFunction<Method, Object, Object> valueExtractor) {
 			int[] result = new int[AnnotationTypeMapping.this.attributes.size()];
