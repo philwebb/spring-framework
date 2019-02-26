@@ -49,7 +49,7 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 	private final Object annotation;
 
 	// FIXME switch order back
-	private final BiFunction<Object, Method, Object> valueExtractor;
+	private final AttributeValueExtractor valueExtractor;
 
 	private final AnnotationTypeMapping mapping;
 
@@ -72,13 +72,13 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 	}
 
 	<T> TypeMappedAnnotation(@Nullable Object source, @Nullable Object annotation,
-			BiFunction<Object, Method, Object> valueExtractor,
+			AttributeValueExtractor valueExtractor,
 			AnnotationTypeMapping mapping, int aggregateIndex) {
 		this(source, annotation, valueExtractor, mapping, aggregateIndex, null);
 	}
 
 	private <T> TypeMappedAnnotation(@Nullable Object source, @Nullable Object annotation,
-			BiFunction<Object, Method, Object> valueExtractor,
+			AttributeValueExtractor valueExtractor,
 			AnnotationTypeMapping mapping, int aggregateIndex,
 			@Nullable int[] resolvedRootMirrors) {
 		this.source = source;
@@ -97,7 +97,7 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 	}
 
 	private <T> TypeMappedAnnotation(@Nullable Object source, @Nullable Object annotation,
-			BiFunction<Object, Method, Object> valueExtractor,
+			AttributeValueExtractor valueExtractor,
 			AnnotationTypeMapping mapping, int aggregateIndex, boolean useNonMergedValues,
 			Predicate<String> attributeFilter, int[] resolvedRootMirrors,
 			int[] resolvedMirrors) {
@@ -494,7 +494,7 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 				mapping, this.aggregateIndex);
 	}
 
-	private BiFunction<Object, Method, Object> getValueExtractorFor(Object value) {
+	private AttributeValueExtractor getValueExtractorFor(Object value) {
 		if (value instanceof Annotation) {
 			return AttributeValues::fromAnnotation;
 		}

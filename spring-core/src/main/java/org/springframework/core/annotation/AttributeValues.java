@@ -34,12 +34,12 @@ import org.springframework.util.ReflectionUtils;
 class AttributeValues {
 
 	public static boolean isDefault(Method attribute, Object value,
-			BiFunction<Object, Method, Object> valueExtractor) {
+			AttributeValueExtractor valueExtractor) {
 		return areEquivalent(attribute.getDefaultValue(), value, valueExtractor);
 	}
 
 	private static boolean areEquivalent(Object value, Object extractedValue,
-			BiFunction<Object, Method, Object> valueExtractor) {
+			AttributeValueExtractor valueExtractor) {
 		if (ObjectUtils.nullSafeEquals(value, extractedValue)) {
 			return true;
 		}
@@ -72,7 +72,7 @@ class AttributeValues {
 	}
 
 	private static boolean areEquivalent(Annotation value, Object extractedValue,
-			BiFunction<Object, Method, Object> valueExtractor) {
+			AttributeValueExtractor valueExtractor) {
 		AttributeMethods attributes = AttributeMethods.forAnnotationType(
 				value.annotationType());
 		for (int i = 0; i < attributes.size(); i++) {
