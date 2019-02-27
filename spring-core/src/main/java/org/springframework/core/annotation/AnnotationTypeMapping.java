@@ -67,7 +67,7 @@ class AnnotationTypeMapping {
 	private final int[] conventionMappings;
 
 	@Nullable
-	private Map<Method, List<Method>> aliasedBy;
+	private final Map<Method, List<Method>> aliasedBy;
 
 	@Nullable
 	private Set<Method> claimedAliases = new HashSet<>();

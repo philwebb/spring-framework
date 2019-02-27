@@ -38,7 +38,7 @@ public interface MergedAnnotationSelector<A extends Annotation> {
 	default boolean isBestCandidate(MergedAnnotation<A> annotation) {
 		return false;
 	}
-	
+
 	/**
 	 * Select the annotation that should be used.
 	 * @param existing an existing annotation returned from an earlier result
