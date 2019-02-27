@@ -463,6 +463,7 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * @return a optional containing the sythesized version of the annotation or
 	 * an empty optional if the condition doesn't match
 	 * @throws NoSuchElementException on a missing annotation
+	 * @see MergedAnnotationPredicates
 	 */
 	Optional<A> synthesize(Predicate<? super MergedAnnotation<A>> condition)
 			throws NoSuchElementException;

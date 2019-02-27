@@ -198,7 +198,7 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 		int attributeIndex = getAttributeIndex(attributeName, true);
 		Object value = getValue(attributeIndex, true, true);
 		return value == null || AttributeValues.isDefaultValue(
-				this.mapping.getAttributes().get(attributeIndex), value,
+				value, this.mapping.getAttributes().get(attributeIndex),
 				this.valueExtractor);
 	}
 
@@ -419,10 +419,10 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 			type = (Class<T>) getDefaultAdaptType(attribute);
 		}
 		if (value instanceof String && type == Class.class) {
-			// FIXME
+			// FIXME write a test and implement string to class
 		}
 		else if (value instanceof String[] && type == Class[].class) {
-			// FIXME
+			// FIXME write a test and implement string to class
 		}
 		else if (value instanceof Class && type == String.class) {
 			value = ((Class<?>) value).getName();
@@ -468,7 +468,7 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 		}
 		if (attributeType.isArray() && attributeType.getComponentType().isAnnotation()
 				&& value.getClass().isArray()) {
-			MergedAnnotation<?>[] result = new MergedAnnotation[Array.getLength(value)];
+			MergedAnnotation<?>[] result = new MergedAnnotation<?>[Array.getLength(value)];
 			for (int i = 0; i < result.length; i++) {
 				result[i] = adaptToMergedAnnotation(Array.get(value, i),
 						(Class<? extends Annotation>) attributeType.getComponentType());

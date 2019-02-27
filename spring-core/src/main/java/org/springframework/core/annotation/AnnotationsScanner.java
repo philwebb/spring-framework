@@ -28,6 +28,7 @@ import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.ObjectUtils;
 
 /**
  * Scanner to search for relevant annotations on the hierarchy of an
@@ -162,7 +163,8 @@ class AnnotationsScanner {
 			return result;
 		}
 		Annotation[] annotations = getDeclaredAnnotations(context, source, classFilter);
-		result = processor.doWithAnnotations(context, aggregateIndex[0], source, annotations);
+		result = processor.doWithAnnotations(context, aggregateIndex[0], source,
+				annotations);
 		if (result != null) {
 			return result;
 		}
@@ -321,7 +323,8 @@ class AnnotationsScanner {
 			Method source, AnnotationsProcessor<C, R> processor,
 			BiPredicate<C, Class<?>> classFilter) {
 		Annotation[] annotations = getDeclaredAnnotations(context, source, classFilter);
-		R result = processor.doWithAnnotations(context, aggregateIndex, source, annotations);
+		R result = processor.doWithAnnotations(context, aggregateIndex, source,
+				annotations);
 		if (result != null) {
 			return result;
 		}
@@ -329,7 +332,13 @@ class AnnotationsScanner {
 		if (bridgedMethod != source) {
 			Annotation[] bridgedAnnotations = getDeclaredAnnotations(context,
 					bridgedMethod, classFilter);
-			return processor.doWithAnnotations(context, aggregateIndex, source, bridgedAnnotations);
+			for (int i = 0; i < bridgedAnnotations.length; i++) {
+				if (ObjectUtils.containsElement(annotations, bridgedAnnotations[i])) {
+					bridgedAnnotations[i] = null;
+				}
+			}
+			return processor.doWithAnnotations(context, aggregateIndex, source,
+					bridgedAnnotations);
 		}
 		return null;
 	}

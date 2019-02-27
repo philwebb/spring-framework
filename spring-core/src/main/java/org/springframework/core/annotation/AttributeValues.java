@@ -20,6 +20,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.function.BiFunction;
 
+import org.springframework.lang.Nullable;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.ReflectionUtils;
 
@@ -32,12 +33,22 @@ import org.springframework.util.ReflectionUtils;
  */
 class AttributeValues {
 
-	public static boolean isDefaultValue(Method attribute, Object value,
+	/**
+	 * Return if the specified value is equivalent to the default value of the
+	 * attribute.
+	 * @param value the value to check
+	 * @param attribute the annotation attribute
+	 * @param valueExtractor the value extractor used to extract value from any
+	 * nested annotations
+	 * @return {@code true} if the value is equivalent to the default value
+	 */
+	public static boolean isDefaultValue(@Nullable Object value, Method attribute,
 			BiFunction<Method, Object, Object> valueExtractor) {
 		return areEquivalent(attribute.getDefaultValue(), value, valueExtractor);
 	}
 
-	private static boolean areEquivalent(Object value, Object extractedValue,
+	private static boolean areEquivalent(@Nullable Object value,
+			@Nullable Object extractedValue,
 			BiFunction<Method, Object, Object> valueExtractor) {
 		if (ObjectUtils.nullSafeEquals(value, extractedValue)) {
 			return true;

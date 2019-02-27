@@ -500,7 +500,7 @@ class AnnotationTypeMapping {
 							this.indexes[i]);
 					Object value = valueExtractor.apply(attribute, annotation);
 					boolean isDefaultValue = value == null || AttributeValues.isDefaultValue(
-							attribute, value, valueExtractor);
+							value, attribute, valueExtractor);
 					if (isDefaultValue || ObjectUtils.nullSafeEquals(lastValue, value)) {
 						continue;
 					}

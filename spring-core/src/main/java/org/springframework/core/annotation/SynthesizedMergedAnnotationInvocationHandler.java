@@ -29,7 +29,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.ReflectionUtils;
-import org.springframework.util.ReflectionUtils.MethodCallback;
 
 /**
  * {@link InvocationHandler} for an {@link Annotation} that Spring has
@@ -47,11 +46,11 @@ import org.springframework.util.ReflectionUtils.MethodCallback;
 class SynthesizedMergedAnnotationInvocationHandler<A extends Annotation>
 		implements InvocationHandler {
 
-	// FIXME change to use AnnAttMethods
-
 	private final MergedAnnotation<?> annotation;
 
 	private final Class<A> type;
+
+	private final AttributeMethods attributes;
 
 	private volatile Integer hashCode;
 
@@ -60,14 +59,12 @@ class SynthesizedMergedAnnotationInvocationHandler<A extends Annotation>
 		Assert.notNull(annotation, "Annotation must not be null");
 		Assert.notNull(type, "Type must not be null");
 		Assert.isTrue(type.isAnnotation(), "Type must be an annotation");
-		this.type = type;
 		this.annotation = annotation;
-		verifyAttributeMethods();
-	}
-
-	private void verifyAttributeMethods() {
-		ReflectionUtils.doWithLocalMethods(this.type, this::getAttributeValue,
-				this::isAttributeMethod);
+		this.type = type;
+		this.attributes = AttributeMethods.forAnnotationType(type);
+		for (int i = 0; i < this.attributes.size(); i++) {
+			getAttributeValue(this.attributes.get(i));
+		}
 	}
 
 	@Override
@@ -84,7 +81,7 @@ class SynthesizedMergedAnnotationInvocationHandler<A extends Annotation>
 		if (isAnnotationTypeMethod(method)) {
 			return this.type;
 		}
-		if (isAttributeMethod(method)) {
+		if (this.attributes.indexOf(method.getName()) != -1) {
 			return getAttributeValue(method);
 		}
 		throw new AnnotationConfigurationException(String.format(
@@ -95,14 +92,6 @@ class SynthesizedMergedAnnotationInvocationHandler<A extends Annotation>
 	private boolean isAnnotationTypeMethod(Method method) {
 		return Objects.equals(method.getName(), "annotationType")
 				&& method.getParameterCount() == 0;
-	}
-
-	private Object getAttributeValue(Method method) {
-		String name = method.getName();
-		Class<?> type = ClassUtils.resolvePrimitiveIfNecessary(method.getReturnType());
-		return this.annotation.getValue(name, type).orElseThrow(
-				() -> new NoSuchElementException("No value found for attribute named '" + name
-						+ "' in merged annotation " + this.annotation.getType()));
 	}
 
 	/**
@@ -117,9 +106,15 @@ class SynthesizedMergedAnnotationInvocationHandler<A extends Annotation>
 		if (!this.type.isInstance(other)) {
 			return false;
 		}
-		EqualsCheck check = new EqualsCheck(other);
-		ReflectionUtils.doWithLocalMethods(this.type, check, this::isAttributeMethod);
-		return check.isEquals();
+		for (int i = 0; i < this.attributes.size(); i++) {
+			Method attribute = this.attributes.get(i);
+			Object thisValue = getAttributeValue(attribute);
+			Object otherValue = ReflectionUtils.invokeMethod(attribute, other);
+			if (!ObjectUtils.nullSafeEquals(thisValue, otherValue)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -129,27 +124,72 @@ class SynthesizedMergedAnnotationInvocationHandler<A extends Annotation>
 	private int annotationHashCode() {
 		Integer hashCode = this.hashCode;
 		if (hashCode == null) {
-			HashCodeGenerator generator = new HashCodeGenerator();
-			ReflectionUtils.doWithLocalMethods(this.type, generator,
-					this::isAttributeMethod);
-			hashCode = generator.getHashCode();
+			hashCode = computeHashCode();
 			this.hashCode = hashCode;
 		}
 		return hashCode;
 	}
 
-	private boolean isAttributeMethod(Method method) {
-		return method.getParameterCount() == 0 && method.getReturnType() != void.class;
+	private Integer computeHashCode() {
+		int hashCode = 0;
+		for (int i = 0; i < this.attributes.size(); i++) {
+			Method attribute = this.attributes.get(i);
+			Object value = getAttributeValue(attribute);
+			hashCode += (127 * attribute.getName().hashCode()) ^ getValueHashCode(value);
+		}
+		return hashCode;
+	}
+
+	private int getValueHashCode(Object value) {
+		// Use Arrays.hashCode since ObjectUtils doesn't comply to to
+		// Annotation#hashCode()
+		if (value instanceof boolean[]) {
+			return Arrays.hashCode((boolean[]) value);
+		}
+		if (value instanceof byte[]) {
+			return Arrays.hashCode((byte[]) value);
+		}
+		if (value instanceof char[]) {
+			return Arrays.hashCode((char[]) value);
+		}
+		if (value instanceof double[]) {
+			return Arrays.hashCode((double[]) value);
+		}
+		if (value instanceof float[]) {
+			return Arrays.hashCode((float[]) value);
+		}
+		if (value instanceof int[]) {
+			return Arrays.hashCode((int[]) value);
+		}
+		if (value instanceof long[]) {
+			return Arrays.hashCode((long[]) value);
+		}
+		if (value instanceof short[]) {
+			return Arrays.hashCode((short[]) value);
+		}
+		if (value instanceof Object[]) {
+			return Arrays.hashCode((Object[]) value);
+		}
+		return value.hashCode();
+	}
+
+	private Object getAttributeValue(Method method) {
+		String name = method.getName();
+		Class<?> type = ClassUtils.resolvePrimitiveIfNecessary(method.getReturnType());
+		return this.annotation.getValue(name, type).orElseThrow(
+				() -> new NoSuchElementException("No value found for attribute named '"
+						+ name + "' in merged annotation " + this.annotation.getType()));
 	}
 
 	@SuppressWarnings("unchecked")
-	static <A extends Annotation> A createProxy(MergedAnnotation<A> annotation, Class<A> type) {
+	static <A extends Annotation> A createProxy(MergedAnnotation<A> annotation,
+			Class<A> type) {
 		ClassLoader classLoader = type.getClassLoader();
 		InvocationHandler handler = new SynthesizedMergedAnnotationInvocationHandler<>(
 				annotation, type);
 		Class<?>[] interfaces = isVisible(classLoader, SynthesizedAnnotation.class)
-						? new Class<?>[] { type, SynthesizedAnnotation.class }
-						: new Class<?>[] { type };
+				? new Class<?>[] { type, SynthesizedAnnotation.class }
+				: new Class<?>[] { type };
 		return (A) Proxy.newProxyInstance(classLoader, interfaces, handler);
 	}
 
@@ -161,94 +201,6 @@ class SynthesizedMergedAnnotationInvocationHandler<A extends Annotation>
 		catch (ClassNotFoundException ex) {
 			return false;
 		}
-	}
-
-	/**
-	 * {@link MethodCallback} used to implement {@code equals}.
-	 */
-	private class EqualsCheck implements MethodCallback {
-
-		private final Object other;
-
-		private boolean equals = true;
-
-		public EqualsCheck(Object other) {
-			this.other = other;
-		}
-
-		@Override
-		public void doWith(Method method)
-				throws IllegalArgumentException, IllegalAccessException {
-			if (method.getParameterCount() == 0 && method.getReturnType() != void.class) {
-				this.equals = this.equals && isEqual(method);
-			}
-		}
-
-		private boolean isEqual(Method method) {
-			ReflectionUtils.makeAccessible(method);
-			Object thisValue = getAttributeValue(method);
-			Object otherValue = ReflectionUtils.invokeMethod(method, this.other);
-			return ObjectUtils.nullSafeEquals(thisValue, otherValue);
-		}
-
-		public boolean isEquals() {
-			return this.equals;
-		}
-
-	}
-
-	/**
-	 * {@link MethodCallback} used to implement {@code hashCode}.
-	 */
-	private class HashCodeGenerator implements MethodCallback {
-
-		private int hashCode;
-
-		@Override
-		public void doWith(Method method)
-				throws IllegalArgumentException, IllegalAccessException {
-			Object value = getAttributeValue(method);
-			int valueHashCode = getValueHashCode(value);
-			this.hashCode += (127 * method.getName().hashCode()) ^ valueHashCode;
-		}
-
-		private int getValueHashCode(Object value) {
-			// Use Arrays.hashCode since ObjectUtils doesn't comply to to
-			// Annotation#hashCode()
-			if (value instanceof boolean[]) {
-				return Arrays.hashCode((boolean[]) value);
-			}
-			if (value instanceof byte[]) {
-				return Arrays.hashCode((byte[]) value);
-			}
-			if (value instanceof char[]) {
-				return Arrays.hashCode((char[]) value);
-			}
-			if (value instanceof double[]) {
-				return Arrays.hashCode((double[]) value);
-			}
-			if (value instanceof float[]) {
-				return Arrays.hashCode((float[]) value);
-			}
-			if (value instanceof int[]) {
-				return Arrays.hashCode((int[]) value);
-			}
-			if (value instanceof long[]) {
-				return Arrays.hashCode((long[]) value);
-			}
-			if (value instanceof short[]) {
-				return Arrays.hashCode((short[]) value);
-			}
-			if (value instanceof Object[]) {
-				return Arrays.hashCode((Object[]) value);
-			}
-			return value.hashCode();
-		}
-
-		public int getHashCode() {
-			return this.hashCode;
-		}
-
 	}
 
 }

@@ -32,6 +32,7 @@ import org.junit.Test;
 import org.springframework.core.annotation.AnnotationTypeMapping.MirrorSets;
 import org.springframework.core.annotation.AnnotationTypeMapping.MirrorSets.MirrorSet;
 import org.springframework.lang.UsesSunMisc;
+import org.springframework.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -461,7 +462,7 @@ public class AnnotationTypeMappingsTests {
 			Class<? extends Annotation> annotationClass) {
 		Annotation annotation = element.getAnnotation(annotationClass);
 		int[] resolved = mapping.getMirrorSets().resolve(element.getName(), annotation,
-				AttributeValueExtractor::fromAnnotation);
+				ReflectionUtils::invokeMethod);
 		Method[] result = new Method[resolved.length];
 		for (int i = 0; i < resolved.length; i++) {
 			result[i] = resolved[i] != -1 ? mapping.getAttributes().get(resolved[i])

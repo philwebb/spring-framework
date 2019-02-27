@@ -19,6 +19,8 @@ package org.springframework.core.annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -33,15 +35,13 @@ public class AttributeMethodsTests {
 
 	@Test
 	public void forAnnotationTypeWhenNullReturnsNone() {
-		AttributeMethods methods = AttributeMethods.forAnnotationType(
-				null);
+		AttributeMethods methods = AttributeMethods.forAnnotationType(null);
 		assertThat(methods).isSameAs(AttributeMethods.NONE);
 	}
 
 	@Test
 	public void forAnnotationWithNoAttributesReturnsNone() {
-		AttributeMethods methods = AttributeMethods.forAnnotationType(
-				NoAttributes.class);
+		AttributeMethods methods = AttributeMethods.forAnnotationType(NoAttributes.class);
 		assertThat(methods).isSameAs(AttributeMethods.NONE);
 	}
 
@@ -51,16 +51,23 @@ public class AttributeMethodsTests {
 				MultipleAttributes.class);
 		assertThat(methods.get("value").getName()).isEqualTo("value");
 		assertThat(methods.get("intValue").getName()).isEqualTo("intValue");
-		assertThat(methods.iterator()).flatExtracting(Method::getName).containsExactly(
+		assertThat(getAll(methods)).flatExtracting(Method::getName).containsExactly(
 				"intValue", "value");
 	}
 
 	@Test
 	public void forAnnotationWithOnlyValueAttributeReturnsAttributes() {
-		AttributeMethods methods = AttributeMethods.forAnnotationType(
-				ValueOnly.class);
+		AttributeMethods methods = AttributeMethods.forAnnotationType(ValueOnly.class);
 		assertThat(methods.get("value").getName()).isEqualTo("value");
 		assertThat(methods.isOnlyValueAttribute()).isTrue();
+	}
+
+	private List<Method> getAll(AttributeMethods attributes) {
+		List<Method> result = new ArrayList<>(attributes.size());
+		for (int i = 0; i < attributes.size(); i++) {
+			result.add(attributes.get(i));
+		}
+		return result;
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)

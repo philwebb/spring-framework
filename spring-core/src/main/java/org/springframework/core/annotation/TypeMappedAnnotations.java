@@ -31,6 +31,8 @@ import java.util.stream.StreamSupport;
 import org.springframework.lang.Nullable;
 
 /**
+ * {@link MergedAnnotations} implementation that searches for and adapts
+ * annotations and meta-annotations using {@link AnnotationTypeMappings}.
  *
  * @author Phillip Webb
  * @since 5.1
@@ -227,10 +229,9 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 	}
 
 	private <C, R> R scan(C criteria, AnnotationsProcessor<C, R> processor) {
-		// FIXME if we already have aggregates and the processor could support
-		// it we could use those instead
 		if (this.annotations != null) {
-			R result = processor.doWithAnnotations(criteria, 0, this.source, this.annotations);
+			R result = processor.doWithAnnotations(criteria, 0, this.source,
+					this.annotations);
 			return processor.finish(result);
 		}
 		return AnnotationsScanner.scan(criteria, this.element, this.searchStrategy,
@@ -263,7 +264,8 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 	}
 
 	/**
-	 * {@link AnnotationsProcessor} that finds a single {@link MergedAnnotation}.
+	 * {@link AnnotationsProcessor} that finds a single
+	 * {@link MergedAnnotation}.
 	 */
 	private class MergedAnnotationFinder<A extends Annotation>
 			implements AnnotationsProcessor<Object, MergedAnnotation<A>> {
@@ -293,10 +295,13 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		}
 
 		@Override
+		@Nullable
 		public MergedAnnotation<A> doWithAnnotations(Object type, int aggregateIndex,
 				@Nullable Object source, Annotation[] annotations) {
 			for (Annotation annotation : annotations) {
-				if (annotation == null || TypeMappedAnnotations.this.annotationFilter.matches(annotation)) {
+				if (annotation == null
+						|| TypeMappedAnnotations.this.annotationFilter.matches(
+								annotation)) {
 					continue;
 				}
 				for (Annotation candidate : annotations) {
@@ -310,18 +315,25 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 			return null;
 		}
 
+		@Nullable
 		private MergedAnnotation<A> process(Object type, int aggregateIndex,
 				@Nullable Object source, Annotation annotation) {
+			if (annotation == null) {
+				return null;
+			}
 			Annotation[] repeatedAnnotations = TypeMappedAnnotations.this.repeatableContainers.findRepeatedAnnotations(
 					annotation);
 			if (repeatedAnnotations != null) {
-				return doWithAnnotations(type, aggregateIndex, source, repeatedAnnotations);
+				return doWithAnnotations(type, aggregateIndex, source,
+						repeatedAnnotations);
 			}
 			AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotationType(
-					annotation.annotationType(), TypeMappedAnnotations.this.annotationFilter);
+					annotation.annotationType(),
+					TypeMappedAnnotations.this.annotationFilter);
 			for (int i = 0; i < mappings.size(); i++) {
 				AnnotationTypeMapping mapping = mappings.get(i);
-				if (isMappingForType(mapping, TypeMappedAnnotations.this.annotationFilter, this.requiredType)) {
+				if (isMappingForType(mapping, TypeMappedAnnotations.this.annotationFilter,
+						this.requiredType)) {
 					MergedAnnotation<A> candidate = new TypeMappedAnnotation<>(mapping,
 							source, annotation, aggregateIndex);
 					if (this.predicate == null || this.predicate.test(candidate)) {
@@ -379,7 +391,9 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		private void addAggregateAnnotations(List<Annotation> aggregateAnnotations,
 				Annotation[] annotations) {
 			for (Annotation annotation : annotations) {
-				if (annotation != null && !TypeMappedAnnotations.this.annotationFilter.matches(annotation)) {
+				if (annotation != null
+						&& !TypeMappedAnnotations.this.annotationFilter.matches(
+								annotation)) {
 					Annotation[] repeatedAnnotations = TypeMappedAnnotations.this.repeatableContainers.findRepeatedAnnotations(
 							annotation);
 					if (repeatedAnnotations != null) {
@@ -427,16 +441,19 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		}
 
 		public AnnotationTypeMapping getMapping(int annotationIndex, int mappingIndex) {
-			AnnotationTypeMappings mappings = this.mappings[annotationIndex];
+			AnnotationTypeMappings mappings = getMappings(annotationIndex);
 			return mappingIndex < mappings.size() ? mappings.get(mappingIndex) : null;
+		}
+
+		public AnnotationTypeMappings getMappings(int annotationIndex) {
+			return this.mappings[annotationIndex];
 		}
 
 		public <A extends Annotation> MergedAnnotation<A> getMergedAnnotation(
 				int annotationIndex, int mappingIndex) {
-			return new TypeMappedAnnotation<>(this.mappings[annotationIndex].get(mappingIndex),
-					this.source,
-					this.annotations.get(annotationIndex),
-					this.aggregateIndex);
+			return new TypeMappedAnnotation<>(
+					this.mappings[annotationIndex].get(mappingIndex), this.source,
+					this.annotations.get(annotationIndex), this.aggregateIndex);
 		}
 
 	}
@@ -509,7 +526,8 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 			do {
 				mapping = aggregate.getMapping(annotationIndex,
 						this.mappingCursors[annotationIndex]);
-				if (isMappingForType(mapping, TypeMappedAnnotations.this.annotationFilter, this.requiredType)) {
+				if (isMappingForType(mapping, TypeMappedAnnotations.this.annotationFilter,
+						this.requiredType)) {
 					return mapping;
 				}
 				this.mappingCursors[annotationIndex]++;
@@ -525,8 +543,22 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 
 		@Override
 		public long estimateSize() {
-			// FIXME
-			return Integer.MAX_VALUE;
+			int size = 0;
+			for (int aggregateIndex = this.aggregateCursor; aggregateIndex < this.aggregates.size(); aggregateIndex++) {
+				Aggregate aggregate = this.aggregates.get(aggregateIndex);
+				for (int annotationIndex = 0; annotationIndex < aggregate.size(); annotationIndex++) {
+					AnnotationTypeMappings mappings = aggregate.getMappings(
+							annotationIndex);
+					int numberOfMappings = mappings.size();
+					if (aggregateIndex == this.aggregateCursor
+							&& this.mappingCursors != null) {
+						numberOfMappings -= Math.min(this.mappingCursors[annotationIndex],
+								mappings.size());
+					}
+					size += numberOfMappings;
+				}
+			}
+			return size;
 		}
 
 		@Override

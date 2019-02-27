@@ -44,7 +44,7 @@ final class AttributeMethods {
 		return m1 != null ? -1 : 1;
 	};
 
-	private static final AttributeMethods NONE = new AttributeMethods(new Method[0]);
+	static final AttributeMethods NONE = new AttributeMethods(new Method[0]);
 
 	private final Method[] attributeMethods;
 

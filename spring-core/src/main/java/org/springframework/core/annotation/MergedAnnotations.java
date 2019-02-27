@@ -161,6 +161,7 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 * @param predicate a predicate that must match, or {@code null} if only
 	 * type matching is required
 	 * @return a {@link MergedAnnotation} instance
+	 * @see MergedAnnotationPredicates
 	 */
 	<A extends Annotation> MergedAnnotation<A> get(@Nullable Class<A> annotationType,
 			@Nullable Predicate<? super MergedAnnotation<A>> predicate);
@@ -172,9 +173,11 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 * @param predicate a predicate that must match, or {@code null} if only
 	 * type matching is required
 	 * @param selector a selector used to choose the most appropriate
-	 * annotation, or {@code null} to select the
+	 * annotation within an aggregate, or {@code null} to select the
 	 * {@link MergedAnnotationSelectors#nearest() nearest}.
 	 * @return a {@link MergedAnnotation} instance
+	 * @see MergedAnnotationPredicates
+	 * @see MergedAnnotationSelectors
 	 */
 	<A extends Annotation> MergedAnnotation<A> get(@Nullable Class<A> annotationType,
 			@Nullable Predicate<? super MergedAnnotation<A>> predicate,
@@ -197,6 +200,7 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 * @param predicate a predicate that must match, or {@code null} if only
 	 * type matching is required
 	 * @return a {@link MergedAnnotation} instance
+	 * @see MergedAnnotationPredicates
 	 */
 	<A extends Annotation> MergedAnnotation<A> get(@Nullable String annotationType,
 			@Nullable Predicate<? super MergedAnnotation<A>> predicate);
@@ -208,9 +212,11 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 * @param predicate a predicate that must match, or {@code null} if only
 	 * type matching is required
 	 * @param selector a selector used to choose the most appropriate
-	 * annotation, or {@code null} to select the
+	 * annotation within an aggregate, or {@code null} to select the
 	 * {@link MergedAnnotationSelectors#nearest() nearest}.
 	 * @return a {@link MergedAnnotation} instance
+	 * @see MergedAnnotationPredicates
+	 * @see MergedAnnotationSelectors
 	 */
 	<A extends Annotation> MergedAnnotation<A> get(@Nullable String annotationType,
 			@Nullable Predicate<? super MergedAnnotation<A>> predicate,
