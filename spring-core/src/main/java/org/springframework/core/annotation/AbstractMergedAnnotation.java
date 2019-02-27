@@ -23,6 +23,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
@@ -144,6 +145,10 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 		return (E[]) getRequiredValue(attributeName, arrayType);
 	}
 
+	private <T> T getRequiredValue(String attributeName, Class<T> type) {
+		return getValue(attributeName, type, true);
+	}
+
 	@Override
 	public Optional<Object> getValue(String attributeName) {
 		return getValue(attributeName, Object.class);
@@ -196,10 +201,18 @@ abstract class AbstractMergedAnnotation<A extends Annotation>
 	 */
 	protected abstract A createSynthesized();
 
-	private <T> T getRequiredValue(String attributeName, Class<T> type) {
-		return getValue(attributeName, type, true);
-	}
-
+	/**
+	 * Get the underlying attribute value.
+	 * @param attributeName the attribute name
+	 * @param type the type to return (see {@link MergedAnnotation} class
+	 * documentation for details).
+	 * @param required if the value is required or optional
+	 * @return the attribute value or {@code null} if the value is not found and
+	 * is not required
+	 * @throws IllegalArgumentException if the source type is not compatible
+	 * @throws NoSuchElementException if the value is required but not found
+	 */
+	@Nullable
 	protected abstract <T> T getValue(String attributeName, Class<T> type,
 			boolean required);
 

@@ -20,10 +20,10 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
 import org.springframework.util.ConcurrentReferenceHashMap;
 
 /**
@@ -33,7 +33,7 @@ import org.springframework.util.ConcurrentReferenceHashMap;
  * @author Phillip Webb
  * @since 5.2
  */
-final class AttributeMethods implements Iterable<Method> {
+final class AttributeMethods {
 
 	private static final Map<Class<? extends Annotation>, AttributeMethods> cache = new ConcurrentReferenceHashMap<>();
 
@@ -44,33 +44,57 @@ final class AttributeMethods implements Iterable<Method> {
 		return m1 != null ? -1 : 1;
 	};
 
-	static final AttributeMethods NONE = new AttributeMethods(new Method[0]);
+	private static final AttributeMethods NONE = new AttributeMethods(new Method[0]);
 
 	private final Method[] attributeMethods;
 
-	public AttributeMethods(Method[] attributeMethods) {
+	private AttributeMethods(Method[] attributeMethods) {
 		this.attributeMethods = attributeMethods;
 		for (Method method : attributeMethods) {
 			method.setAccessible(true);
 		}
 	}
 
-	public boolean isValueOnly() {
+	/**
+	 * Return if this instance only contains only a single attribute named
+	 * {@code value}.
+	 * @return {@code true} if this is only a value attribute
+	 */
+	public boolean isOnlyValueAttribute() {
 		return this.attributeMethods.length == 1
 				&& MergedAnnotation.VALUE.equals(this.attributeMethods[0].getName());
 	}
 
+	/**
+	 * Return the attribute with the specified name or {@code null} if no
+	 * matching attribute exists.
+	 * @param name the attribute name to find
+	 * @return the attribute method or {@code null}
+	 */
 	@Nullable
 	public Method get(String name) {
 		int index = indexOf(name);
 		return index != -1 ? this.attributeMethods[index] : null;
 	}
 
+	/**
+	 * Return the attribute at the specified index.
+	 * @param index the index of the attribute to return
+	 * @return the attribute method
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 * (<tt>index &lt; 0 || index &gt;= size()</tt>)
+	 */
 	@Nullable
 	public Method get(int index) {
 		return this.attributeMethods[index];
 	}
 
+	/**
+	 * Return the index of the attribute with the specified name, or {@code -1}
+	 * if there is no attribute with the name.
+	 * @param name the name to find
+	 * @return the index of the attribute, or {@code -1}
+	 */
 	public int indexOf(String name) {
 		for (int i = 0; i < this.attributeMethods.length; i++) {
 			if (this.attributeMethods[i].getName().equals(name)) {
@@ -80,6 +104,12 @@ final class AttributeMethods implements Iterable<Method> {
 		return -1;
 	}
 
+	/**
+	 * Return the index of the specified attribute , or {@code -1} if the
+	 * attribute is not not in this collection.
+	 * @param name the attribute to find
+	 * @return the index of the attribute, or {@code -1}
+	 */
 	public int indexOf(Method attribute) {
 		for (int i = 0; i < this.attributeMethods.length; i++) {
 			if (this.attributeMethods[i] == attribute) {
@@ -89,19 +119,19 @@ final class AttributeMethods implements Iterable<Method> {
 		return -1;
 	}
 
+	/**
+	 * Return the number of attributes in this collection.
+	 * @return the number of attributes
+	 */
 	public int size() {
 		return this.attributeMethods.length;
 	}
 
-	@Override
-	public Iterator<Method> iterator() {
-		return new MethodsIterator();
-	}
-
-	public static Method get(Class<? extends Annotation> annotationType, String name) {
-		return forAnnotationType(annotationType).get(name);
-	}
-
+	/**
+	 * Return the attribute methods for the given annotation type.
+	 * @param annotationType the annotation type
+	 * @return the attribute methods for the annotation
+	 */
 	public static AttributeMethods forAnnotationType(
 			@Nullable Class<? extends Annotation> annotationType) {
 		if (annotationType == null) {
@@ -132,32 +162,69 @@ final class AttributeMethods implements Iterable<Method> {
 		return method.getParameterCount() == 0 && method.getReturnType() != void.class;
 	}
 
-	public static String describe(Method attributeMethod) {
-		return describe(attributeMethod.getDeclaringClass(), attributeMethod.getName());
+	/**
+	 * Check the declared attributes of the given annotation, in particular
+	 * covering Google App Engine's late arrival of
+	 * {@code TypeNotPresentExceptionProxy} for {@code Class} values (instead of
+	 * early {@code Class.getAnnotations() failure}.
+	 * @param annotation the annotation to validate
+	 * @throws IllegalStateException if a declared {@code Class} attribute could
+	 * not be read
+	 */
+	public static void validate(Annotation annotation) {
+		Assert.notNull(annotation, "Annotation must not be null");
+		AttributeMethods attributes = AttributeMethods.forAnnotationType(
+				annotation.annotationType());
+		for (int i = 0; i < attributes.size(); i++) {
+			Method attribute = attributes.get(i);
+			validate(annotation, attribute);
+		}
 	}
 
-	public static String describe(Class<?> annotationType, String attributeName) {
-		return "attribute '" + attributeName + "' in annotation ["
-				+ annotationType.getName() + "]";
+	private static void validate(Annotation annotation, Method attribute) {
+		Class<?> type = attribute.getReturnType();
+		if (type == Class.class || type == Class[].class) {
+			try {
+				attribute.invoke(annotation);
+			}
+			catch (Throwable ex) {
+				throw new IllegalStateException(
+						"Could not obtain annotation attribute value for "
+								+ attribute.getName() + " declared on "
+								+ annotation.annotationType(),
+						ex);
+			}
+		}
 	}
 
 	/**
-	 * Method {@link Iterator}.
+	 * Return a description for the given attribute method suitable to use in
+	 * exception messages and logs.
+	 * @param attribute the attribute to describe
+	 * @return a description of the attribute
 	 */
-	private class MethodsIterator implements Iterator<Method> {
-
-		private int index = 0;
-
-		@Override
-		public boolean hasNext() {
-			return this.index < attributeMethods.length;
+	public static String describe(@Nullable Method attribute) {
+		if (attribute == null) {
+			return "(none)";
 		}
+		return describe(attribute.getDeclaringClass(), attribute.getName());
+	}
 
-		@Override
-		public Method next() {
-			return attributeMethods[index++];
+	/**
+	 * Return a description for the given attribute method suitable to use in
+	 * exception messages and logs.
+	 * @param attribute the attribute to describe
+	 * @return a description of the attribute
+	 */
+	public static String describe(@Nullable Class<?> annotationType,
+			@Nullable String attributeName) {
+		if (attributeName == null) {
+			return "(none)";
 		}
-
+		String in = annotationType != null
+				? " in annotation [" + annotationType.getName() + "]"
+				: "";
+		return "attribute '" + attributeName + "'" + in;
 	}
 
 }

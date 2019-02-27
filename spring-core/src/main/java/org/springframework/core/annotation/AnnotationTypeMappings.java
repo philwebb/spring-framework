@@ -20,7 +20,6 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +33,8 @@ import org.springframework.util.ConcurrentReferenceHashMap;
  * root {@link Annotation}.
  * <p>
  * Supports convention based merging of meta-annotations as well as implicit and
- * explicit {@link AliasFor @AliasFor} aliases.
+ * explicit {@link AliasFor @AliasFor} aliases. Also provide information about
+ * mirrored attributes.
  * <p>
  * This class is designed to be cached so that meta-annotations only need to be
  * searched once, regardless of how many times they are actually used.
@@ -43,7 +43,7 @@ import org.springframework.util.ConcurrentReferenceHashMap;
  * @since 5.2
  * @see AnnotationTypeMapping
  */
-class AnnotationTypeMappings implements Iterable<AnnotationTypeMapping> {
+class AnnotationTypeMappings {
 
 	private static final Map<AnnotationFilter, Cache> cache = new ConcurrentReferenceHashMap<>();
 
@@ -51,7 +51,7 @@ class AnnotationTypeMappings implements Iterable<AnnotationTypeMapping> {
 
 	private final List<AnnotationTypeMapping> mappings;
 
-	public AnnotationTypeMappings(AnnotationFilter filter,
+	private AnnotationTypeMappings(AnnotationFilter filter,
 			Class<? extends Annotation> annotationType) {
 		this.filter = filter;
 		this.mappings = new ArrayList<>();
@@ -94,7 +94,7 @@ class AnnotationTypeMappings implements Iterable<AnnotationTypeMapping> {
 	}
 
 	private boolean isMappable(AnnotationTypeMapping parent, Annotation metaAnnotation) {
-		return !filter.matches(metaAnnotation)
+		return !this.filter.matches(metaAnnotation)
 				&& !isAlreadyMapped(parent, metaAnnotation);
 	}
 
@@ -111,24 +111,45 @@ class AnnotationTypeMappings implements Iterable<AnnotationTypeMapping> {
 		return false;
 	}
 
+	/**
+	 * Return the total number of contained mappings.
+	 * @return the total number of mappings
+	 */
 	public int size() {
 		return this.mappings.size();
 	}
 
+	/**
+	 * Return an individual mapping from this instance. Index {@code 0} will
+	 * always be return the root mapping, higer indexes will return
+	 * meta-annotation mappings.
+	 * @param index the index to return
+	 * @return the {@link AnnotationTypeMapping}
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 * (<tt>index &lt; 0 || index &gt;= size()</tt>)
+	 */
 	public AnnotationTypeMapping get(int index) {
 		return this.mappings.get(index);
 	}
 
-	public Iterator<AnnotationTypeMapping> iterator() {
-		return this.mappings.iterator();
-	}
-
+	/**
+	 * Return {@link AnnotationTypeMappings} for the specified annotation type.
+	 * @param annotationType the source annotation type
+	 * @return type mappings for the annotation type
+	 */
 	public static AnnotationTypeMappings forAnnotationType(
 			Class<? extends Annotation> annotationType) {
 		return forAnnotationType(annotationType,
 				AnnotationFilter.mostAppropriateFor(annotationType));
 	}
 
+	/**
+	 * Return {@link AnnotationTypeMappings} for the specified annotation type.
+	 * @param annotationType the source annotation type
+	 * @param annotationFilter the annotation filter used to limit which
+	 * annotations are considered
+	 * @return type mappings for the annotation type
+	 */
 	public static AnnotationTypeMappings forAnnotationType(
 			Class<? extends Annotation> annotationType,
 			AnnotationFilter annotationFilter) {
@@ -137,17 +158,30 @@ class AnnotationTypeMappings implements Iterable<AnnotationTypeMapping> {
 		return cache.computeIfAbsent(annotationFilter, Cache::new).get(annotationType);
 	}
 
+	/**
+	 * Cache created per {@link AnnotationFilter}.
+	 */
 	private static class Cache {
 
 		private final AnnotationFilter filter;
 
 		private final Map<Class<? extends Annotation>, AnnotationTypeMappings> mappings;
 
-		public Cache(AnnotationFilter filter) {
+		/**
+		 * Create a cache instance with the specified filter.
+		 * @param filter the annotation filter
+		 */
+		Cache(AnnotationFilter filter) {
 			this.filter = filter;
 			this.mappings = new ConcurrentReferenceHashMap<>();
 		}
 
+		/**
+		 * Return or create {@link AnnotationTypeMappings} for the specified
+		 * annotation type.
+		 * @param annotationType the annotation type
+		 * @return a new or existing {@link AnnotationTypeMapping} instance
+		 */
 		public AnnotationTypeMappings get(Class<? extends Annotation> annotationType) {
 			return this.mappings.computeIfAbsent(annotationType, this::createMappings);
 		}

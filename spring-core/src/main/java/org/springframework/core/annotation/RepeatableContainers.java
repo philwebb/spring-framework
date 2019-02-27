@@ -134,7 +134,7 @@ public abstract class RepeatableContainers {
 		Annotation[] findRepeatedAnnotations(Annotation annotation) {
 			AttributeMethods methods = AttributeMethods.forAnnotationType(
 					annotation.annotationType());
-			if (methods.isValueOnly()) {
+			if (methods.isOnlyValueAttribute()) {
 				Method method = methods.get("value");
 				Class<?> returnType = method.getReturnType();
 				if (returnType.isArray()) {

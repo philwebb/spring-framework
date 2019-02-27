@@ -22,7 +22,6 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -666,10 +665,8 @@ public abstract class AnnotationUtils {
 	public static void validateAnnotation(Annotation annotation) {
 		MigrateMethod.fromCall(() ->
 			InternalAnnotationUtils.validateAnnotation(annotation)
-		).to(() -> {
-			// FIXME
-			//DeclaredAnnotation.validate(annotation)
-		}
+		).to(() ->
+			AttributeMethods.validate(annotation)
 		);
 	}
 

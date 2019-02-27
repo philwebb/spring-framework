@@ -19,7 +19,6 @@ package org.springframework.core.annotation;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Inherited;
 import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.EnumSet;
 import java.util.Map;
@@ -29,23 +28,35 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import org.springframework.core.MethodIntrospector;
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
 
 /**
  * A single merged annotation returned from a {@link MergedAnnotations}
- * collection.
+ * collection. Presents a view onto an annotation where attribute values may
+ * have been "merged" from different source values.
+ * <p>
+ * Attribute values may be accessed using the various {@code get} methods. For
+ * example, to access an {@code int} attribute the {@link #getInt(String)}
+ * method would be used.
+ * <p>
+ * Note that attribute values are <b>not</b> converted when accessed. For
+ * example, it is not possible to call {@link #getString(String)} if the
+ * underlying attribute is an {@code int}. The only exception to this rule is
+ * {@code Class} and {@code Class[]} values which may be accessed as
+ * {@code String} and {@code String[]} respectively to prevent potential early
+ * class initialization.
+ * <p>
+ * If necessary, a {@link MergedAnnotation} can be {@link #synthesize()
+ * synthesized} back into an actual {@link java.lang.annotation.Annotation}.
  *
  * @author Phillip Webb
  * @since 5.2
  * @param <A> the annotation type
  * @see MergedAnnotations
+ * @see MergedAnnotationPredicates
  */
 public interface MergedAnnotation<A extends Annotation> {
-
-	// FIXME equal hashcode rules?
 
 	/**
 	 * The attribute name for annotations with a single element.
@@ -397,6 +408,7 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * @param predicate a predicate used to filter attribute names
 	 * @return a filtered view of the annotation
 	 * @see #filterDefaultValues()
+	 * @see MergedAnnotationPredicates
 	 */
 	MergedAnnotation<A> filterAttributes(Predicate<String> predicate);
 
@@ -579,30 +591,6 @@ public interface MergedAnnotation<A extends Annotation> {
 				result.add(value);
 			}
 		}
-
-	}
-
-	/**
-	 * Interface returned from {@link MergedAnnotation#find} that can be used to
-	 * search for elements that are annotated or meta-annotated with a specific
-	 * annotation type.
-	 * @param <R> the result value type
-	 * @see MergedAnnotationIndex
-	 * @see MethodIntrospector
-	 */
-	public interface MergedAnnotationFinder<R> {
-
-		Map<Method, R> fromMethodsOf(Class<?> source);
-
-		Map<Method, R> fromMethodsOf(Class<?> source, SearchStrategy searchStrategy);
-
-		Map<Method, R> fromMethodsOf(Class<?> source,
-				Function<Method, MergedAnnotations> annotationsProvider);
-
-		<T, M> Map<M, R> fromMethodsOf(ClassLoader classLoader, T source,
-				Function<T, String> classNameProvider,
-				Function<T, Iterable<M>> methodsProvider,
-				Function<Method, MergedAnnotations> annotationsProvider);
 
 	}
 

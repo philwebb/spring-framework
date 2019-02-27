@@ -32,10 +32,8 @@ import org.junit.Test;
 import org.springframework.core.annotation.AnnotationTypeMapping.MirrorSets;
 import org.springframework.core.annotation.AnnotationTypeMapping.MirrorSets.MirrorSet;
 import org.springframework.lang.UsesSunMisc;
-import org.springframework.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.Assert.*;
 
 /**
  * Tests for {@link AnnotationTypeMappings} and {@link AnnotationTypeMapping}.
@@ -57,7 +55,7 @@ public class AnnotationTypeMappingsTests {
 				SimpleAnnotation.class);
 		assertThat(mappings.size()).isEqualTo(1);
 		assertThat(mappings.get(0).getAnnotationType()).isEqualTo(SimpleAnnotation.class);
-		assertThat(mappings.iterator()).flatExtracting(
+		assertThat(getAll(mappings)).flatExtracting(
 				AnnotationTypeMapping::getAnnotationType).containsExactly(
 						SimpleAnnotation.class);
 	}
@@ -74,7 +72,7 @@ public class AnnotationTypeMappingsTests {
 		AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotationType(
 				MetaAnnotated.class);
 		assertThat(mappings.size()).isEqualTo(6);
-		assertThat(mappings.iterator()).flatExtracting(
+		assertThat(getAll(mappings)).flatExtracting(
 				AnnotationTypeMapping::getAnnotationType).containsExactly(
 						MetaAnnotated.class, A.class, B.class, AA.class, AB.class,
 						ABC.class);
@@ -85,7 +83,7 @@ public class AnnotationTypeMappingsTests {
 		AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotationType(
 				WithRepeatedMetaAnnotations.class);
 		assertThat(mappings.size()).isEqualTo(3);
-		assertThat(mappings.iterator()).flatExtracting(
+		assertThat(getAll(mappings)).flatExtracting(
 				AnnotationTypeMapping::getAnnotationType).containsExactly(
 						WithRepeatedMetaAnnotations.class, Repeating.class,
 						Repeating.class);
@@ -96,7 +94,7 @@ public class AnnotationTypeMappingsTests {
 		AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotationType(
 				SelfAnnotated.class);
 		assertThat(mappings.size()).isEqualTo(1);
-		assertThat(mappings.iterator()).flatExtracting(
+		assertThat(getAll(mappings)).flatExtracting(
 				AnnotationTypeMapping::getAnnotationType).containsExactly(
 						SelfAnnotated.class);
 	}
@@ -106,7 +104,7 @@ public class AnnotationTypeMappingsTests {
 		AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotationType(
 				LoopA.class);
 		assertThat(mappings.size()).isEqualTo(2);
-		assertThat(mappings.iterator()).flatExtracting(
+		assertThat(getAll(mappings)).flatExtracting(
 				AnnotationTypeMapping::getAnnotationType).containsExactly(LoopA.class,
 						LoopB.class);
 	}
@@ -451,8 +449,10 @@ public class AnnotationTypeMappingsTests {
 
 	@Test
 	public void getConventionMappingWhenConventionToExplicitAliasesReturnsMappedAttributes() {
-		AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotationType(ConventionToExplicitAliases.class);
-		AnnotationTypeMapping mapping = getMapping(mappings, ConventionToExplicitAliasesTarget.class);
+		AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotationType(
+				ConventionToExplicitAliases.class);
+		AnnotationTypeMapping mapping = getMapping(mappings,
+				ConventionToExplicitAliasesTarget.class);
 		assertThat(mapping.getConventionMapping(0)).isEqualTo(0);
 		assertThat(mapping.getConventionMapping(1)).isEqualTo(0);
 	}
@@ -464,7 +464,8 @@ public class AnnotationTypeMappingsTests {
 				AttributeValueExtractor::fromAnnotation);
 		Method[] result = new Method[resolved.length];
 		for (int i = 0; i < resolved.length; i++) {
-			result[i] = resolved[i] != -1 ? mapping.getAttributes().get(resolved[i]) : null;
+			result[i] = resolved[i] != -1 ? mapping.getAttributes().get(resolved[i])
+					: null;
 		}
 		return result;
 	}
@@ -476,19 +477,30 @@ public class AnnotationTypeMappingsTests {
 	}
 
 	@Nullable
-	private Method getConventionMapping(AnnotationTypeMapping mapping, int attributeIndex) {
+	private Method getConventionMapping(AnnotationTypeMapping mapping,
+			int attributeIndex) {
 		int mapped = mapping.getConventionMapping(attributeIndex);
 		return mapped != -1 ? mapping.getRoot().getAttributes().get(mapped) : null;
 	}
 
 	private AnnotationTypeMapping getMapping(AnnotationTypeMappings mappings,
 			Class<? extends Annotation> annotationType) {
-		for (AnnotationTypeMapping candidate : mappings) {
+		for (AnnotationTypeMapping candidate : getAll(mappings)) {
 			if (candidate.getAnnotationType() == annotationType) {
 				return candidate;
 			}
 		}
 		return null;
+	}
+
+	private List<AnnotationTypeMapping> getAll(AnnotationTypeMappings mappings) {
+		// AnnotationTypeMappings does not implement Iterable so we don't create
+		// too many garbage Iterators
+		List<AnnotationTypeMapping> result = new ArrayList<>(mappings.size());
+		for (int i = 0; i < mappings.size(); i++) {
+			result.add(mappings.get(i));
+		}
+		return result;
 	}
 
 	private List<String> getNames(MirrorSet mirrorSet) {
@@ -932,6 +944,5 @@ public class AnnotationTypeMappingsTests {
 		String test() default "";
 
 	}
-
 
 }

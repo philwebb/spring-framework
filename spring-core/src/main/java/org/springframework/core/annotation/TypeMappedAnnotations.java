@@ -226,12 +226,12 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		return aggregates;
 	}
 
-	private <C, R> R scan(C criteria, AnnotationProcessor<C, R> processor) {
+	private <C, R> R scan(C criteria, AnnotationsProcessor<C, R> processor) {
 		// FIXME if we already have aggregates and the processor could support
 		// it we could use those instead
 		if (this.annotations != null) {
-			R result = processor.process(criteria, 0, this.source, this.annotations);
-			return processor.getFinalResult(result);
+			R result = processor.doWithAnnotations(criteria, 0, this.source, this.annotations);
+			return processor.finish(result);
 		}
 		return AnnotationsScanner.scan(criteria, this.element, this.searchStrategy,
 				processor);
@@ -263,10 +263,10 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 	}
 
 	/**
-	 * {@link AnnotationProcessor} that finds a single {@link MergedAnnotation}.
+	 * {@link AnnotationsProcessor} that finds a single {@link MergedAnnotation}.
 	 */
 	private class MergedAnnotationFinder<A extends Annotation>
-			implements AnnotationProcessor<Object, MergedAnnotation<A>> {
+			implements AnnotationsProcessor<Object, MergedAnnotation<A>> {
 
 		private final Object requiredType;
 
@@ -288,12 +288,12 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		}
 
 		@Override
-		public MergedAnnotation<A> nextAggregate(Object context, int aggregateIndex) {
+		public MergedAnnotation<A> doWithAggregate(Object context, int aggregateIndex) {
 			return this.result;
 		}
 
 		@Override
-		public MergedAnnotation<A> process(Object type, int aggregateIndex,
+		public MergedAnnotation<A> doWithAnnotations(Object type, int aggregateIndex,
 				@Nullable Object source, Annotation[] annotations) {
 			for (Annotation annotation : annotations) {
 				if (annotation == null || annotationFilter.matches(annotation)) {
@@ -315,7 +315,7 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 			Annotation[] repeatedAnnotations = repeatableContainers.findRepeatedAnnotations(
 					annotation);
 			if (repeatedAnnotations != null) {
-				return process(type, aggregateIndex, source, repeatedAnnotations);
+				return doWithAnnotations(type, aggregateIndex, source, repeatedAnnotations);
 			}
 			AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotationType(
 					annotation.annotationType(), annotationFilter);
@@ -342,7 +342,7 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		}
 
 		@Override
-		public MergedAnnotation<A> getFinalResult(MergedAnnotation<A> result) {
+		public MergedAnnotation<A> finish(MergedAnnotation<A> result) {
 			result = result != null ? result : this.result;
 			return result != null ? result : MergedAnnotation.missing();
 		}
@@ -350,15 +350,15 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 	}
 
 	/**
-	 * {@link AnnotationProcessor} that collects {@link Aggregate} instances.
+	 * {@link AnnotationsProcessor} that collects {@link Aggregate} instances.
 	 */
 	private class AggregatesCollector
-			implements AnnotationProcessor<Object, List<Aggregate>> {
+			implements AnnotationsProcessor<Object, List<Aggregate>> {
 
 		private final List<Aggregate> aggregates = new ArrayList<>();
 
 		@Override
-		public List<Aggregate> process(Object criteria, int aggregateIndex,
+		public List<Aggregate> doWithAnnotations(Object criteria, int aggregateIndex,
 				@Nullable Object source, Annotation[] annotations) {
 			this.aggregates.add(createAggregate(aggregateIndex, source, annotations));
 			return null;
@@ -394,7 +394,7 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		}
 
 		@Override
-		public List<Aggregate> getFinalResult(List<Aggregate> processResult) {
+		public List<Aggregate> finish(List<Aggregate> processResult) {
 			return this.aggregates;
 		}
 

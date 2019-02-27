@@ -97,7 +97,7 @@ import org.springframework.lang.Nullable;
  * those that match {@link #stream(String) a specific type}. You can also
  * quickly tell if an annotation {@link #isPresent(String) is present}.
  * <p>
- * Here are some typical example:
+ * Here are some typical examples:
  *
  * <pre class="code">
  * // is an annotation present or meta-present
@@ -119,6 +119,9 @@ import org.springframework.lang.Nullable;
  * @author Phillip Webb
  * @since 5.2
  * @see MergedAnnotation
+ * @see MergedAnnotationCollectors
+ * @see MergedAnnotationPredicates
+ * @see MergedAnnotationSelectors
  */
 public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>> {
 

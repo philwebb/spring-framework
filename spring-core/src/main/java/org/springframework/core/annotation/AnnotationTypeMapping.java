@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.BiFunction;
 
 import org.springframework.core.annotation.AnnotationTypeMapping.MirrorSets.MirrorSet;
 import org.springframework.lang.Nullable;
@@ -38,7 +37,7 @@ import org.springframework.util.StringUtils;
 
 /**
  * Provides mapping information for a single annotation (or meta-annotation) in
- * the context of a source annotation type.
+ * the context of a root annotation type.
  *
  * @author Phillip Webb
  * @since 5.2
@@ -129,25 +128,26 @@ class AnnotationTypeMapping {
 		if (targetAnnotation == Annotation.class) {
 			targetAnnotation = this.annotationType;
 		}
-		String targetAttribute = aliasFor.attribute();
-		if (!StringUtils.hasLength(targetAttribute)) {
-			targetAttribute = aliasFor.value();
+		String targetAttributeName = aliasFor.attribute();
+		if (!StringUtils.hasLength(targetAttributeName)) {
+			targetAttributeName = aliasFor.value();
 		}
-		if (!StringUtils.hasLength(targetAttribute)) {
-			targetAttribute = attribute.getName();
+		if (!StringUtils.hasLength(targetAttributeName)) {
+			targetAttributeName = attribute.getName();
 		}
-		Method target = AttributeMethods.get(targetAnnotation, targetAttribute);
+		Method target = AttributeMethods.forAnnotationType(targetAnnotation).get(
+				targetAttributeName);
 		if (target == null) {
 			if (targetAnnotation == this.annotationType) {
 				throw new AnnotationConfigurationException(String.format(
 						"@AliasFor declaration on %s declares an "
 								+ "alias for '%s' which is not present.",
-						AttributeMethods.describe(attribute), targetAttribute));
+						AttributeMethods.describe(attribute), targetAttributeName));
 			}
 			throw new AnnotationConfigurationException(String.format(
 					"%s is declared as an @AliasFor nonexistent %s.",
 					StringUtils.capitalize(AttributeMethods.describe(attribute)),
-					AttributeMethods.describe(targetAnnotation, targetAttribute)));
+					AttributeMethods.describe(targetAnnotation, targetAttributeName)));
 		}
 		if (target == attribute) {
 			throw new AnnotationConfigurationException(String.format(
@@ -277,7 +277,8 @@ class AnnotationTypeMapping {
 	}
 
 	private void validateAllAliasesClaimed() {
-		for (Method attribute : this.attributes) {
+		for (int i = 0; i < this.attributes.size(); i++) {
+			Method attribute = this.attributes.get(i);
 			AliasFor aliasFor = attribute.getDeclaredAnnotation(AliasFor.class);
 			if (aliasFor != null && !this.claimedAliases.contains(attribute)) {
 				Method target = resolveAliasTarget(attribute, aliasFor);

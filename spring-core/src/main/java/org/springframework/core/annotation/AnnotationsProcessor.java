@@ -29,9 +29,16 @@ import org.springframework.lang.Nullable;
  * @see TypeMappedAnnotations
  */
 @FunctionalInterface
-interface AnnotationProcessor<C, R> {
+interface AnnotationsProcessor<C, R> {
 
-	default R nextAggregate(C context, int aggregateIndex) {
+	/**
+	 * Called when an aggregate is about to be processed. This method may
+	 * return a {@code non-null} result to short-circuit any further processing.
+	 * @param context context information relevant to the processor
+	 * @param aggregateIndex the aggregate index about to be processed
+	 * @return a {@code non-null} result if no further processing is required
+	 */
+	default R doWithAggregate(C context, int aggregateIndex) {
 		return null;
 	}
 
@@ -46,19 +53,18 @@ interface AnnotationProcessor<C, R> {
 	 * @return a {@code non-null} result if no further processing is required
 	 */
 	@Nullable
-	R process(@Nullable C context, int aggregateIndex, @Nullable Object source,
+	R doWithAnnotations(@Nullable C context, int aggregateIndex, @Nullable Object source,
 			Annotation[] annotations);
 
 	/**
 	 * Return the final result to be returned. By default this method returns
 	 * the last process result.
-	 * @param processResult result returned from {@link #process}, or
-	 * {@code null} if processing was not exited early.
+	 * @param result the last early exit result, or {@code null}.
 	 * @return the final result to be returned to the caller
 	 */
 	@Nullable
-	default R getFinalResult(@Nullable R processResult) {
-		return processResult;
+	default R finish(@Nullable R result) {
+		return result;
 	}
 
 }

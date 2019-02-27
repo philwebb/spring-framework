@@ -60,7 +60,7 @@ public class AttributeMethodsTests {
 		AttributeMethods methods = AttributeMethods.forAnnotationType(
 				ValueOnly.class);
 		assertThat(methods.get("value").getName()).isEqualTo("value");
-		assertThat(methods.isValueOnly()).isTrue();
+		assertThat(methods.isOnlyValueAttribute()).isTrue();
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)

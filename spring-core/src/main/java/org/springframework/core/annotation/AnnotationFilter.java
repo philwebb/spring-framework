@@ -89,13 +89,12 @@ public interface AnnotationFilter {
 
 	/**
 	 * Return an {@link AnnotationFilter} that is the most appropriate for, and
-	 * will always match all the given annotation type. Whenever possible,
+	 * will always match the given annotation type. Whenever possible,
 	 * {@link AnnotationFilter#PLAIN} will be returned.
 	 * @param annotationTypes the annotation types to check
 	 * @return the most appropriate annotation filter
 	 */
-	static AnnotationFilter mostAppropriateFor(
-			@Nullable Class<?> annotationType) {
+	static AnnotationFilter mostAppropriateFor(@Nullable Class<?> annotationType) {
 		return PLAIN.matches(annotationType) ? NONE : PLAIN;
 	}
 
@@ -106,8 +105,7 @@ public interface AnnotationFilter {
 	 * @param annotationTypes the annotation types to check
 	 * @return the most appropriate annotation filter
 	 */
-	static AnnotationFilter mostAppropriateFor(
-			Class<?>... annotationTypes) {
+	static AnnotationFilter mostAppropriateFor(Class<?>... annotationTypes) {
 		Assert.notNull(annotationTypes, "AnnotationTypes must not be null");
 		return mostAppropriateFor(Arrays.asList(annotationTypes));
 	}

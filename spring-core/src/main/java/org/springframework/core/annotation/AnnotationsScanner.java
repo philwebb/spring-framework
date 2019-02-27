@@ -35,7 +35,7 @@ import org.springframework.util.ClassUtils;
  *
  * @author Phillip Webb
  * @since 5.2
- * @see AnnotationProcessor
+ * @see AnnotationsProcessor
  */
 class AnnotationsScanner {
 
@@ -51,10 +51,10 @@ class AnnotationsScanner {
 	 * @param source the source element to scan
 	 * @param searchStrategy the search strategy to use
 	 * @param processor the processor that receives the annotations
-	 * @return the result of {@link AnnotationProcessor#getFinalResult(Object)}
+	 * @return the result of {@link AnnotationsProcessor#finish(Object)}
 	 */
 	public static <C, R> R scan(@Nullable C context, AnnotatedElement source,
-			SearchStrategy searchStrategy, AnnotationProcessor<C, R> processor) {
+			SearchStrategy searchStrategy, AnnotationsProcessor<C, R> processor) {
 		return scan(context, source, searchStrategy, processor, null);
 	}
 
@@ -68,17 +68,17 @@ class AnnotationsScanner {
 	 * @param processor the processor that receives the annotations
 	 * @param classFilter an optional filter that can be used to entirely filter
 	 * out a specific class from the hierarchy
-	 * @return the result of {@link AnnotationProcessor#getFinalResult(Object)}
+	 * @return the result of {@link AnnotationsProcessor#finish(Object)}
 	 */
 	public static <C, R> R scan(C context, AnnotatedElement source,
-			SearchStrategy searchStrategy, AnnotationProcessor<C, R> processor,
+			SearchStrategy searchStrategy, AnnotationsProcessor<C, R> processor,
 			@Nullable BiPredicate<C, Class<?>> classFilter) {
-		return processor.getFinalResult(
+		return processor.finish(
 				process(context, source, searchStrategy, processor, classFilter));
 	}
 
 	private static <C, R> R process(C context, AnnotatedElement source,
-			SearchStrategy searchStrategy, AnnotationProcessor<C, R> processor,
+			SearchStrategy searchStrategy, AnnotationsProcessor<C, R> processor,
 			@Nullable BiPredicate<C, Class<?>> classFilter) {
 		if (source instanceof Class) {
 			return processClass(context, (Class<?>) source, searchStrategy, processor,
@@ -92,7 +92,7 @@ class AnnotationsScanner {
 	}
 
 	private static <C, R> R processClass(C context, Class<?> source,
-			SearchStrategy searchStrategy, AnnotationProcessor<C, R> processor,
+			SearchStrategy searchStrategy, AnnotationsProcessor<C, R> processor,
 			@Nullable BiPredicate<C, Class<?>> classFilter) {
 		switch (searchStrategy) {
 			case DIRECT:
@@ -111,14 +111,14 @@ class AnnotationsScanner {
 	}
 
 	private static <C, R> R processClassInheritedAnnotations(C context, Class<?> source,
-			AnnotationProcessor<C, R> processor,
+			AnnotationsProcessor<C, R> processor,
 			@Nullable BiPredicate<C, Class<?>> classFilter) {
 		Annotation[] relevant = null;
 		int remaining = Integer.MAX_VALUE;
 		int aggregateIndex = 0;
 		Class<?> root = source;
 		while (source != null && source != Object.class && remaining > 0) {
-			R result = processor.nextAggregate(context, aggregateIndex);
+			R result = processor.doWithAggregate(context, aggregateIndex);
 			if (result != null) {
 				return result;
 			}
@@ -142,7 +142,7 @@ class AnnotationsScanner {
 						declaredAnnotations[i] = null;
 					}
 				}
-				result = processor.process(context, aggregateIndex, source,
+				result = processor.doWithAnnotations(context, aggregateIndex, source,
 						declaredAnnotations);
 				if (result != null) {
 					return result;
@@ -155,14 +155,14 @@ class AnnotationsScanner {
 	}
 
 	private static <C, R> R processClassHierarchy(C context, int[] aggregateIndex,
-			Class<?> source, AnnotationProcessor<C, R> processor,
+			Class<?> source, AnnotationsProcessor<C, R> processor,
 			@Nullable BiPredicate<C, Class<?>> classFilter, boolean includeInterfaces) {
-		R result = processor.nextAggregate(context, aggregateIndex[0]);
+		R result = processor.doWithAggregate(context, aggregateIndex[0]);
 		if (result != null) {
 			return result;
 		}
 		Annotation[] annotations = getDeclaredAnnotations(context, source, classFilter);
-		result = processor.process(context, aggregateIndex[0], source, annotations);
+		result = processor.doWithAnnotations(context, aggregateIndex[0], source, annotations);
 		if (result != null) {
 			return result;
 		}
@@ -188,7 +188,7 @@ class AnnotationsScanner {
 	}
 
 	private static <C, R> R processMethod(C context, Method source,
-			SearchStrategy searchStrategy, AnnotationProcessor<C, R> processor,
+			SearchStrategy searchStrategy, AnnotationsProcessor<C, R> processor,
 			@Nullable BiPredicate<C, Class<?>> classFilter) {
 		switch (searchStrategy) {
 			case DIRECT:
@@ -207,17 +207,17 @@ class AnnotationsScanner {
 	}
 
 	private static <C, R> R processMethodInheritedAnnotations(C context, Method source,
-			AnnotationProcessor<C, R> processor, BiPredicate<C, Class<?>> classFilter) {
-		R result = processor.nextAggregate(context, 0);
+			AnnotationsProcessor<C, R> processor, BiPredicate<C, Class<?>> classFilter) {
+		R result = processor.doWithAggregate(context, 0);
 		return result != null ? result
 				: processMethodAnnotations(context, 0, source, processor, classFilter);
 	}
 
 	private static <C, R> R processMethodHierarchy(C context, int[] aggregateIndex,
-			Class<?> sourceClass, AnnotationProcessor<C, R> processor,
+			Class<?> sourceClass, AnnotationsProcessor<C, R> processor,
 			@Nullable BiPredicate<C, Class<?>> classFilter, Method rootMethod,
 			boolean includeInterfaces) {
-		R result = processor.nextAggregate(context, aggregateIndex[0]);
+		R result = processor.doWithAggregate(context, aggregateIndex[0]);
 		if (result != null) {
 			return result;
 		}
@@ -318,10 +318,10 @@ class AnnotationsScanner {
 	}
 
 	private static <C, R> R processMethodAnnotations(C context, int aggregateIndex,
-			Method source, AnnotationProcessor<C, R> processor,
+			Method source, AnnotationsProcessor<C, R> processor,
 			BiPredicate<C, Class<?>> classFilter) {
 		Annotation[] annotations = getDeclaredAnnotations(context, source, classFilter);
-		R result = processor.process(context, aggregateIndex, source, annotations);
+		R result = processor.doWithAnnotations(context, aggregateIndex, source, annotations);
 		if (result != null) {
 			return result;
 		}
@@ -329,17 +329,17 @@ class AnnotationsScanner {
 		if (bridgedMethod != source) {
 			Annotation[] bridgedAnnotations = getDeclaredAnnotations(context,
 					bridgedMethod, classFilter);
-			return processor.process(context, aggregateIndex, source, bridgedAnnotations);
+			return processor.doWithAnnotations(context, aggregateIndex, source, bridgedAnnotations);
 		}
 		return null;
 	}
 
 	private static <C, R> R processElement(C context, AnnotatedElement source,
-			AnnotationProcessor<C, R> processor,
+			AnnotationsProcessor<C, R> processor,
 			@Nullable BiPredicate<C, Class<?>> classFilter) {
-		R result = processor.nextAggregate(context, 0);
+		R result = processor.doWithAggregate(context, 0);
 		return result != null ? result
-				: processor.process(context, 0, source,
+				: processor.doWithAnnotations(context, 0, source,
 						getDeclaredAnnotations(context, source, classFilter));
 	}
 
