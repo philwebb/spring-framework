@@ -55,6 +55,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.Assert.*;
 
 /**
  * Tests for {@link MergedAnnotations} and {@link MergedAnnotation}. These tests
@@ -1856,8 +1857,6 @@ public class MergedAnnotationsTests {
 				webMappingWithPathAndValue).synthesize();
 		assertThat(webMappingWithAliases.toString()).isNotEqualTo(
 				synthesizedWebMapping1.toString());
-		System.out.println(synthesizedWebMapping1);
-		System.out.println(synthesizedWebMapping2);
 		assertToStringForWebMappingWithPathAndValue(synthesizedWebMapping1);
 		assertToStringForWebMappingWithPathAndValue(synthesizedWebMapping2);
 	}
@@ -2030,6 +2029,13 @@ public class MergedAnnotationsTests {
 		// Re-retrieve the array from the synthesized annotation
 		chars = synthesizedCharsContainer.chars();
 		assertThat(chars).containsExactly('x', 'y', 'z');
+	}
+
+	@Test
+	public void getValueWhenHasDefaultOverride() {
+		MergedAnnotation<?> annotation = MergedAnnotations.from(
+				DefaultOverrideClass.class).get(DefaultOverrideRoot.class);
+		assertThat(annotation.getString("text")).isEqualTo("metameta");
 	}
 
 	// @formatter:off
@@ -3321,6 +3327,40 @@ public class MergedAnnotationsTests {
 
 	@TestConfiguration(value = "foo", location = "bar")
 	interface TestConfigurationMismatch {
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface DefaultOverrideRoot {
+
+		String text() default "root";
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@DefaultOverrideRoot
+	@interface DefaultOverrideMeta {
+
+		// String text() default "meta";
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@DefaultOverrideMeta
+	@interface DefaultOverrideMetaMeta {
+
+		String text() default "metameta";
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@DefaultOverrideMetaMeta
+	@interface DefaultOverrideMetaMetaMeta {
+
+	}
+
+	@DefaultOverrideMetaMetaMeta
+	static class DefaultOverrideClass {
+
 	}
 
 	// @formatter:on

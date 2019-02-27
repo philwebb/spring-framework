@@ -197,9 +197,8 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 	public boolean hasDefaultValue(String attributeName) {
 		int attributeIndex = getAttributeIndex(attributeName, true);
 		Object value = getValue(attributeIndex, true, true);
-		return value == null || AttributeValues.isDefaultValue(
-				value, this.mapping.getAttributes().get(attributeIndex),
-				this.valueExtractor);
+		return value == null || AttributeValues.isDefaultValue(value,
+				this.mapping.getAttributes().get(attributeIndex), this.valueExtractor);
 	}
 
 	@Override
@@ -405,8 +404,29 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 		if (mapping.getDepth() == 0) {
 			return this.valueExtractor.apply(attribute, this.rootAttributes);
 		}
-		Annotation metaAnnotation = this.mapping.getAnnotation();
-		return ReflectionUtils.invokeMethod(attribute, metaAnnotation);
+		return getValueFromMetaAnnotation(attribute);
+	}
+
+	private Object getValueFromMetaAnnotation(Method attribute) {
+		AnnotationTypeMapping mapping = this.mapping;
+		if (!VALUE.equals(attribute.getName())) {
+			AnnotationTypeMapping candidate = mapping;
+			while (candidate.getDepth() > 0) {
+				int attributeIndex = candidate.getAttributes().indexOf(
+						attribute.getName());
+				if (attributeIndex != -1) {
+					Method candidateAttribute = candidate.getAttributes().get(
+							attributeIndex);
+					if (candidateAttribute.getReturnType().equals(
+							attribute.getReturnType())) {
+						mapping = candidate;
+						attribute = candidateAttribute;
+					}
+				}
+				candidate = candidate.getParent();
+			}
+		}
+		return ReflectionUtils.invokeMethod(attribute, mapping.getAnnotation());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -468,7 +488,8 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 		}
 		if (attributeType.isArray() && attributeType.getComponentType().isAnnotation()
 				&& value.getClass().isArray()) {
-			MergedAnnotation<?>[] result = new MergedAnnotation<?>[Array.getLength(value)];
+			MergedAnnotation<?>[] result = new MergedAnnotation<?>[Array.getLength(
+					value)];
 			for (int i = 0; i < result.length; i++) {
 				result[i] = adaptToMergedAnnotation(Array.get(value, i),
 						(Class<? extends Annotation>) attributeType.getComponentType());
