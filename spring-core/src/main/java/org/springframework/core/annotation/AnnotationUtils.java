@@ -832,7 +832,10 @@ public abstract class AnnotationUtils {
 	 * @see #getDefaultValue(Class, String)
 	 */
 	public static void postProcessAnnotationAttributes(@Nullable Object annotatedElement,
-			AnnotationAttributes attributes, boolean classValuesAsString) {
+			@Nullable AnnotationAttributes attributes, boolean classValuesAsString) {
+		if (attributes == null) {
+			return;
+		}
 		AnnotationAttributes copy = new AnnotationAttributes(attributes);
 		MigrateMethod.fromCall(() ->
 			InternalAnnotationUtils.postProcessAnnotationAttributes(annotatedElement, copy,
@@ -848,7 +851,7 @@ public abstract class AnnotationUtils {
 				for (int i = 0; i < mapping.getMirrorSets().size(); i++) {
 					MirrorSet mirrorSet = mapping.getMirrorSets().get(i);
 					int resolved = mirrorSet.resolve(attributes.displayName, attributes,
-							AnnotationUtils::fromAnnotationAttributes);
+							AnnotationUtils::getAttributeValueForMirrorResolution);
 					if (resolved != -1) {
 						Method attribute = mapping.getAttributes().get(resolved);
 						Object value = attributes.get(attribute.getName());
@@ -874,8 +877,9 @@ public abstract class AnnotationUtils {
 		});
 	}
 
-	private static Object fromAnnotationAttributes(Object attributes, Method attribute) {
-		Object result = AttributeValueExtractor.fromMap(attributes, attribute);
+	private static Object getAttributeValueForMirrorResolution(Method attribute,
+			Object attributes) {
+		Object result = ((AnnotationAttributes) attributes).get(attribute.getName());
 		return result instanceof DefaultValueHolder
 				? ((DefaultValueHolder) result).defaultValue
 				: result;

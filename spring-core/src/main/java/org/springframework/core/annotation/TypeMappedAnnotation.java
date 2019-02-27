@@ -24,12 +24,14 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.ReflectionUtils;
 
 /**
  * {@link MergedAnnotation} implementation that applies
@@ -45,10 +47,12 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 	@Nullable
 	private final Object source;
 
+	// FIXME rename
 	@Nullable
 	private final Object rootAnnotation;
 
-	private final AttributeValueExtractor attributeValueExtractor;
+	// FIXME rename
+	private final BiFunction<Method, Object, Object> attributeValueExtractor;
 
 	private final int aggregateIndex;
 
@@ -65,19 +69,19 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 
 	TypeMappedAnnotation(AnnotationTypeMapping mapping, @Nullable Object source,
 			Annotation annotation, int aggregateIndex) {
-		this(mapping, source, annotation, AttributeValueExtractor::fromAnnotation,
+		this(mapping, source, annotation, ReflectionUtils::invokeMethod,
 				aggregateIndex);
 	}
 
 	<T> TypeMappedAnnotation(AnnotationTypeMapping mapping, @Nullable Object source,
-			@Nullable Object rootAnnotation, AttributeValueExtractor valueExtractor,
+			@Nullable Object rootAnnotation, BiFunction<Method, Object, Object> valueExtractor,
 			int aggregateIndex) {
 		this(mapping, source, rootAnnotation, valueExtractor, aggregateIndex, null);
 	}
 
 	private <T> TypeMappedAnnotation(AnnotationTypeMapping mapping,
 			@Nullable Object source, @Nullable Object rootAnnotation,
-			AttributeValueExtractor valueExtractor, int aggregateIndex,
+			BiFunction<Method, Object, Object> valueExtractor, int aggregateIndex,
 			@Nullable int[] resolvedRootMirrors) {
 		this.source = source;
 		this.rootAnnotation = rootAnnotation;
@@ -96,7 +100,7 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 
 	private <T> TypeMappedAnnotation(AnnotationTypeMapping mapping,
 			@Nullable Object source, @Nullable Object rootAnnotation,
-			AttributeValueExtractor valueExtractor, int aggregateIndex,
+			BiFunction<Method, Object, Object> valueExtractor, int aggregateIndex,
 			boolean useMergedValues, Predicate<String> attributeFilter,
 			int[] resolvedRootMirrors, int[] resolvedMirrors) {
 		this.source = source;
@@ -110,7 +114,7 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 		this.resolvedMirrors = resolvedMirrors;
 	}
 
-	private Object getValueForMirrorResolution(Object annotation, Method attribute) {
+	private Object getValueForMirrorResolution(Method attribute, Object annotation) {
 		int attributeIndex = this.mapping.getAttributes().indexOf(attribute);
 		boolean valueAttribute = VALUE.equals(attribute.getName());
 		return getValue(attributeIndex, !valueAttribute, false);
@@ -157,7 +161,7 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 	public boolean hasDefaultValue(String attributeName) {
 		int attributeIndex = getAttributeIndex(attributeName, true);
 		Object value = getValue(attributeIndex, true, true);
-		return value == null || AttributeValues.isDefault(
+		return value == null || AttributeValues.isDefaultValue(
 				this.mapping.getAttributes().get(attributeIndex), value,
 				this.attributeValueExtractor);
 	}
@@ -363,10 +367,10 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 		}
 		Method attribute = mapping.getAttributes().get(attributeIndex);
 		if (mapping.getDepth() == 0) {
-			return this.attributeValueExtractor.apply(this.rootAnnotation, attribute);
+			return this.attributeValueExtractor.apply(attribute, this.rootAnnotation);
 		}
 		Annotation metaAnnotation = this.mapping.getAnnotation();
-		return AttributeValueExtractor.fromAnnotation(metaAnnotation, attribute);
+		return ReflectionUtils.invokeMethod(attribute, metaAnnotation);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -452,7 +456,7 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 		AnnotationTypeMapping mapping = AnnotationTypeMappings.forAnnotationType(
 				annotationType, filter).get(0);
 		return new TypeMappedAnnotation<>(mapping, this.source, value,
-				AttributeValueExtractor.forValue(value, this.attributeValueExtractor),
+				TypeMappedAnnotation.forValue(value, this.attributeValueExtractor),
 				this.aggregateIndex);
 	}
 
@@ -504,7 +508,22 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 		AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotationType(
 				annotationType);
 		return new TypeMappedAnnotation<A>(mappings.get(0), source, attributes,
-				AttributeValueExtractor::fromMap, 0);
+				TypeMappedAnnotation::fromMap, 0);
 	}
 
+	// FIXME rename
+	@SuppressWarnings("unchecked")
+	private static Object fromMap(Method attribute,Object map) {
+		return map != null ? ((Map<String, ?>) map).get(attribute.getName()) : null;
+	}
+
+	private static BiFunction<Method, Object, Object> forValue(Object value, BiFunction<Method, Object, Object> fallback) {
+		if (value instanceof Annotation) {
+			return ReflectionUtils::invokeMethod;
+		}
+		if (value instanceof Map) {
+			return TypeMappedAnnotation::fromMap;
+		}
+		return fallback;
+	}
 }

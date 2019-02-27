@@ -18,7 +18,6 @@ package org.springframework.core.annotation;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Map;
 import java.util.function.BiFunction;
 
 import org.springframework.util.ObjectUtils;
@@ -33,13 +32,13 @@ import org.springframework.util.ReflectionUtils;
  */
 class AttributeValues {
 
-	public static boolean isDefault(Method attribute, Object value,
-			AttributeValueExtractor valueExtractor) {
+	public static boolean isDefaultValue(Method attribute, Object value,
+			BiFunction<Method, Object, Object> valueExtractor) {
 		return areEquivalent(attribute.getDefaultValue(), value, valueExtractor);
 	}
 
 	private static boolean areEquivalent(Object value, Object extractedValue,
-			AttributeValueExtractor valueExtractor) {
+			BiFunction<Method, Object, Object> valueExtractor) {
 		if (ObjectUtils.nullSafeEquals(value, extractedValue)) {
 			return true;
 		}
@@ -72,19 +71,17 @@ class AttributeValues {
 	}
 
 	private static boolean areEquivalent(Annotation value, Object extractedValue,
-			AttributeValueExtractor valueExtractor) {
+			BiFunction<Method, Object, Object> valueExtractor) {
 		AttributeMethods attributes = AttributeMethods.forAnnotationType(
 				value.annotationType());
 		for (int i = 0; i < attributes.size(); i++) {
 			Method attribute = attributes.get(i);
 			if (!areEquivalent(ReflectionUtils.invokeMethod(attribute, value),
-					valueExtractor.apply(extractedValue, attribute), valueExtractor)) {
+					valueExtractor.apply(attribute, extractedValue), valueExtractor)) {
 				return false;
 			}
 		}
 		return true;
 	}
-
-
 
 }
