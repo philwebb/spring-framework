@@ -406,11 +406,15 @@ public abstract class AnnotationUtils {
 	public static <A extends Annotation> A findAnnotation(AnnotatedElement annotatedElement, Class<A> annotationType) {
 		return MigrateMethod.from(() ->
 			InternalAnnotationUtils.findAnnotation(annotatedElement, annotationType)
-		).to(() ->
-			MergedAnnotations.from(annotatedElement, SearchStrategy.DIRECT,  RepeatableContainers.none(),
+		).to(() -> {
+			A annotation = annotatedElement.getDeclaredAnnotation(annotationType);
+			if (annotation != null) {
+				return annotation;
+			}
+			return MergedAnnotations.from(annotatedElement, SearchStrategy.DIRECT,  RepeatableContainers.none(),
 					AnnotationFilter.mostAppropriateFor(annotationType)).get(annotationType).withNonMergedAttributes().synthesize(
-							MergedAnnotation::isPresent).orElse(null)
-		);
+							MergedAnnotation::isPresent).orElse(null);
+		});
 	}
 
 	/**
@@ -465,11 +469,15 @@ public abstract class AnnotationUtils {
 	public static <A extends Annotation> A findAnnotation(Class<?> clazz, Class<A> annotationType) {
 		return MigrateMethod.from(() ->
 			InternalAnnotationUtils.findAnnotation(clazz, annotationType)
-		).to(() ->
-			MergedAnnotations.from(clazz, SearchStrategy.EXHAUSTIVE, RepeatableContainers.none(),
+		).to(() -> {
+			A annotation = clazz.getDeclaredAnnotation(annotationType);
+			if (annotation != null) {
+				return annotation;
+		    }
+			return MergedAnnotations.from(clazz, SearchStrategy.EXHAUSTIVE, RepeatableContainers.none(),
 					AnnotationFilter.mostAppropriateFor(annotationType)).get(annotationType).withNonMergedAttributes().synthesize(
-							MergedAnnotation::isPresent).orElse(null)
-		);
+							MergedAnnotation::isPresent).orElse(null);
+		});
 	}
 
 	/**
