@@ -81,16 +81,18 @@ public abstract class OrderUtils {
 	 */
 	@Nullable
 	public static Integer getOrder(Class<?> type) {
-		return getOrder(type, MergedAnnotations.from(type, SearchStrategy.EXHAUSTIVE));
+		return getOrderFromAnnotations(type, MergedAnnotations.from(type, SearchStrategy.EXHAUSTIVE));
 	}
 
 	/**
 	 * Return the order from the specified annotations.
-	 * <p>Takes care of {@link Order @Order} and {@code @javax.annotation.Priority}.
+	 * <p>Takes care of {@link Order @Order} and
+	 * {@code @javax.annotation.Priority}.
 	 * @param type the source annotations
 	 * @return the order value, or {@code null} if none can be found
 	 */
-	static Integer getOrder(AnnotatedElement element, MergedAnnotations annotations) {
+	static Integer getOrderFromAnnotations(AnnotatedElement element,
+			MergedAnnotations annotations) {
 		if (!(element instanceof Class)) {
 			return findOrder(annotations);
 		}
