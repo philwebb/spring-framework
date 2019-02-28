@@ -31,7 +31,10 @@ import org.springframework.util.ReflectionUtils;
  * @since 5.2
  * @see AttributeMethods
  */
-class AttributeValues {
+abstract class AttributeValues {
+
+	private AttributeValues() {
+	}
 
 	/**
 	 * Return if the specified value is equivalent to the default value of the

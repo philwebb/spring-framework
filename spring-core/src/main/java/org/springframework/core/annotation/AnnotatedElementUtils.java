@@ -532,6 +532,11 @@ public abstract class AnnotatedElementUtils {
 	@Nullable
 	public static MultiValueMap<String, Object> getAllAnnotationAttributes(AnnotatedElement element,
 			String annotationName, final boolean classValuesAsString, final boolean nestedAnnotationsAsMap) {
+		System.err.println(element);
+		System.err.println(annotationName);
+		getAnnotations(element).stream(annotationName).filter(MergedAnnotationPredicates.unique(
+				AnnotatedElementUtils::parentAndType)).forEach(System.out::println);
+
 		return MigrateMethod.from(() ->
 			InternalAnnotatedElementUtils.getAllAnnotationAttributes(element,
 					annotationName, classValuesAsString, nestedAnnotationsAsMap)

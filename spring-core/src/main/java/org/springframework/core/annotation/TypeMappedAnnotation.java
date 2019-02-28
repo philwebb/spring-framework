@@ -78,6 +78,7 @@ import org.springframework.util.ReflectionUtils;
  *
  * @author Phillip Webb
  * @since 5.2
+ * @param <A> the annotation type
  * @see TypeMappedAnnotations
  */
 class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotation<A> {
@@ -409,7 +410,7 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 
 	private Object getValueFromMetaAnnotation(Method attribute) {
 		AnnotationTypeMapping mapping = this.mapping;
-		if (!VALUE.equals(attribute.getName())) {
+		if (this.useMergedValues && !VALUE.equals(attribute.getName())) {
 			AnnotationTypeMapping candidate = mapping;
 			while (candidate.getDepth() > 0) {
 				int attributeIndex = candidate.getAttributes().indexOf(

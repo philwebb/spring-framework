@@ -107,7 +107,7 @@ final class AttributeMethods {
 	/**
 	 * Return the index of the specified attribute , or {@code -1} if the
 	 * attribute is not not in this collection.
-	 * @param name the attribute to find
+	 * @param attribute the attribute to find
 	 * @return the index of the attribute, or {@code -1}
 	 */
 	public int indexOf(Method attribute) {
@@ -213,7 +213,8 @@ final class AttributeMethods {
 	/**
 	 * Return a description for the given attribute method suitable to use in
 	 * exception messages and logs.
-	 * @param attribute the attribute to describe
+	 * @param annotationType the annotation type
+	 * @param attributeName the attribute name
 	 * @return a description of the attribute
 	 */
 	public static String describe(@Nullable Class<?> annotationType,

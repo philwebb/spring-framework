@@ -38,11 +38,14 @@ import org.springframework.util.ObjectUtils;
  * @since 5.2
  * @see AnnotationsProcessor
  */
-class AnnotationsScanner {
+abstract class AnnotationsScanner {
 
 	private static final Annotation[] NO_ANNOTATIONS = {};
 
 	private static final Method[] NO_METHODS = {};
+
+	private AnnotationsScanner() {
+	}
 
 	/**
 	 * Scan the hierarchy of the specified element for relevant annotations and

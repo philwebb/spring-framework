@@ -47,6 +47,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.MergedAnnotation.MapValues;
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.core.annotation.subpackage.NonPublicAnnotatedClass;
+import org.springframework.core.type.AnnotationMetadataTests.MetaAnnotation;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Indexed;
@@ -3339,8 +3340,6 @@ public class MergedAnnotationsTests {
 	@Retention(RetentionPolicy.RUNTIME)
 	@DefaultOverrideRoot
 	@interface DefaultOverrideMeta {
-
-		// String text() default "meta";
 
 	}
 
