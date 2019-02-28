@@ -23,6 +23,7 @@ import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -36,6 +37,7 @@ import org.springframework.core.annotation.MergedAnnotation.MapValues;
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.ConcurrentReferenceHashMap;
 import org.springframework.util.StringUtils;
 
 /**
@@ -107,6 +109,8 @@ public abstract class AnnotationUtils {
 	 * The attribute name for annotations with a single element.
 	 */
 	public static final String VALUE = "value";
+
+	private static Map<Class<? extends Annotation>, Map<String, DefaultValueHolder>> defaultValuesCache = new ConcurrentReferenceHashMap<>();
 
 
 	/**
@@ -815,11 +819,22 @@ public abstract class AnnotationUtils {
 		});
 	}
 
-	private static Map<String, Object> getDefaultValues(
+	private static Map<String, DefaultValueHolder> getDefaultValues(
 			Class<? extends Annotation> annotationType) {
-		return MergedAnnotation.from(annotationType).asMap(
+		return defaultValuesCache.computeIfAbsent(annotationType,
+				AnnotationUtils::computeDefaultValues);
+	}
+
+	private static Map<String, DefaultValueHolder> computeDefaultValues(
+			Class<? extends Annotation> annotationType) {
+		AnnotationAttributes attributes = MergedAnnotation.from(annotationType).asMap(
 				getAnnotationAttributesFactory(annotationType.getClassLoader()),
 				MapValues.ANNOTATION_TO_MAP);
+		Map<String, DefaultValueHolder> result = new LinkedHashMap<>(attributes.size());
+		for (Map.Entry<String, Object> element : attributes.entrySet()) {
+			result.put(element.getKey(), new DefaultValueHolder(element.getValue()));
+		}
+		return result;
 	}
 
 	/**
