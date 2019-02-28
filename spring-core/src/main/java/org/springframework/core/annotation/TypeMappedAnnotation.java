@@ -224,7 +224,8 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 		int attributeIndex = getAttributeIndex(attributeName, true);
 		Method attribute = this.mapping.getAttributes().get(attributeIndex);
 		Class<?> componentType = attribute.getReturnType().getComponentType();
-		Assert.notNull(componentType, "Attribute " + attributeName + " is not an array");
+		Assert.notNull(componentType,
+				() -> "Attribute " + attributeName + " is not an array");
 		Assert.isAssignable(type, componentType,
 				"Attribute " + attributeName + " component type mismatch:");
 		return (MergedAnnotation<T>[]) getValue(attributeIndex, Object.class);
@@ -469,8 +470,10 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 			}
 			value = array;
 		}
-		Assert.isInstanceOf(type, value,
-				"Unable to adapt to " + type.getName() + " from value of type ");
+		if (!type.isInstance(value)) {
+			throw new IllegalArgumentException("Unable to adapt value of type "
+					+ value.getClass().getName() + " to " + type.getName());
+		}
 		return (T) value;
 	}
 
