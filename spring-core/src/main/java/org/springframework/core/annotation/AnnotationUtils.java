@@ -22,7 +22,6 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +30,7 @@ import java.util.Set;
 import java.util.function.Function;
 
 import org.springframework.core.BridgeMethodResolver;
+import org.springframework.core.annotation.AnnotationTypeMapping.MirrorSets.MirrorSet;
 import org.springframework.core.annotation.InternalAnnotationUtils.DefaultValueHolder;
 import org.springframework.core.annotation.MergedAnnotation.MapValues;
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
@@ -665,10 +665,8 @@ public abstract class AnnotationUtils {
 	public static void validateAnnotation(Annotation annotation) {
 		MigrateMethod.fromCall(() ->
 			InternalAnnotationUtils.validateAnnotation(annotation)
-		).to(() -> {
-			// FIXME
-			//DeclaredAnnotation.validate(annotation)
-		}
+		).to(() ->
+			AttributeMethods.validate(annotation)
 		);
 	}
 
@@ -834,59 +832,73 @@ public abstract class AnnotationUtils {
 	 * @see #getDefaultValue(Class, String)
 	 */
 	public static void postProcessAnnotationAttributes(@Nullable Object annotatedElement,
-			AnnotationAttributes attributes, boolean classValuesAsString) {
+			@Nullable AnnotationAttributes attributes, boolean classValuesAsString) {
+		if (attributes == null) {
+			return;
+		}
 		AnnotationAttributes copy = new AnnotationAttributes(attributes);
 		MigrateMethod.fromCall(() ->
 			InternalAnnotationUtils.postProcessAnnotationAttributes(annotatedElement, copy,
 					classValuesAsString)
 		).withArgumentCheck(copy, attributes).to(()-> {
-			// FIXME
-//			if (attributes == null || attributes.annotationType() == null) {
-//				return;
-//			}
-//			if (!attributes.validated) {
-//				Class<? extends Annotation> annotationClass = attributes.annotationType();
-//				AnnotationType annotationType = AnnotationType.resolve(annotationClass);
-//				AnnotationTypeMapping mapping = AnnotationTypeMappings.forType(
-//						annotationClass.getClassLoader(), RepeatableContainers.none(),
-//						AnnotationFilter.mostAppropriateFor(annotationClass),
-//						annotationType).get(annotationType.getClassName());
-//				for (MirrorSet mirrorSet : mapping.getMirrorSets()) {
-//					String targetName = getMirrorAttributeInUse(annotatedElement, attributes, mirrorSet);
-//					if (targetName != null) {
-//						Object targetValue = attributes.get(targetName);
-//						for (Reference reference : mirrorSet) {
-//							String name = reference.getAttribute().getAttributeName();
-//							Object value = attributes.get(name);
-//							if (!name.equals(targetName)) {
-//								value = targetValue;
-//							}
-//							attributes.put(name, adaptValue(annotatedElement, value, classValuesAsString));
-//						}
-//					}
-//				}
-//			}
-//			for (Map.Entry<String, Object> attributeEntry : attributes.entrySet()) {
-//				String attributeName = attributeEntry.getKey();
-//				Object value = attributeEntry.getValue();
-//				if (value instanceof DefaultValueHolder) {
-//					value = ((DefaultValueHolder) value).defaultValue;
-//					attributes.put(attributeName, adaptValue(annotatedElement, value, classValuesAsString));
-//				}
-//			}
+			if (attributes == null || attributes.annotationType() == null) {
+				return;
+			}
+			if (!attributes.validated) {
+				Class<? extends Annotation> annotationType = attributes.annotationType();
+				AnnotationTypeMapping mapping = AnnotationTypeMappings.forAnnotationType(
+						annotationType).get(0);
+				for (int i = 0; i < mapping.getMirrorSets().size(); i++) {
+					MirrorSet mirrorSet = mapping.getMirrorSets().get(i);
+					int resolved = mirrorSet.resolve(attributes.displayName, attributes,
+							AnnotationUtils::getAttributeValueForMirrorResolution);
+					if (resolved != -1) {
+						Method attribute = mapping.getAttributes().get(resolved);
+						Object value = attributes.get(attribute.getName());
+						for (int j = 0; j < mirrorSet.size(); j++) {
+							Method mirror = mirrorSet.get(j);
+							if (mirror != attribute) {
+								attributes.put(mirror.getName(), adaptValue(
+										annotatedElement, value, classValuesAsString));
+							}
+						}
+					}
+				}
+			}
+			for (Map.Entry<String, Object> attributeEntry : attributes.entrySet()) {
+				String attributeName = attributeEntry.getKey();
+				Object value = attributeEntry.getValue();
+				if (value instanceof DefaultValueHolder) {
+					value = ((DefaultValueHolder) value).defaultValue;
+					attributes.put(attributeName,
+							adaptValue(annotatedElement, value, classValuesAsString));
+				}
+			}
 		});
 	}
 
+	private static Object getAttributeValueForMirrorResolution(Method attribute,
+			Object attributes) {
+		Object result = ((AnnotationAttributes) attributes).get(attribute.getName());
+		return result instanceof DefaultValueHolder
+				? ((DefaultValueHolder) result).defaultValue
+				: result;
+	}
+
 	@Nullable
-	static Object adaptValue(@Nullable Object annotatedElement, @Nullable Object value,
-			boolean classValuesAsString) {
+	private static Object adaptValue(@Nullable Object annotatedElement,
+			@Nullable Object value, boolean classValuesAsString) {
 		if (classValuesAsString) {
 			if (value instanceof Class) {
 				return ((Class<?>) value).getName();
 			}
 			if (value instanceof Class[]) {
-				return Arrays.stream((Class<?>[]) value).map(Class::getName).toArray(
-						String[]::new);
+				Class<?>[] classes = (Class<?>[]) value;
+				String[] names = new String[classes.length];
+				for (int i = 0; i < classes.length; i++) {
+					names[i] = classes[i].getName();
+				}
+				return names;
 			}
 		}
 		if (value instanceof Annotation) {

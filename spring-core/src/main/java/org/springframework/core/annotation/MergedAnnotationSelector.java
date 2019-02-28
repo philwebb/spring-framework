@@ -26,7 +26,18 @@ import java.lang.annotation.Annotation;
  * @param <A> the annotation type
  * @see MergedAnnotationSelectors
  */
+@FunctionalInterface
 public interface MergedAnnotationSelector<A extends Annotation> {
+
+	/**
+	 * Return {@code true} if the existing annotation is known to be the best
+	 * candidate and any subsequent selections may be skipped.
+	 * @param annotation the annotation to check
+	 * @return {@code true} if the annotation is known to be the best candidate
+	 */
+	default boolean isBestCandidate(MergedAnnotation<A> annotation) {
+		return false;
+	}
 
 	/**
 	 * Select the annotation that should be used.
@@ -37,6 +48,5 @@ public interface MergedAnnotationSelector<A extends Annotation> {
 	 */
 	MergedAnnotation<A> select(MergedAnnotation<A> existing,
 			MergedAnnotation<A> candidate);
-
 
 }
