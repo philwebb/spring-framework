@@ -62,6 +62,9 @@ class SynthesizedMergedAnnotationInvocationHandler<A extends Annotation>
 		this.annotation = annotation;
 		this.type = type;
 		this.attributes = AttributeMethods.forAnnotationType(type);
+		for (int i = 0; i < this.attributes.size(); i++) {
+			getAttributeValue(this.attributes.get(i));
+		}
 	}
 
 	@Override
