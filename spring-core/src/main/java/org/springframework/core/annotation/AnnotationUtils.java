@@ -752,7 +752,7 @@ public abstract class AnnotationUtils {
 		Class<? extends Annotation> annotationType = attributes.annotationType();
 		if (annotationType != null && Modifier.isPublic(annotationType.getModifiers())) {
 			getDefaultValues(annotationType).forEach((name, value) ->
-				attributes.putIfAbsent(name, new DefaultValueHolder(value)));
+				attributes.putIfAbsent(name, value));
 		}
 	}
 

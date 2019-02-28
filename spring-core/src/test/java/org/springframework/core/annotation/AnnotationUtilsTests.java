@@ -486,8 +486,8 @@ public class AnnotationUtilsTests {
 	@Test
 	public void getAnnotationAttributesWithAttributeAliasesWithDifferentValues() throws Exception {
 		exception.expect(AnnotationConfigurationException.class);
-		exception.expectMessage(containsString("attribute 'value' and its alias 'path'"));
-		exception.expectMessage(containsString("values of [{/enigma}] and [{/test}]"));
+		exception.expectMessage(containsString("attribute 'path' and its alias 'value'"));
+		exception.expectMessage(containsString("values of [{/test}] and [{/enigma}]"));
 
 		Method method = WebController.class.getMethod("handleMappedWithDifferentPathAndValueAttributes");
 		WebMapping webMapping = method.getAnnotation(WebMapping.class);
@@ -942,16 +942,9 @@ public class AnnotationUtilsTests {
 	public void synthesizeAnnotationFromMapWithAttributeOfIncorrectType() throws Exception {
 		Map<String, Object> map = Collections.singletonMap(VALUE, 42L);
 		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage(either(allOf(startsWith("Attributes map"),
-				containsString("returned a value of type [java.lang.Long]"),
-				containsString("for attribute 'value'"),
-				containsString("but a value of type [java.lang.String] is required"),
-				containsString("as defined by annotation type ["
-						+ Component.class.getName() + "]"))).or(
-								containsString("Attribute 'value' in annotation "
-										+ Component.class.getName()
-										+ " should be of type "
-										+ "java.lang.String but a java.lang.Long value was returned")));
+		exception.expectMessage(containsString(
+				"Attribute 'value' in annotation org.springframework.stereotype.Component "
+				+ "should be compatible with java.lang.String but a java.lang.Long value was returned"));
 		synthesizeAnnotation(map, Component.class, null);
 	}
 

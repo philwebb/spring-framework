@@ -370,7 +370,8 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 	}
 
 	protected <T> T getValue(String attributeName, Class<T> type, boolean required) {
-		return getValue(getAttributeIndex(attributeName, required), type);
+		int attributeIndex = getAttributeIndex(attributeName, required);
+		return attributeIndex != -1 ? getValue(attributeIndex, type) : null;
 	}
 
 	private <T> T getValue(int attributeIndex, Class<T> type) {
