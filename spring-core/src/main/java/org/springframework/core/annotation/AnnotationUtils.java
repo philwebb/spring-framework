@@ -394,10 +394,6 @@ public abstract class AnnotationUtils {
 	 */
 	@Nullable
 	public static <A extends Annotation> A findAnnotation(AnnotatedElement annotatedElement, Class<A> annotationType) {
-		A annotation = annotatedElement.getDeclaredAnnotation(annotationType);
-		if (annotation != null) {
-			return annotation;
-		}
 		return MergedAnnotations.from(annotatedElement, SearchStrategy.DIRECT,
 				RepeatableContainers.none(),
 				AnnotationFilter.mostAppropriateFor(annotationType)).get(
@@ -453,10 +449,6 @@ public abstract class AnnotationUtils {
 	 */
 	@Nullable
 	public static <A extends Annotation> A findAnnotation(Class<?> clazz, Class<A> annotationType) {
-		A annotation = clazz.getDeclaredAnnotation(annotationType);
-		if (annotation != null) {
-			return annotation;
-		}
 		return MergedAnnotations.from(clazz, SearchStrategy.EXHAUSTIVE,
 				RepeatableContainers.none(),
 				AnnotationFilter.mostAppropriateFor(annotationType)).get(
