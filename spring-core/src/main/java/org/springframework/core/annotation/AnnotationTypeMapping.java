@@ -100,7 +100,8 @@ class AnnotationTypeMapping {
 		Map<Method, List<Method>> aliasedBy = new HashMap<>();
 		for (int i = 0; i < this.attributes.size(); i++) {
 			Method attribute = this.attributes.get(i);
-			AliasFor aliasFor = attribute.getDeclaredAnnotation(AliasFor.class);
+			AliasFor aliasFor = AnnotationsScanner.getDeclaredAnnotation(attribute,
+					AliasFor.class);
 			if (aliasFor != null) {
 				Method target = resolveAliasTarget(attribute, aliasFor);
 				aliasedBy.computeIfAbsent(target, key -> new ArrayList<>()).add(
@@ -280,7 +281,7 @@ class AnnotationTypeMapping {
 	private void validateAllAliasesClaimed() {
 		for (int i = 0; i < this.attributes.size(); i++) {
 			Method attribute = this.attributes.get(i);
-			AliasFor aliasFor = attribute.getDeclaredAnnotation(AliasFor.class);
+			AliasFor aliasFor = AnnotationsScanner.getDeclaredAnnotation(attribute, AliasFor.class);
 			if (aliasFor != null && !this.claimedAliases.contains(attribute)) {
 				Method target = resolveAliasTarget(attribute, aliasFor);
 				throw new AnnotationConfigurationException(String.format(

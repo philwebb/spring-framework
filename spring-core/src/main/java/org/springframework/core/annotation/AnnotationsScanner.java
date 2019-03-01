@@ -18,6 +18,7 @@ package org.springframework.core.annotation;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
@@ -46,7 +47,10 @@ abstract class AnnotationsScanner {
 
 	private static final Method[] NO_METHODS = {};
 
-	private static Map<AnnotatedElement, Annotation[]> declaredAnnotationCache = new ConcurrentReferenceHashMap<>();
+	private static final Map<AnnotatedElement, Annotation[]> declaredAnnotationCache = new ConcurrentReferenceHashMap<>(256);
+
+	private static final Map<Class<?>, Method[]> declaredMethodsCache = new ConcurrentReferenceHashMap<>(256);
+
 
 	private AnnotationsScanner() {
 	}
@@ -121,6 +125,9 @@ abstract class AnnotationsScanner {
 	private static <C, R> R processClassInheritedAnnotations(C context, Class<?> source,
 			AnnotationsProcessor<C, R> processor,
 			@Nullable BiPredicate<C, Class<?>> classFilter) {
+		if (isWithoutHierarchy(source)) {
+			return processElement(context, source, processor, classFilter);
+		}
 		Annotation[] relevant = null;
 		int remaining = Integer.MAX_VALUE;
 		int aggregateIndex = 0;
@@ -132,22 +139,26 @@ abstract class AnnotationsScanner {
 			}
 			if (!isFiltered(source, context, classFilter)) {
 				Annotation[] declaredAnnotations = getDeclaredAnnotations(context, source,
-						classFilter);
+						classFilter, true);
 				if (relevant == null && declaredAnnotations.length > 0) {
 					relevant = root.getAnnotations();
 					remaining = relevant.length;
 				}
 				for (int i = 0; i < declaredAnnotations.length; i++) {
-					boolean isRelevant = false;
-					for (int relevantIndex = 0; relevantIndex < relevant.length; relevantIndex++) {
-						if (declaredAnnotations[i].equals(relevant[relevantIndex])) {
-							isRelevant = true;
-							relevant[relevantIndex] = null;
-							remaining--;
+					if (declaredAnnotations[i] != null) {
+						boolean isRelevant = false;
+						for (int relevantIndex = 0; relevantIndex < relevant.length; relevantIndex++) {
+							if (relevant[relevantIndex] != null
+									&& declaredAnnotations[i].annotationType() == relevant[relevantIndex].annotationType()) {
+								isRelevant = true;
+								relevant[relevantIndex] = null;
+								remaining--;
+								break;
+							}
 						}
-					}
-					if (!isRelevant) {
-						declaredAnnotations[i] = null;
+						if (!isRelevant) {
+							declaredAnnotations[i] = null;
+						}
 					}
 				}
 				result = processor.doWithAnnotations(context, aggregateIndex, source,
@@ -169,7 +180,8 @@ abstract class AnnotationsScanner {
 		if (result != null) {
 			return result;
 		}
-		Annotation[] annotations = getDeclaredAnnotations(context, source, classFilter);
+		Annotation[] annotations = getDeclaredAnnotations(context, source, classFilter,
+				false);
 		result = processor.doWithAnnotations(context, aggregateIndex[0], source,
 				annotations);
 		if (result != null) {
@@ -289,7 +301,12 @@ abstract class AnnotationsScanner {
 		if (isFiltered(source, context, classFilter)) {
 			return NO_METHODS;
 		}
-		return source.isInterface() ? source.getMethods() : source.getDeclaredMethods();
+		Method[] methods = declaredMethodsCache.get(source);
+		if (methods == null) {
+			methods = source.isInterface() ? source.getMethods() : source.getDeclaredMethods();
+			declaredMethodsCache.put(source, methods);
+		}
+		return methods;
 	}
 
 	private static boolean isOverride(Method rootMethod, Method candidateMethod) {
@@ -332,7 +349,8 @@ abstract class AnnotationsScanner {
 	private static <C, R> R processMethodAnnotations(C context, int aggregateIndex,
 			Method source, AnnotationsProcessor<C, R> processor,
 			BiPredicate<C, Class<?>> classFilter) {
-		Annotation[] annotations = getDeclaredAnnotations(context, source, classFilter);
+		Annotation[] annotations = getDeclaredAnnotations(context, source, classFilter,
+				false);
 		R result = processor.doWithAnnotations(context, aggregateIndex, source,
 				annotations);
 		if (result != null) {
@@ -341,7 +359,7 @@ abstract class AnnotationsScanner {
 		Method bridgedMethod = BridgeMethodResolver.findBridgedMethod(source);
 		if (bridgedMethod != source) {
 			Annotation[] bridgedAnnotations = getDeclaredAnnotations(context,
-					bridgedMethod, classFilter);
+					bridgedMethod, classFilter, true);
 			for (int i = 0; i < bridgedAnnotations.length; i++) {
 				if (ObjectUtils.containsElement(annotations, bridgedAnnotations[i])) {
 					bridgedAnnotations[i] = null;
@@ -359,11 +377,12 @@ abstract class AnnotationsScanner {
 		R result = processor.doWithAggregate(context, 0);
 		return result != null ? result
 				: processor.doWithAnnotations(context, 0, source,
-						getDeclaredAnnotations(context, source, classFilter));
+						getDeclaredAnnotations(context, source, classFilter, false));
 	}
 
 	private static <C, R> Annotation[] getDeclaredAnnotations(C context,
-			AnnotatedElement source, @Nullable BiPredicate<C, Class<?>> classFilter) {
+			AnnotatedElement source, @Nullable BiPredicate<C, Class<?>> classFilter,
+			boolean copy) {
 		if (source instanceof Class
 				&& isFiltered((Class<?>) source, context, classFilter)) {
 			return NO_ANNOTATIONS;
@@ -372,10 +391,24 @@ abstract class AnnotationsScanner {
 				context, classFilter)) {
 			return NO_ANNOTATIONS;
 		}
-		return getDeclaredAnnotations(source);
+		return getDeclaredAnnotations(source, copy);
 	}
 
-	static Annotation[] getDeclaredAnnotations(AnnotatedElement source) {
+	@SuppressWarnings("unchecked")
+	public static <A extends Annotation> A getDeclaredAnnotation(AnnotatedElement source,
+			Class<A> annotationType) {
+		Annotation[] annotations = getDeclaredAnnotations(source, false);
+		for (int i = 0; i < annotations.length; i++) {
+			if (annotations[i] != null
+					&& annotationType.equals(annotations[i].annotationType())) {
+				return (A) annotations[i];
+			}
+		}
+		return null;
+	}
+
+	static Annotation[] getDeclaredAnnotations(AnnotatedElement source, boolean copy) {
+		boolean cached = true;
 		Annotation[] annotations = declaredAnnotationCache.get(source);
 		if (annotations == null) {
 			annotations = source.getDeclaredAnnotations();
@@ -389,16 +422,17 @@ abstract class AnnotationsScanner {
 				}
 			}
 			annotations = allIgnored ? NO_ANNOTATIONS : annotations;
-			if (isCacheable(source) || annotations.length == 0) {
+			cached = (source instanceof Class || source instanceof Member);
+			if (cached) {
 				declaredAnnotationCache.put(source, annotations);
 			}
 		}
-		if (annotations.length == 0) {
+		if (!copy || annotations.length == 0 || !cached) {
 			return annotations;
 		}
-		Annotation[] copy = new Annotation[annotations.length];
-		System.arraycopy(annotations, 0, copy, 0, annotations.length);
-		return copy;
+		Annotation[] copied = new Annotation[annotations.length];
+		System.arraycopy(annotations, 0, copied, 0, annotations.length);
+		return copied;
 	}
 
 	private static boolean isIgnorable(Class<?> annotationType) {
@@ -417,8 +451,8 @@ abstract class AnnotationsScanner {
 			AnnotatedElement bridged = source instanceof Method
 					? BridgeMethodResolver.findBridgedMethod((Method) source)
 					: source;
-			return getDeclaredAnnotations(source).length == 0
-					&& (bridged == source || getDeclaredAnnotations(bridged).length == 0);
+			return getDeclaredAnnotations(source, false).length == 0 && (bridged == source
+					|| getDeclaredAnnotations(bridged, false).length == 0);
 		}
 		return false;
 	}
@@ -436,19 +470,6 @@ abstract class AnnotationsScanner {
 			Method sourceMethod = (Method) source;
 			return Modifier.isPrivate(sourceMethod.getModifiers())
 					|| isWithoutHierarchy(sourceMethod.getDeclaringClass());
-		}
-		return false;
-	}
-
-	private static boolean isCacheable(AnnotatedElement source) {
-		if (source instanceof Class<?>) {
-			return true;
-		}
-		if (source instanceof Method) {
-			Method method = (Method) source;
-			return method.getDeclaringClass().isInterface()
-					|| method.getDeclaringClass().getName().startsWith(
-							"org.springframework");
 		}
 		return false;
 	}
