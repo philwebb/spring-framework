@@ -71,7 +71,8 @@ final class AnnotationTypeMappings {
 
 	private void addMetaAnnotationsToQueue(Deque<AnnotationTypeMapping> queue,
 			AnnotationTypeMapping parent) {
-		Annotation[] metaAnnotations = parent.getAnnotationType().getDeclaredAnnotations();
+		Annotation[] metaAnnotations = AnnotationsScanner.getDeclaredAnnotations(
+				parent.getAnnotationType());
 		for (Annotation metaAnnotation : metaAnnotations) {
 			if (!isMappable(parent, metaAnnotation)) {
 				continue;

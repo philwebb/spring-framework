@@ -39,7 +39,6 @@ import java.util.stream.Stream;
 
 import javax.annotation.Resource;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.internal.ArrayComparisonFailure;
 
@@ -47,7 +46,6 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.MergedAnnotation.MapValues;
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.core.annotation.subpackage.NonPublicAnnotatedClass;
-import org.springframework.core.type.AnnotationMetadataTests.MetaAnnotation;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Indexed;
@@ -56,7 +54,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.Assert.*;
 
 /**
  * Tests for {@link MergedAnnotations} and {@link MergedAnnotation}. These tests

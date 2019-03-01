@@ -1149,6 +1149,7 @@ public abstract class AnnotationUtils {
 	 */
 	public static void clearCache() {
 		AnnotationTypeMappings.clearCache();
+		AnnotationsScanner.clearCache();
 	}
 
 	private static <A extends Annotation> boolean isSingleLevelPresent(

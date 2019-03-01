@@ -39,6 +39,9 @@ import org.springframework.lang.Nullable;
  */
 final class TypeMappedAnnotations implements MergedAnnotations {
 
+	private static final MergedAnnotations NONE = new TypeMappedAnnotations(null,
+			new Annotation[0], RepeatableContainers.none(), AnnotationFilter.PLAIN);
+
 	@Nullable
 	private final Object source;
 
@@ -238,9 +241,12 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 				processor);
 	}
 
-	public static MergedAnnotations from(AnnotatedElement element,
+	public static MergedAnnotations from(@Nullable AnnotatedElement element,
 			SearchStrategy searchStrategy, RepeatableContainers repeatableContainers,
 			AnnotationFilter annotationFilter) {
+		if (element == null || AnnotationsScanner.isKnownEmpty(element, searchStrategy)) {
+			return NONE;
+		}
 		return new TypeMappedAnnotations(element, searchStrategy, repeatableContainers,
 				annotationFilter);
 	}

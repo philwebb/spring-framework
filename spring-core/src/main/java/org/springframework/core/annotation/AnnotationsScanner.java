@@ -21,6 +21,7 @@ import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.function.BiPredicate;
 
 import org.springframework.core.BridgeMethodResolver;
@@ -28,6 +29,7 @@ import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.ConcurrentReferenceHashMap;
 import org.springframework.util.ObjectUtils;
 
 /**
@@ -43,6 +45,8 @@ abstract class AnnotationsScanner {
 	private static final Annotation[] NO_ANNOTATIONS = {};
 
 	private static final Method[] NO_METHODS = {};
+
+	private static Map<AnnotatedElement, Annotation[]> declaredAnnotationCache = new ConcurrentReferenceHashMap<>();
 
 	private AnnotationsScanner() {
 	}
@@ -247,6 +251,9 @@ abstract class AnnotationsScanner {
 				}
 			}
 		}
+		if (Modifier.isPrivate(rootMethod.getModifiers())) {
+			return null;
+		}
 		if (calledProcessor) {
 			aggregateIndex[0]++;
 		}
@@ -365,17 +372,33 @@ abstract class AnnotationsScanner {
 				context, classFilter)) {
 			return NO_ANNOTATIONS;
 		}
-		Annotation[] declaredAnnotations = source.getDeclaredAnnotations();
-		boolean allIgnored = true;
-		for (int i = 0; i < declaredAnnotations.length; i++) {
-			if (isIgnorable(declaredAnnotations[i].annotationType())) {
-				declaredAnnotations[i] = null;
+		return getDeclaredAnnotations(source);
+	}
+
+	static Annotation[] getDeclaredAnnotations(AnnotatedElement source) {
+		Annotation[] annotations = declaredAnnotationCache.get(source);
+		if (annotations == null) {
+			annotations = source.getDeclaredAnnotations();
+			boolean allIgnored = true;
+			for (int i = 0; i < annotations.length; i++) {
+				if (isIgnorable(annotations[i].annotationType())) {
+					annotations[i] = null;
+				}
+				else {
+					allIgnored = false;
+				}
 			}
-			else {
-				allIgnored = false;
+			annotations = allIgnored ? NO_ANNOTATIONS : annotations;
+			if (isCacheable(source) || annotations.length == 0) {
+				declaredAnnotationCache.put(source, annotations);
 			}
 		}
-		return allIgnored ? NO_ANNOTATIONS : declaredAnnotations;
+		if (annotations.length == 0) {
+			return annotations;
+		}
+		Annotation[] copy = new Annotation[annotations.length];
+		System.arraycopy(annotations, 0, copy, 0, annotations.length);
+		return copy;
 	}
 
 	private static boolean isIgnorable(Class<?> annotationType) {
@@ -386,6 +409,52 @@ abstract class AnnotationsScanner {
 	private static <C> boolean isFiltered(Class<?> sourceClass, C context,
 			BiPredicate<C, Class<?>> classFilter) {
 		return classFilter != null && classFilter.test(context, sourceClass);
+	}
+
+	public static boolean isKnownEmpty(AnnotatedElement source,
+			SearchStrategy searchStrategy) {
+		if (searchStrategy == SearchStrategy.DIRECT || isWithoutHierarchy(source)) {
+			AnnotatedElement bridged = source instanceof Method
+					? BridgeMethodResolver.findBridgedMethod((Method) source)
+					: source;
+			return getDeclaredAnnotations(source).length == 0
+					&& (bridged == source || getDeclaredAnnotations(bridged).length == 0);
+		}
+		return false;
+	}
+
+	private static boolean isWithoutHierarchy(AnnotatedElement source) {
+		if (source == Object.class) {
+			return true;
+		}
+		if (source instanceof Class) {
+			Class<?> sourceClass = (Class<?>) source;
+			return sourceClass.getSuperclass() == Object.class
+					&& sourceClass.getInterfaces().length == 0;
+		}
+		if (source instanceof Method) {
+			Method sourceMethod = (Method) source;
+			return Modifier.isPrivate(sourceMethod.getModifiers())
+					|| isWithoutHierarchy(sourceMethod.getDeclaringClass());
+		}
+		return false;
+	}
+
+	private static boolean isCacheable(AnnotatedElement source) {
+		if (source instanceof Class<?>) {
+			return true;
+		}
+		if (source instanceof Method) {
+			Method method = (Method) source;
+			return method.getDeclaringClass().isInterface()
+					|| method.getDeclaringClass().getName().startsWith(
+							"org.springframework");
+		}
+		return false;
+	}
+
+	static void clearCache() {
+		declaredAnnotationCache.clear();
 	}
 
 }
