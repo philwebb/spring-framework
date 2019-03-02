@@ -442,7 +442,7 @@ abstract class AnnotationsScanner {
 			}
 			annotations = allIgnored ? NO_ANNOTATIONS : annotations;
 			cached = (source instanceof Class || source instanceof Member);
-			if (cached) {
+			if (cached && annotations.length != 0) {
 				declaredAnnotationCache.put(source, annotations);
 			}
 		}
