@@ -95,17 +95,17 @@ public class AnnotationFilterTests {
 
 	@Test
 	public void javaWhenJavaLangAnnotationReturnsTrue() {
-		assertThat(AnnotationFilter.JAVA_LANG_ANNOTATION.matches(Retention.class)).isTrue();
+		assertThat(AnnotationFilter.JAVA.matches(Retention.class)).isTrue();
 	}
 
 	@Test
 	public void javaWhenSpringLangAnnotationReturnsFalse() {
-		assertThat(AnnotationFilter.JAVA_LANG_ANNOTATION.matches(Nullable.class)).isFalse();
+		assertThat(AnnotationFilter.JAVA.matches(Nullable.class)).isFalse();
 	}
 
 	@Test
 	public void javaWhenOtherAnnotationReturnsFalse() {
-		assertThat(AnnotationFilter.JAVA_LANG_ANNOTATION.matches(TestAnnotation.class)).isFalse();
+		assertThat(AnnotationFilter.JAVA.matches(TestAnnotation.class)).isFalse();
 	}
 
 	@Test

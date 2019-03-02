@@ -85,7 +85,6 @@ final class AnnotationTypeMappings {
 						continue;
 					}
 					queue.addLast(new AnnotationTypeMapping(parent, repeatedAnnotation));
-
 				}
 			}
 			else {
@@ -96,6 +95,8 @@ final class AnnotationTypeMappings {
 
 	private boolean isMappable(AnnotationTypeMapping parent, Annotation metaAnnotation) {
 		return !this.filter.matches(metaAnnotation)
+				&& !AnnotationFilter.PLAIN.matches(
+						parent.getAnnotationType())
 				&& !isAlreadyMapped(parent, metaAnnotation);
 	}
 

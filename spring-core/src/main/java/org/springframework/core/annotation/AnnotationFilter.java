@@ -44,13 +44,7 @@ public interface AnnotationFilter {
 	 * {@link AnnotationFilter} that matches annotations in the
 	 * {@code java.lang.annotation.*} package.
 	 */
-	static final AnnotationFilter JAVA_LANG_ANNOTATION = packages("java.lang.annotation");
-
-	/**
-	 * {@link AnnotationFilter} that matches annotations in the {@code java.*}
-	 * package.
-	 */
-	static final AnnotationFilter JAVA = packages("java");
+	static final AnnotationFilter JAVA = packages("java.lang.annotation");
 
 	/**
 	 * {@link AnnotationFilter} that never matches and can be used when no

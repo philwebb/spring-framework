@@ -19,6 +19,7 @@ package org.springframework.core.annotation;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Spliterator;
@@ -39,8 +40,10 @@ import org.springframework.lang.Nullable;
  */
 final class TypeMappedAnnotations implements MergedAnnotations {
 
+	private static final AnnotationFilter FILTER_ALL = annotationType -> true;
+
 	private static final MergedAnnotations NONE = new TypeMappedAnnotations(null,
-			new Annotation[0], RepeatableContainers.none(), AnnotationFilter.PLAIN);
+			new Annotation[0], RepeatableContainers.none(), FILTER_ALL);
 
 	@Nullable
 	private final Object source;
@@ -193,27 +196,42 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 	@Override
 	public <A extends Annotation> Stream<MergedAnnotation<A>> stream(
 			Class<A> annotationType) {
+		if (this.annotationFilter == FILTER_ALL) {
+			return Stream.empty();
+		}
 		return StreamSupport.stream(spliterator(annotationType), false);
 	}
 
 	@Override
 	public <A extends Annotation> Stream<MergedAnnotation<A>> stream(
 			String annotationType) {
+		if (this.annotationFilter == FILTER_ALL) {
+			return Stream.empty();
+		}
 		return StreamSupport.stream(spliterator(annotationType), false);
 	}
 
 	@Override
 	public Stream<MergedAnnotation<Annotation>> stream() {
+		if (this.annotationFilter == FILTER_ALL) {
+			return Stream.empty();
+		}
 		return StreamSupport.stream(spliterator(), false);
 	}
 
 	@Override
 	public Iterator<MergedAnnotation<Annotation>> iterator() {
+		if (this.annotationFilter == FILTER_ALL) {
+			return Collections.emptyIterator();
+		}
 		return Spliterators.iterator(spliterator());
 	}
 
 	@Override
 	public Spliterator<MergedAnnotation<Annotation>> spliterator() {
+		if (this.annotationFilter == FILTER_ALL) {
+			return Collections.<MergedAnnotation<Annotation>> emptyList().spliterator();
+		}
 		return spliterator(null);
 	}
 

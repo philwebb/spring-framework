@@ -506,7 +506,7 @@ abstract class AnnotationsScanner {
 			return Modifier.isPrivate(sourceMethod.getModifiers())
 					|| isWithoutHierarchy(sourceMethod.getDeclaringClass());
 		}
-		return false;
+		return true;
 	}
 
 	static void clearCache() {
