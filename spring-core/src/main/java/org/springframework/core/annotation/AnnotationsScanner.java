@@ -47,10 +47,11 @@ abstract class AnnotationsScanner {
 
 	private static final Method[] NO_METHODS = {};
 
-	private static final Map<AnnotatedElement, Annotation[]> declaredAnnotationCache = new ConcurrentReferenceHashMap<>(256);
+	private static final Map<AnnotatedElement, Annotation[]> declaredAnnotationCache = new ConcurrentReferenceHashMap<>(
+			256);
 
-	private static final Map<Class<?>, Method[]> declaredMethodsCache = new ConcurrentReferenceHashMap<>(256);
-
+	private static final Map<Class<?>, Method[]> baseTypeMethodsCache = new ConcurrentReferenceHashMap<>(
+			256);
 
 	private AnnotationsScanner() {
 	}
@@ -252,8 +253,9 @@ abstract class AnnotationsScanner {
 			}
 		}
 		else {
-			for (Method candidateMethod : getMethods(context, sourceClass, classFilter)) {
-				if (isOverride(rootMethod, candidateMethod)) {
+			for (Method candidateMethod : getBaseTypeMethods(context, sourceClass,
+					classFilter)) {
+				if (candidateMethod != null && isOverride(rootMethod, candidateMethod)) {
 					result = processMethodAnnotations(context, aggregateIndex[0],
 							candidateMethod, processor, classFilter);
 					calledProcessor = true;
@@ -290,30 +292,35 @@ abstract class AnnotationsScanner {
 		return null;
 	}
 
-	private static <C> Method[] getMethods(C context, Class<?> source,
+	private static <C> Method[] getBaseTypeMethods(C context, Class<?> baseType,
 			BiPredicate<C, Class<?>> classFilter) {
-		if (source == Object.class) {
+		if (baseType == Object.class) {
 			return NO_METHODS;
 		}
-		if (source.isInterface() && ClassUtils.isJavaLanguageInterface(source)) {
+		if (baseType.isInterface() && ClassUtils.isJavaLanguageInterface(baseType)) {
 			return NO_METHODS;
 		}
-		if (isFiltered(source, context, classFilter)) {
+		if (isFiltered(baseType, context, classFilter)) {
 			return NO_METHODS;
 		}
-		Method[] methods = declaredMethodsCache.get(source);
+		Method[] methods = baseTypeMethodsCache.get(baseType);
 		if (methods == null) {
-			boolean isInterface = source.isInterface();
-			methods = isInterface ? source.getMethods() : source.getDeclaredMethods();
+			String name = baseType.getName();
+			boolean isInterface = baseType.isInterface();
+			methods = isInterface ? baseType.getMethods() : baseType.getDeclaredMethods();
 			int cleared = 0;
 			for (int i = 0; i < methods.length; i++) {
-				// FIXME clear early
-//				if((!isInterface && Modifier.isPrivate(methods[i].getModifiers())) || !AnnotationFilter.PLAIN) {
-//					methods[i] = null;
-//					cleared++;
-//				}
+				if ((!isInterface && Modifier.isPrivate(methods[i].getModifiers()))
+						|| name.startsWith("java.")
+						|| name.startsWith("org.springframework.lang.")) {
+					methods[i] = null;
+					cleared++;
+				}
 			}
-			declaredMethodsCache.put(source, methods);
+			if (cleared == methods.length) {
+				methods = NO_METHODS;
+			}
+			baseTypeMethodsCache.put(baseType, methods);
 		}
 		return methods;
 	}
@@ -456,9 +463,6 @@ abstract class AnnotationsScanner {
 
 	public static boolean isKnownEmpty(AnnotatedElement source,
 			SearchStrategy searchStrategy) {
-//		if (hasPlainJavaAnnotationsOnly(source)) {
-//			return true;
-//		}
 		if (searchStrategy == SearchStrategy.DIRECT || isWithoutHierarchy(source)) {
 			AnnotatedElement bridged = source instanceof Method
 					? BridgeMethodResolver.findBridgedMethod((Method) source)
@@ -467,17 +471,6 @@ abstract class AnnotationsScanner {
 					|| getDeclaredAnnotations(bridged, false).length == 0);
 		}
 		return false;
-	}
-
-	private static boolean hasPlainJavaAnnotationsOnly(@Nullable Object source) {
-		String name = null;
-		if (source instanceof Class) {
-			name = ((Class<?>) source).getName();
-		}
-		if (source instanceof Member) {
-			name = ((Member) source).getDeclaringClass().getName();
-		}
-		return name != null && (name.startsWith("java.") || name.startsWith("org.springframework.lang."));
 	}
 
 	private static boolean isWithoutHierarchy(AnnotatedElement source) {
