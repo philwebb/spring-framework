@@ -22,6 +22,7 @@ import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.EventListener;
 import java.util.Map;
 import java.util.function.BiPredicate;
 
@@ -297,7 +298,10 @@ abstract class AnnotationsScanner {
 		if (baseType == Object.class) {
 			return NO_METHODS;
 		}
-		if (baseType.isInterface() && ClassUtils.isJavaLanguageInterface(baseType)) {
+		if (baseType.isInterface() && (ClassUtils.isJavaLanguageInterface(baseType)
+				|| baseType == EventListener.class
+				|| (baseType.getName().startsWith("org.springframework.")
+						&& baseType.getName().endsWith("Aware")))) {
 			return NO_METHODS;
 		}
 		if (isFiltered(baseType, context, classFilter)) {
@@ -305,19 +309,18 @@ abstract class AnnotationsScanner {
 		}
 		Method[] methods = baseTypeMethodsCache.get(baseType);
 		if (methods == null) {
-			String name = baseType.getName();
 			boolean isInterface = baseType.isInterface();
 			methods = isInterface ? baseType.getMethods() : baseType.getDeclaredMethods();
 			int cleared = 0;
 			for (int i = 0; i < methods.length; i++) {
 				if ((!isInterface && Modifier.isPrivate(methods[i].getModifiers()))
-						|| name.startsWith("java.")
-						|| name.startsWith("org.springframework.lang.")) {
+						|| hasPlainJavaAnnotationsOnly(methods[i])
+						|| getDeclaredAnnotations(methods[i], false).length == 0) {
 					methods[i] = null;
 					cleared++;
 				}
 			}
-			if (cleared == methods.length) {
+			if (cleared == methods.length || methods.length == 0) {
 				methods = NO_METHODS;
 			}
 			baseTypeMethodsCache.put(baseType, methods);
@@ -462,7 +465,10 @@ abstract class AnnotationsScanner {
 	}
 
 	public static boolean isKnownEmpty(AnnotatedElement source,
-			SearchStrategy searchStrategy) {
+			SearchStrategy searchStrategy, AnnotationFilter annotationFilter) {
+		if(annotationFilter == AnnotationFilter.PLAIN && hasPlainJavaAnnotationsOnly(source)) {
+			return true;
+		}
 		if (searchStrategy == SearchStrategy.DIRECT || isWithoutHierarchy(source)) {
 			AnnotatedElement bridged = source instanceof Method
 					? BridgeMethodResolver.findBridgedMethod((Method) source)
@@ -471,6 +477,19 @@ abstract class AnnotationsScanner {
 					|| getDeclaredAnnotations(bridged, false).length == 0);
 		}
 		return false;
+	}
+
+	public static boolean hasPlainJavaAnnotationsOnly(@Nullable Object annotatedElement) {
+		String name = null;
+		if (annotatedElement instanceof Class) {
+			name = ((Class<?>) annotatedElement).getName();
+		}
+		else if (annotatedElement instanceof Member) {
+			name = ((Member) annotatedElement).getDeclaringClass().getName();
+		}
+		return name != null && (name.startsWith("java")
+				|| name.startsWith("org.springframework.lang.")
+				|| name.startsWith("com.sun"));
 	}
 
 	private static boolean isWithoutHierarchy(AnnotatedElement source) {

@@ -20,7 +20,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Collections;
@@ -1115,7 +1114,7 @@ public abstract class AnnotationUtils {
 	 * @see #synthesizeAnnotation(Map, Class, AnnotatedElement)
 	 */
 	static Annotation[] synthesizeAnnotationArray(Annotation[] annotations, @Nullable Object annotatedElement) {
-		if (AnnotationFilter.PLAIN.matches(getDeclaringClass(annotatedElement))) {
+		if (AnnotationsScanner.hasPlainJavaAnnotationsOnly(annotatedElement)) {
 			return annotations;
 		}
 		Annotation[] synthesized = (Annotation[]) Array.newInstance(
@@ -1127,20 +1126,12 @@ public abstract class AnnotationUtils {
 	}
 
 	private static <A extends Annotation> A synthesizeAnnotation(A annotation, @Nullable Object annotatedElement) {
-		if (AnnotationFilter.PLAIN.matches(getDeclaringClass(annotatedElement))) {
+		if (annotation instanceof SynthesizedAnnotation
+				|| AnnotationsScanner.hasPlainJavaAnnotationsOnly(annotatedElement)
+				|| AnnotationFilter.PLAIN.matches(annotation)) {
 			return annotation;
 		}
 		return MergedAnnotation.from(annotatedElement, annotation).synthesize();
-	}
-
-	private static Class<?> getDeclaringClass(@Nullable Object annotatedElement) {
-		if (annotatedElement instanceof Class) {
-			return (Class<?>) annotatedElement;
-		}
-		if (annotatedElement instanceof Member) {
-			return ((Member) annotatedElement).getDeclaringClass();
-		}
-		return null;
 	}
 
 	/**

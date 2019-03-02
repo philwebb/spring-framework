@@ -323,6 +323,13 @@ public abstract class AnnotatedElementUtils {
 	 */
 	@Nullable
 	public static <A extends Annotation> A getMergedAnnotation(AnnotatedElement element, Class<A> annotationType) {
+		A annotation = AnnotationsScanner.getDeclaredAnnotation(element, annotationType);
+		if (annotation != null) {
+			return AnnotationUtils.synthesizeAnnotation(annotation, element);
+		}
+		if (AnnotationsScanner.hasPlainJavaAnnotationsOnly(element)) {
+			return null;
+		}
 		return getAnnotations(element).get(annotationType, null,
 					MergedAnnotationSelectors.firstDirectlyDeclared()).synthesize(
 							MergedAnnotation::isPresent).orElse(null);
@@ -602,6 +609,13 @@ public abstract class AnnotatedElementUtils {
 	 */
 	@Nullable
 	public static <A extends Annotation> A findMergedAnnotation(AnnotatedElement element, Class<A> annotationType) {
+		A annotation = AnnotationsScanner.getDeclaredAnnotation(element, annotationType);
+		if (annotation != null) {
+			return AnnotationUtils.synthesizeAnnotation(annotation, element);
+		}
+		if (AnnotationsScanner.hasPlainJavaAnnotationsOnly(element)) {
+			return null;
+		}
 		return findAnnotations(element).get(annotationType, null,
 				MergedAnnotationSelectors.firstDirectlyDeclared()).synthesize(
 						MergedAnnotation::isPresent).orElse(null);

@@ -244,7 +244,8 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 	public static MergedAnnotations from(@Nullable AnnotatedElement element,
 			SearchStrategy searchStrategy, RepeatableContainers repeatableContainers,
 			AnnotationFilter annotationFilter) {
-		if (element == null || AnnotationsScanner.isKnownEmpty(element, searchStrategy)) {
+		if (element == null || AnnotationsScanner.isKnownEmpty(element, searchStrategy,
+				annotationFilter)) {
 			return NONE;
 		}
 		return new TypeMappedAnnotations(element, searchStrategy, repeatableContainers,
