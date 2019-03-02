@@ -503,6 +503,10 @@ public abstract class AnnotatedElementUtils {
 	 * @see #isAnnotated(AnnotatedElement, Class)
 	 */
 	public static boolean hasAnnotation(AnnotatedElement element, Class<? extends Annotation> annotationType) {
+		// Shortcut: directly present on the element, with no processing needed?
+		if (AnnotationsScanner.getDeclaredAnnotation(element, annotationType) != null) {
+			return true;
+		}
 		return findAnnotations(element).isPresent(annotationType);
 	}
 

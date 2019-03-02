@@ -591,7 +591,7 @@ public abstract class AnnotationUtils {
 	 * @return {@code true} if the annotation is in the {@code java.lang.annotation} package
 	 */
 	public static boolean isInJavaLangAnnotationPackage(@Nullable Annotation annotation) {
-		return AnnotationFilter.JAVA.matches(annotation);
+		return AnnotationFilter.JAVA_LANG_ANNOTATION.matches(annotation);
 	}
 
 	/**
@@ -602,7 +602,7 @@ public abstract class AnnotationUtils {
 	 * @since 4.2
 	 */
 	public static boolean isInJavaLangAnnotationPackage(@Nullable String annotationType) {
-		return AnnotationFilter.JAVA.matches(annotationType);
+		return AnnotationFilter.JAVA_LANG_ANNOTATION.matches(annotationType);
 	}
 
 	/**

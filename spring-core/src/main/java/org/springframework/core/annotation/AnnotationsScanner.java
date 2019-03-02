@@ -303,7 +303,16 @@ abstract class AnnotationsScanner {
 		}
 		Method[] methods = declaredMethodsCache.get(source);
 		if (methods == null) {
-			methods = source.isInterface() ? source.getMethods() : source.getDeclaredMethods();
+			boolean isInterface = source.isInterface();
+			methods = isInterface ? source.getMethods() : source.getDeclaredMethods();
+			int cleared = 0;
+			for (int i = 0; i < methods.length; i++) {
+				// FIXME clear early
+//				if((!isInterface && Modifier.isPrivate(methods[i].getModifiers())) || !AnnotationFilter.PLAIN) {
+//					methods[i] = null;
+//					cleared++;
+//				}
+			}
 			declaredMethodsCache.put(source, methods);
 		}
 		return methods;
@@ -447,6 +456,9 @@ abstract class AnnotationsScanner {
 
 	public static boolean isKnownEmpty(AnnotatedElement source,
 			SearchStrategy searchStrategy) {
+		if (hasPlainJavaAnnotationsOnly(source)) {
+			return true;
+		}
 		if (searchStrategy == SearchStrategy.DIRECT || isWithoutHierarchy(source)) {
 			AnnotatedElement bridged = source instanceof Method
 					? BridgeMethodResolver.findBridgedMethod((Method) source)
@@ -455,6 +467,17 @@ abstract class AnnotationsScanner {
 					|| getDeclaredAnnotations(bridged, false).length == 0);
 		}
 		return false;
+	}
+
+	private static boolean hasPlainJavaAnnotationsOnly(@Nullable Object source) {
+		String name = null;
+		if (source instanceof Class) {
+			name = ((Class<?>) source).getName();
+		}
+		if (source instanceof Member) {
+			name = ((Member) source).getDeclaringClass().getName();
+		}
+		return name != null && (name.startsWith("java.") || name.startsWith("org.springframework.lang."));
 	}
 
 	private static boolean isWithoutHierarchy(AnnotatedElement source) {
