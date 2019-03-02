@@ -305,14 +305,11 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		public MergedAnnotation<A> doWithAnnotations(Object type, int aggregateIndex,
 				@Nullable Object source, Annotation[] annotations) {
 			for (Annotation annotation : annotations) {
-				if (annotation == null
-						|| TypeMappedAnnotations.this.annotationFilter.matches(
+				if (annotation != null
+						&& !TypeMappedAnnotations.this.annotationFilter.matches(
 								annotation)) {
-					continue;
-				}
-				for (Annotation candidate : annotations) {
 					MergedAnnotation<A> result = process(type, aggregateIndex, source,
-							candidate);
+							annotation);
 					if (result != null) {
 						return result;
 					}
@@ -324,9 +321,6 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		@Nullable
 		private MergedAnnotation<A> process(Object type, int aggregateIndex,
 				@Nullable Object source, Annotation annotation) {
-			if (annotation == null) {
-				return null;
-			}
 			Annotation[] repeatedAnnotations = TypeMappedAnnotations.this.repeatableContainers.findRepeatedAnnotations(
 					annotation);
 			if (repeatedAnnotations != null) {

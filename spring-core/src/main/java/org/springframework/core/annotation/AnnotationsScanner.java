@@ -456,9 +456,9 @@ abstract class AnnotationsScanner {
 
 	public static boolean isKnownEmpty(AnnotatedElement source,
 			SearchStrategy searchStrategy) {
-		if (hasPlainJavaAnnotationsOnly(source)) {
-			return true;
-		}
+//		if (hasPlainJavaAnnotationsOnly(source)) {
+//			return true;
+//		}
 		if (searchStrategy == SearchStrategy.DIRECT || isWithoutHierarchy(source)) {
 			AnnotatedElement bridged = source instanceof Method
 					? BridgeMethodResolver.findBridgedMethod((Method) source)
