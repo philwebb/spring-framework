@@ -91,7 +91,8 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		if (annotationType == null || this.annotationFilter.matches(annotationType)) {
 			return false;
 		}
-		return Boolean.TRUE.equals(scan(annotationType, this::isPresent));
+		return Boolean.TRUE.equals(scan(annotationType,
+				IsPresent.get(this.repeatableContainers, this.annotationFilter, false)));
 	}
 
 	@Override
@@ -99,50 +100,26 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		if (annotationType == null || this.annotationFilter.matches(annotationType)) {
 			return false;
 		}
-		return Boolean.TRUE.equals(scan(annotationType, this::isPresent));
+		return Boolean.TRUE.equals(scan(annotationType,
+				IsPresent.get(this.repeatableContainers, this.annotationFilter, false)));
 	}
 
-	private Boolean isPresent(Object requiredType, int aggregateIndex, Object source,
-			Annotation[] annotations) {
-		for (Annotation annotation : annotations) {
-			if (isPresent(annotation, requiredType)) {
-				return true;
-			}
-		}
-		return null;
-	}
-
-	private boolean isPresent(Annotation annotation, Object requiredType) {
-		if (annotation == null) {
+	@Override
+	public <A extends Annotation> boolean isDirectlyPresent(Class<A> annotationType) {
+		if (annotationType == null || this.annotationFilter.matches(annotationType)) {
 			return false;
 		}
-		Class<? extends Annotation> actualType = annotation.annotationType();
-		if (this.annotationFilter.matches(actualType)) {
-			return false;
-		}
-		if (actualType == requiredType || actualType.getName().equals(requiredType)) {
-			return true;
-		}
-		Annotation[] repeatedAnnotations = this.repeatableContainers.findRepeatedAnnotations(
-				annotation);
-		if (repeatedAnnotations != null) {
-			return repeatedAnnotations.length > 0
-					? isPresent(repeatedAnnotations[0], requiredType)
-					: false;
-		}
-		return isPresent(AnnotationTypeMappings.forAnnotationType(actualType),
-				requiredType);
+		return Boolean.TRUE.equals(scan(annotationType,
+				IsPresent.get(this.repeatableContainers, this.annotationFilter, true)));
 	}
 
-	private boolean isPresent(AnnotationTypeMappings mappings, Object requiredType) {
-		for (int i = 0; i < mappings.size(); i++) {
-			AnnotationTypeMapping mapping = mappings.get(i);
-			if (isMappingForType(mapping, this.annotationFilter, requiredType)) {
-				return true;
-			}
-
+	@Override
+	public <A extends Annotation> boolean isDirectlyPresent(String annotationType) {
+		if (annotationType == null || this.annotationFilter.matches(annotationType)) {
+			return false;
 		}
-		return false;
+		return Boolean.TRUE.equals(scan(annotationType,
+				IsPresent.get(this.repeatableContainers, this.annotationFilter, true)));
 	}
 
 	@Override
@@ -286,6 +263,84 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		return !annotationFilter.matches(actualType)
 				&& (requiredType == null || actualType == requiredType
 						|| actualType.getName().equals(requiredType));
+	}
+
+	private static class IsPresent implements AnnotationsProcessor<Object, Boolean> {
+
+		private static final IsPresent DIRECT_ONLY_INSTANCE = new IsPresent(
+				RepeatableContainers.standardRepeatables(), AnnotationFilter.PLAIN, true);
+
+		private static final IsPresent INSTANCE = new IsPresent(
+				RepeatableContainers.standardRepeatables(), AnnotationFilter.PLAIN,
+				false);
+
+		private final RepeatableContainers repeatableContainers;
+
+		private final AnnotationFilter annotationFilter;
+
+		private final boolean directOnly;
+
+		private IsPresent(RepeatableContainers repeatableContainers,
+				AnnotationFilter annotationFilter, boolean directOnly) {
+			this.repeatableContainers = repeatableContainers;
+			this.annotationFilter = annotationFilter;
+			this.directOnly = directOnly;
+		}
+
+		@Override
+		public Boolean doWithAnnotations(Object requiredType, int aggregateIndex,
+				Object source, Annotation[] annotations) {
+			for (Annotation annotation : annotations) {
+				if (isPresent(annotation, requiredType)) {
+					return Boolean.TRUE;
+				}
+			}
+			return null;
+		}
+
+		private boolean isPresent(Annotation annotation, Object requiredType) {
+			if (annotation == null) {
+				return false;
+			}
+			Class<? extends Annotation> actualType = annotation.annotationType();
+			if (this.annotationFilter.matches(actualType)) {
+				return false;
+			}
+			if (actualType == requiredType || actualType.getName().equals(requiredType)) {
+				return true;
+			}
+			Annotation[] repeatedAnnotations = this.repeatableContainers.findRepeatedAnnotations(
+					annotation);
+			if (repeatedAnnotations != null) {
+				return repeatedAnnotations.length > 0
+						? isPresent(repeatedAnnotations[0], requiredType)
+						: false;
+			}
+			return directOnly ? false
+					: isPresent(AnnotationTypeMappings.forAnnotationType(actualType),
+							requiredType);
+		}
+
+		private boolean isPresent(AnnotationTypeMappings mappings, Object requiredType) {
+			for (int i = 0; i < mappings.size(); i++) {
+				AnnotationTypeMapping mapping = mappings.get(i);
+				if (isMappingForType(mapping, this.annotationFilter, requiredType)) {
+					return true;
+				}
+
+			}
+			return false;
+		}
+
+		public static IsPresent get(RepeatableContainers repeatableContainers,
+				AnnotationFilter annotationFilter, boolean directOnly) {
+			if (repeatableContainers == RepeatableContainers.standardRepeatables()
+					&& annotationFilter == AnnotationFilter.PLAIN) {
+				return directOnly ? DIRECT_ONLY_INSTANCE : INSTANCE;
+			}
+			return new IsPresent(repeatableContainers, annotationFilter, directOnly);
+		}
+
 	}
 
 	/**

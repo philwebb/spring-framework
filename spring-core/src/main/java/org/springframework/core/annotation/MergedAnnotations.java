@@ -136,13 +136,30 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	<A extends Annotation> boolean isPresent(@Nullable Class<A> annotationType);
 
 	/**
+	 * Return if the specified annotation is directly present. Equivalent to
+	 * calling {@code get(annotationType).isDirectlyPresent()}.
+	 * @param annotationType the annotation type to check
+	 * @return {@code true} if the annotation is present
+	 */
+	<A extends Annotation> boolean isPresent(@Nullable String annotationType);
+
+	/**
+	 * Return if the specified annotation is directly present. Equivalent to
+	 * calling {@code get(annotationType).isDirectlyPresent()}.
+	 * @param annotationType the annotation type to check
+	 * @return {@code true} if the annotation is present
+	 * @see #isPresent(AnnotatedElement, Class)
+	 */
+	<A extends Annotation> boolean isDirectlyPresent(@Nullable Class<A> annotationType);
+
+	/**
 	 * Return if the specified annotation is either directly present, or
 	 * meta-present. Equivalent to calling
 	 * {@code get(annotationType).isPresent()}.
 	 * @param annotationType the annotation type to check
 	 * @return {@code true} if the annotation is present
 	 */
-	<A extends Annotation> boolean isPresent(@Nullable String annotationType);
+	<A extends Annotation> boolean isDirectlyPresent(@Nullable String annotationType);
 
 	/**
 	 * Return the {@link MergedAnnotationSelectors#nearest() nearest} matching
@@ -172,8 +189,8 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 * @param annotationType the annotation type to get
 	 * @param predicate a predicate that must match, or {@code null} if only
 	 * type matching is required
-	 * @param selector a selector used to choose the most appropriate
-	 * annotation within an aggregate, or {@code null} to select the
+	 * @param selector a selector used to choose the most appropriate annotation
+	 * within an aggregate, or {@code null} to select the
 	 * {@link MergedAnnotationSelectors#nearest() nearest}.
 	 * @return a {@link MergedAnnotation} instance
 	 * @see MergedAnnotationPredicates
@@ -211,8 +228,8 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 * @param annotationType the annotation type to get
 	 * @param predicate a predicate that must match, or {@code null} if only
 	 * type matching is required
-	 * @param selector a selector used to choose the most appropriate
-	 * annotation within an aggregate, or {@code null} to select the
+	 * @param selector a selector used to choose the most appropriate annotation
+	 * within an aggregate, or {@code null} to select the
 	 * {@link MergedAnnotationSelectors#nearest() nearest}.
 	 * @return a {@link MergedAnnotation} instance
 	 * @see MergedAnnotationPredicates
@@ -296,11 +313,11 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	 * @return a {@link MergedAnnotations} instance containing the merged
 	 * element annotations
 	 */
-	static MergedAnnotations from(@Nullable AnnotatedElement element, SearchStrategy searchStrategy,
-			RepeatableContainers repeatableContainers,
+	static MergedAnnotations from(@Nullable AnnotatedElement element,
+			SearchStrategy searchStrategy, RepeatableContainers repeatableContainers,
 			AnnotationFilter annotationFilter) {
-		return TypeMappedAnnotations.from(element, searchStrategy,
-				repeatableContainers, annotationFilter);
+		return TypeMappedAnnotations.from(element, searchStrategy, repeatableContainers,
+				annotationFilter);
 	}
 
 	/**
