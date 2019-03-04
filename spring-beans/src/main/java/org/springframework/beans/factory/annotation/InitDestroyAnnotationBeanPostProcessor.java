@@ -41,6 +41,7 @@ import org.springframework.beans.factory.support.MergedBeanDefinitionPostProcess
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.core.Ordered;
 import org.springframework.core.PriorityOrdered;
+import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
@@ -205,17 +206,20 @@ public class InitDestroyAnnotationBeanPostProcessor
 			final List<LifecycleElement> currDestroyMethods = new ArrayList<>();
 
 			ReflectionUtils.doWithLocalMethods(targetClass, method -> {
-				if (this.initAnnotationType != null && method.isAnnotationPresent(this.initAnnotationType)) {
-					LifecycleElement element = new LifecycleElement(method);
-					currInitMethods.add(element);
-					if (logger.isTraceEnabled()) {
-						logger.trace("Found init method on class [" + clazz.getName() + "]: " + method);
+				MergedAnnotations annotations = MergedAnnotations.from(method);
+				if(!annotations.isEmpty()) {
+					if (this.initAnnotationType != null && annotations.isDirectlyPresent(this.initAnnotationType)) {
+						LifecycleElement element = new LifecycleElement(method);
+						currInitMethods.add(element);
+						if (logger.isTraceEnabled()) {
+							logger.trace("Found init method on class [" + clazz.getName() + "]: " + method);
+						}
 					}
-				}
-				if (this.destroyAnnotationType != null && method.isAnnotationPresent(this.destroyAnnotationType)) {
-					currDestroyMethods.add(new LifecycleElement(method));
-					if (logger.isTraceEnabled()) {
-						logger.trace("Found destroy method on class [" + clazz.getName() + "]: " + method);
+					if (this.destroyAnnotationType != null && annotations.isDirectlyPresent(this.destroyAnnotationType)) {
+						currDestroyMethods.add(new LifecycleElement(method));
+						if (logger.isTraceEnabled()) {
+							logger.trace("Found destroy method on class [" + clazz.getName() + "]: " + method);
+						}
 					}
 				}
 			});
