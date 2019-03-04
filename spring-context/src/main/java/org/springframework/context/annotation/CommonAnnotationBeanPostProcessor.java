@@ -365,26 +365,24 @@ public class CommonAnnotationBeanPostProcessor extends InitDestroyAnnotationBean
 
 			ReflectionUtils.doWithLocalFields(targetClass, field -> {
 				MergedAnnotations annotations = MergedAnnotations.from(field);
-				if (!annotations.isEmpty()) {
-					if (webServiceRefClass != null && annotations.isDirectlyPresent(webServiceRefClass)) {
-						if (Modifier.isStatic(field.getModifiers())) {
-							throw new IllegalStateException("@WebServiceRef annotation is not supported on static fields");
-						}
-						currElements.add(new WebServiceRefElement(field, field, null));
+				if (webServiceRefClass != null && annotations.isDirectlyPresent(webServiceRefClass)) {
+					if (Modifier.isStatic(field.getModifiers())) {
+						throw new IllegalStateException("@WebServiceRef annotation is not supported on static fields");
 					}
-					else if (ejbRefClass != null && annotations.isDirectlyPresent(ejbRefClass)) {
-						if (Modifier.isStatic(field.getModifiers())) {
-							throw new IllegalStateException("@EJB annotation is not supported on static fields");
-						}
-						currElements.add(new EjbRefElement(field, field, null));
+					currElements.add(new WebServiceRefElement(field, field, null));
+				}
+				else if (ejbRefClass != null && annotations.isDirectlyPresent(ejbRefClass)) {
+					if (Modifier.isStatic(field.getModifiers())) {
+						throw new IllegalStateException("@EJB annotation is not supported on static fields");
 					}
-					else if (annotations.isDirectlyPresent(Resource.class)) {
-						if (Modifier.isStatic(field.getModifiers())) {
-							throw new IllegalStateException("@Resource annotation is not supported on static fields");
-						}
-						if (!this.ignoredResourceTypes.contains(field.getType().getName())) {
-							currElements.add(new ResourceElement(field, field, null));
-						}
+					currElements.add(new EjbRefElement(field, field, null));
+				}
+				else if (annotations.isDirectlyPresent(Resource.class)) {
+					if (Modifier.isStatic(field.getModifiers())) {
+						throw new IllegalStateException("@Resource annotation is not supported on static fields");
+					}
+					if (!this.ignoredResourceTypes.contains(field.getType().getName())) {
+						currElements.add(new ResourceElement(field, field, null));
 					}
 				}
 			});

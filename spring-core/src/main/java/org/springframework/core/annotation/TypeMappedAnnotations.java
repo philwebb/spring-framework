@@ -212,14 +212,6 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		return spliterator(null);
 	}
 
-	@Override
-	public boolean isEmpty() {
-		if (this.annotationFilter == FILTER_ALL) {
-			return true;
-		}
-		return scan(this, IsEmpty.INSTANCE);
-	}
-
 	private <A extends Annotation> Spliterator<MergedAnnotation<A>> spliterator(
 			@Nullable Object annotationType) {
 		return new AggregatesSpliterator<>(annotationType, getAggregates());
@@ -274,48 +266,6 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		return !annotationFilter.matches(actualType)
 				&& (requiredType == null || actualType == requiredType
 						|| actualType.getName().equals(requiredType));
-	}
-
-	/**
-	 * {@link AnnotationsProcessor} used to detect if an annotations collection
-	 * is empty.
-	 */
-	private static final class IsEmpty
-			implements AnnotationsProcessor<TypeMappedAnnotations, Boolean> {
-
-		public static final IsEmpty INSTANCE = new IsEmpty();
-
-		private IsEmpty() {
-		}
-
-		@Override
-		public Boolean doWithAnnotations(TypeMappedAnnotations context,
-				int aggregateIndex, Object source, Annotation[] annotations) {
-			for (Annotation annotation : annotations) {
-				if (annotation != null) {
-					if (!context.annotationFilter.matches(annotation.annotationType())) {
-						return Boolean.FALSE;
-					}
-					Annotation[] repeatedAnnotations = context.repeatableContainers.findRepeatedAnnotations(
-							annotation);
-					if (repeatedAnnotations != null) {
-						Boolean result = doWithAnnotations(context, aggregateIndex,
-								source, repeatedAnnotations);
-						if (result != null) {
-							return result;
-						}
-					}
-				}
-
-			}
-			return null;
-		}
-
-		@Override
-		public Boolean finish(Boolean result) {
-			return result != null ? result : Boolean.TRUE;
-		}
-
 	}
 
 	/**

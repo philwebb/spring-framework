@@ -207,19 +207,17 @@ public class InitDestroyAnnotationBeanPostProcessor
 
 			ReflectionUtils.doWithLocalMethods(targetClass, method -> {
 				MergedAnnotations annotations = MergedAnnotations.from(method);
-				if(!annotations.isEmpty()) {
-					if (this.initAnnotationType != null && annotations.isDirectlyPresent(this.initAnnotationType)) {
-						LifecycleElement element = new LifecycleElement(method);
-						currInitMethods.add(element);
-						if (logger.isTraceEnabled()) {
-							logger.trace("Found init method on class [" + clazz.getName() + "]: " + method);
-						}
+				if (this.initAnnotationType != null && annotations.isDirectlyPresent(this.initAnnotationType)) {
+					LifecycleElement element = new LifecycleElement(method);
+					currInitMethods.add(element);
+					if (logger.isTraceEnabled()) {
+						logger.trace("Found init method on class [" + clazz.getName() + "]: " + method);
 					}
-					if (this.destroyAnnotationType != null && annotations.isDirectlyPresent(this.destroyAnnotationType)) {
-						currDestroyMethods.add(new LifecycleElement(method));
-						if (logger.isTraceEnabled()) {
-							logger.trace("Found destroy method on class [" + clazz.getName() + "]: " + method);
-						}
+				}
+				if (this.destroyAnnotationType != null && annotations.isDirectlyPresent(this.destroyAnnotationType)) {
+					currDestroyMethods.add(new LifecycleElement(method));
+					if (logger.isTraceEnabled()) {
+						logger.trace("Found destroy method on class [" + clazz.getName() + "]: " + method);
 					}
 				}
 			});

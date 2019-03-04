@@ -271,18 +271,6 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 	Stream<MergedAnnotation<Annotation>> stream();
 
 	/**
-	 * Quickly determine if there are no merged annotations contained in this
-	 * collection. When this method returns {@code true} then the {@code stream}
-	 * and {@code iterator} methods will return empty results. Note that is
-	 * possible for this method to return {@code false} <em>and</em> for the
-	 * {@code stream} and {@code iterator} methods to still ultimately return
-	 * empty results.
-	 * @return {@code true} if this collection is known to be empty, or
-	 * {@code false} if the collection might contain elements.
-	 */
-	boolean isEmpty();
-
-	/**
 	 * Create a new {@link MergedAnnotations} instance containing all
 	 * annotations and meta-annotations from the specified element. The
 	 * resulting instance will not include any inherited annotations, if you
