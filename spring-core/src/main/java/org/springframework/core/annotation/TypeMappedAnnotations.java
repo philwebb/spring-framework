@@ -91,8 +91,8 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		if (annotationType == null || this.annotationFilter.matches(annotationType)) {
 			return false;
 		}
-		return Boolean.TRUE.equals(scan(annotationType,
-				IsPresent.get(this.repeatableContainers, this.annotationFilter, false)));
+		return scan(annotationType,
+				IsPresent.get(this.repeatableContainers, this.annotationFilter, false));
 	}
 
 	@Override
@@ -100,8 +100,8 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		if (annotationType == null || this.annotationFilter.matches(annotationType)) {
 			return false;
 		}
-		return Boolean.TRUE.equals(scan(annotationType,
-				IsPresent.get(this.repeatableContainers, this.annotationFilter, false)));
+		return scan(annotationType,
+				IsPresent.get(this.repeatableContainers, this.annotationFilter, false));
 	}
 
 	@Override
@@ -109,8 +109,8 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		if (annotationType == null || this.annotationFilter.matches(annotationType)) {
 			return false;
 		}
-		return Boolean.TRUE.equals(scan(annotationType,
-				IsPresent.get(this.repeatableContainers, this.annotationFilter, true)));
+		return scan(annotationType,
+				IsPresent.get(this.repeatableContainers, this.annotationFilter, true));
 	}
 
 	@Override
@@ -118,8 +118,8 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		if (annotationType == null || this.annotationFilter.matches(annotationType)) {
 			return false;
 		}
-		return Boolean.TRUE.equals(scan(annotationType,
-				IsPresent.get(this.repeatableContainers, this.annotationFilter, true)));
+		return scan(annotationType,
+				IsPresent.get(this.repeatableContainers, this.annotationFilter, true));
 	}
 
 	@Override
@@ -212,6 +212,14 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		return spliterator(null);
 	}
 
+	@Override
+	public boolean isEmpty() {
+		if (this.annotationFilter == FILTER_ALL) {
+			return true;
+		}
+		return scan(this, IsEmpty.INSTANCE);
+	}
+
 	private <A extends Annotation> Spliterator<MergedAnnotation<A>> spliterator(
 			@Nullable Object annotationType) {
 		return new AggregatesSpliterator<>(annotationType, getAggregates());
@@ -250,6 +258,9 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 	public static MergedAnnotations from(@Nullable Object source,
 			Annotation[] annotations, RepeatableContainers repeatableContainers,
 			AnnotationFilter annotationFilter) {
+		if (annotations.length == 0) {
+			return NONE;
+		}
 		return new TypeMappedAnnotations(source, annotations, repeatableContainers,
 				annotationFilter);
 	}
@@ -265,14 +276,70 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 						|| actualType.getName().equals(requiredType));
 	}
 
+	/**
+	 * {@link AnnotationsProcessor} used to detect if an annotations collection
+	 * is empty.
+	 */
+	private static class IsEmpty
+			implements AnnotationsProcessor<TypeMappedAnnotations, Boolean> {
+
+		public static final IsEmpty INSTANCE = new IsEmpty();
+
+		@Override
+		public Boolean doWithAnnotations(TypeMappedAnnotations context,
+				int aggregateIndex, Object source, Annotation[] annotations) {
+			for (Annotation annotation : annotations) {
+				if (annotation != null) {
+					if (!context.annotationFilter.matches(annotation.annotationType())) {
+						return Boolean.FALSE;
+					}
+					Annotation[] repeatedAnnotations = context.repeatableContainers.findRepeatedAnnotations(
+							annotation);
+					if (repeatedAnnotations != null) {
+						Boolean result = doWithAnnotations(context, aggregateIndex,
+								source, repeatedAnnotations);
+						if (result != null) {
+							return result;
+						}
+					}
+				}
+
+			}
+			return null;
+		}
+
+		@Override
+		public Boolean finish(Boolean result) {
+			return result != null ? result : Boolean.TRUE;
+		}
+
+	}
+
+	/**
+	 * {@link AnnotationsProcessor} used to detect if an annotation is directly
+	 * or meta-present.
+	 */
 	private static class IsPresent implements AnnotationsProcessor<Object, Boolean> {
 
-		private static final IsPresent DIRECT_ONLY_INSTANCE = new IsPresent(
-				RepeatableContainers.standardRepeatables(), AnnotationFilter.PLAIN, true);
-
-		private static final IsPresent INSTANCE = new IsPresent(
+		/**
+		 * Shared instance that saves us needing to create a new processor for
+		 * the common combination of
+		 * {@code RepeatableContainers.standardRepeatables()} /
+		 * {@code AnnotationFilter.PLAIN} when checking for direct and meta
+		 * annotations.
+		 */
+		private static final IsPresent SHARED_INSTANCE = new IsPresent(
 				RepeatableContainers.standardRepeatables(), AnnotationFilter.PLAIN,
 				false);
+
+		/**
+		 * Shared instance that saves us needing to create a new processor for
+		 * the common combination of
+		 * {@code RepeatableContainers.standardRepeatables()} /
+		 * {@code AnnotationFilter.PLAIN} when checking for direct annotations.
+		 */
+		private static final IsPresent DIRECT_ONLY_SHARED_INSTANCE = new IsPresent(
+				RepeatableContainers.standardRepeatables(), AnnotationFilter.PLAIN, true);
 
 		private final RepeatableContainers repeatableContainers;
 
@@ -291,52 +358,49 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		public Boolean doWithAnnotations(Object requiredType, int aggregateIndex,
 				Object source, Annotation[] annotations) {
 			for (Annotation annotation : annotations) {
-				if (isPresent(annotation, requiredType)) {
-					return Boolean.TRUE;
+				Class<? extends Annotation> type = annotation != null
+						? annotation.annotationType()
+						: null;
+				if (type != null && !this.annotationFilter.matches(type)) {
+					if (type == requiredType || type.getName().equals(requiredType)) {
+						return Boolean.TRUE;
+					}
+					Annotation[] repeatedAnnotations = this.repeatableContainers.findRepeatedAnnotations(
+							annotation);
+					if (repeatedAnnotations != null) {
+						Boolean result = doWithAnnotations(requiredType, aggregateIndex,
+								source, repeatedAnnotations);
+						if (result != null) {
+							return result;
+						}
+					}
+					if (!this.directOnly) {
+						AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotationType(
+								type);
+						for (int i = 0; i < mappings.size(); i++) {
+							AnnotationTypeMapping mapping = mappings.get(i);
+							if (isMappingForType(mapping, this.annotationFilter,
+									requiredType)) {
+								return Boolean.TRUE;
+							}
+						}
+					}
 				}
 			}
 			return null;
 		}
 
-		private boolean isPresent(Annotation annotation, Object requiredType) {
-			if (annotation == null) {
-				return false;
-			}
-			Class<? extends Annotation> actualType = annotation.annotationType();
-			if (this.annotationFilter.matches(actualType)) {
-				return false;
-			}
-			if (actualType == requiredType || actualType.getName().equals(requiredType)) {
-				return true;
-			}
-			Annotation[] repeatedAnnotations = this.repeatableContainers.findRepeatedAnnotations(
-					annotation);
-			if (repeatedAnnotations != null) {
-				return repeatedAnnotations.length > 0
-						? isPresent(repeatedAnnotations[0], requiredType)
-						: false;
-			}
-			return directOnly ? false
-					: isPresent(AnnotationTypeMappings.forAnnotationType(actualType),
-							requiredType);
-		}
-
-		private boolean isPresent(AnnotationTypeMappings mappings, Object requiredType) {
-			for (int i = 0; i < mappings.size(); i++) {
-				AnnotationTypeMapping mapping = mappings.get(i);
-				if (isMappingForType(mapping, this.annotationFilter, requiredType)) {
-					return true;
-				}
-
-			}
-			return false;
+		@Override
+		public Boolean finish(Boolean result) {
+			return result != null ? result : Boolean.FALSE;
 		}
 
 		public static IsPresent get(RepeatableContainers repeatableContainers,
 				AnnotationFilter annotationFilter, boolean directOnly) {
 			if (repeatableContainers == RepeatableContainers.standardRepeatables()
 					&& annotationFilter == AnnotationFilter.PLAIN) {
-				return directOnly ? DIRECT_ONLY_INSTANCE : INSTANCE;
+				// Use a single shared instance for this common combination
+				return directOnly ? DIRECT_ONLY_SHARED_INSTANCE : SHARED_INSTANCE;
 			}
 			return new IsPresent(repeatableContainers, annotationFilter, directOnly);
 		}

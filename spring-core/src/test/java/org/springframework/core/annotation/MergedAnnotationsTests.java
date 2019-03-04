@@ -1076,26 +1076,54 @@ public class MergedAnnotationsTests {
 		// no class-level annotation
 		assertThat(MergedAnnotations.from(NonAnnotatedInterface.class).get(
 				Transactional.class).isDirectlyPresent()).isFalse();
+		assertThat(MergedAnnotations.from(NonAnnotatedInterface.class).isDirectlyPresent(
+				Transactional.class)).isFalse();
 		assertThat(MergedAnnotations.from(NonAnnotatedClass.class).get(
 				Transactional.class).isDirectlyPresent()).isFalse();
+		assertThat(MergedAnnotations.from(NonAnnotatedClass.class).isDirectlyPresent(
+				Transactional.class)).isFalse();
 		// inherited class-level annotation; note: @Transactional is inherited
 		assertThat(MergedAnnotations.from(InheritedAnnotationInterface.class).get(
 				Transactional.class).isDirectlyPresent()).isTrue();
+		assertThat(MergedAnnotations.from(
+				InheritedAnnotationInterface.class).isDirectlyPresent(
+						Transactional.class)).isTrue();
 		assertThat(MergedAnnotations.from(SubInheritedAnnotationInterface.class).get(
 				Transactional.class).isDirectlyPresent()).isFalse();
+		assertThat(MergedAnnotations.from(
+				SubInheritedAnnotationInterface.class).isDirectlyPresent(
+						Transactional.class)).isFalse();
 		assertThat(MergedAnnotations.from(InheritedAnnotationClass.class).get(
 				Transactional.class).isDirectlyPresent()).isTrue();
+		assertThat(
+				MergedAnnotations.from(InheritedAnnotationClass.class).isDirectlyPresent(
+						Transactional.class)).isTrue();
 		assertThat(MergedAnnotations.from(SubInheritedAnnotationClass.class).get(
 				Transactional.class).isDirectlyPresent()).isFalse();
+		assertThat(MergedAnnotations.from(
+				SubInheritedAnnotationClass.class).isDirectlyPresent(
+						Transactional.class)).isFalse();
 		// non-inherited class-level annotation; note: @Order is not inherited
 		assertThat(MergedAnnotations.from(NonInheritedAnnotationInterface.class).get(
 				Order.class).isDirectlyPresent()).isTrue();
+		assertThat(MergedAnnotations.from(
+				NonInheritedAnnotationInterface.class).isDirectlyPresent(
+						Order.class)).isTrue();
 		assertThat(MergedAnnotations.from(SubNonInheritedAnnotationInterface.class).get(
 				Order.class).isDirectlyPresent()).isFalse();
+		assertThat(MergedAnnotations.from(
+				SubNonInheritedAnnotationInterface.class).isDirectlyPresent(
+						Order.class)).isFalse();
 		assertThat(MergedAnnotations.from(NonInheritedAnnotationClass.class).get(
 				Order.class).isDirectlyPresent()).isTrue();
+		assertThat(MergedAnnotations.from(
+				NonInheritedAnnotationClass.class).isDirectlyPresent(
+						Order.class)).isTrue();
 		assertThat(MergedAnnotations.from(SubNonInheritedAnnotationClass.class).get(
 				Order.class).isDirectlyPresent()).isFalse();
+		assertThat(MergedAnnotations.from(
+				SubNonInheritedAnnotationClass.class).isDirectlyPresent(
+						Order.class)).isFalse();
 	}
 
 	@Test
@@ -2034,6 +2062,23 @@ public class MergedAnnotationsTests {
 		MergedAnnotation<?> annotation = MergedAnnotations.from(
 				DefaultOverrideClass.class).get(DefaultOverrideRoot.class);
 		assertThat(annotation.getString("text")).isEqualTo("metameta");
+	}
+
+	@Test
+	public void isEmptyForAllScenarios() throws Exception {
+		assertThat(MergedAnnotations.from(new Annotation[0]).isEmpty()).isTrue();
+		assertThat(MergedAnnotations.from(NonAnnotatedClass.class).isEmpty()).isTrue();
+		assertThat(MergedAnnotations.from(
+				SubSubClassWithInheritedAnnotation.class).isEmpty()).isTrue();
+		assertThat(MergedAnnotations.from(SubSubClassWithInheritedAnnotation.class,
+				SearchStrategy.INHERITED_ANNOTATIONS).isEmpty()).isFalse();
+		// Bridge methods can be tricky since we might have no declared
+		// annotations but still find some on the other methods
+		Method method = ConcreteClassWithInheritedAnnotation.class.getMethod(
+				"handleParameterized", String.class);
+		assertThat(method.getDeclaredAnnotations()).isEmpty();
+		assertThat(MergedAnnotations.from(method,
+				SearchStrategy.EXHAUSTIVE).isEmpty()).isFalse();
 	}
 
 	// @formatter:off
