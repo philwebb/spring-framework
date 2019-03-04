@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.function.BiPredicate;
 
 import org.springframework.core.BridgeMethodResolver;
+import org.springframework.core.Ordered;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.lang.Nullable;
@@ -431,19 +432,21 @@ abstract class AnnotationsScanner {
 		Annotation[] annotations = declaredAnnotationCache.get(source);
 		if (annotations == null) {
 			annotations = source.getDeclaredAnnotations();
-			boolean allIgnored = true;
-			for (int i = 0; i < annotations.length; i++) {
-				if (isIgnorable(annotations[i].annotationType())) {
-					annotations[i] = null;
+			if (annotations.length != 0) {
+				boolean allIgnored = true;
+				for (int i = 0; i < annotations.length; i++) {
+					if (isIgnorable(annotations[i].annotationType())) {
+						annotations[i] = null;
+					}
+					else {
+						allIgnored = false;
+					}
 				}
-				else {
-					allIgnored = false;
+				annotations = allIgnored ? NO_ANNOTATIONS : annotations;
+				if (source instanceof Class || source instanceof Member) {
+					declaredAnnotationCache.put(source, annotations);
+					cached = true;
 				}
-			}
-			annotations = allIgnored ? NO_ANNOTATIONS : annotations;
-			cached = (source instanceof Class || source instanceof Member);
-			if (cached && annotations.length != 0) {
-				declaredAnnotationCache.put(source, annotations);
 			}
 		}
 		if (!copy || annotations.length == 0 || !cached) {
@@ -466,7 +469,8 @@ abstract class AnnotationsScanner {
 
 	public static boolean isKnownEmpty(AnnotatedElement source,
 			SearchStrategy searchStrategy, AnnotationFilter annotationFilter) {
-		if(annotationFilter == AnnotationFilter.PLAIN && hasPlainJavaAnnotationsOnly(source)) {
+		if (annotationFilter == AnnotationFilter.PLAIN
+				&& hasPlainJavaAnnotationsOnly(source)) {
 			return true;
 		}
 		if (searchStrategy == SearchStrategy.DIRECT || isWithoutHierarchy(source)) {
@@ -480,16 +484,23 @@ abstract class AnnotationsScanner {
 	}
 
 	public static boolean hasPlainJavaAnnotationsOnly(@Nullable Object annotatedElement) {
-		String name = null;
+		Class<?> type = null;
 		if (annotatedElement instanceof Class) {
-			name = ((Class<?>) annotatedElement).getName();
+			type = (Class<?>) annotatedElement;
 		}
 		else if (annotatedElement instanceof Member) {
-			name = ((Member) annotatedElement).getDeclaringClass().getName();
+			type = ((Member) annotatedElement).getDeclaringClass();
 		}
-		return name != null && (name.startsWith("java")
+		else {
+			return false;
+		}
+		String name = type.getName();
+		return type.equals(Ordered.class) || name.startsWith("java")
 				|| name.startsWith("org.springframework.lang.")
-				|| (name.startsWith("com.sun") && !name.contains("Proxy")));
+				|| name.startsWith("org.springframework.util.")
+				|| (type.isInterface() && name.startsWith("org.springframework.")
+						&& name.endsWith("Aware"))
+				|| (name.startsWith("com.sun") && !name.contains("Proxy"));
 	}
 
 	private static boolean isWithoutHierarchy(AnnotatedElement source) {
@@ -511,6 +522,7 @@ abstract class AnnotationsScanner {
 
 	static void clearCache() {
 		declaredAnnotationCache.clear();
+		baseTypeMethodsCache.clear();
 	}
 
 }
