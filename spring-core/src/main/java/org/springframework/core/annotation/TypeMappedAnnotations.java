@@ -280,10 +280,13 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 	 * {@link AnnotationsProcessor} used to detect if an annotations collection
 	 * is empty.
 	 */
-	private static class IsEmpty
+	private static final class IsEmpty
 			implements AnnotationsProcessor<TypeMappedAnnotations, Boolean> {
 
 		public static final IsEmpty INSTANCE = new IsEmpty();
+
+		private IsEmpty() {
+		}
 
 		@Override
 		public Boolean doWithAnnotations(TypeMappedAnnotations context,
@@ -319,7 +322,7 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 	 * {@link AnnotationsProcessor} used to detect if an annotation is directly
 	 * or meta-present.
 	 */
-	private static class IsPresent implements AnnotationsProcessor<Object, Boolean> {
+	private static final class IsPresent implements AnnotationsProcessor<Object, Boolean> {
 
 		/**
 		 * Shared instance that saves us needing to create a new processor for

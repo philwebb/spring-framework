@@ -489,7 +489,7 @@ abstract class AnnotationsScanner {
 		}
 		return name != null && (name.startsWith("java")
 				|| name.startsWith("org.springframework.lang.")
-				|| name.startsWith("com.sun"));
+				|| (name.startsWith("com.sun") && !name.contains("Proxy")));
 	}
 
 	private static boolean isWithoutHierarchy(AnnotatedElement source) {
