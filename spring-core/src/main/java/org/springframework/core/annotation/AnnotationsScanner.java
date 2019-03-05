@@ -186,6 +186,9 @@ abstract class AnnotationsScanner {
 		if (result != null) {
 			return result;
 		}
+		if (hasPlainJavaAnnotationsOnly(source)) {
+			return null;
+		}
 		Annotation[] annotations = getDeclaredAnnotations(context, source, classFilter,
 				false);
 		result = processor.doWithAnnotations(context, aggregateIndex[0], source,
