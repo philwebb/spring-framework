@@ -474,10 +474,11 @@ abstract class AnnotationsScanner {
 			return true;
 		}
 		if (searchStrategy == SearchStrategy.DIRECT || isWithoutHierarchy(source)) {
-			if (source instanceof Method && ((Method) source).isBridge()) {
-				return false;
-			}
-			return getDeclaredAnnotations(source, false).length == 0;
+			AnnotatedElement bridged = source instanceof Method
+					? BridgeMethodResolver.findBridgedMethod((Method) source)
+					: source;
+			return getDeclaredAnnotations(source, false).length == 0 && (bridged == source
+					|| getDeclaredAnnotations(bridged, false).length == 0);
 		}
 		return false;
 	}
