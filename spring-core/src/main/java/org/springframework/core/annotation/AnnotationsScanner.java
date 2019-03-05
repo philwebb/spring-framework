@@ -55,6 +55,9 @@ abstract class AnnotationsScanner {
 	private static final Map<Class<?>, Method[]> baseTypeMethodsCache = new ConcurrentReferenceHashMap<>(
 			256);
 
+	private static final Class<?> SERVLET_CONTEXT_CLASS = getClassIfPresent(
+			"javax.servlet.ServletContext");
+
 	private AnnotationsScanner() {
 	}
 
@@ -500,7 +503,9 @@ abstract class AnnotationsScanner {
 				|| name.startsWith("org.springframework.util.")
 				|| (type.isInterface() && name.startsWith("org.springframework.")
 						&& name.endsWith("Aware"))
-				|| (name.startsWith("com.sun") && !name.contains("Proxy"));
+				|| (name.startsWith("com.sun") && !name.contains("Proxy"))
+				|| (SERVLET_CONTEXT_CLASS != null
+						&& SERVLET_CONTEXT_CLASS.isAssignableFrom(type));
 	}
 
 	private static boolean isWithoutHierarchy(AnnotatedElement source) {
@@ -518,6 +523,15 @@ abstract class AnnotationsScanner {
 					|| isWithoutHierarchy(sourceMethod.getDeclaringClass());
 		}
 		return true;
+	}
+
+	private static Class<?> getClassIfPresent(String name) {
+		try {
+			return ClassUtils.forName(name, null);
+		}
+		catch (Throwable ex) {
+			return null;
+		}
 	}
 
 	static void clearCache() {
