@@ -741,7 +741,8 @@ public abstract class AnnotationUtils {
 	 */
 	public static void registerDefaultValues(AnnotationAttributes attributes) {
 		Class<? extends Annotation> annotationType = attributes.annotationType();
-		if (annotationType != null && Modifier.isPublic(annotationType.getModifiers())) {
+		if (annotationType != null && Modifier.isPublic(annotationType.getModifiers())
+				&& !AnnotationFilter.PLAIN.matches(annotationType)) {
 			getDefaultValues(annotationType).forEach((name, value) ->
 				attributes.putIfAbsent(name, value));
 		}
@@ -755,12 +756,14 @@ public abstract class AnnotationUtils {
 
 	private static Map<String, DefaultValueHolder> computeDefaultValues(
 			Class<? extends Annotation> annotationType) {
-		AnnotationAttributes attributes = MergedAnnotation.from(annotationType).asMap(
-				getAnnotationAttributesFactory(annotationType.getClassLoader()),
-				MapValues.ANNOTATION_TO_MAP);
-		Map<String, DefaultValueHolder> result = new LinkedHashMap<>(attributes.size());
-		for (Map.Entry<String, Object> element : attributes.entrySet()) {
-			result.put(element.getKey(), new DefaultValueHolder(element.getValue()));
+		AttributeMethods methods = AttributeMethods.forAnnotationType(annotationType);
+		Map<String, DefaultValueHolder> result = new LinkedHashMap<>(methods.size());
+		for (int i = 0; i < methods.size(); i++) {
+			Method method = methods.get(i);
+			Object defaultValue = method.getDefaultValue();
+			if(defaultValue != null) {
+				result.put(method.getName(), new DefaultValueHolder(defaultValue));
+			}
 		}
 		return result;
 	}
