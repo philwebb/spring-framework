@@ -251,6 +251,9 @@ abstract class AnnotationsScanner {
 		if (result != null) {
 			return result;
 		}
+		if (hasPlainJavaAnnotationsOnly(sourceClass)) {
+			return null;
+		}
 		boolean calledProcessor = false;
 		if (sourceClass == rootMethod.getDeclaringClass()) {
 			result = processMethodAnnotations(context, aggregateIndex[0], rootMethod,
