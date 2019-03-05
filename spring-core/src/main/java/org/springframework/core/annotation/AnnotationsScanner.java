@@ -505,6 +505,8 @@ abstract class AnnotationsScanner {
 				|| name.startsWith("org.springframework.util.")
 				|| (type.isInterface() && name.startsWith("org.springframework.")
 						&& name.endsWith("Aware"))
+				|| name.equals(
+						"org.springframework.context.annotation.ConfigurationClassEnhancer$EnhancedConfiguration")
 				|| (name.startsWith("com.sun") && !name.contains("Proxy"))
 				|| (SERVLET_CONTEXT_CLASS != null
 						&& SERVLET_CONTEXT_CLASS.isAssignableFrom(type));
