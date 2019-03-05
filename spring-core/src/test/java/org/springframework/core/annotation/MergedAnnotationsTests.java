@@ -2064,23 +2064,6 @@ public class MergedAnnotationsTests {
 		assertThat(annotation.getString("text")).isEqualTo("metameta");
 	}
 
-	@Test
-	public void isEmptyForAllScenarios() throws Exception {
-		assertThat(MergedAnnotations.from(new Annotation[0]).isEmpty()).isTrue();
-		assertThat(MergedAnnotations.from(NonAnnotatedClass.class).isEmpty()).isTrue();
-		assertThat(MergedAnnotations.from(
-				SubSubClassWithInheritedAnnotation.class).isEmpty()).isTrue();
-		assertThat(MergedAnnotations.from(SubSubClassWithInheritedAnnotation.class,
-				SearchStrategy.INHERITED_ANNOTATIONS).isEmpty()).isFalse();
-		// Bridge methods can be tricky since we might have no declared
-		// annotations but still find some on the other methods
-		Method method = ConcreteClassWithInheritedAnnotation.class.getMethod(
-				"handleParameterized", String.class);
-		assertThat(method.getDeclaredAnnotations()).isEmpty();
-		assertThat(MergedAnnotations.from(method,
-				SearchStrategy.EXHAUSTIVE).isEmpty()).isFalse();
-	}
-
 	// @formatter:off
 
 	@Retention(RetentionPolicy.RUNTIME)
