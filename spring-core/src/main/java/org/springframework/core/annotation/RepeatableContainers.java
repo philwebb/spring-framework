@@ -126,9 +126,6 @@ public abstract class RepeatableContainers {
 	 */
 	private static class StandardRepeatableContainers extends RepeatableContainers {
 
-		private static final String[] COMMON_NON_REPEATABLE = { "java.lang.Deprecated",
-			"org.springframework.context.annotation.Bean" };
-
 		private static final Map<Class<? extends Annotation>, Object> cache = new ConcurrentReferenceHashMap<>();
 
 		private static final Object NONE = new Object();
@@ -151,10 +148,6 @@ public abstract class RepeatableContainers {
 		@Nullable
 		private static Method getRepeatedAnnotationsMethod(
 				Class<? extends Annotation> annotationType) {
-			if (ObjectUtils.containsElement(COMMON_NON_REPEATABLE,
-					annotationType.getName())) {
-				return null;
-			}
 			Object result = cache.computeIfAbsent(annotationType,
 					StandardRepeatableContainers::computeRepeatedAnnotationsMethod);
 			return result != NONE ? (Method) result : null;
