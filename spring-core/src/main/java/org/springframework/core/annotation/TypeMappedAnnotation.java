@@ -505,10 +505,12 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 				|| (attributeType == Class[].class && value instanceof String[])) {
 			return value;
 		}
-		Assert.state(attributeType.isInstance(value),
-				"Attribute '" + attribute.getName() + "' in annotation " + getType()
-						+ " should be compatible with " + attributeType.getName()
-						+ " but a " + value.getClass().getName() + " value was returned");
+		if (!attributeType.isInstance(value)) {
+			throw new IllegalStateException("Attribute '" + attribute.getName()
+					+ "' in annotation " + getType() + " should be compatible with "
+					+ attributeType.getName() + " but a " + value.getClass().getName()
+					+ " value was returned");
+		}
 		return value;
 	}
 
