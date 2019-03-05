@@ -19,6 +19,7 @@ package org.springframework.core.annotation;
 import java.util.Arrays;
 
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 /**
  * {@link AnnotationFilter} implementation used for
@@ -73,4 +74,9 @@ class PackagesAnnotationFilter implements AnnotationFilter {
 		return this.hashCode;
 	}
 
+	@Override
+	public String toString() {
+		return "Packages annotation filter: "
+				+ StringUtils.arrayToCommaDelimitedString(this.prefixes);
+	}
 }

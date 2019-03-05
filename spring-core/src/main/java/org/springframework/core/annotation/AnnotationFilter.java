@@ -50,7 +50,19 @@ public interface AnnotationFilter {
 	 * {@link AnnotationFilter} that never matches and can be used when no
 	 * filtering is needed.
 	 */
-	static final AnnotationFilter NONE = annotationType -> false;
+	static final AnnotationFilter NONE = new AnnotationFilter() {
+
+		@Override
+		public boolean matches(String typeName) {
+			return false;
+		}
+
+		@Override
+		public String toString() {
+			return "No annotation filtering";
+		}
+
+	};
 
 	/**
 	 * Test if the given annotation matches the filter.
