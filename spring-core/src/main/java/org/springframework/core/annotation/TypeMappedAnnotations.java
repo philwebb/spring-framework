@@ -20,8 +20,10 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Consumer;
@@ -30,6 +32,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import org.springframework.lang.Nullable;
+import org.springframework.util.ConcurrentReferenceHashMap;
 
 /**
  * {@link MergedAnnotations} implementation that searches for and adapts
@@ -64,6 +67,9 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 	@Nullable
 	private volatile List<Aggregate> aggregates;
 
+	@Nullable
+	private Cache cache;
+
 	private TypeMappedAnnotations(AnnotatedElement element, SearchStrategy searchStrategy,
 			RepeatableContainers repeatableContainers,
 			AnnotationFilter annotationFilter) {
@@ -73,6 +79,8 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		this.annotations = null;
 		this.repeatableContainers = repeatableContainers;
 		this.annotationFilter = annotationFilter;
+		this.cache = Cache.get(element, searchStrategy, repeatableContainers,
+				annotationFilter);
 	}
 
 	private TypeMappedAnnotations(@Nullable Object source, Annotation[] annotations,
@@ -84,11 +92,13 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		this.annotations = annotations;
 		this.repeatableContainers = repeatableContainers;
 		this.annotationFilter = annotationFilter;
+		this.cache = null;
 	}
 
 	@Override
 	public <A extends Annotation> boolean isPresent(@Nullable Class<A> annotationType) {
-		if (annotationType == null || this.annotationFilter.matches(annotationType)) {
+		if (this.annotationFilter == FILTER_ALL || annotationType == null
+				|| this.annotationFilter.matches(annotationType)) {
 			return false;
 		}
 		return scan(annotationType,
@@ -97,7 +107,8 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 
 	@Override
 	public <A extends Annotation> boolean isPresent(@Nullable String annotationType) {
-		if (annotationType == null || this.annotationFilter.matches(annotationType)) {
+		if (this.annotationFilter == FILTER_ALL || annotationType == null
+				|| this.annotationFilter.matches(annotationType)) {
 			return false;
 		}
 		return scan(annotationType,
@@ -106,7 +117,8 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 
 	@Override
 	public <A extends Annotation> boolean isDirectlyPresent(Class<A> annotationType) {
-		if (annotationType == null || this.annotationFilter.matches(annotationType)) {
+		if (this.annotationFilter == FILTER_ALL || annotationType == null
+				|| this.annotationFilter.matches(annotationType)) {
 			return false;
 		}
 		return scan(annotationType,
@@ -115,7 +127,8 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 
 	@Override
 	public <A extends Annotation> boolean isDirectlyPresent(String annotationType) {
-		if (annotationType == null || this.annotationFilter.matches(annotationType)) {
+		if (this.annotationFilter == FILTER_ALL || annotationType == null
+				|| this.annotationFilter.matches(annotationType)) {
 			return false;
 		}
 		return scan(annotationType,
@@ -657,6 +670,45 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 		@Override
 		public int characteristics() {
 			return NONNULL | IMMUTABLE;
+		}
+
+	}
+
+	private static class Cache {
+
+		private static final EnumMap<SearchStrategy, Map<AnnotatedElement, Cache>> noRepeatables;
+
+		private static final EnumMap<SearchStrategy, Map<AnnotatedElement, Cache>> standardRepeatables;
+
+		static {
+			noRepeatables = new EnumMap<>(SearchStrategy.class);
+			for (SearchStrategy searchStrategy : SearchStrategy.values()) {
+				noRepeatables.put(searchStrategy, new ConcurrentReferenceHashMap<>());
+			}
+			standardRepeatables = new EnumMap<>(SearchStrategy.class);
+			for (SearchStrategy searchStrategy : SearchStrategy.values()) {
+				standardRepeatables.put(searchStrategy,
+						new ConcurrentReferenceHashMap<>());
+			}
+		}
+
+		public Cache(AnnotatedElement element) {
+		}
+
+		public static Cache get(AnnotatedElement element, SearchStrategy searchStrategy,
+				RepeatableContainers repeatableContainers,
+				AnnotationFilter annotationFilter) {
+			if (annotationFilter == AnnotationFilter.PLAIN && element instanceof Class) {
+				if (repeatableContainers == RepeatableContainers.none()) {
+					return noRepeatables.get(searchStrategy).computeIfAbsent(element,
+							Cache::new);
+				}
+				else if (repeatableContainers == RepeatableContainers.none()) {
+					return standardRepeatables.get(searchStrategy).computeIfAbsent(
+							element, Cache::new);
+				}
+			}
+			return null;
 		}
 
 	}
