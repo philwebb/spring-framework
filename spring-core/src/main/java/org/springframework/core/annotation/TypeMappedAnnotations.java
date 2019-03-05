@@ -272,27 +272,25 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 	 * {@link AnnotationsProcessor} used to detect if an annotation is directly
 	 * or meta-present.
 	 */
-	private static final class IsPresent implements AnnotationsProcessor<Object, Boolean> {
+	private static final class IsPresent
+			implements AnnotationsProcessor<Object, Boolean> {
 
 		/**
-		 * Shared instance that saves us needing to create a new processor for
-		 * the common combination of
-		 * {@code RepeatableContainers.standardRepeatables()} /
-		 * {@code AnnotationFilter.PLAIN} when checking for direct and meta
-		 * annotations.
+		 * Shared instances that save us needing to create a new processor for
+		 * the common combinations.
 		 */
-		private static final IsPresent SHARED_INSTANCE = new IsPresent(
-				RepeatableContainers.standardRepeatables(), AnnotationFilter.PLAIN,
-				false);
-
-		/**
-		 * Shared instance that saves us needing to create a new processor for
-		 * the common combination of
-		 * {@code RepeatableContainers.standardRepeatables()} /
-		 * {@code AnnotationFilter.PLAIN} when checking for direct annotations.
-		 */
-		private static final IsPresent DIRECT_ONLY_SHARED_INSTANCE = new IsPresent(
-				RepeatableContainers.standardRepeatables(), AnnotationFilter.PLAIN, true);
+		private static final IsPresent[] SHARED;
+		static {
+			SHARED = new IsPresent[4];
+			SHARED[0] = new IsPresent(RepeatableContainers.none(), AnnotationFilter.PLAIN,
+					true);
+			SHARED[1] = new IsPresent(RepeatableContainers.none(), AnnotationFilter.PLAIN,
+					false);
+			SHARED[2] = new IsPresent(RepeatableContainers.standardRepeatables(),
+					AnnotationFilter.PLAIN, true);
+			SHARED[3] = new IsPresent(RepeatableContainers.standardRepeatables(),
+					AnnotationFilter.PLAIN, false);
+		}
 
 		private final RepeatableContainers repeatableContainers;
 
@@ -350,10 +348,14 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 
 		public static IsPresent get(RepeatableContainers repeatableContainers,
 				AnnotationFilter annotationFilter, boolean directOnly) {
-			if (repeatableContainers == RepeatableContainers.standardRepeatables()
-					&& annotationFilter == AnnotationFilter.PLAIN) {
-				// Use a single shared instance for this common combination
-				return directOnly ? DIRECT_ONLY_SHARED_INSTANCE : SHARED_INSTANCE;
+			// Use a single shared instance for common combinations
+			if (annotationFilter == AnnotationFilter.PLAIN) {
+				if (repeatableContainers == RepeatableContainers.none()) {
+					return SHARED[directOnly ? 0 : 1];
+				}
+				if (repeatableContainers == RepeatableContainers.standardRepeatables()) {
+					return SHARED[directOnly ? 2 : 3];
+				}
 			}
 			return new IsPresent(repeatableContainers, annotationFilter, directOnly);
 		}
