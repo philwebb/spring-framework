@@ -1259,26 +1259,10 @@ public class ResolvableType implements Serializable {
 	 * @see #forMethodParameter(MethodParameter)
 	 */
 	public static ResolvableType forMethodParameter(Method method, int parameterIndex, Class<?> implementationClass) {
-		return forMethodParameter(method, parameterIndex, implementationClass, true);
-	}
-
-	/**
-	 * Return a {@link ResolvableType} for the specified {@link Method} parameter with a
-	 * given implementation. Use this variant when the class that declares the method
-	 * includes generic parameter variables that are satisfied by the implementation class.
-	 * @param method the source method (must not be {@code null})
-	 * @param parameterIndex the parameter index
-	 * @param implementationClass the implementation class
-	 * @return a {@link ResolvableType} for the specified method parameter
-	 * @see #forMethodParameter(Method, int, Class)
-	 * @see #forMethodParameter(MethodParameter)
-	 */
-	public static ResolvableType forMethodParameter(Method method, int parameterIndex,
-			Class<?> implementationClass, boolean useSerialzableWrapper) {
 		Assert.notNull(method, "Method must not be null");
 		MethodParameter methodParameter = new MethodParameter(method, parameterIndex);
 		methodParameter.setContainingClass(implementationClass);
-		return forMethodParameter(methodParameter, null, useSerialzableWrapper);
+		return forMethodParameter(methodParameter);
 	}
 
 	/**
@@ -1302,28 +1286,13 @@ public class ResolvableType implements Serializable {
 	 */
 	public static ResolvableType forMethodParameter(MethodParameter methodParameter,
 			@Nullable ResolvableType implementationType) {
-		return forMethodParameter(methodParameter, implementationType, true);
-	}
 
-	/**
-	 * Return a {@link ResolvableType} for the specified {@link MethodParameter} with a
-	 * given implementation type. Use this variant when the class that declares the method
-	 * includes generic parameter variables that are satisfied by the implementation type.
-	 * @param methodParameter the source method parameter (must not be {@code null})
-	 * @param implementationType the implementation type
-	 * @return a {@link ResolvableType} for the specified method parameter
-	 * @see #forMethodParameter(MethodParameter)
-	 */
-	public static ResolvableType forMethodParameter(MethodParameter methodParameter,
-			@Nullable ResolvableType implementationType, boolean useSerialzableWrapper) {
 		Assert.notNull(methodParameter, "MethodParameter must not be null");
 		implementationType = (implementationType != null ? implementationType :
 				forType(methodParameter.getContainingClass()));
 		ResolvableType owner = implementationType.as(methodParameter.getDeclaringClass());
-		return forType(null, new MethodParameterTypeProvider(methodParameter),
-				owner.asVariableResolver(), useSerialzableWrapper).getNested(
-						methodParameter.getNestingLevel(),
-						methodParameter.typeIndexesPerLevel);
+		return forType(null, new MethodParameterTypeProvider(methodParameter), owner.asVariableResolver()).
+				getNested(methodParameter.getNestingLevel(), methodParameter.typeIndexesPerLevel);
 	}
 
 	/**
@@ -1427,22 +1396,8 @@ public class ResolvableType implements Serializable {
 	 */
 	static ResolvableType forType(
 			@Nullable Type type, @Nullable TypeProvider typeProvider, @Nullable VariableResolver variableResolver) {
-		return forType(type, typeProvider, variableResolver, true);
-	}
 
-	/**
-	 * Return a {@link ResolvableType} for the specified {@link Type} backed by a given
-	 * {@link VariableResolver}.
-	 * @param type the source type or {@code null}
-	 * @param typeProvider the type provider or {@code null}
-	 * @param variableResolver the variable resolver or {@code null}
-	 * @return a {@link ResolvableType} for the specified {@link Type} and {@link VariableResolver}
-	 */
-	static ResolvableType forType(@Nullable Type type,
-			@Nullable TypeProvider typeProvider,
-			@Nullable VariableResolver variableResolver, boolean useSerialzableWrapper) {
-
-		if (type == null && typeProvider != null && useSerialzableWrapper) {
+		if (type == null && typeProvider != null) {
 			type = SerializableTypeWrapper.forTypeProvider(typeProvider);
 		}
 		if (type == null) {
