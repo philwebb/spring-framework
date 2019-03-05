@@ -19,9 +19,11 @@ package org.springframework.core.annotation;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Repeatable;
 import java.lang.reflect.Method;
+import java.util.Map;
 
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+import org.springframework.util.ConcurrentReferenceHashMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.ReflectionUtils;
 
@@ -124,6 +126,13 @@ public abstract class RepeatableContainers {
 	 */
 	private static class StandardRepeatableContainers extends RepeatableContainers {
 
+		private static final String[] COMMON_NON_REPEATABLE = { "java.lang.Deprecated",
+			"org.springframework.context.annotation.Bean" };
+
+		private static final Map<Class<? extends Annotation>, Object> cache = new ConcurrentReferenceHashMap<>();
+
+		private static final Object NONE = new Object();
+
 		private static StandardRepeatableContainers INSTANCE = new StandardRepeatableContainers();
 
 		StandardRepeatableContainers() {
@@ -132,8 +141,28 @@ public abstract class RepeatableContainers {
 
 		@Override
 		Annotation[] findRepeatedAnnotations(Annotation annotation) {
-			AttributeMethods methods = AttributeMethods.forAnnotationType(
-					annotation.annotationType());
+			Method method = getRepeatedAnnotationsMethod(annotation.annotationType());
+			if (method != null) {
+				return (Annotation[]) ReflectionUtils.invokeMethod(method, annotation);
+			}
+			return super.findRepeatedAnnotations(annotation);
+		}
+
+		@Nullable
+		private static Method getRepeatedAnnotationsMethod(
+				Class<? extends Annotation> annotationType) {
+			if (ObjectUtils.containsElement(COMMON_NON_REPEATABLE,
+					annotationType.getName())) {
+				return null;
+			}
+			Object result = cache.computeIfAbsent(annotationType,
+					StandardRepeatableContainers::computeRepeatedAnnotationsMethod);
+			return result != NONE ? (Method) result : null;
+		}
+
+		private static Object computeRepeatedAnnotationsMethod(
+				Class<? extends Annotation> annotationType) {
+			AttributeMethods methods = AttributeMethods.forAnnotationType(annotationType);
 			if (methods.isOnlyValueAttribute()) {
 				Method method = methods.get("value");
 				Class<?> returnType = method.getReturnType();
@@ -141,13 +170,13 @@ public abstract class RepeatableContainers {
 					Class<?> componentType = returnType.getComponentType();
 					if (Annotation.class.isAssignableFrom(componentType)
 							&& componentType.isAnnotationPresent(Repeatable.class)) {
-						return (Annotation[]) ReflectionUtils.invokeMethod(method,
-								annotation);
+						return method;
 					}
 				}
 			}
-			return super.findRepeatedAnnotations(annotation);
+			return NONE;
 		}
+
 	}
 
 	/**
