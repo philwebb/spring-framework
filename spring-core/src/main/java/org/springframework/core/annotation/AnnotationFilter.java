@@ -34,17 +34,17 @@ public interface AnnotationFilter {
 
 	/**
 	 * {@link AnnotationFilter} that matches annotations is in the
-	 * {@code java.lang.annotation.*} or in the
+	 * {@code java.lang.*} or in the
 	 * {@code org.springframework.lang.*} package.
 	 */
-	static final AnnotationFilter PLAIN = packages("java.lang.annotation",
+	static final AnnotationFilter PLAIN = packages("java.lang",
 			"org.springframework.lang");
 
 	/**
 	 * {@link AnnotationFilter} that matches annotations in the
-	 * {@code java.lang.annotation.*} package.
+	 * {@code java.lang.*} package.
 	 */
-	static final AnnotationFilter JAVA = packages("java.lang.annotation");
+	static final AnnotationFilter JAVA = packages("java.lang");
 
 	/**
 	 * {@link AnnotationFilter} that never matches and can be used when no
