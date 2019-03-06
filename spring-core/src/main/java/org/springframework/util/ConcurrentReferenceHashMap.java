@@ -35,6 +35,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.springframework.lang.Nullable;
+import org.springframework.util.ConcurrentReferenceHashMap.Reference;
+import org.springframework.util.ConcurrentReferenceHashMap.Restructure;
 
 /**
  * A {@link ConcurrentHashMap} that uses {@link ReferenceType#SOFT soft} or
@@ -232,27 +234,24 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 	@Override
 	@Nullable
 	public V get(@Nullable Object key) {
-		Entry<K, V> entry = getEntryIfAvailable(key);
+		Reference<K, V> ref = getReference(key, Restructure.WHEN_NECESSARY);
+		Entry<K, V> entry = (ref != null ? ref.get() : null);
 		return (entry != null ? entry.getValue() : null);
 	}
 
 	@Override
 	@Nullable
 	public V getOrDefault(@Nullable Object key, @Nullable V defaultValue) {
-		Entry<K, V> entry = getEntryIfAvailable(key);
+		Reference<K, V> ref = getReference(key, Restructure.WHEN_NECESSARY);
+		Entry<K, V> entry = (ref != null ? ref.get() : null);
 		return (entry != null ? entry.getValue() : defaultValue);
 	}
 
 	@Override
 	public boolean containsKey(@Nullable Object key) {
-		Entry<K, V> entry = getEntryIfAvailable(key);
-		return (entry != null && ObjectUtils.nullSafeEquals(entry.getKey(), key));
-	}
-
-	@Nullable
-	private Entry<K, V> getEntryIfAvailable(@Nullable Object key) {
 		Reference<K, V> ref = getReference(key, Restructure.WHEN_NECESSARY);
-		return (ref != null ? ref.get() : null);
+		Entry<K, V> entry = (ref != null ? ref.get() : null);
+		return (entry != null && ObjectUtils.nullSafeEquals(entry.getKey(), key));
 	}
 
 	/**
