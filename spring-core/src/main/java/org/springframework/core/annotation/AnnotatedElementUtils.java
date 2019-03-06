@@ -323,6 +323,9 @@ public abstract class AnnotatedElementUtils {
 	 */
 	@Nullable
 	public static <A extends Annotation> A getMergedAnnotation(AnnotatedElement element, Class<A> annotationType) {
+		if (AnnotationsScanner.hasPlainJavaAnnotationsOnly(element)) {
+			return null;
+		}
 		A annotation = AnnotationsScanner.getDeclaredAnnotation(element, annotationType);
 		if (annotation != null) {
 			return AnnotationUtils.synthesizeAnnotation(annotation, element);
@@ -511,6 +514,9 @@ public abstract class AnnotatedElementUtils {
 	 */
 	public static boolean hasAnnotation(AnnotatedElement element, Class<? extends Annotation> annotationType) {
 		// Shortcut: directly present on the element, with no processing needed?
+		if (AnnotationsScanner.hasPlainJavaAnnotationsOnly(element)) {
+			return false;
+		}
 		if (AnnotationsScanner.getDeclaredAnnotation(element, annotationType) != null) {
 			return true;
 		}
