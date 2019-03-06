@@ -311,9 +311,7 @@ abstract class AnnotationsScanner {
 			return NO_METHODS;
 		}
 		if (baseType.isInterface() && (ClassUtils.isJavaLanguageInterface(baseType)
-				|| baseType == EventListener.class
-				|| (baseType.getName().startsWith("org.springframework.")
-						&& baseType.getName().endsWith("Aware")))) {
+				|| baseType == EventListener.class)) {
 			return NO_METHODS;
 		}
 		if (isFiltered(baseType, context, classFilter)) {
