@@ -34,6 +34,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ConcurrentReferenceHashMap;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.ReflectionUtils;
 
 /**
  * Scanner to search for relevant annotations on the hierarchy of an
@@ -320,7 +321,8 @@ abstract class AnnotationsScanner {
 		Method[] methods = baseTypeMethodsCache.get(baseType);
 		if (methods == null) {
 			boolean isInterface = baseType.isInterface();
-			methods = isInterface ? baseType.getMethods() : baseType.getDeclaredMethods();
+			methods = isInterface ? baseType.getMethods()
+					: ReflectionUtils.getDeclaredMethods(baseType);
 			int cleared = 0;
 			for (int i = 0; i < methods.length; i++) {
 				if ((!isInterface && Modifier.isPrivate(methods[i].getModifiers()))
