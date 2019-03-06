@@ -22,7 +22,6 @@ import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
-import java.util.EventListener;
 import java.util.Map;
 import java.util.function.BiPredicate;
 
@@ -307,14 +306,8 @@ abstract class AnnotationsScanner {
 
 	private static <C> Method[] getBaseTypeMethods(C context, Class<?> baseType,
 			BiPredicate<C, Class<?>> classFilter) {
-		if (baseType == Object.class) {
-			return NO_METHODS;
-		}
-		if (baseType.isInterface() && (ClassUtils.isJavaLanguageInterface(baseType)
-				|| baseType == EventListener.class)) {
-			return NO_METHODS;
-		}
-		if (isFiltered(baseType, context, classFilter)) {
+		if (baseType == Object.class || hasPlainJavaAnnotationsOnly(baseType)
+				|| isFiltered(baseType, context, classFilter)) {
 			return NO_METHODS;
 		}
 		Method[] methods = baseTypeMethodsCache.get(baseType);
