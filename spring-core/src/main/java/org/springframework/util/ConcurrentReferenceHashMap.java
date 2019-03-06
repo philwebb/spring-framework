@@ -573,65 +573,70 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 		 */
 		protected final void restructureIfNecessary(boolean allowResize) {
 			int currCount = this.count.get();
-			boolean needsResize = (currCount > 0 && currCount >= this.resizeThreshold);
+			boolean needsResize = allowResize && (currCount > 0 && currCount >= this.resizeThreshold);
 			Reference<K, V> ref = this.referenceManager.pollForPurge();
-			if (ref != null || (needsResize && allowResize)) {
-				lock();
-				try {
-					int countAfterRestructure = this.count.get();
-					Set<Reference<K, V>> toPurge = Collections.emptySet();
-					if (ref != null) {
-						toPurge = new HashSet<>();
-						while (ref != null) {
-							toPurge.add(ref);
-							ref = this.referenceManager.pollForPurge();
-						}
+			if (ref != null || (needsResize)) {
+				restructure(allowResize, ref);
+			}
+		}
+
+		private void restructure(boolean allowResize, Reference<K, V> ref) {
+			boolean needsResize;
+			lock();
+			try {
+				int countAfterRestructure = this.count.get();
+				Set<Reference<K, V>> toPurge = Collections.emptySet();
+				if (ref != null) {
+					toPurge = new HashSet<>();
+					while (ref != null) {
+						toPurge.add(ref);
+						ref = this.referenceManager.pollForPurge();
 					}
-					countAfterRestructure -= toPurge.size();
+				}
+				countAfterRestructure -= toPurge.size();
 
-					// Recalculate taking into account count inside lock and items that
-					// will be purged
-					needsResize = (countAfterRestructure > 0 && countAfterRestructure >= this.resizeThreshold);
-					boolean resizing = false;
-					int restructureSize = this.references.length;
-					if (allowResize && needsResize && restructureSize < MAXIMUM_SEGMENT_SIZE) {
-						restructureSize <<= 1;
-						resizing = true;
+				// Recalculate taking into account count inside lock and items that
+				// will be purged
+				needsResize = (countAfterRestructure > 0 && countAfterRestructure >= this.resizeThreshold);
+				boolean resizing = false;
+				int restructureSize = this.references.length;
+				if (allowResize && needsResize && restructureSize < MAXIMUM_SEGMENT_SIZE) {
+					restructureSize <<= 1;
+					resizing = true;
+				}
+
+				// Either create a new table or reuse the existing one
+				Reference<K, V>[] restructured =
+						(resizing ? createReferenceArray(restructureSize) : this.references);
+
+				// Restructure
+				for (int i = 0; i < this.references.length; i++) {
+					ref = this.references[i];
+					if (!resizing) {
+						restructured[i] = null;
 					}
-
-					// Either create a new table or reuse the existing one
-					Reference<K, V>[] restructured =
-							(resizing ? createReferenceArray(restructureSize) : this.references);
-
-					// Restructure
-					for (int i = 0; i < this.references.length; i++) {
-						ref = this.references[i];
-						if (!resizing) {
-							restructured[i] = null;
-						}
-						while (ref != null) {
-							if (!toPurge.contains(ref)) {
-								Entry<K, V> entry = ref.get();
-								if (entry != null) {
-									int index = getIndex(ref.getHash(), restructured);
-									restructured[index] = this.referenceManager.createReference(
-											entry, ref.getHash(), restructured[index]);
-								}
+					while (ref != null) {
+						if (!toPurge.contains(ref)) {
+							Entry<K, V> entry = ref.get();
+							if (entry != null) {
+								int index = getIndex(ref.getHash(), restructured);
+								restructured[index] = this.referenceManager.createReference(
+										entry, ref.getHash(), restructured[index]);
 							}
-							ref = ref.getNext();
 						}
+						ref = ref.getNext();
 					}
+				}
 
-					// Replace volatile members
-					if (resizing) {
-						this.references = restructured;
-						this.resizeThreshold = (int) (this.references.length * getLoadFactor());
-					}
-					this.count.set(Math.max(countAfterRestructure, 0));
+				// Replace volatile members
+				if (resizing) {
+					this.references = restructured;
+					this.resizeThreshold = (int) (this.references.length * getLoadFactor());
 				}
-				finally {
-					unlock();
-				}
+				this.count.set(Math.max(countAfterRestructure, 0));
+			}
+			finally {
+				unlock();
 			}
 		}
 

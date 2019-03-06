@@ -49,14 +49,14 @@ abstract class AnnotationsScanner {
 
 	private static final Method[] NO_METHODS = {};
 
+	private static final Class<?> SERVLET_CONTEXT_CLASS = getClassIfPresent(
+			"javax.servlet.ServletContext");
+
 	private static final Map<AnnotatedElement, Annotation[]> declaredAnnotationCache = new ConcurrentReferenceHashMap<>(
 			256);
 
 	private static final Map<Class<?>, Method[]> baseTypeMethodsCache = new ConcurrentReferenceHashMap<>(
 			256);
-
-	private static final Class<?> SERVLET_CONTEXT_CLASS = getClassIfPresent(
-			"javax.servlet.ServletContext");
 
 	private AnnotationsScanner() {
 	}
@@ -502,9 +502,9 @@ abstract class AnnotationsScanner {
 				|| name.startsWith("org.springframework.util.")
 				|| (type.isInterface() && name.startsWith("org.springframework.")
 						&& name.endsWith("Aware"))
+				|| (name.startsWith("com.sun") && !name.contains("Proxy"))
 				|| name.equals(
 						"org.springframework.context.annotation.ConfigurationClassEnhancer$EnhancedConfiguration")
-				|| (name.startsWith("com.sun") && !name.contains("Proxy"))
 				|| (SERVLET_CONTEXT_CLASS != null
 						&& SERVLET_CONTEXT_CLASS.isAssignableFrom(type));
 	}
