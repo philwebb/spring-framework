@@ -139,7 +139,8 @@ abstract class AnnotationsScanner {
 		int remaining = Integer.MAX_VALUE;
 		int aggregateIndex = 0;
 		Class<?> root = source;
-		while (source != null && source != Object.class && remaining > 0) {
+		while (source != null && source != Object.class
+				&& !hasPlainJavaAnnotationsOnly(source) && remaining > 0) {
 			R result = processor.doWithAggregate(context, aggregateIndex);
 			if (result != null) {
 				return result;
