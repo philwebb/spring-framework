@@ -427,6 +427,7 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 				AnnotationTypeMapping mapping = mappings.get(i);
 				if (isMappingForType(mapping, TypeMappedAnnotations.this.annotationFilter,
 						this.requiredType)) {
+					// FIXME this can throw
 					MergedAnnotation<A> candidate = new TypeMappedAnnotation<>(mapping,
 							source, annotation, aggregateIndex);
 					if (this.predicate == null || this.predicate.test(candidate)) {
@@ -605,6 +606,7 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 				}
 			}
 			if (annotationResult != -1) {
+				// FIXME this can throw
 				action.accept(aggregate.getMergedAnnotation(annotationResult,
 						this.mappingCursors[annotationResult]));
 				this.mappingCursors[annotationResult]++;
