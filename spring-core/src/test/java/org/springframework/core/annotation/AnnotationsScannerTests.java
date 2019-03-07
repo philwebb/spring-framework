@@ -36,6 +36,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.Assert.*;
 
 /**
  * Tests for {@link AnnotationsScanner}.
@@ -454,7 +455,20 @@ public class AnnotationsScannerTests {
 				"0:TestAnnotation1");
 	}
 
-	// FIXME early exit
+	@Test
+	public void scanWhenProcessorReturnsFromDoWithAggregateExitsEarly() {
+		// FIXME
+	}
+
+	@Test
+	public void scanWhenProcessorReturnsFromDoWithAnnotationsExitsEarly() {
+		// FIXME
+	}
+
+	@Test
+	public void scanWhnProcessorHasFinishMethodUsesFinishResult() {
+		// FIXME
+	}
 
 	private Method methodFrom(Class<?> type) {
 		return ReflectionUtils.findMethod(type, "method");
@@ -693,7 +707,6 @@ public class AnnotationsScannerTests {
 
 	}
 
-	@SuppressWarnings("deprecation")
 	static class Ignoreable implements IgnoreableOverrideInterface1,
 			IgnoreableOverrideInterface2, Serializable {
 
