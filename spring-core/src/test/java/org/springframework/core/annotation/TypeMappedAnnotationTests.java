@@ -75,7 +75,7 @@ public class TypeMappedAnnotationTests {
 			Class<A> annotationType) {
 		Annotation rootAnnotation = source.getAnnotation(rootAnnotationType);
 		AnnotationTypeMapping mapping = getMapping(rootAnnotation, annotationType);
-		return new TypeMappedAnnotation<>(mapping, source, rootAnnotation, 0);
+		return TypeMappedAnnotation.createIfPossible(mapping, source, rootAnnotation, 0, IntrospectionFailureLogger.INFO);
 	}
 
 	private AnnotationTypeMapping getMapping(Annotation annotation,

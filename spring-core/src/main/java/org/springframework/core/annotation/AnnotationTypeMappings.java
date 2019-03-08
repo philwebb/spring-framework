@@ -23,6 +23,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ConcurrentReferenceHashMap;
 
@@ -45,6 +46,8 @@ import org.springframework.util.ConcurrentReferenceHashMap;
  */
 final class AnnotationTypeMappings {
 
+	private static final IntrospectionFailureLogger failureLogger = IntrospectionFailureLogger.DEBUG;
+
 	private static final Map<AnnotationFilter, Cache> cache = new ConcurrentReferenceHashMap<>();
 
 	private final AnnotationFilter filter;
@@ -61,7 +64,7 @@ final class AnnotationTypeMappings {
 
 	private void addAllMappings(Class<? extends Annotation> annotationType) {
 		Deque<AnnotationTypeMapping> queue = new ArrayDeque<>();
-		queue.add(new AnnotationTypeMapping(annotationType));
+		addIfPossible(queue, null, annotationType, null);
 		while (!queue.isEmpty()) {
 			AnnotationTypeMapping mapping = queue.removeFirst();
 			this.mappings.add(mapping);
@@ -84,19 +87,42 @@ final class AnnotationTypeMappings {
 					if (!isMappable(parent, metaAnnotation)) {
 						continue;
 					}
-					queue.addLast(new AnnotationTypeMapping(parent, repeatedAnnotation));
+					addIfPossible(queue, parent, repeatedAnnotation);
 				}
 			}
 			else {
-				queue.addLast(new AnnotationTypeMapping(parent, metaAnnotation));
+				addIfPossible(queue, parent, metaAnnotation);
+			}
+		}
+	}
+
+	private void addIfPossible(Deque<AnnotationTypeMapping> queue,
+			AnnotationTypeMapping parent, Annotation annotation) {
+		addIfPossible(queue, parent, annotation.annotationType(), annotation);
+	}
+
+	private void addIfPossible(Deque<AnnotationTypeMapping> queue,
+			@Nullable AnnotationTypeMapping parent,
+			Class<? extends Annotation> annotationType, @Nullable Annotation annotation) {
+		try {
+			queue.addLast(new AnnotationTypeMapping(parent, annotationType, annotation));
+		}
+		catch (Exception ex) {
+			if (ex instanceof AnnotationConfigurationException) {
+				throw (AnnotationConfigurationException) ex;
+			}
+			if (failureLogger.isEnabled()) {
+				failureLogger.log(
+						"Failed to introspect meta-annotation "
+								+ annotationType.getName(),
+						parent.getAnnotationType(), ex);
 			}
 		}
 	}
 
 	private boolean isMappable(AnnotationTypeMapping parent, Annotation metaAnnotation) {
 		return !this.filter.matches(metaAnnotation)
-				&& !AnnotationFilter.PLAIN.matches(
-						parent.getAnnotationType())
+				&& !AnnotationFilter.PLAIN.matches(parent.getAnnotationType())
 				&& !isAlreadyMapped(parent, metaAnnotation);
 	}
 

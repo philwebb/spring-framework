@@ -427,10 +427,11 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 				AnnotationTypeMapping mapping = mappings.get(i);
 				if (isMappingForType(mapping, TypeMappedAnnotations.this.annotationFilter,
 						this.requiredType)) {
-					// FIXME this can throw
-					MergedAnnotation<A> candidate = new TypeMappedAnnotation<>(mapping,
-							source, annotation, aggregateIndex);
-					if (this.predicate == null || this.predicate.test(candidate)) {
+					MergedAnnotation<A> candidate = TypeMappedAnnotation.createIfPossible(
+							mapping, source, annotation, aggregateIndex,
+							IntrospectionFailureLogger.INFO);
+					if (candidate != null && (this.predicate == null
+							|| this.predicate.test(candidate))) {
 						if (this.selector.isBestCandidate(candidate)) {
 							return candidate;
 						}
@@ -543,11 +544,14 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 			return this.mappings[annotationIndex];
 		}
 
-		public <A extends Annotation> MergedAnnotation<A> getMergedAnnotation(
-				int annotationIndex, int mappingIndex) {
-			return new TypeMappedAnnotation<>(
+		@Nullable
+		public <A extends Annotation> MergedAnnotation<A> createMergedAnnotationIfPossible(
+				int annotationIndex, int mappingIndex,
+				IntrospectionFailureLogger logger) {
+			return TypeMappedAnnotation.createIfPossible(
 					this.mappings[annotationIndex].get(mappingIndex), this.source,
-					this.annotations.get(annotationIndex), this.aggregateIndex);
+					this.annotations.get(annotationIndex), this.aggregateIndex,
+					logger);
 		}
 
 	}
@@ -606,10 +610,15 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 				}
 			}
 			if (annotationResult != -1) {
-				// FIXME this can throw
-				action.accept(aggregate.getMergedAnnotation(annotationResult,
-						this.mappingCursors[annotationResult]));
+				MergedAnnotation<A> mergedAnnotation = aggregate.createMergedAnnotationIfPossible(
+						annotationResult, this.mappingCursors[annotationResult],
+						requiredType != null ? IntrospectionFailureLogger.INFO
+								: IntrospectionFailureLogger.DEBUG);
 				this.mappingCursors[annotationResult]++;
+				if (mergedAnnotation == null) {
+					return tryAdvance(aggregate, action);
+				}
+				action.accept(mergedAnnotation);
 				return true;
 			}
 			return false;

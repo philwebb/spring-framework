@@ -80,7 +80,7 @@ class AnnotationTypeMapping {
 		this(parent, annotation.annotationType(), annotation);
 	}
 
-	private AnnotationTypeMapping(@Nullable AnnotationTypeMapping parent,
+	AnnotationTypeMapping(@Nullable AnnotationTypeMapping parent,
 			Class<? extends Annotation> annotationType, @Nullable Annotation annotation) {
 		this.parent = parent;
 		this.root = parent != null ? parent.getRoot() : this;

@@ -54,17 +54,28 @@ public class AnnotationIntrospectionFailureTests {
 		}).withCauseInstanceOf(ClassNotFoundException.class);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void filteredTypeInMetaAnnotationHandlesException() throws Exception {
 		FilteringClassLoader classLoader = new FilteringClassLoader(
 				getClass().getClassLoader());
 		Class<?> withExampleMetaAnnotation = ClassUtils.forName(
 				WithExampleMetaAnnotation.class.getName(), classLoader);
+		Class<Annotation> exampleAnnotationClass = (Class<Annotation>) ClassUtils.forName(
+				ExampleAnnotation.class.getName(), classLoader);
+		Class<Annotation> exampleMetaAnnotationClass = (Class<Annotation>) ClassUtils.forName(
+				ExampleMetaAnnotation.class.getName(), classLoader);
 		assertThat(AnnotatedElementUtils.getMergedAnnotationAttributes(
-				withExampleMetaAnnotation, ExampleAnnotation.class.getName())).isNull();
+				withExampleMetaAnnotation, exampleAnnotationClass)).isNull();
 		assertThat(AnnotatedElementUtils.getMergedAnnotationAttributes(
 				withExampleMetaAnnotation,
-				ExampleMetaAnnotation.class.getName())).isNull();
+				exampleMetaAnnotationClass)).isNull();
+		// The Javadoc suggests hasAnnotation will return files but it can
+		// actually return true in this instance
+		assertThat(AnnotatedElementUtils.hasAnnotation(withExampleMetaAnnotation,
+				exampleAnnotationClass)).isTrue();
+		assertThat(AnnotatedElementUtils.hasAnnotation(withExampleMetaAnnotation,
+				exampleMetaAnnotationClass)).isTrue();
 	}
 
 	static class FilteringClassLoader extends OverridingClassLoader {

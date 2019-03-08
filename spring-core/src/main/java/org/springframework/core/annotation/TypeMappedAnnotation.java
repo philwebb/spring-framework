@@ -28,6 +28,8 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import org.apache.commons.logging.Log;
+
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
@@ -83,6 +85,9 @@ import org.springframework.util.ReflectionUtils;
  */
 class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotation<A> {
 
+	@Nullable
+	private static transient Log logger;
+
 	private final AnnotationTypeMapping mapping;
 
 	@Nullable
@@ -106,13 +111,8 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 
 	private String string;
 
-	TypeMappedAnnotation(AnnotationTypeMapping mapping, @Nullable Object source,
-			Annotation annotation, int aggregateIndex) {
-		this(mapping, source, annotation, ReflectionUtils::invokeMethod, aggregateIndex);
-	}
-
-	<T> TypeMappedAnnotation(AnnotationTypeMapping mapping, @Nullable Object source,
-			@Nullable Object rootAttributes,
+	private <T> TypeMappedAnnotation(AnnotationTypeMapping mapping,
+			@Nullable Object source, @Nullable Object rootAttributes,
 			BiFunction<Method, Object, Object> valueExtractor, int aggregateIndex) {
 		this(mapping, source, rootAttributes, valueExtractor, aggregateIndex, null);
 	}
@@ -441,12 +441,6 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 		if (type == Object.class) {
 			type = (Class<T>) getDefaultAdaptType(attribute);
 		}
-		if (value instanceof String && type == Class.class) {
-			// FIXME write a test and implement string to class
-		}
-		else if (value instanceof String[] && type == Class[].class) {
-			// FIXME write a test and implement string to class
-		}
 		else if (value instanceof Class && type == String.class) {
 			value = ((Class<?>) value).getName();
 		}
@@ -572,7 +566,8 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 		Assert.notNull(annotation, "Annotation must not be null");
 		AnnotationTypeMappings mappings = AnnotationTypeMappings.forAnnotationType(
 				annotation.annotationType());
-		return new TypeMappedAnnotation<>(mappings.get(0), source, annotation, 0);
+		return new TypeMappedAnnotation<>(mappings.get(0), source, annotation,
+				ReflectionUtils::invokeMethod, 0);
 	}
 
 	static <A extends Annotation> MergedAnnotation<A> from(@Nullable Object source,
@@ -584,9 +579,31 @@ class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotatio
 				TypeMappedAnnotation::extractFromMap, 0);
 	}
 
+	@Nullable
+	static <A extends Annotation> TypeMappedAnnotation<A> createIfPossible(
+			AnnotationTypeMapping mapping, @Nullable Object source, Annotation annotation,
+			int aggregateIndex, IntrospectionFailureLogger logger) {
+		try {
+			return new TypeMappedAnnotation<>(mapping, source, annotation,
+					ReflectionUtils::invokeMethod, aggregateIndex);
+		}
+		catch (Exception ex) {
+			if (ex instanceof AnnotationConfigurationException) {
+				throw (AnnotationConfigurationException) ex;
+			}
+			if (logger.isEnabled()) {
+				String type = mapping.getAnnotationType().getName();
+				String item = mapping.getDepth() == 0 ? "annotation " + type
+						: "meta-annotation " + type + " from "
+								+ mapping.getRoot().getAnnotationType().getName();
+				logger.log("Failed to introspect " + item, source, ex);
+			}
+			return null;
+		}
+	}
+
 	@SuppressWarnings("unchecked")
 	private static Object extractFromMap(Method attribute, Object map) {
 		return map != null ? ((Map<String, ?>) map).get(attribute.getName()) : null;
 	}
-
 }
