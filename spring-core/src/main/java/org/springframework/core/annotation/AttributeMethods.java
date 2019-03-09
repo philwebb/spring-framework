@@ -88,7 +88,7 @@ final class AttributeMethods {
 	 * {@code value}.
 	 * @return {@code true} if this is only a value attribute
 	 */
-	public boolean isOnlyValueAttribute() {
+	boolean isOnlyValueAttribute() {
 		return this.attributeMethods.length == 1 &&
 				MergedAnnotation.VALUE.equals(this.attributeMethods[0].getName());
 	}
@@ -100,7 +100,7 @@ final class AttributeMethods {
 	 * @return the attribute method or {@code null}
 	 */
 	@Nullable
-	public Method get(String name) {
+	Method get(String name) {
 		int index = indexOf(name);
 		return index != -1 ? this.attributeMethods[index] : null;
 	}
@@ -112,11 +112,11 @@ final class AttributeMethods {
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 * (<tt>index &lt; 0 || index &gt;= size()</tt>)
 	 */
-	public Method get(int index) {
+	Method get(int index) {
 		return this.attributeMethods[index];
 	}
 
-	public boolean canThrowTypeNotPresentException(int index) {
+	boolean canThrowTypeNotPresentException(int index) {
 		return this.canThrowTypeNotPresentException[index];
 	}
 
@@ -126,7 +126,7 @@ final class AttributeMethods {
 	 * @param name the name to find
 	 * @return the index of the attribute, or {@code -1}
 	 */
-	public int indexOf(String name) {
+	int indexOf(String name) {
 		for (int i = 0; i < this.attributeMethods.length; i++) {
 			if (this.attributeMethods[i].getName().equals(name)) {
 				return i;
@@ -141,7 +141,7 @@ final class AttributeMethods {
 	 * @param attribute the attribute to find
 	 * @return the index of the attribute, or {@code -1}
 	 */
-	public int indexOf(Method attribute) {
+	int indexOf(Method attribute) {
 		for (int i = 0; i < this.attributeMethods.length; i++) {
 			if (this.attributeMethods[i] == attribute) {
 				return i;
@@ -154,7 +154,7 @@ final class AttributeMethods {
 	 * Return the number of attributes in this collection.
 	 * @return the number of attributes
 	 */
-	public int size() {
+	int size() {
 		return this.attributeMethods.length;
 	}
 
@@ -162,7 +162,7 @@ final class AttributeMethods {
 	 * Return if at least one of the attribute methods has a default value.
 	 * @return if there is at least one attribute method with a default value
 	 */
-	public boolean hasDefaultValueMethod() {
+	boolean hasDefaultValueMethod() {
 		return this.hasDefaultValueMethod;
 	}
 
@@ -170,7 +170,7 @@ final class AttributeMethods {
 	 * Return if at least on of the attribute methods is a nested annotation.
 	 * @return if there is at least one attribute method with a annotation type
 	 */
-	public boolean hasNestedAnnotation() {
+	boolean hasNestedAnnotation() {
 		return this.hasNestedAnnotation;
 	}
 
@@ -179,7 +179,7 @@ final class AttributeMethods {
 	 * @param annotationType the annotation type
 	 * @return the attribute methods for the annotation
 	 */
-	public static AttributeMethods forAnnotationType(
+	static AttributeMethods forAnnotationType(
 			@Nullable Class<? extends Annotation> annotationType) {
 
 		if (annotationType == null) {
@@ -216,7 +216,7 @@ final class AttributeMethods {
 	 * @param attribute the attribute to describe
 	 * @return a description of the attribute
 	 */
-	public static String describe(@Nullable Method attribute) {
+	static String describe(@Nullable Method attribute) {
 		if (attribute == null) {
 			return "(none)";
 		}
@@ -230,7 +230,7 @@ final class AttributeMethods {
 	 * @param attributeName the attribute name
 	 * @return a description of the attribute
 	 */
-	public static String describe(@Nullable Class<?> annotationType,
+	static String describe(@Nullable Class<?> annotationType,
 			@Nullable String attributeName) {
 		if (attributeName == null) {
 			return "(none)";

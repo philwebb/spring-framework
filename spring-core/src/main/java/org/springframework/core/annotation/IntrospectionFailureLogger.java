@@ -62,14 +62,14 @@ enum IntrospectionFailureLogger {
 	private static Log logger;
 
 
-	public abstract boolean isEnabled();
+	abstract boolean isEnabled();
 
-	public void log(String message, @Nullable Object source, Exception ex) {
+	void log(String message, @Nullable Object source, Exception ex) {
 		String on = source != null ? " on " + source : "";
 		log(message + on + ": " + ex);
 	}
 
-	public abstract void log(String message);
+	abstract void log(String message);
 
 	private static Log getLogger() {
 		Log logger = IntrospectionFailureLogger.logger;

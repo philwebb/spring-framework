@@ -319,7 +319,7 @@ class AnnotationTypeMapping {
 	 * Return the root mapping.
 	 * @return the root mapping
 	 */
-	public AnnotationTypeMapping getRoot() {
+	AnnotationTypeMapping getRoot() {
 		return this.root;
 	}
 
@@ -328,7 +328,7 @@ class AnnotationTypeMapping {
 	 * @return the parent mapping
 	 */
 	@Nullable
-	public AnnotationTypeMapping getParent() {
+	AnnotationTypeMapping getParent() {
 		return this.parent;
 	}
 
@@ -336,7 +336,7 @@ class AnnotationTypeMapping {
 	 * Return the depth of this mapping.
 	 * @return the depth of the mapping
 	 */
-	public int getDepth() {
+	int getDepth() {
 		return this.depth;
 	}
 
@@ -344,7 +344,7 @@ class AnnotationTypeMapping {
 	 * Return the type of the mapped annotation.
 	 * @return the annotation type
 	 */
-	public Class<? extends Annotation> getAnnotationType() {
+	Class<? extends Annotation> getAnnotationType() {
 		return this.annotationType;
 	}
 
@@ -354,7 +354,7 @@ class AnnotationTypeMapping {
 	 * @return the source annotation of the mapping
 	 */
 	@Nullable
-	public Annotation getAnnotation() {
+	Annotation getAnnotation() {
 		return this.annotation;
 	}
 
@@ -362,7 +362,7 @@ class AnnotationTypeMapping {
 	 * Return the annotation attributes for the mapping annotation type.
 	 * @return the attribute methods
 	 */
-	public AttributeMethods getAttributes() {
+	AttributeMethods getAttributes() {
 		return this.attributes;
 	}
 
@@ -374,7 +374,7 @@ class AnnotationTypeMapping {
 	 * @param attributeIndex the attribute index of the source attribute
 	 * @return the mapped attribute index or {@code -1}
 	 */
-	public int getAliasMapping(int attributeIndex) {
+	int getAliasMapping(int attributeIndex) {
 		return this.aliasMappings[attributeIndex];
 	}
 
@@ -386,7 +386,7 @@ class AnnotationTypeMapping {
 	 * @param attributeIndex the attribute index of the source attribute
 	 * @return the mapped attribute index or {@code -1}
 	 */
-	public int getConventionMapping(int attributeIndex) {
+	int getConventionMapping(int attributeIndex) {
 		return this.conventionMappings[attributeIndex];
 	}
 
@@ -394,7 +394,7 @@ class AnnotationTypeMapping {
 	 * Return the mirror sets for this type mapping.
 	 * @return the mirrorSets the attribute mirror sets.
 	 */
-	public MirrorSets getMirrorSets() {
+	MirrorSets getMirrorSets() {
 		return this.mirrorSets;
 	}
 
@@ -409,7 +409,7 @@ class AnnotationTypeMapping {
 	 * A collection of {@link MirrorSet} instances that provides details of all
 	 * defined mirrors.
 	 */
-	public class MirrorSets {
+	class MirrorSets {
 
 		private MirrorSet[] mirrorSets;
 
@@ -449,11 +449,11 @@ class AnnotationTypeMapping {
 			}
 		}
 
-		public int size() {
+		int size() {
 			return this.mirrorSets.length;
 		}
 
-		public MirrorSet get(int index) {
+		MirrorSet get(int index) {
 			return this.mirrorSets[index];
 		}
 
@@ -461,7 +461,7 @@ class AnnotationTypeMapping {
 			return this.assigned[attributeIndex];
 		}
 
-		public int[] resolve(Object source, Object annotation,
+		int[] resolve(Object source, Object annotation,
 				BiFunction<Method, Object, Object> valueExtractor) {
 
 			int[] result = new int[attributes.size()];
@@ -482,14 +482,14 @@ class AnnotationTypeMapping {
 		/**
 		 * A single set of mirror attributes.
 		 */
-		public class MirrorSet {
+		class MirrorSet {
 
 			private int size;
 
 			private final int[] indexes = new int[attributes.size()];
 
 
-			public void update() {
+			void update() {
 				this.size = 0;
 				Arrays.fill(this.indexes, -1);
 				for (int i = 0; i < MirrorSets.this.assigned.length; i++) {
@@ -500,7 +500,7 @@ class AnnotationTypeMapping {
 				}
 			}
 
-			public <A> int resolve(Object source, A annotation,
+			<A> int resolve(Object source, A annotation,
 					BiFunction<Method, Object, Object> valueExtractor) {
 
 				int result = -1;
@@ -531,16 +531,16 @@ class AnnotationTypeMapping {
 				return result;
 			}
 
-			public int size() {
+			int size() {
 				return this.size;
 			}
 
-			public Method get(int index) {
+			Method get(int index) {
 				int attributeIndex = this.indexes[index];
 				return attributes.get(attributeIndex);
 			}
 
-			public int getAttributeIndex(int index) {
+			int getAttributeIndex(int index) {
 				return this.indexes[index];
 			}
 

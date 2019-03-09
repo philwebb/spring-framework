@@ -45,7 +45,7 @@ abstract class AttributeValues {
 	 * @return {@true} if all values are present
 	 * @see #validate(Annotation)
 	 */
-	public static boolean areValid(Annotation annotation) {
+	static boolean areValid(Annotation annotation) {
 		Assert.notNull(annotation, "Annotation must not be null");
 		AttributeMethods attributes = AttributeMethods.forAnnotationType(
 				annotation.annotationType());
@@ -72,7 +72,7 @@ abstract class AttributeValues {
 	 * not be read
 	 * @see #isValid(Annotation)
 	 */
-	public static void validate(Annotation annotation) {
+	static void validate(Annotation annotation) {
 		Assert.notNull(annotation, "Annotation must not be null");
 		AttributeMethods attributes = AttributeMethods.forAnnotationType(
 				annotation.annotationType());
@@ -101,7 +101,7 @@ abstract class AttributeValues {
 	 * nested annotations
 	 * @return {@code true} if the value is equivalent to the default value
 	 */
-	public static boolean isDefaultValue(@Nullable Object value, Method attribute,
+	static boolean isDefaultValue(@Nullable Object value, Method attribute,
 			BiFunction<Method, Object, Object> valueExtractor) {
 		return areEquivalent(attribute.getDefaultValue(), value, valueExtractor);
 	}

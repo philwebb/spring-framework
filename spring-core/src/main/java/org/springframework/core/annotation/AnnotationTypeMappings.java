@@ -149,7 +149,7 @@ final class AnnotationTypeMappings {
 	 * Return the total number of contained mappings.
 	 * @return the total number of mappings
 	 */
-	public int size() {
+	int size() {
 		return this.mappings.size();
 	}
 
@@ -162,7 +162,7 @@ final class AnnotationTypeMappings {
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 * (<tt>index &lt; 0 || index &gt;= size()</tt>)
 	 */
-	public AnnotationTypeMapping get(int index) {
+	AnnotationTypeMapping get(int index) {
 		return this.mappings.get(index);
 	}
 
@@ -171,7 +171,7 @@ final class AnnotationTypeMappings {
 	 * @param annotationType the source annotation type
 	 * @return type mappings for the annotation type
 	 */
-	public static AnnotationTypeMappings forAnnotationType(
+	static AnnotationTypeMappings forAnnotationType(
 			Class<? extends Annotation> annotationType) {
 
 		return forAnnotationType(annotationType,
@@ -185,7 +185,7 @@ final class AnnotationTypeMappings {
 	 * annotations are considered
 	 * @return type mappings for the annotation type
 	 */
-	public static AnnotationTypeMappings forAnnotationType(
+	static AnnotationTypeMappings forAnnotationType(
 			Class<? extends Annotation> annotationType,
 			AnnotationFilter annotationFilter) {
 
@@ -225,11 +225,11 @@ final class AnnotationTypeMappings {
 		 * @param annotationType the annotation type
 		 * @return a new or existing {@link AnnotationTypeMapping} instance
 		 */
-		public AnnotationTypeMappings get(Class<? extends Annotation> annotationType) {
+		AnnotationTypeMappings get(Class<? extends Annotation> annotationType) {
 			return this.mappings.computeIfAbsent(annotationType, this::createMappings);
 		}
 
-		private AnnotationTypeMappings createMappings(
+		AnnotationTypeMappings createMappings(
 				Class<? extends Annotation> annotationType) {
 			return new AnnotationTypeMappings(this.filter, annotationType);
 		}

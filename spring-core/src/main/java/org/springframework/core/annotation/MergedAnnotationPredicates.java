@@ -138,7 +138,7 @@ public abstract class MergedAnnotationPredicates {
 		private Object lastValue;
 
 
-		public FirstRunOfPredicate(
+		FirstRunOfPredicate(
 				Function<? super MergedAnnotation<A>, ?> valueExtractor) {
 			this.valueExtractor = valueExtractor;
 		}
@@ -170,7 +170,7 @@ public abstract class MergedAnnotationPredicates {
 		private final Set<K> seen = new HashSet<>();
 
 
-		public UniquePredicate(Function<? super MergedAnnotation<A>, K> keyExtractor) {
+		UniquePredicate(Function<? super MergedAnnotation<A>, K> keyExtractor) {
 			this.keyExtractor = keyExtractor;
 		}
 

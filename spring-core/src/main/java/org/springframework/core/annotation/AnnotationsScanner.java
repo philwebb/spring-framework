@@ -76,7 +76,7 @@ abstract class AnnotationsScanner {
 	 * @param processor the processor that receives the annotations
 	 * @return the result of {@link AnnotationsProcessor#finish(Object)}
 	 */
-	public static <C, R> R scan(@Nullable C context, AnnotatedElement source,
+	static <C, R> R scan(@Nullable C context, AnnotatedElement source,
 			SearchStrategy searchStrategy, AnnotationsProcessor<C, R> processor) {
 		return scan(context, source, searchStrategy, processor, null);
 	}
@@ -93,7 +93,7 @@ abstract class AnnotationsScanner {
 	 * out a specific class from the hierarchy
 	 * @return the result of {@link AnnotationsProcessor#finish(Object)}
 	 */
-	public static <C, R> R scan(C context, AnnotatedElement source,
+	static <C, R> R scan(C context, AnnotatedElement source,
 			SearchStrategy searchStrategy, AnnotationsProcessor<C, R> processor,
 			@Nullable BiPredicate<C, Class<?>> classFilter) {
 
@@ -432,7 +432,7 @@ abstract class AnnotationsScanner {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <A extends Annotation> A getDeclaredAnnotation(AnnotatedElement source,
+	static <A extends Annotation> A getDeclaredAnnotation(AnnotatedElement source,
 			Class<A> annotationType) {
 
 		Annotation[] annotations = getDeclaredAnnotations(source, false);
@@ -486,7 +486,7 @@ abstract class AnnotationsScanner {
 		return classFilter != null && classFilter.test(context, sourceClass);
 	}
 
-	public static boolean isKnownEmpty(AnnotatedElement source,
+	static boolean isKnownEmpty(AnnotatedElement source,
 			SearchStrategy searchStrategy, AnnotationFilter annotationFilter) {
 		if (annotationFilter == AnnotationFilter.PLAIN &&
 				hasPlainJavaAnnotationsOnly(source)) {
@@ -501,7 +501,7 @@ abstract class AnnotationsScanner {
 		return false;
 	}
 
-	public static boolean hasPlainJavaAnnotationsOnly(@Nullable Object annotatedElement) {
+	static boolean hasPlainJavaAnnotationsOnly(@Nullable Object annotatedElement) {
 		Class<?> type = null;
 		if (annotatedElement instanceof Class) {
 			type = (Class<?>) annotatedElement;
