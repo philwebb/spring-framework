@@ -40,13 +40,13 @@ public class AttributeMethodsTests {
 	}
 
 	@Test
-	public void forAnnotationWithNoAttributesReturnsNone() {
+	public void forAnnotationTypeWhenHasNoAttributesReturnsNone() {
 		AttributeMethods methods = AttributeMethods.forAnnotationType(NoAttributes.class);
 		assertThat(methods).isSameAs(AttributeMethods.NONE);
 	}
 
 	@Test
-	public void forAnnotationWithMultipleAttributesReturnsAttributes() {
+	public void forAnnotationTypeWhenHasMultipleAttributesReturnsAttributes() {
 		AttributeMethods methods = AttributeMethods.forAnnotationType(
 				MultipleAttributes.class);
 		assertThat(methods.get("value").getName()).isEqualTo("value");
@@ -56,13 +56,72 @@ public class AttributeMethodsTests {
 	}
 
 	@Test
-	public void forAnnotationWithOnlyValueAttributeReturnsAttributes() {
+	public void isOnlyValueAttributeWhenHasOnlyValueAttributeReturnsTrue() {
 		AttributeMethods methods = AttributeMethods.forAnnotationType(ValueOnly.class);
-		assertThat(methods.get("value").getName()).isEqualTo("value");
 		assertThat(methods.isOnlyValueAttribute()).isTrue();
 	}
 
-	// FIXME can throw type not preent ...
+	@Test
+	public void isOnlyValueAttributeWhenHasOnlySingleNonValueAttributeReturnsFalse() {
+		AttributeMethods methods = AttributeMethods.forAnnotationType(NonValueOnly.class);
+		assertThat(methods.isOnlyValueAttribute()).isFalse();
+	}
+
+	@Test
+	public void isOnlyValueAttributeWhenHasOnlyMultipleAttributesIncludingValueReturnsFalse() {
+		AttributeMethods methods = AttributeMethods.forAnnotationType(MultipleAttributes.class);
+		assertThat(methods.isOnlyValueAttribute()).isFalse();
+	}
+
+	@Test
+	public void indexOfNameReturnsIndex() {
+		AttributeMethods methods = AttributeMethods.forAnnotationType(MultipleAttributes.class);
+		assertThat(methods.indexOf("value")).isEqualTo(1);
+	}
+
+
+	@Test
+	public void indexOfMethodReturnsIndex() throws Exception {
+		AttributeMethods methods = AttributeMethods.forAnnotationType(MultipleAttributes.class);
+		Method method = MultipleAttributes.class.getDeclaredMethod("value");
+		assertThat(methods.indexOf(method)).isEqualTo(1);
+	}
+
+	@Test
+	public void sizeReturnsSize() {
+		AttributeMethods methods = AttributeMethods.forAnnotationType(MultipleAttributes.class);
+		assertThat(methods.size()).isEqualTo(2);
+	}
+
+	@Test
+	public void canThrowTypeNotPresentExceptionWhenHasClassAttributeReturnsTrue() {
+		AttributeMethods methods = AttributeMethods.forAnnotationType(ClassValue.class);
+		assertThat(methods.canThrowTypeNotPresentException(0)).isTrue();
+	}
+
+	@Test
+	public void canThrowTypeNotPresentExceptionWhenHasClassArrayAttributeReturnsTrue() {
+		AttributeMethods methods = AttributeMethods.forAnnotationType(ClassArrayValue.class);
+		assertThat(methods.canThrowTypeNotPresentException(0)).isTrue();
+	}
+
+	@Test
+	public void canThrowTypeNotPresentExceptionWhenNotClassOrClassArrayAttributeReturnsFalse() {
+		AttributeMethods methods = AttributeMethods.forAnnotationType(ValueOnly.class);
+		assertThat(methods.canThrowTypeNotPresentException(0)).isFalse();
+	}
+
+	@Test
+	public void hasDefaultValueMethodWhenHasDefaultValueMethodReturnsTrue() {
+		AttributeMethods methods = AttributeMethods.forAnnotationType(DefaultValueAttribute.class);
+		assertThat(methods.hasDefaultValueMethod()).isTrue();
+	}
+
+	@Test
+	public void hasDefaultValueMethodWhenHasNoDefaultValueMethodsReturnsFalse() {
+		AttributeMethods methods = AttributeMethods.forAnnotationType(MultipleAttributes.class);
+		assertThat(methods.hasDefaultValueMethod()).isFalse();
+	}
 
 	private List<Method> getAll(AttributeMethods attributes) {
 		List<Method> result = new ArrayList<>(attributes.size());
@@ -80,9 +139,9 @@ public class AttributeMethodsTests {
 	@Retention(RetentionPolicy.RUNTIME)
 	static @interface MultipleAttributes {
 
-		String value();
-
 		int intValue();
+
+		String value();
 
 	}
 
@@ -92,4 +151,37 @@ public class AttributeMethodsTests {
 		String value();
 
 	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	static @interface NonValueOnly {
+
+		String test();
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	static @interface ClassValue {
+
+		Class<?> value();
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	static @interface ClassArrayValue {
+
+		Class<?>[] value();
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	static @interface DefaultValueAttribute {
+
+		String one();
+
+		String two();
+
+		String three() default "3";
+
+	}
+
 }

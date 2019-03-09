@@ -28,7 +28,6 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.Assert.*;
 
 /**
  * Tests that trigger annotation introspection failures and ensure that they are
@@ -77,38 +76,32 @@ public class AnnotationIntrospectionFailureTests {
 				exampleMetaAnnotationClass)).isFalse();
 	}
 
-//	@Test
-//	@SuppressWarnings("unchecked")
-//	public void filteredTypeInMetaAnnotationWhenUsingMergedAnnotationsHandlesException() throws Exception {
-//		FilteringClassLoader classLoader = new FilteringClassLoader(
-//				getClass().getClassLoader());
-//		Class<?> withExampleMetaAnnotation = ClassUtils.forName(
-//				WithExampleMetaAnnotation.class.getName(), classLoader);
-//		Class<Annotation> exampleAnnotationClass = (Class<Annotation>) ClassUtils.forName(
-//				ExampleAnnotation.class.getName(), classLoader);
-//		Class<Annotation> exampleMetaAnnotationClass = (Class<Annotation>) ClassUtils.forName(
-//				ExampleMetaAnnotation.class.getName(), classLoader);
-//		MergedAnnotations annotations = MergedAnnotations.from(withExampleMetaAnnotation);
-//		assertThat(annotations.isPresent(annotationType))
-//
-//
-//		assertThat(AnnotatedElementUtils.getMergedAnnotationAttributes(
-//				withExampleMetaAnnotation, exampleAnnotationClass)).isNull();
-//		assertThat(AnnotatedElementUtils.getMergedAnnotationAttributes(
-//				withExampleMetaAnnotation,
-//				exampleMetaAnnotationClass)).isNull();
-//		assertThat(AnnotatedElementUtils.hasAnnotation(withExampleMetaAnnotation,
-//				exampleAnnotationClass)).isTrue();
-//		assertThat(AnnotatedElementUtils.hasAnnotation(withExampleMetaAnnotation,
-//				exampleMetaAnnotationClass)).isTrue();
-//	}
+	@Test
+	@SuppressWarnings("unchecked")
+	public void filteredTypeInMetaAnnotationWhenUsingMergedAnnotationsHandlesException() throws Exception {
+		FilteringClassLoader classLoader = new FilteringClassLoader(
+				getClass().getClassLoader());
+		Class<?> withExampleMetaAnnotation = ClassUtils.forName(
+				WithExampleMetaAnnotation.class.getName(), classLoader);
+		Class<Annotation> exampleAnnotationClass = (Class<Annotation>) ClassUtils.forName(
+				ExampleAnnotation.class.getName(), classLoader);
+		Class<Annotation> exampleMetaAnnotationClass = (Class<Annotation>) ClassUtils.forName(
+				ExampleMetaAnnotation.class.getName(), classLoader);
+		MergedAnnotations annotations = MergedAnnotations.from(withExampleMetaAnnotation);
+		assertThat(annotations.get(exampleAnnotationClass).isPresent()).isFalse();
+		assertThat(annotations.get(exampleMetaAnnotationClass).isPresent()).isFalse();
+		assertThat(annotations.isPresent(exampleMetaAnnotationClass)).isFalse();
+		assertThat(annotations.isPresent(exampleAnnotationClass)).isFalse();
+	}
+
 
 	static class FilteringClassLoader extends OverridingClassLoader {
 
-		public FilteringClassLoader(ClassLoader parent) {
-			super(parent);
 
+		FilteringClassLoader(ClassLoader parent) {
+			super(parent);
 		}
+
 
 		@Override
 		protected boolean isEligibleForOverriding(String className) {

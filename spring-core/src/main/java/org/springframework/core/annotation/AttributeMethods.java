@@ -116,6 +116,13 @@ final class AttributeMethods {
 		return this.attributeMethods[index];
 	}
 
+	/**
+	 * Return {@code true} if the attribute at the specified index could throw a
+	 * {@link TypeNotPresentException} when accessed.
+	 * @param index the index of the attribute to check
+	 * @return {@code true} if the attribute can throw a
+	 * {@link TypeNotPresentException}
+	 */
 	boolean canThrowTypeNotPresentException(int index) {
 		return this.canThrowTypeNotPresentException[index];
 	}
@@ -143,7 +150,7 @@ final class AttributeMethods {
 	 */
 	int indexOf(Method attribute) {
 		for (int i = 0; i < this.attributeMethods.length; i++) {
-			if (this.attributeMethods[i] == attribute) {
+			if (this.attributeMethods[i].equals(attribute)) {
 				return i;
 			}
 		}
