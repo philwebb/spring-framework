@@ -784,12 +784,26 @@ public abstract class AnnotationUtils {
 			Class<? extends Annotation> annotationType) {
 
 		AttributeMethods methods = AttributeMethods.forAnnotationType(annotationType);
+		if (!methods.hasDefaultValueMethod()) {
+			return Collections.emptyMap();
+		}
 		Map<String, DefaultValueHolder> result = new LinkedHashMap<>(methods.size());
-		for (int i = 0; i < methods.size(); i++) {
-			Method method = methods.get(i);
-			Object defaultValue = method.getDefaultValue();
-			if(defaultValue != null) {
-				result.put(method.getName(), new DefaultValueHolder(defaultValue));
+		if (!methods.hasNestedAnnotation()) {
+			// Use simpler method if there are no nested annotations
+			for (int i = 0; i < methods.size(); i++) {
+				Method method = methods.get(i);
+				Object defaultValue = method.getDefaultValue();
+				if(defaultValue != null) {
+					result.put(method.getName(), new DefaultValueHolder(defaultValue));
+				}
+			}
+		} else {
+			// If we have nested annotations, we need them as nested maps
+			AnnotationAttributes attributes = MergedAnnotation.from(annotationType).asMap(
+					getAnnotationAttributesFactory(annotationType.getClassLoader()),
+					MapValues.ANNOTATION_TO_MAP);
+			for (Map.Entry<String, Object> element : attributes.entrySet()) {
+				result.put(element.getKey(), new DefaultValueHolder(element.getValue()));
 			}
 		}
 		return result;

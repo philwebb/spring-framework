@@ -52,19 +52,34 @@ final class AttributeMethods {
 
 	private final boolean[] canThrowTypeNotPresentException;
 
+	private final boolean hasDefaultValueMethod;
+
+	private final boolean hasNestedAnnotation;
+
 
 	private AttributeMethods(Method[] attributeMethods) {
 		this.attributeMethods = attributeMethods;
 		this.canThrowTypeNotPresentException = new boolean[attributeMethods.length];
+		boolean foundDefaultValueMethod = false;
+		boolean foundNestedAnnotation = false;
 		for (int i = 0; i < attributeMethods.length; i++) {
 			Method method = this.attributeMethods[i];
 			Class<?> type = method.getReturnType();
+			if (method.getDefaultValue() != null) {
+				foundDefaultValueMethod = true;
+			}
+			if (type.isAnnotation() ||
+					(type.isArray() && type.getComponentType().isAnnotation())) {
+				foundNestedAnnotation = true;
+			}
 			method.setAccessible(true);
 			this.canThrowTypeNotPresentException[i] =
 					type == Class.class ||
 					type == Class[].class ||
 					type.isEnum();
 		}
+		this.hasDefaultValueMethod = foundDefaultValueMethod;
+		this.hasNestedAnnotation = foundNestedAnnotation;
 	}
 
 
@@ -141,6 +156,22 @@ final class AttributeMethods {
 	 */
 	public int size() {
 		return this.attributeMethods.length;
+	}
+
+	/**
+	 * Return if at least one of the attribute methods has a default value.
+	 * @return if there is at least one attribute method with a default value
+	 */
+	public boolean hasDefaultValueMethod() {
+		return this.hasDefaultValueMethod;
+	}
+
+	/**
+	 * Return if at least on of the attribute methods is a nested annotation.
+	 * @return if there is at least one attribute method with a annotation type
+	 */
+	public boolean hasNestedAnnotation() {
+		return this.hasNestedAnnotation;
 	}
 
 	/**
