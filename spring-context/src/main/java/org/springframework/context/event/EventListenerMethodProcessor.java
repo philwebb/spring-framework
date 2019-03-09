@@ -142,7 +142,7 @@ public class EventListenerMethodProcessor
 	}
 
 	private void processBean(final String beanName, final Class<?> targetType) {
-		if (!this.nonAnnotatedClasses.contains(targetType) && !isSpringContainerClass(targetType)) {
+		if (!this.nonAnnotatedClasses.contains(targetType) && !isSkippable(targetType)) {
 			Map<Method, EventListener> annotatedMethods = null;
 			try {
 				annotatedMethods = MethodIntrospector.selectMethods(targetType,
@@ -187,6 +187,17 @@ public class EventListenerMethodProcessor
 				}
 			}
 		}
+	}
+
+	/**
+	 * Determine whether the given class can be safely skipped since it is know
+	 * to never contain {@link EventListener} methods.
+	 * @since 5.2
+	 */
+	private static boolean isSkippable(Class<?> clazz) {
+		String name = clazz.getName();
+		return name.startsWith("java.lang") || name.startsWith("java.util")
+				|| name.startsWith("javax.servlet") || isSpringContainerClass(clazz);
 	}
 
 	/**
