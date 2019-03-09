@@ -19,6 +19,7 @@ package org.springframework.core.annotation;
 import java.util.Arrays;
 
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 /**
  * {@link AnnotationFilter} implementation used for
@@ -33,6 +34,7 @@ class PackagesAnnotationFilter implements AnnotationFilter {
 
 	private final int hashCode;
 
+
 	PackagesAnnotationFilter(String... packages) {
 		Assert.notNull(packages, "Packages must not be null");
 		this.prefixes = new String[packages.length];
@@ -43,6 +45,7 @@ class PackagesAnnotationFilter implements AnnotationFilter {
 		Arrays.sort(this.prefixes);
 		this.hashCode = Arrays.hashCode(this.prefixes);
 	}
+
 
 	@Override
 	public boolean matches(String annotationType) {
@@ -71,6 +74,12 @@ class PackagesAnnotationFilter implements AnnotationFilter {
 	@Override
 	public int hashCode() {
 		return this.hashCode;
+	}
+
+	@Override
+	public String toString() {
+		return "Packages annotation filter: " +
+				StringUtils.arrayToCommaDelimitedString(this.prefixes);
 	}
 
 }

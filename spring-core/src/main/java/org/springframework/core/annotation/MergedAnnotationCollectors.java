@@ -39,15 +39,17 @@ import org.springframework.util.MultiValueMap;
  * @author Phillip Webb
  * @since 5.2
  */
-public final class MergedAnnotationCollectors {
+public abstract class MergedAnnotationCollectors {
 
 	private static final Characteristics[] NO_CHARACTERISTICS = {};
 
 	private static final Characteristics[] IDENTITY_FINISH_CHARACTERISTICS = {
 		Characteristics.IDENTITY_FINISH };
 
+
 	private MergedAnnotationCollectors() {
 	}
+
 
 	/**
 	 * Returns a new {@link Collector} that accumulates merged annotations to a
@@ -58,8 +60,7 @@ public final class MergedAnnotationCollectors {
 	 * annotations into a {@link Set}
 	 */
 	public static <A extends Annotation> Collector<MergedAnnotation<A>, ?, Set<A>> toAnnotationSet() {
-		return Collector.of(ArrayList<A>::new,
-				(list, annotation) -> list.add(annotation.synthesize()),
+		return Collector.of(ArrayList<A>::new, (list, annotation) -> list.add(annotation.synthesize()),
 				MergedAnnotationCollectors::addAll, list -> new LinkedHashSet<>(list));
 	}
 
@@ -90,10 +91,9 @@ public final class MergedAnnotationCollectors {
 	 */
 	public static <R extends Annotation, A extends R> Collector<MergedAnnotation<A>, ?, R[]> toAnnotationArray(
 			IntFunction<R[]> generator) {
-		return Collector.of(ArrayList::new,
-				(list, annotation) -> list.add(annotation.synthesize()),
-				MergedAnnotationCollectors::addAll,
-				list -> list.toArray(generator.apply(list.size())));
+
+		return Collector.of(ArrayList::new, (list, annotation) -> list.add(annotation.synthesize()),
+				MergedAnnotationCollectors::addAll, list -> list.toArray(generator.apply(list.size())));
 	}
 
 	/**
@@ -109,6 +109,7 @@ public final class MergedAnnotationCollectors {
 	 */
 	public static <A extends Annotation> Collector<MergedAnnotation<A>, ?, MultiValueMap<String, Object>> toMultiValueMap(
 			MapValues... options) {
+
 		return toMultiValueMap(Function.identity(), options);
 	}
 
@@ -127,12 +128,12 @@ public final class MergedAnnotationCollectors {
 	public static <A extends Annotation> Collector<MergedAnnotation<A>, ?, MultiValueMap<String, Object>> toMultiValueMap(
 			Function<MultiValueMap<String, Object>, MultiValueMap<String, Object>> finisher,
 			MapValues... options) {
+
 		Assert.notNull(finisher, "Finisher must not be null");
-		Characteristics[] characteristics = isSameInstance(finisher, Function.identity())
-				? IDENTITY_FINISH_CHARACTERISTICS
-				: NO_CHARACTERISTICS;
-		return Collector.of(
-				(Supplier<MultiValueMap<String, Object>>) LinkedMultiValueMap::new,
+		Characteristics[] characteristics = isSameInstance(finisher, Function.identity()) ?
+				IDENTITY_FINISH_CHARACTERISTICS :
+				NO_CHARACTERISTICS;
+		return Collector.of((Supplier<MultiValueMap<String, Object>>) LinkedMultiValueMap::new,
 				(map, annotation) -> annotation.asMap(options).forEach(map::add),
 				MergedAnnotationCollectors::merge, finisher, characteristics);
 	}

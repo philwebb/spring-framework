@@ -101,9 +101,8 @@ public class SynthesizingMethodParameter extends MethodParameter {
 
 	@Override
 	protected Annotation[] adaptAnnotationArray(Annotation[] annotations) {
-		return InternalAnnotationUtils.synthesizeAnnotationArray(annotations, getAnnotatedElement());
+		return AnnotationUtils.synthesizeAnnotationArray(annotations, getAnnotatedElement());
 	}
-
 
 	@Override
 	public SynthesizingMethodParameter clone() {

@@ -24,7 +24,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
- * Filter that can be used to match specific annotations.
+ * Callback interface that can be used to filter specific annotation types.
  *
  * @author Phillip Webb
  * @since 5.2
@@ -34,23 +34,36 @@ public interface AnnotationFilter {
 
 	/**
 	 * {@link AnnotationFilter} that matches annotations is in the
-	 * {@code java.lang.annotation} or in the {@code org.springframework.lang}
-	 * package.
+	 * {@code java.lang.*} or in the
+	 * {@code org.springframework.lang.*} package.
 	 */
-	static final AnnotationFilter PLAIN = packages("java.lang.annotation",
+	static final AnnotationFilter PLAIN = packages("java.lang",
 			"org.springframework.lang");
 
 	/**
-	 * {@link AnnotationFilter} that matches annotations is in the
-	 * {@code java.lang.annotation} package.
+	 * {@link AnnotationFilter} that matches annotations in the
+	 * {@code java.lang.*} package.
 	 */
-	static final AnnotationFilter JAVA = packages("java.lang.annotation");
+	static final AnnotationFilter JAVA = packages("java.lang");
 
 	/**
 	 * {@link AnnotationFilter} that never matches and can be used when no
 	 * filtering is needed.
 	 */
-	static final AnnotationFilter NONE = annotationType -> false;
+	static final AnnotationFilter NONE = new AnnotationFilter() {
+
+		@Override
+		public boolean matches(String typeName) {
+			return false;
+		}
+
+		@Override
+		public String toString() {
+			return "No annotation filtering";
+		}
+
+	};
+
 
 	/**
 	 * Test if the given annotation matches the filter.
@@ -89,13 +102,12 @@ public interface AnnotationFilter {
 
 	/**
 	 * Return an {@link AnnotationFilter} that is the most appropriate for, and
-	 * will always match all the given annotation type. Whenever possible,
+	 * will always match the given annotation type. Whenever possible,
 	 * {@link AnnotationFilter#PLAIN} will be returned.
-	 * @param annotationTypes the annotation types to check
+	 * @param annotationType the annotation type to check
 	 * @return the most appropriate annotation filter
 	 */
-	static AnnotationFilter mostAppropriateFor(
-			@Nullable Class<?> annotationType) {
+	static AnnotationFilter mostAppropriateFor(@Nullable Class<?> annotationType) {
 		return PLAIN.matches(annotationType) ? NONE : PLAIN;
 	}
 
@@ -106,8 +118,7 @@ public interface AnnotationFilter {
 	 * @param annotationTypes the annotation types to check
 	 * @return the most appropriate annotation filter
 	 */
-	static AnnotationFilter mostAppropriateFor(
-			Class<?>... annotationTypes) {
+	static AnnotationFilter mostAppropriateFor(Class<?>... annotationTypes) {
 		Assert.notNull(annotationTypes, "AnnotationTypes must not be null");
 		return mostAppropriateFor(Arrays.asList(annotationTypes));
 	}
@@ -116,7 +127,7 @@ public interface AnnotationFilter {
 	 * Return an {@link AnnotationFilter} that is the most appropriate for, and
 	 * will always match all the given annotation type. Whenever possible,
 	 * {@link AnnotationFilter#PLAIN} will be returned.
-	 * @param annotationTypes the annotation types to check
+	 * @param annotationType the annotation type to check
 	 * @return the most appropriate annotation filter
 	 */
 	static AnnotationFilter mostAppropriateFor(@Nullable String annotationType) {

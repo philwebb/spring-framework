@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,26 @@
 
 package org.springframework.core.annotation;
 
-import java.lang.annotation.Annotation;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
+
 
 /**
- * Unit tests for {@link DefaultAnnotationAttributeExtractor}.
+ * Tests for {@link AttributeValues}.
  *
- * @author Sam Brannen
- * @since 4.2.1
+ * @author pwebb
+ * @since 5.1
  */
-public class DefaultAnnotationAttributeExtractorTests extends AbstractAliasAwareAnnotationAttributeExtractorTestCase {
+@Ignore
+public class AttributeValuesTests {
 
-	@Override
-	protected AnnotationAttributeExtractor<?> createExtractorFor(Class<?> clazz, String expected, Class<? extends Annotation> annotationType) {
-		return new DefaultAnnotationAttributeExtractor(clazz.getAnnotation(annotationType), clazz);
+	// FIXME
+
+	@Test
+	public void test() {
+		fail("Not yet implemented");
 	}
 
 }
