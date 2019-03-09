@@ -45,6 +45,8 @@ import org.springframework.lang.Nullable;
  */
 public abstract class ReflectionUtils {
 
+	private static final Object[] NO_ARGS = new Object[0];
+
 	/**
 	 * Pre-built MethodFilter that matches all non-bridge non-synthetic methods
 	 * which are not declared on {@code java.lang.Object}.
@@ -218,7 +220,7 @@ public abstract class ReflectionUtils {
 	 */
 	@Nullable
 	public static Object invokeMethod(Method method, @Nullable Object target) {
-		return invokeMethod(method, target, new Object[0]);
+		return invokeMethod(method, target, NO_ARGS);
 	}
 
 	/**
