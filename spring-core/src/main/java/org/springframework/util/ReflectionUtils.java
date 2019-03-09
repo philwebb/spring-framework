@@ -623,8 +623,8 @@ public abstract class ReflectionUtils {
 	 * @param clazz the class to introspect
 	 * @return the cached array of methods
 	 * @throws IllegalStateException if introspection fails
-	 * @see Class#getDeclaredMethods()
 	 * @since 5.2
+	 * @see Class#getDeclaredMethods()
 	 */
 	public static Method[] getDeclaredMethods(Class<?> clazz) {
 		return getDeclaredMethods(clazz, true);
@@ -639,8 +639,8 @@ public abstract class ReflectionUtils {
 	 * @param copy if a copy of the array is required
 	 * @return the cached array of methods
 	 * @throws IllegalStateException if introspection fails
-	 * @see Class#getDeclaredMethods()
 	 * @since 5.2
+	 * @see Class#getDeclaredMethods()
 	 */
 	private static Method[] getDeclaredMethods(Class<?> clazz, boolean copy) {
 		Assert.notNull(clazz, "Class must not be null");

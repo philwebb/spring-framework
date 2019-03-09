@@ -797,7 +797,8 @@ public abstract class AnnotationUtils {
 					result.put(method.getName(), new DefaultValueHolder(defaultValue));
 				}
 			}
-		} else {
+		}
+		else {
 			// If we have nested annotations, we need them as nested maps
 			AnnotationAttributes attributes = MergedAnnotation.from(annotationType).asMap(
 					getAnnotationAttributesFactory(annotationType.getClassLoader()),

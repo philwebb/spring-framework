@@ -627,7 +627,7 @@ final class TypeMappedAnnotations implements MergedAnnotations {
 			if (annotationResult != -1) {
 				MergedAnnotation<A> mergedAnnotation = aggregate.createMergedAnnotationIfPossible(
 						annotationResult, this.mappingCursors[annotationResult],
-						requiredType != null ? IntrospectionFailureLogger.INFO : IntrospectionFailureLogger.DEBUG);
+						this.requiredType != null ? IntrospectionFailureLogger.INFO : IntrospectionFailureLogger.DEBUG);
 				this.mappingCursors[annotationResult]++;
 				if (mergedAnnotation == null) {
 					return tryAdvance(aggregate, action);

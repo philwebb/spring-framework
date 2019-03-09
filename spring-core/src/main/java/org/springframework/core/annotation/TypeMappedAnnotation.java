@@ -83,7 +83,7 @@ import org.springframework.util.ReflectionUtils;
  * @param <A> the annotation type
  * @see TypeMappedAnnotations
  */
-class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotation<A> {
+final class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotation<A> {
 
 	@Nullable
 	private static transient Log logger;
