@@ -46,36 +46,17 @@ import org.springframework.util.ReflectionUtils;
  * are {@link ReflectionUtils#invokeMethod(Method, Object) invoked} to extract
  * values. Equally, the source could be a simple {@link Map} with values
  * extracted using {@link Map#get(Object)}.
- * <p>
- * Extracted root attribute values must be compatible with the attribute return
+ * <p>Extracted root attribute values must be compatible with the attribute return
  * type, namely:
- * <p>
- * <table>
- * <tr>
- * <th>Return Type</th>
- * <th>Extracted Type</th>
- * </tr>
- * <tr>
- * <td>Class</td>
- * <td>Class or String</td>
- * </tr>
- * <tr>
- * <td>Class[]</td>
- * <td>Class[] or String[]</td>
- * </tr>
- * <tr>
- * <td>Annotation</td>
- * <td>Annotation, Map or Object compatible with the value extractor</td>
- * </tr>
- * <tr>
- * <td>Annotation[]</td>
- * <td>Annotation[], Map[] or Object[] where elements are compatible with the
- * value extractor</td>
- * </tr>
- * <tr>
- * <td>Other types</td>
- * <td>An exact match or the appropriate primitive wrapper</td>
- * </tr>
+ * <p><table border="1">
+ * <tr><th >Return Type</th><th >Extracted Type</th></tr>
+ * <tr><td>Class</td><td>Class or String</td></tr>
+ * <tr><td>Class[]</td><td>Class[] or String[]</td></tr>
+ * <tr><td>Annotation</td><td>Annotation, Map or Object compatible with the value
+ * extractor</td></tr>
+ * <tr><td>Annotation[]</td><td>Annotation[], Map[] or Object[] where elements are
+ * compatible with the value extractor</td></tr>
+ * <tr><td>Other types</td><td>An exact match or the appropriate primitive wrapper</td></tr>
  * </table>
  *
  * @author Phillip Webb

@@ -79,7 +79,6 @@ public class AttributeMethodsTests {
 		assertThat(methods.indexOf("value")).isEqualTo(1);
 	}
 
-
 	@Test
 	public void indexOfMethodReturnsIndex() throws Exception {
 		AttributeMethods methods = AttributeMethods.forAnnotationType(MultipleAttributes.class);
