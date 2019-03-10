@@ -45,9 +45,15 @@ import org.springframework.util.ReflectionUtils;
  */
 abstract class AnnotationsScanner {
 
+	private static final String ENHANCED_CONFIGURATION_CLASS =
+			"org.springframework.context.annotation.ConfigurationClassEnhancer$EnhancedConfiguration";
+
 	private static final Annotation[] NO_ANNOTATIONS = {};
 
 	private static final Method[] NO_METHODS = {};
+
+	private static final Class<?> SERVLET_CONTEXT_CLASS = getClassIfPresent(
+			"javax.servlet.ServletContext");
 
 
 	private static final Map<AnnotatedElement, Annotation[]> declaredAnnotationCache =
@@ -512,7 +518,12 @@ abstract class AnnotationsScanner {
 		String name = type.getName();
 		return type.equals(Ordered.class) ||
 				name.startsWith("java") ||
-				name.startsWith("org.springframework.lang.");
+				name.startsWith("org.springframework.lang.") ||
+				name.startsWith("org.springframework.util.") ||
+				(type.isInterface() && name.startsWith("org.springframework.") && name.endsWith("Aware")) ||
+				(name.startsWith("com.sun") && !name.contains("Proxy")) ||
+				name.equals(ENHANCED_CONFIGURATION_CLASS) ||
+				(SERVLET_CONTEXT_CLASS != null && SERVLET_CONTEXT_CLASS.isAssignableFrom(type));
 	}
 
 	private static boolean isWithoutHierarchy(AnnotatedElement source) {
