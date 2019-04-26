@@ -25,6 +25,7 @@ import java.util.Set;
 
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.lang.Nullable;
 import org.springframework.util.MultiValueMap;
 
@@ -42,6 +43,8 @@ import org.springframework.util.MultiValueMap;
 public class StandardAnnotationMetadata extends StandardClassMetadata implements AnnotationMetadata {
 
 	private final Annotation[] annotations;
+
+	private final MergedAnnotations mergedAnnotations;
 
 	private final boolean nestedAnnotationsAsMap;
 
@@ -69,9 +72,15 @@ public class StandardAnnotationMetadata extends StandardClassMetadata implements
 	public StandardAnnotationMetadata(Class<?> introspectedClass, boolean nestedAnnotationsAsMap) {
 		super(introspectedClass);
 		this.annotations = introspectedClass.getDeclaredAnnotations();
+		this.mergedAnnotations = MergedAnnotations.from(introspectedClass);
 		this.nestedAnnotationsAsMap = nestedAnnotationsAsMap;
 	}
 
+
+	@Override
+	public MergedAnnotations getAnnotations() {
+		return this.mergedAnnotations;
+	}
 
 	@Override
 	public Set<String> getAnnotationTypes() {

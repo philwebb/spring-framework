@@ -30,6 +30,7 @@ import org.springframework.asm.Opcodes;
 import org.springframework.asm.Type;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.MethodMetadata;
 import org.springframework.lang.Nullable;
@@ -72,6 +73,11 @@ public class AnnotationMetadataReadingVisitor extends ClassMetadataReadingVisito
 		this.classLoader = classLoader;
 	}
 
+
+	@Override
+	public MergedAnnotations getAnnotations() {
+		throw new UnsupportedOperationException();
+	}
 
 	@Override
 	public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {

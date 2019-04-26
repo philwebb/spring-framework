@@ -18,6 +18,7 @@ package org.springframework.core.type;
 
 import java.util.Map;
 
+import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.lang.Nullable;
 import org.springframework.util.MultiValueMap;
 
@@ -37,6 +38,13 @@ import org.springframework.util.MultiValueMap;
  * @see MethodMetadata
  */
 public interface AnnotatedTypeMetadata {
+
+	/**
+	 * Return annotation details based on the direct annotations of the
+	 * underlying element.
+	 * @return merged annotations based on the direct annotations
+	 */
+	MergedAnnotations getAnnotations();
 
 	/**
 	 * Determine whether the underlying element has an annotation or meta-annotation
