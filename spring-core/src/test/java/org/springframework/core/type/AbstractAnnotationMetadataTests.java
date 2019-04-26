@@ -25,6 +25,7 @@ import org.junit.Test;
 import org.springframework.core.annotation.MergedAnnotation;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.Assert.*;
 
 /**
  * Base class for {@link AnnotationMetadata} tests.
@@ -61,6 +62,51 @@ public abstract class AbstractAnnotationMetadataTests {
 		assertThat(metadata.getMetaAnnotationTypes(
 				MetaAnnotationRoot.class.getName())).containsExactlyInAnyOrder(
 						MetaAnnotation1.class.getName(), MetaAnnotation2.class.getName());
+	}
+
+	@Test
+	public void hasAnnotationWhenMatchesDirectAnnotationReturnsTrue() {
+
+	}
+
+	@Test
+	public void hasAnnotationWhenMatchesMetaAnnotationReturnsFalse() {
+
+	}
+
+	@Test
+	public void hasAnnotationWhenDoesNotMatchDirectOrMetaAnnotationReturnsFalse() {
+
+	}
+
+	@Test
+	public void hasMetaAnnotationWhenMatchesDirectReturnsFalse() {
+
+	}
+
+	@Test
+	public void hasMetaAnnotationWhenMatchesMetaAnnotationReturnsTrue() {
+
+	}
+
+	@Test
+	public void hasMetaAnnotationWhenDoesNotMatchDirectOrMetaAnnotationReturnsFalse() {
+
+	}
+
+	@Test
+	public void isAnnotatedWhenMatchesDirectAnnotationReturnsTrue() {
+
+	}
+
+	@Test
+	public void isAnnotatedWhenMatchesMetaAnnotationReturnsTrue() {
+
+	}
+
+	@Test
+	public void isAnnotatedWhenDoesNotMatchDirectOrMetaAnnotationReturnsFalse() {
+
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
