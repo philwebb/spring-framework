@@ -126,12 +126,6 @@ public class StandardAnnotationMetadata extends StandardClassMetadata implements
 	}
 
 	@Override
-	public boolean isAnnotated(String annotationName) {
-		return (this.annotations.length > 0 &&
-				AnnotatedElementUtils.isAnnotated(getIntrospectedClass(), annotationName));
-	}
-
-	@Override
 	@Nullable
 	public Map<String, Object> getAnnotationAttributes(String annotationName, boolean classValuesAsString) {
 		return (this.annotations.length > 0 ? AnnotatedElementUtils.getMergedAnnotationAttributes(

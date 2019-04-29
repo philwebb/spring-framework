@@ -119,11 +119,6 @@ public class StandardMethodMetadata implements MethodMetadata {
 	}
 
 	@Override
-	public boolean isAnnotated(String annotationName) {
-		return AnnotatedElementUtils.isAnnotated(this.introspectedMethod, annotationName);
-	}
-
-	@Override
 	@Nullable
 	public Map<String, Object> getAnnotationAttributes(String annotationName, boolean classValuesAsString) {
 		return AnnotatedElementUtils.getMergedAnnotationAttributes(this.introspectedMethod,

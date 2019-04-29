@@ -134,6 +134,11 @@ public class AnnotationMetadataReadingVisitor extends ClassMetadataReadingVisito
 	}
 
 	@Override
+	public boolean hasAnnotation(String annotationName) {
+		return getAnnotationTypes().contains(annotationName);
+	}
+
+	@Override
 	@Nullable
 	public AnnotationAttributes getAnnotationAttributes(String annotationName, boolean classValuesAsString) {
 		AnnotationAttributes raw = AnnotationReadingVisitorUtils.getMergedAnnotationAttributes(
