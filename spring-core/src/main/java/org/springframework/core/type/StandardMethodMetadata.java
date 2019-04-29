@@ -42,6 +42,8 @@ public class StandardMethodMetadata implements MethodMetadata {
 
 	private final boolean nestedAnnotationsAsMap;
 
+	private final MergedAnnotations mergedAnnotations;
+
 
 	/**
 	 * Create a new StandardMethodMetadata wrapper for the given Method.
@@ -66,11 +68,12 @@ public class StandardMethodMetadata implements MethodMetadata {
 		Assert.notNull(introspectedMethod, "Method must not be null");
 		this.introspectedMethod = introspectedMethod;
 		this.nestedAnnotationsAsMap = nestedAnnotationsAsMap;
+		this.mergedAnnotations = MergedAnnotations.from(introspectedMethod);
 	}
 
 	@Override
 	public MergedAnnotations getAnnotations() {
-		throw new UnsupportedOperationException();
+		return this.mergedAnnotations;
 	}
 
 	/**

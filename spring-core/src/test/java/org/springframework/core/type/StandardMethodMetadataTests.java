@@ -17,7 +17,7 @@
 package org.springframework.core.type;
 
 /**
- * Tests for {@link StandardAnnotationMetadata}.
+ * Tests for {@link StandardMethodMetadata}.
  *
  * @author Phillip Webb
  */

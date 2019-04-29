@@ -27,14 +27,15 @@ import org.springframework.core.type.classreading.AnnotationMetadataReadingVisit
 import org.springframework.core.type.classreading.MethodMetadataReadingVisitor;
 import org.springframework.util.ClassUtils;
 
+import static org.assertj.core.api.Assertions.*;
+
 /**
  * Tests for {@link MethodMetadataReadingVisitor}.
  *
  * @author Phillip Webb
  */
 @SuppressWarnings("deprecation")
-public class MethodMetadataReadingVisitorTests
-		extends AbstractMethodMetadataTests {
+public class MethodMetadataReadingVisitorTests extends AbstractMethodMetadataTests {
 
 	// FIXME move to correct package
 
@@ -59,6 +60,12 @@ public class MethodMetadataReadingVisitorTests
 		catch (Exception ex) {
 			throw new IllegalStateException(ex);
 		}
+	}
+
+	@Override
+	public void getAnnotationsReturnsDirectAnnotations() {
+		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(
+				super::getAnnotationsReturnsDirectAnnotations);
 	}
 
 }

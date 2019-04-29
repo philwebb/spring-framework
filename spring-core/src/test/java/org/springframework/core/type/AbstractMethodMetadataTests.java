@@ -19,9 +19,9 @@ package org.springframework.core.type;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
+import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.*;
@@ -93,9 +93,13 @@ public abstract class AbstractMethodMetadataTests {
 	}
 
 	@Test
-	@Ignore
 	public void getAnnotationsReturnsDirectAnnotations() {
-		// FIXME
+		MethodMetadata metadata = getTagged(WithDirectAnnotation.class);
+		assertThat(metadata.getAnnotations().stream().filter(
+				MergedAnnotation::isDirectlyPresent).map(
+						a -> a.getType().getName())).containsExactlyInAnyOrder(
+								Tag.class.getName(),
+								DirectAnnotation.class.getName());
 	}
 
 	@Test
