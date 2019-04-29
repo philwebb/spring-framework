@@ -24,7 +24,7 @@ package org.springframework.core.type;
 public class StandardAnnotationMetadataTests extends AbstractAnnotationMetadataTests {
 
 	@Override
-	protected AnnotationMetadata getAnnotationMetadata(Class<?> source) {
+	protected AnnotationMetadata get(Class<?> source) {
 		return new StandardAnnotationMetadata(source);
 	}
 

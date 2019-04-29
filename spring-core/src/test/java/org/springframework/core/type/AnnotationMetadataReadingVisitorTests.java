@@ -33,7 +33,7 @@ public class AnnotationMetadataReadingVisitorTests
 	// FIXME move to correct package
 
 	@Override
-	protected AnnotationMetadata getAnnotationMetadata(Class<?> source) {
+	protected AnnotationMetadata get(Class<?> source) {
 		try {
 			return new SimpleMetadataReaderFactory(
 					getClass().getClassLoader()).getMetadataReader(
