@@ -21,7 +21,9 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.asm.Opcodes;
 import org.springframework.core.annotation.AnnotationAttributes;
+import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.MethodMetadata;
 import org.springframework.lang.Nullable;
@@ -31,9 +33,11 @@ import org.springframework.util.LinkedMultiValueMap;
  * {@link AnnotationMetadata} returned from a {@link SimpleMetadataReader}.
  *
  * @author Phillip Webb
- * @since 5.1
+ * @since 5.2
  */
-public final class SimpleAnnotationMetadata extends SimpleAnnotatedTypeMetadata implements AnnotationMetadata {
+public final class SimpleAnnotationMetadata implements AnnotationMetadata {
+
+	// FIXME make package private
 
 	private final String className;
 
@@ -49,8 +53,6 @@ public final class SimpleAnnotationMetadata extends SimpleAnnotatedTypeMetadata 
 
 	private final String[] memberClassNames;
 
-	private final Set<String> annotationTypes;
-
 	private final Set<SimpleMethodMetadata> methodMetadata;
 
 
@@ -60,14 +62,12 @@ public final class SimpleAnnotationMetadata extends SimpleAnnotatedTypeMetadata 
 			EnumSet<Flag> flags, String enclosingClassName, String superClassName,
 			String[] interfaceNames, String[] memberClassNames,
 			Set<String> annotationTypes, Set<SimpleMethodMetadata> methodMetadata) {
-		super(classLoader, annotationAttributes, metaAnnotations);
 		this.className = className;
 		this.flags = flags;
 		this.enclosingClassName = enclosingClassName;
 		this.superClassName = superClassName;
 		this.interfaceNames = interfaceNames;
 		this.memberClassNames = memberClassNames;
-		this.annotationTypes = annotationTypes;
 		this.methodMetadata = methodMetadata;
 	}
 
@@ -125,20 +125,10 @@ public final class SimpleAnnotationMetadata extends SimpleAnnotatedTypeMetadata 
 		return this.memberClassNames;
 	}
 
-
 	@Override
-	public Set<String> getAnnotationTypes() {
-		return this.annotationTypes;
-	}
-
-	@Override
-	public Set<String> getMetaAnnotationTypes(String annotationName) {
-		return super.getMetaAnnotationTypes(annotationName);
-	}
-
-	@Override
-	public boolean hasMetaAnnotation(String metaAnnotationType) {
-		return super.hasMetaAnnotation(metaAnnotationType);
+	public MergedAnnotations getAnnotations() {
+		// FIXME;
+		return null;
 	}
 
 	@Override
@@ -162,14 +152,33 @@ public final class SimpleAnnotationMetadata extends SimpleAnnotatedTypeMetadata 
 		return annotatedMethods;
 	}
 
-	@Override
-	protected String getDescription() {
-		return "class '" + this.className + "'";
-	}
-
 	public enum Flag {
 
 		INTERFACE, ANNOTATION, ABSTRACT, FINAL, INDEPENDENT_INNER_CLASS
+
 	}
+
+	private EnumSet<SimpleAnnotationMetadata.Flag> getFlags() {
+		// FIXME drop this and just use the raw int
+		EnumSet<SimpleAnnotationMetadata.Flag> flags = EnumSet.noneOf(
+				SimpleAnnotationMetadata.Flag.class);
+		setAccessFlag(flags, Opcodes.ACC_INTERFACE, SimpleAnnotationMetadata.Flag.INTERFACE);
+		setAccessFlag(flags, Opcodes.ACC_ANNOTATION, SimpleAnnotationMetadata.Flag.ANNOTATION);
+		setAccessFlag(flags, Opcodes.ACC_ABSTRACT, SimpleAnnotationMetadata.Flag.ABSTRACT);
+		setAccessFlag(flags, Opcodes.ACC_INTERFACE, SimpleAnnotationMetadata.Flag.INTERFACE);
+		setAccessFlag(flags, Opcodes.ACC_FINAL, SimpleAnnotationMetadata.Flag.FINAL);
+		if (this.independentInnerClass) {
+			flags.add(SimpleAnnotationMetadata.Flag.INDEPENDENT_INNER_CLASS);
+		}
+		return flags;
+	}
+
+	private void setAccessFlag(EnumSet<SimpleAnnotationMetadata.Flag> flags,
+			int accessCode, SimpleAnnotationMetadata.Flag flag) {
+		if ((this.access & accessCode) != 0) {
+			flags.add(flag);
+		}
+	}
+
 
 }

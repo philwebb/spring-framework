@@ -540,7 +540,7 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * @param attributes the annotation attributes or {@code null} if just default
 	 * values should be used
 	 * @return a {@link MergedAnnotation} instance for the annotation and attributes
-	 * @see #from(AnnotatedElement, Class, Map)
+	 * @see #from(Object, Class, Map)
 	 */
 	static <A extends Annotation> MergedAnnotation<A> from(
 			Class<A> annotationType, @Nullable Map<String, ?> attributes) {
@@ -560,7 +560,7 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * @return a {@link MergedAnnotation} instance for the annotation and attributes
 	 */
 	static <A extends Annotation> MergedAnnotation<A> from(
-			@Nullable AnnotatedElement source, Class<A> annotationType, @Nullable Map<String, ?> attributes) {
+			@Nullable Object source, Class<A> annotationType, @Nullable Map<String, ?> attributes) {
 
 		return TypeMappedAnnotation.from(source, annotationType, attributes);
 	}

@@ -16,21 +16,25 @@
 
 package org.springframework.core.type.classreading;
 
+import java.util.EnumSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.asm.Opcodes;
 import org.springframework.core.annotation.AnnotationAttributes;
+import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.core.type.MethodMetadata;
 import org.springframework.util.LinkedMultiValueMap;
 
 /**
  * {@link MethodMetadata} returned from a {@link SimpleMetadataReader}.
  *
- * @author pwebb
- * @since 5.1
+ * @author Phillip Webb
+ * @since 5.2
  */
-public class SimpleMethodMetadata extends SimpleAnnotatedTypeMetadata
-		implements MethodMetadata {
+public class SimpleMethodMetadata implements MethodMetadata {
+
+	// FIXME make package private
 
 	private final String methodName;
 
@@ -40,18 +44,15 @@ public class SimpleMethodMetadata extends SimpleAnnotatedTypeMetadata
 
 	private final String returnTypeName;
 
-
 	SimpleMethodMetadata(ClassLoader classLoader,
 			LinkedMultiValueMap<String, AnnotationAttributes> annotationAttributes,
 			Map<String, Set<String>> metaAnnotations, String methodName, Set<Flag> flags,
 			String declaringClassName, String returnTypeName) {
-		super(classLoader, annotationAttributes, metaAnnotations);
 		this.methodName = methodName;
 		this.flags = flags;
 		this.declaringClassName = declaringClassName;
 		this.returnTypeName = returnTypeName;
 	}
-
 
 	Set<Flag> getFlags() {
 		return flags;
@@ -93,8 +94,9 @@ public class SimpleMethodMetadata extends SimpleAnnotatedTypeMetadata
 	}
 
 	@Override
-	protected String getDescription() {
-		return "method '" + this.methodName + "'";
+	public MergedAnnotations getAnnotations() {
+		// FIXME
+		return null;
 	}
 
 	public enum Flag {
@@ -102,5 +104,24 @@ public class SimpleMethodMetadata extends SimpleAnnotatedTypeMetadata
 		ABSTRACT, STATIC, FINAL, OVERRIDABLE
 
 	}
+
+	private Set<SimpleMethodMetadata.Flag> getFlags() {
+		EnumSet<SimpleMethodMetadata.Flag> flags = EnumSet.noneOf(SimpleMethodMetadata.Flag.class);
+		setAccessFlag(flags, Opcodes.ACC_ABSTRACT, SimpleMethodMetadata.Flag.ABSTRACT);
+		setAccessFlag(flags, Opcodes.ACC_STATIC, SimpleMethodMetadata.Flag.STATIC);
+		setAccessFlag(flags, Opcodes.ACC_FINAL, SimpleMethodMetadata.Flag.FINAL);
+		if ((this.access & (Opcodes.ACC_STATIC | Opcodes.ACC_FINAL | Opcodes.ACC_PRIVATE)) == 0) {
+			flags.add(SimpleMethodMetadata.Flag.OVERRIDABLE);
+		}
+		return flags;
+	}
+
+	private void setAccessFlag(EnumSet<SimpleMethodMetadata.Flag> flags,
+			int accessCode, SimpleMethodMetadata.Flag flag) {
+		if ((this.access & accessCode) != 0) {
+			flags.add(flag);
+		}
+	}
+
 
 }

@@ -29,8 +29,8 @@ import org.springframework.asm.FieldVisitor;
 import org.springframework.asm.MethodVisitor;
 import org.springframework.asm.Opcodes;
 import org.springframework.asm.SpringAsmInfo;
-import org.springframework.asm.Type;
 import org.springframework.core.annotation.AnnotationAttributes;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.LinkedMultiValueMap;
@@ -65,20 +65,12 @@ class SimpleAnnotationMetadataReadingVistor extends ClassVisitor {
 
 	private Set<String> memberClassNames = new LinkedHashSet<>(4);
 
-	private final Set<String> annotationTypes = new LinkedHashSet<>(4);
-
-	private final Map<String, Set<String>> metaAnnotations = new LinkedHashMap<>(4);
-
-	private final LinkedMultiValueMap<String, AnnotationAttributes> annotationAttributes = new LinkedMultiValueMap<>(4);
-
 	private final Set<MethodMetadataVisitor> methodVistors = new LinkedHashSet<>(4);
-
 
 	SimpleAnnotationMetadataReadingVistor(@Nullable ClassLoader classLoader) {
 		super(SpringAsmInfo.ASM_VERSION);
 		this.classLoader = classLoader;
 	}
-
 
 	@Override
 	public void visit(int version, int access, String name, String signature,
@@ -117,38 +109,23 @@ class SimpleAnnotationMetadataReadingVistor extends ClassVisitor {
 	}
 
 	@Override
-	public void visitSource(String source, String debug) {
-	}
-
-	@Override
-	public AnnotationVisitor visitAnnotation(final String desc, boolean visible) {
-		String className = Type.getType(desc).getClassName();
-		this.annotationTypes.add(className);
-		return new AnnotationAttributesReadingVisitor(className,
-				this.annotationAttributes, this.metaAnnotations, this.classLoader);
-	}
-
-	@Override
-	public void visitAttribute(Attribute attr) {
-	}
-
-	@Override
-	public FieldVisitor visitField(int access, String name, String desc, String signature,
-			Object value) {
-		return EmptyFieldVisitor.INSTANCE;
+	public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
+		return MergedAnnotationMetadataVisitor.get(desc, visible);
 	}
 
 	@Override
 	public MethodVisitor visitMethod(int access, String name, String desc,
 			String signature, String[] exceptions) {
-		// Skip bridge methods - we're only interested in original annotation-defining
+		// Skip bridge methods - we're only interested in original
+		// annotation-defining
 		// user methods.
-		// On JDK 8, we'd otherwise run into double detection of the same annotated
+		// On JDK 8, we'd otherwise run into double detection of the same
+		// annotated
 		// method...
 		if ((access & Opcodes.ACC_BRIDGE) != 0) {
 			return super.visitMethod(access, name, desc, signature, exceptions);
 		}
-		return new MethodMetadataVisitor(name, access, Type.getReturnType(desc).getClassName());
+		return new MethodMetadataVisitor(access, name, desc);
 	}
 
 	@Override
@@ -156,33 +133,15 @@ class SimpleAnnotationMetadataReadingVistor extends ClassVisitor {
 	}
 
 	public SimpleAnnotationMetadata getMetadata() {
-		EnumSet<SimpleAnnotationMetadata.Flag> flags = getFlags();
 		Set<SimpleMethodMetadata> methodMetadata = getMethodMetadata();
-		String[] memberClassNames= StringUtils.toStringArray(this.memberClassNames);
-		return new SimpleAnnotationMetadata(this.classLoader, this.annotationAttributes,
-				this.metaAnnotations, this.className, flags, this.enclosingClassName, this.superClassName,
-				this.interfaceNames, memberClassNames, this.annotationTypes, methodMetadata);
-	}
-
-	private EnumSet<SimpleAnnotationMetadata.Flag> getFlags() {
-		EnumSet<SimpleAnnotationMetadata.Flag> flags = EnumSet.noneOf(
-				SimpleAnnotationMetadata.Flag.class);
-		setAccessFlag(flags, Opcodes.ACC_INTERFACE, SimpleAnnotationMetadata.Flag.INTERFACE);
-		setAccessFlag(flags, Opcodes.ACC_ANNOTATION, SimpleAnnotationMetadata.Flag.ANNOTATION);
-		setAccessFlag(flags, Opcodes.ACC_ABSTRACT, SimpleAnnotationMetadata.Flag.ABSTRACT);
-		setAccessFlag(flags, Opcodes.ACC_INTERFACE, SimpleAnnotationMetadata.Flag.INTERFACE);
-		setAccessFlag(flags, Opcodes.ACC_FINAL, SimpleAnnotationMetadata.Flag.FINAL);
-		if (this.independentInnerClass) {
-			flags.add(SimpleAnnotationMetadata.Flag.INDEPENDENT_INNER_CLASS);
-		}
-		return flags;
-	}
-
-	private void setAccessFlag(EnumSet<SimpleAnnotationMetadata.Flag> flags,
-			int accessCode, SimpleAnnotationMetadata.Flag flag) {
-		if ((this.access & accessCode) != 0) {
-			flags.add(flag);
-		}
+		String[] memberClassNames = StringUtils.toStringArray(this.memberClassNames);
+		// return new SimpleAnnotationMetadata(this.classLoader,
+		// this.annotationAttributes,
+		// this.metaAnnotations, this.className, flags, this.enclosingClassName,
+		// this.superClassName,
+		// this.interfaceNames, memberClassNames, this.annotationTypes,
+		// methodMetadata);
+		return null;
 	}
 
 	private Set<SimpleMethodMetadata> getMethodMetadata() {
@@ -194,71 +153,39 @@ class SimpleAnnotationMetadataReadingVistor extends ClassVisitor {
 		return methodMetadata;
 	}
 
-
-	private static class EmptyFieldVisitor extends FieldVisitor {
-
-		private static final FieldVisitor INSTANCE = new EmptyFieldVisitor();
-
-		public EmptyFieldVisitor() {
-			super(SpringAsmInfo.ASM_VERSION);
-		}
-	}
-
-
 	private class MethodMetadataVisitor extends MethodVisitor {
-
-		private final String methodName;
 
 		private final int access;
 
-		private final String returnTypeName;
+		private final String name;
 
-		private final Map<String, Set<String>> metaAnnotations = new LinkedHashMap<>(4);
+		private final String desc;
 
-		private final LinkedMultiValueMap<String, AnnotationAttributes> annotationAttributes = new LinkedMultiValueMap<>(4);
-
-
-		private MethodMetadataVisitor(String methodName, int access, String returnTypeName) {
+		private MethodMetadataVisitor(int access, String name, String desc) {
 			super(SpringAsmInfo.ASM_VERSION);
-			this.methodName = methodName;
 			this.access = access;
-			this.returnTypeName = returnTypeName;
+			this.name = name;
+			this.desc = desc;
 		}
 
 		@Override
 		public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
-			SimpleAnnotationMetadataReadingVistor.this.methodVistors.add(this);
-			String className = Type.getType(desc).getClassName();
-			return new AnnotationAttributesReadingVisitor(className, this.annotationAttributes,
-					this.metaAnnotations, SimpleAnnotationMetadataReadingVistor.this.classLoader);
+			return MergedAnnotationMetadataVisitor.get(desc, visible);
+		}
+
+		@Override
+		public void visitEnd() {
 		}
 
 		public SimpleMethodMetadata getMetadata() {
-			String declaringClassName = SimpleAnnotationMetadataReadingVistor.this.className;
-			Set<SimpleMethodMetadata.Flag> flags = getFlags();
-			return new SimpleMethodMetadata(
-					SimpleAnnotationMetadataReadingVistor.this.classLoader,
-					this.annotationAttributes, this.metaAnnotations, this.methodName, flags,
-					declaringClassName, returnTypeName);
+			// return new SimpleMethodMetadata(
+			// SimpleAnnotationMetadataReadingVistor.this.classLoader,
+			// this.annotationAttributes, this.metaAnnotations, this.methodName,
+			// flags,
+			// declaringClassName, returnTypeName);
+			return null;
 		}
 
-		private Set<SimpleMethodMetadata.Flag> getFlags() {
-			EnumSet<SimpleMethodMetadata.Flag> flags = EnumSet.noneOf(SimpleMethodMetadata.Flag.class);
-			setAccessFlag(flags, Opcodes.ACC_ABSTRACT, SimpleMethodMetadata.Flag.ABSTRACT);
-			setAccessFlag(flags, Opcodes.ACC_STATIC, SimpleMethodMetadata.Flag.STATIC);
-			setAccessFlag(flags, Opcodes.ACC_FINAL, SimpleMethodMetadata.Flag.FINAL);
-			if ((this.access & (Opcodes.ACC_STATIC | Opcodes.ACC_FINAL | Opcodes.ACC_PRIVATE)) == 0) {
-				flags.add(SimpleMethodMetadata.Flag.OVERRIDABLE);
-			}
-			return flags;
-		}
-
-		private void setAccessFlag(EnumSet<SimpleMethodMetadata.Flag> flags,
-				int accessCode, SimpleMethodMetadata.Flag flag) {
-			if ((this.access & accessCode) != 0) {
-				flags.add(flag);
-			}
-		}
 	}
 
 }
