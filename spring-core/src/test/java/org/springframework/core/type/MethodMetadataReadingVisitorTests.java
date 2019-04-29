@@ -24,16 +24,17 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.classreading.AnnotationMetadataReadingVisitor;
+import org.springframework.core.type.classreading.MethodMetadataReadingVisitor;
 import org.springframework.util.ClassUtils;
 
 /**
- * Tests for {@link AnnotationMetadataReadingVisitor}.
+ * Tests for {@link MethodMetadataReadingVisitor}.
  *
  * @author Phillip Webb
  */
 @SuppressWarnings("deprecation")
-public class AnnotationMetadataReadingVisitorTests
-		extends AbstractAnnotationMetadataTests {
+public class MethodMetadataReadingVisitorTests
+		extends AbstractMethodMetadataTests {
 
 	// FIXME move to correct package
 

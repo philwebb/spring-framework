@@ -25,15 +25,14 @@ import org.junit.Test;
 import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.core.type.AbstractAnnotationMetadataTests.TestMemberClass.TestMemberClassInnerClass;
 import org.springframework.core.type.AbstractAnnotationMetadataTests.TestMemberClass.TestMemberClassInnerInterface;
+import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.Assert.*;
 
 /**
  * Base class for {@link AnnotationMetadata} tests.
  *
  * @author Phillip Webb
- * @since 5.2
  */
 public abstract class AbstractAnnotationMetadataTests {
 
@@ -141,9 +140,7 @@ public abstract class AbstractAnnotationMetadataTests {
 	}
 
 	@Test
-	@Ignore
 	public void getAnnotationsReturnsDirectAnnotations() {
-		// FIXME enable when ASM work is done
 		AnnotationMetadata metadata = get(WithDirectAnnotations.class);
 		assertThat(metadata.getAnnotations().stream().filter(
 				MergedAnnotation::isDirectlyPresent).map(
@@ -171,20 +168,21 @@ public abstract class AbstractAnnotationMetadataTests {
 	}
 
 	@Test
-	public void getAnnotationAttributesReturnsMap() {
+	public void getAnnotationAttributesReturnsAttributes() {
 		assertThat(get(WithAnnotationAttributes.class).getAnnotationAttributes(
 				AnnotationAttributes.class.getName())).containsOnly(entry("name", "test"),
 						entry("size", 1));
 	}
 
 	@Test
-	public void getAllAnnotationAttributes() {
-
+	public void getAllAnnotationAttributesReturnsAllAttributes() {
+		MultiValueMap<String, Object> attributes = get(
+				WithMetaAnnotationAttributes.class).getAllAnnotationAttributes(
+						AnnotationAttributes.class.getName());
+		assertThat(attributes).containsOnlyKeys("name", "size");
+		assertThat(attributes.get("name")).containsExactlyInAnyOrder("m1", "m2");
+		assertThat(attributes.get("size")).containsExactlyInAnyOrder(1, 2);
 	}
-
-
-	// getAnnotationAttributes
-	// getAllAnnotationAttributes
 
 	@Test
 	public void getAnnotationTypesReturnsDirectAnnotations() {
@@ -389,6 +387,24 @@ public abstract class AbstractAnnotationMetadataTests {
 
 	}
 
+	@MetaAnnotationAttributes1
+	@MetaAnnotationAttributes2
+	public static class WithMetaAnnotationAttributes {
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@AnnotationAttributes(name = "m1", size = 1)
+	public static @interface MetaAnnotationAttributes1 {
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@AnnotationAttributes(name = "m2", size = 2)
+	public static @interface MetaAnnotationAttributes2 {
+
+	}
+
 	@Retention(RetentionPolicy.RUNTIME)
 	public static @interface AnnotationAttributes {
 
@@ -397,4 +413,5 @@ public abstract class AbstractAnnotationMetadataTests {
 		int size();
 
 	}
+
 }
