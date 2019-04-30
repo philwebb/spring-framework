@@ -17,7 +17,10 @@
 package org.springframework.core.type.classreading;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -67,16 +70,21 @@ class MergedAnnotationMetadataVisitor<A extends Annotation> extends AnnotationVi
 
 	@Override
 	public void visitEnum(String name, String descriptor, String value) {
+		Enum<?> enumValue = enumValue(this.classLoader, descriptor, value);
+		if (enumValue != null) {
+			this.attributes.put(name, enumValue);
+		}
 	}
 
 	@Override
 	public AnnotationVisitor visitAnnotation(String name, String descriptor) {
-		return null;
+		return MergedAnnotationMetadataVisitor.get(this.classLoader, this.source,
+				descriptor, true, annotation -> this.attributes.put(name, annotation));
 	}
 
 	@Override
 	public AnnotationVisitor visitArray(String name) {
-		return null;
+		return new ArrayVisitor(value -> this.attributes.put(name, value));
 	}
 
 	@Override
@@ -84,6 +92,20 @@ class MergedAnnotationMetadataVisitor<A extends Annotation> extends AnnotationVi
 		MergedAnnotation<A> annotation = MergedAnnotation.from(this.source,
 				this.annotationType, this.attributes);
 		this.consumer.accept(annotation);
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <E extends Enum<E>> E enumValue(ClassLoader classLoader,
+			String descriptor, String value) {
+
+		try {
+			String className = Type.getType(descriptor).getClassName();
+			Class<E> type = (Class<E>) ClassUtils.forName(className, classLoader);
+			return Enum.valueOf(type, value);
+		}
+		catch (ClassNotFoundException | LinkageError ex) {
+			return null;
+		}
 	}
 
 	@Nullable
@@ -107,6 +129,53 @@ class MergedAnnotationMetadataVisitor<A extends Annotation> extends AnnotationVi
 		catch (ClassNotFoundException | LinkageError ex) {
 			return null;
 		}
+	}
+
+	/**
+	 * {@link AnnotationVisitor} to deal with array attributes.
+	 */
+	private class ArrayVisitor extends AnnotationVisitor {
+
+		private final List<Object> elements = new ArrayList<>();
+
+		private final Consumer<Object[]> consumer;
+
+		ArrayVisitor(Consumer<Object[]> consumer) {
+			super(SpringAsmInfo.ASM_VERSION);
+			this.consumer = consumer;
+		}
+
+		@Override
+		public void visit(String name, Object value) {
+			if (value instanceof Type) {
+				((Type) value).getClassName();
+			}
+			this.elements.add(value);
+		}
+
+		@Override
+		public void visitEnum(String name, String descriptor, String value) {
+			Enum<?> enumValue = enumValue(classLoader, descriptor, value);
+			if (enumValue != null) {
+				elements.add(enumValue);
+			}
+		}
+
+		@Override
+		public AnnotationVisitor visitAnnotation(String name, String descriptor) {
+			return MergedAnnotationMetadataVisitor.get(classLoader, source,
+					descriptor, true, annotation -> this.elements.add(annotation));
+		}
+
+		@Override
+		public void visitEnd() {
+			Class<?> componentType = this.elements.isEmpty() ? Object.class
+					: this.elements.get(0).getClass();
+			Object[] array = (Object[]) Array.newInstance(componentType,
+					this.elements.size());
+			this.consumer.accept(this.elements.toArray(array));
+		}
+
 	}
 
 }

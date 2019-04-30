@@ -19,7 +19,9 @@ package org.springframework.core.annotation;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +69,23 @@ import org.springframework.util.ReflectionUtils;
  * @see TypeMappedAnnotations
  */
 final class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnnotation<A> {
+
+	private static final Object[] EMPTY_OBJECT_ARRAY = {};
+
+	private static final Map<Class<?>, Object> EMPTY_ARRAYS;
+	static {
+		Map<Class<?>, Object> emptyArrays = new HashMap<>();
+		emptyArrays.put(String.class, new String[] {});
+		emptyArrays.put(boolean.class, new boolean[] {});
+		emptyArrays.put(byte.class, new byte[] {});
+		emptyArrays.put(char.class, new char[] {});
+		emptyArrays.put(double.class, new double[] {});
+		emptyArrays.put(float.class, new float[] {});
+		emptyArrays.put(int.class, new int[] {});
+		emptyArrays.put(long.class, new long[] {});
+		emptyArrays.put(short.class, new short[] {});
+		EMPTY_ARRAYS = Collections.unmodifiableMap(emptyArrays);
+	}
 
 	private final AnnotationTypeMapping mapping;
 
@@ -204,7 +223,7 @@ final class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnn
 		Assert.notNull(type, "Type must not be null");
 		Assert.isAssignable(type, attribute.getReturnType(),
 				() -> "Attribute " + attributeName + " type mismatch:");
-		return (MergedAnnotation<T>) getRequiredValue(attributeIndex);
+		return (MergedAnnotation<T>) getRequiredValue(attributeIndex, attributeName);
 	}
 
 	@Override
@@ -218,7 +237,7 @@ final class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnn
 		Assert.notNull(type, "Type must not be null");
 		Assert.notNull(componentType, () -> "Attribute " + attributeName + " is not an array");
 		Assert.isAssignable(type, componentType, () -> "Attribute " + attributeName + " component type mismatch:");
-		return (MergedAnnotation<T>[]) getRequiredValue(attributeIndex);
+		return (MergedAnnotation<T>[]) getRequiredValue(attributeIndex, attributeName);
 	}
 
 	@Override
@@ -359,10 +378,11 @@ final class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnn
 		return (attributeIndex != -1 ? getValue(attributeIndex, type) : null);
 	}
 
-	private final Object getRequiredValue(int attributeIndex) {
+	private final Object getRequiredValue(int attributeIndex, String attributeName) {
 		Object value = getValue(attributeIndex, Object.class);
 		if (value == null) {
-			throw new NoSuchElementException("No element at attribute index " + attributeIndex);
+			throw new NoSuchElementException("No element at attribute index "
+					+ attributeIndex + " for name " + attributeName);
 		}
 		return value;
 	}
@@ -487,6 +507,9 @@ final class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnn
 				(attributeType == Class[].class && value instanceof String[])) {
 			return value;
 		}
+		if(attributeType.isArray() && isEmptyObjectArray(value)) {
+			return emptyArray(attributeType.getComponentType());
+		}
 		if (!attributeType.isInstance(value)) {
 			throw new IllegalStateException("Attribute '" + attribute.getName() +
 					"' in annotation " + getType().getName() + " should be compatible with " +
@@ -496,7 +519,22 @@ final class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnn
 		return value;
 	}
 
+	private boolean isEmptyObjectArray(Object value) {
+		return value instanceof Object[] && Arrays.equals((Object[]) value, EMPTY_OBJECT_ARRAY);
+	}
+
+	private Object emptyArray(Class<?> componentType) {
+		Object result = EMPTY_ARRAYS.get(componentType);
+		if (result == null) {
+			result = Array.newInstance(componentType, 0);
+		}
+		return result;
+	}
+
 	private MergedAnnotation<?> adaptToMergedAnnotation(Object value, Class<? extends Annotation> annotationType) {
+		if (value instanceof MergedAnnotation) {
+			return (MergedAnnotation<?>) value;
+		}
 		AnnotationTypeMapping mapping = AnnotationTypeMappings.forAnnotationType(annotationType).get(0);
 		return new TypeMappedAnnotation<>(mapping, this.source, value, getValueExtractor(value), this.aggregateIndex);
 	}

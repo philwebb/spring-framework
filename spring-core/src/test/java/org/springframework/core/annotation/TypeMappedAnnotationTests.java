@@ -19,6 +19,8 @@ package org.springframework.core.annotation;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Test;
 
@@ -63,6 +65,29 @@ public class TypeMappedAnnotationTests {
 				ConventionAliasMetaAnnotationTarget.class);
 		assertThat(annotation.getString("value")).isEqualTo("");
 		assertThat(annotation.getString("convention")).isEqualTo("convention");
+	}
+
+	@Test
+	public void adaptFromEmptyArrayToAnyComponentType() {
+		AttributeMethods methods = AttributeMethods.forAnnotationType(ArrayTypes.class);
+		Map<String, Object> attributes = new HashMap<>();
+		for (int i = 0; i < methods.size(); i++) {
+			attributes.put(methods.get(i).getName(), new Object[] {});
+		}
+		MergedAnnotation<ArrayTypes> annotation = TypeMappedAnnotation.from(null,
+				ArrayTypes.class, attributes);
+		assertThat(annotation.getValue("stringValue")).contains(new String[] {});
+		assertThat(annotation.getValue("byteValue")).contains(new byte[] {});
+		assertThat(annotation.getValue("shortValue")).contains(new short[] {});
+		assertThat(annotation.getValue("intValue")).contains(new int[] {});
+		assertThat(annotation.getValue("longValue")).contains(new long[] {});
+		assertThat(annotation.getValue("booleanValue")).contains(new boolean[] {});
+		assertThat(annotation.getValue("charValue")).contains(new char[] {});
+		assertThat(annotation.getValue("doubleValue")).contains(new double[] {});
+		assertThat(annotation.getValue("floatValue")).contains(new float[] {});
+		assertThat(annotation.getValue("classValue")).contains(new Class<?>[] {});
+		assertThat(annotation.getValue("annotationValue")).contains(new MergedAnnotation<?>[] {});
+		assertThat(annotation.getValue("enumValue")).contains(new ExampleEnum[] {});
 	}
 
 	private <A extends Annotation> TypeMappedAnnotation<A> getTypeMappedAnnotation(
@@ -159,5 +184,36 @@ public class TypeMappedAnnotationTests {
 	private static class WithConventionAliasToMetaAnnotation {
 
 	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	static @interface ArrayTypes {
+
+		String[] stringValue();
+
+		byte[] byteValue();
+
+		short[] shortValue();
+
+		int[] intValue();
+
+		long[] longValue();
+
+		boolean[] booleanValue();
+
+		char[] charValue();
+
+		double[] doubleValue();
+
+		float[] floatValue();
+
+		Class<?>[] classValue();
+
+		ExplicitMirror[] annotationValue();
+
+		ExampleEnum[] enumValue();
+
+	}
+
+	enum ExampleEnum {ONE,TWO,THREE}
 
 }
