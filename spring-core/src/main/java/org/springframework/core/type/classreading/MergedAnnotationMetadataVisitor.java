@@ -65,6 +65,9 @@ class MergedAnnotationMetadataVisitor<A extends Annotation> extends AnnotationVi
 
 	@Override
 	public void visit(String name, Object value) {
+		if (value instanceof Type) {
+			value = ((Type) value).getClassName();
+		}
 		this.attributes.put(name, value);
 	}
 
@@ -89,8 +92,8 @@ class MergedAnnotationMetadataVisitor<A extends Annotation> extends AnnotationVi
 
 	@Override
 	public void visitEnd() {
-		MergedAnnotation<A> annotation = MergedAnnotation.from(this.source,
-				this.annotationType, this.attributes);
+		MergedAnnotation<A> annotation = MergedAnnotation.from(this.classLoader,
+				this.source, this.annotationType, this.attributes);
 		this.consumer.accept(annotation);
 	}
 
@@ -98,14 +101,9 @@ class MergedAnnotationMetadataVisitor<A extends Annotation> extends AnnotationVi
 	private static <E extends Enum<E>> E enumValue(ClassLoader classLoader,
 			String descriptor, String value) {
 
-		try {
-			String className = Type.getType(descriptor).getClassName();
-			Class<E> type = (Class<E>) ClassUtils.forName(className, classLoader);
-			return Enum.valueOf(type, value);
-		}
-		catch (ClassNotFoundException | LinkageError ex) {
-			return null;
-		}
+		String className = Type.getType(descriptor).getClassName();
+		Class<E> type = (Class<E>) ClassUtils.resolveClassName(className, classLoader);
+		return Enum.valueOf(type, value);
 	}
 
 	@Nullable
@@ -120,15 +118,8 @@ class MergedAnnotationMetadataVisitor<A extends Annotation> extends AnnotationVi
 		if (AnnotationFilter.PLAIN.matches(typeName)) {
 			return null;
 		}
-		try {
-			Class<A> annotationType = (Class<A>) ClassUtils.forName(typeName,
-					classLoader);
-			return new MergedAnnotationMetadataVisitor<>(classLoader, source,
-					annotationType, consumer);
-		}
-		catch (ClassNotFoundException | LinkageError ex) {
-			return null;
-		}
+		Class<A> annotationType = (Class<A>) ClassUtils.resolveClassName(typeName, classLoader);
+		return new MergedAnnotationMetadataVisitor<>(classLoader, source, annotationType, consumer);
 	}
 
 	/**
@@ -148,7 +139,7 @@ class MergedAnnotationMetadataVisitor<A extends Annotation> extends AnnotationVi
 		@Override
 		public void visit(String name, Object value) {
 			if (value instanceof Type) {
-				((Type) value).getClassName();
+				value = ((Type) value).getClassName();
 			}
 			this.elements.add(value);
 		}
@@ -163,8 +154,8 @@ class MergedAnnotationMetadataVisitor<A extends Annotation> extends AnnotationVi
 
 		@Override
 		public AnnotationVisitor visitAnnotation(String name, String descriptor) {
-			return MergedAnnotationMetadataVisitor.get(classLoader, source,
-					descriptor, true, annotation -> this.elements.add(annotation));
+			return MergedAnnotationMetadataVisitor.get(classLoader, source, descriptor,
+					true, annotation -> this.elements.add(annotation));
 		}
 
 		@Override

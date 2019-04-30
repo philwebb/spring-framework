@@ -17,6 +17,8 @@
 package org.springframework.core.type.classreading;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -37,7 +39,7 @@ import static org.assertj.core.api.Assertions.*;
  */
 public class MergedAnnotationMetadataVisitorTests {
 
-	protected MergedAnnotation<?> annotation;
+	private MergedAnnotation<?> annotation;
 
 	@Test
 	public void visitWhenHasSimpleTypesCreatesAnnotation() {
@@ -109,6 +111,17 @@ public class MergedAnnotationMetadataVisitorTests {
 		assertThat(arrayValue).hasSize(2);
 		assertThat(arrayValue[0].getString(MergedAnnotation.VALUE)).isEqualTo("b");
 		assertThat(arrayValue[1].getString(MergedAnnotation.VALUE)).isEqualTo("c");
+	}
+
+	@Test
+	public void visitWhenHasClassAttributesCreatesAnnotation() {
+		loadFrom(WithClassAnnotation.class);
+		assertThat(this.annotation.getType()).isEqualTo(ClassAnnotation.class);
+		assertThat(this.annotation.getString("classValue")).isEqualTo(InputStream.class.getName());
+		assertThat(this.annotation.getClass("classValue")).isEqualTo(InputStream.class);
+		assertThat(this.annotation.getValue("classValue")).contains(InputStream.class);
+		assertThat(this.annotation.getStringArray("classArrayValue")).containsExactly(OutputStream.class.getName());
+		assertThat(this.annotation.getValue("classArrayValue")).contains(new Class<?>[] {OutputStream.class});
 	}
 
 	private void loadFrom(Class<?> type) {
@@ -232,4 +245,20 @@ public class MergedAnnotationMetadataVisitorTests {
 		String value() default "";
 
 	}
+
+	@ClassAnnotation(classValue = InputStream.class, classArrayValue = OutputStream.class)
+	static class WithClassAnnotation {
+
+	}
+
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface ClassAnnotation {
+
+		Class<?> classValue();
+
+		Class<?>[] classArrayValue();
+
+	}
+
 }
