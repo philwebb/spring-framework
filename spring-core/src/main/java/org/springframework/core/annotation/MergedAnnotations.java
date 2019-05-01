@@ -369,7 +369,7 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 		return TypeMappedAnnotations.from(source, annotations, repeatableContainers, annotationFilter);
 	}
 
-	static MergedAnnotations of(Collection<MergedAnnotation<?>> annotations) {
+	static MergedAnnotations of(Collection<MergedAnnotation<?>> directAnnotations) {
 		throw new UnsupportedOperationException();
 	}
 

@@ -24,8 +24,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.core.annotation.AnnotationFilter;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.annotation.MergedAnnotations;
+import org.springframework.core.annotation.RepeatableContainers;
+import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.lang.Nullable;
 import org.springframework.util.MultiValueMap;
 
@@ -72,7 +75,9 @@ public class StandardAnnotationMetadata extends StandardClassMetadata implements
 	public StandardAnnotationMetadata(Class<?> introspectedClass, boolean nestedAnnotationsAsMap) {
 		super(introspectedClass);
 		this.annotations = introspectedClass.getDeclaredAnnotations();
-		this.mergedAnnotations = MergedAnnotations.from(introspectedClass);
+		this.mergedAnnotations = MergedAnnotations.from(introspectedClass,
+				SearchStrategy.DIRECT, RepeatableContainers.none(),
+				AnnotationFilter.PLAIN);
 		this.nestedAnnotationsAsMap = nestedAnnotationsAsMap;
 	}
 

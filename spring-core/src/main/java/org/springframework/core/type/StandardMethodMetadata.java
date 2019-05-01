@@ -21,7 +21,10 @@ import java.lang.reflect.Modifier;
 import java.util.Map;
 
 import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.core.annotation.AnnotationFilter;
 import org.springframework.core.annotation.MergedAnnotations;
+import org.springframework.core.annotation.RepeatableContainers;
+import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
@@ -68,7 +71,9 @@ public class StandardMethodMetadata implements MethodMetadata {
 		Assert.notNull(introspectedMethod, "Method must not be null");
 		this.introspectedMethod = introspectedMethod;
 		this.nestedAnnotationsAsMap = nestedAnnotationsAsMap;
-		this.mergedAnnotations = MergedAnnotations.from(introspectedMethod);
+		this.mergedAnnotations = MergedAnnotations.from(introspectedMethod,
+				SearchStrategy.DIRECT, RepeatableContainers.none(),
+				AnnotationFilter.PLAIN);
 	}
 
 	@Override
@@ -115,7 +120,11 @@ public class StandardMethodMetadata implements MethodMetadata {
 
 	@Override
 	public boolean isOverridable() {
-		return (!isStatic() && !isFinal() && !Modifier.isPrivate(this.introspectedMethod.getModifiers()));
+		return !isStatic() && !isFinal() && !isPrivate();
+	}
+
+	private boolean isPrivate() {
+		return Modifier.isPrivate(this.introspectedMethod.getModifiers());
 	}
 
 	@Override
