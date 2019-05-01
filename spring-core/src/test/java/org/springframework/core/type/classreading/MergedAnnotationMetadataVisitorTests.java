@@ -33,7 +33,7 @@ import org.springframework.core.annotation.MergedAnnotation;
 import static org.assertj.core.api.Assertions.*;
 
 /**
- * Tests for {@link MergedAnnotationMetadataVisitor}.
+ * Tests for {@link MergedAnnotationReadingVisitor}.
  *
  * @author Phillip Webb
  */
@@ -129,8 +129,8 @@ public class MergedAnnotationMetadataVisitorTests {
 
 			@Override
 			public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-				return MergedAnnotationMetadataVisitor.get(getClass().getClassLoader(),
-						this, descriptor, visible,
+				return MergedAnnotationReadingVisitor.get(getClass().getClassLoader(),
+						null, descriptor, visible,
 						annotation -> MergedAnnotationMetadataVisitorTests.this.annotation = annotation);
 			}
 

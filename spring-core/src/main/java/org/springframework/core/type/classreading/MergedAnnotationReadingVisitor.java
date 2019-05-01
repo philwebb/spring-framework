@@ -23,6 +23,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.springframework.asm.AnnotationVisitor;
 import org.springframework.asm.SpringAsmInfo;
@@ -39,7 +40,7 @@ import org.springframework.util.ClassUtils;
  * @author Phillip Webb
  * @since 5.2
  */
-class MergedAnnotationMetadataVisitor<A extends Annotation> extends AnnotationVisitor {
+class MergedAnnotationReadingVisitor<A extends Annotation> extends AnnotationVisitor {
 
 	@Nullable
 	private final ClassLoader classLoader;
@@ -53,7 +54,7 @@ class MergedAnnotationMetadataVisitor<A extends Annotation> extends AnnotationVi
 
 	private final Map<String, Object> attributes = new LinkedHashMap<>(4);
 
-	public MergedAnnotationMetadataVisitor(ClassLoader classLoader,
+	public MergedAnnotationReadingVisitor(ClassLoader classLoader,
 			@Nullable Object source, Class<A> annotationType,
 			Consumer<MergedAnnotation<A>> consumer) {
 		super(SpringAsmInfo.ASM_VERSION);
@@ -73,16 +74,13 @@ class MergedAnnotationMetadataVisitor<A extends Annotation> extends AnnotationVi
 
 	@Override
 	public void visitEnum(String name, String descriptor, String value) {
-		Enum<?> enumValue = enumValue(this.classLoader, descriptor, value);
-		if (enumValue != null) {
-			this.attributes.put(name, enumValue);
-		}
+		visitEnum(descriptor, value, enumValue -> this.attributes.put(name, enumValue));
 	}
 
 	@Override
 	public AnnotationVisitor visitAnnotation(String name, String descriptor) {
-		return MergedAnnotationMetadataVisitor.get(this.classLoader, this.source,
-				descriptor, true, annotation -> this.attributes.put(name, annotation));
+		return visitAnnotation(descriptor,
+				annotation -> this.attributes.put(name, annotation));
 	}
 
 	@Override
@@ -98,19 +96,33 @@ class MergedAnnotationMetadataVisitor<A extends Annotation> extends AnnotationVi
 	}
 
 	@SuppressWarnings("unchecked")
-	private static <E extends Enum<E>> E enumValue(ClassLoader classLoader,
-			String descriptor, String value) {
+	public <E extends Enum<E>> void visitEnum(String descriptor, String value,
+			Consumer<E> consumer) {
 
 		String className = Type.getType(descriptor).getClassName();
 		Class<E> type = (Class<E>) ClassUtils.resolveClassName(className, classLoader);
-		return Enum.valueOf(type, value);
+		E enumValue = Enum.valueOf(type, value);
+		if (enumValue != null) {
+			consumer.accept(enumValue);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T extends Annotation> AnnotationVisitor visitAnnotation(String descriptor,
+			Consumer<MergedAnnotation<T>> consumer) {
+
+		String className = Type.getType(descriptor).getClassName();
+		Class<T> type = (Class<T>) ClassUtils.resolveClassName(className,
+				this.classLoader);
+		return new MergedAnnotationReadingVisitor<>(this.classLoader, this.source, type,
+				consumer);
 	}
 
 	@Nullable
 	@SuppressWarnings("unchecked")
-	public static <A extends Annotation> AnnotationVisitor get(
-			@Nullable ClassLoader classLoader, @Nullable Object source, String descriptor,
-			boolean visible, Consumer<MergedAnnotation<A>> consumer) {
+	static <A extends Annotation> AnnotationVisitor get(@Nullable ClassLoader classLoader,
+			@Nullable Supplier<Object> sourceSupplier, String descriptor, boolean visible,
+			Consumer<MergedAnnotation<A>> consumer) {
 		if (!visible) {
 			return null;
 		}
@@ -118,8 +130,16 @@ class MergedAnnotationMetadataVisitor<A extends Annotation> extends AnnotationVi
 		if (AnnotationFilter.PLAIN.matches(typeName)) {
 			return null;
 		}
-		Class<A> annotationType = (Class<A>) ClassUtils.resolveClassName(typeName, classLoader);
-		return new MergedAnnotationMetadataVisitor<>(classLoader, source, annotationType, consumer);
+		Object source = sourceSupplier != null ? sourceSupplier.get() : null;
+		try {
+			Class<A> annotationType = (Class<A>) ClassUtils.forName(typeName,
+					classLoader);
+			return new MergedAnnotationReadingVisitor<>(classLoader, source,
+					annotationType, consumer);
+		}
+		catch (ClassNotFoundException | LinkageError ex) {
+			return null;
+		}
 	}
 
 	/**
@@ -146,16 +166,14 @@ class MergedAnnotationMetadataVisitor<A extends Annotation> extends AnnotationVi
 
 		@Override
 		public void visitEnum(String name, String descriptor, String value) {
-			Enum<?> enumValue = enumValue(classLoader, descriptor, value);
-			if (enumValue != null) {
-				elements.add(enumValue);
-			}
+			MergedAnnotationReadingVisitor.this.visitEnum(descriptor, value,
+					enumValue -> elements.add(enumValue));
 		}
 
 		@Override
 		public AnnotationVisitor visitAnnotation(String name, String descriptor) {
-			return MergedAnnotationMetadataVisitor.get(classLoader, source, descriptor,
-					true, annotation -> this.elements.add(annotation));
+			return MergedAnnotationReadingVisitor.this.visitAnnotation(descriptor,
+					annotation -> this.elements.add(annotation));
 		}
 
 		@Override

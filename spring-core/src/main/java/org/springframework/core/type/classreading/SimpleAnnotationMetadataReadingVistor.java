@@ -16,35 +16,29 @@
 
 package org.springframework.core.type.classreading;
 
-import java.util.EnumSet;
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashSet;
-import java.util.Map;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.asm.AnnotationVisitor;
-import org.springframework.asm.Attribute;
 import org.springframework.asm.ClassVisitor;
-import org.springframework.asm.FieldVisitor;
 import org.springframework.asm.MethodVisitor;
 import org.springframework.asm.Opcodes;
 import org.springframework.asm.SpringAsmInfo;
-import org.springframework.core.annotation.AnnotationAttributes;
-import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.annotation.MergedAnnotation;
+import org.springframework.core.annotation.MergedAnnotations;
+import org.springframework.core.type.MethodMetadata;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
-import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.StringUtils;
 
 /**
  * ASM class visitor to create {@link SimpleAnnotationMetadata}.
  *
- * @author Juergen Hoeller
- * @author Mark Fisher
- * @author Costin Leau
  * @author Phillip Webb
- * @author Sam Brannen
- * @since 5.1
+ * @since 5.2
  */
 class SimpleAnnotationMetadataReadingVistor extends ClassVisitor {
 
@@ -55,17 +49,23 @@ class SimpleAnnotationMetadataReadingVistor extends ClassVisitor {
 
 	private int access;
 
-	private String enclosingClassName;
-
-	private boolean independentInnerClass;
-
 	private String superClassName;
 
 	private String[] interfaceNames;
 
+	private String enclosingClassName;
+
+	private boolean independentInnerClass;
+
 	private Set<String> memberClassNames = new LinkedHashSet<>(4);
 
-	private final Set<MethodMetadataVisitor> methodVistors = new LinkedHashSet<>(4);
+	private List<MergedAnnotation<?>> annotations = new ArrayList<>();
+
+	private Set<SimpleMethodMetadata> annotatedMethods = new LinkedHashSet<>();
+
+	private SimpleAnnotationMetadata metadata;
+
+	private Source source;
 
 	SimpleAnnotationMetadataReadingVistor(@Nullable ClassLoader classLoader) {
 		super(SpringAsmInfo.ASM_VERSION);
@@ -75,29 +75,28 @@ class SimpleAnnotationMetadataReadingVistor extends ClassVisitor {
 	@Override
 	public void visit(int version, int access, String name, String signature,
 			@Nullable String supername, String[] interfaces) {
-		this.className = ClassUtils.convertResourcePathToClassName(name);
+		this.className = toClassName(name);
 		this.access = access;
-		if (supername != null && !((access & Opcodes.ACC_INTERFACE) != 0)) {
-			this.superClassName = ClassUtils.convertResourcePathToClassName(supername);
+		if (supername != null && !isInterface(access)) {
+			this.superClassName = toClassName(supername);
 		}
 		this.interfaceNames = new String[interfaces.length];
 		for (int i = 0; i < interfaces.length; i++) {
-			this.interfaceNames[i] = ClassUtils.convertResourcePathToClassName(
-					interfaces[i]);
+			this.interfaceNames[i] = toClassName(interfaces[i]);
 		}
 	}
 
 	@Override
 	public void visitOuterClass(String owner, String name, String desc) {
-		this.enclosingClassName = ClassUtils.convertResourcePathToClassName(owner);
+		this.enclosingClassName = toClassName(owner);
 	}
 
 	@Override
 	public void visitInnerClass(String name, @Nullable String outerName, String innerName,
 			int access) {
 		if (outerName != null) {
-			String className = ClassUtils.convertResourcePathToClassName(name);
-			String outerClassName = ClassUtils.convertResourcePathToClassName(outerName);
+			String className = toClassName(name);
+			String outerClassName = toClassName(outerName);
 			if (this.className.equals(className)) {
 				this.enclosingClassName = outerClassName;
 				this.independentInnerClass = ((access & Opcodes.ACC_STATIC) != 0);
@@ -109,81 +108,90 @@ class SimpleAnnotationMetadataReadingVistor extends ClassVisitor {
 	}
 
 	@Override
-	public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
-		return MergedAnnotationMetadataVisitor.get(desc, visible);
+	public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
+		return MergedAnnotationReadingVisitor.get(classLoader, this::getSource,
+				descriptor, visible, this.annotations::add);
 	}
 
 	@Override
-	public MethodVisitor visitMethod(int access, String name, String desc,
+	public MethodVisitor visitMethod(int access, String name, String descriptor,
 			String signature, String[] exceptions) {
 		// Skip bridge methods - we're only interested in original
-		// annotation-defining
-		// user methods.
-		// On JDK 8, we'd otherwise run into double detection of the same
-		// annotated
-		// method...
-		if ((access & Opcodes.ACC_BRIDGE) != 0) {
-			return super.visitMethod(access, name, desc, signature, exceptions);
+		// annotation-defining user methods. On JDK 8, we'd otherwise run into
+		// double detection of the same annotated method...
+		if (isBridge(access)) {
+			return null;
 		}
-		return new MethodMetadataVisitor(access, name, desc);
+		return new SimpleMethodMetadataReadingVistor(this.classLoader, this.className,
+				access, name, descriptor, this.annotatedMethods::add);
 	}
 
 	@Override
 	public void visitEnd() {
+		String[] memberClassNames = StringUtils.toStringArray(this.memberClassNames);
+		Set<MethodMetadata> annotatedMethods = Collections.unmodifiableSet(
+				this.annotatedMethods);
+		MergedAnnotations annotations = MergedAnnotations.of(this.annotations);
+		this.metadata = new SimpleAnnotationMetadata(this.className, this.access,
+				this.enclosingClassName, this.superClassName, this.independentInnerClass,
+				this.interfaceNames, memberClassNames, annotatedMethods, annotations);
 	}
 
 	public SimpleAnnotationMetadata getMetadata() {
-		Set<SimpleMethodMetadata> methodMetadata = getMethodMetadata();
-		String[] memberClassNames = StringUtils.toStringArray(this.memberClassNames);
-		// return new SimpleAnnotationMetadata(this.classLoader,
-		// this.annotationAttributes,
-		// this.metaAnnotations, this.className, flags, this.enclosingClassName,
-		// this.superClassName,
-		// this.interfaceNames, memberClassNames, this.annotationTypes,
-		// methodMetadata);
-		return null;
+		return this.metadata;
 	}
 
-	private Set<SimpleMethodMetadata> getMethodMetadata() {
-		Set<SimpleMethodMetadata> methodMetadata = new LinkedHashSet<>(
-				this.methodVistors.size());
-		for (MethodMetadataVisitor methodVistor : this.methodVistors) {
-			methodMetadata.add(methodVistor.getMetadata());
+	private Source getSource() {
+		Source source = this.source;
+		if (source == null) {
+			source = new Source(this.className);
+			this.source = source;
 		}
-		return methodMetadata;
+		return source;
 	}
 
-	private class MethodMetadataVisitor extends MethodVisitor {
+	private String toClassName(String name) {
+		return ClassUtils.convertResourcePathToClassName(name);
+	}
 
-		private final int access;
+	private boolean isBridge(int access) {
+		return (access & Opcodes.ACC_BRIDGE) != 0;
+	}
 
-		private final String name;
+	private boolean isInterface(int access) {
+		return (access & Opcodes.ACC_INTERFACE) != 0;
+	}
 
-		private final String desc;
+	/**
+	 * {@link MergedAnnotation} source.
+	 */
+	private static final class Source {
 
-		private MethodMetadataVisitor(int access, String name, String desc) {
-			super(SpringAsmInfo.ASM_VERSION);
-			this.access = access;
-			this.name = name;
-			this.desc = desc;
+		private final String className;
+
+		Source(String className) {
+			this.className = className;
 		}
 
 		@Override
-		public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
-			return MergedAnnotationMetadataVisitor.get(desc, visible);
+		public int hashCode() {
+			return this.className.hashCode();
 		}
 
 		@Override
-		public void visitEnd() {
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+			if (obj == null || getClass() != obj.getClass()) {
+				return false;
+			}
+			return this.className.equals(((Source) obj).className);
 		}
 
-		public SimpleMethodMetadata getMetadata() {
-			// return new SimpleMethodMetadata(
-			// SimpleAnnotationMetadataReadingVistor.this.classLoader,
-			// this.annotationAttributes, this.metaAnnotations, this.methodName,
-			// flags,
-			// declaringClassName, returnTypeName);
-			return null;
+		@Override
+		public String toString() {
+			return this.className;
 		}
 
 	}

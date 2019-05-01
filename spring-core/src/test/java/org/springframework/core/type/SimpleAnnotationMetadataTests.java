@@ -16,11 +16,11 @@
 
 package org.springframework.core.type;
 
-import org.springframework.core.type.classreading.SimpleAnnotationMetadata;
+import org.springframework.core.type.classreading.XSimpleAnnotationMetadata;
 import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
 
 /**
- * Tests for {@link SimpleAnnotationMetadata}.
+ * Tests for {@link XSimpleAnnotationMetadata}.
  *
  * @author Phillip Webb
  */

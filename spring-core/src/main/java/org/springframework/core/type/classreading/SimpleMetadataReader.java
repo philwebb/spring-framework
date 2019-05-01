@@ -31,14 +31,14 @@ import org.springframework.lang.Nullable;
  * {@link MetadataReader} implementation based on an ASM
  * {@link org.springframework.asm.ClassReader}.
  *
- * <p>Package-visible in order to allow for repackaging the ASM library
- * without effect on users of the {@code core.type} package.
- *
  * @author Juergen Hoeller
  * @author Costin Leau
  * @since 2.5
  */
 final class SimpleMetadataReader implements MetadataReader {
+
+	private static final int PARSING_OPTIONS = ClassReader.SKIP_DEBUG
+			| ClassReader.SKIP_CODE | ClassReader.SKIP_FRAMES;
 
 	private final Resource resource;
 
@@ -47,9 +47,9 @@ final class SimpleMetadataReader implements MetadataReader {
 
 	SimpleMetadataReader(Resource resource, @Nullable ClassLoader classLoader) throws IOException {
 		SimpleAnnotationMetadataReadingVistor visitor = new SimpleAnnotationMetadataReadingVistor(classLoader);
-		getClassReader(resource).accept(visitor, ClassReader.SKIP_DEBUG | ClassReader.SKIP_CODE | ClassReader.SKIP_FRAMES);
-		this.annotationMetadata = visitor.getMetadata();
+		getClassReader(resource).accept(visitor, PARSING_OPTIONS);
 		this.resource = resource;
+		this.annotationMetadata = visitor.getMetadata();
 	}
 
 	private ClassReader getClassReader(Resource resource)
@@ -79,4 +79,5 @@ final class SimpleMetadataReader implements MetadataReader {
 	public AnnotationMetadata getAnnotationMetadata() {
 		return this.annotationMetadata;
 	}
+
 }

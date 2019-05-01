@@ -17,10 +17,10 @@
 package org.springframework.core.type;
 
 import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
-import org.springframework.core.type.classreading.SimpleMethodMetadata;
+import org.springframework.core.type.classreading.SimpleMethodMetadataReadingVistor;
 
 /**
- * Tests for {@link SimpleMethodMetadata}.
+ * Tests for {@link SimpleMethodMetadataReadingVistor}.
  *
  * @author Phillip Webb
  */

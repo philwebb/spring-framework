@@ -20,6 +20,7 @@ import java.lang.annotation.Annotation;
 import java.lang.annotation.Inherited;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -366,6 +367,10 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 			RepeatableContainers repeatableContainers, AnnotationFilter annotationFilter) {
 
 		return TypeMappedAnnotations.from(source, annotations, repeatableContainers, annotationFilter);
+	}
+
+	static MergedAnnotations of(Collection<MergedAnnotation<?>> annotations) {
+		throw new UnsupportedOperationException();
 	}
 
 

@@ -16,71 +16,41 @@
 
 package org.springframework.core.type.classreading;
 
-import java.util.EnumSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.springframework.asm.Opcodes;
-import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.core.type.MethodMetadata;
-import org.springframework.util.LinkedMultiValueMap;
 
 /**
- * {@link MethodMetadata} returned from a {@link SimpleMetadataReader}.
+ * {@link MethodMetadata} created from a
+ * {@link SimpleMethodMetadataReadingVistor}.
  *
  * @author Phillip Webb
  * @since 5.2
  */
-public class SimpleMethodMetadata implements MethodMetadata {
-
-	// FIXME make package private
+final class SimpleMethodMetadata implements MethodMetadata {
 
 	private final String methodName;
 
-	private final Set<Flag> flags;
+	private final int access;
 
 	private final String declaringClassName;
 
 	private final String returnTypeName;
 
-	SimpleMethodMetadata(ClassLoader classLoader,
-			LinkedMultiValueMap<String, AnnotationAttributes> annotationAttributes,
-			Map<String, Set<String>> metaAnnotations, String methodName, Set<Flag> flags,
-			String declaringClassName, String returnTypeName) {
+	private final MergedAnnotations annotations;
+
+	public SimpleMethodMetadata(String methodName, int access, String declaringClassName,
+			String returnTypeName, MergedAnnotations annotations) {
 		this.methodName = methodName;
-		this.flags = flags;
+		this.access = access;
 		this.declaringClassName = declaringClassName;
 		this.returnTypeName = returnTypeName;
-	}
-
-	Set<Flag> getFlags() {
-		return flags;
+		this.annotations = annotations;
 	}
 
 	@Override
 	public String getMethodName() {
 		return this.methodName;
-	}
-
-	@Override
-	public boolean isAbstract() {
-		return flags.contains(Flag.ABSTRACT);
-	}
-
-	@Override
-	public boolean isStatic() {
-		return flags.contains(Flag.STATIC);
-	}
-
-	@Override
-	public boolean isFinal() {
-		return flags.contains(Flag.FINAL);
-	}
-
-	@Override
-	public boolean isOverridable() {
-		return this.flags.contains(Flag.OVERRIDABLE);
 	}
 
 	@Override
@@ -94,34 +64,32 @@ public class SimpleMethodMetadata implements MethodMetadata {
 	}
 
 	@Override
+	public boolean isAbstract() {
+		return (this.access & Opcodes.ACC_ABSTRACT) != 0;
+	}
+
+	@Override
+	public boolean isStatic() {
+		return (this.access & Opcodes.ACC_STATIC) != 0;
+	}
+
+	@Override
+	public boolean isFinal() {
+		return (this.access & Opcodes.ACC_FINAL) != 0;
+	}
+
+	@Override
+	public boolean isOverridable() {
+		return !isStatic() && !isFinal() && !isPrivate();
+	}
+
+	public boolean isPrivate() {
+		return (this.access & Opcodes.ACC_PRIVATE) != 0;
+	}
+
+	@Override
 	public MergedAnnotations getAnnotations() {
-		// FIXME
-		return null;
+		return this.annotations;
 	}
-
-	public enum Flag {
-
-		ABSTRACT, STATIC, FINAL, OVERRIDABLE
-
-	}
-
-	private Set<SimpleMethodMetadata.Flag> getFlags() {
-		EnumSet<SimpleMethodMetadata.Flag> flags = EnumSet.noneOf(SimpleMethodMetadata.Flag.class);
-		setAccessFlag(flags, Opcodes.ACC_ABSTRACT, SimpleMethodMetadata.Flag.ABSTRACT);
-		setAccessFlag(flags, Opcodes.ACC_STATIC, SimpleMethodMetadata.Flag.STATIC);
-		setAccessFlag(flags, Opcodes.ACC_FINAL, SimpleMethodMetadata.Flag.FINAL);
-		if ((this.access & (Opcodes.ACC_STATIC | Opcodes.ACC_FINAL | Opcodes.ACC_PRIVATE)) == 0) {
-			flags.add(SimpleMethodMetadata.Flag.OVERRIDABLE);
-		}
-		return flags;
-	}
-
-	private void setAccessFlag(EnumSet<SimpleMethodMetadata.Flag> flags,
-			int accessCode, SimpleMethodMetadata.Flag flag) {
-		if ((this.access & accessCode) != 0) {
-			flags.add(flag);
-		}
-	}
-
 
 }
