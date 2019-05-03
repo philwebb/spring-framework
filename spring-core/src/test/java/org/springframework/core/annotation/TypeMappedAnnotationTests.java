@@ -76,7 +76,7 @@ public class TypeMappedAnnotationTests {
 		for (int i = 0; i < methods.size(); i++) {
 			attributes.put(methods.get(i).getName(), new Object[] {});
 		}
-		MergedAnnotation<ArrayTypes> annotation = TypeMappedAnnotation.from(null, null,
+		MergedAnnotation<ArrayTypes> annotation = TypeMappedAnnotation.of(null, null,
 				ArrayTypes.class, attributes);
 		assertThat(annotation.getValue("stringValue")).contains(new String[] {});
 		assertThat(annotation.getValue("byteValue")).contains(new byte[] {});
@@ -95,14 +95,14 @@ public class TypeMappedAnnotationTests {
 	@Test
 	public void adaptFromNestedMergedAnnotation() {
 		MergedAnnotation<Nested> nested = MergedAnnotation.from(Nested.class);
-		MergedAnnotation<?> annotation = TypeMappedAnnotation.from(null, null,
+		MergedAnnotation<?> annotation = TypeMappedAnnotation.of(null, null,
 				NestedContainer.class, Collections.singletonMap("value", nested));
 		assertThat(annotation.getAnnotation("value", Nested.class)).isSameAs(nested);
 	}
 
 	@Test
 	public void adaptFromStringToClass() {
-		MergedAnnotation<?> annotation = TypeMappedAnnotation.from(null, null,
+		MergedAnnotation<?> annotation = TypeMappedAnnotation.of(null, null,
 				ClassAttributes.class,
 				Collections.singletonMap("classValue", InputStream.class.getName()));
 		assertThat(annotation.getString("classValue")).isEqualTo(InputStream.class.getName());
@@ -111,7 +111,7 @@ public class TypeMappedAnnotationTests {
 
 	@Test
 	public void adaptFromStringArrayToClassArray() {
-		MergedAnnotation<?> annotation = TypeMappedAnnotation.from(null, null, ClassAttributes.class,
+		MergedAnnotation<?> annotation = TypeMappedAnnotation.of(null, null, ClassAttributes.class,
 				Collections.singletonMap("classArrayValue", new String[] { InputStream.class.getName() }));
 		assertThat(annotation.getStringArray("classArrayValue")).containsExactly(InputStream.class.getName());
 		assertThat(annotation.getClassArray("classArrayValue")).containsExactly(InputStream.class);

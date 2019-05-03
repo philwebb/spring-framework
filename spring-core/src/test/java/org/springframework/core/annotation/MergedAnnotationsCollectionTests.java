@@ -197,14 +197,14 @@ public class MergedAnnotationsCollectionTests {
 
 	private MergedAnnotations getDirectAndSimple() {
 		List<MergedAnnotation<?>> list = new ArrayList<>();
-		list.add(MergedAnnotation.from(null, null, Direct.class, Collections.emptyMap()));
-		list.add(MergedAnnotation.from(null, null, Simple.class, Collections.emptyMap()));
+		list.add(MergedAnnotation.of(null, null, Direct.class, Collections.emptyMap()));
+		list.add(MergedAnnotation.of(null, null, Simple.class, Collections.emptyMap()));
 		return MergedAnnotationsCollection.of(list);
 	}
 
 	private MergedAnnotations getMutiRoute1() {
 		List<MergedAnnotation<?>> list = new ArrayList<>();
-		list.add(MergedAnnotation.from(null, null, MutiRoute1.class,
+		list.add(MergedAnnotation.of(null, null, MutiRoute1.class,
 				Collections.emptyMap()));
 		return MergedAnnotationsCollection.of(list);
 	}

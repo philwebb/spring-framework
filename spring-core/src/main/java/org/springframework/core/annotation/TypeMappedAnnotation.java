@@ -624,7 +624,7 @@ final class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnn
 		return new TypeMappedAnnotation<>(mappings.get(0), null, source, annotation, ReflectionUtils::invokeMethod, 0);
 	}
 
-	static <A extends Annotation> MergedAnnotation<A> from(
+	static <A extends Annotation> MergedAnnotation<A> of(
 			@Nullable ClassLoader classLoader, @Nullable Object source,
 			Class<A> annotationType, @Nullable Map<String, ?> attributes) {
 

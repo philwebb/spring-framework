@@ -562,7 +562,7 @@ public interface MergedAnnotation<A extends Annotation> {
 	static <A extends Annotation> MergedAnnotation<A> from(
 			@Nullable Object source, Class<A> annotationType, @Nullable Map<String, ?> attributes) {
 
-		return from(null, source, annotationType, attributes);
+		return of(null, source, annotationType, attributes);
 	}
 
 	/**
@@ -577,11 +577,11 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * values should be used
 	 * @return a {@link MergedAnnotation} instance for the annotation and attributes
 	 */
-	static <A extends Annotation> MergedAnnotation<A> from(
+	static <A extends Annotation> MergedAnnotation<A> of(
 			@Nullable ClassLoader classLoader, @Nullable Object source,
 			Class<A> annotationType, @Nullable Map<String, ?> attributes) {
 
-		return TypeMappedAnnotation.from(classLoader, source, annotationType, attributes);
+		return TypeMappedAnnotation.of(classLoader, source, annotationType, attributes);
 	}
 
 
