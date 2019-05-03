@@ -577,7 +577,6 @@ public interface MergedAnnotation<A extends Annotation> {
 	 * values should be used
 	 * @return a {@link MergedAnnotation} instance for the annotation and attributes
 	 */
-	// FIXME rename to of
 	static <A extends Annotation> MergedAnnotation<A> from(
 			@Nullable ClassLoader classLoader, @Nullable Object source,
 			Class<A> annotationType, @Nullable Map<String, ?> attributes) {
