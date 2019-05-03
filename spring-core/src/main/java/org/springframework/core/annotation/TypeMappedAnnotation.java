@@ -636,12 +636,36 @@ final class TypeMappedAnnotation<A extends Annotation> extends AbstractMergedAnn
 
 	@Nullable
 	static <A extends Annotation> TypeMappedAnnotation<A> createIfPossible(
+			AnnotationTypeMapping mapping, MergedAnnotation<?> annotation, IntrospectionFailureLogger logger) {
+		if (annotation instanceof TypeMappedAnnotation) {
+			TypeMappedAnnotation<?> typeMappedAnnotation = (TypeMappedAnnotation<?>) annotation;
+			return createIfPossible(mapping, typeMappedAnnotation.source,
+					typeMappedAnnotation.rootAttributes,
+					typeMappedAnnotation.valueExtractor,
+					typeMappedAnnotation.aggregateIndex, logger);
+		}
+		return createIfPossible(mapping, annotation.getSource(), annotation.synthesize(),
+				annotation.getAggregateIndex(), logger);
+	}
+
+	@Nullable
+	static <A extends Annotation> TypeMappedAnnotation<A> createIfPossible(
 			AnnotationTypeMapping mapping, @Nullable Object source, Annotation annotation,
 			int aggregateIndex, IntrospectionFailureLogger logger) {
 
+		return createIfPossible(mapping, source, annotation,
+				ReflectionUtils::invokeMethod, aggregateIndex, logger);
+	}
+
+	@Nullable
+	static <A extends Annotation> TypeMappedAnnotation<A> createIfPossible(
+			AnnotationTypeMapping mapping, @Nullable Object source, Object rootAttribute,
+			BiFunction<Method, Object, Object> valueExtractor,
+			int aggregateIndex, IntrospectionFailureLogger logger) {
+
 		try {
-			return new TypeMappedAnnotation<>(mapping, null, source, annotation,
-					ReflectionUtils::invokeMethod, aggregateIndex);
+			return new TypeMappedAnnotation<>(mapping, null, source, rootAttribute,
+					valueExtractor, aggregateIndex);
 		}
 		catch (Exception ex) {
 			if (ex instanceof AnnotationConfigurationException) {
