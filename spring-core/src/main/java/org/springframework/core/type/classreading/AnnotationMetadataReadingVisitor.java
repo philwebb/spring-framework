@@ -86,6 +86,9 @@ public class AnnotationMetadataReadingVisitor extends ClassMetadataReadingVisito
 	@Override
 	public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
 		String className = Type.getType(desc).getClassName();
+		if (AnnotationUtils.isInJavaLangAnnotationPackage(className)) {
+			return null;
+		}
 		this.annotationSet.add(className);
 		return new AnnotationAttributesReadingVisitor(
 				className, this.attributesMap, this.metaAnnotationMap, this.classLoader);
@@ -105,11 +108,17 @@ public class AnnotationMetadataReadingVisitor extends ClassMetadataReadingVisito
 
 	@Override
 	public boolean hasAnnotation(String annotationName) {
+		if (AnnotationUtils.isInJavaLangAnnotationPackage(annotationName)) {
+			return false;
+		}
 		return this.annotationSet.contains(annotationName);
 	}
 
 	@Override
 	public boolean hasMetaAnnotation(String metaAnnotationType) {
+		if (AnnotationUtils.isInJavaLangAnnotationPackage(metaAnnotationType)) {
+			return false;
+		}
 		Collection<Set<String>> allMetaTypes = this.metaAnnotationMap.values();
 		for (Set<String> metaTypes : allMetaTypes) {
 			if (metaTypes.contains(metaAnnotationType)) {
