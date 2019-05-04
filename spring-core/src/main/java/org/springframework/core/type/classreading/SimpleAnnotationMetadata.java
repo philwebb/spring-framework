@@ -16,7 +16,6 @@
 
 package org.springframework.core.type.classreading;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -53,6 +52,8 @@ final class SimpleAnnotationMetadata implements AnnotationMetadata {
 	private final MethodMetadata[] annotatedMethods;
 
 	private final MergedAnnotations annotations;
+
+	private Set<String> annotationTypes;
 
 	SimpleAnnotationMetadata(String className, int access, String enclosingClassName,
 			String superClassName, boolean independentInnerClass, String[] interfaceNames,
@@ -113,12 +114,23 @@ final class SimpleAnnotationMetadata implements AnnotationMetadata {
 
 	@Override
 	public String[] getInterfaceNames() {
-		return this.interfaceNames;
+		return this.interfaceNames.clone();
 	}
 
 	@Override
 	public String[] getMemberClassNames() {
-		return this.memberClassNames;
+		return this.memberClassNames.clone();
+	}
+
+	@Override
+	public Set<String> getAnnotationTypes() {
+		Set<String> annotationTypes = this.annotationTypes;
+		if (annotationTypes == null) {
+			annotationTypes = Collections.unmodifiableSet(
+					AnnotationMetadata.super.getAnnotationTypes());
+			this.annotationTypes = annotationTypes;
+		}
+		return annotationTypes;
 	}
 
 	@Override
@@ -139,5 +151,7 @@ final class SimpleAnnotationMetadata implements AnnotationMetadata {
 	public MergedAnnotations getAnnotations() {
 		return this.annotations;
 	}
+
+
 
 }

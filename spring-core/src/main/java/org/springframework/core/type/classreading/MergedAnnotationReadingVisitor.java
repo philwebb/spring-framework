@@ -112,6 +112,9 @@ class MergedAnnotationReadingVisitor<A extends Annotation> extends AnnotationVis
 			Consumer<MergedAnnotation<T>> consumer) {
 
 		String className = Type.getType(descriptor).getClassName();
+		if (AnnotationFilter.PLAIN.matches(className)) {
+			return null;
+		}
 		Class<T> type = (Class<T>) ClassUtils.resolveClassName(className,
 				this.classLoader);
 		return new MergedAnnotationReadingVisitor<>(this.classLoader, this.source, type,
@@ -123,10 +126,10 @@ class MergedAnnotationReadingVisitor<A extends Annotation> extends AnnotationVis
 	static <A extends Annotation> AnnotationVisitor get(@Nullable ClassLoader classLoader,
 			@Nullable Supplier<Object> sourceSupplier, String descriptor, boolean visible,
 			Consumer<MergedAnnotation<A>> consumer) {
-		if (!visible) {
+		String typeName = Type.getType(descriptor).getClassName();
+		if (AnnotationFilter.PLAIN.matches(typeName)) {
 			return null;
 		}
-		String typeName = Type.getType(descriptor).getClassName();
 		Object source = sourceSupplier != null ? sourceSupplier.get() : null;
 		try {
 			Class<A> annotationType = (Class<A>) ClassUtils.forName(typeName,
