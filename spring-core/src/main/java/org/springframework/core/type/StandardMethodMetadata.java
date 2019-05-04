@@ -130,6 +130,9 @@ public class StandardMethodMetadata implements MethodMetadata {
 	@Override
 	@Nullable
 	public Map<String, Object> getAnnotationAttributes(String annotationName, boolean classValuesAsString) {
+		if (this.nestedAnnotationsAsMap) {
+			return MethodMetadata.super.getAnnotationAttributes(annotationName, classValuesAsString);
+		}
 		return AnnotatedElementUtils.getMergedAnnotationAttributes(this.introspectedMethod,
 				annotationName, classValuesAsString, this.nestedAnnotationsAsMap);
 	}
@@ -137,6 +140,9 @@ public class StandardMethodMetadata implements MethodMetadata {
 	@Override
 	@Nullable
 	public MultiValueMap<String, Object> getAllAnnotationAttributes(String annotationName, boolean classValuesAsString) {
+		if (this.nestedAnnotationsAsMap) {
+			return MethodMetadata.super.getAllAnnotationAttributes(annotationName, classValuesAsString);
+		}
 		return AnnotatedElementUtils.getAllAnnotationAttributes(this.introspectedMethod,
 				annotationName, classValuesAsString, this.nestedAnnotationsAsMap);
 	}
