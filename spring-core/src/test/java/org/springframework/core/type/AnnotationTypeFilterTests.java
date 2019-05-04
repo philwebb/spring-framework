@@ -17,6 +17,8 @@
 package org.springframework.core.type;
 
 import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 import org.junit.Test;
 
@@ -108,6 +110,7 @@ public class AnnotationTypeFilterTests {
 	// and interfering with ClassloadingAssertions.assertClassNotLoaded()
 
 	@Inherited
+	@Retention(RetentionPolicy.RUNTIME)
 	private @interface InheritedAnnotation {
 	}
 
@@ -132,6 +135,7 @@ public class AnnotationTypeFilterTests {
 	}
 
 
+	@Retention(RetentionPolicy.RUNTIME)
 	private @interface NonInheritedAnnotation {
 	}
 

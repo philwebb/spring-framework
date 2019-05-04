@@ -16,6 +16,9 @@
 
 package org.springframework.context.annotation.configuration.spr9031;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 import org.junit.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,5 +78,6 @@ public class Spr9031Tests {
 		@Autowired Spr9031Component scanned;
 	}
 
+	@Retention(RetentionPolicy.RUNTIME)
 	public @interface MarkerAnnotation {}
 }
