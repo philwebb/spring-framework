@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package org.springframework.core.type;
+package org.springframework.core.type.classreading;
 
+import org.springframework.core.type.AbstractMethodMetadataTests;
+import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
-import org.springframework.core.type.classreading.SimpleMethodMetadataReadingVistor;
 
 /**
- * Tests for {@link SimpleMethodMetadataReadingVistor}.
+ * Tests for {@link SimpleMethodMetadata} and
+ * {@link SimpleMethodMetadataReadingVistor}.
  *
  * @author Phillip Webb
  */

@@ -19,7 +19,6 @@ package org.springframework.core.type;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import org.springframework.core.annotation.MergedAnnotation;

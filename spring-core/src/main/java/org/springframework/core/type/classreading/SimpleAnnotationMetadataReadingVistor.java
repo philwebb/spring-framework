@@ -17,7 +17,6 @@
 package org.springframework.core.type.classreading;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -61,7 +60,7 @@ class SimpleAnnotationMetadataReadingVistor extends ClassVisitor {
 
 	private List<MergedAnnotation<?>> annotations = new ArrayList<>();
 
-	private Set<SimpleMethodMetadata> annotatedMethods = new LinkedHashSet<>();
+	private List<SimpleMethodMetadata> annotatedMethods = new ArrayList<>();
 
 	private SimpleAnnotationMetadata metadata;
 
@@ -129,8 +128,7 @@ class SimpleAnnotationMetadataReadingVistor extends ClassVisitor {
 	@Override
 	public void visitEnd() {
 		String[] memberClassNames = StringUtils.toStringArray(this.memberClassNames);
-		Set<MethodMetadata> annotatedMethods = Collections.unmodifiableSet(
-				this.annotatedMethods);
+		MethodMetadata[] annotatedMethods = this.annotatedMethods.toArray(new MethodMetadata[0]);
 		MergedAnnotations annotations = MergedAnnotations.of(this.annotations);
 		this.metadata = new SimpleAnnotationMetadata(this.className, this.access,
 				this.enclosingClassName, this.superClassName, this.independentInnerClass,

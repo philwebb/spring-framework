@@ -19,6 +19,8 @@ package org.springframework.core.type;
 import java.lang.annotation.Annotation;
 import java.util.Map;
 
+import org.springframework.core.annotation.AnnotationFilter;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.core.annotation.MergedAnnotationCollectors;
 import org.springframework.core.annotation.MergedAnnotationPredicates;
@@ -62,6 +64,9 @@ public interface AnnotatedTypeMetadata {
 	 * @return whether a matching annotation is defined
 	 */
 	default boolean isAnnotated(String annotationName) {
+		if (AnnotationUtils.isInJavaLangAnnotationPackage(annotationName)) {
+			return false;
+		}
 		return getAnnotations().isPresent(annotationName);
 	}
 

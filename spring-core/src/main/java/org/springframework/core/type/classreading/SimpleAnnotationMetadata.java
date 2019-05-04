@@ -16,6 +16,9 @@
 
 package org.springframework.core.type.classreading;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.springframework.asm.Opcodes;
@@ -47,13 +50,13 @@ final class SimpleAnnotationMetadata implements AnnotationMetadata {
 
 	private final String[] memberClassNames;
 
-	private final Set<MethodMetadata> annotatedMethods;
+	private final MethodMetadata[] annotatedMethods;
 
 	private final MergedAnnotations annotations;
 
 	SimpleAnnotationMetadata(String className, int access, String enclosingClassName,
 			String superClassName, boolean independentInnerClass, String[] interfaceNames,
-			String[] memberClassNames, Set<MethodMetadata> annotatedMethods,
+			String[] memberClassNames, MethodMetadata[] annotatedMethods,
 			MergedAnnotations annotations) {
 		this.className = className;
 		this.access = access;
@@ -120,7 +123,16 @@ final class SimpleAnnotationMetadata implements AnnotationMetadata {
 
 	@Override
 	public Set<MethodMetadata> getAnnotatedMethods(String annotationName) {
-		return this.annotatedMethods;
+		Set<MethodMetadata> annotatedMethods = null;
+		for (int i = 0; i < this.annotatedMethods.length; i++) {
+			if (this.annotatedMethods[i].isAnnotated(annotationName)) {
+				if (annotatedMethods == null) {
+					annotatedMethods = new LinkedHashSet<>(4);
+				}
+				annotatedMethods.add(this.annotatedMethods[i]);
+			}
+		}
+		return annotatedMethods != null ? annotatedMethods : Collections.emptySet();
 	}
 
 	@Override

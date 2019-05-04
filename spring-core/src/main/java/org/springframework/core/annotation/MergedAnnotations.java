@@ -369,8 +369,24 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 		return TypeMappedAnnotations.from(source, annotations, repeatableContainers, annotationFilter);
 	}
 
-	static MergedAnnotations of(Collection<MergedAnnotation<?>> directAnnotations) {
-		throw new UnsupportedOperationException();
+	/**
+	 * Create a new {@link MergedAnnotations} instance from the specified
+	 * collection of directly present annotations. This method allows a
+	 * {@link MergedAnnotations} instance to be created from annotations that
+	 * are not necessarily loaded using reflection. The provided annotations
+	 * must all be {@link MergedAnnotation#isDirectlyPresent() directly present}
+	 * and must have a {@link MergedAnnotation#getAggregateIndex() aggregate
+	 * index} of {@code 0}.
+	 * <p>
+	 * The resulting {@link MergedAnnotations} instance will contain both the
+	 * specified annotations, and any meta-annotations that can be read using
+	 * reflection.
+	 * @param annotations the annotations to include
+	 * @return a {@link MergedAnnotations} instance containing the annotations
+	 * @see MergedAnnotation#of(ClassLoader, Object, Class, java.util.Map)
+	 */
+	static MergedAnnotations of(Collection<MergedAnnotation<?>> annotations) {
+		return MergedAnnotationsCollection.of(annotations);
 	}
 
 

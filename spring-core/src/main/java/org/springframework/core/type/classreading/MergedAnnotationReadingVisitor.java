@@ -127,9 +127,6 @@ class MergedAnnotationReadingVisitor<A extends Annotation> extends AnnotationVis
 			return null;
 		}
 		String typeName = Type.getType(descriptor).getClassName();
-		if (AnnotationFilter.PLAIN.matches(typeName)) {
-			return null;
-		}
 		Object source = sourceSupplier != null ? sourceSupplier.get() : null;
 		try {
 			Class<A> annotationType = (Class<A>) ClassUtils.forName(typeName,
@@ -178,11 +175,21 @@ class MergedAnnotationReadingVisitor<A extends Annotation> extends AnnotationVis
 
 		@Override
 		public void visitEnd() {
-			Class<?> componentType = this.elements.isEmpty() ? Object.class
-					: this.elements.get(0).getClass();
+			Class<?> componentType = getComponentType();
 			Object[] array = (Object[]) Array.newInstance(componentType,
 					this.elements.size());
 			this.consumer.accept(this.elements.toArray(array));
+		}
+
+		private Class<?> getComponentType() {
+			if (this.elements.isEmpty()) {
+				return Object.class;
+			}
+			Object firstElement = this.elements.get(0);
+			if(firstElement instanceof Enum) {
+				return ((Enum<?>) firstElement).getDeclaringClass();
+			}
+			return firstElement.getClass();
 		}
 
 	}
