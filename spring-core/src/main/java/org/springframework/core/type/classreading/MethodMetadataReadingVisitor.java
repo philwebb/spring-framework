@@ -79,6 +79,9 @@ public class MethodMetadataReadingVisitor extends MethodVisitor implements Metho
 
 	@Override
 	public AnnotationVisitor visitAnnotation(final String desc, boolean visible) {
+		if (!visible) {
+			return null;
+		}
 		this.methodMetadataSet.add(this);
 		String className = Type.getType(desc).getClassName();
 		return new AnnotationAttributesReadingVisitor(

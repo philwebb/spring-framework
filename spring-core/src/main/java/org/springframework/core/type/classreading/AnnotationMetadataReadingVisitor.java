@@ -85,6 +85,9 @@ public class AnnotationMetadataReadingVisitor extends ClassMetadataReadingVisito
 
 	@Override
 	public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
+		if (!visible) {
+			return null;
+		}
 		String className = Type.getType(desc).getClassName();
 		this.annotationSet.add(className);
 		return new AnnotationAttributesReadingVisitor(
