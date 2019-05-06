@@ -106,7 +106,7 @@ abstract class ConfigurationClassUtils {
 					EventListenerFactory.class.isAssignableFrom(beanClass)) {
 				return false;
 			}
-			metadata = new StandardAnnotationMetadata(beanClass, true);
+			metadata = AnnotationMetadata.introspect(beanClass);
 		}
 		else {
 			try {

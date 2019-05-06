@@ -55,7 +55,7 @@ public class AnnotatedGenericBeanDefinition extends GenericBeanDefinition implem
 	 */
 	public AnnotatedGenericBeanDefinition(Class<?> beanClass) {
 		setBeanClass(beanClass);
-		this.metadata = new StandardAnnotationMetadata(beanClass, true);
+		this.metadata = AnnotationMetadata.introspect(beanClass);
 	}
 
 	/**
