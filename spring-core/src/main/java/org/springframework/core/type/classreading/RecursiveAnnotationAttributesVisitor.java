@@ -28,6 +28,7 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 3.1.1
  */
+@Deprecated
 class RecursiveAnnotationAttributesVisitor extends AbstractRecursiveAnnotationVisitor {
 
 	protected final String annotationType;

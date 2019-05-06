@@ -39,6 +39,7 @@ import org.springframework.util.ReflectionUtils;
  * @author Sam Brannen
  * @since 3.1.1
  */
+@Deprecated
 abstract class AbstractRecursiveAnnotationVisitor extends AnnotationVisitor {
 
 	protected final Log logger = LogFactory.getLog(getClass());

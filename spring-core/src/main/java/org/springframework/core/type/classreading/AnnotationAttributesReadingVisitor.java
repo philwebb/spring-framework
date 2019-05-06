@@ -42,6 +42,7 @@ import org.springframework.util.ObjectUtils;
  * @author Sam Brannen
  * @since 3.0
  */
+@Deprecated
 final class AnnotationAttributesReadingVisitor extends RecursiveAnnotationAttributesVisitor {
 
 	private final MultiValueMap<String, AnnotationAttributes> attributesMap;
