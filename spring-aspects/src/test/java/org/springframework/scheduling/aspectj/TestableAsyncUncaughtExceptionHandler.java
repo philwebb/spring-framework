@@ -69,12 +69,12 @@ class TestableAsyncUncaughtExceptionHandler
 		try {
 			this.latch.await(timeout, TimeUnit.MILLISECONDS);
 		}
-		catch (Exception e) {
+		catch (Exception ex) {
 			Thread.currentThread().interrupt();
 		}
 	}
 
-	private static class UncaughtExceptionDescriptor {
+	private static final class UncaughtExceptionDescriptor {
 		private final Throwable ex;
 
 		private final Method method;

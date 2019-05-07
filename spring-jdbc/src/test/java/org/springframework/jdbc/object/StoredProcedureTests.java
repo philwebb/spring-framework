@@ -165,8 +165,6 @@ public class StoredProcedureTests {
 	/**
 	 * Confirm no connection was used to get metadata. Does not use superclass replay
 	 * mechanism.
-	 *
-	 * @throws Exception
 	 */
 	@Test
 	public void testStoredProcedureConfiguredViaJdbcTemplateWithCustomExceptionTranslator()
@@ -204,8 +202,6 @@ public class StoredProcedureTests {
 
 	/**
 	 * Confirm our JdbcTemplate is used
-	 *
-	 * @throws Exception
 	 */
 	@Test
 	public void testStoredProcedureConfiguredViaJdbcTemplate() throws Exception {

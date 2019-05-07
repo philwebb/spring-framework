@@ -251,7 +251,9 @@ public class PropertySourcesPlaceholderConfigurerTests {
 		PropertySourcesPlaceholderConfigurer ppc = new PropertySourcesPlaceholderConfigurer();
 
 		ppc.setLocalOverride(override);
-		ppc.setProperties(new Properties() {{ setProperty("foo", "local"); }});
+		ppc.setProperties(new Properties() {{
+				setProperty("foo", "local");
+		}});
 		ppc.setEnvironment(new MockEnvironment().withProperty("foo", "enclosing"));
 		ppc.postProcessBeanFactory(bf);
 		if (override) {

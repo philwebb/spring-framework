@@ -181,11 +181,11 @@ public class TransactionAspectTests {
 		try {
 			toc.performTransactionalOperation();
 		}
-		catch (Throwable t) {
+		catch (Throwable ex) {
 			if (expected == null) {
 				fail("Expected " + expected);
 			}
-			assertSame(expected, t);
+			assertSame(expected, ex);
 		}
 		finally {
 			assertEquals(0, txManager.begun);

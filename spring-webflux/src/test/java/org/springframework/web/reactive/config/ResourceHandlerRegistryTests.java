@@ -123,7 +123,7 @@ public class ResourceHandlerRegistryTests {
 		this.registry.setResourceUrlProvider(resourceUrlProvider);
 		ResourceResolver mockResolver = Mockito.mock(ResourceResolver.class);
 		ResourceTransformerSupport mockTransformer = Mockito.mock(ResourceTransformerSupport.class);
-		
+
 		this.registration.resourceChain(true).addResolver(mockResolver).addTransformer(mockTransformer);
 
 		ResourceWebHandler handler = getHandler("/resources/**");

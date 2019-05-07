@@ -137,7 +137,8 @@ public class NestedRouteIntegrationTests extends AbstractRouterFunctionIntegrati
 			Flux<String> responseBody;
 			if (!pattern.isEmpty()) {
 				responseBody = Flux.just(pattern, "\n", pathVariables.toString());
-			} else {
+			}
+			else {
 				responseBody = Flux.just(pathVariables.toString());
 			}
 			return ServerResponse.ok().body(responseBody, String.class);

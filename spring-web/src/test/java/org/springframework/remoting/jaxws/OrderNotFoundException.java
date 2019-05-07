@@ -25,10 +25,11 @@ import javax.xml.ws.WebFault;
 @SuppressWarnings("serial")
 public class OrderNotFoundException extends Exception {
 
-	private String faultInfo;
+	private final String faultInfo;
 
 	public OrderNotFoundException(String message) {
 		super(message);
+		this.faultInfo = null;
 	}
 
 	public OrderNotFoundException(String message, String faultInfo) {

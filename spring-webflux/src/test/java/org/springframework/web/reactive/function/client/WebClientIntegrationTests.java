@@ -730,9 +730,9 @@ public class WebClientIntegrationTests {
 				.exchange()
 				.flatMap(response -> response.toEntity(Void.class));
 
-		StepVerifier.create(result).assertNext(r -> {
-			assertTrue(r.getStatusCode().is2xxSuccessful());
-		}).verifyComplete();
+		StepVerifier.create(result).assertNext(r ->
+			assertTrue(r.getStatusCode().is2xxSuccessful())
+		).verifyComplete();
 	}
 
 	@Test  // SPR-15782

@@ -109,12 +109,12 @@ public class RouterFunctionTests {
 
 		StepVerifier.create(responseMono)
 				.consumeNextWith(
-						serverResponse -> {
+						serverResponse ->
 							StepVerifier.create(serverResponse.entity())
 									.expectNext(42)
 									.expectComplete()
-									.verify();
-						})
+									.verify()
+						)
 				.expectComplete()
 				.verify();
 	}

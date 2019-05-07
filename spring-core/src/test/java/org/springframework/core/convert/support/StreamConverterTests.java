@@ -130,7 +130,7 @@ public class StreamConverterTests {
 		assertTrue("Converted object must be a stream", result instanceof Stream);
 		@SuppressWarnings("unchecked")
 		Stream<Integer> content = (Stream<Integer>) result;
-		assertEquals(6, content.mapToInt((x) -> x).sum());
+		assertEquals(6, content.mapToInt(x -> x).sum());
 	}
 
 	@Test

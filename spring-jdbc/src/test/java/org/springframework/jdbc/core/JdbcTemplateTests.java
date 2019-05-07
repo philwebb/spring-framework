@@ -172,9 +172,8 @@ public class JdbcTemplateTests {
 	@Test
 	public void testStringsWithPreparedStatementSetter() throws Exception {
 		final Integer argument = 99;
-		doTestStrings(null, null, null, argument, (template, sql, rch) -> template.query(sql, ps -> {
-			ps.setObject(1, argument);
-		}, rch));
+		doTestStrings(null, null, null, argument, (template, sql, rch) ->
+			template.query(sql, ps -> ps.setObject(1, argument), rch));
 	}
 
 	@Test
@@ -924,9 +923,8 @@ public class JdbcTemplateTests {
 		this.thrown.expect(SQLWarningException.class);
 		this.thrown.expect(exceptionCause(sameInstance(warnings)));
 		try {
-			t.query(sql, rs -> {
-				rs.getByte(1);
-			});
+			ResultSetExtractor<Byte> extractor = rs -> rs.getByte(1);
+			t.query(sql, extractor);
 		}
 		finally {
 			verify(this.resultSet).close();
@@ -947,9 +945,8 @@ public class JdbcTemplateTests {
 		// Too long: truncation
 
 		this.template.setIgnoreWarnings(true);
-		this.template.query(sql, rs -> {
-			rs.getByte(1);
-		});
+		RowCallbackHandler rch = rs -> rs.getByte(1);
+		this.template.query(sql, rch);
 
 		verify(this.resultSet).close();
 		verify(this.preparedStatement).close();

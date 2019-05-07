@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- package org.springframework.expression.spel.testresources;
+
+package org.springframework.expression.spel.testresources;
 
 /**
  * Hold the various kinds of primitive array for access through the test evaluation context.
@@ -21,6 +22,7 @@
  * @author Andy Clement
  */
 public class ArrayContainer {
+
 	public int[] ints = new int[3];
 	public long[] longs = new long[3];
 	public double[] doubles = new double[3];

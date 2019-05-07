@@ -35,9 +35,9 @@ public class FastByteArrayOutputStreamTests {
 
 	private static final int INITIAL_CAPACITY = 256;
 
-	private final FastByteArrayOutputStream os = new FastByteArrayOutputStream(INITIAL_CAPACITY);;
+	private final FastByteArrayOutputStream os = new FastByteArrayOutputStream(INITIAL_CAPACITY);
 
-	private final byte[] helloBytes = "Hello World".getBytes(StandardCharsets.UTF_8);;
+	private final byte[] helloBytes = "Hello World".getBytes(StandardCharsets.UTF_8);
 
 
 	@Test

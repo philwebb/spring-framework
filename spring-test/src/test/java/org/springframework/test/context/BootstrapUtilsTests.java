@@ -155,12 +155,12 @@ public class BootstrapUtilsTests {
 	@BootWithFoo
 	@BootWithFooAgain
 	static class DuplicateMetaAnnotatedBootstrapWithAnnotationClass {}
-	
+
 	@BootWithFoo
 	@BootWithBar
 	@BootstrapWith(EnigmaBootstrapper.class)
 	static class LocalDeclarationAndMetaAnnotatedBootstrapWithAnnotationClass {}
-	
+
 	@WebAppConfiguration
 	static class WebAppConfigurationAnnotatedClass {}
 

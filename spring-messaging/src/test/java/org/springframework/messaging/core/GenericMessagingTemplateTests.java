@@ -132,9 +132,7 @@ public class GenericMessagingTemplateTests {
 		SubscribableChannel channel = mock(SubscribableChannel.class);
 		MessageHandler handler = createLateReplier(latch, failure);
 		doAnswer(invocation -> {
-			this.executor.execute(() -> {
-				handler.handleMessage(invocation.getArgument(0));
-			});
+			this.executor.execute(() -> handler.handleMessage(invocation.getArgument(0)));
 			return true;
 		}).when(channel).send(any(Message.class), anyLong());
 
@@ -160,9 +158,7 @@ public class GenericMessagingTemplateTests {
 		SubscribableChannel channel = mock(SubscribableChannel.class);
 		MessageHandler handler = createLateReplier(latch, failure);
 		doAnswer(invocation -> {
-			this.executor.execute(() -> {
-				handler.handleMessage(invocation.getArgument(0));
-			});
+			this.executor.execute(() -> handler.handleMessage(invocation.getArgument(0)));
 			return true;
 		}).when(channel).send(any(Message.class), anyLong());
 
@@ -194,9 +190,7 @@ public class GenericMessagingTemplateTests {
 		SubscribableChannel channel = mock(SubscribableChannel.class);
 		MessageHandler handler = createLateReplier(latch, failure);
 		doAnswer(invocation -> {
-			this.executor.execute(() -> {
-				handler.handleMessage(invocation.getArgument(0));
-			});
+			this.executor.execute(() -> handler.handleMessage(invocation.getArgument(0)));
 			return true;
 		}).when(channel).send(any(Message.class), anyLong());
 

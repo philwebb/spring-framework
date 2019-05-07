@@ -435,8 +435,8 @@ public class BodyExtractorsTests {
 					try {
 						buffer.release();
 						Assert.fail("releasing the buffer should have failed");
-					} catch (IllegalReferenceCountException exc) {
-
+					}
+					catch (IllegalReferenceCountException exc) {
 					}
 					body.assertCancelled();
 				}).verify();

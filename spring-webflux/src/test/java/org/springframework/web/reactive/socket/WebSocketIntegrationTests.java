@@ -129,9 +129,9 @@ public class WebSocketIntegrationTests extends AbstractWebSocketIntegrationTests
 					return session.receive()
 							.doOnNext(s -> logger.debug("inbound " + s))
 							.then()
-							.doFinally(signalType -> {
-								logger.debug("Completed with: " + signalType);
-							});
+							.doFinally(signalType ->
+								logger.debug("Completed with: " + signalType)
+							);
 				})
 				.block(TIMEOUT);
 	}

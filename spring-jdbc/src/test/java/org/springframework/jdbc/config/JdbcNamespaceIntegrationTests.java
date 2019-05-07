@@ -77,25 +77,24 @@ public class JdbcNamespaceIntegrationTests {
 	@Test
 	public void createWithAnonymousDataSourceAndDefaultDatabaseName() throws Exception {
 		assertCorrectSetupForSingleDataSource("jdbc-config-db-name-default-and-anonymous-datasource.xml",
-			(url) -> url.endsWith(DEFAULT_DATABASE_NAME));
+			url -> url.endsWith(DEFAULT_DATABASE_NAME));
 	}
 
 	@Test
 	public void createWithImplicitDatabaseName() throws Exception {
-		assertCorrectSetupForSingleDataSource("jdbc-config-db-name-implicit.xml", (url) -> url.endsWith("dataSource"));
+		assertCorrectSetupForSingleDataSource("jdbc-config-db-name-implicit.xml", url -> url.endsWith("dataSource"));
 	}
 
 	@Test
 	public void createWithExplicitDatabaseName() throws Exception {
-		assertCorrectSetupForSingleDataSource("jdbc-config-db-name-explicit.xml", (url) -> url.endsWith("customDbName"));
+		assertCorrectSetupForSingleDataSource("jdbc-config-db-name-explicit.xml", url -> url.endsWith("customDbName"));
 	}
 
 	@Test
 	public void createWithGeneratedDatabaseName() throws Exception {
-		Predicate<String> urlPredicate = (url) -> url.startsWith("jdbc:hsqldb:mem:");
-		urlPredicate.and((url) -> !url.endsWith("dataSource"));
-		urlPredicate.and((url) -> !url.endsWith("shouldBeOverriddenByGeneratedName"));
-
+		Predicate<String> urlPredicate = url -> url.startsWith("jdbc:hsqldb:mem:");
+		urlPredicate.and(url -> !url.endsWith("dataSource"));
+		urlPredicate.and(url -> !url.endsWith("shouldBeOverriddenByGeneratedName"));
 		assertCorrectSetupForSingleDataSource("jdbc-config-db-name-generated.xml", urlPredicate);
 	}
 

@@ -247,7 +247,8 @@ public class DefaultClientResponseTests {
 		try {
 			result.getStatusCode();
 			fail("Expected IllegalArgumentException");
-		} catch (IllegalArgumentException ex) {
+		}
+		catch (IllegalArgumentException ex) {
 			// do nothing
 		}
 		assertEquals(999, result.getStatusCodeValue());
@@ -317,7 +318,8 @@ public class DefaultClientResponseTests {
 		try {
 			result.getStatusCode();
 			fail("Expected IllegalArgumentException");
-		} catch (IllegalArgumentException ex) {
+		}
+		catch (IllegalArgumentException ex) {
 			// do nothing
 		}
 		assertEquals(999, result.getStatusCodeValue());

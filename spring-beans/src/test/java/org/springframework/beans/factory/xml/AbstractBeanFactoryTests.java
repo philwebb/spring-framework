@@ -232,7 +232,6 @@ public abstract class AbstractBeanFactoryTests {
 	/**
 	 * Check that we can get the factory bean itself.
 	 * This is only possible if we're dealing with a factory
-	 * @throws Exception
 	 */
 	@Test
 	public void getFactoryItself() throws Exception {
@@ -241,7 +240,6 @@ public abstract class AbstractBeanFactoryTests {
 
 	/**
 	 * Check that afterPropertiesSet gets called on factory
-	 * @throws Exception
 	 */
 	@Test
 	public void factoryIsInitialized() throws Exception {

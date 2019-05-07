@@ -257,12 +257,12 @@ public class MissingMergedAnnotationTests {
 	@Test
 	public void synthesizeWithPredicateWhenPredicateMatchesThrowsNoSuchElementException() {
 		assertThatNoSuchElementException().isThrownBy(
-				() -> this.missing.synthesize((annotation) -> true));
+				() -> this.missing.synthesize(annotation -> true));
 	}
 
 	@Test
 	public void synthesizeWithPredicateWhenPredicateDoesNotMatchReturnsEmpty() {
-		assertThat(this.missing.synthesize((annotation) -> false)).isEmpty();
+		assertThat(this.missing.synthesize(annotation -> false)).isEmpty();
 	}
 
 	@Test

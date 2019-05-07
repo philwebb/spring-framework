@@ -105,7 +105,7 @@ public class ServletServerHttpRequestTests {
 		mockRequest.setRequestURI(uri.getRawPath());
 		mockRequest.setQueryString(uri.getRawQuery());
 		assertEquals(uri, request.getURI());
-    }
+	}
 
 	@Test
 	public void getHeaders() {
