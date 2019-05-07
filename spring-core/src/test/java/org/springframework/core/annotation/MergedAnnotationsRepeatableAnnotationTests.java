@@ -47,7 +47,7 @@ public class MergedAnnotationsRepeatableAnnotationTests {
 	// See SPR-13973
 
 	@Rule
-	public ExpectedException exception = ExpectedException.none();
+	public ExpectedException thrown = ExpectedException.none();
 
 	@Test
 	public void inheritedAnnotationsWhenNonRepeatableThrowsException() {

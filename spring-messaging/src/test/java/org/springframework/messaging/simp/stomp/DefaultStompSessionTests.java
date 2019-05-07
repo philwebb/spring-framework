@@ -74,7 +74,7 @@ public class DefaultStompSessionTests {
 	private ArgumentCaptor<Message<byte[]>> messageCaptor;
 
 	@Rule
-	public ExpectedException expected = ExpectedException.none();
+	public ExpectedException thrown = ExpectedException.none();
 
 
 	@Before
@@ -400,7 +400,7 @@ public class DefaultStompSessionTests {
 		stompHeaders.setContentType(MimeTypeUtils.APPLICATION_JSON);
 		String payload = "{'foo':'bar'}";
 
-		this.expected.expect(MessageConversionException.class);
+		this.thrown.expect(MessageConversionException.class);
 		this.session.send(stompHeaders, payload);
 		verifyNoMoreInteractions(this.connection);
 	}
@@ -415,8 +415,8 @@ public class DefaultStompSessionTests {
 		future.setException(exception);
 
 		when(this.connection.send(any())).thenReturn(future);
-		this.expected.expect(MessageDeliveryException.class);
-		this.expected.expectCause(Matchers.sameInstance(exception));
+		this.thrown.expect(MessageDeliveryException.class);
+		this.thrown.expectCause(Matchers.sameInstance(exception));
 
 		this.session.send("/topic/foo", "sample payload".getBytes(StandardCharsets.UTF_8));
 

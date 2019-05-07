@@ -39,7 +39,7 @@ public class AnnotationConfigContextLoaderTests {
 	private static final Class<?>[] EMPTY_CLASS_ARRAY = new Class<?>[0];
 
 	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
+	public ExpectedException thrown = ExpectedException.none();
 
 
 	/**
@@ -47,8 +47,8 @@ public class AnnotationConfigContextLoaderTests {
 	 */
 	@Test
 	public void configMustNotContainLocations() throws Exception {
-		expectedException.expect(IllegalStateException.class);
-		expectedException.expectMessage(containsString("does not support resource locations"));
+		thrown.expect(IllegalStateException.class);
+		thrown.expectMessage(containsString("does not support resource locations"));
 
 		MergedContextConfiguration mergedConfig = new MergedContextConfiguration(getClass(),
 			new String[] { "config.xml" }, EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, contextLoader);

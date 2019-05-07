@@ -53,7 +53,7 @@ import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseFacto
 public class JdbcNamespaceIntegrationTests {
 
 	@Rule
-	public ExpectedException expected = ExpectedException.none();
+	public ExpectedException thrown = ExpectedException.none();
 
 
 	@Test
@@ -116,7 +116,7 @@ public class JdbcNamespaceIntegrationTests {
 			JdbcTemplate template = new JdbcTemplate(dataSource);
 			assertNumRowsInTestTable(template, 1);
 			context.getBean(DataSourceInitializer.class).destroy();
-			expected.expect(BadSqlGrammarException.class); // Table has been dropped
+			thrown.expect(BadSqlGrammarException.class); // Table has been dropped
 			assertNumRowsInTestTable(template, 1);
 		}
 		finally {
@@ -132,7 +132,7 @@ public class JdbcNamespaceIntegrationTests {
 			JdbcTemplate template = new JdbcTemplate(dataSource);
 			assertNumRowsInTestTable(template, 1);
 			context.getBean(EmbeddedDatabaseFactoryBean.class).destroy();
-			expected.expect(BadSqlGrammarException.class); // Table has been dropped
+			thrown.expect(BadSqlGrammarException.class); // Table has been dropped
 			assertNumRowsInTestTable(template, 1);
 		}
 		finally {
@@ -148,7 +148,7 @@ public class JdbcNamespaceIntegrationTests {
 			JdbcTemplate template = new JdbcTemplate(dataSource);
 			assertNumRowsInTestTable(template, 1);
 			context.getBean(EmbeddedDatabaseFactoryBean.class).destroy();
-			expected.expect(BadSqlGrammarException.class); // Table has been dropped
+			thrown.expect(BadSqlGrammarException.class); // Table has been dropped
 			assertNumRowsInTestTable(template, 1);
 		}
 		finally {

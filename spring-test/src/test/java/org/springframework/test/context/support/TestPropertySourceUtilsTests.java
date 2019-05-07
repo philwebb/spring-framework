@@ -55,22 +55,22 @@ public class TestPropertySourceUtilsTests {
 
 
 	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
+	public ExpectedException thrown = ExpectedException.none();
 
 
 	@Test
 	public void emptyAnnotation() {
-		expectedException.expect(IllegalStateException.class);
-		expectedException.expectMessage(startsWith("Could not detect default properties file for test"));
-		expectedException.expectMessage(containsString("EmptyPropertySources.properties"));
+		thrown.expect(IllegalStateException.class);
+		thrown.expectMessage(startsWith("Could not detect default properties file for test"));
+		thrown.expectMessage(containsString("EmptyPropertySources.properties"));
 		buildMergedTestPropertySources(EmptyPropertySources.class);
 	}
 
 	@Test
 	public void extendedEmptyAnnotation() {
-		expectedException.expect(IllegalStateException.class);
-		expectedException.expectMessage(startsWith("Could not detect default properties file for test"));
-		expectedException.expectMessage(containsString("ExtendedEmptyPropertySources.properties"));
+		thrown.expect(IllegalStateException.class);
+		thrown.expectMessage(startsWith("Could not detect default properties file for test"));
+		thrown.expectMessage(containsString("ExtendedEmptyPropertySources.properties"));
 		buildMergedTestPropertySources(ExtendedEmptyPropertySources.class);
 	}
 
@@ -82,7 +82,7 @@ public class TestPropertySourceUtilsTests {
 
 	@Test
 	public void locationsAndValueAttributes() {
-		expectedException.expect(AnnotationConfigurationException.class);
+		thrown.expect(AnnotationConfigurationException.class);
 		buildMergedTestPropertySources(LocationsAndValuePropertySources.class);
 	}
 
@@ -126,29 +126,29 @@ public class TestPropertySourceUtilsTests {
 
 	@Test
 	public void addPropertiesFilesToEnvironmentWithNullContext() {
-		expectedException.expect(IllegalArgumentException.class);
-		expectedException.expectMessage("must not be null");
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("must not be null");
 		addPropertiesFilesToEnvironment((ConfigurableApplicationContext) null, FOO_LOCATIONS);
 	}
 
 	@Test
 	public void addPropertiesFilesToEnvironmentWithContextAndNullLocations() {
-		expectedException.expect(IllegalArgumentException.class);
-		expectedException.expectMessage("must not be null");
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("must not be null");
 		addPropertiesFilesToEnvironment(mock(ConfigurableApplicationContext.class), (String[]) null);
 	}
 
 	@Test
 	public void addPropertiesFilesToEnvironmentWithNullEnvironment() {
-		expectedException.expect(IllegalArgumentException.class);
-		expectedException.expectMessage("must not be null");
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("must not be null");
 		addPropertiesFilesToEnvironment((ConfigurableEnvironment) null, mock(ResourceLoader.class), FOO_LOCATIONS);
 	}
 
 	@Test
 	public void addPropertiesFilesToEnvironmentWithEnvironmentAndNullLocations() {
-		expectedException.expect(IllegalArgumentException.class);
-		expectedException.expectMessage("must not be null");
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("must not be null");
 		addPropertiesFilesToEnvironment(new MockEnvironment(), mock(ResourceLoader.class), (String[]) null);
 	}
 
@@ -172,43 +172,43 @@ public class TestPropertySourceUtilsTests {
 
 	@Test
 	public void addInlinedPropertiesToEnvironmentWithNullContext() {
-		expectedException.expect(IllegalArgumentException.class);
-		expectedException.expectMessage("context");
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("context");
 		addInlinedPropertiesToEnvironment((ConfigurableApplicationContext) null, KEY_VALUE_PAIR);
 	}
 
 	@Test
 	public void addInlinedPropertiesToEnvironmentWithContextAndNullInlinedProperties() {
-		expectedException.expect(IllegalArgumentException.class);
-		expectedException.expectMessage("inlined");
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("inlined");
 		addInlinedPropertiesToEnvironment(mock(ConfigurableApplicationContext.class), (String[]) null);
 	}
 
 	@Test
 	public void addInlinedPropertiesToEnvironmentWithNullEnvironment() {
-		expectedException.expect(IllegalArgumentException.class);
-		expectedException.expectMessage("environment");
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("environment");
 		addInlinedPropertiesToEnvironment((ConfigurableEnvironment) null, KEY_VALUE_PAIR);
 	}
 
 	@Test
 	public void addInlinedPropertiesToEnvironmentWithEnvironmentAndNullInlinedProperties() {
-		expectedException.expect(IllegalArgumentException.class);
-		expectedException.expectMessage("inlined");
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("inlined");
 		addInlinedPropertiesToEnvironment(new MockEnvironment(), (String[]) null);
 	}
 
 	@Test
 	public void addInlinedPropertiesToEnvironmentWithMalformedUnicodeInValue() {
-		expectedException.expect(IllegalStateException.class);
-		expectedException.expectMessage("Failed to load test environment property");
+		thrown.expect(IllegalStateException.class);
+		thrown.expectMessage("Failed to load test environment property");
 		addInlinedPropertiesToEnvironment(new MockEnvironment(), asArray("key = \\uZZZZ"));
 	}
 
 	@Test
 	public void addInlinedPropertiesToEnvironmentWithMultipleKeyValuePairsInSingleInlinedProperty() {
-		expectedException.expect(IllegalStateException.class);
-		expectedException.expectMessage("Failed to load exactly one test environment property");
+		thrown.expect(IllegalStateException.class);
+		thrown.expectMessage("Failed to load exactly one test environment property");
 		addInlinedPropertiesToEnvironment(new MockEnvironment(), asArray("a=b\nx=y"));
 	}
 
@@ -226,8 +226,8 @@ public class TestPropertySourceUtilsTests {
 
 	@Test
 	public void convertInlinedPropertiesToMapWithNullInlinedProperties() {
-		expectedException.expect(IllegalArgumentException.class);
-		expectedException.expectMessage("inlined");
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("inlined");
 		convertInlinedPropertiesToMap((String[]) null);
 	}
 

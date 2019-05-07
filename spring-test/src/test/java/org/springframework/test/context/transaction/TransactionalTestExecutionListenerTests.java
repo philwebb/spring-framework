@@ -60,7 +60,7 @@ public class TransactionalTestExecutionListenerTests {
 	private final TestContext testContext = mock(TestContext.class);
 
 	@Rule
-	public ExpectedException exception = ExpectedException.none();
+	public ExpectedException thrown = ExpectedException.none();
 
 
 	@After

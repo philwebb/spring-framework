@@ -51,7 +51,7 @@ public class WebConnectionHtmlUnitDriverTests {
 	private WebConnection connection;
 
 	@Rule
-	public ExpectedException exception = ExpectedException.none();
+	public ExpectedException thrown = ExpectedException.none();
 
 	@Before
 	public void setup() throws Exception {
@@ -66,7 +66,7 @@ public class WebConnectionHtmlUnitDriverTests {
 
 	@Test
 	public void setWebConnectionToNull() {
-		this.exception.expect(IllegalArgumentException.class);
+		this.thrown.expect(IllegalArgumentException.class);
 		this.driver.setWebConnection(null);
 	}
 
@@ -75,7 +75,7 @@ public class WebConnectionHtmlUnitDriverTests {
 		this.driver.setWebConnection(this.connection);
 		assertThat(this.driver.getWebConnection(), equalTo(this.connection));
 
-		this.exception.expect(WebDriverException.class);
+		this.thrown.expect(WebDriverException.class);
 		this.driver.get("https://example.com");
 	}
 

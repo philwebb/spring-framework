@@ -72,7 +72,7 @@ public class CrossOriginTests {
 	private final MockHttpServletRequest request = new MockHttpServletRequest();
 
 	@Rule
-	public ExpectedException exception = ExpectedException.none();
+	public ExpectedException thrown = ExpectedException.none();
 
 
 	@Before
@@ -172,9 +172,9 @@ public class CrossOriginTests {
 
 	@Test
 	public void bogusAllowCredentialsValue() throws Exception {
-		exception.expect(IllegalStateException.class);
-		exception.expectMessage(containsString("@CrossOrigin's allowCredentials"));
-		exception.expectMessage(containsString("current value is [bogus]"));
+		thrown.expect(IllegalStateException.class);
+		thrown.expectMessage(containsString("@CrossOrigin's allowCredentials"));
+		thrown.expectMessage(containsString("current value is [bogus]"));
 		this.handlerMapping.registerHandler(new MethodLevelControllerWithBogusAllowCredentialsValue());
 	}
 

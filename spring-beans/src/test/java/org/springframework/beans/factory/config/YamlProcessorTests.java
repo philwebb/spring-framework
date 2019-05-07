@@ -40,7 +40,7 @@ public class YamlProcessorTests {
 	private final YamlProcessor processor = new YamlProcessor() {};
 
 	@Rule
-	public ExpectedException exception = ExpectedException.none();
+	public ExpectedException thrown = ExpectedException.none();
 
 
 	@Test
@@ -68,16 +68,16 @@ public class YamlProcessorTests {
 	@Test
 	public void testBadDocumentStart() {
 		this.processor.setResources(new ByteArrayResource("foo # a document\nbar: baz".getBytes()));
-		this.exception.expect(ParserException.class);
-		this.exception.expectMessage("line 2, column 1");
+		this.thrown.expect(ParserException.class);
+		this.thrown.expectMessage("line 2, column 1");
 		this.processor.process((properties, map) -> {});
 	}
 
 	@Test
 	public void testBadResource() {
 		this.processor.setResources(new ByteArrayResource("foo: bar\ncd\nspam:\n  foo: baz".getBytes()));
-		this.exception.expect(ScannerException.class);
-		this.exception.expectMessage("line 3, column 1");
+		this.thrown.expect(ScannerException.class);
+		this.thrown.expectMessage("line 3, column 1");
 		this.processor.process((properties, map) -> {});
 	}
 

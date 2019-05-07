@@ -46,7 +46,7 @@ public class DelegatingSmartContextLoaderTests {
 	private final DelegatingSmartContextLoader loader = new DelegatingSmartContextLoader();
 
 	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
+	public ExpectedException thrown = ExpectedException.none();
 
 
 	private static void assertEmpty(Object[] array) {
@@ -75,8 +75,8 @@ public class DelegatingSmartContextLoaderTests {
 
 	@Test
 	public void processContextConfigurationWithDefaultXmlConfigAndConfigurationClassGeneration() {
-		expectedException.expect(IllegalStateException.class);
-		expectedException.expectMessage(containsString("both default locations AND default configuration classes were detected"));
+		thrown.expect(IllegalStateException.class);
+		thrown.expectMessage(containsString("both default locations AND default configuration classes were detected"));
 
 		ContextConfigurationAttributes configAttributes = new ContextConfigurationAttributes(
 				ImproperDuplicateDefaultXmlAndConfigClassTestCase.class, EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY,
@@ -114,9 +114,9 @@ public class DelegatingSmartContextLoaderTests {
 
 	@Test
 	public void loadContextWithoutLocationsAndConfigurationClasses() throws Exception {
-		expectedException.expect(IllegalStateException.class);
-		expectedException.expectMessage(startsWith("Neither"));
-		expectedException.expectMessage(containsString("was able to load an ApplicationContext from"));
+		thrown.expect(IllegalStateException.class);
+		thrown.expectMessage(startsWith("Neither"));
+		thrown.expectMessage(containsString("was able to load an ApplicationContext from"));
 
 		MergedContextConfiguration mergedConfig = new MergedContextConfiguration(
 				getClass(), EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, loader);
@@ -128,9 +128,9 @@ public class DelegatingSmartContextLoaderTests {
 	 */
 	@Test
 	public void loadContextWithLocationsAndConfigurationClasses() throws Exception {
-		expectedException.expect(IllegalStateException.class);
-		expectedException.expectMessage(startsWith("Neither"));
-		expectedException.expectMessage(endsWith("declare either 'locations' or 'classes' but not both."));
+		thrown.expect(IllegalStateException.class);
+		thrown.expectMessage(startsWith("Neither"));
+		thrown.expectMessage(endsWith("declare either 'locations' or 'classes' but not both."));
 
 		MergedContextConfiguration mergedConfig = new MergedContextConfiguration(getClass(),
 				new String[] {"test.xml"}, new Class<?>[] {getClass()}, EMPTY_STRING_ARRAY, loader);

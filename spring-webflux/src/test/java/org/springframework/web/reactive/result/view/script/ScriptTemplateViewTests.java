@@ -53,7 +53,7 @@ public class ScriptTemplateViewTests {
 	private StaticApplicationContext context;
 
 	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
+	public ExpectedException thrown = ExpectedException.none();
 
 
 	@Before
@@ -78,9 +78,9 @@ public class ScriptTemplateViewTests {
 
 	@Test
 	public void missingScriptTemplateConfig() throws Exception {
-		this.expectedException.expect(ApplicationContextException.class);
+		this.thrown.expect(ApplicationContextException.class);
 		this.view.setApplicationContext(new StaticApplicationContext());
-		this.expectedException.expectMessage(contains("ScriptTemplateConfig"));
+		this.thrown.expectMessage(contains("ScriptTemplateConfig"));
 	}
 
 	@Test
@@ -161,7 +161,7 @@ public class ScriptTemplateViewTests {
 	public void nonInvocableScriptEngineWithRenderFunction() throws Exception {
 		this.view.setEngine(mock(ScriptEngine.class));
 		this.view.setRenderFunction("render");
-		this.expectedException.expect(IllegalArgumentException.class);
+		this.thrown.expect(IllegalArgumentException.class);
 		this.view.setApplicationContext(this.context);
 	}
 
@@ -170,9 +170,9 @@ public class ScriptTemplateViewTests {
 		this.view.setEngine(mock(InvocableScriptEngine.class));
 		this.view.setEngineName("test");
 		this.view.setRenderFunction("render");
-		this.expectedException.expect(IllegalArgumentException.class);
+		this.thrown.expect(IllegalArgumentException.class);
 		this.view.setApplicationContext(this.context);
-		this.expectedException.expectMessage(contains("'engine' or 'engineName'"));
+		this.thrown.expectMessage(contains("'engine' or 'engineName'"));
 	}
 
 	@Test
@@ -180,9 +180,9 @@ public class ScriptTemplateViewTests {
 		this.view.setEngine(mock(InvocableScriptEngine.class));
 		this.view.setRenderFunction("render");
 		this.view.setSharedEngine(false);
-		this.expectedException.expect(IllegalArgumentException.class);
+		this.thrown.expect(IllegalArgumentException.class);
 		this.view.setApplicationContext(this.context);
-		this.expectedException.expectMessage(contains("sharedEngine"));
+		this.thrown.expectMessage(contains("sharedEngine"));
 	}
 
 	private interface InvocableScriptEngine extends ScriptEngine, Invocable {

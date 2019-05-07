@@ -44,7 +44,7 @@ import static org.hamcrest.Matchers.*;
 public class YamlPropertiesFactoryBeanTests {
 
 	@Rule
-	public ExpectedException exception = ExpectedException.none();
+	public ExpectedException thrown = ExpectedException.none();
 
 
 	@Test
@@ -61,8 +61,8 @@ public class YamlPropertiesFactoryBeanTests {
 		YamlPropertiesFactoryBean factory = new YamlPropertiesFactoryBean();
 		factory.setResources(new ByteArrayResource(
 				"foo: bar\ncd\nspam:\n  foo: baz".getBytes()));
-		this.exception.expect(ScannerException.class);
-		this.exception.expectMessage("line 3, column 1");
+		this.thrown.expect(ScannerException.class);
+		this.thrown.expectMessage("line 3, column 1");
 		factory.getObject();
 	}
 
