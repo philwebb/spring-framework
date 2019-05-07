@@ -3,8 +3,7 @@
 <suppressions>
 
 	<!-- global -->
-	<suppress files="[\\/]src[\\/]test[\\/]java[\\/]" checks="AvoidStarImport|AvoidNestedBlocks|JavadocVariable|JavadocStyle|JavadocType|LeftCurly|AtclauseOrder|OneTopLevelClass|OuterTypeFilename|AnnotationLocation|InnerTypeLast|AnnotationUseStyle|SpringCatch|FinalClass|NeedBraces|SpringNoThis|MultipleVariableDeclarations|HideUtilityClassConstructor|SpringJavadoc|RequireThis" />
-	<suppress files="ValueConstants" checks="InterfaceIsType" />
+	<suppress files="[\\/]src[\\/]test[\\/]java[\\/]" checks="AnnotationLocation|AnnotationUseStyle|AtclauseOrder|AvoidNestedBlocks|AvoidStarImport|FinalClass|HideUtilityClassConstructor|InnerTypeLast|JavadocStyle|JavadocType|JavadocVariable|LeftCurly|MultipleVariableDeclarations|NeedBraces|OneTopLevelClass|OuterTypeFilename|RequireThis|SpringCatch|SpringJavadoc|SpringNoThis" />
 
 	<!-- spring-beans -->
 	<suppress files="TypeMismatchException" checks="MutableException"/>
@@ -46,6 +45,7 @@
 	<suppress files="StompCommand" checks="JavadocVariable" />
 	<suppress files="StompHeaderAccessor" checks="JavadocVariable" />
 	<suppress files="StompHeaders" checks="JavadocVariable" />
+	<suppress files="org[\\/]springframework[\\/]messaging[\\/]handler[\\/]annotation[\\/]ValueConstants" checks="InterfaceIsType" />
 
 	<!-- spring-orm -->
 	<suppress files="jpa[\\/]vendor[\\/]Database" checks="JavadocVariable|JavadocStyle"/>
@@ -63,6 +63,7 @@
 	<suppress files="org[\\/]springframework[\\/]http[\\/]HttpStatus" checks="JavadocVariable|JavadocStyle" />
 	<suppress files="org[\\/]springframework[\\/]web[\\/]bind[\\/]annotation[\\/]CrossOrigin" checks="JavadocStyle" />
 	<suppress files="org[\\/]springframework[\\/]web[\\/]bind[\\/]annotation[\\/]RequestMethod" checks="JavadocVariable" />
+	<suppress files="org[\\/]springframework[\\/]web[\\/]bind[\\/]annotation[\\/]ValueConstants" checks="InterfaceIsType" />
 	<suppress files="PatternParseException" checks="JavadocVariable" />
 	<suppress files="web[\\/]reactive[\\/]socket[\\/]CloseStatus" checks="JavadocStyle" />
 
