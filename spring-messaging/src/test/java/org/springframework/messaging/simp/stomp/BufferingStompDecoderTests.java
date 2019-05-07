@@ -25,9 +25,7 @@ import org.junit.Test;
 
 import org.springframework.messaging.Message;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 /**
  * Unit tests for {@link BufferingStompDecoder}.

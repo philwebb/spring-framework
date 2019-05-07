@@ -60,7 +60,8 @@ import org.springframework.util.xml.StaxUtils;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 import static org.xmlunit.matchers.CompareMatcher.*;
 
 /**

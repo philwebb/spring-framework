@@ -19,12 +19,12 @@ package org.springframework.web.servlet.config.annotation;
 import java.util.Arrays;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
 import org.springframework.web.cors.CorsConfiguration;
+
+import static org.junit.Assert.*;
 
 /**
  * Test fixture with a {@link CorsRegistry}.

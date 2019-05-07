@@ -36,10 +36,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolverComposite;
 import org.springframework.web.method.support.InvocableHandlerMethod;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 /**
  * Test fixture with {@link InitBinderDataBinderFactory}.

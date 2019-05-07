@@ -21,7 +21,8 @@ import org.junit.Test;
 
 import org.springframework.core.io.DescriptiveResource;
 
-import static org.mockito.BDDMockito.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Rick Evans

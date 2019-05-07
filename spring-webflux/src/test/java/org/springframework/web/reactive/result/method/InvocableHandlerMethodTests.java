@@ -45,7 +45,7 @@ import org.springframework.web.server.UnsupportedMediaTypeStatusException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.*;
 

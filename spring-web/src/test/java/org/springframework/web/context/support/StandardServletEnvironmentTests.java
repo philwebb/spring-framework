@@ -25,7 +25,7 @@ import org.springframework.core.env.StandardEnvironment;
 import org.springframework.tests.mock.jndi.SimpleNamingContextBuilder;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.*;
 
 /**
  * Unit tests for {@link StandardServletEnvironment}.

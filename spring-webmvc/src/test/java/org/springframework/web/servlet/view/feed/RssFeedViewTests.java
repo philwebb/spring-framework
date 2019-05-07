@@ -16,25 +16,24 @@
 
 package org.springframework.web.servlet.view.feed;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.rometools.rome.feed.rss.Channel;
 import com.rometools.rome.feed.rss.Description;
 import com.rometools.rome.feed.rss.Item;
-
 import org.junit.Test;
 
 import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.mock.web.test.MockHttpServletResponse;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;
+import static org.junit.Assert.*;
+import static org.xmlunit.matchers.CompareMatcher.*;
 
 /**
  * @author Arjen Poutsma

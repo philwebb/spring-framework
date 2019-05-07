@@ -15,9 +15,6 @@
  */
 package org.springframework.messaging.simp.stomp;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -43,6 +40,9 @@ import org.springframework.messaging.tcp.TcpConnectionHandler;
 import org.springframework.messaging.tcp.TcpOperations;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureTask;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Unit tests for StompBrokerRelayMessageHandler.

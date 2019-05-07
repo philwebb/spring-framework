@@ -48,6 +48,7 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.util.ReflectionUtils;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
 /**

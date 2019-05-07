@@ -19,6 +19,7 @@ package org.springframework.core.io.support;
 import java.nio.charset.Charset;
 
 import org.junit.Test;
+
 import org.springframework.core.io.DescriptiveResource;
 import org.springframework.core.io.Resource;
 

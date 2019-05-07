@@ -33,9 +33,7 @@ import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.web.server.ServerWebExchange;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 /**
  * Unit tests for {@link AbstractView}.

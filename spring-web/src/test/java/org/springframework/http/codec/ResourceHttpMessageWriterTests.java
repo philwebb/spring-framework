@@ -35,12 +35,10 @@ import org.springframework.util.MimeTypeUtils;
 import org.springframework.util.StringUtils;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.startsWith;
-import static org.junit.Assert.assertArrayEquals;
-import static org.springframework.http.MediaType.TEXT_PLAIN;
-import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.get;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
+import static org.springframework.http.MediaType.*;
+import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.*;
 
 /**
  * Unit tests for {@link ResourceHttpMessageWriter}.

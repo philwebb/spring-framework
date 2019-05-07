@@ -23,7 +23,7 @@ import org.junit.rules.ExpectedException;
 
 import org.springframework.beans.factory.BeanCreationException;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.core.Is.*;
 
 /**

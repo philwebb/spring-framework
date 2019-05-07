@@ -41,7 +41,7 @@ import org.springframework.util.MimeTypeUtils;
 
 import static java.nio.charset.StandardCharsets.*;
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.core.ResolvableType.*;
 import static org.springframework.http.MediaType.*;

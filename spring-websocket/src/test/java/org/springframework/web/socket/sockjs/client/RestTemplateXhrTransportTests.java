@@ -56,6 +56,7 @@ import org.springframework.web.socket.sockjs.frame.Jackson2SockJsMessageCodec;
 import org.springframework.web.socket.sockjs.frame.SockJsFrame;
 import org.springframework.web.socket.sockjs.transport.TransportType;
 
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
 /**

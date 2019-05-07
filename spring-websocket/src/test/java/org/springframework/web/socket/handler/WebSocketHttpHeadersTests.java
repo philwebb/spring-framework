@@ -26,7 +26,7 @@ import org.junit.Test;
 import org.springframework.web.socket.WebSocketExtension;
 import org.springframework.web.socket.WebSocketHttpHeaders;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.*;
 
 /**
  * Unit tests for WebSocketHttpHeaders.

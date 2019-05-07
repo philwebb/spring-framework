@@ -19,7 +19,6 @@ package org.springframework.jdbc.object;
 import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.sql.DataSource;
 
 import org.junit.Rule;
@@ -34,7 +33,6 @@ import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import static org.hamcrest.CoreMatchers.*;
-
 import static org.junit.Assert.*;
 
 /**

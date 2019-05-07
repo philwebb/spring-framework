@@ -21,7 +21,7 @@ import java.util.Comparator;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.*;
 
 /**
  * Tests for {@link BooleanComparator}.

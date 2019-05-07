@@ -27,7 +27,7 @@ import org.springframework.beans.factory.config.InstantiationAwareBeanPostProces
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessorAdapter;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.*;
 
 /**
  * Unit tests for SPR-8954, in which a custom {@link InstantiationAwareBeanPostProcessor}

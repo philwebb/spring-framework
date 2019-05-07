@@ -34,7 +34,7 @@ import org.springframework.protobuf.SecondMsg;
 import org.springframework.util.MimeType;
 
 import static org.junit.Assert.*;
-import static org.springframework.core.ResolvableType.forClass;
+import static org.springframework.core.ResolvableType.*;
 
 /**
  * Unit tests for {@link ProtobufEncoder}.

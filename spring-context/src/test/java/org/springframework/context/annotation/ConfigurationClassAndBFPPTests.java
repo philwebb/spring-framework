@@ -25,7 +25,7 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.*;
 
 /**
  * Tests semantics of declaring {@link BeanFactoryPostProcessor}-returning @Bean

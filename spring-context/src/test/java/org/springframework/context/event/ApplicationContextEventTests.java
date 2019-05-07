@@ -49,6 +49,7 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.ReflectionUtils;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
 /**

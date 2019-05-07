@@ -34,16 +34,9 @@ import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.sockjs.client.TestTransport.XhrTestTransport;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.BDDMockito.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.mock;
-import static org.mockito.BDDMockito.times;
-import static org.mockito.BDDMockito.verify;
-import static org.mockito.BDDMockito.verifyNoMoreInteractions;
-import static org.mockito.BDDMockito.when;
+import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.*;
 
 /**
  * Unit tests for {@link org.springframework.web.socket.sockjs.client.SockJsClient}.

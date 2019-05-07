@@ -39,10 +39,10 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Integration tests cornering bug SPR-8651, which revealed that @Scheduled methods may

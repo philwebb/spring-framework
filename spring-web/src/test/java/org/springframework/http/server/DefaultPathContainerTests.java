@@ -26,8 +26,7 @@ import org.springframework.http.server.PathContainer.PathSegment;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 /**
  * Unit tests for {@link DefaultPathContainer}.

@@ -35,11 +35,11 @@ import org.springframework.http.MockHttpInputMessage;
 import org.springframework.http.MockHttpOutputMessage;
 import org.springframework.util.FileCopyUtils;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.*;
 import static org.hamcrest.core.IsInstanceOf.*;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
 
 /**

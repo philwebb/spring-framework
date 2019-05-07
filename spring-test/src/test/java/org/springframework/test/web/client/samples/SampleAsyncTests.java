@@ -28,7 +28,7 @@ import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.util.concurrent.ListenableFuture;
 
 import static org.junit.Assert.*;
-import static org.springframework.test.web.client.ExpectedCount.manyTimes;
+import static org.springframework.test.web.client.ExpectedCount.*;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.*;
 

@@ -28,7 +28,7 @@ import org.springframework.core.NestedCheckedException;
 import org.springframework.core.NestedRuntimeException;
 
 import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 import static org.springframework.beans.factory.support.BeanDefinitionBuilder.*;
 
 /**

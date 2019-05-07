@@ -31,10 +31,6 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
-import static org.mockito.BDDMockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.withSettings;
 
 /**
  * Unit tests for {@link SharedEntityManagerCreator}.

@@ -40,7 +40,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 import org.springframework.web.servlet.view.groovy.GroovyMarkupConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * Integration tests for view resolution with {@code @EnableWebMvc}.

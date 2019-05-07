@@ -68,10 +68,7 @@ import org.springframework.web.socket.server.HandshakeHandler;
 import org.springframework.web.socket.server.RequestUpgradeStrategy;
 import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 /**
  * Abstract base class for integration tests using the

@@ -31,6 +31,7 @@ import org.springframework.web.socket.sockjs.transport.session.StreamingSockJsSe
 import org.springframework.web.socket.sockjs.transport.session.StubSockJsServiceConfig;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 /**

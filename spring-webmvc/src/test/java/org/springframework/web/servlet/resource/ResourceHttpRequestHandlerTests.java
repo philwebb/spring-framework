@@ -43,6 +43,7 @@ import org.springframework.web.accept.ContentNegotiationManagerFactoryBean;
 import org.springframework.web.servlet.HandlerMapping;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 /**

@@ -26,7 +26,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.spr10546.scanpackage.AEnclosingConfig;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.*;
 
 /**
  * @author Rob Winch

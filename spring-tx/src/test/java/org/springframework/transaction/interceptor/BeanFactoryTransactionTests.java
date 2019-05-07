@@ -43,7 +43,7 @@ import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.TransactionStatus;
 
 import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Test cases for AOP transaction management.

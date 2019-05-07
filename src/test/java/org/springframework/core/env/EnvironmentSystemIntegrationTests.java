@@ -57,8 +57,8 @@ import org.springframework.web.context.support.StandardServletEnvironment;
 import org.springframework.web.context.support.StaticWebApplicationContext;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 
-import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.springframework.beans.factory.support.BeanDefinitionBuilder.*;
 import static org.springframework.context.ConfigurableApplicationContext.*;

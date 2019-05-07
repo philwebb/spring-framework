@@ -36,10 +36,7 @@ import org.springframework.web.socket.sockjs.transport.TransportType;
 import org.springframework.web.socket.sockjs.transport.handler.DefaultSockJsService;
 import org.springframework.web.socket.sockjs.transport.handler.WebSocketTransportHandler;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Test fixture for

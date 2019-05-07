@@ -21,6 +21,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import org.junit.Test;
+
 import org.springframework.tests.sample.objects.TestObject;
 
 import static org.junit.Assert.*;

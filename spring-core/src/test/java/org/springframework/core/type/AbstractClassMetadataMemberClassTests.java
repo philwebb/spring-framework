@@ -19,7 +19,7 @@ package org.springframework.core.type;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.*;
 
 /**
  * Abstract base class for testing implementations of

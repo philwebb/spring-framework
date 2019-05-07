@@ -30,8 +30,7 @@ import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.util.MultiValueMap;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
  * Test fixture for

@@ -31,11 +31,8 @@ import org.springframework.mock.web.test.server.MockServerWebExchange;
 import org.springframework.web.reactive.HandlerMapping;
 import org.springframework.web.server.ServerWebExchange;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.springframework.web.reactive.HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE;
+import static org.junit.Assert.*;
+import static org.springframework.web.reactive.HandlerMapping.*;
 
 /**
  * Unit tests for {@link SimpleUrlHandlerMapping}.

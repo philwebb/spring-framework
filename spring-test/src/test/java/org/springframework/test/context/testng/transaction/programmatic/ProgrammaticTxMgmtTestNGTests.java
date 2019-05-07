@@ -19,8 +19,11 @@ package org.springframework.test.context.testng.transaction.programmatic;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
 import javax.sql.DataSource;
+
+import org.testng.IHookCallBack;
+import org.testng.ITestResult;
+import org.testng.annotations.Test;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,10 +39,6 @@ import org.springframework.test.context.transaction.programmatic.ProgrammaticTxM
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import org.testng.IHookCallBack;
-import org.testng.ITestResult;
-import org.testng.annotations.Test;
 
 import static org.junit.Assert.*;
 import static org.springframework.test.transaction.TransactionTestUtils.*;

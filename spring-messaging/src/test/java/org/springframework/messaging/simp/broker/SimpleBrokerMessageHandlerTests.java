@@ -39,6 +39,7 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.scheduling.TaskScheduler;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 /**

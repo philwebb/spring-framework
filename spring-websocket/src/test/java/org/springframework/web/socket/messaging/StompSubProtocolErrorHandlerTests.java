@@ -15,8 +15,6 @@
  */
 package org.springframework.web.socket.messaging;
 
-import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,6 +24,8 @@ import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.messaging.support.MessageHeaderAccessor;
+
+import static org.junit.Assert.*;
 
 /**
  * Unit tests for {@link StompSubProtocolErrorHandler}.

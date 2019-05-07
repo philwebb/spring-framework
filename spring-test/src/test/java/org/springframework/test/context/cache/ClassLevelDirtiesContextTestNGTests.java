@@ -23,6 +23,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.testng.ITestNGListener;
+import org.testng.TestNG;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -35,9 +37,6 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.testng.TrackingTestNGTestListener;
-
-import org.testng.ITestNGListener;
-import org.testng.TestNG;
 
 import static org.junit.Assert.*;
 import static org.springframework.test.context.cache.ContextCacheTestUtils.*;

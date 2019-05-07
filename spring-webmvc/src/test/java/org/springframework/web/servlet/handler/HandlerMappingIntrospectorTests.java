@@ -39,10 +39,8 @@ import org.springframework.web.servlet.HandlerExecutionChain;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.springframework.web.servlet.HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE;
+import static org.junit.Assert.*;
+import static org.springframework.web.servlet.HandlerMapping.*;
 
 /**
  * Unit tests for {@link HandlerMappingIntrospector}.

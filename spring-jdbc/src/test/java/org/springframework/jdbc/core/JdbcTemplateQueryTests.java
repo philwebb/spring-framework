@@ -36,6 +36,7 @@ import org.junit.rules.ExpectedException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
 /**

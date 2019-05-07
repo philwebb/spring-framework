@@ -46,6 +46,7 @@ import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.util.MimeType;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
 /**

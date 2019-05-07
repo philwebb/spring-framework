@@ -32,7 +32,7 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilterChain;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * Tests for {@link HiddenHttpMethodFilter}.

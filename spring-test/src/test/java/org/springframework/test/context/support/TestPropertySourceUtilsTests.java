@@ -35,6 +35,7 @@ import org.springframework.test.context.TestPropertySource;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.context.support.TestPropertySourceUtils.*;
 

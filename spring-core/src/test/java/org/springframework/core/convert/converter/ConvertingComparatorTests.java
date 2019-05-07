@@ -30,7 +30,7 @@ import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.util.comparator.ComparableComparator;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.*;
 
 /**
  * Tests for {@link ConvertingComparator}.

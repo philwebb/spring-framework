@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.aopalliance.intercept.MethodInvocation;
-
 import org.junit.Test;
 
 import org.springframework.beans.factory.BeanClassLoaderAware;

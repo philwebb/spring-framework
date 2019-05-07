@@ -30,6 +30,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 public class StaxStreamXMLReaderTests extends AbstractStaxXMLReaderTestCase {

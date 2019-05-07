@@ -44,6 +44,7 @@ import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.SqlParameterValue;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
 /**

@@ -30,6 +30,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
 /**

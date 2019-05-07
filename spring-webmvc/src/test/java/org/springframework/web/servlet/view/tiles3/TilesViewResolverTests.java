@@ -26,6 +26,7 @@ import org.springframework.mock.web.test.MockServletContext;
 import org.springframework.web.context.support.StaticWebApplicationContext;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
 /**

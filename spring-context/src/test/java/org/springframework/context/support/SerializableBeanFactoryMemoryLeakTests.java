@@ -21,7 +21,6 @@ import java.util.Map;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-
 import org.junit.Test;
 
 import org.springframework.beans.factory.BeanCreationException;
@@ -30,7 +29,7 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.*;
 import static org.springframework.beans.factory.support.BeanDefinitionBuilder.*;
 
 /**

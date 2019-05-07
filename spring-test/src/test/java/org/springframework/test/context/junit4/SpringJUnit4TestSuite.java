@@ -19,6 +19,7 @@ package org.springframework.test.context.junit4;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
+
 import org.springframework.test.context.cache.ClassLevelDirtiesContextTests;
 import org.springframework.test.context.cache.SpringRunnerContextCacheTests;
 import org.springframework.test.context.jdbc.IsolatedTransactionModeSqlScriptsTests;

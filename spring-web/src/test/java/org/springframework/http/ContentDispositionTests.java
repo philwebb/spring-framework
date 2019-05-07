@@ -22,10 +22,11 @@ import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import org.springframework.util.ReflectionUtils;
+
+import static org.junit.Assert.*;
 
 /**
  * Unit tests for {@link ContentDisposition}

@@ -24,7 +24,7 @@ import org.junit.Test;
 import org.springframework.jms.core.JmsTemplate;
 
 import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Mark Pollack

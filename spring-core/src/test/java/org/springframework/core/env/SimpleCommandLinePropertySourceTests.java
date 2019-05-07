@@ -21,7 +21,7 @@ import java.util.List;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.*;
 
 /**
  * Unit tests for {@link SimpleCommandLinePropertySource}.

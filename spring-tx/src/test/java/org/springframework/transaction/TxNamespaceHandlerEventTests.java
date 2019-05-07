@@ -27,7 +27,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.tests.beans.CollectingReaderEventListener;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.*;
 
 /**
  * @author Torsten Juergeleit

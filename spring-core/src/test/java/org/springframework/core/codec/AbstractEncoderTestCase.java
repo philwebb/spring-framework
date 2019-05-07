@@ -32,9 +32,9 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.MimeType;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.nio.charset.StandardCharsets.*;
 import static org.junit.Assert.*;
-import static org.springframework.core.io.buffer.DataBufferUtils.release;
+import static org.springframework.core.io.buffer.DataBufferUtils.*;
 
 /**
  * Abstract base class for {@link Encoder} unit tests. Subclasses need to implement

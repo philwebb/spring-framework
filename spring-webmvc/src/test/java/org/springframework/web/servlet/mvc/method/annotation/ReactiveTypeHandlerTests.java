@@ -58,8 +58,8 @@ import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.springframework.core.ResolvableType.forClass;
-import static org.springframework.web.method.ResolvableMethod.on;
+import static org.springframework.core.ResolvableType.*;
+import static org.springframework.web.method.ResolvableMethod.*;
 
 /**
  * Unit tests for {@link ReactiveTypeHandler}.

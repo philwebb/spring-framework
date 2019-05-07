@@ -33,6 +33,7 @@ import org.springframework.oxm.Unmarshaller;
 import org.springframework.oxm.UnmarshallingFailureException;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
 /**

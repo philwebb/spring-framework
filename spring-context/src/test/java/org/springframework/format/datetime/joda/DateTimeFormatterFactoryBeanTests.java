@@ -20,8 +20,8 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.Test;
 
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Phillip Webb

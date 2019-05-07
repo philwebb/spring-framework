@@ -33,7 +33,7 @@ import org.springframework.web.reactive.function.client.ClientRequest;
 import org.springframework.web.reactive.function.client.ExchangeFunction;
 import org.springframework.web.reactive.function.client.ExchangeFunctions;
 
-import static java.time.Duration.ofMillis;
+import static java.time.Duration.*;
 import static org.junit.Assert.*;
 
 /**

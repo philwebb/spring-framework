@@ -33,6 +33,7 @@ import org.springframework.jdbc.support.SQLStateSQLExceptionTranslator;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
 /**

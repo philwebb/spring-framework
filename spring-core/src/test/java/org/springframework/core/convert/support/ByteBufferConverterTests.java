@@ -23,7 +23,7 @@ import org.junit.Test;
 
 import org.springframework.core.convert.converter.Converter;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
 /**

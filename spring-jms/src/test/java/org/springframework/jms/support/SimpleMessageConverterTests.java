@@ -36,6 +36,7 @@ import org.springframework.jms.support.converter.MessageConversionException;
 import org.springframework.jms.support.converter.SimpleMessageConverter;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
 /**

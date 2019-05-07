@@ -22,7 +22,7 @@ import org.junit.Test;
 import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpHeaders;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * Unit tests for {@link MockServerHttpRequest}.

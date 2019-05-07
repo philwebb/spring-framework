@@ -36,7 +36,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.*;
 
 /**
  * System tests covering use of AspectJ {@link Aspect}s in conjunction with {@link Configuration} classes.

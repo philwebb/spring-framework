@@ -102,9 +102,10 @@ import org.springframework.util.SerializationTestUtils;
 import org.springframework.util.StopWatch;
 import org.springframework.util.StringValueResolver;
 
-import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
 /**

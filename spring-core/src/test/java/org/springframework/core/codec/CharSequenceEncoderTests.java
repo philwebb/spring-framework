@@ -25,10 +25,7 @@ import reactor.core.publisher.Flux;
 import org.springframework.core.ResolvableType;
 import org.springframework.util.MimeTypeUtils;
 
-import static java.nio.charset.StandardCharsets.ISO_8859_1;
-import static java.nio.charset.StandardCharsets.US_ASCII;
-import static java.nio.charset.StandardCharsets.UTF_16;
-import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.nio.charset.StandardCharsets.*;
 import static org.junit.Assert.*;
 
 /**

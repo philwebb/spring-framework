@@ -16,10 +16,10 @@
 
 package org.springframework.test.context.testng.transaction.ejb;
 
+import org.testng.annotations.Test;
+
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
-
-import org.testng.annotations.Test;
 
 /**
  * Extension of {@link CommitForRequiresNewEjbTxDaoTestNGTests} which sets the default

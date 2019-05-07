@@ -21,6 +21,7 @@ import javax.sql.DataSource;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;

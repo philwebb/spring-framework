@@ -16,12 +16,12 @@
 
 package org.springframework.test.context.testng.transaction.ejb;
 
+import org.testng.annotations.Test;
+
 import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.test.context.transaction.ejb.dao.RequiresNewEjbTxTestEntityDao;
-
-import org.testng.annotations.Test;
 
 /**
  * Concrete subclass of {@link AbstractEjbTxDaoTestNGTests} which uses the

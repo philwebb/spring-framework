@@ -30,7 +30,7 @@ import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.*;
 
 /**
  * Tests for {@link MockWebResponseBuilder}.

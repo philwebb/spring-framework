@@ -16,14 +16,14 @@
 
 package org.springframework.web.servlet.view.xslt;
 
-import org.junit.Test;
-
 import java.util.Locale;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.util.ClassUtils;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Rob Harrop

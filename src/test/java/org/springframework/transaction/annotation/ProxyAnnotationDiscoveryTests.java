@@ -16,15 +16,15 @@
 
 package org.springframework.transaction.annotation;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
+
 import org.springframework.aop.support.AopUtils;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.*;
 
 /**
  * Tests proving that regardless the proxy strategy used (JDK interface-based vs. CGLIB

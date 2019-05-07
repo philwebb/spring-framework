@@ -27,10 +27,8 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.util.pattern.PathPattern;
 import org.springframework.web.util.pattern.PathPatternParser;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.get;
+import static org.junit.Assert.*;
+import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.*;
 
 /**
  * Unit tests for {@link PatternsRequestCondition}.

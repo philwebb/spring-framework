@@ -23,7 +23,7 @@ import javax.sql.DataSource;
 
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.BDDMockito.*;
 

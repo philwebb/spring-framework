@@ -44,6 +44,7 @@ import org.springframework.tests.MockitoUtils;
 import org.springframework.tests.MockitoUtils.InvocationArgumentsAdapter;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
 /**

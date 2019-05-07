@@ -29,6 +29,7 @@ import org.springframework.oxm.Marshaller;
 import org.springframework.oxm.Unmarshaller;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
 /**

@@ -46,6 +46,7 @@ import org.springframework.web.reactive.result.view.ViewResolverSupport;
 import org.springframework.web.server.ServerWebExchange;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 /**

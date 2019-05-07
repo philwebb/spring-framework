@@ -56,8 +56,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import static org.junit.Assert.*;
-import static org.junit.Assume.assumeFalse;
-import static org.springframework.http.HttpMethod.POST;
+import static org.junit.Assume.*;
+import static org.springframework.http.HttpMethod.*;
 
 /**
  * @author Arjen Poutsma

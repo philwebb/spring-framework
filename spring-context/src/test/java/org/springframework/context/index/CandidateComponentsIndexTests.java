@@ -23,7 +23,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
 /**

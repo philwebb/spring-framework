@@ -49,6 +49,7 @@ import org.springframework.web.context.request.async.WebAsyncUtils;
 import org.springframework.web.context.support.StaticWebApplicationContext;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
 /**

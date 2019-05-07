@@ -32,7 +32,7 @@ import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 import org.springframework.mock.http.server.reactive.test.MockServerHttpResponse;
 import org.springframework.mock.web.test.server.MockServerWebExchange;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * Unit tests for Kotlin script templates running on Kotlin JSR-223 support.

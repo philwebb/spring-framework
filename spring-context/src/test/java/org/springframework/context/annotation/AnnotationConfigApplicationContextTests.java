@@ -33,7 +33,7 @@ import org.springframework.context.annotation6.Jsr330NamedForScanning;
 import org.springframework.core.ResolvableType;
 import org.springframework.util.ObjectUtils;
 
-import static java.lang.String.*;
+import static java.lang.String.format;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;

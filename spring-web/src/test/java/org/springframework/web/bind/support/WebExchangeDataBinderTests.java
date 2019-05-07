@@ -42,12 +42,11 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 
 import static junit.framework.TestCase.assertFalse;
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.springframework.core.ResolvableType.forClass;
-import static org.springframework.core.ResolvableType.forClassWithGenerics;
+import static org.springframework.core.ResolvableType.*;
 
 /**
  * Unit tests for {@link WebExchangeDataBinder}.

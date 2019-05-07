@@ -24,8 +24,8 @@ import org.junit.Test;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 

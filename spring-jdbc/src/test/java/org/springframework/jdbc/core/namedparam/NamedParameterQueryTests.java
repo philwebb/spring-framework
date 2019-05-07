@@ -37,6 +37,7 @@ import org.junit.Test;
 import org.springframework.jdbc.core.RowMapper;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
 /**

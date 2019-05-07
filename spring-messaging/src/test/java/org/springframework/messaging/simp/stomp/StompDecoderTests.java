@@ -26,8 +26,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.util.InvalidMimeTypeException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 /**
  * Test fixture for {@link StompDecoder}.

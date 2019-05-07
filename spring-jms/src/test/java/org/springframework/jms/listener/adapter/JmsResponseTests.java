@@ -26,9 +26,8 @@ import org.junit.rules.ExpectedException;
 
 import org.springframework.jms.support.destination.DestinationResolver;
 
-import static org.junit.Assert.assertSame;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
+import static org.junit.Assert.*;
+import static org.mockito.BDDMockito.*;
 
 /**
  * @author Stephane Nicoll

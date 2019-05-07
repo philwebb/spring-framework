@@ -36,9 +36,8 @@ import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Unit tests for {@link ResourceUrlProvider}.

@@ -58,8 +58,8 @@ import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.ObjectUtils;
 
-import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 /**

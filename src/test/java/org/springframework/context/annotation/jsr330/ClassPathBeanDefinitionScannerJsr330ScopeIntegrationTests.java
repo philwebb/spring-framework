@@ -24,7 +24,6 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.junit.After;
-import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,6 +40,8 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.support.GenericWebApplicationContext;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Mark Fisher

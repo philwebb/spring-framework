@@ -25,7 +25,6 @@ import javax.servlet.jsp.tagext.Tag;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-
 import org.junit.Test;
 
 import org.springframework.tests.sample.beans.Pet;

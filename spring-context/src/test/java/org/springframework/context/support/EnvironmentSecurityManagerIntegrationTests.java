@@ -31,9 +31,9 @@ import org.springframework.core.env.AbstractEnvironment;
 import org.springframework.core.env.StandardEnvironmentTests;
 import org.springframework.stereotype.Component;
 
-import static java.lang.String.format;
+import static java.lang.String.*;
 import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.*;
 
 /**
  * Tests integration between Environment and SecurityManagers. See SPR-9970.
