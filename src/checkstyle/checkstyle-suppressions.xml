@@ -3,7 +3,7 @@
 <suppressions>
 
 	<!-- global -->
-	<suppress files="[\\/]src[\\/]test[\\/]java[\\/]" checks=".*" />
+	<suppress files="[\\/]src[\\/]test[\\/]java[\\/]" checks="AvoidStarImport|AvoidNestedBlocks|JavadocVariable|JavadocStyle|JavadocType|LeftCurly|AtclauseOrder|OneTopLevelClass|OuterTypeFilename|AnnotationLocation|InnerTypeLast|AnnotationUseStyle|SpringCatch|FinalClass|NeedBraces|SpringNoThis|MultipleVariableDeclarations|HideUtilityClassConstructor|SpringJavadoc|RequireThis" />
 	<suppress files="ValueConstants" checks="InterfaceIsType" />
 
 	<!-- spring-beans -->
@@ -25,9 +25,10 @@
 	<!-- spring-expression -->
 	<suppress files="ExpressionException" checks="MutableException" />
 	<suppress files="SpelMessage" checks="JavadocVariable|JavadocStyle" />
+	<suppress files="SpelReproTests" checks="InterfaceIsType" />
 
 	<!-- spring-jcl -->
-	<suppress files="[\\/]src[\\/]main[\\/]java[\\/]org[\\/]apache[\\/]commons[\\/]logging[\\/]" checks="Header|SpringNoThis" />
+	<suppress files="[\\/]src[\\/]main[\\/]java[\\/]org[\\/]apache[\\/]commons[\\/]logging[\\/]" checks="Header|SpringNoThis|IllegalImport" />
 
 	<!-- spring-jdbc -->
 	<suppress files="ResultSetWrappingSqlRowSet" checks="JavadocStyle" />
@@ -67,11 +68,15 @@
 
 	<!-- spring-webmvc -->
 	<suppress files="org[\\/]springframework[\\/]web[\\/]servlet[\\/]tags[\\/]form[\\/].*Tag" checks="JavadocVariable" />
+	<suppress files="src[\\/]test[\\/]java[\\/]org[\\/]springframework[\\/]protobuf[\\/].*" checks=".*" />
+	<suppress files="ExtractingResponseErrorHandlerTests" checks="MutableException" />
+	<suppress files="ServletAnnotationControllerHandlerMethodTests" checks="InterfaceIsType" />
 
 	<!-- spring-websocket -->
 	<suppress files="web[\\/]socket[\\/]CloseStatus" checks="JavadocStyle" />
 	<suppress files="web[\\/]socket[\\/]WebSocketHttpHeaders" checks="JavadocVariable" />
 	<suppress files="sockjs[\\/]frame[\\/]SockJsFrameType" checks="JavadocVariable" />
 	<suppress files="sockjs[\\/]transport[\\/]TransportType" checks="JavadocVariable" />
+	<suppress files="src[\\/]test[\\/]java[\\/]org[\\/]springframework[\\/]web[\\/]reactive[\\/]protobuf[\\/].*" checks=".*" />
 
 </suppressions>
