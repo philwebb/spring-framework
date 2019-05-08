@@ -101,8 +101,7 @@ public class JmsInvokerTests {
 		pfb.afterPropertiesSet();
 		ITestBean proxy = (ITestBean) pfb.getObject();
 
-		thrown.expect(RemoteTimeoutException.class);
-		thrown.expectMessage("1500 ms");
+		thrown.expect(RemoteTimeoutException.class, "1500 ms");
 		thrown.expectMessage("getAge");
 		proxy.getAge();
 	}

@@ -211,12 +211,10 @@ public class MessageHeaderAccessorTests {
 		MessageHeaders headers = accessor.getMessageHeaders();
 		Message<?> message = MessageBuilder.createMessage("payload", headers);
 
-		this.thrown.expect(IllegalStateException.class);
-		this.thrown.expectMessage("Already immutable");
+		this.thrown.expect(IllegalStateException.class, "Already immutable");
 		accessor.setLeaveMutable(true);
 
-		this.thrown.expect(IllegalStateException.class);
-		this.thrown.expectMessage("Already immutable");
+		this.thrown.expect(IllegalStateException.class, "Already immutable");
 		accessor.setHeader("foo", "baz");
 
 		assertEquals("bar", headers.get("foo"));

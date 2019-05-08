@@ -150,8 +150,7 @@ public class MessagingMessageListenerAdapterTests {
 		MessagingMessageListenerAdapter listener = getSimpleInstance("simple", Message.class);
 		Message<?> message = listener.toMessagingMessage(jmsMessage);
 
-		this.thrown.expect(IllegalArgumentException.class);
-		this.thrown.expectMessage("Header failure");
+		this.thrown.expect(IllegalArgumentException.class, "Header failure");
 		message.getHeaders(); // Triggers headers resolution
 	}
 

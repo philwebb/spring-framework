@@ -69,8 +69,7 @@ public class ExecutorSubscribableChannelTests {
 
 	@Test
 	public void messageMustNotBeNull() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("Message must not be null");
+		thrown.expect(IllegalArgumentException.class, "Message must not be null");
 		this.channel.send(null);
 	}
 

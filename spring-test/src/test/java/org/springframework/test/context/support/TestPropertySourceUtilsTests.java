@@ -171,43 +171,37 @@ public class TestPropertySourceUtilsTests {
 
 	@Test
 	public void addInlinedPropertiesToEnvironmentWithNullContext() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("context");
+		thrown.expect(IllegalArgumentException.class, "context");
 		addInlinedPropertiesToEnvironment((ConfigurableApplicationContext) null, KEY_VALUE_PAIR);
 	}
 
 	@Test
 	public void addInlinedPropertiesToEnvironmentWithContextAndNullInlinedProperties() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("inlined");
+		thrown.expect(IllegalArgumentException.class, "inlined");
 		addInlinedPropertiesToEnvironment(mock(ConfigurableApplicationContext.class), (String[]) null);
 	}
 
 	@Test
 	public void addInlinedPropertiesToEnvironmentWithNullEnvironment() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("environment");
+		thrown.expect(IllegalArgumentException.class, "environment");
 		addInlinedPropertiesToEnvironment((ConfigurableEnvironment) null, KEY_VALUE_PAIR);
 	}
 
 	@Test
 	public void addInlinedPropertiesToEnvironmentWithEnvironmentAndNullInlinedProperties() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("inlined");
+		thrown.expect(IllegalArgumentException.class, "inlined");
 		addInlinedPropertiesToEnvironment(new MockEnvironment(), (String[]) null);
 	}
 
 	@Test
 	public void addInlinedPropertiesToEnvironmentWithMalformedUnicodeInValue() {
-		thrown.expect(IllegalStateException.class);
-		thrown.expectMessage("Failed to load test environment property");
+		thrown.expect(IllegalStateException.class, "Failed to load test environment property");
 		addInlinedPropertiesToEnvironment(new MockEnvironment(), asArray("key = \\uZZZZ"));
 	}
 
 	@Test
 	public void addInlinedPropertiesToEnvironmentWithMultipleKeyValuePairsInSingleInlinedProperty() {
-		thrown.expect(IllegalStateException.class);
-		thrown.expectMessage("Failed to load exactly one test environment property");
+		thrown.expect(IllegalStateException.class, "Failed to load exactly one test environment property");
 		addInlinedPropertiesToEnvironment(new MockEnvironment(), asArray("a=b\nx=y"));
 	}
 

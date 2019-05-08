@@ -112,8 +112,7 @@ public class MessageMethodArgumentResolverTests {
 		MethodParameter parameter = new MethodParameter(this.method, 1);
 
 		assertTrue(this.resolver.supportsParameter(parameter));
-		thrown.expect(MessageConversionException.class);
-		thrown.expectMessage(Integer.class.getName());
+		thrown.expect(MessageConversionException.class, Integer.class.getName());
 		thrown.expectMessage(String.class.getName());
 		this.resolver.resolveArgument(parameter, message);
 	}
@@ -124,8 +123,7 @@ public class MessageMethodArgumentResolverTests {
 		MethodParameter parameter = new MethodParameter(this.method, 1);
 
 		assertTrue(this.resolver.supportsParameter(parameter));
-		thrown.expect(MessageConversionException.class);
-		thrown.expectMessage("payload is empty");
+		thrown.expect(MessageConversionException.class, "payload is empty");
 		thrown.expectMessage(Integer.class.getName());
 		thrown.expectMessage(String.class.getName());
 		this.resolver.resolveArgument(parameter, message);
@@ -146,8 +144,7 @@ public class MessageMethodArgumentResolverTests {
 		MethodParameter parameter = new MethodParameter(this.method, 3);
 
 		assertTrue(this.resolver.supportsParameter(parameter));
-		thrown.expect(MessageConversionException.class);
-		thrown.expectMessage(Number.class.getName());
+		thrown.expect(MessageConversionException.class, Number.class.getName());
 		thrown.expectMessage(Locale.class.getName());
 		this.resolver.resolveArgument(parameter, message);
 	}
@@ -177,8 +174,7 @@ public class MessageMethodArgumentResolverTests {
 		MethodParameter parameter = new MethodParameter(this.method, 4);
 
 		assertTrue(this.resolver.supportsParameter(parameter));
-		thrown.expect(MethodArgumentTypeMismatchException.class);
-		thrown.expectMessage(ErrorMessage.class.getName());
+		thrown.expect(MethodArgumentTypeMismatchException.class, ErrorMessage.class.getName());
 		thrown.expectMessage(GenericMessage.class.getName());
 		assertSame(message, this.resolver.resolveArgument(parameter, message));
 	}
@@ -202,8 +198,7 @@ public class MessageMethodArgumentResolverTests {
 		MethodParameter parameter = new MethodParameter(this.method, 1);
 
 		assertTrue(this.resolver.supportsParameter(parameter));
-		thrown.expect(MessageConversionException.class);
-		thrown.expectMessage(Integer.class.getName());
+		thrown.expect(MessageConversionException.class, Integer.class.getName());
 		thrown.expectMessage(String.class.getName());
 		this.resolver.resolveArgument(parameter, message);
 	}
@@ -216,8 +211,7 @@ public class MessageMethodArgumentResolverTests {
 		MethodParameter parameter = new MethodParameter(this.method, 1);
 
 		assertTrue(this.resolver.supportsParameter(parameter));
-		thrown.expect(MessageConversionException.class);
-		thrown.expectMessage("payload is empty");
+		thrown.expect(MessageConversionException.class, "payload is empty");
 		thrown.expectMessage(Integer.class.getName());
 		thrown.expectMessage(String.class.getName());
 		this.resolver.resolveArgument(parameter, message);
