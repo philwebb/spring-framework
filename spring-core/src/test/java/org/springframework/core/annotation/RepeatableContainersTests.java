@@ -123,8 +123,9 @@ public class RepeatableContainersTests {
 
 	@Test
 	public void ofExplicitWhenAnnotationIsNullThrowsException() {
-		assertThatIllegalArgumentException().isThrownBy(() -> RepeatableContainers.of(null, null))
-				.withMessage("Repeatable must not be null");
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				RepeatableContainers.of(null, null))
+			.withMessage("Repeatable must not be null");
 	}
 
 	@Test
@@ -137,11 +138,11 @@ public class RepeatableContainersTests {
 
 	@Test
 	public void ofExplicitWhenContainerIsNullAndNotRepeatableThrowsException() {
-		assertThatIllegalArgumentException().isThrownBy(() -> RepeatableContainers.of(
-				ExplicitRepeatable.class, null)).withMessage(
-						"Annotation type must be a repeatable annotation: "
-								+ "failed to resolve container type for "
-								+ ExplicitRepeatable.class.getName());
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				RepeatableContainers.of(ExplicitRepeatable.class, null))
+			.withMessage("Annotation type must be a repeatable annotation: " +
+						"failed to resolve container type for " +
+						ExplicitRepeatable.class.getName());
 	}
 
 	@Test

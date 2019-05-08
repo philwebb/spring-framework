@@ -1816,10 +1816,11 @@ public class MergedAnnotationsTests {
 		MergedAnnotation<Component> annotation = MergedAnnotation.from(Component.class,
 				map);
 		// annotation.synthesize();
-		assertThatIllegalStateException().isThrownBy(
-				() -> annotation.synthesize()).withMessage(
-						"Attribute 'value' in annotation org.springframework.stereotype.Component "
-								+ "should be compatible with java.lang.String but a java.lang.Long value was returned");
+		assertThatIllegalStateException().isThrownBy(() ->
+				annotation.synthesize())
+						.withMessage("Attribute 'value' in annotation " +
+								"org.springframework.stereotype.Component should be " +
+								"compatible with java.lang.String but a java.lang.Long value was returned");
 	}
 
 	@Test
