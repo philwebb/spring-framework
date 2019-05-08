@@ -25,7 +25,7 @@ public class ExpectedException {
 	public void expect(Class<?> class1) {
 	}
 
-	public void expectMessage(String string) {
+	public void expect(Class<?> class1, String message) {
 	}
 
 }

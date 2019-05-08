@@ -51,8 +51,7 @@ public class AssertTests {
 
 	@Test
 	public void stateWithFalseExpressionAndMessage() {
-		thrown.expect(IllegalStateException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalStateException.class, "enigma");
 		Assert.state(false, "enigma");
 	}
 
@@ -63,8 +62,7 @@ public class AssertTests {
 
 	@Test
 	public void stateWithFalseExpressionAndMessageSupplier() {
-		thrown.expect(IllegalStateException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalStateException.class, "enigma");
 		Assert.state(false, () -> "enigma");
 	}
 
@@ -82,8 +80,7 @@ public class AssertTests {
 
 	@Test
 	public void isTrueWithFalse() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalArgumentException.class, "enigma");
 		Assert.isTrue(false, "enigma");
 	}
 
@@ -94,8 +91,7 @@ public class AssertTests {
 
 	@Test
 	public void isTrueWithFalseAndMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalArgumentException.class, "enigma");
 		Assert.isTrue(false, () -> "enigma");
 	}
 
@@ -118,8 +114,7 @@ public class AssertTests {
 
 	@Test
 	public void isNullWithNonNullObjectAndMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalArgumentException.class, "enigma");
 		Assert.isNull("foo", () -> "enigma");
 	}
 
@@ -142,8 +137,7 @@ public class AssertTests {
 
 	@Test
 	public void notNullWithNullAndMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalArgumentException.class, "enigma");
 		Assert.notNull(null, () -> "enigma");
 	}
 
@@ -166,15 +160,13 @@ public class AssertTests {
 
 	@Test
 	public void hasLengthWithEmptyString() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalArgumentException.class, "enigma");
 		Assert.hasLength("", "enigma");
 	}
 
 	@Test
 	public void hasLengthWithNull() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalArgumentException.class, "enigma");
 		Assert.hasLength(null, "enigma");
 	}
 
@@ -190,15 +182,13 @@ public class AssertTests {
 
 	@Test
 	public void hasLengthWithEmptyStringAndMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalArgumentException.class, "enigma");
 		Assert.hasLength("", () -> "enigma");
 	}
 
 	@Test
 	public void hasLengthWithNullAndMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalArgumentException.class, "enigma");
 		Assert.hasLength(null, () -> "enigma");
 	}
 
@@ -216,22 +206,19 @@ public class AssertTests {
 
 	@Test
 	public void hasTextWithWhitespaceOnly() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalArgumentException.class, "enigma");
 		Assert.hasText("\t ", "enigma");
 	}
 
 	@Test
 	public void hasTextWithEmptyString() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalArgumentException.class, "enigma");
 		Assert.hasText("", "enigma");
 	}
 
 	@Test
 	public void hasTextWithNull() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalArgumentException.class, "enigma");
 		Assert.hasText(null, "enigma");
 	}
 
@@ -242,22 +229,19 @@ public class AssertTests {
 
 	@Test
 	public void hasTextWithWhitespaceOnlyAndMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalArgumentException.class, "enigma");
 		Assert.hasText("\t ", () -> "enigma");
 	}
 
 	@Test
 	public void hasTextWithEmptyStringAndMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalArgumentException.class, "enigma");
 		Assert.hasText("", () -> "enigma");
 	}
 
 	@Test
 	public void hasTextWithNullAndMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalArgumentException.class, "enigma");
 		Assert.hasText(null, () -> "enigma");
 	}
 
@@ -310,8 +294,7 @@ public class AssertTests {
 
 	@Test
 	public void doesNotContainWithSubstringPresentInSearchStringAndMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalArgumentException.class, "enigma");
 		Assert.doesNotContain("1234", "23", () -> "enigma");
 	}
 
@@ -329,15 +312,13 @@ public class AssertTests {
 
 	@Test
 	public void notEmptyArrayWithEmptyArray() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalArgumentException.class, "enigma");
 		Assert.notEmpty(new String[] {}, "enigma");
 	}
 
 	@Test
 	public void notEmptyArrayWithNullArray() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalArgumentException.class, "enigma");
 		Assert.notEmpty((Object[]) null, "enigma");
 	}
 
@@ -348,15 +329,13 @@ public class AssertTests {
 
 	@Test
 	public void notEmptyArrayWithEmptyArrayAndMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalArgumentException.class, "enigma");
 		Assert.notEmpty(new String[] {}, () -> "enigma");
 	}
 
 	@Test
 	public void notEmptyArrayWithNullArrayAndMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalArgumentException.class, "enigma");
 		Assert.notEmpty((Object[]) null, () -> "enigma");
 	}
 
@@ -394,8 +373,7 @@ public class AssertTests {
 
 	@Test
 	public void noNullElementsWithNullElementsAndMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalArgumentException.class, "enigma");
 		Assert.noNullElements(new String[] { "foo", null, "bar" }, () -> "enigma");
 	}
 
@@ -413,15 +391,13 @@ public class AssertTests {
 
 	@Test
 	public void notEmptyCollectionWithEmptyCollection() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalArgumentException.class, "enigma");
 		Assert.notEmpty(emptyList(), "enigma");
 	}
 
 	@Test
 	public void notEmptyCollectionWithNullCollection() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalArgumentException.class, "enigma");
 		Assert.notEmpty((Collection<?>) null, "enigma");
 	}
 
@@ -432,15 +408,13 @@ public class AssertTests {
 
 	@Test
 	public void notEmptyCollectionWithEmptyCollectionAndMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalArgumentException.class, "enigma");
 		Assert.notEmpty(emptyList(), () -> "enigma");
 	}
 
 	@Test
 	public void notEmptyCollectionWithNullCollectionAndMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalArgumentException.class, "enigma");
 		Assert.notEmpty((Collection<?>) null, () -> "enigma");
 	}
 
@@ -458,15 +432,13 @@ public class AssertTests {
 
 	@Test
 	public void notEmptyMapWithNullMap() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalArgumentException.class, "enigma");
 		Assert.notEmpty((Map<?, ?>) null, "enigma");
 	}
 
 	@Test
 	public void notEmptyMapWithEmptyMap() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalArgumentException.class, "enigma");
 		Assert.notEmpty(emptyMap(), "enigma");
 	}
 
@@ -477,15 +449,13 @@ public class AssertTests {
 
 	@Test
 	public void notEmptyMapWithEmptyMapAndMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalArgumentException.class, "enigma");
 		Assert.notEmpty(emptyMap(), () -> "enigma");
 	}
 
 	@Test
 	public void notEmptyMapWithNullMapAndMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalArgumentException.class, "enigma");
 		Assert.notEmpty((Map<?, ?>) null, () -> "enigma");
 	}
 
@@ -503,44 +473,38 @@ public class AssertTests {
 
 	@Test
 	public void isInstanceOfWithNullType() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("Type to check against must not be null");
+		thrown.expect(IllegalArgumentException.class, "Type to check against must not be null");
 		Assert.isInstanceOf(null, "foo", "enigma");
 	}
 
 	@Test
 	public void isInstanceOfWithNullInstance() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma: null");
+		thrown.expect(IllegalArgumentException.class, "enigma: null");
 		Assert.isInstanceOf(String.class, null, "enigma");
 	}
 
 	@Test
 	public void isInstanceOfWithTypeMismatchAndNullMessage() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("Object of class [java.lang.Long] must be an instance of class java.lang.String");
+		thrown.expect(IllegalArgumentException.class, "Object of class [java.lang.Long] must be an instance of class java.lang.String");
 		Assert.isInstanceOf(String.class, 42L, (String) null);
 	}
 
 	@Test
 	public void isInstanceOfWithTypeMismatchAndCustomMessage() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("Custom message: java.lang.Long");
+		thrown.expect(IllegalArgumentException.class, "Custom message: java.lang.Long");
 		Assert.isInstanceOf(String.class, 42L, "Custom message");
 	}
 
 	@Test
 	public void isInstanceOfWithTypeMismatchAndCustomMessageWithSeparator() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage(
+		thrown.expect(IllegalArgumentException.class, 
 				"Custom message: Object of class [java.lang.Long] must be an instance of class java.lang.String");
 		Assert.isInstanceOf(String.class, 42L, "Custom message:");
 	}
 
 	@Test
 	public void isInstanceOfWithTypeMismatchAndCustomMessageWithSpace() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("Custom message for java.lang.Long");
+		thrown.expect(IllegalArgumentException.class, "Custom message for java.lang.Long");
 		Assert.isInstanceOf(String.class, 42L, "Custom message for ");
 	}
 
@@ -551,29 +515,25 @@ public class AssertTests {
 
 	@Test
 	public void isInstanceOfWithNullTypeAndMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("Type to check against must not be null");
+		thrown.expect(IllegalArgumentException.class, "Type to check against must not be null");
 		Assert.isInstanceOf(null, "foo", () -> "enigma");
 	}
 
 	@Test
 	public void isInstanceOfWithNullInstanceAndMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma: null");
+		thrown.expect(IllegalArgumentException.class, "enigma: null");
 		Assert.isInstanceOf(String.class, null, () -> "enigma");
 	}
 
 	@Test
 	public void isInstanceOfWithTypeMismatchAndNullMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("Object of class [java.lang.Long] must be an instance of class java.lang.String");
+		thrown.expect(IllegalArgumentException.class, "Object of class [java.lang.Long] must be an instance of class java.lang.String");
 		Assert.isInstanceOf(String.class, 42L, (Supplier<String>) null);
 	}
 
 	@Test
 	public void isInstanceOfWithTypeMismatchAndMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma: java.lang.Long");
+		thrown.expect(IllegalArgumentException.class, "enigma: java.lang.Long");
 		Assert.isInstanceOf(String.class, 42L, () -> "enigma");
 	}
 
@@ -584,43 +544,37 @@ public class AssertTests {
 
 	@Test
 	public void isAssignableWithNullSupertype() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("Super type to check against must not be null");
+		thrown.expect(IllegalArgumentException.class, "Super type to check against must not be null");
 		Assert.isAssignable(null, Integer.class, "enigma");
 	}
 
 	@Test
 	public void isAssignableWithNullSubtype() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma: null");
+		thrown.expect(IllegalArgumentException.class, "enigma: null");
 		Assert.isAssignable(Integer.class, null, "enigma");
 	}
 
 	@Test
 	public void isAssignableWithTypeMismatchAndNullMessage() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("class java.lang.Integer is not assignable to class java.lang.String");
+		thrown.expect(IllegalArgumentException.class, "class java.lang.Integer is not assignable to class java.lang.String");
 		Assert.isAssignable(String.class, Integer.class, (String) null);
 	}
 
 	@Test
 	public void isAssignableWithTypeMismatchAndCustomMessage() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("Custom message: class java.lang.Integer");
+		thrown.expect(IllegalArgumentException.class, "Custom message: class java.lang.Integer");
 		Assert.isAssignable(String.class, Integer.class, "Custom message");
 	}
 
 	@Test
 	public void isAssignableWithTypeMismatchAndCustomMessageWithSeparator() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("Custom message: class java.lang.Integer is not assignable to class java.lang.String");
+		thrown.expect(IllegalArgumentException.class, "Custom message: class java.lang.Integer is not assignable to class java.lang.String");
 		Assert.isAssignable(String.class, Integer.class, "Custom message:");
 	}
 
 	@Test
 	public void isAssignableWithTypeMismatchAndCustomMessageWithSpace() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("Custom message for class java.lang.Integer");
+		thrown.expect(IllegalArgumentException.class, "Custom message for class java.lang.Integer");
 		Assert.isAssignable(String.class, Integer.class, "Custom message for ");
 	}
 
@@ -631,29 +585,25 @@ public class AssertTests {
 
 	@Test
 	public void isAssignableWithNullSupertypeAndMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("Super type to check against must not be null");
+		thrown.expect(IllegalArgumentException.class, "Super type to check against must not be null");
 		Assert.isAssignable(null, Integer.class, () -> "enigma");
 	}
 
 	@Test
 	public void isAssignableWithNullSubtypeAndMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma: null");
+		thrown.expect(IllegalArgumentException.class, "enigma: null");
 		Assert.isAssignable(Integer.class, null, () -> "enigma");
 	}
 
 	@Test
 	public void isAssignableWithTypeMismatchAndNullMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("class java.lang.Integer is not assignable to class java.lang.String");
+		thrown.expect(IllegalArgumentException.class, "class java.lang.Integer is not assignable to class java.lang.String");
 		Assert.isAssignable(String.class, Integer.class, (Supplier<String>) null);
 	}
 
 	@Test
 	public void isAssignableWithTypeMismatchAndMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("enigma: class java.lang.Integer");
+		thrown.expect(IllegalArgumentException.class, "enigma: class java.lang.Integer");
 		Assert.isAssignable(String.class, Integer.class, () -> "enigma");
 	}
 
@@ -664,8 +614,7 @@ public class AssertTests {
 
 	@Test
 	public void stateWithFalseExpression() {
-		thrown.expect(IllegalStateException.class);
-		thrown.expectMessage("enigma");
+		thrown.expect(IllegalStateException.class, "enigma");
 		Assert.state(false, "enigma");
 	}
 

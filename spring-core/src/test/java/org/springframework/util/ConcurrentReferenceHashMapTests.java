@@ -106,24 +106,21 @@ public class ConcurrentReferenceHashMapTests {
 	@Test
 	public void shouldNeedNonNegativeInitialCapacity() {
 		new ConcurrentReferenceHashMap<Integer, String>(0, 1);
-		this.thrown.expect(IllegalArgumentException.class);
-		this.thrown.expectMessage("Initial capacity must not be negative");
+		this.thrown.expect(IllegalArgumentException.class, "Initial capacity must not be negative");
 		new TestWeakConcurrentCache<Integer, String>(-1, 1);
 	}
 
 	@Test
 	public void shouldNeedPositiveLoadFactor() {
 		new ConcurrentReferenceHashMap<Integer, String>(0, 0.1f, 1);
-		this.thrown.expect(IllegalArgumentException.class);
-		this.thrown.expectMessage("Load factor must be positive");
+		this.thrown.expect(IllegalArgumentException.class, "Load factor must be positive");
 		new TestWeakConcurrentCache<Integer, String>(0, 0.0f, 1);
 	}
 
 	@Test
 	public void shouldNeedPositiveConcurrencyLevel() {
 		new ConcurrentReferenceHashMap<Integer, String>(1, 1);
-		this.thrown.expect(IllegalArgumentException.class);
-		this.thrown.expectMessage("Concurrency level must be positive");
+		this.thrown.expect(IllegalArgumentException.class, "Concurrency level must be positive");
 		new TestWeakConcurrentCache<Integer, String>(1, 0);
 	}
 

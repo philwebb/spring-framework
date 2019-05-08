@@ -214,8 +214,7 @@ public class DataSizeTests {
 
 	@Test
 	public void parseWithUnsupportedUnit() {
-		this.thrown.expect(IllegalArgumentException.class);
-		this.thrown.expectMessage("3WB");
+		this.thrown.expect(IllegalArgumentException.class, "3WB");
 		this.thrown.expectMessage("is not a valid data size");
 		DataSize.parse("3WB");
 	}

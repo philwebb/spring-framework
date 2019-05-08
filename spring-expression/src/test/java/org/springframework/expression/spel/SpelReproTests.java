@@ -1288,8 +1288,7 @@ public class SpelReproTests extends AbstractExpressionTests {
 	}
 
 	private void doTestSpr10146(String expression, String expectedMessage) {
-		thrown.expect(SpelParseException.class);
-		thrown.expectMessage(expectedMessage);
+		thrown.expect(SpelParseException.class, expectedMessage);
 		new SpelExpressionParser().parseExpression(expression);
 	}
 
@@ -1314,8 +1313,7 @@ public class SpelReproTests extends AbstractExpressionTests {
 
 	@Test
 	public void SPR10328() {
-		thrown.expect(SpelParseException.class);
-		thrown.expectMessage("EL1071E: A required selection expression has not been specified");
+		thrown.expect(SpelParseException.class, "EL1071E: A required selection expression has not been specified");
 		Expression exp = parser.parseExpression("$[]");
 		exp.getValue(Arrays.asList("foo", "bar", "baz"));
 	}
@@ -1407,8 +1405,7 @@ public class SpelReproTests extends AbstractExpressionTests {
 		StandardEvaluationContext context = new StandardEvaluationContext();
 		Spr11142 rootObject = new Spr11142();
 		Expression expression = parser.parseExpression("something");
-		thrown.expect(SpelEvaluationException.class);
-		thrown.expectMessage("'something' cannot be found");
+		thrown.expect(SpelEvaluationException.class, "'something' cannot be found");
 		expression.getValue(context, rootObject);
 	}
 
