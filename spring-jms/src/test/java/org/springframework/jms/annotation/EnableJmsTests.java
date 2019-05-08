@@ -185,8 +185,8 @@ public class EnableJmsTests extends AbstractJmsAnnotationDrivenTests {
 	@SuppressWarnings("resource")
 	public void unknownFactory() {
 		 // not found
-		thrown.expect(BeanCreationException.class, "customFactory", () ->
-		new AnnotationConfigApplicationContext(EnableJmsSampleConfig.class, CustomBean.class));
+		assertThatExceptionOfType((Class<? extends Throwable>) BeanCreationException.class).isThrownBy(() ->
+		new AnnotationConfigApplicationContext(EnableJmsSampleConfig.class, CustomBean.class)).withMessageContaining("customFactory");
 	}
 
 	@Test

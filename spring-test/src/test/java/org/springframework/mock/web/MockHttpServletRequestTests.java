@@ -37,6 +37,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StreamUtils;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
 /**
@@ -104,7 +105,7 @@ public class MockHttpServletRequestTests {
 
 	@Test
 	public void getContentAsStringWithoutSettingCharacterEncoding() throws IOException {
-		thrown.expect(IllegalStateException.class, "Cannot get content as a String for a null character encoding", request::getContentAsString);
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(request::getContentAsString).withMessageContaining("Cannot get content as a String for a null character encoding");
 	}
 
 	@Test
@@ -141,15 +142,13 @@ public class MockHttpServletRequestTests {
 	@Test  // SPR-16499
 	public void getReaderAfterGettingInputStream() throws IOException {
 		request.getInputStream();
-		thrown.expect(IllegalStateException.class,
-				"Cannot call getReader() after getInputStream() has already been called for the current request", request::getReader);
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(request::getReader).withMessageContaining("Cannot call getReader() after getInputStream() has already been called for the current request");
 	}
 
 	@Test  // SPR-16499
 	public void getInputStreamAfterGettingReader() throws IOException {
 		request.getReader();
-		thrown.expect(IllegalStateException.class,
-				"Cannot call getInputStream() after getReader() has already been called for the current request", request::getInputStream);
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(request::getInputStream).withMessageContaining("Cannot call getInputStream() after getReader() has already been called for the current request");
 	}
 
 	@Test

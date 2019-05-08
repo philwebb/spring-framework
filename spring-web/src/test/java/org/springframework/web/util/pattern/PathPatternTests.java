@@ -33,6 +33,7 @@ import org.springframework.http.server.PathContainer.Element;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.util.pattern.PathPattern.PathRemainingMatchInfo;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
@@ -888,7 +889,7 @@ public class PathPatternTests {
 	@Test
 	public void combineWithTwoFileExtensionPatterns() {
 		TestPathCombiner pathMatcher = new TestPathCombiner();
-		exception.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		pathMatcher.combine("/*.html", "/*.txt"));
 	}
 

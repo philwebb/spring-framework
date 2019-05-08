@@ -52,6 +52,7 @@ import org.springframework.jdbc.support.SQLStateSQLExceptionTranslator;
 import org.springframework.lang.Nullable;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
@@ -98,7 +99,7 @@ public class StoredProcedureTests {
 				callableStatement);
 
 		NoSuchStoredProcedure sproc = new NoSuchStoredProcedure(dataSource);
-		thrown.expect(BadSqlGrammarException.class, sproc::execute);
+		assertThatExceptionOfType((Class<? extends Throwable>) BadSqlGrammarException.class).isThrownBy(sproc::execute);
 	}
 
 	private void testAddInvoice(final int amount, final int custid) throws Exception {
@@ -231,7 +232,7 @@ public class StoredProcedureTests {
 	public void testUnnamedParameter() throws Exception {
 		this.verifyClosedAfter = false;
 		// Shouldn't succeed in creating stored procedure with unnamed parameter
-		thrown.expect(InvalidDataAccessApiUsageException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) InvalidDataAccessApiUsageException.class).isThrownBy(() ->
 		new UnnamedParameterStoredProcedure(dataSource));
 	}
 
@@ -239,7 +240,7 @@ public class StoredProcedureTests {
 	public void testMissingParameter() throws Exception {
 		this.verifyClosedAfter = false;
 		MissingParameterStoredProcedure mp = new MissingParameterStoredProcedure(dataSource);
-		thrown.expect(InvalidDataAccessApiUsageException.class, mp::execute);
+		assertThatExceptionOfType((Class<? extends Throwable>) InvalidDataAccessApiUsageException.class).isThrownBy(mp::execute);
 		fail("Shouldn't succeed in running stored procedure with missing required parameter");
 	}
 
@@ -251,7 +252,7 @@ public class StoredProcedureTests {
 		given(connection.prepareCall("{call " + StoredProcedureExceptionTranslator.SQL + "()}")
 				).willReturn(callableStatement);
 		StoredProcedureExceptionTranslator sproc = new StoredProcedureExceptionTranslator(dataSource);
-		thrown.expect(CustomDataException.class, sproc::execute);
+		assertThatExceptionOfType((Class<? extends Throwable>) CustomDataException.class).isThrownBy(sproc::execute);
 	}
 
 	@Test

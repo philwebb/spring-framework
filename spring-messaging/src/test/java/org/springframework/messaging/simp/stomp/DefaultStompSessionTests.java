@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -401,7 +400,7 @@ public class DefaultStompSessionTests {
 		stompHeaders.setContentType(MimeTypeUtils.APPLICATION_JSON);
 		String payload = "{'foo':'bar'}";
 
-		this.thrown.expect(MessageConversionException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) MessageConversionException.class).isThrownBy(() ->
 		this.session.send(stompHeaders, payload));
 		verifyNoMoreInteractions(this.connection);
 	}

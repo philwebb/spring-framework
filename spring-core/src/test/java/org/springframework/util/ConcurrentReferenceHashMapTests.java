@@ -41,6 +41,7 @@ import org.springframework.util.ConcurrentReferenceHashMap.Restructure;
 import org.springframework.util.comparator.ComparableComparator;
 import org.springframework.util.comparator.NullSafeComparator;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -106,22 +107,22 @@ public class ConcurrentReferenceHashMapTests {
 	@Test
 	public void shouldNeedNonNegativeInitialCapacity() {
 		new ConcurrentReferenceHashMap<Integer, String>(0, 1);
-		this.thrown.expect(IllegalArgumentException.class, "Initial capacity must not be negative", () ->
-		new TestWeakConcurrentCache<Integer, String>(-1, 1));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		new TestWeakConcurrentCache<Integer, String>(-1, 1)).withMessageContaining("Initial capacity must not be negative");
 	}
 
 	@Test
 	public void shouldNeedPositiveLoadFactor() {
 		new ConcurrentReferenceHashMap<Integer, String>(0, 0.1f, 1);
-		this.thrown.expect(IllegalArgumentException.class, "Load factor must be positive", () ->
-		new TestWeakConcurrentCache<Integer, String>(0, 0.0f, 1));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		new TestWeakConcurrentCache<Integer, String>(0, 0.0f, 1)).withMessageContaining("Load factor must be positive");
 	}
 
 	@Test
 	public void shouldNeedPositiveConcurrencyLevel() {
 		new ConcurrentReferenceHashMap<Integer, String>(1, 1);
-		this.thrown.expect(IllegalArgumentException.class, "Concurrency level must be positive", () ->
-		new TestWeakConcurrentCache<Integer, String>(1, 0));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		new TestWeakConcurrentCache<Integer, String>(1, 0)).withMessageContaining("Concurrency level must be positive");
 	}
 
 	@Test

@@ -37,6 +37,7 @@ import org.mockito.stubbing.Answer;
 
 import org.springframework.core.MethodParameter;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
@@ -207,7 +208,7 @@ public class MappingJackson2MessageConverterTests {
 		Method method = this.getClass().getDeclaredMethod("invalid");
 		MethodParameter returnType = new MethodParameter(method, -1);
 
-		thrown.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		testToTextMessageWithReturnType(returnType));
 	}
 

@@ -22,7 +22,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hamcrest.Matchers;
 import org.junit.Rule;
 import org.junit.Test;
 import temp.ExpectedException;
@@ -160,7 +159,7 @@ public class HttpMessageConverterExtractorTests {
 		given(response.getHeaders()).willReturn(responseHeaders);
 		given(response.getBody()).willReturn(new ByteArrayInputStream("Foobar".getBytes()));
 		given(converter.canRead(String.class, contentType)).willReturn(false);
-		exception.expect(RestClientException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) RestClientException.class).isThrownBy(() ->
 		extractor.extractData(response));
 	}
 

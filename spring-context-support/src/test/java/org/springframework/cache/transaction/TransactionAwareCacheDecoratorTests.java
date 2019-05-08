@@ -28,6 +28,7 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
 /**
@@ -42,7 +43,7 @@ public class TransactionAwareCacheDecoratorTests {
 
 	@Test
 	public void createWithNullTarget() {
-		this.thrown.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		new TransactionAwareCacheDecorator(null));
 	}
 

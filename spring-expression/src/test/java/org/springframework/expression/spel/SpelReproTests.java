@@ -62,6 +62,7 @@ import org.springframework.expression.spel.support.StandardTypeLocator;
 import org.springframework.expression.spel.testresources.le.div.mod.reserved.Reserver;
 import org.springframework.util.ObjectUtils;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -1288,8 +1289,8 @@ public class SpelReproTests extends AbstractExpressionTests {
 	}
 
 	private void doTestSpr10146(String expression, String expectedMessage) {
-		thrown.expect(SpelParseException.class, expectedMessage, () ->
-		new SpelExpressionParser().parseExpression(expression));
+		assertThatExceptionOfType((Class<? extends Throwable>) SpelParseException.class).isThrownBy(() ->
+		new SpelExpressionParser().parseExpression(expression)).withMessageContaining(expectedMessage);
 	}
 
 	@Test
@@ -1314,8 +1315,8 @@ public class SpelReproTests extends AbstractExpressionTests {
 	@Test
 	public void SPR10328() {
 		Expression exp = parser.parseExpression("$[]");
-		thrown.expect(SpelParseException.class, "EL1071E: A required selection expression has not been specified", () ->
-		exp.getValue(Arrays.asList("foo", "bar", "baz")));
+		assertThatExceptionOfType((Class<? extends Throwable>) SpelParseException.class).isThrownBy(() ->
+		exp.getValue(Arrays.asList("foo", "bar", "baz"))).withMessageContaining("EL1071E: A required selection expression has not been specified");
 	}
 
 	@Test
@@ -1405,8 +1406,8 @@ public class SpelReproTests extends AbstractExpressionTests {
 		StandardEvaluationContext context = new StandardEvaluationContext();
 		Spr11142 rootObject = new Spr11142();
 		Expression expression = parser.parseExpression("something");
-		thrown.expect(SpelEvaluationException.class, "'something' cannot be found", () ->
-		expression.getValue(context, rootObject));
+		assertThatExceptionOfType((Class<? extends Throwable>) SpelEvaluationException.class).isThrownBy(() ->
+		expression.getValue(context, rootObject)).withMessageContaining("'something' cannot be found");
 	}
 
 	@Test

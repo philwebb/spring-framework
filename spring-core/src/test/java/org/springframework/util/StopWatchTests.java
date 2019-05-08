@@ -20,6 +20,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import temp.ExpectedException;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
 /**
@@ -122,17 +123,17 @@ public class StopWatchTests {
 		assertFalse(toString.contains(name1));
 		assertFalse(toString.contains(name2));
 
-		exception.expect(UnsupportedOperationException.class, sw::getTaskInfo);
+		assertThatExceptionOfType((Class<? extends Throwable>) UnsupportedOperationException.class).isThrownBy(sw::getTaskInfo);
 	}
 
 	@Test
 	public void failureToStartBeforeGettingTimings() {
-		exception.expect(IllegalStateException.class, sw::getLastTaskTimeMillis);
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(sw::getLastTaskTimeMillis);
 	}
 
 	@Test
 	public void failureToStartBeforeStop() {
-		exception.expect(IllegalStateException.class, sw::stop);
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(sw::stop);
 	}
 
 	@Test
@@ -141,7 +142,7 @@ public class StopWatchTests {
 		sw.stop();
 		sw.start("");
 		assertTrue(sw.isRunning());
-		exception.expect(IllegalStateException.class, () -> sw.start(""));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(() -> sw.start(""));
 	}
 
 }

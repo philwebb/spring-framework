@@ -30,6 +30,7 @@ import org.springframework.jms.StubTextMessage;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
@@ -46,7 +47,7 @@ public class MessagingMessageConverterTests {
 
 	@Test
 	public void onlyHandlesMessage() throws JMSException {
-		this.thrown.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		this.converter.toMessage(new Object(), mock(Session.class)));
 	}
 

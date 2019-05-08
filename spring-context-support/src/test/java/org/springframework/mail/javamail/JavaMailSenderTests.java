@@ -44,6 +44,7 @@ import org.springframework.mail.MailSendException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.util.ObjectUtils;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
 /**
@@ -512,7 +513,7 @@ public class JavaMailSenderTests {
 		MockJavaMailSender sender = new MockJavaMailSender();
 		sender.setHost(null);
 
-		thrown.expect(MessagingException.class, sender::testConnection);
+		assertThatExceptionOfType((Class<? extends Throwable>) MessagingException.class).isThrownBy(sender::testConnection);
 	}
 
 

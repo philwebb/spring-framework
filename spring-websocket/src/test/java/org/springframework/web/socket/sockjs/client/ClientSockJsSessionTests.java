@@ -36,6 +36,7 @@ import org.springframework.web.socket.sockjs.frame.Jackson2SockJsMessageCodec;
 import org.springframework.web.socket.sockjs.frame.SockJsFrame;
 import org.springframework.web.socket.sockjs.transport.TransportType;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
@@ -190,15 +191,15 @@ public class ClientSockJsSessionTests {
 	@Test
 	public void closeWithNullStatus() throws Exception {
 		this.session.handleFrame(SockJsFrame.openFrame().getContent());
-		this.thrown.expect(IllegalArgumentException.class, "Invalid close status", () ->
-		this.session.close(null));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		this.session.close(null)).withMessageContaining("Invalid close status");
 	}
 
 	@Test
 	public void closeWithStatusOutOfRange() throws Exception {
 		this.session.handleFrame(SockJsFrame.openFrame().getContent());
-		this.thrown.expect(IllegalArgumentException.class, "Invalid close status", () ->
-		this.session.close(new CloseStatus(2999, "reason")));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		this.session.close(new CloseStatus(2999, "reason"))).withMessageContaining("Invalid close status");
 	}
 
 	@Test

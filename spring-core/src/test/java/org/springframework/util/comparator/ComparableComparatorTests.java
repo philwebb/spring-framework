@@ -22,6 +22,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import temp.ExpectedException;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
 /**
@@ -50,7 +51,7 @@ public class ComparableComparatorTests {
 		Comparator c = new ComparableComparator();
 		Object o1 = new Object();
 		Object o2 = new Object();
-		thrown.expect(ClassCastException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) ClassCastException.class).isThrownBy(() ->
 		c.compare(o1, o2));
 	}
 

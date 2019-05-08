@@ -34,6 +34,7 @@ import reactor.core.publisher.Mono;
 import org.springframework.tests.sample.objects.TestObject;
 import org.springframework.util.ClassUtils;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
 /**
@@ -76,7 +77,7 @@ public class ConventionsTests {
 
 	@Test
 	public void emptyList() {
-		this.exception.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		Conventions.getVariableName(new ArrayList<>()));
 	}
 

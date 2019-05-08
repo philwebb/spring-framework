@@ -37,6 +37,7 @@ import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
@@ -275,7 +276,7 @@ public class SqlUpdateTests {
 
 		MaxRowsUpdater pc = new MaxRowsUpdater();
 
-		thrown.expect(JdbcUpdateAffectedIncorrectNumberOfRowsException.class, pc::run);
+		assertThatExceptionOfType((Class<? extends Throwable>) JdbcUpdateAffectedIncorrectNumberOfRowsException.class).isThrownBy(pc::run);
 	}
 
 	@Test
@@ -294,7 +295,7 @@ public class SqlUpdateTests {
 		given(preparedStatement.executeUpdate()).willReturn(2);
 		given(connection.prepareStatement(UPDATE)).willReturn(preparedStatement);
 		RequiredRowsUpdater pc = new RequiredRowsUpdater();
-		thrown.expect(JdbcUpdateAffectedIncorrectNumberOfRowsException.class, pc::run);
+		assertThatExceptionOfType((Class<? extends Throwable>) JdbcUpdateAffectedIncorrectNumberOfRowsException.class).isThrownBy(pc::run);
 	}
 
 	private class Updater extends SqlUpdate {

@@ -22,6 +22,7 @@ import temp.ExpectedException;
 
 import org.springframework.jms.support.QosSettings;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
 /**
@@ -80,21 +81,21 @@ public class JmsMessageEndpointManagerTests {
 	public void isPubSubDomainWithNoConfig() {
 		JmsMessageEndpointManager endpoint = new JmsMessageEndpointManager();
 		// far from ideal
-		this.thrown.expect(IllegalStateException.class, endpoint::isPubSubDomain);
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(endpoint::isPubSubDomain);
 	}
 
 	@Test
 	public void isReplyPubSubDomainWithNoConfig() {
 		JmsMessageEndpointManager endpoint = new JmsMessageEndpointManager();
 		// far from ideal
-		this.thrown.expect(IllegalStateException.class, endpoint::isReplyPubSubDomain);
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(endpoint::isReplyPubSubDomain);
 	}
 
 	@Test
 	public void getReplyQosSettingsWithNoConfig() {
 		JmsMessageEndpointManager endpoint = new JmsMessageEndpointManager();
 		// far from ideal
-		this.thrown.expect(IllegalStateException.class, endpoint::getReplyQosSettings);
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(endpoint::getReplyQosSettings);
 	}
 
 	@Test

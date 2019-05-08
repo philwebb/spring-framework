@@ -37,6 +37,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.MockHttpInputMessage;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
 /**
@@ -199,8 +200,8 @@ public class Jaxb2CollectionHttpMessageConverterTests {
 				"]>\n" +
 				"<list><rootElement><external>&lol9;</external></rootElement></list>";
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(content.getBytes("UTF-8"));
-		this.thrown.expect(HttpMessageNotReadableException.class, "\"lol9\"", () ->
-		this.converter.read(this.rootElementListType, null, inputMessage));
+		assertThatExceptionOfType((Class<? extends Throwable>) HttpMessageNotReadableException.class).isThrownBy(() ->
+		this.converter.read(this.rootElementListType, null, inputMessage)).withMessageContaining("\"lol9\"");
 	}
 
 

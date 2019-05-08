@@ -35,6 +35,7 @@ import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.InvalidResultSetAccessException;
 import org.springframework.lang.Nullable;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
 /**
@@ -177,7 +178,7 @@ public class SQLErrorCodeSQLExceptionTranslatorTests {
 		assertEquals(invResEx, diex.getCause());
 
 		// Shouldn't custom translate this - invalid class
-		exception.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		customTranslation.setExceptionClass(String.class));
 	}
 

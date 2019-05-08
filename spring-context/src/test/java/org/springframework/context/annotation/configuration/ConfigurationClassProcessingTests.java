@@ -60,6 +60,7 @@ import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.NestedTestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
 /**
@@ -97,7 +98,7 @@ public class ConfigurationClassProcessingTests {
 		assertSame(testBeanSupplier.get(), ac.getBean(beanName));
 
 		// method name should not be registered
-		exception.expect(NoSuchBeanDefinitionException.class, ()->
+		assertThatExceptionOfType((Class<? extends Throwable>) NoSuchBeanDefinitionException.class).isThrownBy(()->
 		ac.getBean("methodName"));
 	}
 
@@ -121,7 +122,7 @@ public class ConfigurationClassProcessingTests {
 		Arrays.stream(factory.getAliases(beanName)).map(factory::getBean).forEach(alias -> assertSame(testBean, alias));
 
 		// method name should not be registered
-		exception.expect(NoSuchBeanDefinitionException.class, ()->
+		assertThatExceptionOfType((Class<? extends Throwable>) NoSuchBeanDefinitionException.class).isThrownBy(()->
 		factory.getBean("methodName"));
 	}
 
@@ -145,7 +146,7 @@ public class ConfigurationClassProcessingTests {
 
 	@Test
 	public void testFinalBeanMethod() {
-		exception.expect(BeanDefinitionParsingException.class, ()->
+		assertThatExceptionOfType((Class<? extends Throwable>) BeanDefinitionParsingException.class).isThrownBy(()->
 		initBeanFactory(ConfigWithFinalBean.class));
 	}
 

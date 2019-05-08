@@ -23,6 +23,7 @@ import temp.ExpectedException;
 import org.springframework.util.backoff.BackOffExecution;
 import org.springframework.util.backoff.ExponentialBackOff;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
 /**
@@ -110,7 +111,7 @@ public class ExponentialBackOffTests {
 	public void invalidInterval() {
 		ExponentialBackOff backOff = new ExponentialBackOff();
 
-		thrown.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		backOff.setMultiplier(0.9));
 	}
 

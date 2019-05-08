@@ -22,6 +22,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import temp.ExpectedException;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+
 /**
  * Test for {@link CompoundComparator}.
  *
@@ -38,7 +40,7 @@ public class CompoundComparatorTests {
 	@Test
 	public void shouldNeedAtLeastOneComparator() {
 		Comparator<String> c = new CompoundComparator<>();
-		thrown.expect(IllegalStateException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(() ->
 		c.compare("foo", "bar"));
 	}
 

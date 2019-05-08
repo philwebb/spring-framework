@@ -33,6 +33,7 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageDeliveryException;
 import org.springframework.messaging.MessageHandler;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -69,8 +70,8 @@ public class ExecutorSubscribableChannelTests {
 
 	@Test
 	public void messageMustNotBeNull() {
-		thrown.expect(IllegalArgumentException.class, "Message must not be null", () ->
-		this.channel.send(null));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		this.channel.send(null)).withMessageContaining("Message must not be null");
 	}
 
 	@Test

@@ -35,6 +35,7 @@ import org.springframework.mock.env.MockEnvironment;
 import org.springframework.mock.env.MockPropertySource;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
@@ -329,7 +330,7 @@ public class PropertySourcesPlaceholderConfigurerTests {
 	@Test
 	public void getAppliedPropertySourcesTooEarly() throws Exception {
 		PropertySourcesPlaceholderConfigurer ppc = new PropertySourcesPlaceholderConfigurer();
-		thrown.expect(IllegalStateException.class, ppc::getAppliedPropertySources);
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(ppc::getAppliedPropertySources);
 	}
 
 	@Test

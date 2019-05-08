@@ -46,6 +46,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
 /**
@@ -116,8 +117,8 @@ public class JCacheJavaConfigTests extends AbstractJCacheAnnotationTests {
 			service.cache("id");
 
 			// This call requires the cache manager to be set
-			thrown.expect(IllegalStateException.class, ()->
-			service.cacheWithException("test", false));
+			assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(()->
+				service.cacheWithException("test", false));
 		}
 		finally {
 			context.close();

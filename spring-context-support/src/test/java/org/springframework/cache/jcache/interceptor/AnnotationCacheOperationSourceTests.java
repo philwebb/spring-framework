@@ -37,6 +37,7 @@ import org.springframework.cache.jcache.support.TestableCacheResolverFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
@@ -99,7 +100,7 @@ public class AnnotationCacheOperationSourceTests extends AbstractJCacheTests {
 
 	@Test
 	public void multiAnnotations() {
-		thrown.expect(IllegalStateException.class, ()->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(()->
 		getCacheOperation(InvalidCases.class, name.getMethodName()));
 	}
 

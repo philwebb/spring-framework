@@ -23,6 +23,7 @@ import temp.ExpectedException;
 
 import org.springframework.beans.factory.BeanCreationException;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.core.Is.*;
 
@@ -59,9 +60,9 @@ public class Spr12278Tests {
 
 	@Test
 	public void componentTwoSpecificConstructorsNoHint() {
-		thrown.expect(BeanCreationException.class, NoSuchMethodException.class.getName(), ()->
+		assertThatExceptionOfType((Class<? extends Throwable>) BeanCreationException.class).isThrownBy(()->
 		new AnnotationConfigApplicationContext(BaseConfiguration.class,
-				TwoSpecificConstructorsComponent.class));
+				TwoSpecificConstructorsComponent.class)).withMessageContaining(NoSuchMethodException.class.getName());
 	}
 
 

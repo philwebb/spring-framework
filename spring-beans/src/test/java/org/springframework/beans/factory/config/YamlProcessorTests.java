@@ -27,6 +27,7 @@ import org.yaml.snakeyaml.scanner.ScannerException;
 
 import org.springframework.core.io.ByteArrayResource;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
 /**
@@ -68,15 +69,15 @@ public class YamlProcessorTests {
 	@Test
 	public void testBadDocumentStart() {
 		this.processor.setResources(new ByteArrayResource("foo # a document\nbar: baz".getBytes()));
-		this.thrown.expect(ParserException.class, "line 2, column 1", ()->
-		this.processor.process((properties, map) -> {}));
+		assertThatExceptionOfType((Class<? extends Throwable>) ParserException.class).isThrownBy(()->
+		this.processor.process((properties, map) -> {})).withMessageContaining("line 2, column 1");
 	}
 
 	@Test
 	public void testBadResource() {
 		this.processor.setResources(new ByteArrayResource("foo: bar\ncd\nspam:\n  foo: baz".getBytes()));
-		this.thrown.expect(ScannerException.class, "line 3, column 1", ()->
-		this.processor.process((properties, map) -> {}));
+		assertThatExceptionOfType((Class<? extends Throwable>) ScannerException.class).isThrownBy(()->
+		this.processor.process((properties, map) -> {})).withMessageContaining("line 3, column 1");
 	}
 
 	@Test

@@ -35,6 +35,7 @@ import org.springframework.context.MessageSourceResolvable;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.core.io.ClassPathResource;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
 /**
@@ -183,7 +184,7 @@ public class StaticMessageSourceTests extends AbstractApplicationContextTests {
 		String[] codes4 = new String[] {"message.format.example99", "message.format.example98"};
 		MessageSourceResolvable resolvable4 = new DefaultMessageSourceResolvable(codes4);
 
-		exception.expect(NoSuchMessageException.class, ()->
+		assertThatExceptionOfType((Class<? extends Throwable>) NoSuchMessageException.class).isThrownBy(()->
 		sac.getMessage(resolvable4, Locale.US));
 	}
 

@@ -43,6 +43,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.Nullable;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -129,8 +130,8 @@ public class CacheReproTests {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Spr13081Config.class);
 		Spr13081Service bean = context.getBean(Spr13081Service.class);
 
-		this.thrown.expect(IllegalStateException.class, MyCacheResolver.class.getName(), ()->
-		bean.getSimple(null));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(()->
+		bean.getSimple(null)).withMessageContaining(MyCacheResolver.class.getName());
 	}
 
 	@Test

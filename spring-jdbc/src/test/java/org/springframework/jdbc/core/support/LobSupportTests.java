@@ -31,6 +31,7 @@ import org.springframework.jdbc.LobRetrievalFailureException;
 import org.springframework.jdbc.support.lob.LobCreator;
 import org.springframework.jdbc.support.lob.LobHandler;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
@@ -77,7 +78,7 @@ public class LobSupportTests {
 	public void testAbstractLobStreamingResultSetExtractorNoRows() throws SQLException {
 		ResultSet rset = mock(ResultSet.class);
 		AbstractLobStreamingResultSetExtractor<Void> lobRse = getResultSetExtractor(false);
-		thrown.expect(IncorrectResultSizeDataAccessException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IncorrectResultSizeDataAccessException.class).isThrownBy(() ->
 			lobRse.extractData(rset));
 		verify(rset).next();
 	}
@@ -97,7 +98,7 @@ public class LobSupportTests {
 		ResultSet rset = mock(ResultSet.class);
 		given(rset.next()).willReturn(true, true, false);
 		AbstractLobStreamingResultSetExtractor<Void> lobRse = getResultSetExtractor(false);
-		thrown.expect(IncorrectResultSizeDataAccessException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IncorrectResultSizeDataAccessException.class).isThrownBy(() ->
 			lobRse.extractData(rset));
 		verify(rset).clearWarnings();
 	}
@@ -108,7 +109,7 @@ public class LobSupportTests {
 		ResultSet rset = mock(ResultSet.class);
 		given(rset.next()).willReturn(true);
 		AbstractLobStreamingResultSetExtractor<Void> lobRse = getResultSetExtractor(true);
-		thrown.expect(LobRetrievalFailureException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) LobRetrievalFailureException.class).isThrownBy(() ->
 		lobRse.extractData(rset));
 	}
 

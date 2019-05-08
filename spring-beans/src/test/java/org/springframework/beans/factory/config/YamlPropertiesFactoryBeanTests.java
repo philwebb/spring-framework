@@ -32,6 +32,7 @@ import org.springframework.beans.factory.config.YamlProcessor.ResolutionMethod;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
@@ -61,7 +62,7 @@ public class YamlPropertiesFactoryBeanTests {
 		YamlPropertiesFactoryBean factory = new YamlPropertiesFactoryBean();
 		factory.setResources(new ByteArrayResource(
 				"foo: bar\ncd\nspam:\n  foo: baz".getBytes()));
-		this.thrown.expect(ScannerException.class, "line 3, column 1", factory::getObject);
+		assertThatExceptionOfType((Class<? extends Throwable>) ScannerException.class).isThrownBy(factory::getObject).withMessageContaining("line 3, column 1");
 	}
 
 	@Test

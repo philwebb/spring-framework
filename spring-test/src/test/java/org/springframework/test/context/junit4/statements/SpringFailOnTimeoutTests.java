@@ -25,6 +25,7 @@ import temp.ExpectedException;
 import org.junit.runners.model.Statement;
 import org.mockito.stubbing.Answer;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.*;
 
 /**
@@ -44,13 +45,13 @@ public class SpringFailOnTimeoutTests {
 
 	@Test
 	public void nullNextStatement() throws Throwable {
-		exception.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		new SpringFailOnTimeout(null, 1));
 	}
 
 	@Test
 	public void negativeTimeout() throws Throwable {
-		exception.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		new SpringFailOnTimeout(statement, -1));
 	}
 
@@ -58,7 +59,7 @@ public class SpringFailOnTimeoutTests {
 	public void userExceptionPropagates() throws Throwable {
 		doThrow(new Boom()).when(statement).evaluate();
 
-		exception.expect(Boom.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) Boom.class).isThrownBy(() ->
 		new SpringFailOnTimeout(statement, 1).evaluate());
 	}
 
@@ -69,7 +70,7 @@ public class SpringFailOnTimeoutTests {
 			return null;
 		}).when(statement).evaluate();
 
-		exception.expect(TimeoutException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) TimeoutException.class).isThrownBy(() ->
 		new SpringFailOnTimeout(statement, 1).evaluate());
 	}
 

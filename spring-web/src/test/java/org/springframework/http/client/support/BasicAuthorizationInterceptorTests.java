@@ -28,6 +28,7 @@ import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -44,8 +45,8 @@ public class BasicAuthorizationInterceptorTests {
 
 	@Test
 	public void createWhenUsernameContainsColonShouldThrowException() {
-		this.thrown.expect(IllegalArgumentException.class, "Username must not contain a colon", () ->
-		new BasicAuthorizationInterceptor("username:", "password"));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		new BasicAuthorizationInterceptor("username:", "password")).withMessageContaining("Username must not contain a colon");
 	}
 
 	@Test

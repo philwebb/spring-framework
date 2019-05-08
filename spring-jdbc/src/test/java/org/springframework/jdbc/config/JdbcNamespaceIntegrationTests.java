@@ -38,6 +38,7 @@ import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.tests.Assume;
 import org.springframework.tests.TestGroup;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
@@ -117,8 +118,8 @@ public class JdbcNamespaceIntegrationTests {
 			assertNumRowsInTestTable(template, 1);
 			context.getBean(DataSourceInitializer.class).destroy();
 			// Table has been dropped
-			thrown.expect(BadSqlGrammarException.class, () ->
-			assertNumRowsInTestTable(template, 1));
+			assertThatExceptionOfType((Class<? extends Throwable>) BadSqlGrammarException.class).isThrownBy(() ->
+				assertNumRowsInTestTable(template, 1));
 		}
 		finally {
 			context.close();
@@ -134,8 +135,8 @@ public class JdbcNamespaceIntegrationTests {
 			assertNumRowsInTestTable(template, 1);
 			context.getBean(EmbeddedDatabaseFactoryBean.class).destroy();
 			// Table has been dropped
-			thrown.expect(BadSqlGrammarException.class, () ->
-			assertNumRowsInTestTable(template, 1));
+			assertThatExceptionOfType((Class<? extends Throwable>) BadSqlGrammarException.class).isThrownBy(() ->
+				assertNumRowsInTestTable(template, 1));
 		}
 		finally {
 			context.close();
@@ -151,8 +152,8 @@ public class JdbcNamespaceIntegrationTests {
 			assertNumRowsInTestTable(template, 1);
 			context.getBean(EmbeddedDatabaseFactoryBean.class).destroy();
 			 // Table has been dropped
-			thrown.expect(BadSqlGrammarException.class, () ->
-			assertNumRowsInTestTable(template, 1));
+			assertThatExceptionOfType((Class<? extends Throwable>) BadSqlGrammarException.class).isThrownBy(() ->
+				assertNumRowsInTestTable(template, 1));
 		}
 		finally {
 			context.close();

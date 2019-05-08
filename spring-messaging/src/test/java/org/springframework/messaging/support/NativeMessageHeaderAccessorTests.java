@@ -30,6 +30,7 @@ import org.springframework.messaging.Message;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
 /**
@@ -166,8 +167,8 @@ public class NativeMessageHeaderAccessorTests {
 		headerAccessor.setNativeHeader("foo", "bar");
 		headerAccessor.setImmutable();
 
-		this.thrown.expect(IllegalStateException.class, "Already immutable", () ->
-		headerAccessor.setNativeHeader("foo", "baz"));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(() ->
+		headerAccessor.setNativeHeader("foo", "baz")).withMessageContaining("Already immutable");
 	}
 
 	@Test
@@ -215,8 +216,8 @@ public class NativeMessageHeaderAccessorTests {
 		headerAccessor.addNativeHeader("foo", "bar");
 		headerAccessor.setImmutable();
 
-		this.thrown.expect(IllegalStateException.class, "Already immutable", () ->
-		headerAccessor.addNativeHeader("foo", "baz"));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(() ->
+		headerAccessor.addNativeHeader("foo", "baz")).withMessageContaining("Already immutable");
 	}
 
 	@Test

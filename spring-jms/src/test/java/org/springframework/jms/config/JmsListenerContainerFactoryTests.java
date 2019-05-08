@@ -42,6 +42,7 @@ import org.springframework.jms.support.destination.DynamicDestinationResolver;
 import org.springframework.util.backoff.BackOff;
 import org.springframework.util.backoff.FixedBackOff;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -130,7 +131,7 @@ public class JmsListenerContainerFactoryTests {
 
 		SimpleJmsListenerEndpoint endpoint = new SimpleJmsListenerEndpoint();
 		endpoint.setMessageListener(new MessageListenerAdapter());
-		this.thrown.expect(IllegalStateException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(() ->
 		factory.createListenerContainer(endpoint));
 	}
 

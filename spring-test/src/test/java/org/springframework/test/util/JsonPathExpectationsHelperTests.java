@@ -20,6 +20,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import temp.ExpectedException;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.hamcrest.core.Is.*;
 
 /**
@@ -78,8 +79,8 @@ public class JsonPathExpectationsHelperTests {
 	@Test
 	public void existsForIndefinatePathWithEmptyResults() throws Exception {
 		String expression = "$.familyMembers[?(@.name == 'Dilbert')]";
-		thrown.expect(AssertionError.class, "No value at JSON path \"" + expression + "\"", () ->
-		new JsonPathExpectationsHelper(expression).exists(SIMPSONS));
+		assertThatExceptionOfType((Class<? extends Throwable>) AssertionError.class).isThrownBy(() ->
+		new JsonPathExpectationsHelper(expression).exists(SIMPSONS)).withMessageContaining("No value at JSON path \"" + expression + "\"");
 	}
 
 	@Test
@@ -90,23 +91,23 @@ public class JsonPathExpectationsHelperTests {
 	@Test
 	public void doesNotExistForAnEmptyArray() throws Exception {
 		String expression = "$.emptyArray";
-		thrown.expect(AssertionError.class, "Expected no value at JSON path \"" + expression + "\" but found: []", () ->
-		new JsonPathExpectationsHelper(expression).doesNotExist(CONTENT));
+		assertThatExceptionOfType((Class<? extends Throwable>) AssertionError.class).isThrownBy(() ->
+		new JsonPathExpectationsHelper(expression).doesNotExist(CONTENT)).withMessageContaining("Expected no value at JSON path \"" + expression + "\" but found: []");
 	}
 
 	@Test
 	public void doesNotExistForAnEmptyMap() throws Exception {
 		String expression = "$.emptyMap";
-		thrown.expect(AssertionError.class, "Expected no value at JSON path \"" + expression + "\" but found: {}", () ->
-		new JsonPathExpectationsHelper(expression).doesNotExist(CONTENT));
+		assertThatExceptionOfType((Class<? extends Throwable>) AssertionError.class).isThrownBy(() ->
+		new JsonPathExpectationsHelper(expression).doesNotExist(CONTENT)).withMessageContaining("Expected no value at JSON path \"" + expression + "\" but found: {}");
 	}
 
 	@Test
 	public void doesNotExistForIndefinatePathWithResults() throws Exception {
 		String expression = "$.familyMembers[?(@.name == 'Bart')]";
-		thrown.expect(AssertionError.class, "Expected no value at JSON path \"" + expression
-				+ "\" but found: [{\"name\":\"Bart\"}]", () ->
-		new JsonPathExpectationsHelper(expression).doesNotExist(SIMPSONS));
+		assertThatExceptionOfType((Class<? extends Throwable>) AssertionError.class).isThrownBy(() ->
+		new JsonPathExpectationsHelper(expression).doesNotExist(SIMPSONS)).withMessageContaining("Expected no value at JSON path \"" + expression
+				+ "\" but found: [{\"name\":\"Bart\"}]");
 	}
 
 	@Test
@@ -137,16 +138,16 @@ public class JsonPathExpectationsHelperTests {
 	@Test
 	public void assertValueIsEmptyForIndefinatePathWithResults() throws Exception {
 		String expression = "$.familyMembers[?(@.name == 'Bart')]";
-		thrown.expect(AssertionError.class, "Expected an empty value at JSON path \"" + expression
-				+ "\" but found: [{\"name\":\"Bart\"}]", () ->
-		new JsonPathExpectationsHelper(expression).assertValueIsEmpty(SIMPSONS));
+		assertThatExceptionOfType((Class<? extends Throwable>) AssertionError.class).isThrownBy(() ->
+		new JsonPathExpectationsHelper(expression).assertValueIsEmpty(SIMPSONS)).withMessageContaining("Expected an empty value at JSON path \"" + expression
+				+ "\" but found: [{\"name\":\"Bart\"}]");
 	}
 
 	@Test
 	public void assertValueIsEmptyForWhitespace() throws Exception {
 		String expression = "$.whitespace";
-		thrown.expect(AssertionError.class, "Expected an empty value at JSON path \"" + expression + "\" but found: '    '", () ->
-		new JsonPathExpectationsHelper(expression).assertValueIsEmpty(CONTENT));
+		assertThatExceptionOfType((Class<? extends Throwable>) AssertionError.class).isThrownBy(() ->
+		new JsonPathExpectationsHelper(expression).assertValueIsEmpty(CONTENT)).withMessageContaining("Expected an empty value at JSON path \"" + expression + "\" but found: '    '");
 	}
 
 	@Test
@@ -182,29 +183,29 @@ public class JsonPathExpectationsHelperTests {
 	@Test
 	public void assertValueIsNotEmptyForIndefinatePathWithEmptyResults() throws Exception {
 		String expression = "$.familyMembers[?(@.name == 'Dilbert')]";
-		thrown.expect(AssertionError.class, "Expected a non-empty value at JSON path \"" + expression + "\" but found: []", () ->
-		new JsonPathExpectationsHelper(expression).assertValueIsNotEmpty(SIMPSONS));
+		assertThatExceptionOfType((Class<? extends Throwable>) AssertionError.class).isThrownBy(() ->
+		new JsonPathExpectationsHelper(expression).assertValueIsNotEmpty(SIMPSONS)).withMessageContaining("Expected a non-empty value at JSON path \"" + expression + "\" but found: []");
 	}
 
 	@Test
 	public void assertValueIsNotEmptyForAnEmptyString() throws Exception {
 		String expression = "$.emptyString";
-		thrown.expect(AssertionError.class, "Expected a non-empty value at JSON path \"" + expression + "\" but found: ''", () ->
-		new JsonPathExpectationsHelper(expression).assertValueIsNotEmpty(CONTENT));
+		assertThatExceptionOfType((Class<? extends Throwable>) AssertionError.class).isThrownBy(() ->
+		new JsonPathExpectationsHelper(expression).assertValueIsNotEmpty(CONTENT)).withMessageContaining("Expected a non-empty value at JSON path \"" + expression + "\" but found: ''");
 	}
 
 	@Test
 	public void assertValueIsNotEmptyForAnEmptyArray() throws Exception {
 		String expression = "$.emptyArray";
-		thrown.expect(AssertionError.class, "Expected a non-empty value at JSON path \"" + expression + "\" but found: []", () ->
-		new JsonPathExpectationsHelper(expression).assertValueIsNotEmpty(CONTENT));
+		assertThatExceptionOfType((Class<? extends Throwable>) AssertionError.class).isThrownBy(() ->
+		new JsonPathExpectationsHelper(expression).assertValueIsNotEmpty(CONTENT)).withMessageContaining("Expected a non-empty value at JSON path \"" + expression + "\" but found: []");
 	}
 
 	@Test
 	public void assertValueIsNotEmptyForAnEmptyMap() throws Exception {
 		String expression = "$.emptyMap";
-		thrown.expect(AssertionError.class, "Expected a non-empty value at JSON path \"" + expression + "\" but found: {}", () ->
-		new JsonPathExpectationsHelper(expression).assertValueIsNotEmpty(CONTENT));
+		assertThatExceptionOfType((Class<? extends Throwable>) AssertionError.class).isThrownBy(() ->
+		new JsonPathExpectationsHelper(expression).assertValueIsNotEmpty(CONTENT)).withMessageContaining("Expected a non-empty value at JSON path \"" + expression + "\" but found: {}");
 	}
 
 	@Test
@@ -225,8 +226,8 @@ public class JsonPathExpectationsHelperTests {
 	@Test
 	public void hasJsonPathForIndefinatePathWithEmptyResults() {
 		String expression = "$.familyMembers[?(@.name == 'Dilbert')]";
-		thrown.expect(AssertionError.class, "No values for JSON path \"" + expression + "\"", () ->
-		new JsonPathExpectationsHelper(expression).hasJsonPath(SIMPSONS));
+		assertThatExceptionOfType((Class<? extends Throwable>) AssertionError.class).isThrownBy(() ->
+		new JsonPathExpectationsHelper(expression).hasJsonPath(SIMPSONS)).withMessageContaining("No values for JSON path \"" + expression + "\"");
 	}
 
 	@Test // SPR-16339
@@ -236,7 +237,7 @@ public class JsonPathExpectationsHelperTests {
 
 	@Test // SPR-16339
 	public void doesNotHaveJsonPathWithNull() {
-		thrown.expect(AssertionError.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) AssertionError.class).isThrownBy(() ->
 		new JsonPathExpectationsHelper("$.abc").doesNotHaveJsonPath("{\"abc\": null}"));
 	}
 
@@ -248,9 +249,9 @@ public class JsonPathExpectationsHelperTests {
 	@Test
 	public void doesNotHaveEmptyPathForIndefinatePathWithResults() {
 		String expression = "$.familyMembers[?(@.name == 'Bart')]";
-		thrown.expect(AssertionError.class, "Expected no values at JSON path \"" + expression + "\" " +
-				"but found: [{\"name\":\"Bart\"}]", () ->
-		new JsonPathExpectationsHelper(expression).doesNotHaveJsonPath(SIMPSONS));
+		assertThatExceptionOfType((Class<? extends Throwable>) AssertionError.class).isThrownBy(() ->
+		new JsonPathExpectationsHelper(expression).doesNotHaveJsonPath(SIMPSONS)).withMessageContaining("Expected no values at JSON path \"" + expression + "\" " +
+				"but found: [{\"name\":\"Bart\"}]");
 	}
 
 	@Test
@@ -281,8 +282,8 @@ public class JsonPathExpectationsHelperTests {
 	@Test
 	public void assertValueIsStringForNonString() throws Exception {
 		String expression = "$.bool";
-		thrown.expect(AssertionError.class, "Expected a string at JSON path \"" + expression + "\" but found: true", () ->
-		new JsonPathExpectationsHelper(expression).assertValueIsString(CONTENT));
+		assertThatExceptionOfType((Class<? extends Throwable>) AssertionError.class).isThrownBy(() ->
+		new JsonPathExpectationsHelper(expression).assertValueIsString(CONTENT)).withMessageContaining("Expected a string at JSON path \"" + expression + "\" but found: true");
 	}
 
 	@Test
@@ -293,8 +294,8 @@ public class JsonPathExpectationsHelperTests {
 	@Test
 	public void assertValueIsNumberForNonNumber() throws Exception {
 		String expression = "$.bool";
-		thrown.expect(AssertionError.class, "Expected a number at JSON path \"" + expression + "\" but found: true", () ->
-		new JsonPathExpectationsHelper(expression).assertValueIsNumber(CONTENT));
+		assertThatExceptionOfType((Class<? extends Throwable>) AssertionError.class).isThrownBy(() ->
+		new JsonPathExpectationsHelper(expression).assertValueIsNumber(CONTENT)).withMessageContaining("Expected a number at JSON path \"" + expression + "\" but found: true");
 	}
 
 	@Test
@@ -305,8 +306,8 @@ public class JsonPathExpectationsHelperTests {
 	@Test
 	public void assertValueIsBooleanForNonBoolean() throws Exception {
 		String expression = "$.num";
-		thrown.expect(AssertionError.class, "Expected a boolean at JSON path \"" + expression + "\" but found: 5", () ->
-		new JsonPathExpectationsHelper(expression).assertValueIsBoolean(CONTENT));
+		assertThatExceptionOfType((Class<? extends Throwable>) AssertionError.class).isThrownBy(() ->
+		new JsonPathExpectationsHelper(expression).assertValueIsBoolean(CONTENT)).withMessageContaining("Expected a boolean at JSON path \"" + expression + "\" but found: 5");
 	}
 
 	@Test
@@ -322,8 +323,8 @@ public class JsonPathExpectationsHelperTests {
 	@Test
 	public void assertValueIsArrayForNonArray() throws Exception {
 		String expression = "$.str";
-		thrown.expect(AssertionError.class, "Expected an array at JSON path \"" + expression + "\" but found: 'foo'", () ->
-		new JsonPathExpectationsHelper(expression).assertValueIsArray(CONTENT));
+		assertThatExceptionOfType((Class<? extends Throwable>) AssertionError.class).isThrownBy(() ->
+		new JsonPathExpectationsHelper(expression).assertValueIsArray(CONTENT)).withMessageContaining("Expected an array at JSON path \"" + expression + "\" but found: 'foo'");
 	}
 
 	@Test
@@ -339,8 +340,8 @@ public class JsonPathExpectationsHelperTests {
 	@Test
 	public void assertValueIsMapForNonMap() throws Exception {
 		String expression = "$.str";
-		thrown.expect(AssertionError.class, "Expected a map at JSON path \"" + expression + "\" but found: 'foo'", () ->
-		new JsonPathExpectationsHelper(expression).assertValueIsMap(CONTENT));
+		assertThatExceptionOfType((Class<? extends Throwable>) AssertionError.class).isThrownBy(() ->
+		new JsonPathExpectationsHelper(expression).assertValueIsMap(CONTENT)).withMessageContaining("Expected a map at JSON path \"" + expression + "\" but found: 'foo'");
 	}
 
 }

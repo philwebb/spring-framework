@@ -30,6 +30,7 @@ import temp.ExpectedException;
 
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.BDDMockito.*;
 
 /**
@@ -77,7 +78,7 @@ public class SimpleJdbcInsertTests {
 
 		SimpleJdbcInsert insert = new SimpleJdbcInsert(dataSource).withTableName("x");
 		// Shouldn't succeed in inserting into table which doesn't exist
-		thrown.expect(InvalidDataAccessApiUsageException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) InvalidDataAccessApiUsageException.class).isThrownBy(() ->
 			insert.execute(new HashMap<>()));
 		verify(resultSet).close();
 	}

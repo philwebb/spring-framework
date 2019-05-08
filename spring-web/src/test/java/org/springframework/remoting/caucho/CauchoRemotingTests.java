@@ -31,6 +31,7 @@ import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.SocketUtils;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
 /**
@@ -47,7 +48,7 @@ public class CauchoRemotingTests {
 	@Test
 	public void hessianProxyFactoryBeanWithClassInsteadOfInterface() throws Exception {
 		HessianProxyFactoryBean factory = new HessianProxyFactoryBean();
-		exception.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		factory.setServiceInterface(TestBean.class));
 	}
 
@@ -62,7 +63,7 @@ public class CauchoRemotingTests {
 		assertTrue(factory.getObject() instanceof ITestBean);
 		ITestBean bean = (ITestBean) factory.getObject();
 
-		exception.expect(RemoteAccessException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) RemoteAccessException.class).isThrownBy(() ->
 		bean.setName("test"));
 	}
 
@@ -80,7 +81,7 @@ public class CauchoRemotingTests {
 		assertTrue(factory.getObject() instanceof ITestBean);
 		ITestBean bean = (ITestBean) factory.getObject();
 
-		exception.expect(RemoteAccessException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) RemoteAccessException.class).isThrownBy(() ->
 		bean.setName("test"));
 	}
 
@@ -103,7 +104,7 @@ public class CauchoRemotingTests {
 		assertEquals("bean", proxyFactory.password);
 		assertTrue(proxyFactory.overloadEnabled);
 
-		exception.expect(RemoteAccessException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) RemoteAccessException.class).isThrownBy(() ->
 		bean.setName("test"));
 	}
 

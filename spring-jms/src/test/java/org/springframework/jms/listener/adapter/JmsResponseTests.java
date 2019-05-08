@@ -26,6 +26,7 @@ import temp.ExpectedException;
 
 import org.springframework.jms.support.destination.DestinationResolver;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
@@ -58,25 +59,25 @@ public class JmsResponseTests {
 
 	@Test
 	public void createWithNulResponse() {
-		thrown.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		JmsResponse.forQueue(null, "myQueue"));
 	}
 
 	@Test
 	public void createWithNullQueueName() {
-		thrown.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		JmsResponse.forQueue("foo", null));
 	}
 
 	@Test
 	public void createWithNullTopicName() {
-		thrown.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		JmsResponse.forTopic("foo", null));
 	}
 
 	@Test
 	public void createWithNulDestination() {
-		thrown.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		JmsResponse.forDestination("foo", null));
 	}
 

@@ -47,6 +47,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
 /**
@@ -95,7 +96,7 @@ public class DefaultMessageHandlerMethodFactoryTests {
 		InvocableHandlerMethod invocableHandlerMethod =
 				createInvocableHandlerMethod(instance, "simpleString", String.class);
 
-		thrown.expect(MessageConversionException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) MessageConversionException.class).isThrownBy(() ->
 		invocableHandlerMethod.invoke(MessageBuilder.withPayload(123).build()));
 	}
 
@@ -109,7 +110,7 @@ public class DefaultMessageHandlerMethodFactoryTests {
 		InvocableHandlerMethod invocableHandlerMethod =
 				createInvocableHandlerMethod(instance, "simpleString", String.class);
 
-		thrown.expect(MessageConversionException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) MessageConversionException.class).isThrownBy(() ->
 		invocableHandlerMethod.invoke(MessageBuilder.withPayload(123).build()));
 	}
 
@@ -148,8 +149,8 @@ public class DefaultMessageHandlerMethodFactoryTests {
 		InvocableHandlerMethod invocableHandlerMethod2 =
 				createInvocableHandlerMethod(instance, "simpleString", String.class);
 
-		thrown.expect(MethodArgumentResolutionException.class, "No suitable resolver", () ->
-		invocableHandlerMethod2.invoke(message));
+		assertThatExceptionOfType((Class<? extends Throwable>) MethodArgumentResolutionException.class).isThrownBy(() ->
+		invocableHandlerMethod2.invoke(message)).withMessageContaining("No suitable resolver");
 	}
 
 	@Test
@@ -183,7 +184,7 @@ public class DefaultMessageHandlerMethodFactoryTests {
 
 		InvocableHandlerMethod invocableHandlerMethod =
 				createInvocableHandlerMethod(instance, "payloadValidation", String.class);
-		thrown.expect(MethodArgumentNotValidException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) MethodArgumentNotValidException.class).isThrownBy(() ->
 		invocableHandlerMethod.invoke(MessageBuilder.withPayload("failure").build()));
 	}
 

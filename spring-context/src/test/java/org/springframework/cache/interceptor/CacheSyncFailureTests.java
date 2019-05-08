@@ -36,6 +36,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+
 /**
  * Provides various failure scenario linked to the use of {@link Cacheable#sync()}.
  *
@@ -66,32 +68,32 @@ public class CacheSyncFailureTests {
 
 	@Test
 	public void unlessSync() {
-		this.thrown.expect(IllegalStateException.class, "@Cacheable(sync=true) does not support unless attribute", ()->
-		this.simpleService.unlessSync("key"));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(()->
+		this.simpleService.unlessSync("key")).withMessageContaining("@Cacheable(sync=true) does not support unless attribute");
 	}
 
 	@Test
 	public void severalCachesSync() {
-		this.thrown.expect(IllegalStateException.class, "@Cacheable(sync=true) only allows a single cache", ()->
-		this.simpleService.severalCachesSync("key"));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(()->
+		this.simpleService.severalCachesSync("key")).withMessageContaining("@Cacheable(sync=true) only allows a single cache");
 	}
 
 	@Test
 	public void severalCachesWithResolvedSync() {
-		this.thrown.expect(IllegalStateException.class, "@Cacheable(sync=true) only allows a single cache", ()->
-		this.simpleService.severalCachesWithResolvedSync("key"));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(()->
+		this.simpleService.severalCachesWithResolvedSync("key")).withMessageContaining("@Cacheable(sync=true) only allows a single cache");
 	}
 
 	@Test
 	public void syncWithAnotherOperation() {
-		this.thrown.expect(IllegalStateException.class, "@Cacheable(sync=true) cannot be combined with other cache operations", ()->
-		this.simpleService.syncWithAnotherOperation("key"));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(()->
+		this.simpleService.syncWithAnotherOperation("key")).withMessageContaining("@Cacheable(sync=true) cannot be combined with other cache operations");
 	}
 
 	@Test
 	public void syncWithTwoGetOperations() {
-		this.thrown.expect(IllegalStateException.class, "Only one @Cacheable(sync=true) entry is allowed", ()->
-		this.simpleService.syncWithTwoGetOperations("key"));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(()->
+		this.simpleService.syncWithTwoGetOperations("key")).withMessageContaining("Only one @Cacheable(sync=true) entry is allowed");
 	}
 
 

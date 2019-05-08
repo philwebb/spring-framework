@@ -31,6 +31,7 @@ import temp.ExpectedException;
 import org.springframework.cache.Cache;
 import org.springframework.cache.jcache.AbstractJCacheTests;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
@@ -58,7 +59,7 @@ public class CacheResolverAdapterTests extends AbstractJCacheTests {
 		DefaultCacheInvocationContext<?> dummyContext = createDummyContext();
 		CacheResolverAdapter adapter = new CacheResolverAdapter(getCacheResolver(dummyContext, null));
 
-		thrown.expect(IllegalStateException.class, ()->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(()->
 		adapter.resolveCaches(dummyContext));
 	}
 

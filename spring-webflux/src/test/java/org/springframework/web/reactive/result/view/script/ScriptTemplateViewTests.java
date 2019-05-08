@@ -35,8 +35,8 @@ import org.springframework.beans.DirectFieldAccessor;
 import org.springframework.context.ApplicationContextException;
 import org.springframework.context.support.StaticApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
 /**
@@ -78,8 +78,8 @@ public class ScriptTemplateViewTests {
 
 	@Test
 	public void missingScriptTemplateConfig() throws Exception {
-		this.thrown.expect(ApplicationContextException.class, "ScriptTemplateConfig", () ->
-		this.view.setApplicationContext(new StaticApplicationContext()));
+		assertThatExceptionOfType((Class<? extends Throwable>) ApplicationContextException.class).isThrownBy(() ->
+		this.view.setApplicationContext(new StaticApplicationContext())).withMessageContaining("ScriptTemplateConfig");
 	}
 
 	@Test
@@ -160,7 +160,7 @@ public class ScriptTemplateViewTests {
 	public void nonInvocableScriptEngineWithRenderFunction() throws Exception {
 		this.view.setEngine(mock(ScriptEngine.class));
 		this.view.setRenderFunction("render");
-		this.thrown.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		this.view.setApplicationContext(this.context));
 	}
 
@@ -169,8 +169,8 @@ public class ScriptTemplateViewTests {
 		this.view.setEngine(mock(InvocableScriptEngine.class));
 		this.view.setEngineName("test");
 		this.view.setRenderFunction("render");
-		this.thrown.expect(IllegalArgumentException.class, "'engine' or 'engineName'", () ->
-		this.view.setApplicationContext(this.context));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		this.view.setApplicationContext(this.context)).withMessageContaining("'engine' or 'engineName'");
 	}
 
 	@Test
@@ -178,8 +178,8 @@ public class ScriptTemplateViewTests {
 		this.view.setEngine(mock(InvocableScriptEngine.class));
 		this.view.setRenderFunction("render");
 		this.view.setSharedEngine(false);
-		this.thrown.expect(IllegalArgumentException.class, "sharedEngine", () ->
-		this.view.setApplicationContext(this.context));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		this.view.setApplicationContext(this.context)).withMessageContaining("sharedEngine");
 	}
 
 	private interface InvocableScriptEngine extends ScriptEngine, Invocable {

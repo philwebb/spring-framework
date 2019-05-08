@@ -42,6 +42,7 @@ import org.springframework.web.server.adapter.DefaultServerWebExchange;
 import org.springframework.web.server.i18n.AcceptHeaderLocaleContextResolver;
 import org.springframework.web.server.session.DefaultWebSessionManager;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
 /**
@@ -82,13 +83,13 @@ public class FreeMarkerViewTests {
 		FreeMarkerView view = new FreeMarkerView();
 		view.setApplicationContext(this.context);
 		view.setUrl("anythingButNull");
-		this.thrown.expect(ApplicationContextException.class, "Must define a single FreeMarkerConfig bean", view::afterPropertiesSet);
+		assertThatExceptionOfType((Class<? extends Throwable>) ApplicationContextException.class).isThrownBy(view::afterPropertiesSet).withMessageContaining("Must define a single FreeMarkerConfig bean");
 	}
 
 	@Test
 	public void noTemplateName() throws Exception {
 		FreeMarkerView freeMarkerView = new FreeMarkerView();
-		this.thrown.expect(IllegalArgumentException.class, "Property 'url' is required", freeMarkerView::afterPropertiesSet);
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(freeMarkerView::afterPropertiesSet).withMessageContaining("Property 'url' is required");
 	}
 
 	@Test

@@ -35,6 +35,7 @@ import temp.ExpectedException;
 
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
@@ -148,7 +149,7 @@ public class JdbcTemplateQueryTests {
 		String sql = "select pass from t_account where first_name='Alef'";
 		given(this.resultSet.next()).willReturn(true, true, false);
 		given(this.resultSet.getString(1)).willReturn("pass");
-		this.thrown.expect(IncorrectResultSizeDataAccessException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IncorrectResultSizeDataAccessException.class).isThrownBy(() ->
 			this.template.queryForObject(sql, String.class));
 		verify(this.resultSet).close();
 		verify(this.statement).close();

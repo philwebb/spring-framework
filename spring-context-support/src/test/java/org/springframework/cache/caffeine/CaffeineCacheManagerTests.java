@@ -26,6 +26,7 @@ import temp.ExpectedException;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -187,8 +188,8 @@ public class CaffeineCacheManagerTests {
 		assertNotNull(value);
 		assertEquals("pong", value.get());
 
-		thrown.expect(IllegalArgumentException.class, "I only know ping", ()->
-		assertNull(cache1.get("foo")));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(()->
+		assertNull(cache1.get("foo"))).withMessageContaining("I only know ping");
 	}
 
 	@SuppressWarnings("unchecked")

@@ -27,6 +27,7 @@ import temp.ExpectedException;
 
 import org.springframework.util.StringUtils;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
 /**
@@ -44,26 +45,26 @@ public class ProfilesTests {
 
 	@Test
 	public void ofWhenNullThrowsException() {
-		this.thrown.expect(IllegalArgumentException.class, "Must specify at least one profile", () ->
-		Profiles.of((String[]) null));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		Profiles.of((String[]) null)).withMessageContaining("Must specify at least one profile");
 	}
 
 	@Test
 	public void ofWhenEmptyThrowsException() {
-		this.thrown.expect(IllegalArgumentException.class, "Must specify at least one profile", () ->
-		Profiles.of());
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		Profiles.of()).withMessageContaining("Must specify at least one profile");
 	}
 
 	@Test
 	public void ofNullElement() {
-		this.thrown.expect(IllegalArgumentException.class, "must contain text", () ->
-		Profiles.of((String) null));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		Profiles.of((String) null)).withMessageContaining("must contain text");
 	}
 
 	@Test
 	public void ofEmptyElement() {
-		this.thrown.expect(IllegalArgumentException.class, "must contain text", () ->
-		Profiles.of("  "));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		Profiles.of("  ")).withMessageContaining("must contain text");
 	}
 
 	@Test

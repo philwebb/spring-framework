@@ -38,6 +38,7 @@ import org.springframework.web.util.pattern.PathPatternParser;
 import org.springframework.web.util.pattern.PatternParseException;
 
 import static java.util.Arrays.*;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 import static org.springframework.web.reactive.result.method.RequestMappingInfo.*;
 
@@ -70,8 +71,8 @@ public class RequestMappingInfoTests {
 
 	@Test
 	public void throwWhenInvalidPattern() {
-		this.thrown.expect(PatternParseException.class, "Expected close capture character after variable name }", () ->
-		paths("/{foo").build());
+		assertThatExceptionOfType((Class<? extends Throwable>) PatternParseException.class).isThrownBy(() ->
+		paths("/{foo").build()).withMessageContaining("Expected close capture character after variable name }");
 	}
 
 	@Test

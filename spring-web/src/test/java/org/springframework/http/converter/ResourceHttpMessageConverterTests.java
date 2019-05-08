@@ -35,6 +35,7 @@ import org.springframework.http.MockHttpInputMessage;
 import org.springframework.http.MockHttpOutputMessage;
 import org.springframework.util.FileCopyUtils;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.*;
 import static org.hamcrest.core.IsInstanceOf.*;
@@ -98,8 +99,8 @@ public class ResourceHttpMessageConverterTests {
 		try (InputStream body = getClass().getResourceAsStream("logo.jpg") ) {
 			MockHttpInputMessage inputMessage = new MockHttpInputMessage(body);
 			inputMessage.getHeaders().setContentType(MediaType.IMAGE_JPEG);
-			this.thrown.expect(HttpMessageNotReadableException.class, () ->
-			noStreamConverter.read(InputStreamResource.class, inputMessage));
+			assertThatExceptionOfType((Class<? extends Throwable>) HttpMessageNotReadableException.class).isThrownBy(() ->
+				noStreamConverter.read(InputStreamResource.class, inputMessage));
 		}
 	}
 

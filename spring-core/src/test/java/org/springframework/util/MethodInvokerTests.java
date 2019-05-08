@@ -24,6 +24,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import temp.ExpectedException;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
 /**
@@ -80,7 +81,7 @@ public class MethodInvokerTests {
 		mi.setTargetMethod("supertypes2");
 		mi.setArguments(new ArrayList<>(), new ArrayList<>(), "hello", Boolean.TRUE);
 
-		exception.expect(NoSuchMethodException.class, mi::prepare);
+		assertThatExceptionOfType((Class<? extends Throwable>) NoSuchMethodException.class).isThrownBy(mi::prepare);
 	}
 
 	@Test
@@ -90,7 +91,7 @@ public class MethodInvokerTests {
 		methodInvoker.setTargetMethod("greet");
 		methodInvoker.setArguments("no match");
 
-		exception.expect(NoSuchMethodException.class, methodInvoker::prepare);
+		assertThatExceptionOfType((Class<? extends Throwable>) NoSuchMethodException.class).isThrownBy(methodInvoker::prepare);
 	}
 
 	@Test

@@ -23,6 +23,7 @@ import javax.cache.annotation.CachePut;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
 /**
@@ -56,7 +57,7 @@ public class CachePutOperationTests extends AbstractCacheOperationTests<CachePut
 		CacheMethodDetails<CachePut> methodDetails = create(CachePut.class,
 				SampleObject.class, "noCacheValue", Long.class);
 
-		thrown.expect(IllegalArgumentException.class, ()->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(()->
 		createDefaultOperation(methodDetails));
 	}
 
@@ -65,7 +66,7 @@ public class CachePutOperationTests extends AbstractCacheOperationTests<CachePut
 		CacheMethodDetails<CachePut> methodDetails = create(CachePut.class,
 				SampleObject.class, "multiCacheValues", Long.class, SampleObject.class, SampleObject.class);
 
-		thrown.expect(IllegalArgumentException.class, ()->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(()->
 		createDefaultOperation(methodDetails));
 	}
 
@@ -73,7 +74,7 @@ public class CachePutOperationTests extends AbstractCacheOperationTests<CachePut
 	public void invokeWithWrongParameters() {
 		CachePutOperation operation = createSimpleOperation();
 
-		thrown.expect(IllegalStateException.class, ()->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(()->
 		operation.getValueParameter(2L));
 	}
 

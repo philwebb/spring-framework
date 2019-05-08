@@ -33,6 +33,7 @@ import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.util.SerializationTestUtils;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
@@ -154,8 +155,8 @@ public class TransactionInterceptorTests extends AbstractTransactionAspectTests 
 		DefaultTransactionAttribute attribute = new DefaultTransactionAttribute();
 		attribute.setQualifier("fooTransactionManager");
 
-		thrown.expect(NoSuchBeanDefinitionException.class, "'fooTransactionManager'", () ->
-		ti.determineTransactionManager(attribute));
+		assertThatExceptionOfType((Class<? extends Throwable>) NoSuchBeanDefinitionException.class).isThrownBy(() ->
+		ti.determineTransactionManager(attribute)).withMessageContaining("'fooTransactionManager'");
 	}
 
 	@Test

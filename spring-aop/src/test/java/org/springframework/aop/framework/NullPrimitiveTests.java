@@ -24,7 +24,7 @@ import temp.ExpectedException;
 
 import org.springframework.aop.AopInvocationException;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
  * Test for SPR-4675. A null value returned from around advice is very hard to debug if
@@ -62,7 +62,7 @@ public class NullPrimitiveTests {
 
 		Foo foo = (Foo) factory.getProxy();
 
-		thrown.expect(AopInvocationException.class, "Foo.getValue()", () -> foo.getValue());
+		assertThatExceptionOfType((Class<? extends Throwable>) AopInvocationException.class).isThrownBy(() -> foo.getValue()).withMessageContaining("Foo.getValue()");
 	}
 
 	public static class Bar {
@@ -85,7 +85,7 @@ public class NullPrimitiveTests {
 
 		Bar bar = (Bar) factory.getProxy();
 
-		thrown.expect(AopInvocationException.class, "Bar.getValue()", ()-> bar.getValue());
+		assertThatExceptionOfType((Class<? extends Throwable>) AopInvocationException.class).isThrownBy(()-> bar.getValue()).withMessageContaining("Bar.getValue()");
 	}
 
 }

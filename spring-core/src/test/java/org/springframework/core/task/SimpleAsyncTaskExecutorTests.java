@@ -24,6 +24,7 @@ import temp.ExpectedException;
 
 import org.springframework.util.ConcurrencyThrottleSupport;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
@@ -44,7 +45,7 @@ public class SimpleAsyncTaskExecutorTests {
 		SimpleAsyncTaskExecutor executor = new SimpleAsyncTaskExecutor();
 		executor.setConcurrencyLimit(ConcurrencyThrottleSupport.NO_CONCURRENCY);
 		assertTrue(executor.isThrottleActive());
-		exception.expect(IllegalStateException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(() ->
 		executor.execute(new NoOpRunnable()));
 	}
 
@@ -80,7 +81,7 @@ public class SimpleAsyncTaskExecutorTests {
 
 	@Test
 	public void throwsExceptionWhenSuppliedWithNullRunnable() throws Exception {
-		exception.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		new SimpleAsyncTaskExecutor().execute(null));
 	}
 

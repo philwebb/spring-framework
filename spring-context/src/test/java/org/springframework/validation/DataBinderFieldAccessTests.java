@@ -30,6 +30,7 @@ import org.springframework.beans.PropertyValue;
 import org.springframework.tests.sample.beans.FieldAccessBean;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
 /**
@@ -147,7 +148,7 @@ public class DataBinderFieldAccessTests {
 		MutablePropertyValues pvs = new MutablePropertyValues();
 		pvs.addPropertyValue(new PropertyValue("spouse.name", "Kerry"));
 
-		thrown.expect(NullValueInNestedPathException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) NullValueInNestedPathException.class).isThrownBy(() ->
 		binder.bind(pvs));
 	}
 

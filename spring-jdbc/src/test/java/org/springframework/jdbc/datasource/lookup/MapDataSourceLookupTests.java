@@ -24,6 +24,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import temp.ExpectedException;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
 /**
@@ -44,7 +45,7 @@ public class MapDataSourceLookupTests {
 		MapDataSourceLookup lookup = new MapDataSourceLookup();
 		Map dataSources = lookup.getDataSources();
 
-		exception.expect(UnsupportedOperationException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) UnsupportedOperationException.class).isThrownBy(() ->
 		dataSources.put("", ""));
 	}
 
@@ -94,7 +95,7 @@ public class MapDataSourceLookupTests {
 		dataSources.put(DATA_SOURCE_NAME, new Object());
 		MapDataSourceLookup lookup = new MapDataSourceLookup(dataSources);
 
-		exception.expect(ClassCastException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) ClassCastException.class).isThrownBy(() ->
 		lookup.getDataSource(DATA_SOURCE_NAME));
 	}
 
@@ -102,7 +103,7 @@ public class MapDataSourceLookupTests {
 	public void getDataSourceWhereSuppliedMapHasNoEntryForSpecifiedKey() throws Exception {
 		MapDataSourceLookup lookup = new MapDataSourceLookup();
 
-		exception.expect(DataSourceLookupFailureException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) DataSourceLookupFailureException.class).isThrownBy(() ->
 		lookup.getDataSource(DATA_SOURCE_NAME));
 	}
 

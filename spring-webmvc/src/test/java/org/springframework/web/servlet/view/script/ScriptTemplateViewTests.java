@@ -44,6 +44,7 @@ import org.springframework.mock.web.test.MockServletContext;
 import org.springframework.web.context.support.StaticWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
@@ -89,8 +90,8 @@ public class ScriptTemplateViewTests {
 
 	@Test
 	public void missingScriptTemplateConfig() throws Exception {
-		this.thrown.expect(ApplicationContextException.class, contains("ScriptTemplateConfig"), () ->
-		this.view.setApplicationContext(new StaticApplicationContext()));
+		assertThatExceptionOfType((Class<? extends Throwable>) ApplicationContextException.class).isThrownBy(() ->
+		this.view.setApplicationContext(new StaticApplicationContext())).withMessageContaining(contains("ScriptTemplateConfig"));
 	}
 
 	@Test
@@ -174,7 +175,7 @@ public class ScriptTemplateViewTests {
 	public void nonInvocableScriptEngineWithRenderFunction() throws Exception {
 		this.view.setEngine(mock(ScriptEngine.class));
 		this.view.setRenderFunction("render");
-		this.thrown.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		this.view.setApplicationContext(this.wac));
 	}
 
@@ -183,8 +184,8 @@ public class ScriptTemplateViewTests {
 		this.view.setEngine(mock(InvocableScriptEngine.class));
 		this.view.setEngineName("test");
 		this.view.setRenderFunction("render");
-		this.thrown.expect(IllegalArgumentException.class, "'engine' or 'engineName'", () ->
-		this.view.setApplicationContext(this.wac));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		this.view.setApplicationContext(this.wac)).withMessageContaining("'engine' or 'engineName'");
 	}
 
 	@Test
@@ -192,8 +193,8 @@ public class ScriptTemplateViewTests {
 		this.view.setEngine(mock(InvocableScriptEngine.class));
 		this.view.setRenderFunction("render");
 		this.view.setSharedEngine(false);
-		this.thrown.expect(IllegalArgumentException.class, "sharedEngine", () ->
-		this.view.setApplicationContext(this.wac));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		this.view.setApplicationContext(this.wac)).withMessageContaining("sharedEngine");
 	}
 
 	@Test // SPR-14210

@@ -29,6 +29,7 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.config.DependencyDescriptor;
 import org.springframework.util.ClassUtils;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -48,8 +49,8 @@ public class ParameterResolutionTests {
 
 	@Test
 	public void isAutowirablePreconditions() {
-		thrown.expect(IllegalArgumentException.class, "Parameter must not be null", ()->
-		ParameterResolutionDelegate.isAutowirable(null, 0));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(()->
+		ParameterResolutionDelegate.isAutowirable(null, 0)).withMessageContaining("Parameter must not be null");
 	}
 
 	@Test
@@ -97,20 +98,20 @@ public class ParameterResolutionTests {
 
 	@Test
 	public void resolveDependencyPreconditionsForParameter() {
-		thrown.expect(IllegalArgumentException.class, "Parameter must not be null", ()->
-		ParameterResolutionDelegate.resolveDependency(null, 0, null, mock(AutowireCapableBeanFactory.class)));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(()->
+		ParameterResolutionDelegate.resolveDependency(null, 0, null, mock(AutowireCapableBeanFactory.class))).withMessageContaining("Parameter must not be null");
 	}
 
 	@Test
 	public void resolveDependencyPreconditionsForContainingClass() throws Exception {
-		thrown.expect(IllegalArgumentException.class, "Containing class must not be null", ()->
-		ParameterResolutionDelegate.resolveDependency(getParameter(), 0, null, null));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(()->
+		ParameterResolutionDelegate.resolveDependency(getParameter(), 0, null, null)).withMessageContaining("Containing class must not be null");
 	}
 
 	@Test
 	public void resolveDependencyPreconditionsForBeanFactory() throws Exception {
-		thrown.expect(IllegalArgumentException.class, "AutowireCapableBeanFactory must not be null", ()->
-		ParameterResolutionDelegate.resolveDependency(getParameter(), 0, getClass(), null));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(()->
+		ParameterResolutionDelegate.resolveDependency(getParameter(), 0, getClass(), null)).withMessageContaining("AutowireCapableBeanFactory must not be null");
 	}
 
 	private Parameter getParameter() throws NoSuchMethodException {

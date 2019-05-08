@@ -53,13 +53,13 @@ public class SocketUtilsTests {
 
 	@Test
 	public void findAvailableTcpPortWithZeroMinPort() {
-		exception.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		SocketUtils.findAvailableTcpPort(0));
 	}
 
 	@Test
 	public void findAvailableTcpPortWithNegativeMinPort() {
-		exception.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		SocketUtils.findAvailableTcpPort(-500));
 	}
 
@@ -128,7 +128,7 @@ public class SocketUtilsTests {
 
 	@Test
 	public void findAvailableTcpPortsWithRequestedNumberGreaterThanSizeOfRange() {
-		exception.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		findAvailableTcpPorts(50, 45000, 45010));
 	}
 
@@ -137,13 +137,13 @@ public class SocketUtilsTests {
 
 	@Test
 	public void findAvailableUdpPortWithZeroMinPort() {
-		exception.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		SocketUtils.findAvailableUdpPort(0));
 	}
 
 	@Test
 	public void findAvailableUdpPortWithNegativeMinPort() {
-		exception.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		SocketUtils.findAvailableUdpPort(-500));
 	}
 
@@ -205,7 +205,7 @@ public class SocketUtilsTests {
 
 	@Test
 	public void findAvailableUdpPortsWithRequestedNumberGreaterThanSizeOfRange() {
-		exception.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		findAvailableUdpPorts(50, 45000, 45010));
 	}
 

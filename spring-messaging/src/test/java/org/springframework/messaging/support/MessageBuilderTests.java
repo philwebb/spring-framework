@@ -29,6 +29,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.util.IdGenerator;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
 /**
@@ -192,8 +193,8 @@ public class MessageBuilderTests {
 		MessageHeaders headers = accessor.getMessageHeaders();
 		Message<?> message = MessageBuilder.createMessage("foo", headers);
 
-		this.thrown.expect(IllegalStateException.class, "Already immutable", () ->
-		accessor.setHeader("foo", "bar"));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(() ->
+		accessor.setHeader("foo", "bar")).withMessageContaining("Already immutable");
 
 		assertSame(accessor, MessageHeaderAccessor.getAccessor(message, MessageHeaderAccessor.class));
 	}

@@ -47,6 +47,7 @@ import org.springframework.messaging.handler.annotation.support.DefaultMessageHa
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.util.ReflectionUtils;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
@@ -150,7 +151,8 @@ public class MessagingMessageListenerAdapterTests {
 		MessagingMessageListenerAdapter listener = getSimpleInstance("simple", Message.class);
 		Message<?> message = listener.toMessagingMessage(jmsMessage);
 
-		this.thrown.expect(IllegalArgumentException.class, "Header failure", message::getHeaders); // Triggers headers resolution
+		// Triggers headers resolution
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(message::getHeaders).withMessageContaining("Header failure");
 	}
 
 	@Test

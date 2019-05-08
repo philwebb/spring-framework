@@ -24,6 +24,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import temp.ExpectedException;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
@@ -68,10 +69,10 @@ public class TestGroupTests {
 
 	@Test
 	public void parseMissing() {
-		thrown.expect(IllegalArgumentException.class, "Unable to find test group 'missing' when parsing " +
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		TestGroup.parse("performance, missing")).withMessageContaining("Unable to find test group 'missing' when parsing " +
 				"testGroups value: 'performance, missing'. Available groups include: " +
-				"[LONG_RUNNING,PERFORMANCE,CI]", () ->
-		TestGroup.parse("performance, missing"));
+				"[LONG_RUNNING,PERFORMANCE,CI]");
 	}
 
 	@Test
@@ -88,10 +89,10 @@ public class TestGroupTests {
 
 	@Test
 	public void parseAllExceptMissing() {
-		thrown.expect(IllegalArgumentException.class, "Unable to find test group 'missing' when parsing " +
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		TestGroup.parse("all-missing")).withMessageContaining("Unable to find test group 'missing' when parsing " +
 				"testGroups value: 'all-missing'. Available groups include: " +
-				"[LONG_RUNNING,PERFORMANCE,CI]", () ->
-		TestGroup.parse("all-missing"));
+				"[LONG_RUNNING,PERFORMANCE,CI]");
 	}
 
 }

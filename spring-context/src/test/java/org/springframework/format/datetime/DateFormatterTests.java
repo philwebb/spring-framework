@@ -32,6 +32,7 @@ import temp.ExpectedException;
 
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
@@ -175,8 +176,8 @@ public class DateFormatterTests {
 	public void shouldThrowOnUnsupportedStylePattern() throws Exception {
 		DateFormatter formatter = new DateFormatter();
 		formatter.setStylePattern("OO");
-		thrown.expect(IllegalStateException.class, "Unsupported style pattern 'OO'", ()->
-		formatter.parse("2009", Locale.US));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(()->
+		formatter.parse("2009", Locale.US)).withMessageContaining("Unsupported style pattern 'OO'");
 	}
 
 	@Test

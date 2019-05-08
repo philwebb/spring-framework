@@ -98,7 +98,7 @@ public class MethodJmsListenerEndpointTests {
 		endpoint.setBean(this);
 		endpoint.setMethod(getTestMethod());
 
-		this.thrown.expect(IllegalStateException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(() ->
 		endpoint.createMessageListener(this.container));
 	}
 
@@ -419,8 +419,9 @@ public class MethodJmsListenerEndpointTests {
 		MessagingMessageListenerAdapter listener = createInstance(customFactory, method);
 		Session session = mock(Session.class);
 
-		this.thrown.expect(ListenerExecutionFailedException.class, () ->
-		listener.onMessage(createSimpleJmsTextMessage("invalid value"), session)); // test is an invalid value
+		// test is an invalid value
+		assertThatExceptionOfType((Class<? extends Throwable>) ListenerExecutionFailedException.class).isThrownBy(() ->
+		listener.onMessage(createSimpleJmsTextMessage("invalid value"), session));
 
 	}
 

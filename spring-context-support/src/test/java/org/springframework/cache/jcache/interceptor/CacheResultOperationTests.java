@@ -28,6 +28,7 @@ import org.junit.Test;
 
 import org.springframework.beans.factory.annotation.Value;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
 /**
@@ -81,8 +82,9 @@ public class CacheResultOperationTests extends AbstractCacheOperationTests<Cache
 				SampleObject.class, "anotherSimpleGet", String.class, Long.class);
 		CacheResultOperation operation = createDefaultOperation(methodDetails);
 
-		thrown.expect(IllegalStateException.class, ()->
-		operation.getAllParameters("bar")); // missing one argument
+		// missing one argument
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(()->
+		operation.getAllParameters("bar"));
 	}
 
 	@Test
@@ -91,8 +93,9 @@ public class CacheResultOperationTests extends AbstractCacheOperationTests<Cache
 				SampleObject.class, "anotherSimpleGet", String.class, Long.class);
 		CacheResultOperation operation = createDefaultOperation(methodDetails);
 
-		thrown.expect(IllegalStateException.class, ()->
-		operation.getKeyParameters("bar")); // missing one argument
+		// missing one argument
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(()->
+		operation.getKeyParameters("bar"));
 	}
 
 	@Test

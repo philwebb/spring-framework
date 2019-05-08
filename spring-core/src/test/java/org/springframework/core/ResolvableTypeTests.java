@@ -53,6 +53,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.core.ResolvableType.VariableResolver;
 import org.springframework.util.MultiValueMap;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -138,8 +139,8 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void forInstanceMustNotBeNull() {
-		this.thrown.expect(IllegalArgumentException.class, "Instance must not be null", () ->
-		ResolvableType.forInstance(null));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		ResolvableType.forInstance(null)).withMessageContaining("Instance must not be null");
 	}
 
 	@Test
@@ -190,8 +191,8 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void forFieldMustNotBeNull() throws Exception {
-		this.thrown.expect(IllegalArgumentException.class, "Field must not be null", () ->
-		ResolvableType.forField(null));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		ResolvableType.forField(null)).withMessageContaining("Field must not be null");
 	}
 
 	@Test
@@ -203,8 +204,8 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void forConstructorParameterMustNotBeNull() throws Exception {
-		this.thrown.expect(IllegalArgumentException.class, "Constructor must not be null", () ->
-		ResolvableType.forConstructorParameter(null, 0));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		ResolvableType.forConstructorParameter(null, 0)).withMessageContaining("Constructor must not be null");
 	}
 
 	@Test
@@ -216,8 +217,8 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void forMethodParameterByIndexMustNotBeNull() throws Exception {
-		this.thrown.expect(IllegalArgumentException.class, "Method must not be null", () ->
-		ResolvableType.forMethodParameter(null, 0));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		ResolvableType.forMethodParameter(null, 0)).withMessageContaining("Method must not be null");
 	}
 
 	@Test
@@ -253,8 +254,8 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void forMethodParameterMustNotBeNull() throws Exception {
-		this.thrown.expect(IllegalArgumentException.class, "MethodParameter must not be null", () ->
-		ResolvableType.forMethodParameter(null));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		ResolvableType.forMethodParameter(null)).withMessageContaining("MethodParameter must not be null");
 	}
 
 	@Test  // SPR-16210
@@ -279,8 +280,8 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void forMethodReturnMustNotBeNull() throws Exception {
-		this.thrown.expect(IllegalArgumentException.class, "Method must not be null", () ->
-		ResolvableType.forMethodReturnType(null));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		ResolvableType.forMethodReturnType(null)).withMessageContaining("Method must not be null");
 	}
 
 	@Test
@@ -957,8 +958,8 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void isAssignableFromMustNotBeNull() throws Exception {
-		this.thrown.expect(IllegalArgumentException.class, "Type must not be null", () ->
-		ResolvableType.forClass(Object.class).isAssignableFrom((ResolvableType) null));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		ResolvableType.forClass(Object.class).isAssignableFrom((ResolvableType) null)).withMessageContaining("Type must not be null");
 	}
 
 	@Test
@@ -1219,8 +1220,8 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void forClassWithMismatchedGenerics() throws Exception {
-		thrown.expect(IllegalArgumentException.class, "Mismatched number of generics specified", () ->
-		ResolvableType.forClassWithGenerics(Map.class, Integer.class));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		ResolvableType.forClassWithGenerics(Map.class, Integer.class)).withMessageContaining("Mismatched number of generics specified");
 	}
 
 	@Test

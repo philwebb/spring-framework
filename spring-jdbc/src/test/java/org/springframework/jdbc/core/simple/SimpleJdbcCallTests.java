@@ -98,7 +98,7 @@ public class SimpleJdbcCallTests {
 		final String MY_PROC = "my_proc";
 		SimpleJdbcCall sproc = new SimpleJdbcCall(dataSource).withProcedureName(MY_PROC);
 		// Shouldn't succeed in adding unnamed parameter
-		thrown.expect(InvalidDataAccessApiUsageException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) InvalidDataAccessApiUsageException.class).isThrownBy(() ->
 		sproc.addDeclaredParameter(new SqlParameter(1)));
 	}
 

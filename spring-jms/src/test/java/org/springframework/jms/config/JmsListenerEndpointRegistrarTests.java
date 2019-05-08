@@ -23,6 +23,7 @@ import temp.ExpectedException;
 
 import org.springframework.beans.factory.support.StaticListableBeanFactory;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
 /**
@@ -50,13 +51,13 @@ public class JmsListenerEndpointRegistrarTests {
 
 	@Test
 	public void registerNullEndpoint() {
-		this.thrown.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		this.registrar.registerEndpoint(null, this.containerFactory));
 	}
 
 	@Test
 	public void registerNullEndpointId() {
-		this.thrown.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		this.registrar.registerEndpoint(new SimpleJmsListenerEndpoint(), this.containerFactory));
 	}
 
@@ -65,7 +66,7 @@ public class JmsListenerEndpointRegistrarTests {
 		SimpleJmsListenerEndpoint endpoint = new SimpleJmsListenerEndpoint();
 		endpoint.setId("");
 
-		this.thrown.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		this.registrar.registerEndpoint(endpoint, this.containerFactory));
 	}
 
@@ -87,8 +88,8 @@ public class JmsListenerEndpointRegistrarTests {
 		endpoint.setId("some id");
 		this.registrar.registerEndpoint(endpoint, null);
 
-		this.thrown.expect(IllegalStateException.class, endpoint.toString(), () ->
-		this.registrar.afterPropertiesSet());
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(() ->
+		this.registrar.afterPropertiesSet()).withMessageContaining(endpoint.toString());
 	}
 
 	@Test

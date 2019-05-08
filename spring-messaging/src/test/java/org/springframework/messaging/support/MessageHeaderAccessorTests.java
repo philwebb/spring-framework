@@ -31,6 +31,7 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.util.SerializationTestUtils;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
@@ -211,11 +212,11 @@ public class MessageHeaderAccessorTests {
 		MessageHeaders headers = accessor.getMessageHeaders();
 		Message<?> message = MessageBuilder.createMessage("payload", headers);
 
-		this.thrown.expect(IllegalStateException.class, "Already immutable", () ->
-		accessor.setLeaveMutable(true));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(() ->
+		accessor.setLeaveMutable(true)).withMessageContaining("Already immutable");
 
-		this.thrown.expect(IllegalStateException.class, "Already immutable", () ->
-		accessor.setHeader("foo", "baz"));
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(() ->
+		accessor.setHeader("foo", "baz")).withMessageContaining("Already immutable");
 
 		assertEquals("bar", headers.get("foo"));
 		assertSame(accessor, MessageHeaderAccessor.getAccessor(message, MessageHeaderAccessor.class));

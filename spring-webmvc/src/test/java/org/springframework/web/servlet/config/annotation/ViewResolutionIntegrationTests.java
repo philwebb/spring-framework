@@ -18,7 +18,6 @@ package org.springframework.web.servlet.config.annotation;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
-import javax.swing.text.html.HTMLDocument.RunElement;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -41,6 +40,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 import org.springframework.web.servlet.view.groovy.GroovyMarkupConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
 /**
@@ -75,20 +75,20 @@ public class ViewResolutionIntegrationTests {
 
 	@Test
 	public void freemarkerInvalidConfig() throws Exception {
-		this.thrown.expect(RuntimeException.class, "In addition to a FreeMarker view resolver ", () ->
-		runTest(InvalidFreeMarkerWebConfig.class));
+		assertThatExceptionOfType((Class<? extends Throwable>) RuntimeException.class).isThrownBy(() ->
+		runTest(InvalidFreeMarkerWebConfig.class)).withMessageContaining("In addition to a FreeMarker view resolver ");
 	}
 
 	@Test
 	public void tilesInvalidConfig() throws Exception {
-		this.thrown.expect(RuntimeException.class, "In addition to a Tiles view resolver ", () ->
-		runTest(InvalidTilesWebConfig.class));
+		assertThatExceptionOfType((Class<? extends Throwable>) RuntimeException.class).isThrownBy(() ->
+		runTest(InvalidTilesWebConfig.class)).withMessageContaining("In addition to a Tiles view resolver ");
 	}
 
 	@Test
 	public void groovyMarkupInvalidConfig() throws Exception {
-		this.thrown.expect(RuntimeException.class, "In addition to a Groovy markup view resolver ", ()->
-		runTest(InvalidGroovyMarkupWebConfig.class));
+		assertThatExceptionOfType((Class<? extends Throwable>) RuntimeException.class).isThrownBy(()->
+		runTest(InvalidGroovyMarkupWebConfig.class)).withMessageContaining("In addition to a Groovy markup view resolver ");
 	}
 
 	// SPR-12013

@@ -34,6 +34,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.jdbc.support.lob.LobCreator;
 import org.springframework.jdbc.support.lob.LobHandler;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -96,7 +97,7 @@ public class SqlLobValueTests  {
 	@Test
 	public void test3() throws SQLException {
 		SqlLobValue lob = new SqlLobValue(new InputStreamReader(new ByteArrayInputStream("Bla".getBytes())), 12);
-		thrown.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		lob.setTypeValue(preparedStatement, 1, Types.BLOB, "test"));
 	}
 
@@ -132,7 +133,7 @@ public class SqlLobValueTests  {
 	@Test
 	public void test7() throws SQLException {
 		SqlLobValue lob = new SqlLobValue("bla".getBytes());
-		thrown.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		lob.setTypeValue(preparedStatement, 1, Types.CLOB, "test"));
 	}
 
@@ -193,7 +194,7 @@ public class SqlLobValueTests  {
 	@Test
 	public void testOtherSqlType() throws SQLException {
 		SqlLobValue lob = new SqlLobValue("Bla", handler);
-		thrown.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		lob.setTypeValue(preparedStatement, 1, Types.SMALLINT, "test"));
 	}
 

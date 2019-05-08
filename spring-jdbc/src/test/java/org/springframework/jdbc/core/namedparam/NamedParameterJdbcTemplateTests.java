@@ -43,6 +43,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.SqlParameterValue;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
@@ -113,13 +114,13 @@ public class NamedParameterJdbcTemplateTests {
 
 	@Test
 	public void testNullDataSourceProvidedToCtor() {
-		thrown.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		new NamedParameterJdbcTemplate((DataSource) null));
 	}
 
 	@Test
 	public void testNullJdbcTemplateProvidedToCtor() {
-		thrown.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		new NamedParameterJdbcTemplate((JdbcOperations) null));
 	}
 

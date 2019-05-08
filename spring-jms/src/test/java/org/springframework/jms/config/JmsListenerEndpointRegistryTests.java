@@ -20,6 +20,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import temp.ExpectedException;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+
 /**
  * @author Stephane Nicoll
  */
@@ -36,19 +38,19 @@ public class JmsListenerEndpointRegistryTests {
 
 	@Test
 	public void createWithNullEndpoint() {
-		thrown.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		registry.registerListenerContainer(null, containerFactory));
 	}
 
 	@Test
 	public void createWithNullEndpointId() {
-		thrown.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		registry.registerListenerContainer(new SimpleJmsListenerEndpoint(), containerFactory));
 	}
 
 	@Test
 	public void createWithNullContainerFactory() {
-		thrown.expect(IllegalArgumentException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		registry.registerListenerContainer(createEndpoint("foo", "myDestination"), null));
 	}
 
@@ -56,7 +58,7 @@ public class JmsListenerEndpointRegistryTests {
 	public void createWithDuplicateEndpointId() {
 		registry.registerListenerContainer(createEndpoint("test", "queue"), containerFactory);
 
-		thrown.expect(IllegalStateException.class, () ->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(() ->
 		registry.registerListenerContainer(createEndpoint("test", "queue"), containerFactory));
 	}
 

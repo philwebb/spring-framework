@@ -60,6 +60,7 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.StopWatch;
 import org.springframework.util.StringUtils;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -126,7 +127,7 @@ public abstract class AbstractPropertyAccessorTests {
 	public void isReadablePropertyNull() {
 		AbstractPropertyAccessor accessor = createAccessor(new NoRead());
 
-		thrown.expect(IllegalArgumentException.class, ()->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(()->
 		accessor.isReadableProperty(null));
 	}
 
@@ -141,7 +142,7 @@ public abstract class AbstractPropertyAccessorTests {
 	public void isWritablePropertyNull() {
 		AbstractPropertyAccessor accessor = createAccessor(new NoRead());
 
-		thrown.expect(IllegalArgumentException.class, ()->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(()->
 		accessor.isWritableProperty(null));
 	}
 
@@ -290,7 +291,7 @@ public abstract class AbstractPropertyAccessorTests {
 		Person target = createPerson("John", "London", "UK");
 		AbstractPropertyAccessor accessor = createAccessor(target);
 
-		thrown.expect(NotReadablePropertyException.class, ()->
+		assertThatExceptionOfType((Class<? extends Throwable>) NotReadablePropertyException.class).isThrownBy(()->
 		accessor.getPropertyValue("address.bar"));
 	}
 
@@ -1564,7 +1565,7 @@ public abstract class AbstractPropertyAccessorTests {
 		Person target = createPerson("John", "Paris", "FR");
 		AbstractPropertyAccessor accessor = createAccessor(target);
 
-		thrown.expect(NotWritablePropertyException.class, ()->
+		assertThatExceptionOfType((Class<? extends Throwable>) NotWritablePropertyException.class).isThrownBy(()->
 		accessor.setPropertyValue("address.bar", "value"));
 	}
 

@@ -35,6 +35,7 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.sockjs.frame.Jackson2SockJsMessageCodec;
 import org.springframework.web.socket.sockjs.transport.TransportType;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -97,7 +98,7 @@ public class DefaultTransportRequestTests {
 		// Transport error => no more fallback
 		this.xhrTransport.getConnectCallback().onFailure(new IOException("Fake exception 2"));
 		assertTrue(this.connectFuture.isDone());
-		this.thrown.expect(ExecutionException.class, "Fake exception 2", this.connectFuture::get);
+		assertThatExceptionOfType((Class<? extends Throwable>) ExecutionException.class).isThrownBy(this.connectFuture::get).withMessageContaining("Fake exception 2");
 	}
 
 	@Test
