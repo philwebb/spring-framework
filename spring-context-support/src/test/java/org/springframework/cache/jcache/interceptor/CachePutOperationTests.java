@@ -57,7 +57,7 @@ public class CachePutOperationTests extends AbstractCacheOperationTests<CachePut
 		CacheMethodDetails<CachePut> methodDetails = create(CachePut.class,
 				SampleObject.class, "noCacheValue", Long.class);
 
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				createDefaultOperation(methodDetails));
 	}
 
@@ -66,7 +66,7 @@ public class CachePutOperationTests extends AbstractCacheOperationTests<CachePut
 		CacheMethodDetails<CachePut> methodDetails = create(CachePut.class,
 				SampleObject.class, "multiCacheValues", Long.class, SampleObject.class, SampleObject.class);
 
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				createDefaultOperation(methodDetails));
 	}
 
@@ -74,7 +74,7 @@ public class CachePutOperationTests extends AbstractCacheOperationTests<CachePut
 	public void invokeWithWrongParameters() {
 		CachePutOperation operation = createSimpleOperation();
 
-		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
+		assertThatIllegalStateException().isThrownBy(() ->
 				operation.getValueParameter(2L));
 	}
 

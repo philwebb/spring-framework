@@ -47,7 +47,7 @@ public class MessagingMessageConverterTests {
 
 	@Test
 	public void onlyHandlesMessage() throws JMSException {
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				this.converter.toMessage(new Object(), mock(Session.class)));
 	}
 

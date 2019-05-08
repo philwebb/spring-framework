@@ -127,7 +127,7 @@ public abstract class AbstractPropertyAccessorTests {
 	public void isReadablePropertyNull() {
 		AbstractPropertyAccessor accessor = createAccessor(new NoRead());
 
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				accessor.isReadableProperty(null));
 	}
 
@@ -142,7 +142,7 @@ public abstract class AbstractPropertyAccessorTests {
 	public void isWritablePropertyNull() {
 		AbstractPropertyAccessor accessor = createAccessor(new NoRead());
 
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				accessor.isWritableProperty(null));
 	}
 

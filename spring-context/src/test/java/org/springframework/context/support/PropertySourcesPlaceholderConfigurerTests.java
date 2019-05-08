@@ -327,7 +327,7 @@ public class PropertySourcesPlaceholderConfigurerTests {
 	@Test
 	public void getAppliedPropertySourcesTooEarly() throws Exception {
 		PropertySourcesPlaceholderConfigurer ppc = new PropertySourcesPlaceholderConfigurer();
-		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(
+		assertThatIllegalStateException().isThrownBy(
 				ppc::getAppliedPropertySources);
 	}
 

@@ -75,21 +75,21 @@ public class PathResourceTests {
 
 	@Test
 	public void nullPath() {
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				new PathResource((Path) null))
 			.withMessageContaining("Path must not be null");
 	}
 
 	@Test
 	public void nullPathString() {
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				new PathResource((String) null))
 			.withMessageContaining("Path must not be null");
 	}
 
 	@Test
 	public void nullUri() {
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				new PathResource((URI) null))
 			.withMessageContaining("URI must not be null");
 	}

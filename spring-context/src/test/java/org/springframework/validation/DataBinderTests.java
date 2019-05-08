@@ -2025,7 +2025,7 @@ public class DataBinderTests {
 	public void testSetAutoGrowCollectionLimitAfterInitialization() {
 		DataBinder binder = new DataBinder(new BeanWithIntegerList());
 		binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
-		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
+		assertThatIllegalStateException().isThrownBy(() ->
 				binder.setAutoGrowCollectionLimit(257))
 			.withMessageContaining("DataBinder is already initialized - call setAutoGrowCollectionLimit before other configuration methods");
 	}
@@ -2096,7 +2096,7 @@ public class DataBinderTests {
 		TestBean testBean = new TestBean();
 		DataBinder binder = new DataBinder(testBean, "testBean");
 		binder.setMessageCodesResolver(new DefaultMessageCodesResolver());
-		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
+		assertThatIllegalStateException().isThrownBy(() ->
 				binder.setMessageCodesResolver(new DefaultMessageCodesResolver()))
 			.withMessageContaining("DataBinder is already initialized with MessageCodesResolver");
 

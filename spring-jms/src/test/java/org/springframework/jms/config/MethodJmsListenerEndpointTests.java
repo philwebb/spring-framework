@@ -98,7 +98,7 @@ public class MethodJmsListenerEndpointTests {
 		endpoint.setBean(this);
 		endpoint.setMethod(getTestMethod());
 
-		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
+		assertThatIllegalStateException().isThrownBy(() ->
 				endpoint.createMessageListener(this.container));
 	}
 

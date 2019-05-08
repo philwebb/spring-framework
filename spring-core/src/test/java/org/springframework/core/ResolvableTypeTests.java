@@ -136,7 +136,7 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void forInstanceMustNotBeNull() {
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				ResolvableType.forInstance(null))
 			.withMessageContaining("Instance must not be null");
 	}
@@ -189,7 +189,7 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void forFieldMustNotBeNull() throws Exception {
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				ResolvableType.forField(null))
 			.withMessageContaining("Field must not be null");
 	}
@@ -203,7 +203,7 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void forConstructorParameterMustNotBeNull() throws Exception {
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				ResolvableType.forConstructorParameter(null, 0))
 			.withMessageContaining("Constructor must not be null");
 	}
@@ -217,7 +217,7 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void forMethodParameterByIndexMustNotBeNull() throws Exception {
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				ResolvableType.forMethodParameter(null, 0))
 			.withMessageContaining("Method must not be null");
 	}
@@ -255,7 +255,7 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void forMethodParameterMustNotBeNull() throws Exception {
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				ResolvableType.forMethodParameter(null))
 			.withMessageContaining("MethodParameter must not be null");
 	}
@@ -282,7 +282,7 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void forMethodReturnMustNotBeNull() throws Exception {
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				ResolvableType.forMethodReturnType(null))
 			.withMessageContaining("Method must not be null");
 	}
@@ -961,7 +961,7 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void isAssignableFromMustNotBeNull() throws Exception {
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				ResolvableType.forClass(Object.class).isAssignableFrom((ResolvableType) null))
 			.withMessageContaining("Type must not be null");
 	}
@@ -1224,7 +1224,7 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void forClassWithMismatchedGenerics() throws Exception {
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				ResolvableType.forClassWithGenerics(Map.class, Integer.class))
 			.withMessageContaining("Mismatched number of generics specified");
 	}

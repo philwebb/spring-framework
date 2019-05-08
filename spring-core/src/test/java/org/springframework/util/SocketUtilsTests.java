@@ -53,13 +53,13 @@ public class SocketUtilsTests {
 
 	@Test
 	public void findAvailableTcpPortWithZeroMinPort() {
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				SocketUtils.findAvailableTcpPort(0));
 	}
 
 	@Test
 	public void findAvailableTcpPortWithNegativeMinPort() {
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				SocketUtils.findAvailableTcpPort(-500));
 	}
 
@@ -128,7 +128,7 @@ public class SocketUtilsTests {
 
 	@Test
 	public void findAvailableTcpPortsWithRequestedNumberGreaterThanSizeOfRange() {
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				findAvailableTcpPorts(50, 45000, 45010));
 	}
 
@@ -137,13 +137,13 @@ public class SocketUtilsTests {
 
 	@Test
 	public void findAvailableUdpPortWithZeroMinPort() {
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				SocketUtils.findAvailableUdpPort(0));
 	}
 
 	@Test
 	public void findAvailableUdpPortWithNegativeMinPort() {
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				SocketUtils.findAvailableUdpPort(-500));
 	}
 
@@ -205,7 +205,7 @@ public class SocketUtilsTests {
 
 	@Test
 	public void findAvailableUdpPortsWithRequestedNumberGreaterThanSizeOfRange() {
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				findAvailableUdpPorts(50, 45000, 45010));
 	}
 

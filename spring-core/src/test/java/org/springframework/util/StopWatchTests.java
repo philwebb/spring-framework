@@ -129,13 +129,13 @@ public class StopWatchTests {
 
 	@Test
 	public void failureToStartBeforeGettingTimings() {
-		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(
+		assertThatIllegalStateException().isThrownBy(
 				sw::getLastTaskTimeMillis);
 	}
 
 	@Test
 	public void failureToStartBeforeStop() {
-		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(
+		assertThatIllegalStateException().isThrownBy(
 				sw::stop);
 	}
 
@@ -145,7 +145,7 @@ public class StopWatchTests {
 		sw.stop();
 		sw.start("");
 		assertTrue(sw.isRunning());
-		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
+		assertThatIllegalStateException().isThrownBy(() ->
 				sw.start(""));
 	}
 

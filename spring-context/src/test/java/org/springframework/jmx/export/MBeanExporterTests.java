@@ -86,7 +86,7 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 		listeners.put("*", null);
 		MBeanExporter exporter = new MBeanExporter();
 
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				exporter.setNotificationListenerMappings(listeners));
 	}
 
@@ -485,35 +485,35 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 	@Test
 	public void testSetAutodetectModeToOutOfRangeNegativeValue() {
 		MBeanExporter exporter = new MBeanExporter();
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				exporter.setAutodetectMode(-1));
 	}
 
 	@Test
 	public void testSetAutodetectModeToOutOfRangePositiveValue() {
 		MBeanExporter exporter = new MBeanExporter();
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				exporter.setAutodetectMode(5));
 	}
 
 	@Test
 	public void testSetAutodetectModeNameToAnEmptyString() {
 		MBeanExporter exporter = new MBeanExporter();
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				exporter.setAutodetectModeName(""));
 	}
 
 	@Test
 	public void testSetAutodetectModeNameToAWhitespacedString() {
 		MBeanExporter exporter = new MBeanExporter();
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				exporter.setAutodetectModeName("  \t"));
 	}
 
 	@Test
 	public void testSetAutodetectModeNameToARubbishValue() {
 		MBeanExporter exporter = new MBeanExporter();
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				exporter.setAutodetectModeName("That Hansel is... *sssooo* hot right now!"));
 	}
 

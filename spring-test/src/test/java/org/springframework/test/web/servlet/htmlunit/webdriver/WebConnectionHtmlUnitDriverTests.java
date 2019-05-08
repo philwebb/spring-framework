@@ -64,7 +64,7 @@ public class WebConnectionHtmlUnitDriverTests {
 
 	@Test
 	public void setWebConnectionToNull() {
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				this.driver.setWebConnection(null));
 	}
 

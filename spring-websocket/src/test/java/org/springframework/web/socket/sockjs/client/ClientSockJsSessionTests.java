@@ -191,7 +191,7 @@ public class ClientSockJsSessionTests {
 	@Test
 	public void closeWithNullStatus() throws Exception {
 		this.session.handleFrame(SockJsFrame.openFrame().getContent());
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				this.session.close(null))
 			.withMessageContaining("Invalid close status");
 	}
@@ -199,7 +199,7 @@ public class ClientSockJsSessionTests {
 	@Test
 	public void closeWithStatusOutOfRange() throws Exception {
 		this.session.handleFrame(SockJsFrame.openFrame().getContent());
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				this.session.close(new CloseStatus(2999, "reason")))
 			.withMessageContaining("Invalid close status");
 	}

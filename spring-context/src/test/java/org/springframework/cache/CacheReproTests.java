@@ -130,7 +130,7 @@ public class CacheReproTests {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Spr13081Config.class);
 		Spr13081Service bean = context.getBean(Spr13081Service.class);
 
-		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
+		assertThatIllegalStateException().isThrownBy(() ->
 				bean.getSimple(null))
 			.withMessageContaining(MyCacheResolver.class.getName());
 	}

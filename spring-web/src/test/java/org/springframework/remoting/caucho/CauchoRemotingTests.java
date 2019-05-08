@@ -48,7 +48,7 @@ public class CauchoRemotingTests {
 	@Test
 	public void hessianProxyFactoryBeanWithClassInsteadOfInterface() throws Exception {
 		HessianProxyFactoryBean factory = new HessianProxyFactoryBean();
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				factory.setServiceInterface(TestBean.class));
 	}
 

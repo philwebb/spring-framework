@@ -158,7 +158,7 @@ public class ScriptTemplateViewTests {
 	public void nonInvocableScriptEngineWithRenderFunction() throws Exception {
 		this.view.setEngine(mock(ScriptEngine.class));
 		this.view.setRenderFunction("render");
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				this.view.setApplicationContext(this.context));
 	}
 
@@ -167,7 +167,7 @@ public class ScriptTemplateViewTests {
 		this.view.setEngine(mock(InvocableScriptEngine.class));
 		this.view.setEngineName("test");
 		this.view.setRenderFunction("render");
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				this.view.setApplicationContext(this.context))
 			.withMessageContaining("'engine' or 'engineName'");
 	}
@@ -177,7 +177,7 @@ public class ScriptTemplateViewTests {
 		this.view.setEngine(mock(InvocableScriptEngine.class));
 		this.view.setRenderFunction("render");
 		this.view.setSharedEngine(false);
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				this.view.setApplicationContext(this.context))
 			.withMessageContaining("sharedEngine");
 	}

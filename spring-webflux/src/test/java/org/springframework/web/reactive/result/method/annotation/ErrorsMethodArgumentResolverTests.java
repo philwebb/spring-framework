@@ -109,7 +109,7 @@ public class ErrorsMethodArgumentResolverTests {
 	@Test
 	public void resolveWithMonoOnBindingResultAndModelAttribute() {
 		MethodParameter parameter = this.testMethod.arg(BindingResult.class);
-		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
+		assertThatIllegalStateException().isThrownBy(() ->
 				this.resolver.resolveArgument(parameter, this.bindingContext, this.exchange)
 						.block(Duration.ofMillis(5000)))
 			.withMessage("An @ModelAttribute and an Errors/BindingResult argument " +
@@ -119,7 +119,7 @@ public class ErrorsMethodArgumentResolverTests {
 	@Test  // SPR-16187
 	public void resolveWithBindingResultNotFound() {
 		MethodParameter parameter = this.testMethod.arg(Errors.class);
-		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
+		assertThatIllegalStateException().isThrownBy(() ->
 				this.resolver.resolveArgument(parameter, this.bindingContext, this.exchange)
 						.block(Duration.ofMillis(5000)))
 			.withMessage("An Errors/BindingResult argument is expected " +

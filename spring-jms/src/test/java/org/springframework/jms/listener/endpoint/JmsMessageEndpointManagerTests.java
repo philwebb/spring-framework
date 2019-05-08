@@ -81,7 +81,7 @@ public class JmsMessageEndpointManagerTests {
 	public void isPubSubDomainWithNoConfig() {
 		JmsMessageEndpointManager endpoint = new JmsMessageEndpointManager();
 		// far from ideal
-		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(
+		assertThatIllegalStateException().isThrownBy(
 				endpoint::isPubSubDomain);
 	}
 
@@ -89,7 +89,7 @@ public class JmsMessageEndpointManagerTests {
 	public void isReplyPubSubDomainWithNoConfig() {
 		JmsMessageEndpointManager endpoint = new JmsMessageEndpointManager();
 		// far from ideal
-		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(
+		assertThatIllegalStateException().isThrownBy(
 				endpoint::isReplyPubSubDomain);
 	}
 
@@ -97,7 +97,7 @@ public class JmsMessageEndpointManagerTests {
 	public void getReplyQosSettingsWithNoConfig() {
 		JmsMessageEndpointManager endpoint = new JmsMessageEndpointManager();
 		// far from ideal
-		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(
+		assertThatIllegalStateException().isThrownBy(
 				endpoint::getReplyQosSettings);
 	}
 

@@ -49,7 +49,7 @@ public class BootstrapUtilsTests {
 	@Test
 	public void resolveTestContextBootstrapperWithEmptyBootstrapWithAnnotation() {
 		BootstrapContext bootstrapContext = BootstrapTestUtils.buildBootstrapContext(EmptyBootstrapWithAnnotationClass.class, delegate);
-		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
+		assertThatIllegalStateException().isThrownBy(() ->
 				resolveTestContextBootstrapper(bootstrapContext))
 			.withMessageContaining("Specify @BootstrapWith's 'value' attribute");
 	}

@@ -91,7 +91,7 @@ public class FreeMarkerViewTests {
 	@Test
 	public void noTemplateName() throws Exception {
 		FreeMarkerView freeMarkerView = new FreeMarkerView();
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(
+		assertThatIllegalArgumentException().isThrownBy(
 				freeMarkerView::afterPropertiesSet)
 			.withMessageContaining("Property 'url' is required");
 	}

@@ -42,7 +42,7 @@ public class BasicAuthorizationInterceptorTests {
 
 	@Test
 	public void createWhenUsernameContainsColonShouldThrowException() {
-		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				new BasicAuthorizationInterceptor("username:", "password"))
 			.withMessageContaining("Username must not contain a colon");
 	}

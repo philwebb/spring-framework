@@ -152,7 +152,7 @@ public class PayloadMethodArgumentResolverTests {
 	public void resolveSpelExpressionNotSupported() throws Exception {
 		Message<?> message = MessageBuilder.withPayload("ABC".getBytes()).build();
 
-		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
+		assertThatIllegalStateException().isThrownBy(() ->
 				this.resolver.resolveArgument(paramWithSpelExpression, message));
 	}
 

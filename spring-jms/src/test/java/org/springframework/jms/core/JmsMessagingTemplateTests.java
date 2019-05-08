@@ -170,7 +170,7 @@ public class JmsMessagingTemplateTests {
 	public void sendNoDefaultSet() {
 		Message<String> message = createTextMessage();
 
-		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
+		assertThatIllegalStateException().isThrownBy(() ->
 				this.messagingTemplate.send(message));
 	}
 
@@ -228,7 +228,7 @@ public class JmsMessagingTemplateTests {
 
 	@Test
 	public void convertAndSendNoDefaultSet() throws JMSException {
-		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
+		assertThatIllegalStateException().isThrownBy(() ->
 				this.messagingTemplate.convertAndSend("my Payload"));
 	}
 
@@ -317,7 +317,7 @@ public class JmsMessagingTemplateTests {
 
 	@Test
 	public void receiveNoDefaultSet() {
-		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(
+		assertThatIllegalStateException().isThrownBy(
 				this.messagingTemplate::receive);
 	}
 
@@ -445,7 +445,7 @@ public class JmsMessagingTemplateTests {
 	public void sendAndReceiveNoDefaultSet() {
 		Message<String> message = createTextMessage();
 
-		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
+		assertThatIllegalStateException().isThrownBy(() ->
 				this.messagingTemplate.sendAndReceive(message));
 	}
 
@@ -495,7 +495,7 @@ public class JmsMessagingTemplateTests {
 
 	@Test
 	public void convertSendAndReceiveNoDefaultSet() throws JMSException {
-		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
+		assertThatIllegalStateException().isThrownBy(() ->
 				this.messagingTemplate.convertSendAndReceive("my Payload", String.class));
 	}
 
