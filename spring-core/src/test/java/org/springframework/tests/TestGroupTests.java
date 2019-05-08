@@ -66,7 +66,7 @@ public class TestGroupTests {
 
 	@Test
 	public void parseMissing() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		TestGroup.parse("performance, missing")).withMessageContaining("Unable to find test group 'missing' when parsing " +
 				"testGroups value: 'performance, missing'. Available groups include: " +
 				"[LONG_RUNNING,PERFORMANCE,CI]");
@@ -86,7 +86,7 @@ public class TestGroupTests {
 
 	@Test
 	public void parseAllExceptMissing() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		TestGroup.parse("all-missing")).withMessageContaining("Unable to find test group 'missing' when parsing " +
 				"testGroups value: 'all-missing'. Available groups include: " +
 				"[LONG_RUNNING,PERFORMANCE,CI]");

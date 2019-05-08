@@ -77,7 +77,7 @@ public class ConventionsTests {
 
 	@Test
 	public void emptyList() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Conventions.getVariableName(new ArrayList<>()));
 	}
 

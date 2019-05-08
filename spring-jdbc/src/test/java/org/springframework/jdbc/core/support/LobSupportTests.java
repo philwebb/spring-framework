@@ -75,7 +75,7 @@ public class LobSupportTests {
 	public void testAbstractLobStreamingResultSetExtractorNoRows() throws SQLException {
 		ResultSet rset = mock(ResultSet.class);
 		AbstractLobStreamingResultSetExtractor<Void> lobRse = getResultSetExtractor(false);
-		assertThatExceptionOfType((Class<? extends Throwable>) IncorrectResultSizeDataAccessException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IncorrectResultSizeDataAccessException.class).isThrownBy(() ->
 			lobRse.extractData(rset));
 		verify(rset).next();
 	}
@@ -95,7 +95,7 @@ public class LobSupportTests {
 		ResultSet rset = mock(ResultSet.class);
 		given(rset.next()).willReturn(true, true, false);
 		AbstractLobStreamingResultSetExtractor<Void> lobRse = getResultSetExtractor(false);
-		assertThatExceptionOfType((Class<? extends Throwable>) IncorrectResultSizeDataAccessException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IncorrectResultSizeDataAccessException.class).isThrownBy(() ->
 			lobRse.extractData(rset));
 		verify(rset).clearWarnings();
 	}
@@ -106,7 +106,7 @@ public class LobSupportTests {
 		ResultSet rset = mock(ResultSet.class);
 		given(rset.next()).willReturn(true);
 		AbstractLobStreamingResultSetExtractor<Void> lobRse = getResultSetExtractor(true);
-		assertThatExceptionOfType((Class<? extends Throwable>) LobRetrievalFailureException.class).isThrownBy(() ->
+		assertThatExceptionOfType(LobRetrievalFailureException.class).isThrownBy(() ->
 		lobRse.extractData(rset));
 	}
 

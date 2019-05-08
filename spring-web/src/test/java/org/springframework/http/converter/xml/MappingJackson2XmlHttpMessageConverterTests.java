@@ -110,7 +110,7 @@ public class MappingJackson2XmlHttpMessageConverterTests {
 		String body = "FooBar";
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(body.getBytes("UTF-8"));
 		inputMessage.getHeaders().setContentType(new MediaType("application", "xml"));
-		assertThatExceptionOfType((Class<? extends Throwable>) HttpMessageNotReadableException.class).isThrownBy(() ->
+		assertThatExceptionOfType(HttpMessageNotReadableException.class).isThrownBy(() ->
 		converter.read(MyBean.class, inputMessage));
 	}
 
@@ -158,7 +158,7 @@ public class MappingJackson2XmlHttpMessageConverterTests {
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(body.getBytes("UTF-8"));
 		inputMessage.getHeaders().setContentType(new MediaType("application", "xml"));
 
-		assertThatExceptionOfType((Class<? extends Throwable>) HttpMessageNotReadableException.class).isThrownBy(() ->
+		assertThatExceptionOfType(HttpMessageNotReadableException.class).isThrownBy(() ->
 		this.converter.read(MyBean.class, inputMessage));
 	}
 
@@ -185,7 +185,7 @@ public class MappingJackson2XmlHttpMessageConverterTests {
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(body.getBytes("UTF-8"));
 		inputMessage.getHeaders().setContentType(new MediaType("application", "xml"));
 
-		assertThatExceptionOfType((Class<? extends Throwable>) HttpMessageNotReadableException.class).isThrownBy(() ->
+		assertThatExceptionOfType(HttpMessageNotReadableException.class).isThrownBy(() ->
 		this.converter.read(MyBean.class, inputMessage));
 	}
 

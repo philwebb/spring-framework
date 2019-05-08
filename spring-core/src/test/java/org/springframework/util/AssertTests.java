@@ -50,7 +50,7 @@ public class AssertTests {
 
 	@Test
 	public void stateWithFalseExpressionAndMessage() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
 		Assert.state(false, "enigma")).withMessageContaining("enigma");
 	}
 
@@ -61,7 +61,7 @@ public class AssertTests {
 
 	@Test
 	public void stateWithFalseExpressionAndMessageSupplier() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
 		Assert.state(false, () -> "enigma")).withMessageContaining("enigma");
 	}
 
@@ -79,7 +79,7 @@ public class AssertTests {
 
 	@Test
 	public void isTrueWithFalse() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.isTrue(false, "enigma")).withMessageContaining("enigma");
 	}
 
@@ -90,7 +90,7 @@ public class AssertTests {
 
 	@Test
 	public void isTrueWithFalseAndMessageSupplier() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.isTrue(false, () -> "enigma")).withMessageContaining("enigma");
 	}
 
@@ -113,7 +113,7 @@ public class AssertTests {
 
 	@Test
 	public void isNullWithNonNullObjectAndMessageSupplier() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.isNull("foo", () -> "enigma")).withMessageContaining("enigma");
 	}
 
@@ -136,7 +136,7 @@ public class AssertTests {
 
 	@Test
 	public void notNullWithNullAndMessageSupplier() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.notNull(null, () -> "enigma")).withMessageContaining("enigma");
 	}
 
@@ -159,13 +159,13 @@ public class AssertTests {
 
 	@Test
 	public void hasLengthWithEmptyString() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.hasLength("", "enigma")).withMessageContaining("enigma");
 	}
 
 	@Test
 	public void hasLengthWithNull() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.hasLength(null, "enigma")).withMessageContaining("enigma");
 	}
 
@@ -181,13 +181,13 @@ public class AssertTests {
 
 	@Test
 	public void hasLengthWithEmptyStringAndMessageSupplier() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.hasLength("", () -> "enigma")).withMessageContaining("enigma");
 	}
 
 	@Test
 	public void hasLengthWithNullAndMessageSupplier() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.hasLength(null, () -> "enigma")).withMessageContaining("enigma");
 	}
 
@@ -205,19 +205,19 @@ public class AssertTests {
 
 	@Test
 	public void hasTextWithWhitespaceOnly() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.hasText("\t ", "enigma")).withMessageContaining("enigma");
 	}
 
 	@Test
 	public void hasTextWithEmptyString() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.hasText("", "enigma")).withMessageContaining("enigma");
 	}
 
 	@Test
 	public void hasTextWithNull() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.hasText(null, "enigma")).withMessageContaining("enigma");
 	}
 
@@ -228,19 +228,19 @@ public class AssertTests {
 
 	@Test
 	public void hasTextWithWhitespaceOnlyAndMessageSupplier() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.hasText("\t ", () -> "enigma")).withMessageContaining("enigma");
 	}
 
 	@Test
 	public void hasTextWithEmptyStringAndMessageSupplier() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.hasText("", () -> "enigma")).withMessageContaining("enigma");
 	}
 
 	@Test
 	public void hasTextWithNullAndMessageSupplier() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.hasText(null, () -> "enigma")).withMessageContaining("enigma");
 	}
 
@@ -293,7 +293,7 @@ public class AssertTests {
 
 	@Test
 	public void doesNotContainWithSubstringPresentInSearchStringAndMessageSupplier() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.doesNotContain("1234", "23", () -> "enigma")).withMessageContaining("enigma");
 	}
 
@@ -311,13 +311,13 @@ public class AssertTests {
 
 	@Test
 	public void notEmptyArrayWithEmptyArray() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.notEmpty(new String[] {}, "enigma")).withMessageContaining("enigma");
 	}
 
 	@Test
 	public void notEmptyArrayWithNullArray() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.notEmpty((Object[]) null, "enigma")).withMessageContaining("enigma");
 	}
 
@@ -328,13 +328,13 @@ public class AssertTests {
 
 	@Test
 	public void notEmptyArrayWithEmptyArrayAndMessageSupplier() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.notEmpty(new String[] {}, () -> "enigma")).withMessageContaining("enigma");
 	}
 
 	@Test
 	public void notEmptyArrayWithNullArrayAndMessageSupplier() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.notEmpty((Object[]) null, () -> "enigma")).withMessageContaining("enigma");
 	}
 
@@ -372,7 +372,7 @@ public class AssertTests {
 
 	@Test
 	public void noNullElementsWithNullElementsAndMessageSupplier() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.noNullElements(new String[] { "foo", null, "bar" }, () -> "enigma")).withMessageContaining("enigma");
 	}
 
@@ -390,13 +390,13 @@ public class AssertTests {
 
 	@Test
 	public void notEmptyCollectionWithEmptyCollection() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.notEmpty(emptyList(), "enigma")).withMessageContaining("enigma");
 	}
 
 	@Test
 	public void notEmptyCollectionWithNullCollection() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.notEmpty((Collection<?>) null, "enigma")).withMessageContaining("enigma");
 	}
 
@@ -407,13 +407,13 @@ public class AssertTests {
 
 	@Test
 	public void notEmptyCollectionWithEmptyCollectionAndMessageSupplier() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.notEmpty(emptyList(), () -> "enigma")).withMessageContaining("enigma");
 	}
 
 	@Test
 	public void notEmptyCollectionWithNullCollectionAndMessageSupplier() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.notEmpty((Collection<?>) null, () -> "enigma")).withMessageContaining("enigma");
 	}
 
@@ -431,13 +431,13 @@ public class AssertTests {
 
 	@Test
 	public void notEmptyMapWithNullMap() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.notEmpty((Map<?, ?>) null, "enigma")).withMessageContaining("enigma");
 	}
 
 	@Test
 	public void notEmptyMapWithEmptyMap() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.notEmpty(emptyMap(), "enigma")).withMessageContaining("enigma");
 	}
 
@@ -448,13 +448,13 @@ public class AssertTests {
 
 	@Test
 	public void notEmptyMapWithEmptyMapAndMessageSupplier() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.notEmpty(emptyMap(), () -> "enigma")).withMessageContaining("enigma");
 	}
 
 	@Test
 	public void notEmptyMapWithNullMapAndMessageSupplier() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.notEmpty((Map<?, ?>) null, () -> "enigma")).withMessageContaining("enigma");
 	}
 
@@ -472,37 +472,37 @@ public class AssertTests {
 
 	@Test
 	public void isInstanceOfWithNullType() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.isInstanceOf(null, "foo", "enigma")).withMessageContaining("Type to check against must not be null");
 	}
 
 	@Test
 	public void isInstanceOfWithNullInstance() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.isInstanceOf(String.class, null, "enigma")).withMessageContaining("enigma: null");
 	}
 
 	@Test
 	public void isInstanceOfWithTypeMismatchAndNullMessage() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.isInstanceOf(String.class, 42L, (String) null)).withMessageContaining("Object of class [java.lang.Long] must be an instance of class java.lang.String");
 	}
 
 	@Test
 	public void isInstanceOfWithTypeMismatchAndCustomMessage() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.isInstanceOf(String.class, 42L, "Custom message")).withMessageContaining("Custom message: java.lang.Long");
 	}
 
 	@Test
 	public void isInstanceOfWithTypeMismatchAndCustomMessageWithSeparator() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.isInstanceOf(String.class, 42L, "Custom message:")).withMessageContaining("Custom message: Object of class [java.lang.Long] must be an instance of class java.lang.String");
 	}
 
 	@Test
 	public void isInstanceOfWithTypeMismatchAndCustomMessageWithSpace() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.isInstanceOf(String.class, 42L, "Custom message for ")).withMessageContaining("Custom message for java.lang.Long");
 	}
 
@@ -513,25 +513,25 @@ public class AssertTests {
 
 	@Test
 	public void isInstanceOfWithNullTypeAndMessageSupplier() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.isInstanceOf(null, "foo", () -> "enigma")).withMessageContaining("Type to check against must not be null");
 	}
 
 	@Test
 	public void isInstanceOfWithNullInstanceAndMessageSupplier() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.isInstanceOf(String.class, null, () -> "enigma")).withMessageContaining("enigma: null");
 	}
 
 	@Test
 	public void isInstanceOfWithTypeMismatchAndNullMessageSupplier() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.isInstanceOf(String.class, 42L, (Supplier<String>) null)).withMessageContaining("Object of class [java.lang.Long] must be an instance of class java.lang.String");
 	}
 
 	@Test
 	public void isInstanceOfWithTypeMismatchAndMessageSupplier() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.isInstanceOf(String.class, 42L, () -> "enigma")).withMessageContaining("enigma: java.lang.Long");
 	}
 
@@ -542,37 +542,37 @@ public class AssertTests {
 
 	@Test
 	public void isAssignableWithNullSupertype() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.isAssignable(null, Integer.class, "enigma")).withMessageContaining("Super type to check against must not be null");
 	}
 
 	@Test
 	public void isAssignableWithNullSubtype() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.isAssignable(Integer.class, null, "enigma")).withMessageContaining("enigma: null");
 	}
 
 	@Test
 	public void isAssignableWithTypeMismatchAndNullMessage() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.isAssignable(String.class, Integer.class, (String) null)).withMessageContaining("class java.lang.Integer is not assignable to class java.lang.String");
 	}
 
 	@Test
 	public void isAssignableWithTypeMismatchAndCustomMessage() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.isAssignable(String.class, Integer.class, "Custom message")).withMessageContaining("Custom message: class java.lang.Integer");
 	}
 
 	@Test
 	public void isAssignableWithTypeMismatchAndCustomMessageWithSeparator() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.isAssignable(String.class, Integer.class, "Custom message:")).withMessageContaining("Custom message: class java.lang.Integer is not assignable to class java.lang.String");
 	}
 
 	@Test
 	public void isAssignableWithTypeMismatchAndCustomMessageWithSpace() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.isAssignable(String.class, Integer.class, "Custom message for ")).withMessageContaining("Custom message for class java.lang.Integer");
 	}
 
@@ -583,25 +583,25 @@ public class AssertTests {
 
 	@Test
 	public void isAssignableWithNullSupertypeAndMessageSupplier() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.isAssignable(null, Integer.class, () -> "enigma")).withMessageContaining("Super type to check against must not be null");
 	}
 
 	@Test
 	public void isAssignableWithNullSubtypeAndMessageSupplier() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.isAssignable(Integer.class, null, () -> "enigma")).withMessageContaining("enigma: null");
 	}
 
 	@Test
 	public void isAssignableWithTypeMismatchAndNullMessageSupplier() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.isAssignable(String.class, Integer.class, (Supplier<String>) null)).withMessageContaining("class java.lang.Integer is not assignable to class java.lang.String");
 	}
 
 	@Test
 	public void isAssignableWithTypeMismatchAndMessageSupplier() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		Assert.isAssignable(String.class, Integer.class, () -> "enigma")).withMessageContaining("enigma: class java.lang.Integer");
 	}
 
@@ -612,7 +612,7 @@ public class AssertTests {
 
 	@Test
 	public void stateWithFalseExpression() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
 		Assert.state(false, "enigma")).withMessageContaining("enigma");
 	}
 

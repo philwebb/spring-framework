@@ -115,7 +115,7 @@ public class JdbcNamespaceIntegrationTests {
 			assertNumRowsInTestTable(template, 1);
 			context.getBean(DataSourceInitializer.class).destroy();
 			// Table has been dropped
-			assertThatExceptionOfType((Class<? extends Throwable>) BadSqlGrammarException.class).isThrownBy(() ->
+			assertThatExceptionOfType(BadSqlGrammarException.class).isThrownBy(() ->
 				assertNumRowsInTestTable(template, 1));
 		}
 		finally {
@@ -132,7 +132,7 @@ public class JdbcNamespaceIntegrationTests {
 			assertNumRowsInTestTable(template, 1);
 			context.getBean(EmbeddedDatabaseFactoryBean.class).destroy();
 			// Table has been dropped
-			assertThatExceptionOfType((Class<? extends Throwable>) BadSqlGrammarException.class).isThrownBy(() ->
+			assertThatExceptionOfType(BadSqlGrammarException.class).isThrownBy(() ->
 				assertNumRowsInTestTable(template, 1));
 		}
 		finally {
@@ -149,7 +149,7 @@ public class JdbcNamespaceIntegrationTests {
 			assertNumRowsInTestTable(template, 1);
 			context.getBean(EmbeddedDatabaseFactoryBean.class).destroy();
 			 // Table has been dropped
-			assertThatExceptionOfType((Class<? extends Throwable>) BadSqlGrammarException.class).isThrownBy(() ->
+			assertThatExceptionOfType(BadSqlGrammarException.class).isThrownBy(() ->
 				assertNumRowsInTestTable(template, 1));
 		}
 		finally {

@@ -78,7 +78,7 @@ public class TestPropertySourceUtilsTests {
 
 	@Test
 	public void locationsAndValueAttributes() {
-		assertThatExceptionOfType((Class<? extends Throwable>) AnnotationConfigurationException.class).isThrownBy(() ->
+		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(() ->
 		buildMergedTestPropertySources(LocationsAndValuePropertySources.class));
 	}
 
@@ -122,25 +122,25 @@ public class TestPropertySourceUtilsTests {
 
 	@Test
 	public void addPropertiesFilesToEnvironmentWithNullContext() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		addPropertiesFilesToEnvironment((ConfigurableApplicationContext) null, FOO_LOCATIONS)).withMessageContaining("must not be null");
 	}
 
 	@Test
 	public void addPropertiesFilesToEnvironmentWithContextAndNullLocations() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		addPropertiesFilesToEnvironment(mock(ConfigurableApplicationContext.class), (String[]) null)).withMessageContaining("must not be null");
 	}
 
 	@Test
 	public void addPropertiesFilesToEnvironmentWithNullEnvironment() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		addPropertiesFilesToEnvironment((ConfigurableEnvironment) null, mock(ResourceLoader.class), FOO_LOCATIONS)).withMessageContaining("must not be null");
 	}
 
 	@Test
 	public void addPropertiesFilesToEnvironmentWithEnvironmentAndNullLocations() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		addPropertiesFilesToEnvironment(new MockEnvironment(), mock(ResourceLoader.class), (String[]) null)).withMessageContaining("must not be null");
 	}
 
@@ -164,37 +164,37 @@ public class TestPropertySourceUtilsTests {
 
 	@Test
 	public void addInlinedPropertiesToEnvironmentWithNullContext() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		addInlinedPropertiesToEnvironment((ConfigurableApplicationContext) null, KEY_VALUE_PAIR)).withMessageContaining("context");
 	}
 
 	@Test
 	public void addInlinedPropertiesToEnvironmentWithContextAndNullInlinedProperties() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		addInlinedPropertiesToEnvironment(mock(ConfigurableApplicationContext.class), (String[]) null)).withMessageContaining("inlined");
 	}
 
 	@Test
 	public void addInlinedPropertiesToEnvironmentWithNullEnvironment() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		addInlinedPropertiesToEnvironment((ConfigurableEnvironment) null, KEY_VALUE_PAIR)).withMessageContaining("environment");
 	}
 
 	@Test
 	public void addInlinedPropertiesToEnvironmentWithEnvironmentAndNullInlinedProperties() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		addInlinedPropertiesToEnvironment(new MockEnvironment(), (String[]) null)).withMessageContaining("inlined");
 	}
 
 	@Test
 	public void addInlinedPropertiesToEnvironmentWithMalformedUnicodeInValue() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
 		addInlinedPropertiesToEnvironment(new MockEnvironment(), asArray("key = \\uZZZZ"))).withMessageContaining("Failed to load test environment property");
 	}
 
 	@Test
 	public void addInlinedPropertiesToEnvironmentWithMultipleKeyValuePairsInSingleInlinedProperty() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
 		addInlinedPropertiesToEnvironment(new MockEnvironment(), asArray("a=b\nx=y"))).withMessageContaining("Failed to load exactly one test environment property");
 	}
 
@@ -212,7 +212,7 @@ public class TestPropertySourceUtilsTests {
 
 	@Test
 	public void convertInlinedPropertiesToMapWithNullInlinedProperties() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		convertInlinedPropertiesToMap((String[]) null)).withMessageContaining("inlined");
 	}
 

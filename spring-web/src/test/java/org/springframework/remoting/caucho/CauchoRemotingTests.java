@@ -48,7 +48,7 @@ public class CauchoRemotingTests {
 	@Test
 	public void hessianProxyFactoryBeanWithClassInsteadOfInterface() throws Exception {
 		HessianProxyFactoryBean factory = new HessianProxyFactoryBean();
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		factory.setServiceInterface(TestBean.class));
 	}
 
@@ -63,7 +63,7 @@ public class CauchoRemotingTests {
 		assertTrue(factory.getObject() instanceof ITestBean);
 		ITestBean bean = (ITestBean) factory.getObject();
 
-		assertThatExceptionOfType((Class<? extends Throwable>) RemoteAccessException.class).isThrownBy(() ->
+		assertThatExceptionOfType(RemoteAccessException.class).isThrownBy(() ->
 		bean.setName("test"));
 	}
 
@@ -81,7 +81,7 @@ public class CauchoRemotingTests {
 		assertTrue(factory.getObject() instanceof ITestBean);
 		ITestBean bean = (ITestBean) factory.getObject();
 
-		assertThatExceptionOfType((Class<? extends Throwable>) RemoteAccessException.class).isThrownBy(() ->
+		assertThatExceptionOfType(RemoteAccessException.class).isThrownBy(() ->
 		bean.setName("test"));
 	}
 
@@ -104,7 +104,7 @@ public class CauchoRemotingTests {
 		assertEquals("bean", proxyFactory.password);
 		assertTrue(proxyFactory.overloadEnabled);
 
-		assertThatExceptionOfType((Class<? extends Throwable>) RemoteAccessException.class).isThrownBy(() ->
+		assertThatExceptionOfType(RemoteAccessException.class).isThrownBy(() ->
 		bean.setName("test"));
 	}
 

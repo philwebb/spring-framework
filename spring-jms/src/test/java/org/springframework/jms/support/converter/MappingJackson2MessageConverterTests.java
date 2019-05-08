@@ -208,7 +208,7 @@ public class MappingJackson2MessageConverterTests {
 		Method method = this.getClass().getDeclaredMethod("invalid");
 		MethodParameter returnType = new MethodParameter(method, -1);
 
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		testToTextMessageWithReturnType(returnType));
 	}
 

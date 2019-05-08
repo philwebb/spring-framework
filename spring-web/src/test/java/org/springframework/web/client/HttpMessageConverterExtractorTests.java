@@ -159,7 +159,7 @@ public class HttpMessageConverterExtractorTests {
 		given(response.getHeaders()).willReturn(responseHeaders);
 		given(response.getBody()).willReturn(new ByteArrayInputStream("Foobar".getBytes()));
 		given(converter.canRead(String.class, contentType)).willReturn(false);
-		assertThatExceptionOfType((Class<? extends Throwable>) RestClientException.class).isThrownBy(() ->
+		assertThatExceptionOfType(RestClientException.class).isThrownBy(() ->
 		extractor.extractData(response));
 	}
 

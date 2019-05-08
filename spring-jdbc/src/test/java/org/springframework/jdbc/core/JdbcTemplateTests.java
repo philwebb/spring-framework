@@ -477,7 +477,7 @@ public class JdbcTemplateTests {
 		given(this.connection.createStatement()).willReturn(this.statement);
 
 		JdbcTemplate template = new JdbcTemplate(this.dataSource, false);
-		assertThatExceptionOfType((Class<? extends Throwable>) InvalidDataAccessApiUsageException.class).isThrownBy(() ->
+		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class).isThrownBy(() ->
 			template.batchUpdate(sql));
 		verify(this.statement, never()).addBatch(anyString());
 		verify(this.statement).close();
@@ -1065,7 +1065,7 @@ public class JdbcTemplateTests {
 			throw new InvalidDataAccessApiUsageException("");
 		});
 
-		assertThatExceptionOfType((Class<? extends Throwable>) InvalidDataAccessApiUsageException.class).isThrownBy(() ->
+		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class).isThrownBy(() ->
 			this.template.call(conn -> conn.prepareCall("my query"), Collections.singletonList(param)));
 		verify(this.resultSet).close();
 		verify(this.callableStatement).close();

@@ -45,7 +45,7 @@ public class MapDataSourceLookupTests {
 		MapDataSourceLookup lookup = new MapDataSourceLookup();
 		Map dataSources = lookup.getDataSources();
 
-		assertThatExceptionOfType((Class<? extends Throwable>) UnsupportedOperationException.class).isThrownBy(() ->
+		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() ->
 		dataSources.put("", ""));
 	}
 
@@ -95,7 +95,7 @@ public class MapDataSourceLookupTests {
 		dataSources.put(DATA_SOURCE_NAME, new Object());
 		MapDataSourceLookup lookup = new MapDataSourceLookup(dataSources);
 
-		assertThatExceptionOfType((Class<? extends Throwable>) ClassCastException.class).isThrownBy(() ->
+		assertThatExceptionOfType(ClassCastException.class).isThrownBy(() ->
 		lookup.getDataSource(DATA_SOURCE_NAME));
 	}
 
@@ -103,7 +103,7 @@ public class MapDataSourceLookupTests {
 	public void getDataSourceWhereSuppliedMapHasNoEntryForSpecifiedKey() throws Exception {
 		MapDataSourceLookup lookup = new MapDataSourceLookup();
 
-		assertThatExceptionOfType((Class<? extends Throwable>) DataSourceLookupFailureException.class).isThrownBy(() ->
+		assertThatExceptionOfType(DataSourceLookupFailureException.class).isThrownBy(() ->
 		lookup.getDataSource(DATA_SOURCE_NAME));
 	}
 

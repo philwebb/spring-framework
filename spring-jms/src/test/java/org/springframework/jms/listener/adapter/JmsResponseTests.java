@@ -59,25 +59,25 @@ public class JmsResponseTests {
 
 	@Test
 	public void createWithNulResponse() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		JmsResponse.forQueue(null, "myQueue"));
 	}
 
 	@Test
 	public void createWithNullQueueName() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		JmsResponse.forQueue("foo", null));
 	}
 
 	@Test
 	public void createWithNullTopicName() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		JmsResponse.forTopic("foo", null));
 	}
 
 	@Test
 	public void createWithNulDestination() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		JmsResponse.forDestination("foo", null));
 	}
 

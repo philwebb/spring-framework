@@ -37,7 +37,7 @@ public class CompoundComparatorTests {
 	@Test
 	public void shouldNeedAtLeastOneComparator() {
 		Comparator<String> c = new CompoundComparator<>();
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
 		c.compare("foo", "bar"));
 	}
 

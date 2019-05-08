@@ -96,7 +96,7 @@ public class ResourceHttpMessageConverterTests {
 		try (InputStream body = getClass().getResourceAsStream("logo.jpg") ) {
 			MockHttpInputMessage inputMessage = new MockHttpInputMessage(body);
 			inputMessage.getHeaders().setContentType(MediaType.IMAGE_JPEG);
-			assertThatExceptionOfType((Class<? extends Throwable>) HttpMessageNotReadableException.class).isThrownBy(() ->
+			assertThatExceptionOfType(HttpMessageNotReadableException.class).isThrownBy(() ->
 				noStreamConverter.read(InputStreamResource.class, inputMessage));
 		}
 	}

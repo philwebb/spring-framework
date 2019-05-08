@@ -131,7 +131,7 @@ public class SourceHttpMessageConverterTests {
 				"<root>&lol9;</root>";
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(content.getBytes("UTF-8"));
 
-		assertThatExceptionOfType((Class<? extends Throwable>) HttpMessageNotReadableException.class).isThrownBy(() ->
+		assertThatExceptionOfType(HttpMessageNotReadableException.class).isThrownBy(() ->
 		this.converter.read(DOMSource.class, inputMessage)).withMessageContaining("DOCTYPE");
 	}
 
@@ -188,7 +188,7 @@ public class SourceHttpMessageConverterTests {
 
 		InputSource inputSource = result.getInputSource();
 		XMLReader reader = result.getXMLReader();
-		assertThatExceptionOfType((Class<? extends Throwable>) SAXException.class).isThrownBy(() ->
+		assertThatExceptionOfType(SAXException.class).isThrownBy(() ->
 		reader.parse(inputSource)).withMessageContaining("DOCTYPE");
 	}
 

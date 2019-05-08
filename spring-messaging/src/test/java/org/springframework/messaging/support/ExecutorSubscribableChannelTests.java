@@ -67,7 +67,7 @@ public class ExecutorSubscribableChannelTests {
 
 	@Test
 	public void messageMustNotBeNull() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		this.channel.send(null)).withMessageContaining("Message must not be null");
 	}
 

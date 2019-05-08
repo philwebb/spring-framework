@@ -397,7 +397,7 @@ public class DefaultStompSessionTests {
 		stompHeaders.setContentType(MimeTypeUtils.APPLICATION_JSON);
 		String payload = "{'foo':'bar'}";
 
-		assertThatExceptionOfType((Class<? extends Throwable>) MessageConversionException.class).isThrownBy(() ->
+		assertThatExceptionOfType(MessageConversionException.class).isThrownBy(() ->
 		this.session.send(stompHeaders, payload));
 		verifyNoMoreInteractions(this.connection);
 	}

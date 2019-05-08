@@ -81,7 +81,7 @@ public class MethodInvokerTests {
 		mi.setTargetMethod("supertypes2");
 		mi.setArguments(new ArrayList<>(), new ArrayList<>(), "hello", Boolean.TRUE);
 
-		assertThatExceptionOfType((Class<? extends Throwable>) NoSuchMethodException.class).isThrownBy(mi::prepare);
+		assertThatExceptionOfType(NoSuchMethodException.class).isThrownBy(mi::prepare);
 	}
 
 	@Test
@@ -91,7 +91,7 @@ public class MethodInvokerTests {
 		methodInvoker.setTargetMethod("greet");
 		methodInvoker.setArguments("no match");
 
-		assertThatExceptionOfType((Class<? extends Throwable>) NoSuchMethodException.class).isThrownBy(methodInvoker::prepare);
+		assertThatExceptionOfType(NoSuchMethodException.class).isThrownBy(methodInvoker::prepare);
 	}
 
 	@Test

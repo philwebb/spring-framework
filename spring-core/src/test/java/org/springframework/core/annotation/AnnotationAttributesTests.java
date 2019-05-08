@@ -133,19 +133,19 @@ public class AnnotationAttributesTests {
 
 	@Test
 	public void getEnumWithNullAttributeName() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		attributes.getEnum(null)).withMessageContaining("must not be null or empty");
 	}
 
 	@Test
 	public void getEnumWithEmptyAttributeName() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		attributes.getEnum("")).withMessageContaining("must not be null or empty");
 	}
 
 	@Test
 	public void getEnumWithUnknownAttributeName() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		attributes.getEnum("bogus")).withMessageContaining("Attribute 'bogus' not found");
 	}
 

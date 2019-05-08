@@ -155,7 +155,7 @@ public class TransactionInterceptorTests extends AbstractTransactionAspectTests 
 		DefaultTransactionAttribute attribute = new DefaultTransactionAttribute();
 		attribute.setQualifier("fooTransactionManager");
 
-		assertThatExceptionOfType((Class<? extends Throwable>) NoSuchBeanDefinitionException.class).isThrownBy(() ->
+		assertThatExceptionOfType(NoSuchBeanDefinitionException.class).isThrownBy(() ->
 		ti.determineTransactionManager(attribute)).withMessageContaining("'fooTransactionManager'");
 	}
 

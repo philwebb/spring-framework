@@ -100,7 +100,7 @@ public class JmsListenerEndpointTests {
 		DefaultMessageListenerContainer container = new DefaultMessageListenerContainer();
 		SimpleJmsListenerEndpoint endpoint = new SimpleJmsListenerEndpoint();
 
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
 		endpoint.setupListenerContainer(container));
 	}
 
@@ -110,7 +110,7 @@ public class JmsListenerEndpointTests {
 		SimpleJmsListenerEndpoint endpoint = new SimpleJmsListenerEndpoint();
 		endpoint.setMessageListener(new MessageListenerAdapter());
 
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		endpoint.setupListenerContainer(container));
 	}
 

@@ -152,7 +152,7 @@ public class MessagingMessageListenerAdapterTests {
 		Message<?> message = listener.toMessagingMessage(jmsMessage);
 
 		// Triggers headers resolution
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(message::getHeaders).withMessageContaining("Header failure");
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(message::getHeaders).withMessageContaining("Header failure");
 	}
 
 	@Test

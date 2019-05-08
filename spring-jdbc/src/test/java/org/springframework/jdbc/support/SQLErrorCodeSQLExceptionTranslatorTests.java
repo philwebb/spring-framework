@@ -178,7 +178,7 @@ public class SQLErrorCodeSQLExceptionTranslatorTests {
 		assertEquals(invResEx, diex.getCause());
 
 		// Shouldn't custom translate this - invalid class
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		customTranslation.setExceptionClass(String.class));
 	}
 

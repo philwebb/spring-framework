@@ -64,7 +64,7 @@ public class WebConnectionHtmlUnitDriverTests {
 
 	@Test
 	public void setWebConnectionToNull() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		this.driver.setWebConnection(null));
 	}
 
@@ -73,7 +73,7 @@ public class WebConnectionHtmlUnitDriverTests {
 		this.driver.setWebConnection(this.connection);
 		assertThat(this.driver.getWebConnection(), equalTo(this.connection));
 
-		assertThatExceptionOfType((Class<? extends Throwable>) WebDriverException.class).isThrownBy(() ->
+		assertThatExceptionOfType(WebDriverException.class).isThrownBy(() ->
 		this.driver.get("https://example.com"));
 	}
 

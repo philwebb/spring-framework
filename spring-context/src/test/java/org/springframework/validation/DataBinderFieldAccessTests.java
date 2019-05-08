@@ -148,7 +148,7 @@ public class DataBinderFieldAccessTests {
 		MutablePropertyValues pvs = new MutablePropertyValues();
 		pvs.addPropertyValue(new PropertyValue("spouse.name", "Kerry"));
 
-		assertThatExceptionOfType((Class<? extends Throwable>) NullValueInNestedPathException.class).isThrownBy(() ->
+		assertThatExceptionOfType(NullValueInNestedPathException.class).isThrownBy(() ->
 		binder.bind(pvs));
 	}
 

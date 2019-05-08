@@ -146,7 +146,7 @@ public class JdbcTemplateQueryTests {
 		String sql = "select pass from t_account where first_name='Alef'";
 		given(this.resultSet.next()).willReturn(true, true, false);
 		given(this.resultSet.getString(1)).willReturn("pass");
-		assertThatExceptionOfType((Class<? extends Throwable>) IncorrectResultSizeDataAccessException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IncorrectResultSizeDataAccessException.class).isThrownBy(() ->
 			this.template.queryForObject(sql, String.class));
 		verify(this.resultSet).close();
 		verify(this.statement).close();

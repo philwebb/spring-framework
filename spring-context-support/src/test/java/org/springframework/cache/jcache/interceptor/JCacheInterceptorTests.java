@@ -68,7 +68,7 @@ public class JCacheInterceptorTests extends AbstractJCacheTests {
 
 	@Test
 	public void cacheManagerMandatoryIfCacheResolverNotSet() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
 		createOperationSource(null, null, null, defaultKeyGenerator));
 	}
 

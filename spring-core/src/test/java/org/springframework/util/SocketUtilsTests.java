@@ -53,13 +53,13 @@ public class SocketUtilsTests {
 
 	@Test
 	public void findAvailableTcpPortWithZeroMinPort() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		SocketUtils.findAvailableTcpPort(0));
 	}
 
 	@Test
 	public void findAvailableTcpPortWithNegativeMinPort() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		SocketUtils.findAvailableTcpPort(-500));
 	}
 
@@ -128,7 +128,7 @@ public class SocketUtilsTests {
 
 	@Test
 	public void findAvailableTcpPortsWithRequestedNumberGreaterThanSizeOfRange() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		findAvailableTcpPorts(50, 45000, 45010));
 	}
 
@@ -137,13 +137,13 @@ public class SocketUtilsTests {
 
 	@Test
 	public void findAvailableUdpPortWithZeroMinPort() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		SocketUtils.findAvailableUdpPort(0));
 	}
 
 	@Test
 	public void findAvailableUdpPortWithNegativeMinPort() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		SocketUtils.findAvailableUdpPort(-500));
 	}
 
@@ -205,7 +205,7 @@ public class SocketUtilsTests {
 
 	@Test
 	public void findAvailableUdpPortsWithRequestedNumberGreaterThanSizeOfRange() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		findAvailableUdpPorts(50, 45000, 45010));
 	}
 

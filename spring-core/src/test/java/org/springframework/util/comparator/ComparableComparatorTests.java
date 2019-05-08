@@ -48,7 +48,7 @@ public class ComparableComparatorTests {
 		Comparator c = new ComparableComparator();
 		Object o1 = new Object();
 		Object o2 = new Object();
-		assertThatExceptionOfType((Class<? extends Throwable>) ClassCastException.class).isThrownBy(() ->
+		assertThatExceptionOfType(ClassCastException.class).isThrownBy(() ->
 		c.compare(o1, o2));
 	}
 

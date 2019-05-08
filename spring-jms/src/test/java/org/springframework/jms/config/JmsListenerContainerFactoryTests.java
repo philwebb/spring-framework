@@ -131,7 +131,7 @@ public class JmsListenerContainerFactoryTests {
 
 		SimpleJmsListenerEndpoint endpoint = new SimpleJmsListenerEndpoint();
 		endpoint.setMessageListener(new MessageListenerAdapter());
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
 		factory.createListenerContainer(endpoint));
 	}
 

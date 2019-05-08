@@ -197,7 +197,7 @@ public class Jaxb2CollectionHttpMessageConverterTests {
 				"]>\n" +
 				"<list><rootElement><external>&lol9;</external></rootElement></list>";
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(content.getBytes("UTF-8"));
-		assertThatExceptionOfType((Class<? extends Throwable>) HttpMessageNotReadableException.class).isThrownBy(() ->
+		assertThatExceptionOfType(HttpMessageNotReadableException.class).isThrownBy(() ->
 		this.converter.read(this.rootElementListType, null, inputMessage)).withMessageContaining("\"lol9\"");
 	}
 

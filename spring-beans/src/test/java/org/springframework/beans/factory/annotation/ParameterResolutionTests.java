@@ -49,7 +49,7 @@ public class ParameterResolutionTests {
 
 	@Test
 	public void isAutowirablePreconditions() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		ParameterResolutionDelegate.isAutowirable(null, 0)).withMessageContaining("Parameter must not be null");
 	}
 
@@ -98,19 +98,19 @@ public class ParameterResolutionTests {
 
 	@Test
 	public void resolveDependencyPreconditionsForParameter() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		ParameterResolutionDelegate.resolveDependency(null, 0, null, mock(AutowireCapableBeanFactory.class))).withMessageContaining("Parameter must not be null");
 	}
 
 	@Test
 	public void resolveDependencyPreconditionsForContainingClass() throws Exception {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		ParameterResolutionDelegate.resolveDependency(getParameter(), 0, null, null)).withMessageContaining("Containing class must not be null");
 	}
 
 	@Test
 	public void resolveDependencyPreconditionsForBeanFactory() throws Exception {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		ParameterResolutionDelegate.resolveDependency(getParameter(), 0, getClass(), null)).withMessageContaining("AutowireCapableBeanFactory must not be null");
 	}
 

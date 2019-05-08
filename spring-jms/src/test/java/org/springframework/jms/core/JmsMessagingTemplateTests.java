@@ -170,7 +170,7 @@ public class JmsMessagingTemplateTests {
 	public void sendNoDefaultSet() {
 		Message<String> message = createTextMessage();
 
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
 		this.messagingTemplate.send(message));
 	}
 
@@ -228,7 +228,7 @@ public class JmsMessagingTemplateTests {
 
 	@Test
 	public void convertAndSendNoDefaultSet() throws JMSException {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
 		this.messagingTemplate.convertAndSend("my Payload"));
 	}
 
@@ -317,7 +317,7 @@ public class JmsMessagingTemplateTests {
 
 	@Test
 	public void receiveNoDefaultSet() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(this.messagingTemplate::receive);
+		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(this.messagingTemplate::receive);
 	}
 
 	@Test
@@ -381,7 +381,7 @@ public class JmsMessagingTemplateTests {
 		javax.jms.Message jmsMessage = createJmsTextMessage("Hello");
 		given(this.jmsTemplate.receive("myQueue")).willReturn(jmsMessage);
 
-		assertThatExceptionOfType((Class<? extends Throwable>) org.springframework.messaging.converter.MessageConversionException.class).isThrownBy(() ->
+		assertThatExceptionOfType(org.springframework.messaging.converter.MessageConversionException.class).isThrownBy(() ->
 		this.messagingTemplate.receiveAndConvert("myQueue", Writer.class));
 	}
 
@@ -444,7 +444,7 @@ public class JmsMessagingTemplateTests {
 	public void sendAndReceiveNoDefaultSet() {
 		Message<String> message = createTextMessage();
 
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
 		this.messagingTemplate.sendAndReceive(message));
 	}
 
@@ -494,7 +494,7 @@ public class JmsMessagingTemplateTests {
 
 	@Test
 	public void convertSendAndReceiveNoDefaultSet() throws JMSException {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
 		this.messagingTemplate.convertSendAndReceive("my Payload", String.class));
 	}
 
@@ -507,7 +507,7 @@ public class JmsMessagingTemplateTests {
 		this.messagingTemplate.setJmsMessageConverter(messageConverter);
 		invokeMessageCreator();
 
-		assertThatExceptionOfType((Class<? extends Throwable>) org.springframework.messaging.converter.MessageConversionException.class).isThrownBy(() ->
+		assertThatExceptionOfType(org.springframework.messaging.converter.MessageConversionException.class).isThrownBy(() ->
 		this.messagingTemplate.send("myQueue", message));
 	}
 
@@ -520,7 +520,7 @@ public class JmsMessagingTemplateTests {
 		this.messagingTemplate.setJmsMessageConverter(messageConverter);
 		given(this.jmsTemplate.receive("myQueue")).willReturn(message);
 
-		assertThatExceptionOfType((Class<? extends Throwable>) org.springframework.messaging.converter.MessageConversionException.class).isThrownBy(() ->
+		assertThatExceptionOfType(org.springframework.messaging.converter.MessageConversionException.class).isThrownBy(() ->
 		this.messagingTemplate.receive("myQueue"));
 	}
 
@@ -528,7 +528,7 @@ public class JmsMessagingTemplateTests {
 	public void convertMessageNotReadableException() throws JMSException {
 		willThrow(MessageNotReadableException.class).given(this.jmsTemplate).receive("myQueue");
 
-		assertThatExceptionOfType((Class<? extends Throwable>) MessagingException.class).isThrownBy(() ->
+		assertThatExceptionOfType(MessagingException.class).isThrownBy(() ->
 		this.messagingTemplate.receive("myQueue"));
 	}
 
@@ -537,7 +537,7 @@ public class JmsMessagingTemplateTests {
 		Destination destination = new Destination() {};
 		willThrow(DestinationResolutionException.class).given(this.jmsTemplate).send(eq(destination), any());
 
-		assertThatExceptionOfType((Class<? extends Throwable>) org.springframework.messaging.core.DestinationResolutionException.class).isThrownBy(() ->
+		assertThatExceptionOfType(org.springframework.messaging.core.DestinationResolutionException.class).isThrownBy(() ->
 		this.messagingTemplate.send(destination, createTextMessage()));
 	}
 
@@ -546,7 +546,7 @@ public class JmsMessagingTemplateTests {
 		Destination destination = new Destination() {};
 		willThrow(DestinationResolutionException.class).given(this.jmsTemplate).receive(destination);
 
-		assertThatExceptionOfType((Class<? extends Throwable>) org.springframework.messaging.core.DestinationResolutionException.class).isThrownBy(() ->
+		assertThatExceptionOfType(org.springframework.messaging.core.DestinationResolutionException.class).isThrownBy(() ->
 		this.messagingTemplate.receive(destination));
 	}
 
@@ -558,7 +558,7 @@ public class JmsMessagingTemplateTests {
 		this.messagingTemplate.setJmsMessageConverter(messageConverter);
 		invokeMessageCreator();
 
-		assertThatExceptionOfType((Class<? extends Throwable>) org.springframework.messaging.converter.MessageConversionException.class).isThrownBy(() ->
+		assertThatExceptionOfType(org.springframework.messaging.converter.MessageConversionException.class).isThrownBy(() ->
 		this.messagingTemplate.send("myQueue", message));
 	}
 
@@ -570,7 +570,7 @@ public class JmsMessagingTemplateTests {
 		this.messagingTemplate.setJmsMessageConverter(messageConverter);
 		invokeMessageCreator();
 
-		assertThatExceptionOfType((Class<? extends Throwable>) org.springframework.messaging.converter.MessageConversionException.class).isThrownBy(() ->
+		assertThatExceptionOfType(org.springframework.messaging.converter.MessageConversionException.class).isThrownBy(() ->
 		this.messagingTemplate.send("myQueue", message));
 	}
 
@@ -578,7 +578,7 @@ public class JmsMessagingTemplateTests {
 	public void convertInvalidDestinationExceptionOnSendAndReceiveWithName() {
 		willThrow(InvalidDestinationException.class).given(this.jmsTemplate).sendAndReceive(eq("unknownQueue"), any());
 
-		assertThatExceptionOfType((Class<? extends Throwable>) org.springframework.messaging.core.DestinationResolutionException.class).isThrownBy(() ->
+		assertThatExceptionOfType(org.springframework.messaging.core.DestinationResolutionException.class).isThrownBy(() ->
 		this.messagingTemplate.sendAndReceive("unknownQueue", createTextMessage()));
 	}
 
@@ -587,7 +587,7 @@ public class JmsMessagingTemplateTests {
 		Destination destination = new Destination() {};
 		willThrow(InvalidDestinationException.class).given(this.jmsTemplate).sendAndReceive(eq(destination), any());
 
-		assertThatExceptionOfType((Class<? extends Throwable>) org.springframework.messaging.core.DestinationResolutionException.class).isThrownBy(() ->
+		assertThatExceptionOfType(org.springframework.messaging.core.DestinationResolutionException.class).isThrownBy(() ->
 		this.messagingTemplate.sendAndReceive(destination, createTextMessage()));
 	}
 

@@ -105,7 +105,7 @@ public class MockHttpServletRequestTests {
 
 	@Test
 	public void getContentAsStringWithoutSettingCharacterEncoding() throws IOException {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(request::getContentAsString).withMessageContaining("Cannot get content as a String for a null character encoding");
+		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(request::getContentAsString).withMessageContaining("Cannot get content as a String for a null character encoding");
 	}
 
 	@Test
@@ -142,13 +142,13 @@ public class MockHttpServletRequestTests {
 	@Test  // SPR-16499
 	public void getReaderAfterGettingInputStream() throws IOException {
 		request.getInputStream();
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(request::getReader).withMessageContaining("Cannot call getReader() after getInputStream() has already been called for the current request");
+		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(request::getReader).withMessageContaining("Cannot call getReader() after getInputStream() has already been called for the current request");
 	}
 
 	@Test  // SPR-16499
 	public void getInputStreamAfterGettingReader() throws IOException {
 		request.getReader();
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(request::getInputStream).withMessageContaining("Cannot call getInputStream() after getReader() has already been called for the current request");
+		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(request::getInputStream).withMessageContaining("Cannot call getInputStream() after getReader() has already been called for the current request");
 	}
 
 	@Test

@@ -123,17 +123,17 @@ public class StopWatchTests {
 		assertFalse(toString.contains(name1));
 		assertFalse(toString.contains(name2));
 
-		assertThatExceptionOfType((Class<? extends Throwable>) UnsupportedOperationException.class).isThrownBy(sw::getTaskInfo);
+		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(sw::getTaskInfo);
 	}
 
 	@Test
 	public void failureToStartBeforeGettingTimings() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(sw::getLastTaskTimeMillis);
+		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(sw::getLastTaskTimeMillis);
 	}
 
 	@Test
 	public void failureToStartBeforeStop() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(sw::stop);
+		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(sw::stop);
 	}
 
 	@Test
@@ -142,7 +142,7 @@ public class StopWatchTests {
 		sw.stop();
 		sw.start("");
 		assertTrue(sw.isRunning());
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(() -> sw.start(""));
+		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() -> sw.start(""));
 	}
 
 }

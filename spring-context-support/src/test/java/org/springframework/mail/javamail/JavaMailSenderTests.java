@@ -513,7 +513,7 @@ public class JavaMailSenderTests {
 		MockJavaMailSender sender = new MockJavaMailSender();
 		sender.setHost(null);
 
-		assertThatExceptionOfType((Class<? extends Throwable>) MessagingException.class).isThrownBy(sender::testConnection);
+		assertThatExceptionOfType(MessagingException.class).isThrownBy(sender::testConnection);
 	}
 
 

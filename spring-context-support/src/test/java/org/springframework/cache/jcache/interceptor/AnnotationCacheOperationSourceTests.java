@@ -100,7 +100,7 @@ public class AnnotationCacheOperationSourceTests extends AbstractJCacheTests {
 
 	@Test
 	public void multiAnnotations() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
 		getCacheOperation(InvalidCases.class, name.getMethodName()));
 	}
 

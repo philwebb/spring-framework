@@ -140,7 +140,7 @@ public class SqlQueryTests  {
 		query.declareParameter(new SqlParameter(COLUMN_NAMES[1], COLUMN_TYPES[1]));
 		query.compile();
 
-		assertThatExceptionOfType((Class<? extends Throwable>) InvalidDataAccessApiUsageException.class).isThrownBy(query::execute);
+		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class).isThrownBy(query::execute);
 	}
 
 	@Test
@@ -157,7 +157,7 @@ public class SqlQueryTests  {
 		query.declareParameter(new SqlParameter(COLUMN_NAMES[1], COLUMN_TYPES[1]));
 		query.compile();
 
-		assertThatExceptionOfType((Class<? extends Throwable>) InvalidDataAccessApiUsageException.class).isThrownBy(() ->
+		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class).isThrownBy(() ->
 		query.executeByNamedParam(Collections.singletonMap(COLUMN_NAMES[0], "value")));
 	}
 
@@ -351,7 +351,7 @@ public class SqlQueryTests  {
 		}
 
 		CustomerQuery query = new CustomerQuery(dataSource);
-		assertThatExceptionOfType((Class<? extends Throwable>) IncorrectResultSizeDataAccessException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IncorrectResultSizeDataAccessException.class).isThrownBy(() ->
 			query.findCustomer("rod"));
 		verify(preparedStatement).setString(1, "rod");
 		verify(connection).prepareStatement(SELECT_ID_FORENAME_WHERE);
@@ -503,7 +503,7 @@ public class SqlQueryTests  {
 
 		// Query should not succeed since parameter declaration did not specify parameter name
 		CustomerQuery query = new CustomerQuery(dataSource);
-		assertThatExceptionOfType((Class<? extends Throwable>) InvalidDataAccessApiUsageException.class).isThrownBy(() ->
+		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class).isThrownBy(() ->
 		query.findCustomer(1));
 	}
 
@@ -705,7 +705,7 @@ public class SqlQueryTests  {
 		}
 
 		CustomerQuery query = new CustomerQuery(dataSource);
-		assertThatExceptionOfType((Class<? extends Throwable>) InvalidDataAccessApiUsageException.class).isThrownBy(() ->
+		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class).isThrownBy(() ->
 		query.findCustomers(1));
 	}
 

@@ -45,13 +45,13 @@ public class SpringFailOnTimeoutTests {
 
 	@Test
 	public void nullNextStatement() throws Throwable {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		new SpringFailOnTimeout(null, 1));
 	}
 
 	@Test
 	public void negativeTimeout() throws Throwable {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		new SpringFailOnTimeout(statement, -1));
 	}
 
@@ -59,7 +59,7 @@ public class SpringFailOnTimeoutTests {
 	public void userExceptionPropagates() throws Throwable {
 		doThrow(new Boom()).when(statement).evaluate();
 
-		assertThatExceptionOfType((Class<? extends Throwable>) Boom.class).isThrownBy(() ->
+		assertThatExceptionOfType(Boom.class).isThrownBy(() ->
 		new SpringFailOnTimeout(statement, 1).evaluate());
 	}
 
@@ -70,7 +70,7 @@ public class SpringFailOnTimeoutTests {
 			return null;
 		}).when(statement).evaluate();
 
-		assertThatExceptionOfType((Class<? extends Throwable>) TimeoutException.class).isThrownBy(() ->
+		assertThatExceptionOfType(TimeoutException.class).isThrownBy(() ->
 		new SpringFailOnTimeout(statement, 1).evaluate());
 	}
 

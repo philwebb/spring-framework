@@ -44,7 +44,7 @@ public class BeanPropertyRowMapperTests extends AbstractRowMapperTests {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void testOverridingDifferentClassDefinedForMapping() {
 		BeanPropertyRowMapper mapper = new BeanPropertyRowMapper(Person.class);
-		assertThatExceptionOfType((Class<? extends Throwable>) InvalidDataAccessApiUsageException.class).isThrownBy(() ->
+		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class).isThrownBy(() ->
 		mapper.setMappedClass(Long.class));
 	}
 
@@ -102,7 +102,7 @@ public class BeanPropertyRowMapperTests extends AbstractRowMapperTests {
 	@Test
 	public void testMappingWithUnpopulatedFieldsNotAccepted() throws Exception {
 		Mock mock = new Mock();
-		assertThatExceptionOfType((Class<? extends Throwable>) InvalidDataAccessApiUsageException.class).isThrownBy(() ->
+		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class).isThrownBy(() ->
 		mock.getJdbcTemplate().query(
 				"select name, age, birth_date, balance from people",
 				new BeanPropertyRowMapper<>(ExtendedPerson.class, true)));
@@ -112,7 +112,7 @@ public class BeanPropertyRowMapperTests extends AbstractRowMapperTests {
 	public void testMappingNullValue() throws Exception {
 		BeanPropertyRowMapper<Person> mapper = new BeanPropertyRowMapper<>(Person.class);
 		Mock mock = new Mock(MockType.TWO);
-		assertThatExceptionOfType((Class<? extends Throwable>) TypeMismatchException.class).isThrownBy(() ->
+		assertThatExceptionOfType(TypeMismatchException.class).isThrownBy(() ->
 		mock.getJdbcTemplate().query(
 				"select name, null as age, birth_date, balance from people", mapper));
 	}

@@ -38,19 +38,19 @@ public class JmsListenerEndpointRegistryTests {
 
 	@Test
 	public void createWithNullEndpoint() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		registry.registerListenerContainer(null, containerFactory));
 	}
 
 	@Test
 	public void createWithNullEndpointId() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		registry.registerListenerContainer(new SimpleJmsListenerEndpoint(), containerFactory));
 	}
 
 	@Test
 	public void createWithNullContainerFactory() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		registry.registerListenerContainer(createEndpoint("foo", "myDestination"), null));
 	}
 
@@ -58,7 +58,7 @@ public class JmsListenerEndpointRegistryTests {
 	public void createWithDuplicateEndpointId() {
 		registry.registerListenerContainer(createEndpoint("test", "queue"), containerFactory);
 
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
 		registry.registerListenerContainer(createEndpoint("test", "queue"), containerFactory));
 	}
 

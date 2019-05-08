@@ -51,13 +51,13 @@ public class JmsListenerEndpointRegistrarTests {
 
 	@Test
 	public void registerNullEndpoint() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		this.registrar.registerEndpoint(null, this.containerFactory));
 	}
 
 	@Test
 	public void registerNullEndpointId() {
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		this.registrar.registerEndpoint(new SimpleJmsListenerEndpoint(), this.containerFactory));
 	}
 
@@ -66,7 +66,7 @@ public class JmsListenerEndpointRegistrarTests {
 		SimpleJmsListenerEndpoint endpoint = new SimpleJmsListenerEndpoint();
 		endpoint.setId("");
 
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
 		this.registrar.registerEndpoint(endpoint, this.containerFactory));
 	}
 
@@ -88,7 +88,7 @@ public class JmsListenerEndpointRegistrarTests {
 		endpoint.setId("some id");
 		this.registrar.registerEndpoint(endpoint, null);
 
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalStateException.class).isThrownBy(() ->
+		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
 		this.registrar.afterPropertiesSet()).withMessageContaining(endpoint.toString());
 	}
 

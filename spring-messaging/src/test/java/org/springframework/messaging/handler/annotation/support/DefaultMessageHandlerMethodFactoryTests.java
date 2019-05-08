@@ -96,7 +96,7 @@ public class DefaultMessageHandlerMethodFactoryTests {
 		InvocableHandlerMethod invocableHandlerMethod =
 				createInvocableHandlerMethod(instance, "simpleString", String.class);
 
-		assertThatExceptionOfType((Class<? extends Throwable>) MessageConversionException.class).isThrownBy(() ->
+		assertThatExceptionOfType(MessageConversionException.class).isThrownBy(() ->
 		invocableHandlerMethod.invoke(MessageBuilder.withPayload(123).build()));
 	}
 
@@ -110,7 +110,7 @@ public class DefaultMessageHandlerMethodFactoryTests {
 		InvocableHandlerMethod invocableHandlerMethod =
 				createInvocableHandlerMethod(instance, "simpleString", String.class);
 
-		assertThatExceptionOfType((Class<? extends Throwable>) MessageConversionException.class).isThrownBy(() ->
+		assertThatExceptionOfType(MessageConversionException.class).isThrownBy(() ->
 		invocableHandlerMethod.invoke(MessageBuilder.withPayload(123).build()));
 	}
 
@@ -149,7 +149,7 @@ public class DefaultMessageHandlerMethodFactoryTests {
 		InvocableHandlerMethod invocableHandlerMethod2 =
 				createInvocableHandlerMethod(instance, "simpleString", String.class);
 
-		assertThatExceptionOfType((Class<? extends Throwable>) MethodArgumentResolutionException.class).isThrownBy(() ->
+		assertThatExceptionOfType(MethodArgumentResolutionException.class).isThrownBy(() ->
 		invocableHandlerMethod2.invoke(message)).withMessageContaining("No suitable resolver");
 	}
 
@@ -184,7 +184,7 @@ public class DefaultMessageHandlerMethodFactoryTests {
 
 		InvocableHandlerMethod invocableHandlerMethod =
 				createInvocableHandlerMethod(instance, "payloadValidation", String.class);
-		assertThatExceptionOfType((Class<? extends Throwable>) MethodArgumentNotValidException.class).isThrownBy(() ->
+		assertThatExceptionOfType(MethodArgumentNotValidException.class).isThrownBy(() ->
 		invocableHandlerMethod.invoke(MessageBuilder.withPayload("failure").build()));
 	}
 
