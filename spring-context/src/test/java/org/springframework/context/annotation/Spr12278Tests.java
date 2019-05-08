@@ -60,7 +60,7 @@ public class Spr12278Tests {
 
 	@Test
 	public void componentTwoSpecificConstructorsNoHint() {
-		assertThatExceptionOfType((Class<? extends Throwable>) BeanCreationException.class).isThrownBy(()->
+		assertThatExceptionOfType((Class<? extends Throwable>) BeanCreationException.class).isThrownBy(() ->
 		new AnnotationConfigApplicationContext(BaseConfiguration.class,
 				TwoSpecificConstructorsComponent.class)).withMessageContaining(NoSuchMethodException.class.getName());
 	}

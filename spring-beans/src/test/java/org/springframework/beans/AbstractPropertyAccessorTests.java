@@ -127,7 +127,7 @@ public abstract class AbstractPropertyAccessorTests {
 	public void isReadablePropertyNull() {
 		AbstractPropertyAccessor accessor = createAccessor(new NoRead());
 
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(()->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		accessor.isReadableProperty(null));
 	}
 
@@ -142,7 +142,7 @@ public abstract class AbstractPropertyAccessorTests {
 	public void isWritablePropertyNull() {
 		AbstractPropertyAccessor accessor = createAccessor(new NoRead());
 
-		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(()->
+		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->
 		accessor.isWritableProperty(null));
 	}
 
@@ -291,7 +291,7 @@ public abstract class AbstractPropertyAccessorTests {
 		Person target = createPerson("John", "London", "UK");
 		AbstractPropertyAccessor accessor = createAccessor(target);
 
-		assertThatExceptionOfType((Class<? extends Throwable>) NotReadablePropertyException.class).isThrownBy(()->
+		assertThatExceptionOfType((Class<? extends Throwable>) NotReadablePropertyException.class).isThrownBy(() ->
 		accessor.getPropertyValue("address.bar"));
 	}
 
@@ -1565,7 +1565,7 @@ public abstract class AbstractPropertyAccessorTests {
 		Person target = createPerson("John", "Paris", "FR");
 		AbstractPropertyAccessor accessor = createAccessor(target);
 
-		assertThatExceptionOfType((Class<? extends Throwable>) NotWritablePropertyException.class).isThrownBy(()->
+		assertThatExceptionOfType((Class<? extends Throwable>) NotWritablePropertyException.class).isThrownBy(() ->
 		accessor.setPropertyValue("address.bar", "value"));
 	}
 

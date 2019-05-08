@@ -87,7 +87,7 @@ public class ViewResolutionIntegrationTests {
 
 	@Test
 	public void groovyMarkupInvalidConfig() throws Exception {
-		assertThatExceptionOfType((Class<? extends Throwable>) RuntimeException.class).isThrownBy(()->
+		assertThatExceptionOfType((Class<? extends Throwable>) RuntimeException.class).isThrownBy(() ->
 		runTest(InvalidGroovyMarkupWebConfig.class)).withMessageContaining("In addition to a Groovy markup view resolver ");
 	}
 

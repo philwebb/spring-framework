@@ -85,7 +85,7 @@ public class NullPrimitiveTests {
 
 		Bar bar = (Bar) factory.getProxy();
 
-		assertThatExceptionOfType((Class<? extends Throwable>) AopInvocationException.class).isThrownBy(()-> bar.getValue()).withMessageContaining("Bar.getValue()");
+		assertThatExceptionOfType((Class<? extends Throwable>) AopInvocationException.class).isThrownBy(() -> bar.getValue()).withMessageContaining("Bar.getValue()");
 	}
 
 }

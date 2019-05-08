@@ -56,7 +56,7 @@ public class ComposedRepeatableAnnotationsTests {
 
 	@Test
 	public void getNonRepeatableAnnotation() {
-		expectNonRepeatableAnnotation(()->
+		expectNonRepeatableAnnotation(() ->
 				getMergedRepeatableAnnotations(getClass(), NonRepeatable.class));
 	}
 

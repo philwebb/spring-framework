@@ -98,7 +98,7 @@ public class ConfigurationClassProcessingTests {
 		assertSame(testBeanSupplier.get(), ac.getBean(beanName));
 
 		// method name should not be registered
-		assertThatExceptionOfType((Class<? extends Throwable>) NoSuchBeanDefinitionException.class).isThrownBy(()->
+		assertThatExceptionOfType((Class<? extends Throwable>) NoSuchBeanDefinitionException.class).isThrownBy(() ->
 		ac.getBean("methodName"));
 	}
 
@@ -122,7 +122,7 @@ public class ConfigurationClassProcessingTests {
 		Arrays.stream(factory.getAliases(beanName)).map(factory::getBean).forEach(alias -> assertSame(testBean, alias));
 
 		// method name should not be registered
-		assertThatExceptionOfType((Class<? extends Throwable>) NoSuchBeanDefinitionException.class).isThrownBy(()->
+		assertThatExceptionOfType((Class<? extends Throwable>) NoSuchBeanDefinitionException.class).isThrownBy(() ->
 		factory.getBean("methodName"));
 	}
 
@@ -146,7 +146,7 @@ public class ConfigurationClassProcessingTests {
 
 	@Test
 	public void testFinalBeanMethod() {
-		assertThatExceptionOfType((Class<? extends Throwable>) BeanDefinitionParsingException.class).isThrownBy(()->
+		assertThatExceptionOfType((Class<? extends Throwable>) BeanDefinitionParsingException.class).isThrownBy(() ->
 		initBeanFactory(ConfigWithFinalBean.class));
 	}
 

@@ -69,14 +69,14 @@ public class YamlProcessorTests {
 	@Test
 	public void testBadDocumentStart() {
 		this.processor.setResources(new ByteArrayResource("foo # a document\nbar: baz".getBytes()));
-		assertThatExceptionOfType((Class<? extends Throwable>) ParserException.class).isThrownBy(()->
+		assertThatExceptionOfType((Class<? extends Throwable>) ParserException.class).isThrownBy(() ->
 		this.processor.process((properties, map) -> {})).withMessageContaining("line 2, column 1");
 	}
 
 	@Test
 	public void testBadResource() {
 		this.processor.setResources(new ByteArrayResource("foo: bar\ncd\nspam:\n  foo: baz".getBytes()));
-		assertThatExceptionOfType((Class<? extends Throwable>) ScannerException.class).isThrownBy(()->
+		assertThatExceptionOfType((Class<? extends Throwable>) ScannerException.class).isThrownBy(() ->
 		this.processor.process((properties, map) -> {})).withMessageContaining("line 3, column 1");
 	}
 
