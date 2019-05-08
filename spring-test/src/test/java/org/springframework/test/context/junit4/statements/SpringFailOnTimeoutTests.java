@@ -21,7 +21,7 @@ import java.util.concurrent.TimeoutException;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 import org.junit.runners.model.Statement;
 import org.mockito.stubbing.Answer;
 

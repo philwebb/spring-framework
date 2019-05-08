@@ -22,7 +22,7 @@ import javax.jms.Session;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.jms.StubTextMessage;

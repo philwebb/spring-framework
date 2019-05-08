@@ -18,7 +18,7 @@ package org.springframework.jms.config;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 /**
  * @author Stephane Nicoll

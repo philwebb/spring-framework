@@ -26,7 +26,7 @@ import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
@@ -46,6 +46,7 @@ import org.springframework.util.MimeType;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.util.concurrent.SettableListenableFuture;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -415,10 +416,9 @@ public class DefaultStompSessionTests {
 		future.setException(exception);
 
 		when(this.connection.send(any())).thenReturn(future);
-		this.thrown.expect(MessageDeliveryException.class);
-		this.thrown.expectCause(Matchers.sameInstance(exception));
-
-		this.session.send("/topic/foo", "sample payload".getBytes(StandardCharsets.UTF_8));
+		assertThatExceptionOfType(MessageDeliveryException.class).isThrownBy(() ->
+				this.session.send("/topic/foo", "sample payload".getBytes(StandardCharsets.UTF_8)))
+			.withCause(exception);
 
 		verifyNoMoreInteractions(this.connection);
 	}

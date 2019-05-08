@@ -22,9 +22,10 @@ import java.util.function.Supplier;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import static java.util.Collections.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.CoreMatchers.*;
 
 /**
@@ -69,9 +70,9 @@ public class AssertTests {
 
 	@Test
 	public void stateWithFalseExpressionAndNullMessageSupplier() {
-		thrown.expect(IllegalStateException.class);
-		thrown.expectMessage(equalTo(null));
-		Assert.state(false, (Supplier<String>) null);
+		assertThatIllegalStateException().isThrownBy(() ->
+				Assert.state(false, (Supplier<String>) null))
+			.withMessage(null);
 	}
 
 	@Test
@@ -100,9 +101,9 @@ public class AssertTests {
 
 	@Test
 	public void isTrueWithFalseAndNullMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage(equalTo(null));
-		Assert.isTrue(false, (Supplier<String>) null);
+		assertThatIllegalStateException().isThrownBy(() ->
+				Assert.isTrue(false, (Supplier<String>) null))
+			.withMessage(null);
 	}
 
 	@Test
@@ -124,9 +125,9 @@ public class AssertTests {
 
 	@Test
 	public void isNullWithNonNullObjectAndNullMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage(equalTo(null));
-		Assert.isNull("foo", (Supplier<String>) null);
+		assertThatIllegalStateException().isThrownBy(() ->
+				Assert.isNull("foo", (Supplier<String>) null))
+			.withMessage(null);
 	}
 
 	@Test
@@ -148,9 +149,9 @@ public class AssertTests {
 
 	@Test
 	public void notNullWithNullAndNullMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage(equalTo(null));
-		Assert.notNull(null, (Supplier<String>) null);
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				Assert.notNull(null, (Supplier<String>) null))
+			.withMessage(null);
 	}
 
 	@Test
@@ -203,9 +204,9 @@ public class AssertTests {
 
 	@Test
 	public void hasLengthWithNullAndNullMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage(equalTo(null));
-		Assert.hasLength(null, (Supplier<String>) null);
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				Assert.hasLength(null, (Supplier<String>) null))
+			.withMessage(null);
 	}
 
 	@Test
@@ -262,9 +263,9 @@ public class AssertTests {
 
 	@Test
 	public void hasTextWithNullAndNullMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage(equalTo(null));
-		Assert.hasText(null, (Supplier<String>) null);
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				Assert.hasText(null, (Supplier<String>) null))
+			.withMessage(null);
 	}
 
 	@Test
@@ -316,9 +317,9 @@ public class AssertTests {
 
 	@Test
 	public void doesNotContainWithNullMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage(equalTo(null));
-		Assert.doesNotContain("1234", "23", (Supplier<String>) null);
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				Assert.doesNotContain("1234", "23", (Supplier<String>) null))
+			.withMessage(null);
 	}
 
 	@Test
@@ -361,9 +362,9 @@ public class AssertTests {
 
 	@Test
 	public void notEmptyArrayWithEmptyArrayAndNullMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage(equalTo(null));
-		Assert.notEmpty(new String[] {}, (Supplier<String>) null);
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				Assert.notEmpty(new String[] {}, (Supplier<String>) null))
+			.withMessage(null);
 	}
 
 	@Test
@@ -400,9 +401,9 @@ public class AssertTests {
 
 	@Test
 	public void noNullElementsWithNullElementsAndNullMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage(equalTo(null));
-		Assert.noNullElements(new String[] { "foo", null, "bar" }, (Supplier<String>) null);
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				Assert.noNullElements(new String[] { "foo", null, "bar" }, (Supplier<String>) null))
+			.withMessage(null);
 	}
 
 	@Test
@@ -445,9 +446,9 @@ public class AssertTests {
 
 	@Test
 	public void notEmptyCollectionWithEmptyCollectionAndNullMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage(equalTo(null));
-		Assert.notEmpty(emptyList(), (Supplier<String>) null);
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				Assert.notEmpty(emptyList(), (Supplier<String>) null))
+			.withMessage(null);
 	}
 
 	@Test
@@ -490,9 +491,9 @@ public class AssertTests {
 
 	@Test
 	public void notEmptyMapWithEmptyMapAndNullMessageSupplier() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage(equalTo(null));
-		Assert.notEmpty(emptyMap(), (Supplier<String>) null);
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				Assert.notEmpty(emptyMap(), (Supplier<String>) null))
+			.withMessage(null);
 	}
 
 	@Test

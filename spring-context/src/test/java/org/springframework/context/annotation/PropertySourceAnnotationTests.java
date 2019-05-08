@@ -27,7 +27,7 @@ import javax.inject.Inject;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.beans.factory.FactoryBean;
@@ -40,6 +40,7 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.core.io.support.PropertySourceFactory;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
@@ -226,9 +227,9 @@ public class PropertySourceAnnotationTests {
 
 	@Test
 	public void withMissingPropertySource() {
-		thrown.expect(BeanDefinitionStoreException.class);
-		thrown.expectCause(isA(FileNotFoundException.class));
-		new AnnotationConfigApplicationContext(ConfigWithMissingPropertySource.class);
+		assertThatExceptionOfType(BeanDefinitionStoreException.class).isThrownBy(() ->
+				new AnnotationConfigApplicationContext(ConfigWithMissingPropertySource.class))
+			.withCauseInstanceOf(FileNotFoundException.class);
 	}
 
 	@Test

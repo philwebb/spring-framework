@@ -18,7 +18,7 @@ package org.springframework.mock.web;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import static org.junit.Assert.*;
 

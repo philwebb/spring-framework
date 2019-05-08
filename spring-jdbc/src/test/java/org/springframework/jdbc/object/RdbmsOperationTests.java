@@ -23,7 +23,7 @@ import javax.sql.DataSource;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -32,7 +32,7 @@ import org.springframework.jdbc.core.SqlOutParameter;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 
 /**
@@ -91,10 +91,9 @@ public class RdbmsOperationTests {
 	@Test
 	public void operationConfiguredViaJdbcTemplateMustGetDataSource() throws Exception {
 		operation.setSql("foo");
-
-		exception.expect(InvalidDataAccessApiUsageException.class);
-		exception.expectMessage(containsString("ataSource"));
-		operation.compile();
+		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class).isThrownBy(() ->
+				operation.compile())
+			.withMessageContaining("ataSource");
 	}
 
 	@Test

@@ -20,7 +20,7 @@ import java.time.Duration;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoProcessor;
 

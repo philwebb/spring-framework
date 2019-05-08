@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 import org.xmlunit.diff.DifferenceEvaluator;
 
 import org.springframework.aop.framework.AdvisedSupport;

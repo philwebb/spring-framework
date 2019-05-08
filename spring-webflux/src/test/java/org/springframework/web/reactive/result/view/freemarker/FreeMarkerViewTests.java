@@ -25,7 +25,7 @@ import freemarker.template.Configuration;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 import reactor.test.StepVerifier;
 
 import org.springframework.context.ApplicationContextException;

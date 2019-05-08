@@ -18,8 +18,9 @@ package org.springframework.test.context.web;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.CoreMatchers.*;
 
 /**
@@ -39,14 +40,13 @@ public class AnnotationConfigWebContextLoaderTests {
 
 	@Test
 	public void configMustNotContainLocations() throws Exception {
-		thrown.expect(IllegalStateException.class);
-		thrown.expectMessage(containsString("does not support resource locations"));
-
 		AnnotationConfigWebContextLoader loader = new AnnotationConfigWebContextLoader();
 		WebMergedContextConfiguration mergedConfig = new WebMergedContextConfiguration(getClass(),
 				new String[] { "config.xml" }, EMPTY_CLASS_ARRAY, null, EMPTY_STRING_ARRAY, EMPTY_STRING_ARRAY,
 				EMPTY_STRING_ARRAY, "resource/path", loader, null, null);
-		loader.loadContext(mergedConfig);
+		assertThatIllegalStateException().isThrownBy(() ->
+				loader.loadContext(mergedConfig))
+			.withMessageContaining("does not support resource locations");
 	}
 
 }

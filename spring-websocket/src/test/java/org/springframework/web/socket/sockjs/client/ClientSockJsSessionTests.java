@@ -24,7 +24,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.util.concurrent.SettableListenableFuture;
 import org.springframework.web.socket.CloseStatus;

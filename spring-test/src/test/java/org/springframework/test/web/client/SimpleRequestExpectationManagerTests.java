@@ -22,7 +22,7 @@ import java.net.URISyntaxException;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpRequest;

@@ -21,10 +21,9 @@ import java.lang.annotation.RetentionPolicy;
 import javax.jms.JMSException;
 import javax.jms.MessageListener;
 
-import org.hamcrest.core.Is;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -48,6 +47,7 @@ import org.springframework.messaging.handler.annotation.support.MessageHandlerMe
 import org.springframework.messaging.handler.annotation.support.MethodArgumentNotValidException;
 import org.springframework.stereotype.Component;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 
 /**
@@ -138,9 +138,9 @@ public class EnableJmsTests extends AbstractJmsAnnotationDrivenTests {
 		ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(
 				EnableJmsHandlerMethodFactoryConfig.class, ValidationBean.class);
 
-		thrown.expect(ListenerExecutionFailedException.class);
-		thrown.expectCause(Is.<MethodArgumentNotValidException>isA(MethodArgumentNotValidException.class));
-		testJmsHandlerMethodFactoryConfiguration(context);
+		assertThatExceptionOfType(ListenerExecutionFailedException.class).isThrownBy(() ->
+				testJmsHandlerMethodFactoryConfiguration(context))
+			.withCauseInstanceOf(MethodArgumentNotValidException.class);
 	}
 
 	@Override

@@ -32,7 +32,7 @@ import java.util.WeakHashMap;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.lang.Nullable;
 import org.springframework.util.ConcurrentReferenceHashMap.Entry;

@@ -23,12 +23,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.messaging.support.MessageBuilder;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
@@ -108,19 +109,19 @@ public class SimpAttributesContextHolderTests {
 
 	@Test
 	public void setAttributesFromMessageWithMissingSessionId() {
-		this.thrown.expect(IllegalStateException.class);
-		this.thrown.expectMessage(startsWith("No session id in"));
-		SimpAttributesContextHolder.setAttributesFromMessage(new GenericMessage<Object>(""));
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				SimpAttributesContextHolder.setAttributesFromMessage(new GenericMessage<Object>("")))
+			.withMessageStartingWith("No session id in");
 	}
 
 	@Test
 	public void setAttributesFromMessageWithMissingSessionAttributes() {
-		this.thrown.expect(IllegalStateException.class);
-		this.thrown.expectMessage(startsWith("No session attributes in"));
 		SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create();
 		headerAccessor.setSessionId("session1");
 		Message<?> message = MessageBuilder.createMessage("", headerAccessor.getMessageHeaders());
-		SimpAttributesContextHolder.setAttributesFromMessage(message);
+		assertThatIllegalStateException().isThrownBy(() ->
+				SimpAttributesContextHolder.setAttributesFromMessage(message))
+			.withMessageStartingWith("No session attributes in");
 	}
 
 	@Test
@@ -131,9 +132,9 @@ public class SimpAttributesContextHolderTests {
 
 	@Test
 	public void currentAttributesNone() {
-		this.thrown.expect(IllegalStateException.class);
-		this.thrown.expectMessage(startsWith("No thread-bound SimpAttributes found"));
-		SimpAttributesContextHolder.currentAttributes();
+		assertThatIllegalStateException().isThrownBy(() ->
+				SimpAttributesContextHolder.currentAttributes())
+			.withMessageStartingWith("No thread-bound SimpAttributes found");
 	}
 
 }

@@ -18,11 +18,11 @@ package org.springframework.test.context.support;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.test.context.MergedContextConfiguration;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * Unit tests for {@link GenericXmlContextLoader}.
@@ -41,13 +41,12 @@ public class GenericXmlContextLoaderTests {
 
 	@Test
 	public void configMustNotContainAnnotatedClasses() throws Exception {
-		thrown.expect(IllegalStateException.class);
-		thrown.expectMessage(containsString("does not support annotated classes"));
-
 		GenericXmlContextLoader loader = new GenericXmlContextLoader();
 		MergedContextConfiguration mergedConfig = new MergedContextConfiguration(getClass(), EMPTY_STRING_ARRAY,
 			new Class<?>[] { getClass() }, EMPTY_STRING_ARRAY, loader);
-		loader.loadContext(mergedConfig);
+		assertThatIllegalStateException().isThrownBy(() ->
+				loader.loadContext(mergedConfig))
+			.withMessageContaining("does not support annotated classes");
 	}
 
 }

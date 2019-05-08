@@ -24,9 +24,9 @@ import javax.net.ServerSocketFactory;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 import static org.springframework.util.SocketUtils.*;
 
@@ -81,11 +81,11 @@ public class SocketUtilsTests {
 		int port = SocketUtils.findAvailableTcpPort();
 		ServerSocket socket = ServerSocketFactory.getDefault().createServerSocket(port, 1, InetAddress.getByName("localhost"));
 		try {
-			exception.expect(IllegalStateException.class);
-			exception.expectMessage(startsWith("Could not find an available TCP port"));
-			exception.expectMessage(endsWith("after 1 attempts"));
 			// will only look for the exact port
-			SocketUtils.findAvailableTcpPort(port, port);
+			assertThatIllegalStateException().isThrownBy(() ->
+					SocketUtils.findAvailableTcpPort(port, port))
+				.withMessageStartingWith("Could not find an available TCP port")
+				.withMessageEndingWith("after 1 attempts");
 		}
 		finally {
 			socket.close();
@@ -158,11 +158,11 @@ public class SocketUtilsTests {
 		int port = SocketUtils.findAvailableUdpPort();
 		DatagramSocket socket = new DatagramSocket(port, InetAddress.getByName("localhost"));
 		try {
-			exception.expect(IllegalStateException.class);
-			exception.expectMessage(startsWith("Could not find an available UDP port"));
-			exception.expectMessage(endsWith("after 1 attempts"));
 			// will only look for the exact port
-			SocketUtils.findAvailableUdpPort(port, port);
+			assertThatIllegalStateException().isThrownBy(() ->
+					SocketUtils.findAvailableUdpPort(port, port))
+				.withMessageStartingWith("Could not find an available UDP port")
+				.withMessageEndingWith("after 1 attempts");
 		}
 		finally {
 			socket.close();

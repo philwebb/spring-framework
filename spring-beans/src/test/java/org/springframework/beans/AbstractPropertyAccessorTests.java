@@ -38,7 +38,7 @@ import java.util.TreeSet;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;

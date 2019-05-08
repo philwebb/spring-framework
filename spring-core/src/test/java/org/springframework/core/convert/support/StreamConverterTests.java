@@ -23,15 +23,14 @@ import java.util.stream.Stream;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.convert.ConverterNotFoundException;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.Converter;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.core.Is.is;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 
 /**
@@ -112,10 +111,9 @@ public class StreamConverterTests {
 	public void convertFromStreamToArrayNoConverter() throws NoSuchFieldException {
 		Stream<Integer> stream = Arrays.asList(1, 2, 3).stream();
 		TypeDescriptor arrayOfLongs = new TypeDescriptor(Types.class.getField("arrayOfLongs"));
-
-		thrown.expect(ConversionFailedException.class);
-		thrown.expectCause(is(instanceOf(ConverterNotFoundException.class)));
-		this.conversionService.convert(stream, arrayOfLongs);
+		assertThatExceptionOfType(ConversionFailedException.class).isThrownBy(() ->
+				this.conversionService.convert(stream, arrayOfLongs))
+			.withCauseInstanceOf(ConverterNotFoundException.class);
 	}
 
 	@Test

@@ -19,7 +19,7 @@ package org.springframework.context.annotation;
 import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.beans.factory.BeanCreationException;
 

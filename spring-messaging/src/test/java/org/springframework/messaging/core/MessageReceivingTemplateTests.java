@@ -21,7 +21,7 @@ import java.io.Writer;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.messaging.Message;
@@ -29,6 +29,7 @@ import org.springframework.messaging.converter.GenericMessageConverter;
 import org.springframework.messaging.converter.MessageConversionException;
 import org.springframework.messaging.support.GenericMessage;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
@@ -104,9 +105,9 @@ public class MessageReceivingTemplateTests {
 		this.template.setReceiveMessage(expected);
 		this.template.setMessageConverter(new GenericMessageConverter());
 
-		thrown.expect(MessageConversionException.class);
-		thrown.expectCause(isA(ConversionFailedException.class));
-		this.template.receiveAndConvert("somewhere", Integer.class);
+		assertThatExceptionOfType(MessageConversionException.class).isThrownBy(() ->
+				this.template.receiveAndConvert("somewhere", Integer.class))
+			.withCauseInstanceOf(ConversionFailedException.class);
 	}
 
 	@Test

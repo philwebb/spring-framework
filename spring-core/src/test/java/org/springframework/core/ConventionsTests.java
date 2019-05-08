@@ -27,7 +27,7 @@ import io.reactivex.Observable;
 import io.reactivex.Single;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

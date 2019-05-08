@@ -26,14 +26,14 @@ import java.util.Map;
 import org.hamcrest.Matchers;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.http.server.PathContainer;
 import org.springframework.http.server.PathContainer.Element;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.util.pattern.PathPattern.PathRemainingMatchInfo;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 
@@ -837,9 +837,9 @@ public class PathPatternTests {
 	public void extractUriTemplateVarsRegexCapturingGroups() {
 		PathPatternParser ppp = new PathPatternParser();
 		PathPattern pathPattern = ppp.parse("/web/{id:foo(bar)?}_{goo}");
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage(containsString("The number of capturing groups in the pattern"));
-		matchAndExtract(pathPattern,"/web/foobar_goo");
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				matchAndExtract(pathPattern,"/web/foobar_goo"))
+			.withMessageContaining("The number of capturing groups in the pattern");
 	}
 
 	@Rule

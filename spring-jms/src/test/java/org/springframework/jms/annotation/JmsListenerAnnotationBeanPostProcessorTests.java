@@ -24,7 +24,7 @@ import java.lang.reflect.Method;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.BeanCreationException;
@@ -47,6 +47,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -171,10 +172,10 @@ public class JmsListenerAnnotationBeanPostProcessorTests {
 	@Test
 	@SuppressWarnings("resource")
 	public void invalidProxy() {
-		thrown.expect(BeanCreationException.class);
-		thrown.expectCause(is(instanceOf(IllegalStateException.class)));
-		thrown.expectMessage("handleIt2");
-		new AnnotationConfigApplicationContext(Config.class, ProxyConfig.class, InvalidProxyTestBean.class);
+		assertThatExceptionOfType(BeanCreationException.class).isThrownBy(() ->
+				new AnnotationConfigApplicationContext(Config.class, ProxyConfig.class, InvalidProxyTestBean.class))
+			.withCauseInstanceOf(IllegalStateException.class)
+			.withMessage("handleIt2");
 	}
 
 

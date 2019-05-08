@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;

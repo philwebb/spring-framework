@@ -32,7 +32,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.beans.factory.support.StaticListableBeanFactory;
 import org.springframework.jms.StubTextMessage;

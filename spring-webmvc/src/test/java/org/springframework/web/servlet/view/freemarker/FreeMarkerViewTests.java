@@ -31,7 +31,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.context.ApplicationContextException;
 import org.springframework.mock.web.test.MockHttpServletRequest;
@@ -46,6 +46,7 @@ import org.springframework.web.servlet.view.AbstractView;
 import org.springframework.web.servlet.view.InternalResourceView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
@@ -71,18 +72,18 @@ public class FreeMarkerViewTests {
 
 		fv.setUrl("anythingButNull");
 
-		exception.expect(ApplicationContextException.class);
-		exception.expectMessage(containsString("FreeMarkerConfig"));
-		fv.setApplicationContext(wac);
+		assertThatExceptionOfType(ApplicationContextException.class).isThrownBy(() ->
+				fv.setApplicationContext(wac))
+			.withMessageContaining("FreeMarkerConfig");
 	}
 
 	@Test
 	public void noTemplateName() throws Exception {
 		FreeMarkerView fv = new FreeMarkerView();
 
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage(containsString("url"));
-		fv.afterPropertiesSet();
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				fv.afterPropertiesSet())
+			.withMessageContaining("url");
 	}
 
 	@Test

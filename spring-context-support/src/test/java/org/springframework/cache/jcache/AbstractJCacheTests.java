@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Rule;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 import org.junit.rules.TestName;
 
 import org.springframework.cache.Cache;

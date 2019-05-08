@@ -26,7 +26,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -40,6 +40,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.socket.ContextLoaderTestUtils;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
@@ -89,9 +90,9 @@ public class ConvertingEncoderDecoderSupportTests {
 	@Test
 	public void encodeToTextCannotConvert() throws Exception {
 		setup(NoConvertersConfig.class);
-		thown.expect(EncodeException.class);
-		thown.expectCause(isA(ConverterNotFoundException.class));
-		new MyTextEncoder().encode(myType);
+		assertThatExceptionOfType(EncodeException.class).isThrownBy(() ->
+				new MyTextEncoder().encode(myType))
+			.withCauseInstanceOf(ClassNotFoundException.class);
 	}
 
 	@Test
@@ -103,9 +104,9 @@ public class ConvertingEncoderDecoderSupportTests {
 	@Test
 	public void encodeToBinaryCannotConvert() throws Exception {
 		setup(NoConvertersConfig.class);
-		thown.expect(EncodeException.class);
-		thown.expectCause(isA(ConverterNotFoundException.class));
-		new MyBinaryEncoder().encode(myType);
+		assertThatExceptionOfType(EncodeException.class).isThrownBy(() ->
+				new MyBinaryEncoder().encode(myType))
+			.withCauseInstanceOf(ConverterNotFoundException.class);
 	}
 
 	@Test
@@ -120,9 +121,9 @@ public class ConvertingEncoderDecoderSupportTests {
 		setup(NoConvertersConfig.class);
 		Decoder.Text<MyType> decoder = new MyTextDecoder();
 		assertThat(decoder.willDecode(CONVERTED_TEXT), is(false));
-		thown.expect(DecodeException.class);
-		thown.expectCause(isA(ConverterNotFoundException.class));
-		decoder.decode(CONVERTED_TEXT);
+		assertThatExceptionOfType(DecodeException.class).isThrownBy(() ->
+				decoder.decode(CONVERTED_TEXT))
+			.withCauseInstanceOf(ConverterNotFoundException.class);
 	}
 
 	@Test
@@ -137,9 +138,9 @@ public class ConvertingEncoderDecoderSupportTests {
 		setup(NoConvertersConfig.class);
 		Decoder.Binary<MyType> decoder = new MyBinaryDecoder();
 		assertThat(decoder.willDecode(CONVERTED_BYTES), is(false));
-		thown.expect(DecodeException.class);
-		thown.expectCause(isA(ConverterNotFoundException.class));
-		decoder.decode(CONVERTED_BYTES);
+		assertThatExceptionOfType(DecodeException.class).isThrownBy(() ->
+				decoder.decode(CONVERTED_BYTES))
+			.withCauseInstanceOf(ConverterNotFoundException.class);
 	}
 
 	@Test

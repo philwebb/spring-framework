@@ -18,10 +18,11 @@ package org.springframework.test.context.support;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.test.context.MergedContextConfiguration;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
@@ -47,12 +48,11 @@ public class AnnotationConfigContextLoaderTests {
 	 */
 	@Test
 	public void configMustNotContainLocations() throws Exception {
-		thrown.expect(IllegalStateException.class);
-		thrown.expectMessage(containsString("does not support resource locations"));
-
 		MergedContextConfiguration mergedConfig = new MergedContextConfiguration(getClass(),
 			new String[] { "config.xml" }, EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, contextLoader);
-		contextLoader.loadContext(mergedConfig);
+		assertThatIllegalStateException().isThrownBy(() ->
+				contextLoader.loadContext(mergedConfig))
+			.withMessageContaining("does not support resource locations");
 	}
 
 	@Test

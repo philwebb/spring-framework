@@ -26,8 +26,9 @@ import java.util.Set;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
@@ -808,10 +809,9 @@ public class ObjectUtilsTests {
 		assertThat(ObjectUtils.caseInsensitiveValueOf(Tropes.values(), "foo"), is(Tropes.FOO));
 		assertThat(ObjectUtils.caseInsensitiveValueOf(Tropes.values(), "BAR"), is(Tropes.BAR));
 
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage(
-				is("Constant [bogus] does not exist in enum type org.springframework.util.ObjectUtilsTests$Tropes"));
-		ObjectUtils.caseInsensitiveValueOf(Tropes.values(), "bogus");
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				ObjectUtils.caseInsensitiveValueOf(Tropes.values(), "bogus"))
+			.withMessage("Constant [bogus] does not exist in enum type org.springframework.util.ObjectUtilsTests$Tropes");
 	}
 
 	private void assertEqualHashCodes(int expected, Object array) {

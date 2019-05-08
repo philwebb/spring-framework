@@ -31,7 +31,7 @@ import java.nio.file.Paths;
 import org.hamcrest.Matchers;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 
 import org.springframework.util.FileCopyUtils;

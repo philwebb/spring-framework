@@ -20,7 +20,7 @@ import java.util.Map;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.annotation.AnnotationConfigurationException;
@@ -32,8 +32,7 @@ import org.springframework.mock.env.MockEnvironment;
 import org.springframework.mock.env.MockPropertySource;
 import org.springframework.test.context.TestPropertySource;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.CoreMatchers.startsWith;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -60,18 +59,18 @@ public class TestPropertySourceUtilsTests {
 
 	@Test
 	public void emptyAnnotation() {
-		thrown.expect(IllegalStateException.class);
-		thrown.expectMessage(startsWith("Could not detect default properties file for test"));
-		thrown.expectMessage(containsString("EmptyPropertySources.properties"));
-		buildMergedTestPropertySources(EmptyPropertySources.class);
+		assertThatIllegalStateException().isThrownBy(() ->
+				buildMergedTestPropertySources(EmptyPropertySources.class))
+			.withMessageStartingWith("Could not detect default properties file for test")
+			.withMessageContaining("EmptyPropertySources.properties");
 	}
 
 	@Test
 	public void extendedEmptyAnnotation() {
-		thrown.expect(IllegalStateException.class);
-		thrown.expectMessage(startsWith("Could not detect default properties file for test"));
-		thrown.expectMessage(containsString("ExtendedEmptyPropertySources.properties"));
-		buildMergedTestPropertySources(ExtendedEmptyPropertySources.class);
+		assertThatIllegalStateException().isThrownBy(() ->
+				buildMergedTestPropertySources(ExtendedEmptyPropertySources.class))
+			.withMessageStartingWith("Could not detect default properties file for test")
+			.withMessageContaining("ExtendedEmptyPropertySources.properties");
 	}
 
 	@Test

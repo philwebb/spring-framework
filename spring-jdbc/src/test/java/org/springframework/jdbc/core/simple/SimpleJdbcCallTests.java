@@ -28,7 +28,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.jdbc.BadSqlGrammarException;
@@ -36,10 +36,9 @@ import org.springframework.jdbc.core.SqlOutParameter;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 
-import static org.hamcrest.Matchers.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
-import static org.springframework.tests.Matchers.*;
 
 /**
  * Tests for {@link SimpleJdbcCall}.
@@ -83,10 +82,10 @@ public class SimpleJdbcCallTests {
 		given(callableStatement.execute()).willThrow(sqlException);
 		given(connection.prepareCall("{call " + NO_SUCH_PROC + "()}")).willReturn(callableStatement);
 		SimpleJdbcCall sproc = new SimpleJdbcCall(dataSource).withProcedureName(NO_SUCH_PROC);
-		thrown.expect(BadSqlGrammarException.class);
-		thrown.expect(exceptionCause(sameInstance(sqlException)));
 		try {
-			sproc.execute();
+			assertThatExceptionOfType(BadSqlGrammarException.class).isThrownBy(() ->
+					sproc.execute())
+				.withCause(sqlException);
 		}
 		finally {
 			verify(callableStatement).close();

@@ -21,14 +21,14 @@ import java.util.Map;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 
 import static java.util.Arrays.*;
 import static java.util.Collections.*;
-import static org.hamcrest.CoreMatchers.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 
 /**
@@ -58,18 +58,18 @@ public class KeyHolderTests {
 	public void singleKeyNonNumeric() {
 		kh.getKeyList().addAll(singletonList(singletonMap("key", "1")));
 
-		exception.expect(DataRetrievalFailureException.class);
-		exception.expectMessage(startsWith("The generated key is not of a supported numeric type."));
-		kh.getKey().intValue();
+		assertThatExceptionOfType(DataRetrievalFailureException.class).isThrownBy(() ->
+				kh.getKey().intValue())
+			.withMessageStartingWith("The generated key is not of a supported numeric type.");
 	}
 
 	@Test
 	public void noKeyReturnedInMap() {
 		kh.getKeyList().addAll(singletonList(emptyMap()));
 
-		exception.expect(DataRetrievalFailureException.class);
-		exception.expectMessage(startsWith("Unable to retrieve the generated key."));
-		kh.getKey();
+		assertThatExceptionOfType(DataRetrievalFailureException.class).isThrownBy(() ->
+				kh.getKey())
+			.withMessageStartingWith("Unable to retrieve the generated key.");
 	}
 
 	@Test
@@ -81,9 +81,9 @@ public class KeyHolderTests {
 		kh.getKeyList().addAll(singletonList(m));
 
 		assertEquals("two keys should be in the map", 2, kh.getKeys().size());
-		exception.expect(InvalidDataAccessApiUsageException.class);
-		exception.expectMessage(startsWith("The getKey method should only be used when a single key is returned."));
-		kh.getKey();
+		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class).isThrownBy(() ->
+				kh.getKey())
+			.withMessageStartingWith("The getKey method should only be used when a single key is returned.");
 	}
 
 	@Test
@@ -95,9 +95,9 @@ public class KeyHolderTests {
 		kh.getKeyList().addAll(asList(m, m));
 
 		assertEquals("two rows should be in the list", 2, kh.getKeyList().size());
-		exception.expect(InvalidDataAccessApiUsageException.class);
-		exception.expectMessage(startsWith("The getKeys method should only be used when keys for a single row are returned."));
-		kh.getKeys();
+		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class).isThrownBy(() ->
+				kh.getKeys())
+			.withMessageStartingWith("The getKeys method should only be used when keys for a single row are returned.");
 	}
 
 }

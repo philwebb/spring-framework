@@ -34,7 +34,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 import org.mockito.InOrder;
 
 import org.springframework.jdbc.Customer;

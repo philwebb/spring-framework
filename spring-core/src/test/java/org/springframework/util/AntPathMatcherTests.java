@@ -25,9 +25,9 @@ import java.util.Map;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 
 /**
@@ -401,9 +401,9 @@ public class AntPathMatcherTests {
 	 */
 	@Test
 	public void extractUriTemplateVarsRegexCapturingGroups() {
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage(containsString("The number of capturing groups in the pattern"));
-		pathMatcher.extractUriTemplateVariables("/web/{id:foo(bar)?}", "/web/foobar");
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				pathMatcher.extractUriTemplateVariables("/web/{id:foo(bar)?}", "/web/foobar"))
+			.withMessageContaining("The number of capturing groups in the pattern");
 	}
 
 	@Test

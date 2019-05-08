@@ -21,7 +21,7 @@ import javax.servlet.ServletException;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

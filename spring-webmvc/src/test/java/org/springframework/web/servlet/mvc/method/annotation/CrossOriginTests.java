@@ -27,7 +27,7 @@ import java.util.Properties;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.beans.DirectFieldAccessor;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -55,6 +55,7 @@ import org.springframework.web.servlet.mvc.condition.ProducesRequestCondition;
 import org.springframework.web.servlet.mvc.condition.RequestMethodsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
@@ -172,10 +173,10 @@ public class CrossOriginTests {
 
 	@Test
 	public void bogusAllowCredentialsValue() throws Exception {
-		thrown.expect(IllegalStateException.class);
-		thrown.expectMessage(containsString("@CrossOrigin's allowCredentials"));
-		thrown.expectMessage(containsString("current value is [bogus]"));
-		this.handlerMapping.registerHandler(new MethodLevelControllerWithBogusAllowCredentialsValue());
+		assertThatIllegalStateException().isThrownBy(() ->
+				this.handlerMapping.registerHandler(new MethodLevelControllerWithBogusAllowCredentialsValue()))
+			.withMessageContaining("@CrossOrigin's allowCredentials")
+			.withMessageContaining("current value is [bogus]");
 	}
 
 	@Test

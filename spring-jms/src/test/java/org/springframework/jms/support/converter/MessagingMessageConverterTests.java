@@ -24,7 +24,7 @@ import javax.jms.TextMessage;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.jms.StubTextMessage;
 import org.springframework.messaging.Message;

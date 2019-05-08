@@ -29,11 +29,10 @@ import javax.jms.QueueSender;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 import org.junit.rules.TestName;
 
 import org.springframework.beans.DirectFieldAccessor;
@@ -64,6 +63,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
@@ -382,9 +382,9 @@ public class MethodJmsListenerEndpointTests {
 		Session session = mock(Session.class);
 		given(session.createTextMessage("content")).willReturn(reply);
 
-		this.thrown.expect(ReplyFailureException.class);
-		this.thrown.expectCause(Matchers.isA(InvalidDestinationException.class));
-		listener.onMessage(createSimpleJmsTextMessage("content"), session);
+		assertThatExceptionOfType(ReplyFailureException.class).isThrownBy(() ->
+				listener.onMessage(createSimpleJmsTextMessage("content"), session))
+			.withCauseInstanceOf(InvalidDestinationException.class);
 	}
 
 	@Test
@@ -431,10 +431,11 @@ public class MethodJmsListenerEndpointTests {
 		MessagingMessageListenerAdapter listener = createDefaultInstance(Integer.class);
 		Session session = mock(Session.class);
 
-		this.thrown.expect(ListenerExecutionFailedException.class);
-		this.thrown.expectCause(Matchers.isA(MessageConversionException.class));
-		this.thrown.expectMessage(getDefaultListenerMethod(Integer.class).toGenericString()); // ref to method
-		listener.onMessage(createSimpleJmsTextMessage("test"), session); // test is not a valid integer
+		// test is not a valid integer
+		assertThatExceptionOfType(ListenerExecutionFailedException.class).isThrownBy(() ->
+				listener.onMessage(createSimpleJmsTextMessage("test"), session))
+			.withCauseInstanceOf(MessageConversionException.class)
+			.withMessageContaining(getDefaultListenerMethod(Integer.class).toGenericString()); // ref to method
 	}
 
 	@Test
@@ -442,9 +443,10 @@ public class MethodJmsListenerEndpointTests {
 		MessagingMessageListenerAdapter listener = createDefaultInstance(Message.class);
 		Session session = mock(Session.class);
 
-		this.thrown.expect(ListenerExecutionFailedException.class);
-		this.thrown.expectCause(Matchers.isA(MessageConversionException.class));
-		listener.onMessage(createSimpleJmsTextMessage("test"), session);  // Message<String> as Message<Integer>
+		// Message<String> as Message<Integer>
+		assertThatExceptionOfType(ListenerExecutionFailedException.class).isThrownBy(() ->
+				listener.onMessage(createSimpleJmsTextMessage("test"), session))
+			.withCauseInstanceOf(MessageConversionException.class);
 	}
 
 

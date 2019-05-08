@@ -18,7 +18,7 @@ package org.springframework.test.util;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import static org.hamcrest.core.Is.*;
 

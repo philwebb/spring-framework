@@ -33,7 +33,7 @@ import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;

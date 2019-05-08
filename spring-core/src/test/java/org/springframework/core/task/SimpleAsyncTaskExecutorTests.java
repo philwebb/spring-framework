@@ -20,7 +20,7 @@ import java.util.concurrent.ThreadFactory;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.util.ConcurrencyThrottleSupport;
 

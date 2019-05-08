@@ -37,7 +37,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.mail.MailParseException;
 import org.springframework.mail.MailSendException;

@@ -26,19 +26,23 @@ import java.lang.annotation.Target;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
+
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.annotation.Resource;
 import javax.annotation.meta.When;
 
+import org.assertj.core.api.Condition;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.internal.ArrayComparisonFailure;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.core.annotation.AnnotationUtilsTests.ExtendsBaseClassWithGenericAnnotatedMethod;
 import org.springframework.core.annotation.AnnotationUtilsTests.ImplementsInterfaceWithGenericAnnotatedMethod;
@@ -49,9 +53,11 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Indexed;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 
 import static java.util.Arrays.*;
 import static java.util.stream.Collectors.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -516,16 +522,29 @@ public class AnnotatedElementUtilsTests {
 	@Test
 	public void getMergedAnnotationAttributesWithInvalidConventionBasedComposedAnnotation() {
 		Class<?> element = InvalidConventionBasedComposedContextConfigClass.class;
-		exception.expect(AnnotationConfigurationException.class);
-		exception.expectMessage(either(containsString("attribute 'value' and its alias 'locations'")).or(
-				containsString("attribute 'locations' and its alias 'value'")));
-		exception.expectMessage(either(
-				containsString("values of [{duplicateDeclaration}] and [{requiredLocationsDeclaration}]")).or(
-				containsString("values of [{requiredLocationsDeclaration}] and [{duplicateDeclaration}]")));
-		exception.expectMessage(either(
-				containsString("but only one is permitted")).or(
-				containsString("Different @AliasFor mirror values for annotation")));
-		getMergedAnnotationAttributes(element, ContextConfig.class);
+		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(() ->
+				getMergedAnnotationAttributes(element, ContextConfig.class)
+			).satisfies(ex -> {
+				String message = ex.getMessage();
+				assertThat(message).satisfies(containingOneOf(
+						"attribute 'value' and its alias 'locations'",
+						"attribute 'locations' and its alias 'value'"));
+				assertThat(message).satisfies(containingOneOf(
+						"values of [{duplicateDeclaration}] and [{requiredLocationsDeclaration}]",
+						"values of [{requiredLocationsDeclaration}] and [{duplicateDeclaration}]"));
+				assertThat(message).satisfies(containingOneOf(
+						"but only one is permitted",
+						"Different @AliasFor mirror values for annotation"));
+			});
+	}
+
+	private Consumer<String> containingOneOf(String... strings) {
+		return value -> {
+			if (!Arrays.stream(strings).anyMatch(value::contains)) {
+				throw new AssertionError(value + " did not contain one of "
+						+ StringUtils.arrayToCommaDelimitedString(strings));
+			}
+		};
 	}
 
 	@Test

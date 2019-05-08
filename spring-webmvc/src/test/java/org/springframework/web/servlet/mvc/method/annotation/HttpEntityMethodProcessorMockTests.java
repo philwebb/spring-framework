@@ -33,7 +33,7 @@ import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 import org.mockito.ArgumentCaptor;
 
 import org.springframework.core.MethodParameter;

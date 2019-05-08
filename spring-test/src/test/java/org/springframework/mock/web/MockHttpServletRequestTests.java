@@ -31,7 +31,7 @@ import javax.servlet.http.Cookie;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.FileCopyUtils;

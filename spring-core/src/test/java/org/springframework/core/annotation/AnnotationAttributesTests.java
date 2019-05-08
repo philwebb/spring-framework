@@ -23,10 +23,11 @@ import java.util.List;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.core.annotation.AnnotationUtilsTests.ImplicitAliasesContextConfig;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
@@ -80,9 +81,9 @@ public class AnnotationAttributesTests {
 	@Test
 	public void unresolvableClass() throws Exception {
 		attributes.put("unresolvableClass", new ClassNotFoundException("myclass"));
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage(containsString("myclass"));
-		attributes.getClass("unresolvableClass");
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				attributes.getClass("unresolvableClass"))
+			.withMessageContaining("myclass");
 	}
 
 	@Test
@@ -154,9 +155,9 @@ public class AnnotationAttributesTests {
 	@Test
 	public void getEnumWithTypeMismatch() {
 		attributes.put("color", "RED");
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage(containsString("Attribute 'color' is of type String, but Enum was expected"));
-		attributes.getEnum("color");
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				attributes.getEnum("color"))
+			.withMessageContaining("Attribute 'color' is of type String, but Enum was expected");
 	}
 
 	@Test

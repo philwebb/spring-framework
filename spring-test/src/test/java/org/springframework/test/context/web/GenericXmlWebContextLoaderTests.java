@@ -18,8 +18,9 @@ package org.springframework.test.context.web;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.CoreMatchers.*;
 
 /**
@@ -38,14 +39,13 @@ public class GenericXmlWebContextLoaderTests {
 
 	@Test
 	public void configMustNotContainAnnotatedClasses() throws Exception {
-		thrown.expect(IllegalStateException.class);
-		thrown.expectMessage(containsString("does not support annotated classes"));
-
 		GenericXmlWebContextLoader loader = new GenericXmlWebContextLoader();
 		WebMergedContextConfiguration mergedConfig = new WebMergedContextConfiguration(getClass(), EMPTY_STRING_ARRAY,
 				new Class<?>[] { getClass() }, null, EMPTY_STRING_ARRAY, EMPTY_STRING_ARRAY, EMPTY_STRING_ARRAY,
 				"resource/path", loader, null, null);
-		loader.loadContext(mergedConfig);
+		assertThatIllegalStateException().isThrownBy(() ->
+				loader.loadContext(mergedConfig))
+			.withMessageContaining("does not support annotated classes");
 	}
 
 }

@@ -22,7 +22,7 @@ import java.lang.reflect.UndeclaredThrowableException;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.context.ApplicationContext;
@@ -33,6 +33,7 @@ import org.springframework.core.ResolvableTypeProvider;
 import org.springframework.core.annotation.Order;
 import org.springframework.util.ReflectionUtils;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
@@ -227,10 +228,10 @@ public class ApplicationListenerMethodAdapterTests extends AbstractApplicationEv
 				SampleEvents.class, "generateRuntimeException", GenericTestEvent.class);
 		GenericTestEvent<String> event = createGenericTestEvent("fail");
 
-		this.thrown.expect(IllegalStateException.class);
-		this.thrown.expectMessage("Test exception");
-		this.thrown.expectCause(is((Throwable) isNull()));
-		invokeListener(method, event);
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				invokeListener(method, event))
+			.withMessageContaining("Test exception")
+			.withNoCause();
 	}
 
 	@Test
@@ -239,9 +240,9 @@ public class ApplicationListenerMethodAdapterTests extends AbstractApplicationEv
 				SampleEvents.class, "generateCheckedException", GenericTestEvent.class);
 		GenericTestEvent<String> event = createGenericTestEvent("fail");
 
-		this.thrown.expect(UndeclaredThrowableException.class);
-		this.thrown.expectCause(is(instanceOf(IOException.class)));
-		invokeListener(method, event);
+		assertThatExceptionOfType(UndeclaredThrowableException.class).isThrownBy(() ->
+				invokeListener(method, event))
+			.withCauseInstanceOf(IOException.class);
 	}
 
 	@Test

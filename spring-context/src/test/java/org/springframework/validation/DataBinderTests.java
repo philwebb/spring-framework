@@ -38,7 +38,7 @@ import java.util.TreeSet;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.InvalidPropertyException;

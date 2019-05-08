@@ -18,7 +18,7 @@ package org.springframework.test.context.support;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -29,6 +29,7 @@ import org.springframework.test.context.ContextLoader;
 import org.springframework.test.context.MergedContextConfiguration;
 import org.springframework.util.ObjectUtils;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
@@ -75,13 +76,12 @@ public class DelegatingSmartContextLoaderTests {
 
 	@Test
 	public void processContextConfigurationWithDefaultXmlConfigAndConfigurationClassGeneration() {
-		thrown.expect(IllegalStateException.class);
-		thrown.expectMessage(containsString("both default locations AND default configuration classes were detected"));
-
 		ContextConfigurationAttributes configAttributes = new ContextConfigurationAttributes(
 				ImproperDuplicateDefaultXmlAndConfigClassTestCase.class, EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY,
 				true, null, true, ContextLoader.class);
-		loader.processContextConfiguration(configAttributes);
+		assertThatIllegalStateException().isThrownBy(() ->
+					loader.processContextConfiguration(configAttributes))
+			.withMessageContaining("both default locations AND default configuration classes were detected");
 	}
 
 	@Test
@@ -114,13 +114,12 @@ public class DelegatingSmartContextLoaderTests {
 
 	@Test
 	public void loadContextWithoutLocationsAndConfigurationClasses() throws Exception {
-		thrown.expect(IllegalStateException.class);
-		thrown.expectMessage(startsWith("Neither"));
-		thrown.expectMessage(containsString("was able to load an ApplicationContext from"));
-
 		MergedContextConfiguration mergedConfig = new MergedContextConfiguration(
 				getClass(), EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, EMPTY_STRING_ARRAY, loader);
-		loader.loadContext(mergedConfig);
+		assertThatIllegalStateException().isThrownBy(() ->
+				loader.loadContext(mergedConfig))
+			.withMessageStartingWith("Neither")
+			.withMessageContaining("was able to load an ApplicationContext from");
 	}
 
 	/**
@@ -128,13 +127,12 @@ public class DelegatingSmartContextLoaderTests {
 	 */
 	@Test
 	public void loadContextWithLocationsAndConfigurationClasses() throws Exception {
-		thrown.expect(IllegalStateException.class);
-		thrown.expectMessage(startsWith("Neither"));
-		thrown.expectMessage(endsWith("declare either 'locations' or 'classes' but not both."));
-
 		MergedContextConfiguration mergedConfig = new MergedContextConfiguration(getClass(),
 				new String[] {"test.xml"}, new Class<?>[] {getClass()}, EMPTY_STRING_ARRAY, loader);
-		loader.loadContext(mergedConfig);
+		assertThatIllegalStateException().isThrownBy(() ->
+				loader.loadContext(mergedConfig))
+			.withMessageStartingWith("Neither")
+			.withMessageContaining("declare either 'locations' or 'classes' but not both.");
 	}
 
 	private void assertApplicationContextLoadsAndContainsFooString(MergedContextConfiguration mergedConfig)

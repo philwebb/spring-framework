@@ -22,9 +22,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import temp.ExpectedException;
 import org.mockito.Mockito;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
@@ -82,9 +83,9 @@ public class SimpAttributesTests {
 	@Test
 	public void registerDestructionCallbackAfterSessionCompleted() {
 		this.simpAttributes.sessionCompleted();
-		this.thrown.expect(IllegalStateException.class);
-		this.thrown.expectMessage(containsString("already completed"));
-		this.simpAttributes.registerDestructionCallback("name1", Mockito.mock(Runnable.class));
+		assertThatIllegalStateException().isThrownBy(() ->
+				this.simpAttributes.registerDestructionCallback("name1", Mockito.mock(Runnable.class)))
+			.withMessageContaining("already completed");
 	}
 
 	@Test
