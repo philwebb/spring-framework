@@ -88,7 +88,8 @@ public class ScriptTemplateViewTests {
 	@Test
 	public void missingScriptTemplateConfig() throws Exception {
 		assertThatExceptionOfType(ApplicationContextException.class).isThrownBy(() ->
-		this.view.setApplicationContext(new StaticApplicationContext())).withMessageContaining(contains("ScriptTemplateConfig"));
+				this.view.setApplicationContext(new StaticApplicationContext()))
+			.withMessageContaining(contains("ScriptTemplateConfig"));
 	}
 
 	@Test
@@ -173,7 +174,7 @@ public class ScriptTemplateViewTests {
 		this.view.setEngine(mock(ScriptEngine.class));
 		this.view.setRenderFunction("render");
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
-		this.view.setApplicationContext(this.wac));
+				this.view.setApplicationContext(this.wac));
 	}
 
 	@Test
@@ -182,7 +183,8 @@ public class ScriptTemplateViewTests {
 		this.view.setEngineName("test");
 		this.view.setRenderFunction("render");
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
-		this.view.setApplicationContext(this.wac)).withMessageContaining("'engine' or 'engineName'");
+				this.view.setApplicationContext(this.wac))
+			.withMessageContaining("'engine' or 'engineName'");
 	}
 
 	@Test
@@ -191,7 +193,8 @@ public class ScriptTemplateViewTests {
 		this.view.setRenderFunction("render");
 		this.view.setSharedEngine(false);
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
-		this.view.setApplicationContext(this.wac)).withMessageContaining("sharedEngine");
+				this.view.setApplicationContext(this.wac))
+			.withMessageContaining("sharedEngine");
 	}
 
 	@Test // SPR-14210

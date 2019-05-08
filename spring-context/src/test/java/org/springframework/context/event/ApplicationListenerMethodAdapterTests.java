@@ -142,14 +142,14 @@ public class ApplicationListenerMethodAdapterTests extends AbstractApplicationEv
 		Method method = ReflectionUtils.findMethod(
 				SampleEvents.class, "tooManyParameters", String.class, String.class);
 		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
-		createTestInstance(method));
+				createTestInstance(method));
 	}
 
 	@Test
 	public void listenerWithNoParameter() {
 		Method method = ReflectionUtils.findMethod(SampleEvents.class, "noParameter");
 		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
-		createTestInstance(method));
+				createTestInstance(method));
 	}
 
 	@Test
@@ -157,7 +157,7 @@ public class ApplicationListenerMethodAdapterTests extends AbstractApplicationEv
 		Method method = ReflectionUtils.findMethod(
 				SampleEvents.class, "moreThanOneParameter", String.class, Integer.class);
 		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
-		createTestInstance(method));
+				createTestInstance(method));
 	}
 
 	@Test
@@ -257,7 +257,8 @@ public class ApplicationListenerMethodAdapterTests extends AbstractApplicationEv
 		StaticApplicationListenerMethodAdapter listener =
 				new StaticApplicationListenerMethodAdapter(method, bean);
 		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
-		listener.onApplicationEvent(createGenericTestEvent("test"))).withMessageContaining("handleIt2");
+				listener.onApplicationEvent(createGenericTestEvent("test")))
+			.withMessageContaining("handleIt2");
 	}
 
 	@Test

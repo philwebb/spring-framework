@@ -167,7 +167,8 @@ public class ConvertingEncoderDecoderSupportTests {
 		WithAutowire encoder = new WithAutowire();
 		encoder.init(null);
 		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
-		encoder.encode(myType)).withMessageContaining("Unable to locate the Spring ApplicationContext");
+				encoder.encode(myType))
+			.withMessageContaining("Unable to locate the Spring ApplicationContext");
 	}
 
 	@Test
@@ -176,7 +177,8 @@ public class ConvertingEncoderDecoderSupportTests {
 		MyBinaryEncoder encoder = new MyBinaryEncoder();
 		encoder.init(null);
 		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
-		encoder.encode(myType)).withMessageContaining("Unable to find ConversionService");
+				encoder.encode(myType))
+			.withMessageContaining("Unable to find ConversionService");
 	}
 
 	@Configuration

@@ -233,7 +233,7 @@ public class HttpEntityMethodProcessorMockTests {
 		given(stringHttpMessageConverter.canRead(String.class, contentType)).willReturn(false);
 
 		assertThatExceptionOfType(HttpMediaTypeNotSupportedException.class).isThrownBy(() ->
-		processor.resolveArgument(paramHttpEntity, mavContainer, webRequest, null));
+				processor.resolveArgument(paramHttpEntity, mavContainer, webRequest, null));
 	}
 
 	@Test
@@ -241,7 +241,7 @@ public class HttpEntityMethodProcessorMockTests {
 		servletRequest.setMethod("POST");
 		servletRequest.setContent("some content".getBytes(StandardCharsets.UTF_8));
 		assertThatExceptionOfType(HttpMediaTypeNotSupportedException.class).isThrownBy(() ->
-		processor.resolveArgument(paramHttpEntity, mavContainer, webRequest, null));
+				processor.resolveArgument(paramHttpEntity, mavContainer, webRequest, null));
 	}
 
 	@Test
@@ -306,7 +306,7 @@ public class HttpEntityMethodProcessorMockTests {
 				.willReturn(Collections.singletonList(TEXT_PLAIN));
 
 		assertThatExceptionOfType(HttpMediaTypeNotAcceptableException.class).isThrownBy(() ->
-		processor.handleReturnValue(returnValue, returnTypeResponseEntity, mavContainer, webRequest));
+				processor.handleReturnValue(returnValue, returnTypeResponseEntity, mavContainer, webRequest));
 	}
 
 	@Test
@@ -322,7 +322,7 @@ public class HttpEntityMethodProcessorMockTests {
 		given(stringHttpMessageConverter.canWrite(String.class, accepted)).willReturn(false);
 
 		assertThatExceptionOfType(HttpMediaTypeNotAcceptableException.class).isThrownBy(() ->
-		processor.handleReturnValue(returnValue, returnTypeResponseEntityProduces, mavContainer, webRequest));
+				processor.handleReturnValue(returnValue, returnTypeResponseEntityProduces, mavContainer, webRequest));
 	}
 
 	@Test  // SPR-9142
@@ -331,7 +331,7 @@ public class HttpEntityMethodProcessorMockTests {
 		servletRequest.addHeader("Accept", "01");
 
 		assertThatExceptionOfType(HttpMediaTypeNotAcceptableException.class).isThrownBy(() ->
-		processor.handleReturnValue(returnValue, returnTypeResponseEntity, mavContainer, webRequest));
+				processor.handleReturnValue(returnValue, returnTypeResponseEntity, mavContainer, webRequest));
 	}
 
 	@Test

@@ -440,7 +440,7 @@ public class AntPathMatcherTests {
 	@Test
 	public void combineWithTwoFileExtensionPatterns() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
-		pathMatcher.combine("/*.html", "/*.txt"));
+				pathMatcher.combine("/*.html", "/*.txt"));
 	}
 
 	@Test

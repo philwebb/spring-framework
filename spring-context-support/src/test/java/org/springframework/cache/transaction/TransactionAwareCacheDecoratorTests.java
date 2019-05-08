@@ -44,7 +44,7 @@ public class TransactionAwareCacheDecoratorTests {
 	@Test
 	public void createWithNullTarget() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
-		new TransactionAwareCacheDecorator(null));
+				new TransactionAwareCacheDecorator(null));
 	}
 
 	@Test

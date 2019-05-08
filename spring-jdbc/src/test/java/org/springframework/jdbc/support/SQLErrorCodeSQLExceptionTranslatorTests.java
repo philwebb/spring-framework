@@ -179,7 +179,7 @@ public class SQLErrorCodeSQLExceptionTranslatorTests {
 
 		// Shouldn't custom translate this - invalid class
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
-		customTranslation.setExceptionClass(String.class));
+				customTranslation.setExceptionClass(String.class));
 	}
 
 }

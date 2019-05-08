@@ -49,7 +49,7 @@ public class ComparableComparatorTests {
 		Object o1 = new Object();
 		Object o2 = new Object();
 		assertThatExceptionOfType(ClassCastException.class).isThrownBy(() ->
-		c.compare(o1, o2));
+				c.compare(o1, o2));
 	}
 
 }

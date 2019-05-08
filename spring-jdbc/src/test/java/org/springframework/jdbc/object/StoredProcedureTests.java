@@ -96,7 +96,8 @@ public class StoredProcedureTests {
 				callableStatement);
 
 		NoSuchStoredProcedure sproc = new NoSuchStoredProcedure(dataSource);
-		assertThatExceptionOfType(BadSqlGrammarException.class).isThrownBy(sproc::execute);
+		assertThatExceptionOfType(BadSqlGrammarException.class).isThrownBy(
+				sproc::execute);
 	}
 
 	private void testAddInvoice(final int amount, final int custid) throws Exception {
@@ -237,7 +238,8 @@ public class StoredProcedureTests {
 	public void testMissingParameter() throws Exception {
 		this.verifyClosedAfter = false;
 		MissingParameterStoredProcedure mp = new MissingParameterStoredProcedure(dataSource);
-		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class).isThrownBy(mp::execute);
+		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class).isThrownBy(
+				mp::execute);
 		fail("Shouldn't succeed in running stored procedure with missing required parameter");
 	}
 
@@ -249,7 +251,8 @@ public class StoredProcedureTests {
 		given(connection.prepareCall("{call " + StoredProcedureExceptionTranslator.SQL + "()}")
 				).willReturn(callableStatement);
 		StoredProcedureExceptionTranslator sproc = new StoredProcedureExceptionTranslator(dataSource);
-		assertThatExceptionOfType(CustomDataException.class).isThrownBy(sproc::execute);
+		assertThatExceptionOfType(CustomDataException.class).isThrownBy(
+				sproc::execute);
 	}
 
 	@Test

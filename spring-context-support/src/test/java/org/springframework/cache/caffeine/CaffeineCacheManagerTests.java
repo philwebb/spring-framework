@@ -189,7 +189,8 @@ public class CaffeineCacheManagerTests {
 		assertEquals("pong", value.get());
 
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
-		assertNull(cache1.get("foo"))).withMessageContaining("I only know ping");
+				assertNull(cache1.get("foo")))
+			.withMessageContaining("I only know ping");
 	}
 
 	@SuppressWarnings("unchecked")

@@ -185,7 +185,7 @@ public class StaticMessageSourceTests extends AbstractApplicationContextTests {
 		MessageSourceResolvable resolvable4 = new DefaultMessageSourceResolvable(codes4);
 
 		assertThatExceptionOfType(NoSuchMessageException.class).isThrownBy(() ->
-		sac.getMessage(resolvable4, Locale.US));
+				sac.getMessage(resolvable4, Locale.US));
 	}
 
 	@Override

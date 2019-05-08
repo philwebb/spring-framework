@@ -128,7 +128,7 @@ public abstract class AbstractPropertyAccessorTests {
 		AbstractPropertyAccessor accessor = createAccessor(new NoRead());
 
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
-		accessor.isReadableProperty(null));
+				accessor.isReadableProperty(null));
 	}
 
 	@Test
@@ -143,7 +143,7 @@ public abstract class AbstractPropertyAccessorTests {
 		AbstractPropertyAccessor accessor = createAccessor(new NoRead());
 
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
-		accessor.isWritableProperty(null));
+				accessor.isWritableProperty(null));
 	}
 
 	@Test
@@ -292,7 +292,7 @@ public abstract class AbstractPropertyAccessorTests {
 		AbstractPropertyAccessor accessor = createAccessor(target);
 
 		assertThatExceptionOfType(NotReadablePropertyException.class).isThrownBy(() ->
-		accessor.getPropertyValue("address.bar"));
+				accessor.getPropertyValue("address.bar"));
 	}
 
 	@Test
@@ -1566,7 +1566,7 @@ public abstract class AbstractPropertyAccessorTests {
 		AbstractPropertyAccessor accessor = createAccessor(target);
 
 		assertThatExceptionOfType(NotWritablePropertyException.class).isThrownBy(() ->
-		accessor.setPropertyValue("address.bar", "value"));
+				accessor.setPropertyValue("address.bar", "value"));
 	}
 
 	@Test

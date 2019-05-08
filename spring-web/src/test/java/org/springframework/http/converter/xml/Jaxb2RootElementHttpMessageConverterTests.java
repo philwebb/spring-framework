@@ -170,7 +170,8 @@ public class Jaxb2RootElementHttpMessageConverterTests {
 				"<rootElement><external>&lol9;</external></rootElement>";
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(content.getBytes("UTF-8"));
 		assertThatExceptionOfType(HttpMessageNotReadableException.class).isThrownBy(() ->
-		this.converter.read(RootElement.class, inputMessage)).withMessageContaining("DOCTYPE");
+				this.converter.read(RootElement.class, inputMessage))
+			.withMessageContaining("DOCTYPE");
 	}
 
 	@Test

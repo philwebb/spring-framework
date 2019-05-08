@@ -273,7 +273,8 @@ public class SqlUpdateTests {
 
 		MaxRowsUpdater pc = new MaxRowsUpdater();
 
-		assertThatExceptionOfType(JdbcUpdateAffectedIncorrectNumberOfRowsException.class).isThrownBy(pc::run);
+		assertThatExceptionOfType(JdbcUpdateAffectedIncorrectNumberOfRowsException.class).isThrownBy(
+				pc::run);
 	}
 
 	@Test
@@ -292,7 +293,8 @@ public class SqlUpdateTests {
 		given(preparedStatement.executeUpdate()).willReturn(2);
 		given(connection.prepareStatement(UPDATE)).willReturn(preparedStatement);
 		RequiredRowsUpdater pc = new RequiredRowsUpdater();
-		assertThatExceptionOfType(JdbcUpdateAffectedIncorrectNumberOfRowsException.class).isThrownBy(pc::run);
+		assertThatExceptionOfType(JdbcUpdateAffectedIncorrectNumberOfRowsException.class).isThrownBy(
+				pc::run);
 	}
 
 	private class Updater extends SqlUpdate {

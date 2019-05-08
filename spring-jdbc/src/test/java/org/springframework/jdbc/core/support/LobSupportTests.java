@@ -76,7 +76,7 @@ public class LobSupportTests {
 		ResultSet rset = mock(ResultSet.class);
 		AbstractLobStreamingResultSetExtractor<Void> lobRse = getResultSetExtractor(false);
 		assertThatExceptionOfType(IncorrectResultSizeDataAccessException.class).isThrownBy(() ->
-			lobRse.extractData(rset));
+				lobRse.extractData(rset));
 		verify(rset).next();
 	}
 
@@ -96,7 +96,7 @@ public class LobSupportTests {
 		given(rset.next()).willReturn(true, true, false);
 		AbstractLobStreamingResultSetExtractor<Void> lobRse = getResultSetExtractor(false);
 		assertThatExceptionOfType(IncorrectResultSizeDataAccessException.class).isThrownBy(() ->
-			lobRse.extractData(rset));
+				lobRse.extractData(rset));
 		verify(rset).clearWarnings();
 	}
 
@@ -107,7 +107,7 @@ public class LobSupportTests {
 		given(rset.next()).willReturn(true);
 		AbstractLobStreamingResultSetExtractor<Void> lobRse = getResultSetExtractor(true);
 		assertThatExceptionOfType(LobRetrievalFailureException.class).isThrownBy(() ->
-		lobRse.extractData(rset));
+				lobRse.extractData(rset));
 	}
 
 	private AbstractLobStreamingResultSetExtractor<Void> getResultSetExtractor(final boolean ex) {

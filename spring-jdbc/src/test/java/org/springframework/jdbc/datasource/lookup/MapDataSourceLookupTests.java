@@ -46,7 +46,7 @@ public class MapDataSourceLookupTests {
 		Map dataSources = lookup.getDataSources();
 
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() ->
-		dataSources.put("", ""));
+				dataSources.put("", ""));
 	}
 
 	@Test
@@ -96,7 +96,7 @@ public class MapDataSourceLookupTests {
 		MapDataSourceLookup lookup = new MapDataSourceLookup(dataSources);
 
 		assertThatExceptionOfType(ClassCastException.class).isThrownBy(() ->
-		lookup.getDataSource(DATA_SOURCE_NAME));
+				lookup.getDataSource(DATA_SOURCE_NAME));
 	}
 
 	@Test
@@ -104,7 +104,7 @@ public class MapDataSourceLookupTests {
 		MapDataSourceLookup lookup = new MapDataSourceLookup();
 
 		assertThatExceptionOfType(DataSourceLookupFailureException.class).isThrownBy(() ->
-		lookup.getDataSource(DATA_SOURCE_NAME));
+				lookup.getDataSource(DATA_SOURCE_NAME));
 	}
 
 }

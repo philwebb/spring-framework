@@ -131,7 +131,8 @@ public class CacheReproTests {
 		Spr13081Service bean = context.getBean(Spr13081Service.class);
 
 		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
-		bean.getSimple(null)).withMessageContaining(MyCacheResolver.class.getName());
+				bean.getSimple(null))
+			.withMessageContaining(MyCacheResolver.class.getName());
 	}
 
 	@Test

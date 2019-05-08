@@ -112,7 +112,7 @@ public class NamedParameterJdbcTemplateTests {
 	@Test
 	public void testNullDataSourceProvidedToCtor() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
-		new NamedParameterJdbcTemplate((DataSource) null));
+				new NamedParameterJdbcTemplate((DataSource) null));
 	}
 
 	@Test

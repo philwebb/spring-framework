@@ -1485,7 +1485,8 @@ public class DefaultListableBeanFactoryTests {
 		lbf.registerBeanDefinition("bd1", bd1);
 		lbf.registerBeanDefinition("bd2", bd2);
 		assertThatExceptionOfType(NoUniqueBeanDefinitionException.class).isThrownBy(() ->
-			lbf.getBean(TestBean.class)).withMessageContaining("more than one 'primary'");
+				lbf.getBean(TestBean.class))
+			.withMessageContaining("more than one 'primary'");
 	}
 
 	@Test
@@ -1528,10 +1529,10 @@ public class DefaultListableBeanFactoryTests {
 		RootBeanDefinition bd2 = new RootBeanDefinition(HighPriorityTestBean.class);
 		lbf.registerBeanDefinition("bd1", bd1);
 		lbf.registerBeanDefinition("bd2", bd2);
-		assertThatExceptionOfType(NoUniqueBeanDefinitionException.class).isThrownBy(
-				() -> lbf.getBean(TestBean.class)).withMessageContaining(
-						"Multiple beans found with the same priority").withMessageContaining(
-								"5"); // conflicting priority
+		assertThatExceptionOfType(NoUniqueBeanDefinitionException.class).isThrownBy(() ->
+				lbf.getBean(TestBean.class))
+			.withMessageContaining("Multiple beans found with the same priority")
+			.withMessageContaining("5"); // conflicting priority
 	}
 
 	@Test
@@ -1778,9 +1779,9 @@ public class DefaultListableBeanFactoryTests {
 		lbf.registerBeanDefinition("bd1", bd1);
 		lbf.registerBeanDefinition("bd2", bd2);
 
-		assertThatExceptionOfType(NoUniqueBeanDefinitionException.class).isThrownBy(
-				() -> lbf.getBean(ConstructorDependency.class, 42)).withMessageContaining(
-						"more than one 'primary'");
+		assertThatExceptionOfType(NoUniqueBeanDefinitionException.class).isThrownBy(() ->
+				lbf.getBean(ConstructorDependency.class, 42))
+			.withMessageContaining("more than one 'primary'");
 	}
 
 	@Test

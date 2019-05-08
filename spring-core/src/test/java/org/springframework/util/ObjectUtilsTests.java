@@ -172,7 +172,7 @@ public class ObjectUtilsTests {
 	@Test
 	public void toObjectArrayWithNonArrayType() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
-		ObjectUtils.toObjectArray("Not an []"));
+				ObjectUtils.toObjectArray("Not an []"));
 	}
 
 	@Test

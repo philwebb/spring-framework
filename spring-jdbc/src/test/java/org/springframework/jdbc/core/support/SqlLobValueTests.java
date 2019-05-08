@@ -95,7 +95,7 @@ public class SqlLobValueTests  {
 	public void test3() throws SQLException {
 		SqlLobValue lob = new SqlLobValue(new InputStreamReader(new ByteArrayInputStream("Bla".getBytes())), 12);
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
-		lob.setTypeValue(preparedStatement, 1, Types.BLOB, "test"));
+				lob.setTypeValue(preparedStatement, 1, Types.BLOB, "test"));
 	}
 
 	@Test
@@ -131,7 +131,7 @@ public class SqlLobValueTests  {
 	public void test7() throws SQLException {
 		SqlLobValue lob = new SqlLobValue("bla".getBytes());
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
-		lob.setTypeValue(preparedStatement, 1, Types.CLOB, "test"));
+				lob.setTypeValue(preparedStatement, 1, Types.CLOB, "test"));
 	}
 
 	@Test
@@ -192,7 +192,7 @@ public class SqlLobValueTests  {
 	public void testOtherSqlType() throws SQLException {
 		SqlLobValue lob = new SqlLobValue("Bla", handler);
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
-		lob.setTypeValue(preparedStatement, 1, Types.SMALLINT, "test"));
+				lob.setTypeValue(preparedStatement, 1, Types.SMALLINT, "test"));
 	}
 
 }

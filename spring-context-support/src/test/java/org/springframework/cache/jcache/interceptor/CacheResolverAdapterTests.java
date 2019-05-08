@@ -60,7 +60,7 @@ public class CacheResolverAdapterTests extends AbstractJCacheTests {
 		CacheResolverAdapter adapter = new CacheResolverAdapter(getCacheResolver(dummyContext, null));
 
 		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
-		adapter.resolveCaches(dummyContext));
+				adapter.resolveCaches(dummyContext));
 	}
 
 	protected CacheResolver getCacheResolver(CacheInvocationContext<? extends Annotation> context, String cacheName) {

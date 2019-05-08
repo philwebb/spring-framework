@@ -890,7 +890,7 @@ public class PathPatternTests {
 	public void combineWithTwoFileExtensionPatterns() {
 		TestPathCombiner pathMatcher = new TestPathCombiner();
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
-		pathMatcher.combine("/*.html", "/*.txt"));
+				pathMatcher.combine("/*.html", "/*.txt"));
 	}
 
 	@Test

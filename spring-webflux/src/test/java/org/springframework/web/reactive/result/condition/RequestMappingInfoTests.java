@@ -69,7 +69,8 @@ public class RequestMappingInfoTests {
 	@Test
 	public void throwWhenInvalidPattern() {
 		assertThatExceptionOfType(PatternParseException.class).isThrownBy(() ->
-		paths("/{foo").build()).withMessageContaining("Expected close capture character after variable name }");
+				paths("/{foo").build())
+			.withMessageContaining("Expected close capture character after variable name }");
 	}
 
 	@Test

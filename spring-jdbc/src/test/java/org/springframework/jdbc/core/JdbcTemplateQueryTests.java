@@ -147,7 +147,7 @@ public class JdbcTemplateQueryTests {
 		given(this.resultSet.next()).willReturn(true, true, false);
 		given(this.resultSet.getString(1)).willReturn("pass");
 		assertThatExceptionOfType(IncorrectResultSizeDataAccessException.class).isThrownBy(() ->
-			this.template.queryForObject(sql, String.class));
+				this.template.queryForObject(sql, String.class));
 		verify(this.resultSet).close();
 		verify(this.statement).close();
 	}

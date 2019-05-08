@@ -398,7 +398,7 @@ public class DefaultStompSessionTests {
 		String payload = "{'foo':'bar'}";
 
 		assertThatExceptionOfType(MessageConversionException.class).isThrownBy(() ->
-		this.session.send(stompHeaders, payload));
+				this.session.send(stompHeaders, payload));
 		verifyNoMoreInteractions(this.connection);
 	}
 

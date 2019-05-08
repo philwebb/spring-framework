@@ -43,25 +43,29 @@ public class ProfilesTests {
 	@Test
 	public void ofWhenNullThrowsException() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
-		Profiles.of((String[]) null)).withMessageContaining("Must specify at least one profile");
+				Profiles.of((String[]) null))
+			.withMessageContaining("Must specify at least one profile");
 	}
 
 	@Test
 	public void ofWhenEmptyThrowsException() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
-		Profiles.of()).withMessageContaining("Must specify at least one profile");
+				Profiles.of())
+			.withMessageContaining("Must specify at least one profile");
 	}
 
 	@Test
 	public void ofNullElement() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
-		Profiles.of((String) null)).withMessageContaining("must contain text");
+				Profiles.of((String) null))
+			.withMessageContaining("must contain text");
 	}
 
 	@Test
 	public void ofEmptyElement() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
-		Profiles.of("  ")).withMessageContaining("must contain text");
+				Profiles.of("  "))
+			.withMessageContaining("must contain text");
 	}
 
 	@Test

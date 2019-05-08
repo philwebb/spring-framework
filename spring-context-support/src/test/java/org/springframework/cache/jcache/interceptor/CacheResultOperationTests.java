@@ -84,7 +84,7 @@ public class CacheResultOperationTests extends AbstractCacheOperationTests<Cache
 
 		// missing one argument
 		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
-		operation.getAllParameters("bar"));
+				operation.getAllParameters("bar"));
 	}
 
 	@Test
@@ -95,7 +95,7 @@ public class CacheResultOperationTests extends AbstractCacheOperationTests<Cache
 
 		// missing one argument
 		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
-		operation.getKeyParameters("bar"));
+				operation.getKeyParameters("bar"));
 	}
 
 	@Test

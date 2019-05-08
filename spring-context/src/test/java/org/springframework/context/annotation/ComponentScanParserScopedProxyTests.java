@@ -105,8 +105,8 @@ public class ComponentScanParserScopedProxyTests {
 	@Test
 	@SuppressWarnings("resource")
 	public void testInvalidConfigScopedProxy() throws Exception {
-		assertThatExceptionOfType(BeanDefinitionParsingException.class).isThrownBy(
-				() -> new ClassPathXmlApplicationContext("org/springframework/context/annotation/scopedProxyInvalidConfigTests.xml"))
+		assertThatExceptionOfType(BeanDefinitionParsingException.class).isThrownBy(() ->
+				new ClassPathXmlApplicationContext("org/springframework/context/annotation/scopedProxyInvalidConfigTests.xml"))
 			.withMessageContaining("Cannot define both 'scope-resolver' and 'scoped-proxy' on <component-scan> tag")
 			.withMessageContaining("Offending resource: class path resource [org/springframework/context/annotation/scopedProxyInvalidConfigTests.xml]");
 	}

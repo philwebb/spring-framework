@@ -138,16 +138,12 @@ public class JdbcTemplateTests {
 		given(this.preparedStatement.executeUpdate()).willThrow(sqlException);
 
 		Dispatcher d = new Dispatcher(idParam, sql);
-		try {
-			assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() ->
-					this.template.update(d))
-				.withCause(sqlException);
-		}
-		finally {
-			verify(this.preparedStatement).setInt(1, idParam);
-			verify(this.preparedStatement).close();
-			verify(this.connection, atLeastOnce()).close();
-		}
+		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() ->
+				this.template.update(d))
+			.withCause(sqlException);
+		verify(this.preparedStatement).setInt(1, idParam);
+		verify(this.preparedStatement).close();
+		verify(this.connection, atLeastOnce()).close();
 	}
 
 	@Test
@@ -380,15 +376,11 @@ public class JdbcTemplateTests {
 		given(this.statement.executeUpdate(sql)).willThrow(sqlException);
 		given(this.connection.createStatement()).willReturn(this.statement);
 
-		try {
-			assertThatExceptionOfType(DataAccessException.class).isThrownBy(() ->
-					this.template.update(sql))
-				.withCause(sqlException);
-		}
-		finally {
-			verify(this.statement).close();
-			verify(this.connection, atLeastOnce()).close();
-		}
+		assertThatExceptionOfType(DataAccessException.class).isThrownBy(() ->
+				this.template.update(sql))
+			.withCause(sqlException);
+		verify(this.statement).close();
+		verify(this.connection, atLeastOnce()).close();
 	}
 
 	@Test
@@ -478,7 +470,7 @@ public class JdbcTemplateTests {
 
 		JdbcTemplate template = new JdbcTemplate(this.dataSource, false);
 		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class).isThrownBy(() ->
-			template.batchUpdate(sql));
+				template.batchUpdate(sql));
 		verify(this.statement, never()).addBatch(anyString());
 		verify(this.statement).close();
 		verify(this.connection, atLeastOnce()).close();
@@ -875,16 +867,12 @@ public class JdbcTemplateTests {
 		given(this.preparedStatement.executeUpdate()).willThrow(sqlException);
 
 		PreparedStatementSetter pss = ps -> ps.setString(1, name);
-		try {
-			assertThatExceptionOfType(DataAccessException.class).isThrownBy(() ->
-					new JdbcTemplate(this.dataSource).update(sql, pss))
-				.withCause(sqlException);
-		}
-		finally {
-			verify(this.preparedStatement).setString(1, name);
-			verify(this.preparedStatement).close();
-			verify(this.connection, atLeastOnce()).close();
-		}
+		assertThatExceptionOfType(DataAccessException.class).isThrownBy(() ->
+				new JdbcTemplate(this.dataSource).update(sql, pss))
+			.withCause(sqlException);
+		verify(this.preparedStatement).setString(1, name);
+		verify(this.preparedStatement).close();
+		verify(this.connection, atLeastOnce()).close();
 	}
 
 	@Test
@@ -916,17 +904,13 @@ public class JdbcTemplateTests {
 		JdbcTemplate t = new JdbcTemplate(this.dataSource);
 		t.setIgnoreWarnings(false);
 
-		try {
-			ResultSetExtractor<Byte> extractor = rs -> rs.getByte(1);
-			assertThatExceptionOfType(SQLWarningException.class).isThrownBy(() ->
-					t.query(sql, extractor))
-				.withCause(warnings);
-		}
-		finally {
-			verify(this.resultSet).close();
-			verify(this.preparedStatement).close();
-			verify(this.connection).close();
-		}
+		ResultSetExtractor<Byte> extractor = rs -> rs.getByte(1);
+		assertThatExceptionOfType(SQLWarningException.class).isThrownBy(() ->
+				t.query(sql, extractor))
+			.withCause(warnings);
+		verify(this.resultSet).close();
+		verify(this.preparedStatement).close();
+		verify(this.connection).close();
 	}
 
 	@Test
@@ -958,18 +942,14 @@ public class JdbcTemplateTests {
 		mockDatabaseMetaData(false);
 		given(this.connection.createStatement()).willReturn(this.preparedStatement);
 
-		try {
-			assertThatExceptionOfType(BadSqlGrammarException.class).isThrownBy(() ->
-					this.template.query(sql, (RowCallbackHandler) rs -> {
-						throw sqlException;
-					}))
-				.withCause(sqlException);
-		}
-		finally {
-			verify(this.resultSet).close();
-			verify(this.preparedStatement).close();
-			verify(this.connection, atLeastOnce()).close();
-		}
+		assertThatExceptionOfType(BadSqlGrammarException.class).isThrownBy(() ->
+				this.template.query(sql, (RowCallbackHandler) rs -> {
+					throw sqlException;
+				}))
+			.withCause(sqlException);
+		verify(this.resultSet).close();
+		verify(this.preparedStatement).close();
+		verify(this.connection, atLeastOnce()).close();
 	}
 
 	@Test
@@ -985,18 +965,14 @@ public class JdbcTemplateTests {
 		template.setDatabaseProductName("MySQL");
 		template.afterPropertiesSet();
 
-		try {
-			assertThatExceptionOfType(BadSqlGrammarException.class).isThrownBy(() ->
-					template.query(sql, (RowCallbackHandler) rs -> {
-						throw sqlException;
-					}))
-				.withCause(sqlException);
-		}
-		finally {
-			verify(this.resultSet).close();
-			verify(this.preparedStatement).close();
-			verify(this.connection).close();
-		}
+		assertThatExceptionOfType(BadSqlGrammarException.class).isThrownBy(() ->
+				template.query(sql, (RowCallbackHandler) rs -> {
+					throw sqlException;
+				}))
+			.withCause(sqlException);
+		verify(this.resultSet).close();
+		verify(this.preparedStatement).close();
+		verify(this.connection).close();
 	}
 
 	/**
@@ -1019,18 +995,14 @@ public class JdbcTemplateTests {
 		template.setExceptionTranslator(new SQLStateSQLExceptionTranslator());
 		template.afterPropertiesSet();
 
-		try {
-			assertThatExceptionOfType(BadSqlGrammarException.class).isThrownBy(() ->
-					template.query(sql, (RowCallbackHandler) rs -> {
-						throw sqlException;
-					}))
-				.withCause(sqlException);
-		}
-		finally {
-			verify(this.resultSet).close();
-			verify(this.preparedStatement).close();
-			verify(this.connection).close();
-		}
+		assertThatExceptionOfType(BadSqlGrammarException.class).isThrownBy(() ->
+				template.query(sql, (RowCallbackHandler) rs -> {
+					throw sqlException;
+				}))
+			.withCause(sqlException);
+		verify(this.resultSet).close();
+		verify(this.preparedStatement).close();
+		verify(this.connection).close();
 	}
 
 	@Test
@@ -1066,7 +1038,7 @@ public class JdbcTemplateTests {
 		});
 
 		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class).isThrownBy(() ->
-			this.template.call(conn -> conn.prepareCall("my query"), Collections.singletonList(param)));
+				this.template.call(conn -> conn.prepareCall("my query"), Collections.singletonList(param)));
 		verify(this.resultSet).close();
 		verify(this.callableStatement).close();
 		verify(this.connection).close();

@@ -194,7 +194,8 @@ public class MessageBuilderTests {
 		Message<?> message = MessageBuilder.createMessage("foo", headers);
 
 		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
-		accessor.setHeader("foo", "bar")).withMessageContaining("Already immutable");
+				accessor.setHeader("foo", "bar"))
+			.withMessageContaining("Already immutable");
 
 		assertSame(accessor, MessageHeaderAccessor.getAccessor(message, MessageHeaderAccessor.class));
 	}

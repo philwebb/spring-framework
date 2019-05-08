@@ -39,19 +39,19 @@ public class JmsListenerEndpointRegistryTests {
 	@Test
 	public void createWithNullEndpoint() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
-		registry.registerListenerContainer(null, containerFactory));
+				registry.registerListenerContainer(null, containerFactory));
 	}
 
 	@Test
 	public void createWithNullEndpointId() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
-		registry.registerListenerContainer(new SimpleJmsListenerEndpoint(), containerFactory));
+				registry.registerListenerContainer(new SimpleJmsListenerEndpoint(), containerFactory));
 	}
 
 	@Test
 	public void createWithNullContainerFactory() {
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
-		registry.registerListenerContainer(createEndpoint("foo", "myDestination"), null));
+				registry.registerListenerContainer(createEndpoint("foo", "myDestination"), null));
 	}
 
 	@Test
@@ -59,7 +59,7 @@ public class JmsListenerEndpointRegistryTests {
 		registry.registerListenerContainer(createEndpoint("test", "queue"), containerFactory);
 
 		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
-		registry.registerListenerContainer(createEndpoint("test", "queue"), containerFactory));
+				registry.registerListenerContainer(createEndpoint("test", "queue"), containerFactory));
 	}
 
 

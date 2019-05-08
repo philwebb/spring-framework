@@ -1287,7 +1287,8 @@ public class SpelReproTests extends AbstractExpressionTests {
 
 	private void doTestSpr10146(String expression, String expectedMessage) {
 		assertThatExceptionOfType(SpelParseException.class).isThrownBy(() ->
-		new SpelExpressionParser().parseExpression(expression)).withMessageContaining(expectedMessage);
+				new SpelExpressionParser().parseExpression(expression))
+			.withMessageContaining(expectedMessage);
 	}
 
 	@Test
@@ -1313,7 +1314,8 @@ public class SpelReproTests extends AbstractExpressionTests {
 	public void SPR10328() {
 		Expression exp = parser.parseExpression("$[]");
 		assertThatExceptionOfType(SpelParseException.class).isThrownBy(() ->
-		exp.getValue(Arrays.asList("foo", "bar", "baz"))).withMessageContaining("EL1071E: A required selection expression has not been specified");
+				exp.getValue(Arrays.asList("foo", "bar", "baz")))
+			.withMessageContaining("EL1071E: A required selection expression has not been specified");
 	}
 
 	@Test
@@ -1404,7 +1406,8 @@ public class SpelReproTests extends AbstractExpressionTests {
 		Spr11142 rootObject = new Spr11142();
 		Expression expression = parser.parseExpression("something");
 		assertThatExceptionOfType(SpelEvaluationException.class).isThrownBy(() ->
-		expression.getValue(context, rootObject)).withMessageContaining("'something' cannot be found");
+				expression.getValue(context, rootObject))
+			.withMessageContaining("'something' cannot be found");
 	}
 
 	@Test

@@ -149,7 +149,7 @@ public class DataBinderFieldAccessTests {
 		pvs.addPropertyValue(new PropertyValue("spouse.name", "Kerry"));
 
 		assertThatExceptionOfType(NullValueInNestedPathException.class).isThrownBy(() ->
-		binder.bind(pvs));
+				binder.bind(pvs));
 	}
 
 	@Test

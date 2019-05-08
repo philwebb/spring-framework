@@ -118,7 +118,7 @@ public class JCacheJavaConfigTests extends AbstractJCacheAnnotationTests {
 
 			// This call requires the cache manager to be set
 			assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
-				service.cacheWithException("test", false));
+					service.cacheWithException("test", false));
 		}
 		finally {
 			context.close();

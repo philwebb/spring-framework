@@ -93,20 +93,19 @@ public class RepeatableContainersTests {
 
 	@Test
 	public void ofExplicitWhenHasNoValueThrowsException() {
-		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
-				() -> RepeatableContainers.of(ExplicitRepeatable.class,
-						InvalidNoValue.class)).withMessageContaining(
-								"Invalid declaration of container type ["
-										+ InvalidNoValue.class.getName()
-										+ "] for repeatable annotation ["
-										+ ExplicitRepeatable.class.getName() + "]");
+		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(() ->
+				RepeatableContainers.of(ExplicitRepeatable.class, InvalidNoValue.class))
+			.withMessageContaining("Invalid declaration of container type ["
+									+ InvalidNoValue.class.getName()
+									+ "] for repeatable annotation ["
+									+ ExplicitRepeatable.class.getName() + "]");
 	}
 
 	@Test
 	public void ofExplicitWhenValueIsNotArrayThrowsException() {
-		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
-				() -> RepeatableContainers.of(ExplicitRepeatable.class,
-						InvalidNotArray.class)).withMessage("Container type ["
+		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(() ->
+				RepeatableContainers.of(ExplicitRepeatable.class, InvalidNotArray.class))
+			.withMessage("Container type ["
 								+ InvalidNotArray.class.getName()
 								+ "] must declare a 'value' attribute for an array of type ["
 								+ ExplicitRepeatable.class.getName() + "]");
@@ -114,9 +113,9 @@ public class RepeatableContainersTests {
 
 	@Test
 	public void ofExplicitWhenValueIsArrayOfWrongTypeThrowsException() {
-		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(
-				() -> RepeatableContainers.of(ExplicitRepeatable.class,
-						InvalidWrongArrayType.class)).withMessage("Container type ["
+		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(() ->
+				RepeatableContainers.of(ExplicitRepeatable.class, InvalidWrongArrayType.class))
+			.withMessage("Container type ["
 								+ InvalidWrongArrayType.class.getName()
 								+ "] must declare a 'value' attribute for an array of type ["
 								+ ExplicitRepeatable.class.getName() + "]");
@@ -124,9 +123,8 @@ public class RepeatableContainersTests {
 
 	@Test
 	public void ofExplicitWhenAnnotationIsNullThrowsException() {
-		assertThatIllegalArgumentException().isThrownBy(
-				() -> RepeatableContainers.of(null, null)).withMessage(
-						"Repeatable must not be null");
+		assertThatIllegalArgumentException().isThrownBy(() -> RepeatableContainers.of(null, null))
+				.withMessage("Repeatable must not be null");
 	}
 
 	@Test

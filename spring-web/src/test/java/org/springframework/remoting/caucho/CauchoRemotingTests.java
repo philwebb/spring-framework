@@ -49,7 +49,7 @@ public class CauchoRemotingTests {
 	public void hessianProxyFactoryBeanWithClassInsteadOfInterface() throws Exception {
 		HessianProxyFactoryBean factory = new HessianProxyFactoryBean();
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
-		factory.setServiceInterface(TestBean.class));
+				factory.setServiceInterface(TestBean.class));
 	}
 
 	@Test
@@ -64,7 +64,7 @@ public class CauchoRemotingTests {
 		ITestBean bean = (ITestBean) factory.getObject();
 
 		assertThatExceptionOfType(RemoteAccessException.class).isThrownBy(() ->
-		bean.setName("test"));
+				bean.setName("test"));
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class CauchoRemotingTests {
 		ITestBean bean = (ITestBean) factory.getObject();
 
 		assertThatExceptionOfType(RemoteAccessException.class).isThrownBy(() ->
-		bean.setName("test"));
+				bean.setName("test"));
 	}
 
 	@Test
@@ -105,7 +105,7 @@ public class CauchoRemotingTests {
 		assertTrue(proxyFactory.overloadEnabled);
 
 		assertThatExceptionOfType(RemoteAccessException.class).isThrownBy(() ->
-		bean.setName("test"));
+				bean.setName("test"));
 	}
 
 	@Test

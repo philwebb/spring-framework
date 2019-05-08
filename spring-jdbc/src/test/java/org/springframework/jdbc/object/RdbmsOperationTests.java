@@ -50,7 +50,8 @@ public class RdbmsOperationTests {
 
 	@Test
 	public void emptySql() {
-		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class).isThrownBy(operation::compile);
+		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class).isThrownBy(
+				operation::compile);
 	}
 
 	@Test
@@ -59,7 +60,7 @@ public class RdbmsOperationTests {
 		operation.setSql("select * from mytable");
 		operation.compile();
 		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class).isThrownBy(() ->
-		operation.setTypes(new int[] { Types.INTEGER }));
+				operation.setTypes(new int[] { Types.INTEGER }));
 	}
 
 	@Test
@@ -68,7 +69,7 @@ public class RdbmsOperationTests {
 		operation.setSql("select * from mytable");
 		operation.compile();
 		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class).isThrownBy(() ->
-		operation.declareParameter(new SqlParameter(Types.INTEGER)));
+				operation.declareParameter(new SqlParameter(Types.INTEGER)));
 	}
 
 	@Test
@@ -76,7 +77,7 @@ public class RdbmsOperationTests {
 		operation.setSql("select * from mytable");
 		operation.setTypes(new int[] { Types.INTEGER });
 		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class).isThrownBy(() ->
-		operation.validateParameters((Object[]) null));
+				operation.validateParameters((Object[]) null));
 	}
 
 	@Test
@@ -84,7 +85,7 @@ public class RdbmsOperationTests {
 		operation.setSql("select * from mytable");
 		operation.setTypes(new int[] { Types.INTEGER });
 		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class).isThrownBy(() ->
-		operation.validateNamedParameters((Map<String, String>) null));
+				operation.validateNamedParameters((Map<String, String>) null));
 	}
 
 	@Test
@@ -99,7 +100,7 @@ public class RdbmsOperationTests {
 	public void tooManyParameters() {
 		operation.setSql("select * from mytable");
 		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class).isThrownBy(() ->
-		operation.validateParameters(new Object[] { 1, 2 }));
+				operation.validateParameters(new Object[] { 1, 2 }));
 	}
 
 	@Test
@@ -108,7 +109,7 @@ public class RdbmsOperationTests {
 		Map<String, String> params = new HashMap<>();
 		params.put("col1", "value");
 		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class).isThrownBy(() ->
-		operation.validateNamedParameters(params));
+				operation.validateNamedParameters(params));
 	}
 
 	@Test
@@ -124,7 +125,8 @@ public class RdbmsOperationTests {
 	public void emptyDataSource() {
 		SqlOperation operation = new SqlOperation() {};
 		operation.setSql("select * from mytable");
-		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class).isThrownBy(operation::compile);
+		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class).isThrownBy(
+				operation::compile);
 	}
 
 	@Test

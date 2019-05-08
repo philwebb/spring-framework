@@ -99,7 +99,7 @@ public class ConfigurationClassProcessingTests {
 
 		// method name should not be registered
 		assertThatExceptionOfType(NoSuchBeanDefinitionException.class).isThrownBy(() ->
-		ac.getBean("methodName"));
+				ac.getBean("methodName"));
 	}
 
 	@Test
@@ -123,7 +123,7 @@ public class ConfigurationClassProcessingTests {
 
 		// method name should not be registered
 		assertThatExceptionOfType(NoSuchBeanDefinitionException.class).isThrownBy(() ->
-		factory.getBean("methodName"));
+				factory.getBean("methodName"));
 	}
 
 	@Test  // SPR-11830
@@ -147,7 +147,7 @@ public class ConfigurationClassProcessingTests {
 	@Test
 	public void testFinalBeanMethod() {
 		assertThatExceptionOfType(BeanDefinitionParsingException.class).isThrownBy(() ->
-		initBeanFactory(ConfigWithFinalBean.class));
+				initBeanFactory(ConfigWithFinalBean.class));
 	}
 
 	@Test

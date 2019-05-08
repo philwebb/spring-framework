@@ -99,7 +99,7 @@ public class MethodJmsListenerEndpointTests {
 		endpoint.setMethod(getTestMethod());
 
 		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
-		endpoint.createMessageListener(this.container));
+				endpoint.createMessageListener(this.container));
 	}
 
 	@Test
@@ -421,7 +421,7 @@ public class MethodJmsListenerEndpointTests {
 
 		// test is an invalid value
 		assertThatExceptionOfType(ListenerExecutionFailedException.class).isThrownBy(() ->
-		listener.onMessage(createSimpleJmsTextMessage("invalid value"), session));
+				listener.onMessage(createSimpleJmsTextMessage("invalid value"), session));
 
 	}
 

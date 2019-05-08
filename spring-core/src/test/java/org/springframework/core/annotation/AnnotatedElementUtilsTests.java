@@ -523,28 +523,10 @@ public class AnnotatedElementUtilsTests {
 	public void getMergedAnnotationAttributesWithInvalidConventionBasedComposedAnnotation() {
 		Class<?> element = InvalidConventionBasedComposedContextConfigClass.class;
 		assertThatExceptionOfType(AnnotationConfigurationException.class).isThrownBy(() ->
-				getMergedAnnotationAttributes(element, ContextConfig.class)
-			).satisfies(ex -> {
-				String message = ex.getMessage();
-				assertThat(message).satisfies(containingOneOf(
-						"attribute 'value' and its alias 'locations'",
-						"attribute 'locations' and its alias 'value'"));
-				assertThat(message).satisfies(containingOneOf(
-						"values of [{duplicateDeclaration}] and [{requiredLocationsDeclaration}]",
-						"values of [{requiredLocationsDeclaration}] and [{duplicateDeclaration}]"));
-				assertThat(message).satisfies(containingOneOf(
-						"but only one is permitted",
-						"Different @AliasFor mirror values for annotation"));
-			});
-	}
-
-	private Consumer<String> containingOneOf(String... strings) {
-		return value -> {
-			if (!Arrays.stream(strings).anyMatch(value::contains)) {
-				throw new AssertionError(value + " did not contain one of "
-						+ StringUtils.arrayToCommaDelimitedString(strings));
-			}
-		};
+				getMergedAnnotationAttributes(element, ContextConfig.class))
+			.withMessageContaining("Different @AliasFor mirror values for annotation")
+			.withMessageContaining("attribute 'locations' and its alias 'value'")
+			.withMessageContaining("values of [{requiredLocationsDeclaration}] and [{duplicateDeclaration}]");
 	}
 
 	@Test

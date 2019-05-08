@@ -168,7 +168,8 @@ public class NativeMessageHeaderAccessorTests {
 		headerAccessor.setImmutable();
 
 		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
-		headerAccessor.setNativeHeader("foo", "baz")).withMessageContaining("Already immutable");
+				headerAccessor.setNativeHeader("foo", "baz"))
+			.withMessageContaining("Already immutable");
 	}
 
 	@Test
@@ -217,7 +218,8 @@ public class NativeMessageHeaderAccessorTests {
 		headerAccessor.setImmutable();
 
 		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
-		headerAccessor.addNativeHeader("foo", "baz")).withMessageContaining("Already immutable");
+				headerAccessor.addNativeHeader("foo", "baz"))
+			.withMessageContaining("Already immutable");
 	}
 
 	@Test

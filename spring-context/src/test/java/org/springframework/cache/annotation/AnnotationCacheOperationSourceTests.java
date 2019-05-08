@@ -158,7 +158,7 @@ public class AnnotationCacheOperationSourceTests {
 	@Test
 	public void keyAndKeyGeneratorCannotBeSetTogether() {
 		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
-		getOps(AnnotatedClass.class, "invalidKeyAndKeyGeneratorSet"));
+				getOps(AnnotatedClass.class, "invalidKeyAndKeyGeneratorSet"));
 	}
 
 	@Test
@@ -192,7 +192,7 @@ public class AnnotationCacheOperationSourceTests {
 	@Test
 	public void cacheResolverAndCacheManagerCannotBeSetTogether() {
 		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
-		getOps(AnnotatedClass.class, "invalidCacheResolverAndCacheManagerSet"));
+				getOps(AnnotatedClass.class, "invalidCacheResolverAndCacheManagerSet"));
 	}
 
 	@Test

@@ -512,8 +512,8 @@ public class JavaMailSenderTests {
 	public void testConnectionWithFailure() throws MessagingException {
 		MockJavaMailSender sender = new MockJavaMailSender();
 		sender.setHost(null);
-
-		assertThatExceptionOfType(MessagingException.class).isThrownBy(sender::testConnection);
+		assertThatExceptionOfType(MessagingException.class).isThrownBy(
+				sender::testConnection);
 	}
 
 

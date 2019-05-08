@@ -58,7 +58,7 @@ public class CachePutOperationTests extends AbstractCacheOperationTests<CachePut
 				SampleObject.class, "noCacheValue", Long.class);
 
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
-		createDefaultOperation(methodDetails));
+				createDefaultOperation(methodDetails));
 	}
 
 	@Test
@@ -67,7 +67,7 @@ public class CachePutOperationTests extends AbstractCacheOperationTests<CachePut
 				SampleObject.class, "multiCacheValues", Long.class, SampleObject.class, SampleObject.class);
 
 		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() ->
-		createDefaultOperation(methodDetails));
+				createDefaultOperation(methodDetails));
 	}
 
 	@Test
@@ -75,7 +75,7 @@ public class CachePutOperationTests extends AbstractCacheOperationTests<CachePut
 		CachePutOperation operation = createSimpleOperation();
 
 		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
-		operation.getValueParameter(2L));
+				operation.getValueParameter(2L));
 	}
 
 	@Test

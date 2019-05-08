@@ -150,7 +150,7 @@ public class JmsInvokerTests {
 		assertThatIllegalStateException().isThrownBy(() ->
 			proxy.exceptional(new IllegalStateException()));
 		assertThatExceptionOfType(IllegalAccessException.class).isThrownBy(() ->
-			proxy.exceptional(new IllegalAccessException()));
+				proxy.exceptional(new IllegalAccessException()));
 	}
 
 
