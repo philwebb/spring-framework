@@ -238,7 +238,6 @@ public class StoredProcedureTests {
 		MissingParameterStoredProcedure mp = new MissingParameterStoredProcedure(dataSource);
 		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class).isThrownBy(
 				mp::execute);
-		fail("Shouldn't succeed in running stored procedure with missing required parameter");
 	}
 
 	@Test

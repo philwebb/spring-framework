@@ -929,8 +929,6 @@ public class AnnotationUtilsTests {
 	private void assertMissingTextAttribute(Map<String, Object> attributes) {
 		assertThatIllegalArgumentException().isThrownBy(() ->
 				synthesizeAnnotation(attributes, AnnotationWithoutDefaults.class, null))
-			.withMessageStartingWith("Attributes map")
-			.withMessageContaining("returned null for required attribute 'text'")
 			.withMessageContaining("No value found for attribute named 'text' in merged annotation");
 	}
 

@@ -136,7 +136,7 @@ public class JdbcTemplateTests {
 		given(this.preparedStatement.executeUpdate()).willThrow(sqlException);
 
 		Dispatcher d = new Dispatcher(idParam, sql);
-		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() ->
+		assertThatExceptionOfType(UncategorizedSQLException.class).isThrownBy(() ->
 				this.template.update(d))
 			.withCause(sqlException);
 		verify(this.preparedStatement).setInt(1, idParam);

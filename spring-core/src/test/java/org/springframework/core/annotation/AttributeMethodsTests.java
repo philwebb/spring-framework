@@ -157,7 +157,7 @@ public class AttributeMethodsTests {
 		given(annotation.value()).willThrow(TypeNotPresentException.class);
 		AttributeMethods attributes = AttributeMethods.forAnnotationType(
 				annotation.annotationType());
-		assertThatIllegalStateException().isThrownBy(() -> 
+		assertThatIllegalStateException().isThrownBy(() ->
 				attributes.validate(annotation));
 	}
 

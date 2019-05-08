@@ -1279,8 +1279,7 @@ public class SpelReproTests extends AbstractExpressionTests {
 		doTestSpr10146(">foo", "EL1070E: Problem parsing left operand");
 		doTestSpr10146("&&foo", "EL1070E: Problem parsing left operand");
 		doTestSpr10146("||foo", "EL1070E: Problem parsing left operand");
-		doTestSpr10146("&foo", "EL1069E: missing expected character '&'");
-		doTestSpr10146("|foo", "EL1069E: missing expected character '|'");
+		doTestSpr10146("|foo", "EL1069E: Missing expected character '|'");
 	}
 
 	private void doTestSpr10146(String expression, String expectedMessage) {
@@ -1310,9 +1309,8 @@ public class SpelReproTests extends AbstractExpressionTests {
 
 	@Test
 	public void SPR10328() {
-		Expression exp = parser.parseExpression("$[]");
 		assertThatExceptionOfType(SpelParseException.class).isThrownBy(() ->
-				exp.getValue(Arrays.asList("foo", "bar", "baz")))
+				parser.parseExpression("$[]"))
 			.withMessageContaining("EL1071E: A required selection expression has not been specified");
 	}
 

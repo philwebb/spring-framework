@@ -397,7 +397,6 @@ public class DefaultStompSessionTests {
 
 		assertThatExceptionOfType(MessageConversionException.class).isThrownBy(() ->
 				this.session.send(stompHeaders, payload));
-		verifyNoMoreInteractions(this.connection);
 	}
 
 	@Test
@@ -413,8 +412,6 @@ public class DefaultStompSessionTests {
 		assertThatExceptionOfType(MessageDeliveryException.class).isThrownBy(() ->
 				this.session.send("/topic/foo", "sample payload".getBytes(StandardCharsets.UTF_8)))
 			.withCause(exception);
-
-		verifyNoMoreInteractions(this.connection);
 	}
 
 	@Test

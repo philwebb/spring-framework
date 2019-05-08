@@ -64,7 +64,7 @@ public class ContextLoaderUtilsConfigurationAttributesTests extends AbstractCont
 			.withMessageStartingWith("Different @AliasFor mirror values")
 			.withMessageContaining(ConflictingLocations.class.getName())
 			.withMessageContaining("attribute 'locations' and its alias 'value'")
-			.withMessageContaining("values of [{x}] and [{y}]");
+			.withMessageContaining("values of [{y}] and [{x}]");
 	}
 
 	@Test

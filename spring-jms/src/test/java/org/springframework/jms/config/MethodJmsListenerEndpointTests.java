@@ -385,7 +385,7 @@ public class MethodJmsListenerEndpointTests {
 
 	@Test
 	public void invalidSendTo() {
-		assertThatIllegalArgumentException().isThrownBy(() ->
+		assertThatIllegalStateException().isThrownBy(() ->
 				createDefaultInstance(String.class))
 			.withMessageContaining("firstDestination")
 			.withMessageContaining("secondDestination");

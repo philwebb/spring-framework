@@ -87,7 +87,7 @@ public class ConvertingEncoderDecoderSupportTests {
 		setup(NoConvertersConfig.class);
 		assertThatExceptionOfType(EncodeException.class).isThrownBy(() ->
 				new MyTextEncoder().encode(myType))
-			.withCauseInstanceOf(ClassNotFoundException.class);
+			.withCauseInstanceOf(ConverterNotFoundException.class);
 	}
 
 	@Test

@@ -106,7 +106,7 @@ public class UnorderedRequestExpectationManagerTests {
 		this.manager.validateRequest(createRequest(GET, "/foo"));
 		assertThatExceptionOfType(AssertionError.class).isThrownBy(() ->
 				this.manager.verify())
-			.withMessage("3 request(s) executed:\n" +
+			.withMessageContaining("3 request(s) executed:\n" +
 				"GET /bar\n" +
 				"GET /foo\n" +
 				"GET /foo\n");

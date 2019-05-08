@@ -53,7 +53,7 @@ public class BootstrapUtilsTests {
 	public void resolveTestContextBootstrapperWithDoubleMetaBootstrapWithAnnotations() {
 		BootstrapContext bootstrapContext = BootstrapTestUtils.buildBootstrapContext(
 			DoubleMetaAnnotatedBootstrapWithAnnotationClass.class, delegate);
-		assertThatIllegalArgumentException().isThrownBy(() ->
+		assertThatIllegalStateException().isThrownBy(() ->
 				resolveTestContextBootstrapper(bootstrapContext))
 			.withMessageContaining("Configuration error: found multiple declarations of @BootstrapWith")
 			.withMessageContaining(FooBootstrapper.class.getName())

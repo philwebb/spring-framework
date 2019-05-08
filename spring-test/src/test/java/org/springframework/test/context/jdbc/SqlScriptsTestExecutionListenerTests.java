@@ -71,7 +71,7 @@ public class SqlScriptsTestExecutionListenerTests {
 				listener.beforeTestMethod(testContext))
 			.withMessageContaining("Different @AliasFor mirror values")
 			.withMessageContaining("attribute 'scripts' and its alias 'value'")
-			.withMessageContaining("values of [{foo}] and [{bar}]");
+			.withMessageContaining("values of [{bar}] and [{foo}]");
 	}
 
 	@Test

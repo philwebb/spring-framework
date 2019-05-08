@@ -358,28 +358,28 @@ public class ReflectionTestUtilsTests {
 
 	@Test
 	public void invokeInitMethodBeforeAutowiring() {
-		assertThatIllegalArgumentException().isThrownBy(() ->
+		assertThatIllegalStateException().isThrownBy(() ->
 				invokeMethod(component, "init"))
 			.withMessageStartingWith("number must not be null");
 	}
 
 	@Test
 	public void invokeMethodWithIncompatibleArgumentTypes() {
-		assertThatIllegalArgumentException().isThrownBy(() ->
+		assertThatIllegalStateException().isThrownBy(() ->
 				invokeMethod(component, "subtract", "foo", 2.0))
 		.withMessageStartingWith("Method not found");
 	}
 
 	@Test
 	public void invokeMethodWithTooFewArguments() {
-		assertThatIllegalArgumentException().isThrownBy(() ->
+		assertThatIllegalStateException().isThrownBy(() ->
 				invokeMethod(component, "configure", Integer.valueOf(42)))
 			.withMessageStartingWith("Method not found");
 	}
 
 	@Test
 	public void invokeMethodWithTooManyArguments() {
-		assertThatIllegalArgumentException().isThrownBy(() ->
+		assertThatIllegalStateException().isThrownBy(() ->
 				invokeMethod(component, "configure", Integer.valueOf(42), "enigma", "baz", "quux"))
 			.withMessageStartingWith("Method not found");
 	}

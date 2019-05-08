@@ -221,7 +221,7 @@ public class ApplicationListenerMethodAdapterTests extends AbstractApplicationEv
 				SampleEvents.class, "generateRuntimeException", GenericTestEvent.class);
 		GenericTestEvent<String> event = createGenericTestEvent("fail");
 
-		assertThatIllegalArgumentException().isThrownBy(() ->
+		assertThatIllegalStateException().isThrownBy(() ->
 				invokeListener(method, event))
 			.withMessageContaining("Test exception")
 			.withNoCause();

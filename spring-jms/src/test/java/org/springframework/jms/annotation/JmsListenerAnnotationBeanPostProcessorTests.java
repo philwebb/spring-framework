@@ -168,7 +168,7 @@ public class JmsListenerAnnotationBeanPostProcessorTests {
 		assertThatExceptionOfType(BeanCreationException.class).isThrownBy(() ->
 				new AnnotationConfigApplicationContext(Config.class, ProxyConfig.class, InvalidProxyTestBean.class))
 			.withCauseInstanceOf(IllegalStateException.class)
-			.withMessage("handleIt2");
+			.withMessageContaining("handleIt2");
 	}
 
 
