@@ -89,8 +89,7 @@ public class ScriptTemplateViewTests {
 
 	@Test
 	public void missingScriptTemplateConfig() throws Exception {
-		this.thrown.expect(ApplicationContextException.class);
-		this.thrown.expectMessage(contains("ScriptTemplateConfig"));
+		this.thrown.expect(ApplicationContextException.class, contains("ScriptTemplateConfig"));
 		this.view.setApplicationContext(new StaticApplicationContext());
 	}
 

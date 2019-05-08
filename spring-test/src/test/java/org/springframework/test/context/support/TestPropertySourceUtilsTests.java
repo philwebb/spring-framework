@@ -219,8 +219,7 @@ public class TestPropertySourceUtilsTests {
 
 	@Test
 	public void convertInlinedPropertiesToMapWithNullInlinedProperties() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("inlined");
+		thrown.expect(IllegalArgumentException.class, "inlined");
 		convertInlinedPropertiesToMap((String[]) null);
 	}
 
