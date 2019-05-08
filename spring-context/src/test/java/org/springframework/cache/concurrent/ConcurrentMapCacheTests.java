@@ -28,6 +28,7 @@ import org.junit.Test;
 import org.springframework.cache.AbstractValueAdaptingCacheTests;
 import org.springframework.core.serializer.support.SerializationDelegate;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 
 /**
@@ -97,10 +98,11 @@ public class ConcurrentMapCacheTests
 	public void testNonSerializableContent() {
 		ConcurrentMapCache serializeCache = createCacheWithStoreByValue();
 
-		this.thrown.expect(IllegalArgumentException.class);
-		this.thrown.expectMessage("Failed to serialize");
-		this.thrown.expectMessage(this.cache.getClass().getName());
-		serializeCache.put(createRandomKey(), this.cache);
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				serializeCache.put(createRandomKey(), this.cache))
+			.withMessageContaining("Failed to serialize")
+			.withMessageContaining(this.cache.getClass().getName());
+
 	}
 
 	@Test
@@ -109,10 +111,10 @@ public class ConcurrentMapCacheTests
 
 		String key = createRandomKey();
 		this.nativeCache.put(key, "Some garbage");
-		this.thrown.expect(IllegalArgumentException.class);
-		this.thrown.expectMessage("Failed to deserialize");
-		this.thrown.expectMessage("Some garbage");
-		serializeCache.get(key);
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				serializeCache.get(key))
+			.withMessageContaining("Failed to deserialize")
+			.withMessageContaining("Some garbage");
 	}
 
 

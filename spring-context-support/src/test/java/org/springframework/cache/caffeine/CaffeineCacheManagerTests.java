@@ -187,8 +187,7 @@ public class CaffeineCacheManagerTests {
 		assertNotNull(value);
 		assertEquals("pong", value.get());
 
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("I only know ping");
+		thrown.expect(IllegalArgumentException.class, "I only know ping");
 		assertNull(cache1.get("foo"));
 	}
 

@@ -66,36 +66,31 @@ public class CacheSyncFailureTests {
 
 	@Test
 	public void unlessSync() {
-		this.thrown.expect(IllegalStateException.class);
-		this.thrown.expectMessage("@Cacheable(sync=true) does not support unless attribute");
+		this.thrown.expect(IllegalStateException.class, "@Cacheable(sync=true) does not support unless attribute");
 		this.simpleService.unlessSync("key");
 	}
 
 	@Test
 	public void severalCachesSync() {
-		this.thrown.expect(IllegalStateException.class);
-		this.thrown.expectMessage("@Cacheable(sync=true) only allows a single cache");
+		this.thrown.expect(IllegalStateException.class, "@Cacheable(sync=true) only allows a single cache");
 		this.simpleService.severalCachesSync("key");
 	}
 
 	@Test
 	public void severalCachesWithResolvedSync() {
-		this.thrown.expect(IllegalStateException.class);
-		this.thrown.expectMessage("@Cacheable(sync=true) only allows a single cache");
+		this.thrown.expect(IllegalStateException.class, "@Cacheable(sync=true) only allows a single cache");
 		this.simpleService.severalCachesWithResolvedSync("key");
 	}
 
 	@Test
 	public void syncWithAnotherOperation() {
-		this.thrown.expect(IllegalStateException.class);
-		this.thrown.expectMessage("@Cacheable(sync=true) cannot be combined with other cache operations");
+		this.thrown.expect(IllegalStateException.class, "@Cacheable(sync=true) cannot be combined with other cache operations");
 		this.simpleService.syncWithAnotherOperation("key");
 	}
 
 	@Test
 	public void syncWithTwoGetOperations() {
-		this.thrown.expect(IllegalStateException.class);
-		this.thrown.expectMessage("Only one @Cacheable(sync=true) entry is allowed");
+		this.thrown.expect(IllegalStateException.class, "Only one @Cacheable(sync=true) entry is allowed");
 		this.simpleService.syncWithTwoGetOperations("key");
 	}
 

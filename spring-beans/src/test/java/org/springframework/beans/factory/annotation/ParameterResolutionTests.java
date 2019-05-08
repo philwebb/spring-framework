@@ -43,13 +43,12 @@ import static org.mockito.Mockito.*;
 public class ParameterResolutionTests {
 
 	@Rule
-	public final ExpectedException exception = ExpectedException.none();
+	public final ExpectedException thrown = ExpectedException.none();
 
 
 	@Test
 	public void isAutowirablePreconditions() {
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage("Parameter must not be null");
+		thrown.expect(IllegalArgumentException.class, "Parameter must not be null");
 		ParameterResolutionDelegate.isAutowirable(null, 0);
 	}
 
@@ -98,22 +97,19 @@ public class ParameterResolutionTests {
 
 	@Test
 	public void resolveDependencyPreconditionsForParameter() {
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage("Parameter must not be null");
+		thrown.expect(IllegalArgumentException.class, "Parameter must not be null");
 		ParameterResolutionDelegate.resolveDependency(null, 0, null, mock(AutowireCapableBeanFactory.class));
 	}
 
 	@Test
 	public void resolveDependencyPreconditionsForContainingClass() throws Exception {
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage("Containing class must not be null");
+		thrown.expect(IllegalArgumentException.class, "Containing class must not be null");
 		ParameterResolutionDelegate.resolveDependency(getParameter(), 0, null, null);
 	}
 
 	@Test
 	public void resolveDependencyPreconditionsForBeanFactory() throws Exception {
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage("AutowireCapableBeanFactory must not be null");
+		thrown.expect(IllegalArgumentException.class, "AutowireCapableBeanFactory must not be null");
 		ParameterResolutionDelegate.resolveDependency(getParameter(), 0, getClass(), null);
 	}
 

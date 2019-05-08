@@ -44,29 +44,25 @@ public class ProfilesTests {
 
 	@Test
 	public void ofWhenNullThrowsException() {
-		this.thrown.expect(IllegalArgumentException.class);
-		this.thrown.expectMessage("Must specify at least one profile");
+		this.thrown.expect(IllegalArgumentException.class, "Must specify at least one profile");
 		Profiles.of((String[]) null);
 	}
 
 	@Test
 	public void ofWhenEmptyThrowsException() {
-		this.thrown.expect(IllegalArgumentException.class);
-		this.thrown.expectMessage("Must specify at least one profile");
+		this.thrown.expect(IllegalArgumentException.class, "Must specify at least one profile");
 		Profiles.of();
 	}
 
 	@Test
 	public void ofNullElement() {
-		this.thrown.expect(IllegalArgumentException.class);
-		this.thrown.expectMessage("must contain text");
+		this.thrown.expect(IllegalArgumentException.class, "must contain text");
 		Profiles.of((String) null);
 	}
 
 	@Test
 	public void ofEmptyElement() {
-		this.thrown.expect(IllegalArgumentException.class);
-		this.thrown.expectMessage("must contain text");
+		this.thrown.expect(IllegalArgumentException.class, "must contain text");
 		Profiles.of("  ");
 	}
 

@@ -62,8 +62,7 @@ public class NullPrimitiveTests {
 
 		Foo foo = (Foo) factory.getProxy();
 
-		thrown.expect(AopInvocationException.class);
-		thrown.expectMessage("Foo.getValue()");
+		thrown.expect(AopInvocationException.class, "Foo.getValue()");
 		assertEquals(0, foo.getValue());
 	}
 
@@ -87,9 +86,8 @@ public class NullPrimitiveTests {
 
 		Bar bar = (Bar) factory.getProxy();
 
-		thrown.expect(AopInvocationException.class);
-		thrown.expectMessage("Bar.getValue()");
-		assertEquals(0, bar.getValue());
+		thrown.expect(AopInvocationException.class, "Bar.getValue()");
+		bar.getValue();
 	}
 
 }

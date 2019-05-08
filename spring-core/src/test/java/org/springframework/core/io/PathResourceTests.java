@@ -77,22 +77,19 @@ public class PathResourceTests {
 
 	@Test
 	public void nullPath() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("Path must not be null");
+		thrown.expect(IllegalArgumentException.class, "Path must not be null");
 		new PathResource((Path) null);
 	}
 
 	@Test
 	public void nullPathString() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("Path must not be null");
+		thrown.expect(IllegalArgumentException.class, "Path must not be null");
 		new PathResource((String) null);
 	}
 
 	@Test
 	public void nullUri() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("URI must not be null");
+		thrown.expect(IllegalArgumentException.class, "URI must not be null");
 		new PathResource((URI) null);
 	}
 

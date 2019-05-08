@@ -66,6 +66,7 @@ import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -162,10 +163,10 @@ public class AnnotationDrivenEventListenerTests {
 		failingContext.register(BasicConfiguration.class,
 				InvalidMethodSignatureEventListener.class);
 
-		this.thrown.expect(BeanInitializationException.class);
-		this.thrown.expectMessage(InvalidMethodSignatureEventListener.class.getName());
-		this.thrown.expectMessage("cannotBeCalled");
-		failingContext.refresh();
+		assertThatExceptionOfType(BeanInitializationException.class).isThrownBy(() ->
+				failingContext.refresh())
+			.withMessageContaining(InvalidMethodSignatureEventListener.class.getName())
+			.withMessageContaining("cannotBeCalled");
 	}
 
 	@Test

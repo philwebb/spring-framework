@@ -175,8 +175,7 @@ public class DateFormatterTests {
 	public void shouldThrowOnUnsupportedStylePattern() throws Exception {
 		DateFormatter formatter = new DateFormatter();
 		formatter.setStylePattern("OO");
-		thrown.expect(IllegalStateException.class);
-		thrown.expectMessage("Unsupported style pattern 'OO'");
+		thrown.expect(IllegalStateException.class, "Unsupported style pattern 'OO'");
 		formatter.parse("2009", Locale.US);
 	}
 

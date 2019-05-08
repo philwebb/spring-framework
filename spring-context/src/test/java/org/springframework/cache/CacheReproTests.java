@@ -129,8 +129,7 @@ public class CacheReproTests {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Spr13081Config.class);
 		Spr13081Service bean = context.getBean(Spr13081Service.class);
 
-		this.thrown.expect(IllegalStateException.class);
-		this.thrown.expectMessage(MyCacheResolver.class.getName());
+		this.thrown.expect(IllegalStateException.class, MyCacheResolver.class.getName());
 		bean.getSimple(null);
 	}
 
