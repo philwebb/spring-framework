@@ -34,9 +34,6 @@ import static org.junit.Assert.*;
  */
 public class ComparableComparatorTests {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 	@Test
 	public void testComparableComparator() {
 		Comparator<String> c = new ComparableComparator<>();

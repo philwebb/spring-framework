@@ -46,9 +46,6 @@ public class DelegatingSmartContextLoaderTests {
 
 	private final DelegatingSmartContextLoader loader = new DelegatingSmartContextLoader();
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	private static void assertEmpty(Object[] array) {
 		assertTrue(ObjectUtils.isEmpty(array));

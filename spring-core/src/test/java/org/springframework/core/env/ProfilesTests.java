@@ -40,9 +40,6 @@ import static org.junit.Assert.*;
  */
 public class ProfilesTests {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 	@Test
 	public void ofWhenNullThrowsException() {
 		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->

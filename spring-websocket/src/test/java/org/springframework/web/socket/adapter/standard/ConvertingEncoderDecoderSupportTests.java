@@ -56,9 +56,6 @@ public class ConvertingEncoderDecoderSupportTests {
 	private static final ByteBuffer CONVERTED_BYTES = ByteBuffer.wrap("~test".getBytes());
 
 
-	@Rule
-	public ExpectedException thown = ExpectedException.none();
-
 	private WebApplicationContext applicationContext;
 
 	private MyType myType = new MyType("test");

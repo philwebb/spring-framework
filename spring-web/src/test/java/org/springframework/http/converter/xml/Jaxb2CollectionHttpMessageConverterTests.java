@@ -58,9 +58,6 @@ public class Jaxb2CollectionHttpMessageConverterTests {
 
 	private Type typeSetType;
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@Before
 	public void setup() {

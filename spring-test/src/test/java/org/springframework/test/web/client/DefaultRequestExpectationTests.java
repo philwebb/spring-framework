@@ -39,9 +39,6 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
  */
 public class DefaultRequestExpectationTests {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@Test
 	public void match() throws Exception {

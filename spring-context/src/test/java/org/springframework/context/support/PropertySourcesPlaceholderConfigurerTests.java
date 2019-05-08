@@ -48,9 +48,6 @@ import static org.springframework.beans.factory.support.BeanDefinitionBuilder.*;
  */
 public class PropertySourcesPlaceholderConfigurerTests {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@Test
 	public void replacementFromEnvironmentProperties() {

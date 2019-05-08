@@ -30,9 +30,6 @@ import static org.assertj.core.api.Assertions.*;
 public abstract class AbstractValueAdaptingCacheTests<T extends AbstractValueAdaptingCache>
 		extends AbstractCacheTests<T>  {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 	protected final static String CACHE_NAME_NO_NULL = "testCacheNoNull";
 
 	protected abstract T getCache(boolean allowNull);

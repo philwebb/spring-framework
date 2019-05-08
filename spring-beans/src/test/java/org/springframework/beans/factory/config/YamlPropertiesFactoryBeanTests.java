@@ -44,9 +44,6 @@ import static org.hamcrest.Matchers.*;
  */
 public class YamlPropertiesFactoryBeanTests {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@Test
 	public void testLoadResource() {

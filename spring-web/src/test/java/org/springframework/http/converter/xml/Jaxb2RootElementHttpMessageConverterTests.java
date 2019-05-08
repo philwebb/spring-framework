@@ -64,9 +64,6 @@ public class Jaxb2RootElementHttpMessageConverterTests {
 
 	private RootElement rootElementCglib;
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@Before
 	public void setup() {

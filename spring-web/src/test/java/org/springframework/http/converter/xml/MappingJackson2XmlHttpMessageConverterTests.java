@@ -47,9 +47,6 @@ public class MappingJackson2XmlHttpMessageConverterTests {
 
 	private final MappingJackson2XmlHttpMessageConverter converter = new MappingJackson2XmlHttpMessageConverter();
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@Test
 	public void canRead() {

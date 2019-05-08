@@ -34,9 +34,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 @Deprecated
 public class CompoundComparatorTests {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 	@Test
 	public void shouldNeedAtLeastOneComparator() {
 		Comparator<String> c = new CompoundComparator<>();

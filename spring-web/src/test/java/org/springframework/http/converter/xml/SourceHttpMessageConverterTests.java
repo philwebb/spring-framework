@@ -65,9 +65,6 @@ public class SourceHttpMessageConverterTests {
 
 	private String bodyExternal;
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@Before
 	public void setup() throws IOException {

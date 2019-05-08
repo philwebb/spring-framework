@@ -51,9 +51,6 @@ public class WebConnectionHtmlUnitDriverTests {
 	@Mock
 	private WebConnection connection;
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 	@Before
 	public void setup() throws Exception {
 		when(this.connection.getResponse(any(WebRequest.class))).thenThrow(new IOException(""));

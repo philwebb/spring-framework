@@ -46,9 +46,6 @@ public class MergedAnnotationsRepeatableAnnotationTests {
 
 	// See SPR-13973
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 	@Test
 	public void inheritedAnnotationsWhenNonRepeatableThrowsException() {
 		assertThatIllegalArgumentException().isThrownBy(

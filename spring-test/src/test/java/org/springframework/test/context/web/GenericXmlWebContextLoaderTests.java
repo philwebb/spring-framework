@@ -33,9 +33,6 @@ public class GenericXmlWebContextLoaderTests {
 
 	private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@Test
 	public void configMustNotContainAnnotatedClasses() throws Exception {

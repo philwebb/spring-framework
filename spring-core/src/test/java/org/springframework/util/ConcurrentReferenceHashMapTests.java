@@ -56,9 +56,6 @@ public class ConcurrentReferenceHashMapTests {
 	private static final Comparator<? super String> NULL_SAFE_STRING_SORT = new NullSafeComparator<String>(
 			new ComparableComparator<String>(), true);
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 	private TestWeakConcurrentCache<Integer, String> map = new TestWeakConcurrentCache<>();
 
 

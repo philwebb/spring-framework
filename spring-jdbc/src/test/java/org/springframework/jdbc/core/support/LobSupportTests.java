@@ -40,9 +40,6 @@ import static org.mockito.BDDMockito.*;
  */
 public class LobSupportTests {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 	@Test
 	public void testCreatingPreparedStatementCallback() throws SQLException {
 		LobHandler handler = mock(LobHandler.class);

@@ -84,9 +84,6 @@ public class SqlQueryTests  {
 	private static final String[] COLUMN_NAMES = new String[] {"id", "forename"};
 	private static final int[] COLUMN_TYPES = new int[] {Types.INTEGER, Types.VARCHAR};
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 	private Connection connection;
 	private DataSource dataSource;
 	private PreparedStatement preparedStatement;

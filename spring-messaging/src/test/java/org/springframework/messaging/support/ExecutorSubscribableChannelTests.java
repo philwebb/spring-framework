@@ -46,9 +46,6 @@ import static org.mockito.BDDMockito.*;
  */
 public class ExecutorSubscribableChannelTests {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 	private ExecutorSubscribableChannel channel = new ExecutorSubscribableChannel();
 
 	@Mock

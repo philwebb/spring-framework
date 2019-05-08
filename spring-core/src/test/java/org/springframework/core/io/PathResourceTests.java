@@ -70,9 +70,6 @@ public class PathResourceTests {
 
 
 	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
-	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
 

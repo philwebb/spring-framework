@@ -40,9 +40,6 @@ import static org.mockito.Mockito.*;
  */
 public class BasicAuthorizationInterceptorTests {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 	@Test
 	public void createWhenUsernameContainsColonShouldThrowException() {
 		assertThatExceptionOfType((Class<? extends Throwable>) IllegalArgumentException.class).isThrownBy(() ->

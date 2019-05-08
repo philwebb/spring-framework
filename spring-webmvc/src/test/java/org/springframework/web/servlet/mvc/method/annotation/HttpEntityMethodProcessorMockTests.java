@@ -83,9 +83,6 @@ public class HttpEntityMethodProcessorMockTests {
 	private static final ZoneId GMT = ZoneId.of("GMT");
 
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 	private HttpEntityMethodProcessor processor;
 
 	private HttpMessageConverter<String> stringHttpMessageConverter;

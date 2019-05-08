@@ -49,9 +49,6 @@ import static org.springframework.web.reactive.result.method.RequestMappingInfo.
  */
 public class RequestMappingInfoTests {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 	// TODO: CORS pre-flight (see @Ignore)
 
 

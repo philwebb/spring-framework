@@ -34,9 +34,6 @@ public class AnnotationConfigWebContextLoaderTests {
 	private static final String[] EMPTY_STRING_ARRAY = new String[0];
 	private static final Class<?>[] EMPTY_CLASS_ARRAY = new Class<?>[0];
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@Test
 	public void configMustNotContainLocations() throws Exception {

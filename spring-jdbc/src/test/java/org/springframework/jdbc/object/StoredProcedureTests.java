@@ -64,9 +64,6 @@ import static org.mockito.BDDMockito.*;
  */
 public class StoredProcedureTests {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 	private DataSource dataSource;
 	private Connection connection;
 	private CallableStatement callableStatement;

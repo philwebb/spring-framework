@@ -72,9 +72,6 @@ public class CrossOriginTests {
 
 	private final MockHttpServletRequest request = new MockHttpServletRequest();
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@Before
 	@SuppressWarnings("resource")

@@ -44,9 +44,6 @@ public class SimpleRequestExpectationManagerTests {
 
 	private final SimpleRequestExpectationManager manager = new SimpleRequestExpectationManager();
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@Test
 	public void unexpectedRequest() throws Exception {

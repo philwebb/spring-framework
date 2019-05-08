@@ -42,9 +42,6 @@ public class UnorderedRequestExpectationManagerTests {
 
 	private UnorderedRequestExpectationManager manager = new UnorderedRequestExpectationManager();
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@Test
 	public void unexpectedRequest() throws Exception {

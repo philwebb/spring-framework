@@ -56,9 +56,6 @@ public class SimpleJdbcCallTests {
 
 	private CallableStatement callableStatement;
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@Before
 	public void setUp() throws Exception {

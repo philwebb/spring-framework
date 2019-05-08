@@ -69,9 +69,6 @@ public class SqlUpdateTests {
 	private static final String INSERT_GENERATE_KEYS =
 			"insert into show (name) values(?)";
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 	private DataSource dataSource;
 
 	private Connection connection;

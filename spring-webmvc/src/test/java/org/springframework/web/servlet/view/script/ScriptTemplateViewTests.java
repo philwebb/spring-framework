@@ -62,9 +62,6 @@ public class ScriptTemplateViewTests {
 
 	private StaticWebApplicationContext wac;
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@Before
 	public void setup() {

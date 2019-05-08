@@ -59,9 +59,6 @@ public class TransactionalTestExecutionListenerTests {
 
 	private final TestContext testContext = mock(TestContext.class);
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@After
 	public void cleanUpThreadLocalStateForSubsequentTestClassesInSuite() {

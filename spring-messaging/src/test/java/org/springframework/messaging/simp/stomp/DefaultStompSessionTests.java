@@ -73,9 +73,6 @@ public class DefaultStompSessionTests {
 	@Captor
 	private ArgumentCaptor<Message<byte[]>> messageCaptor;
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@Before
 	public void setUp() {

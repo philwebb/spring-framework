@@ -85,9 +85,6 @@ public class JdbcTemplateTests {
 
 	private CallableStatement callableStatement;
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@Before
 	public void setup() throws Exception {

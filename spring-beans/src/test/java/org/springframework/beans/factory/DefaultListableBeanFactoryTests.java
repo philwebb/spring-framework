@@ -127,9 +127,6 @@ public class DefaultListableBeanFactoryTests {
 	private static final Log factoryLog = LogFactory.getLog(DefaultListableBeanFactory.class);
 
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@Test
 	public void testUnreferencedSingletonWasInstantiated() {

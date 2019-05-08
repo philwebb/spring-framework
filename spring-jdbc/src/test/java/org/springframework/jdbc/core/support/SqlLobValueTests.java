@@ -59,9 +59,6 @@ import static org.mockito.BDDMockito.*;
  */
 public class SqlLobValueTests  {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 	private PreparedStatement preparedStatement;
 	private LobHandler handler;
 	private LobCreator creator;

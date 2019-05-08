@@ -44,9 +44,6 @@ public class SimpAttributesContextHolderTests {
 
 	private SimpAttributes simpAttributes;
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@Before
 	public void setUp() {

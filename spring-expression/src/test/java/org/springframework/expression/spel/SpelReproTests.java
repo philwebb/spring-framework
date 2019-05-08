@@ -78,9 +78,6 @@ import static org.junit.Assert.*;
  */
 public class SpelReproTests extends AbstractExpressionTests {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@Test
 	public void NPE_SPR5661() {

@@ -40,9 +40,6 @@ public class YamlProcessorTests {
 
 	private final YamlProcessor processor = new YamlProcessor() {};
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@Test
 	public void arrayConvertedToIndexedBeanReference() {

@@ -53,9 +53,6 @@ import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseFacto
  */
 public class JdbcNamespaceIntegrationTests {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@Test
 	public void createEmbeddedDatabase() throws Exception {

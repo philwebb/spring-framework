@@ -46,9 +46,6 @@ public class DateFormatterTests {
 
 	private static final TimeZone UTC = TimeZone.getTimeZone("UTC");
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@Test
 	public void shouldPrintAndParseDefault() throws Exception {

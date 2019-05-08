@@ -46,9 +46,6 @@ public class SimpleJdbcInsertTests {
 
 	private DataSource dataSource;
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@Before
 	public void setUp() throws Exception {

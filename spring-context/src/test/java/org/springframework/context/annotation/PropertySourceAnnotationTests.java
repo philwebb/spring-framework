@@ -54,9 +54,6 @@ import static org.junit.Assert.*;
  */
 public class PropertySourceAnnotationTests {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@Test
 	public void withExplicitName() {

@@ -34,9 +34,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
  */
 public class NullPrimitiveTests {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 	static interface Foo {
 		int getValue();
 	}

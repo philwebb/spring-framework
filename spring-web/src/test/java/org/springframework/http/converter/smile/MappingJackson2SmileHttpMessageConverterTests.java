@@ -40,9 +40,6 @@ public class MappingJackson2SmileHttpMessageConverterTests {
 	private final MappingJackson2SmileHttpMessageConverter converter = new MappingJackson2SmileHttpMessageConverter();
 	private final ObjectMapper mapper = new ObjectMapper(new SmileFactory());
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@Test
 	public void canRead() {

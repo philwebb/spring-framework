@@ -77,9 +77,6 @@ public class NamedParameterJdbcTemplateTests {
 	private static final String[] COLUMN_NAMES = new String[] {"id", "forename"};
 
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 	private Connection connection;
 
 	private DataSource dataSource;

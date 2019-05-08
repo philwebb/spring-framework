@@ -53,9 +53,6 @@ public class TestPropertySourceUtilsTests {
 	private static final String[] FOO_LOCATIONS = new String[] {"classpath:/foo.properties"};
 
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@Test
 	public void emptyAnnotation() {

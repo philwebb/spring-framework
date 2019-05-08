@@ -43,9 +43,6 @@ public class SimpAttributesTests {
 
 	private Map<String, Object> map;
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@Before
 	public void setup() {

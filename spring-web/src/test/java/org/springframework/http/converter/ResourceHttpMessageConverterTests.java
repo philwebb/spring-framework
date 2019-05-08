@@ -52,9 +52,6 @@ public class ResourceHttpMessageConverterTests {
 
 	private final ResourceHttpMessageConverter converter = new ResourceHttpMessageConverter();
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@Test
 	public void canReadResource() {

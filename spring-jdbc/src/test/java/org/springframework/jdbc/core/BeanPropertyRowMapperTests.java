@@ -39,9 +39,6 @@ import static org.junit.Assert.*;
  */
 public class BeanPropertyRowMapperTests extends AbstractRowMapperTests {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 
 	@Test
 	@SuppressWarnings({ "unchecked", "rawtypes" })

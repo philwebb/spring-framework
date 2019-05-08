@@ -71,9 +71,6 @@ import static org.mockito.BDDMockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class ResolvableTypeTests {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 	@Captor
 	private ArgumentCaptor<TypeVariable<?>> typeVariableCaptor;
 

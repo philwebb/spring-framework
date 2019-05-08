@@ -48,9 +48,6 @@ import static org.mockito.BDDMockito.*;
  */
 public class JdbcTemplateQueryTests {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 	private Connection connection;
 
 	private DataSource dataSource;
