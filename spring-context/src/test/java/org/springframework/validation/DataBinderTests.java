@@ -80,7 +80,7 @@ import static org.junit.Assert.*;
 public class DataBinderTests {
 
 	@Rule
-	public final ExpectedException expectedException = ExpectedException.none();
+	public final ExpectedException thrown = ExpectedException.none();
 
 
 	@Test
@@ -2022,8 +2022,7 @@ public class DataBinderTests {
 
 	@Test  // SPR-14888
 	public void testSetAutoGrowCollectionLimitAfterInitialization() {
-		expectedException.expect(IllegalStateException.class);
-		expectedException.expectMessage("DataBinder is already initialized - call setAutoGrowCollectionLimit before other configuration methods");
+		thrown.expect(IllegalStateException.class, "DataBinder is already initialized - call setAutoGrowCollectionLimit before other configuration methods");
 
 		DataBinder binder = new DataBinder(new BeanWithIntegerList());
 		binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
@@ -2092,8 +2091,7 @@ public class DataBinderTests {
 
 	@Test  // SPR-15009
 	public void testCallSetMessageCodesResolverTwice() {
-		expectedException.expect(IllegalStateException.class);
-		expectedException.expectMessage("DataBinder is already initialized with MessageCodesResolver");
+		thrown.expect(IllegalStateException.class, "DataBinder is already initialized with MessageCodesResolver");
 
 		TestBean testBean = new TestBean();
 		DataBinder binder = new DataBinder(testBean, "testBean");

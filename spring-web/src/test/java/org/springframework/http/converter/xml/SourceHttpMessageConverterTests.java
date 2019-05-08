@@ -48,6 +48,7 @@ import org.springframework.http.MockHttpOutputMessage;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.util.FileCopyUtils;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 import static org.xmlunit.matchers.CompareMatcher.*;
@@ -261,9 +262,9 @@ public class SourceHttpMessageConverterTests {
 		streamReader.next();
 		String s = streamReader.getLocalName();
 		assertEquals("root", s);
-
-		this.thrown.expectMessage("\"lol9\"");
-		s = streamReader.getElementText();
+		assertThatExceptionOfType(XMLStreamException.class).isThrownBy(() ->
+				streamReader.getElementText())
+			.withMessageContaining("\"lol9\"");
 	}
 
 	@Test

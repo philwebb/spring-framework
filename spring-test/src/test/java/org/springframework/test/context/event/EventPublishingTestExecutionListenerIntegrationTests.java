@@ -53,6 +53,7 @@ import org.springframework.util.ReflectionUtils;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -132,16 +133,10 @@ public class EventPublishingTestExecutionListenerIntegrationTests {
 	@Test
 	public void beforeTestMethodAnnotationWithFailingEventListener() throws Exception {
 		Method method = ReflectionUtils.findMethod(ExampleTestCase.class, "testWithFailingEventListener");
-
-		exception.expect(RuntimeException.class);
-		exception.expectMessage("Boom!");
-
-		try {
-			testContextManager.beforeTestMethod(testInstance, method);
-		}
-		finally {
-			verify(listener, only()).beforeTestMethod(testContext);
-		}
+		assertThatExceptionOfType(RuntimeException.class).isThrownBy(() ->
+				testContextManager.beforeTestMethod(testInstance, method))
+			.withMessageContaining("Boom!");
+		verify(listener, only()).beforeTestMethod(testContext);
 	}
 
 	/**

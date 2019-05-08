@@ -32,7 +32,7 @@ import static org.junit.Assert.*;
 public class MockCookieTests {
 
 	@Rule
-	public final ExpectedException exception = ExpectedException.none();
+	public final ExpectedException thrown = ExpectedException.none();
 
 
 	@Test
@@ -86,15 +86,13 @@ public class MockCookieTests {
 
 	@Test
 	public void parseNullHeader() {
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage("Set-Cookie header must not be null");
+		thrown.expect(IllegalArgumentException.class, "Set-Cookie header must not be null");
 		MockCookie.parse(null);
 	}
 
 	@Test
 	public void parseInvalidHeader() {
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage("Invalid Set-Cookie header 'BOOM'");
+		thrown.expect(IllegalArgumentException.class, "Invalid Set-Cookie header 'BOOM'");
 		MockCookie.parse("BOOM");
 	}
 
@@ -102,8 +100,7 @@ public class MockCookieTests {
 	public void parseInvalidAttribute() {
 		String header = "SESSION=123; Path=";
 
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage("No value in attribute 'Path' for Set-Cookie header '" + header + "'");
+		thrown.expect(IllegalArgumentException.class, "No value in attribute 'Path' for Set-Cookie header '" + header + "'");
 		MockCookie.parse(header);
 	}
 

@@ -125,29 +125,25 @@ public class TestPropertySourceUtilsTests {
 
 	@Test
 	public void addPropertiesFilesToEnvironmentWithNullContext() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("must not be null");
+		thrown.expect(IllegalArgumentException.class, "must not be null");
 		addPropertiesFilesToEnvironment((ConfigurableApplicationContext) null, FOO_LOCATIONS);
 	}
 
 	@Test
 	public void addPropertiesFilesToEnvironmentWithContextAndNullLocations() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("must not be null");
+		thrown.expect(IllegalArgumentException.class, "must not be null");
 		addPropertiesFilesToEnvironment(mock(ConfigurableApplicationContext.class), (String[]) null);
 	}
 
 	@Test
 	public void addPropertiesFilesToEnvironmentWithNullEnvironment() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("must not be null");
+		thrown.expect(IllegalArgumentException.class, "must not be null");
 		addPropertiesFilesToEnvironment((ConfigurableEnvironment) null, mock(ResourceLoader.class), FOO_LOCATIONS);
 	}
 
 	@Test
 	public void addPropertiesFilesToEnvironmentWithEnvironmentAndNullLocations() {
-		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("must not be null");
+		thrown.expect(IllegalArgumentException.class, "must not be null");
 		addPropertiesFilesToEnvironment(new MockEnvironment(), mock(ResourceLoader.class), (String[]) null);
 	}
 

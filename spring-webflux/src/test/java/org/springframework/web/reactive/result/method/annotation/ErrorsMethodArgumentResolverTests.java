@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.method.ResolvableMethod;
 import org.springframework.web.reactive.BindingContext;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 
 /**
@@ -107,22 +108,22 @@ public class ErrorsMethodArgumentResolverTests {
 
 	@Test
 	public void resolveWithMonoOnBindingResultAndModelAttribute() {
-		this.expectedException.expectMessage("An @ModelAttribute and an Errors/BindingResult argument " +
-				"cannot both be declared with an async type wrapper.");
-
 		MethodParameter parameter = this.testMethod.arg(BindingResult.class);
-		this.resolver.resolveArgument(parameter, this.bindingContext, this.exchange)
-				.block(Duration.ofMillis(5000));
+		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
+				this.resolver.resolveArgument(parameter, this.bindingContext, this.exchange)
+						.block(Duration.ofMillis(5000)))
+			.withMessage("An @ModelAttribute and an Errors/BindingResult argument " +
+					"cannot both be declared with an async type wrapper.");
 	}
 
 	@Test  // SPR-16187
 	public void resolveWithBindingResultNotFound() {
-		this.expectedException.expectMessage("An Errors/BindingResult argument is expected " +
-				"immediately after the @ModelAttribute argument");
-
 		MethodParameter parameter = this.testMethod.arg(Errors.class);
-		this.resolver.resolveArgument(parameter, this.bindingContext, this.exchange)
-				.block(Duration.ofMillis(5000));
+		assertThatExceptionOfType(IllegalStateException.class).isThrownBy(() ->
+				this.resolver.resolveArgument(parameter, this.bindingContext, this.exchange)
+						.block(Duration.ofMillis(5000)))
+			.withMessage("An Errors/BindingResult argument is expected " +
+					"immediately after the @ModelAttribute argument");
 	}
 
 

@@ -35,7 +35,7 @@ import static org.junit.Assert.*;
 public class SpringFactoriesLoaderTests {
 
 	@Rule
-	public final ExpectedException exception = ExpectedException.none();
+	public final ExpectedException thrown = ExpectedException.none();
 
 	@Test
 	public void loadFactoriesInCorrectOrder() {
@@ -55,8 +55,7 @@ public class SpringFactoriesLoaderTests {
 
 	@Test
 	public void attemptToLoadFactoryOfIncompatibleType() {
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage("Unable to instantiate factory class [org.springframework.core.io.support.MyDummyFactory1] for factory type [java.lang.String]");
+		thrown.expect(IllegalArgumentException.class, "Unable to instantiate factory class [org.springframework.core.io.support.MyDummyFactory1] for factory type [java.lang.String]");
 
 		SpringFactoriesLoader.loadFactories(String.class, null);
 	}

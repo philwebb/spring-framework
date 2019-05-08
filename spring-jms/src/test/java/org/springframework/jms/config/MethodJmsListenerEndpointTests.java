@@ -389,10 +389,10 @@ public class MethodJmsListenerEndpointTests {
 
 	@Test
 	public void invalidSendTo() {
-		this.thrown.expect(IllegalStateException.class);
-		this.thrown.expectMessage("firstDestination");
-		this.thrown.expectMessage("secondDestination");
-		createDefaultInstance(String.class);
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				createDefaultInstance(String.class))
+			.withMessageContaining("firstDestination")
+			.withMessageContaining("secondDestination");
 	}
 
 	@Test

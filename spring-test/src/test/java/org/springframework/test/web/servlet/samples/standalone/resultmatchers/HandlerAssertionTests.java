@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -55,12 +56,11 @@ public class HandlerAssertionTests {
 
 	@Test
 	public void methodCallOnNonMock() throws Exception {
-		exception.expect(AssertionError.class);
-		exception.expectMessage("The supplied object [bogus] is not an instance of");
-		exception.expectMessage(MvcUriComponentsBuilder.MethodInvocationInfo.class.getName());
-		exception.expectMessage("Ensure that you invoke the handler method via MvcUriComponentsBuilder.on()");
-
-		this.mockMvc.perform(get("/")).andExpect(handler().methodCall("bogus"));
+		assertThatExceptionOfType(AssertionError.class).isThrownBy(() ->
+				this.mockMvc.perform(get("/")).andExpect(handler().methodCall("bogus")))
+			.withMessageContaining("The supplied object [bogus] is not an instance of")
+			.withMessageContaining(MvcUriComponentsBuilder.MethodInvocationInfo.class.getName())
+			.withMessageContaining("Ensure that you invoke the handler method via MvcUriComponentsBuilder.on()");
 	}
 
 	@Test

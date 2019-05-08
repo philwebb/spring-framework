@@ -148,8 +148,7 @@ public class DefaultMessageHandlerMethodFactoryTests {
 		InvocableHandlerMethod invocableHandlerMethod2 =
 				createInvocableHandlerMethod(instance, "simpleString", String.class);
 
-		thrown.expect(MethodArgumentResolutionException.class);
-		thrown.expectMessage("No suitable resolver");
+		thrown.expect(MethodArgumentResolutionException.class, "No suitable resolver");
 		invocableHandlerMethod2.invoke(message);
 	}
 

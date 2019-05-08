@@ -142,8 +142,7 @@ public class PayloadMethodArgumentResolverTests {
 	public void resolveNonConvertibleParam() throws Exception {
 		Message<?> notEmptyMessage = MessageBuilder.withPayload(123).build();
 
-		thrown.expect(MessageConversionException.class);
-		thrown.expectMessage("Cannot convert");
+		thrown.expect(MessageConversionException.class, "Cannot convert");
 		this.resolver.resolveArgument(this.paramAnnotatedRequired, notEmptyMessage);
 	}
 
@@ -193,8 +192,7 @@ public class PayloadMethodArgumentResolverTests {
 		// See testValidator()
 		Message<?> message = MessageBuilder.withPayload("invalidValue".getBytes()).build();
 
-		thrown.expect(MethodArgumentNotValidException.class);
-		thrown.expectMessage("invalid value");
+		thrown.expect(MethodArgumentNotValidException.class, "invalid value");
 		assertEquals("invalidValue", this.resolver.resolveArgument(this.paramValidatedNotAnnotated, message));
 	}
 

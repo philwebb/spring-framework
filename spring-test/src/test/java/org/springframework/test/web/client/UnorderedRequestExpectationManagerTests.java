@@ -26,6 +26,7 @@ import temp.ExpectedException;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpRequest;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 import static org.springframework.http.HttpMethod.*;
 import static org.springframework.test.web.client.ExpectedCount.*;
@@ -87,35 +88,33 @@ public class UnorderedRequestExpectationManagerTests {
 	public void repeatedRequestsTooMany() throws Exception {
 		this.manager.expectRequest(max(2), requestTo("/foo")).andExpect(method(GET)).andRespond(withSuccess());
 		this.manager.expectRequest(max(2), requestTo("/bar")).andExpect(method(GET)).andRespond(withSuccess());
-
-		this.thrown.expectMessage("No further requests expected: HTTP GET /foo\n" +
+		this.manager.validateRequest(createRequest(GET, "/bar"));
+		this.manager.validateRequest(createRequest(GET, "/foo"));
+		this.manager.validateRequest(createRequest(GET, "/bar"));
+		this.manager.validateRequest(createRequest(GET, "/foo"));
+		assertThatExceptionOfType(AssertionError.class).isThrownBy(() ->
+				this.manager.validateRequest(createRequest(GET, "/foo")))
+			.withMessage("No further requests expected: HTTP GET /foo\n" +
 				"4 request(s) executed:\n" +
 				"GET /bar\n" +
 				"GET /foo\n" +
 				"GET /bar\n" +
 				"GET /foo\n");
-
-		this.manager.validateRequest(createRequest(GET, "/bar"));
-		this.manager.validateRequest(createRequest(GET, "/foo"));
-		this.manager.validateRequest(createRequest(GET, "/bar"));
-		this.manager.validateRequest(createRequest(GET, "/foo"));
-		this.manager.validateRequest(createRequest(GET, "/foo"));
 	}
 
 	@Test
 	public void repeatedRequestsTooFew() throws Exception {
 		this.manager.expectRequest(min(2), requestTo("/foo")).andExpect(method(GET)).andRespond(withSuccess());
 		this.manager.expectRequest(min(2), requestTo("/bar")).andExpect(method(GET)).andRespond(withSuccess());
-
-		this.thrown.expectMessage("3 request(s) executed:\n" +
-				"GET /bar\n" +
-				"GET /foo\n" +
-				"GET /foo\n");
-
 		this.manager.validateRequest(createRequest(GET, "/bar"));
 		this.manager.validateRequest(createRequest(GET, "/foo"));
 		this.manager.validateRequest(createRequest(GET, "/foo"));
-		this.manager.verify();
+		assertThatExceptionOfType(AssertionError.class).isThrownBy(() ->
+				this.manager.verify())
+			.withMessage("3 request(s) executed:\n" +
+				"GET /bar\n" +
+				"GET /foo\n" +
+				"GET /foo\n");
 	}
 
 

@@ -45,7 +45,7 @@ public class AnnotationAttributesTests {
 	private AnnotationAttributes attributes = new AnnotationAttributes();
 
 	@Rule
-	public final ExpectedException exception = ExpectedException.none();
+	public final ExpectedException thrown = ExpectedException.none();
 
 
 	@Test
@@ -133,22 +133,19 @@ public class AnnotationAttributesTests {
 
 	@Test
 	public void getEnumWithNullAttributeName() {
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage("must not be null or empty");
+		thrown.expect(IllegalArgumentException.class, "must not be null or empty");
 		attributes.getEnum(null);
 	}
 
 	@Test
 	public void getEnumWithEmptyAttributeName() {
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage("must not be null or empty");
+		thrown.expect(IllegalArgumentException.class, "must not be null or empty");
 		attributes.getEnum("");
 	}
 
 	@Test
 	public void getEnumWithUnknownAttributeName() {
-		exception.expect(IllegalArgumentException.class);
-		exception.expectMessage("Attribute 'bogus' not found");
+		thrown.expect(IllegalArgumentException.class, "Attribute 'bogus' not found");
 		attributes.getEnum("bogus");
 	}
 

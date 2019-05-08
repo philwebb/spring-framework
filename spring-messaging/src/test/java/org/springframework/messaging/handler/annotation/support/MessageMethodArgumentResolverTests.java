@@ -33,6 +33,7 @@ import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.messaging.support.MessageBuilder;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -112,9 +113,10 @@ public class MessageMethodArgumentResolverTests {
 		MethodParameter parameter = new MethodParameter(this.method, 1);
 
 		assertTrue(this.resolver.supportsParameter(parameter));
-		thrown.expect(MessageConversionException.class, Integer.class.getName());
-		thrown.expectMessage(String.class.getName());
-		this.resolver.resolveArgument(parameter, message);
+		assertThatExceptionOfType(MessageConversionException.class).isThrownBy(() ->
+				this.resolver.resolveArgument(parameter, message))
+			.withMessageContaining(Integer.class.getName())
+			.withMessageContaining(String.class.getName());
 	}
 
 	@Test
@@ -123,10 +125,11 @@ public class MessageMethodArgumentResolverTests {
 		MethodParameter parameter = new MethodParameter(this.method, 1);
 
 		assertTrue(this.resolver.supportsParameter(parameter));
-		thrown.expect(MessageConversionException.class, "payload is empty");
-		thrown.expectMessage(Integer.class.getName());
-		thrown.expectMessage(String.class.getName());
-		this.resolver.resolveArgument(parameter, message);
+		assertThatExceptionOfType(MessageConversionException.class).isThrownBy(() ->
+				this.resolver.resolveArgument(parameter, message))
+			.withMessageContaining("payload is empty")
+			.withMessageContaining(Integer.class.getName())
+			.withMessageContaining(String.class.getName());
 	}
 
 	@Test
@@ -144,9 +147,10 @@ public class MessageMethodArgumentResolverTests {
 		MethodParameter parameter = new MethodParameter(this.method, 3);
 
 		assertTrue(this.resolver.supportsParameter(parameter));
-		thrown.expect(MessageConversionException.class, Number.class.getName());
-		thrown.expectMessage(Locale.class.getName());
-		this.resolver.resolveArgument(parameter, message);
+		assertThatExceptionOfType(MessageConversionException.class).isThrownBy(() ->
+				this.resolver.resolveArgument(parameter, message))
+			.withMessageContaining(Number.class.getName())
+			.withMessageContaining(Locale.class.getName());
 	}
 
 	@Test
@@ -174,9 +178,10 @@ public class MessageMethodArgumentResolverTests {
 		MethodParameter parameter = new MethodParameter(this.method, 4);
 
 		assertTrue(this.resolver.supportsParameter(parameter));
-		thrown.expect(MethodArgumentTypeMismatchException.class, ErrorMessage.class.getName());
-		thrown.expectMessage(GenericMessage.class.getName());
-		assertSame(message, this.resolver.resolveArgument(parameter, message));
+		assertThatExceptionOfType(MethodArgumentTypeMismatchException.class).isThrownBy(() ->
+				this.resolver.resolveArgument(parameter, message))
+			.withMessageContaining(ErrorMessage.class.getName())
+			.withMessageContaining(GenericMessage.class.getName());
 	}
 
 	@Test
@@ -198,9 +203,10 @@ public class MessageMethodArgumentResolverTests {
 		MethodParameter parameter = new MethodParameter(this.method, 1);
 
 		assertTrue(this.resolver.supportsParameter(parameter));
-		thrown.expect(MessageConversionException.class, Integer.class.getName());
-		thrown.expectMessage(String.class.getName());
-		this.resolver.resolveArgument(parameter, message);
+		assertThatExceptionOfType(MessageConversionException.class).isThrownBy(() ->
+				this.resolver.resolveArgument(parameter, message))
+			.withMessageContaining(Integer.class.getName())
+			.withMessageContaining(String.class.getName());
 	}
 
 	@Test
@@ -211,10 +217,11 @@ public class MessageMethodArgumentResolverTests {
 		MethodParameter parameter = new MethodParameter(this.method, 1);
 
 		assertTrue(this.resolver.supportsParameter(parameter));
-		thrown.expect(MessageConversionException.class, "payload is empty");
-		thrown.expectMessage(Integer.class.getName());
-		thrown.expectMessage(String.class.getName());
-		this.resolver.resolveArgument(parameter, message);
+		assertThatExceptionOfType(MessageConversionException.class).isThrownBy(() ->
+				this.resolver.resolveArgument(parameter, message))
+			.withMessageContaining("payload is empty")
+			.withMessageContaining(Integer.class.getName())
+			.withMessageContaining(String.class.getName());
 	}
 
 	@Test // SPR-16486

@@ -257,8 +257,7 @@ public class ApplicationListenerMethodAdapterTests extends AbstractApplicationEv
 				InvalidProxyTestBean.class, "handleIt2", ApplicationEvent.class);
 		StaticApplicationListenerMethodAdapter listener =
 				new StaticApplicationListenerMethodAdapter(method, bean);
-		this.thrown.expect(IllegalStateException.class);
-		this.thrown.expectMessage("handleIt2");
+		this.thrown.expect(IllegalStateException.class, "handleIt2");
 		listener.onApplicationEvent(createGenericTestEvent("test"));
 	}
 

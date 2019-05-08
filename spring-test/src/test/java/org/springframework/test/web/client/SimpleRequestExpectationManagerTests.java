@@ -28,6 +28,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.mock.http.client.MockClientHttpRequest;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 import static org.springframework.http.HttpMethod.*;
 import static org.springframework.test.web.client.ExpectedCount.*;
@@ -77,27 +78,25 @@ public class SimpleRequestExpectationManagerTests {
 	public void sequentialRequestsTooMany() throws Exception {
 		this.manager.expectRequest(max(1), requestTo("/foo")).andExpect(method(GET)).andRespond(withSuccess());
 		this.manager.expectRequest(max(1), requestTo("/bar")).andExpect(method(GET)).andRespond(withSuccess());
-
-		this.thrown.expectMessage("No further requests expected: HTTP GET /baz\n" +
-				"2 request(s) executed:\n" +
-				"GET /foo\n" +
-				"GET /bar\n");
-
 		this.manager.validateRequest(createRequest(GET, "/foo"));
 		this.manager.validateRequest(createRequest(GET, "/bar"));
-		this.manager.validateRequest(createRequest(GET, "/baz"));
+		assertThatExceptionOfType(AssertionError.class).isThrownBy(() ->
+				this.manager.validateRequest(createRequest(GET, "/baz")))
+			.withMessage("No further requests expected: HTTP GET /baz\n" +
+					"2 request(s) executed:\n" +
+					"GET /foo\n" +
+					"GET /bar\n");
 	}
 
 	@Test
 	public void sequentialRequestsTooFew() throws Exception {
 		this.manager.expectRequest(min(1), requestTo("/foo")).andExpect(method(GET)).andRespond(withSuccess());
 		this.manager.expectRequest(min(1), requestTo("/bar")).andExpect(method(GET)).andRespond(withSuccess());
-
-		this.thrown.expectMessage("Further request(s) expected leaving 1 unsatisfied expectation(s).\n" +
-				"1 request(s) executed:\nGET /foo\n");
-
 		this.manager.validateRequest(createRequest(GET, "/foo"));
-		this.manager.verify();
+		assertThatExceptionOfType(AssertionError.class).isThrownBy(() ->
+				this.manager.verify())
+			.withMessage("Further request(s) expected leaving 1 unsatisfied expectation(s).\n" +
+				"1 request(s) executed:\nGET /foo\n");
 	}
 
 	@Test
@@ -118,35 +117,33 @@ public class SimpleRequestExpectationManagerTests {
 	public void repeatedRequestsTooMany() throws Exception {
 		this.manager.expectRequest(max(2), requestTo("/foo")).andExpect(method(GET)).andRespond(withSuccess());
 		this.manager.expectRequest(max(2), requestTo("/bar")).andExpect(method(GET)).andRespond(withSuccess());
-
-		this.thrown.expectMessage("No further requests expected: HTTP GET /foo\n" +
-				"4 request(s) executed:\n" +
-				"GET /foo\n" +
-				"GET /bar\n" +
-				"GET /foo\n" +
-				"GET /bar\n");
-
 		this.manager.validateRequest(createRequest(GET, "/foo"));
 		this.manager.validateRequest(createRequest(GET, "/bar"));
 		this.manager.validateRequest(createRequest(GET, "/foo"));
 		this.manager.validateRequest(createRequest(GET, "/bar"));
-		this.manager.validateRequest(createRequest(GET, "/foo"));
+		assertThatExceptionOfType(AssertionError.class).isThrownBy(() ->
+				this.manager.validateRequest(createRequest(GET, "/foo")))
+			.withMessage("No further requests expected: HTTP GET /foo\n" +
+					"4 request(s) executed:\n" +
+					"GET /foo\n" +
+					"GET /bar\n" +
+					"GET /foo\n" +
+					"GET /bar\n");
 	}
 
 	@Test
 	public void repeatedRequestsTooFew() throws Exception {
 		this.manager.expectRequest(min(2), requestTo("/foo")).andExpect(method(GET)).andRespond(withSuccess());
 		this.manager.expectRequest(min(2), requestTo("/bar")).andExpect(method(GET)).andRespond(withSuccess());
-
-		this.thrown.expectMessage("3 request(s) executed:\n" +
-				"GET /foo\n" +
-				"GET /bar\n" +
-				"GET /foo\n");
-
 		this.manager.validateRequest(createRequest(GET, "/foo"));
 		this.manager.validateRequest(createRequest(GET, "/bar"));
 		this.manager.validateRequest(createRequest(GET, "/foo"));
-		this.manager.verify();
+		assertThatExceptionOfType(AssertionError.class).isThrownBy(() ->
+				this.manager.verify())
+			.withMessage("3 request(s) executed:\n" +
+				"GET /foo\n" +
+				"GET /bar\n" +
+				"GET /foo\n");
 	}
 
 	@Test
@@ -154,9 +151,9 @@ public class SimpleRequestExpectationManagerTests {
 		this.manager.expectRequest(twice(), requestTo("/foo")).andExpect(method(GET)).andRespond(withSuccess());
 		this.manager.expectRequest(twice(), requestTo("/bar")).andExpect(method(GET)).andRespond(withSuccess());
 		this.manager.expectRequest(twice(), requestTo("/baz")).andExpect(method(GET)).andRespond(withSuccess());
-
-		this.thrown.expectMessage("Unexpected HttpMethod expected:<GET> but was:<POST>");
-		this.manager.validateRequest(createRequest(POST, "/foo"));
+		assertThatExceptionOfType(AssertionError.class).isThrownBy(() ->
+				this.manager.validateRequest(createRequest(POST, "/foo")))
+			.withMessage("Unexpected HttpMethod expected:<GET> but was:<POST>");
 	}
 
 	@Test  // SPR-15672
@@ -186,14 +183,8 @@ public class SimpleRequestExpectationManagerTests {
 				andExpect(method(GET)).andRespond(request -> { throw new SocketException("pseudo network error"); });
 		this.manager.expectRequest(once(), requestTo("/handle-error")).
 				andExpect(method(POST)).andRespond(withSuccess());
-
-		try {
-			this.manager.validateRequest(createRequest(GET, "/foo"));
-			fail("Expected SocketException");
-		}
-		catch (SocketException ex) {
-			// expected
-		}
+		assertThatExceptionOfType(SocketException.class).isThrownBy(() ->
+				this.manager.validateRequest(createRequest(GET, "/foo")));
 		this.manager.validateRequest(createRequest(POST, "/handle-error"));
 		this.manager.verify();
 	}

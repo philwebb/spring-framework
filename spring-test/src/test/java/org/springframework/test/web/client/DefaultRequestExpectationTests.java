@@ -26,6 +26,7 @@ import temp.ExpectedException;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpRequest;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 import static org.springframework.http.HttpMethod.*;
 import static org.springframework.test.web.client.ExpectedCount.*;
@@ -52,9 +53,9 @@ public class DefaultRequestExpectationTests {
 	public void matchWithFailedExpectation() throws Exception {
 		RequestExpectation expectation = new DefaultRequestExpectation(once(), requestTo("/foo"));
 		expectation.andExpect(method(POST));
-
-		this.thrown.expectMessage("Unexpected HttpMethod expected:<POST> but was:<GET>");
-		expectation.match(createRequest(GET, "/foo"));
+		assertThatExceptionOfType(AssertionError.class).isThrownBy(() ->
+				expectation.match(createRequest(GET, "/foo")))
+			.withMessageContaining("Unexpected HttpMethod expected:<POST> but was:<GET>");
 	}
 
 	@Test

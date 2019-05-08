@@ -20,6 +20,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import temp.ExpectedException;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 
 /**
@@ -214,9 +215,9 @@ public class DataSizeTests {
 
 	@Test
 	public void parseWithUnsupportedUnit() {
-		this.thrown.expect(IllegalArgumentException.class, "3WB");
-		this.thrown.expectMessage("is not a valid data size");
-		DataSize.parse("3WB");
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				DataSize.parse("3WB"))
+			.withMessage("3WB is not a valid data size");
 	}
 
 }
