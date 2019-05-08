@@ -138,8 +138,8 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void forInstanceMustNotBeNull() {
-		this.thrown.expect(IllegalArgumentException.class, "Instance must not be null");
-		ResolvableType.forInstance(null);
+		this.thrown.expect(IllegalArgumentException.class, "Instance must not be null", () ->
+		ResolvableType.forInstance(null));
 	}
 
 	@Test
@@ -190,8 +190,8 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void forFieldMustNotBeNull() throws Exception {
-		this.thrown.expect(IllegalArgumentException.class, "Field must not be null");
-		ResolvableType.forField(null);
+		this.thrown.expect(IllegalArgumentException.class, "Field must not be null", () ->
+		ResolvableType.forField(null));
 	}
 
 	@Test
@@ -203,8 +203,8 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void forConstructorParameterMustNotBeNull() throws Exception {
-		this.thrown.expect(IllegalArgumentException.class, "Constructor must not be null");
-		ResolvableType.forConstructorParameter(null, 0);
+		this.thrown.expect(IllegalArgumentException.class, "Constructor must not be null", () ->
+		ResolvableType.forConstructorParameter(null, 0));
 	}
 
 	@Test
@@ -216,8 +216,8 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void forMethodParameterByIndexMustNotBeNull() throws Exception {
-		this.thrown.expect(IllegalArgumentException.class, "Method must not be null");
-		ResolvableType.forMethodParameter(null, 0);
+		this.thrown.expect(IllegalArgumentException.class, "Method must not be null", () ->
+		ResolvableType.forMethodParameter(null, 0));
 	}
 
 	@Test
@@ -253,8 +253,8 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void forMethodParameterMustNotBeNull() throws Exception {
-		this.thrown.expect(IllegalArgumentException.class, "MethodParameter must not be null");
-		ResolvableType.forMethodParameter(null);
+		this.thrown.expect(IllegalArgumentException.class, "MethodParameter must not be null", () ->
+		ResolvableType.forMethodParameter(null));
 	}
 
 	@Test  // SPR-16210
@@ -279,8 +279,8 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void forMethodReturnMustNotBeNull() throws Exception {
-		this.thrown.expect(IllegalArgumentException.class, "Method must not be null");
-		ResolvableType.forMethodReturnType(null);
+		this.thrown.expect(IllegalArgumentException.class, "Method must not be null", () ->
+		ResolvableType.forMethodReturnType(null));
 	}
 
 	@Test
@@ -957,8 +957,8 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void isAssignableFromMustNotBeNull() throws Exception {
-		this.thrown.expect(IllegalArgumentException.class, "Type must not be null");
-		ResolvableType.forClass(Object.class).isAssignableFrom((ResolvableType) null);
+		this.thrown.expect(IllegalArgumentException.class, "Type must not be null", () ->
+		ResolvableType.forClass(Object.class).isAssignableFrom((ResolvableType) null));
 	}
 
 	@Test
@@ -1219,8 +1219,8 @@ public class ResolvableTypeTests {
 
 	@Test
 	public void forClassWithMismatchedGenerics() throws Exception {
-		thrown.expect(IllegalArgumentException.class, "Mismatched number of generics specified");
-		ResolvableType.forClassWithGenerics(Map.class, Integer.class);
+		thrown.expect(IllegalArgumentException.class, "Mismatched number of generics specified", () ->
+		ResolvableType.forClassWithGenerics(Map.class, Integer.class));
 	}
 
 	@Test

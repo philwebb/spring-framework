@@ -207,8 +207,8 @@ public class MappingJackson2MessageConverterTests {
 		Method method = this.getClass().getDeclaredMethod("invalid");
 		MethodParameter returnType = new MethodParameter(method, -1);
 
-		thrown.expect(IllegalArgumentException.class);
-		testToTextMessageWithReturnType(returnType);
+		thrown.expect(IllegalArgumentException.class, () ->
+		testToTextMessageWithReturnType(returnType));
 	}
 
 	private void testToTextMessageWithReturnType(MethodParameter returnType) throws JMSException, NoSuchMethodException {

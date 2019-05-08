@@ -171,8 +171,8 @@ public class ObjectUtilsTests {
 
 	@Test
 	public void toObjectArrayWithNonArrayType() {
-		exception.expect(IllegalArgumentException.class);
-		ObjectUtils.toObjectArray("Not an []");
+		exception.expect(IllegalArgumentException.class, () ->
+		ObjectUtils.toObjectArray("Not an []"));
 	}
 
 	@Test

@@ -142,23 +142,23 @@ public class ApplicationListenerMethodAdapterTests extends AbstractApplicationEv
 	public void listenerWithTooManyParameters() {
 		Method method = ReflectionUtils.findMethod(
 				SampleEvents.class, "tooManyParameters", String.class, String.class);
-		this.thrown.expect(IllegalStateException.class);
-		createTestInstance(method);
+		this.thrown.expect(IllegalStateException.class, ()->
+		createTestInstance(method));
 	}
 
 	@Test
 	public void listenerWithNoParameter() {
 		Method method = ReflectionUtils.findMethod(SampleEvents.class, "noParameter");
-		this.thrown.expect(IllegalStateException.class);
-		createTestInstance(method);
+		this.thrown.expect(IllegalStateException.class, ()->
+		createTestInstance(method));
 	}
 
 	@Test
 	public void listenerWithMoreThanOneParameter() {
 		Method method = ReflectionUtils.findMethod(
 				SampleEvents.class, "moreThanOneParameter", String.class, Integer.class);
-		this.thrown.expect(IllegalStateException.class);
-		createTestInstance(method);
+		this.thrown.expect(IllegalStateException.class, ()->
+		createTestInstance(method));
 	}
 
 	@Test
@@ -257,8 +257,8 @@ public class ApplicationListenerMethodAdapterTests extends AbstractApplicationEv
 				InvalidProxyTestBean.class, "handleIt2", ApplicationEvent.class);
 		StaticApplicationListenerMethodAdapter listener =
 				new StaticApplicationListenerMethodAdapter(method, bean);
-		this.thrown.expect(IllegalStateException.class, "handleIt2");
-		listener.onApplicationEvent(createGenericTestEvent("test"));
+		this.thrown.expect(IllegalStateException.class, "handleIt2", ()->
+		listener.onApplicationEvent(createGenericTestEvent("test")));
 	}
 
 	@Test

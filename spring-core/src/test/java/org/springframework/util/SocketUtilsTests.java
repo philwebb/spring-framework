@@ -53,14 +53,14 @@ public class SocketUtilsTests {
 
 	@Test
 	public void findAvailableTcpPortWithZeroMinPort() {
-		exception.expect(IllegalArgumentException.class);
-		SocketUtils.findAvailableTcpPort(0);
+		exception.expect(IllegalArgumentException.class, () ->
+		SocketUtils.findAvailableTcpPort(0));
 	}
 
 	@Test
 	public void findAvailableTcpPortWithNegativeMinPort() {
-		exception.expect(IllegalArgumentException.class);
-		SocketUtils.findAvailableTcpPort(-500);
+		exception.expect(IllegalArgumentException.class, () ->
+		SocketUtils.findAvailableTcpPort(-500));
 	}
 
 	@Test
@@ -128,8 +128,8 @@ public class SocketUtilsTests {
 
 	@Test
 	public void findAvailableTcpPortsWithRequestedNumberGreaterThanSizeOfRange() {
-		exception.expect(IllegalArgumentException.class);
-		findAvailableTcpPorts(50, 45000, 45010);
+		exception.expect(IllegalArgumentException.class, () ->
+		findAvailableTcpPorts(50, 45000, 45010));
 	}
 
 
@@ -137,14 +137,14 @@ public class SocketUtilsTests {
 
 	@Test
 	public void findAvailableUdpPortWithZeroMinPort() {
-		exception.expect(IllegalArgumentException.class);
-		SocketUtils.findAvailableUdpPort(0);
+		exception.expect(IllegalArgumentException.class, () ->
+		SocketUtils.findAvailableUdpPort(0));
 	}
 
 	@Test
 	public void findAvailableUdpPortWithNegativeMinPort() {
-		exception.expect(IllegalArgumentException.class);
-		SocketUtils.findAvailableUdpPort(-500);
+		exception.expect(IllegalArgumentException.class, () ->
+		SocketUtils.findAvailableUdpPort(-500));
 	}
 
 	@Test
@@ -205,8 +205,8 @@ public class SocketUtilsTests {
 
 	@Test
 	public void findAvailableUdpPortsWithRequestedNumberGreaterThanSizeOfRange() {
-		exception.expect(IllegalArgumentException.class);
-		findAvailableUdpPorts(50, 45000, 45010);
+		exception.expect(IllegalArgumentException.class, () ->
+		findAvailableUdpPorts(50, 45000, 45010));
 	}
 
 

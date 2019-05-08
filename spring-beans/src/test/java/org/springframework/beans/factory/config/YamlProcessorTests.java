@@ -68,15 +68,15 @@ public class YamlProcessorTests {
 	@Test
 	public void testBadDocumentStart() {
 		this.processor.setResources(new ByteArrayResource("foo # a document\nbar: baz".getBytes()));
-		this.thrown.expect(ParserException.class, "line 2, column 1");
-		this.processor.process((properties, map) -> {});
+		this.thrown.expect(ParserException.class, "line 2, column 1", ()->
+		this.processor.process((properties, map) -> {}));
 	}
 
 	@Test
 	public void testBadResource() {
 		this.processor.setResources(new ByteArrayResource("foo: bar\ncd\nspam:\n  foo: baz".getBytes()));
-		this.thrown.expect(ScannerException.class, "line 3, column 1");
-		this.processor.process((properties, map) -> {});
+		this.thrown.expect(ScannerException.class, "line 3, column 1", ()->
+		this.processor.process((properties, map) -> {}));
 	}
 
 	@Test

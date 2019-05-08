@@ -97,8 +97,7 @@ public class DefaultTransportRequestTests {
 		// Transport error => no more fallback
 		this.xhrTransport.getConnectCallback().onFailure(new IOException("Fake exception 2"));
 		assertTrue(this.connectFuture.isDone());
-		this.thrown.expect(ExecutionException.class, "Fake exception 2");
-		this.connectFuture.get();
+		this.thrown.expect(ExecutionException.class, "Fake exception 2", this.connectFuture::get);
 	}
 
 	@Test

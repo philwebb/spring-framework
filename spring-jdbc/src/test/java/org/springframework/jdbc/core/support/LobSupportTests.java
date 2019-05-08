@@ -77,13 +77,9 @@ public class LobSupportTests {
 	public void testAbstractLobStreamingResultSetExtractorNoRows() throws SQLException {
 		ResultSet rset = mock(ResultSet.class);
 		AbstractLobStreamingResultSetExtractor<Void> lobRse = getResultSetExtractor(false);
-		thrown.expect(IncorrectResultSizeDataAccessException.class);
-		try {
-			lobRse.extractData(rset);
-		}
-		finally {
-			verify(rset).next();
-		}
+		thrown.expect(IncorrectResultSizeDataAccessException.class, () ->
+			lobRse.extractData(rset));
+		verify(rset).next();
 	}
 
 	@Test
@@ -101,13 +97,9 @@ public class LobSupportTests {
 		ResultSet rset = mock(ResultSet.class);
 		given(rset.next()).willReturn(true, true, false);
 		AbstractLobStreamingResultSetExtractor<Void> lobRse = getResultSetExtractor(false);
-		thrown.expect(IncorrectResultSizeDataAccessException.class);
-		try {
-			lobRse.extractData(rset);
-		}
-		finally {
-			verify(rset).clearWarnings();
-		}
+		thrown.expect(IncorrectResultSizeDataAccessException.class, () ->
+			lobRse.extractData(rset));
+		verify(rset).clearWarnings();
 	}
 
 	@Test
@@ -116,8 +108,8 @@ public class LobSupportTests {
 		ResultSet rset = mock(ResultSet.class);
 		given(rset.next()).willReturn(true);
 		AbstractLobStreamingResultSetExtractor<Void> lobRse = getResultSetExtractor(true);
-		thrown.expect(LobRetrievalFailureException.class);
-		lobRse.extractData(rset);
+		thrown.expect(LobRetrievalFailureException.class, () ->
+		lobRse.extractData(rset));
 	}
 
 	private AbstractLobStreamingResultSetExtractor<Void> getResultSetExtractor(final boolean ex) {

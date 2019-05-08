@@ -166,8 +166,8 @@ public class NativeMessageHeaderAccessorTests {
 		headerAccessor.setNativeHeader("foo", "bar");
 		headerAccessor.setImmutable();
 
-		this.thrown.expect(IllegalStateException.class, "Already immutable");
-		headerAccessor.setNativeHeader("foo", "baz");
+		this.thrown.expect(IllegalStateException.class, "Already immutable", () ->
+		headerAccessor.setNativeHeader("foo", "baz"));
 	}
 
 	@Test
@@ -215,8 +215,8 @@ public class NativeMessageHeaderAccessorTests {
 		headerAccessor.addNativeHeader("foo", "bar");
 		headerAccessor.setImmutable();
 
-		this.thrown.expect(IllegalStateException.class, "Already immutable");
-		headerAccessor.addNativeHeader("foo", "baz");
+		this.thrown.expect(IllegalStateException.class, "Already immutable", () ->
+		headerAccessor.addNativeHeader("foo", "baz"));
 	}
 
 	@Test

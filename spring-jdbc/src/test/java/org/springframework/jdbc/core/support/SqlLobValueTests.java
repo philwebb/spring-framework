@@ -96,8 +96,8 @@ public class SqlLobValueTests  {
 	@Test
 	public void test3() throws SQLException {
 		SqlLobValue lob = new SqlLobValue(new InputStreamReader(new ByteArrayInputStream("Bla".getBytes())), 12);
-		thrown.expect(IllegalArgumentException.class);
-		lob.setTypeValue(preparedStatement, 1, Types.BLOB, "test");
+		thrown.expect(IllegalArgumentException.class, () ->
+		lob.setTypeValue(preparedStatement, 1, Types.BLOB, "test"));
 	}
 
 	@Test
@@ -132,8 +132,8 @@ public class SqlLobValueTests  {
 	@Test
 	public void test7() throws SQLException {
 		SqlLobValue lob = new SqlLobValue("bla".getBytes());
-		thrown.expect(IllegalArgumentException.class);
-		lob.setTypeValue(preparedStatement, 1, Types.CLOB, "test");
+		thrown.expect(IllegalArgumentException.class, () ->
+		lob.setTypeValue(preparedStatement, 1, Types.CLOB, "test"));
 	}
 
 	@Test
@@ -193,8 +193,8 @@ public class SqlLobValueTests  {
 	@Test
 	public void testOtherSqlType() throws SQLException {
 		SqlLobValue lob = new SqlLobValue("Bla", handler);
-		thrown.expect(IllegalArgumentException.class);
-		lob.setTypeValue(preparedStatement, 1, Types.SMALLINT, "test");
+		thrown.expect(IllegalArgumentException.class, () ->
+		lob.setTypeValue(preparedStatement, 1, Types.SMALLINT, "test"));
 	}
 
 }

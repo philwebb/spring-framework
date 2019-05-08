@@ -113,14 +113,14 @@ public class NamedParameterJdbcTemplateTests {
 
 	@Test
 	public void testNullDataSourceProvidedToCtor() {
-		thrown.expect(IllegalArgumentException.class);
-		new NamedParameterJdbcTemplate((DataSource) null);
+		thrown.expect(IllegalArgumentException.class, () ->
+		new NamedParameterJdbcTemplate((DataSource) null));
 	}
 
 	@Test
 	public void testNullJdbcTemplateProvidedToCtor() {
-		thrown.expect(IllegalArgumentException.class);
-		new NamedParameterJdbcTemplate((JdbcOperations) null);
+		thrown.expect(IllegalArgumentException.class, () ->
+		new NamedParameterJdbcTemplate((JdbcOperations) null));
 	}
 
 	@Test

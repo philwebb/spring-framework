@@ -82,15 +82,13 @@ public class FreeMarkerViewTests {
 		FreeMarkerView view = new FreeMarkerView();
 		view.setApplicationContext(this.context);
 		view.setUrl("anythingButNull");
-		this.thrown.expect(ApplicationContextException.class, "Must define a single FreeMarkerConfig bean");
-		view.afterPropertiesSet();
+		this.thrown.expect(ApplicationContextException.class, "Must define a single FreeMarkerConfig bean", view::afterPropertiesSet);
 	}
 
 	@Test
 	public void noTemplateName() throws Exception {
-		this.thrown.expect(IllegalArgumentException.class, "Property 'url' is required");
 		FreeMarkerView freeMarkerView = new FreeMarkerView();
-		freeMarkerView.afterPropertiesSet();
+		this.thrown.expect(IllegalArgumentException.class, "Property 'url' is required", freeMarkerView::afterPropertiesSet);
 	}
 
 	@Test

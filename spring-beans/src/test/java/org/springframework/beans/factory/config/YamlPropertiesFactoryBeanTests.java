@@ -61,8 +61,7 @@ public class YamlPropertiesFactoryBeanTests {
 		YamlPropertiesFactoryBean factory = new YamlPropertiesFactoryBean();
 		factory.setResources(new ByteArrayResource(
 				"foo: bar\ncd\nspam:\n  foo: baz".getBytes()));
-		this.thrown.expect(ScannerException.class, "line 3, column 1");
-		factory.getObject();
+		this.thrown.expect(ScannerException.class, "line 3, column 1", factory::getObject);
 	}
 
 	@Test

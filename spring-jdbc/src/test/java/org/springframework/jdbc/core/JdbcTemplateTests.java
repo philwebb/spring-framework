@@ -480,15 +480,11 @@ public class JdbcTemplateTests {
 		given(this.connection.createStatement()).willReturn(this.statement);
 
 		JdbcTemplate template = new JdbcTemplate(this.dataSource, false);
-		this.thrown.expect(InvalidDataAccessApiUsageException.class);
-		try {
-			template.batchUpdate(sql);
-		}
-		finally {
-			verify(this.statement, never()).addBatch(anyString());
-			verify(this.statement).close();
-			verify(this.connection, atLeastOnce()).close();
-		}
+		this.thrown.expect(InvalidDataAccessApiUsageException.class, () ->
+			template.batchUpdate(sql));
+		verify(this.statement, never()).addBatch(anyString());
+		verify(this.statement).close();
+		verify(this.connection, atLeastOnce()).close();
 	}
 
 	@Test
@@ -1072,15 +1068,11 @@ public class JdbcTemplateTests {
 			throw new InvalidDataAccessApiUsageException("");
 		});
 
-		this.thrown.expect(InvalidDataAccessApiUsageException.class);
-		try {
-			this.template.call(conn -> conn.prepareCall("my query"), Collections.singletonList(param));
-		}
-		finally {
-			verify(this.resultSet).close();
-			verify(this.callableStatement).close();
-			verify(this.connection).close();
-		}
+		this.thrown.expect(InvalidDataAccessApiUsageException.class, () ->
+			this.template.call(conn -> conn.prepareCall("my query"), Collections.singletonList(param)));
+		verify(this.resultSet).close();
+		verify(this.callableStatement).close();
+		verify(this.connection).close();
 	}
 
 	@Test

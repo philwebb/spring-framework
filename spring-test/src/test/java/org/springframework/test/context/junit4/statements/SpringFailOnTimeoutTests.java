@@ -44,22 +44,22 @@ public class SpringFailOnTimeoutTests {
 
 	@Test
 	public void nullNextStatement() throws Throwable {
-		exception.expect(IllegalArgumentException.class);
-		new SpringFailOnTimeout(null, 1);
+		exception.expect(IllegalArgumentException.class, () ->
+		new SpringFailOnTimeout(null, 1));
 	}
 
 	@Test
 	public void negativeTimeout() throws Throwable {
-		exception.expect(IllegalArgumentException.class);
-		new SpringFailOnTimeout(statement, -1);
+		exception.expect(IllegalArgumentException.class, () ->
+		new SpringFailOnTimeout(statement, -1));
 	}
 
 	@Test
 	public void userExceptionPropagates() throws Throwable {
 		doThrow(new Boom()).when(statement).evaluate();
 
-		exception.expect(Boom.class);
-		new SpringFailOnTimeout(statement, 1).evaluate();
+		exception.expect(Boom.class, () ->
+		new SpringFailOnTimeout(statement, 1).evaluate());
 	}
 
 	@Test
@@ -69,8 +69,8 @@ public class SpringFailOnTimeoutTests {
 			return null;
 		}).when(statement).evaluate();
 
-		exception.expect(TimeoutException.class);
-		new SpringFailOnTimeout(statement, 1).evaluate();
+		exception.expect(TimeoutException.class, () ->
+		new SpringFailOnTimeout(statement, 1).evaluate());
 	}
 
 	@Test

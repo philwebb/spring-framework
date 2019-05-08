@@ -77,20 +77,20 @@ public class PathResourceTests {
 
 	@Test
 	public void nullPath() {
-		thrown.expect(IllegalArgumentException.class, "Path must not be null");
-		new PathResource((Path) null);
+		thrown.expect(IllegalArgumentException.class, "Path must not be null", () ->
+		new PathResource((Path) null));
 	}
 
 	@Test
 	public void nullPathString() {
-		thrown.expect(IllegalArgumentException.class, "Path must not be null");
-		new PathResource((String) null);
+		thrown.expect(IllegalArgumentException.class, "Path must not be null", () ->
+		new PathResource((String) null));
 	}
 
 	@Test
 	public void nullUri() {
-		thrown.expect(IllegalArgumentException.class, "URI must not be null");
-		new PathResource((URI) null);
+		thrown.expect(IllegalArgumentException.class, "URI must not be null", () ->
+		new PathResource((URI) null));
 	}
 
 	@Test
@@ -171,15 +171,13 @@ public class PathResourceTests {
 	@Test
 	public void getInputStreamForDir() throws IOException {
 		PathResource resource = new PathResource(TEST_DIR);
-		thrown.expect(FileNotFoundException.class);
-		resource.getInputStream();
+		thrown.expect(FileNotFoundException.class, resource::getInputStream);
 	}
 
 	@Test
 	public void getInputStreamDoesNotExist() throws IOException {
 		PathResource resource = new PathResource(NON_EXISTING_FILE);
-		thrown.expect(FileNotFoundException.class);
-		resource.getInputStream();
+		thrown.expect(FileNotFoundException.class, resource::getInputStream);
 	}
 
 	@Test
@@ -207,8 +205,7 @@ public class PathResourceTests {
 		given(path.normalize()).willReturn(path);
 		given(path.toFile()).willThrow(new UnsupportedOperationException());
 		PathResource resource = new PathResource(path);
-		thrown.expect(FileNotFoundException.class);
-		resource.getFile();
+		thrown.expect(FileNotFoundException.class, resource::getFile);
 	}
 
 	@Test
@@ -288,8 +285,7 @@ public class PathResourceTests {
 	@Test
 	public void directoryOutputStream() throws IOException {
 		PathResource resource = new PathResource(TEST_DIR);
-		thrown.expect(FileNotFoundException.class);
-		resource.getOutputStream();
+		thrown.expect(FileNotFoundException.class, resource::getOutputStream);
 	}
 
 	@Test
@@ -324,8 +320,7 @@ public class PathResourceTests {
 	@Test
 	public void getReadableByteChannelDoesNotExist() throws IOException {
 		PathResource resource = new PathResource(NON_EXISTING_FILE);
-		thrown.expect(FileNotFoundException.class);
-		resource.readableChannel();
+		thrown.expect(FileNotFoundException.class, resource::readableChannel);
 	}
 
 	@Test

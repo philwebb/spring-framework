@@ -199,8 +199,8 @@ public class Jaxb2CollectionHttpMessageConverterTests {
 				"]>\n" +
 				"<list><rootElement><external>&lol9;</external></rootElement></list>";
 		MockHttpInputMessage inputMessage = new MockHttpInputMessage(content.getBytes("UTF-8"));
-		this.thrown.expect(HttpMessageNotReadableException.class, "\"lol9\"");
-		this.converter.read(this.rootElementListType, null, inputMessage);
+		this.thrown.expect(HttpMessageNotReadableException.class, "\"lol9\"", () ->
+		this.converter.read(this.rootElementListType, null, inputMessage));
 	}
 
 

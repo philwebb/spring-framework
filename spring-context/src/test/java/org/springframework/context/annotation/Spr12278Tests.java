@@ -59,9 +59,9 @@ public class Spr12278Tests {
 
 	@Test
 	public void componentTwoSpecificConstructorsNoHint() {
-		thrown.expect(BeanCreationException.class, NoSuchMethodException.class.getName());
+		thrown.expect(BeanCreationException.class, NoSuchMethodException.class.getName(), ()->
 		new AnnotationConfigApplicationContext(BaseConfiguration.class,
-				TwoSpecificConstructorsComponent.class);
+				TwoSpecificConstructorsComponent.class));
 	}
 
 

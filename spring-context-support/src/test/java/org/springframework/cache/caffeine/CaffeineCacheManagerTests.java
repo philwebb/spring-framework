@@ -187,8 +187,8 @@ public class CaffeineCacheManagerTests {
 		assertNotNull(value);
 		assertEquals("pong", value.get());
 
-		thrown.expect(IllegalArgumentException.class, "I only know ping");
-		assertNull(cache1.get("foo"));
+		thrown.expect(IllegalArgumentException.class, "I only know ping", ()->
+		assertNull(cache1.get("foo")));
 	}
 
 	@SuppressWarnings("unchecked")

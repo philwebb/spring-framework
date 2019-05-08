@@ -97,8 +97,8 @@ public class ConfigurationClassProcessingTests {
 		assertSame(testBeanSupplier.get(), ac.getBean(beanName));
 
 		// method name should not be registered
-		exception.expect(NoSuchBeanDefinitionException.class);
-		ac.getBean("methodName");
+		exception.expect(NoSuchBeanDefinitionException.class, ()->
+		ac.getBean("methodName"));
 	}
 
 	@Test
@@ -121,8 +121,8 @@ public class ConfigurationClassProcessingTests {
 		Arrays.stream(factory.getAliases(beanName)).map(factory::getBean).forEach(alias -> assertSame(testBean, alias));
 
 		// method name should not be registered
-		exception.expect(NoSuchBeanDefinitionException.class);
-		factory.getBean("methodName");
+		exception.expect(NoSuchBeanDefinitionException.class, ()->
+		factory.getBean("methodName"));
 	}
 
 	@Test  // SPR-11830
@@ -145,8 +145,8 @@ public class ConfigurationClassProcessingTests {
 
 	@Test
 	public void testFinalBeanMethod() {
-		exception.expect(BeanDefinitionParsingException.class);
-		initBeanFactory(ConfigWithFinalBean.class);
+		exception.expect(BeanDefinitionParsingException.class, ()->
+		initBeanFactory(ConfigWithFinalBean.class));
 	}
 
 	@Test

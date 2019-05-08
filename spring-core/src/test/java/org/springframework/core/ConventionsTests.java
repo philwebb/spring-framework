@@ -76,8 +76,8 @@ public class ConventionsTests {
 
 	@Test
 	public void emptyList() {
-		this.exception.expect(IllegalArgumentException.class);
-		Conventions.getVariableName(new ArrayList<>());
+		this.exception.expect(IllegalArgumentException.class, () ->
+		Conventions.getVariableName(new ArrayList<>()));
 	}
 
 	@Test

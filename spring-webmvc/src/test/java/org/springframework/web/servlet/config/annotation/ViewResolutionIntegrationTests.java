@@ -18,6 +18,7 @@ package org.springframework.web.servlet.config.annotation;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
+import javax.swing.text.html.HTMLDocument.RunElement;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -74,20 +75,20 @@ public class ViewResolutionIntegrationTests {
 
 	@Test
 	public void freemarkerInvalidConfig() throws Exception {
-		this.thrown.expectMessage("In addition to a FreeMarker view resolver ");
-		runTest(InvalidFreeMarkerWebConfig.class);
+		this.thrown.expect(RuntimeException.class, "In addition to a FreeMarker view resolver ", () ->
+		runTest(InvalidFreeMarkerWebConfig.class));
 	}
 
 	@Test
 	public void tilesInvalidConfig() throws Exception {
-		this.thrown.expectMessage("In addition to a Tiles view resolver ");
-		runTest(InvalidTilesWebConfig.class);
+		this.thrown.expect(RuntimeException.class, "In addition to a Tiles view resolver ", () ->
+		runTest(InvalidTilesWebConfig.class));
 	}
 
 	@Test
 	public void groovyMarkupInvalidConfig() throws Exception {
-		this.thrown.expectMessage("In addition to a Groovy markup view resolver ");
-		runTest(InvalidGroovyMarkupWebConfig.class);
+		this.thrown.expect(RuntimeException.class, "In addition to a Groovy markup view resolver ", ()->
+		runTest(InvalidGroovyMarkupWebConfig.class));
 	}
 
 	// SPR-12013

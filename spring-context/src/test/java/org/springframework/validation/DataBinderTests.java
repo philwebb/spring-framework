@@ -2022,11 +2022,10 @@ public class DataBinderTests {
 
 	@Test  // SPR-14888
 	public void testSetAutoGrowCollectionLimitAfterInitialization() {
-		thrown.expect(IllegalStateException.class, "DataBinder is already initialized - call setAutoGrowCollectionLimit before other configuration methods");
-
 		DataBinder binder = new DataBinder(new BeanWithIntegerList());
 		binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
-		binder.setAutoGrowCollectionLimit(257);
+		thrown.expect(IllegalStateException.class, "DataBinder is already initialized - call setAutoGrowCollectionLimit before other configuration methods", ()->
+		binder.setAutoGrowCollectionLimit(257));
 	}
 
 	@Test // SPR-15009
@@ -2091,12 +2090,12 @@ public class DataBinderTests {
 
 	@Test  // SPR-15009
 	public void testCallSetMessageCodesResolverTwice() {
-		thrown.expect(IllegalStateException.class, "DataBinder is already initialized with MessageCodesResolver");
 
 		TestBean testBean = new TestBean();
 		DataBinder binder = new DataBinder(testBean, "testBean");
 		binder.setMessageCodesResolver(new DefaultMessageCodesResolver());
-		binder.setMessageCodesResolver(new DefaultMessageCodesResolver());
+		thrown.expect(IllegalStateException.class, "DataBinder is already initialized with MessageCodesResolver", ()->
+		binder.setMessageCodesResolver(new DefaultMessageCodesResolver()));
 
 	}
 

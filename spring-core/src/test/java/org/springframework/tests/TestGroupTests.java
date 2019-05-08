@@ -70,8 +70,8 @@ public class TestGroupTests {
 	public void parseMissing() {
 		thrown.expect(IllegalArgumentException.class, "Unable to find test group 'missing' when parsing " +
 				"testGroups value: 'performance, missing'. Available groups include: " +
-				"[LONG_RUNNING,PERFORMANCE,CI]");
-		TestGroup.parse("performance, missing");
+				"[LONG_RUNNING,PERFORMANCE,CI]", () ->
+		TestGroup.parse("performance, missing"));
 	}
 
 	@Test
@@ -90,8 +90,8 @@ public class TestGroupTests {
 	public void parseAllExceptMissing() {
 		thrown.expect(IllegalArgumentException.class, "Unable to find test group 'missing' when parsing " +
 				"testGroups value: 'all-missing'. Available groups include: " +
-				"[LONG_RUNNING,PERFORMANCE,CI]");
-		TestGroup.parse("all-missing");
+				"[LONG_RUNNING,PERFORMANCE,CI]", () ->
+		TestGroup.parse("all-missing"));
 	}
 
 }

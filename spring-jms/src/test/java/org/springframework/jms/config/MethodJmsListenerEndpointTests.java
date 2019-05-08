@@ -98,8 +98,8 @@ public class MethodJmsListenerEndpointTests {
 		endpoint.setBean(this);
 		endpoint.setMethod(getTestMethod());
 
-		this.thrown.expect(IllegalStateException.class);
-		endpoint.createMessageListener(this.container);
+		this.thrown.expect(IllegalStateException.class, () ->
+		endpoint.createMessageListener(this.container));
 	}
 
 	@Test
@@ -419,8 +419,8 @@ public class MethodJmsListenerEndpointTests {
 		MessagingMessageListenerAdapter listener = createInstance(customFactory, method);
 		Session session = mock(Session.class);
 
-		this.thrown.expect(ListenerExecutionFailedException.class);
-		listener.onMessage(createSimpleJmsTextMessage("invalid value"), session); // test is an invalid value
+		this.thrown.expect(ListenerExecutionFailedException.class, () ->
+		listener.onMessage(createSimpleJmsTextMessage("invalid value"), session)); // test is an invalid value
 
 	}
 

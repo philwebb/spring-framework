@@ -66,8 +66,8 @@ public class WebConnectionHtmlUnitDriverTests {
 
 	@Test
 	public void setWebConnectionToNull() {
-		this.thrown.expect(IllegalArgumentException.class);
-		this.driver.setWebConnection(null);
+		this.thrown.expect(IllegalArgumentException.class, () ->
+		this.driver.setWebConnection(null));
 	}
 
 	@Test
@@ -75,8 +75,8 @@ public class WebConnectionHtmlUnitDriverTests {
 		this.driver.setWebConnection(this.connection);
 		assertThat(this.driver.getWebConnection(), equalTo(this.connection));
 
-		this.thrown.expect(WebDriverException.class);
-		this.driver.get("https://example.com");
+		this.thrown.expect(WebDriverException.class, () ->
+		this.driver.get("https://example.com"));
 	}
 
 }

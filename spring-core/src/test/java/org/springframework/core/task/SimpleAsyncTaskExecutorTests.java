@@ -44,8 +44,8 @@ public class SimpleAsyncTaskExecutorTests {
 		SimpleAsyncTaskExecutor executor = new SimpleAsyncTaskExecutor();
 		executor.setConcurrencyLimit(ConcurrencyThrottleSupport.NO_CONCURRENCY);
 		assertTrue(executor.isThrottleActive());
-		exception.expect(IllegalStateException.class);
-		executor.execute(new NoOpRunnable());
+		exception.expect(IllegalStateException.class, () ->
+		executor.execute(new NoOpRunnable()));
 	}
 
 	@Test
@@ -80,8 +80,8 @@ public class SimpleAsyncTaskExecutorTests {
 
 	@Test
 	public void throwsExceptionWhenSuppliedWithNullRunnable() throws Exception {
-		exception.expect(IllegalArgumentException.class);
-		new SimpleAsyncTaskExecutor().execute(null);
+		exception.expect(IllegalArgumentException.class, () ->
+		new SimpleAsyncTaskExecutor().execute(null));
 	}
 
 	private void executeAndWait(SimpleAsyncTaskExecutor executor, Runnable task, Object monitor) {

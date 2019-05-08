@@ -401,8 +401,8 @@ public class DefaultStompSessionTests {
 		stompHeaders.setContentType(MimeTypeUtils.APPLICATION_JSON);
 		String payload = "{'foo':'bar'}";
 
-		this.thrown.expect(MessageConversionException.class);
-		this.session.send(stompHeaders, payload);
+		this.thrown.expect(MessageConversionException.class, () ->
+		this.session.send(stompHeaders, payload));
 		verifyNoMoreInteractions(this.connection);
 	}
 

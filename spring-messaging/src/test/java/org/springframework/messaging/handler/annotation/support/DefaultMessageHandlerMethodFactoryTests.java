@@ -95,8 +95,8 @@ public class DefaultMessageHandlerMethodFactoryTests {
 		InvocableHandlerMethod invocableHandlerMethod =
 				createInvocableHandlerMethod(instance, "simpleString", String.class);
 
-		thrown.expect(MessageConversionException.class);
-		invocableHandlerMethod.invoke(MessageBuilder.withPayload(123).build());
+		thrown.expect(MessageConversionException.class, () ->
+		invocableHandlerMethod.invoke(MessageBuilder.withPayload(123).build()));
 	}
 
 	@Test
@@ -109,8 +109,8 @@ public class DefaultMessageHandlerMethodFactoryTests {
 		InvocableHandlerMethod invocableHandlerMethod =
 				createInvocableHandlerMethod(instance, "simpleString", String.class);
 
-		thrown.expect(MessageConversionException.class);
-		invocableHandlerMethod.invoke(MessageBuilder.withPayload(123).build());
+		thrown.expect(MessageConversionException.class, () ->
+		invocableHandlerMethod.invoke(MessageBuilder.withPayload(123).build()));
 	}
 
 	@Test
@@ -148,8 +148,8 @@ public class DefaultMessageHandlerMethodFactoryTests {
 		InvocableHandlerMethod invocableHandlerMethod2 =
 				createInvocableHandlerMethod(instance, "simpleString", String.class);
 
-		thrown.expect(MethodArgumentResolutionException.class, "No suitable resolver");
-		invocableHandlerMethod2.invoke(message);
+		thrown.expect(MethodArgumentResolutionException.class, "No suitable resolver", () ->
+		invocableHandlerMethod2.invoke(message));
 	}
 
 	@Test
@@ -183,8 +183,8 @@ public class DefaultMessageHandlerMethodFactoryTests {
 
 		InvocableHandlerMethod invocableHandlerMethod =
 				createInvocableHandlerMethod(instance, "payloadValidation", String.class);
-		thrown.expect(MethodArgumentNotValidException.class);
-		invocableHandlerMethod.invoke(MessageBuilder.withPayload("failure").build());
+		thrown.expect(MethodArgumentNotValidException.class, () ->
+		invocableHandlerMethod.invoke(MessageBuilder.withPayload("failure").build()));
 	}
 
 

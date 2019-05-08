@@ -80,8 +80,7 @@ public class MethodInvokerTests {
 		mi.setTargetMethod("supertypes2");
 		mi.setArguments(new ArrayList<>(), new ArrayList<>(), "hello", Boolean.TRUE);
 
-		exception.expect(NoSuchMethodException.class);
-		mi.prepare();
+		exception.expect(NoSuchMethodException.class, mi::prepare);
 	}
 
 	@Test
@@ -91,8 +90,7 @@ public class MethodInvokerTests {
 		methodInvoker.setTargetMethod("greet");
 		methodInvoker.setArguments("no match");
 
-		exception.expect(NoSuchMethodException.class);
-		methodInvoker.prepare();
+		exception.expect(NoSuchMethodException.class, methodInvoker::prepare);
 	}
 
 	@Test

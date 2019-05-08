@@ -49,10 +49,8 @@ public class BootstrapUtilsTests {
 	@Test
 	public void resolveTestContextBootstrapperWithEmptyBootstrapWithAnnotation() {
 		BootstrapContext bootstrapContext = BootstrapTestUtils.buildBootstrapContext(EmptyBootstrapWithAnnotationClass.class, delegate);
-
-		thrown.expect(IllegalStateException.class, "Specify @BootstrapWith's 'value' attribute");
-
-		resolveTestContextBootstrapper(bootstrapContext);
+		thrown.expect(IllegalStateException.class, "Specify @BootstrapWith's 'value' attribute", () ->
+		resolveTestContextBootstrapper(bootstrapContext));
 	}
 
 	@Test

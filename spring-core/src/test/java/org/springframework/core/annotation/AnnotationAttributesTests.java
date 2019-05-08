@@ -133,20 +133,20 @@ public class AnnotationAttributesTests {
 
 	@Test
 	public void getEnumWithNullAttributeName() {
-		thrown.expect(IllegalArgumentException.class, "must not be null or empty");
-		attributes.getEnum(null);
+		thrown.expect(IllegalArgumentException.class, "must not be null or empty", () ->
+		attributes.getEnum(null));
 	}
 
 	@Test
 	public void getEnumWithEmptyAttributeName() {
-		thrown.expect(IllegalArgumentException.class, "must not be null or empty");
-		attributes.getEnum("");
+		thrown.expect(IllegalArgumentException.class, "must not be null or empty", () ->
+		attributes.getEnum(""));
 	}
 
 	@Test
 	public void getEnumWithUnknownAttributeName() {
-		thrown.expect(IllegalArgumentException.class, "Attribute 'bogus' not found");
-		attributes.getEnum("bogus");
+		thrown.expect(IllegalArgumentException.class, "Attribute 'bogus' not found", () ->
+		attributes.getEnum("bogus"));
 	}
 
 	@Test

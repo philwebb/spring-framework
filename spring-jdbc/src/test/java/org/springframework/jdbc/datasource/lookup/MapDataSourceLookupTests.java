@@ -44,8 +44,8 @@ public class MapDataSourceLookupTests {
 		MapDataSourceLookup lookup = new MapDataSourceLookup();
 		Map dataSources = lookup.getDataSources();
 
-		exception.expect(UnsupportedOperationException.class);
-		dataSources.put("", "");
+		exception.expect(UnsupportedOperationException.class, () ->
+		dataSources.put("", ""));
 	}
 
 	@Test
@@ -94,16 +94,16 @@ public class MapDataSourceLookupTests {
 		dataSources.put(DATA_SOURCE_NAME, new Object());
 		MapDataSourceLookup lookup = new MapDataSourceLookup(dataSources);
 
-		exception.expect(ClassCastException.class);
-		lookup.getDataSource(DATA_SOURCE_NAME);
+		exception.expect(ClassCastException.class, () ->
+		lookup.getDataSource(DATA_SOURCE_NAME));
 	}
 
 	@Test
 	public void getDataSourceWhereSuppliedMapHasNoEntryForSpecifiedKey() throws Exception {
 		MapDataSourceLookup lookup = new MapDataSourceLookup();
 
-		exception.expect(DataSourceLookupFailureException.class);
-		lookup.getDataSource(DATA_SOURCE_NAME);
+		exception.expect(DataSourceLookupFailureException.class, () ->
+		lookup.getDataSource(DATA_SOURCE_NAME));
 	}
 
 }

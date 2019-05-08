@@ -98,8 +98,7 @@ public class StoredProcedureTests {
 				callableStatement);
 
 		NoSuchStoredProcedure sproc = new NoSuchStoredProcedure(dataSource);
-		thrown.expect(BadSqlGrammarException.class);
-		sproc.execute();
+		thrown.expect(BadSqlGrammarException.class, sproc::execute);
 	}
 
 	private void testAddInvoice(final int amount, final int custid) throws Exception {
@@ -232,16 +231,15 @@ public class StoredProcedureTests {
 	public void testUnnamedParameter() throws Exception {
 		this.verifyClosedAfter = false;
 		// Shouldn't succeed in creating stored procedure with unnamed parameter
-		thrown.expect(InvalidDataAccessApiUsageException.class);
-		new UnnamedParameterStoredProcedure(dataSource);
+		thrown.expect(InvalidDataAccessApiUsageException.class, () ->
+		new UnnamedParameterStoredProcedure(dataSource));
 	}
 
 	@Test
 	public void testMissingParameter() throws Exception {
 		this.verifyClosedAfter = false;
 		MissingParameterStoredProcedure mp = new MissingParameterStoredProcedure(dataSource);
-		thrown.expect(InvalidDataAccessApiUsageException.class);
-		mp.execute();
+		thrown.expect(InvalidDataAccessApiUsageException.class, mp::execute);
 		fail("Shouldn't succeed in running stored procedure with missing required parameter");
 	}
 
@@ -253,8 +251,7 @@ public class StoredProcedureTests {
 		given(connection.prepareCall("{call " + StoredProcedureExceptionTranslator.SQL + "()}")
 				).willReturn(callableStatement);
 		StoredProcedureExceptionTranslator sproc = new StoredProcedureExceptionTranslator(dataSource);
-		thrown.expect(CustomDataException.class);
-		sproc.execute();
+		thrown.expect(CustomDataException.class, sproc::execute);
 	}
 
 	@Test

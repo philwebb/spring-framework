@@ -36,28 +36,28 @@ public class JmsListenerEndpointRegistryTests {
 
 	@Test
 	public void createWithNullEndpoint() {
-		thrown.expect(IllegalArgumentException.class);
-		registry.registerListenerContainer(null, containerFactory);
+		thrown.expect(IllegalArgumentException.class, () ->
+		registry.registerListenerContainer(null, containerFactory));
 	}
 
 	@Test
 	public void createWithNullEndpointId() {
-		thrown.expect(IllegalArgumentException.class);
-		registry.registerListenerContainer(new SimpleJmsListenerEndpoint(), containerFactory);
+		thrown.expect(IllegalArgumentException.class, () ->
+		registry.registerListenerContainer(new SimpleJmsListenerEndpoint(), containerFactory));
 	}
 
 	@Test
 	public void createWithNullContainerFactory() {
-		thrown.expect(IllegalArgumentException.class);
-		registry.registerListenerContainer(createEndpoint("foo", "myDestination"), null);
+		thrown.expect(IllegalArgumentException.class, () ->
+		registry.registerListenerContainer(createEndpoint("foo", "myDestination"), null));
 	}
 
 	@Test
 	public void createWithDuplicateEndpointId() {
 		registry.registerListenerContainer(createEndpoint("test", "queue"), containerFactory);
 
-		thrown.expect(IllegalStateException.class);
-		registry.registerListenerContainer(createEndpoint("test", "queue"), containerFactory);
+		thrown.expect(IllegalStateException.class, () ->
+		registry.registerListenerContainer(createEndpoint("test", "queue"), containerFactory));
 	}
 
 

@@ -44,8 +44,8 @@ public class BasicAuthorizationInterceptorTests {
 
 	@Test
 	public void createWhenUsernameContainsColonShouldThrowException() {
-		this.thrown.expect(IllegalArgumentException.class, "Username must not contain a colon");
-		new BasicAuthorizationInterceptor("username:", "password");
+		this.thrown.expect(IllegalArgumentException.class, "Username must not contain a colon", () ->
+		new BasicAuthorizationInterceptor("username:", "password"));
 	}
 
 	@Test

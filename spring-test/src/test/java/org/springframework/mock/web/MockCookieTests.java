@@ -86,22 +86,22 @@ public class MockCookieTests {
 
 	@Test
 	public void parseNullHeader() {
-		thrown.expect(IllegalArgumentException.class, "Set-Cookie header must not be null");
-		MockCookie.parse(null);
+		thrown.expect(IllegalArgumentException.class, "Set-Cookie header must not be null", () ->
+		MockCookie.parse(null));
 	}
 
 	@Test
 	public void parseInvalidHeader() {
-		thrown.expect(IllegalArgumentException.class, "Invalid Set-Cookie header 'BOOM'");
-		MockCookie.parse("BOOM");
+		thrown.expect(IllegalArgumentException.class, "Invalid Set-Cookie header 'BOOM'", () ->
+		MockCookie.parse("BOOM"));
 	}
 
 	@Test
 	public void parseInvalidAttribute() {
 		String header = "SESSION=123; Path=";
 
-		thrown.expect(IllegalArgumentException.class, "No value in attribute 'Path' for Set-Cookie header '" + header + "'");
-		MockCookie.parse(header);
+		thrown.expect(IllegalArgumentException.class, "No value in attribute 'Path' for Set-Cookie header '" + header + "'", () ->
+		MockCookie.parse(header));
 	}
 
 	@Test

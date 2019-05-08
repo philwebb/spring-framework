@@ -79,25 +79,22 @@ public class JmsMessageEndpointManagerTests {
 	@Test
 	public void isPubSubDomainWithNoConfig() {
 		JmsMessageEndpointManager endpoint = new JmsMessageEndpointManager();
-
-		this.thrown.expect(IllegalStateException.class); // far from ideal
-		endpoint.isPubSubDomain();
+		// far from ideal
+		this.thrown.expect(IllegalStateException.class, endpoint::isPubSubDomain);
 	}
 
 	@Test
 	public void isReplyPubSubDomainWithNoConfig() {
 		JmsMessageEndpointManager endpoint = new JmsMessageEndpointManager();
-
-		this.thrown.expect(IllegalStateException.class); // far from ideal
-		endpoint.isReplyPubSubDomain();
+		// far from ideal
+		this.thrown.expect(IllegalStateException.class, endpoint::isReplyPubSubDomain);
 	}
 
 	@Test
 	public void getReplyQosSettingsWithNoConfig() {
 		JmsMessageEndpointManager endpoint = new JmsMessageEndpointManager();
-
-		this.thrown.expect(IllegalStateException.class); // far from ideal
-		endpoint.getReplyQosSettings();
+		// far from ideal
+		this.thrown.expect(IllegalStateException.class, endpoint::getReplyQosSettings);
 	}
 
 	@Test

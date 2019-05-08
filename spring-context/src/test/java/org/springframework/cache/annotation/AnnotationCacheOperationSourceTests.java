@@ -156,8 +156,8 @@ public class AnnotationCacheOperationSourceTests {
 
 	@Test
 	public void keyAndKeyGeneratorCannotBeSetTogether() {
-		this.exception.expect(IllegalStateException.class);
-		getOps(AnnotatedClass.class, "invalidKeyAndKeyGeneratorSet");
+		this.exception.expect(IllegalStateException.class, ()->
+		getOps(AnnotatedClass.class, "invalidKeyAndKeyGeneratorSet"));
 	}
 
 	@Test
@@ -190,8 +190,8 @@ public class AnnotationCacheOperationSourceTests {
 
 	@Test
 	public void cacheResolverAndCacheManagerCannotBeSetTogether() {
-		this.exception.expect(IllegalStateException.class);
-		getOps(AnnotatedClass.class, "invalidCacheResolverAndCacheManagerSet");
+		this.exception.expect(IllegalStateException.class, ()->
+		getOps(AnnotatedClass.class, "invalidCacheResolverAndCacheManagerSet"));
 	}
 
 	@Test

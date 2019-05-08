@@ -56,8 +56,8 @@ public class CachePutOperationTests extends AbstractCacheOperationTests<CachePut
 		CacheMethodDetails<CachePut> methodDetails = create(CachePut.class,
 				SampleObject.class, "noCacheValue", Long.class);
 
-		thrown.expect(IllegalArgumentException.class);
-		createDefaultOperation(methodDetails);
+		thrown.expect(IllegalArgumentException.class, ()->
+		createDefaultOperation(methodDetails));
 	}
 
 	@Test
@@ -65,16 +65,16 @@ public class CachePutOperationTests extends AbstractCacheOperationTests<CachePut
 		CacheMethodDetails<CachePut> methodDetails = create(CachePut.class,
 				SampleObject.class, "multiCacheValues", Long.class, SampleObject.class, SampleObject.class);
 
-		thrown.expect(IllegalArgumentException.class);
-		createDefaultOperation(methodDetails);
+		thrown.expect(IllegalArgumentException.class, ()->
+		createDefaultOperation(methodDetails));
 	}
 
 	@Test
 	public void invokeWithWrongParameters() {
 		CachePutOperation operation = createSimpleOperation();
 
-		thrown.expect(IllegalStateException.class);
-		operation.getValueParameter(2L);
+		thrown.expect(IllegalStateException.class, ()->
+		operation.getValueParameter(2L));
 	}
 
 	@Test

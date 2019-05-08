@@ -50,14 +50,14 @@ public class JmsListenerEndpointRegistrarTests {
 
 	@Test
 	public void registerNullEndpoint() {
-		this.thrown.expect(IllegalArgumentException.class);
-		this.registrar.registerEndpoint(null, this.containerFactory);
+		this.thrown.expect(IllegalArgumentException.class, () ->
+		this.registrar.registerEndpoint(null, this.containerFactory));
 	}
 
 	@Test
 	public void registerNullEndpointId() {
-		this.thrown.expect(IllegalArgumentException.class);
-		this.registrar.registerEndpoint(new SimpleJmsListenerEndpoint(), this.containerFactory);
+		this.thrown.expect(IllegalArgumentException.class, () ->
+		this.registrar.registerEndpoint(new SimpleJmsListenerEndpoint(), this.containerFactory));
 	}
 
 	@Test
@@ -65,8 +65,8 @@ public class JmsListenerEndpointRegistrarTests {
 		SimpleJmsListenerEndpoint endpoint = new SimpleJmsListenerEndpoint();
 		endpoint.setId("");
 
-		this.thrown.expect(IllegalArgumentException.class);
-		this.registrar.registerEndpoint(endpoint, this.containerFactory);
+		this.thrown.expect(IllegalArgumentException.class, () ->
+		this.registrar.registerEndpoint(endpoint, this.containerFactory));
 	}
 
 	@Test
@@ -87,8 +87,8 @@ public class JmsListenerEndpointRegistrarTests {
 		endpoint.setId("some id");
 		this.registrar.registerEndpoint(endpoint, null);
 
-		this.thrown.expect(IllegalStateException.class, endpoint.toString());
-		this.registrar.afterPropertiesSet();
+		this.thrown.expect(IllegalStateException.class, endpoint.toString(), () ->
+		this.registrar.afterPropertiesSet());
 	}
 
 	@Test

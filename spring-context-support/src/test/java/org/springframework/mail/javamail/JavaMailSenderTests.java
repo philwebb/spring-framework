@@ -512,8 +512,7 @@ public class JavaMailSenderTests {
 		MockJavaMailSender sender = new MockJavaMailSender();
 		sender.setHost(null);
 
-		thrown.expect(MessagingException.class);
-		sender.testConnection();
+		thrown.expect(MessagingException.class, sender::testConnection);
 	}
 
 

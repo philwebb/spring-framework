@@ -126,8 +126,8 @@ public abstract class AbstractPropertyAccessorTests {
 	public void isReadablePropertyNull() {
 		AbstractPropertyAccessor accessor = createAccessor(new NoRead());
 
-		thrown.expect(IllegalArgumentException.class);
-		accessor.isReadableProperty(null);
+		thrown.expect(IllegalArgumentException.class, ()->
+		accessor.isReadableProperty(null));
 	}
 
 	@Test
@@ -141,8 +141,8 @@ public abstract class AbstractPropertyAccessorTests {
 	public void isWritablePropertyNull() {
 		AbstractPropertyAccessor accessor = createAccessor(new NoRead());
 
-		thrown.expect(IllegalArgumentException.class);
-		accessor.isWritableProperty(null);
+		thrown.expect(IllegalArgumentException.class, ()->
+		accessor.isWritableProperty(null));
 	}
 
 	@Test
@@ -290,8 +290,8 @@ public abstract class AbstractPropertyAccessorTests {
 		Person target = createPerson("John", "London", "UK");
 		AbstractPropertyAccessor accessor = createAccessor(target);
 
-		thrown.expect(NotReadablePropertyException.class);
-		accessor.getPropertyValue("address.bar");
+		thrown.expect(NotReadablePropertyException.class, ()->
+		accessor.getPropertyValue("address.bar"));
 	}
 
 	@Test
@@ -1564,8 +1564,8 @@ public abstract class AbstractPropertyAccessorTests {
 		Person target = createPerson("John", "Paris", "FR");
 		AbstractPropertyAccessor accessor = createAccessor(target);
 
-		thrown.expect(NotWritablePropertyException.class);
-		accessor.setPropertyValue("address.bar", "value");
+		thrown.expect(NotWritablePropertyException.class, ()->
+		accessor.setPropertyValue("address.bar", "value"));
 	}
 
 	@Test

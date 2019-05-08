@@ -142,8 +142,7 @@ public class SqlQueryTests  {
 		query.declareParameter(new SqlParameter(COLUMN_NAMES[1], COLUMN_TYPES[1]));
 		query.compile();
 
-		thrown.expect(InvalidDataAccessApiUsageException.class);
-		query.execute();
+		thrown.expect(InvalidDataAccessApiUsageException.class, query::execute);
 	}
 
 	@Test
@@ -160,8 +159,8 @@ public class SqlQueryTests  {
 		query.declareParameter(new SqlParameter(COLUMN_NAMES[1], COLUMN_TYPES[1]));
 		query.compile();
 
-		thrown.expect(InvalidDataAccessApiUsageException.class);
-		query.executeByNamedParam(Collections.singletonMap(COLUMN_NAMES[0], "value"));
+		thrown.expect(InvalidDataAccessApiUsageException.class, () ->
+		query.executeByNamedParam(Collections.singletonMap(COLUMN_NAMES[0], "value")));
 	}
 
 	@Test
@@ -354,17 +353,13 @@ public class SqlQueryTests  {
 		}
 
 		CustomerQuery query = new CustomerQuery(dataSource);
-		thrown.expect(IncorrectResultSizeDataAccessException.class);
-		try {
-			query.findCustomer("rod");
-		}
-		finally {
-			verify(preparedStatement).setString(1, "rod");
-			verify(connection).prepareStatement(SELECT_ID_FORENAME_WHERE);
-			verify(resultSet).close();
-			verify(preparedStatement).close();
-			verify(connection).close();
-		}
+		thrown.expect(IncorrectResultSizeDataAccessException.class, () ->
+			query.findCustomer("rod"));
+		verify(preparedStatement).setString(1, "rod");
+		verify(connection).prepareStatement(SELECT_ID_FORENAME_WHERE);
+		verify(resultSet).close();
+		verify(preparedStatement).close();
+		verify(connection).close();
 	}
 
 	@Test
@@ -510,8 +505,8 @@ public class SqlQueryTests  {
 
 		// Query should not succeed since parameter declaration did not specify parameter name
 		CustomerQuery query = new CustomerQuery(dataSource);
-		thrown.expect(InvalidDataAccessApiUsageException.class);
-		query.findCustomer(1);
+		thrown.expect(InvalidDataAccessApiUsageException.class, () ->
+		query.findCustomer(1));
 	}
 
 	@Test
@@ -712,8 +707,8 @@ public class SqlQueryTests  {
 		}
 
 		CustomerQuery query = new CustomerQuery(dataSource);
-		thrown.expect(InvalidDataAccessApiUsageException.class);
-		query.findCustomers(1);
+		thrown.expect(InvalidDataAccessApiUsageException.class, () ->
+		query.findCustomers(1));
 	}
 
 	@Test

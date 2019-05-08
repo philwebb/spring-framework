@@ -104,8 +104,7 @@ public class MockHttpServletRequestTests {
 
 	@Test
 	public void getContentAsStringWithoutSettingCharacterEncoding() throws IOException {
-		thrown.expect(IllegalStateException.class, "Cannot get content as a String for a null character encoding");
-		request.getContentAsString();
+		thrown.expect(IllegalStateException.class, "Cannot get content as a String for a null character encoding", request::getContentAsString);
 	}
 
 	@Test
@@ -141,18 +140,16 @@ public class MockHttpServletRequestTests {
 
 	@Test  // SPR-16499
 	public void getReaderAfterGettingInputStream() throws IOException {
-		thrown.expect(IllegalStateException.class,
-				"Cannot call getReader() after getInputStream() has already been called for the current request");
 		request.getInputStream();
-		request.getReader();
+		thrown.expect(IllegalStateException.class,
+				"Cannot call getReader() after getInputStream() has already been called for the current request", request::getReader);
 	}
 
 	@Test  // SPR-16499
 	public void getInputStreamAfterGettingReader() throws IOException {
-		thrown.expect(IllegalStateException.class,
-				"Cannot call getInputStream() after getReader() has already been called for the current request");
 		request.getReader();
-		request.getInputStream();
+		thrown.expect(IllegalStateException.class,
+				"Cannot call getInputStream() after getReader() has already been called for the current request", request::getInputStream);
 	}
 
 	@Test

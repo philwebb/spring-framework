@@ -160,9 +160,8 @@ public class HttpMessageConverterExtractorTests {
 		given(response.getHeaders()).willReturn(responseHeaders);
 		given(response.getBody()).willReturn(new ByteArrayInputStream("Foobar".getBytes()));
 		given(converter.canRead(String.class, contentType)).willReturn(false);
-		exception.expect(RestClientException.class);
-
-		extractor.extractData(response);
+		exception.expect(RestClientException.class, () ->
+		extractor.extractData(response));
 	}
 
 	@Test

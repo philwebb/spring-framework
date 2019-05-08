@@ -234,16 +234,16 @@ public class HttpEntityMethodProcessorMockTests {
 		given(stringHttpMessageConverter.getSupportedMediaTypes()).willReturn(Collections.singletonList(contentType));
 		given(stringHttpMessageConverter.canRead(String.class, contentType)).willReturn(false);
 
-		this.thrown.expect(HttpMediaTypeNotSupportedException.class);
-		processor.resolveArgument(paramHttpEntity, mavContainer, webRequest, null);
+		this.thrown.expect(HttpMediaTypeNotSupportedException.class, () ->
+		processor.resolveArgument(paramHttpEntity, mavContainer, webRequest, null));
 	}
 
 	@Test
 	public void shouldFailResolvingWhenContentTypeNotSupported() throws Exception {
 		servletRequest.setMethod("POST");
 		servletRequest.setContent("some content".getBytes(StandardCharsets.UTF_8));
-		this.thrown.expect(HttpMediaTypeNotSupportedException.class);
-		processor.resolveArgument(paramHttpEntity, mavContainer, webRequest, null);
+		this.thrown.expect(HttpMediaTypeNotSupportedException.class, () ->
+		processor.resolveArgument(paramHttpEntity, mavContainer, webRequest, null));
 	}
 
 	@Test
@@ -307,8 +307,8 @@ public class HttpEntityMethodProcessorMockTests {
 		given(stringHttpMessageConverter.getSupportedMediaTypes())
 				.willReturn(Collections.singletonList(TEXT_PLAIN));
 
-		this.thrown.expect(HttpMediaTypeNotAcceptableException.class);
-		processor.handleReturnValue(returnValue, returnTypeResponseEntity, mavContainer, webRequest);
+		this.thrown.expect(HttpMediaTypeNotAcceptableException.class, () ->
+		processor.handleReturnValue(returnValue, returnTypeResponseEntity, mavContainer, webRequest));
 	}
 
 	@Test
@@ -323,8 +323,8 @@ public class HttpEntityMethodProcessorMockTests {
 				.willReturn(Collections.singletonList(TEXT_PLAIN));
 		given(stringHttpMessageConverter.canWrite(String.class, accepted)).willReturn(false);
 
-		this.thrown.expect(HttpMediaTypeNotAcceptableException.class);
-		processor.handleReturnValue(returnValue, returnTypeResponseEntityProduces, mavContainer, webRequest);
+		this.thrown.expect(HttpMediaTypeNotAcceptableException.class, () ->
+		processor.handleReturnValue(returnValue, returnTypeResponseEntityProduces, mavContainer, webRequest));
 	}
 
 	@Test  // SPR-9142
@@ -332,8 +332,8 @@ public class HttpEntityMethodProcessorMockTests {
 		ResponseEntity<String> returnValue = new ResponseEntity<>("Body", HttpStatus.ACCEPTED);
 		servletRequest.addHeader("Accept", "01");
 
-		this.thrown.expect(HttpMediaTypeNotAcceptableException.class);
-		processor.handleReturnValue(returnValue, returnTypeResponseEntity, mavContainer, webRequest);
+		this.thrown.expect(HttpMediaTypeNotAcceptableException.class, () ->
+		processor.handleReturnValue(returnValue, returnTypeResponseEntity, mavContainer, webRequest));
 	}
 
 	@Test

@@ -888,8 +888,8 @@ public class PathPatternTests {
 	@Test
 	public void combineWithTwoFileExtensionPatterns() {
 		TestPathCombiner pathMatcher = new TestPathCombiner();
-		exception.expect(IllegalArgumentException.class);
-		pathMatcher.combine("/*.html", "/*.txt");
+		exception.expect(IllegalArgumentException.class, () ->
+		pathMatcher.combine("/*.html", "/*.txt"));
 	}
 
 	@Test

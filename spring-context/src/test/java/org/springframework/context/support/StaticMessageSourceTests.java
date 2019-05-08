@@ -183,8 +183,8 @@ public class StaticMessageSourceTests extends AbstractApplicationContextTests {
 		String[] codes4 = new String[] {"message.format.example99", "message.format.example98"};
 		MessageSourceResolvable resolvable4 = new DefaultMessageSourceResolvable(codes4);
 
-		exception.expect(NoSuchMessageException.class);
-		sac.getMessage(resolvable4, Locale.US);
+		exception.expect(NoSuchMessageException.class, ()->
+		sac.getMessage(resolvable4, Locale.US));
 	}
 
 	@Override

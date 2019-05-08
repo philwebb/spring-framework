@@ -176,9 +176,13 @@ public class StreamConverterTests {
 
 	@Test
 	public void shouldFailToConvertIfNoStream() throws NoSuchFieldException {
-		thrown.expect(IllegalStateException.class);
-		this.streamConverter.convert(new Object(), new TypeDescriptor(Types.class.getField("listOfStrings")),
-				new TypeDescriptor(Types.class.getField("arrayOfLongs")));
+		thrown.expect(IllegalStateException.class, () ->
+		{
+			TypeDescriptor sourceType = new TypeDescriptor(Types.class.getField("listOfStrings"));
+			TypeDescriptor targetType = new TypeDescriptor(Types.class.getField("arrayOfLongs"));
+			this.streamConverter.convert(new Object(), sourceType,
+					targetType);
+		});
 	}
 
 

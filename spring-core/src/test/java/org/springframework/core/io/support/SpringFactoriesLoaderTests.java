@@ -55,9 +55,8 @@ public class SpringFactoriesLoaderTests {
 
 	@Test
 	public void attemptToLoadFactoryOfIncompatibleType() {
-		thrown.expect(IllegalArgumentException.class, "Unable to instantiate factory class [org.springframework.core.io.support.MyDummyFactory1] for factory type [java.lang.String]");
-
-		SpringFactoriesLoader.loadFactories(String.class, null);
+		thrown.expect(IllegalArgumentException.class, "Unable to instantiate factory class [org.springframework.core.io.support.MyDummyFactory1] for factory type [java.lang.String]", () ->
+		SpringFactoriesLoader.loadFactories(String.class, null));
 	}
 
 }

@@ -275,8 +275,7 @@ public class SqlUpdateTests {
 
 		MaxRowsUpdater pc = new MaxRowsUpdater();
 
-		thrown.expect(JdbcUpdateAffectedIncorrectNumberOfRowsException.class);
-		pc.run();
+		thrown.expect(JdbcUpdateAffectedIncorrectNumberOfRowsException.class, pc::run);
 	}
 
 	@Test
@@ -294,9 +293,8 @@ public class SqlUpdateTests {
 	public void testNotRequiredRows() throws SQLException {
 		given(preparedStatement.executeUpdate()).willReturn(2);
 		given(connection.prepareStatement(UPDATE)).willReturn(preparedStatement);
-		thrown.expect(JdbcUpdateAffectedIncorrectNumberOfRowsException.class);
 		RequiredRowsUpdater pc = new RequiredRowsUpdater();
-		pc.run();
+		thrown.expect(JdbcUpdateAffectedIncorrectNumberOfRowsException.class, pc::run);
 	}
 
 	private class Updater extends SqlUpdate {

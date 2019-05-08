@@ -77,13 +77,9 @@ public class SimpleJdbcInsertTests {
 
 		SimpleJdbcInsert insert = new SimpleJdbcInsert(dataSource).withTableName("x");
 		// Shouldn't succeed in inserting into table which doesn't exist
-		thrown.expect(InvalidDataAccessApiUsageException.class);
-		try {
-			insert.execute(new HashMap<>());
-		}
-		finally {
-			verify(resultSet).close();
-		}
+		thrown.expect(InvalidDataAccessApiUsageException.class, () ->
+			insert.execute(new HashMap<>()));
+		verify(resultSet).close();
 	}
 
 }

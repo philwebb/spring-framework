@@ -42,8 +42,8 @@ public class TransactionAwareCacheDecoratorTests {
 
 	@Test
 	public void createWithNullTarget() {
-		this.thrown.expect(IllegalArgumentException.class);
-		new TransactionAwareCacheDecorator(null);
+		this.thrown.expect(IllegalArgumentException.class, () ->
+		new TransactionAwareCacheDecorator(null));
 	}
 
 	@Test

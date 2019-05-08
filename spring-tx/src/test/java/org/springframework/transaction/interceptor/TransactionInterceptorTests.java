@@ -154,8 +154,8 @@ public class TransactionInterceptorTests extends AbstractTransactionAspectTests 
 		DefaultTransactionAttribute attribute = new DefaultTransactionAttribute();
 		attribute.setQualifier("fooTransactionManager");
 
-		thrown.expect(NoSuchBeanDefinitionException.class, "'fooTransactionManager'");
-		ti.determineTransactionManager(attribute);
+		thrown.expect(NoSuchBeanDefinitionException.class, "'fooTransactionManager'", () ->
+		ti.determineTransactionManager(attribute));
 	}
 
 	@Test

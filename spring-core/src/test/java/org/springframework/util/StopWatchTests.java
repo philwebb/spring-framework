@@ -122,20 +122,17 @@ public class StopWatchTests {
 		assertFalse(toString.contains(name1));
 		assertFalse(toString.contains(name2));
 
-		exception.expect(UnsupportedOperationException.class);
-		sw.getTaskInfo();
+		exception.expect(UnsupportedOperationException.class, sw::getTaskInfo);
 	}
 
 	@Test
 	public void failureToStartBeforeGettingTimings() {
-		exception.expect(IllegalStateException.class);
-		sw.getLastTaskTimeMillis();
+		exception.expect(IllegalStateException.class, sw::getLastTaskTimeMillis);
 	}
 
 	@Test
 	public void failureToStartBeforeStop() {
-		exception.expect(IllegalStateException.class);
-		sw.stop();
+		exception.expect(IllegalStateException.class, sw::stop);
 	}
 
 	@Test
@@ -144,8 +141,7 @@ public class StopWatchTests {
 		sw.stop();
 		sw.start("");
 		assertTrue(sw.isRunning());
-		exception.expect(IllegalStateException.class);
-		sw.start("");
+		exception.expect(IllegalStateException.class, () -> sw.start(""));
 	}
 
 }

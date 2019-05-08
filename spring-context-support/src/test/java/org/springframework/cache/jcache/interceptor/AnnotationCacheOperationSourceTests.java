@@ -99,8 +99,8 @@ public class AnnotationCacheOperationSourceTests extends AbstractJCacheTests {
 
 	@Test
 	public void multiAnnotations() {
-		thrown.expect(IllegalStateException.class);
-		getCacheOperation(InvalidCases.class, name.getMethodName());
+		thrown.expect(IllegalStateException.class, ()->
+		getCacheOperation(InvalidCases.class, name.getMethodName()));
 	}
 
 	@Test

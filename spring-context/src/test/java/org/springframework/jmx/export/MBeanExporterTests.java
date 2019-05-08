@@ -85,8 +85,8 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 		listeners.put("*", null);
 		MBeanExporter exporter = new MBeanExporter();
 
-		thrown.expect(IllegalArgumentException.class);
-		exporter.setNotificationListenerMappings(listeners);
+		thrown.expect(IllegalArgumentException.class, ()->
+		exporter.setNotificationListenerMappings(listeners));
 	}
 
 	@Test
@@ -179,8 +179,8 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 			ObjectInstance instance = server.getObjectInstance(ObjectNameManager.getInstance("spring:mbean=true"));
 			assertNotNull(instance);
 
-			thrown.expect(InstanceNotFoundException.class);
-			server.getObjectInstance(ObjectNameManager.getInstance("spring:mbean=false"));
+			thrown.expect(InstanceNotFoundException.class, ()->
+			server.getObjectInstance(ObjectNameManager.getInstance("spring:mbean=false")));
 		}
 		finally {
 			ctx.close();
@@ -484,36 +484,36 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 	@Test
 	public void testSetAutodetectModeToOutOfRangeNegativeValue() {
 		MBeanExporter exporter = new MBeanExporter();
-		thrown.expect(IllegalArgumentException.class);
-		exporter.setAutodetectMode(-1);
+		thrown.expect(IllegalArgumentException.class, ()->
+		exporter.setAutodetectMode(-1));
 	}
 
 	@Test
 	public void testSetAutodetectModeToOutOfRangePositiveValue() {
 		MBeanExporter exporter = new MBeanExporter();
-		thrown.expect(IllegalArgumentException.class);
-		exporter.setAutodetectMode(5);
+		thrown.expect(IllegalArgumentException.class, ()->
+		exporter.setAutodetectMode(5));
 	}
 
 	@Test
 	public void testSetAutodetectModeNameToAnEmptyString() {
 		MBeanExporter exporter = new MBeanExporter();
-		thrown.expect(IllegalArgumentException.class);
-		exporter.setAutodetectModeName("");
+		thrown.expect(IllegalArgumentException.class, ()->
+		exporter.setAutodetectModeName(""));
 	}
 
 	@Test
 	public void testSetAutodetectModeNameToAWhitespacedString() {
 		MBeanExporter exporter = new MBeanExporter();
-		thrown.expect(IllegalArgumentException.class);
-		exporter.setAutodetectModeName("  \t");
+		thrown.expect(IllegalArgumentException.class, ()->
+		exporter.setAutodetectModeName("  \t"));
 	}
 
 	@Test
 	public void testSetAutodetectModeNameToARubbishValue() {
 		MBeanExporter exporter = new MBeanExporter();
-		thrown.expect(IllegalArgumentException.class);
-		exporter.setAutodetectModeName("That Hansel is... *sssooo* hot right now!");
+		thrown.expect(IllegalArgumentException.class, ()->
+		exporter.setAutodetectModeName("That Hansel is... *sssooo* hot right now!"));
 	}
 
 	@Test
@@ -522,16 +522,16 @@ public class MBeanExporterTests extends AbstractMBeanServerTests {
 		Map<String, Object> beans = new HashMap<>();
 		beans.put(OBJECT_NAME, "beanName");
 		exporter.setBeans(beans);
-		thrown.expect(MBeanExportException.class);
-		start(exporter);
+		thrown.expect(MBeanExportException.class, ()->
+		start(exporter));
 	}
 
 	@Test
 	public void testNotRunningInBeanFactoryAndAutodetectionIsOn() throws Exception {
 		MBeanExporter exporter = new MBeanExporter();
 		exporter.setAutodetectMode(MBeanExporter.AUTODETECT_ALL);
-		thrown.expect(MBeanExportException.class);
-		start(exporter);
+		thrown.expect(MBeanExportException.class, ()->
+		start(exporter));
 	}
 
 	@Test  // SPR-2158

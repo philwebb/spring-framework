@@ -16,16 +16,18 @@
 
 package temp;
 
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
+
 public class ExpectedException {
 
 	public static ExpectedException none() {
 		return null;
 	}
 
-	public void expect(Class<?> class1) {
+	public void expect(Class<? extends Throwable> exceptionType, ThrowingCallable throwingCallable) {
 	}
 
-	public void expect(Class<?> class1, String message) {
+	public void expect(Class<? extends Throwable> exceptionType, String message, ThrowingCallable throwingCallable) {
 	}
 
 }

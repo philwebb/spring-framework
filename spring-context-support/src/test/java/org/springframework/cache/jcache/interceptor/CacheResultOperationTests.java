@@ -81,8 +81,8 @@ public class CacheResultOperationTests extends AbstractCacheOperationTests<Cache
 				SampleObject.class, "anotherSimpleGet", String.class, Long.class);
 		CacheResultOperation operation = createDefaultOperation(methodDetails);
 
-		thrown.expect(IllegalStateException.class);
-		operation.getAllParameters("bar"); // missing one argument
+		thrown.expect(IllegalStateException.class, ()->
+		operation.getAllParameters("bar")); // missing one argument
 	}
 
 	@Test
@@ -91,8 +91,8 @@ public class CacheResultOperationTests extends AbstractCacheOperationTests<Cache
 				SampleObject.class, "anotherSimpleGet", String.class, Long.class);
 		CacheResultOperation operation = createDefaultOperation(methodDetails);
 
-		thrown.expect(IllegalStateException.class);
-		operation.getKeyParameters("bar"); // missing one argument
+		thrown.expect(IllegalStateException.class, ()->
+		operation.getKeyParameters("bar")); // missing one argument
 	}
 
 	@Test

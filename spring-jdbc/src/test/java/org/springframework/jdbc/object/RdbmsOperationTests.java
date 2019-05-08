@@ -50,8 +50,7 @@ public class RdbmsOperationTests {
 
 	@Test
 	public void emptySql() {
-		exception.expect(InvalidDataAccessApiUsageException.class);
-		operation.compile();
+		exception.expect(InvalidDataAccessApiUsageException.class, operation::compile);
 	}
 
 	@Test
@@ -59,8 +58,8 @@ public class RdbmsOperationTests {
 		operation.setDataSource(new DriverManagerDataSource());
 		operation.setSql("select * from mytable");
 		operation.compile();
-		exception.expect(InvalidDataAccessApiUsageException.class);
-		operation.setTypes(new int[] { Types.INTEGER });
+		exception.expect(InvalidDataAccessApiUsageException.class, () ->
+		operation.setTypes(new int[] { Types.INTEGER }));
 	}
 
 	@Test
@@ -68,24 +67,24 @@ public class RdbmsOperationTests {
 		operation.setDataSource(new DriverManagerDataSource());
 		operation.setSql("select * from mytable");
 		operation.compile();
-		exception.expect(InvalidDataAccessApiUsageException.class);
-		operation.declareParameter(new SqlParameter(Types.INTEGER));
+		exception.expect(InvalidDataAccessApiUsageException.class, () ->
+		operation.declareParameter(new SqlParameter(Types.INTEGER)));
 	}
 
 	@Test
 	public void tooFewParameters() {
 		operation.setSql("select * from mytable");
 		operation.setTypes(new int[] { Types.INTEGER });
-		exception.expect(InvalidDataAccessApiUsageException.class);
-		operation.validateParameters((Object[]) null);
+		exception.expect(InvalidDataAccessApiUsageException.class, () ->
+		operation.validateParameters((Object[]) null));
 	}
 
 	@Test
 	public void tooFewMapParameters() {
 		operation.setSql("select * from mytable");
 		operation.setTypes(new int[] { Types.INTEGER });
-		exception.expect(InvalidDataAccessApiUsageException.class);
-		operation.validateNamedParameters((Map<String, String>) null);
+		exception.expect(InvalidDataAccessApiUsageException.class, () ->
+		operation.validateNamedParameters((Map<String, String>) null));
 	}
 
 	@Test
@@ -99,8 +98,8 @@ public class RdbmsOperationTests {
 	@Test
 	public void tooManyParameters() {
 		operation.setSql("select * from mytable");
-		exception.expect(InvalidDataAccessApiUsageException.class);
-		operation.validateParameters(new Object[] { 1, 2 });
+		exception.expect(InvalidDataAccessApiUsageException.class, () ->
+		operation.validateParameters(new Object[] { 1, 2 }));
 	}
 
 	@Test
@@ -108,8 +107,8 @@ public class RdbmsOperationTests {
 		operation.setSql("select * from mytable");
 		Map<String, String> params = new HashMap<>();
 		params.put("col1", "value");
-		exception.expect(InvalidDataAccessApiUsageException.class);
-		operation.validateNamedParameters(params);
+		exception.expect(InvalidDataAccessApiUsageException.class, () ->
+		operation.validateNamedParameters(params));
 	}
 
 	@Test
@@ -125,8 +124,7 @@ public class RdbmsOperationTests {
 	public void emptyDataSource() {
 		SqlOperation operation = new SqlOperation() {};
 		operation.setSql("select * from mytable");
-		exception.expect(InvalidDataAccessApiUsageException.class);
-		operation.compile();
+		exception.expect(InvalidDataAccessApiUsageException.class, operation::compile);
 	}
 
 	@Test
