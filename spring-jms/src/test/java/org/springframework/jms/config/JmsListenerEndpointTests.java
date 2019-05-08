@@ -18,9 +18,7 @@ package org.springframework.jms.config;
 
 import javax.jms.MessageListener;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.beans.DirectFieldAccessor;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
@@ -30,7 +28,8 @@ import org.springframework.jms.listener.adapter.MessageListenerAdapter;
 import org.springframework.jms.listener.endpoint.JmsActivationSpecConfig;
 import org.springframework.jms.listener.endpoint.JmsMessageEndpointManager;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -38,10 +37,6 @@ import static org.mockito.Mockito.*;
  * @author Stephane Nicoll
  */
 public class JmsListenerEndpointTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
-
 
 	@Test
 	public void setupJmsMessageContainerFullConfig() {

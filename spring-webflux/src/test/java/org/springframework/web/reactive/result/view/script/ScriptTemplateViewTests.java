@@ -27,15 +27,13 @@ import javax.script.Invocable;
 import javax.script.ScriptEngine;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.beans.DirectFieldAccessor;
 import org.springframework.context.ApplicationContextException;
 import org.springframework.context.support.StaticApplicationContext;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 

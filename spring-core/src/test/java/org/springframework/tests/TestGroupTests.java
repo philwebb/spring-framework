@@ -20,11 +20,9 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
@@ -35,7 +33,6 @@ import static org.hamcrest.Matchers.*;
  * @author Sam Brannen
  */
 public class TestGroupTests {
-
 
 	@Test
 	public void parseNull() {

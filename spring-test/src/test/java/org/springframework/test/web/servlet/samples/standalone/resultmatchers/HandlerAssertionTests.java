@@ -18,9 +18,7 @@ package org.springframework.test.web.servlet.samples.standalone.resultmatchers;
 
 import java.lang.reflect.Method;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
@@ -44,9 +42,6 @@ import static org.springframework.web.servlet.mvc.method.annotation.MvcUriCompon
 public class HandlerAssertionTests {
 
 	private final MockMvc mockMvc = standaloneSetup(new SimpleController()).alwaysExpect(status().isOk()).build();
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
 
 
 	@Test

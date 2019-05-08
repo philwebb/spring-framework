@@ -18,9 +18,7 @@ package org.springframework.messaging.converter;
 
 import java.util.Locale;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.core.convert.ConversionException;
 import org.springframework.core.convert.ConversionService;
@@ -36,9 +34,6 @@ import static org.junit.Assert.*;
  * @author Stephane Nicoll
  */
 public class GenericMessageConverterTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 	private final ConversionService conversionService = new DefaultConversionService();
 	private final GenericMessageConverter converter = new GenericMessageConverter(conversionService);

@@ -20,9 +20,7 @@ import java.lang.reflect.Method;
 import javax.jms.JMSException;
 import javax.jms.Session;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.jms.StubTextMessage;
@@ -49,10 +47,6 @@ import static org.mockito.Mockito.*;
  * @author Stephane Nicoll
  */
 public abstract class AbstractJmsAnnotationDrivenTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
-
 
 	@Test
 	public abstract void sampleConfiguration();

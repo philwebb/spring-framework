@@ -25,16 +25,14 @@ import java.util.Set;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import org.springframework.tests.sample.objects.TestObject;
 import org.springframework.util.ClassUtils;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.junit.Assert.*;
 
 /**
@@ -44,10 +42,6 @@ import static org.junit.Assert.*;
  * @author Sam Brannen
  */
 public class ConventionsTests {
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
-
 
 	@Test
 	public void simpleObject() {

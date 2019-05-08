@@ -21,9 +21,7 @@ import javax.jms.MessageListener;
 import javax.jms.Session;
 import javax.transaction.TransactionManager;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.beans.DirectFieldAccessor;
 import org.springframework.jms.StubConnectionFactory;
@@ -42,7 +40,7 @@ import org.springframework.jms.support.destination.DynamicDestinationResolver;
 import org.springframework.util.backoff.BackOff;
 import org.springframework.util.backoff.FixedBackOff;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -58,10 +56,6 @@ public class JmsListenerContainerFactoryTests {
 	private final MessageConverter messageConverter = new SimpleMessageConverter();
 
 	private final TransactionManager transactionManager = mock(TransactionManager.class);
-
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 
 	@Test

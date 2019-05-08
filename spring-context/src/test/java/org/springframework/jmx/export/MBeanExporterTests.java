@@ -34,9 +34,7 @@ import javax.management.ObjectInstance;
 import javax.management.ObjectName;
 import javax.management.modelmbean.ModelMBeanInfo;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.beans.factory.FactoryBean;
@@ -57,6 +55,7 @@ import org.springframework.jmx.support.RegistrationPolicy;
 import org.springframework.tests.aop.interceptor.NopInterceptor;
 import org.springframework.tests.sample.beans.TestBean;
 
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
@@ -72,9 +71,6 @@ import static org.junit.Assert.*;
  * @author Stephane Nicoll
  */
 public class MBeanExporterTests extends AbstractMBeanServerTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 	private static final String OBJECT_NAME = "spring:test=jmxMBeanAdaptor";
 

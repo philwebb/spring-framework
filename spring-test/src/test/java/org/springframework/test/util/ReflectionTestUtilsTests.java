@@ -18,9 +18,7 @@ package org.springframework.test.util;
 
 import org.junit.Before;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.aop.support.AopUtils;
@@ -31,7 +29,6 @@ import org.springframework.test.util.subpackage.PersonEntity;
 import org.springframework.test.util.subpackage.StaticFields;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.springframework.test.util.ReflectionTestUtils.*;
 
@@ -50,9 +47,6 @@ public class ReflectionTestUtilsTests {
 	private final Component component = new Component();
 
 	private final LegacyEntity entity = new LegacyEntity();
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
 
 
 	@Before

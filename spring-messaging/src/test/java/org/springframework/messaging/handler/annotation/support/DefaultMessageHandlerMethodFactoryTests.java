@@ -26,7 +26,6 @@ import java.util.Map;
 
 import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 import org.junit.rules.TestName;
 
 import org.springframework.beans.factory.support.StaticListableBeanFactory;
@@ -59,9 +58,6 @@ public class DefaultMessageHandlerMethodFactoryTests {
 
 	@Rule
 	public final TestName name = new TestName();
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 
 	@Test

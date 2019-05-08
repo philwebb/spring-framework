@@ -22,9 +22,7 @@ import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 import org.mockito.ArgumentCaptor;
 
 import org.springframework.http.HttpHeaders;
@@ -57,10 +55,6 @@ public class DefaultTransportRequestTests {
 	private TestTransport webSocketTransport;
 
 	private TestTransport xhrTransport;
-
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 
 	@SuppressWarnings("unchecked")

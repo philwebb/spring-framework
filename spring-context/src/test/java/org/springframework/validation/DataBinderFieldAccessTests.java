@@ -19,9 +19,7 @@ package org.springframework.validation;
 import java.beans.PropertyEditorSupport;
 import java.util.Map;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.NotWritablePropertyException;
@@ -39,9 +37,6 @@ import static org.junit.Assert.*;
  * @since 07.03.2006
  */
 public class DataBinderFieldAccessTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 	@Test
 	public void bindingNoErrors() throws Exception {

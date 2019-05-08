@@ -20,9 +20,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.CacheTestUtils;
@@ -36,7 +34,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 /**
  * Provides various failure scenario linked to the use of {@link Cacheable#sync()}.
@@ -45,9 +43,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
  * @since 4.3
  */
 public class CacheSyncFailureTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 	private ConfigurableApplicationContext context;
 

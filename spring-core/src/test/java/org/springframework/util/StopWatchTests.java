@@ -16,10 +16,9 @@
 
 package org.springframework.util;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
@@ -31,9 +30,6 @@ import static org.junit.Assert.*;
 public class StopWatchTests {
 
 	private final StopWatch sw = new StopWatch();
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
 
 	@Test
 	public void validUsage() throws Exception {

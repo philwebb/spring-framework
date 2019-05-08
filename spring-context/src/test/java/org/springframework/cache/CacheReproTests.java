@@ -21,9 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 import org.mockito.Mockito;
 
 import org.springframework.cache.annotation.CachePut;
@@ -43,7 +41,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.Nullable;
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -55,10 +53,6 @@ import static org.mockito.Mockito.*;
  * @author Stephane Nicoll
  */
 public class CacheReproTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
-
 
 	@Test
 	public void spr11124MultipleAnnotations() throws Exception {

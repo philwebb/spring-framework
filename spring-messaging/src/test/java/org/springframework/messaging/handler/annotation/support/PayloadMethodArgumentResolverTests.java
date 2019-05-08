@@ -24,9 +24,7 @@ import java.lang.reflect.Method;
 import java.util.Locale;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.MethodParameter;
@@ -40,6 +38,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
 
@@ -67,10 +66,6 @@ public class PayloadMethodArgumentResolverTests {
 	private MethodParameter paramValidatedNotAnnotated;
 
 	private MethodParameter paramValidated;
-
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 
 	@Before

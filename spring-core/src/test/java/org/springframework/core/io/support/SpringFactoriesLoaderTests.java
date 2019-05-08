@@ -19,11 +19,9 @@ package org.springframework.core.io.support;
 import java.lang.reflect.Modifier;
 import java.util.List;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.junit.Assert.*;
 
 /**
@@ -34,9 +32,6 @@ import static org.junit.Assert.*;
  * @author Sam Brannen
  */
 public class SpringFactoriesLoaderTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 	@Test
 	public void loadFactoriesInCorrectOrder() {

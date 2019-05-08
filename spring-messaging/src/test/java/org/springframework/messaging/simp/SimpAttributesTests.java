@@ -20,9 +20,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 import org.mockito.Mockito;
 
 import static org.assertj.core.api.Assertions.*;

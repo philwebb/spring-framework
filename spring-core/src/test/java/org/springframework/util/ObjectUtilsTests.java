@@ -24,9 +24,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -43,10 +41,6 @@ import static org.springframework.util.ObjectUtils.*;
  * @author Sam Brannen
  */
 public class ObjectUtilsTests {
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
-
 
 	@Test
 	public void isCheckedException() {

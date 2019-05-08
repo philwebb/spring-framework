@@ -16,9 +16,7 @@
 
 package org.springframework.test.util;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.hamcrest.core.Is.*;
@@ -51,9 +49,6 @@ public class JsonPathExpectationsHelperTests {
 			"{'name': 'Lisa'  }, " + //
 			"{'name': 'Maggie'}  " + //
 	" ] }";
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 
 	@Test

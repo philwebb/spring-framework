@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Rule;
-import temp.ExpectedException;
 import org.junit.rules.TestName;
 
 import org.springframework.cache.Cache;
@@ -37,9 +36,6 @@ import org.springframework.cache.support.SimpleCacheManager;
  * @author Stephane Nicoll
  */
 public abstract class AbstractJCacheTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 	@Rule
 	public final TestName name = new TestName();

@@ -16,14 +16,11 @@
 
 package org.springframework.test.context.support;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.test.context.MergedContextConfiguration;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 /**

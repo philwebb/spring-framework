@@ -18,11 +18,9 @@ package org.springframework.util.comparator;
 
 import java.util.Comparator;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 /**
  * Test for {@link CompoundComparator}.

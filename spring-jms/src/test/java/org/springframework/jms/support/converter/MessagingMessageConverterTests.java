@@ -22,15 +22,13 @@ import javax.jms.ObjectMessage;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.jms.StubTextMessage;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
@@ -40,9 +38,6 @@ import static org.mockito.BDDMockito.*;
 public class MessagingMessageConverterTests {
 
 	private final MessagingMessageConverter converter = new MessagingMessageConverter();
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 
 	@Test

@@ -31,9 +31,7 @@ import javax.annotation.PostConstruct;
 
 import org.junit.After;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
@@ -76,9 +74,6 @@ import static org.junit.Assert.*;
  * @author Juergen Hoeller
  */
 public class AnnotationDrivenEventListenerTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 	private ConfigurableApplicationContext context;
 

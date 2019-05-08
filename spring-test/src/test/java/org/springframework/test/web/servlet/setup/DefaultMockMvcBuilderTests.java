@@ -16,9 +16,7 @@
 
 package org.springframework.test.web.servlet.setup;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.beans.DirectFieldAccessor;
 import org.springframework.context.support.StaticApplicationContext;
@@ -30,7 +28,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 
@@ -45,10 +42,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 public class DefaultMockMvcBuilderTests {
 
 	private final MockServletContext servletContext = new MockServletContext();
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
-
 
 	@Test
 	public void webAppContextSetupWithNullWac() {

@@ -30,9 +30,7 @@ import javax.jms.Topic;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.beans.factory.support.StaticListableBeanFactory;
 import org.springframework.jms.StubTextMessage;
@@ -47,7 +45,7 @@ import org.springframework.messaging.handler.annotation.support.DefaultMessageHa
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.util.ReflectionUtils;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
@@ -56,9 +54,6 @@ import static org.mockito.BDDMockito.*;
  * @author Stephane Nicoll
  */
 public class MessagingMessageListenerAdapterTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 	private static final Destination sharedReplyDestination = mock(Destination.class);
 

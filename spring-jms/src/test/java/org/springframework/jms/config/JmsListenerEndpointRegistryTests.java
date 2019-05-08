@@ -16,11 +16,10 @@
 
 package org.springframework.jms.config;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 /**
  * @author Stephane Nicoll
@@ -30,10 +29,6 @@ public class JmsListenerEndpointRegistryTests {
 	private final JmsListenerEndpointRegistry registry = new JmsListenerEndpointRegistry();
 
 	private final JmsListenerContainerTestFactory containerFactory = new JmsListenerContainerTestFactory();
-
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 
 	@Test

@@ -20,9 +20,7 @@ import java.util.NoSuchElementException;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.aop.framework.Advised;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -47,9 +45,6 @@ import static org.junit.Assert.*;
  * @author Stephane Nicoll
  */
 public class CommonsPool2TargetSourceTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 	/**
 	 * Initial count value set in bean factory XML

@@ -19,13 +19,11 @@ package org.springframework.test.context.junit4.statements;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 import org.junit.runners.model.Statement;
 import org.mockito.stubbing.Answer;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -38,9 +36,6 @@ import static org.mockito.Mockito.*;
 public class SpringFailOnTimeoutTests {
 
 	private Statement statement = mock(Statement.class);
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
 
 
 	@Test

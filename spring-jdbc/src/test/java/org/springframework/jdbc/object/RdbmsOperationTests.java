@@ -21,9 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.sql.DataSource;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -43,9 +41,6 @@ import static org.junit.Assert.*;
 public class RdbmsOperationTests {
 
 	private final TestRdbmsOperation operation = new TestRdbmsOperation();
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
 
 
 	@Test

@@ -36,9 +36,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.apache.commons.logging.LogFactory;
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
@@ -61,6 +59,7 @@ import org.springframework.util.StopWatch;
 import org.springframework.util.StringUtils;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -80,9 +79,6 @@ import static org.junit.Assert.*;
  * @author Stephane Nicoll
  */
 public abstract class AbstractPropertyAccessorTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 
 	protected abstract AbstractPropertyAccessor createAccessor(Object target);

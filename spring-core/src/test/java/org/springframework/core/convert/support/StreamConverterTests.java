@@ -21,9 +21,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.convert.ConverterNotFoundException;
@@ -40,9 +38,6 @@ import static org.junit.Assert.*;
  * @since 4.2
  */
 public class StreamConverterTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 	private final GenericConversionService conversionService = new GenericConversionService();
 

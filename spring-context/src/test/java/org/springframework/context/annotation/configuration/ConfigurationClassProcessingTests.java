@@ -24,9 +24,7 @@ import java.util.function.Supplier;
 import javax.annotation.Resource;
 import javax.inject.Provider;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.BeanFactory;
@@ -72,10 +70,6 @@ import static org.junit.Assert.*;
  * @author Sam Brannen
  */
 public class ConfigurationClassProcessingTests {
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
-
 
 	@Test
 	public void customBeanNameIsRespectedWhenConfiguredViaNameAttribute() {

@@ -16,12 +16,9 @@
 
 package org.springframework.test.context.web;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.hamcrest.CoreMatchers.*;
 
 /**
  * Unit tests for {@link AnnotationConfigWebContextLoader}.

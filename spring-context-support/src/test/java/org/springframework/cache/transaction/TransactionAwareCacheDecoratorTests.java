@@ -16,9 +16,7 @@
 
 package org.springframework.cache.transaction;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.cache.Cache;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
@@ -28,16 +26,13 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.junit.Assert.*;
 
 /**
  * @author Stephane Nicoll
  */
 public class TransactionAwareCacheDecoratorTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 	private final PlatformTransactionManager txManager = new CallCountingTransactionManager();
 

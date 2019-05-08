@@ -20,9 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
@@ -34,10 +32,6 @@ import static org.junit.Assert.*;
  * @since 21.11.2003
  */
 public class MethodInvokerTests {
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
-
 
 	@Test
 	public void plainMethodInvoker() throws Exception {

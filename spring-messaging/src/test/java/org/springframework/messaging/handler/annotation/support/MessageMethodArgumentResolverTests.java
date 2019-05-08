@@ -20,9 +20,7 @@ import java.lang.reflect.Method;
 import java.util.Locale;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.messaging.Message;
@@ -44,9 +42,6 @@ import static org.mockito.Mockito.*;
  * @author Juergen Hoeller
  */
 public class MessageMethodArgumentResolverTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 	private MessageConverter converter;
 

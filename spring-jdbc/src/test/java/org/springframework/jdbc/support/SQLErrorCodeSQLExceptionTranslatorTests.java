@@ -20,9 +20,7 @@ import java.sql.BatchUpdateException;
 import java.sql.DataTruncation;
 import java.sql.SQLException;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.dao.CannotAcquireLockException;
 import org.springframework.dao.CannotSerializeTransactionException;
@@ -35,7 +33,7 @@ import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.InvalidResultSetAccessException;
 import org.springframework.lang.Nullable;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.junit.Assert.*;
 
 /**
@@ -56,9 +54,6 @@ public class SQLErrorCodeSQLExceptionTranslatorTests {
 		ERROR_CODES.setDeadlockLoserCodes(new String[] { "8" });
 		ERROR_CODES.setCannotSerializeTransactionCodes(new String[] { "9" });
 	}
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
 
 
 	@Test

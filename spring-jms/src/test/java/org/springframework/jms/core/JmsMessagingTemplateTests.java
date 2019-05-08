@@ -27,9 +27,7 @@ import javax.jms.Session;
 import javax.jms.TextMessage;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 import org.mockito.ArgumentCaptor;
 import org.mockito.BDDMockito;
 import org.mockito.Captor;
@@ -61,9 +59,6 @@ import static org.mockito.BDDMockito.*;
  * @author Stephane Nicoll
  */
 public class JmsMessagingTemplateTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 	@Captor
 	private ArgumentCaptor<MessageCreator> messageCreator;

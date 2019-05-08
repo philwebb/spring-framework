@@ -16,9 +16,7 @@
 
 package org.springframework.util.unit;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
@@ -29,9 +27,6 @@ import static org.junit.Assert.*;
  * @author Stephane Nicoll
  */
 public class DataSizeTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 	@Test
 	public void ofBytesToBytes() {

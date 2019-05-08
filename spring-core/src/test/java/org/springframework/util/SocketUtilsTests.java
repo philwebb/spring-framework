@@ -22,9 +22,7 @@ import java.net.ServerSocket;
 import java.util.SortedSet;
 import javax.net.ServerSocketFactory;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
@@ -37,9 +35,6 @@ import static org.springframework.util.SocketUtils.*;
  * @author Gary Russell
  */
 public class SocketUtilsTests {
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
 
 	@Test
 	public void canBeInstantiated() {

@@ -20,9 +20,7 @@ import java.util.Collections;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -46,9 +44,6 @@ import static org.mockito.BDDMockito.*;
  * @author Stephane Nicoll
  */
 public class CacheErrorHandlerTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 	private Cache cache;
 

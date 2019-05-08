@@ -19,9 +19,7 @@ package org.springframework.transaction.interceptor;
 import java.io.Serializable;
 import java.util.Properties;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.beans.factory.BeanFactory;
@@ -44,10 +42,6 @@ import static org.mockito.BDDMockito.*;
  * @since 16.03.2003
  */
 public class TransactionInterceptorTests extends AbstractTransactionAspectTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
-
 
 	@Override
 	protected Object advised(Object target, PlatformTransactionManager ptm, TransactionAttributeSource[] tas) throws Exception {

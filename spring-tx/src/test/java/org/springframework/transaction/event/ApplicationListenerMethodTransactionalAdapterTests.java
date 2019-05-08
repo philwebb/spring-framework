@@ -18,9 +18,7 @@ package org.springframework.transaction.event;
 
 import java.lang.reflect.Method;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.context.PayloadApplicationEvent;
 import org.springframework.context.event.ApplicationListenerMethodAdapter;
@@ -34,10 +32,6 @@ import static org.junit.Assert.*;
  * @author Stephane Nicoll
  */
 public class ApplicationListenerMethodTransactionalAdapterTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
-
 
 	@Test
 	public void defaultPhase() {

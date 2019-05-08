@@ -19,9 +19,7 @@ package org.springframework.test.web.client;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpRequest;

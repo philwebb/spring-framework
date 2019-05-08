@@ -20,9 +20,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.UndeclaredThrowableException;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.context.ApplicationContext;
@@ -34,7 +32,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.util.ReflectionUtils;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -44,9 +41,6 @@ import static org.mockito.Mockito.*;
  * @author Stephane Nicoll
  */
 public class ApplicationListenerMethodAdapterTests extends AbstractApplicationEventListenerTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 	private final SampleEvents sampleEvents = spy(new SampleEvents());
 

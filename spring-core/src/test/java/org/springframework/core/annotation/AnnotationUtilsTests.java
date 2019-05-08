@@ -33,9 +33,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.subpackage.NonPublicAnnotatedClass;
@@ -61,10 +59,6 @@ import static org.springframework.core.annotation.AnnotationUtils.*;
  */
 @SuppressWarnings("deprecation")
 public class AnnotationUtilsTests {
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
-
 
 	@Before
 	public void clearCacheBeforeTests() {

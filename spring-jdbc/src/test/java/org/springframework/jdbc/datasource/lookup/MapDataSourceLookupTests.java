@@ -20,9 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.sql.DataSource;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.*;
@@ -34,9 +32,6 @@ import static org.junit.Assert.*;
 public class MapDataSourceLookupTests {
 
 	private static final String DATA_SOURCE_NAME = "dataSource";
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
 
 
 	@Test

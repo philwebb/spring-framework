@@ -19,9 +19,7 @@ package org.springframework.jdbc.config;
 import java.util.function.Predicate;
 import javax.sql.DataSource;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.config.BeanDefinition;

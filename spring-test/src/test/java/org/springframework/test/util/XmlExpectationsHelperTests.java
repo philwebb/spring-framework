@@ -16,10 +16,7 @@
 
 package org.springframework.test.util;
 
-import org.hamcrest.Matchers;
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -29,9 +26,6 @@ import static org.assertj.core.api.Assertions.*;
  * @author Matthew Depue
  */
 public class XmlExpectationsHelperTests {
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
 
 
 	@Test

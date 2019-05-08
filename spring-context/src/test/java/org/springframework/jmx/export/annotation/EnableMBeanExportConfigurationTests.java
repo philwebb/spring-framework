@@ -20,9 +20,7 @@ import javax.management.MBeanServer;
 import javax.management.ObjectName;
 
 import org.junit.After;
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -52,9 +50,6 @@ import static org.junit.Assert.*;
  * @see AnnotationLazyInitMBeanTests
  */
 public class EnableMBeanExportConfigurationTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 	private AnnotationConfigApplicationContext ctx;
 

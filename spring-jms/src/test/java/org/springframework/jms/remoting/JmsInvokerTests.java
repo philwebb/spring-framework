@@ -32,9 +32,7 @@ import javax.jms.QueueSession;
 import javax.jms.Session;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.jms.support.converter.MessageConversionException;
 import org.springframework.jms.support.converter.SimpleMessageConverter;
@@ -51,9 +49,6 @@ import static org.mockito.BDDMockito.*;
  * @author Stephane Nicoll
  */
 public class JmsInvokerTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 	private QueueConnectionFactory mockConnectionFactory;
 

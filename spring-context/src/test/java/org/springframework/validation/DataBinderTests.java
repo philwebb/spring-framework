@@ -36,9 +36,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.InvalidPropertyException;
@@ -69,7 +67,7 @@ import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.junit.Assert.*;
 
 /**
@@ -79,10 +77,6 @@ import static org.junit.Assert.*;
  * @author Kazuki Shimizu
  */
 public class DataBinderTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
-
 
 	@Test
 	public void testBindingNoErrors() throws BindException {

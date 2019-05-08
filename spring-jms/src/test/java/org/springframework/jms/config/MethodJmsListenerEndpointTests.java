@@ -32,7 +32,6 @@ import javax.jms.TextMessage;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 import org.junit.rules.TestName;
 
 import org.springframework.beans.DirectFieldAccessor;
@@ -81,9 +80,6 @@ public class MethodJmsListenerEndpointTests {
 
 	@Rule
 	public final TestName name = new TestName();
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 
 	@Before

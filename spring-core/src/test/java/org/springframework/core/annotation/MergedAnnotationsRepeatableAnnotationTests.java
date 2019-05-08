@@ -27,9 +27,7 @@ import java.lang.reflect.AnnotatedElement;
 import java.util.Set;
 
 import org.assertj.core.api.ThrowableTypeAssert;
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 

@@ -31,12 +31,12 @@ import java.nio.file.Paths;
 import org.hamcrest.Matchers;
 import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 
 import org.springframework.util.FileCopyUtils;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;

@@ -31,9 +31,7 @@ import java.util.Date;
 
 import org.hamcrest.Matchers;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 import org.mockito.ArgumentCaptor;
 
 import org.springframework.core.MethodParameter;

@@ -26,9 +26,7 @@ import javax.cache.annotation.CacheResult;
 import javax.cache.annotation.CacheValue;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -56,9 +54,6 @@ public class JCacheErrorHandlerTests {
 	private CacheErrorHandler errorHandler;
 
 	private SimpleService simpleService;
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 
 	@Before

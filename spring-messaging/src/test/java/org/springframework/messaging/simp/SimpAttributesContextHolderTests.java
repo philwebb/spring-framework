@@ -21,9 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;

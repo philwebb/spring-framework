@@ -26,23 +26,18 @@ import java.lang.annotation.Target;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.annotation.Resource;
 import javax.annotation.meta.When;
 
-import org.assertj.core.api.Condition;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.internal.ArrayComparisonFailure;
-import temp.ExpectedException;
 
 import org.springframework.core.annotation.AnnotationUtilsTests.ExtendsBaseClassWithGenericAnnotatedMethod;
 import org.springframework.core.annotation.AnnotationUtilsTests.ImplementsInterfaceWithGenericAnnotatedMethod;
@@ -53,13 +48,11 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Indexed;
 import org.springframework.util.MultiValueMap;
-import org.springframework.util.StringUtils;
 
 import static java.util.Arrays.*;
 import static java.util.stream.Collectors.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.springframework.core.annotation.AnnotatedElementUtils.*;
 import static org.springframework.core.annotation.AnnotationUtilsTests.*;
@@ -78,9 +71,6 @@ import static org.springframework.core.annotation.AnnotationUtilsTests.*;
 public class AnnotatedElementUtilsTests {
 
 	private static final String TX_NAME = Transactional.class.getName();
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
 
 
 	@Test

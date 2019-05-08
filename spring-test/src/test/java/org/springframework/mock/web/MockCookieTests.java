@@ -16,11 +16,9 @@
 
 package org.springframework.mock.web;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.junit.Assert.*;
 
 /**
@@ -31,9 +29,6 @@ import static org.junit.Assert.*;
  * @since 5.1
  */
 public class MockCookieTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 
 	@Test

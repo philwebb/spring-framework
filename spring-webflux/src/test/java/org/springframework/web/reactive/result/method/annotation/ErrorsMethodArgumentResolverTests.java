@@ -18,9 +18,7 @@ package org.springframework.web.reactive.result.method.annotation;
 
 import java.time.Duration;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoProcessor;
 
@@ -55,9 +53,6 @@ public class ErrorsMethodArgumentResolverTests {
 			MockServerWebExchange.from(MockServerHttpRequest.post("/path"));
 
 	private final ResolvableMethod testMethod = ResolvableMethod.on(getClass()).named("handle").build();
-
-	@Rule
-	public final ExpectedException expectedException = ExpectedException.none();
 
 
 	@Test

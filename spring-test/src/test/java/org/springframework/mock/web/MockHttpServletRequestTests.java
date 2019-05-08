@@ -29,15 +29,13 @@ import java.util.Locale;
 import java.util.Map;
 import javax.servlet.http.Cookie;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StreamUtils;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.junit.Assert.*;
 
 /**
@@ -56,9 +54,6 @@ public class MockHttpServletRequestTests {
 	private static final String HOST = "Host";
 
 	private final MockHttpServletRequest request = new MockHttpServletRequest();
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 
 	@Test

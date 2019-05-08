@@ -22,9 +22,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
@@ -52,9 +50,6 @@ public class HttpMessageConverterExtractorTests {
 	private HttpMessageConverterExtractor<?> extractor;
 
 	private final ClientHttpResponse response = mock(ClientHttpResponse.class);
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
 
 
 	@Test

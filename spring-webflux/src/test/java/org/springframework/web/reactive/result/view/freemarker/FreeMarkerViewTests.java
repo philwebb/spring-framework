@@ -23,9 +23,7 @@ import java.util.Locale;
 
 import freemarker.template.Configuration;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 import reactor.test.StepVerifier;
 
 import org.springframework.context.ApplicationContextException;
@@ -42,7 +40,7 @@ import org.springframework.web.server.adapter.DefaultServerWebExchange;
 import org.springframework.web.server.i18n.AcceptHeaderLocaleContextResolver;
 import org.springframework.web.server.session.DefaultWebSessionManager;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 
 /**
@@ -60,9 +58,6 @@ public class FreeMarkerViewTests {
 	private GenericApplicationContext context;
 
 	private Configuration freeMarkerConfig;
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 
 	@Before

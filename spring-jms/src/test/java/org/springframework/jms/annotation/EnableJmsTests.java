@@ -21,9 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import javax.jms.JMSException;
 import javax.jms.MessageListener;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -55,10 +53,6 @@ import static org.junit.Assert.*;
  * @author Sam Brannen
  */
 public class EnableJmsTests extends AbstractJmsAnnotationDrivenTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
-
 
 	@Override
 	@Test

@@ -19,9 +19,7 @@ package org.springframework.context.index;
 import java.io.IOException;
 import java.util.Set;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.core.io.ClassPathResource;
 
@@ -35,10 +33,6 @@ import static org.hamcrest.Matchers.*;
  * @author Stephane Nicoll
  */
 public class CandidateComponentsIndexLoaderTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
-
 
 	@Test
 	public void validateIndexIsDisabledByDefault() {

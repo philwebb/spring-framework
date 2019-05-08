@@ -19,9 +19,7 @@ package org.springframework.beans.factory.config;
 import java.util.Map;
 import java.util.Properties;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.DuplicateKeyException;
 import org.yaml.snakeyaml.scanner.ScannerException;

@@ -16,9 +16,7 @@
 
 package org.springframework.test.context.support;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.test.context.MergedContextConfiguration;
 

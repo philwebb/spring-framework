@@ -25,9 +25,7 @@ import java.util.Iterator;
 import java.util.Properties;
 import javax.inject.Inject;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.beans.factory.FactoryBean;

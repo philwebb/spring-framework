@@ -20,13 +20,11 @@ import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Session;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.jms.support.destination.DestinationResolver;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
@@ -34,9 +32,6 @@ import static org.mockito.BDDMockito.*;
  * @author Stephane Nicoll
  */
 public class JmsResponseTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 	@Test
 	public void destinationDoesNotUseDestinationResolver() throws JMSException {

@@ -21,9 +21,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.support.PropertiesBeanDefinitionReader;
@@ -55,9 +53,6 @@ public class StaticMessageSourceTests extends AbstractApplicationContextTests {
 			"This is another test message in the message catalog with no args.";
 
 	protected StaticApplicationContext sac;
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
 
 
 	@Test

@@ -20,9 +20,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import static java.util.Collections.*;
 import static org.assertj.core.api.Assertions.*;
@@ -38,9 +36,6 @@ import static org.assertj.core.api.Assertions.*;
  * @author Juergen Hoeller
  */
 public class AssertTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 
 	@Test

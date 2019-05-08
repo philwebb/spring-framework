@@ -27,9 +27,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
@@ -49,9 +47,6 @@ import static org.springframework.core.annotation.AnnotatedElementUtils.*;
  * @see MultipleComposedAnnotationsOnSingleAnnotatedElementTests
  */
 public class ComposedRepeatableAnnotationsTests {
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
 
 
 	@Test

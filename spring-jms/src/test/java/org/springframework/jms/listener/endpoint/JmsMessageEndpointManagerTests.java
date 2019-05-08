@@ -16,22 +16,17 @@
 
 package org.springframework.jms.listener.endpoint;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.jms.support.QosSettings;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.junit.Assert.*;
 
 /**
  * @author Stephane Nicoll
  */
 public class JmsMessageEndpointManagerTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 	@Test
 	public void isPubSubDomainWithQueue() {

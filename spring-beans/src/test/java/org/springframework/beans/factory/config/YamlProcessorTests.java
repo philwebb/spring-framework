@@ -19,9 +19,7 @@ package org.springframework.beans.factory.config;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 import org.yaml.snakeyaml.parser.ParserException;
 import org.yaml.snakeyaml.scanner.ScannerException;
 

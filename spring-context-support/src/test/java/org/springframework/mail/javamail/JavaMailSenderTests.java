@@ -35,9 +35,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.mail.MailParseException;
 import org.springframework.mail.MailSendException;
@@ -53,10 +51,6 @@ import static org.junit.Assert.*;
  * @since 09.10.2004
  */
 public class JavaMailSenderTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
-
 
 	@Test
 	public void javaMailSenderWithSimpleMessage() throws MessagingException, IOException {

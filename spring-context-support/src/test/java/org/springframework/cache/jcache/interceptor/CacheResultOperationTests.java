@@ -28,7 +28,7 @@ import org.junit.Test;
 
 import org.springframework.beans.factory.annotation.Value;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.junit.Assert.*;
 
 /**

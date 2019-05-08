@@ -37,7 +37,7 @@ import org.springframework.cache.jcache.support.TestableCacheResolverFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 

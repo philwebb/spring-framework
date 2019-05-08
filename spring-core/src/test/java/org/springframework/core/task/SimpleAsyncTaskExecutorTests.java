@@ -18,13 +18,12 @@ package org.springframework.core.task;
 
 import java.util.concurrent.ThreadFactory;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.util.ConcurrencyThrottleSupport;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
@@ -35,10 +34,6 @@ import static org.junit.Assert.*;
  * @author Sam Brannen
  */
 public class SimpleAsyncTaskExecutorTests {
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
-
 
 	@Test
 	public void cannotExecuteWhenConcurrencyIsSwitchedOff() throws Exception {

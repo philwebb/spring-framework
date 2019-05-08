@@ -19,9 +19,7 @@ package org.springframework.jdbc.support;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
@@ -42,9 +40,6 @@ import static org.junit.Assert.*;
 public class KeyHolderTests {
 
 	private final KeyHolder kh = new GeneratedKeyHolder();
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
 
 
 	@Test

@@ -26,16 +26,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.cache.interceptor.CacheEvictOperation;
 import org.springframework.cache.interceptor.CacheOperation;
 import org.springframework.cache.interceptor.CacheableOperation;
 import org.springframework.core.annotation.AliasFor;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
@@ -46,9 +44,6 @@ import static org.junit.Assert.*;
  * @author Sam Brannen
  */
 public class AnnotationCacheOperationSourceTests {
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
 
 	private final AnnotationCacheOperationSource source = new AnnotationCacheOperationSource();
 

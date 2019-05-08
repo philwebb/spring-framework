@@ -24,14 +24,12 @@ import javax.cache.annotation.CacheMethodDetails;
 import javax.cache.annotation.CacheResolver;
 import javax.cache.annotation.CacheResult;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.cache.Cache;
 import org.springframework.cache.jcache.AbstractJCacheTests;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
@@ -39,10 +37,6 @@ import static org.mockito.BDDMockito.*;
  * @author Stephane Nicoll
  */
 public class CacheResolverAdapterTests extends AbstractJCacheTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
-
 
 	@Test
 	public void resolveSimpleCache() throws Exception {

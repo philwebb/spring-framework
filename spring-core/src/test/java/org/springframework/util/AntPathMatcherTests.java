@@ -23,9 +23,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
@@ -43,9 +41,6 @@ import static org.junit.Assert.*;
 public class AntPathMatcherTests {
 
 	private final AntPathMatcher pathMatcher = new AntPathMatcher();
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
 
 
 	@Test

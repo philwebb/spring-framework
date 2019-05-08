@@ -19,9 +19,7 @@ package org.springframework.web.servlet.config.annotation;
 import java.io.IOException;
 import javax.servlet.ServletException;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,10 +48,6 @@ import static org.junit.Assert.*;
  * @since 4.1
  */
 public class ViewResolutionIntegrationTests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
-
 
 	@Test
 	public void freemarker() throws Exception {

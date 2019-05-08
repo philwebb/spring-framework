@@ -18,9 +18,7 @@ package org.springframework.jdbc.core;
 
 import java.util.List;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;

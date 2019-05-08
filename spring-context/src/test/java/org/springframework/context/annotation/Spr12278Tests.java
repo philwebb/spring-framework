@@ -17,9 +17,7 @@
 package org.springframework.context.annotation;
 
 import org.junit.After;
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.beans.factory.BeanCreationException;
 
@@ -31,9 +29,6 @@ import static org.hamcrest.core.Is.*;
  * @author Stephane Nicoll
  */
 public class Spr12278Tests {
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 	private AnnotationConfigApplicationContext context;
 

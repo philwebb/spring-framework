@@ -21,9 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.core.annotation.AnnotationUtilsTests.ImplicitAliasesContextConfig;
 
@@ -43,9 +41,6 @@ import static org.junit.Assert.*;
 public class AnnotationAttributesTests {
 
 	private AnnotationAttributes attributes = new AnnotationAttributes();
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 
 	@Test

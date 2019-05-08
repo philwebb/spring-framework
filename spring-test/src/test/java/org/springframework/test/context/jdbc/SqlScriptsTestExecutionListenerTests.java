@@ -16,9 +16,7 @@
 
 package org.springframework.test.context.jdbc;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 import org.mockito.BDDMockito;
 
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
@@ -43,9 +41,6 @@ public class SqlScriptsTestExecutionListenerTests {
 	private final SqlScriptsTestExecutionListener listener = new SqlScriptsTestExecutionListener();
 
 	private final TestContext testContext = mock(TestContext.class);
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
 
 
 	@Test

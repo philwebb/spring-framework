@@ -24,9 +24,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 import org.junit.runner.RunWith;
 
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
@@ -85,9 +83,6 @@ public class EventPublishingTestExecutionListenerIntegrationTests {
 	private final TestExecutionListener listener = testContext.getApplicationContext().getBean(TestExecutionListener.class);
 	private final Object testInstance = new ExampleTestCase();
 	private final Method traceableTestMethod = ReflectionUtils.findMethod(ExampleTestCase.class, "traceableTest");
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
 
 
 	@After

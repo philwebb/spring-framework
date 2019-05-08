@@ -22,9 +22,7 @@ import java.net.URI;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.util.concurrent.SettableListenableFuture;
 import org.springframework.web.socket.CloseStatus;
@@ -36,7 +34,7 @@ import org.springframework.web.socket.sockjs.frame.Jackson2SockJsMessageCodec;
 import org.springframework.web.socket.sockjs.frame.SockJsFrame;
 import org.springframework.web.socket.sockjs.transport.TransportType;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
@@ -57,9 +55,6 @@ public class ClientSockJsSessionTests {
 	private WebSocketHandler handler;
 
 	private SettableListenableFuture<WebSocketSession> connectFuture;
-
-	@Rule
-	public final ExpectedException thrown = ExpectedException.none();
 
 
 	@Before

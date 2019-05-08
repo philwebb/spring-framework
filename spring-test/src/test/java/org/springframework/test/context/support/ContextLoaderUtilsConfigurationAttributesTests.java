@@ -18,9 +18,7 @@ package org.springframework.test.context.support;
 
 import java.util.List;
 
-import org.junit.Rule;
 import org.junit.Test;
-import temp.ExpectedException;
 
 import org.springframework.core.annotation.AnnotationConfigurationException;
 import org.springframework.test.context.ContextConfiguration;
@@ -28,7 +26,6 @@ import org.springframework.test.context.ContextConfigurationAttributes;
 import org.springframework.test.context.ContextLoader;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.springframework.test.context.support.ContextLoaderUtils.*;
 
@@ -39,10 +36,6 @@ import static org.springframework.test.context.support.ContextLoaderUtils.*;
  * @since 3.1
  */
 public class ContextLoaderUtilsConfigurationAttributesTests extends AbstractContextConfigurationUtilsTests {
-
-	@Rule
-	public final ExpectedException exception = ExpectedException.none();
-
 
 	private void assertLocationsFooAttributes(ContextConfigurationAttributes attributes) {
 		assertAttributes(attributes, LocationsFoo.class, new String[] { "/foo.xml" }, EMPTY_CLASS_ARRAY,
