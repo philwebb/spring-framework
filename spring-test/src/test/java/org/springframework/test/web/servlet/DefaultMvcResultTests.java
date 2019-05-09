@@ -38,9 +38,10 @@ public class DefaultMvcResultTests {
 		this.mvcResult.getAsyncResult();
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test
 	public void getAsyncResultFailure() {
-		this.mvcResult.getAsyncResult(0);
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				this.mvcResult.getAsyncResult(0));
 	}
 
 }

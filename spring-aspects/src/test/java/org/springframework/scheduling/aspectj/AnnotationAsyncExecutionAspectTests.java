@@ -176,18 +176,12 @@ public class AnnotationAsyncExecutionAspectTests {
 		try {
 			assertFalse("Handler should not have been called", exceptionHandler.isCalled());
 			ClassWithException obj = new ClassWithException();
-			try {
-				obj.failWithVoid();
-				exceptionHandler.await(3000);
-				exceptionHandler.assertCalledWith(m, UnsupportedOperationException.class);
-			}
-			catch (Exception ex) {
-				fail("No unexpected exception should have been received but got " + ex.getMessage());
-			}
+			obj.failWithVoid();
+			exceptionHandler.await(3000);
+			exceptionHandler.assertCalledWith(m, UnsupportedOperationException.class);
 		}
 		finally {
 			AnnotationAsyncExecutionAspect.aspectOf().setExceptionHandler(defaultExceptionHandler);
-
 		}
 	}
 
@@ -215,7 +209,7 @@ public class AnnotationAsyncExecutionAspectTests {
 				wait(WAIT_TIME);
 			}
 			catch (InterruptedException ex) {
-				fail("Didn't finish the async job in " + WAIT_TIME + " milliseconds");
+				throw new AssertionError("Didn't finish the async job in " + WAIT_TIME + " milliseconds");
 			}
 		}
 	}

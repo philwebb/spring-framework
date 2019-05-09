@@ -18,6 +18,8 @@ package org.springframework.beans.factory.parsing;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+
 /**
  * Unit tests for {@link PropertyEntry}.
  *
@@ -26,19 +28,22 @@ import org.junit.Test;
  */
 public class PropertyEntryTests {
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testCtorBailsOnNullPropertyNameArgument() throws Exception {
-		new PropertyEntry(null);
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				new PropertyEntry(null));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testCtorBailsOnEmptyPropertyNameArgument() throws Exception {
-		new PropertyEntry("");
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				new PropertyEntry(""));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testCtorBailsOnWhitespacedPropertyNameArgument() throws Exception {
-		new PropertyEntry("\t   ");
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				new PropertyEntry("\t   "));
 	}
 
 }

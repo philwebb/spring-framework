@@ -24,9 +24,9 @@ import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.SideEffectBean;
 
+import static org.assertj.core.api.Assertions.assertThatNullPointerException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 import static org.springframework.tests.TestResourceUtils.qualifiedResource;
 
 /**
@@ -154,12 +154,7 @@ public class ThreadLocalTargetSourceTests {
 		source.destroy();
 
 		// try second time
-		try {
-			source.getTarget();
-		}
-		catch (NullPointerException ex) {
-			fail("Should not throw NPE");
-		}
+		assertThatNullPointerException().isThrownBy(source::getTarget);
 	}
 
 }

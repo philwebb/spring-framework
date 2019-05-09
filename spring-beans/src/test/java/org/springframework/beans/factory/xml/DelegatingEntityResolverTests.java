@@ -20,6 +20,8 @@ import org.junit.Test;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+
 /**
  * Unit tests for the {@link DelegatingEntityResolver} class.
  *
@@ -28,19 +30,22 @@ import org.xml.sax.InputSource;
  */
 public class DelegatingEntityResolverTests {
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testCtorWhereDtdEntityResolverIsNull() throws Exception {
-		new DelegatingEntityResolver(null, new NoOpEntityResolver());
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				new DelegatingEntityResolver(null, new NoOpEntityResolver()));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testCtorWhereSchemaEntityResolverIsNull() throws Exception {
-		new DelegatingEntityResolver(new NoOpEntityResolver(), null);
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				new DelegatingEntityResolver(new NoOpEntityResolver(), null));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testCtorWhereEntityResolversAreBothNull() throws Exception {
-		new DelegatingEntityResolver(null, null);
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				new DelegatingEntityResolver(null, null));
 	}
 
 

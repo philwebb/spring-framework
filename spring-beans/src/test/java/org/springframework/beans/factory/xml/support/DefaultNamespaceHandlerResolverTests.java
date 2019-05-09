@@ -22,9 +22,10 @@ import org.springframework.beans.factory.xml.DefaultNamespaceHandlerResolver;
 import org.springframework.beans.factory.xml.NamespaceHandler;
 import org.springframework.beans.factory.xml.UtilNamespaceHandler;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
 /**
  * Unit and integration tests for the {@link DefaultNamespaceHandlerResolver} class.
@@ -53,24 +54,15 @@ public class DefaultNamespaceHandlerResolverTests {
 	@Test
 	public void testNonExistentHandlerClass() throws Exception {
 		String mappingPath = "org/springframework/beans/factory/xml/support/nonExistent.properties";
-		try {
-			new DefaultNamespaceHandlerResolver(getClass().getClassLoader(), mappingPath);
-			// pass
-		}
-		catch (Throwable ex) {
-			fail("Non-existent handler classes must be ignored: " + ex);
-		}
+		assertThatExceptionOfType(Throwable.class).isThrownBy(() ->
+			new DefaultNamespaceHandlerResolver(getClass().getClassLoader(), mappingPath));
 	}
 
 	@Test
 	public void testResolveInvalidHandler() throws Exception {
 		String mappingPath = "org/springframework/beans/factory/xml/support/invalid.properties";
-		try {
-			new DefaultNamespaceHandlerResolver(getClass().getClassLoader(), mappingPath);
-			fail("Should not be able to map a class that doesn't implement NamespaceHandler");
-		}
-		catch (Throwable expected) {
-		}
+		assertThatExceptionOfType(Throwable.class).as("class that doesn't implement NamespaceHandler").isThrownBy(() ->
+			new DefaultNamespaceHandlerResolver(getClass().getClassLoader(), mappingPath));
 	}
 
 	@Test
@@ -79,9 +71,10 @@ public class DefaultNamespaceHandlerResolverTests {
 		new DefaultNamespaceHandlerResolver(null);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testCtorWithNullClassLoaderArgumentAndNullMappingLocationArgument() throws Exception {
-		new DefaultNamespaceHandlerResolver(null, null);
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				new DefaultNamespaceHandlerResolver(null, null));
 	}
 
 	@Test

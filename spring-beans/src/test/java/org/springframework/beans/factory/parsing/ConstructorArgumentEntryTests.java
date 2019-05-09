@@ -18,6 +18,8 @@ package org.springframework.beans.factory.parsing;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+
 /**
  * Unit tests for {@link ConstructorArgumentEntry}.
  *
@@ -26,9 +28,10 @@ import org.junit.Test;
  */
 public class ConstructorArgumentEntryTests {
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testCtorBailsOnNegativeCtorIndexArgument() {
-		new ConstructorArgumentEntry(-1);
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				new ConstructorArgumentEntry(-1));
 	}
 
 }

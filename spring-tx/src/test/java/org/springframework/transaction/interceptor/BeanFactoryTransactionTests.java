@@ -42,6 +42,7 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.TransactionStatus;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -191,15 +192,11 @@ public class BeanFactoryTransactionTests {
 	 */
 	@Test
 	public void testNoTransactionAttributeSource() {
-		try {
-			DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
-			new XmlBeanDefinitionReader(bf).loadBeanDefinitions(new ClassPathResource("noTransactionAttributeSource.xml", getClass()));
-			bf.getBean("noTransactionAttributeSource");
-			fail("Should require TransactionAttributeSource to be set");
-		}
-		catch (FatalBeanException ex) {
-			// Ok
-		}
+		assertThatExceptionOfType(FatalBeanException.class).isThrownBy(() -> {
+				DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
+				new XmlBeanDefinitionReader(bf).loadBeanDefinitions(new ClassPathResource("noTransactionAttributeSource.xml", getClass()));
+				bf.getBean("noTransactionAttributeSource");
+		});
 	}
 
 	/**
