@@ -25,7 +25,6 @@ import org.springframework.asm.MethodVisitor;
 import org.springframework.asm.SpringAsmInfo;
 import org.springframework.asm.Type;
 import org.springframework.core.annotation.MergedAnnotation;
-import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.core.type.MethodMetadata;
 import org.springframework.lang.Nullable;
 
@@ -48,7 +47,7 @@ final class SimpleMethodMetadataReadingVisitor extends MethodVisitor {
 
 	private final String descriptor;
 
-	private final List<MergedAnnotation<?>> annotations = new ArrayList<>(4);
+	private final List<MergedAnnotationSupplier<?>> annotations = new ArrayList<>(4);
 
 	private final Consumer<SimpleMethodMetadata> consumer;
 
@@ -72,7 +71,7 @@ final class SimpleMethodMetadataReadingVisitor extends MethodVisitor {
 	@Override
 	@Nullable
 	public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-		return MergedAnnotationReadingVisitor.get(this.classLoader, this::getSource,
+		return MergedAnnotationReadingVisitor.get(this.classLoader,
 				descriptor, visible, this.annotations::add);
 	}
 
@@ -80,7 +79,7 @@ final class SimpleMethodMetadataReadingVisitor extends MethodVisitor {
 	public void visitEnd() {
 		if (!this.annotations.isEmpty()) {
 			String returnTypeName = Type.getReturnType(this.descriptor).getClassName();
-			MergedAnnotations annotations = MergedAnnotations.of(this.annotations);
+			MergedAnnotationsSupplier annotations = MergedAnnotationsSupplier.from(this::getSource, this.annotations);
 			SimpleMethodMetadata metadata = new SimpleMethodMetadata(this.name,
 					this.access, this.declaringClassName, returnTypeName, annotations);
 			this.consumer.accept(metadata);

@@ -21,6 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 
 import org.junit.Test;
 
+import org.springframework.core.annotation.AliasFor;
 import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.core.type.AbstractAnnotationMetadataTests.TestMemberClass.TestMemberClassInnerClass;
 import org.springframework.core.type.AbstractAnnotationMetadataTests.TestMemberClass.TestMemberClassInnerInterface;
@@ -267,6 +268,14 @@ public abstract class AbstractAnnotationMetadataTests {
 								"direct", "meta");
 	}
 
+	// gh-22969
+	@Test
+	public void getClassNameWhenAnnotatedWithBadAliases() {
+		// For compatibility with Spring 5.1 we should allow most meta-data to be read
+		// even if annotations are bad
+		assertThat(get(WithBadAliases.class).getClassName()).isEqualTo(WithBadAliases.class.getName());
+	}
+
 	protected abstract AnnotationMetadata get(Class<?> source);
 
 	@Retention(RetentionPolicy.RUNTIME)
@@ -411,6 +420,22 @@ public abstract class AbstractAnnotationMetadataTests {
 		String name();
 
 		int size();
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	public static @interface AlaisedAnnotation {
+
+		@AliasFor("two")
+		String one() default "";
+
+		@AliasFor("one")
+		String two() default "";
+
+	}
+
+	@AlaisedAnnotation(one = "one", two = "different-to-one")
+	public static class WithBadAliases {
 
 	}
 

@@ -27,7 +27,6 @@ import org.springframework.asm.MethodVisitor;
 import org.springframework.asm.Opcodes;
 import org.springframework.asm.SpringAsmInfo;
 import org.springframework.core.annotation.MergedAnnotation;
-import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.core.type.MethodMetadata;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
@@ -61,7 +60,7 @@ final class SimpleAnnotationMetadataReadingVisitor extends ClassVisitor {
 
 	private Set<String> memberClassNames = new LinkedHashSet<>(4);
 
-	private List<MergedAnnotation<?>> annotations = new ArrayList<>();
+	private List<MergedAnnotationSupplier<?>> annotations = new ArrayList<>();
 
 	private List<SimpleMethodMetadata> annotatedMethods = new ArrayList<>();
 
@@ -117,7 +116,7 @@ final class SimpleAnnotationMetadataReadingVisitor extends ClassVisitor {
 	@Override
 	@Nullable
 	public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-		return MergedAnnotationReadingVisitor.get(this.classLoader, this::getSource,
+		return MergedAnnotationReadingVisitor.get(this.classLoader,
 				descriptor, visible, this.annotations::add);
 	}
 
@@ -140,7 +139,7 @@ final class SimpleAnnotationMetadataReadingVisitor extends ClassVisitor {
 	public void visitEnd() {
 		String[] memberClassNames = StringUtils.toStringArray(this.memberClassNames);
 		MethodMetadata[] annotatedMethods = this.annotatedMethods.toArray(new MethodMetadata[0]);
-		MergedAnnotations annotations = MergedAnnotations.of(this.annotations);
+		MergedAnnotationsSupplier annotations = MergedAnnotationsSupplier.from(this::getSource, this.annotations);
 		this.metadata = new SimpleAnnotationMetadata(this.className, this.access,
 				this.enclosingClassName, this.superClassName, this.independentInnerClass,
 				this.interfaceNames, memberClassNames, annotatedMethods, annotations);

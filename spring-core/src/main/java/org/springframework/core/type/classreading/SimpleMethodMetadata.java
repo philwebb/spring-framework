@@ -37,11 +37,11 @@ final class SimpleMethodMetadata implements MethodMetadata {
 
 	private final String returnTypeName;
 
-	private final MergedAnnotations annotations;
+	private Object annotations;
 
 
 	public SimpleMethodMetadata(String methodName, int access, String declaringClassName,
-			String returnTypeName, MergedAnnotations annotations) {
+			String returnTypeName, MergedAnnotationsSupplier annotations) {
 
 		this.methodName = methodName;
 		this.access = access;
@@ -92,7 +92,12 @@ final class SimpleMethodMetadata implements MethodMetadata {
 
 	@Override
 	public MergedAnnotations getAnnotations() {
-		return this.annotations;
+		Object annotations = this.annotations;
+		if (annotations instanceof MergedAnnotationsSupplier) {
+			annotations = ((MergedAnnotationsSupplier) annotations).get();
+			this.annotations = annotations;
+		}
+		return (MergedAnnotations) annotations;
 	}
 
 }

@@ -53,7 +53,7 @@ final class SimpleAnnotationMetadata implements AnnotationMetadata {
 
 	private final MethodMetadata[] annotatedMethods;
 
-	private final MergedAnnotations annotations;
+	private Object annotations;
 
 	@Nullable
 	private Set<String> annotationTypes;
@@ -61,7 +61,8 @@ final class SimpleAnnotationMetadata implements AnnotationMetadata {
 
 	SimpleAnnotationMetadata(String className, int access, @Nullable String enclosingClassName,
 			@Nullable String superClassName, boolean independentInnerClass, String[] interfaceNames,
-			String[] memberClassNames, MethodMetadata[] annotatedMethods, MergedAnnotations annotations) {
+			String[] memberClassNames, MethodMetadata[] annotatedMethods,
+			MergedAnnotationsSupplier annotations) {
 
 		this.className = className;
 		this.access = access;
@@ -153,9 +154,12 @@ final class SimpleAnnotationMetadata implements AnnotationMetadata {
 
 	@Override
 	public MergedAnnotations getAnnotations() {
-		return this.annotations;
+		Object annotations = this.annotations;
+		if (annotations instanceof MergedAnnotationsSupplier) {
+			annotations = ((MergedAnnotationsSupplier) annotations).get();
+			this.annotations = annotations;
+		}
+		return (MergedAnnotations) annotations;
 	}
-
-
 
 }

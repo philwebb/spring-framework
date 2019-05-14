@@ -23,19 +23,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import org.springframework.asm.AnnotationVisitor;
 import org.springframework.asm.SpringAsmInfo;
 import org.springframework.asm.Type;
 import org.springframework.core.annotation.AnnotationFilter;
-import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 
 /**
  * {@link AnnotationVisitor} that can be used to construct a
- * {@link MergedAnnotation}.
+ * {@link MergedAnnotationSupplier}.
  *
  * @author Phillip Webb
  * @since 5.2
@@ -46,22 +44,20 @@ class MergedAnnotationReadingVisitor<A extends Annotation> extends AnnotationVis
 	@Nullable
 	private final ClassLoader classLoader;
 
-	@Nullable
-	private final Object source;
-
 	private final Class<A> annotationType;
 
-	private final Consumer<MergedAnnotation<A>> consumer;
+	private final Consumer<MergedAnnotationSupplier<A>> consumer;
 
 	private final Map<String, Object> attributes = new LinkedHashMap<>(4);
 
+	private boolean nestedAnnotations = false;
 
-	public MergedAnnotationReadingVisitor(@Nullable ClassLoader classLoader, @Nullable Object source,
-			Class<A> annotationType, Consumer<MergedAnnotation<A>> consumer) {
+
+	public MergedAnnotationReadingVisitor(@Nullable ClassLoader classLoader,
+			Class<A> annotationType, Consumer<MergedAnnotationSupplier<A>> consumer) {
 
 		super(SpringAsmInfo.ASM_VERSION);
 		this.classLoader = classLoader;
-		this.source = source;
 		this.annotationType = annotationType;
 		this.consumer = consumer;
 	}
@@ -93,9 +89,9 @@ class MergedAnnotationReadingVisitor<A extends Annotation> extends AnnotationVis
 
 	@Override
 	public void visitEnd() {
-		MergedAnnotation<A> annotation = MergedAnnotation.of(
-				this.classLoader, this.source, this.annotationType, this.attributes);
-		this.consumer.accept(annotation);
+		MergedAnnotationSupplier<A> annotationSupplier = new MergedAnnotationSupplier<A>(
+				this.classLoader, this.annotationType, this.attributes, this.nestedAnnotations);
+		this.consumer.accept(annotationSupplier);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -108,21 +104,22 @@ class MergedAnnotationReadingVisitor<A extends Annotation> extends AnnotationVis
 	@SuppressWarnings("unchecked")
 	@Nullable
 	private <T extends Annotation> AnnotationVisitor visitAnnotation(
-			String descriptor, Consumer<MergedAnnotation<T>> consumer) {
+			String descriptor, Consumer<MergedAnnotationSupplier<T>> consumer) {
 
 		String className = Type.getType(descriptor).getClassName();
 		if (AnnotationFilter.PLAIN.matches(className)) {
 			return null;
 		}
 		Class<T> type = (Class<T>) ClassUtils.resolveClassName(className, this.classLoader);
-		return new MergedAnnotationReadingVisitor<>(this.classLoader, this.source, type, consumer);
+		this.nestedAnnotations = true;
+		return new MergedAnnotationReadingVisitor<>(this.classLoader, type, consumer);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Nullable
 	static <A extends Annotation> AnnotationVisitor get(@Nullable ClassLoader classLoader,
-			@Nullable Supplier<Object> sourceSupplier, String descriptor, boolean visible,
-			Consumer<MergedAnnotation<A>> consumer) {
+			String descriptor, boolean visible,
+			Consumer<MergedAnnotationSupplier<A>> consumer) {
 
 		if (!visible) {
 			return null;
@@ -133,10 +130,9 @@ class MergedAnnotationReadingVisitor<A extends Annotation> extends AnnotationVis
 			return null;
 		}
 
-		Object source = (sourceSupplier != null ? sourceSupplier.get() : null);
 		try {
 			Class<A> annotationType = (Class<A>) ClassUtils.forName(typeName, classLoader);
-			return new MergedAnnotationReadingVisitor<>(classLoader, source, annotationType, consumer);
+			return new MergedAnnotationReadingVisitor<>(classLoader, annotationType, consumer);
 		}
 		catch (ClassNotFoundException | LinkageError ex) {
 			return null;
