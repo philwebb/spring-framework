@@ -348,8 +348,8 @@ public class ProxyFactoryBeanTests {
 	 */
 	@Test
 	public void testCanAddAndRemoveAspectInterfacesOnPrototype() {
-		assertThat("Shouldn't implement TimeStamped before manipulation",
-				factory.getBean("test2"), not(instanceOf(TimeStamped.class)));
+		assertThat(factory.getBean("test2")).as("Shouldn't implement TimeStamped before manipulation")
+				.isNotInstanceOf(TimeStamped.class);
 
 		ProxyFactoryBean config = (ProxyFactoryBean) factory.getBean("&test2");
 		long time = 666L;
@@ -370,8 +370,8 @@ public class ProxyFactoryBeanTests {
 		// Check no change on existing object reference
 		assertTrue(ts.getTimeStamp() == time);
 
-		assertThat("Should no longer implement TimeStamped",
-				factory.getBean("test2"), not(instanceOf(TimeStamped.class)));
+		assertThat(factory.getBean("test2")).as("Should no longer implement TimeStamped")
+				.isNotInstanceOf(TimeStamped.class);
 
 		// Now check non-effect of removing interceptor that isn't there
 		config.removeAdvice(new DebugInterceptor());

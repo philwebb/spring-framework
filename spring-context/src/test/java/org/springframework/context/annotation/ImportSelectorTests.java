@@ -110,11 +110,11 @@ public class ImportSelectorTests {
 	@Test
 	public void correctMetaDataOnIndirectImports() {
 		new AnnotationConfigApplicationContext(IndirectConfig.class);
-		Matcher<String> isFromIndirect = equalTo(IndirectImport.class.getName());
-		assertThat(importFrom.get(ImportSelector1.class), isFromIndirect);
-		assertThat(importFrom.get(ImportSelector2.class), isFromIndirect);
-		assertThat(importFrom.get(DeferredImportSelector1.class), isFromIndirect);
-		assertThat(importFrom.get(DeferredImportSelector2.class), isFromIndirect);
+		String indirectImport = IndirectImport.class.getName();
+		assertThat(importFrom.get(ImportSelector1.class)).isEqualTo(indirectImport);
+		assertThat(importFrom.get(ImportSelector2.class)).isEqualTo(indirectImport);
+		assertThat(importFrom.get(DeferredImportSelector1.class)).isEqualTo(indirectImport);
+		assertThat(importFrom.get(DeferredImportSelector2.class)).isEqualTo(indirectImport);
 	}
 
 	@Test
@@ -162,13 +162,12 @@ public class ImportSelectorTests {
 		ordered.verify(beanFactory).registerBeanDefinition(eq("c"), any());
 		assertThat(TestImportGroup.instancesCount.get()).isEqualTo(2);
 		assertThat(TestImportGroup.imports.size()).isEqualTo(2);
-		assertThat(TestImportGroup.allImports(), hasEntry(
-				is(ParentConfiguration1.class.getName()),
-				IsIterableContainingInOrder.contains(DeferredImportSelector1.class.getName(),
-						ChildConfiguration1.class.getName())));
-		assertThat(TestImportGroup.allImports(), hasEntry(
-				is(ChildConfiguration1.class.getName()),
-				IsIterableContainingInOrder.contains(DeferredImportedSelector3.class.getName())));
+		assertThat(TestImportGroup.allImports())
+			.containsOnlyKeys(ParentConfiguration1.class.getName(), ChildConfiguration1.class.getName());
+		assertThat(TestImportGroup.allImports().get(ParentConfiguration1.class.getName()))
+			.containsExactly(DeferredImportSelector1.class.getName(), ChildConfiguration1.class.getName());
+		assertThat(TestImportGroup.allImports().get(ChildConfiguration1.class.getName()))
+			.containsExactly(DeferredImportedSelector3.class.getName());
 	}
 
 	@Test
@@ -182,13 +181,12 @@ public class ImportSelectorTests {
 		ordered.verify(beanFactory).registerBeanDefinition(eq("d"), any());
 		assertThat(TestImportGroup.instancesCount.get()).isEqualTo(2);
 		assertThat(TestImportGroup.allImports().size()).isEqualTo(2);
-		assertThat(TestImportGroup.allImports(), hasEntry(
-				is(ParentConfiguration2.class.getName()),
-				IsIterableContainingInOrder.contains(DeferredImportSelector2.class.getName(),
-						ChildConfiguration2.class.getName())));
-		assertThat(TestImportGroup.allImports(), hasEntry(
-				is(ChildConfiguration2.class.getName()),
-				IsIterableContainingInOrder.contains(DeferredImportSelector2.class.getName())));
+		assertThat(TestImportGroup.allImports())
+			.containsOnlyKeys(ParentConfiguration2.class.getName(), ChildConfiguration2.class.getName());
+		assertThat(TestImportGroup.allImports().get(ParentConfiguration2.class.getName()))
+			.containsExactly(DeferredImportSelector2.class.getName(), ChildConfiguration2.class.getName());
+		assertThat(TestImportGroup.allImports().get(ChildConfiguration2.class.getName()))
+			.containsExactly(DeferredImportSelector2.class.getName());
 	}
 
 	@Test

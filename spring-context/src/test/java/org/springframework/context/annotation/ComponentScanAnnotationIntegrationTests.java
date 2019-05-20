@@ -89,8 +89,8 @@ public class ComponentScanAnnotationIntegrationTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 		ctx.scan(example.scannable._package.class.getPackage().getName());
 		ctx.refresh();
-		assertThat("control scan for example.scannable package failed to register FooServiceImpl bean",
-				ctx.containsBean("fooServiceImpl"), is(true));
+		assertThat(ctx.containsBean("fooServiceImpl")).as(
+				"control scan for example.scannable package failed to register FooServiceImpl bean").isTrue();
 	}
 
 	@Test
@@ -100,10 +100,11 @@ public class ComponentScanAnnotationIntegrationTests {
 		ctx.refresh();
 		ctx.getBean(ComponentScanAnnotatedConfig.class);
 		ctx.getBean(TestBean.class);
-		assertThat("config class bean not found", ctx.containsBeanDefinition("componentScanAnnotatedConfig")).isTrue();
-		assertThat("@ComponentScan annotated @Configuration class registered directly against " +
-				"AnnotationConfigApplicationContext did not trigger component scanning as expected",
-				ctx.containsBean("fooServiceImpl"), is(true));
+		assertThat(ctx.containsBeanDefinition("componentScanAnnotatedConfig")).as("config class bean not found")
+			.isTrue();
+		assertThat(ctx.containsBean("fooServiceImpl")).as("@ComponentScan annotated @Configuration class registered directly against " +
+				"AnnotationConfigApplicationContext did not trigger component scanning as expected")
+			.isTrue();
 	}
 
 	@Test
@@ -113,10 +114,11 @@ public class ComponentScanAnnotationIntegrationTests {
 		ctx.refresh();
 		ctx.getBean(ComponentScanAnnotatedConfig_WithValueAttribute.class);
 		ctx.getBean(TestBean.class);
-		assertThat("config class bean not found", ctx.containsBeanDefinition("componentScanAnnotatedConfig_WithValueAttribute")).isTrue();
-		assertThat("@ComponentScan annotated @Configuration class registered directly against " +
-				"AnnotationConfigApplicationContext did not trigger component scanning as expected",
-				ctx.containsBean("fooServiceImpl"), is(true));
+		assertThat(ctx.containsBeanDefinition("componentScanAnnotatedConfig_WithValueAttribute")).as("config class bean not found")
+			.isTrue();
+		assertThat(ctx.containsBean("fooServiceImpl")).as("@ComponentScan annotated @Configuration class registered directly against " +
+				"AnnotationConfigApplicationContext did not trigger component scanning as expected")
+			.isTrue();
 	}
 
 	@Test
@@ -125,11 +127,13 @@ public class ComponentScanAnnotationIntegrationTests {
 		ctx.register(ComponentScanAnnotatedConfigWithImplicitBasePackage.class);
 		ctx.refresh();
 		ctx.getBean(ComponentScanAnnotatedConfigWithImplicitBasePackage.class);
-		assertThat("config class bean not found", ctx.containsBeanDefinition("componentScanAnnotatedConfigWithImplicitBasePackage")).isTrue();
-		assertThat("@ComponentScan annotated @Configuration class registered directly against " +
-				"AnnotationConfigApplicationContext did not trigger component scanning as expected",
-				ctx.containsBean("scannedComponent"), is(true));
-		assertThat("@Bean method overrides scanned class", ctx.getBean(ConfigurableComponent.class).isFlag()).isTrue();
+		assertThat(ctx.containsBeanDefinition("componentScanAnnotatedConfigWithImplicitBasePackage")).as("config class bean not found")
+			.isTrue();
+		assertThat(ctx.containsBean("scannedComponent")).as("@ComponentScan annotated @Configuration class registered directly against " +
+				"AnnotationConfigApplicationContext did not trigger component scanning as expected")
+			.isTrue();
+		assertThat(ctx.getBean(ConfigurableComponent.class).isFlag()).as("@Bean method overrides scanned class")
+			.isTrue();
 	}
 
 	@Test
@@ -141,11 +145,11 @@ public class ComponentScanAnnotationIntegrationTests {
 		ctx.getBean(SimpleComponent.class);
 		ctx.getBean(ClassWithNestedComponents.NestedComponent.class);
 		ctx.getBean(ClassWithNestedComponents.OtherNestedComponent.class);
-		assertThat("config class bean not found",
-				ctx.containsBeanDefinition("componentScanAnnotationIntegrationTests.ComposedAnnotationConfig"), is(true));
-		assertThat("@ComponentScan annotated @Configuration class registered directly against " +
-						"AnnotationConfigApplicationContext did not trigger component scanning as expected",
-				ctx.containsBean("simpleComponent"), is(true));
+		assertThat(ctx.containsBeanDefinition("componentScanAnnotationIntegrationTests.ComposedAnnotationConfig")).as("config class bean not found")
+			.isTrue();
+		assertThat(ctx.containsBean("simpleComponent")).as("@ComponentScan annotated @Configuration class registered directly against " +
+				"AnnotationConfigApplicationContext did not trigger component scanning as expected")
+			.isTrue();
 	}
 
 	@Test
@@ -159,10 +163,11 @@ public class ComponentScanAnnotationIntegrationTests {
 		ctx.refresh();
 		ctx.getBean(ComponentScanAnnotatedConfig.class);
 		ctx.getBean(TestBean.class);
-		assertThat("config class bean not found", ctx.containsBeanDefinition("componentScanAnnotatedConfig")).isTrue();
-		assertThat("@ComponentScan annotated @Configuration class registered " +
-				"as bean definition did not trigger component scanning as expected",
-				ctx.containsBean("fooServiceImpl"), is(true));
+		assertThat(ctx.containsBeanDefinition("componentScanAnnotatedConfig")).as("config class bean not found")
+			.isTrue();
+		assertThat(ctx.containsBean("fooServiceImpl")).as("@ComponentScan annotated @Configuration class registered as bean " +
+				"definition did not trigger component scanning as expected")
+			.isTrue();
 	}
 
 	@Test

@@ -18,6 +18,7 @@ package org.springframework.context.annotation;
 
 import java.io.Closeable;
 
+import org.assertj.core.api.AbstractBooleanAssert;
 import org.junit.Test;
 
 import org.springframework.beans.factory.DisposableBean;
@@ -49,27 +50,27 @@ public class DestroyMethodInferenceTests {
 		WithInheritedCloseMethod c8 = ctx.getBean("c8", WithInheritedCloseMethod.class);
 		WithDisposableBean c9 = ctx.getBean("c9", WithDisposableBean.class);
 
-		assertThat(c0.closed).isFalse();
-		assertThat(c1.closed).isFalse();
-		assertThat(c2.closed).isFalse();
-		assertThat(c3.closed).isFalse();
-		assertThat(c4.closed).isFalse();
-		assertThat(c5.closed).isFalse();
-		assertThat(c6.closed).isFalse();
-		assertThat(c7.closed).isFalse();
-		assertThat(c8.closed).isFalse();
-		assertThat(c9.closed).isFalse();
+		assertThat(c0.closed).as("c0").isFalse();
+		assertThat(c1.closed).as("c1").isFalse();
+		assertThat(c2.closed).as("c2").isFalse();
+		assertThat(c3.closed).as("c3").isFalse();
+		assertThat(c4.closed).as("c4").isFalse();
+		assertThat(c5.closed).as("c5").isFalse();
+		assertThat(c6.closed).as("c6").isFalse();
+		assertThat(c7.closed).as("c7").isFalse();
+		assertThat(c8.closed).as("c8").isFalse();
+		assertThat(c9.closed).as("c9").isFalse();
 		ctx.close();
-		assertThat("c0", c0.closed).isTrue();
-		assertThat("c1", c1.closed).isTrue();
-		assertThat("c2", c2.closed).isTrue();
-		assertThat("c3", c3.closed).isTrue();
-		assertThat("c4", c4.closed).isTrue();
-		assertThat("c5", c5.closed).isTrue();
-		assertThat("c6", c6.closed).isFalse();
-		assertThat("c7", c7.closed).isTrue();
-		assertThat("c8", c8.closed).isFalse();
-		assertThat("c9", c9.closed).isTrue();
+		assertThat(c0.closed).as("c0").isTrue();
+		assertThat(c1.closed).as("c1").isTrue();
+		assertThat(c2.closed).as("c2").isTrue();
+		assertThat(c3.closed).as("c3").isTrue();
+		assertThat(c4.closed).as("c4").isTrue();
+		assertThat(c5.closed).as("c5").isTrue();
+		assertThat(c6.closed).as("c6").isFalse();
+		assertThat(c7.closed).as("c7").isTrue();
+		assertThat(c8.closed).as("c8").isFalse();
+		assertThat(c9.closed).as("c9").isTrue();
 	}
 
 	@Test
