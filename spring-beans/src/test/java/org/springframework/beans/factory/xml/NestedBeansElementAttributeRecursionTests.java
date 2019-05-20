@@ -96,19 +96,19 @@ public class NestedBeansElementAttributeRecursionTests {
 	private void assertMerge(DefaultListableBeanFactory bf) {
 		TestBean topLevel = bf.getBean("topLevelConcreteTestBean", TestBean.class);
 		// has the concrete child bean values
-		assertThat((Iterable<String>) topLevel.getSomeList(), hasItems("charlie", "delta"));
+		assertThat((Iterable<String>) topLevel.getSomeList()).contains("charlie", "delta");
 		// but does not merge the parent values
-		assertThat((Iterable<String>) topLevel.getSomeList()).isNotEqualTo(hasItems("alpha", "bravo"));
+		assertThat((Iterable<String>) topLevel.getSomeList()).doesNotContain("alpha", "bravo");
 
 		TestBean firstLevel = bf.getBean("firstLevelNestedTestBean", TestBean.class);
 		// merges all values
-		assertThat((Iterable<String>) firstLevel.getSomeList(),
-				hasItems("charlie", "delta", "echo", "foxtrot"));
+		assertThat((Iterable<String>) firstLevel.getSomeList()).contains(
+				"charlie", "delta", "echo", "foxtrot");
 
 		TestBean secondLevel = bf.getBean("secondLevelNestedTestBean", TestBean.class);
 		// merges all values
-		assertThat((Iterable<String>)secondLevel.getSomeList(),
-				hasItems("charlie", "delta", "echo", "foxtrot", "golf", "hotel"));
+		assertThat((Iterable<String>)secondLevel.getSomeList()).contains(
+				"charlie", "delta", "echo", "foxtrot", "golf", "hotel");
 	}
 
 	@Test
