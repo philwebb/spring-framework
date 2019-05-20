@@ -95,8 +95,7 @@ public class DelegatingDataSourceTests {
 	@Test
 	public void shouldDelegateUnwrapImplementing() throws Exception {
 		dataSource = new DelegatingDataSourceWithWrapper();
-		assertThat(dataSource.unwrap(ExampleWrapper.class),
-				is((ExampleWrapper) dataSource));
+		assertThat(dataSource.unwrap(ExampleWrapper.class)).isSameAs(dataSource);
 	}
 
 	@Test

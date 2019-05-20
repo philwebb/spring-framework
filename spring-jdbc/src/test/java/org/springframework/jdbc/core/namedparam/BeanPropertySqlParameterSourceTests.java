@@ -95,35 +95,32 @@ public class BeanPropertySqlParameterSourceTests {
 	@Test
 	public void toStringShowsParameterDetails() {
 		BeanPropertySqlParameterSource source = new BeanPropertySqlParameterSource(new TestBean("tb", 99));
-		assertThat(source.toString(), Matchers.allOf(
-				Matchers.startsWith("BeanPropertySqlParameterSource {"),
-				Matchers.endsWith("}"),
-				Matchers.containsString("name=tb (type:VARCHAR)"),
-				Matchers.containsString("age=99 (type:INTEGER)")
-		));
+		assertThat(source.toString())
+			.startsWith("BeanPropertySqlParameterSource {")
+			.contains("name=tb (type:VARCHAR)")
+			.contains("age=99 (type:INTEGER)")
+			.endsWith("}");
 	}
 
 	@Test
 	public void toStringShowsCustomSqlType() {
 		BeanPropertySqlParameterSource source = new BeanPropertySqlParameterSource(new TestBean("tb", 99));
 		source.registerSqlType("name", Integer.MAX_VALUE);
-		assertThat(source.toString(), Matchers.allOf(
-				Matchers.startsWith("BeanPropertySqlParameterSource {"),
-				Matchers.endsWith("}"),
-				Matchers.containsString("name=tb (type:" + Integer.MAX_VALUE + ")"),
-				Matchers.containsString("age=99 (type:INTEGER)")
-		));
+		assertThat(source.toString())
+				.startsWith("BeanPropertySqlParameterSource {")
+				.contains("name=tb (type:" + Integer.MAX_VALUE + ")")
+				.contains("age=99 (type:INTEGER)")
+				.endsWith("}");
 	}
 
 	@Test
 	public void toStringDoesNotShowTypeUnknown() {
 		BeanPropertySqlParameterSource source = new BeanPropertySqlParameterSource(new TestBean("tb", 99));
-		assertThat(source.toString(), Matchers.allOf(
-				Matchers.startsWith("BeanPropertySqlParameterSource {"),
-				Matchers.endsWith("}"),
-				Matchers.containsString("beanFactory=null"),
-				Matchers.not(Matchers.containsString("beanFactory=null (type:"))
-		));
+		assertThat(source.toString())
+				.startsWith("BeanPropertySqlParameterSource {")
+				.contains("beanFactory=null")
+				.doesNotContain("beanFactory=null (type:")
+				.endsWith("}");
 	}
 
 
