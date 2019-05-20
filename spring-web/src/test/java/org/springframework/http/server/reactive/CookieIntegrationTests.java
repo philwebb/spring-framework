@@ -32,7 +32,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import static org.hamcrest.CoreMatchers.equalTo;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 

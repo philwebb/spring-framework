@@ -33,7 +33,7 @@ import org.springframework.web.context.support.StaticWebApplicationContext;
 import org.springframework.web.servlet.View;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.hamcrest.CoreMatchers.instanceOf;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.junit.Assert.assertEquals;

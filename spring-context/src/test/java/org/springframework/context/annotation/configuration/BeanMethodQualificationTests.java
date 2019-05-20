@@ -35,7 +35,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.tests.sample.beans.NestedTestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.hamcrest.CoreMatchers.equalTo;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.junit.Assert.assertArrayEquals;

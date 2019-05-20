@@ -23,8 +23,8 @@ import org.junit.Test;
 
 import org.springframework.tests.mock.jndi.SimpleNamingContext;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.nullValue;
+
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.junit.Assert.assertEquals;

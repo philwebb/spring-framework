@@ -23,7 +23,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
-import static org.hamcrest.CoreMatchers.equalTo;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 

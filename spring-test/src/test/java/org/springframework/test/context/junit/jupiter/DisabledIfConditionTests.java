@@ -30,10 +30,10 @@ import org.springframework.test.context.TestContextManager;
 import org.springframework.test.context.junit.SpringJUnitJupiterTestSuite;
 import org.springframework.util.ReflectionUtils;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.endsWith;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
+
+
+
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.junit.jupiter.api.Assertions.assertAll;

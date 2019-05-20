@@ -24,7 +24,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.equalTo;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -52,7 +52,7 @@ public class SystemEnvironmentPropertySourceTests {
 	@Test
 	public void none() {
 		assertThat(ps.containsProperty("a.key")).isEqualTo(false);
-		assertThat(ps.getProperty("a.key")).isEqualTo(null);
+		assertThat(ps.getProperty("a.key")).isNull();
 	}
 
 	@Test

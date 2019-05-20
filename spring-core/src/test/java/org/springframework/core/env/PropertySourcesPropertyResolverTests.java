@@ -146,7 +146,7 @@ public class PropertySourcesPropertyResolverTests {
 		MutablePropertySources propertySources = new MutablePropertySources();
 		propertySources.addFirst(new MapPropertySource("testProperties", map));
 		PropertyResolver propertyResolver = new PropertySourcesPropertyResolver(propertySources);
-		assertThat(propertyResolver.getProperty("foo")).isEqualTo(null);
+		assertThat(propertyResolver.getProperty("foo")).isNull();
 		map.put("foo", "42");
 		assertThat(propertyResolver.getProperty("foo")).isEqualTo("42");
 	}

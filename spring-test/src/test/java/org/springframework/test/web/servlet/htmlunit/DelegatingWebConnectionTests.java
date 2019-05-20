@@ -39,8 +39,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.tests.Assume;
 import org.springframework.tests.TestGroup;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.sameInstance;
+
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 

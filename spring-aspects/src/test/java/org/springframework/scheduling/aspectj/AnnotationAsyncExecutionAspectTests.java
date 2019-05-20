@@ -38,7 +38,7 @@ import org.springframework.tests.TestGroup;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.concurrent.ListenableFuture;
 
-import static org.hamcrest.CoreMatchers.startsWith;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 

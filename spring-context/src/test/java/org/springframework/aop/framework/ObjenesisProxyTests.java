@@ -22,7 +22,7 @@ import org.springframework.aop.interceptor.DebugInterceptor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import static org.hamcrest.CoreMatchers.is;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 

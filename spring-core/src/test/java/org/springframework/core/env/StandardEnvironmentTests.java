@@ -442,7 +442,7 @@ public class StandardEnvironmentTests {
 			assertThat(systemProperties).isNotNull();
 			assertThat(systemProperties).isInstanceOf(ReadOnlySystemAttributesMap.class);
 			assertThat((String)systemProperties.get(ALLOWED_PROPERTY_NAME)).isEqualTo(ALLOWED_PROPERTY_VALUE);
-			assertThat(systemProperties.get(DISALLOWED_PROPERTY_NAME)).isEqualTo(null);
+			assertThat(systemProperties.get(DISALLOWED_PROPERTY_NAME)).isNull();
 
 			// nothing we can do here in terms of warning the user that there was
 			// actually a (non-string) value available. By this point, we only

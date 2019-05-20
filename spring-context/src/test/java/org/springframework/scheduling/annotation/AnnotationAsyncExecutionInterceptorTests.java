@@ -21,7 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 

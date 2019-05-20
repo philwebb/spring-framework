@@ -22,7 +22,7 @@ import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.aop.support.AopUtils;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.hamcrest.CoreMatchers.instanceOf;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.junit.Assert.assertNotSame;

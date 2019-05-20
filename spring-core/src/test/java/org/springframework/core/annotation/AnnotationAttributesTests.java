@@ -26,8 +26,8 @@ import org.junit.Test;
 import org.springframework.core.annotation.AnnotationUtilsTests.ImplicitAliasesContextConfig;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
+
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.junit.Assert.assertArrayEquals;

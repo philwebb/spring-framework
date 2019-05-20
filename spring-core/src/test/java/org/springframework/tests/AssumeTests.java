@@ -24,9 +24,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static java.util.stream.Collectors.joining;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.startsWith;
+
+
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.junit.Assert.fail;

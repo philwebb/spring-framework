@@ -26,7 +26,7 @@ import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.tests.beans.CollectingReaderEventListener;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 

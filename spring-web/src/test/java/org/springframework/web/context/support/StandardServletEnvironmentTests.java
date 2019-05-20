@@ -24,8 +24,8 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.tests.mock.jndi.SimpleNamingContextBuilder;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
+
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 

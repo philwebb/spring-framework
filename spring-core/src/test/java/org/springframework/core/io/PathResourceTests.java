@@ -240,13 +240,13 @@ public class PathResourceTests {
 	@Test
 	public void createRelativeFromDir() throws IOException {
 		Resource resource = new PathResource(TEST_DIR).createRelative("example.properties");
-		assertThat(resource).isEqualTo((Resource) new PathResource(TEST_FILE));
+		assertThat(resource).isEqualTo(new PathResource(TEST_FILE));
 	}
 
 	@Test
 	public void createRelativeFromFile() throws IOException {
 		Resource resource = new PathResource(TEST_FILE).createRelative("../example.properties");
-		assertThat(resource).isEqualTo((Resource) new PathResource(TEST_FILE));
+		assertThat(resource).isEqualTo(new PathResource(TEST_FILE));
 	}
 
 	@Test

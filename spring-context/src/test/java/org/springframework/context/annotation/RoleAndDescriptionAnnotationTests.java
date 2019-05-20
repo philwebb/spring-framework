@@ -22,7 +22,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.role.ComponentWithRole;
 import org.springframework.context.annotation.role.ComponentWithoutRole;
 
-import static org.hamcrest.CoreMatchers.is;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -42,7 +42,7 @@ public class RoleAndDescriptionAnnotationTests {
 		ctx.refresh();
 		assertThat("Expected bean to have ROLE_APPLICATION",
 				ctx.getBeanDefinition("foo").getRole(), is(BeanDefinition.ROLE_APPLICATION));
-		assertThat(ctx.getBeanDefinition("foo").getDescription()).isEqualTo((Object) null);
+		assertThat(ctx.getBeanDefinition("foo").getDescription()).isNull();
 		assertThat("Expected bean to have ROLE_INFRASTRUCTURE",
 				ctx.getBeanDefinition("bar").getRole(), is(BeanDefinition.ROLE_INFRASTRUCTURE));
 		assertThat(ctx.getBeanDefinition("bar").getDescription()).isEqualTo("A Bean method with a role");
@@ -55,7 +55,7 @@ public class RoleAndDescriptionAnnotationTests {
 		ctx.refresh();
 		assertThat("Expected bean to have ROLE_APPLICATION",
 				ctx.getBeanDefinition("componentWithoutRole").getRole(), is(BeanDefinition.ROLE_APPLICATION));
-		assertThat(ctx.getBeanDefinition("componentWithoutRole").getDescription()).isEqualTo((Object) null);
+		assertThat(ctx.getBeanDefinition("componentWithoutRole").getDescription()).isNull();
 		assertThat("Expected bean to have ROLE_INFRASTRUCTURE",
 				ctx.getBeanDefinition("componentWithRole").getRole(), is(BeanDefinition.ROLE_INFRASTRUCTURE));
 		assertThat(ctx.getBeanDefinition("componentWithRole").getDescription()).isEqualTo("A Component with a role");
@@ -69,7 +69,7 @@ public class RoleAndDescriptionAnnotationTests {
 		ctx.refresh();
 		assertThat("Expected bean to have ROLE_APPLICATION",
 				ctx.getBeanDefinition("componentWithoutRole").getRole(), is(BeanDefinition.ROLE_APPLICATION));
-		assertThat(ctx.getBeanDefinition("componentWithoutRole").getDescription()).isEqualTo((Object) null);
+		assertThat(ctx.getBeanDefinition("componentWithoutRole").getDescription()).isNull();
 		assertThat("Expected bean to have ROLE_INFRASTRUCTURE",
 				ctx.getBeanDefinition("componentWithRole").getRole(), is(BeanDefinition.ROLE_INFRASTRUCTURE));
 		assertThat(ctx.getBeanDefinition("componentWithRole").getDescription()).isEqualTo("A Component with a role");

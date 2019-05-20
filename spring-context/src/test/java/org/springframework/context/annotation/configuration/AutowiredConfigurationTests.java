@@ -44,7 +44,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.tests.sample.beans.Colour;
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.hamcrest.CoreMatchers.equalTo;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.junit.Assert.assertNull;

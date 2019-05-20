@@ -38,10 +38,10 @@ import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
 import org.springframework.stereotype.Component;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
+
+
+
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -359,7 +359,7 @@ public class AnnotationMetadataTests {
 			AnnotationAttributes specialAttrs = (AnnotationAttributes) metadata.getAnnotationAttributes(
 				SpecialAttr.class.getName(), true);
 			assertThat(specialAttrs).hasSize(6);
-			assertThat(specialAttrs.get("clazz")).isEqualTo((Object) String.class.getName());
+			assertThat(specialAttrs.get("clazz")).isEqualTo(String.class.getName());
 			assertThat(specialAttrs.getString("clazz")).isEqualTo(String.class.getName());
 
 			AnnotationAttributes nestedAnno = specialAttrs.getAnnotation("nestedAnno");

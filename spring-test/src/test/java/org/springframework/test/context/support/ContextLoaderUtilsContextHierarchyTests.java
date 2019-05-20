@@ -32,9 +32,9 @@ import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.ContextLoader;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.hasItems;
-import static org.hamcrest.CoreMatchers.is;
+
+
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.junit.Assert.assertArrayEquals;

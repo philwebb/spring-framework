@@ -30,7 +30,7 @@ import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.TriggerContext;
 import org.springframework.scheduling.support.ScheduledMethodRunnable;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.junit.Assert.assertEquals;

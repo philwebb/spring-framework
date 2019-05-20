@@ -21,7 +21,7 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.ClassUtils;
 
-import static org.hamcrest.CoreMatchers.is;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 

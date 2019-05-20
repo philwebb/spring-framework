@@ -32,7 +32,7 @@ import org.springframework.core.env.StandardEnvironmentTests;
 import org.springframework.stereotype.Component;
 
 import static java.lang.String.format;
-import static org.hamcrest.CoreMatchers.is;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 

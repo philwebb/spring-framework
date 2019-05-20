@@ -61,9 +61,9 @@ import org.springframework.util.StringUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
+
+
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -1109,11 +1109,11 @@ public abstract class AbstractPropertyAccessorTests {
 
 		Object[] array = new Object[] {"1", "2"};
 		accessor.setPropertyValue("object", array);
-		assertThat(target.getObject()).isEqualTo((Object) array);
+		assertThat(target.getObject()).isEqualTo(array);
 
 		array = new Object[] {"1"};
 		accessor.setPropertyValue("object", array);
-		assertThat(target.getObject()).isEqualTo((Object) array);
+		assertThat(target.getObject()).isEqualTo(array);
 	}
 
 

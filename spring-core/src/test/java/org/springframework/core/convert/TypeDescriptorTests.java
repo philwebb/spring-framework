@@ -763,9 +763,9 @@ public class TypeDescriptorTests {
 	public void getSource() throws Exception {
 		Field field = getClass().getField("fieldScalar");
 		MethodParameter methodParameter = new MethodParameter(getClass().getMethod("testParameterPrimitive", int.class), 0);
-		assertThat(new TypeDescriptor(field).getSource()).isEqualTo((Object) field);
-		assertThat(new TypeDescriptor(methodParameter).getSource()).isEqualTo((Object) methodParameter);
-		assertThat(TypeDescriptor.valueOf(Integer.class).getSource()).isEqualTo((Object) Integer.class);
+		assertThat(new TypeDescriptor(field).getSource()).isEqualTo(field);
+		assertThat(new TypeDescriptor(methodParameter).getSource()).isEqualTo(methodParameter);
+		assertThat(TypeDescriptor.valueOf(Integer.class).getSource()).isEqualTo(Integer.class);
 	}
 
 

@@ -23,7 +23,7 @@ import org.junit.Test;
 import org.springframework.mock.http.client.MockClientHttpRequest;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.hamcrest.CoreMatchers.equalTo;
+
 
 /**
  * Unit tests for {@link JsonPathRequestMatchers}.

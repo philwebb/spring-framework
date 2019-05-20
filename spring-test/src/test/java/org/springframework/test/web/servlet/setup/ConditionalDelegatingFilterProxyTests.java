@@ -236,12 +236,12 @@ public class ConditionalDelegatingFilterProxyTests {
 		filter = new PatternMappingFilterProxy(delegate, pattern);
 		filter.doFilter(request, response, filterChain);
 
-		assertThat(delegate.request).isEqualTo((ServletRequest) null);
-		assertThat(delegate.response).isEqualTo((ServletResponse) null);
-		assertThat(delegate.chain).isEqualTo((FilterChain) null);
+		assertThat(delegate.request).isNull();
+		assertThat(delegate.response).isNull();
+		assertThat(delegate.chain).isNull();
 
-		assertThat(filterChain.getRequest()).isEqualTo((ServletRequest) request);
-		assertThat(filterChain.getResponse()).isEqualTo((ServletResponse) response);
+		assertThat(filterChain.getRequest()).isEqualTo(request);
+		assertThat(filterChain.getResponse()).isEqualTo(response);
 		filterChain = new MockFilterChain();
 	}
 
@@ -250,9 +250,9 @@ public class ConditionalDelegatingFilterProxyTests {
 		filter = new PatternMappingFilterProxy(delegate, pattern);
 		filter.doFilter(request, response, filterChain);
 
-		assertThat(delegate.request).isEqualTo((ServletRequest) request);
-		assertThat(delegate.response).isEqualTo((ServletResponse) response);
-		assertThat(delegate.chain).isEqualTo((FilterChain) filterChain);
+		assertThat(delegate.request).isEqualTo(request);
+		assertThat(delegate.response).isEqualTo(response);
+		assertThat(delegate.chain).isEqualTo(filterChain);
 		delegate = new MockFilter();
 	}
 
