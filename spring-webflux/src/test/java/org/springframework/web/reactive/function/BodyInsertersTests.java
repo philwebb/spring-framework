@@ -69,7 +69,7 @@ import org.springframework.util.MultiValueMap;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.hamcrest.Matchers.containsString;
+
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.http.codec.json.Jackson2CodecSupport.JSON_VIEW_HINT;

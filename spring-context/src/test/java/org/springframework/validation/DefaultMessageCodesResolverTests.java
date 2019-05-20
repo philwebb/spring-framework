@@ -23,8 +23,8 @@ import org.springframework.validation.DefaultMessageCodesResolver.Format;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
+
+
 
 /**
  * Tests for {@link DefaultMessageCodesResolver}.

@@ -25,7 +25,7 @@ import org.springframework.orm.jpa.domain.Person;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.hamcrest.Matchers.containsInAnyOrder;
+
 
 /**
  * Tests for {@link DefaultPersistenceUnitManager}.

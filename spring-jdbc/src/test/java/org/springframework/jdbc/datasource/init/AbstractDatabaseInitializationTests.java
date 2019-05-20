@@ -29,7 +29,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.hamcrest.Matchers.equalTo;
+
 
 /**
  * Abstract base class for integration tests involving database initialization.

@@ -25,9 +25,9 @@ import org.springframework.cache.CacheManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
+
+
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 

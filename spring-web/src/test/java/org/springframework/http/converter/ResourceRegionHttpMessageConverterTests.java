@@ -40,7 +40,7 @@ import org.springframework.util.StringUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.hamcrest.Matchers.is;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 

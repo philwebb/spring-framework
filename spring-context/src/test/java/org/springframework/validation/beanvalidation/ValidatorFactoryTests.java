@@ -54,7 +54,7 @@ import org.springframework.validation.ObjectError;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.hamcrest.Matchers.instanceOf;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;

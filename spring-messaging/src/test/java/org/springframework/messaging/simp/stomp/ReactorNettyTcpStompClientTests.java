@@ -42,7 +42,7 @@ import org.springframework.util.concurrent.ListenableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.hamcrest.Matchers.containsInAnyOrder;
+
 import static org.junit.Assert.assertTrue;
 
 /**

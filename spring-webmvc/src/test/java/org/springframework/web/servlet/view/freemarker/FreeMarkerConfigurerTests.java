@@ -37,7 +37,7 @@ import org.springframework.ui.freemarker.SpringTemplateLoader;
 import static org.assertj.core.api.Assertions.assertThatIOException;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.hamcrest.Matchers.instanceOf;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 

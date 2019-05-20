@@ -42,8 +42,8 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
+
+
 
 /**
  * Test for {@link org.springframework.web.socket.adapter.standard.ConvertingEncoderDecoderSupport}.

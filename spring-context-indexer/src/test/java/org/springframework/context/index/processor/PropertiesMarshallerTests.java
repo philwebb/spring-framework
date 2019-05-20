@@ -26,7 +26,7 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.hamcrest.Matchers.hasSize;
+
 import static org.springframework.context.index.processor.Metadata.hasComponent;
 
 /**

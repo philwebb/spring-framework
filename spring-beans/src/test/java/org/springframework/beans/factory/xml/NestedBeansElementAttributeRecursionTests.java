@@ -27,7 +27,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.hamcrest.Matchers.hasItems;
+
 
 /**
  * Tests for propagating enclosing beans element defaults to nested beans elements.

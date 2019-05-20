@@ -27,7 +27,7 @@ import org.springframework.mock.web.test.MockHttpServletResponse;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.hamcrest.Matchers.is;
+
 
 /**
  * @author Rick Evans
