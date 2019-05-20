@@ -49,7 +49,7 @@ public class ExtendedBeanInfoFactoryTests {
 		class C {
 			public C setFoo(String s) { return this; }
 		}
-		assertThat(factory.getBeanInfo(C.class), notNullValue());
+		assertThat(factory.getBeanInfo(C.class)).isNotNull();
 	}
 
 	@Test
@@ -58,7 +58,7 @@ public class ExtendedBeanInfoFactoryTests {
 		class C {
 			public C setFoo(int i, String s) { return this; }
 		}
-		assertThat(factory.getBeanInfo(C.class), notNullValue());
+		assertThat(factory.getBeanInfo(C.class)).isNotNull();
 	}
 
 	@Test

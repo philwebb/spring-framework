@@ -99,7 +99,7 @@ public class SimpAttributesContextHolderTests {
 		SimpAttributesContextHolder.setAttributesFromMessage(message);
 
 		SimpAttributes attrs = SimpAttributesContextHolder.getAttributes();
-		assertThat(attrs, notNullValue());
+		assertThat(attrs).isNotNull();
 		assertThat(attrs.getSessionId()).isEqualTo(sessionId);
 
 		attrs.setAttribute("name1", "value1");

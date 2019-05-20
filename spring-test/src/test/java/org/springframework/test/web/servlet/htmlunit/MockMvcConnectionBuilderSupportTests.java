@@ -135,7 +135,7 @@ public class MockMvcConnectionBuilderSupportTests {
 
 
 	private void assertMockMvcUsed(WebConnection connection, String url) throws Exception {
-		assertThat(getResponse(connection, url), notNullValue());
+		assertThat(getResponse(connection, url)).isNotNull();
 	}
 
 	private void assertMockMvcNotUsed(WebConnection connection, String url) throws Exception {

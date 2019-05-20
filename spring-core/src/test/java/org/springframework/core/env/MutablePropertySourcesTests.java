@@ -176,7 +176,7 @@ public class MutablePropertySourcesTests {
 		MutablePropertySources sources = new MutablePropertySources();
 		sources.addLast(new MockPropertySource("test"));
 
-		assertThat(sources.stream(), notNullValue());
+		assertThat(sources.stream()).isNotNull();
 		assertThat(sources.stream().count()).isEqualTo(1L);
 		assertThat(sources.stream().anyMatch(source -> "test".equals(source.getName()))).isTrue();
 		assertThat(sources.stream().anyMatch(source -> "bogus".equals(source.getName()))).isFalse();
@@ -185,7 +185,7 @@ public class MutablePropertySourcesTests {
 	@Test
 	public void streamIsEmptyForEmptySources() {
 		MutablePropertySources sources = new MutablePropertySources();
-		assertThat(sources.stream(), notNullValue());
+		assertThat(sources.stream()).isNotNull();
 		assertThat(sources.stream().count()).isEqualTo(0L);
 	}
 

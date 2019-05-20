@@ -599,21 +599,21 @@ public class EnvironmentSystemIntegrationTests {
 
 	private void assertHasStandardEnvironment(ApplicationContext ctx) {
 		Environment defaultEnv = ctx.getEnvironment();
-		assertThat(defaultEnv, notNullValue());
+		assertThat(defaultEnv).isNotNull();
 		assertThat(defaultEnv).isInstanceOf(StandardEnvironment.class);
 	}
 
 	private void assertHasStandardServletEnvironment(WebApplicationContext ctx) {
 		// ensure a default servlet environment exists
 		Environment defaultEnv = ctx.getEnvironment();
-		assertThat(defaultEnv, notNullValue());
+		assertThat(defaultEnv).isNotNull();
 		assertThat(defaultEnv).isInstanceOf(StandardServletEnvironment.class);
 	}
 
 	private void assertHasEnvironment(ApplicationContext ctx, Environment expectedEnv) {
 		// ensure the custom environment took
 		Environment actualEnv = ctx.getEnvironment();
-		assertThat(actualEnv, notNullValue());
+		assertThat(actualEnv).isNotNull();
 		assertThat(actualEnv).isEqualTo(expectedEnv);
 		// ensure environment is registered as a bean
 		assertThat(ctx.containsBean(ENVIRONMENT_BEAN_NAME)).isTrue();

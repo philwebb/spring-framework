@@ -96,19 +96,19 @@ public class ContextHierarchyDirtiesContextTests {
 		Result result = jUnitCore.run(testClass);
 		assertTrue("all tests passed", result.wasSuccessful());
 
-		assertThat(ContextHierarchyDirtiesContextTests.context, notNullValue());
+		assertThat(ContextHierarchyDirtiesContextTests.context).isNotNull();
 
 		ConfigurableApplicationContext bazContext = (ConfigurableApplicationContext) ContextHierarchyDirtiesContextTests.context;
 		assertEquals("baz", ContextHierarchyDirtiesContextTests.baz);
 		assertThat("bazContext#isActive()", bazContext.isActive()).isEqualTo(isBazContextActive);
 
 		ConfigurableApplicationContext barContext = (ConfigurableApplicationContext) bazContext.getParent();
-		assertThat(barContext, notNullValue());
+		assertThat(barContext).isNotNull();
 		assertEquals("bar", ContextHierarchyDirtiesContextTests.bar);
 		assertThat("barContext#isActive()", barContext.isActive()).isEqualTo(isBarContextActive);
 
 		ConfigurableApplicationContext fooContext = (ConfigurableApplicationContext) barContext.getParent();
-		assertThat(fooContext, notNullValue());
+		assertThat(fooContext).isNotNull();
 		assertEquals("foo", ContextHierarchyDirtiesContextTests.foo);
 		assertThat("fooContext#isActive()", fooContext.isActive()).isEqualTo(isFooContextActive);
 	}

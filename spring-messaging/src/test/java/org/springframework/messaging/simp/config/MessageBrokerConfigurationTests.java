@@ -376,7 +376,7 @@ public class MessageBrokerConfigurationTests {
 		AbstractMessageBrokerConfiguration config = new BaseTestMessageBrokerConfig() {};
 		config.setApplicationContext(new StaticApplicationContext());
 
-		assertThat(config.simpValidator(), Matchers.notNullValue());
+		assertThat(config.simpValidator()).isNotNull();
 		assertThat(config.simpValidator()).isInstanceOf(OptionalValidatorFactoryBean.class);
 	}
 
@@ -400,7 +400,7 @@ public class MessageBrokerConfigurationTests {
 		AbstractMessageBrokerConfiguration config = new BaseTestMessageBrokerConfig() {};
 		config.setApplicationContext(appCxt);
 
-		assertThat(config.simpValidator(), Matchers.notNullValue());
+		assertThat(config.simpValidator()).isNotNull();
 		assertThat(config.simpValidator()).isInstanceOf(TestValidator.class);
 	}
 

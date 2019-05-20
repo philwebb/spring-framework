@@ -414,7 +414,7 @@ public class StandardEnvironmentTests {
 
 		{
 			Map<?, ?> systemProperties = environment.getSystemProperties();
-			assertThat(systemProperties, notNullValue());
+			assertThat(systemProperties).isNotNull();
 			assertSame(systemProperties, System.getProperties());
 			assertThat(systemProperties.get(ALLOWED_PROPERTY_NAME)).isEqualTo((Object)ALLOWED_PROPERTY_VALUE);
 			assertThat(systemProperties.get(DISALLOWED_PROPERTY_NAME)).isEqualTo((Object)DISALLOWED_PROPERTY_VALUE);
@@ -448,7 +448,7 @@ public class StandardEnvironmentTests {
 
 		{
 			Map<?, ?> systemProperties = environment.getSystemProperties();
-			assertThat(systemProperties, notNullValue());
+			assertThat(systemProperties).isNotNull();
 			assertThat(systemProperties).isInstanceOf(ReadOnlySystemAttributesMap.class);
 			assertThat((String)systemProperties.get(ALLOWED_PROPERTY_NAME)).isEqualTo(ALLOWED_PROPERTY_VALUE);
 			assertThat(systemProperties.get(DISALLOWED_PROPERTY_NAME)).isEqualTo(null);
@@ -482,7 +482,7 @@ public class StandardEnvironmentTests {
 
 		{
 			Map<String, Object> systemEnvironment = environment.getSystemEnvironment();
-			assertThat(systemEnvironment, notNullValue());
+			assertThat(systemEnvironment).isNotNull();
 			assertSame(systemEnvironment, System.getenv());
 		}
 
@@ -505,7 +505,7 @@ public class StandardEnvironmentTests {
 
 		{
 			Map<String, Object> systemEnvironment = environment.getSystemEnvironment();
-			assertThat(systemEnvironment, notNullValue());
+			assertThat(systemEnvironment).isNotNull();
 			assertThat(systemEnvironment).isInstanceOf(ReadOnlySystemAttributesMap.class);
 			assertThat(systemEnvironment.get(ALLOWED_PROPERTY_NAME)).isEqualTo((Object)ALLOWED_PROPERTY_VALUE);
 			assertThat(systemEnvironment.get(DISALLOWED_PROPERTY_NAME)).isNull();

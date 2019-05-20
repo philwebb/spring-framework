@@ -57,7 +57,7 @@ public class ConfigurationClassAndBFPPTests {
 		ctx.register(TestBeanConfig.class, AutowiredConfigWithBFPPAsStaticMethod.class);
 		ctx.refresh();
 		// static method BFPP does not interfere with lifecycle -> autowiring succeeds
-		assertThat(ctx.getBean(AutowiredConfigWithBFPPAsStaticMethod.class).autowiredTestBean, notNullValue());
+		assertThat(ctx.getBean(AutowiredConfigWithBFPPAsStaticMethod.class).autowiredTestBean).isNotNull();
 	}
 
 

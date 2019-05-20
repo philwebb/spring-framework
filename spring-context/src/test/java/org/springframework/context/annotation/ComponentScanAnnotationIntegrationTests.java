@@ -195,7 +195,7 @@ public class ComponentScanAnnotationIntegrationTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(ComponentScanWithCustomTypeFilter.class);
 		assertFalse(ctx.getDefaultListableBeanFactory().containsSingleton("componentScanParserTests.KustomAnnotationAutowiredBean"));
 		KustomAnnotationAutowiredBean testBean = ctx.getBean("componentScanParserTests.KustomAnnotationAutowiredBean", KustomAnnotationAutowiredBean.class);
-		assertThat(testBean.getDependency(), notNullValue());
+		assertThat(testBean.getDependency()).isNotNull();
 	}
 
 	@Test
@@ -217,7 +217,7 @@ public class ComponentScanAnnotationIntegrationTests {
 		// test serializability
 		assertThat(bean.foo(1)).isEqualTo("bar");
 		FooService deserialized = (FooService) SerializationTestUtils.serializeAndDeserialize(bean);
-		assertThat(deserialized, notNullValue());
+		assertThat(deserialized).isNotNull();
 		assertThat(deserialized.foo(1)).isEqualTo("bar");
 	}
 

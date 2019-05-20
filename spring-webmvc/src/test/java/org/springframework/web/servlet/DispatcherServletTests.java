@@ -780,7 +780,7 @@ public class DispatcherServletTests {
 	public void environmentOperations() {
 		DispatcherServlet servlet = new DispatcherServlet();
 		ConfigurableEnvironment defaultEnv = servlet.getEnvironment();
-		assertThat(defaultEnv, notNullValue());
+		assertThat(defaultEnv).isNotNull();
 		ConfigurableEnvironment env1 = new StandardServletEnvironment();
 		servlet.setEnvironment(env1); // should succeed
 		assertThat(servlet.getEnvironment()).isSameAs(env1);

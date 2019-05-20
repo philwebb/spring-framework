@@ -59,7 +59,7 @@ public class WebConnectionHtmlUnitDriverTests {
 
 	@Test
 	public void getWebConnectionDefaultNotNull() {
-		assertThat(this.driver.getWebConnection(), notNullValue());
+		assertThat(this.driver.getWebConnection()).isNotNull();
 	}
 
 	@Test

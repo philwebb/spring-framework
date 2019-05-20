@@ -715,7 +715,7 @@ public class HtmlUnitRequestBuilderTests {
 		MockHttpServletRequest actualRequest = requestBuilder.buildRequest(servletContext);
 
 		HttpSession newSession = actualRequest.getSession();
-		assertThat(newSession, notNullValue());
+		assertThat(newSession).isNotNull();
 		assertSingleSessionCookie(
 				"JSESSIONID=" + newSession.getId() + "; Path=/test; Domain=example.com");
 
@@ -753,7 +753,7 @@ public class HtmlUnitRequestBuilderTests {
 		MockHttpServletRequest actualRequest = requestBuilder.buildRequest(servletContext);
 
 		HttpSession session = actualRequest.getSession(true);
-		assertThat(session, notNullValue());
+		assertThat(session).isNotNull();
 	}
 
 	@Test
@@ -771,7 +771,7 @@ public class HtmlUnitRequestBuilderTests {
 		MockHttpServletRequest actualRequest = requestBuilder.buildRequest(servletContext);
 
 		HttpSession session = actualRequest.getSession(false);
-		assertThat(session, notNullValue());
+		assertThat(session).isNotNull();
 	}
 
 	@Test
@@ -902,7 +902,7 @@ public class HtmlUnitRequestBuilderTests {
 				.build();
 
 		Cookie[] cookies = mockMvc.perform(requestBuilder).andReturn().getRequest().getCookies();
-		assertThat(cookies, notNullValue());
+		assertThat(cookies).isNotNull();
 		assertThat(cookies.length).isEqualTo(1);
 		Cookie cookie = cookies[0];
 		assertThat(cookie.getName()).isEqualTo(cookieName);
