@@ -48,7 +48,7 @@ public class WebContentInterceptorTests {
 		interceptor.preHandle(request, response, null);
 
 		Iterable<String> cacheControlHeaders = response.getHeaders("Cache-Control");
-		assertThat(cacheControlHeaders, Matchers.hasItem("max-age=10"));
+		assertThat(cacheControlHeaders).contains("max-age=10");
 	}
 
 	@Test
@@ -72,7 +72,7 @@ public class WebContentInterceptorTests {
 		interceptor.preHandle(request, response, null);
 
 		cacheControlHeaders = response.getHeaders("Cache-Control");
-		assertThat(cacheControlHeaders, Matchers.hasItem("max-age=10"));
+		assertThat(cacheControlHeaders).contains("max-age=10");
 	}
 
 	@Test

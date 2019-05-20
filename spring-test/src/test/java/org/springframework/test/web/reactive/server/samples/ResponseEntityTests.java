@@ -111,7 +111,7 @@ public class ResponseEntityTests {
 				.expectStatus().isOk()
 				.expectHeader().contentType(MediaType.APPLICATION_JSON)
 				.expectBodyList(Person.class).value(people ->
-					MatcherAssert.assertThat(people, hasItem(new Person("Jason")))
+					MatcherAssert.assertThat(people).contains(new Person("Jason"))
 				);
 	}
 

@@ -251,7 +251,7 @@ public class StandardEnvironmentTests {
 	@Test
 	public void getActiveProfiles_fromSystemProperties() {
 		System.setProperty(ACTIVE_PROFILES_PROPERTY_NAME, "foo");
-		assertThat(Arrays.asList(environment.getActiveProfiles()), hasItem("foo"));
+		assertThat(Arrays.asList(environment.getActiveProfiles())).contains("foo");
 		System.getProperties().remove(ACTIVE_PROFILES_PROPERTY_NAME);
 	}
 
@@ -274,7 +274,7 @@ public class StandardEnvironmentTests {
 		assertThat(environment.getDefaultProfiles()).isEqualTo(new String[] {RESERVED_DEFAULT_PROFILE_NAME});
 		environment.getPropertySources().addFirst(new MockPropertySource().withProperty(DEFAULT_PROFILES_PROPERTY_NAME, "pd1"));
 		assertThat(environment.getDefaultProfiles().length).isEqualTo(1);
-		assertThat(Arrays.asList(environment.getDefaultProfiles()), hasItem("pd1"));
+		assertThat(Arrays.asList(environment.getDefaultProfiles())).contains("pd1");
 	}
 
 	@Test
@@ -282,7 +282,7 @@ public class StandardEnvironmentTests {
 		environment.setDefaultProfiles();
 		assertThat(environment.getDefaultProfiles().length).isEqualTo(0);
 		environment.setDefaultProfiles("pd1");
-		assertThat(Arrays.asList(environment.getDefaultProfiles()), hasItem("pd1"));
+		assertThat(Arrays.asList(environment.getDefaultProfiles())).contains("pd1");
 		environment.setDefaultProfiles("pd2", "pd3");
 		assertThat(Arrays.asList(environment.getDefaultProfiles())).isNotEqualTo(hasItem("pd1"));
 		assertThat(Arrays.asList(environment.getDefaultProfiles()), hasItems("pd2", "pd3"));

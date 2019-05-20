@@ -64,11 +64,11 @@ public class Spr8954Tests {
 		@SuppressWarnings("rawtypes")
 		Map<String, FactoryBean> fbBeans = bf.getBeansOfType(FactoryBean.class);
 		assertThat(fbBeans).hasSize(1);
-		assertThat(fbBeans.keySet(), hasItem("&foo"));
+		assertThat(fbBeans.keySet()).contains("&foo");
 
 		Map<String, AnInterface> aiBeans = bf.getBeansOfType(AnInterface.class);
 		assertThat(aiBeans).hasSize(1);
-		assertThat(aiBeans.keySet(), hasItem("&foo"));
+		assertThat(aiBeans.keySet()).contains("&foo");
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class Spr8954Tests {
 
 		Map<String, AnInterface> aiBeans = bf.getBeansOfType(AnInterface.class);
 		assertThat(aiBeans).hasSize(1);
-		assertThat(aiBeans.keySet(), hasItem("&foo"));
+		assertThat(aiBeans.keySet()).contains("&foo");
 	}
 
 	/**
@@ -91,11 +91,11 @@ public class Spr8954Tests {
 	@Test
 	public void findsFactoryBeanNameByTypeWithoutInstantiation() {
 		String[] names = bf.getBeanNamesForType(AnInterface.class, false, false);
-		assertThat(Arrays.asList(names), hasItem("&foo"));
+		assertThat(Arrays.asList(names)).contains("&foo");
 
 		Map<String, AnInterface> beans = bf.getBeansOfType(AnInterface.class, false, false);
 		assertThat(beans).hasSize(1);
-		assertThat(beans.keySet(), hasItem("&foo"));
+		assertThat(beans.keySet()).contains("&foo");
 	}
 
 
