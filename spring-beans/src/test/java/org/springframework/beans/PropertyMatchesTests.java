@@ -41,13 +41,13 @@ public class PropertyMatchesTests {
 	@Test
 	public void complexBeanPropertyTypo() {
 		PropertyMatches matches = PropertyMatches.forProperty("desriptn", SampleBeanProperties.class);
-		assertThat(matches.getPossibleMatches(), emptyArray());
+		assertThat(matches.getPossibleMatches()).isEmpty();
 	}
 
 	@Test
 	public void unknownBeanProperty() {
 		PropertyMatches matches = PropertyMatches.forProperty("unknown", SampleBeanProperties.class);
-		assertThat(matches.getPossibleMatches(), emptyArray());
+		assertThat(matches.getPossibleMatches()).isEmpty();
 	}
 
 	@Test
@@ -87,13 +87,13 @@ public class PropertyMatchesTests {
 	@Test
 	public void complexFieldPropertyTypo() {
 		PropertyMatches matches = PropertyMatches.forField("desriptn", SampleFieldProperties.class);
-		assertThat(matches.getPossibleMatches(), emptyArray());
+		assertThat(matches.getPossibleMatches()).isEmpty();
 	}
 
 	@Test
 	public void unknownFieldProperty() {
 		PropertyMatches matches = PropertyMatches.forField("unknown", SampleFieldProperties.class);
-		assertThat(matches.getPossibleMatches(), emptyArray());
+		assertThat(matches.getPossibleMatches()).isEmpty();
 	}
 
 	@Test
