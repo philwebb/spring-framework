@@ -288,7 +288,7 @@ public class ResourceWebHandlerTests {
 
 		StepVerifier.create(handler.handle(exchange))
 				.expectErrorSatisfies(err -> {
-					assertThat(err, instanceOf(ResponseStatusException.class));
+					assertThat(err).isInstanceOf(ResponseStatusException.class);
 					assertEquals(HttpStatus.NOT_FOUND, ((ResponseStatusException) err).getStatus());
 				}).verify(TIMEOUT);
 	}
@@ -334,7 +334,7 @@ public class ResourceWebHandlerTests {
 		setPathWithinHandlerMapping(exchange, requestPath);
 		StepVerifier.create(this.handler.handle(exchange))
 				.expectErrorSatisfies(err -> {
-					assertThat(err, instanceOf(ResponseStatusException.class));
+					assertThat(err).isInstanceOf(ResponseStatusException.class);
 					assertEquals(HttpStatus.NOT_FOUND, ((ResponseStatusException) err).getStatus());
 				})
 				.verify(TIMEOUT);
@@ -429,7 +429,7 @@ public class ResourceWebHandlerTests {
 		setPathWithinHandlerMapping(exchange, "js/");
 		StepVerifier.create(this.handler.handle(exchange))
 				.expectErrorSatisfies(err -> {
-					assertThat(err, instanceOf(ResponseStatusException.class));
+					assertThat(err).isInstanceOf(ResponseStatusException.class);
 					assertEquals(HttpStatus.NOT_FOUND, ((ResponseStatusException) err).getStatus());
 				}).verify(TIMEOUT);
 	}
@@ -440,7 +440,7 @@ public class ResourceWebHandlerTests {
 		setPathWithinHandlerMapping(exchange, "underscorejs/");
 		StepVerifier.create(this.handler.handle(exchange))
 				.expectErrorSatisfies(err -> {
-					assertThat(err, instanceOf(ResponseStatusException.class));
+					assertThat(err).isInstanceOf(ResponseStatusException.class);
 					assertEquals(HttpStatus.NOT_FOUND, ((ResponseStatusException) err).getStatus());
 				}).verify(TIMEOUT);
 	}
@@ -451,7 +451,7 @@ public class ResourceWebHandlerTests {
 		setPathWithinHandlerMapping(exchange, "");
 		StepVerifier.create(this.handler.handle(exchange))
 				.expectErrorSatisfies(err -> {
-					assertThat(err, instanceOf(ResponseStatusException.class));
+					assertThat(err).isInstanceOf(ResponseStatusException.class);
 					assertEquals(HttpStatus.NOT_FOUND, ((ResponseStatusException) err).getStatus());
 				}).verify(TIMEOUT);
 	}
@@ -486,7 +486,7 @@ public class ResourceWebHandlerTests {
 
 		StepVerifier.create(mono)
 				.expectErrorSatisfies(err -> {
-					assertThat(err, instanceOf(ResponseStatusException.class));
+					assertThat(err).isInstanceOf(ResponseStatusException.class);
 					assertEquals(HttpStatus.NOT_FOUND, ((ResponseStatusException) err).getStatus());
 				}).verify(TIMEOUT);
 

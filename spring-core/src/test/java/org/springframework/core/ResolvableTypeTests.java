@@ -305,33 +305,33 @@ public class ResolvableTypeTests {
 	@Test
 	public void paramaterizedType() throws Exception {
 		ResolvableType type = ResolvableType.forField(Fields.class.getField("parameterizedType"));
-		assertThat(type.getType(), instanceOf(ParameterizedType.class));
+		assertThat(type.getType()).isInstanceOf(ParameterizedType.class);
 	}
 
 	@Test
 	public void arrayClassType() throws Exception {
 		ResolvableType type = ResolvableType.forField(Fields.class.getField("arrayClassType"));
-		assertThat(type.getType(), instanceOf(Class.class));
+		assertThat(type.getType()).isInstanceOf(Class.class);
 		assertThat(((Class) type.getType()).isArray()).isEqualTo(true);
 	}
 
 	@Test
 	public void genericArrayType() throws Exception {
 		ResolvableType type = ResolvableType.forField(Fields.class.getField("genericArrayType"));
-		assertThat(type.getType(), instanceOf(GenericArrayType.class));
+		assertThat(type.getType()).isInstanceOf(GenericArrayType.class);
 	}
 
 	@Test
 	public void wildcardType() throws Exception {
 		ResolvableType type = ResolvableType.forField(Fields.class.getField("wildcardType"));
-		assertThat(type.getType(), instanceOf(ParameterizedType.class));
-		assertThat(type.getGeneric().getType(), instanceOf(WildcardType.class));
+		assertThat(type.getType()).isInstanceOf(ParameterizedType.class);
+		assertThat(type.getGeneric().getType()).isInstanceOf(WildcardType.class);
 	}
 
 	@Test
 	public void typeVariableType() throws Exception {
 		ResolvableType type = ResolvableType.forField(Fields.class.getField("typeVariableType"));
-		assertThat(type.getType(), instanceOf(TypeVariable.class));
+		assertThat(type.getType()).isInstanceOf(TypeVariable.class);
 	}
 
 	@Test
@@ -355,7 +355,7 @@ public class ResolvableTypeTests {
 	public void getComponentTypeForVariableThatResolvesToGenericArray() throws Exception {
 		ResolvableType type = ResolvableType.forClass(ListOfGenericArray.class).asCollection().getGeneric();
 		assertThat(type.isArray()).isEqualTo(true);
-		assertThat(type.getType(), instanceOf(TypeVariable.class));
+		assertThat(type.getType()).isInstanceOf(TypeVariable.class);
 		assertThat(type.getComponentType().getType().toString(),
 				equalTo("java.util.List<java.lang.String>"));
 	}

@@ -53,7 +53,7 @@ public class SQLExceptionCustomTranslatorTests {
 		SQLException badSqlGrammarExceptionEx = SQLExceptionSubclassFactory.newSQLDataException("", "", 1);
 		DataAccessException dae = sext.translate("task", "SQL", badSqlGrammarExceptionEx);
 		assertEquals(badSqlGrammarExceptionEx, dae.getCause());
-		assertThat(dae, instanceOf(BadSqlGrammarException.class));
+		assertThat(dae).isInstanceOf(BadSqlGrammarException.class);
 	}
 
 	@Test
@@ -61,7 +61,7 @@ public class SQLExceptionCustomTranslatorTests {
 		SQLException dataAccessResourceEx = SQLExceptionSubclassFactory.newSQLDataException("", "", 2);
 		DataAccessException dae = sext.translate("task", "SQL", dataAccessResourceEx);
 		assertEquals(dataAccessResourceEx, dae.getCause());
-		assertThat(dae, instanceOf(TransientDataAccessResourceException.class));
+		assertThat(dae).isInstanceOf(TransientDataAccessResourceException.class);
 	}
 
 }

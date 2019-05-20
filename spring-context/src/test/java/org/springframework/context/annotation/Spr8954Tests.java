@@ -54,8 +54,8 @@ public class Spr8954Tests {
 		bf.getBeanFactory().addBeanPostProcessor(new PredictingBPP());
 		bf.refresh();
 
-		assertThat(bf.getBean("foo"), instanceOf(Foo.class));
-		assertThat(bf.getBean("&foo"), instanceOf(FooFactoryBean.class));
+		assertThat(bf.getBean("foo")).isInstanceOf(Foo.class);
+		assertThat(bf.getBean("&foo")).isInstanceOf(FooFactoryBean.class);
 
 		assertThat(bf.isTypeMatch("&foo", FactoryBean.class)).isTrue();
 

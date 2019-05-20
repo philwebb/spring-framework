@@ -123,7 +123,7 @@ public class StandardEnvironmentTests {
 	public void propertySourceTypes() {
 		ConfigurableEnvironment env = new StandardEnvironment();
 		MutablePropertySources sources = env.getPropertySources();
-		assertThat(sources.get(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME), instanceOf(SystemEnvironmentPropertySource.class));
+		assertThat(sources.get(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME)).isInstanceOf(SystemEnvironmentPropertySource.class);
 	}
 
 	@Test
@@ -449,7 +449,7 @@ public class StandardEnvironmentTests {
 		{
 			Map<?, ?> systemProperties = environment.getSystemProperties();
 			assertThat(systemProperties, notNullValue());
-			assertThat(systemProperties, instanceOf(ReadOnlySystemAttributesMap.class));
+			assertThat(systemProperties).isInstanceOf(ReadOnlySystemAttributesMap.class);
 			assertThat((String)systemProperties.get(ALLOWED_PROPERTY_NAME)).isEqualTo(ALLOWED_PROPERTY_VALUE);
 			assertThat(systemProperties.get(DISALLOWED_PROPERTY_NAME)).isEqualTo(null);
 
@@ -506,7 +506,7 @@ public class StandardEnvironmentTests {
 		{
 			Map<String, Object> systemEnvironment = environment.getSystemEnvironment();
 			assertThat(systemEnvironment, notNullValue());
-			assertThat(systemEnvironment, instanceOf(ReadOnlySystemAttributesMap.class));
+			assertThat(systemEnvironment).isInstanceOf(ReadOnlySystemAttributesMap.class);
 			assertThat(systemEnvironment.get(ALLOWED_PROPERTY_NAME)).isEqualTo((Object)ALLOWED_PROPERTY_VALUE);
 			assertThat(systemEnvironment.get(DISALLOWED_PROPERTY_NAME)).isNull();
 		}

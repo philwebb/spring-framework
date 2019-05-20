@@ -385,7 +385,7 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 						CannotBeUnlocked.class
 				),
 				CannotBeUnlocked.class);
-		assertThat(proxy, instanceOf(Lockable.class));
+		assertThat(proxy).isInstanceOf(Lockable.class);
 		Lockable lockable = proxy;
 		assertTrue("Already locked", lockable.locked());
 		lockable.lock();
@@ -430,7 +430,7 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 				new SingletonMetadataAwareAspectInstanceFactory(new MakeLockable(), "someBean")));
 
 		Modifiable modifiable = (Modifiable) createProxy(target, advisors, ITestBean.class);
-		assertThat(modifiable, instanceOf(Modifiable.class));
+		assertThat(modifiable).isInstanceOf(Modifiable.class);
 		Lockable lockable = (Lockable) modifiable;
 		assertFalse(lockable.locked());
 

@@ -57,8 +57,8 @@ public class Spr8954Tests {
 
 	@Test
 	public void repro() {
-		assertThat(bf.getBean("foo"), instanceOf(Foo.class));
-		assertThat(bf.getBean("&foo"), instanceOf(FooFactoryBean.class));
+		assertThat(bf.getBean("foo")).isInstanceOf(Foo.class);
+		assertThat(bf.getBean("&foo")).isInstanceOf(FooFactoryBean.class);
 		assertThat(bf.isTypeMatch("&foo", FactoryBean.class)).isTrue();
 
 		@SuppressWarnings("rawtypes")

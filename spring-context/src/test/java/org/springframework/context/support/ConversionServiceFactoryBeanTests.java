@@ -143,8 +143,8 @@ public class ConversionServiceFactoryBeanTests {
 
 		public ComplexConstructorArgument(Map<String, Class<?>> map) {
 			assertTrue(!map.isEmpty());
-			assertThat(map.keySet().iterator().next(), instanceOf(String.class));
-			assertThat(map.values().iterator().next(), instanceOf(Class.class));
+			assertThat(map.keySet().iterator().next()).isInstanceOf(String.class);
+			assertThat(map.values().iterator().next()).isInstanceOf(Class.class);
 		}
 	}
 

@@ -627,7 +627,7 @@ public class XmlBeanFactoryTests {
 	public void testFactoryReferenceWithDoublePrefix() {
 		DefaultListableBeanFactory xbf = new DefaultListableBeanFactory();
 		new XmlBeanDefinitionReader(xbf).loadBeanDefinitions(FACTORY_CIRCLE_CONTEXT);
-		assertThat(xbf.getBean("&&singletonFactory"), instanceOf(DummyFactory.class));
+		assertThat(xbf.getBean("&&singletonFactory")).isInstanceOf(DummyFactory.class);
 	}
 
 	@Test

@@ -105,12 +105,12 @@ public class AnnotationCacheOperationSourceTests {
 		Iterator<CacheOperation> it = ops.iterator();
 
 		CacheOperation cacheOperation = it.next();
-		assertThat(cacheOperation, instanceOf(CacheableOperation.class));
+		assertThat(cacheOperation).isInstanceOf(CacheableOperation.class);
 		assertThat(cacheOperation.getCacheNames()).isEqualTo(Collections.singleton("directly declared"));
 		assertThat(cacheOperation.getKey()).isEqualTo("");
 
 		cacheOperation = it.next();
-		assertThat(cacheOperation, instanceOf(CacheableOperation.class));
+		assertThat(cacheOperation).isInstanceOf(CacheableOperation.class);
 		assertThat(cacheOperation.getCacheNames()).isEqualTo(Collections.singleton("composedCache"));
 		assertThat(cacheOperation.getKey()).isEqualTo("composedKey");
 	}
@@ -121,22 +121,22 @@ public class AnnotationCacheOperationSourceTests {
 		Iterator<CacheOperation> it = ops.iterator();
 
 		CacheOperation cacheOperation = it.next();
-		assertThat(cacheOperation, instanceOf(CacheableOperation.class));
+		assertThat(cacheOperation).isInstanceOf(CacheableOperation.class);
 		assertThat(cacheOperation.getCacheNames()).isEqualTo(Collections.singleton("directly declared"));
 		assertThat(cacheOperation.getKey()).isEqualTo("");
 
 		cacheOperation = it.next();
-		assertThat(cacheOperation, instanceOf(CacheableOperation.class));
+		assertThat(cacheOperation).isInstanceOf(CacheableOperation.class);
 		assertThat(cacheOperation.getCacheNames()).isEqualTo(Collections.singleton("composedCache"));
 		assertThat(cacheOperation.getKey()).isEqualTo("composedKey");
 
 		cacheOperation = it.next();
-		assertThat(cacheOperation, instanceOf(CacheableOperation.class));
+		assertThat(cacheOperation).isInstanceOf(CacheableOperation.class);
 		assertThat(cacheOperation.getCacheNames()).isEqualTo(Collections.singleton("foo"));
 		assertThat(cacheOperation.getKey()).isEqualTo("");
 
 		cacheOperation = it.next();
-		assertThat(cacheOperation, instanceOf(CacheEvictOperation.class));
+		assertThat(cacheOperation).isInstanceOf(CacheEvictOperation.class);
 		assertThat(cacheOperation.getCacheNames()).isEqualTo(Collections.singleton("composedCacheEvict"));
 		assertThat(cacheOperation.getKey()).isEqualTo("composedEvictionKey");
 	}

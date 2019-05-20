@@ -86,7 +86,7 @@ public class ResourceHttpMessageConverterTests {
 			inputMessage.getHeaders().setContentDisposition(
 					ContentDisposition.builder("attachment").filename("yourlogo.jpg").build());
 			Resource actualResource = converter.read(InputStreamResource.class, inputMessage);
-			assertThat(actualResource, instanceOf(InputStreamResource.class));
+			assertThat(actualResource).isInstanceOf(InputStreamResource.class);
 			assertThat(actualResource.getInputStream()).isEqualTo(body);
 			assertEquals("yourlogo.jpg", actualResource.getFilename());
 		}

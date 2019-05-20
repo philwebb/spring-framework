@@ -111,7 +111,7 @@ public class ScheduledTasksBeanDefinitionParserTests {
 		List<TriggerTask> tasks = (List<TriggerTask>) new DirectFieldAccessor(
 				this.registrar).getPropertyValue("triggerTasks");
 		assertEquals(1, tasks.size());
-		assertThat(tasks.get(0).getTrigger(), instanceOf(TestTrigger.class));
+		assertThat(tasks.get(0).getTrigger()).isInstanceOf(TestTrigger.class);
 	}
 
 

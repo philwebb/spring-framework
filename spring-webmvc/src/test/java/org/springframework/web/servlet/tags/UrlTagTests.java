@@ -56,7 +56,7 @@ public class UrlTagTests extends AbstractTagTests {
 
 	@Test
 	public void paramSupport() {
-		assertThat(tag, instanceOf(ParamAware.class));
+		assertThat(tag).isInstanceOf(ParamAware.class);
 	}
 
 	@Test

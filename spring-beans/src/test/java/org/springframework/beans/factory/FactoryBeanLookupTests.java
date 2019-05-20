@@ -48,7 +48,7 @@ public class FactoryBeanLookupTests {
 	@Test
 	public void factoryBeanLookupByNameDereferencing() {
 		Object fooFactory = beanFactory.getBean("&fooFactory");
-		assertThat(fooFactory, instanceOf(FooFactoryBean.class));
+		assertThat(fooFactory).isInstanceOf(FooFactoryBean.class);
 	}
 
 	@Test
@@ -66,7 +66,7 @@ public class FactoryBeanLookupTests {
 	@Test
 	public void factoryBeanObjectLookupByName() {
 		Object fooFactory = beanFactory.getBean("fooFactory");
-		assertThat(fooFactory, instanceOf(Foo.class));
+		assertThat(fooFactory).isInstanceOf(Foo.class);
 	}
 
 	@Test

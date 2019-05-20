@@ -140,8 +140,8 @@ public class ConvertingComparatorTests {
 
 		@Override
 		public int compare(Integer o1, Integer o2) {
-			assertThat(o1, instanceOf(Integer.class));
-			assertThat(o2, instanceOf(Integer.class));
+			assertThat(o1).isInstanceOf(Integer.class);
+			assertThat(o2).isInstanceOf(Integer.class);
 			this.called = true;
 			return super.compare(o1, o2);
 		};

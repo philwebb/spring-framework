@@ -82,7 +82,7 @@ public class HiddenHttpMethodFilterTests {
 	public void filterWithInvalidMethodValue() {
 		StepVerifier.create(postForm("_method=INVALID"))
 				.consumeErrorWith(error -> {
-					assertThat(error, Matchers.instanceOf(IllegalArgumentException.class));
+					assertThat(error).isInstanceOf(IllegalArgumentException.class);
 					assertEquals("HttpMethod 'INVALID' not supported", error.getMessage());
 				})
 				.verify();

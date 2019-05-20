@@ -213,7 +213,7 @@ public class UriComponentsTests {
 		UriComponents uric1 = UriComponentsBuilder.fromUriString(url).path("/{foo}").query("bar={baz}").build();
 		UriComponents uric2 = UriComponentsBuilder.fromUriString(url).path("/{foo}").query("bar={baz}").build();
 		UriComponents uric3 = UriComponentsBuilder.fromUriString(url).path("/{foo}").query("bin={baz}").build();
-		assertThat(uric1, instanceOf(HierarchicalUriComponents.class));
+		assertThat(uric1).isInstanceOf(HierarchicalUriComponents.class);
 		assertThat(uric1).isEqualTo(uric1);
 		assertThat(uric1).isEqualTo(uric2);
 		assertThat(uric1).isNotEqualTo(uric3);
@@ -225,7 +225,7 @@ public class UriComponentsTests {
 		UriComponents uric1 = UriComponentsBuilder.fromUriString(baseUrl + "/foo/bar").build();
 		UriComponents uric2 = UriComponentsBuilder.fromUriString(baseUrl + "/foo/bar").build();
 		UriComponents uric3 = UriComponentsBuilder.fromUriString(baseUrl + "/foo/bin").build();
-		assertThat(uric1, instanceOf(OpaqueUriComponents.class));
+		assertThat(uric1).isInstanceOf(OpaqueUriComponents.class);
 		assertThat(uric1).isEqualTo(uric1);
 		assertThat(uric1).isEqualTo(uric2);
 		assertThat(uric1).isNotEqualTo(uric3);

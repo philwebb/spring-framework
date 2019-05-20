@@ -48,7 +48,7 @@ public class ProxyAnnotationDiscoveryTests {
 		ctx.refresh();
 		AnnotatedServiceWithoutInterface s = ctx.getBean(AnnotatedServiceWithoutInterface.class);
 		assertTrue("expected a subclass proxy", AopUtils.isCglibProxy(s));
-		assertThat(s, instanceOf(AnnotatedServiceWithoutInterface.class));
+		assertThat(s).isInstanceOf(AnnotatedServiceWithoutInterface.class);
 	}
 
 	@Test
@@ -58,7 +58,7 @@ public class ProxyAnnotationDiscoveryTests {
 		ctx.refresh();
 		AnnotatedServiceWithoutInterface s = ctx.getBean(AnnotatedServiceWithoutInterface.class);
 		assertTrue("expected a subclass proxy", AopUtils.isCglibProxy(s));
-		assertThat(s, instanceOf(AnnotatedServiceWithoutInterface.class));
+		assertThat(s).isInstanceOf(AnnotatedServiceWithoutInterface.class);
 	}
 
 	@Test
@@ -68,7 +68,7 @@ public class ProxyAnnotationDiscoveryTests {
 		ctx.refresh();
 		NonAnnotatedService s = ctx.getBean(NonAnnotatedService.class);
 		assertTrue("expected a subclass proxy", AopUtils.isCglibProxy(s));
-		assertThat(s, instanceOf(AnnotatedServiceImpl.class));
+		assertThat(s).isInstanceOf(AnnotatedServiceImpl.class);
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class ProxyAnnotationDiscoveryTests {
 		ctx.refresh();
 		AnnotatedService s = ctx.getBean(AnnotatedService.class);
 		assertTrue("expected a subclass proxy", AopUtils.isCglibProxy(s));
-		assertThat(s, instanceOf(NonAnnotatedServiceImpl.class));
+		assertThat(s).isInstanceOf(NonAnnotatedServiceImpl.class);
 	}
 
 	@Test

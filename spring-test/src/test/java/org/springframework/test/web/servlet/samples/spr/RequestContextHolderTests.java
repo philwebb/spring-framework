@@ -304,7 +304,7 @@ public class RequestContextHolderTests {
 
 	private static void assertRequestAttributes(boolean withinMockMvc) {
 		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-		assertThat(requestAttributes, instanceOf(ServletRequestAttributes.class));
+		assertThat(requestAttributes).isInstanceOf(ServletRequestAttributes.class);
 		assertRequestAttributes(((ServletRequestAttributes) requestAttributes).getRequest(), withinMockMvc);
 	}
 

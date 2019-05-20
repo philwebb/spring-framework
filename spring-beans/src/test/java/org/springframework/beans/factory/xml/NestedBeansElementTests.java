@@ -43,7 +43,7 @@ public class NestedBeansElementTests {
 		new XmlBeanDefinitionReader(bf).loadBeanDefinitions(XML);
 
 		Object foo = bf.getBean("foo");
-		assertThat(foo, instanceOf(String.class));
+		assertThat(foo).isInstanceOf(String.class);
 	}
 
 	@Test
@@ -59,7 +59,7 @@ public class NestedBeansElementTests {
 		bf.getBean("devOnlyBean"); // should not throw NSBDE
 
 		Object foo = bf.getBean("foo");
-		assertThat(foo, instanceOf(Integer.class));
+		assertThat(foo).isInstanceOf(Integer.class);
 
 		bf.getBean("devOnlyBean");
 	}

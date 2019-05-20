@@ -213,32 +213,32 @@ public class CollectionFactoryTests {
 	@Test
 	public void createsCollectionsCorrectly() {
 		// interfaces
-		assertThat(createCollection(List.class, 0)).isEqualTo(instanceOf(ArrayList.class));
-		assertThat(createCollection(Set.class, 0)).isEqualTo(instanceOf(LinkedHashSet.class));
-		assertThat(createCollection(Collection.class, 0)).isEqualTo(instanceOf(LinkedHashSet.class));
-		assertThat(createCollection(SortedSet.class, 0)).isEqualTo(instanceOf(TreeSet.class));
-		assertThat(createCollection(NavigableSet.class, 0)).isEqualTo(instanceOf(TreeSet.class));
+		assertThat(createCollection(List.class).isInstanceOf(ArrayList.class);
+		assertThat(createCollection(Set.class).isInstanceOf(LinkedHashSet.class);
+		assertThat(createCollection(Collection.class).isInstanceOf(LinkedHashSet.class);
+		assertThat(createCollection(SortedSet.class).isInstanceOf(TreeSet.class);
+		assertThat(createCollection(NavigableSet.class).isInstanceOf(TreeSet.class);
 
-		assertThat(createCollection(List.class, String.class, 0)).isEqualTo(instanceOf(ArrayList.class));
-		assertThat(createCollection(Set.class, String.class, 0)).isEqualTo(instanceOf(LinkedHashSet.class));
-		assertThat(createCollection(Collection.class, String.class, 0)).isEqualTo(instanceOf(LinkedHashSet.class));
-		assertThat(createCollection(SortedSet.class, String.class, 0)).isEqualTo(instanceOf(TreeSet.class));
-		assertThat(createCollection(NavigableSet.class, String.class, 0)).isEqualTo(instanceOf(TreeSet.class));
+		assertThat(createCollection(List.class, String.class).isInstanceOf(ArrayList.class);
+		assertThat(createCollection(Set.class, String.class).isInstanceOf(LinkedHashSet.class);
+		assertThat(createCollection(Collection.class, String.class).isInstanceOf(LinkedHashSet.class);
+		assertThat(createCollection(SortedSet.class, String.class).isInstanceOf(TreeSet.class);
+		assertThat(createCollection(NavigableSet.class, String.class).isInstanceOf(TreeSet.class);
 
 		// concrete types
-		assertThat(createCollection(HashSet.class, 0)).isEqualTo(instanceOf(HashSet.class));
-		assertThat(createCollection(HashSet.class, String.class, 0)).isEqualTo(instanceOf(HashSet.class));
+		assertThat(createCollection(HashSet.class).isInstanceOf(HashSet.class);
+		assertThat(createCollection(HashSet.class, String.class).isInstanceOf(HashSet.class);
 	}
 
 	@Test
 	public void createsEnumSet() {
-		assertThat(createCollection(EnumSet.class, Color.class, 0)).isEqualTo(instanceOf(EnumSet.class));
+		assertThat(createCollection(EnumSet.class, Color.class).isInstanceOf(EnumSet.class);
 	}
 
 	@Test  // SPR-17619
 	public void createsEnumSetSubclass() {
 		EnumSet<Color> enumSet = EnumSet.noneOf(Color.class);
-		assertThat(createCollection(enumSet.getClass(), Color.class, 0)).isEqualTo(instanceOf(enumSet.getClass()));
+		assertThat(createCollection(enumSet.getClass(), Color.class).isInstanceOf(enumSet.getClass());
 	}
 
 	@Test
@@ -262,25 +262,25 @@ public class CollectionFactoryTests {
 	@Test
 	public void createsMapsCorrectly() {
 		// interfaces
-		assertThat(createMap(Map.class, 0)).isEqualTo(instanceOf(LinkedHashMap.class));
-		assertThat(createMap(SortedMap.class, 0)).isEqualTo(instanceOf(TreeMap.class));
-		assertThat(createMap(NavigableMap.class, 0)).isEqualTo(instanceOf(TreeMap.class));
-		assertThat(createMap(MultiValueMap.class, 0)).isEqualTo(instanceOf(LinkedMultiValueMap.class));
+		assertThat(createMap(Map.class).isInstanceOf(LinkedHashMap.class);
+		assertThat(createMap(SortedMap.class).isInstanceOf(TreeMap.class);
+		assertThat(createMap(NavigableMap.class).isInstanceOf(TreeMap.class);
+		assertThat(createMap(MultiValueMap.class).isInstanceOf(LinkedMultiValueMap.class);
 
-		assertThat(createMap(Map.class, String.class, 0)).isEqualTo(instanceOf(LinkedHashMap.class));
-		assertThat(createMap(SortedMap.class, String.class, 0)).isEqualTo(instanceOf(TreeMap.class));
-		assertThat(createMap(NavigableMap.class, String.class, 0)).isEqualTo(instanceOf(TreeMap.class));
-		assertThat(createMap(MultiValueMap.class, String.class, 0)).isEqualTo(instanceOf(LinkedMultiValueMap.class));
+		assertThat(createMap(Map.class, String.class).isInstanceOf(LinkedHashMap.class);
+		assertThat(createMap(SortedMap.class, String.class).isInstanceOf(TreeMap.class);
+		assertThat(createMap(NavigableMap.class, String.class).isInstanceOf(TreeMap.class);
+		assertThat(createMap(MultiValueMap.class, String.class).isInstanceOf(LinkedMultiValueMap.class);
 
 		// concrete types
-		assertThat(createMap(HashMap.class, 0)).isEqualTo(instanceOf(HashMap.class));
+		assertThat(createMap(HashMap.class).isInstanceOf(HashMap.class);
 
-		assertThat(createMap(HashMap.class, String.class, 0)).isEqualTo(instanceOf(HashMap.class));
+		assertThat(createMap(HashMap.class, String.class).isInstanceOf(HashMap.class);
 	}
 
 	@Test
 	public void createsEnumMap() {
-		assertThat(createMap(EnumMap.class, Color.class, 0)).isEqualTo(instanceOf(EnumMap.class));
+		assertThat(createMap(EnumMap.class, Color.class).isInstanceOf(EnumMap.class);
 	}
 
 	@Test

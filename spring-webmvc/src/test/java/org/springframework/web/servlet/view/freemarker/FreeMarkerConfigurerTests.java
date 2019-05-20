@@ -89,7 +89,7 @@ public class FreeMarkerConfigurerTests {
 			}
 		});
 		fcfb.afterPropertiesSet();
-		assertThat(fcfb.getObject(), instanceOf(Configuration.class));
+		assertThat(fcfb.getObject()).isInstanceOf(Configuration.class);
 		Configuration fc = fcfb.getObject();
 		Template ft = fc.getTemplate("test");
 		assertEquals("test", FreeMarkerTemplateUtils.processTemplateIntoString(ft, new HashMap()));

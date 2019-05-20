@@ -94,7 +94,7 @@ public class CustomRequestAttributesRequestContextHolderTests {
 	@After
 	public void verifyCustomRequestAttributesAreRestored() {
 		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-		assertThat(requestAttributes, instanceOf(ServletRequestAttributes.class));
+		assertThat(requestAttributes).isInstanceOf(ServletRequestAttributes.class);
 		HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
 
 		assertThat(request.getAttribute(FROM_CUSTOM_MOCK)).isEqualTo(FROM_CUSTOM_MOCK);
@@ -129,7 +129,7 @@ public class CustomRequestAttributesRequestContextHolderTests {
 
 	private static void assertRequestAttributes() {
 		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-		assertThat(requestAttributes, instanceOf(ServletRequestAttributes.class));
+		assertThat(requestAttributes).isInstanceOf(ServletRequestAttributes.class);
 		assertRequestAttributes(((ServletRequestAttributes) requestAttributes).getRequest());
 	}
 

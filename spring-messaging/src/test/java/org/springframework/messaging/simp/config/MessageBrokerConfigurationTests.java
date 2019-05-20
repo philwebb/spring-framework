@@ -290,9 +290,9 @@ public class MessageBrokerConfigurationTests {
 
 		List<MessageConverter> converters = compositeConverter.getConverters();
 		assertThat(converters).hasSize(3);
-		assertThat(converters.get(0), Matchers.instanceOf(StringMessageConverter.class));
-		assertThat(converters.get(1), Matchers.instanceOf(ByteArrayMessageConverter.class));
-		assertThat(converters.get(2), Matchers.instanceOf(MappingJackson2MessageConverter.class));
+		assertThat(converters.get(0)).isInstanceOf(StringMessageConverter.class);
+		assertThat(converters.get(1)).isInstanceOf(ByteArrayMessageConverter.class);
+		assertThat(converters.get(2)).isInstanceOf(MappingJackson2MessageConverter.class);
 
 		ContentTypeResolver resolver = ((MappingJackson2MessageConverter) converters.get(2)).getContentTypeResolver();
 		assertEquals(MimeTypeUtils.APPLICATION_JSON, ((DefaultContentTypeResolver) resolver).getDefaultMimeType());
@@ -350,9 +350,9 @@ public class MessageBrokerConfigurationTests {
 		assertThat(compositeConverter.getConverters()).hasSize(4);
 		Iterator<MessageConverter> iterator = compositeConverter.getConverters().iterator();
 		assertThat(iterator.next()).isEqualTo(testConverter);
-		assertThat(iterator.next(), Matchers.instanceOf(StringMessageConverter.class));
-		assertThat(iterator.next(), Matchers.instanceOf(ByteArrayMessageConverter.class));
-		assertThat(iterator.next(), Matchers.instanceOf(MappingJackson2MessageConverter.class));
+		assertThat(iterator.next()).isInstanceOf(StringMessageConverter.class);
+		assertThat(iterator.next()).isInstanceOf(ByteArrayMessageConverter.class);
+		assertThat(iterator.next()).isInstanceOf(MappingJackson2MessageConverter.class);
 	}
 
 	@Test
@@ -377,7 +377,7 @@ public class MessageBrokerConfigurationTests {
 		config.setApplicationContext(new StaticApplicationContext());
 
 		assertThat(config.simpValidator(), Matchers.notNullValue());
-		assertThat(config.simpValidator(), Matchers.instanceOf(OptionalValidatorFactoryBean.class));
+		assertThat(config.simpValidator()).isInstanceOf(OptionalValidatorFactoryBean.class);
 	}
 
 	@Test
@@ -401,7 +401,7 @@ public class MessageBrokerConfigurationTests {
 		config.setApplicationContext(appCxt);
 
 		assertThat(config.simpValidator(), Matchers.notNullValue());
-		assertThat(config.simpValidator(), Matchers.instanceOf(TestValidator.class));
+		assertThat(config.simpValidator()).isInstanceOf(TestValidator.class);
 	}
 
 	@Test

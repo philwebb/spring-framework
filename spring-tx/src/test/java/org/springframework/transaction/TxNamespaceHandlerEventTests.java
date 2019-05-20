@@ -51,7 +51,7 @@ public class TxNamespaceHandlerEventTests {
 	@Test
 	public void componentEventReceived() {
 		ComponentDefinition component = this.eventListener.getComponentDefinition("txAdvice");
-		assertThat(component, instanceOf(BeanComponentDefinition.class));
+		assertThat(component).isInstanceOf(BeanComponentDefinition.class);
 	}
 
 }

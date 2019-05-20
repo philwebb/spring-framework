@@ -295,7 +295,7 @@ public class CglibProxyTests extends AbstractAopProxyTests implements Serializab
 		as.addAdvice(new NopInterceptor());
 		cglib = new CglibAopProxy(as);
 
-		assertThat(cglib.getProxy(), instanceOf(ITestBean.class));
+		assertThat(cglib.getProxy()).isInstanceOf(ITestBean.class);
 	}
 
 	@Test

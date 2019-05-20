@@ -175,9 +175,9 @@ public class HandlersBeanDefinitionParserTests {
 
 		assertSame(testSockJsService, sockJsService);
 
-		assertThat(sockJsService, instanceOf(DefaultSockJsService.class));
+		assertThat(sockJsService).isInstanceOf(DefaultSockJsService.class);
 		DefaultSockJsService defaultSockJsService = (DefaultSockJsService) sockJsService;
-		assertThat(defaultSockJsService.getTaskScheduler(), instanceOf(ThreadPoolTaskScheduler.class));
+		assertThat(defaultSockJsService.getTaskScheduler()).isInstanceOf(ThreadPoolTaskScheduler.class);
 		assertFalse(defaultSockJsService.shouldSuppressCors());
 
 		Map<TransportType, TransportHandler> handlerMap = defaultSockJsService.getTransportHandlers();
@@ -212,9 +212,9 @@ public class HandlersBeanDefinitionParserTests {
 
 		SockJsService sockJsService = handler.getSockJsService();
 		assertNotNull(sockJsService);
-		assertThat(sockJsService, instanceOf(TransportHandlingSockJsService.class));
+		assertThat(sockJsService).isInstanceOf(TransportHandlingSockJsService.class);
 		TransportHandlingSockJsService transportService = (TransportHandlingSockJsService) sockJsService;
-		assertThat(transportService.getTaskScheduler(), instanceOf(TestTaskScheduler.class));
+		assertThat(transportService.getTaskScheduler()).isInstanceOf(TestTaskScheduler.class);
 		assertThat(transportService.getTransportHandlers().values(),
 				containsInAnyOrder(
 						instanceOf(XhrPollingTransportHandler.class),
@@ -231,7 +231,7 @@ public class HandlersBeanDefinitionParserTests {
 		assertEquals(TestMessageCodec.class, transportService.getMessageCodec().getClass());
 
 		List<HandshakeInterceptor> interceptors = transportService.getHandshakeInterceptors();
-		assertThat(interceptors, contains(instanceOf(OriginHandshakeInterceptor.class)));
+		assertThat(interceptors).isInstanceOf(OriginHandshakeInterceptor.class));
 		assertTrue(transportService.shouldSuppressCors());
 		assertTrue(transportService.getAllowedOrigins().contains("https://mydomain1.com"));
 		assertTrue(transportService.getAllowedOrigins().contains("https://mydomain2.com"));

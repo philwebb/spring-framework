@@ -90,7 +90,7 @@ public class DispatcherHandlerErrorTests {
 
 		StepVerifier.create(mono)
 				.consumeErrorWith(ex -> {
-					assertThat(ex, instanceOf(ResponseStatusException.class));
+					assertThat(ex).isInstanceOf(ResponseStatusException.class);
 					assertThat(ex.getMessage()).isEqualTo("404 NOT_FOUND \"No matching handler\"");
 				})
 				.verify();
@@ -128,7 +128,7 @@ public class DispatcherHandlerErrorTests {
 
 		StepVerifier.create(publisher)
 				.consumeErrorWith(error -> {
-					assertThat(error, instanceOf(IllegalStateException.class));
+					assertThat(error).isInstanceOf(IllegalStateException.class);
 					assertThat(error.getMessage(), startsWith("No HandlerResultHandler"));
 				})
 				.verify();
@@ -142,7 +142,7 @@ public class DispatcherHandlerErrorTests {
 		Mono<Void> publisher = this.dispatcherHandler.handle(exchange);
 
 		StepVerifier.create(publisher)
-				.consumeErrorWith(error -> assertThat(error, instanceOf(NotAcceptableStatusException.class)))
+				.consumeErrorWith(error -> assertThat(error).isInstanceOf(NotAcceptableStatusException.class))
 				.verify();
 	}
 

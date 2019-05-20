@@ -435,7 +435,7 @@ public class EnvironmentSystemIntegrationTests {
 		ctx.refresh();
 
 		ConfigurableEnvironment environment = ctx.getEnvironment();
-		assertThat(environment, instanceOf(StandardServletEnvironment.class));
+		assertThat(environment).isInstanceOf(StandardServletEnvironment.class);
 		MutablePropertySources propertySources = environment.getPropertySources();
 		assertThat(propertySources.contains(StandardServletEnvironment.SERVLET_CONTEXT_PROPERTY_SOURCE_NAME)).isTrue();
 		assertThat(propertySources.contains(StandardServletEnvironment.SERVLET_CONFIG_PROPERTY_SOURCE_NAME)).isTrue();
@@ -475,7 +475,7 @@ public class EnvironmentSystemIntegrationTests {
 		ctx.refresh();
 
 		ConfigurableEnvironment environment = ctx.getEnvironment();
-		assertThat(environment, instanceOf(StandardServletEnvironment.class));
+		assertThat(environment).isInstanceOf(StandardServletEnvironment.class);
 		MutablePropertySources propertySources = environment.getPropertySources();
 		assertThat(propertySources.contains(StandardServletEnvironment.SERVLET_CONTEXT_PROPERTY_SOURCE_NAME)).isTrue();
 
@@ -600,14 +600,14 @@ public class EnvironmentSystemIntegrationTests {
 	private void assertHasStandardEnvironment(ApplicationContext ctx) {
 		Environment defaultEnv = ctx.getEnvironment();
 		assertThat(defaultEnv, notNullValue());
-		assertThat(defaultEnv, instanceOf(StandardEnvironment.class));
+		assertThat(defaultEnv).isInstanceOf(StandardEnvironment.class);
 	}
 
 	private void assertHasStandardServletEnvironment(WebApplicationContext ctx) {
 		// ensure a default servlet environment exists
 		Environment defaultEnv = ctx.getEnvironment();
 		assertThat(defaultEnv, notNullValue());
-		assertThat(defaultEnv, instanceOf(StandardServletEnvironment.class));
+		assertThat(defaultEnv).isInstanceOf(StandardServletEnvironment.class);
 	}
 
 	private void assertHasEnvironment(ApplicationContext ctx, Environment expectedEnv) {

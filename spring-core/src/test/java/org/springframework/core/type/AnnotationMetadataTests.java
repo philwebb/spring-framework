@@ -186,7 +186,7 @@ public class AnnotationMetadataTests {
 		AnnotationMetadata metadata = new StandardAnnotationMetadata(AnnotatedComponent.class);
 		AnnotationAttributes specialAttrs = (AnnotationAttributes) metadata.getAnnotationAttributes(SpecialAttr.class.getName());
 		Annotation[] nestedAnnoArray = (Annotation[]) specialAttrs.get("nestedAnnoArray");
-		assertThat(nestedAnnoArray[0], instanceOf(NestedAnno.class));
+		assertThat(nestedAnnoArray[0]).isInstanceOf(NestedAnno.class);
 	}
 
 	@Test

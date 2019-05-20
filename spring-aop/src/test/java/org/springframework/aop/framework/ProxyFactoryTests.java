@@ -188,7 +188,7 @@ public class ProxyFactoryTests {
 		// This call should be ignored without error
 		pf.addInterface(TimeStamped.class);
 		// All cool
-		assertThat(pf.getProxy(), instanceOf(TimeStamped.class));
+		assertThat(pf.getProxy()).isInstanceOf(TimeStamped.class);
 	}
 
 	@Test
@@ -205,7 +205,7 @@ public class ProxyFactoryTests {
 		//System.out.println("Proxied interfaces are " + StringUtils.arrayToDelimitedString(factory.getProxiedInterfaces(), ","));
 		assertEquals("Found correct number of interfaces", 5, factory.getProxiedInterfaces().length);
 		ITestBean tb = (ITestBean) factory.getProxy();
-		assertThat("Picked up secondary interface", tb, instanceOf(IOther.class));
+		assertThat("Picked up secondary interface", tb).isInstanceOf(IOther.class);
 
 		raw.setAge(25);
 		assertTrue(tb.getAge() == raw.getAge());
@@ -239,7 +239,7 @@ public class ProxyFactoryTests {
 		NopInterceptor diUnused = new NopInterceptor();
 		ProxyFactory factory = new ProxyFactory(new TestBean());
 		factory.addAdvice(0, di);
-		assertThat(factory.getProxy(), instanceOf(ITestBean.class));
+		assertThat(factory.getProxy()).isInstanceOf(ITestBean.class);
 		assertTrue(factory.adviceIncluded(di));
 		assertTrue(!factory.adviceIncluded(diUnused));
 		assertTrue(factory.countAdvicesOfType(NopInterceptor.class) == 1);

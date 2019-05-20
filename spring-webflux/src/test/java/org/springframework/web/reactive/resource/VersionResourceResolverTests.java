@@ -180,7 +180,7 @@ public class VersionResourceResolverTests {
 
 		assertEquals(expected.getFilename(), actual.getFilename());
 		verify(this.versionStrategy, times(1)).getResourceVersion(expected);
-		assertThat(actual, instanceOf(HttpResource.class));
+		assertThat(actual).isInstanceOf(HttpResource.class);
 		assertEquals("\"" + version + "\"", ((HttpResource)actual).getResponseHeaders().getETag());
 	}
 

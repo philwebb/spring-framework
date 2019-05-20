@@ -132,7 +132,7 @@ public class AopTestUtilsTests {
 		pf.addInterface(Foo.class);
 		Foo proxy = (Foo) pf.getProxy();
 		assertTrue("Proxy is a JDK dynamic proxy", AopUtils.isJdkDynamicProxy(proxy));
-		assertThat(proxy, instanceOf(Foo.class));
+		assertThat(proxy).isInstanceOf(Foo.class);
 		return proxy;
 	}
 
@@ -142,7 +142,7 @@ public class AopTestUtilsTests {
 		pf.setProxyTargetClass(true);
 		Foo proxy = (Foo) pf.getProxy();
 		assertTrue("Proxy is a CGLIB proxy", AopUtils.isCglibProxy(proxy));
-		assertThat(proxy, instanceOf(FooImpl.class));
+		assertThat(proxy).isInstanceOf(FooImpl.class);
 		return proxy;
 	}
 

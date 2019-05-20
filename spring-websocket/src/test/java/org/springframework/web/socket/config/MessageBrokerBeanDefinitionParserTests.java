@@ -121,14 +121,14 @@ public class MessageBrokerBeanDefinitionParserTests {
 		loadBeanDefinitions("websocket-config-broker-simple.xml");
 
 		HandlerMapping hm = this.appContext.getBean(HandlerMapping.class);
-		assertThat(hm, Matchers.instanceOf(SimpleUrlHandlerMapping.class));
+		assertThat(hm).isInstanceOf(SimpleUrlHandlerMapping.class);
 		SimpleUrlHandlerMapping suhm = (SimpleUrlHandlerMapping) hm;
 		assertThat(suhm.getUrlMap().keySet(), Matchers.hasSize(4));
 		assertThat(suhm.getUrlMap().values(), Matchers.hasSize(4));
 
 		HttpRequestHandler httpRequestHandler = (HttpRequestHandler) suhm.getUrlMap().get("/foo");
 		assertNotNull(httpRequestHandler);
-		assertThat(httpRequestHandler, Matchers.instanceOf(WebSocketHttpRequestHandler.class));
+		assertThat(httpRequestHandler).isInstanceOf(WebSocketHttpRequestHandler.class);
 
 		WebSocketHttpRequestHandler wsHttpRequestHandler = (WebSocketHttpRequestHandler) httpRequestHandler;
 		HandshakeHandler handshakeHandler = wsHttpRequestHandler.getHandshakeHandler();
@@ -143,13 +143,13 @@ public class MessageBrokerBeanDefinitionParserTests {
 		assertEquals(true, session.getAttributes().get("decorated"));
 
 		WebSocketHandler wsHandler = wsHttpRequestHandler.getWebSocketHandler();
-		assertThat(wsHandler, Matchers.instanceOf(ExceptionWebSocketHandlerDecorator.class));
+		assertThat(wsHandler).isInstanceOf(ExceptionWebSocketHandlerDecorator.class);
 		wsHandler = ((ExceptionWebSocketHandlerDecorator) wsHandler).getDelegate();
-		assertThat(wsHandler, Matchers.instanceOf(LoggingWebSocketHandlerDecorator.class));
+		assertThat(wsHandler).isInstanceOf(LoggingWebSocketHandlerDecorator.class);
 		wsHandler = ((LoggingWebSocketHandlerDecorator) wsHandler).getDelegate();
-		assertThat(wsHandler, Matchers.instanceOf(TestWebSocketHandlerDecorator.class));
+		assertThat(wsHandler).isInstanceOf(TestWebSocketHandlerDecorator.class);
 		wsHandler = ((TestWebSocketHandlerDecorator) wsHandler).getDelegate();
-		assertThat(wsHandler, Matchers.instanceOf(SubProtocolWebSocketHandler.class));
+		assertThat(wsHandler).isInstanceOf(SubProtocolWebSocketHandler.class);
 		assertSame(wsHandler, this.appContext.getBean(MessageBrokerBeanDefinitionParser.WEB_SOCKET_HANDLER_BEAN_NAME));
 
 		SubProtocolWebSocketHandler subProtocolWsHandler = (SubProtocolWebSocketHandler) wsHandler;
@@ -169,20 +169,20 @@ public class MessageBrokerBeanDefinitionParserTests {
 
 		httpRequestHandler = (HttpRequestHandler) suhm.getUrlMap().get("/test/**");
 		assertNotNull(httpRequestHandler);
-		assertThat(httpRequestHandler, Matchers.instanceOf(SockJsHttpRequestHandler.class));
+		assertThat(httpRequestHandler).isInstanceOf(SockJsHttpRequestHandler.class);
 
 		SockJsHttpRequestHandler sockJsHttpRequestHandler = (SockJsHttpRequestHandler) httpRequestHandler;
 		wsHandler = unwrapWebSocketHandler(sockJsHttpRequestHandler.getWebSocketHandler());
 		assertNotNull(wsHandler);
-		assertThat(wsHandler, Matchers.instanceOf(SubProtocolWebSocketHandler.class));
+		assertThat(wsHandler).isInstanceOf(SubProtocolWebSocketHandler.class);
 		assertNotNull(sockJsHttpRequestHandler.getSockJsService());
-		assertThat(sockJsHttpRequestHandler.getSockJsService(), Matchers.instanceOf(DefaultSockJsService.class));
+		assertThat(sockJsHttpRequestHandler.getSockJsService()).isInstanceOf(DefaultSockJsService.class);
 
 		DefaultSockJsService defaultSockJsService = (DefaultSockJsService) sockJsHttpRequestHandler.getSockJsService();
 		WebSocketTransportHandler wsTransportHandler = (WebSocketTransportHandler) defaultSockJsService
 				.getTransportHandlers().get(TransportType.WEBSOCKET);
 		assertNotNull(wsTransportHandler.getHandshakeHandler());
-		assertThat(wsTransportHandler.getHandshakeHandler(), Matchers.instanceOf(TestHandshakeHandler.class));
+		assertThat(wsTransportHandler.getHandshakeHandler()).isInstanceOf(TestHandshakeHandler.class);
 		assertFalse(defaultSockJsService.shouldSuppressCors());
 
 		ThreadPoolTaskScheduler scheduler = (ThreadPoolTaskScheduler) defaultSockJsService.getTaskScheduler();
@@ -202,7 +202,7 @@ public class MessageBrokerBeanDefinitionParserTests {
 
 		UserDestinationResolver userDestResolver = this.appContext.getBean(UserDestinationResolver.class);
 		assertNotNull(userDestResolver);
-		assertThat(userDestResolver, Matchers.instanceOf(DefaultUserDestinationResolver.class));
+		assertThat(userDestResolver).isInstanceOf(DefaultUserDestinationResolver.class);
 		DefaultUserDestinationResolver defaultUserDestResolver = (DefaultUserDestinationResolver) userDestResolver;
 		assertEquals("/personal/", defaultUserDestResolver.getDestinationPrefix());
 
@@ -247,7 +247,7 @@ public class MessageBrokerBeanDefinitionParserTests {
 
 		HandlerMapping hm = this.appContext.getBean(HandlerMapping.class);
 		assertNotNull(hm);
-		assertThat(hm, Matchers.instanceOf(SimpleUrlHandlerMapping.class));
+		assertThat(hm).isInstanceOf(SimpleUrlHandlerMapping.class);
 
 		SimpleUrlHandlerMapping suhm = (SimpleUrlHandlerMapping) hm;
 		assertThat(suhm.getUrlMap().keySet(), Matchers.hasSize(1));
@@ -256,16 +256,16 @@ public class MessageBrokerBeanDefinitionParserTests {
 
 		HttpRequestHandler httpRequestHandler = (HttpRequestHandler) suhm.getUrlMap().get("/foo/**");
 		assertNotNull(httpRequestHandler);
-		assertThat(httpRequestHandler, Matchers.instanceOf(SockJsHttpRequestHandler.class));
+		assertThat(httpRequestHandler).isInstanceOf(SockJsHttpRequestHandler.class);
 		SockJsHttpRequestHandler sockJsHttpRequestHandler = (SockJsHttpRequestHandler) httpRequestHandler;
 		WebSocketHandler wsHandler = unwrapWebSocketHandler(sockJsHttpRequestHandler.getWebSocketHandler());
 		assertNotNull(wsHandler);
-		assertThat(wsHandler, Matchers.instanceOf(SubProtocolWebSocketHandler.class));
+		assertThat(wsHandler).isInstanceOf(SubProtocolWebSocketHandler.class);
 		assertNotNull(sockJsHttpRequestHandler.getSockJsService());
 
 		UserDestinationResolver userDestResolver = this.appContext.getBean(UserDestinationResolver.class);
 		assertNotNull(userDestResolver);
-		assertThat(userDestResolver, Matchers.instanceOf(DefaultUserDestinationResolver.class));
+		assertThat(userDestResolver).isInstanceOf(DefaultUserDestinationResolver.class);
 		DefaultUserDestinationResolver defaultUserDestResolver = (DefaultUserDestinationResolver) userDestResolver;
 		assertEquals("/user/", defaultUserDestResolver.getDestinationPrefix());
 
@@ -353,9 +353,9 @@ public class MessageBrokerBeanDefinitionParserTests {
 
 		List<MessageConverter> converters = compositeMessageConverter.getConverters();
 		assertThat(converters).hasSize(3);
-		assertThat(converters.get(0), Matchers.instanceOf(StringMessageConverter.class));
-		assertThat(converters.get(1), Matchers.instanceOf(ByteArrayMessageConverter.class));
-		assertThat(converters.get(2), Matchers.instanceOf(MappingJackson2MessageConverter.class));
+		assertThat(converters.get(0)).isInstanceOf(StringMessageConverter.class);
+		assertThat(converters.get(1)).isInstanceOf(ByteArrayMessageConverter.class);
+		assertThat(converters.get(2)).isInstanceOf(MappingJackson2MessageConverter.class);
 
 		ContentTypeResolver resolver = ((MappingJackson2MessageConverter) converters.get(2)).getContentTypeResolver();
 		assertEquals(MimeTypeUtils.APPLICATION_JSON, ((DefaultContentTypeResolver) resolver).getDefaultMimeType());
@@ -376,7 +376,7 @@ public class MessageBrokerBeanDefinitionParserTests {
 		Validator validator = annotationMethodMessageHandler.getValidator();
 		assertNotNull(validator);
 		assertSame(this.appContext.getBean("myValidator"), validator);
-		assertThat(validator, Matchers.instanceOf(TestValidator.class));
+		assertThat(validator).isInstanceOf(TestValidator.class);
 
 		List<Class<? extends MessageHandler>> subscriberTypes = Arrays.asList(SimpAnnotationMethodMessageHandler.class,
 				UserDestinationMessageHandler.class, SimpleBrokerMessageHandler.class);

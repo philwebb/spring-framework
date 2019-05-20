@@ -1070,7 +1070,7 @@ public class JdbcTemplateTests {
 		Map<String, Object> out = this.template.call(
 				conn -> conn.prepareCall("my query"), Collections.singletonList(new SqlOutParameter("a", 12)));
 
-		assertThat(out, instanceOf(LinkedCaseInsensitiveMap.class));
+		assertThat(out).isInstanceOf(LinkedCaseInsensitiveMap.class);
 		assertNotNull("we should have gotten the result with upper case", out.get("A"));
 		assertNotNull("we should have gotten the result with lower case", out.get("a"));
 		verify(this.callableStatement).close();

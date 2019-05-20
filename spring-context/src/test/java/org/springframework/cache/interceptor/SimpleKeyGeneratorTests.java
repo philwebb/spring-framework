@@ -78,7 +78,7 @@ public class SimpleKeyGeneratorTests {
 		assertThat(k1.hashCode()).isNotEqualTo(k3.hashCode());
 		assertThat(k1).isEqualTo(k2);
 		assertThat(k1).isNotEqualTo(k3);
-		assertThat(k1, instanceOf(SimpleKey.class));
+		assertThat(k1).isInstanceOf(SimpleKey.class);
 	}
 
 	@Test

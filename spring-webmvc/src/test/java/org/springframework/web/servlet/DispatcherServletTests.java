@@ -794,7 +794,7 @@ public class DispatcherServletTests {
 				return new CustomServletEnvironment();
 			}
 		};
-		assertThat(custom.getEnvironment(), instanceOf(CustomServletEnvironment.class));
+		assertThat(custom.getEnvironment()).isInstanceOf(CustomServletEnvironment.class);
 	}
 
 	@Test
