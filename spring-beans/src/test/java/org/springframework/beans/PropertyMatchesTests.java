@@ -35,7 +35,7 @@ public class PropertyMatchesTests {
 	@Test
 	public void simpleBeanPropertyTypo() {
 		PropertyMatches matches = PropertyMatches.forProperty("naem", SampleBeanProperties.class);
-		assertThat(matches.getPossibleMatches(), hasItemInArray("name"));
+		assertThat(matches.getPossibleMatches()).contains("name");
 	}
 
 	@Test
@@ -53,9 +53,9 @@ public class PropertyMatchesTests {
 	@Test
 	public void severalMatchesBeanProperty() {
 		PropertyMatches matches = PropertyMatches.forProperty("counter", SampleBeanProperties.class);
-		assertThat(matches.getPossibleMatches(), hasItemInArray("counter1"));
-		assertThat(matches.getPossibleMatches(), hasItemInArray("counter2"));
-		assertThat(matches.getPossibleMatches(), hasItemInArray("counter3"));
+		assertThat(matches.getPossibleMatches()).contains("counter1");
+		assertThat(matches.getPossibleMatches()).contains("counter2");
+		assertThat(matches.getPossibleMatches()).contains("counter3");
 	}
 
 	@Test
@@ -81,7 +81,7 @@ public class PropertyMatchesTests {
 	@Test
 	public void simpleFieldPropertyTypo() {
 		PropertyMatches matches = PropertyMatches.forField("naem", SampleFieldProperties.class);
-		assertThat(matches.getPossibleMatches(), hasItemInArray("name"));
+		assertThat(matches.getPossibleMatches()).contains("name");
 	}
 
 	@Test
@@ -99,9 +99,9 @@ public class PropertyMatchesTests {
 	@Test
 	public void severalMatchesFieldProperty() {
 		PropertyMatches matches = PropertyMatches.forField("counter", SampleFieldProperties.class);
-		assertThat(matches.getPossibleMatches(), hasItemInArray("counter1"));
-		assertThat(matches.getPossibleMatches(), hasItemInArray("counter2"));
-		assertThat(matches.getPossibleMatches(), hasItemInArray("counter3"));
+		assertThat(matches.getPossibleMatches()).contains("counter1");
+		assertThat(matches.getPossibleMatches()).contains("counter2");
+		assertThat(matches.getPossibleMatches()).contains("counter3");
 	}
 
 	@Test
