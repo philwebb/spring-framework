@@ -184,14 +184,14 @@ public class ComponentScanAnnotationIntegrationTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(ComponentScanWithScopeResolver.class);
 		// custom scope annotation makes the bean prototype scoped. subsequent calls
 		// to getBean should return distinct instances.
-		assertThat(ctx.getBean(CustomScopeAnnotationBean.class)).isNotEqualTo(sameInstance(ctx.getBean(CustomScopeAnnotationBean.class)));
+		assertThat(ctx.getBean(CustomScopeAnnotationBean.class)).isNotSameAs(ctx.getBean(CustomScopeAnnotationBean.class));
 		assertThat(ctx.containsBean("scannedComponent")).isFalse();
 	}
 
 	@Test
 	public void multiComponentScan() {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(MultiComponentScan.class);
-		assertThat(ctx.getBean(CustomScopeAnnotationBean.class)).isNotEqualTo(sameInstance(ctx.getBean(CustomScopeAnnotationBean.class)));
+		assertThat(ctx.getBean(CustomScopeAnnotationBean.class)).isNotSameAs(ctx.getBean(CustomScopeAnnotationBean.class));
 		assertThat(ctx.containsBean("scannedComponent")).isTrue();
 	}
 

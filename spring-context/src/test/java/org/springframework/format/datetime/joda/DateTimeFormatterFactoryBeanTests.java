@@ -58,7 +58,7 @@ public class DateTimeFormatterFactoryBeanTests {
 		DateTimeFormatter formatter = factory.getObject();
 		assertThat(formatter).isEqualTo(DateTimeFormat.mediumDateTime());
 		factory.setStyle("LL");
-		assertThat(factory.getObject()).isEqualTo(sameInstance(formatter));
+		assertThat(factory.getObject()).isSameAs(formatter);
 	}
 
 }

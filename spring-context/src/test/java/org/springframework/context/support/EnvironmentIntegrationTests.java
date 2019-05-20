@@ -48,10 +48,7 @@ public class EnvironmentIntegrationTests {
 		child.refresh();
 
 		ConfigurableEnvironment env = child.getBean(ConfigurableEnvironment.class);
-		assertThat("unknown env", env, anyOf(
-				sameInstance(parent.getEnvironment()),
-				sameInstance(child.getEnvironment())));
-		assertThat("expected child ctx env", env).isSameAs(child.getEnvironment());
+		assertThat(env).isSameAs(child.getEnvironment());
 
 		child.close();
 		parent.close();

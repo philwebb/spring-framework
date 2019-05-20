@@ -77,7 +77,7 @@ public class DateTimeFormatterFactoryTests {
 	public void createDateTimeFormatterWithFallback() {
 		DateTimeFormatter fallback = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG);
 		DateTimeFormatter formatter = factory.createDateTimeFormatter(fallback);
-		assertThat(formatter).isEqualTo(sameInstance(fallback));
+		assertThat(formatter).isSameAs(fallback);
 	}
 
 	@Test

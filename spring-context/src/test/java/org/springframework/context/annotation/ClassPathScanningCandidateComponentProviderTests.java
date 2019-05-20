@@ -518,7 +518,7 @@ public class ClassPathScanningCandidateComponentProviderTests {
 	private void assertBeanDefinitionType(Set<BeanDefinition> candidates,
 			Class<? extends BeanDefinition> expectedType) {
 		candidates.forEach(c ->
-			assertThat(c).isEqualTo(instanceOf(expectedType))
+			assertThat(c).isInstanceOf(expectedType)
 		);
 	}
 

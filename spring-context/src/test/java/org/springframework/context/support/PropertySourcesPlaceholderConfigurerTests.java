@@ -68,7 +68,7 @@ public class PropertySourcesPlaceholderConfigurerTests {
 		ppc.setEnvironment(env);
 		ppc.postProcessBeanFactory(bf);
 		assertThat(bf.getBean(TestBean.class).getName()).isEqualTo("myValue");
-		assertThat(ppc.getAppliedPropertySources()).isNotEqualTo(nullValue());
+		assertThat(ppc.getAppliedPropertySources()).isNotNull();
 	}
 
 	@Test

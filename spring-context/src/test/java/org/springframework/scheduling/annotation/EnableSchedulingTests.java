@@ -73,7 +73,7 @@ public class EnableSchedulingTests {
 		assertEquals(2, ctx.getBean(ScheduledTaskHolder.class).getScheduledTasks().size());
 
 		Thread.sleep(100);
-		assertThat(ctx.getBean(AtomicInteger.class).get(), greaterThanOrEqualTo(10));
+		assertThat(ctx.getBean(AtomicInteger.class).get()).isGreaterThanOrEqualTo(10);
 	}
 
 	@Test
@@ -84,7 +84,7 @@ public class EnableSchedulingTests {
 		assertEquals(2, ctx.getBean(ScheduledTaskHolder.class).getScheduledTasks().size());
 
 		Thread.sleep(100);
-		assertThat(ctx.getBean(AtomicInteger.class).get(), greaterThanOrEqualTo(10));
+		assertThat(ctx.getBean(AtomicInteger.class).get()).isGreaterThanOrEqualTo(10);
 	}
 
 	@Test
@@ -95,8 +95,8 @@ public class EnableSchedulingTests {
 		assertEquals(1, ctx.getBean(ScheduledTaskHolder.class).getScheduledTasks().size());
 
 		Thread.sleep(100);
-		assertThat(ctx.getBean(AtomicInteger.class).get(), greaterThanOrEqualTo(10));
-		assertThat(ctx.getBean(ExplicitSchedulerConfig.class).threadName, startsWith("explicitScheduler-"));
+		assertThat(ctx.getBean(AtomicInteger.class).get()).isGreaterThanOrEqualTo(10);
+		assertThat(ctx.getBean(ExplicitSchedulerConfig.class).threadName).startsWith("explicitScheduler-");
 		assertTrue(Arrays.asList(ctx.getDefaultListableBeanFactory().getDependentBeans("myTaskScheduler")).contains(
 				TaskManagementConfigUtils.SCHEDULED_ANNOTATION_PROCESSOR_BEAN_NAME));
 	}
@@ -115,8 +115,8 @@ public class EnableSchedulingTests {
 		assertEquals(1, ctx.getBean(ScheduledTaskHolder.class).getScheduledTasks().size());
 
 		Thread.sleep(100);
-		assertThat(ctx.getBean(AtomicInteger.class).get(), greaterThanOrEqualTo(10));
-		assertThat(ctx.getBean(ExplicitScheduledTaskRegistrarConfig.class).threadName, startsWith("explicitScheduler1"));
+		assertThat(ctx.getBean(AtomicInteger.class).get()).isGreaterThanOrEqualTo(10);
+		assertThat(ctx.getBean(ExplicitScheduledTaskRegistrarConfig.class).threadName).startsWith("explicitScheduler1");
 	}
 
 	@Test
@@ -138,7 +138,7 @@ public class EnableSchedulingTests {
 				SchedulingEnabled_withAmbiguousTaskSchedulers_andSingleTask_disambiguatedByScheduledTaskRegistrar.class);
 
 		Thread.sleep(100);
-		assertThat(ctx.getBean(ThreadAwareWorker.class).executedByThread, startsWith("explicitScheduler2-"));
+		assertThat(ctx.getBean(ThreadAwareWorker.class).executedByThread).startsWith("explicitScheduler2-");
 	}
 
 	@Test
@@ -149,7 +149,7 @@ public class EnableSchedulingTests {
 				SchedulingEnabled_withAmbiguousTaskSchedulers_andSingleTask_disambiguatedBySchedulerNameAttribute.class);
 
 		Thread.sleep(100);
-		assertThat(ctx.getBean(ThreadAwareWorker.class).executedByThread, startsWith("explicitScheduler2-"));
+		assertThat(ctx.getBean(ThreadAwareWorker.class).executedByThread).startsWith("explicitScheduler2-");
 	}
 
 	@Test
@@ -159,7 +159,7 @@ public class EnableSchedulingTests {
 		ctx = new AnnotationConfigApplicationContext(SchedulingEnabled_withTaskAddedVia_configureTasks.class);
 
 		Thread.sleep(100);
-		assertThat(ctx.getBean(ThreadAwareWorker.class).executedByThread, startsWith("taskScheduler-"));
+		assertThat(ctx.getBean(ThreadAwareWorker.class).executedByThread).startsWith("taskScheduler-");
 	}
 
 	@Test
@@ -183,7 +183,7 @@ public class EnableSchedulingTests {
 
 		// The @Scheduled method should have been called at least once but
 		// not more times than the delay allows.
-		assertThat(counter.get()).isGreaterThan(0)).and(lessThanOrEqualTo(10));
+		assertThat(counter.get()).isBetween(1, 10);
 	}
 
 

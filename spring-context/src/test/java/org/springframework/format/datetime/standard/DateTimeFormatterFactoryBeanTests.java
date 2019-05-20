@@ -58,7 +58,7 @@ public class DateTimeFormatterFactoryBeanTests {
 		DateTimeFormatter formatter = factory.getObject();
 		assertThat(formatter.toString()).isEqualTo(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).toString());
 		factory.setStylePattern("LL");
-		assertThat(factory.getObject()).isEqualTo(sameInstance(formatter));
+		assertThat(factory.getObject()).isSameAs(formatter);
 	}
 
 }

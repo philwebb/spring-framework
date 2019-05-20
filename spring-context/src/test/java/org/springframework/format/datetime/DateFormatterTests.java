@@ -112,8 +112,8 @@ public class DateFormatterTests {
 		formatter.setIso(ISO.DATE);
 		Date date = getDate(2009, Calendar.JUNE, 1, 14, 23, 5, 3);
 		assertThat(formatter.print(date, Locale.US)).isEqualTo("2009-06-01");
-		assertThat(formatter.parse("2009-6-01", Locale.US),
-				is(getDate(2009, Calendar.JUNE, 1)));
+		assertThat(formatter.parse("2009-6-01", Locale.US))
+				.isEqualTo(getDate(2009, Calendar.JUNE, 1));
 	}
 
 	@Test
@@ -123,8 +123,8 @@ public class DateFormatterTests {
 		formatter.setIso(ISO.TIME);
 		Date date = getDate(2009, Calendar.JANUARY, 1, 14, 23, 5, 3);
 		assertThat(formatter.print(date, Locale.US)).isEqualTo("14:23:05.003Z");
-		assertThat(formatter.parse("14:23:05.003Z", Locale.US),
-				is(getDate(1970, Calendar.JANUARY, 1, 14, 23, 5, 3)));
+		assertThat(formatter.parse("14:23:05.003Z", Locale.US))
+				.isEqualTo(getDate(1970, Calendar.JANUARY, 1, 14, 23, 5, 3));
 	}
 
 	@Test
@@ -163,10 +163,12 @@ public class DateFormatterTests {
 		formatter.setStylePattern(style);
 		DateTimeFormatter jodaFormatter = DateTimeFormat.forStyle(style).withLocale(locale).withZone(DateTimeZone.UTC);
 		String jodaPrinted = jodaFormatter.print(date.getTime());
-		assertThat("Unable to print style pattern " + style,
-				formatter.print(date, locale), is(equalTo(jodaPrinted)));
-		assertThat("Unable to parse style pattern " + style,
-				formatter.parse(jodaPrinted, locale), is(equalTo(date)));
+		assertThat(formatter.print(date, locale))
+				.as("Unable to print style pattern " + style)
+				.isEqualTo(jodaPrinted);
+		assertThat(formatter.parse(jodaPrinted, locale))
+				.as("Unable to parse style pattern " + style)
+				.isEqualTo(date);
 	}
 
 	@Test
@@ -188,16 +190,16 @@ public class DateFormatterTests {
 		formatter.setPattern("yyyy");
 		Date date = getDate(2009, Calendar.JUNE, 1, 14, 23, 5, 3);
 
-		assertThat("uses pattern",formatter.print(date, Locale.US)).isEqualTo("2009");
+		assertThat(formatter.print(date, Locale.US)).as("uses pattern").isEqualTo("2009");
 
 		formatter.setPattern("");
-		assertThat("uses ISO", formatter.print(date, Locale.US)).isEqualTo("2009-06-01T14:23:05.003Z");
+		assertThat(formatter.print(date, Locale.US)).as("uses ISO").isEqualTo("2009-06-01T14:23:05.003Z");
 
 		formatter.setIso(ISO.NONE);
-		assertThat("uses style pattern", formatter.print(date, Locale.US)).isEqualTo("June 1, 2009");
+		assertThat(formatter.print(date, Locale.US)).as("uses style pattern").isEqualTo("June 1, 2009");
 
 		formatter.setStylePattern("");
-		assertThat("uses style", formatter.print(date, Locale.US)).isEqualTo("6/1/09");
+		assertThat(formatter.print(date, Locale.US)).as("uses style").isEqualTo("6/1/09");
 	}
 
 

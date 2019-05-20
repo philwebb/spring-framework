@@ -126,13 +126,13 @@ public class EnableAsyncTests {
 
 		AsyncBeanWithExecutorQualifiedByName asyncBean = ctx.getBean(AsyncBeanWithExecutorQualifiedByName.class);
 		Future<Thread> workerThread0 = asyncBean.work0();
-		assertThat(workerThread0.get().getName()).isNotEqualTo(anyOf(startsWith("e1-"), startsWith("otherExecutor-")));
+		assertThat(workerThread0.get().getName()).doesNotStartWith("e1-").doesNotStartWith("otherExecutor-");
 		Future<Thread> workerThread = asyncBean.work();
-		assertThat(workerThread.get().getName(), startsWith("e1-"));
+		assertThat(workerThread.get().getName()).startsWith("e1-");
 		Future<Thread> workerThread2 = asyncBean.work2();
-		assertThat(workerThread2.get().getName(), startsWith("otherExecutor-"));
+		assertThat(workerThread2.get().getName()).startsWith("otherExecutor-");
 		Future<Thread> workerThread3 = asyncBean.work3();
-		assertThat(workerThread3.get().getName(), startsWith("otherExecutor-"));
+		assertThat(workerThread3.get().getName()).startsWith("otherExecutor-");
 
 		ctx.close();
 	}
@@ -207,7 +207,7 @@ public class EnableAsyncTests {
 					.atMost(500, TimeUnit.MILLISECONDS)
 					.pollInterval(10, TimeUnit.MILLISECONDS)
 					.until(() -> asyncBean.getThreadOfExecution() != null);
-		assertThat(asyncBean.getThreadOfExecution().getName(), startsWith("Custom-"));
+		assertThat(asyncBean.getThreadOfExecution().getName()).startsWith("Custom-");
 		ctx.close();
 	}
 
@@ -225,7 +225,7 @@ public class EnableAsyncTests {
 					.atMost(500, TimeUnit.MILLISECONDS)
 					.pollInterval(10, TimeUnit.MILLISECONDS)
 					.until(() -> asyncBean.getThreadOfExecution() != null);
-		assertThat(asyncBean.getThreadOfExecution().getName(), startsWith("Custom-"));
+		assertThat(asyncBean.getThreadOfExecution().getName()).startsWith("Custom-");
 		ctx.close();
 	}
 
@@ -264,7 +264,7 @@ public class EnableAsyncTests {
 					.atMost(500, TimeUnit.MILLISECONDS)
 					.pollInterval(10, TimeUnit.MILLISECONDS)
 					.until(() -> asyncBean.getThreadOfExecution() != null);
-		assertThat(asyncBean.getThreadOfExecution().getName(), startsWith("Post-"));
+		assertThat(asyncBean.getThreadOfExecution().getName()).startsWith("Post-");
 		ctx.close();
 	}
 
@@ -301,7 +301,7 @@ public class EnableAsyncTests {
 					.atMost(500, TimeUnit.MILLISECONDS)
 					.pollInterval(10, TimeUnit.MILLISECONDS)
 					.until(() -> asyncBean.getThreadOfExecution() != null);
-		assertThat(asyncBean.getThreadOfExecution().getName(), startsWith("Custom-"));
+		assertThat(asyncBean.getThreadOfExecution().getName()).startsWith("Custom-");
 		ctx.close();
 	}
 
@@ -317,7 +317,7 @@ public class EnableAsyncTests {
 					.atMost(500, TimeUnit.MILLISECONDS)
 					.pollInterval(10, TimeUnit.MILLISECONDS)
 					.until(() -> asyncBean.getThreadOfExecution() != null);
-		assertThat(asyncBean.getThreadOfExecution().getName(), startsWith("Custom-"));
+		assertThat(asyncBean.getThreadOfExecution().getName()).startsWith("Custom-");
 		ctx.close();
 	}
 

@@ -549,7 +549,7 @@ public class AnnotationDrivenEventListenerTests {
 
 		assertTrue(listener.order.isEmpty());
 		this.context.publishEvent("whatever");
-		assertThat(listener.order, contains("first", "second", "third"));
+		assertThat(listener.order).contains("first", "second", "third");
 	}
 
 	@Test @Ignore  // SPR-15122
@@ -557,7 +557,7 @@ public class AnnotationDrivenEventListenerTests {
 		load(EventOnPostConstruct.class, OrderedTestListener.class);
 		OrderedTestListener listener = this.context.getBean(OrderedTestListener.class);
 
-		assertThat(listener.order, contains("first", "second", "third"));
+		assertThat(listener.order).contains("first", "second", "third");
 	}
 
 

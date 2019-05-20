@@ -65,7 +65,7 @@ public class PropertyMatchesTests {
 		assertThat(msg).contains("naem");
 		assertThat(msg).contains("name");
 		assertThat(msg).contains("setter");
-		assertThat(msg).isNotEqualTo(containsString("field"));
+		assertThat(msg).doesNotContain("field");
 	}
 
 	@Test
@@ -111,7 +111,7 @@ public class PropertyMatchesTests {
 		assertThat(msg).contains("naem");
 		assertThat(msg).contains("name");
 		assertThat(msg).contains("field");
-		assertThat(msg).isNotEqualTo(containsString("setter"));
+		assertThat(msg).doesNotContain("setter");
 	}
 
 	@Test

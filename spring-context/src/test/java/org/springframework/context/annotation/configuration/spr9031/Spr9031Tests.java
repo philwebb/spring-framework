@@ -51,7 +51,7 @@ public class Spr9031Tests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 		ctx.register(HighLevelConfig.class);
 		ctx.refresh();
-		assertThat(ctx.getBean(LowLevelConfig.class).scanned).isNotEqualTo(nullValue());
+		assertThat(ctx.getBean(LowLevelConfig.class).scanned).isNotNull();
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class Spr9031Tests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 		ctx.register(LowLevelConfig.class);
 		ctx.refresh();
-		assertThat(ctx.getBean(LowLevelConfig.class).scanned).isNotEqualTo(nullValue());
+		assertThat(ctx.getBean(LowLevelConfig.class).scanned).isNotNull();
 	}
 
 	@Configuration

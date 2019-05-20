@@ -41,7 +41,7 @@ public class CandidateComponentsIndexLoaderTests {
 	@Test
 	public void validateIndexIsDisabledByDefault() {
 		CandidateComponentsIndex index = CandidateComponentsIndexLoader.loadIndex(null);
-		assertThat("No spring.components should be available at the default location", index).isNull();
+		assertThat(index).as("No spring.components should be available at the default location").isNull();
 	}
 
 	@Test
@@ -50,9 +50,9 @@ public class CandidateComponentsIndexLoaderTests {
 				CandidateComponentsTestClassLoader.index(getClass().getClassLoader(),
 						new ClassPathResource("spring.components", getClass())));
 		Set<String> components = index.getCandidateTypes("org.springframework", "foo");
-		assertThat(components, containsInAnyOrder(
+		assertThat(components).contains(
 				"org.springframework.context.index.Sample1",
-				"org.springframework.context.index.Sample2"));
+				"org.springframework.context.index.Sample2");
 	}
 
 	@Test
@@ -61,8 +61,8 @@ public class CandidateComponentsIndexLoaderTests {
 				CandidateComponentsTestClassLoader.index(getClass().getClassLoader(),
 						new ClassPathResource("spring.components", getClass())));
 		Set<String> components = index.getCandidateTypes("org.springframework", "biz");
-		assertThat(components, containsInAnyOrder(
-				"org.springframework.context.index.Sample3"));
+		assertThat(components).contains(
+				"org.springframework.context.index.Sample3");
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class CandidateComponentsIndexLoaderTests {
 				CandidateComponentsTestClassLoader.index(getClass().getClassLoader(),
 						new ClassPathResource("spring.components", getClass())));
 		Set<String> components = index.getCandidateTypes("org.springframework", "none");
-		assertThat(components, hasSize(0));
+		assertThat(components).isEmpty();
 	}
 
 	@Test
@@ -80,7 +80,7 @@ public class CandidateComponentsIndexLoaderTests {
 				CandidateComponentsTestClassLoader.index(getClass().getClassLoader(),
 						new ClassPathResource("spring.components", getClass())));
 		Set<String> components = index.getCandidateTypes("com.example", "foo");
-		assertThat(components, hasSize(0));
+		assertThat(components).isEmpty();
 	}
 
 	@Test

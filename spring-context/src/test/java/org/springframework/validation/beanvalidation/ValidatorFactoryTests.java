@@ -137,8 +137,9 @@ public class ValidatorFactoryTests {
 		BeanPropertyBindingResult errors = new BeanPropertyBindingResult(person, "person");
 		validator.validate(person, errors);
 		assertEquals(1, errors.getErrorCount());
-		assertThat("Field/Value type mismatch", errors.getFieldError("address").getRejectedValue(),
-				instanceOf(ValidAddress.class));
+		assertThat(errors.getFieldError("address").getRejectedValue())
+				.as("Field/Value type mismatch")
+				.isInstanceOf(ValidAddress.class);
 	}
 
 	@Test
