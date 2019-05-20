@@ -147,7 +147,7 @@ public class MutablePropertySourcesTests {
 	@Test
 	public void getNonExistentPropertySourceReturnsNull() {
 		MutablePropertySources sources = new MutablePropertySources();
-		assertThat(sources.get("bogus"), nullValue());
+		assertThat(sources.get("bogus")).isNull();
 	}
 
 	@Test

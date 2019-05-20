@@ -231,7 +231,7 @@ public class HtmlUnitRequestBuilderTests {
 	public void buildRequestCookiesNull() {
 		MockHttpServletRequest actualRequest = requestBuilder.buildRequest(servletContext);
 
-		assertThat(actualRequest.getCookies(), nullValue());
+		assertThat(actualRequest.getCookies()).isNull();
 	}
 
 	@Test
@@ -391,7 +391,7 @@ public class HtmlUnitRequestBuilderTests {
 		MockHttpServletRequest actualRequest = requestBuilder.buildRequest(servletContext);
 
 		assertThat(actualRequest.getParameterMap().size()).isEqualTo(1);
-		assertThat(actualRequest.getParameter("name"), nullValue());
+		assertThat(actualRequest.getParameter("name")).isNull();
 	}
 
 	@Test
@@ -501,7 +501,7 @@ public class HtmlUnitRequestBuilderTests {
 	public void buildRequestPathInfo() throws Exception {
 		MockHttpServletRequest actualRequest = requestBuilder.buildRequest(servletContext);
 
-		assertThat(actualRequest.getPathInfo(), nullValue());
+		assertThat(actualRequest.getPathInfo()).isNull();
 	}
 
 	@Test
@@ -510,7 +510,7 @@ public class HtmlUnitRequestBuilderTests {
 
 		MockHttpServletRequest actualRequest = requestBuilder.buildRequest(servletContext);
 
-		assertThat(actualRequest.getPathInfo(), nullValue());
+		assertThat(actualRequest.getPathInfo()).isNull();
 	}
 
 	@Test
@@ -520,7 +520,7 @@ public class HtmlUnitRequestBuilderTests {
 		MockHttpServletRequest actualRequest = requestBuilder.buildRequest(servletContext);
 
 		// verify it is going to work with Spring Security's AntPathRequestMatcher
-		assertThat(actualRequest.getPathInfo(), nullValue());
+		assertThat(actualRequest.getPathInfo()).isNull();
 		assertThat(actualRequest.getServletPath()).isEqualTo("/login/authenticate");
 	}
 
@@ -644,7 +644,7 @@ public class HtmlUnitRequestBuilderTests {
 	public void buildRequestRequestedSessionIdNull() throws Exception {
 		MockHttpServletRequest actualRequest = requestBuilder.buildRequest(servletContext);
 
-		assertThat(actualRequest.getRequestedSessionId(), nullValue());
+		assertThat(actualRequest.getRequestedSessionId()).isNull();
 	}
 
 	@Test
@@ -761,7 +761,7 @@ public class HtmlUnitRequestBuilderTests {
 		MockHttpServletRequest actualRequest = requestBuilder.buildRequest(servletContext);
 
 		HttpSession session = actualRequest.getSession(false);
-		assertThat(session, nullValue());
+		assertThat(session).isNull();
 	}
 
 	@Test
@@ -819,7 +819,7 @@ public class HtmlUnitRequestBuilderTests {
 	public void setContextPathNull() {
 		requestBuilder.setContextPath(null);
 
-		assertThat(getContextPath(), nullValue());
+		assertThat(getContextPath()).isNull();
 	}
 
 	@Test
@@ -877,7 +877,7 @@ public class HtmlUnitRequestBuilderTests {
 				.defaultRequest(get("/"))
 				.build();
 
-		assertThat(mockMvc.perform(requestBuilder).andReturn().getRequest().getSession(false), nullValue());
+		assertThat(mockMvc.perform(requestBuilder).andReturn().getRequest().getSession(false)).isNull();
 	}
 
 	@Test
@@ -938,7 +938,7 @@ public class HtmlUnitRequestBuilderTests {
 	private void assertSingleSessionCookie(String expected) {
 		com.gargoylesoftware.htmlunit.util.Cookie jsessionidCookie = webClient.getCookieManager().getCookie("JSESSIONID");
 		if (expected == null || expected.contains("Expires=Thu, 01-Jan-1970 00:00:01 GMT")) {
-			assertThat(jsessionidCookie, nullValue());
+			assertThat(jsessionidCookie).isNull();
 			return;
 		}
 		String actual = jsessionidCookie.getValue();

@@ -278,7 +278,7 @@ public abstract class AbstractCacheAnnotationTests {
 		service.unless(10);
 		service.unless(11);
 		assertThat(cache.get(10).get()).isEqualTo(10L);
-		assertThat(cache.get(11), nullValue());
+		assertThat(cache.get(11)).isNull();
 	}
 
 	public void testKeyExpression(CacheableService<?> service) throws Exception {

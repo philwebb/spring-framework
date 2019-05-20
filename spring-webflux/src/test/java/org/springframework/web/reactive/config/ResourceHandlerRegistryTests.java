@@ -100,7 +100,7 @@ public class ResourceHandlerRegistryTests {
 
 	@Test
 	public void cacheControl() {
-		assertThat(getHandler("/resources/**").getCacheControl(), Matchers.nullValue());
+		assertThat(getHandler("/resources/**").getCacheControl()).isNull();
 
 		this.registration.setCacheControl(CacheControl.noCache().cachePrivate());
 		assertThat(getHandler("/resources/**").getCacheControl().getHeaderValue(),

@@ -113,14 +113,14 @@ public class ExpressionEvaluatorTests {
 	public void withNullReturn() {
 		EvaluationContext context = createEvaluationContext(null);
 		Object value = new SpelExpressionParser().parseExpression("#result").getValue(context);
-		assertThat(value, nullValue());
+		assertThat(value).isNull();
 	}
 
 	@Test
 	public void withoutReturnValue() {
 		EvaluationContext context = createEvaluationContext(CacheOperationExpressionEvaluator.NO_RESULT);
 		Object value = new SpelExpressionParser().parseExpression("#result").getValue(context);
-		assertThat(value, nullValue());
+		assertThat(value).isNull();
 	}
 
 	@Test

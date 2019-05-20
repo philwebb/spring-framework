@@ -256,7 +256,7 @@ public class ResourceTests {
 				resource.createRelative("/testing"))
 			.withMessageContaining(name);
 
-		assertThat(resource.getFilename(), nullValue());
+		assertThat(resource.getFilename()).isNull();
 	}
 
 	@Test

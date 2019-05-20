@@ -41,7 +41,7 @@ public class JndiPropertySourceTests {
 	@Test
 	public void nonExistentProperty() {
 		JndiPropertySource ps = new JndiPropertySource("jndiProperties");
-		assertThat(ps.getProperty("bogus"), nullValue());
+		assertThat(ps.getProperty("bogus")).isNull();
 	}
 
 	@Test
@@ -93,7 +93,7 @@ public class JndiPropertySourceTests {
 		jndiLocator.setResourceRef(true);
 
 		JndiPropertySource ps = new JndiPropertySource("jndiProperties", jndiLocator);
-		assertThat(ps.getProperty("propertyKey:defaultValue"), nullValue());
+		assertThat(ps.getProperty("propertyKey:defaultValue")).isNull();
 	}
 
 	@Test

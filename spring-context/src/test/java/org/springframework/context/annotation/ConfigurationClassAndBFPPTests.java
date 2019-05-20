@@ -48,7 +48,7 @@ public class ConfigurationClassAndBFPPTests {
 		ctx.refresh();
 		// instance method BFPP interferes with lifecycle -> autowiring fails!
 		// WARN-level logging should have been issued about returning BFPP from non-static @Bean method
-		assertThat(ctx.getBean(AutowiredConfigWithBFPPAsInstanceMethod.class).autowiredTestBean, nullValue());
+		assertThat(ctx.getBean(AutowiredConfigWithBFPPAsInstanceMethod.class).autowiredTestBean).isNull();
 	}
 
 	@Test

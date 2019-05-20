@@ -51,7 +51,7 @@ public class SimpleCommandLinePropertySourceTests {
 	public void withNoArgs() {
 		PropertySource<?> ps = new SimpleCommandLinePropertySource();
 		assertThat(ps.containsProperty("foo")).isFalse();
-		assertThat(ps.getProperty("foo"), nullValue());
+		assertThat(ps.getProperty("foo")).isNull();
 	}
 
 	@Test
@@ -63,7 +63,7 @@ public class SimpleCommandLinePropertySourceTests {
 		assertThat(ps.containsProperty("o3")).isFalse();
 		assertThat(ps.getProperty("o1")).isEqualTo("v1");
 		assertThat(ps.getProperty("o2")).isEqualTo("");
-		assertThat(ps.getProperty("o3"), nullValue());
+		assertThat(ps.getProperty("o3")).isNull();
 	}
 
 	@Test
@@ -75,7 +75,7 @@ public class SimpleCommandLinePropertySourceTests {
 		assertThat(ps.containsProperty("o2")).isTrue();
 
 		assertThat(ps.containsProperty("nonOptionArgs")).isFalse();
-		assertThat(ps.getProperty("nonOptionArgs"), nullValue());
+		assertThat(ps.getProperty("nonOptionArgs")).isNull();
 		assertThat(ps.getPropertyNames().length).isEqualTo(2);
 	}
 

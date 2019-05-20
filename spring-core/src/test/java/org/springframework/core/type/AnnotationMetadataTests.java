@@ -106,10 +106,10 @@ public class AnnotationMetadataTests {
 		assertThat(metadata.hasAnnotation(Scope.class.getName())).isFalse();
 		assertThat(metadata.hasAnnotation(SpecialAttr.class.getName())).isFalse();
 		assertThat(metadata.getAnnotationTypes()).hasSize(0);
-		assertThat(metadata.getAnnotationAttributes(Component.class.getName()), nullValue());
+		assertThat(metadata.getAnnotationAttributes(Component.class.getName())).isNull();
 		assertThat(metadata.getAnnotatedMethods(DirectAnnotation.class.getName()).size()).isEqualTo(0);
 		assertThat(metadata.isAnnotated(IsAnnotatedAnnotation.class.getName())).isEqualTo(false);
-		assertThat(metadata.getAllAnnotationAttributes(DirectAnnotation.class.getName()), nullValue());
+		assertThat(metadata.getAllAnnotationAttributes(DirectAnnotation.class.getName())).isNull();
 	}
 
 	@Test
@@ -133,7 +133,7 @@ public class AnnotationMetadataTests {
 		assertThat(metadata.isAbstract()).isTrue();
 		assertThat(metadata.isConcrete()).isFalse();
 		assertThat(metadata.hasSuperClass()).isFalse();
-		assertThat(metadata.getSuperClassName(), nullValue());
+		assertThat(metadata.getSuperClassName()).isNull();
 		assertThat(metadata.getInterfaceNames().length).isEqualTo(2);
 		assertThat(metadata.getInterfaceNames()[0]).isEqualTo(ClassMetadata.class.getName());
 		assertThat(metadata.getInterfaceNames()[1]).isEqualTo(AnnotatedTypeMetadata.class.getName());
@@ -161,7 +161,7 @@ public class AnnotationMetadataTests {
 		assertThat(metadata.isAbstract()).isTrue();
 		assertThat(metadata.isConcrete()).isFalse();
 		assertThat(metadata.hasSuperClass()).isFalse();
-		assertThat(metadata.getSuperClassName(), nullValue());
+		assertThat(metadata.getSuperClassName()).isNull();
 		assertThat(metadata.getInterfaceNames().length).isEqualTo(1);
 		assertThat(metadata.getInterfaceNames()[0]).isEqualTo(Annotation.class.getName());
 		assertThat(metadata.isAnnotated(Documented.class.getName())).isFalse();

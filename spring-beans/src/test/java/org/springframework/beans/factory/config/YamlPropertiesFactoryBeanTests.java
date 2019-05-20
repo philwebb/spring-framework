@@ -155,7 +155,7 @@ public class YamlPropertiesFactoryBeanTests {
 		Properties properties = factory.getObject();
 		assertThat(properties.getProperty("foo")).isEqualTo("bag");
 		assertThat(properties.getProperty("spam")).isEqualTo("bad");
-		assertThat(properties.getProperty("one"), nullValue());
+		assertThat(properties.getProperty("one")).isNull();
 	}
 
 	@Test

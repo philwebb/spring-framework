@@ -72,7 +72,7 @@ public class ConfigurationClassWithPlaceholderConfigurerBeanTests {
 
 		TestBean testBean = ctx.getBean(TestBean.class);
 		// Proof that the @Value field did not get set:
-		assertThat(testBean.getName(), nullValue());
+		assertThat(testBean.getName()).isNull();
 	}
 
 	@Test

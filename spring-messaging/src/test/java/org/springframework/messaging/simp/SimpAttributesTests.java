@@ -59,7 +59,7 @@ public class SimpAttributesTests {
 		this.simpAttributes.setAttribute("name1", "value1");
 
 		assertThat(this.simpAttributes.getAttribute("name1")).isEqualTo("value1");
-		assertThat(this.simpAttributes.getAttribute("name2"), nullValue());
+		assertThat(this.simpAttributes.getAttribute("name2")).isNull();
 	}
 
 	@Test

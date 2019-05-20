@@ -302,7 +302,7 @@ public class PropertySourcesPlaceholderConfigurerTests {
 				.getBeanDefinition());
 		ppc.setEnvironment(new MockEnvironment().withProperty("my.name", "customNull"));
 		ppc.postProcessBeanFactory(bf);
-		assertThat(bf.getBean(TestBean.class).getName(), nullValue());
+		assertThat(bf.getBean(TestBean.class).getName()).isNull();
 	}
 
 	@Test

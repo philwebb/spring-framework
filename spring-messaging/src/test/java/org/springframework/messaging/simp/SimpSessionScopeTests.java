@@ -85,10 +85,10 @@ public class SimpSessionScopeTests {
 
 		Object removed = this.scope.remove("name");
 		assertThat(removed).isEqualTo("value");
-		assertThat(this.simpAttributes.getAttribute("name"), nullValue());
+		assertThat(this.simpAttributes.getAttribute("name")).isNull();
 
 		removed = this.scope.remove("name");
-		assertThat(removed, nullValue());
+		assertThat(removed).isNull();
 	}
 
 	@Test

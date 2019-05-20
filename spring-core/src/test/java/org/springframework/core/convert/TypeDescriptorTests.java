@@ -749,14 +749,14 @@ public class TypeDescriptorTests {
 	@Test
 	public void createCollectionWithNullElement() throws Exception {
 		TypeDescriptor typeDescriptor = TypeDescriptor.collection(List.class, null);
-		assertThat(typeDescriptor.getElementTypeDescriptor(), nullValue());
+		assertThat(typeDescriptor.getElementTypeDescriptor()).isNull();
 	}
 
 	@Test
 	public void createMapWithNullElements() throws Exception {
 		TypeDescriptor typeDescriptor = TypeDescriptor.map(LinkedHashMap.class, null, null);
-		assertThat(typeDescriptor.getMapKeyTypeDescriptor(), nullValue());
-		assertThat(typeDescriptor.getMapValueTypeDescriptor(), nullValue());
+		assertThat(typeDescriptor.getMapKeyTypeDescriptor()).isNull();
+		assertThat(typeDescriptor.getMapValueTypeDescriptor()).isNull();
 	}
 
 	@Test

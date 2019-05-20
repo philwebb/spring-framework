@@ -95,7 +95,7 @@ public abstract class AbstractTransactionSupportingCacheManagerTests<T extends C
 		T cacheManager = getCacheManager(false);
 		String cacheName = name.getMethodName();
 		assertFalse(cacheManager.getCacheNames().contains(cacheName));
-		assertThat(cacheManager.getCache(cacheName), nullValue());
+		assertThat(cacheManager.getCache(cacheName)).isNull();
 	}
 
 	@Test

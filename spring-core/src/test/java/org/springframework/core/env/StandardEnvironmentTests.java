@@ -86,10 +86,10 @@ public class StandardEnvironmentTests {
 						.withProperty("bothKey", "parentBothVal"));
 
 		assertThat(child.getProperty("childKey")).isEqualTo("childVal");
-		assertThat(child.getProperty("parentKey"), nullValue());
+		assertThat(child.getProperty("parentKey")).isNull();
 		assertThat(child.getProperty("bothKey")).isEqualTo("childBothVal");
 
-		assertThat(parent.getProperty("childKey"), nullValue());
+		assertThat(parent.getProperty("childKey")).isNull();
 		assertThat(parent.getProperty("parentKey")).isEqualTo("parentVal");
 		assertThat(parent.getProperty("bothKey")).isEqualTo("parentBothVal");
 
@@ -102,7 +102,7 @@ public class StandardEnvironmentTests {
 		assertThat(child.getProperty("parentKey")).isEqualTo("parentVal");
 		assertThat(child.getProperty("bothKey")).isEqualTo("childBothVal");
 
-		assertThat(parent.getProperty("childKey"), nullValue());
+		assertThat(parent.getProperty("childKey")).isNull();
 		assertThat(parent.getProperty("parentKey")).isEqualTo("parentVal");
 		assertThat(parent.getProperty("bothKey")).isEqualTo("parentBothVal");
 
@@ -211,7 +211,7 @@ public class StandardEnvironmentTests {
 	@Test
 	public void addActiveProfile_whenActiveProfilesPropertyIsAlreadySet() {
 		ConfigurableEnvironment env = new StandardEnvironment();
-		assertThat(env.getProperty(ACTIVE_PROFILES_PROPERTY_NAME), nullValue());
+		assertThat(env.getProperty(ACTIVE_PROFILES_PROPERTY_NAME)).isNull();
 		env.getPropertySources().addFirst(new MockPropertySource().withProperty(ACTIVE_PROFILES_PROPERTY_NAME, "p1"));
 		assertThat(env.getProperty(ACTIVE_PROFILES_PROPERTY_NAME)).isEqualTo("p1");
 		env.addActiveProfile("p2");
@@ -458,7 +458,7 @@ public class StandardEnvironmentTests {
 			// have access to calling System.getProperty(), which itself returns null
 			// if the value is non-string.  So we're stuck with returning a potentially
 			// misleading null.
-			assertThat(systemProperties.get(STRING_PROPERTY_NAME), nullValue());
+			assertThat(systemProperties.get(STRING_PROPERTY_NAME)).isNull();
 
 			// in the case of a non-string *key*, however, we can do better.  Alert
 			// the user that under these very special conditions (non-object key +
@@ -508,7 +508,7 @@ public class StandardEnvironmentTests {
 			assertThat(systemEnvironment, notNullValue());
 			assertThat(systemEnvironment, instanceOf(ReadOnlySystemAttributesMap.class));
 			assertThat(systemEnvironment.get(ALLOWED_PROPERTY_NAME)).isEqualTo((Object)ALLOWED_PROPERTY_VALUE);
-			assertThat(systemEnvironment.get(DISALLOWED_PROPERTY_NAME), nullValue());
+			assertThat(systemEnvironment.get(DISALLOWED_PROPERTY_NAME)).isNull();
 		}
 
 		System.setSecurityManager(oldSecurityManager);

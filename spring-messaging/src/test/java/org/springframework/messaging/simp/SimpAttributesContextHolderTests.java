@@ -65,12 +65,12 @@ public class SimpAttributesContextHolderTests {
 		assertThat(SimpAttributesContextHolder.getAttributes()).isSameAs(this.simpAttributes);
 
 		SimpAttributesContextHolder.resetAttributes();
-		assertThat(SimpAttributesContextHolder.getAttributes(), nullValue());
+		assertThat(SimpAttributesContextHolder.getAttributes()).isNull();
 	}
 
 	@Test
 	public void getAttributes() {
-		assertThat(SimpAttributesContextHolder.getAttributes(), nullValue());
+		assertThat(SimpAttributesContextHolder.getAttributes()).isNull();
 
 		SimpAttributesContextHolder.setAttributes(this.simpAttributes);
 		assertThat(SimpAttributesContextHolder.getAttributes()).isSameAs(this.simpAttributes);
@@ -82,7 +82,7 @@ public class SimpAttributesContextHolderTests {
 		assertThat(SimpAttributesContextHolder.getAttributes()).isSameAs(this.simpAttributes);
 
 		SimpAttributesContextHolder.setAttributes(null);
-		assertThat(SimpAttributesContextHolder.getAttributes(), nullValue());
+		assertThat(SimpAttributesContextHolder.getAttributes()).isNull();
 	}
 
 	@Test

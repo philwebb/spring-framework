@@ -68,7 +68,7 @@ public class PropertySourcesPropertyResolverTests {
 
 	@Test
 	public void getProperty() {
-		assertThat(propertyResolver.getProperty("foo"), nullValue());
+		assertThat(propertyResolver.getProperty("foo")).isNull();
 		testProperties.put("foo", "bar");
 		assertThat(propertyResolver.getProperty("foo")).isEqualTo("bar");
 	}
@@ -98,7 +98,7 @@ public class PropertySourcesPropertyResolverTests {
 		Map<String, Object> nullableProperties = new HashMap<>();
 		propertySources.addLast(new MapPropertySource("nullableProperties", nullableProperties));
 		nullableProperties.put("foo", null);
-		assertThat(propertyResolver.getProperty("foo"), nullValue());
+		assertThat(propertyResolver.getProperty("foo")).isNull();
 	}
 
 	@Test

@@ -34,7 +34,7 @@ public class SimpleCommandLineParserTests {
 	@Test
 	public void withNoOptions() {
 		SimpleCommandLineArgsParser parser = new SimpleCommandLineArgsParser();
-		assertThat(parser.parse().getOptionValues("foo"), nullValue());
+		assertThat(parser.parse().getOptionValues("foo")).isNull();
 	}
 
 	@Test
@@ -62,7 +62,7 @@ public class SimpleCommandLineParserTests {
 		assertThat(args.containsOption("o3")).isFalse();
 		assertThat(args.getOptionValues("o1").get(0)).isEqualTo("v1");
 		assertThat(args.getOptionValues("o2")).isEqualTo(Collections.EMPTY_LIST);
-		assertThat(args.getOptionValues("o3"), nullValue());
+		assertThat(args.getOptionValues("o3")).isNull();
 	}
 
 	@Test

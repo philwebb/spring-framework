@@ -33,7 +33,7 @@ public class CacheControlTests {
 	@Test
 	public void emptyCacheControl() throws Exception {
 		CacheControl cc = CacheControl.empty();
-		assertThat(cc.getHeaderValue(), Matchers.nullValue());
+		assertThat(cc.getHeaderValue()).isNull();
 	}
 
 	@Test

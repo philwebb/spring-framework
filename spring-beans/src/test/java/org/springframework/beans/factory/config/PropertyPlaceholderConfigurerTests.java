@@ -220,7 +220,7 @@ public class PropertyPlaceholderConfigurerTests {
 				.addPropertyValue("name", "${my.name}")
 				.getBeanDefinition());
 		ppc.postProcessBeanFactory(bf);
-		assertThat(bf.getBean(TestBean.class).getName(), nullValue());
+		assertThat(bf.getBean(TestBean.class).getName()).isNull();
 		System.clearProperty("my.name");
 	}
 
