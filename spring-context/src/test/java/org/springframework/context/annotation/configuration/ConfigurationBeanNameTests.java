@@ -45,10 +45,10 @@ public class ConfigurationBeanNameTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 		ctx.register(A.class);
 		ctx.refresh();
-		assertThat(ctx.containsBean("outer"), is(true));
-		assertThat(ctx.containsBean("imported"), is(true));
-		assertThat(ctx.containsBean("nested"), is(true));
-		assertThat(ctx.containsBean("nestedBean"), is(true));
+		assertThat(ctx.containsBean("outer")).isTrue();
+		assertThat(ctx.containsBean("imported")).isTrue();
+		assertThat(ctx.containsBean("nested")).isTrue();
+		assertThat(ctx.containsBean("nestedBean")).isTrue();
 	}
 
 	@Test
@@ -56,10 +56,10 @@ public class ConfigurationBeanNameTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 		ctx.register(A.B.class);
 		ctx.refresh();
-		assertThat(ctx.containsBean("outer"), is(false));
-		assertThat(ctx.containsBean("imported"), is(false));
-		assertThat(ctx.containsBean("nested"), is(true));
-		assertThat(ctx.containsBean("nestedBean"), is(true));
+		assertThat(ctx.containsBean("outer")).isFalse();
+		assertThat(ctx.containsBean("imported")).isFalse();
+		assertThat(ctx.containsBean("nested")).isTrue();
+		assertThat(ctx.containsBean("nestedBean")).isTrue();
 	}
 
 	@Test
@@ -74,10 +74,10 @@ public class ConfigurationBeanNameTests {
 		});
 		ctx.register(A.class);
 		ctx.refresh();
-		assertThat(ctx.containsBean("custom-outer"), is(true));
-		assertThat(ctx.containsBean("custom-imported"), is(true));
-		assertThat(ctx.containsBean("custom-nested"), is(true));
-		assertThat(ctx.containsBean("nestedBean"), is(true));
+		assertThat(ctx.containsBean("custom-outer")).isTrue();
+		assertThat(ctx.containsBean("custom-imported")).isTrue();
+		assertThat(ctx.containsBean("custom-nested")).isTrue();
+		assertThat(ctx.containsBean("nestedBean")).isTrue();
 	}
 
 	@Configuration("outer")

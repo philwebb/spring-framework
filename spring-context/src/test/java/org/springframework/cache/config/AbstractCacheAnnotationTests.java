@@ -276,7 +276,7 @@ public abstract class AbstractCacheAnnotationTests {
 		cache.clear();
 		service.unless(10);
 		service.unless(11);
-		assertThat(cache.get(10).get(), equalTo(10L));
+		assertThat(cache.get(10).get()).isEqualTo(10L);
 		assertThat(cache.get(11), nullValue());
 	}
 

@@ -492,7 +492,7 @@ public class StompSubProtocolHandlerTests {
 			@Override
 			public boolean send(Message<?> message) {
 				SimpAttributes simpAttributes = SimpAttributesContextHolder.currentAttributes();
-				assertThat(simpAttributes.getAttribute("name"), is("value"));
+				assertThat(simpAttributes.getAttribute("name")).isEqualTo("value");
 				return true;
 			}
 			@Override

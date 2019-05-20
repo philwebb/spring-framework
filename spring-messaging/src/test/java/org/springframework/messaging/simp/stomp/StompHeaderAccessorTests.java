@@ -113,7 +113,7 @@ public class StompHeaderAccessorTests {
 		assertNotNull(headerAccessor.getHeader("stompCredentials"));
 		assertEquals("joe", headerAccessor.getLogin());
 		assertEquals("joe123", headerAccessor.getPasscode());
-		assertThat(headerAccessor.toString(), CoreMatchers.containsString("passcode=[PROTECTED]"));
+		assertThat(headerAccessor.toString()).contains("passcode=[PROTECTED]");
 
 		Map<String, List<String>> output = headerAccessor.toNativeHeaderMap();
 		assertEquals("joe", output.get(StompHeaderAccessor.STOMP_LOGIN_HEADER).get(0));

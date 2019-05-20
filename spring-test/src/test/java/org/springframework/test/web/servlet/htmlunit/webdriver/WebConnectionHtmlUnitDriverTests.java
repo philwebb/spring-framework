@@ -70,7 +70,7 @@ public class WebConnectionHtmlUnitDriverTests {
 	@Test
 	public void setWebConnection() {
 		this.driver.setWebConnection(this.connection);
-		assertThat(this.driver.getWebConnection(), equalTo(this.connection));
+		assertThat(this.driver.getWebConnection()).isEqualTo(this.connection);
 		assertThatExceptionOfType(WebDriverException.class).isThrownBy(() ->
 				this.driver.get("https://example.com"));
 	}

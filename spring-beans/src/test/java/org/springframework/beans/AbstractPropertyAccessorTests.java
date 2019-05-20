@@ -98,7 +98,7 @@ public abstract class AbstractPropertyAccessorTests {
 	public void isReadableProperty() {
 		AbstractPropertyAccessor accessor = createAccessor(new Simple("John", 2));
 
-		assertThat(accessor.isReadableProperty("name"), is(true));
+		assertThat(accessor.isReadableProperty("name")).isTrue();
 	}
 
 	@Test
@@ -130,7 +130,7 @@ public abstract class AbstractPropertyAccessorTests {
 	public void isWritableProperty() {
 		AbstractPropertyAccessor accessor = createAccessor(new Simple("John", 2));
 
-		assertThat(accessor.isWritableProperty("name"), is(true));
+		assertThat(accessor.isWritableProperty("name")).isTrue();
 	}
 
 	@Test
@@ -198,21 +198,21 @@ public abstract class AbstractPropertyAccessorTests {
 	public void getSimpleProperty() {
 		Simple target = new Simple("John", 2);
 		AbstractPropertyAccessor accessor = createAccessor(target);
-		assertThat(accessor.getPropertyValue("name"), is("John"));
+		assertThat(accessor.getPropertyValue("name")).isEqualTo("John");
 	}
 
 	@Test
 	public void getNestedProperty() {
 		Person target = createPerson("John", "London", "UK");
 		AbstractPropertyAccessor accessor = createAccessor(target);
-		assertThat(accessor.getPropertyValue("address.city"), is("London"));
+		assertThat(accessor.getPropertyValue("address.city")).isEqualTo("London");
 	}
 
 	@Test
 	public void getNestedDeepProperty() {
 		Person target = createPerson("John", "London", "UK");
 		AbstractPropertyAccessor accessor = createAccessor(target);
-		assertThat(accessor.getPropertyValue("address.country.name"), is("UK"));
+		assertThat(accessor.getPropertyValue("address.country.name")).isEqualTo("UK");
 	}
 
 	@Test
@@ -291,8 +291,8 @@ public abstract class AbstractPropertyAccessorTests {
 
 		accessor.setPropertyValue("name", "SomeValue");
 
-		assertThat(target.name, is("SomeValue"));
-		assertThat(target.getName(), is("SomeValue"));
+		assertThat(target.name).isEqualTo("SomeValue");
+		assertThat(target.getName()).isEqualTo("SomeValue");
 	}
 
 	@Test
@@ -301,7 +301,7 @@ public abstract class AbstractPropertyAccessorTests {
 		AbstractPropertyAccessor accessor = createAccessor(target);
 
 		accessor.setPropertyValue("address.city", "London");
-		assertThat(target.address.city, is("London"));
+		assertThat(target.address.city).isEqualTo("London");
 	}
 
 	@Test
@@ -364,7 +364,7 @@ public abstract class AbstractPropertyAccessorTests {
 		AbstractPropertyAccessor accessor = createAccessor(target);
 
 		accessor.setPropertyValue("address.country.name", "UK");
-		assertThat(target.address.country.name, is("UK"));
+		assertThat(target.address.country.name).isEqualTo("UK");
 	}
 
 	@Test
@@ -413,7 +413,7 @@ public abstract class AbstractPropertyAccessorTests {
 		accessor.setAutoGrowNestedPaths(true);
 
 		accessor.setPropertyValue("address.country.name", "UK");
-		assertThat(target.address.country.name, is("UK"));
+		assertThat(target.address.country.name).isEqualTo("UK");
 	}
 
 	@SuppressWarnings("AssertEqualsBetweenInconvertibleTypes")
@@ -1108,11 +1108,11 @@ public abstract class AbstractPropertyAccessorTests {
 
 		Object[] array = new Object[] {"1", "2"};
 		accessor.setPropertyValue("object", array);
-		assertThat(target.getObject(), equalTo((Object) array));
+		assertThat(target.getObject()).isEqualTo((Object) array);
 
 		array = new Object[] {"1"};
 		accessor.setPropertyValue("object", array);
-		assertThat(target.getObject(), equalTo((Object) array));
+		assertThat(target.getObject()).isEqualTo((Object) array);
 	}
 
 
@@ -1636,7 +1636,7 @@ public abstract class AbstractPropertyAccessorTests {
 		Simple target = new Simple("John", 2);
 		AbstractPropertyAccessor accessor = createAccessor(target);
 
-		assertThat(accessor.getPropertyType("foo"), is(nullValue()));
+		assertThat(accessor.getPropertyType("foo")).isNull();
 	}
 
 	@Test
@@ -1644,7 +1644,7 @@ public abstract class AbstractPropertyAccessorTests {
 		Person target = createPerson("John", "Paris", "FR");
 		AbstractPropertyAccessor accessor = createAccessor(target);
 
-		assertThat(accessor.getPropertyTypeDescriptor("address.city"), is(notNullValue()));
+		assertThat(accessor.getPropertyTypeDescriptor("address.city")).isNotNull();
 	}
 
 	@Test
@@ -1652,7 +1652,7 @@ public abstract class AbstractPropertyAccessorTests {
 		Simple target = new Simple("John", 2);
 		AbstractPropertyAccessor accessor = createAccessor(target);
 
-		assertThat(accessor.getPropertyTypeDescriptor("foo"), is(nullValue()));
+		assertThat(accessor.getPropertyTypeDescriptor("foo")).isNull();
 	}
 
 	@Test

@@ -40,7 +40,7 @@ public class CandidateComponentsIndexLoaderTests {
 	@Test
 	public void validateIndexIsDisabledByDefault() {
 		CandidateComponentsIndex index = CandidateComponentsIndexLoader.loadIndex(null);
-		assertThat("No spring.components should be available at the default location", index, is(nullValue()));
+		assertThat("No spring.components should be available at the default location", index).isNull();
 	}
 
 	@Test
@@ -86,7 +86,7 @@ public class CandidateComponentsIndexLoaderTests {
 	public void loadIndexNoSpringComponentsResource() {
 		CandidateComponentsIndex index = CandidateComponentsIndexLoader.loadIndex(
 				CandidateComponentsTestClassLoader.disableIndex(getClass().getClassLoader()));
-		assertThat(index, is(nullValue()));
+		assertThat(index).isNull();
 	}
 
 	@Test
@@ -94,7 +94,7 @@ public class CandidateComponentsIndexLoaderTests {
 		CandidateComponentsIndex index = CandidateComponentsIndexLoader.loadIndex(
 				CandidateComponentsTestClassLoader.index(getClass().getClassLoader(),
 						new ClassPathResource("empty-spring.components", getClass())));
-		assertThat(index, is(nullValue()));
+		assertThat(index).isNull();
 	}
 
 	@Test

@@ -124,19 +124,19 @@ public class MockMvcHtmlUnitDriverBuilderTests {
 		this.driver = MockMvcHtmlUnitDriverBuilder.mockMvcSetup(this.mockMvc)
 				.withDelegate(otherDriver).build();
 
-		assertThat(get("http://localhost/"), equalTo(""));
+		assertThat(get("http://localhost/")).isEqualTo("");
 		Cookie cookie = new Cookie("localhost", "cookie", "cookieManagerShared");
 		otherDriver.getWebClient().getCookieManager().addCookie(cookie);
-		assertThat(get("http://localhost/"), equalTo("cookieManagerShared"));
+		assertThat(get("http://localhost/")).isEqualTo("cookieManagerShared");
 	}
 
 
 	private void assertMockMvcUsed(String url) throws Exception {
-		assertThat(get(url), containsString(EXPECTED_BODY));
+		assertThat(get(url)).contains(EXPECTED_BODY);
 	}
 
 	private void assertMockMvcNotUsed(String url) throws Exception {
-		assertThat(get(url), not(containsString(EXPECTED_BODY)));
+		assertThat(get(url)).isNotEqualTo(containsString(EXPECTED_BODY));
 	}
 
 	private String get(String url) throws IOException {

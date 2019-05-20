@@ -36,17 +36,17 @@ public class TestGroupTests {
 
 	@Test
 	public void parseNull() {
-		assertThat(TestGroup.parse(null), equalTo(Collections.emptySet()));
+		assertThat(TestGroup.parse(null)).isEqualTo(Collections.emptySet());
 	}
 
 	@Test
 	public void parseEmptyString() {
-		assertThat(TestGroup.parse(""), equalTo(Collections.emptySet()));
+		assertThat(TestGroup.parse("")).isEqualTo(Collections.emptySet());
 	}
 
 	@Test
 	public void parseBlankString() {
-		assertThat(TestGroup.parse("     "), equalTo(Collections.emptySet()));
+		assertThat(TestGroup.parse("     ")).isEqualTo(Collections.emptySet());
 	}
 
 	@Test
@@ -72,14 +72,14 @@ public class TestGroupTests {
 
 	@Test
 	public void parseAll() {
-		assertThat(TestGroup.parse("all"), equalTo(EnumSet.allOf(TestGroup.class)));
+		assertThat(TestGroup.parse("all")).isEqualTo(EnumSet.allOf(TestGroup.class));
 	}
 
 	@Test
 	public void parseAllExceptPerformance() {
 		Set<TestGroup> expected = EnumSet.allOf(TestGroup.class);
 		expected.remove(TestGroup.PERFORMANCE);
-		assertThat(TestGroup.parse("all-performance"), equalTo(expected));
+		assertThat(TestGroup.parse("all-performance")).isEqualTo(expected);
 	}
 
 	@Test

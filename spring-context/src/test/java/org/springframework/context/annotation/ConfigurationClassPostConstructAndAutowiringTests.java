@@ -56,7 +56,7 @@ public class ConfigurationClassPostConstructAndAutowiringTests {
 		assertions(ctx);
 
 		Config2 config2 = ctx.getBean(Config2.class);
-		assertThat(config2.testBean, is(ctx.getBean(TestBean.class)));
+		assertThat(config2.testBean).isEqualTo(ctx.getBean(TestBean.class));
 	}
 
 	/**
@@ -75,8 +75,8 @@ public class ConfigurationClassPostConstructAndAutowiringTests {
 	private void assertions(AnnotationConfigApplicationContext ctx) {
 		Config1 config1 = ctx.getBean(Config1.class);
 		TestBean testBean = ctx.getBean(TestBean.class);
-		assertThat(config1.beanMethodCallCount, is(1));
-		assertThat(testBean.getAge(), is(2));
+		assertThat(config1.beanMethodCallCount).isEqualTo(1);
+		assertThat(testBean.getAge()).isEqualTo(2);
 	}
 
 

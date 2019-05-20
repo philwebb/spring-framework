@@ -66,14 +66,14 @@ public class ConditionalDelegatingFilterProxyTests {
 		FilterConfig config = new MockFilterConfig();
 		filter = new PatternMappingFilterProxy(delegate, "/");
 		filter.init(config);
-		assertThat(delegate.filterConfig, is(config));
+		assertThat(delegate.filterConfig).isEqualTo(config);
 	}
 
 	@Test
 	public void destroy() throws Exception {
 		filter = new PatternMappingFilterProxy(delegate, "/");
 		filter.destroy();
-		assertThat(delegate.destroy, is(true));
+		assertThat(delegate.destroy).isTrue();
 	}
 
 	@Test
@@ -235,12 +235,12 @@ public class ConditionalDelegatingFilterProxyTests {
 		filter = new PatternMappingFilterProxy(delegate, pattern);
 		filter.doFilter(request, response, filterChain);
 
-		assertThat(delegate.request, equalTo((ServletRequest) null));
-		assertThat(delegate.response, equalTo((ServletResponse) null));
-		assertThat(delegate.chain, equalTo((FilterChain) null));
+		assertThat(delegate.request).isEqualTo((ServletRequest) null);
+		assertThat(delegate.response).isEqualTo((ServletResponse) null);
+		assertThat(delegate.chain).isEqualTo((FilterChain) null);
 
-		assertThat(filterChain.getRequest(), equalTo((ServletRequest) request));
-		assertThat(filterChain.getResponse(), equalTo((ServletResponse) response));
+		assertThat(filterChain.getRequest()).isEqualTo((ServletRequest) request);
+		assertThat(filterChain.getResponse()).isEqualTo((ServletResponse) response);
 		filterChain = new MockFilterChain();
 	}
 
@@ -249,9 +249,9 @@ public class ConditionalDelegatingFilterProxyTests {
 		filter = new PatternMappingFilterProxy(delegate, pattern);
 		filter.doFilter(request, response, filterChain);
 
-		assertThat(delegate.request, equalTo((ServletRequest) request));
-		assertThat(delegate.response, equalTo((ServletResponse) response));
-		assertThat(delegate.chain, equalTo((FilterChain) filterChain));
+		assertThat(delegate.request).isEqualTo((ServletRequest) request);
+		assertThat(delegate.response).isEqualTo((ServletResponse) response);
+		assertThat(delegate.chain).isEqualTo((FilterChain) filterChain);
 		delegate = new MockFilter();
 	}
 

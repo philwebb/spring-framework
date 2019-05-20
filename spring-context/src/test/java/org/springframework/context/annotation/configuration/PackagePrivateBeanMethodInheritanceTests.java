@@ -42,7 +42,7 @@ public class PackagePrivateBeanMethodInheritanceTests {
 		Foo foo1 = ctx.getBean("foo1", Foo.class);
 		Foo foo2 = ctx.getBean("foo2", Foo.class);
 		ctx.getBean("packagePrivateBar", Bar.class); // <-- i.e. @Bean was registered
-		assertThat(foo1.bar, not(is(foo2.bar)));     // <-- i.e. @Bean *not* enhanced
+		assertThat(foo1.bar).isEqualTo(foo2.bar));     // <-- i.e. @Bean *not* enhanced
 	}
 
 	@Test
@@ -53,7 +53,7 @@ public class PackagePrivateBeanMethodInheritanceTests {
 		Foo foo1 = ctx.getBean("foo1", Foo.class);
 		Foo foo2 = ctx.getBean("foo2", Foo.class);
 		ctx.getBean("protectedBar", Bar.class); // <-- i.e. @Bean was registered
-		assertThat(foo1.bar, is(foo2.bar));     // <-- i.e. @Bean *was* enhanced
+		assertThat(foo1.bar).isEqualTo(foo2.bar);     // <-- i.e. @Bean *was* enhanced
 	}
 
 	public static class Foo {

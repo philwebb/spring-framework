@@ -72,9 +72,9 @@ public class ResourceHttpMessageWriterTests {
 
 		testWrite(get("/").build());
 
-		assertThat(this.response.getHeaders().getContentType(), is(TEXT_PLAIN));
-		assertThat(this.response.getHeaders().getContentLength(), is(39L));
-		assertThat(this.response.getHeaders().getFirst(HttpHeaders.ACCEPT_RANGES), is("bytes"));
+		assertThat(this.response.getHeaders().getContentType()).isEqualTo(TEXT_PLAIN);
+		assertThat(this.response.getHeaders().getContentLength()).isEqualTo(39L);
+		assertThat(this.response.getHeaders().getFirst(HttpHeaders.ACCEPT_RANGES)).isEqualTo("bytes");
 
 		String content = "Spring Framework test resource content.";
 		StepVerifier.create(this.response.getBodyAsString()).expectNext(content).expectComplete().verify();
@@ -85,9 +85,9 @@ public class ResourceHttpMessageWriterTests {
 
 		testWrite(get("/").range(of(0, 5)).build());
 
-		assertThat(this.response.getHeaders().getContentType(), is(TEXT_PLAIN));
-		assertThat(this.response.getHeaders().getFirst(HttpHeaders.CONTENT_RANGE), is("bytes 0-5/39"));
-		assertThat(this.response.getHeaders().getContentLength(), is(6L));
+		assertThat(this.response.getHeaders().getContentType()).isEqualTo(TEXT_PLAIN);
+		assertThat(this.response.getHeaders().getFirst(HttpHeaders.CONTENT_RANGE)).isEqualTo("bytes 0-5/39");
+		assertThat(this.response.getHeaders().getContentLength()).isEqualTo(6L);
 
 		StepVerifier.create(this.response.getBodyAsString()).expectNext("Spring").expectComplete().verify();
 	}
@@ -136,8 +136,8 @@ public class ResourceHttpMessageWriterTests {
 
 		testWrite(get("/").header(HttpHeaders.RANGE, "invalid").build());
 
-		assertThat(this.response.getHeaders().getFirst(HttpHeaders.ACCEPT_RANGES), is("bytes"));
-		assertThat(this.response.getStatusCode(), is(HttpStatus.REQUESTED_RANGE_NOT_SATISFIABLE));
+		assertThat(this.response.getHeaders().getFirst(HttpHeaders.ACCEPT_RANGES)).isEqualTo("bytes");
+		assertThat(this.response.getStatusCode()).isEqualTo(HttpStatus.REQUESTED_RANGE_NOT_SATISFIABLE);
 	}
 
 

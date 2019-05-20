@@ -80,7 +80,7 @@ public class AnnotationConfigWebApplicationContextTests {
 		});
 		ctx.setConfigLocation(Config.class.getName());
 		ctx.refresh();
-		assertThat(ctx.containsBean("custom-myConfig"), is(true));
+		assertThat(ctx.containsBean("custom-myConfig")).isTrue();
 	}
 
 

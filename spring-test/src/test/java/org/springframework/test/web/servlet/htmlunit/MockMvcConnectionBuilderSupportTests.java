@@ -123,13 +123,13 @@ public class MockMvcConnectionBuilderSupportTests {
 	@Test
 	public void defaultContextPathEmpty() throws Exception {
 		WebConnection conn = this.builder.createConnection(this.client);
-		assertThat(getResponse(conn, "http://localhost/abc").getContentAsString(), equalTo(""));
+		assertThat(getResponse(conn, "http://localhost/abc").getContentAsString()).isEqualTo("");
 	}
 
 	@Test
 	public void defaultContextPathCustom() throws Exception {
 		WebConnection conn = this.builder.contextPath("/abc").createConnection(this.client);
-		assertThat(getResponse(conn, "http://localhost/abc/def").getContentAsString(), equalTo("/abc"));
+		assertThat(getResponse(conn, "http://localhost/abc/def").getContentAsString()).isEqualTo("/abc");
 	}
 
 

@@ -57,7 +57,7 @@ public class SimpAttributesTests {
 	public void getAttribute() {
 		this.simpAttributes.setAttribute("name1", "value1");
 
-		assertThat(this.simpAttributes.getAttribute("name1"), is("value1"));
+		assertThat(this.simpAttributes.getAttribute("name1")).isEqualTo("value1");
 		assertThat(this.simpAttributes.getAttribute("name2"), nullValue());
 	}
 
@@ -94,12 +94,12 @@ public class SimpAttributesTests {
 		this.simpAttributes.registerDestructionCallback("name1", callback1);
 		this.simpAttributes.registerDestructionCallback("name2", callback2);
 
-		assertThat(this.simpAttributes.getAttributeNames().length, is(2));
+		assertThat(this.simpAttributes.getAttributeNames().length).isEqualTo(2);
 	}
 
 	@Test
 	public void getSessionMutex() {
-		assertThat(this.simpAttributes.getSessionMutex(), sameInstance(this.map));
+		assertThat(this.simpAttributes.getSessionMutex()).isSameAs(this.map);
 	}
 
 	@Test
@@ -107,7 +107,7 @@ public class SimpAttributesTests {
 		Object mutex = new Object();
 		this.simpAttributes.setAttribute(SimpAttributes.SESSION_MUTEX_NAME, mutex);
 
-		assertThat(this.simpAttributes.getSessionMutex(), sameInstance(mutex));
+		assertThat(this.simpAttributes.getSessionMutex()).isSameAs(mutex);
 	}
 
 	@Test

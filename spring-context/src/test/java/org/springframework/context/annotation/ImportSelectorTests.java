@@ -100,10 +100,10 @@ public class ImportSelectorTests {
 	@Test
 	public void invokeAwareMethodsInImportSelector() {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AwareConfig.class);
-		assertThat(SampleImportSelector.beanFactory, is(context.getBeanFactory()));
-		assertThat(SampleImportSelector.classLoader, is(context.getBeanFactory().getBeanClassLoader()));
-		assertThat(SampleImportSelector.resourceLoader, is(notNullValue()));
-		assertThat(SampleImportSelector.environment, is(context.getEnvironment()));
+		assertThat(SampleImportSelector.beanFactory).isEqualTo(context.getBeanFactory());
+		assertThat(SampleImportSelector.classLoader).isEqualTo(context.getBeanFactory().getBeanClassLoader());
+		assertThat(SampleImportSelector.resourceLoader).isNotNull();
+		assertThat(SampleImportSelector.environment).isEqualTo(context.getEnvironment());
 	}
 
 	@Test
@@ -127,9 +127,9 @@ public class ImportSelectorTests {
 		ordered.verify(beanFactory).registerBeanDefinition(eq("b"), any());
 		ordered.verify(beanFactory).registerBeanDefinition(eq("c"), any());
 		ordered.verify(beanFactory).registerBeanDefinition(eq("d"), any());
-		assertThat(TestImportGroup.instancesCount.get(), equalTo(1));
-		assertThat(TestImportGroup.imports.size(), equalTo(1));
-		assertThat(TestImportGroup.imports.values().iterator().next().size(), equalTo(2));
+		assertThat(TestImportGroup.instancesCount.get()).isEqualTo(1);
+		assertThat(TestImportGroup.imports.size()).isEqualTo(1);
+		assertThat(TestImportGroup.imports.values().iterator().next().size()).isEqualTo(2);
 	}
 
 	@Test
@@ -142,11 +142,11 @@ public class ImportSelectorTests {
 		InOrder ordered = inOrder(beanFactory);
 		ordered.verify(beanFactory).registerBeanDefinition(eq("c"), any());
 		ordered.verify(beanFactory).registerBeanDefinition(eq("d"), any());
-		assertThat(TestImportGroup.instancesCount.get(), equalTo(1));
-		assertThat(TestImportGroup.imports.size(), equalTo(2));
+		assertThat(TestImportGroup.instancesCount.get()).isEqualTo(1);
+		assertThat(TestImportGroup.imports.size()).isEqualTo(2);
 		Iterator<AnnotationMetadata> iterator = TestImportGroup.imports.keySet().iterator();
-		assertThat(iterator.next().getClassName(), equalTo(GroupedConfig2.class.getName()));
-		assertThat(iterator.next().getClassName(), equalTo(GroupedConfig1.class.getName()));
+		assertThat(iterator.next().getClassName()).isEqualTo(GroupedConfig2.class.getName());
+		assertThat(iterator.next().getClassName()).isEqualTo(GroupedConfig1.class.getName());
 	}
 
 	@Test
@@ -159,8 +159,8 @@ public class ImportSelectorTests {
 		ordered.verify(beanFactory).registerBeanDefinition(eq("a"), any());
 		ordered.verify(beanFactory).registerBeanDefinition(eq("e"), any());
 		ordered.verify(beanFactory).registerBeanDefinition(eq("c"), any());
-		assertThat(TestImportGroup.instancesCount.get(), equalTo(2));
-		assertThat(TestImportGroup.imports.size(), equalTo(2));
+		assertThat(TestImportGroup.instancesCount.get()).isEqualTo(2);
+		assertThat(TestImportGroup.imports.size()).isEqualTo(2);
 		assertThat(TestImportGroup.allImports(), hasEntry(
 				is(ParentConfiguration1.class.getName()),
 				IsIterableContainingInOrder.contains(DeferredImportSelector1.class.getName(),
@@ -179,8 +179,8 @@ public class ImportSelectorTests {
 		InOrder ordered = inOrder(beanFactory);
 		ordered.verify(beanFactory).registerBeanDefinition(eq("b"), any());
 		ordered.verify(beanFactory).registerBeanDefinition(eq("d"), any());
-		assertThat(TestImportGroup.instancesCount.get(), equalTo(2));
-		assertThat(TestImportGroup.allImports().size(), equalTo(2));
+		assertThat(TestImportGroup.instancesCount.get()).isEqualTo(2);
+		assertThat(TestImportGroup.allImports().size()).isEqualTo(2);
 		assertThat(TestImportGroup.allImports(), hasEntry(
 				is(ParentConfiguration2.class.getName()),
 				IsIterableContainingInOrder.contains(DeferredImportSelector2.class.getName(),
@@ -193,10 +193,10 @@ public class ImportSelectorTests {
 	@Test
 	public void invokeAwareMethodsInImportGroup() {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(GroupedConfig1.class);
-		assertThat(TestImportGroup.beanFactory, is(context.getBeanFactory()));
-		assertThat(TestImportGroup.classLoader, is(context.getBeanFactory().getBeanClassLoader()));
-		assertThat(TestImportGroup.resourceLoader, is(notNullValue()));
-		assertThat(TestImportGroup.environment, is(context.getEnvironment()));
+		assertThat(TestImportGroup.beanFactory).isEqualTo(context.getBeanFactory());
+		assertThat(TestImportGroup.classLoader).isEqualTo(context.getBeanFactory().getBeanClassLoader());
+		assertThat(TestImportGroup.resourceLoader).isNotNull();
+		assertThat(TestImportGroup.environment).isEqualTo(context.getEnvironment());
 	}
 
 

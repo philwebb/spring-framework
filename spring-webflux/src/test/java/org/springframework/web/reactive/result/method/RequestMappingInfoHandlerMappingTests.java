@@ -187,8 +187,8 @@ public class RequestMappingInfoHandlerMappingTests {
 		ServerWebExchange exchange = MockServerWebExchange.from(get("/params"));
 		Mono<Object> mono = this.handlerMapping.getHandler(exchange);
 		assertError(mono, ServerWebInputException.class, ex -> {
-			assertThat(ex.getReason(), containsString("[foo=bar]"));
-			assertThat(ex.getReason(), containsString("[bar=baz]"));
+			assertThat(ex.getReason()).contains("[foo=bar]");
+			assertThat(ex.getReason()).contains("[bar=baz]");
 		});
 	}
 

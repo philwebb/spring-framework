@@ -44,7 +44,7 @@ public class DelegatingDataSourceTests {
 	public void shouldDelegateGetConnection() throws Exception {
 		Connection connection = mock(Connection.class);
 		given(delegate.getConnection()).willReturn(connection);
-		assertThat(dataSource.getConnection(), is(connection));
+		assertThat(dataSource.getConnection()).isEqualTo(connection);
 	}
 
 	@Test
@@ -53,14 +53,14 @@ public class DelegatingDataSourceTests {
 		String username = "username";
 		String password = "password";
 		given(delegate.getConnection(username, password)).willReturn(connection);
-		assertThat(dataSource.getConnection(username, password), is(connection));
+		assertThat(dataSource.getConnection(username, password)).isEqualTo(connection);
 	}
 
 	@Test
 	public void shouldDelegateGetLogWriter() throws Exception {
 		PrintWriter writer = new PrintWriter(new ByteArrayOutputStream());
 		given(delegate.getLogWriter()).willReturn(writer);
-		assertThat(dataSource.getLogWriter(), is(writer));
+		assertThat(dataSource.getLogWriter()).isEqualTo(writer);
 	}
 
 	@Test
@@ -74,7 +74,7 @@ public class DelegatingDataSourceTests {
 	public void shouldDelegateGetLoginTimeout() throws Exception {
 		int timeout = 123;
 		given(delegate.getLoginTimeout()).willReturn(timeout);
-		assertThat(dataSource.getLoginTimeout(), is(timeout));
+		assertThat(dataSource.getLoginTimeout()).isEqualTo(timeout);
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class DelegatingDataSourceTests {
 	public void shouldDelegateUnwrapWithoutImplementing() throws Exception {
 		ExampleWrapper wrapper = mock(ExampleWrapper.class);
 		given(delegate.unwrap(ExampleWrapper.class)).willReturn(wrapper);
-		assertThat(dataSource.unwrap(ExampleWrapper.class), is(wrapper));
+		assertThat(dataSource.unwrap(ExampleWrapper.class)).isEqualTo(wrapper);
 	}
 
 	@Test
@@ -101,13 +101,13 @@ public class DelegatingDataSourceTests {
 	@Test
 	public void shouldDelegateIsWrapperForWithoutImplementing() throws Exception {
 		given(delegate.isWrapperFor(ExampleWrapper.class)).willReturn(true);
-		assertThat(dataSource.isWrapperFor(ExampleWrapper.class), is(true));
+		assertThat(dataSource.isWrapperFor(ExampleWrapper.class)).isTrue();
 	}
 
 	@Test
 	public void shouldDelegateIsWrapperForImplementing() throws Exception {
 		dataSource = new DelegatingDataSourceWithWrapper();
-		assertThat(dataSource.isWrapperFor(ExampleWrapper.class), is(true));
+		assertThat(dataSource.isWrapperFor(ExampleWrapper.class)).isTrue();
 	}
 
 	public static interface ExampleWrapper {

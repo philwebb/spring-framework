@@ -108,8 +108,8 @@ public class ExecutorSubscribableChannelTests {
 
 	@Test
 	public void subscribeTwice()  {
-		assertThat(this.channel.subscribe(this.handler), equalTo(true));
-		assertThat(this.channel.subscribe(this.handler), equalTo(false));
+		assertThat(this.channel.subscribe(this.handler)).isEqualTo(true);
+		assertThat(this.channel.subscribe(this.handler)).isEqualTo(false);
 		this.channel.send(this.message);
 		verify(this.handler, times(1)).handleMessage(this.message);
 	}
@@ -117,8 +117,8 @@ public class ExecutorSubscribableChannelTests {
 	@Test
 	public void unsubscribeTwice()  {
 		this.channel.subscribe(this.handler);
-		assertThat(this.channel.unsubscribe(this.handler), equalTo(true));
-		assertThat(this.channel.unsubscribe(this.handler), equalTo(false));
+		assertThat(this.channel.unsubscribe(this.handler)).isEqualTo(true);
+		assertThat(this.channel.unsubscribe(this.handler)).isEqualTo(false);
 		this.channel.send(this.message);
 		verify(this.handler, never()).handleMessage(this.message);
 	}
@@ -134,7 +134,7 @@ public class ExecutorSubscribableChannelTests {
 			this.channel.send(message);
 		}
 		catch (MessageDeliveryException actualException) {
-			assertThat(actualException.getCause(), equalTo(ex));
+			assertThat(actualException.getCause()).isEqualTo(ex);
 		}
 		verifyZeroInteractions(secondHandler);
 	}

@@ -211,7 +211,7 @@ public class CandidateComponentsIndexerTests {
 		// Validate nested type structure
 		String nestedType = "org.springframework.context.index.sample.SampleEmbedded.Another$AnotherPublicCandidate";
 		Class<?> type = ClassUtils.forName(nestedType, getClass().getClassLoader());
-		assertThat(type, sameInstance(SampleEmbedded.Another.AnotherPublicCandidate.class));
+		assertThat(type).isSameAs(SampleEmbedded.Another.AnotherPublicCandidate.class);
 
 		CandidateComponentsMetadata metadata = compile(SampleEmbedded.class);
 		assertThat(metadata, hasComponent(

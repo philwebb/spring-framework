@@ -87,11 +87,11 @@ public class ResourceRegionHttpMessageConverterTests {
 		converter.write(region, MediaType.TEXT_PLAIN, outputMessage);
 
 		HttpHeaders headers = outputMessage.getHeaders();
-		assertThat(headers.getContentType(), is(MediaType.TEXT_PLAIN));
-		assertThat(headers.getContentLength(), is(6L));
-		assertThat(headers.get(HttpHeaders.CONTENT_RANGE).size(), is(1));
-		assertThat(headers.get(HttpHeaders.CONTENT_RANGE).get(0), is("bytes 0-5/39"));
-		assertThat(outputMessage.getBodyAsString(StandardCharsets.UTF_8), is("Spring"));
+		assertThat(headers.getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
+		assertThat(headers.getContentLength()).isEqualTo(6L);
+		assertThat(headers.get(HttpHeaders.CONTENT_RANGE)).hasSize(1);
+		assertThat(headers.get(HttpHeaders.CONTENT_RANGE).get(0)).isEqualTo("bytes 0-5/39");
+		assertThat(outputMessage.getBodyAsString(StandardCharsets.UTF_8)).isEqualTo("Spring");
 	}
 
 	@Test
@@ -102,11 +102,11 @@ public class ResourceRegionHttpMessageConverterTests {
 		converter.write(region, MediaType.TEXT_PLAIN, outputMessage);
 
 		HttpHeaders headers = outputMessage.getHeaders();
-		assertThat(headers.getContentType(), is(MediaType.TEXT_PLAIN));
-		assertThat(headers.getContentLength(), is(32L));
-		assertThat(headers.get(HttpHeaders.CONTENT_RANGE).size(), is(1));
-		assertThat(headers.get(HttpHeaders.CONTENT_RANGE).get(0), is("bytes 7-38/39"));
-		assertThat(outputMessage.getBodyAsString(StandardCharsets.UTF_8), is("Framework test resource content."));
+		assertThat(headers.getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
+		assertThat(headers.getContentLength()).isEqualTo(32L);
+		assertThat(headers.get(HttpHeaders.CONTENT_RANGE)).hasSize(1);
+		assertThat(headers.get(HttpHeaders.CONTENT_RANGE).get(0)).isEqualTo("bytes 7-38/39");
+		assertThat(outputMessage.getBodyAsString(StandardCharsets.UTF_8)).isEqualTo("Framework test resource content.");
 	}
 
 	@Test
@@ -127,25 +127,25 @@ public class ResourceRegionHttpMessageConverterTests {
 		String content = outputMessage.getBodyAsString(StandardCharsets.UTF_8);
 		String[] ranges = StringUtils.tokenizeToStringArray(content, "\r\n", false, true);
 
-		assertThat(ranges[0], is(boundary));
-		assertThat(ranges[1], is("Content-Type: text/plain"));
-		assertThat(ranges[2], is("Content-Range: bytes 0-5/39"));
-		assertThat(ranges[3], is("Spring"));
+		assertThat(ranges[0]).isEqualTo(boundary);
+		assertThat(ranges[1]).isEqualTo("Content-Type: text/plain");
+		assertThat(ranges[2]).isEqualTo("Content-Range: bytes 0-5/39");
+		assertThat(ranges[3]).isEqualTo("Spring");
 
-		assertThat(ranges[4], is(boundary));
-		assertThat(ranges[5], is("Content-Type: text/plain"));
-		assertThat(ranges[6], is("Content-Range: bytes 7-15/39"));
-		assertThat(ranges[7], is("Framework"));
+		assertThat(ranges[4]).isEqualTo(boundary);
+		assertThat(ranges[5]).isEqualTo("Content-Type: text/plain");
+		assertThat(ranges[6]).isEqualTo("Content-Range: bytes 7-15/39");
+		assertThat(ranges[7]).isEqualTo("Framework");
 
-		assertThat(ranges[8], is(boundary));
-		assertThat(ranges[9], is("Content-Type: text/plain"));
-		assertThat(ranges[10], is("Content-Range: bytes 17-20/39"));
-		assertThat(ranges[11], is("test"));
+		assertThat(ranges[8]).isEqualTo(boundary);
+		assertThat(ranges[9]).isEqualTo("Content-Type: text/plain");
+		assertThat(ranges[10]).isEqualTo("Content-Range: bytes 17-20/39");
+		assertThat(ranges[11]).isEqualTo("test");
 
-		assertThat(ranges[12], is(boundary));
-		assertThat(ranges[13], is("Content-Type: text/plain"));
-		assertThat(ranges[14], is("Content-Range: bytes 22-38/39"));
-		assertThat(ranges[15], is("resource content."));
+		assertThat(ranges[12]).isEqualTo(boundary);
+		assertThat(ranges[13]).isEqualTo("Content-Type: text/plain");
+		assertThat(ranges[14]).isEqualTo("Content-Range: bytes 22-38/39");
+		assertThat(ranges[15]).isEqualTo("resource content.");
 	}
 
 	@Test // SPR-15041
@@ -160,9 +160,9 @@ public class ResourceRegionHttpMessageConverterTests {
 
 		converter.write(Collections.singletonList(resourceRegion), null, outputMessage);
 
-		assertThat(outputMessage.getHeaders().getContentType(), is(MediaType.APPLICATION_OCTET_STREAM));
-		assertThat(outputMessage.getHeaders().getFirst(HttpHeaders.CONTENT_RANGE), is("bytes 0-5/12"));
-		assertThat(outputMessage.getBodyAsString(StandardCharsets.UTF_8), is("Spring"));
+		assertThat(outputMessage.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_OCTET_STREAM);
+		assertThat(outputMessage.getHeaders().getFirst(HttpHeaders.CONTENT_RANGE)).isEqualTo("bytes 0-5/12");
+		assertThat(outputMessage.getBodyAsString(StandardCharsets.UTF_8)).isEqualTo("Spring");
 	}
 
 }

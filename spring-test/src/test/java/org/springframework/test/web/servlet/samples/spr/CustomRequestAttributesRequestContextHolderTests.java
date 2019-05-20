@@ -96,9 +96,9 @@ public class CustomRequestAttributesRequestContextHolderTests {
 		assertThat(requestAttributes, instanceOf(ServletRequestAttributes.class));
 		HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
 
-		assertThat(request.getAttribute(FROM_CUSTOM_MOCK), is(FROM_CUSTOM_MOCK));
-		assertThat(request.getAttribute(FROM_MVC_TEST_DEFAULT), is(nullValue()));
-		assertThat(request.getAttribute(FROM_MVC_TEST_MOCK), is(nullValue()));
+		assertThat(request.getAttribute(FROM_CUSTOM_MOCK)).isEqualTo(FROM_CUSTOM_MOCK);
+		assertThat(request.getAttribute(FROM_MVC_TEST_DEFAULT)).isNull();
+		assertThat(request.getAttribute(FROM_MVC_TEST_MOCK)).isNull();
 
 		RequestContextHolder.resetRequestAttributes();
 		this.wac.close();
@@ -133,9 +133,9 @@ public class CustomRequestAttributesRequestContextHolderTests {
 	}
 
 	private static void assertRequestAttributes(ServletRequest request) {
-		assertThat(request.getAttribute(FROM_CUSTOM_MOCK), is(nullValue()));
-		assertThat(request.getAttribute(FROM_MVC_TEST_DEFAULT), is(FROM_MVC_TEST_DEFAULT));
-		assertThat(request.getAttribute(FROM_MVC_TEST_MOCK), is(FROM_MVC_TEST_MOCK));
+		assertThat(request.getAttribute(FROM_CUSTOM_MOCK)).isNull();
+		assertThat(request.getAttribute(FROM_MVC_TEST_DEFAULT)).isEqualTo(FROM_MVC_TEST_DEFAULT);
+		assertThat(request.getAttribute(FROM_MVC_TEST_MOCK)).isEqualTo(FROM_MVC_TEST_MOCK);
 	}
 
 }

@@ -88,7 +88,7 @@ public class CachedIntrospectionResultsTests {
 
 		// resulting in a property descriptor including the non-standard setFoo method
 		assertThat(pd, notNullValue());
-		assertThat(pd.getReadMethod(), equalTo(C.class.getMethod("getFoo")));
+		assertThat(pd.getReadMethod()).isEqualTo(C.class.getMethod("getFoo"));
 		assertThat(
 				"No write method found for non-void returning 'setFoo' method. " +
 				"Check to see if CachedIntrospectionResults is delegating to " +

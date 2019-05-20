@@ -107,7 +107,7 @@ public class ImportResourceTests {
 	public void importXmlWithAutowiredConfig() {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(ImportXmlAutowiredConfig.class);
 		String name = ctx.getBean("xmlBeanName", String.class);
-		assertThat(name, equalTo("xml.declared"));
+		assertThat(name).isEqualTo("xml.declared");
 		ctx.close();
 	}
 

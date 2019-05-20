@@ -36,28 +36,28 @@ public class DateTimeFormatterFactoryBeanTests {
 
 	@Test
 	public void isSingleton() {
-		assertThat(factory.isSingleton(), is(true));
+		assertThat(factory.isSingleton()).isTrue();
 	}
 
 	@Test
 	@SuppressWarnings("rawtypes")
 	public void getObjectType() {
-		assertThat(factory.getObjectType(), is(equalTo((Class) DateTimeFormatter.class)));
+		assertThat(factory.getObjectType()).isEqualTo((Class) DateTimeFormatter.class);
 	}
 
 	@Test
 	public void getObject() {
 		factory.afterPropertiesSet();
-		assertThat(factory.getObject(), is(equalTo(DateTimeFormat.mediumDateTime())));
+		assertThat(factory.getObject()).isEqualTo(DateTimeFormat.mediumDateTime());
 	}
 
 	@Test
 	public void getObjectIsAlwaysSingleton() {
 		factory.afterPropertiesSet();
 		DateTimeFormatter formatter = factory.getObject();
-		assertThat(formatter, is(equalTo(DateTimeFormat.mediumDateTime())));
+		assertThat(formatter).isEqualTo(DateTimeFormat.mediumDateTime());
 		factory.setStyle("LL");
-		assertThat(factory.getObject(), is(sameInstance(formatter)));
+		assertThat(factory.getObject()).isEqualTo(sameInstance(formatter));
 	}
 
 }

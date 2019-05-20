@@ -351,7 +351,7 @@ public class MessageBrokerBeanDefinitionParserTests {
 		assertEquals("/personal/", simpMessagingTemplate.getUserDestinationPrefix());
 
 		List<MessageConverter> converters = compositeMessageConverter.getConverters();
-		assertThat(converters.size(), Matchers.is(3));
+		assertThat(converters).hasSize(3);
 		assertThat(converters.get(0), Matchers.instanceOf(StringMessageConverter.class));
 		assertThat(converters.get(1), Matchers.instanceOf(ByteArrayMessageConverter.class));
 		assertThat(converters.get(2), Matchers.instanceOf(MappingJackson2MessageConverter.class));

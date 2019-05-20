@@ -184,8 +184,8 @@ public class JdbcNamespaceIntegrationTests {
 	private void assertBeanPropertyValueOf(String propertyName, String expected, DefaultListableBeanFactory factory) {
 		BeanDefinition bean = factory.getBeanDefinition(expected);
 		PropertyValue value = bean.getPropertyValues().getPropertyValue(propertyName);
-		assertThat(value, is(notNullValue()));
-		assertThat(value.getValue().toString(), is(expected));
+		assertThat(value).isNotNull();
+		assertThat(value.getValue().toString()).isEqualTo(expected);
 	}
 
 	private void assertNumRowsInTestTable(JdbcTemplate template, int count) {
@@ -204,7 +204,7 @@ public class JdbcNamespaceIntegrationTests {
 				assertNumRowsInTestTable(new JdbcTemplate(dataSource), count);
 				assertTrue(dataSource instanceof AbstractDriverBasedDataSource);
 				AbstractDriverBasedDataSource adbDataSource = (AbstractDriverBasedDataSource) dataSource;
-				assertThat(adbDataSource.getUrl(), containsString(dataSourceName));
+				assertThat(adbDataSource.getUrl()).contains(dataSourceName);
 			}
 		}
 		finally {

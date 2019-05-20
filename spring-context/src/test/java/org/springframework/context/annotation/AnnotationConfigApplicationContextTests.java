@@ -97,7 +97,7 @@ public class AnnotationConfigApplicationContextTests {
 		ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
 		TestBean testBean = context.getBean(TestBean.class);
 		assertNotNull(testBean);
-		assertThat(testBean.name, equalTo("foo"));
+		assertThat(testBean.name).isEqualTo("foo");
 	}
 
 	@Test
@@ -158,7 +158,7 @@ public class AnnotationConfigApplicationContextTests {
 	@Test
 	public void autowiringIsEnabledByDefault() {
 		ApplicationContext context = new AnnotationConfigApplicationContext(AutowiredConfig.class);
-		assertThat(context.getBean(TestBean.class).name, equalTo("foo"));
+		assertThat(context.getBean(TestBean.class).name).isEqualTo("foo");
 	}
 
 	@Test

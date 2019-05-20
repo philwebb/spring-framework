@@ -49,7 +49,7 @@ public class EnvironmentAccessorIntegrationTests {
 		ctx.getEnvironment().getPropertySources().addFirst(new MockPropertySource().withProperty("my.name", "myBean"));
 		ctx.refresh();
 
-		assertThat(ctx.getBean(TestBean.class).getName(), equalTo("myBean"));
+		assertThat(ctx.getBean(TestBean.class).getName()).isEqualTo("myBean");
 		ctx.close();
 	}
 

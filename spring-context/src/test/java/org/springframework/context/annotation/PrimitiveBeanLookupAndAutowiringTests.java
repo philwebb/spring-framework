@@ -47,34 +47,34 @@ public class PrimitiveBeanLookupAndAutowiringTests {
 	public void primitiveLookupByName() {
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(Config.class);
 		boolean b = ctx.getBean("b", boolean.class);
-		assertThat(b, equalTo(true));
+		assertThat(b).isEqualTo(true);
 		int i = ctx.getBean("i", int.class);
-		assertThat(i, equalTo(42));
+		assertThat(i).isEqualTo(42);
 	}
 
 	@Test
 	public void primitiveLookupByType() {
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(Config.class);
 		boolean b = ctx.getBean(boolean.class);
-		assertThat(b, equalTo(true));
+		assertThat(b).isEqualTo(true);
 		int i = ctx.getBean(int.class);
-		assertThat(i, equalTo(42));
+		assertThat(i).isEqualTo(42);
 	}
 
 	@Test
 	public void primitiveAutowiredInjection() {
 		ApplicationContext ctx =
 				new AnnotationConfigApplicationContext(Config.class, AutowiredComponent.class);
-		assertThat(ctx.getBean(AutowiredComponent.class).b, equalTo(true));
-		assertThat(ctx.getBean(AutowiredComponent.class).i, equalTo(42));
+		assertThat(ctx.getBean(AutowiredComponent.class).b).isEqualTo(true);
+		assertThat(ctx.getBean(AutowiredComponent.class).i).isEqualTo(42);
 	}
 
 	@Test
 	public void primitiveResourceInjection() {
 		ApplicationContext ctx =
 				new AnnotationConfigApplicationContext(Config.class, ResourceComponent.class);
-		assertThat(ctx.getBean(ResourceComponent.class).b, equalTo(true));
-		assertThat(ctx.getBean(ResourceComponent.class).i, equalTo(42));
+		assertThat(ctx.getBean(ResourceComponent.class).b).isEqualTo(true);
+		assertThat(ctx.getBean(ResourceComponent.class).i).isEqualTo(42);
 	}
 
 

@@ -62,11 +62,11 @@ public class NestedBeansElementAttributeRecursionTests {
 		BeanDefinition biz = bf.getBeanDefinition("biz");
 		BeanDefinition buz = bf.getBeanDefinition("buz");
 
-		assertThat(foo.isLazyInit(), is(false));
-		assertThat(bar.isLazyInit(), is(true));
-		assertThat(baz.isLazyInit(), is(false));
-		assertThat(biz.isLazyInit(), is(true));
-		assertThat(buz.isLazyInit(), is(true));
+		assertThat(foo.isLazyInit()).isFalse();
+		assertThat(bar.isLazyInit()).isTrue();
+		assertThat(baz.isLazyInit()).isFalse();
+		assertThat(biz.isLazyInit()).isTrue();
+		assertThat(buz.isLazyInit()).isTrue();
 	}
 
 	@Test
@@ -97,7 +97,7 @@ public class NestedBeansElementAttributeRecursionTests {
 		// has the concrete child bean values
 		assertThat((Iterable<String>) topLevel.getSomeList(), hasItems("charlie", "delta"));
 		// but does not merge the parent values
-		assertThat((Iterable<String>) topLevel.getSomeList(), not(hasItems("alpha", "bravo")));
+		assertThat((Iterable<String>) topLevel.getSomeList()).isNotEqualTo(hasItems("alpha", "bravo"));
 
 		TestBean firstLevel = bf.getBean("firstLevelNestedTestBean", TestBean.class);
 		// merges all values
@@ -131,23 +131,23 @@ public class NestedBeansElementAttributeRecursionTests {
 	}
 
 	private void assertAutowireCandidates(DefaultListableBeanFactory bf) {
-		assertThat(bf.getBeanDefinition("fooService").isAutowireCandidate(), is(true));
-		assertThat(bf.getBeanDefinition("fooRepository").isAutowireCandidate(), is(true));
-		assertThat(bf.getBeanDefinition("other").isAutowireCandidate(), is(false));
+		assertThat(bf.getBeanDefinition("fooService").isAutowireCandidate()).isTrue();
+		assertThat(bf.getBeanDefinition("fooRepository").isAutowireCandidate()).isTrue();
+		assertThat(bf.getBeanDefinition("other").isAutowireCandidate()).isFalse();
 
-		assertThat(bf.getBeanDefinition("barService").isAutowireCandidate(), is(true));
-		assertThat(bf.getBeanDefinition("fooController").isAutowireCandidate(), is(false));
+		assertThat(bf.getBeanDefinition("barService").isAutowireCandidate()).isTrue();
+		assertThat(bf.getBeanDefinition("fooController").isAutowireCandidate()).isFalse();
 
-		assertThat(bf.getBeanDefinition("bizRepository").isAutowireCandidate(), is(true));
-		assertThat(bf.getBeanDefinition("bizService").isAutowireCandidate(), is(false));
+		assertThat(bf.getBeanDefinition("bizRepository").isAutowireCandidate()).isTrue();
+		assertThat(bf.getBeanDefinition("bizService").isAutowireCandidate()).isFalse();
 
-		assertThat(bf.getBeanDefinition("bazService").isAutowireCandidate(), is(true));
-		assertThat(bf.getBeanDefinition("random").isAutowireCandidate(), is(false));
-		assertThat(bf.getBeanDefinition("fooComponent").isAutowireCandidate(), is(false));
-		assertThat(bf.getBeanDefinition("fRepository").isAutowireCandidate(), is(false));
+		assertThat(bf.getBeanDefinition("bazService").isAutowireCandidate()).isTrue();
+		assertThat(bf.getBeanDefinition("random").isAutowireCandidate()).isFalse();
+		assertThat(bf.getBeanDefinition("fooComponent").isAutowireCandidate()).isFalse();
+		assertThat(bf.getBeanDefinition("fRepository").isAutowireCandidate()).isFalse();
 
-		assertThat(bf.getBeanDefinition("aComponent").isAutowireCandidate(), is(true));
-		assertThat(bf.getBeanDefinition("someService").isAutowireCandidate(), is(false));
+		assertThat(bf.getBeanDefinition("aComponent").isAutowireCandidate()).isTrue();
+		assertThat(bf.getBeanDefinition("someService").isAutowireCandidate()).isFalse();
 	}
 
 	@Test
@@ -161,17 +161,17 @@ public class NestedBeansElementAttributeRecursionTests {
 		InitDestroyBean beanC = bf.getBean("beanC", InitDestroyBean.class);
 		InitDestroyBean beanD = bf.getBean("beanD", InitDestroyBean.class);
 
-		assertThat(beanA.initMethod1Called, is(true));
-		assertThat(beanB.initMethod2Called, is(true));
-		assertThat(beanC.initMethod3Called, is(true));
-		assertThat(beanD.initMethod2Called, is(true));
+		assertThat(beanA.initMethod1Called).isTrue();
+		assertThat(beanB.initMethod2Called).isTrue();
+		assertThat(beanC.initMethod3Called).isTrue();
+		assertThat(beanD.initMethod2Called).isTrue();
 
 		bf.destroySingletons();
 
-		assertThat(beanA.destroyMethod1Called, is(true));
-		assertThat(beanB.destroyMethod2Called, is(true));
-		assertThat(beanC.destroyMethod3Called, is(true));
-		assertThat(beanD.destroyMethod2Called, is(true));
+		assertThat(beanA.destroyMethod1Called).isTrue();
+		assertThat(beanB.destroyMethod2Called).isTrue();
+		assertThat(beanC.destroyMethod3Called).isTrue();
+		assertThat(beanD.destroyMethod2Called).isTrue();
 	}
 
 }

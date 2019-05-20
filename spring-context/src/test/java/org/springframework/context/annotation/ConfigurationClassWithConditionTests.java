@@ -248,7 +248,7 @@ public class ConfigurationClassWithConditionTests {
 		@Override
 		public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
 			AnnotationAttributes attributes = AnnotationAttributes.fromMap(metadata.getAnnotationAttributes(MetaConditional.class.getName()));
-			assertThat(attributes.getString("value"), equalTo("test"));
+			assertThat(attributes.getString("value")).isEqualTo("test");
 			return true;
 		}
 	}

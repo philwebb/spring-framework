@@ -368,7 +368,7 @@ public class ClassPathScanningCandidateComponentProviderTests {
 	public void testWithNullEnvironment() {
 		ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(true);
 		Set<BeanDefinition> candidates = provider.findCandidateComponents(TEST_PROFILE_PACKAGE);
-		assertThat(containsBeanClass(candidates, ProfileAnnotatedComponent.class), is(false));
+		assertThat(containsBeanClass(candidates, ProfileAnnotatedComponent.class)).isFalse();
 	}
 
 	@Test
@@ -378,7 +378,7 @@ public class ClassPathScanningCandidateComponentProviderTests {
 		env.setActiveProfiles("other");
 		provider.setEnvironment(env);
 		Set<BeanDefinition> candidates = provider.findCandidateComponents(TEST_PROFILE_PACKAGE);
-		assertThat(containsBeanClass(candidates, ProfileAnnotatedComponent.class), is(false));
+		assertThat(containsBeanClass(candidates, ProfileAnnotatedComponent.class)).isFalse();
 	}
 
 	@Test
@@ -388,7 +388,7 @@ public class ClassPathScanningCandidateComponentProviderTests {
 		env.setActiveProfiles(ProfileAnnotatedComponent.PROFILE_NAME);
 		provider.setEnvironment(env);
 		Set<BeanDefinition> candidates = provider.findCandidateComponents(TEST_PROFILE_PACKAGE);
-		assertThat(containsBeanClass(candidates, ProfileAnnotatedComponent.class), is(true));
+		assertThat(containsBeanClass(candidates, ProfileAnnotatedComponent.class)).isTrue();
 	}
 
 	@Test
@@ -396,7 +396,7 @@ public class ClassPathScanningCandidateComponentProviderTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 		ctx.register(ProfileAnnotatedComponent.class);
 		ctx.refresh();
-		assertThat(ctx.containsBean(ProfileAnnotatedComponent.BEAN_NAME), is(false));
+		assertThat(ctx.containsBean(ProfileAnnotatedComponent.BEAN_NAME)).isFalse();
 	}
 
 	@Test
@@ -405,7 +405,7 @@ public class ClassPathScanningCandidateComponentProviderTests {
 		ctx.getEnvironment().setActiveProfiles(ProfileAnnotatedComponent.PROFILE_NAME);
 		ctx.register(ProfileAnnotatedComponent.class);
 		ctx.refresh();
-		assertThat(ctx.containsBean(ProfileAnnotatedComponent.BEAN_NAME), is(true));
+		assertThat(ctx.containsBean(ProfileAnnotatedComponent.BEAN_NAME)).isTrue();
 	}
 
 	@Test
@@ -414,7 +414,7 @@ public class ClassPathScanningCandidateComponentProviderTests {
 		ctx.getEnvironment().setActiveProfiles(DevComponent.PROFILE_NAME);
 		ctx.register(ProfileMetaAnnotatedComponent.class);
 		ctx.refresh();
-		assertThat(ctx.containsBean(ProfileMetaAnnotatedComponent.BEAN_NAME), is(true));
+		assertThat(ctx.containsBean(ProfileMetaAnnotatedComponent.BEAN_NAME)).isTrue();
 	}
 
 	@Test
@@ -423,7 +423,7 @@ public class ClassPathScanningCandidateComponentProviderTests {
 		ctx.getEnvironment().setActiveProfiles("other");
 		ctx.register(ProfileAnnotatedComponent.class);
 		ctx.refresh();
-		assertThat(ctx.containsBean(ProfileAnnotatedComponent.BEAN_NAME), is(false));
+		assertThat(ctx.containsBean(ProfileAnnotatedComponent.BEAN_NAME)).isFalse();
 	}
 
 	@Test
@@ -432,7 +432,7 @@ public class ClassPathScanningCandidateComponentProviderTests {
 		ctx.getEnvironment().setActiveProfiles("other");
 		ctx.register(ProfileMetaAnnotatedComponent.class);
 		ctx.refresh();
-		assertThat(ctx.containsBean(ProfileMetaAnnotatedComponent.BEAN_NAME), is(false));
+		assertThat(ctx.containsBean(ProfileMetaAnnotatedComponent.BEAN_NAME)).isFalse();
 	}
 
 	@Test
@@ -442,7 +442,7 @@ public class ClassPathScanningCandidateComponentProviderTests {
 		// no active profiles are set
 		ctx.register(DefaultProfileAnnotatedComponent.class);
 		ctx.refresh();
-		assertThat(ctx.containsBean(DefaultProfileAnnotatedComponent.BEAN_NAME), is(true));
+		assertThat(ctx.containsBean(DefaultProfileAnnotatedComponent.BEAN_NAME)).isTrue();
 	}
 
 	@Test
@@ -455,7 +455,7 @@ public class ClassPathScanningCandidateComponentProviderTests {
 			// no active profiles are set
 			ctx.register(beanClass);
 			ctx.refresh();
-			assertThat(ctx.containsBean(beanName), is(true));
+			assertThat(ctx.containsBean(beanName)).isTrue();
 		}
 		{
 			AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
@@ -463,7 +463,7 @@ public class ClassPathScanningCandidateComponentProviderTests {
 			ctx.getEnvironment().setActiveProfiles("dev");
 			ctx.register(beanClass);
 			ctx.refresh();
-			assertThat(ctx.containsBean(beanName), is(true));
+			assertThat(ctx.containsBean(beanName)).isTrue();
 		}
 		{
 			AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
@@ -471,7 +471,7 @@ public class ClassPathScanningCandidateComponentProviderTests {
 			ctx.getEnvironment().setActiveProfiles("other");
 			ctx.register(beanClass);
 			ctx.refresh();
-			assertThat(ctx.containsBean(beanName), is(false));
+			assertThat(ctx.containsBean(beanName)).isFalse();
 		}
 	}
 
@@ -485,7 +485,7 @@ public class ClassPathScanningCandidateComponentProviderTests {
 			// no active profiles are set
 			ctx.register(beanClass);
 			ctx.refresh();
-			assertThat(ctx.containsBean(beanName), is(true));
+			assertThat(ctx.containsBean(beanName)).isTrue();
 		}
 		{
 			AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
@@ -493,7 +493,7 @@ public class ClassPathScanningCandidateComponentProviderTests {
 			ctx.getEnvironment().setActiveProfiles("dev");
 			ctx.register(beanClass);
 			ctx.refresh();
-			assertThat(ctx.containsBean(beanName), is(true));
+			assertThat(ctx.containsBean(beanName)).isTrue();
 		}
 		{
 			AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
@@ -501,7 +501,7 @@ public class ClassPathScanningCandidateComponentProviderTests {
 			ctx.getEnvironment().setActiveProfiles("other");
 			ctx.register(beanClass);
 			ctx.refresh();
-			assertThat(ctx.containsBean(beanName), is(false));
+			assertThat(ctx.containsBean(beanName)).isFalse();
 		}
 	}
 
@@ -517,7 +517,7 @@ public class ClassPathScanningCandidateComponentProviderTests {
 	private void assertBeanDefinitionType(Set<BeanDefinition> candidates,
 			Class<? extends BeanDefinition> expectedType) {
 		candidates.forEach(c ->
-			assertThat(c, is(instanceOf(expectedType)))
+			assertThat(c).isEqualTo(instanceOf(expectedType))
 		);
 	}
 

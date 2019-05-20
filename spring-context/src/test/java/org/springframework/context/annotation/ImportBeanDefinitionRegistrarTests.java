@@ -52,10 +52,10 @@ public class ImportBeanDefinitionRegistrarTests {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
 		context.getBean(MessageSource.class);
 
-		assertThat(SampleRegistrar.beanFactory, is(context.getBeanFactory()));
-		assertThat(SampleRegistrar.classLoader, is(context.getBeanFactory().getBeanClassLoader()));
-		assertThat(SampleRegistrar.resourceLoader, is(notNullValue()));
-		assertThat(SampleRegistrar.environment, is(context.getEnvironment()));
+		assertThat(SampleRegistrar.beanFactory).isEqualTo(context.getBeanFactory());
+		assertThat(SampleRegistrar.classLoader).isEqualTo(context.getBeanFactory().getBeanClassLoader());
+		assertThat(SampleRegistrar.resourceLoader).isNotNull();
+		assertThat(SampleRegistrar.environment).isEqualTo(context.getEnvironment());
 	}
 
 

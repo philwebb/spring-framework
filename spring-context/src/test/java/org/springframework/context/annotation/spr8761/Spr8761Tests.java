@@ -43,7 +43,7 @@ public class Spr8761Tests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 		ctx.scan(getClass().getPackage().getName());
 		ctx.refresh();
-		assertThat(ctx.containsBean("withNestedAnnotation"), is(true));
+		assertThat(ctx.containsBean("withNestedAnnotation")).isTrue();
 	}
 
 }

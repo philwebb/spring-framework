@@ -135,7 +135,7 @@ public class GroovyMarkupViewTests {
 		Map<String, Object> model = new HashMap<>();
 		model.put("name", "Spring");
 		MockHttpServletResponse response = renderViewWithModel("test.tpl", model, Locale.US);
-		assertThat(response.getContentAsString(), Matchers.containsString("<h1>Hello Spring</h1>"));
+		assertThat(response.getContentAsString()).contains("<h1>Hello Spring</h1>");
 	}
 
 	@Test

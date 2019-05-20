@@ -54,7 +54,7 @@ public class SharedEntityManagerCreatorTests {
 		EntityManagerFactory emf = mock(EntityManagerFactory.class,
 				withSettings().extraInterfaces(EntityManagerFactoryInfo.class));
 		// EntityManagerFactoryInfo.getEntityManagerInterface returns null
-		assertThat(SharedEntityManagerCreator.createSharedEntityManager(emf), is(notNullValue()));
+		assertThat(SharedEntityManagerCreator.createSharedEntityManager(emf)).isNotNull();
 	}
 
 	@Test

@@ -147,7 +147,7 @@ public class EventPublishingTestExecutionListenerIntegrationTests {
 
 		testContextManager.beforeTestMethod(testInstance, method);
 
-		assertThat(countDownLatch.await(2, TimeUnit.SECONDS), equalTo(true));
+		assertThat(countDownLatch.await(2, TimeUnit.SECONDS)).isEqualTo(true);
 
 		verify(listener, only()).beforeTestMethod(testContext);
 		assertThat(TrackingAsyncUncaughtExceptionHandler.asyncException.getMessage(),

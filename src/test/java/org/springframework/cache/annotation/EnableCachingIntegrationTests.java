@@ -53,7 +53,7 @@ public class EnableCachingIntegrationTests {
 		ctx.refresh();
 
 		assertCacheProxying(ctx);
-		assertThat(AopUtils.isCglibProxy(ctx.getBean(FooRepository.class)), is(true));
+		assertThat(AopUtils.isCglibProxy(ctx.getBean(FooRepository.class))).isTrue();
 	}
 
 	@Test

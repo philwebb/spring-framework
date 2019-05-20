@@ -742,7 +742,7 @@ public class TypeDescriptorTests {
 		ObjectInputStream inputStream = new ObjectInputStream(new ByteArrayInputStream(
 				out.toByteArray()));
 		TypeDescriptor readObject = (TypeDescriptor) inputStream.readObject();
-		assertThat(readObject, equalTo(typeDescriptor));
+		assertThat(readObject).isEqualTo(typeDescriptor);
 	}
 
 	@Test
@@ -762,9 +762,9 @@ public class TypeDescriptorTests {
 	public void getSource() throws Exception {
 		Field field = getClass().getField("fieldScalar");
 		MethodParameter methodParameter = new MethodParameter(getClass().getMethod("testParameterPrimitive", int.class), 0);
-		assertThat(new TypeDescriptor(field).getSource(), equalTo((Object) field));
-		assertThat(new TypeDescriptor(methodParameter).getSource(), equalTo((Object) methodParameter));
-		assertThat(TypeDescriptor.valueOf(Integer.class).getSource(), equalTo((Object) Integer.class));
+		assertThat(new TypeDescriptor(field).getSource()).isEqualTo((Object) field);
+		assertThat(new TypeDescriptor(methodParameter).getSource()).isEqualTo((Object) methodParameter);
+		assertThat(TypeDescriptor.valueOf(Integer.class).getSource()).isEqualTo((Object) Integer.class);
 	}
 
 

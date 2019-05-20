@@ -112,9 +112,9 @@ public class MockMvcWebClientBuilderTests {
 		this.mockMvc = MockMvcBuilders.standaloneSetup(new CookieController()).build();
 		WebClient client = MockMvcWebClientBuilder.mockMvcSetup(this.mockMvc).build();
 
-		assertThat(getResponse(client, "http://localhost/").getContentAsString(), equalTo("NA"));
+		assertThat(getResponse(client, "http://localhost/").getContentAsString()).isEqualTo("NA");
 		client.getCookieManager().addCookie(new Cookie("localhost", "cookie", "cookieManagerShared"));
-		assertThat(getResponse(client, "http://localhost/").getContentAsString(), equalTo("cookieManagerShared"));
+		assertThat(getResponse(client, "http://localhost/").getContentAsString()).isEqualTo("cookieManagerShared");
 	}
 
 	@Test // SPR-14265
@@ -122,19 +122,19 @@ public class MockMvcWebClientBuilderTests {
 		this.mockMvc = MockMvcBuilders.standaloneSetup(new CookieController()).build();
 		WebClient client = MockMvcWebClientBuilder.mockMvcSetup(this.mockMvc).build();
 
-		assertThat(getResponse(client, "http://localhost/").getContentAsString(), equalTo("NA"));
-		assertThat(postResponse(client, "http://localhost/?cookie=foo").getContentAsString(), equalTo("Set"));
-		assertThat(getResponse(client, "http://localhost/").getContentAsString(), equalTo("foo"));
-		assertThat(deleteResponse(client, "http://localhost/").getContentAsString(), equalTo("Delete"));
-		assertThat(getResponse(client, "http://localhost/").getContentAsString(), equalTo("NA"));
+		assertThat(getResponse(client, "http://localhost/").getContentAsString()).isEqualTo("NA");
+		assertThat(postResponse(client, "http://localhost/?cookie=foo").getContentAsString()).isEqualTo("Set");
+		assertThat(getResponse(client, "http://localhost/").getContentAsString()).isEqualTo("foo");
+		assertThat(deleteResponse(client, "http://localhost/").getContentAsString()).isEqualTo("Delete");
+		assertThat(getResponse(client, "http://localhost/").getContentAsString()).isEqualTo("NA");
 	}
 
 	private void assertMockMvcUsed(WebClient client, String url) throws Exception {
-		assertThat(getResponse(client, url).getContentAsString(), equalTo("mvc"));
+		assertThat(getResponse(client, url).getContentAsString()).isEqualTo("mvc");
 	}
 
 	private void assertMockMvcNotUsed(WebClient client, String url) throws Exception {
-		assertThat(getResponse(client, url).getContentAsString(), not(equalTo("mvc")));
+		assertThat(getResponse(client, url).getContentAsString()).isNotEqualTo("mvc");
 	}
 
 	private WebResponse getResponse(WebClient client, String url) throws IOException {

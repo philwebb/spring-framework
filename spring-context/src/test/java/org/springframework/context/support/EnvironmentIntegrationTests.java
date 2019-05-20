@@ -50,7 +50,7 @@ public class EnvironmentIntegrationTests {
 		assertThat("unknown env", env, anyOf(
 				sameInstance(parent.getEnvironment()),
 				sameInstance(child.getEnvironment())));
-		assertThat("expected child ctx env", env, sameInstance(child.getEnvironment()));
+		assertThat("expected child ctx env", env).isSameAs(child.getEnvironment());
 
 		child.close();
 		parent.close();

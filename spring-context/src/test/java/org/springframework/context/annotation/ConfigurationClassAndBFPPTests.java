@@ -106,7 +106,7 @@ public class ConfigurationClassAndBFPPTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 		ctx.register(ConfigWithStaticBeanMethod.class);
 		ctx.refresh();
-		assertThat(ConfigWithStaticBeanMethod.testBean(), not(sameInstance(ConfigWithStaticBeanMethod.testBean())));
+		assertThat(ConfigWithStaticBeanMethod.testBean()).isNotEqualTo(sameInstance(ConfigWithStaticBeanMethod.testBean()));
 	}
 
 

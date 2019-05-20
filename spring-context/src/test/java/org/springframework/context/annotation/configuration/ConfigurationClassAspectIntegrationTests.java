@@ -73,9 +73,9 @@ public class ConfigurationClassAspectIntegrationTests {
 		ctx.refresh();
 
 		TestBean testBean = ctx.getBean("testBean", TestBean.class);
-		assertThat(testBean.getName(), equalTo("name"));
+		assertThat(testBean.getName()).isEqualTo("name");
 		testBean.absquatulate();
-		assertThat(testBean.getName(), equalTo("advisedName"));
+		assertThat(testBean.getName()).isEqualTo("advisedName");
 	}
 
 	@Test

@@ -56,16 +56,16 @@ public class Spr8954Tests {
 		assertThat(bf.getBean("foo"), instanceOf(Foo.class));
 		assertThat(bf.getBean("&foo"), instanceOf(FooFactoryBean.class));
 
-		assertThat(bf.isTypeMatch("&foo", FactoryBean.class), is(true));
+		assertThat(bf.isTypeMatch("&foo", FactoryBean.class)).isTrue();
 
 		@SuppressWarnings("rawtypes")
 		Map<String, FactoryBean> fbBeans = bf.getBeansOfType(FactoryBean.class);
-		assertThat(1, equalTo(fbBeans.size()));
-		assertThat("&foo", equalTo(fbBeans.keySet().iterator().next()));
+		assertThat(1).isEqualTo(fbBeans.size());
+		assertThat("&foo").isEqualTo(fbBeans.keySet().iterator().next());
 
 		Map<String, AnInterface> aiBeans = bf.getBeansOfType(AnInterface.class);
-		assertThat(1, equalTo(aiBeans.size()));
-		assertThat("&foo", equalTo(aiBeans.keySet().iterator().next()));
+		assertThat(1).isEqualTo(aiBeans.size());
+		assertThat("&foo").isEqualTo(aiBeans.keySet().iterator().next());
 	}
 
 	@Test
@@ -75,16 +75,16 @@ public class Spr8954Tests {
 		bf.getBeanFactory().addBeanPostProcessor(new PredictingBPP());
 		bf.refresh();
 
-		assertThat(bf.isTypeMatch("&foo", FactoryBean.class), is(true));
+		assertThat(bf.isTypeMatch("&foo", FactoryBean.class)).isTrue();
 
 		@SuppressWarnings("rawtypes")
 		Map<String, FactoryBean> fbBeans = bf.getBeansOfType(FactoryBean.class);
-		assertThat(1, equalTo(fbBeans.size()));
-		assertThat("&foo", equalTo(fbBeans.keySet().iterator().next()));
+		assertThat(1).isEqualTo(fbBeans.size());
+		assertThat("&foo").isEqualTo(fbBeans.keySet().iterator().next());
 
 		Map<String, AnInterface> aiBeans = bf.getBeansOfType(AnInterface.class);
-		assertThat(1, equalTo(aiBeans.size()));
-		assertThat("&foo", equalTo(aiBeans.keySet().iterator().next()));
+		assertThat(1).isEqualTo(aiBeans.size());
+		assertThat("&foo").isEqualTo(aiBeans.keySet().iterator().next());
 	}
 
 

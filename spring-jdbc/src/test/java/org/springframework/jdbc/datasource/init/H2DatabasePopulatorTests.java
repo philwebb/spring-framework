@@ -48,7 +48,7 @@ public class H2DatabasePopulatorTests extends AbstractDatabasePopulatorTests {
 		databasePopulator.setSeparator("\n\n");
 		DatabasePopulatorUtils.execute(databasePopulator, db);
 		String sql = "select REVERSE(first_name) from users where last_name='Brannen'";
-		assertThat(jdbcTemplate.queryForObject(sql, String.class), equalTo("maS"));
+		assertThat(jdbcTemplate.queryForObject(sql, String.class)).isEqualTo("maS");
 	}
 
 }

@@ -440,7 +440,7 @@ public class JdbcTemplateTests {
 			template.batchUpdate(sql);
 		}
 		catch (UncategorizedSQLException ex) {
-			assertThat(ex.getSql(), equalTo("B; D"));
+			assertThat(ex.getSql()).isEqualTo("B; D");
 		}
 	}
 

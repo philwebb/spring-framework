@@ -53,7 +53,7 @@ public class StandardServletEnvironmentTests {
 				StandardEnvironment.SYSTEM_PROPERTIES_PROPERTY_SOURCE_NAME)), equalTo(3));
 		assertThat(sources.precedenceOf(PropertySource.named(
 				StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME)), equalTo(4));
-		assertThat(sources.size(), is(5));
+		assertThat(sources).hasSize(5);
 	}
 
 }

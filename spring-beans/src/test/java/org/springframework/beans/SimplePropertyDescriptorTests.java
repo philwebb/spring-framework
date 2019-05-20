@@ -76,11 +76,11 @@ public class SimplePropertyDescriptorTests {
 	@Test
 	public void nonIndexedEquality() throws IntrospectionException, SecurityException, NoSuchMethodException {
 		Object pd1 = new ExtendedBeanInfo.SimplePropertyDescriptor("foo", null, null);
-		assertThat(pd1, equalTo(pd1));
+		assertThat(pd1).isEqualTo(pd1);
 
 		Object pd2 = new ExtendedBeanInfo.SimplePropertyDescriptor("foo", null, null);
-		assertThat(pd1, equalTo(pd2));
-		assertThat(pd2, equalTo(pd1));
+		assertThat(pd1).isEqualTo(pd2);
+		assertThat(pd2).isEqualTo(pd1);
 
 		@SuppressWarnings("unused")
 		class C {
@@ -89,35 +89,35 @@ public class SimplePropertyDescriptorTests {
 		}
 		Method wm1 = C.class.getMethod("setFoo", String.class);
 		Object pd3 = new ExtendedBeanInfo.SimplePropertyDescriptor("foo", null, wm1);
-		assertThat(pd1, not(equalTo(pd3)));
-		assertThat(pd3, not(equalTo(pd1)));
+		assertThat(pd1).isNotEqualTo(pd3);
+		assertThat(pd3).isNotEqualTo(pd1);
 
 		Method rm1 = C.class.getMethod("getFoo");
 		Object pd4 = new ExtendedBeanInfo.SimplePropertyDescriptor("foo", rm1, null);
-		assertThat(pd1, not(equalTo(pd4)));
-		assertThat(pd4, not(equalTo(pd1)));
+		assertThat(pd1).isNotEqualTo(pd4);
+		assertThat(pd4).isNotEqualTo(pd1);
 
 		Object pd5 = new PropertyDescriptor("foo", null, null);
-		assertThat(pd1, equalTo(pd5));
-		assertThat(pd5, equalTo(pd1));
+		assertThat(pd1).isEqualTo(pd5);
+		assertThat(pd5).isEqualTo(pd1);
 
 		Object pd6 = "not a PD";
-		assertThat(pd1, not(equalTo(pd6)));
-		assertThat(pd6, not(equalTo(pd1)));
+		assertThat(pd1).isNotEqualTo(pd6);
+		assertThat(pd6).isNotEqualTo(pd1);
 
 		Object pd7 = null;
-		assertThat(pd1, not(equalTo(pd7)));
-		assertThat(pd7, not(equalTo(pd1)));
+		assertThat(pd1).isNotEqualTo(pd7);
+		assertThat(pd7).isNotEqualTo(pd1);
 	}
 
 	@Test
 	public void indexedEquality() throws IntrospectionException, SecurityException, NoSuchMethodException {
 		Object pd1 = new ExtendedBeanInfo.SimpleIndexedPropertyDescriptor("foo", null, null, null, null);
-		assertThat(pd1, equalTo(pd1));
+		assertThat(pd1).isEqualTo(pd1);
 
 		Object pd2 = new ExtendedBeanInfo.SimpleIndexedPropertyDescriptor("foo", null, null, null, null);
-		assertThat(pd1, equalTo(pd2));
-		assertThat(pd2, equalTo(pd1));
+		assertThat(pd1).isEqualTo(pd2);
+		assertThat(pd2).isEqualTo(pd1);
 
 		@SuppressWarnings("unused")
 		class C {
@@ -126,25 +126,25 @@ public class SimplePropertyDescriptorTests {
 		}
 		Method wm1 = C.class.getMethod("setFoo", int.class, String.class);
 		Object pd3 = new ExtendedBeanInfo.SimpleIndexedPropertyDescriptor("foo", null, null, null, wm1);
-		assertThat(pd1, not(equalTo(pd3)));
-		assertThat(pd3, not(equalTo(pd1)));
+		assertThat(pd1).isNotEqualTo(pd3);
+		assertThat(pd3).isNotEqualTo(pd1);
 
 		Method rm1 = C.class.getMethod("getFoo", int.class);
 		Object pd4 = new ExtendedBeanInfo.SimpleIndexedPropertyDescriptor("foo", null, null, rm1, null);
-		assertThat(pd1, not(equalTo(pd4)));
-		assertThat(pd4, not(equalTo(pd1)));
+		assertThat(pd1).isNotEqualTo(pd4);
+		assertThat(pd4).isNotEqualTo(pd1);
 
 		Object pd5 = new IndexedPropertyDescriptor("foo", null, null, null, null);
-		assertThat(pd1, equalTo(pd5));
-		assertThat(pd5, equalTo(pd1));
+		assertThat(pd1).isEqualTo(pd5);
+		assertThat(pd5).isEqualTo(pd1);
 
 		Object pd6 = "not a PD";
-		assertThat(pd1, not(equalTo(pd6)));
-		assertThat(pd6, not(equalTo(pd1)));
+		assertThat(pd1).isNotEqualTo(pd6);
+		assertThat(pd6).isNotEqualTo(pd1);
 
 		Object pd7 = null;
-		assertThat(pd1, not(equalTo(pd7)));
-		assertThat(pd7, not(equalTo(pd1)));
+		assertThat(pd1).isNotEqualTo(pd7);
+		assertThat(pd7).isNotEqualTo(pd1);
 	}
 
 }

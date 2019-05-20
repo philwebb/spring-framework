@@ -137,9 +137,9 @@ public class MappingJackson2XmlHttpMessageConverterTests {
 		this.converter.write(jacksonValue, null, outputMessage);
 
 		String result = outputMessage.getBodyAsString(StandardCharsets.UTF_8);
-		assertThat(result, containsString("<withView1>with</withView1>"));
-		assertThat(result, not(containsString("<withView2>with</withView2>")));
-		assertThat(result, not(containsString("<withoutView>without</withoutView>")));
+		assertThat(result).contains("<withView1>with</withView1>");
+		assertThat(result).isNotEqualTo(containsString("<withView2>with</withView2>"));
+		assertThat(result).isNotEqualTo(containsString("<withoutView>without</withoutView>"));
 	}
 
 	@Test

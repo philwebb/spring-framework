@@ -789,23 +789,23 @@ public class ObjectUtilsTests {
 
 	@Test
 	public void containsConstant() {
-		assertThat(ObjectUtils.containsConstant(Tropes.values(), "FOO"), is(true));
-		assertThat(ObjectUtils.containsConstant(Tropes.values(), "foo"), is(true));
-		assertThat(ObjectUtils.containsConstant(Tropes.values(), "BaR"), is(true));
-		assertThat(ObjectUtils.containsConstant(Tropes.values(), "bar"), is(true));
-		assertThat(ObjectUtils.containsConstant(Tropes.values(), "BAZ"), is(true));
-		assertThat(ObjectUtils.containsConstant(Tropes.values(), "baz"), is(true));
+		assertThat(ObjectUtils.containsConstant(Tropes.values(), "FOO")).isTrue();
+		assertThat(ObjectUtils.containsConstant(Tropes.values(), "foo")).isTrue();
+		assertThat(ObjectUtils.containsConstant(Tropes.values(), "BaR")).isTrue();
+		assertThat(ObjectUtils.containsConstant(Tropes.values(), "bar")).isTrue();
+		assertThat(ObjectUtils.containsConstant(Tropes.values(), "BAZ")).isTrue();
+		assertThat(ObjectUtils.containsConstant(Tropes.values(), "baz")).isTrue();
 
-		assertThat(ObjectUtils.containsConstant(Tropes.values(), "BOGUS"), is(false));
+		assertThat(ObjectUtils.containsConstant(Tropes.values(), "BOGUS")).isFalse();
 
-		assertThat(ObjectUtils.containsConstant(Tropes.values(), "FOO", true), is(true));
-		assertThat(ObjectUtils.containsConstant(Tropes.values(), "foo", true), is(false));
+		assertThat(ObjectUtils.containsConstant(Tropes.values(), "FOO", true)).isTrue();
+		assertThat(ObjectUtils.containsConstant(Tropes.values(), "foo", true)).isFalse();
 	}
 
 	@Test
 	public void caseInsensitiveValueOf() {
-		assertThat(ObjectUtils.caseInsensitiveValueOf(Tropes.values(), "foo"), is(Tropes.FOO));
-		assertThat(ObjectUtils.caseInsensitiveValueOf(Tropes.values(), "BAR"), is(Tropes.BAR));
+		assertThat(ObjectUtils.caseInsensitiveValueOf(Tropes.values(), "foo")).isEqualTo(Tropes.FOO);
+		assertThat(ObjectUtils.caseInsensitiveValueOf(Tropes.values(), "BAR")).isEqualTo(Tropes.BAR);
 
 		assertThatIllegalArgumentException().isThrownBy(() ->
 				ObjectUtils.caseInsensitiveValueOf(Tropes.values(), "bogus"))

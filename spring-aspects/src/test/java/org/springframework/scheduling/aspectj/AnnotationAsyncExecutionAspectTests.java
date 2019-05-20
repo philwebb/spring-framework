@@ -140,8 +140,8 @@ public class AnnotationAsyncExecutionAspectTests {
 		ClassWithQualifiedAsyncMethods obj = new ClassWithQualifiedAsyncMethods();
 
 		Future<Thread> defaultThread = obj.defaultWork();
-		assertThat(defaultThread.get(), not(Thread.currentThread()));
-		assertThat(defaultThread.get().getName(), not(startsWith("e1-")));
+		assertThat(defaultThread.get()).isNotEqualTo(Thread.currentThread());
+		assertThat(defaultThread.get().getName()).isNotEqualTo(startsWith("e1-"));
 
 		ListenableFuture<Thread> e1Thread = obj.e1Work();
 		assertThat(e1Thread.get().getName(), startsWith("e1-"));

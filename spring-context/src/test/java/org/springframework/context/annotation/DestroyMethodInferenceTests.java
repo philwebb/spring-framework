@@ -48,27 +48,27 @@ public class DestroyMethodInferenceTests {
 		WithInheritedCloseMethod c8 = ctx.getBean("c8", WithInheritedCloseMethod.class);
 		WithDisposableBean c9 = ctx.getBean("c9", WithDisposableBean.class);
 
-		assertThat(c0.closed, is(false));
-		assertThat(c1.closed, is(false));
-		assertThat(c2.closed, is(false));
-		assertThat(c3.closed, is(false));
-		assertThat(c4.closed, is(false));
-		assertThat(c5.closed, is(false));
-		assertThat(c6.closed, is(false));
-		assertThat(c7.closed, is(false));
-		assertThat(c8.closed, is(false));
-		assertThat(c9.closed, is(false));
+		assertThat(c0.closed).isFalse();
+		assertThat(c1.closed).isFalse();
+		assertThat(c2.closed).isFalse();
+		assertThat(c3.closed).isFalse();
+		assertThat(c4.closed).isFalse();
+		assertThat(c5.closed).isFalse();
+		assertThat(c6.closed).isFalse();
+		assertThat(c7.closed).isFalse();
+		assertThat(c8.closed).isFalse();
+		assertThat(c9.closed).isFalse();
 		ctx.close();
-		assertThat("c0", c0.closed, is(true));
-		assertThat("c1", c1.closed, is(true));
-		assertThat("c2", c2.closed, is(true));
-		assertThat("c3", c3.closed, is(true));
-		assertThat("c4", c4.closed, is(true));
-		assertThat("c5", c5.closed, is(true));
-		assertThat("c6", c6.closed, is(false));
-		assertThat("c7", c7.closed, is(true));
-		assertThat("c8", c8.closed, is(false));
-		assertThat("c9", c9.closed, is(true));
+		assertThat("c0", c0.closed).isTrue();
+		assertThat("c1", c1.closed).isTrue();
+		assertThat("c2", c2.closed).isTrue();
+		assertThat("c3", c3.closed).isTrue();
+		assertThat("c4", c4.closed).isTrue();
+		assertThat("c5", c5.closed).isTrue();
+		assertThat("c6", c6.closed).isFalse();
+		assertThat("c7", c7.closed).isTrue();
+		assertThat("c8", c8.closed).isFalse();
+		assertThat("c9", c9.closed).isTrue();
 	}
 
 	@Test
@@ -81,16 +81,16 @@ public class DestroyMethodInferenceTests {
 		WithNoCloseMethod x4 = ctx.getBean("x4", WithNoCloseMethod.class);
 		WithInheritedCloseMethod x8 = ctx.getBean("x8", WithInheritedCloseMethod.class);
 
-		assertThat(x1.closed, is(false));
-		assertThat(x2.closed, is(false));
-		assertThat(x3.closed, is(false));
-		assertThat(x4.closed, is(false));
+		assertThat(x1.closed).isFalse();
+		assertThat(x2.closed).isFalse();
+		assertThat(x3.closed).isFalse();
+		assertThat(x4.closed).isFalse();
 		ctx.close();
-		assertThat(x1.closed, is(false));
-		assertThat(x2.closed, is(true));
-		assertThat(x3.closed, is(true));
-		assertThat(x4.closed, is(false));
-		assertThat(x8.closed, is(false));
+		assertThat(x1.closed).isFalse();
+		assertThat(x2.closed).isTrue();
+		assertThat(x3.closed).isTrue();
+		assertThat(x4.closed).isFalse();
+		assertThat(x8.closed).isFalse();
 	}
 
 

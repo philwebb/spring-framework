@@ -288,7 +288,7 @@ public class ReflectionUtilsTests {
 				toStringMethodCount++;
 			}
 		}
-		assertThat(toStringMethodCount, is(2));
+		assertThat(toStringMethodCount).isEqualTo(2);
 	}
 
 	@Test
@@ -305,7 +305,7 @@ public class ReflectionUtilsTests {
 				toStringMethodCount++;
 			}
 		}
-		assertThat(toStringMethodCount, is(1));
+		assertThat(toStringMethodCount).isEqualTo(1);
 	}
 
 	@Test
@@ -329,7 +329,7 @@ public class ReflectionUtilsTests {
 				m1MethodCount++;
 			}
 		}
-		assertThat(m1MethodCount, is(1));
+		assertThat(m1MethodCount).isEqualTo(1);
 		assertTrue(ObjectUtils.containsElement(methods, Leaf.class.getMethod("m1")));
 		assertFalse(ObjectUtils.containsElement(methods, Parent.class.getMethod("m1")));
 	}
@@ -367,7 +367,7 @@ public class ReflectionUtilsTests {
 		Method[] methods = ReflectionUtils.getUniqueDeclaredMethods(C.class);
 		sw.stop();
 		long totalMs = sw.getTotalTimeMillis();
-		assertThat(methods.length, Matchers.greaterThan(100));
+		assertThat(methods.length).isGreaterThan(100);
 		assertThat(totalMs, Matchers.lessThan(10L));
 	}
 
@@ -375,7 +375,7 @@ public class ReflectionUtilsTests {
 	public void getDecalredMethodsReturnsCopy() {
 		Method[] m1 = ReflectionUtils.getDeclaredMethods(A.class);
 		Method[] m2 = ReflectionUtils.getDeclaredMethods(A.class);
-		assertThat(m1, not(sameInstance(m2)));
+		assertThat(m1).isNotEqualTo(sameInstance(m2));
 	}
 
 	private static class ListSavingMethodCallback implements ReflectionUtils.MethodCallback {

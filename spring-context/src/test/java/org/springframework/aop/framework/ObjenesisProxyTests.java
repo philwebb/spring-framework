@@ -41,8 +41,8 @@ public class ObjenesisProxyTests {
 		bean.method();
 
 		DebugInterceptor interceptor = context.getBean(DebugInterceptor.class);
-		assertThat(interceptor.getCount(), is(1L));
-		assertThat(bean.getDependency().getValue(), is(1));
+		assertThat(interceptor.getCount()).isEqualTo(1L);
+		assertThat(bean.getDependency().getValue()).isEqualTo(1);
 	}
 
 }

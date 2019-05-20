@@ -981,7 +981,7 @@ public class PathPatternTests {
 		// Comparator<String> patternComparator = new AntPathMatcher().getPatternComparator("");
 		// System.out.println(patternComparator.compare("/{foo}","/{foo}.*"));
 
-		assertThat(p1.compareTo(p2), Matchers.greaterThan(0));
+		assertThat(p1.compareTo(p2)).isGreaterThan(0);
 	}
 
 	@Test

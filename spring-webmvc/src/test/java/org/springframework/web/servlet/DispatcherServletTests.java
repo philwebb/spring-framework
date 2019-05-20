@@ -782,7 +782,7 @@ public class DispatcherServletTests {
 		assertThat(defaultEnv, notNullValue());
 		ConfigurableEnvironment env1 = new StandardServletEnvironment();
 		servlet.setEnvironment(env1); // should succeed
-		assertThat(servlet.getEnvironment(), sameInstance(env1));
+		assertThat(servlet.getEnvironment()).isSameAs(env1);
 		assertThatIllegalArgumentException().as("non-configurable Environment").isThrownBy(() ->
 				servlet.setEnvironment(new DummyEnvironment()));
 		class CustomServletEnvironment extends StandardServletEnvironment { }
@@ -804,7 +804,7 @@ public class DispatcherServletTests {
 		servlet.setDispatchOptionsRequest(false);
 		servlet.service(request, response);
 		verify(response, never()).getHeader(anyString()); // SPR-10341
-		assertThat(response.getHeader("Allow"), equalTo("GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, PATCH"));
+		assertThat(response.getHeader("Allow")).isEqualTo("GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, PATCH");
 	}
 
 	@Test

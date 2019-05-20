@@ -288,7 +288,7 @@ public class MessageBrokerConfigurationTests {
 		CompositeMessageConverter compositeConverter = config.brokerMessageConverter();
 
 		List<MessageConverter> converters = compositeConverter.getConverters();
-		assertThat(converters.size(), Matchers.is(3));
+		assertThat(converters).hasSize(3);
 		assertThat(converters.get(0), Matchers.instanceOf(StringMessageConverter.class));
 		assertThat(converters.get(1), Matchers.instanceOf(ByteArrayMessageConverter.class));
 		assertThat(converters.get(2), Matchers.instanceOf(MappingJackson2MessageConverter.class));
@@ -328,9 +328,9 @@ public class MessageBrokerConfigurationTests {
 		};
 
 		CompositeMessageConverter compositeConverter = config.brokerMessageConverter();
-		assertThat(compositeConverter.getConverters().size(), Matchers.is(1));
+		assertThat(compositeConverter.getConverters()).hasSize(1);
 		Iterator<MessageConverter> iterator = compositeConverter.getConverters().iterator();
-		assertThat(iterator.next(), Matchers.is(testConverter));
+		assertThat(iterator.next()).isEqualTo(testConverter);
 	}
 
 	@Test
@@ -346,9 +346,9 @@ public class MessageBrokerConfigurationTests {
 		};
 		CompositeMessageConverter compositeConverter = config.brokerMessageConverter();
 
-		assertThat(compositeConverter.getConverters().size(), Matchers.is(4));
+		assertThat(compositeConverter.getConverters()).hasSize(4);
 		Iterator<MessageConverter> iterator = compositeConverter.getConverters().iterator();
-		assertThat(iterator.next(), Matchers.is(testConverter));
+		assertThat(iterator.next()).isEqualTo(testConverter);
 		assertThat(iterator.next(), Matchers.instanceOf(StringMessageConverter.class));
 		assertThat(iterator.next(), Matchers.instanceOf(ByteArrayMessageConverter.class));
 		assertThat(iterator.next(), Matchers.instanceOf(MappingJackson2MessageConverter.class));

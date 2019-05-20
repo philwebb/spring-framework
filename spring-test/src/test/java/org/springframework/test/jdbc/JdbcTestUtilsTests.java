@@ -45,21 +45,21 @@ public class JdbcTestUtilsTests {
 	public void deleteWithoutWhereClause() throws Exception {
 		given(jdbcTemplate.update("DELETE FROM person")).willReturn(10);
 		int deleted = JdbcTestUtils.deleteFromTableWhere(jdbcTemplate, "person", null);
-		assertThat(deleted, equalTo(10));
+		assertThat(deleted).isEqualTo(10);
 	}
 
 	@Test
 	public void deleteWithWhereClause() throws Exception {
 		given(jdbcTemplate.update("DELETE FROM person WHERE name = 'Bob' and age > 25")).willReturn(10);
 		int deleted = JdbcTestUtils.deleteFromTableWhere(jdbcTemplate, "person", "name = 'Bob' and age > 25");
-		assertThat(deleted, equalTo(10));
+		assertThat(deleted).isEqualTo(10);
 	}
 
 	@Test
 	public void deleteWithWhereClauseAndArguments() throws Exception {
 		given(jdbcTemplate.update("DELETE FROM person WHERE name = ? and age > ?", "Bob", 25)).willReturn(10);
 		int deleted = JdbcTestUtils.deleteFromTableWhere(jdbcTemplate, "person", "name = ? and age > ?", "Bob", 25);
-		assertThat(deleted, equalTo(10));
+		assertThat(deleted).isEqualTo(10);
 	}
 
 }

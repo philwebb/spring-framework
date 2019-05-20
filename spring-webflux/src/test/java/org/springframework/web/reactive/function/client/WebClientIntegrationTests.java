@@ -338,8 +338,8 @@ public class WebClientIntegrationTests {
 				.bodyToFlux(Pojo.class);
 
 		StepVerifier.create(result)
-				.consumeNextWith(p -> assertThat(p.getBar(), Matchers.is("bar1")))
-				.consumeNextWith(p -> assertThat(p.getBar(), Matchers.is("bar2")))
+				.consumeNextWith(p -> assertThat(p.getBar()).isEqualTo("bar1"))
+				.consumeNextWith(p -> assertThat(p.getBar()).isEqualTo("bar2"))
 				.expectComplete()
 				.verify(Duration.ofSeconds(3));
 

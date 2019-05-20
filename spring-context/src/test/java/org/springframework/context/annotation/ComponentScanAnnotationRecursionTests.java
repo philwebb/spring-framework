@@ -47,8 +47,8 @@ public class ComponentScanAnnotationRecursionTests {
 		ctx.getBean(Level3Component.class);
 
 		// assert that enhancement is working
-		assertThat(ctx.getBean("level1Bean"), sameInstance(ctx.getBean("level1Bean")));
-		assertThat(ctx.getBean("level2Bean"), sameInstance(ctx.getBean("level2Bean")));
+		assertThat(ctx.getBean("level1Bean")).isSameAs(ctx.getBean("level1Bean"));
+		assertThat(ctx.getBean("level2Bean")).isSameAs(ctx.getBean("level2Bean"));
 	}
 
 	public void evenCircularScansAreSupported() {

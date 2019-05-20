@@ -56,6 +56,6 @@ public class DuplicateBeanIdTests {
 		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(bf);
 		reader.loadBeanDefinitions(new ClassPathResource("DuplicateBeanIdTests-multiLevel-context.xml", this.getClass()));
 		TestBean testBean = bf.getBean(TestBean.class); // there should be only one
-		assertThat(testBean.getName(), equalTo("nested"));
+		assertThat(testBean.getName()).isEqualTo("nested");
 	}
 }

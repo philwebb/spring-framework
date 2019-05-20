@@ -49,7 +49,7 @@ public class EnableAspectJAutoProxyTests {
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(ConfigWithJdkProxy.class);
 
 		aspectIsApplied(ctx);
-		assertThat(AopUtils.isJdkDynamicProxy(ctx.getBean(FooService.class)), is(true));
+		assertThat(AopUtils.isJdkDynamicProxy(ctx.getBean(FooService.class))).isTrue();
 	}
 
 	@Test
@@ -57,7 +57,7 @@ public class EnableAspectJAutoProxyTests {
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(ConfigWithCglibProxy.class);
 
 		aspectIsApplied(ctx);
-		assertThat(AopUtils.isCglibProxy(ctx.getBean(FooService.class)), is(true));
+		assertThat(AopUtils.isCglibProxy(ctx.getBean(FooService.class))).isTrue();
 	}
 
 	@Test
@@ -65,7 +65,7 @@ public class EnableAspectJAutoProxyTests {
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(ConfigWithExposedProxy.class);
 
 		aspectIsApplied(ctx);
-		assertThat(AopUtils.isJdkDynamicProxy(ctx.getBean(FooService.class)), is(true));
+		assertThat(AopUtils.isJdkDynamicProxy(ctx.getBean(FooService.class))).isTrue();
 	}
 
 	private void aspectIsApplied(ApplicationContext ctx) {

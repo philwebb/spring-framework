@@ -36,7 +36,7 @@ public abstract class AbstractClassMetadataMemberClassTests {
 	public void withNoMemberClasses() {
 		ClassMetadata metadata = getClassMetadataFor(L0_a.class);
 		String[] nestedClasses = metadata.getMemberClassNames();
-		assertThat(nestedClasses, equalTo(new String[]{}));
+		assertThat(nestedClasses).isEqualTo(new String[]{});
 	}
 
 	public static class L0_a {
@@ -47,7 +47,7 @@ public abstract class AbstractClassMetadataMemberClassTests {
 	public void withPublicMemberClasses() {
 		ClassMetadata metadata = getClassMetadataFor(L0_b.class);
 		String[] nestedClasses = metadata.getMemberClassNames();
-		assertThat(nestedClasses, equalTo(new String[]{L0_b.L1.class.getName()}));
+		assertThat(nestedClasses).isEqualTo(new String[]{L0_b.L1.class.getName()});
 	}
 
 	public static class L0_b {
@@ -59,7 +59,7 @@ public abstract class AbstractClassMetadataMemberClassTests {
 	public void withNonPublicMemberClasses() {
 		ClassMetadata metadata = getClassMetadataFor(L0_c.class);
 		String[] nestedClasses = metadata.getMemberClassNames();
-		assertThat(nestedClasses, equalTo(new String[]{L0_c.L1.class.getName()}));
+		assertThat(nestedClasses).isEqualTo(new String[]{L0_c.L1.class.getName()});
 	}
 
 	public static class L0_c {
@@ -71,7 +71,7 @@ public abstract class AbstractClassMetadataMemberClassTests {
 	public void againstMemberClass() {
 		ClassMetadata metadata = getClassMetadataFor(L0_b.L1.class);
 		String[] nestedClasses = metadata.getMemberClassNames();
-		assertThat(nestedClasses, equalTo(new String[]{}));
+		assertThat(nestedClasses).isEqualTo(new String[]{});
 	}
 
 }

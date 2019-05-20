@@ -527,7 +527,7 @@ public class GenericConversionServiceTests {
 		MyConditionalGenericConverter converter = new MyConditionalGenericConverter();
 		conversionService.addConverter(converter);
 		assertEquals((Integer) 3, conversionService.convert(3, Integer.class));
-		assertThat(converter.getSourceTypes().size(), greaterThan(2));
+		assertThat(converter.getSourceTypes().size()).isGreaterThan(2);
 		assertTrue(converter.getSourceTypes().stream().allMatch(td -> Integer.class.equals(td.getType())));
 	}
 

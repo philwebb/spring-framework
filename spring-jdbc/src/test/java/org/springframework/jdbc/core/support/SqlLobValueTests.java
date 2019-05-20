@@ -113,7 +113,7 @@ public class SqlLobValueTests  {
 		verify(creator).setClobAsAsciiStream(eq(preparedStatement), eq(1), inputStreamCaptor.capture(), eq(3));
 		byte[] bytes = new byte[3];
 		inputStreamCaptor.getValue().read(bytes);
-		assertThat(bytes, equalTo(testContent));
+		assertThat(bytes).isEqualTo(testContent);
 	}
 
 	@Test

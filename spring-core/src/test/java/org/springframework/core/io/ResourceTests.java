@@ -270,7 +270,7 @@ public class ResourceTests {
 				return "";
 			}
 		};
-		assertThat(resource.contentLength(), is(3L));
+		assertThat(resource.contentLength()).isEqualTo(3L);
 	}
 
 	@Test

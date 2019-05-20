@@ -168,7 +168,7 @@ public class EnableSchedulingTests {
 		ctx = new AnnotationConfigApplicationContext(TriggerTaskConfig.class);
 
 		Thread.sleep(100);
-		assertThat(ctx.getBean(AtomicInteger.class).get(), greaterThan(1));
+		assertThat(ctx.getBean(AtomicInteger.class).get()).isGreaterThan(1);
 	}
 
 	@Test
@@ -182,7 +182,7 @@ public class EnableSchedulingTests {
 
 		// The @Scheduled method should have been called at least once but
 		// not more times than the delay allows.
-		assertThat(counter.get(), both(greaterThan(0)).and(lessThanOrEqualTo(10)));
+		assertThat(counter.get()).isGreaterThan(0)).and(lessThanOrEqualTo(10));
 	}
 
 

@@ -48,8 +48,8 @@ public class ImportAnnotationDetectionTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 		ctx.register(MultiMetaImportConfig.class);
 		ctx.refresh();
-		assertThat(ctx.containsBean("testBean1"), is(true));
-		assertThat(ctx.containsBean("testBean2"), is(true));
+		assertThat(ctx.containsBean("testBean1")).isTrue();
+		assertThat(ctx.containsBean("testBean2")).isTrue();
 	}
 
 	@Test
@@ -57,9 +57,9 @@ public class ImportAnnotationDetectionTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 		ctx.register(MultiMetaImportConfigWithLocalImport.class);
 		ctx.refresh();
-		assertThat(ctx.containsBean("testBean1"), is(true));
-		assertThat(ctx.containsBean("testBean2"), is(true));
-		assertThat(ctx.containsBean("testBean3"), is(true));
+		assertThat(ctx.containsBean("testBean1")).isTrue();
+		assertThat(ctx.containsBean("testBean2")).isTrue();
+		assertThat(ctx.containsBean("testBean3")).isTrue();
 	}
 
 	@Test
@@ -67,9 +67,9 @@ public class ImportAnnotationDetectionTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 		ctx.register(MultiMetaImportConfigWithLocalImportWithBeanOverride.class);
 		ctx.refresh();
-		assertThat(ctx.containsBean("testBean1"), is(true));
-		assertThat(ctx.containsBean("testBean2"), is(true));
-		assertThat(ctx.getBean("testBean2", TestBean.class).getName(), is("2a"));
+		assertThat(ctx.containsBean("testBean1")).isTrue();
+		assertThat(ctx.containsBean("testBean2")).isTrue();
+		assertThat(ctx.getBean("testBean2", TestBean.class).getName()).isEqualTo("2a");
 	}
 
 	@Test
@@ -77,9 +77,9 @@ public class ImportAnnotationDetectionTests {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 		ctx.register(ImportFromBean.class);
 		ctx.refresh();
-		assertThat(ctx.containsBean("importAnnotationDetectionTests.ImportFromBean"), is(true));
-		assertThat(ctx.containsBean("testBean1"), is(true));
-		assertThat(ctx.getBean("testBean1", TestBean.class).getName(), is("1"));
+		assertThat(ctx.containsBean("importAnnotationDetectionTests.ImportFromBean")).isTrue();
+		assertThat(ctx.containsBean("testBean1")).isTrue();
+		assertThat(ctx.getBean("testBean1", TestBean.class).getName()).isEqualTo("1");
 	}
 
 	@Configuration

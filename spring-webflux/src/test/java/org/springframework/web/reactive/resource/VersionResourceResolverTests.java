@@ -203,7 +203,7 @@ public class VersionResourceResolverTests {
 
 		this.resolver.addFixedVersionStrategy("fixedversion", "/js/**", "/css/**", "/fixedversion/css/**");
 
-		assertThat(this.resolver.getStrategyMap().size(), is(4));
+		assertThat(this.resolver.getStrategyMap()).hasSize(4);
 
 		assertThat(this.resolver.getStrategyForPath("js/something.js"),
 				Matchers.instanceOf(FixedVersionStrategy.class));
@@ -223,7 +223,7 @@ public class VersionResourceResolverTests {
 		given(this.chain.resolveUrlPath("/foo.css", this.locations)).willReturn(Mono.just("/foo.css"));
 		String resolved = this.resolver.resolveUrlPathInternal("/foo.css", this.locations, this.chain)
 				.block(Duration.ofMillis(1000));
-		assertThat(resolved, is("/foo.css"));
+		assertThat(resolved).isEqualTo("/foo.css");
 	}
 
 

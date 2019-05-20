@@ -238,9 +238,9 @@ public class MappingJackson2MessageConverterTests {
 		Message<?> message = converter.toMessage(jsonViewResponse(), new MessageHeaders(map), returnType);
 		String actual = new String((byte[]) message.getPayload(), StandardCharsets.UTF_8);
 
-		assertThat(actual, containsString("\"withView1\":\"with\""));
-		assertThat(actual, containsString("\"withView2\":\"with\""));
-		assertThat(actual, not(containsString("\"withoutView\":\"with\"")));
+		assertThat(actual).contains("\"withView1\":\"with\"");
+		assertThat(actual).contains("\"withView2\":\"with\"");
+		assertThat(actual).isNotEqualTo(containsString("\"withoutView\":\"with\""));
 
 		method = getClass().getDeclaredMethod("jsonViewPayload", JacksonViewBean.class);
 		MethodParameter param = new MethodParameter(method, 0);

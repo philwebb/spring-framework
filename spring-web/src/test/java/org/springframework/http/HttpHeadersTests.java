@@ -64,7 +64,7 @@ public class HttpHeadersTests {
 	public void getFirst() {
 		headers.add(HttpHeaders.CACHE_CONTROL, "max-age=1000, public");
 		headers.add(HttpHeaders.CACHE_CONTROL, "s-maxage=1000");
-		assertThat(headers.getFirst(HttpHeaders.CACHE_CONTROL), is("max-age=1000, public"));
+		assertThat(headers.getFirst(HttpHeaders.CACHE_CONTROL)).isEqualTo("max-age=1000, public");
 	}
 
 	@Test
@@ -505,20 +505,20 @@ public class HttpHeadersTests {
 	@Test
 	public void firstDate() {
 		headers.setDate(HttpHeaders.DATE, 1496370120000L);
-		assertThat(headers.getFirstDate(HttpHeaders.DATE), is(1496370120000L));
+		assertThat(headers.getFirstDate(HttpHeaders.DATE)).isEqualTo(1496370120000L);
 
 		headers.clear();
 
 		headers.add(HttpHeaders.DATE, "Fri, 02 Jun 2017 02:22:00 GMT");
 		headers.add(HttpHeaders.DATE, "Sat, 18 Dec 2010 10:20:00 GMT");
-		assertThat(headers.getFirstDate(HttpHeaders.DATE), is(1496370120000L));
+		assertThat(headers.getFirstDate(HttpHeaders.DATE)).isEqualTo(1496370120000L);
 	}
 
 	@Test
 	public void firstZonedDateTime() {
 		ZonedDateTime date = ZonedDateTime.of(2017, 6, 2, 2, 22, 0, 0, ZoneId.of("GMT"));
 		headers.setZonedDateTime(HttpHeaders.DATE, date);
-		assertThat(headers.getFirst(HttpHeaders.DATE), is("Fri, 02 Jun 2017 02:22:00 GMT"));
+		assertThat(headers.getFirst(HttpHeaders.DATE)).isEqualTo("Fri, 02 Jun 2017 02:22:00 GMT");
 		assertTrue(headers.getFirstZonedDateTime(HttpHeaders.DATE).isEqual(date));
 
 		headers.clear();

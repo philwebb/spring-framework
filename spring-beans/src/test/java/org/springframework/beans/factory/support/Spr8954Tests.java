@@ -58,29 +58,29 @@ public class Spr8954Tests {
 	public void repro() {
 		assertThat(bf.getBean("foo"), instanceOf(Foo.class));
 		assertThat(bf.getBean("&foo"), instanceOf(FooFactoryBean.class));
-		assertThat(bf.isTypeMatch("&foo", FactoryBean.class), is(true));
+		assertThat(bf.isTypeMatch("&foo", FactoryBean.class)).isTrue();
 
 		@SuppressWarnings("rawtypes")
 		Map<String, FactoryBean> fbBeans = bf.getBeansOfType(FactoryBean.class);
-		assertThat(fbBeans.size(), is(1));
+		assertThat(fbBeans).hasSize(1);
 		assertThat(fbBeans.keySet(), hasItem("&foo"));
 
 		Map<String, AnInterface> aiBeans = bf.getBeansOfType(AnInterface.class);
-		assertThat(aiBeans.size(), is(1));
+		assertThat(aiBeans).hasSize(1);
 		assertThat(aiBeans.keySet(), hasItem("&foo"));
 	}
 
 	@Test
 	public void findsBeansByTypeIfNotInstantiated() {
-		assertThat(bf.isTypeMatch("&foo", FactoryBean.class), is(true));
+		assertThat(bf.isTypeMatch("&foo", FactoryBean.class)).isTrue();
 
 		@SuppressWarnings("rawtypes")
 		Map<String, FactoryBean> fbBeans = bf.getBeansOfType(FactoryBean.class);
-		assertThat(1, equalTo(fbBeans.size()));
-		assertThat("&foo", equalTo(fbBeans.keySet().iterator().next()));
+		assertThat(1).isEqualTo(fbBeans.size());
+		assertThat("&foo").isEqualTo(fbBeans.keySet().iterator().next());
 
 		Map<String, AnInterface> aiBeans = bf.getBeansOfType(AnInterface.class);
-		assertThat(aiBeans.size(), is(1));
+		assertThat(aiBeans).hasSize(1);
 		assertThat(aiBeans.keySet(), hasItem("&foo"));
 	}
 
@@ -93,7 +93,7 @@ public class Spr8954Tests {
 		assertThat(Arrays.asList(names), hasItem("&foo"));
 
 		Map<String, AnInterface> beans = bf.getBeansOfType(AnInterface.class, false, false);
-		assertThat(beans.size(), is(1));
+		assertThat(beans).hasSize(1);
 		assertThat(beans.keySet(), hasItem("&foo"));
 	}
 

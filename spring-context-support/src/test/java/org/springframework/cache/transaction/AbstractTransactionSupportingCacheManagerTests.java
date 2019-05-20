@@ -71,7 +71,7 @@ public abstract class AbstractTransactionSupportingCacheManagerTests<T extends C
 
 	@Test
 	public void getOnExistingCache() {
-		assertThat(getCacheManager(false).getCache(CACHE_NAME), is(instanceOf(getCacheType())));
+		assertThat(getCacheManager(false).getCache(CACHE_NAME)).isEqualTo(instanceOf(getCacheType()));
 	}
 
 	@Test
@@ -81,7 +81,7 @@ public abstract class AbstractTransactionSupportingCacheManagerTests<T extends C
 		addNativeCache(cacheName);
 		assertFalse(cacheManager.getCacheNames().contains(cacheName));
 		try {
-			assertThat(cacheManager.getCache(cacheName), is(instanceOf(getCacheType())));
+			assertThat(cacheManager.getCache(cacheName)).isEqualTo(instanceOf(getCacheType()));
 			assertTrue(cacheManager.getCacheNames().contains(cacheName));
 		}
 		finally {

@@ -84,8 +84,8 @@ public class MockFilterChainTests {
 		MockFilterChain chain = new MockFilterChain();
 		chain.doFilter(this.request, this.response);
 
-		assertThat(chain.getRequest(), is(request));
-		assertThat(chain.getResponse(), is(response));
+		assertThat(chain.getRequest()).isEqualTo(request);
+		assertThat(chain.getResponse()).isEqualTo(response);
 
 		assertThatIllegalStateException().isThrownBy(() ->
 				chain.doFilter(this.request, this.response))

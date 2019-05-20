@@ -61,20 +61,20 @@ public class PropertyMatchesTests {
 	public void simpleBeanPropertyErrorMessage() {
 		PropertyMatches matches = PropertyMatches.forProperty("naem", SampleBeanProperties.class);
 		String msg = matches.buildErrorMessage();
-		assertThat(msg, containsString("naem"));
-		assertThat(msg, containsString("name"));
-		assertThat(msg, containsString("setter"));
-		assertThat(msg, not(containsString("field")));
+		assertThat(msg).contains("naem");
+		assertThat(msg).contains("name");
+		assertThat(msg).contains("setter");
+		assertThat(msg).isNotEqualTo(containsString("field"));
 	}
 
 	@Test
 	public void complexBeanPropertyErrorMessage() {
 		PropertyMatches matches = PropertyMatches.forProperty("counter", SampleBeanProperties.class);
 		String msg = matches.buildErrorMessage();
-		assertThat(msg, containsString("counter"));
-		assertThat(msg, containsString("counter1"));
-		assertThat(msg, containsString("counter2"));
-		assertThat(msg, containsString("counter3"));
+		assertThat(msg).contains("counter");
+		assertThat(msg).contains("counter1");
+		assertThat(msg).contains("counter2");
+		assertThat(msg).contains("counter3");
 	}
 
 	@Test
@@ -107,20 +107,20 @@ public class PropertyMatchesTests {
 	public void simpleFieldPropertyErrorMessage() {
 		PropertyMatches matches = PropertyMatches.forField("naem", SampleFieldProperties.class);
 		String msg = matches.buildErrorMessage();
-		assertThat(msg, containsString("naem"));
-		assertThat(msg, containsString("name"));
-		assertThat(msg, containsString("field"));
-		assertThat(msg, not(containsString("setter")));
+		assertThat(msg).contains("naem");
+		assertThat(msg).contains("name");
+		assertThat(msg).contains("field");
+		assertThat(msg).isNotEqualTo(containsString("setter"));
 	}
 
 	@Test
 	public void complexFieldPropertyErrorMessage() {
 		PropertyMatches matches = PropertyMatches.forField("counter", SampleFieldProperties.class);
 		String msg = matches.buildErrorMessage();
-		assertThat(msg, containsString("counter"));
-		assertThat(msg, containsString("counter1"));
-		assertThat(msg, containsString("counter2"));
-		assertThat(msg, containsString("counter3"));
+		assertThat(msg).contains("counter");
+		assertThat(msg).contains("counter1");
+		assertThat(msg).contains("counter2");
+		assertThat(msg).contains("counter3");
 	}
 
 

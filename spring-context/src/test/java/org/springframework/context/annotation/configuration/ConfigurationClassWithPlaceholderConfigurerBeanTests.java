@@ -84,7 +84,7 @@ public class ConfigurationClassWithPlaceholderConfigurerBeanTests {
 		System.clearProperty("test.name");
 
 		TestBean testBean = ctx.getBean(TestBean.class);
-		assertThat(testBean.getName(), equalTo("foo"));
+		assertThat(testBean.getName()).isEqualTo("foo");
 	}
 
 	@Test
@@ -98,7 +98,7 @@ public class ConfigurationClassWithPlaceholderConfigurerBeanTests {
 		System.clearProperty("test.name");
 
 		TestBean testBean = ctx.getBean(TestBean.class);
-		assertThat(testBean.getName(), equalTo("foo"));
+		assertThat(testBean.getName()).isEqualTo("foo");
 	}
 
 	@Test
@@ -110,7 +110,7 @@ public class ConfigurationClassWithPlaceholderConfigurerBeanTests {
 		ctx.refresh();
 
 		TestBean testBean = ctx.getBean(TestBean.class);
-		assertThat(testBean.getName(), equalTo("bar"));
+		assertThat(testBean.getName()).isEqualTo("bar");
 	}
 
 	@Test
@@ -122,7 +122,7 @@ public class ConfigurationClassWithPlaceholderConfigurerBeanTests {
 		ctx.refresh();
 
 		TestBean testBean = ctx.getBean(TestBean.class);
-		assertThat(testBean.getName(), equalTo("bar"));
+		assertThat(testBean.getName()).isEqualTo("bar");
 	}
 
 

@@ -61,7 +61,7 @@ public class SimpAttributesContextHolderTests {
 	@Test
 	public void resetAttributes() {
 		SimpAttributesContextHolder.setAttributes(this.simpAttributes);
-		assertThat(SimpAttributesContextHolder.getAttributes(), sameInstance(this.simpAttributes));
+		assertThat(SimpAttributesContextHolder.getAttributes()).isSameAs(this.simpAttributes);
 
 		SimpAttributesContextHolder.resetAttributes();
 		assertThat(SimpAttributesContextHolder.getAttributes(), nullValue());
@@ -72,13 +72,13 @@ public class SimpAttributesContextHolderTests {
 		assertThat(SimpAttributesContextHolder.getAttributes(), nullValue());
 
 		SimpAttributesContextHolder.setAttributes(this.simpAttributes);
-		assertThat(SimpAttributesContextHolder.getAttributes(), sameInstance(this.simpAttributes));
+		assertThat(SimpAttributesContextHolder.getAttributes()).isSameAs(this.simpAttributes);
 	}
 
 	@Test
 	public void setAttributes() {
 		SimpAttributesContextHolder.setAttributes(this.simpAttributes);
-		assertThat(SimpAttributesContextHolder.getAttributes(), sameInstance(this.simpAttributes));
+		assertThat(SimpAttributesContextHolder.getAttributes()).isSameAs(this.simpAttributes);
 
 		SimpAttributesContextHolder.setAttributes(null);
 		assertThat(SimpAttributesContextHolder.getAttributes(), nullValue());
@@ -99,10 +99,10 @@ public class SimpAttributesContextHolderTests {
 
 		SimpAttributes attrs = SimpAttributesContextHolder.getAttributes();
 		assertThat(attrs, notNullValue());
-		assertThat(attrs.getSessionId(), is(sessionId));
+		assertThat(attrs.getSessionId()).isEqualTo(sessionId);
 
 		attrs.setAttribute("name1", "value1");
-		assertThat(map.get("name1"), is("value1"));
+		assertThat(map.get("name1")).isEqualTo("value1");
 	}
 
 	@Test
@@ -125,7 +125,7 @@ public class SimpAttributesContextHolderTests {
 	@Test
 	public void currentAttributes() {
 		SimpAttributesContextHolder.setAttributes(this.simpAttributes);
-		assertThat(SimpAttributesContextHolder.currentAttributes(), sameInstance(this.simpAttributes));
+		assertThat(SimpAttributesContextHolder.currentAttributes()).isSameAs(this.simpAttributes);
 	}
 
 	@Test

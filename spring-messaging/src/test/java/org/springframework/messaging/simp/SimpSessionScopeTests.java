@@ -66,7 +66,7 @@ public class SimpSessionScopeTests {
 		this.simpAttributes.setAttribute("name", "value");
 		Object actual = this.scope.get("name", this.objectFactory);
 
-		assertThat(actual, is("value"));
+		assertThat(actual).isEqualTo("value");
 	}
 
 	@Test
@@ -74,8 +74,8 @@ public class SimpSessionScopeTests {
 		given(this.objectFactory.getObject()).willReturn("value");
 		Object actual = this.scope.get("name", this.objectFactory);
 
-		assertThat(actual, is("value"));
-		assertThat(this.simpAttributes.getAttribute("name"), is("value"));
+		assertThat(actual).isEqualTo("value");
+		assertThat(this.simpAttributes.getAttribute("name")).isEqualTo("value");
 	}
 
 	@Test
@@ -83,7 +83,7 @@ public class SimpSessionScopeTests {
 		this.simpAttributes.setAttribute("name", "value");
 
 		Object removed = this.scope.remove("name");
-		assertThat(removed, is("value"));
+		assertThat(removed).isEqualTo("value");
 		assertThat(this.simpAttributes.getAttribute("name"), nullValue());
 
 		removed = this.scope.remove("name");
@@ -101,7 +101,7 @@ public class SimpSessionScopeTests {
 
 	@Test
 	public void getSessionId() {
-		assertThat(this.scope.getConversationId(), is("session1"));
+		assertThat(this.scope.getConversationId()).isEqualTo("session1");
 	}
 
 

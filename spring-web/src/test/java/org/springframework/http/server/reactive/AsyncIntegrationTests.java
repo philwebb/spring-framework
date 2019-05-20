@@ -58,7 +58,7 @@ public class AsyncIntegrationTests extends AbstractHttpHandlerIntegrationTests {
 		ResponseEntity<String> response = new RestTemplate().exchange(
 				RequestEntity.get(url).build(), String.class);
 
-		assertThat(response.getBody(), Matchers.equalTo("hello"));
+		assertThat(response.getBody()).isEqualTo("hello");
 	}
 
 

@@ -39,10 +39,10 @@ public class SimpleKeyGeneratorTests {
 		Object k1 = generateKey(new Object[] {});
 		Object k2 = generateKey(new Object[] {});
 		Object k3 = generateKey(new Object[] { "different" });
-		assertThat(k1.hashCode(), equalTo(k2.hashCode()));
-		assertThat(k1.hashCode(), not(equalTo(k3.hashCode())));
-		assertThat(k1, equalTo(k2));
-		assertThat(k1, not(equalTo(k3)));
+		assertThat(k1.hashCode()).isEqualTo(k2.hashCode());
+		assertThat(k1.hashCode()).isNotEqualTo(k3.hashCode());
+		assertThat(k1).isEqualTo(k2);
+		assertThat(k1).isNotEqualTo(k3);
 	}
 
 	@Test
@@ -50,11 +50,11 @@ public class SimpleKeyGeneratorTests {
 		Object k1 = generateKey(new Object[] { "a" });
 		Object k2 = generateKey(new Object[] { "a" });
 		Object k3 = generateKey(new Object[] { "different" });
-		assertThat(k1.hashCode(), equalTo(k2.hashCode()));
-		assertThat(k1.hashCode(), not(equalTo(k3.hashCode())));
-		assertThat(k1, equalTo(k2));
-		assertThat(k1, not(equalTo(k3)));
-		assertThat(k1, equalTo("a"));
+		assertThat(k1.hashCode()).isEqualTo(k2.hashCode());
+		assertThat(k1.hashCode()).isNotEqualTo(k3.hashCode());
+		assertThat(k1).isEqualTo(k2);
+		assertThat(k1).isNotEqualTo(k3);
+		assertThat(k1).isEqualTo("a");
 	}
 
 	@Test
@@ -62,10 +62,10 @@ public class SimpleKeyGeneratorTests {
 		Object k1 = generateKey(new Object[] { "a", 1, "b" });
 		Object k2 = generateKey(new Object[] { "a", 1, "b" });
 		Object k3 = generateKey(new Object[] { "b", 1, "a" });
-		assertThat(k1.hashCode(), equalTo(k2.hashCode()));
-		assertThat(k1.hashCode(), not(equalTo(k3.hashCode())));
-		assertThat(k1, equalTo(k2));
-		assertThat(k1, not(equalTo(k3)));
+		assertThat(k1.hashCode()).isEqualTo(k2.hashCode());
+		assertThat(k1.hashCode()).isNotEqualTo(k3.hashCode());
+		assertThat(k1).isEqualTo(k2);
+		assertThat(k1).isNotEqualTo(k3);
 	}
 
 	@Test
@@ -73,10 +73,10 @@ public class SimpleKeyGeneratorTests {
 		Object k1 = generateKey(new Object[] { null });
 		Object k2 = generateKey(new Object[] { null });
 		Object k3 = generateKey(new Object[] { "different" });
-		assertThat(k1.hashCode(), equalTo(k2.hashCode()));
-		assertThat(k1.hashCode(), not(equalTo(k3.hashCode())));
-		assertThat(k1, equalTo(k2));
-		assertThat(k1, not(equalTo(k3)));
+		assertThat(k1.hashCode()).isEqualTo(k2.hashCode());
+		assertThat(k1.hashCode()).isNotEqualTo(k3.hashCode());
+		assertThat(k1).isEqualTo(k2);
+		assertThat(k1).isNotEqualTo(k3);
 		assertThat(k1, instanceOf(SimpleKey.class));
 	}
 
@@ -85,10 +85,10 @@ public class SimpleKeyGeneratorTests {
 		Object k1 = generateKey(new Object[] { "a", null, "b", null });
 		Object k2 = generateKey(new Object[] { "a", null, "b", null });
 		Object k3 = generateKey(new Object[] { "a", null, "b" });
-		assertThat(k1.hashCode(), equalTo(k2.hashCode()));
-		assertThat(k1.hashCode(), not(equalTo(k3.hashCode())));
-		assertThat(k1, equalTo(k2));
-		assertThat(k1, not(equalTo(k3)));
+		assertThat(k1.hashCode()).isEqualTo(k2.hashCode());
+		assertThat(k1.hashCode()).isNotEqualTo(k3.hashCode());
+		assertThat(k1).isEqualTo(k2);
+		assertThat(k1).isNotEqualTo(k3);
 	}
 
 	@Test
@@ -96,10 +96,10 @@ public class SimpleKeyGeneratorTests {
 		Object k1 = generateKey(new Object[] { new String[]{"a", "b"} });
 		Object k2 = generateKey(new Object[] { new String[]{"a", "b"} });
 		Object k3 = generateKey(new Object[] { new String[]{"b", "a"} });
-		assertThat(k1.hashCode(), equalTo(k2.hashCode()));
-		assertThat(k1.hashCode(), not(equalTo(k3.hashCode())));
-		assertThat(k1, equalTo(k2));
-		assertThat(k1, not(equalTo(k3)));
+		assertThat(k1.hashCode()).isEqualTo(k2.hashCode());
+		assertThat(k1.hashCode()).isNotEqualTo(k3.hashCode());
+		assertThat(k1).isEqualTo(k2);
+		assertThat(k1).isNotEqualTo(k3);
 	}
 
 	@Test
@@ -107,10 +107,10 @@ public class SimpleKeyGeneratorTests {
 		Object k1 = generateKey(new Object[] { new String[]{"a", "b"}, "c" });
 		Object k2 = generateKey(new Object[] { new String[]{"a", "b"}, "c" });
 		Object k3 = generateKey(new Object[] { new String[]{"b", "a"}, "c" });
-		assertThat(k1.hashCode(), equalTo(k2.hashCode()));
-		assertThat(k1.hashCode(), not(equalTo(k3.hashCode())));
-		assertThat(k1, equalTo(k2));
-		assertThat(k1, not(equalTo(k3)));
+		assertThat(k1.hashCode()).isEqualTo(k2.hashCode());
+		assertThat(k1.hashCode()).isNotEqualTo(k3.hashCode());
+		assertThat(k1).isEqualTo(k2);
+		assertThat(k1).isNotEqualTo(k3);
 	}
 
 

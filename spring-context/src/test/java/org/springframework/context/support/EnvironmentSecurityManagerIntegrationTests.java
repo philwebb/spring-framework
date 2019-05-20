@@ -78,7 +78,7 @@ public class EnvironmentSecurityManagerIntegrationTests {
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
 		AnnotatedBeanDefinitionReader reader = new AnnotatedBeanDefinitionReader(bf);
 		reader.register(C1.class);
-		assertThat(bf.containsBean("c1"), is(true));
+		assertThat(bf.containsBean("c1")).isTrue();
 	}
 
 	@Test
@@ -108,7 +108,7 @@ public class EnvironmentSecurityManagerIntegrationTests {
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
 		AnnotatedBeanDefinitionReader reader = new AnnotatedBeanDefinitionReader(bf);
 		reader.register(C1.class);
-		assertThat(bf.containsBean("c1"), is(false));
+		assertThat(bf.containsBean("c1")).isFalse();
 	}
 
 

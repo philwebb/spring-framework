@@ -54,7 +54,7 @@ public class ImportTests {
 
 	private void assertBeanDefinitionCount(int expectedCount, Class<?>... classes) {
 		DefaultListableBeanFactory beanFactory = processConfigurationClasses(classes);
-		assertThat(beanFactory.getBeanDefinitionCount(), equalTo(expectedCount));
+		assertThat(beanFactory.getBeanDefinitionCount()).isEqualTo(expectedCount);
 		beanFactory.preInstantiateSingletons();
 		for (Class<?> clazz : classes) {
 			beanFactory.getBean(clazz);
@@ -70,7 +70,7 @@ public class ImportTests {
 		beanFactory.registerBeanDefinition("config", new RootBeanDefinition(ConfigurationWithImportAnnotation.class.getName()));
 		ConfigurationClassPostProcessor pp = new ConfigurationClassPostProcessor();
 		pp.postProcessBeanFactory(beanFactory);
-		assertThat(beanFactory.getBeanDefinitionCount(), equalTo(configClasses + beansInClasses));
+		assertThat(beanFactory.getBeanDefinitionCount()).isEqualTo(configClasses + beansInClasses);
 	}
 
 	@Test
@@ -178,8 +178,8 @@ public class ImportTests {
 				WithMultipleArgumentsThatWillCauseDuplication.class));
 		ConfigurationClassPostProcessor pp = new ConfigurationClassPostProcessor();
 		pp.postProcessBeanFactory(beanFactory);
-		assertThat(beanFactory.getBeanDefinitionCount(), equalTo(4));
-		assertThat(beanFactory.getBean("foo", ITestBean.class).getName(), equalTo("foo2"));
+		assertThat(beanFactory.getBeanDefinitionCount()).isEqualTo(4);
+		assertThat(beanFactory.getBean("foo", ITestBean.class).getName()).isEqualTo("foo2");
 	}
 
 	@Configuration
@@ -341,8 +341,8 @@ public class ImportTests {
 		ctx.register(B.class);
 		ctx.refresh();
 		System.out.println(ctx.getBeanFactory());
-		assertThat(ctx.getBeanNamesForType(B.class)[0], is("config-b"));
-		assertThat(ctx.getBeanNamesForType(A.class)[0], is("config-a"));
+		assertThat(ctx.getBeanNamesForType(B.class)[0]).isEqualTo("config-b");
+		assertThat(ctx.getBeanNamesForType(A.class)[0]).isEqualTo("config-a");
 	}
 
 	@Configuration("config-a")

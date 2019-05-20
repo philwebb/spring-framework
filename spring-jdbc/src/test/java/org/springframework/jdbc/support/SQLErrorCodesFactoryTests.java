@@ -76,7 +76,7 @@ public class SQLErrorCodesFactoryTests {
 	}
 
 	private void assertIsSQLServer(SQLErrorCodes sec) {
-		assertThat(sec.getDatabaseProductName(), equalTo("Microsoft SQL Server"));
+		assertThat(sec.getDatabaseProductName()).isEqualTo("Microsoft SQL Server");
 
 		assertTrue(sec.getBadSqlGrammarCodes().length > 0);
 

@@ -95,7 +95,7 @@ public class DelegatingWebConnectionTests {
 		given(defaultConnection.getResponse(request)).willReturn(expectedResponse);
 		WebResponse response = webConnection.getResponse(request);
 
-		assertThat(response, sameInstance(expectedResponse));
+		assertThat(response).isSameAs(expectedResponse);
 		verify(matcher1).matches(request);
 		verify(matcher2).matches(request);
 		verifyNoMoreInteractions(connection1, connection2);
@@ -108,7 +108,7 @@ public class DelegatingWebConnectionTests {
 		given(connection1.getResponse(request)).willReturn(expectedResponse);
 		WebResponse response = webConnection.getResponse(request);
 
-		assertThat(response, sameInstance(expectedResponse));
+		assertThat(response).isSameAs(expectedResponse);
 		verify(matcher1).matches(request);
 		verifyNoMoreInteractions(matcher2, connection2, defaultConnection);
 		verify(connection1).getResponse(request);
@@ -120,7 +120,7 @@ public class DelegatingWebConnectionTests {
 		given(connection2.getResponse(request)).willReturn(expectedResponse);
 		WebResponse response = webConnection.getResponse(request);
 
-		assertThat(response, sameInstance(expectedResponse));
+		assertThat(response).isSameAs(expectedResponse);
 		verify(matcher1).matches(request);
 		verify(matcher2).matches(request);
 		verifyNoMoreInteractions(connection1, defaultConnection);
@@ -142,8 +142,8 @@ public class DelegatingWebConnectionTests {
 				new DelegatingWebConnection(mockConnection, new DelegateWebConnection(cdnMatcher, httpConnection)));
 
 		Page page = webClient.getPage("https://code.jquery.com/jquery-1.11.0.min.js");
-		assertThat(page.getWebResponse().getStatusCode(), equalTo(200));
-		assertThat(page.getWebResponse().getContentAsString(), not(isEmptyString()));
+		assertThat(page.getWebResponse().getStatusCode()).isEqualTo(200);
+		assertThat(page.getWebResponse().getContentAsString()).isNotEqualTo(isEmptyString());
 	}
 
 

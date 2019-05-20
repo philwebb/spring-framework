@@ -76,7 +76,7 @@ public class TestContextConcurrencyTests {
 					throw new RuntimeException(ex);
 				}
 			});
-			assertThat(actualMethods, equalTo(expectedMethods));
+			assertThat(actualMethods).isEqualTo(expectedMethods);
 		});
 		assertEquals(0, tcm.getTestContext().attributeNames().length);
 	}

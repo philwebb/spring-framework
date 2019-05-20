@@ -65,8 +65,8 @@ public class AutowiredConfigurationTests {
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
 				AutowiredConfigurationTests.class.getSimpleName() + ".xml", AutowiredConfigurationTests.class);
 
-		assertThat(context.getBean("colour", Colour.class), equalTo(Colour.RED));
-		assertThat(context.getBean("testBean", TestBean.class).getName(), equalTo(Colour.RED.toString()));
+		assertThat(context.getBean("colour", Colour.class)).isEqualTo(Colour.RED);
+		assertThat(context.getBean("testBean", TestBean.class).getName()).isEqualTo(Colour.RED.toString());
 	}
 
 	@Test
@@ -74,8 +74,8 @@ public class AutowiredConfigurationTests {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
 				AutowiredMethodConfig.class, ColorConfig.class);
 
-		assertThat(context.getBean(Colour.class), equalTo(Colour.RED));
-		assertThat(context.getBean(TestBean.class).getName(), equalTo("RED-RED"));
+		assertThat(context.getBean(Colour.class)).isEqualTo(Colour.RED);
+		assertThat(context.getBean(TestBean.class).getName()).isEqualTo("RED-RED");
 	}
 
 	@Test
@@ -83,8 +83,8 @@ public class AutowiredConfigurationTests {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
 				OptionalAutowiredMethodConfig.class, ColorConfig.class);
 
-		assertThat(context.getBean(Colour.class), equalTo(Colour.RED));
-		assertThat(context.getBean(TestBean.class).getName(), equalTo("RED-RED"));
+		assertThat(context.getBean(Colour.class)).isEqualTo(Colour.RED);
+		assertThat(context.getBean(TestBean.class).getName()).isEqualTo("RED-RED");
 	}
 
 	@Test
@@ -93,7 +93,7 @@ public class AutowiredConfigurationTests {
 				OptionalAutowiredMethodConfig.class);
 
 		assertTrue(context.getBeansOfType(Colour.class).isEmpty());
-		assertThat(context.getBean(TestBean.class).getName(), equalTo(""));
+		assertThat(context.getBean(TestBean.class).getName()).isEqualTo("");
 	}
 
 	@Test
@@ -186,10 +186,10 @@ public class AutowiredConfigurationTests {
 		System.setProperty("myProp", "foo");
 
 		testBean = context.getBean("testBean", TestBean.class);
-		assertThat(testBean.getName(), equalTo("foo"));
+		assertThat(testBean.getName()).isEqualTo("foo");
 
 		testBean = context.getBean("testBean2", TestBean.class);
-		assertThat(testBean.getName(), equalTo("foo"));
+		assertThat(testBean.getName()).isEqualTo("foo");
 
 		System.clearProperty("myProp");
 
@@ -206,8 +206,8 @@ public class AutowiredConfigurationTests {
 				"AutowiredConfigurationTests-custom.xml", AutowiredConfigurationTests.class);
 
 		TestBean testBean = context.getBean("testBean", TestBean.class);
-		assertThat(testBean.getName(), equalTo("localhost"));
-		assertThat(testBean.getAge(), equalTo(contentLength()));
+		assertThat(testBean.getName()).isEqualTo("localhost");
+		assertThat(testBean.getAge()).isEqualTo(contentLength());
 	}
 
 	@Test
@@ -218,8 +218,8 @@ public class AutowiredConfigurationTests {
 		context.refresh();
 
 		TestBean testBean = context.getBean("testBean", TestBean.class);
-		assertThat(testBean.getName(), equalTo("localhost"));
-		assertThat(testBean.getAge(), equalTo(contentLength()));
+		assertThat(testBean.getName()).isEqualTo("localhost");
+		assertThat(testBean.getAge()).isEqualTo(contentLength());
 	}
 
 	private int contentLength() throws IOException {

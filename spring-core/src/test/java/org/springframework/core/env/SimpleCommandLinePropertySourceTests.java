@@ -43,13 +43,13 @@ public class SimpleCommandLinePropertySourceTests {
 	@Test
 	public void withCustomName() {
 		PropertySource<?> ps = new SimpleCommandLinePropertySource("ps1", new String[0]);
-		assertThat(ps.getName(), equalTo("ps1"));
+		assertThat(ps.getName()).isEqualTo("ps1");
 	}
 
 	@Test
 	public void withNoArgs() {
 		PropertySource<?> ps = new SimpleCommandLinePropertySource();
-		assertThat(ps.containsProperty("foo"), is(false));
+		assertThat(ps.containsProperty("foo")).isFalse();
 		assertThat(ps.getProperty("foo"), nullValue());
 	}
 
@@ -57,11 +57,11 @@ public class SimpleCommandLinePropertySourceTests {
 	public void withOptionArgsOnly() {
 		CommandLinePropertySource<?> ps =
 			new SimpleCommandLinePropertySource("--o1=v1", "--o2");
-		assertThat(ps.containsProperty("o1"), is(true));
-		assertThat(ps.containsProperty("o2"), is(true));
-		assertThat(ps.containsProperty("o3"), is(false));
-		assertThat(ps.getProperty("o1"), equalTo("v1"));
-		assertThat(ps.getProperty("o2"), equalTo(""));
+		assertThat(ps.containsProperty("o1")).isTrue();
+		assertThat(ps.containsProperty("o2")).isTrue();
+		assertThat(ps.containsProperty("o3")).isFalse();
+		assertThat(ps.getProperty("o1")).isEqualTo("v1");
+		assertThat(ps.getProperty("o2")).isEqualTo("");
 		assertThat(ps.getProperty("o3"), nullValue());
 	}
 
@@ -69,13 +69,13 @@ public class SimpleCommandLinePropertySourceTests {
 	public void withDefaultNonOptionArgsNameAndNoNonOptionArgsPresent() {
 		EnumerablePropertySource<?> ps = new SimpleCommandLinePropertySource("--o1=v1", "--o2");
 
-		assertThat(ps.containsProperty("nonOptionArgs"), is(false));
-		assertThat(ps.containsProperty("o1"), is(true));
-		assertThat(ps.containsProperty("o2"), is(true));
+		assertThat(ps.containsProperty("nonOptionArgs")).isFalse();
+		assertThat(ps.containsProperty("o1")).isTrue();
+		assertThat(ps.containsProperty("o2")).isTrue();
 
-		assertThat(ps.containsProperty("nonOptionArgs"), is(false));
+		assertThat(ps.containsProperty("nonOptionArgs")).isFalse();
 		assertThat(ps.getProperty("nonOptionArgs"), nullValue());
-		assertThat(ps.getPropertyNames().length, is(2));
+		assertThat(ps.getPropertyNames().length).isEqualTo(2);
 	}
 
 	@Test
@@ -83,12 +83,12 @@ public class SimpleCommandLinePropertySourceTests {
 		CommandLinePropertySource<?> ps =
 			new SimpleCommandLinePropertySource("--o1=v1", "noa1", "--o2", "noa2");
 
-		assertThat(ps.containsProperty("nonOptionArgs"), is(true));
-		assertThat(ps.containsProperty("o1"), is(true));
-		assertThat(ps.containsProperty("o2"), is(true));
+		assertThat(ps.containsProperty("nonOptionArgs")).isTrue();
+		assertThat(ps.containsProperty("o1")).isTrue();
+		assertThat(ps.containsProperty("o2")).isTrue();
 
 		String nonOptionArgs = ps.getProperty("nonOptionArgs");
-		assertThat(nonOptionArgs, equalTo("noa1,noa2"));
+		assertThat(nonOptionArgs).isEqualTo("noa1,noa2");
 	}
 
 	@Test
@@ -97,12 +97,12 @@ public class SimpleCommandLinePropertySourceTests {
 			new SimpleCommandLinePropertySource("--o1=v1", "noa1", "--o2", "noa2");
 		ps.setNonOptionArgsPropertyName("NOA");
 
-		assertThat(ps.containsProperty("nonOptionArgs"), is(false));
-		assertThat(ps.containsProperty("NOA"), is(true));
-		assertThat(ps.containsProperty("o1"), is(true));
-		assertThat(ps.containsProperty("o2"), is(true));
+		assertThat(ps.containsProperty("nonOptionArgs")).isFalse();
+		assertThat(ps.containsProperty("NOA")).isTrue();
+		assertThat(ps.containsProperty("o1")).isTrue();
+		assertThat(ps.containsProperty("o2")).isTrue();
 		String nonOptionArgs = ps.getProperty("NOA");
-		assertThat(nonOptionArgs, equalTo("noa1,noa2"));
+		assertThat(nonOptionArgs).isEqualTo("noa1,noa2");
 	}
 
 	@Test
@@ -113,16 +113,16 @@ public class SimpleCommandLinePropertySourceTests {
 		env.getPropertySources().addFirst(ps);
 
 		String nonOptionArgs = env.getProperty("nonOptionArgs");
-		assertThat(nonOptionArgs, equalTo("noa1,noa2"));
+		assertThat(nonOptionArgs).isEqualTo("noa1,noa2");
 
 		String[] nonOptionArgsArray = env.getProperty("nonOptionArgs", String[].class);
-		assertThat(nonOptionArgsArray[0], equalTo("noa1"));
-		assertThat(nonOptionArgsArray[1], equalTo("noa2"));
+		assertThat(nonOptionArgsArray[0]).isEqualTo("noa1");
+		assertThat(nonOptionArgsArray[1]).isEqualTo("noa2");
 
 		@SuppressWarnings("unchecked")
 		List<String> nonOptionArgsList = env.getProperty("nonOptionArgs", List.class);
-		assertThat(nonOptionArgsList.get(0), equalTo("noa1"));
-		assertThat(nonOptionArgsList.get(1), equalTo("noa2"));
+		assertThat(nonOptionArgsList.get(0)).isEqualTo("noa1");
+		assertThat(nonOptionArgsList.get(1)).isEqualTo("noa2");
 	}
 
 }

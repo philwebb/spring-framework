@@ -108,8 +108,8 @@ public class WebContentInterceptorTests {
 
 		interceptor.preHandle(request, response, null);
 
-		assertThat(response.getHeader("Pragma"), is(""));
-		assertThat(response.getHeader("Expires"), is(""));
+		assertThat(response.getHeader("Pragma")).isEqualTo("");
+		assertThat(response.getHeader("Expires")).isEqualTo("");
 	}
 
 	// SPR-13252, SPR-14053
@@ -124,8 +124,8 @@ public class WebContentInterceptorTests {
 
 		interceptor.preHandle(request, response, null);
 
-		assertThat(response.getHeader("Pragma"), is(""));
-		assertThat(response.getHeader("Expires"), is(""));
+		assertThat(response.getHeader("Pragma")).isEqualTo("");
+		assertThat(response.getHeader("Expires")).isEqualTo("");
 	}
 
 	@SuppressWarnings("deprecation")

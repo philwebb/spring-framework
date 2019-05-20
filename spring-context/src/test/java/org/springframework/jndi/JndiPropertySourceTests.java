@@ -59,7 +59,7 @@ public class JndiPropertySourceTests {
 		jndiLocator.setJndiTemplate(jndiTemplate);
 
 		JndiPropertySource ps = new JndiPropertySource("jndiProperties", jndiLocator);
-		assertThat(ps.getProperty("p1"), equalTo("v1"));
+		assertThat(ps.getProperty("p1")).isEqualTo("v1");
 	}
 
 	@Test
@@ -78,7 +78,7 @@ public class JndiPropertySourceTests {
 		jndiLocator.setJndiTemplate(jndiTemplate);
 
 		JndiPropertySource ps = new JndiPropertySource("jndiProperties", jndiLocator);
-		assertThat(ps.getProperty("p1"), equalTo("v1"));
+		assertThat(ps.getProperty("p1")).isEqualTo("v1");
 	}
 
 	@Test
@@ -107,7 +107,7 @@ public class JndiPropertySourceTests {
 		jndiLocator.setResourceRef(false);
 
 		JndiPropertySource ps = new JndiPropertySource("jndiProperties", jndiLocator);
-		assertThat(ps.getProperty("my:key"), equalTo("my:value"));
+		assertThat(ps.getProperty("my:key")).isEqualTo("my:value");
 	}
 
 }

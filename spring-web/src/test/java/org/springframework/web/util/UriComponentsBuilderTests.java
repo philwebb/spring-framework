@@ -715,24 +715,24 @@ public class UriComponentsBuilderTests {
 	@Test
 	public void queryParamWithValueWithEquals() {
 		UriComponents uriComponents = UriComponentsBuilder.fromUriString("https://example.com/foo?bar=baz").build();
-		assertThat(uriComponents.toUriString(), equalTo("https://example.com/foo?bar=baz"));
-		assertThat(uriComponents.getQueryParams().get("bar").get(0), equalTo("baz"));
+		assertThat(uriComponents.toUriString()).isEqualTo("https://example.com/foo?bar=baz");
+		assertThat(uriComponents.getQueryParams().get("bar").get(0)).isEqualTo("baz");
 	}
 
 	@Test
 	public void queryParamWithoutValueWithEquals()  {
 		UriComponents uriComponents = UriComponentsBuilder.fromUriString("https://example.com/foo?bar=").build();
-		assertThat(uriComponents.toUriString(), equalTo("https://example.com/foo?bar="));
-		assertThat(uriComponents.getQueryParams().get("bar").get(0), equalTo(""));
+		assertThat(uriComponents.toUriString()).isEqualTo("https://example.com/foo?bar=");
+		assertThat(uriComponents.getQueryParams().get("bar").get(0)).isEqualTo("");
 	}
 
 	@Test
 	public void queryParamWithoutValueWithoutEquals() {
 		UriComponents uriComponents = UriComponentsBuilder.fromUriString("https://example.com/foo?bar").build();
-		assertThat(uriComponents.toUriString(), equalTo("https://example.com/foo?bar"));
+		assertThat(uriComponents.toUriString()).isEqualTo("https://example.com/foo?bar");
 
 		// TODO [SPR-13537] Change equalTo(null) to equalTo("").
-		assertThat(uriComponents.getQueryParams().get("bar").get(0), equalTo(null));
+		assertThat(uriComponents.getQueryParams().get("bar").get(0)).isEqualTo(null);
 	}
 
 	@Test
@@ -774,14 +774,14 @@ public class UriComponentsBuilderTests {
 	@Test
 	public void parsesEmptyFragment() {
 		UriComponents components = UriComponentsBuilder.fromUriString("/example#").build();
-		assertThat(components.getFragment(), is(nullValue()));
-		assertThat(components.toString(), equalTo("/example"));
+		assertThat(components.getFragment()).isNull();
+		assertThat(components.toString()).isEqualTo("/example");
 	}
 
 	@Test  // SPR-13257
 	public void parsesEmptyUri() {
 		UriComponents components = UriComponentsBuilder.fromUriString("").build();
-		assertThat(components.toString(), equalTo(""));
+		assertThat(components.toString()).isEqualTo("");
 	}
 
 	@Test

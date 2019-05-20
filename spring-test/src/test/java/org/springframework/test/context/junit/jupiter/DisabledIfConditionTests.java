@@ -137,7 +137,7 @@ class DisabledIfConditionTests {
 		IllegalStateException exception = assertThrows(IllegalStateException.class,
 			() -> condition.evaluateExecutionCondition(buildExtensionContext(methodName)));
 
-		assertThat(exception.getMessage(), containsString("must not be blank"));
+		assertThat(exception.getMessage()).contains("must not be blank");
 	}
 
 	private void assertResult(ConditionEvaluationResult result, boolean disabled, Matcher<String> matcher) {

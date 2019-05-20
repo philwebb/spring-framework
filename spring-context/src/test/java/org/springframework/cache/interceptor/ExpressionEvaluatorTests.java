@@ -105,7 +105,7 @@ public class ExpressionEvaluatorTests {
 	public void withReturnValue() {
 		EvaluationContext context = createEvaluationContext("theResult");
 		Object value = new SpelExpressionParser().parseExpression("#result").getValue(context);
-		assertThat(value, equalTo("theResult"));
+		assertThat(value).isEqualTo("theResult");
 	}
 
 	@Test
@@ -139,7 +139,7 @@ public class ExpressionEvaluatorTests {
 
 		EvaluationContext context = createEvaluationContext(CacheOperationExpressionEvaluator.NO_RESULT, applicationContext);
 		Object value = new SpelExpressionParser().parseExpression("@myBean.class.getName()").getValue(context);
-		assertThat(value, is(String.class.getName()));
+		assertThat(value).isEqualTo(String.class.getName());
 	}
 
 	private EvaluationContext createEvaluationContext(Object result) {

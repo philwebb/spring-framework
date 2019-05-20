@@ -284,7 +284,7 @@ public class ResponseEntityTests {
 		assertEquals(entity, responseEntity.getBody());
 
 		String cacheControlHeader = responseEntity.getHeaders().getCacheControl();
-		assertThat(cacheControlHeader, Matchers.equalTo("no-store"));
+		assertThat(cacheControlHeader).isEqualTo("no-store");
 	}
 
 	@Test

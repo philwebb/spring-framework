@@ -52,7 +52,7 @@ public class HttpStatusCodeExceptionTests {
 		ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
 		HttpStatusCodeException ex2 =
 				(HttpStatusCodeException) new ObjectInputStream(in).readObject();
-		assertThat(ex2.getResponseBodyAsString(), equalTo(ex1.getResponseBodyAsString()));
+		assertThat(ex2.getResponseBodyAsString()).isEqualTo(ex1.getResponseBodyAsString());
 	}
 
 	@Test

@@ -139,16 +139,16 @@ public class MutablePropertyValuesTests extends AbstractPropertyValuesTests {
 		pvs.add("foo", "bar");
 
 		assertThat(pvs.stream(), notNullValue());
-		assertThat(pvs.stream().count(), is(1L));
-		assertThat(pvs.stream().anyMatch(pv -> "foo".equals(pv.getName()) && "bar".equals(pv.getValue())), is(true));
-		assertThat(pvs.stream().anyMatch(pv -> "bar".equals(pv.getName()) && "foo".equals(pv.getValue())), is(false));
+		assertThat(pvs.stream().count()).isEqualTo(1L);
+		assertThat(pvs.stream().anyMatch(pv -> "foo".equals(pv.getName()) && "bar".equals(pv.getValue()))).isTrue();
+		assertThat(pvs.stream().anyMatch(pv -> "bar".equals(pv.getName()) && "foo".equals(pv.getValue()))).isFalse();
 	}
 
 	@Test
 	public void streamIsEmptyForEmptyValues() {
 		MutablePropertyValues pvs = new MutablePropertyValues();
 		assertThat(pvs.stream(), notNullValue());
-		assertThat(pvs.stream().count(), is(0L));
+		assertThat(pvs.stream().count()).isEqualTo(0L);
 	}
 
 }

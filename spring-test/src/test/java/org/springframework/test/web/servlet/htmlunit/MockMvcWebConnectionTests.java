@@ -50,14 +50,14 @@ public class MockMvcWebConnectionTests {
 	public void contextPathNull() throws IOException {
 		this.webClient.setWebConnection(new MockMvcWebConnection(this.mockMvc, this.webClient, null));
 		Page page = this.webClient.getPage("http://localhost/context/a");
-		assertThat(page.getWebResponse().getStatusCode(), equalTo(200));
+		assertThat(page.getWebResponse().getStatusCode()).isEqualTo(200);
 	}
 
 	@Test
 	public void contextPathExplicit() throws IOException {
 		this.webClient.setWebConnection(new MockMvcWebConnection(this.mockMvc, this.webClient, "/context"));
 		Page page = this.webClient.getPage("http://localhost/context/a");
-		assertThat(page.getWebResponse().getStatusCode(), equalTo(200));
+		assertThat(page.getWebResponse().getStatusCode()).isEqualTo(200);
 	}
 
 	@Test
@@ -78,7 +78,7 @@ public class MockMvcWebConnectionTests {
 	public void forward() throws IOException {
 		this.webClient.setWebConnection(new MockMvcWebConnection(this.mockMvc, this.webClient, ""));
 		Page page = this.webClient.getPage("http://localhost/forward");
-		assertThat(page.getWebResponse().getContentAsString(), equalTo("hello"));
+		assertThat(page.getWebResponse().getContentAsString()).isEqualTo("hello");
 	}
 
 	@Test

@@ -141,7 +141,7 @@ public class SimpleNamespaceContextTests {
 	@Test
 	public void bindNamespaceUri() {
 		context.bindNamespaceUri(prefix, namespaceUri);
-		assertThat("The Namespace URI was bound to the prefix", context.getNamespaceURI(prefix), is(namespaceUri));
+		assertThat("The Namespace URI was bound to the prefix", context.getNamespaceURI(prefix)).isEqualTo(namespaceUri);
 		assertThat("The prefix was bound to the namespace URI", getItemSet(context.getPrefixes(namespaceUri)),
 				hasItem(prefix));
 	}
@@ -161,8 +161,8 @@ public class SimpleNamespaceContextTests {
 		context.bindNamespaceUri("prefix2", namespaceUri);
 		context.bindNamespaceUri("prefix3", additionalNamespaceUri);
 		context.clear();
-		assertThat("All bound prefixes were removed", context.getBoundPrefixes().hasNext(), is(false));
-		assertThat("All bound namespace URIs were removed", context.getPrefixes(namespaceUri).hasNext(), is(false));
+		assertThat("All bound prefixes were removed", context.getBoundPrefixes().hasNext()).isFalse();
+		assertThat("All bound namespace URIs were removed", context.getPrefixes(namespaceUri).hasNext()).isFalse();
 	}
 
 	@Test
@@ -181,7 +181,7 @@ public class SimpleNamespaceContextTests {
 		context.bindNamespaceUri("prefix1", additionalNamespaceUri);
 		context.bindNamespaceUri("prefix2", additionalNamespaceUri);
 		context.removeBinding("prefix1");
-		assertThat("Prefix was unbound", context.getNamespaceURI("prefix1"), is(XMLConstants.NULL_NS_URI));
+		assertThat("Prefix was unbound", context.getNamespaceURI("prefix1")).isEqualTo(XMLConstants.NULL_NS_URI);
 		assertThat("#getPrefix returns a bound prefix after removal of another prefix for the same namespace URI",
 				context.getPrefix(additionalNamespaceUri), is("prefix2"));
 		assertThat("Prefix was removed from namespace URI", getItemSet(context.getPrefixes(additionalNamespaceUri)),

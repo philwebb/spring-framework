@@ -295,7 +295,7 @@ public class Jackson2ObjectMapperBuilderTests {
 				.build();
 		DateTime dateTime = new DateTime(1322903730000L, DateTimeZone.UTC);
 		assertEquals("1322903730000", new String(objectMapper.writeValueAsBytes(dateTime), "UTF-8"));
-		assertThat(new String(objectMapper.writeValueAsBytes(new Integer(4)), "UTF-8"), containsString("customid"));
+		assertThat(new String(objectMapper.writeValueAsBytes(new Integer(4)), "UTF-8")).contains("customid");
 	}
 
 	@Test  // SPR-12634
@@ -308,7 +308,7 @@ public class Jackson2ObjectMapperBuilderTests {
 				.build();
 		DateTime dateTime = new DateTime(1322903730000L, DateTimeZone.UTC);
 		assertEquals("1322903730000", new String(objectMapper.writeValueAsBytes(dateTime), "UTF-8"));
-		assertThat(new String(objectMapper.writeValueAsBytes(new Integer(4)), "UTF-8"), containsString("customid"));
+		assertThat(new String(objectMapper.writeValueAsBytes(new Integer(4)), "UTF-8")).contains("customid");
 	}
 
 	@Test  // SPR-12634
@@ -319,7 +319,7 @@ public class Jackson2ObjectMapperBuilderTests {
 				.serializerByType(Integer.class, new CustomIntegerSerializer()).build();
 		DateTime dateTime = new DateTime(1322903730000L, DateTimeZone.UTC);
 		assertEquals("1322903730000", new String(objectMapper.writeValueAsBytes(dateTime), "UTF-8"));
-		assertThat(new String(objectMapper.writeValueAsBytes(new Integer(4)), "UTF-8"), containsString("customid"));
+		assertThat(new String(objectMapper.writeValueAsBytes(new Integer(4)), "UTF-8")).contains("customid");
 	}
 
 	@Test  // gh-22576
@@ -427,16 +427,16 @@ public class Jackson2ObjectMapperBuilderTests {
 				.filters(new SimpleFilterProvider().setFailOnUnknownId(false)).build();
 		JacksonFilteredBean bean = new JacksonFilteredBean("value1", "value2");
 		String output = objectMapper.writeValueAsString(bean);
-		assertThat(output, containsString("value1"));
-		assertThat(output, containsString("value2"));
+		assertThat(output).contains("value1");
+		assertThat(output).contains("value2");
 
 		SimpleFilterProvider provider = new SimpleFilterProvider()
 				.setFailOnUnknownId(false)
 				.setDefaultFilter(SimpleBeanPropertyFilter.serializeAllExcept("property2"));
 		objectMapper = Jackson2ObjectMapperBuilder.json().filters(provider).build();
 		output = objectMapper.writeValueAsString(bean);
-		assertThat(output, containsString("value1"));
-		assertThat(output, not(containsString("value2")));
+		assertThat(output).contains("value1");
+		assertThat(output).isNotEqualTo(containsString("value2"));
 	}
 
 	@Test
@@ -529,7 +529,7 @@ public class Jackson2ObjectMapperBuilderTests {
 		assertEquals(XmlMapper.class, objectMapper.getClass());
 		ListContainer<String> container = new ListContainer<>(Arrays.asList("foo", "bar"));
 		String output = objectMapper.writeValueAsString(container);
-		assertThat(output, containsString("<list>foo</list><list>bar</list></ListContainer>"));
+		assertThat(output).contains("<list>foo</list><list>bar</list></ListContainer>");
 	}
 
 	@Test  // SPR-14435
@@ -562,9 +562,9 @@ public class Jackson2ObjectMapperBuilderTests {
 				.build();
 
 		String json = objectMapper.writeValueAsString(new JacksonVisibilityBean());
-		assertThat(json, containsString("property1"));
-		assertThat(json, containsString("property2"));
-		assertThat(json, not(containsString("property3")));
+		assertThat(json).contains("property1");
+		assertThat(json).contains("property2");
+		assertThat(json).isNotEqualTo(containsString("property3"));
 	}
 
 	public static class CustomIntegerModule extends Module {

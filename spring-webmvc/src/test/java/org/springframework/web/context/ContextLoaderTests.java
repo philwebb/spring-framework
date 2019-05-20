@@ -131,7 +131,7 @@ public class ContextLoaderTests {
 		listener.contextInitialized(new ServletContextEvent(sc));
 		WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(sc);
 		TestBean testBean = wac.getBean(TestBean.class);
-		assertThat(testBean.getName(), equalTo("testName"));
+		assertThat(testBean.getName()).isEqualTo("testName");
 		assertThat(wac.getServletContext().getAttribute("initialized"), notNullValue());
 	}
 
@@ -146,7 +146,7 @@ public class ContextLoaderTests {
 		listener.contextInitialized(new ServletContextEvent(sc));
 		WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(sc);
 		TestBean testBean = wac.getBean(TestBean.class);
-		assertThat(testBean.getName(), equalTo("testName"));
+		assertThat(testBean.getName()).isEqualTo("testName");
 		assertThat(wac.getServletContext().getAttribute("initialized"), notNullValue());
 	}
 
@@ -161,7 +161,7 @@ public class ContextLoaderTests {
 		listener.contextInitialized(new ServletContextEvent(sc));
 		WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(sc);
 		TestBean testBean = wac.getBean(TestBean.class);
-		assertThat(testBean.getName(), equalTo("testName"));
+		assertThat(testBean.getName()).isEqualTo("testName");
 		assertThat(wac.getServletContext().getAttribute("initialized"), notNullValue());
 	}
 
@@ -175,7 +175,7 @@ public class ContextLoaderTests {
 		listener.contextInitialized(new ServletContextEvent(sc));
 		WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(sc);
 		TestBean testBean = wac.getBean(TestBean.class);
-		assertThat(testBean.getName(), equalTo("testName"));
+		assertThat(testBean.getName()).isEqualTo("testName");
 		assertThat(wac.getServletContext().getAttribute("initialized"), notNullValue());
 	}
 
@@ -190,7 +190,7 @@ public class ContextLoaderTests {
 		listener.contextInitialized(new ServletContextEvent(sc));
 		WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(sc);
 		TestBean testBean = wac.getBean(TestBean.class);
-		assertThat(testBean.getName(), equalTo("testName"));
+		assertThat(testBean.getName()).isEqualTo("testName");
 		assertThat(wac.getServletContext().getAttribute("initialized"), notNullValue());
 	}
 
@@ -205,7 +205,7 @@ public class ContextLoaderTests {
 		listener.contextInitialized(new ServletContextEvent(sc));
 		WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(sc);
 		TestBean testBean = wac.getBean(TestBean.class);
-		assertThat(testBean.getName(), equalTo("testName"));
+		assertThat(testBean.getName()).isEqualTo("testName");
 		assertThat(wac.getServletContext().getAttribute("initialized"), notNullValue());
 	}
 
@@ -381,7 +381,7 @@ public class ContextLoaderTests {
 			// test that ApplicationContextInitializers can access ServletContext properties
 			// via the environment (SPR-8991)
 			String value = applicationContext.getEnvironment().getRequiredProperty("someProperty");
-			assertThat(value, is("someValue"));
+			assertThat(value).isEqualTo("someValue");
 		}
 	}
 

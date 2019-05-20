@@ -42,7 +42,7 @@ public class BeanMethodMetadataTests {
 		assertThat("should provide AnnotatedBeanDefinition", beanDefinition, instanceOf(AnnotatedBeanDefinition.class));
 		Map<String, Object> annotationAttributes =
 				((AnnotatedBeanDefinition) beanDefinition).getFactoryMethodMetadata().getAnnotationAttributes(MyAnnotation.class.getName());
-		assertThat(annotationAttributes.get("value"), equalTo("test"));
+		assertThat(annotationAttributes.get("value")).isEqualTo("test");
 		context.close();
 	}
 

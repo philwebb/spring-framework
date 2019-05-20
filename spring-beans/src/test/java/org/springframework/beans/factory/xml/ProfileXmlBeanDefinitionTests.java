@@ -71,28 +71,28 @@ public class ProfileXmlBeanDefinitionTests {
 
 	@Test
 	public void testProfilePermutations() {
-		assertThat(beanFactoryFor(PROD_ELIGIBLE_XML, NONE_ACTIVE), not(containsTargetBean()));
-		assertThat(beanFactoryFor(PROD_ELIGIBLE_XML, DEV_ACTIVE), not(containsTargetBean()));
+		assertThat(beanFactoryFor(PROD_ELIGIBLE_XML, NONE_ACTIVE)).isNotEqualTo(containsTargetBean());
+		assertThat(beanFactoryFor(PROD_ELIGIBLE_XML, DEV_ACTIVE)).isNotEqualTo(containsTargetBean());
 		assertThat(beanFactoryFor(PROD_ELIGIBLE_XML, PROD_ACTIVE), containsTargetBean());
 		assertThat(beanFactoryFor(PROD_ELIGIBLE_XML, MULTI_ACTIVE), containsTargetBean());
 
-		assertThat(beanFactoryFor(DEV_ELIGIBLE_XML, NONE_ACTIVE), not(containsTargetBean()));
+		assertThat(beanFactoryFor(DEV_ELIGIBLE_XML, NONE_ACTIVE)).isNotEqualTo(containsTargetBean());
 		assertThat(beanFactoryFor(DEV_ELIGIBLE_XML, DEV_ACTIVE), containsTargetBean());
-		assertThat(beanFactoryFor(DEV_ELIGIBLE_XML, PROD_ACTIVE), not(containsTargetBean()));
+		assertThat(beanFactoryFor(DEV_ELIGIBLE_XML, PROD_ACTIVE)).isNotEqualTo(containsTargetBean());
 		assertThat(beanFactoryFor(DEV_ELIGIBLE_XML, MULTI_ACTIVE), containsTargetBean());
 
 		assertThat(beanFactoryFor(NOT_DEV_ELIGIBLE_XML, NONE_ACTIVE), containsTargetBean());
-		assertThat(beanFactoryFor(NOT_DEV_ELIGIBLE_XML, DEV_ACTIVE), not(containsTargetBean()));
+		assertThat(beanFactoryFor(NOT_DEV_ELIGIBLE_XML, DEV_ACTIVE)).isNotEqualTo(containsTargetBean());
 		assertThat(beanFactoryFor(NOT_DEV_ELIGIBLE_XML, PROD_ACTIVE), containsTargetBean());
-		assertThat(beanFactoryFor(NOT_DEV_ELIGIBLE_XML, MULTI_ACTIVE), not(containsTargetBean()));
+		assertThat(beanFactoryFor(NOT_DEV_ELIGIBLE_XML, MULTI_ACTIVE)).isNotEqualTo(containsTargetBean());
 
 		assertThat(beanFactoryFor(ALL_ELIGIBLE_XML, NONE_ACTIVE), containsTargetBean());
 		assertThat(beanFactoryFor(ALL_ELIGIBLE_XML, DEV_ACTIVE), containsTargetBean());
 		assertThat(beanFactoryFor(ALL_ELIGIBLE_XML, PROD_ACTIVE), containsTargetBean());
 		assertThat(beanFactoryFor(ALL_ELIGIBLE_XML, MULTI_ACTIVE), containsTargetBean());
 
-		assertThat(beanFactoryFor(MULTI_ELIGIBLE_XML, NONE_ACTIVE), not(containsTargetBean()));
-		assertThat(beanFactoryFor(MULTI_ELIGIBLE_XML, UNKNOWN_ACTIVE), not(containsTargetBean()));
+		assertThat(beanFactoryFor(MULTI_ELIGIBLE_XML, NONE_ACTIVE)).isNotEqualTo(containsTargetBean());
+		assertThat(beanFactoryFor(MULTI_ELIGIBLE_XML, UNKNOWN_ACTIVE)).isNotEqualTo(containsTargetBean());
 		assertThat(beanFactoryFor(MULTI_ELIGIBLE_XML, DEV_ACTIVE), containsTargetBean());
 		assertThat(beanFactoryFor(MULTI_ELIGIBLE_XML, PROD_ACTIVE), containsTargetBean());
 		assertThat(beanFactoryFor(MULTI_ELIGIBLE_XML, MULTI_ACTIVE), containsTargetBean());
@@ -101,21 +101,21 @@ public class ProfileXmlBeanDefinitionTests {
 		assertThat(beanFactoryFor(MULTI_NEGATED_XML, UNKNOWN_ACTIVE), containsTargetBean());
 		assertThat(beanFactoryFor(MULTI_NEGATED_XML, DEV_ACTIVE), containsTargetBean());
 		assertThat(beanFactoryFor(MULTI_NEGATED_XML, PROD_ACTIVE), containsTargetBean());
-		assertThat(beanFactoryFor(MULTI_NEGATED_XML, MULTI_ACTIVE), not(containsTargetBean()));
+		assertThat(beanFactoryFor(MULTI_NEGATED_XML, MULTI_ACTIVE)).isNotEqualTo(containsTargetBean());
 
 		assertThat(beanFactoryFor(MULTI_NOT_DEV_ELIGIBLE_XML, NONE_ACTIVE), containsTargetBean());
 		assertThat(beanFactoryFor(MULTI_NOT_DEV_ELIGIBLE_XML, UNKNOWN_ACTIVE), containsTargetBean());
-		assertThat(beanFactoryFor(MULTI_NOT_DEV_ELIGIBLE_XML, DEV_ACTIVE), not(containsTargetBean()));
+		assertThat(beanFactoryFor(MULTI_NOT_DEV_ELIGIBLE_XML, DEV_ACTIVE)).isNotEqualTo(containsTargetBean());
 		assertThat(beanFactoryFor(MULTI_NOT_DEV_ELIGIBLE_XML, PROD_ACTIVE), containsTargetBean());
 		assertThat(beanFactoryFor(MULTI_NOT_DEV_ELIGIBLE_XML, MULTI_ACTIVE), containsTargetBean());
 
-		assertThat(beanFactoryFor(MULTI_ELIGIBLE_SPACE_DELIMITED_XML, NONE_ACTIVE), not(containsTargetBean()));
-		assertThat(beanFactoryFor(MULTI_ELIGIBLE_SPACE_DELIMITED_XML, UNKNOWN_ACTIVE), not(containsTargetBean()));
+		assertThat(beanFactoryFor(MULTI_ELIGIBLE_SPACE_DELIMITED_XML, NONE_ACTIVE)).isNotEqualTo(containsTargetBean());
+		assertThat(beanFactoryFor(MULTI_ELIGIBLE_SPACE_DELIMITED_XML, UNKNOWN_ACTIVE)).isNotEqualTo(containsTargetBean());
 		assertThat(beanFactoryFor(MULTI_ELIGIBLE_SPACE_DELIMITED_XML, DEV_ACTIVE), containsTargetBean());
 		assertThat(beanFactoryFor(MULTI_ELIGIBLE_SPACE_DELIMITED_XML, PROD_ACTIVE), containsTargetBean());
 		assertThat(beanFactoryFor(MULTI_ELIGIBLE_SPACE_DELIMITED_XML, MULTI_ACTIVE), containsTargetBean());
 
-		assertThat(beanFactoryFor(UNKNOWN_ELIGIBLE_XML, MULTI_ACTIVE), not(containsTargetBean()));
+		assertThat(beanFactoryFor(UNKNOWN_ELIGIBLE_XML, MULTI_ACTIVE)).isNotEqualTo(containsTargetBean());
 	}
 
 	@Test
@@ -128,7 +128,7 @@ public class ProfileXmlBeanDefinitionTests {
 			reader.setEnvironment(env);
 			reader.loadBeanDefinitions(new ClassPathResource(DEFAULT_ELIGIBLE_XML, getClass()));
 
-			assertThat(beanFactory, not(containsTargetBean()));
+			assertThat(beanFactory).isNotEqualTo(containsTargetBean());
 		}
 		{
 			DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
@@ -145,7 +145,7 @@ public class ProfileXmlBeanDefinitionTests {
 	@Test
 	public void testDefaultAndNonDefaultProfile() {
 		assertThat(beanFactoryFor(DEFAULT_ELIGIBLE_XML, NONE_ACTIVE), containsTargetBean());
-		assertThat(beanFactoryFor(DEFAULT_ELIGIBLE_XML, "other"), not(containsTargetBean()));
+		assertThat(beanFactoryFor(DEFAULT_ELIGIBLE_XML, "other")).isNotEqualTo(containsTargetBean());
 
 		{
 			DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();

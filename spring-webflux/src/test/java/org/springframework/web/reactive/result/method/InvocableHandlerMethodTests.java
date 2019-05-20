@@ -158,7 +158,7 @@ public class InvocableHandlerMethodTests {
 		Mono<HandlerResult> mono = invoke(new TestController(), method);
 
 		assertHandlerResultValue(mono, "created");
-		assertThat(this.exchange.getResponse().getStatusCode(), is(HttpStatus.CREATED));
+		assertThat(this.exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.CREATED);
 	}
 
 	@Test

@@ -539,7 +539,7 @@ public class SimpAnnotationMethodMessageHandlerTests {
 		@MessageMapping("/scope")
 		public void scope() {
 			SimpAttributes simpAttributes = SimpAttributesContextHolder.currentAttributes();
-			assertThat(simpAttributes.getAttribute("name"), is("value"));
+			assertThat(simpAttributes.getAttribute("name")).isEqualTo("value");
 			this.method = "scope";
 		}
 

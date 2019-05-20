@@ -112,25 +112,25 @@ public class GenericTypeResolverTests {
 		Map<TypeVariable, Type> map;
 
 		map = GenericTypeResolver.getTypeVariableMap(MySimpleInterfaceType.class);
-		assertThat(map.toString(), equalTo("{T=class java.lang.String}"));
+		assertThat(map.toString()).isEqualTo("{T=class java.lang.String}");
 
 		map = GenericTypeResolver.getTypeVariableMap(MyCollectionInterfaceType.class);
-		assertThat(map.toString(), equalTo("{T=java.util.Collection<java.lang.String>}"));
+		assertThat(map.toString()).isEqualTo("{T=java.util.Collection<java.lang.String>}");
 
 		map = GenericTypeResolver.getTypeVariableMap(MyCollectionSuperclassType.class);
-		assertThat(map.toString(), equalTo("{T=java.util.Collection<java.lang.String>}"));
+		assertThat(map.toString()).isEqualTo("{T=java.util.Collection<java.lang.String>}");
 
 		map = GenericTypeResolver.getTypeVariableMap(MySimpleTypeWithMethods.class);
-		assertThat(map.toString(), equalTo("{T=class java.lang.Integer}"));
+		assertThat(map.toString()).isEqualTo("{T=class java.lang.Integer}");
 
 		map = GenericTypeResolver.getTypeVariableMap(TopLevelClass.class);
-		assertThat(map.toString(), equalTo("{}"));
+		assertThat(map.toString()).isEqualTo("{}");
 
 		map = GenericTypeResolver.getTypeVariableMap(TypedTopLevelClass.class);
-		assertThat(map.toString(), equalTo("{T=class java.lang.Integer}"));
+		assertThat(map.toString()).isEqualTo("{T=class java.lang.Integer}");
 
 		map = GenericTypeResolver.getTypeVariableMap(TypedTopLevelClass.TypedNested.class);
-		assertThat(map.size(), equalTo(2));
+		assertThat(map.size()).isEqualTo(2);
 		Type t = null;
 		Type x = null;
 		for (Map.Entry<TypeVariable, Type> entry : map.entrySet()) {
@@ -141,8 +141,8 @@ public class GenericTypeResolverTests {
 				x = entry.getValue();
 			}
 		}
-		assertThat(t, equalTo((Type) Integer.class));
-		assertThat(x, equalTo((Type) Long.class));
+		assertThat(t).isEqualTo((Type) Integer.class);
+		assertThat(x).isEqualTo((Type) Long.class);
 	}
 
 	@Test  // SPR-11030
@@ -162,14 +162,14 @@ public class GenericTypeResolverTests {
 		MethodParameter methodParameter = MethodParameter.forExecutable(
 				WithArrayBase.class.getDeclaredMethod("array", Object[].class), 0);
 		Class<?> resolved = GenericTypeResolver.resolveParameterType(methodParameter, WithArray.class);
-		assertThat(resolved, equalTo((Class<?>) Object[].class));
+		assertThat(resolved).isEqualTo((Class<?>) Object[].class);
 	}
 
 	@Test  // SPR-11044
 	public void getGenericsOnArrayFromReturnCannotBeResolved() throws Exception {
 		Class<?> resolved = GenericTypeResolver.resolveReturnType(
 				WithArrayBase.class.getDeclaredMethod("array", Object[].class), WithArray.class);
-		assertThat(resolved, equalTo((Class<?>) Object[].class));
+		assertThat(resolved).isEqualTo((Class<?>) Object[].class);
 	}
 
 	@Test  // SPR-11763

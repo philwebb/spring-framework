@@ -37,7 +37,7 @@ public class AnnotationAwareOrderComparatorTests {
 
 	@Test
 	public void instanceVariableIsAnAnnotationAwareOrderComparator() {
-		assertThat(AnnotationAwareOrderComparator.INSTANCE, is(instanceOf(AnnotationAwareOrderComparator.class)));
+		assertThat(AnnotationAwareOrderComparator.INSTANCE).isEqualTo(instanceOf(AnnotationAwareOrderComparator.class));
 	}
 
 	@Test

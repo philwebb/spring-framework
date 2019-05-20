@@ -90,7 +90,7 @@ public class DispatcherHandlerErrorTests {
 		StepVerifier.create(mono)
 				.consumeErrorWith(ex -> {
 					assertThat(ex, instanceOf(ResponseStatusException.class));
-					assertThat(ex.getMessage(), is("404 NOT_FOUND \"No matching handler\""));
+					assertThat(ex.getMessage()).isEqualTo("404 NOT_FOUND \"No matching handler\"");
 				})
 				.verify();
 

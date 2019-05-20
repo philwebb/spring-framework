@@ -40,8 +40,8 @@ public class TestPropertySourceInterfaceTests implements TestPropertySourceTestI
 
 	@Test
 	public void propertiesAreAvailableInEnvironment() {
-		assertThat(property("foo"), is("bar"));
-		assertThat(property("enigma"), is("42"));
+		assertThat(property("foo")).isEqualTo("bar");
+		assertThat(property("enigma")).isEqualTo("42");
 	}
 
 	private String property(String key) {

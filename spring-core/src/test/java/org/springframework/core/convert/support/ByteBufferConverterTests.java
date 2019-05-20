@@ -51,8 +51,8 @@ public class ByteBufferConverterTests {
 	public void byteArrayToByteBuffer() throws Exception {
 		byte[] bytes = new byte[] { 1, 2, 3 };
 		ByteBuffer convert = this.conversionService.convert(bytes, ByteBuffer.class);
-		assertThat(convert.array(), not(sameInstance(bytes)));
-		assertThat(convert.array(), equalTo(bytes));
+		assertThat(convert.array()).isNotEqualTo(sameInstance(bytes));
+		assertThat(convert.array()).isEqualTo(bytes);
 	}
 
 	@Test
@@ -60,8 +60,8 @@ public class ByteBufferConverterTests {
 		byte[] bytes = new byte[] { 1, 2, 3 };
 		ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
 		byte[] convert = this.conversionService.convert(byteBuffer, byte[].class);
-		assertThat(convert, not(sameInstance(bytes)));
-		assertThat(convert, equalTo(bytes));
+		assertThat(convert).isNotEqualTo(sameInstance(bytes));
+		assertThat(convert).isEqualTo(bytes);
 	}
 
 	@Test
@@ -69,8 +69,8 @@ public class ByteBufferConverterTests {
 		byte[] bytes = new byte[] { 1, 2, 3 };
 		ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
 		OtherType convert = this.conversionService.convert(byteBuffer, OtherType.class);
-		assertThat(convert.bytes, not(sameInstance(bytes)));
-		assertThat(convert.bytes, equalTo(bytes));
+		assertThat(convert.bytes).isNotEqualTo(sameInstance(bytes));
+		assertThat(convert.bytes).isEqualTo(bytes);
 	}
 
 	@Test
@@ -78,8 +78,8 @@ public class ByteBufferConverterTests {
 		byte[] bytes = new byte[] { 1, 2, 3 };
 		OtherType otherType = new OtherType(bytes);
 		ByteBuffer convert = this.conversionService.convert(otherType, ByteBuffer.class);
-		assertThat(convert.array(), not(sameInstance(bytes)));
-		assertThat(convert.array(), equalTo(bytes));
+		assertThat(convert.array()).isNotEqualTo(sameInstance(bytes));
+		assertThat(convert.array()).isEqualTo(bytes);
 	}
 
 	@Test
@@ -87,10 +87,10 @@ public class ByteBufferConverterTests {
 		byte[] bytes = new byte[] { 1, 2, 3 };
 		ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
 		ByteBuffer convert = this.conversionService.convert(byteBuffer, ByteBuffer.class);
-		assertThat(convert, not(sameInstance(byteBuffer.rewind())));
-		assertThat(convert, equalTo(byteBuffer.rewind()));
-		assertThat(convert, equalTo(ByteBuffer.wrap(bytes)));
-		assertThat(convert.array(), equalTo(bytes));
+		assertThat(convert).isNotEqualTo(sameInstance(byteBuffer.rewind()));
+		assertThat(convert).isEqualTo(byteBuffer.rewind());
+		assertThat(convert).isEqualTo(ByteBuffer.wrap(bytes));
+		assertThat(convert.array()).isEqualTo(bytes);
 	}
 
 

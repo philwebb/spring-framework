@@ -145,7 +145,7 @@ public class GroovyMarkupConfigurerTests {
 		LocaleContextHolder.setLocale(Locale.GERMANY);
 		URL url = this.configurer.resolveTemplate(getClass().getClassLoader(), TEMPLATE_PREFIX + "i18n.tpl");
 		assertNotNull(url);
-		assertThat(url.getPath(), Matchers.containsString("i18n_de_DE.tpl"));
+		assertThat(url.getPath()).contains("i18n_de_DE.tpl");
 	}
 
 	@Test
@@ -153,7 +153,7 @@ public class GroovyMarkupConfigurerTests {
 		LocaleContextHolder.setLocale(Locale.FRANCE);
 		URL url = this.configurer.resolveTemplate(getClass().getClassLoader(), TEMPLATE_PREFIX + "i18n.tpl");
 		assertNotNull(url);
-		assertThat(url.getPath(), Matchers.containsString("i18n_fr.tpl"));
+		assertThat(url.getPath()).contains("i18n_fr.tpl");
 	}
 
 	@Test
@@ -161,7 +161,7 @@ public class GroovyMarkupConfigurerTests {
 		LocaleContextHolder.setLocale(Locale.US);
 		URL url = this.configurer.resolveTemplate(getClass().getClassLoader(), TEMPLATE_PREFIX + "i18n.tpl");
 		assertNotNull(url);
-		assertThat(url.getPath(), Matchers.containsString("i18n.tpl"));
+		assertThat(url.getPath()).contains("i18n.tpl");
 	}
 
 	@Test

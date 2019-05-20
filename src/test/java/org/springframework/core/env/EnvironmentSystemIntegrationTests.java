@@ -137,8 +137,8 @@ public class EnvironmentSystemIntegrationTests {
 		ctx.setEnvironment(prodEnv);
 		new XmlBeanDefinitionReader(ctx).loadBeanDefinitions(XML_PATH);
 		ctx.refresh();
-		assertThat(ctx.containsBean(DEV_BEAN_NAME), is(false));
-		assertThat(ctx.containsBean(PROD_BEAN_NAME), is(true));
+		assertThat(ctx.containsBean(DEV_BEAN_NAME)).isFalse();
+		assertThat(ctx.containsBean(PROD_BEAN_NAME)).isTrue();
 	}
 
 	@Test
@@ -147,8 +147,8 @@ public class EnvironmentSystemIntegrationTests {
 		ctx.setEnvironment(prodEnv);
 		new AnnotatedBeanDefinitionReader(ctx).register(Config.class);
 		ctx.refresh();
-		assertThat(ctx.containsBean(DEV_BEAN_NAME), is(false));
-		assertThat(ctx.containsBean(PROD_BEAN_NAME), is(true));
+		assertThat(ctx.containsBean(DEV_BEAN_NAME)).isFalse();
+		assertThat(ctx.containsBean(PROD_BEAN_NAME)).isTrue();
 	}
 
 	@Test
@@ -159,8 +159,8 @@ public class EnvironmentSystemIntegrationTests {
 		ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(ctx);
 		scanner.scan("org.springframework.core.env.scan1");
 		ctx.refresh();
-		assertThat(ctx.containsBean(DEV_BEAN_NAME), is(false));
-		assertThat(ctx.containsBean(PROD_BEAN_NAME), is(true));
+		assertThat(ctx.containsBean(DEV_BEAN_NAME)).isFalse();
+		assertThat(ctx.containsBean(PROD_BEAN_NAME)).isTrue();
 	}
 
 	@Test
@@ -170,9 +170,9 @@ public class EnvironmentSystemIntegrationTests {
 		ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(ctx);
 		scanner.scan("org.springframework.core.env.scan2");
 		ctx.refresh();
-		assertThat(scanner.getEnvironment(), is((Environment)ctx.getEnvironment()));
-		assertThat(ctx.containsBean(DEV_BEAN_NAME), is(false));
-		assertThat(ctx.containsBean(PROD_BEAN_NAME), is(true));
+		assertThat(scanner.getEnvironment()).isEqualTo((Environment)ctx.getEnvironment());
+		assertThat(ctx.containsBean(DEV_BEAN_NAME)).isFalse();
+		assertThat(ctx.containsBean(PROD_BEAN_NAME)).isTrue();
 	}
 
 	@Test
@@ -186,8 +186,8 @@ public class EnvironmentSystemIntegrationTests {
 		assertHasEnvironment(ctx, prodEnv);
 		assertEnvironmentBeanRegistered(ctx);
 		assertEnvironmentAwareInvoked(ctx, prodEnv);
-		assertThat(ctx.containsBean(DEV_BEAN_NAME), is(false));
-		assertThat(ctx.containsBean(PROD_BEAN_NAME), is(true));
+		assertThat(ctx.containsBean(DEV_BEAN_NAME)).isFalse();
+		assertThat(ctx.containsBean(PROD_BEAN_NAME)).isTrue();
 	}
 
 	@Test
@@ -199,8 +199,8 @@ public class EnvironmentSystemIntegrationTests {
 		assertEnvironmentBeanRegistered(ctx);
 		assertHasEnvironment(ctx, prodEnv);
 		assertEnvironmentAwareInvoked(ctx, ctx.getEnvironment());
-		assertThat(ctx.containsBean(DEV_BEAN_NAME), is(false));
-		assertThat(ctx.containsBean(PROD_BEAN_NAME), is(true));
+		assertThat(ctx.containsBean(DEV_BEAN_NAME)).isFalse();
+		assertThat(ctx.containsBean(PROD_BEAN_NAME)).isTrue();
 	}
 
 	@Test
@@ -217,8 +217,8 @@ public class EnvironmentSystemIntegrationTests {
 		assertEnvironmentBeanRegistered(ctx);
 		assertHasEnvironment(ctx, prodEnv);
 		assertEnvironmentAwareInvoked(ctx, ctx.getEnvironment());
-		assertThat(ctx.containsBean(DEV_BEAN_NAME), is(false));
-		assertThat(ctx.containsBean(PROD_BEAN_NAME), is(true));
+		assertThat(ctx.containsBean(DEV_BEAN_NAME)).isFalse();
+		assertThat(ctx.containsBean(PROD_BEAN_NAME)).isTrue();
 	}
 
 	@Test
@@ -244,7 +244,7 @@ public class EnvironmentSystemIntegrationTests {
 		ctx.register(ProdConfig.class);
 		ctx.refresh();
 
-		assertThat("should have prod bean", ctx.containsBean(PROD_BEAN_NAME), is(true));
+		assertThat("should have prod bean", ctx.containsBean(PROD_BEAN_NAME)).isTrue();
 	}
 
 	@Test
@@ -257,8 +257,8 @@ public class EnvironmentSystemIntegrationTests {
 		ctx.register(DevConfig.class);
 		ctx.refresh();
 
-		assertThat("should not have dev bean", ctx.containsBean(DEV_BEAN_NAME), is(false));
-		assertThat("should not have transitive bean", ctx.containsBean(TRANSITIVE_BEAN_NAME), is(false));
+		assertThat("should not have dev bean", ctx.containsBean(DEV_BEAN_NAME)).isFalse();
+		assertThat("should not have transitive bean", ctx.containsBean(TRANSITIVE_BEAN_NAME)).isFalse();
 	}
 
 	@Test
@@ -271,8 +271,8 @@ public class EnvironmentSystemIntegrationTests {
 		ctx.register(DevConfig.class);
 		ctx.refresh();
 
-		assertThat("should have dev bean", ctx.containsBean(DEV_BEAN_NAME), is(true));
-		assertThat("should have transitive bean", ctx.containsBean(TRANSITIVE_BEAN_NAME), is(true));
+		assertThat("should have dev bean", ctx.containsBean(DEV_BEAN_NAME)).isTrue();
+		assertThat("should have transitive bean", ctx.containsBean(TRANSITIVE_BEAN_NAME)).isTrue();
 	}
 
 	@Test
@@ -286,9 +286,9 @@ public class EnvironmentSystemIntegrationTests {
 		ctx.refresh();
 
 		assertEnvironmentAwareInvoked(ctx, prodEnv);
-		assertThat("should have prod bean", ctx.containsBean(PROD_BEAN_NAME), is(true));
-		assertThat("should not have dev bean", ctx.containsBean(DEV_BEAN_NAME), is(false));
-		assertThat("should not have transitive bean", ctx.containsBean(TRANSITIVE_BEAN_NAME), is(false));
+		assertThat("should have prod bean", ctx.containsBean(PROD_BEAN_NAME)).isTrue();
+		assertThat("should not have dev bean", ctx.containsBean(DEV_BEAN_NAME)).isFalse();
+		assertThat("should not have transitive bean", ctx.containsBean(TRANSITIVE_BEAN_NAME)).isFalse();
 	}
 
 	@Test
@@ -300,9 +300,9 @@ public class EnvironmentSystemIntegrationTests {
 		ctx.register(DerivedDevConfig.class);
 		ctx.refresh();
 
-		assertThat("should have dev bean", ctx.containsBean(DEV_BEAN_NAME), is(true));
-		assertThat("should have derived dev bean", ctx.containsBean(DERIVED_DEV_BEAN_NAME), is(true));
-		assertThat("should have transitive bean", ctx.containsBean(TRANSITIVE_BEAN_NAME), is(true));
+		assertThat("should have dev bean", ctx.containsBean(DEV_BEAN_NAME)).isTrue();
+		assertThat("should have derived dev bean", ctx.containsBean(DERIVED_DEV_BEAN_NAME)).isTrue();
+		assertThat("should have transitive bean", ctx.containsBean(TRANSITIVE_BEAN_NAME)).isTrue();
 	}
 
 	@Test
@@ -312,9 +312,9 @@ public class EnvironmentSystemIntegrationTests {
 		ctx.register(DerivedDevConfig.class);
 		ctx.refresh();
 
-		assertThat("should not have dev bean", ctx.containsBean(DEV_BEAN_NAME), is(false));
-		assertThat("should not have derived dev bean", ctx.containsBean(DERIVED_DEV_BEAN_NAME), is(false));
-		assertThat("should not have transitive bean", ctx.containsBean(TRANSITIVE_BEAN_NAME), is(false));
+		assertThat("should not have dev bean", ctx.containsBean(DEV_BEAN_NAME)).isFalse();
+		assertThat("should not have derived dev bean", ctx.containsBean(DERIVED_DEV_BEAN_NAME)).isFalse();
+		assertThat("should not have transitive bean", ctx.containsBean(TRANSITIVE_BEAN_NAME)).isFalse();
 	}
 
 	@Test
@@ -370,8 +370,8 @@ public class EnvironmentSystemIntegrationTests {
 		assertHasEnvironment(ctx, prodWebEnv);
 		assertEnvironmentBeanRegistered(ctx);
 		assertEnvironmentAwareInvoked(ctx, prodWebEnv);
-		assertThat(ctx.containsBean(DEV_BEAN_NAME), is(false));
-		assertThat(ctx.containsBean(PROD_BEAN_NAME), is(true));
+		assertThat(ctx.containsBean(DEV_BEAN_NAME)).isFalse();
+		assertThat(ctx.containsBean(PROD_BEAN_NAME)).isTrue();
 	}
 
 	@Test
@@ -436,17 +436,17 @@ public class EnvironmentSystemIntegrationTests {
 		ConfigurableEnvironment environment = ctx.getEnvironment();
 		assertThat(environment, instanceOf(StandardServletEnvironment.class));
 		MutablePropertySources propertySources = environment.getPropertySources();
-		assertThat(propertySources.contains(StandardServletEnvironment.SERVLET_CONTEXT_PROPERTY_SOURCE_NAME), is(true));
-		assertThat(propertySources.contains(StandardServletEnvironment.SERVLET_CONFIG_PROPERTY_SOURCE_NAME), is(true));
+		assertThat(propertySources.contains(StandardServletEnvironment.SERVLET_CONTEXT_PROPERTY_SOURCE_NAME)).isTrue();
+		assertThat(propertySources.contains(StandardServletEnvironment.SERVLET_CONFIG_PROPERTY_SOURCE_NAME)).isTrue();
 
 		// ServletConfig gets precedence
-		assertThat(environment.getProperty("pCommon"), is("pCommonConfigValue"));
+		assertThat(environment.getProperty("pCommon")).isEqualTo("pCommonConfigValue");
 		assertThat(propertySources.precedenceOf(PropertySource.named(StandardServletEnvironment.SERVLET_CONFIG_PROPERTY_SOURCE_NAME)),
 				lessThan(propertySources.precedenceOf(PropertySource.named(StandardServletEnvironment.SERVLET_CONTEXT_PROPERTY_SOURCE_NAME))));
 
 		// but all params are available
-		assertThat(environment.getProperty("pContext1"), is("pContext1Value"));
-		assertThat(environment.getProperty("pConfig1"), is("pConfig1Value"));
+		assertThat(environment.getProperty("pContext1")).isEqualTo("pContext1Value");
+		assertThat(environment.getProperty("pConfig1")).isEqualTo("pConfig1Value");
 
 		// Servlet* PropertySources have precedence over System* PropertySources
 		assertThat(propertySources.precedenceOf(PropertySource.named(StandardServletEnvironment.SERVLET_CONFIG_PROPERTY_SOURCE_NAME)),
@@ -459,8 +459,8 @@ public class EnvironmentSystemIntegrationTests {
 		propertySources.replace(StandardEnvironment.SYSTEM_PROPERTIES_PROPERTY_SOURCE_NAME, mockSystemProperties);
 
 		// assert that servletconfig params resolve with higher precedence than sysprops
-		assertThat(environment.getProperty("pCommon"), is("pCommonConfigValue"));
-		assertThat(environment.getProperty("pSysProps1"), is("pSysProps1Value"));
+		assertThat(environment.getProperty("pCommon")).isEqualTo("pCommonConfigValue");
+		assertThat(environment.getProperty("pSysProps1")).isEqualTo("pSysProps1Value");
 	}
 
 	@Test
@@ -476,11 +476,11 @@ public class EnvironmentSystemIntegrationTests {
 		ConfigurableEnvironment environment = ctx.getEnvironment();
 		assertThat(environment, instanceOf(StandardServletEnvironment.class));
 		MutablePropertySources propertySources = environment.getPropertySources();
-		assertThat(propertySources.contains(StandardServletEnvironment.SERVLET_CONTEXT_PROPERTY_SOURCE_NAME), is(true));
+		assertThat(propertySources.contains(StandardServletEnvironment.SERVLET_CONTEXT_PROPERTY_SOURCE_NAME)).isTrue();
 
 		// ServletContext params are available
-		assertThat(environment.getProperty("pCommon"), is("pCommonContextValue"));
-		assertThat(environment.getProperty("pContext1"), is("pContext1Value"));
+		assertThat(environment.getProperty("pCommon")).isEqualTo("pCommonContextValue");
+		assertThat(environment.getProperty("pContext1")).isEqualTo("pContext1Value");
 
 		// Servlet* PropertySources have precedence over System* PropertySources
 		assertThat(propertySources.precedenceOf(PropertySource.named(StandardServletEnvironment.SERVLET_CONTEXT_PROPERTY_SOURCE_NAME)),
@@ -493,8 +493,8 @@ public class EnvironmentSystemIntegrationTests {
 		propertySources.replace(StandardEnvironment.SYSTEM_PROPERTIES_PROPERTY_SOURCE_NAME, mockSystemProperties);
 
 		// assert that servletcontext init params resolve with higher precedence than sysprops
-		assertThat(environment.getProperty("pCommon"), is("pCommonContextValue"));
-		assertThat(environment.getProperty("pSysProps1"), is("pSysProps1Value"));
+		assertThat(environment.getProperty("pCommon")).isEqualTo("pCommonContextValue");
+		assertThat(environment.getProperty("pSysProps1")).isEqualTo("pSysProps1Value");
 	}
 
 	@Test
@@ -513,17 +513,17 @@ public class EnvironmentSystemIntegrationTests {
 
 		ConfigurableEnvironment environment = ctx.getEnvironment();
 		MutablePropertySources propertySources = environment.getPropertySources();
-		assertThat(propertySources.contains(StandardServletEnvironment.SERVLET_CONTEXT_PROPERTY_SOURCE_NAME), is(true));
-		assertThat(propertySources.contains(StandardServletEnvironment.SERVLET_CONFIG_PROPERTY_SOURCE_NAME), is(true));
+		assertThat(propertySources.contains(StandardServletEnvironment.SERVLET_CONTEXT_PROPERTY_SOURCE_NAME)).isTrue();
+		assertThat(propertySources.contains(StandardServletEnvironment.SERVLET_CONFIG_PROPERTY_SOURCE_NAME)).isTrue();
 
 		// ServletConfig gets precedence
-		assertThat(environment.getProperty("pCommon"), is("pCommonConfigValue"));
+		assertThat(environment.getProperty("pCommon")).isEqualTo("pCommonConfigValue");
 		assertThat(propertySources.precedenceOf(PropertySource.named(StandardServletEnvironment.SERVLET_CONFIG_PROPERTY_SOURCE_NAME)),
 				lessThan(propertySources.precedenceOf(PropertySource.named(StandardServletEnvironment.SERVLET_CONTEXT_PROPERTY_SOURCE_NAME))));
 
 		// but all params are available
-		assertThat(environment.getProperty("pContext1"), is("pContext1Value"));
-		assertThat(environment.getProperty("pConfig1"), is("pConfig1Value"));
+		assertThat(environment.getProperty("pContext1")).isEqualTo("pContext1Value");
+		assertThat(environment.getProperty("pConfig1")).isEqualTo("pConfig1Value");
 
 		// Servlet* PropertySources have precedence over System* PropertySources
 		assertThat(propertySources.precedenceOf(PropertySource.named(StandardServletEnvironment.SERVLET_CONFIG_PROPERTY_SOURCE_NAME)),
@@ -536,8 +536,8 @@ public class EnvironmentSystemIntegrationTests {
 		propertySources.replace(StandardEnvironment.SYSTEM_PROPERTIES_PROPERTY_SOURCE_NAME, mockSystemProperties);
 
 		// assert that servletconfig params resolve with higher precedence than sysprops
-		assertThat(environment.getProperty("pCommon"), is("pCommonConfigValue"));
-		assertThat(environment.getProperty("pSysProps1"), is("pSysProps1Value"));
+		assertThat(environment.getProperty("pCommon")).isEqualTo("pCommonConfigValue");
+		assertThat(environment.getProperty("pSysProps1")).isEqualTo("pSysProps1Value");
 	}
 
 	@Test
@@ -593,7 +593,7 @@ public class EnvironmentSystemIntegrationTests {
 	private void assertEnvironmentBeanRegistered(
 			ConfigurableApplicationContext ctx) {
 		// ensure environment is registered as a bean
-		assertThat(ctx.containsBean(ENVIRONMENT_BEAN_NAME), is(true));
+		assertThat(ctx.containsBean(ENVIRONMENT_BEAN_NAME)).isTrue();
 	}
 
 	private void assertHasStandardEnvironment(ApplicationContext ctx) {
@@ -613,13 +613,13 @@ public class EnvironmentSystemIntegrationTests {
 		// ensure the custom environment took
 		Environment actualEnv = ctx.getEnvironment();
 		assertThat(actualEnv, notNullValue());
-		assertThat(actualEnv, is(expectedEnv));
+		assertThat(actualEnv).isEqualTo(expectedEnv);
 		// ensure environment is registered as a bean
-		assertThat(ctx.containsBean(ENVIRONMENT_BEAN_NAME), is(true));
+		assertThat(ctx.containsBean(ENVIRONMENT_BEAN_NAME)).isTrue();
 	}
 
 	private void assertEnvironmentAwareInvoked(ConfigurableApplicationContext ctx, Environment expectedEnv) {
-		assertThat(ctx.getBean(EnvironmentAwareBean.class).environment, is(expectedEnv));
+		assertThat(ctx.getBean(EnvironmentAwareBean.class).environment).isEqualTo(expectedEnv);
 	}
 
 

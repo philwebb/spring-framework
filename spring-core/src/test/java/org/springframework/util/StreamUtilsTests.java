@@ -60,7 +60,7 @@ public class StreamUtilsTests {
 	public void copyToByteArray() throws Exception {
 		InputStream inputStream = spy(new ByteArrayInputStream(bytes));
 		byte[] actual = StreamUtils.copyToByteArray(inputStream);
-		assertThat(actual, equalTo(bytes));
+		assertThat(actual).isEqualTo(bytes);
 		verify(inputStream, never()).close();
 	}
 
@@ -69,7 +69,7 @@ public class StreamUtilsTests {
 		Charset charset = Charset.defaultCharset();
 		InputStream inputStream = spy(new ByteArrayInputStream(string.getBytes(charset)));
 		String actual = StreamUtils.copyToString(inputStream, charset);
-		assertThat(actual, equalTo(string));
+		assertThat(actual).isEqualTo(string);
 		verify(inputStream, never()).close();
 	}
 
@@ -77,7 +77,7 @@ public class StreamUtilsTests {
 	public void copyBytes() throws Exception {
 		ByteArrayOutputStream out = spy(new ByteArrayOutputStream());
 		StreamUtils.copy(bytes, out);
-		assertThat(out.toByteArray(), equalTo(bytes));
+		assertThat(out.toByteArray()).isEqualTo(bytes);
 		verify(out, never()).close();
 	}
 
@@ -86,7 +86,7 @@ public class StreamUtilsTests {
 		Charset charset = Charset.defaultCharset();
 		ByteArrayOutputStream out = spy(new ByteArrayOutputStream());
 		StreamUtils.copy(string, charset, out);
-		assertThat(out.toByteArray(), equalTo(string.getBytes(charset)));
+		assertThat(out.toByteArray()).isEqualTo(string.getBytes(charset));
 		verify(out, never()).close();
 	}
 
@@ -94,7 +94,7 @@ public class StreamUtilsTests {
 	public void copyStream() throws Exception {
 		ByteArrayOutputStream out = spy(new ByteArrayOutputStream());
 		StreamUtils.copy(new ByteArrayInputStream(bytes), out);
-		assertThat(out.toByteArray(), equalTo(bytes));
+		assertThat(out.toByteArray()).isEqualTo(bytes);
 		verify(out, never()).close();
 	}
 
@@ -103,7 +103,7 @@ public class StreamUtilsTests {
 		ByteArrayOutputStream out = spy(new ByteArrayOutputStream());
 		StreamUtils.copyRange(new ByteArrayInputStream(bytes), out, 0, 100);
 		byte[] range = Arrays.copyOfRange(bytes, 0, 101);
-		assertThat(out.toByteArray(), equalTo(range));
+		assertThat(out.toByteArray()).isEqualTo(range);
 		verify(out, never()).close();
 	}
 

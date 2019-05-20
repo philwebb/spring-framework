@@ -64,7 +64,7 @@ public class Spr10546Tests {
 		context = ctx;
 		ctx.scan(AEnclosingConfig.class.getPackage().getName());
 		ctx.refresh();
-		assertThat(context.getBean("myBean",String.class), equalTo("myBean"));
+		assertThat(context.getBean("myBean",String.class)).isEqualTo("myBean");
 	}
 
 	@Test
@@ -143,7 +143,7 @@ public class Spr10546Tests {
 
 	private void assertLoadsMyBean(Class<?>... annotatedClasses) {
 		context = new AnnotationConfigApplicationContext(annotatedClasses);
-		assertThat(context.getBean("myBean",String.class), equalTo("myBean"));
+		assertThat(context.getBean("myBean",String.class)).isEqualTo("myBean");
 	}
 
 }

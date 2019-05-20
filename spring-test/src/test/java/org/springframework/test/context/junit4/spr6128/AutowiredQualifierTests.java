@@ -50,8 +50,8 @@ public class AutowiredQualifierTests {
 
 	@Test
 	public void test() {
-		assertThat(foo, equalTo("normal"));
-		assertThat(customFoo, equalTo("custom"));
+		assertThat(foo).isEqualTo("normal");
+		assertThat(customFoo).isEqualTo("custom");
 	}
 
 }

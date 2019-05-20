@@ -159,7 +159,7 @@ public class EventPublishingTestExecutionListenerTests {
 		// Verify the type of event that was published.
 		ApplicationEvent event = eventFactory.getValue().apply(testContext);
 		assertThat(event, instanceOf(eventClass));
-		assertThat(event.getSource(), equalTo(testContext));
+		assertThat(event.getSource()).isEqualTo(testContext);
 	}
 
 	private void assertNoEvent(Class<? extends TestContextEvent> eventClass, Consumer<TestContext> callback) {
@@ -176,7 +176,7 @@ public class EventPublishingTestExecutionListenerTests {
 		// been published.
 		ApplicationEvent event = eventFactory.getValue().apply(testContext);
 		assertThat(event, instanceOf(eventClass));
-		assertThat(event.getSource(), equalTo(testContext));
+		assertThat(event.getSource()).isEqualTo(testContext);
 	}
 
 }
