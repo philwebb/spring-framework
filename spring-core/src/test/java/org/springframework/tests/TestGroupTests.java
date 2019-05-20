@@ -25,7 +25,6 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.hamcrest.Matchers.equalTo;
 
 /**
  * Tests for {@link TestGroup}.
@@ -52,14 +51,14 @@ public class TestGroupTests {
 
 	@Test
 	public void parseWithSpaces() {
-		assertThat(TestGroup.parse(" PERFORMANCE,  PERFORMANCE "),
-				equalTo(EnumSet.of(TestGroup.PERFORMANCE)));
+		assertThat(TestGroup.parse(" PERFORMANCE,  PERFORMANCE ")).containsOnly(
+				TestGroup.PERFORMANCE);
 	}
 
 	@Test
 	public void parseInMixedCase() {
-		assertThat(TestGroup.parse("performance,  PERFormaNCE"),
-				equalTo(EnumSet.of(TestGroup.PERFORMANCE)));
+		assertThat(TestGroup.parse("performance,  PERFormaNCE")).containsOnly(
+				TestGroup.PERFORMANCE);
 	}
 
 	@Test

@@ -53,7 +53,7 @@ public abstract class MockitoUtils {
 	private static void verifySameInvocations(List<Invocation> expectedInvocations, List<Invocation> actualInvocations,
 			InvocationArgumentsAdapter... argumentAdapters) {
 
-		assertThat(expectedInvocations.size(), is(equalTo(actualInvocations.size())));
+		assertThat(expectedInvocations.size()).isEqualTo(actualInvocations.size());
 		for (int i = 0; i < expectedInvocations.size(); i++) {
 			verifySameInvocation(expectedInvocations.get(i), actualInvocations.get(i), argumentAdapters);
 		}
@@ -62,10 +62,10 @@ public abstract class MockitoUtils {
 	private static void verifySameInvocation(Invocation expectedInvocation, Invocation actualInvocation,
 			InvocationArgumentsAdapter... argumentAdapters) {
 
-		assertThat(expectedInvocation.getMethod(), is(equalTo(actualInvocation.getMethod())));
+		assertThat(expectedInvocation.getMethod()).isEqualTo(actualInvocation.getMethod());
 		Object[] expectedArguments = getInvocationArguments(expectedInvocation, argumentAdapters);
 		Object[] actualArguments = getInvocationArguments(actualInvocation, argumentAdapters);
-		assertThat(expectedArguments, is(equalTo(actualArguments)));
+		assertThat(expectedArguments).isEqualTo(actualArguments);
 	}
 
 	private static Object[] getInvocationArguments(Invocation invocation, InvocationArgumentsAdapter... argumentAdapters) {

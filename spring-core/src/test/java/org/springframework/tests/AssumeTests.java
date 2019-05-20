@@ -109,13 +109,13 @@ public class AssumeTests {
 			fail("assumption should have failed");
 		}
 		catch (IllegalStateException ex) {
-			assertThat(ex.getMessage(),
-				startsWith("Failed to parse '" + TEST_GROUPS_SYSTEM_PROPERTY + "' system property: "));
+			assertThat(ex.getMessage()).
+				startsWith("Failed to parse '" + TEST_GROUPS_SYSTEM_PROPERTY + "' system property: ");
 
 			assertThat(ex.getCause()).isInstanceOf(IllegalArgumentException.class);
-			assertThat(ex.getCause().getMessage(),
-				equalTo("Unable to find test group 'bogus' when parsing testGroups value: '" + testGroups
-						+ "'. Available groups include: [LONG_RUNNING,PERFORMANCE,CI]"));
+			assertThat(ex.getCause().getMessage()).
+				isEqualTo("Unable to find test group 'bogus' when parsing testGroups value: '" + testGroups
+						+ "'. Available groups include: [LONG_RUNNING,PERFORMANCE,CI]");
 		}
 	}
 

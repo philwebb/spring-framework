@@ -201,8 +201,8 @@ public class PropertySourcesPropertyResolverTests {
 		MutablePropertySources propertySources = new MutablePropertySources();
 		propertySources.addFirst(new MockPropertySource().withProperty("key", "value"));
 		PropertyResolver resolver = new PropertySourcesPropertyResolver(propertySources);
-		assertThat(resolver.resolvePlaceholders("Replace this ${key} plus ${unknown}"),
-				equalTo("Replace this value plus ${unknown}"));
+		assertThat(resolver.resolvePlaceholders("Replace this ${key} plus ${unknown}"))
+				.isEqualTo("Replace this value plus ${unknown}");
 	}
 
 	@Test
@@ -210,8 +210,8 @@ public class PropertySourcesPropertyResolverTests {
 		MutablePropertySources propertySources = new MutablePropertySources();
 		propertySources.addFirst(new MockPropertySource().withProperty("key", "value"));
 		PropertyResolver resolver = new PropertySourcesPropertyResolver(propertySources);
-		assertThat(resolver.resolvePlaceholders("Replace this ${key} plus ${unknown:defaultValue}"),
-				equalTo("Replace this value plus defaultValue"));
+		assertThat(resolver.resolvePlaceholders("Replace this ${key} plus ${unknown:defaultValue}"))
+				.isEqualTo("Replace this value plus defaultValue");
 	}
 
 	@Test
@@ -242,8 +242,8 @@ public class PropertySourcesPropertyResolverTests {
 		MutablePropertySources propertySources = new MutablePropertySources();
 		propertySources.addFirst(new MockPropertySource().withProperty("key", "value"));
 		PropertyResolver resolver = new PropertySourcesPropertyResolver(propertySources);
-		assertThat(resolver.resolveRequiredPlaceholders("Replace this ${key} plus ${unknown:defaultValue}"),
-				equalTo("Replace this value plus defaultValue"));
+		assertThat(resolver.resolveRequiredPlaceholders("Replace this ${key} plus ${unknown:defaultValue}"))
+				.isEqualTo("Replace this value plus defaultValue");
 	}
 
 	@Test
@@ -296,20 +296,13 @@ public class PropertySourcesPropertyResolverTests {
 		assertThat(pr.getProperty("p2")).isEqualTo("v2");
 		assertThat(pr.getProperty("p3")).isEqualTo("v1:v2");
 		assertThat(pr.getProperty("p4")).isEqualTo("v1:v2");
-		try {
-			pr.getProperty("p5");
-		}
-		catch (IllegalArgumentException ex) {
-			assertThat(ex.getMessage(), containsString(
-					"Could not resolve placeholder 'bogus' in value \"${p1}:${p2}:${bogus}\""));
-		}
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				pr.getProperty("p5"))
+			.withMessageContaining("Could not resolve placeholder 'bogus' in value \"${p1}:${p2}:${bogus}\"");
 		assertThat(pr.getProperty("p6")).isEqualTo("v1:v2:def");
-		try {
-			pr.getProperty("pL");
-		}
-		catch (IllegalArgumentException ex) {
-			assertTrue(ex.getMessage().toLowerCase().contains("circular"));
-		}
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				pr.getProperty("pL"))
+			.withMessageContaining("Circular");
 	}
 
 	@Test
@@ -328,13 +321,9 @@ public class PropertySourcesPropertyResolverTests {
 
 		// placeholders nested within the value of "p4" are unresolvable and cause an
 		// exception by default
-		try {
-			pr.getProperty("p4");
-		}
-		catch (IllegalArgumentException ex) {
-			assertThat(ex.getMessage(), containsString(
-					"Could not resolve placeholder 'bogus' in value \"${p1}:${p2}:${bogus}\""));
-		}
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				pr.getProperty("p4"))
+			.withMessageContaining("Could not resolve placeholder 'bogus' in value \"${p1}:${p2}:${bogus}\"");
 
 		// relax the treatment of unresolvable nested placeholders
 		pr.setIgnoreUnresolvableNestedPlaceholders(true);
@@ -344,13 +333,9 @@ public class PropertySourcesPropertyResolverTests {
 		// resolve[Nested]Placeholders methods behave as usual regardless the value of
 		// ignoreUnresolvableNestedPlaceholders
 		assertThat(pr.resolvePlaceholders("${p1}:${p2}:${bogus}")).isEqualTo("v1:v2:${bogus}");
-		try {
-			pr.resolveRequiredPlaceholders("${p1}:${p2}:${bogus}");
-		}
-		catch (IllegalArgumentException ex) {
-			assertThat(ex.getMessage(), containsString(
-					"Could not resolve placeholder 'bogus' in value \"${p1}:${p2}:${bogus}\""));
-		}
+		assertThatIllegalArgumentException().isThrownBy(() ->
+				pr.resolveRequiredPlaceholders("${p1}:${p2}:${bogus}"))
+			.withMessageContaining("Could not resolve placeholder 'bogus' in value \"${p1}:${p2}:${bogus}\"");
 	}
 
 }

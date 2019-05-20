@@ -31,15 +31,6 @@ import org.springframework.mock.env.MockPropertySource;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.hamcrest.Matchers.arrayContaining;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.core.env.AbstractEnvironment.ACTIVE_PROFILES_PROPERTY_NAME;
@@ -141,7 +132,7 @@ public class StandardEnvironmentTests {
 	public void setActiveProfiles() {
 		environment.setActiveProfiles("local", "embedded");
 		String[] activeProfiles = environment.getActiveProfiles();
-		assertThat(Arrays.asList(activeProfiles), hasItems("local", "embedded"));
+		assertThat(activeProfiles).contains("local", "embedded");
 		assertThat(activeProfiles.length).isEqualTo(2);
 	}
 
@@ -197,14 +188,14 @@ public class StandardEnvironmentTests {
 	public void addActiveProfile() {
 		assertThat(environment.getActiveProfiles().length).isEqualTo(0);
 		environment.setActiveProfiles("local", "embedded");
-		assertThat(Arrays.asList(environment.getActiveProfiles()), hasItems("local", "embedded"));
+		assertThat(environment.getActiveProfiles()).contains("local", "embedded");
 		assertThat(environment.getActiveProfiles().length).isEqualTo(2);
 		environment.addActiveProfile("p1");
-		assertThat(Arrays.asList(environment.getActiveProfiles()), hasItems("p1"));
+		assertThat(environment.getActiveProfiles()).contains("p1");
 		assertThat(environment.getActiveProfiles().length).isEqualTo(3);
 		environment.addActiveProfile("p2");
 		environment.addActiveProfile("p3");
-		assertThat(Arrays.asList(environment.getActiveProfiles()), hasItems("p2", "p3"));
+		assertThat(environment.getActiveProfiles()).contains("p2", "p3");
 		assertThat(environment.getActiveProfiles().length).isEqualTo(5);
 	}
 
@@ -215,7 +206,7 @@ public class StandardEnvironmentTests {
 		env.getPropertySources().addFirst(new MockPropertySource().withProperty(ACTIVE_PROFILES_PROPERTY_NAME, "p1"));
 		assertThat(env.getProperty(ACTIVE_PROFILES_PROPERTY_NAME)).isEqualTo("p1");
 		env.addActiveProfile("p2");
-		assertThat(env.getActiveProfiles(), arrayContaining("p1", "p2"));
+		assertThat(env.getActiveProfiles()).contains("p1", "p2");
 	}
 
 	@Test
@@ -258,14 +249,14 @@ public class StandardEnvironmentTests {
 	@Test
 	public void getActiveProfiles_fromSystemProperties_withMultipleProfiles() {
 		System.setProperty(ACTIVE_PROFILES_PROPERTY_NAME, "foo,bar");
-		assertThat(Arrays.asList(environment.getActiveProfiles()), hasItems("foo", "bar"));
+		assertThat(environment.getActiveProfiles()).contains("foo", "bar");
 		System.getProperties().remove(ACTIVE_PROFILES_PROPERTY_NAME);
 	}
 
 	@Test
 	public void getActiveProfiles_fromSystemProperties_withMulitpleProfiles_withWhitespace() {
 		System.setProperty(ACTIVE_PROFILES_PROPERTY_NAME, " bar , baz "); // notice whitespace
-		assertThat(Arrays.asList(environment.getActiveProfiles()), hasItems("bar", "baz"));
+		assertThat(environment.getActiveProfiles()).contains("bar", "baz");
 		System.getProperties().remove(ACTIVE_PROFILES_PROPERTY_NAME);
 	}
 
@@ -284,8 +275,8 @@ public class StandardEnvironmentTests {
 		environment.setDefaultProfiles("pd1");
 		assertThat(Arrays.asList(environment.getDefaultProfiles())).contains("pd1");
 		environment.setDefaultProfiles("pd2", "pd3");
-		assertThat(Arrays.asList(environment.getDefaultProfiles())).isNotEqualTo(hasItem("pd1"));
-		assertThat(Arrays.asList(environment.getDefaultProfiles()), hasItems("pd2", "pd3"));
+		assertThat(environment.getDefaultProfiles()).doesNotContain("pd1");
+		assertThat(environment.getDefaultProfiles()).contains("pd2", "pd3");
 	}
 
 	@Test
