@@ -117,7 +117,7 @@ public class MapAccessTests extends AbstractExpressionTests {
 			expr.getValue(context);
 		}
 		s.stop();
-		assertThat(s.getTotalTimeMillis(), lessThan(200L));
+		assertThat(s.getTotalTimeMillis()).isLessThan(200L);
 	}
 
 

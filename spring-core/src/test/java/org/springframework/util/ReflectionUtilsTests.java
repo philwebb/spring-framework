@@ -369,7 +369,7 @@ public class ReflectionUtilsTests {
 		sw.stop();
 		long totalMs = sw.getTotalTimeMillis();
 		assertThat(methods.length).isGreaterThan(100);
-		assertThat(totalMs, Matchers.lessThan(10L));
+		assertThat(totalMs).isLessThan(10L);
 	}
 
 	@Test

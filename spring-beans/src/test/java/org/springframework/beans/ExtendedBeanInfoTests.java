@@ -785,16 +785,16 @@ public class ExtendedBeanInfoTests {
 
 		assertThat(c.compare(new PropertyDescriptor("a", null, null), new PropertyDescriptor("a", null, null))).isEqualTo(0);
 		assertThat(c.compare(new PropertyDescriptor("abc", null, null), new PropertyDescriptor("abc", null, null))).isEqualTo(0);
-		assertThat(c.compare(new PropertyDescriptor("a", null, null), new PropertyDescriptor("b", null, null)), lessThan(0));
+		assertThat(c.compare(new PropertyDescriptor("a", null, null), new PropertyDescriptor("b", null, null))).isLessThan(0);
 		assertThat(c.compare(new PropertyDescriptor("b", null, null), new PropertyDescriptor("a", null, null))).isGreaterThan(0);
-		assertThat(c.compare(new PropertyDescriptor("abc", null, null), new PropertyDescriptor("abd", null, null)), lessThan(0));
+		assertThat(c.compare(new PropertyDescriptor("abc", null, null), new PropertyDescriptor("abd", null, null))).isLessThan(0);
 		assertThat(c.compare(new PropertyDescriptor("xyz", null, null), new PropertyDescriptor("123", null, null))).isGreaterThan(0);
-		assertThat(c.compare(new PropertyDescriptor("a", null, null), new PropertyDescriptor("abc", null, null)), lessThan(0));
+		assertThat(c.compare(new PropertyDescriptor("a", null, null), new PropertyDescriptor("abc", null, null))).isLessThan(0);
 		assertThat(c.compare(new PropertyDescriptor("abc", null, null), new PropertyDescriptor("a", null, null))).isGreaterThan(0);
-		assertThat(c.compare(new PropertyDescriptor("abc", null, null), new PropertyDescriptor("b", null, null)), lessThan(0));
+		assertThat(c.compare(new PropertyDescriptor("abc", null, null), new PropertyDescriptor("b", null, null))).isLessThan(0);
 
-		assertThat(c.compare(new PropertyDescriptor(" ", null, null), new PropertyDescriptor("a", null, null)), lessThan(0));
-		assertThat(c.compare(new PropertyDescriptor("1", null, null), new PropertyDescriptor("a", null, null)), lessThan(0));
+		assertThat(c.compare(new PropertyDescriptor(" ", null, null), new PropertyDescriptor("a", null, null))).isLessThan(0);
+		assertThat(c.compare(new PropertyDescriptor("1", null, null), new PropertyDescriptor("a", null, null))).isLessThan(0);
 		assertThat(c.compare(new PropertyDescriptor("a", null, null), new PropertyDescriptor("A", null, null))).isGreaterThan(0);
 	}
 
