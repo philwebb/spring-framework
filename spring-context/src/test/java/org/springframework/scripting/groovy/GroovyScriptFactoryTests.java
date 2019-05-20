@@ -47,6 +47,7 @@ import org.springframework.util.ObjectUtils;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.assertj.core.api.Assertions.assertThatNullPointerException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -528,7 +529,7 @@ public class GroovyScriptFactoryTests {
 		// expect the exception we threw in the custom metaclass to show it got invoked
 		ApplicationContext ctx = new ClassPathXmlApplicationContext(xmlFile);
 		Calculator calc = (Calculator) ctx.getBean("delegatingCalculator");
-		assertThatIllegalArgumentException().isThrownBy(() ->
+		assertThatIllegalStateException().isThrownBy(() ->
 				calc.add(1, 2))
 			.withMessage("Gotcha");
 	}

@@ -84,9 +84,10 @@ public class ResourceEditorTests {
 		PropertyEditor editor = new ResourceEditor(new DefaultResourceLoader(), new StandardEnvironment(), false);
 		System.setProperty("test.prop", "foo");
 		try {
-			editor.setAsText("${test.prop}-${bar}");
-			assertThatIllegalArgumentException().isThrownBy(() ->
-					editor.getValue());
+			assertThatIllegalArgumentException().isThrownBy(() -> {
+					editor.setAsText("${test.prop}-${bar}");
+					editor.getValue();
+			});
 		}
 		finally {
 			System.getProperties().remove("test.prop");

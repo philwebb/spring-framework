@@ -38,6 +38,7 @@ import org.springframework.tests.sample.beans.subpkg.DeepBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -238,7 +239,7 @@ public class AspectJExpressionPointcutTests {
 	@Test
 	public void testInvalidExpression() {
 		String expression = "execution(void org.springframework.tests.sample.beans.TestBean.setSomeNumber(Number) && args(Double)";
-		assertThatIllegalStateException().isThrownBy(
+		assertThatIllegalArgumentException().isThrownBy(
 				getPointcut(expression)::getClassFilter);  // call to getClassFilter forces resolution
 	}
 

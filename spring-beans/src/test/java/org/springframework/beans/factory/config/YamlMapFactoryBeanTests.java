@@ -53,9 +53,10 @@ public class YamlMapFactoryBeanTests {
 
 	@Test
 	public void testSetBarfOnResourceNotFound() {
-		this.factory.setResources(new FileSystemResource("non-exsitent-file.yml"));
-		assertThatIllegalStateException().isThrownBy(
-				this.factory.getObject()::size);
+		assertThatIllegalStateException().isThrownBy(() -> {
+				this.factory.setResources(new FileSystemResource("non-exsitent-file.yml"));
+				this.factory.getObject().size();
+		});
 	}
 
 	@Test

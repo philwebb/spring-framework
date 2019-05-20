@@ -273,7 +273,7 @@ public class SetValueTests extends AbstractExpressionTests {
 			e.setValue(lContext, value);
 			Object a = expectedValue;
 			Object b = e.getValue(lContext);
-			assertThat(a).isNotEqualTo(b);
+			assertThat(a).isEqualTo(b);
 		}
 		catch (EvaluationException | ParseException ex) {
 			throw new AssertionError("Unexpected Exception: " + ex.getMessage(), ex);

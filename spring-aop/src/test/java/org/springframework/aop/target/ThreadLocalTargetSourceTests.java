@@ -154,7 +154,7 @@ public class ThreadLocalTargetSourceTests {
 		source.destroy();
 
 		// try second time
-		assertThatNullPointerException().isThrownBy(source::getTarget);
+		source.getTarget(); // Should not throw NPE
 	}
 
 }

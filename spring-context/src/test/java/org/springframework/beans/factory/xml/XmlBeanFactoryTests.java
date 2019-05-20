@@ -644,9 +644,9 @@ public class XmlBeanFactoryTests {
 	@Test
 	public void noSuchFactoryBeanMethod() {
 		DefaultListableBeanFactory xbf = new DefaultListableBeanFactory();
+		new XmlBeanDefinitionReader(xbf).loadBeanDefinitions(NO_SUCH_FACTORY_METHOD_CONTEXT);
 		assertThatExceptionOfType(BeanCreationException.class).isThrownBy(() ->
-				new XmlBeanDefinitionReader(xbf).loadBeanDefinitions(NO_SUCH_FACTORY_METHOD_CONTEXT));
-		assertNotNull(xbf.getBean("defaultTestBean"));
+				xbf.getBean("defaultTestBean"));
 	}
 
 	@Test

@@ -22,7 +22,6 @@ import org.junit.Test;
 
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.ExpressionException;
-import org.springframework.expression.ParseException;
 import org.springframework.expression.spel.SpelMessage;
 import org.springframework.expression.spel.SpelNode;
 import org.springframework.expression.spel.SpelParseException;
@@ -403,9 +402,9 @@ public class SpelParserTests {
 
 	private void checkNumberError(String expression, SpelMessage expectedMessage) {
 		SpelExpressionParser parser = new SpelExpressionParser();
-		assertThatExceptionOfType(ParseException.class).isThrownBy(() ->
+		assertThatExceptionOfType(SpelParseException.class).isThrownBy(() ->
 				parser.parseRaw(expression))
-			.satisfies(ex -> assertThat(ex.getMessage()).isEqualTo(expectedMessage));
+			.satisfies(ex -> assertThat(ex.getMessageCode()).isEqualTo(expectedMessage));
 	}
 
 }

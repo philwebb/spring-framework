@@ -60,6 +60,7 @@ import org.springframework.util.ObjectUtils;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
@@ -357,7 +358,7 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 		assertFalse(lockable2.locked());
 		notLockable2.setIntValue(1);
 		lockable2.lock();
-		assertThatIllegalArgumentException().isThrownBy(() ->
+		assertThatIllegalStateException().isThrownBy(() ->
 			notLockable2.setIntValue(32));
 		assertTrue(lockable2.locked());
 	}
@@ -541,10 +542,11 @@ public abstract class AbstractAspectJAdvisorFactoryTests {
 	@Test
 	public void testDeclarePrecedenceNotSupported() {
 		TestBean target = new TestBean();
-		MetadataAwareAspectInstanceFactory aspectInstanceFactory = new SingletonMetadataAwareAspectInstanceFactory(
-				new DeclarePrecedenceShouldSucceed(), "someBean");
-		assertThatIllegalArgumentException().isThrownBy(() ->
-				createProxy(target, getFixture().getAdvisors(aspectInstanceFactory), ITestBean.class));
+		assertThatIllegalArgumentException().isThrownBy(() -> {
+				MetadataAwareAspectInstanceFactory aspectInstanceFactory = new SingletonMetadataAwareAspectInstanceFactory(
+							new DeclarePrecedenceShouldSucceed(), "someBean");
+				createProxy(target, getFixture().getAdvisors(aspectInstanceFactory), ITestBean.class);
+		});
 	}
 
 

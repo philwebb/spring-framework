@@ -888,7 +888,7 @@ public class DefaultConversionServiceTests {
 
 	@Test
 	public void convertObjectToObjectNoValueOfMethodOrConstructor() {
-		assertThatExceptionOfType(ConversionFailedException.class).isThrownBy(() ->
+		assertThatExceptionOfType(ConverterNotFoundException.class).isThrownBy(() ->
 				conversionService.convert(Long.valueOf(3), SSN.class));
 	}
 

@@ -107,9 +107,10 @@ public abstract class AbstractSchedulingTaskExecutorTests {
 		TestTask task2 = new TestTask(-1);
 		Future<?> future2 = executor.submit(task2);
 		shutdownExecutor();
-		future1.get();
-		assertThatExceptionOfType(CancellationException.class).isThrownBy(
-				future2::get);
+		assertThatExceptionOfType(CancellationException.class).isThrownBy(() -> {
+				future1.get();
+				future2.get();
+		});
 	}
 
 	@Test
@@ -148,9 +149,10 @@ public abstract class AbstractSchedulingTaskExecutorTests {
 		TestTask task2 = new TestTask(-1);
 		ListenableFuture<?> future2 = executor.submitListenable(task2);
 		shutdownExecutor();
-		future1.get();
-		assertThatExceptionOfType(CancellationException.class).isThrownBy(
-				future2::get);
+		assertThatExceptionOfType(CancellationException.class).isThrownBy(() -> {
+				future1.get();
+				future2.get();
+		});
 	}
 
 	@Test
@@ -177,9 +179,10 @@ public abstract class AbstractSchedulingTaskExecutorTests {
 		TestCallable task2 = new TestCallable(-1);
 		Future<?> future2 = executor.submit(task2);
 		shutdownExecutor();
-		future1.get(1000, TimeUnit.MILLISECONDS);
-		assertThatExceptionOfType(CancellationException.class).isThrownBy(() ->
-			future2.get(1000, TimeUnit.MILLISECONDS));
+		assertThatExceptionOfType(CancellationException.class).isThrownBy(() -> {
+			future1.get(1000, TimeUnit.MILLISECONDS);
+			future2.get(1000, TimeUnit.MILLISECONDS);
+		});
 	}
 
 	@Test

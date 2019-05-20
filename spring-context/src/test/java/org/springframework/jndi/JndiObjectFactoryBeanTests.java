@@ -29,6 +29,7 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -323,7 +324,7 @@ public class JndiObjectFactoryBeanTests {
 		JndiObjectFactoryBean jof = new JndiObjectFactoryBean();
 		jof.setJndiName("foo");
 		jof.setLookupOnStartup(false);
-		assertThatIllegalArgumentException().isThrownBy(jof::afterPropertiesSet);
+		assertThatIllegalStateException().isThrownBy(jof::afterPropertiesSet);
 	}
 
 	@Test
@@ -332,7 +333,7 @@ public class JndiObjectFactoryBeanTests {
 		jof.setJndiName("foo");
 		jof.setCache(false);
 		jof.setLookupOnStartup(false);
-		assertThatIllegalArgumentException().isThrownBy(jof::afterPropertiesSet);
+		assertThatIllegalStateException().isThrownBy(jof::afterPropertiesSet);
 	}
 
 	@Test

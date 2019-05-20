@@ -132,11 +132,12 @@ public abstract class AbstractAopProxyTests {
 
 	@Test
 	public void testNoInterceptorsAndNoTarget() {
-		AdvisedSupport pc = new AdvisedSupport(ITestBean.class);
-		// Add no interceptors
-		AopProxy aop = createAopProxy(pc);
-		assertThatExceptionOfType(AopConfigException.class).isThrownBy(
-				aop::getProxy);
+		assertThatExceptionOfType(AopConfigException.class).isThrownBy(() -> {
+				AdvisedSupport pc = new AdvisedSupport(ITestBean.class);
+				//Add no interceptors
+				AopProxy aop = createAopProxy(pc);
+				aop.getProxy();
+		});
 	}
 
 	/**

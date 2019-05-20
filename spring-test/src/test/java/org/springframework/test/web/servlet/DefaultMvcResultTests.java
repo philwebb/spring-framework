@@ -22,6 +22,8 @@ import org.junit.Test;
 
 import org.springframework.mock.web.MockHttpServletRequest;
 
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+
 /**
  * Test fixture for {@link DefaultMvcResult}.
  *

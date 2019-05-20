@@ -32,6 +32,7 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.expression.spel.testresources.PlaceOfBirth;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -131,7 +132,7 @@ public class ConstructorInvocationTests extends AbstractExpressionTests {
 		eContext.setVariable("bar", 4);
 		assertThatExceptionOfType(Exception.class).isThrownBy(() ->
 				expr.getValue(eContext))
-			.withMessageNotContaining("Tester");
+			.withMessageContaining("Tester");
 		// A problem occurred whilst attempting to construct an object of type
 		// 'org.springframework.expression.spel.ConstructorInvocationTests$Tester'
 		// using arguments '(java.lang.Integer)'
@@ -141,8 +142,9 @@ public class ConstructorInvocationTests extends AbstractExpressionTests {
 
 		// 1 will make it throw a RuntimeException - SpEL will let this through
 		eContext.setVariable("bar", 1);
-		assertThatExceptionOfType(SpelEvaluationException.class).isThrownBy(() ->
-				expr.getValue(eContext));
+		assertThatExceptionOfType(Exception.class).isThrownBy(() ->
+				expr.getValue(eContext))
+			.satisfies(ex -> assertThat(ex).isNotInstanceOf(SpelEvaluationException.class));
 		// A problem occurred whilst attempting to construct an object of type
 		// 'org.springframework.expression.spel.ConstructorInvocationTests$Tester'
 		// using arguments '(java.lang.Integer)'

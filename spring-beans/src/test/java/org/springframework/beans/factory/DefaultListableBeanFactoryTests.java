@@ -792,9 +792,9 @@ public class DefaultListableBeanFactoryTests {
 		DefaultListableBeanFactory lbf = new DefaultListableBeanFactory();
 		lbf.registerAlias("test", "test2");
 		lbf.registerAlias("test2", "test3");
-		assertThatIllegalArgumentException().isThrownBy(() ->
+		assertThatIllegalStateException().isThrownBy(() ->
 				lbf.registerAlias("test3", "test2"));
-		assertThatIllegalArgumentException().isThrownBy(() ->
+		assertThatIllegalStateException().isThrownBy(() ->
 				lbf.registerAlias("test3", "test"));
 		lbf.registerAlias("test", "test3");
 	}
@@ -1096,7 +1096,7 @@ public class DefaultListableBeanFactoryTests {
 		DefaultListableBeanFactory lbf = new DefaultListableBeanFactory();
 		Object singletonObject = new TestBean();
 		lbf.registerSingleton("singletonObject", singletonObject);
-		assertThatIllegalArgumentException().isThrownBy(() ->
+		assertThatIllegalStateException().isThrownBy(() ->
 				lbf.registerSingleton("singletonObject", singletonObject));
 	}
 

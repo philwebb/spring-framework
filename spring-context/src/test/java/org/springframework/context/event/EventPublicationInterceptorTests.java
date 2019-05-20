@@ -62,27 +62,30 @@ public class EventPublicationInterceptorTests {
 	public void testWithNonApplicationEventClassSupplied() throws Exception {
 		EventPublicationInterceptor interceptor = new EventPublicationInterceptor();
 		interceptor.setApplicationEventPublisher(this.publisher);
-		interceptor.setApplicationEventClass(getClass());
-		assertThatIllegalArgumentException().isThrownBy(
-				interceptor::afterPropertiesSet);
+		assertThatIllegalArgumentException().isThrownBy(() -> {
+				interceptor.setApplicationEventClass(getClass());
+				interceptor.afterPropertiesSet();
+		});
 	}
 
 	@Test
 	public void testWithAbstractStraightApplicationEventClassSupplied() throws Exception {
 		EventPublicationInterceptor interceptor = new EventPublicationInterceptor();
 		interceptor.setApplicationEventPublisher(this.publisher);
-		interceptor.setApplicationEventClass(ApplicationEvent.class);
-		assertThatIllegalArgumentException().isThrownBy(
-				interceptor::afterPropertiesSet);
+		assertThatIllegalArgumentException().isThrownBy(() -> {
+				interceptor.setApplicationEventClass(ApplicationEvent.class);
+				interceptor.afterPropertiesSet();
+		});
 	}
 
 	@Test
 	public void testWithApplicationEventClassThatDoesntExposeAValidCtor() throws Exception {
 		EventPublicationInterceptor interceptor = new EventPublicationInterceptor();
 		interceptor.setApplicationEventPublisher(this.publisher);
-		interceptor.setApplicationEventClass(TestEventWithNoValidOneArgObjectCtor.class);
-		assertThatIllegalArgumentException().isThrownBy(
-				interceptor::afterPropertiesSet);
+		assertThatIllegalArgumentException().isThrownBy(() -> {
+				interceptor.setApplicationEventClass(TestEventWithNoValidOneArgObjectCtor.class);
+				interceptor.afterPropertiesSet();
+		});
 	}
 
 	@Test

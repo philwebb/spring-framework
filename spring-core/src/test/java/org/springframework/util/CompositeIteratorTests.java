@@ -24,6 +24,7 @@ import java.util.NoSuchElementException;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -97,7 +98,7 @@ public class CompositeIteratorTests {
 		CompositeIterator<String> it = new CompositeIterator<>();
 		it.add(iterator);
 		it.add(list.iterator());
-		assertThatIllegalStateException().isThrownBy(() ->
+		assertThatIllegalArgumentException().isThrownBy(() ->
 				it.add(iterator));
 	}
 

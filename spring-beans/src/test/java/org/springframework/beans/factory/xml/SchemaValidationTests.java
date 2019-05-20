@@ -19,6 +19,7 @@ package org.springframework.beans.factory.xml;
 import org.junit.Test;
 import org.xml.sax.SAXParseException;
 
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -37,7 +38,7 @@ public class SchemaValidationTests {
 	public void withAutodetection() throws Exception {
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
 		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(bf);
-		assertThatExceptionOfType(BeanCreationException.class).isThrownBy(() ->
+		assertThatExceptionOfType(BeansException.class).isThrownBy(() ->
 				reader.loadBeanDefinitions(new ClassPathResource("invalidPerSchema.xml", getClass())))
 			.withCauseInstanceOf(SAXParseException.class);
 	}
@@ -47,7 +48,7 @@ public class SchemaValidationTests {
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
 		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(bf);
 		reader.setValidationMode(XmlBeanDefinitionReader.VALIDATION_XSD);
-		assertThatExceptionOfType(BeanCreationException.class).isThrownBy(() ->
+		assertThatExceptionOfType(BeansException.class).isThrownBy(() ->
 				reader.loadBeanDefinitions(new ClassPathResource("invalidPerSchema.xml", getClass())))
 			.withCauseInstanceOf(SAXParseException.class);
 	}

@@ -155,8 +155,9 @@ public class MethodInvocationTests extends AbstractExpressionTests {
 		Expression expr = parser.parseExpression("throwException(#bar)");
 
 		context.setVariable("bar", 2);
-		assertThatExceptionOfType(SpelEvaluationException.class).isThrownBy(() ->
-				expr.getValue(context));
+		assertThatExceptionOfType(Exception.class).isThrownBy(() ->
+				expr.getValue(context))
+			.satisfies(ex -> assertThat(ex).isNotInstanceOf(SpelEvaluationException.class));
 	}
 
 	@Test

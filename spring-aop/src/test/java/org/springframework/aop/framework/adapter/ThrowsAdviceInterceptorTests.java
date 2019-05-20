@@ -121,9 +121,9 @@ public class ThrowsAdviceInterceptorTests {
 		ConnectException ex = new ConnectException("");
 		MethodInvocation mi = mock(MethodInvocation.class);
 		given(mi.proceed()).willThrow(ex);
-		assertThatExceptionOfType(ConnectException.class).isThrownBy(() ->
+		assertThatExceptionOfType(Throwable.class).isThrownBy(() ->
 				ti.invoke(mi))
-			.isSameAs(ex);
+			.isSameAs(t);
 		assertEquals(1, th.getCalls());
 		assertEquals(1, th.getCalls("remoteException"));
 	}

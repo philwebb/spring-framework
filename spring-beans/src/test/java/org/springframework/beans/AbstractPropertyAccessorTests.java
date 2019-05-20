@@ -390,7 +390,7 @@ public abstract class AbstractPropertyAccessorTests {
 		assertThatExceptionOfType(NullValueInNestedPathException.class).isThrownBy(() ->
 				accessor.setPropertyValue("address.country.name", "UK"))
 			.satisfies(ex -> {
-				assertThat(ex.getPropertyName()).isEqualTo("address.contry");
+				assertThat(ex.getPropertyName()).isEqualTo("address.country");
 				assertThat(ex.getBeanClass()).isEqualTo(Person.class);
 			});
 		assertThat(target.address.country).isNull(); // Not touched
@@ -1445,8 +1445,7 @@ public abstract class AbstractPropertyAccessorTests {
 		AbstractPropertyAccessor accessor = createAccessor(target);
 		PropertyValue value = new PropertyValue("foo", "value");
 		value.setOptional(true);
-		assertThatExceptionOfType(NotWritablePropertyException.class).isThrownBy(() ->
-				accessor.setPropertyValue(value));
+		accessor.setPropertyValue(value);
 	}
 
 	@Test

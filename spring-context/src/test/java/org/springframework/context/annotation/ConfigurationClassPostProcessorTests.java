@@ -1080,9 +1080,10 @@ public class ConfigurationClassPostProcessorTests {
 
 	@Test
 	public void testNameClashBetweenConfigurationClassAndBean() {
-		ApplicationContext ctx = new AnnotationConfigApplicationContext(MyTestBean.class);
-		assertThatExceptionOfType(BeanDefinitionStoreException.class).isThrownBy(() ->
-				ctx.getBean("myTestBean", TestBean.class));
+		assertThatExceptionOfType(BeanDefinitionStoreException.class).isThrownBy(() -> {
+				ApplicationContext ctx = new AnnotationConfigApplicationContext(MyTestBean.class);
+				ctx.getBean("myTestBean", TestBean.class);
+		});
 	}
 
 	@Test

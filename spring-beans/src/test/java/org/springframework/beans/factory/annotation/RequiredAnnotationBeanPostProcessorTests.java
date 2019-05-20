@@ -109,7 +109,7 @@ public class RequiredAnnotationBeanPostProcessorTests {
 		assertThatExceptionOfType(BeanCreationException.class).isThrownBy(
 				factory::preInstantiateSingletons)
 			.withMessageContaining("Property")
-			.withMessageContaining("age")
+			.withMessageContaining("name")
 			.withMessageContaining("testBean");
 	}
 
