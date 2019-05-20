@@ -52,7 +52,7 @@ public class ByteBufferConverterTests {
 	public void byteArrayToByteBuffer() throws Exception {
 		byte[] bytes = new byte[] { 1, 2, 3 };
 		ByteBuffer convert = this.conversionService.convert(bytes, ByteBuffer.class);
-		assertThat(convert.array()).isNotEqualTo(sameInstance(bytes));
+		assertThat(convert.array()).isNotSameAs(bytes);
 		assertThat(convert.array()).isEqualTo(bytes);
 	}
 
@@ -61,7 +61,7 @@ public class ByteBufferConverterTests {
 		byte[] bytes = new byte[] { 1, 2, 3 };
 		ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
 		byte[] convert = this.conversionService.convert(byteBuffer, byte[].class);
-		assertThat(convert).isNotEqualTo(sameInstance(bytes));
+		assertThat(convert).isNotSameAs(bytes);
 		assertThat(convert).isEqualTo(bytes);
 	}
 
@@ -70,7 +70,7 @@ public class ByteBufferConverterTests {
 		byte[] bytes = new byte[] { 1, 2, 3 };
 		ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
 		OtherType convert = this.conversionService.convert(byteBuffer, OtherType.class);
-		assertThat(convert.bytes).isNotEqualTo(sameInstance(bytes));
+		assertThat(convert.bytes).isNotSameAs(bytes);
 		assertThat(convert.bytes).isEqualTo(bytes);
 	}
 
@@ -79,7 +79,7 @@ public class ByteBufferConverterTests {
 		byte[] bytes = new byte[] { 1, 2, 3 };
 		OtherType otherType = new OtherType(bytes);
 		ByteBuffer convert = this.conversionService.convert(otherType, ByteBuffer.class);
-		assertThat(convert.array()).isNotEqualTo(sameInstance(bytes));
+		assertThat(convert.array()).isNotSameAs(bytes);
 		assertThat(convert.array()).isEqualTo(bytes);
 	}
 
@@ -88,7 +88,7 @@ public class ByteBufferConverterTests {
 		byte[] bytes = new byte[] { 1, 2, 3 };
 		ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
 		ByteBuffer convert = this.conversionService.convert(byteBuffer, ByteBuffer.class);
-		assertThat(convert).isNotEqualTo(sameInstance(byteBuffer.rewind()));
+		assertThat(convert).isNotSameAs(byteBuffer.rewind());
 		assertThat(convert).isEqualTo(byteBuffer.rewind());
 		assertThat(convert).isEqualTo(ByteBuffer.wrap(bytes));
 		assertThat(convert.array()).isEqualTo(bytes);

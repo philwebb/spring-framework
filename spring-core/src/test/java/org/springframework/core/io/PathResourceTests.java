@@ -190,13 +190,13 @@ public class PathResourceTests {
 	@Test
 	public void getUrl() throws IOException {
 		PathResource resource = new PathResource(TEST_FILE);
-		assertThat(resource.getURL().toString(), Matchers.endsWith("core/io/example.properties"));
+		assertThat(resource.getURL().toString()).endsWith("core/io/example.properties");
 	}
 
 	@Test
 	public void getUri() throws IOException {
 		PathResource resource = new PathResource(TEST_FILE);
-		assertThat(resource.getURI().toString(), Matchers.endsWith("core/io/example.properties"));
+		assertThat(resource.getURI().toString()).endsWith("core/io/example.properties");
 	}
 
 	@Test
