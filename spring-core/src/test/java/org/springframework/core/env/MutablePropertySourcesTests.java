@@ -58,9 +58,9 @@ public class MutablePropertySourcesTests {
 		assertThat(sources.contains("f")).isTrue();
 		assertThat(sources.contains("g")).isFalse();
 
-		assertThat(sources.get("b")).isNotEqualTo(nullValue());
+		assertThat(sources.get("b")).isNotNull();
 		assertThat(sources.get("b").getProperty("p1")).isEqualTo("bValue");
-		assertThat(sources.get("d")).isNotEqualTo(nullValue());
+		assertThat(sources.get("d")).isNotNull();
 		assertThat(sources.get("d").getProperty("p1")).isEqualTo("dValue");
 
 		sources.addBefore("b", new MockPropertySource("a"));

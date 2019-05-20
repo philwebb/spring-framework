@@ -60,7 +60,7 @@ public class SimpleAsyncTaskExecutorTests {
 		SimpleAsyncTaskExecutor executor = new SimpleAsyncTaskExecutor(customPrefix);
 		ThreadNameHarvester task = new ThreadNameHarvester(monitor);
 		executeAndWait(executor, task, monitor);
-		assertThat(task.getThreadName(), startsWith(customPrefix));
+		assertThat(task.getThreadName()).startsWith(customPrefix);
 	}
 
 	@Test

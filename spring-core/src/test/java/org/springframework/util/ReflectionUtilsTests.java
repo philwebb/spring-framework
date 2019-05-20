@@ -376,7 +376,7 @@ public class ReflectionUtilsTests {
 	public void getDecalredMethodsReturnsCopy() {
 		Method[] m1 = ReflectionUtils.getDeclaredMethods(A.class);
 		Method[] m2 = ReflectionUtils.getDeclaredMethods(A.class);
-		assertThat(m1).isNotEqualTo(sameInstance(m2));
+		assertThat(m1). isNotSameAs(m2);
 	}
 
 	private static class ListSavingMethodCallback implements ReflectionUtils.MethodCallback {

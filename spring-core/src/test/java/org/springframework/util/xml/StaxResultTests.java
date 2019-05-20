@@ -64,7 +64,7 @@ public class StaxResultTests {
 		assertEquals("Invalid streamWriter returned", streamWriter, result.getXMLStreamWriter());
 		assertNull("EventWriter returned", result.getXMLEventWriter());
 		transformer.transform(source, result);
-		assertThat("Invalid result", stringWriter.toString(), isSimilarTo(XML));
+		assertThat(stringWriter.toString()).as("Invalid result").has(XmlContent.similarTo(XML));
 	}
 
 	@Test
@@ -77,7 +77,7 @@ public class StaxResultTests {
 		assertEquals("Invalid eventWriter returned", eventWriter, result.getXMLEventWriter());
 		assertNull("StreamWriter returned", result.getXMLStreamWriter());
 		transformer.transform(source, result);
-		assertThat("Invalid result", stringWriter.toString(), isSimilarTo(XML));
+		assertThat(stringWriter.toString()).as("Invalid result").has(XmlContent.similarTo(XML));
 	}
 
 }

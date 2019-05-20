@@ -61,7 +61,7 @@ public class ListBasedXMLEventReaderTests {
 		XMLEventWriter writer = this.outputFactory.createXMLEventWriter(resultWriter);
 		writer.add(reader);
 
-		assertThat(resultWriter.toString(), isSimilarTo(xml));
+		assertThat(resultWriter.toString()).has(XmlContent.similarTo(xml));
 	}
 
 	@Test

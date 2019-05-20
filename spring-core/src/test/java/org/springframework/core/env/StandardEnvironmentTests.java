@@ -407,12 +407,12 @@ public class StandardEnvironmentTests {
 			Map<?, ?> systemProperties = environment.getSystemProperties();
 			assertThat(systemProperties).isNotNull();
 			assertSame(systemProperties, System.getProperties());
-			assertThat(systemProperties.get(ALLOWED_PROPERTY_NAME)).isEqualTo((Object)ALLOWED_PROPERTY_VALUE);
-			assertThat(systemProperties.get(DISALLOWED_PROPERTY_NAME)).isEqualTo((Object)DISALLOWED_PROPERTY_VALUE);
+			assertThat(systemProperties.get(ALLOWED_PROPERTY_NAME)).isEqualTo(ALLOWED_PROPERTY_VALUE);
+			assertThat(systemProperties.get(DISALLOWED_PROPERTY_NAME)).isEqualTo(DISALLOWED_PROPERTY_VALUE);
 
 			// non-string keys and values work fine... until the security manager is introduced below
 			assertThat(systemProperties.get(STRING_PROPERTY_NAME)).isEqualTo(NON_STRING_PROPERTY_VALUE);
-			assertThat(systemProperties.get(NON_STRING_PROPERTY_NAME)).isEqualTo((Object)STRING_PROPERTY_VALUE);
+			assertThat(systemProperties.get(NON_STRING_PROPERTY_NAME)).isEqualTo(STRING_PROPERTY_VALUE);
 		}
 
 		SecurityManager oldSecurityManager = System.getSecurityManager();
@@ -498,7 +498,7 @@ public class StandardEnvironmentTests {
 			Map<String, Object> systemEnvironment = environment.getSystemEnvironment();
 			assertThat(systemEnvironment).isNotNull();
 			assertThat(systemEnvironment).isInstanceOf(ReadOnlySystemAttributesMap.class);
-			assertThat(systemEnvironment.get(ALLOWED_PROPERTY_NAME)).isEqualTo((Object)ALLOWED_PROPERTY_VALUE);
+			assertThat(systemEnvironment.get(ALLOWED_PROPERTY_NAME)).isEqualTo(ALLOWED_PROPERTY_VALUE);
 			assertThat(systemEnvironment.get(DISALLOWED_PROPERTY_NAME)).isNull();
 		}
 

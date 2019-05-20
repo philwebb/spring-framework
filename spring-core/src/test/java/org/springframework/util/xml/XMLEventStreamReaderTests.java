@@ -64,7 +64,7 @@ public class XMLEventStreamReaderTests {
 		transformer.transform(source, new StreamResult(writer));
 		Predicate<Node> nodeFilter = n ->
 				n.getNodeType() != Node.DOCUMENT_TYPE_NODE && n.getNodeType() != Node.PROCESSING_INSTRUCTION_NODE;
-		assertThat(writer.toString(), isSimilarTo(XML).withNodeFilter(nodeFilter));
+		assertThat(writer.toString()).has(XmlContent.similarTo(XML, nodeFilter));
 	}
 
 }

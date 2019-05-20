@@ -504,7 +504,7 @@ public class ConcurrentReferenceHashMapTests {
 		System.out.println(cacheTime.prettyPrint());
 
 		// We should be at least 4 time faster
-		assertThat(cacheTime.getTotalTimeSeconds()).isEqualTo(lessThan(mapTime.getTotalTimeSeconds() / 4.0));
+		assertThat(cacheTime.getTotalTimeSeconds()).isLessThan(mapTime.getTotalTimeSeconds() / 4.0);
 	}
 
 	@Test

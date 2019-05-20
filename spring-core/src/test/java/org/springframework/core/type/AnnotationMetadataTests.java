@@ -207,13 +207,9 @@ public class AnnotationMetadataTests {
 	private void assertMetaAnnotationOverrides(AnnotationMetadata metadata) {
 		AnnotationAttributes attributes = (AnnotationAttributes) metadata.getAnnotationAttributes(
 				TestComponentScan.class.getName(), false);
-		String[] basePackages = attributes.getStringArray("basePackages");
-		assertThat("length of basePackages[]", basePackages.length).isEqualTo(1);
-		assertThat("basePackages[0]", basePackages[0]).isEqualTo("org.example.componentscan");
-		String[] value = attributes.getStringArray("value");
-		assertThat("length of value[]", value.length).isEqualTo(0);
-		Class<?>[] basePackageClasses = attributes.getClassArray("basePackageClasses");
-		assertThat("length of basePackageClasses[]", basePackageClasses.length).isEqualTo(0);
+		assertThat(attributes.getStringArray("basePackages")).containsExactly("org.example.componentscan");
+		assertThat(attributes.getStringArray("value")).isEmpty();
+		assertThat(attributes.getClassArray("basePackageClasses")).isEmpty();
 	}
 
 	@Test  // SPR-11649
@@ -263,17 +259,17 @@ public class AnnotationMetadataTests {
 		AnnotationAttributes attributes1 = (AnnotationAttributes) metadata.getAnnotationAttributes(
 				NamedAnnotation1.class.getName(), false);
 		String name1 = attributes1.getString("name");
-		assertThat("name of NamedAnnotation1", name1).isEqualTo("name 1");
+		assertThat(name1).as("name of NamedAnnotation1").isEqualTo("name 1");
 
 		AnnotationAttributes attributes2 = (AnnotationAttributes) metadata.getAnnotationAttributes(
 				NamedAnnotation2.class.getName(), false);
 		String name2 = attributes2.getString("name");
-		assertThat("name of NamedAnnotation2", name2).isEqualTo("name 2");
+		assertThat(name2).as("name of NamedAnnotation2").isEqualTo("name 2");
 
 		AnnotationAttributes attributes3 = (AnnotationAttributes) metadata.getAnnotationAttributes(
 				NamedAnnotation3.class.getName(), false);
 		String name3 = attributes3.getString("name");
-		assertThat("name of NamedAnnotation3", name3).isEqualTo("name 3");
+		assertThat(name3).as("name of NamedAnnotation3").isEqualTo("name 3");
 	}
 
 	private void doTestAnnotationInfo(AnnotationMetadata metadata) {

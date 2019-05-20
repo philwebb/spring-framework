@@ -78,7 +78,7 @@ public class DomContentHandlerTests {
 		expected = documentBuilder.parse(new InputSource(new StringReader(XML_1)));
 		xmlReader.setContentHandler(handler);
 		xmlReader.parse(new InputSource(new StringReader(XML_1)));
-		assertThat("Invalid result", result, isSimilarTo(expected));
+		assertThat(result).as("Invalid result").has(XmlContent.similarTo(expected));
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public class DomContentHandlerTests {
 		expected = documentBuilder.parse(new InputSource(new StringReader(XML_1)));
 		xmlReader.setContentHandler(handler);
 		xmlReader.parse(new InputSource(new StringReader(XML_1)));
-		assertThat("Invalid result", result, isSimilarTo(expected));
+		assertThat(result).as("Invalid result").has(XmlContent.similarTo(expected));
 	}
 
 	@Test
@@ -98,7 +98,7 @@ public class DomContentHandlerTests {
 		expected = documentBuilder.parse(new InputSource(new StringReader(XML_2_EXPECTED)));
 		xmlReader.setContentHandler(handler);
 		xmlReader.parse(new InputSource(new StringReader(XML_2_SNIPPET)));
-		assertThat("Invalid result", result, isSimilarTo(expected));
+		assertThat(result).as("Invalid result").has(XmlContent.similarTo(expected));
 	}
 
 }

@@ -18,6 +18,8 @@ package org.springframework.util.xml;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLEventReader;
@@ -70,7 +72,7 @@ public class StaxSourceTests {
 		assertNull("EventReader returned", source.getXMLEventReader());
 		StringWriter writer = new StringWriter();
 		transformer.transform(source, new StreamResult(writer));
-		assertThat("Invalid result", writer.toString(), isSimilarTo(XML));
+		assertThat(writer.toString()).as("Invalid result").has(XmlContent.similarTo(XML));
 	}
 
 	@Test
@@ -83,7 +85,7 @@ public class StaxSourceTests {
 		Document expected = documentBuilder.parse(new InputSource(new StringReader(XML)));
 		Document result = documentBuilder.newDocument();
 		transformer.transform(source, new DOMResult(result));
-		assertThat("Invalid result", result, isSimilarTo(expected));
+		assertThat(result).as("Invalid result").has(XmlContent.similarTo(expected));
 	}
 
 	@Test
@@ -94,7 +96,7 @@ public class StaxSourceTests {
 		assertNull("StreamReader returned", source.getXMLStreamReader());
 		StringWriter writer = new StringWriter();
 		transformer.transform(source, new StreamResult(writer));
-		assertThat("Invalid result", writer.toString(), isSimilarTo(XML));
+		assertThat(writer.toString()).as("Invalid result").has(XmlContent.similarTo(XML));
 	}
 
 	@Test
@@ -107,6 +109,6 @@ public class StaxSourceTests {
 		Document expected = documentBuilder.parse(new InputSource(new StringReader(XML)));
 		Document result = documentBuilder.newDocument();
 		transformer.transform(source, new DOMResult(result));
-		assertThat("Invalid result", result, isSimilarTo(expected));
+		assertThat(result).as("Invalid result").has(XmlContent.similarTo(expected));
 	}
 }
