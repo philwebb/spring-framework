@@ -28,7 +28,8 @@ import org.springframework.tests.sample.beans.TestBean;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * A configuration class that registers a non-static placeholder configurer {@code @Bean}

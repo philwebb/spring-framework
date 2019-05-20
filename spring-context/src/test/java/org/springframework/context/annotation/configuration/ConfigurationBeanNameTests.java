@@ -28,7 +28,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Component;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * Unit tests ensuring that configuration class bean names as expressed via @Configuration

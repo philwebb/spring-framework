@@ -38,7 +38,8 @@ import org.xmlunit.matchers.CompareMatcher;
 
 import org.springframework.util.xml.StaxUtils;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import static org.junit.Assert.assertTrue;
 
 /**

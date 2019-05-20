@@ -20,7 +20,8 @@ import org.junit.Test;
 
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import static org.hamcrest.Matchers.equalTo;
 
 /**

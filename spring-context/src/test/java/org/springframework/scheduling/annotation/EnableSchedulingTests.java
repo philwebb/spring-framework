@@ -35,7 +35,8 @@ import org.springframework.scheduling.config.TaskManagementConfigUtils;
 import org.springframework.tests.Assume;
 import org.springframework.tests.TestGroup;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import static org.hamcrest.Matchers.both;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;

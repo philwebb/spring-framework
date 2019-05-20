@@ -24,7 +24,8 @@ import org.springframework.context.annotation.Configuration;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * Reproduces SPR-8756, which has been marked as "won't fix" for reasons

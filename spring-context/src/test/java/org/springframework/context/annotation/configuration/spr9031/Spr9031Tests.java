@@ -31,7 +31,8 @@ import org.springframework.context.annotation.configuration.spr9031.scanpackage.
 
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * Unit tests cornering bug SPR-9031.

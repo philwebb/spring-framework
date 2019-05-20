@@ -23,7 +23,8 @@ import java.util.Set;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * Unit tests covering the extensibility of {@link AbstractEnvironment}.

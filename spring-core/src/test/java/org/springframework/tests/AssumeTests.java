@@ -27,7 +27,8 @@ import static java.util.stream.Collectors.joining;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.startsWith;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import static org.junit.Assert.fail;
 import static org.springframework.tests.Assume.TEST_GROUPS_SYSTEM_PROPERTY;
 import static org.springframework.tests.TestGroup.CI;

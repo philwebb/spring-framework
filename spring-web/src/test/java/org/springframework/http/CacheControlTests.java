@@ -22,7 +22,8 @@ import java.util.concurrent.TimeUnit;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * @author Brian Clozel

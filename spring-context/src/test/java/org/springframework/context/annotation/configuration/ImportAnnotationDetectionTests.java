@@ -30,7 +30,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * Tests that @Import may be used both as a locally declared and meta-declared

@@ -23,7 +23,8 @@ import org.junit.rules.TestName;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;

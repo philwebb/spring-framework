@@ -19,7 +19,8 @@ package org.springframework.web.socket;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * Test fixture for {@link TextMessage}.

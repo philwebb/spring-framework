@@ -26,7 +26,8 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 public class SimpleCommandLineParserTests {
 

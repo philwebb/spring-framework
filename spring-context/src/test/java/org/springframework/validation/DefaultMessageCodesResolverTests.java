@@ -21,7 +21,8 @@ import org.junit.Test;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.validation.DefaultMessageCodesResolver.Format;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 

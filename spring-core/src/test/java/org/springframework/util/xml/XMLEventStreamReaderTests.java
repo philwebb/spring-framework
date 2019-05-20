@@ -30,7 +30,8 @@ import org.junit.Test;
 import org.w3c.dom.Node;
 import org.xmlunit.util.Predicate;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;
 
 public class XMLEventStreamReaderTests {

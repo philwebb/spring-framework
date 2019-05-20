@@ -33,7 +33,8 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.startsWith;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * Tests for {@link MockWebResponseBuilder}.

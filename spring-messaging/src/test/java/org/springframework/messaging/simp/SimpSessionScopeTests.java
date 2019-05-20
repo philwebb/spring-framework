@@ -25,7 +25,8 @@ import org.mockito.Mockito;
 
 import org.springframework.beans.factory.ObjectFactory;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.BDDMockito.given;

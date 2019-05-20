@@ -29,7 +29,8 @@ import org.springframework.tests.Assume;
 import org.springframework.tests.TestGroup;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * Unit tests for checking the behaviour of {@link CachingMetadataReaderFactory} under
