@@ -56,6 +56,7 @@ import org.xml.sax.ContentHandler;
 import org.xmlunit.builder.Input;
 import org.xmlunit.xpath.JAXPXPathEngine;
 
+import org.springframework.tests.XmlContent;
 import org.springframework.util.xml.StaxUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -107,7 +108,7 @@ public class XStreamMarshallerTests {
 		flightElement.appendChild(numberElement);
 		Text text = expected.createTextNode("42");
 		numberElement.appendChild(text);
-		assertThat("Marshaller writes invalid DOMResult", document, isSimilarTo(expected));
+		assertThat(XmlContent.of(document)).isSimilarTo(expected);
 	}
 
 	// see SWS-392
@@ -136,7 +137,7 @@ public class XStreamMarshallerTests {
 		eFlightElement.appendChild(eNumberElement);
 		Text text = expected.createTextNode("42");
 		eNumberElement.appendChild(text);
-		assertThat("Marshaller writes invalid DOMResult", existent, isSimilarTo(expected));
+		assertThat(XmlContent.of(existent)).isSimilarTo(expected);
 	}
 
 	@Test
@@ -144,7 +145,7 @@ public class XStreamMarshallerTests {
 		StringWriter writer = new StringWriter();
 		StreamResult result = new StreamResult(writer);
 		marshaller.marshal(flight, result);
-		assertThat("Marshaller writes invalid StreamResult", writer.toString(), isSimilarTo(EXPECTED_STRING));
+		assertThat(XmlContent.of(writer)).isSimilarTo(EXPECTED_STRING);
 	}
 
 	@Test
@@ -153,7 +154,7 @@ public class XStreamMarshallerTests {
 		StreamResult result = new StreamResult(os);
 		marshaller.marshal(flight, result);
 		String s = new String(os.toByteArray(), "UTF-8");
-		assertThat("Marshaller writes invalid StreamResult", s, isSimilarTo(EXPECTED_STRING));
+		assertThat(XmlContent.of(s)).isSimilarTo(EXPECTED_STRING);
 	}
 
 	@Test
@@ -178,7 +179,7 @@ public class XStreamMarshallerTests {
 		XMLStreamWriter streamWriter = outputFactory.createXMLStreamWriter(writer);
 		Result result = StaxUtils.createStaxResult(streamWriter);
 		marshaller.marshal(flight, result);
-		assertThat("Marshaller writes invalid StreamResult", writer.toString(), isSimilarTo(EXPECTED_STRING));
+		assertThat(XmlContent.of(writer)).isSimilarTo(EXPECTED_STRING);
 	}
 
 	@Test
@@ -188,7 +189,7 @@ public class XStreamMarshallerTests {
 		XMLEventWriter eventWriter = outputFactory.createXMLEventWriter(writer);
 		Result result = StaxUtils.createStaxResult(eventWriter);
 		marshaller.marshal(flight, result);
-		assertThat("Marshaller writes invalid StreamResult", writer.toString(), isSimilarTo(EXPECTED_STRING));
+		assertThat(XmlContent.of(writer)).isSimilarTo(EXPECTED_STRING);
 	}
 
 	@Test

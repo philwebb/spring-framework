@@ -72,7 +72,7 @@ public abstract class AbstractTransactionSupportingCacheManagerTests<T extends C
 
 	@Test
 	public void getOnExistingCache() {
-		assertThat(getCacheManager(false).getCache(CACHE_NAME)).isEqualTo(instanceOf(getCacheType()));
+		assertThat(getCacheManager(false).getCache(CACHE_NAME)).isInstanceOf(getCacheType());
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public abstract class AbstractTransactionSupportingCacheManagerTests<T extends C
 		addNativeCache(cacheName);
 		assertFalse(cacheManager.getCacheNames().contains(cacheName));
 		try {
-			assertThat(cacheManager.getCache(cacheName)).isEqualTo(instanceOf(getCacheType()));
+			assertThat(cacheManager.getCache(cacheName)).isInstanceOf(getCacheType());
 			assertTrue(cacheManager.getCacheNames().contains(cacheName));
 		}
 		finally {
@@ -100,8 +100,8 @@ public abstract class AbstractTransactionSupportingCacheManagerTests<T extends C
 
 	@Test
 	public void getTransactionalOnExistingCache() {
-		assertThat(getCacheManager(true).getCache(CACHE_NAME),
-				is(instanceOf(TransactionAwareCacheDecorator.class)));
+		assertThat(getCacheManager(true).getCache(CACHE_NAME))
+				.isInstanceOf(TransactionAwareCacheDecorator.class);
 	}
 
 	@Test
@@ -111,8 +111,8 @@ public abstract class AbstractTransactionSupportingCacheManagerTests<T extends C
 		assertFalse(cacheManager.getCacheNames().contains(cacheName));
 		addNativeCache(cacheName);
 		try {
-			assertThat(cacheManager.getCache(cacheName),
-					is(instanceOf(TransactionAwareCacheDecorator.class)));
+			assertThat(cacheManager.getCache(cacheName))
+					.isInstanceOf(TransactionAwareCacheDecorator.class);
 			assertTrue(cacheManager.getCacheNames().contains(cacheName));
 		}
 		finally {

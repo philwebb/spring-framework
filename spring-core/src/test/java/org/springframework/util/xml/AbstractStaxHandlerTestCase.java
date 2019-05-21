@@ -33,6 +33,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xmlunit.util.Predicate;
 
+import org.springframework.tests.XmlContent;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -79,7 +81,7 @@ public abstract class AbstractStaxHandlerTestCase {
 
 		xmlReader.parse(new InputSource(new StringReader(COMPLEX_XML)));
 
-		assertThat(stringWriter.toString()).has(XmlContent.similarTo(COMPLEX_XML, nodeFilter));
+		assertThat(XmlContent.of(stringWriter)).isSimilarTo(COMPLEX_XML, nodeFilter);
 	}
 
 	@Test
@@ -94,7 +96,7 @@ public abstract class AbstractStaxHandlerTestCase {
 
 		xmlReader.parse(new InputSource(new StringReader(COMPLEX_XML)));
 
-		assertThat(stringWriter.toString()).has(XmlContent.similarTo(COMPLEX_XML, nodeFilter));
+		assertThat(XmlContent.of(stringWriter)).isSimilarTo(COMPLEX_XML, nodeFilter);
 	}
 
 	@Test
@@ -115,7 +117,7 @@ public abstract class AbstractStaxHandlerTestCase {
 
 		xmlReader.parse(new InputSource(new StringReader(SIMPLE_XML)));
 
-		assertThat(result).has(XmlContent.similarTo(expected, nodeFilter));
+		assertThat(XmlContent.of(result)).isSimilarTo(expected, nodeFilter);
 	}
 
 	@Test
@@ -136,7 +138,7 @@ public abstract class AbstractStaxHandlerTestCase {
 
 		xmlReader.parse(new InputSource(new StringReader(SIMPLE_XML)));
 
-		assertThat(expected).has(XmlContent.similarTo(result, nodeFilter));
+		assertThat(XmlContent.of(result)).isSimilarTo(expected, nodeFilter);
 	}
 
 	protected abstract AbstractStaxHandler createStaxHandler(Result result) throws XMLStreamException;

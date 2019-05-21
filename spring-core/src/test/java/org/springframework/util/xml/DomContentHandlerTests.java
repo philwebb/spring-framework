@@ -27,6 +27,8 @@ import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
+import org.springframework.tests.XmlContent;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;
@@ -78,7 +80,7 @@ public class DomContentHandlerTests {
 		expected = documentBuilder.parse(new InputSource(new StringReader(XML_1)));
 		xmlReader.setContentHandler(handler);
 		xmlReader.parse(new InputSource(new StringReader(XML_1)));
-		assertThat(result).as("Invalid result").has(XmlContent.similarTo(expected));
+		assertThat(XmlContent.of(result)).as("Invalid result").isSimilarTo(expected);
 	}
 
 	@Test
@@ -87,7 +89,7 @@ public class DomContentHandlerTests {
 		expected = documentBuilder.parse(new InputSource(new StringReader(XML_1)));
 		xmlReader.setContentHandler(handler);
 		xmlReader.parse(new InputSource(new StringReader(XML_1)));
-		assertThat(result).as("Invalid result").has(XmlContent.similarTo(expected));
+		assertThat(XmlContent.of(result)).as("Invalid result").isSimilarTo(expected);
 	}
 
 	@Test
@@ -98,7 +100,7 @@ public class DomContentHandlerTests {
 		expected = documentBuilder.parse(new InputSource(new StringReader(XML_2_EXPECTED)));
 		xmlReader.setContentHandler(handler);
 		xmlReader.parse(new InputSource(new StringReader(XML_2_SNIPPET)));
-		assertThat(result).as("Invalid result").has(XmlContent.similarTo(expected));
+		assertThat(XmlContent.of(result)).as("Invalid result").isSimilarTo(expected);
 	}
 
 }

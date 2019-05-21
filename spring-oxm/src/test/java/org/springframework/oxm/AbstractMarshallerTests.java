@@ -36,6 +36,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 import org.xmlunit.matchers.CompareMatcher;
 
+import org.springframework.tests.XmlContent;
 import org.springframework.util.xml.StaxUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -86,7 +87,7 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 		flightElement.appendChild(numberElement);
 		Text text = expected.createTextNode("42");
 		numberElement.appendChild(text);
-		assertThat("Marshaller writes invalid DOMResult", result, isSimilarTo(expected));
+		assertThat(XmlContent.of(result)).isSimilarToIgnoringWhitepace(expected);
 	}
 
 	@Test
@@ -110,7 +111,7 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 		flightElement.appendChild(numberElement);
 		Text text = expected.createTextNode("42");
 		numberElement.appendChild(text);
-		assertThat("Marshaller writes invalid DOMResult", result, isSimilarTo(expected));
+		assertThat(XmlContent.of(result)).isSimilarToIgnoringWhitepace(expected);
 	}
 
 	@Test
@@ -118,7 +119,7 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 		StringWriter writer = new StringWriter();
 		StreamResult result = new StreamResult(writer);
 		marshaller.marshal(flights, result);
-		assertThat("Marshaller writes invalid StreamResult", writer.toString(), isSimilarTo(EXPECTED_STRING));
+		assertThat(XmlContent.of(writer)).isSimilarToIgnoringWhitepace(EXPECTED_STRING);
 	}
 
 	@Test
@@ -126,8 +127,7 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		StreamResult result = new StreamResult(os);
 		marshaller.marshal(flights, result);
-		assertThat("Marshaller writes invalid StreamResult", new String(os.toByteArray(), "UTF-8"),
-				isSimilarTo(EXPECTED_STRING));
+		assertThat(XmlContent.of(new String(os.toByteArray(), "UTF-8"))).isSimilarToIgnoringWhitepace(EXPECTED_STRING);
 	}
 
 	@Test
@@ -137,7 +137,7 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 		XMLStreamWriter streamWriter = outputFactory.createXMLStreamWriter(writer);
 		Result result = StaxUtils.createStaxResult(streamWriter);
 		marshaller.marshal(flights, result);
-		assertThat("Marshaller writes invalid StreamResult", writer.toString(), isSimilarTo(EXPECTED_STRING));
+		assertThat(XmlContent.of(writer)).isSimilarToIgnoringWhitepace(EXPECTED_STRING);
 	}
 
 	@Test
@@ -147,7 +147,7 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 		XMLEventWriter eventWriter = outputFactory.createXMLEventWriter(writer);
 		Result result = StaxUtils.createStaxResult(eventWriter);
 		marshaller.marshal(flights, result);
-		assertThat("Marshaller writes invalid StreamResult", writer.toString(), isSimilarTo(EXPECTED_STRING));
+		assertThat(XmlContent.of(writer)).isSimilarToIgnoringWhitepace(EXPECTED_STRING);
 	}
 
 	@Test
@@ -157,7 +157,7 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 		XMLStreamWriter streamWriter = outputFactory.createXMLStreamWriter(writer);
 		StAXResult result = new StAXResult(streamWriter);
 		marshaller.marshal(flights, result);
-		assertThat("Marshaller writes invalid StreamResult", writer.toString(), isSimilarTo(EXPECTED_STRING));
+		assertThat(XmlContent.of(writer)).isSimilarToIgnoringWhitepace(EXPECTED_STRING);
 	}
 
 	@Test
@@ -167,11 +167,6 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 		XMLEventWriter eventWriter = outputFactory.createXMLEventWriter(writer);
 		StAXResult result = new StAXResult(eventWriter);
 		marshaller.marshal(flights, result);
-		assertThat("Marshaller writes invalid StreamResult", writer.toString(), isSimilarTo(EXPECTED_STRING));
-	}
-
-	private static CompareMatcher isSimilarTo(final Object content) {
-		return CompareMatcher.isSimilarTo(content)
-				.ignoreWhitespace();
+		assertThat(XmlContent.of(writer)).isSimilarToIgnoringWhitepace(EXPECTED_STRING);
 	}
 }

@@ -29,6 +29,8 @@ import javax.xml.stream.events.XMLEvent;
 
 import org.junit.Test;
 
+import org.springframework.tests.XmlContent;
+
 import static javax.xml.stream.XMLStreamConstants.END_DOCUMENT;
 import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
 import static javax.xml.stream.XMLStreamConstants.START_DOCUMENT;
@@ -61,7 +63,7 @@ public class ListBasedXMLEventReaderTests {
 		XMLEventWriter writer = this.outputFactory.createXMLEventWriter(resultWriter);
 		writer.add(reader);
 
-		assertThat(resultWriter.toString()).has(XmlContent.similarTo(xml));
+		assertThat(XmlContent.of(resultWriter)).isSimilarTo(xml);
 	}
 
 	@Test
