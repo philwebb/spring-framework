@@ -52,6 +52,7 @@ import org.springframework.oxm.jaxb.test.FlightType;
 import org.springframework.oxm.jaxb.test.Flights;
 import org.springframework.oxm.jaxb.test.ObjectFactory;
 import org.springframework.oxm.mime.MimeContainer;
+import org.springframework.tests.XmlContent;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ReflectionUtils;
 
@@ -136,8 +137,7 @@ public class Jaxb2MarshallerTests extends AbstractMarshallerTests<Jaxb2Marshalle
 		StreamResult result = new StreamResult(writer);
 		marshaller.marshal(flights, result);
 		DifferenceEvaluator ev = chain(Default, downgradeDifferencesToEqual(XML_STANDALONE));
-		assertThat("Marshaller writes invalid StreamResult", writer.toString(),
-				isSimilarTo(EXPECTED_STRING).withDifferenceEvaluator(ev));
+		assertThat(XmlContent.from(writer)).isSimilarTo(EXPECTED_STRING, ev);
 	}
 
 	@Test
@@ -323,9 +323,7 @@ public class Jaxb2MarshallerTests extends AbstractMarshallerTests<Jaxb2Marshalle
 		Result result = new StreamResult(writer);
 		marshaller.marshal(airplane, result);
 		DifferenceEvaluator ev = chain(Default, downgradeDifferencesToEqual(XML_STANDALONE));
-		assertThat("Marshalling should use root Element",
-				writer.toString(),
-				isSimilarTo("<airplane><name>test</name></airplane>").withDifferenceEvaluator(ev));
+		assertThat(XmlContent.from(writer)).isSimilarTo("<airplane><name>test</name></airplane>", ev);
 	}
 
 	@Test  // SPR-10806

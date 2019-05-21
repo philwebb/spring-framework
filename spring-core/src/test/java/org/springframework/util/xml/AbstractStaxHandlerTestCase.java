@@ -81,7 +81,7 @@ public abstract class AbstractStaxHandlerTestCase {
 
 		xmlReader.parse(new InputSource(new StringReader(COMPLEX_XML)));
 
-		assertThat(XmlContent.of(stringWriter)).isSimilarTo(COMPLEX_XML, nodeFilter);
+		assertThat(XmlContent.from(stringWriter)).isSimilarTo(COMPLEX_XML, nodeFilter);
 	}
 
 	@Test
@@ -96,7 +96,7 @@ public abstract class AbstractStaxHandlerTestCase {
 
 		xmlReader.parse(new InputSource(new StringReader(COMPLEX_XML)));
 
-		assertThat(XmlContent.of(stringWriter)).isSimilarTo(COMPLEX_XML, nodeFilter);
+		assertThat(XmlContent.from(stringWriter)).isSimilarTo(COMPLEX_XML, nodeFilter);
 	}
 
 	@Test

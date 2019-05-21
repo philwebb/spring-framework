@@ -64,7 +64,7 @@ public class XMLEventStreamWriterTests {
 		streamWriter.writeEndDocument();
 
 		Predicate<Node> nodeFilter = n -> n.getNodeType() != Node.DOCUMENT_TYPE_NODE && n.getNodeType() != Node.PROCESSING_INSTRUCTION_NODE;
-		assertThat(XmlContent.of(stringWriter)).isSimilarTo(XML, nodeFilter);
+		assertThat(XmlContent.from(stringWriter)).isSimilarTo(XML, nodeFilter);
 	}
 
 

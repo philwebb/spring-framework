@@ -137,7 +137,7 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 		XMLStreamWriter streamWriter = outputFactory.createXMLStreamWriter(writer);
 		Result result = StaxUtils.createStaxResult(streamWriter);
 		marshaller.marshal(flights, result);
-		assertThat(XmlContent.of(writer)).isSimilarToIgnoringWhitepace(EXPECTED_STRING);
+		assertThat(XmlContent.from(writer)).isSimilarToIgnoringWhitepace(EXPECTED_STRING);
 	}
 
 	@Test
@@ -147,7 +147,7 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 		XMLEventWriter eventWriter = outputFactory.createXMLEventWriter(writer);
 		Result result = StaxUtils.createStaxResult(eventWriter);
 		marshaller.marshal(flights, result);
-		assertThat(XmlContent.of(writer)).isSimilarToIgnoringWhitepace(EXPECTED_STRING);
+		assertThat(XmlContent.from(writer)).isSimilarToIgnoringWhitepace(EXPECTED_STRING);
 	}
 
 	@Test
@@ -157,7 +157,7 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 		XMLStreamWriter streamWriter = outputFactory.createXMLStreamWriter(writer);
 		StAXResult result = new StAXResult(streamWriter);
 		marshaller.marshal(flights, result);
-		assertThat(XmlContent.of(writer)).isSimilarToIgnoringWhitepace(EXPECTED_STRING);
+		assertThat(XmlContent.from(writer)).isSimilarToIgnoringWhitepace(EXPECTED_STRING);
 	}
 
 	@Test
@@ -167,6 +167,6 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 		XMLEventWriter eventWriter = outputFactory.createXMLEventWriter(writer);
 		StAXResult result = new StAXResult(eventWriter);
 		marshaller.marshal(flights, result);
-		assertThat(XmlContent.of(writer)).isSimilarToIgnoringWhitepace(EXPECTED_STRING);
+		assertThat(XmlContent.from(writer)).isSimilarToIgnoringWhitepace(EXPECTED_STRING);
 	}
 }

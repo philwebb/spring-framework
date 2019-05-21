@@ -18,46 +18,36 @@ package org.springframework.tests;
 
 import java.io.StringWriter;
 
-import javax.xml.transform.Source;
-
 import org.assertj.core.api.AssertProvider;
-import org.xmlunit.builder.Input;
-import org.xmlunit.matchers.CompareMatcher;
+import org.xmlunit.assertj.XmlAssert;
 
 /**
- * Test util that allows {@link CompareMatcher XML Unit CompareMatchers} to be
- * used with AssertJ.
+ * {@link AssertProvider} to allow XML content assertions. Ultimately delegates
+ * to {@link XmlAssert}.
+ *
+ * @author Phillip Webb
  */
 public class XmlContent implements AssertProvider<XmlContentAssert> {
 
-	private Source source;
+	private Object source;
 
-	private XmlContent(Source source) {
+	private XmlContent(Object source) {
 	}
 
 	@Override
 	public XmlContentAssert assertThat() {
-		return new XmlContentAssert(this);
+		return new XmlContentAssert(this.source);
 	}
 
-	public static XmlContent of(Object object) {
-		if(object instanceof StringWriter) {
-			return of(object.toString());
+	public static XmlContent from(Object source) {
+		return of(source);
+	}
+
+	public static XmlContent of(Object source) {
+		if (source instanceof StringWriter) {
+			return of(source.toString());
 		}
-		return of(Input.from(object));
-	}
-
-	public static XmlContent of(String xml) {
-		return of(Input.from(xml));
-	}
-
-	public static XmlContent of(Input.Builder input) {
-		return of(input.build());
-	}
-
-	public static XmlContent of(Source source) {
 		return new XmlContent(source);
 	}
-
 
 }

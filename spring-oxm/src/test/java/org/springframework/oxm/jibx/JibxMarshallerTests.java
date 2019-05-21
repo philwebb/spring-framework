@@ -23,6 +23,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import org.springframework.oxm.AbstractMarshallerTests;
+import org.springframework.tests.XmlContent;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -82,7 +83,7 @@ public class JibxMarshallerTests extends AbstractMarshallerTests<JibxMarshaller>
 		String expected =
 				"<?xml version=\"1.0\"?>\n" + "<flights xmlns=\"http://samples.springframework.org/flight\">\n" +
 						"    <flight>\n" + "        <number>42</number>\n" + "    </flight>\n" + "</flights>";
-		assertThat(writer.toString(), isSimilarTo(expected).ignoreWhitespace());
+		assertThat(XmlContent.from(writer)).isSimilarToIgnoringWhitepace(expected);
 	}
 
 	@Test

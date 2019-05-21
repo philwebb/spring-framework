@@ -68,7 +68,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
-import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;
 
 /**
  * @author Arjen Poutsma
@@ -145,7 +144,7 @@ public class XStreamMarshallerTests {
 		StringWriter writer = new StringWriter();
 		StreamResult result = new StreamResult(writer);
 		marshaller.marshal(flight, result);
-		assertThat(XmlContent.of(writer)).isSimilarTo(EXPECTED_STRING);
+		assertThat(XmlContent.from(writer)).isSimilarTo(EXPECTED_STRING);
 	}
 
 	@Test
@@ -179,7 +178,7 @@ public class XStreamMarshallerTests {
 		XMLStreamWriter streamWriter = outputFactory.createXMLStreamWriter(writer);
 		Result result = StaxUtils.createStaxResult(streamWriter);
 		marshaller.marshal(flight, result);
-		assertThat(XmlContent.of(writer)).isSimilarTo(EXPECTED_STRING);
+		assertThat(XmlContent.from(writer)).isSimilarTo(EXPECTED_STRING);
 	}
 
 	@Test
@@ -189,7 +188,7 @@ public class XStreamMarshallerTests {
 		XMLEventWriter eventWriter = outputFactory.createXMLEventWriter(writer);
 		Result result = StaxUtils.createStaxResult(eventWriter);
 		marshaller.marshal(flight, result);
-		assertThat(XmlContent.of(writer)).isSimilarTo(EXPECTED_STRING);
+		assertThat(XmlContent.from(writer)).isSimilarTo(EXPECTED_STRING);
 	}
 
 	@Test
@@ -198,7 +197,7 @@ public class XStreamMarshallerTests {
 		byte[] buf = new byte[]{0x1, 0x2};
 		Writer writer = new StringWriter();
 		marshaller.marshal(buf, new StreamResult(writer));
-		assertThat(writer.toString(), isSimilarTo("<byte-array>AQI=</byte-array>"));
+		assertThat(XmlContent.from(writer)).isSimilarTo("<byte-array>AQI=</byte-array>");
 		Reader reader = new StringReader(writer.toString());
 		byte[] bufResult = (byte[]) marshaller.unmarshal(new StreamSource(reader));
 		assertTrue("Invalid result", Arrays.equals(buf, bufResult));
@@ -210,7 +209,7 @@ public class XStreamMarshallerTests {
 		Writer writer = new StringWriter();
 		marshaller.marshal(flight, new StreamResult(writer));
 		String expected = "<flight flightNumber=\"42\" />";
-		assertThat("Marshaller does not use attributes", writer.toString(), isSimilarTo(expected));
+		assertThat(XmlContent.from(writer)).isSimilarTo(expected);
 	}
 
 	@Test
@@ -219,7 +218,7 @@ public class XStreamMarshallerTests {
 		Writer writer = new StringWriter();
 		marshaller.marshal(flight, new StreamResult(writer));
 		String expected = "<flight flightNumber=\"42\" />";
-		assertThat("Marshaller does not use attributes", writer.toString(), isSimilarTo(expected));
+		assertThat(XmlContent.from(writer)).isSimilarTo(expected);
 	}
 
 	@Test
@@ -228,7 +227,7 @@ public class XStreamMarshallerTests {
 		Writer writer = new StringWriter();
 		marshaller.marshal(flight, new StreamResult(writer));
 		String expected = "<flight flightNumber=\"42\" />";
-		assertThat("Marshaller does not use attributes", writer.toString(), isSimilarTo(expected));
+		assertThat(XmlContent.from(writer)).isSimilarTo(expected);
 	}
 
 	@Test
@@ -237,7 +236,7 @@ public class XStreamMarshallerTests {
 		Writer writer = new StringWriter();
 		marshaller.marshal(flight, new StreamResult(writer));
 		String expected = "<flight flightNumber=\"42\" />";
-		assertThat("Marshaller does not use attributes", writer.toString(), isSimilarTo(expected));
+		assertThat(XmlContent.from(writer)).isSimilarTo(expected);
 	}
 
 	@Test
@@ -251,7 +250,7 @@ public class XStreamMarshallerTests {
 
 		Writer writer = new StringWriter();
 		marshaller.marshal(flight, new StreamResult(writer));
-		assertThat("Marshaller does not use attributes", writer.toString(), isSimilarTo(EXPECTED_STRING));
+		assertThat(XmlContent.from(writer)).isSimilarTo(EXPECTED_STRING);
 	}
 
 	@Test
@@ -265,7 +264,7 @@ public class XStreamMarshallerTests {
 
 		Writer writer = new StringWriter();
 		marshaller.marshal(flight, new StreamResult(writer));
-		assertThat("Marshaller does not use attributes", writer.toString(), isSimilarTo(EXPECTED_STRING));
+		assertThat(XmlContent.from(writer)).isSimilarTo(EXPECTED_STRING);
 	}
 
 	@Test
@@ -274,7 +273,7 @@ public class XStreamMarshallerTests {
 		Writer writer = new StringWriter();
 		marshaller.marshal(flight, new StreamResult(writer));
 		String expected = "<flight><flightNo>42</flightNo></flight>";
-		assertThat("Marshaller does not use aliases", writer.toString(), isSimilarTo(expected));
+		assertThat(XmlContent.from(writer)).isSimilarTo(expected);
 	}
 
 	@Test
@@ -349,7 +348,7 @@ public class XStreamMarshallerTests {
 		flight.setFlightNumber(42);
 		marshaller.marshal(flight, result);
 		String expected = "<flight><number>42</number></flight>";
-		assertThat("Marshaller writes invalid StreamResult", writer.toString(), isSimilarTo(expected));
+		assertThat(XmlContent.from(writer)).isSimilarTo(expected);
 	}
 
 

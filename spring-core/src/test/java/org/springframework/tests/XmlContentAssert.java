@@ -17,48 +17,42 @@
 package org.springframework.tests;
 
 import org.assertj.core.api.AbstractAssert;
-import org.assertj.core.api.HamcrestCondition;
 import org.w3c.dom.Node;
+import org.xmlunit.assertj.XmlAssert;
+import org.xmlunit.diff.DifferenceEvaluator;
 import org.xmlunit.util.Predicate;
 
-import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;
-
 /**
+ * Assertions exposed by {@link XmlContent}.
  *
- * @author pwebb
- * @since 5.2
+ * @author Phillip Webb
  */
-public class XmlContentAssert extends AbstractAssert<XmlContentAssert, XmlContent> {
+public class XmlContentAssert extends AbstractAssert<XmlContentAssert, Object> {
 
-	XmlContentAssert(XmlContent actual) {
+	XmlContentAssert(Object actual) {
 		super(actual, XmlContentAssert.class);
 	}
 
-	public XmlContent isSimilarTo(Object control) {
-		return null;
+	public XmlContentAssert isSimilarTo(Object control) {
+		XmlAssert.assertThat(actual).and(control).areSimilar();
+		return this;
 	}
 
-	public XmlContent isSimilarTo(Object control, Predicate<Node> nodefilter) {
-		return null;
+	public XmlContentAssert isSimilarTo(Object control, Predicate<Node> nodeFilter) {
+		XmlAssert.assertThat(actual).and(control).withNodeFilter(nodeFilter).areSimilar();
+		return this;
 	}
 
-	/**
-	 * @param expectedString
-	 */
-	public void isSimilarToIgnoringWhitepace(Object expectedString) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Auto-generated method stub");
+	public XmlContentAssert isSimilarToIgnoringWhitepace(Object control) {
+		XmlAssert.assertThat(actual).and(control).ignoreWhitespace().areSimilar();
+		return this;
 	}
 
-//	static HamcrestCondition<Object> similarTo(Object control) {
-//		return new HamcrestCondition<Object>(isSimilarTo(control));
-//	}
-//
-//	static HamcrestCondition<Object> similarTo(Object control,
-//			Predicate<Node> nodeFilter) {
-//		return new HamcrestCondition<Object>(
-//				isSimilarTo(control).withNodeFilter(nodeFilter));
-//	}
-
+	public XmlContentAssert isSimilarTo(String control,
+			DifferenceEvaluator differenceEvaluator) {
+		XmlAssert.assertThat(actual).and(control).withDifferenceEvaluator(
+				differenceEvaluator).areSimilar();
+		return this;
+	}
 
 }
