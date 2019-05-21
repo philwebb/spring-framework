@@ -33,6 +33,7 @@ import org.xmlunit.matchers.CompareMatcher;
 import org.springframework.http.MediaType;
 import org.springframework.http.MockHttpInputMessage;
 import org.springframework.http.MockHttpOutputMessage;
+import org.springframework.tests.XmlContent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -113,7 +114,8 @@ public class RssChannelHttpMessageConverterTests {
 				"<item><title>title1</title></item>" +
 				"<item><title>title2</title></item>" +
 				"</channel></rss>";
-		assertThat(outputMessage.getBodyAsString(StandardCharsets.UTF_8), isSimilarTo(expected));
+		assertThat(XmlContent.of(outputMessage.getBodyAsString(StandardCharsets.UTF_8)))
+				.isSimilarToIgnoringWhitespace(expected);
 	}
 
 	@Test
@@ -136,8 +138,4 @@ public class RssChannelHttpMessageConverterTests {
 				outputMessage.getHeaders().getContentType());
 	}
 
-	private static CompareMatcher isSimilarTo(final String content) {
-		return CompareMatcher.isSimilarTo(content)
-				.ignoreWhitespace();
-	}
 }

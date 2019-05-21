@@ -151,7 +151,7 @@ public class FormHttpMessageConverterTests {
 
 		final MediaType contentType = outputMessage.getHeaders().getContentType();
 		// SPR-17030
-		assertThat(contentType.getParameters().keySet(), Matchers.contains("charset", "boundary"));
+		assertThat(contentType.getParameters()).containsKeys("charset", "boundary");
 
 		// see if Commons FileUpload can read what we wrote
 		FileItemFactory fileItemFactory = new DiskFileItemFactory();
@@ -235,8 +235,9 @@ public class FormHttpMessageConverterTests {
 		// With developer builds we get: <MyBean><string>foo</string></MyBean>
 		// But on CI server we get: <MyBean xmlns=""><string>foo</string></MyBean>
 		// So... we make a compromise:
-		assertThat(item.getString(),
-				allOf(startsWith("<MyBean"), endsWith("><string>foo</string></MyBean>")));
+		assertThat(item.getString())
+				.startsWith("<MyBean")
+				.endsWith("><string>foo</string></MyBean>");
 	}
 
 

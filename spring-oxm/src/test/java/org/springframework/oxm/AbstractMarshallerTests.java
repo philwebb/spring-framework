@@ -87,7 +87,7 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 		flightElement.appendChild(numberElement);
 		Text text = expected.createTextNode("42");
 		numberElement.appendChild(text);
-		assertThat(XmlContent.of(result)).isSimilarToIgnoringWhitepace(expected);
+		assertThat(XmlContent.of(result)).isSimilarToIgnoringWhitespace(expected);
 	}
 
 	@Test
@@ -111,7 +111,7 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 		flightElement.appendChild(numberElement);
 		Text text = expected.createTextNode("42");
 		numberElement.appendChild(text);
-		assertThat(XmlContent.of(result)).isSimilarToIgnoringWhitepace(expected);
+		assertThat(XmlContent.of(result)).isSimilarToIgnoringWhitespace(expected);
 	}
 
 	@Test
@@ -119,7 +119,7 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 		StringWriter writer = new StringWriter();
 		StreamResult result = new StreamResult(writer);
 		marshaller.marshal(flights, result);
-		assertThat(XmlContent.of(writer)).isSimilarToIgnoringWhitepace(EXPECTED_STRING);
+		assertThat(XmlContent.of(writer)).isSimilarToIgnoringWhitespace(EXPECTED_STRING);
 	}
 
 	@Test
@@ -127,7 +127,7 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		StreamResult result = new StreamResult(os);
 		marshaller.marshal(flights, result);
-		assertThat(XmlContent.of(new String(os.toByteArray(), "UTF-8"))).isSimilarToIgnoringWhitepace(EXPECTED_STRING);
+		assertThat(XmlContent.of(new String(os.toByteArray(), "UTF-8"))).isSimilarToIgnoringWhitespace(EXPECTED_STRING);
 	}
 
 	@Test
@@ -137,7 +137,7 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 		XMLStreamWriter streamWriter = outputFactory.createXMLStreamWriter(writer);
 		Result result = StaxUtils.createStaxResult(streamWriter);
 		marshaller.marshal(flights, result);
-		assertThat(XmlContent.from(writer)).isSimilarToIgnoringWhitepace(EXPECTED_STRING);
+		assertThat(XmlContent.from(writer)).isSimilarToIgnoringWhitespace(EXPECTED_STRING);
 	}
 
 	@Test
@@ -147,7 +147,7 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 		XMLEventWriter eventWriter = outputFactory.createXMLEventWriter(writer);
 		Result result = StaxUtils.createStaxResult(eventWriter);
 		marshaller.marshal(flights, result);
-		assertThat(XmlContent.from(writer)).isSimilarToIgnoringWhitepace(EXPECTED_STRING);
+		assertThat(XmlContent.from(writer)).isSimilarToIgnoringWhitespace(EXPECTED_STRING);
 	}
 
 	@Test
@@ -157,7 +157,7 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 		XMLStreamWriter streamWriter = outputFactory.createXMLStreamWriter(writer);
 		StAXResult result = new StAXResult(streamWriter);
 		marshaller.marshal(flights, result);
-		assertThat(XmlContent.from(writer)).isSimilarToIgnoringWhitepace(EXPECTED_STRING);
+		assertThat(XmlContent.from(writer)).isSimilarToIgnoringWhitespace(EXPECTED_STRING);
 	}
 
 	@Test
@@ -167,6 +167,6 @@ public abstract class AbstractMarshallerTests<M extends Marshaller> {
 		XMLEventWriter eventWriter = outputFactory.createXMLEventWriter(writer);
 		StAXResult result = new StAXResult(eventWriter);
 		marshaller.marshal(flights, result);
-		assertThat(XmlContent.from(writer)).isSimilarToIgnoringWhitepace(EXPECTED_STRING);
+		assertThat(XmlContent.from(writer)).isSimilarToIgnoringWhitespace(EXPECTED_STRING);
 	}
 }

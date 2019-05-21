@@ -44,6 +44,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.MockHttpInputMessage;
 import org.springframework.http.MockHttpOutputMessage;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.tests.XmlContent;
 import org.springframework.util.FileCopyUtils;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -144,7 +145,7 @@ public class SourceHttpMessageConverterTests {
 		SAXSource result = (SAXSource) converter.read(SAXSource.class, inputMessage);
 		InputSource inputSource = result.getInputSource();
 		String s = FileCopyUtils.copyToString(new InputStreamReader(inputSource.getByteStream()));
-		assertThat("Invalid result", s, isSimilarTo(BODY));
+		assertThat(XmlContent.from(s)).isSimilarTo(BODY);
 	}
 
 	@Test
@@ -271,7 +272,7 @@ public class SourceHttpMessageConverterTests {
 		inputMessage.getHeaders().setContentType(new MediaType("application", "xml"));
 		StreamSource result = (StreamSource) converter.read(StreamSource.class, inputMessage);
 		String s = FileCopyUtils.copyToString(new InputStreamReader(result.getInputStream()));
-		assertThat("Invalid result", s, isSimilarTo(BODY));
+		assertThat(XmlContent.of(s)).isSimilarTo(BODY);
 	}
 
 	@Test
@@ -293,8 +294,8 @@ public class SourceHttpMessageConverterTests {
 
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		converter.write(domSource, null, outputMessage);
-		assertThat("Invalid result", outputMessage.getBodyAsString(StandardCharsets.UTF_8),
-				isSimilarTo("<root>Hello World</root>"));
+		assertThat(XmlContent.of(outputMessage.getBodyAsString(StandardCharsets.UTF_8)))
+				.isSimilarTo("<root>Hello World</root>");
 		assertEquals("Invalid content-type", new MediaType("application", "xml"),
 				outputMessage.getHeaders().getContentType());
 		assertEquals("Invalid content-length", outputMessage.getBodyAsBytes().length,
@@ -308,8 +309,8 @@ public class SourceHttpMessageConverterTests {
 
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		converter.write(saxSource, null, outputMessage);
-		assertThat("Invalid result", outputMessage.getBodyAsString(StandardCharsets.UTF_8),
-				isSimilarTo("<root>Hello World</root>"));
+		assertThat(XmlContent.of(outputMessage.getBodyAsString(StandardCharsets.UTF_8)))
+				.isSimilarTo("<root>Hello World</root>");
 		assertEquals("Invalid content-type", new MediaType("application", "xml"),
 				outputMessage.getHeaders().getContentType());
 	}
@@ -321,8 +322,8 @@ public class SourceHttpMessageConverterTests {
 
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		converter.write(streamSource, null, outputMessage);
-		assertThat("Invalid result", outputMessage.getBodyAsString(StandardCharsets.UTF_8),
-				isSimilarTo("<root>Hello World</root>"));
+		assertThat(XmlContent.of(outputMessage.getBodyAsString(StandardCharsets.UTF_8)))
+				.isSimilarTo("<root>Hello World</root>");
 		assertEquals("Invalid content-type", new MediaType("application", "xml"),
 				outputMessage.getHeaders().getContentType());
 	}

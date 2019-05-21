@@ -83,7 +83,7 @@ public class JibxMarshallerTests extends AbstractMarshallerTests<JibxMarshaller>
 		String expected =
 				"<?xml version=\"1.0\"?>\n" + "<flights xmlns=\"http://samples.springframework.org/flight\">\n" +
 						"    <flight>\n" + "        <number>42</number>\n" + "    </flight>\n" + "</flights>";
-		assertThat(XmlContent.from(writer)).isSimilarToIgnoringWhitepace(expected);
+		assertThat(XmlContent.from(writer)).isSimilarToIgnoringWhitespace(expected);
 	}
 
 	@Test

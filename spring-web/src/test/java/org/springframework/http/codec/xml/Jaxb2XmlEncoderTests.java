@@ -32,6 +32,7 @@ import org.springframework.core.codec.AbstractEncoderTestCase;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.MediaType;
 import org.springframework.http.codec.Pojo;
+import org.springframework.tests.XmlContent;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -110,7 +111,7 @@ public class Jaxb2XmlEncoderTests extends AbstractEncoderTestCase<Jaxb2XmlEncode
 			dataBuffer.read(resultBytes);
 			release(dataBuffer);
 			String actual = new String(resultBytes, UTF_8);
-			assertThat(actual, isSimilarTo(expected));
+			assertThat(XmlContent.from(actual)).isSimilarTo(expected);
 		};
 	}
 

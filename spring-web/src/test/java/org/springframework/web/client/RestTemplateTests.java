@@ -635,7 +635,7 @@ public class RestTemplateTests {
 		entityHeaders.add("MyHeader", "MyEntityValue");
 		HttpEntity<Void> entity = new HttpEntity<>(null, entityHeaders);
 		template.exchange("https://example.com", POST, entity, Void.class);
-		assertThat(requestHeaders.get("MyHeader"), contains("MyEntityValue", "MyInterceptorValue"));
+		assertThat(requestHeaders.get("MyHeader")).contains("MyEntityValue", "MyInterceptorValue");
 
 		verify(response).close();
 	}
@@ -659,7 +659,7 @@ public class RestTemplateTests {
 		entityHeaders.add("MyHeader", "MyEntityValue");
 		HttpEntity<String> entity = new HttpEntity<>("Hello World", entityHeaders);
 		template.exchange("https://example.com", POST, entity, Void.class);
-		assertThat(requestHeaders.get("MyHeader"), contains("MyEntityValue", "MyInterceptorValue"));
+		assertThat(requestHeaders.get("MyHeader")).contains("MyEntityValue", "MyInterceptorValue");
 
 		verify(response).close();
 	}

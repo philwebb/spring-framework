@@ -18,6 +18,7 @@ package org.springframework.http.codec;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
@@ -63,9 +64,10 @@ public class ResourceHttpMessageWriterTests {
 
 
 	@Test
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void getWritableMediaTypes() throws Exception {
-		assertThat(this.writer.getWritableMediaTypes(),
-				containsInAnyOrder(MimeTypeUtils.APPLICATION_OCTET_STREAM, MimeTypeUtils.ALL));
+		assertThat((List) this.writer.getWritableMediaTypes())
+				.containsExactlyInAnyOrder(MimeTypeUtils.APPLICATION_OCTET_STREAM, MimeTypeUtils.ALL);
 	}
 
 	@Test
@@ -102,7 +104,7 @@ public class ResourceHttpMessageWriterTests {
 		String contentType = headers.getContentType().toString();
 		String boundary = contentType.substring(30);
 
-		assertThat(contentType, startsWith("multipart/byteranges;boundary="));
+		assertThat(contentType).startsWith("multipart/byteranges;boundary=");
 
 		StepVerifier.create(this.response.getBodyAsString())
 				.consumeNextWith(content -> {

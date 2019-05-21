@@ -361,8 +361,8 @@ public class MappingJackson2HttpMessageConverterTests {
 
 		String result = outputMessage.getBodyAsString(StandardCharsets.UTF_8);
 		assertThat(result).contains("\"withView1\":\"with\"");
-		assertThat(result).isNotEqualTo(containsString("\"withView2\":\"with\""));
-		assertThat(result).isNotEqualTo(containsString("\"withoutView\":\"without\""));
+		assertThat(result).doesNotContain("\"withView2\":\"with\"");
+		assertThat(result).doesNotContain("\"withoutView\":\"without\"");
 	}
 
 	@Test
@@ -378,8 +378,8 @@ public class MappingJackson2HttpMessageConverterTests {
 		this.converter.writeInternal(jacksonValue, null, outputMessage);
 
 		String result = outputMessage.getBodyAsString(StandardCharsets.UTF_8);
-		assertThat(result).isNotEqualTo(containsString("\"withView1\":\"with\""));
-		assertThat(result).isNotEqualTo(containsString("\"withView2\":\"with\""));
+		assertThat(result).doesNotContain("\"withView1\":\"with\"");
+		assertThat(result).doesNotContain("\"withView2\":\"with\"");
 		assertThat(result).contains("\"withoutView\":\"without\"");
 	}
 
@@ -398,7 +398,7 @@ public class MappingJackson2HttpMessageConverterTests {
 
 		String result = outputMessage.getBodyAsString(StandardCharsets.UTF_8);
 		assertThat(result).contains("\"property1\":\"value\"");
-		assertThat(result).isNotEqualTo(containsString("\"property2\":\"value\""));
+		assertThat(result).doesNotContain("\"property2\":\"value\"");
 	}
 
 	@Test  // SPR-13318

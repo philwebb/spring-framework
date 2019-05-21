@@ -437,7 +437,7 @@ public class Jackson2ObjectMapperBuilderTests {
 		objectMapper = Jackson2ObjectMapperBuilder.json().filters(provider).build();
 		output = objectMapper.writeValueAsString(bean);
 		assertThat(output).contains("value1");
-		assertThat(output).isNotEqualTo(containsString("value2"));
+		assertThat(output).doesNotContain("value2");
 	}
 
 	@Test
@@ -565,7 +565,7 @@ public class Jackson2ObjectMapperBuilderTests {
 		String json = objectMapper.writeValueAsString(new JacksonVisibilityBean());
 		assertThat(json).contains("property1");
 		assertThat(json).contains("property2");
-		assertThat(json).isNotEqualTo(containsString("property3"));
+		assertThat(json).doesNotContain("property3");
 	}
 
 	public static class CustomIntegerModule extends Module {

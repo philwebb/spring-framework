@@ -208,7 +208,7 @@ public class HttpHeadersTests {
 		headers.add(HttpHeaders.IF_MATCH, "W/\"v2,1\", \"v2,2\"");
 		assertEquals("Invalid If-Match header", "\"v2,0\"", headers.get(HttpHeaders.IF_MATCH).get(0));
 		assertEquals("Invalid If-Match header", "W/\"v2,1\", \"v2,2\"", headers.get(HttpHeaders.IF_MATCH).get(1));
-		assertThat(headers.getIfMatch(), Matchers.contains("\"v2,0\"", "W/\"v2,1\"", "\"v2,2\""));
+		assertThat(headers.getIfMatch()).contains("\"v2,0\"", "W/\"v2,1\"", "\"v2,2\"");
 	}
 
 	@Test
@@ -235,7 +235,7 @@ public class HttpHeadersTests {
 		ifNoneMatchList.add(ifNoneMatch1);
 		ifNoneMatchList.add(ifNoneMatch2);
 		headers.setIfNoneMatch(ifNoneMatchList);
-		assertThat(headers.getIfNoneMatch(), Matchers.contains("\"v2.6\"", "\"v2.7\"", "\"v2.8\""));
+		assertThat(headers.getIfNoneMatch()).contains("\"v2.6\"", "\"v2.7\"", "\"v2.8\"");
 		assertEquals("Invalid If-None-Match header", "\"v2.6\", \"v2.7\", \"v2.8\"", headers.getFirst("If-None-Match"));
 	}
 
@@ -385,7 +385,7 @@ public class HttpHeadersTests {
 	@Test  // SPR-11917
 	public void getAllowEmptySet() {
 		headers.setAllow(Collections.emptySet());
-		assertThat(headers.getAllow(), Matchers.emptyCollectionOf(HttpMethod.class));
+		assertThat(headers.getAllow()).isEmpty();
 	}
 
 	@Test
@@ -400,7 +400,7 @@ public class HttpHeadersTests {
 	@Test
 	public void accessControlAllowHeaders() {
 		List<String> allowedHeaders = headers.getAccessControlAllowHeaders();
-		assertThat(allowedHeaders, Matchers.emptyCollectionOf(String.class));
+		assertThat(allowedHeaders).isEmpty();
 		headers.setAccessControlAllowHeaders(Arrays.asList("header1", "header2"));
 		allowedHeaders = headers.getAccessControlAllowHeaders();
 		assertEquals(allowedHeaders, Arrays.asList("header1", "header2"));
@@ -409,7 +409,7 @@ public class HttpHeadersTests {
 	@Test
 	public void accessControlAllowHeadersMultipleValues() {
 		List<String> allowedHeaders = headers.getAccessControlAllowHeaders();
-		assertThat(allowedHeaders, Matchers.emptyCollectionOf(String.class));
+		assertThat(allowedHeaders).isEmpty();
 		headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "header1, header2");
 		headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "header3");
 		allowedHeaders = headers.getAccessControlAllowHeaders();
@@ -419,7 +419,7 @@ public class HttpHeadersTests {
 	@Test
 	public void accessControlAllowMethods() {
 		List<HttpMethod> allowedMethods = headers.getAccessControlAllowMethods();
-		assertThat(allowedMethods, Matchers.emptyCollectionOf(HttpMethod.class));
+		assertThat(allowedMethods).isEmpty();
 		headers.setAccessControlAllowMethods(Arrays.asList(HttpMethod.GET, HttpMethod.POST));
 		allowedMethods = headers.getAccessControlAllowMethods();
 		assertEquals(allowedMethods, Arrays.asList(HttpMethod.GET, HttpMethod.POST));
@@ -435,7 +435,7 @@ public class HttpHeadersTests {
 	@Test
 	public void accessControlExposeHeaders() {
 		List<String> exposedHeaders = headers.getAccessControlExposeHeaders();
-		assertThat(exposedHeaders, Matchers.emptyCollectionOf(String.class));
+		assertThat(exposedHeaders).isEmpty();
 		headers.setAccessControlExposeHeaders(Arrays.asList("header1", "header2"));
 		exposedHeaders = headers.getAccessControlExposeHeaders();
 		assertEquals(exposedHeaders, Arrays.asList("header1", "header2"));
@@ -451,7 +451,7 @@ public class HttpHeadersTests {
 	@Test
 	public void accessControlRequestHeaders() {
 		List<String> requestHeaders = headers.getAccessControlRequestHeaders();
-		assertThat(requestHeaders, Matchers.emptyCollectionOf(String.class));
+		assertThat(requestHeaders).isEmpty();
 		headers.setAccessControlRequestHeaders(Arrays.asList("header1", "header2"));
 		requestHeaders = headers.getAccessControlRequestHeaders();
 		assertEquals(requestHeaders, Arrays.asList("header1", "header2"));

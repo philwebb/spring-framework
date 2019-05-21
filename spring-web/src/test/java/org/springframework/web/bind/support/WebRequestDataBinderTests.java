@@ -150,14 +150,9 @@ public class WebRequestDataBinderTests {
 		request.addParameter("_someMap", "visible");
 
 		binder.bind(new ServletWebRequest(request));
-		assertThat(target.getSomeSet()).isNotNull();
-		assertThat(target.getSomeSet(), isA(Set.class));
-
-		assertThat(target.getSomeList()).isNotNull();
-		assertThat(target.getSomeList(), isA(List.class));
-
-		assertThat(target.getSomeMap()).isNotNull();
-		assertThat(target.getSomeMap(), isA(Map.class));
+		assertThat(target.getSomeSet()).isNotNull().isInstanceOf(Set.class);
+		assertThat(target.getSomeList()).isNotNull().isInstanceOf(List.class);
+		assertThat(target.getSomeMap()).isNotNull().isInstanceOf(Map.class);
 	}
 
 	@Test

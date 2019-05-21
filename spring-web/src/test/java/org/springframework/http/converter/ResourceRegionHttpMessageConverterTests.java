@@ -123,7 +123,7 @@ public class ResourceRegionHttpMessageConverterTests {
 		converter.write(regions, MediaType.TEXT_PLAIN, outputMessage);
 
 		HttpHeaders headers = outputMessage.getHeaders();
-		assertThat(headers.getContentType().toString(), Matchers.startsWith("multipart/byteranges;boundary="));
+		assertThat(headers.getContentType().toString()).startsWith("multipart/byteranges;boundary=");
 		String boundary = "--" + headers.getContentType().toString().substring(30);
 		String content = outputMessage.getBodyAsString(StandardCharsets.UTF_8);
 		String[] ranges = StringUtils.tokenizeToStringArray(content, "\r\n", false, true);

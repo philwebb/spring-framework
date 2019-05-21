@@ -20,6 +20,7 @@ import org.assertj.core.api.AbstractAssert;
 import org.w3c.dom.Node;
 import org.xmlunit.assertj.XmlAssert;
 import org.xmlunit.diff.DifferenceEvaluator;
+import org.xmlunit.diff.NodeMatcher;
 import org.xmlunit.util.Predicate;
 
 /**
@@ -43,15 +44,21 @@ public class XmlContentAssert extends AbstractAssert<XmlContentAssert, Object> {
 		return this;
 	}
 
-	public XmlContentAssert isSimilarToIgnoringWhitepace(Object control) {
-		XmlAssert.assertThat(actual).and(control).ignoreWhitespace().areSimilar();
-		return this;
-	}
-
 	public XmlContentAssert isSimilarTo(String control,
 			DifferenceEvaluator differenceEvaluator) {
 		XmlAssert.assertThat(actual).and(control).withDifferenceEvaluator(
 				differenceEvaluator).areSimilar();
+		return this;
+	}
+
+	public XmlContentAssert isSimilarToIgnoringWhitespace(Object control) {
+		XmlAssert.assertThat(actual).and(control).ignoreWhitespace().areSimilar();
+		return this;
+	}
+
+
+	public XmlContentAssert isSimilarToIgnoringWhitespace(String control, NodeMatcher nodeMatcher) {
+		XmlAssert.assertThat(actual).and(control).ignoreWhitespace().withNodeMatcher(nodeMatcher).areSimilar();
 		return this;
 	}
 

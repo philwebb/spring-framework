@@ -45,15 +45,15 @@ public class StandardServletEnvironmentTests {
 		MutablePropertySources sources = env.getPropertySources();
 
 		assertThat(sources.precedenceOf(PropertySource.named(
-				StandardServletEnvironment.SERVLET_CONFIG_PROPERTY_SOURCE_NAME)), equalTo(0));
+				StandardServletEnvironment.SERVLET_CONFIG_PROPERTY_SOURCE_NAME))).isEqualTo(0);
 		assertThat(sources.precedenceOf(PropertySource.named(
-				StandardServletEnvironment.SERVLET_CONTEXT_PROPERTY_SOURCE_NAME)), equalTo(1));
+				StandardServletEnvironment.SERVLET_CONTEXT_PROPERTY_SOURCE_NAME))).isEqualTo(1);
 		assertThat(sources.precedenceOf(PropertySource.named(
-				StandardServletEnvironment.JNDI_PROPERTY_SOURCE_NAME)), equalTo(2));
+				StandardServletEnvironment.JNDI_PROPERTY_SOURCE_NAME))).isEqualTo(2);
 		assertThat(sources.precedenceOf(PropertySource.named(
-				StandardEnvironment.SYSTEM_PROPERTIES_PROPERTY_SOURCE_NAME)), equalTo(3));
+				StandardEnvironment.SYSTEM_PROPERTIES_PROPERTY_SOURCE_NAME))).isEqualTo(3);
 		assertThat(sources.precedenceOf(PropertySource.named(
-				StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME)), equalTo(4));
+				StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME))).isEqualTo(4);
 		assertThat(sources).hasSize(5);
 	}
 
