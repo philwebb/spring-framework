@@ -577,7 +577,7 @@ public class HttpEntityMethodProcessorMockTests {
 		then(resourceMessageConverter).should(times(1)).write(
 				any(InputStreamResource.class), eq(APPLICATION_OCTET_STREAM), any(HttpOutputMessage.class));
 		assertEquals(200, servletResponse.getStatus());
-		assertThat(servletResponse.getHeader(HttpHeaders.ACCEPT_RANGES), Matchers.isEmptyOrNullString());
+		assertThat(servletResponse.getHeader(HttpHeaders.ACCEPT_RANGES)).isNull();
 	}
 
 	@Test //SPR-16921

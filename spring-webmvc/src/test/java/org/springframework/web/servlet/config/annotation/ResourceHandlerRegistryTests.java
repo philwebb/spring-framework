@@ -112,12 +112,11 @@ public class ResourceHandlerRegistryTests {
 
 	@Test
 	public void cacheControl() {
-		assertThat(getHandler("/resources/**").getCacheControl(),
-				Matchers.nullValue());
+		assertThat(getHandler("/resources/**").getCacheControl()).isNull();
 
 		this.registration.setCacheControl(CacheControl.noCache().cachePrivate());
-		assertThat(getHandler("/resources/**").getCacheControl().getHeaderValue(),
-				Matchers.equalTo(CacheControl.noCache().cachePrivate().getHeaderValue()));
+		assertThat(getHandler("/resources/**").getCacheControl().getHeaderValue())
+				.isEqualTo(CacheControl.noCache().cachePrivate().getHeaderValue());
 	}
 
 	@Test
@@ -142,7 +141,7 @@ public class ResourceHandlerRegistryTests {
 
 		ResourceHttpRequestHandler handler = getHandler("/resources/**");
 		List<ResourceResolver> resolvers = handler.getResourceResolvers();
-		assertThat(resolvers.toString(), resolvers, Matchers.hasSize(4));
+		assertThat(resolvers).hasSize(4);
 		assertThat(resolvers.get(0)).isInstanceOf(CachingResourceResolver.class);
 		CachingResourceResolver cachingResolver = (CachingResourceResolver) resolvers.get(0);
 		assertThat(cachingResolver.getCache()).isInstanceOf(ConcurrentMapCache.class);
@@ -151,7 +150,7 @@ public class ResourceHandlerRegistryTests {
 		assertThat(resolvers.get(3)).isInstanceOf(PathResourceResolver.class);
 
 		List<ResourceTransformer> transformers = handler.getResourceTransformers();
-		assertThat(transformers, Matchers.hasSize(2));
+		assertThat(transformers).hasSize(2);
 		assertThat(transformers.get(0)).isInstanceOf(CachingResourceTransformer.class);
 		assertThat(transformers.get(1)).isEqualTo(mockTransformer);
 	}
@@ -162,12 +161,12 @@ public class ResourceHandlerRegistryTests {
 
 		ResourceHttpRequestHandler handler = getHandler("/resources/**");
 		List<ResourceResolver> resolvers = handler.getResourceResolvers();
-		assertThat(resolvers, Matchers.hasSize(2));
+		assertThat(resolvers).hasSize(2);
 		assertThat(resolvers.get(0)).isInstanceOf(WebJarsResourceResolver.class);
 		assertThat(resolvers.get(1)).isInstanceOf(PathResourceResolver.class);
 
 		List<ResourceTransformer> transformers = handler.getResourceTransformers();
-		assertThat(transformers, Matchers.hasSize(0));
+		assertThat(transformers).isEmpty();
 	}
 
 	@Test
@@ -181,14 +180,14 @@ public class ResourceHandlerRegistryTests {
 
 		ResourceHttpRequestHandler handler = getHandler("/resources/**");
 		List<ResourceResolver> resolvers = handler.getResourceResolvers();
-		assertThat(resolvers.toString(), resolvers, Matchers.hasSize(4));
+		assertThat(resolvers).hasSize(4);
 		assertThat(resolvers.get(0)).isInstanceOf(CachingResourceResolver.class);
 		assertThat(resolvers.get(1)).isSameAs(versionResolver);
 		assertThat(resolvers.get(2)).isInstanceOf(WebJarsResourceResolver.class);
 		assertThat(resolvers.get(3)).isInstanceOf(PathResourceResolver.class);
 
 		List<ResourceTransformer> transformers = handler.getResourceTransformers();
-		assertThat(transformers, Matchers.hasSize(3));
+		assertThat(transformers).hasSize(3);
 		assertThat(transformers.get(0)).isInstanceOf(CachingResourceTransformer.class);
 		assertThat(transformers.get(1)).isInstanceOf(CssLinkResourceTransformer.class);
 		assertThat(transformers.get(2)).isInstanceOf(AppCacheManifestTransformer.class);
@@ -216,14 +215,14 @@ public class ResourceHandlerRegistryTests {
 
 		ResourceHttpRequestHandler handler = getHandler("/resources/**");
 		List<ResourceResolver> resolvers = handler.getResourceResolvers();
-		assertThat(resolvers.toString(), resolvers, Matchers.hasSize(4));
+		assertThat(resolvers).hasSize(4);
 		assertThat(resolvers.get(0)).isSameAs(cachingResolver);
 		assertThat(resolvers.get(1)).isSameAs(versionResolver);
 		assertThat(resolvers.get(2)).isSameAs(webjarsResolver);
 		assertThat(resolvers.get(3)).isSameAs(pathResourceResolver);
 
 		List<ResourceTransformer> transformers = handler.getResourceTransformers();
-		assertThat(transformers, Matchers.hasSize(3));
+		assertThat(transformers).hasSize(3);
 		assertThat(transformers.get(0)).isSameAs(cachingTransformer);
 		assertThat(transformers.get(1)).isSameAs(appCacheTransformer);
 		assertThat(transformers.get(2)).isSameAs(cssLinkTransformer);

@@ -112,8 +112,8 @@ public class HandlerMethodMappingTests {
 		this.mapping.registerMapping(key1, this.handler, this.method1);
 		this.mapping.registerMapping(key2, this.handler, this.method2);
 
-		assertThat(this.mapping.getMappingRegistry().getMappings().keySet(),
-				Matchers.contains(key1, key2));
+		assertThat(this.mapping.getMappingRegistry().getMappings())
+				.containsKeys(key1, key2);
 	}
 
 	@Test
@@ -125,7 +125,8 @@ public class HandlerMethodMappingTests {
 		this.mapping.registerMapping(key1, handler1, this.method1);
 		this.mapping.registerMapping(key2, handler2, this.method1);
 
-		assertThat(this.mapping.getMappingRegistry().getMappings().keySet(), Matchers.contains(key1, key2));
+		assertThat(this.mapping.getMappingRegistry().getMappings())
+				.containsKeys(key1, key2);
 	}
 
 	@Test

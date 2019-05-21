@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.assertj.core.api.Condition;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matchers;
@@ -139,10 +140,16 @@ public class ResourceUrlProviderTests {
 		context.register(HandlerMappingConfiguration.class);
 		context.refresh();
 
-		assertThat(context.getBean(ResourceUrlProvider.class).getHandlerMap(),
-				Matchers.hasKey(pattern("/resources/**")));
+		assertThat(context.getBean(ResourceUrlProvider.class).getHandlerMap())
+				.hasKeySatisfying(pathPatternStringOf("/resources/**"));
 	}
 
+
+	private Condition<PathPattern> pathPatternStringOf(String expected) {
+		return new Condition<PathPattern>(
+				actual -> actual != null && actual.getPatternString().equals(expected),
+				"Pattern %s", expected);
+	}
 
 	@Configuration
 	@SuppressWarnings({"unused", "WeakerAccess"})
@@ -161,32 +168,6 @@ public class ResourceUrlProviderTests {
 		@Bean
 		public ResourceUrlProvider resourceUrlProvider() {
 			return new ResourceUrlProvider();
-		}
-	}
-
-	private static PathPatternMatcher pattern(String pattern) {
-		return new PathPatternMatcher(pattern);
-	}
-
-	private static class PathPatternMatcher extends BaseMatcher<PathPattern> {
-
-		private final String pattern;
-
-		public PathPatternMatcher(String pattern) {
-			this.pattern = pattern;
-		}
-
-		@Override
-		public boolean matches(Object item) {
-			if (item != null && item instanceof PathPattern) {
-				return ((PathPattern) item).getPatternString().equals(pattern);
-			}
-			return false;
-		}
-
-		@Override
-		public void describeTo(Description description) {
-
 		}
 	}
 

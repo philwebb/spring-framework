@@ -67,8 +67,8 @@ public class HandlerMappingTests {
 		this.handlerMapping.setInterceptors(mappedInterceptor1, i2, mappedInterceptor3, i4);
 		this.handlerMapping.setApplicationContext(this.context);
 		HandlerExecutionChain chain = this.handlerMapping.getHandlerExecutionChain(new SimpleHandler(), this.request);
-		assertThat(chain.getInterceptors(), Matchers.arrayContaining(
-				mappedInterceptor1.getInterceptor(), i2, mappedInterceptor3.getInterceptor(), i4));
+		assertThat(chain.getInterceptors()).contains(
+				mappedInterceptor1.getInterceptor(), i2, mappedInterceptor3.getInterceptor(), i4);
 	}
 
 	class TestHandlerMapping extends AbstractHandlerMapping {

@@ -55,9 +55,9 @@ public class DefaultPersistenceUnitManagerTests {
 
 	private void testDefaultDomain() {
 		SpringPersistenceUnitInfo puInfo = buildDefaultPersistenceUnitInfo();
-		assertThat(puInfo.getManagedClassNames(), containsInAnyOrder(
+		assertThat(puInfo.getManagedClassNames()).contains(
 				"org.springframework.orm.jpa.domain.Person",
-				"org.springframework.orm.jpa.domain.DriversLicense"));
+				"org.springframework.orm.jpa.domain.DriversLicense");
 	}
 
 	private SpringPersistenceUnitInfo buildDefaultPersistenceUnitInfo() {

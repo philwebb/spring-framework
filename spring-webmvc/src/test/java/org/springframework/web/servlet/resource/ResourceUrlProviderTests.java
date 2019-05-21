@@ -149,7 +149,7 @@ public class ResourceUrlProviderTests {
 		context.refresh();
 
 		ResourceUrlProvider urlProviderBean = context.getBean(ResourceUrlProvider.class);
-		assertThat(urlProviderBean.getHandlerMap(), Matchers.hasKey("/resources/**"));
+		assertThat(urlProviderBean.getHandlerMap()).containsKey("/resources/**");
 		assertFalse(urlProviderBean.isAutodetect());
 	}
 

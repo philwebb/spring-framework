@@ -68,10 +68,11 @@ public class HandshakeWebSocketServiceTests {
 		assertNotNull(info);
 
 		Map<String, Object> attributes = info.getAttributes();
-		assertEquals(3, attributes.size());
-		assertThat(attributes, Matchers.hasEntry("a1", "v1"));
-		assertThat(attributes, Matchers.hasEntry("a3", "v3"));
-		assertThat(attributes, Matchers.hasEntry("a5", "v5"));
+		assertThat(attributes)
+				.hasSize(3)
+				.containsEntry("a1", "v1")
+				.containsEntry("a3", "v3")
+				.containsEntry("a5", "v5");
 	}
 
 	private MockServerHttpRequest initHandshakeRequest() {

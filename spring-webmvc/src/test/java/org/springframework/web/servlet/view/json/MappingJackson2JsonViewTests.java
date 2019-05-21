@@ -324,7 +324,7 @@ public class MappingJackson2JsonViewTests {
 		assertTrue(content.length() > 0);
 		assertEquals(content.length(), response.getContentLength());
 		assertThat(content).contains("\"property1\":\"value\"");
-		assertThat(content).isNotEqualTo(containsString("\"property2\":\"value\""));
+		assertThat(content).doesNotContain("\"property2\":\"value\"");
 		assertFalse(content.contains(FilterProvider.class.getName()));
 	}
 

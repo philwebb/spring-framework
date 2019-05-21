@@ -65,7 +65,7 @@ public class WebContentInterceptorTests {
 		interceptor.preHandle(request, response, null);
 
 		Iterable<String> cacheControlHeaders = response.getHeaders("Cache-Control");
-		assertThat(cacheControlHeaders, Matchers.emptyIterable());
+		assertThat(cacheControlHeaders).isEmpty();
 
 		// request.setRequestURI("http://localhost:7070/example/bingo.html");
 		request.setRequestURI("example/bingo.html");
@@ -83,7 +83,7 @@ public class WebContentInterceptorTests {
 		interceptor.preHandle(request, response, null);
 
 		Iterable<String> cacheControlHeaders = response.getHeaders("Cache-Control");
-		assertThat(cacheControlHeaders, Matchers.contains("no-store"));
+		assertThat(cacheControlHeaders).contains("no-store");
 	}
 
 	@Test
@@ -94,9 +94,9 @@ public class WebContentInterceptorTests {
 		interceptor.preHandle(request, response, null);
 
 		Iterable<String> expiresHeaders = response.getHeaders("Expires");
-		assertThat(expiresHeaders, Matchers.emptyIterable());
+		assertThat(expiresHeaders).isEmpty();
 		Iterable<String> cacheControlHeaders = response.getHeaders("Cache-Control");
-		assertThat(cacheControlHeaders, Matchers.emptyIterable());
+		assertThat(cacheControlHeaders).isEmpty();
 	}
 
 	// SPR-13252, SPR-14053
@@ -145,11 +145,11 @@ public class WebContentInterceptorTests {
 		interceptor.preHandle(request, response, null);
 
 		Iterable<String> expiresHeaders = response.getHeaders("Expires");
-		assertThat(expiresHeaders, Matchers.iterableWithSize(1));
+		assertThat(expiresHeaders).hasSize(1);
 		Iterable<String> cacheControlHeaders = response.getHeaders("Cache-Control");
-		assertThat(cacheControlHeaders, Matchers.contains("no-cache", "no-store"));
+		assertThat(cacheControlHeaders).containsExactly("no-cache", "no-store");
 		Iterable<String> pragmaHeaders = response.getHeaders("Pragma");
-		assertThat(pragmaHeaders, Matchers.contains("no-cache"));
+		assertThat(pragmaHeaders).containsExactly("no-cache");
 
 		// request.setRequestURI("https://example.org/page.cache.html");
 		request = new MockHttpServletRequest("GET", "foo/page.cache.html");
@@ -157,9 +157,9 @@ public class WebContentInterceptorTests {
 		interceptor.preHandle(request, response, null);
 
 		expiresHeaders = response.getHeaders("Expires");
-		assertThat(expiresHeaders, Matchers.iterableWithSize(1));
+		assertThat(expiresHeaders).hasSize(1);
 		cacheControlHeaders = response.getHeaders("Cache-Control");
-		assertThat(cacheControlHeaders, Matchers.contains("max-age=10, must-revalidate"));
+		assertThat(cacheControlHeaders).containsExactly("max-age=10, must-revalidate");
 	}
 
 	@Test

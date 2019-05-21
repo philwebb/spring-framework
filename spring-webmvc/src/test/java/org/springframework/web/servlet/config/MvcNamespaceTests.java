@@ -380,8 +380,8 @@ public class MvcNamespaceTests {
 		List<Class<?>> interceptors = beans.values().stream()
 				.map(mappedInterceptor -> mappedInterceptor.getInterceptor().getClass())
 				.collect(Collectors.toList());
-		assertThat(interceptors, containsInAnyOrder(ConversionServiceExposingInterceptor.class,
-				ResourceUrlProviderExposingInterceptor.class));
+		assertThat(interceptors).contains(ConversionServiceExposingInterceptor.class,
+				ResourceUrlProviderExposingInterceptor.class);
 
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setRequestURI("/resources/foo.css");
@@ -428,7 +428,7 @@ public class MvcNamespaceTests {
 		assertNotNull(handler.getUrlPathHelper());
 
 		List<ResourceResolver> resolvers = handler.getResourceResolvers();
-		assertThat(resolvers, Matchers.hasSize(4));
+		assertThat(resolvers).hasSize(4);
 		assertThat(resolvers.get(0)).isInstanceOf(CachingResourceResolver.class);
 		assertThat(resolvers.get(1)).isInstanceOf(VersionResourceResolver.class);
 		assertThat(resolvers.get(2)).isInstanceOf(WebJarsResourceResolver.class);
@@ -439,10 +439,10 @@ public class MvcNamespaceTests {
 		assertEquals("test-resource-cache", cachingResolver.getCache().getName());
 
 		VersionResourceResolver versionResolver = (VersionResourceResolver) resolvers.get(1);
-		assertThat(versionResolver.getStrategyMap().get("/**/*.js"),
-				Matchers.instanceOf(FixedVersionStrategy.class));
-		assertThat(versionResolver.getStrategyMap().get("/**"),
-				Matchers.instanceOf(ContentVersionStrategy.class));
+		assertThat(versionResolver.getStrategyMap().get("/**/*.js"))
+				.isInstanceOf(FixedVersionStrategy.class);
+		assertThat(versionResolver.getStrategyMap().get("/**"))
+				.isInstanceOf(ContentVersionStrategy.class);
 
 		PathResourceResolver pathResolver = (PathResourceResolver) resolvers.get(3);
 		Map<Resource, Charset> locationCharsets = pathResolver.getLocationCharsets();
@@ -450,7 +450,7 @@ public class MvcNamespaceTests {
 		assertEquals(StandardCharsets.ISO_8859_1, locationCharsets.values().iterator().next());
 
 		List<ResourceTransformer> transformers = handler.getResourceTransformers();
-		assertThat(transformers, Matchers.hasSize(3));
+		assertThat(transformers).hasSize(3);
 		assertThat(transformers.get(0)).isInstanceOf(CachingResourceTransformer.class);
 		assertThat(transformers.get(1)).isInstanceOf(CssLinkResourceTransformer.class);
 		assertThat(transformers.get(2)).isInstanceOf(AppCacheManifestTransformer.class);
@@ -471,24 +471,24 @@ public class MvcNamespaceTests {
 				ResourceHttpRequestHandler.class);
 		assertNotNull(handler);
 
-		assertThat(handler.getCacheControl().getHeaderValue(),
-				Matchers.equalTo(CacheControl.maxAge(1, TimeUnit.HOURS)
-						.sMaxAge(30, TimeUnit.MINUTES).cachePublic().getHeaderValue()));
+		assertThat(handler.getCacheControl().getHeaderValue())
+				.isEqualTo(CacheControl.maxAge(1, TimeUnit.HOURS)
+						.sMaxAge(30, TimeUnit.MINUTES).cachePublic().getHeaderValue());
 
 		List<ResourceResolver> resolvers = handler.getResourceResolvers();
-		assertThat(resolvers, Matchers.hasSize(3));
+		assertThat(resolvers).hasSize(3);
 		assertThat(resolvers.get(0)).isInstanceOf(VersionResourceResolver.class);
 		assertThat(resolvers.get(1)).isInstanceOf(EncodedResourceResolver.class);
 		assertThat(resolvers.get(2)).isInstanceOf(PathResourceResolver.class);
 
 		VersionResourceResolver versionResolver = (VersionResourceResolver) resolvers.get(0);
-		assertThat(versionResolver.getStrategyMap().get("/**/*.js"),
-				Matchers.instanceOf(FixedVersionStrategy.class));
-		assertThat(versionResolver.getStrategyMap().get("/**"),
-				Matchers.instanceOf(ContentVersionStrategy.class));
+		assertThat(versionResolver.getStrategyMap().get("/**/*.js"))
+				.isInstanceOf(FixedVersionStrategy.class);
+		assertThat(versionResolver.getStrategyMap().get("/**"))
+				.isInstanceOf(ContentVersionStrategy.class);
 
 		List<ResourceTransformer> transformers = handler.getResourceTransformers();
-		assertThat(transformers, Matchers.hasSize(2));
+		assertThat(transformers).hasSize(2);
 		assertThat(transformers.get(0)).isInstanceOf(CachingResourceTransformer.class);
 		assertThat(transformers.get(1)).isInstanceOf(AppCacheManifestTransformer.class);
 	}

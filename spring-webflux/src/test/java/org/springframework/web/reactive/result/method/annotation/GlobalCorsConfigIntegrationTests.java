@@ -117,8 +117,8 @@ public class GlobalCorsConfigIntegrationTests extends AbstractRequestMappingInte
 		ResponseEntity<String> entity = performOptions("/cors", this.headers, String.class);
 		assertEquals(HttpStatus.OK, entity.getStatusCode());
 		assertEquals("*", entity.getHeaders().getAccessControlAllowOrigin());
-		assertThat(entity.getHeaders().getAccessControlAllowMethods(),
-				contains(HttpMethod.GET, HttpMethod.HEAD, HttpMethod.POST));
+		assertThat(entity.getHeaders().getAccessControlAllowMethods())
+				.containsExactly(HttpMethod.GET, HttpMethod.HEAD, HttpMethod.POST);
 	}
 
 	@Test
@@ -144,7 +144,8 @@ public class GlobalCorsConfigIntegrationTests extends AbstractRequestMappingInte
 		ResponseEntity<String> entity = performOptions("/cors-restricted", this.headers, String.class);
 		assertEquals(HttpStatus.OK, entity.getStatusCode());
 		assertEquals("https://foo", entity.getHeaders().getAccessControlAllowOrigin());
-		assertThat(entity.getHeaders().getAccessControlAllowMethods(), contains(HttpMethod.GET, HttpMethod.POST));
+		assertThat(entity.getHeaders().getAccessControlAllowMethods())
+				.containsExactly(HttpMethod.GET, HttpMethod.POST);
 	}
 
 	@Test
@@ -153,10 +154,12 @@ public class GlobalCorsConfigIntegrationTests extends AbstractRequestMappingInte
 		ResponseEntity<String> entity = performOptions("/ambiguous", this.headers, String.class);
 		assertEquals(HttpStatus.OK, entity.getStatusCode());
 		assertEquals("http://localhost:9000", entity.getHeaders().getAccessControlAllowOrigin());
-		assertThat(entity.getHeaders().getAccessControlAllowMethods(), contains(HttpMethod.GET));
+		assertThat(entity.getHeaders().getAccessControlAllowMethods())
+				.containsExactly(HttpMethod.GET);
 		assertEquals(true, entity.getHeaders().getAccessControlAllowCredentials());
-		assertThat(entity.getHeaders().get(HttpHeaders.VARY), contains(HttpHeaders.ORIGIN,
-				HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS));
+		assertThat(entity.getHeaders().get(HttpHeaders.VARY))
+				.containsExactly(HttpHeaders.ORIGIN, HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD,
+						HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS);
 	}
 
 

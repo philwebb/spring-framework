@@ -184,12 +184,11 @@ public class VersionResourceResolverTests {
 
 		this.resolver.addFixedVersionStrategy("fixedversion", "/js/**", "/css/**", "/fixedversion/css/**");
 
-		Matcher<VersionStrategy> matcher = Matchers.instanceOf(FixedVersionStrategy.class);
 		assertThat(this.resolver.getStrategyMap()).hasSize(4);
-		assertThat(this.resolver.getStrategyForPath("js/something.js"), matcher);
-		assertThat(this.resolver.getStrategyForPath("fixedversion/js/something.js"), matcher);
-		assertThat(this.resolver.getStrategyForPath("css/something.css"), matcher);
-		assertThat(this.resolver.getStrategyForPath("fixedversion/css/something.css"), matcher);
+		assertThat(this.resolver.getStrategyForPath("js/something.js")).isInstanceOf(FixedVersionStrategy.class);
+		assertThat(this.resolver.getStrategyForPath("fixedversion/js/something.js")).isInstanceOf(FixedVersionStrategy.class);
+		assertThat(this.resolver.getStrategyForPath("css/something.css")).isInstanceOf(FixedVersionStrategy.class);
+		assertThat(this.resolver.getStrategyForPath("fixedversion/css/something.css")).isInstanceOf(FixedVersionStrategy.class);
 	}
 
 	@Test // SPR-15372

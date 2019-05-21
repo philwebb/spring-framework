@@ -374,7 +374,7 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		assertNull(mav);
 		assertEquals(HttpStatus.OK.value(), response.getStatus());
 		assertEquals("Handled requestBody=[Hello Server]", new String(response.getContentAsByteArray(), "UTF-8"));
-		assertThat(response.getHeaderValues("Cache-Control"), Matchers.contains("max-age=3600"));
+		assertThat(response.getHeaderValues("Cache-Control")).containsExactly("max-age=3600");
 	}
 
 	@Test

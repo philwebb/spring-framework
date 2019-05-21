@@ -188,7 +188,7 @@ public class ResourceHttpRequestHandlerTests {
 		this.handler.handleRequest(this.request, this.response);
 
 		assertEquals("no-cache", this.response.getHeader("Pragma"));
-		assertThat(this.response.getHeaderValues("Cache-Control"), Matchers.iterableWithSize(1));
+		assertThat(this.response.getHeaderValues("Cache-Control")).hasSize(1);
 		assertEquals("no-cache", this.response.getHeader("Cache-Control"));
 		assertTrue(this.response.getDateHeader("Expires") <= System.currentTimeMillis());
 		assertTrue(this.response.containsHeader("Last-Modified"));

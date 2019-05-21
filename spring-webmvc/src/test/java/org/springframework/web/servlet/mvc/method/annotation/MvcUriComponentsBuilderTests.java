@@ -105,20 +105,20 @@ public class MvcUriComponentsBuilderTests {
 	@Test
 	public void fromControllerPlain() {
 		UriComponents uriComponents = fromController(PersonControllerImpl.class).build();
-		assertThat(uriComponents.toUriString(), Matchers.endsWith("/people"));
+		assertThat(uriComponents.toUriString()).endsWith("/people");
 	}
 
 	@Test
 	public void fromControllerUriTemplate() {
 		UriComponents uriComponents = fromController(PersonsAddressesController.class).buildAndExpand(15);
-		assertThat(uriComponents.toUriString(), endsWith("/people/15/addresses"));
+		assertThat(uriComponents.toUriString()).endsWith("/people/15/addresses");
 	}
 
 	@Test
 	public void fromControllerSubResource() {
 		UriComponents uriComponents = fromController(PersonControllerImpl.class).pathSegment("something").build();
 
-		assertThat(uriComponents.toUriString(), endsWith("/people/something"));
+		assertThat(uriComponents.toUriString()).endsWith("/people/something");
 	}
 
 	@Test
@@ -159,7 +159,7 @@ public class MvcUriComponentsBuilderTests {
 		adaptRequestFromForwardedHeaders();
 		UriComponents uriComponents = fromController(PersonControllerImpl.class).build();
 
-		assertThat(uriComponents.toUriString(), startsWith("https://somethingDifferent"));
+		assertThat(uriComponents.toUriString()).startsWith("https://somethingDifferent");
 	}
 
 	@Test
@@ -169,7 +169,7 @@ public class MvcUriComponentsBuilderTests {
 		adaptRequestFromForwardedHeaders();
 		UriComponents uriComponents = fromController(PersonControllerImpl.class).build();
 
-		assertThat(uriComponents.toUriString(), startsWith("https://foobar:8088"));
+		assertThat(uriComponents.toUriString()).startsWith("https://foobar:8088");
 	}
 
 	@Test
@@ -179,7 +179,7 @@ public class MvcUriComponentsBuilderTests {
 		adaptRequestFromForwardedHeaders();
 		UriComponents uriComponents = fromController(PersonControllerImpl.class).build();
 
-		assertThat(uriComponents.toUriString(), startsWith("https://barfoo:8888"));
+		assertThat(uriComponents.toUriString()).startsWith("https://barfoo:8888");
 	}
 
 	// SPR-16668
@@ -223,8 +223,8 @@ public class MvcUriComponentsBuilderTests {
 
 		assertThat(uriComponents.getPath()).isEqualTo("/something/1/foo");
 		MultiValueMap<String, String> queryParams = uriComponents.getQueryParams();
-		assertThat(queryParams.get("limit"), contains("5"));
-		assertThat(queryParams.get("offset"), contains("10"));
+		assertThat(queryParams.get("limit")).contains("5");
+		assertThat(queryParams.get("offset")).contains("10");
 	}
 
 	@Test  // SPR-12977
@@ -282,8 +282,8 @@ public class MvcUriComponentsBuilderTests {
 		UriComponents uriComponents = fromMethodName(ControllerWithMethods.class,
 				"methodWithOptionalNamedParam", Optional.of("foo")).build();
 
-		assertThat(uriComponents.toUriString(),
-				is("http://localhost/something/optional-param-with-name?search=foo"));
+		assertThat(uriComponents.toUriString())
+				.isEqualTo("http://localhost/something/optional-param-with-name?search=foo");
 	}
 
 	@Test
@@ -297,16 +297,16 @@ public class MvcUriComponentsBuilderTests {
 	public void fromMethodCallPlain() {
 		UriComponents uriComponents = fromMethodCall(on(ControllerWithMethods.class).myMethod(null)).build();
 
-		assertThat(uriComponents.toUriString(), startsWith("http://localhost"));
-		assertThat(uriComponents.toUriString(), endsWith("/something/else"));
+		assertThat(uriComponents.toUriString()).startsWith("http://localhost");
+		assertThat(uriComponents.toUriString()).endsWith("/something/else");
 	}
 
 	@Test
 	public void fromMethodCallOnSubclass() {
 		UriComponents uriComponents = fromMethodCall(on(ExtendedController.class).myMethod(null)).build();
 
-		assertThat(uriComponents.toUriString(), startsWith("http://localhost"));
-		assertThat(uriComponents.toUriString(), endsWith("/extended/else"));
+		assertThat(uriComponents.toUriString()).startsWith("http://localhost");
+		assertThat(uriComponents.toUriString()).endsWith("/extended/else");
 	}
 
 	@Test
@@ -314,7 +314,7 @@ public class MvcUriComponentsBuilderTests {
 		UriComponents uriComponents = fromMethodCall(
 				on(PersonsAddressesController.class).getAddressesForCountry("DE")).buildAndExpand(15);
 
-		assertThat(uriComponents.toUriString(), endsWith("/people/15/addresses/DE"));
+		assertThat(uriComponents.toUriString()).endsWith("/people/15/addresses/DE");
 	}
 
 	@Test
@@ -322,8 +322,8 @@ public class MvcUriComponentsBuilderTests {
 		UriComponents uriComponents = fromMethodCall(
 				on(ControllerWithMethods.class).methodWithPathVariable("1")).build();
 
-		assertThat(uriComponents.toUriString(), startsWith("http://localhost"));
-		assertThat(uriComponents.toUriString(), endsWith("/something/1/foo"));
+		assertThat(uriComponents.toUriString()).startsWith("http://localhost");
+		assertThat(uriComponents.toUriString()).endsWith("/something/1/foo");
 	}
 
 	@Test
@@ -334,8 +334,8 @@ public class MvcUriComponentsBuilderTests {
 		assertThat(uriComponents.getPath()).isEqualTo("/something/1/foo");
 
 		MultiValueMap<String, String> queryParams = uriComponents.getQueryParams();
-		assertThat(queryParams.get("limit"), contains("5"));
-		assertThat(queryParams.get("offset"), contains("10"));
+		assertThat(queryParams.get("limit")).contains("5");
+		assertThat(queryParams.get("offset")).contains("10");
 	}
 
 	@Test
@@ -346,8 +346,8 @@ public class MvcUriComponentsBuilderTests {
 		assertThat(uriComponents.getPath()).isEqualTo("/something/1/foo");
 
 		MultiValueMap<String, String> queryParams = uriComponents.getQueryParams();
-		assertThat(queryParams.get("limit"), contains("5"));
-		assertThat(queryParams.get("items"), containsInAnyOrder("3", "7"));
+		assertThat(queryParams.get("limit")).contains("5");
+		assertThat(queryParams.get("items")).containsExactly("3", "7");
 	}
 
 	@Test

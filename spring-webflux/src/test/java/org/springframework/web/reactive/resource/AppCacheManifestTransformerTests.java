@@ -105,21 +105,20 @@ public class AppCacheManifestTransformerTests {
 		byte[] bytes = FileCopyUtils.copyToByteArray(actual.getInputStream());
 		String content = new String(bytes, "UTF-8");
 
-		assertThat("should rewrite resource links", content,
-				containsString("/static/foo-e36d2e05253c6c7085a91522ce43a0b4.css"));
-		assertThat("should rewrite resource links", content,
-				containsString("/static/bar-11e16cf79faee7ac698c805cf28248d2.css"));
-		assertThat("should rewrite resource links", content,
-				containsString("/static/js/bar-bd508c62235b832d960298ca6c0b7645.js"));
+		assertThat(content).as("rewrite resource links")
+				.contains("/static/foo-e36d2e05253c6c7085a91522ce43a0b4.css")
+				.contains("/static/bar-11e16cf79faee7ac698c805cf28248d2.css")
+				.contains("/static/js/bar-bd508c62235b832d960298ca6c0b7645.js");
 
-		assertThat("should not rewrite external resources", content).contains("//example.org/style.css");
-		assertThat("should not rewrite external resources", content).contains("http://example.org/image.png");
+		assertThat(content).as("not rewrite external resources")
+				.contains("//example.org/style.css")
+				.contains("http://example.org/image.png");
 
 		// Not the same hash as Spring MVC
 		// Hash is computed from links, and not from the linked content
 
-		assertThat("should generate fingerprint", content,
-				containsString("# Hash: 8eefc904df3bd46537fa7bdbbc5ab9fb"));
+		assertThat(content).as("generate fingerprint")
+				.contains("# Hash: 8eefc904df3bd46537fa7bdbbc5ab9fb");
 	}
 
 	private Resource getResource(String filePath) {

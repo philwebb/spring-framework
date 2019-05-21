@@ -113,19 +113,19 @@ public class GroovyMarkupConfigurerTests {
 		ClassLoader classLoader = this.configurer.createTemplateClassLoader();
 		assertNotNull(classLoader);
 		URLClassLoader urlClassLoader = (URLClassLoader) classLoader;
-		assertThat(Arrays.asList(urlClassLoader.getURLs()), Matchers.hasSize(1));
-		assertThat(Arrays.asList(urlClassLoader.getURLs()).get(0).toString(),
-				Matchers.endsWith("org/springframework/web/servlet/view/groovy/"));
+		assertThat(urlClassLoader.getURLs()).hasSize(1);
+		assertThat(urlClassLoader.getURLs()[0].toString())
+				.endsWith("org/springframework/web/servlet/view/groovy/");
 
 		this.configurer.setResourceLoaderPath(RESOURCE_LOADER_PATH + ",classpath:org/springframework/web/servlet/view/");
 		classLoader = this.configurer.createTemplateClassLoader();
 		assertNotNull(classLoader);
 		urlClassLoader = (URLClassLoader) classLoader;
-		assertThat(Arrays.asList(urlClassLoader.getURLs()), Matchers.hasSize(2));
-		assertThat(Arrays.asList(urlClassLoader.getURLs()).get(0).toString(),
-				Matchers.endsWith("org/springframework/web/servlet/view/groovy/"));
-		assertThat(Arrays.asList(urlClassLoader.getURLs()).get(1).toString(),
-				Matchers.endsWith("org/springframework/web/servlet/view/"));
+		assertThat(urlClassLoader.getURLs()).hasSize(2);
+		assertThat(urlClassLoader.getURLs()[0].toString())
+				.endsWith("org/springframework/web/servlet/view/groovy/");
+		assertThat(urlClassLoader.getURLs()[1].toString())
+				.endsWith("org/springframework/web/servlet/view/");
 	}
 
 	private class TestTemplateEngine extends MarkupTemplateEngine {
