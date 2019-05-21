@@ -68,7 +68,7 @@ public class SimpAttributesTests {
 		this.simpAttributes.setAttribute("name2", "value1");
 		this.simpAttributes.setAttribute("name3", "value1");
 
-		assertThat(this.simpAttributes.getAttributeNames(), arrayContainingInAnyOrder("name1", "name2", "name3"));
+		assertThat(this.simpAttributes.getAttributeNames()).containsExactly("name1", "name2", "name3");
 	}
 
 	@Test
@@ -77,7 +77,7 @@ public class SimpAttributesTests {
 		this.simpAttributes.registerDestructionCallback("name1", callback);
 
 		assertThat(this.simpAttributes.getAttribute(
-				SimpAttributes.DESTRUCTION_CALLBACK_NAME_PREFIX + "name1"), sameInstance(callback));
+				SimpAttributes.DESTRUCTION_CALLBACK_NAME_PREFIX + "name1")).isSameAs(callback);
 	}
 
 	@Test

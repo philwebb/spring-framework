@@ -27,6 +27,7 @@ import org.xmlunit.diff.DifferenceEvaluator;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
+import org.springframework.tests.XmlContent;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -93,7 +94,7 @@ public class MarshallingMessageConverterTests {
 		String actual = new String((byte[]) message.getPayload(), StandardCharsets.UTF_8);
 
 		DifferenceEvaluator ev = chain(Default, downgradeDifferencesToEqual(XML_STANDALONE));
-		assertThat(actual, isSimilarTo("<myBean><name>Foo</name></myBean>").withDifferenceEvaluator(ev));
+		assertThat(XmlContent.of(actual)).isSimilarTo("<myBean><name>Foo</name></myBean>", ev);
 	}
 
 

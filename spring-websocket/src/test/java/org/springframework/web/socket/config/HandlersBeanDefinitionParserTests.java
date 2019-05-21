@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
+import java.util.stream.Stream;
 
 import org.junit.Test;
 
@@ -61,11 +62,6 @@ import org.springframework.web.socket.sockjs.transport.handler.XhrReceivingTrans
 import org.springframework.web.socket.sockjs.transport.handler.XhrStreamingTransportHandler;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-
-
-
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -90,14 +86,14 @@ public class HandlersBeanDefinitionParserTests {
 
 		Map<String, HandlerMapping> handlersMap = this.appContext.getBeansOfType(HandlerMapping.class);
 		assertNotNull(handlersMap);
-		assertThat(handlersMap.values(), hasSize(2));
+		assertThat(handlersMap).hasSize(2);
 
 		for (HandlerMapping hm : handlersMap.values()) {
 			assertTrue(hm instanceof SimpleUrlHandlerMapping);
 			SimpleUrlHandlerMapping shm = (SimpleUrlHandlerMapping) hm;
 
 			if (shm.getUrlMap().keySet().contains("/foo")) {
-				assertThat(shm.getUrlMap().keySet(), contains("/foo", "/bar"));
+				assertThat(shm.getUrlMap()).containsOnlyKeys("/foo", "/bar");
 				WebSocketHttpRequestHandler handler = (WebSocketHttpRequestHandler) shm.getUrlMap().get("/foo");
 				assertNotNull(handler);
 				unwrapAndCheckDecoratedHandlerType(handler.getWebSocketHandler(), FooWebSocketHandler.class);
@@ -108,7 +104,7 @@ public class HandlersBeanDefinitionParserTests {
 				assertTrue(handler.getHandshakeInterceptors().get(0) instanceof OriginHandshakeInterceptor);
 			}
 			else {
-				assertThat(shm.getUrlMap().keySet(), contains("/test"));
+				assertThat(shm.getUrlMap()).containsOnlyKeys("/test");
 				WebSocketHttpRequestHandler handler = (WebSocketHttpRequestHandler) shm.getUrlMap().get("/test");
 				assertNotNull(handler);
 				unwrapAndCheckDecoratedHandlerType(handler.getWebSocketHandler(), TestWebSocketHandler.class);
@@ -140,8 +136,8 @@ public class HandlersBeanDefinitionParserTests {
 		assertNotNull(handshakeHandler);
 		assertTrue(handshakeHandler instanceof TestHandshakeHandler);
 		List<HandshakeInterceptor> interceptors = handler.getHandshakeInterceptors();
-		assertThat(interceptors, contains(instanceOf(FooTestInterceptor.class),
-				instanceOf(BarTestInterceptor.class), instanceOf(OriginHandshakeInterceptor.class)));
+		assertThat(interceptors).extracting("class")
+				.containsExactlyInAnyOrder(FooTestInterceptor.class, BarTestInterceptor.class, OriginHandshakeInterceptor.class);
 
 		handler = (WebSocketHttpRequestHandler) urlHandlerMapping.getUrlMap().get("/test");
 		assertNotNull(handler);
@@ -150,8 +146,8 @@ public class HandlersBeanDefinitionParserTests {
 		assertNotNull(handshakeHandler);
 		assertTrue(handshakeHandler instanceof TestHandshakeHandler);
 		interceptors = handler.getHandshakeInterceptors();
-		assertThat(interceptors, contains(instanceOf(FooTestInterceptor.class),
-				instanceOf(BarTestInterceptor.class), instanceOf(OriginHandshakeInterceptor.class)));
+		assertThat(interceptors).extracting("class")
+				.containsExactlyInAnyOrder(FooTestInterceptor.class, BarTestInterceptor.class, OriginHandshakeInterceptor.class);
 	}
 
 	@Test
@@ -181,21 +177,21 @@ public class HandlersBeanDefinitionParserTests {
 		assertFalse(defaultSockJsService.shouldSuppressCors());
 
 		Map<TransportType, TransportHandler> handlerMap = defaultSockJsService.getTransportHandlers();
-		assertThat(handlerMap.values(),
-				containsInAnyOrder(
-						instanceOf(XhrPollingTransportHandler.class),
-						instanceOf(XhrReceivingTransportHandler.class),
-						instanceOf(XhrStreamingTransportHandler.class),
-						instanceOf(EventSourceTransportHandler.class),
-						instanceOf(HtmlFileTransportHandler.class),
-						instanceOf(WebSocketTransportHandler.class)));
+		assertThat(handlerMap.values()).extracting("class")
+				.containsExactlyInAnyOrder(
+						XhrPollingTransportHandler.class,
+						XhrReceivingTransportHandler.class,
+						XhrStreamingTransportHandler.class,
+						EventSourceTransportHandler.class,
+						HtmlFileTransportHandler.class,
+						WebSocketTransportHandler.class);
 
 		WebSocketTransportHandler handler = (WebSocketTransportHandler) handlerMap.get(TransportType.WEBSOCKET);
 		assertEquals(TestHandshakeHandler.class, handler.getHandshakeHandler().getClass());
 
 		List<HandshakeInterceptor> interceptors = defaultSockJsService.getHandshakeInterceptors();
-		assertThat(interceptors, contains(instanceOf(FooTestInterceptor.class),
-				instanceOf(BarTestInterceptor.class), instanceOf(OriginHandshakeInterceptor.class)));
+		assertThat(interceptors).extracting("class")
+				.containsExactlyInAnyOrder(FooTestInterceptor.class, BarTestInterceptor.class, OriginHandshakeInterceptor.class);
 	}
 
 	@Test
@@ -215,10 +211,8 @@ public class HandlersBeanDefinitionParserTests {
 		assertThat(sockJsService).isInstanceOf(TransportHandlingSockJsService.class);
 		TransportHandlingSockJsService transportService = (TransportHandlingSockJsService) sockJsService;
 		assertThat(transportService.getTaskScheduler()).isInstanceOf(TestTaskScheduler.class);
-		assertThat(transportService.getTransportHandlers().values(),
-				containsInAnyOrder(
-						instanceOf(XhrPollingTransportHandler.class),
-						instanceOf(XhrStreamingTransportHandler.class)));
+		assertThat(transportService.getTransportHandlers().values()).extracting("class")
+				.containsExactlyInAnyOrder(XhrPollingTransportHandler.class, XhrStreamingTransportHandler.class);
 
 		assertEquals("testSockJsService", transportService.getName());
 		assertFalse(transportService.isWebSocketEnabled());
@@ -231,7 +225,7 @@ public class HandlersBeanDefinitionParserTests {
 		assertEquals(TestMessageCodec.class, transportService.getMessageCodec().getClass());
 
 		List<HandshakeInterceptor> interceptors = transportService.getHandshakeInterceptors();
-		assertThat(interceptors).isInstanceOf(OriginHandshakeInterceptor.class));
+		assertThat(interceptors).extracting("class").containsExactly(OriginHandshakeInterceptor.class);
 		assertTrue(transportService.shouldSuppressCors());
 		assertTrue(transportService.getAllowedOrigins().contains("https://mydomain1.com"));
 		assertTrue(transportService.getAllowedOrigins().contains("https://mydomain2.com"));

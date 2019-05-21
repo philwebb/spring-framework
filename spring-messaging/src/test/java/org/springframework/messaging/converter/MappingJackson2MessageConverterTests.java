@@ -58,8 +58,8 @@ public class MappingJackson2MessageConverterTests {
 	@Test
 	public void defaultConstructor() {
 		MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
-		assertThat(converter.getSupportedMimeTypes(),
-				contains(new MimeType("application", "json")));
+		assertThat(converter.getSupportedMimeTypes())
+				.contains(new MimeType("application", "json"));
 		assertFalse(converter.getObjectMapper().getDeserializationConfig()
 				.isEnabled(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES));
 	}
@@ -68,7 +68,7 @@ public class MappingJackson2MessageConverterTests {
 	public void mimetypeParametrizedConstructor() {
 		MimeType mimetype = new MimeType("application", "xml", StandardCharsets.UTF_8);
 		MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter(mimetype);
-		assertThat(converter.getSupportedMimeTypes(), contains(mimetype));
+		assertThat(converter.getSupportedMimeTypes()).contains(mimetype);
 		assertFalse(converter.getObjectMapper().getDeserializationConfig()
 				.isEnabled(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES));
 	}
@@ -78,7 +78,7 @@ public class MappingJackson2MessageConverterTests {
 		MimeType jsonMimetype = new MimeType("application", "json", StandardCharsets.UTF_8);
 		MimeType xmlMimetype = new MimeType("application", "xml", StandardCharsets.UTF_8);
 		MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter(jsonMimetype, xmlMimetype);
-		assertThat(converter.getSupportedMimeTypes(), contains(jsonMimetype, xmlMimetype));
+		assertThat(converter.getSupportedMimeTypes()).contains(jsonMimetype, xmlMimetype);
 		assertFalse(converter.getObjectMapper().getDeserializationConfig()
 				.isEnabled(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES));
 	}
@@ -241,7 +241,7 @@ public class MappingJackson2MessageConverterTests {
 
 		assertThat(actual).contains("\"withView1\":\"with\"");
 		assertThat(actual).contains("\"withView2\":\"with\"");
-		assertThat(actual).isNotEqualTo(containsString("\"withoutView\":\"with\""));
+		assertThat(actual).doesNotContain("\"withoutView\":\"with\"");
 
 		method = getClass().getDeclaredMethod("jsonViewPayload", JacksonViewBean.class);
 		MethodParameter param = new MethodParameter(method, 0);

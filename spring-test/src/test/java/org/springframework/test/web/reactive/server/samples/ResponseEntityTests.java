@@ -44,7 +44,7 @@ import static java.time.Duration.ofMillis;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.http.MediaType.TEXT_EVENT_STREAM;
 
@@ -111,7 +111,7 @@ public class ResponseEntityTests {
 				.expectStatus().isOk()
 				.expectHeader().contentType(MediaType.APPLICATION_JSON)
 				.expectBodyList(Person.class).value(people ->
-					MatcherAssert.assertThat(people).contains(new Person("Jason"))
+					assertThat(people).contains(new Person("Jason"))
 				);
 	}
 
@@ -142,7 +142,7 @@ public class ResponseEntityTests {
 		StepVerifier.create(result.getResponseBody())
 				.expectNext(new Person("N0"), new Person("N1"), new Person("N2"))
 				.expectNextCount(4)
-				.consumeNextWith(person -> assertThat(person.getName(), endsWith("7")))
+				.consumeNextWith(person -> assertThat(person.getName()).endsWith("7"))
 				.thenCancel()
 				.verify();
 	}

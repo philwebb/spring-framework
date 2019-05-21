@@ -89,7 +89,7 @@ public class MethodMessageHandlerTests {
 		Map<String, HandlerMethod> handlerMethods = this.messageHandler.getHandlerMethods();
 
 		assertNotNull(handlerMethods);
-		assertThat(handlerMethods.keySet(), Matchers.hasSize(3));
+		assertThat(handlerMethods).hasSize(3);
 	}
 
 	@Test

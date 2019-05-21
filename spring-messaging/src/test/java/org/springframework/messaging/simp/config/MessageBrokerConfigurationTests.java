@@ -411,7 +411,7 @@ public class MessageBrokerConfigurationTests {
 		SimpAnnotationMethodMessageHandler messageHandler =
 				context.getBean(SimpAnnotationMethodMessageHandler.class);
 
-		assertThat(messageHandler.getValidator(), Matchers.notNullValue(Validator.class));
+		assertThat(messageHandler.getValidator()).isNotNull();
 	}
 
 	@Test

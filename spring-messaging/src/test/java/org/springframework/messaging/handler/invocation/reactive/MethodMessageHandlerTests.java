@@ -71,9 +71,9 @@ public class MethodMessageHandlerTests {
 		Map<String, HandlerMethod> mappings = messageHandler.getHandlerMethods();
 
 		assertEquals(5, mappings.keySet().size());
-		assertThat(mappings.keySet(), Matchers.containsInAnyOrder(
+		assertThat(mappings).containsOnlyKeys(
 				"/handleMessage", "/handleMessageWithArgument", "/handleMessageWithError",
-				"/handleMessageMatch1", "/handleMessageMatch2"));
+				"/handleMessageMatch1", "/handleMessageMatch2");
 	}
 
 	@Test

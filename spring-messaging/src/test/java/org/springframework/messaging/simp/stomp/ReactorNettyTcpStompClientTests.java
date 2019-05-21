@@ -121,10 +121,10 @@ public class ReactorNettyTcpStompClientTests {
 		ListenableFuture<StompSession> producerFuture = this.client.connect(producingHandler);
 
 		assertTrue(consumingHandler1.awaitForMessageCount(2, 5000));
-		assertThat(consumingHandler1.getReceived(), containsInAnyOrder("foo1", "foo2"));
+		assertThat(consumingHandler1.getReceived()).containsExactly("foo1", "foo2");
 
 		assertTrue(consumingHandler2.awaitForMessageCount(2, 5000));
-		assertThat(consumingHandler2.getReceived(), containsInAnyOrder("foo1", "foo2"));
+		assertThat(consumingHandler2.getReceived()).containsExactly("foo1", "foo2");
 
 		consumerFuture1.get().disconnect();
 		consumerFuture2.get().disconnect();

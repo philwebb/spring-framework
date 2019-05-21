@@ -123,8 +123,7 @@ public class MessageBrokerBeanDefinitionParserTests {
 		HandlerMapping hm = this.appContext.getBean(HandlerMapping.class);
 		assertThat(hm).isInstanceOf(SimpleUrlHandlerMapping.class);
 		SimpleUrlHandlerMapping suhm = (SimpleUrlHandlerMapping) hm;
-		assertThat(suhm.getUrlMap().keySet(), Matchers.hasSize(4));
-		assertThat(suhm.getUrlMap().values(), Matchers.hasSize(4));
+		assertThat(suhm.getUrlMap()).hasSize(4);
 
 		HttpRequestHandler httpRequestHandler = (HttpRequestHandler) suhm.getUrlMap().get("/foo");
 		assertNotNull(httpRequestHandler);
@@ -135,8 +134,8 @@ public class MessageBrokerBeanDefinitionParserTests {
 		assertNotNull(handshakeHandler);
 		assertTrue(handshakeHandler instanceof TestHandshakeHandler);
 		List<HandshakeInterceptor> interceptors = wsHttpRequestHandler.getHandshakeInterceptors();
-		assertThat(interceptors, contains(instanceOf(FooTestInterceptor.class),
-				instanceOf(BarTestInterceptor.class), instanceOf(OriginHandshakeInterceptor.class)));
+		assertThat(interceptors).extracting("class").containsExactly(FooTestInterceptor.class,
+				BarTestInterceptor.class, OriginHandshakeInterceptor.class);
 
 		WebSocketSession session = new TestWebSocketSession("id");
 		wsHttpRequestHandler.getWebSocketHandler().afterConnectionEstablished(session);
@@ -191,8 +190,8 @@ public class MessageBrokerBeanDefinitionParserTests {
 		assertTrue(executor.getRemoveOnCancelPolicy());
 
 		interceptors = defaultSockJsService.getHandshakeInterceptors();
-		assertThat(interceptors, contains(instanceOf(FooTestInterceptor.class),
-				instanceOf(BarTestInterceptor.class), instanceOf(OriginHandshakeInterceptor.class)));
+		assertThat(interceptors).extracting("class").containsExactly(FooTestInterceptor.class,
+				BarTestInterceptor.class, OriginHandshakeInterceptor.class);
 		assertTrue(defaultSockJsService.getAllowedOrigins().contains("https://mydomain3.com"));
 		assertTrue(defaultSockJsService.getAllowedOrigins().contains("https://mydomain4.com"));
 
@@ -250,8 +249,7 @@ public class MessageBrokerBeanDefinitionParserTests {
 		assertThat(hm).isInstanceOf(SimpleUrlHandlerMapping.class);
 
 		SimpleUrlHandlerMapping suhm = (SimpleUrlHandlerMapping) hm;
-		assertThat(suhm.getUrlMap().keySet(), Matchers.hasSize(1));
-		assertThat(suhm.getUrlMap().values(), Matchers.hasSize(1));
+		assertThat(suhm.getUrlMap()).hasSize(1);
 		assertEquals(2, suhm.getOrder());
 
 		HttpRequestHandler httpRequestHandler = (HttpRequestHandler) suhm.getUrlMap().get("/foo/**");
@@ -280,7 +278,7 @@ public class MessageBrokerBeanDefinitionParserTests {
 		assertEquals("spring.io", messageBroker.getVirtualHost());
 		assertEquals(5000, messageBroker.getSystemHeartbeatReceiveInterval());
 		assertEquals(5000, messageBroker.getSystemHeartbeatSendInterval());
-		assertThat(messageBroker.getDestinationPrefixes(), Matchers.containsInAnyOrder("/topic","/queue"));
+		assertThat(messageBroker.getDestinationPrefixes()).containsExactlyInAnyOrder("/topic","/queue");
 		assertTrue(messageBroker.isPreservePublishOrder());
 
 		List<Class<? extends MessageHandler>> subscriberTypes = Arrays.asList(SimpAnnotationMethodMessageHandler.class,

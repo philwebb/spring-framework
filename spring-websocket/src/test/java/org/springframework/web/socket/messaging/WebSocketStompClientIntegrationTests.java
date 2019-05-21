@@ -122,7 +122,7 @@ public class WebSocketStompClientIntegrationTests {
 		this.stompClient.connect(url, testHandler);
 
 		assertTrue(testHandler.awaitForMessageCount(1, 5000));
-		assertThat(testHandler.getReceived(), containsInAnyOrder("payload"));
+		assertThat(testHandler.getReceived()).containsExactly("payload");
 	}
 
 

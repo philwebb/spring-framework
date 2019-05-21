@@ -345,7 +345,7 @@ public class MessageHeaderAccessorTests {
 				return payload;
 			}
 		});
-		assertThat(actual, startsWith("headers={contentType=text/plain} payload=" + getClass().getName() + "$"));
+		assertThat(actual).startsWith("headers={contentType=text/plain} payload=" + getClass().getName() + "$");
 	}
 
 	@Test

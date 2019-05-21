@@ -51,7 +51,7 @@ public class WebSocketHttpHeadersTests {
 		this.headers.put(WebSocketHttpHeaders.SEC_WEBSOCKET_EXTENSIONS, extensions);
 
 		List<WebSocketExtension> parsedExtensions = this.headers.getSecWebSocketExtensions();
-		assertThat(parsedExtensions, Matchers.hasSize(3));
+		assertThat(parsedExtensions).hasSize(3);
 	}
 
 }

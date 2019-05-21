@@ -95,8 +95,8 @@ public class ConvertingEncoderDecoderSupportTests {
 
 	@Test
 	public void encodeToBinary() throws Exception {
-		assertThat(new MyBinaryEncoder().encode(myType).array(),
-				equalTo(CONVERTED_BYTES.array()));
+		assertThat(new MyBinaryEncoder().encode(myType).array())
+				.isEqualTo(CONVERTED_BYTES.array());
 	}
 
 	@Test
