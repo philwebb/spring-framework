@@ -55,7 +55,8 @@ public class StompSubProtocolErrorHandlerTests {
 		assertNotNull(accessor);
 		assertThat(accessor.getCommand()).isEqualTo(StompCommand.ERROR);
 		assertThat(accessor.getMessage()).isEqualTo(ex.getMessage());
-		assertArrayEquals(new byte[0], actual.getPayload());
+		byte[] expecteds = new byte[0];
+		assertThat(actual.getPayload()).isEqualTo(expecteds);
 	}
 
 	@Test

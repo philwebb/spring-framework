@@ -134,7 +134,7 @@ public class ExtractingResponseErrorHandlerTests {
 				this.errorHandler.handleError(this.response))
 			.satisfies(ex -> {
 				assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-				assertArrayEquals(body, ex.getResponseBodyAsByteArray());
+				assertThat(ex.getResponseBodyAsByteArray()).isEqualTo(body);
 			});
 	}
 

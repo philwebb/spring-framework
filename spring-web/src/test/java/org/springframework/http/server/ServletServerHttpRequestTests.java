@@ -157,7 +157,7 @@ public class ServletServerHttpRequestTests {
 		mockRequest.setContent(content);
 
 		byte[] result = FileCopyUtils.copyToByteArray(request.getBody());
-		assertArrayEquals("Invalid content returned", content, result);
+		assertThat(result).as("Invalid content returned").isEqualTo(content);
 	}
 
 	@Test
@@ -171,7 +171,7 @@ public class ServletServerHttpRequestTests {
 
 		byte[] result = FileCopyUtils.copyToByteArray(request.getBody());
 		byte[] content = "name+1=value+1&name+2=value+2%2B1&name+2=value+2%2B2&name+3".getBytes("UTF-8");
-		assertArrayEquals("Invalid content returned", content, result);
+		assertThat(result).as("Invalid content returned").isEqualTo(content);
 	}
 
 }

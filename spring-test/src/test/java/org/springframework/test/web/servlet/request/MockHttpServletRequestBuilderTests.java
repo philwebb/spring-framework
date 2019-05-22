@@ -349,7 +349,7 @@ public class MockHttpServletRequestBuilderTests {
 		MockHttpServletRequest request = this.builder.buildRequest(this.servletContext);
 		byte[] result = FileCopyUtils.copyToByteArray(request.getInputStream());
 
-		assertArrayEquals(body, result);
+		assertThat(result).isEqualTo(body);
 	}
 
 	@Test

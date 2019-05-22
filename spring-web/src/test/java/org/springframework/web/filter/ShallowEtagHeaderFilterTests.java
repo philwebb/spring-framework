@@ -76,7 +76,7 @@ public class ShallowEtagHeaderFilterTests {
 		assertEquals("Invalid status", 200, response.getStatus());
 		assertThat(response.getHeader("ETag")).as("Invalid ETag header").isEqualTo("\"0b10a8db164e0754105b7a99be72e3fe5\"");
 		assertThat(response.getContentLength() > 0).as("Invalid Content-Length header").isTrue();
-		assertArrayEquals("Invalid content", responseBody, response.getContentAsByteArray());
+		assertThat(response.getContentAsByteArray()).as("Invalid content").isEqualTo(responseBody);
 	}
 
 	@Test
@@ -96,7 +96,7 @@ public class ShallowEtagHeaderFilterTests {
 		assertEquals("Invalid status", 200, response.getStatus());
 		assertThat(response.getHeader("ETag")).as("Invalid ETag header").isEqualTo("W/\"0b10a8db164e0754105b7a99be72e3fe5\"");
 		assertThat(response.getContentLength() > 0).as("Invalid Content-Length header").isTrue();
-		assertArrayEquals("Invalid content", responseBody, response.getContentAsByteArray());
+		assertThat(response.getContentAsByteArray()).as("Invalid content").isEqualTo(responseBody);
 	}
 
 	@Test
@@ -117,7 +117,8 @@ public class ShallowEtagHeaderFilterTests {
 		assertEquals("Invalid status", 304, response.getStatus());
 		assertThat(response.getHeader("ETag")).as("Invalid ETag header").isEqualTo("\"0b10a8db164e0754105b7a99be72e3fe5\"");
 		assertThat(response.containsHeader("Content-Length")).as("Response has Content-Length header").isFalse();
-		assertArrayEquals("Invalid content", new byte[0], response.getContentAsByteArray());
+		byte[] expecteds = new byte[0];
+		assertThat(response.getContentAsByteArray()).as("Invalid content").isEqualTo(expecteds);
 	}
 
 	@Test
@@ -138,7 +139,8 @@ public class ShallowEtagHeaderFilterTests {
 		assertEquals("Invalid status", 304, response.getStatus());
 		assertThat(response.getHeader("ETag")).as("Invalid ETag header").isEqualTo("\"0b10a8db164e0754105b7a99be72e3fe5\"");
 		assertThat(response.containsHeader("Content-Length")).as("Response has Content-Length header").isFalse();
-		assertArrayEquals("Invalid content", new byte[0], response.getContentAsByteArray());
+		byte[] expecteds = new byte[0];
+		assertThat(response.getContentAsByteArray()).as("Invalid content").isEqualTo(expecteds);
 	}
 
 	@Test
@@ -159,7 +161,8 @@ public class ShallowEtagHeaderFilterTests {
 		assertEquals("Invalid status", 304, response.getStatus());
 		assertThat(response.getHeader("ETag")).as("Invalid ETag header").isEqualTo("\"0b10a8db164e0754105b7a99be72e3fe5\"");
 		assertThat(response.containsHeader("Content-Length")).as("Response has Content-Length header").isFalse();
-		assertArrayEquals("Invalid content", new byte[0], response.getContentAsByteArray());
+		byte[] expecteds = new byte[0];
+		assertThat(response.getContentAsByteArray()).as("Invalid content").isEqualTo(expecteds);
 	}
 
 	@Test  // SPR-12960
@@ -179,7 +182,7 @@ public class ShallowEtagHeaderFilterTests {
 
 		assertEquals(200, response.getStatus());
 		assertNull(response.getHeader("ETag"));
-		assertArrayEquals(responseBody, response.getContentAsByteArray());
+		assertThat(response.getContentAsByteArray()).isEqualTo(responseBody);
 	}
 
 	@Test
@@ -199,7 +202,7 @@ public class ShallowEtagHeaderFilterTests {
 		assertEquals("Invalid status", 403, response.getStatus());
 		assertNull("Invalid ETag header", response.getHeader("ETag"));
 		assertEquals("Invalid Content-Length header", 100, response.getContentLength());
-		assertArrayEquals("Invalid content", responseBody, response.getContentAsByteArray());
+		assertThat(response.getContentAsByteArray()).as("Invalid content").isEqualTo(responseBody);
 	}
 
 	@Test
@@ -219,7 +222,7 @@ public class ShallowEtagHeaderFilterTests {
 		assertEquals("Invalid status", 403, response.getStatus());
 		assertNull("Invalid ETag header", response.getHeader("ETag"));
 		assertEquals("Invalid Content-Length header", 100, response.getContentLength());
-		assertArrayEquals("Invalid content", responseBody, response.getContentAsByteArray());
+		assertThat(response.getContentAsByteArray()).as("Invalid content").isEqualTo(responseBody);
 		assertThat(response.getErrorMessage()).as("Invalid error message").isEqualTo("ERROR");
 	}
 
@@ -240,7 +243,7 @@ public class ShallowEtagHeaderFilterTests {
 		assertEquals("Invalid status", 302, response.getStatus());
 		assertNull("Invalid ETag header", response.getHeader("ETag"));
 		assertEquals("Invalid Content-Length header", 100, response.getContentLength());
-		assertArrayEquals("Invalid content", responseBody, response.getContentAsByteArray());
+		assertThat(response.getContentAsByteArray()).as("Invalid content").isEqualTo(responseBody);
 		assertThat(response.getRedirectedUrl()).as("Invalid redirect URL").isEqualTo("https://www.google.com");
 	}
 
@@ -262,7 +265,7 @@ public class ShallowEtagHeaderFilterTests {
 		assertEquals("Invalid status", 200, response.getStatus());
 		assertThat(response.getHeader("ETag")).as("Invalid ETag header").isEqualTo("\"0b10a8db164e0754105b7a99be72e3fe5\"");
 		assertThat(response.getContentLength() > 0).as("Invalid Content-Length header").isTrue();
-		assertArrayEquals("Invalid content", responseBody, response.getContentAsByteArray());
+		assertThat(response.getContentAsByteArray()).as("Invalid content").isEqualTo(responseBody);
 	}
 
 }

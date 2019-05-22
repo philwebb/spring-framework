@@ -53,7 +53,7 @@ public class ResponseCreatorsTests {
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(response.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
-		assertArrayEquals("foo".getBytes(), StreamUtils.copyToByteArray(response.getBody()));
+		assertThat(StreamUtils.copyToByteArray(response.getBody())).isEqualTo("foo".getBytes());
 	}
 
 	@Test
@@ -63,7 +63,7 @@ public class ResponseCreatorsTests {
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertNull(response.getHeaders().getContentType());
-		assertArrayEquals("foo".getBytes(), StreamUtils.copyToByteArray(response.getBody()));
+		assertThat(StreamUtils.copyToByteArray(response.getBody())).isEqualTo("foo".getBytes());
 	}
 
 	@Test

@@ -46,7 +46,7 @@ public class ContentCachingRequestWrapperTests {
 
 		ContentCachingRequestWrapper wrapper = new ContentCachingRequestWrapper(this.request);
 		byte[] response = FileCopyUtils.copyToByteArray(wrapper.getInputStream());
-		assertArrayEquals(response, wrapper.getContentAsByteArray());
+		assertThat(wrapper.getContentAsByteArray()).isEqualTo(response);
 	}
 
 	@Test
@@ -57,8 +57,8 @@ public class ContentCachingRequestWrapperTests {
 
 		ContentCachingRequestWrapper wrapper = new ContentCachingRequestWrapper(this.request, 3);
 		byte[] response = FileCopyUtils.copyToByteArray(wrapper.getInputStream());
-		assertArrayEquals("Hello World".getBytes(CHARSET), response);
-		assertArrayEquals("Hel".getBytes(CHARSET), wrapper.getContentAsByteArray());
+		assertThat(response).isEqualTo("Hello World".getBytes(CHARSET));
+		assertThat(wrapper.getContentAsByteArray()).isEqualTo("Hel".getBytes(CHARSET));
 	}
 
 	@Test
@@ -106,7 +106,7 @@ public class ContentCachingRequestWrapperTests {
 		ContentCachingRequestWrapper wrapper = new ContentCachingRequestWrapper(this.request);
 
 		byte[] response = FileCopyUtils.copyToByteArray(wrapper.getInputStream());
-		assertArrayEquals(response, wrapper.getContentAsByteArray());
+		assertThat(wrapper.getContentAsByteArray()).isEqualTo(response);
 	}
 
 }

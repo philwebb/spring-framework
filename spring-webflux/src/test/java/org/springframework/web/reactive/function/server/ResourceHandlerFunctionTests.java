@@ -99,7 +99,7 @@ public class ResourceHandlerFunctionTests {
 				.consumeNextWith(dataBuffer -> {
 					byte[] resultBytes = new byte[dataBuffer.readableByteCount()];
 					dataBuffer.read(resultBytes);
-					assertArrayEquals(expectedBytes, resultBytes);
+					assertThat(resultBytes).isEqualTo(expectedBytes);
 				})
 				.expectComplete()
 				.verify();

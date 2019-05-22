@@ -337,8 +337,7 @@ public class ApplicationContextExpressionTests {
 			assertThat(resourceInjectionBean.url).isEqualTo(resource.getURL());
 			assertThat(resourceInjectionBean.uri).isEqualTo(resource.getURI());
 			assertThat(resourceInjectionBean.file).isEqualTo(resource.getFile());
-			assertArrayEquals(FileCopyUtils.copyToByteArray(resource.getInputStream()),
-					FileCopyUtils.copyToByteArray(resourceInjectionBean.inputStream));
+			assertThat(FileCopyUtils.copyToByteArray(resourceInjectionBean.inputStream)).isEqualTo(FileCopyUtils.copyToByteArray(resource.getInputStream()));
 			assertThat(FileCopyUtils.copyToString(resourceInjectionBean.reader)).isEqualTo(FileCopyUtils.copyToString(new EncodedResource(resource).getReader()));
 		}
 		finally {

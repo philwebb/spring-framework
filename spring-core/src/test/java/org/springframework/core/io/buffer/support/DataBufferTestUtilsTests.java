@@ -40,7 +40,7 @@ public class DataBufferTestUtilsTests extends AbstractDataBufferAllocatingTestCa
 
 		byte[] result = DataBufferTestUtils.dumpBytes(buffer);
 
-		assertArrayEquals(source, result);
+		assertThat(result).isEqualTo(source);
 
 		release(buffer);
 	}

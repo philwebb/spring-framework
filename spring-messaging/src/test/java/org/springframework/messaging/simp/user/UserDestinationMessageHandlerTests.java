@@ -151,7 +151,7 @@ public class UserDestinationMessageHandlerTests {
 		assertThat(headers.getDestination()).isEqualTo("/queue/foo-user123");
 		assertThat(headers.getFirstNativeHeader(ORIGINAL_DESTINATION)).isEqualTo("/user/queue/foo");
 		assertThat(headers.getFirstNativeHeader("customHeader")).isEqualTo("customHeaderValue");
-		assertArrayEquals(payload, (byte[]) captor.getValue().getPayload());
+		assertThat((byte[]) captor.getValue().getPayload()).isEqualTo(payload);
 	}
 
 	@Test

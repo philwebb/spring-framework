@@ -74,7 +74,7 @@ public class MappingJackson2SmileHttpMessageConverterTests {
 
 		assertThat(result.getArray()).isEqualTo(new String[]{"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
-		assertArrayEquals(new byte[]{0x1, 0x2}, result.getBytes());
+		assertThat(result.getBytes()).isEqualTo(new byte[]{0x1, 0x2});
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class MappingJackson2SmileHttpMessageConverterTests {
 		body.setBool(true);
 		body.setBytes(new byte[]{0x1, 0x2});
 		converter.write(body, null, outputMessage);
-		assertArrayEquals(mapper.writeValueAsBytes(body), outputMessage.getBodyAsBytes());
+		assertThat(outputMessage.getBodyAsBytes()).isEqualTo(mapper.writeValueAsBytes(body));
 		assertThat(outputMessage.getHeaders().getContentType()).as("Invalid content-type").isEqualTo(new MediaType("application", "x-jackson-smile"));
 	}
 

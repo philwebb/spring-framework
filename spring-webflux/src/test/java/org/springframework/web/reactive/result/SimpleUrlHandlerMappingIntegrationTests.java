@@ -75,7 +75,7 @@ public class SimpleUrlHandlerMappingIntegrationTests extends AbstractHttpHandler
 		ResponseEntity<byte[]> response = new RestTemplate().exchange(request, byte[].class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertArrayEquals("foo".getBytes("UTF-8"), response.getBody());
+		assertThat(response.getBody()).isEqualTo("foo".getBytes("UTF-8"));
 	}
 
 	@Test
@@ -85,7 +85,7 @@ public class SimpleUrlHandlerMappingIntegrationTests extends AbstractHttpHandler
 		ResponseEntity<byte[]> response = new RestTemplate().exchange(request, byte[].class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertArrayEquals("bar".getBytes("UTF-8"), response.getBody());
+		assertThat(response.getBody()).isEqualTo("bar".getBytes("UTF-8"));
 	}
 
 	@Test

@@ -26,6 +26,7 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 
 /**
@@ -52,7 +53,7 @@ public class EchoHandlerIntegrationTests extends AbstractHttpHandlerIntegrationT
 		RequestEntity<byte[]> request = RequestEntity.post(new URI("http://localhost:" + port)).body(body);
 		ResponseEntity<byte[]> response = restTemplate.exchange(request, byte[].class);
 
-		assertArrayEquals(body, response.getBody());
+		assertThat(response.getBody()).isEqualTo(body);
 	}
 
 

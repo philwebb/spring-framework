@@ -97,7 +97,7 @@ public class MappingJackson2HttpMessageConverterTests {
 
 		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
-		assertArrayEquals(new byte[] {0x1, 0x2}, result.getBytes());
+		assertThat(result.getBytes()).isEqualTo(new byte[] {0x1, 0x2});
 	}
 
 	@Test
@@ -228,7 +228,7 @@ public class MappingJackson2HttpMessageConverterTests {
 
 		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
-		assertArrayEquals(new byte[] {0x1, 0x2}, result.getBytes());
+		assertThat(result.getBytes()).isEqualTo(new byte[] {0x1, 0x2});
 
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		converter.write(results, new MediaType("application", "json"), outputMessage);
@@ -260,7 +260,7 @@ public class MappingJackson2HttpMessageConverterTests {
 
 		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
-		assertArrayEquals(new byte[] {0x1, 0x2}, result.getBytes());
+		assertThat(result.getBytes()).isEqualTo(new byte[] {0x1, 0x2});
 
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		converter.write(results, beansList.getType(), new MediaType("application", "json"), outputMessage);
@@ -293,7 +293,7 @@ public class MappingJackson2HttpMessageConverterTests {
 
 		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
 		assertThat(result.isBool()).isTrue();
-		assertArrayEquals(new byte[] {0x1, 0x2}, result.getBytes());
+		assertThat(result.getBytes()).isEqualTo(new byte[] {0x1, 0x2});
 
 		MockHttpOutputMessage outputMessage = new MockHttpOutputMessage();
 		converter.write(results, baseList.getType(), new MediaType("application", "json"), outputMessage);

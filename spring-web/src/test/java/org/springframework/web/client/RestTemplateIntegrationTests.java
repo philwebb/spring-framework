@@ -117,7 +117,7 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 	@Test
 	public void getNoContentTypeHeader() throws UnsupportedEncodingException {
 		byte[] bytes = template.getForObject(baseUrl + "/get/nocontenttype", byte[].class);
-		assertArrayEquals("Invalid content", helloWorld.getBytes("UTF-8"), bytes);
+		assertThat(bytes).as("Invalid content").isEqualTo(helloWorld.getBytes("UTF-8"));
 	}
 
 	@Test

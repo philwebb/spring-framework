@@ -88,7 +88,7 @@ public class ResourceHandlerFunctionTests {
 		assertEquals(200, servletResponse.getStatus());
 		byte[] expectedBytes = Files.readAllBytes(this.resource.getFile().toPath());
 		byte[] actualBytes = servletResponse.getContentAsByteArray();
-		assertArrayEquals(expectedBytes, actualBytes);
+		assertThat(actualBytes).isEqualTo(expectedBytes);
 		assertThat(servletResponse.getContentType()).isEqualTo(MediaType.TEXT_PLAIN_VALUE);
 		assertEquals(this.resource.contentLength(),servletResponse.getContentLength());
 	}

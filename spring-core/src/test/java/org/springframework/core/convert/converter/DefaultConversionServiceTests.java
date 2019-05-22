@@ -946,7 +946,7 @@ public class DefaultConversionServiceTests {
 		byte[] byteArray = new byte[] {1, 2, 3};
 		byte[] converted = conversionService.convert(byteArray, byte[].class);
 		assertNotSame(byteArray, converted);
-		assertArrayEquals(new byte[]{2, 3, 4}, converted);
+		assertThat(converted).isEqualTo(new byte[]{2, 3, 4});
 	}
 
 	@Test

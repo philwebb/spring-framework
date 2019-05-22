@@ -29,6 +29,7 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static temp.XAssert.assertArrayEquals;
 
 /**
@@ -59,7 +60,7 @@ public class WriteOnlyHandlerIntegrationTests extends AbstractHttpHandlerIntegra
 						"".getBytes(StandardCharsets.UTF_8));
 		ResponseEntity<byte[]> response = restTemplate.exchange(request, byte[].class);
 
-		assertArrayEquals(body, response.getBody());
+		assertThat(response.getBody()).isEqualTo(body);
 	}
 
 	private byte[] randomBytes() {

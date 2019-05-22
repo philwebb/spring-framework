@@ -136,7 +136,7 @@ public class RequestLoggingFilterTests {
 		FilterChain filterChain = (filterRequest, filterResponse) -> {
 			((HttpServletResponse) filterResponse).setStatus(HttpServletResponse.SC_OK);
 			byte[] buf = FileCopyUtils.copyToByteArray(filterRequest.getInputStream());
-			assertArrayEquals(requestBody, buf);
+			assertThat(buf).isEqualTo(requestBody);
 		};
 
 		filter.doFilter(request, response, filterChain);
@@ -181,10 +181,10 @@ public class RequestLoggingFilterTests {
 		FilterChain filterChain = (filterRequest, filterResponse) -> {
 			((HttpServletResponse) filterResponse).setStatus(HttpServletResponse.SC_OK);
 			byte[] buf = FileCopyUtils.copyToByteArray(filterRequest.getInputStream());
-			assertArrayEquals(requestBody, buf);
+			assertThat(buf).isEqualTo(requestBody);
 			ContentCachingRequestWrapper wrapper =
 					WebUtils.getNativeRequest(filterRequest, ContentCachingRequestWrapper.class);
-			assertArrayEquals("Hel".getBytes(StandardCharsets.UTF_8), wrapper.getContentAsByteArray());
+			assertThat(wrapper.getContentAsByteArray()).isEqualTo("Hel".getBytes(StandardCharsets.UTF_8));
 		};
 
 		filter.doFilter(request, response, filterChain);

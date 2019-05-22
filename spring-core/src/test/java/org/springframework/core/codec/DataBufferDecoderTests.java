@@ -86,7 +86,7 @@ public class DataBufferDecoderTests extends AbstractDecoderTestCase<DataBufferDe
 		return actual -> {
 			byte[] actualBytes = new byte[actual.readableByteCount()];
 			actual.read(actualBytes);
-			assertArrayEquals(expected, actualBytes);
+			assertThat(actualBytes).isEqualTo(expected);
 
 			DataBufferUtils.release(actual);
 		};

@@ -1695,7 +1695,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		assertEquals(200, response.getStatus());
 		assertThat(response.getContentType()).isEqualTo("text/html;charset=ISO-8859-1");
 		assertThat(response.getHeader("Content-Disposition")).isEqualTo("inline;filename=f.txt");
-		assertArrayEquals(content, response.getContentAsByteArray());
+		assertThat(response.getContentAsByteArray()).isEqualTo(content);
 	}
 
 	@Test
@@ -1718,7 +1718,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		assertEquals(200, response.getStatus());
 		assertThat(response.getContentType()).isEqualTo("text/html;charset=ISO-8859-1");
 		assertNull(response.getHeader("Content-Disposition"));
-		assertArrayEquals(content, response.getContentAsByteArray());
+		assertThat(response.getContentAsByteArray()).isEqualTo(content);
 	}
 
 	@Test
@@ -1741,7 +1741,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		assertEquals(200, response.getStatus());
 		assertThat(response.getContentType()).isEqualTo("text/html;charset=ISO-8859-1");
 		assertNull(response.getHeader("Content-Disposition"));
-		assertArrayEquals(content, response.getContentAsByteArray());
+		assertThat(response.getContentAsByteArray()).isEqualTo(content);
 	}
 
 	@Test
@@ -1764,7 +1764,7 @@ public class ServletAnnotationControllerHandlerMethodTests extends AbstractServl
 		assertEquals(200, response.getStatus());
 		assertThat(response.getContentType()).isEqualTo("text/css;charset=ISO-8859-1");
 		assertNull(response.getHeader("Content-Disposition"));
-		assertArrayEquals(content, response.getContentAsByteArray());
+		assertThat(response.getContentAsByteArray()).isEqualTo(content);
 	}
 
 	@Test

@@ -240,7 +240,7 @@ public class RequestPartIntegrationTests {
 				@RequestPart(name = "empty-data", required = false) TestData emptyData,
 				@RequestPart(name = "iso-8859-1-data") byte[] iso88591Data) {
 
-			assertArrayEquals(new byte[]{(byte) 0xC4}, iso88591Data);
+			assertThat(iso88591Data).isEqualTo(new byte[]{(byte) 0xC4});
 
 			String url = "http://localhost:8080/test/" + testData.getName() + "/" + file.get().getOriginalFilename();
 			HttpHeaders headers = new HttpHeaders();

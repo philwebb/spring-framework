@@ -96,7 +96,7 @@ public class MappingJackson2MessageConverterTests {
 
 		assertThat(actual.getArray()).isEqualTo(new String[]{"Foo", "Bar"});
 		assertThat(actual.isBool()).isTrue();
-		assertArrayEquals(new byte[]{0x1, 0x2}, actual.getBytes());
+		assertThat(actual.getBytes()).isEqualTo(new byte[]{0x1, 0x2});
 	}
 
 	@Test

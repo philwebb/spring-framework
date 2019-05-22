@@ -87,7 +87,7 @@ public class RequestPartServletServerHttpRequestTests {
 		ServerHttpRequest request = new RequestPartServletServerHttpRequest(this.mockRequest, "part");
 
 		byte[] result = FileCopyUtils.copyToByteArray(request.getBody());
-		assertArrayEquals(bytes, result);
+		assertThat(result).isEqualTo(bytes);
 	}
 
 	@Test  // SPR-13317
@@ -99,7 +99,7 @@ public class RequestPartServletServerHttpRequestTests {
 		ServerHttpRequest request = new RequestPartServletServerHttpRequest(wrapped, "part");
 
 		byte[] result = FileCopyUtils.copyToByteArray(request.getBody());
-		assertArrayEquals(bytes, result);
+		assertThat(result).isEqualTo(bytes);
 	}
 
 	@Test  // SPR-13096
@@ -117,7 +117,7 @@ public class RequestPartServletServerHttpRequestTests {
 		mockRequest.setParameter("part", new String(bytes, StandardCharsets.ISO_8859_1));
 		ServerHttpRequest request = new RequestPartServletServerHttpRequest(mockRequest, "part");
 		byte[] result = FileCopyUtils.copyToByteArray(request.getBody());
-		assertArrayEquals(bytes, result);
+		assertThat(result).isEqualTo(bytes);
 	}
 
 	@Test
@@ -136,7 +136,7 @@ public class RequestPartServletServerHttpRequestTests {
 		mockRequest.setCharacterEncoding("iso-8859-1");
 		ServerHttpRequest request = new RequestPartServletServerHttpRequest(mockRequest, "part");
 		byte[] result = FileCopyUtils.copyToByteArray(request.getBody());
-		assertArrayEquals(bytes, result);
+		assertThat(result).isEqualTo(bytes);
 	}
 
 }

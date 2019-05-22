@@ -242,7 +242,7 @@ public abstract class AbstractEncoderTestCase<E extends Encoder<?>>
 			byte[] resultBytes = new byte[dataBuffer.readableByteCount()];
 			dataBuffer.read(resultBytes);
 			release(dataBuffer);
-			assertArrayEquals(expected, resultBytes);
+			assertThat(resultBytes).isEqualTo(expected);
 		};
 	}
 

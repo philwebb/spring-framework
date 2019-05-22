@@ -135,7 +135,7 @@ public class AsyncRestTemplateIntegrationTests extends AbstractMockWebServerTest
 	public void getNoContentTypeHeader() throws Exception {
 		Future<ResponseEntity<byte[]>> futureEntity = template.getForEntity(baseUrl + "/get/nocontenttype", byte[].class);
 		ResponseEntity<byte[]> responseEntity = futureEntity.get();
-		assertArrayEquals("Invalid content", helloWorld.getBytes("UTF-8"), responseEntity.getBody());
+		assertThat(responseEntity.getBody()).as("Invalid content").isEqualTo(helloWorld.getBytes("UTF-8"));
 	}
 
 	@Test

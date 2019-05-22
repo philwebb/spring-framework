@@ -29,24 +29,6 @@ import static org.assertj.core.api.Assertions.within;
  */
 public class XAssert {
 
-	public static void assertArrayEquals(String message, boolean[] expecteds,
-			boolean[] actuals) throws ArrayComparisonFailure {
-		assertThat(actuals).as(message).isEqualTo(expecteds);
-	}
-
-	public static void assertArrayEquals(boolean[] expecteds, boolean[] actuals) {
-		assertThat(actuals).isEqualTo(expecteds);
-	}
-
-	public static void assertArrayEquals(String message, byte[] expecteds, byte[] actuals)
-			throws ArrayComparisonFailure {
-		assertThat(actuals).as(message).isEqualTo(expecteds);
-	}
-
-	public static void assertArrayEquals(byte[] expecteds, byte[] actuals) {
-		assertThat(actuals).isEqualTo(expecteds);
-	}
-
 	public static void assertArrayEquals(String message, char[] expecteds, char[] actuals)
 			throws ArrayComparisonFailure {
 		assertThat(actuals).as(message).isEqualTo(expecteds);

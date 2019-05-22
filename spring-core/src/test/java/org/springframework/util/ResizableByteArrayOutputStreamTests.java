@@ -19,6 +19,7 @@ package org.springframework.util;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static temp.XAssert.assertArrayEquals;
 import static temp.XAssert.assertEquals;
@@ -86,7 +87,7 @@ public class ResizableByteArrayOutputStreamTests {
 
 
 	private void assertByteArrayEqualsString(ResizableByteArrayOutputStream actual) {
-		assertArrayEquals(helloBytes, actual.toByteArray());
+		assertThat(actual.toByteArray()).isEqualTo(helloBytes);
 	}
 
 }

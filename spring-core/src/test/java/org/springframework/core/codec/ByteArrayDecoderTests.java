@@ -85,7 +85,7 @@ public class ByteArrayDecoderTests extends AbstractDecoderTestCase<ByteArrayDeco
 	}
 
 	private Consumer<byte[]> expectBytes(byte[] expected) {
-		return bytes -> assertArrayEquals(expected, bytes);
+		return bytes -> assertThat(bytes).isEqualTo(expected);
 	}
 
 }

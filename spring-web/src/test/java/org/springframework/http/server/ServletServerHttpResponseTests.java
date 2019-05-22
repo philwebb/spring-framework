@@ -98,7 +98,7 @@ public class ServletServerHttpResponseTests {
 		byte[] content = "Hello World".getBytes("UTF-8");
 		FileCopyUtils.copy(content, response.getBody());
 
-		assertArrayEquals("Invalid content written", content, mockResponse.getContentAsByteArray());
+		assertThat(mockResponse.getContentAsByteArray()).as("Invalid content written").isEqualTo(content);
 	}
 
 }
