@@ -74,7 +74,7 @@ public class ProxyAnnotationDiscoveryTests {
 		ctx.refresh();
 		NonAnnotatedService s = ctx.getBean(NonAnnotatedService.class);
 		assertThat(AopUtils.isJdkDynamicProxy(s)).as("expected a jdk proxy").isTrue();
-		assertThat(s).isInstanceOf(AnnotatedServiceImpl.class);
+		assertThat(s).isNotInstanceOf(AnnotatedServiceImpl.class);
 	}
 
 	@Test
