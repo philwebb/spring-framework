@@ -58,7 +58,7 @@ public class ConcurrencyThrottleInterceptorTests {
 		Advised advised = (Advised) serializedProxy;
 		ConcurrencyThrottleInterceptor serializedCti =
 				(ConcurrencyThrottleInterceptor) advised.getAdvisors()[0].getAdvice();
-		assertThat((long) serializedCti.getConcurrencyLimit()).isEqualTo((long) cti.getConcurrencyLimit());
+		assertThat(serializedCti.getConcurrencyLimit()).isEqualTo((long) cti.getConcurrencyLimit());
 		serializedProxy.getAge();
 	}
 

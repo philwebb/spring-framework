@@ -45,7 +45,7 @@ public class ParamsRequestConditionTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addParameter("foo", "");
 
-		assertThat((Object) new ParamsRequestCondition("foo").getMatchingCondition(request)).isNotNull();
+		assertThat(new ParamsRequestCondition("foo").getMatchingCondition(request)).isNotNull();
 	}
 
 	@Test // SPR-15831
@@ -53,7 +53,7 @@ public class ParamsRequestConditionTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addParameter("foo", (String) null);
 
-		assertThat((Object) new ParamsRequestCondition("foo").getMatchingCondition(request)).isNotNull();
+		assertThat(new ParamsRequestCondition("foo").getMatchingCondition(request)).isNotNull();
 	}
 
 	@Test
@@ -61,7 +61,7 @@ public class ParamsRequestConditionTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addHeader("bar", "");
 
-		assertThat((Object) new ParamsRequestCondition("foo").getMatchingCondition(request)).isNull();
+		assertThat(new ParamsRequestCondition("foo").getMatchingCondition(request)).isNull();
 	}
 
 	@Test
@@ -69,7 +69,7 @@ public class ParamsRequestConditionTests {
 		ParamsRequestCondition condition = new ParamsRequestCondition("!foo");
 		MockHttpServletRequest request = new MockHttpServletRequest();
 
-		assertThat((Object) condition.getMatchingCondition(request)).isNotNull();
+		assertThat(condition.getMatchingCondition(request)).isNotNull();
 	}
 
 	@Test
@@ -77,7 +77,7 @@ public class ParamsRequestConditionTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addParameter("foo", "bar");
 
-		assertThat((Object) new ParamsRequestCondition("foo=bar").getMatchingCondition(request)).isNotNull();
+		assertThat(new ParamsRequestCondition("foo=bar").getMatchingCondition(request)).isNotNull();
 	}
 
 	@Test
@@ -85,7 +85,7 @@ public class ParamsRequestConditionTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addParameter("foo", "bazz");
 
-		assertThat((Object) new ParamsRequestCondition("foo=bar").getMatchingCondition(request)).isNull();
+		assertThat(new ParamsRequestCondition("foo=bar").getMatchingCondition(request)).isNull();
 	}
 
 	@Test
@@ -120,7 +120,7 @@ public class ParamsRequestConditionTests {
 		ParamsRequestCondition condition1 = new ParamsRequestCondition("response_type!=code");
 		ParamsRequestCondition condition2 = new ParamsRequestCondition("response_type");
 
-		assertThat((long) condition1.compareTo(condition2, request)).as("Negated match should not count as more specific").isEqualTo((long) 0);
+		assertThat(condition1.compareTo(condition2, request)).as("Negated match should not count as more specific").isEqualTo((long) 0);
 	}
 
 	@Test
@@ -130,7 +130,7 @@ public class ParamsRequestConditionTests {
 
 		ParamsRequestCondition result = condition1.combine(condition2);
 		Collection<ParamExpression> conditions = result.getContent();
-		assertThat((long) conditions.size()).isEqualTo((long) 2);
+		assertThat(conditions.size()).isEqualTo((long) 2);
 	}
 
 }

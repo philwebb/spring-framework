@@ -71,7 +71,7 @@ public class CachePutEvaluationTests {
 
 		Long first = this.service.getOrPut(key, true);
 		Long second = this.service.getOrPut(key, true);
-		assertThat((Object) second).isSameAs(first);
+		assertThat(second).isSameAs(first);
 
 		// This forces the method to be executed again
 		Long expected = first + 1;
@@ -79,7 +79,7 @@ public class CachePutEvaluationTests {
 		assertThat(third).isEqualTo(expected);
 
 		Long fourth = this.service.getOrPut(key, true);
-		assertThat((Object) fourth).isSameAs(third);
+		assertThat(fourth).isSameAs(third);
 	}
 
 	@Test
@@ -95,7 +95,7 @@ public class CachePutEvaluationTests {
 
 		// CachePut forced a method call
 		Long anotherValue = this.service.getAndPut(key);
-		assertThat((Object) anotherValue).isNotSameAs(value);
+		assertThat(anotherValue).isNotSameAs(value);
 		// NOTE: while you might expect the main key to have been updated, it hasn't. @Cacheable operations
 		// are only processed in case of a cache miss. This is why combining @Cacheable with @CachePut
 		// is a very bad idea. We could refine the condition now that we can figure out if we are going

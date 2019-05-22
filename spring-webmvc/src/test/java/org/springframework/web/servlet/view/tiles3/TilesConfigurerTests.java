@@ -53,7 +53,7 @@ public class TilesConfigurerTests {
 		BasicTilesContainer container = (BasicTilesContainer) TilesAccess.getContainer(tilesContext);
 		Request requestContext = new ServletRequest(container.getApplicationContext(),
 				new MockHttpServletRequest(), new MockHttpServletResponse());
-		assertThat((Object) container.getDefinitionsFactory().getDefinition("test", requestContext)).isNotNull();
+		assertThat(container.getDefinitionsFactory().getDefinition("test", requestContext)).isNotNull();
 
 		tc.destroy();
 	}

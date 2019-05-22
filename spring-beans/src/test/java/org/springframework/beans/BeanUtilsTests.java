@@ -63,8 +63,8 @@ public class BeanUtilsTests {
 		Constructor<BeanWithNullableTypes> ctor = BeanWithNullableTypes.class.getDeclaredConstructor(
 				Integer.class, Boolean.class, String.class);
 		BeanWithNullableTypes bean = BeanUtils.instantiateClass(ctor, null, null, "foo");
-		assertThat((Object) bean.getCounter()).isNull();
-		assertThat((Object) bean.isFlag()).isNull();
+		assertThat(bean.getCounter()).isNull();
+		assertThat(bean.isFlag()).isNull();
 		assertThat(bean.getValue()).isEqualTo("foo");
 	}
 
@@ -72,7 +72,7 @@ public class BeanUtilsTests {
 	public void testInstantiateClassWithOptionalPrimitiveType() throws NoSuchMethodException {
 		Constructor<BeanWithPrimitiveTypes> ctor = BeanWithPrimitiveTypes.class.getDeclaredConstructor(int.class, boolean.class, String.class);
 		BeanWithPrimitiveTypes bean = BeanUtils.instantiateClass(ctor, null, null, "foo");
-		assertThat((long) bean.getCounter()).isEqualTo((long) 0);
+		assertThat(bean.getCounter()).isEqualTo((long) 0);
 		assertThat(bean.isFlag()).isEqualTo(false);
 		assertThat(bean.getValue()).isEqualTo("foo");
 	}
@@ -88,8 +88,8 @@ public class BeanUtilsTests {
 	public void testGetPropertyDescriptors() throws Exception {
 		PropertyDescriptor[] actual = Introspector.getBeanInfo(TestBean.class).getPropertyDescriptors();
 		PropertyDescriptor[] descriptors = BeanUtils.getPropertyDescriptors(TestBean.class);
-		assertThat((Object) descriptors).as("Descriptors should not be null").isNotNull();
-		assertThat((long) descriptors.length).as("Invalid number of descriptors returned").isEqualTo((long) actual.length);
+		assertThat(descriptors).as("Descriptors should not be null").isNotNull();
+		assertThat(descriptors.length).as("Invalid number of descriptors returned").isEqualTo((long) actual.length);
 	}
 
 	@Test
@@ -237,7 +237,7 @@ public class BeanUtilsTests {
 	public void testResolveWithAndWithoutArgList() throws Exception {
 		Method desiredMethod = MethodSignatureBean.class.getMethod("doSomethingElse", String.class, int.class);
 		assertSignatureEquals(desiredMethod, "doSomethingElse");
-		assertThat((Object) BeanUtils.resolveSignature("doSomethingElse()", MethodSignatureBean.class)).isNull();
+		assertThat(BeanUtils.resolveSignature("doSomethingElse()", MethodSignatureBean.class)).isNull();
 	}
 
 	@Test

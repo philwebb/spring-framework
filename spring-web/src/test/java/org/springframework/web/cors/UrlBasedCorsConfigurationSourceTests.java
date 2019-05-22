@@ -35,7 +35,7 @@ public class UrlBasedCorsConfigurationSourceTests {
 	@Test
 	public void empty() {
 		MockHttpServletRequest request = new MockHttpServletRequest(HttpMethod.GET.name(), "/bar/test.html");
-		assertThat((Object) this.configSource.getCorsConfiguration(request)).isNull();
+		assertThat(this.configSource.getCorsConfiguration(request)).isNull();
 	}
 
 	@Test
@@ -44,7 +44,7 @@ public class UrlBasedCorsConfigurationSourceTests {
 		this.configSource.registerCorsConfiguration("/bar/**", config);
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/foo/test.html");
-		assertThat((Object) this.configSource.getCorsConfiguration(request)).isNull();
+		assertThat(this.configSource.getCorsConfiguration(request)).isNull();
 
 		request.setRequestURI("/bar/test.html");
 		assertThat(this.configSource.getCorsConfiguration(request)).isEqualTo(config);

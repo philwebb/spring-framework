@@ -85,7 +85,7 @@ public class MethodInvocationProceedingJoinPointTests {
 				ITestBean thisProxy = (ITestBean) AbstractAspectJAdvice.currentJoinPoint().getThis();
 				assertThat(AopUtils.isAopProxy(AbstractAspectJAdvice.currentJoinPoint().getThis())).isTrue();
 
-				assertThat((Object) thisProxy).isNotSameAs(target);
+				assertThat(thisProxy).isNotSameAs(target);
 
 				// Check getting again doesn't cause a problem
 				assertThat(AbstractAspectJAdvice.currentJoinPoint().getThis()).isSameAs(thisProxy);
@@ -97,18 +97,18 @@ public class MethodInvocationProceedingJoinPointTests {
 					thisProxy.toString();
 					// Change age, so this will be returned by invocation
 					thisProxy.setAge(newAge);
-					assertThat((long) thisProxy.getAge()).isEqualTo((long) newAge);
+					assertThat(thisProxy.getAge()).isEqualTo((long) newAge);
 				}
 
-				assertThat((Object) thisProxy).isSameAs(AopContext.currentProxy());
+				assertThat(thisProxy).isSameAs(AopContext.currentProxy());
 				assertThat(raw).isSameAs(target);
 
-				assertThat((Object) AbstractAspectJAdvice.currentJoinPoint().getSignature().getName()).isSameAs(method.getName());
-				assertThat((long) AbstractAspectJAdvice.currentJoinPoint().getSignature().getModifiers()).isEqualTo((long) method.getModifiers());
+				assertThat(AbstractAspectJAdvice.currentJoinPoint().getSignature().getName()).isSameAs(method.getName());
+				assertThat(AbstractAspectJAdvice.currentJoinPoint().getSignature().getModifiers()).isEqualTo((long) method.getModifiers());
 
 				MethodSignature msig = (MethodSignature) AbstractAspectJAdvice.currentJoinPoint().getSignature();
-				assertThat((Object) AbstractAspectJAdvice.currentJoinPoint().getSignature()).as("Return same MethodSignature repeatedly").isSameAs(msig);
-				assertThat((Object) AbstractAspectJAdvice.currentJoinPoint()).as("Return same JoinPoint repeatedly").isSameAs(AbstractAspectJAdvice.currentJoinPoint());
+				assertThat(AbstractAspectJAdvice.currentJoinPoint().getSignature()).as("Return same MethodSignature repeatedly").isSameAs(msig);
+				assertThat(AbstractAspectJAdvice.currentJoinPoint()).as("Return same JoinPoint repeatedly").isSameAs(AbstractAspectJAdvice.currentJoinPoint());
 				assertThat(msig.getDeclaringType()).isEqualTo(method.getDeclaringClass());
 				assertThat(Arrays.equals(method.getParameterTypes(), msig.getParameterTypes())).isTrue();
 				assertThat(msig.getReturnType()).isEqualTo(method.getReturnType());
@@ -119,7 +119,7 @@ public class MethodInvocationProceedingJoinPointTests {
 		});
 		ITestBean itb = (ITestBean) pf.getProxy();
 		// Any call will do
-		assertThat((long) itb.getAge()).as("Advice reentrantly set age").isEqualTo((long) newAge);
+		assertThat(itb.getAge()).as("Advice reentrantly set age").isEqualTo((long) newAge);
 	}
 
 	@Test
@@ -153,7 +153,7 @@ public class MethodInvocationProceedingJoinPointTests {
 				StaticPart staticPart = AbstractAspectJAdvice.currentJoinPoint().getStaticPart();
 				assertThat(AbstractAspectJAdvice.currentJoinPoint().getStaticPart()).as("Same static part must be returned on subsequent requests").isEqualTo(staticPart);
 				assertThat(staticPart.getKind()).isEqualTo(ProceedingJoinPoint.METHOD_EXECUTION);
-				assertThat((Object) staticPart.getSignature()).isSameAs(AbstractAspectJAdvice.currentJoinPoint().getSignature());
+				assertThat(staticPart.getSignature()).isSameAs(AbstractAspectJAdvice.currentJoinPoint().getSignature());
 				assertThat(staticPart.getSourceLocation()).isEqualTo(AbstractAspectJAdvice.currentJoinPoint().getSourceLocation());
 			}
 		});

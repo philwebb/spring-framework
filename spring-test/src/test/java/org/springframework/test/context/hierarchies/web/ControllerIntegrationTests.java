@@ -85,17 +85,17 @@ public class ControllerIntegrationTests {
 		assertThat(bar).isEqualTo("bar");
 
 		ApplicationContext parent = wac.getParent();
-		assertThat((Object) parent).isNotNull();
+		assertThat(parent).isNotNull();
 		boolean condition = parent instanceof WebApplicationContext;
 		assertThat(condition).isTrue();
 		WebApplicationContext root = (WebApplicationContext) parent;
 		assertThat(root.getBeansOfType(String.class).containsKey("bar")).isFalse();
 
 		ServletContext childServletContext = wac.getServletContext();
-		assertThat((Object) childServletContext).isNotNull();
+		assertThat(childServletContext).isNotNull();
 		ServletContext rootServletContext = root.getServletContext();
-		assertThat((Object) rootServletContext).isNotNull();
-		assertThat((Object) rootServletContext).isSameAs(childServletContext);
+		assertThat(rootServletContext).isNotNull();
+		assertThat(rootServletContext).isSameAs(childServletContext);
 
 		assertThat(rootServletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).isSameAs(root);
 		assertThat(childServletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).isSameAs(root);

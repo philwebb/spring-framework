@@ -78,11 +78,11 @@ public class DefaultPathContainerTests {
 		PathContainer container = PathContainer.parsePath(rawValue);
 
 		if ("".equals(rawValue)) {
-			assertThat((long) container.elements().size()).isEqualTo((long) 0);
+			assertThat(container.elements().size()).isEqualTo((long) 0);
 			return;
 		}
 
-		assertThat((long) container.elements().size()).isEqualTo((long) 1);
+		assertThat(container.elements().size()).isEqualTo((long) 1);
 		PathSegment segment = (PathSegment) container.elements().get(0);
 
 		assertThat(segment.value()).as("value: '" + rawValue + "'").isEqualTo(rawValue);
@@ -124,7 +124,7 @@ public class DefaultPathContainerTests {
 	public void subPath() throws Exception {
 		// basic
 		PathContainer path = PathContainer.parsePath("/a/b/c");
-		assertThat((Object) path.subPath(0)).isSameAs(path);
+		assertThat(path.subPath(0)).isSameAs(path);
 		assertThat(path.subPath(2).value()).isEqualTo("/b/c");
 		assertThat(path.subPath(4).value()).isEqualTo("/c");
 

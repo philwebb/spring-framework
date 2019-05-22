@@ -215,7 +215,7 @@ public class ServletUriComponentsBuilderTests {
 	public void pathExtensionNone() {
 		this.request.setRequestURI("/rest/books/6");
 		ServletUriComponentsBuilder builder = ServletUriComponentsBuilder.fromRequestUri(this.request);
-		assertThat((Object) builder.removePathExtension()).isNull();
+		assertThat(builder.removePathExtension()).isNull();
 	}
 
 	// SPR-16668

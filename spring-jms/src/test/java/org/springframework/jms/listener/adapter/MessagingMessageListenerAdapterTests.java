@@ -87,7 +87,7 @@ public class MessagingMessageListenerAdapterTests {
 		javax.jms.Message replyMessage = listener.buildMessage(session, result);
 
 		verify(session).createTextMessage("Response");
-		assertThat((Object) replyMessage).as("reply should never be null").isNotNull();
+		assertThat(replyMessage).as("reply should never be null").isNotNull();
 		assertThat(((TextMessage) replyMessage).getText()).isEqualTo("Response");
 		assertThat(replyMessage.getStringProperty("foo")).as("custom header not copied").isEqualTo("bar");
 		assertThat(replyMessage.getJMSType()).as("type header not copied").isEqualTo("msg_type");
@@ -152,7 +152,7 @@ public class MessagingMessageListenerAdapterTests {
 		listener.setMessageConverter(messageConverter);
 		listener.onMessage(jmsMessage, session);
 		verify(messageConverter, times(1)).fromMessage(jmsMessage);
-		assertThat((long) sample.simples.size()).isEqualTo((long) 1);
+		assertThat(sample.simples.size()).isEqualTo((long) 1);
 		assertThat(sample.simples.get(0).getPayload()).isEqualTo("FooBar");
 	}
 
@@ -168,7 +168,7 @@ public class MessagingMessageListenerAdapterTests {
 		javax.jms.Message replyMessage = listener.buildMessage(session, result);
 
 		verify(messageConverter, times(1)).toMessage("Response", session);
-		assertThat((Object) replyMessage).as("reply should never be null").isNotNull();
+		assertThat(replyMessage).as("reply should never be null").isNotNull();
 		assertThat(((TextMessage) replyMessage).getText()).isEqualTo("Response");
 	}
 

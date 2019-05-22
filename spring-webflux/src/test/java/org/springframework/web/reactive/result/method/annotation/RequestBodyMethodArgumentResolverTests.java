@@ -103,7 +103,7 @@ public class RequestBodyMethodArgumentResolverTests {
 		MethodParameter param = this.testMethod.annot(requestBody().notRequired()).arg(String.class);
 		String body = resolveValueWithEmptyBody(param);
 
-		assertThat((Object) body).isNull();
+		assertThat(body).isNull();
 	}
 
 	@Test // SPR-15758
@@ -111,7 +111,7 @@ public class RequestBodyMethodArgumentResolverTests {
 		MethodParameter param = this.testMethod.annot(requestBody().notRequired()).arg(Map.class);
 		String body = resolveValueWithEmptyBody(param);
 
-		assertThat((Object) body).isNull();
+		assertThat(body).isNull();
 	}
 
 	@Test
@@ -202,15 +202,15 @@ public class RequestBodyMethodArgumentResolverTests {
 		MethodParameter param = this.testMethod.annot(requestBody()).arg(CompletableFuture.class, String.class);
 		CompletableFuture<String> future = resolveValueWithEmptyBody(param);
 		future.whenComplete((text, ex) -> {
-			assertThat((Object) text).isNull();
-			assertThat((Object) ex).isNotNull();
+			assertThat(text).isNull();
+			assertThat(ex).isNotNull();
 		});
 
 		param = this.testMethod.annot(requestBody().notRequired()).arg(CompletableFuture.class, String.class);
 		future = resolveValueWithEmptyBody(param);
 		future.whenComplete((text, ex) -> {
-			assertThat((Object) text).isNotNull();
-			assertThat((Object) ex).isNull();
+			assertThat(text).isNotNull();
+			assertThat(ex).isNull();
 		});
 	}
 

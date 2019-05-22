@@ -74,7 +74,7 @@ public class RequestMappingViewResolutionIntegrationTests extends AbstractReques
 		ResponseEntity<String> response = getRestTemplate().exchange(request, String.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_MODIFIED);
-		assertThat((Object) response.getBody()).isNull();
+		assertThat(response.getBody()).isNull();
 	}
 
 	@Test  // SPR-15291

@@ -111,7 +111,7 @@ public class MultipartHttpMessageWriterTests extends AbstractLeakCheckingTestCas
 		this.writer.write(result, null, MediaType.MULTIPART_FORM_DATA, this.response, hints).block(Duration.ofSeconds(5));
 
 		MultiValueMap<String, Part> requestParts = parse(hints);
-		assertThat((long) requestParts.size()).isEqualTo((long) 7);
+		assertThat(requestParts.size()).isEqualTo((long) 7);
 
 		Part part = requestParts.getFirst("name 1");
 		boolean condition4 = part instanceof FormFieldPart;
@@ -120,7 +120,7 @@ public class MultipartHttpMessageWriterTests extends AbstractLeakCheckingTestCas
 		assertThat(((FormFieldPart) part).value()).isEqualTo("value 1");
 
 		List<Part> parts2 = requestParts.get("name 2");
-		assertThat((long) parts2.size()).isEqualTo((long) 2);
+		assertThat(parts2.size()).isEqualTo((long) 2);
 		part = parts2.get(0);
 		boolean condition3 = part instanceof FormFieldPart;
 		assertThat(condition3).isTrue();
@@ -187,7 +187,7 @@ public class MultipartHttpMessageWriterTests extends AbstractLeakCheckingTestCas
 		this.writer.write(result, null, MediaType.MULTIPART_FORM_DATA, this.response, hints).block();
 
 		MultiValueMap<String, Part> requestParts = parse(hints);
-		assertThat((long) requestParts.size()).isEqualTo((long) 1);
+		assertThat(requestParts.size()).isEqualTo((long) 1);
 
 		Part part = requestParts.getFirst("logo");
 		assertThat(part.name()).isEqualTo("logo");
@@ -238,7 +238,7 @@ public class MultipartHttpMessageWriterTests extends AbstractLeakCheckingTestCas
 				this.response, hints).block();
 
 		MultiValueMap<String, Part> requestParts = parse(hints);
-		assertThat((long) requestParts.size()).isEqualTo((long) 2);
+		assertThat(requestParts.size()).isEqualTo((long) 2);
 
 		Part part = requestParts.getFirst("resource");
 		boolean condition1 = part instanceof FilePart;
@@ -255,7 +255,7 @@ public class MultipartHttpMessageWriterTests extends AbstractLeakCheckingTestCas
 
 	private MultiValueMap<String, Part> parse(Map<String, Object> hints) {
 		MediaType contentType = this.response.getHeaders().getContentType();
-		assertThat((Object) contentType.getParameter("boundary")).as("No boundary found").isNotNull();
+		assertThat(contentType.getParameter("boundary")).as("No boundary found").isNotNull();
 
 		// see if Synchronoss NIO Multipart can read what we wrote
 		SynchronossPartHttpMessageReader synchronossReader = new SynchronossPartHttpMessageReader();
@@ -271,7 +271,7 @@ public class MultipartHttpMessageWriterTests extends AbstractLeakCheckingTestCas
 		MultiValueMap<String, Part> result = reader.readMono(elementType, request, hints)
 				.block(Duration.ofSeconds(5));
 
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 		return result;
 	}
 

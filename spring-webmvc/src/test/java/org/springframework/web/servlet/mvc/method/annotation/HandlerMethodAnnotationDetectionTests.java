@@ -133,7 +133,7 @@ public class HandlerMethodAnnotationDetectionTests {
 		request.addHeader("header2", dateB);
 
 		HandlerExecutionChain chain = handlerMapping.getHandler(request);
-		assertThat((Object) chain).isNotNull();
+		assertThat(chain).isNotNull();
 
 		ModelAndView mav = handlerAdapter.handle(request, new MockHttpServletResponse(), chain.getHandler());
 

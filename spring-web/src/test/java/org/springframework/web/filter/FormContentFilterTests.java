@@ -65,10 +65,10 @@ public class FormContentFilterTests {
 			this.filterChain = new MockFilterChain();
 			this.filter.doFilter(request, this.response, this.filterChain);
 			if (method == HttpMethod.PUT || method == HttpMethod.PATCH || method == HttpMethod.DELETE) {
-				assertThat((Object) this.filterChain.getRequest()).isNotSameAs(request);
+				assertThat(this.filterChain.getRequest()).isNotSameAs(request);
 			}
 			else {
-				assertThat((Object) this.filterChain.getRequest()).isSameAs(request);
+				assertThat(this.filterChain.getRequest()).isSameAs(request);
 			}
 		}
 	}
@@ -82,7 +82,7 @@ public class FormContentFilterTests {
 			request.setContentType(contentType);
 			this.filterChain = new MockFilterChain();
 			this.filter.doFilter(request, this.response, this.filterChain);
-			assertThat((Object) this.filterChain.getRequest()).isSameAs(request);
+			assertThat(this.filterChain.getRequest()).isSameAs(request);
 		}
 	}
 
@@ -92,7 +92,7 @@ public class FormContentFilterTests {
 		this.request.setContentType("foo");
 		this.filterChain = new MockFilterChain();
 		this.filter.doFilter(this.request, this.response, this.filterChain);
-		assertThat((Object) this.filterChain.getRequest()).isSameAs(this.request);
+		assertThat(this.filterChain.getRequest()).isSameAs(this.request);
 	}
 
 	@Test
@@ -109,7 +109,7 @@ public class FormContentFilterTests {
 		this.request.setContent("name=value2".getBytes("ISO-8859-1"));
 		this.filter.doFilter(this.request, this.response, this.filterChain);
 
-		assertThat((Object) this.filterChain.getRequest()).as("Request not wrapped").isNotSameAs(this.request);
+		assertThat(this.filterChain.getRequest()).as("Request not wrapped").isNotSameAs(this.request);
 		assertThat(this.filterChain.getRequest().getParameter("name")).as("Query string parameters should be listed ahead of form parameters").isEqualTo("value1");
 	}
 
@@ -118,8 +118,8 @@ public class FormContentFilterTests {
 		this.request.setContent("name=value".getBytes("ISO-8859-1"));
 		this.filter.doFilter(this.request, this.response, this.filterChain);
 
-		assertThat((Object) this.filterChain.getRequest()).as("Request not wrapped").isNotSameAs(this.request);
-		assertThat((Object) this.filterChain.getRequest().getParameter("noSuchParam")).isNull();
+		assertThat(this.filterChain.getRequest()).as("Request not wrapped").isNotSameAs(this.request);
+		assertThat(this.filterChain.getRequest().getParameter("noSuchParam")).isNull();
 	}
 
 	@Test
@@ -131,7 +131,7 @@ public class FormContentFilterTests {
 		this.filter.doFilter(this.request, this.response, this.filterChain);
 		List<String> names = Collections.list(this.filterChain.getRequest().getParameterNames());
 
-		assertThat((Object) this.filterChain.getRequest()).as("Request not wrapped").isNotSameAs(this.request);
+		assertThat(this.filterChain.getRequest()).as("Request not wrapped").isNotSameAs(this.request);
 		assertThat(names).isEqualTo(Arrays.asList("name1", "name2", "name3", "name4"));
 	}
 
@@ -145,7 +145,7 @@ public class FormContentFilterTests {
 		this.filter.doFilter(this.request, this.response, this.filterChain);
 		String[] values = this.filterChain.getRequest().getParameterValues("name");
 
-		assertThat((Object) filterChain.getRequest()).as("Request not wrapped").isNotSameAs(this.request);
+		assertThat(filterChain.getRequest()).as("Request not wrapped").isNotSameAs(this.request);
 		assertThat(values).isEqualTo(new String[] {"value1", "value2", "value3", "value4"});
 	}
 
@@ -159,7 +159,7 @@ public class FormContentFilterTests {
 		this.filter.doFilter(this.request, this.response, this.filterChain);
 		String[] values = this.filterChain.getRequest().getParameterValues("name");
 
-		assertThat((Object) this.filterChain.getRequest()).as("Request not wrapped").isNotSameAs(this.request);
+		assertThat(this.filterChain.getRequest()).as("Request not wrapped").isNotSameAs(this.request);
 		assertThat(values).isEqualTo(new String[] {"value1", "value2"});
 	}
 
@@ -172,7 +172,7 @@ public class FormContentFilterTests {
 		this.filter.doFilter(this.request, this.response, this.filterChain);
 		String[] values = this.filterChain.getRequest().getParameterValues("anotherName");
 
-		assertThat((Object) this.filterChain.getRequest()).as("Request not wrapped").isNotSameAs(this.request);
+		assertThat(this.filterChain.getRequest()).as("Request not wrapped").isNotSameAs(this.request);
 		assertThat(values).isEqualTo(new String[] {"anotherValue"});
 	}
 
@@ -185,8 +185,8 @@ public class FormContentFilterTests {
 		this.filter.doFilter(this.request, this.response, this.filterChain);
 		String[] values = this.filterChain.getRequest().getParameterValues("noSuchParameter");
 
-		assertThat((Object) this.filterChain.getRequest()).as("Request not wrapped").isNotSameAs(this.request);
-		assertThat((Object) values).isNull();
+		assertThat(this.filterChain.getRequest()).as("Request not wrapped").isNotSameAs(this.request);
+		assertThat(values).isNull();
 	}
 
 	@Test
@@ -199,8 +199,8 @@ public class FormContentFilterTests {
 		this.filter.doFilter(this.request, this.response, this.filterChain);
 		Map<String, String[]> parameters = this.filterChain.getRequest().getParameterMap();
 
-		assertThat((Object) this.filterChain.getRequest()).as("Request not wrapped").isNotSameAs(this.request);
-		assertThat((long) parameters.size()).isEqualTo((long) 2);
+		assertThat(this.filterChain.getRequest()).as("Request not wrapped").isNotSameAs(this.request);
+		assertThat(parameters.size()).isEqualTo((long) 2);
 		assertThat(parameters.get("name")).isEqualTo(new String[] {"value1", "value2", "value3"});
 		assertThat(parameters.get("name4")).isEqualTo(new String[] {"value4"});
 	}

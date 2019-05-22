@@ -53,7 +53,7 @@ public class FixedVersionStrategyTests {
 	@Test
 	public void extractVersion() {
 		assertThat(this.strategy.extractVersion(VERSION + "/" + PATH)).isEqualTo(VERSION);
-		assertThat((Object) this.strategy.extractVersion(PATH)).isNull();
+		assertThat(this.strategy.extractVersion(PATH)).isNull();
 	}
 
 	@Test

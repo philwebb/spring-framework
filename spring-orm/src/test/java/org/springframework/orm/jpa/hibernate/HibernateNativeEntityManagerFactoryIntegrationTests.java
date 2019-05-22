@@ -66,9 +66,9 @@ public class HibernateNativeEntityManagerFactoryIntegrationTests extends Abstrac
 		insertPerson(firstName);
 
 		List<Person> people = sharedEntityManager.createQuery("select p from Person as p").getResultList();
-		assertThat((long) people.size()).isEqualTo((long) 1);
+		assertThat(people.size()).isEqualTo((long) 1);
 		assertThat(people.get(0).getFirstName()).isEqualTo(firstName);
-		assertThat((Object) people.get(0).postLoaded).isSameAs(applicationContext);
+		assertThat(people.get(0).postLoaded).isSameAs(applicationContext);
 	}
 
 	@Test
@@ -79,20 +79,20 @@ public class HibernateNativeEntityManagerFactoryIntegrationTests extends Abstrac
 
 		Query q = sessionFactory.getCurrentSession().createQuery("select p from Person as p");
 		List<Person> people = q.getResultList();
-		assertThat((long) people.size()).isEqualTo((long) 1);
+		assertThat(people.size()).isEqualTo((long) 1);
 		assertThat(people.get(0).getFirstName()).isEqualTo(firstName);
-		assertThat((Object) people.get(0).postLoaded).isSameAs(applicationContext);
+		assertThat(people.get(0).postLoaded).isSameAs(applicationContext);
 	}
 
 	@Test  // SPR-16956
 	public void testReadOnly() {
-		assertThat((Object) sessionFactory.getCurrentSession().getHibernateFlushMode()).isSameAs(FlushMode.AUTO);
+		assertThat(sessionFactory.getCurrentSession().getHibernateFlushMode()).isSameAs(FlushMode.AUTO);
 		assertThat(sessionFactory.getCurrentSession().isDefaultReadOnly()).isFalse();
 		endTransaction();
 
 		this.transactionDefinition.setReadOnly(true);
 		startNewTransaction();
-		assertThat((Object) sessionFactory.getCurrentSession().getHibernateFlushMode()).isSameAs(FlushMode.MANUAL);
+		assertThat(sessionFactory.getCurrentSession().getHibernateFlushMode()).isSameAs(FlushMode.MANUAL);
 		assertThat(sessionFactory.getCurrentSession().isDefaultReadOnly()).isTrue();
 	}
 

@@ -45,7 +45,7 @@ public class GroovyMarkupViewResolverTests {
 	public void cacheKey() throws Exception {
 		GroovyMarkupViewResolver resolver = new GroovyMarkupViewResolver();
 		String cacheKey = (String) resolver.getCacheKey("test", Locale.US);
-		assertThat((Object) cacheKey).isNotNull();
+		assertThat(cacheKey).isNotNull();
 		assertThat(cacheKey).isEqualTo("test_en_US");
 	}
 

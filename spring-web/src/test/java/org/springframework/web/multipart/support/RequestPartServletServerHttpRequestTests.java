@@ -72,7 +72,7 @@ public class RequestPartServletServerHttpRequestTests {
 		ServerHttpRequest request = new RequestPartServletServerHttpRequest(this.mockRequest, "part");
 
 		HttpHeaders headers = request.getHeaders();
-		assertThat((Object) headers).isNotNull();
+		assertThat(headers).isNotNull();
 		assertThat(headers.getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
 	}
 

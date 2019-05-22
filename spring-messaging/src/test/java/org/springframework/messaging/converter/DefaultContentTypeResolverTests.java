@@ -84,7 +84,7 @@ public class DefaultContentTypeResolverTests {
 	public void resolveNoContentTypeHeader() {
 		MessageHeaders headers = new MessageHeaders(Collections.<String, Object>emptyMap());
 
-		assertThat((Object) this.resolver.resolve(headers)).isNull();
+		assertThat(this.resolver.resolve(headers)).isNull();
 	}
 
 	@Test

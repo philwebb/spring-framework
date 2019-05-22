@@ -80,7 +80,7 @@ public class AppCacheManifestTransformerTests {
 		Resource expected = getResource("foo.css");
 		Resource actual = this.transformer.transform(exchange, expected, this.chain).block(TIMEOUT);
 
-		assertThat((Object) actual).isSameAs(expected);
+		assertThat(actual).isSameAs(expected);
 	}
 
 	@Test
@@ -98,7 +98,7 @@ public class AppCacheManifestTransformerTests {
 		Resource resource = getResource("test.appcache");
 		Resource actual = this.transformer.transform(exchange, resource, this.chain).block(TIMEOUT);
 
-		assertThat((Object) actual).isNotNull();
+		assertThat(actual).isNotNull();
 		byte[] bytes = FileCopyUtils.copyToByteArray(actual.getInputStream());
 		String content = new String(bytes, "UTF-8");
 

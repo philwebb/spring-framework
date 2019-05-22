@@ -164,10 +164,10 @@ public class SimpleBrokerMessageHandlerTests {
 
 	@Test
 	public void heartbeatValueWithAndWithoutTaskScheduler() {
-		assertThat((Object) this.messageHandler.getHeartbeatValue()).isNull();
+		assertThat(this.messageHandler.getHeartbeatValue()).isNull();
 		this.messageHandler.setTaskScheduler(this.taskScheduler);
 
-		assertThat((Object) this.messageHandler.getHeartbeatValue()).isNotNull();
+		assertThat(this.messageHandler.getHeartbeatValue()).isNotNull();
 		assertThat(this.messageHandler.getHeartbeatValue()).isEqualTo(new long[] {10000, 10000});
 	}
 
@@ -216,7 +216,7 @@ public class SimpleBrokerMessageHandlerTests {
 		ArgumentCaptor<Runnable> taskCaptor = ArgumentCaptor.forClass(Runnable.class);
 		verify(this.taskScheduler).scheduleWithFixedDelay(taskCaptor.capture(), eq(1L));
 		Runnable heartbeatTask = taskCaptor.getValue();
-		assertThat((Object) heartbeatTask).isNotNull();
+		assertThat(heartbeatTask).isNotNull();
 
 		String id = "sess1";
 		TestPrincipal user = new TestPrincipal("joe");
@@ -228,7 +228,7 @@ public class SimpleBrokerMessageHandlerTests {
 
 		verify(this.clientOutChannel, atLeast(2)).send(this.messageCaptor.capture());
 		List<Message<?>> messages = this.messageCaptor.getAllValues();
-		assertThat((long) messages.size()).isEqualTo((long) 2);
+		assertThat(messages.size()).isEqualTo((long) 2);
 
 		MessageHeaders headers = messages.get(0).getHeaders();
 		assertThat(headers.get(SimpMessageHeaderAccessor.MESSAGE_TYPE_HEADER)).isEqualTo(SimpMessageType.CONNECT_ACK);
@@ -247,7 +247,7 @@ public class SimpleBrokerMessageHandlerTests {
 		ArgumentCaptor<Runnable> taskCaptor = ArgumentCaptor.forClass(Runnable.class);
 		verify(this.taskScheduler).scheduleWithFixedDelay(taskCaptor.capture(), eq(1L));
 		Runnable heartbeatTask = taskCaptor.getValue();
-		assertThat((Object) heartbeatTask).isNotNull();
+		assertThat(heartbeatTask).isNotNull();
 
 		String id = "sess1";
 		TestPrincipal user = new TestPrincipal("joe");
@@ -259,7 +259,7 @@ public class SimpleBrokerMessageHandlerTests {
 
 		verify(this.clientOutChannel, times(2)).send(this.messageCaptor.capture());
 		List<Message<?>> messages = this.messageCaptor.getAllValues();
-		assertThat((long) messages.size()).isEqualTo((long) 2);
+		assertThat(messages.size()).isEqualTo((long) 2);
 
 		MessageHeaders headers = messages.get(0).getHeaders();
 		assertThat(headers.get(SimpMessageHeaderAccessor.MESSAGE_TYPE_HEADER)).isEqualTo(SimpMessageType.CONNECT_ACK);
@@ -278,7 +278,7 @@ public class SimpleBrokerMessageHandlerTests {
 		ArgumentCaptor<Runnable> taskCaptor = ArgumentCaptor.forClass(Runnable.class);
 		verify(this.taskScheduler).scheduleWithFixedDelay(taskCaptor.capture(), eq(1L));
 		Runnable heartbeatTask = taskCaptor.getValue();
-		assertThat((Object) heartbeatTask).isNotNull();
+		assertThat(heartbeatTask).isNotNull();
 
 		String id = "sess1";
 		TestPrincipal user = new TestPrincipal("joe");
@@ -290,7 +290,7 @@ public class SimpleBrokerMessageHandlerTests {
 
 		verify(this.clientOutChannel, times(1)).send(this.messageCaptor.capture());
 		List<Message<?>> messages = this.messageCaptor.getAllValues();
-		assertThat((long) messages.size()).isEqualTo((long) 1);
+		assertThat(messages.size()).isEqualTo((long) 1);
 		assertThat(messages.get(0).getHeaders().get(SimpMessageHeaderAccessor.MESSAGE_TYPE_HEADER)).isEqualTo(SimpMessageType.CONNECT_ACK);
 	}
 

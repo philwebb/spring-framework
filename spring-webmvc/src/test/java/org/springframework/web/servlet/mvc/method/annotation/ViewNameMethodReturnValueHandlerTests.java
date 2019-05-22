@@ -71,7 +71,7 @@ public class ViewNameMethodReturnValueHandlerTests {
 		this.mavContainer.setRedirectModel(redirectModel);
 		this.handler.handleReturnValue("redirect:testView", this.param, this.mavContainer, this.webRequest);
 		assertThat(this.mavContainer.getViewName()).isEqualTo("redirect:testView");
-		assertThat((Object) this.mavContainer.getModel()).isSameAs(redirectModel);
+		assertThat(this.mavContainer.getModel()).isSameAs(redirectModel);
 	}
 
 	@Test
@@ -81,7 +81,7 @@ public class ViewNameMethodReturnValueHandlerTests {
 		this.handler.setRedirectPatterns("myRedirect:*");
 		this.handler.handleReturnValue("myRedirect:testView", this.param, this.mavContainer, this.webRequest);
 		assertThat(this.mavContainer.getViewName()).isEqualTo("myRedirect:testView");
-		assertThat((Object) this.mavContainer.getModel()).isSameAs(redirectModel);
+		assertThat(this.mavContainer.getModel()).isSameAs(redirectModel);
 	}
 
 	@Test
@@ -91,7 +91,7 @@ public class ViewNameMethodReturnValueHandlerTests {
 		this.handler.setRedirectPatterns("myRedirect:*");
 		this.handler.handleReturnValue("redirect:testView", this.param, this.mavContainer, this.webRequest);
 		assertThat(this.mavContainer.getViewName()).isEqualTo("redirect:testView");
-		assertThat((Object) this.mavContainer.getModel()).isSameAs(redirectModel);
+		assertThat(this.mavContainer.getModel()).isSameAs(redirectModel);
 	}
 
 

@@ -43,7 +43,7 @@ public class YamlProcessorTests {
 	public void arrayConvertedToIndexedBeanReference() {
 		this.processor.setResources(new ByteArrayResource("foo: bar\nbar: [1,2,3]".getBytes()));
 		this.processor.process((properties, map) -> {
-			assertThat((long) properties.size()).isEqualTo((long) 4);
+			assertThat(properties.size()).isEqualTo((long) 4);
 			assertThat(properties.get("foo")).isEqualTo("bar");
 			assertThat(properties.getProperty("foo")).isEqualTo("bar");
 			assertThat(properties.get("bar[0]")).isEqualTo(1);
@@ -82,7 +82,7 @@ public class YamlProcessorTests {
 		this.processor.setResources(new ByteArrayResource("foo: bar\nbar:\n spam: bucket".getBytes()));
 		this.processor.process((properties, map) -> {
 			assertThat(properties.get("bar.spam")).isEqualTo("bucket");
-			assertThat((long) properties.size()).isEqualTo((long) 2);
+			assertThat(properties.size()).isEqualTo((long) 2);
 		});
 	}
 
@@ -91,7 +91,7 @@ public class YamlProcessorTests {
 		this.processor.setResources(new ByteArrayResource("foo: bar\n1: bar".getBytes()));
 		this.processor.process((properties, map) -> {
 			assertThat(properties.get("[1]")).isEqualTo("bar");
-			assertThat((long) properties.size()).isEqualTo((long) 2);
+			assertThat(properties.size()).isEqualTo((long) 2);
 		});
 	}
 
@@ -100,7 +100,7 @@ public class YamlProcessorTests {
 		this.processor.setResources(new ByteArrayResource("foo:\n  1: bar".getBytes()));
 		this.processor.process((properties, map) -> {
 			assertThat(properties.get("foo[1]")).isEqualTo("bar");
-			assertThat((long) properties.size()).isEqualTo((long) 1);
+			assertThat(properties.size()).isEqualTo((long) 1);
 		});
 	}
 
@@ -110,10 +110,10 @@ public class YamlProcessorTests {
 		this.processor.setResources(new ByteArrayResource("foo: bar\nbar:\n spam: bucket".getBytes()));
 		this.processor.process((properties, map) -> {
 			assertThat(properties.get("bar.spam")).isEqualTo("bucket");
-			assertThat((long) properties.size()).isEqualTo((long) 2);
+			assertThat(properties.size()).isEqualTo((long) 2);
 			Map<String, Object> flattenedMap = processor.getFlattenedMap(map);
 			assertThat(flattenedMap.get("bar.spam")).isEqualTo("bucket");
-			assertThat((long) flattenedMap.size()).isEqualTo((long) 2);
+			assertThat(flattenedMap.size()).isEqualTo((long) 2);
 			boolean condition = flattenedMap instanceof LinkedHashMap;
 			assertThat(condition).isTrue();
 			Map<String, Object> bar = (Map<String, Object>) map.get("bar");

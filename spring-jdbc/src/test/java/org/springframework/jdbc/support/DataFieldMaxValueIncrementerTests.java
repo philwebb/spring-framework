@@ -89,10 +89,10 @@ public class DataFieldMaxValueIncrementerTests {
 		incrementer.setPaddingLength(3);
 		incrementer.afterPropertiesSet();
 
-		assertThat((long) incrementer.nextIntValue()).isEqualTo((long) 0);
+		assertThat(incrementer.nextIntValue()).isEqualTo((long) 0);
 		assertThat(incrementer.nextLongValue()).isEqualTo((long) 1);
 		assertThat(incrementer.nextStringValue()).isEqualTo("002");
-		assertThat((long) incrementer.nextIntValue()).isEqualTo((long) 3);
+		assertThat(incrementer.nextIntValue()).isEqualTo((long) 3);
 		assertThat(incrementer.nextLongValue()).isEqualTo((long) 4);
 
 		verify(statement, times(6)).executeUpdate("insert into myseq values(null)");
@@ -120,10 +120,10 @@ public class DataFieldMaxValueIncrementerTests {
 		incrementer.setDeleteSpecificValues(true);
 		incrementer.afterPropertiesSet();
 
-		assertThat((long) incrementer.nextIntValue()).isEqualTo((long) 0);
+		assertThat(incrementer.nextIntValue()).isEqualTo((long) 0);
 		assertThat(incrementer.nextLongValue()).isEqualTo((long) 1);
 		assertThat(incrementer.nextStringValue()).isEqualTo("002");
-		assertThat((long) incrementer.nextIntValue()).isEqualTo((long) 3);
+		assertThat(incrementer.nextIntValue()).isEqualTo((long) 3);
 		assertThat(incrementer.nextLongValue()).isEqualTo((long) 4);
 
 		verify(statement, times(6)).executeUpdate("insert into myseq values(null)");
@@ -150,7 +150,7 @@ public class DataFieldMaxValueIncrementerTests {
 		incrementer.setPaddingLength(1);
 		incrementer.afterPropertiesSet();
 
-		assertThat((long) incrementer.nextIntValue()).isEqualTo((long) 1);
+		assertThat(incrementer.nextIntValue()).isEqualTo((long) 1);
 		assertThat(incrementer.nextLongValue()).isEqualTo((long) 2);
 		assertThat(incrementer.nextStringValue()).isEqualTo("3");
 		assertThat(incrementer.nextLongValue()).isEqualTo((long) 4);
@@ -198,7 +198,7 @@ public class DataFieldMaxValueIncrementerTests {
 		incrementer.afterPropertiesSet();
 
 		assertThat(incrementer.nextStringValue()).isEqualTo("00010");
-		assertThat((long) incrementer.nextIntValue()).isEqualTo((long) 12);
+		assertThat(incrementer.nextIntValue()).isEqualTo((long) 12);
 
 		verify(resultSet, times(2)).close();
 		verify(statement, times(2)).close();

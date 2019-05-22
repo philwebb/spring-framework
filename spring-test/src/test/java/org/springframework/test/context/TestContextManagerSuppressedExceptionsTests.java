@@ -22,7 +22,7 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.fail;
+import static org.assertj.core.api.Assertions.fail;
 
 /**
  * JUnit 4 based unit tests for {@link TestContextManager}, which verify proper
@@ -54,7 +54,7 @@ public class TestContextManagerSuppressedExceptionsTests {
 
 	private void test(String useCase, Class<?> testClass, Callback callback) throws Exception {
 		TestContextManager testContextManager = new TestContextManager(testClass);
-		assertThat((long) testContextManager.getTestExecutionListeners().size()).as("Registered TestExecutionListeners").isEqualTo((long) 2);
+		assertThat(testContextManager.getTestExecutionListeners().size()).as("Registered TestExecutionListeners").isEqualTo((long) 2);
 
 		assertThatExceptionOfType(AssertionError.class).isThrownBy(() -> {
 				Method testMethod = getClass().getMethod("toString");

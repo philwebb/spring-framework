@@ -65,7 +65,7 @@ public class DefaultCorsProcessorTests {
 		assertThat(this.response.containsHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN)).isFalse();
 		assertThat(this.response.getHeaders(HttpHeaders.VARY)).contains(HttpHeaders.ORIGIN,
 				HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS);
-		assertThat((long) this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
+		assertThat(this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
 	}
 
 	@Test
@@ -77,7 +77,7 @@ public class DefaultCorsProcessorTests {
 		assertThat(this.response.containsHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN)).isFalse();
 		assertThat(this.response.getHeaders(HttpHeaders.VARY)).contains(HttpHeaders.ORIGIN,
 				HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS);
-		assertThat((long) this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
+		assertThat(this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
 	}
 
 	@Test
@@ -89,7 +89,7 @@ public class DefaultCorsProcessorTests {
 		assertThat(this.response.containsHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN)).isFalse();
 		assertThat(this.response.getHeaders(HttpHeaders.VARY)).contains(HttpHeaders.ORIGIN,
 				HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS);
-		assertThat((long) this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_FORBIDDEN);
+		assertThat(this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_FORBIDDEN);
 	}
 
 	@Test
@@ -99,7 +99,7 @@ public class DefaultCorsProcessorTests {
 
 		this.processor.processRequest(null, this.request, this.response);
 		assertThat(this.response.containsHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN)).isFalse();
-		assertThat((long) this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
+		assertThat(this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
 	}
 
 	@Test
@@ -115,7 +115,7 @@ public class DefaultCorsProcessorTests {
 		assertThat(this.response.containsHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS)).isFalse();
 		assertThat(this.response.getHeaders(HttpHeaders.VARY)).contains(HttpHeaders.ORIGIN,
 				HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS);
-		assertThat((long) this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
+		assertThat(this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
 	}
 
 	@Test
@@ -134,7 +134,7 @@ public class DefaultCorsProcessorTests {
 		assertThat(this.response.getHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS)).isEqualTo("true");
 		assertThat(this.response.getHeaders(HttpHeaders.VARY)).contains(HttpHeaders.ORIGIN,
 				HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS);
-		assertThat((long) this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
+		assertThat(this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
 	}
 
 	@Test
@@ -151,7 +151,7 @@ public class DefaultCorsProcessorTests {
 		assertThat(this.response.getHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS)).isEqualTo("true");
 		assertThat(this.response.getHeaders(HttpHeaders.VARY)).contains(HttpHeaders.ORIGIN,
 				HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS);
-		assertThat((long) this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
+		assertThat(this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
 	}
 
 	@Test
@@ -164,7 +164,7 @@ public class DefaultCorsProcessorTests {
 		assertThat(this.response.containsHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN)).isTrue();
 		assertThat(this.response.getHeaders(HttpHeaders.VARY)).contains(HttpHeaders.ORIGIN,
 				HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS);
-		assertThat((long) this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
+		assertThat(this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
 	}
 
 	@Test
@@ -183,7 +183,7 @@ public class DefaultCorsProcessorTests {
 		assertThat(this.response.getHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS).contains("header2")).isTrue();
 		assertThat(this.response.getHeaders(HttpHeaders.VARY)).contains(HttpHeaders.ORIGIN,
 				HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS);
-		assertThat((long) this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
+		assertThat(this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
 	}
 
 	@Test
@@ -196,7 +196,7 @@ public class DefaultCorsProcessorTests {
 		this.processor.processRequest(this.conf, this.request, this.response);
 		assertThat(this.response.getHeaders(HttpHeaders.VARY)).contains(HttpHeaders.ORIGIN,
 				HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS);
-		assertThat((long) this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
+		assertThat(this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
 	}
 
 	@Test
@@ -209,7 +209,7 @@ public class DefaultCorsProcessorTests {
 		this.processor.processRequest(this.conf, this.request, this.response);
 		assertThat(this.response.getHeaders(HttpHeaders.VARY)).contains(HttpHeaders.ORIGIN,
 				HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS);
-		assertThat((long) this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_FORBIDDEN);
+		assertThat(this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_FORBIDDEN);
 	}
 
 	@Test
@@ -220,7 +220,7 @@ public class DefaultCorsProcessorTests {
 		this.conf.addAllowedOrigin("*");
 
 		this.processor.processRequest(this.conf, this.request, this.response);
-		assertThat((long) this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
+		assertThat(this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
 		assertThat(this.response.getHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS)).isEqualTo("GET,HEAD");
 		assertThat(this.response.getHeaders(HttpHeaders.VARY)).contains(HttpHeaders.ORIGIN,
 				HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS);
@@ -235,7 +235,7 @@ public class DefaultCorsProcessorTests {
 		assertThat(this.response.containsHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN)).isFalse();
 		assertThat(this.response.getHeaders(HttpHeaders.VARY)).contains(HttpHeaders.ORIGIN,
 				HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS);
-		assertThat((long) this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_FORBIDDEN);
+		assertThat(this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_FORBIDDEN);
 	}
 
 	@Test
@@ -248,7 +248,7 @@ public class DefaultCorsProcessorTests {
 		assertThat(this.response.containsHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN)).isFalse();
 		assertThat(this.response.getHeaders(HttpHeaders.VARY)).contains(HttpHeaders.ORIGIN,
 				HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS);
-		assertThat((long) this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_FORBIDDEN);
+		assertThat(this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_FORBIDDEN);
 	}
 
 	@Test
@@ -262,7 +262,7 @@ public class DefaultCorsProcessorTests {
 		assertThat(this.response.containsHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN)).isFalse();
 		assertThat(this.response.getHeaders(HttpHeaders.VARY)).contains(HttpHeaders.ORIGIN,
 				HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS);
-		assertThat((long) this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_FORBIDDEN);
+		assertThat(this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_FORBIDDEN);
 	}
 
 	@Test
@@ -285,7 +285,7 @@ public class DefaultCorsProcessorTests {
 		assertThat(this.response.containsHeader(HttpHeaders.ACCESS_CONTROL_MAX_AGE)).isFalse();
 		assertThat(this.response.getHeaders(HttpHeaders.VARY)).contains(HttpHeaders.ORIGIN,
 				HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS);
-		assertThat((long) this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
+		assertThat(this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
 	}
 
 	@Test
@@ -307,7 +307,7 @@ public class DefaultCorsProcessorTests {
 		assertThat(this.response.getHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS)).isEqualTo("true");
 		assertThat(this.response.getHeaders(HttpHeaders.VARY)).contains(HttpHeaders.ORIGIN,
 				HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS);
-		assertThat((long) this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
+		assertThat(this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
 	}
 
 	@Test
@@ -327,7 +327,7 @@ public class DefaultCorsProcessorTests {
 		assertThat(this.response.getHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN)).isEqualTo("https://domain2.com");
 		assertThat(this.response.getHeaders(HttpHeaders.VARY)).contains(HttpHeaders.ORIGIN,
 				HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS);
-		assertThat((long) this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
+		assertThat(this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
 	}
 
 	@Test
@@ -349,7 +349,7 @@ public class DefaultCorsProcessorTests {
 		assertThat(this.response.getHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS).contains("Header3")).isFalse();
 		assertThat(this.response.getHeaders(HttpHeaders.VARY)).contains(HttpHeaders.ORIGIN,
 				HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS);
-		assertThat((long) this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
+		assertThat(this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
 	}
 
 	@Test
@@ -369,7 +369,7 @@ public class DefaultCorsProcessorTests {
 		assertThat(this.response.getHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS).contains("*")).isFalse();
 		assertThat(this.response.getHeaders(HttpHeaders.VARY)).contains(HttpHeaders.ORIGIN,
 				HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS);
-		assertThat((long) this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
+		assertThat(this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
 	}
 
 	@Test
@@ -386,7 +386,7 @@ public class DefaultCorsProcessorTests {
 		assertThat(this.response.containsHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS)).isFalse();
 		assertThat(this.response.getHeaders(HttpHeaders.VARY)).contains(HttpHeaders.ORIGIN,
 				HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS);
-		assertThat((long) this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
+		assertThat(this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_OK);
 	}
 
 	@Test
@@ -398,7 +398,7 @@ public class DefaultCorsProcessorTests {
 
 		this.processor.processRequest(null, this.request, this.response);
 		assertThat(this.response.containsHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN)).isFalse();
-		assertThat((long) this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_FORBIDDEN);
+		assertThat(this.response.getStatus()).isEqualTo((long) HttpServletResponse.SC_FORBIDDEN);
 	}
 
 }

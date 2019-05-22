@@ -133,8 +133,8 @@ public class RdbmsOperationTests {
 		operation.setMaxRows(20);
 		JdbcTemplate jt = operation.getJdbcTemplate();
 		assertThat(jt.getDataSource()).isEqualTo(ds);
-		assertThat((long) jt.getFetchSize()).isEqualTo((long) 10);
-		assertThat((long) jt.getMaxRows()).isEqualTo((long) 20);
+		assertThat(jt.getFetchSize()).isEqualTo((long) 10);
+		assertThat(jt.getMaxRows()).isEqualTo((long) 20);
 	}
 
 	@Test
@@ -156,7 +156,7 @@ public class RdbmsOperationTests {
 				new SqlParameter("two", Types.NUMERIC)});
 		operation.afterPropertiesSet();
 		operation.validateParameters(new Object[] { 1, "2" });
-		assertThat((long) operation.getDeclaredParameters().size()).isEqualTo((long) 2);
+		assertThat(operation.getDeclaredParameters().size()).isEqualTo((long) 2);
 	}
 
 

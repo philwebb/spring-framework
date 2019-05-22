@@ -125,7 +125,7 @@ public class ControllerMethodResolverTests {
 	public void modelAttributeArgumentResolvers() {
 		List<InvocableHandlerMethod> methods = this.methodResolver.getModelAttributeMethods(this.handlerMethod);
 
-		assertThat((long) methods.size()).as("Expected one each from Controller + ControllerAdvice").isEqualTo((long) 2);
+		assertThat(methods.size()).as("Expected one each from Controller + ControllerAdvice").isEqualTo((long) 2);
 		InvocableHandlerMethod invocable = methods.get(0);
 		List<HandlerMethodArgumentResolver> resolvers = invocable.getResolvers();
 
@@ -163,7 +163,7 @@ public class ControllerMethodResolverTests {
 		List<SyncInvocableHandlerMethod> methods =
 				this.methodResolver.getInitBinderMethods(this.handlerMethod);
 
-		assertThat((long) methods.size()).as("Expected one each from Controller + ControllerAdvice").isEqualTo((long) 2);
+		assertThat(methods.size()).as("Expected one each from Controller + ControllerAdvice").isEqualTo((long) 2);
 		SyncInvocableHandlerMethod invocable = methods.get(0);
 		List<SyncHandlerMethodArgumentResolver> resolvers = invocable.getResolvers();
 
@@ -193,7 +193,7 @@ public class ControllerMethodResolverTests {
 		InvocableHandlerMethod invocable = this.methodResolver.getExceptionHandlerMethod(
 				new ResponseStatusException(HttpStatus.BAD_REQUEST, "reason"), this.handlerMethod);
 
-		assertThat((Object) invocable).as("No match").isNotNull();
+		assertThat(invocable).as("No match").isNotNull();
 		assertThat(invocable.getBeanType()).isEqualTo(TestController.class);
 		List<HandlerMethodArgumentResolver> resolvers = invocable.getResolvers();
 
@@ -228,7 +228,7 @@ public class ControllerMethodResolverTests {
 		InvocableHandlerMethod invocable = this.methodResolver.getExceptionHandlerMethod(
 				new IllegalStateException("reason"), this.handlerMethod);
 
-		assertThat((Object) invocable).isNotNull();
+		assertThat(invocable).isNotNull();
 		assertThat(invocable.getBeanType()).isEqualTo(TestControllerAdvice.class);
 	}
 

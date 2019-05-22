@@ -39,7 +39,7 @@ public class ConsumesRequestConditionTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setContentType("text/plain");
 
-		assertThat((Object) condition.getMatchingCondition(request)).isNotNull();
+		assertThat(condition.getMatchingCondition(request)).isNotNull();
 	}
 
 	@Test
@@ -49,7 +49,7 @@ public class ConsumesRequestConditionTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setContentType("text/plain");
 
-		assertThat((Object) condition.getMatchingCondition(request)).isNull();
+		assertThat(condition.getMatchingCondition(request)).isNull();
 	}
 
 	@Test
@@ -65,7 +65,7 @@ public class ConsumesRequestConditionTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setContentType("text/plain");
 
-		assertThat((Object) condition.getMatchingCondition(request)).isNotNull();
+		assertThat(condition.getMatchingCondition(request)).isNotNull();
 	}
 
 	@Test
@@ -75,7 +75,7 @@ public class ConsumesRequestConditionTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setContentType("text/plain");
 
-		assertThat((Object) condition.getMatchingCondition(request)).isNotNull();
+		assertThat(condition.getMatchingCondition(request)).isNotNull();
 	}
 
 	@Test
@@ -85,7 +85,7 @@ public class ConsumesRequestConditionTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setContentType("application/xml");
 
-		assertThat((Object) condition.getMatchingCondition(request)).isNull();
+		assertThat(condition.getMatchingCondition(request)).isNull();
 	}
 
 	@Test
@@ -95,7 +95,7 @@ public class ConsumesRequestConditionTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setContentType("01");
 
-		assertThat((Object) condition.getMatchingCondition(request)).isNull();
+		assertThat(condition.getMatchingCondition(request)).isNull();
 	}
 
 	@Test
@@ -105,7 +105,7 @@ public class ConsumesRequestConditionTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setContentType("01");
 
-		assertThat((Object) condition.getMatchingCondition(request)).isNull();
+		assertThat(condition.getMatchingCondition(request)).isNull();
 	}
 
 	@Test // gh-22010
@@ -114,19 +114,19 @@ public class ConsumesRequestConditionTests {
 		condition.setBodyRequired(false);
 
 		MockHttpServletRequest request = new MockHttpServletRequest();
-		assertThat((Object) condition.getMatchingCondition(request)).isNotNull();
+		assertThat(condition.getMatchingCondition(request)).isNotNull();
 
 		request = new MockHttpServletRequest();
 		request.addHeader(HttpHeaders.CONTENT_LENGTH, "0");
-		assertThat((Object) condition.getMatchingCondition(request)).isNotNull();
+		assertThat(condition.getMatchingCondition(request)).isNotNull();
 
 		request = new MockHttpServletRequest();
 		request.addHeader(HttpHeaders.CONTENT_LENGTH, "21");
-		assertThat((Object) condition.getMatchingCondition(request)).isNull();
+		assertThat(condition.getMatchingCondition(request)).isNull();
 
 		request = new MockHttpServletRequest();
 		request.addHeader(HttpHeaders.TRANSFER_ENCODING, "chunked");
-		assertThat((Object) condition.getMatchingCondition(request)).isNull();
+		assertThat(condition.getMatchingCondition(request)).isNull();
 	}
 
 	@Test
@@ -198,7 +198,7 @@ public class ConsumesRequestConditionTests {
 		condition = new ConsumesRequestCondition("application/xml");
 
 		result = condition.getMatchingCondition(request);
-		assertThat((Object) result).isNull();
+		assertThat(result).isNull();
 	}
 
 	private void assertConditions(ConsumesRequestCondition condition, String... expected) {

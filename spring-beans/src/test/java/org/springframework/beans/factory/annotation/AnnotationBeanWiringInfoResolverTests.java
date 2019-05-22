@@ -39,21 +39,21 @@ public class AnnotationBeanWiringInfoResolverTests {
 	public void testResolveWiringInfoWithAnInstanceOfANonAnnotatedClass() {
 		AnnotationBeanWiringInfoResolver resolver = new AnnotationBeanWiringInfoResolver();
 		BeanWiringInfo info = resolver.resolveWiringInfo("java.lang.String is not @Configurable");
-		assertThat((Object) info).as("Must be returning null for a non-@Configurable class instance").isNull();
+		assertThat(info).as("Must be returning null for a non-@Configurable class instance").isNull();
 	}
 
 	@Test
 	public void testResolveWiringInfoWithAnInstanceOfAnAnnotatedClass() {
 		AnnotationBeanWiringInfoResolver resolver = new AnnotationBeanWiringInfoResolver();
 		BeanWiringInfo info = resolver.resolveWiringInfo(new Soap());
-		assertThat((Object) info).as("Must *not* be returning null for a non-@Configurable class instance").isNotNull();
+		assertThat(info).as("Must *not* be returning null for a non-@Configurable class instance").isNotNull();
 	}
 
 	@Test
 	public void testResolveWiringInfoWithAnInstanceOfAnAnnotatedClassWithAutowiringTurnedOffExplicitly() {
 		AnnotationBeanWiringInfoResolver resolver = new AnnotationBeanWiringInfoResolver();
 		BeanWiringInfo info = resolver.resolveWiringInfo(new WirelessSoap());
-		assertThat((Object) info).as("Must *not* be returning null for an @Configurable class instance even when autowiring is NO").isNotNull();
+		assertThat(info).as("Must *not* be returning null for an @Configurable class instance even when autowiring is NO").isNotNull();
 		assertThat(info.indicatesAutowiring()).isFalse();
 		assertThat(info.getBeanName()).isEqualTo(WirelessSoap.class.getName());
 	}
@@ -62,7 +62,7 @@ public class AnnotationBeanWiringInfoResolverTests {
 	public void testResolveWiringInfoWithAnInstanceOfAnAnnotatedClassWithAutowiringTurnedOffExplicitlyAndCustomBeanName() {
 		AnnotationBeanWiringInfoResolver resolver = new AnnotationBeanWiringInfoResolver();
 		BeanWiringInfo info = resolver.resolveWiringInfo(new NamedWirelessSoap());
-		assertThat((Object) info).as("Must *not* be returning null for an @Configurable class instance even when autowiring is NO").isNotNull();
+		assertThat(info).as("Must *not* be returning null for an @Configurable class instance even when autowiring is NO").isNotNull();
 		assertThat(info.indicatesAutowiring()).isFalse();
 		assertThat(info.getBeanName()).isEqualTo("DerBigStick");
 	}

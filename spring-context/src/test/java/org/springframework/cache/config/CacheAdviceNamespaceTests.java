@@ -39,7 +39,7 @@ public class CacheAdviceNamespaceTests extends AbstractCacheAnnotationTests {
 	@Test
 	public void testKeyStrategy() throws Exception {
 		CacheInterceptor bean = this.ctx.getBean("cacheAdviceClass", CacheInterceptor.class);
-		assertThat((Object) bean.getKeyGenerator()).isSameAs(this.ctx.getBean("keyGenerator"));
+		assertThat(bean.getKeyGenerator()).isSameAs(this.ctx.getBean("keyGenerator"));
 	}
 
 }

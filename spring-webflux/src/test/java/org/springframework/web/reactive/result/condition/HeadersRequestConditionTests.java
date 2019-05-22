@@ -47,7 +47,7 @@ public class HeadersRequestConditionTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/").header("Accept", ""));
 		HeadersRequestCondition condition = new HeadersRequestCondition("accept");
 
-		assertThat((Object) condition.getMatchingCondition(exchange)).isNotNull();
+		assertThat(condition.getMatchingCondition(exchange)).isNotNull();
 	}
 
 	@Test
@@ -55,7 +55,7 @@ public class HeadersRequestConditionTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/").header("bar", ""));
 		HeadersRequestCondition condition = new HeadersRequestCondition("foo");
 
-		assertThat((Object) condition.getMatchingCondition(exchange)).isNull();
+		assertThat(condition.getMatchingCondition(exchange)).isNull();
 	}
 
 	@Test
@@ -63,7 +63,7 @@ public class HeadersRequestConditionTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/"));
 		HeadersRequestCondition condition = new HeadersRequestCondition("!accept");
 
-		assertThat((Object) condition.getMatchingCondition(exchange)).isNotNull();
+		assertThat(condition.getMatchingCondition(exchange)).isNotNull();
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class HeadersRequestConditionTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/").header("foo", "bar"));
 		HeadersRequestCondition condition = new HeadersRequestCondition("foo=bar");
 
-		assertThat((Object) condition.getMatchingCondition(exchange)).isNotNull();
+		assertThat(condition.getMatchingCondition(exchange)).isNotNull();
 	}
 
 	@Test
@@ -79,7 +79,7 @@ public class HeadersRequestConditionTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/").header("foo", "bazz"));
 		HeadersRequestCondition condition = new HeadersRequestCondition("foo=bar");
 
-		assertThat((Object) condition.getMatchingCondition(exchange)).isNull();
+		assertThat(condition.getMatchingCondition(exchange)).isNull();
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public class HeadersRequestConditionTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/").header("foo", "bar"));
 		HeadersRequestCondition condition = new HeadersRequestCondition("foo=Bar");
 
-		assertThat((Object) condition.getMatchingCondition(exchange)).isNull();
+		assertThat(condition.getMatchingCondition(exchange)).isNull();
 	}
 
 	@Test
@@ -95,7 +95,7 @@ public class HeadersRequestConditionTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/").header("foo", "baz"));
 		HeadersRequestCondition condition = new HeadersRequestCondition("foo!=bar");
 
-		assertThat((Object) condition.getMatchingCondition(exchange)).isNotNull();
+		assertThat(condition.getMatchingCondition(exchange)).isNotNull();
 	}
 
 	@Test
@@ -103,7 +103,7 @@ public class HeadersRequestConditionTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get("/").header("foo", "bar"));
 		HeadersRequestCondition condition = new HeadersRequestCondition("foo!=bar");
 
-		assertThat((Object) condition.getMatchingCondition(exchange)).isNull();
+		assertThat(condition.getMatchingCondition(exchange)).isNull();
 	}
 
 	@Test
@@ -138,7 +138,7 @@ public class HeadersRequestConditionTests {
 		HeadersRequestCondition condition1 = new HeadersRequestCondition("foo!=a");
 		HeadersRequestCondition condition2 = new HeadersRequestCondition("foo");
 
-		assertThat((long) condition1.compareTo(condition2, exchange)).as("Negated match should not count as more specific").isEqualTo((long) 0);
+		assertThat(condition1.compareTo(condition2, exchange)).as("Negated match should not count as more specific").isEqualTo((long) 0);
 	}
 
 	@Test
@@ -148,7 +148,7 @@ public class HeadersRequestConditionTests {
 
 		HeadersRequestCondition result = condition1.combine(condition2);
 		Collection<?> conditions = result.getContent();
-		assertThat((long) conditions.size()).isEqualTo((long) 2);
+		assertThat(conditions.size()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -162,7 +162,7 @@ public class HeadersRequestConditionTests {
 		condition = new HeadersRequestCondition("bar");
 
 		result = condition.getMatchingCondition(exchange);
-		assertThat((Object) result).isNull();
+		assertThat(result).isNull();
 	}
 
 }

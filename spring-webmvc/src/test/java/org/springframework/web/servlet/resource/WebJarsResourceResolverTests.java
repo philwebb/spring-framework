@@ -80,7 +80,7 @@ public class WebJarsResourceResolverTests {
 
 		String actual = this.resolver.resolveUrlPath(file, this.locations, this.chain);
 
-		assertThat((Object) actual).isNull();
+		assertThat(actual).isNull();
 		verify(this.chain, times(1)).resolveUrlPath(file, this.locations);
 		verify(this.chain, never()).resolveUrlPath("foo/2.3/foo.txt", this.locations);
 	}
@@ -106,7 +106,7 @@ public class WebJarsResourceResolverTests {
 
 		String actual = this.resolver.resolveUrlPath(file, this.locations, this.chain);
 
-		assertThat((Object) actual).isNull();
+		assertThat(actual).isNull();
 		verify(this.chain, times(1)).resolveUrlPath(file, this.locations);
 		verify(this.chain, never()).resolveUrlPath(null, this.locations);
 	}
@@ -131,7 +131,7 @@ public class WebJarsResourceResolverTests {
 
 		Resource actual = this.resolver.resolveResource(this.request, file, this.locations, this.chain);
 
-		assertThat((Object) actual).isNull();
+		assertThat(actual).isNull();
 		verify(this.chain, times(1)).resolveResource(this.request, file, this.locations);
 		verify(this.chain, never()).resolveResource(this.request, null, this.locations);
 	}

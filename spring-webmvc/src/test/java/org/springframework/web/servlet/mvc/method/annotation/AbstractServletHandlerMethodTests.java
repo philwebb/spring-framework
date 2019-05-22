@@ -48,7 +48,7 @@ public abstract class AbstractServletHandlerMethodTests {
 
 
 	protected DispatcherServlet getServlet() {
-		assertThat((Object) servlet).as("DispatcherServlet not initialized").isNotNull();
+		assertThat(servlet).as("DispatcherServlet not initialized").isNotNull();
 		return servlet;
 	}
 

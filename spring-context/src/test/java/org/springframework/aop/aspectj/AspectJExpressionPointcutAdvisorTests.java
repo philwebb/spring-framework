@@ -49,11 +49,11 @@ public class AspectJExpressionPointcutAdvisorTests {
 
 	@Test
 	public void testPointcutting() {
-		assertThat((long) interceptor.getCount()).as("Count should be 0").isEqualTo((long) 0);
+		assertThat(interceptor.getCount()).as("Count should be 0").isEqualTo((long) 0);
 		testBean.getSpouses();
-		assertThat((long) interceptor.getCount()).as("Count should be 1").isEqualTo((long) 1);
+		assertThat(interceptor.getCount()).as("Count should be 1").isEqualTo((long) 1);
 		testBean.getSpouse();
-		assertThat((long) interceptor.getCount()).as("Count should be 1").isEqualTo((long) 1);
+		assertThat(interceptor.getCount()).as("Count should be 1").isEqualTo((long) 1);
 	}
 
 }

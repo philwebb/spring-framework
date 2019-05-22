@@ -88,7 +88,7 @@ public class DestinationPatternsMessageConditionTests {
 		DestinationPatternsMessageCondition condition = condition("/foo");
 		DestinationPatternsMessageCondition match = condition.getMatchingCondition(messageTo("/foo"));
 
-		assertThat((Object) match).isNotNull();
+		assertThat(match).isNotNull();
 	}
 
 	@Test
@@ -96,7 +96,7 @@ public class DestinationPatternsMessageConditionTests {
 		DestinationPatternsMessageCondition condition = condition("/foo/*");
 		DestinationPatternsMessageCondition match = condition.getMatchingCondition(messageTo("/foo/bar"));
 
-		assertThat((Object) match).isNotNull();
+		assertThat(match).isNotNull();
 	}
 
 	@Test
@@ -113,7 +113,7 @@ public class DestinationPatternsMessageConditionTests {
 		DestinationPatternsMessageCondition c1 = condition("/foo*");
 		DestinationPatternsMessageCondition c2 = condition("/foo*");
 
-		assertThat((long) c1.compareTo(c2, messageTo("/foo"))).isEqualTo((long) 0);
+		assertThat(c1.compareTo(c2, messageTo("/foo"))).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -121,7 +121,7 @@ public class DestinationPatternsMessageConditionTests {
 		DestinationPatternsMessageCondition c1 = condition("/fo*");
 		DestinationPatternsMessageCondition c2 = condition("/foo");
 
-		assertThat((long) c1.compareTo(c2, messageTo("/foo"))).isEqualTo((long) 1);
+		assertThat(c1.compareTo(c2, messageTo("/foo"))).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -134,7 +134,7 @@ public class DestinationPatternsMessageConditionTests {
 		DestinationPatternsMessageCondition match1 = c1.getMatchingCondition(message);
 		DestinationPatternsMessageCondition match2 = c2.getMatchingCondition(message);
 
-		assertThat((long) match1.compareTo(match2, message)).isEqualTo((long) 1);
+		assertThat(match1.compareTo(match2, message)).isEqualTo((long) 1);
 	}
 
 

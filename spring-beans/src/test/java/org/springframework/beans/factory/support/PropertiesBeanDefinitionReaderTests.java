@@ -53,7 +53,7 @@ public class PropertiesBeanDefinitionReaderTests {
 		this.reader.loadBeanDefinitions(new ClassPathResource("multiConstructorArgs.properties", getClass()));
 		TestBean bean = (TestBean) this.beanFactory.getBean("testBean");
 		assertThat(bean.getName()).isEqualTo("Rob Harrop");
-		assertThat((long) bean.getAge()).isEqualTo((long) 23);
+		assertThat(bean.getAge()).isEqualTo((long) 23);
 	}
 
 }

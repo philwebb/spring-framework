@@ -84,13 +84,13 @@ public class RequestContextFilterTests {
 			assertThat(sex).isNull();
 		}
 		catch (ServletException ex) {
-			assertThat((Object) sex).isNotNull();
+			assertThat(sex).isNotNull();
 		}
 
 		assertThatIllegalStateException().isThrownBy(
 				RequestContextHolder::currentRequestAttributes);
 
-		assertThat((long) fc.invocations).isEqualTo((long) 1);
+		assertThat(fc.invocations).isEqualTo((long) 1);
 	}
 
 }

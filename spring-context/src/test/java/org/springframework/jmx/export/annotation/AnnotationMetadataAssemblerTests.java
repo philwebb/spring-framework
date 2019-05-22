@@ -49,35 +49,35 @@ public class AnnotationMetadataAssemblerTests extends AbstractMetadataAssemblerT
 	public void testOperationFromInterface() throws Exception {
 		ModelMBeanInfo inf = getMBeanInfoFromAssembler();
 		ModelMBeanOperationInfo op = inf.getOperation("fromInterface");
-		assertThat((Object) op).isNotNull();
+		assertThat(op).isNotNull();
 	}
 
 	@Test
 	public void testOperationOnGetter() throws Exception {
 		ModelMBeanInfo inf = getMBeanInfoFromAssembler();
 		ModelMBeanOperationInfo op = inf.getOperation("getExpensiveToCalculate");
-		assertThat((Object) op).isNotNull();
+		assertThat(op).isNotNull();
 	}
 
 	@Test
 	public void testRegistrationOnInterface() throws Exception {
 		Object bean = getContext().getBean("testInterfaceBean");
 		ModelMBeanInfo inf = getAssembler().getMBeanInfo(bean, "bean:name=interfaceTestBean");
-		assertThat((Object) inf).isNotNull();
+		assertThat(inf).isNotNull();
 		assertThat(inf.getDescription()).isEqualTo("My Managed Bean");
 
 		ModelMBeanOperationInfo op = inf.getOperation("foo");
-		assertThat((Object) op).as("foo operation not exposed").isNotNull();
+		assertThat(op).as("foo operation not exposed").isNotNull();
 		assertThat(op.getDescription()).isEqualTo("invoke foo");
 
-		assertThat((Object) inf.getOperation("doNotExpose")).as("doNotExpose operation should not be exposed").isNull();
+		assertThat(inf.getOperation("doNotExpose")).as("doNotExpose operation should not be exposed").isNull();
 
 		ModelMBeanAttributeInfo attr = inf.getAttribute("Bar");
-		assertThat((Object) attr).as("bar attribute not exposed").isNotNull();
+		assertThat(attr).as("bar attribute not exposed").isNotNull();
 		assertThat(attr.getDescription()).isEqualTo("Bar description");
 
 		ModelMBeanAttributeInfo attr2 = inf.getAttribute("CacheEntries");
-		assertThat((Object) attr2).as("cacheEntries attribute not exposed").isNotNull();
+		assertThat(attr2).as("cacheEntries attribute not exposed").isNotNull();
 		assertThat(attr2.getDescriptor().getFieldValue("metricType")).as("Metric Type should be COUNTER").isEqualTo("COUNTER");
 	}
 

@@ -35,13 +35,13 @@ public class GenericBridgeMethodMatchingClassProxyTests extends GenericBridgeMet
 	@Test
 	public void testGenericDerivedInterfaceMethodThroughClass() {
 		((DerivedStringParameterizedClass) testBean).genericDerivedInterfaceMethod("");
-		assertThat((long) counterAspect.count).isEqualTo((long) 1);
+		assertThat(counterAspect.count).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void testGenericBaseInterfaceMethodThroughClass() {
 		((DerivedStringParameterizedClass) testBean).genericBaseInterfaceMethod("");
-		assertThat((long) counterAspect.count).isEqualTo((long) 1);
+		assertThat(counterAspect.count).isEqualTo((long) 1);
 	}
 
 }

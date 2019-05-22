@@ -32,7 +32,7 @@ public class DevProfileAnnotationConfigTests extends DefaultProfileAnnotationCon
 	@Test
 	@Override
 	public void employee() {
-		assertThat((Object) employee).as("employee bean should be loaded for the 'dev' profile").isNotNull();
+		assertThat(employee).as("employee bean should be loaded for the 'dev' profile").isNotNull();
 		assertThat(employee.getName()).isEqualTo("John Smith");
 	}
 

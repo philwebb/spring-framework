@@ -85,7 +85,7 @@ public class ParameterizedSpringRuleTests {
 		invocationCount.incrementAndGet();
 
 		// Verifying dependency injection:
-		assertThat((Object) this.pet).as("The pet field should have been autowired.").isNotNull();
+		assertThat(this.pet).as("The pet field should have been autowired.").isNotNull();
 
 		// Verifying 'parameterized' support:
 		Employee employee = this.applicationContext.getBean(this.employeeBeanName, Employee.class);
@@ -94,7 +94,7 @@ public class ParameterizedSpringRuleTests {
 
 	@AfterClass
 	public static void verifyNumParameterizedRuns() {
-		assertThat((long) invocationCount.get()).as("Number of times the parameterized test method was executed.").isEqualTo((long) employeeData().length);
+		assertThat(invocationCount.get()).as("Number of times the parameterized test method was executed.").isEqualTo((long) employeeData().length);
 	}
 
 }

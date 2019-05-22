@@ -49,7 +49,7 @@ public class RequestEntityTests {
 				RequestEntity.method(HttpMethod.GET, url)
 						.header(headerName, headerValue).body(entity);
 
-		assertThat((Object) requestEntity).isNotNull();
+		assertThat(requestEntity).isNotNull();
 		assertThat(requestEntity.getMethod()).isEqualTo(HttpMethod.GET);
 		assertThat(requestEntity.getHeaders().containsKey(headerName)).isTrue();
 		assertThat(requestEntity.getHeaders().getFirst(headerName)).isEqualTo(headerValue);
@@ -84,11 +84,11 @@ public class RequestEntityTests {
 		RequestEntity<Void> requestEntity = RequestEntity.get(URI.create("https://example.com")).accept(
 				MediaType.IMAGE_GIF, MediaType.IMAGE_JPEG, MediaType.IMAGE_PNG).build();
 
-		assertThat((Object) requestEntity).isNotNull();
+		assertThat(requestEntity).isNotNull();
 		assertThat(requestEntity.getMethod()).isEqualTo(HttpMethod.GET);
 		assertThat(requestEntity.getHeaders().containsKey("Accept")).isTrue();
 		assertThat(requestEntity.getHeaders().getFirst("Accept")).isEqualTo("image/gif, image/jpeg, image/png");
-		assertThat((Object) requestEntity.getBody()).isNull();
+		assertThat(requestEntity.getBody()).isNull();
 	}
 
 	@Test
@@ -108,7 +108,7 @@ public class RequestEntityTests {
 				contentType(contentType).
 				build();
 
-		assertThat((Object) responseEntity).isNotNull();
+		assertThat(responseEntity).isNotNull();
 		assertThat(responseEntity.getMethod()).isEqualTo(HttpMethod.POST);
 		assertThat(responseEntity.getUrl()).isEqualTo(new URI("https://example.com"));
 		HttpHeaders responseHeaders = responseEntity.getHeaders();
@@ -120,7 +120,7 @@ public class RequestEntityTests {
 		assertThat(responseHeaders.getFirst("Content-Length")).isEqualTo(String.valueOf(contentLength));
 		assertThat(responseHeaders.getFirst("Content-Type")).isEqualTo(contentType.toString());
 
-		assertThat((Object) responseEntity.getBody()).isNull();
+		assertThat(responseEntity.getBody()).isNull();
 	}
 
 	@Test

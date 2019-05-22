@@ -61,7 +61,7 @@ public class SerializationUtilsTests {
 
 	@Test
 	public void serializeNull() throws Exception {
-		assertThat((Object) SerializationUtils.serialize(null)).isNull();
+		assertThat(SerializationUtils.serialize(null)).isNull();
 	}
 
 	@Test

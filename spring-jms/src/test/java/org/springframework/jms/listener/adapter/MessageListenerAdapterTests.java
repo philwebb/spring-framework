@@ -173,13 +173,13 @@ public class MessageListenerAdapterTests {
 		MessageListenerAdapter adapter = new MessageListenerAdapter(delegate) {
 			@Override
 			protected void handleListenerException(Throwable ex) {
-				assertThat((Object) ex).as("The Throwable passed to the handleListenerException(..) method must never be null.").isNotNull();
+				assertThat(ex).as("The Throwable passed to the handleListenerException(..) method must never be null.").isNotNull();
 				boolean condition = ex instanceof ListenerExecutionFailedException;
 				assertThat(condition).as("The Throwable passed to the handleListenerException(..) method must be of type [ListenerExecutionFailedException].").isTrue();
 				ListenerExecutionFailedException lefx = (ListenerExecutionFailedException) ex;
 				Throwable cause = lefx.getCause();
-				assertThat((Object) cause).as("The cause of a ListenerExecutionFailedException must be preserved.").isNotNull();
-				assertThat((Object) cause).isSameAs(exception);
+				assertThat(cause).as("The cause of a ListenerExecutionFailedException must be preserved.").isNotNull();
+				assertThat(cause).isSameAs(exception);
 			}
 		};
 		// we DON'T want the default SimpleMessageConversion happening...
@@ -190,7 +190,7 @@ public class MessageListenerAdapterTests {
 	@Test
 	public void testThatTheDefaultMessageConverterisIndeedTheSimpleMessageConverter() throws Exception {
 		MessageListenerAdapter adapter = new MessageListenerAdapter();
-		assertThat((Object) adapter.getMessageConverter()).as("The default [MessageConverter] must never be null.").isNotNull();
+		assertThat(adapter.getMessageConverter()).as("The default [MessageConverter] must never be null.").isNotNull();
 		boolean condition = adapter.getMessageConverter() instanceof SimpleMessageConverter;
 		assertThat(condition).as("The default [MessageConverter] must be of the type [SimpleMessageConverter]").isTrue();
 	}

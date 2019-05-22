@@ -78,7 +78,7 @@ public class ServerCodecConfigurerTests {
 	@Test
 	public void defaultReaders() {
 		List<HttpMessageReader<?>> readers = this.configurer.getReaders();
-		assertThat((long) readers.size()).isEqualTo((long) 13);
+		assertThat(readers.size()).isEqualTo((long) 13);
 		assertThat(getNextDecoder(readers).getClass()).isEqualTo(ByteArrayDecoder.class);
 		assertThat(getNextDecoder(readers).getClass()).isEqualTo(ByteBufferDecoder.class);
 		assertThat(getNextDecoder(readers).getClass()).isEqualTo(DataBufferDecoder.class);
@@ -97,7 +97,7 @@ public class ServerCodecConfigurerTests {
 	@Test
 	public void defaultWriters() {
 		List<HttpMessageWriter<?>> writers = this.configurer.getWriters();
-		assertThat((long) writers.size()).isEqualTo((long) 11);
+		assertThat(writers.size()).isEqualTo((long) 11);
 		assertThat(getNextEncoder(writers).getClass()).isEqualTo(ByteArrayEncoder.class);
 		assertThat(getNextEncoder(writers).getClass()).isEqualTo(ByteBufferEncoder.class);
 		assertThat(getNextEncoder(writers).getClass()).isEqualTo(DataBufferEncoder.class);
@@ -116,7 +116,7 @@ public class ServerCodecConfigurerTests {
 		Jackson2JsonEncoder encoder = new Jackson2JsonEncoder();
 		this.configurer.defaultCodecs().jackson2JsonEncoder(encoder);
 
-		assertThat((Object) this.configurer.getWriters().stream()
+		assertThat(this.configurer.getWriters().stream()
 				.filter(writer -> ServerSentEventHttpMessageWriter.class.equals(writer.getClass()))
 				.map(writer -> (ServerSentEventHttpMessageWriter) writer)
 				.findFirst()
@@ -162,7 +162,7 @@ public class ServerCodecConfigurerTests {
 		HttpMessageWriter<?> writer = writers.get(this.index.getAndIncrement());
 		assertThat(writer.getClass()).isEqualTo(ServerSentEventHttpMessageWriter.class);
 		Encoder<?> encoder = ((ServerSentEventHttpMessageWriter) writer).getEncoder();
-		assertThat((Object) encoder).isNotNull();
+		assertThat(encoder).isNotNull();
 		assertThat(encoder.getClass()).isEqualTo(Jackson2JsonEncoder.class);
 	}
 

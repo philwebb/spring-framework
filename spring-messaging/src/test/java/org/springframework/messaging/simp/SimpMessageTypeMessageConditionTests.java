@@ -51,7 +51,7 @@ public class SimpMessageTypeMessageConditionTests {
 		SimpMessageTypeMessageCondition condition = condition(SimpMessageType.MESSAGE);
 		SimpMessageTypeMessageCondition actual = condition.getMatchingCondition(message);
 
-		assertThat((Object) actual).isNotNull();
+		assertThat(actual).isNotNull();
 		assertThat(actual.getMessageType()).isEqualTo(SimpMessageType.MESSAGE);
 	}
 
@@ -60,14 +60,14 @@ public class SimpMessageTypeMessageConditionTests {
 		Message<?> message = message(null);
 		SimpMessageTypeMessageCondition condition = condition(SimpMessageType.MESSAGE);
 
-		assertThat((Object) condition.getMatchingCondition(message)).isNull();
+		assertThat(condition.getMatchingCondition(message)).isNull();
 	}
 
 	@Test
 	public void compareTo() {
 		Message<byte[]> message = message(null);
-		assertThat((long) condition(SimpMessageType.MESSAGE).compareTo(condition(SimpMessageType.MESSAGE), message)).isEqualTo((long) 0);
-		assertThat((long) condition(SimpMessageType.MESSAGE).compareTo(condition(SimpMessageType.SUBSCRIBE), message)).isEqualTo((long) 0);
+		assertThat(condition(SimpMessageType.MESSAGE).compareTo(condition(SimpMessageType.MESSAGE), message)).isEqualTo((long) 0);
+		assertThat(condition(SimpMessageType.MESSAGE).compareTo(condition(SimpMessageType.SUBSCRIBE), message)).isEqualTo((long) 0);
 	}
 
 	private Message<byte[]> message(SimpMessageType messageType) {

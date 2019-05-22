@@ -49,7 +49,7 @@ public class WebSocketServletServerContainerFactoryBeanTests {
 
 	@Test
 	public void servletServerContainerFactoryBeanSupport() {
-		assertThat((long) serverContainer.getDefaultMaxTextMessageBufferSize()).isEqualTo((long) 42);
+		assertThat(serverContainer.getDefaultMaxTextMessageBufferSize()).isEqualTo((long) 42);
 	}
 
 

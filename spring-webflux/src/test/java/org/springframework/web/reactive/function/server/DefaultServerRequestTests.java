@@ -102,7 +102,7 @@ public class DefaultServerRequestTests {
 		URI result = request.uriBuilder().build();
 		assertThat(result.getScheme()).isEqualTo("http");
 		assertThat(result.getHost()).isEqualTo("localhost");
-		assertThat((long) result.getPort()).isEqualTo((long) -1);
+		assertThat(result.getPort()).isEqualTo((long) -1);
 		assertThat(result.getPath()).isEqualTo("/path");
 		assertThat(result.getQuery()).isEqualTo("a=1");
 	}
@@ -385,7 +385,7 @@ public class DefaultServerRequestTests {
 		Mono<MultiValueMap<String, String>> resultData = request.formData();
 		StepVerifier.create(resultData)
 				.consumeNextWith(formData -> {
-					assertThat((long) formData.size()).isEqualTo((long) 2);
+					assertThat(formData.size()).isEqualTo((long) 2);
 					assertThat(formData.getFirst("foo")).isEqualTo("bar");
 					assertThat(formData.getFirst("baz")).isEqualTo("qux");
 				})
@@ -419,7 +419,7 @@ public class DefaultServerRequestTests {
 		Mono<MultiValueMap<String, Part>> resultData = request.multipartData();
 		StepVerifier.create(resultData)
 				.consumeNextWith(formData -> {
-					assertThat((long) formData.size()).isEqualTo((long) 2);
+					assertThat(formData.size()).isEqualTo((long) 2);
 
 					Part part = formData.getFirst("foo");
 					boolean condition1 = part instanceof FormFieldPart;

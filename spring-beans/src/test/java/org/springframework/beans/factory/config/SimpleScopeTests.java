@@ -63,9 +63,9 @@ public class SimpleScopeTests {
 		beanFactory.registerScope("myScope", scope);
 
 		String[] scopeNames = beanFactory.getRegisteredScopeNames();
-		assertThat((long) scopeNames.length).isEqualTo((long) 1);
+		assertThat(scopeNames.length).isEqualTo((long) 1);
 		assertThat(scopeNames[0]).isEqualTo("myScope");
-		assertThat((Object) beanFactory.getRegisteredScope("myScope")).isSameAs(scope);
+		assertThat(beanFactory.getRegisteredScope("myScope")).isSameAs(scope);
 
 		new XmlBeanDefinitionReader(beanFactory).loadBeanDefinitions(
 				qualifiedResource(SimpleScopeTests.class, "context.xml"));
@@ -76,9 +76,9 @@ public class SimpleScopeTests {
 	public void testCanGetScopedObject() {
 		TestBean tb1 = (TestBean) beanFactory.getBean("usesScope");
 		TestBean tb2 = (TestBean) beanFactory.getBean("usesScope");
-		assertThat((Object) tb2).isNotSameAs(tb1);
+		assertThat(tb2).isNotSameAs(tb1);
 		TestBean tb3 = (TestBean) beanFactory.getBean("usesScope");
-		assertThat((Object) tb1).isSameAs(tb3);
+		assertThat(tb1).isSameAs(tb3);
 	}
 
 }

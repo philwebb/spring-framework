@@ -87,18 +87,18 @@ public class RelativeRedirectFilterTests {
 		this.filter.doFilterInternal(new MockHttpServletRequest(), original, chain);
 
 		HttpServletResponse wrapped1 = (HttpServletResponse) chain.getResponse();
-		assertThat((Object) wrapped1).isNotSameAs(original);
+		assertThat(wrapped1).isNotSameAs(original);
 
 		chain.reset();
 		this.filter.doFilterInternal(new MockHttpServletRequest(), wrapped1, chain);
 		HttpServletResponse current = (HttpServletResponse) chain.getResponse();
-		assertThat((Object) current).isSameAs(wrapped1);
+		assertThat(current).isSameAs(wrapped1);
 
 		chain.reset();
 		HttpServletResponse wrapped2 = new HttpServletResponseWrapper(wrapped1);
 		this.filter.doFilterInternal(new MockHttpServletRequest(), wrapped2, chain);
 		current = (HttpServletResponse) chain.getResponse();
-		assertThat((Object) current).isSameAs(wrapped2);
+		assertThat(current).isSameAs(wrapped2);
 	}
 
 

@@ -54,7 +54,7 @@ public class MBeanServerFactoryBeanTests {
 		bean.afterPropertiesSet();
 		try {
 			MBeanServer server = bean.getObject();
-			assertThat((Object) server).as("The MBeanServer should not be null").isNotNull();
+			assertThat(server).as("The MBeanServer should not be null").isNotNull();
 		}
 		finally {
 			bean.destroy();
@@ -84,7 +84,7 @@ public class MBeanServerFactoryBeanTests {
 			bean.afterPropertiesSet();
 			try {
 				MBeanServer otherServer = bean.getObject();
-				assertThat((Object) otherServer).as("Existing MBeanServer not located").isSameAs(server);
+				assertThat(otherServer).as("Existing MBeanServer not located").isSameAs(server);
 			}
 			finally {
 				bean.destroy();
@@ -101,7 +101,7 @@ public class MBeanServerFactoryBeanTests {
 		bean.setLocateExistingServerIfPossible(true);
 		bean.afterPropertiesSet();
 		try {
-			assertThat((Object) bean.getObject()).isSameAs(ManagementFactory.getPlatformMBeanServer());
+			assertThat(bean.getObject()).isSameAs(ManagementFactory.getPlatformMBeanServer());
 		}
 		finally {
 			bean.destroy();
@@ -114,7 +114,7 @@ public class MBeanServerFactoryBeanTests {
 		bean.setAgentId("");
 		bean.afterPropertiesSet();
 		try {
-			assertThat((Object) bean.getObject()).isSameAs(ManagementFactory.getPlatformMBeanServer());
+			assertThat(bean.getObject()).isSameAs(ManagementFactory.getPlatformMBeanServer());
 		}
 		finally {
 			bean.destroy();

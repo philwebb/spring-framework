@@ -81,7 +81,7 @@ public class ServerSentEventHttpMessageReaderTests extends AbstractLeakCheckingT
 					assertThat(event.id()).isEqualTo("c43");
 					assertThat(event.event()).isEqualTo("bar");
 					assertThat(event.retry()).isEqualTo(Duration.ofMillis(456));
-					assertThat((Object) event.comment()).isNull();
+					assertThat(event.comment()).isNull();
 					assertThat(event.data()).isEqualTo("baz");
 				})
 				.expectComplete()
@@ -113,7 +113,7 @@ public class ServerSentEventHttpMessageReaderTests extends AbstractLeakCheckingT
 					assertThat(event.id()).isEqualTo("c43");
 					assertThat(event.event()).isEqualTo("bar");
 					assertThat(event.retry()).isEqualTo(Duration.ofMillis(456));
-					assertThat((Object) event.comment()).isNull();
+					assertThat(event.comment()).isNull();
 					assertThat(event.data()).isEqualTo("baz");
 				})
 				.expectComplete()

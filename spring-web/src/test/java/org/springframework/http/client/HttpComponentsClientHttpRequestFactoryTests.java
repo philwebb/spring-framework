@@ -68,9 +68,9 @@ public class HttpComponentsClientHttpRequestFactoryTests extends AbstractHttpReq
 		assertThat(config).as("Request config should be set").isNotNull();
 		assertThat(RequestConfig.class.isInstance(config)).as("Wrong request config type" + config.getClass().getName()).isTrue();
 		RequestConfig requestConfig = (RequestConfig) config;
-		assertThat((long) requestConfig.getConnectTimeout()).as("Wrong custom connection timeout").isEqualTo((long) 1234);
-		assertThat((long) requestConfig.getConnectionRequestTimeout()).as("Wrong custom connection request timeout").isEqualTo((long) 4321);
-		assertThat((long) requestConfig.getSocketTimeout()).as("Wrong custom socket timeout").isEqualTo((long) 4567);
+		assertThat(requestConfig.getConnectTimeout()).as("Wrong custom connection timeout").isEqualTo((long) 1234);
+		assertThat(requestConfig.getConnectionRequestTimeout()).as("Wrong custom connection request timeout").isEqualTo((long) 4321);
+		assertThat(requestConfig.getSocketTimeout()).as("Wrong custom socket timeout").isEqualTo((long) 4567);
 	}
 
 	@Test
@@ -82,14 +82,14 @@ public class HttpComponentsClientHttpRequestFactoryTests extends AbstractHttpReq
 		given(configurable.getConfig()).willReturn(defaultConfig);
 
 		HttpComponentsClientHttpRequestFactory hrf = new HttpComponentsClientHttpRequestFactory(client);
-		assertThat((Object) retrieveRequestConfig(hrf)).as("Default client configuration is expected").isSameAs(defaultConfig);
+		assertThat(retrieveRequestConfig(hrf)).as("Default client configuration is expected").isSameAs(defaultConfig);
 
 		hrf.setConnectionRequestTimeout(4567);
 		RequestConfig requestConfig = retrieveRequestConfig(hrf);
-		assertThat((Object) requestConfig).isNotNull();
-		assertThat((long) requestConfig.getConnectionRequestTimeout()).isEqualTo((long) 4567);
+		assertThat(requestConfig).isNotNull();
+		assertThat(requestConfig.getConnectionRequestTimeout()).isEqualTo((long) 4567);
 		// Default connection timeout merged
-		assertThat((long) requestConfig.getConnectTimeout()).isEqualTo((long) 1234);
+		assertThat(requestConfig.getConnectTimeout()).isEqualTo((long) 1234);
 	}
 
 	@Test
@@ -105,9 +105,9 @@ public class HttpComponentsClientHttpRequestFactoryTests extends AbstractHttpReq
 		hrf.setConnectTimeout(5000);
 
 		RequestConfig requestConfig = retrieveRequestConfig(hrf);
-		assertThat((long) requestConfig.getConnectTimeout()).isEqualTo((long) 5000);
-		assertThat((long) requestConfig.getConnectionRequestTimeout()).isEqualTo((long) 6789);
-		assertThat((long) requestConfig.getSocketTimeout()).isEqualTo((long) -1);
+		assertThat(requestConfig.getConnectTimeout()).isEqualTo((long) 5000);
+		assertThat(requestConfig.getConnectionRequestTimeout()).isEqualTo((long) 6789);
+		assertThat(requestConfig.getSocketTimeout()).isEqualTo((long) -1);
 	}
 
 	@Test
@@ -128,9 +128,9 @@ public class HttpComponentsClientHttpRequestFactoryTests extends AbstractHttpReq
 		hrf.setReadTimeout(5000);
 
 		RequestConfig requestConfig = retrieveRequestConfig(hrf);
-		assertThat((long) requestConfig.getConnectTimeout()).isEqualTo((long) -1);
-		assertThat((long) requestConfig.getConnectionRequestTimeout()).isEqualTo((long) -1);
-		assertThat((long) requestConfig.getSocketTimeout()).isEqualTo((long) 5000);
+		assertThat(requestConfig.getConnectTimeout()).isEqualTo((long) -1);
+		assertThat(requestConfig.getConnectionRequestTimeout()).isEqualTo((long) -1);
+		assertThat(requestConfig.getSocketTimeout()).isEqualTo((long) 5000);
 
 		// Update the Http client so that it returns an updated  config
 		RequestConfig updatedDefaultConfig = RequestConfig.custom()
@@ -138,9 +138,9 @@ public class HttpComponentsClientHttpRequestFactoryTests extends AbstractHttpReq
 		given(configurable.getConfig()).willReturn(updatedDefaultConfig);
 		hrf.setReadTimeout(7000);
 		RequestConfig requestConfig2 = retrieveRequestConfig(hrf);
-		assertThat((long) requestConfig2.getConnectTimeout()).isEqualTo((long) 1234);
-		assertThat((long) requestConfig2.getConnectionRequestTimeout()).isEqualTo((long) -1);
-		assertThat((long) requestConfig2.getSocketTimeout()).isEqualTo((long) 7000);
+		assertThat(requestConfig2.getConnectTimeout()).isEqualTo((long) 1234);
+		assertThat(requestConfig2.getConnectionRequestTimeout()).isEqualTo((long) -1);
+		assertThat(requestConfig2.getSocketTimeout()).isEqualTo((long) 7000);
 	}
 
 	private RequestConfig retrieveRequestConfig(HttpComponentsClientHttpRequestFactory factory) throws Exception {

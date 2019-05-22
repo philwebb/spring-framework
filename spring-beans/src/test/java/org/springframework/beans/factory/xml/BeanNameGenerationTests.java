@@ -48,18 +48,18 @@ public class BeanNameGenerationTests {
 
 		String targetName = className + BeanDefinitionReaderUtils.GENERATED_BEAN_NAME_SEPARATOR + "0";
 		GeneratedNameBean topLevel1 = (GeneratedNameBean) beanFactory.getBean(targetName);
-		assertThat((Object) topLevel1).isNotNull();
+		assertThat(topLevel1).isNotNull();
 
 		targetName = className + BeanDefinitionReaderUtils.GENERATED_BEAN_NAME_SEPARATOR + "1";
 		GeneratedNameBean topLevel2 = (GeneratedNameBean) beanFactory.getBean(targetName);
-		assertThat((Object) topLevel2).isNotNull();
+		assertThat(topLevel2).isNotNull();
 
 		GeneratedNameBean child1 = topLevel1.getChild();
-		assertThat((Object) child1.getBeanName()).isNotNull();
+		assertThat(child1.getBeanName()).isNotNull();
 		assertThat(child1.getBeanName().startsWith(className)).isTrue();
 
 		GeneratedNameBean child2 = topLevel2.getChild();
-		assertThat((Object) child2.getBeanName()).isNotNull();
+		assertThat(child2.getBeanName()).isNotNull();
 		assertThat(child2.getBeanName().startsWith(className)).isTrue();
 
 		assertThat(child1.getBeanName().equals(child2.getBeanName())).isFalse();

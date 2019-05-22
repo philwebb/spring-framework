@@ -375,14 +375,14 @@ public class TransactionalEventListenerTests {
 			}
 			for (String phase : phases) {
 				List<Object> eventsForPhase = getEvents(phase);
-				assertThat((long) eventsForPhase.size()).as("Expected no events for phase '" + phase + "' " +
+				assertThat(eventsForPhase.size()).as("Expected no events for phase '" + phase + "' " +
 								"but got " + eventsForPhase + ":").isEqualTo((long) 0);
 			}
 		}
 
 		public void assertEvents(String phase, Object... expected) {
 			List<Object> actual = getEvents(phase);
-			assertThat((long) actual.size()).as("wrong number of events for phase '" + phase + "'").isEqualTo((long) expected.length);
+			assertThat(actual.size()).as("wrong number of events for phase '" + phase + "'").isEqualTo((long) expected.length);
 			for (int i = 0; i < expected.length; i++) {
 				assertThat(actual.get(i)).as("Wrong event for phase '" + phase + "' at index " + i).isEqualTo(expected[i]);
 			}
@@ -393,7 +393,7 @@ public class TransactionalEventListenerTests {
 			for (Map.Entry<String, List<Object>> entry : this.events.entrySet()) {
 				size += entry.getValue().size();
 			}
-			assertThat((long) size).as("Wrong number of total events (" + this.events.size() + ") " +
+			assertThat(size).as("Wrong number of total events (" + this.events.size() + ") " +
 						"registered phase(s)").isEqualTo((long) number);
 		}
 	}

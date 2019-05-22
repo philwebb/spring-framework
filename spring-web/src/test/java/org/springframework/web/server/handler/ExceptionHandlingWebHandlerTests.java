@@ -65,7 +65,7 @@ public class ExceptionHandlingWebHandlerTests {
 	public void unresolvedException() throws Exception {
 		Mono<Void> mono = createWebHandler(new UnresolvedExceptionHandler()).handle(this.exchange);
 		StepVerifier.create(mono).expectErrorMessage("boo").verify();
-		assertThat((Object) this.exchange.getResponse().getStatusCode()).isNull();
+		assertThat(this.exchange.getResponse().getStatusCode()).isNull();
 	}
 
 	@Test

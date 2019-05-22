@@ -101,12 +101,12 @@ public class ControllerAdviceBeanTests {
 	}
 
 	private void assertApplicable(String message, ControllerAdviceBean controllerAdvice, Class<?> controllerBeanType) {
-		assertThat((Object) controllerAdvice).isNotNull();
+		assertThat(controllerAdvice).isNotNull();
 		assertThat(controllerAdvice.isApplicableToBeanType(controllerBeanType)).as(message).isTrue();
 	}
 
 	private void assertNotApplicable(String message, ControllerAdviceBean controllerAdvice, Class<?> controllerBeanType) {
-		assertThat((Object) controllerAdvice).isNotNull();
+		assertThat(controllerAdvice).isNotNull();
 		assertThat(controllerAdvice.isApplicableToBeanType(controllerBeanType)).as(message).isFalse();
 	}
 

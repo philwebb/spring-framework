@@ -98,7 +98,7 @@ public class ControllerTests {
 		StaticWebApplicationContext sac = new StaticWebApplicationContext();
 		sac.setServletContext(context);
 		sfc.setApplicationContext(sac);
-		assertThat((Object) sfc.handleRequest(request, response)).isNull();
+		assertThat(sfc.handleRequest(request, response)).isNull();
 
 		if (include) {
 			verify(dispatcher).include(request, response);
@@ -121,13 +121,13 @@ public class ControllerTests {
 		swc.setInitParameters(props);
 
 		swc.afterPropertiesSet();
-		assertThat((Object) TestServlet.config).isNotNull();
+		assertThat(TestServlet.config).isNotNull();
 		assertThat(TestServlet.config.getServletName()).isEqualTo("action");
 		assertThat(TestServlet.config.getInitParameter("config")).isEqualTo("myValue");
-		assertThat((Object) TestServlet.request).isNull();
+		assertThat(TestServlet.request).isNull();
 		assertThat(TestServlet.destroyed).isFalse();
 
-		assertThat((Object) swc.handleRequest(request, response)).isNull();
+		assertThat(swc.handleRequest(request, response)).isNull();
 		assertThat(TestServlet.request).isEqualTo(request);
 		assertThat(TestServlet.response).isEqualTo(response);
 		assertThat(TestServlet.destroyed).isFalse();
@@ -146,12 +146,12 @@ public class ControllerTests {
 		swc.setBeanName("action");
 
 		swc.afterPropertiesSet();
-		assertThat((Object) TestServlet.config).isNotNull();
+		assertThat(TestServlet.config).isNotNull();
 		assertThat(TestServlet.config.getServletName()).isEqualTo("action");
-		assertThat((Object) TestServlet.request).isNull();
+		assertThat(TestServlet.request).isNull();
 		assertThat(TestServlet.destroyed).isFalse();
 
-		assertThat((Object) swc.handleRequest(request, response)).isNull();
+		assertThat(swc.handleRequest(request, response)).isNull();
 		assertThat(TestServlet.request).isEqualTo(request);
 		assertThat(TestServlet.response).isEqualTo(response);
 		assertThat(TestServlet.destroyed).isFalse();

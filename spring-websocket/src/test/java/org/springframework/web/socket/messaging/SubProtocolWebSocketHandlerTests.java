@@ -181,7 +181,7 @@ public class SubProtocolWebSocketHandlerTests {
 		this.webSocketHandler.handleMessage(session1, new TextMessage("foo"));
 
 		assertThat(session1.isOpen()).isTrue();
-		assertThat((Object) session1.getCloseStatus()).isNull();
+		assertThat(session1.getCloseStatus()).isNull();
 
 		assertThat(session2.isOpen()).isFalse();
 		assertThat(session2.getCloseStatus()).isEqualTo(CloseStatus.SESSION_NOT_RELIABLE);

@@ -261,7 +261,7 @@ public class StompBrokerRelayMessageHandlerIntegrationTests {
 
 		public void expectBrokerAvailabilityEvent(boolean isBrokerAvailable) throws InterruptedException {
 			BrokerAvailabilityEvent event = this.eventQueue.poll(20000, TimeUnit.MILLISECONDS);
-			assertThat((Object) event).as("Times out waiting for BrokerAvailabilityEvent[" + isBrokerAvailable + "]").isNotNull();
+			assertThat(event).as("Times out waiting for BrokerAvailabilityEvent[" + isBrokerAvailable + "]").isNotNull();
 			assertThat(event.isBrokerAvailable()).isEqualTo(isBrokerAvailable);
 		}
 	}
@@ -284,9 +284,9 @@ public class StompBrokerRelayMessageHandlerIntegrationTests {
 					new ArrayList<>(Arrays.<MessageExchange>asList(messageExchanges));
 			while (expectedMessages.size() > 0) {
 				Message<?> message = this.queue.poll(10000, TimeUnit.MILLISECONDS);
-				assertThat((Object) message).as("Timed out waiting for messages, expected [" + expectedMessages + "]").isNotNull();
+				assertThat(message).as("Timed out waiting for messages, expected [" + expectedMessages + "]").isNotNull();
 				MessageExchange match = findMatch(expectedMessages, message);
-				assertThat((Object) match).as("Unexpected message=" + message + ", expected [" + expectedMessages + "]").isNotNull();
+				assertThat(match).as("Unexpected message=" + message + ", expected [" + expectedMessages + "]").isNotNull();
 				expectedMessages.remove(match);
 			}
 		}

@@ -57,56 +57,56 @@ public class ThisAndTargetSelectionOnlyPointcutsAtAspectJTests {
 	@Test
 	public void thisAsClassDoesNotMatch() {
 		testBean.doIt();
-		assertThat((long) counter.thisAsClassCounter).isEqualTo((long) 0);
+		assertThat(counter.thisAsClassCounter).isEqualTo((long) 0);
 	}
 
 	@Test
 	public void thisAsInterfaceMatch() {
 		testBean.doIt();
-		assertThat((long) counter.thisAsInterfaceCounter).isEqualTo((long) 1);
+		assertThat(counter.thisAsInterfaceCounter).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void targetAsClassDoesMatch() {
 		testBean.doIt();
-		assertThat((long) counter.targetAsClassCounter).isEqualTo((long) 1);
+		assertThat(counter.targetAsClassCounter).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void targetAsInterfaceMatch() {
 		testBean.doIt();
-		assertThat((long) counter.targetAsInterfaceCounter).isEqualTo((long) 1);
+		assertThat(counter.targetAsInterfaceCounter).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void thisAsClassAndTargetAsClassCounterNotMatch() {
 		testBean.doIt();
-		assertThat((long) counter.thisAsClassAndTargetAsClassCounter).isEqualTo((long) 0);
+		assertThat(counter.thisAsClassAndTargetAsClassCounter).isEqualTo((long) 0);
 	}
 
 	@Test
 	public void thisAsInterfaceAndTargetAsInterfaceCounterMatch() {
 		testBean.doIt();
-		assertThat((long) counter.thisAsInterfaceAndTargetAsInterfaceCounter).isEqualTo((long) 1);
+		assertThat(counter.thisAsInterfaceAndTargetAsInterfaceCounter).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void thisAsInterfaceAndTargetAsClassCounterMatch() {
 		testBean.doIt();
-		assertThat((long) counter.thisAsInterfaceAndTargetAsInterfaceCounter).isEqualTo((long) 1);
+		assertThat(counter.thisAsInterfaceAndTargetAsInterfaceCounter).isEqualTo((long) 1);
 	}
 
 
 	@Test
 	public void atTargetClassAnnotationMatch() {
 		testAnnotatedClassBean.doIt();
-		assertThat((long) counter.atTargetClassAnnotationCounter).isEqualTo((long) 1);
+		assertThat(counter.atTargetClassAnnotationCounter).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void atAnnotationMethodAnnotationMatch() {
 		testAnnotatedMethodBean.doIt();
-		assertThat((long) counter.atAnnotationMethodAnnotationCounter).isEqualTo((long) 1);
+		assertThat(counter.atAnnotationMethodAnnotationCounter).isEqualTo((long) 1);
 	}
 
 	public static interface TestInterface {

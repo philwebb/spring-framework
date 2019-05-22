@@ -58,13 +58,13 @@ public class DefaultServerRequestBuilderTests {
 				.build();
 
 		assertThat(result.method()).isEqualTo(HttpMethod.HEAD);
-		assertThat((long) result.headers().asHttpHeaders().size()).isEqualTo((long) 2);
+		assertThat(result.headers().asHttpHeaders().size()).isEqualTo((long) 2);
 		assertThat(result.headers().asHttpHeaders().getFirst("foo")).isEqualTo("bar");
 		assertThat(result.headers().asHttpHeaders().getFirst("baz")).isEqualTo("qux");
-		assertThat((long) result.cookies().size()).isEqualTo((long) 2);
+		assertThat(result.cookies().size()).isEqualTo((long) 2);
 		assertThat(result.cookies().getFirst("foo").getValue()).isEqualTo("bar");
 		assertThat(result.cookies().getFirst("baz").getValue()).isEqualTo("qux");
-		assertThat((long) result.attributes().size()).isEqualTo((long) 2);
+		assertThat(result.attributes().size()).isEqualTo((long) 2);
 		assertThat(result.attributes().get("foo")).isEqualTo("bar");
 		assertThat(result.attributes().get("baz")).isEqualTo("qux");
 

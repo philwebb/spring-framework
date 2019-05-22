@@ -65,7 +65,7 @@ public class CookieLocaleResolverTests {
 		assertThat(loc.getLocale().getLanguage()).isEqualTo("nl");
 		boolean condition = loc instanceof TimeZoneAwareLocaleContext;
 		assertThat(condition).isTrue();
-		assertThat((Object) ((TimeZoneAwareLocaleContext) loc).getTimeZone()).isNull();
+		assertThat(((TimeZoneAwareLocaleContext) loc).getTimeZone()).isNull();
 	}
 
 	@Test
@@ -155,7 +155,7 @@ public class CookieLocaleResolverTests {
 		resolver.setLocale(request, response, new Locale("nl", ""));
 
 		Cookie cookie = response.getCookie(CookieLocaleResolver.DEFAULT_COOKIE_NAME);
-		assertThat((Object) cookie).isNotNull();
+		assertThat(cookie).isNotNull();
 		assertThat(cookie.getName()).isEqualTo(CookieLocaleResolver.DEFAULT_COOKIE_NAME);
 		assertThat(cookie.getDomain()).isEqualTo(null);
 		assertThat(cookie.getPath()).isEqualTo(CookieLocaleResolver.DEFAULT_COOKIE_PATH);
@@ -186,7 +186,7 @@ public class CookieLocaleResolverTests {
 		assertThat(loc.getLocale().getLanguage()).isEqualTo("nl");
 		boolean condition = loc instanceof TimeZoneAwareLocaleContext;
 		assertThat(condition).isTrue();
-		assertThat((Object) ((TimeZoneAwareLocaleContext) loc).getTimeZone()).isNull();
+		assertThat(((TimeZoneAwareLocaleContext) loc).getTimeZone()).isNull();
 	}
 
 	@Test
@@ -241,7 +241,7 @@ public class CookieLocaleResolverTests {
 		resolver.setLocale(request, response, new Locale("de", "AT"));
 
 		Cookie cookie = response.getCookie(CookieLocaleResolver.DEFAULT_COOKIE_NAME);
-		assertThat((Object) cookie).isNotNull();
+		assertThat(cookie).isNotNull();
 		assertThat(cookie.getName()).isEqualTo(CookieLocaleResolver.DEFAULT_COOKIE_NAME);
 		assertThat(cookie.getDomain()).isEqualTo(null);
 		assertThat(cookie.getPath()).isEqualTo(CookieLocaleResolver.DEFAULT_COOKIE_PATH);
@@ -267,7 +267,7 @@ public class CookieLocaleResolverTests {
 		resolver.setLocale(request, response, new Locale("de", "AT"));
 
 		Cookie cookie = response.getCookie(CookieLocaleResolver.DEFAULT_COOKIE_NAME);
-		assertThat((Object) cookie).isNotNull();
+		assertThat(cookie).isNotNull();
 		assertThat(cookie.getName()).isEqualTo(CookieLocaleResolver.DEFAULT_COOKIE_NAME);
 		assertThat(cookie.getDomain()).isEqualTo(null);
 		assertThat(cookie.getPath()).isEqualTo(CookieLocaleResolver.DEFAULT_COOKIE_PATH);
@@ -297,11 +297,11 @@ public class CookieLocaleResolverTests {
 		resolver.setLocale(request, response, new Locale("nl", ""));
 
 		Cookie cookie = response.getCookie("LanguageKoek");
-		assertThat((Object) cookie).isNotNull();
+		assertThat(cookie).isNotNull();
 		assertThat(cookie.getName()).isEqualTo("LanguageKoek");
 		assertThat(cookie.getDomain()).isEqualTo(".springframework.org");
 		assertThat(cookie.getPath()).isEqualTo("/mypath");
-		assertThat((long) cookie.getMaxAge()).isEqualTo((long) 10000);
+		assertThat(cookie.getMaxAge()).isEqualTo((long) 10000);
 		assertThat(cookie.getSecure()).isTrue();
 
 		request = new MockHttpServletRequest();
@@ -335,7 +335,7 @@ public class CookieLocaleResolverTests {
 		assertThat(loc.getLocale()).isEqualTo(request.getLocale());
 		boolean condition = loc instanceof TimeZoneAwareLocaleContext;
 		assertThat(condition).isTrue();
-		assertThat((Object) ((TimeZoneAwareLocaleContext) loc).getTimeZone()).isNull();
+		assertThat(((TimeZoneAwareLocaleContext) loc).getTimeZone()).isNull();
 	}
 
 	@Test
@@ -392,7 +392,7 @@ public class CookieLocaleResolverTests {
 		assertThat(loc.getLocale()).isEqualTo(request.getLocale());
 		boolean condition = loc instanceof TimeZoneAwareLocaleContext;
 		assertThat(condition).isTrue();
-		assertThat((Object) ((TimeZoneAwareLocaleContext) loc).getTimeZone()).isNull();
+		assertThat(((TimeZoneAwareLocaleContext) loc).getTimeZone()).isNull();
 	}
 
 	@Test
@@ -409,7 +409,7 @@ public class CookieLocaleResolverTests {
 		assertThat(locale).isEqualTo(Locale.TAIWAN);
 
 		Cookie[] cookies = response.getCookies();
-		assertThat((long) cookies.length).isEqualTo((long) 1);
+		assertThat(cookies.length).isEqualTo((long) 1);
 		Cookie localeCookie = cookies[0];
 		assertThat(localeCookie.getName()).isEqualTo(CookieLocaleResolver.DEFAULT_COOKIE_NAME);
 		assertThat(localeCookie.getValue()).isEqualTo("");
@@ -428,10 +428,10 @@ public class CookieLocaleResolverTests {
 		Locale locale = (Locale) request.getAttribute(CookieLocaleResolver.LOCALE_REQUEST_ATTRIBUTE_NAME);
 		assertThat(locale).isEqualTo(Locale.TAIWAN);
 		TimeZone timeZone = (TimeZone) request.getAttribute(CookieLocaleResolver.TIME_ZONE_REQUEST_ATTRIBUTE_NAME);
-		assertThat((Object) timeZone).isNull();
+		assertThat(timeZone).isNull();
 
 		Cookie[] cookies = response.getCookies();
-		assertThat((long) cookies.length).isEqualTo((long) 1);
+		assertThat(cookies.length).isEqualTo((long) 1);
 		Cookie localeCookie = cookies[0];
 		assertThat(localeCookie.getName()).isEqualTo(CookieLocaleResolver.DEFAULT_COOKIE_NAME);
 		assertThat(localeCookie.getValue()).isEqualTo("");
@@ -452,7 +452,7 @@ public class CookieLocaleResolverTests {
 		assertThat(locale).isEqualTo(Locale.CANADA_FRENCH);
 
 		Cookie[] cookies = response.getCookies();
-		assertThat((long) cookies.length).isEqualTo((long) 1);
+		assertThat(cookies.length).isEqualTo((long) 1);
 		Cookie localeCookie = cookies[0];
 		assertThat(localeCookie.getName()).isEqualTo(CookieLocaleResolver.DEFAULT_COOKIE_NAME);
 		assertThat(localeCookie.getValue()).isEqualTo("");
@@ -476,7 +476,7 @@ public class CookieLocaleResolverTests {
 		assertThat(timeZone).isEqualTo(TimeZone.getTimeZone("GMT+1"));
 
 		Cookie[] cookies = response.getCookies();
-		assertThat((long) cookies.length).isEqualTo((long) 1);
+		assertThat(cookies.length).isEqualTo((long) 1);
 		Cookie localeCookie = cookies[0];
 		assertThat(localeCookie.getName()).isEqualTo(CookieLocaleResolver.DEFAULT_COOKIE_NAME);
 		assertThat(localeCookie.getValue()).isEqualTo("");

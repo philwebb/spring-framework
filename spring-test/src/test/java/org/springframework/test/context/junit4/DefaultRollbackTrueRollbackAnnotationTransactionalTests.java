@@ -65,21 +65,21 @@ public class DefaultRollbackTrueRollbackAnnotationTransactionalTests extends Abs
 	@Before
 	public void verifyInitialTestData() {
 		originalNumRows = clearPersonTable(jdbcTemplate);
-		assertThat((long) addPerson(jdbcTemplate, BOB)).as("Adding bob").isEqualTo((long) 1);
-		assertThat((long) countRowsInPersonTable(jdbcTemplate)).as("Verifying the initial number of rows in the person table.").isEqualTo((long) 1);
+		assertThat(addPerson(jdbcTemplate, BOB)).as("Adding bob").isEqualTo((long) 1);
+		assertThat(countRowsInPersonTable(jdbcTemplate)).as("Verifying the initial number of rows in the person table.").isEqualTo((long) 1);
 	}
 
 	@Test(timeout = 1000)
 	public void modifyTestDataWithinTransaction() {
 		assertInTransaction(true);
-		assertThat((long) addPerson(jdbcTemplate, JANE)).as("Adding jane").isEqualTo((long) 1);
-		assertThat((long) addPerson(jdbcTemplate, SUE)).as("Adding sue").isEqualTo((long) 1);
-		assertThat((long) countRowsInPersonTable(jdbcTemplate)).as("Verifying the number of rows in the person table within a transaction.").isEqualTo((long) 3);
+		assertThat(addPerson(jdbcTemplate, JANE)).as("Adding jane").isEqualTo((long) 1);
+		assertThat(addPerson(jdbcTemplate, SUE)).as("Adding sue").isEqualTo((long) 1);
+		assertThat(countRowsInPersonTable(jdbcTemplate)).as("Verifying the number of rows in the person table within a transaction.").isEqualTo((long) 3);
 	}
 
 	@AfterClass
 	public static void verifyFinalTestData() {
-		assertThat((long) countRowsInPersonTable(jdbcTemplate)).as("Verifying the final number of rows in the person table after all tests.").isEqualTo((long) originalNumRows);
+		assertThat(countRowsInPersonTable(jdbcTemplate)).as("Verifying the final number of rows in the person table after all tests.").isEqualTo((long) originalNumRows);
 	}
 
 }

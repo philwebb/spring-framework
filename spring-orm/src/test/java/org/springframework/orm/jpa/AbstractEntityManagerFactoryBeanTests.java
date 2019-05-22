@@ -59,9 +59,9 @@ public abstract class AbstractEntityManagerFactoryBeanTests {
 		boolean condition = gotObject instanceof EntityManagerFactoryInfo;
 		assertThat(condition).as("Object created by factory implements EntityManagerFactoryInfo").isTrue();
 		EntityManagerFactoryInfo emfi = (EntityManagerFactoryInfo) demf.getObject();
-		assertThat((Object) demf.getObject()).as("Successive invocations of getObject() return same object").isSameAs(emfi);
-		assertThat((Object) demf.getObject()).isSameAs(emfi);
-		assertThat((Object) mockEmf).isSameAs(emfi.getNativeEntityManagerFactory());
+		assertThat(demf.getObject()).as("Successive invocations of getObject() return same object").isSameAs(emfi);
+		assertThat(demf.getObject()).isSameAs(emfi);
+		assertThat(mockEmf).isSameAs(emfi.getNativeEntityManagerFactory());
 	}
 
 

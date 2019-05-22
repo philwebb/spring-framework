@@ -46,7 +46,7 @@ public class TransactionAwareCacheDecoratorTests {
 	public void getTargetCache() {
 		Cache target = new ConcurrentMapCache("testCache");
 		TransactionAwareCacheDecorator cache = new TransactionAwareCacheDecorator(target);
-		assertThat((Object) cache.getTargetCache()).isSameAs(target);
+		assertThat(cache.getTargetCache()).isSameAs(target);
 	}
 
 	@Test
@@ -62,7 +62,7 @@ public class TransactionAwareCacheDecoratorTests {
 		assertThat(cache.get(key, String.class)).isEqualTo("123");
 
 		cache.clear();
-		assertThat((Object) target.get(key)).isNull();
+		assertThat(target.get(key)).isNull();
 	}
 
 	@Test
@@ -85,7 +85,7 @@ public class TransactionAwareCacheDecoratorTests {
 
 		Object key = new Object();
 		cache.put(key, "123");
-		assertThat((Object) target.get(key)).isNull();
+		assertThat(target.get(key)).isNull();
 		this.txManager.commit(status);
 
 		assertThat(target.get(key, String.class)).isEqualTo("123");
@@ -97,7 +97,7 @@ public class TransactionAwareCacheDecoratorTests {
 		Cache cache = new TransactionAwareCacheDecorator(target);
 
 		Object key = new Object();
-		assertThat((Object) cache.putIfAbsent(key, "123")).isNull();
+		assertThat(cache.putIfAbsent(key, "123")).isNull();
 		assertThat(target.get(key, String.class)).isEqualTo("123");
 		assertThat(cache.putIfAbsent(key, "456").get()).isEqualTo("123");
 		// unchanged
@@ -112,7 +112,7 @@ public class TransactionAwareCacheDecoratorTests {
 		cache.put(key, "123");
 
 		cache.evict(key);
-		assertThat((Object) target.get(key)).isNull();
+		assertThat(target.get(key)).isNull();
 	}
 
 	@Test
@@ -129,7 +129,7 @@ public class TransactionAwareCacheDecoratorTests {
 		assertThat(target.get(key, String.class)).isEqualTo("123");
 		this.txManager.commit(status);
 
-		assertThat((Object) target.get(key)).isNull();
+		assertThat(target.get(key)).isNull();
 	}
 
 	@Test
@@ -140,7 +140,7 @@ public class TransactionAwareCacheDecoratorTests {
 		cache.put(key, "123");
 
 		cache.clear();
-		assertThat((Object) target.get(key)).isNull();
+		assertThat(target.get(key)).isNull();
 	}
 
 	@Test
@@ -157,6 +157,6 @@ public class TransactionAwareCacheDecoratorTests {
 		assertThat(target.get(key, String.class)).isEqualTo("123");
 		this.txManager.commit(status);
 
-		assertThat((Object) target.get(key)).isNull();
+		assertThat(target.get(key)).isNull();
 	}
 }

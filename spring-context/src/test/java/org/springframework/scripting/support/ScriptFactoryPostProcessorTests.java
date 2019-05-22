@@ -226,7 +226,7 @@ public class ScriptFactoryPostProcessorTests {
 
 		Messenger messenger1 = (Messenger) ctx.getBean(BEAN_WITH_DEPENDENCY_NAME);
 		Messenger messenger2 = (Messenger) ctx.getBean(BEAN_WITH_DEPENDENCY_NAME);
-		assertThat((Object) messenger2).isNotSameAs(messenger1);
+		assertThat(messenger2).isNotSameAs(messenger1);
 	}
 
 	private static StaticScriptSource getScriptSource(GenericApplicationContext ctx) throws Exception {

@@ -174,7 +174,7 @@ public class BodyExtractorsTests {
 		StepVerifier.create(result)
 				.consumeNextWith(user -> {
 					assertThat(user.getUsername()).isEqualTo("foo");
-					assertThat((Object) user.getPassword()).isNull();
+					assertThat(user.getPassword()).isNull();
 				})
 				.expectComplete()
 				.verify();
@@ -265,11 +265,11 @@ public class BodyExtractorsTests {
 		StepVerifier.create(result)
 				.consumeNextWith(user -> {
 					assertThat(user.getUsername()).isEqualTo("foo");
-					assertThat((Object) user.getPassword()).isNull();
+					assertThat(user.getPassword()).isNull();
 				})
 				.consumeNextWith(user -> {
 					assertThat(user.getUsername()).isEqualTo("bar");
-					assertThat((Object) user.getPassword()).isNull();
+					assertThat(user.getPassword()).isNull();
 				})
 				.expectComplete()
 				.verify();
@@ -326,13 +326,13 @@ public class BodyExtractorsTests {
 
 		StepVerifier.create(result)
 				.consumeNextWith(form -> {
-					assertThat((long) form.size()).as("Invalid result").isEqualTo((long) 3);
+					assertThat(form.size()).as("Invalid result").isEqualTo((long) 3);
 					assertThat(form.getFirst("name 1")).as("Invalid result").isEqualTo("value 1");
 					List<String> values = form.get("name 2");
-					assertThat((long) values.size()).as("Invalid result").isEqualTo((long) 2);
+					assertThat(values.size()).as("Invalid result").isEqualTo((long) 2);
 					assertThat(values.get(0)).as("Invalid result").isEqualTo("value 2+1");
 					assertThat(values.get(1)).as("Invalid result").isEqualTo("value 2+2");
-					assertThat((Object) form.getFirst("name 3")).as("Invalid result").isNull();
+					assertThat(form.getFirst("name 3")).as("Invalid result").isNull();
 				})
 				.expectComplete()
 				.verify();

@@ -69,14 +69,14 @@ public class AspectJEnableCachingIsolatedTests {
 	public void testKeyStrategy() {
 		load(EnableCachingConfig.class);
 		AnnotationCacheAspect aspect = this.ctx.getBean(AnnotationCacheAspect.class);
-		assertThat((Object) aspect.getKeyGenerator()).isSameAs(this.ctx.getBean("keyGenerator", KeyGenerator.class));
+		assertThat(aspect.getKeyGenerator()).isSameAs(this.ctx.getBean("keyGenerator", KeyGenerator.class));
 	}
 
 	@Test
 	public void testCacheErrorHandler() {
 		load(EnableCachingConfig.class);
 		AnnotationCacheAspect aspect = this.ctx.getBean(AnnotationCacheAspect.class);
-		assertThat((Object) aspect.getErrorHandler()).isSameAs(this.ctx.getBean("errorHandler", CacheErrorHandler.class));
+		assertThat(aspect.getErrorHandler()).isSameAs(this.ctx.getBean("errorHandler", CacheErrorHandler.class));
 	}
 
 
@@ -130,9 +130,9 @@ public class AspectJEnableCachingIsolatedTests {
 	public void emptyConfigSupport() {
 		load(EmptyConfigSupportConfig.class);
 		AnnotationCacheAspect aspect = this.ctx.getBean(AnnotationCacheAspect.class);
-		assertThat((Object) aspect.getCacheResolver()).isNotNull();
+		assertThat(aspect.getCacheResolver()).isNotNull();
 		assertThat(aspect.getCacheResolver().getClass()).isEqualTo(SimpleCacheResolver.class);
-		assertThat((Object) ((SimpleCacheResolver) aspect.getCacheResolver()).getCacheManager()).isSameAs(this.ctx.getBean(CacheManager.class));
+		assertThat(((SimpleCacheResolver) aspect.getCacheResolver()).getCacheManager()).isSameAs(this.ctx.getBean(CacheManager.class));
 	}
 
 	@Test
@@ -140,8 +140,8 @@ public class AspectJEnableCachingIsolatedTests {
 		load(FullCachingConfig.class);
 
 		AnnotationCacheAspect aspect = this.ctx.getBean(AnnotationCacheAspect.class);
-		assertThat((Object) aspect.getCacheResolver()).isSameAs(this.ctx.getBean("cacheResolver"));
-		assertThat((Object) aspect.getKeyGenerator()).isSameAs(this.ctx.getBean("keyGenerator"));
+		assertThat(aspect.getCacheResolver()).isSameAs(this.ctx.getBean("cacheResolver"));
+		assertThat(aspect.getKeyGenerator()).isSameAs(this.ctx.getBean("keyGenerator"));
 	}
 
 

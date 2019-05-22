@@ -199,8 +199,8 @@ public class HttpEntityMethodArgumentResolverTests {
 		HttpEntity<CompletableFuture<String>> entity = resolveValueWithEmptyBody(type);
 
 		entity.getBody().whenComplete((body, ex) -> {
-			assertThat((Object) body).isNull();
-			assertThat((Object) ex).isNull();
+			assertThat(body).isNull();
+			assertThat(ex).isNull();
 		});
 	}
 

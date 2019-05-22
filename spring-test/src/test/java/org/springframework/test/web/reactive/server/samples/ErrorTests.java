@@ -69,7 +69,7 @@ public class ErrorTests {
 				.expectBody().isEmpty();
 
 		byte[] content = result.getRequestBodyContent();
-		assertThat((Object) content).isNotNull();
+		assertThat(content).isNotNull();
 		assertThat(new String(content, StandardCharsets.UTF_8)).isEqualTo("{\"name\":\"Dan\"}");
 	}
 

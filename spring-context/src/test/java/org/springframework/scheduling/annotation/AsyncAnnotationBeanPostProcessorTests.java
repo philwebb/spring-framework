@@ -71,7 +71,7 @@ public class AsyncAnnotationBeanPostProcessorTests {
 		Thread mainThread = Thread.currentThread();
 		testBean.await(3000);
 		Thread asyncThread = testBean.getThread();
-		assertThat((Object) asyncThread).isNotSameAs(mainThread);
+		assertThat(asyncThread).isNotSameAs(mainThread);
 		context.close();
 	}
 
@@ -90,7 +90,7 @@ public class AsyncAnnotationBeanPostProcessorTests {
 		Thread mainThread = Thread.currentThread();
 		testBean.await(3000);
 		Thread asyncThread = testBean.getThread();
-		assertThat((Object) asyncThread).isNotSameAs(mainThread);
+		assertThat(asyncThread).isNotSameAs(mainThread);
 		context.close();
 	}
 

@@ -142,7 +142,7 @@ public class BeanValidationPostProcessorTests {
 
 		@PostConstruct
 		public void init() {
-			assertThat((Object) this.testBean).as("Shouldn't be here after constraint checking").isNotNull();
+			assertThat(this.testBean).as("Shouldn't be here after constraint checking").isNotNull();
 		}
 	}
 

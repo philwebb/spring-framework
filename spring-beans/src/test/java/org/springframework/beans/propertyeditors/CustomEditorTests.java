@@ -102,7 +102,7 @@ public class CustomEditorTests {
 		ITestBean spouse = tb.getSpouse();
 
 		bw.setPropertyValues(pvs);
-		assertThat((Object) tb.getSpouse()).as("Should have remained same object").isSameAs(spouse);
+		assertThat(tb.getSpouse()).as("Should have remained same object").isSameAs(spouse);
 	}
 
 	@Test
@@ -261,7 +261,7 @@ public class CustomEditorTests {
 		assertThat(condition).as("Correct bool2 value").isTrue();
 
 		bw.setPropertyValue("bool2", "");
-		assertThat((Object) tb.getBool2()).as("Correct bool2 value").isNull();
+		assertThat(tb.getBool2()).as("Correct bool2 value").isNull();
 	}
 
 	@Test
@@ -500,16 +500,16 @@ public class CustomEditorTests {
 		BeanWrapper bw = new BeanWrapperImpl(cb);
 
 		bw.setPropertyValue("myChar", new Character('c'));
-		assertThat((long) cb.getMyChar()).isEqualTo((long) 'c');
+		assertThat(cb.getMyChar()).isEqualTo((long) 'c');
 
 		bw.setPropertyValue("myChar", "c");
-		assertThat((long) cb.getMyChar()).isEqualTo((long) 'c');
+		assertThat(cb.getMyChar()).isEqualTo((long) 'c');
 
 		bw.setPropertyValue("myChar", "\u0041");
-		assertThat((long) cb.getMyChar()).isEqualTo((long) 'A');
+		assertThat(cb.getMyChar()).isEqualTo((long) 'A');
 
 		bw.setPropertyValue("myChar", "\\u0022");
-		assertThat((long) cb.getMyChar()).isEqualTo((long) '"');
+		assertThat(cb.getMyChar()).isEqualTo((long) '"');
 
 		CharacterEditor editor = new CharacterEditor(false);
 		editor.setAsText("M");
@@ -535,7 +535,7 @@ public class CustomEditorTests {
 		assertThat(cb.getMyCharacter()).isEqualTo(new Character(' '));
 
 		bw.setPropertyValue("myCharacter", "");
-		assertThat((Object) cb.getMyCharacter()).isNull();
+		assertThat(cb.getMyCharacter()).isNull();
 	}
 
 	@Test
@@ -1354,12 +1354,12 @@ public class CustomEditorTests {
 		bw.registerCustomEditor(Hashtable.class, new CustomMapEditor(Hashtable.class));
 
 		bw.setPropertyValue("vector", new String[] {"a", "b"});
-		assertThat((long) tb.getVector().size()).isEqualTo((long) 2);
+		assertThat(tb.getVector().size()).isEqualTo((long) 2);
 		assertThat(tb.getVector().get(0)).isEqualTo("a");
 		assertThat(tb.getVector().get(1)).isEqualTo("b");
 
 		bw.setPropertyValue("hashtable", Collections.singletonMap("foo", "bar"));
-		assertThat((long) tb.getHashtable().size()).isEqualTo((long) 1);
+		assertThat(tb.getHashtable().size()).isEqualTo((long) 1);
 		assertThat(tb.getHashtable().get("foo")).isEqualTo("bar");
 	}
 
@@ -1390,7 +1390,7 @@ public class CustomEditorTests {
 			}
 		});
 		bw.setPropertyValue("array", new String[] {"a", "b"});
-		assertThat((long) tb.getArray().length).isEqualTo((long) 2);
+		assertThat(tb.getArray().length).isEqualTo((long) 2);
 		assertThat(tb.getArray()[0].getName()).isEqualTo("a");
 		assertThat(tb.getArray()[1].getName()).isEqualTo("b");
 	}
@@ -1414,7 +1414,7 @@ public class CustomEditorTests {
 		ClassArrayEditor classArrayEditor = new ClassArrayEditor();
 		classArrayEditor.setAsText("java.lang.String,java.util.HashMap");
 		Class<?>[] classes = (Class<?>[]) classArrayEditor.getValue();
-		assertThat((long) classes.length).isEqualTo((long) 2);
+		assertThat(classes.length).isEqualTo((long) 2);
 		assertThat(classes[0]).isEqualTo(String.class);
 		assertThat(classes[1]).isEqualTo(HashMap.class);
 		assertThat(classArrayEditor.getAsText()).isEqualTo("java.lang.String,java.util.HashMap");
@@ -1427,7 +1427,7 @@ public class CustomEditorTests {
 		ClassArrayEditor classArrayEditor = new ClassArrayEditor();
 		classArrayEditor.setAsText("java.lang.String[],java.util.Map[],int[],float[][][]");
 		Class<?>[] classes = (Class<?>[]) classArrayEditor.getValue();
-		assertThat((long) classes.length).isEqualTo((long) 4);
+		assertThat(classes.length).isEqualTo((long) 4);
 		assertThat(classes[0]).isEqualTo(String[].class);
 		assertThat(classes[1]).isEqualTo(Map[].class);
 		assertThat(classes[2]).isEqualTo(int[].class);

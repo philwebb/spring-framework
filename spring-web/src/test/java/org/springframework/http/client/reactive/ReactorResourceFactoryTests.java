@@ -47,8 +47,8 @@ public class ReactorResourceFactoryTests {
 		this.resourceFactory.afterPropertiesSet();
 
 		HttpResources globalResources = HttpResources.get();
-		assertThat((Object) this.resourceFactory.getConnectionProvider()).isSameAs(globalResources);
-		assertThat((Object) this.resourceFactory.getLoopResources()).isSameAs(globalResources);
+		assertThat(this.resourceFactory.getConnectionProvider()).isSameAs(globalResources);
+		assertThat(this.resourceFactory.getLoopResources()).isSameAs(globalResources);
 		assertThat(globalResources.isDisposed()).isFalse();
 
 		this.resourceFactory.destroy();
@@ -77,8 +77,8 @@ public class ReactorResourceFactoryTests {
 		ConnectionProvider connectionProvider = this.resourceFactory.getConnectionProvider();
 		LoopResources loopResources = this.resourceFactory.getLoopResources();
 
-		assertThat((Object) connectionProvider).isNotSameAs(HttpResources.get());
-		assertThat((Object) loopResources).isNotSameAs(HttpResources.get());
+		assertThat(connectionProvider).isNotSameAs(HttpResources.get());
+		assertThat(loopResources).isNotSameAs(HttpResources.get());
 
 		// The below does not work since ConnectionPoolProvider simply checks if pool is empty.
 		// assertFalse(connectionProvider.isDisposed());
@@ -101,8 +101,8 @@ public class ReactorResourceFactoryTests {
 		ConnectionProvider connectionProvider = this.resourceFactory.getConnectionProvider();
 		LoopResources loopResources = this.resourceFactory.getLoopResources();
 
-		assertThat((Object) connectionProvider).isSameAs(this.connectionProvider);
-		assertThat((Object) loopResources).isSameAs(this.loopResources);
+		assertThat(connectionProvider).isSameAs(this.connectionProvider);
+		assertThat(loopResources).isSameAs(this.loopResources);
 
 		verifyNoMoreInteractions(this.connectionProvider, this.loopResources);
 
@@ -125,8 +125,8 @@ public class ReactorResourceFactoryTests {
 		ConnectionProvider connectionProvider = this.resourceFactory.getConnectionProvider();
 		LoopResources loopResources = this.resourceFactory.getLoopResources();
 
-		assertThat((Object) connectionProvider).isSameAs(this.connectionProvider);
-		assertThat((Object) loopResources).isSameAs(this.loopResources);
+		assertThat(connectionProvider).isSameAs(this.connectionProvider);
+		assertThat(loopResources).isSameAs(this.loopResources);
 
 		verifyNoMoreInteractions(this.connectionProvider, this.loopResources);
 

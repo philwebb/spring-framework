@@ -70,12 +70,12 @@ public class InputStreamEditorTests {
 
 	@Test
 	public void testGetAsTextReturnsNullByDefault() throws Exception {
-		assertThat((Object) new InputStreamEditor().getAsText()).isNull();
+		assertThat(new InputStreamEditor().getAsText()).isNull();
 		String resource = "classpath:" + ClassUtils.classPackageAsResourcePath(getClass()) +
 				"/" + ClassUtils.getShortName(getClass()) + ".class";
 		InputStreamEditor editor = new InputStreamEditor();
 		editor.setAsText(resource);
-		assertThat((Object) editor.getAsText()).isNull();
+		assertThat(editor.getAsText()).isNull();
 	}
 
 }

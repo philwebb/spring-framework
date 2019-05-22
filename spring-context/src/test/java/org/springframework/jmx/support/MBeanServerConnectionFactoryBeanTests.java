@@ -61,7 +61,7 @@ public class MBeanServerConnectionFactoryBeanTests extends AbstractMBeanServerTe
 
 			try {
 				MBeanServerConnection connection = bean.getObject();
-				assertThat((Object) connection).as("Connection should not be null").isNotNull();
+				assertThat(connection).as("Connection should not be null").isNotNull();
 
 				// perform simple MBean count test
 				assertThat(connection.getMBeanCount()).as("MBean count should be the same").isEqualTo(getServer().getMBeanCount());

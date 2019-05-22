@@ -126,7 +126,7 @@ public class BaseViewTests {
 
 		checkContainsAll(pathVars, tv.model);
 
-		assertThat((long) tv.model.size()).isEqualTo((long) 3);
+		assertThat(tv.model.size()).isEqualTo((long) 3);
 		assertThat(tv.model.get("something")).isEqualTo("else");
 		assertThat(tv.initialized).isTrue();
 	}
@@ -154,7 +154,7 @@ public class BaseViewTests {
 		// Check it contains all
 		checkContainsAll(model, tv.model);
 
-		assertThat((long) tv.model.size()).isEqualTo((long) 3);
+		assertThat(tv.model.size()).isEqualTo((long) 3);
 		assertThat(tv.model.get("something")).isEqualTo("else");
 		assertThat(tv.initialized).isTrue();
 	}
@@ -182,7 +182,7 @@ public class BaseViewTests {
 		tv.render(model, request, response);
 
 		checkContainsAll(model, tv.model);
-		assertThat((long) tv.model.size()).isEqualTo((long) 3);
+		assertThat(tv.model.size()).isEqualTo((long) 3);
 		assertThat(tv.model.get("something")).isEqualTo("else");
 		assertThat(tv.initialized).isTrue();
 	}
@@ -191,7 +191,7 @@ public class BaseViewTests {
 	public void ignoresNullAttributes() {
 		AbstractView v = new ConcreteView();
 		v.setAttributes(null);
-		assertThat((long) v.getStaticAttributes().size()).isEqualTo((long) 0);
+		assertThat(v.getStaticAttributes().size()).isEqualTo((long) 0);
 	}
 
 	/**
@@ -201,14 +201,14 @@ public class BaseViewTests {
 	public void attributeCSVParsingIgnoresNull() {
 		AbstractView v = new ConcreteView();
 		v.setAttributesCSV(null);
-		assertThat((long) v.getStaticAttributes().size()).isEqualTo((long) 0);
+		assertThat(v.getStaticAttributes().size()).isEqualTo((long) 0);
 	}
 
 	@Test
 	public void attributeCSVParsingIgnoresEmptyString() {
 		AbstractView v = new ConcreteView();
 		v.setAttributesCSV("");
-		assertThat((long) v.getStaticAttributes().size()).isEqualTo((long) 0);
+		assertThat(v.getStaticAttributes().size()).isEqualTo((long) 0);
 	}
 
 	/**
@@ -259,7 +259,7 @@ public class BaseViewTests {
 	public void attributeCSVParsingIgnoresTrailingComma() {
 		AbstractView v = new ConcreteView();
 		v.setAttributesCSV("foo=[de],");
-		assertThat((long) v.getStaticAttributes().size()).isEqualTo((long) 1);
+		assertThat(v.getStaticAttributes().size()).isEqualTo((long) 1);
 	}
 
 	/**

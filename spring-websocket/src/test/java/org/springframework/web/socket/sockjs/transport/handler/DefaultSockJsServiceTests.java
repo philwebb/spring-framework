@@ -103,13 +103,13 @@ public class DefaultSockJsServiceTests extends AbstractHttpRequestTests {
 		DefaultSockJsService service = new DefaultSockJsService(mock(TaskScheduler.class));
 		Map<TransportType, TransportHandler> handlers = service.getTransportHandlers();
 
-		assertThat((long) handlers.size()).isEqualTo((long) 6);
-		assertThat((Object) handlers.get(TransportType.WEBSOCKET)).isNotNull();
-		assertThat((Object) handlers.get(TransportType.XHR)).isNotNull();
-		assertThat((Object) handlers.get(TransportType.XHR_SEND)).isNotNull();
-		assertThat((Object) handlers.get(TransportType.XHR_STREAMING)).isNotNull();
-		assertThat((Object) handlers.get(TransportType.HTML_FILE)).isNotNull();
-		assertThat((Object) handlers.get(TransportType.EVENT_SOURCE)).isNotNull();
+		assertThat(handlers.size()).isEqualTo((long) 6);
+		assertThat(handlers.get(TransportType.WEBSOCKET)).isNotNull();
+		assertThat(handlers.get(TransportType.XHR)).isNotNull();
+		assertThat(handlers.get(TransportType.XHR_SEND)).isNotNull();
+		assertThat(handlers.get(TransportType.XHR_STREAMING)).isNotNull();
+		assertThat(handlers.get(TransportType.HTML_FILE)).isNotNull();
+		assertThat(handlers.get(TransportType.EVENT_SOURCE)).isNotNull();
 	}
 
 	@Test
@@ -119,8 +119,8 @@ public class DefaultSockJsServiceTests extends AbstractHttpRequestTests {
 		DefaultSockJsService service = new DefaultSockJsService(mock(TaskScheduler.class), xhrHandler);
 		Map<TransportType, TransportHandler> handlers = service.getTransportHandlers();
 
-		assertThat((long) handlers.size()).isEqualTo((long) 6);
-		assertThat((Object) handlers.get(xhrHandler.getTransportType())).isSameAs(xhrHandler);
+		assertThat(handlers.size()).isEqualTo((long) 6);
+		assertThat(handlers.get(xhrHandler.getTransportType())).isSameAs(xhrHandler);
 	}
 
 	@Test
@@ -135,7 +135,7 @@ public class DefaultSockJsServiceTests extends AbstractHttpRequestTests {
 				mock(TaskScheduler.class), new XhrPollingTransportHandler(), new XhrReceivingTransportHandler());
 		Map<TransportType, TransportHandler> actualHandlers = service.getTransportHandlers();
 
-		assertThat((long) actualHandlers.size()).isEqualTo((long) 2);
+		assertThat(actualHandlers.size()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -144,13 +144,13 @@ public class DefaultSockJsServiceTests extends AbstractHttpRequestTests {
 		setRequest("POST", sockJsPrefix + sockJsPath);
 		this.service.handleRequest(this.request, this.response, sockJsPath, this.wsHandler);
 
-		assertThat((long) this.servletResponse.getStatus()).isEqualTo((long) 200);
+		assertThat(this.servletResponse.getStatus()).isEqualTo((long) 200);
 		verify(this.xhrHandler).handleRequest(this.request, this.response, this.wsHandler, this.session);
 		verify(taskScheduler).scheduleAtFixedRate(any(Runnable.class), eq(service.getDisconnectDelay()));
 
 		assertThat(this.response.getHeaders().getCacheControl()).isEqualTo("no-store, no-cache, must-revalidate, max-age=0");
-		assertThat((Object) this.servletResponse.getHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN)).isNull();
-		assertThat((Object) this.servletResponse.getHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS)).isNull();
+		assertThat(this.servletResponse.getHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN)).isNull();
+		assertThat(this.servletResponse.getHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS)).isNull();
 	}
 
 	@Test  // SPR-12226
@@ -161,7 +161,7 @@ public class DefaultSockJsServiceTests extends AbstractHttpRequestTests {
 		this.servletRequest.addHeader(HttpHeaders.ORIGIN, "https://mydomain1.com");
 		this.service.handleRequest(this.request, this.response, sockJsPath, this.wsHandler);
 
-		assertThat((long) this.servletResponse.getStatus()).isEqualTo((long) 200);
+		assertThat(this.servletResponse.getStatus()).isEqualTo((long) 200);
 	}
 
 	@Test  // SPR-12226
@@ -172,7 +172,7 @@ public class DefaultSockJsServiceTests extends AbstractHttpRequestTests {
 		this.servletRequest.addHeader(HttpHeaders.ORIGIN, "http://mydomain3.com");
 		this.service.handleRequest(this.request, this.response, sockJsPath, this.wsHandler);
 
-		assertThat((long) this.servletResponse.getStatus()).isEqualTo((long) 403);
+		assertThat(this.servletResponse.getStatus()).isEqualTo((long) 403);
 	}
 
 	@Test  // SPR-13464
@@ -184,7 +184,7 @@ public class DefaultSockJsServiceTests extends AbstractHttpRequestTests {
 		this.servletRequest.setServerName("mydomain2.com");
 		this.service.handleRequest(this.request, this.response, sockJsPath, this.wsHandler);
 
-		assertThat((long) this.servletResponse.getStatus()).isEqualTo((long) 200);
+		assertThat(this.servletResponse.getStatus()).isEqualTo((long) 200);
 	}
 
 	@Test  // SPR-13545
@@ -196,7 +196,7 @@ public class DefaultSockJsServiceTests extends AbstractHttpRequestTests {
 		this.servletRequest.setServerName("mydomain2.com");
 		this.service.handleRequest(this.request, this.response, sockJsPath, this.wsHandler);
 
-		assertThat((long) this.servletResponse.getStatus()).isEqualTo((long) 404);
+		assertThat(this.servletResponse.getStatus()).isEqualTo((long) 404);
 	}
 
 	@Test
@@ -205,10 +205,10 @@ public class DefaultSockJsServiceTests extends AbstractHttpRequestTests {
 		setRequest("OPTIONS", sockJsPrefix + sockJsPath);
 		this.service.handleRequest(this.request, this.response, sockJsPath, this.wsHandler);
 
-		assertThat((long) this.servletResponse.getStatus()).isEqualTo((long) 204);
-		assertThat((Object) this.servletResponse.getHeader("Access-Control-Allow-Origin")).isNull();
-		assertThat((Object) this.servletResponse.getHeader("Access-Control-Allow-Credentials")).isNull();
-		assertThat((Object) this.servletResponse.getHeader("Access-Control-Allow-Methods")).isNull();
+		assertThat(this.servletResponse.getStatus()).isEqualTo((long) 204);
+		assertThat(this.servletResponse.getHeader("Access-Control-Allow-Origin")).isNull();
+		assertThat(this.servletResponse.getHeader("Access-Control-Allow-Credentials")).isNull();
+		assertThat(this.servletResponse.getHeader("Access-Control-Allow-Methods")).isNull();
 	}
 
 	@Test
@@ -217,7 +217,7 @@ public class DefaultSockJsServiceTests extends AbstractHttpRequestTests {
 		setRequest("POST", sockJsPrefix + sockJsPath);
 		this.service.handleRequest(this.request, this.response, sockJsPath, this.wsHandler);
 
-		assertThat((long) this.servletResponse.getStatus()).isEqualTo((long) 404);
+		assertThat(this.servletResponse.getStatus()).isEqualTo((long) 404);
 	}
 
 	@Test
@@ -227,7 +227,7 @@ public class DefaultSockJsServiceTests extends AbstractHttpRequestTests {
 		this.service.handleRequest(this.request, this.response, sockJsPath, this.wsHandler);
 
 		// no session yet
-		assertThat((long) this.servletResponse.getStatus()).isEqualTo((long) 404);
+		assertThat(this.servletResponse.getStatus()).isEqualTo((long) 404);
 
 		resetResponse();
 		sockJsPath = sessionUrlPrefix + "xhr";
@@ -235,7 +235,7 @@ public class DefaultSockJsServiceTests extends AbstractHttpRequestTests {
 		this.service.handleRequest(this.request, this.response, sockJsPath, this.wsHandler);
 
 		// session created
-		assertThat((long) this.servletResponse.getStatus()).isEqualTo((long) 200);
+		assertThat(this.servletResponse.getStatus()).isEqualTo((long) 200);
 		verify(this.xhrHandler).handleRequest(this.request, this.response, this.wsHandler, this.session);
 
 		resetResponse();
@@ -245,7 +245,7 @@ public class DefaultSockJsServiceTests extends AbstractHttpRequestTests {
 		this.service.handleRequest(this.request, this.response, sockJsPath, this.wsHandler);
 
 		// session exists
-		assertThat((long) this.servletResponse.getStatus()).isEqualTo((long) 200);
+		assertThat(this.servletResponse.getStatus()).isEqualTo((long) 200);
 		verify(this.xhrSendHandler).handleRequest(this.request, this.response, this.wsHandler, this.session);
 	}
 
@@ -256,7 +256,7 @@ public class DefaultSockJsServiceTests extends AbstractHttpRequestTests {
 		this.service.handleRequest(this.request, this.response, sockJsPath, this.wsHandler);
 
 		// session created
-		assertThat((long) this.servletResponse.getStatus()).isEqualTo((long) 200);
+		assertThat(this.servletResponse.getStatus()).isEqualTo((long) 200);
 		verify(this.xhrHandler).handleRequest(this.request, this.response, this.wsHandler, this.session);
 
 		this.session.setPrincipal(new TestPrincipal("little red riding hood"));
@@ -268,7 +268,7 @@ public class DefaultSockJsServiceTests extends AbstractHttpRequestTests {
 		setRequest("POST", sockJsPrefix + sockJsPath);
 		this.service.handleRequest(this.request, this.response, sockJsPath, this.wsHandler);
 
-		assertThat((long) this.servletResponse.getStatus()).isEqualTo((long) 404);
+		assertThat(this.servletResponse.getStatus()).isEqualTo((long) 404);
 		verifyNoMoreInteractions(this.xhrSendHandler);
 	}
 
@@ -294,7 +294,7 @@ public class DefaultSockJsServiceTests extends AbstractHttpRequestTests {
 		setRequest("GET", sockJsPrefix + sockJsPath);
 		this.servletRequest.addHeader(HttpHeaders.ORIGIN, "https://mydomain2.com");
 		wsService.handleRequest(this.request, this.response, sockJsPath, this.wsHandler);
-		assertThat((long) this.servletResponse.getStatus()).isEqualTo((long) 403);
+		assertThat(this.servletResponse.getStatus()).isEqualTo((long) 403);
 	}
 
 	@Test
@@ -309,15 +309,15 @@ public class DefaultSockJsServiceTests extends AbstractHttpRequestTests {
 		setRequest("GET", sockJsPrefix + sockJsPath);
 		this.service.setAllowedOrigins(Collections.singletonList("https://mydomain1.com"));
 		this.service.handleRequest(this.request, this.response, sockJsPath, this.wsHandler);
-		assertThat((long) this.servletResponse.getStatus()).isEqualTo((long) 404);
-		assertThat((Object) this.servletResponse.getHeader("X-Frame-Options")).isNull();
+		assertThat(this.servletResponse.getStatus()).isEqualTo((long) 404);
+		assertThat(this.servletResponse.getHeader("X-Frame-Options")).isNull();
 
 		resetRequestAndResponse();
 		setRequest("GET", sockJsPrefix + sockJsPath);
 		this.service.setAllowedOrigins(Collections.singletonList("*"));
 		this.service.handleRequest(this.request, this.response, sockJsPath, this.wsHandler);
 		assertThat(this.servletResponse.getStatus()).isNotEqualTo((long) 404);
-		assertThat((Object) this.servletResponse.getHeader("X-Frame-Options")).isNull();
+		assertThat(this.servletResponse.getHeader("X-Frame-Options")).isNull();
 	}
 
 

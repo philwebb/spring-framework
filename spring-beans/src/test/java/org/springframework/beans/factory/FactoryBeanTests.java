@@ -63,16 +63,16 @@ public class FactoryBeanTests {
 		BeanFactoryPostProcessor ppc = (BeanFactoryPostProcessor) factory.getBean("propertyPlaceholderConfigurer");
 		ppc.postProcessBeanFactory(factory);
 
-		assertThat((Object) factory.getType("betaFactory")).isNull();
+		assertThat(factory.getType("betaFactory")).isNull();
 
 		Alpha alpha = (Alpha) factory.getBean("alpha");
 		Beta beta = (Beta) factory.getBean("beta");
 		Gamma gamma = (Gamma) factory.getBean("gamma");
 		Gamma gamma2 = (Gamma) factory.getBean("gammaFactory");
 
-		assertThat((Object) alpha.getBeta()).isSameAs(beta);
-		assertThat((Object) beta.getGamma()).isSameAs(gamma);
-		assertThat((Object) beta.getGamma()).isSameAs(gamma2);
+		assertThat(alpha.getBeta()).isSameAs(beta);
+		assertThat(beta.getGamma()).isSameAs(gamma);
+		assertThat(beta.getGamma()).isSameAs(gamma2);
 		assertThat(beta.getName()).isEqualTo("yourName");
 	}
 
@@ -87,8 +87,8 @@ public class FactoryBeanTests {
 		Beta beta = (Beta) factory.getBean("beta");
 		Alpha alpha = (Alpha) factory.getBean("alpha");
 		Gamma gamma = (Gamma) factory.getBean("gamma");
-		assertThat((Object) alpha.getBeta()).isSameAs(beta);
-		assertThat((Object) beta.getGamma()).isSameAs(gamma);
+		assertThat(alpha.getBeta()).isSameAs(beta);
+		assertThat(beta.getGamma()).isSameAs(gamma);
 	}
 
 	@Test
@@ -114,12 +114,12 @@ public class FactoryBeanTests {
 		factory.addBeanPostProcessor(counter);
 
 		BeanImpl1 impl1 = factory.getBean(BeanImpl1.class);
-		assertThat((Object) impl1).isNotNull();
-		assertThat((Object) impl1.getImpl2()).isNotNull();
-		assertThat((Object) impl1.getImpl2()).isNotNull();
-		assertThat((Object) impl1.getImpl2().getImpl1()).isSameAs(impl1);
-		assertThat((long) counter.getCount("bean1")).isEqualTo((long) 1);
-		assertThat((long) counter.getCount("bean2")).isEqualTo((long) 1);
+		assertThat(impl1).isNotNull();
+		assertThat(impl1.getImpl2()).isNotNull();
+		assertThat(impl1.getImpl2()).isNotNull();
+		assertThat(impl1.getImpl2().getImpl1()).isSameAs(impl1);
+		assertThat(counter.getCount("bean1")).isEqualTo((long) 1);
+		assertThat(counter.getCount("bean2")).isEqualTo((long) 1);
 	}
 
 

@@ -44,13 +44,13 @@ public class DefaultProfileXmlConfigTests {
 
 	@Test
 	public void pet() {
-		assertThat((Object) pet).isNotNull();
+		assertThat(pet).isNotNull();
 		assertThat(pet.getName()).isEqualTo("Fido");
 	}
 
 	@Test
 	public void employee() {
-		assertThat((Object) employee).as("employee bean should not be created for the default profile").isNull();
+		assertThat(employee).as("employee bean should not be created for the default profile").isNull();
 	}
 
 }

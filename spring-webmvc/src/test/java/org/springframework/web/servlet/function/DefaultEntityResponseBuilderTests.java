@@ -61,7 +61,7 @@ public class DefaultEntityResponseBuilderTests {
 	public void fromObject() {
 		String body = "foo";
 		EntityResponse<String> response = EntityResponse.fromObject(body).build();
-		assertThat((Object) response.entity()).isSameAs(body);
+		assertThat(response.entity()).isSameAs(body);
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class DefaultEntityResponseBuilderTests {
 				new ParameterizedTypeReference<String>() {})
 				.build();
 
-		assertThat((Object) response.entity()).isSameAs(body);
+		assertThat(response.entity()).isSameAs(body);
 	}
 
 	@Test
@@ -192,9 +192,9 @@ public class DefaultEntityResponseBuilderTests {
 		MockHttpServletResponse mockResponse = new MockHttpServletResponse();
 
 		ModelAndView mav = entityResponse.writeTo(mockRequest, mockResponse, EMPTY_CONTEXT);
-		assertThat((Object) mav).isNull();
+		assertThat(mav).isNull();
 
-		assertThat((long) mockResponse.getStatus()).isEqualTo((long) HttpStatus.NOT_MODIFIED.value());
+		assertThat(mockResponse.getStatus()).isEqualTo((long) HttpStatus.NOT_MODIFIED.value());
 	}
 
 
@@ -213,9 +213,9 @@ public class DefaultEntityResponseBuilderTests {
 		MockHttpServletResponse mockResponse = new MockHttpServletResponse();
 
 		ModelAndView mav = entityResponse.writeTo(mockRequest, mockResponse, EMPTY_CONTEXT);
-		assertThat((Object) mav).isNull();
+		assertThat(mav).isNull();
 
-		assertThat((long) mockResponse.getStatus()).isEqualTo((long) HttpStatus.NOT_MODIFIED.value());
+		assertThat(mockResponse.getStatus()).isEqualTo((long) HttpStatus.NOT_MODIFIED.value());
 	}
 
 }

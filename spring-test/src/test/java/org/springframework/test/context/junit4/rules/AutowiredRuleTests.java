@@ -49,7 +49,7 @@ public class AutowiredRuleTests {
 
 	@Test
 	public void test() {
-		assertThat((Object) autowiredTestRule).as("TestRule should have been @Autowired").isNotNull();
+		assertThat(autowiredTestRule).as("TestRule should have been @Autowired").isNotNull();
 
 		// Rationale for the following assertion:
 		//

@@ -76,26 +76,26 @@ public class AtBeanLiteModeScopeTests {
 
 	@Test
 	public void singletonLiteBean() {
-		assertThat((Object) injectedSingletonBean).isNotNull();
+		assertThat(injectedSingletonBean).isNotNull();
 		assertThat(injectedSingletonBean.isInitialized()).isTrue();
 
 		LifecycleBean retrievedSingletonBean = applicationContext.getBean("singleton", LifecycleBean.class);
-		assertThat((Object) retrievedSingletonBean).isNotNull();
+		assertThat(retrievedSingletonBean).isNotNull();
 		assertThat(retrievedSingletonBean.isInitialized()).isTrue();
 
-		assertThat((Object) retrievedSingletonBean).isSameAs(injectedSingletonBean);
+		assertThat(retrievedSingletonBean).isSameAs(injectedSingletonBean);
 	}
 
 	@Test
 	public void prototypeLiteBean() {
-		assertThat((Object) injectedPrototypeBean).isNotNull();
+		assertThat(injectedPrototypeBean).isNotNull();
 		assertThat(injectedPrototypeBean.isInitialized()).isTrue();
 
 		LifecycleBean retrievedPrototypeBean = applicationContext.getBean("prototype", LifecycleBean.class);
-		assertThat((Object) retrievedPrototypeBean).isNotNull();
+		assertThat(retrievedPrototypeBean).isNotNull();
 		assertThat(retrievedPrototypeBean.isInitialized()).isTrue();
 
-		assertThat((Object) retrievedPrototypeBean).isNotSameAs(injectedPrototypeBean);
+		assertThat(retrievedPrototypeBean).isNotSameAs(injectedPrototypeBean);
 	}
 
 }

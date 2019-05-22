@@ -39,7 +39,7 @@ public class ManagedMapTests {
 		child.put("three", "three");
 		child.setMergeEnabled(true);
 		Map mergedMap = (Map) child.merge(parent);
-		assertThat((long) mergedMap.size()).as("merge() obviously did not work.").isEqualTo((long) 3);
+		assertThat(mergedMap.size()).as("merge() obviously did not work.").isEqualTo((long) 3);
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class ManagedMapTests {
 		ManagedMap child = new ManagedMap();
 		child.setMergeEnabled(true);
 		Map mergedMap = (Map) child.merge(parent);
-		assertThat((long) mergedMap.size()).as("merge() obviously did not work.").isEqualTo((long) 2);
+		assertThat(mergedMap.size()).as("merge() obviously did not work.").isEqualTo((long) 2);
 	}
 
 	@Test
@@ -84,7 +84,7 @@ public class ManagedMapTests {
 		child.setMergeEnabled(true);
 		Map mergedMap = (Map) child.merge(parent);
 		// child value for 'one' must override parent value...
-		assertThat((long) mergedMap.size()).as("merge() obviously did not work.").isEqualTo((long) 2);
+		assertThat(mergedMap.size()).as("merge() obviously did not work.").isEqualTo((long) 2);
 		assertThat(mergedMap.get("one")).as("Parent value not being overridden during merge().").isEqualTo("fork");
 	}
 

@@ -86,9 +86,9 @@ public class ClassHierarchyWithMergedConfigLevelOneTests {
 
 	@Test
 	public void loadContextHierarchy() {
-		assertThat((Object) context).as("child ApplicationContext").isNotNull();
-		assertThat((Object) context.getParent()).as("parent ApplicationContext").isNotNull();
-		assertThat((Object) context.getParent().getParent()).as("grandparent ApplicationContext").isNull();
+		assertThat(context).as("child ApplicationContext").isNotNull();
+		assertThat(context.getParent()).as("parent ApplicationContext").isNotNull();
+		assertThat(context.getParent().getParent()).as("grandparent ApplicationContext").isNull();
 		assertThat(parent).isEqualTo("parent");
 		assertThat(user).isEqualTo("parent + user");
 		assertThat(beanFromUserConfig).isEqualTo("from UserConfig");

@@ -80,7 +80,7 @@ public class SingleColumnRowMapperTests {
 
 		MyLocalDateTime actualMyLocalDateTime = rowMapper.mapRow(resultSet, 1);
 
-		assertThat((Object) actualMyLocalDateTime).isNotNull();
+		assertThat(actualMyLocalDateTime).isNotNull();
 		assertThat(actualMyLocalDateTime.value).isEqualTo(timestamp.toLocalDateTime());
 	}
 

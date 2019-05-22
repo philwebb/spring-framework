@@ -93,7 +93,7 @@ public class RequestResponseBodyAdviceChainTests {
 		given(requestAdvice.beforeBodyRead(eq(this.request), eq(this.paramType), eq(String.class),
 				eq(this.converterType))).willReturn(wrapped);
 
-		assertThat((Object) chain.beforeBodyRead(this.request, this.paramType, String.class, this.converterType)).isSameAs(wrapped);
+		assertThat(chain.beforeBodyRead(this.request, this.paramType, String.class, this.converterType)).isSameAs(wrapped);
 
 		String modified = "body++";
 		given(requestAdvice.afterBodyRead(eq(this.body), eq(this.request), eq(this.paramType),

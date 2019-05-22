@@ -49,7 +49,7 @@ public class JmsAccessorTests {
 	@Test
 	public void testAcknowledgeModeReallyDoesDefaultToAutoAcknowledge() throws Exception {
 		JmsAccessor accessor = new StubJmsAccessor();
-		assertThat((long) accessor.getSessionAcknowledgeMode()).as("The [sessionAcknowledgeMode] property of JmsAccessor must default to " +
+		assertThat(accessor.getSessionAcknowledgeMode()).as("The [sessionAcknowledgeMode] property of JmsAccessor must default to " +
 				"[Session.AUTO_ACKNOWLEDGE]. Change this test (and the attendant " +
 				"Javadoc) if you have changed the default.").isEqualTo((long) Session.AUTO_ACKNOWLEDGE);
 	}

@@ -36,7 +36,7 @@ public class SpringFactoriesLoaderTests {
 	@Test
 	public void loadFactoriesInCorrectOrder() {
 		List<DummyFactory> factories = SpringFactoriesLoader.loadFactories(DummyFactory.class, null);
-		assertThat((long) factories.size()).isEqualTo((long) 2);
+		assertThat(factories.size()).isEqualTo((long) 2);
 		boolean condition1 = factories.get(0) instanceof MyDummyFactory1;
 		assertThat(condition1).isTrue();
 		boolean condition = factories.get(1) instanceof MyDummyFactory2;
@@ -47,7 +47,7 @@ public class SpringFactoriesLoaderTests {
 	public void loadPackagePrivateFactory() {
 		List<DummyPackagePrivateFactory> factories =
 				SpringFactoriesLoader.loadFactories(DummyPackagePrivateFactory.class, null);
-		assertThat((long) factories.size()).isEqualTo((long) 1);
+		assertThat(factories.size()).isEqualTo((long) 1);
 		assertThat(Modifier.isPublic(factories.get(0).getClass().getModifiers())).isFalse();
 	}
 

@@ -75,14 +75,14 @@ public abstract class AbstractJCacheAnnotationTests {
 		Cache cache = getCache(DEFAULT_CACHE);
 
 		String keyItem = name.getMethodName();
-		assertThat((Object) cache.get(keyItem)).isNull();
+		assertThat(cache.get(keyItem)).isNull();
 
 		Object first = service.cacheNull(keyItem);
 		Object second = service.cacheNull(keyItem);
 		assertThat(second).isSameAs(first);
 
 		Cache.ValueWrapper wrapper = cache.get(keyItem);
-		assertThat((Object) wrapper).isNotNull();
+		assertThat(wrapper).isNotNull();
 		assertThat(wrapper.get()).isSameAs(first);
 		assertThat(wrapper.get()).as("Cached value should be null").isNull();
 	}
@@ -93,13 +93,13 @@ public abstract class AbstractJCacheAnnotationTests {
 		Cache cache = getCache(EXCEPTION_CACHE);
 
 		Object key = createKey(keyItem);
-		assertThat((Object) cache.get(key)).isNull();
+		assertThat(cache.get(key)).isNull();
 
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() ->
 				service.cacheWithException(keyItem, true));
 
 		Cache.ValueWrapper result = cache.get(key);
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 		assertThat(result.get().getClass()).isEqualTo(UnsupportedOperationException.class);
 	}
 
@@ -109,11 +109,11 @@ public abstract class AbstractJCacheAnnotationTests {
 		Cache cache = getCache(EXCEPTION_CACHE);
 
 		Object key = createKey(keyItem);
-		assertThat((Object) cache.get(key)).isNull();
+		assertThat(cache.get(key)).isNull();
 
 		assertThatNullPointerException().isThrownBy(() ->
 				service.cacheWithException(keyItem, false));
-		assertThat((Object) cache.get(key)).isNull();
+		assertThat(cache.get(key)).isNull();
 	}
 
 	@Test
@@ -122,12 +122,12 @@ public abstract class AbstractJCacheAnnotationTests {
 		Cache cache = getCache(EXCEPTION_CACHE);
 
 		Object key = createKey(keyItem);
-		assertThat((Object) cache.get(key)).isNull();
+		assertThat(cache.get(key)).isNull();
 		assertThatIOException().isThrownBy(() ->
 				service.cacheWithCheckedException(keyItem, true));
 
 		Cache.ValueWrapper result = cache.get(key);
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 		assertThat(result.get().getClass()).isEqualTo(IOException.class);
 	}
 
@@ -185,7 +185,7 @@ public abstract class AbstractJCacheAnnotationTests {
 		service.cacheWithCustomCacheResolver(keyItem);
 
 		// Cache in mock cache
-		assertThat((Object) cache.get(key)).isNull();
+		assertThat(cache.get(key)).isNull();
 	}
 
 	@Test
@@ -196,7 +196,7 @@ public abstract class AbstractJCacheAnnotationTests {
 		Object key = createKey(keyItem);
 		service.cacheWithCustomKeyGenerator(keyItem, "ignored");
 
-		assertThat((Object) cache.get(key)).isNull();
+		assertThat(cache.get(key)).isNull();
 	}
 
 	@Test
@@ -206,12 +206,12 @@ public abstract class AbstractJCacheAnnotationTests {
 
 		Object key = createKey(keyItem);
 		Object value = new Object();
-		assertThat((Object) cache.get(key)).isNull();
+		assertThat(cache.get(key)).isNull();
 
 		service.put(keyItem, value);
 
 		Cache.ValueWrapper result = cache.get(key);
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 		assertThat(result.get()).isEqualTo(value);
 	}
 
@@ -222,13 +222,13 @@ public abstract class AbstractJCacheAnnotationTests {
 
 		Object key = createKey(keyItem);
 		Object value = new Object();
-		assertThat((Object) cache.get(key)).isNull();
+		assertThat(cache.get(key)).isNull();
 
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() ->
 				service.putWithException(keyItem, value, true));
 
 		Cache.ValueWrapper result = cache.get(key);
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 		assertThat(result.get()).isEqualTo(value);
 	}
 
@@ -239,11 +239,11 @@ public abstract class AbstractJCacheAnnotationTests {
 
 		Object key = createKey(keyItem);
 		Object value = new Object();
-		assertThat((Object) cache.get(key)).isNull();
+		assertThat(cache.get(key)).isNull();
 
 		assertThatNullPointerException().isThrownBy(() ->
 				service.putWithException(keyItem, value, false));
-		assertThat((Object) cache.get(key)).isNull();
+		assertThat(cache.get(key)).isNull();
 	}
 
 	@Test
@@ -253,12 +253,12 @@ public abstract class AbstractJCacheAnnotationTests {
 
 		Object key = createKey(keyItem);
 		Object value = new Object();
-		assertThat((Object) cache.get(key)).isNull();
+		assertThat(cache.get(key)).isNull();
 
 		service.earlyPut(keyItem, value);
 
 		Cache.ValueWrapper result = cache.get(key);
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 		assertThat(result.get()).isEqualTo(value);
 	}
 
@@ -269,13 +269,13 @@ public abstract class AbstractJCacheAnnotationTests {
 
 		Object key = createKey(keyItem);
 		Object value = new Object();
-		assertThat((Object) cache.get(key)).isNull();
+		assertThat(cache.get(key)).isNull();
 
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() ->
 				service.earlyPutWithException(keyItem, value, true));
 
 		Cache.ValueWrapper result = cache.get(key);
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 		assertThat(result.get()).isEqualTo(value);
 	}
 
@@ -286,12 +286,12 @@ public abstract class AbstractJCacheAnnotationTests {
 
 		Object key = createKey(keyItem);
 		Object value = new Object();
-		assertThat((Object) cache.get(key)).isNull();
+		assertThat(cache.get(key)).isNull();
 		assertThatNullPointerException().isThrownBy(() ->
 				service.earlyPutWithException(keyItem, value, false));
 		// This will be cached anyway as the earlyPut has updated the cache before
 		Cache.ValueWrapper result = cache.get(key);
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 		assertThat(result.get()).isEqualTo(value);
 	}
 
@@ -306,7 +306,7 @@ public abstract class AbstractJCacheAnnotationTests {
 
 		service.remove(keyItem);
 
-		assertThat((Object) cache.get(key)).isNull();
+		assertThat(cache.get(key)).isNull();
 	}
 
 	@Test
@@ -321,7 +321,7 @@ public abstract class AbstractJCacheAnnotationTests {
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() ->
 				service.removeWithException(keyItem, true));
 
-		assertThat((Object) cache.get(key)).isNull();
+		assertThat(cache.get(key)).isNull();
 	}
 
 	@Test
@@ -336,7 +336,7 @@ public abstract class AbstractJCacheAnnotationTests {
 		assertThatNullPointerException().isThrownBy(() ->
 				service.removeWithException(keyItem, false));
 		Cache.ValueWrapper wrapper = cache.get(key);
-		assertThat((Object) wrapper).isNotNull();
+		assertThat(wrapper).isNotNull();
 		assertThat(wrapper.get()).isEqualTo(value);
 	}
 
@@ -351,7 +351,7 @@ public abstract class AbstractJCacheAnnotationTests {
 
 		service.earlyRemove(keyItem);
 
-		assertThat((Object) cache.get(key)).isNull();
+		assertThat(cache.get(key)).isNull();
 	}
 
 	@Test
@@ -365,7 +365,7 @@ public abstract class AbstractJCacheAnnotationTests {
 
 		assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() ->
 				service.earlyRemoveWithException(keyItem, true));
-		assertThat((Object) cache.get(key)).isNull();
+		assertThat(cache.get(key)).isNull();
 	}
 
 	@Test
@@ -380,7 +380,7 @@ public abstract class AbstractJCacheAnnotationTests {
 		assertThatNullPointerException().isThrownBy(() ->
 				service.earlyRemoveWithException(keyItem, false));
 		// This will be remove anyway as the earlyRemove has removed the cache before
-		assertThat((Object) cache.get(key)).isNull();
+		assertThat(cache.get(key)).isNull();
 	}
 
 	@Test
@@ -417,7 +417,7 @@ public abstract class AbstractJCacheAnnotationTests {
 
 		assertThatNullPointerException().isThrownBy(() ->
 				service.removeAllWithException(false));
-		assertThat((Object) cache.get(key)).isNotNull();
+		assertThat(cache.get(key)).isNotNull();
 	}
 
 	@Test
@@ -469,7 +469,7 @@ public abstract class AbstractJCacheAnnotationTests {
 
 	private Cache getCache(String name) {
 		Cache cache = cacheManager.getCache(name);
-		assertThat((Object) cache).as("required cache " + name + " does not exist").isNotNull();
+		assertThat(cache).as("required cache " + name + " does not exist").isNotNull();
 		return cache;
 	}
 

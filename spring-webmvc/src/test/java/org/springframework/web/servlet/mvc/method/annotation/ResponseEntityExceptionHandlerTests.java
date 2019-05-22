@@ -220,9 +220,9 @@ public class ResponseEntityExceptionHandlerTests {
 		resolver.afterPropertiesSet();
 
 		ServletRequestBindingException ex = new ServletRequestBindingException("message");
-		assertThat((Object) resolver.resolveException(this.servletRequest, this.servletResponse, null, ex)).isNotNull();
+		assertThat(resolver.resolveException(this.servletRequest, this.servletResponse, null, ex)).isNotNull();
 
-		assertThat((long) this.servletResponse.getStatus()).isEqualTo((long) 400);
+		assertThat(this.servletResponse.getStatus()).isEqualTo((long) 400);
 		assertThat(this.servletResponse.getContentAsString()).isEqualTo("error content");
 		assertThat(this.servletResponse.getHeader("someHeader")).isEqualTo("someHeaderValue");
 	}
@@ -238,7 +238,7 @@ public class ResponseEntityExceptionHandlerTests {
 		resolver.afterPropertiesSet();
 
 		IllegalStateException ex = new IllegalStateException(new ServletRequestBindingException("message"));
-		assertThat((Object) resolver.resolveException(this.servletRequest, this.servletResponse, null, ex)).isNull();
+		assertThat(resolver.resolveException(this.servletRequest, this.servletResponse, null, ex)).isNull();
 	}
 
 	@Test
@@ -252,7 +252,7 @@ public class ResponseEntityExceptionHandlerTests {
 		servlet.init(new MockServletConfig());
 		servlet.service(this.servletRequest, this.servletResponse);
 
-		assertThat((long) this.servletResponse.getStatus()).isEqualTo((long) 400);
+		assertThat(this.servletResponse.getStatus()).isEqualTo((long) 400);
 		assertThat(this.servletResponse.getContentAsString()).isEqualTo("error content");
 		assertThat(this.servletResponse.getHeader("someHeader")).isEqualTo("someHeaderValue");
 	}
@@ -289,7 +289,7 @@ public class ResponseEntityExceptionHandlerTests {
 
 			this.defaultExceptionResolver.resolveException(this.servletRequest, this.servletResponse, null, ex);
 
-			assertThat((long) responseEntity.getStatusCode().value()).isEqualTo((long) this.servletResponse.getStatus());
+			assertThat(responseEntity.getStatusCode().value()).isEqualTo((long) this.servletResponse.getStatus());
 
 			return responseEntity;
 		}

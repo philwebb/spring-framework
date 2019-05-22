@@ -71,7 +71,7 @@ public class JmsTransactionManagerTests {
 		TransactionStatus ts = tm.getTransaction(new DefaultTransactionDefinition());
 		JmsTemplate jt = new JmsTemplate(cf);
 		jt.execute((SessionCallback<Void>) sess -> {
-			assertThat((Object) session).isSameAs(sess);
+			assertThat(session).isSameAs(sess);
 			return null;
 		});
 		tm.commit(ts);
@@ -94,7 +94,7 @@ public class JmsTransactionManagerTests {
 		TransactionStatus ts = tm.getTransaction(new DefaultTransactionDefinition());
 		JmsTemplate jt = new JmsTemplate(cf);
 		jt.execute((SessionCallback<Void>) sess -> {
-			assertThat((Object) session).isSameAs(sess);
+			assertThat(session).isSameAs(sess);
 			return null;
 		});
 		tm.rollback(ts);
@@ -117,7 +117,7 @@ public class JmsTransactionManagerTests {
 		TransactionStatus ts = tm.getTransaction(new DefaultTransactionDefinition());
 		final JmsTemplate jt = new JmsTemplate(cf);
 		jt.execute((SessionCallback<Void>) sess -> {
-			assertThat((Object) session).isSameAs(sess);
+			assertThat(session).isSameAs(sess);
 			return null;
 		});
 		TransactionTemplate tt = new TransactionTemplate(tm);
@@ -125,7 +125,7 @@ public class JmsTransactionManagerTests {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus status) {
 				jt.execute((SessionCallback<Void>) sess -> {
-					assertThat((Object) session).isSameAs(sess);
+					assertThat(session).isSameAs(sess);
 					return null;
 				});
 			}
@@ -150,7 +150,7 @@ public class JmsTransactionManagerTests {
 		TransactionStatus ts = tm.getTransaction(new DefaultTransactionDefinition());
 		final JmsTemplate jt = new JmsTemplate(cf);
 		jt.execute((SessionCallback<Void>) sess -> {
-			assertThat((Object) session).isSameAs(sess);
+			assertThat(session).isSameAs(sess);
 			return null;
 		});
 		TransactionTemplate tt = new TransactionTemplate(tm);
@@ -158,7 +158,7 @@ public class JmsTransactionManagerTests {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus status) {
 				jt.execute((SessionCallback<Void>) sess -> {
-					assertThat((Object) session).isSameAs(sess);
+					assertThat(session).isSameAs(sess);
 					return null;
 				});
 				status.setRollbackOnly();
@@ -187,7 +187,7 @@ public class JmsTransactionManagerTests {
 		TransactionStatus ts = tm.getTransaction(new DefaultTransactionDefinition());
 		final JmsTemplate jt = new JmsTemplate(cf);
 		jt.execute((SessionCallback<Void>) sess -> {
-			assertThat((Object) session).isSameAs(sess);
+			assertThat(session).isSameAs(sess);
 			return null;
 		});
 		TransactionTemplate tt = new TransactionTemplate(tm);
@@ -196,13 +196,13 @@ public class JmsTransactionManagerTests {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus status) {
 				jt.execute((SessionCallback<Void>) sess -> {
-					assertThat((Object) session).isNotSameAs(sess);
+					assertThat(session).isNotSameAs(sess);
 					return null;
 				});
 			}
 		});
 		jt.execute((SessionCallback<Void>) sess -> {
-			assertThat((Object) session).isSameAs(sess);
+			assertThat(session).isSameAs(sess);
 			return null;
 		});
 		tm.commit(ts);
@@ -227,7 +227,7 @@ public class JmsTransactionManagerTests {
 		TransactionStatus ts = tm.getTransaction(new DefaultTransactionDefinition());
 		final JmsTemplate jt = new JmsTemplate(cf);
 		jt.execute((SessionCallback<Void>) sess -> {
-			assertThat((Object) session).isSameAs(sess);
+			assertThat(session).isSameAs(sess);
 			return null;
 		});
 		TransactionTemplate tt = new TransactionTemplate(tm);
@@ -236,13 +236,13 @@ public class JmsTransactionManagerTests {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus status) {
 				jt.execute((SessionCallback<Void>) sess -> {
-					assertThat((Object) session).isNotSameAs(sess);
+					assertThat(session).isNotSameAs(sess);
 					return null;
 				});
 			}
 		});
 		jt.execute((SessionCallback<Void>) sess -> {
-			assertThat((Object) session).isSameAs(sess);
+			assertThat(session).isSameAs(sess);
 			return null;
 		});
 		tm.commit(ts);
@@ -297,7 +297,7 @@ public class JmsTransactionManagerTests {
 
 		JmsTemplate jt = new JmsTemplate(cf);
 		jt.execute((SessionCallback<Void>) sess -> {
-			assertThat((Object) session).isSameAs(sess);
+			assertThat(session).isSameAs(sess);
 			return null;
 		});
 		tm.commit(ts);

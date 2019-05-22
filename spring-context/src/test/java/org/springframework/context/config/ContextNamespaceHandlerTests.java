@@ -155,7 +155,7 @@ public class ContextNamespaceHandlerTests {
 		Date date = (Date) applicationContext.getBean("date");
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
-		assertThat((long) calendar.get(Calendar.MINUTE)).isEqualTo((long) 42);
+		assertThat(calendar.get(Calendar.MINUTE)).isEqualTo((long) 42);
 	}
 
 }

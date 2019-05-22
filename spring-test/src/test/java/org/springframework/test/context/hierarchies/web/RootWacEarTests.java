@@ -70,7 +70,7 @@ public class RootWacEarTests extends EarTests {
 	@Test
 	public void verifyRootWacConfig() {
 		ApplicationContext parent = wac.getParent();
-		assertThat((Object) parent).isNotNull();
+		assertThat(parent).isNotNull();
 		boolean condition = parent instanceof WebApplicationContext;
 		assertThat(condition).isFalse();
 		assertThat(ear).isEqualTo("ear");

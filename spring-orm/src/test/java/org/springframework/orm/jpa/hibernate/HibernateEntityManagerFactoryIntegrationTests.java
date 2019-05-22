@@ -81,13 +81,13 @@ public class HibernateEntityManagerFactoryIntegrationTests extends AbstractConta
 
 	@Test  // SPR-16956
 	public void testReadOnly() {
-		assertThat((Object) sharedEntityManager.unwrap(Session.class).getHibernateFlushMode()).isSameAs(FlushMode.AUTO);
+		assertThat(sharedEntityManager.unwrap(Session.class).getHibernateFlushMode()).isSameAs(FlushMode.AUTO);
 		assertThat(sharedEntityManager.unwrap(Session.class).isDefaultReadOnly()).isFalse();
 		endTransaction();
 
 		this.transactionDefinition.setReadOnly(true);
 		startNewTransaction();
-		assertThat((Object) sharedEntityManager.unwrap(Session.class).getHibernateFlushMode()).isSameAs(FlushMode.MANUAL);
+		assertThat(sharedEntityManager.unwrap(Session.class).getHibernateFlushMode()).isSameAs(FlushMode.MANUAL);
 		assertThat(sharedEntityManager.unwrap(Session.class).isDefaultReadOnly()).isTrue();
 	}
 

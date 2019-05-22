@@ -95,9 +95,9 @@ public class NamedParameterQueryTests {
 		List<Map<String, Object>> li = template.queryForList(
 				"SELECT AGE FROM CUSTMR WHERE ID < :id", params);
 
-		assertThat((long) li.size()).as("All rows returned").isEqualTo((long) 2);
-		assertThat((long) ((Integer) li.get(0).get("age")).intValue()).as("First row is Integer").isEqualTo((long) 11);
-		assertThat((long) ((Integer) li.get(1).get("age")).intValue()).as("Second row is Integer").isEqualTo((long) 12);
+		assertThat(li.size()).as("All rows returned").isEqualTo((long) 2);
+		assertThat(((Integer) li.get(0).get("age")).intValue()).as("First row is Integer").isEqualTo((long) 11);
+		assertThat(((Integer) li.get(1).get("age")).intValue()).as("Second row is Integer").isEqualTo((long) 12);
 
 		verify(connection).prepareStatement("SELECT AGE FROM CUSTMR WHERE ID < ?");
 		verify(preparedStatement).setObject(1, 3);
@@ -112,7 +112,7 @@ public class NamedParameterQueryTests {
 		List<Map<String, Object>> li = template.queryForList(
 				"SELECT AGE FROM CUSTMR WHERE ID < :id", params);
 
-		assertThat((long) li.size()).as("All rows returned").isEqualTo((long) 0);
+		assertThat(li.size()).as("All rows returned").isEqualTo((long) 0);
 		verify(connection).prepareStatement("SELECT AGE FROM CUSTMR WHERE ID < ?");
 		verify(preparedStatement).setObject(1, 3);
 	}
@@ -128,8 +128,8 @@ public class NamedParameterQueryTests {
 		List<Map<String, Object>> li = template.queryForList(
 				"SELECT AGE FROM CUSTMR WHERE ID < :id", params);
 
-		assertThat((long) li.size()).as("All rows returned").isEqualTo((long) 1);
-		assertThat((long) ((Integer) li.get(0).get("age")).intValue()).as("First row is Integer").isEqualTo((long) 11);
+		assertThat(li.size()).as("All rows returned").isEqualTo((long) 1);
+		assertThat(((Integer) li.get(0).get("age")).intValue()).as("First row is Integer").isEqualTo((long) 11);
 		verify(connection).prepareStatement("SELECT AGE FROM CUSTMR WHERE ID < ?");
 		verify(preparedStatement).setObject(1, 3);
 	}
@@ -146,8 +146,8 @@ public class NamedParameterQueryTests {
 		List<Integer> li = template.queryForList("SELECT AGE FROM CUSTMR WHERE ID < :id",
 				params, Integer.class);
 
-		assertThat((long) li.size()).as("All rows returned").isEqualTo((long) 1);
-		assertThat((long) li.get(0).intValue()).as("First row is Integer").isEqualTo((long) 11);
+		assertThat(li.size()).as("All rows returned").isEqualTo((long) 1);
+		assertThat(li.get(0).intValue()).as("First row is Integer").isEqualTo((long) 11);
 		verify(connection).prepareStatement("SELECT AGE FROM CUSTMR WHERE ID < ?");
 		verify(preparedStatement).setObject(1, 3);
 	}
@@ -162,7 +162,7 @@ public class NamedParameterQueryTests {
 		params.addValue("id", 3);
 		Map<String, Object> map = template.queryForMap("SELECT AGE FROM CUSTMR WHERE ID < :id", params);
 
-		assertThat((long) ((Integer) map.get("age")).intValue()).as("Row is Integer").isEqualTo((long) 11);
+		assertThat(((Integer) map.get("age")).intValue()).as("Row is Integer").isEqualTo((long) 11);
 		verify(connection).prepareStatement("SELECT AGE FROM CUSTMR WHERE ID < ?");
 		verify(preparedStatement).setObject(1, 3);
 	}
@@ -272,7 +272,7 @@ public class NamedParameterQueryTests {
 		params.addValue("id", 3);
 		int i = template.queryForObject("SELECT AGE FROM CUSTMR WHERE ID = :id", params, Integer.class).intValue();
 
-		assertThat((long) i).as("Return of an int").isEqualTo((long) 22);
+		assertThat(i).as("Return of an int").isEqualTo((long) 22);
 		verify(connection).prepareStatement("SELECT AGE FROM CUSTMR WHERE ID = ?");
 		verify(preparedStatement).setObject(1, 3);
 	}

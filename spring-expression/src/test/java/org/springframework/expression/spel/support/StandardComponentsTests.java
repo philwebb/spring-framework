@@ -36,7 +36,7 @@ public class StandardComponentsTests {
 	@Test
 	public void testStandardEvaluationContext() {
 		StandardEvaluationContext context = new StandardEvaluationContext();
-		assertThat((Object) context.getTypeComparator()).isNotNull();
+		assertThat(context.getTypeComparator()).isNotNull();
 
 		TypeComparator tc = new StandardTypeComparator();
 		context.setTypeComparator(tc);
@@ -59,13 +59,13 @@ public class StandardComponentsTests {
 	public void testStandardTypeLocator() {
 		StandardTypeLocator tl = new StandardTypeLocator();
 		List<String> prefixes = tl.getImportPrefixes();
-		assertThat((long) prefixes.size()).isEqualTo((long) 1);
+		assertThat(prefixes.size()).isEqualTo((long) 1);
 		tl.registerImport("java.util");
 		prefixes = tl.getImportPrefixes();
-		assertThat((long) prefixes.size()).isEqualTo((long) 2);
+		assertThat(prefixes.size()).isEqualTo((long) 2);
 		tl.removeImport("java.util");
 		prefixes = tl.getImportPrefixes();
-		assertThat((long) prefixes.size()).isEqualTo((long) 1);
+		assertThat(prefixes.size()).isEqualTo((long) 1);
 	}
 
 	@Test

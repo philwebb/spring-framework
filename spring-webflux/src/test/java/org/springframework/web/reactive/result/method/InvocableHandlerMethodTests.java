@@ -167,7 +167,7 @@ public class InvocableHandlerMethodTests {
 		Method method = ResolvableMethod.on(TestController.class).mockCall(c -> c.response(response)).method();
 		HandlerResult result = invokeForResult(new TestController(), method);
 
-		assertThat((Object) result).as("Expected no result (i.e. fully handled)").isNull();
+		assertThat(result).as("Expected no result (i.e. fully handled)").isNull();
 		assertThat(this.exchange.getResponse().getHeaders().getFirst("foo")).isEqualTo("bar");
 	}
 
@@ -178,7 +178,7 @@ public class InvocableHandlerMethodTests {
 		Method method = ResolvableMethod.on(TestController.class).mockCall(c -> c.responseMonoVoid(response)).method();
 		HandlerResult result = invokeForResult(new TestController(), method);
 
-		assertThat((Object) result).as("Expected no result (i.e. fully handled)").isNull();
+		assertThat(result).as("Expected no result (i.e. fully handled)").isNull();
 		assertThat(this.exchange.getResponse().getBodyAsString().block(Duration.ZERO)).isEqualTo("body");
 	}
 
@@ -188,7 +188,7 @@ public class InvocableHandlerMethodTests {
 		Method method = ResolvableMethod.on(TestController.class).mockCall(c -> c.exchange(exchange)).method();
 		HandlerResult result = invokeForResult(new TestController(), method);
 
-		assertThat((Object) result).as("Expected no result (i.e. fully handled)").isNull();
+		assertThat(result).as("Expected no result (i.e. fully handled)").isNull();
 		assertThat(this.exchange.getResponse().getHeaders().getFirst("foo")).isEqualTo("bar");
 	}
 
@@ -198,7 +198,7 @@ public class InvocableHandlerMethodTests {
 		Method method = ResolvableMethod.on(TestController.class).mockCall(c -> c.exchangeMonoVoid(exchange)).method();
 		HandlerResult result = invokeForResult(new TestController(), method);
 
-		assertThat((Object) result).as("Expected no result (i.e. fully handled)").isNull();
+		assertThat(result).as("Expected no result (i.e. fully handled)").isNull();
 		assertThat(this.exchange.getResponse().getBodyAsString().block(Duration.ZERO)).isEqualTo("body");
 	}
 
@@ -210,7 +210,7 @@ public class InvocableHandlerMethodTests {
 		Method method = ResolvableMethod.on(TestController.class).mockCall(c -> c.notModified(exchange)).method();
 		HandlerResult result = invokeForResult(new TestController(), method);
 
-		assertThat((Object) result).as("Expected no result (i.e. fully handled)").isNull();
+		assertThat(result).as("Expected no result (i.e. fully handled)").isNull();
 	}
 
 

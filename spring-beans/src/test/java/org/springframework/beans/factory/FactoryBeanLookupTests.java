@@ -52,13 +52,13 @@ public class FactoryBeanLookupTests {
 	@Test
 	public void factoryBeanLookupByType() {
 		FooFactoryBean fooFactory = beanFactory.getBean(FooFactoryBean.class);
-		assertThat((Object) fooFactory).isNotNull();
+		assertThat(fooFactory).isNotNull();
 	}
 
 	@Test
 	public void factoryBeanLookupByTypeAndNameDereference() {
 		FooFactoryBean fooFactory = beanFactory.getBean("&fooFactory", FooFactoryBean.class);
-		assertThat((Object) fooFactory).isNotNull();
+		assertThat(fooFactory).isNotNull();
 	}
 
 	@Test
@@ -70,7 +70,7 @@ public class FactoryBeanLookupTests {
 	@Test
 	public void factoryBeanObjectLookupByNameAndType() {
 		Foo foo = beanFactory.getBean("fooFactory", Foo.class);
-		assertThat((Object) foo).isNotNull();
+		assertThat(foo).isNotNull();
 	}
 }
 

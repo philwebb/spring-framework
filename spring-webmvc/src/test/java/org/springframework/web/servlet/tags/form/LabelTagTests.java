@@ -67,8 +67,8 @@ public class LabelTagTests extends AbstractFormTagTests {
 		int startResult = this.tag.doStartTag();
 		int endResult = this.tag.doEndTag();
 
-		assertThat((long) startResult).isEqualTo((long) Tag.EVAL_BODY_INCLUDE);
-		assertThat((long) endResult).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(startResult).isEqualTo((long) Tag.EVAL_BODY_INCLUDE);
+		assertThat(endResult).isEqualTo((long) Tag.EVAL_PAGE);
 
 		String output = getOutput();
 		// we are using a nested path (see extendPageContext(..)), so...
@@ -93,8 +93,8 @@ public class LabelTagTests extends AbstractFormTagTests {
 		int startResult = this.tag.doStartTag();
 		int endResult = this.tag.doEndTag();
 
-		assertThat((long) startResult).isEqualTo((long) Tag.EVAL_BODY_INCLUDE);
-		assertThat((long) endResult).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(startResult).isEqualTo((long) Tag.EVAL_BODY_INCLUDE);
+		assertThat(endResult).isEqualTo((long) Tag.EVAL_PAGE);
 
 		String output = getOutput();
 		// we are using a nested path (see extendPageContext(..)), so...
@@ -115,8 +115,8 @@ public class LabelTagTests extends AbstractFormTagTests {
 		int startResult = this.tag.doStartTag();
 		int endResult = this.tag.doEndTag();
 
-		assertThat((long) startResult).isEqualTo((long) Tag.EVAL_BODY_INCLUDE);
-		assertThat((long) endResult).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(startResult).isEqualTo((long) Tag.EVAL_BODY_INCLUDE);
+		assertThat(endResult).isEqualTo((long) Tag.EVAL_PAGE);
 
 		String output = getOutput();
 		// we are using a nested path (see extendPageContext(..)), so...
@@ -136,8 +136,8 @@ public class LabelTagTests extends AbstractFormTagTests {
 		int startResult = this.tag.doStartTag();
 		int endResult = this.tag.doEndTag();
 
-		assertThat((long) startResult).isEqualTo((long) Tag.EVAL_BODY_INCLUDE);
-		assertThat((long) endResult).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(startResult).isEqualTo((long) Tag.EVAL_BODY_INCLUDE);
+		assertThat(endResult).isEqualTo((long) Tag.EVAL_PAGE);
 
 		String output = getOutput();
 		assertContainsAttribute(output, "for", "myElement");

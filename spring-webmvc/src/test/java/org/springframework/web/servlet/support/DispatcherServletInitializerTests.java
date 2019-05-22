@@ -59,8 +59,8 @@ public class DispatcherServletInitializerTests {
 	public void register() throws ServletException {
 		initializer.onStartup(servletContext);
 
-		assertThat((long) servlets.size()).isEqualTo((long) 1);
-		assertThat((Object) servlets.get(SERVLET_NAME)).isNotNull();
+		assertThat(servlets.size()).isEqualTo((long) 1);
+		assertThat(servlets.get(SERVLET_NAME)).isNotNull();
 
 		DispatcherServlet servlet = (DispatcherServlet) servlets.get(SERVLET_NAME);
 		assertThat(servlet.getClass()).isEqualTo(MyDispatcherServlet.class);
@@ -70,12 +70,12 @@ public class DispatcherServletInitializerTests {
 		boolean condition = servletContext.getBean("bean") instanceof MyBean;
 		assertThat(condition).isTrue();
 
-		assertThat((long) registrations.size()).isEqualTo((long) 1);
-		assertThat((Object) registrations.get(SERVLET_NAME)).isNotNull();
+		assertThat(registrations.size()).isEqualTo((long) 1);
+		assertThat(registrations.get(SERVLET_NAME)).isNotNull();
 
 		MockServletRegistration registration = registrations.get(SERVLET_NAME);
 		assertThat(registration.getMappings()).isEqualTo(Collections.singleton(SERVLET_MAPPING));
-		assertThat((long) registration.getLoadOnStartup()).isEqualTo((long) 1);
+		assertThat(registration.getLoadOnStartup()).isEqualTo((long) 1);
 		assertThat(registration.getRunAsRole()).isEqualTo(ROLE_NAME);
 	}
 

@@ -37,8 +37,8 @@ public class NoOpCacheManagerTests {
 	@Test
 	public void testGetCache() throws Exception {
 		Cache cache = this.manager.getCache("bucket");
-		assertThat((Object) cache).isNotNull();
-		assertThat((Object) this.manager.getCache("bucket")).isSameAs(cache);
+		assertThat(cache).isNotNull();
+		assertThat(this.manager.getCache("bucket")).isSameAs(cache);
 	}
 
 	@Test
@@ -48,7 +48,7 @@ public class NoOpCacheManagerTests {
 		assertThat(cache.getName()).isEqualTo(name);
 		Object key = new Object();
 		cache.put(key, new Object());
-		assertThat((Object) cache.get(key)).isNull();
+		assertThat(cache.get(key)).isNull();
 		assertThat(cache.get(key, Object.class)).isNull();
 		assertThat(cache.getNativeCache()).isSameAs(cache);
 	}
@@ -80,7 +80,7 @@ public class NoOpCacheManagerTests {
 			});
 		}
 		catch (Cache.ValueRetrievalException ex) {
-			assertThat((Object) ex.getCause()).isNotNull();
+			assertThat(ex.getCause()).isNotNull();
 			assertThat(ex.getCause().getClass()).isEqualTo(UnsupportedOperationException.class);
 		}
 	}

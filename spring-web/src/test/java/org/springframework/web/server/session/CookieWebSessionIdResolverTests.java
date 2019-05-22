@@ -40,9 +40,9 @@ public class CookieWebSessionIdResolverTests {
 		this.resolver.setSessionId(exchange, "123");
 
 		MultiValueMap<String, ResponseCookie> cookies = exchange.getResponse().getCookies();
-		assertThat((long) cookies.size()).isEqualTo((long) 1);
+		assertThat(cookies.size()).isEqualTo((long) 1);
 		ResponseCookie cookie = cookies.getFirst(this.resolver.getCookieName());
-		assertThat((Object) cookie).isNotNull();
+		assertThat(cookie).isNotNull();
 		assertThat(cookie.toString()).isEqualTo("SESSION=123; Path=/; Secure; HttpOnly; SameSite=Lax");
 	}
 
@@ -57,9 +57,9 @@ public class CookieWebSessionIdResolverTests {
 		this.resolver.setSessionId(exchange, "123");
 
 		MultiValueMap<String, ResponseCookie> cookies = exchange.getResponse().getCookies();
-		assertThat((long) cookies.size()).isEqualTo((long) 1);
+		assertThat(cookies.size()).isEqualTo((long) 1);
 		ResponseCookie cookie = cookies.getFirst(this.resolver.getCookieName());
-		assertThat((Object) cookie).isNotNull();
+		assertThat(cookie).isNotNull();
 		assertThat(cookie.toString()).isEqualTo("SESSION=123; Path=/; Domain=example.org; HttpOnly; SameSite=Strict");
 	}
 

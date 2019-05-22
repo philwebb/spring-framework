@@ -58,7 +58,7 @@ public class ParameterizableViewControllerTests {
 	@Test
 	public void handleRequestWithoutViewName() throws Exception {
 		ModelAndView mav = this.controller.handleRequest(this.request, new MockHttpServletResponse());
-		assertThat((Object) mav.getViewName()).isNull();
+		assertThat(mav.getViewName()).isNull();
 		assertThat(mav.getModel().isEmpty()).isTrue();
 	}
 
@@ -66,7 +66,7 @@ public class ParameterizableViewControllerTests {
 	public void handleRequestWithFlashAttributes() throws Exception {
 		this.request.setAttribute(DispatcherServlet.INPUT_FLASH_MAP_ATTRIBUTE, new ModelMap("name", "value"));
 		ModelAndView mav = this.controller.handleRequest(this.request, new MockHttpServletResponse());
-		assertThat((long) mav.getModel().size()).isEqualTo((long) 1);
+		assertThat(mav.getModel().size()).isEqualTo((long) 1);
 		assertThat(mav.getModel().get("name")).isEqualTo("value");
 	}
 
@@ -76,7 +76,7 @@ public class ParameterizableViewControllerTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mav = this.controller.handleRequest(this.request, response);
 
-		assertThat((Object) mav).isNull();
+		assertThat(mav).isNull();
 		assertThat(response.getHeader("Allow")).isEqualTo("GET,HEAD,OPTIONS");
 	}
 

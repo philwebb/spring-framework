@@ -61,17 +61,17 @@ public class HibernateSessionFlushingTests extends AbstractTransactionalJUnit4Sp
 	@Before
 	public void setup() {
 		assertInTransaction(true);
-		assertThat((Object) personService).as("PersonService should have been autowired.").isNotNull();
-		assertThat((Object) sessionFactory).as("SessionFactory should have been autowired.").isNotNull();
+		assertThat(personService).as("PersonService should have been autowired.").isNotNull();
+		assertThat(sessionFactory).as("SessionFactory should have been autowired.").isNotNull();
 	}
 
 
 	@Test
 	public void findSam() {
 		Person sam = personService.findByName(SAM);
-		assertThat((Object) sam).as("Should be able to find Sam").isNotNull();
+		assertThat(sam).as("Should be able to find Sam").isNotNull();
 		DriversLicense driversLicense = sam.getDriversLicense();
-		assertThat((Object) driversLicense).as("Sam's driver's license should not be null").isNotNull();
+		assertThat(driversLicense).as("Sam's driver's license should not be null").isNotNull();
 		assertThat(driversLicense.getNumber()).as("Verifying Sam's driver's license number").isEqualTo(Long.valueOf(1234));
 	}
 
@@ -93,9 +93,9 @@ public class HibernateSessionFlushingTests extends AbstractTransactionalJUnit4Sp
 		Person juergen = new Person(JUERGEN, driversLicense);
 		int numRows = countRowsInTable("person");
 		personService.save(juergen);
-		assertThat((long) countRowsInTable("person")).as("Verifying number of rows in the 'person' table.").isEqualTo((long) (numRows + 1));
-		assertThat((Object) personService.findByName(JUERGEN)).as("Should be able to save and retrieve Juergen").isNotNull();
-		assertThat((Object) juergen.getId()).as("Juergen's ID should have been set").isNotNull();
+		assertThat(countRowsInTable("person")).as("Verifying number of rows in the 'person' table.").isEqualTo((long) (numRows + 1));
+		assertThat(personService.findByName(JUERGEN)).as("Should be able to save and retrieve Juergen").isNotNull();
+		assertThat(juergen.getId()).as("Juergen's ID should have been set").isNotNull();
 	}
 
 	@Test
@@ -129,7 +129,7 @@ public class HibernateSessionFlushingTests extends AbstractTransactionalJUnit4Sp
 
 	private void updateSamWithNullDriversLicense() {
 		Person sam = personService.findByName(SAM);
-		assertThat((Object) sam).as("Should be able to find Sam").isNotNull();
+		assertThat(sam).as("Should be able to find Sam").isNotNull();
 		sam.setDriversLicense(null);
 		personService.save(sam);
 	}

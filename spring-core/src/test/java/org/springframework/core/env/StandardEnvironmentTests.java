@@ -404,7 +404,7 @@ public class StandardEnvironmentTests {
 		{
 			Map<?, ?> systemProperties = environment.getSystemProperties();
 			assertThat(systemProperties).isNotNull();
-			assertThat((Object) System.getProperties()).isSameAs(systemProperties);
+			assertThat(System.getProperties()).isSameAs(systemProperties);
 			assertThat(systemProperties.get(ALLOWED_PROPERTY_NAME)).isEqualTo(ALLOWED_PROPERTY_VALUE);
 			assertThat(systemProperties.get(DISALLOWED_PROPERTY_NAME)).isEqualTo(DISALLOWED_PROPERTY_VALUE);
 
@@ -472,7 +472,7 @@ public class StandardEnvironmentTests {
 		{
 			Map<String, Object> systemEnvironment = environment.getSystemEnvironment();
 			assertThat(systemEnvironment).isNotNull();
-			assertThat((Object) System.getenv()).isSameAs(systemEnvironment);
+			assertThat(System.getenv()).isSameAs(systemEnvironment);
 		}
 
 		SecurityManager oldSecurityManager = System.getSecurityManager();

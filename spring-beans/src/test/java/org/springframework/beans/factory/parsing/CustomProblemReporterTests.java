@@ -55,10 +55,10 @@ public class CustomProblemReporterTests {
 	@Test
 	public void testErrorsAreCollated() {
 		this.reader.loadBeanDefinitions(qualifiedResource(CustomProblemReporterTests.class, "context.xml"));
-		assertThat((long) this.problemReporter.getErrors().length).as("Incorrect number of errors collated").isEqualTo((long) 4);
+		assertThat(this.problemReporter.getErrors().length).as("Incorrect number of errors collated").isEqualTo((long) 4);
 
 		TestBean bean = (TestBean) this.beanFactory.getBean("validBean");
-		assertThat((Object) bean).isNotNull();
+		assertThat(bean).isNotNull();
 	}
 
 

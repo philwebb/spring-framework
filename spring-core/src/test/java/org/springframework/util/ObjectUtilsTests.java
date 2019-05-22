@@ -148,22 +148,22 @@ public class ObjectUtilsTests {
 		Integer[] wrapper = (Integer[]) ObjectUtils.toObjectArray(a);
 		assertThat(wrapper.length == 5).isTrue();
 		for (int i = 0; i < wrapper.length; i++) {
-			assertThat((long) wrapper[i].intValue()).isEqualTo((long) a[i]);
+			assertThat(wrapper[i].intValue()).isEqualTo((long) a[i]);
 		}
 	}
 
 	@Test
 	public void toObjectArrayWithNull() {
 		Object[] objects = ObjectUtils.toObjectArray(null);
-		assertThat((Object) objects).isNotNull();
-		assertThat((long) objects.length).isEqualTo((long) 0);
+		assertThat(objects).isNotNull();
+		assertThat(objects.length).isEqualTo((long) 0);
 	}
 
 	@Test
 	public void toObjectArrayWithEmptyPrimitiveArray() {
 		Object[] objects = ObjectUtils.toObjectArray(new byte[] {});
-		assertThat((Object) objects).isNotNull();
-		assertThat((long) objects.length).isEqualTo((long) 0);
+		assertThat(objects).isNotNull();
+		assertThat(objects.length).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -183,7 +183,7 @@ public class ObjectUtilsTests {
 		String[] array = new String[] {"foo", "bar"};
 		String newElement = "baz";
 		Object[] newArray = ObjectUtils.addObjectToArray(array, newElement);
-		assertThat((long) newArray.length).isEqualTo((long) 3);
+		assertThat(newArray.length).isEqualTo((long) 3);
 		assertThat(newArray[2]).isEqualTo(newElement);
 	}
 
@@ -192,7 +192,7 @@ public class ObjectUtilsTests {
 		String[] array = new String[0];
 		String newElement = "foo";
 		String[] newArray = ObjectUtils.addObjectToArray(array, newElement);
-		assertThat((long) newArray.length).isEqualTo((long) 1);
+		assertThat(newArray.length).isEqualTo((long) 1);
 		assertThat(newArray[0]).isEqualTo(newElement);
 	}
 
@@ -202,7 +202,7 @@ public class ObjectUtilsTests {
 		String[] array = new String[] {existingElement};
 		String newElement = "bar";
 		String[] newArray = ObjectUtils.addObjectToArray(array, newElement);
-		assertThat((long) newArray.length).isEqualTo((long) 2);
+		assertThat(newArray.length).isEqualTo((long) 2);
 		assertThat(newArray[0]).isEqualTo(existingElement);
 		assertThat(newArray[1]).isEqualTo(newElement);
 	}
@@ -212,7 +212,7 @@ public class ObjectUtilsTests {
 		String[] array = new String[] {null};
 		String newElement = "bar";
 		String[] newArray = ObjectUtils.addObjectToArray(array, newElement);
-		assertThat((long) newArray.length).isEqualTo((long) 2);
+		assertThat(newArray.length).isEqualTo((long) 2);
 		assertThat(newArray[0]).isEqualTo(null);
 		assertThat(newArray[1]).isEqualTo(newElement);
 	}
@@ -221,14 +221,14 @@ public class ObjectUtilsTests {
 	public void addObjectToNullArray() throws Exception {
 		String newElement = "foo";
 		String[] newArray = ObjectUtils.addObjectToArray(null, newElement);
-		assertThat((long) newArray.length).isEqualTo((long) 1);
+		assertThat(newArray.length).isEqualTo((long) 1);
 		assertThat(newArray[0]).isEqualTo(newElement);
 	}
 
 	@Test
 	public void addNullObjectToNullArray() throws Exception {
 		Object[] newArray = ObjectUtils.addObjectToArray(null, null);
-		assertThat((long) newArray.length).isEqualTo((long) 1);
+		assertThat(newArray.length).isEqualTo((long) 1);
 		assertThat(newArray[0]).isEqualTo(null);
 	}
 
@@ -242,14 +242,14 @@ public class ObjectUtilsTests {
 	@Deprecated
 	public void hashCodeWithBooleanFalse() {
 		int expected = Boolean.FALSE.hashCode();
-		assertThat((long) ObjectUtils.hashCode(false)).isEqualTo((long) expected);
+		assertThat(ObjectUtils.hashCode(false)).isEqualTo((long) expected);
 	}
 
 	@Test
 	@Deprecated
 	public void hashCodeWithBooleanTrue() {
 		int expected = Boolean.TRUE.hashCode();
-		assertThat((long) ObjectUtils.hashCode(true)).isEqualTo((long) expected);
+		assertThat(ObjectUtils.hashCode(true)).isEqualTo((long) expected);
 	}
 
 	@Test
@@ -257,7 +257,7 @@ public class ObjectUtilsTests {
 	public void hashCodeWithDouble() {
 		double dbl = 9830.43;
 		int expected = (new Double(dbl)).hashCode();
-		assertThat((long) ObjectUtils.hashCode(dbl)).isEqualTo((long) expected);
+		assertThat(ObjectUtils.hashCode(dbl)).isEqualTo((long) expected);
 	}
 
 	@Test
@@ -265,7 +265,7 @@ public class ObjectUtilsTests {
 	public void hashCodeWithFloat() {
 		float flt = 34.8f;
 		int expected = (new Float(flt)).hashCode();
-		assertThat((long) ObjectUtils.hashCode(flt)).isEqualTo((long) expected);
+		assertThat(ObjectUtils.hashCode(flt)).isEqualTo((long) expected);
 	}
 
 	@Test
@@ -273,7 +273,7 @@ public class ObjectUtilsTests {
 	public void hashCodeWithLong() {
 		long lng = 883L;
 		int expected = (new Long(lng)).hashCode();
-		assertThat((long) ObjectUtils.hashCode(lng)).isEqualTo((long) expected);
+		assertThat(ObjectUtils.hashCode(lng)).isEqualTo((long) expected);
 	}
 
 	@Test
@@ -397,12 +397,12 @@ public class ObjectUtilsTests {
 		boolean[] array = {true, false};
 		int actual = ObjectUtils.nullSafeHashCode(array);
 
-		assertThat((long) actual).isEqualTo((long) expected);
+		assertThat(actual).isEqualTo((long) expected);
 	}
 
 	@Test
 	public void nullSafeHashCodeWithBooleanArrayEqualToNull() {
-		assertThat((long) ObjectUtils.nullSafeHashCode((boolean[]) null)).isEqualTo((long) 0);
+		assertThat(ObjectUtils.nullSafeHashCode((boolean[]) null)).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -413,12 +413,12 @@ public class ObjectUtilsTests {
 		byte[] array = {8, 10};
 		int actual = ObjectUtils.nullSafeHashCode(array);
 
-		assertThat((long) actual).isEqualTo((long) expected);
+		assertThat(actual).isEqualTo((long) expected);
 	}
 
 	@Test
 	public void nullSafeHashCodeWithByteArrayEqualToNull() {
-		assertThat((long) ObjectUtils.nullSafeHashCode((byte[]) null)).isEqualTo((long) 0);
+		assertThat(ObjectUtils.nullSafeHashCode((byte[]) null)).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -429,12 +429,12 @@ public class ObjectUtilsTests {
 		char[] array = {'a', 'E'};
 		int actual = ObjectUtils.nullSafeHashCode(array);
 
-		assertThat((long) actual).isEqualTo((long) expected);
+		assertThat(actual).isEqualTo((long) expected);
 	}
 
 	@Test
 	public void nullSafeHashCodeWithCharArrayEqualToNull() {
-		assertThat((long) ObjectUtils.nullSafeHashCode((char[]) null)).isEqualTo((long) 0);
+		assertThat(ObjectUtils.nullSafeHashCode((char[]) null)).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -447,12 +447,12 @@ public class ObjectUtilsTests {
 		double[] array = {8449.65, 9944.923};
 		int actual = ObjectUtils.nullSafeHashCode(array);
 
-		assertThat((long) actual).isEqualTo((long) expected);
+		assertThat(actual).isEqualTo((long) expected);
 	}
 
 	@Test
 	public void nullSafeHashCodeWithDoubleArrayEqualToNull() {
-		assertThat((long) ObjectUtils.nullSafeHashCode((double[]) null)).isEqualTo((long) 0);
+		assertThat(ObjectUtils.nullSafeHashCode((double[]) null)).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -463,12 +463,12 @@ public class ObjectUtilsTests {
 		float[] array = {9.6f, 7.4f};
 		int actual = ObjectUtils.nullSafeHashCode(array);
 
-		assertThat((long) actual).isEqualTo((long) expected);
+		assertThat(actual).isEqualTo((long) expected);
 	}
 
 	@Test
 	public void nullSafeHashCodeWithFloatArrayEqualToNull() {
-		assertThat((long) ObjectUtils.nullSafeHashCode((float[]) null)).isEqualTo((long) 0);
+		assertThat(ObjectUtils.nullSafeHashCode((float[]) null)).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -479,12 +479,12 @@ public class ObjectUtilsTests {
 		int[] array = {884, 340};
 		int actual = ObjectUtils.nullSafeHashCode(array);
 
-		assertThat((long) actual).isEqualTo((long) expected);
+		assertThat(actual).isEqualTo((long) expected);
 	}
 
 	@Test
 	public void nullSafeHashCodeWithIntArrayEqualToNull() {
-		assertThat((long) ObjectUtils.nullSafeHashCode((int[]) null)).isEqualTo((long) 0);
+		assertThat(ObjectUtils.nullSafeHashCode((int[]) null)).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -497,18 +497,18 @@ public class ObjectUtilsTests {
 		long[] array = {7993L, 84320L};
 		int actual = ObjectUtils.nullSafeHashCode(array);
 
-		assertThat((long) actual).isEqualTo((long) expected);
+		assertThat(actual).isEqualTo((long) expected);
 	}
 
 	@Test
 	public void nullSafeHashCodeWithLongArrayEqualToNull() {
-		assertThat((long) ObjectUtils.nullSafeHashCode((long[]) null)).isEqualTo((long) 0);
+		assertThat(ObjectUtils.nullSafeHashCode((long[]) null)).isEqualTo((long) 0);
 	}
 
 	@Test
 	public void nullSafeHashCodeWithObject() {
 		String str = "Luke";
-		assertThat((long) ObjectUtils.nullSafeHashCode(str)).isEqualTo((long) str.hashCode());
+		assertThat(ObjectUtils.nullSafeHashCode(str)).isEqualTo((long) str.hashCode());
 	}
 
 	@Test
@@ -519,12 +519,12 @@ public class ObjectUtilsTests {
 		Object[] array = {"Leia", "Han"};
 		int actual = ObjectUtils.nullSafeHashCode(array);
 
-		assertThat((long) actual).isEqualTo((long) expected);
+		assertThat(actual).isEqualTo((long) expected);
 	}
 
 	@Test
 	public void nullSafeHashCodeWithObjectArrayEqualToNull() {
-		assertThat((long) ObjectUtils.nullSafeHashCode((Object[]) null)).isEqualTo((long) 0);
+		assertThat(ObjectUtils.nullSafeHashCode((Object[]) null)).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -592,7 +592,7 @@ public class ObjectUtilsTests {
 
 	@Test
 	public void nullSafeHashCodeWithObjectEqualToNull() {
-		assertThat((long) ObjectUtils.nullSafeHashCode((Object) null)).isEqualTo((long) 0);
+		assertThat(ObjectUtils.nullSafeHashCode((Object) null)).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -603,12 +603,12 @@ public class ObjectUtilsTests {
 		short[] array = {70, 8};
 		int actual = ObjectUtils.nullSafeHashCode(array);
 
-		assertThat((long) actual).isEqualTo((long) expected);
+		assertThat(actual).isEqualTo((long) expected);
 	}
 
 	@Test
 	public void nullSafeHashCodeWithShortArrayEqualToNull() {
-		assertThat((long) ObjectUtils.nullSafeHashCode((short[]) null)).isEqualTo((long) 0);
+		assertThat(ObjectUtils.nullSafeHashCode((short[]) null)).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -813,7 +813,7 @@ public class ObjectUtilsTests {
 
 	private void assertEqualHashCodes(int expected, Object array) {
 		int actual = ObjectUtils.nullSafeHashCode(array);
-		assertThat((long) actual).isEqualTo((long) expected);
+		assertThat(actual).isEqualTo((long) expected);
 		assertThat(array.hashCode() != actual).isTrue();
 	}
 

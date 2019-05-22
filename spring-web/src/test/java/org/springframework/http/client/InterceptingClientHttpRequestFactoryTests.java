@@ -66,7 +66,7 @@ public class InterceptingClientHttpRequestFactoryTests {
 		assertThat(((NoOpInterceptor) interceptors.get(1)).invoked).isTrue();
 		assertThat(((NoOpInterceptor) interceptors.get(2)).invoked).isTrue();
 		assertThat(requestMock.executed).isTrue();
-		assertThat((Object) response).isSameAs(responseMock);
+		assertThat(response).isSameAs(responseMock);
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class InterceptingClientHttpRequestFactoryTests {
 
 		assertThat(((NoOpInterceptor) interceptors.get(1)).invoked).isFalse();
 		assertThat(requestMock.executed).isFalse();
-		assertThat((Object) response).isSameAs(responseMock);
+		assertThat(response).isSameAs(responseMock);
 	}
 
 	@Test
@@ -111,7 +111,7 @@ public class InterceptingClientHttpRequestFactoryTests {
 			@Override
 			public ClientHttpResponse execute() throws IOException {
 				List<String> headerValues = getHeaders().get(headerName);
-				assertThat((long) headerValues.size()).isEqualTo((long) 2);
+				assertThat(headerValues.size()).isEqualTo((long) 2);
 				assertThat(headerValues.get(0)).isEqualTo(headerValue);
 				assertThat(headerValues.get(1)).isEqualTo(otherValue);
 				return super.execute();

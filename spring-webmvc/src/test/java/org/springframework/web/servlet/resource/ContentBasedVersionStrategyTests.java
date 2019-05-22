@@ -52,7 +52,7 @@ public class ContentBasedVersionStrategyTests {
 		String path = "font-awesome/css/font-awesome.min-" + hash + ".css";
 
 		assertThat(this.versionStrategy.extractVersion(path)).isEqualTo(hash);
-		assertThat((Object) this.versionStrategy.extractVersion("foo/bar.css")).isNull();
+		assertThat(this.versionStrategy.extractVersion("foo/bar.css")).isNull();
 	}
 
 	@Test

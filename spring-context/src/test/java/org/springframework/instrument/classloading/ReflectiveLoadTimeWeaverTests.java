@@ -53,7 +53,7 @@ public class ReflectiveLoadTimeWeaverTests {
 				return "CAFEDEAD".getBytes();
 			}
 		});
-		assertThat((long) classLoader.getNumTimesGetThrowawayClassLoaderCalled()).isEqualTo((long) 1);
+		assertThat(classLoader.getNumTimesGetThrowawayClassLoaderCalled()).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -66,7 +66,7 @@ public class ReflectiveLoadTimeWeaverTests {
 	public void testGetThrowawayClassLoaderWithClassLoaderThatDoesNotExposeAGetThrowawayClassLoaderMethodYieldsFallbackClassLoader() {
 		ReflectiveLoadTimeWeaver weaver = new ReflectiveLoadTimeWeaver(new JustAddTransformerClassLoader());
 		ClassLoader throwawayClassLoader = weaver.getThrowawayClassLoader();
-		assertThat((Object) throwawayClassLoader).isNotNull();
+		assertThat(throwawayClassLoader).isNotNull();
 	}
 
 	@Test
@@ -74,8 +74,8 @@ public class ReflectiveLoadTimeWeaverTests {
 		TotallyCompliantClassLoader classLoader = new TotallyCompliantClassLoader();
 		ReflectiveLoadTimeWeaver weaver = new ReflectiveLoadTimeWeaver(classLoader);
 		ClassLoader throwawayClassLoader = weaver.getThrowawayClassLoader();
-		assertThat((Object) throwawayClassLoader).isNotNull();
-		assertThat((long) classLoader.getNumTimesGetThrowawayClassLoaderCalled()).isEqualTo((long) 1);
+		assertThat(throwawayClassLoader).isNotNull();
+		assertThat(classLoader.getNumTimesGetThrowawayClassLoaderCalled()).isEqualTo((long) 1);
 	}
 
 

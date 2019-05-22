@@ -46,21 +46,21 @@ public class AnnotationConfigContextLoaderUtilsTests {
 	@Test
 	public void detectDefaultConfigurationClassesWithoutConfigurationClass() {
 		Class<?>[] configClasses = detectDefaultConfigurationClasses(NoConfigTestCase.class);
-		assertThat((Object) configClasses).isNotNull();
-		assertThat((long) configClasses.length).isEqualTo((long) 0);
+		assertThat(configClasses).isNotNull();
+		assertThat(configClasses.length).isEqualTo((long) 0);
 	}
 
 	@Test
 	public void detectDefaultConfigurationClassesWithExplicitConfigurationAnnotation() {
 		Class<?>[] configClasses = detectDefaultConfigurationClasses(ExplicitConfigTestCase.class);
-		assertThat((Object) configClasses).isNotNull();
+		assertThat(configClasses).isNotNull();
 		assertThat(configClasses).isEqualTo(new Class<?>[] { ExplicitConfigTestCase.Config.class });
 	}
 
 	@Test
 	public void detectDefaultConfigurationClassesWithConfigurationMetaAnnotation() {
 		Class<?>[] configClasses = detectDefaultConfigurationClasses(MetaAnnotatedConfigTestCase.class);
-		assertThat((Object) configClasses).isNotNull();
+		assertThat(configClasses).isNotNull();
 		assertThat(configClasses).isEqualTo(new Class<?>[] { MetaAnnotatedConfigTestCase.Config.class });
 	}
 

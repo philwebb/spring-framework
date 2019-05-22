@@ -132,7 +132,7 @@ public class SockJsSessionTests extends AbstractSockJsSessionTests<TestSockJsSes
 		this.session.delegateConnectionClosed(CloseStatus.GOING_AWAY);
 
 		assertClosed();
-		assertThat((long) this.session.getNumberOfLastActiveTimeUpdates()).isEqualTo((long) 1);
+		assertThat(this.session.getNumberOfLastActiveTimeUpdates()).isEqualTo((long) 1);
 		verify(this.webSocketHandler).afterConnectionClosed(this.session, CloseStatus.GOING_AWAY);
 	}
 
@@ -141,17 +141,17 @@ public class SockJsSessionTests extends AbstractSockJsSessionTests<TestSockJsSes
 		assertNew();
 
 		this.session.close();
-		assertThat((Object) this.session.getCloseStatus()).as("Close not ignored for a new session").isNull();
+		assertThat(this.session.getCloseStatus()).as("Close not ignored for a new session").isNull();
 
 		this.session.delegateConnectionEstablished();
 		assertOpen();
 
 		this.session.close();
 		assertClosed();
-		assertThat((long) this.session.getCloseStatus().getCode()).isEqualTo((long) 3000);
+		assertThat(this.session.getCloseStatus().getCode()).isEqualTo((long) 3000);
 
 		this.session.close(CloseStatus.SERVER_ERROR);
-		assertThat((long) this.session.getCloseStatus().getCode()).as("Close should be ignored if already closed").isEqualTo((long) 3000);
+		assertThat(this.session.getCloseStatus().getCode()).as("Close should be ignored if already closed").isEqualTo((long) 3000);
 	}
 
 	@Test
@@ -173,10 +173,10 @@ public class SockJsSessionTests extends AbstractSockJsSessionTests<TestSockJsSes
 		this.session.setActive(true);
 		this.session.close();
 
-		assertThat((long) this.session.getSockJsFramesWritten().size()).isEqualTo((long) 1);
+		assertThat(this.session.getSockJsFramesWritten().size()).isEqualTo((long) 1);
 		assertThat(this.session.getSockJsFramesWritten().get(0)).isEqualTo(SockJsFrame.closeFrameGoAway());
 
-		assertThat((long) this.session.getNumberOfLastActiveTimeUpdates()).isEqualTo((long) 1);
+		assertThat(this.session.getNumberOfLastActiveTimeUpdates()).isEqualTo((long) 1);
 		assertThat(this.session.didCancelHeartbeat()).isTrue();
 
 		assertThat(this.session.getCloseStatus()).isEqualTo(new CloseStatus(3000, "Go away!"));
@@ -222,7 +222,7 @@ public class SockJsSessionTests extends AbstractSockJsSessionTests<TestSockJsSes
 	public void writeFrame() throws Exception {
 		this.session.writeFrame(SockJsFrame.openFrame());
 
-		assertThat((long) this.session.getSockJsFramesWritten().size()).isEqualTo((long) 1);
+		assertThat(this.session.getSockJsFramesWritten().size()).isEqualTo((long) 1);
 		assertThat(this.session.getSockJsFramesWritten().get(0)).isEqualTo(SockJsFrame.openFrame());
 	}
 
@@ -242,7 +242,7 @@ public class SockJsSessionTests extends AbstractSockJsSessionTests<TestSockJsSes
 		this.session.setActive(true);
 		this.session.sendHeartbeat();
 
-		assertThat((long) this.session.getSockJsFramesWritten().size()).isEqualTo((long) 1);
+		assertThat(this.session.getSockJsFramesWritten().size()).isEqualTo((long) 1);
 		assertThat(this.session.getSockJsFramesWritten().get(0)).isEqualTo(SockJsFrame.heartbeatFrame());
 
 		verify(this.taskScheduler).schedule(any(Runnable.class), any(Date.class));

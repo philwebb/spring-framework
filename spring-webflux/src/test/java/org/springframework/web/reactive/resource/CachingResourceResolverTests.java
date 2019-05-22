@@ -72,7 +72,7 @@ public class CachingResourceResolverTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get(""));
 		Resource actual = this.chain.resolveResource(exchange, "bar.css", this.locations).block(TIMEOUT);
 
-		assertThat((Object) actual).isNotSameAs(expected);
+		assertThat(actual).isNotSameAs(expected);
 		assertThat(actual).isEqualTo(expected);
 	}
 
@@ -84,13 +84,13 @@ public class CachingResourceResolverTests {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get(""));
 		Resource actual = this.chain.resolveResource(exchange, "bar.css", this.locations).block(TIMEOUT);
 
-		assertThat((Object) actual).isSameAs(expected);
+		assertThat(actual).isSameAs(expected);
 	}
 
 	@Test
 	public void resolveResourceInternalNoMatch() {
 		MockServerWebExchange exchange = MockServerWebExchange.from(get(""));
-		assertThat((Object) this.chain.resolveResource(exchange, "invalid.css", this.locations).block(TIMEOUT)).isNull();
+		assertThat(this.chain.resolveResource(exchange, "invalid.css", this.locations).block(TIMEOUT)).isNull();
 	}
 
 	@Test
@@ -112,7 +112,7 @@ public class CachingResourceResolverTests {
 
 	@Test
 	public void resolverUrlPathNoMatch() {
-		assertThat((Object) this.chain.resolveUrlPath("invalid.css", this.locations).block(TIMEOUT)).isNull();
+		assertThat(this.chain.resolveUrlPath("invalid.css", this.locations).block(TIMEOUT)).isNull();
 	}
 
 	@Test
@@ -169,10 +169,10 @@ public class CachingResourceResolverTests {
 
 		String file = "bar.css";
 		MockServerWebExchange exchange = MockServerWebExchange.from(get(file));
-		assertThat((Object) this.chain.resolveResource(exchange, file, this.locations).block(TIMEOUT)).isSameAs(resource);
+		assertThat(this.chain.resolveResource(exchange, file, this.locations).block(TIMEOUT)).isSameAs(resource);
 
 		exchange = MockServerWebExchange.from(get(file).header("Accept-Encoding", "gzip"));
-		assertThat((Object) this.chain.resolveResource(exchange, file, this.locations).block(TIMEOUT)).isSameAs(gzipped);
+		assertThat(this.chain.resolveResource(exchange, file, this.locations).block(TIMEOUT)).isSameAs(gzipped);
 	}
 
 	private static String resourceKey(String key) {

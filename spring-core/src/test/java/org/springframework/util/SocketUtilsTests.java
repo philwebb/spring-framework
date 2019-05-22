@@ -68,7 +68,7 @@ public class SocketUtilsTests {
 	public void findAvailableTcpPortWithMinPortEqualToMaxPort() {
 		int minMaxPort = SocketUtils.findAvailableTcpPort();
 		int port = SocketUtils.findAvailableTcpPort(minMaxPort, minMaxPort);
-		assertThat((long) port).isEqualTo((long) minMaxPort);
+		assertThat(port).isEqualTo((long) minMaxPort);
 	}
 
 	@Test
@@ -232,7 +232,7 @@ public class SocketUtilsTests {
 	}
 
 	private void assertAvailablePorts(SortedSet<Integer> ports, int numRequested, int minPort, int maxPort) {
-		assertThat((long) ports.size()).as("number of ports requested").isEqualTo((long) numRequested);
+		assertThat(ports.size()).as("number of ports requested").isEqualTo((long) numRequested);
 		for (int port : ports) {
 			assertPortInRange(port, minPort, maxPort);
 		}

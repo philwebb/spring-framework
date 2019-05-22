@@ -56,8 +56,8 @@ public class BasicAnnotationConfigWacTests extends AbstractBasicWacTests {
 
 	@Test
 	public void servletContextAwareBeanProcessed() {
-		assertThat((Object) servletContextAwareBean).isNotNull();
-		assertThat((Object) servletContextAwareBean.servletContext).isNotNull();
+		assertThat(servletContextAwareBean).isNotNull();
+		assertThat(servletContextAwareBean.servletContext).isNotNull();
 	}
 
 }

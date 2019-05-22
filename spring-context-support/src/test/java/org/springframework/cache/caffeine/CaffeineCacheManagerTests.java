@@ -42,17 +42,17 @@ public class CaffeineCacheManagerTests {
 		boolean condition2 = cache1 instanceof CaffeineCache;
 		assertThat(condition2).isTrue();
 		Cache cache1again = cm.getCache("c1");
-		assertThat((Object) cache1).isSameAs(cache1again);
+		assertThat(cache1).isSameAs(cache1again);
 		Cache cache2 = cm.getCache("c2");
 		boolean condition1 = cache2 instanceof CaffeineCache;
 		assertThat(condition1).isTrue();
 		Cache cache2again = cm.getCache("c2");
-		assertThat((Object) cache2).isSameAs(cache2again);
+		assertThat(cache2).isSameAs(cache2again);
 		Cache cache3 = cm.getCache("c3");
 		boolean condition = cache3 instanceof CaffeineCache;
 		assertThat(condition).isTrue();
 		Cache cache3again = cm.getCache("c3");
-		assertThat((Object) cache3).isSameAs(cache3again);
+		assertThat(cache3).isSameAs(cache3again);
 
 		cache1.put("key1", "value1");
 		assertThat(cache1.get("key1").get()).isEqualTo("value1");
@@ -61,7 +61,7 @@ public class CaffeineCacheManagerTests {
 		cache1.put("key3", null);
 		assertThat(cache1.get("key3").get()).isNull();
 		cache1.evict("key3");
-		assertThat((Object) cache1.get("key3")).isNull();
+		assertThat(cache1.get("key3")).isNull();
 	}
 
 	@Test
@@ -71,14 +71,14 @@ public class CaffeineCacheManagerTests {
 		boolean condition3 = cache1 instanceof CaffeineCache;
 		assertThat(condition3).isTrue();
 		Cache cache1again = cm.getCache("c1");
-		assertThat((Object) cache1).isSameAs(cache1again);
+		assertThat(cache1).isSameAs(cache1again);
 		Cache cache2 = cm.getCache("c2");
 		boolean condition2 = cache2 instanceof CaffeineCache;
 		assertThat(condition2).isTrue();
 		Cache cache2again = cm.getCache("c2");
-		assertThat((Object) cache2).isSameAs(cache2again);
+		assertThat(cache2).isSameAs(cache2again);
 		Cache cache3 = cm.getCache("c3");
-		assertThat((Object) cache3).isNull();
+		assertThat(cache3).isNull();
 
 		cache1.put("key1", "value1");
 		assertThat(cache1.get("key1").get()).isEqualTo("value1");
@@ -87,7 +87,7 @@ public class CaffeineCacheManagerTests {
 		cache1.put("key3", null);
 		assertThat(cache1.get("key3").get()).isNull();
 		cache1.evict("key3");
-		assertThat((Object) cache1.get("key3")).isNull();
+		assertThat(cache1.get("key3")).isNull();
 
 		cm.setAllowNullValues(false);
 		Cache cache1x = cm.getCache("c1");
@@ -99,7 +99,7 @@ public class CaffeineCacheManagerTests {
 		assertThat(condition).isTrue();
 		assertThat(cache2x != cache2).isTrue();
 		Cache cache3x = cm.getCache("c3");
-		assertThat((Object) cache3x).isNull();
+		assertThat(cache3x).isNull();
 
 		cache1x.put("key1", "value1");
 		assertThat(cache1x.get("key1").get()).isEqualTo("value1");
@@ -112,7 +112,7 @@ public class CaffeineCacheManagerTests {
 		cache1y.put("key3", null);
 		assertThat(cache1y.get("key3").get()).isNull();
 		cache1y.evict("key3");
-		assertThat((Object) cache1y.get("key3")).isNull();
+		assertThat(cache1y.get("key3")).isNull();
 	}
 
 	@Test
@@ -127,7 +127,7 @@ public class CaffeineCacheManagerTests {
 
 		cm.setCaffeine(caffeine); // Set same instance
 		Cache cache1xx = cm.getCache("c1");
-		assertThat((Object) cache1xx).isSameAs(cache1x);
+		assertThat(cache1xx).isSameAs(cache1x);
 	}
 
 	@Test
@@ -162,15 +162,15 @@ public class CaffeineCacheManagerTests {
 
 		cm.setCacheLoader(loader); // Set same instance
 		Cache cache1xx = cm.getCache("c1");
-		assertThat((Object) cache1xx).isSameAs(cache1x);
+		assertThat(cache1xx).isSameAs(cache1x);
 	}
 
 	@Test
 	public void setCacheNameNullRestoreDynamicMode() {
 		CaffeineCacheManager cm = new CaffeineCacheManager("c1");
-		assertThat((Object) cm.getCache("someCache")).isNull();
+		assertThat(cm.getCache("someCache")).isNull();
 		cm.setCacheNames(null);
-		assertThat((Object) cm.getCache("someCache")).isNotNull();
+		assertThat(cm.getCache("someCache")).isNotNull();
 	}
 
 	@Test
@@ -187,10 +187,10 @@ public class CaffeineCacheManagerTests {
 		});
 		Cache cache1 = cm.getCache("c1");
 		Cache.ValueWrapper value = cache1.get("ping");
-		assertThat((Object) value).isNotNull();
+		assertThat(value).isNotNull();
 		assertThat(value.get()).isEqualTo("pong");
 
-		assertThatIllegalArgumentException().isThrownBy(() -> assertThat((Object) cache1.get("foo")).isNull())
+		assertThatIllegalArgumentException().isThrownBy(() -> assertThat(cache1.get("foo")).isNull())
 			.withMessageContaining("I only know ping");
 	}
 

@@ -86,10 +86,10 @@ public class SQLStateSQLExceptionTranslatorTests {
 		SQLException ex = new SQLException(REASON, sqlState);
 		SQLExceptionTranslator translator = new SQLStateSQLExceptionTranslator();
 		DataAccessException dax = translator.translate(TASK, SQL, ex);
-		assertThat((Object) dax).as("Translation must *never* result in a null DataAccessException being returned.").isNotNull();
+		assertThat(dax).as("Translation must *never* result in a null DataAccessException being returned.").isNotNull();
 		assertThat(dax.getClass()).as("Wrong DataAccessException type returned as the result of the translation").isEqualTo(dataAccessExceptionType);
-		assertThat((Object) dax.getCause()).as("The original SQLException must be preserved in the translated DataAccessException").isNotNull();
-		assertThat((Object) dax.getCause()).as("The exact same original SQLException must be preserved in the translated DataAccessException").isSameAs(ex);
+		assertThat(dax.getCause()).as("The original SQLException must be preserved in the translated DataAccessException").isNotNull();
+		assertThat(dax.getCause()).as("The exact same original SQLException must be preserved in the translated DataAccessException").isSameAs(ex);
 	}
 
 }

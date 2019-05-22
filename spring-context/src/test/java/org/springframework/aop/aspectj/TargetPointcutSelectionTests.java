@@ -64,17 +64,17 @@ public class TargetPointcutSelectionTests {
 	@Test
 	public void targetSelectionForMatchedType() {
 		testImpl1.interfaceMethod();
-		assertThat((long) testAspectForTestImpl1.count).as("Should have been advised by POJO advice for impl").isEqualTo((long) 1);
-		assertThat((long) testAspectForAbstractTestImpl.count).as("Should have been advised by POJO advice for base type").isEqualTo((long) 1);
-		assertThat((long) testInterceptor.count).as("Should have been advised by advisor").isEqualTo((long) 1);
+		assertThat(testAspectForTestImpl1.count).as("Should have been advised by POJO advice for impl").isEqualTo((long) 1);
+		assertThat(testAspectForAbstractTestImpl.count).as("Should have been advised by POJO advice for base type").isEqualTo((long) 1);
+		assertThat(testInterceptor.count).as("Should have been advised by advisor").isEqualTo((long) 1);
 	}
 
 	@Test
 	public void targetNonSelectionForMismatchedType() {
 		testImpl2.interfaceMethod();
-		assertThat((long) testAspectForTestImpl1.count).as("Shouldn't have been advised by POJO advice for impl").isEqualTo((long) 0);
-		assertThat((long) testAspectForAbstractTestImpl.count).as("Should have been advised by POJO advice for base type").isEqualTo((long) 1);
-		assertThat((long) testInterceptor.count).as("Shouldn't have been advised by advisor").isEqualTo((long) 0);
+		assertThat(testAspectForTestImpl1.count).as("Shouldn't have been advised by POJO advice for impl").isEqualTo((long) 0);
+		assertThat(testAspectForAbstractTestImpl.count).as("Should have been advised by POJO advice for base type").isEqualTo((long) 1);
+		assertThat(testInterceptor.count).as("Shouldn't have been advised by advisor").isEqualTo((long) 0);
 	}
 
 

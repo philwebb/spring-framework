@@ -250,7 +250,7 @@ public class ScheduledAndTransactionalAnnotationIntegrationTests {
 		@Override
 		public int getInvocationCount() {
 			if (this.myAspect != null) {
-				assertThat((long) this.myAspect.count.get()).isEqualTo((long) this.count.get());
+				assertThat(this.myAspect.count.get()).isEqualTo((long) this.count.get());
 			}
 			return this.count.get();
 		}

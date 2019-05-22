@@ -32,7 +32,7 @@ import org.springframework.web.servlet.LocaleContextResolver;
 import org.springframework.web.servlet.LocaleResolver;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.fail;
+import static org.assertj.core.api.Assertions.fail;
 
 /**
  * @author Juergen Hoeller
@@ -94,7 +94,7 @@ public class LocaleResolverTests {
 			}
 			boolean condition2 = localeContext instanceof TimeZoneAwareLocaleContext;
 			assertThat(condition2).isTrue();
-			assertThat((Object) ((TimeZoneAwareLocaleContext) localeContext).getTimeZone()).isNull();
+			assertThat(((TimeZoneAwareLocaleContext) localeContext).getTimeZone()).isNull();
 
 			if (localeContextResolver instanceof AbstractLocaleContextResolver) {
 				((AbstractLocaleContextResolver) localeContextResolver).setDefaultTimeZone(TimeZone.getTimeZone("GMT+1"));
@@ -112,7 +112,7 @@ public class LocaleResolverTests {
 					assertThat(TimeZone.getTimeZone("GMT+1")).isEqualTo(((TimeZoneAwareLocaleContext) localeContext).getTimeZone());
 				}
 				else {
-					assertThat((Object) ((TimeZoneAwareLocaleContext) localeContext).getTimeZone()).isNull();
+					assertThat(((TimeZoneAwareLocaleContext) localeContext).getTimeZone()).isNull();
 				}
 
 				localeContextResolver.setLocaleContext(request, response,

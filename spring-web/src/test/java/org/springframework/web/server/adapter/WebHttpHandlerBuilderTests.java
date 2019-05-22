@@ -55,7 +55,7 @@ public class WebHttpHandlerBuilderTests {
 		HttpHandler httpHandler = WebHttpHandlerBuilder.applicationContext(context).build();
 		boolean condition = httpHandler instanceof HttpWebHandlerAdapter;
 		assertThat(condition).isTrue();
-		assertThat((Object) ((HttpWebHandlerAdapter) httpHandler).getApplicationContext()).isSameAs(context);
+		assertThat(((HttpWebHandlerAdapter) httpHandler).getApplicationContext()).isSameAs(context);
 
 		MockServerHttpRequest request = MockServerHttpRequest.get("/").build();
 		MockServerHttpResponse response = new MockServerHttpResponse();
@@ -110,8 +110,8 @@ public class WebHttpHandlerBuilderTests {
 		context.refresh();
 
 		WebHttpHandlerBuilder builder = WebHttpHandlerBuilder.applicationContext(context);
-		assertThat((Object) ((HttpWebHandlerAdapter) builder.build()).getApplicationContext()).isSameAs(context);
-		assertThat((Object) ((HttpWebHandlerAdapter) builder.clone().build()).getApplicationContext()).isSameAs(context);
+		assertThat(((HttpWebHandlerAdapter) builder.build()).getApplicationContext()).isSameAs(context);
+		assertThat(((HttpWebHandlerAdapter) builder.clone().build()).getApplicationContext()).isSameAs(context);
 	}
 
 

@@ -64,7 +64,7 @@ public class WebSocketConnectionManagerTests {
 		WebSocketHandlerDecorator loggingHandler = (WebSocketHandlerDecorator) client.webSocketHandler;
 		assertThat(loggingHandler.getClass()).isEqualTo(LoggingWebSocketHandlerDecorator.class);
 
-		assertThat((Object) loggingHandler.getDelegate()).isSameAs(handler);
+		assertThat(loggingHandler.getDelegate()).isSameAs(handler);
 	}
 
 	@Test

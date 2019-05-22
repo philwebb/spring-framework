@@ -87,8 +87,8 @@ public class WebSocketHandshakeTests extends AbstractWebSocketIntegrationTests {
 		session.sendMessage(new PongMessage());
 
 		serverHandler.await();
-		assertThat((Object) serverHandler.getTransportError()).isNull();
-		assertThat((long) serverHandler.getReceivedMessages().size()).isEqualTo((long) 1);
+		assertThat(serverHandler.getTransportError()).isNull();
+		assertThat(serverHandler.getReceivedMessages().size()).isEqualTo((long) 1);
 		assertThat(serverHandler.getReceivedMessages().get(0).getClass()).isEqualTo(PongMessage.class);
 	}
 

@@ -61,8 +61,8 @@ public class MessageRequestReplyTemplateTests {
 		Message<?> actual = this.template.sendAndReceive(requestMessage);
 
 		assertThat(this.template.destination).isEqualTo("home");
-		assertThat((Object) this.template.requestMessage).isSameAs(requestMessage);
-		assertThat((Object) actual).isSameAs(responseMessage);
+		assertThat(this.template.requestMessage).isSameAs(requestMessage);
+		assertThat(actual).isSameAs(responseMessage);
 	}
 
 	@Test
@@ -79,8 +79,8 @@ public class MessageRequestReplyTemplateTests {
 		Message<?> actual = this.template.sendAndReceive("somewhere", requestMessage);
 
 		assertThat(this.template.destination).isEqualTo("somewhere");
-		assertThat((Object) this.template.requestMessage).isSameAs(requestMessage);
-		assertThat((Object) actual).isSameAs(responseMessage);
+		assertThat(this.template.requestMessage).isSameAs(requestMessage);
+		assertThat(actual).isSameAs(responseMessage);
 	}
 
 	@Test
@@ -92,7 +92,7 @@ public class MessageRequestReplyTemplateTests {
 
 		assertThat(this.template.destination).isEqualTo("home");
 		assertThat(this.template.requestMessage.getPayload()).isSameAs("request");
-		assertThat((Object) response).isSameAs("response");
+		assertThat(response).isSameAs("response");
 	}
 
 	@Test
@@ -103,7 +103,7 @@ public class MessageRequestReplyTemplateTests {
 
 		assertThat(this.template.destination).isEqualTo("somewhere");
 		assertThat(this.template.requestMessage.getPayload()).isSameAs("request");
-		assertThat((Object) response).isSameAs("response");
+		assertThat(response).isSameAs("response");
 	}
 
 	@Test
@@ -115,7 +115,7 @@ public class MessageRequestReplyTemplateTests {
 		assertThat(this.template.destination).isEqualTo("somewhere");
 		assertThat(this.template.requestMessage.getHeaders().get("key")).isEqualTo("value");
 		assertThat(this.template.requestMessage.getPayload()).isSameAs("request");
-		assertThat((Object) response).isSameAs("response");
+		assertThat(response).isSameAs("response");
 	}
 
 	@Test
@@ -127,8 +127,8 @@ public class MessageRequestReplyTemplateTests {
 
 		assertThat(this.template.destination).isEqualTo("home");
 		assertThat(this.template.requestMessage.getPayload()).isSameAs("request");
-		assertThat((Object) response).isSameAs("response");
-		assertThat((Object) this.template.requestMessage).isSameAs(this.postProcessor.getMessage());
+		assertThat(response).isSameAs("response");
+		assertThat(this.template.requestMessage).isSameAs(this.postProcessor.getMessage());
 	}
 
 	@Test
@@ -139,8 +139,8 @@ public class MessageRequestReplyTemplateTests {
 
 		assertThat(this.template.destination).isEqualTo("somewhere");
 		assertThat(this.template.requestMessage.getPayload()).isSameAs("request");
-		assertThat((Object) response).isSameAs("response");
-		assertThat((Object) this.template.requestMessage).isSameAs(this.postProcessor.getMessage());
+		assertThat(response).isSameAs("response");
+		assertThat(this.template.requestMessage).isSameAs(this.postProcessor.getMessage());
 	}
 
 	@Test
@@ -153,8 +153,8 @@ public class MessageRequestReplyTemplateTests {
 		assertThat(this.template.destination).isEqualTo("somewhere");
 		assertThat(this.template.requestMessage.getHeaders().get("key")).isEqualTo("value");
 		assertThat(this.template.requestMessage.getPayload()).isSameAs("request");
-		assertThat((Object) response).isSameAs("response");
-		assertThat((Object) this.template.requestMessage).isSameAs(this.postProcessor.getMessage());
+		assertThat(response).isSameAs("response");
+		assertThat(this.template.requestMessage).isSameAs(this.postProcessor.getMessage());
 	}
 
 

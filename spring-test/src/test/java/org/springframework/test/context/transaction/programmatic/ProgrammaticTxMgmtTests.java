@@ -48,7 +48,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.fail;
+import static org.assertj.core.api.Assertions.fail;
 import static org.springframework.test.transaction.TransactionTestUtils.assertInTransaction;
 
 /**

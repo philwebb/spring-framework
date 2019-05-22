@@ -143,8 +143,8 @@ public class HtmlEscapeTagTests extends AbstractTagTests {
 			}
 		};
 		tag.setPageContext(pc);
-		assertThat((long) tag.doStartTag()).isEqualTo((long) BodyTag.EVAL_BODY_BUFFERED);
-		assertThat((long) tag.doAfterBody()).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(tag.doStartTag()).isEqualTo((long) BodyTag.EVAL_BODY_BUFFERED);
+		assertThat(tag.doAfterBody()).isEqualTo((long) Tag.SKIP_BODY);
 		assertThat(result.toString()).isEqualTo("test text");
 	}
 
@@ -164,8 +164,8 @@ public class HtmlEscapeTagTests extends AbstractTagTests {
 		};
 		tag.setPageContext(pc);
 		tag.setHtmlEscape(true);
-		assertThat((long) tag.doStartTag()).isEqualTo((long) BodyTag.EVAL_BODY_BUFFERED);
-		assertThat((long) tag.doAfterBody()).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(tag.doStartTag()).isEqualTo((long) BodyTag.EVAL_BODY_BUFFERED);
+		assertThat(tag.doAfterBody()).isEqualTo((long) Tag.SKIP_BODY);
 		assertThat(result.toString()).isEqualTo("test &amp; text");
 	}
 
@@ -185,8 +185,8 @@ public class HtmlEscapeTagTests extends AbstractTagTests {
 		};
 		tag.setPageContext(pc);
 		tag.setJavaScriptEscape(true);
-		assertThat((long) tag.doStartTag()).isEqualTo((long) BodyTag.EVAL_BODY_BUFFERED);
-		assertThat((long) tag.doAfterBody()).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(tag.doStartTag()).isEqualTo((long) BodyTag.EVAL_BODY_BUFFERED);
+		assertThat(tag.doAfterBody()).isEqualTo((long) Tag.SKIP_BODY);
 		assertThat(result.toString()).as("Correct content").isEqualTo("\\' test & text \\\\");
 	}
 
@@ -207,8 +207,8 @@ public class HtmlEscapeTagTests extends AbstractTagTests {
 		tag.setPageContext(pc);
 		tag.setHtmlEscape(true);
 		tag.setJavaScriptEscape(true);
-		assertThat((long) tag.doStartTag()).isEqualTo((long) BodyTag.EVAL_BODY_BUFFERED);
-		assertThat((long) tag.doAfterBody()).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(tag.doStartTag()).isEqualTo((long) BodyTag.EVAL_BODY_BUFFERED);
+		assertThat(tag.doAfterBody()).isEqualTo((long) Tag.SKIP_BODY);
 		assertThat(result.toString()).as("Correct content").isEqualTo("&#39; test &amp; text \\\\");
 	}
 

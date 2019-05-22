@@ -147,8 +147,8 @@ public class Jackson2JsonDecoderTests extends AbstractDecoderTestCase<Jackson2Js
 				.consumeNextWith(o -> {
 					JacksonViewBean b = (JacksonViewBean) o;
 					assertThat(b.getWithView1()).isEqualTo("with");
-					assertThat((Object) b.getWithView2()).isNull();
-					assertThat((Object) b.getWithoutView()).isNull();
+					assertThat(b.getWithView2()).isNull();
+					assertThat(b.getWithoutView()).isNull();
 				}), null, hints);
 	}
 
@@ -163,8 +163,8 @@ public class Jackson2JsonDecoderTests extends AbstractDecoderTestCase<Jackson2Js
 				.consumeNextWith(o -> {
 					JacksonViewBean b = (JacksonViewBean) o;
 					assertThat(b.getWithoutView()).isEqualTo("without");
-					assertThat((Object) b.getWithView1()).isNull();
-					assertThat((Object) b.getWithView2()).isNull();
+					assertThat(b.getWithView1()).isNull();
+					assertThat(b.getWithView2()).isNull();
 				})
 				.verifyComplete(), null, hints);
 	}
@@ -199,7 +199,7 @@ public class Jackson2JsonDecoderTests extends AbstractDecoderTestCase<Jackson2Js
 		Mono<DataBuffer> input = stringBuffer("{\"test\": 1}");
 
 		testDecode(input, TestObject.class, step -> step
-				.consumeNextWith(o -> assertThat((long) o.getTest()).isEqualTo((long) 1))
+				.consumeNextWith(o -> assertThat(o.getTest()).isEqualTo((long) 1))
 				.verifyComplete()
 		);
 	}

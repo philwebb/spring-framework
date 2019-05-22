@@ -81,15 +81,15 @@ public class SimpleTransactionScopeTests {
 
 			bean2a = context.getBean(DerivedTestBean.class);
 			assertThat(context.getBean(DerivedTestBean.class)).isSameAs(bean2a);
-			assertThat((Object) bean2a).isNotSameAs(bean2);
+			assertThat(bean2a).isNotSameAs(bean2);
 			context.getBeanFactory().getRegisteredScope("tx").remove("txScopedObject2");
 			assertThat(TransactionSynchronizationManager.hasResource("txScopedObject2")).isFalse();
 			assertThat(bean2a.wasDestroyed()).isFalse();
 
 			bean2b = context.getBean(DerivedTestBean.class);
 			assertThat(context.getBean(DerivedTestBean.class)).isSameAs(bean2b);
-			assertThat((Object) bean2b).isNotSameAs(bean2);
-			assertThat((Object) bean2b).isNotSameAs(bean2a);
+			assertThat(bean2b).isNotSameAs(bean2);
+			assertThat(bean2b).isNotSameAs(bean2a);
 		}
 		finally {
 			TransactionSynchronizationUtils.triggerAfterCompletion(TransactionSynchronization.STATUS_COMMITTED);
@@ -143,7 +143,7 @@ public class SimpleTransactionScopeTests {
 
 				DerivedTestBean bean2a = context.getBean(DerivedTestBean.class);
 				assertThat(context.getBean(DerivedTestBean.class)).isSameAs(bean2a);
-				assertThat((Object) bean2a).isNotSameAs(bean2);
+				assertThat(bean2a).isNotSameAs(bean2);
 				context.getBeanFactory().getRegisteredScope("tx").remove("txScopedObject2");
 				assertThat(TransactionSynchronizationManager.hasResource("txScopedObject2")).isFalse();
 				assertThat(bean2a.wasDestroyed()).isFalse();
@@ -151,8 +151,8 @@ public class SimpleTransactionScopeTests {
 				DerivedTestBean bean2b = context.getBean(DerivedTestBean.class);
 				finallyDestroy.add(bean2b);
 				assertThat(context.getBean(DerivedTestBean.class)).isSameAs(bean2b);
-				assertThat((Object) bean2b).isNotSameAs(bean2);
-				assertThat((Object) bean2b).isNotSameAs(bean2a);
+				assertThat(bean2b).isNotSameAs(bean2);
+				assertThat(bean2b).isNotSameAs(bean2a);
 
 				Set<DerivedTestBean> immediatelyDestroy = new HashSet<>();
 				TransactionTemplate tt2 = new TransactionTemplate(tm);
@@ -161,9 +161,9 @@ public class SimpleTransactionScopeTests {
 					DerivedTestBean bean2c = context.getBean(DerivedTestBean.class);
 					immediatelyDestroy.add(bean2c);
 					assertThat(context.getBean(DerivedTestBean.class)).isSameAs(bean2c);
-					assertThat((Object) bean2c).isNotSameAs(bean2);
-					assertThat((Object) bean2c).isNotSameAs(bean2a);
-					assertThat((Object) bean2c).isNotSameAs(bean2b);
+					assertThat(bean2c).isNotSameAs(bean2);
+					assertThat(bean2c).isNotSameAs(bean2a);
+					assertThat(bean2c).isNotSameAs(bean2b);
 					return null;
 				});
 				assertThat(immediatelyDestroy.iterator().next().wasDestroyed()).isTrue();

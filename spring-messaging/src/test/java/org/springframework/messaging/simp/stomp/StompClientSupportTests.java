@@ -60,7 +60,7 @@ public class StompClientSupportTests {
 	public void processConnectHeadersDefault() throws Exception {
 		StompHeaders connectHeaders = this.stompClient.processConnectHeaders(null);
 
-		assertThat((Object) connectHeaders).isNotNull();
+		assertThat(connectHeaders).isNotNull();
 		assertThat(connectHeaders.getHeartbeat()).isEqualTo(new long[] {10000, 10000});
 	}
 
@@ -71,7 +71,7 @@ public class StompClientSupportTests {
 		connectHeaders.setHeartbeat(new long[] {15000, 15000});
 		connectHeaders = this.stompClient.processConnectHeaders(connectHeaders);
 
-		assertThat((Object) connectHeaders).isNotNull();
+		assertThat(connectHeaders).isNotNull();
 		assertThat(connectHeaders.getHeartbeat()).isEqualTo(new long[] {15000, 15000});
 	}
 

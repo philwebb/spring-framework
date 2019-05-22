@@ -42,7 +42,7 @@ public class EclipseLinkEntityManagerFactoryIntegrationTests extends AbstractCon
 		boolean condition = sharedEntityManager instanceof JpaEntityManager;
 		assertThat(condition).isTrue();
 		JpaEntityManager eclipselinkEntityManager = (JpaEntityManager) sharedEntityManager;
-		assertThat((Object) eclipselinkEntityManager.getActiveSession()).isNotNull();
+		assertThat(eclipselinkEntityManager.getActiveSession()).isNotNull();
 	}
 
 }

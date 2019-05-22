@@ -79,8 +79,8 @@ public class CollectionToCollectionConverterTests {
 		@SuppressWarnings("unchecked")
 		List<Integer> result = (List<Integer>) conversionService.convert(list, sourceType, targetType);
 		assertThat(list.equals(result)).isFalse();
-		assertThat((long) result.get(0).intValue()).isEqualTo((long) 9);
-		assertThat((long) result.get(1).intValue()).isEqualTo((long) 37);
+		assertThat(result.get(0).intValue()).isEqualTo((long) 9);
+		assertThat(result.get(1).intValue()).isEqualTo((long) 37);
 	}
 
 	@Test
@@ -196,7 +196,7 @@ public class CollectionToCollectionConverterTests {
 				aSource, TypeDescriptor.forObject(aSource), TypeDescriptor.forObject(new ArrayList()));
 		boolean condition = myConverted instanceof ArrayList<?>;
 		assertThat(condition).isTrue();
-		assertThat((long) ((ArrayList<?>) myConverted).size()).isEqualTo((long) aSource.size());
+		assertThat(((ArrayList<?>) myConverted).size()).isEqualTo((long) aSource.size());
 	}
 
 	@Test

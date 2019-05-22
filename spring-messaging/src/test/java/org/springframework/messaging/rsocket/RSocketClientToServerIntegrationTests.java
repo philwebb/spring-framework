@@ -100,8 +100,8 @@ public class RSocketClientToServerIntegrationTests {
 				.thenCancel()
 				.verify(Duration.ofSeconds(5));
 
-		assertThat((long) interceptor.getRSocketCount()).isEqualTo((long) 1);
-		assertThat((long) interceptor.getFireAndForgetCount(0)).as("Fire and forget requests did not actually complete handling on the server side").isEqualTo((long) 3);
+		assertThat(interceptor.getRSocketCount()).isEqualTo((long) 1);
+		assertThat(interceptor.getFireAndForgetCount(0)).as("Fire and forget requests did not actually complete handling on the server side").isEqualTo((long) 3);
 	}
 
 	@Test

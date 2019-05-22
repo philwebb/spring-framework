@@ -39,7 +39,7 @@ public class AopProxyUtilsTests {
 	public void testCompleteProxiedInterfacesWorksWithNull() {
 		AdvisedSupport as = new AdvisedSupport();
 		Class<?>[] completedInterfaces = AopProxyUtils.completeProxiedInterfaces(as);
-		assertThat((long) completedInterfaces.length).isEqualTo((long) 2);
+		assertThat(completedInterfaces.length).isEqualTo((long) 2);
 		List<?> ifaces = Arrays.asList(completedInterfaces);
 		assertThat(ifaces.contains(Advised.class)).isTrue();
 		assertThat(ifaces.contains(SpringProxy.class)).isTrue();
@@ -50,7 +50,7 @@ public class AopProxyUtilsTests {
 		AdvisedSupport as = new AdvisedSupport();
 		as.setOpaque(true);
 		Class<?>[] completedInterfaces = AopProxyUtils.completeProxiedInterfaces(as);
-		assertThat((long) completedInterfaces.length).isEqualTo((long) 1);
+		assertThat(completedInterfaces.length).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -59,7 +59,7 @@ public class AopProxyUtilsTests {
 		as.addInterface(ITestBean.class);
 		as.addInterface(Comparable.class);
 		Class<?>[] completedInterfaces = AopProxyUtils.completeProxiedInterfaces(as);
-		assertThat((long) completedInterfaces.length).isEqualTo((long) 4);
+		assertThat(completedInterfaces.length).isEqualTo((long) 4);
 
 		// Can't assume ordering for others, so use a list
 		List<?> l = Arrays.asList(completedInterfaces);
@@ -75,7 +75,7 @@ public class AopProxyUtilsTests {
 		as.addInterface(Comparable.class);
 		as.addInterface(Advised.class);
 		Class<?>[] completedInterfaces = AopProxyUtils.completeProxiedInterfaces(as);
-		assertThat((long) completedInterfaces.length).isEqualTo((long) 4);
+		assertThat(completedInterfaces.length).isEqualTo((long) 4);
 
 		// Can't assume ordering for others, so use a list
 		List<?> l = Arrays.asList(completedInterfaces);
@@ -91,7 +91,7 @@ public class AopProxyUtilsTests {
 		as.addInterface(ITestBean.class);
 		as.addInterface(Comparable.class);
 		Class<?>[] completedInterfaces = AopProxyUtils.completeProxiedInterfaces(as);
-		assertThat((long) completedInterfaces.length).isEqualTo((long) 3);
+		assertThat(completedInterfaces.length).isEqualTo((long) 3);
 
 		// Can't assume ordering for others, so use a list
 		List<?> l = Arrays.asList(completedInterfaces);
@@ -107,7 +107,7 @@ public class AopProxyUtilsTests {
 		pf.addInterface(ITestBean.class);
 		Object proxy = pf.getProxy();
 		Class<?>[] userInterfaces = AopProxyUtils.proxiedUserInterfaces(proxy);
-		assertThat((long) userInterfaces.length).isEqualTo((long) 1);
+		assertThat(userInterfaces.length).isEqualTo((long) 1);
 		assertThat(userInterfaces[0]).isEqualTo(ITestBean.class);
 	}
 
@@ -119,7 +119,7 @@ public class AopProxyUtilsTests {
 		pf.addInterface(Comparable.class);
 		Object proxy = pf.getProxy();
 		Class<?>[] userInterfaces = AopProxyUtils.proxiedUserInterfaces(proxy);
-		assertThat((long) userInterfaces.length).isEqualTo((long) 2);
+		assertThat(userInterfaces.length).isEqualTo((long) 2);
 		assertThat(userInterfaces[0]).isEqualTo(ITestBean.class);
 		assertThat(userInterfaces[1]).isEqualTo(Comparable.class);
 	}

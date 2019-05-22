@@ -174,7 +174,7 @@ public class ScopingTests {
 		ITestBean spouseFromBF = (ITestBean) ctx.getBean(scopedBeanName);
 		assertThat(spouseFromBF.getName()).isEqualTo(spouse.getName());
 		// the scope proxy has kicked in
-		assertThat((Object) spouseFromBF).isNotSameAs(spouse);
+		assertThat(spouseFromBF).isNotSameAs(spouse);
 
 		// create a new bean
 		customScope.createNewScope = true;
@@ -182,12 +182,12 @@ public class ScopingTests {
 		// get the bean again from the BF
 		spouseFromBF = (ITestBean) ctx.getBean(scopedBeanName);
 		// make sure the name has been updated
-		assertThat((Object) spouseFromBF.getName()).isSameAs(spouse.getName());
-		assertThat((Object) spouseFromBF).isNotSameAs(spouse);
+		assertThat(spouseFromBF.getName()).isSameAs(spouse.getName());
+		assertThat(spouseFromBF).isNotSameAs(spouse);
 
 		// get the bean again
 		spouseFromBF = (ITestBean) ctx.getBean(scopedBeanName);
-		assertThat((Object) spouseFromBF.getName()).isSameAs(spouse.getName());
+		assertThat(spouseFromBF.getName()).isSameAs(spouse.getName());
 	}
 
 	@Test
@@ -207,7 +207,7 @@ public class ScopingTests {
 		TestBean spouseFromBF = (TestBean) ctx.getBean(scopedBeanName);
 		assertThat(spouseFromBF.getName()).isEqualTo(spouse.getName());
 		// the scope proxy has kicked in
-		assertThat((Object) spouseFromBF).isNotSameAs(spouse);
+		assertThat(spouseFromBF).isNotSameAs(spouse);
 
 		// create a new bean
 		customScope.createNewScope = true;
@@ -216,12 +216,12 @@ public class ScopingTests {
 		// get the bean again from the BF
 		spouseFromBF = (TestBean) ctx.getBean(scopedBeanName);
 		// make sure the name has been updated
-		assertThat((Object) spouseFromBF.getName()).isSameAs(spouse.getName());
-		assertThat((Object) spouseFromBF).isNotSameAs(spouse);
+		assertThat(spouseFromBF.getName()).isSameAs(spouse.getName());
+		assertThat(spouseFromBF).isNotSameAs(spouse);
 
 		// get the bean again
 		spouseFromBF = (TestBean) ctx.getBean(scopedBeanName);
-		assertThat((Object) spouseFromBF.getName()).isSameAs(spouse.getName());
+		assertThat(spouseFromBF.getName()).isSameAs(spouse.getName());
 	}
 
 

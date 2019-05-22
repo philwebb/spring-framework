@@ -49,29 +49,29 @@ public class ReactiveAdapterRegistryTests {
 	public void defaultAdapterRegistrations() {
 
 		// Reactor
-		assertThat((Object) getAdapter(Mono.class)).isNotNull();
-		assertThat((Object) getAdapter(Flux.class)).isNotNull();
+		assertThat(getAdapter(Mono.class)).isNotNull();
+		assertThat(getAdapter(Flux.class)).isNotNull();
 
 		// Publisher
-		assertThat((Object) getAdapter(Publisher.class)).isNotNull();
+		assertThat(getAdapter(Publisher.class)).isNotNull();
 
 		// Completable
-		assertThat((Object) getAdapter(CompletableFuture.class)).isNotNull();
+		assertThat(getAdapter(CompletableFuture.class)).isNotNull();
 
 		// RxJava 1
-		assertThat((Object) getAdapter(Observable.class)).isNotNull();
-		assertThat((Object) getAdapter(Single.class)).isNotNull();
-		assertThat((Object) getAdapter(Completable.class)).isNotNull();
+		assertThat(getAdapter(Observable.class)).isNotNull();
+		assertThat(getAdapter(Single.class)).isNotNull();
+		assertThat(getAdapter(Completable.class)).isNotNull();
 
 		// RxJava 2
-		assertThat((Object) getAdapter(Flowable.class)).isNotNull();
-		assertThat((Object) getAdapter(io.reactivex.Observable.class)).isNotNull();
-		assertThat((Object) getAdapter(io.reactivex.Single.class)).isNotNull();
-		assertThat((Object) getAdapter(Maybe.class)).isNotNull();
-		assertThat((Object) getAdapter(io.reactivex.Completable.class)).isNotNull();
+		assertThat(getAdapter(Flowable.class)).isNotNull();
+		assertThat(getAdapter(io.reactivex.Observable.class)).isNotNull();
+		assertThat(getAdapter(io.reactivex.Single.class)).isNotNull();
+		assertThat(getAdapter(Maybe.class)).isNotNull();
+		assertThat(getAdapter(io.reactivex.Completable.class)).isNotNull();
 
 		// Coroutines
-		assertThat((Object) getAdapter(Deferred.class)).isNotNull();
+		assertThat(getAdapter(Deferred.class)).isNotNull();
 	}
 
 	@Test
@@ -80,7 +80,7 @@ public class ReactiveAdapterRegistryTests {
 		ReactiveAdapter adapter1 = getAdapter(Flux.class);
 		ReactiveAdapter adapter2 = getAdapter(FluxProcessor.class);
 
-		assertThat((Object) adapter2).isSameAs(adapter1);
+		assertThat(adapter2).isSameAs(adapter1);
 
 		this.registry.registerReactiveType(
 				ReactiveTypeDescriptor.multiValue(FluxProcessor.class, FluxProcessor::empty),
@@ -89,8 +89,8 @@ public class ReactiveAdapterRegistryTests {
 
 		ReactiveAdapter adapter3 = getAdapter(FluxProcessor.class);
 
-		assertThat((Object) adapter3).isNotNull();
-		assertThat((Object) adapter3).isNotSameAs(adapter1);
+		assertThat(adapter3).isNotNull();
+		assertThat(adapter3).isNotSameAs(adapter1);
 	}
 
 	@Test
@@ -148,7 +148,7 @@ public class ReactiveAdapterRegistryTests {
 		Object target = getAdapter(rx.Completable.class).fromPublisher(source);
 		boolean condition = target instanceof Completable;
 		assertThat(condition).isTrue();
-		assertThat((Object) ((Completable) target).get()).isNull();
+		assertThat(((Completable) target).get()).isNull();
 	}
 
 	@Test
@@ -186,7 +186,7 @@ public class ReactiveAdapterRegistryTests {
 		Object target = getAdapter(io.reactivex.Completable.class).fromPublisher(source);
 		boolean condition = target instanceof io.reactivex.Completable;
 		assertThat(condition).isTrue();
-		assertThat((Object) ((io.reactivex.Completable) target).blockingGet()).isNull();
+		assertThat(((io.reactivex.Completable) target).blockingGet()).isNull();
 	}
 
 	@Test

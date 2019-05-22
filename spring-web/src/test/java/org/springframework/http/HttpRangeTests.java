@@ -96,7 +96,7 @@ public class HttpRangeTests {
 	@Test
 	public void parseRanges() {
 		List<HttpRange> ranges = HttpRange.parseRanges("bytes=0-0,500-,-1");
-		assertThat((long) ranges.size()).isEqualTo((long) 3);
+		assertThat(ranges.size()).isEqualTo((long) 3);
 		assertThat(ranges.get(0).getRangeStart(1000)).isEqualTo((long) 0);
 		assertThat(ranges.get(0).getRangeEnd(1000)).isEqualTo((long) 0);
 		assertThat(ranges.get(1).getRangeStart(1000)).isEqualTo((long) 500);
@@ -114,7 +114,7 @@ public class HttpRangeTests {
 			atLimit.append(",").append(i).append("-").append(i + 1);
 		}
 		List<HttpRange> ranges = HttpRange.parseRanges(atLimit.toString());
-		assertThat((long) ranges.size()).isEqualTo((long) 100);
+		assertThat(ranges.size()).isEqualTo((long) 100);
 
 		// 2. Above limit..
 		StringBuilder aboveLimit = new StringBuilder("bytes=0-0");
@@ -180,7 +180,7 @@ public class HttpRangeTests {
 		// 1. Below length
 		List<HttpRange> belowLengthRanges = HttpRange.parseRanges("bytes=0-1,2-3");
 		List<ResourceRegion> regions = HttpRange.toResourceRegions(belowLengthRanges, resource);
-		assertThat((long) regions.size()).isEqualTo((long) 2);
+		assertThat(regions.size()).isEqualTo((long) 2);
 
 		// 2. At length
 		List<HttpRange> atLengthRanges = HttpRange.parseRanges("bytes=0-1,2-4");

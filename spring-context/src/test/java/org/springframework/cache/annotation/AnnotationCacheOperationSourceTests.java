@@ -232,8 +232,8 @@ public class AnnotationCacheOperationSourceTests {
 		// Valid as a CacheResolver might return the cache names to use with other info
 		Collection<CacheOperation> ops = getOps(AnnotatedClass.class, "noCacheNameSpecified");
 		CacheOperation cacheOperation = ops.iterator().next();
-		assertThat((Object) cacheOperation.getCacheNames()).as("cache names set must not be null").isNotNull();
-		assertThat((long) cacheOperation.getCacheNames().size()).as("no cache names specified").isEqualTo((long) 0);
+		assertThat(cacheOperation.getCacheNames()).as("cache names set must not be null").isNotNull();
+		assertThat(cacheOperation.getCacheNames().size()).as("no cache names specified").isEqualTo((long) 0);
 	}
 
 	@Test
@@ -260,7 +260,7 @@ public class AnnotationCacheOperationSourceTests {
 	@Test
 	public void cacheAnnotationOverride() {
 		Collection<CacheOperation> ops = getOps(InterfaceCacheConfig.class, "interfaceCacheableOverride");
-		assertThat((Object) ops.size()).isSameAs(1);
+		assertThat(ops.size()).isSameAs(1);
 		CacheOperation cacheOperation = ops.iterator().next();
 		boolean condition = cacheOperation instanceof CacheableOperation;
 		assertThat(condition).isTrue();
@@ -290,7 +290,7 @@ public class AnnotationCacheOperationSourceTests {
 
 	private Collection<CacheOperation> getOps(Class<?> target, String name, int expectedNumberOfOperations) {
 		Collection<CacheOperation> result = getOps(target, name);
-		assertThat((long) result.size()).as("Wrong number of operation(s) for '" + name + "'").isEqualTo((long) expectedNumberOfOperations);
+		assertThat(result.size()).as("Wrong number of operation(s) for '" + name + "'").isEqualTo((long) expectedNumberOfOperations);
 		return result;
 	}
 
@@ -310,7 +310,7 @@ public class AnnotationCacheOperationSourceTests {
 		assertThat(actual.getKeyGenerator()).as("Wrong key manager").isEqualTo(keyGenerator);
 		assertThat(actual.getCacheManager()).as("Wrong cache manager").isEqualTo(cacheManager);
 		assertThat(actual.getCacheResolver()).as("Wrong cache resolver").isEqualTo(cacheResolver);
-		assertThat((long) actual.getCacheNames().size()).as("Wrong number of cache names").isEqualTo((long) cacheNames.length);
+		assertThat(actual.getCacheNames().size()).as("Wrong number of cache names").isEqualTo((long) cacheNames.length);
 		Arrays.stream(cacheNames).forEach(cacheName -> assertThat(actual.getCacheNames().contains(cacheName)).as("Cache '" + cacheName + "' not found in " + actual.getCacheNames()).isTrue());
 	}
 

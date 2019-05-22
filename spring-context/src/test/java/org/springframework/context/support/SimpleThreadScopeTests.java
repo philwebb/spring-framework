@@ -40,10 +40,10 @@ public class SimpleThreadScopeTests {
 	public void getFromScope() throws Exception {
 		String name = "threadScopedObject";
 		TestBean bean = this.applicationContext.getBean(name, TestBean.class);
-		assertThat((Object) bean).isNotNull();
+		assertThat(bean).isNotNull();
 		assertThat(this.applicationContext.getBean(name)).isSameAs(bean);
 		TestBean bean2 = this.applicationContext.getBean(name, TestBean.class);
-		assertThat((Object) bean2).isSameAs(bean);
+		assertThat(bean2).isSameAs(bean);
 	}
 
 	@Test
@@ -60,7 +60,7 @@ public class SimpleThreadScopeTests {
 					.atMost(500, TimeUnit.MILLISECONDS)
 					.pollInterval(10, TimeUnit.MILLISECONDS)
 					.until(() -> (beans[0] != null) && (beans[1] != null));
-		assertThat((Object) beans[1]).isNotSameAs(beans[0]);
+		assertThat(beans[1]).isNotSameAs(beans[0]);
 	}
 
 }

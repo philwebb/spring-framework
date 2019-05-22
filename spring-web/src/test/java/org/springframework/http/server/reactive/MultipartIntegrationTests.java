@@ -90,7 +90,7 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 			return exchange
 					.getMultipartData()
 					.doOnNext(parts -> {
-						assertThat((long) parts.size()).isEqualTo((long) 2);
+						assertThat(parts.size()).isEqualTo((long) 2);
 						assertThat(parts.containsKey("fooPart")).isTrue();
 						assertFooPart(parts.getFirst("fooPart"));
 						assertThat(parts.containsKey("barPart")).isTrue();
@@ -107,7 +107,7 @@ public class MultipartIntegrationTests extends AbstractHttpHandlerIntegrationTes
 
 			StepVerifier.create(DataBufferUtils.join(part.content()))
 					.consumeNextWith(buffer -> {
-						assertThat((long) buffer.readableByteCount()).isEqualTo((long) 12);
+						assertThat(buffer.readableByteCount()).isEqualTo((long) 12);
 						byte[] byteContent = new byte[12];
 						buffer.read(byteContent);
 						assertThat(new String(byteContent)).isEqualTo("Lorem Ipsum.");

@@ -163,7 +163,7 @@ public class ResourceBundleMessageSourceTests {
 		assertThat(ac.getMessage("hello", args, Locale.ENGLISH)).isEqualTo("Hello, message1");
 
 		// test default message without and with args
-		assertThat((Object) ac.getMessage(null, null, null, Locale.ENGLISH)).isNull();
+		assertThat(ac.getMessage(null, null, null, Locale.ENGLISH)).isNull();
 		assertThat(ac.getMessage(null, null, "default", Locale.ENGLISH)).isEqualTo("default");
 		assertThat(ac.getMessage(null, args, "default", Locale.ENGLISH)).isEqualTo("default");
 		assertThat(ac.getMessage(null, null, "{0}, default", Locale.ENGLISH)).isEqualTo("{0}, default");
@@ -385,32 +385,32 @@ public class ResourceBundleMessageSourceTests {
 		ReloadableResourceBundleMessageSource ms = new ReloadableResourceBundleMessageSource();
 
 		List<String> filenames = ms.calculateFilenamesForLocale("messages", Locale.ENGLISH);
-		assertThat((long) filenames.size()).isEqualTo((long) 1);
+		assertThat(filenames.size()).isEqualTo((long) 1);
 		assertThat(filenames.get(0)).isEqualTo("messages_en");
 
 		filenames = ms.calculateFilenamesForLocale("messages", Locale.UK);
-		assertThat((long) filenames.size()).isEqualTo((long) 2);
+		assertThat(filenames.size()).isEqualTo((long) 2);
 		assertThat(filenames.get(1)).isEqualTo("messages_en");
 		assertThat(filenames.get(0)).isEqualTo("messages_en_GB");
 
 		filenames = ms.calculateFilenamesForLocale("messages", new Locale("en", "GB", "POSIX"));
-		assertThat((long) filenames.size()).isEqualTo((long) 3);
+		assertThat(filenames.size()).isEqualTo((long) 3);
 		assertThat(filenames.get(2)).isEqualTo("messages_en");
 		assertThat(filenames.get(1)).isEqualTo("messages_en_GB");
 		assertThat(filenames.get(0)).isEqualTo("messages_en_GB_POSIX");
 
 		filenames = ms.calculateFilenamesForLocale("messages", new Locale("en", "", "POSIX"));
-		assertThat((long) filenames.size()).isEqualTo((long) 2);
+		assertThat(filenames.size()).isEqualTo((long) 2);
 		assertThat(filenames.get(1)).isEqualTo("messages_en");
 		assertThat(filenames.get(0)).isEqualTo("messages_en__POSIX");
 
 		filenames = ms.calculateFilenamesForLocale("messages", new Locale("", "UK", "POSIX"));
-		assertThat((long) filenames.size()).isEqualTo((long) 2);
+		assertThat(filenames.size()).isEqualTo((long) 2);
 		assertThat(filenames.get(1)).isEqualTo("messages__UK");
 		assertThat(filenames.get(0)).isEqualTo("messages__UK_POSIX");
 
 		filenames = ms.calculateFilenamesForLocale("messages", new Locale("", "", "POSIX"));
-		assertThat((long) filenames.size()).isEqualTo((long) 0);
+		assertThat(filenames.size()).isEqualTo((long) 0);
 	}
 
 	@Test

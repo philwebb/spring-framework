@@ -54,7 +54,7 @@ public class CollectionMergingTests {
 	public void mergeList() throws Exception {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithList");
 		List list = bean.getSomeList();
-		assertThat((long) list.size()).as("Incorrect size").isEqualTo((long) 3);
+		assertThat(list.size()).as("Incorrect size").isEqualTo((long) 3);
 		assertThat(list.get(0)).isEqualTo("Rob Harrop");
 		assertThat(list.get(1)).isEqualTo("Rod Johnson");
 		assertThat(list.get(2)).isEqualTo("Juergen Hoeller");
@@ -65,7 +65,7 @@ public class CollectionMergingTests {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithListOfRefs");
 		List list = bean.getSomeList();
 		assertThat(list).isNotNull();
-		assertThat((long) list.size()).isEqualTo((long) 3);
+		assertThat(list.size()).isEqualTo((long) 3);
 		assertThat(list.get(2)).isNotNull();
 		boolean condition = list.get(2) instanceof TestBean;
 		assertThat(condition).isTrue();
@@ -75,7 +75,7 @@ public class CollectionMergingTests {
 	public void mergeSet() {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithSet");
 		Set set = bean.getSomeSet();
-		assertThat((long) set.size()).as("Incorrect size").isEqualTo((long) 2);
+		assertThat(set.size()).as("Incorrect size").isEqualTo((long) 2);
 		assertThat(set.contains("Rob Harrop")).isTrue();
 		assertThat(set.contains("Sally Greenwood")).isTrue();
 	}
@@ -85,7 +85,7 @@ public class CollectionMergingTests {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithSetOfRefs");
 		Set set = bean.getSomeSet();
 		assertThat(set).isNotNull();
-		assertThat((long) set.size()).isEqualTo((long) 2);
+		assertThat(set.size()).isEqualTo((long) 2);
 		Iterator it = set.iterator();
 		it.next();
 		Object o = it.next();
@@ -99,7 +99,7 @@ public class CollectionMergingTests {
 	public void mergeMap() throws Exception {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithMap");
 		Map map = bean.getSomeMap();
-		assertThat((long) map.size()).as("Incorrect size").isEqualTo((long) 3);
+		assertThat(map.size()).as("Incorrect size").isEqualTo((long) 3);
 		assertThat(map.get("Rob")).isEqualTo("Sally");
 		assertThat(map.get("Rod")).isEqualTo("Kerry");
 		assertThat(map.get("Juergen")).isEqualTo("Eva");
@@ -110,7 +110,7 @@ public class CollectionMergingTests {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithMapOfRefs");
 		Map map = bean.getSomeMap();
 		assertThat(map).isNotNull();
-		assertThat((long) map.size()).isEqualTo((long) 2);
+		assertThat(map.size()).isEqualTo((long) 2);
 		assertThat(map.get("Rob")).isNotNull();
 		boolean condition = map.get("Rob") instanceof TestBean;
 		assertThat(condition).isTrue();
@@ -121,7 +121,7 @@ public class CollectionMergingTests {
 	public void mergeProperties() throws Exception {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithProps");
 		Properties props = bean.getSomeProperties();
-		assertThat((long) props.size()).as("Incorrect size").isEqualTo((long) 3);
+		assertThat(props.size()).as("Incorrect size").isEqualTo((long) 3);
 		assertThat(props.getProperty("Rob")).isEqualTo("Sally");
 		assertThat(props.getProperty("Rod")).isEqualTo("Kerry");
 		assertThat(props.getProperty("Juergen")).isEqualTo("Eva");
@@ -131,7 +131,7 @@ public class CollectionMergingTests {
 	public void mergeListInConstructor() throws Exception {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithListInConstructor");
 		List list = bean.getSomeList();
-		assertThat((long) list.size()).as("Incorrect size").isEqualTo((long) 3);
+		assertThat(list.size()).as("Incorrect size").isEqualTo((long) 3);
 		assertThat(list.get(0)).isEqualTo("Rob Harrop");
 		assertThat(list.get(1)).isEqualTo("Rod Johnson");
 		assertThat(list.get(2)).isEqualTo("Juergen Hoeller");
@@ -142,7 +142,7 @@ public class CollectionMergingTests {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithListOfRefsInConstructor");
 		List list = bean.getSomeList();
 		assertThat(list).isNotNull();
-		assertThat((long) list.size()).isEqualTo((long) 3);
+		assertThat(list.size()).isEqualTo((long) 3);
 		assertThat(list.get(2)).isNotNull();
 		boolean condition = list.get(2) instanceof TestBean;
 		assertThat(condition).isTrue();
@@ -152,7 +152,7 @@ public class CollectionMergingTests {
 	public void mergeSetInConstructor() {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithSetInConstructor");
 		Set set = bean.getSomeSet();
-		assertThat((long) set.size()).as("Incorrect size").isEqualTo((long) 2);
+		assertThat(set.size()).as("Incorrect size").isEqualTo((long) 2);
 		assertThat(set.contains("Rob Harrop")).isTrue();
 		assertThat(set.contains("Sally Greenwood")).isTrue();
 	}
@@ -162,7 +162,7 @@ public class CollectionMergingTests {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithSetOfRefsInConstructor");
 		Set set = bean.getSomeSet();
 		assertThat(set).isNotNull();
-		assertThat((long) set.size()).isEqualTo((long) 2);
+		assertThat(set.size()).isEqualTo((long) 2);
 		Iterator it = set.iterator();
 		it.next();
 		Object o = it.next();
@@ -176,7 +176,7 @@ public class CollectionMergingTests {
 	public void mergeMapInConstructor() throws Exception {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithMapInConstructor");
 		Map map = bean.getSomeMap();
-		assertThat((long) map.size()).as("Incorrect size").isEqualTo((long) 3);
+		assertThat(map.size()).as("Incorrect size").isEqualTo((long) 3);
 		assertThat(map.get("Rob")).isEqualTo("Sally");
 		assertThat(map.get("Rod")).isEqualTo("Kerry");
 		assertThat(map.get("Juergen")).isEqualTo("Eva");
@@ -187,7 +187,7 @@ public class CollectionMergingTests {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithMapOfRefsInConstructor");
 		Map map = bean.getSomeMap();
 		assertThat(map).isNotNull();
-		assertThat((long) map.size()).isEqualTo((long) 2);
+		assertThat(map.size()).isEqualTo((long) 2);
 		assertThat(map.get("Rob")).isNotNull();
 		boolean condition = map.get("Rob") instanceof TestBean;
 		assertThat(condition).isTrue();
@@ -198,7 +198,7 @@ public class CollectionMergingTests {
 	public void mergePropertiesInConstructor() throws Exception {
 		TestBean bean = (TestBean) this.beanFactory.getBean("childWithPropsInConstructor");
 		Properties props = bean.getSomeProperties();
-		assertThat((long) props.size()).as("Incorrect size").isEqualTo((long) 3);
+		assertThat(props.size()).as("Incorrect size").isEqualTo((long) 3);
 		assertThat(props.getProperty("Rob")).isEqualTo("Sally");
 		assertThat(props.getProperty("Rod")).isEqualTo("Kerry");
 		assertThat(props.getProperty("Juergen")).isEqualTo("Eva");

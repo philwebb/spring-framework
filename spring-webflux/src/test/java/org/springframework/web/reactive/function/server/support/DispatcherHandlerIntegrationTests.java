@@ -61,7 +61,7 @@ public class DispatcherHandlerIntegrationTests extends AbstractHttpHandlerIntegr
 		ResponseEntity<String> result = this.restTemplate
 				.getForEntity("http://localhost:" + this.port + "/foo/bar", String.class);
 
-		assertThat((long) result.getStatusCodeValue()).isEqualTo((long) 200);
+		assertThat(result.getStatusCodeValue()).isEqualTo((long) 200);
 	}
 
 

@@ -38,7 +38,7 @@ public class WebAppConfigurationInterfaceTests implements WebAppConfigurationTes
 
 	@Test
 	public void wacLoaded() {
-		assertThat((Object) wac).isNotNull();
+		assertThat(wac).isNotNull();
 	}
 
 }

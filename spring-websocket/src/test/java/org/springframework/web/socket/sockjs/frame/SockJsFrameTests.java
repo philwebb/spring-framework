@@ -35,7 +35,7 @@ public class SockJsFrameTests {
 
 		assertThat(frame.getContent()).isEqualTo("o");
 		assertThat(frame.getType()).isEqualTo(SockJsFrameType.OPEN);
-		assertThat((Object) frame.getFrameData()).isNull();
+		assertThat(frame.getFrameData()).isNull();
 	}
 
 	@Test
@@ -44,7 +44,7 @@ public class SockJsFrameTests {
 
 		assertThat(frame.getContent()).isEqualTo("h");
 		assertThat(frame.getType()).isEqualTo(SockJsFrameType.HEARTBEAT);
-		assertThat((Object) frame.getFrameData()).isNull();
+		assertThat(frame.getFrameData()).isNull();
 	}
 
 	@Test

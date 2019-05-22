@@ -74,13 +74,13 @@ public class ProtobufHttpMessageConverterTests {
 	@Test
 	public void extensionRegistryInitializerNull() {
 		ProtobufHttpMessageConverter converter = new ProtobufHttpMessageConverter((ExtensionRegistryInitializer)null);
-		assertThat((Object) converter.extensionRegistry).isNotNull();
+		assertThat(converter.extensionRegistry).isNotNull();
 	}
 
 	@Test
 	public void extensionRegistryNull() {
 		ProtobufHttpMessageConverter converter = new ProtobufHttpMessageConverter((ExtensionRegistry)null);
-		assertThat((Object) converter.extensionRegistry).isNotNull();
+		assertThat(converter.extensionRegistry).isNotNull();
 	}
 
 	@Test
@@ -158,9 +158,9 @@ public class ProtobufHttpMessageConverterTests {
 		JsonFormat.parser().merge(body, builder);
 		assertThat(builder.build()).isEqualTo(this.testMsg);
 
-		assertThat((Object) outputMessage.getHeaders().getFirst(
+		assertThat(outputMessage.getHeaders().getFirst(
 				ProtobufHttpMessageConverter.X_PROTOBUF_MESSAGE_HEADER)).isNull();
-		assertThat((Object) outputMessage.getHeaders().getFirst(
+		assertThat(outputMessage.getHeaders().getFirst(
 				ProtobufHttpMessageConverter.X_PROTOBUF_SCHEMA_HEADER)).isNull();
 	}
 
@@ -182,9 +182,9 @@ public class ProtobufHttpMessageConverterTests {
 		JsonFormat.parser().merge(body, builder);
 		assertThat(builder.build()).isEqualTo(this.testMsg);
 
-		assertThat((Object) outputMessage.getHeaders().getFirst(
+		assertThat(outputMessage.getHeaders().getFirst(
 				ProtobufHttpMessageConverter.X_PROTOBUF_MESSAGE_HEADER)).isNull();
-		assertThat((Object) outputMessage.getHeaders().getFirst(
+		assertThat(outputMessage.getHeaders().getFirst(
 				ProtobufHttpMessageConverter.X_PROTOBUF_SCHEMA_HEADER)).isNull();
 	}
 

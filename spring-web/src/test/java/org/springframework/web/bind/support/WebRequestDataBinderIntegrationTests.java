@@ -107,8 +107,8 @@ public class WebRequestDataBinderIntegrationTests {
 
 		template.postForLocation(baseUrl + "/parts", parts);
 
-		assertThat((Object) bean.getFirstPart()).isNotNull();
-		assertThat((Object) bean.getSecondPart()).isNotNull();
+		assertThat(bean.getFirstPart()).isNotNull();
+		assertThat(bean.getSecondPart()).isNotNull();
 	}
 
 	@Test
@@ -124,8 +124,8 @@ public class WebRequestDataBinderIntegrationTests {
 
 		template.postForLocation(baseUrl + "/partlist", parts);
 
-		assertThat((Object) bean.getPartList()).isNotNull();
-		assertThat((long) bean.getPartList().size()).isEqualTo((long) parts.get("partList").size());
+		assertThat(bean.getPartList()).isNotNull();
+		assertThat(bean.getPartList().size()).isEqualTo((long) parts.get("partList").size());
 	}
 
 

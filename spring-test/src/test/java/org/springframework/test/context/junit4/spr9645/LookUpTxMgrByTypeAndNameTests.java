@@ -68,18 +68,18 @@ public class LookUpTxMgrByTypeAndNameTests {
 
 	@Test
 	public void transactionalTest() {
-		assertThat((long) txManager1.begun).isEqualTo((long) 1);
-		assertThat((long) txManager1.inflight).isEqualTo((long) 1);
-		assertThat((long) txManager1.commits).isEqualTo((long) 0);
-		assertThat((long) txManager1.rollbacks).isEqualTo((long) 0);
+		assertThat(txManager1.begun).isEqualTo((long) 1);
+		assertThat(txManager1.inflight).isEqualTo((long) 1);
+		assertThat(txManager1.commits).isEqualTo((long) 0);
+		assertThat(txManager1.rollbacks).isEqualTo((long) 0);
 	}
 
 	@AfterTransaction
 	public void afterTransaction() {
-		assertThat((long) txManager1.begun).isEqualTo((long) 1);
-		assertThat((long) txManager1.inflight).isEqualTo((long) 0);
-		assertThat((long) txManager1.commits).isEqualTo((long) 0);
-		assertThat((long) txManager1.rollbacks).isEqualTo((long) 1);
+		assertThat(txManager1.begun).isEqualTo((long) 1);
+		assertThat(txManager1.inflight).isEqualTo((long) 0);
+		assertThat(txManager1.commits).isEqualTo((long) 0);
+		assertThat(txManager1.rollbacks).isEqualTo((long) 1);
 	}
 
 }

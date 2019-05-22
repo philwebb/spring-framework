@@ -61,8 +61,8 @@ public class ChannelSendOperatorTests {
 		Mono<Void> completion = Mono.<String>error(error).as(this::sendOperator);
 		Signal<Void> signal = completion.materialize().block();
 
-		assertThat((Object) signal).isNotNull();
-		assertThat((Object) signal.getThrowable()).as("Unexpected signal: " + signal).isSameAs(error);
+		assertThat(signal).isNotNull();
+		assertThat(signal.getThrowable()).as("Unexpected signal: " + signal).isSameAs(error);
 	}
 
 	@Test
@@ -70,10 +70,10 @@ public class ChannelSendOperatorTests {
 		Mono<Void> completion = Flux.<String>empty().as(this::sendOperator);
 		Signal<Void> signal = completion.materialize().block();
 
-		assertThat((Object) signal).isNotNull();
+		assertThat(signal).isNotNull();
 		assertThat(signal.isOnComplete()).as("Unexpected signal: " + signal).isTrue();
 
-		assertThat((long) this.writer.items.size()).isEqualTo((long) 0);
+		assertThat(this.writer.items.size()).isEqualTo((long) 0);
 		assertThat(this.writer.completed).isTrue();
 	}
 
@@ -82,10 +82,10 @@ public class ChannelSendOperatorTests {
 		Mono<Void> completion = Flux.just("one").as(this::sendOperator);
 		Signal<Void> signal = completion.materialize().block();
 
-		assertThat((Object) signal).isNotNull();
+		assertThat(signal).isNotNull();
 		assertThat(signal.isOnComplete()).as("Unexpected signal: " + signal).isTrue();
 
-		assertThat((long) this.writer.items.size()).isEqualTo((long) 1);
+		assertThat(this.writer.items.size()).isEqualTo((long) 1);
 		assertThat(this.writer.items.get(0)).isEqualTo("one");
 		assertThat(this.writer.completed).isTrue();
 	}
@@ -97,10 +97,10 @@ public class ChannelSendOperatorTests {
 		Mono<Void> completion = Flux.fromIterable(items).as(this::sendOperator);
 		Signal<Void> signal = completion.materialize().block();
 
-		assertThat((Object) signal).isNotNull();
+		assertThat(signal).isNotNull();
 		assertThat(signal.isOnComplete()).as("Unexpected signal: " + signal).isTrue();
 
-		assertThat((long) this.writer.items.size()).isEqualTo((long) 3);
+		assertThat(this.writer.items.size()).isEqualTo((long) 3);
 		assertThat(this.writer.items.get(0)).isEqualTo("one");
 		assertThat(this.writer.items.get(1)).isEqualTo("two");
 		assertThat(this.writer.items.get(2)).isEqualTo("three");
@@ -121,14 +121,14 @@ public class ChannelSendOperatorTests {
 		Mono<Void> completion = publisher.as(this::sendOperator);
 		Signal<Void> signal = completion.materialize().block();
 
-		assertThat((Object) signal).isNotNull();
-		assertThat((Object) signal.getThrowable()).as("Unexpected signal: " + signal).isSameAs(error);
+		assertThat(signal).isNotNull();
+		assertThat(signal.getThrowable()).as("Unexpected signal: " + signal).isSameAs(error);
 
-		assertThat((long) this.writer.items.size()).isEqualTo((long) 3);
+		assertThat(this.writer.items.size()).isEqualTo((long) 3);
 		assertThat(this.writer.items.get(0)).isEqualTo("1");
 		assertThat(this.writer.items.get(1)).isEqualTo("2");
 		assertThat(this.writer.items.get(2)).isEqualTo("3");
-		assertThat((Object) this.writer.error).isSameAs(error);
+		assertThat(this.writer.error).isSameAs(error);
 	}
 
 	@Test // gh-22720
@@ -182,7 +182,7 @@ public class ChannelSendOperatorTests {
 			writeSubscriber.signalDemand(1);  // Let cached signals ("foo" and error) be published..
 		}
 		catch (Throwable ex) {
-			assertThat((Object) ex.getCause()).isNotNull();
+			assertThat(ex.getCause()).isNotNull();
 			assertThat(ex.getCause().getMessage()).isEqualTo("err");
 		}
 

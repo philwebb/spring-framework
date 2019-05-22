@@ -38,7 +38,7 @@ public class SimpleJmsListenerEndpointTests {
 		SimpleJmsListenerEndpoint endpoint = new SimpleJmsListenerEndpoint();
 		MessageListener messageListener = new MessageListenerAdapter();
 		endpoint.setMessageListener(messageListener);
-		assertThat((Object) endpoint.createMessageListener(container)).isSameAs(messageListener);
+		assertThat(endpoint.createMessageListener(container)).isSameAs(messageListener);
 	}
 
 }

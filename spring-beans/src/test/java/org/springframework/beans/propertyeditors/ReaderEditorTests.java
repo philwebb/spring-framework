@@ -71,12 +71,12 @@ public class ReaderEditorTests {
 
 	@Test
 	public void testGetAsTextReturnsNullByDefault() throws Exception {
-		assertThat((Object) new ReaderEditor().getAsText()).isNull();
+		assertThat(new ReaderEditor().getAsText()).isNull();
 		String resource = "classpath:" + ClassUtils.classPackageAsResourcePath(getClass()) +
 				"/" + ClassUtils.getShortName(getClass()) + ".class";
 		ReaderEditor editor = new ReaderEditor();
 		editor.setAsText(resource);
-		assertThat((Object) editor.getAsText()).isNull();
+		assertThat(editor.getAsText()).isNull();
 	}
 
 }

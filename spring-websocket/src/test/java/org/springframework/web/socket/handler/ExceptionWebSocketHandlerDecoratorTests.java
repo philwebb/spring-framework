@@ -98,7 +98,7 @@ public class ExceptionWebSocketHandlerDecoratorTests {
 
 		this.decorator.afterConnectionClosed(this.session, closeStatus);
 
-		assertThat((Object) this.session.getCloseStatus()).isNull();
+		assertThat(this.session.getCloseStatus()).isNull();
 	}
 
 }

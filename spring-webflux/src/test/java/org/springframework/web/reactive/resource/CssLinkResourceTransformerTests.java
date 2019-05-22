@@ -102,7 +102,7 @@ public class CssLinkResourceTransformerTests {
 		Resource expected = getResource("foo.css");
 
 		StepVerifier.create(this.transformerChain.transform(exchange, expected))
-				.consumeNextWith(resource -> assertThat((Object) resource).isSameAs(expected))
+				.consumeNextWith(resource -> assertThat(resource).isSameAs(expected))
 				.expectComplete().verify();
 	}
 

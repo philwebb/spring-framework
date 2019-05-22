@@ -100,7 +100,7 @@ public class PropertyAccessTests extends AbstractExpressionTests {
 		ctx.addPropertyAccessor(new StringyPropertyAccessor());
 		Expression expr = parser.parseRaw("new String('hello').flibbles");
 		Integer i = expr.getValue(ctx, Integer.class);
-		assertThat((long) (int) i).isEqualTo((long) 7);
+		assertThat((int) i).isEqualTo((long) 7);
 
 		// The reflection one will be used for other properties...
 		expr = parser.parseRaw("new String('hello').CASE_INSENSITIVE_ORDER");
@@ -110,7 +110,7 @@ public class PropertyAccessTests extends AbstractExpressionTests {
 		SpelExpression flibbleexpr = parser.parseRaw("new String('hello').flibbles");
 		flibbleexpr.setValue(ctx, 99);
 		i = flibbleexpr.getValue(ctx, Integer.class);
-		assertThat((long) (int) i).isEqualTo((long) 99);
+		assertThat((int) i).isEqualTo((long) 99);
 
 		// Cannot set it to a string value
 		assertThatExceptionOfType(EvaluationException.class).isThrownBy(() ->
@@ -126,20 +126,20 @@ public class PropertyAccessTests extends AbstractExpressionTests {
 
 		// reflective property accessor is the only one by default
 		List<PropertyAccessor> propertyAccessors = ctx.getPropertyAccessors();
-		assertThat((long) propertyAccessors.size()).isEqualTo((long) 1);
+		assertThat(propertyAccessors.size()).isEqualTo((long) 1);
 
 		StringyPropertyAccessor spa = new StringyPropertyAccessor();
 		ctx.addPropertyAccessor(spa);
-		assertThat((long) ctx.getPropertyAccessors().size()).isEqualTo((long) 2);
+		assertThat(ctx.getPropertyAccessors().size()).isEqualTo((long) 2);
 
 		List<PropertyAccessor> copy = new ArrayList<>();
 		copy.addAll(ctx.getPropertyAccessors());
 		assertThat(ctx.removePropertyAccessor(spa)).isTrue();
 		assertThat(ctx.removePropertyAccessor(spa)).isFalse();
-		assertThat((long) ctx.getPropertyAccessors().size()).isEqualTo((long) 1);
+		assertThat(ctx.getPropertyAccessors().size()).isEqualTo((long) 1);
 
 		ctx.setPropertyAccessors(copy);
-		assertThat((long) ctx.getPropertyAccessors().size()).isEqualTo((long) 2);
+		assertThat(ctx.getPropertyAccessors().size()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -251,7 +251,7 @@ public class PropertyAccessTests extends AbstractExpressionTests {
 
 		assertThat(parser.parseExpression("name.substring(1)").getValue(context, target)).isEqualTo("1");
 		assertThat(context.getRootObject().getValue()).isSameAs(target);
-		assertThat((Object) context.getRootObject().getTypeDescriptor().getType()).isSameAs(Object.class);
+		assertThat(context.getRootObject().getTypeDescriptor().getType()).isSameAs(Object.class);
 	}
 
 

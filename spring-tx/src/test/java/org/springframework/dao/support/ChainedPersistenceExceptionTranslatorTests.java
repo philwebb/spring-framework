@@ -35,7 +35,7 @@ public class ChainedPersistenceExceptionTranslatorTests {
 		ChainedPersistenceExceptionTranslator pet = new ChainedPersistenceExceptionTranslator();
 		//MapPersistenceExceptionTranslator mpet = new MapPersistenceExceptionTranslator();
 		RuntimeException in = new RuntimeException("in");
-		assertThat((Object) DataAccessUtils.translateIfNecessary(in, pet)).isSameAs(in);
+		assertThat(DataAccessUtils.translateIfNecessary(in, pet)).isSameAs(in);
 	}
 
 	@Test
@@ -47,28 +47,28 @@ public class ChainedPersistenceExceptionTranslatorTests {
 		mpet1.addTranslation(in1, out1);
 
 		ChainedPersistenceExceptionTranslator chainedPet1 = new ChainedPersistenceExceptionTranslator();
-		assertThat((Object) DataAccessUtils.translateIfNecessary(in1, chainedPet1)).as("Should not translate yet").isSameAs(in1);
+		assertThat(DataAccessUtils.translateIfNecessary(in1, chainedPet1)).as("Should not translate yet").isSameAs(in1);
 		chainedPet1.addDelegate(mpet1);
-		assertThat((Object) DataAccessUtils.translateIfNecessary(in1, chainedPet1)).as("Should now translate").isSameAs(out1);
+		assertThat(DataAccessUtils.translateIfNecessary(in1, chainedPet1)).as("Should now translate").isSameAs(out1);
 
 		// Now add a new translator and verify it wins
 		MapPersistenceExceptionTranslator mpet2 = new MapPersistenceExceptionTranslator();
 		mpet2.addTranslation(in1, out2);
 		chainedPet1.addDelegate(mpet2);
-		assertThat((Object) DataAccessUtils.translateIfNecessary(in1, chainedPet1)).as("Should still translate the same due to ordering").isSameAs(out1);
+		assertThat(DataAccessUtils.translateIfNecessary(in1, chainedPet1)).as("Should still translate the same due to ordering").isSameAs(out1);
 
 		ChainedPersistenceExceptionTranslator chainedPet2 = new ChainedPersistenceExceptionTranslator();
 		chainedPet2.addDelegate(mpet2);
 		chainedPet2.addDelegate(mpet1);
-		assertThat((Object) DataAccessUtils.translateIfNecessary(in1, chainedPet2)).as("Should translate differently due to ordering").isSameAs(out2);
+		assertThat(DataAccessUtils.translateIfNecessary(in1, chainedPet2)).as("Should translate differently due to ordering").isSameAs(out2);
 
 		RuntimeException in2 = new RuntimeException("in2");
 		OptimisticLockingFailureException out3 = new OptimisticLockingFailureException("out2");
-		assertThat((Object) chainedPet2.translateExceptionIfPossible(in2)).isNull();
+		assertThat(chainedPet2.translateExceptionIfPossible(in2)).isNull();
 		MapPersistenceExceptionTranslator mpet3 = new MapPersistenceExceptionTranslator();
 		mpet3.addTranslation(in2, out3);
 		chainedPet2.addDelegate(mpet3);
-		assertThat((Object) chainedPet2.translateExceptionIfPossible(in2)).isSameAs(out3);
+		assertThat(chainedPet2.translateExceptionIfPossible(in2)).isSameAs(out3);
 	}
 
 }

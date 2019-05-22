@@ -85,7 +85,7 @@ public class GenericMessagingTemplateTests {
 				.build();
 		this.template.send(channel, message);
 		verify(channel).send(any(Message.class), eq(30_000L));
-		assertThat((Object) sent.get()).isNotNull();
+		assertThat(sent.get()).isNotNull();
 		assertThat(sent.get().getHeaders().containsKey(GenericMessagingTemplate.DEFAULT_SEND_TIMEOUT_HEADER)).isFalse();
 		assertThat(sent.get().getHeaders().containsKey(GenericMessagingTemplate.DEFAULT_RECEIVE_TIMEOUT_HEADER)).isFalse();
 	}
@@ -104,7 +104,7 @@ public class GenericMessagingTemplateTests {
 		accessor.setHeader(GenericMessagingTemplate.DEFAULT_SEND_TIMEOUT_HEADER, 30_000L);
 		this.template.send(channel, message);
 		verify(channel).send(any(Message.class), eq(30_000L));
-		assertThat((Object) sent.get()).isNotNull();
+		assertThat(sent.get()).isNotNull();
 		assertThat(sent.get().getHeaders().containsKey(GenericMessagingTemplate.DEFAULT_SEND_TIMEOUT_HEADER)).isFalse();
 		assertThat(sent.get().getHeaders().containsKey(GenericMessagingTemplate.DEFAULT_RECEIVE_TIMEOUT_HEADER)).isFalse();
 	}
@@ -170,7 +170,7 @@ public class GenericMessagingTemplateTests {
 				.setHeader(GenericMessagingTemplate.DEFAULT_SEND_TIMEOUT_HEADER, 30_000L)
 				.setHeader(GenericMessagingTemplate.DEFAULT_RECEIVE_TIMEOUT_HEADER, 1L)
 				.build();
-		assertThat((Object) this.template.sendAndReceive(channel, message)).isNull();
+		assertThat(this.template.sendAndReceive(channel, message)).isNull();
 		assertThat(latch.await(10_000, TimeUnit.MILLISECONDS)).isTrue();
 
 		Throwable ex = failure.get();
@@ -202,7 +202,7 @@ public class GenericMessagingTemplateTests {
 				.setHeader("sto", 30_000L)
 				.setHeader("rto", 1L)
 				.build();
-		assertThat((Object) this.template.sendAndReceive(channel, message)).isNull();
+		assertThat(this.template.sendAndReceive(channel, message)).isNull();
 		assertThat(latch.await(10_000, TimeUnit.MILLISECONDS)).isTrue();
 
 		Throwable ex = failure.get();
@@ -249,7 +249,7 @@ public class GenericMessagingTemplateTests {
 		List<Message<byte[]>> messages = this.messageChannel.getMessages();
 		Message<byte[]> message = messages.get(0);
 
-		assertThat((Object) message.getHeaders()).isSameAs(headers);
+		assertThat(message.getHeaders()).isSameAs(headers);
 		assertThat(accessor.isMutable()).isFalse();
 	}
 

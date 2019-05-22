@@ -159,13 +159,13 @@ public class EnableJmsTests extends AbstractJmsAnnotationDrivenTests {
 			EnableJmsDefaultContainerFactoryConfig.class, ComposedJmsListenersBean.class)) {
 			JmsListenerContainerTestFactory simpleFactory = context.getBean("jmsListenerContainerFactory",
 				JmsListenerContainerTestFactory.class);
-			assertThat((long) simpleFactory.getListenerContainers().size()).isEqualTo((long) 2);
+			assertThat(simpleFactory.getListenerContainers().size()).isEqualTo((long) 2);
 
 			MethodJmsListenerEndpoint first = (MethodJmsListenerEndpoint) simpleFactory.getListenerContainer(
 				"first").getEndpoint();
 			assertThat(first.getId()).isEqualTo("first");
 			assertThat(first.getDestination()).isEqualTo("orderQueue");
-			assertThat((Object) first.getConcurrency()).isNull();
+			assertThat(first.getConcurrency()).isNull();
 
 			MethodJmsListenerEndpoint second = (MethodJmsListenerEndpoint) simpleFactory.getListenerContainer(
 				"second").getEndpoint();
@@ -190,10 +190,10 @@ public class EnableJmsTests extends AbstractJmsAnnotationDrivenTests {
 				EnableJmsDefaultContainerFactoryConfig.class, LazyBean.class);
 		JmsListenerContainerTestFactory defaultFactory =
 				context.getBean("jmsListenerContainerFactory", JmsListenerContainerTestFactory.class);
-		assertThat((long) defaultFactory.getListenerContainers().size()).isEqualTo((long) 0);
+		assertThat(defaultFactory.getListenerContainers().size()).isEqualTo((long) 0);
 
 		context.getBean(LazyBean.class);  // trigger lazy resolution
-		assertThat((long) defaultFactory.getListenerContainers().size()).isEqualTo((long) 1);
+		assertThat(defaultFactory.getListenerContainers().size()).isEqualTo((long) 1);
 		MessageListenerTestContainer container = defaultFactory.getListenerContainers().get(0);
 		assertThat(container.isStarted()).as("Should have been started " + container).isTrue();
 		context.close();  // close and stop the listeners

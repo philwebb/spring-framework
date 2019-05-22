@@ -48,9 +48,9 @@ public class ComponentScanParserBeanDefinitionDefaultsTests {
 		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(context);
 		reader.loadBeanDefinitions(LOCATION_PREFIX + "defaultWithNoOverridesTests.xml");
 		assertThat(context.getBeanDefinition(TEST_BEAN_NAME).isLazyInit()).as("lazy-init should be false").isFalse();
-		assertThat((long) DefaultsTestBean.INIT_COUNT).as("initCount should be 0").isEqualTo((long) 0);
+		assertThat(DefaultsTestBean.INIT_COUNT).as("initCount should be 0").isEqualTo((long) 0);
 		context.refresh();
-		assertThat((long) DefaultsTestBean.INIT_COUNT).as("bean should have been instantiated").isEqualTo((long) 1);
+		assertThat(DefaultsTestBean.INIT_COUNT).as("bean should have been instantiated").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -59,11 +59,11 @@ public class ComponentScanParserBeanDefinitionDefaultsTests {
 		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(context);
 		reader.loadBeanDefinitions(LOCATION_PREFIX + "defaultLazyInitTrueTests.xml");
 		assertThat(context.getBeanDefinition(TEST_BEAN_NAME).isLazyInit()).as("lazy-init should be true").isTrue();
-		assertThat((long) DefaultsTestBean.INIT_COUNT).as("initCount should be 0").isEqualTo((long) 0);
+		assertThat(DefaultsTestBean.INIT_COUNT).as("initCount should be 0").isEqualTo((long) 0);
 		context.refresh();
-		assertThat((long) DefaultsTestBean.INIT_COUNT).as("bean should not have been instantiated yet").isEqualTo((long) 0);
+		assertThat(DefaultsTestBean.INIT_COUNT).as("bean should not have been instantiated yet").isEqualTo((long) 0);
 		context.getBean(TEST_BEAN_NAME);
-		assertThat((long) DefaultsTestBean.INIT_COUNT).as("bean should have been instantiated").isEqualTo((long) 1);
+		assertThat(DefaultsTestBean.INIT_COUNT).as("bean should have been instantiated").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -72,9 +72,9 @@ public class ComponentScanParserBeanDefinitionDefaultsTests {
 		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(context);
 		reader.loadBeanDefinitions(LOCATION_PREFIX + "defaultLazyInitFalseTests.xml");
 		assertThat(context.getBeanDefinition(TEST_BEAN_NAME).isLazyInit()).as("lazy-init should be false").isFalse();
-		assertThat((long) DefaultsTestBean.INIT_COUNT).as("initCount should be 0").isEqualTo((long) 0);
+		assertThat(DefaultsTestBean.INIT_COUNT).as("initCount should be 0").isEqualTo((long) 0);
 		context.refresh();
-		assertThat((long) DefaultsTestBean.INIT_COUNT).as("bean should have been instantiated").isEqualTo((long) 1);
+		assertThat(DefaultsTestBean.INIT_COUNT).as("bean should have been instantiated").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -84,9 +84,9 @@ public class ComponentScanParserBeanDefinitionDefaultsTests {
 		reader.loadBeanDefinitions(LOCATION_PREFIX + "defaultWithNoOverridesTests.xml");
 		context.refresh();
 		DefaultsTestBean bean = (DefaultsTestBean) context.getBean(TEST_BEAN_NAME);
-		assertThat((Object) bean.getConstructorDependency()).as("no dependencies should have been autowired").isNull();
-		assertThat((Object) bean.getPropertyDependency1()).as("no dependencies should have been autowired").isNull();
-		assertThat((Object) bean.getPropertyDependency2()).as("no dependencies should have been autowired").isNull();
+		assertThat(bean.getConstructorDependency()).as("no dependencies should have been autowired").isNull();
+		assertThat(bean.getPropertyDependency1()).as("no dependencies should have been autowired").isNull();
+		assertThat(bean.getPropertyDependency2()).as("no dependencies should have been autowired").isNull();
 	}
 
 	@Test
@@ -96,9 +96,9 @@ public class ComponentScanParserBeanDefinitionDefaultsTests {
 		reader.loadBeanDefinitions(LOCATION_PREFIX + "defaultAutowireNoTests.xml");
 		context.refresh();
 		DefaultsTestBean bean = (DefaultsTestBean) context.getBean(TEST_BEAN_NAME);
-		assertThat((Object) bean.getConstructorDependency()).as("no dependencies should have been autowired").isNull();
-		assertThat((Object) bean.getPropertyDependency1()).as("no dependencies should have been autowired").isNull();
-		assertThat((Object) bean.getPropertyDependency2()).as("no dependencies should have been autowired").isNull();
+		assertThat(bean.getConstructorDependency()).as("no dependencies should have been autowired").isNull();
+		assertThat(bean.getPropertyDependency1()).as("no dependencies should have been autowired").isNull();
+		assertThat(bean.getPropertyDependency2()).as("no dependencies should have been autowired").isNull();
 	}
 
 	@Test
@@ -108,10 +108,10 @@ public class ComponentScanParserBeanDefinitionDefaultsTests {
 		reader.loadBeanDefinitions(LOCATION_PREFIX + "defaultAutowireConstructorTests.xml");
 		context.refresh();
 		DefaultsTestBean bean = (DefaultsTestBean) context.getBean(TEST_BEAN_NAME);
-		assertThat((Object) bean.getConstructorDependency()).as("constructor dependency should have been autowired").isNotNull();
+		assertThat(bean.getConstructorDependency()).as("constructor dependency should have been autowired").isNotNull();
 		assertThat(bean.getConstructorDependency().getName()).isEqualTo("cd");
-		assertThat((Object) bean.getPropertyDependency1()).as("property dependencies should not have been autowired").isNull();
-		assertThat((Object) bean.getPropertyDependency2()).as("property dependencies should not have been autowired").isNull();
+		assertThat(bean.getPropertyDependency1()).as("property dependencies should not have been autowired").isNull();
+		assertThat(bean.getPropertyDependency2()).as("property dependencies should not have been autowired").isNull();
 	}
 
 	@Test
@@ -130,9 +130,9 @@ public class ComponentScanParserBeanDefinitionDefaultsTests {
 		reader.loadBeanDefinitions(LOCATION_PREFIX + "defaultAutowireByNameTests.xml");
 		context.refresh();
 		DefaultsTestBean bean = (DefaultsTestBean) context.getBean(TEST_BEAN_NAME);
-		assertThat((Object) bean.getConstructorDependency()).as("constructor dependency should not have been autowired").isNull();
-		assertThat((Object) bean.getPropertyDependency1()).as("propertyDependency1 should not have been autowired").isNull();
-		assertThat((Object) bean.getPropertyDependency2()).as("propertyDependency2 should have been autowired").isNotNull();
+		assertThat(bean.getConstructorDependency()).as("constructor dependency should not have been autowired").isNull();
+		assertThat(bean.getPropertyDependency1()).as("propertyDependency1 should not have been autowired").isNull();
+		assertThat(bean.getPropertyDependency2()).as("propertyDependency2 should have been autowired").isNotNull();
 		assertThat(bean.getPropertyDependency2().getName()).isEqualTo("pd2");
 	}
 
@@ -143,9 +143,9 @@ public class ComponentScanParserBeanDefinitionDefaultsTests {
 		reader.loadBeanDefinitions(LOCATION_PREFIX + "defaultWithNoOverridesTests.xml");
 		context.refresh();
 		DefaultsTestBean bean = (DefaultsTestBean) context.getBean(TEST_BEAN_NAME);
-		assertThat((Object) bean.getConstructorDependency()).as("constructor dependency should not have been autowired").isNull();
-		assertThat((Object) bean.getPropertyDependency1()).as("property dependencies should not have been autowired").isNull();
-		assertThat((Object) bean.getPropertyDependency2()).as("property dependencies should not have been autowired").isNull();
+		assertThat(bean.getConstructorDependency()).as("constructor dependency should not have been autowired").isNull();
+		assertThat(bean.getPropertyDependency1()).as("property dependencies should not have been autowired").isNull();
+		assertThat(bean.getPropertyDependency2()).as("property dependencies should not have been autowired").isNull();
 	}
 
 	@Test

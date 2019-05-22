@@ -130,21 +130,21 @@ public class MockHttpServletResponseTests {
 	@Test
 	public void contentLength() {
 		response.setContentLength(66);
-		assertThat((long) response.getContentLength()).isEqualTo((long) 66);
+		assertThat(response.getContentLength()).isEqualTo((long) 66);
 		assertThat(response.getHeader("Content-Length")).isEqualTo("66");
 	}
 
 	@Test
 	public void contentLengthHeader() {
 		response.addHeader("Content-Length", "66");
-		assertThat((long) response.getContentLength()).isEqualTo((long) 66);
+		assertThat(response.getContentLength()).isEqualTo((long) 66);
 		assertThat(response.getHeader("Content-Length")).isEqualTo("66");
 	}
 
 	@Test
 	public void contentLengthIntHeader() {
 		response.addIntHeader("Content-Length", 66);
-		assertThat((long) response.getContentLength()).isEqualTo((long) 66);
+		assertThat(response.getContentLength()).isEqualTo((long) 66);
 		assertThat(response.getHeader("Content-Length")).isEqualTo("66");
 	}
 
@@ -153,8 +153,8 @@ public class MockHttpServletResponseTests {
 		final String headerName = "Header1";
 		response.addHeader(headerName, "value1");
 		Collection<String> responseHeaders = response.getHeaderNames();
-		assertThat((Object) responseHeaders).isNotNull();
-		assertThat((long) responseHeaders.size()).isEqualTo((long) 1);
+		assertThat(responseHeaders).isNotNull();
+		assertThat(responseHeaders.size()).isEqualTo((long) 1);
 		assertThat(responseHeaders.iterator().next()).as("HTTP header casing not being preserved").isEqualTo(headerName);
 	}
 
@@ -182,7 +182,7 @@ public class MockHttpServletResponseTests {
 		int size = response.getBufferSize();
 		response.getOutputStream().write(new byte[size]);
 		assertThat(response.isCommitted()).isTrue();
-		assertThat((long) response.getContentAsByteArray().length).isEqualTo((long) (size + 1));
+		assertThat(response.getContentAsByteArray().length).isEqualTo((long) (size + 1));
 	}
 
 	@Test
@@ -192,7 +192,7 @@ public class MockHttpServletResponseTests {
 		assertThat(response.isCommitted()).isFalse();
 		response.flushBuffer();
 		assertThat(response.isCommitted()).isTrue();
-		assertThat((long) response.getContentAsByteArray().length).isEqualTo((long) 1);
+		assertThat(response.getContentAsByteArray().length).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -205,7 +205,7 @@ public class MockHttpServletResponseTests {
 		Arrays.fill(data, 'p');
 		response.getWriter().write(data);
 		assertThat(response.isCommitted()).isTrue();
-		assertThat((long) response.getContentAsByteArray().length).isEqualTo((long) (size + 1));
+		assertThat(response.getContentAsByteArray().length).isEqualTo((long) (size + 1));
 	}
 
 	@Test
@@ -215,7 +215,7 @@ public class MockHttpServletResponseTests {
 		assertThat(response.isCommitted()).isFalse();
 		response.getOutputStream().flush();
 		assertThat(response.isCommitted()).isTrue();
-		assertThat((long) response.getContentAsByteArray().length).isEqualTo((long) 1);
+		assertThat(response.getContentAsByteArray().length).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -225,7 +225,7 @@ public class MockHttpServletResponseTests {
 		assertThat(response.isCommitted()).isFalse();
 		response.getWriter().flush();
 		assertThat(response.isCommitted()).isTrue();
-		assertThat((long) response.getContentAsByteArray().length).isEqualTo((long) 1);
+		assertThat(response.getContentAsByteArray().length).isEqualTo((long) 1);
 	}
 
 	@Test // SPR-16683
@@ -235,7 +235,7 @@ public class MockHttpServletResponseTests {
 		assertThat(response.isCommitted()).isFalse();
 		response.getWriter().close();
 		assertThat(response.isCommitted()).isTrue();
-		assertThat((long) response.getContentAsByteArray().length).isEqualTo((long) 1);
+		assertThat(response.getContentAsByteArray().length).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -260,7 +260,7 @@ public class MockHttpServletResponseTests {
 	public void sendRedirect() throws IOException {
 		String redirectUrl = "/redirect";
 		response.sendRedirect(redirectUrl);
-		assertThat((long) response.getStatus()).isEqualTo((long) HttpServletResponse.SC_MOVED_TEMPORARILY);
+		assertThat(response.getStatus()).isEqualTo((long) HttpServletResponse.SC_MOVED_TEMPORARILY);
 		assertThat(response.getHeader("Location")).isEqualTo(redirectUrl);
 		assertThat(response.getRedirectedUrl()).isEqualTo(redirectUrl);
 		assertThat(response.isCommitted()).isTrue();
@@ -305,7 +305,7 @@ public class MockHttpServletResponseTests {
 
 	@Test  // SPR-16160
 	public void getNonExistentDateHeader() {
-		assertThat((Object) response.getHeader("Last-Modified")).isNull();
+		assertThat(response.getHeader("Last-Modified")).isNull();
 		assertThat(response.getDateHeader("Last-Modified")).isEqualTo((long) -1);
 	}
 
@@ -313,7 +313,7 @@ public class MockHttpServletResponseTests {
 	public void modifyStatusAfterSendError() throws IOException {
 		response.sendError(HttpServletResponse.SC_NOT_FOUND);
 		response.setStatus(HttpServletResponse.SC_OK);
-		assertThat((long) response.getStatus()).isEqualTo((long) HttpServletResponse.SC_NOT_FOUND);
+		assertThat(response.getStatus()).isEqualTo((long) HttpServletResponse.SC_NOT_FOUND);
 	}
 
 	@Test  // SPR-10414
@@ -321,14 +321,14 @@ public class MockHttpServletResponseTests {
 	public void modifyStatusMessageAfterSendError() throws IOException {
 		response.sendError(HttpServletResponse.SC_NOT_FOUND);
 		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,"Server Error");
-		assertThat((long) response.getStatus()).isEqualTo((long) HttpServletResponse.SC_NOT_FOUND);
+		assertThat(response.getStatus()).isEqualTo((long) HttpServletResponse.SC_NOT_FOUND);
 	}
 
 	@Test
 	public void setCookieHeaderValid() {
 		response.addHeader(HttpHeaders.SET_COOKIE, "SESSION=123; Path=/; Secure; HttpOnly; SameSite=Lax");
 		Cookie cookie = response.getCookie("SESSION");
-		assertThat((Object) cookie).isNotNull();
+		assertThat(cookie).isNotNull();
 		boolean condition = cookie instanceof MockCookie;
 		assertThat(condition).isTrue();
 		assertThat(cookie.getName()).isEqualTo("SESSION");

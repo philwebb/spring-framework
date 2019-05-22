@@ -32,7 +32,7 @@ import org.springframework.web.context.support.ServletContextResource;
 import org.springframework.web.util.UrlPathHelper;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.fail;
+import static org.assertj.core.api.Assertions.fail;
 
 /**
  * Unit tests for {@link PathResourceResolver}.
@@ -60,7 +60,7 @@ public class PathResourceResolverTests {
 		String requestPath = "org/springframework/web/servlet/resource/test/bar.css";
 		Resource actual = this.resolver.resolveResource(null, requestPath, Collections.singletonList(location), null);
 
-		assertThat((Object) actual).isNotNull();
+		assertThat(actual).isNotNull();
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class PathResourceResolverTests {
 		if (!location.createRelative(requestPath).exists() && !requestPath.contains(":")) {
 			fail(requestPath + " doesn't actually exist as a relative path");
 		}
-		assertThat((Object) actual).isNull();
+		assertThat(actual).isNull();
 	}
 
 	@Test
@@ -123,7 +123,7 @@ public class PathResourceResolverTests {
 		String locationUrl= new UrlResource(getClass().getResource("./test/")).getURL().toExternalForm();
 		Resource location = new UrlResource(locationUrl.replace("/springframework","/../org/springframework"));
 
-		assertThat((Object) this.resolver.resolveResource(null, "main.css", Collections.singletonList(location), null)).isNotNull();
+		assertThat(this.resolver.resolveResource(null, "main.css", Collections.singletonList(location), null)).isNotNull();
 	}
 
 	// SPR-12747
@@ -139,7 +139,7 @@ public class PathResourceResolverTests {
 		Resource webjarsLocation = new ClassPathResource("/META-INF/resources/webjars/", PathResourceResolver.class);
 		String path = this.resolver.resolveUrlPathInternal("", Collections.singletonList(webjarsLocation), null);
 
-		assertThat((Object) path).isNull();
+		assertThat(path).isNull();
 	}
 
 	@Test

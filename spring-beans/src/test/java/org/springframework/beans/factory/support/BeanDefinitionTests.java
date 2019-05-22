@@ -149,8 +149,8 @@ public class BeanDefinitionTests {
 
 		RootBeanDefinition mergedBd = new RootBeanDefinition(bd);
 		mergedBd.overrideFrom(childBd);
-		assertThat((long) mergedBd.getConstructorArgumentValues().getArgumentCount()).isEqualTo((long) 2);
-		assertThat((long) mergedBd.getPropertyValues().size()).isEqualTo((long) 2);
+		assertThat(mergedBd.getConstructorArgumentValues().getArgumentCount()).isEqualTo((long) 2);
+		assertThat(mergedBd.getPropertyValues().size()).isEqualTo((long) 2);
 		assertThat(mergedBd).isEqualTo(bd);
 
 		mergedBd.getConstructorArgumentValues().getArgumentValue(1, null).setValue(new Integer(9));

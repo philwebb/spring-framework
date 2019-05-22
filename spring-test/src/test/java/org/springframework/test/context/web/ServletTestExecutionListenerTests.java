@@ -172,12 +172,12 @@ public class ServletTestExecutionListenerTests {
 
 	private RequestAttributes assertRequestAttributesExist() {
 		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-		assertThat((Object) requestAttributes).as("request attributes should exist").isNotNull();
+		assertThat(requestAttributes).as("request attributes should exist").isNotNull();
 		return requestAttributes;
 	}
 
 	private void assertRequestAttributesDoNotExist() {
-		assertThat((Object) RequestContextHolder.getRequestAttributes()).as("request attributes should not exist").isNull();
+		assertThat(RequestContextHolder.getRequestAttributes()).as("request attributes should not exist").isNull();
 	}
 
 	private void assertSetUpOutsideOfStelAttributeExists() {

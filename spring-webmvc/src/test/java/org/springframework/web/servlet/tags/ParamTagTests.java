@@ -56,7 +56,7 @@ public class ParamTagTests extends AbstractTagTests {
 
 		int action = tag.doEndTag();
 
-		assertThat((long) action).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(action).isEqualTo((long) Tag.EVAL_PAGE);
 		assertThat(parent.getParam().getName()).isEqualTo("name");
 		assertThat(parent.getParam().getValue()).isEqualTo("value");
 	}
@@ -68,7 +68,7 @@ public class ParamTagTests extends AbstractTagTests {
 
 		int action = tag.doEndTag();
 
-		assertThat((long) action).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(action).isEqualTo((long) Tag.EVAL_PAGE);
 		assertThat(parent.getParam().getName()).isEqualTo("name");
 		assertThat(parent.getParam().getValue()).isEqualTo("value");
 	}
@@ -79,9 +79,9 @@ public class ParamTagTests extends AbstractTagTests {
 
 		int action = tag.doEndTag();
 
-		assertThat((long) action).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(action).isEqualTo((long) Tag.EVAL_PAGE);
 		assertThat(parent.getParam().getName()).isEqualTo("name");
-		assertThat((Object) parent.getParam().getValue()).isNull();
+		assertThat(parent.getParam().getValue()).isNull();
 	}
 
 	@Test
@@ -91,9 +91,9 @@ public class ParamTagTests extends AbstractTagTests {
 
 		int action = tag.doEndTag();
 
-		assertThat((long) action).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(action).isEqualTo((long) Tag.EVAL_PAGE);
 		assertThat(parent.getParam().getName()).isEqualTo("name");
-		assertThat((Object) parent.getParam().getValue()).isNull();
+		assertThat(parent.getParam().getValue()).isNull();
 	}
 
 	@Test
@@ -103,7 +103,7 @@ public class ParamTagTests extends AbstractTagTests {
 
 		int action = tag.doEndTag();
 
-		assertThat((long) action).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(action).isEqualTo((long) Tag.EVAL_PAGE);
 		assertThat(parent.getParam().getName()).isEqualTo("name1");
 		assertThat(parent.getParam().getValue()).isEqualTo("value1");
 
@@ -117,7 +117,7 @@ public class ParamTagTests extends AbstractTagTests {
 
 		action = tag.doEndTag();
 
-		assertThat((long) action).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(action).isEqualTo((long) Tag.EVAL_PAGE);
 		assertThat(parent.getParam().getName()).isEqualTo("name2");
 		assertThat(parent.getParam().getValue()).isEqualTo("value2");
 	}

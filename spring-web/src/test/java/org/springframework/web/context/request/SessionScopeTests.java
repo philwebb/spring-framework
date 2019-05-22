@@ -79,15 +79,15 @@ public class SessionScopeTests {
 		String name = "sessionScopedObject";
 		assertThat(session.getAttribute(name)).isNull();
 		TestBean bean = (TestBean) this.beanFactory.getBean(name);
-		assertThat((long) count.intValue()).isEqualTo((long) 1);
+		assertThat(count.intValue()).isEqualTo((long) 1);
 		assertThat(bean).isEqualTo(session.getAttribute(name));
 		assertThat(this.beanFactory.getBean(name)).isSameAs(bean);
-		assertThat((long) count.intValue()).isEqualTo((long) 1);
+		assertThat(count.intValue()).isEqualTo((long) 1);
 
 		// should re-propagate updated attribute
 		requestAttributes.requestCompleted();
 		assertThat(bean).isEqualTo(session.getAttribute(name));
-		assertThat((long) count.intValue()).isEqualTo((long) 2);
+		assertThat(count.intValue()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -108,12 +108,12 @@ public class SessionScopeTests {
 		String name = "sessionScopedObject";
 		assertThat(session.getAttribute(name)).isNull();
 		TestBean bean = (TestBean) this.beanFactory.getBean(name);
-		assertThat((long) count.intValue()).isEqualTo((long) 1);
+		assertThat(count.intValue()).isEqualTo((long) 1);
 
 		// should re-propagate updated attribute
 		requestAttributes.requestCompleted();
 		assertThat(bean).isEqualTo(session.getAttribute(name));
-		assertThat((long) count.intValue()).isEqualTo((long) 2);
+		assertThat(count.intValue()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -191,10 +191,10 @@ public class SessionScopeTests {
 		assertThat(bean.wasDestroyed()).isTrue();
 
 		if (beanNameReset) {
-			assertThat((Object) bean.getBeanName()).isNull();
+			assertThat(bean.getBeanName()).isNull();
 		}
 		else {
-			assertThat((Object) bean.getBeanName()).isNotNull();
+			assertThat(bean.getBeanName()).isNotNull();
 		}
 	}
 

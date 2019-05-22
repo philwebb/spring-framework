@@ -54,11 +54,11 @@ public class CompositeFilterTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		filterProxy.doFilter(request, response, null);
 
-		assertThat((Object) targetFilter.filterConfig).isNotNull();
+		assertThat(targetFilter.filterConfig).isNotNull();
 		assertThat(request.getAttribute("called")).isEqualTo(Boolean.TRUE);
 
 		filterProxy.destroy();
-		assertThat((Object) targetFilter.filterConfig).isNull();
+		assertThat(targetFilter.filterConfig).isNull();
 	}
 
 

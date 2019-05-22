@@ -66,12 +66,12 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 	public void testMessageCodesResolver() {
 		loadBeanDefinitions("mvc-config-message-codes-resolver.xml");
 		RequestMappingHandlerAdapter adapter = this.appContext.getBean(RequestMappingHandlerAdapter.class);
-		assertThat((Object) adapter).isNotNull();
+		assertThat(adapter).isNotNull();
 		Object initializer = adapter.getWebBindingInitializer();
 		assertThat(initializer).isNotNull();
 		MessageCodesResolver resolver =
 				((ConfigurableWebBindingInitializer) initializer).getMessageCodesResolver();
-		assertThat((Object) resolver).isNotNull();
+		assertThat(resolver).isNotNull();
 		assertThat(resolver.getClass()).isEqualTo(TestMessageCodesResolver.class);
 		assertThat(new DirectFieldAccessor(adapter).getPropertyValue("ignoreDefaultModelOnRedirect")).isEqualTo(false);
 	}
@@ -80,7 +80,7 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 	public void testPathMatchingConfiguration() {
 		loadBeanDefinitions("mvc-config-path-matching.xml");
 		RequestMappingHandlerMapping hm = this.appContext.getBean(RequestMappingHandlerMapping.class);
-		assertThat((Object) hm).isNotNull();
+		assertThat(hm).isNotNull();
 		assertThat(hm.useSuffixPatternMatch()).isTrue();
 		assertThat(hm.useTrailingSlashMatch()).isFalse();
 		assertThat(hm.useRegisteredSuffixPatternMatch()).isTrue();
@@ -121,14 +121,14 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 		assertThat(condition3).isTrue();
 		@SuppressWarnings("unchecked")
 		List<HandlerMethodArgumentResolver> resolvers = (List<HandlerMethodArgumentResolver>) value;
-		assertThat((long) resolvers.size()).isEqualTo((long) 3);
+		assertThat(resolvers.size()).isEqualTo((long) 3);
 		boolean condition2 = resolvers.get(0) instanceof ServletWebArgumentResolverAdapter;
 		assertThat(condition2).isTrue();
 		boolean condition1 = resolvers.get(1) instanceof TestHandlerMethodArgumentResolver;
 		assertThat(condition1).isTrue();
 		boolean condition = resolvers.get(2) instanceof TestHandlerMethodArgumentResolver;
 		assertThat(condition).isTrue();
-		assertThat((Object) resolvers.get(2)).isNotSameAs(resolvers.get(1));
+		assertThat(resolvers.get(2)).isNotSameAs(resolvers.get(1));
 	}
 
 	@Test
@@ -146,18 +146,18 @@ public class AnnotationDrivenBeanDefinitionParserTests {
 		assertThat(condition).isTrue();
 		@SuppressWarnings("unchecked")
 		List<HandlerMethodReturnValueHandler> handlers = (List<HandlerMethodReturnValueHandler>) value;
-		assertThat((long) handlers.size()).isEqualTo((long) 2);
+		assertThat(handlers.size()).isEqualTo((long) 2);
 		assertThat(handlers.get(0).getClass()).isEqualTo(TestHandlerMethodReturnValueHandler.class);
 		assertThat(handlers.get(1).getClass()).isEqualTo(TestHandlerMethodReturnValueHandler.class);
-		assertThat((Object) handlers.get(1)).isNotSameAs(handlers.get(0));
+		assertThat(handlers.get(1)).isNotSameAs(handlers.get(0));
 	}
 
 	@Test
 	public void beanNameUrlHandlerMapping() {
 		loadBeanDefinitions("mvc-config.xml");
 		BeanNameUrlHandlerMapping mapping = this.appContext.getBean(BeanNameUrlHandlerMapping.class);
-		assertThat((Object) mapping).isNotNull();
-		assertThat((long) mapping.getOrder()).isEqualTo((long) 2);
+		assertThat(mapping).isNotNull();
+		assertThat(mapping.getOrder()).isEqualTo((long) 2);
 	}
 
 	private void loadBeanDefinitions(String fileName) {

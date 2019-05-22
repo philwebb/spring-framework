@@ -46,7 +46,7 @@ public class ModelMapTests {
 
 	@Test
 	public void testNoArgCtorYieldsEmptyModel() throws Exception {
-		assertThat((long) new ModelMap().size()).isEqualTo((long) 0);
+		assertThat(new ModelMap().size()).isEqualTo((long) 0);
 	}
 
 	/*
@@ -73,27 +73,27 @@ public class ModelMapTests {
 	@Test
 	public void testNamedObjectCtor() throws Exception {
 		ModelMap model = new ModelMap("foo", "bing");
-		assertThat((long) model.size()).isEqualTo((long) 1);
+		assertThat(model.size()).isEqualTo((long) 1);
 		String bing = (String) model.get("foo");
-		assertThat((Object) bing).isNotNull();
+		assertThat(bing).isNotNull();
 		assertThat(bing).isEqualTo("bing");
 	}
 
 	@Test
 	public void testUnnamedCtorScalar() throws Exception {
 		ModelMap model = new ModelMap("foo", "bing");
-		assertThat((long) model.size()).isEqualTo((long) 1);
+		assertThat(model.size()).isEqualTo((long) 1);
 		String bing = (String) model.get("foo");
-		assertThat((Object) bing).isNotNull();
+		assertThat(bing).isNotNull();
 		assertThat(bing).isEqualTo("bing");
 	}
 
 	@Test
 	public void testOneArgCtorWithScalar() throws Exception {
 		ModelMap model = new ModelMap("bing");
-		assertThat((long) model.size()).isEqualTo((long) 1);
+		assertThat(model.size()).isEqualTo((long) 1);
 		String string = (String) model.get("string");
-		assertThat((Object) string).isNotNull();
+		assertThat(string).isNotNull();
 		assertThat(string).isEqualTo("bing");
 	}
 
@@ -107,10 +107,10 @@ public class ModelMapTests {
 	@Test
 	public void testOneArgCtorWithCollection() throws Exception {
 		ModelMap model = new ModelMap(new String[]{"foo", "boing"});
-		assertThat((long) model.size()).isEqualTo((long) 1);
+		assertThat(model.size()).isEqualTo((long) 1);
 		String[] strings = (String[]) model.get("stringList");
-		assertThat((Object) strings).isNotNull();
-		assertThat((long) strings.length).isEqualTo((long) 2);
+		assertThat(strings).isNotNull();
+		assertThat(strings.length).isEqualTo((long) 2);
 		assertThat(strings[0]).isEqualTo("foo");
 		assertThat(strings[1]).isEqualTo("boing");
 	}
@@ -119,7 +119,7 @@ public class ModelMapTests {
 	public void testOneArgCtorWithEmptyCollection() throws Exception {
 		ModelMap model = new ModelMap(new HashSet<>());
 		// must not add if collection is empty...
-		assertThat((long) model.size()).isEqualTo((long) 0);
+		assertThat(model.size()).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -133,24 +133,24 @@ public class ModelMapTests {
 	@Test
 	public void testAddObjectWithEmptyArray() throws Exception {
 		ModelMap model = new ModelMap(new int[]{});
-		assertThat((long) model.size()).isEqualTo((long) 1);
+		assertThat(model.size()).isEqualTo((long) 1);
 		int[] ints = (int[]) model.get("intList");
-		assertThat((Object) ints).isNotNull();
-		assertThat((long) ints.length).isEqualTo((long) 0);
+		assertThat(ints).isNotNull();
+		assertThat(ints.length).isEqualTo((long) 0);
 	}
 
 	@Test
 	public void testAddAllObjectsWithNullMap() throws Exception {
 		ModelMap model = new ModelMap();
 		model.addAllAttributes((Map<String, ?>) null);
-		assertThat((long) model.size()).isEqualTo((long) 0);
+		assertThat(model.size()).isEqualTo((long) 0);
 	}
 
 	@Test
 	public void testAddAllObjectsWithNullCollection() throws Exception {
 		ModelMap model = new ModelMap();
 		model.addAllAttributes((Collection<Object>) null);
-		assertThat((long) model.size()).isEqualTo((long) 0);
+		assertThat(model.size()).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -171,7 +171,7 @@ public class ModelMapTests {
 		map.put("two", "two-value");
 		ModelMap model = new ModelMap();
 		model.addAttribute(map);
-		assertThat((long) model.size()).isEqualTo((long) 1);
+		assertThat(model.size()).isEqualTo((long) 1);
 		String key = StringUtils.uncapitalize(ClassUtils.getShortName(map.getClass()));
 		assertThat(model.containsKey(key)).isTrue();
 	}
@@ -181,7 +181,7 @@ public class ModelMapTests {
 		ModelMap model = new ModelMap();
 		model.addAttribute("foo");
 		model.addAttribute("bar");
-		assertThat((long) model.size()).isEqualTo((long) 1);
+		assertThat(model.size()).isEqualTo((long) 1);
 		String bar = (String) model.get("string");
 		assertThat(bar).isEqualTo("bar");
 	}
@@ -194,7 +194,7 @@ public class ModelMapTests {
 		beans.add(new TestBean("three"));
 		ModelMap model = new ModelMap();
 		model.addAllAttributes(beans);
-		assertThat((long) model.size()).isEqualTo((long) 1);
+		assertThat(model.size()).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -206,7 +206,7 @@ public class ModelMapTests {
 		ModelMap model = new ModelMap();
 		model.put("one", new TestBean("oneOld"));
 		model.mergeAttributes(beans);
-		assertThat((long) model.size()).isEqualTo((long) 3);
+		assertThat(model.size()).isEqualTo((long) 3);
 		assertThat(((TestBean) model.get("one")).getName()).isEqualTo("oneOld");
 	}
 

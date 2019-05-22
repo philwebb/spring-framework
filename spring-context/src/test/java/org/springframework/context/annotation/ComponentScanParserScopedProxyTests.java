@@ -73,7 +73,7 @@ public class ComponentScanParserScopedProxyTests {
 		// test serializability
 		assertThat(bean.foo(1)).isEqualTo("bar");
 		FooService deserialized = (FooService) SerializationTestUtils.serializeAndDeserialize(bean);
-		assertThat((Object) deserialized).isNotNull();
+		assertThat(deserialized).isNotNull();
 		assertThat(deserialized.foo(1)).isEqualTo("bar");
 		context.close();
 	}
@@ -90,7 +90,7 @@ public class ComponentScanParserScopedProxyTests {
 		// test serializability
 		assertThat(bean.foo(1)).isEqualTo("bar");
 		ScopedProxyTestBean deserialized = (ScopedProxyTestBean) SerializationTestUtils.serializeAndDeserialize(bean);
-		assertThat((Object) deserialized).isNotNull();
+		assertThat(deserialized).isNotNull();
 		assertThat(deserialized.foo(1)).isEqualTo("bar");
 		context.close();
 	}

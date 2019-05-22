@@ -76,7 +76,7 @@ public class DefaultTransportRequestTests {
 		request.connect(null, this.connectFuture);
 		WebSocketSession session = mock(WebSocketSession.class);
 		this.webSocketTransport.getConnectCallback().onSuccess(session);
-		assertThat((Object) this.connectFuture.get()).isSameAs(session);
+		assertThat(this.connectFuture.get()).isSameAs(session);
 	}
 
 	@Test

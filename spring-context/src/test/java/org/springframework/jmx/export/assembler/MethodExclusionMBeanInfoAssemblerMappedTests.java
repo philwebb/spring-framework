@@ -45,7 +45,7 @@ public class MethodExclusionMBeanInfoAssemblerMappedTests extends AbstractJmxAss
 	public void testNickNameIsExposed() throws Exception {
 		ModelMBeanInfo inf = (ModelMBeanInfo) getMBeanInfo();
 		MBeanAttributeInfo attr = inf.getAttribute("NickName");
-		assertThat((Object) attr).as("Nick Name should not be null").isNotNull();
+		assertThat(attr).as("Nick Name should not be null").isNotNull();
 		assertThat(attr.isWritable()).as("Nick Name should be writable").isTrue();
 		assertThat(attr.isReadable()).as("Nick Name should be readable").isTrue();
 	}

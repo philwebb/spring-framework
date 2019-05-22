@@ -77,8 +77,8 @@ public class AnnotationExceptionHandlerMethodResolverTests {
 	@Test
 	public void resolveMethodNoMatch() {
 		Exception exception = new Exception();
-		assertThat((Object) this.resolver.resolveMethod(exception)).as("1st lookup").isNull();
-		assertThat((Object) this.resolver.resolveMethod(exception)).as("2nd lookup from cache").isNull();
+		assertThat(this.resolver.resolveMethod(exception)).as("1st lookup").isNull();
+		assertThat(this.resolver.resolveMethod(exception)).as("2nd lookup from cache").isNull();
 	}
 
 	@Test

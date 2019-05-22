@@ -71,7 +71,7 @@ public class ErrorsMethodArgumentResolverTests {
 		mavContainer.addAllAttributes(bindingResult.getModel());
 
 		Object actual = resolver.resolveArgument(paramErrors, mavContainer, webRequest, null);
-		assertThat((Object) bindingResult).isSameAs(actual);
+		assertThat(bindingResult).isSameAs(actual);
 	}
 
 	@Test

@@ -103,7 +103,7 @@ public class ResponseStatusExceptionResolverTests {
 		Exception ex = new Exception();
 		exceptionResolver.resolveException(request, response, null, ex);
 		ModelAndView mav = exceptionResolver.resolveException(request, response, null, ex);
-		assertThat((Object) mav).as("ModelAndView returned").isNull();
+		assertThat(mav).as("ModelAndView returned").isNull();
 	}
 
 	@Test // SPR-12903
@@ -131,7 +131,7 @@ public class ResponseStatusExceptionResolverTests {
 
 	private void assertResolved(ModelAndView mav, int status, String reason) {
 		assertThat(mav != null && mav.isEmpty()).as("No Empty ModelAndView returned").isTrue();
-		assertThat((long) response.getStatus()).isEqualTo((long) status);
+		assertThat(response.getStatus()).isEqualTo((long) status);
 		assertThat(response.getErrorMessage()).isEqualTo(reason);
 		assertThat(response.isCommitted()).isTrue();
 	}

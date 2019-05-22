@@ -91,20 +91,20 @@ abstract class AbstractContextConfigurationUtilsTests {
 			Set<Class<? extends ApplicationContextInitializer<?>>> expectedInitializerClasses,
 			Class<? extends ContextLoader> expectedContextLoaderClass) {
 
-		assertThat((Object) mergedConfig).isNotNull();
+		assertThat(mergedConfig).isNotNull();
 		assertThat(mergedConfig.getTestClass()).isEqualTo(expectedTestClass);
-		assertThat((Object) mergedConfig.getLocations()).isNotNull();
+		assertThat(mergedConfig.getLocations()).isNotNull();
 		assertThat(mergedConfig.getLocations()).isEqualTo(expectedLocations);
-		assertThat((Object) mergedConfig.getClasses()).isNotNull();
+		assertThat(mergedConfig.getClasses()).isNotNull();
 		assertThat(mergedConfig.getClasses()).isEqualTo(expectedClasses);
-		assertThat((Object) mergedConfig.getActiveProfiles()).isNotNull();
+		assertThat(mergedConfig.getActiveProfiles()).isNotNull();
 		if (expectedContextLoaderClass == null) {
-			assertThat((Object) mergedConfig.getContextLoader()).isNull();
+			assertThat(mergedConfig.getContextLoader()).isNull();
 		}
 		else {
 			assertThat(mergedConfig.getContextLoader().getClass()).isEqualTo(expectedContextLoaderClass);
 		}
-		assertThat((Object) mergedConfig.getContextInitializerClasses()).isNotNull();
+		assertThat(mergedConfig.getContextInitializerClasses()).isNotNull();
 		assertThat(mergedConfig.getContextInitializerClasses()).isEqualTo(expectedInitializerClasses);
 	}
 

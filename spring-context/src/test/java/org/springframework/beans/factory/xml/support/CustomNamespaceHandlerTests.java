@@ -115,7 +115,7 @@ public class CustomNamespaceHandlerTests {
 		assertTestBean(bean);
 		assertThat(AopUtils.isAopProxy(bean)).isTrue();
 		Advisor[] advisors = ((Advised) bean).getAdvisors();
-		assertThat((long) advisors.length).as("Incorrect number of advisors").isEqualTo((long) 1);
+		assertThat(advisors.length).as("Incorrect number of advisors").isEqualTo((long) 1);
 		assertThat(advisors[0].getAdvice().getClass()).as("Incorrect advice class").isEqualTo(DebugInterceptor.class);
 	}
 
@@ -135,7 +135,7 @@ public class CustomNamespaceHandlerTests {
 		assertTestBean(bean);
 		assertThat(AopUtils.isAopProxy(bean)).isTrue();
 		Advisor[] advisors = ((Advised) bean).getAdvisors();
-		assertThat((long) advisors.length).as("Incorrect number of advisors").isEqualTo((long) 2);
+		assertThat(advisors.length).as("Incorrect number of advisors").isEqualTo((long) 2);
 		assertThat(advisors[0].getAdvice().getClass()).as("Incorrect advice class").isEqualTo(DebugInterceptor.class);
 		assertThat(advisors[1].getAdvice().getClass()).as("Incorrect advice class").isEqualTo(NopInterceptor.class);
 	}
@@ -149,28 +149,28 @@ public class CustomNamespaceHandlerTests {
 	@Test  // SPR-2728
 	public void testCustomElementNestedWithinUtilList() throws Exception {
 		List<?> things = (List<?>) this.beanFactory.getBean("list.of.things");
-		assertThat((Object) things).isNotNull();
-		assertThat((long) things.size()).isEqualTo((long) 2);
+		assertThat(things).isNotNull();
+		assertThat(things.size()).isEqualTo((long) 2);
 	}
 
 	@Test  // SPR-2728
 	public void testCustomElementNestedWithinUtilSet() throws Exception {
 		Set<?> things = (Set<?>) this.beanFactory.getBean("set.of.things");
-		assertThat((Object) things).isNotNull();
-		assertThat((long) things.size()).isEqualTo((long) 2);
+		assertThat(things).isNotNull();
+		assertThat(things.size()).isEqualTo((long) 2);
 	}
 
 	@Test  // SPR-2728
 	public void testCustomElementNestedWithinUtilMap() throws Exception {
 		Map<?, ?> things = (Map<?, ?>) this.beanFactory.getBean("map.of.things");
-		assertThat((Object) things).isNotNull();
-		assertThat((long) things.size()).isEqualTo((long) 2);
+		assertThat(things).isNotNull();
+		assertThat(things.size()).isEqualTo((long) 2);
 	}
 
 
 	private void assertTestBean(ITestBean bean) {
 		assertThat(bean.getName()).as("Invalid name").isEqualTo("Rob Harrop");
-		assertThat((long) bean.getAge()).as("Invalid age").isEqualTo((long) 23);
+		assertThat(bean.getAge()).as("Invalid age").isEqualTo((long) 23);
 	}
 
 	private Resource getResource() {

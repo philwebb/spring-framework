@@ -52,7 +52,7 @@ public class CacheTestUtils {
 	 */
 	public static void assertCacheMiss(Object key, Cache... caches) {
 		for (Cache cache : caches) {
-			assertThat((Object) cache.get(key)).as("No entry in " + cache + " should have been found with key " + key).isNull();
+			assertThat(cache.get(key)).as("No entry in " + cache + " should have been found with key " + key).isNull();
 		}
 	}
 
@@ -62,7 +62,7 @@ public class CacheTestUtils {
 	public static void assertCacheHit(Object key, Object value, Cache... caches) {
 		for (Cache cache : caches) {
 			Cache.ValueWrapper wrapper = cache.get(key);
-			assertThat((Object) wrapper).as("An entry in " + cache + " should have been found with key " + key).isNotNull();
+			assertThat(wrapper).as("An entry in " + cache + " should have been found with key " + key).isNotNull();
 			assertThat(wrapper.get()).as("Wrong value in " + cache + " for entry with key " + key).isEqualTo(value);
 		}
 	}

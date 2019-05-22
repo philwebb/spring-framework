@@ -39,7 +39,7 @@ public class ResourceEditorTests {
 		PropertyEditor editor = new ResourceEditor();
 		editor.setAsText("classpath:org/springframework/core/io/ResourceEditorTests.class");
 		Resource resource = (Resource) editor.getValue();
-		assertThat((Object) resource).isNotNull();
+		assertThat(resource).isNotNull();
 		assertThat(resource.exists()).isTrue();
 	}
 

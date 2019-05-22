@@ -45,7 +45,7 @@ public class HttpReceivingTransportHandlerTests extends AbstractHttpRequestTests
 		this.servletRequest.setContent("[\"x\"]".getBytes("UTF-8"));
 		handleRequest(new XhrReceivingTransportHandler());
 
-		assertThat((long) this.servletResponse.getStatus()).isEqualTo((long) 204);
+		assertThat(this.servletResponse.getStatus()).isEqualTo((long) 204);
 	}
 
 	@Test
@@ -79,7 +79,7 @@ public class HttpReceivingTransportHandlerTests extends AbstractHttpRequestTests
 		transportHandler.initialize(sockJsConfig);
 		assertThatExceptionOfType(SockJsMessageDeliveryException.class).isThrownBy(() ->
 				transportHandler.handleRequest(this.request, this.response, wsHandler, session));
-		assertThat((Object) session.getCloseStatus()).isNull();
+		assertThat(session.getCloseStatus()).isNull();
 	}
 
 
@@ -102,7 +102,7 @@ public class HttpReceivingTransportHandlerTests extends AbstractHttpRequestTests
 
 		new XhrReceivingTransportHandler().handleRequest(this.request, this.response, wsHandler, session);
 
-		assertThat((long) this.servletResponse.getStatus()).isEqualTo((long) 500);
+		assertThat(this.servletResponse.getStatus()).isEqualTo((long) 500);
 		verifyNoMoreInteractions(wsHandler);
 	}
 

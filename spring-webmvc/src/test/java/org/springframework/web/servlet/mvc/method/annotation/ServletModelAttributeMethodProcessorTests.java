@@ -103,7 +103,7 @@ public class ServletModelAttributeMethodProcessorTests {
 		TestBeanWithoutStringConstructor testBean = (TestBeanWithoutStringConstructor) processor.resolveArgument(
 				testBeanWithoutStringConstructorModelAttr, mavContainer, webRequest, binderFactory);
 
-		assertThat((Object) testBean).isNotNull();
+		assertThat(testBean).isNotNull();
 	}
 
 	@Test
@@ -138,7 +138,7 @@ public class ServletModelAttributeMethodProcessorTests {
 		TestBeanWithoutStringConstructor testBean = (TestBeanWithoutStringConstructor) processor.resolveArgument(
 				testBeanWithoutStringConstructorModelAttr, mavContainer, webRequest, binderFactory);
 
-		assertThat((Object) testBean).isNotNull();
+		assertThat(testBean).isNotNull();
 	}
 
 	@Test

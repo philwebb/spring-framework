@@ -54,21 +54,21 @@ public class FlashMapTests {
 	public void compareTo() {
 		FlashMap flashMap1 = new FlashMap();
 		FlashMap flashMap2 = new FlashMap();
-		assertThat((long) flashMap1.compareTo(flashMap2)).isEqualTo((long) 0);
+		assertThat(flashMap1.compareTo(flashMap2)).isEqualTo((long) 0);
 
 		flashMap1.setTargetRequestPath("/path1");
-		assertThat((long) flashMap1.compareTo(flashMap2)).isEqualTo((long) -1);
-		assertThat((long) flashMap2.compareTo(flashMap1)).isEqualTo((long) 1);
+		assertThat(flashMap1.compareTo(flashMap2)).isEqualTo((long) -1);
+		assertThat(flashMap2.compareTo(flashMap1)).isEqualTo((long) 1);
 
 		flashMap2.setTargetRequestPath("/path2");
-		assertThat((long) flashMap1.compareTo(flashMap2)).isEqualTo((long) 0);
+		assertThat(flashMap1.compareTo(flashMap2)).isEqualTo((long) 0);
 
 		flashMap1.addTargetRequestParam("id", "1");
-		assertThat((long) flashMap1.compareTo(flashMap2)).isEqualTo((long) -1);
-		assertThat((long) flashMap2.compareTo(flashMap1)).isEqualTo((long) 1);
+		assertThat(flashMap1.compareTo(flashMap2)).isEqualTo((long) -1);
+		assertThat(flashMap2.compareTo(flashMap1)).isEqualTo((long) 1);
 
 		flashMap2.addTargetRequestParam("id", "2");
-		assertThat((long) flashMap1.compareTo(flashMap2)).isEqualTo((long) 0);
+		assertThat(flashMap1.compareTo(flashMap2)).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -78,7 +78,7 @@ public class FlashMapTests {
 		flashMap.addTargetRequestParam("empty", " ");
 		flashMap.addTargetRequestParam("null", null);
 
-		assertThat((long) flashMap.getTargetRequestParams().size()).isEqualTo((long) 1);
+		assertThat(flashMap.getTargetRequestParams().size()).isEqualTo((long) 1);
 		assertThat(flashMap.getTargetRequestParams().getFirst("text")).isEqualTo("abc");
 	}
 
@@ -92,8 +92,8 @@ public class FlashMapTests {
 		FlashMap flashMap = new FlashMap();
 		flashMap.addTargetRequestParams(params);
 
-		assertThat((long) flashMap.getTargetRequestParams().size()).isEqualTo((long) 1);
-		assertThat((long) flashMap.getTargetRequestParams().get("key").size()).isEqualTo((long) 1);
+		assertThat(flashMap.getTargetRequestParams().size()).isEqualTo((long) 1);
+		assertThat(flashMap.getTargetRequestParams().get("key").size()).isEqualTo((long) 1);
 		assertThat(flashMap.getTargetRequestParams().getFirst("key")).isEqualTo("abc");
 	}
 

@@ -92,7 +92,7 @@ public class RequiredAnnotationBeanPostProcessorTests {
 		factory.addBeanPostProcessor(new RequiredAnnotationBeanPostProcessor());
 		factory.preInstantiateSingletons();
 		RequiredTestBean bean = (RequiredTestBean) factory.getBean("testBean");
-		assertThat((long) bean.getAge()).isEqualTo((long) 24);
+		assertThat(bean.getAge()).isEqualTo((long) 24);
 		assertThat(bean.getFavouriteColour()).isEqualTo("Blue");
 	}
 
@@ -146,7 +146,7 @@ public class RequiredAnnotationBeanPostProcessorTests {
 		factory.addBeanPostProcessor(new RequiredAnnotationBeanPostProcessor());
 		factory.preInstantiateSingletons();
 		RequiredTestBean bean = (RequiredTestBean) factory.getBean("testBean");
-		assertThat((long) bean.getAge()).isEqualTo((long) 24);
+		assertThat(bean.getAge()).isEqualTo((long) 24);
 		assertThat(bean.getFavouriteColour()).isEqualTo("Blue");
 	}
 

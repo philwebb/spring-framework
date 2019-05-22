@@ -67,7 +67,7 @@ public class WebContentGeneratorTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		generator.prepareResponse(response);
 
-		assertThat((Object) response.getHeader("Vary")).isNull();
+		assertThat(response.getHeader("Vary")).isNull();
 	}
 
 	@Test

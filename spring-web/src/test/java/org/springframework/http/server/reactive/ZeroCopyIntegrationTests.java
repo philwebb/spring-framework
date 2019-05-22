@@ -62,7 +62,7 @@ public class ZeroCopyIntegrationTests extends AbstractHttpHandlerIntegrationTest
 
 		assertThat(response.hasBody()).isTrue();
 		assertThat(response.getHeaders().getContentLength()).isEqualTo(logo.contentLength());
-		assertThat((long) response.getBody().length).isEqualTo(logo.contentLength());
+		assertThat(response.getBody().length).isEqualTo(logo.contentLength());
 		assertThat(response.getHeaders().getContentType()).isEqualTo(MediaType.IMAGE_PNG);
 	}
 

@@ -34,7 +34,7 @@ public class ZoneIdEditorTests {
 		editor.setAsText("America/Chicago");
 
 		ZoneId zoneId = (ZoneId) editor.getValue();
-		assertThat((Object) zoneId).as("The zone ID should not be null.").isNotNull();
+		assertThat(zoneId).as("The zone ID should not be null.").isNotNull();
 		assertThat(zoneId).as("The zone ID is not correct.").isEqualTo(ZoneId.of("America/Chicago"));
 
 		assertThat(editor.getAsText()).as("The text version is not correct.").isEqualTo("America/Chicago");
@@ -45,7 +45,7 @@ public class ZoneIdEditorTests {
 		editor.setAsText("America/Los_Angeles");
 
 		ZoneId zoneId = (ZoneId) editor.getValue();
-		assertThat((Object) zoneId).as("The zone ID should not be null.").isNotNull();
+		assertThat(zoneId).as("The zone ID should not be null.").isNotNull();
 		assertThat(zoneId).as("The zone ID is not correct.").isEqualTo(ZoneId.of("America/Los_Angeles"));
 
 		assertThat(editor.getAsText()).as("The text version is not correct.").isEqualTo("America/Los_Angeles");

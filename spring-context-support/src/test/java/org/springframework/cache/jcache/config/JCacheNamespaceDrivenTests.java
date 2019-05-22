@@ -44,14 +44,14 @@ public class JCacheNamespaceDrivenTests extends AbstractJCacheAnnotationTests {
 				"/org/springframework/cache/jcache/config/jCacheNamespaceDriven-resolver.xml");
 
 		DefaultJCacheOperationSource ci = context.getBean(DefaultJCacheOperationSource.class);
-		assertThat((Object) ci.getCacheResolver()).isSameAs(context.getBean("cacheResolver"));
+		assertThat(ci.getCacheResolver()).isSameAs(context.getBean("cacheResolver"));
 		context.close();
 	}
 
 	@Test
 	public void testCacheErrorHandler() {
 		JCacheInterceptor ci = ctx.getBean(JCacheInterceptor.class);
-		assertThat((Object) ci.getErrorHandler()).isSameAs(ctx.getBean("errorHandler", CacheErrorHandler.class));
+		assertThat(ci.getErrorHandler()).isSameAs(ctx.getBean("errorHandler", CacheErrorHandler.class));
 	}
 
 }

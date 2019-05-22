@@ -39,7 +39,7 @@ public class PasswordInputTagTests extends InputTagTests {
 	public void passwordValueIsNotRenderedByDefault() throws Exception {
 		this.getTag().setPath("name");
 
-		assertThat((long) this.getTag().doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(this.getTag().doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 		assertTagOpened(output);
@@ -57,7 +57,7 @@ public class PasswordInputTagTests extends InputTagTests {
 		this.getTag().setPath("name");
 		this.getPasswordTag().setShowPassword(true);
 
-		assertThat((long) this.getTag().doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(this.getTag().doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 		assertTagOpened(output);
@@ -75,7 +75,7 @@ public class PasswordInputTagTests extends InputTagTests {
 		this.getTag().setPath("name");
 		this.getPasswordTag().setShowPassword(false);
 
-		assertThat((long) this.getTag().doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(this.getTag().doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 		assertTagOpened(output);

@@ -54,7 +54,7 @@ public class TestClass2 {
 
 	@Test
 	public void dummyTest() {
-		assertThat((Object) dataSource).isNotNull();
+		assertThat(dataSource).isNotNull();
 	}
 
 }

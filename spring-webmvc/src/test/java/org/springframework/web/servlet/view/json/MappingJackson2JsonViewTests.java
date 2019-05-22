@@ -109,7 +109,7 @@ public class MappingJackson2JsonViewTests {
 
 		String jsonResult = response.getContentAsString();
 		assertThat(jsonResult.length() > 0).isTrue();
-		assertThat((long) response.getContentLength()).isEqualTo((long) jsonResult.length());
+		assertThat(response.getContentLength()).isEqualTo((long) jsonResult.length());
 
 		validateResult();
 	}
@@ -138,7 +138,7 @@ public class MappingJackson2JsonViewTests {
 
 		view.render(model, request, response);
 
-		assertThat((Object) response.getHeader("Cache-Control")).isNull();
+		assertThat(response.getHeader("Cache-Control")).isNull();
 	}
 
 	@Test
@@ -158,7 +158,7 @@ public class MappingJackson2JsonViewTests {
 		view.render(model, request, response);
 
 		assertThat(response.getContentAsString().length() > 0).isTrue();
-		assertThat((long) response.getContentLength()).isEqualTo((long) response.getContentAsString().length());
+		assertThat(response.getContentLength()).isEqualTo((long) response.getContentAsString().length());
 
 		validateResult();
 	}
@@ -294,7 +294,7 @@ public class MappingJackson2JsonViewTests {
 
 		String content = response.getContentAsString();
 		assertThat(content.length() > 0).isTrue();
-		assertThat((long) response.getContentLength()).isEqualTo((long) content.length());
+		assertThat(response.getContentLength()).isEqualTo((long) content.length());
 		assertThat(content.contains("foo")).isTrue();
 		assertThat(content.contains("boo")).isFalse();
 		assertThat(content.contains(JsonView.class.getName())).isFalse();
@@ -317,7 +317,7 @@ public class MappingJackson2JsonViewTests {
 
 		String content = response.getContentAsString();
 		assertThat(content.length() > 0).isTrue();
-		assertThat((long) response.getContentLength()).isEqualTo((long) content.length());
+		assertThat(response.getContentLength()).isEqualTo((long) content.length());
 		assertThat(content).contains("\"property1\":\"value\"");
 		assertThat(content).doesNotContain("\"property2\":\"value\"");
 		assertThat(content.contains(FilterProvider.class.getName())).isFalse();

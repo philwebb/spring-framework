@@ -68,7 +68,7 @@ public class NonTransactionalSqlScriptsTests {
 	}
 
 	protected void assertNumUsers(int expected) {
-		assertThat((long) JdbcTestUtils.countRowsInTable(jdbcTemplate, "user")).as("Number of rows in the 'user' table.").isEqualTo((long) expected);
+		assertThat(JdbcTestUtils.countRowsInTable(jdbcTemplate, "user")).as("Number of rows in the 'user' table.").isEqualTo((long) expected);
 	}
 
 }

@@ -113,20 +113,20 @@ public class JavaConfigTests {
 	 * @see org.springframework.test.context.hierarchies.web.ControllerIntegrationTests#verifyRootWacSupport()
 	 */
 	private void verifyRootWacSupport() {
-		assertThat((Object) personDao).isNotNull();
-		assertThat((Object) personController).isNotNull();
+		assertThat(personDao).isNotNull();
+		assertThat(personController).isNotNull();
 
 		ApplicationContext parent = wac.getParent();
-		assertThat((Object) parent).isNotNull();
+		assertThat(parent).isNotNull();
 		boolean condition = parent instanceof WebApplicationContext;
 		assertThat(condition).isTrue();
 		WebApplicationContext root = (WebApplicationContext) parent;
 
 		ServletContext childServletContext = wac.getServletContext();
-		assertThat((Object) childServletContext).isNotNull();
+		assertThat(childServletContext).isNotNull();
 		ServletContext rootServletContext = root.getServletContext();
-		assertThat((Object) rootServletContext).isNotNull();
-		assertThat((Object) rootServletContext).isSameAs(childServletContext);
+		assertThat(rootServletContext).isNotNull();
+		assertThat(rootServletContext).isSameAs(childServletContext);
 
 		assertThat(rootServletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).isSameAs(root);
 		assertThat(childServletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).isSameAs(root);

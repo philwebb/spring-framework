@@ -66,7 +66,7 @@ public class AnnotationProcessorPerformanceTests {
 		sw.start("prototype");
 		for (int i = 0; i < 100000; i++) {
 			TestBean tb = (TestBean) ctx.getBean("test");
-			assertThat((Object) tb.getSpouse()).isSameAs(spouse);
+			assertThat(tb.getSpouse()).isSameAs(spouse);
 		}
 		sw.stop();
 		assertThat(sw.getTotalTimeMillis() < 4000).as("Prototype creation took too long: " + sw.getTotalTimeMillis()).isTrue();
@@ -88,7 +88,7 @@ public class AnnotationProcessorPerformanceTests {
 		sw.start("prototype");
 		for (int i = 0; i < 100000; i++) {
 			TestBean tb = (TestBean) ctx.getBean("test");
-			assertThat((Object) tb.getSpouse()).isSameAs(spouse);
+			assertThat(tb.getSpouse()).isSameAs(spouse);
 		}
 		sw.stop();
 		assertThat(sw.getTotalTimeMillis() < 4000).as("Prototype creation took too long: " + sw.getTotalTimeMillis()).isTrue();
@@ -109,7 +109,7 @@ public class AnnotationProcessorPerformanceTests {
 		sw.start("prototype");
 		for (int i = 0; i < 100000; i++) {
 			TestBean tb = (TestBean) ctx.getBean("test");
-			assertThat((Object) tb.getSpouse()).isSameAs(spouse);
+			assertThat(tb.getSpouse()).isSameAs(spouse);
 		}
 		sw.stop();
 		assertThat(sw.getTotalTimeMillis() < 4000).as("Prototype creation took too long: " + sw.getTotalTimeMillis()).isTrue();
@@ -131,7 +131,7 @@ public class AnnotationProcessorPerformanceTests {
 		sw.start("prototype");
 		for (int i = 0; i < 100000; i++) {
 			TestBean tb = (TestBean) ctx.getBean("test");
-			assertThat((Object) tb.getSpouse()).isSameAs(spouse);
+			assertThat(tb.getSpouse()).isSameAs(spouse);
 		}
 		sw.stop();
 		assertThat(sw.getTotalTimeMillis() < 6000).as("Prototype creation took too long: " + sw.getTotalTimeMillis()).isTrue();

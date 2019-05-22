@@ -149,7 +149,7 @@ public class RequestMappingHandlerMappingTests {
 		Method method = UserController.class.getMethod("getUser");
 		RequestMappingInfo info = this.handlerMapping.getMappingForMethod(method, UserController.class);
 
-		assertThat((Object) info).isNotNull();
+		assertThat(info).isNotNull();
 		assertThat(info.getPatternsCondition().getPatterns()).isEqualTo(Collections.singleton("/api/user/{id}"));
 	}
 
@@ -221,14 +221,14 @@ public class RequestMappingHandlerMappingTests {
 		Method method = ClassUtils.getMethod(clazz, methodName, (Class<?>[]) null);
 		RequestMappingInfo info = this.handlerMapping.getMappingForMethod(method, clazz);
 
-		assertThat((Object) info).isNotNull();
+		assertThat(info).isNotNull();
 
 		Set<String> paths = info.getPatternsCondition().getPatterns();
-		assertThat((long) paths.size()).isEqualTo((long) 1);
+		assertThat(paths.size()).isEqualTo((long) 1);
 		assertThat(paths.iterator().next()).isEqualTo(path);
 
 		Set<RequestMethod> methods = info.getMethodsCondition().getMethods();
-		assertThat((long) methods.size()).isEqualTo((long) 1);
+		assertThat(methods.size()).isEqualTo((long) 1);
 		assertThat(methods.iterator().next()).isEqualTo(requestMethod);
 
 		return info;

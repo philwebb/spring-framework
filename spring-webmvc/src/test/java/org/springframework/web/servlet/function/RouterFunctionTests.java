@@ -38,7 +38,7 @@ public class RouterFunctionTests {
 		RouterFunction<ServerResponse> routerFunction2 = request -> Optional.of(handlerFunction);
 
 		RouterFunction<ServerResponse> result = routerFunction1.and(routerFunction2);
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 
 		MockHttpServletRequest servletRequest = new MockHttpServletRequest();
 		ServerRequest request = new DefaultServerRequest(servletRequest, emptyList());
@@ -56,7 +56,7 @@ public class RouterFunctionTests {
 		RouterFunction<ServerResponse> routerFunction2 = request -> Optional.of(handlerFunction);
 
 		RouterFunction<?> result = routerFunction1.andOther(routerFunction2);
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 
 		MockHttpServletRequest servletRequest = new MockHttpServletRequest();
 		ServerRequest request = new DefaultServerRequest(servletRequest, emptyList());
@@ -73,7 +73,7 @@ public class RouterFunctionTests {
 		RequestPredicate requestPredicate = request -> true;
 
 		RouterFunction<ServerResponse> result = routerFunction1.andRoute(requestPredicate, this::handlerMethod);
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 
 		MockHttpServletRequest servletRequest = new MockHttpServletRequest();
 		ServerRequest request = new DefaultServerRequest(servletRequest, emptyList());
@@ -99,7 +99,7 @@ public class RouterFunctionTests {
 				};
 
 		RouterFunction<EntityResponse<Integer>> result = routerFunction.filter(filterFunction);
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 
 		MockHttpServletRequest servletRequest = new MockHttpServletRequest();
 		ServerRequest request = new DefaultServerRequest(servletRequest, emptyList());
@@ -114,7 +114,7 @@ public class RouterFunctionTests {
 					}
 				});
 		assertThat(resultHandlerFunction.isPresent()).isTrue();
-		assertThat((long) (int) resultHandlerFunction.get().entity()).isEqualTo((long) 42);
+		assertThat((int) resultHandlerFunction.get().entity()).isEqualTo((long) 42);
 	}
 
 

@@ -50,7 +50,7 @@ public class LocalConnectionFactoryBeanTests {
 	@Test
 	public void testGetObjectTypeIsNullIfConnectionFactoryHasNotBeenConfigured() throws Exception {
 		LocalConnectionFactoryBean factory = new LocalConnectionFactoryBean();
-		assertThat((Object) factory.getObjectType()).isNull();
+		assertThat(factory.getObjectType()).isNull();
 	}
 
 	@Test

@@ -67,7 +67,7 @@ public class CachingResourceResolverTests {
 		Resource expected = new ClassPathResource("test/bar.css", getClass());
 		Resource actual = this.chain.resolveResource(null, "bar.css", this.locations);
 
-		assertThat((Object) actual).isNotSameAs(expected);
+		assertThat(actual).isNotSameAs(expected);
 		assertThat(actual).isEqualTo(expected);
 	}
 
@@ -77,12 +77,12 @@ public class CachingResourceResolverTests {
 		this.cache.put(resourceKey("bar.css"), expected);
 		Resource actual = this.chain.resolveResource(null, "bar.css", this.locations);
 
-		assertThat((Object) actual).isSameAs(expected);
+		assertThat(actual).isSameAs(expected);
 	}
 
 	@Test
 	public void resolveResourceInternalNoMatch() {
-		assertThat((Object) this.chain.resolveResource(null, "invalid.css", this.locations)).isNull();
+		assertThat(this.chain.resolveResource(null, "invalid.css", this.locations)).isNull();
 	}
 
 	@Test
@@ -104,7 +104,7 @@ public class CachingResourceResolverTests {
 
 	@Test
 	public void resolverUrlPathNoMatch() {
-		assertThat((Object) this.chain.resolveUrlPath("invalid.css", this.locations)).isNull();
+		assertThat(this.chain.resolveUrlPath("invalid.css", this.locations)).isNull();
 	}
 
 	@Test
@@ -160,11 +160,11 @@ public class CachingResourceResolverTests {
 		this.cache.put(resourceKey("bar.css+encoding=gzip"), gzipped);
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "bar.css");
-		assertThat((Object) this.chain.resolveResource(request, "bar.css", this.locations)).isSameAs(resource);
+		assertThat(this.chain.resolveResource(request, "bar.css", this.locations)).isSameAs(resource);
 
 		request = new MockHttpServletRequest("GET", "bar.css");
 		request.addHeader("Accept-Encoding", "gzip");
-		assertThat((Object) this.chain.resolveResource(request, "bar.css", this.locations)).isSameAs(gzipped);
+		assertThat(this.chain.resolveResource(request, "bar.css", this.locations)).isSameAs(gzipped);
 	}
 
 	private static String resourceKey(String key) {

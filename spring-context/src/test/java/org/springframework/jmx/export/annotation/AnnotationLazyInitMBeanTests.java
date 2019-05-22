@@ -40,7 +40,7 @@ public class AnnotationLazyInitMBeanTests {
 		try {
 			MBeanServer server = (MBeanServer) ctx.getBean("server");
 			ObjectName oname = ObjectNameManager.getInstance("bean:name=testBean4");
-			assertThat((Object) server.getObjectInstance(oname)).isNotNull();
+			assertThat(server.getObjectInstance(oname)).isNotNull();
 			String name = (String) server.getAttribute(oname, "Name");
 			assertThat(name).as("Invalid name returned").isEqualTo("TEST");
 		}
@@ -58,22 +58,22 @@ public class AnnotationLazyInitMBeanTests {
 			MBeanServer server = (MBeanServer) ctx.getBean("server");
 
 			ObjectName oname = ObjectNameManager.getInstance("bean:name=testBean4");
-			assertThat((Object) server.getObjectInstance(oname)).isNotNull();
+			assertThat(server.getObjectInstance(oname)).isNotNull();
 			String name = (String) server.getAttribute(oname, "Name");
 			assertThat(name).as("Invalid name returned").isEqualTo("TEST");
 
 			oname = ObjectNameManager.getInstance("bean:name=testBean5");
-			assertThat((Object) server.getObjectInstance(oname)).isNotNull();
+			assertThat(server.getObjectInstance(oname)).isNotNull();
 			name = (String) server.getAttribute(oname, "Name");
 			assertThat(name).as("Invalid name returned").isEqualTo("FACTORY");
 
 			oname = ObjectNameManager.getInstance("spring:mbean=true");
-			assertThat((Object) server.getObjectInstance(oname)).isNotNull();
+			assertThat(server.getObjectInstance(oname)).isNotNull();
 			name = (String) server.getAttribute(oname, "Name");
 			assertThat(name).as("Invalid name returned").isEqualTo("Rob Harrop");
 
 			oname = ObjectNameManager.getInstance("spring:mbean=another");
-			assertThat((Object) server.getObjectInstance(oname)).isNotNull();
+			assertThat(server.getObjectInstance(oname)).isNotNull();
 			name = (String) server.getAttribute(oname, "Name");
 			assertThat(name).as("Invalid name returned").isEqualTo("Juergen Hoeller");
 		}
@@ -90,9 +90,9 @@ public class AnnotationLazyInitMBeanTests {
 		try {
 			MBeanServer server = (MBeanServer) ctx.getBean("server");
 			ObjectName oname = ObjectNameManager.getInstance("bean:name=testBean4");
-			assertThat((Object) server.getObjectInstance(oname)).isNotNull();
+			assertThat(server.getObjectInstance(oname)).isNotNull();
 			String name = (String) server.getAttribute(oname, "Name");
-			assertThat((Object) name).isNull();
+			assertThat(name).isNull();
 		}
 		finally {
 			ctx.close();

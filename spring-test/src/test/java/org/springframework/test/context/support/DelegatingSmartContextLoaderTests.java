@@ -54,7 +54,7 @@ public class DelegatingSmartContextLoaderTests {
 		ContextConfigurationAttributes configAttributes = new ContextConfigurationAttributes(
 				XmlTestCase.class, EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, true, null, true, ContextLoader.class);
 		loader.processContextConfiguration(configAttributes);
-		assertThat((long) configAttributes.getLocations().length).isEqualTo((long) 1);
+		assertThat(configAttributes.getLocations().length).isEqualTo((long) 1);
 		assertEmpty(configAttributes.getClasses());
 	}
 
@@ -63,7 +63,7 @@ public class DelegatingSmartContextLoaderTests {
 		ContextConfigurationAttributes configAttributes = new ContextConfigurationAttributes(
 				ConfigClassTestCase.class, EMPTY_STRING_ARRAY, EMPTY_CLASS_ARRAY, true, null, true, ContextLoader.class);
 		loader.processContextConfiguration(configAttributes);
-		assertThat((long) configAttributes.getClasses().length).isEqualTo((long) 1);
+		assertThat(configAttributes.getClasses().length).isEqualTo((long) 1);
 		assertEmpty(configAttributes.getLocations());
 	}
 
@@ -132,7 +132,7 @@ public class DelegatingSmartContextLoaderTests {
 			throws Exception {
 
 		ApplicationContext applicationContext = loader.loadContext(mergedConfig);
-		assertThat((Object) applicationContext).isNotNull();
+		assertThat(applicationContext).isNotNull();
 		assertThat(applicationContext.getBean(String.class)).isEqualTo("foo");
 		boolean condition = applicationContext instanceof ConfigurableApplicationContext;
 		assertThat(condition).isTrue();

@@ -47,17 +47,17 @@ public class SharedHttpSessionTests {
 
 		MvcResult result = mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
 		HttpSession session = result.getRequest().getSession(false);
-		assertThat((Object) session).isNotNull();
+		assertThat(session).isNotNull();
 		assertThat(session.getAttribute("counter")).isEqualTo(1);
 
 		result = mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
 		session = result.getRequest().getSession(false);
-		assertThat((Object) session).isNotNull();
+		assertThat(session).isNotNull();
 		assertThat(session.getAttribute("counter")).isEqualTo(2);
 
 		result = mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
 		session = result.getRequest().getSession(false);
-		assertThat((Object) session).isNotNull();
+		assertThat(session).isNotNull();
 		assertThat(session.getAttribute("counter")).isEqualTo(3);
 	}
 
@@ -71,17 +71,17 @@ public class SharedHttpSessionTests {
 
 		MvcResult result = mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
 		HttpSession session = result.getRequest().getSession(false);
-		assertThat((Object) session).isNull();
+		assertThat(session).isNull();
 
 		result = mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
 		session = result.getRequest().getSession(false);
-		assertThat((Object) session).isNull();
+		assertThat(session).isNull();
 
 		url = "/session";
 
 		result = mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn();
 		session = result.getRequest().getSession(false);
-		assertThat((Object) session).isNotNull();
+		assertThat(session).isNotNull();
 		assertThat(session.getAttribute("counter")).isEqualTo(1);
 	}
 

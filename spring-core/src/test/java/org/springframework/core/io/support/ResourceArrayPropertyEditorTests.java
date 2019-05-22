@@ -37,7 +37,7 @@ public class ResourceArrayPropertyEditorTests {
 		PropertyEditor editor = new ResourceArrayPropertyEditor();
 		editor.setAsText("classpath:org/springframework/core/io/support/ResourceArrayPropertyEditor.class");
 		Resource[] resources = (Resource[]) editor.getValue();
-		assertThat((Object) resources).isNotNull();
+		assertThat(resources).isNotNull();
 		assertThat(resources[0].exists()).isTrue();
 	}
 
@@ -50,7 +50,7 @@ public class ResourceArrayPropertyEditorTests {
 		PropertyEditor editor = new ResourceArrayPropertyEditor();
 		editor.setAsText("classpath*:org/springframework/core/io/support/Resource*Editor.class");
 		Resource[] resources = (Resource[]) editor.getValue();
-		assertThat((Object) resources).isNotNull();
+		assertThat(resources).isNotNull();
 		assertThat(resources[0].exists()).isTrue();
 	}
 

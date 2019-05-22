@@ -55,7 +55,7 @@ public class ClientResponseWrapperTests {
 
 	@Test
 	public void response() {
-		assertThat((Object) wrapper.response()).isSameAs(mockResponse);
+		assertThat(wrapper.response()).isSameAs(mockResponse);
 	}
 
 	@Test
@@ -63,7 +63,7 @@ public class ClientResponseWrapperTests {
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		given(mockResponse.statusCode()).willReturn(status);
 
-		assertThat((Object) wrapper.statusCode()).isSameAs(status);
+		assertThat(wrapper.statusCode()).isSameAs(status);
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class ClientResponseWrapperTests {
 		int status = 999;
 		given(mockResponse.rawStatusCode()).willReturn(status);
 
-		assertThat((long) wrapper.rawStatusCode()).isEqualTo((long) status);
+		assertThat(wrapper.rawStatusCode()).isEqualTo((long) status);
 	}
 
 	@Test
@@ -79,7 +79,7 @@ public class ClientResponseWrapperTests {
 		ClientResponse.Headers headers = mock(ClientResponse.Headers.class);
 		given(mockResponse.headers()).willReturn(headers);
 
-		assertThat((Object) wrapper.headers()).isSameAs(headers);
+		assertThat(wrapper.headers()).isSameAs(headers);
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class ClientResponseWrapperTests {
 		MultiValueMap<String, ResponseCookie> cookies = mock(MultiValueMap.class);
 		given(mockResponse.cookies()).willReturn(cookies);
 
-		assertThat((Object) wrapper.cookies()).isSameAs(cookies);
+		assertThat(wrapper.cookies()).isSameAs(cookies);
 	}
 
 	@Test

@@ -66,21 +66,21 @@ public class SpringConfiguratorTests {
 	@Test
 	public void getEndpointPerConnection() throws Exception {
 		PerConnectionEchoEndpoint endpoint = this.configurator.getEndpointInstance(PerConnectionEchoEndpoint.class);
-		assertThat((Object) endpoint).isNotNull();
+		assertThat(endpoint).isNotNull();
 	}
 
 	@Test
 	public void getEndpointSingletonByType() throws Exception {
 		EchoEndpoint expected = this.webAppContext.getBean(EchoEndpoint.class);
 		EchoEndpoint actual = this.configurator.getEndpointInstance(EchoEndpoint.class);
-		assertThat((Object) actual).isSameAs(expected);
+		assertThat(actual).isSameAs(expected);
 	}
 
 	@Test
 	public void getEndpointSingletonByComponentName() throws Exception {
 		ComponentEchoEndpoint expected = this.webAppContext.getBean(ComponentEchoEndpoint.class);
 		ComponentEchoEndpoint actual = this.configurator.getEndpointInstance(ComponentEchoEndpoint.class);
-		assertThat((Object) actual).isSameAs(expected);
+		assertThat(actual).isSameAs(expected);
 	}
 
 

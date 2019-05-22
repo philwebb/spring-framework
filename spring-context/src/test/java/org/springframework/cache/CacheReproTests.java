@@ -115,7 +115,7 @@ public class CacheReproTests {
 		MyCacheResolver cacheResolver = context.getBean(MyCacheResolver.class);
 		Spr13081Service bean = context.getBean(Spr13081Service.class);
 
-		assertThat((Object) cacheResolver.getCache("foo").get("foo")).isNull();
+		assertThat(cacheResolver.getCache("foo").get("foo")).isNull();
 		Object result = bean.getSimple("foo");  // cache name = id
 		assertThat(cacheResolver.getCache("foo").get("foo").get()).isEqualTo(result);
 	}
@@ -138,12 +138,12 @@ public class CacheReproTests {
 
 		TestBean tb = new TestBean("tb1");
 		bean.insertItem(tb);
-		assertThat((Object) bean.findById("tb1").get()).isSameAs(tb);
+		assertThat(bean.findById("tb1").get()).isSameAs(tb);
 		assertThat(cache.get("tb1").get()).isSameAs(tb);
 
 		cache.clear();
 		TestBean tb2 = bean.findById("tb1").get();
-		assertThat((Object) tb2).isNotSameAs(tb);
+		assertThat(tb2).isNotSameAs(tb);
 		assertThat(cache.get("tb1").get()).isSameAs(tb2);
 	}
 
@@ -155,12 +155,12 @@ public class CacheReproTests {
 
 		TestBean tb = new TestBean("tb1");
 		bean.insertItem(tb);
-		assertThat((Object) bean.findById("tb1").get()).isSameAs(tb);
+		assertThat(bean.findById("tb1").get()).isSameAs(tb);
 		assertThat(cache.get("tb1").get()).isSameAs(tb);
 
 		cache.clear();
 		TestBean tb2 = bean.findById("tb1").get();
-		assertThat((Object) tb2).isNotSameAs(tb);
+		assertThat(tb2).isNotSameAs(tb);
 		assertThat(cache.get("tb1").get()).isSameAs(tb2);
 	}
 
@@ -172,7 +172,7 @@ public class CacheReproTests {
 
 		TestBean tb = new TestBean("tb1");
 		bean.insertItem(tb);
-		assertThat((Object) bean.findById("tb1").get()).isSameAs(tb);
+		assertThat(bean.findById("tb1").get()).isSameAs(tb);
 		assertThat(cache.get("tb1").get()).isSameAs(tb);
 	}
 
@@ -184,7 +184,7 @@ public class CacheReproTests {
 
 		TestBean tb = new TestBean("tb1");
 		bean.insertItem(tb);
-		assertThat((Object) bean.findById("tb1").get()).isSameAs(tb);
+		assertThat(bean.findById("tb1").get()).isSameAs(tb);
 		assertThat(cache.get("tb1").get()).isSameAs(tb);
 	}
 

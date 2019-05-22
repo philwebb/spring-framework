@@ -75,33 +75,33 @@ public class BatchSqlUpdateTests {
 		update.update(ids[1]);
 
 		if (flushThroughBatchSize) {
-			assertThat((long) update.getQueueCount()).isEqualTo((long) 0);
-			assertThat((long) update.getRowsAffected().length).isEqualTo((long) 2);
+			assertThat(update.getQueueCount()).isEqualTo((long) 0);
+			assertThat(update.getRowsAffected().length).isEqualTo((long) 2);
 		}
 		else {
-			assertThat((long) update.getQueueCount()).isEqualTo((long) 2);
-			assertThat((long) update.getRowsAffected().length).isEqualTo((long) 0);
+			assertThat(update.getQueueCount()).isEqualTo((long) 2);
+			assertThat(update.getRowsAffected().length).isEqualTo((long) 0);
 		}
 
 		int[] actualRowsAffected = update.flush();
-		assertThat((long) update.getQueueCount()).isEqualTo((long) 0);
+		assertThat(update.getQueueCount()).isEqualTo((long) 0);
 
 		if (flushThroughBatchSize) {
 			assertThat(actualRowsAffected.length == 0).as("flush did not execute updates").isTrue();
 		}
 		else {
 			assertThat(actualRowsAffected.length == 2).as("executed 2 updates").isTrue();
-			assertThat((long) actualRowsAffected[0]).isEqualTo((long) rowsAffected[0]);
-			assertThat((long) actualRowsAffected[1]).isEqualTo((long) rowsAffected[1]);
+			assertThat(actualRowsAffected[0]).isEqualTo((long) rowsAffected[0]);
+			assertThat(actualRowsAffected[1]).isEqualTo((long) rowsAffected[1]);
 		}
 
 		actualRowsAffected = update.getRowsAffected();
 		assertThat(actualRowsAffected.length == 2).as("executed 2 updates").isTrue();
-		assertThat((long) actualRowsAffected[0]).isEqualTo((long) rowsAffected[0]);
-		assertThat((long) actualRowsAffected[1]).isEqualTo((long) rowsAffected[1]);
+		assertThat(actualRowsAffected[0]).isEqualTo((long) rowsAffected[0]);
+		assertThat(actualRowsAffected[1]).isEqualTo((long) rowsAffected[1]);
 
 		update.reset();
-		assertThat((long) update.getRowsAffected().length).isEqualTo((long) 0);
+		assertThat(update.getRowsAffected().length).isEqualTo((long) 0);
 
 		verify(preparedStatement).setObject(1, ids[0], Types.INTEGER);
 		verify(preparedStatement).setObject(1, ids[1], Types.INTEGER);

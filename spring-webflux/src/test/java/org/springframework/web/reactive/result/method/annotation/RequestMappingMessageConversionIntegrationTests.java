@@ -153,13 +153,13 @@ public class RequestMappingMessageConversionIntegrationTests extends AbstractReq
 	public void personResponseBodyWithEmptyMono() throws Exception {
 		ResponseEntity<Person> responseEntity = performGet("/person-response/mono-empty", JSON, Person.class);
 		assertThat(responseEntity.getHeaders().getContentLength()).isEqualTo((long) 0);
-		assertThat((Object) responseEntity.getBody()).isNull();
+		assertThat(responseEntity.getBody()).isNull();
 
 		// As we're on the same connection, the 2nd request proves server response handling
 		// did complete after the 1st request..
 		responseEntity = performGet("/person-response/mono-empty", JSON, Person.class);
 		assertThat(responseEntity.getHeaders().getContentLength()).isEqualTo((long) 0);
-		assertThat((Object) responseEntity.getBody()).isNull();
+		assertThat(responseEntity.getBody()).isNull();
 	}
 
 	@Test
@@ -233,7 +233,7 @@ public class RequestMappingMessageConversionIntegrationTests extends AbstractReq
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(response.hasBody()).isTrue();
 		assertThat(response.getHeaders().getContentLength()).isEqualTo((long) 951);
-		assertThat((long) response.getBody().length).isEqualTo((long) 951);
+		assertThat(response.getBody().length).isEqualTo((long) 951);
 		assertThat(response.getHeaders().getContentType()).isEqualTo(new MediaType("image", "png"));
 	}
 
@@ -320,7 +320,7 @@ public class RequestMappingMessageConversionIntegrationTests extends AbstractReq
 				asList(new Person("Robert"), new Person("Marie")), null, Void.class);
 
 		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((long) getApplicationContext().getBean(PersonCreateController.class).persons.size()).isEqualTo((long) 2);
+		assertThat(getApplicationContext().getBean(PersonCreateController.class).persons.size()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -329,7 +329,7 @@ public class RequestMappingMessageConversionIntegrationTests extends AbstractReq
 		ResponseEntity<Void> response = performPost("/person-create/publisher", APPLICATION_XML, people, null, Void.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((long) getApplicationContext().getBean(PersonCreateController.class).persons.size()).isEqualTo((long) 2);
+		assertThat(getApplicationContext().getBean(PersonCreateController.class).persons.size()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -338,7 +338,7 @@ public class RequestMappingMessageConversionIntegrationTests extends AbstractReq
 				"/person-create/mono", JSON, new Person("Robert"), null, Void.class);
 
 		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((long) getApplicationContext().getBean(PersonCreateController.class).persons.size()).isEqualTo((long) 1);
+		assertThat(getApplicationContext().getBean(PersonCreateController.class).persons.size()).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -347,7 +347,7 @@ public class RequestMappingMessageConversionIntegrationTests extends AbstractReq
 				"/person-create/single", JSON, new Person("Robert"), null, Void.class);
 
 		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((long) getApplicationContext().getBean(PersonCreateController.class).persons.size()).isEqualTo((long) 1);
+		assertThat(getApplicationContext().getBean(PersonCreateController.class).persons.size()).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -356,7 +356,7 @@ public class RequestMappingMessageConversionIntegrationTests extends AbstractReq
 				"/person-create/rxjava2-single", JSON, new Person("Robert"), null, Void.class);
 
 		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((long) getApplicationContext().getBean(PersonCreateController.class).persons.size()).isEqualTo((long) 1);
+		assertThat(getApplicationContext().getBean(PersonCreateController.class).persons.size()).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -365,7 +365,7 @@ public class RequestMappingMessageConversionIntegrationTests extends AbstractReq
 				asList(new Person("Robert"), new Person("Marie")), null, Void.class);
 
 		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((long) getApplicationContext().getBean(PersonCreateController.class).persons.size()).isEqualTo((long) 2);
+		assertThat(getApplicationContext().getBean(PersonCreateController.class).persons.size()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -374,7 +374,7 @@ public class RequestMappingMessageConversionIntegrationTests extends AbstractReq
 		ResponseEntity<Void> response = performPost("/person-create/flux", APPLICATION_XML, people, null, Void.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((long) getApplicationContext().getBean(PersonCreateController.class).persons.size()).isEqualTo((long) 2);
+		assertThat(getApplicationContext().getBean(PersonCreateController.class).persons.size()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -383,7 +383,7 @@ public class RequestMappingMessageConversionIntegrationTests extends AbstractReq
 				asList(new Person("Robert"), new Person("Marie")), null, Void.class);
 
 		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((long) getApplicationContext().getBean(PersonCreateController.class).persons.size()).isEqualTo((long) 2);
+		assertThat(getApplicationContext().getBean(PersonCreateController.class).persons.size()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -392,7 +392,7 @@ public class RequestMappingMessageConversionIntegrationTests extends AbstractReq
 				asList(new Person("Robert"), new Person("Marie")), null, Void.class);
 
 		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((long) getApplicationContext().getBean(PersonCreateController.class).persons.size()).isEqualTo((long) 2);
+		assertThat(getApplicationContext().getBean(PersonCreateController.class).persons.size()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -401,7 +401,7 @@ public class RequestMappingMessageConversionIntegrationTests extends AbstractReq
 		ResponseEntity<Void> response = performPost("/person-create/observable", APPLICATION_XML, people, null, Void.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((long) getApplicationContext().getBean(PersonCreateController.class).persons.size()).isEqualTo((long) 2);
+		assertThat(getApplicationContext().getBean(PersonCreateController.class).persons.size()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -411,7 +411,7 @@ public class RequestMappingMessageConversionIntegrationTests extends AbstractReq
 		ResponseEntity<Void> response = performPost(url, APPLICATION_XML, people, null, Void.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((long) getApplicationContext().getBean(PersonCreateController.class).persons.size()).isEqualTo((long) 2);
+		assertThat(getApplicationContext().getBean(PersonCreateController.class).persons.size()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -420,7 +420,7 @@ public class RequestMappingMessageConversionIntegrationTests extends AbstractReq
 				asList(new Person("Robert"), new Person("Marie")), null, Void.class);
 
 		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((long) getApplicationContext().getBean(PersonCreateController.class).persons.size()).isEqualTo((long) 2);
+		assertThat(getApplicationContext().getBean(PersonCreateController.class).persons.size()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -429,7 +429,7 @@ public class RequestMappingMessageConversionIntegrationTests extends AbstractReq
 		ResponseEntity<Void> response = performPost("/person-create/flowable", APPLICATION_XML, people, null, Void.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((long) getApplicationContext().getBean(PersonCreateController.class).persons.size()).isEqualTo((long) 2);
+		assertThat(getApplicationContext().getBean(PersonCreateController.class).persons.size()).isEqualTo((long) 2);
 	}
 
 

@@ -50,12 +50,12 @@ public class LazyAutowiredAnnotationBeanPostProcessorTests {
 
 		TestBeanHolder bean = ac.getBean("annotatedBean", TestBeanHolder.class);
 		assertThat(ac.getBeanFactory().containsSingleton("testBean")).isFalse();
-		assertThat((Object) bean.getTestBean()).isNotNull();
-		assertThat((Object) bean.getTestBean().getName()).isNull();
+		assertThat(bean.getTestBean()).isNotNull();
+		assertThat(bean.getTestBean().getName()).isNull();
 		assertThat(ac.getBeanFactory().containsSingleton("testBean")).isTrue();
 		TestBean tb = (TestBean) ac.getBean("testBean");
 		tb.setName("tb");
-		assertThat((Object) bean.getTestBean().getName()).isSameAs("tb");
+		assertThat(bean.getTestBean().getName()).isSameAs("tb");
 	}
 
 	@Test
@@ -74,11 +74,11 @@ public class LazyAutowiredAnnotationBeanPostProcessorTests {
 		FieldResourceInjectionBean bean = ac.getBean("annotatedBean", FieldResourceInjectionBean.class);
 		assertThat(ac.getBeanFactory().containsSingleton("testBean")).isFalse();
 		assertThat(bean.getTestBeans().isEmpty()).isFalse();
-		assertThat((Object) bean.getTestBeans().get(0).getName()).isNull();
+		assertThat(bean.getTestBeans().get(0).getName()).isNull();
 		assertThat(ac.getBeanFactory().containsSingleton("testBean")).isTrue();
 		TestBean tb = (TestBean) ac.getBean("testBean");
 		tb.setName("tb");
-		assertThat((Object) bean.getTestBean().getName()).isSameAs("tb");
+		assertThat(bean.getTestBean().getName()).isSameAs("tb");
 	}
 
 	@Test
@@ -128,7 +128,7 @@ public class LazyAutowiredAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("annotatedBean", bd);
 
 		FieldResourceInjectionBean bean = (FieldResourceInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean.getTestBean()).isNotNull();
+		assertThat(bean.getTestBean()).isNotNull();
 		assertThatExceptionOfType(NoSuchBeanDefinitionException.class).isThrownBy(() ->
 				bean.getTestBean().getName());
 	}
@@ -145,8 +145,8 @@ public class LazyAutowiredAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("annotatedBean", bd);
 
 		OptionalFieldResourceInjectionBean bean = (OptionalFieldResourceInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean.getTestBean()).isNotNull();
-		assertThat((Object) bean.getTestBeans()).isNotNull();
+		assertThat(bean.getTestBean()).isNotNull();
+		assertThat(bean.getTestBeans()).isNotNull();
 		assertThat(bean.getTestBeans().isEmpty()).isTrue();
 		assertThatExceptionOfType(NoSuchBeanDefinitionException.class).isThrownBy(() ->
 				bean.getTestBean().getName());

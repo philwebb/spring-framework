@@ -193,17 +193,17 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		assertThat(model.get("value")).isEqualTo("/contextPath");
 
 		TestBean modelAttr = (TestBean) model.get("modelAttr");
-		assertThat((long) modelAttr.getAge()).isEqualTo((long) 25);
+		assertThat(modelAttr.getAge()).isEqualTo((long) 25);
 		assertThat(modelAttr.getName()).isEqualTo("Set by model method [modelAttr]");
 		assertThat(request.getSession().getAttribute("modelAttr")).isSameAs(modelAttr);
 
 		BindingResult bindingResult = (BindingResult) model.get(BindingResult.MODEL_KEY_PREFIX + "modelAttr");
 		assertThat(bindingResult.getTarget()).isSameAs(modelAttr);
-		assertThat((long) bindingResult.getErrorCount()).isEqualTo((long) 1);
+		assertThat(bindingResult.getErrorCount()).isEqualTo((long) 1);
 
 		String conventionAttrName = "testBean";
 		TestBean modelAttrByConvention = (TestBean) model.get(conventionAttrName);
-		assertThat((long) modelAttrByConvention.getAge()).isEqualTo((long) 25);
+		assertThat(modelAttrByConvention.getAge()).isEqualTo((long) 25);
 		assertThat(modelAttrByConvention.getName()).isEqualTo("Set by model method [modelAttrByConvention]");
 		assertThat(request.getSession().getAttribute(conventionAttrName)).isSameAs(modelAttrByConvention);
 
@@ -275,17 +275,17 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		assertThat(model.get("value")).isEqualTo("/contextPath");
 
 		TestBean modelAttr = (TestBean) model.get("modelAttr");
-		assertThat((long) modelAttr.getAge()).isEqualTo((long) 25);
+		assertThat(modelAttr.getAge()).isEqualTo((long) 25);
 		assertThat(modelAttr.getName()).isEqualTo("Set by model method [modelAttr]");
 		assertThat(request.getSession().getAttribute("modelAttr")).isSameAs(modelAttr);
 
 		BindingResult bindingResult = (BindingResult) model.get(BindingResult.MODEL_KEY_PREFIX + "modelAttr");
 		assertThat(bindingResult.getTarget()).isSameAs(modelAttr);
-		assertThat((long) bindingResult.getErrorCount()).isEqualTo((long) 1);
+		assertThat(bindingResult.getErrorCount()).isEqualTo((long) 1);
 
 		String conventionAttrName = "testBean";
 		TestBean modelAttrByConvention = (TestBean) model.get(conventionAttrName);
-		assertThat((long) modelAttrByConvention.getAge()).isEqualTo((long) 25);
+		assertThat(modelAttrByConvention.getAge()).isEqualTo((long) 25);
 		assertThat(modelAttrByConvention.getName()).isEqualTo("Set by model method [modelAttrByConvention]");
 		assertThat(request.getSession().getAttribute(conventionAttrName)).isSameAs(modelAttrByConvention);
 
@@ -315,9 +315,9 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 
 		ModelAndView mav = handlerAdapter.handle(request, response, handlerMethod);
 
-		assertThat((Object) mav).isNull();
+		assertThat(mav).isNull();
 		assertThat(new String(response.getContentAsByteArray(), "UTF-8")).isEqualTo("Handled requestBody=[Hello Server]");
-		assertThat((long) response.getStatus()).isEqualTo((long) HttpStatus.ACCEPTED.value());
+		assertThat(response.getStatus()).isEqualTo((long) HttpStatus.ACCEPTED.value());
 	}
 
 	@Test
@@ -331,9 +331,9 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 
 		ModelAndView mav = handlerAdapter.handle(request, response, handlerMethod);
 
-		assertThat((Object) mav).isNull();
+		assertThat(mav).isNull();
 		assertThat(new String(response.getContentAsByteArray(), "UTF-8")).isEqualTo("Error count [1]");
-		assertThat((long) response.getStatus()).isEqualTo((long) HttpStatus.ACCEPTED.value());
+		assertThat(response.getStatus()).isEqualTo((long) HttpStatus.ACCEPTED.value());
 	}
 
 	@Test
@@ -347,8 +347,8 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 
 		ModelAndView mav = handlerAdapter.handle(request, response, handlerMethod);
 
-		assertThat((Object) mav).isNull();
-		assertThat((long) response.getStatus()).isEqualTo((long) HttpStatus.ACCEPTED.value());
+		assertThat(mav).isNull();
+		assertThat(response.getStatus()).isEqualTo((long) HttpStatus.ACCEPTED.value());
 		assertThat(new String(response.getContentAsByteArray(), "UTF-8")).isEqualTo("Handled requestBody=[Hello Server]");
 		assertThat(response.getHeader("header")).isEqualTo("headerValue");
 		// set because of @SesstionAttributes
@@ -365,8 +365,8 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		HandlerMethod handlerMethod = handlerMethod("handleHttpEntityWithCacheControl", parameterTypes);
 		ModelAndView mav = handlerAdapter.handle(request, response, handlerMethod);
 
-		assertThat((Object) mav).isNull();
-		assertThat((long) response.getStatus()).isEqualTo((long) HttpStatus.OK.value());
+		assertThat(mav).isNull();
+		assertThat(response.getStatus()).isEqualTo((long) HttpStatus.OK.value());
 		assertThat(new String(response.getContentAsByteArray(), "UTF-8")).isEqualTo("Handled requestBody=[Hello Server]");
 		assertThat(response.getHeaderValues("Cache-Control")).containsExactly("max-age=3600");
 	}
@@ -379,7 +379,7 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		HandlerMethod handlerMethod = handlerMethod("handleRequestPart", String.class, Model.class);
 		ModelAndView mav = handlerAdapter.handle(multipartRequest, response, handlerMethod);
 
-		assertThat((Object) mav).isNotNull();
+		assertThat(mav).isNotNull();
 		assertThat(mav.getModelMap().get("requestPart")).isEqualTo("content");
 	}
 
@@ -391,7 +391,7 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 		HandlerMethod handlerMethod = handlerMethod("handleAndValidateRequestPart", String.class, Errors.class, Model.class);
 		ModelAndView mav = handlerAdapter.handle(multipartRequest, response, handlerMethod);
 
-		assertThat((Object) mav).isNotNull();
+		assertThat(mav).isNotNull();
 		assertThat(mav.getModelMap().get("error count")).isEqualTo(1);
 	}
 
@@ -491,8 +491,8 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 					.addAttribute("requestAttribute", requestAttribute)
 					.addAttribute("url", builder.path("/path").build().toUri());
 
-			assertThat((Object) request).isNotNull();
-			assertThat((Object) response).isNotNull();
+			assertThat(request).isNotNull();
+			assertThat(response).isNotNull();
 
 			return "viewName";
 		}
@@ -530,8 +530,8 @@ public class RequestMappingHandlerAdapterIntegrationTests {
 					.addAttribute("requestAttribute", requestAttribute)
 					.addAttribute("url", builder.path("/path").build().toUri());
 
-			assertThat((Object) request).isNotNull();
-			assertThat((Object) response).isNotNull();
+			assertThat(request).isNotNull();
+			assertThat(response).isNotNull();
 
 			return "viewName";
 		}

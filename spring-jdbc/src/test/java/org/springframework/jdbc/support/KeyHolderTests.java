@@ -48,7 +48,7 @@ public class KeyHolderTests {
 	public void singleKey() {
 		kh.getKeyList().addAll(singletonList(singletonMap("key", 1)));
 
-		assertThat((long) kh.getKey().intValue()).as("single key should be returned").isEqualTo((long) 1);
+		assertThat(kh.getKey().intValue()).as("single key should be returned").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -77,7 +77,7 @@ public class KeyHolderTests {
 		}};
 		kh.getKeyList().addAll(singletonList(m));
 
-		assertThat((long) kh.getKeys().size()).as("two keys should be in the map").isEqualTo((long) 2);
+		assertThat(kh.getKeys().size()).as("two keys should be in the map").isEqualTo((long) 2);
 		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class).isThrownBy(() ->
 				kh.getKey())
 			.withMessageStartingWith("The getKey method should only be used when a single key is returned.");
@@ -91,7 +91,7 @@ public class KeyHolderTests {
 		}};
 		kh.getKeyList().addAll(asList(m, m));
 
-		assertThat((long) kh.getKeyList().size()).as("two rows should be in the list").isEqualTo((long) 2);
+		assertThat(kh.getKeyList().size()).as("two rows should be in the list").isEqualTo((long) 2);
 		assertThatExceptionOfType(InvalidDataAccessApiUsageException.class).isThrownBy(() ->
 				kh.getKeys())
 			.withMessageStartingWith("The getKeys method should only be used when keys for a single row are returned.");

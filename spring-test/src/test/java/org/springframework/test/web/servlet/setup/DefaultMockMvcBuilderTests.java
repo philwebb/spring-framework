@@ -66,7 +66,7 @@ public class DefaultMockMvcBuilderTests {
 		this.servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, child);
 
 		DefaultMockMvcBuilder builder = webAppContextSetup(child);
-		assertThat((Object) WebApplicationContextUtils.getRequiredWebApplicationContext(this.servletContext)).isSameAs(builder.initWebAppContext());
+		assertThat(WebApplicationContextUtils.getRequiredWebApplicationContext(this.servletContext)).isSameAs(builder.initWebAppContext());
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class DefaultMockMvcBuilderTests {
 		child.setServletContext(this.servletContext);
 
 		DefaultMockMvcBuilder builder = webAppContextSetup(child);
-		assertThat((Object) WebApplicationContextUtils.getRequiredWebApplicationContext(this.servletContext)).isSameAs(builder.initWebAppContext().getParent());
+		assertThat(WebApplicationContextUtils.getRequiredWebApplicationContext(this.servletContext)).isSameAs(builder.initWebAppContext().getParent());
 	}
 
 	/**
@@ -94,8 +94,8 @@ public class DefaultMockMvcBuilderTests {
 		StubWebApplicationContext root = new StubWebApplicationContext(this.servletContext);
 		DefaultMockMvcBuilder builder = webAppContextSetup(root);
 		WebApplicationContext wac = builder.initWebAppContext();
-		assertThat((Object) wac).isSameAs(root);
-		assertThat((Object) WebApplicationContextUtils.getRequiredWebApplicationContext(this.servletContext)).isSameAs(root);
+		assertThat(wac).isSameAs(root);
+		assertThat(WebApplicationContextUtils.getRequiredWebApplicationContext(this.servletContext)).isSameAs(root);
 	}
 
 	/**
@@ -114,10 +114,10 @@ public class DefaultMockMvcBuilderTests {
 		DefaultMockMvcBuilder builder = webAppContextSetup(dispatcher);
 		WebApplicationContext wac = builder.initWebAppContext();
 
-		assertThat((Object) wac).isSameAs(dispatcher);
-		assertThat((Object) wac.getParent()).isSameAs(root);
-		assertThat((Object) wac.getParent().getParent()).isSameAs(ear);
-		assertThat((Object) WebApplicationContextUtils.getRequiredWebApplicationContext(this.servletContext)).isSameAs(root);
+		assertThat(wac).isSameAs(dispatcher);
+		assertThat(wac.getParent()).isSameAs(root);
+		assertThat(wac.getParent().getParent()).isSameAs(ear);
+		assertThat(WebApplicationContextUtils.getRequiredWebApplicationContext(this.servletContext)).isSameAs(root);
 	}
 
 	/**

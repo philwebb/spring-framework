@@ -69,23 +69,23 @@ public class LocalContainerEntityManagerFactoryBeanTests extends AbstractEntityM
 	public void testExceptionTranslationWithNoDialect() throws Exception {
 		LocalContainerEntityManagerFactoryBean cefb = parseValidPersistenceUnit();
 		cefb.getObject();
-		assertThat((Object) cefb.getJpaDialect()).as("No dialect set").isNull();
+		assertThat(cefb.getJpaDialect()).as("No dialect set").isNull();
 
 		RuntimeException in1 = new RuntimeException("in1");
 		PersistenceException in2 = new PersistenceException();
-		assertThat((Object) cefb.translateExceptionIfPossible(in1)).as("No translation here").isNull();
+		assertThat(cefb.translateExceptionIfPossible(in1)).as("No translation here").isNull();
 		DataAccessException dex = cefb.translateExceptionIfPossible(in2);
-		assertThat((Object) dex).isNotNull();
-		assertThat((Object) dex.getCause()).isSameAs(in2);
+		assertThat(dex).isNotNull();
+		assertThat(dex.getCause()).isSameAs(in2);
 	}
 
 	@Test
 	public void testEntityManagerFactoryIsProxied() throws Exception {
 		LocalContainerEntityManagerFactoryBean cefb = parseValidPersistenceUnit();
 		EntityManagerFactory emf = cefb.getObject();
-		assertThat((Object) cefb.getObject()).as("EntityManagerFactory reference must be cached after init").isSameAs(emf);
+		assertThat(cefb.getObject()).as("EntityManagerFactory reference must be cached after init").isSameAs(emf);
 
-		assertThat((Object) emf).as("EMF must be proxied").isNotSameAs(mockEmf);
+		assertThat(emf).as("EMF must be proxied").isNotSameAs(mockEmf);
 		assertThat(emf.equals(emf)).isTrue();
 
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
@@ -105,9 +105,9 @@ public class LocalContainerEntityManagerFactoryBeanTests extends AbstractEntityM
 
 		LocalContainerEntityManagerFactoryBean cefb = parseValidPersistenceUnit();
 		EntityManagerFactory emf = cefb.getObject();
-		assertThat((Object) cefb.getObject()).as("EntityManagerFactory reference must be cached after init").isSameAs(emf);
+		assertThat(cefb.getObject()).as("EntityManagerFactory reference must be cached after init").isSameAs(emf);
 
-		assertThat((Object) emf).as("EMF must be proxied").isNotSameAs(mockEmf);
+		assertThat(emf).as("EMF must be proxied").isNotSameAs(mockEmf);
 		EntityManager em = emf.createEntityManager();
 		assertThat(em.contains(testEntity)).isFalse();
 
@@ -140,9 +140,9 @@ public class LocalContainerEntityManagerFactoryBeanTests extends AbstractEntityM
 		TransactionStatus txStatus = jpatm.getTransaction(new DefaultTransactionAttribute());
 
 		EntityManagerFactory emf = cefb.getObject();
-		assertThat((Object) cefb.getObject()).as("EntityManagerFactory reference must be cached after init").isSameAs(emf);
+		assertThat(cefb.getObject()).as("EntityManagerFactory reference must be cached after init").isSameAs(emf);
 
-		assertThat((Object) emf).as("EMF must be proxied").isNotSameAs(mockEmf);
+		assertThat(emf).as("EMF must be proxied").isNotSameAs(mockEmf);
 		EntityManager em = emf.createEntityManager();
 		em.joinTransaction();
 		assertThat(em.contains(testEntity)).isFalse();
@@ -182,9 +182,9 @@ public class LocalContainerEntityManagerFactoryBeanTests extends AbstractEntityM
 		TransactionStatus txStatus = jpatm.getTransaction(new DefaultTransactionAttribute());
 
 		EntityManagerFactory emf = cefb.getObject();
-		assertThat((Object) cefb.getObject()).as("EntityManagerFactory reference must be cached after init").isSameAs(emf);
+		assertThat(cefb.getObject()).as("EntityManagerFactory reference must be cached after init").isSameAs(emf);
 
-		assertThat((Object) emf).as("EMF must be proxied").isNotSameAs(mockEmf);
+		assertThat(emf).as("EMF must be proxied").isNotSameAs(mockEmf);
 		EntityManager em = emf.createEntityManager();
 		em.joinTransaction();
 		assertThat(em.contains(testEntity)).isFalse();
@@ -222,9 +222,9 @@ public class LocalContainerEntityManagerFactoryBeanTests extends AbstractEntityM
 		TransactionStatus txStatus = jpatm.getTransaction(new DefaultTransactionAttribute());
 
 		EntityManagerFactory emf = cefb.getObject();
-		assertThat((Object) cefb.getObject()).as("EntityManagerFactory reference must be cached after init").isSameAs(emf);
+		assertThat(cefb.getObject()).as("EntityManagerFactory reference must be cached after init").isSameAs(emf);
 
-		assertThat((Object) emf).as("EMF must be proxied").isNotSameAs(mockEmf);
+		assertThat(emf).as("EMF must be proxied").isNotSameAs(mockEmf);
 		EntityManager em = emf.createEntityManager();
 		em.joinTransaction();
 		assertThat(em.contains(testEntity)).isFalse();

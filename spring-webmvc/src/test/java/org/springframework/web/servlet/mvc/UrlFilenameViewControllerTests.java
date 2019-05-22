@@ -150,7 +150,7 @@ public class UrlFilenameViewControllerTests {
 	public void settingPrefixToNullCausesEmptyStringToBeUsed() throws Exception {
 		UrlFilenameViewController ctrl = new UrlFilenameViewController();
 		ctrl.setPrefix(null);
-		assertThat((Object) ctrl.getPrefix()).as("For setPrefix(..) with null, the empty string must be used instead.").isNotNull();
+		assertThat(ctrl.getPrefix()).as("For setPrefix(..) with null, the empty string must be used instead.").isNotNull();
 		assertThat(ctrl.getPrefix()).as("For setPrefix(..) with null, the empty string must be used instead.").isEqualTo("");
 	}
 
@@ -158,7 +158,7 @@ public class UrlFilenameViewControllerTests {
 	public void settingSuffixToNullCausesEmptyStringToBeUsed() throws Exception {
 		UrlFilenameViewController ctrl = new UrlFilenameViewController();
 		ctrl.setSuffix(null);
-		assertThat((Object) ctrl.getSuffix()).as("For setPrefix(..) with null, the empty string must be used instead.").isNotNull();
+		assertThat(ctrl.getSuffix()).as("For setPrefix(..) with null, the empty string must be used instead.").isNotNull();
 		assertThat(ctrl.getSuffix()).as("For setPrefix(..) with null, the empty string must be used instead.").isEqualTo("");
 	}
 
@@ -184,7 +184,7 @@ public class UrlFilenameViewControllerTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mv = ctrl.handleRequest(request, response);
 		assertThat(mv.getViewName()).isEqualTo("index");
-		assertThat((long) mv.getModel().size()).isEqualTo((long) 1);
+		assertThat(mv.getModel().size()).isEqualTo((long) 1);
 		assertThat(mv.getModel().get("name")).isEqualTo("value");
 	}
 

@@ -54,7 +54,7 @@ public class DefaultServletHandlerConfigurerTests {
 
 	@Test
 	public void notEnabled() {
-		assertThat((Object) configurer.buildHandlerMapping()).isNull();
+		assertThat(configurer.buildHandlerMapping()).isNull();
 	}
 
 	@Test
@@ -63,8 +63,8 @@ public class DefaultServletHandlerConfigurerTests {
 		SimpleUrlHandlerMapping handlerMapping = configurer.buildHandlerMapping();
 		DefaultServletHttpRequestHandler handler = (DefaultServletHttpRequestHandler) handlerMapping.getUrlMap().get("/**");
 
-		assertThat((Object) handler).isNotNull();
-		assertThat((long) handlerMapping.getOrder()).isEqualTo((long) Integer.MAX_VALUE);
+		assertThat(handler).isNotNull();
+		assertThat(handlerMapping.getOrder()).isEqualTo((long) Integer.MAX_VALUE);
 
 		handler.handleRequest(new MockHttpServletRequest(), response);
 
@@ -79,8 +79,8 @@ public class DefaultServletHandlerConfigurerTests {
 		SimpleUrlHandlerMapping handlerMapping = configurer.buildHandlerMapping();
 		DefaultServletHttpRequestHandler handler = (DefaultServletHttpRequestHandler) handlerMapping.getUrlMap().get("/**");
 
-		assertThat((Object) handler).isNotNull();
-		assertThat((long) handlerMapping.getOrder()).isEqualTo((long) Integer.MAX_VALUE);
+		assertThat(handler).isNotNull();
+		assertThat(handlerMapping.getOrder()).isEqualTo((long) Integer.MAX_VALUE);
 
 		handler.handleRequest(new MockHttpServletRequest(), response);
 

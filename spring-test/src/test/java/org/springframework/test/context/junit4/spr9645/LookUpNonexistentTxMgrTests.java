@@ -52,9 +52,9 @@ public class LookUpNonexistentTxMgrTests {
 
 	@Test
 	public void nonTransactionalTest() {
-		assertThat((long) txManager.begun).isEqualTo((long) 0);
-		assertThat((long) txManager.inflight).isEqualTo((long) 0);
-		assertThat((long) txManager.commits).isEqualTo((long) 0);
-		assertThat((long) txManager.rollbacks).isEqualTo((long) 0);
+		assertThat(txManager.begun).isEqualTo((long) 0);
+		assertThat(txManager.inflight).isEqualTo((long) 0);
+		assertThat(txManager.commits).isEqualTo((long) 0);
+		assertThat(txManager.rollbacks).isEqualTo((long) 0);
 	}
 }

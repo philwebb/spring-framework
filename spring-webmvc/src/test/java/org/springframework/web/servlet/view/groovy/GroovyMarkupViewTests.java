@@ -86,7 +86,7 @@ public class GroovyMarkupViewTests {
 
 		DirectFieldAccessor accessor = new DirectFieldAccessor(view);
 		TemplateEngine engine = (TemplateEngine) accessor.getPropertyValue("engine");
-		assertThat((Object) engine).isNotNull();
+		assertThat(engine).isNotNull();
 		assertThat(engine.getClass()).isEqualTo(TestTemplateEngine.class);
 	}
 
@@ -98,7 +98,7 @@ public class GroovyMarkupViewTests {
 
 		DirectFieldAccessor accessor = new DirectFieldAccessor(view);
 		TemplateEngine engine = (TemplateEngine) accessor.getPropertyValue("engine");
-		assertThat((Object) engine).isNotNull();
+		assertThat(engine).isNotNull();
 		assertThat(engine.getClass()).isEqualTo(TestTemplateEngine.class);
 	}
 

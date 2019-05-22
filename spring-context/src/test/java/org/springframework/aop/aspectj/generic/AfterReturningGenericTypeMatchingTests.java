@@ -62,42 +62,42 @@ public class AfterReturningGenericTypeMatchingTests {
 	@Test
 	public void testReturnTypeExactMatching() {
 		testBean.getStrings();
-		assertThat((long) counterAspect.getStringsInvocationsCount).isEqualTo((long) 1);
-		assertThat((long) counterAspect.getIntegersInvocationsCount).isEqualTo((long) 0);
+		assertThat(counterAspect.getStringsInvocationsCount).isEqualTo((long) 1);
+		assertThat(counterAspect.getIntegersInvocationsCount).isEqualTo((long) 0);
 
 		counterAspect.reset();
 
 		testBean.getIntegers();
-		assertThat((long) counterAspect.getStringsInvocationsCount).isEqualTo((long) 0);
-		assertThat((long) counterAspect.getIntegersInvocationsCount).isEqualTo((long) 1);
+		assertThat(counterAspect.getStringsInvocationsCount).isEqualTo((long) 0);
+		assertThat(counterAspect.getIntegersInvocationsCount).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void testReturnTypeRawMatching() {
 		testBean.getStrings();
-		assertThat((long) counterAspect.getRawsInvocationsCount).isEqualTo((long) 1);
+		assertThat(counterAspect.getRawsInvocationsCount).isEqualTo((long) 1);
 
 		counterAspect.reset();
 
 		testBean.getIntegers();
-		assertThat((long) counterAspect.getRawsInvocationsCount).isEqualTo((long) 1);
+		assertThat(counterAspect.getRawsInvocationsCount).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void testReturnTypeUpperBoundMatching() {
 		testBean.getIntegers();
-		assertThat((long) counterAspect.getNumbersInvocationsCount).isEqualTo((long) 1);
+		assertThat(counterAspect.getNumbersInvocationsCount).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void testReturnTypeLowerBoundMatching() {
 		testBean.getTestBeans();
-		assertThat((long) counterAspect.getTestBeanInvocationsCount).isEqualTo((long) 1);
+		assertThat(counterAspect.getTestBeanInvocationsCount).isEqualTo((long) 1);
 
 		counterAspect.reset();
 
 		testBean.getEmployees();
-		assertThat((long) counterAspect.getTestBeanInvocationsCount).isEqualTo((long) 0);
+		assertThat(counterAspect.getTestBeanInvocationsCount).isEqualTo((long) 0);
 	}
 
 }

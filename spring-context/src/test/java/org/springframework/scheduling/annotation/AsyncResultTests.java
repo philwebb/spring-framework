@@ -49,10 +49,10 @@ public class AsyncResultTests {
 				throw new AssertionError("Failure callback not expected: " + ex, ex);
 			}
 		});
-		assertThat((Object) values.iterator().next()).isSameAs(value);
-		assertThat((Object) future.get()).isSameAs(value);
-		assertThat((Object) future.completable().get()).isSameAs(value);
-		future.completable().thenAccept(v -> assertThat((Object) v).isSameAs(value));
+		assertThat(values.iterator().next()).isSameAs(value);
+		assertThat(future.get()).isSameAs(value);
+		assertThat(future.completable().get()).isSameAs(value);
+		future.completable().thenAccept(v -> assertThat(v).isSameAs(value));
 	}
 
 	@Test
@@ -70,7 +70,7 @@ public class AsyncResultTests {
 				values.add(ex);
 			}
 		});
-		assertThat((Object) values.iterator().next()).isSameAs(ex);
+		assertThat(values.iterator().next()).isSameAs(ex);
 		assertThatExceptionOfType(ExecutionException.class).isThrownBy(
 				future::get)
 			.withCause(ex);
@@ -85,10 +85,10 @@ public class AsyncResultTests {
 		final Set<String> values = new HashSet<>(1);
 		ListenableFuture<String> future = AsyncResult.forValue(value);
 		future.addCallback(values::add, ex -> new AssertionError("Failure callback not expected: " + ex));
-		assertThat((Object) values.iterator().next()).isSameAs(value);
-		assertThat((Object) future.get()).isSameAs(value);
-		assertThat((Object) future.completable().get()).isSameAs(value);
-		future.completable().thenAccept(v -> assertThat((Object) v).isSameAs(value));
+		assertThat(values.iterator().next()).isSameAs(value);
+		assertThat(future.get()).isSameAs(value);
+		assertThat(future.completable().get()).isSameAs(value);
+		future.completable().thenAccept(v -> assertThat(v).isSameAs(value));
 	}
 
 	@Test
@@ -97,7 +97,7 @@ public class AsyncResultTests {
 		final Set<Throwable> values = new HashSet<>(1);
 		ListenableFuture<String> future = AsyncResult.forExecutionException(ex);
 		future.addCallback(result -> new AssertionError("Success callback not expected: " + result), values::add);
-		assertThat((Object) values.iterator().next()).isSameAs(ex);
+		assertThat(values.iterator().next()).isSameAs(ex);
 		assertThatExceptionOfType(ExecutionException.class).isThrownBy(
 				future::get)
 			.withCause(ex);

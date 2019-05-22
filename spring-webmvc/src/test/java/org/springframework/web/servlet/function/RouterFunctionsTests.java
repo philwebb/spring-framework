@@ -44,7 +44,7 @@ public class RouterFunctionsTests {
 
 		RouterFunction<ServerResponse>
 				result = RouterFunctions.route(requestPredicate, handlerFunction);
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 
 		Optional<HandlerFunction<ServerResponse>> resultHandlerFunction = result.route(request);
 		assertThat(resultHandlerFunction.isPresent()).isTrue();
@@ -61,7 +61,7 @@ public class RouterFunctionsTests {
 		given(requestPredicate.test(request)).willReturn(false);
 
 		RouterFunction<ServerResponse> result = RouterFunctions.route(requestPredicate, handlerFunction);
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 
 		Optional<HandlerFunction<ServerResponse>> resultHandlerFunction = result.route(request);
 		assertThat(resultHandlerFunction.isPresent()).isFalse();
@@ -78,7 +78,7 @@ public class RouterFunctionsTests {
 		given(requestPredicate.nest(request)).willReturn(Optional.of(request));
 
 		RouterFunction<ServerResponse> result = RouterFunctions.nest(requestPredicate, routerFunction);
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 
 		Optional<HandlerFunction<ServerResponse>> resultHandlerFunction = result.route(request);
 		assertThat(resultHandlerFunction.isPresent()).isTrue();
@@ -96,7 +96,7 @@ public class RouterFunctionsTests {
 		given(requestPredicate.nest(request)).willReturn(Optional.empty());
 
 		RouterFunction<ServerResponse> result = RouterFunctions.nest(requestPredicate, routerFunction);
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 
 		Optional<HandlerFunction<ServerResponse>> resultHandlerFunction = result.route(request);
 		assertThat(resultHandlerFunction.isPresent()).isFalse();

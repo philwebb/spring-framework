@@ -70,9 +70,9 @@ public class AnnotationAsyncExecutionAspectTests {
 		ClassWithoutAsyncAnnotation obj = new ClassWithoutAsyncAnnotation();
 		obj.incrementAsync();
 		executor.waitForCompletion();
-		assertThat((long) obj.counter).isEqualTo((long) 1);
-		assertThat((long) executor.submitStartCounter).isEqualTo((long) 1);
-		assertThat((long) executor.submitCompleteCounter).isEqualTo((long) 1);
+		assertThat(obj.counter).isEqualTo((long) 1);
+		assertThat(executor.submitStartCounter).isEqualTo((long) 1);
+		assertThat(executor.submitCompleteCounter).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -80,19 +80,19 @@ public class AnnotationAsyncExecutionAspectTests {
 		ClassWithoutAsyncAnnotation obj = new ClassWithoutAsyncAnnotation();
 		Future<Integer> future = obj.incrementReturningAFuture();
 		// No need to executor.waitForCompletion() as future.get() will have the same effect
-		assertThat((long) future.get().intValue()).isEqualTo((long) 5);
-		assertThat((long) obj.counter).isEqualTo((long) 1);
-		assertThat((long) executor.submitStartCounter).isEqualTo((long) 1);
-		assertThat((long) executor.submitCompleteCounter).isEqualTo((long) 1);
+		assertThat(future.get().intValue()).isEqualTo((long) 5);
+		assertThat(obj.counter).isEqualTo((long) 1);
+		assertThat(executor.submitStartCounter).isEqualTo((long) 1);
+		assertThat(executor.submitCompleteCounter).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void syncMethodGetsRoutedSynchronously() {
 		ClassWithoutAsyncAnnotation obj = new ClassWithoutAsyncAnnotation();
 		obj.increment();
-		assertThat((long) obj.counter).isEqualTo((long) 1);
-		assertThat((long) executor.submitStartCounter).isEqualTo((long) 0);
-		assertThat((long) executor.submitCompleteCounter).isEqualTo((long) 0);
+		assertThat(obj.counter).isEqualTo((long) 1);
+		assertThat(executor.submitStartCounter).isEqualTo((long) 0);
+		assertThat(executor.submitCompleteCounter).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -102,19 +102,19 @@ public class AnnotationAsyncExecutionAspectTests {
 		ClassWithAsyncAnnotation obj = new ClassWithAsyncAnnotation();
 		obj.increment();
 		executor.waitForCompletion();
-		assertThat((long) obj.counter).isEqualTo((long) 1);
-		assertThat((long) executor.submitStartCounter).isEqualTo((long) 1);
-		assertThat((long) executor.submitCompleteCounter).isEqualTo((long) 1);
+		assertThat(obj.counter).isEqualTo((long) 1);
+		assertThat(executor.submitStartCounter).isEqualTo((long) 1);
+		assertThat(executor.submitCompleteCounter).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void methodReturningFutureInAsyncClassGetsRoutedAsynchronouslyAndReturnsAFuture() throws InterruptedException, ExecutionException {
 		ClassWithAsyncAnnotation obj = new ClassWithAsyncAnnotation();
 		Future<Integer> future = obj.incrementReturningAFuture();
-		assertThat((long) future.get().intValue()).isEqualTo((long) 5);
-		assertThat((long) obj.counter).isEqualTo((long) 1);
-		assertThat((long) executor.submitStartCounter).isEqualTo((long) 1);
-		assertThat((long) executor.submitCompleteCounter).isEqualTo((long) 1);
+		assertThat(future.get().intValue()).isEqualTo((long) 5);
+		assertThat(obj.counter).isEqualTo((long) 1);
+		assertThat(executor.submitStartCounter).isEqualTo((long) 1);
+		assertThat(executor.submitCompleteCounter).isEqualTo((long) 1);
 	}
 
 	/*

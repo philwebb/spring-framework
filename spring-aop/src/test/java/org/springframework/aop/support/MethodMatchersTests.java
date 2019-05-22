@@ -61,7 +61,7 @@ public class MethodMatchersTests {
 
 	@Test
 	public void testMethodMatcherTrueSerializable() throws Exception {
-		assertThat((Object) MethodMatcher.TRUE).isSameAs(SerializationTestUtils.serializeAndDeserialize(MethodMatcher.TRUE));
+		assertThat(MethodMatcher.TRUE).isSameAs(SerializationTestUtils.serializeAndDeserialize(MethodMatcher.TRUE));
 	}
 
 	@Test

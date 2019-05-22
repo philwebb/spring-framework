@@ -107,7 +107,7 @@ public class SimpleUrlHandlerMappingTests {
 			assertThat(actual).isSameAs(bean);
 			//noinspection OptionalGetWithoutIsPresent
 			PathContainer path = exchange.getAttribute(PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
-			assertThat((Object) path).isNotNull();
+			assertThat(path).isNotNull();
 			assertThat(path.value()).isEqualTo(pathWithinMapping);
 		}
 		else {

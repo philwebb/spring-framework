@@ -98,17 +98,17 @@ public class MockServerTests {
 		mutatedBuilder.defaultCookie("baz", "qux");
 		WebTestClient clientFromMutatedBuilder = mutatedBuilder.build();
 
-		client1.mutate().filters(filters -> assertThat((long) filters.size()).isEqualTo((long) 1));
-		client1.mutate().defaultHeaders(headers -> assertThat((long) headers.size()).isEqualTo((long) 1));
-		client1.mutate().defaultCookies(cookies -> assertThat((long) cookies.size()).isEqualTo((long) 1));
+		client1.mutate().filters(filters -> assertThat(filters.size()).isEqualTo((long) 1));
+		client1.mutate().defaultHeaders(headers -> assertThat(headers.size()).isEqualTo((long) 1));
+		client1.mutate().defaultCookies(cookies -> assertThat(cookies.size()).isEqualTo((long) 1));
 
-		client2.mutate().filters(filters -> assertThat((long) filters.size()).isEqualTo((long) 2));
-		client2.mutate().defaultHeaders(headers -> assertThat((long) headers.size()).isEqualTo((long) 2));
-		client2.mutate().defaultCookies(cookies -> assertThat((long) cookies.size()).isEqualTo((long) 2));
+		client2.mutate().filters(filters -> assertThat(filters.size()).isEqualTo((long) 2));
+		client2.mutate().defaultHeaders(headers -> assertThat(headers.size()).isEqualTo((long) 2));
+		client2.mutate().defaultCookies(cookies -> assertThat(cookies.size()).isEqualTo((long) 2));
 
-		clientFromMutatedBuilder.mutate().filters(filters -> assertThat((long) filters.size()).isEqualTo((long) 2));
-		clientFromMutatedBuilder.mutate().defaultHeaders(headers -> assertThat((long) headers.size()).isEqualTo((long) 2));
-		clientFromMutatedBuilder.mutate().defaultCookies(cookies -> assertThat((long) cookies.size()).isEqualTo((long) 2));
+		clientFromMutatedBuilder.mutate().filters(filters -> assertThat(filters.size()).isEqualTo((long) 2));
+		clientFromMutatedBuilder.mutate().defaultHeaders(headers -> assertThat(headers.size()).isEqualTo((long) 2));
+		clientFromMutatedBuilder.mutate().defaultCookies(cookies -> assertThat(cookies.size()).isEqualTo((long) 2));
 	}
 
 	@Test // SPR-16124
@@ -154,7 +154,7 @@ public class MockServerTests {
 		// Get the raw content without consuming the response body flux..
 		byte[] bytes = result.getResponseBodyContent();
 
-		assertThat((Object) bytes).isNotNull();
+		assertThat(bytes).isNotNull();
 		assertThat(new String(bytes, UTF_8)).isEqualTo("body");
 	}
 

@@ -44,8 +44,8 @@ public class CacheResolverAdapterTests extends AbstractJCacheTests {
 		DefaultCacheInvocationContext<?> dummyContext = createDummyContext();
 		CacheResolverAdapter adapter = new CacheResolverAdapter(getCacheResolver(dummyContext, "testCache"));
 		Collection<? extends Cache> caches = adapter.resolveCaches(dummyContext);
-		assertThat((Object) caches).isNotNull();
-		assertThat((long) caches.size()).isEqualTo((long) 1);
+		assertThat(caches).isNotNull();
+		assertThat(caches.size()).isEqualTo((long) 1);
 		assertThat(caches.iterator().next().getName()).isEqualTo("testCache");
 	}
 

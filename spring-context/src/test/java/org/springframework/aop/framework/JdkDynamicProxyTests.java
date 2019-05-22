@@ -86,7 +86,7 @@ public class JdkDynamicProxyTests extends AbstractAopProxyTests implements Seria
 		AopProxy aop = createAopProxy(pc);
 
 		ITestBean tb = (ITestBean) aop.getProxy();
-		assertThat((long) tb.getAge()).as("correct return value").isEqualTo((long) age);
+		assertThat(tb.getAge()).as("correct return value").isEqualTo((long) age);
 	}
 
 	@Test
@@ -125,8 +125,8 @@ public class JdkDynamicProxyTests extends AbstractAopProxyTests implements Seria
 		as.setTarget(bean);
 
 		Foo proxy = (Foo) createProxy(as);
-		assertThat((Object) proxy.getBarThis()).as("Target should be returned when return types are incompatible").isSameAs(bean);
-		assertThat((Object) proxy.getFooThis()).as("Proxy should be returned when return types are compatible").isSameAs(proxy);
+		assertThat(proxy.getBarThis()).as("Target should be returned when return types are incompatible").isSameAs(bean);
+		assertThat(proxy.getFooThis()).as("Proxy should be returned when return types are compatible").isSameAs(proxy);
 	}
 
 	@Test
@@ -137,7 +137,7 @@ public class JdkDynamicProxyTests extends AbstractAopProxyTests implements Seria
 		Named proxy = (Named) aopProxy.getProxy();
 		Named named = new Person();
 		assertThat(named).as("equals()").isEqualTo(proxy);
-		assertThat((long) named.hashCode()).as("hashCode()").isEqualTo((long) proxy.hashCode());
+		assertThat(named.hashCode()).as("hashCode()").isEqualTo((long) proxy.hashCode());
 	}
 
 	@Test  // SPR-13328

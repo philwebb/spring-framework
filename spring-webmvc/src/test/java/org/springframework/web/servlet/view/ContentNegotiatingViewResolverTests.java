@@ -102,7 +102,7 @@ public class ContentNegotiatingViewResolverTests {
 		given(viewMock.getContentType()).willReturn("application/vnd.ms-excel");
 
 		View result = viewResolver.resolveViewName(viewName, locale);
-		assertThat((Object) result).as("Invalid view").isSameAs(viewMock);
+		assertThat(result).as("Invalid view").isSameAs(viewMock);
 	}
 
 	@Test
@@ -128,7 +128,7 @@ public class ContentNegotiatingViewResolverTests {
 		given(viewMock.getContentType()).willReturn("application/vnd.ms-excel");
 
 		View result = viewResolver.resolveViewName(viewName, locale);
-		assertThat((Object) result).as("Invalid view").isSameAs(viewMock);
+		assertThat(result).as("Invalid view").isSameAs(viewMock);
 	}
 
 	@Test
@@ -140,7 +140,7 @@ public class ContentNegotiatingViewResolverTests {
 		viewResolver.afterPropertiesSet();
 
 		View result = viewResolver.resolveViewName("test", Locale.ENGLISH);
-		assertThat((Object) result).isNull();
+		assertThat(result).isNull();
 	}
 
 	@Test
@@ -165,7 +165,7 @@ public class ContentNegotiatingViewResolverTests {
 		given(viewMock.getContentType()).willReturn("application/vnd.ms-excel");
 
 		View result = viewResolver.resolveViewName(viewName, locale);
-		assertThat((Object) result).as("Invalid view").isSameAs(viewMock);
+		assertThat(result).as("Invalid view").isSameAs(viewMock);
 	}
 
 	@Test
@@ -193,7 +193,7 @@ public class ContentNegotiatingViewResolverTests {
 		given(viewMock2.getContentType()).willReturn("text/html;charset=ISO-8859-1");
 
 		View result = viewResolver.resolveViewName(viewName, locale);
-		assertThat((Object) result).as("Invalid view").isSameAs(viewMock1);
+		assertThat(result).as("Invalid view").isSameAs(viewMock1);
 	}
 
 	@Test
@@ -218,7 +218,7 @@ public class ContentNegotiatingViewResolverTests {
 		given(viewMock2.getContentType()).willReturn("text/html;charset=ISO-8859-1");
 
 		View result = viewResolver.resolveViewName(viewName, locale);
-		assertThat((Object) result).as("Invalid view").isSameAs(viewMock2);
+		assertThat(result).as("Invalid view").isSameAs(viewMock2);
 	}
 
 	// SPR-9160
@@ -245,7 +245,7 @@ public class ContentNegotiatingViewResolverTests {
 		given(jsonViewMock.getContentType()).willReturn("application/json");
 
 		View result = viewResolver.resolveViewName(viewName, locale);
-		assertThat((Object) result).as("Invalid view").isSameAs(jsonViewMock);
+		assertThat(result).as("Invalid view").isSameAs(jsonViewMock);
 	}
 
 	// SPR-9807
@@ -269,7 +269,7 @@ public class ContentNegotiatingViewResolverTests {
 
 		View result = viewResolver.resolveViewName(viewName, locale);
 
-		assertThat((Object) result).as("Invalid view").isSameAs(viewMock);
+		assertThat(result).as("Invalid view").isSameAs(viewMock);
 		assertThat(request.getAttribute(View.SELECTED_CONTENT_TYPE)).isEqualTo(new MediaType("application", "vnd.example-v2+xml"));
 	}
 
@@ -301,7 +301,7 @@ public class ContentNegotiatingViewResolverTests {
 		given(viewMock3.getContentType()).willReturn("application/json");
 
 		View result = viewResolver.resolveViewName(viewName, locale);
-		assertThat((Object) result).as("Invalid view").isSameAs(viewMock3);
+		assertThat(result).as("Invalid view").isSameAs(viewMock3);
 	}
 
 	@Test
@@ -328,7 +328,7 @@ public class ContentNegotiatingViewResolverTests {
 		given(viewMock2.getContentType()).willReturn("text/html;charset=ISO-8859-1");
 
 		View result = viewResolver.resolveViewName(viewName, locale);
-		assertThat((Object) result).as("Invalid view").isSameAs(viewMock2);
+		assertThat(result).as("Invalid view").isSameAs(viewMock2);
 	}
 
 	@Test
@@ -365,7 +365,7 @@ public class ContentNegotiatingViewResolverTests {
 		given(viewMock3.getContentType()).willReturn("application/json");
 
 		View result = viewResolver.resolveViewName(viewName, locale);
-		assertThat((Object) result).as("Invalid view").isSameAs(viewMock3);
+		assertThat(result).as("Invalid view").isSameAs(viewMock3);
 	}
 
 	@Test
@@ -386,7 +386,7 @@ public class ContentNegotiatingViewResolverTests {
 		given(viewMock.getContentType()).willReturn(null);
 
 		View result = viewResolver.resolveViewName(viewName, locale);
-		assertThat((Object) result).as("Invalid view").isNull();
+		assertThat(result).as("Invalid view").isNull();
 	}
 
 	@Test
@@ -437,7 +437,7 @@ public class ContentNegotiatingViewResolverTests {
 		given(viewMock.getContentType()).willReturn("application/pdf");
 
 		View result = viewResolver.resolveViewName(viewName, locale);
-		assertThat((Object) result).as("Invalid view").isNull();
+		assertThat(result).as("Invalid view").isNull();
 	}
 
 	@Test
@@ -459,10 +459,10 @@ public class ContentNegotiatingViewResolverTests {
 		given(viewMock.getContentType()).willReturn("application/pdf");
 
 		View result = viewResolver.resolveViewName(viewName, locale);
-		assertThat((Object) result).as("Invalid view").isNotNull();
+		assertThat(result).as("Invalid view").isNotNull();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		result.render(null, request, response);
-		assertThat((long) response.getStatus()).as("Invalid status code set").isEqualTo((long) 406);
+		assertThat(response.getStatus()).as("Invalid status code set").isEqualTo((long) 406);
 	}
 
 	@Test
@@ -485,7 +485,7 @@ public class ContentNegotiatingViewResolverTests {
 		Locale locale = Locale.ENGLISH;
 
 		View result = viewResolver.resolveViewName(viewName, locale);
-		assertThat((Object) result).as("Invalid view").isNotNull();
+		assertThat(result).as("Invalid view").isNotNull();
 	}
 
 }

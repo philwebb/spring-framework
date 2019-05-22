@@ -35,7 +35,7 @@ public class ParseStateTests {
 		parseState.push(entry);
 		assertThat(parseState.peek()).as("Incorrect peek value.").isEqualTo(entry);
 		parseState.pop();
-		assertThat((Object) parseState.peek()).as("Should get null on peek()").isNull();
+		assertThat(parseState.peek()).as("Should get null on peek()").isNull();
 	}
 
 	@Test

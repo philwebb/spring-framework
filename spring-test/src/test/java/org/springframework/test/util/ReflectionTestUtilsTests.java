@@ -149,7 +149,7 @@ public class ReflectionTestUtilsTests {
 		// Get directly
 		assertThat(person.getId()).as("ID (private field in a superclass)").isEqualTo((long) 99);
 		assertThat(person.getName()).as("name (protected field)").isEqualTo("Tom");
-		assertThat((long) person.getAge()).as("age (private field)").isEqualTo((long) 42);
+		assertThat(person.getAge()).as("age (private field)").isEqualTo((long) 42);
 		assertThat(person.getEyeColor()).as("eye color (package private field)").isEqualTo("blue");
 		assertThat(person.likesPets()).as("'likes pets' flag (package private boolean field)").isEqualTo(true);
 		assertThat(person.getFavoriteNumber()).as("'favorite number' (package field)").isEqualTo(PI);
@@ -161,7 +161,7 @@ public class ReflectionTestUtilsTests {
 		// Get directly from Target
 		assertThat(target.getId()).as("ID (private field in a superclass)").isEqualTo((long) 99);
 		assertThat(target.getName()).as("name (protected field)").isEqualTo("Tom");
-		assertThat((long) target.getAge()).as("age (private field)").isEqualTo((long) 42);
+		assertThat(target.getAge()).as("age (private field)").isEqualTo((long) 42);
 		assertThat(target.getEyeColor()).as("eye color (package private field)").isEqualTo("blue");
 		assertThat(target.likesPets()).as("'likes pets' flag (package private boolean field)").isEqualTo(true);
 		assertThat(target.getFavoriteNumber()).as("'favorite number' (package field)").isEqualTo(PI);
@@ -173,18 +173,18 @@ public class ReflectionTestUtilsTests {
 		setField(person, "name", "Tom");
 		setField(person, "eyeColor", "blue", String.class);
 		setField(person, "favoriteNumber", PI, Number.class);
-		assertThat((Object) person.getName()).isNotNull();
-		assertThat((Object) person.getEyeColor()).isNotNull();
-		assertThat((Object) person.getFavoriteNumber()).isNotNull();
+		assertThat(person.getName()).isNotNull();
+		assertThat(person.getEyeColor()).isNotNull();
+		assertThat(person.getFavoriteNumber()).isNotNull();
 
 		// Set to null
 		setField(person, "name", null, String.class);
 		setField(person, "eyeColor", null, String.class);
 		setField(person, "favoriteNumber", null, Number.class);
 
-		assertThat((Object) person.getName()).as("name (protected field)").isNull();
-		assertThat((Object) person.getEyeColor()).as("eye color (package private field)").isNull();
-		assertThat((Object) person.getFavoriteNumber()).as("'favorite number' (package field)").isNull();
+		assertThat(person.getName()).as("name (protected field)").isNull();
+		assertThat(person.getEyeColor()).as("eye color (package private field)").isNull();
+		assertThat(person.getFavoriteNumber()).as("'favorite number' (package field)").isNull();
 	}
 
 	@Test
@@ -257,7 +257,7 @@ public class ReflectionTestUtilsTests {
 
 		assertThat(person.getId()).as("ID (protected method in a superclass)").isEqualTo((long) 1);
 		assertThat(person.getName()).as("name (private method)").isEqualTo("Jerry");
-		assertThat((long) person.getAge()).as("age (protected method)").isEqualTo((long) 33);
+		assertThat(person.getAge()).as("age (protected method)").isEqualTo((long) 33);
 		assertThat(person.getEyeColor()).as("eye color (package private method)").isEqualTo("green");
 		assertThat(person.likesPets()).as("'likes pets' flag (protected method for a boolean)").isEqualTo(false);
 		assertThat(person.getFavoriteNumber()).as("'favorite number' (protected method for a Number)").isEqualTo(Integer.valueOf(42));
@@ -281,7 +281,7 @@ public class ReflectionTestUtilsTests {
 
 		assertThat(person.getId()).as("ID (protected method in a superclass)").isEqualTo((long) 99);
 		assertThat(person.getName()).as("name (private method)").isEqualTo("Tom");
-		assertThat((long) person.getAge()).as("age (protected method)").isEqualTo((long) 42);
+		assertThat(person.getAge()).as("age (protected method)").isEqualTo((long) 42);
 		assertThat(person.getEyeColor()).as("eye color (package private method)").isEqualTo("blue");
 		assertThat(person.likesPets()).as("'likes pets' flag (protected method for a boolean)").isEqualTo(true);
 		assertThat(person.getFavoriteNumber()).as("'favorite number' (protected method for a Number)").isEqualTo(PI);
@@ -300,9 +300,9 @@ public class ReflectionTestUtilsTests {
 		invokeSetterMethod(person, "eyeColor", null, String.class);
 		invokeSetterMethod(person, "favoriteNumber", null, Number.class);
 
-		assertThat((Object) person.getName()).as("name (private method)").isNull();
-		assertThat((Object) person.getEyeColor()).as("eye color (package private method)").isNull();
-		assertThat((Object) person.getFavoriteNumber()).as("'favorite number' (protected method for a Number)").isNull();
+		assertThat(person.getName()).as("name (private method)").isNull();
+		assertThat(person.getEyeColor()).as("eye color (package private method)").isNull();
+		assertThat(person.getFavoriteNumber()).as("'favorite number' (protected method for a Number)").isNull();
 	}
 
 	@Test
@@ -327,7 +327,7 @@ public class ReflectionTestUtilsTests {
 	public void invokeMethodWithAutoboxingAndUnboxing() {
 		// IntelliJ IDEA 11 won't accept int assignment here
 		Integer difference = invokeMethod(component, "subtract", 5, 2);
-		assertThat((long) difference.intValue()).as("subtract(5, 2)").isEqualTo((long) 3);
+		assertThat(difference.intValue()).as("subtract(5, 2)").isEqualTo((long) 3);
 	}
 
 	@Test
@@ -335,20 +335,20 @@ public class ReflectionTestUtilsTests {
 	public void invokeMethodWithPrimitiveVarArgs() {
 		// IntelliJ IDEA 11 won't accept int assignment here
 		Integer sum = invokeMethod(component, "add", 1, 2, 3, 4);
-		assertThat((long) sum.intValue()).as("add(1,2,3,4)").isEqualTo((long) 10);
+		assertThat(sum.intValue()).as("add(1,2,3,4)").isEqualTo((long) 10);
 	}
 
 	@Test
 	public void invokeMethodWithPrimitiveVarArgsAsSingleArgument() {
 		// IntelliJ IDEA 11 won't accept int assignment here
 		Integer sum = invokeMethod(component, "add", new int[] { 1, 2, 3, 4 });
-		assertThat((long) sum.intValue()).as("add(1,2,3,4)").isEqualTo((long) 10);
+		assertThat(sum.intValue()).as("add(1,2,3,4)").isEqualTo((long) 10);
 	}
 
 	@Test
 	public void invokeMethodSimulatingLifecycleEvents() {
-		assertThat((Object) component.getNumber()).as("number").isNull();
-		assertThat((Object) component.getText()).as("text").isNull();
+		assertThat(component.getNumber()).as("number").isNull();
+		assertThat(component.getText()).as("text").isNull();
 
 		// Simulate autowiring a configuration method
 		invokeMethod(component, "configure", Integer.valueOf(42), "enigma");
@@ -361,8 +361,8 @@ public class ReflectionTestUtilsTests {
 
 		// Simulate @PreDestroy life-cycle event
 		invokeMethod(component, "destroy");
-		assertThat((Object) component.getNumber()).as("number").isNull();
-		assertThat((Object) component.getText()).as("text").isNull();
+		assertThat(component.getNumber()).as("number").isNull();
+		assertThat(component.getText()).as("text").isNull();
 	}
 
 	@Test

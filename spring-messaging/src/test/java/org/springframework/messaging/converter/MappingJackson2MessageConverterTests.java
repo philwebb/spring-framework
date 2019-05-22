@@ -86,7 +86,7 @@ public class MappingJackson2MessageConverterTests {
 		MyBean actual = (MyBean) converter.fromMessage(message, MyBean.class);
 
 		assertThat(actual.getString()).isEqualTo("Foo");
-		assertThat((long) actual.getNumber()).isEqualTo((long) 42);
+		assertThat(actual.getNumber()).isEqualTo((long) 42);
 		assertThat(actual.getFraction()).isCloseTo((double) 42F, within((double) 0F));
 
 		assertThat(actual.getArray()).isEqualTo(new String[]{"Foo", "Bar"});
@@ -237,9 +237,9 @@ public class MappingJackson2MessageConverterTests {
 		method = getClass().getDeclaredMethod("jsonViewPayload", JacksonViewBean.class);
 		MethodParameter param = new MethodParameter(method, 0);
 		JacksonViewBean back = (JacksonViewBean) converter.fromMessage(message, JacksonViewBean.class, param);
-		assertThat((Object) back.getWithView1()).isNull();
+		assertThat(back.getWithView1()).isNull();
 		assertThat(back.getWithView2()).isEqualTo("with");
-		assertThat((Object) back.getWithoutView()).isNull();
+		assertThat(back.getWithoutView()).isNull();
 	}
 
 

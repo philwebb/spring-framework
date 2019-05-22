@@ -71,8 +71,8 @@ public class LruContextCacheTests {
 	@Test
 	public void maxCacheSizeOne() {
 		DefaultContextCache cache = new DefaultContextCache(1);
-		assertThat((long) cache.size()).isEqualTo((long) 0);
-		assertThat((long) cache.getMaxSize()).isEqualTo((long) 1);
+		assertThat(cache.size()).isEqualTo((long) 0);
+		assertThat(cache.getMaxSize()).isEqualTo((long) 1);
 
 		cache.put(fooConfig, fooContext);
 		assertCacheContents(cache, "Foo");
@@ -90,8 +90,8 @@ public class LruContextCacheTests {
 	@Test
 	public void maxCacheSizeThree() {
 		DefaultContextCache cache = new DefaultContextCache(3);
-		assertThat((long) cache.size()).isEqualTo((long) 0);
-		assertThat((long) cache.getMaxSize()).isEqualTo((long) 3);
+		assertThat(cache.size()).isEqualTo((long) 0);
+		assertThat(cache.getMaxSize()).isEqualTo((long) 3);
 
 		cache.put(fooConfig, fooContext);
 		assertCacheContents(cache, "Foo");

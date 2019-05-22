@@ -149,10 +149,10 @@ public class ResponseBodyEmitterReturnValueHandlerTests {
 						"{\"id\":3,\"name\":\"Jason\"}"));
 
 		MockAsyncContext asyncContext = (MockAsyncContext) this.request.getAsyncContext();
-		assertThat((Object) asyncContext.getDispatchedPath()).isNull();
+		assertThat(asyncContext.getDispatchedPath()).isNull();
 
 		emitter.complete();
-		assertThat((Object) asyncContext.getDispatchedPath()).isNotNull();
+		assertThat(asyncContext.getDispatchedPath()).isNotNull();
 	}
 
 	@Test
@@ -200,7 +200,7 @@ public class ResponseBodyEmitterReturnValueHandlerTests {
 		this.handler.handleReturnValue(emitter, type, this.mavContainer, this.webRequest);
 
 		assertThat(this.request.isAsyncStarted()).isTrue();
-		assertThat((long) this.response.getStatus()).isEqualTo((long) 200);
+		assertThat(this.response.getStatus()).isEqualTo((long) 200);
 
 		SimpleBean bean1 = new SimpleBean();
 		bean1.setId(1L);
@@ -233,7 +233,7 @@ public class ResponseBodyEmitterReturnValueHandlerTests {
 		this.handler.handleReturnValue(processor, type, this.mavContainer, this.webRequest);
 
 		assertThat(this.request.isAsyncStarted()).isTrue();
-		assertThat((long) this.response.getStatus()).isEqualTo((long) 200);
+		assertThat(this.response.getStatus()).isEqualTo((long) 200);
 
 		processor.onNext("foo");
 		processor.onNext("bar");
@@ -261,7 +261,7 @@ public class ResponseBodyEmitterReturnValueHandlerTests {
 
 		WebAsyncManager asyncManager = WebAsyncUtils.getAsyncManager(this.webRequest);
 		assertThat(asyncManager.getConcurrentResult()).isSameAs(ex);
-		assertThat((Object) this.response.getContentType()).isNull();
+		assertThat(this.response.getContentType()).isNull();
 	}
 
 	@Test
@@ -273,7 +273,7 @@ public class ResponseBodyEmitterReturnValueHandlerTests {
 		emitter.complete();
 
 		assertThat(this.request.isAsyncStarted()).isTrue();
-		assertThat((long) this.response.getStatus()).isEqualTo((long) 200);
+		assertThat(this.response.getStatus()).isEqualTo((long) 200);
 		assertThat(this.response.getContentType()).isEqualTo("text/event-stream;charset=UTF-8");
 		assertThat(this.response.getHeader("foo")).isEqualTo("bar");
 	}
@@ -285,7 +285,7 @@ public class ResponseBodyEmitterReturnValueHandlerTests {
 		this.handler.handleReturnValue(entity, type, this.mavContainer, this.webRequest);
 
 		assertThat(this.request.isAsyncStarted()).isFalse();
-		assertThat((long) this.response.getStatus()).isEqualTo((long) 204);
+		assertThat(this.response.getStatus()).isEqualTo((long) 204);
 		assertThat(this.response.getHeaders("foo")).isEqualTo(Collections.singletonList("bar"));
 	}
 
@@ -299,7 +299,7 @@ public class ResponseBodyEmitterReturnValueHandlerTests {
 		this.handler.handleReturnValue(entity, type, this.mavContainer, this.webRequest);
 
 		assertThat(this.request.isAsyncStarted()).isTrue();
-		assertThat((long) this.response.getStatus()).isEqualTo((long) 200);
+		assertThat(this.response.getStatus()).isEqualTo((long) 200);
 
 		processor.onNext("foo");
 		processor.onNext("bar");
@@ -320,7 +320,7 @@ public class ResponseBodyEmitterReturnValueHandlerTests {
 		this.handler.handleReturnValue(entity, type, this.mavContainer, this.webRequest);
 
 		assertThat(this.request.isAsyncStarted()).isTrue();
-		assertThat((long) this.response.getStatus()).isEqualTo((long) 200);
+		assertThat(this.response.getStatus()).isEqualTo((long) 200);
 		assertThat(this.response.getHeader("x-foo")).isEqualTo("bar");
 		assertThat(this.response.isCommitted()).isFalse();
 	}

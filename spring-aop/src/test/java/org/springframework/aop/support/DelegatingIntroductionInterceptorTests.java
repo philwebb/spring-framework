@@ -226,7 +226,7 @@ public class DelegatingIntroductionInterceptorTests {
 
 		assertThat(proxy.getCompany()).isEqualTo(company);
 		ITestBean introduction = (ITestBean) proxy;
-		assertThat((Object) introduction.getSpouse()).as("Introduced method returning delegate returns proxy").isSameAs(introduction);
+		assertThat(introduction.getSpouse()).as("Introduced method returning delegate returns proxy").isSameAs(introduction);
 		assertThat(AopUtils.isAopProxy(introduction.getSpouse())).as("Introduced method returning delegate returns proxy").isTrue();
 	}
 

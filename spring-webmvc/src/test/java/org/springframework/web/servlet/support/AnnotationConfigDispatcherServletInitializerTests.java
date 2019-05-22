@@ -85,8 +85,8 @@ public class AnnotationConfigDispatcherServletInitializerTests {
 	public void register() throws ServletException {
 		initializer.onStartup(servletContext);
 
-		assertThat((long) servlets.size()).isEqualTo((long) 1);
-		assertThat((Object) servlets.get(SERVLET_NAME)).isNotNull();
+		assertThat(servlets.size()).isEqualTo((long) 1);
+		assertThat(servlets.get(SERVLET_NAME)).isNotNull();
 
 		DispatcherServlet servlet = (DispatcherServlet) servlets.get(SERVLET_NAME);
 		WebApplicationContext wac = servlet.getWebApplicationContext();
@@ -96,21 +96,21 @@ public class AnnotationConfigDispatcherServletInitializerTests {
 		boolean condition = wac.getBean("bean") instanceof MyBean;
 		assertThat(condition).isTrue();
 
-		assertThat((long) servletRegistrations.size()).isEqualTo((long) 1);
-		assertThat((Object) servletRegistrations.get(SERVLET_NAME)).isNotNull();
+		assertThat(servletRegistrations.size()).isEqualTo((long) 1);
+		assertThat(servletRegistrations.get(SERVLET_NAME)).isNotNull();
 
 		MockServletRegistration servletRegistration = servletRegistrations.get(SERVLET_NAME);
 
 		assertThat(servletRegistration.getMappings()).isEqualTo(Collections.singleton(SERVLET_MAPPING));
-		assertThat((long) servletRegistration.getLoadOnStartup()).isEqualTo((long) 1);
+		assertThat(servletRegistration.getLoadOnStartup()).isEqualTo((long) 1);
 		assertThat(servletRegistration.getRunAsRole()).isEqualTo(ROLE_NAME);
 		assertThat(servletRegistration.isAsyncSupported()).isTrue();
 
-		assertThat((long) filterRegistrations.size()).isEqualTo((long) 4);
-		assertThat((Object) filterRegistrations.get("hiddenHttpMethodFilter")).isNotNull();
-		assertThat((Object) filterRegistrations.get("delegatingFilterProxy")).isNotNull();
-		assertThat((Object) filterRegistrations.get("delegatingFilterProxy#0")).isNotNull();
-		assertThat((Object) filterRegistrations.get("delegatingFilterProxy#1")).isNotNull();
+		assertThat(filterRegistrations.size()).isEqualTo((long) 4);
+		assertThat(filterRegistrations.get("hiddenHttpMethodFilter")).isNotNull();
+		assertThat(filterRegistrations.get("delegatingFilterProxy")).isNotNull();
+		assertThat(filterRegistrations.get("delegatingFilterProxy#0")).isNotNull();
+		assertThat(filterRegistrations.get("delegatingFilterProxy#1")).isNotNull();
 
 		for (MockFilterRegistration filterRegistration : filterRegistrations.values()) {
 			assertThat(filterRegistration.isAsyncSupported()).isTrue();
@@ -179,7 +179,7 @@ public class AnnotationConfigDispatcherServletInitializerTests {
 
 		initializer.onStartup(servletContext);
 
-		assertThat((long) filterRegistrations.size()).isEqualTo((long) 0);
+		assertThat(filterRegistrations.size()).isEqualTo((long) 0);
 	}
 
 

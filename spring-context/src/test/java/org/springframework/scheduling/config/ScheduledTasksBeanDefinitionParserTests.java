@@ -79,7 +79,7 @@ public class ScheduledTasksBeanDefinitionParserTests {
 	public void fixedRateTasks() {
 		List<IntervalTask> tasks = (List<IntervalTask>) new DirectFieldAccessor(
 				this.registrar).getPropertyValue("fixedRateTasks");
-		assertThat((long) tasks.size()).isEqualTo((long) 3);
+		assertThat(tasks.size()).isEqualTo((long) 3);
 		assertThat(tasks.get(0).getInterval()).isEqualTo(1000L);
 		assertThat(tasks.get(1).getInterval()).isEqualTo(2000L);
 		assertThat(tasks.get(2).getInterval()).isEqualTo(4000L);
@@ -90,7 +90,7 @@ public class ScheduledTasksBeanDefinitionParserTests {
 	public void fixedDelayTasks() {
 		List<IntervalTask> tasks = (List<IntervalTask>) new DirectFieldAccessor(
 				this.registrar).getPropertyValue("fixedDelayTasks");
-		assertThat((long) tasks.size()).isEqualTo((long) 2);
+		assertThat(tasks.size()).isEqualTo((long) 2);
 		assertThat(tasks.get(0).getInterval()).isEqualTo(3000L);
 		assertThat(tasks.get(1).getInterval()).isEqualTo(3500L);
 		assertThat(tasks.get(1).getInitialDelay()).isEqualTo((long) 250);
@@ -100,7 +100,7 @@ public class ScheduledTasksBeanDefinitionParserTests {
 	public void cronTasks() {
 		List<CronTask> tasks = (List<CronTask>) new DirectFieldAccessor(
 				this.registrar).getPropertyValue("cronTasks");
-		assertThat((long) tasks.size()).isEqualTo((long) 1);
+		assertThat(tasks.size()).isEqualTo((long) 1);
 		assertThat(tasks.get(0).getExpression()).isEqualTo("*/4 * 9-17 * * MON-FRI");
 	}
 
@@ -108,7 +108,7 @@ public class ScheduledTasksBeanDefinitionParserTests {
 	public void triggerTasks() {
 		List<TriggerTask> tasks = (List<TriggerTask>) new DirectFieldAccessor(
 				this.registrar).getPropertyValue("triggerTasks");
-		assertThat((long) tasks.size()).isEqualTo((long) 1);
+		assertThat(tasks.size()).isEqualTo((long) 1);
 		assertThat(tasks.get(0).getTrigger()).isInstanceOf(TestTrigger.class);
 	}
 

@@ -613,10 +613,10 @@ public class SqlQueryTests  {
 		ids.add(2);
 		List<Customer> cust = query.findCustomers(ids);
 
-		assertThat((long) cust.size()).as("We got two customers back").isEqualTo((long) 2);
-		assertThat((long) 1).as("First customer id was assigned correctly").isEqualTo((long) cust.get(0).getId());
+		assertThat(cust.size()).as("We got two customers back").isEqualTo((long) 2);
+		assertThat(1).as("First customer id was assigned correctly").isEqualTo((long) cust.get(0).getId());
 		assertThat("rod").as("First customer forename was assigned correctly").isEqualTo(cust.get(0).getForename());
-		assertThat((long) 2).as("Second customer id was assigned correctly").isEqualTo((long) cust.get(1).getId());
+		assertThat(2).as("Second customer id was assigned correctly").isEqualTo((long) cust.get(1).getId());
 		assertThat("juergen").as("Second customer forename was assigned correctly").isEqualTo(cust.get(1).getForename());
 		verify(preparedStatement).setObject(1, 1, Types.NUMERIC);
 		verify(preparedStatement).setObject(2, 2, Types.NUMERIC);
@@ -662,10 +662,10 @@ public class SqlQueryTests  {
 		CustomerQuery query = new CustomerQuery(dataSource);
 		List<Customer> cust = query.findCustomers(1);
 
-		assertThat((long) cust.size()).as("We got two customers back").isEqualTo((long) 2);
-		assertThat((long) 1).as("First customer id was assigned correctly").isEqualTo((long) cust.get(0).getId());
+		assertThat(cust.size()).as("We got two customers back").isEqualTo((long) 2);
+		assertThat(1).as("First customer id was assigned correctly").isEqualTo((long) cust.get(0).getId());
 		assertThat("rod").as("First customer forename was assigned correctly").isEqualTo(cust.get(0).getForename());
-		assertThat((long) 2).as("Second customer id was assigned correctly").isEqualTo((long) cust.get(1).getId());
+		assertThat(2).as("Second customer id was assigned correctly").isEqualTo((long) cust.get(1).getId());
 		assertThat("juergen").as("Second customer forename was assigned correctly").isEqualTo(cust.get(1).getForename());
 
 		verify(preparedStatement).setObject(1, 1, Types.NUMERIC);

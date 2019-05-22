@@ -58,15 +58,15 @@ public class MetaAnnotationConfigWacTests {
 
 	@Test
 	public void basicWacFeatures() throws Exception {
-		assertThat((Object) wac.getServletContext()).as("ServletContext should be set in the WAC.").isNotNull();
+		assertThat(wac.getServletContext()).as("ServletContext should be set in the WAC.").isNotNull();
 
-		assertThat((Object) mockServletContext).as("ServletContext should have been autowired from the WAC.").isNotNull();
+		assertThat(mockServletContext).as("ServletContext should have been autowired from the WAC.").isNotNull();
 
 		Object rootWac = mockServletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
 		assertThat(rootWac).as("Root WAC must be stored in the ServletContext as: "
 				+ WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE).isNotNull();
 		assertThat(rootWac).as("test WAC and Root WAC in ServletContext must be the same object.").isSameAs(wac);
-		assertThat((Object) wac.getServletContext()).as("ServletContext instances must be the same object.").isSameAs(mockServletContext);
+		assertThat(wac.getServletContext()).as("ServletContext instances must be the same object.").isSameAs(mockServletContext);
 
 		assertThat(mockServletContext.getRealPath("index.jsp")).as("Getting real path for ServletContext resource.").isEqualTo(new File("src/main/webapp/index.jsp").getCanonicalPath());
 	}

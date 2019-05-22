@@ -49,66 +49,66 @@ public class JtaTransactionAspectsTests {
 
 	@Test
 	public void commitOnAnnotatedPublicMethod() throws Throwable {
-		assertThat((long) this.txManager.begun).isEqualTo((long) 0);
+		assertThat(this.txManager.begun).isEqualTo((long) 0);
 		new JtaAnnotationPublicAnnotatedMember().echo(null);
-		assertThat((long) this.txManager.commits).isEqualTo((long) 1);
+		assertThat(this.txManager.commits).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void matchingRollbackOnApplied() throws Throwable {
-		assertThat((long) this.txManager.begun).isEqualTo((long) 0);
+		assertThat(this.txManager.begun).isEqualTo((long) 0);
 		InterruptedException test = new InterruptedException();
 		assertThatExceptionOfType(InterruptedException.class).isThrownBy(() ->
 				new JtaAnnotationPublicAnnotatedMember().echo(test))
 			.isSameAs(test);
-		assertThat((long) this.txManager.rollbacks).isEqualTo((long) 1);
-		assertThat((long) this.txManager.commits).isEqualTo((long) 0);
+		assertThat(this.txManager.rollbacks).isEqualTo((long) 1);
+		assertThat(this.txManager.commits).isEqualTo((long) 0);
 	}
 
 	@Test
 	public void nonMatchingRollbackOnApplied() throws Throwable {
-		assertThat((long) this.txManager.begun).isEqualTo((long) 0);
+		assertThat(this.txManager.begun).isEqualTo((long) 0);
 		IOException test = new IOException();
 		assertThatIOException().isThrownBy(() ->
 				new JtaAnnotationPublicAnnotatedMember().echo(test))
 			.isSameAs(test);
-		assertThat((long) this.txManager.commits).isEqualTo((long) 1);
-		assertThat((long) this.txManager.rollbacks).isEqualTo((long) 0);
+		assertThat(this.txManager.commits).isEqualTo((long) 1);
+		assertThat(this.txManager.rollbacks).isEqualTo((long) 0);
 	}
 
 	@Test
 	public void commitOnAnnotatedProtectedMethod() {
-		assertThat((long) this.txManager.begun).isEqualTo((long) 0);
+		assertThat(this.txManager.begun).isEqualTo((long) 0);
 		new JtaAnnotationProtectedAnnotatedMember().doInTransaction();
-		assertThat((long) this.txManager.commits).isEqualTo((long) 1);
+		assertThat(this.txManager.commits).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void nonAnnotatedMethodCallingProtectedMethod() {
-		assertThat((long) this.txManager.begun).isEqualTo((long) 0);
+		assertThat(this.txManager.begun).isEqualTo((long) 0);
 		new JtaAnnotationProtectedAnnotatedMember().doSomething();
-		assertThat((long) this.txManager.commits).isEqualTo((long) 1);
+		assertThat(this.txManager.commits).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void commitOnAnnotatedPrivateMethod() {
-		assertThat((long) this.txManager.begun).isEqualTo((long) 0);
+		assertThat(this.txManager.begun).isEqualTo((long) 0);
 		new JtaAnnotationPrivateAnnotatedMember().doInTransaction();
-		assertThat((long) this.txManager.commits).isEqualTo((long) 1);
+		assertThat(this.txManager.commits).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void nonAnnotatedMethodCallingPrivateMethod() {
-		assertThat((long) this.txManager.begun).isEqualTo((long) 0);
+		assertThat(this.txManager.begun).isEqualTo((long) 0);
 		new JtaAnnotationPrivateAnnotatedMember().doSomething();
-		assertThat((long) this.txManager.commits).isEqualTo((long) 1);
+		assertThat(this.txManager.commits).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void notTransactional() {
-		assertThat((long) this.txManager.begun).isEqualTo((long) 0);
+		assertThat(this.txManager.begun).isEqualTo((long) 0);
 		new TransactionAspectTests.NotTransactional().noop();
-		assertThat((long) this.txManager.begun).isEqualTo((long) 0);
+		assertThat(this.txManager.begun).isEqualTo((long) 0);
 	}
 
 

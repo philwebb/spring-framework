@@ -58,7 +58,7 @@ public class BeanPropertyRowMapperTests extends AbstractRowMapperTests {
 		List<Person> result = mock.getJdbcTemplate().query(
 				"select name, age, birth_date, balance from people",
 				new BeanPropertyRowMapper<>(Person.class));
-		assertThat((long) result.size()).isEqualTo((long) 1);
+		assertThat(result.size()).isEqualTo((long) 1);
 		verifyPerson(result.get(0));
 		mock.verifyClosed();
 	}
@@ -69,7 +69,7 @@ public class BeanPropertyRowMapperTests extends AbstractRowMapperTests {
 		List<ConcretePerson> result = mock.getJdbcTemplate().query(
 				"select name, age, birth_date, balance from people",
 				new BeanPropertyRowMapper<>(ConcretePerson.class));
-		assertThat((long) result.size()).isEqualTo((long) 1);
+		assertThat(result.size()).isEqualTo((long) 1);
 		verifyPerson(result.get(0));
 		mock.verifyClosed();
 	}
@@ -80,7 +80,7 @@ public class BeanPropertyRowMapperTests extends AbstractRowMapperTests {
 		List<ConcretePerson> result = mock.getJdbcTemplate().query(
 				"select name, age, birth_date, balance from people",
 				new BeanPropertyRowMapper<>(ConcretePerson.class, true));
-		assertThat((long) result.size()).isEqualTo((long) 1);
+		assertThat(result.size()).isEqualTo((long) 1);
 		verifyPerson(result.get(0));
 		mock.verifyClosed();
 	}
@@ -91,7 +91,7 @@ public class BeanPropertyRowMapperTests extends AbstractRowMapperTests {
 		List<ExtendedPerson> result = mock.getJdbcTemplate().query(
 				"select name, age, birth_date, balance from people",
 				new BeanPropertyRowMapper<>(ExtendedPerson.class));
-		assertThat((long) result.size()).isEqualTo((long) 1);
+		assertThat(result.size()).isEqualTo((long) 1);
 		ExtendedPerson bean = result.get(0);
 		verifyPerson(bean);
 		mock.verifyClosed();
@@ -119,7 +119,7 @@ public class BeanPropertyRowMapperTests extends AbstractRowMapperTests {
 		List<SpacePerson> result = mock.getJdbcTemplate().query(
 				"select last_name as \"Last Name\", age, birth_date, balance from people",
 				new BeanPropertyRowMapper<>(SpacePerson.class));
-		assertThat((long) result.size()).isEqualTo((long) 1);
+		assertThat(result.size()).isEqualTo((long) 1);
 		verifyPerson(result.get(0));
 		mock.verifyClosed();
 	}
@@ -130,7 +130,7 @@ public class BeanPropertyRowMapperTests extends AbstractRowMapperTests {
 		List<DatePerson> result = mock.getJdbcTemplate().query(
 				"select last_name as \"Last Name\", age, birth_date, balance from people",
 				new BeanPropertyRowMapper<>(DatePerson.class));
-		assertThat((long) result.size()).isEqualTo((long) 1);
+		assertThat(result.size()).isEqualTo((long) 1);
 		verifyPerson(result.get(0));
 		mock.verifyClosed();
 	}

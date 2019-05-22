@@ -208,8 +208,8 @@ public class QualifierAnnotationTests {
 
 		MultiQualifierClient testBean = (MultiQualifierClient) context.getBean("testBean");
 
-		assertThat((Object) testBean.factoryTheta).isNotNull();
-		assertThat((Object) testBean.implTheta).isNotNull();
+		assertThat(testBean.factoryTheta).isNotNull();
+		assertThat(testBean.implTheta).isNotNull();
 	}
 
 	@Test

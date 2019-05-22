@@ -49,10 +49,10 @@ public class BeanInfoTests {
 		assertThat(value).as("value not converted").isEqualTo(bean.getValue());
 
 		bw.setPropertyValue("value", null);
-		assertThat((Object) bean.getValue()).as("value not null").isNull();
+		assertThat(bean.getValue()).as("value not null").isNull();
 
 		bw.setPropertyValue("value", "");
-		assertThat((Object) bean.getValue()).as("value not converted to null").isNull();
+		assertThat(bean.getValue()).as("value not converted to null").isNull();
 	}
 
 

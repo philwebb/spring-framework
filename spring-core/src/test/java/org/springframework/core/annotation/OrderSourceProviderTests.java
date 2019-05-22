@@ -150,14 +150,14 @@ public class OrderSourceProviderTests {
 		for (int i = 0; i < actual.size(); i++) {
 			assertThat(actual.get(i)).as("Wrong instance at index '" + i + "'").isSameAs(expected[i]);
 		}
-		assertThat((long) actual.size()).as("Wrong number of items").isEqualTo((long) expected.length);
+		assertThat(actual.size()).as("Wrong number of items").isEqualTo((long) expected.length);
 	}
 
 	private void assertOrder(Object[] actual, Object... expected) {
 		for (int i = 0; i < actual.length; i++) {
 			assertThat(actual[i]).as("Wrong instance at index '" + i + "'").isSameAs(expected[i]);
 		}
-		assertThat((long) expected.length).as("Wrong number of items").isEqualTo((long) expected.length);
+		assertThat(expected.length).as("Wrong number of items").isEqualTo((long) expected.length);
 	}
 
 

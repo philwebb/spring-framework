@@ -43,17 +43,17 @@ public class ControlFlowPointcutTests {
 		pf.addAdvisor(new DefaultPointcutAdvisor(cflow, nop));
 
 		// Not advised, not under One
-		assertThat((long) proxied.getAge()).isEqualTo((long) target.getAge());
-		assertThat((long) nop.getCount()).isEqualTo((long) 0);
+		assertThat(proxied.getAge()).isEqualTo((long) target.getAge());
+		assertThat(nop.getCount()).isEqualTo((long) 0);
 
 		// Will be advised
-		assertThat((long) new One().getAge(proxied)).isEqualTo((long) target.getAge());
-		assertThat((long) nop.getCount()).isEqualTo((long) 1);
+		assertThat(new One().getAge(proxied)).isEqualTo((long) target.getAge());
+		assertThat(nop.getCount()).isEqualTo((long) 1);
 
 		// Won't be advised
-		assertThat((long) new One().nomatch(proxied)).isEqualTo((long) target.getAge());
-		assertThat((long) nop.getCount()).isEqualTo((long) 1);
-		assertThat((long) cflow.getEvaluations()).isEqualTo((long) 3);
+		assertThat(new One().nomatch(proxied)).isEqualTo((long) target.getAge());
+		assertThat(nop.getCount()).isEqualTo((long) 1);
+		assertThat(cflow.getEvaluations()).isEqualTo((long) 3);
 	}
 
 	/**
@@ -76,18 +76,18 @@ public class ControlFlowPointcutTests {
 
 		// Not advised, not under One
 		target.setAge(16);
-		assertThat((long) nop.getCount()).isEqualTo((long) 0);
+		assertThat(nop.getCount()).isEqualTo((long) 0);
 
 		// Not advised; under One but not a setter
-		assertThat((long) new One().getAge(proxied)).isEqualTo((long) 16);
-		assertThat((long) nop.getCount()).isEqualTo((long) 0);
+		assertThat(new One().getAge(proxied)).isEqualTo((long) 16);
+		assertThat(nop.getCount()).isEqualTo((long) 0);
 
 		// Won't be advised
 		new One().set(proxied);
-		assertThat((long) nop.getCount()).isEqualTo((long) 1);
+		assertThat(nop.getCount()).isEqualTo((long) 1);
 
 		// We saved most evaluations
-		assertThat((long) cflow.getEvaluations()).isEqualTo((long) 1);
+		assertThat(cflow.getEvaluations()).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -95,8 +95,8 @@ public class ControlFlowPointcutTests {
 		assertThat(new ControlFlowPointcut(One.class)).isEqualTo(new ControlFlowPointcut(One.class));
 		assertThat(new ControlFlowPointcut(One.class, "getAge")).isEqualTo(new ControlFlowPointcut(One.class, "getAge"));
 		assertThat(new ControlFlowPointcut(One.class, "getAge").equals(new ControlFlowPointcut(One.class))).isFalse();
-		assertThat((long) new ControlFlowPointcut(One.class).hashCode()).isEqualTo((long) new ControlFlowPointcut(One.class).hashCode());
-		assertThat((long) new ControlFlowPointcut(One.class, "getAge").hashCode()).isEqualTo((long) new ControlFlowPointcut(One.class, "getAge").hashCode());
+		assertThat(new ControlFlowPointcut(One.class).hashCode()).isEqualTo((long) new ControlFlowPointcut(One.class).hashCode());
+		assertThat(new ControlFlowPointcut(One.class, "getAge").hashCode()).isEqualTo((long) new ControlFlowPointcut(One.class, "getAge").hashCode());
 		assertThat(new ControlFlowPointcut(One.class, "getAge").hashCode() == new ControlFlowPointcut(One.class).hashCode()).isFalse();
 	}
 

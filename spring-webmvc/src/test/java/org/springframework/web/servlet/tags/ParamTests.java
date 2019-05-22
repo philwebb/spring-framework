@@ -43,8 +43,8 @@ public class ParamTests {
 
 	@Test
 	public void nullDefaults() {
-		assertThat((Object) param.getName()).isNull();
-		assertThat((Object) param.getValue()).isNull();
+		assertThat(param.getName()).isNull();
+		assertThat(param.getValue()).isNull();
 	}
 
 }

@@ -38,14 +38,14 @@ public class PerformanceMonitorInterceptorTests {
 	public void testSuffixAndPrefixAssignment() {
 		PerformanceMonitorInterceptor interceptor = new PerformanceMonitorInterceptor();
 
-		assertThat((Object) interceptor.getPrefix()).isNotNull();
-		assertThat((Object) interceptor.getSuffix()).isNotNull();
+		assertThat(interceptor.getPrefix()).isNotNull();
+		assertThat(interceptor.getSuffix()).isNotNull();
 
 		interceptor.setPrefix(null);
 		interceptor.setSuffix(null);
 
-		assertThat((Object) interceptor.getPrefix()).isNotNull();
-		assertThat((Object) interceptor.getSuffix()).isNotNull();
+		assertThat(interceptor.getPrefix()).isNotNull();
+		assertThat(interceptor.getSuffix()).isNotNull();
 	}
 
 	@Test

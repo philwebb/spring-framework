@@ -102,9 +102,9 @@ public class ServerHttpsRequestIntegrationTests {
 		public Mono<Void> handle(ServerHttpRequest request, ServerHttpResponse response) {
 			URI uri = request.getURI();
 			assertThat(uri.getScheme()).isEqualTo("https");
-			assertThat((Object) uri.getHost()).isNotNull();
+			assertThat(uri.getHost()).isNotNull();
 			assertThat(uri.getPort()).isNotEqualTo((long) -1);
-			assertThat((Object) request.getRemoteAddress()).isNotNull();
+			assertThat(request.getRemoteAddress()).isNotNull();
 			assertThat(uri.getPath()).isEqualTo("/foo");
 			assertThat(uri.getQuery()).isEqualTo("param=bar");
 			return Mono.empty();

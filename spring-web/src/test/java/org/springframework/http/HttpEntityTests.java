@@ -34,7 +34,7 @@ public class HttpEntityTests {
 	public void noHeaders() {
 		String body = "foo";
 		HttpEntity<String> entity = new HttpEntity<>(body);
-		assertThat((Object) entity.getBody()).isSameAs(body);
+		assertThat(entity.getBody()).isSameAs(body);
 		assertThat(entity.getHeaders().isEmpty()).isTrue();
 	}
 

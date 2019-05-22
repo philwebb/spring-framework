@@ -131,7 +131,7 @@ public class MessageWriterResultHandlerTests {
 	private void testVoid(Object body, MethodParameter returnType) {
 		this.resultHandler.writeBody(body, returnType, this.exchange).block(Duration.ofSeconds(5));
 
-		assertThat((Object) this.exchange.getResponse().getHeaders().get("Content-Type")).isNull();
+		assertThat(this.exchange.getResponse().getHeaders().get("Content-Type")).isNull();
 		StepVerifier.create(this.exchange.getResponse().getBody())
 				.expectErrorMatches(ex -> ex.getMessage().startsWith("No content was written")).verify();
 	}

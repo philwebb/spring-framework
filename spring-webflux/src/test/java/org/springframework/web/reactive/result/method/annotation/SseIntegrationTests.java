@@ -162,15 +162,15 @@ public class SseIntegrationTests extends AbstractHttpHandlerIntegrationTests {
 					assertThat(event.id()).isEqualTo("0");
 					assertThat(event.data()).isEqualTo(new Person("foo 0"));
 					assertThat(event.comment()).isEqualTo("bar 0");
-					assertThat((Object) event.event()).isNull();
-					assertThat((Object) event.retry()).isNull();
+					assertThat(event.event()).isNull();
+					assertThat(event.retry()).isNull();
 				})
 				.consumeNextWith( event -> {
 					assertThat(event.id()).isEqualTo("1");
 					assertThat(event.data()).isEqualTo(new Person("foo 1"));
 					assertThat(event.comment()).isEqualTo("bar 1");
-					assertThat((Object) event.event()).isNull();
-					assertThat((Object) event.retry()).isNull();
+					assertThat(event.event()).isNull();
+					assertThat(event.retry()).isNull();
 				})
 				.thenCancel()
 				.verify(Duration.ofSeconds(5L));

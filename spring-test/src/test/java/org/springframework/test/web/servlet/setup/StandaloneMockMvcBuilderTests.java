@@ -61,7 +61,7 @@ public class StandaloneMockMvcBuilderTests {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/foo");
 		HandlerExecutionChain chain = hm.getHandler(request);
 
-		assertThat((Object) chain).isNotNull();
+		assertThat(chain).isNotNull();
 		assertThat(((HandlerMethod) chain.getHandler()).getMethod().getName()).isEqualTo("handleWithPlaceholders");
 	}
 
@@ -75,12 +75,12 @@ public class StandaloneMockMvcBuilderTests {
 
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/persons");
 		HandlerExecutionChain chain = hm.getHandler(request);
-		assertThat((Object) chain).isNotNull();
+		assertThat(chain).isNotNull();
 		assertThat(((HandlerMethod) chain.getHandler()).getMethod().getName()).isEqualTo("persons");
 
 		request = new MockHttpServletRequest("GET", "/persons.xml");
 		chain = hm.getHandler(request);
-		assertThat((Object) chain).isNull();
+		assertThat(chain).isNull();
 	}
 
 	@Test  // SPR-12553

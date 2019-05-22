@@ -99,7 +99,7 @@ public class DataAccessUtilsTests {
 		assertThat(DataAccessUtils.requiredUniqueResult(col)).isEqualTo(Integer.valueOf(5));
 		assertThat(DataAccessUtils.objectResult(col, Integer.class)).isEqualTo(Integer.valueOf(5));
 		assertThat(DataAccessUtils.objectResult(col, String.class)).isEqualTo("5");
-		assertThat((long) DataAccessUtils.intResult(col)).isEqualTo((long) 5);
+		assertThat(DataAccessUtils.intResult(col)).isEqualTo((long) 5);
 		assertThat(DataAccessUtils.longResult(col)).isEqualTo((long) 5);
 	}
 
@@ -114,7 +114,7 @@ public class DataAccessUtilsTests {
 		assertThat(DataAccessUtils.requiredUniqueResult(col)).isEqualTo(Integer.valueOf(5));
 		assertThat(DataAccessUtils.objectResult(col, Integer.class)).isEqualTo(Integer.valueOf(5));
 		assertThat(DataAccessUtils.objectResult(col, String.class)).isEqualTo("5");
-		assertThat((long) DataAccessUtils.intResult(col)).isEqualTo((long) 5);
+		assertThat(DataAccessUtils.intResult(col)).isEqualTo((long) 5);
 		assertThat(DataAccessUtils.longResult(col)).isEqualTo((long) 5);
 	}
 
@@ -139,7 +139,7 @@ public class DataAccessUtilsTests {
 		assertThat(DataAccessUtils.requiredUniqueResult(col)).isEqualTo(Long.valueOf(5L));
 		assertThat(DataAccessUtils.objectResult(col, Long.class)).isEqualTo(Long.valueOf(5L));
 		assertThat(DataAccessUtils.objectResult(col, String.class)).isEqualTo("5");
-		assertThat((long) DataAccessUtils.intResult(col)).isEqualTo((long) 5);
+		assertThat(DataAccessUtils.intResult(col)).isEqualTo((long) 5);
 		assertThat(DataAccessUtils.longResult(col)).isEqualTo((long) 5);
 	}
 
@@ -181,7 +181,7 @@ public class DataAccessUtilsTests {
 	public void exceptionTranslationWithNoTranslation() {
 		MapPersistenceExceptionTranslator mpet = new MapPersistenceExceptionTranslator();
 		RuntimeException in = new RuntimeException();
-		assertThat((Object) DataAccessUtils.translateIfNecessary(in, mpet)).isSameAs(in);
+		assertThat(DataAccessUtils.translateIfNecessary(in, mpet)).isSameAs(in);
 	}
 
 	@Test
@@ -190,7 +190,7 @@ public class DataAccessUtilsTests {
 		RuntimeException in = new RuntimeException("in");
 		InvalidDataAccessApiUsageException out = new InvalidDataAccessApiUsageException("out");
 		mpet.addTranslation(in, out);
-		assertThat((Object) DataAccessUtils.translateIfNecessary(in, mpet)).isSameAs(out);
+		assertThat(DataAccessUtils.translateIfNecessary(in, mpet)).isSameAs(out);
 	}
 
 	private <E extends IncorrectResultSizeDataAccessException> Consumer<E> sizeRequirements(

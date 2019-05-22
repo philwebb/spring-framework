@@ -225,7 +225,7 @@ public class RestTemplateTests {
 		template.setMessageConverters(Arrays.asList(firstConverter, secondConverter));
 		template.getForObject("https://example.com/", String.class);
 
-		assertThat((long) requestHeaders.getAccept().size()).as("Sent duplicate Accept header values").isEqualTo((long) 1);
+		assertThat(requestHeaders.getAccept().size()).as("Sent duplicate Accept header values").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -275,7 +275,7 @@ public class RestTemplateTests {
 
 		HttpHeaders result = template.headForHeaders("https://example.com");
 
-		assertThat((Object) result).as("Invalid headers returned").isSameAs(responseHeaders);
+		assertThat(result).as("Invalid headers returned").isSameAs(responseHeaders);
 
 		verify(response).close();
 	}
@@ -348,7 +348,7 @@ public class RestTemplateTests {
 		mockResponseStatus(HttpStatus.OK);
 
 		URI result = template.postForLocation("https://example.com", "Hello World");
-		assertThat((Object) result).as("Invalid POST result").isNull();
+		assertThat(result).as("Invalid POST result").isNull();
 
 		verify(response).close();
 	}
@@ -413,7 +413,7 @@ public class RestTemplateTests {
 		given(converter.read(String.class, response)).willReturn(null);
 
 		String result = template.postForObject("https://example.com", null, String.class);
-		assertThat((Object) result).as("Invalid POST result").isNull();
+		assertThat(result).as("Invalid POST result").isNull();
 		assertThat(requestHeaders.getContentLength()).as("Invalid content length").isEqualTo((long) 0);
 
 		verify(response).close();
@@ -493,7 +493,7 @@ public class RestTemplateTests {
 		given(response.getBody()).willReturn(StreamUtils.emptyInput());
 
 		String result = template.patchForObject("https://example.com", null, String.class);
-		assertThat((Object) result).as("Invalid POST result").isNull();
+		assertThat(result).as("Invalid POST result").isNull();
 		assertThat(requestHeaders.getContentLength()).as("Invalid content length").isEqualTo((long) 0);
 
 		verify(response).close();

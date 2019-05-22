@@ -97,8 +97,8 @@ public class PathVariableMethodArgumentResolverTests {
 
 		@SuppressWarnings("unchecked")
 		Map<String, Object> pathVars = (Map<String, Object>) request.getAttribute(View.PATH_VARIABLES);
-		assertThat((Object) pathVars).isNotNull();
-		assertThat((long) pathVars.size()).isEqualTo((long) 1);
+		assertThat(pathVars).isNotNull();
+		assertThat(pathVars.size()).isEqualTo((long) 1);
 		assertThat(pathVars.get("name")).isEqualTo("value");
 	}
 
@@ -113,8 +113,8 @@ public class PathVariableMethodArgumentResolverTests {
 
 		@SuppressWarnings("unchecked")
 		Map<String, Object> pathVars = (Map<String, Object>) request.getAttribute(View.PATH_VARIABLES);
-		assertThat((Object) pathVars).isNotNull();
-		assertThat((long) pathVars.size()).isEqualTo((long) 1);
+		assertThat(pathVars).isNotNull();
+		assertThat(pathVars.size()).isEqualTo((long) 1);
 		assertThat(pathVars.get("name")).isEqualTo("value");
 	}
 
@@ -135,8 +135,8 @@ public class PathVariableMethodArgumentResolverTests {
 
 		@SuppressWarnings("unchecked")
 		Map<String, Object> pathVars = (Map<String, Object>) request.getAttribute(View.PATH_VARIABLES);
-		assertThat((Object) pathVars).isNotNull();
-		assertThat((long) pathVars.size()).isEqualTo((long) 1);
+		assertThat(pathVars).isNotNull();
+		assertThat(pathVars.size()).isEqualTo((long) 1);
 		assertThat(pathVars.get("name")).isEqualTo(Optional.of("value"));
 	}
 
@@ -154,8 +154,8 @@ public class PathVariableMethodArgumentResolverTests {
 
 		@SuppressWarnings("unchecked")
 		Map<String, Object> pathVars = (Map<String, Object>) request.getAttribute(View.PATH_VARIABLES);
-		assertThat((Object) pathVars).isNotNull();
-		assertThat((long) pathVars.size()).isEqualTo((long) 2);
+		assertThat(pathVars).isNotNull();
+		assertThat(pathVars.size()).isEqualTo((long) 2);
 		assertThat(pathVars.get("name")).isEqualTo("value");
 		assertThat(pathVars.get("oldName")).isEqualTo("oldValue");
 	}

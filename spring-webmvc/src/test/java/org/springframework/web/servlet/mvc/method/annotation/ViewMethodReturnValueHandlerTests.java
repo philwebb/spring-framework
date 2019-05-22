@@ -77,7 +77,7 @@ public class ViewMethodReturnValueHandlerTests {
 		this.handler.handleReturnValue(redirectView, param, this.mavContainer, this.webRequest);
 
 		assertThat(this.mavContainer.getView()).isSameAs(redirectView);
-		assertThat((Object) this.mavContainer.getModel()).as("Should have switched to the RedirectModel").isSameAs(redirectModel);
+		assertThat(this.mavContainer.getModel()).as("Should have switched to the RedirectModel").isSameAs(redirectModel);
 	}
 
 	private MethodParameter createReturnValueParam(String methodName) throws Exception {

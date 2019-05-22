@@ -66,7 +66,7 @@ public class RequestMethodsRequestConditionTests {
 		for (RequestMethod method : RequestMethod.values()) {
 			if (method != OPTIONS) {
 				ServerWebExchange exchange = getExchange(method.name());
-				assertThat((Object) condition.getMatchingCondition(exchange)).isNotNull();
+				assertThat(condition.getMatchingCondition(exchange)).isNotNull();
 			}
 		}
 		testNoMatch(condition, OPTIONS);
@@ -76,8 +76,8 @@ public class RequestMethodsRequestConditionTests {
 	@Ignore
 	public void getMatchingConditionWithCustomMethod() throws Exception {
 		ServerWebExchange exchange = getExchange("PROPFIND");
-		assertThat((Object) new RequestMethodsRequestCondition().getMatchingCondition(exchange)).isNotNull();
-		assertThat((Object) new RequestMethodsRequestCondition(GET, POST).getMatchingCondition(exchange)).isNull();
+		assertThat(new RequestMethodsRequestCondition().getMatchingCondition(exchange)).isNotNull();
+		assertThat(new RequestMethodsRequestCondition(GET, POST).getMatchingCondition(exchange)).isNull();
 	}
 
 	@Test
@@ -87,9 +87,9 @@ public class RequestMethodsRequestConditionTests {
 		exchange.getRequest().getHeaders().add("Origin", "https://example.com");
 		exchange.getRequest().getHeaders().add(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "PUT");
 
-		assertThat((Object) new RequestMethodsRequestCondition().getMatchingCondition(exchange)).isNotNull();
-		assertThat((Object) new RequestMethodsRequestCondition(PUT).getMatchingCondition(exchange)).isNotNull();
-		assertThat((Object) new RequestMethodsRequestCondition(DELETE).getMatchingCondition(exchange)).isNull();
+		assertThat(new RequestMethodsRequestCondition().getMatchingCondition(exchange)).isNotNull();
+		assertThat(new RequestMethodsRequestCondition(PUT).getMatchingCondition(exchange)).isNotNull();
+		assertThat(new RequestMethodsRequestCondition(DELETE).getMatchingCondition(exchange)).isNull();
 	}
 
 	@Test
@@ -110,7 +110,7 @@ public class RequestMethodsRequestConditionTests {
 		assertThat(result < 0).as("Invalid comparison result: " + result).isTrue();
 
 		result = c1.compareTo(c1, exchange);
-		assertThat((long) result).as("Invalid comparison result ").isEqualTo((long) 0);
+		assertThat(result).as("Invalid comparison result ").isEqualTo((long) 0);
 	}
 
 	@Test
@@ -119,20 +119,20 @@ public class RequestMethodsRequestConditionTests {
 		RequestMethodsRequestCondition condition2 = new RequestMethodsRequestCondition(POST);
 
 		RequestMethodsRequestCondition result = condition1.combine(condition2);
-		assertThat((long) result.getContent().size()).isEqualTo((long) 2);
+		assertThat(result.getContent().size()).isEqualTo((long) 2);
 	}
 
 
 	private void testMatch(RequestMethodsRequestCondition condition, RequestMethod method) throws Exception {
 		ServerWebExchange exchange = getExchange(method.name());
 		RequestMethodsRequestCondition actual = condition.getMatchingCondition(exchange);
-		assertThat((Object) actual).isNotNull();
+		assertThat(actual).isNotNull();
 		assertThat(actual.getContent()).isEqualTo(Collections.singleton(method));
 	}
 
 	private void testNoMatch(RequestMethodsRequestCondition condition, RequestMethod method) throws Exception {
 		ServerWebExchange exchange = getExchange(method.name());
-		assertThat((Object) condition.getMatchingCondition(exchange)).isNull();
+		assertThat(condition.getMatchingCondition(exchange)).isNull();
 	}
 
 	private ServerWebExchange getExchange(String method) throws URISyntaxException {

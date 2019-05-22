@@ -57,7 +57,7 @@ public class RouterFunctionsTests {
 
 		RouterFunction<ServerResponse>
 				result = RouterFunctions.route(requestPredicate, handlerFunction);
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 
 		Mono<HandlerFunction<ServerResponse>> resultHandlerFunction = result.route(request);
 
@@ -76,7 +76,7 @@ public class RouterFunctionsTests {
 		given(requestPredicate.test(request)).willReturn(false);
 
 		RouterFunction<ServerResponse> result = RouterFunctions.route(requestPredicate, handlerFunction);
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 
 		Mono<HandlerFunction<ServerResponse>> resultHandlerFunction = result.route(request);
 		StepVerifier.create(resultHandlerFunction)
@@ -94,7 +94,7 @@ public class RouterFunctionsTests {
 		given(requestPredicate.nest(request)).willReturn(Optional.of(request));
 
 		RouterFunction<ServerResponse> result = RouterFunctions.nest(requestPredicate, routerFunction);
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 
 		Mono<HandlerFunction<ServerResponse>> resultHandlerFunction = result.route(request);
 		StepVerifier.create(resultHandlerFunction)
@@ -113,7 +113,7 @@ public class RouterFunctionsTests {
 		given(requestPredicate.nest(request)).willReturn(Optional.empty());
 
 		RouterFunction<ServerResponse> result = RouterFunctions.nest(requestPredicate, routerFunction);
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 
 		Mono<HandlerFunction<ServerResponse>> resultHandlerFunction = result.route(request);
 		StepVerifier.create(resultHandlerFunction)
@@ -128,7 +128,7 @@ public class RouterFunctionsTests {
 				RouterFunctions.route(RequestPredicates.all(), handlerFunction);
 
 		HttpHandler result = RouterFunctions.toHttpHandler(routerFunction);
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 
 		MockServerHttpRequest httpRequest = MockServerHttpRequest.get("http://localhost").build();
 		MockServerHttpResponse httpResponse = new MockServerHttpResponse();
@@ -146,7 +146,7 @@ public class RouterFunctionsTests {
 				RouterFunctions.route(RequestPredicates.all(), handlerFunction);
 
 		HttpHandler result = RouterFunctions.toHttpHandler(routerFunction);
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 
 		MockServerHttpRequest httpRequest = MockServerHttpRequest.get("http://localhost").build();
 		MockServerHttpResponse httpResponse = new MockServerHttpResponse();
@@ -162,7 +162,7 @@ public class RouterFunctionsTests {
 				RouterFunctions.route(RequestPredicates.all(), handlerFunction);
 
 		HttpHandler result = RouterFunctions.toHttpHandler(routerFunction);
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 
 		MockServerHttpRequest httpRequest = MockServerHttpRequest.get("http://localhost").build();
 		MockServerHttpResponse httpResponse = new MockServerHttpResponse();
@@ -178,7 +178,7 @@ public class RouterFunctionsTests {
 				RouterFunctions.route(RequestPredicates.all(), handlerFunction);
 
 		HttpHandler result = RouterFunctions.toHttpHandler(routerFunction);
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 
 		MockServerHttpRequest httpRequest = MockServerHttpRequest.get("http://localhost").build();
 		MockServerHttpResponse httpResponse = new MockServerHttpResponse();
@@ -212,7 +212,7 @@ public class RouterFunctionsTests {
 				RouterFunctions.route(RequestPredicates.all(), handlerFunction);
 
 		HttpHandler result = RouterFunctions.toHttpHandler(routerFunction);
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 
 		MockServerHttpRequest httpRequest = MockServerHttpRequest.get("http://localhost").build();
 		MockServerHttpResponse httpResponse = new MockServerHttpResponse();
@@ -246,7 +246,7 @@ public class RouterFunctionsTests {
 				RouterFunctions.route(RequestPredicates.all(), handlerFunction);
 
 		HttpHandler result = RouterFunctions.toHttpHandler(routerFunction);
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 
 		MockServerHttpRequest httpRequest = MockServerHttpRequest.get("http://localhost").build();
 		MockServerHttpResponse httpResponse = new MockServerHttpResponse();
@@ -274,7 +274,7 @@ public class RouterFunctionsTests {
 				.webFilter(webFilter).build();
 
 		HttpHandler result = RouterFunctions.toHttpHandler(routerFunction, handlerStrategies);
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 
 		MockServerHttpRequest httpRequest = MockServerHttpRequest.get("http://localhost").build();
 		MockServerHttpResponse httpResponse = new MockServerHttpResponse();

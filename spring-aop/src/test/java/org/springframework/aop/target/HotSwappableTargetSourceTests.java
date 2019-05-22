@@ -70,13 +70,13 @@ public class HotSwappableTargetSourceTests {
 	@Test
 	public void testBasicFunctionality() {
 		SideEffectBean proxied = (SideEffectBean) beanFactory.getBean("swappable");
-		assertThat((long) proxied.getCount()).isEqualTo((long) INITIAL_COUNT);
+		assertThat(proxied.getCount()).isEqualTo((long) INITIAL_COUNT);
 		proxied.doWork();
-		assertThat((long) proxied.getCount()).isEqualTo((long) (INITIAL_COUNT + 1));
+		assertThat(proxied.getCount()).isEqualTo((long) (INITIAL_COUNT + 1));
 
 		proxied = (SideEffectBean) beanFactory.getBean("swappable");
 		proxied.doWork();
-		assertThat((long) proxied.getCount()).isEqualTo((long) (INITIAL_COUNT + 2));
+		assertThat(proxied.getCount()).isEqualTo((long) (INITIAL_COUNT + 2));
 	}
 
 	@Test
@@ -85,9 +85,9 @@ public class HotSwappableTargetSourceTests {
 		SideEffectBean target2 = (SideEffectBean) beanFactory.getBean("target2");
 
 		SideEffectBean proxied = (SideEffectBean) beanFactory.getBean("swappable");
-		assertThat((long) proxied.getCount()).isEqualTo((long) target1.getCount());
+		assertThat(proxied.getCount()).isEqualTo((long) target1.getCount());
 		proxied.doWork();
-		assertThat((long) proxied.getCount()).isEqualTo((long) (INITIAL_COUNT + 1));
+		assertThat(proxied.getCount()).isEqualTo((long) (INITIAL_COUNT + 1));
 
 		HotSwappableTargetSource swapper = (HotSwappableTargetSource) beanFactory.getBean("swapper");
 		Object old = swapper.swap(target2);
@@ -97,13 +97,13 @@ public class HotSwappableTargetSourceTests {
 		// in AdvisedSupport
 		//assertEquals(target2, ((Advised) proxied).getTarget());
 
-		assertThat((long) proxied.getCount()).isEqualTo((long) 20);
+		assertThat(proxied.getCount()).isEqualTo((long) 20);
 		proxied.doWork();
-		assertThat((long) target2.getCount()).isEqualTo((long) 21);
+		assertThat(target2.getCount()).isEqualTo((long) 21);
 
 		// Swap it back
 		swapper.swap(target1);
-		assertThat((long) proxied.getCount()).isEqualTo((long) target1.getCount());
+		assertThat(proxied.getCount()).isEqualTo((long) target1.getCount());
 	}
 
 	@Test

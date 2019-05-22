@@ -90,7 +90,7 @@ public class FormattingConversionServiceFactoryBeanTests {
 		FormattingConversionService fcs = factory.getObject();
 
 		TestBean testBean = fcs.convert("5", TestBean.class);
-		assertThat((long) testBean.getSpecialInt()).isEqualTo((long) 5);
+		assertThat(testBean.getSpecialInt()).isEqualTo((long) 5);
 		assertThat(fcs.convert(testBean, String.class)).isEqualTo("5");
 
 		TypeDescriptor descriptor = new TypeDescriptor(TestBean.class.getDeclaredField("specialInt"));
@@ -110,7 +110,7 @@ public class FormattingConversionServiceFactoryBeanTests {
 		FormattingConversionService fcs = factory.getObject();
 
 		TestBean testBean = fcs.convert("5", TestBean.class);
-		assertThat((long) testBean.getSpecialInt()).isEqualTo((long) 5);
+		assertThat(testBean.getSpecialInt()).isEqualTo((long) 5);
 		assertThat(fcs.convert(testBean, String.class)).isEqualTo("5");
 	}
 

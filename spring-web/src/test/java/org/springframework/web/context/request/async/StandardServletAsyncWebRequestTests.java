@@ -66,10 +66,10 @@ public class StandardServletAsyncWebRequestTests {
 		this.asyncRequest.startAsync();
 
 		MockAsyncContext context = (MockAsyncContext) this.request.getAsyncContext();
-		assertThat((Object) context).isNotNull();
+		assertThat(context).isNotNull();
 		assertThat(context.getTimeout()).as("Timeout value not set").isEqualTo((long) (44 * 1000));
-		assertThat((long) context.getListeners().size()).isEqualTo((long) 1);
-		assertThat((Object) context.getListeners().get(0)).isSameAs(this.asyncRequest);
+		assertThat(context.getListeners().size()).isEqualTo((long) 1);
+		assertThat(context.getListeners().get(0)).isSameAs(this.asyncRequest);
 	}
 
 	@Test
@@ -80,8 +80,8 @@ public class StandardServletAsyncWebRequestTests {
 		this.asyncRequest.startAsync();	// idempotent
 
 		MockAsyncContext context = (MockAsyncContext) this.request.getAsyncContext();
-		assertThat((Object) context).isNotNull();
-		assertThat((long) context.getListeners().size()).isEqualTo((long) 1);
+		assertThat(context).isNotNull();
+		assertThat(context.getListeners().size()).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -103,7 +103,7 @@ public class StandardServletAsyncWebRequestTests {
 	@Test
 	public void onTimeoutDefaultBehavior() throws Exception {
 		this.asyncRequest.onTimeout(new AsyncEvent(new MockAsyncContext(this.request, this.response)));
-		assertThat((long) this.response.getStatus()).isEqualTo((long) 200);
+		assertThat(this.response.getStatus()).isEqualTo((long) 200);
 	}
 
 	@Test

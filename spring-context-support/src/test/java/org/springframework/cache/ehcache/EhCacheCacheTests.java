@@ -86,7 +86,7 @@ public class EhCacheCacheTests extends AbstractCacheTests<EhCacheCache> {
 		assertThat(cache.get(key).get()).isEqualTo(value);
 		// wait for the entry to expire
 		Thread.sleep(5 * 1000);
-		assertThat((Object) cache.get(key)).isNull();
+		assertThat(cache.get(key)).isNull();
 	}
 
 }

@@ -46,8 +46,8 @@ public class StompDecoderTests {
 		StompHeaderAccessor headers = StompHeaderAccessor.wrap(frame);
 
 		assertThat(headers.getCommand()).isEqualTo(StompCommand.DISCONNECT);
-		assertThat((long) headers.toNativeHeaderMap().size()).isEqualTo((long) 0);
-		assertThat((long) frame.getPayload().length).isEqualTo((long) 0);
+		assertThat(headers.toNativeHeaderMap().size()).isEqualTo((long) 0);
+		assertThat(frame.getPayload().length).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -56,8 +56,8 @@ public class StompDecoderTests {
 		StompHeaderAccessor headers = StompHeaderAccessor.wrap(frame);
 
 		assertThat(headers.getCommand()).isEqualTo(StompCommand.DISCONNECT);
-		assertThat((long) headers.toNativeHeaderMap().size()).isEqualTo((long) 0);
-		assertThat((long) frame.getPayload().length).isEqualTo((long) 0);
+		assertThat(headers.toNativeHeaderMap().size()).isEqualTo((long) 0);
+		assertThat(frame.getPayload().length).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -70,11 +70,11 @@ public class StompDecoderTests {
 
 		assertThat(headers.getCommand()).isEqualTo(StompCommand.CONNECT);
 
-		assertThat((long) headers.toNativeHeaderMap().size()).isEqualTo((long) 2);
+		assertThat(headers.toNativeHeaderMap().size()).isEqualTo((long) 2);
 		assertThat(headers.getFirstNativeHeader("accept-version")).isEqualTo("1.1");
 		assertThat(headers.getHost()).isEqualTo("github.org");
 
-		assertThat((long) frame.getPayload().length).isEqualTo((long) 0);
+		assertThat(frame.getPayload().length).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -84,7 +84,7 @@ public class StompDecoderTests {
 
 		assertThat(headers.getCommand()).isEqualTo(StompCommand.SEND);
 
-		assertThat((long) headers.toNativeHeaderMap().size()).as(headers.toNativeHeaderMap().toString()).isEqualTo((long) 1);
+		assertThat(headers.toNativeHeaderMap().size()).as(headers.toNativeHeaderMap().toString()).isEqualTo((long) 1);
 		assertThat(headers.getDestination()).isEqualTo("test");
 
 		String bodyText = new String(frame.getPayload());
@@ -98,7 +98,7 @@ public class StompDecoderTests {
 
 		assertThat(headers.getCommand()).isEqualTo(StompCommand.SEND);
 
-		assertThat((long) headers.toNativeHeaderMap().size()).isEqualTo((long) 1);
+		assertThat(headers.toNativeHeaderMap().size()).isEqualTo((long) 1);
 		assertThat(headers.getContentLength()).isEqualTo(Integer.valueOf(23));
 
 		String bodyText = new String(message.getPayload());
@@ -114,7 +114,7 @@ public class StompDecoderTests {
 
 		assertThat(headers.getCommand()).isEqualTo(StompCommand.SEND);
 
-		assertThat((long) headers.toNativeHeaderMap().size()).isEqualTo((long) 1);
+		assertThat(headers.toNativeHeaderMap().size()).isEqualTo((long) 1);
 		assertThat(headers.getContentLength()).isEqualTo(Integer.valueOf(-1));
 
 		String bodyText = new String(message.getPayload());
@@ -128,7 +128,7 @@ public class StompDecoderTests {
 
 		assertThat(headers.getCommand()).isEqualTo(StompCommand.SEND);
 
-		assertThat((long) headers.toNativeHeaderMap().size()).isEqualTo((long) 1);
+		assertThat(headers.toNativeHeaderMap().size()).isEqualTo((long) 1);
 		assertThat(headers.getContentLength()).isEqualTo(Integer.valueOf(0));
 
 		String bodyText = new String(frame.getPayload());
@@ -142,7 +142,7 @@ public class StompDecoderTests {
 
 		assertThat(headers.getCommand()).isEqualTo(StompCommand.SEND);
 
-		assertThat((long) headers.toNativeHeaderMap().size()).isEqualTo((long) 1);
+		assertThat(headers.toNativeHeaderMap().size()).isEqualTo((long) 1);
 		assertThat(headers.getContentLength()).isEqualTo(Integer.valueOf(23));
 
 		String bodyText = new String(frame.getPayload());
@@ -156,7 +156,7 @@ public class StompDecoderTests {
 
 		assertThat(headers.getCommand()).isEqualTo(StompCommand.DISCONNECT);
 
-		assertThat((long) headers.toNativeHeaderMap().size()).isEqualTo((long) 1);
+		assertThat(headers.toNativeHeaderMap().size()).isEqualTo((long) 1);
 		assertThat(headers.getFirstNativeHeader("a:\r\n\\b")).isEqualTo("alpha:bravo\r\n\\");
 	}
 
@@ -174,7 +174,7 @@ public class StompDecoderTests {
 
 		final List<Message<byte[]>> messages = decoder.decode(buffer);
 
-		assertThat((long) messages.size()).isEqualTo((long) 2);
+		assertThat(messages.size()).isEqualTo((long) 2);
 		assertThat(StompHeaderAccessor.wrap(messages.get(0)).getCommand()).isEqualTo(StompCommand.SEND);
 		assertThat(StompHeaderAccessor.wrap(messages.get(1)).getCommand()).isEqualTo(StompCommand.DISCONNECT);
 	}
@@ -191,11 +191,11 @@ public class StompDecoderTests {
 
 		assertThat(headers.getCommand()).isEqualTo(StompCommand.CONNECT);
 
-		assertThat((long) headers.toNativeHeaderMap().size()).isEqualTo((long) 2);
+		assertThat(headers.toNativeHeaderMap().size()).isEqualTo((long) 2);
 		assertThat(headers.getFirstNativeHeader("accept-version")).isEqualTo("1.1");
 		assertThat(headers.getFirstNativeHeader("key")).isEqualTo("");
 
-		assertThat((long) frame.getPayload().length).isEqualTo((long) 0);
+		assertThat(frame.getPayload().length).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -247,14 +247,14 @@ public class StompDecoderTests {
 
 		final List<Message<byte[]>> messages = decoder.decode(buffer);
 
-		assertThat((long) messages.size()).isEqualTo((long) 1);
+		assertThat(messages.size()).isEqualTo((long) 1);
 		assertThat(StompHeaderAccessor.wrap(messages.get(0)).getMessageType()).isEqualTo(SimpMessageType.HEARTBEAT);
 	}
 
 	private void assertIncompleteDecode(String partialFrame) {
 		ByteBuffer buffer = ByteBuffer.wrap(partialFrame.getBytes());
-		assertThat((Object) decode(buffer)).isNull();
-		assertThat((long) buffer.position()).isEqualTo((long) 0);
+		assertThat(decode(buffer)).isNull();
+		assertThat(buffer.position()).isEqualTo((long) 0);
 	}
 
 	private Message<byte[]> decode(String stompFrame) {

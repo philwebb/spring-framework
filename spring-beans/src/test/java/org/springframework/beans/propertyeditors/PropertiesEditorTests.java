@@ -139,7 +139,7 @@ public class PropertiesEditorTests {
 		PropertiesEditor pe= new PropertiesEditor();
 		pe.setAsText(null);
 		Properties p = (Properties) pe.getValue();
-		assertThat((long) p.size()).isEqualTo((long) 0);
+		assertThat(p.size()).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -163,7 +163,7 @@ public class PropertiesEditorTests {
 		boolean condition = value instanceof Properties;
 		assertThat(condition).isTrue();
 		Properties props = (Properties) value;
-		assertThat((long) props.size()).isEqualTo((long) 3);
+		assertThat(props.size()).isEqualTo((long) 3);
 		assertThat(props.getProperty("one")).isEqualTo("1");
 		assertThat(props.getProperty("two")).isEqualTo("2");
 		assertThat(props.getProperty("three")).isEqualTo("3");

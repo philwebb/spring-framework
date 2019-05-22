@@ -93,7 +93,7 @@ public class DefaultWebSessionManagerTests {
 		WebSession session = this.sessionManager.getSession(this.exchange).block();
 		this.exchange.getResponse().setComplete().block();
 
-		assertThat((Object) session).isSameAs(this.createSession);
+		assertThat(session).isSameAs(this.createSession);
 		assertThat(session.isStarted()).isFalse();
 		assertThat(session.isExpired()).isFalse();
 		verify(this.createSession, never()).save();
@@ -105,7 +105,7 @@ public class DefaultWebSessionManagerTests {
 
 		given(this.sessionIdResolver.resolveSessionIds(this.exchange)).willReturn(Collections.emptyList());
 		WebSession session = this.sessionManager.getSession(this.exchange).block();
-		assertThat((Object) session).isSameAs(this.createSession);
+		assertThat(session).isSameAs(this.createSession);
 		String sessionId = this.createSession.getId();
 
 		given(this.createSession.isStarted()).willReturn(true);
@@ -123,7 +123,7 @@ public class DefaultWebSessionManagerTests {
 		given(this.sessionIdResolver.resolveSessionIds(this.exchange)).willReturn(Collections.singletonList(sessionId));
 
 		WebSession actual = this.sessionManager.getSession(this.exchange).block();
-		assertThat((Object) actual).isNotNull();
+		assertThat(actual).isNotNull();
 		assertThat(actual.getId()).isEqualTo(sessionId);
 	}
 
@@ -136,7 +136,7 @@ public class DefaultWebSessionManagerTests {
 		given(this.sessionIdResolver.resolveSessionIds(this.exchange)).willReturn(ids);
 		WebSession actual = this.sessionManager.getSession(this.exchange).block();
 
-		assertThat((Object) actual).isNotNull();
+		assertThat(actual).isNotNull();
 		assertThat(actual.getId()).isEqualTo(this.updateSession.getId());
 	}
 }

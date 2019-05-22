@@ -60,9 +60,9 @@ public class NotificationPublisherTests extends AbstractMBeanServerTests {
 				null);
 
 		MyNotificationPublisher publisher = (MyNotificationPublisher) ctx.getBean("publisher");
-		assertThat((Object) publisher.getNotificationPublisher()).as("NotificationPublisher should not be null").isNotNull();
+		assertThat(publisher.getNotificationPublisher()).as("NotificationPublisher should not be null").isNotNull();
 		publisher.sendNotification();
-		assertThat((long) listener.count).as("Notification not sent").isEqualTo((long) 1);
+		assertThat(listener.count).as("Notification not sent").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -75,9 +75,9 @@ public class NotificationPublisherTests extends AbstractMBeanServerTests {
 		this.server.addNotificationListener(ObjectNameManager.getInstance("spring:type=Publisher2"), listener, null,
 				null);
 
-		assertThat((Object) publisher.getNotificationPublisher()).as("NotificationPublisher should not be null").isNotNull();
+		assertThat(publisher.getNotificationPublisher()).as("NotificationPublisher should not be null").isNotNull();
 		publisher.sendNotification();
-		assertThat((long) listener.count).as("Notification not sent").isEqualTo((long) 1);
+		assertThat(listener.count).as("Notification not sent").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -89,7 +89,7 @@ public class NotificationPublisherTests extends AbstractMBeanServerTests {
 
 		MyNotificationPublisherMBean publisher = (MyNotificationPublisherMBean) ctx.getBean("publisherMBean");
 		publisher.sendNotification();
-		assertThat((long) listener.count).as("Notification not sent").isEqualTo((long) 1);
+		assertThat(listener.count).as("Notification not sent").isEqualTo((long) 1);
 	}
 
 	/*
@@ -117,9 +117,9 @@ public class NotificationPublisherTests extends AbstractMBeanServerTests {
 				null);
 
 		MyNotificationPublisher publisher = (MyNotificationPublisher) ctx.getBean("publisher");
-		assertThat((Object) publisher.getNotificationPublisher()).as("NotificationPublisher should not be null").isNotNull();
+		assertThat(publisher.getNotificationPublisher()).as("NotificationPublisher should not be null").isNotNull();
 		publisher.sendNotification();
-		assertThat((long) listener.count).as("Notification not sent").isEqualTo((long) 1);
+		assertThat(listener.count).as("Notification not sent").isEqualTo((long) 1);
 	}
 
 	private static class CountingNotificationListener implements NotificationListener {

@@ -68,14 +68,14 @@ public class PathMatchingResourcePatternResolverTests {
 	public void singleResourceOnFileSystem() throws IOException {
 		Resource[] resources =
 				resolver.getResources("org/springframework/core/io/support/PathMatchingResourcePatternResolverTests.class");
-		assertThat((long) resources.length).isEqualTo((long) 1);
+		assertThat(resources.length).isEqualTo((long) 1);
 		assertProtocolAndFilenames(resources, "file", "PathMatchingResourcePatternResolverTests.class");
 	}
 
 	@Test
 	public void singleResourceInJar() throws IOException {
 		Resource[] resources = resolver.getResources("org/reactivestreams/Publisher.class");
-		assertThat((long) resources.length).isEqualTo((long) 1);
+		assertThat(resources.length).isEqualTo((long) 1);
 		assertProtocolAndFilenames(resources, "jar", "Publisher.class");
 	}
 
@@ -143,7 +143,7 @@ public class PathMatchingResourcePatternResolverTests {
 //			System.out.println(resources[i]);
 //		}
 
-		assertThat((long) resources.length).as("Correct number of files found").isEqualTo((long) filenames.length);
+		assertThat(resources.length).as("Correct number of files found").isEqualTo((long) filenames.length);
 		for (Resource resource : resources) {
 			String actualProtocol = resource.getURL().getProtocol();
 			assertThat(actualProtocol).isEqualTo(protocol);

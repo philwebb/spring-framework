@@ -29,7 +29,7 @@ import static java.util.stream.Collectors.joining;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static temp.XAssert.fail;
+import static org.assertj.core.api.Assertions.fail;
 import static org.springframework.tests.Assume.TEST_GROUPS_SYSTEM_PROPERTY;
 import static org.springframework.tests.TestGroup.CI;
 import static org.springframework.tests.TestGroup.LONG_RUNNING;

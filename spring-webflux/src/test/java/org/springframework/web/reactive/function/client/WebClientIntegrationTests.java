@@ -206,7 +206,7 @@ public class WebClientIntegrationTests {
 		StepVerifier.create(result)
 				.assertNext(valueContainer -> {
 					Foo foo = valueContainer.getContainerValue();
-					assertThat((Object) foo).isNotNull();
+					assertThat(foo).isNotNull();
 					assertThat(foo.getFooValue()).isEqualTo("bar");
 				})
 				.expectComplete().verify(Duration.ofSeconds(3));
@@ -419,7 +419,7 @@ public class WebClientIntegrationTests {
 			catch (IOException ex) {
 				throw new IllegalStateException(ex);
 			}
-			assertThat((long) actual.size()).isEqualTo((long) expected.length);
+			assertThat(actual.size()).isEqualTo((long) expected.length);
 			assertThat(hash(actual.toByteArray())).isEqualTo(hash(expected));
 		});
 	}
@@ -508,7 +508,7 @@ public class WebClientIntegrationTests {
 					assertThat(condition).isTrue();
 					WebClientResponseException ex = (WebClientResponseException) throwable;
 					assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
-					assertThat((long) ex.getRawStatusCode()).isEqualTo((long) HttpStatus.INTERNAL_SERVER_ERROR.value());
+					assertThat(ex.getRawStatusCode()).isEqualTo((long) HttpStatus.INTERNAL_SERVER_ERROR.value());
 					assertThat(ex.getStatusText()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
 					assertThat(ex.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 					assertThat(ex.getResponseBodyAsString()).isEqualTo(errorMessage);
@@ -516,7 +516,7 @@ public class WebClientIntegrationTests {
 					HttpRequest request = ex.getRequest();
 					assertThat(request.getMethod()).isEqualTo(HttpMethod.GET);
 					assertThat(request.getURI()).isEqualTo(URI.create(this.server.url(path).toString()));
-					assertThat((Object) request.getHeaders()).isNotNull();
+					assertThat(request.getHeaders()).isNotNull();
 				})
 				.verify(Duration.ofSeconds(3));
 
@@ -530,7 +530,7 @@ public class WebClientIntegrationTests {
 	@Test
 	public void shouldSupportUnknownStatusCode() {
 		int errorStatus = 555;
-		assertThat((Object) HttpStatus.resolve(errorStatus)).isNull();
+		assertThat(HttpStatus.resolve(errorStatus)).isNull();
 		String errorMessage = "Something went wrong";
 		prepareResponse(response -> response.setResponseCode(errorStatus)
 				.setHeader("Content-Type", "text/plain").setBody(errorMessage));
@@ -540,7 +540,7 @@ public class WebClientIntegrationTests {
 				.exchange();
 
 		StepVerifier.create(result)
-				.consumeNextWith(response -> assertThat((long) response.rawStatusCode()).isEqualTo((long) 555))
+				.consumeNextWith(response -> assertThat(response.rawStatusCode()).isEqualTo((long) 555))
 				.expectComplete()
 				.verify(Duration.ofSeconds(3));
 
@@ -554,7 +554,7 @@ public class WebClientIntegrationTests {
 	@Test
 	public void shouldGetErrorSignalWhenRetrievingUnknownStatusCode() {
 		int errorStatus = 555;
-		assertThat((Object) HttpStatus.resolve(errorStatus)).isNull();
+		assertThat(HttpStatus.resolve(errorStatus)).isNull();
 		String errorMessage = "Something went wrong";
 		prepareResponse(response -> response.setResponseCode(errorStatus)
 				.setHeader("Content-Type", "text/plain").setBody(errorMessage));
@@ -570,7 +570,7 @@ public class WebClientIntegrationTests {
 					assertThat(condition).isTrue();
 					UnknownHttpStatusCodeException ex = (UnknownHttpStatusCodeException) throwable;
 					assertThat(ex.getMessage()).isEqualTo(("Unknown status code ["+errorStatus+"]"));
-					assertThat((long) ex.getRawStatusCode()).isEqualTo((long) errorStatus);
+					assertThat(ex.getRawStatusCode()).isEqualTo((long) errorStatus);
 					assertThat(ex.getStatusText()).isEqualTo("");
 					assertThat(ex.getHeaders().getContentType()).isEqualTo(MediaType.TEXT_PLAIN);
 					assertThat(ex.getResponseBodyAsString()).isEqualTo(errorMessage);
@@ -760,7 +760,7 @@ public class WebClientIntegrationTests {
 	}
 
 	private void expectRequestCount(int count) {
-		assertThat((long) this.server.getRequestCount()).isEqualTo((long) count);
+		assertThat(this.server.getRequestCount()).isEqualTo((long) count);
 	}
 
 

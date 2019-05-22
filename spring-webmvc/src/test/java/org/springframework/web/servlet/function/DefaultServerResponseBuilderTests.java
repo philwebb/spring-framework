@@ -237,9 +237,9 @@ public class DefaultServerResponseBuilderTests {
 		MockHttpServletResponse mockResponse = new MockHttpServletResponse();
 
 		ModelAndView mav = response.writeTo(mockRequest, mockResponse, EMPTY_CONTEXT);
-		assertThat((Object) mav).isNull();
+		assertThat(mav).isNull();
 
-		assertThat((long) mockResponse.getStatus()).isEqualTo((long) HttpStatus.CREATED.value());
+		assertThat(mockResponse.getStatus()).isEqualTo((long) HttpStatus.CREATED.value());
 		assertThat(mockResponse.getHeader("MyKey")).isEqualTo("MyValue");
 		assertThat(mockResponse.getCookie("name").getValue()).isEqualTo("value");
 	}
@@ -256,9 +256,9 @@ public class DefaultServerResponseBuilderTests {
 
 		MockHttpServletResponse mockResponse = new MockHttpServletResponse();
 		ModelAndView mav = response.writeTo(mockRequest, mockResponse, EMPTY_CONTEXT);
-		assertThat((Object) mav).isNull();
+		assertThat(mav).isNull();
 
-		assertThat((long) mockResponse.getStatus()).isEqualTo((long) HttpStatus.NOT_MODIFIED.value());
+		assertThat(mockResponse.getStatus()).isEqualTo((long) HttpStatus.NOT_MODIFIED.value());
 	}
 
 	@Test
@@ -275,9 +275,9 @@ public class DefaultServerResponseBuilderTests {
 
 		MockHttpServletResponse mockResponse = new MockHttpServletResponse();
 		ModelAndView mav = response.writeTo(mockRequest, mockResponse, EMPTY_CONTEXT);
-		assertThat((Object) mav).isNull();
+		assertThat(mav).isNull();
 
-		assertThat((long) mockResponse.getStatus()).isEqualTo((long) HttpStatus.NOT_MODIFIED.value());
+		assertThat(mockResponse.getStatus()).isEqualTo((long) HttpStatus.NOT_MODIFIED.value());
 	}
 
 	@Test
@@ -290,7 +290,7 @@ public class DefaultServerResponseBuilderTests {
 		ServerResponse.Context context = () -> Collections.singletonList(new StringHttpMessageConverter());
 
 		ModelAndView mav = response.writeTo(mockRequest, mockResponse, context);
-		assertThat((Object) mav).isNull();
+		assertThat(mav).isNull();
 
 		assertThat(mockResponse.getContentAsString()).isEqualTo(body);
 	}
@@ -307,7 +307,7 @@ public class DefaultServerResponseBuilderTests {
 		ServerResponse.Context context = () -> Collections.singletonList(new MappingJackson2HttpMessageConverter());
 
 		ModelAndView mav = response.writeTo(mockRequest, mockResponse, context);
-		assertThat((Object) mav).isNull();
+		assertThat(mav).isNull();
 
 		assertThat(mockResponse.getContentAsString()).isEqualTo("[\"foo\",\"bar\"]");
 	}
@@ -325,7 +325,7 @@ public class DefaultServerResponseBuilderTests {
 		ServerResponse.Context context = () -> Collections.singletonList(new StringHttpMessageConverter());
 
 		ModelAndView mav = response.writeTo(mockRequest, mockResponse, context);
-		assertThat((Object) mav).isNull();
+		assertThat(mav).isNull();
 
 
 		assertThat(mockResponse.getContentAsString()).isEqualTo(body);
@@ -344,7 +344,7 @@ public class DefaultServerResponseBuilderTests {
 		ServerResponse.Context context = () -> Collections.singletonList(new StringHttpMessageConverter());
 
 		ModelAndView mav = response.writeTo(mockRequest, mockResponse, context);
-		assertThat((Object) mav).isNull();
+		assertThat(mav).isNull();
 
 		assertThat(mockResponse.getContentAsString()).isEqualTo(body);
 	}

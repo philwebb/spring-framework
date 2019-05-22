@@ -47,7 +47,7 @@ public class AspectJPointcutAdvisorTests {
 				new SingletonMetadataAwareAspectInstanceFactory(new AbstractAspectJAdvisorFactoryTests.ExceptionAspect(null), "someBean"),
 				1, "someBean");
 
-		assertThat((Object) ajpa.getAspectMetadata().getPerClausePointcut()).isSameAs(Pointcut.TRUE);
+		assertThat(ajpa.getAspectMetadata().getPerClausePointcut()).isSameAs(Pointcut.TRUE);
 		assertThat(ajpa.isPerInstance()).isFalse();
 	}
 
@@ -61,7 +61,7 @@ public class AspectJPointcutAdvisorTests {
 				new SingletonMetadataAwareAspectInstanceFactory(new PerTargetAspect(), "someBean"),
 				1, "someBean");
 
-		assertThat((Object) ajpa.getAspectMetadata().getPerClausePointcut()).isNotSameAs(Pointcut.TRUE);
+		assertThat(ajpa.getAspectMetadata().getPerClausePointcut()).isNotSameAs(Pointcut.TRUE);
 		boolean condition = ajpa.getAspectMetadata().getPerClausePointcut() instanceof AspectJExpressionPointcut;
 		assertThat(condition).isTrue();
 		assertThat(ajpa.isPerInstance()).isTrue();

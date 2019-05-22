@@ -255,7 +255,7 @@ public class RequestMappingHandlerAdapterTests {
 		this.handlerAdapter.afterPropertiesSet();
 		this.handlerAdapter.handle(this.request, this.response, handlerMethod);
 
-		assertThat((long) this.response.getStatus()).isEqualTo((long) 200);
+		assertThat(this.response.getStatus()).isEqualTo((long) 200);
 		assertThat(this.response.getContentAsString()).isEqualTo("{\"status\":400,\"message\":\"body\"}");
 	}
 
@@ -265,9 +265,9 @@ public class RequestMappingHandlerAdapterTests {
 	}
 
 	private void assertMethodProcessorCount(int resolverCount, int initBinderResolverCount, int handlerCount) {
-		assertThat((long) this.handlerAdapter.getArgumentResolvers().size()).isEqualTo((long) resolverCount);
-		assertThat((long) this.handlerAdapter.getInitBinderArgumentResolvers().size()).isEqualTo((long) initBinderResolverCount);
-		assertThat((long) this.handlerAdapter.getReturnValueHandlers().size()).isEqualTo((long) handlerCount);
+		assertThat(this.handlerAdapter.getArgumentResolvers().size()).isEqualTo((long) resolverCount);
+		assertThat(this.handlerAdapter.getInitBinderArgumentResolvers().size()).isEqualTo((long) initBinderResolverCount);
+		assertThat(this.handlerAdapter.getReturnValueHandlers().size()).isEqualTo((long) handlerCount);
 	}
 
 

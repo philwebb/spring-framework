@@ -533,7 +533,7 @@ public class CciTemplateTests {
 
 		CciTemplate ct = new CciTemplate(connectionFactory);
 		Record tmpOutputRecord = ct.execute(interactionSpec, inputOutputRecord);
-		assertThat((Object) tmpOutputRecord).isNull();
+		assertThat(tmpOutputRecord).isNull();
 
 		verify(interaction).execute(interactionSpec, inputOutputRecord);
 		verify(interaction).close();

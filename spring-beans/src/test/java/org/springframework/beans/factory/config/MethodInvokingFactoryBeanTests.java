@@ -104,7 +104,7 @@ public class MethodInvokingFactoryBeanTests {
 		mcfb.setTargetMethod("voidRetvalMethod");
 		mcfb.afterPropertiesSet();
 		Class<?> objType = mcfb.getObjectType();
-		assertThat((Object) void.class).isSameAs(objType);
+		assertThat(void.class).isSameAs(objType);
 
 		// verify that we can call a method with args that are subtypes of the
 		// target method arg types
@@ -134,9 +134,9 @@ public class MethodInvokingFactoryBeanTests {
 		mcfb.setTargetMethod("method1");
 		mcfb.afterPropertiesSet();
 		Integer i = (Integer) mcfb.getObject();
-		assertThat((long) i.intValue()).isEqualTo((long) 1);
+		assertThat(i.intValue()).isEqualTo((long) 1);
 		i = (Integer) mcfb.getObject();
-		assertThat((long) i.intValue()).isEqualTo((long) 1);
+		assertThat(i.intValue()).isEqualTo((long) 1);
 
 		// non-singleton, non-static
 		tc1 = new TestClass1();
@@ -146,9 +146,9 @@ public class MethodInvokingFactoryBeanTests {
 		mcfb.setSingleton(false);
 		mcfb.afterPropertiesSet();
 		i = (Integer) mcfb.getObject();
-		assertThat((long) i.intValue()).isEqualTo((long) 1);
+		assertThat(i.intValue()).isEqualTo((long) 1);
 		i = (Integer) mcfb.getObject();
-		assertThat((long) i.intValue()).isEqualTo((long) 2);
+		assertThat(i.intValue()).isEqualTo((long) 2);
 
 		// singleton, static
 		TestClass1._staticField1 = 0;
@@ -157,9 +157,9 @@ public class MethodInvokingFactoryBeanTests {
 		mcfb.setTargetMethod("staticMethod1");
 		mcfb.afterPropertiesSet();
 		i = (Integer) mcfb.getObject();
-		assertThat((long) i.intValue()).isEqualTo((long) 1);
+		assertThat(i.intValue()).isEqualTo((long) 1);
 		i = (Integer) mcfb.getObject();
-		assertThat((long) i.intValue()).isEqualTo((long) 1);
+		assertThat(i.intValue()).isEqualTo((long) 1);
 
 		// non-singleton, static
 		TestClass1._staticField1 = 0;
@@ -168,9 +168,9 @@ public class MethodInvokingFactoryBeanTests {
 		mcfb.setSingleton(false);
 		mcfb.afterPropertiesSet();
 		i = (Integer) mcfb.getObject();
-		assertThat((long) i.intValue()).isEqualTo((long) 1);
+		assertThat(i.intValue()).isEqualTo((long) 1);
 		i = (Integer) mcfb.getObject();
-		assertThat((long) i.intValue()).isEqualTo((long) 2);
+		assertThat(i.intValue()).isEqualTo((long) 2);
 
 		// void return value
 		mcfb = new MethodInvokingFactoryBean();

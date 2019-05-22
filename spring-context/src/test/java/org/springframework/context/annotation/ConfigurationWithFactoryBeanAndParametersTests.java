@@ -38,7 +38,7 @@ public class ConfigurationWithFactoryBeanAndParametersTests {
 	@Test
 	public void test() {
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(Config.class, Bar.class);
-		assertThat((Object) ctx.getBean(Bar.class).foo).isNotNull();
+		assertThat(ctx.getBean(Bar.class).foo).isNotNull();
 	}
 
 

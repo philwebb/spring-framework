@@ -39,7 +39,7 @@ public class ManagedListTests {
 		child.add("three");
 		child.setMergeEnabled(true);
 		List mergedList = child.merge(parent);
-		assertThat((long) mergedList.size()).as("merge() obviously did not work.").isEqualTo((long) 3);
+		assertThat(mergedList.size()).as("merge() obviously did not work.").isEqualTo((long) 3);
 	}
 
 	@Test
@@ -74,7 +74,7 @@ public class ManagedListTests {
 		ManagedList child = new ManagedList();
 		child.setMergeEnabled(true);
 		List mergedList = child.merge(parent);
-		assertThat((long) mergedList.size()).as("merge() obviously did not work.").isEqualTo((long) 2);
+		assertThat(mergedList.size()).as("merge() obviously did not work.").isEqualTo((long) 2);
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public class ManagedListTests {
 		child.add("one");
 		child.setMergeEnabled(true);
 		List mergedList = child.merge(parent);
-		assertThat((long) mergedList.size()).as("merge() obviously did not work.").isEqualTo((long) 3);
+		assertThat(mergedList.size()).as("merge() obviously did not work.").isEqualTo((long) 3);
 	}
 
 }

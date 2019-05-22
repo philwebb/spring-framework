@@ -62,7 +62,7 @@ public class EnableSchedulingTests {
 		Assume.group(TestGroup.PERFORMANCE);
 
 		ctx = new AnnotationConfigApplicationContext(FixedRateTaskConfig.class);
-		assertThat((long) ctx.getBean(ScheduledTaskHolder.class).getScheduledTasks().size()).isEqualTo((long) 2);
+		assertThat(ctx.getBean(ScheduledTaskHolder.class).getScheduledTasks().size()).isEqualTo((long) 2);
 
 		Thread.sleep(100);
 		assertThat(ctx.getBean(AtomicInteger.class).get()).isGreaterThanOrEqualTo(10);
@@ -73,7 +73,7 @@ public class EnableSchedulingTests {
 		Assume.group(TestGroup.PERFORMANCE);
 
 		ctx = new AnnotationConfigApplicationContext(FixedRateTaskConfigSubclass.class);
-		assertThat((long) ctx.getBean(ScheduledTaskHolder.class).getScheduledTasks().size()).isEqualTo((long) 2);
+		assertThat(ctx.getBean(ScheduledTaskHolder.class).getScheduledTasks().size()).isEqualTo((long) 2);
 
 		Thread.sleep(100);
 		assertThat(ctx.getBean(AtomicInteger.class).get()).isGreaterThanOrEqualTo(10);
@@ -84,7 +84,7 @@ public class EnableSchedulingTests {
 		Assume.group(TestGroup.PERFORMANCE);
 
 		ctx = new AnnotationConfigApplicationContext(ExplicitSchedulerConfig.class);
-		assertThat((long) ctx.getBean(ScheduledTaskHolder.class).getScheduledTasks().size()).isEqualTo((long) 1);
+		assertThat(ctx.getBean(ScheduledTaskHolder.class).getScheduledTasks().size()).isEqualTo((long) 1);
 
 		Thread.sleep(100);
 		assertThat(ctx.getBean(AtomicInteger.class).get()).isGreaterThanOrEqualTo(10);
@@ -104,7 +104,7 @@ public class EnableSchedulingTests {
 		Assume.group(TestGroup.PERFORMANCE);
 
 		ctx = new AnnotationConfigApplicationContext(ExplicitScheduledTaskRegistrarConfig.class);
-		assertThat((long) ctx.getBean(ScheduledTaskHolder.class).getScheduledTasks().size()).isEqualTo((long) 1);
+		assertThat(ctx.getBean(ScheduledTaskHolder.class).getScheduledTasks().size()).isEqualTo((long) 1);
 
 		Thread.sleep(100);
 		assertThat(ctx.getBean(AtomicInteger.class).get()).isGreaterThanOrEqualTo(10);

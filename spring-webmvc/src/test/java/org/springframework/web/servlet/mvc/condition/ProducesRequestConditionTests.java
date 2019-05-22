@@ -45,7 +45,7 @@ public class ProducesRequestConditionTests {
 		ProducesRequestCondition condition = new ProducesRequestCondition("text/plain");
 		HttpServletRequest request = createRequest("text/plain");
 
-		assertThat((Object) condition.getMatchingCondition(request)).isNotNull();
+		assertThat(condition.getMatchingCondition(request)).isNotNull();
 	}
 
 	@Test
@@ -53,14 +53,14 @@ public class ProducesRequestConditionTests {
 		ProducesRequestCondition condition = new ProducesRequestCondition("!text/plain");
 		HttpServletRequest request = createRequest("text/plain");
 
-		assertThat((Object) condition.getMatchingCondition(request)).isNull();
+		assertThat(condition.getMatchingCondition(request)).isNull();
 	}
 
 	@Test
 	public void matchNegatedWithoutAcceptHeader() {
 		ProducesRequestCondition condition = new ProducesRequestCondition("!text/plain");
 
-		assertThat((Object) condition.getMatchingCondition(new MockHttpServletRequest())).isNotNull();
+		assertThat(condition.getMatchingCondition(new MockHttpServletRequest())).isNotNull();
 		assertThat(condition.getProducibleMediaTypes()).isEqualTo(Collections.emptySet());
 	}
 
@@ -75,7 +75,7 @@ public class ProducesRequestConditionTests {
 		ProducesRequestCondition condition = new ProducesRequestCondition("text/*");
 		HttpServletRequest request = createRequest("text/plain");
 
-		assertThat((Object) condition.getMatchingCondition(request)).isNotNull();
+		assertThat(condition.getMatchingCondition(request)).isNotNull();
 	}
 
 	@Test
@@ -83,7 +83,7 @@ public class ProducesRequestConditionTests {
 		ProducesRequestCondition condition = new ProducesRequestCondition("text/plain", "application/xml");
 		HttpServletRequest request = createRequest("text/plain");
 
-		assertThat((Object) condition.getMatchingCondition(request)).isNotNull();
+		assertThat(condition.getMatchingCondition(request)).isNotNull();
 	}
 
 	@Test
@@ -91,7 +91,7 @@ public class ProducesRequestConditionTests {
 		ProducesRequestCondition condition = new ProducesRequestCondition("text/plain");
 		HttpServletRequest request = createRequest("application/xml");
 
-		assertThat((Object) condition.getMatchingCondition(request)).isNull();
+		assertThat(condition.getMatchingCondition(request)).isNull();
 	}
 
 	@Test // gh-21670
@@ -99,19 +99,19 @@ public class ProducesRequestConditionTests {
 		String base = "application/atom+xml";
 		ProducesRequestCondition condition = new ProducesRequestCondition(base + ";type=feed");
 		HttpServletRequest request = createRequest(base + ";type=entry");
-		assertThat((Object) condition.getMatchingCondition(request)).as("Declared parameter value must match if present in request").isNull();
+		assertThat(condition.getMatchingCondition(request)).as("Declared parameter value must match if present in request").isNull();
 
 		condition = new ProducesRequestCondition(base + ";type=feed");
 		request = createRequest(base + ";type=feed");
-		assertThat((Object) condition.getMatchingCondition(request)).as("Declared parameter value must match if present in request").isNotNull();
+		assertThat(condition.getMatchingCondition(request)).as("Declared parameter value must match if present in request").isNotNull();
 
 		condition = new ProducesRequestCondition(base + ";type=feed");
 		request = createRequest(base);
-		assertThat((Object) condition.getMatchingCondition(request)).as("Declared parameter has no impact if not present in request").isNotNull();
+		assertThat(condition.getMatchingCondition(request)).as("Declared parameter has no impact if not present in request").isNotNull();
 
 		condition = new ProducesRequestCondition(base);
 		request = createRequest(base + ";type=feed");
-		assertThat((Object) condition.getMatchingCondition(request)).as("No impact from other parameters in request").isNotNull();
+		assertThat(condition.getMatchingCondition(request)).as("No impact from other parameters in request").isNotNull();
 	}
 
 	@Test
@@ -119,7 +119,7 @@ public class ProducesRequestConditionTests {
 		ProducesRequestCondition condition = new ProducesRequestCondition("text/plain");
 		HttpServletRequest request = createRequest("bogus");
 
-		assertThat((Object) condition.getMatchingCondition(request)).isNull();
+		assertThat(condition.getMatchingCondition(request)).isNull();
 	}
 
 	@Test
@@ -127,7 +127,7 @@ public class ProducesRequestConditionTests {
 		ProducesRequestCondition condition = new ProducesRequestCondition("!text/plain");
 		HttpServletRequest request = createRequest("bogus");
 
-		assertThat((Object) condition.getMatchingCondition(request)).isNull();
+		assertThat(condition.getMatchingCondition(request)).isNull();
 	}
 
 	@Test
@@ -137,7 +137,7 @@ public class ProducesRequestConditionTests {
 		ProducesRequestCondition condition = new ProducesRequestCondition(produces, headers);
 		HttpServletRequest request = new MockHttpServletRequest("GET", "/foo.txt");
 
-		assertThat((Object) condition.getMatchingCondition(request)).isNotNull();
+		assertThat(condition.getMatchingCondition(request)).isNotNull();
 	}
 
 	@Test // SPR-17550
@@ -146,7 +146,7 @@ public class ProducesRequestConditionTests {
 		HttpServletRequest request = createRequest(
 				"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
 
-		assertThat((Object) condition.getMatchingCondition(request)).isNotNull();
+		assertThat(condition.getMatchingCondition(request)).isNotNull();
 	}
 
 	@Test // gh-22853
@@ -164,7 +164,7 @@ public class ProducesRequestConditionTests {
 		ProducesRequestCondition noneMatch = none.getMatchingCondition(request);
 		ProducesRequestCondition htmlMatch = html.getMatchingCondition(request);
 
-		assertThat((long) noneMatch.compareTo(htmlMatch, request)).isEqualTo((long) 1);
+		assertThat(noneMatch.compareTo(htmlMatch, request)).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -189,8 +189,8 @@ public class ProducesRequestConditionTests {
 
 		request = createRequest("application/pdf");
 
-		assertThat((long) html.compareTo(xml, request)).isEqualTo((long) 0);
-		assertThat((long) xml.compareTo(html, request)).isEqualTo((long) 0);
+		assertThat(html.compareTo(xml, request)).isEqualTo((long) 0);
+		assertThat(xml.compareTo(html, request)).isEqualTo((long) 0);
 
 		// See SPR-7000
 		request = createRequest("text/html;q=0.9,application/xml");
@@ -348,7 +348,7 @@ public class ProducesRequestConditionTests {
 		condition = new ProducesRequestCondition("application/xml");
 
 		result = condition.getMatchingCondition(request);
-		assertThat((Object) result).isNull();
+		assertThat(result).isNull();
 	}
 
 

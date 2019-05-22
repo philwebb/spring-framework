@@ -30,42 +30,42 @@ public class LogSupportTests {
 	public void testLogMessageWithSupplier() {
 		LogMessage msg = LogMessage.of(() -> new StringBuilder("a").append(" b"));
 		assertThat(msg.toString()).isEqualTo("a b");
-		assertThat((Object) msg.toString()).isSameAs(msg.toString());
+		assertThat(msg.toString()).isSameAs(msg.toString());
 	}
 
 	@Test
 	public void testLogMessageWithFormat1() {
 		LogMessage msg = LogMessage.format("a %s", "b");
 		assertThat(msg.toString()).isEqualTo("a b");
-		assertThat((Object) msg.toString()).isSameAs(msg.toString());
+		assertThat(msg.toString()).isSameAs(msg.toString());
 	}
 
 	@Test
 	public void testLogMessageWithFormat2() {
 		LogMessage msg = LogMessage.format("a %s %s", "b", "c");
 		assertThat(msg.toString()).isEqualTo("a b c");
-		assertThat((Object) msg.toString()).isSameAs(msg.toString());
+		assertThat(msg.toString()).isSameAs(msg.toString());
 	}
 
 	@Test
 	public void testLogMessageWithFormat3() {
 		LogMessage msg = LogMessage.format("a %s %s %s", "b", "c", "d");
 		assertThat(msg.toString()).isEqualTo("a b c d");
-		assertThat((Object) msg.toString()).isSameAs(msg.toString());
+		assertThat(msg.toString()).isSameAs(msg.toString());
 	}
 
 	@Test
 	public void testLogMessageWithFormat4() {
 		LogMessage msg = LogMessage.format("a %s %s %s %s", "b", "c", "d", "e");
 		assertThat(msg.toString()).isEqualTo("a b c d e");
-		assertThat((Object) msg.toString()).isSameAs(msg.toString());
+		assertThat(msg.toString()).isSameAs(msg.toString());
 	}
 
 	@Test
 	public void testLogMessageWithFormatX() {
 		LogMessage msg = LogMessage.format("a %s %s %s %s %s", "b", "c", "d", "e", "f");
 		assertThat(msg.toString()).isEqualTo("a b c d e f");
-		assertThat((Object) msg.toString()).isSameAs(msg.toString());
+		assertThat(msg.toString()).isSameAs(msg.toString());
 	}
 
 }

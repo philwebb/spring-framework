@@ -36,7 +36,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport.Tran
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static temp.XAssert.fail;
+import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.mock;
@@ -138,7 +138,7 @@ public abstract class AbstractTransactionAspectTests {
 		itb.getName();
 		checkTransactionStatus(false);
 
-		assertThat((Object) ptm.getDefinition()).isSameAs(txatt);
+		assertThat(ptm.getDefinition()).isSameAs(txatt);
 		assertThat(ptm.getStatus().isRollbackOnly()).isFalse();
 	}
 
@@ -159,7 +159,7 @@ public abstract class AbstractTransactionAspectTests {
 				itb.exceptional(new OptimisticLockingFailureException("")));
 		checkTransactionStatus(false);
 
-		assertThat((Object) ptm.getDefinition()).isSameAs(txatt);
+		assertThat(ptm.getDefinition()).isSameAs(txatt);
 		assertThat(ptm.getStatus().isRollbackOnly()).isFalse();
 	}
 

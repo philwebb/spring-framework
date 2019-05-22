@@ -86,7 +86,7 @@ public class JndiJtaTransactionManagerTests {
 			assertThat(ptm.getTransactionManager()).isEqualTo(tm);
 		}
 		else {
-			assertThat((Object) ptm.getTransactionManager()).isNull();
+			assertThat(ptm.getTransactionManager()).isNull();
 		}
 
 		if (defaultUt) {
@@ -182,7 +182,7 @@ public class JndiJtaTransactionManagerTests {
 		assertThat(ptm.getUserTransaction()).isEqualTo(ut);
 
 		TransactionTemplate tt = new TransactionTemplate(ptm);
-		assertThat((long) ptm.getTransactionSynchronization()).isEqualTo((long) JtaTransactionManager.SYNCHRONIZATION_ALWAYS);
+		assertThat(ptm.getTransactionSynchronization()).isEqualTo((long) JtaTransactionManager.SYNCHRONIZATION_ALWAYS);
 		boolean condition1 = !TransactionSynchronizationManager.isSynchronizationActive();
 		assertThat(condition1).isTrue();
 		assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
@@ -222,7 +222,7 @@ public class JndiJtaTransactionManagerTests {
 	public void tearDown() {
 		assertThat(TransactionSynchronizationManager.getResourceMap().isEmpty()).isTrue();
 		assertThat(TransactionSynchronizationManager.isSynchronizationActive()).isFalse();
-		assertThat((Object) TransactionSynchronizationManager.getCurrentTransactionName()).isNull();
+		assertThat(TransactionSynchronizationManager.getCurrentTransactionName()).isNull();
 		assertThat(TransactionSynchronizationManager.isCurrentTransactionReadOnly()).isFalse();
 		assertThat(TransactionSynchronizationManager.isActualTransactionActive()).isFalse();
 	}

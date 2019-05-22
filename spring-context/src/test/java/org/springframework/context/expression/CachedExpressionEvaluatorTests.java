@@ -44,7 +44,7 @@ public class CachedExpressionEvaluatorTests {
 		Expression expression = expressionEvaluator.getTestExpression("true", method, getClass());
 		hasParsedExpression("true");
 		assertThat(expression.getValue()).isEqualTo(true);
-		assertThat((long) expressionEvaluator.testCache.size()).as("Expression should be in cache").isEqualTo((long) 1);
+		assertThat(expressionEvaluator.testCache.size()).as("Expression should be in cache").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -55,7 +55,7 @@ public class CachedExpressionEvaluatorTests {
 		expressionEvaluator.getTestExpression("true", method, getClass());
 		expressionEvaluator.getTestExpression("true", method, getClass());
 		hasParsedExpression("true");
-		assertThat((long) expressionEvaluator.testCache.size()).as("Only one expression should be in cache").isEqualTo((long) 1);
+		assertThat(expressionEvaluator.testCache.size()).as("Only one expression should be in cache").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -63,7 +63,7 @@ public class CachedExpressionEvaluatorTests {
 		Method method = ReflectionUtils.findMethod(getClass(), "toString");
 		expressionEvaluator.getTestExpression("true", method, getClass());
 		expressionEvaluator.getTestExpression("true", method, Object.class);
-		assertThat((long) expressionEvaluator.testCache.size()).as("Cached expression should be based on type").isEqualTo((long) 2);
+		assertThat(expressionEvaluator.testCache.size()).as("Cached expression should be based on type").isEqualTo((long) 2);
 	}
 
 	private void hasParsedExpression(String expression) {

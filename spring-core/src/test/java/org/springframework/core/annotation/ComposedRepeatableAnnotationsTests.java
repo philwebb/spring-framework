@@ -109,8 +109,8 @@ public class ComposedRepeatableAnnotationsTests {
 	public void getNoninheritedComposedRepeatableAnnotationsOnSuperclass() {
 		Class<?> element = SubNoninheritedRepeatableClass.class;
 		Set<Noninherited> annotations = getMergedRepeatableAnnotations(element, Noninherited.class);
-		assertThat((Object) annotations).isNotNull();
-		assertThat((long) annotations.size()).isEqualTo((long) 0);
+		assertThat(annotations).isNotNull();
+		assertThat(annotations.size()).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -210,11 +210,11 @@ public class ComposedRepeatableAnnotationsTests {
 	}
 
 	private void assertGetRepeatableAnnotations(AnnotatedElement element) {
-		assertThat((Object) element).isNotNull();
+		assertThat(element).isNotNull();
 
 		Set<PeteRepeat> peteRepeats = getMergedRepeatableAnnotations(element, PeteRepeat.class);
-		assertThat((Object) peteRepeats).isNotNull();
-		assertThat((long) peteRepeats.size()).isEqualTo((long) 3);
+		assertThat(peteRepeats).isNotNull();
+		assertThat(peteRepeats.size()).isEqualTo((long) 3);
 
 		Iterator<PeteRepeat> iterator = peteRepeats.iterator();
 		assertThat(iterator.next().value()).isEqualTo("A");
@@ -223,11 +223,11 @@ public class ComposedRepeatableAnnotationsTests {
 	}
 
 	private void assertFindRepeatableAnnotations(AnnotatedElement element) {
-		assertThat((Object) element).isNotNull();
+		assertThat(element).isNotNull();
 
 		Set<PeteRepeat> peteRepeats = findMergedRepeatableAnnotations(element, PeteRepeat.class);
-		assertThat((Object) peteRepeats).isNotNull();
-		assertThat((long) peteRepeats.size()).isEqualTo((long) 3);
+		assertThat(peteRepeats).isNotNull();
+		assertThat(peteRepeats.size()).isEqualTo((long) 3);
 
 		Iterator<PeteRepeat> iterator = peteRepeats.iterator();
 		assertThat(iterator.next().value()).isEqualTo("A");
@@ -236,8 +236,8 @@ public class ComposedRepeatableAnnotationsTests {
 	}
 
 	private void assertNoninheritedRepeatableAnnotations(Set<Noninherited> annotations) {
-		assertThat((Object) annotations).isNotNull();
-		assertThat((long) annotations.size()).isEqualTo((long) 3);
+		assertThat(annotations).isNotNull();
+		assertThat(annotations.size()).isEqualTo((long) 3);
 
 		Iterator<Noninherited> iterator = annotations.iterator();
 		assertThat(iterator.next().value()).isEqualTo("A");

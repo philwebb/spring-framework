@@ -65,7 +65,7 @@ public class AnnotationCacheOperationSourceTests extends AbstractJCacheTests {
 	public void cache() {
 		CacheResultOperation op = getDefaultCacheOperation(CacheResultOperation.class, String.class);
 		assertDefaults(op);
-		assertThat((Object) op.getExceptionCacheResolver()).as("Exception caching not enabled so resolver should not be set").isNull();
+		assertThat(op.getExceptionCacheResolver()).as("Exception caching not enabled so resolver should not be set").isNull();
 	}
 
 	@Test
@@ -96,7 +96,7 @@ public class AnnotationCacheOperationSourceTests extends AbstractJCacheTests {
 
 	@Test
 	public void noAnnotation() {
-		assertThat((Object) getCacheOperation(AnnotatedJCacheableService.class, name.getMethodName())).isNull();
+		assertThat(getCacheOperation(AnnotatedJCacheableService.class, name.getMethodName())).isNull();
 	}
 
 	@Test
@@ -146,7 +146,7 @@ public class AnnotationCacheOperationSourceTests extends AbstractJCacheTests {
 		CacheResultOperation operation =
 				getCacheOperation(CacheResultOperation.class, CustomService.class, name.getMethodName(), Long.class);
 		assertThat(operation.getCacheResolver()).isEqualTo(defaultCacheResolver);
-		assertThat((Object) operation.getExceptionCacheResolver()).isNull();
+		assertThat(operation.getExceptionCacheResolver()).isNull();
 		assertCacheKeyGenerator(operation.getKeyGenerator(), TestableCacheKeyGenerator.class);
 	}
 
@@ -157,7 +157,7 @@ public class AnnotationCacheOperationSourceTests extends AbstractJCacheTests {
 		CacheResultOperation operation =
 				getCacheOperation(CacheResultOperation.class, CustomService.class, name.getMethodName(), Long.class);
 		assertThat(operation.getCacheResolver()).isEqualTo(defaultCacheResolver);
-		assertThat((Object) operation.getExceptionCacheResolver()).isNull();
+		assertThat(operation.getExceptionCacheResolver()).isNull();
 		KeyGeneratorAdapter adapter = (KeyGeneratorAdapter) operation.getKeyGenerator();
 		// take bean from context
 		assertThat(adapter.getTarget()).isSameAs(bean);
@@ -195,7 +195,7 @@ public class AnnotationCacheOperationSourceTests extends AbstractJCacheTests {
 			Class<T> operationType, Class<?> targetType, String methodName, Class<?>... parameterTypes) {
 
 		JCacheOperation<?> result = getCacheOperation(targetType, methodName, parameterTypes);
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 		assertThat(result.getClass()).isEqualTo(operationType);
 		return operationType.cast(result);
 	}
@@ -210,7 +210,7 @@ public class AnnotationCacheOperationSourceTests extends AbstractJCacheTests {
 			Class<? extends javax.cache.annotation.CacheResolver> expectedTargetType) {
 
 		if (expectedTargetType == null) {
-			assertThat((Object) actual).isNull();
+			assertThat(actual).isNull();
 		}
 		else {
 			assertThat(actual.getClass()).as("Wrong cache resolver implementation").isEqualTo(CacheResolverAdapter.class);

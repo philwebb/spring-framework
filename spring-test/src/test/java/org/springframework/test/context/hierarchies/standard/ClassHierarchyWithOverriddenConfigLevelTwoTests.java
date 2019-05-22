@@ -62,13 +62,13 @@ public class ClassHierarchyWithOverriddenConfigLevelTwoTests extends ClassHierar
 	@Test
 	@Override
 	public void loadContextHierarchy() {
-		assertThat((Object) context).as("child ApplicationContext").isNotNull();
-		assertThat((Object) context.getParent()).as("parent ApplicationContext").isNotNull();
-		assertThat((Object) context.getParent().getParent()).as("grandparent ApplicationContext").isNull();
+		assertThat(context).as("child ApplicationContext").isNotNull();
+		assertThat(context.getParent()).as("parent ApplicationContext").isNotNull();
+		assertThat(context.getParent().getParent()).as("grandparent ApplicationContext").isNull();
 		assertThat(parent).isEqualTo("parent");
 		assertThat(user).isEqualTo("parent + test user");
 		assertThat(beanFromTestUserConfig).isEqualTo("from TestUserConfig");
-		assertThat((Object) beanFromUserConfig).as("Bean from UserConfig should not be present.").isNull();
+		assertThat(beanFromUserConfig).as("Bean from UserConfig should not be present.").isNull();
 	}
 
 }

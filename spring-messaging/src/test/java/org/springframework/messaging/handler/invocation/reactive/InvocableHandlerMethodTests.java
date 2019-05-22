@@ -55,8 +55,8 @@ public class InvocableHandlerMethodTests {
 		Method method = ResolvableMethod.on(Handler.class).mockCall(c -> c.handle(0, "")).method();
 		Object value = invokeAndBlock(new Handler(), method);
 
-		assertThat((long) getStubResolver(0).getResolvedParameters().size()).isEqualTo((long) 1);
-		assertThat((long) getStubResolver(1).getResolvedParameters().size()).isEqualTo((long) 1);
+		assertThat(getStubResolver(0).getResolvedParameters().size()).isEqualTo((long) 1);
+		assertThat(getStubResolver(1).getResolvedParameters().size()).isEqualTo((long) 1);
 		assertThat(value).isEqualTo("99-value");
 		assertThat(getStubResolver(0).getResolvedParameters().get(0).getParameterName()).isEqualTo("intArg");
 		assertThat(getStubResolver(1).getResolvedParameters().get(0).getParameterName()).isEqualTo("stringArg");
@@ -69,8 +69,8 @@ public class InvocableHandlerMethodTests {
 		Method method = ResolvableMethod.on(Handler.class).mockCall(c -> c.handle(0, "")).method();
 		Object value = invokeAndBlock(new Handler(), method);
 
-		assertThat((long) getStubResolver(0).getResolvedParameters().size()).isEqualTo((long) 1);
-		assertThat((long) getStubResolver(1).getResolvedParameters().size()).isEqualTo((long) 1);
+		assertThat(getStubResolver(0).getResolvedParameters().size()).isEqualTo((long) 1);
+		assertThat(getStubResolver(1).getResolvedParameters().size()).isEqualTo((long) 1);
 		assertThat(value).isEqualTo("null-null");
 	}
 
@@ -131,7 +131,7 @@ public class InvocableHandlerMethodTests {
 
 		Throwable expected = new Throwable("error");
 		Mono<Object> result = invoke(new Handler(), method, expected);
-		StepVerifier.create(result).expectErrorSatisfies(actual -> assertThat((Object) actual).isSameAs(expected)).verify();
+		StepVerifier.create(result).expectErrorSatisfies(actual -> assertThat(actual).isSameAs(expected)).verify();
 	}
 
 	@Test
@@ -142,7 +142,7 @@ public class InvocableHandlerMethodTests {
 		Object value = invokeAndBlock(handler, method);
 
 		assertThat(value).isNull();
-		assertThat((long) getStubResolver(0).getResolvedParameters().size()).isEqualTo((long) 1);
+		assertThat(getStubResolver(0).getResolvedParameters().size()).isEqualTo((long) 1);
 		assertThat(handler.getResult()).isEqualTo("5.25");
 		assertThat(getStubResolver(0).getResolvedParameters().get(0).getParameterName()).isEqualTo("amount");
 	}

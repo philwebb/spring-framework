@@ -65,7 +65,7 @@ public class RequestMappingIntegrationTests extends AbstractRequestMappingIntegr
 		String url = "http://localhost:" + this.port + "/text";
 		HttpHeaders headers = getRestTemplate().headForHeaders(url);
 		String contentType = headers.getFirst("Content-Type");
-		assertThat((Object) contentType).isNotNull();
+		assertThat(contentType).isNotNull();
 		assertThat(contentType.toLowerCase()).isEqualTo("text/html;charset=utf-8");
 		assertThat(headers.getContentLength()).isEqualTo((long) 3);
 	}

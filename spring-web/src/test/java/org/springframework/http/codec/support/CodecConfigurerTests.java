@@ -73,7 +73,7 @@ public class CodecConfigurerTests {
 	@Test
 	public void defaultReaders() {
 		List<HttpMessageReader<?>> readers = this.configurer.getReaders();
-		assertThat((long) readers.size()).isEqualTo((long) 11);
+		assertThat(readers.size()).isEqualTo((long) 11);
 		assertThat(getNextDecoder(readers).getClass()).isEqualTo(ByteArrayDecoder.class);
 		assertThat(getNextDecoder(readers).getClass()).isEqualTo(ByteBufferDecoder.class);
 		assertThat(getNextDecoder(readers).getClass()).isEqualTo(DataBufferDecoder.class);
@@ -90,7 +90,7 @@ public class CodecConfigurerTests {
 	@Test
 	public void defaultWriters() {
 		List<HttpMessageWriter<?>> writers = this.configurer.getWriters();
-		assertThat((long) writers.size()).isEqualTo((long) 10);
+		assertThat(writers.size()).isEqualTo((long) 10);
 		assertThat(getNextEncoder(writers).getClass()).isEqualTo(ByteArrayEncoder.class);
 		assertThat(getNextEncoder(writers).getClass()).isEqualTo(ByteBufferEncoder.class);
 		assertThat(getNextEncoder(writers).getClass()).isEqualTo(DataBufferEncoder.class);
@@ -125,9 +125,9 @@ public class CodecConfigurerTests {
 
 		List<HttpMessageReader<?>> readers = this.configurer.getReaders();
 
-		assertThat((long) readers.size()).isEqualTo((long) 15);
-		assertThat((Object) getNextDecoder(readers)).isSameAs(customDecoder1);
-		assertThat((Object) readers.get(this.index.getAndIncrement())).isSameAs(customReader1);
+		assertThat(readers.size()).isEqualTo((long) 15);
+		assertThat(getNextDecoder(readers)).isSameAs(customDecoder1);
+		assertThat(readers.get(this.index.getAndIncrement())).isSameAs(customReader1);
 		assertThat(getNextDecoder(readers).getClass()).isEqualTo(ByteArrayDecoder.class);
 		assertThat(getNextDecoder(readers).getClass()).isEqualTo(ByteBufferDecoder.class);
 		assertThat(getNextDecoder(readers).getClass()).isEqualTo(DataBufferDecoder.class);
@@ -135,8 +135,8 @@ public class CodecConfigurerTests {
 		assertThat(getNextDecoder(readers).getClass()).isEqualTo(StringDecoder.class);
 		assertThat(getNextDecoder(readers).getClass()).isEqualTo(ProtobufDecoder.class);
 		assertThat(readers.get(this.index.getAndIncrement()).getClass()).isEqualTo(FormHttpMessageReader.class);
-		assertThat((Object) getNextDecoder(readers)).isSameAs(customDecoder2);
-		assertThat((Object) readers.get(this.index.getAndIncrement())).isSameAs(customReader2);
+		assertThat(getNextDecoder(readers)).isSameAs(customDecoder2);
+		assertThat(readers.get(this.index.getAndIncrement())).isSameAs(customReader2);
 		assertThat(getNextDecoder(readers).getClass()).isEqualTo(Jackson2JsonDecoder.class);
 		assertThat(getNextDecoder(readers).getClass()).isEqualTo(Jackson2SmileDecoder.class);
 		assertThat(getNextDecoder(readers).getClass()).isEqualTo(Jaxb2XmlDecoder.class);
@@ -165,17 +165,17 @@ public class CodecConfigurerTests {
 
 		List<HttpMessageWriter<?>> writers = this.configurer.getWriters();
 
-		assertThat((long) writers.size()).isEqualTo((long) 14);
-		assertThat((Object) getNextEncoder(writers)).isSameAs(customEncoder1);
-		assertThat((Object) writers.get(this.index.getAndIncrement())).isSameAs(customWriter1);
+		assertThat(writers.size()).isEqualTo((long) 14);
+		assertThat(getNextEncoder(writers)).isSameAs(customEncoder1);
+		assertThat(writers.get(this.index.getAndIncrement())).isSameAs(customWriter1);
 		assertThat(getNextEncoder(writers).getClass()).isEqualTo(ByteArrayEncoder.class);
 		assertThat(getNextEncoder(writers).getClass()).isEqualTo(ByteBufferEncoder.class);
 		assertThat(getNextEncoder(writers).getClass()).isEqualTo(DataBufferEncoder.class);
 		assertThat(writers.get(index.getAndIncrement()).getClass()).isEqualTo(ResourceHttpMessageWriter.class);
 		assertThat(getNextEncoder(writers).getClass()).isEqualTo(CharSequenceEncoder.class);
 		assertThat(writers.get(index.getAndIncrement()).getClass()).isEqualTo(ProtobufHttpMessageWriter.class);
-		assertThat((Object) getNextEncoder(writers)).isSameAs(customEncoder2);
-		assertThat((Object) writers.get(this.index.getAndIncrement())).isSameAs(customWriter2);
+		assertThat(getNextEncoder(writers)).isSameAs(customEncoder2);
+		assertThat(writers.get(this.index.getAndIncrement())).isSameAs(customWriter2);
 		assertThat(getNextEncoder(writers).getClass()).isEqualTo(Jackson2JsonEncoder.class);
 		assertThat(getNextEncoder(writers).getClass()).isEqualTo(Jackson2SmileEncoder.class);
 		assertThat(getNextEncoder(writers).getClass()).isEqualTo(Jaxb2XmlEncoder.class);
@@ -206,11 +206,11 @@ public class CodecConfigurerTests {
 
 		List<HttpMessageReader<?>> readers = this.configurer.getReaders();
 
-		assertThat((long) readers.size()).isEqualTo((long) 4);
-		assertThat((Object) getNextDecoder(readers)).isSameAs(customDecoder1);
-		assertThat((Object) readers.get(this.index.getAndIncrement())).isSameAs(customReader1);
-		assertThat((Object) getNextDecoder(readers)).isSameAs(customDecoder2);
-		assertThat((Object) readers.get(this.index.getAndIncrement())).isSameAs(customReader2);
+		assertThat(readers.size()).isEqualTo((long) 4);
+		assertThat(getNextDecoder(readers)).isSameAs(customDecoder1);
+		assertThat(readers.get(this.index.getAndIncrement())).isSameAs(customReader1);
+		assertThat(getNextDecoder(readers)).isSameAs(customDecoder2);
+		assertThat(readers.get(this.index.getAndIncrement())).isSameAs(customReader2);
 	}
 
 	@Test
@@ -237,11 +237,11 @@ public class CodecConfigurerTests {
 
 		List<HttpMessageWriter<?>> writers = this.configurer.getWriters();
 
-		assertThat((long) writers.size()).isEqualTo((long) 4);
-		assertThat((Object) getNextEncoder(writers)).isSameAs(customEncoder1);
-		assertThat((Object) writers.get(this.index.getAndIncrement())).isSameAs(customWriter1);
-		assertThat((Object) getNextEncoder(writers)).isSameAs(customEncoder2);
-		assertThat((Object) writers.get(this.index.getAndIncrement())).isSameAs(customWriter2);
+		assertThat(writers.size()).isEqualTo((long) 4);
+		assertThat(getNextEncoder(writers)).isSameAs(customEncoder1);
+		assertThat(writers.get(this.index.getAndIncrement())).isSameAs(customWriter1);
+		assertThat(getNextEncoder(writers)).isSameAs(customEncoder2);
+		assertThat(writers.get(this.index.getAndIncrement())).isSameAs(customWriter2);
 	}
 
 	@Test
@@ -295,7 +295,7 @@ public class CodecConfigurerTests {
 	}
 
 	private void assertDecoderInstance(Decoder<?> decoder) {
-		assertThat((Object) this.configurer.getReaders().stream()
+		assertThat(this.configurer.getReaders().stream()
 				.filter(writer -> writer instanceof DecoderHttpMessageReader)
 				.map(writer -> ((DecoderHttpMessageReader<?>) writer).getDecoder())
 				.filter(e -> decoder.getClass().equals(e.getClass()))
@@ -304,7 +304,7 @@ public class CodecConfigurerTests {
 	}
 
 	private void assertEncoderInstance(Encoder<?> encoder) {
-		assertThat((Object) this.configurer.getWriters().stream()
+		assertThat(this.configurer.getWriters().stream()
 				.filter(writer -> writer instanceof EncoderHttpMessageWriter)
 				.map(writer -> ((EncoderHttpMessageWriter<?>) writer).getEncoder())
 				.filter(e -> encoder.getClass().equals(e.getClass()))

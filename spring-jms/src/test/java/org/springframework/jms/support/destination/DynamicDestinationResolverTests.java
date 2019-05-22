@@ -76,8 +76,8 @@ public class DynamicDestinationResolverTests {
 	private static void testResolveDestination(Session session, Destination expectedDestination, boolean isPubSub) throws JMSException {
 		DynamicDestinationResolver resolver = new DynamicDestinationResolver();
 		Destination destination = resolver.resolveDestinationName(session, DESTINATION_NAME, isPubSub);
-		assertThat((Object) destination).isNotNull();
-		assertThat((Object) destination).isSameAs(expectedDestination);
+		assertThat(destination).isNotNull();
+		assertThat(destination).isSameAs(expectedDestination);
 	}
 
 }

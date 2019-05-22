@@ -82,7 +82,7 @@ public class BridgeMethodResolverTests {
 		Method bridgedMethod = BridgeMethodResolver.findBridgedMethod(bridgeMethod);
 		assertThat(bridgedMethod.isBridge()).isFalse();
 		assertThat(bridgedMethod.getName()).isEqualTo("add");
-		assertThat((long) bridgedMethod.getParameterCount()).isEqualTo((long) 1);
+		assertThat(bridgedMethod.getParameterCount()).isEqualTo((long) 1);
 		assertThat(bridgedMethod.getParameterTypes()[0]).isEqualTo(Date.class);
 	}
 
@@ -111,11 +111,11 @@ public class BridgeMethodResolverTests {
 	@Test
 	public void testFindBridgedMethodFromMultipleBridges() throws Exception {
 		Method loadWithObjectReturn = findMethodWithReturnType("load", Object.class, SettingsDaoImpl.class);
-		assertThat((Object) loadWithObjectReturn).isNotNull();
+		assertThat(loadWithObjectReturn).isNotNull();
 
 		Method loadWithSettingsReturn = findMethodWithReturnType("load", Settings.class, SettingsDaoImpl.class);
-		assertThat((Object) loadWithSettingsReturn).isNotNull();
-		assertThat((Object) loadWithSettingsReturn).isNotSameAs(loadWithObjectReturn);
+		assertThat(loadWithSettingsReturn).isNotNull();
+		assertThat(loadWithSettingsReturn).isNotSameAs(loadWithObjectReturn);
 
 		Method method = SettingsDaoImpl.class.getMethod("load");
 		assertThat(BridgeMethodResolver.findBridgedMethod(loadWithObjectReturn)).isEqualTo(method);
@@ -176,7 +176,7 @@ public class BridgeMethodResolverTests {
 	public void testOnAllMethods() throws Exception {
 		Method[] methods = StringList.class.getMethods();
 		for (Method method : methods) {
-			assertThat((Object) BridgeMethodResolver.findBridgedMethod(method)).isNotNull();
+			assertThat(BridgeMethodResolver.findBridgedMethod(method)).isNotNull();
 		}
 	}
 

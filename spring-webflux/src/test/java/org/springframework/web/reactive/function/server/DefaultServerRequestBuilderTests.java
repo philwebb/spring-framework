@@ -62,9 +62,9 @@ public class DefaultServerRequestBuilderTests {
 				.build();
 
 		assertThat(result.method()).isEqualTo(HttpMethod.HEAD);
-		assertThat((long) result.headers().asHttpHeaders().size()).isEqualTo((long) 1);
+		assertThat(result.headers().asHttpHeaders().size()).isEqualTo((long) 1);
 		assertThat(result.headers().asHttpHeaders().getFirst("foo")).isEqualTo("baar");
-		assertThat((long) result.cookies().size()).isEqualTo((long) 1);
+		assertThat(result.cookies().size()).isEqualTo((long) 1);
 		assertThat(result.cookies().getFirst("baz").getValue()).isEqualTo("quux");
 
 		StepVerifier.create(result.bodyToFlux(String.class))

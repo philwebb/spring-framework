@@ -89,7 +89,7 @@ public class StaticApplicationContextMulticasterTests extends AbstractApplicatio
 	public void events() throws Exception {
 		TestApplicationEventMulticaster.counter = 0;
 		super.events();
-		assertThat((long) TestApplicationEventMulticaster.counter).isEqualTo((long) 1);
+		assertThat(TestApplicationEventMulticaster.counter).isEqualTo((long) 1);
 	}
 
 

@@ -83,7 +83,7 @@ public class SimpleUrlHandlerMappingTests {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/foo%0a%0dbar/baz");
 
 		HandlerExecutionChain hec = handlerMapping.getHandler(request);
-		assertThat((Object) hec).isNotNull();
+		assertThat(hec).isNotNull();
 		assertThat(hec.getHandler()).isSameAs(controller);
 	}
 

@@ -38,7 +38,7 @@ public class JmsResponseTests {
 	public void destinationDoesNotUseDestinationResolver() throws JMSException {
 		Destination destination = mock(Destination.class);
 		Destination actual = JmsResponse.forDestination("foo", destination).resolveDestination(null, null);
-		assertThat((Object) actual).isSameAs(destination);
+		assertThat(actual).isSameAs(destination);
 	}
 
 	@Test
@@ -50,7 +50,7 @@ public class JmsResponseTests {
 		given(destinationResolver.resolveDestinationName(session, "myQueue", false)).willReturn(destination);
 		JmsResponse<String> jmsResponse = JmsResponse.forQueue("foo", "myQueue");
 		Destination actual = jmsResponse.resolveDestination(destinationResolver, session);
-		assertThat((Object) actual).isSameAs(destination);
+		assertThat(actual).isSameAs(destination);
 	}
 
 	@Test

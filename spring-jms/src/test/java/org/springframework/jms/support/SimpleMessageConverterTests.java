@@ -85,7 +85,7 @@ public class SimpleMessageConverterTests {
 
 		SimpleMessageConverter converter = new SimpleMessageConverter();
 		Message msg = converter.toMessage(content, session);
-		assertThat((long) ((byte[]) converter.fromMessage(msg)).length).isEqualTo((long) content.length);
+		assertThat(((byte[]) converter.fromMessage(msg)).length).isEqualTo((long) content.length);
 
 		verify(message).writeBytes(content);
 	}
@@ -147,7 +147,7 @@ public class SimpleMessageConverterTests {
 
 		SimpleMessageConverter converter = new SimpleMessageConverter();
 		Message msg = converter.toMessage(message, session);
-		assertThat((Object) msg).isSameAs(message);
+		assertThat(msg).isSameAs(message);
 	}
 
 	@Test

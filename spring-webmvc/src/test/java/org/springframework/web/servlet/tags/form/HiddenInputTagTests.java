@@ -52,7 +52,7 @@ public class HiddenInputTagTests extends AbstractFormTagTests {
 	public void render() throws Exception {
 		this.tag.setPath("name");
 		int result = this.tag.doStartTag();
-		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 
@@ -72,7 +72,7 @@ public class HiddenInputTagTests extends AbstractFormTagTests {
 		errors.getPropertyAccessor().registerCustomEditor(Float.class, new SimpleFloatEditor());
 		exposeBindingResult(errors);
 
-		assertThat((long) this.tag.doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(this.tag.doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 

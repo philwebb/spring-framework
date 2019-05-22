@@ -330,13 +330,13 @@ public class AnnotationTransactionInterceptorTests {
 	}
 
 	private void assertGetTransactionAndCommitCount(int expectedCount) {
-		assertThat((long) this.ptm.begun).isEqualTo((long) expectedCount);
-		assertThat((long) this.ptm.commits).isEqualTo((long) expectedCount);
+		assertThat(this.ptm.begun).isEqualTo((long) expectedCount);
+		assertThat(this.ptm.commits).isEqualTo((long) expectedCount);
 	}
 
 	private void assertGetTransactionAndRollbackCount(int expectedCount) {
-		assertThat((long) this.ptm.begun).isEqualTo((long) expectedCount);
-		assertThat((long) this.ptm.rollbacks).isEqualTo((long) expectedCount);
+		assertThat(this.ptm.begun).isEqualTo((long) expectedCount);
+		assertThat(this.ptm.rollbacks).isEqualTo((long) expectedCount);
 	}
 
 

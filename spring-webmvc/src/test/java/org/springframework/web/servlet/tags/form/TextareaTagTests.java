@@ -54,7 +54,7 @@ public class TextareaTagTests extends AbstractFormTagTests {
 		this.tag.setPath("name");
 		this.tag.setReadonly(true);
 
-		assertThat((long) this.tag.doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(this.tag.doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
 		String output = getOutput();
 		assertContainsAttribute(output, "name", "name");
 		assertContainsAttribute(output, "readonly", "readonly");
@@ -71,7 +71,7 @@ public class TextareaTagTests extends AbstractFormTagTests {
 		this.tag.setDynamicAttribute(null, dynamicAttribute1, dynamicAttribute1);
 		this.tag.setDynamicAttribute(null, dynamicAttribute2, dynamicAttribute2);
 
-		assertThat((long) this.tag.doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(this.tag.doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
 		String output = getOutput();
 		assertContainsAttribute(output, "name", "name");
 		assertContainsAttribute(output, "readonly", "readonly");
@@ -87,7 +87,7 @@ public class TextareaTagTests extends AbstractFormTagTests {
 		this.tag.setPath("spouse.name");
 		this.tag.setOnselect(onselect);
 
-		assertThat((long) this.tag.doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(this.tag.doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
 		String output = getOutput();
 		assertContainsAttribute(output, "name", "spouse.name");
 		assertContainsAttribute(output, "onselect", onselect);
@@ -102,7 +102,7 @@ public class TextareaTagTests extends AbstractFormTagTests {
 		this.tag.setPath("name");
 		this.rob.setName(NAME);
 
-		assertThat((long) this.tag.doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(this.tag.doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
 		String output = getOutput();
 		System.out.println(output);
 		assertContainsAttribute(output, "name", "name");
@@ -115,7 +115,7 @@ public class TextareaTagTests extends AbstractFormTagTests {
 		result.getPropertyAccessor().registerCustomEditor(Float.class, new SimpleFloatEditor());
 		exposeBindingResult(result);
 		this.tag.setPath("myFloat");
-		assertThat((long) this.tag.doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(this.tag.doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
 		String output = getOutput();
 		assertContainsAttribute(output, "name", "myFloat");
 		assertBlockTagContains(output, "12.34f");
@@ -126,7 +126,7 @@ public class TextareaTagTests extends AbstractFormTagTests {
 		this.tag.setPath("name");
 		this.tag.setReadonly(true);
 
-		assertThat((long) this.tag.doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(this.tag.doStartTag()).isEqualTo((long) Tag.SKIP_BODY);
 		String output = getOutput();
 		assertBlockTagContains(output, "\r\nRob");
 	}

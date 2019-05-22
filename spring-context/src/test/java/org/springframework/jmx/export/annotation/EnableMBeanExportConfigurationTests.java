@@ -145,7 +145,7 @@ public class EnableMBeanExportConfigurationTests {
 
 	private void validateMBeanAttribute(MBeanServer server, String objectName, String expected) throws Exception {
 		ObjectName oname = ObjectNameManager.getInstance(objectName);
-		assertThat((Object) server.getObjectInstance(oname)).isNotNull();
+		assertThat(server.getObjectInstance(oname)).isNotNull();
 		String name = (String) server.getAttribute(oname, "Name");
 		assertThat(name).as("Invalid name returned").isEqualTo(expected);
 	}

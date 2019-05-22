@@ -52,11 +52,11 @@ public class GroovyControlGroupTests {
 		assertThat(bar).isEqualTo("Bar");
 
 		Pet pet = ctx.getBean(Pet.class);
-		assertThat((Object) pet).as("pet").isNotNull();
+		assertThat(pet).as("pet").isNotNull();
 		assertThat(pet.getName()).isEqualTo("Dogbert");
 
 		Employee employee = ctx.getBean(Employee.class);
-		assertThat((Object) employee).as("employee").isNotNull();
+		assertThat(employee).as("employee").isNotNull();
 		assertThat(employee.getName()).isEqualTo("Dilbert");
 		assertThat(employee.getCompany()).isEqualTo("???");
 	}

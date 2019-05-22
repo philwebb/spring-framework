@@ -41,7 +41,7 @@ public class RefreshableTargetSourceTests {
 		Thread.sleep(1);
 		Object b = ts.getTarget();
 
-		assertThat((long) ts.getCallCount()).as("Should be one call to freshTarget to get initial target").isEqualTo((long) 1);
+		assertThat(ts.getCallCount()).as("Should be one call to freshTarget to get initial target").isEqualTo((long) 1);
 		assertThat(b).as("Returned objects should be the same - no refresh should occur").isSameAs(a);
 	}
 
@@ -57,7 +57,7 @@ public class RefreshableTargetSourceTests {
 		Thread.sleep(100);
 		Object b = ts.getTarget();
 
-		assertThat((long) ts.getCallCount()).as("Should have called freshTarget twice").isEqualTo((long) 2);
+		assertThat(ts.getCallCount()).as("Should have called freshTarget twice").isEqualTo((long) 2);
 		assertThat(b).as("Should be different objects").isNotSameAs(a);
 	}
 
@@ -72,7 +72,7 @@ public class RefreshableTargetSourceTests {
 		Object a = ts.getTarget();
 		Object b = ts.getTarget();
 
-		assertThat((long) ts.getCallCount()).as("Refresh target should only be called once").isEqualTo((long) 1);
+		assertThat(ts.getCallCount()).as("Refresh target should only be called once").isEqualTo((long) 1);
 		assertThat(b).as("Objects should be the same - refresh check delay not elapsed").isSameAs(a);
 	}
 

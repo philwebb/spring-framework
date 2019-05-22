@@ -75,7 +75,7 @@ public class GsonHttpMessageConverterTests {
 		MyBean result = (MyBean) this.converter.read(MyBean.class, inputMessage);
 
 		assertThat(result.getString()).isEqualTo("Foo");
-		assertThat((long) result.getNumber()).isEqualTo((long) 42);
+		assertThat(result.getNumber()).isEqualTo((long) 42);
 		assertThat(result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
 
 		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
@@ -185,10 +185,10 @@ public class GsonHttpMessageConverterTests {
 
 		Type genericType = beansList.getGenericType();
 		List<MyBean> results = (List<MyBean>) converter.read(genericType, MyBeanListHolder.class, inputMessage);
-		assertThat((long) results.size()).isEqualTo((long) 1);
+		assertThat(results.size()).isEqualTo((long) 1);
 		MyBean result = results.get(0);
 		assertThat(result.getString()).isEqualTo("Foo");
-		assertThat((long) result.getNumber()).isEqualTo((long) 42);
+		assertThat(result.getNumber()).isEqualTo((long) 42);
 		assertThat(result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
 
 		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
@@ -212,10 +212,10 @@ public class GsonHttpMessageConverterTests {
 		inputMessage.getHeaders().setContentType(new MediaType("application", "json"));
 
 		List<MyBean> results = (List<MyBean>) converter.read(beansList.getType(), null, inputMessage);
-		assertThat((long) results.size()).isEqualTo((long) 1);
+		assertThat(results.size()).isEqualTo((long) 1);
 		MyBean result = results.get(0);
 		assertThat(result.getString()).isEqualTo("Foo");
-		assertThat((long) result.getNumber()).isEqualTo((long) 42);
+		assertThat(result.getNumber()).isEqualTo((long) 42);
 		assertThat(result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
 
 		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});
@@ -239,10 +239,10 @@ public class GsonHttpMessageConverterTests {
 		inputMessage.getHeaders().setContentType(new MediaType("application", "json"));
 
 		List<MyBean> results = (List<MyBean>) converter.read(beansList.getType(), null, inputMessage);
-		assertThat((long) results.size()).isEqualTo((long) 1);
+		assertThat(results.size()).isEqualTo((long) 1);
 		MyBean result = results.get(0);
 		assertThat(result.getString()).isEqualTo("Foo");
-		assertThat((long) result.getNumber()).isEqualTo((long) 42);
+		assertThat(result.getNumber()).isEqualTo((long) 42);
 		assertThat(result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
 
 		assertThat(result.getArray()).isEqualTo(new String[] {"Foo", "Bar"});

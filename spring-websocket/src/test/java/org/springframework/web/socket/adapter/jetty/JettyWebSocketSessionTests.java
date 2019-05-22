@@ -48,7 +48,7 @@ public class JettyWebSocketSessionTests {
 		TestPrincipal user = new TestPrincipal("joe");
 		JettyWebSocketSession session = new JettyWebSocketSession(attributes, user);
 
-		assertThat((Object) session.getPrincipal()).isSameAs(user);
+		assertThat(session.getPrincipal()).isSameAs(user);
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class JettyWebSocketSessionTests {
 
 		reset(nativeSession);
 
-		assertThat((Object) session.getPrincipal()).isSameAs(user);
+		assertThat(session.getPrincipal()).isSameAs(user);
 		verifyNoMoreInteractions(nativeSession);
 	}
 
@@ -93,7 +93,7 @@ public class JettyWebSocketSessionTests {
 
 		reset(nativeSession);
 
-		assertThat((Object) session.getPrincipal()).isNull();
+		assertThat(session.getPrincipal()).isNull();
 		verifyNoMoreInteractions(nativeSession);
 	}
 
@@ -117,7 +117,7 @@ public class JettyWebSocketSessionTests {
 
 		reset(nativeSession);
 
-		assertThat((Object) session.getAcceptedProtocol()).isSameAs(protocol);
+		assertThat(session.getAcceptedProtocol()).isSameAs(protocol);
 		verifyNoMoreInteractions(nativeSession);
 	}
 

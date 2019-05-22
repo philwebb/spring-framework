@@ -362,14 +362,14 @@ public class CallbacksSecurityTests {
 	public void testSpringDestroyBean() throws Exception {
 		beanFactory.getBean("spring-destroy");
 		beanFactory.destroySingletons();
-		assertThat((Object) System.getProperty("security.destroy")).isNull();
+		assertThat(System.getProperty("security.destroy")).isNull();
 	}
 
 	@Test
 	public void testCustomDestroyBean() throws Exception {
 		beanFactory.getBean("custom-destroy");
 		beanFactory.destroySingletons();
-		assertThat((Object) System.getProperty("security.destroy")).isNull();
+		assertThat(System.getProperty("security.destroy")).isNull();
 	}
 
 	@Test
@@ -381,8 +381,8 @@ public class CallbacksSecurityTests {
 
 	@Test
 	public void testCustomFactoryType() throws Exception {
-		assertThat((Object) beanFactory.getType("spring-factory")).isNull();
-		assertThat((Object) System.getProperty("factory.object.type")).isNull();
+		assertThat(beanFactory.getType("spring-factory")).isNull();
+		assertThat(System.getProperty("factory.object.type")).isNull();
 	}
 
 	@Test
@@ -455,7 +455,7 @@ public class CallbacksSecurityTests {
 						return lbf.getBean("test", NonPrivilegedBean.class);
 					}
 				}, null);
-		assertThat((Object) bean).isNotNull();
+		assertThat(bean).isNotNull();
 	}
 
 	@Test

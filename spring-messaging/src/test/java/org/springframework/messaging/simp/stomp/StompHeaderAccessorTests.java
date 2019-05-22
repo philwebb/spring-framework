@@ -123,7 +123,7 @@ public class StompHeaderAccessorTests {
 
 		Map<String, List<String>> actual = headers.toNativeHeaderMap();
 
-		assertThat((long) actual.size()).isEqualTo((long) 2);
+		assertThat(actual.size()).isEqualTo((long) 2);
 		assertThat(actual.get(StompHeaderAccessor.STOMP_ID_HEADER).get(0)).isEqualTo("s1");
 		assertThat(actual.get(StompHeaderAccessor.STOMP_DESTINATION_HEADER).get(0)).isEqualTo("/d");
 	}
@@ -135,7 +135,7 @@ public class StompHeaderAccessorTests {
 
 		Map<String, List<String>> actual = headers.toNativeHeaderMap();
 
-		assertThat((long) actual.size()).isEqualTo((long) 1);
+		assertThat(actual.size()).isEqualTo((long) 1);
 		assertThat(actual.get(StompHeaderAccessor.STOMP_ID_HEADER).get(0)).isEqualTo("s1");
 	}
 
@@ -149,11 +149,11 @@ public class StompHeaderAccessorTests {
 
 		Map<String, List<String>> actual = headers.toNativeHeaderMap();
 
-		assertThat((long) actual.size()).as(actual.toString()).isEqualTo((long) 4);
+		assertThat(actual.size()).as(actual.toString()).isEqualTo((long) 4);
 		assertThat(actual.get(StompHeaderAccessor.STOMP_SUBSCRIPTION_HEADER).get(0)).isEqualTo("s1");
 		assertThat(actual.get(StompHeaderAccessor.STOMP_DESTINATION_HEADER).get(0)).isEqualTo("/d");
 		assertThat(actual.get(StompHeaderAccessor.STOMP_CONTENT_TYPE_HEADER).get(0)).isEqualTo("application/json");
-		assertThat((Object) actual.get(StompHeaderAccessor.STOMP_MESSAGE_ID_HEADER).get(0)).as("message-id was not created").isNotNull();
+		assertThat(actual.get(StompHeaderAccessor.STOMP_MESSAGE_ID_HEADER).get(0)).as("message-id was not created").isNotNull();
 	}
 
 	@Test
@@ -193,11 +193,11 @@ public class StompHeaderAccessorTests {
 		headers.setNativeHeader("accountId", accountId.toLowerCase());
 
 		Map<String, List<String>> actual = headers.toNativeHeaderMap();
-		assertThat((long) actual.size()).isEqualTo((long) 3);
+		assertThat(actual.size()).isEqualTo((long) 3);
 
 		assertThat(actual.get(StompHeaderAccessor.STOMP_ID_HEADER).get(0)).isEqualTo("s1");
 		assertThat(actual.get(StompHeaderAccessor.STOMP_DESTINATION_HEADER).get(0)).isEqualTo("/d");
-		assertThat((Object) actual.get("accountId").get(0)).as("abc123").isNotNull();
+		assertThat(actual.get("accountId").get(0)).as("abc123").isNotNull();
 	}
 
 	@Test
@@ -205,8 +205,8 @@ public class StompHeaderAccessorTests {
 		StompHeaderAccessor headerAccessor = StompHeaderAccessor.create(StompCommand.SEND);
 		MessageHeaders headers = headerAccessor.getMessageHeaders();
 
-		assertThat((Object) headers.getId()).isNull();
-		assertThat((Object) headers.getTimestamp()).isNull();
+		assertThat(headers.getId()).isNull();
+		assertThat(headers.getTimestamp()).isNull();
 	}
 
 	@Test
@@ -218,8 +218,8 @@ public class StompHeaderAccessorTests {
 		StompHeaderAccessor headerAccessor = StompHeaderAccessor.create(StompCommand.SEND);
 		headerInitializer.initHeaders(headerAccessor);
 
-		assertThat((Object) headerAccessor.getMessageHeaders().getId()).isNotNull();
-		assertThat((Object) headerAccessor.getMessageHeaders().getTimestamp()).isNotNull();
+		assertThat(headerAccessor.getMessageHeaders().getId()).isNotNull();
+		assertThat(headerAccessor.getMessageHeaders().getTimestamp()).isNotNull();
 	}
 
 	@Test

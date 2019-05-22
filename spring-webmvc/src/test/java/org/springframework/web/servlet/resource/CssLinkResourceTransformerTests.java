@@ -100,7 +100,7 @@ public class CssLinkResourceTransformerTests {
 		this.request = new MockHttpServletRequest("GET", "/static/foo.css");
 		Resource expected = getResource("foo.css");
 		Resource actual = this.transformerChain.transform(this.request, expected);
-		assertThat((Object) actual).isSameAs(expected);
+		assertThat(actual).isSameAs(expected);
 	}
 
 	@Test
@@ -133,7 +133,7 @@ public class CssLinkResourceTransformerTests {
 		Resource expected = getResource("images/image.png");
 		Resource actual = this.transformerChain.transform(this.request, expected);
 
-		assertThat((Object) actual).isSameAs(expected);
+		assertThat(actual).isSameAs(expected);
 	}
 
 	@Test
@@ -146,7 +146,7 @@ public class CssLinkResourceTransformerTests {
 		EncodedResource gzipped = new EncodedResource(original, "gzip", ".gz");
 		Resource actual = this.transformerChain.transform(this.request, gzipped);
 
-		assertThat((Object) actual).isSameAs(gzipped);
+		assertThat(actual).isSameAs(gzipped);
 	}
 
 	@Test // https://github.com/spring-projects/spring-framework/issues/22602

@@ -42,7 +42,7 @@ public class MessageHeadersTests {
 	@Test
 	public void testTimestamp() {
 		MessageHeaders headers = new MessageHeaders(null);
-		assertThat((Object) headers.getTimestamp()).isNotNull();
+		assertThat(headers.getTimestamp()).isNotNull();
 	}
 
 	@Test
@@ -50,39 +50,39 @@ public class MessageHeadersTests {
 		MessageHeaders headers1 = new MessageHeaders(null);
 		Thread.sleep(50L);
 		MessageHeaders headers2 = new MessageHeaders(headers1);
-		assertThat((Object) headers2.getTimestamp()).isNotSameAs(headers1.getTimestamp());
+		assertThat(headers2.getTimestamp()).isNotSameAs(headers1.getTimestamp());
 	}
 
 	@Test
 	public void testTimestampProvided() throws Exception {
 		MessageHeaders headers = new MessageHeaders(null, null, 10L);
-		assertThat((long) headers.getTimestamp()).isEqualTo(10L);
+		assertThat(headers.getTimestamp()).isEqualTo(10L);
 	}
 
 	@Test
 	public void testTimestampProvidedNullValue() throws Exception {
 		Map<String, Object> input = Collections.<String, Object>singletonMap(MessageHeaders.TIMESTAMP, 1L);
 		MessageHeaders headers = new MessageHeaders(input, null, null);
-		assertThat((Object) headers.getTimestamp()).isNotNull();
+		assertThat(headers.getTimestamp()).isNotNull();
 	}
 
 	@Test
 	public void testTimestampNone() throws Exception {
 		MessageHeaders headers = new MessageHeaders(null, null, -1L);
-		assertThat((Object) headers.getTimestamp()).isNull();
+		assertThat(headers.getTimestamp()).isNull();
 	}
 
 	@Test
 	public void testIdOverwritten() throws Exception {
 		MessageHeaders headers1 = new MessageHeaders(null);
 		MessageHeaders headers2 = new MessageHeaders(headers1);
-		assertThat((Object) headers2.getId()).isNotSameAs(headers1.getId());
+		assertThat(headers2.getId()).isNotSameAs(headers1.getId());
 	}
 
 	@Test
 	public void testId() {
 		MessageHeaders headers = new MessageHeaders(null);
-		assertThat((Object) headers.getId()).isNotNull();
+		assertThat(headers.getId()).isNotNull();
 	}
 
 	@Test
@@ -96,13 +96,13 @@ public class MessageHeadersTests {
 	public void testIdProvidedNullValue() {
 		Map<String, Object> input = Collections.<String, Object>singletonMap(MessageHeaders.ID, new UUID(0L, 25L));
 		MessageHeaders headers = new MessageHeaders(input, null, null);
-		assertThat((Object) headers.getId()).isNotNull();
+		assertThat(headers.getId()).isNotNull();
 	}
 
 	@Test
 	public void testIdNone() {
 		MessageHeaders headers = new MessageHeaders(null, MessageHeaders.ID_VALUE_NONE, null);
-		assertThat((Object) headers.getId()).isNull();
+		assertThat(headers.getId()).isNull();
 	}
 
 	@Test
@@ -196,7 +196,7 @@ public class MessageHeadersTests {
 		}
 		MessageHeaders headers = new MyMH();
 		assertThat(headers.getId().toString()).isEqualTo("00000000-0000-0000-0000-000000000001");
-		assertThat((long) headers.size()).isEqualTo((long) 1);
+		assertThat(headers.size()).isEqualTo((long) 1);
 	}
 
 }

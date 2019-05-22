@@ -89,7 +89,7 @@ public class ContextLoaderTests {
 		listener.contextDestroyed(event);
 		assertThat(lb.isDestroyed()).as("Destroyed").isTrue();
 		assertThat(sc.getAttribute(contextAttr)).isNull();
-		assertThat((Object) WebApplicationContextUtils.getWebApplicationContext(sc)).isNull();
+		assertThat(WebApplicationContextUtils.getWebApplicationContext(sc)).isNull();
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class ContextLoaderTests {
 		ServletContextListener listener = new ContextLoaderListener() {
 			@Override
 			protected void customizeContext(ServletContext sc, ConfigurableWebApplicationContext wac) {
-				assertThat((Object) sc).as("The ServletContext should not be null.").isNotNull();
+				assertThat(sc).as("The ServletContext should not be null.").isNotNull();
 				assertThat(sc).as("Verifying that we received the expected ServletContext.").isEqualTo(sc);
 				assertThat(wac.isActive()).as("The ApplicationContext should not yet have been refreshed.").isFalse();
 				buffer.append(expectedContents);
@@ -337,7 +337,7 @@ public class ContextLoaderTests {
 						}
 						catch (BeanCreationException ex) {
 							DefaultListableBeanFactory factory = (DefaultListableBeanFactory) getBeanFactory();
-							assertThat((long) factory.getSingletonCount()).isEqualTo((long) 0);
+							assertThat(factory.getSingletonCount()).isEqualTo((long) 0);
 							throw ex;
 						}
 					}

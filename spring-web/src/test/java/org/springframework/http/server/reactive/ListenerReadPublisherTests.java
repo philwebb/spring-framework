@@ -51,7 +51,7 @@ public class ListenerReadPublisherTests {
 		this.subscriber.getSubscription().request(2);
 		this.publisher.onDataAvailable();
 
-		assertThat((long) this.publisher.getReadCalls()).isEqualTo((long) 2);
+		assertThat(this.publisher.getReadCalls()).isEqualTo((long) 2);
 	}
 
 	@Test // SPR-17410
@@ -61,8 +61,8 @@ public class ListenerReadPublisherTests {
 		this.publisher.onDataAvailable();
 		this.publisher.onError(new IllegalStateException());
 
-		assertThat((long) this.publisher.getReadCalls()).isEqualTo((long) 2);
-		assertThat((long) this.publisher.getDiscardCalls()).isEqualTo((long) 1);
+		assertThat(this.publisher.getReadCalls()).isEqualTo((long) 2);
+		assertThat(this.publisher.getDiscardCalls()).isEqualTo((long) 1);
 	}
 
 	@Test // SPR-17410
@@ -72,8 +72,8 @@ public class ListenerReadPublisherTests {
 		this.subscriber.setCancelOnNext(true);
 		this.publisher.onDataAvailable();
 
-		assertThat((long) this.publisher.getReadCalls()).isEqualTo((long) 1);
-		assertThat((long) this.publisher.getDiscardCalls()).isEqualTo((long) 1);
+		assertThat(this.publisher.getReadCalls()).isEqualTo((long) 1);
+		assertThat(this.publisher.getDiscardCalls()).isEqualTo((long) 1);
 	}
 
 

@@ -73,8 +73,8 @@ public class ExceptionHandlerMethodResolverTests {
 	public void resolveMethodNoMatch() {
 		ExceptionHandlerMethodResolver resolver = new ExceptionHandlerMethodResolver(ExceptionController.class);
 		Exception exception = new Exception();
-		assertThat((Object) resolver.resolveMethod(exception)).as("1st lookup").isNull();
-		assertThat((Object) resolver.resolveMethod(exception)).as("2nd lookup from cache").isNull();
+		assertThat(resolver.resolveMethod(exception)).as("1st lookup").isNull();
+		assertThat(resolver.resolveMethod(exception)).as("2nd lookup from cache").isNull();
 	}
 
 	@Test

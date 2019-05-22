@@ -69,17 +69,17 @@ public class EnableAspectJAutoProxyTests {
 		FooService fooService = ctx.getBean(FooService.class);
 		ServiceInvocationCounter counter = ctx.getBean(ServiceInvocationCounter.class);
 
-		assertThat((long) counter.getCount()).isEqualTo((long) 0);
+		assertThat(counter.getCount()).isEqualTo((long) 0);
 
 		assertThat(fooService.isInitCalled()).isTrue();
-		assertThat((long) counter.getCount()).isEqualTo((long) 1);
+		assertThat(counter.getCount()).isEqualTo((long) 1);
 
 		String value = fooService.foo(1);
 		assertThat(value).isEqualTo("bar");
-		assertThat((long) counter.getCount()).isEqualTo((long) 2);
+		assertThat(counter.getCount()).isEqualTo((long) 2);
 
 		fooService.foo(1);
-		assertThat((long) counter.getCount()).isEqualTo((long) 3);
+		assertThat(counter.getCount()).isEqualTo((long) 3);
 	}
 
 	@Test

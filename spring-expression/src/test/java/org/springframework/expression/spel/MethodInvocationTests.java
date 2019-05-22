@@ -220,20 +220,20 @@ public class MethodInvocationTests extends AbstractExpressionTests {
 
 		// reflective method accessor is the only one by default
 		List<MethodResolver> methodResolvers = ctx.getMethodResolvers();
-		assertThat((long) methodResolvers.size()).isEqualTo((long) 1);
+		assertThat(methodResolvers.size()).isEqualTo((long) 1);
 
 		MethodResolver dummy = new DummyMethodResolver();
 		ctx.addMethodResolver(dummy);
-		assertThat((long) ctx.getMethodResolvers().size()).isEqualTo((long) 2);
+		assertThat(ctx.getMethodResolvers().size()).isEqualTo((long) 2);
 
 		List<MethodResolver> copy = new ArrayList<>();
 		copy.addAll(ctx.getMethodResolvers());
 		assertThat(ctx.removeMethodResolver(dummy)).isTrue();
 		assertThat(ctx.removeMethodResolver(dummy)).isFalse();
-		assertThat((long) ctx.getMethodResolvers().size()).isEqualTo((long) 1);
+		assertThat(ctx.getMethodResolvers().size()).isEqualTo((long) 1);
 
 		ctx.setMethodResolvers(copy);
-		assertThat((long) ctx.getMethodResolvers().size()).isEqualTo((long) 2);
+		assertThat(ctx.getMethodResolvers().size()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -288,7 +288,7 @@ public class MethodInvocationTests extends AbstractExpressionTests {
 		});
 		Expression expression = parser.parseExpression("@service.handleBytes(#root)");
 		byte[] outBytes = expression.getValue(context, byte[].class);
-		assertThat((Object) outBytes).isSameAs(bytes);
+		assertThat(outBytes).isSameAs(bytes);
 	}
 
 

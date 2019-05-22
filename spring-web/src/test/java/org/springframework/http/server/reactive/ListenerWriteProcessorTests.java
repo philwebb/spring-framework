@@ -63,9 +63,9 @@ public class ListenerWriteProcessorTests {
 		// Send error while item cached
 		this.processor.onError(new IllegalStateException());
 
-		assertThat((Object) this.resultSubscriber.getError()).as("Error should flow to result publisher").isNotNull();
-		assertThat((long) this.processor.getDiscardedBuffers().size()).isEqualTo((long) 1);
-		assertThat((Object) this.processor.getDiscardedBuffers().get(0)).isSameAs(buffer);
+		assertThat(this.resultSubscriber.getError()).as("Error should flow to result publisher").isNotNull();
+		assertThat(this.processor.getDiscardedBuffers().size()).isEqualTo((long) 1);
+		assertThat(this.processor.getDiscardedBuffers().get(0)).isSameAs(buffer);
 	}
 
 	@Test // SPR-17410
@@ -79,9 +79,9 @@ public class ListenerWriteProcessorTests {
 		DataBuffer buffer = mock(DataBuffer.class);
 		this.processor.onNext(buffer);
 
-		assertThat((Object) this.resultSubscriber.getError()).as("Error should flow to result publisher").isNotNull();
-		assertThat((long) this.processor.getDiscardedBuffers().size()).isEqualTo((long) 1);
-		assertThat((Object) this.processor.getDiscardedBuffers().get(0)).isSameAs(buffer);
+		assertThat(this.resultSubscriber.getError()).as("Error should flow to result publisher").isNotNull();
+		assertThat(this.processor.getDiscardedBuffers().size()).isEqualTo((long) 1);
+		assertThat(this.processor.getDiscardedBuffers().get(0)).isSameAs(buffer);
 	}
 
 	@Test // SPR-17410
@@ -96,10 +96,10 @@ public class ListenerWriteProcessorTests {
 		DataBuffer buffer2 = mock(DataBuffer.class);
 		this.processor.onNext(buffer2);
 
-		assertThat((Object) this.resultSubscriber.getError()).as("Error should flow to result publisher").isNotNull();
-		assertThat((long) this.processor.getDiscardedBuffers().size()).isEqualTo((long) 2);
-		assertThat((Object) this.processor.getDiscardedBuffers().get(0)).isSameAs(buffer2);
-		assertThat((Object) this.processor.getDiscardedBuffers().get(1)).isSameAs(buffer1);
+		assertThat(this.resultSubscriber.getError()).as("Error should flow to result publisher").isNotNull();
+		assertThat(this.processor.getDiscardedBuffers().size()).isEqualTo((long) 2);
+		assertThat(this.processor.getDiscardedBuffers().get(0)).isSameAs(buffer2);
+		assertThat(this.processor.getDiscardedBuffers().get(1)).isSameAs(buffer1);
 	}
 
 

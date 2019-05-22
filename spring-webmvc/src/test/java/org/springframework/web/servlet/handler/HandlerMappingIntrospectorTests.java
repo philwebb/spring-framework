@@ -87,7 +87,7 @@ public class HandlerMappingIntrospectorTests {
 		cxt.refresh();
 
 		List<HandlerMapping> actual = getIntrospector(cxt).getHandlerMappings();
-		assertThat((long) actual.size()).isEqualTo((long) 2);
+		assertThat(actual.size()).isEqualTo((long) 2);
 		assertThat(actual.get(0).getClass()).isEqualTo(BeanNameUrlHandlerMapping.class);
 		assertThat(actual.get(1).getClass()).isEqualTo(RequestMappingHandlerMapping.class);
 	}
@@ -132,7 +132,7 @@ public class HandlerMappingIntrospectorTests {
 		request.addHeader(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "POST");
 		CorsConfiguration corsConfig = getIntrospector(cxt).getCorsConfiguration(request);
 
-		assertThat((Object) corsConfig).isNotNull();
+		assertThat(corsConfig).isNotNull();
 		assertThat(corsConfig.getAllowedOrigins()).isEqualTo(Collections.singletonList("http://localhost:9000"));
 		assertThat(corsConfig.getAllowedMethods()).isEqualTo(Collections.singletonList("POST"));
 	}
@@ -147,7 +147,7 @@ public class HandlerMappingIntrospectorTests {
 		request.addHeader("Origin", "http://localhost:9000");
 		CorsConfiguration corsConfig = getIntrospector(cxt).getCorsConfiguration(request);
 
-		assertThat((Object) corsConfig).isNotNull();
+		assertThat(corsConfig).isNotNull();
 		assertThat(corsConfig.getAllowedOrigins()).isEqualTo(Collections.singletonList("http://localhost:9000"));
 		assertThat(corsConfig.getAllowedMethods()).isEqualTo(Collections.singletonList("POST"));
 	}

@@ -108,7 +108,7 @@ public class BenchmarkTests {
 		ITestBean adrian = (ITestBean) bf.getBean("adrian");
 
 		assertThat(AopUtils.isAopProxy(adrian)).isTrue();
-		assertThat((long) adrian.getAge()).isEqualTo((long) 68);
+		assertThat(adrian.getAge()).isEqualTo((long) 68);
 
 		for (int i = 0; i < howmany; i++) {
 			adrian.getAge();

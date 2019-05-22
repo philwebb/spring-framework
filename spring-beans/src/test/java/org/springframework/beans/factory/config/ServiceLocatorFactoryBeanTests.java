@@ -57,7 +57,7 @@ public class ServiceLocatorFactoryBeanTests {
 
 		TestServiceLocator factory = (TestServiceLocator) bf.getBean("factory");
 		TestService testService = factory.getTestService();
-		assertThat((Object) testService).isNotNull();
+		assertThat(testService).isNotNull();
 	}
 
 	@Test
@@ -156,12 +156,12 @@ public class ServiceLocatorFactoryBeanTests {
 		TestService testBean2 = factory.getTestService("testService");
 		TestService testBean3 = factory.getTestService(1);
 		TestService testBean4 = factory.someFactoryMethod();
-		assertThat((Object) testBean2).isNotSameAs(testBean1);
-		assertThat((Object) testBean3).isNotSameAs(testBean1);
-		assertThat((Object) testBean4).isNotSameAs(testBean1);
-		assertThat((Object) testBean3).isNotSameAs(testBean2);
-		assertThat((Object) testBean4).isNotSameAs(testBean2);
-		assertThat((Object) testBean4).isNotSameAs(testBean3);
+		assertThat(testBean2).isNotSameAs(testBean1);
+		assertThat(testBean3).isNotSameAs(testBean1);
+		assertThat(testBean4).isNotSameAs(testBean1);
+		assertThat(testBean3).isNotSameAs(testBean2);
+		assertThat(testBean4).isNotSameAs(testBean2);
+		assertThat(testBean4).isNotSameAs(testBean3);
 
 		assertThat(factory.toString().contains("TestServiceLocator3")).isTrue();
 	}
@@ -190,12 +190,12 @@ public class ServiceLocatorFactoryBeanTests {
 		TestService testBean2 = factory.getTestService("testService1");
 		TestService testBean3 = factory.getTestService(1);
 		TestService testBean4 = factory.getTestService(2);
-		assertThat((Object) testBean2).isNotSameAs(testBean1);
-		assertThat((Object) testBean3).isNotSameAs(testBean1);
-		assertThat((Object) testBean4).isNotSameAs(testBean1);
-		assertThat((Object) testBean3).isNotSameAs(testBean2);
-		assertThat((Object) testBean4).isNotSameAs(testBean2);
-		assertThat((Object) testBean4).isNotSameAs(testBean3);
+		assertThat(testBean2).isNotSameAs(testBean1);
+		assertThat(testBean3).isNotSameAs(testBean1);
+		assertThat(testBean4).isNotSameAs(testBean1);
+		assertThat(testBean3).isNotSameAs(testBean2);
+		assertThat(testBean4).isNotSameAs(testBean2);
+		assertThat(testBean4).isNotSameAs(testBean3);
 		boolean condition3 = testBean1 instanceof ExtendedTestService;
 		assertThat(condition3).isFalse();
 		boolean condition2 = testBean2 instanceof ExtendedTestService;

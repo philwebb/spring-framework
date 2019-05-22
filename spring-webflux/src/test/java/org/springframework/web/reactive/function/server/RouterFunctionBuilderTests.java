@@ -174,20 +174,20 @@ public class RouterFunctionBuilderTests {
 				.GET("/bar", request -> Mono.error(new IllegalStateException()))
 				.before(request -> {
 					int count = filterCount.getAndIncrement();
-					assertThat((long) count).isEqualTo((long) 0);
+					assertThat(count).isEqualTo((long) 0);
 					return request;
 				})
 				.after((request, response) -> {
 					int count = filterCount.getAndIncrement();
-					assertThat((long) count).isEqualTo((long) 3);
+					assertThat(count).isEqualTo((long) 3);
 					return response;
 				})
 				.filter((request, next) -> {
 					int count = filterCount.getAndIncrement();
-					assertThat((long) count).isEqualTo((long) 1);
+					assertThat(count).isEqualTo((long) 1);
 					Mono<ServerResponse> responseMono = next.handle(request);
 					count = filterCount.getAndIncrement();
-					assertThat((long) count).isEqualTo((long) 2);
+					assertThat(count).isEqualTo((long) 2);
 					return responseMono;
 				})
 				.onError(IllegalStateException.class, (e, request) -> ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).build())
@@ -203,7 +203,7 @@ public class RouterFunctionBuilderTests {
 
 
 		StepVerifier.create(fooResponseMono)
-				.consumeNextWith(serverResponse -> assertThat((long) filterCount.get()).isEqualTo((long) 4)
+				.consumeNextWith(serverResponse -> assertThat(filterCount.get()).isEqualTo((long) 4)
 				)
 				.verifyComplete();
 

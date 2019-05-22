@@ -64,7 +64,7 @@ public class TilesViewResolverTests {
 
 		boolean condition = this.viewResolver.resolveViewName("/template.test", Locale.ITALY) instanceof TilesView;
 		assertThat(condition).isTrue();
-		assertThat((Object) this.viewResolver.resolveViewName("/nonexistent.test", Locale.ITALY)).isNull();
+		assertThat(this.viewResolver.resolveViewName("/nonexistent.test", Locale.ITALY)).isNull();
 
 		verify(this.renderer).isRenderable(eq("/template.test"), isA(Request.class));
 		verify(this.renderer).isRenderable(eq("/nonexistent.test"), isA(Request.class));

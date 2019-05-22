@@ -23,7 +23,7 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelCompiler;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.fail;
+import static org.assertj.core.api.Assertions.fail;
 
 /**
  * Checks the speed of compiled SpEL expressions.

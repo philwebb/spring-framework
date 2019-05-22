@@ -90,8 +90,8 @@ public class AnnotatedConfigClassesWithoutAtConfigurationTests {
 
 	@Test
 	public void testSPR_9051() throws Exception {
-		assertThat((Object) enigma).isNotNull();
-		assertThat((Object) lifecycleBean).isNotNull();
+		assertThat(enigma).isNotNull();
+		assertThat(lifecycleBean).isNotNull();
 		assertThat(lifecycleBean.isInitialized()).isTrue();
 		Set<String> names = new HashSet<>();
 		names.add(enigma.toString());

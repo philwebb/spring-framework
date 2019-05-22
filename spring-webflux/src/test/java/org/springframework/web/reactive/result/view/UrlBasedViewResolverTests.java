@@ -58,10 +58,10 @@ public class UrlBasedViewResolverTests {
 		this.resolver.setViewNames("my*");
 
 		Mono<View> mono = this.resolver.resolveViewName("my-view", Locale.US);
-		assertThat((Object) mono.block()).isNotNull();
+		assertThat(mono.block()).isNotNull();
 
 		mono = this.resolver.resolveViewName("not-my-view", Locale.US);
-		assertThat((Object) mono.block()).isNull();
+		assertThat(mono.block()).isNull();
 	}
 
 	@Test

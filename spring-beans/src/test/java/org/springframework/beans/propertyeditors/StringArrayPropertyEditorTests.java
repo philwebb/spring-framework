@@ -60,7 +60,7 @@ public class StringArrayPropertyEditorTests {
 		Object value = editor.getValue();
 		String[] array = (String[]) value;
 		for (int i = 0; i < array.length; ++i) {
-			assertThat((long) array[i].length()).isEqualTo((long) 3);
+			assertThat(array[i].length()).isEqualTo((long) 3);
 			assertThat(array[i].trim()).isEqualTo(("" + i));
 		}
 		assertThat(editor.getAsText()).isEqualTo("  0,1  , 2 ");
@@ -101,7 +101,7 @@ public class StringArrayPropertyEditorTests {
 		Object value = editor.getValue();
 		boolean condition = value instanceof String[];
 		assertThat(condition).isTrue();
-		assertThat((long) ((String[]) value).length).isEqualTo((long) 0);
+		assertThat(((String[]) value).length).isEqualTo((long) 0);
 	}
 
 	@Test

@@ -643,7 +643,7 @@ public class SpelReproTests extends AbstractExpressionTests {
 		// Compiler chooses getX(Number i) when passing Integer
 		final int compiler = target.getX(INTEGER);
 		// Fails!
-		assertThat((long) actual).isEqualTo((long) compiler);
+		assertThat(actual).isEqualTo((long) compiler);
 
 		ConversionPriority2 target2 = new ConversionPriority2();
 		MethodExecutor me2 = new ReflectiveMethodResolver(true).resolve(emptyEvalContext, target2, "getX", args);
@@ -652,7 +652,7 @@ public class SpelReproTests extends AbstractExpressionTests {
 		// Compiler chooses getX(Number i) when passing Integer
 		int compiler2 = target2.getX(INTEGER);
 		// Fails!
-		assertThat((long) actual2).isEqualTo((long) compiler2);
+		assertThat(actual2).isEqualTo((long) compiler2);
 
 	}
 
@@ -680,7 +680,7 @@ public class SpelReproTests extends AbstractExpressionTests {
 		final int actual = (Integer) me.execute(emptyEvalContext, target, INTEGER_VALUE).getValue();
 
 		final int compiler = target.getX(INTEGER_VALUE);
-		assertThat((long) actual).isEqualTo((long) compiler);
+		assertThat(actual).isEqualTo((long) compiler);
 	}
 
 	@Test
@@ -871,7 +871,7 @@ public class SpelReproTests extends AbstractExpressionTests {
 		Expression expression = parser.parseExpression("parseInt('-FF', 16)");
 
 		Integer result = expression.getValue(context, "", Integer.class);
-		assertThat((long) result.intValue()).isEqualTo((long) -255);
+		assertThat(result.intValue()).isEqualTo((long) -255);
 	}
 
 	@Test
@@ -1198,7 +1198,7 @@ public class SpelReproTests extends AbstractExpressionTests {
 		ExpressionParser parser = new SpelExpressionParser();
 		StandardEvaluationContext evaluationContext = new StandardEvaluationContext(new BooleanHolder());
 		Class<?> valueType = parser.parseExpression("simpleProperty").getValueType(evaluationContext);
-		assertThat((Object) valueType).isNotNull();
+		assertThat(valueType).isNotNull();
 	}
 
 	@Test
@@ -1214,7 +1214,7 @@ public class SpelReproTests extends AbstractExpressionTests {
 		ExpressionParser parser = new SpelExpressionParser();
 		StandardEvaluationContext evaluationContext = new StandardEvaluationContext(new BooleanHolder());
 		Class<?> valueType = parser.parseExpression("primitiveProperty").getValueType(evaluationContext);
-		assertThat((Object) valueType).isNotNull();
+		assertThat(valueType).isNotNull();
 	}
 
 	@Test

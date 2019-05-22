@@ -42,7 +42,7 @@ public class BeanCreatingHandlerProviderTests {
 		BeanCreatingHandlerProvider<SimpleEchoHandler> provider =
 				new BeanCreatingHandlerProvider<>(SimpleEchoHandler.class);
 
-		assertThat((Object) provider.getHandler()).isNotNull();
+		assertThat(provider.getHandler()).isNotNull();
 	}
 
 	@Test
@@ -55,7 +55,7 @@ public class BeanCreatingHandlerProviderTests {
 				new BeanCreatingHandlerProvider<>(EchoHandler.class);
 		provider.setBeanFactory(context.getBeanFactory());
 
-		assertThat((Object) provider.getHandler()).isNotNull();
+		assertThat(provider.getHandler()).isNotNull();
 	}
 
 	@Test

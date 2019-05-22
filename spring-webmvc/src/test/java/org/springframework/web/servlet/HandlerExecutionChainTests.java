@@ -65,9 +65,9 @@ public class HandlerExecutionChainTests {
 
 		this.chain.addInterceptor(this.interceptor1);
 		this.chain.addInterceptor(this.interceptor2);
-		assertThat((long) this.chain.getInterceptors().length).isEqualTo((long) 2);
+		assertThat(this.chain.getInterceptors().length).isEqualTo((long) 2);
 		this.chain.addInterceptor(this.interceptor3);
-		assertThat((long) this.chain.getInterceptors().length).isEqualTo((long) 3);
+		assertThat(this.chain.getInterceptors().length).isEqualTo((long) 3);
 	}
 
 
@@ -134,7 +134,7 @@ public class HandlerExecutionChainTests {
 			this.chain.applyPreHandle(request, response);
 		}
 		catch (Exception actual) {
-			assertThat((Object) actual).isSameAs(ex);
+			assertThat(actual).isSameAs(ex);
 		}
 		this.chain.triggerAfterCompletion(this.request, this.response, ex);
 

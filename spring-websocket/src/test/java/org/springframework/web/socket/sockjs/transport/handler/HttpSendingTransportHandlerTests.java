@@ -111,7 +111,7 @@ public class HttpSendingTransportHandlerTests  extends AbstractHttpRequestTests 
 
 		transportHandler.handleRequest(this.request, this.response, this.webSocketHandler, session);
 
-		assertThat((long) this.servletResponse.getStatus()).isEqualTo((long) 500);
+		assertThat(this.servletResponse.getStatus()).isEqualTo((long) 500);
 		assertThat(this.servletResponse.getContentAsString()).isEqualTo("\"callback\" parameter required");
 
 		resetRequestAndResponse();

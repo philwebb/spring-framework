@@ -44,7 +44,7 @@ public class JdbcUtilsTests {
 		assertThat(JdbcUtils.resolveTypeName(Types.VARCHAR)).isEqualTo("VARCHAR");
 		assertThat(JdbcUtils.resolveTypeName(Types.NUMERIC)).isEqualTo("NUMERIC");
 		assertThat(JdbcUtils.resolveTypeName(Types.INTEGER)).isEqualTo("INTEGER");
-		assertThat((Object) JdbcUtils.resolveTypeName(JdbcUtils.TYPE_UNKNOWN)).isNull();
+		assertThat(JdbcUtils.resolveTypeName(JdbcUtils.TYPE_UNKNOWN)).isNull();
 	}
 
 	@Test

@@ -67,7 +67,7 @@ public class MappingJackson2SmileHttpMessageConverterTests {
 		inputMessage.getHeaders().setContentType(new MediaType("application", "x-jackson-smile"));
 		MyBean result = (MyBean) converter.read(MyBean.class, inputMessage);
 		assertThat(result.getString()).isEqualTo("Foo");
-		assertThat((long) result.getNumber()).isEqualTo((long) 42);
+		assertThat(result.getNumber()).isEqualTo((long) 42);
 		assertThat(result.getFraction()).isCloseTo((double) 42F, within((double) 0F));
 
 		assertThat(result.getArray()).isEqualTo(new String[]{"Foo", "Bar"});

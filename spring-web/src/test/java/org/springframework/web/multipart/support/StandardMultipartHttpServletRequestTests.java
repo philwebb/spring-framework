@@ -45,7 +45,7 @@ public class StandardMultipartHttpServletRequestTests {
 		StandardMultipartHttpServletRequest request = requestWithPart("file", disposition, "");
 
 		MultipartFile multipartFile = request.getFile("file");
-		assertThat((Object) multipartFile).isNotNull();
+		assertThat(multipartFile).isNotNull();
 		assertThat(multipartFile.getOriginalFilename()).isEqualTo("myFile.txt");
 	}
 
@@ -55,7 +55,7 @@ public class StandardMultipartHttpServletRequestTests {
 		StandardMultipartHttpServletRequest request = requestWithPart("file", disposition, "");
 
 		MultipartFile multipartFile = request.getFile("file");
-		assertThat((Object) multipartFile).isNotNull();
+		assertThat(multipartFile).isNotNull();
 		assertThat(multipartFile.getOriginalFilename()).isEqualTo("foo-ä-€.html");
 	}
 
@@ -65,7 +65,7 @@ public class StandardMultipartHttpServletRequestTests {
 		StandardMultipartHttpServletRequest request = requestWithPart("file", disposition, "");
 
 		MultipartFile multipartFile = request.getFile("file");
-		assertThat((Object) multipartFile).isNotNull();
+		assertThat(multipartFile).isNotNull();
 		assertThat(multipartFile.getOriginalFilename()).isEqualTo("Declaração.pdf");
 	}
 
@@ -76,7 +76,7 @@ public class StandardMultipartHttpServletRequestTests {
 		StandardMultipartHttpServletRequest request = requestWithPart(name, disposition, "myBody");
 		MultipartFile multipartFile = request.getFile(name);
 
-		assertThat((Object) multipartFile).isNotNull();
+		assertThat(multipartFile).isNotNull();
 
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
 		map.add(name, multipartFile.getResource());

@@ -68,12 +68,12 @@ public class CaffeineCacheTests extends AbstractValueAdaptingCacheTests<Caffeine
 		Object key = new Object();
 		Object value = null;
 
-		assertThat((Object) cache.get(key)).isNull();
-		assertThat((Object) cache.putIfAbsent(key, value)).isNull();
+		assertThat(cache.get(key)).isNull();
+		assertThat(cache.putIfAbsent(key, value)).isNull();
 		assertThat(cache.get(key).get()).isEqualTo(value);
 		Cache.ValueWrapper wrapper = cache.putIfAbsent(key, "anotherValue");
 		// A value is set but is 'null'
-		assertThat((Object) wrapper).isNotNull();
+		assertThat(wrapper).isNotNull();
 		assertThat(wrapper.get()).isEqualTo(null);
 		// not changed
 		assertThat(cache.get(key).get()).isEqualTo(value);

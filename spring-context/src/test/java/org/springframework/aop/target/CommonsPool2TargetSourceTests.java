@@ -72,9 +72,9 @@ public class CommonsPool2TargetSourceTests {
 
 	private void testFunctionality(String name) {
 		SideEffectBean pooled = (SideEffectBean) beanFactory.getBean(name);
-		assertThat((long) pooled.getCount()).isEqualTo((long) INITIAL_COUNT);
+		assertThat(pooled.getCount()).isEqualTo((long) INITIAL_COUNT);
 		pooled.doWork();
-		assertThat((long) pooled.getCount()).isEqualTo((long) (INITIAL_COUNT + 1));
+		assertThat(pooled.getCount()).isEqualTo((long) (INITIAL_COUNT + 1));
 
 		pooled = (SideEffectBean) beanFactory.getBean(name);
 		// Just check that it works--we can't make assumptions
@@ -96,16 +96,16 @@ public class CommonsPool2TargetSourceTests {
 	@Test
 	public void testConfigMixin() {
 		SideEffectBean pooled = (SideEffectBean) beanFactory.getBean("pooledWithMixin");
-		assertThat((long) pooled.getCount()).isEqualTo((long) INITIAL_COUNT);
+		assertThat(pooled.getCount()).isEqualTo((long) INITIAL_COUNT);
 		PoolingConfig conf = (PoolingConfig) beanFactory.getBean("pooledWithMixin");
 		// TODO one invocation from setup
 		//assertEquals(1, conf.getInvocations());
 		pooled.doWork();
 		//	assertEquals("No objects active", 0, conf.getActive());
-		assertThat((long) conf.getMaxSize()).as("Correct target source").isEqualTo((long) 25);
+		assertThat(conf.getMaxSize()).as("Correct target source").isEqualTo((long) 25);
 		//	assertTrue("Some free", conf.getFree() > 0);
 		//assertEquals(2, conf.getInvocations());
-		assertThat((long) conf.getMaxSize()).isEqualTo((long) 25);
+		assertThat(conf.getMaxSize()).isEqualTo((long) 25);
 	}
 
 	@Test
@@ -131,7 +131,7 @@ public class CommonsPool2TargetSourceTests {
 		boolean condition = ((Advised) serialized).getTargetSource() instanceof SingletonTargetSource;
 		assertThat(condition).isTrue();
 		serialized.setAge(25);
-		assertThat((long) serialized.getAge()).isEqualTo((long) 25);
+		assertThat(serialized.getAge()).isEqualTo((long) 25);
 	}
 
 	@Test

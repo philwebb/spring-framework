@@ -99,12 +99,12 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerSingleton("testBean", tb);
 
 		ResourceInjectionBean bean = (ResourceInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean.getTestBean()).isSameAs(tb);
-		assertThat((Object) bean.getTestBean2()).isSameAs(tb);
+		assertThat(bean.getTestBean()).isSameAs(tb);
+		assertThat(bean.getTestBean2()).isSameAs(tb);
 
 		bean = (ResourceInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean.getTestBean()).isSameAs(tb);
-		assertThat((Object) bean.getTestBean2()).isSameAs(tb);
+		assertThat(bean.getTestBean()).isSameAs(tb);
+		assertThat(bean.getTestBean2()).isSameAs(tb);
 	}
 
 	@Test
@@ -118,20 +118,20 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerSingleton("nestedTestBean", ntb);
 
 		TypedExtendedResourceInjectionBean bean = (TypedExtendedResourceInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean.getTestBean()).isSameAs(tb);
-		assertThat((Object) bean.getTestBean2()).isSameAs(tb);
-		assertThat((Object) bean.getTestBean3()).isSameAs(tb);
-		assertThat((Object) bean.getTestBean4()).isSameAs(tb);
-		assertThat((Object) bean.getNestedTestBean()).isSameAs(ntb);
-		assertThat((Object) bean.getBeanFactory()).isSameAs(bf);
+		assertThat(bean.getTestBean()).isSameAs(tb);
+		assertThat(bean.getTestBean2()).isSameAs(tb);
+		assertThat(bean.getTestBean3()).isSameAs(tb);
+		assertThat(bean.getTestBean4()).isSameAs(tb);
+		assertThat(bean.getNestedTestBean()).isSameAs(ntb);
+		assertThat(bean.getBeanFactory()).isSameAs(bf);
 
 		bean = (TypedExtendedResourceInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean.getTestBean()).isSameAs(tb);
-		assertThat((Object) bean.getTestBean2()).isSameAs(tb);
-		assertThat((Object) bean.getTestBean3()).isSameAs(tb);
-		assertThat((Object) bean.getTestBean4()).isSameAs(tb);
-		assertThat((Object) bean.getNestedTestBean()).isSameAs(ntb);
-		assertThat((Object) bean.getBeanFactory()).isSameAs(bf);
+		assertThat(bean.getTestBean()).isSameAs(tb);
+		assertThat(bean.getTestBean2()).isSameAs(tb);
+		assertThat(bean.getTestBean3()).isSameAs(tb);
+		assertThat(bean.getTestBean4()).isSameAs(tb);
+		assertThat(bean.getNestedTestBean()).isSameAs(ntb);
+		assertThat(bean.getBeanFactory()).isSameAs(bf);
 	}
 
 	@Test
@@ -146,12 +146,12 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerSingleton("nestedTestBean", ntb);
 
 		TypedExtendedResourceInjectionBean bean = (TypedExtendedResourceInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean.getTestBean()).isSameAs(tb);
-		assertThat((Object) bean.getTestBean2()).isSameAs(tb2);
-		assertThat((Object) bean.getTestBean3()).isSameAs(tb);
-		assertThat((Object) bean.getTestBean4()).isSameAs(tb);
-		assertThat((Object) bean.getNestedTestBean()).isSameAs(ntb);
-		assertThat((Object) bean.getBeanFactory()).isSameAs(bf);
+		assertThat(bean.getTestBean()).isSameAs(tb);
+		assertThat(bean.getTestBean2()).isSameAs(tb2);
+		assertThat(bean.getTestBean3()).isSameAs(tb);
+		assertThat(bean.getTestBean4()).isSameAs(tb);
+		assertThat(bean.getNestedTestBean()).isSameAs(ntb);
+		assertThat(bean.getBeanFactory()).isSameAs(bf);
 	}
 
 	@Test
@@ -167,12 +167,12 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerSingleton("nestedTestBean", ntb);
 
 		TypedExtendedResourceInjectionBean bean = (TypedExtendedResourceInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean.getTestBean()).isSameAs(tb);
-		assertThat((Object) bean.getTestBean2()).isSameAs(tb);
-		assertThat((Object) bean.getTestBean3()).isSameAs(tb);
-		assertThat((Object) bean.getTestBean4()).isSameAs(tb);
-		assertThat((Object) bean.getNestedTestBean()).isSameAs(ntb);
-		assertThat((Object) bean.getBeanFactory()).isSameAs(bf);
+		assertThat(bean.getTestBean()).isSameAs(tb);
+		assertThat(bean.getTestBean2()).isSameAs(tb);
+		assertThat(bean.getTestBean3()).isSameAs(tb);
+		assertThat(bean.getTestBean4()).isSameAs(tb);
+		assertThat(bean.getNestedTestBean()).isSameAs(ntb);
+		assertThat(bean.getBeanFactory()).isSameAs(bf);
 	}
 
 	@Test
@@ -186,20 +186,20 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerSingleton("nestedTestBean", ntb);
 
 		ConstructorResourceInjectionBean bean = (ConstructorResourceInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean.getTestBean()).isSameAs(tb);
-		assertThat((Object) bean.getTestBean2()).isSameAs(tb);
-		assertThat((Object) bean.getTestBean3()).isSameAs(tb);
-		assertThat((Object) bean.getTestBean4()).isSameAs(tb);
-		assertThat((Object) bean.getNestedTestBean()).isSameAs(ntb);
-		assertThat((Object) bean.getBeanFactory()).isSameAs(bf);
+		assertThat(bean.getTestBean()).isSameAs(tb);
+		assertThat(bean.getTestBean2()).isSameAs(tb);
+		assertThat(bean.getTestBean3()).isSameAs(tb);
+		assertThat(bean.getTestBean4()).isSameAs(tb);
+		assertThat(bean.getNestedTestBean()).isSameAs(ntb);
+		assertThat(bean.getBeanFactory()).isSameAs(bf);
 
 		bean = (ConstructorResourceInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean.getTestBean()).isSameAs(tb);
-		assertThat((Object) bean.getTestBean2()).isSameAs(tb);
-		assertThat((Object) bean.getTestBean3()).isSameAs(tb);
-		assertThat((Object) bean.getTestBean4()).isSameAs(tb);
-		assertThat((Object) bean.getNestedTestBean()).isSameAs(ntb);
-		assertThat((Object) bean.getBeanFactory()).isSameAs(bf);
+		assertThat(bean.getTestBean()).isSameAs(tb);
+		assertThat(bean.getTestBean2()).isSameAs(tb);
+		assertThat(bean.getTestBean3()).isSameAs(tb);
+		assertThat(bean.getTestBean4()).isSameAs(tb);
+		assertThat(bean.getNestedTestBean()).isSameAs(ntb);
+		assertThat(bean.getBeanFactory()).isSameAs(bf);
 	}
 
 	@Test
@@ -214,11 +214,11 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerSingleton("nestedTestBean2", ntb2);
 
 		ConstructorsCollectionResourceInjectionBean bean = (ConstructorsCollectionResourceInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean.getTestBean3()).isNull();
-		assertThat((Object) bean.getTestBean4()).isSameAs(tb);
-		assertThat((long) bean.getNestedTestBeans().size()).isEqualTo((long) 2);
-		assertThat((Object) bean.getNestedTestBeans().get(0)).isSameAs(ntb1);
-		assertThat((Object) bean.getNestedTestBeans().get(1)).isSameAs(ntb2);
+		assertThat(bean.getTestBean3()).isNull();
+		assertThat(bean.getTestBean4()).isSameAs(tb);
+		assertThat(bean.getNestedTestBeans().size()).isEqualTo((long) 2);
+		assertThat(bean.getNestedTestBeans().get(0)).isSameAs(ntb1);
+		assertThat(bean.getNestedTestBeans().get(1)).isSameAs(ntb2);
 	}
 
 	@Test
@@ -228,8 +228,8 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerSingleton("testBean", tb);
 
 		ConstructorsResourceInjectionBean bean = (ConstructorsResourceInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean.getTestBean3()).isSameAs(tb);
-		assertThat((Object) bean.getTestBean4()).isNull();
+		assertThat(bean.getTestBean3()).isSameAs(tb);
+		assertThat(bean.getTestBean4()).isNull();
 	}
 
 	@Test
@@ -243,14 +243,14 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerSingleton("testBean2", tb1);
 
 		MapConstructorInjectionBean bean = (MapConstructorInjectionBean) bf.getBean("annotatedBean");
-		assertThat((long) bean.getTestBeanMap().size()).isEqualTo((long) 2);
+		assertThat(bean.getTestBeanMap().size()).isEqualTo((long) 2);
 		assertThat(bean.getTestBeanMap().keySet().contains("testBean1")).isTrue();
 		assertThat(bean.getTestBeanMap().keySet().contains("testBean2")).isTrue();
 		assertThat(bean.getTestBeanMap().values().contains(tb1)).isTrue();
 		assertThat(bean.getTestBeanMap().values().contains(tb2)).isTrue();
 
 		bean = (MapConstructorInjectionBean) bf.getBean("annotatedBean");
-		assertThat((long) bean.getTestBeanMap().size()).isEqualTo((long) 2);
+		assertThat(bean.getTestBeanMap().size()).isEqualTo((long) 2);
 		assertThat(bean.getTestBeanMap().keySet().contains("testBean1")).isTrue();
 		assertThat(bean.getTestBeanMap().keySet().contains("testBean2")).isTrue();
 		assertThat(bean.getTestBeanMap().values().contains(tb1)).isTrue();
@@ -268,14 +268,14 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerSingleton("testBean2", tb1);
 
 		MapFieldInjectionBean bean = (MapFieldInjectionBean) bf.getBean("annotatedBean");
-		assertThat((long) bean.getTestBeanMap().size()).isEqualTo((long) 2);
+		assertThat(bean.getTestBeanMap().size()).isEqualTo((long) 2);
 		assertThat(bean.getTestBeanMap().keySet().contains("testBean1")).isTrue();
 		assertThat(bean.getTestBeanMap().keySet().contains("testBean2")).isTrue();
 		assertThat(bean.getTestBeanMap().values().contains(tb1)).isTrue();
 		assertThat(bean.getTestBeanMap().values().contains(tb2)).isTrue();
 
 		bean = (MapFieldInjectionBean) bf.getBean("annotatedBean");
-		assertThat((long) bean.getTestBeanMap().size()).isEqualTo((long) 2);
+		assertThat(bean.getTestBeanMap().size()).isEqualTo((long) 2);
 		assertThat(bean.getTestBeanMap().keySet().contains("testBean1")).isTrue();
 		assertThat(bean.getTestBeanMap().keySet().contains("testBean2")).isTrue();
 		assertThat(bean.getTestBeanMap().values().contains(tb1)).isTrue();
@@ -291,16 +291,16 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerSingleton("testBean", tb);
 
 		MapMethodInjectionBean bean = (MapMethodInjectionBean) bf.getBean("annotatedBean");
-		assertThat((long) bean.getTestBeanMap().size()).isEqualTo((long) 1);
+		assertThat(bean.getTestBeanMap().size()).isEqualTo((long) 1);
 		assertThat(bean.getTestBeanMap().keySet().contains("testBean")).isTrue();
 		assertThat(bean.getTestBeanMap().values().contains(tb)).isTrue();
-		assertThat((Object) bean.getTestBean()).isSameAs(tb);
+		assertThat(bean.getTestBean()).isSameAs(tb);
 
 		bean = (MapMethodInjectionBean) bf.getBean("annotatedBean");
-		assertThat((long) bean.getTestBeanMap().size()).isEqualTo((long) 1);
+		assertThat(bean.getTestBeanMap().size()).isEqualTo((long) 1);
 		assertThat(bean.getTestBeanMap().keySet().contains("testBean")).isTrue();
 		assertThat(bean.getTestBeanMap().values().contains(tb)).isTrue();
-		assertThat((Object) bean.getTestBean()).isSameAs(tb);
+		assertThat(bean.getTestBean()).isSameAs(tb);
 	}
 
 	@Test
@@ -322,10 +322,10 @@ public class InjectAnnotationBeanPostProcessorTests {
 
 		MapMethodInjectionBean bean = (MapMethodInjectionBean) bf.getBean("annotatedBean");
 		TestBean tb = (TestBean) bf.getBean("testBean1");
-		assertThat((long) bean.getTestBeanMap().size()).isEqualTo((long) 1);
+		assertThat(bean.getTestBeanMap().size()).isEqualTo((long) 1);
 		assertThat(bean.getTestBeanMap().keySet().contains("testBean1")).isTrue();
 		assertThat(bean.getTestBeanMap().values().contains(tb)).isTrue();
-		assertThat((Object) bean.getTestBean()).isSameAs(tb);
+		assertThat(bean.getTestBean()).isSameAs(tb);
 	}
 
 	@Test
@@ -337,7 +337,7 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("testBean2", new RootBeanDefinition(TestBean.class));
 
 		ObjectFactoryQualifierFieldInjectionBean bean = (ObjectFactoryQualifierFieldInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean.getTestBean()).isSameAs(bf.getBean("testBean"));
+		assertThat(bean.getTestBean()).isSameAs(bf.getBean("testBean"));
 	}
 
 	@Test
@@ -348,7 +348,7 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("testBean", bd);
 
 		ObjectFactoryQualifierFieldInjectionBean bean = (ObjectFactoryQualifierFieldInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean.getTestBean()).isSameAs(bf.getBean("testBean"));
+		assertThat(bean.getTestBean()).isSameAs(bf.getBean("testBean"));
 	}
 
 	@Test
@@ -362,10 +362,10 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("testBean2", new RootBeanDefinition(TestBean.class));
 
 		ObjectFactoryQualifierFieldInjectionBean bean = (ObjectFactoryQualifierFieldInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean.getTestBean()).isSameAs(bf.getBean("testBean"));
+		assertThat(bean.getTestBean()).isSameAs(bf.getBean("testBean"));
 		ObjectFactoryQualifierFieldInjectionBean anotherBean = (ObjectFactoryQualifierFieldInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean).isNotSameAs(anotherBean);
-		assertThat((Object) bean.getTestBean()).isSameAs(bf.getBean("testBean"));
+		assertThat(bean).isNotSameAs(anotherBean);
+		assertThat(bean.getTestBean()).isSameAs(bf.getBean("testBean"));
 	}
 
 	@Test
@@ -379,10 +379,10 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("testBean2", new RootBeanDefinition(TestBean.class));
 
 		ObjectFactoryQualifierMethodInjectionBean bean = (ObjectFactoryQualifierMethodInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean.getTestBean()).isSameAs(bf.getBean("testBean"));
+		assertThat(bean.getTestBean()).isSameAs(bf.getBean("testBean"));
 		ObjectFactoryQualifierMethodInjectionBean anotherBean = (ObjectFactoryQualifierMethodInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean).isNotSameAs(anotherBean);
-		assertThat((Object) bean.getTestBean()).isSameAs(bf.getBean("testBean"));
+		assertThat(bean).isNotSameAs(anotherBean);
+		assertThat(bean.getTestBean()).isSameAs(bf.getBean("testBean"));
 	}
 
 	@Test
@@ -392,9 +392,9 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.setSerializationId("test");
 
 		ObjectFactoryFieldInjectionBean bean = (ObjectFactoryFieldInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean.getTestBean()).isSameAs(bf.getBean("testBean"));
+		assertThat(bean.getTestBean()).isSameAs(bf.getBean("testBean"));
 		bean = (ObjectFactoryFieldInjectionBean) SerializationTestUtils.serializeAndDeserialize(bean);
-		assertThat((Object) bean.getTestBean()).isSameAs(bf.getBean("testBean"));
+		assertThat(bean.getTestBean()).isSameAs(bf.getBean("testBean"));
 	}
 
 	@Test
@@ -404,9 +404,9 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.setSerializationId("test");
 
 		ObjectFactoryMethodInjectionBean bean = (ObjectFactoryMethodInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean.getTestBean()).isSameAs(bf.getBean("testBean"));
+		assertThat(bean.getTestBean()).isSameAs(bf.getBean("testBean"));
 		bean = (ObjectFactoryMethodInjectionBean) SerializationTestUtils.serializeAndDeserialize(bean);
-		assertThat((Object) bean.getTestBean()).isSameAs(bf.getBean("testBean"));
+		assertThat(bean.getTestBean()).isSameAs(bf.getBean("testBean"));
 	}
 
 	@Test
@@ -416,9 +416,9 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.setSerializationId("test");
 
 		ObjectFactoryListFieldInjectionBean bean = (ObjectFactoryListFieldInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean.getTestBean()).isSameAs(bf.getBean("testBean"));
+		assertThat(bean.getTestBean()).isSameAs(bf.getBean("testBean"));
 		bean = (ObjectFactoryListFieldInjectionBean) SerializationTestUtils.serializeAndDeserialize(bean);
-		assertThat((Object) bean.getTestBean()).isSameAs(bf.getBean("testBean"));
+		assertThat(bean.getTestBean()).isSameAs(bf.getBean("testBean"));
 	}
 
 	@Test
@@ -428,9 +428,9 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.setSerializationId("test");
 
 		ObjectFactoryListMethodInjectionBean bean = (ObjectFactoryListMethodInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean.getTestBean()).isSameAs(bf.getBean("testBean"));
+		assertThat(bean.getTestBean()).isSameAs(bf.getBean("testBean"));
 		bean = (ObjectFactoryListMethodInjectionBean) SerializationTestUtils.serializeAndDeserialize(bean);
-		assertThat((Object) bean.getTestBean()).isSameAs(bf.getBean("testBean"));
+		assertThat(bean.getTestBean()).isSameAs(bf.getBean("testBean"));
 	}
 
 	@Test
@@ -440,9 +440,9 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.setSerializationId("test");
 
 		ObjectFactoryMapFieldInjectionBean bean = (ObjectFactoryMapFieldInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean.getTestBean()).isSameAs(bf.getBean("testBean"));
+		assertThat(bean.getTestBean()).isSameAs(bf.getBean("testBean"));
 		bean = (ObjectFactoryMapFieldInjectionBean) SerializationTestUtils.serializeAndDeserialize(bean);
-		assertThat((Object) bean.getTestBean()).isSameAs(bf.getBean("testBean"));
+		assertThat(bean.getTestBean()).isSameAs(bf.getBean("testBean"));
 	}
 
 	@Test
@@ -452,9 +452,9 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.setSerializationId("test");
 
 		ObjectFactoryMapMethodInjectionBean bean = (ObjectFactoryMapMethodInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean.getTestBean()).isSameAs(bf.getBean("testBean"));
+		assertThat(bean.getTestBean()).isSameAs(bf.getBean("testBean"));
 		bean = (ObjectFactoryMapMethodInjectionBean) SerializationTestUtils.serializeAndDeserialize(bean);
-		assertThat((Object) bean.getTestBean()).isSameAs(bf.getBean("testBean"));
+		assertThat(bean.getTestBean()).isSameAs(bf.getBean("testBean"));
 	}
 
 	/**
@@ -470,8 +470,8 @@ public class InjectAnnotationBeanPostProcessorTests {
 		final StringFactoryBean factoryBean = (StringFactoryBean) bf.getBean("&stringFactoryBean");
 		final FactoryBeanDependentBean bean = (FactoryBeanDependentBean) bf.getBean("factoryBeanDependentBean");
 
-		assertThat((Object) factoryBean).as("The singleton StringFactoryBean should have been registered.").isNotNull();
-		assertThat((Object) bean).as("The factoryBeanDependentBean should have been registered.").isNotNull();
+		assertThat(factoryBean).as("The singleton StringFactoryBean should have been registered.").isNotNull();
+		assertThat(bean).as("The factoryBeanDependentBean should have been registered.").isNotNull();
 		assertThat(bean.getFactoryBean()).as("The FactoryBeanDependentBean should have been autowired 'by type' with the StringFactoryBean.").isEqualTo(factoryBean);
 	}
 
@@ -481,7 +481,7 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("testBean", new RootBeanDefinition(TestBean.class));
 
 		NullableFieldInjectionBean bean = (NullableFieldInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean.getTestBean()).isSameAs(bf.getBean("testBean"));
+		assertThat(bean.getTestBean()).isSameAs(bf.getBean("testBean"));
 	}
 
 	@Test
@@ -489,7 +489,7 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("annotatedBean", new RootBeanDefinition(NullableFieldInjectionBean.class));
 
 		NullableFieldInjectionBean bean = (NullableFieldInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean.getTestBean()).isNull();
+		assertThat(bean.getTestBean()).isNull();
 	}
 
 	@Test
@@ -498,7 +498,7 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("testBean", new RootBeanDefinition(TestBean.class));
 
 		NullableMethodInjectionBean bean = (NullableMethodInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean.getTestBean()).isSameAs(bf.getBean("testBean"));
+		assertThat(bean.getTestBean()).isSameAs(bf.getBean("testBean"));
 	}
 
 	@Test
@@ -506,7 +506,7 @@ public class InjectAnnotationBeanPostProcessorTests {
 		bf.registerBeanDefinition("annotatedBean", new RootBeanDefinition(NullableMethodInjectionBean.class));
 
 		NullableMethodInjectionBean bean = (NullableMethodInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean.getTestBean()).isNull();
+		assertThat(bean.getTestBean()).isNull();
 	}
 
 	@Test
@@ -516,7 +516,7 @@ public class InjectAnnotationBeanPostProcessorTests {
 
 		OptionalFieldInjectionBean bean = (OptionalFieldInjectionBean) bf.getBean("annotatedBean");
 		assertThat(bean.getTestBean().isPresent()).isTrue();
-		assertThat((Object) bean.getTestBean().get()).isSameAs(bf.getBean("testBean"));
+		assertThat(bean.getTestBean().get()).isSameAs(bf.getBean("testBean"));
 	}
 
 	@Test
@@ -534,7 +534,7 @@ public class InjectAnnotationBeanPostProcessorTests {
 
 		OptionalMethodInjectionBean bean = (OptionalMethodInjectionBean) bf.getBean("annotatedBean");
 		assertThat(bean.getTestBean().isPresent()).isTrue();
-		assertThat((Object) bean.getTestBean().get()).isSameAs(bf.getBean("testBean"));
+		assertThat(bean.getTestBean().get()).isSameAs(bf.getBean("testBean"));
 	}
 
 	@Test
@@ -552,7 +552,7 @@ public class InjectAnnotationBeanPostProcessorTests {
 
 		OptionalListFieldInjectionBean bean = (OptionalListFieldInjectionBean) bf.getBean("annotatedBean");
 		assertThat(bean.getTestBean().isPresent()).isTrue();
-		assertThat((Object) bean.getTestBean().get().get(0)).isSameAs(bf.getBean("testBean"));
+		assertThat(bean.getTestBean().get().get(0)).isSameAs(bf.getBean("testBean"));
 	}
 
 	@Test
@@ -570,7 +570,7 @@ public class InjectAnnotationBeanPostProcessorTests {
 
 		OptionalListMethodInjectionBean bean = (OptionalListMethodInjectionBean) bf.getBean("annotatedBean");
 		assertThat(bean.getTestBean().isPresent()).isTrue();
-		assertThat((Object) bean.getTestBean().get().get(0)).isSameAs(bf.getBean("testBean"));
+		assertThat(bean.getTestBean().get().get(0)).isSameAs(bf.getBean("testBean"));
 	}
 
 	@Test
@@ -588,7 +588,7 @@ public class InjectAnnotationBeanPostProcessorTests {
 
 		ProviderOfOptionalFieldInjectionBean bean = (ProviderOfOptionalFieldInjectionBean) bf.getBean("annotatedBean");
 		assertThat(bean.getTestBean().isPresent()).isTrue();
-		assertThat((Object) bean.getTestBean().get()).isSameAs(bf.getBean("testBean"));
+		assertThat(bean.getTestBean().get()).isSameAs(bf.getBean("testBean"));
 	}
 
 	@Test
@@ -606,7 +606,7 @@ public class InjectAnnotationBeanPostProcessorTests {
 
 		ProviderOfOptionalMethodInjectionBean bean = (ProviderOfOptionalMethodInjectionBean) bf.getBean("annotatedBean");
 		assertThat(bean.getTestBean().isPresent()).isTrue();
-		assertThat((Object) bean.getTestBean().get()).isSameAs(bf.getBean("testBean"));
+		assertThat(bean.getTestBean().get()).isSameAs(bf.getBean("testBean"));
 	}
 
 	@Test

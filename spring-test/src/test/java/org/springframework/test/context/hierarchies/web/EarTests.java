@@ -60,7 +60,7 @@ public class EarTests {
 	public void verifyEarConfig() {
 		boolean condition = context instanceof WebApplicationContext;
 		assertThat(condition).isFalse();
-		assertThat((Object) context.getParent()).isNull();
+		assertThat(context.getParent()).isNull();
 		assertThat(ear).isEqualTo("ear");
 	}
 

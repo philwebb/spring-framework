@@ -134,7 +134,7 @@ public class ScriptTemplateViewTests {
 		this.view.setRenderFunction("render");
 		this.view.setApplicationContext(this.wac);
 		engine = this.view.getEngine();
-		assertThat((Object) engine).isNotNull();
+		assertThat(engine).isNotNull();
 		assertThat(engine.get("key")).isEqualTo("value");
 		DirectFieldAccessor accessor = new DirectFieldAccessor(this.view);
 		assertThat(accessor.getPropertyValue("renderObject")).isNull();
@@ -154,7 +154,7 @@ public class ScriptTemplateViewTests {
 		for (int i = 0; i < iterations; i++) {
 			results.add(executor.submit(() -> view.getEngine() != null));
 		}
-		assertThat((long) results.size()).isEqualTo((long) iterations);
+		assertThat(results.size()).isEqualTo((long) iterations);
 		for (int i = 0; i < iterations; i++) {
 			assertThat((boolean) results.get(i).get()).isTrue();
 		}

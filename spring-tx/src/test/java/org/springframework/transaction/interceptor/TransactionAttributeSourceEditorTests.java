@@ -45,7 +45,7 @@ public class TransactionAttributeSourceEditorTests {
 		TransactionAttributeSource tas = (TransactionAttributeSource) editor.getValue();
 
 		Method m = Object.class.getMethod("hashCode");
-		assertThat((Object) tas.getTransactionAttribute(m, null)).isNull();
+		assertThat(tas.getTransactionAttribute(m, null)).isNull();
 	}
 
 	@Test
@@ -107,12 +107,12 @@ public class TransactionAttributeSourceEditorTests {
 	private void checkTransactionProperties(TransactionAttributeSource tas, Method method, int propagationBehavior) {
 		TransactionAttribute ta = tas.getTransactionAttribute(method, null);
 		if (propagationBehavior >= 0) {
-			assertThat((Object) ta).isNotNull();
-			assertThat((long) ta.getIsolationLevel()).isEqualTo((long) TransactionDefinition.ISOLATION_DEFAULT);
-			assertThat((long) ta.getPropagationBehavior()).isEqualTo((long) propagationBehavior);
+			assertThat(ta).isNotNull();
+			assertThat(ta.getIsolationLevel()).isEqualTo((long) TransactionDefinition.ISOLATION_DEFAULT);
+			assertThat(ta.getPropagationBehavior()).isEqualTo((long) propagationBehavior);
 		}
 		else {
-			assertThat((Object) ta).isNull();
+			assertThat(ta).isNull();
 		}
 	}
 

@@ -121,10 +121,10 @@ public class DefaultRSocketRequesterTests {
 
 		assertThat(this.rsocket.getSavedMethodName()).isEqualTo("requestChannel");
 		List<Payload> payloads = this.rsocket.getSavedPayloadFlux().collectList().block(Duration.ofSeconds(5));
-		assertThat((Object) payloads).isNotNull();
+		assertThat(payloads).isNotNull();
 
 		if (Arrays.equals(new String[] {""}, expectedValues)) {
-			assertThat((long) payloads.size()).isEqualTo((long) 1);
+			assertThat(payloads.size()).isEqualTo((long) 1);
 			assertThat(payloads.get(0).getMetadataUtf8()).isEqualTo("toA");
 			assertThat(payloads.get(0).getDataUtf8()).isEqualTo("");
 		}

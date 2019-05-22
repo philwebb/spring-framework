@@ -47,9 +47,9 @@ public class BeanFactoryDataSourceLookupTests {
 		BeanFactoryDataSourceLookup lookup = new BeanFactoryDataSourceLookup();
 		lookup.setBeanFactory(beanFactory);
 		DataSource dataSource = lookup.getDataSource(DATASOURCE_BEAN_NAME);
-		assertThat((Object) dataSource).as("A DataSourceLookup implementation must *never* return null from " +
+		assertThat(dataSource).as("A DataSourceLookup implementation must *never* return null from " +
 				"getDataSource(): this one obviously (and incorrectly) is").isNotNull();
-		assertThat((Object) dataSource).isSameAs(expectedDataSource);
+		assertThat(dataSource).isSameAs(expectedDataSource);
 	}
 
 	@Test

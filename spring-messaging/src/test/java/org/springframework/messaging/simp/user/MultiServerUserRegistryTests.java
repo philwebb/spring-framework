@@ -66,8 +66,8 @@ public class MultiServerUserRegistryTests {
 		given(this.localRegistry.getUserCount()).willReturn(1);
 		given(this.localRegistry.getUser("joe")).willReturn(user);
 
-		assertThat((long) this.registry.getUserCount()).isEqualTo((long) 1);
-		assertThat((Object) this.registry.getUser("joe")).isSameAs(user);
+		assertThat(this.registry.getUserCount()).isEqualTo((long) 1);
+		assertThat(this.registry.getUser("joe")).isSameAs(user);
 	}
 
 	@Test
@@ -85,19 +85,19 @@ public class MultiServerUserRegistryTests {
 		// Add remote registry
 		this.registry.addRemoteRegistryDto(message, this.converter, 20000);
 
-		assertThat((long) this.registry.getUserCount()).isEqualTo((long) 1);
+		assertThat(this.registry.getUserCount()).isEqualTo((long) 1);
 		SimpUser user = this.registry.getUser("joe");
-		assertThat((Object) user).isNotNull();
+		assertThat(user).isNotNull();
 		assertThat(user.hasSessions()).isTrue();
-		assertThat((long) user.getSessions().size()).isEqualTo((long) 1);
+		assertThat(user.getSessions().size()).isEqualTo((long) 1);
 		SimpSession session = user.getSession("remote-sess");
-		assertThat((Object) session).isNotNull();
+		assertThat(session).isNotNull();
 		assertThat(session.getId()).isEqualTo("remote-sess");
-		assertThat((Object) session.getUser()).isSameAs(user);
-		assertThat((long) session.getSubscriptions().size()).isEqualTo((long) 1);
+		assertThat(session.getUser()).isSameAs(user);
+		assertThat(session.getSubscriptions().size()).isEqualTo((long) 1);
 		SimpSubscription subscription = session.getSubscriptions().iterator().next();
 		assertThat(subscription.getId()).isEqualTo("remote-sub");
-		assertThat((Object) subscription.getSession()).isSameAs(session);
+		assertThat(subscription.getSession()).isSameAs(session);
 		assertThat(subscription.getDestination()).isEqualTo("/remote-dest");
 	}
 
@@ -124,9 +124,9 @@ public class MultiServerUserRegistryTests {
 		// Add remote registry
 		this.registry.addRemoteRegistryDto(message, this.converter, 20000);
 
-		assertThat((long) this.registry.getUserCount()).isEqualTo((long) 3);
+		assertThat(this.registry.getUserCount()).isEqualTo((long) 3);
 		Set<SimpSubscription> matches = this.registry.findSubscriptions(s -> s.getDestination().equals("/match"));
-		assertThat((long) matches.size()).isEqualTo((long) 2);
+		assertThat(matches.size()).isEqualTo((long) 2);
 		Iterator<SimpSubscription> iterator = matches.iterator();
 		Set<String> sessionIds = new HashSet<>(2);
 		sessionIds.add(iterator.next().getSession().getId());
@@ -155,18 +155,18 @@ public class MultiServerUserRegistryTests {
 		this.registry.addRemoteRegistryDto(message, this.converter, 20000);
 
 
-		assertThat((long) this.registry.getUserCount()).isEqualTo((long) 1);
+		assertThat(this.registry.getUserCount()).isEqualTo((long) 1);
 		SimpUser user = this.registry.getUsers().iterator().next();
 		assertThat(user.hasSessions()).isTrue();
-		assertThat((long) user.getSessions().size()).isEqualTo((long) 2);
+		assertThat(user.getSessions().size()).isEqualTo((long) 2);
 		assertThat(user.getSessions()).containsExactlyInAnyOrder(localSession, remoteSession);
-		assertThat((Object) user.getSession("sess123")).isSameAs(localSession);
+		assertThat(user.getSession("sess123")).isSameAs(localSession);
 		assertThat(user.getSession("sess456")).isEqualTo(remoteSession);
 
 		user = this.registry.getUser("joe");
-		assertThat((long) user.getSessions().size()).isEqualTo((long) 2);
+		assertThat(user.getSessions().size()).isEqualTo((long) 2);
 		assertThat(user.getSessions()).containsExactlyInAnyOrder(localSession, remoteSession);
-		assertThat((Object) user.getSession("sess123")).isSameAs(localSession);
+		assertThat(user.getSession("sess123")).isSameAs(localSession);
 		assertThat(user.getSession("sess456")).isEqualTo(remoteSession);
 	}
 
@@ -184,9 +184,9 @@ public class MultiServerUserRegistryTests {
 		this.registry.addRemoteRegistryDto(message, this.converter, -1);
 
 
-		assertThat((long) this.registry.getUserCount()).isEqualTo((long) 1);
+		assertThat(this.registry.getUserCount()).isEqualTo((long) 1);
 		this.registry.purgeExpiredRegistries();
-		assertThat((long) this.registry.getUserCount()).isEqualTo((long) 0);
+		assertThat(this.registry.getUserCount()).isEqualTo((long) 0);
 	}
 
 }

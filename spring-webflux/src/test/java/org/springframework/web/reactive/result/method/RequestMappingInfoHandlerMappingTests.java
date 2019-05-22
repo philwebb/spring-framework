@@ -225,7 +225,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		String name = HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE;
 		Map<String, String> uriVariables = (Map<String, String>) exchange.getAttributes().get(name);
 
-		assertThat((Object) uriVariables).isNotNull();
+		assertThat(uriVariables).isNotNull();
 		assertThat(uriVariables.get("path1")).isEqualTo("1");
 		assertThat(uriVariables.get("path2")).isEqualTo("2");
 	}
@@ -242,7 +242,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		@SuppressWarnings("unchecked")
 		Map<String, String> uriVariables = (Map<String, String>) exchange.getAttributes().get(name);
 
-		assertThat((Object) uriVariables).isNotNull();
+		assertThat(uriVariables).isNotNull();
 		assertThat(uriVariables.get("group")).isEqualTo("group");
 		assertThat(uriVariables.get("identifier")).isEqualTo("a/b");
 	}
@@ -257,7 +257,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		assertThat(bestMatch.getPatternString()).isEqualTo("/{path1}/2");
 
 		HandlerMethod mapped = (HandlerMethod) exchange.getAttributes().get(BEST_MATCHING_HANDLER_ATTRIBUTE);
-		assertThat((Object) mapped).isSameAs(handlerMethod);
+		assertThat(mapped).isSameAs(handlerMethod);
 	}
 
 	@Test // gh-22543
@@ -279,7 +279,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		matrixVariables = getMatrixVariables(exchange, "cars");
 		uriVariables = getUriTemplateVariables(exchange);
 
-		assertThat((Object) matrixVariables).isNotNull();
+		assertThat(matrixVariables).isNotNull();
 		assertThat(matrixVariables.get("colors")).isEqualTo(Arrays.asList("red", "blue", "green"));
 		assertThat(matrixVariables.getFirst("year")).isEqualTo("2012");
 		assertThat(uriVariables.get("cars")).isEqualTo("cars");
@@ -295,8 +295,8 @@ public class RequestMappingInfoHandlerMappingTests {
 		// "/foo/{ids}" and URL "/foo/id=1;id=2;id=3" where the whole path
 		// segment is a sequence of name-value pairs.
 
-		assertThat((Object) matrixVariables).isNotNull();
-		assertThat((long) matrixVariables.size()).isEqualTo((long) 1);
+		assertThat(matrixVariables).isNotNull();
+		assertThat(matrixVariables.size()).isEqualTo((long) 1);
 		assertThat(matrixVariables.getFirst("b")).isEqualTo("c");
 		assertThat(uriVariables.get("foo")).isEqualTo("a=42");
 	}
@@ -310,7 +310,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		MultiValueMap<String, String> matrixVariables = getMatrixVariables(exchange, "cars");
 		Map<String, String> uriVariables = getUriTemplateVariables(exchange);
 
-		assertThat((Object) matrixVariables).isNotNull();
+		assertThat(matrixVariables).isNotNull();
 		assertThat(matrixVariables.get("mvar")).isEqualTo(Collections.singletonList("a/b"));
 		assertThat(uriVariables.get("cars")).isEqualTo("cars");
 	}
@@ -343,7 +343,7 @@ public class RequestMappingInfoHandlerMappingTests {
 		Mono<HandlerResult> mono = invocable.invoke(exchange, bindingContext);
 
 		HandlerResult result = mono.block();
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 
 		Object value = result.getReturnValue();
 		assertThat(value).isNotNull();

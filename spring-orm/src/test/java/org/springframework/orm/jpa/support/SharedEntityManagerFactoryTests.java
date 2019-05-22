@@ -56,7 +56,7 @@ public class SharedEntityManagerFactoryTests {
 		assertThat(proxyFactoryBean.isSingleton()).isTrue();
 
 		EntityManager proxy = proxyFactoryBean.getObject();
-		assertThat((Object) proxyFactoryBean.getObject()).isSameAs(proxy);
+		assertThat(proxyFactoryBean.getObject()).isSameAs(proxy);
 		assertThat(proxy.contains(o)).isFalse();
 
 		boolean condition = proxy instanceof EntityManagerProxy;
@@ -67,7 +67,7 @@ public class SharedEntityManagerFactoryTests {
 
 		TransactionSynchronizationManager.bindResource(mockEmf, new EntityManagerHolder(mockEm));
 		try {
-			assertThat((Object) emProxy.getTargetEntityManager()).isSameAs(mockEm);
+			assertThat(emProxy.getTargetEntityManager()).isSameAs(mockEm);
 		}
 		finally {
 			TransactionSynchronizationManager.unbindResource(mockEmf);

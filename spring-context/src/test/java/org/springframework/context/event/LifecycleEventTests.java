@@ -41,11 +41,11 @@ public class LifecycleEventTests {
 		LifecycleTestBean lifecycleBean = (LifecycleTestBean) context.getBean("lifecycle");
 		LifecycleListener listener = (LifecycleListener) context.getBean("listener");
 		assertThat(lifecycleBean.isRunning()).isFalse();
-		assertThat((long) listener.getStartedCount()).isEqualTo((long) 0);
+		assertThat(listener.getStartedCount()).isEqualTo((long) 0);
 		context.start();
 		assertThat(lifecycleBean.isRunning()).isTrue();
-		assertThat((long) listener.getStartedCount()).isEqualTo((long) 1);
-		assertThat((Object) listener.getApplicationContext()).isSameAs(context);
+		assertThat(listener.getStartedCount()).isEqualTo((long) 1);
+		assertThat(listener.getApplicationContext()).isSameAs(context);
 	}
 
 	@Test
@@ -59,11 +59,11 @@ public class LifecycleEventTests {
 		assertThat(lifecycleBean.isRunning()).isFalse();
 		context.start();
 		assertThat(lifecycleBean.isRunning()).isTrue();
-		assertThat((long) listener.getStoppedCount()).isEqualTo((long) 0);
+		assertThat(listener.getStoppedCount()).isEqualTo((long) 0);
 		context.stop();
 		assertThat(lifecycleBean.isRunning()).isFalse();
-		assertThat((long) listener.getStoppedCount()).isEqualTo((long) 1);
-		assertThat((Object) listener.getApplicationContext()).isSameAs(context);
+		assertThat(listener.getStoppedCount()).isEqualTo((long) 1);
+		assertThat(listener.getApplicationContext()).isSameAs(context);
 	}
 
 

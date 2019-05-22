@@ -349,8 +349,8 @@ public class HttpHeadersTests {
 	@Test
 	public void cacheControlEmpty() {
 		headers.setCacheControl(CacheControl.empty());
-		assertThat((Object) headers.getCacheControl()).as("Invalid Cache-Control header").isNull();
-		assertThat((Object) headers.getFirst("cache-control")).as("Invalid Cache-Control header").isNull();
+		assertThat(headers.getCacheControl()).as("Invalid Cache-Control header").isNull();
+		assertThat(headers.getFirst("cache-control")).as("Invalid Cache-Control header").isNull();
 	}
 
 	@Test
@@ -363,7 +363,7 @@ public class HttpHeadersTests {
 	@Test
 	public void contentDisposition() {
 		ContentDisposition disposition = headers.getContentDisposition();
-		assertThat((Object) disposition).isNotNull();
+		assertThat(disposition).isNotNull();
 		assertThat(headers.getContentDisposition()).as("Invalid Content-Disposition header").isEqualTo(ContentDisposition.empty());
 
 		disposition = ContentDisposition.builder("attachment").name("foo").filename("foo.txt").size(123L).build();
@@ -416,7 +416,7 @@ public class HttpHeadersTests {
 
 	@Test
 	public void accessControlAllowOrigin() {
-		assertThat((Object) headers.getAccessControlAllowOrigin()).isNull();
+		assertThat(headers.getAccessControlAllowOrigin()).isNull();
 		headers.setAccessControlAllowOrigin("*");
 		assertThat(headers.getAccessControlAllowOrigin()).isEqualTo("*");
 	}
@@ -448,7 +448,7 @@ public class HttpHeadersTests {
 
 	@Test
 	public void accessControlRequestMethod() {
-		assertThat((Object) headers.getAccessControlRequestMethod()).isNull();
+		assertThat(headers.getAccessControlRequestMethod()).isNull();
 		headers.setAccessControlRequestMethod(HttpMethod.POST);
 		assertThat(headers.getAccessControlRequestMethod()).isEqualTo(HttpMethod.POST);
 	}
@@ -535,7 +535,7 @@ public class HttpHeadersTests {
 		String password = "bar";
 		headers.setBasicAuth(username, password);
 		String authorization = headers.getFirst(HttpHeaders.AUTHORIZATION);
-		assertThat((Object) authorization).isNotNull();
+		assertThat(authorization).isNotNull();
 		assertThat(authorization.startsWith("Basic ")).isTrue();
 		byte[] result = Base64.getDecoder().decode(authorization.substring(6).getBytes(StandardCharsets.ISO_8859_1));
 		assertThat(new String(result, StandardCharsets.ISO_8859_1)).isEqualTo("foo:bar");

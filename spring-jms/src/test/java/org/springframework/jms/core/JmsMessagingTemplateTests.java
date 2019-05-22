@@ -82,7 +82,7 @@ public class JmsMessagingTemplateTests {
 
 	@Test
 	public void validateJmsTemplate() {
-		assertThat((Object) this.messagingTemplate.getJmsTemplate()).isSameAs(this.jmsTemplate);
+		assertThat(this.messagingTemplate.getJmsTemplate()).isSameAs(this.jmsTemplate);
 	}
 
 	@Test
@@ -120,7 +120,7 @@ public class JmsMessagingTemplateTests {
 	private void assertPayloadConverter(JmsMessagingTemplate messagingTemplate,
 			MessageConverter messageConverter) {
 		MessageConverter jmsMessageConverter = messagingTemplate.getJmsMessageConverter();
-		assertThat((Object) jmsMessageConverter).isNotNull();
+		assertThat(jmsMessageConverter).isNotNull();
 		assertThat(jmsMessageConverter.getClass()).isEqualTo(MessagingMessageConverter.class);
 		assertThat(new DirectFieldAccessor(jmsMessageConverter)
 				.getPropertyValue("payloadConverter")).isSameAs(messageConverter);
@@ -638,7 +638,7 @@ public class JmsMessagingTemplateTests {
 	}
 
 	private void assertTextMessage(Message<?> message) {
-		assertThat((Object) message).as("message should not be null").isNotNull();
+		assertThat(message).as("message should not be null").isNotNull();
 		assertThat(message.getPayload()).as("Wrong payload").isEqualTo("Hello");
 		assertThat(message.getHeaders().get("foo")).as("Invalid foo property").isEqualTo("bar");
 	}

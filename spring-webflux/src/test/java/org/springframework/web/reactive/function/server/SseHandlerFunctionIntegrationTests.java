@@ -100,15 +100,15 @@ public class SseHandlerFunctionIntegrationTests extends AbstractRouterFunctionIn
 					assertThat(event.id()).isEqualTo("0");
 					assertThat(event.data()).isEqualTo("foo");
 					assertThat(event.comment()).isEqualTo("bar");
-					assertThat((Object) event.event()).isNull();
-					assertThat((Object) event.retry()).isNull();
+					assertThat(event.event()).isNull();
+					assertThat(event.retry()).isNull();
 				})
 				.consumeNextWith( event -> {
 					assertThat(event.id()).isEqualTo("1");
 					assertThat(event.data()).isEqualTo("foo");
 					assertThat(event.comment()).isEqualTo("bar");
-					assertThat((Object) event.event()).isNull();
-					assertThat((Object) event.retry()).isNull();
+					assertThat(event.event()).isNull();
+					assertThat(event.retry()).isNull();
 				})
 				.expectComplete()
 				.verify(Duration.ofSeconds(5L));

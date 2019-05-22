@@ -56,13 +56,13 @@ public class EnableCachingTests extends AbstractCacheAnnotationTests {
 	@Test
 	public void testKeyStrategy() {
 		CacheInterceptor ci = this.ctx.getBean(CacheInterceptor.class);
-		assertThat((Object) ci.getKeyGenerator()).isSameAs(this.ctx.getBean("keyGenerator", KeyGenerator.class));
+		assertThat(ci.getKeyGenerator()).isSameAs(this.ctx.getBean("keyGenerator", KeyGenerator.class));
 	}
 
 	@Test
 	public void testCacheErrorHandler() {
 		CacheInterceptor ci = this.ctx.getBean(CacheInterceptor.class);
-		assertThat((Object) ci.getErrorHandler()).isSameAs(this.ctx.getBean("errorHandler", CacheErrorHandler.class));
+		assertThat(ci.getErrorHandler()).isSameAs(this.ctx.getBean("errorHandler", CacheErrorHandler.class));
 	}
 
 	@Test
@@ -122,9 +122,9 @@ public class EnableCachingTests extends AbstractCacheAnnotationTests {
 	public void emptyConfigSupport() {
 		ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(EmptyConfigSupportConfig.class);
 		CacheInterceptor ci = context.getBean(CacheInterceptor.class);
-		assertThat((Object) ci.getCacheResolver()).isNotNull();
+		assertThat(ci.getCacheResolver()).isNotNull();
 		assertThat(ci.getCacheResolver().getClass()).isEqualTo(SimpleCacheResolver.class);
-		assertThat((Object) ((SimpleCacheResolver) ci.getCacheResolver()).getCacheManager()).isSameAs(context.getBean(CacheManager.class));
+		assertThat(((SimpleCacheResolver) ci.getCacheResolver()).getCacheManager()).isSameAs(context.getBean(CacheManager.class));
 		context.close();
 	}
 
@@ -132,8 +132,8 @@ public class EnableCachingTests extends AbstractCacheAnnotationTests {
 	public void bothSetOnlyResolverIsUsed() {
 		ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(FullCachingConfig.class);
 		CacheInterceptor ci = context.getBean(CacheInterceptor.class);
-		assertThat((Object) ci.getCacheResolver()).isSameAs(context.getBean("cacheResolver"));
-		assertThat((Object) ci.getKeyGenerator()).isSameAs(context.getBean("keyGenerator"));
+		assertThat(ci.getCacheResolver()).isSameAs(context.getBean("cacheResolver"));
+		assertThat(ci.getKeyGenerator()).isSameAs(context.getBean("keyGenerator"));
 		context.close();
 	}
 

@@ -66,20 +66,20 @@ public class DispatcherWacRootWacEarTests extends RootWacEarTests {
 	@Test
 	public void verifyDispatcherWacConfig() {
 		ApplicationContext parent = wac.getParent();
-		assertThat((Object) parent).isNotNull();
+		assertThat(parent).isNotNull();
 		boolean condition = parent instanceof WebApplicationContext;
 		assertThat(condition).isTrue();
 
 		ApplicationContext grandParent = parent.getParent();
-		assertThat((Object) grandParent).isNotNull();
+		assertThat(grandParent).isNotNull();
 		boolean condition1 = grandParent instanceof WebApplicationContext;
 		assertThat(condition1).isFalse();
 
 		ServletContext dispatcherServletContext = wac.getServletContext();
-		assertThat((Object) dispatcherServletContext).isNotNull();
+		assertThat(dispatcherServletContext).isNotNull();
 		ServletContext rootServletContext = ((WebApplicationContext) parent).getServletContext();
-		assertThat((Object) rootServletContext).isNotNull();
-		assertThat((Object) rootServletContext).isSameAs(dispatcherServletContext);
+		assertThat(rootServletContext).isNotNull();
+		assertThat(rootServletContext).isSameAs(dispatcherServletContext);
 
 		assertThat(rootServletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).isSameAs(parent);
 		assertThat(dispatcherServletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE)).isSameAs(parent);

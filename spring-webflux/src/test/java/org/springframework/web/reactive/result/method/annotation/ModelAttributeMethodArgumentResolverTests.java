@@ -213,12 +213,12 @@ public class ModelAttributeMethodArgumentResolverTests {
 
 		Foo foo = valueExtractor.apply(value);
 		assertThat(foo.getName()).isEqualTo("Robert");
-		assertThat((long) foo.getAge()).isEqualTo((long) 25);
+		assertThat(foo.getAge()).isEqualTo((long) 25);
 
 		String bindingResultKey = BindingResult.MODEL_KEY_PREFIX + modelKey;
 
 		Map<String, Object> map = bindContext.getModel().asMap();
-		assertThat((long) map.size()).as(map.toString()).isEqualTo((long) 2);
+		assertThat(map.size()).as(map.toString()).isEqualTo((long) 2);
 		assertThat(map.get(modelKey)).isSameAs(foo);
 		assertThat(map.get(bindingResultKey)).isNotNull();
 		boolean condition = map.get(bindingResultKey) instanceof BindingResult;
@@ -274,7 +274,7 @@ public class ModelAttributeMethodArgumentResolverTests {
 					boolean condition = ex instanceof WebExchangeBindException;
 					assertThat(condition).isTrue();
 					WebExchangeBindException bindException = (WebExchangeBindException) ex;
-					assertThat((long) bindException.getErrorCount()).isEqualTo((long) 1);
+					assertThat(bindException.getErrorCount()).isEqualTo((long) 1);
 					assertThat(bindException.hasFieldErrors("age")).isTrue();
 				})
 				.verify();
@@ -292,14 +292,14 @@ public class ModelAttributeMethodArgumentResolverTests {
 
 		Bar bar = (Bar) value;
 		assertThat(bar.getName()).isEqualTo("Robert");
-		assertThat((long) bar.getAge()).isEqualTo((long) 25);
-		assertThat((long) bar.getCount()).isEqualTo((long) 1);
+		assertThat(bar.getAge()).isEqualTo((long) 25);
+		assertThat(bar.getCount()).isEqualTo((long) 1);
 
 		String key = "bar";
 		String bindingResultKey = BindingResult.MODEL_KEY_PREFIX + key;
 
 		Map<String, Object> map = bindContext.getModel().asMap();
-		assertThat((long) map.size()).as(map.toString()).isEqualTo((long) 2);
+		assertThat(map.size()).as(map.toString()).isEqualTo((long) 2);
 		assertThat(map.get(key)).isSameAs(bar);
 		assertThat(map.get(bindingResultKey)).isNotNull();
 		boolean condition = map.get(bindingResultKey) instanceof BindingResult;

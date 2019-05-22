@@ -87,13 +87,13 @@ public class FormHttpMessageConverterTests {
 				new MediaType("application", "x-www-form-urlencoded", StandardCharsets.ISO_8859_1));
 		MultiValueMap<String, String> result = this.converter.read(null, inputMessage);
 
-		assertThat((long) result.size()).as("Invalid result").isEqualTo((long) 3);
+		assertThat(result.size()).as("Invalid result").isEqualTo((long) 3);
 		assertThat(result.getFirst("name 1")).as("Invalid result").isEqualTo("value 1");
 		List<String> values = result.get("name 2");
-		assertThat((long) values.size()).as("Invalid result").isEqualTo((long) 2);
+		assertThat(values.size()).as("Invalid result").isEqualTo((long) 2);
 		assertThat(values.get(0)).as("Invalid result").isEqualTo("value 2+1");
 		assertThat(values.get(1)).as("Invalid result").isEqualTo("value 2+2");
-		assertThat((Object) result.getFirst("name 3")).as("Invalid result").isNull();
+		assertThat(result.getFirst("name 3")).as("Invalid result").isNull();
 	}
 
 	@Test
@@ -149,7 +149,7 @@ public class FormHttpMessageConverterTests {
 		FileUpload fileUpload = new FileUpload(fileItemFactory);
 		RequestContext requestContext = new MockHttpOutputMessageRequestContext(outputMessage);
 		List<FileItem> items = fileUpload.parseRequest(requestContext);
-		assertThat((long) items.size()).isEqualTo((long) 6);
+		assertThat(items.size()).isEqualTo((long) 6);
 		FileItem item = items.get(0);
 		assertThat(item.isFormField()).isTrue();
 		assertThat(item.getFieldName()).isEqualTo("name 1");
@@ -205,14 +205,14 @@ public class FormHttpMessageConverterTests {
 		this.converter.write(parts, new MediaType("multipart", "form-data", StandardCharsets.UTF_8), outputMessage);
 
 		final MediaType contentType = outputMessage.getHeaders().getContentType();
-		assertThat((Object) contentType.getParameter("boundary")).as("No boundary found").isNotNull();
+		assertThat(contentType.getParameter("boundary")).as("No boundary found").isNotNull();
 
 		// see if Commons FileUpload can read what we wrote
 		FileItemFactory fileItemFactory = new DiskFileItemFactory();
 		FileUpload fileUpload = new FileUpload(fileItemFactory);
 		RequestContext requestContext = new MockHttpOutputMessageRequestContext(outputMessage);
 		List<FileItem> items = fileUpload.parseRequest(requestContext);
-		assertThat((long) items.size()).isEqualTo((long) 2);
+		assertThat(items.size()).isEqualTo((long) 2);
 
 		FileItem item = items.get(0);
 		assertThat(item.isFormField()).isTrue();

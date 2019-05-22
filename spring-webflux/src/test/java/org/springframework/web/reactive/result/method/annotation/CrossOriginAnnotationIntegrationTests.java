@@ -86,7 +86,7 @@ public class CrossOriginAnnotationIntegrationTests extends AbstractRequestMappin
 	public void actualGetRequestWithoutAnnotation() throws Exception {
 		ResponseEntity<String> entity = performGet("/no", this.headers, String.class);
 		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) entity.getHeaders().getAccessControlAllowOrigin()).isNull();
+		assertThat(entity.getHeaders().getAccessControlAllowOrigin()).isNull();
 		assertThat(entity.getBody()).isEqualTo("no");
 	}
 
@@ -94,7 +94,7 @@ public class CrossOriginAnnotationIntegrationTests extends AbstractRequestMappin
 	public void actualPostRequestWithoutAnnotation() throws Exception {
 		ResponseEntity<String> entity = performPost("/no", this.headers, null, String.class);
 		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) entity.getHeaders().getAccessControlAllowOrigin()).isNull();
+		assertThat(entity.getHeaders().getAccessControlAllowOrigin()).isNull();
 		assertThat(entity.getBody()).isEqualTo("no-post");
 	}
 
@@ -122,7 +122,7 @@ public class CrossOriginAnnotationIntegrationTests extends AbstractRequestMappin
 		HttpHeaders headers = new HttpHeaders();
 		ResponseEntity<String> entity = performGet("/default", headers, String.class);
 		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((Object) entity.getHeaders().getAccessControlAllowOrigin()).isNull();
+		assertThat(entity.getHeaders().getAccessControlAllowOrigin()).isNull();
 		assertThat(entity.getBody()).isEqualTo("default");
 	}
 

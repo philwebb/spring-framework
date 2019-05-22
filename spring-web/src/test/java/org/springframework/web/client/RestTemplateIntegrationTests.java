@@ -107,7 +107,7 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 	@Test
 	public void getNoResponse() {
 		String s = template.getForObject(baseUrl + "/get/nothing", String.class);
-		assertThat((Object) s).as("Invalid content").isNull();
+		assertThat(s).as("Invalid content").isNull();
 	}
 
 	@Test
@@ -119,21 +119,21 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 	@Test
 	public void getNoContent() {
 		String s = template.getForObject(baseUrl + "/status/nocontent", String.class);
-		assertThat((Object) s).as("Invalid content").isNull();
+		assertThat(s).as("Invalid content").isNull();
 
 		ResponseEntity<String> entity = template.getForEntity(baseUrl + "/status/nocontent", String.class);
 		assertThat(entity.getStatusCode()).as("Invalid response code").isEqualTo(HttpStatus.NO_CONTENT);
-		assertThat((Object) entity.getBody()).as("Invalid content").isNull();
+		assertThat(entity.getBody()).as("Invalid content").isNull();
 	}
 
 	@Test
 	public void getNotModified() {
 		String s = template.getForObject(baseUrl + "/status/notmodified", String.class);
-		assertThat((Object) s).as("Invalid content").isNull();
+		assertThat(s).as("Invalid content").isNull();
 
 		ResponseEntity<String> entity = template.getForEntity(baseUrl + "/status/notmodified", String.class);
 		assertThat(entity.getStatusCode()).as("Invalid response code").isEqualTo(HttpStatus.NOT_MODIFIED);
-		assertThat((Object) entity.getBody()).as("Invalid content").isNull();
+		assertThat(entity.getBody()).as("Invalid content").isNull();
 	}
 
 	@Test
@@ -172,8 +172,8 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 				template.execute(baseUrl + "/status/notfound", HttpMethod.GET, null, null))
 			.satisfies(ex -> {
 				assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-				assertThat((Object) ex.getStatusText()).isNotNull();
-				assertThat((Object) ex.getResponseBodyAsString()).isNotNull();
+				assertThat(ex.getStatusText()).isNotNull();
+				assertThat(ex.getResponseBodyAsString()).isNotNull();
 			});
 	}
 
@@ -193,8 +193,8 @@ public class RestTemplateIntegrationTests extends AbstractMockWebServerTestCase 
 				template.execute(baseUrl + "/status/server", HttpMethod.GET, null, null))
 			.satisfies(ex -> {
 				assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
-				assertThat((Object) ex.getStatusText()).isNotNull();
-				assertThat((Object) ex.getResponseBodyAsString()).isNotNull();
+				assertThat(ex.getStatusText()).isNotNull();
+				assertThat(ex.getResponseBodyAsString()).isNotNull();
 			});
 	}
 

@@ -35,10 +35,10 @@ public class LinkedCaseInsensitiveMapTests {
 
 	@Test
 	public void putAndGet() {
-		assertThat((Object) map.put("key", "value1")).isNull();
+		assertThat(map.put("key", "value1")).isNull();
 		assertThat(map.put("key", "value2")).isEqualTo("value1");
 		assertThat(map.put("key", "value3")).isEqualTo("value2");
-		assertThat((long) map.size()).isEqualTo((long) 1);
+		assertThat(map.size()).isEqualTo((long) 1);
 		assertThat(map.get("key")).isEqualTo("value3");
 		assertThat(map.get("KEY")).isEqualTo("value3");
 		assertThat(map.get("Key")).isEqualTo("value3");
@@ -52,10 +52,10 @@ public class LinkedCaseInsensitiveMapTests {
 
 	@Test
 	public void putWithOverlappingKeys() {
-		assertThat((Object) map.put("key", "value1")).isNull();
+		assertThat(map.put("key", "value1")).isNull();
 		assertThat(map.put("KEY", "value2")).isEqualTo("value1");
 		assertThat(map.put("Key", "value3")).isEqualTo("value2");
-		assertThat((long) map.size()).isEqualTo((long) 1);
+		assertThat(map.size()).isEqualTo((long) 1);
 		assertThat(map.get("key")).isEqualTo("value3");
 		assertThat(map.get("KEY")).isEqualTo("value3");
 		assertThat(map.get("Key")).isEqualTo("value3");
@@ -69,7 +69,7 @@ public class LinkedCaseInsensitiveMapTests {
 
 	@Test
 	public void getOrDefault() {
-		assertThat((Object) map.put("key", "value1")).isNull();
+		assertThat(map.put("key", "value1")).isNull();
 		assertThat(map.put("KEY", "value2")).isEqualTo("value1");
 		assertThat(map.put("Key", "value3")).isEqualTo("value2");
 		assertThat(map.getOrDefault("key", "N")).isEqualTo("value3");
@@ -81,19 +81,19 @@ public class LinkedCaseInsensitiveMapTests {
 
 	@Test
 	public void getOrDefaultWithNullValue() {
-		assertThat((Object) map.put("key", null)).isNull();
-		assertThat((Object) map.put("KEY", null)).isNull();
-		assertThat((Object) map.put("Key", null)).isNull();
-		assertThat((Object) map.getOrDefault("key", "N")).isNull();
-		assertThat((Object) map.getOrDefault("KEY", "N")).isNull();
-		assertThat((Object) map.getOrDefault("Key", "N")).isNull();
+		assertThat(map.put("key", null)).isNull();
+		assertThat(map.put("KEY", null)).isNull();
+		assertThat(map.put("Key", null)).isNull();
+		assertThat(map.getOrDefault("key", "N")).isNull();
+		assertThat(map.getOrDefault("KEY", "N")).isNull();
+		assertThat(map.getOrDefault("Key", "N")).isNull();
 		assertThat(map.getOrDefault("keeeey", "N")).isEqualTo("N");
 		assertThat(map.getOrDefault(new Object(), "N")).isEqualTo("N");
 	}
 
 	@Test
 	public void computeIfAbsentWithExistingValue() {
-		assertThat((Object) map.putIfAbsent("key", "value1")).isNull();
+		assertThat(map.putIfAbsent("key", "value1")).isNull();
 		assertThat(map.putIfAbsent("KEY", "value2")).isEqualTo("value1");
 		assertThat(map.put("Key", "value3")).isEqualTo("value1");
 		assertThat(map.computeIfAbsent("key", key2 -> "value1")).isEqualTo("value3");
@@ -110,7 +110,7 @@ public class LinkedCaseInsensitiveMapTests {
 
 	@Test
 	public void mapClone() {
-		assertThat((Object) map.put("key", "value1")).isNull();
+		assertThat(map.put("key", "value1")).isNull();
 		LinkedCaseInsensitiveMap<String> copy = map.clone();
 
 		assertThat(copy.getLocale()).isEqualTo(map.getLocale());
@@ -122,8 +122,8 @@ public class LinkedCaseInsensitiveMapTests {
 		assertThat(copy.get("Key")).isEqualTo("value1");
 
 		copy.put("Key", "value2");
-		assertThat((long) map.size()).isEqualTo((long) 1);
-		assertThat((long) copy.size()).isEqualTo((long) 1);
+		assertThat(map.size()).isEqualTo((long) 1);
+		assertThat(copy.size()).isEqualTo((long) 1);
 		assertThat(map.get("key")).isEqualTo("value1");
 		assertThat(map.get("KEY")).isEqualTo("value1");
 		assertThat(map.get("Key")).isEqualTo("value1");
@@ -153,7 +153,7 @@ public class LinkedCaseInsensitiveMapTests {
 	public void removeFromKeySetViaIterator() {
 		map.put("key", "value");
 		nextAndRemove(map.keySet().iterator());
-		assertThat((long) map.size()).isEqualTo((long) 0);
+		assertThat(map.size()).isEqualTo((long) 0);
 		map.computeIfAbsent("key", k -> "newvalue");
 		assertThat(map.get("key")).isEqualTo("newvalue");
 	}
@@ -162,7 +162,7 @@ public class LinkedCaseInsensitiveMapTests {
 	public void clearFromValues() {
 		map.put("key", "value");
 		map.values().clear();
-		assertThat((long) map.size()).isEqualTo((long) 0);
+		assertThat(map.size()).isEqualTo((long) 0);
 		map.computeIfAbsent("key", k -> "newvalue");
 		assertThat(map.get("key")).isEqualTo("newvalue");
 	}
@@ -171,7 +171,7 @@ public class LinkedCaseInsensitiveMapTests {
 	public void removeFromValues() {
 		map.put("key", "value");
 		map.values().remove("value");
-		assertThat((long) map.size()).isEqualTo((long) 0);
+		assertThat(map.size()).isEqualTo((long) 0);
 		map.computeIfAbsent("key", k -> "newvalue");
 		assertThat(map.get("key")).isEqualTo("newvalue");
 	}
@@ -180,7 +180,7 @@ public class LinkedCaseInsensitiveMapTests {
 	public void removeFromValuesViaIterator() {
 		map.put("key", "value");
 		nextAndRemove(map.values().iterator());
-		assertThat((long) map.size()).isEqualTo((long) 0);
+		assertThat(map.size()).isEqualTo((long) 0);
 		map.computeIfAbsent("key", k -> "newvalue");
 		assertThat(map.get("key")).isEqualTo("newvalue");
 	}
@@ -189,7 +189,7 @@ public class LinkedCaseInsensitiveMapTests {
 	public void clearFromEntrySet() {
 		map.put("key", "value");
 		map.entrySet().clear();
-		assertThat((long) map.size()).isEqualTo((long) 0);
+		assertThat(map.size()).isEqualTo((long) 0);
 		map.computeIfAbsent("key", k -> "newvalue");
 		assertThat(map.get("key")).isEqualTo("newvalue");
 	}
@@ -198,7 +198,7 @@ public class LinkedCaseInsensitiveMapTests {
 	public void removeFromEntrySet() {
 		map.put("key", "value");
 		map.entrySet().remove(map.entrySet().iterator().next());
-		assertThat((long) map.size()).isEqualTo((long) 0);
+		assertThat(map.size()).isEqualTo((long) 0);
 		map.computeIfAbsent("key", k -> "newvalue");
 		assertThat(map.get("key")).isEqualTo("newvalue");
 	}
@@ -207,7 +207,7 @@ public class LinkedCaseInsensitiveMapTests {
 	public void removeFromEntrySetViaIterator() {
 		map.put("key", "value");
 		nextAndRemove(map.entrySet().iterator());
-		assertThat((long) map.size()).isEqualTo((long) 0);
+		assertThat(map.size()).isEqualTo((long) 0);
 		map.computeIfAbsent("key", k -> "newvalue");
 		assertThat(map.get("key")).isEqualTo("newvalue");
 	}

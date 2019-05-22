@@ -53,7 +53,7 @@ public class TestClass4 {
 
 	@Test
 	public void dummyTest() {
-		assertThat((Object) dataSource).isNotNull();
+		assertThat(dataSource).isNotNull();
 	}
 
 }

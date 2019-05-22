@@ -163,7 +163,7 @@ public class FreeMarkerViewTests {
 		assertThat(((FreeMarkerView) view).getUrl()).as("Correct URL").isEqualTo("prefix_test_suffix");
 
 		view = vr.resolveViewName("non-existing", Locale.CANADA);
-		assertThat((Object) view).isNull();
+		assertThat(view).isNull();
 
 		view = vr.resolveViewName("redirect:myUrl", Locale.getDefault());
 		assertThat(view.getClass()).as("Correct view class").isEqualTo(RedirectView.class);

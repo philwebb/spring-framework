@@ -210,11 +210,11 @@ public class AspectJExpressionPointcutTests {
 		CallCountingInterceptor interceptor = new CallCountingInterceptor();
 		TestBean testBean = getAdvisedProxy(expression, interceptor);
 
-		assertThat((long) interceptor.getCount()).as("Calls should be 0").isEqualTo((long) 0);
+		assertThat(interceptor.getCount()).as("Calls should be 0").isEqualTo((long) 0);
 		testBean.getAge();
-		assertThat((long) interceptor.getCount()).as("Calls should be 1").isEqualTo((long) 1);
+		assertThat(interceptor.getCount()).as("Calls should be 1").isEqualTo((long) 1);
 		testBean.setAge(90);
-		assertThat((long) interceptor.getCount()).as("Calls should still be 1").isEqualTo((long) 1);
+		assertThat(interceptor.getCount()).as("Calls should still be 1").isEqualTo((long) 1);
 	}
 
 	@Test
@@ -223,12 +223,12 @@ public class AspectJExpressionPointcutTests {
 		CallCountingInterceptor interceptor = new CallCountingInterceptor();
 		TestBean testBean = getAdvisedProxy(expression, interceptor);
 
-		assertThat((long) interceptor.getCount()).as("Calls should be 0").isEqualTo((long) 0);
+		assertThat(interceptor.getCount()).as("Calls should be 0").isEqualTo((long) 0);
 		testBean.setSomeNumber(new Double(30));
-		assertThat((long) interceptor.getCount()).as("Calls should be 1").isEqualTo((long) 1);
+		assertThat(interceptor.getCount()).as("Calls should be 1").isEqualTo((long) 1);
 
 		testBean.setSomeNumber(new Integer(90));
-		assertThat((long) interceptor.getCount()).as("Calls should be 1").isEqualTo((long) 1);
+		assertThat(interceptor.getCount()).as("Calls should be 1").isEqualTo((long) 1);
 	}
 
 	@Test

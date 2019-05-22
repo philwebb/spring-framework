@@ -95,7 +95,7 @@ public class DispatcherHandlerErrorTests {
 		// SPR-17475
 		AtomicReference<Throwable> exceptionRef = new AtomicReference<>();
 		StepVerifier.create(mono).consumeErrorWith(exceptionRef::set).verify();
-		StepVerifier.create(mono).consumeErrorWith(ex -> assertThat((Object) ex).isNotSameAs(exceptionRef.get())).verify();
+		StepVerifier.create(mono).consumeErrorWith(ex -> assertThat(ex).isNotSameAs(exceptionRef.get())).verify();
 	}
 
 	@Test
@@ -104,7 +104,7 @@ public class DispatcherHandlerErrorTests {
 		Mono<Void> publisher = this.dispatcherHandler.handle(exchange);
 
 		StepVerifier.create(publisher)
-				.consumeErrorWith(error -> assertThat((Object) error).isSameAs(EXCEPTION))
+				.consumeErrorWith(error -> assertThat(error).isSameAs(EXCEPTION))
 				.verify();
 	}
 
@@ -114,7 +114,7 @@ public class DispatcherHandlerErrorTests {
 		Mono<Void> publisher = this.dispatcherHandler.handle(exchange);
 
 		StepVerifier.create(publisher)
-				.consumeErrorWith(error -> assertThat((Object) error).isSameAs(EXCEPTION))
+				.consumeErrorWith(error -> assertThat(error).isSameAs(EXCEPTION))
 				.verify();
 	}
 
@@ -152,7 +152,7 @@ public class DispatcherHandlerErrorTests {
 		Mono<Void> publisher = this.dispatcherHandler.handle(exchange);
 
 		StepVerifier.create(publisher)
-				.consumeErrorWith(error -> assertThat((Object) error).isSameAs(EXCEPTION))
+				.consumeErrorWith(error -> assertThat(error).isSameAs(EXCEPTION))
 				.verify();
 	}
 

@@ -123,7 +123,7 @@ public class XmlListableBeanFactoryTests extends AbstractListableBeanFactoryTest
 	@Test
 	public void descriptionButNoProperties() {
 		TestBean validEmpty = (TestBean) getBeanFactory().getBean("validEmptyWithDescription");
-		assertThat((long) validEmpty.getAge()).isEqualTo((long) 0);
+		assertThat(validEmpty.getAge()).isEqualTo((long) 0);
 	}
 
 	/**
@@ -137,7 +137,7 @@ public class XmlListableBeanFactoryTests extends AbstractListableBeanFactoryTest
 		TestBean alias1 = (TestBean) getBeanFactory().getBean("myalias");
 		assertThat(tb1 == alias1).isTrue();
 		List tb1Aliases = Arrays.asList(getBeanFactory().getAliases("aliased"));
-		assertThat((long) tb1Aliases.size()).isEqualTo((long) 2);
+		assertThat(tb1Aliases.size()).isEqualTo((long) 2);
 		assertThat(tb1Aliases.contains("myalias")).isTrue();
 		assertThat(tb1Aliases.contains("youralias")).isTrue();
 		assertThat(beanNames.contains("aliased")).isTrue();
@@ -155,7 +155,7 @@ public class XmlListableBeanFactoryTests extends AbstractListableBeanFactoryTest
 		assertThat(tb2 == alias3b).isTrue();
 
 		List tb2Aliases = Arrays.asList(getBeanFactory().getAliases("multiAliased"));
-		assertThat((long) tb2Aliases.size()).isEqualTo((long) 4);
+		assertThat(tb2Aliases.size()).isEqualTo((long) 4);
 		assertThat(tb2Aliases.contains("alias1")).isTrue();
 		assertThat(tb2Aliases.contains("alias2")).isTrue();
 		assertThat(tb2Aliases.contains("alias3")).isTrue();
@@ -172,7 +172,7 @@ public class XmlListableBeanFactoryTests extends AbstractListableBeanFactoryTest
 		assertThat(tb3 == alias4).isTrue();
 		assertThat(tb3 == alias5).isTrue();
 		List tb3Aliases = Arrays.asList(getBeanFactory().getAliases("aliasWithoutId1"));
-		assertThat((long) tb3Aliases.size()).isEqualTo((long) 2);
+		assertThat(tb3Aliases.size()).isEqualTo((long) 2);
 		assertThat(tb3Aliases.contains("aliasWithoutId2")).isTrue();
 		assertThat(tb3Aliases.contains("aliasWithoutId3")).isTrue();
 		assertThat(beanNames.contains("aliasWithoutId1")).isTrue();
@@ -183,7 +183,7 @@ public class XmlListableBeanFactoryTests extends AbstractListableBeanFactoryTest
 		assertThat(tb4.getName()).isEqualTo(null);
 
 		Map drs = getListableBeanFactory().getBeansOfType(DummyReferencer.class, false, false);
-		assertThat((long) drs.size()).isEqualTo((long) 5);
+		assertThat(drs.size()).isEqualTo((long) 5);
 		assertThat(drs.containsKey(DummyReferencer.class.getName() + "#0")).isTrue();
 		assertThat(drs.containsKey(DummyReferencer.class.getName() + "#1")).isTrue();
 		assertThat(drs.containsKey(DummyReferencer.class.getName() + "#2")).isTrue();

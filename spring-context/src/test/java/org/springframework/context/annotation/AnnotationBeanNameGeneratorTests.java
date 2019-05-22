@@ -54,7 +54,7 @@ public class AnnotationBeanNameGeneratorTests {
 		BeanDefinitionRegistry registry = new SimpleBeanDefinitionRegistry();
 		AnnotatedBeanDefinition bd = new AnnotatedGenericBeanDefinition(ComponentWithName.class);
 		String beanName = this.beanNameGenerator.generateBeanName(bd, registry);
-		assertThat((Object) beanName).as("The generated beanName must *never* be null.").isNotNull();
+		assertThat(beanName).as("The generated beanName must *never* be null.").isNotNull();
 		assertThat(StringUtils.hasText(beanName)).as("The generated beanName must *never* be blank.").isTrue();
 		assertThat(beanName).isEqualTo("walden");
 	}
@@ -64,7 +64,7 @@ public class AnnotationBeanNameGeneratorTests {
 		BeanDefinitionRegistry registry = new SimpleBeanDefinitionRegistry();
 		AnnotatedBeanDefinition bd = new AnnotatedGenericBeanDefinition(DefaultNamedComponent.class);
 		String beanName = this.beanNameGenerator.generateBeanName(bd, registry);
-		assertThat((Object) beanName).as("The generated beanName must *never* be null.").isNotNull();
+		assertThat(beanName).as("The generated beanName must *never* be null.").isNotNull();
 		assertThat(StringUtils.hasText(beanName)).as("The generated beanName must *never* be blank.").isTrue();
 		assertThat(beanName).isEqualTo("thoreau");
 	}
@@ -74,7 +74,7 @@ public class AnnotationBeanNameGeneratorTests {
 		BeanDefinitionRegistry registry = new SimpleBeanDefinitionRegistry();
 		AnnotatedBeanDefinition bd = new AnnotatedGenericBeanDefinition(ComponentWithBlankName.class);
 		String beanName = this.beanNameGenerator.generateBeanName(bd, registry);
-		assertThat((Object) beanName).as("The generated beanName must *never* be null.").isNotNull();
+		assertThat(beanName).as("The generated beanName must *never* be null.").isNotNull();
 		assertThat(StringUtils.hasText(beanName)).as("The generated beanName must *never* be blank.").isTrue();
 		String expectedGeneratedBeanName = this.beanNameGenerator.buildDefaultBeanName(bd);
 		assertThat(beanName).isEqualTo(expectedGeneratedBeanName);
@@ -85,7 +85,7 @@ public class AnnotationBeanNameGeneratorTests {
 		BeanDefinitionRegistry registry = new SimpleBeanDefinitionRegistry();
 		AnnotatedBeanDefinition bd = new AnnotatedGenericBeanDefinition(AnonymousComponent.class);
 		String beanName = this.beanNameGenerator.generateBeanName(bd, registry);
-		assertThat((Object) beanName).as("The generated beanName must *never* be null.").isNotNull();
+		assertThat(beanName).as("The generated beanName must *never* be null.").isNotNull();
 		assertThat(StringUtils.hasText(beanName)).as("The generated beanName must *never* be blank.").isTrue();
 		String expectedGeneratedBeanName = this.beanNameGenerator.buildDefaultBeanName(bd);
 		assertThat(beanName).isEqualTo(expectedGeneratedBeanName);

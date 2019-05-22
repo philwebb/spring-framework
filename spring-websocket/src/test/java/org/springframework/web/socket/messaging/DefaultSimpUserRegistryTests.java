@@ -54,11 +54,11 @@ public class DefaultSimpUserRegistryTests {
 		registry.onApplicationEvent(event);
 
 		SimpUser simpUser = registry.getUser("joe");
-		assertThat((Object) simpUser).isNotNull();
+		assertThat(simpUser).isNotNull();
 
-		assertThat((long) registry.getUserCount()).isEqualTo((long) 1);
-		assertThat((long) simpUser.getSessions().size()).isEqualTo((long) 1);
-		assertThat((Object) simpUser.getSession("123")).isNotNull();
+		assertThat(registry.getUserCount()).isEqualTo((long) 1);
+		assertThat(simpUser.getSessions().size()).isEqualTo((long) 1);
+		assertThat(simpUser.getSession("123")).isNotNull();
 	}
 
 	@Test
@@ -79,13 +79,13 @@ public class DefaultSimpUserRegistryTests {
 		registry.onApplicationEvent(event);
 
 		SimpUser simpUser = registry.getUser("joe");
-		assertThat((Object) simpUser).isNotNull();
+		assertThat(simpUser).isNotNull();
 
-		assertThat((long) registry.getUserCount()).isEqualTo((long) 1);
-		assertThat((long) simpUser.getSessions().size()).isEqualTo((long) 3);
-		assertThat((Object) simpUser.getSession("123")).isNotNull();
-		assertThat((Object) simpUser.getSession("456")).isNotNull();
-		assertThat((Object) simpUser.getSession("789")).isNotNull();
+		assertThat(registry.getUserCount()).isEqualTo((long) 1);
+		assertThat(simpUser.getSessions().size()).isEqualTo((long) 3);
+		assertThat(simpUser.getSession("123")).isNotNull();
+		assertThat(simpUser.getSession("456")).isNotNull();
+		assertThat(simpUser.getSession("789")).isNotNull();
 	}
 
 	@Test
@@ -106,8 +106,8 @@ public class DefaultSimpUserRegistryTests {
 		registry.onApplicationEvent(connectedEvent);
 
 		SimpUser simpUser = registry.getUser("joe");
-		assertThat((Object) simpUser).isNotNull();
-		assertThat((long) simpUser.getSessions().size()).isEqualTo((long) 3);
+		assertThat(simpUser).isNotNull();
+		assertThat(simpUser.getSessions().size()).isEqualTo((long) 3);
 
 		CloseStatus status = CloseStatus.GOING_AWAY;
 		message = createMessage(SimpMessageType.DISCONNECT, "456");
@@ -118,8 +118,8 @@ public class DefaultSimpUserRegistryTests {
 		disconnectEvent = new SessionDisconnectEvent(this, message, "789", status, user);
 		registry.onApplicationEvent(disconnectEvent);
 
-		assertThat((long) simpUser.getSessions().size()).isEqualTo((long) 1);
-		assertThat((Object) simpUser.getSession("123")).isNotNull();
+		assertThat(simpUser.getSessions().size()).isEqualTo((long) 1);
+		assertThat(simpUser.getSession("123")).isNotNull();
 	}
 
 	@Test
@@ -150,7 +150,7 @@ public class DefaultSimpUserRegistryTests {
 			}
 		});
 
-		assertThat((long) matches.size()).isEqualTo((long) 2);
+		assertThat(matches.size()).isEqualTo((long) 2);
 
 		Iterator<SimpSubscription> iterator = matches.iterator();
 		Set<String> sessionIds = new HashSet<>(2);
@@ -169,7 +169,7 @@ public class DefaultSimpUserRegistryTests {
 		registry.onApplicationEvent(event);
 
 		SimpUser simpUser = registry.getUser("joe");
-		assertThat((Object) simpUser.getSession(null)).isNull();
+		assertThat(simpUser.getSession(null)).isNull();
 	}
 
 

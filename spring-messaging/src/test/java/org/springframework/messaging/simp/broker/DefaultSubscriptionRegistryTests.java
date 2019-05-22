@@ -52,18 +52,18 @@ public class DefaultSubscriptionRegistryTests {
 
 		this.registry.registerSubscription(subscribeMessage(null, subsId, dest));
 		MultiValueMap<String, String> actual = this.registry.findSubscriptions(createMessage(dest));
-		assertThat((Object) actual).isNotNull();
-		assertThat((long) actual.size()).isEqualTo((long) 0);
+		assertThat(actual).isNotNull();
+		assertThat(actual.size()).isEqualTo((long) 0);
 
 		this.registry.registerSubscription(subscribeMessage(sessId, null, dest));
 		actual = this.registry.findSubscriptions(createMessage(dest));
-		assertThat((Object) actual).isNotNull();
-		assertThat((long) actual.size()).isEqualTo((long) 0);
+		assertThat(actual).isNotNull();
+		assertThat(actual.size()).isEqualTo((long) 0);
 
 		this.registry.registerSubscription(subscribeMessage(sessId, subsId, null));
 		actual = this.registry.findSubscriptions(createMessage(dest));
-		assertThat((Object) actual).isNotNull();
-		assertThat((long) actual.size()).isEqualTo((long) 0);
+		assertThat(actual).isNotNull();
+		assertThat(actual.size()).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -75,8 +75,8 @@ public class DefaultSubscriptionRegistryTests {
 		this.registry.registerSubscription(subscribeMessage(sessId, subsId, dest));
 
 		MultiValueMap<String, String> actual = this.registry.findSubscriptions(createMessage(dest));
-		assertThat((Object) actual).isNotNull();
-		assertThat((long) actual.size()).as("Expected one element " + actual).isEqualTo((long) 1);
+		assertThat(actual).isNotNull();
+		assertThat(actual.size()).as("Expected one element " + actual).isEqualTo((long) 1);
 		assertThat(actual.get(sessId)).isEqualTo(Collections.singletonList(subsId));
 	}
 
@@ -91,8 +91,8 @@ public class DefaultSubscriptionRegistryTests {
 		}
 
 		MultiValueMap<String, String> actual = this.registry.findSubscriptions(createMessage(dest));
-		assertThat((Object) actual).isNotNull();
-		assertThat((long) actual.size()).isEqualTo((long) 1);
+		assertThat(actual).isNotNull();
+		assertThat(actual.size()).isEqualTo((long) 1);
 		assertThat(sort(actual.get(sessId))).isEqualTo(subscriptionIds);
 	}
 
@@ -109,8 +109,8 @@ public class DefaultSubscriptionRegistryTests {
 		}
 
 		MultiValueMap<String, String> actual = this.registry.findSubscriptions(createMessage(dest));
-		assertThat((Object) actual).isNotNull();
-		assertThat((long) actual.size()).isEqualTo((long) 3);
+		assertThat(actual).isNotNull();
+		assertThat(actual.size()).isEqualTo((long) 3);
 		assertThat(sort(actual.get(sessIds.get(0)))).isEqualTo(subscriptionIds);
 		assertThat(sort(actual.get(sessIds.get(1)))).isEqualTo(subscriptionIds);
 		assertThat(sort(actual.get(sessIds.get(2)))).isEqualTo(subscriptionIds);
@@ -125,8 +125,8 @@ public class DefaultSubscriptionRegistryTests {
 		this.registry.registerSubscription(subscribeMessage(sessId, subsId, destPattern));
 
 		MultiValueMap<String, String> actual = this.registry.findSubscriptions(createMessage(dest));
-		assertThat((Object) actual).isNotNull();
-		assertThat((long) actual.size()).as("Expected one element " + actual).isEqualTo((long) 1);
+		assertThat(actual).isNotNull();
+		assertThat(actual.size()).as("Expected one element " + actual).isEqualTo((long) 1);
 		assertThat(actual.get(sessId)).isEqualTo(Collections.singletonList(subsId));
 	}
 
@@ -146,8 +146,8 @@ public class DefaultSubscriptionRegistryTests {
 		this.registry.registerSubscription(subscribeMessage(sess1, subs1, "/topic/PRICE.STOCK.*.IBM"));
 
 		MultiValueMap<String, String> actual = this.registry.findSubscriptions(destNasdaqIbmMessage);
-		assertThat((Object) actual).isNotNull();
-		assertThat((long) actual.size()).isEqualTo((long) 1);
+		assertThat(actual).isNotNull();
+		assertThat(actual.size()).isEqualTo((long) 1);
 		assertThat(actual.get(sess1)).isEqualTo(Arrays.asList(subs2, subs1));
 
 		this.registry.registerSubscription(subscribeMessage(sess2, subs1, destNasdaqIbm));
@@ -155,47 +155,47 @@ public class DefaultSubscriptionRegistryTests {
 		this.registry.registerSubscription(subscribeMessage(sess2, subs3, "/topic/PRICE.STOCK.NASDAQ.GOOG"));
 
 		actual = this.registry.findSubscriptions(destNasdaqIbmMessage);
-		assertThat((Object) actual).isNotNull();
-		assertThat((long) actual.size()).isEqualTo((long) 2);
+		assertThat(actual).isNotNull();
+		assertThat(actual.size()).isEqualTo((long) 2);
 		assertThat(actual.get(sess1)).isEqualTo(Arrays.asList(subs2, subs1));
 		assertThat(actual.get(sess2)).isEqualTo(Collections.singletonList(subs1));
 
 		this.registry.unregisterAllSubscriptions(sess1);
 
 		actual = this.registry.findSubscriptions(destNasdaqIbmMessage);
-		assertThat((Object) actual).isNotNull();
-		assertThat((long) actual.size()).isEqualTo((long) 1);
+		assertThat(actual).isNotNull();
+		assertThat(actual.size()).isEqualTo((long) 1);
 		assertThat(actual.get(sess2)).isEqualTo(Collections.singletonList(subs1));
 
 		this.registry.registerSubscription(subscribeMessage(sess1, subs1, "/topic/PRICE.STOCK.*.IBM"));
 		this.registry.registerSubscription(subscribeMessage(sess1, subs2, destNasdaqIbm));
 
 		actual = this.registry.findSubscriptions(destNasdaqIbmMessage);
-		assertThat((Object) actual).isNotNull();
-		assertThat((long) actual.size()).isEqualTo((long) 2);
+		assertThat(actual).isNotNull();
+		assertThat(actual.size()).isEqualTo((long) 2);
 		assertThat(actual.get(sess1)).isEqualTo(Arrays.asList(subs1, subs2));
 		assertThat(actual.get(sess2)).isEqualTo(Collections.singletonList(subs1));
 
 		this.registry.unregisterSubscription(unsubscribeMessage(sess1, subs2));
 
 		actual = this.registry.findSubscriptions(destNasdaqIbmMessage);
-		assertThat((Object) actual).isNotNull();
-		assertThat((long) actual.size()).isEqualTo((long) 2);
+		assertThat(actual).isNotNull();
+		assertThat(actual.size()).isEqualTo((long) 2);
 		assertThat(actual.get(sess1)).isEqualTo(Collections.singletonList(subs1));
 		assertThat(actual.get(sess2)).isEqualTo(Collections.singletonList(subs1));
 
 		this.registry.unregisterSubscription(unsubscribeMessage(sess1, subs1));
 
 		actual = this.registry.findSubscriptions(destNasdaqIbmMessage);
-		assertThat((Object) actual).isNotNull();
-		assertThat((long) actual.size()).isEqualTo((long) 1);
+		assertThat(actual).isNotNull();
+		assertThat(actual.size()).isEqualTo((long) 1);
 		assertThat(actual.get(sess2)).isEqualTo(Collections.singletonList(subs1));
 
 		this.registry.unregisterSubscription(unsubscribeMessage(sess2, subs1));
 
 		actual = this.registry.findSubscriptions(destNasdaqIbmMessage);
-		assertThat((Object) actual).isNotNull();
-		assertThat((long) actual.size()).isEqualTo((long) 0);
+		assertThat(actual).isNotNull();
+		assertThat(actual.size()).isEqualTo((long) 0);
 	}
 
 	@Test  // SPR-11755
@@ -240,20 +240,20 @@ public class DefaultSubscriptionRegistryTests {
 		this.registry.registerSubscription(subscribeMessage(sessId, subsId, destPattern));
 		Message<?> message = createMessage("/topic/PRICE.STOCK.NASDAQ.IBM");
 		MultiValueMap<String, String> actual = this.registry.findSubscriptions(message);
-		assertThat((Object) actual).isNotNull();
-		assertThat((long) actual.size()).as("Expected one element " + actual).isEqualTo((long) 1);
+		assertThat(actual).isNotNull();
+		assertThat(actual.size()).as("Expected one element " + actual).isEqualTo((long) 1);
 		assertThat(actual.get(sessId)).isEqualTo(Collections.singletonList(subsId));
 
 		message = createMessage("/topic/PRICE.STOCK.NASDAQ.MSFT");
 		actual = this.registry.findSubscriptions(message);
-		assertThat((Object) actual).isNotNull();
-		assertThat((long) actual.size()).as("Expected one element " + actual).isEqualTo((long) 1);
+		assertThat(actual).isNotNull();
+		assertThat(actual.size()).as("Expected one element " + actual).isEqualTo((long) 1);
 		assertThat(actual.get(sessId)).isEqualTo(Collections.singletonList(subsId));
 
 		message = createMessage("/topic/PRICE.STOCK.NASDAQ.VMW");
 		actual = this.registry.findSubscriptions(message);
-		assertThat((Object) actual).isNotNull();
-		assertThat((long) actual.size()).as("Expected no elements " + actual).isEqualTo((long) 0);
+		assertThat(actual).isNotNull();
+		assertThat(actual.size()).as("Expected no elements " + actual).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -273,15 +273,15 @@ public class DefaultSubscriptionRegistryTests {
 		Message<?> message = MessageBuilder.createMessage("", accessor.getMessageHeaders());
 
 		MultiValueMap<String, String> actual = this.registry.findSubscriptions(message);
-		assertThat((Object) actual).isNotNull();
-		assertThat((long) actual.size()).isEqualTo((long) 1);
+		assertThat(actual).isNotNull();
+		assertThat(actual.size()).isEqualTo((long) 1);
 		assertThat(actual.get(sessionId)).isEqualTo(Collections.singletonList(subscriptionId));
 
 		// Then without
 
 		actual = this.registry.findSubscriptions(createMessage(destination));
-		assertThat((Object) actual).isNotNull();
-		assertThat((long) actual.size()).isEqualTo((long) 0);
+		assertThat(actual).isNotNull();
+		assertThat(actual.size()).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -300,8 +300,8 @@ public class DefaultSubscriptionRegistryTests {
 		Message<?> message = MessageBuilder.createMessage("", accessor.getMessageHeaders());
 
 		MultiValueMap<String, String> actual = this.registry.findSubscriptions(message);
-		assertThat((Object) actual).isNotNull();
-		assertThat((long) actual.size()).isEqualTo((long) 1);
+		assertThat(actual).isNotNull();
+		assertThat(actual.size()).isEqualTo((long) 1);
 		assertThat(actual.get(sessionId)).isEqualTo(Collections.singletonList(subscriptionId));
 	}
 
@@ -311,22 +311,22 @@ public class DefaultSubscriptionRegistryTests {
 		this.registry.registerSubscription(subscribeMessage("sess01", "subs02", "/foo"));
 
 		MultiValueMap<String, String> actual = this.registry.findSubscriptions(createMessage("/foo"));
-		assertThat((Object) actual).isNotNull();
-		assertThat((long) actual.size()).as("Expected 1 element").isEqualTo((long) 1);
+		assertThat(actual).isNotNull();
+		assertThat(actual.size()).as("Expected 1 element").isEqualTo((long) 1);
 		assertThat(actual.get("sess01")).isEqualTo(Arrays.asList("subs01", "subs02"));
 
 		this.registry.unregisterSubscription(unsubscribeMessage("sess01", "subs01"));
 
 		actual = this.registry.findSubscriptions(createMessage("/foo"));
-		assertThat((Object) actual).isNotNull();
-		assertThat((long) actual.size()).as("Expected 1 element").isEqualTo((long) 1);
+		assertThat(actual).isNotNull();
+		assertThat(actual.size()).as("Expected 1 element").isEqualTo((long) 1);
 		assertThat(actual.get("sess01")).isEqualTo(Collections.singletonList("subs02"));
 
 		this.registry.unregisterSubscription(unsubscribeMessage("sess01", "subs02"));
 
 		actual = this.registry.findSubscriptions(createMessage("/foo"));
-		assertThat((Object) actual).isNotNull();
-		assertThat((long) actual.size()).as("Expected no element").isEqualTo((long) 0);
+		assertThat(actual).isNotNull();
+		assertThat(actual.size()).as("Expected no element").isEqualTo((long) 0);
 	}
 
 	@Test
@@ -346,8 +346,8 @@ public class DefaultSubscriptionRegistryTests {
 		this.registry.unregisterSubscription(unsubscribeMessage(sessIds.get(0), subscriptionIds.get(2)));
 
 		MultiValueMap<String, String> actual = this.registry.findSubscriptions(createMessage(dest));
-		assertThat((Object) actual).isNotNull();
-		assertThat((long) actual.size()).as("Expected two elements: " + actual).isEqualTo((long) 2);
+		assertThat(actual).isNotNull();
+		assertThat(actual.size()).as("Expected two elements: " + actual).isEqualTo((long) 2);
 		assertThat(sort(actual.get(sessIds.get(1)))).isEqualTo(subscriptionIds);
 		assertThat(sort(actual.get(sessIds.get(2)))).isEqualTo(subscriptionIds);
 	}
@@ -368,8 +368,8 @@ public class DefaultSubscriptionRegistryTests {
 		this.registry.unregisterAllSubscriptions(sessIds.get(1));
 
 		MultiValueMap<String, String> actual = this.registry.findSubscriptions(createMessage(dest));
-		assertThat((Object) actual).isNotNull();
-		assertThat((long) actual.size()).as("Expected one element: " + actual).isEqualTo((long) 1);
+		assertThat(actual).isNotNull();
+		assertThat(actual.size()).as("Expected one element: " + actual).isEqualTo((long) 1);
 		assertThat(sort(actual.get(sessIds.get(2)))).isEqualTo(subscriptionIds);
 	}
 
@@ -382,8 +382,8 @@ public class DefaultSubscriptionRegistryTests {
 	@Test
 	public void findSubscriptionsNoMatches() {
 		MultiValueMap<String, String> actual = this.registry.findSubscriptions(createMessage("/foo"));
-		assertThat((Object) actual).isNotNull();
-		assertThat((long) actual.size()).as("Expected no elements " + actual).isEqualTo((long) 0);
+		assertThat(actual).isNotNull();
+		assertThat(actual.size()).as("Expected no elements " + actual).isEqualTo((long) 0);
 	}
 
 	@Test  // SPR-12665
@@ -392,8 +392,8 @@ public class DefaultSubscriptionRegistryTests {
 		this.registry.registerSubscription(subscribeMessage("sess2", "1", "/foo"));
 
 		MultiValueMap<String, String> subscriptions = this.registry.findSubscriptions(createMessage("/foo"));
-		assertThat((Object) subscriptions).isNotNull();
-		assertThat((long) subscriptions.size()).isEqualTo((long) 2);
+		assertThat(subscriptions).isNotNull();
+		assertThat(subscriptions.size()).isEqualTo((long) 2);
 
 		Iterator<Map.Entry<String, List<String>>> iterator = subscriptions.entrySet().iterator();
 		iterator.next();
@@ -410,8 +410,8 @@ public class DefaultSubscriptionRegistryTests {
 		this.registry.registerSubscription(subscribeMessage("sess1", "2", "/foo"));
 
 		MultiValueMap<String, String> allSubscriptions = this.registry.findSubscriptions(createMessage("/foo"));
-		assertThat((Object) allSubscriptions).isNotNull();
-		assertThat((long) allSubscriptions.size()).isEqualTo((long) 1);
+		assertThat(allSubscriptions).isNotNull();
+		assertThat(allSubscriptions.size()).isEqualTo((long) 1);
 
 		Iterator<String> iteratorValues = allSubscriptions.get("sess1").iterator();
 		iteratorValues.next();
@@ -428,14 +428,14 @@ public class DefaultSubscriptionRegistryTests {
 		this.registry.registerSubscription(subscribeMessage("sess1", "1", "/foo"));
 		this.registry.registerSubscription(subscribeMessage("sess1", "2", "/bar"));
 
-		assertThat((long) this.registry.findSubscriptions(createMessage("/foo")).size()).isEqualTo((long) 1);
-		assertThat((long) this.registry.findSubscriptions(createMessage("/bar")).size()).isEqualTo((long) 1);
+		assertThat(this.registry.findSubscriptions(createMessage("/foo")).size()).isEqualTo((long) 1);
+		assertThat(this.registry.findSubscriptions(createMessage("/bar")).size()).isEqualTo((long) 1);
 
 		this.registry.registerSubscription(subscribeMessage("sess2", "1", "/foo"));
 		this.registry.registerSubscription(subscribeMessage("sess2", "2", "/bar"));
 
-		assertThat((long) this.registry.findSubscriptions(createMessage("/foo")).size()).isEqualTo((long) 2);
-		assertThat((long) this.registry.findSubscriptions(createMessage("/bar")).size()).isEqualTo((long) 2);
+		assertThat(this.registry.findSubscriptions(createMessage("/foo")).size()).isEqualTo((long) 2);
+		assertThat(this.registry.findSubscriptions(createMessage("/bar")).size()).isEqualTo((long) 2);
 	}
 
 	private Message<?> createMessage(String destination) {

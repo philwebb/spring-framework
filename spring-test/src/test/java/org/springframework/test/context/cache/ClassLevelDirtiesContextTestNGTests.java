@@ -148,9 +148,9 @@ public class ClassLevelDirtiesContextTestNGTests {
 		testNG.setVerbose(0);
 		testNG.run();
 
-		assertThat((long) listener.testFailureCount).as("Failures for test class [" + testClass + "].").isEqualTo((long) expectedTestFailureCount);
-		assertThat((long) listener.testStartCount).as("Tests started for test class [" + testClass + "].").isEqualTo((long) expectedTestStartedCount);
-		assertThat((long) listener.testSuccessCount).as("Successful tests for test class [" + testClass + "].").isEqualTo((long) expectedTestFinishedCount);
+		assertThat(listener.testFailureCount).as("Failures for test class [" + testClass + "].").isEqualTo((long) expectedTestFailureCount);
+		assertThat(listener.testStartCount).as("Tests started for test class [" + testClass + "].").isEqualTo((long) expectedTestStartedCount);
+		assertThat(listener.testSuccessCount).as("Successful tests for test class [" + testClass + "].").isEqualTo((long) expectedTestFinishedCount);
 	}
 
 	private void assertBehaviorForCleanTestCase() {

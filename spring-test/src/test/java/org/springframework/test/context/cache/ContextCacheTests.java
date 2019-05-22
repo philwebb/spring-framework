@@ -57,7 +57,7 @@ public class ContextCacheTests {
 	}
 
 	private void assertParentContextCount(int expected) {
-		assertThat((long) contextCache.getParentContextCount()).as("parent context count").isEqualTo((long) expected);
+		assertThat(contextCache.getParentContextCount()).as("parent context count").isEqualTo((long) expected);
 	}
 
 	private MergedContextConfiguration getMergedContextConfiguration(TestContext testContext) {
@@ -70,7 +70,7 @@ public class ContextCacheTests {
 	}
 
 	private void loadCtxAndAssertStats(Class<?> testClass, int expectedSize, int expectedHitCount, int expectedMissCount) {
-		assertThat((Object) loadContext(testClass)).isNotNull();
+		assertThat(loadContext(testClass)).isNotNull();
 		assertContextCacheStatistics(contextCache, testClass.getName(), expectedSize, expectedHitCount,
 			expectedMissCount);
 	}

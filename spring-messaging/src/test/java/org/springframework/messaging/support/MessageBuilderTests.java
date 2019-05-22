@@ -111,7 +111,7 @@ public class MessageBuilderTests {
 				.setHeader("foo", "bar").build();
 		Message<String> message2 = MessageBuilder.fromMessage(message1).setHeader("another", 1).build();
 		assertThat(message2.getHeaders().get("foo")).isEqualTo("bar");
-		assertThat((Object) message2.getHeaders().getId()).isNotSameAs(message1.getHeaders().getId());
+		assertThat(message2.getHeaders().getId()).isNotSameAs(message1.getHeaders().getId());
 	}
 
 	@Test
@@ -205,8 +205,8 @@ public class MessageBuilderTests {
 			}
 		});
 		Message<?> message = MessageBuilder.createMessage("foo", headerAccessor.getMessageHeaders());
-		assertThat((Object) message.getHeaders().getId()).isNull();
-		assertThat((Object) message.getHeaders().getTimestamp()).isNull();
+		assertThat(message.getHeaders().getId()).isNull();
+		assertThat(message.getHeaders().getTimestamp()).isNull();
 	}
 
 	@Test

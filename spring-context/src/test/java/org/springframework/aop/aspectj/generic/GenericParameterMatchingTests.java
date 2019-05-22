@@ -57,19 +57,19 @@ public class GenericParameterMatchingTests {
 	@Test
 	public void testGenericInterfaceGenericArgExecution() {
 		testBean.save("");
-		assertThat((long) counterAspect.genericInterfaceGenericArgExecutionCount).isEqualTo((long) 1);
+		assertThat(counterAspect.genericInterfaceGenericArgExecutionCount).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void testGenericInterfaceGenericCollectionArgExecution() {
 		testBean.saveAll(null);
-		assertThat((long) counterAspect.genericInterfaceGenericCollectionArgExecutionCount).isEqualTo((long) 1);
+		assertThat(counterAspect.genericInterfaceGenericCollectionArgExecutionCount).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void testGenericInterfaceSubtypeGenericCollectionArgExecution() {
 		testBean.saveAll(null);
-		assertThat((long) counterAspect.genericInterfaceSubtypeGenericCollectionArgExecutionCount).isEqualTo((long) 1);
+		assertThat(counterAspect.genericInterfaceSubtypeGenericCollectionArgExecutionCount).isEqualTo((long) 1);
 	}
 
 

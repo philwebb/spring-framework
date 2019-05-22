@@ -42,7 +42,7 @@ public class InMemoryWebSessionStoreTests {
 	@Test
 	public void startsSessionExplicitly() {
 		WebSession session = this.store.createWebSession().block();
-		assertThat((Object) session).isNotNull();
+		assertThat(session).isNotNull();
 		session.start();
 		assertThat(session.isStarted()).isTrue();
 	}
@@ -50,7 +50,7 @@ public class InMemoryWebSessionStoreTests {
 	@Test
 	public void startsSessionImplicitly() {
 		WebSession session = this.store.createWebSession().block();
-		assertThat((Object) session).isNotNull();
+		assertThat(session).isNotNull();
 		session.start();
 		session.getAttributes().put("foo", "bar");
 		assertThat(session.isStarted()).isTrue();
@@ -59,25 +59,25 @@ public class InMemoryWebSessionStoreTests {
 	@Test
 	public void retrieveExpiredSession() {
 		WebSession session = this.store.createWebSession().block();
-		assertThat((Object) session).isNotNull();
+		assertThat(session).isNotNull();
 		session.getAttributes().put("foo", "bar");
 		session.save().block();
 
 		String id = session.getId();
 		WebSession retrieved = this.store.retrieveSession(id).block();
-		assertThat((Object) retrieved).isNotNull();
-		assertThat((Object) retrieved).isSameAs(session);
+		assertThat(retrieved).isNotNull();
+		assertThat(retrieved).isSameAs(session);
 
 		// Fast-forward 31 minutes
 		this.store.setClock(Clock.offset(this.store.getClock(), Duration.ofMinutes(31)));
 		WebSession retrievedAgain = this.store.retrieveSession(id).block();
-		assertThat((Object) retrievedAgain).isNull();
+		assertThat(retrievedAgain).isNull();
 	}
 
 	@Test
 	public void lastAccessTimeIsUpdatedOnRetrieve() {
 		WebSession session1 = this.store.createWebSession().block();
-		assertThat((Object) session1).isNotNull();
+		assertThat(session1).isNotNull();
 		String id = session1.getId();
 		Instant time1 = session1.getLastAccessTime();
 		session1.start();
@@ -87,8 +87,8 @@ public class InMemoryWebSessionStoreTests {
 		this.store.setClock(Clock.offset(this.store.getClock(), Duration.ofSeconds(5)));
 
 		WebSession session2 = this.store.retrieveSession(id).block();
-		assertThat((Object) session2).isNotNull();
-		assertThat((Object) session2).isSameAs(session1);
+		assertThat(session2).isNotNull();
+		assertThat(session2).isSameAs(session1);
 		Instant time2 = session2.getLastAccessTime();
 		assertThat(time1.isBefore(time2)).isTrue();
 	}
@@ -97,20 +97,20 @@ public class InMemoryWebSessionStoreTests {
 	public void sessionInvalidatedBeforeSave() {
 		// Request 1 creates session
 		WebSession session1 = this.store.createWebSession().block();
-		assertThat((Object) session1).isNotNull();
+		assertThat(session1).isNotNull();
 		String id = session1.getId();
 		session1.start();
 		session1.save().block();
 
 		// Request 2 retrieves session
 		WebSession session2 = this.store.retrieveSession(id).block();
-		assertThat((Object) session2).isNotNull();
-		assertThat((Object) session2).isSameAs(session1);
+		assertThat(session2).isNotNull();
+		assertThat(session2).isSameAs(session1);
 
 		// Request 3 retrieves and invalidates
 		WebSession session3 = this.store.retrieveSession(id).block();
-		assertThat((Object) session3).isNotNull();
-		assertThat((Object) session3).isSameAs(session1);
+		assertThat(session3).isNotNull();
+		assertThat(session3).isSameAs(session1);
 		session3.invalidate().block();
 
 		// Request 2 saves session after invalidated
@@ -118,7 +118,7 @@ public class InMemoryWebSessionStoreTests {
 
 		// Session should not be present
 		WebSession session4 = this.store.retrieveSession(id).block();
-		assertThat((Object) session4).isNull();
+		assertThat(session4).isNull();
 	}
 
 	@Test
@@ -126,19 +126,19 @@ public class InMemoryWebSessionStoreTests {
 
 		DirectFieldAccessor accessor = new DirectFieldAccessor(this.store);
 		Map<?,?> sessions = (Map<?, ?>) accessor.getPropertyValue("sessions");
-		assertThat((Object) sessions).isNotNull();
+		assertThat(sessions).isNotNull();
 
 		// Create 100 sessions
 		IntStream.range(0, 100).forEach(i -> insertSession());
-		assertThat((long) sessions.size()).isEqualTo((long) 100);
+		assertThat(sessions.size()).isEqualTo((long) 100);
 
 		// Force a new clock (31 min later), don't use setter which would clean expired sessions
 		accessor.setPropertyValue("clock", Clock.offset(this.store.getClock(), Duration.ofMinutes(31)));
-		assertThat((long) sessions.size()).isEqualTo((long) 100);
+		assertThat(sessions.size()).isEqualTo((long) 100);
 
 		// Create 1 more which forces a time-based check (clock moved forward)
 		insertSession();
-		assertThat((long) sessions.size()).isEqualTo((long) 1);
+		assertThat(sessions.size()).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -152,7 +152,7 @@ public class InMemoryWebSessionStoreTests {
 
 	private WebSession insertSession() {
 		WebSession session = this.store.createWebSession().block();
-		assertThat((Object) session).isNotNull();
+		assertThat(session).isNotNull();
 		session.start();
 		session.save().block();
 		return session;

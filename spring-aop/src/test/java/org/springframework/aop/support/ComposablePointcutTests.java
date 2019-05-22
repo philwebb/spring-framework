@@ -137,7 +137,7 @@ public class ComposablePointcutTests {
 		ComposablePointcut pc2 = new ComposablePointcut();
 
 		assertThat(pc2).isEqualTo(pc1);
-		assertThat((long) pc2.hashCode()).isEqualTo((long) pc1.hashCode());
+		assertThat(pc2.hashCode()).isEqualTo((long) pc1.hashCode());
 
 		pc1.intersection(GETTER_METHOD_MATCHER);
 
@@ -147,13 +147,13 @@ public class ComposablePointcutTests {
 		pc2.intersection(GETTER_METHOD_MATCHER);
 
 		assertThat(pc2).isEqualTo(pc1);
-		assertThat((long) pc2.hashCode()).isEqualTo((long) pc1.hashCode());
+		assertThat(pc2.hashCode()).isEqualTo((long) pc1.hashCode());
 
 		pc1.union(GET_AGE_METHOD_MATCHER);
 		pc2.union(GET_AGE_METHOD_MATCHER);
 
 		assertThat(pc2).isEqualTo(pc1);
-		assertThat((long) pc2.hashCode()).isEqualTo((long) pc1.hashCode());
+		assertThat(pc2.hashCode()).isEqualTo((long) pc1.hashCode());
 	}
 
 }

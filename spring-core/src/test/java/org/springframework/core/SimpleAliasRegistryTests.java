@@ -35,9 +35,9 @@ public class SimpleAliasRegistryTests {
 		assertThat(registry.hasAlias("test", "testAlias")).isTrue();
 		assertThat(registry.hasAlias("test", "testAlias2")).isTrue();
 		assertThat(registry.hasAlias("test", "testAlias3")).isTrue();
-		assertThat((Object) registry.canonicalName("testAlias")).isSameAs("test");
-		assertThat((Object) registry.canonicalName("testAlias2")).isSameAs("test");
-		assertThat((Object) registry.canonicalName("testAlias3")).isSameAs("test");
+		assertThat(registry.canonicalName("testAlias")).isSameAs("test");
+		assertThat(registry.canonicalName("testAlias2")).isSameAs("test");
+		assertThat(registry.canonicalName("testAlias3")).isSameAs("test");
 	}
 
 	@Test  // SPR-17191

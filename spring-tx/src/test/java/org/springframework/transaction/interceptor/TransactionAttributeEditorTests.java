@@ -95,10 +95,10 @@ public class TransactionAttributeEditorTests {
 		TransactionAttributeEditor pe = new TransactionAttributeEditor();
 		pe.setAsText("PROPAGATION_MANDATORY,ISOLATION_REPEATABLE_READ,timeout_10,-IOException,+MyRuntimeException");
 		TransactionAttribute ta = (TransactionAttribute) pe.getValue();
-		assertThat((Object) ta).isNotNull();
-		assertThat((long) ta.getPropagationBehavior()).isEqualTo((long) TransactionDefinition.PROPAGATION_MANDATORY);
-		assertThat((long) ta.getIsolationLevel()).isEqualTo((long) TransactionDefinition.ISOLATION_REPEATABLE_READ);
-		assertThat((long) ta.getTimeout()).isEqualTo((long) 10);
+		assertThat(ta).isNotNull();
+		assertThat(ta.getPropagationBehavior()).isEqualTo((long) TransactionDefinition.PROPAGATION_MANDATORY);
+		assertThat(ta.getIsolationLevel()).isEqualTo((long) TransactionDefinition.ISOLATION_REPEATABLE_READ);
+		assertThat(ta.getTimeout()).isEqualTo((long) 10);
 		assertThat(ta.isReadOnly()).isFalse();
 		assertThat(ta.rollbackOn(new RuntimeException())).isTrue();
 		assertThat(ta.rollbackOn(new Exception())).isFalse();
@@ -113,10 +113,10 @@ public class TransactionAttributeEditorTests {
 		TransactionAttributeEditor pe = new TransactionAttributeEditor();
 		pe.setAsText("+IOException,readOnly,ISOLATION_READ_COMMITTED,-MyRuntimeException,PROPAGATION_SUPPORTS");
 		TransactionAttribute ta = (TransactionAttribute) pe.getValue();
-		assertThat((Object) ta).isNotNull();
-		assertThat((long) ta.getPropagationBehavior()).isEqualTo((long) TransactionDefinition.PROPAGATION_SUPPORTS);
-		assertThat((long) ta.getIsolationLevel()).isEqualTo((long) TransactionDefinition.ISOLATION_READ_COMMITTED);
-		assertThat((long) ta.getTimeout()).isEqualTo((long) TransactionDefinition.TIMEOUT_DEFAULT);
+		assertThat(ta).isNotNull();
+		assertThat(ta.getPropagationBehavior()).isEqualTo((long) TransactionDefinition.PROPAGATION_SUPPORTS);
+		assertThat(ta.getIsolationLevel()).isEqualTo((long) TransactionDefinition.ISOLATION_READ_COMMITTED);
+		assertThat(ta.getTimeout()).isEqualTo((long) TransactionDefinition.TIMEOUT_DEFAULT);
 		assertThat(ta.isReadOnly()).isTrue();
 		assertThat(ta.rollbackOn(new RuntimeException())).isTrue();
 		assertThat(ta.rollbackOn(new Exception())).isFalse();
@@ -137,15 +137,15 @@ public class TransactionAttributeEditorTests {
 		pe.setAsText(source.toString());
 		TransactionAttribute ta = (TransactionAttribute) pe.getValue();
 		assertThat(source).isEqualTo(ta);
-		assertThat((long) ta.getPropagationBehavior()).isEqualTo((long) TransactionDefinition.PROPAGATION_SUPPORTS);
-		assertThat((long) ta.getIsolationLevel()).isEqualTo((long) TransactionDefinition.ISOLATION_REPEATABLE_READ);
-		assertThat((long) ta.getTimeout()).isEqualTo((long) 10);
+		assertThat(ta.getPropagationBehavior()).isEqualTo((long) TransactionDefinition.PROPAGATION_SUPPORTS);
+		assertThat(ta.getIsolationLevel()).isEqualTo((long) TransactionDefinition.ISOLATION_REPEATABLE_READ);
+		assertThat(ta.getTimeout()).isEqualTo((long) 10);
 		assertThat(ta.isReadOnly()).isTrue();
 		assertThat(ta.rollbackOn(new RuntimeException())).isTrue();
 		assertThat(ta.rollbackOn(new Exception())).isFalse();
 
 		source.setTimeout(9);
-		assertThat((Object) source).isNotSameAs(ta);
+		assertThat(source).isNotSameAs(ta);
 		source.setTimeout(10);
 		assertThat(source).isEqualTo(ta);
 	}
@@ -164,15 +164,15 @@ public class TransactionAttributeEditorTests {
 		pe.setAsText(source.toString());
 		TransactionAttribute ta = (TransactionAttribute) pe.getValue();
 		assertThat(source).isEqualTo(ta);
-		assertThat((long) ta.getPropagationBehavior()).isEqualTo((long) TransactionDefinition.PROPAGATION_SUPPORTS);
-		assertThat((long) ta.getIsolationLevel()).isEqualTo((long) TransactionDefinition.ISOLATION_REPEATABLE_READ);
-		assertThat((long) ta.getTimeout()).isEqualTo((long) 10);
+		assertThat(ta.getPropagationBehavior()).isEqualTo((long) TransactionDefinition.PROPAGATION_SUPPORTS);
+		assertThat(ta.getIsolationLevel()).isEqualTo((long) TransactionDefinition.ISOLATION_REPEATABLE_READ);
+		assertThat(ta.getTimeout()).isEqualTo((long) 10);
 		assertThat(ta.isReadOnly()).isTrue();
 		assertThat(ta.rollbackOn(new IllegalArgumentException())).isTrue();
 		assertThat(ta.rollbackOn(new IllegalStateException())).isFalse();
 
 		source.getRollbackRules().clear();
-		assertThat((Object) source).isNotSameAs(ta);
+		assertThat(source).isNotSameAs(ta);
 		source.getRollbackRules().add(new RollbackRuleAttribute("IllegalArgumentException"));
 		source.getRollbackRules().add(new NoRollbackRuleAttribute("IllegalStateException"));
 		assertThat(source).isEqualTo(ta);

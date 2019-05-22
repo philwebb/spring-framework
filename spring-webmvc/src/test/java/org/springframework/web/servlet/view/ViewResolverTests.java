@@ -143,7 +143,7 @@ public class ViewResolverTests {
 		view = vr.resolveViewName("redirect:myUrl", Locale.getDefault());
 		assertThat(view.getClass()).as("Correct view class").isEqualTo(RedirectView.class);
 		assertThat(((RedirectView) view).getUrl()).as("Correct URL").isEqualTo("myUrl");
-		assertThat((Object) ((RedirectView) view).getApplicationContext()).as("View not initialized as bean").isSameAs(wac);
+		assertThat(((RedirectView) view).getApplicationContext()).as("View not initialized as bean").isSameAs(wac);
 
 		view = vr.resolveViewName("forward:myUrl", Locale.getDefault());
 		assertThat(view.getClass()).as("Correct view class").isEqualTo(InternalResourceView.class);
@@ -492,7 +492,7 @@ public class ViewResolverTests {
 		viewResolver.resolveViewName("view", Locale.getDefault());
 		viewResolver.resolveViewName("view", Locale.getDefault());
 
-		assertThat((long) count.intValue()).isEqualTo((long) 2);
+		assertThat(count.intValue()).isEqualTo((long) 2);
 
 		viewResolver.setCacheUnresolved(true);
 
@@ -502,7 +502,7 @@ public class ViewResolverTests {
 		viewResolver.resolveViewName("view", Locale.getDefault());
 		viewResolver.resolveViewName("view", Locale.getDefault());
 
-		assertThat((long) count.intValue()).isEqualTo((long) 3);
+		assertThat(count.intValue()).isEqualTo((long) 3);
 	}
 
 

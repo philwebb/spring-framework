@@ -104,10 +104,10 @@ public class FailingBeforeAndAfterMethodsTestNGTests {
 
 		String name = this.clazz.getSimpleName();
 
-		assertThat((long) listener.testStartCount).as("tests started for [" + name + "] ==> ").isEqualTo((long) this.expectedTestStartCount);
-		assertThat((long) listener.testSuccessCount).as("successful tests for [" + name + "] ==> ").isEqualTo((long) this.expectedTestSuccessCount);
-		assertThat((long) listener.testFailureCount).as("failed tests for [" + name + "] ==> ").isEqualTo((long) this.expectedFailureCount);
-		assertThat((long) listener.failedConfigurationsCount).as("failed configurations for [" + name + "] ==> ").isEqualTo((long) this.expectedFailedConfigurationsCount);
+		assertThat(listener.testStartCount).as("tests started for [" + name + "] ==> ").isEqualTo((long) this.expectedTestStartCount);
+		assertThat(listener.testSuccessCount).as("successful tests for [" + name + "] ==> ").isEqualTo((long) this.expectedTestSuccessCount);
+		assertThat(listener.testFailureCount).as("failed tests for [" + name + "] ==> ").isEqualTo((long) this.expectedFailureCount);
+		assertThat(listener.failedConfigurationsCount).as("failed configurations for [" + name + "] ==> ").isEqualTo((long) this.expectedFailedConfigurationsCount);
 	}
 
 

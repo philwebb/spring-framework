@@ -50,8 +50,8 @@ public class HttpRequestHandlerTests {
 		wac.getBeanFactory().registerSingleton("myHandler", new HttpRequestHandler() {
 			@Override
 			public void handleRequest(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-				assertThat((Object) req).isSameAs(request);
-				assertThat((Object) res).isSameAs(response);
+				assertThat(req).isSameAs(request);
+				assertThat(res).isSameAs(response);
 				String exception = request.getParameter("exception");
 				if ("ServletException".equals(exception)) {
 					throw new ServletException("test");

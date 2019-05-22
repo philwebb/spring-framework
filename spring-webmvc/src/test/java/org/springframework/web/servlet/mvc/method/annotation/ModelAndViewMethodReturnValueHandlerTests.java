@@ -98,7 +98,7 @@ public class ModelAndViewMethodReturnValueHandlerTests {
 
 		assertThat(mavContainer.getView().getClass()).isEqualTo(RedirectView.class);
 		assertThat(mavContainer.getModel().get("attrName")).isEqualTo("attrValue");
-		assertThat((Object) mavContainer.getModel()).as("RedirectAttributes should be used if controller redirects").isSameAs(redirectAttributes);
+		assertThat(mavContainer.getModel()).as("RedirectAttributes should be used if controller redirects").isSameAs(redirectAttributes);
 	}
 
 	@Test
@@ -112,7 +112,7 @@ public class ModelAndViewMethodReturnValueHandlerTests {
 		ModelMap model = mavContainer.getModel();
 		assertThat(mavContainer.getViewName()).isEqualTo("redirect:viewName");
 		assertThat(model.get("attrName")).isEqualTo("attrValue");
-		assertThat((Object) model).isSameAs(redirectAttributes);
+		assertThat(model).isSameAs(redirectAttributes);
 	}
 
 	@Test
@@ -127,7 +127,7 @@ public class ModelAndViewMethodReturnValueHandlerTests {
 		ModelMap model = mavContainer.getModel();
 		assertThat(mavContainer.getViewName()).isEqualTo("myRedirect:viewName");
 		assertThat(model.get("attrName")).isEqualTo("attrValue");
-		assertThat((Object) model).isSameAs(redirectAttributes);
+		assertThat(model).isSameAs(redirectAttributes);
 	}
 
 	@Test
@@ -141,7 +141,7 @@ public class ModelAndViewMethodReturnValueHandlerTests {
 		ModelMap model = mavContainer.getModel();
 		assertThat(mavContainer.getView()).isEqualTo(null);
 		assertThat(mavContainer.getModel().isEmpty()).isTrue();
-		assertThat((Object) model).as("RedirectAttributes should not be used if controller doesn't redirect").isNotSameAs(redirectAttributes);
+		assertThat(model).as("RedirectAttributes should not be used if controller doesn't redirect").isNotSameAs(redirectAttributes);
 	}
 
 	@Test  // SPR-14045
@@ -154,7 +154,7 @@ public class ModelAndViewMethodReturnValueHandlerTests {
 
 		ModelMap model = mavContainer.getModel();
 		assertThat(mavContainer.getView()).isSameAs(redirectView);
-		assertThat((long) model.size()).isEqualTo((long) 1);
+		assertThat(model.size()).isEqualTo((long) 1);
 		assertThat(model.get("name")).isEqualTo("value");
 	}
 

@@ -66,7 +66,7 @@ public class GenericTypeResolverTests {
 	@Test
 	public void nullIfNotResolvable() {
 		GenericClass<String> obj = new GenericClass<>();
-		assertThat((Object) resolveTypeArgument(obj.getClass(), GenericClass.class)).isNull();
+		assertThat(resolveTypeArgument(obj.getClass(), GenericClass.class)).isNull();
 	}
 
 	@Test
@@ -141,13 +141,13 @@ public class GenericTypeResolverTests {
 	@Test  // SPR-11030
 	public void getGenericsCannotBeResolved() throws Exception {
 		Class<?>[] resolved = GenericTypeResolver.resolveTypeArguments(List.class, Iterable.class);
-		assertThat((Object) resolved).isNull();
+		assertThat(resolved).isNull();
 	}
 
 	@Test  // SPR-11052
 	public void getRawMapTypeCannotBeResolved() throws Exception {
 		Class<?>[] resolved = GenericTypeResolver.resolveTypeArguments(Map.class, Map.class);
-		assertThat((Object) resolved).isNull();
+		assertThat(resolved).isNull();
 	}
 
 	@Test  // SPR-11044
@@ -168,8 +168,8 @@ public class GenericTypeResolverTests {
 	@Test  // SPR-11763
 	public void resolveIncompleteTypeVariables() {
 		Class<?>[] resolved = GenericTypeResolver.resolveTypeArguments(IdFixingRepository.class, Repository.class);
-		assertThat((Object) resolved).isNotNull();
-		assertThat((long) resolved.length).isEqualTo((long) 2);
+		assertThat(resolved).isNotNull();
+		assertThat(resolved.length).isEqualTo((long) 2);
 		assertThat(resolved[0]).isEqualTo(Object.class);
 		assertThat(resolved[1]).isEqualTo(Long.class);
 	}

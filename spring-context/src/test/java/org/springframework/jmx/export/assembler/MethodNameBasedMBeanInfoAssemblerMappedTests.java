@@ -101,7 +101,7 @@ public class MethodNameBasedMBeanInfoAssemblerMappedTests extends AbstractJmxAss
 	}
 
 	private void assertNickName(MBeanAttributeInfo attr) {
-		assertThat((Object) attr).as("Nick Name should not be null").isNotNull();
+		assertThat(attr).as("Nick Name should not be null").isNotNull();
 		assertThat(attr.isWritable()).as("Nick Name should be writable").isTrue();
 		assertThat(attr.isReadable()).as("Nick Name should be readable").isTrue();
 	}

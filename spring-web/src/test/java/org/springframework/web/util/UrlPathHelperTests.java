@@ -440,7 +440,7 @@ public class UrlPathHelperTests {
 	public void getOriginatingQueryStringIsNull() {
 		request.setQueryString("forward=true");
 		request.setAttribute(WebUtils.FORWARD_REQUEST_URI_ATTRIBUTE, "/path");
-		assertThat((Object) this.helper.getOriginatingQueryString(request)).isNull();
+		assertThat(this.helper.getOriginatingQueryString(request)).isNull();
 	}
 
 }

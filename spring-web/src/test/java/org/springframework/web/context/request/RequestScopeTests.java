@@ -138,8 +138,8 @@ public class RequestScopeTests {
 		requestAttributes = new ServletRequestAttributes(request);
 		RequestContextHolder.setRequestAttributes(requestAttributes);
 		TestBean outer2 = (TestBean) this.beanFactory.getBean(outerBeanName);
-		assertThat((Object) outer2).isNotSameAs(outer1);
-		assertThat((Object) outer2.getSpouse()).isNotSameAs(inner1);
+		assertThat(outer2).isNotSameAs(outer1);
+		assertThat(outer2.getSpouse()).isNotSameAs(inner1);
 	}
 
 	@Test
@@ -153,8 +153,8 @@ public class RequestScopeTests {
 		assertThat(request.getAttribute(outerBeanName)).isNull();
 		TestBean inner1 = (TestBean) outer1.getSpouse();
 		TestBean outer2 = (TestBean) this.beanFactory.getBean(outerBeanName);
-		assertThat((Object) outer2).isSameAs(outer1);
-		assertThat((Object) outer2.getSpouse()).isSameAs(inner1);
+		assertThat(outer2).isSameAs(outer1);
+		assertThat(outer2.getSpouse()).isSameAs(inner1);
 		requestAttributes.requestCompleted();
 		assertThat(inner1.wasDestroyed()).isTrue();
 		assertThat(outer1.wasDestroyed()).isFalse();

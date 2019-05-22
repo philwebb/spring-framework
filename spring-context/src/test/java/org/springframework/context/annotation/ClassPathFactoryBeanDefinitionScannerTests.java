@@ -60,7 +60,7 @@ public class ClassPathFactoryBeanDefinitionScannerTests {
 		assertThat(tb.getName()).isEqualTo("publicInstance");
 		TestBean tb2 = (TestBean) context.getBean("publicInstance"); //2
 		assertThat(tb2.getName()).isEqualTo("publicInstance");
-		assertThat((Object) tb).isSameAs(tb2);
+		assertThat(tb).isSameAs(tb2);
 
 		tb = (TestBean) context.getBean("protectedInstance"); //3
 		assertThat(tb.getName()).isEqualTo("protectedInstance");
@@ -68,14 +68,14 @@ public class ClassPathFactoryBeanDefinitionScannerTests {
 		assertThat(tb.getCountry()).isEqualTo("0");
 		tb2 = context.getBean("protectedInstance", TestBean.class); //3
 		assertThat(tb2.getName()).isEqualTo("protectedInstance");
-		assertThat((Object) tb).isSameAs(tb2);
+		assertThat(tb).isSameAs(tb2);
 
 		tb = context.getBean("privateInstance", TestBean.class); //4
 		assertThat(tb.getName()).isEqualTo("privateInstance");
-		assertThat((long) tb.getAge()).isEqualTo((long) 1);
+		assertThat(tb.getAge()).isEqualTo((long) 1);
 		tb2 = context.getBean("privateInstance", TestBean.class); //4
-		assertThat((long) tb2.getAge()).isEqualTo((long) 2);
-		assertThat((Object) tb).isNotSameAs(tb2);
+		assertThat(tb2.getAge()).isEqualTo((long) 2);
+		assertThat(tb).isNotSameAs(tb2);
 
 		Object bean = context.getBean("requestScopedInstance"); //5
 		assertThat(AopUtils.isCglibProxy(bean)).isTrue();
@@ -83,9 +83,9 @@ public class ClassPathFactoryBeanDefinitionScannerTests {
 		assertThat(condition).isTrue();
 
 		QualifiedClientBean clientBean = context.getBean("clientBean", QualifiedClientBean.class);
-		assertThat((Object) clientBean.testBean).isSameAs(context.getBean("publicInstance"));
-		assertThat((Object) clientBean.dependencyBean).isSameAs(context.getBean("dependencyBean"));
-		assertThat((Object) clientBean.applicationContext).isSameAs(context);
+		assertThat(clientBean.testBean).isSameAs(context.getBean("publicInstance"));
+		assertThat(clientBean.dependencyBean).isSameAs(context.getBean("dependencyBean"));
+		assertThat(clientBean.applicationContext).isSameAs(context);
 	}
 
 

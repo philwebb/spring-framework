@@ -59,7 +59,7 @@ public class RmiSupportTests {
 		IRemoteBean proxy = (IRemoteBean) factory.getObject();
 		proxy.setName("myName");
 		assertThat(RemoteBean.name).isEqualTo("myName");
-		assertThat((long) factory.counter).isEqualTo((long) 1);
+		assertThat(factory.counter).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -112,7 +112,7 @@ public class RmiSupportTests {
 		IRemoteBean proxy = (IRemoteBean) factory.getObject();
 		assertThatExceptionOfType(exceptionClass).isThrownBy(() ->
 				proxy.setName(exceptionClass.getName()));
-		assertThat((long) factory.counter).isEqualTo((long) 1);
+		assertThat(factory.counter).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -151,7 +151,7 @@ public class RmiSupportTests {
 		IRemoteBean proxy = (IRemoteBean) factory.getObject();
 		assertThatExceptionOfType(exceptionClass).isThrownBy(() ->
 				proxy.setName(exceptionClass.getName()));
-		assertThat((long) factory.counter).isEqualTo((long) 2);
+		assertThat(factory.counter).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -167,7 +167,7 @@ public class RmiSupportTests {
 		assertThat(condition1).isFalse();
 		proxy.setName("myName");
 		assertThat(RemoteBean.name).isEqualTo("myName");
-		assertThat((long) factory.counter).isEqualTo((long) 1);
+		assertThat(factory.counter).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -186,7 +186,7 @@ public class RmiSupportTests {
 			.withCauseInstanceOf(NoSuchMethodException.class)
 			.withMessageContaining("setOtherName")
 			.withMessageContaining("IWrongBusinessBean");
-		assertThat((long) factory.counter).isEqualTo((long) 1);
+		assertThat(factory.counter).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -239,7 +239,7 @@ public class RmiSupportTests {
 		assertThat(condition1).isFalse();
 		assertThatExceptionOfType(springExceptionClass).isThrownBy(() ->
 				proxy.setName(rmiExceptionClass.getName()));
-		assertThat((long) factory.counter).isEqualTo((long) 1);
+		assertThat(factory.counter).isEqualTo((long) 1);
 	}
 
 	@Test
@@ -381,7 +381,7 @@ public class RmiSupportTests {
 		// shouldn't go through to remote service
 		assertThat(proxy.toString().contains("RMI invoker")).isTrue();
 		assertThat(proxy.toString().contains(serviceUrl)).isTrue();
-		assertThat((long) proxy.hashCode()).isEqualTo((long) proxy.hashCode());
+		assertThat(proxy.hashCode()).isEqualTo((long) proxy.hashCode());
 		assertThat(proxy.equals(proxy)).isTrue();
 
 		// should go through

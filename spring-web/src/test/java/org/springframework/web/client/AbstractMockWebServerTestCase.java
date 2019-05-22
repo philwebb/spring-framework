@@ -84,10 +84,10 @@ public class AbstractMockWebServerTestCase {
 	private MockResponse postRequest(RecordedRequest request, String expectedRequestContent,
 			String location, String contentType, byte[] responseBody) {
 
-		assertThat((long) request.getHeaders().values("Content-Length").size()).isEqualTo((long) 1);
+		assertThat(request.getHeaders().values("Content-Length").size()).isEqualTo((long) 1);
 		assertThat(Integer.parseInt(request.getHeader("Content-Length")) > 0).as("Invalid request content-length").isTrue();
 		String requestContentType = request.getHeader("Content-Type");
-		assertThat((Object) requestContentType).as("No content-type").isNotNull();
+		assertThat(requestContentType).as("No content-type").isNotNull();
 		Charset charset = StandardCharsets.ISO_8859_1;
 		if (requestContentType.contains("charset=")) {
 			String charsetName = requestContentType.split("charset=")[1];
@@ -107,7 +107,7 @@ public class AbstractMockWebServerTestCase {
 	private MockResponse jsonPostRequest(RecordedRequest request, String location, String contentType) {
 		if (request.getBodySize() > 0) {
 			assertThat(Integer.parseInt(request.getHeader("Content-Length")) > 0).as("Invalid request content-length").isTrue();
-			assertThat((Object) request.getHeader("Content-Type")).as("No content-type").isNotNull();
+			assertThat(request.getHeader("Content-Type")).as("No content-type").isNotNull();
 		}
 		return new MockResponse()
 				.setHeader("Location", baseUrl + location)
@@ -158,7 +158,7 @@ public class AbstractMockWebServerTestCase {
 		assertThat(buffer.readUtf8Line().startsWith("Content-Type: "+contentType)).isTrue();
 		assertThat(buffer.readUtf8Line().startsWith("Content-Length: ")).isTrue();
 		assertThat(buffer.readUtf8Line().equals("")).isTrue();
-		assertThat((Object) buffer.readUtf8Line()).isNotNull();
+		assertThat(buffer.readUtf8Line()).isNotNull();
 	}
 
 	private MockResponse formRequest(RecordedRequest request) {
@@ -176,7 +176,7 @@ public class AbstractMockWebServerTestCase {
 		assertThat(request.getMethod()).isEqualTo("PATCH");
 		assertThat(Integer.parseInt(request.getHeader("Content-Length")) > 0).as("Invalid request content-length").isTrue();
 		String requestContentType = request.getHeader("Content-Type");
-		assertThat((Object) requestContentType).as("No content-type").isNotNull();
+		assertThat(requestContentType).as("No content-type").isNotNull();
 		Charset charset = StandardCharsets.ISO_8859_1;
 		if (requestContentType.contains("charset=")) {
 			String charsetName = requestContentType.split("charset=")[1];
@@ -194,7 +194,7 @@ public class AbstractMockWebServerTestCase {
 	private MockResponse putRequest(RecordedRequest request, String expectedRequestContent) {
 		assertThat(Integer.parseInt(request.getHeader("Content-Length")) > 0).as("Invalid request content-length").isTrue();
 		String requestContentType = request.getHeader("Content-Type");
-		assertThat((Object) requestContentType).as("No content-type").isNotNull();
+		assertThat(requestContentType).as("No content-type").isNotNull();
 		Charset charset = StandardCharsets.ISO_8859_1;
 		if (requestContentType.contains("charset=")) {
 			String charsetName = requestContentType.split("charset=")[1];

@@ -39,13 +39,13 @@ public class TagUtilsTests {
 		assertThat(TagUtils.SCOPE_SESSION).isEqualTo("session");
 		assertThat(TagUtils.SCOPE_REQUEST).isEqualTo("request");
 
-		assertThat((long) TagUtils.getScope("page")).isEqualTo((long) PageContext.PAGE_SCOPE);
-		assertThat((long) TagUtils.getScope("request")).isEqualTo((long) PageContext.REQUEST_SCOPE);
-		assertThat((long) TagUtils.getScope("session")).isEqualTo((long) PageContext.SESSION_SCOPE);
-		assertThat((long) TagUtils.getScope("application")).isEqualTo((long) PageContext.APPLICATION_SCOPE);
+		assertThat(TagUtils.getScope("page")).isEqualTo((long) PageContext.PAGE_SCOPE);
+		assertThat(TagUtils.getScope("request")).isEqualTo((long) PageContext.REQUEST_SCOPE);
+		assertThat(TagUtils.getScope("session")).isEqualTo((long) PageContext.SESSION_SCOPE);
+		assertThat(TagUtils.getScope("application")).isEqualTo((long) PageContext.APPLICATION_SCOPE);
 
 		// non-existent scope
-		assertThat((long) TagUtils.getScope("bla")).as("TagUtils.getScope(..) with a non-existent scope argument must " +
+		assertThat(TagUtils.getScope("bla")).as("TagUtils.getScope(..) with a non-existent scope argument must " +
 				"just return the default scope (PageContext.PAGE_SCOPE).").isEqualTo((long) PageContext.PAGE_SCOPE);
 	}
 

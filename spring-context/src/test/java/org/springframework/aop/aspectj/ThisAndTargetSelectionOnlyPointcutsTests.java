@@ -66,43 +66,43 @@ public class ThisAndTargetSelectionOnlyPointcutsTests {
 	@Test
 	public void testThisAsClassDoesNotMatch() {
 		testBean.doIt();
-		assertThat((long) thisAsClassCounter.getCount()).isEqualTo((long) 0);
+		assertThat(thisAsClassCounter.getCount()).isEqualTo((long) 0);
 	}
 
 	@Test
 	public void testThisAsInterfaceMatch() {
 		testBean.doIt();
-		assertThat((long) thisAsInterfaceCounter.getCount()).isEqualTo((long) 1);
+		assertThat(thisAsInterfaceCounter.getCount()).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void testTargetAsClassDoesMatch() {
 		testBean.doIt();
-		assertThat((long) targetAsClassCounter.getCount()).isEqualTo((long) 1);
+		assertThat(targetAsClassCounter.getCount()).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void testTargetAsInterfaceMatch() {
 		testBean.doIt();
-		assertThat((long) targetAsInterfaceCounter.getCount()).isEqualTo((long) 1);
+		assertThat(targetAsInterfaceCounter.getCount()).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void testThisAsClassAndTargetAsClassCounterNotMatch() {
 		testBean.doIt();
-		assertThat((long) thisAsClassAndTargetAsClassCounter.getCount()).isEqualTo((long) 0);
+		assertThat(thisAsClassAndTargetAsClassCounter.getCount()).isEqualTo((long) 0);
 	}
 
 	@Test
 	public void testThisAsInterfaceAndTargetAsInterfaceCounterMatch() {
 		testBean.doIt();
-		assertThat((long) thisAsInterfaceAndTargetAsInterfaceCounter.getCount()).isEqualTo((long) 1);
+		assertThat(thisAsInterfaceAndTargetAsInterfaceCounter.getCount()).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void testThisAsInterfaceAndTargetAsClassCounterMatch() {
 		testBean.doIt();
-		assertThat((long) thisAsInterfaceAndTargetAsInterfaceCounter.getCount()).isEqualTo((long) 1);
+		assertThat(thisAsInterfaceAndTargetAsInterfaceCounter.getCount()).isEqualTo((long) 1);
 	}
 
 }

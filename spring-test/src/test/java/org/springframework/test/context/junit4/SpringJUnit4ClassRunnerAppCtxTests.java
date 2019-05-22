@@ -169,7 +169,7 @@ public class SpringJUnit4ClassRunnerAppCtxTests implements ApplicationContextAwa
 
 	@Test
 	public void verifyApplicationContextSet() {
-		assertThat((Object) this.applicationContext).as("The application context should have been set due to ApplicationContextAware semantics.").isNotNull();
+		assertThat(this.applicationContext).as("The application context should have been set due to ApplicationContextAware semantics.").isNotNull();
 	}
 
 	@Test
@@ -179,36 +179,36 @@ public class SpringJUnit4ClassRunnerAppCtxTests implements ApplicationContextAwa
 
 	@Test
 	public void verifyAnnotationAutowiredAndInjectedFields() {
-		assertThat((Object) this.nonrequiredLong).as("The nonrequiredLong field should NOT have been autowired.").isNull();
+		assertThat(this.nonrequiredLong).as("The nonrequiredLong field should NOT have been autowired.").isNull();
 		assertThat(this.quux).as("The quux field should have been autowired via @Autowired and @Qualifier.").isEqualTo("Quux");
 		assertThat(this.namedQuux).as("The namedFoo field should have been injected via @Inject and @Named.").isEqualTo("Quux");
-		assertThat((Object) this.namedQuux).as("@Autowired/@Qualifier and @Inject/@Named quux should be the same object.").isSameAs(this.quux);
+		assertThat(this.namedQuux).as("@Autowired/@Qualifier and @Inject/@Named quux should be the same object.").isSameAs(this.quux);
 
-		assertThat((Object) this.autowiredPet).as("The pet field should have been autowired.").isNotNull();
-		assertThat((Object) this.injectedPet).as("The pet field should have been injected.").isNotNull();
+		assertThat(this.autowiredPet).as("The pet field should have been autowired.").isNotNull();
+		assertThat(this.injectedPet).as("The pet field should have been injected.").isNotNull();
 		assertThat(this.autowiredPet.getName()).isEqualTo("Fido");
 		assertThat(this.injectedPet.getName()).isEqualTo("Fido");
-		assertThat((Object) this.injectedPet).as("@Autowired and @Inject pet should be the same object.").isSameAs(this.autowiredPet);
+		assertThat(this.injectedPet).as("@Autowired and @Inject pet should be the same object.").isSameAs(this.autowiredPet);
 	}
 
 	@Test
 	public void verifyAnnotationAutowiredMethods() {
-		assertThat((Object) this.employee).as("The employee setter method should have been autowired.").isNotNull();
+		assertThat(this.employee).as("The employee setter method should have been autowired.").isNotNull();
 		assertThat(this.employee.getName()).isEqualTo("John Smith");
 	}
 
 	@Test
 	public void verifyAutowiredAtValueFields() {
-		assertThat((Object) this.literalFieldValue).as("Literal @Value field should have been autowired").isNotNull();
-		assertThat((Object) this.spelFieldValue).as("SpEL @Value field should have been autowired.").isNotNull();
+		assertThat(this.literalFieldValue).as("Literal @Value field should have been autowired").isNotNull();
+		assertThat(this.spelFieldValue).as("SpEL @Value field should have been autowired.").isNotNull();
 		assertThat(this.literalFieldValue).isEqualTo("enigma");
 		assertThat(this.spelFieldValue).isEqualTo(Boolean.TRUE);
 	}
 
 	@Test
 	public void verifyAutowiredAtValueMethods() {
-		assertThat((Object) this.literalParameterValue).as("Literal @Value method parameter should have been autowired.").isNotNull();
-		assertThat((Object) this.spelParameterValue).as("SpEL @Value method parameter should have been autowired.").isNotNull();
+		assertThat(this.literalParameterValue).as("Literal @Value method parameter should have been autowired.").isNotNull();
+		assertThat(this.spelParameterValue).as("SpEL @Value method parameter should have been autowired.").isNotNull();
 		assertThat(this.literalParameterValue).isEqualTo("enigma");
 		assertThat(this.spelParameterValue).isEqualTo(Boolean.TRUE);
 	}

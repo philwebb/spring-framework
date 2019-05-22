@@ -59,7 +59,7 @@ public class ThreadPoolTaskSchedulerTests extends AbstractSchedulingTaskExecutor
 		scheduler.setErrorHandler(errorHandler);
 		scheduler.execute(task);
 		await(errorHandler);
-		assertThat((Object) errorHandler.lastError).isNotNull();
+		assertThat(errorHandler.lastError).isNotNull();
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class ThreadPoolTaskSchedulerTests extends AbstractSchedulingTaskExecutor
 		Object result = future.get(1000, TimeUnit.MILLISECONDS);
 		assertThat(future.isDone()).isTrue();
 		assertThat(result).isNull();
-		assertThat((Object) errorHandler.lastError).isNotNull();
+		assertThat(errorHandler.lastError).isNotNull();
 	}
 
 	@Test
@@ -83,7 +83,7 @@ public class ThreadPoolTaskSchedulerTests extends AbstractSchedulingTaskExecutor
 		Object result = future.get(1000, TimeUnit.MILLISECONDS);
 		assertThat(future.isDone()).isTrue();
 		assertThat(result).isNull();
-		assertThat((Object) errorHandler.lastError).isNotNull();
+		assertThat(errorHandler.lastError).isNotNull();
 	}
 
 	@Test
@@ -114,7 +114,7 @@ public class ThreadPoolTaskSchedulerTests extends AbstractSchedulingTaskExecutor
 		Object result = future.get(1000, TimeUnit.MILLISECONDS);
 		assertThat(future.isDone()).isTrue();
 		assertThat(result).isNull();
-		assertThat((Object) errorHandler.lastError).isNotNull();
+		assertThat(errorHandler.lastError).isNotNull();
 	}
 
 	@Test

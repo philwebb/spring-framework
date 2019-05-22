@@ -234,8 +234,8 @@ public class JmsTemplateTests {
 				}
 			});
 
-			assertThat((Object) ConnectionFactoryUtils.getTransactionalSession(scf, null, false)).isSameAs(this.session);
-			assertThat((Object) ConnectionFactoryUtils.getTransactionalSession(scf, scf.createConnection(), false)).isSameAs(this.session);
+			assertThat(ConnectionFactoryUtils.getTransactionalSession(scf, null, false)).isSameAs(this.session);
+			assertThat(ConnectionFactoryUtils.getTransactionalSession(scf, scf.createConnection(), false)).isSameAs(this.session);
 
 			TransactionAwareConnectionFactoryProxy tacf = new TransactionAwareConnectionFactoryProxy(scf);
 			Connection tac = tacf.createConnection();
@@ -245,7 +245,7 @@ public class JmsTemplateTests {
 			tac.close();
 
 			List<TransactionSynchronization> synchs = TransactionSynchronizationManager.getSynchronizations();
-			assertThat((long) synchs.size()).isEqualTo((long) 1);
+			assertThat(synchs.size()).isEqualTo((long) 1);
 			TransactionSynchronization synch = synchs.get(0);
 			synch.beforeCommit(false);
 			synch.beforeCompletion();
@@ -710,7 +710,7 @@ public class JmsTemplateTests {
 
 		// replyTO set on the request
 		verify(request).setJMSReplyTo(replyDestination);
-		assertThat((Object) message).as("Reply message not received").isSameAs(reply);
+		assertThat(message).as("Reply message not received").isSameAs(reply);
 		verify(this.connection).start();
 		verify(this.connection).close();
 		verify(localSession).close();

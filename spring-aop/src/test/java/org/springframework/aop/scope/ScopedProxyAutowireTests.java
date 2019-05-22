@@ -44,7 +44,7 @@ public class ScopedProxyAutowireTests {
 		assertThat(bf.containsSingleton("scoped")).isFalse();
 		TestBean autowired = (TestBean) bf.getBean("autowired");
 		TestBean unscoped = (TestBean) bf.getBean("unscoped");
-		assertThat((Object) autowired.getChild()).isSameAs(unscoped);
+		assertThat(autowired.getChild()).isSameAs(unscoped);
 	}
 
 	@Test
@@ -58,7 +58,7 @@ public class ScopedProxyAutowireTests {
 		assertThat(bf.containsSingleton("scoped")).isFalse();
 		TestBean autowired = (TestBean) bf.getBean("autowired");
 		TestBean scoped = (TestBean) bf.getBean("scoped");
-		assertThat((Object) autowired.getChild()).isSameAs(scoped);
+		assertThat(autowired.getChild()).isSameAs(scoped);
 	}
 
 

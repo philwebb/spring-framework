@@ -146,7 +146,7 @@ public class ResponseEntityResultHandlerTests {
 
 	@Test
 	public void defaultOrder() throws Exception {
-		assertThat((long) this.resultHandler.getOrder()).isEqualTo((long) 0);
+		assertThat(this.resultHandler.getOrder()).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -158,7 +158,7 @@ public class ResponseEntityResultHandlerTests {
 		this.resultHandler.handleResult(exchange, result).block(Duration.ofSeconds(5));
 
 		assertThat(exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
-		assertThat((long) exchange.getResponse().getHeaders().size()).isEqualTo((long) 0);
+		assertThat(exchange.getResponse().getHeaders().size()).isEqualTo((long) 0);
 		assertResponseBodyIsEmpty(exchange);
 	}
 
@@ -172,7 +172,7 @@ public class ResponseEntityResultHandlerTests {
 		this.resultHandler.handleResult(exchange, result).block(Duration.ofSeconds(5));
 
 		assertThat(exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((long) exchange.getResponse().getHeaders().size()).isEqualTo((long) 1);
+		assertThat(exchange.getResponse().getHeaders().size()).isEqualTo((long) 1);
 		assertThat(exchange.getResponse().getHeaders().getFirst("Allow")).isEqualTo("GET,POST,OPTIONS");
 		assertResponseBodyIsEmpty(exchange);
 	}
@@ -187,7 +187,7 @@ public class ResponseEntityResultHandlerTests {
 		this.resultHandler.handleResult(exchange, result).block(Duration.ofSeconds(5));
 
 		assertThat(exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.CREATED);
-		assertThat((long) exchange.getResponse().getHeaders().size()).isEqualTo((long) 1);
+		assertThat(exchange.getResponse().getHeaders().size()).isEqualTo((long) 1);
 		assertThat(exchange.getResponse().getHeaders().getLocation()).isEqualTo(location);
 		assertResponseBodyIsEmpty(exchange);
 	}
@@ -346,7 +346,7 @@ public class ResponseEntityResultHandlerTests {
 		this.resultHandler.handleResult(exchange, result).block(Duration.ofSeconds(5));
 
 		assertThat(exchange.getResponse().getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat((long) exchange.getResponse().getHeaders().size()).isEqualTo((long) 1);
+		assertThat(exchange.getResponse().getHeaders().size()).isEqualTo((long) 1);
 		assertThat(exchange.getResponse().getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
 		assertResponseBodyIsEmpty(exchange);
 	}
@@ -393,11 +393,11 @@ public class ResponseEntityResultHandlerTests {
 			assertResponseBodyIsEmpty(exchange);
 		}
 		if (etag != null) {
-			assertThat((long) exchange.getResponse().getHeaders().get(HttpHeaders.ETAG).size()).isEqualTo((long) 1);
+			assertThat(exchange.getResponse().getHeaders().get(HttpHeaders.ETAG).size()).isEqualTo((long) 1);
 			assertThat(exchange.getResponse().getHeaders().getETag()).isEqualTo(etag);
 		}
 		if (lastModified.isAfter(Instant.EPOCH)) {
-			assertThat((long) exchange.getResponse().getHeaders().get(HttpHeaders.LAST_MODIFIED).size()).isEqualTo((long) 1);
+			assertThat(exchange.getResponse().getHeaders().get(HttpHeaders.LAST_MODIFIED).size()).isEqualTo((long) 1);
 			assertThat(exchange.getResponse().getHeaders().getLastModified()).isEqualTo(lastModified.toEpochMilli());
 		}
 	}

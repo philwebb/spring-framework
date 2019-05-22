@@ -49,7 +49,7 @@ public class ServerEndpointRegistrationTests {
 
 		EchoEndpoint endpoint = registration.getConfigurator().getEndpointInstance(EchoEndpoint.class);
 
-		assertThat((Object) endpoint).isNotNull();
+		assertThat(endpoint).isNotNull();
 	}
 
 	@Test
@@ -60,7 +60,7 @@ public class ServerEndpointRegistrationTests {
 
 		EchoEndpoint actual = registration.getConfigurator().getEndpointInstance(EchoEndpoint.class);
 
-		assertThat((Object) actual).isSameAs(endpoint);
+		assertThat(actual).isSameAs(endpoint);
 	}
 
 

@@ -65,7 +65,7 @@ public class StompCommandTests {
 			if (simp == null) {
 				simp = SimpMessageType.OTHER;
 			}
-			assertThat((Object) stompCommand.getMessageType()).isSameAs(simp);
+			assertThat(stompCommand.getMessageType()).isSameAs(simp);
 		}
 	}
 

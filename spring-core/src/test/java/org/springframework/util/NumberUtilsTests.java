@@ -372,15 +372,15 @@ public class NumberUtilsTests {
 	}
 
 	private void assertIntegerEquals(String anInteger) {
-		assertThat((long) NumberUtils.parseNumber(anInteger, Integer.class).intValue()).as("Integer did not parse").isEqualTo((long) Integer.MAX_VALUE);
+		assertThat(NumberUtils.parseNumber(anInteger, Integer.class).intValue()).as("Integer did not parse").isEqualTo((long) Integer.MAX_VALUE);
 	}
 
 	private void assertShortEquals(String aShort) {
-		assertThat((long) NumberUtils.parseNumber(aShort, Short.class).shortValue()).as("Short did not parse").isEqualTo((long) Short.MAX_VALUE);
+		assertThat(NumberUtils.parseNumber(aShort, Short.class).shortValue()).as("Short did not parse").isEqualTo((long) Short.MAX_VALUE);
 	}
 
 	private void assertByteEquals(String aByte) {
-		assertThat((long) NumberUtils.parseNumber(aByte, Byte.class).byteValue()).as("Byte did not parse").isEqualTo((long) Byte.MAX_VALUE);
+		assertThat(NumberUtils.parseNumber(aByte, Byte.class).byteValue()).as("Byte did not parse").isEqualTo((long) Byte.MAX_VALUE);
 	}
 
 	private void assertNegativeLongEquals(String aLong) {
@@ -388,15 +388,15 @@ public class NumberUtilsTests {
 	}
 
 	private void assertNegativeIntegerEquals(String anInteger) {
-		assertThat((long) NumberUtils.parseNumber(anInteger, Integer.class).intValue()).as("Integer did not parse").isEqualTo((long) Integer.MIN_VALUE);
+		assertThat(NumberUtils.parseNumber(anInteger, Integer.class).intValue()).as("Integer did not parse").isEqualTo((long) Integer.MIN_VALUE);
 	}
 
 	private void assertNegativeShortEquals(String aShort) {
-		assertThat((long) NumberUtils.parseNumber(aShort, Short.class).shortValue()).as("Short did not parse").isEqualTo((long) Short.MIN_VALUE);
+		assertThat(NumberUtils.parseNumber(aShort, Short.class).shortValue()).as("Short did not parse").isEqualTo((long) Short.MIN_VALUE);
 	}
 
 	private void assertNegativeByteEquals(String aByte) {
-		assertThat((long) NumberUtils.parseNumber(aByte, Byte.class).byteValue()).as("Byte did not parse").isEqualTo((long) Byte.MIN_VALUE);
+		assertThat(NumberUtils.parseNumber(aByte, Byte.class).byteValue()).as("Byte did not parse").isEqualTo((long) Byte.MIN_VALUE);
 	}
 
 	private void assertToNumberOverflow(Number number, Class<? extends Number> targetClass) {

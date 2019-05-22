@@ -52,10 +52,10 @@ public class JtaTransactionManagerSerializationTests {
 				.serializeAndDeserialize(jtam);
 
 		// should do client-side lookup
-		assertThat((Object) serializedJtatm.logger).as("Logger must survive serialization").isNotNull();
+		assertThat(serializedJtatm.logger).as("Logger must survive serialization").isNotNull();
 		assertThat(serializedJtatm
 				.getUserTransaction() == ut2).as("UserTransaction looked up on client").isTrue();
-		assertThat((Object) serializedJtatm
+		assertThat(serializedJtatm
 				.getTransactionManager()).as("TransactionManager didn't survive").isNull();
 		assertThat(serializedJtatm.isRollbackOnCommitFailure()).isEqualTo(true);
 	}

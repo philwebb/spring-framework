@@ -79,7 +79,7 @@ public class RenderingResponseIntegrationTests extends AbstractRouterFunctionInt
 
 		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 		Map<String, String> body = parseBody(result.getBody());
-		assertThat((long) body.size()).isEqualTo((long) 2);
+		assertThat(body.size()).isEqualTo((long) 2);
 		assertThat(body.get("name")).isEqualTo("foo");
 		assertThat(body.get("bar")).isEqualTo("baz");
 	}
@@ -91,7 +91,7 @@ public class RenderingResponseIntegrationTests extends AbstractRouterFunctionInt
 
 		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 		Map<String, String> body = parseBody(result.getBody());
-		assertThat((long) body.size()).isEqualTo((long) 3);
+		assertThat(body.size()).isEqualTo((long) 3);
 		assertThat(body.get("name")).isEqualTo("foo");
 		assertThat(body.get("bar")).isEqualTo("baz");
 		assertThat(body.get("qux")).isEqualTo("quux");

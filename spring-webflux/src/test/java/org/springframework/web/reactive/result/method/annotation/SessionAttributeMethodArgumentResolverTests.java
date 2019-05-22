@@ -119,7 +119,7 @@ public class SessionAttributeMethodArgumentResolverTests {
 		Optional<Object> actual = (Optional<Object>) this.resolver
 				.resolveArgument(param, new BindingContext(), this.exchange).block();
 
-		assertThat((Object) actual).isNotNull();
+		assertThat(actual).isNotNull();
 		assertThat(actual.isPresent()).isFalse();
 
 		ConfigurableWebBindingInitializer initializer = new ConfigurableWebBindingInitializer();
@@ -130,7 +130,7 @@ public class SessionAttributeMethodArgumentResolverTests {
 		given(this.session.getAttribute("foo")).willReturn(foo);
 		actual = (Optional<Object>) this.resolver.resolveArgument(param, bindingContext, this.exchange).block();
 
-		assertThat((Object) actual).isNotNull();
+		assertThat(actual).isNotNull();
 		assertThat(actual.isPresent()).isTrue();
 		assertThat(actual.get()).isSameAs(foo);
 	}

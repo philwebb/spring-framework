@@ -49,7 +49,7 @@ public class StompSubProtocolErrorHandlerTests {
 		Message<byte[]> actual = this.handler.handleClientMessageProcessingError(null, ex);
 
 		StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(actual, StompHeaderAccessor.class);
-		assertThat((Object) accessor).isNotNull();
+		assertThat(accessor).isNotNull();
 		assertThat(accessor.getCommand()).isEqualTo(StompCommand.ERROR);
 		assertThat(accessor.getMessage()).isEqualTo(ex.getMessage());
 		byte[] expecteds = new byte[0];
@@ -67,7 +67,7 @@ public class StompSubProtocolErrorHandlerTests {
 		Message<byte[]> actual = this.handler.handleClientMessageProcessingError(clientMessage, new Exception());
 
 		StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(actual, StompHeaderAccessor.class);
-		assertThat((Object) accessor).isNotNull();
+		assertThat(accessor).isNotNull();
 		assertThat(accessor.getReceiptId()).isEqualTo(receiptId);
 	}
 

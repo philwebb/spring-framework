@@ -312,7 +312,7 @@ public class ReactiveTypeHandlerTests {
 			ResolvableType elementType, Runnable produceTask, Object expected) throws Exception {
 
 		ResponseBodyEmitter emitter = handleValue(returnValue, asyncType, elementType);
-		assertThat((Object) emitter).isNull();
+		assertThat(emitter).isNull();
 
 		assertThat(this.servletRequest.isAsyncStarted()).isTrue();
 		assertThat(WebAsyncUtils.getAsyncManager(this.webRequest).hasConcurrentResult()).isFalse();

@@ -98,7 +98,7 @@ public class EhCacheSupportTests {
 			cacheManagerFb2.setAcceptExisting(true);
 			cacheManagerFb2.afterPropertiesSet();
 			CacheManager cm2 = cacheManagerFb2.getObject();
-			assertThat((Object) cm2).isSameAs(cm);
+			assertThat(cm2).isSameAs(cm);
 			cacheManagerFb2.destroy();
 		}
 		finally {
@@ -155,7 +155,7 @@ public class EhCacheSupportTests {
 			cacheFb.afterPropertiesSet();
 			cache = (Cache) cacheFb.getObject();
 			Class<? extends Ehcache> objectType2 = cacheFb.getObjectType();
-			assertThat((Object) objectType2).isSameAs(objectType);
+			assertThat(objectType2).isSameAs(objectType);
 			CacheConfiguration config = cache.getCacheConfiguration();
 			assertThat(cache.getName()).isEqualTo("myCache1");
 			if (useCacheManagerFb){

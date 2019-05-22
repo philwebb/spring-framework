@@ -53,7 +53,7 @@ public class MessageReceivingTemplateTests {
 		Message<?> actual = this.template.receive();
 
 		assertThat(this.template.destination).isEqualTo("home");
-		assertThat((Object) actual).isSameAs(expected);
+		assertThat(actual).isSameAs(expected);
 	}
 
 	@Test
@@ -69,7 +69,7 @@ public class MessageReceivingTemplateTests {
 		Message<?> actual = this.template.receive("somewhere");
 
 		assertThat(this.template.destination).isEqualTo("somewhere");
-		assertThat((Object) actual).isSameAs(expected);
+		assertThat(actual).isSameAs(expected);
 	}
 
 	@Test
@@ -80,7 +80,7 @@ public class MessageReceivingTemplateTests {
 		String payload = this.template.receiveAndConvert(String.class);
 
 		assertThat(this.template.destination).isEqualTo("home");
-		assertThat((Object) payload).isSameAs("payload");
+		assertThat(payload).isSameAs("payload");
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class MessageReceivingTemplateTests {
 		String payload = this.template.receiveAndConvert("somewhere", String.class);
 
 		assertThat(this.template.destination).isEqualTo("somewhere");
-		assertThat((Object) payload).isSameAs("payload");
+		assertThat(payload).isSameAs("payload");
 	}
 
 	@Test
@@ -115,7 +115,7 @@ public class MessageReceivingTemplateTests {
 		}
 		catch (MessageConversionException ex) {
 			assertThat(ex.getMessage().contains("payload")).as("Invalid exception message '" + ex.getMessage() + "'").isTrue();
-			assertThat((Object) ex.getFailedMessage()).isSameAs(expected);
+			assertThat(ex.getFailedMessage()).isSameAs(expected);
 		}
 	}
 

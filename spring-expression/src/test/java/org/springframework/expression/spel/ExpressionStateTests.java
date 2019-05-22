@@ -237,7 +237,7 @@ public class ExpressionStateTests extends AbstractExpressionTests {
 	@Test
 	public void testTypeLocator() throws EvaluationException {
 		ExpressionState state = getState();
-		assertThat((Object) state.getEvaluationContext().getTypeLocator()).isNotNull();
+		assertThat(state.getEvaluationContext().getTypeLocator()).isNotNull();
 		assertThat(state.findType("java.lang.Integer")).isEqualTo(Integer.class);
 		assertThatExceptionOfType(SpelEvaluationException.class).isThrownBy(() ->
 				state.findType("someMadeUpName"))

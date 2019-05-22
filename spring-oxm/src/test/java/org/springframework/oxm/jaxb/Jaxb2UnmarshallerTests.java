@@ -63,15 +63,15 @@ public class Jaxb2UnmarshallerTests extends AbstractUnmarshallerTests<Jaxb2Marsh
 	@Override
 	protected void testFlights(Object o) {
 		Flights flights = (Flights) o;
-		assertThat((Object) flights).as("Flights is null").isNotNull();
-		assertThat((long) flights.getFlight().size()).as("Invalid amount of flight elements").isEqualTo((long) 1);
+		assertThat(flights).as("Flights is null").isNotNull();
+		assertThat(flights.getFlight().size()).as("Invalid amount of flight elements").isEqualTo((long) 1);
 		testFlight(flights.getFlight().get(0));
 	}
 
 	@Override
 	protected void testFlight(Object o) {
 		FlightType flight = (FlightType) o;
-		assertThat((Object) flight).as("Flight is null").isNotNull();
+		assertThat(flight).as("Flight is null").isNotNull();
 		assertThat(flight.getNumber()).as("Number is invalid").isEqualTo(42L);
 	}
 
@@ -103,9 +103,9 @@ public class Jaxb2UnmarshallerTests extends AbstractUnmarshallerTests<Jaxb2Marsh
 		boolean condition = result instanceof BinaryObject;
 		assertThat(condition).as("Result is not a BinaryObject").isTrue();
 		BinaryObject object = (BinaryObject) result;
-		assertThat((Object) object.getBytes()).as("bytes property not set").isNotNull();
+		assertThat(object.getBytes()).as("bytes property not set").isNotNull();
 		assertThat(object.getBytes().length > 0).as("bytes property not set").isTrue();
-		assertThat((Object) object.getSwaDataHandler()).as("datahandler property not set").isNotNull();
+		assertThat(object.getSwaDataHandler()).as("datahandler property not set").isNotNull();
 	}
 
 	@Test

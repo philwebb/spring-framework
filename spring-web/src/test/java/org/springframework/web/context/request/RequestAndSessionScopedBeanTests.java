@@ -56,7 +56,7 @@ public class RequestAndSessionScopedBeanTests {
 
 		TestBean target2 = (TestBean) wac.getBean(targetBeanName);
 		assertThat(target2.getName()).isEqualTo("abc");
-		assertThat((Object) target).isSameAs(target2);
+		assertThat(target).isSameAs(target2);
 		assertThat(request.getAttribute(targetBeanName)).isSameAs(target2);
 
 		request = new MockHttpServletRequest();
@@ -64,7 +64,7 @@ public class RequestAndSessionScopedBeanTests {
 		TestBean target3 = (TestBean) wac.getBean(targetBeanName);
 		assertThat(target3.getName()).isEqualTo("abc");
 		assertThat(request.getAttribute(targetBeanName)).isSameAs(target3);
-		assertThat((Object) target).isNotSameAs(target3);
+		assertThat(target).isNotSameAs(target3);
 
 		RequestContextHolder.setRequestAttributes(null);
 		assertThatExceptionOfType(BeanCreationException.class).isThrownBy(() ->

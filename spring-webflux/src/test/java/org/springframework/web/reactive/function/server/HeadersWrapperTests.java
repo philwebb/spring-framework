@@ -58,7 +58,7 @@ public class HeadersWrapperTests {
 		List<MediaType> accept = Collections.singletonList(MediaType.APPLICATION_JSON);
 		given(mockHeaders.accept()).willReturn(accept);
 
-		assertThat((Object) wrapper.accept()).isSameAs(accept);
+		assertThat(wrapper.accept()).isSameAs(accept);
 	}
 
 	@Test
@@ -66,7 +66,7 @@ public class HeadersWrapperTests {
 		List<Charset> acceptCharset = Collections.singletonList(StandardCharsets.UTF_8);
 		given(mockHeaders.acceptCharset()).willReturn(acceptCharset);
 
-		assertThat((Object) wrapper.acceptCharset()).isSameAs(acceptCharset);
+		assertThat(wrapper.acceptCharset()).isSameAs(acceptCharset);
 	}
 
 	@Test
@@ -74,7 +74,7 @@ public class HeadersWrapperTests {
 		OptionalLong contentLength = OptionalLong.of(42L);
 		given(mockHeaders.contentLength()).willReturn(contentLength);
 
-		assertThat((Object) wrapper.contentLength()).isSameAs(contentLength);
+		assertThat(wrapper.contentLength()).isSameAs(contentLength);
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class HeadersWrapperTests {
 		Optional<MediaType> contentType = Optional.of(MediaType.APPLICATION_JSON);
 		given(mockHeaders.contentType()).willReturn(contentType);
 
-		assertThat((Object) wrapper.contentType()).isSameAs(contentType);
+		assertThat(wrapper.contentType()).isSameAs(contentType);
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class HeadersWrapperTests {
 		InetSocketAddress host = InetSocketAddress.createUnresolved("example.com", 42);
 		given(mockHeaders.host()).willReturn(host);
 
-		assertThat((Object) wrapper.host()).isSameAs(host);
+		assertThat(wrapper.host()).isSameAs(host);
 	}
 
 	@Test
@@ -98,7 +98,7 @@ public class HeadersWrapperTests {
 		List<HttpRange> range = Collections.singletonList(HttpRange.createByteRange(42));
 		given(mockHeaders.range()).willReturn(range);
 
-		assertThat((Object) wrapper.range()).isSameAs(range);
+		assertThat(wrapper.range()).isSameAs(range);
 	}
 
 	@Test
@@ -107,7 +107,7 @@ public class HeadersWrapperTests {
 		List<String> value = Collections.singletonList("bar");
 		given(mockHeaders.header(name)).willReturn(value);
 
-		assertThat((Object) wrapper.header(name)).isSameAs(value);
+		assertThat(wrapper.header(name)).isSameAs(value);
 	}
 
 	@Test
@@ -115,7 +115,7 @@ public class HeadersWrapperTests {
 		HttpHeaders httpHeaders = new HttpHeaders();
 		given(mockHeaders.asHttpHeaders()).willReturn(httpHeaders);
 
-		assertThat((Object) wrapper.asHttpHeaders()).isSameAs(httpHeaders);
+		assertThat(wrapper.asHttpHeaders()).isSameAs(httpHeaders);
 	}
 
 }

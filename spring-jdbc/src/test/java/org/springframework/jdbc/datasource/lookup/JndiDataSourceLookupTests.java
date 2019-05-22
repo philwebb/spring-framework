@@ -43,8 +43,8 @@ public class JndiDataSourceLookupTests {
 			}
 		};
 		DataSource dataSource = lookup.getDataSource(DATA_SOURCE_NAME);
-		assertThat((Object) dataSource).as("A DataSourceLookup implementation must *never* return null from getDataSource(): this one obviously (and incorrectly) is").isNotNull();
-		assertThat((Object) dataSource).isSameAs(expectedDataSource);
+		assertThat(dataSource).as("A DataSourceLookup implementation must *never* return null from getDataSource(): this one obviously (and incorrectly) is").isNotNull();
+		assertThat(dataSource).isSameAs(expectedDataSource);
 	}
 
 	@Test

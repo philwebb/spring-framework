@@ -71,7 +71,7 @@ public class BshScriptFactoryTests {
 		boolean condition = !messenger.toString().equals(calc.toString());
 		assertThat(condition).isTrue();
 
-		assertThat((long) calc.add(2, 3)).isEqualTo((long) 5);
+		assertThat(calc.add(2, 3)).isEqualTo((long) 5);
 
 		String desiredMessage = "Hello World!";
 		assertThat(messenger.getMessage()).as("Message is incorrect").isEqualTo(desiredMessage);
@@ -87,7 +87,7 @@ public class BshScriptFactoryTests {
 
 		ConfigurableMessenger messenger = (ConfigurableMessenger) ctx.getBean("messengerWithConfig");
 		messenger.setMessage(null);
-		assertThat((Object) messenger.getMessage()).isNull();
+		assertThat(messenger.getMessage()).isNull();
 		assertThat(ctx.getBeansOfType(Messenger.class).values().contains(messenger)).isTrue();
 	}
 
@@ -98,11 +98,11 @@ public class BshScriptFactoryTests {
 
 		ConfigurableMessenger messenger = (ConfigurableMessenger) ctx.getBean("messengerWithConfigExtra");
 		messenger.setMessage(null);
-		assertThat((Object) messenger.getMessage()).isNull();
+		assertThat(messenger.getMessage()).isNull();
 		assertThat(ctx.getBeansOfType(Messenger.class).values().contains(messenger)).isTrue();
 
 		ctx.close();
-		assertThat((Object) messenger.getMessage()).isNull();
+		assertThat(messenger.getMessage()).isNull();
 	}
 
 	@Test
@@ -116,7 +116,7 @@ public class BshScriptFactoryTests {
 		assertThat(ctx.getBeansOfType(Messenger.class).values().contains(messenger)).isTrue();
 
 		ctx.close();
-		assertThat((Object) messenger.getMessage()).isNull();
+		assertThat(messenger.getMessage()).isNull();
 	}
 
 	@Test
@@ -130,7 +130,7 @@ public class BshScriptFactoryTests {
 		assertThat(ctx.getBeansOfType(Messenger.class).values().contains(messenger)).isTrue();
 
 		ctx.close();
-		assertThat((Object) messenger.getMessage()).isNull();
+		assertThat(messenger.getMessage()).isNull();
 	}
 
 	@Test
@@ -143,8 +143,8 @@ public class BshScriptFactoryTests {
 		boolean condition = messenger instanceof Refreshable;
 		assertThat(condition).as("Scripted object should not be instance of Refreshable").isFalse();
 
-		assertThat((Object) messenger2).isNotSameAs(messenger);
-		assertThat((Object) messenger2.getClass()).isSameAs(messenger.getClass());
+		assertThat(messenger2).isNotSameAs(messenger);
+		assertThat(messenger2.getClass()).isSameAs(messenger.getClass());
 		assertThat(messenger.getMessage()).isEqualTo("Hello World!");
 		assertThat(messenger2.getMessage()).isEqualTo("Hello World!");
 		messenger.setMessage("Bye World!");
@@ -271,9 +271,9 @@ public class BshScriptFactoryTests {
 		assertThat(beans.contains(messengerByName)).isTrue();
 
 		ctx.close();
-		assertThat((Object) messenger.getMessage()).isNull();
-		assertThat((Object) messengerImpl.getMessage()).isNull();
-		assertThat((Object) messengerInstance.getMessage()).isNull();
+		assertThat(messenger.getMessage()).isNull();
+		assertThat(messengerImpl.getMessage()).isNull();
+		assertThat(messengerInstance.getMessage()).isNull();
 	}
 
 	@Test
@@ -282,8 +282,8 @@ public class BshScriptFactoryTests {
 		ConfigurableMessenger messenger = (ConfigurableMessenger) ctx.getBean("messengerPrototype");
 		ConfigurableMessenger messenger2 = (ConfigurableMessenger) ctx.getBean("messengerPrototype");
 
-		assertThat((Object) messenger2).isNotSameAs(messenger);
-		assertThat((Object) messenger2.getClass()).isSameAs(messenger.getClass());
+		assertThat(messenger2).isNotSameAs(messenger);
+		assertThat(messenger2.getClass()).isSameAs(messenger.getClass());
 		assertThat(messenger.getMessage()).isEqualTo("Hello World!");
 		assertThat(messenger2.getMessage()).isEqualTo("Hello World!");
 		messenger.setMessage("Bye World!");
@@ -296,7 +296,7 @@ public class BshScriptFactoryTests {
 	public void inlineScriptFromTag() {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("bsh-with-xsd.xml", getClass());
 		Calculator calculator = (Calculator) ctx.getBean("calculator");
-		assertThat((Object) calculator).isNotNull();
+		assertThat(calculator).isNotNull();
 		boolean condition = calculator instanceof Refreshable;
 		assertThat(condition).isFalse();
 	}

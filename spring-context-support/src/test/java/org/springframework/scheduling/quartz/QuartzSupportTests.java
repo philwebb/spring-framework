@@ -123,7 +123,7 @@ public class QuartzSupportTests {
 
 		Thread.sleep(500);
 		assertThat(DummyJob.count > 0).as("DummyJob should have been executed at least once.").isTrue();
-		assertThat((long) taskExecutor.count).isEqualTo((long) DummyJob.count);
+		assertThat(taskExecutor.count).isEqualTo((long) DummyJob.count);
 
 		bean.destroy();
 	}
@@ -164,7 +164,7 @@ public class QuartzSupportTests {
 		bean.start();
 
 		Thread.sleep(500);
-		assertThat((long) DummyJobBean.param).isEqualTo((long) 10);
+		assertThat(DummyJobBean.param).isEqualTo((long) 10);
 		assertThat(DummyJobBean.count > 0).isTrue();
 
 		bean.destroy();
@@ -200,7 +200,7 @@ public class QuartzSupportTests {
 		bean.start();
 
 		Thread.sleep(500);
-		assertThat((long) DummyJob.param).isEqualTo((long) 10);
+		assertThat(DummyJob.param).isEqualTo((long) 10);
 		assertThat(DummyJob.count > 0).as("DummyJob should have been executed at least once.").isTrue();
 
 		bean.destroy();
@@ -237,7 +237,7 @@ public class QuartzSupportTests {
 		bean.afterPropertiesSet();
 
 		Thread.sleep(500);
-		assertThat((long) DummyJob.param).isEqualTo((long) 0);
+		assertThat(DummyJob.param).isEqualTo((long) 0);
 		assertThat(DummyJob.count == 0).isTrue();
 
 		bean.destroy();
@@ -271,7 +271,7 @@ public class QuartzSupportTests {
 		bean.start();
 
 		Thread.sleep(500);
-		assertThat((long) DummyJobBean.param).isEqualTo((long) 10);
+		assertThat(DummyJobBean.param).isEqualTo((long) 10);
 		assertThat(DummyJobBean.count > 0).isTrue();
 
 		bean.destroy();
@@ -290,7 +290,7 @@ public class QuartzSupportTests {
 		bean.start();
 
 		Thread.sleep(500);
-		assertThat((long) DummyJob.param).isEqualTo((long) 10);
+		assertThat(DummyJob.param).isEqualTo((long) 10);
 		assertThat(DummyJob.count > 0).as("DummyJob should have been executed at least once.").isTrue();
 
 		bean.destroy();
@@ -302,7 +302,7 @@ public class QuartzSupportTests {
 		try {
 			Scheduler scheduler1 = (Scheduler) ctx.getBean("scheduler1");
 			Scheduler scheduler2 = (Scheduler) ctx.getBean("scheduler2");
-			assertThat((Object) scheduler2).isNotSameAs(scheduler1);
+			assertThat(scheduler2).isNotSameAs(scheduler1);
 			assertThat(scheduler1.getSchedulerName()).isEqualTo("quartz1");
 			assertThat(scheduler2.getSchedulerName()).isEqualTo("quartz2");
 		}
@@ -317,7 +317,7 @@ public class QuartzSupportTests {
 		try {
 			Scheduler scheduler1 = (Scheduler) ctx.getBean("scheduler1");
 			Scheduler scheduler2 = (Scheduler) ctx.getBean("scheduler2");
-			assertThat((Object) scheduler2).isNotSameAs(scheduler1);
+			assertThat(scheduler2).isNotSameAs(scheduler1);
 			assertThat(scheduler1.getSchedulerName()).isEqualTo("quartz1");
 			assertThat(scheduler2.getSchedulerName()).isEqualTo("quartz2");
 		}
@@ -335,10 +335,10 @@ public class QuartzSupportTests {
 			QuartzTestBean exportService = (QuartzTestBean) ctx.getBean("exportService");
 			QuartzTestBean importService = (QuartzTestBean) ctx.getBean("importService");
 
-			assertThat((long) exportService.getImportCount()).as("doImport called exportService").isEqualTo((long) 0);
-			assertThat((long) exportService.getExportCount()).as("doExport not called on exportService").isEqualTo((long) 2);
-			assertThat((long) importService.getImportCount()).as("doImport not called on importService").isEqualTo((long) 2);
-			assertThat((long) importService.getExportCount()).as("doExport called on importService").isEqualTo((long) 0);
+			assertThat(exportService.getImportCount()).as("doImport called exportService").isEqualTo((long) 0);
+			assertThat(exportService.getExportCount()).as("doExport not called on exportService").isEqualTo((long) 2);
+			assertThat(importService.getImportCount()).as("doImport not called on importService").isEqualTo((long) 2);
+			assertThat(importService.getExportCount()).as("doExport called on importService").isEqualTo((long) 0);
 		}
 		finally {
 			ctx.close();
@@ -354,10 +354,10 @@ public class QuartzSupportTests {
 			QuartzTestBean exportService = (QuartzTestBean) ctx.getBean("exportService");
 			QuartzTestBean importService = (QuartzTestBean) ctx.getBean("importService");
 
-			assertThat((long) exportService.getImportCount()).as("doImport called exportService").isEqualTo((long) 0);
-			assertThat((long) exportService.getExportCount()).as("doExport not called on exportService").isEqualTo((long) 2);
-			assertThat((long) importService.getImportCount()).as("doImport not called on importService").isEqualTo((long) 2);
-			assertThat((long) importService.getExportCount()).as("doExport called on importService").isEqualTo((long) 0);
+			assertThat(exportService.getImportCount()).as("doImport called exportService").isEqualTo((long) 0);
+			assertThat(exportService.getExportCount()).as("doExport not called on exportService").isEqualTo((long) 2);
+			assertThat(importService.getImportCount()).as("doImport not called on importService").isEqualTo((long) 2);
+			assertThat(importService.getExportCount()).as("doExport called on importService").isEqualTo((long) 0);
 		}
 		finally {
 			ctx.close();

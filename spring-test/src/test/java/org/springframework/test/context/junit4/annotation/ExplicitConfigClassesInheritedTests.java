@@ -47,7 +47,7 @@ public class ExplicitConfigClassesInheritedTests extends ExplicitConfigClassesBa
 
 	@Test
 	public void verifyPetSetFromExtendedContextConfig() {
-		assertThat((Object) this.pet).as("The pet should have been autowired.").isNotNull();
+		assertThat(this.pet).as("The pet should have been autowired.").isNotNull();
 		assertThat(this.pet.getName()).isEqualTo("Fido");
 	}
 

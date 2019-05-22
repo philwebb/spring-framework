@@ -88,7 +88,7 @@ public class SessionLocaleResolverTests {
 		SessionLocaleResolver resolver = new SessionLocaleResolver();
 		resolver.setLocale(request, response, null);
 		Locale locale = (Locale) request.getSession().getAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME);
-		assertThat((Object) locale).isNull();
+		assertThat(locale).isNull();
 
 		HttpSession session = request.getSession();
 		request = new MockHttpServletRequest();

@@ -52,10 +52,10 @@ public class ConcurrentWebSocketSessionDecoratorTests {
 		TextMessage textMessage = new TextMessage("payload");
 		decorator.sendMessage(textMessage);
 
-		assertThat((long) session.getSentMessages().size()).isEqualTo((long) 1);
+		assertThat(session.getSentMessages().size()).isEqualTo((long) 1);
 		assertThat(session.getSentMessages().get(0)).isEqualTo(textMessage);
 
-		assertThat((long) decorator.getBufferSize()).isEqualTo((long) 0);
+		assertThat(decorator.getBufferSize()).isEqualTo((long) 0);
 		assertThat(decorator.getTimeSinceSendStarted()).isEqualTo((long) 0);
 		assertThat(session.isOpen()).isTrue();
 	}
@@ -80,7 +80,7 @@ public class ConcurrentWebSocketSessionDecoratorTests {
 		}
 
 		assertThat(decorator.getTimeSinceSendStarted() > 0).isTrue();
-		assertThat((long) decorator.getBufferSize()).isEqualTo((long) (5 * payload.getPayloadLength()));
+		assertThat(decorator.getBufferSize()).isEqualTo((long) (5 * payload.getPayloadLength()));
 		assertThat(session.isOpen()).isTrue();
 	}
 
@@ -126,7 +126,7 @@ public class ConcurrentWebSocketSessionDecoratorTests {
 		TextMessage message = new TextMessage(sb.toString());
 		decorator.sendMessage(message);
 
-		assertThat((long) decorator.getBufferSize()).isEqualTo((long) 1023);
+		assertThat(decorator.getBufferSize()).isEqualTo((long) 1023);
 		assertThat(session.isOpen()).isTrue();
 
 		assertThatExceptionOfType(SessionLimitExceededException.class).isThrownBy(() ->
@@ -157,7 +157,7 @@ public class ConcurrentWebSocketSessionDecoratorTests {
 			decorator.sendMessage(message);
 		}
 
-		assertThat((long) decorator.getBufferSize()).isEqualTo((long) 1023);
+		assertThat(decorator.getBufferSize()).isEqualTo((long) 1023);
 		assertThat(session.isOpen()).isTrue();
 
 	}

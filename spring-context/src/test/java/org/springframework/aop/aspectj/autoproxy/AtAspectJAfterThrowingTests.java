@@ -51,8 +51,8 @@ public class AtAspectJAfterThrowingTests {
 			//
 		}
 
-		assertThat((long) aspect.handled).isEqualTo((long) 1);
-		assertThat((Object) aspect.lastException).isNotNull();
+		assertThat(aspect.handled).isEqualTo((long) 1);
+		assertThat(aspect.lastException).isNotNull();
 	}
 }
 

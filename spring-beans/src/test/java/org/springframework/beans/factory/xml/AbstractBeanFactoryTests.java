@@ -248,7 +248,7 @@ public abstract class AbstractBeanFactoryTests {
 	@Test
 	public void factoryIsInitialized() throws Exception {
 		TestBean tb = (TestBean) getBeanFactory().getBean("singletonFactory");
-		assertThat((Object) tb).isNotNull();
+		assertThat(tb).isNotNull();
 		DummyFactory factory = (DummyFactory) getBeanFactory().getBean("&singletonFactory");
 		assertThat(factory.wasInitialized()).as("Factory was initialized because it implemented InitializingBean").isTrue();
 	}

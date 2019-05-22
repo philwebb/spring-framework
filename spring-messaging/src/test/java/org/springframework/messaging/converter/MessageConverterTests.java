@@ -114,8 +114,8 @@ public class MessageConverterTests {
 		MessageHeaders headers = new MessageHeaders(map);
 		Message<?> message = this.converter.toMessage("ABC", headers);
 
-		assertThat((Object) message.getHeaders().getId()).isNotNull();
-		assertThat((Object) message.getHeaders().getTimestamp()).isNotNull();
+		assertThat(message.getHeaders().getId()).isNotNull();
+		assertThat(message.getHeaders().getTimestamp()).isNotNull();
 		assertThat(message.getHeaders().get(MessageHeaders.CONTENT_TYPE)).isEqualTo(MimeTypeUtils.TEXT_PLAIN);
 		assertThat(message.getHeaders().get("foo")).isEqualTo("bar");
 	}
@@ -130,9 +130,9 @@ public class MessageConverterTests {
 		MessageHeaders headers = accessor.getMessageHeaders();
 		Message<?> message = this.converter.toMessage("ABC", headers);
 
-		assertThat((Object) message.getHeaders()).isSameAs(headers);
-		assertThat((Object) message.getHeaders().getId()).isNull();
-		assertThat((Object) message.getHeaders().getTimestamp()).isNull();
+		assertThat(message.getHeaders()).isSameAs(headers);
+		assertThat(message.getHeaders().getId()).isNull();
+		assertThat(message.getHeaders().getTimestamp()).isNull();
 		assertThat(message.getHeaders().get(MessageHeaders.CONTENT_TYPE)).isEqualTo(MimeTypeUtils.TEXT_PLAIN);
 	}
 

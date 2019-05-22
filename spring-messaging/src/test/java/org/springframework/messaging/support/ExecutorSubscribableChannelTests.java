@@ -83,7 +83,7 @@ public class ExecutorSubscribableChannelTests {
 		this.channel.subscribe(this.handler);
 		this.channel.send(this.message);
 		verify(this.handler).handleMessage(this.message);
-		assertThat((long) interceptor.getCounter().get()).isEqualTo((long) 1);
+		assertThat(interceptor.getCounter().get()).isEqualTo((long) 1);
 		assertThat(interceptor.wasAfterHandledInvoked()).isTrue();
 	}
 
@@ -99,7 +99,7 @@ public class ExecutorSubscribableChannelTests {
 		verify(this.handler, never()).handleMessage(this.message);
 		this.runnableCaptor.getValue().run();
 		verify(this.handler).handleMessage(this.message);
-		assertThat((long) interceptor.getCounter().get()).isEqualTo((long) 1);
+		assertThat(interceptor.getCounter().get()).isEqualTo((long) 1);
 		assertThat(interceptor.wasAfterHandledInvoked()).isTrue();
 	}
 
@@ -153,7 +153,7 @@ public class ExecutorSubscribableChannelTests {
 		this.channel.subscribe(this.handler);
 		this.channel.send(this.message);
 		verify(this.handler).handleMessage(expected);
-		assertThat((long) interceptor.getCounter().get()).isEqualTo((long) 1);
+		assertThat(interceptor.getCounter().get()).isEqualTo((long) 1);
 		assertThat(interceptor.wasAfterHandledInvoked()).isTrue();
 	}
 
@@ -166,8 +166,8 @@ public class ExecutorSubscribableChannelTests {
 		this.channel.subscribe(this.handler);
 		this.channel.send(this.message);
 		verifyNoMoreInteractions(this.handler);
-		assertThat((long) interceptor1.getCounter().get()).isEqualTo((long) 1);
-		assertThat((long) interceptor2.getCounter().get()).isEqualTo((long) 1);
+		assertThat(interceptor1.getCounter().get()).isEqualTo((long) 1);
+		assertThat(interceptor2.getCounter().get()).isEqualTo((long) 1);
 		assertThat(interceptor1.wasAfterHandledInvoked()).isTrue();
 	}
 
@@ -182,10 +182,10 @@ public class ExecutorSubscribableChannelTests {
 			this.channel.send(this.message);
 		}
 		catch (MessageDeliveryException actual) {
-			assertThat((Object) actual.getCause()).isSameAs(expected);
+			assertThat(actual.getCause()).isSameAs(expected);
 		}
 		verify(this.handler).handleMessage(this.message);
-		assertThat((long) interceptor.getCounter().get()).isEqualTo((long) 1);
+		assertThat(interceptor.getCounter().get()).isEqualTo((long) 1);
 		assertThat(interceptor.wasAfterHandledInvoked()).isTrue();
 	}
 
@@ -206,7 +206,7 @@ public class ExecutorSubscribableChannelTests {
 
 		@Override
 		public Message<?> beforeHandle(Message<?> message, MessageChannel channel, MessageHandler handler) {
-			assertThat((Object) message).isNotNull();
+			assertThat(message).isNotNull();
 			counter.incrementAndGet();
 			return message;
 		}

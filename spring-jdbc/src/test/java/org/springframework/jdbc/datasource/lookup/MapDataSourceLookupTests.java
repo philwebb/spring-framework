@@ -52,8 +52,8 @@ public class MapDataSourceLookupTests {
 		MapDataSourceLookup lookup = new MapDataSourceLookup();
 		lookup.setDataSources(dataSources);
 		DataSource dataSource = lookup.getDataSource(DATA_SOURCE_NAME);
-		assertThat((Object) dataSource).as("A DataSourceLookup implementation must *never* return null from getDataSource(): this one obviously (and incorrectly) is").isNotNull();
-		assertThat((Object) dataSource).isSameAs(expectedDataSource);
+		assertThat(dataSource).as("A DataSourceLookup implementation must *never* return null from getDataSource(): this one obviously (and incorrectly) is").isNotNull();
+		assertThat(dataSource).isSameAs(expectedDataSource);
 	}
 
 	@Test
@@ -65,8 +65,8 @@ public class MapDataSourceLookupTests {
 		lookup.setDataSources(dataSources);
 		lookup.setDataSources(null); // must be idempotent (i.e. the following lookup must still work);
 		DataSource dataSource = lookup.getDataSource(DATA_SOURCE_NAME);
-		assertThat((Object) dataSource).as("A DataSourceLookup implementation must *never* return null from getDataSource(): this one obviously (and incorrectly) is").isNotNull();
-		assertThat((Object) dataSource).isSameAs(expectedDataSource);
+		assertThat(dataSource).as("A DataSourceLookup implementation must *never* return null from getDataSource(): this one obviously (and incorrectly) is").isNotNull();
+		assertThat(dataSource).isSameAs(expectedDataSource);
 	}
 
 	@Test
@@ -79,8 +79,8 @@ public class MapDataSourceLookupTests {
 		lookup.setDataSources(dataSources);
 		lookup.addDataSource(DATA_SOURCE_NAME, expectedDataSource); // must override existing entry
 		DataSource dataSource = lookup.getDataSource(DATA_SOURCE_NAME);
-		assertThat((Object) dataSource).as("A DataSourceLookup implementation must *never* return null from getDataSource(): this one obviously (and incorrectly) is").isNotNull();
-		assertThat((Object) dataSource).isSameAs(expectedDataSource);
+		assertThat(dataSource).as("A DataSourceLookup implementation must *never* return null from getDataSource(): this one obviously (and incorrectly) is").isNotNull();
+		assertThat(dataSource).isSameAs(expectedDataSource);
 	}
 
 	@Test

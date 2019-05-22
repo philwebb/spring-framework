@@ -317,7 +317,7 @@ public class XStreamMarshallerTests {
 		boolean condition = o instanceof Flight;
 		assertThat(condition).as("Unmarshalled object is not Flights").isTrue();
 		Flight unflight = (Flight) o;
-		assertThat((Object) unflight).as("Flight is null").isNotNull();
+		assertThat(unflight).as("Flight is null").isNotNull();
 		assertThat(unflight.getFlightNumber()).as("Number is invalid").isEqualTo(42L);
 	}
 
@@ -359,11 +359,11 @@ public class XStreamMarshallerTests {
 	private static void assertXpathNotExists(String xPathExpression, String inXMLString){
 		Source source = Input.fromString(inXMLString).build();
 		Iterable<Node> nodes = new JAXPXPathEngine().selectNodes(xPathExpression, source);
-		assertThat((long) count(nodes)).as("Should be zero matches for Xpath " + xPathExpression).isEqualTo((long) 0);
+		assertThat(count(nodes)).as("Should be zero matches for Xpath " + xPathExpression).isEqualTo((long) 0);
 	}
 
 	private static int count(Iterable<Node> nodes) {
-		assertThat((Object) nodes).isNotNull();
+		assertThat(nodes).isNotNull();
 		AtomicInteger count = new AtomicInteger();
 		nodes.forEach(n -> count.incrementAndGet());
 		return count.get();

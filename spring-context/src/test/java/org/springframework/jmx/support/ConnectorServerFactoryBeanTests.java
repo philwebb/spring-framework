@@ -87,7 +87,7 @@ public class ConnectorServerFactoryBeanTests extends AbstractMBeanServerTests {
 		try {
 			// Try to get the connector bean.
 			ObjectInstance instance = getServer().getObjectInstance(ObjectName.getInstance(OBJECT_NAME));
-			assertThat((Object) instance).as("ObjectInstance should not be null").isNotNull();
+			assertThat(instance).as("ObjectInstance should not be null").isNotNull();
 		}
 		finally {
 			bean.destroy();
@@ -113,11 +113,11 @@ public class ConnectorServerFactoryBeanTests extends AbstractMBeanServerTests {
 		JMXServiceURL serviceURL = new JMXServiceURL(ConnectorServerFactoryBean.DEFAULT_SERVICE_URL);
 		JMXConnector connector = JMXConnectorFactory.connect(serviceURL);
 
-		assertThat((Object) connector).as("Client Connector should not be null").isNotNull();
+		assertThat(connector).as("Client Connector should not be null").isNotNull();
 
 		// Get the MBean server connection.
 		MBeanServerConnection connection = connector.getMBeanServerConnection();
-		assertThat((Object) connection).as("MBeanServerConnection should not be null").isNotNull();
+		assertThat(connection).as("MBeanServerConnection should not be null").isNotNull();
 
 		// Test for MBean server equality.
 		assertThat(connection.getMBeanCount()).as("Registered MBean count should be the same").isEqualTo(hostedServer.getMBeanCount());

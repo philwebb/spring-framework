@@ -58,7 +58,7 @@ public class XStreamUnmarshallerTests {
 		boolean condition = o instanceof Flight;
 		assertThat(condition).as("Unmarshalled object is not Flights").isTrue();
 		Flight flight = (Flight) o;
-		assertThat((Object) flight).as("Flight is null").isNotNull();
+		assertThat(flight).as("Flight is null").isNotNull();
 		assertThat(flight.getFlightNumber()).as("Number is invalid").isEqualTo(42L);
 	}
 

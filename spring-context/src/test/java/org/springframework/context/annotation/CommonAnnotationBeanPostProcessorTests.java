@@ -158,8 +158,8 @@ public class CommonAnnotationBeanPostProcessorTests {
 		assertThat(bean.initCalled).isTrue();
 		assertThat(bean.init2Called).isTrue();
 		assertThat(bean.init3Called).isTrue();
-		assertThat((Object) bean.getTestBean()).isSameAs(tb);
-		assertThat((Object) bean.getTestBean2()).isSameAs(tb2);
+		assertThat(bean.getTestBean()).isSameAs(tb);
+		assertThat(bean.getTestBean2()).isSameAs(tb2);
 		bf.destroySingletons();
 		assertThat(bean.destroyCalled).isTrue();
 		assertThat(bean.destroy2Called).isTrue();
@@ -189,13 +189,13 @@ public class CommonAnnotationBeanPostProcessorTests {
 
 		TestBean tb = bean.getTestBean();
 		TestBean tb2 = bean.getTestBean2();
-		assertThat((Object) tb).isNotNull();
-		assertThat((Object) tb2).isNotNull();
+		assertThat(tb).isNotNull();
+		assertThat(tb2).isNotNull();
 
 		ResourceInjectionBean anotherBean = (ResourceInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean).isNotSameAs(anotherBean);
-		assertThat((Object) tb).isNotSameAs(anotherBean.getTestBean());
-		assertThat((Object) tb2).isNotSameAs(anotherBean.getTestBean2());
+		assertThat(bean).isNotSameAs(anotherBean);
+		assertThat(tb).isNotSameAs(anotherBean.getTestBean());
+		assertThat(tb2).isNotSameAs(anotherBean.getTestBean2());
 
 		bf.destroyBean("annotatedBean", bean);
 		assertThat(bean.destroyCalled).isTrue();
@@ -232,14 +232,14 @@ public class CommonAnnotationBeanPostProcessorTests {
 
 		ExtendedResourceInjectionBean bean = (ExtendedResourceInjectionBean) bf.getBean("annotatedBean");
 		INestedTestBean tb = bean.getTestBean6();
-		assertThat((Object) tb).isNotNull();
+		assertThat(tb).isNotNull();
 
 		ExtendedResourceInjectionBean anotherBean = (ExtendedResourceInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean).isNotSameAs(anotherBean);
-		assertThat((Object) tb).isNotSameAs(anotherBean.getTestBean6());
+		assertThat(bean).isNotSameAs(anotherBean);
+		assertThat(tb).isNotSameAs(anotherBean.getTestBean6());
 
 		String[] depBeans = bf.getDependenciesForBean("annotatedBean");
-		assertThat((long) depBeans.length).isEqualTo((long) 1);
+		assertThat(depBeans.length).isEqualTo((long) 1);
 		assertThat(depBeans[0]).isEqualTo("testBean4");
 	}
 
@@ -256,11 +256,11 @@ public class CommonAnnotationBeanPostProcessorTests {
 		bf.registerSingleton("testBean7", tb7);
 
 		DefaultMethodResourceInjectionBean bean = (DefaultMethodResourceInjectionBean) bf.getBean("annotatedBean");
-		assertThat((Object) bean.getTestBean2()).isSameAs(tb2);
-		assertThat((Object) bean.counter).isSameAs(2);
+		assertThat(bean.getTestBean2()).isSameAs(tb2);
+		assertThat(bean.counter).isSameAs(2);
 
 		bf.destroySingletons();
-		assertThat((Object) bean.counter).isSameAs(3);
+		assertThat(bean.counter).isSameAs(3);
 	}
 
 	@Test
@@ -281,8 +281,8 @@ public class CommonAnnotationBeanPostProcessorTests {
 		ResourceInjectionBean bean = (ResourceInjectionBean) bf.getBean("annotatedBean");
 		assertThat(bean.initCalled).isTrue();
 		assertThat(bean.init2Called).isTrue();
-		assertThat((Object) bean.getTestBean()).isSameAs(tb);
-		assertThat((Object) bean.getTestBean2()).isSameAs(tb2);
+		assertThat(bean.getTestBean()).isSameAs(tb);
+		assertThat(bean.getTestBean2()).isSameAs(tb2);
 		bf.destroySingletons();
 		assertThat(bean.destroyCalled).isTrue();
 		assertThat(bean.destroy2Called).isTrue();
@@ -306,8 +306,8 @@ public class CommonAnnotationBeanPostProcessorTests {
 		ResourceInjectionBean bean = (ResourceInjectionBean) bf.getBean("annotatedBean");
 		assertThat(bean.initCalled).isTrue();
 		assertThat(bean.init2Called).isTrue();
-		assertThat((Object) bean.getTestBean()).isSameAs(tb);
-		assertThat((Object) bean.getTestBean2()).isSameAs(tb2);
+		assertThat(bean.getTestBean()).isSameAs(tb);
+		assertThat(bean.getTestBean2()).isSameAs(tb2);
 		bf.destroySingletons();
 		assertThat(bean.destroyCalled).isTrue();
 		assertThat(bean.destroy2Called).isTrue();
@@ -346,19 +346,19 @@ public class CommonAnnotationBeanPostProcessorTests {
 		ExtendedResourceInjectionBean bean = (ExtendedResourceInjectionBean) bf.getBean("annotatedBean");
 		assertThat(bean.initCalled).isTrue();
 		assertThat(bean.init2Called).isTrue();
-		assertThat((Object) bean.getTestBean()).isSameAs(tb);
-		assertThat((Object) bean.getTestBean2()).isSameAs(tb2);
-		assertThat((Object) bean.getTestBean3()).isSameAs(tb4);
-		assertThat((Object) bean.getTestBean4()).isSameAs(tb3);
-		assertThat((Object) bean.testBean5).isSameAs(tb6);
-		assertThat((Object) bean.testBean6).isSameAs(tb6);
-		assertThat((Object) bean.beanFactory).isSameAs(bf);
+		assertThat(bean.getTestBean()).isSameAs(tb);
+		assertThat(bean.getTestBean2()).isSameAs(tb2);
+		assertThat(bean.getTestBean3()).isSameAs(tb4);
+		assertThat(bean.getTestBean4()).isSameAs(tb3);
+		assertThat(bean.testBean5).isSameAs(tb6);
+		assertThat(bean.testBean6).isSameAs(tb6);
+		assertThat(bean.beanFactory).isSameAs(bf);
 
 		NamedResourceInjectionBean bean2 = (NamedResourceInjectionBean) bf.getBean("annotatedBean2");
-		assertThat((Object) bean2.testBean).isSameAs(tb6);
+		assertThat(bean2.testBean).isSameAs(tb6);
 
 		ConvertedResourceInjectionBean bean3 = (ConvertedResourceInjectionBean) bf.getBean("annotatedBean3");
-		assertThat((Object) bean3.value).isSameAs(5);
+		assertThat(bean3.value).isSameAs(5);
 
 		bf.destroySingletons();
 		assertThat(bean.destroyCalled).isTrue();
@@ -398,13 +398,13 @@ public class CommonAnnotationBeanPostProcessorTests {
 		ExtendedResourceInjectionBean bean = (ExtendedResourceInjectionBean) bf.getBean("annotatedBean");
 		assertThat(bean.initCalled).isTrue();
 		assertThat(bean.init2Called).isTrue();
-		assertThat((Object) bean.getTestBean()).isSameAs(tb);
-		assertThat((Object) bean.getTestBean2()).isSameAs(tb5);
-		assertThat((Object) bean.getTestBean3()).isSameAs(tb4);
-		assertThat((Object) bean.getTestBean4()).isSameAs(tb3);
-		assertThat((Object) bean.testBean5).isSameAs(tb6);
-		assertThat((Object) bean.testBean6).isSameAs(tb6);
-		assertThat((Object) bean.beanFactory).isSameAs(bf);
+		assertThat(bean.getTestBean()).isSameAs(tb);
+		assertThat(bean.getTestBean2()).isSameAs(tb5);
+		assertThat(bean.getTestBean3()).isSameAs(tb4);
+		assertThat(bean.getTestBean4()).isSameAs(tb3);
+		assertThat(bean.testBean5).isSameAs(tb6);
+		assertThat(bean.testBean6).isSameAs(tb6);
+		assertThat(bean.beanFactory).isSameAs(bf);
 
 		try {
 			bf.getBean("annotatedBean2");
@@ -445,13 +445,13 @@ public class CommonAnnotationBeanPostProcessorTests {
 		ExtendedEjbInjectionBean bean = (ExtendedEjbInjectionBean) bf.getBean("annotatedBean");
 		assertThat(bean.initCalled).isTrue();
 		assertThat(bean.init2Called).isTrue();
-		assertThat((Object) bean.getTestBean()).isSameAs(tb);
-		assertThat((Object) bean.getTestBean2()).isSameAs(tb2);
-		assertThat((Object) bean.getTestBean3()).isSameAs(tb4);
-		assertThat((Object) bean.getTestBean4()).isSameAs(tb3);
-		assertThat((Object) bean.testBean5).isSameAs(tb6);
-		assertThat((Object) bean.testBean6).isSameAs(tb6);
-		assertThat((Object) bean.beanFactory).isSameAs(bf);
+		assertThat(bean.getTestBean()).isSameAs(tb);
+		assertThat(bean.getTestBean2()).isSameAs(tb2);
+		assertThat(bean.getTestBean3()).isSameAs(tb4);
+		assertThat(bean.getTestBean4()).isSameAs(tb3);
+		assertThat(bean.testBean5).isSameAs(tb6);
+		assertThat(bean.testBean6).isSameAs(tb6);
+		assertThat(bean.beanFactory).isSameAs(bf);
 
 		bf.destroySingletons();
 		assertThat(bean.destroyCalled).isTrue();

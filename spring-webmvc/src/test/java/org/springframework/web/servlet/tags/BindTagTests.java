@@ -452,7 +452,7 @@ public class BindTagTests extends AbstractTagTests {
 		tag.setPageContext(pc);
 		tag.setPath("tb");
 		assertThat(tag.doStartTag() == Tag.EVAL_BODY_INCLUDE).as("Correct doStartTag return value").isTrue();
-		assertThat((Object) tag.getProperty()).isNull();
+		assertThat(tag.getProperty()).isNull();
 
 		// test property set (tb.name)
 		tag.release();
@@ -617,7 +617,7 @@ public class BindTagTests extends AbstractTagTests {
 		pc.getRequest().setAttribute("tb", new TestBean("juergen", 99));
 		tag.doStartTag();
 		BindStatus status = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
-		assertThat((Object) status.getExpression()).isNull();
+		assertThat(status.getExpression()).isNull();
 		assertThat(status.getValue()).isNull();
 	}
 
@@ -675,7 +675,7 @@ public class BindTagTests extends AbstractTagTests {
 		tag.setPageContext(pc);
 		tag.doStartTag();
 		int returnValue = tag.doEndTag();
-		assertThat((long) returnValue).isEqualTo((long) Tag.EVAL_PAGE);
+		assertThat(returnValue).isEqualTo((long) Tag.EVAL_PAGE);
 		assertThat(pc.getAttribute(NestedPathTag.NESTED_PATH_VARIABLE_NAME, PageContext.REQUEST_SCOPE)).isNull();
 	}
 
@@ -707,7 +707,7 @@ public class BindTagTests extends AbstractTagTests {
 		tag.setPageContext(pc);
 		int returnValue = tag.doStartTag();
 
-		assertThat((long) returnValue).isEqualTo((long) Tag.EVAL_BODY_INCLUDE);
+		assertThat(returnValue).isEqualTo((long) Tag.EVAL_BODY_INCLUDE);
 		assertThat(pc.getAttribute(NestedPathTag.NESTED_PATH_VARIABLE_NAME, PageContext.REQUEST_SCOPE)).isEqualTo("foo.");
 	}
 
@@ -778,7 +778,7 @@ public class BindTagTests extends AbstractTagTests {
 		bindTag2.doEndTag();
 
 		BindStatus status3 = (BindStatus) pc.getAttribute(BindTag.STATUS_VARIABLE_NAME, PageContext.REQUEST_SCOPE);
-		assertThat((Object) status3).as("Status matches previous status").isSameAs(status);
+		assertThat(status3).as("Status matches previous status").isSameAs(status);
 		assertThat(status.getPath()).isEqualTo("tb.name");
 		assertThat(status.getDisplayValue()).as("Correct field value").isEqualTo("");
 

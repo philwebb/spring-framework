@@ -80,7 +80,7 @@ public class ResourceHandlerRegistryTests {
 	@Test
 	public void noResourceHandlers() throws Exception {
 		this.registry = new ResourceHandlerRegistry(new GenericWebApplicationContext(), new MockServletContext());
-		assertThat((Object) this.registry.getHandlerMapping()).isNull();
+		assertThat(this.registry.getHandlerMapping()).isNull();
 	}
 
 	@Test
@@ -97,10 +97,10 @@ public class ResourceHandlerRegistryTests {
 
 	@Test
 	public void cachePeriod() {
-		assertThat((long) getHandler("/resources/**").getCacheSeconds()).isEqualTo((long) -1);
+		assertThat(getHandler("/resources/**").getCacheSeconds()).isEqualTo((long) -1);
 
 		this.registration.setCachePeriod(0);
-		assertThat((long) getHandler("/resources/**").getCacheSeconds()).isEqualTo((long) 0);
+		assertThat(getHandler("/resources/**").getCacheSeconds()).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -114,10 +114,10 @@ public class ResourceHandlerRegistryTests {
 
 	@Test
 	public void order() {
-		assertThat((long) registry.getHandlerMapping().getOrder()).isEqualTo((long) (Integer.MAX_VALUE - 1));
+		assertThat(registry.getHandlerMapping().getOrder()).isEqualTo((long) (Integer.MAX_VALUE - 1));
 
 		registry.setOrder(0);
-		assertThat((long) registry.getHandlerMapping().getOrder()).isEqualTo((long) 0);
+		assertThat(registry.getHandlerMapping().getOrder()).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -229,12 +229,12 @@ public class ResourceHandlerRegistryTests {
 		ResourceHttpRequestHandler handler = getHandler("/resources/**");
 		UrlResource resource = (UrlResource) handler.getLocations().get(1);
 		assertThat(resource.getURL().toString()).isEqualTo("file:/tmp");
-		assertThat((Object) handler.getUrlPathHelper()).isNotNull();
+		assertThat(handler.getUrlPathHelper()).isNotNull();
 
 		List<ResourceResolver> resolvers = handler.getResourceResolvers();
 		PathResourceResolver resolver = (PathResourceResolver) resolvers.get(resolvers.size()-1);
 		Map<Resource, Charset> locationCharsets = resolver.getLocationCharsets();
-		assertThat((long) locationCharsets.size()).isEqualTo((long) 1);
+		assertThat(locationCharsets.size()).isEqualTo((long) 1);
 		assertThat(locationCharsets.values().iterator().next()).isEqualTo(StandardCharsets.ISO_8859_1);
 	}
 

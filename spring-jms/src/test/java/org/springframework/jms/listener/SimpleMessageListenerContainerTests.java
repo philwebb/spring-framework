@@ -37,7 +37,7 @@ import org.springframework.util.ErrorHandler;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static temp.XAssert.fail;
+import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -186,7 +186,7 @@ public class SimpleMessageListenerContainerTests {
 			public void onMessage(Message message, @Nullable Session sess) {
 				try {
 					// Check correct Session passed into SessionAwareMessageListener.
-					assertThat((Object) session).isSameAs(sess);
+					assertThat(session).isSameAs(sess);
 				}
 				catch (Throwable ex) {
 					failure.add("MessageListener execution failed: " + ex);

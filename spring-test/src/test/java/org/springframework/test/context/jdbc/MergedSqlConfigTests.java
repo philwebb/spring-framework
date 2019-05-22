@@ -40,7 +40,7 @@ import static org.springframework.test.context.jdbc.SqlConfig.TransactionMode.IS
 public class MergedSqlConfigTests {
 
 	private void assertDefaults(MergedSqlConfig cfg) {
-		assertThat((Object) cfg).isNotNull();
+		assertThat(cfg).isNotNull();
 		assertThat(cfg.getDataSource()).as("dataSource").isEqualTo("");
 		assertThat(cfg.getTransactionManager()).as("transactionManager").isEqualTo("");
 		assertThat(cfg.getTransactionMode()).as("transactionMode").isEqualTo(INFERRED);
@@ -73,7 +73,7 @@ public class MergedSqlConfigTests {
 		Method method = getClass().getMethod("localConfigMethodWithCustomValues");
 		SqlConfig localSqlConfig = method.getAnnotation(Sql.class).config();
 		MergedSqlConfig cfg = new MergedSqlConfig(localSqlConfig, getClass());
-		assertThat((Object) cfg).isNotNull();
+		assertThat(cfg).isNotNull();
 		assertThat(cfg.getDataSource()).as("dataSource").isEqualTo("ds");
 		assertThat(cfg.getTransactionManager()).as("transactionManager").isEqualTo("txMgr");
 		assertThat(cfg.getTransactionMode()).as("transactionMode").isEqualTo(ISOLATED);
@@ -90,7 +90,7 @@ public class MergedSqlConfigTests {
 		Method method = getClass().getMethod("localConfigMethodWithContinueOnError");
 		SqlConfig localSqlConfig = method.getAnnotation(Sql.class).config();
 		MergedSqlConfig cfg = new MergedSqlConfig(localSqlConfig, getClass());
-		assertThat((Object) cfg).isNotNull();
+		assertThat(cfg).isNotNull();
 		assertThat(cfg.getErrorMode()).as("errorMode").isEqualTo(CONTINUE_ON_ERROR);
 	}
 
@@ -99,7 +99,7 @@ public class MergedSqlConfigTests {
 		Method method = getClass().getMethod("localConfigMethodWithIgnoreFailedDrops");
 		SqlConfig localSqlConfig = method.getAnnotation(Sql.class).config();
 		MergedSqlConfig cfg = new MergedSqlConfig(localSqlConfig, getClass());
-		assertThat((Object) cfg).isNotNull();
+		assertThat(cfg).isNotNull();
 		assertThat(cfg.getErrorMode()).as("errorMode").isEqualTo(IGNORE_FAILED_DROPS);
 	}
 
@@ -108,7 +108,7 @@ public class MergedSqlConfigTests {
 		Method method = GlobalConfigClass.class.getMethod("globalConfigMethod");
 		SqlConfig localSqlConfig = method.getAnnotation(Sql.class).config();
 		MergedSqlConfig cfg = new MergedSqlConfig(localSqlConfig, GlobalConfigClass.class);
-		assertThat((Object) cfg).isNotNull();
+		assertThat(cfg).isNotNull();
 		assertThat(cfg.getDataSource()).as("dataSource").isEqualTo("");
 		assertThat(cfg.getTransactionManager()).as("transactionManager").isEqualTo("");
 		assertThat(cfg.getTransactionMode()).as("transactionMode").isEqualTo(INFERRED);
@@ -126,7 +126,7 @@ public class MergedSqlConfigTests {
 		SqlConfig localSqlConfig = method.getAnnotation(Sql.class).config();
 		MergedSqlConfig cfg = new MergedSqlConfig(localSqlConfig, GlobalConfigClass.class);
 
-		assertThat((Object) cfg).isNotNull();
+		assertThat(cfg).isNotNull();
 		assertThat(cfg.getDataSource()).as("dataSource").isEqualTo("");
 		assertThat(cfg.getTransactionManager()).as("transactionManager").isEqualTo("");
 		assertThat(cfg.getTransactionMode()).as("transactionMode").isEqualTo(INFERRED);

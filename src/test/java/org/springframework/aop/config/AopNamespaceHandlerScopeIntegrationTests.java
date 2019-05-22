@@ -121,7 +121,7 @@ public class AopNamespaceHandlerScopeIntegrationTests {
 		assertThat(condition1).as("Should not be target class proxy").isFalse();
 
 		ITestBean scopedAlias = (ITestBean) this.context.getBean("sessionScopedAlias");
-		assertThat((Object) scopedAlias).isSameAs(scoped);
+		assertThat(scopedAlias).isSameAs(scoped);
 
 		ITestBean testBean = (ITestBean) this.context.getBean("testBean");
 		assertThat(AopUtils.isAopProxy(testBean)).as("Should be AOP proxy").isTrue();

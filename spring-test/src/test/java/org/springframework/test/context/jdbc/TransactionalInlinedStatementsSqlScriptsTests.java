@@ -80,7 +80,7 @@ public class TransactionalInlinedStatementsSqlScriptsTests {
 	}
 
 	protected void assertNumUsers(int expected) {
-		assertThat((long) countRowsInTable("user")).as("Number of rows in the 'user' table.").isEqualTo((long) expected);
+		assertThat(countRowsInTable("user")).as("Number of rows in the 'user' table.").isEqualTo((long) expected);
 	}
 
 }

@@ -185,7 +185,7 @@ public class ResolvableTypeTests {
 		assertThat(type2.getSource()).isSameAs(field2);
 
 		assertThat(type2).isEqualTo(type);
-		assertThat((long) type2.hashCode()).isEqualTo((long) type.hashCode());
+		assertThat(type2.hashCode()).isEqualTo((long) type.hashCode());
 	}
 
 	@Test

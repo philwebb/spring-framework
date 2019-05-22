@@ -64,7 +64,7 @@ public class GenericStoredProcedureTests {
 		in.put("custid", 3);
 		Map<String, Object> out = adder.execute(in);
 		Integer id = (Integer) out.get("newid");
-		assertThat((long) id.intValue()).isEqualTo((long) 4);
+		assertThat(id.intValue()).isEqualTo((long) 4);
 
 		verify(callableStatement).setObject(1, 1106, Types.INTEGER);
 		verify(callableStatement).setObject(2, 3, Types.INTEGER);

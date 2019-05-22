@@ -104,7 +104,7 @@ public class HttpEntityMethodProcessorTests {
 		HttpEntity<SimpleBean> result = (HttpEntity<SimpleBean>) processor.resolveArgument(
 				paramSimpleBean, mavContainer, webRequest, binderFactory);
 
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 		assertThat(result.getBody().getName()).isEqualTo("Jad");
 	}
 
@@ -120,7 +120,7 @@ public class HttpEntityMethodProcessorTests {
 		HttpEntity<?> result = (HttpEntity<?>) processor.resolveArgument(this.paramSimpleBean,
 				this.mavContainer, this.webRequest, this.binderFactory);
 
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 		assertThat(result.getBody()).isNull();
 	}
 
@@ -138,7 +138,7 @@ public class HttpEntityMethodProcessorTests {
 		HttpEntity<List<SimpleBean>> result = (HttpEntity<List<SimpleBean>>) processor.resolveArgument(
 				paramList, mavContainer, webRequest, binderFactory);
 
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 		assertThat(result.getBody().get(0).getName()).isEqualTo("Jad");
 		assertThat(result.getBody().get(1).getName()).isEqualTo("Robert");
 	}
@@ -161,7 +161,7 @@ public class HttpEntityMethodProcessorTests {
 		HttpEntity<SimpleBean> result = (HttpEntity<SimpleBean>)
 				processor.resolveArgument(methodParam, mavContainer, webRequest, binderFactory);
 
-		assertThat((Object) result).isNotNull();
+		assertThat(result).isNotNull();
 		assertThat(result.getBody().getName()).isEqualTo("Jad");
 	}
 

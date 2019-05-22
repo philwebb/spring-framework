@@ -48,14 +48,14 @@ public class OrderUtilsTests {
 
 	@Test
 	public void getDefaultOrder() {
-		assertThat((long) OrderUtils.getOrder(NoOrder.class, 33)).isEqualTo((long) 33);
-		assertThat((long) OrderUtils.getOrder(NoOrder.class, 33)).isEqualTo((long) 33);
+		assertThat(OrderUtils.getOrder(NoOrder.class, 33)).isEqualTo((long) 33);
+		assertThat(OrderUtils.getOrder(NoOrder.class, 33)).isEqualTo((long) 33);
 	}
 
 	@Test
 	public void getPriorityValueNoAnnotation() {
-		assertThat((Object) OrderUtils.getPriority(SimpleOrder.class)).isNull();
-		assertThat((Object) OrderUtils.getPriority(SimpleOrder.class)).isNull();
+		assertThat(OrderUtils.getPriority(SimpleOrder.class)).isNull();
+		assertThat(OrderUtils.getPriority(SimpleOrder.class)).isNull();
 	}
 
 	@Test

@@ -88,7 +88,7 @@ public class ModelAndViewResolverMethodReturnValueHandlerTests {
 		handler.handleReturnValue(null, returnType, mavContainer, request);
 
 		assertThat(mavContainer.getView()).isNull();
-		assertThat((Object) mavContainer.getViewName()).isNull();
+		assertThat(mavContainer.getViewName()).isNull();
 		assertThat(mavContainer.getModel().isEmpty()).isTrue();
 	}
 

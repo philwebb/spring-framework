@@ -51,7 +51,7 @@ public class ServerRequestWrapperTests {
 
 	@Test
 	public void request() {
-		assertThat((Object) wrapper.request()).isSameAs(mockRequest);
+		assertThat(wrapper.request()).isSameAs(mockRequest);
 	}
 
 	@Test
@@ -59,7 +59,7 @@ public class ServerRequestWrapperTests {
 		HttpMethod method = HttpMethod.POST;
 		given(mockRequest.method()).willReturn(method);
 
-		assertThat((Object) wrapper.method()).isSameAs(method);
+		assertThat(wrapper.method()).isSameAs(method);
 	}
 
 	@Test
@@ -67,7 +67,7 @@ public class ServerRequestWrapperTests {
 		URI uri = URI.create("https://example.com");
 		given(mockRequest.uri()).willReturn(uri);
 
-		assertThat((Object) wrapper.uri()).isSameAs(uri);
+		assertThat(wrapper.uri()).isSameAs(uri);
 	}
 
 	@Test
@@ -75,7 +75,7 @@ public class ServerRequestWrapperTests {
 		String path = "/foo/bar";
 		given(mockRequest.path()).willReturn(path);
 
-		assertThat((Object) wrapper.path()).isSameAs(path);
+		assertThat(wrapper.path()).isSameAs(path);
 	}
 
 	@Test
@@ -83,7 +83,7 @@ public class ServerRequestWrapperTests {
 		ServerRequest.Headers headers = mock(ServerRequest.Headers.class);
 		given(mockRequest.headers()).willReturn(headers);
 
-		assertThat((Object) wrapper.headers()).isSameAs(headers);
+		assertThat(wrapper.headers()).isSameAs(headers);
 	}
 
 	@Test
@@ -110,7 +110,7 @@ public class ServerRequestWrapperTests {
 		value.add("foo", "bar");
 		given(mockRequest.queryParams()).willReturn(value);
 
-		assertThat((Object) wrapper.queryParams()).isSameAs(value);
+		assertThat(wrapper.queryParams()).isSameAs(value);
 	}
 
 	@Test
@@ -127,7 +127,7 @@ public class ServerRequestWrapperTests {
 		Map<String, String> pathVariables = Collections.singletonMap("foo", "bar");
 		given(mockRequest.pathVariables()).willReturn(pathVariables);
 
-		assertThat((Object) wrapper.pathVariables()).isSameAs(pathVariables);
+		assertThat(wrapper.pathVariables()).isSameAs(pathVariables);
 	}
 
 	@Test
@@ -136,7 +136,7 @@ public class ServerRequestWrapperTests {
 		MultiValueMap<String, HttpCookie> cookies = mock(MultiValueMap.class);
 		given(mockRequest.cookies()).willReturn(cookies);
 
-		assertThat((Object) wrapper.cookies()).isSameAs(cookies);
+		assertThat(wrapper.cookies()).isSameAs(cookies);
 	}
 
 	@Test

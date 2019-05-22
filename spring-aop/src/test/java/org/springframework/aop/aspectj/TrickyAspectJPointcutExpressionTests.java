@@ -111,10 +111,10 @@ public class TrickyAspectJPointcutExpressionTests {
 		factory.addAdvisor(advisor);
 		TestService bean = (TestService) factory.getProxy();
 
-		assertThat((long) logAdvice.getCountThrows()).isEqualTo((long) 0);
+		assertThat(logAdvice.getCountThrows()).isEqualTo((long) 0);
 		assertThatExceptionOfType(TestException.class).isThrownBy(
 				bean::sayHello).withMessageContaining(message);
-		assertThat((long) logAdvice.getCountThrows()).isEqualTo((long) 1);
+		assertThat(logAdvice.getCountThrows()).isEqualTo((long) 1);
 	}
 
 

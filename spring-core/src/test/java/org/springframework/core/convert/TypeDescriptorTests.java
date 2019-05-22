@@ -65,7 +65,7 @@ public class TypeDescriptorTests {
 		assertThat(desc.getName()).isEqualTo("int");
 		assertThat(desc.toString()).isEqualTo("int");
 		assertThat(desc.isPrimitive()).isTrue();
-		assertThat((long) desc.getAnnotations().length).isEqualTo((long) 0);
+		assertThat(desc.getAnnotations().length).isEqualTo((long) 0);
 		assertThat(desc.isCollection()).isFalse();
 		assertThat(desc.isMap()).isFalse();
 	}
@@ -79,7 +79,7 @@ public class TypeDescriptorTests {
 		assertThat(desc.toString()).isEqualTo("java.lang.String");
 		boolean condition = !desc.isPrimitive();
 		assertThat(condition).isTrue();
-		assertThat((long) desc.getAnnotations().length).isEqualTo((long) 0);
+		assertThat(desc.getAnnotations().length).isEqualTo((long) 0);
 		assertThat(desc.isCollection()).isFalse();
 		assertThat(desc.isArray()).isFalse();
 		assertThat(desc.isMap()).isFalse();
@@ -95,7 +95,7 @@ public class TypeDescriptorTests {
 		assertThat(desc.toString()).isEqualTo("java.util.List<java.util.List<java.util.Map<java.lang.Integer, java.lang.Enum<?>>>>");
 		boolean condition = !desc.isPrimitive();
 		assertThat(condition).isTrue();
-		assertThat((long) desc.getAnnotations().length).isEqualTo((long) 0);
+		assertThat(desc.getAnnotations().length).isEqualTo((long) 0);
 		assertThat(desc.isCollection()).isTrue();
 		assertThat(desc.isArray()).isFalse();
 		assertThat(desc.getElementTypeDescriptor().getType()).isEqualTo(List.class);
@@ -117,10 +117,10 @@ public class TypeDescriptorTests {
 		assertThat(desc.toString()).isEqualTo("java.util.List<?>");
 		boolean condition = !desc.isPrimitive();
 		assertThat(condition).isTrue();
-		assertThat((long) desc.getAnnotations().length).isEqualTo((long) 0);
+		assertThat(desc.getAnnotations().length).isEqualTo((long) 0);
 		assertThat(desc.isCollection()).isTrue();
 		assertThat(desc.isArray()).isFalse();
-		assertThat((Object) desc.getElementTypeDescriptor()).isNull();
+		assertThat(desc.getElementTypeDescriptor()).isNull();
 		assertThat(desc.isMap()).isFalse();
 	}
 
@@ -134,7 +134,7 @@ public class TypeDescriptorTests {
 		assertThat(desc.toString()).isEqualTo("java.lang.Integer[]");
 		boolean condition = !desc.isPrimitive();
 		assertThat(condition).isTrue();
-		assertThat((long) desc.getAnnotations().length).isEqualTo((long) 0);
+		assertThat(desc.getAnnotations().length).isEqualTo((long) 0);
 		assertThat(desc.isCollection()).isFalse();
 		assertThat(desc.isArray()).isTrue();
 		assertThat(desc.getElementTypeDescriptor().getType()).isEqualTo(Integer.class);
@@ -152,7 +152,7 @@ public class TypeDescriptorTests {
 		assertThat(desc.toString()).isEqualTo("java.util.Map<java.lang.Integer, java.util.List<java.lang.String>>");
 		boolean condition = !desc.isPrimitive();
 		assertThat(condition).isTrue();
-		assertThat((long) desc.getAnnotations().length).isEqualTo((long) 0);
+		assertThat(desc.getAnnotations().length).isEqualTo((long) 0);
 		assertThat(desc.isCollection()).isFalse();
 		assertThat(desc.isArray()).isFalse();
 		assertThat(desc.isMap()).isTrue();
@@ -167,17 +167,17 @@ public class TypeDescriptorTests {
 	public void parameterAnnotated() throws Exception {
 		TypeDescriptor t1 = new TypeDescriptor(new MethodParameter(getClass().getMethod("testAnnotatedMethod", String.class), 0));
 		assertThat(t1.getType()).isEqualTo(String.class);
-		assertThat((long) t1.getAnnotations().length).isEqualTo((long) 1);
+		assertThat(t1.getAnnotations().length).isEqualTo((long) 1);
 		assertThat(t1.getAnnotation(ParameterAnnotation.class)).isNotNull();
 		assertThat(t1.hasAnnotation(ParameterAnnotation.class)).isTrue();
-		assertThat((long) t1.getAnnotation(ParameterAnnotation.class).value()).isEqualTo((long) 123);
+		assertThat(t1.getAnnotation(ParameterAnnotation.class).value()).isEqualTo((long) 123);
 	}
 
 	@Test
 	public void getAnnotationsReturnsClonedArray() throws Exception {
 		TypeDescriptor t = new TypeDescriptor(new MethodParameter(getClass().getMethod("testAnnotatedMethod", String.class), 0));
 		t.getAnnotations()[0] = null;
-		assertThat((Object) t.getAnnotations()[0]).isNotNull();
+		assertThat(t.getAnnotations()[0]).isNotNull();
 	}
 
 	@Test
@@ -298,7 +298,7 @@ public class TypeDescriptorTests {
 		assertThat(typeDescriptor.isArray()).isFalse();
 		assertThat(typeDescriptor.getType()).isEqualTo(List.class);
 		assertThat(typeDescriptor.getElementTypeDescriptor().getType()).isEqualTo(List.class);
-		assertThat((Object) typeDescriptor.getElementTypeDescriptor().getElementTypeDescriptor()).isNull();
+		assertThat(typeDescriptor.getElementTypeDescriptor().getElementTypeDescriptor()).isNull();
 		assertThat(typeDescriptor.toString()).isEqualTo("java.util.List<java.util.List<?>>");
 	}
 
@@ -340,7 +340,7 @@ public class TypeDescriptorTests {
 	@Test
 	public void fieldAnnotated() throws Exception {
 		TypeDescriptor typeDescriptor = new TypeDescriptor(getClass().getField("fieldAnnotated"));
-		assertThat((long) typeDescriptor.getAnnotations().length).isEqualTo((long) 1);
+		assertThat(typeDescriptor.getAnnotations().length).isEqualTo((long) 1);
 		assertThat(typeDescriptor.getAnnotation(FieldAnnotation.class)).isNotNull();
 	}
 
@@ -381,7 +381,7 @@ public class TypeDescriptorTests {
 		assertThat(typeDescriptor.isCollection()).isTrue();
 		assertThat(typeDescriptor.isArray()).isFalse();
 		assertThat(typeDescriptor.isMap()).isFalse();
-		assertThat((Object) typeDescriptor.getElementTypeDescriptor()).isNull();
+		assertThat(typeDescriptor.getElementTypeDescriptor()).isNull();
 	}
 
 	@Test
@@ -393,7 +393,7 @@ public class TypeDescriptorTests {
 	@Test
 	public void forObjectNullTypeDescriptor() {
 		TypeDescriptor desc = TypeDescriptor.forObject(null);
-		assertThat((Object) desc).isNull();
+		assertThat(desc).isNull();
 	}
 
 	@Test
@@ -423,13 +423,13 @@ public class TypeDescriptorTests {
 	@Test
 	public void nestedTooManyLevels() throws Exception {
 		TypeDescriptor t1 = TypeDescriptor.nested(new MethodParameter(getClass().getMethod("test4", List.class), 0), 3);
-		assertThat((Object) t1).isNull();
+		assertThat(t1).isNull();
 	}
 
 	@Test
 	public void nestedMethodParameterTypeNotNestable() throws Exception {
 		TypeDescriptor t1 = TypeDescriptor.nested(new MethodParameter(getClass().getMethod("test5", String.class), 0), 2);
-		assertThat((Object) t1).isNull();
+		assertThat(t1).isNull();
 	}
 
 	@Test
@@ -444,7 +444,7 @@ public class TypeDescriptorTests {
 		assertThat(t1.getType()).isEqualTo(List.class);
 		assertThat(t1.toString()).isEqualTo("java.util.List<?>");
 		TypeDescriptor t2 = TypeDescriptor.nested(new MethodParameter(getClass().getMethod("test6", List.class), 0), 2);
-		assertThat((Object) t2).isNull();
+		assertThat(t2).isNull();
 	}
 
 	@Test
@@ -469,7 +469,7 @@ public class TypeDescriptorTests {
 		assertThat(desc.toString()).isEqualTo("java.util.List<java.lang.Integer>");
 		boolean condition = !desc.isPrimitive();
 		assertThat(condition).isTrue();
-		assertThat((long) desc.getAnnotations().length).isEqualTo((long) 0);
+		assertThat(desc.getAnnotations().length).isEqualTo((long) 0);
 		assertThat(desc.isCollection()).isTrue();
 		assertThat(desc.isArray()).isFalse();
 		assertThat(desc.getElementTypeDescriptor().getType()).isEqualTo(Integer.class);
@@ -486,7 +486,7 @@ public class TypeDescriptorTests {
 		assertThat(desc.toString()).isEqualTo("java.util.List<java.util.List<java.lang.Integer>>");
 		boolean condition = !desc.isPrimitive();
 		assertThat(condition).isTrue();
-		assertThat((long) desc.getAnnotations().length).isEqualTo((long) 0);
+		assertThat(desc.getAnnotations().length).isEqualTo((long) 0);
 		assertThat(desc.isCollection()).isTrue();
 		assertThat(desc.isArray()).isFalse();
 		assertThat(desc.getElementTypeDescriptor().getType()).isEqualTo(List.class);
@@ -503,7 +503,7 @@ public class TypeDescriptorTests {
 		assertThat(desc.toString()).isEqualTo("java.util.Map<java.lang.String, java.lang.Integer>");
 		boolean condition = !desc.isPrimitive();
 		assertThat(condition).isTrue();
-		assertThat((long) desc.getAnnotations().length).isEqualTo((long) 0);
+		assertThat(desc.getAnnotations().length).isEqualTo((long) 0);
 		assertThat(desc.isCollection()).isFalse();
 		assertThat(desc.isArray()).isFalse();
 		assertThat(desc.isMap()).isTrue();
@@ -521,7 +521,7 @@ public class TypeDescriptorTests {
 		assertThat(desc.toString()).isEqualTo("java.util.Map<java.lang.String, java.util.Map<java.lang.String, java.lang.Integer>>");
 		boolean condition = !desc.isPrimitive();
 		assertThat(condition).isTrue();
-		assertThat((long) desc.getAnnotations().length).isEqualTo((long) 0);
+		assertThat(desc.getAnnotations().length).isEqualTo((long) 0);
 		assertThat(desc.isCollection()).isFalse();
 		assertThat(desc.isArray()).isFalse();
 		assertThat(desc.isMap()).isTrue();
@@ -729,7 +729,7 @@ public class TypeDescriptorTests {
 
 	@Test
 	public void createNullArray() throws Exception {
-		assertThat((Object) TypeDescriptor.array(null)).isNull();
+		assertThat(TypeDescriptor.array(null)).isNull();
 	}
 
 	@Test

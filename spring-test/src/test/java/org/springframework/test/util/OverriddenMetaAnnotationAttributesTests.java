@@ -45,11 +45,11 @@ public class OverriddenMetaAnnotationAttributesTests {
 		Class<MetaValueConfigTestCase> declaringClass = MetaValueConfigTestCase.class;
 		AnnotationDescriptor<ContextConfiguration> descriptor = findAnnotationDescriptor(declaringClass,
 			ContextConfiguration.class);
-		assertThat((Object) descriptor).isNotNull();
+		assertThat(descriptor).isNotNull();
 		assertThat(descriptor.getRootDeclaringClass()).isEqualTo(declaringClass);
 		assertThat(descriptor.getComposedAnnotationType()).isEqualTo(MetaValueConfig.class);
 		assertThat(descriptor.getAnnotationType()).isEqualTo(ContextConfiguration.class);
-		assertThat((Object) descriptor.getComposedAnnotation()).isNotNull();
+		assertThat(descriptor.getComposedAnnotation()).isNotNull();
 		assertThat(descriptor.getComposedAnnotationType()).isEqualTo(MetaValueConfig.class);
 
 		// direct access to annotation value:
@@ -61,11 +61,11 @@ public class OverriddenMetaAnnotationAttributesTests {
 		Class<?> declaringClass = OverriddenMetaValueConfigTestCase.class;
 		AnnotationDescriptor<ContextConfiguration> descriptor = findAnnotationDescriptor(declaringClass,
 			ContextConfiguration.class);
-		assertThat((Object) descriptor).isNotNull();
+		assertThat(descriptor).isNotNull();
 		assertThat(descriptor.getRootDeclaringClass()).isEqualTo(declaringClass);
 		assertThat(descriptor.getComposedAnnotationType()).isEqualTo(MetaValueConfig.class);
 		assertThat(descriptor.getAnnotationType()).isEqualTo(ContextConfiguration.class);
-		assertThat((Object) descriptor.getComposedAnnotation()).isNotNull();
+		assertThat(descriptor.getComposedAnnotation()).isNotNull();
 		assertThat(descriptor.getComposedAnnotationType()).isEqualTo(MetaValueConfig.class);
 
 		// direct access to annotation value:
@@ -85,11 +85,11 @@ public class OverriddenMetaAnnotationAttributesTests {
 		Class<MetaLocationsConfigTestCase> declaringClass = MetaLocationsConfigTestCase.class;
 		AnnotationDescriptor<ContextConfiguration> descriptor = findAnnotationDescriptor(declaringClass,
 			ContextConfiguration.class);
-		assertThat((Object) descriptor).isNotNull();
+		assertThat(descriptor).isNotNull();
 		assertThat(descriptor.getRootDeclaringClass()).isEqualTo(declaringClass);
 		assertThat(descriptor.getComposedAnnotationType()).isEqualTo(MetaLocationsConfig.class);
 		assertThat(descriptor.getAnnotationType()).isEqualTo(ContextConfiguration.class);
-		assertThat((Object) descriptor.getComposedAnnotation()).isNotNull();
+		assertThat(descriptor.getComposedAnnotation()).isNotNull();
 		assertThat(descriptor.getComposedAnnotationType()).isEqualTo(MetaLocationsConfig.class);
 
 		// direct access to annotation attributes:
@@ -102,11 +102,11 @@ public class OverriddenMetaAnnotationAttributesTests {
 		Class<?> declaringClass = OverriddenMetaLocationsConfigTestCase.class;
 		AnnotationDescriptor<ContextConfiguration> descriptor = findAnnotationDescriptor(declaringClass,
 			ContextConfiguration.class);
-		assertThat((Object) descriptor).isNotNull();
+		assertThat(descriptor).isNotNull();
 		assertThat(descriptor.getRootDeclaringClass()).isEqualTo(declaringClass);
 		assertThat(descriptor.getComposedAnnotationType()).isEqualTo(MetaLocationsConfig.class);
 		assertThat(descriptor.getAnnotationType()).isEqualTo(ContextConfiguration.class);
-		assertThat((Object) descriptor.getComposedAnnotation()).isNotNull();
+		assertThat(descriptor.getComposedAnnotation()).isNotNull();
 		assertThat(descriptor.getComposedAnnotationType()).isEqualTo(MetaLocationsConfig.class);
 
 		// direct access to annotation attributes:

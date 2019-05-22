@@ -48,7 +48,7 @@ public class ComposedAnnotationSqlScriptsTests extends AbstractTransactionalJUni
 		executionPhase = BEFORE_TEST_METHOD
 	)
 	public void composedSqlAnnotation() {
-		assertThat((long) countRowsInTable("user")).as("Number of rows in the 'user' table.").isEqualTo((long) 1);
+		assertThat(countRowsInTable("user")).as("Number of rows in the 'user' table.").isEqualTo((long) 1);
 	}
 
 

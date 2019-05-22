@@ -94,7 +94,7 @@ public class CommonsMultipartResolverTests {
 		}
 		resolver.setServletContext(wac.getServletContext());
 		assertThat(resolver.getFileUpload().getSizeMax()).isEqualTo((long) 1000);
-		assertThat((long) resolver.getFileItemFactory().getSizeThreshold()).isEqualTo((long) 100);
+		assertThat(resolver.getFileItemFactory().getSizeThreshold()).isEqualTo((long) 100);
 		assertThat(resolver.getFileUpload().getHeaderEncoding()).isEqualTo("enc");
 		assertThat(resolver.getFileItemFactory().getRepository().getAbsolutePath().endsWith("mytemp")).isTrue();
 
@@ -121,17 +121,17 @@ public class CommonsMultipartResolverTests {
 		while (parameterEnum.hasMoreElements()) {
 			parameterNames.add(parameterEnum.nextElement());
 		}
-		assertThat((long) parameterNames.size()).isEqualTo((long) 3);
+		assertThat(parameterNames.size()).isEqualTo((long) 3);
 		assertThat(parameterNames.contains("field3")).isTrue();
 		assertThat(parameterNames.contains("field4")).isTrue();
 		assertThat(parameterNames.contains("getField")).isTrue();
 		assertThat(request.getParameter("field3")).isEqualTo("value3");
 		List<String> parameterValues = Arrays.asList(request.getParameterValues("field3"));
-		assertThat((long) parameterValues.size()).isEqualTo((long) 1);
+		assertThat(parameterValues.size()).isEqualTo((long) 1);
 		assertThat(parameterValues.contains("value3")).isTrue();
 		assertThat(request.getParameter("field4")).isEqualTo("value4");
 		parameterValues = Arrays.asList(request.getParameterValues("field4"));
-		assertThat((long) parameterValues.size()).isEqualTo((long) 2);
+		assertThat(parameterValues.size()).isEqualTo((long) 2);
 		assertThat(parameterValues.contains("value4")).isTrue();
 		assertThat(parameterValues.contains("value5")).isTrue();
 		assertThat(request.getParameter("field4")).isEqualTo("value4");
@@ -144,8 +144,8 @@ public class CommonsMultipartResolverTests {
 			parameterMapKeys.add(key);
 			parameterMapValues.add(request.getParameterMap().get(key));
 		}
-		assertThat((long) parameterMapKeys.size()).isEqualTo((long) 3);
-		assertThat((long) parameterMapValues.size()).isEqualTo((long) 3);
+		assertThat(parameterMapKeys.size()).isEqualTo((long) 3);
+		assertThat(parameterMapValues.size()).isEqualTo((long) 3);
 		int field3Index = parameterMapKeys.indexOf("field3");
 		int field4Index = parameterMapKeys.indexOf("field4");
 		int getFieldIndex = parameterMapKeys.indexOf("getField");
@@ -153,14 +153,14 @@ public class CommonsMultipartResolverTests {
 		assertThat(field4Index != -1).isTrue();
 		assertThat(getFieldIndex != -1).isTrue();
 		parameterValues = Arrays.asList((String[]) parameterMapValues.get(field3Index));
-		assertThat((long) parameterValues.size()).isEqualTo((long) 1);
+		assertThat(parameterValues.size()).isEqualTo((long) 1);
 		assertThat(parameterValues.contains("value3")).isTrue();
 		parameterValues = Arrays.asList((String[]) parameterMapValues.get(field4Index));
-		assertThat((long) parameterValues.size()).isEqualTo((long) 2);
+		assertThat(parameterValues.size()).isEqualTo((long) 2);
 		assertThat(parameterValues.contains("value4")).isTrue();
 		assertThat(parameterValues.contains("value5")).isTrue();
 		parameterValues = Arrays.asList((String[]) parameterMapValues.get(getFieldIndex));
-		assertThat((long) parameterValues.size()).isEqualTo((long) 1);
+		assertThat(parameterValues.size()).isEqualTo((long) 1);
 		assertThat(parameterValues.contains("getValue")).isTrue();
 	}
 
@@ -170,7 +170,7 @@ public class CommonsMultipartResolverTests {
 		while (fileIter.hasNext()) {
 			fileNames.add(fileIter.next());
 		}
-		assertThat((long) fileNames.size()).isEqualTo((long) 3);
+		assertThat(fileNames.size()).isEqualTo((long) 3);
 		assertThat(fileNames.contains("field1")).isTrue();
 		assertThat(fileNames.contains("field2")).isTrue();
 		assertThat(fileNames.contains("field2x")).isTrue();
@@ -179,7 +179,7 @@ public class CommonsMultipartResolverTests {
 		CommonsMultipartFile file2x = (CommonsMultipartFile) request.getFile("field2x");
 
 		Map<String, MultipartFile> fileMap = request.getFileMap();
-		assertThat((long) fileMap.size()).isEqualTo((long) 3);
+		assertThat(fileMap.size()).isEqualTo((long) 3);
 		assertThat(fileMap.containsKey("field1")).isTrue();
 		assertThat(fileMap.containsKey("field2")).isTrue();
 		assertThat(fileMap.containsKey("field2x")).isTrue();
@@ -188,12 +188,12 @@ public class CommonsMultipartResolverTests {
 		assertThat(fileMap.get("field2x")).isEqualTo(file2x);
 
 		MultiValueMap<String, MultipartFile> multiFileMap = request.getMultiFileMap();
-		assertThat((long) multiFileMap.size()).isEqualTo((long) 3);
+		assertThat(multiFileMap.size()).isEqualTo((long) 3);
 		assertThat(multiFileMap.containsKey("field1")).isTrue();
 		assertThat(multiFileMap.containsKey("field2")).isTrue();
 		assertThat(multiFileMap.containsKey("field2x")).isTrue();
 		List<MultipartFile> field1Files = multiFileMap.get("field1");
-		assertThat((long) field1Files.size()).isEqualTo((long) 2);
+		assertThat(field1Files.size()).isEqualTo((long) 2);
 		assertThat(field1Files.contains(file1)).isTrue();
 		assertThat(multiFileMap.getFirst("field1")).isEqualTo(file1);
 		assertThat(multiFileMap.getFirst("field2")).isEqualTo(file2);

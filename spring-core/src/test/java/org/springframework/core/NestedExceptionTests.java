@@ -35,7 +35,7 @@ public class NestedExceptionTests {
 		String mesg = "mesg of mine";
 		// Making a class abstract doesn't _really_ prevent instantiation :-)
 		NestedRuntimeException nex = new NestedRuntimeException(mesg) {};
-		assertThat((Object) nex.getCause()).isNull();
+		assertThat(nex.getCause()).isNull();
 		assertThat(mesg).isEqualTo(nex.getMessage());
 
 		// Check printStackTrace
@@ -73,7 +73,7 @@ public class NestedExceptionTests {
 		String mesg = "mesg of mine";
 		// Making a class abstract doesn't _really_ prevent instantiation :-)
 		NestedCheckedException nex = new NestedCheckedException(mesg) {};
-		assertThat((Object) nex.getCause()).isNull();
+		assertThat(nex.getCause()).isNull();
 		assertThat(mesg).isEqualTo(nex.getMessage());
 
 		// Check printStackTrace

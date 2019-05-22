@@ -235,7 +235,7 @@ public class AspectJAdviceParameterNameDiscovererTests {
 	protected void assertParameterNames(
 			Method method, String pointcut, String returning, String throwing, String[] parameterNames) {
 
-		assertThat((long) parameterNames.length).as("bad test specification, must have same number of parameter names as method arguments").isEqualTo((long) method.getParameterCount());
+		assertThat(parameterNames.length).as("bad test specification, must have same number of parameter names as method arguments").isEqualTo((long) method.getParameterCount());
 
 		AspectJAdviceParameterNameDiscoverer discoverer = new AspectJAdviceParameterNameDiscoverer(pointcut);
 		discoverer.setRaiseExceptions(true);
@@ -246,12 +246,12 @@ public class AspectJAdviceParameterNameDiscovererTests {
 		String formattedExpectedNames = format(parameterNames);
 		String formattedActualNames = format(discoveredNames);
 
-		assertThat((long) discoveredNames.length).as("Expecting " + parameterNames.length + " parameter names in return set '" +
+		assertThat(discoveredNames.length).as("Expecting " + parameterNames.length + " parameter names in return set '" +
 				formattedExpectedNames + "', but found " + discoveredNames.length +
 				" '" + formattedActualNames + "'").isEqualTo((long) parameterNames.length);
 
 		for (int i = 0; i < discoveredNames.length; i++) {
-			assertThat((Object) discoveredNames[i]).as("Parameter names must never be null").isNotNull();
+			assertThat(discoveredNames[i]).as("Parameter names must never be null").isNotNull();
 			assertThat(discoveredNames[i]).as("Expecting parameter " + i + " to be named '" +
 						parameterNames[i] + "' but was '" + discoveredNames[i] + "'").isEqualTo(parameterNames[i]);
 		}

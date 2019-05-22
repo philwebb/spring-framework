@@ -78,13 +78,13 @@ public class MethodParameterTests {
 
 	@Test
 	public void testHashCode() throws NoSuchMethodException {
-		assertThat((long) stringParameter.hashCode()).isEqualTo((long) stringParameter.hashCode());
-		assertThat((long) longParameter.hashCode()).isEqualTo((long) longParameter.hashCode());
-		assertThat((long) intReturnType.hashCode()).isEqualTo((long) intReturnType.hashCode());
+		assertThat(stringParameter.hashCode()).isEqualTo((long) stringParameter.hashCode());
+		assertThat(longParameter.hashCode()).isEqualTo((long) longParameter.hashCode());
+		assertThat(intReturnType.hashCode()).isEqualTo((long) intReturnType.hashCode());
 
 		Method method = getClass().getMethod("method", String.class, Long.TYPE);
 		MethodParameter methodParameter = new MethodParameter(method, 0);
-		assertThat((long) methodParameter.hashCode()).isEqualTo((long) stringParameter.hashCode());
+		assertThat(methodParameter.hashCode()).isEqualTo((long) stringParameter.hashCode());
 		assertThat(methodParameter.hashCode()).isNotEqualTo((long) longParameter.hashCode());
 	}
 

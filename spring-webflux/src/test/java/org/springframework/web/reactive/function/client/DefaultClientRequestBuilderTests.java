@@ -61,9 +61,9 @@ public class DefaultClientRequestBuilderTests {
 		.build();
 		assertThat(result.url()).isEqualTo(new URI("https://example.com"));
 		assertThat(result.method()).isEqualTo(GET);
-		assertThat((long) result.headers().size()).isEqualTo((long) 1);
+		assertThat(result.headers().size()).isEqualTo((long) 1);
 		assertThat(result.headers().getFirst("foo")).isEqualTo("baar");
-		assertThat((long) result.cookies().size()).isEqualTo((long) 1);
+		assertThat(result.cookies().size()).isEqualTo((long) 1);
 		assertThat(result.cookies().getFirst("baz")).isEqualTo("quux");
 	}
 
@@ -134,7 +134,7 @@ public class DefaultClientRequestBuilderTests {
 
 		MockClientHttpRequest request = new MockClientHttpRequest(GET, "/");
 		result.writeTo(request, strategies).block();
-		assertThat((Object) request.getBody()).isNotNull();
+		assertThat(request.getBody()).isNotNull();
 
 		StepVerifier.create(request.getBody())
 				.expectNextCount(1)
@@ -156,7 +156,7 @@ public class DefaultClientRequestBuilderTests {
 
 		MockClientHttpRequest request = new MockClientHttpRequest(GET, "/");
 		result.writeTo(request, strategies).block();
-		assertThat((Object) request.getBody()).isNotNull();
+		assertThat(request.getBody()).isNotNull();
 
 		StepVerifier.create(request.getBody())
 				.expectNextCount(1)
@@ -179,7 +179,7 @@ public class DefaultClientRequestBuilderTests {
 
 		MockClientHttpRequest request = new MockClientHttpRequest(GET, "/");
 		result.writeTo(request, strategies).block();
-		assertThat((Object) request.getBody()).isNotNull();
+		assertThat(request.getBody()).isNotNull();
 
 		StepVerifier.create(request.getBody())
 				.expectNextCount(1)

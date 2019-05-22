@@ -24,7 +24,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.fail;
+import static org.assertj.core.api.Assertions.fail;
 import static org.junit.Assume.assumeTrue;
 
 /**
@@ -93,7 +93,7 @@ public class StandardJUnit4FeaturesTests {
 
 	@Test
 	public void verifyBeforeAnnotation() {
-		assertThat((long) this.beforeCounter).isEqualTo((long) 1);
+		assertThat(this.beforeCounter).isEqualTo((long) 1);
 	}
 
 	@Test

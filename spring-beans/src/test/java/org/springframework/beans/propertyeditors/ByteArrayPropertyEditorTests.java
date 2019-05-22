@@ -42,7 +42,7 @@ public class ByteArrayPropertyEditorTests {
 		assertThat(condition).isTrue();
 		byte[] bytes = (byte[]) value;
 		for (int i = 0; i < text.length(); ++i) {
-			assertThat((long) bytes[i]).as("cyte[] differs at index '" + i + "'").isEqualTo((long) text.charAt(i));
+			assertThat(bytes[i]).as("cyte[] differs at index '" + i + "'").isEqualTo((long) text.charAt(i));
 		}
 		assertThat(byteEditor.getAsText()).isEqualTo(text);
 	}

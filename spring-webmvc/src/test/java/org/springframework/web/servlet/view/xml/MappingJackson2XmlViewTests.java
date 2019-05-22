@@ -97,7 +97,7 @@ public class MappingJackson2XmlViewTests {
 
 		String jsonResult = response.getContentAsString();
 		assertThat(jsonResult.length() > 0).isTrue();
-		assertThat((long) response.getContentLength()).isEqualTo((long) jsonResult.length());
+		assertThat(response.getContentLength()).isEqualTo((long) jsonResult.length());
 
 		validateResult();
 	}
@@ -126,7 +126,7 @@ public class MappingJackson2XmlViewTests {
 
 		view.render(model, request, response);
 
-		assertThat((Object) response.getHeader("Cache-Control")).isNull();
+		assertThat(response.getHeader("Cache-Control")).isNull();
 	}
 
 	@Test
@@ -140,7 +140,7 @@ public class MappingJackson2XmlViewTests {
 		view.render(model, request, response);
 
 		assertThat(response.getContentAsString().length() > 0).isTrue();
-		assertThat((long) response.getContentLength()).isEqualTo((long) response.getContentAsString().length());
+		assertThat(response.getContentLength()).isEqualTo((long) response.getContentAsString().length());
 
 		validateResult();
 	}
@@ -222,7 +222,7 @@ public class MappingJackson2XmlViewTests {
 
 		String content = response.getContentAsString();
 		assertThat(content.length() > 0).isTrue();
-		assertThat((long) response.getContentLength()).isEqualTo((long) content.length());
+		assertThat(response.getContentLength()).isEqualTo((long) content.length());
 		assertThat(content.contains("foo")).isTrue();
 		assertThat(content.contains("boo")).isFalse();
 		assertThat(content.contains(JsonView.class.getName())).isFalse();

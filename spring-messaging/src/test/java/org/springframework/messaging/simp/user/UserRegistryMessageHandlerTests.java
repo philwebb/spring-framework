@@ -88,7 +88,7 @@ public class UserRegistryMessageHandlerTests {
 	@Test
 	public void brokerAvailableEvent() throws Exception {
 		Runnable runnable = getUserRegistryTask();
-		assertThat((Object) runnable).isNotNull();
+		assertThat(runnable).isNotNull();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -125,15 +125,15 @@ public class UserRegistryMessageHandlerTests {
 		verify(this.brokerChannel).send(captor.capture());
 
 		Message<?> message = captor.getValue();
-		assertThat((Object) message).isNotNull();
+		assertThat(message).isNotNull();
 		MessageHeaders headers = message.getHeaders();
 		assertThat(SimpMessageHeaderAccessor.getDestination(headers)).isEqualTo("/topic/simp-user-registry");
 
 		MultiServerUserRegistry remoteRegistry = new MultiServerUserRegistry(mock(SimpUserRegistry.class));
 		remoteRegistry.addRemoteRegistryDto(message, this.converter, 20000);
-		assertThat((long) remoteRegistry.getUserCount()).isEqualTo((long) 2);
-		assertThat((Object) remoteRegistry.getUser("joe")).isNotNull();
-		assertThat((Object) remoteRegistry.getUser("jane")).isNotNull();
+		assertThat(remoteRegistry.getUserCount()).isEqualTo((long) 2);
+		assertThat(remoteRegistry.getUser("joe")).isNotNull();
+		assertThat(remoteRegistry.getUser("jane")).isNotNull();
 	}
 
 	@Test
@@ -155,9 +155,9 @@ public class UserRegistryMessageHandlerTests {
 
 		this.handler.handleMessage(message);
 
-		assertThat((long) remoteRegistry.getUserCount()).isEqualTo((long) 2);
-		assertThat((Object) this.multiServerRegistry.getUser("joe")).isNotNull();
-		assertThat((Object) this.multiServerRegistry.getUser("jane")).isNotNull();
+		assertThat(remoteRegistry.getUserCount()).isEqualTo((long) 2);
+		assertThat(this.multiServerRegistry.getUser("joe")).isNotNull();
+		assertThat(this.multiServerRegistry.getUser("jane")).isNotNull();
 	}
 
 	@Test
@@ -168,11 +168,11 @@ public class UserRegistryMessageHandlerTests {
 		given(this.localRegistry.getUserCount()).willReturn(1);
 		given(this.localRegistry.getUsers()).willReturn(Collections.singleton(simpUser));
 
-		assertThat((long) this.multiServerRegistry.getUserCount()).isEqualTo((long) 1);
+		assertThat(this.multiServerRegistry.getUserCount()).isEqualTo((long) 1);
 
 		Message<?> message = this.converter.toMessage(this.multiServerRegistry.getLocalRegistryDto(), null);
 		this.multiServerRegistry.addRemoteRegistryDto(message, this.converter, 20000);
-		assertThat((long) this.multiServerRegistry.getUserCount()).isEqualTo((long) 1);
+		assertThat(this.multiServerRegistry.getUserCount()).isEqualTo((long) 1);
 	}
 
 

@@ -230,7 +230,7 @@ public class GenericConversionServiceTests {
 		conversionService.addConverterFactory(new StringToNumberConverterFactory());
 		assertThat(conversionService.canConvert(String.class, int.class)).isTrue();
 		Integer three = conversionService.convert("3", int.class);
-		assertThat((long) three.intValue()).isEqualTo((long) 3);
+		assertThat(three.intValue()).isEqualTo((long) 3);
 	}
 
 	@Test
@@ -325,7 +325,7 @@ public class GenericConversionServiceTests {
 	public void testStringToString() {
 		String value = "myValue";
 		String result = conversionService.convert(value, String.class);
-		assertThat((Object) result).isSameAs(value);
+		assertThat(result).isSameAs(value);
 	}
 
 	@Test
@@ -398,7 +398,7 @@ public class GenericConversionServiceTests {
 		TypeDescriptor sourceType = TypeDescriptor.forObject(list);
 		TypeDescriptor targetType = TypeDescriptor.valueOf(String[].class);
 		assertThat(conversionService.canConvert(sourceType, targetType)).isTrue();
-		assertThat((long) ((String[]) conversionService.convert(list, sourceType, targetType)).length).isEqualTo((long) 0);
+		assertThat(((String[]) conversionService.convert(list, sourceType, targetType)).length).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -442,7 +442,7 @@ public class GenericConversionServiceTests {
 		GenericConverter.ConvertiblePair pair = new GenericConverter.ConvertiblePair(Number.class, String.class);
 		GenericConverter.ConvertiblePair pairEqual = new GenericConverter.ConvertiblePair(Number.class, String.class);
 		assertThat(pairEqual).isEqualTo(pair);
-		assertThat((long) pairEqual.hashCode()).isEqualTo((long) pair.hashCode());
+		assertThat(pairEqual.hashCode()).isEqualTo((long) pair.hashCode());
 	}
 
 	@Test
@@ -529,7 +529,7 @@ public class GenericConversionServiceTests {
 		// SPR-9566
 		byte[] byteArray = new byte[] { 1, 2, 3 };
 		byte[] converted = conversionService.convert(byteArray, byte[].class);
-		assertThat((Object) converted).isSameAs(byteArray);
+		assertThat(converted).isSameAs(byteArray);
 	}
 
 	@Test

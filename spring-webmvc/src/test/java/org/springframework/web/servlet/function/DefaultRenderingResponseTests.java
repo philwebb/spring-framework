@@ -70,8 +70,8 @@ public class DefaultRenderingResponseTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mav = result.writeTo(request, response, EMPTY_CONTEXT);
-		assertThat((Object) mav).isNotNull();
-		assertThat((long) response.getStatus()).isEqualTo((long) status.value());
+		assertThat(mav).isNotNull();
+		assertThat(response.getStatus()).isEqualTo((long) status.value());
 	}
 
 	@Test
@@ -85,7 +85,7 @@ public class DefaultRenderingResponseTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mav = result.writeTo(request, response, EMPTY_CONTEXT);
-		assertThat((Object) mav).isNotNull();
+		assertThat(mav).isNotNull();
 
 		assertThat(response.getHeader("foo")).isEqualTo("bar");
 	}
@@ -98,7 +98,7 @@ public class DefaultRenderingResponseTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mav = result.writeTo(request, response, EMPTY_CONTEXT);
-		assertThat((Object) mav).isNotNull();
+		assertThat(mav).isNotNull();
 
 		assertThat(mav.getModel().get("foo")).isEqualTo("bar");
 	}
@@ -111,7 +111,7 @@ public class DefaultRenderingResponseTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mav = result.writeTo(request, response, EMPTY_CONTEXT);
-		assertThat((Object) mav).isNotNull();
+		assertThat(mav).isNotNull();
 		assertThat(mav.getModel().get("string")).isEqualTo("bar");
 	}
 
@@ -123,7 +123,7 @@ public class DefaultRenderingResponseTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mav = result.writeTo(request, response, EMPTY_CONTEXT);
-		assertThat((Object) mav).isNotNull();
+		assertThat(mav).isNotNull();
 		assertThat(mav.getModel().get("foo")).isEqualTo("bar");
 	}
 
@@ -134,7 +134,7 @@ public class DefaultRenderingResponseTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mav = result.writeTo(request, response, EMPTY_CONTEXT);
-		assertThat((Object) mav).isNotNull();
+		assertThat(mav).isNotNull();
 		assertThat(mav.getModel().get("string")).isEqualTo("bar");
 	}
 
@@ -147,8 +147,8 @@ public class DefaultRenderingResponseTests {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelAndView mav = result.writeTo(request, response, EMPTY_CONTEXT);
-		assertThat((Object) mav).isNotNull();
-		assertThat((long) response.getCookies().length).isEqualTo((long) 1);
+		assertThat(mav).isNotNull();
+		assertThat(response.getCookies().length).isEqualTo((long) 1);
 		assertThat(response.getCookies()[0].getName()).isEqualTo("name");
 		assertThat(response.getCookies()[0].getValue()).isEqualTo("value");
 	}
@@ -165,8 +165,8 @@ public class DefaultRenderingResponseTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 
 		ModelAndView mav = result.writeTo(request, response, EMPTY_CONTEXT);
-		assertThat((Object) mav).isNull();
-		assertThat((long) response.getStatus()).isEqualTo((long) HttpStatus.NOT_MODIFIED.value());
+		assertThat(mav).isNull();
+		assertThat(response.getStatus()).isEqualTo((long) HttpStatus.NOT_MODIFIED.value());
 	}
 
 
@@ -184,8 +184,8 @@ public class DefaultRenderingResponseTests {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 
 		ModelAndView mav = result.writeTo(request, response, EMPTY_CONTEXT);
-		assertThat((Object) mav).isNull();
-		assertThat((long) response.getStatus()).isEqualTo((long) HttpStatus.NOT_MODIFIED.value());
+		assertThat(mav).isNull();
+		assertThat(response.getStatus()).isEqualTo((long) HttpStatus.NOT_MODIFIED.value());
 	}
 
 

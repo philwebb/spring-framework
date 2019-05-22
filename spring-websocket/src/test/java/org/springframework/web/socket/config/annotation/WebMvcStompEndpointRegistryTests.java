@@ -63,16 +63,16 @@ public class WebMvcStompEndpointRegistryTests {
 		this.endpointRegistry.addEndpoint("/stomp");
 
 		Map<String, SubProtocolHandler> protocolHandlers = webSocketHandler.getProtocolHandlerMap();
-		assertThat((long) protocolHandlers.size()).isEqualTo((long) 3);
-		assertThat((Object) protocolHandlers.get("v10.stomp")).isNotNull();
-		assertThat((Object) protocolHandlers.get("v11.stomp")).isNotNull();
-		assertThat((Object) protocolHandlers.get("v12.stomp")).isNotNull();
+		assertThat(protocolHandlers.size()).isEqualTo((long) 3);
+		assertThat(protocolHandlers.get("v10.stomp")).isNotNull();
+		assertThat(protocolHandlers.get("v11.stomp")).isNotNull();
+		assertThat(protocolHandlers.get("v12.stomp")).isNotNull();
 	}
 
 	@Test
 	public void handlerMapping() {
 		SimpleUrlHandlerMapping hm = (SimpleUrlHandlerMapping) this.endpointRegistry.getHandlerMapping();
-		assertThat((long) hm.getUrlMap().size()).isEqualTo((long) 0);
+		assertThat(hm.getUrlMap().size()).isEqualTo((long) 0);
 
 		UrlPathHelper pathHelper = new UrlPathHelper();
 		this.endpointRegistry.setUrlPathHelper(pathHelper);
@@ -80,13 +80,13 @@ public class WebMvcStompEndpointRegistryTests {
 		this.endpointRegistry.addEndpoint("/stompOverSockJS").withSockJS();
 
 		//SPR-12403
-		assertThat((long) this.webSocketHandler.getProtocolHandlers().size()).isEqualTo((long) 1);
+		assertThat(this.webSocketHandler.getProtocolHandlers().size()).isEqualTo((long) 1);
 
 		hm = (SimpleUrlHandlerMapping) this.endpointRegistry.getHandlerMapping();
-		assertThat((long) hm.getUrlMap().size()).isEqualTo((long) 2);
+		assertThat(hm.getUrlMap().size()).isEqualTo((long) 2);
 		assertThat(hm.getUrlMap().get("/stompOverWebSocket")).isNotNull();
 		assertThat(hm.getUrlMap().get("/stompOverSockJS/**")).isNotNull();
-		assertThat((Object) hm.getUrlPathHelper()).isSameAs(pathHelper);
+		assertThat(hm.getUrlPathHelper()).isSameAs(pathHelper);
 	}
 
 	@Test
@@ -97,7 +97,7 @@ public class WebMvcStompEndpointRegistryTests {
 
 		Map<String, SubProtocolHandler> protocolHandlers = this.webSocketHandler.getProtocolHandlerMap();
 		StompSubProtocolHandler stompHandler = (StompSubProtocolHandler) protocolHandlers.get("v12.stomp");
-		assertThat((Object) stompHandler.getErrorHandler()).isSameAs(errorHandler);
+		assertThat(stompHandler.getErrorHandler()).isSameAs(errorHandler);
 	}
 
 }

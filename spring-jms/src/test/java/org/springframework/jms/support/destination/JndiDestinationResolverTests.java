@@ -47,8 +47,8 @@ public class JndiDestinationResolverTests {
 
 		JndiDestinationResolver resolver = new OneTimeLookupJndiDestinationResolver();
 		Destination destination = resolver.resolveDestinationName(session, DESTINATION_NAME, true);
-		assertThat((Object) destination).isNotNull();
-		assertThat((Object) destination).isSameAs(DESTINATION);
+		assertThat(destination).isNotNull();
+		assertThat(destination).isSameAs(DESTINATION);
 	}
 
 	@Test
@@ -60,14 +60,14 @@ public class JndiDestinationResolverTests {
 				= new CountingCannedJndiDestinationResolver();
 		resolver.setCache(false);
 		Destination destination = resolver.resolveDestinationName(session, DESTINATION_NAME, true);
-		assertThat((Object) destination).isNotNull();
-		assertThat((Object) destination).isSameAs(DESTINATION);
-		assertThat((long) resolver.getCallCount()).isEqualTo((long) 1);
+		assertThat(destination).isNotNull();
+		assertThat(destination).isSameAs(DESTINATION);
+		assertThat(resolver.getCallCount()).isEqualTo((long) 1);
 
 		destination = resolver.resolveDestinationName(session, DESTINATION_NAME, true);
-		assertThat((Object) destination).isNotNull();
-		assertThat((Object) destination).isSameAs(DESTINATION);
-		assertThat((long) resolver.getCallCount()).isEqualTo((long) 2);
+		assertThat(destination).isNotNull();
+		assertThat(destination).isSameAs(DESTINATION);
+		assertThat(resolver.getCallCount()).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -88,8 +88,8 @@ public class JndiDestinationResolverTests {
 		resolver.setDynamicDestinationResolver(dynamicResolver);
 		Destination destination = resolver.resolveDestinationName(session, DESTINATION_NAME, true);
 
-		assertThat((Object) destination).isNotNull();
-		assertThat((Object) destination).isSameAs(DESTINATION);
+		assertThat(destination).isNotNull();
+		assertThat(destination).isSameAs(DESTINATION);
 	}
 
 	@Test

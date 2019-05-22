@@ -171,7 +171,7 @@ public class TransactionSupportTests {
 			}
 		});
 
-		assertThat((Object) ptm.getDefinition()).isSameAs(template);
+		assertThat(ptm.getDefinition()).isSameAs(template);
 		assertThat(ptm.getStatus().isRollbackOnly()).isFalse();
 	}
 

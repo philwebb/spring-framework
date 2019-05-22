@@ -73,7 +73,7 @@ public class ResourceHandlerRegistryTests {
 	@Test
 	public void noResourceHandlers() throws Exception {
 		this.registry = new ResourceHandlerRegistry(new GenericApplicationContext());
-		assertThat((Object) this.registry.getHandlerMapping()).isNull();
+		assertThat(this.registry.getHandlerMapping()).isNull();
 	}
 
 	@Test
@@ -102,10 +102,10 @@ public class ResourceHandlerRegistryTests {
 
 	@Test
 	public void order() {
-		assertThat((long) this.registry.getHandlerMapping().getOrder()).isEqualTo((long) (Integer.MAX_VALUE - 1));
+		assertThat(this.registry.getHandlerMapping().getOrder()).isEqualTo((long) (Integer.MAX_VALUE - 1));
 
 		this.registry.setOrder(0);
-		assertThat((long) this.registry.getHandlerMapping().getOrder()).isEqualTo((long) 0);
+		assertThat(this.registry.getHandlerMapping().getOrder()).isEqualTo((long) 0);
 	}
 
 	@Test

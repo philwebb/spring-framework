@@ -46,7 +46,7 @@ public class ExplicitConfigClassesBaseTests {
 
 	@Test
 	public void verifyEmployeeSetFromBaseContextConfig() {
-		assertThat((Object) this.employee).as("The employee should have been autowired.").isNotNull();
+		assertThat(this.employee).as("The employee should have been autowired.").isNotNull();
 		assertThat(this.employee.getName()).isEqualTo("John Smith");
 	}
 

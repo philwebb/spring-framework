@@ -47,7 +47,7 @@ public class ServerWebExchangeContextFilterTests {
 		httpHandler.handle(MockServerHttpRequest.get("/path").build(), new MockServerHttpResponse())
 				.block(Duration.ofSeconds(5));
 
-		assertThat((Object) service.getExchange()).isNotNull();
+		assertThat(service.getExchange()).isNotNull();
 	}
 
 

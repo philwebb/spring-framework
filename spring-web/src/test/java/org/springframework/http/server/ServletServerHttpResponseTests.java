@@ -53,7 +53,7 @@ public class ServletServerHttpResponseTests {
 	@Test
 	public void setStatusCode() throws Exception {
 		response.setStatusCode(HttpStatus.NOT_FOUND);
-		assertThat((long) mockResponse.getStatus()).as("Invalid status code").isEqualTo((long) 404);
+		assertThat(mockResponse.getStatus()).as("Invalid status code").isEqualTo((long) 404);
 	}
 
 	@Test

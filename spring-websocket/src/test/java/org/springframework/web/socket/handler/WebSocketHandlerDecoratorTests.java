@@ -34,7 +34,7 @@ public class WebSocketHandlerDecoratorTests {
 		WebSocketHandlerDecorator h2 = new WebSocketHandlerDecorator(h1);
 		WebSocketHandlerDecorator h3 = new WebSocketHandlerDecorator(h2);
 
-		assertThat((Object) h3.getLastHandler()).isSameAs(h1);
+		assertThat(h3.getLastHandler()).isSameAs(h1);
 	}
 
 }

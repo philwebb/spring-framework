@@ -103,11 +103,11 @@ public class DelegatingWebFluxConfigurationTests {
 		verify(webFluxConfigurer).addFormatters(formatterRegistry.capture());
 		verify(webFluxConfigurer).configureArgumentResolvers(any());
 
-		assertThat((Object) initializer).isNotNull();
+		assertThat(initializer).isNotNull();
 		boolean condition = initializer.getValidator() instanceof LocalValidatorFactoryBean;
 		assertThat(condition).isTrue();
-		assertThat((Object) initializer.getConversionService()).isSameAs(formatterRegistry.getValue());
-		assertThat((long) codecsConfigurer.getValue().getReaders().size()).isEqualTo((long) 13);
+		assertThat(initializer.getConversionService()).isSameAs(formatterRegistry.getValue());
+		assertThat(codecsConfigurer.getValue().getReaders().size()).isEqualTo((long) 13);
 	}
 
 	@Test

@@ -53,7 +53,7 @@ public class BeanConfigurerSupportTests {
 		configurer.setBeanFactory(new DefaultListableBeanFactory());
 		configurer.configureBean(beanInstance);
 		verify(resolver).resolveWiringInfo(beanInstance);
-		assertThat((Object) beanInstance.getName()).isNull();
+		assertThat(beanInstance.getName()).isNull();
 	}
 
 	@Test
@@ -61,7 +61,7 @@ public class BeanConfigurerSupportTests {
 		TestBean beanInstance = new TestBean();
 		BeanConfigurerSupport configurer = new StubBeanConfigurerSupport();
 		configurer.configureBean(beanInstance);
-		assertThat((Object) beanInstance.getName()).isNull();
+		assertThat(beanInstance.getName()).isNull();
 	}
 
 	@Test

@@ -167,7 +167,7 @@ public class ResponseBodyEmitterTests {
 		verify(this.handler).onTimeout(captor.capture());
 		verify(this.handler).onCompletion(any());
 
-		assertThat((Object) captor.getValue()).isNotNull();
+		assertThat(captor.getValue()).isNotNull();
 		captor.getValue().run();
 		verify(runnable).run();
 	}
@@ -183,7 +183,7 @@ public class ResponseBodyEmitterTests {
 		Runnable runnable = mock(Runnable.class);
 		this.emitter.onTimeout(runnable);
 
-		assertThat((Object) captor.getValue()).isNotNull();
+		assertThat(captor.getValue()).isNotNull();
 		captor.getValue().run();
 		verify(runnable).run();
 	}
@@ -198,7 +198,7 @@ public class ResponseBodyEmitterTests {
 		verify(this.handler).onTimeout(any());
 		verify(this.handler).onCompletion(captor.capture());
 
-		assertThat((Object) captor.getValue()).isNotNull();
+		assertThat(captor.getValue()).isNotNull();
 		captor.getValue().run();
 		verify(runnable).run();
 	}
@@ -214,7 +214,7 @@ public class ResponseBodyEmitterTests {
 		Runnable runnable = mock(Runnable.class);
 		this.emitter.onCompletion(runnable);
 
-		assertThat((Object) captor.getValue()).isNotNull();
+		assertThat(captor.getValue()).isNotNull();
 		captor.getValue().run();
 		verify(runnable).run();
 	}

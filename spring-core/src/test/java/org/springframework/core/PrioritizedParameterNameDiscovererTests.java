@@ -63,8 +63,8 @@ public class PrioritizedParameterNameDiscovererTests {
 	@Test
 	public void noParametersDiscoverers() {
 		ParameterNameDiscoverer pnd = new PrioritizedParameterNameDiscoverer();
-		assertThat((Object) pnd.getParameterNames(anyMethod)).isNull();
-		assertThat((Object) pnd.getParameterNames((Constructor<?>) null)).isNull();
+		assertThat(pnd.getParameterNames(anyMethod)).isNull();
+		assertThat(pnd.getParameterNames((Constructor<?>) null)).isNull();
 	}
 
 	@Test

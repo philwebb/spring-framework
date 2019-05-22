@@ -98,8 +98,8 @@ public class MessageMethodArgumentResolverTests {
 		@SuppressWarnings("unchecked")
 		Message<Integer> actual = (Message<Integer>) this.resolver.resolveArgument(parameter, message);
 
-		assertThat((Object) actual).isNotNull();
-		assertThat((Object) actual.getHeaders()).isSameAs(message.getHeaders());
+		assertThat(actual).isNotNull();
+		assertThat(actual.getHeaders()).isSameAs(message.getHeaders());
 		assertThat(actual.getPayload()).isEqualTo(new Integer(4));
 	}
 

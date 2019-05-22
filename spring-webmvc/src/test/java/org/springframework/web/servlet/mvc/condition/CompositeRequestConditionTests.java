@@ -67,9 +67,9 @@ public class CompositeRequestConditionTests {
 		CompositeRequestCondition empty = new CompositeRequestCondition();
 		CompositeRequestCondition notEmpty = new CompositeRequestCondition(this.param1);
 
-		assertThat((Object) empty.combine(empty)).isSameAs(empty);
-		assertThat((Object) notEmpty.combine(empty)).isSameAs(notEmpty);
-		assertThat((Object) empty.combine(notEmpty)).isSameAs(notEmpty);
+		assertThat(empty.combine(empty)).isSameAs(empty);
+		assertThat(notEmpty.combine(empty)).isSameAs(notEmpty);
+		assertThat(empty.combine(notEmpty)).isSameAs(notEmpty);
 	}
 
 	@Test
@@ -100,13 +100,13 @@ public class CompositeRequestConditionTests {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/");
 		CompositeRequestCondition cond = new CompositeRequestCondition(this.param1);
 
-		assertThat((Object) cond.getMatchingCondition(request)).isNull();
+		assertThat(cond.getMatchingCondition(request)).isNull();
 	}
 
 	@Test
 	public void matchEmpty() {
 		CompositeRequestCondition empty = new CompositeRequestCondition();
-		assertThat((Object) empty.getMatchingCondition(new MockHttpServletRequest())).isSameAs(empty);
+		assertThat(empty.getMatchingCondition(new MockHttpServletRequest())).isSameAs(empty);
 	}
 
 	@Test
@@ -116,8 +116,8 @@ public class CompositeRequestConditionTests {
 		CompositeRequestCondition cond1 = new CompositeRequestCondition(this.param1);
 		CompositeRequestCondition cond3 = new CompositeRequestCondition(this.param3);
 
-		assertThat((long) cond1.compareTo(cond3, request)).isEqualTo((long) 1);
-		assertThat((long) cond3.compareTo(cond1, request)).isEqualTo((long) -1);
+		assertThat(cond1.compareTo(cond3, request)).isEqualTo((long) 1);
+		assertThat(cond3.compareTo(cond1, request)).isEqualTo((long) -1);
 	}
 
 	@Test
@@ -127,9 +127,9 @@ public class CompositeRequestConditionTests {
 		CompositeRequestCondition empty = new CompositeRequestCondition();
 		CompositeRequestCondition notEmpty = new CompositeRequestCondition(this.param1);
 
-		assertThat((long) empty.compareTo(empty, request)).isEqualTo((long) 0);
-		assertThat((long) notEmpty.compareTo(empty, request)).isEqualTo((long) -1);
-		assertThat((long) empty.compareTo(notEmpty, request)).isEqualTo((long) 1);
+		assertThat(empty.compareTo(empty, request)).isEqualTo((long) 0);
+		assertThat(notEmpty.compareTo(empty, request)).isEqualTo((long) -1);
+		assertThat(empty.compareTo(notEmpty, request)).isEqualTo((long) 1);
 	}
 
 	@Test

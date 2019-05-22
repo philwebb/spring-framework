@@ -92,13 +92,13 @@ public class DefaultControllerSpecTests {
 				.viewResolvers(viewResolverConsumer)
 				.build();
 
-		assertThat((Object) argumentResolverConsumer.getValue()).isNotNull();
-		assertThat((Object) contenTypeResolverConsumer.getValue()).isNotNull();
-		assertThat((Object) corsRegistryConsumer.getValue()).isNotNull();
-		assertThat((Object) formatterConsumer.getValue()).isNotNull();
-		assertThat((Object) codecsConsumer.getValue()).isNotNull();
-		assertThat((Object) pathMatchingConsumer.getValue()).isNotNull();
-		assertThat((Object) viewResolverConsumer.getValue()).isNotNull();
+		assertThat(argumentResolverConsumer.getValue()).isNotNull();
+		assertThat(contenTypeResolverConsumer.getValue()).isNotNull();
+		assertThat(corsRegistryConsumer.getValue()).isNotNull();
+		assertThat(formatterConsumer.getValue()).isNotNull();
+		assertThat(codecsConsumer.getValue()).isNotNull();
+		assertThat(pathMatchingConsumer.getValue()).isNotNull();
+		assertThat(viewResolverConsumer.getValue()).isNotNull();
 
 	}
 

@@ -44,17 +44,17 @@ public abstract class AbstractCacheOperationTests<O extends JCacheOperation<?>> 
 	public void simple() {
 		O operation = createSimpleOperation();
 		assertThat(operation.getCacheName()).as("Wrong cache name").isEqualTo("simpleCache");
-		assertThat((long) operation.getAnnotations().size()).as("Unexpected number of annotation on " + operation.getMethod()).isEqualTo((long) 1);
+		assertThat(operation.getAnnotations().size()).as("Unexpected number of annotation on " + operation.getMethod()).isEqualTo((long) 1);
 		assertThat(operation.getAnnotations().iterator().next()).as("Wrong method annotation").isEqualTo(operation.getCacheAnnotation());
 
-		assertThat((Object) operation.getCacheResolver()).as("cache resolver should be set").isNotNull();
+		assertThat(operation.getCacheResolver()).as("cache resolver should be set").isNotNull();
 	}
 
 	protected void assertCacheInvocationParameter(CacheInvocationParameter actual, Class<?> targetType,
 			Object value, int position) {
 		assertThat(actual.getRawType()).as("wrong parameter type for " + actual).isEqualTo(targetType);
 		assertThat(actual.getValue()).as("wrong parameter value for " + actual).isEqualTo(value);
-		assertThat((long) actual.getParameterPosition()).as("wrong parameter position for " + actual).isEqualTo((long) position);
+		assertThat(actual.getParameterPosition()).as("wrong parameter position for " + actual).isEqualTo((long) position);
 	}
 
 	protected <A extends Annotation> CacheMethodDetails<A> create(Class<A> annotationType,

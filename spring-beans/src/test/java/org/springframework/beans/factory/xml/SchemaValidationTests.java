@@ -59,8 +59,8 @@ public class SchemaValidationTests {
 		reader.loadBeanDefinitions(new ClassPathResource("schemaValidated.xml", getClass()));
 
 		TestBean foo = (TestBean) bf.getBean("fooBean");
-		assertThat((Object) foo.getSpouse()).as("Spouse is null").isNotNull();
-		assertThat((long) foo.getFriends().size()).as("Incorrect number of friends").isEqualTo((long) 2);
+		assertThat(foo.getSpouse()).as("Spouse is null").isNotNull();
+		assertThat(foo.getFriends().size()).as("Incorrect number of friends").isEqualTo((long) 2);
 	}
 
 }

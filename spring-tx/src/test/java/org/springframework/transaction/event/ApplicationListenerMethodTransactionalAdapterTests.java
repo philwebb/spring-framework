@@ -63,7 +63,7 @@ public class ApplicationListenerMethodTransactionalAdapterTests {
 	}
 
 	private void assertPhase(Method method, TransactionPhase expected) {
-		assertThat((Object) method).as("Method must not be null").isNotNull();
+		assertThat(method).as("Method must not be null").isNotNull();
 		TransactionalEventListener annotation =
 				AnnotatedElementUtils.findMergedAnnotation(method, TransactionalEventListener.class);
 		assertThat(annotation.phase()).as("Wrong phase for '" + method + "'").isEqualTo(expected);

@@ -39,8 +39,8 @@ public class DefaultRenderingBuilderTests {
 
 		assertThat(rendering.view()).isEqualTo("abc");
 		assertThat(rendering.modelAttributes()).isEqualTo(Collections.emptyMap());
-		assertThat((Object) rendering.status()).isNull();
-		assertThat((long) rendering.headers().size()).isEqualTo((long) 0);
+		assertThat(rendering.status()).isNull();
+		assertThat(rendering.headers().size()).isEqualTo((long) 0);
 	}
 
 	@Test
@@ -95,7 +95,7 @@ public class DefaultRenderingBuilderTests {
 	public void header() throws Exception {
 		Rendering rendering = Rendering.view("foo").header("foo", "bar").build();
 
-		assertThat((long) rendering.headers().size()).isEqualTo((long) 1);
+		assertThat(rendering.headers().size()).isEqualTo((long) 1);
 		assertThat(rendering.headers().get("foo")).isEqualTo(Collections.singletonList("bar"));
 	}
 

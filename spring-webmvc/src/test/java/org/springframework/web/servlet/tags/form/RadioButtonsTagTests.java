@@ -75,7 +75,7 @@ public class RadioButtonsTagTests extends AbstractFormTagTests {
 		this.tag.setPath("stringArray");
 		this.tag.setItems(new Object[] {"foo", "bar", "baz"});
 		int result = this.tag.doStartTag();
-		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 
@@ -104,7 +104,7 @@ public class RadioButtonsTagTests extends AbstractFormTagTests {
 		assertThat(radioButtonElement3.getName()).isEqualTo("input");
 		assertThat(radioButtonElement3.attribute("type").getValue()).isEqualTo("radio");
 		assertThat(radioButtonElement3.attribute("name").getValue()).isEqualTo("stringArray");
-		assertThat((Object) radioButtonElement3.attribute("checked")).as("not checked").isNull();
+		assertThat(radioButtonElement3.attribute("checked")).as("not checked").isNull();
 		assertThat(radioButtonElement3.attribute("value").getValue()).isEqualTo("baz");
 		assertThat(spanElement3.getStringValue()).isEqualTo("baz");
 	}
@@ -120,7 +120,7 @@ public class RadioButtonsTagTests extends AbstractFormTagTests {
 		this.tag.setDynamicAttribute(null, dynamicAttribute2, dynamicAttribute2);
 
 		int result = this.tag.doStartTag();
-		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 
@@ -155,7 +155,7 @@ public class RadioButtonsTagTests extends AbstractFormTagTests {
 		assertThat(radioButtonElement3.getName()).isEqualTo("input");
 		assertThat(radioButtonElement3.attribute("type").getValue()).isEqualTo("radio");
 		assertThat(radioButtonElement3.attribute("name").getValue()).isEqualTo("stringArray");
-		assertThat((Object) radioButtonElement3.attribute("checked")).as("not checked").isNull();
+		assertThat(radioButtonElement3.attribute("checked")).as("not checked").isNull();
 		assertThat(radioButtonElement3.attribute("value").getValue()).isEqualTo("baz");
 		assertThat(spanElement3.getStringValue()).isEqualTo("baz");
 		assertThat(radioButtonElement3.attribute(dynamicAttribute1).getValue()).isEqualTo(dynamicAttribute1);
@@ -169,7 +169,7 @@ public class RadioButtonsTagTests extends AbstractFormTagTests {
 		this.tag.setPath("stringArray");
 		this.tag.setItems(new Object[] {"foo", "bar", "baz"});
 		int result = this.tag.doStartTag();
-		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 
@@ -179,7 +179,7 @@ public class RadioButtonsTagTests extends AbstractFormTagTests {
 		Document document = reader.read(new StringReader(output));
 		Element spanElement1 = (Element) document.getRootElement().elements().get(0);
 		Element delimiterElement1 = spanElement1.element("br");
-		assertThat((Object) delimiterElement1).isNull();
+		assertThat(delimiterElement1).isNull();
 		Element radioButtonElement1 = (Element) spanElement1.elements().get(0);
 		assertThat(radioButtonElement1.getName()).isEqualTo("input");
 		assertThat(radioButtonElement1.attribute("type").getValue()).isEqualTo("radio");
@@ -204,7 +204,7 @@ public class RadioButtonsTagTests extends AbstractFormTagTests {
 		assertThat(radioButtonElement3.getName()).isEqualTo("input");
 		assertThat(radioButtonElement3.attribute("type").getValue()).isEqualTo("radio");
 		assertThat(radioButtonElement3.attribute("name").getValue()).isEqualTo("stringArray");
-		assertThat((Object) radioButtonElement3.attribute("checked")).as("not checked").isNull();
+		assertThat(radioButtonElement3.attribute("checked")).as("not checked").isNull();
 		assertThat(radioButtonElement3.attribute("value").getValue()).isEqualTo("baz");
 		assertThat(spanElement3.getStringValue()).isEqualTo("baz");
 	}
@@ -218,7 +218,7 @@ public class RadioButtonsTagTests extends AbstractFormTagTests {
 		m.put("baz", "BAZ");
 		this.tag.setItems(m);
 		int result = this.tag.doStartTag();
-		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 
@@ -248,7 +248,7 @@ public class RadioButtonsTagTests extends AbstractFormTagTests {
 		assertThat(radioButtonElement3.getName()).isEqualTo("input");
 		assertThat(radioButtonElement3.attribute("type").getValue()).isEqualTo("radio");
 		assertThat(radioButtonElement3.attribute("name").getValue()).isEqualTo("stringArray");
-		assertThat((Object) radioButtonElement3.attribute("checked")).as("not checked").isNull();
+		assertThat(radioButtonElement3.attribute("checked")).as("not checked").isNull();
 		assertThat(radioButtonElement3.attribute("value").getValue()).isEqualTo("baz");
 		assertThat(spanElement3.getStringValue()).isEqualTo("BAZ");
 	}
@@ -264,7 +264,7 @@ public class RadioButtonsTagTests extends AbstractFormTagTests {
 		m.put("baz", "BAZ");
 		this.tag.setItems(m);
 		int result = this.tag.doStartTag();
-		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 
@@ -294,7 +294,7 @@ public class RadioButtonsTagTests extends AbstractFormTagTests {
 		assertThat(radioButtonElement3.getName()).isEqualTo("input");
 		assertThat(radioButtonElement3.attribute("type").getValue()).isEqualTo("radio");
 		assertThat(radioButtonElement3.attribute("name").getValue()).isEqualTo("stringArray");
-		assertThat((Object) radioButtonElement3.attribute("checked")).as("not checked").isNull();
+		assertThat(radioButtonElement3.attribute("checked")).as("not checked").isNull();
 		assertThat(radioButtonElement3.attribute("value").getValue()).isEqualTo("baz");
 		assertThat(spanElement3.getStringValue()).isEqualTo((delimiter + "BAZ"));
 	}
@@ -309,8 +309,8 @@ public class RadioButtonsTagTests extends AbstractFormTagTests {
 		getPageContext().getRequest().setAttribute(BindingResult.MODEL_KEY_PREFIX + COMMAND_NAME, bindingResult);
 
 		int result = this.tag.doStartTag();
-		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
-		assertThat((long) editor.allProcessedValues.size()).isEqualTo((long) 3);
+		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(editor.allProcessedValues.size()).isEqualTo((long) 3);
 
 		String output = getOutput();
 
@@ -338,7 +338,7 @@ public class RadioButtonsTagTests extends AbstractFormTagTests {
 		assertThat(radioButtonElement3.getName()).isEqualTo("input");
 		assertThat(radioButtonElement3.attribute("type").getValue()).isEqualTo("radio");
 		assertThat(radioButtonElement3.attribute("name").getValue()).isEqualTo("stringArray");
-		assertThat((Object) radioButtonElement3.attribute("checked")).as("not checked").isNull();
+		assertThat(radioButtonElement3.attribute("checked")).as("not checked").isNull();
 		assertThat(radioButtonElement3.attribute("value").getValue()).isEqualTo("   baz");
 	}
 
@@ -356,7 +356,7 @@ public class RadioButtonsTagTests extends AbstractFormTagTests {
 		this.tag.setItemLabel("label");
 
 		int result = this.tag.doStartTag();
-		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 
@@ -386,7 +386,7 @@ public class RadioButtonsTagTests extends AbstractFormTagTests {
 		assertThat(radioButtonElement3.getName()).isEqualTo("input");
 		assertThat(radioButtonElement3.attribute("type").getValue()).isEqualTo("radio");
 		assertThat(radioButtonElement3.attribute("name").getValue()).isEqualTo("pets");
-		assertThat((Object) radioButtonElement3.attribute("checked")).as("not checked").isNull();
+		assertThat(radioButtonElement3.attribute("checked")).as("not checked").isNull();
 		assertThat(radioButtonElement3.attribute("value").getValue()).isEqualTo("Checkers");
 		assertThat(spanElement3.getStringValue()).isEqualTo("CHECKERS");
 		Element spanElement4 = (Element) document.getRootElement().elements().get(3);
@@ -426,7 +426,7 @@ public class RadioButtonsTagTests extends AbstractFormTagTests {
 		getPageContext().getRequest().setAttribute(BindingResult.MODEL_KEY_PREFIX + COMMAND_NAME, bindingResult);
 
 		int result = this.tag.doStartTag();
-		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = getOutput();
 
@@ -456,7 +456,7 @@ public class RadioButtonsTagTests extends AbstractFormTagTests {
 		assertThat(radioButtonElement3.getName()).isEqualTo("input");
 		assertThat(radioButtonElement3.attribute("type").getValue()).isEqualTo("radio");
 		assertThat(radioButtonElement3.attribute("name").getValue()).isEqualTo("pets");
-		assertThat((Object) radioButtonElement3.attribute("checked")).as("not checked").isNull();
+		assertThat(radioButtonElement3.attribute("checked")).as("not checked").isNull();
 		assertThat(radioButtonElement3.attribute("value").getValue()).isEqualTo("Checkers");
 		assertThat(spanElement3.getStringValue()).isEqualTo("CHECKERS");
 		Element spanElement4 = (Element) document.getRootElement().elements().get(3);
@@ -485,14 +485,14 @@ public class RadioButtonsTagTests extends AbstractFormTagTests {
 
 		this.tag.setPath("testEnum");
 		int result = this.tag.doStartTag();
-		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = "<div>" + getOutput() + "</div>";
 		SAXReader reader = new SAXReader();
 		Document document = reader.read(new StringReader(output));
 		Element rootElement = document.getRootElement();
 
-		assertThat((long) rootElement.elements().size()).isEqualTo((long) 2);
+		assertThat(rootElement.elements().size()).isEqualTo((long) 2);
 		Node value1 = rootElement.selectSingleNode("//input[@value = 'VALUE_1']");
 		Node value2 = rootElement.selectSingleNode("//input[@value = 'VALUE_2']");
 		assertThat(rootElement.selectSingleNode("//label[@for = '" + value1.valueOf("@id") + "']").getText()).isEqualTo("TestEnum: VALUE_1");
@@ -510,14 +510,14 @@ public class RadioButtonsTagTests extends AbstractFormTagTests {
 		this.tag.setItemLabel("enumLabel");
 		this.tag.setItemValue("enumValue");
 		int result = this.tag.doStartTag();
-		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
 
 		String output = "<div>" + getOutput() + "</div>";
 		SAXReader reader = new SAXReader();
 		Document document = reader.read(new StringReader(output));
 		Element rootElement = document.getRootElement();
 
-		assertThat((long) rootElement.elements().size()).isEqualTo((long) 2);
+		assertThat(rootElement.elements().size()).isEqualTo((long) 2);
 		Node value1 = rootElement.selectSingleNode("//input[@value = 'Value: VALUE_1']");
 		Node value2 = rootElement.selectSingleNode("//input[@value = 'Value: VALUE_2']");
 		assertThat(rootElement.selectSingleNode("//label[@for = '" + value1.valueOf("@id") + "']").getText()).isEqualTo("Label: VALUE_1");
@@ -538,7 +538,7 @@ public class RadioButtonsTagTests extends AbstractFormTagTests {
 		this.tag.setItems(new Object[] {"foo", "bar", "baz"});
 		this.tag.setDisabled(true);
 		int result = this.tag.doStartTag();
-		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
 		String output = getOutput();
 
 		// wrap the output so it is valid XML
@@ -547,7 +547,7 @@ public class RadioButtonsTagTests extends AbstractFormTagTests {
 		SAXReader reader = new SAXReader();
 		Document document = reader.read(new StringReader(output));
 		Element rootElement = document.getRootElement();
-		assertThat((long) rootElement.elements().size()).as("Both tag and hidden element rendered incorrectly").isEqualTo((long) 3);
+		assertThat(rootElement.elements().size()).as("Both tag and hidden element rendered incorrectly").isEqualTo((long) 3);
 		Element spanElement = (Element) document.getRootElement().elements().get(0);
 		Element radioButtonElement = (Element) spanElement.elements().get(0);
 		assertThat(radioButtonElement.getName()).isEqualTo("input");
@@ -564,7 +564,7 @@ public class RadioButtonsTagTests extends AbstractFormTagTests {
 		this.tag.setItems(new Object[] {"foo", "bar", "baz"});
 		this.tag.setElement("element");
 		int result = this.tag.doStartTag();
-		assertThat((long) result).isEqualTo((long) Tag.SKIP_BODY);
+		assertThat(result).isEqualTo((long) Tag.SKIP_BODY);
 		String output = getOutput();
 
 		// wrap the output so it is valid XML

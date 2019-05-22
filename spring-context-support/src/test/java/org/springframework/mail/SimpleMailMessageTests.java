@@ -118,7 +118,7 @@ public class SimpleMailMessageTests {
 		SimpleMailMessage message2 = new SimpleMailMessage(message1);
 
 		assertThat(message2).isEqualTo(message1);
-		assertThat((long) message2.hashCode()).isEqualTo((long) message1.hashCode());
+		assertThat(message2.hashCode()).isEqualTo((long) message1.hashCode());
 	}
 
 	public final void testEqualsObject() {

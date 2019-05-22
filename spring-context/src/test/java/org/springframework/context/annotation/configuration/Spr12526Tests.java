@@ -42,11 +42,11 @@ public class Spr12526Tests {
 
 		condition.setCondition(true);
 		FirstService firstService = (FirstService) ctx.getBean(Service.class);
-		assertThat((Object) firstService.getDependency()).as("FirstService.dependency is null").isNotNull();
+		assertThat(firstService.getDependency()).as("FirstService.dependency is null").isNotNull();
 
 		condition.setCondition(false);
 		SecondService secondService = (SecondService) ctx.getBean(Service.class);
-		assertThat((Object) secondService.getDependency()).as("SecondService.dependency is null").isNotNull();
+		assertThat(secondService.getDependency()).as("SecondService.dependency is null").isNotNull();
 	}
 
 

@@ -49,9 +49,9 @@ public class RequestConditionHolderTests {
 		RequestConditionHolder empty = new RequestConditionHolder(null);
 		RequestConditionHolder notEmpty = new RequestConditionHolder(new ParamsRequestCondition("name"));
 
-		assertThat((Object) empty.combine(empty)).isSameAs(empty);
-		assertThat((Object) notEmpty.combine(empty)).isSameAs(notEmpty);
-		assertThat((Object) empty.combine(notEmpty)).isSameAs(notEmpty);
+		assertThat(empty.combine(empty)).isSameAs(empty);
+		assertThat(notEmpty.combine(empty)).isSameAs(notEmpty);
+		assertThat(empty.combine(notEmpty)).isSameAs(notEmpty);
 	}
 
 	@Test
@@ -69,7 +69,7 @@ public class RequestConditionHolderTests {
 		RequestMethodsRequestCondition expected = new RequestMethodsRequestCondition(RequestMethod.GET);
 
 		RequestConditionHolder holder = custom.getMatchingCondition(this.exchange);
-		assertThat((Object) holder).isNotNull();
+		assertThat(holder).isNotNull();
 		assertThat(holder.getCondition()).isEqualTo(expected);
 	}
 
@@ -78,13 +78,13 @@ public class RequestConditionHolderTests {
 		RequestMethodsRequestCondition rm = new RequestMethodsRequestCondition(RequestMethod.POST);
 		RequestConditionHolder custom = new RequestConditionHolder(rm);
 
-		assertThat((Object) custom.getMatchingCondition(this.exchange)).isNull();
+		assertThat(custom.getMatchingCondition(this.exchange)).isNull();
 	}
 
 	@Test
 	public void matchEmpty() {
 		RequestConditionHolder empty = new RequestConditionHolder(null);
-		assertThat((Object) empty.getMatchingCondition(this.exchange)).isSameAs(empty);
+		assertThat(empty.getMatchingCondition(this.exchange)).isSameAs(empty);
 	}
 
 	@Test
@@ -92,8 +92,8 @@ public class RequestConditionHolderTests {
 		RequestConditionHolder params11 = new RequestConditionHolder(new ParamsRequestCondition("1"));
 		RequestConditionHolder params12 = new RequestConditionHolder(new ParamsRequestCondition("1", "2"));
 
-		assertThat((long) params11.compareTo(params12, this.exchange)).isEqualTo((long) 1);
-		assertThat((long) params12.compareTo(params11, this.exchange)).isEqualTo((long) -1);
+		assertThat(params11.compareTo(params12, this.exchange)).isEqualTo((long) 1);
+		assertThat(params12.compareTo(params11, this.exchange)).isEqualTo((long) -1);
 	}
 
 	@Test
@@ -102,9 +102,9 @@ public class RequestConditionHolderTests {
 		RequestConditionHolder empty2 = new RequestConditionHolder(null);
 		RequestConditionHolder notEmpty = new RequestConditionHolder(new ParamsRequestCondition("name"));
 
-		assertThat((long) empty.compareTo(empty2, this.exchange)).isEqualTo((long) 0);
-		assertThat((long) notEmpty.compareTo(empty, this.exchange)).isEqualTo((long) -1);
-		assertThat((long) empty.compareTo(notEmpty, this.exchange)).isEqualTo((long) 1);
+		assertThat(empty.compareTo(empty2, this.exchange)).isEqualTo((long) 0);
+		assertThat(notEmpty.compareTo(empty, this.exchange)).isEqualTo((long) -1);
+		assertThat(empty.compareTo(notEmpty, this.exchange)).isEqualTo((long) 1);
 	}
 
 	@Test

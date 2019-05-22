@@ -42,7 +42,7 @@ public class AnnotationNamespaceDrivenTests extends AbstractCacheAnnotationTests
 	public void testKeyStrategy() {
 		CacheInterceptor ci = this.ctx.getBean(
 				"org.springframework.cache.interceptor.CacheInterceptor#0", CacheInterceptor.class);
-		assertThat((Object) ci.getKeyGenerator()).isSameAs(this.ctx.getBean("keyGenerator"));
+		assertThat(ci.getKeyGenerator()).isSameAs(this.ctx.getBean("keyGenerator"));
 	}
 
 	@Test
@@ -51,7 +51,7 @@ public class AnnotationNamespaceDrivenTests extends AbstractCacheAnnotationTests
 				"/org/springframework/cache/config/annotationDrivenCacheNamespace-resolver.xml");
 
 		CacheInterceptor ci = context.getBean(CacheInterceptor.class);
-		assertThat((Object) ci.getCacheResolver()).isSameAs(context.getBean("cacheResolver"));
+		assertThat(ci.getCacheResolver()).isSameAs(context.getBean("cacheResolver"));
 		context.close();
 	}
 
@@ -61,7 +61,7 @@ public class AnnotationNamespaceDrivenTests extends AbstractCacheAnnotationTests
 				"/org/springframework/cache/config/annotationDrivenCacheNamespace-manager-resolver.xml");
 
 		CacheInterceptor ci = context.getBean(CacheInterceptor.class);
-		assertThat((Object) ci.getCacheResolver()).isSameAs(context.getBean("cacheResolver"));
+		assertThat(ci.getCacheResolver()).isSameAs(context.getBean("cacheResolver"));
 		context.close();
 	}
 
@@ -69,7 +69,7 @@ public class AnnotationNamespaceDrivenTests extends AbstractCacheAnnotationTests
 	public void testCacheErrorHandler() {
 		CacheInterceptor ci = this.ctx.getBean(
 				"org.springframework.cache.interceptor.CacheInterceptor#0", CacheInterceptor.class);
-		assertThat((Object) ci.getErrorHandler()).isSameAs(this.ctx.getBean("errorHandler", CacheErrorHandler.class));
+		assertThat(ci.getErrorHandler()).isSameAs(this.ctx.getBean("errorHandler", CacheErrorHandler.class));
 	}
 
 }

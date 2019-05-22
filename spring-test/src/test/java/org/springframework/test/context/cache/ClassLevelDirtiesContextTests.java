@@ -170,7 +170,7 @@ public class ClassLevelDirtiesContextTests {
 
 
 		protected void assertApplicationContextWasAutowired() {
-			assertThat((Object) this.applicationContext).as("The application context should have been autowired.").isNotNull();
+			assertThat(this.applicationContext).as("The application context should have been autowired.").isNotNull();
 		}
 	}
 

@@ -136,7 +136,7 @@ public abstract class AbstractSchedulingTaskExecutorTests {
 					.atMost(1, TimeUnit.SECONDS)
 					.pollInterval(10, TimeUnit.MILLISECONDS)
 					.until(() -> future.isDone() && outcome != null);
-		assertThat((Object) outcome.getClass()).isSameAs(RuntimeException.class);
+		assertThat(outcome.getClass()).isSameAs(RuntimeException.class);
 	}
 
 	@Test
@@ -208,7 +208,7 @@ public abstract class AbstractSchedulingTaskExecutorTests {
 					.atMost(1, TimeUnit.SECONDS)
 					.pollInterval(10, TimeUnit.MILLISECONDS)
 					.until(() -> future.isDone() && outcome != null);
-		assertThat((Object) outcome.getClass()).isSameAs(RuntimeException.class);
+		assertThat(outcome.getClass()).isSameAs(RuntimeException.class);
 	}
 
 	@Test

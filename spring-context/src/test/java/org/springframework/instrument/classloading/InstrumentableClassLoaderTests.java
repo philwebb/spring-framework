@@ -33,7 +33,7 @@ public class InstrumentableClassLoaderTests {
 	public void testDefaultLoadTimeWeaver() {
 		ClassLoader loader = new SimpleInstrumentableClassLoader(ClassUtils.getDefaultClassLoader());
 		ReflectiveLoadTimeWeaver handler = new ReflectiveLoadTimeWeaver(loader);
-		assertThat((Object) handler.getInstrumentableClassLoader()).isSameAs(loader);
+		assertThat(handler.getInstrumentableClassLoader()).isSameAs(loader);
 	}
 
 }

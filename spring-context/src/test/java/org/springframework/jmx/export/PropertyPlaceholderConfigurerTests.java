@@ -41,7 +41,7 @@ public class PropertyPlaceholderConfigurerTests extends AbstractJmxTests {
 		IJmxTestBean bean = (IJmxTestBean) getContext().getBean("testBean");
 
 		assertThat(bean.getName()).as("Name is incorrect").isEqualTo("Rob Harrop");
-		assertThat((long) bean.getAge()).as("Age is incorrect").isEqualTo((long) 100);
+		assertThat(bean.getAge()).as("Age is incorrect").isEqualTo((long) 100);
 	}
 
 	@Test
@@ -51,7 +51,7 @@ public class PropertyPlaceholderConfigurerTests extends AbstractJmxTests {
 		Integer age = (Integer) getServer().getAttribute(oname, "Age");
 
 		assertThat(name).as("Name is incorrect in JMX").isEqualTo("Rob Harrop");
-		assertThat((long) age.intValue()).as("Age is incorrect in JMX").isEqualTo((long) 100);
+		assertThat(age.intValue()).as("Age is incorrect in JMX").isEqualTo((long) 100);
 	}
 
 }

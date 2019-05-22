@@ -66,9 +66,9 @@ public class JmsMessageEndpointManagerTests {
 		QosSettings settings = new QosSettings(1, 3, 5);
 		config.setReplyQosSettings(settings);
 		endpoint.setActivationSpecConfig(config);
-		assertThat((Object) endpoint.getReplyQosSettings()).isNotNull();
-		assertThat((long) endpoint.getReplyQosSettings().getDeliveryMode()).isEqualTo((long) 1);
-		assertThat((long) endpoint.getReplyQosSettings().getPriority()).isEqualTo((long) 3);
+		assertThat(endpoint.getReplyQosSettings()).isNotNull();
+		assertThat(endpoint.getReplyQosSettings().getDeliveryMode()).isEqualTo((long) 1);
+		assertThat(endpoint.getReplyQosSettings().getPriority()).isEqualTo((long) 3);
 		assertThat(endpoint.getReplyQosSettings().getTimeToLive()).isEqualTo((long) 5);
 	}
 
@@ -99,12 +99,12 @@ public class JmsMessageEndpointManagerTests {
 	@Test
 	public void getMessageConverterNoConfig() {
 		JmsMessageEndpointManager endpoint = new JmsMessageEndpointManager();
-		assertThat((Object) endpoint.getMessageConverter()).isNull();
+		assertThat(endpoint.getMessageConverter()).isNull();
 	}
 
 	@Test
 	public void getDestinationResolverNoConfig() {
 		JmsMessageEndpointManager endpoint = new JmsMessageEndpointManager();
-		assertThat((Object) endpoint.getDestinationResolver()).isNull();
+		assertThat(endpoint.getDestinationResolver()).isNull();
 	}
 }

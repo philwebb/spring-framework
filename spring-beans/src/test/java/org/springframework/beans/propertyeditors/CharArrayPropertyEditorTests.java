@@ -42,7 +42,7 @@ public class CharArrayPropertyEditorTests {
 		assertThat(condition).isTrue();
 		char[] chars = (char[]) value;
 		for (int i = 0; i < text.length(); ++i) {
-			assertThat((long) chars[i]).as("char[] differs at index '" + i + "'").isEqualTo((long) text.charAt(i));
+			assertThat(chars[i]).as("char[] differs at index '" + i + "'").isEqualTo((long) text.charAt(i));
 		}
 		assertThat(charEditor.getAsText()).isEqualTo(text);
 	}

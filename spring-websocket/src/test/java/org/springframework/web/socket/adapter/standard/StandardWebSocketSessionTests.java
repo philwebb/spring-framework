@@ -49,7 +49,7 @@ public class StandardWebSocketSessionTests {
 		TestPrincipal user = new TestPrincipal("joe");
 		StandardWebSocketSession session = new StandardWebSocketSession(this.headers, this.attributes, null, null, user);
 
-		assertThat((Object) session.getPrincipal()).isSameAs(user);
+		assertThat(session.getPrincipal()).isSameAs(user);
 	}
 
 	@Test
@@ -63,7 +63,7 @@ public class StandardWebSocketSessionTests {
 		StandardWebSocketSession session = new StandardWebSocketSession(this.headers, this.attributes, null, null);
 		session.initializeNativeSession(nativeSession);
 
-		assertThat((Object) session.getPrincipal()).isSameAs(user);
+		assertThat(session.getPrincipal()).isSameAs(user);
 	}
 
 	@Test
@@ -77,7 +77,7 @@ public class StandardWebSocketSessionTests {
 
 		reset(nativeSession);
 
-		assertThat((Object) session.getPrincipal()).isNull();
+		assertThat(session.getPrincipal()).isNull();
 		verifyNoMoreInteractions(nativeSession);
 	}
 

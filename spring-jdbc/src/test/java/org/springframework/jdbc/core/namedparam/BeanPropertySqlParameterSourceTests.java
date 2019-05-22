@@ -54,8 +54,8 @@ public class BeanPropertySqlParameterSourceTests {
 		assertThat(Arrays.asList(source.getReadablePropertyNames()).contains("age")).isTrue();
 		assertThat(source.getValue("name")).isEqualTo("tb");
 		assertThat(source.getValue("age")).isEqualTo(99);
-		assertThat((long) source.getSqlType("name")).isEqualTo((long) Types.VARCHAR);
-		assertThat((long) source.getSqlType("age")).isEqualTo((long) Types.INTEGER);
+		assertThat(source.getSqlType("name")).isEqualTo((long) Types.VARCHAR);
+		assertThat(source.getSqlType("age")).isEqualTo((long) Types.INTEGER);
 	}
 
 	@Test
@@ -64,8 +64,8 @@ public class BeanPropertySqlParameterSourceTests {
 		source.registerSqlType("age", Types.NUMERIC);
 		assertThat(source.getValue("name")).isEqualTo("tb");
 		assertThat(source.getValue("age")).isEqualTo(99);
-		assertThat((long) source.getSqlType("name")).isEqualTo((long) Types.VARCHAR);
-		assertThat((long) source.getSqlType("age")).isEqualTo((long) Types.NUMERIC);
+		assertThat(source.getSqlType("name")).isEqualTo((long) Types.VARCHAR);
+		assertThat(source.getSqlType("age")).isEqualTo((long) Types.NUMERIC);
 	}
 
 	@Test

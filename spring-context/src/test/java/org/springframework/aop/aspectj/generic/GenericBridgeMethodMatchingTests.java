@@ -62,13 +62,13 @@ public class GenericBridgeMethodMatchingTests {
 	@Test
 	public void testGenericDerivedInterfaceMethodThroughInterface() {
 		testBean.genericDerivedInterfaceMethod("");
-		assertThat((long) counterAspect.count).isEqualTo((long) 1);
+		assertThat(counterAspect.count).isEqualTo((long) 1);
 	}
 
 	@Test
 	public void testGenericBaseInterfaceMethodThroughInterface() {
 		testBean.genericBaseInterfaceMethod("");
-		assertThat((long) counterAspect.count).isEqualTo((long) 1);
+		assertThat(counterAspect.count).isEqualTo((long) 1);
 	}
 
 }

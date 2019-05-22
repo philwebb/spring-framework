@@ -95,7 +95,7 @@ public class EnableCachingIntegrationTests {
 		service.getWithCondition(key);
 		assertCacheMiss(key, cache);
 
-		assertThat((long) this.context.getBean(BeanConditionConfig.Bar.class).count).isEqualTo((long) 2);
+		assertThat(this.context.getBean(BeanConditionConfig.Bar.class).count).isEqualTo((long) 2);
 	}
 
 	@Test
@@ -115,7 +115,7 @@ public class EnableCachingIntegrationTests {
 		value = service.getWithCondition(key);
 		assertCacheHit(key, value, cache);
 
-		assertThat((long) this.context.getBean(BeanConditionConfig.Bar.class).count).isEqualTo((long) 2);
+		assertThat(this.context.getBean(BeanConditionConfig.Bar.class).count).isEqualTo((long) 2);
 	}
 
 	private Cache getCache() {

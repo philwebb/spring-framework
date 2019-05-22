@@ -106,7 +106,7 @@ public class MethodJmsListenerEndpointTests {
 		endpoint.setMethod(getTestMethod());
 		endpoint.setMessageHandlerMethodFactory(this.factory);
 
-		assertThat((Object) endpoint.createMessageListener(this.container)).isNotNull();
+		assertThat(endpoint.createMessageListener(this.container)).isNotNull();
 	}
 
 	@Test
@@ -472,7 +472,7 @@ public class MethodJmsListenerEndpointTests {
 
 	private Method getListenerMethod(String methodName, Class<?>... parameterTypes) {
 		Method method = ReflectionUtils.findMethod(JmsEndpointSampleBean.class, methodName, parameterTypes);
-		assertThat((Object) ("no method found with name " + methodName + " and parameters " + Arrays.toString(parameterTypes))).isNotNull();
+		assertThat(("no method found with name " + methodName + " and parameters " + Arrays.toString(parameterTypes))).isNotNull();
 		return method;
 	}
 
@@ -521,65 +521,65 @@ public class MethodJmsListenerEndpointTests {
 
 		public void resolveMessageAndSession(javax.jms.Message message, Session session) {
 			this.invocations.put("resolveMessageAndSession", true);
-			assertThat((Object) message).as("Message not injected").isNotNull();
-			assertThat((Object) session).as("Session not injected").isNotNull();
+			assertThat(message).as("Message not injected").isNotNull();
+			assertThat(session).as("Session not injected").isNotNull();
 		}
 
 		public void resolveGenericMessage(Message<String> message) {
 			this.invocations.put("resolveGenericMessage", true);
-			assertThat((Object) message).as("Generic message not injected").isNotNull();
+			assertThat(message).as("Generic message not injected").isNotNull();
 			assertThat(message.getPayload()).as("Wrong message payload").isEqualTo("test");
 		}
 
 		public void resolveHeaderAndPayload(@Payload String content, @Header int myCounter) {
 			this.invocations.put("resolveHeaderAndPayload", true);
 			assertThat(content).as("Wrong @Payload resolution").isEqualTo("my payload");
-			assertThat((long) myCounter).as("Wrong @Header resolution").isEqualTo((long) 55);
+			assertThat(myCounter).as("Wrong @Header resolution").isEqualTo((long) 55);
 		}
 
 		public void resolveCustomHeaderNameAndPayload(@Payload String content, @Header("myCounter") int counter) {
 			this.invocations.put("resolveCustomHeaderNameAndPayload", true);
 			assertThat(content).as("Wrong @Payload resolution").isEqualTo("my payload");
-			assertThat((long) counter).as("Wrong @Header resolution").isEqualTo((long) 24);
+			assertThat(counter).as("Wrong @Header resolution").isEqualTo((long) 24);
 		}
 
 		public void resolveCustomHeaderNameAndPayloadWithHeaderNameSet(@Payload String content, @Header(name = "myCounter") int counter) {
 			this.invocations.put("resolveCustomHeaderNameAndPayloadWithHeaderNameSet", true);
 			assertThat(content).as("Wrong @Payload resolution").isEqualTo("my payload");
-			assertThat((long) counter).as("Wrong @Header resolution").isEqualTo((long) 24);
+			assertThat(counter).as("Wrong @Header resolution").isEqualTo((long) 24);
 		}
 
 		public void resolveHeaders(String content, @Headers Map<String, Object> headers) {
 			this.invocations.put("resolveHeaders", true);
 			assertThat(content).as("Wrong payload resolution").isEqualTo("my payload");
-			assertThat((Object) headers).as("headers not injected").isNotNull();
+			assertThat(headers).as("headers not injected").isNotNull();
 			assertThat(headers.get(JmsHeaders.MESSAGE_ID)).as("Missing JMS message id header").isEqualTo("abcd-1234");
 			assertThat(headers.get("customInt")).as("Missing custom header").isEqualTo(1234);
 		}
 
 		public void resolveMessageHeaders(MessageHeaders headers) {
 			this.invocations.put("resolveMessageHeaders", true);
-			assertThat((Object) headers).as("MessageHeaders not injected").isNotNull();
+			assertThat(headers).as("MessageHeaders not injected").isNotNull();
 			assertThat(headers.get(JmsHeaders.TYPE)).as("Missing JMS message type header").isEqualTo("myMessageType");
 			assertThat((double) (long) headers.get("customLong")).as("Missing custom header").isCloseTo((double) 4567L, within(0.0));
 		}
 
 		public void resolveJmsMessageHeaderAccessor(JmsMessageHeaderAccessor headers) {
 			this.invocations.put("resolveJmsMessageHeaderAccessor", true);
-			assertThat((Object) headers).as("MessageHeaders not injected").isNotNull();
+			assertThat(headers).as("MessageHeaders not injected").isNotNull();
 			assertThat(headers.getPriority()).as("Missing JMS message priority header").isEqualTo(Integer.valueOf(9));
 			assertThat(headers.getHeader("customBoolean")).as("Missing custom header").isEqualTo(true);
 		}
 
 		public void resolveObjectPayload(MyBean bean) {
 			this.invocations.put("resolveObjectPayload", true);
-			assertThat((Object) bean).as("Object payload not injected").isNotNull();
+			assertThat(bean).as("Object payload not injected").isNotNull();
 			assertThat(bean.name).as("Wrong content for payload").isEqualTo("myBean name");
 		}
 
 		public void resolveConvertedPayload(Integer counter) {
 			this.invocations.put("resolveConvertedPayload", true);
-			assertThat((Object) counter).as("Payload not injected").isNotNull();
+			assertThat(counter).as("Payload not injected").isNotNull();
 			assertThat(counter).as("Wrong content for payload").isEqualTo(Integer.valueOf(33));
 		}
 

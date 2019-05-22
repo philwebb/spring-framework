@@ -69,7 +69,7 @@ import org.springframework.web.socket.server.RequestUpgradeStrategy;
 import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static temp.XAssert.fail;
+import static org.assertj.core.api.Assertions.fail;
 
 /**
  * Abstract base class for integration tests using the
@@ -281,7 +281,7 @@ public abstract class AbstractSockJsIntegrationTests {
 		for (TextMessage message : messages) {
 			assertThat(handler.receivedMessages.remove(message)).as("Message not received: " + message).isTrue();
 		}
-		assertThat((long) handler.receivedMessages.size()).as("Remaining messages: " + handler.receivedMessages).isEqualTo((long) 0);
+		assertThat(handler.receivedMessages.size()).as("Remaining messages: " + handler.receivedMessages).isEqualTo((long) 0);
 		session.close();
 	}
 
@@ -293,7 +293,7 @@ public abstract class AbstractSockJsIntegrationTests {
 		this.sockJsClient.doHandshake(clientHandler, headers, new URI(this.baseUrl + "/test")).get();
 		TestServerHandler serverHandler = this.wac.getBean(TestServerHandler.class);
 
-		assertThat((Object) clientHandler.session).as("afterConnectionEstablished should have been called").isNotNull();
+		assertThat(clientHandler.session).as("afterConnectionEstablished should have been called").isNotNull();
 		serverHandler.awaitSession(5000);
 
 		TextMessage message = new TextMessage("message1");

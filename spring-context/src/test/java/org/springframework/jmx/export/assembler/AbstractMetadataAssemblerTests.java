@@ -92,7 +92,7 @@ public abstract class AbstractMetadataAssemblerTests extends AbstractJmxAssemble
 	public void testWithOnlySetter() throws Exception {
 		ModelMBeanInfo inf = getMBeanInfoFromAssembler();
 		ModelMBeanAttributeInfo attr = inf.getAttribute("NickName");
-		assertThat((Object) attr).as("Attribute should not be null").isNotNull();
+		assertThat(attr).as("Attribute should not be null").isNotNull();
 	}
 
 	/**
@@ -102,7 +102,7 @@ public abstract class AbstractMetadataAssemblerTests extends AbstractJmxAssemble
 	public void testWithOnlyGetter() throws Exception {
 		ModelMBeanInfo info = getMBeanInfoFromAssembler();
 		ModelMBeanAttributeInfo attr = info.getAttribute("Superman");
-		assertThat((Object) attr).as("Attribute should not be null").isNotNull();
+		assertThat(attr).as("Attribute should not be null").isNotNull();
 	}
 
 	@Test
@@ -145,7 +145,7 @@ public abstract class AbstractMetadataAssemblerTests extends AbstractJmxAssemble
 		ModelMBeanOperationInfo oper = info.getOperation("add");
 		MBeanParameterInfo[] params = oper.getSignature();
 
-		assertThat((long) params.length).as("Invalid number of params").isEqualTo((long) 2);
+		assertThat(params.length).as("Invalid number of params").isEqualTo((long) 2);
 		assertThat(params[0].getName()).as("Incorrect name for x param").isEqualTo("x");
 		assertThat(params[0].getType()).as("Incorrect type for x param").isEqualTo(int.class.getName());
 
@@ -175,8 +175,8 @@ public abstract class AbstractMetadataAssemblerTests extends AbstractJmxAssemble
 		start(exporter);
 
 		MBeanInfo inf = getServer().getMBeanInfo(ObjectNameManager.getInstance(objectName));
-		assertThat((long) inf.getOperations().length).as("Incorrect number of operations").isEqualTo((long) getExpectedOperationCount());
-		assertThat((long) inf.getAttributes().length).as("Incorrect number of attributes").isEqualTo((long) getExpectedAttributeCount());
+		assertThat(inf.getOperations().length).as("Incorrect number of operations").isEqualTo((long) getExpectedOperationCount());
+		assertThat(inf.getAttributes().length).as("Incorrect number of attributes").isEqualTo((long) getExpectedAttributeCount());
 
 		assertThat(assembler.includeBean(proxy.getClass(), "some bean name")).as("Not included in autodetection").isTrue();
 	}
