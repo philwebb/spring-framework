@@ -19,8 +19,8 @@ package org.springframework.util;
 import org.junit.Test;
 
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertTrue;
 
 /**
  * @author Stephane Nicoll

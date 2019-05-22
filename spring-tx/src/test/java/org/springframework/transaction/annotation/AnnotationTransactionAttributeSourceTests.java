@@ -38,11 +38,11 @@ import org.springframework.transaction.interceptor.TransactionAttribute;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
 import org.springframework.util.SerializationTestUtils;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertNotNull;
+import static temp.XAssert.assertNull;
+import static temp.XAssert.assertTrue;
 
 /**
  * @author Colin Sampaleanu

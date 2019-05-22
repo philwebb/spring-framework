@@ -25,7 +25,7 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.i18n.AcceptHeaderLocaleContextResolver;
 import org.springframework.web.server.session.DefaultWebSessionManager;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for {@link DefaultServerWebExchange}.

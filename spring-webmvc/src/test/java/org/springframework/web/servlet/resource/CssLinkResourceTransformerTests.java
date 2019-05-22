@@ -31,8 +31,8 @@ import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.resource.EncodedResourceResolver.EncodedResource;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertSame;
 
 /**
  * Unit tests for {@link CssLinkResourceTransformer}.

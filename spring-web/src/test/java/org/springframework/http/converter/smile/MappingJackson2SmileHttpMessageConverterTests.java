@@ -26,10 +26,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.MockHttpInputMessage;
 import org.springframework.http.MockHttpOutputMessage;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertArrayEquals;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertTrue;
 
 /**
  * Jackson 2.x Smile converter tests.

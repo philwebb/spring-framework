@@ -39,8 +39,8 @@ import org.springframework.tests.mock.jndi.SimpleNamingContext;
 import org.springframework.tests.mock.jndi.SimpleNamingContextBuilder;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller

@@ -22,9 +22,9 @@ import java.util.List;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertTrue;
 
 /**
  * Tests for {@link SpringFactoriesLoader}.

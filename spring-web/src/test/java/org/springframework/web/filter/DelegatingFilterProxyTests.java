@@ -35,8 +35,8 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.StaticWebApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNull;
 
 /**
  * @author Juergen Hoeller

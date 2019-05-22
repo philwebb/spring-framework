@@ -27,10 +27,10 @@ import org.junit.Test;
 import org.springframework.orm.jpa.domain.Person;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertNotNull;
+import static temp.XAssert.assertTrue;
 
 /**
  * An application-managed entity manager can join an existing transaction,

@@ -28,11 +28,11 @@ import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertNotEquals;
+import static temp.XAssert.assertNotNull;
+import static temp.XAssert.assertNull;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.HEAD;
 import static org.springframework.web.servlet.mvc.method.RequestMappingInfo.paths;

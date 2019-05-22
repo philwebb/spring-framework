@@ -26,8 +26,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.support.StaticListableBeanFactory;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertTrue;
 
 /**
  * @author Colin Sampaleanu

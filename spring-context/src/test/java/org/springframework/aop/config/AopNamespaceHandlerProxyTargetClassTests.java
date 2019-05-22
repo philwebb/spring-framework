@@ -22,7 +22,7 @@ import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.tests.sample.beans.ITestBean;
 
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop

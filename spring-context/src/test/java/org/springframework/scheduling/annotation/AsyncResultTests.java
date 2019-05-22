@@ -27,7 +27,7 @@ import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.Assert.assertSame;
+import static temp.XAssert.assertSame;
 
 /**
  * @author Juergen Hoeller

@@ -43,8 +43,8 @@ import org.springframework.validation.beanvalidation.MethodValidationInterceptor
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNotNull;
 
 /**
  * @author Juergen Hoeller

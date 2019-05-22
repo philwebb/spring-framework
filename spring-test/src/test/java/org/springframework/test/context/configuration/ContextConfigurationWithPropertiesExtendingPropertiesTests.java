@@ -25,8 +25,8 @@ import org.springframework.test.context.junit4.PropertiesBasedSpringJUnit4ClassR
 import org.springframework.test.context.support.GenericPropertiesContextLoader;
 import org.springframework.tests.sample.beans.Pet;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNotNull;
 
 /**
  * Integration tests which verify that the same custom {@link ContextLoader} can

@@ -23,7 +23,7 @@ import java.util.Locale;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * @author Keith Donald

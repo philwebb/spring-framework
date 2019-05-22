@@ -36,10 +36,10 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNotNull;
+import static temp.XAssert.assertSame;
+import static temp.XAssert.assertTrue;
 
 /**
  * Integration tests for {@code @EnableCaching} and its related

@@ -26,7 +26,7 @@ import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.tests.beans.CollectingReaderEventListener;
 
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertTrue;
 
 /**
  * @author Torsten Juergeleit

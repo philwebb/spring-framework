@@ -38,10 +38,10 @@ import org.springframework.test.context.MergedContextConfiguration;
 import org.springframework.test.context.TestContextBootstrapper;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static temp.XAssert.assertArrayEquals;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNotNull;
+import static temp.XAssert.assertNull;
 
 /**
  * Abstract base class for tests involving {@link ContextLoaderUtils},

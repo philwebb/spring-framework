@@ -28,9 +28,9 @@ import org.springframework.web.context.ContextCleanupListener;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.GenericWebApplicationContext;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertNull;
+import static temp.XAssert.assertSame;
+import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller

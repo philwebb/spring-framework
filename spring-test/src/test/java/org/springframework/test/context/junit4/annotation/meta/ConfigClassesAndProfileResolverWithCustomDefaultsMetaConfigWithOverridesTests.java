@@ -26,7 +26,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.ActiveProfilesResolver;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * Integration tests for meta-annotation attribute override support, overriding

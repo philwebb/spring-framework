@@ -29,8 +29,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.method.annotation.RequestHeaderMethodArgumentResolver;
 import org.springframework.web.method.annotation.RequestParamMethodArgumentResolver;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for

@@ -36,10 +36,10 @@ import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertNull;
+import static temp.XAssert.assertTrue;
 
 /**
  * @author Sebastien Deleuze

@@ -45,8 +45,8 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.result.view.ViewResolver;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertFalse;
 
 /**
  * @author Arjen Poutsma

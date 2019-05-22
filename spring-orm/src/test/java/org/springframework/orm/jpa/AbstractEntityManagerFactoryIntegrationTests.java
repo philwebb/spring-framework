@@ -38,8 +38,8 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertTrue;
 
 /**
  * @author Rod Johnson

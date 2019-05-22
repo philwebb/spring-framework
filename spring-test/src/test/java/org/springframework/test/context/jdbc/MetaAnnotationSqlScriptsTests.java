@@ -27,7 +27,7 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * Integration tests that verify support for using {@link Sql @Sql} and

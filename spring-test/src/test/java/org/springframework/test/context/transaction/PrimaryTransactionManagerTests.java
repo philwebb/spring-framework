@@ -39,7 +39,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * Integration tests that ensure that <em>primary</em> transaction managers

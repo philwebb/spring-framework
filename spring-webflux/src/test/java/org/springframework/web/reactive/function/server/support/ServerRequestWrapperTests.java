@@ -35,8 +35,8 @@ import org.springframework.web.reactive.function.BodyExtractor;
 import org.springframework.web.reactive.function.BodyExtractors;
 import org.springframework.web.reactive.function.server.ServerRequest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 

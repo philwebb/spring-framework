@@ -21,7 +21,7 @@ import javax.jms.ConnectionFactory;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.junit.Assert.assertFalse;
+import static temp.XAssert.assertFalse;
 import static org.mockito.Mockito.mock;
 
 /**

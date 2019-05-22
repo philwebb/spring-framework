@@ -30,10 +30,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNotNull;
+import static temp.XAssert.assertNull;
+import static temp.XAssert.assertSame;
 import static org.springframework.tests.TestResourceUtils.qualifiedResource;
 
 /**

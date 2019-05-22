@@ -27,8 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertNotNull;
 
 /**
  * Integration tests for an issue raised in https://jira.spring.io/browse/SPR-15927.

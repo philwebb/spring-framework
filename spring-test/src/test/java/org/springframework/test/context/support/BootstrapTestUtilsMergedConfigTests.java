@@ -31,8 +31,8 @@ import org.springframework.test.context.web.WebDelegatingSmartContextLoader;
 import org.springframework.test.context.web.WebMergedContextConfiguration;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNotEquals;
 
 /**
  * Unit tests for {@link BootstrapTestUtils} involving {@link MergedContextConfiguration}.

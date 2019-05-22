@@ -22,8 +22,8 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertTrue;
 
 /** @author Arjen Poutsma */
 public class HttpStatusTests {

@@ -30,7 +30,7 @@ import org.springframework.web.servlet.HandlerExecutionChain;
 import org.springframework.web.servlet.HandlerMapping;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertTrue;
 
 /**
  * @author Rod Johnson

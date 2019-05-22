@@ -31,7 +31,7 @@ import org.springframework.web.reactive.accept.FixedContentTypeResolver;
 import org.springframework.web.reactive.accept.HeaderContentTypeResolver;
 import org.springframework.web.reactive.accept.RequestedContentTypeResolver;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 import static org.springframework.http.MediaType.ALL;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;

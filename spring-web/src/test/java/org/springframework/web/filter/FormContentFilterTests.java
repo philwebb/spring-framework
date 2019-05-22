@@ -29,11 +29,11 @@ import org.springframework.mock.web.test.MockFilterChain;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.mock.web.test.MockHttpServletResponse;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
+import static temp.XAssert.assertArrayEquals;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNotSame;
+import static temp.XAssert.assertNull;
+import static temp.XAssert.assertSame;
 
 /**
  * Test fixture for {@link FormContentFilter}.

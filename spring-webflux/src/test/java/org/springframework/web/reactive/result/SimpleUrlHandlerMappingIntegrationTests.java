@@ -44,8 +44,8 @@ import org.springframework.web.server.WebHandler;
 import org.springframework.web.server.adapter.WebHttpHandlerBuilder;
 import org.springframework.web.server.handler.ResponseStatusExceptionHandler;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertArrayEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * Integration tests with requests mapped via

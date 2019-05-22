@@ -37,7 +37,7 @@ import org.springframework.core.io.support.EncodedResource;
 import org.springframework.lang.Nullable;
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * Tests for static application context with custom application event multicaster.

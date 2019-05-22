@@ -25,7 +25,7 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.support.StaticListableBeanFactory;
 import org.springframework.lang.Nullable;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * @author Colin Sampaleanu

@@ -49,9 +49,9 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 import org.springframework.util.SerializationTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertNotNull;
+import static temp.XAssert.assertSame;
+import static temp.XAssert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;

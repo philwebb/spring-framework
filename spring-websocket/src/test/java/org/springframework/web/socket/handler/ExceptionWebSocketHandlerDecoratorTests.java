@@ -23,8 +23,8 @@ import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketHandler;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNull;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.mock;
 

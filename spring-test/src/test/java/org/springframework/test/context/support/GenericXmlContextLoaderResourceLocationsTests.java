@@ -32,7 +32,7 @@ import org.springframework.test.context.ContextLoader;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 
-import static org.junit.Assert.assertArrayEquals;
+import static temp.XAssert.assertArrayEquals;
 
 /**
  * JUnit 4 based unit test which verifies proper

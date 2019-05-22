@@ -29,7 +29,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static org.junit.Assert.assertSame;
+import static temp.XAssert.assertSame;
 
 /**
  * Test fixture with {@link ErrorsMethodArgumentResolver}.

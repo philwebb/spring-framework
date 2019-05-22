@@ -22,7 +22,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
-import static org.junit.Assert.assertNotNull;
+import static temp.XAssert.assertNotNull;
 
 /**
  * Tests the {@link OxmNamespaceHandler} class.

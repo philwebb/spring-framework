@@ -19,8 +19,8 @@ package org.springframework.beans.factory.wiring;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for the BeanWiringInfo class.

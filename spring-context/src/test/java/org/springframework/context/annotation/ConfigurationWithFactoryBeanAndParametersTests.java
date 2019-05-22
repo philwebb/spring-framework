@@ -23,7 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 
-import static org.junit.Assert.assertNotNull;
+import static temp.XAssert.assertNotNull;
 
 /**
  * Test case cornering the bug initially raised with SPR-8762, in which a

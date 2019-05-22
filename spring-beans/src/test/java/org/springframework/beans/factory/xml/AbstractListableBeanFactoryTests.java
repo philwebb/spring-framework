@@ -23,7 +23,7 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertTrue;
 
 /**
  * @author Rod Johnson

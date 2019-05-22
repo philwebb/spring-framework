@@ -20,7 +20,7 @@ import java.io.UnsupportedEncodingException;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * Test fixture for {@link JavaScriptUtils}.

@@ -30,8 +30,8 @@ import org.springframework.util.ClassUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertSame;
+import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests cornering the bug exposed in SPR-6779.

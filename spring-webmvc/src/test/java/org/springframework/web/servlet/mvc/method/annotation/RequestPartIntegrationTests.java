@@ -66,8 +66,8 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertArrayEquals;
+import static temp.XAssert.assertEquals;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**

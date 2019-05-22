@@ -25,8 +25,8 @@ import org.junit.Test;
 import org.springframework.util.ClassUtils;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertTrue;
 
 /**
  * @author Juergen Hoeller

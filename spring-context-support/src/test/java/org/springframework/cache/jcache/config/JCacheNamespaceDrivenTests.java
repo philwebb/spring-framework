@@ -25,7 +25,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
-import static org.junit.Assert.assertSame;
+import static temp.XAssert.assertSame;
 
 /**
  * @author Stephane Nicoll

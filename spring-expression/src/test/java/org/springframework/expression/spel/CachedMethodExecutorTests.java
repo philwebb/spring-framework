@@ -24,7 +24,7 @@ import org.springframework.expression.spel.ast.MethodReference;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * Test for caching in {@link MethodReference} (SPR-10657).

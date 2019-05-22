@@ -33,7 +33,7 @@ import org.springframework.util.StringUtils;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static org.junit.Assert.assertArrayEquals;
+import static temp.XAssert.assertArrayEquals;
 import static org.springframework.test.context.support.ActiveProfilesUtils.resolveActiveProfiles;
 
 /**

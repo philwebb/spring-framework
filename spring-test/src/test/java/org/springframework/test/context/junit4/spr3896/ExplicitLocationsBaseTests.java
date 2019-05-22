@@ -24,8 +24,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.tests.sample.beans.Employee;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNotNull;
 
 /**
  * JUnit 4 based integration test for verifying support for the

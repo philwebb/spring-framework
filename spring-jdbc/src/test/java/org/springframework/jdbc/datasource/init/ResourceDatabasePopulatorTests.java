@@ -22,7 +22,7 @@ import org.mockito.Mockito;
 import org.springframework.core.io.Resource;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for {@link ResourceDatabasePopulator}.

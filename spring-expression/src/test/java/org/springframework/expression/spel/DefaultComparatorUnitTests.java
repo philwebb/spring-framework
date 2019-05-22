@@ -23,8 +23,8 @@ import org.springframework.expression.EvaluationException;
 import org.springframework.expression.TypeComparator;
 import org.springframework.expression.spel.support.StandardTypeComparator;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for type comparison

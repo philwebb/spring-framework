@@ -35,12 +35,12 @@ import org.springframework.expression.spel.standard.SpelExpression;
 import org.springframework.expression.spel.support.ReflectionHelper.ArgumentsMatchKind;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertNotEquals;
+import static temp.XAssert.assertNotNull;
+import static temp.XAssert.assertNull;
+import static temp.XAssert.assertTrue;
 
 /**
  * Tests for reflection helper code.

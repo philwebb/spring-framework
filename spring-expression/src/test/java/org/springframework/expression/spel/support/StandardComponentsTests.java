@@ -29,9 +29,9 @@ import org.springframework.expression.TypeConverter;
 import org.springframework.expression.TypeLocator;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertNotNull;
 
 public class StandardComponentsTests {
 

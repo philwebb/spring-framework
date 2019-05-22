@@ -24,8 +24,8 @@ import org.springframework.messaging.SubscribableChannel;
 import org.springframework.messaging.simp.stomp.StompBrokerRelayMessageHandler;
 import org.springframework.util.StringUtils;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertArrayEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for

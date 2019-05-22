@@ -24,7 +24,7 @@ import org.springframework.jdbc.core.SqlParameterValue;
 import org.springframework.jdbc.support.JdbcUtils;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * @author Rick Evans

@@ -39,7 +39,7 @@ import org.springframework.web.servlet.support.RequestDataValueProcessorWrapper;
 import org.springframework.web.servlet.tags.AbstractTagTests;
 import org.springframework.web.servlet.tags.RequestContextAwareTag;
 
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 /**

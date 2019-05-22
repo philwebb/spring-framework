@@ -32,9 +32,9 @@ import org.springframework.mock.web.test.MockMultipartHttpServletRequest;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static temp.XAssert.assertArrayEquals;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNotNull;
 
 /**
  * @author Rossen Stoyanchev

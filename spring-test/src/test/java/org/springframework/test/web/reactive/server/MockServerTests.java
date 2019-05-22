@@ -30,8 +30,8 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNotNull;
 
 /**
  * Test scenarios involving a mock server.

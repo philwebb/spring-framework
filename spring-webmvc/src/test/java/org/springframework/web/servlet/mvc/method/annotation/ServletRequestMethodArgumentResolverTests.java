@@ -43,11 +43,11 @@ import org.springframework.web.multipart.MultipartRequest;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.i18n.FixedLocaleResolver;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertNull;
+import static temp.XAssert.assertSame;
+import static temp.XAssert.assertTrue;
 
 /**
  * @author Arjen Poutsma

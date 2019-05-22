@@ -29,8 +29,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.filter.ForwardedHeaderFilter;
 import org.springframework.web.util.UriComponents;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for

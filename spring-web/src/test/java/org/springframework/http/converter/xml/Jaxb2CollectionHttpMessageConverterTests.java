@@ -36,8 +36,8 @@ import org.springframework.http.MockHttpInputMessage;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture for {@link Jaxb2CollectionHttpMessageConverter}.

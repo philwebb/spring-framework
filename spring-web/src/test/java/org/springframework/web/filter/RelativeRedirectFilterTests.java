@@ -30,8 +30,8 @@ import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.mock.web.test.MockHttpServletResponse;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
+import static temp.XAssert.assertNotSame;
+import static temp.XAssert.assertSame;
 
 /**
  * Unit tests for {@link RelativeRedirectFilter}.

@@ -31,7 +31,7 @@ import org.springframework.util.ClassUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertTrue;
 
 public class Spr7167Tests {
 

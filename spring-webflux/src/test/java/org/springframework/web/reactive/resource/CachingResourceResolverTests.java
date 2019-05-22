@@ -31,10 +31,10 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.mock.web.test.server.MockServerWebExchange;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNotSame;
+import static temp.XAssert.assertNull;
+import static temp.XAssert.assertSame;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.get;
 
 /**

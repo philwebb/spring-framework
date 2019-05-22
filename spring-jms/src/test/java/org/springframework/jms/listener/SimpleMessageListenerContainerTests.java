@@ -36,11 +36,11 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.ErrorHandler;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertNull;
+import static temp.XAssert.assertSame;
+import static temp.XAssert.assertTrue;
+import static temp.XAssert.fail;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;

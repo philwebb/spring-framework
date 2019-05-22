@@ -24,8 +24,8 @@ import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jmx.support.ObjectNameManager;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertFalse;
 
 /**
  * @author Rob Harrop

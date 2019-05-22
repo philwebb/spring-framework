@@ -24,7 +24,7 @@ import org.springframework.test.context.TestContext;
 import org.springframework.test.context.TestExecutionListener;
 import org.springframework.test.context.TestExecutionListeners;
 
-import static org.junit.Assert.fail;
+import static temp.XAssert.fail;
 
 /**
  * @author Juergen Hoeller

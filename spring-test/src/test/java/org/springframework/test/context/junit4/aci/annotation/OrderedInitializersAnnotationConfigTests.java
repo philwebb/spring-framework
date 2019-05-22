@@ -35,7 +35,7 @@ import org.springframework.test.context.junit4.aci.annotation.OrderedInitializer
 import org.springframework.test.context.junit4.aci.annotation.OrderedInitializersAnnotationConfigTests.OrderedOneInitializer;
 import org.springframework.test.context.junit4.aci.annotation.OrderedInitializersAnnotationConfigTests.OrderedTwoInitializer;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * Integration tests that verify that any {@link ApplicationContextInitializer

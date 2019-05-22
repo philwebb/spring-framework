@@ -24,7 +24,7 @@ import org.springframework.jdbc.datasource.init.CannotReadScriptException;
 import org.springframework.jdbc.datasource.init.ScriptStatementFailedException;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.DERBY;
 import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.H2;
 

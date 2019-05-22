@@ -27,8 +27,8 @@ import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.support.GenericXmlContextLoader;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNotEquals;
 import static org.mockito.Mockito.mock;
 
 /**

@@ -28,9 +28,9 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 
 import static java.util.Collections.emptyList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertTrue;
 import static org.springframework.web.servlet.function.RequestPredicates.HEAD;
 
 /**

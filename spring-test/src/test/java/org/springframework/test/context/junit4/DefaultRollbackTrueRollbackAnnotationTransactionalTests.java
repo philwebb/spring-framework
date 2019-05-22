@@ -29,7 +29,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 import static org.springframework.test.transaction.TransactionTestUtils.assertInTransaction;
 
 /**

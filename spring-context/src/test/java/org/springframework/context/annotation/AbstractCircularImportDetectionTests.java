@@ -21,7 +21,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.parsing.BeanDefinitionParsingException;
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertTrue;
 
 /**
  * TCK-style unit tests for handling circular use of the {@link Import} annotation.

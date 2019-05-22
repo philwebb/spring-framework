@@ -23,7 +23,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * JUnit 4 based unit test for {@link TestContextManager}, which verifies proper

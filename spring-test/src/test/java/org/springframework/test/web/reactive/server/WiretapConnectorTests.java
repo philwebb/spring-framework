@@ -34,7 +34,7 @@ import org.springframework.web.reactive.function.client.ExchangeFunction;
 import org.springframework.web.reactive.function.client.ExchangeFunctions;
 
 import static java.time.Duration.ofMillis;
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for {@link WiretapConnector}.

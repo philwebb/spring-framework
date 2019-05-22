@@ -21,8 +21,8 @@ import org.junit.Test;
 import org.springframework.context.annotation.DeferredImportSelector.Group;
 import org.springframework.core.type.AnnotationMetadata;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNotEquals;
 import static org.mockito.Mockito.mock;
 
 /**

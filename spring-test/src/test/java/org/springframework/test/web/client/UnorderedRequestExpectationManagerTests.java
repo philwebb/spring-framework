@@ -25,7 +25,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpRequest;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.test.web.client.ExpectedCount.max;
 import static org.springframework.test.web.client.ExpectedCount.min;

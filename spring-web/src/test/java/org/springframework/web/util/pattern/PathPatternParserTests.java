@@ -28,11 +28,11 @@ import org.springframework.web.util.pattern.PatternParseException.PatternMessage
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertNotEquals;
+import static temp.XAssert.assertTrue;
+import static temp.XAssert.fail;
 
 /**
  * Exercise the {@link PathPatternParser}.

@@ -23,7 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.junit.Assert.assertNotNull;
+import static temp.XAssert.assertNotNull;
 
 /**
  * @author Sam Brannen

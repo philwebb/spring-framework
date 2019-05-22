@@ -27,7 +27,7 @@ import org.junit.Test;
 
 import org.springframework.http.HttpMethod;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 public class BufferedSimpleHttpRequestFactoryTests extends AbstractHttpRequestFactoryTestCase {
 

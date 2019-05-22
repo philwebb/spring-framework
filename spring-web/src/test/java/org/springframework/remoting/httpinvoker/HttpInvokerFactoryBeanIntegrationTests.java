@@ -33,7 +33,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncAnnotationBeanPostProcessor;
 import org.springframework.stereotype.Component;
 
-import static org.junit.Assert.assertSame;
+import static temp.XAssert.assertSame;
 
 /**
  * @author Stephane Nicoll

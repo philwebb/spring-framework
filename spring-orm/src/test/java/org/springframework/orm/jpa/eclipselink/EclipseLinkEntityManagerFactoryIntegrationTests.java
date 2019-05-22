@@ -22,8 +22,8 @@ import org.junit.Test;
 import org.springframework.orm.jpa.AbstractContainerEntityManagerFactoryIntegrationTests;
 import org.springframework.orm.jpa.EntityManagerFactoryInfo;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertNotNull;
+import static temp.XAssert.assertTrue;
 
 /**
  * EclipseLink-specific JPA tests.

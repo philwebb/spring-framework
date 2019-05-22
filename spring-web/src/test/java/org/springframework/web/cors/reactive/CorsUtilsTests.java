@@ -26,8 +26,8 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 import org.springframework.mock.web.test.server.MockServerWebExchange;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertTrue;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.get;
 import static org.springframework.mock.http.server.reactive.test.MockServerHttpRequest.options;
 

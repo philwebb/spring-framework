@@ -24,8 +24,8 @@ import org.junit.rules.TestName;
 
 import org.springframework.util.ReflectionUtils;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertFalse;
 
 /**
  * @author Stephane Nicoll

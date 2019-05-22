@@ -23,9 +23,9 @@ import org.junit.Test;
 import org.springframework.util.ClassUtils;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertNotNull;
+import static temp.XAssert.assertNull;
+import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for the {@link InputStreamEditor} class.

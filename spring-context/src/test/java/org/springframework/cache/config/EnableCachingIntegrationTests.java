@@ -37,7 +37,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
 import org.springframework.mock.env.MockEnvironment;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 import static org.springframework.cache.CacheTestUtils.assertCacheHit;
 import static org.springframework.cache.CacheTestUtils.assertCacheMiss;
 

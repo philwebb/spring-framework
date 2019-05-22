@@ -23,7 +23,7 @@ import org.reactivestreams.Subscription;
 
 import org.springframework.core.io.buffer.DataBuffer;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 import static org.mockito.Mockito.mock;
 
 /**

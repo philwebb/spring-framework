@@ -25,7 +25,7 @@ import org.springframework.jmx.JmxTestBean;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * @author Rob Harrop

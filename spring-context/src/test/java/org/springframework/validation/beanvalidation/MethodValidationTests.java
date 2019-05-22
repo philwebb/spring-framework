@@ -40,8 +40,8 @@ import org.springframework.scheduling.annotation.AsyncAnnotationBeanPostProcesso
 import org.springframework.validation.annotation.Validated;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNotNull;
 
 /**
  * @author Juergen Hoeller

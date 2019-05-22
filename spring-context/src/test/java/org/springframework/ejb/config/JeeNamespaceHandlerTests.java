@@ -30,9 +30,9 @@ import org.springframework.ejb.access.SimpleRemoteStatelessSessionProxyFactoryBe
 import org.springframework.jndi.JndiObjectFactoryBean;
 import org.springframework.tests.sample.beans.ITestBean;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop

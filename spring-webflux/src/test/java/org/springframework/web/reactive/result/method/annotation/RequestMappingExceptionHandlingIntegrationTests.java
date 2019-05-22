@@ -38,7 +38,7 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.reactive.config.EnableWebFlux;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * {@code @RequestMapping} integration tests with exception handling scenarios.

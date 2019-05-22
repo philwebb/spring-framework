@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.handler.ResponseStatusExceptionHandler;
 import org.springframework.web.server.handler.ResponseStatusExceptionHandlerTests;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for {@link WebFluxResponseStatusExceptionHandler}.

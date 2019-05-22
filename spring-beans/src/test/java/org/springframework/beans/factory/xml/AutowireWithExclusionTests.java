@@ -25,8 +25,8 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNotSame;
 
 /**
  * @author Rob Harrop

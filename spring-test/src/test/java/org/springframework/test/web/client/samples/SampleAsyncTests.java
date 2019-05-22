@@ -27,7 +27,7 @@ import org.springframework.test.web.Person;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.util.concurrent.ListenableFuture;
 
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertTrue;
 import static org.springframework.test.web.client.ExpectedCount.manyTimes;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;

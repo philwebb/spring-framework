@@ -22,7 +22,7 @@ import org.springframework.cache.interceptor.CacheInterceptor;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
-import static org.junit.Assert.assertSame;
+import static temp.XAssert.assertSame;
 
 /**
  * @author Costin Leau

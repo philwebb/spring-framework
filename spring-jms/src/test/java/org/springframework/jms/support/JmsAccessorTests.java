@@ -21,8 +21,8 @@ import javax.jms.Session;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for the {@link JmsAccessor} class.

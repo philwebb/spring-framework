@@ -26,7 +26,7 @@ import org.springframework.scripting.ScriptEvaluator;
 import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.scripting.support.StaticScriptSource;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * @author Juergen Hoeller

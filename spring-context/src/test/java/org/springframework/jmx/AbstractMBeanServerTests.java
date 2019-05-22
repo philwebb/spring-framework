@@ -29,8 +29,8 @@ import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.jmx.export.MBeanExporter;
 import org.springframework.util.MBeanTestUtils;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertTrue;
 
 /**
  * <p>If you run into the <em>"Unsupported protocol: jmxmp"</em> error, you will need to

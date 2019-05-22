@@ -32,7 +32,7 @@ import org.springframework.http.HttpRange;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.server.support.ServerRequestWrapper;
 
-import static org.junit.Assert.assertSame;
+import static temp.XAssert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 

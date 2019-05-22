@@ -29,7 +29,7 @@ import org.springframework.tests.sample.beans.Person;
 import org.springframework.tests.sample.beans.TestBean;
 import org.springframework.util.SerializationTestUtils;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 import static org.springframework.tests.TestResourceUtils.qualifiedResource;
 
 /**

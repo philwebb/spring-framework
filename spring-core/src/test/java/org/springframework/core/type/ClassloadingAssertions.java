@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
-import static org.junit.Assert.assertFalse;
+import static temp.XAssert.assertFalse;
 
 /**
  * @author Ramnivas Laddad

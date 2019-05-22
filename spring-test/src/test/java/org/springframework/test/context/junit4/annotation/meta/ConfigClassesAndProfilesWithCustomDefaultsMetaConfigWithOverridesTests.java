@@ -25,8 +25,8 @@ import org.springframework.test.context.junit4.annotation.PojoAndStringConfig;
 import org.springframework.tests.sample.beans.Employee;
 import org.springframework.tests.sample.beans.Pet;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNotNull;
 
 /**
  * Integration tests for meta-annotation attribute override support, overriding

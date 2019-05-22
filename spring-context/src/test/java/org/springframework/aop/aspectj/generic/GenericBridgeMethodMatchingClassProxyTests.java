@@ -18,7 +18,7 @@ package org.springframework.aop.aspectj.generic;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * Tests for AspectJ pointcut expression matching when working with bridge methods.

@@ -20,7 +20,7 @@ import org.junit.Test;
 
 import org.springframework.jmx.JmxTestBean;
 
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertTrue;
 
 /**
  * @author Rob Harrop

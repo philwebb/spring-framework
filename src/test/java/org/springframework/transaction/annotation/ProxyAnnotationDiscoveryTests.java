@@ -26,7 +26,7 @@ import org.springframework.context.annotation.Configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertTrue;
 
 /**
  * Tests proving that regardless the proxy strategy used (JDK interface-based vs. CGLIB

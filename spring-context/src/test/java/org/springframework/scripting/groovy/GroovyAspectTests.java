@@ -27,7 +27,7 @@ import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.util.ClassUtils;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * @author Dave Syer

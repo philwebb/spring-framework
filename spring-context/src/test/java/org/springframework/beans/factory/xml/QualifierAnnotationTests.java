@@ -36,9 +36,9 @@ import org.springframework.context.support.StaticApplicationContext;
 
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNotNull;
+import static temp.XAssert.assertTrue;
 import static org.springframework.util.ClassUtils.convertClassNameToResourcePath;
 
 /**

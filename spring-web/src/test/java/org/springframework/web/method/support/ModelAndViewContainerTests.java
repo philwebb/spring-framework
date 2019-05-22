@@ -21,8 +21,8 @@ import org.junit.Test;
 
 import org.springframework.ui.ModelMap;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertTrue;
 
 /**
  * Test fixture for {@link ModelAndViewContainer}.

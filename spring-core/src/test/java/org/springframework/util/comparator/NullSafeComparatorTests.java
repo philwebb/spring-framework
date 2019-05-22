@@ -20,7 +20,7 @@ import java.util.Comparator;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertTrue;
 
 /**
  * Tests for {@link NullSafeComparator}.

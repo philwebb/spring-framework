@@ -27,8 +27,8 @@ import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.web.util.pattern.PathPatternParser;
 
 import static java.util.Collections.emptyList;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertTrue;
 import static org.springframework.http.MediaType.TEXT_XML_VALUE;
 
 /**

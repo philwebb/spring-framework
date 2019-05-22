@@ -32,9 +32,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
+import static temp.XAssert.assertNotNull;
+import static temp.XAssert.assertNotSame;
+import static temp.XAssert.assertSame;
 import static org.springframework.test.context.cache.ContextCacheTestUtils.assertContextCacheStatistics;
 import static org.springframework.test.context.cache.ContextCacheTestUtils.resetContextCache;
 

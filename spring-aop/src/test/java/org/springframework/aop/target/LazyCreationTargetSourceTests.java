@@ -21,7 +21,7 @@ import org.junit.Test;
 import org.springframework.aop.TargetSource;
 import org.springframework.aop.framework.ProxyFactory;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * @author Rob Harrop

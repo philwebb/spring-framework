@@ -28,7 +28,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.tests.sample.beans.Employee;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import static org.junit.Assert.assertSame;
+import static temp.XAssert.assertSame;
 
 /**
  * Concrete implementation of {@link AbstractTransactionalAnnotatedConfigClassTests}

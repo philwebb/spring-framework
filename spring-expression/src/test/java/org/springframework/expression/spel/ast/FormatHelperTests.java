@@ -22,7 +22,7 @@ import org.junit.Test;
 
 import org.springframework.core.convert.TypeDescriptor;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * @author Andy Wilkinson

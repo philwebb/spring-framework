@@ -29,8 +29,8 @@ import org.junit.Test;
 import org.springframework.jms.StubQueue;
 import org.springframework.jms.StubTopic;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
+import static temp.XAssert.assertNotNull;
+import static temp.XAssert.assertSame;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 

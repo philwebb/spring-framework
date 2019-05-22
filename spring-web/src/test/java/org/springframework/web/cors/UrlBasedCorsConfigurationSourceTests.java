@@ -22,8 +22,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.mock.web.test.MockHttpServletRequest;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for {@link UrlBasedCorsConfigurationSource}.

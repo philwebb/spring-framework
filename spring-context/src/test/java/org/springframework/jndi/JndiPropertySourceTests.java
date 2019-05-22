@@ -27,7 +27,7 @@ import org.springframework.tests.mock.jndi.SimpleNamingContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for {@link JndiPropertySource}.

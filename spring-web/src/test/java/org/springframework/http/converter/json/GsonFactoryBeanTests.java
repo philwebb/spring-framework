@@ -22,8 +22,8 @@ import java.util.Date;
 import com.google.gson.Gson;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertTrue;
 
 /**
  * {@link GsonFactoryBean} tests.

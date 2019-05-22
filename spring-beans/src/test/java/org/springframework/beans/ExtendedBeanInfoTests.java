@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * @author Chris Beams

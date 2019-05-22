@@ -35,7 +35,7 @@ import org.springframework.core.OverridingClassLoader;
 import org.springframework.lang.Nullable;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * @author Dave Syer

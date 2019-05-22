@@ -33,7 +33,7 @@ import org.springframework.test.annotation.Timed;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.util.ClassUtils;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 import static org.springframework.test.context.junit4.JUnitTestingUtils.runTestsAndAssertCounters;
 
 /**

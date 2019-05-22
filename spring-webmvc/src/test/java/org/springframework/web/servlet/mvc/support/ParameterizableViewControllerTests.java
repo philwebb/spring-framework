@@ -26,9 +26,9 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 import org.springframework.web.servlet.view.RedirectView;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNull;
+import static temp.XAssert.assertSame;
 
 /**
  * Unit tests for

@@ -22,7 +22,7 @@ import org.junit.Test;
 import org.springframework.tests.transaction.CallCountingTransactionManager;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * @author Rod Johnson

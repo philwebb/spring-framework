@@ -29,7 +29,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * Integration tests that validate support for {@link ServletServerContainerFactoryBean}

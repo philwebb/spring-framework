@@ -34,8 +34,8 @@ import org.springframework.jmx.AbstractJmxTests;
 import org.springframework.jmx.IJmxTestBean;
 import org.springframework.jmx.support.ObjectNameManager;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNotNull;
 
 /**
  * @author Rob Harrop

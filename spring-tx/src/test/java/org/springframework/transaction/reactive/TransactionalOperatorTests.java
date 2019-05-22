@@ -23,8 +23,8 @@ import reactor.test.StepVerifier;
 
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertTrue;
 
 /**
  * Tests for {@link TransactionalOperator}.

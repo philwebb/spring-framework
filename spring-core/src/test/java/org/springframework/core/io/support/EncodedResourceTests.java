@@ -23,9 +23,9 @@ import org.junit.Test;
 import org.springframework.core.io.DescriptiveResource;
 import org.springframework.core.io.Resource;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertNotEquals;
 
 /**
  * Unit tests for {@link EncodedResource}.

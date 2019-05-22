@@ -29,7 +29,7 @@ import org.springframework.mock.web.test.MockHttpServletRequest;
 import org.springframework.mock.web.test.MockHttpServletResponse;
 import org.springframework.mock.web.test.MockServletContext;
 
-import static org.junit.Assert.assertNotNull;
+import static temp.XAssert.assertNotNull;
 
 /**
  * Test fixture for {@link TilesConfigurer}.

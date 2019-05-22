@@ -23,7 +23,7 @@ import org.junit.Test;
 import org.springframework.jms.listener.SimpleMessageListenerContainer;
 import org.springframework.jms.listener.adapter.MessageListenerAdapter;
 
-import static org.junit.Assert.assertSame;
+import static temp.XAssert.assertSame;
 
 /**
  * @author Stephane Nicoll

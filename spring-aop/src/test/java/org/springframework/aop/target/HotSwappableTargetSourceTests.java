@@ -32,7 +32,7 @@ import org.springframework.tests.sample.beans.SideEffectBean;
 import org.springframework.util.SerializationTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 import static org.springframework.tests.TestResourceUtils.qualifiedResource;
 
 /**

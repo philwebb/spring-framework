@@ -38,10 +38,10 @@ import reactor.test.StepVerifier;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.LeakAwareDataBufferFactory;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNotNull;
+import static temp.XAssert.assertSame;
+import static temp.XAssert.assertTrue;
 
 /**
  * @author Rossen Stoyanchev

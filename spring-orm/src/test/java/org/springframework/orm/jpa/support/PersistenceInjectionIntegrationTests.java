@@ -23,7 +23,7 @@ import org.springframework.orm.jpa.AbstractEntityManagerFactoryIntegrationTests;
 import org.springframework.orm.jpa.support.PersistenceInjectionTests.DefaultPublicPersistenceContextSetter;
 import org.springframework.orm.jpa.support.PersistenceInjectionTests.DefaultPublicPersistenceUnitSetterNamedPerson;
 
-import static org.junit.Assert.assertNotNull;
+import static temp.XAssert.assertNotNull;
 
 /**
  * @author Rod Johnson

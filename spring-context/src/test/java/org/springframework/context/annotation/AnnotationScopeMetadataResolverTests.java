@@ -30,8 +30,8 @@ import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNotNull;
 import static org.springframework.context.annotation.ScopedProxyMode.INTERFACES;
 import static org.springframework.context.annotation.ScopedProxyMode.NO;
 import static org.springframework.context.annotation.ScopedProxyMode.TARGET_CLASS;

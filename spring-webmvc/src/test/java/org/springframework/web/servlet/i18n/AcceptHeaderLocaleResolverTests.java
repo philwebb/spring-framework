@@ -34,7 +34,7 @@ import static java.util.Locale.JAPANESE;
 import static java.util.Locale.KOREA;
 import static java.util.Locale.UK;
 import static java.util.Locale.US;
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for {@link AcceptHeaderLocaleResolver}.

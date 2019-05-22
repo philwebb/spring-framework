@@ -37,11 +37,11 @@ import org.springframework.tests.sample.objects.ITestInterface;
 import org.springframework.tests.sample.objects.ITestObject;
 import org.springframework.tests.sample.objects.TestObject;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertNotNull;
+import static temp.XAssert.assertNull;
+import static temp.XAssert.assertTrue;
 
 /**
  * @author Colin Sampaleanu

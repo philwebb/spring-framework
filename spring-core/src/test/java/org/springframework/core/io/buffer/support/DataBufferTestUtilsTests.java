@@ -23,8 +23,8 @@ import org.junit.Test;
 import org.springframework.core.io.buffer.AbstractDataBufferAllocatingTestCase;
 import org.springframework.core.io.buffer.DataBuffer;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertArrayEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * @author Arjen Poutsma

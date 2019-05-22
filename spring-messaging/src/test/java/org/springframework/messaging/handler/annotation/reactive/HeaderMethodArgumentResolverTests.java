@@ -35,9 +35,9 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.messaging.support.NativeMessageHeaderAccessor;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertTrue;
 import static org.springframework.messaging.handler.annotation.MessagingPredicates.header;
 import static org.springframework.messaging.handler.annotation.MessagingPredicates.headerPlain;
 

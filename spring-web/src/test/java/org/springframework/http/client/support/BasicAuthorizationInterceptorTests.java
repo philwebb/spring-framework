@@ -27,7 +27,7 @@ import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 

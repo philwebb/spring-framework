@@ -20,7 +20,7 @@ import org.junit.Test;
 
 import org.springframework.util.ClassUtils;
 
-import static org.junit.Assert.assertSame;
+import static temp.XAssert.assertSame;
 
 /**
  * @author Costin Leau

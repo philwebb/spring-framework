@@ -24,9 +24,9 @@ import org.springframework.cache.config.CacheableService;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
+import static temp.XAssert.assertNotSame;
+import static temp.XAssert.assertNull;
+import static temp.XAssert.assertSame;
 
 /**
  * @author Costin Leau

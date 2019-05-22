@@ -39,7 +39,7 @@ import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.ModelMap;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for {@link HttpMessageWriterView}.

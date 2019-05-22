@@ -22,8 +22,8 @@ import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.aci.DevProfileInitializer;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNull;
 
 /**
  * Integration tests that verify support for {@link ApplicationContextInitializer

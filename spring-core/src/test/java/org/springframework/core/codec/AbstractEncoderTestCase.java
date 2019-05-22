@@ -33,8 +33,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.MimeType;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertArrayEquals;
+import static temp.XAssert.assertEquals;
 import static org.springframework.core.io.buffer.DataBufferUtils.release;
 
 /**

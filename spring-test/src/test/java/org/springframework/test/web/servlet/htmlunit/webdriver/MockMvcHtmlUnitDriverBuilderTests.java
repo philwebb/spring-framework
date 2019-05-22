@@ -46,8 +46,8 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertTrue;
 
 /**
  * Integration tests for {@link MockMvcHtmlUnitDriverBuilder}.

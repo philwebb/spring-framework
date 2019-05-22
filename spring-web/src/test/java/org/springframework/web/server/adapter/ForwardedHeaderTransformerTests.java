@@ -25,8 +25,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.mock.http.server.reactive.test.MockServerHttpRequest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertFalse;
 
 /**
  * Unit tests for {@link ForwardedHeaderTransformer}.

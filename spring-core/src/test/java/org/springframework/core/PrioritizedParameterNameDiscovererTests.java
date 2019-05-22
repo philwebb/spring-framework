@@ -24,8 +24,8 @@ import org.junit.Test;
 
 import org.springframework.tests.sample.objects.TestObject;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertNull;
+import static temp.XAssert.assertTrue;
 
 public class PrioritizedParameterNameDiscovererTests {
 

@@ -18,7 +18,7 @@ package org.springframework.remoting.support;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertTrue;
 
 /**
  * @author Rick Evans

@@ -26,7 +26,7 @@ import org.springframework.test.annotation.Timed;
 import org.springframework.test.context.TestContextManager;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * Unit tests for {@link SpringJUnit4ClassRunner}.

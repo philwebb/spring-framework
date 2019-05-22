@@ -47,7 +47,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 import static org.springframework.transaction.event.TransactionPhase.AFTER_COMMIT;
 import static org.springframework.transaction.event.TransactionPhase.AFTER_COMPLETION;
 import static org.springframework.transaction.event.TransactionPhase.AFTER_ROLLBACK;

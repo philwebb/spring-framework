@@ -28,7 +28,7 @@ import org.springframework.web.socket.messaging.StompSubProtocolHandler;
 import org.springframework.web.socket.messaging.SubProtocolWebSocketHandler;
 import org.springframework.web.socket.sockjs.transport.session.WebSocketServerSockJsSession;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 import static org.mockito.Mockito.mock;
 
 /**

@@ -35,8 +35,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.protobuf.Msg;
 import org.springframework.web.reactive.protobuf.SecondMsg;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertFalse;
 
 /**
  * Integration tests for Protobuf support.

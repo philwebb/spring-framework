@@ -23,9 +23,9 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertTrue;
+import static temp.XAssert.fail;
 import static org.junit.Assume.assumeTrue;
 
 /**

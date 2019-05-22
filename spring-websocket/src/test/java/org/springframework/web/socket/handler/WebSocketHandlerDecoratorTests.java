@@ -18,7 +18,7 @@ package org.springframework.web.socket.handler;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertSame;
+import static temp.XAssert.assertSame;
 
 /**
  * Test fixture for {@link WebSocketHandlerDecorator}.

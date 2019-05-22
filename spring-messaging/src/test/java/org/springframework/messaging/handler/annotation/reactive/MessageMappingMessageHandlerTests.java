@@ -51,7 +51,7 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.util.SimpleRouteMatcher;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertTrue;
 
 /**
  * Unit tests for {@link MessageMappingMessageHandler}.

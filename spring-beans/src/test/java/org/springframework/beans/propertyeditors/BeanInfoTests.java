@@ -27,8 +27,8 @@ import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.util.Assert;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNull;
 
 /**
  * @author Juergen Hoeller

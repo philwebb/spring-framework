@@ -33,9 +33,9 @@ import org.springframework.tests.sample.beans.SideEffectBean;
 import org.springframework.util.SerializationTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNotNull;
+import static temp.XAssert.assertTrue;
 
 /**
  * Tests for pooling invoker interceptor.

@@ -37,8 +37,8 @@ import org.springframework.mock.http.client.reactive.test.MockClientHttpRequest;
 import org.springframework.web.reactive.function.BodyInserter;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNotNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.springframework.http.HttpMethod.DELETE;

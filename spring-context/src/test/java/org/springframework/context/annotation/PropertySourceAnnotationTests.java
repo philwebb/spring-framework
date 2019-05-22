@@ -43,7 +43,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertTrue;
 
 /**
  * Tests the processing of @PropertySource annotations on @Configuration classes.

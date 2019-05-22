@@ -30,8 +30,8 @@ import org.springframework.web.server.WebExceptionHandler;
 import org.springframework.web.server.WebHandler;
 import org.springframework.web.server.adapter.HttpWebHandlerAdapter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for {@link ExceptionHandlingWebHandler}.

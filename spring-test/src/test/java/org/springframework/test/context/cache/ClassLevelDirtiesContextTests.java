@@ -35,7 +35,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 
-import static org.junit.Assert.assertNotNull;
+import static temp.XAssert.assertNotNull;
 import static org.springframework.test.context.cache.ContextCacheTestUtils.assertContextCacheStatistics;
 import static org.springframework.test.context.cache.ContextCacheTestUtils.resetContextCache;
 import static org.springframework.test.context.junit4.JUnitTestingUtils.runTestsAndAssertCounters;

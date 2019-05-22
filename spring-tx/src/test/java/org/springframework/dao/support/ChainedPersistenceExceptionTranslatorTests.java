@@ -22,8 +22,8 @@ import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.dao.support.DataAccessUtilsTests.MapPersistenceExceptionTranslator;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
+import static temp.XAssert.assertNull;
+import static temp.XAssert.assertSame;
 
 /**
  * @author Rod Johnson

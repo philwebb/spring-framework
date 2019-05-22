@@ -29,7 +29,7 @@ import org.springframework.test.context.junit4.ContextCustomizerSpringRunnerTest
 import org.springframework.test.context.support.DefaultTestContextBootstrapper;
 
 import static java.util.Collections.singletonList;
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * JUnit 4 based integration test which verifies support of

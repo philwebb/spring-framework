@@ -33,7 +33,7 @@ import org.springframework.web.reactive.config.PathMatchConfigurer;
 import org.springframework.web.reactive.config.ViewResolverRegistry;
 import org.springframework.web.reactive.result.method.annotation.ArgumentResolverConfigurer;
 
-import static org.junit.Assert.assertNotNull;
+import static temp.XAssert.assertNotNull;
 
 /**
  * Unit tests for {@link DefaultControllerSpec}.

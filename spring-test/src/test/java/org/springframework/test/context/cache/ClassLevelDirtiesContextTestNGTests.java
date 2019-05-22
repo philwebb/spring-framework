@@ -38,7 +38,7 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.testng.TrackingTestNGTestListener;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 import static org.springframework.test.context.cache.ContextCacheTestUtils.assertContextCacheStatistics;
 import static org.springframework.test.context.cache.ContextCacheTestUtils.resetContextCache;
 

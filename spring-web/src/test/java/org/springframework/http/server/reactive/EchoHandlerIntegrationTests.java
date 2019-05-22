@@ -26,7 +26,7 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import static org.junit.Assert.assertArrayEquals;
+import static temp.XAssert.assertArrayEquals;
 
 /**
  * @author Arjen Poutsma

@@ -23,7 +23,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * @author Arjen Poutsma

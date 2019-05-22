@@ -32,7 +32,7 @@ import org.junit.runners.Parameterized.Parameters;
 import org.springframework.scheduling.TriggerContext;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * @author Dave Syer

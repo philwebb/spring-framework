@@ -25,7 +25,7 @@ import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.web.context.request.NativeWebRequest;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * A test fixture with a test sub-class of AbstractMappingContentNegotiationStrategy.

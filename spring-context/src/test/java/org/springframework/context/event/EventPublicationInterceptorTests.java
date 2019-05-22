@@ -32,7 +32,7 @@ import org.springframework.tests.sample.beans.ITestBean;
 import org.springframework.tests.sample.beans.TestBean;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 /**

@@ -31,7 +31,7 @@ import org.springframework.validation.beanvalidation.BeanValidationPostProcessor
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.Assert.assertNotNull;
+import static temp.XAssert.assertNotNull;
 
 /**
  * @author Juergen Hoeller

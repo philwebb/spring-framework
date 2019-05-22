@@ -23,7 +23,7 @@ import org.junit.runners.MethodSorters;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * Extension of {@link CommitForRequiredEjbTxDaoTests} which sets the default

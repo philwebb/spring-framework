@@ -18,8 +18,8 @@ package org.springframework.web.socket.sockjs.frame;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNull;
 
 /**
  * Unit tests for {@link org.springframework.web.socket.sockjs.frame.SockJsFrame}.

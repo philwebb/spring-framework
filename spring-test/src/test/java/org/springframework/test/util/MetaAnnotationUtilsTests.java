@@ -34,10 +34,10 @@ import org.springframework.test.util.MetaAnnotationUtils.AnnotationDescriptor;
 import org.springframework.test.util.MetaAnnotationUtils.UntypedAnnotationDescriptor;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static temp.XAssert.assertArrayEquals;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertNotNull;
+import static temp.XAssert.assertNull;
 import static org.springframework.test.util.MetaAnnotationUtils.findAnnotationDescriptor;
 import static org.springframework.test.util.MetaAnnotationUtils.findAnnotationDescriptorForTypes;
 

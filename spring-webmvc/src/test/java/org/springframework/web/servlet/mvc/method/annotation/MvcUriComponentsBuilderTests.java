@@ -70,7 +70,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 import static org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.fromController;
 import static org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.fromMappingName;
 import static org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.fromMethodCall;

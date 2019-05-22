@@ -32,8 +32,8 @@ import org.springframework.http.server.reactive.bootstrap.ReactorHttpServer;
 import org.springframework.http.server.reactive.bootstrap.UndertowHttpServer;
 import org.springframework.web.client.RestTemplate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertEquals;
+import static temp.XAssert.assertTrue;
 import static org.junit.Assume.assumeTrue;
 
 /**

@@ -20,8 +20,8 @@ import org.junit.Test;
 
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertTrue;
 
 /**
  * Tests for matching of bean() pointcut designator.

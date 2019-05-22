@@ -24,9 +24,9 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.tests.sample.beans.TestBean;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
+import static temp.XAssert.assertNotNull;
+import static temp.XAssert.assertNotSame;
+import static temp.XAssert.assertSame;
 
 /**
  * @author Arjen Poutsma

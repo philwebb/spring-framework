@@ -21,8 +21,8 @@ import java.net.URL;
 
 import com.gargoylesoftware.htmlunit.WebRequest;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertFalse;
+import static temp.XAssert.assertTrue;
 
 /**
  * Abstract base class for testing {@link WebRequestMatcher} implementations.

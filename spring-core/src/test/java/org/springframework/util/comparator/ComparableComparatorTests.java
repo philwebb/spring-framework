@@ -21,7 +21,7 @@ import java.util.Comparator;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.Assert.assertTrue;
+import static temp.XAssert.assertTrue;
 
 /**
  * Tests for {@link ComparableComparator}.

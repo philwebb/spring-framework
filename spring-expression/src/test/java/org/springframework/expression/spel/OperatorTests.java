@@ -24,7 +24,7 @@ import org.junit.Test;
 import org.springframework.expression.spel.ast.Operator;
 import org.springframework.expression.spel.standard.SpelExpression;
 
-import static org.junit.Assert.assertEquals;
+import static temp.XAssert.assertEquals;
 
 /**
  * Tests the evaluation of expressions using relational operators.
